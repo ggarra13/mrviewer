@@ -6,7 +6,11 @@ set( ZIPFILE32 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-32/Release/tmp/
 set( ZIPFILE64 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/${mrViewerPackageName64}.zip" )
 
 IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
+    #file( SHA256 ${ZIPFILE32} CHECKSUM )
+    #file( SHA256 ${ZIPFILE64} CHECKSUM64 )
+
     execute_process( COMMAND checksum --type sha256 ${ZIPFILE32} OUTPUT_VARIABLE CHECKSUM OUTPUT_STRIP_TRAILING_WHITESPACE )
+
     execute_process( COMMAND checksum --type sha256 ${ZIPFILE64} OUTPUT_VARIABLE CHECKSUM64 OUTPUT_STRIP_TRAILING_WHITESPACE )
 
     MESSAGE( STATUS "" )
