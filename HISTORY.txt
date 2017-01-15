@@ -1,5 +1,7 @@
 v3.4.4   - Bug fixed stuterring NaNs in pixel info bar when loading
-	   an OpenEXR sequence.  Regression from v3.4.0.
+	   an OpenEXR sequence.  This was particularly buggy on Windows.
+	 - Fixed documentation, main_toolbar.html, to reflect the changes
+	   in stereo.
 
 v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   in the VR360 view.
