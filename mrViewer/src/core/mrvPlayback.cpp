@@ -859,7 +859,7 @@ void video_thread( PlaybackData* data )
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
-       DBG( img->name() << " wait image " << frame );
+       // DBG( img->name() << " wait image " << frame );
        img->wait_image();
 
        // img->debug_video_stores( frame, "BACK" );
@@ -873,6 +873,8 @@ void video_thread( PlaybackData* data )
        DBG( img->name() << " decoded image " << frame << " status " 
             << CMedia::decode_error(status) );
 
+#undef DBG
+#define DBG(x) std::cerr << x << std::endl;
       switch( status )
       {
           // case CMedia::DecodeDone:
@@ -1021,6 +1023,8 @@ void video_thread( PlaybackData* data )
 }  // video_thread
 
 
+#undef DBG
+#define DBG(x) 
 
 
 
