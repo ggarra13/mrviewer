@@ -1087,7 +1087,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   while(  pkt->size > 0 || pkt->data == NULL )
   {
-      int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
+     int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
 
 
      if ( got_pict ) {
@@ -1165,9 +1165,10 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          return kDecodeError;
      }
 
-     if ( err == 0 ) return kDecodeLoopEnd;
-
-
+     if ( err == 0 ) {
+         break;
+     }
+     
      pkt->size -= err;
      pkt->data += err;
   }
@@ -1450,9 +1451,11 @@ bool aviImage::find_image( const boost::int64_t frame )
 	  {
 	    _hires = _images.back();
 
+            uint64_t diff = abs(frame - _hires->frame() );
+
 	    if ( !filter_graph &&
                  _hires->frame() != frame && 
-		 abs(frame - _hires->frame() ) < 10 )
+		 diff > 1 && diff < 10 )
             {
 	       IMG_WARNING( _("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
