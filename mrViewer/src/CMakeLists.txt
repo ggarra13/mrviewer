@@ -654,6 +654,7 @@ ADD_CUSTOM_TARGET( bundle
   		   	   "-C" "$<CONFIGURATION>"
 			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
 			   COMMENT "Running CPack. Please wait..."
+			   USES_TERMINAL
 			   DEPENDS ${PROJECT_NAME})
 
 IF (WIN32)

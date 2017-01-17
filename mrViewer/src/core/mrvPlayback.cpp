@@ -873,14 +873,11 @@ void video_thread( PlaybackData* data )
        DBG( img->name() << " decoded image " << frame << " status " 
             << CMedia::decode_error(status) );
 
-#undef DBG
-#define DBG(x) std::cerr << x << std::endl;
       switch( status )
       {
           // case CMedia::DecodeDone:
           //    continue;
           case CMedia::kDecodeError:
-          case CMedia::kDecodeMissingFrame:
               LOG_ERROR( img->name() << _(" - Decode of image frame ") << frame 
                          << _(" returned ") << CMedia::decode_error( status ) );
              break;
@@ -914,6 +911,8 @@ void video_thread( PlaybackData* data )
 
 	       continue;
 	    }
+          case CMedia::kDecodeMissingFrame:
+              break;
           case CMedia::kDecodeBufferFull:
           default:
               break;
@@ -995,13 +994,7 @@ void video_thread( PlaybackData* data )
       img->real_fps( timer.actualFrameRate() );
 
 
-      
-      bool ok = img->find_image( frame );
-      if ( !ok )
-      {
-          LOG_ERROR( "Could not find image frame " << frame );
-      }
-
+      img->find_image( frame );
 
       if ( fg && reel->edl && img->is_left_eye() )
       {
@@ -1022,9 +1015,6 @@ void video_thread( PlaybackData* data )
 
 }  // video_thread
 
-
-#undef DBG
-#define DBG(x) 
 
 
 
