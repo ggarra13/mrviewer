@@ -2,6 +2,12 @@ v3.4.4   - Bug fixed stuterring NaNs in pixel info bar when loading
 	   an OpenEXR sequence.  This was particularly buggy on Windows.
 	 - Fixed documentation, main_toolbar.html, to reflect the changes
 	   in stereo.
+	 - Fixed a playback bug which would stop playback sooner than at
+	   the end.  In some cases, video playback would not even begin.
+	 - Added Disposition to the video, audio and subtitle tracks'
+	   media info.
+	 - Lowered the severity of errors caused by missing frames.  Now
+	   they are warnings instead of errors.
 
 v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   in the VR360 view.
