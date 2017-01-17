@@ -911,7 +911,10 @@ void ImageInformation::fill_data()
 
 	    sprintf( buf, "%g %s", s.fps, name );
 	    add_text( _("FPS"), _("Frames per Second"), buf );
-
+	    ++group;
+	    add_text( _("Language"), _("Language if known"), s.language );
+            add_text( _("Disposition"), _("Disposition of Track"),
+                      s.disposition );
 
 	    ++group;
 	    add_time( _("Start"), _("Start of Video"), s.start, s.fps );
@@ -962,7 +965,9 @@ void ImageInformation::fill_data()
 
 	    ++group;
 	    add_text( _("Language"), _("Language if known"), s.language );
-
+	    ++group;
+            add_text( _("Disposition"), _("Disposition of Track"),
+                                          s.disposition);
 	    ++group;
 
 	    add_time( _("Start"), _("Start of Audio"), s.start, img->fps() );
@@ -998,6 +1003,9 @@ void ImageInformation::fill_data()
 
 	    ++group;
 	    add_text( _("Language"), _("Language if known"), s.language );
+	    ++group;
+            add_text( _("Disposition"), _("Disposition of Track"),
+                      s.disposition );
 
 	    ++group;
 	    add_time( _("Start"), _("Start of Subtitle"), s.start, img->fps() );
