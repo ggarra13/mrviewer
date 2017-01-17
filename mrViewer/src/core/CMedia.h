@@ -145,6 +145,8 @@ class CMedia
         bool         has_codec;
         std::string  codec_name;
         std::string  fourcc;
+        std::string  language;
+        std::string  disposition;
         double       start;
         double       duration;
 
@@ -162,6 +164,8 @@ class CMedia
         has_codec( b.has_codec ),
         codec_name( b.codec_name ),
         fourcc( b.fourcc ),
+        language( b.language ),
+        disposition( b.disposition ),
         start( b.start ),
         duration( b.duration )
         {
@@ -209,7 +213,6 @@ class CMedia
         unsigned int frequency;
         unsigned int bitrate;
         std::string format;
-        std::string language;
 
         AudioStream() : StreamInfo(), channels(0), frequency(0), bitrate(0)
         {
@@ -220,8 +223,7 @@ class CMedia
 	channels( b.channels ),
 	frequency( b.frequency ),
 	bitrate( b.bitrate ),
-	format( b.format ),
-	language( b.language )
+	format( b.format )
         {
         }
     };
@@ -233,7 +235,6 @@ class CMedia
     struct SubtitleStream : public StreamInfo
     {
         unsigned int bitrate;
-        std::string  language;
 
         SubtitleStream() : StreamInfo(), bitrate(0)
         {
@@ -241,8 +242,7 @@ class CMedia
 
         SubtitleStream( const SubtitleStream& b ) :
 	StreamInfo( b ),
-	bitrate( b.bitrate ),
-	language( b.language )
+	bitrate( b.bitrate )
         {
         }
     };
