@@ -2571,27 +2571,54 @@ void CMedia::populate_stream_info( StreamInfo& s,
   s.codec_name   = codec_name( ctx );
   s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
 
-  AVStream* stream = context->streams[stream_index];
-  double time  = av_q2d( stream->time_base );
+  AVStream* st = context->streams[stream_index];
+  double time  = av_q2d( st->time_base );
 
 
-  if ( stream->start_time == AV_NOPTS_VALUE )
+  AVDictionaryEntry* lang = av_dict_get(st->metadata, "language", NULL, 0);
+  if ( lang && lang->value )
+      s.language = lang->value;
+  else
+      s.language = _("und");
+  
+  if ( st->start_time == AV_NOPTS_VALUE )
     {
         s.start = 1;
     }
   else
     {
-        s.start = ((double) stream->start_time * time);
+        s.start = ((double) st->start_time * time);
     }
 
-  if ( stream->duration != AV_NOPTS_VALUE )
+  if ( st->duration != AV_NOPTS_VALUE )
     {
-        s.duration = ((double) stream->duration * time);
+        s.duration = ((double) st->duration * time);
     }
   else
     {
         s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
     }
+  
+    if (st->disposition & AV_DISPOSITION_DEFAULT)
+        s.disposition = _("default");
+    if (st->disposition & AV_DISPOSITION_DUB)
+        s.disposition = _("dub");
+    if (st->disposition & AV_DISPOSITION_ORIGINAL)
+        s.disposition = _("original");
+    if (st->disposition & AV_DISPOSITION_COMMENT)
+        s.disposition = _("comment");
+    if (st->disposition & AV_DISPOSITION_LYRICS)
+        s.disposition = _("lyrics");
+    if (st->disposition & AV_DISPOSITION_KARAOKE)
+        s.disposition = _("karaoke");
+    if (st->disposition & AV_DISPOSITION_FORCED)
+        s.disposition = _("forced");
+    if (st->disposition & AV_DISPOSITION_HEARING_IMPAIRED)
+        s.disposition = _("hearing impaired");
+    if (st->disposition & AV_DISPOSITION_VISUAL_IMPAIRED)
+        s.disposition = _("visual impaired");
+    if (st->disposition & AV_DISPOSITION_CLEAN_EFFECTS)
+        s.disposition = _("clean effects");
 }
 
 
@@ -3256,9 +3283,9 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 	   std::cerr << f << " ";
 	}
      }
+     std::cerr << std::endl << std::endl;
   }
 
-  std::cerr << std::endl << std::endl;
 }
 
 
