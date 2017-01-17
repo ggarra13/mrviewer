@@ -1184,7 +1184,6 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 {
   boost::int64_t ptsframe = frame;
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
-
   if ( status == kDecodeOK )
   {
       store_image( ptsframe, pkt.dts );
@@ -1457,7 +1456,7 @@ bool aviImage::find_image( const boost::int64_t frame )
                  _hires->frame() != frame && 
 		 diff > 1 && diff < 10 )
             {
-	       IMG_WARNING( _("find_image: frame ") << frame 
+                IMG_WARNING( name() << _(" find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
                // debug_video_packets( frame, "find_image", false );
@@ -1465,7 +1464,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	  }
 	else
 	  {
-              IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
+              IMG_ERROR( name() << _(" find_image: frame ") << frame << _(" not found") );
               return false;
 	  }
       }
@@ -1746,17 +1745,6 @@ void aviImage::populate()
                     s.frequency  = ctx->sample_rate;
                     s.bitrate    = calculate_bitrate( ctx );
 		 
-                    if ( stream->metadata )
-                    {
-                        AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
-                                                              "language", NULL, 0);
-                        if ( lang && lang->value )
-                            s.language = lang->value;
-                    }
-                    else
-                    {
-                        s.language = "und";
-                    }
 
                     const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
                     if ( fmt ) s.format = fmt;
@@ -1772,10 +1760,6 @@ void aviImage::populate()
                     subtitle_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
                     s.bitrate    = calculate_bitrate( ctx );
-                    AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
-                                                          "language", NULL, 0);
-                    if ( lang && lang->value )
-                        s.language = lang->value;
                     _subtitle_info.push_back( s );
                     if ( _subtitle_index < 0 )
                         _subtitle_index = 0;
@@ -2899,7 +2883,8 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	}
       else if ( _video_packets.is_seek() )
 	{
-	  return handle_video_packet_seek( frame, true );
+            got_video = handle_video_packet_seek( frame, true );
+            continue;
 	}
       else if ( _video_packets.is_preroll() )
 	{
@@ -2976,11 +2961,11 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	    {
                // if ( pktframe == frame )
                {
-                   decode_vpacket( pktframe, frame, pkt );
+                   got_video = decode_vpacket( pktframe, frame, pkt );
                    assert( !_video_packets.empty() );
                    _video_packets.pop_front();
                }
-               return kDecodeOK;
+               continue;
 	    }
 
 
@@ -3657,8 +3642,8 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 {
    SCOPED_LOCK( _subtitle_mutex );
 
-   // Check if audio is already in audio store
-   // If so, no need to decode it again.  We just pop the packet and return.
+   // This is wrong.  Subtitle spans several frames and has gaps without
+   // frames.  Searching for equal frame is bound not to work in most cases.
    subtitle_cache_t::iterator end = _subtitles.end();
    subtitle_cache_t::iterator i = std::find_if( _subtitles.begin(), end,
 						EqualFunctor(frame) );
