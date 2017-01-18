@@ -1089,6 +1089,11 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
   {
      int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
 
+     if ( err < 0 ) {
+         IMG_ERROR( "Decode video error: " << get_error_text(err) );
+         return kDecodeError;
+     }
+
 
      if ( got_pict ) {
          ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
@@ -1142,30 +1147,12 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          }
 
 
-        if ( eof )
-        {
-            eof_found = true;
-            store_image( ptsframe, p.dts );
-            av_frame_unref(_av_frame);
-            av_frame_unref(_filt_frame);
-            continue;
-        }
-
 	return kDecodeOK;
      }
 
-     if ( eof_found )
-     {
-         flush_video();
-     }
-
      
-     if ( err < 0 ) {
-         IMG_ERROR( "Decode video error: " << get_error_text(err) );
-         return kDecodeError;
-     }
-
      if ( err == 0 ) {
+         if ( pkt->data == NULL ) return kDecodeOK;
          break;
      }
      
