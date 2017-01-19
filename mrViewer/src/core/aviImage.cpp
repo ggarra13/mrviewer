@@ -1160,10 +1160,9 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	return kDecodeOK;
      }
 
-     
      if ( err == 0 ) {
-         // If flushing caches, return ok.
-         if ( pkt->data == NULL ) return kDecodeOK;
+         // If flushing caches, return done.
+         if ( pkt->data == NULL ) return kDecodeDone;
          break;
      }
      
@@ -1204,6 +1203,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       av_frame_unref(_filt_frame);
   }
 
+  if ( status == kDecodeDone ) status = kDecodeOK;
   return status;
 }
 
@@ -2578,6 +2578,7 @@ CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& pktframe,
     }
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
+    if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
 }
 
