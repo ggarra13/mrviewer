@@ -96,7 +96,7 @@ namespace
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
-// #define DEBUG_AUDIO_STORES
+//#define DEBUG_AUDIO_STORES
 // #define DEBUG_STORES_DETAIL
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
@@ -865,6 +865,14 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         spts = frame2pts( get_subtitle_stream(), start );
     }
 
+#ifdef DEBUG_SEEK_VIDEO_PACKETS
+    debug_video_packets(start, _right_eye ? "RBEFORE SEEK" : "BEFORE SEEK", true);
+#endif
+
+#ifdef DEBUG_AUDIO_PACKETS
+    debug_audio_packets(start, _right_eye ? "RBEFORE SEEK" :  "BEFORE SEEK", true);
+#endif
+    
     if ( !_seek_req && playback() == kBackwards )
     {
         if ( !got_video )    _video_packets.preroll(vpts);
@@ -881,13 +889,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
     }
 
-#ifdef DEBUG_SEEK_VIDEO_PACKETS
-    debug_video_packets(start, "BEFORE SEEK", true);
-#endif
-
-#ifdef DEBUG_SEEK_AUDIO_PACKETS
-    debug_audio_packets(start, "BEFORE SEEK", true);
-#endif
 
 
     boost::int64_t dts = queue_packets( frame, true, got_video,
@@ -910,15 +911,15 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-    debug_audio_stores(frame, "AFTER SEEK");
+    debug_audio_stores(frame, _right_eye ? "RAFTER SEEK" : "AFTER SEEK");
 #endif
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
-    debug_video_packets(frame, "AFTER SEEK", true);
+    debug_video_packets(frame,  "AFTER SEEK", true);
 #endif
 
-#ifdef DEBUG_SEEK_AUDIO_PACKETS
-    debug_audio_packets(frame, "AFTER SEEK", true);
+#ifdef DEBUG_AUDIO_PACKETS
+    debug_audio_packets(frame, _right_eye ? "RAFTER SEEK" : "AFTER SEEK", true);
 #endif
 
 
@@ -1040,6 +1041,7 @@ void aviImage::store_image( const boost::int64_t frame,
  
 }
 
+static
 int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
            bool eof)
 {
@@ -1202,7 +1204,6 @@ void aviImage::clear_packets()
 	<< " expected: " << _expected << endl;
 #endif
 
-   if ( _right_eye ) _right_eye->clear_packets();
 
   _video_packets.clear();
   _audio_packets.clear();
@@ -1666,7 +1667,7 @@ void aviImage::populate()
   
     if ( _context == NULL ) return;
 
-
+    std::cerr << this << " " << name() << " populate" << std::endl;
   
     // Iterate through all the streams available
     for( unsigned i = 0; i < _context->nb_streams; ++i ) 
@@ -2015,7 +2016,7 @@ void aviImage::populate()
             av_packet_unref( &pkt );
 	}
 
-      
+     
         if ( has_picture() && (!has_audio() || audio_context() == _context) )
             find_image( _frameStart );
     }
@@ -2049,7 +2050,7 @@ void aviImage::populate()
     if ( _context->iformat )
         _format = _context->iformat->name;
     else
-        _format = "Unknown";
+        _format = _("Unknown");
 
     //
     // Miscellaneous information
@@ -2066,21 +2067,18 @@ void aviImage::populate()
         dump_metadata(ch->metadata, buf);
     }
 
-    if ( _context->nb_programs )
+    for (unsigned i = 0; i < _context->nb_programs; ++i) 
     {
-        for (unsigned i = 0; i < _context->nb_programs; ++i) 
+        AVDictionaryEntry* tag = 
+        av_dict_get(_context->programs[i]->metadata,
+                    "name", NULL, 0);
+        if ( tag ) 
         {
-            AVDictionaryEntry* tag = 
-            av_dict_get(_context->programs[i]->metadata,
-                        "name", NULL, 0);
-            if ( tag ) 
-            {
-                sprintf( buf, "Program %d: %s", i+1, tag->key );
-                _iptc.insert( std::make_pair(buf, tag->value) );
-            }
-            sprintf( buf, "Program %d ", i+1 );
-            dump_metadata( _context->programs[i]->metadata, buf );
+            sprintf( buf, "Program %d: %s", i+1, tag->key );
+            _iptc.insert( std::make_pair(buf, tag->value) );
         }
+        sprintf( buf, "Program %d ", i+1 );
+        dump_metadata( _context->programs[i]->metadata, buf );
     }
  
    
@@ -2467,10 +2465,10 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "Fetch", true);
+  debug_audio_packets(frame, _right_eye ? "rFetch" :"Fetch", true);
 #endif
 #ifdef DEBUG_AUDIO_STORES
-  debug_audio_stores(frame, "Fetch");
+  debug_audio_stores(frame, _right_eye ? "rFetch" :"Fetch");
 #endif
 
 
@@ -2502,11 +2500,11 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "FETCH DONE", true);
+  debug_audio_packets(frame, _right_eye ? "RFETCH DONE" : "FETCH DONE", true);
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-  debug_audio_stores(frame, "FETCH DONE");
+  debug_audio_stores(frame, _right_eye ? "RFETCH DONE" : "FETCH DONE");
 #endif
 
 
@@ -2517,6 +2515,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 bool aviImage::frame( const boost::int64_t f )
 {
 
+    
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
     
