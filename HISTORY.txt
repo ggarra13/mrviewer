@@ -9,7 +9,11 @@ v3.4.4   - Bug fixed stuterring NaNs in pixel info bar when loading
 	   media info.
 	 - Lowered the severity of errors caused by missing frames.  Now
 	   they are warnings instead of errors.
-	 - Bug fixed audio frames on right eye movies at the beginning. 
+	 - Bug fixed audio frames on right eye movies at the beginning.
+	 - Bug fixed a problem with multiple images when not in EDL mode
+	   which would lead to stopping and switching to the wrong
+	   image.
+	 - Bug fixed stepping on the second/third/etc. movie in a reel.
 
 v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   in the VR360 view.
