@@ -1066,6 +1066,7 @@ void decode_thread( PlaybackData* data )
       {
 	 img->do_seek();
 	 frame = img->dts();
+         std::cerr << "seek request: " << frame << std::endl;
       }
 
 
