@@ -84,9 +84,9 @@ namespace {
 //#undef DBG
 //#define DBG(x) std::cerr << x << std::endl;
 
-//#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS
 // #define DEBUG_AUDIO_PACKETS_DETAIL
-//#define DEBUG_AUDIO_STORES
+// #define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
 //#define DEBUG_DECODE
 // #define DEBUG_QUEUE
@@ -130,6 +130,7 @@ namespace mrv {
  */
 void CMedia::clear_packets()
 {
+    
    SCOPED_LOCK( _mutex );
    SCOPED_LOCK( _audio_mutex );
    SCOPED_LOCK( _subtitle_mutex );
@@ -1581,11 +1582,11 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   {
 #ifdef DEBUG_AUDIO_PACKETS
-    debug_audio_packets(frame, "FIND");
+      debug_audio_packets(frame, _right_eye ? "RFIND" : "FIND");
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-    debug_audio_stores(frame, "FIND");
+    debug_audio_stores(frame, _right_eye ? "RFIND" : "FIND");
 #endif
 
     SCOPED_LOCK( _audio_mutex );
@@ -1614,6 +1615,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   }
 
+  
   bool ok = play_audio( result );
   if ( !ok )
   {
@@ -1623,7 +1625,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = (result->frame() - _audio_offset ) / _orig_fps; //av_q2d( get_audio_stream()->avg_frame_rate );
+  _audio_pts = (result->frame() - _audio_offset ) / _orig_fps; //not av_q2d( get_audio_stream()->avg_frame_rate );
 
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
   set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
@@ -1677,11 +1679,11 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 				  const bool is_seek )
 {
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "DOSEEK");
+  debug_audio_packets(frame, _right_eye ? "RDOSEEK" : "DOSEEK");
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-  debug_audio_stores(frame, "DOSEEK");
+  debug_audio_stores(frame, _right_eye ? "RDOSEEK" : "DOSEEK");
 #endif
 
   Mutex& m = _audio_packets.mutex();
@@ -1766,11 +1768,11 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   }
   
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "DOSEEK END");
+  debug_audio_packets(frame, _right_eye ? "RDOSEEK END" : "DOSEEK END");
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-  debug_audio_stores(frame, "DOSEEK END");
+  debug_audio_stores(frame, _right_eye ? "RDOSEEK END" : "DOSEEK END");
 #endif
 
   if ( _audio_packets.empty() ) return got_audio;
@@ -1798,11 +1800,11 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
     boost::int64_t frame = f;
 
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "DECODE");
+    debug_audio_packets(frame, _right_eye ? "RDECODE" : "DECODE");
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-  debug_audio_stores(frame, "DECODE");
+  debug_audio_stores(frame, _right_eye ? "RDECODE" : "DECODE");
 #endif
 
   DecodeStatus got_audio = kDecodeMissingFrame;
@@ -1901,8 +1903,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
           assert( !_audio_packets.empty() );
 	  AVPacket& pkt = _audio_packets.front();
 
-#if 0
 	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+#if 0
           // This does not work as decode_audio_packet may decode more
           // than one frame of audio (see Essa.wmv)
 	  bool ok = in_audio_store( frame );
@@ -1914,7 +1916,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
               continue;
           }
 #endif
-
 	  got_audio = decode_audio( frame, pkt );
           assert( !_audio_packets.empty() );
 	  _audio_packets.pop_front();
@@ -1924,11 +1925,11 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   }
 
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "DECODE END");
+  debug_audio_packets(frame, _right_eye ? "RDECODE END" : "DECODE END");
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-  debug_audio_stores(frame, "DECODE END");
+  debug_audio_stores(frame, _right_eye ? "RDECODE END" : "DECODE END");
 #endif
 
 
@@ -1992,7 +1993,8 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
   audio_cache_t::const_iterator iter = _audio.begin();
   audio_cache_t::const_iterator last = _audio.end();
 
-  std::cerr << name() << " S:" << _frame << " D:" << _adts 
+  std::cerr << this << std::dec << " " << name()
+            << " S:" << _frame << " D:" << _adts 
 	    << " A:" << frame << " " << routine << " audio stores #"
 	    << _audio.size() << ": ";
 
@@ -2072,7 +2074,8 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 
   mrv::PacketQueue::const_iterator iter = _audio_packets.begin();
   mrv::PacketQueue::const_iterator last = _audio_packets.end();
-  std::cerr << name() << " F:" << frame << " D:" << _adts 
+  std::cerr << this << std::dec << " " << name()
+            << " F:" << frame << " D:" << _adts 
 	    << " A:" << _audio_frame << " " << routine << " audio packets #"
 	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): ";
 

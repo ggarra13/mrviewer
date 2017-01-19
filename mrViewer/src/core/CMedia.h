@@ -746,11 +746,6 @@ class CMedia
                        mrv::ViewerUI* const uiMain,
                        const bool fg );
 
-    // Abort playback suddenly
-    void abort(bool t) { _aborted = t; }
-
-    // Is playback aborted?
-    bool aborted() { return _aborted; }
 
 
     /// VCR stop sequence
@@ -1398,7 +1393,6 @@ class CMedia
     unsigned int _frame_offset;      //!< hack to get ffmpeg to behave correctly
 
     Playback       _playback;        //!< playback direction or stopped
-    bool        _aborted;
     
     thread_pool_t  _threads;         //!< any threads associated with process
 
