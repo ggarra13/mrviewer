@@ -205,7 +205,6 @@ _rendering_transform( NULL ),
 _idt_transform( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
-_aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
 _context(NULL),
@@ -294,7 +293,6 @@ _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
 _playback( kStopped ),
-_aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
 _context(NULL),
@@ -395,7 +393,6 @@ _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
 _playback( kStopped ),
-_aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
 _context(NULL),
@@ -1896,7 +1893,6 @@ void CMedia::play(const CMedia::Playback dir,
     stop();
 
     _playback = dir;
-    _aborted = false;
 
     assert( uiMain != NULL );
     assert( _threads.size() == 0 );
@@ -1927,9 +1923,10 @@ void CMedia::play(const CMedia::Playback dir,
 
   // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
-
+  
   if ( ! seek_to_position( _frame ) )
       IMG_ERROR( _("Could not seek to frame ") << _frame );
+
 
   // Start threads
   PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
@@ -2007,12 +2004,11 @@ void CMedia::play(const CMedia::Playback dir,
 void CMedia::stop()
 {
 
+
     if ( _playback == kStopped && _threads.empty() ) return;
 
     if ( _right_eye ) _right_eye->stop();
-
-
-
+    
   _playback = kStopped;
 
   //
