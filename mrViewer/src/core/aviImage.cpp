@@ -1090,7 +1090,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
   while(  pkt->size > 0 || pkt->data == NULL )
   {
      int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
-
+     
      if ( err < 0 ) {
          IMG_ERROR( "Decode video error: " << get_error_text(err) );
          return kDecodeError;
@@ -1148,12 +1148,21 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              }
          }
 
+         if ( eof )
+         {
+             eof_found = true;
+             store_image( ptsframe, p.dts );
+             av_frame_unref( _av_frame );
+             av_frame_unref( _filt_frame );
+             continue;
+         }
 
 	return kDecodeOK;
      }
 
      
      if ( err == 0 ) {
+         // If flushing caches, return ok.
          if ( pkt->data == NULL ) return kDecodeOK;
          break;
      }
@@ -1191,6 +1200,8 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
                        << (pkt.pts == AV_NOPTS_VALUE ?
                            -1 : pkt.pts ) << " dts: " << pkt.dts
 		      << " data: " << (void*)pkt.data);
+      av_frame_unref(_av_frame);
+      av_frame_unref(_filt_frame);
   }
 
   return status;
@@ -1666,8 +1677,6 @@ void aviImage::populate()
     std::ostringstream msg;
   
     if ( _context == NULL ) return;
-
-    std::cerr << this << " " << name() << " populate" << std::endl;
   
     // Iterate through all the streams available
     for( unsigned i = 0; i < _context->nb_streams; ++i ) 
