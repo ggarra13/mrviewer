@@ -2486,7 +2486,7 @@ void ImageBrowser::handle_dnd()
 
     mrv::Reel reel = reel_at( view()->fg_reel() );
     mrv::Reel bgreel = reel_at( view()->bg_reel() );
-    if ( reel && reel != bgreel )
+    if ( reel && reel != bgreel && reel->edl )
     {
 	// Check if we need to change to a new sequence based on frame
 	 mrv::media m = reel->media_at( tframe );
