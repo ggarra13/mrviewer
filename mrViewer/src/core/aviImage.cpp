@@ -1895,8 +1895,7 @@ void aviImage::populate()
                                    video_stream_index(),
                                    0,
                                    AVSEEK_FLAG_BACKWARD);
-                    close_video_codec();
-                    open_video_codec();
+                    flush_video();
                 }
                 else
                 {
