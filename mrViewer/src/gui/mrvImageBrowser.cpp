@@ -1535,9 +1535,11 @@ void ImageBrowser::load( const mrv::LoadList& files,
                      
                      if (!fg) 
                      {
-                         LOG_ERROR( _("Could not load '") 
-                                    << load.filename.c_str() 
-                                    << N_("'") );
+                         if ( load.filename.find( "ACESclip" ) ==
+                              std::string::npos )
+                             LOG_ERROR( _("Could not load '") 
+                                        << load.filename.c_str() 
+                                        << N_("'") );
                      }
                      else
                      {
