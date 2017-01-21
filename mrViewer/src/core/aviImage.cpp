@@ -1891,11 +1891,11 @@ void aviImage::populate()
                     while ( readFrame(pts) )
                         ++duration;
                     
+                    flush_video();
                     av_seek_frame( _context,
                                    video_stream_index(),
                                    0,
                                    AVSEEK_FLAG_BACKWARD);
-                    flush_video();
                 }
                 else
                 {
