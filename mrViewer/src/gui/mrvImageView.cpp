@@ -6327,7 +6327,8 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-    uiMain->uiFrame->frame(f);
+    if ( uiMain && uiMain->uiFrame )
+        uiMain->uiFrame->frame(f);
     
     // Redraw browser to update thumbnail
     mrv::ImageBrowser* b = browser();
