@@ -1053,10 +1053,6 @@ int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
         ret = avcodec_send_packet(avctx, pkt);
         // In particular, we don't expect AVERROR(EAGAIN), because we read all
         // decoded frames with avcodec_receive_frame() until done.
-        if ( ret == AVERROR(EAGAIN) )
-            LOG_ERROR( "avcodec_send_packet returned EAGAIN" );
-        if ( ret == AVERROR_EOF )
-            LOG_ERROR( "avcodec_send_packet returned EOF" );
         if (ret < 0)
             return ret == AVERROR_EOF ? 0 : ret;
     }
