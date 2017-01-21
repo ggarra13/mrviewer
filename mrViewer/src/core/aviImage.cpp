@@ -1053,6 +1053,10 @@ int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
         ret = avcodec_send_packet(avctx, pkt);
         // In particular, we don't expect AVERROR(EAGAIN), because we read all
         // decoded frames with avcodec_receive_frame() until done.
+        if ( ret == AVERROR(EAGAIN) )
+            LOG_ERROR( "avcodec_send_packet returned EAGAIN" );
+        if ( ret == AVERROR_EOF )
+            LOG_ERROR( "avcodec_send_packet returned EOF" );
         if (ret < 0)
             return ret == AVERROR_EOF ? 0 : ret;
     }
@@ -1166,8 +1170,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          break;
      }
      
-     pkt->size -= err;
-     pkt->data += err;
   }
 
   return kDecodeMissingFrame;
@@ -1455,15 +1457,14 @@ bool aviImage::find_image( const boost::int64_t frame )
                  _hires->frame() != frame && 
 		 diff > 1 && diff < 10 )
             {
-                IMG_WARNING( name() << _(" find_image: frame ") << frame 
-			    << _(" not found, choosing ") << _hires->frame() 
-			    << _(" instead") );
-               // debug_video_packets( frame, "find_image", false );
+                IMG_ERROR( _(" find_image: frame ") << frame 
+                           << _(" not found, choosing ") << _hires->frame() 
+                           << _(" instead") );
             }
 	  }
 	else
 	  {
-              IMG_ERROR( name() << _(" find_image: frame ") << frame << _(" not found") );
+              IMG_ERROR( _(" find_image: frame ") << frame << _(" not found") );
               return false;
 	  }
       }
@@ -1630,11 +1631,11 @@ bool aviImage::readFrame(int64_t & pts)
     while (! got_video)
     {
         int r = av_read_frame(_context, &packet);
-
         AVPacket* pkt = &packet;
         if (r < 0)
         {
-            pkt = NULL;
+            pkt->size = 0;
+            pkt->data = NULL;
         }
         bool eof = false;
         if ( video_stream_index() == packet.stream_index)
@@ -1658,7 +1659,6 @@ bool aviImage::readFrame(int64_t & pts)
     pts = av_rescale_q( pts,
                         get_video_stream()->time_base,
                         q );
-
     return got_video;
 }
 
@@ -1899,6 +1899,8 @@ void aviImage::populate()
                                    video_stream_index(),
                                    0,
                                    AVSEEK_FLAG_BACKWARD);
+                    close_video_codec();
+                    open_video_codec();
                 }
                 else
                 {
