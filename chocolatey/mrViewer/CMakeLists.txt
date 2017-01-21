@@ -5,6 +5,10 @@ set(mrViewerPackageName64 mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-64)
 set( ZIPFILE32 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-32/Release/tmp/mrViewer/src/${mrViewerPackageName32}.zip" )
 set( ZIPFILE64 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/${mrViewerPackageName64}.zip" )
 
+FILE( GLOB NUPACKAGES "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/*.nupkg" )
+execute_process( COMMAND ${CMAKE_COMMAND} -E copy ${NUPACKAGES} old/
+    		 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
+		     
 IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
     #file( SHA256 ${ZIPFILE32} CHECKSUM )
     #file( SHA256 ${ZIPFILE64} CHECKSUM64 )
@@ -23,6 +27,7 @@ IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
+
 
     execute_process( COMMAND choco pack WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
 
