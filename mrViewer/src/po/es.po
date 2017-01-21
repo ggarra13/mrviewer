@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-01-21 19:52-0300\n"
+"POT-Creation-Date: 2017-01-21 19:56-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -97,7 +97,7 @@ msgstr "- error de decodificacion del cuadro de audio "
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
-#: core/aviImage.cpp:2151
+#: core/aviImage.cpp:2150
 msgid " Could not open file"
 msgstr " No pude abrir el archivo avi"
 
@@ -160,7 +160,7 @@ msgstr " busca_imagen: cuadro "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:1970 core/aviImage.cpp:3173
+#: core/CMedia_audio.cpp:1970 core/aviImage.cpp:3172
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -208,7 +208,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3184
+#: core/aviImage.cpp:3183
 msgid " status: "
 msgstr " estatus: "
 
@@ -2132,11 +2132,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1968 core/aviImage.cpp:3171
+#: core/CMedia_audio.cpp:1968 core/aviImage.cpp:3170
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3182
+#: core/aviImage.cpp:3181
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2412,11 +2412,11 @@ msgstr "Editar Status"
 msgid "Elapsed"
 msgstr "Transcurrido"
 
-#: core/aviImage.cpp:2674
+#: core/aviImage.cpp:2673
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2691
+#: core/aviImage.cpp:2690
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -5751,7 +5751,7 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2060
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2059
 #: gui/mrvImageInformation.cpp:525 video/mrvGLEngine.cpp:169
 #: video/mrvGLEngine.cpp:172 video/mrvGLEngine.cpp:175
 msgid "Unknown"
@@ -6278,7 +6278,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2598
+#: core/aviImage.cpp:2597
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
