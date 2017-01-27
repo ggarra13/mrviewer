@@ -6,18 +6,17 @@ EXCLUDE = %w(
 libGL\.so
 libGLdispatch\.so
 libGLX\.so
-libGL\.so
-libGL\.so
-libm\.so
-libgcc_s.*
-libc\.so*
-libdl\.so*
-libstdc\+\+.*
-libpthread.*
 libX.*
 .*nvidia.*
+libpthread.*
+libstdc\+\+.*
+libresolv.*
+libm\.so
+libgcc_s.*
+libc\.so.*
 librt.*
 )
+
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 release = `uname -r`.chop!
@@ -32,20 +31,30 @@ FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/b
 FileUtils.rm_f( home + '-dbg' )
 FileUtils.ln_s( ENV['PWD']+'/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
-output=`ldd Release/bin/mrViewer`
+exes = Dir.glob( "Release/bin/mrViewer" )
 
-files = output.split("\n")
+files = []
+
+for exe in exes
+  output=`ldd #{exe}`
+  files += output.split("\n")
+end
+
 files.sort!
+files.uniq!
 
 for line in files
   lib, loc = line.split(" => ")
-  
-  next if not loc or not lib
 
+  next if not loc or not lib
+  
   loc.sub!(/\s*\(.*\)$/, '')
   lib.sub!(/^\s*/, '')
 
-  next if loc.empty?
+  if loc.empty?
+    puts "#{lib} empty loc"
+    next
+  end
 
   if lib =~ EXCLUDE_REGEX
     puts "Exclude #{lib}"

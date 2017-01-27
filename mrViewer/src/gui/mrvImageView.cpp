@@ -5844,7 +5844,14 @@ void ImageView::foreground( mrv::media fg )
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
     
+
+    
     CMedia* img = NULL;
+    if (old)
+    {
+        CMedia* img = old->image();
+        img->close_audio();
+    }
     if ( fg ) 
     {
         img = fg->image();
@@ -5871,7 +5878,7 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiStartFrame->fps( fps );
         uiMain->uiEndFrame->fps( fps );
         uiMain->uiFPS->value( img->play_fps() );
-
+        
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
         {
             img->volume( _volume );
@@ -6041,10 +6048,17 @@ void ImageView::background( mrv::media bg )
   char buf[1024];
   mrv::media fg = foreground();
 
+  CMedia* img = NULL;
+  if (old && old != fg)
+  {
+      CMedia* img = old->image();
+      img->close_audio();
+  }
+    
   _bg = bg;
   if ( bg ) 
     {
-      CMedia* img = bg->image();
+      img = bg->image();
 
       if ( fg )
       {
@@ -6752,6 +6766,7 @@ void ImageView::volume( float v )
 {
 
   _volume = v;
+  std::cerr << "volume " << v << std::endl;
 
   mrv::media fg = foreground();
   if ( fg ) 
