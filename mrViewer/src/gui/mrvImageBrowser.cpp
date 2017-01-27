@@ -519,6 +519,10 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    return reel;
   }
 
+#undef fprintf
+#undef fclose
+#undef fopen
+
   /** 
    * Save current reel to a disk file
    * 
@@ -558,6 +562,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     for ( ; i != e; ++i )
       {
 	const CMedia* img = (*i)->image();
+        
 	fprintf( f, "\"%s\" %" PRId64 " %" PRId64 
                  " %" PRId64 " %" PRId64 "\n", img->fileroot(), 
 		 img->first_frame(), img->last_frame(),
@@ -567,7 +572,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 	    if ( img->has_audio() )
                 fprintf( f, "audio: %s\n", img->audio_file().c_str() );
 	  }
-
+        
         const CMedia* const right = img->right_eye();
 
         if ( img->is_stereo() && right )
@@ -590,8 +595,10 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
                 fprintf( f, "%s\n", cmd.c_str() );
             }
         }
+    
       }
 
+    
     if ( reel->edl )
        fprintf( f, "EDL\n" );
 
@@ -599,6 +606,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     fclose(f);
 
+    
     setlocale( LC_NUMERIC, "" );
 
   }
