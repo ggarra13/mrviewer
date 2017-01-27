@@ -359,10 +359,11 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
       unsigned short left = unsigned(0xFFFF & vol);
       unsigned short right = unsigned(0xFFFF & (vol >> 16));
-
-      float v = (float)left + (float)right;
-      v /= 0xFFFF;
-
+      
+      float v = (float)left / 0xFFFF;;
+      v += (float)right / 0xFFFF;
+      if ( right > 0x0000 ) v /= 2.0f;
+    
       return v;
   }
 
@@ -376,7 +377,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
     unsigned short right = unsigned(0xFFFF * v);
 
     unsigned long x = left + (right << 16);
-
+    
     MMRESULT result = waveOutSetVolume( _audio_device, x );
     if ( result != MMSYSERR_NOERROR )
       {
@@ -428,7 +429,8 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	wavefmt.Format.nBlockAlign = wavefmt.Format.wBitsPerSample * ch / 8;
 	wavefmt.Format.nAvgBytesPerSec = freq * wavefmt.Format.nBlockAlign;
 
-	/* Only use the new WAVE_FORMAT_EXTENSIBLE format for multichannel audio */
+	/* Only use the new WAVE_FORMAT_EXTENSIBLE format for
+           multichannel audio */
 	if( ch <= 2 )
 	{
 	   wavefmt.Format.cbSize = 0;
@@ -441,15 +443,17 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
 
 	unsigned device = _device_idx;
+        _old_device_idx = _device_idx;
 	if ( device == 0 )
             device = WAVE_MAPPER; // default device
         else
             device -= 1;
 
+
 	MMRESULT result = 
 	waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
-		      // 0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
-		      0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
+                    //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
+                    0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
 	if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
 	  {
 	     if( result == WAVERR_BADFORMAT )
@@ -470,7 +474,6 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	    return false;
 	  }
 
-        _old_device_idx = _device_idx;
 	_audio_format = format;
 
 	// Allocate internal sound buffer
@@ -521,9 +524,12 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
   {
     wait_audio();
 
-    if ( !_audio_device) return false;
-    if ( !_enabled ) return true;
-    
+    if ( !_audio_device) {
+        return false;
+    }
+    if ( !_enabled ) {
+        return true;
+    }
 
     MMRESULT result;
 

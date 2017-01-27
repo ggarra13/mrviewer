@@ -86,7 +86,7 @@ namespace {
 
 // #define DEBUG_AUDIO_PACKETS
 // #define DEBUG_AUDIO_PACKETS_DETAIL
-// #define DEBUG_AUDIO_STORES
+//#define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
 //#define DEBUG_DECODE
 // #define DEBUG_QUEUE
@@ -990,6 +990,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 // Just to be safe, we recalc data_size
                 data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
+#if 0
                 if ( _audio_channels >= 6 )
                 {
                     if ( fmt == AV_SAMPLE_FMT_FLT )
@@ -1007,8 +1008,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                         Swizzle<int16_t> t( samples, len2 );
                         t.do_it();
                     }
-
                 }
+#endif
 
             }
             else
@@ -1531,7 +1532,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
   
   double speedup = _play_fps / _fps;
   unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
-  if ( nSamplesPerSec != _samples_per_sec ||
+  if ( !_audio_engine || nSamplesPerSec != _samples_per_sec ||
        result->channels() != _audio_channels ||
        _audio_format == AudioEngine::kNoAudioFormat ||
        AudioEngine::device_index() != AudioEngine::old_device_index())
@@ -1548,6 +1549,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
   if ( ! _audio_engine ) return false;
 
+  
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
       IMG_ERROR( _("Playback of audio frame ") << result->frame() 
