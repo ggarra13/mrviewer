@@ -10,8 +10,6 @@ execute_process( COMMAND ${CMAKE_COMMAND} -E copy ${NUPACKAGES} old/
     		 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
 		     
 IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
-    #file( SHA256 ${ZIPFILE32} CHECKSUM )
-    #file( SHA256 ${ZIPFILE64} CHECKSUM64 )
 
     execute_process( COMMAND checksum --type sha256 ${ZIPFILE32} OUTPUT_VARIABLE CHECKSUM OUTPUT_STRIP_TRAILING_WHITESPACE )
 
@@ -24,9 +22,9 @@ IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/mrviewer.nuspec.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/mrviewer.nuspec @ONLY NEWLINE_STYLE WIN32 )
     
-    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/input/chocolateyinstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
 
-    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/input/chocolateyuninstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
 
 
     execute_process( COMMAND choco pack WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
