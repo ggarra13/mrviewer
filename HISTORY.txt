@@ -1,10 +1,20 @@
 v3.4.5   - Bug fixed GIF duration check, which would result in errors
 	   due to ffmpeg new api.  Regression from v3.4.1.
+	 - Bug fixed saving of reels from the gui on Windows.
+	   Previously this led to a crash due to libintl conflicting
+	   with Windows' stdio.
+	 - Bug fixed audio device descriptor count as it seems Windows
+	   or its drivers impose a limit on the number of open devices.
+	   This prevented audio to be played on the 8th clip or so.
+	 - Made 5.1/7.1 Surround not shuffle channels as they now seem
+	   to come ordered from ffmpeg.
+	 - Added input of , to float input requesters to support Spanish
+	   locale on Windows.
 
 v3.4.4   - Bug fixed stuterring NaNs in pixel info bar when loading
 	   an OpenEXR sequence.  This was particularly buggy on Windows.
-	 - Fixed documentation, main_toolbar.html, to reflect the changes
-	   in stereo.
+	 - Fixed documentation, main_toolbar.html, to reflect the
+	   changes in stereo.
 	 - Fixed a playback bug which would stop playback sooner than at
 	   the end.  In some cases, video playback would not even begin.
 	 - Fixed video frames at the end of movies not being shown.
