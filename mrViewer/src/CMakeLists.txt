@@ -73,6 +73,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
 
+    
   ENDIF(APPLE)
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
@@ -476,10 +477,11 @@ ELSEIF (UNIX)
     # try to set up the menu system
 
     SET(CPACK_GENERATOR DEB TGZ RPM )
+    #SET(CPACK_GENERATOR RPM )
 
     # SET the installation directory.
     
-    SET(CPACK_SET_DESTDIR true) # Needed
+    SET(CPACK_SET_DESTDIR ON) # Needed
     SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
 
     # Configure install/uninstall scripts
@@ -504,7 +506,9 @@ ELSEIF (UNIX)
       # SET RPM options.
     
     SET(CPACK_RPM_PACKAGE_NAME mrViewer)
-    SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
+    SET(CPACK_RPM_PACKAGE_RELOCATABLE ON)
+    SET(CPACK_RPM_PACKAGE_RELEASE 2 )
+    SET(CPACK_RPM_PACKAGE_DEBUG 1 )
     
     # SET Debian options.
     

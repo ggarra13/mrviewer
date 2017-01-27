@@ -75,3 +75,7 @@ foreach ($path in [Environment]::GetEnvironmentVariable("PATH","User").split(';'
 $AssembledNewPath = ($newpath -join(';')).trimend(';')
 
 [Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"User")
+
+$target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}"
+
+Remove-Item $target -Force
