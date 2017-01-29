@@ -526,8 +526,10 @@ ELSEIF (UNIX)
     SET(
         CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
         ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
-
-
+      
+      set(CPACK_RPM_SPEC_MORE_DEFINE "%define ignore \#")
+      set(CPACK_RPM_USER_FILELIST "%ignore /" "%ignore /usr" "%ignore /usr/bin" "%ignore /usr/local" "%ignore /usr/share" "%ignore /usr/share/applications" "%ignore /usr/share/doc" "%ignore /usr/share/icons" "%ignore /usr/share/icons/hicolor" "%ignore /usr/share/icons/hicolor/32x32" "%ignore /usr/share/icons/hicolor/32x32/apps")
+      
 ENDIF(WIN32)
 
   SET(CPACK_PACKAGE_NAME ${PROJECT_NAME})
