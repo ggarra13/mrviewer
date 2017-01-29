@@ -470,7 +470,7 @@ void GLEngine::initialize()
 	    }
 	  catch ( const std::exception& e )
 	    {
-	      LOG_ERROR( e.what() );
+	      LOG_ERROR( shaderFile << ": " <<e.what() );
 	      directory.clear();
 	      _has_yuv  = false;
 	      _has_yuva = false;
