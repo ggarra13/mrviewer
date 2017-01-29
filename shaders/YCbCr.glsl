@@ -53,6 +53,7 @@ void main()
   //
   // Sample luminance and chroma, convert to RGB. 
   //
+  vec4 c;	
   vec3 pre;
   pre.r = texture2D(YImage, gl_TexCoord[0].st).r;  // Y
   pre.g = texture2D(UImage, gl_TexCoord[0].st).r;  // U
@@ -62,7 +63,6 @@ void main()
   {
 	pre += Koff;
 
-  	vec4 c;
   	c.r = dot(Kr, pre);
   	c.g = dot(Kg, pre);
   	c.b = dot(Kb, pre);
@@ -70,7 +70,7 @@ void main()
   }
   else
   {
-      half3 yuv;
+      vec3 yuv;
 
       yuv.r = 1.1643 * ( pre.r - 0.0625 );
       yuv.g = pre.g - 0.5;
