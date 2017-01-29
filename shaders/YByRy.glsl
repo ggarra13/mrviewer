@@ -124,19 +124,16 @@ void main()
   if ( mask == 1.0 )  // even odd rows
   {
       x = mod( gl_TexCoord[0].t * height, 2.0 );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
   else if ( mask == 2.0 )  // even-odd columns
   {
       x = mod( gl_TexCoord[0].s * width, 2.0 );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
   else if ( mask == 3.0 ) // checkerboard
   {
       x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2.0 );
       if ( x < 1.0 ) x = 1.0;
       else x = 0.0;
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
 
   if ( x == mask_value )
