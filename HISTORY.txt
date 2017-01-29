@@ -1,3 +1,10 @@
+v3.4.6   - Made mrViewer compile with Linux 3.13.0-32 (Ubuntu 12.04.5).
+	 - Fixed chocolatey uninstaller to remove the directory of
+	   the mrViewer install.
+	 - Fixed glsl shaders to compile under NVidia's old drivers.
+	 - Added FONTCONFIG_PATH to mrViewer.sh to remove warnings of
+	   fontconfig. Commented out as unneeded.
+
 v3.4.5   - Bug fixed GIF duration check, which would result in errors
 	   due to ffmpeg new api.  Regression from v3.4.1.
 	 - Bug fixed saving of reels from the gui on Windows.
