@@ -33,6 +33,7 @@ FIND_LIBRARY( GLEW   glew32 glew GLEW
   $ENV{GLEW_ROOT}/lib/
   $ENV{GLEW_ROOT}
   /usr/local/glew/lib
+  /usr/lib/x86_64-linux-gnu
   /usr/lib${CMAKE_BUILD_ARCH}
   /usr/lib
   DOC   "GLEW library"
