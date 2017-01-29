@@ -6766,7 +6766,6 @@ void ImageView::volume( float v )
 {
 
   _volume = v;
-  std::cerr << "volume " << v << std::endl;
 
   mrv::media fg = foreground();
   if ( fg ) 

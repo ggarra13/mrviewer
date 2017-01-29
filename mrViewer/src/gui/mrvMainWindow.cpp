@@ -46,7 +46,6 @@
 #  include <X11/xpm.h>
 #undef Bool
 #  include "icons/viewer16.xpm"
-Pixmap p, mask;
 #else
 #  include <windows.h>
 #  include <fltk/win32.h>
@@ -57,6 +56,8 @@ Pixmap p, mask;
 using namespace std;
 
 namespace mrv {
+
+  Pixmap p, mask;
 
   MainWindow::MainWindow( int W, int H, const char* title ) :
     fltk::Window( W, H, title )
