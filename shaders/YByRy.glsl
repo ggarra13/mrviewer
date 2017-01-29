@@ -15,10 +15,10 @@ uniform sampler2D VImage;
 uniform sampler3D lut;
 
 // Interlaced/Checkerboard controls
-uniform int mask;
-uniform int mask_value;
-uniform int height;
-uniform int width;
+uniform float mask;
+uniform float mask_value;
+uniform float height;
+uniform float width;
 
 // Standard controls
 uniform float gain;
@@ -55,8 +55,8 @@ void main()
   pre.b = texture2D(VImage, gl_TexCoord[0].st).r;  // V
 
   vec4 c;
-  c.r = (pre.g + 1) * pre.r;
-  c.b = (pre.b + 1) * pre.r;
+  c.r = (pre.g + 1.0) * pre.r;
+  c.b = (pre.b + 1.0) * pre.r;
   c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
   c.rgb = clamp( c.rgb, 0.0, 1.0 );
   c.a = 1.0;
@@ -86,7 +86,9 @@ void main()
   //
   // Apply video gamma correction.
   // 
-  c.rgb = pow( c.rgb, gamma );
+  c.r = pow( c.r, gamma );
+  c.g = pow( c.g, gamma );
+  c.b = pow( c.b, gamma );
 
   //
   // Apply channel selection
@@ -118,26 +120,31 @@ void main()
     }
 
 
-  int x = 0;
-  if ( mask == 1 )  // even odd rows
+  float x = 1000.0;
+  if ( mask == 1.0 )  // even odd rows
   {
-      x = mod( gl_TexCoord[0].t * height, 2 );
+      x = mod( gl_TexCoord[0].t * height, 2.0 );
       if ( c.a == 0.0 ) c.a = 1.0;
   }
-  else if ( mask == 2 )  // even-odd columns
+  else if ( mask == 2.0 )  // even-odd columns
   {
-      x = mod( gl_TexCoord[0].s * width, 2 );
+      x = mod( gl_TexCoord[0].s * width, 2.0 );
       if ( c.a == 0.0 ) c.a = 1.0;
   }
-  else if ( mask == 3 ) // checkerboard
+  else if ( mask == 3.0 ) // checkerboard
   {
-      x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2 ) < 1;
+      x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2.0 );
+      if ( x < 1.0 ) x = 1.0;
+      else x = 0.0;
       if ( c.a == 0.0 ) c.a = 1.0;
   }
 
   if ( x == mask_value )
   {
-      c.rgba = 0.0f;
+      c.r = 0.0f;
+      c.g = 0.0f;
+      c.b = 0.0f;
+      c.a = 0.0f;
   }
 
 
