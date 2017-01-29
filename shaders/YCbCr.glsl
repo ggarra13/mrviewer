@@ -109,7 +109,9 @@ void main()
   //
   // Apply video gamma correction.
   // 
-  c.rgb = pow( c.rgb, gamma );
+  c.r = pow( c.r, gamma );
+  c.g = pow( c.g, gamma );
+  c.b = pow( c.b, gamma );
 
   //
   // Apply channel selection
