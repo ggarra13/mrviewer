@@ -38,6 +38,7 @@ export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 # Uncomment this to always use English in mrViewer, regardless of locale
 # export LANG=C
 
+export FONTCONFIG_PATH=/etc/fonts
 
 # This is to avoid underruns in audio
 export PULSE_LATENCY_MSEC=60

@@ -15,9 +15,42 @@ libm\.so
 libgcc_s.*
 libc\.so.*
 librt.*
+libdl.*
+libxcb.*
+libasound.*
 )
 
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
+
+def parse( files )
+
+  for line in files
+    lib, loc = line.split(" => ")
+    
+    next if not loc or not lib
+    
+    loc.sub!(/\s*\(.*\)$/, '')
+    lib.sub!(/^\s*/, '')
+    
+    if loc.empty?
+      puts "#{lib} empty loc"
+      next
+    end
+
+    if lib =~ EXCLUDE_REGEX
+      puts "Exclude #{lib}"
+      next
+    end
+
+    begin
+      FileUtils.rm("Release/lib/#{lib}")
+    rescue
+    end
+
+    puts "#{loc} -> #{lib}"
+    FileUtils.cp(loc, "Release/lib/#{lib}" )
+  end
+end
 
 release = `uname -r`.chop!
 
@@ -31,7 +64,10 @@ FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/b
 FileUtils.rm_f( home + '-dbg' )
 FileUtils.ln_s( ENV['PWD']+'/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
-exes = Dir.glob( "Release/bin/mrViewer" )
+libs = Dir.glob( "Release/lib/*" )
+FileUtils.rm_f( libs )
+
+exes = Dir.glob( "Release/bin/*" )
 
 files = []
 
@@ -43,33 +79,8 @@ end
 files.sort!
 files.uniq!
 
-for line in files
-  lib, loc = line.split(" => ")
 
-  next if not loc or not lib
-  
-  loc.sub!(/\s*\(.*\)$/, '')
-  lib.sub!(/^\s*/, '')
-
-  if loc.empty?
-    puts "#{lib} empty loc"
-    next
-  end
-
-  if lib =~ EXCLUDE_REGEX
-    puts "Exclude #{lib}"
-    next
-  end
-
-  begin
-    FileUtils.rm("Release/lib/#{lib}")
-  rescue
-  end
-
-  puts "#{loc} -> #{lib}"
-  FileUtils.cp(loc, "Release/lib/#{lib}" )
-
-end
+parse( files )
 
 FileUtils.rm_f( "Release/shaders" )
 FileUtils.rm_f( "Release/docs" )
