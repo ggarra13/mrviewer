@@ -285,7 +285,8 @@ lookup3D
     //
     // Convert the output values into a 3D texture.
     //
-    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+      glPixelStorei( GL_UNPACK_ROW_LENGTH, 0 );
+      glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
     glActiveTexture( GL_TEXTURE3 );
 
