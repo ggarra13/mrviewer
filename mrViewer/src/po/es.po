@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-02-02 06:32-0300\n"
+"POT-Creation-Date: 2017-02-02 17:17-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -569,7 +569,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:997
+#: video/mrvGLLut3d.cpp:996
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -785,7 +785,7 @@ msgstr "Agregar"
 msgid "Add this directory to my favorites"
 msgstr "Agregar esta carpeta a mis favoritos"
 
-#: core/exrImage.cpp:1091 core/exrImage.cpp:2307
+#: core/exrImage.cpp:1091 core/exrImage.cpp:2309
 msgid "Adopted Neutral"
 msgstr "Neutral Adoptado"
 
@@ -851,13 +851,13 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1398 core/CMedia.cpp:1505 core/exrImage.cpp:2861
+#: core/CMedia.cpp:1398 core/CMedia.cpp:1505 core/exrImage.cpp:2863
 #: core/wandImage.cpp:653 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5316
 #: gui/mrvImageView.cpp:5714 gui/mrvImageView.cpp:5732
 msgid "Alpha"
 msgstr "Alfa"
 
-#: core/CMedia.cpp:1400 core/CMedia.cpp:1505 core/exrImage.cpp:2859
+#: core/CMedia.cpp:1400 core/CMedia.cpp:1505 core/exrImage.cpp:2861
 #: core/wandImage.cpp:651 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5297
 #: gui/mrvImageView.cpp:5715
 msgid "Alpha Overlay"
@@ -871,7 +871,7 @@ msgstr "Valor de alfa de la imagen del pixel bajo el mouse."
 msgid "Alt"
 msgstr "Alt"
 
-#: core/exrImage.cpp:1174 core/exrImage.cpp:2280 core/exrImage.cpp:2379
+#: core/exrImage.cpp:1174 core/exrImage.cpp:2282 core/exrImage.cpp:2381
 msgid "Altitude"
 msgstr "Altitud"
 
@@ -898,11 +898,11 @@ msgstr "Siempre Arriba de Otras"
 msgid "An error ocurred while trying to delete '%s'."
 msgstr "Un error ocurrió al intentar borrar '%s'."
 
-#: core/exrImage.cpp:1207 core/exrImage.cpp:2411
+#: core/exrImage.cpp:1207 core/exrImage.cpp:2413
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:677
+#: video/mrvGLLut3d.cpp:676
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1120,7 +1120,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1745
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2490
-#: core/CMedia.cpp:1414 core/CMedia.cpp:1504 core/exrImage.cpp:2861
+#: core/CMedia.cpp:1414 core/CMedia.cpp:1504 core/exrImage.cpp:2863
 #: core/wandImage.cpp:653 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5311
 #: gui/mrvImageView.cpp:5714
 msgid "Blue"
@@ -1254,7 +1254,7 @@ msgstr "Mensaje"
 msgid "Caption Writer"
 msgstr "Escritor del Mensaje"
 
-#: core/exrImage.cpp:1130 core/exrImage.cpp:2246 core/exrImage.cpp:2341
+#: core/exrImage.cpp:1130 core/exrImage.cpp:2248 core/exrImage.cpp:2343
 msgid "Capture Date"
 msgstr "Fecha de Captura"
 
@@ -1295,7 +1295,7 @@ msgstr "Elija Tecla de Manejo"
 msgid "Chromaticities (CIE)"
 msgstr "Cromaticidades (CIE)"
 
-#: core/exrImage.cpp:1078 core/exrImage.cpp:2293
+#: core/exrImage.cpp:1078 core/exrImage.cpp:2295
 msgid "Chromaticities Name"
 msgstr "Cromaticidades (CIE)"
 
@@ -1388,9 +1388,9 @@ msgstr "Codecs"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:125
-#: core/CMedia.cpp:1411 core/CMedia.cpp:1503 core/exrImage.cpp:2707
-#: core/exrImage.cpp:2863 core/exrImage.cpp:2870 core/exrImage.cpp:2882
-#: core/exrImage.cpp:2887 core/exrImage.cpp:2923 core/exrImage.cpp:2954
+#: core/CMedia.cpp:1411 core/CMedia.cpp:1503 core/exrImage.cpp:2709
+#: core/exrImage.cpp:2865 core/exrImage.cpp:2872 core/exrImage.cpp:2884
+#: core/exrImage.cpp:2889 core/exrImage.cpp:2925 core/exrImage.cpp:2956
 #: core/wandImage.cpp:612 core/wandImage.cpp:676 gui/mrvImageView.cpp:172
 #: gui/mrvImageView.cpp:5122 gui/mrvImageView.cpp:5718
 #: gui/mrvImageView.cpp:5814
@@ -1426,7 +1426,7 @@ msgstr "Espacio de Color"
 msgid "Colors"
 msgstr "Colores"
 
-#: core/exrImage.cpp:1121 core/exrImage.cpp:2300 core/exrImage.cpp:2334
+#: core/exrImage.cpp:1121 core/exrImage.cpp:2302 core/exrImage.cpp:2336
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -1483,7 +1483,7 @@ msgstr "Texto de Copyright"
 msgid "Core"
 msgstr "Central"
 
-#: video/mrvGLLut3d.cpp:592
+#: video/mrvGLLut3d.cpp:591
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -1603,7 +1603,7 @@ msgstr "No pude obtener contexto de conversion de imagen."
 msgid "Could not get profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: video/mrvGLLut3d.cpp:667
+#: video/mrvGLLut3d.cpp:666
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -1619,11 +1619,11 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:583
+#: video/mrvGLLut3d.cpp:582
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: core/exrImage.cpp:2045 core/exrImage.cpp:2111 core/exrImage.cpp:2137
+#: core/exrImage.cpp:2047 core/exrImage.cpp:2113 core/exrImage.cpp:2139
 msgid "Could not locate channels in header"
 msgstr "No pude localizar canales en el encabezado"
 
@@ -1834,7 +1834,7 @@ msgstr "No pude setear/obtener los canales de audio"
 msgid "Couldn't write out to '"
 msgstr "No pude escribir en '"
 
-#: core/exrImage.cpp:1238 core/exrImage.cpp:2460
+#: core/exrImage.cpp:1238 core/exrImage.cpp:2462
 msgid "Count"
 msgstr "Cuenta"
 
@@ -2212,7 +2212,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:654
+#: video/mrvGLLut3d.cpp:653
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -2220,7 +2220,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:660
+#: video/mrvGLLut3d.cpp:659
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -2499,7 +2499,7 @@ msgstr "Menos Exposición"
 msgid "Exposure More"
 msgstr "Más Exposición"
 
-#: core/exrImage.cpp:1196 core/exrImage.cpp:2401
+#: core/exrImage.cpp:1196 core/exrImage.cpp:2403
 msgid "Exposure Time"
 msgstr "Tiempo de Exposición"
 
@@ -2549,7 +2549,7 @@ msgstr "CPS: %.3f"
 msgid "Failed "
 msgstr "Falló "
 
-#: core/exrImage.cpp:2956
+#: core/exrImage.cpp:2958
 msgid "Failed setting layer to "
 msgstr "Falló setear la capa a "
 
@@ -2637,11 +2637,11 @@ msgstr "Nombre del archivo del clip"
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
-#: core/exrImage.cpp:1232 core/exrImage.cpp:2437
+#: core/exrImage.cpp:1232 core/exrImage.cpp:2439
 msgid "Film Manufacturer Code"
 msgstr "Código de Manufacturador del Film"
 
-#: core/exrImage.cpp:1234 core/exrImage.cpp:2446
+#: core/exrImage.cpp:1234 core/exrImage.cpp:2448
 msgid "Film Type Code"
 msgstr "Código del Tipo de Film"
 
@@ -2696,7 +2696,7 @@ msgstr "Disco Floppy"
 msgid "Flushing of buffers failed"
 msgstr "Vaciar los buffers falló"
 
-#: core/exrImage.cpp:1185 core/exrImage.cpp:2390
+#: core/exrImage.cpp:1185 core/exrImage.cpp:2392
 msgid "Focus"
 msgstr "Foco"
 
@@ -2913,7 +2913,7 @@ msgstr "Obtuve: "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1744
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2472
-#: core/CMedia.cpp:1413 core/CMedia.cpp:1503 core/exrImage.cpp:2860
+#: core/CMedia.cpp:1413 core/CMedia.cpp:1503 core/exrImage.cpp:2862
 #: core/wandImage.cpp:652 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:5306
 #: gui/mrvImageView.cpp:5713
 msgid "Green"
@@ -3017,7 +3017,7 @@ msgstr "Valor de Tinte (HUE) del pixel bajo el ratón."
 msgid "ICC"
 msgstr "ICC"
 
-#: core/exrImage.cpp:1290 core/exrImage.cpp:2573
+#: core/exrImage.cpp:1290 core/exrImage.cpp:2575
 #: gui/mrvImageInformation.cpp:742
 msgid "ICC Profile"
 msgstr "Perfil ICC"
@@ -3052,7 +3052,7 @@ msgstr "IPTC"
 msgid "IPTC Data"
 msgstr "Datos IPTC"
 
-#: core/exrImage.cpp:1219 core/exrImage.cpp:2421
+#: core/exrImage.cpp:1219 core/exrImage.cpp:2423
 msgid "ISO Speed"
 msgstr "Velocidad ISO"
 
@@ -3092,7 +3092,7 @@ msgstr "Nombre de Imagen"
 msgid "Image Options"
 msgstr "Grabar Opciones"
 
-#: core/exrImage.cpp:1103 core/exrImage.cpp:2317
+#: core/exrImage.cpp:1103 core/exrImage.cpp:2319
 msgid "Image State"
 msgstr "Estado de Imagen"
 
@@ -3268,11 +3268,11 @@ msgstr "Entero"
 msgid "Internal error in wizard selection: "
 msgstr "Error interno en selección del wizard: "
 
-#: video/mrvGLLut3d.cpp:604
+#: video/mrvGLLut3d.cpp:603
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
-#: video/mrvGLLut3d.cpp:648
+#: video/mrvGLLut3d.cpp:647
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -3292,7 +3292,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:619
+#: video/mrvGLLut3d.cpp:618
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -3413,7 +3413,7 @@ msgstr "Ultimo Cuadro"
 msgid "Last frame of clip - User selected"
 msgstr "Ultimo cuadro del clip - Selección del Usario"
 
-#: core/exrImage.cpp:1163 core/exrImage.cpp:2271 core/exrImage.cpp:2368
+#: core/exrImage.cpp:1163 core/exrImage.cpp:2273 core/exrImage.cpp:2370
 msgid "Latitude"
 msgstr "Latitud"
 
@@ -3580,7 +3580,7 @@ msgstr "Logaritmico"
 msgid "Logs"
 msgstr "Mensajes"
 
-#: core/exrImage.cpp:1152 core/exrImage.cpp:2262 core/exrImage.cpp:2358
+#: core/exrImage.cpp:1152 core/exrImage.cpp:2264 core/exrImage.cpp:2360
 msgid "Longitude"
 msgstr "Longitud"
 
@@ -3601,7 +3601,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1746
-#: core/CMedia.cpp:1426 core/CMedia.cpp:1505 core/exrImage.cpp:2859
+#: core/CMedia.cpp:1426 core/CMedia.cpp:1505 core/exrImage.cpp:2861
 #: core/wandImage.cpp:651 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5320
 #: gui/mrvImageView.cpp:5716 gui/mrvImageInformation.cpp:629
 msgid "Lumma"
@@ -3843,15 +3843,15 @@ msgstr "No"
 msgid "No Baking"
 msgstr "No cocinado"
 
-#: video/mrvGLLut3d.cpp:906 video/mrvGLLut3d.cpp:951
+#: video/mrvGLLut3d.cpp:905 video/mrvGLLut3d.cpp:950
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:904 video/mrvGLLut3d.cpp:949
+#: video/mrvGLLut3d.cpp:903 video/mrvGLLut3d.cpp:948
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:908 video/mrvGLLut3d.cpp:953
+#: video/mrvGLLut3d.cpp:907 video/mrvGLLut3d.cpp:952
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -3891,11 +3891,11 @@ msgstr "Sin memoria para grafica de filtro"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:955
+#: video/mrvGLLut3d.cpp:954
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:910
+#: video/mrvGLLut3d.cpp:909
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -3992,13 +3992,13 @@ msgstr "Numero de flujos de video en el archivo"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:851
+#: video/mrvGLLut3d.cpp:850
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:827
+#: video/mrvGLLut3d.cpp:826
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -4119,7 +4119,7 @@ msgstr "Abre diferentes ventanas"
 msgid "Options controlling the OpenEXR reader/writer"
 msgstr "Opciones controlando el lector/escritor de OpenEXR"
 
-#: core/exrImage.cpp:2757
+#: core/exrImage.cpp:2759
 msgid "Options for EXR were empty"
 msgstr "Opciones para EXR estaban vacías"
 
@@ -4179,7 +4179,7 @@ msgstr "Sobre escritura línea (Crudo) ["
 msgid "Overrun scanline (Repeat) ["
 msgstr "Sobre escritura línea (Repetir) ["
 
-#: core/exrImage.cpp:1112 core/exrImage.cpp:2327
+#: core/exrImage.cpp:1112 core/exrImage.cpp:2329
 #: gui/FLU/Flu_File_Chooser.cpp:107
 msgid "Owner"
 msgstr "Propietario"
@@ -4256,15 +4256,15 @@ msgstr "Tamaño del Lapiz"
 msgid "Perceptual"
 msgstr "Perceptual"
 
-#: core/exrImage.cpp:1240 core/exrImage.cpp:2467
+#: core/exrImage.cpp:1240 core/exrImage.cpp:2469
 msgid "Perf Offset"
 msgstr "Desplazamiento Perf"
 
-#: core/exrImage.cpp:1244 core/exrImage.cpp:2481
+#: core/exrImage.cpp:1244 core/exrImage.cpp:2483
 msgid "Perfs per Count"
 msgstr "Perfs por Cuenta"
 
-#: core/exrImage.cpp:1242 core/exrImage.cpp:2474
+#: core/exrImage.cpp:1242 core/exrImage.cpp:2476
 msgid "Perfs per Frame"
 msgstr "Perfs por Cuadro"
 
@@ -4381,7 +4381,7 @@ msgstr "Preferir ICC"
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: core/exrImage.cpp:1236 core/exrImage.cpp:2453
+#: core/exrImage.cpp:1236 core/exrImage.cpp:2455
 msgid "Prefix Code"
 msgstr "Código de Prefijo"
 
@@ -4513,13 +4513,13 @@ msgstr "RLE"
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:802
+#: video/mrvGLLut3d.cpp:801
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:771
+#: video/mrvGLLut3d.cpp:770
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -4563,7 +4563,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1743
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2454
-#: core/CMedia.cpp:1412 core/CMedia.cpp:1503 core/exrImage.cpp:2860
+#: core/CMedia.cpp:1412 core/CMedia.cpp:1503 core/exrImage.cpp:2862
 #: core/wandImage.cpp:652 gui/mrvImageView.cpp:177 gui/mrvImageView.cpp:5301
 #: gui/mrvImageView.cpp:5713
 msgid "Red"
@@ -5273,31 +5273,31 @@ msgstr "T"
 msgid "T: "
 msgstr "T: "
 
-#: core/exrImage.cpp:1262 core/exrImage.cpp:2513
+#: core/exrImage.cpp:1262 core/exrImage.cpp:2515
 msgid "TC Color Frame"
 msgstr "TC Cuadro de Color"
 
-#: core/exrImage.cpp:1260 core/exrImage.cpp:2506
+#: core/exrImage.cpp:1260 core/exrImage.cpp:2508
 msgid "TC Drop Frame"
 msgstr "TC Cuadros Perdidos"
 
-#: core/exrImage.cpp:1264 core/exrImage.cpp:2520
+#: core/exrImage.cpp:1264 core/exrImage.cpp:2522
 msgid "TC Field/Phase"
 msgstr "TC Campo/Fase"
 
-#: core/exrImage.cpp:1272 core/exrImage.cpp:2549
+#: core/exrImage.cpp:1272 core/exrImage.cpp:2551
 msgid "TC User Data"
 msgstr "TC Datos de Usario"
 
-#: core/exrImage.cpp:1266 core/exrImage.cpp:2527
+#: core/exrImage.cpp:1266 core/exrImage.cpp:2529
 msgid "TC bgf0"
 msgstr ""
 
-#: core/exrImage.cpp:1268 core/exrImage.cpp:2535
+#: core/exrImage.cpp:1268 core/exrImage.cpp:2537
 msgid "TC bgf1"
 msgstr ""
 
-#: core/exrImage.cpp:1270 core/exrImage.cpp:2542
+#: core/exrImage.cpp:1270 core/exrImage.cpp:2544
 msgid "TC bgf2"
 msgstr ""
 
@@ -5604,7 +5604,7 @@ msgid "Time"
 msgstr "Tiempo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-32-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2062
-#: core/exrImage.cpp:1258 core/exrImage.cpp:2494
+#: core/exrImage.cpp:1258 core/exrImage.cpp:2496
 msgid "Timecode"
 msgstr "Código de Tiempo"
 
@@ -5720,7 +5720,7 @@ msgstr "Elementos de Interfaz de Usario (IU)"
 msgid "UInt"
 msgstr ""
 
-#: core/exrImage.cpp:1141 core/exrImage.cpp:2253 core/exrImage.cpp:2348
+#: core/exrImage.cpp:1141 core/exrImage.cpp:2255 core/exrImage.cpp:2350
 msgid "UTC Offset"
 msgstr "Desplazamiento UTC"
 
@@ -5785,7 +5785,7 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLLut3d.cpp:477
+#: video/mrvGLLut3d.cpp:476
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
@@ -6266,11 +6266,11 @@ msgstr ""
 "su velocidad depende del tamaño de la imagen y puede solo ser usada cuando "
 "no se reproduce una película.\n"
 
-#: core/exrImage.cpp:1299 core/exrImage.cpp:2580
+#: core/exrImage.cpp:1299 core/exrImage.cpp:2582
 msgid "Wrap Modes"
 msgstr "Modo de Wrap"
 
-#: core/exrImage.cpp:1281 core/exrImage.cpp:2566
+#: core/exrImage.cpp:1281 core/exrImage.cpp:2568
 msgid "Writer"
 msgstr "Escritor"
 
@@ -6335,7 +6335,7 @@ msgstr "Y' (Luma)"
 msgid "Y:"
 msgstr ""
 
-#: core/exrImage.cpp:2698
+#: core/exrImage.cpp:2700
 msgid "YBYRY"
 msgstr ""
 
