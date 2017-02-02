@@ -2011,7 +2011,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
    {
        for ( int i = 0; i < 2; ++i )
        {
-           if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
+           if ( _stereo_output != kNoStereo && st[i] >= 0 &&
+                _right_eye == NULL )
+               _curpart = st[i];
 
            const Header& header = inmaster.header(_curpart);
 
