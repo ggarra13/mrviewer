@@ -550,8 +550,8 @@ void save_clip_xml_metadata( const CMedia* img,
     save_aces_xml( img, file );
 }
 
-  void monitor_ctl_script( const unsigned index, const char* startfile, 
-                           const mrv::ViewerUI* main )
+void monitor_ctl_script( const mrv::ViewerUI* main,
+			 const unsigned index, const char* startfile )
   {
     if ( !startfile )
       startfile = mrv::Preferences::ODT_CTL_transform.c_str();
@@ -561,13 +561,15 @@ void save_clip_xml_metadata( const CMedia* img,
 
     mrv::Preferences::ODT_CTL_transform = script;
 
+    main->uiView->redraw();
+
     // @todo: prefs
     //     uiCTL_display_transform->static_text( script );
     //     uiCTL_display_transform->do_callback();
   }
 			
-  void monitor_icc_profile( const unsigned index, 
-                            const mrv::ViewerUI* main )
+  void monitor_icc_profile( const mrv::ViewerUI* main,
+			    const unsigned index )
   {
     const char* profile = open_icc_profile( NULL, 
 					    "Load Monitor Profile" );
@@ -575,6 +577,8 @@ void save_clip_xml_metadata( const CMedia* img,
 
     mrv::Preferences::ODT_ICC_profile = profile;
     mrv::colorProfile::set_monitor_profile( profile, index );
+
+    main->uiView->redraw();
   }
 
 
