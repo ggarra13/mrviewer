@@ -6,6 +6,7 @@ v3.4.6   - Made mrViewer compile with Linux 3.13.0-32 (Ubuntu 12.04.5).
 	   fontconfig. Commented out as, supposedly, unneeded.
 	 - Fixed LUT crashes due to new stereo engine OpenGL
 	   conflicts.
+	 - Fixed saving of ACESclip XML files only, on Linux.
 
 v3.4.5   - Bug fixed GIF duration check, which would result in errors
 	   due to ffmpeg new api.  Regression from v3.4.1.
