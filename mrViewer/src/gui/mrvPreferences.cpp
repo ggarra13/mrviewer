@@ -702,7 +702,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  RENDER_TRANSFORM( 8bits,  "" );
 	  RENDER_TRANSFORM( 16bits, "" );
 	  RENDER_TRANSFORM( 32bits, "" );
-	  RENDER_TRANSFORM( float,  "RRT.a1.0.0" );
+	  RENDER_TRANSFORM( float,  "RRT.a1.0.1" );
 #undef RENDER_TRANSFORM
 	}
 
