@@ -1,3 +1,8 @@
+v3.4.7   - Made CTL Lut calculation faster.
+	 - Made CTL/ICC of monitor trigger a refresh of the view.
+	   Previously, the old values were kept until a refresh from
+	   other ways happened (resize window, etc).
+
 v3.4.6   - Made mrViewer compile with Linux 3.13.0-32 (Ubuntu 12.04.5).
 	 - Fixed chocolatey uninstaller to remove the directory of
 	   the mrViewer install.
