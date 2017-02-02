@@ -89,17 +89,17 @@ void attach_icc_profile( CMedia* image, const char* startfile,
    * 
    * @param index monitor index
    */
-  void monitor_ctl_script( const unsigned index = 0, 
-			   const char* startfile = NULL,
-                           const mrv::ViewerUI* main = NULL  );
+  void monitor_ctl_script( const mrv::ViewerUI* main,
+			   const unsigned index = 0, 
+			   const char* startfile = NULL );
 
   /** 
    * Attach an ICC/ICM color profile to a monitor display
    * 
    * @param index monitor index
    */
-  void monitor_icc_profile( const unsigned index = 0,
-                            const mrv::ViewerUI* main = NULL );
+  void monitor_icc_profile( const mrv::ViewerUI* main = NULL,
+			    const unsigned index = 0 );
 
 
   /** 
