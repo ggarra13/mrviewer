@@ -701,15 +701,15 @@ static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_idt_script( fg->image() );
 }
 
-static void monitor_icc_profile_cb( fltk::Widget* o, void* data )
+static void monitor_icc_profile_cb( fltk::Widget* o, ViewerUI* uiMain )
 {
-  monitor_icc_profile();
+  monitor_icc_profile(uiMain);
 }
 
 
-static void monitor_ctl_script_cb( fltk::Widget* o, void* data )
+static void monitor_ctl_script_cb( fltk::Widget* o, ViewerUI* uiMain )
 {
-  monitor_ctl_script();
+  monitor_ctl_script(uiMain);
 }
 
 static void copy_pixel_rgba_cb( fltk::Widget* o, mrv::ImageView* view )
@@ -2656,11 +2656,11 @@ int ImageView::leftMouseDown(int x, int y)
 	  menu.add( _("Monitor/Attach CTL Display Transform"),
 		    kMonitorCTLScript.hotkey(),
 		   (fltk::Callback*)monitor_ctl_script_cb,
-		   NULL);
+		   uiMain);
 	  menu.add( _("Monitor/Attach ICC Color Profile"),
 		    kMonitorIccProfile.hotkey(),
 		    (fltk::Callback*)monitor_icc_profile_cb,
-		    this, fltk::MENU_DIVIDER);
+		    uiMain, fltk::MENU_DIVIDER);
 
    
 	  menu.popup( fltk::Rectangle( fltk::event_x(),
@@ -3978,12 +3978,12 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kMonitorCTLScript.match( rawkey ) )
     {
-        monitor_ctl_script_cb( NULL, NULL );
+        monitor_ctl_script_cb( NULL, uiMain );
         return 1;
     }
     else if ( kMonitorIccProfile.match( rawkey ) )
     {
-        monitor_icc_profile_cb( NULL, NULL );
+        monitor_icc_profile_cb( NULL, uiMain );
         return 1;
     }
     else if ( kSetAsBG.match( rawkey ) )
