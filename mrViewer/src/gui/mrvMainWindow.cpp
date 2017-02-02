@@ -57,7 +57,9 @@ using namespace std;
 
 namespace mrv {
 
+#ifndef _WIN32
   Pixmap p, mask;
+#endif
 
   MainWindow::MainWindow( int W, int H, const char* title ) :
     fltk::Window( W, H, title )
