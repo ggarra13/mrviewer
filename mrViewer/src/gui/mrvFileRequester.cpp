@@ -524,7 +524,7 @@ void save_clip_xml_metadata( const CMedia* img,
 
     std::string title = _( "Save XML Clip Metadata" );
 
-    const char* file;
+    const char* file = NULL;
     stringArray filelist;
 #ifdef _WIN32
     bool native = mrv::Preferences::native_file_chooser;
@@ -541,9 +541,9 @@ void save_clip_xml_metadata( const CMedia* img,
     else
 #endif
     {
-        const char* file = flu_save_chooser( title.c_str(), 
-                                             kXML_PATTERN.c_str(), 
-                                             xml.c_str());
+        file = flu_save_chooser( title.c_str(), 
+                                 kXML_PATTERN.c_str(), 
+                                 xml.c_str());
         if (!file) return;
     }
 
