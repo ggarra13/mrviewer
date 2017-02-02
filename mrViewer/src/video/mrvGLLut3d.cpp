@@ -241,12 +241,11 @@ lookup3D
   void GLLut3d::clear_lut()
   {
      _inited = false;
-     // @bug: CTL would crash if pixel values was set to lut_size()
-     //       We pad here 4 more bytes and that prevents the crash.
-     unsigned long num = lut_size() + 4;
+     // @bug: CTL would hang or crash if lut_size is used.
+     //       We pad it with 4 additional values and all seems fine.
+     size_t num = lut_size() + 4;
      lut.resizeErase( num );
-     for ( unsigned long i = 0; i < num; ++i )
-         lut[i] = 0;
+     // memset( &lut[0], 0, num*sizeof(float) );
   }
 
 
@@ -362,17 +361,17 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     for (size_t ib = 0; ib < _lutN; ++ib)
     {
         float b = float(ib) / float(_lutN - 1.0);
-        half B = expf((b - lutT) / lutM);
+        float B = expf((b - lutT) / lutM);
 
 	for (size_t ig = 0; ig < _lutN; ++ig)
 	  {
               float g = float(ig) / float(_lutN - 1.0);
-              half G = expf ((g - lutT) / lutM);
+              float G = expf ((g - lutT) / lutM);
 
 	    for (size_t ir = 0; ir < _lutN; ++ir)
 	      {
                   float r = float(ir) / float(_lutN - 1.0);
-                  half R = expf ((r - lutT) / lutM);
+                  float R = expf ((r - lutT) / lutM);
 
                   size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * 4;
                   pixelValues[i + 0] = R;
