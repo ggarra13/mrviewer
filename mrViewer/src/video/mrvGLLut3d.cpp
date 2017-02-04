@@ -71,6 +71,8 @@ void prepare_ACES( const CMedia* img, const std::string& name,
     using namespace Imf;
     using namespace Imath;
 
+    if ( name.size() < 4 ) return;
+    
     const ACES::ASC_CDL& c = img->asc_cdl();
 
     std::string n = name.substr( 4, 7 );
@@ -243,7 +245,7 @@ lookup3D
      _inited = false;
      // @bug: CTL would hang or crash if lut_size is used.
      //       We pad it with 4 additional values and all seems fine.
-     size_t num = lut_size() + 4;
+     unsigned long num = lut_size() + 4;
      lut.resizeErase( num );
      // memset( &lut[0], 0, num*sizeof(float) );
   }
