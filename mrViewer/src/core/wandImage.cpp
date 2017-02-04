@@ -171,11 +171,26 @@ namespace mrv {
      _num_channels = 0;
 
      ColorspaceType colorspace = MagickGetImageColorspace( wand );
-     if ( colorspace == RGBColorspace ||
-          colorspace == sRGBColorspace )
+     switch( colorspace )
      {
-         rgb_layers();
-         lumma_layers();
+         case RGBColorspace:
+         case sRGBColorspace:
+         case LogColorspace:
+         case scRGBColorspace:
+         case YCbCrColorspace:
+         case YCCColorspace:
+         case YIQColorspace:
+         case YPbPrColorspace:
+         case Rec601LumaColorspace:
+         case Rec601YCbCrColorspace:
+         case Rec709LumaColorspace:
+         case Rec709YCbCrColorspace:
+             rgb_layers();
+             lumma_layers();
+             break;
+         default:
+             lumma_layers();
+             break;
      }
 
      bool has_alpha = false;
