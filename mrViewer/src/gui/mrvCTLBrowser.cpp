@@ -94,6 +94,9 @@ void CTLBrowser::fill()
       std::string path = *it;
       if ( ! fs::exists( path ) || ! fs::is_directory( path ) ) continue;
 
+      typedef std::vector<std::string> stringArray;
+      stringArray files;
+      
       fs::directory_iterator end_itr;
       for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
 	{
@@ -101,6 +104,16 @@ void CTLBrowser::fill()
 
 	  if ( fs::is_directory( p ) ) continue;
 
+          files.push_back( p.string() );
+        }
+
+      std::sort( files.begin(), files.end() );
+
+      stringArray::const_iterator itr = files.begin();
+      stringArray::const_iterator e = files.end();
+
+      for ( ; itr != e; ++itr )
+      {
 
 	  std::string base = fs::basename( *itr );
 	  std::string ext  = fs::extension( *itr );
@@ -115,6 +128,7 @@ void CTLBrowser::fill()
                pt != prefixes.end(); ++pt)
           {
               size_t num = base.size() - (*pt).size() + 1;
+              if ( num > base.size() ) num = base.size();
               for ( size_t i = 0; i < num; ++i )
               {
                   if ( !(*pt).empty() && base.substr(i, (*pt).size()) == *pt )
