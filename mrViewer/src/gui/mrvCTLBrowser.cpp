@@ -104,6 +104,7 @@ void CTLBrowser::fill()
 
 	  if ( fs::is_directory( p ) ) continue;
 
+          std::cerr << "LIST " << p.string() << std::endl;
           files.push_back( p.string() );
         }
 
@@ -120,8 +121,11 @@ void CTLBrowser::fill()
 
 	  // Make extension lowercase and compare it against "ctl"
 	  std::transform( ext.begin(), ext.end(), ext.begin(), tolower );
-	  if ( ext != ".ctl" ) continue;
-
+	  if ( ext != ".ctl" ) {
+              std::cerr << "ignore not ctl " << base << std::endl;
+              continue;
+          }
+          
 	  // Skip those CTL files that don't match the prefix
           bool found = false;
           for (Tokenizer_t::const_iterator pt = prefixes.begin(); 
@@ -139,8 +143,13 @@ void CTLBrowser::fill()
               if ( found ) break;
           }
 
-          if ( !found ) continue;
-
+          if ( !found ) {
+              std::cerr << "ignore " << base << std::endl;
+              continue;
+          }
+          
+          std::cerr << "add " << base << std::endl;
+          
 	  // valid CTL, add it to the browser
 	  this->add( base.c_str() );
 	}
