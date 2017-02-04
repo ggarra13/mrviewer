@@ -83,7 +83,6 @@ bool load_aces_xml( CMedia* img, const char* filename )
             for ( size_t i = 0; i < num; ++i )
             {
                 std::string name = "LMT." + c.grade_refs[i];
-                name += N_(".a1.0.0");
                 img->append_look_mod_transform( name.c_str() );
             }
         }

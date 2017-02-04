@@ -1,7 +1,16 @@
-v3.4.7   - Made CTL Lut calculation faster.
+v3.4.7   - Made CTL Lut baking calculation faster and more accurate.
 	 - Made CTL/ICC of monitor trigger a refresh of the view.
 	   Previously, the old values were kept until a refresh from
-	   other ways happened (resize window, etc).
+	   other ways happened (switch to new frame, etc).
+	 - Removed a debugging statement in the seek request.
+	 - Bug fixed ImageMagick loader to work with different color
+	   spaces.  This effects log colorspace as found in DPX images.
+	   Previously rgb layers would not appear and only VR360 would
+	   show up.
+	 - Added all ACES v1.0.3 CTL transforms.
+	 - Made CTL browser list all transforms sorted alphabetically.
+	 - Allowed CTL transform which is only the prefix, like RRT.ctl.
+	   Previously that would crash the viewer.
 
 v3.4.6   - Made mrViewer compile with Linux 3.13.0-32 (Ubuntu 12.04.5).
 	 - Fixed chocolatey uninstaller to remove the directory of
