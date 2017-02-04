@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-02-04 12:11-0300\n"
+"POT-Creation-Date: 2017-02-04 13:58-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -1675,7 +1675,7 @@ msgstr "No pude leer audio fifo: "
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr "No pude leer samples del fifo buffer.  Error: "
 
-#: core/mrvACES.cpp:210
+#: core/mrvACES.cpp:209
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
@@ -3533,7 +3533,7 @@ msgstr "Carger Subtítulo"
 msgid "Load XML Clip Metadata"
 msgstr "Cargar Clip XML de Metadatos"
 
-#: core/mrvACES.cpp:118
+#: core/mrvACES.cpp:117
 msgid "Loaded ACES clip metadata file '"
 msgstr "Cargué archivo de Clip Metadata de ACES '"
 
@@ -3707,7 +3707,7 @@ msgstr "Nivel de Mipmap"
 msgid "Mipmap Levels"
 msgstr "Niveles de Mipmap"
 
-#: core/mrvACES.cpp:97
+#: core/mrvACES.cpp:96
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
 
@@ -3715,7 +3715,7 @@ msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
 msgid "Missing audio frame "
 msgstr "Cuadro faltante de audio "
 
-#: core/mrvACES.cpp:162
+#: core/mrvACES.cpp:161
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Faltan transformaciones para aces:GradeRef en '"
 
@@ -4748,11 +4748,11 @@ msgstr "SDI Output:\t"
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
-#: core/mrvACES.cpp:136
+#: core/mrvACES.cpp:135
 msgid "SHOT"
 msgstr "TOMA"
 
-#: core/mrvACES.cpp:132
+#: core/mrvACES.cpp:131
 msgid "SHOW"
 msgstr "SHOW"
 
@@ -4825,7 +4825,7 @@ msgstr "Grabar preferencias al disco por defecto."
 msgid "Save sequence or movie."
 msgstr "Grabar secuencia o película."
 
-#: core/mrvACES.cpp:212
+#: core/mrvACES.cpp:211
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabé archivo de Clip Metadata de ACES '"
 
@@ -5761,11 +5761,11 @@ msgstr "Desconocido"
 msgid "Unknown Imf::PixelType"
 msgstr "Imf::PixelType desconocido"
 
-#: core/mrvACES.cpp:137
+#: core/mrvACES.cpp:136
 msgid "Unknown Shot"
 msgstr "Toma Desconocida"
 
-#: core/mrvACES.cpp:133
+#: core/mrvACES.cpp:132
 msgid "Unknown Show"
 msgstr "Show Desconocido"
 
@@ -5797,7 +5797,7 @@ msgstr "Formato de imagen desconocido"
 msgid "Unknown mrv::Frame pixel type"
 msgstr "Formato de pixel en mrv::Frame desconocido"
 
-#: core/mrvACES.cpp:182
+#: core/mrvACES.cpp:181
 msgid "Unknown node in GradeRef"
 msgstr "Nodo desconocido en GradeRef"
 
