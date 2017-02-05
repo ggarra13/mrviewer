@@ -10,9 +10,13 @@ v3.4.7   - Made CTL Lut baking calculation faster and more accurate.
 	 - Added all ACES v1.0.3 CTL transforms.
 	 - Made CTL browser list all transforms sorted alphabetically.
 	 - Allowed CTL transform which is only the prefix, like RRT.ctl.
-	   Previously that would crash the viewer.
+	   Previously those file names would not get shown.
 	 - Added missing CTL scripts ( LMT.SatNode and LMT.SOPNode )
 	   used to emulate ASC_CDL.
+	 - Compiled libtiff into ImageMagick which was missing in the
+	   previous release on Linux.
+	 - Removed the auto maximize window on Linux as it was buggy. 
+	   Now it works like Windows.
 
 v3.4.6   - Made mrViewer compile with Linux 3.13.0-32 (Ubuntu 12.04.5).
 	 - Fixed chocolatey uninstaller to remove the directory of
