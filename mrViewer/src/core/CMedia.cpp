@@ -1760,7 +1760,7 @@ size_t  CMedia::number_of_grade_refs() const
         size_t num = strlen( *i );
         if ( num < 4 ) continue;
 
-        for ( size_t j = 0; j < num - 4; ++j )
+        for ( size_t j = 0; j < num - 3; ++j )
         {
             if ( strncmp( "Node", (*i) + j, 4 ) == 0 )
             {
