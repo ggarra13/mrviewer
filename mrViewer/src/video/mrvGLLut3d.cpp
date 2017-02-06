@@ -75,6 +75,7 @@ void prepare_ACES( const CMedia* img, const std::string& name,
     
     const ACES::ASC_CDL& c = img->asc_cdl();
 
+    // Transform LMT.SopNode into SopNode
     std::string n = name.substr( 4, 7 );
 
 
