@@ -78,6 +78,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
             img->append_look_mod_transform( c.convert_to.c_str() );
 
             size_t num = c.grade_refs.size();
+            
             img->asc_cdl( c.sops );
 
             for ( size_t i = 0; i < num; ++i )
@@ -168,6 +169,7 @@ bool save_aces_xml( const CMedia* img, const char* filename )
         for ( unsigned j = 0; j < num_graderefs; ++j )
         {
             const std::string& g = img->look_mod_transform( j+1 );
+            if ( g.size() < 4 ) continue;
             if ( g.substr(4, 7) == N_("SOPNode") )
             {
                 c.gradeRef_SOPNode( t );
