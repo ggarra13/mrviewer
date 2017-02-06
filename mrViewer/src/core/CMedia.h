@@ -654,6 +654,7 @@ class CMedia
 
     size_t number_of_grade_refs() const;
 
+    
     const ACES::ASC_CDL& asc_cdl() const { return _sops; }
 
     /// True if image represents a sequence
