@@ -1,0 +1,206 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Group 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "core/mrvACES.h"} {public
+} 
+
+decl {\#include "gui/mrvMedia.h"} {public
+} 
+
+decl {\#include "gui/mrvImageView.h"} {public
+} 
+
+namespace mrv {open
+} {
+  class SopNode {open
+  } {
+    decl {mrv::media m;} {}
+    Function {make_window(mrv::ImageView* view)} {open
+    } {
+      {fltk::Window} {} {open
+        xywh {500 752 560 325} hide resizable
+      } {
+        {fltk::Group} {} {
+          label Slope open
+          xywh {56 16 209 135} box ROUNDED_BOX
+        } {
+          {fltk::ValueSlider} SlopeRUI {
+            label R
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.slope( 0, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 20 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} SlopeGUI {
+            label G
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.slope( 1, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 54 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} SlopeBUI {
+            label B
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.slope( 2, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 87 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+        }
+        {fltk::Group} {} {
+          label Power open
+          xywh {56 170 209 134} box ROUNDED_BOX
+        } {
+          {fltk::ValueSlider} PowerRUI {
+            label R
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.power( 0, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 18 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} PowerGUI {
+            label G
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.power( 1, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {32 52 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} PowerBUI {
+            label B
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.power( 2, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {32 85 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+        }
+        {fltk::Group} {} {
+          label Offset open
+          xywh {290 16 209 134} box ROUNDED_BOX
+        } {
+          {fltk::ValueSlider} OffsetRUI {
+            label R
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.offset( 0, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {43 28 160 25} align 4 maximum 10
+          }
+          {fltk::ValueSlider} OffsetGUI {
+            label G
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.offset( 1, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {42 62 160 25} align 4 maximum 10
+          }
+          {fltk::ValueSlider} OffsetBUI {
+            label B
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.offset( 2, o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();} selected
+            xywh {42 95 160 25} align 4 maximum 10
+          }
+        }
+        {fltk::ValueSlider} SaturationUI {
+          label Saturation
+          user_data view user_data_type {mrv::ImageView*}
+          callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.saturation( o->value() );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+          xywh {355 215 135 25} align 4 when RELEASE value 1
+        }
+      }
+      code {mrv::media fg = view->foreground();
+if (!fg) return NULL;
+CMedia* img = fg->image();
+const ACES::ASC_CDL& cdl = img->asc_cdl();
+SaturationUI->value( cdl.saturation() );
+SlopeRUI->value( cdl.slope(0) );
+SlopeGUI->value( cdl.slope(1) );
+SlopeBUI->value( cdl.slope(2) );
+OffsetRUI->value( cdl.offset(0) );
+OffsetGUI->value( cdl.offset(1) );
+OffsetBUI->value( cdl.offset(2) );
+PowerRUI->value( cdl.power(0) );
+PowerGUI->value( cdl.power(1) );
+PowerBUI->value( cdl.power(2) );} {}
+      code {w->show();} {}
+    }
+    Function {SopNode( mrv::ImageView* view )} {open
+    } {
+      code {m = view->foreground();
+make_window(view);} {}
+    }
+  }
+} 
