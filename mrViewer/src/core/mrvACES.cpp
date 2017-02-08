@@ -67,8 +67,6 @@ bool load_aces_xml( CMedia* img, const char* filename )
         img->idt_transform( c.IDT.name.c_str() );
       }
 
-    size_t num = c.LMT.size();
-    size_t i = 0;
     img->clear_look_mod_transform();
 
     if ( c.graderef_status == ACES::kPreview )
@@ -99,8 +97,8 @@ bool load_aces_xml( CMedia* img, const char* filename )
         }
     }
 
-
-    for ( ; i < num; ++i )
+    size_t num = c.LMT.size();
+    for ( size_t i = 0; i < num; ++i )
       {
         if ( c.LMT[i].status != ACES::kPreview )
 	  continue;
