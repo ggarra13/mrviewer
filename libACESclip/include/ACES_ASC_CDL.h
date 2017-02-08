@@ -79,6 +79,17 @@ class ASC_CDL
     inline void saturation( float s ) { _saturation = s; };
     inline float saturation() const { return _saturation; };
 
+    inline friend std::ostream& operator<<( std::ostream& o, const ASC_CDL& b ) 
+    {
+        o << "slope " << b.slope(0) << ", " << b.slope(1) << ", " << b.slope(2)
+          << std::endl
+          << "offset " << b.offset(0) << ", " << b.offset(1) << ", "
+          << b.offset(2) << std::endl
+          << "power " << b.power(0) << ", " << b.power(1) << ", " << b.power(2)
+          << std::endl
+          << "saturation " << b.saturation() << std::endl;
+        return o; 
+    }
 
     inline bool operator==( const ASC_CDL& b )
     {
