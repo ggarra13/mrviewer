@@ -95,12 +95,13 @@ namespace mrv {
     typedef std::vector< std::string  >      TransformNames;
 
     typedef boost::shared_ptr< GLLut3d >         GLLut3d_ptr;
-    typedef std::multimap< std::string, GLLut3d_ptr > LutsMap;
-
+    // typedef std::multimap< std::string, GLLut3d_ptr > LutsMap;
+    typedef std::map< std::string, GLLut3d_ptr > LutsMap;
 
   public:
-    GLLut3d( const unsigned N );
-    virtual ~GLLut3d();
+      GLLut3d( const unsigned N );
+      GLLut3d( const GLLut3d& b );
+      virtual ~GLLut3d();
 
     void enable();
     void disable();
@@ -121,6 +122,7 @@ namespace mrv {
     void create_gl_texture();
 
       inline bool inited() const { return _inited; }
+      inline bool inited(bool x) { _inited = x; }
 
   protected:
     void icc_cmm_error( const char* prefix,
