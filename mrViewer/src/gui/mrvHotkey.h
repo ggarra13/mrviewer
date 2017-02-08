@@ -171,6 +171,8 @@ extern Hotkey kGammaLess;
 extern Hotkey kSetAsBG;
 extern Hotkey kToggleLUT;
 
+extern Hotkey kSOPSatNodes;
+
 extern Hotkey kAttachAudio;
 extern Hotkey kEditAudio;
 extern Hotkey kDetachAudio;
