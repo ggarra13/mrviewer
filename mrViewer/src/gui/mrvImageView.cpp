@@ -121,6 +121,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
 #include "mrvEDLWindowUI.h"
+#include "mrvSOPNode.h"
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvAudioOffset.h"
 #include "gui/mrvVersion.h"
@@ -682,6 +683,18 @@ static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_script( fg->image() );
 }
 
+static void modify_sop_sat( mrv::ImageView* view )
+{
+    mrv::SopNode* w = new mrv::SopNode( view );
+}
+
+static void modify_sop_sat_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  modify_sop_sat( view );
+}
 
 static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -2575,6 +2588,10 @@ int ImageView::leftMouseDown(int x, int y)
 		      kIDTScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_idt_script_cb,
 		      this);
+            menu.add( _("Image/Modify SOP Saturation"),
+                      kSOPSatNodes.hotkey(),
+	              (fltk::Callback*)modify_sop_sat_cb,
+	              this);
 	    menu.add( _("Image/Add CTL Look Mod Transform"),
 		      kLookModScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_lmt_script_cb,
