@@ -27,34 +27,76 @@ class ASC_CDL
         }
     }
 
-    void slope( const float x, const float y, const float z )
+    inline void slope( const unsigned i, const float x )
+    {
+        assert( i < 3 );
+        _slope[i] = x;
+    }
+
+    inline void offset( const unsigned i, const float x )
+    {
+        assert( i < 3 );
+        _offset[i] = x;
+    }
+    
+    inline void power( const unsigned i, const float x )
+    {
+        assert( i < 3 );
+        _power[i] = x;
+    }
+    
+    inline void slope( const float x, const float y, const float z )
     {
         _slope[0] = x;
         _slope[1] = y;
         _slope[2] = z;
     };
 
-    void offset( const float x, const float y, const float z )
+    inline void offset( const float x, const float y, const float z )
     {
         _offset[0] = x;
         _offset[1] = y;
         _offset[2] = z;
     };
 
-    void power( const float x, const float y, const float z )
+    inline void power( const float x, const float y, const float z )
     {
         _power[0] = x;
         _power[1] = y;
         _power[2] = z;
     };
 
-    float slope( unsigned short i ) const  { assert( i < 3 ); return _slope[i]; };
-    float offset( unsigned short i ) const { assert( i < 3 ); return _offset[i]; };
-    float power( unsigned short i ) const  { assert( i < 3 ); return _power[i]; };
+    inline float slope( unsigned short i ) const  {
+        assert( i < 3 ); return _slope[i];
+    };
+    inline float offset( unsigned short i ) const {
+        assert( i < 3 ); return _offset[i];
+    };
+    inline float power( unsigned short i ) const  {
+        assert( i < 3 ); return _power[i];
+    };
 
-    void saturation( float s ) { _saturation = s; };
-    float saturation() const { return _saturation; };
+    inline void saturation( float s ) { _saturation = s; };
+    inline float saturation() const { return _saturation; };
 
+
+    inline bool operator==( const ASC_CDL& b )
+    {
+        if ( _saturation != b._saturation ) return false;
+        for ( int i = 0; i < 3; ++i )
+        {
+            if ( _slope[i]  != b._slope[i]  ) return false;
+            if ( _offset[i] != b._offset[i] ) return false;
+            if ( _power[i]  != b._power[i]  ) return false;
+        }
+        return true;
+    }
+    
+    inline bool operator!=( const ASC_CDL& b )
+    {
+        return ! (operator==(b));
+    }
+    
   protected:
     float _slope[3];
     float _offset[3];
