@@ -209,6 +209,18 @@ lookup3D
       glGenTextures( 1, &texId );
   }
 
+  GLLut3d::GLLut3d( const GLLut3d& b ) :
+    lutMin( b.lutMin ),
+    lutMax( b.lutMax ),
+    lutM( b.lutM ),
+    lutT( b.lutT ),
+    lutF( b.lutF ),
+    texId( b.texId ),
+    _lutN( b._lutN ),
+    _inited( b._inited )
+  {
+  }
+
 
 
   GLLut3d::~GLLut3d()
@@ -468,7 +480,6 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
           {
               ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
                         channelNames );
-              _inited = true;
           }
           catch( const std::exception& e )
           {
@@ -480,6 +491,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
               LOG_ERROR( _("Unknown error returned from ctlToLut") );
               return false;
           }
+          _inited = true;
       }
 
 
@@ -968,10 +980,10 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     //
     {
       LutsMap::const_iterator i = _luts.find( path );
-      if ( i != _luts.end() && i->second.get()->inited() )
+      if ( i != _luts.end() && i->second->inited() )
         {
-          // this lut was already created, return it.
-          return i->second.get();
+            // this lut was already created, return it.
+            return i->second.get();
         }
     }
 
@@ -1040,6 +1052,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
 
     lut->create_gl_texture();
 
+    _luts.erase( path );
     _luts.insert( std::make_pair( path, lut ) );
     return lut.get();
   }
