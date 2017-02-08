@@ -97,6 +97,7 @@ void prepare_ACES( const CMedia* img, const std::string& name,
     else if ( n == "SatNode" )
     {
         FloatAttribute attr( c.saturation() );
+        // std::cerr << "saturation " << c.saturation() << std::endl;
         h.insert( "saturation", attr );
     }
 }
@@ -967,7 +968,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     //
     {
       LutsMap::const_iterator i = _luts.find( path );
-      if ( i != _luts.end() )
+      if ( i != _luts.end() && i->second.get()->inited() )
         {
           // this lut was already created, return it.
           return i->second.get();
