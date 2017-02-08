@@ -195,7 +195,9 @@ OffsetBUI->value( cdl.offset(2) );
 PowerRUI->value( cdl.power(0) );
 PowerGUI->value( cdl.power(1) );
 PowerBUI->value( cdl.power(2) );} {}
-      code {w->show();} {}
+      code {
+      w->child_of( view->fltk_main() );
+      w->show();} {}
     }
     Function {SopNode( mrv::ImageView* view )} {open
     } {
