@@ -120,6 +120,8 @@ Hotkey kZDepthDown( false, false, false, false, 'a' );
 Hotkey kDensityUp( false, false, false, false, 'c' );
 Hotkey kDensityDown( false, false, false, false, 'd' );
 
+Hotkey kSOPSatNodes( false, false, false, false, 0 );
+
 Hotkey kAttachAudio( false, false, false, false, 0 );
 Hotkey kEditAudio( false, false, false, false, 0 );
 Hotkey kDetachAudio( false, false, false, false, 0 );
