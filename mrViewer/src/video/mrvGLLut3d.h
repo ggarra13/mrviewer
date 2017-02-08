@@ -117,10 +117,12 @@ namespace mrv {
 				const Transforms::const_iterator& end,
 				const XformFlags flags );
       
+      void clear_lut();
     void create_gl_texture();
 
+      inline bool inited() const { return _inited; }
+
   protected:
-      void clear_lut();
     void icc_cmm_error( const char* prefix,
 			const icStatusCMM& status );
 
