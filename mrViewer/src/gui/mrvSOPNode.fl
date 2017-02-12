@@ -23,7 +23,7 @@ namespace mrv {open
     Function {make_window(mrv::ImageView* view)} {open
     } {
       {fltk::Window} {} {open
-        xywh {500 752 560 325} hide resizable
+        xywh {500 752 560 325} resizable visible
       } {
         {fltk::Group} {} {
           label Slope open
@@ -120,7 +120,7 @@ v->redraw();}
           }
         }
         {fltk::Group} {} {
-          label Offset open
+          label Offset open selected
           xywh {290 16 209 134} box ROUNDED_BOX
         } {
           {fltk::ValueSlider} OffsetRUI {
@@ -135,7 +135,7 @@ ACES::ASC_CDL& a = img->asc_cdl();
 a.offset( 0, o->value() );
 img->image_damage( img->image_damage() | CMedia::kDamageLut );
 v->redraw();}
-            xywh {43 28 160 25} align 4 maximum 10
+            xywh {34 21 160 25} align 4 maximum 10
           }
           {fltk::ValueSlider} OffsetGUI {
             label G
@@ -149,7 +149,7 @@ ACES::ASC_CDL& a = img->asc_cdl();
 a.offset( 1, o->value() );
 img->image_damage( img->image_damage() | CMedia::kDamageLut );
 v->redraw();}
-            xywh {42 62 160 25} align 4 maximum 10
+            xywh {33 55 160 25} align 4 maximum 10
           }
           {fltk::ValueSlider} OffsetBUI {
             label B
@@ -162,8 +162,8 @@ CMedia* img = m->image();
 ACES::ASC_CDL& a = img->asc_cdl();
 a.offset( 2, o->value() );
 img->image_damage( img->image_damage() | CMedia::kDamageLut );
-v->redraw();} selected
-            xywh {42 95 160 25} align 4 maximum 10
+v->redraw();}
+            xywh {33 88 160 25} align 4 maximum 10
           }
         }
         {fltk::ValueSlider} SaturationUI {
@@ -195,8 +195,7 @@ OffsetBUI->value( cdl.offset(2) );
 PowerRUI->value( cdl.power(0) );
 PowerGUI->value( cdl.power(1) );
 PowerBUI->value( cdl.power(2) );} {}
-      code {
-      w->child_of( view->fltk_main() );
+      code {w->child_of( view->fltk_main() );
       w->show();} {}
     }
     Function {SopNode( mrv::ImageView* view )} {open
