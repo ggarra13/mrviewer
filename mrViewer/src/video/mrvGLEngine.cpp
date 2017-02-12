@@ -231,12 +231,13 @@ void GLEngine::init_charset()
 
     // Load XFont to user's specs
     char font_name[256];
-    sprintf( font_name, N_("-*-fixed-*-r-normal--%d-0-0-0-c-0-iso8859-1"),
+    sprintf( font_name, N_("-*-fixed-*-r-normal--%d-0-0-0-*-*-iso8859-1"),
 	     fontsize );
     XFontStruct* hfont = XLoadQueryFont( gdc, font_name );
     if (!hfont) {
        LOG_ERROR( _("Could not open any font of size ") << fontsize);
-       return;
+       hfont = XLoadQueryFont( gdc, "fixed" );
+       if ( !hfont ) return;
     }
 
     // Create GL lists out of XFont
