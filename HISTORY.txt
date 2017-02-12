@@ -1,3 +1,14 @@
+v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
+	 - Added GUI SOP and Saturation to modify the ASC_CDL of
+	   ACESclip files.
+	 - Made GUI SOP and Saturation add 4 look mod transforms if
+	   not present:
+	   ACEScsc.ACES_to_ACEScg -> LMT.SOPNode ->
+	   LMT.SatNode -> ACEScsc.ACEScg_to_ACES
+	 - Made GUI SOP and Saturation turn on LUT automatically.
+	 - Made OpenGL use any fixed text if no font of 16 pixels is found.
+	 - Added HUD display of directory which was missing.
+
 v3.4.7   - Made CTL Lut baking calculation faster and more accurate.
 	 - Made CTL/ICC of monitor trigger a refresh of the view.
 	   Previously, the old values were kept until a refresh from
