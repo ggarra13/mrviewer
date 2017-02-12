@@ -46,6 +46,7 @@ Hotkey kSaveClipXMLMetadata( false, false, true, false, 'x' );
 Hotkey kIccProfile( true, false, false, false, 'i' );
 Hotkey kIDTScript( true, false, false, true, 'i' );
 Hotkey kLookModScript( true, false, false, false, 'l' );
+Hotkey kModifyLookModScript( true, false, false, true, 'l' );
 Hotkey kCTLScript( true, false, false, false, 't' );
 Hotkey kMonitorCTLScript( true, false, false, false, 'm' );
 Hotkey kMonitorIccProfile( true, false, false, false, 'n' );
