@@ -644,6 +644,11 @@ class CMedia
     void append_look_mod_transform( const char* cfile );
 
     /// Assigns a new look mod transform to a certain index ( CTL script )
+    /// and moves all other indexes down.
+    /// If cfile is NULL, the look mod at the index is removed.
+    void insert_look_mod_transform( const size_t idx, const char* cfile );
+    
+    /// Assigns a new look mod transform to a certain index ( CTL script )
     /// If cfile is NULL, the look mod at the index is removed.
     void look_mod_transform( const size_t idx, const char* cfile );
 
