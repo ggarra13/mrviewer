@@ -1778,6 +1778,28 @@ size_t  CMedia::number_of_grade_refs() const
  * 
  * @param cfile  CTL script name
  */
+void CMedia::insert_look_mod_transform( const size_t idx, const char* cfile )
+{
+    if ( idx >= _look_mod_transform.size() ) return;
+
+    if ( cfile && strlen(cfile) > 0 ) 
+    {
+        _look_mod_transform.insert( _look_mod_transform.begin() + idx,
+                                    strdup( cfile ) );
+    }
+    else
+    {
+        _look_mod_transform.erase( _look_mod_transform.begin() + idx );
+    }
+  image_damage( image_damage() | kDamageData | kDamageLut );
+  refresh();
+}
+
+/** 
+ * Change the look mod transform for the image
+ * 
+ * @param cfile  CTL script name
+ */
 void CMedia::look_mod_transform( const size_t idx, const char* cfile )
 {
     if ( idx >= _look_mod_transform.size() ) return;
