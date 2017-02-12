@@ -29,6 +29,7 @@
 #define mrvFileRequester_h
 
 #include "mrvString.h"
+#include "gui/mrvMedia.h"
 
 
 namespace mrv
@@ -112,6 +113,7 @@ void attach_icc_profile( CMedia* image, const char* startfile,
                           const mrv::ViewerUI* main = NULL  );
   void attach_ctl_script( CMedia* image,
                           const mrv::ViewerUI* main = NULL  );
+void modify_ctl_lmt_script( const mrv::ViewerUI* main );
 
   /**
    * Attach a CTL (Color Transform Language) LMT script to an image for display.
