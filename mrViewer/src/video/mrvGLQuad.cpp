@@ -184,12 +184,12 @@ namespace mrv {
 
   void GLQuad::clear_lut()
   {
-      if (_lut && _image)
+      if (_image)
       {
           static ACES::ASC_CDL old;
           if ( old != _image->asc_cdl() )
           {
-              _lut->clear_lut();
+              if ( _lut ) _lut->clear_lut();
               old = _image->asc_cdl();
           }
       }
