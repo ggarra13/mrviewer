@@ -106,18 +106,19 @@ INCLUDE_DIRECTORIES(
   )
 
 
-FLTK_WRAP_UI( mrViewer  
+FLTK_WRAP_UI( mrViewer
   gui/aviSave.fl
   gui/mrvStereoUI.fl
   gui/WandOptionsUI.fl
   gui/EXROptionsUI.fl
-  gui/mrvEDLWindowUI.fl
-  gui/mrvSOPNode.fl
-  gui/mrvIccProfileUI.fl
+  gui/mrvAudioOffset.fl
   gui/mrvColorAreaUI.fl  
+  gui/mrvEDLWindowUI.fl
+  gui/mrvIccProfileUI.fl
+  gui/mrvLMTModifier.fl
+  gui/mrvSOPNode.fl
   gui/mrViewer.fl 
   gui/keyboard_ui.fl 
-  gui/mrvAudioOffset.fl
   )
 
 
@@ -208,6 +209,7 @@ SET( SOURCES
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
+  gui/mrvLMTBrowser.cpp
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
