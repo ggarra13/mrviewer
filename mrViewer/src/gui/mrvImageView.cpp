@@ -685,7 +685,33 @@ static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
 
 static void modify_sop_sat( mrv::ImageView* view )
 {
-    mrv::SopNode* w = new mrv::SopNode( view );
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+
+    CMedia* img = fg->image();
+    size_t num = img->number_of_lmts();
+    size_t num_graderefs = img->number_of_grade_refs();
+    if ( num_graderefs == 0 )
+    {
+        img->append_look_mod_transform( "ACEScsc.ACES_to_ACEScg" );
+        img->append_look_mod_transform( "LMT.SOPNode" );
+        img->append_look_mod_transform( "LMT.SatNode" );
+        img->append_look_mod_transform( "ACEScsc.ACEScg_to_ACES" );
+    }
+
+    if ( ! img->rendering_transform() )
+    {
+        img->rendering_transform( "RRT" );
+    }
+    if ( mrv::Preferences::ODT_CTL_transform == "" )
+    {
+        mrv::Preferences::ODT_CTL_transform =
+        "ODT.Academy.RGBmonitor_D60sim_100nits_dim";
+    }
+
+    view->use_lut( true );
+    
+    static mrv::SopNode* w = new mrv::SopNode( view );
 }
 
 static void modify_sop_sat_cb( fltk::Widget* o, mrv::ImageView* view )
@@ -705,6 +731,12 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 
   attach_ctl_lmt_script( img, img->number_of_lmts() );
 }
+
+static void modify_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    modify_ctl_lmt_script( view->main() );
+}
+
 
 static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -2159,6 +2191,13 @@ void ImageView::draw()
   int yi = 25;
   static char buf[1024];
 
+  if ( _hud & kHudDirectory )
+    {
+       hud << img->directory();
+       draw_text( r, g, b, 5, y, hud.str().c_str() );
+       y -= yi; hud.str("");
+    }
+
   if ( _hud & kHudFilename )
     {
        sprintf( buf, img->name().c_str(), img->frame() );
@@ -2588,13 +2627,17 @@ int ImageView::leftMouseDown(int x, int y)
 		      kIDTScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_idt_script_cb,
 		      this);
-            menu.add( _("Image/Modify SOP Saturation"),
+            menu.add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
                       kSOPSatNodes.hotkey(),
 	              (fltk::Callback*)modify_sop_sat_cb,
 	              this);
 	    menu.add( _("Image/Add CTL Look Mod Transform"),
 		      kLookModScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_lmt_script_cb,
+		      this);
+	    menu.add( _("Image/Modify CTL Look Mod Transforms"),
+		      kModifyLookModScript.hotkey(),
+		      (fltk::Callback*)modify_ctl_lmt_script_cb,
 		      this);
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
@@ -2886,7 +2929,6 @@ void ImageView::pixel_processed( const CMedia* img,
         rgba.r = out[0];
         rgba.g = out[1];
         rgba.b = out[2];
-
     }
 
     //
@@ -6300,6 +6342,8 @@ void ImageView::show_pixel_ratio( const bool b )
 void ImageView::toggle_lut()
 {
   _useLUT = !_useLUT;
+
+  main()->uiLUT->value( _useLUT );
 
   char buf[128];
   sprintf( buf, "UseLUT %d", (int)_useLUT );
