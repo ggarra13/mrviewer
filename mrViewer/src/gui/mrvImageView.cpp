@@ -709,9 +709,15 @@ static void modify_sop_sat( mrv::ImageView* view )
         "ODT.Academy.RGBmonitor_D60sim_100nits_dim";
     }
 
+    mrv::ViewerUI* main = view->main();
+    if ( main->uiSOPNode ) main->uiSOPNode->uiMain->show();
+    else 
+      {
+	main->uiSOPNode = new mrv::SopNode( view );
+      }
     view->use_lut( true );
-    
-    static mrv::SopNode* w = new mrv::SopNode( view );
+    img->image_damage( img->image_damage() | CMedia::kDamageLut );
+    view->redraw();
 }
 
 static void modify_sop_sat_cb( fltk::Widget* o, mrv::ImageView* view )
@@ -730,11 +736,6 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   CMedia* img = fg->image();
 
   attach_ctl_lmt_script( img, img->number_of_lmts() );
-}
-
-static void modify_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
-{
-    modify_ctl_lmt_script( view->main() );
 }
 
 
@@ -2634,10 +2635,6 @@ int ImageView::leftMouseDown(int x, int y)
 	    menu.add( _("Image/Add CTL Look Mod Transform"),
 		      kLookModScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_lmt_script_cb,
-		      this);
-	    menu.add( _("Image/Modify CTL Look Mod Transforms"),
-		      kModifyLookModScript.hotkey(),
-		      (fltk::Callback*)modify_ctl_lmt_script_cb,
 		      this);
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
