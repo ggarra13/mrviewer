@@ -432,16 +432,6 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
   }
 
 
-void modify_ctl_lmt_script( const mrv::ViewerUI* main )
-  {
-    static mrv::LMTModifier* w = new mrv::LMTModifier( main );
-
-    mrv::media fg = main->uiView->foreground();
-    if (!fg) return;
-    
-    w->fill( fg );
-    w->uiMain->show();
-  }
 
 
   void attach_ctl_script( CMedia* image, 
