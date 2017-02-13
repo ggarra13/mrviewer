@@ -115,7 +115,6 @@ FLTK_WRAP_UI( mrViewer
   gui/mrvColorAreaUI.fl  
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
-  gui/mrvLMTModifier.fl
   gui/mrvSOPNode.fl
   gui/mrViewer.fl 
   gui/keyboard_ui.fl 
@@ -209,7 +208,6 @@ SET( SOURCES
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
-  gui/mrvLMTBrowser.cpp
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
