@@ -37,7 +37,7 @@ namespace mrv {open
         xywh {627 416 650 485} resizable visible
       } {
         {fltk::Group} {} {open
-          xywh {5 5 640 475}
+          xywh {10 5 640 475}
         } {
           {fltk::Browser} uiLMTs {
             label {Look Mod Transforms}
@@ -65,14 +65,29 @@ uiLMTs->fill( fg );}
 mrv::media fg = view->foreground();
 if (!fg) return;
 
-int i = o->value();
-if ( i < 0 ) return;
+typedef std::vector< int > LMTs;
+LMTs r;
+fltk::Widget* w = uiLMTs->goto_top();
+int i = 0;
+for ( ; w; w = uiLMTs->next(), ++i )
+{
+   if ( w->selected() )
+  {
+    r.push_back( i );
+  }
+}
+
 
 CMedia* img = fg->image();
-img->look_mod_transform( i, NULL );
 
+LMTs::const_reverse_iterator s = r.rbegin();
+LMTs::const_reverse_iterator e = r.rend();
+for ( ; s != e; ++s )
+{
+  img->look_mod_transform( *s, NULL );
+}
 uiLMTs->fill( fg );} selected
-          xywh {140 440 105 30}
+          xywh {135 440 105 30}
         }
       }
     }
