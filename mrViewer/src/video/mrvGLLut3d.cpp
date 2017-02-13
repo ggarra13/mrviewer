@@ -75,7 +75,7 @@ void prepare_ACES( const CMedia* img, const std::string& name,
     
     const ACES::ASC_CDL& c = img->asc_cdl();
 
-    // Transform LMT.SopNode into SopNode
+    // Transform LMT.SOPNode/LMT.SatNode into SOPNode/SatNode
     std::string n = name.substr( 4, 7 );
 
 
@@ -97,7 +97,6 @@ void prepare_ACES( const CMedia* img, const std::string& name,
     else if ( n == "SatNode" )
     {
         FloatAttribute attr( c.saturation() );
-        // std::cerr << "saturation " << c.saturation() << std::endl;
         h.insert( "saturation", attr );
     }
 }
@@ -480,6 +479,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
           {
               ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
                         channelNames );
+	      _inited = true;
           }
           catch( const std::exception& e )
           {
@@ -491,7 +491,6 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
               LOG_ERROR( _("Unknown error returned from ctlToLut") );
               return false;
           }
-          _inited = true;
       }
 
 
@@ -1052,7 +1051,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
 
     lut->create_gl_texture();
 
-    _luts.erase( path );
+    if ( _luts.find( path ) != _luts.end() ) _luts.erase( path );
     _luts.insert( std::make_pair( path, lut ) );
     return lut.get();
   }
