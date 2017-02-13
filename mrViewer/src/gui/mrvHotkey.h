@@ -109,7 +109,6 @@ extern Hotkey kSaveClipXMLMetadata;
 extern Hotkey kIccProfile;
 extern Hotkey kIDTScript;
 extern Hotkey kLookModScript;
-extern Hotkey kModifyLookModScript;
 extern Hotkey kCTLScript;
 extern Hotkey kMonitorCTLScript;
 extern Hotkey kMonitorIccProfile;
