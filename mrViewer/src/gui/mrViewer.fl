@@ -65,6 +65,8 @@ decl {\#include "gui/mrvGlWindow3d.h"} {public
 
 decl {\#include "gui/mrvHotkey.h"} {} 
 
+decl {\#include "mrvSOPNode.h"} {} 
+
 decl {\#include "mrvPlayback.h"} {} 
 
 decl {\#include "mrvVersion.h"} {} 
@@ -160,6 +162,8 @@ namespace mrv {open
   decl {class Timeline;} {public
   }
   decl {class Vectorscope;} {public
+  }
+  decl {class SopNode;} {public
   }
   decl {class ViewerUI;} {public
   }
@@ -636,9 +640,8 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
-    Function {make_window(mrv::ViewerUI* m)} {open private
+  class PreferencesUI {} {
+    Function {make_window(mrv::ViewerUI* m)} {private
     } {
       {fltk::Window} uiMain {
         label Preferences open
@@ -693,7 +696,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label {UI Elements} open selected
+              label {UI Elements} open
               xywh {9 196 410 123} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
@@ -2480,7 +2483,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2492,6 +2496,8 @@ else
     decl {static HotkeyUI* uiHotkey;} {public
     }
     decl {static ConnectionUI* uiConnection;} {public
+    }
+    decl {SopNode* uiSOPNode;} {selected public
     }
     decl {ReelUI* uiReelWindow;} {public
     }
@@ -2511,7 +2517,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
@@ -3451,7 +3457,8 @@ v->uiTimeline->redraw();}
           }
         }
       }
-      code {uiReelWindow = new ReelUI(this);
+      code {uiSOPNode = NULL;
+uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
 uiStereo = new StereoUI(this);
@@ -3492,6 +3499,7 @@ delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
 delete uiStereo; uiStereo = NULL;
+delete uiSOPNode; uiSOPNode = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
