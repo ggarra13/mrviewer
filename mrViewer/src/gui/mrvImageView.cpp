@@ -720,7 +720,7 @@ static void modify_sop_sat( mrv::ImageView* view )
     view->redraw();
 }
 
-static void modify_sop_sat_cb( fltk::Widget* o, mrv::ImageView* view )
+void modify_sop_sat_cb( fltk::Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;

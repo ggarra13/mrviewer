@@ -53,6 +53,8 @@ namespace fltk {
 
 namespace mrv {
 
+void modify_sop_sat_cb( fltk::Widget* w, mrv::ImageView* view );
+
 class ViewerUI;
 class ImageBrowser;
 class Timeline;
