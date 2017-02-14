@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-02-13 17:11-0300\n"
+"POT-Creation-Date: 2017-02-14 13:24-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -80,7 +80,7 @@ msgstr "==>  Usando "
 msgid "  INF.  "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:1671
+#: gui/mrvImageInformation.cpp:1686
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
@@ -277,7 +277,7 @@ msgstr "%.2f"
 msgid "%.2g %%"
 msgstr "%.2g %%"
 
-#: gui/mrvImageInformation.cpp:1659
+#: gui/mrvImageInformation.cpp:1674
 #, c-format
 msgid "%<PRId64> seconds %d ms."
 msgstr "%<PRId64> segundos %d ms."
@@ -2726,7 +2726,7 @@ msgstr "CuatroCC"
 msgid "Frame"
 msgstr "Cuadro"
 
-#: gui/mrvImageInformation.cpp:1656
+#: gui/mrvImageInformation.cpp:1671
 #, c-format
 msgid "Frame %<PRId64> "
 msgstr "Cuadro %<PRId64> "
@@ -3841,7 +3841,7 @@ msgid "Next Image"
 msgstr "Próxima Imagen"
 
 #: gui/mrvFileRequester.cpp:814 gui/mrvImageBrowser.cpp:640
-#: gui/mrvImageBrowser.cpp:1915 gui/mrvImageInformation.cpp:1893
+#: gui/mrvImageBrowser.cpp:1915 gui/mrvImageInformation.cpp:1908
 #: video/mrvGLEngine.cpp:181 video/mrvGLEngine.cpp:182
 #: video/mrvGLEngine.cpp:183 video/mrvGLEngine.cpp:185
 #: video/mrvGLEngine.cpp:189 video/mrvGLEngine.cpp:190
@@ -4296,7 +4296,7 @@ msgstr "Imagen de Photoshop"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2630
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2645
 #: gui/mrvImageInformation.cpp:1221 gui/mrvImageInformation.cpp:1271
-#: gui/mrvImageInformation.cpp:1329
+#: gui/mrvImageInformation.cpp:1344
 msgid "Pick"
 msgstr "Elegir"
 
@@ -5905,6 +5905,10 @@ msgstr "Valor"
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "Valor (Intensidad) del pixel de la imagen bajo el ratón."
 
+#: gui/mrvImageInformation.cpp:1337
+msgid "Values"
+msgstr "Valores"
+
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1690
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1898
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3393
@@ -6414,7 +6418,7 @@ msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
 #: gui/mrvFileRequester.cpp:814 gui/mrvImageBrowser.cpp:640
-#: gui/mrvImageBrowser.cpp:1915 gui/mrvImageInformation.cpp:1893
+#: gui/mrvImageBrowser.cpp:1915 gui/mrvImageInformation.cpp:1908
 #: video/mrvGLEngine.cpp:181 video/mrvGLEngine.cpp:182
 #: video/mrvGLEngine.cpp:183 video/mrvGLEngine.cpp:185
 #: video/mrvGLEngine.cpp:189 video/mrvGLEngine.cpp:190
