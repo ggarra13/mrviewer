@@ -1325,6 +1325,21 @@ void ImageInformation::fill_data()
 	widget->callback( callback, (void*)c );
 
       sg->add( widget );
+
+      if ( content )
+      {
+          std::string n = content;
+          n = n.substr( 4, 7 );
+          if ( n == "SOPNode" || n == "SatNode" )
+          {
+              widget->w( sg->w() - 100 );
+              fltk::Button* modify = new fltk::Button( sg->w()-100, 0, 50, hh,
+                                                       _("Values") );
+              mrv::ImageView* view = main()->uiView;
+              modify->callback( (fltk::Callback*)modify_sop_sat_cb, view );
+              sg->add( modify );
+          }
+      }
       
       fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
       pick->callback( (fltk::Callback*)ctl_lmt_callback, c );
