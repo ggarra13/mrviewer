@@ -18,6 +18,7 @@ librt.*
 libdl.*
 libxcb.*
 libasound.*
+libfontconfig.*
 )
 
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
