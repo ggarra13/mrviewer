@@ -919,9 +919,12 @@ static const char* kCLocale = "C";
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
 
-    main->uiLUT->value( uiPrefs->uiPrefsViewLut->value() );
-    
-    view->use_lut( uiPrefs->uiPrefsViewLut->value() );
+    if ( !view->use_lut() )
+    {
+        bool use = uiPrefs->uiPrefsViewLut->value();
+        main->uiLUT->value( use );
+        view->use_lut( use );
+    }
 
 
     if ( uiPrefs->uiPrefsSafeAreas->value() )
