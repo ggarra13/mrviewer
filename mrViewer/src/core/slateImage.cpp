@@ -34,7 +34,7 @@ using namespace std;
 #include "mrvIO.h"
 #include "mrvString.h"
 #include "mrvException.h"
-#include <wand/magick-wand.h>
+#include <MagickWand/MagickWand.h>
 
 namespace 
 {
