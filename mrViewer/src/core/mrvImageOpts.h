@@ -22,7 +22,7 @@
 
 #include "ImfCompression.h"
 #include "ImfPixelType.h"
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 
 namespace mrv {
 

@@ -54,7 +54,6 @@
 #include "gui/mrvMainWindow.h"
 #include "mrViewer.h"
 #include "aviSave.h"
-#include "mrvLMTModifier.h"
 
 #include <GL/gl.h>
 
