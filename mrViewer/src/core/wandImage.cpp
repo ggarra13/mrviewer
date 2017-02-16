@@ -38,7 +38,7 @@ using namespace std;
 #endif
 
 #include <algorithm>
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 
 #include "core/mrvImageOpts.h"
 #include "core/Sequence.h"
@@ -181,9 +181,7 @@ namespace mrv {
          case YCCColorspace:
          case YIQColorspace:
          case YPbPrColorspace:
-         case Rec601LumaColorspace:
          case Rec601YCbCrColorspace:
-         case Rec709LumaColorspace:
          case Rec709YCbCrColorspace:
              rgb_layers();
              lumma_layers();
@@ -264,8 +262,6 @@ namespace mrv {
                    _layers.push_back( ly + ".Y" );
                    _layers.push_back( ly + ".K" );
                    break;
-               case Rec601LumaColorspace:
-               case Rec709LumaColorspace:
                case GRAYColorspace:
                    if ( ( ly.find("Z") != std::string::npos ) ||
                         ( ly.find("depth") != std::string::npos ) )
@@ -370,11 +366,11 @@ namespace mrv {
      _compression = MagickGetImageCompression( wand );
 
 
-     double rx, ry, gx, gy, bx, by, wx, wy;
-     MagickGetImageRedPrimary( wand, &rx, &ry );
-     MagickGetImageGreenPrimary( wand, &gx, &gy );
-     MagickGetImageBluePrimary( wand, &bx, &by );
-     MagickGetImageWhitePoint( wand, &wx, &wy );
+     double rx, ry, rz, gx, gy, gz, bx, by, bz, wx, wy, wz;
+     MagickGetImageRedPrimary( wand, &rx, &ry, &rz );
+     MagickGetImageGreenPrimary( wand, &gx, &gy, &gz );
+     MagickGetImageBluePrimary( wand, &bx, &by, &bz );
+     MagickGetImageWhitePoint( wand, &wx, &wy, &wz );
      if ( rx > 0.0 && ry > 0.0 )
      {
 	_chromaticities.red.x = float(rx);
@@ -389,13 +385,13 @@ namespace mrv {
 
      if ( _exif.empty() )
      {
-
-	GetImageProperty( img, "exif:*" );
+       ExceptionInfo* exception = NULL;
+       GetImageProperty( img, "exif:*", exception );
 	ResetImagePropertyIterator( img );
 	const char* property = GetNextImageProperty(img);
 	while ( property )
 	{
-	   const char* value = GetImageProperty( img, property );
+	  const char* value = GetImageProperty( img, property, exception );
 	   if ( value )
 	   {
 	      //
@@ -557,7 +553,7 @@ const char* const pixel_storage( StorageType storage )
     {
         case ShortPixel:
             return _("Short");
-        case IntegerPixel:
+        case LongPixel:
             return _("Int");
         case FloatPixel:
             return _("Float");
@@ -736,7 +732,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 storage = ShortPixel;
                 break;
             case image_type::kInt:
-                storage = IntegerPixel;
+                storage = LongPixel;
                 break;
             case image_type::kFloat:
                 storage = FloatPixel;
@@ -781,7 +777,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             case ShortPixel:
                 pixel_size = sizeof(short);
                 break;
-            case IntegerPixel:
+            case LongPixel:
                 pixel_size = sizeof(int);
                 break;
             case FloatPixel:
@@ -904,7 +900,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         Image* img = GetImageFromMagickWand( w );
 
-        img->x_resolution = img->y_resolution = 72;  // so GIMP doesn't bark
+        img->resolution.x = img->resolution.y = 72;  // so GIMP doesn't bark
 
         img->page.x = daw.x();
         img->page.y = daw.y();
@@ -1004,7 +1000,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             }
 
             Image* img = GetImageFromMagickWand( w );
-            img->x_resolution = img->y_resolution = 72;  // so GIMP doesn't bark
+            img->resolution.x = img->resolution.y = 72;  // so GIMP doesn't bark
 
             // This is the composite channel, add it as first channel.
             // This is needed to have Photoshop distinguish it and set
