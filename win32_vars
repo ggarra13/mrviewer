@@ -14,7 +14,8 @@ export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20160718-450cf40-win32-shared"
 
 export  GLUT_ROOT_PATH=$DIST
 export   FLTK2_DIR="$ROOT/dependencies/fltk-2.0-win32"
-export MAGICK_HOME="$ROOT/dependencies/ImageMagick-6.9.3-0-win32"
+#export MAGICK_HOME="$ROOT/dependencies/ImageMagick-6.9.3-0-win32"
+export MAGICK_HOME="$ROOT/dependencies/ImageMagick-7.0.4-9-win32"
 export GLEW_ROOT="$ROOT/dependencies/glew-1.11.0"
 export TCLAP_ROOT="$ROOT/dependencies/tclap-1.2.1"
 export SampleICC_ROOT="$ROOT/dependencies/SampleICC-1.6.10-win32"
