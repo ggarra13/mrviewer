@@ -20,10 +20,12 @@
 SET(MAGICK_FOUND   "NO" )
 SET(MAGICK++_FOUND "NO" )
 
-FIND_PATH( MAGICK_INCLUDE_DIR magick/magick.h
+FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h 
+  PATHS
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
+  /usr/local/include/ImageMagick-7
   /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
   /usr/include/ImageMagick
@@ -33,22 +35,27 @@ FIND_PATH( MAGICK_INCLUDE_DIR magick/magick.h
 # Extract ImageMagick's version number from .h file
 #
 IF( MAGICK_INCLUDE_DIR )
-  FILE( READ "${MAGICK_INCLUDE_DIR}/magick/version.h" tmp )
+  FILE( READ "${MAGICK_INCLUDE_DIR}/MagickCore/version.h" tmp )
   STRING( REGEX REPLACE ".*define[ \t]+MagickLibVersionText[ \t]+\"([^\"]+)\".*" "\\1" MAGICK_VERSION ${tmp} )
 ENDIF( MAGICK_INCLUDE_DIR )
 
 
-FIND_PATH( MAGICK++_INCLUDE_DIR wand/magick-wand.h
+FIND_PATH( MAGICK++_INCLUDE_DIR 
+  NAMES MagickWand/MagickWand.h wand/magick-wand.h 
+  PATHS
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
+  /usr/local/include/ImageMagick-7
   /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
   /usr/include/ImageMagick
   )
 
 FIND_LIBRARY( Magick 
-  NAMES MagickCore-6.Q32HDRI MagickCore-6.Q16HDRI  MagickCore CORE_RL_magick_
+  NAMES  MagickCore-7.Q32HDRI MagickCore-7.Q16HDRI  
+         MagickCore-6.Q32HDRI MagickCore-6.Q16HDRI  MagickCore
+	 CORE_RL_MagickCore_ CORE_RL_magick_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
@@ -65,7 +72,8 @@ FIND_LIBRARY( Magick
 
 
 FIND_LIBRARY( Magick++ 
-  NAMES Magick++-6.Q32HDRI Magick++-6.Q16HDRI Magick++ CORE_RL_Magick++_
+  NAMES Magick++-7.Q32HDRI Magick++-7.Q16HDRI
+        Magick++-6.Q32HDRI Magick++-6.Q16HDRI Magick++ CORE_RL_Magick++_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
@@ -82,7 +90,9 @@ MESSAGE( STATUS "MAGICK: "  "$ENV{MAGICK_HOME}/VisualMagick/lib"  )
 
 
 FIND_LIBRARY( Wand 
-  NAMES MagickWand-6.Q32HDRI MagickWand-6.Q16HDRI MagickWand CORE_RL_wand_
+  NAMES MagickWand-7.Q32HDRI MagickWand-7.Q16HDRI 
+        MagickWand-6.Q32HDRI MagickWand-6.Q16HDRI MagickWand
+	CORE_RL_MagickWand_ CORE_RL_wand_
   PATHS 
   "$ENV{MAGICK_HOME}/wand/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
