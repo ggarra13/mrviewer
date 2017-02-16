@@ -31,7 +31,7 @@
 #include <CMedia.h>
 
 extern "C" {
-#include <wand/magick-wand.h>
+#include <MagickWand/MagickWand.h>
 }
 
 namespace mrv {
