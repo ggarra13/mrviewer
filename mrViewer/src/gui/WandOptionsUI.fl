@@ -6,7 +6,8 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
-decl {\#include <iostream>} {} 
+decl {\#include <iostream>} {selected
+} 
 
 decl {\#include <core/mrvI8N.h>} {public
 } 
@@ -17,7 +18,7 @@ decl {\#include <gui/mrvIO.h>} {public
 decl {\#include <core/mrvImageOpts.h>} {public
 } 
 
-decl {\#include <wand/MagickWand.h>} {public
+decl {\#include <MagickWand/MagickWand.h>} {public
 } 
 
 decl {\#include <string>} {public
@@ -33,7 +34,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {ImageMagick Saving} open
-        xywh {193 251 340 295} resizable modal noborder visible
+        xywh {193 251 340 295} hide resizable modal noborder
       } {
         {fltk::Group} {} {
           label {Image Options} open
@@ -89,12 +90,11 @@ v->uiMain->make_exec_return(false);}
       code {if ( pixel_type == "" || pixel_type == _("Char") ) _pixel_type = CharPixel;
 else if ( pixel_type == _("Float") ) _pixel_type = FloatPixel;
 else if ( pixel_type == _("Short") ) _pixel_type = ShortPixel;
-else if ( pixel_type == _("Integer") ) _pixel_type = IntegerPixel;
+else if ( pixel_type == _("Integer") ) _pixel_type = LongPixel;
 _ACESmetadata = uiACESmetadata->value();
 _all_layers = uiAllLayers->value();} {}
     }
-    Function {WandOptionsUI(bool aces, bool all_layers) : WandOpts(aces, all_layers)} {selected
-    } {
+    Function {WandOptionsUI(bool aces, bool all_layers) : WandOpts(aces, all_layers)} {} {
       code {fltk::Window* w = make_window(aces, all_layers);
 if ( w->exec() ) convert();} {}
     }
