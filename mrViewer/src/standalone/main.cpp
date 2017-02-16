@@ -41,7 +41,7 @@
 #include <fltk/run.h>
 #include <fltk/Preferences.h>
 
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
