@@ -50,7 +50,7 @@ extern "C" {
 
 
 #include <GL/glew.h>
-#include <wand/magick-wand.h>
+#include <MagickWand/MagickWand.h>
 
 
 #include <fltk/visual.h>
@@ -251,12 +251,8 @@ void ffmpeg_formats( fltk::Browser& browser )
       {
 	const MagickInfo* m = magick_info[i];
 
-	if (m->stealth != MagickFalse)
-	  continue;
-
-
 	f = new FormatInfo( m->decoder, m->encoder, 
-			    m->blob_support != MagickFalse, 
+			    false, 
 			    m->name, "ImageMagick", m->description );
 	formats.push_back( f );
       }
