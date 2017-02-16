@@ -11,6 +11,10 @@ v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
 	 - Added HUD display of directory which was missing.
 	 - Removed libfontconfig.so.1 from Linux distribution as it
 	   should use the one installed in the machine OS.
+	 - Added "Values" button to change values of SOP and Saturation
+	   in the Media Information window.
+	 - Made CTL Preferences not reset the LUT button, but activate
+	   it if it is not on and the preference is set to have it on.
 
 v3.4.7   - Made CTL Lut baking calculation faster and more accurate.
 	 - Made CTL/ICC of monitor trigger a refresh of the view.
