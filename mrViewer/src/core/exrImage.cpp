@@ -1856,6 +1856,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             }
         }
 
+
         for ( int i = 0; i < _numparts; ++i )
         {
             const Header& header = inmaster.header(i);
@@ -1889,6 +1890,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             }
 #endif
 
+
             std::string ext = name;
             if ( header.hasView() ) ext = header.view();
 
@@ -1896,11 +1898,11 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             std::transform( ext.begin(), ext.end(), ext.begin(),
                             (int(*)(int)) tolower);
 #endif
-
+	    // std::cerr << "layer #" << i << " of " << _numparts << std::endl;
             // std::cerr << "ext " << ext << std::endl;
             // std::cerr << "name " << name << std::endl;
             // std::cerr << "prefix " << prefix << std::endl
-            //           << "suffix " << suffix << std::endl;
+	    // 	      << "suffix " << suffix << std::endl;
      
             if ( st[1] == -1 &&
                  ( ext.find( right ) != std::string::npos ||
@@ -1942,6 +1944,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 _has_left_eye = strdup( name.c_str() );
                 st[0] = i;
                 _is_stereo = true;
+		continue;
             }
 
         }
@@ -2193,10 +2196,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 	}
  
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
-	if ( _numparts <= 0 )
-	  {
-              _numparts = inmaster.parts();
-	  }
+	_numparts = inmaster.parts();
 
 
 
