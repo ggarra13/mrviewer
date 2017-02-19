@@ -211,7 +211,7 @@ inline double get_master_clock(CMedia* img)
 }
 
 
-unsigned int barrier_thread_count( const CMedia* img )
+inline unsigned int barrier_thread_count( const CMedia* img )
 {
     unsigned r = 1;               // 1 for decode thread
     if    ( img->valid_video() )    r += 1;
@@ -884,7 +884,7 @@ void video_thread( PlaybackData* data )
           case CMedia::kDecodeLoopEnd:
           case CMedia::kDecodeLoopStart:
 	    {
-                DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
+               DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
 
                CMedia::Barrier* barrier = img->loop_barrier();
                // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
@@ -953,9 +953,9 @@ void video_thread( PlaybackData* data )
 
           diff = step * ( video_clock - master_clock );
 
-          double absdiff = std::abs(diff);
+         double absdiff = std::abs(diff);
 
-          if ( absdiff > 1000.0 ) diff = 0.0;
+         if ( absdiff > 1000.0 ) diff = 0.0;
 
           if (! isnan(diff) ) 
           {
@@ -972,7 +972,7 @@ void video_thread( PlaybackData* data )
 
                   if (sdiff <= -sync_threshold)
                   {
-                      delay = FFMAX(0, delay + sdiff);  // make fps faster
+                      delay = FFMAX(0, delay + sdiff);
                   }
                   else if (sdiff >= sync_threshold &&
                            delay > AV_SYNC_FRAMEDUP_THRESHOLD)
@@ -986,7 +986,7 @@ void video_thread( PlaybackData* data )
           }
       }
 
-
+    
       timer.setDesiredSecondsPerFrame( delay );
       //timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
