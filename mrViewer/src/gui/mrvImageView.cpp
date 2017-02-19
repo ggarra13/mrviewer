@@ -715,8 +715,8 @@ static void modify_sop_sat( mrv::ImageView* view )
       {
 	main->uiSOPNode = new mrv::SopNode( view );
       }
+    img->image_damage( img->image_damage() | CMedia::kDamageAll );
     view->use_lut( true );
-    img->image_damage( img->image_damage() | CMedia::kDamageLut );
     view->redraw();
 }
 
