@@ -15,6 +15,14 @@ v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
 	   in the Media Information window.
 	 - Made CTL Preferences not reset the LUT button, but activate
 	   it if it is not on and the preference is set to have it on.
+	 - Bug fixed stereo exr layer selection when images in sequence
+	   change the order or count of layer pairs.  Note that you
+	   cannot expect an image to have layer.rgbaz and the next
+	   have layer.rgba and layer.z.  Only the rgba will be taken
+	   into account in that case.
+	 - Extracted duration of movies from the movie stream instead
+	   of the file context.  This leads to better calculation of
+	   end frame.
 
 v3.4.7   - Made CTL Lut baking calculation faster and more accurate.
 	 - Made CTL/ICC of monitor trigger a refresh of the view.

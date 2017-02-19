@@ -779,7 +779,7 @@ class CMedia
 
     /// Change play rate of movie
     inline void play_fps( double fps ) {
-        if ( fps < 6.0 ) fps = 6.0;
+        if ( fps < 1.0 ) fps = 1.0;
         _play_fps = fps;
     }
 
