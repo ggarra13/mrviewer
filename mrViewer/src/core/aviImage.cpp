@@ -378,6 +378,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   } 
   else if ( magic == 0x060E2B34 )
   {
+      // MXF 
       unsigned int tag = ntohl( *((unsigned int*)data+1) );
       if ( tag != 0x02050101 ) return false;
 
@@ -404,6 +405,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       return true;
     }
 
+#if 0
    uint8_t* d = new uint8_t[ len + AVPROBE_PADDING_SIZE ];
    memset( d+len, 0, AVPROBE_PADDING_SIZE );
    memcpy( d, data, len );
@@ -419,7 +421,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       return true;
 
   return false;
-
+#endif
 
 }
 
@@ -771,8 +773,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
 
-    int flag = AVSEEK_FLAG_BACKWARD;
-
     if ( playback() == kStopped &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
@@ -794,6 +794,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( offset < 0 ) offset = 0;
 
+    int flag = AVSEEK_FLAG_BACKWARD;
     int ret = av_seek_frame( _context, -1, offset, flag );
     if (ret < 0)
     {
@@ -822,7 +823,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // Skip the seek packets when playback is stopped (scrubbing)
     if ( skip )
     {
-        boost::int64_t f = frame;
+        boost::int64_t f = frame-1;
         if ( f > _frame_end ) f = _frame_end;
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
@@ -952,7 +953,7 @@ void aviImage::store_image( const boost::int64_t frame,
 {
 
   SCOPED_LOCK( _mutex );
-
+  
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
 
@@ -1099,13 +1100,13 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
      if ( got_pict ) {
          ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
-
+         
          if ( ptsframe == AV_NOPTS_VALUE )
          {
              ptsframe = _av_frame->pkt_dts;
          }
 
-         _av_frame->pts = ptsframe;
+         //_av_frame->pts = ptsframe;
 
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
@@ -1115,7 +1116,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          }
          else
          {
-             ptsframe = pts2frame( stream, ptsframe );
+             ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
          }
 
          if ( filter_graph && _subtitle_index >= 0 )
@@ -1453,9 +1454,9 @@ bool aviImage::find_image( const boost::int64_t frame )
                  _hires->frame() != frame && 
 		 diff > 1 && diff < 10 )
             {
-                IMG_ERROR( _(" find_image: frame ") << frame 
-                           << _(" not found, choosing ") << _hires->frame() 
-                           << _(" instead") );
+                IMG_WARNING( _(" find_image: frame ") << frame 
+                             << _(" not found, choosing ") << _hires->frame() 
+                             << _(" instead") );
             }
 	  }
 	else
@@ -1824,7 +1825,7 @@ void aviImage::populate()
     if ( _context->start_time != AV_NOPTS_VALUE )
     {
         _frameStart = boost::int64_t( ( _fps * ( double )_context->start_time / 
-                                        ( double )AV_TIME_BASE ) ) + 1;
+                                        ( double )AV_TIME_BASE ) + 1);
     }
     else
     {
@@ -1840,51 +1841,67 @@ void aviImage::populate()
             if ( d < start ) start = d;
 	}
 
-        _frameStart = (boost::int64_t)start;
+        _frameStart = (boost::int64_t)start + 1;
     }
 
-    _frame_start = _frame = _frameStart;
+    _frame_start = _frame = _frameEnd = _frameStart;
 
     //
     // BUG FIX for ffmpeg bugs with some codecs/containers.
     //
     // using context->start_time and context->duration should be enough,
     // but with that ffmpeg often reports a frame that cannot be decoded
-    // with some codecs like divx.
-    //
-    int64_t duration;
-    if ( _context->duration > 0 )
+    // with some codecs like h264.
+    int64_t duration = 0;
+    
+    if ( 0 ) //_context->duration != AV_NOPTS_VALUE && _context->duration > 0 )
     {
-        duration = int64_t( (_fps * ( double )(_context->duration) / 
-                             ( double )AV_TIME_BASE ) + 0.5 );
+        duration = _context->duration;
+        
+        // int hours, mins, secs, us;
+        // secs  = duration / AV_TIME_BASE;
+        // us    = duration % AV_TIME_BASE;
+        // mins  = secs / 60;
+        // secs %= 60;
+        // hours = mins / 60;
+        // mins %= 60;
+
+        // duration = int64_t( _fps * ( hours*3600 + mins * 60 + secs ) +
+        //                     _fps * (double) us / AV_TIME_BASE );
+        
+        duration = int64_t( ( double )_fps * ( double )duration / 
+                            ( double ) AV_TIME_BASE + 0.5 );
     }
     else
     {
-        double length = 0;
-
-        if ( has_video() )
+        if ( stream->nb_frames > 0 )
         {
-            length = _video_info[ _video_index ].duration;
-        }
-      
-        if ( has_audio() )
-        {
-            double d = _audio_info[ _audio_index ].duration;
-            if ( d > length ) length = d;
-        }
-
-        if ( length > 0 )
-        {
-            duration = boost::int64_t( length * _fps + 1 );
+            duration = stream->nb_frames;
         }
         else
         {
-            if ( stream->nb_frames != 0 )
-                duration = stream->nb_frames;
-            else {
+            double length = 0;
+
+            if ( has_video() )
+            {
+                length = _video_info[ _video_index ].duration;
+            }
+        
+            if ( has_audio() )
+            {
+                double d = _audio_info[ _audio_index ].duration;
+                if ( d > length ) length = d;
+            }
+        
+            if ( length > 0 )
+            {
+                duration = boost::int64_t( length * _fps + 0.5 );
+            }
+            else 
+            {
                 // As a last resort, count the frames manually.
                 int64_t pts = 0;
-
+                
                 if ( fileroot() == filename() )
                 {
                     duration = 0; // GIF89
@@ -1905,6 +1922,7 @@ void aviImage::populate()
         }
     }
 
+    
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
 
@@ -1961,7 +1979,6 @@ void aviImage::populate()
                     else
                     {
                         ++_frame_offset;
-                        continue;
                     }
                 }
                 else
