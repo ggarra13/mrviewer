@@ -1,3 +1,13 @@
+v3.4.9   - Added an option in Preferences to select how the color
+	   picker in the pixel bar calculates its values.  By default,
+	   it uses a lookup table, but it can be set to calculate the
+	   values fully.  Besides the difference in speed, the
+	   calculation of values fully can result in colors that are
+	   not quite a match to what you see in the viewer (which
+	   always uses a LUT), but the pixel values will be correct.
+	 - On Windows, turning on the LUT automatically was not
+	   showing the results immediately.  Fixed.
+
 v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
 	 - Added GUI SOP and Saturation to modify the ASC_CDL of
 	   ACESclip files.
