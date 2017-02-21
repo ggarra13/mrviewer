@@ -86,8 +86,8 @@ Out main(
 
 	  c.rgb = ((c0 * (1-s.x) + c1 * s.x) * (1-s.y) +
 		   (c2 * (1-s.x) + c3 * s.x) *  s.y) * (1-s.z) +
-	    ((c4 * (1-s.x) + c5 * s.x) * (1-s.y) +
-	     (c6 * (1-s.x) + c7 * s.x) *  s.y) * s.z;
+                  ((c4 * (1-s.x) + c5 * s.x) * (1-s.y) +
+                   (c6 * (1-s.x) + c7 * s.x) *  s.y) * s.z;
 
 	  c.rgb = exp(c.rgb);
 	}
