@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-02-21 14:32-0300\n"
+"POT-Creation-Date: 2017-02-21 18:47-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -569,7 +569,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1021
+#: video/mrvGLLut3d.cpp:1017
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -903,7 +903,7 @@ msgstr "Un error ocurrió al intentar borrar '%s'."
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:701
+#: video/mrvGLLut3d.cpp:697
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1218,7 +1218,7 @@ msgstr "Caches"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2417
 msgid "Calculation (accurate, slow)"
-msgstr ""
+msgstr "Calculo (preciso, lento)"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:222
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:60
@@ -1418,9 +1418,9 @@ msgid "Color Information"
 msgstr "Información de Area de Color"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2405
-#, fuzzy
+#
 msgid "Color Picker"
-msgstr "Espacio de Color"
+msgstr "Selector de Color"
 
 #: gui/mrvFileRequester.cpp:242
 msgid "Color Profiles (*."
@@ -1496,7 +1496,7 @@ msgstr "Texto de Copyright"
 msgid "Core"
 msgstr "Central"
 
-#: video/mrvGLLut3d.cpp:616
+#: video/mrvGLLut3d.cpp:612
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -1616,7 +1616,7 @@ msgstr "No pude obtener contexto de conversion de imagen."
 msgid "Could not get profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: video/mrvGLLut3d.cpp:691
+#: video/mrvGLLut3d.cpp:687
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -1632,7 +1632,7 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:607
+#: video/mrvGLLut3d.cpp:603
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -2225,7 +2225,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:678
+#: video/mrvGLLut3d.cpp:674
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -2233,7 +2233,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:684
+#: video/mrvGLLut3d.cpp:680
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -3288,11 +3288,11 @@ msgstr "Entero"
 msgid "Internal error in wizard selection: "
 msgstr "Error interno en selección del wizard: "
 
-#: video/mrvGLLut3d.cpp:628
+#: video/mrvGLLut3d.cpp:624
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
-#: video/mrvGLLut3d.cpp:672
+#: video/mrvGLLut3d.cpp:668
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -3312,7 +3312,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:643
+#: video/mrvGLLut3d.cpp:639
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -3633,7 +3633,7 @@ msgstr "Lut Activo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
 msgid "Lut Table (approx.fast)"
-msgstr ""
+msgstr "Tabla (approx. rapido)"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3712
 msgid "Luv CIELUV (L*u*v*)"
@@ -3867,15 +3867,15 @@ msgstr "No"
 msgid "No Baking"
 msgstr "No cocinado"
 
-#: video/mrvGLLut3d.cpp:930 video/mrvGLLut3d.cpp:975
+#: video/mrvGLLut3d.cpp:926 video/mrvGLLut3d.cpp:971
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:928 video/mrvGLLut3d.cpp:973
+#: video/mrvGLLut3d.cpp:924 video/mrvGLLut3d.cpp:969
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:932 video/mrvGLLut3d.cpp:977
+#: video/mrvGLLut3d.cpp:928 video/mrvGLLut3d.cpp:973
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -3915,11 +3915,11 @@ msgstr "Sin memoria para grafica de filtro"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:979
+#: video/mrvGLLut3d.cpp:975
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:934
+#: video/mrvGLLut3d.cpp:930
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -4016,13 +4016,13 @@ msgstr "Numero de flujos de video en el archivo"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:875
+#: video/mrvGLLut3d.cpp:871
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:851
+#: video/mrvGLLut3d.cpp:847
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -4548,13 +4548,13 @@ msgstr "RLE"
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:826
+#: video/mrvGLLut3d.cpp:822
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:795
+#: video/mrvGLLut3d.cpp:791
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -5825,7 +5825,7 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLLut3d.cpp:501
+#: video/mrvGLLut3d.cpp:497
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
