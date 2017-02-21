@@ -178,13 +178,10 @@ lookup3D
     const V4f &g = table[(k  * size + j1) * size + i1];
     const V4f &h = table[(k1 * size + j1) * size + i1];
 
-    V3f out;
     V4f out4( w1 * (v1 * (u1 * a + u * b) + v * (u1 * c + u * d)) +
               w  * (v1 * (u1 * e + u * f) + v * (u1 * g + u * h)) );
 
-    out.x = out4.x;
-    out.y = out4.y;
-    out.z = out4.z;
+    return V3f( out4.x, out4.y, out4.z );
 
     /*
     V3f out(
@@ -197,9 +194,8 @@ lookup3D
     u1 * (v1 * (w1 * a.z + w * b.z) + v * (w1 * c.z + w * d.z)) +
     u  * (v1 * (w1 * e.z + w * f.z) + v * (w1 * g.z + w * h.z))
     );
-    */
-    
     return out;
+    */
 }
 
 
