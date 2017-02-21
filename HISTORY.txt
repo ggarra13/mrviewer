@@ -5,6 +5,9 @@ v3.4.9   - Added an option in Preferences to select how the color
 	   calculation of values fully can result in colors that are
 	   not quite a match to what you see in the viewer (which
 	   always uses a LUT), but the pixel values will be correct.
+	   Note that this setting does not effect the Color Area
+	   Window, nor the Histogram or Vectorscope, all of which
+	   use a lookup table for performance.
 	 - On Windows, turning on the LUT automatically was not
 	   showing the results immediately.  Fixed.
 
