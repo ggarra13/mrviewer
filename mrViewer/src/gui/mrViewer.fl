@@ -640,19 +640,20 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
-    Function {make_window(mrv::ViewerUI* m)} {private
+  class PreferencesUI {open
+  } {
+    Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {669 540 670 450} resizable visible
+        xywh {669 568 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
           xywh {218 24 452 400}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {13 22 426 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1205,13 +1206,13 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
-            xywh {13 25 424 358} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {3D Luts} open
+            xywh {13 25 424 366} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
-              xywh {40 45 343 105} box ROUNDED_BOX
+              xywh {40 21 343 105} box ROUNDED_BOX
             } {
               {fltk::Choice} ODT_algorithm {
                 label ODT
@@ -1223,7 +1224,7 @@ if ( x == Preferences::kLutOnlyCTL )
     uiODT_ICC->deactivate();
 if ( x == Preferences::kLutOnlyICC )
     uiODT_CTL->deactivate();
-v->refresh();} open
+v->refresh();}
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
 When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
@@ -1252,7 +1253,7 @@ if ( x == Preferences::kLutOnlyCTL )
     uiRT_ICC->deactivate();
 if ( x == Preferences::kLutOnlyICC )
     uiRT_CTL->deactivate();
-v->refresh();} open
+v->refresh();}
                 tooltip {mrViewer supports either ICC profiles or a CTL script for the render transform (RT) of your images.  This setting prioritizes choosing one over the other. 
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
@@ -1276,7 +1277,7 @@ If unsure what this means, keep your display and images setting always using the
             {fltk::Group} {} {
               label Quality
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
-              xywh {43 240 340 75} box ROUNDED_BOX
+              xywh {43 216 340 75} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
                 label Resolution
@@ -1314,20 +1315,19 @@ The "No Baking" setting performs the color correction on the image directly inst
               }
             }
             {fltk::Group} {} {
-              label {Rendering Intent}
-              xywh {43 175 340 45} box ROUNDED_BOX
+              label {Rendering Intent} open
+              xywh {43 151 340 45} box ROUNDED_BOX
             } {
               {fltk::Choice} uiICC_intent {
                 label ICC
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();} open
+                callback {v->refresh();}
                 tooltip {When using luts with ICC profiles, this setting allows you to select the ICC rendering intent.   Rendering intents are mostly used for printing to film or paper to emulate or proof the output of the output device (ODT), particularly when it does not have the same gamut (color/white range) as the linear RGB/XYZ space.
 }
                 xywh {120 10 170 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label Perceptual
-                  tooltip xxxx
                   }
                 {fltk::Item} {} {
                   label {Relative Colorimetric}
@@ -1337,6 +1337,23 @@ The "No Baking" setting performs the color correction on the image directly inst
                   }
                 {fltk::Item} {} {
                   label Saturation
+                  }
+              }
+            }
+            {fltk::Group} {} {
+              label {Color Picker} open
+              xywh {44 311 340 45} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiColorPicker {
+                label Algorithm selected
+                tooltip {When using luts, this setting determines how the value of the pixel bar color picker is calculated.  By default a lookup table is used which is fast but can result in inaccurate values.  When set to Calculation, the full pixel is calculated with the CTL transform, but the pixel color might not match exactly what you see on the view window.}
+                xywh {85 10 240 25} box THIN_DOWN_BOX
+              } {
+                {fltk::Item} {} {
+                  label {Lut Table (approx.fast)}
+                  }
+                {fltk::Item} {} {
+                  label {Calculation (accurate, slow)}
                   }
               }
             }
@@ -1973,7 +1990,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2483,8 +2500,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2497,7 +2513,7 @@ else
     }
     decl {static ConnectionUI* uiConnection;} {public
     }
-    decl {SopNode* uiSOPNode;} {selected public
+    decl {SopNode* uiSOPNode;} {public
     }
     decl {ReelUI* uiReelWindow;} {public
     }
@@ -2517,7 +2533,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
