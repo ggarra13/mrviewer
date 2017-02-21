@@ -63,7 +63,6 @@ namespace
 
 
 namespace mrv {
-namespace {
 
 void prepare_ACES( const CMedia* img, const std::string& name,
                    Imf::Header& h )
@@ -100,6 +99,8 @@ void prepare_ACES( const CMedia* img, const std::string& name,
         h.insert( "saturation", attr );
     }
 }
+
+namespace {
 
 inline void
 indicesAndWeights (float r, int iMax, int &i, int &i1, float &u, float &u1)
@@ -177,6 +178,15 @@ lookup3D
     const V4f &g = table[(k  * size + j1) * size + i1];
     const V4f &h = table[(k1 * size + j1) * size + i1];
 
+    V3f out;
+    V4f out4( w1 * (v1 * (u1 * a + u * b) + v * (u1 * c + u * d)) +
+              w  * (v1 * (u1 * e + u * f) + v * (u1 * g + u * h)) );
+
+    out.x = out4.x;
+    out.y = out4.y;
+    out.z = out4.z;
+
+    /*
     V3f out(
     u1 * (v1 * (w1 * a.x + w * b.x) + v * (w1 * c.x + w * d.x)) +
     u  * (v1 * (w1 * e.x + w * f.x) + v * (w1 * g.x + w * h.x)),
@@ -187,7 +197,8 @@ lookup3D
     u1 * (v1 * (w1 * a.z + w * b.z) + v * (w1 * c.z + w * d.z)) +
     u  * (v1 * (w1 * e.z + w * f.z) + v * (w1 * g.z + w * h.z))
     );
-
+    */
+    
     return out;
 }
 
@@ -332,7 +343,6 @@ lookup3D
 void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 {
     using namespace Imath;
-
 
     out.x = lutT + lutM * logf( Imath::clamp( rgb.x, lutMin, lutMax ) );
     out.y = lutT + lutM * logf( Imath::clamp( rgb.y, lutMin, lutMax ) );
