@@ -647,7 +647,6 @@ fltk::StyleSet*     newscheme = NULL;
 	    uiPrefs->uiLUT_quality->value(i); break;
 	  }
       }
-
  
     {
       fltk::Preferences odt( lut, "ODT" );
@@ -706,6 +705,10 @@ fltk::StyleSet*     newscheme = NULL;
 #undef RENDER_TRANSFORM
 	}
 
+        //
+        // ICC
+        //
+
 	fltk::Preferences icc( rt, "ICC" );
 	{
 #define ICC_PROFILE(x, d)						\
@@ -721,11 +724,8 @@ fltk::StyleSet*     newscheme = NULL;
       }
     }
 
-    //
-    // ICC
-    //
-
-
+    lut.get( "color picker", tmp, 0 );
+    uiPrefs->uiColorPicker->value( tmp );
 
     fltk::Preferences loading( base, "loading" );
     loading.get( "drag_load_seq", tmp, 1 );
@@ -1333,6 +1333,8 @@ static const char* kCLocale = "C";
       }
     }
 
+    lut.set( "color picker", uiPrefs->uiColorPicker->value() );
+    
     fltk::Preferences errors( base, "errors" );
     errors.set( "raise_log_window_on_error", 
                 uiPrefs->uiPrefsRaiseLogWindowOnError->value() );

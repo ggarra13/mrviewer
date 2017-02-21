@@ -53,6 +53,9 @@ namespace mrv {
   class CMedia;
   class PreferencesUI;
 
+  void prepare_ACES( const CMedia* img, const std::string& name,
+                     Imf::Header& h );
+
   class GLLut3d
   {
   public:
