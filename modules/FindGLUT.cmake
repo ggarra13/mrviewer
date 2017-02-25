@@ -43,10 +43,21 @@ IF (WIN32)
       ${GLUT_ROOT_PATH}/lib
       ${OPENGL_LIBRARY_DIR} )
 
+    IF ( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
     FIND_LIBRARY( GLUT_glut_LIBRARY
-      NAMES glut32 freeglut_static freeglut glut
-      PATHS ${SEARCH_PATHS}
-    )
+		  NAMES freeglut_staticd freeglutd glut32d glutd
+		  PATHS ${SEARCH_PATHS}
+		  NO_SYSTEM_PATHS
+		)
+    ELSE()
+    FIND_LIBRARY( GLUT_glut_LIBRARY
+		  NAMES freeglut_static freeglut glut32 glut
+		  PATHS ${SEARCH_PATHS}
+		  NO_SYSTEM_PATHS
+		)
+    ENDIF()
+
+
 
 
   ENDIF(CYGWIN)

@@ -1227,6 +1227,7 @@ void GLEngine::draw_images( ImageList& images )
   static int LUT_quality           = 2;
   static std::string ODT_ICC_old_profile;
   static std::string ODT_CTL_old_transform;
+  static unsigned kNumStops = 10;
 
   if ( _view->use_lut() )
     {
@@ -1235,13 +1236,15 @@ void GLEngine::draw_images( ImageList& images )
       int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
       const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->text();
       int lut_quality = uiPrefs->uiLUT_quality->value();
+      unsigned num_stops = uiPrefs->uiPrefsNumStops->value();
 
       // Check if there was a change effecting lut.
       if ( ( RT_lut_algorithm != RT_lut_old_algorithm ) ||
 	   ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
 	   ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
 	   ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform ) ||
-	   ( LUT_quality != lut_quality ) )
+	   ( LUT_quality != lut_quality ) ||
+           ( kNumStops != num_stops) )
 	{
 	  RT_lut_old_algorithm = RT_lut_algorithm;
 	  ODT_lut_old_algorithm = ODT_lut_algorithm;
@@ -1254,9 +1257,11 @@ void GLEngine::draw_images( ImageList& images )
 
 	  refresh_luts();
 
-	  if ( LUT_quality != lut_quality )
+	  if ( LUT_quality != lut_quality ||
+               kNumStops != num_stops )
 	    {
                 LUT_quality = lut_quality;
+                kNumStops = num_stops;
                 mrv::GLLut3d::clear();
 	    }
 	}

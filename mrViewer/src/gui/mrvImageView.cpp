@@ -2918,50 +2918,12 @@ void ImageView::pixel_processed( const CMedia* img,
     //
     if ( use_lut() && p == kRGBA_Full )
     {
-        if ( !uiMain || !uiMain->uiPrefs ) return;
-        
-        int calc = uiMain->uiPrefs->uiColorPicker->value();
-
-        if ( ! calc )
-        {
-            Imath::V3f in( rgba.r, rgba.g, rgba.b );
-            Imath::V3f out;
-            _engine->evaluate( img, in, out );
-            rgba.r = out[0];
-            rgba.g = out[1];
-            rgba.b = out[2];
-        }
-        else
-        {
-            mrv::media fg = foreground();
-            if (!fg) return;
-
-            CMedia* img = fg->image();
-            
-            float out[4];
-            Imf::Header header( 1, 1, 1.0f );
-            GLLut3d::Transforms transforms;
-            GLLut3d::transform_names( transforms, img );
-            
-            size_t num = transforms.size();
-            try
-            {
-              for ( size_t i = 0; i < num; ++i )
-              {
-                GLLut3d::TransformNames t;
-                t.push_back( transforms[i].name );
-                prepare_ACES( img, t[0], header );
-                ctlToLut( t, header, 3, (float*)&rgba, out );
-                rgba.r = out[0];
-                rgba.g = out[1];
-                rgba.b = out[2];
-              } 
-            }
-            catch (...)
-            {
-            }
-        }
-
+        Imath::V3f in( rgba.r, rgba.g, rgba.b );
+        Imath::V3f out;
+        _engine->evaluate( img, in, out );
+        rgba.r = out[0];
+        rgba.g = out[1];
+        rgba.b = out[2];
     }
 
     //
@@ -4932,6 +4894,7 @@ int ImageView::handle(int event)
         case fltk::ENTER:
                 TRACE("");
             focus(this);
+            window()->cursor(fltk::CURSOR_CROSS);
                 TRACE("");
             fltk::GlWindow::handle( event );
                 TRACE("");
@@ -5039,9 +5002,6 @@ int ImageView::handle(int event)
             browser()->handle_dnd();
             return 1;
         default:
-                TRACE("");
-            window()->cursor(fltk::CURSOR_CROSS);
-                TRACE("");
             return fltk::GlWindow::handle( event ); 
     }
 
