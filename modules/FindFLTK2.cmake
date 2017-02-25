@@ -120,7 +120,7 @@ IF(FLTK2_DIR)
     IF(FLUID_COMMAND) 
       SET(FLTK2_FLUID_EXECUTABLE ${FLUID_COMMAND} CACHE FILEPATH "Fluid executable")
     ELSE(FLUID_COMMAND) 
-      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2 PATHS 
+      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2 fluid2d.exe fluid2_wdlld.exe fluid2d PATHS 
         ${FLTK2_EXECUTABLE_DIRS}
         ${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
         ${FLTK2_EXECUTABLE_DIRS}/Debug
@@ -139,11 +139,11 @@ IF(FLTK2_DIR)
     SET(FLTK2_INCLUDE_DIR ${FLTK2_DIR}/include)
 
 
-    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dll fltk2
+    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dll fltk2 fltk2dlld fltk2d
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-      	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gl fltk2_gl
+      	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gl fltk2_gl fltk2dll_gld fltk2_gld
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_images fltk2_images
+        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_images fltk2_images fltk2dll_imagesd fltk2_imagesd
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
 
     # Add the extra libraries
@@ -217,11 +217,11 @@ IF(FLTK2_DIR)
       MESSAGE( STATUS "SEARCH=${FLTK2_LIBRARY_SEARCH_PATH}" )
 
       IF( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
-    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dlld fltk2d fltk2
+    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dlld fltk2d 
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-      	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gld fltk2_gld fltk2_gl
+      	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gld fltk2_gld 
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_imagesd fltk2_imagesd fltk2_images
+        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_imagesd fltk2_imagesd 
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
       ELSE( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
     	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2
