@@ -305,6 +305,9 @@ run_cmake()
 
     if [[ $OS == Windows* ]]; then
 	installdir="D:/code/lib/Windows_${CMAKE_BUILD_ARCH}"
+	if [[ $CMAKE_BUILD_TYPE == Debug ]]; then
+	   installdir="${installdir}_debug"
+	fi
     fi
 
     if [ ! -d $installdir ]; then
