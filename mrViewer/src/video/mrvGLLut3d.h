@@ -59,6 +59,9 @@ namespace mrv {
   class GLLut3d
   {
   public:
+
+      static unsigned NUM_STOPS;
+      
     struct Transform
     {
       enum Type
