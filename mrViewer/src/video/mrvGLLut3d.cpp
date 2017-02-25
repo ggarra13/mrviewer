@@ -198,7 +198,7 @@ lookup3D
     */
 }
 
-
+  unsigned GLLut3d::NUM_STOPS = 10;
   GLLut3d::LutsMap GLLut3d::_luts;
 
 
@@ -363,7 +363,6 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     //	lutM * lutMax + lutT == 1
     //
 
-    static const int NUM_STOPS = 7;
     static const float MIDDLE_GRAY = 0.18f;
 
     lutMin = MIDDLE_GRAY / (1 << NUM_STOPS);
