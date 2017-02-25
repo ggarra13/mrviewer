@@ -55,8 +55,6 @@
 #  define access          _access
 #endif
 
-#undef  _ITERATOR_DEBUG_LEVEL 
-#define _ITERATOR_DEBUG_LEVEL 0
 
 #endif // defined(WIN32) || defined(WIN64)
 
