@@ -1,17 +1,12 @@
-v3.4.9   - Added an option in Preferences to select how the color
-	   picker in the pixel bar calculates its values.  By default,
-	   it uses a lookup table, but it can be set to calculate the
-	   values fully.  Besides the difference in speed, the
-	   calculation of values fully can result in colors that are
-	   not quite a match to what you see in the viewer (which
-	   always uses a LUT), but the pixel values will be correct.
-	   Note that this setting does not effect the Color Area
-	   Window, nor the Histogram or Vectorscope, all of which
-	   use a lookup table for performance.
+v3.5.0	 - There was a bug in the theme color selection which would
+	   show as random crashes on Windows, particularly when the
+	   viewer was in the background.  Fixed.
+
+v3.4.9   - Added an option in Preferences to select the number of
+	   fstops the LUT will use.  This helps to get more accurate
+	   values on black levels.
 	 - On Windows, turning on the LUT automatically was not
 	   showing the results immediately.  Fixed.
-	 - There was a bug in the theme color selection which would
-	   show as random crashes on Windows.  Fixed.
 
 v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
 	 - Added GUI SOP and Saturation to modify the ASC_CDL of
