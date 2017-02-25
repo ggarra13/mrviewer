@@ -73,6 +73,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvHotkey.h"
+#include "video/mrvGLLut3d.h"
 #include "mrvEDLWindowUI.h"
 
 // Widgets
@@ -647,6 +648,9 @@ fltk::StyleSet*     newscheme = NULL;
 	    uiPrefs->uiLUT_quality->value(i); break;
 	  }
       }
+
+    lut.get("number_stops", tmp, 10 );
+    uiPrefs->uiPrefsNumStops->value( tmp );
  
     {
       fltk::Preferences odt( lut, "ODT" );
@@ -724,8 +728,6 @@ fltk::StyleSet*     newscheme = NULL;
       }
     }
 
-    lut.get( "color picker", tmp, 0 );
-    uiPrefs->uiColorPicker->value( tmp );
 
     fltk::Preferences loading( base, "loading" );
     loading.get( "drag_load_seq", tmp, 1 );
@@ -794,9 +796,9 @@ fltk::StyleSet*     newscheme = NULL;
 
     
     // Set the theme and colors for GUI
-    // scheme = new fltk::StyleSet();
+    fltk::reset_theme();
     fltk::theme( &Preferences::set_theme );
-    fltk::load_theme();
+    fltk::reload_theme();
   }
 
 #ifdef _WIN32
@@ -1062,6 +1064,8 @@ static const char* kCLocale = "C";
 	view->toggle_presentation();
       }
 
+    GLLut3d::NUM_STOPS = uiPrefs->uiPrefsNumStops->value();
+    
     int num = (int)main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
     Imf::setGlobalThreadCount( num );
 
@@ -1274,6 +1278,8 @@ static const char* kCLocale = "C";
 	lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
       }
 
+    lut.set( "number_stops", uiPrefs->uiPrefsNumStops->value() );
+    
     {
       fltk::Preferences odt( lut, "ODT" );
       {
@@ -1333,8 +1339,6 @@ static const char* kCLocale = "C";
       }
     }
 
-    lut.set( "color picker", uiPrefs->uiColorPicker->value() );
-    
     fltk::Preferences errors( base, "errors" );
     errors.set( "raise_log_window_on_error", 
                 uiPrefs->uiPrefsRaiseLogWindowOnError->value() );
@@ -1382,11 +1386,11 @@ static const char* kCLocale = "C";
 
   bool Preferences::set_theme()
   {
-    // Default Style handling for changing the scheme of all widget at once
-    fltk::reset_theme();
-
-    newscheme = new fltk::StyleSet();
-
+      if ( !newscheme ) {
+          newscheme = new fltk::StyleSet();
+      }
+      
+    
     // this is ugly and fucks up all gray75 colors
     //   fltk::set_background( bgcolor );
 
@@ -1604,6 +1608,7 @@ static const char* kCLocale = "C";
     //
     // This changes up/down buttons to draw a tad darker
     //
+#if 1
     fltk::FrameBox* box;
     box = (fltk::FrameBox*) fltk::Symbol::find( "down_" );
     if ( box ) box->data( "2HHOODD" );
@@ -1620,7 +1625,7 @@ static const char* kCLocale = "C";
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "embossed" );
     if ( box ) box->data( "LLOO" );
-
+#endif
 
     // this has default_style
     style = fltk::Style::find( "PopupMenu" );
@@ -1734,6 +1739,8 @@ static const char* kCLocale = "C";
 
     // Set ui window settings
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
+    if (!uiPrefs) return true;
+    
     uiPrefs->uiODT_CTL_transform->value( ODT_CTL_transform.c_str() );
     uiPrefs->uiODT_CTL_chromaticities_red_x->value( ODT_CTL_chromaticities.red.x );
     uiPrefs->uiODT_CTL_chromaticities_red_y->value( ODT_CTL_chromaticities.red.y );
@@ -1756,7 +1763,8 @@ static const char* kCLocale = "C";
     uiPrefs->uiICC_float_profile->value( CMedia::icc_profile_float.c_str() );
 
     newscheme->make_current();
-    fltk::reload_theme();
+
+    //fltk::reload_theme();
 
     return true;
   }
