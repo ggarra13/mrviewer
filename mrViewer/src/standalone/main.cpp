@@ -358,13 +358,6 @@ int main( int argc, char** argv )
           ui->uiMain->show();   // so run() does something
           ok = fltk::run();
       }
-      catch( const mrv::reinit_exception& e )
-      {
-          LOG_INFO( _(e.what()) );
-
-          delete ui;
-          continue;
-      }
       catch( const std::exception& e )
       {
           LOG_ERROR( _( e.what() ) );
@@ -381,6 +374,7 @@ int main( int argc, char** argv )
           ok = -1;
       }
 
+#if 0
       if( fs::exists(lockfile) )
       {
           try {
@@ -400,6 +394,7 @@ int main( int argc, char** argv )
               LOG_ERROR( _("Unknown error") );
           }
       }
+#endif
       break;
   }
   MagickWandTerminus();
