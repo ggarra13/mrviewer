@@ -66,7 +66,7 @@ namespace mrv
     int W2 = r.w() / 2;
     int H2 = r.h() / 2;
     int R2 = diameter_ / 2;
-    int angle = 32;
+    float angle = 32;
     for ( i = 0; i < 4; ++i, angle += 90 )
       {
 	fltk::push_matrix();
@@ -98,7 +98,7 @@ namespace mrv
       "G"
     };
 
-    angle = 15;
+    angle = 15.0f;
     for ( i = 0; i < 6; ++i, angle += 60 )
       {
 	fltk::push_matrix();
@@ -189,11 +189,11 @@ namespace mrv
             pic = img->right();
         if (!pic) return;
     }
-    if ( xmin >= pic->width() ) xmin = pic->width()-1;
-    if ( ymin >= pic->height() ) ymin = pic->height()-1;
+    if ( xmin >= (int)pic->width() ) xmin = pic->width()-1;
+    if ( ymin >= (int)pic->height() ) ymin = pic->height()-1;
 
-    if ( xmax >= pic->width() ) xmax = pic->width()-1;
-    if ( ymax >= pic->height() ) ymax = pic->height()-1;
+    if ( xmax >= (int)pic->width() ) xmax = pic->width()-1;
+    if ( ymax >= (int)pic->height() ) ymax = pic->height()-1;
 
 
     unsigned stepX = (xmax - xmin + 1) / w();
@@ -214,9 +214,9 @@ namespace mrv
     float one_gamma = 1.0f / gamma;
 
     CMedia::Pixel rp;
-    for ( unsigned y = ymin; y <= ymax; y += stepY )
+    for ( unsigned y = (unsigned)ymin; (int) y <= ymax; y += stepY )
       {
-	for ( unsigned x = xmin; x <= xmax; x += stepX )
+          for ( unsigned x = (unsigned)xmin; (int) x <= xmax; x += stepX )
 	  {
 	    CMedia::Pixel op = pic->pixel( x, y );
 
