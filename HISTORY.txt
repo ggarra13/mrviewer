@@ -1,3 +1,6 @@
+v3.5.1   - Fixed a memory leak in OpenEXR library.
+	 - Fixed a memory leak in audio buffer.
+
 v3.5.0	 - There was a bug in the theme color selection which would
 	   show as random crashes on Windows, particularly when the
 	   viewer was in the background.  Fixed.
