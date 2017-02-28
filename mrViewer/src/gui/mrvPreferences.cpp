@@ -1772,6 +1772,7 @@ static const char* kCLocale = "C";
 
   Preferences::~Preferences()
   {
+      delete newscheme; newscheme = NULL;
   }
 
 
