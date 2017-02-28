@@ -42,6 +42,7 @@
 #include <fltk/Preferences.h>
 
 #include <MagickWand/MagickWand.h>
+#include <OpenEXR/ImfHeader.h>
 
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
@@ -308,6 +309,7 @@ int main( int argc, char** argv )
      
           }
 
+          Imf::staticInitialize();
           MagickWandGenesis();
 
       // mrv::open_license( argv[0] );
@@ -398,7 +400,7 @@ int main( int argc, char** argv )
       break;
   }
   MagickWandTerminus();
-  
+  Imf::staticUninitialize();
 
   return ok;
 }
