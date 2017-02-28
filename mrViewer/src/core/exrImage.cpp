@@ -1723,7 +1723,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         
         st[0] = st[1] = -1;
 
-        std::string c = inmaster.header(0).name();
+        std::string c;
+        
+        const Imf::Header& h = inmaster.header(0);
+        if ( h.hasName() ) c = h.name();
                 
         if  ( channel() ) c = channel();
 

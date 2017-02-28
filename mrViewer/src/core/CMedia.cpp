@@ -541,11 +541,12 @@ CMedia::~CMedia()
   _right = NULL;
 
   
+
+  delete [] _audio_buf; _audio_buf = NULL;
+  
   if ( has_audio() )
     {
       close_audio();
-
-      delete [] _audio_buf; _audio_buf = NULL;
 
       close_audio_codec();
 
@@ -2662,17 +2663,10 @@ boost::int64_t CMedia::frame2pts( const AVStream* stream,
 boost::int64_t CMedia::pts2frame( const AVStream* stream, 
 				  const boost::int64_t dts ) const
 {
-   // static boost::int64_t frame = 0;
-    
-
-   // if ( pts == MRV_NOPTS_VALUE ) {
-   //    if ( frame == _frame_end ) frame -= 1;
-   //    pts = frame2pts( stream, frame+1 );
-   // }
 
 
-  assert( dts != AV_NOPTS_VALUE );
-  if (!stream) return 0;
+    //assert( dts != AV_NOPTS_VALUE );
+  if (!stream || dts == AV_NOPTS_VALUE) return 0;
 
   long double p = (long double) dts;
   p *= stream->time_base.num;
