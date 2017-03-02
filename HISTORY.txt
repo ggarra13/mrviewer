@@ -1,5 +1,8 @@
 v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Fixed a memory leak in audio buffer.
+	 - Made CTL listing list all ctl scripts alphabetically,
+	   regardless of what directory they are in.  Previously,
+	   each directory would list its files alphabetically.
 
 v3.5.0	 - There was a bug in the theme color selection which would
 	   show as random crashes on Windows, particularly when the

@@ -59,6 +59,12 @@ CTLBrowser::~CTLBrowser()
 {
 }
 
+bool SortByBasename( const std::string& a, const std::string& b )
+{
+    std::string baseA = fs::basename( a );
+    std::string baseB = fs::basename( b );
+    return baseA < baseB;
+}
 
 void CTLBrowser::fill()
 {
@@ -88,14 +94,15 @@ void CTLBrowser::fill()
   //
   // Iterate thru each path looking for .ctl files
   //
+  typedef std::vector<std::string> stringArray;
+  stringArray files;
+
   for (Tokenizer_t::const_iterator it = tokens.begin(); 
        it != tokens.end(); ++it)
     {
       std::string path = *it;
       if ( ! fs::exists( path ) || ! fs::is_directory( path ) ) continue;
 
-      typedef std::vector<std::string> stringArray;
-      stringArray files;
       
       fs::directory_iterator end_itr;
       for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
@@ -106,26 +113,29 @@ void CTLBrowser::fill()
 
           files.push_back( p.string() );
         }
+    }
 
-      std::sort( files.begin(), files.end() );
+  
+  std::sort( files.begin(), files.end(), SortByBasename );
+  
+  stringArray::const_iterator itr = files.begin();
+  stringArray::const_iterator e = files.end();
 
-      stringArray::const_iterator itr = files.begin();
-      stringArray::const_iterator e = files.end();
-
-      for ( ; itr != e; ++itr )
-      {
-
-	  std::string base = fs::basename( *itr );
-	  std::string ext  = fs::extension( *itr );
-
-	  // Make extension lowercase and compare it against "ctl"
-	  std::transform( ext.begin(), ext.end(), ext.begin(), tolower );
-	  if ( ext != ".ctl" ) continue;
+  for ( ; itr != e; ++itr )
+  {
+      
+      
+      std::string base = fs::basename( *itr );
+      std::string ext  = fs::extension( *itr );
+      
+      // Make extension lowercase and compare it against "ctl"
+      std::transform( ext.begin(), ext.end(), ext.begin(), tolower );
+      if ( ext != ".ctl" ) continue;
           
-	  // Skip those CTL files that don't match the prefix
-          bool found = false;
-          for (Tokenizer_t::const_iterator pt = prefixes.begin(); 
-               pt != prefixes.end(); ++pt)
+      // Skip those CTL files that don't match the prefix
+      bool found = false;
+      for (Tokenizer_t::const_iterator pt = prefixes.begin(); 
+           pt != prefixes.end(); ++pt)
           {
               size_t num = base.size() - (*pt).size() + 1;
               if ( num > base.size() ) num = base.size();
@@ -138,13 +148,12 @@ void CTLBrowser::fill()
               }
               if ( found ) break;
           }
-
-          if ( !found ) continue;
-          
-	  // valid CTL, add it to the browser
-	  this->add( base.c_str() );
-	}
-    }
+      
+      if ( !found ) continue;
+      
+      // valid CTL, add it to the browser
+      this->add( base.c_str() );
+  }
 }
 
 int CTLBrowser::handle( int e )
