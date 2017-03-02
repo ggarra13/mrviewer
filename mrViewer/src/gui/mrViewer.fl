@@ -646,7 +646,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 41 670 450} resizable visible
+        xywh {607 52 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1275,14 +1275,14 @@ If unsure what this means, keep your display and images setting always using the
               }
             }
             {fltk::Group} {} {
-              label Quality
+              label Quality open
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
               xywh {44 240 339 96} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();}
+                callback {v->refresh();} open selected
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.  
 
@@ -1314,7 +1314,8 @@ The "No Baking" setting performs the color correction on the image directly inst
                   }
               }
               {fltk::ValueInput} uiPrefsNumStops {
-                label {Number of Fstops} selected
+                label {Number of Fstops}
+                tooltip {Number of FStops the LUT will cover.  Higher numbers show more detail in the black levels, while it makes the midrange be less defined.}
                 xywh {224 56 65 25} minimum 1 maximum 20 step 1 value 10
               }
             }
@@ -1978,7 +1979,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
