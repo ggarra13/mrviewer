@@ -744,6 +744,8 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsStereoRightEyeInverted->value(tmp);
     video.get( "blend_mode", tmp, 0 );
     uiPrefs->uiPrefsBlendMode->value(tmp);
+    video.get( "yuv_hint", tmp, 0 );
+    uiPrefs->uiPrefsYUVConversion->value(tmp);
 
     fltk::Preferences errors( base, "errors" );
     errors.get( "raise_log_window_on_error", tmp, 0 );
@@ -1243,7 +1245,7 @@ static const char* kCLocale = "C";
     video.set( "stereo_right_eye_inverted", 
                (int) uiPrefs->uiPrefsStereoRightEyeInverted->value() );
     video.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
-
+    video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
 
     //
     // Audio prefs
