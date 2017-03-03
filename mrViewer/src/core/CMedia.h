@@ -1060,6 +1060,8 @@ class CMedia
     static int  cache_scale() { return _cache_scale; }
 
        
+    static int colorspace_override; //!< Override YUV Hint always with this
+    
     static std::string rendering_transform_8bits;
     static std::string rendering_transform_16bits;
     static std::string rendering_transform_32bits;
@@ -1312,7 +1314,7 @@ class CMedia
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
-    int _colorspace_index;
+    int _colorspace_index;    //!< YUV Hint for conversion
 
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
