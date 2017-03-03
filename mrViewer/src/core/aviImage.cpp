@@ -165,7 +165,7 @@ fs::path relativePath( const fs::path &path, const fs::path &relative_to )
     return result;
 }
 
-
+int CMedia::colorspace_override = 0;
 
 const char* const kColorRange[] = {
 _("Unspecified"),
@@ -190,6 +190,7 @@ const char* const kColorSpaces[] = {
 const size_t aviImage::colorspace_index() const
 {
     if ( !_av_frame ) return 2; // Unspecified
+    if ( colorspace_override ) return colorspace_override;
     aviImage* img = const_cast< aviImage* >( this );
     if ( _colorspace_index < 0 || 
          _colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
