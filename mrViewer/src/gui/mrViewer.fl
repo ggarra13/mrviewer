@@ -646,7 +646,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 52 670 450} resizable visible
+        xywh {867 248 670 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1207,7 +1207,7 @@ This setting thus allows caching more pictures in memory for float and half pict
           }
           {fltk::Group} {} {
             label {3D Luts} open
-            xywh {13 25 424 366} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 25 424 366} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
@@ -1282,7 +1282,7 @@ If unsure what this means, keep your display and images setting always using the
               {fltk::Choice} uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();} open selected
+                callback {v->refresh();} open
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.  
 
@@ -1724,7 +1724,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading open
+            label Loading
             xywh {15 22 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -1747,8 +1747,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video
-            xywh {15 22 424 361} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Video open
+            xywh {15 22 424 361} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver open
@@ -1796,9 +1796,51 @@ where SC is source color, SA is source alpha, and DC is destination color.}
                   }
               }
             }
+            {fltk::Group} {} {open
+              xywh {47 182 321 72} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiPrefsYUVConversion {
+                label {YUV Conversion}
+                user_data uiMain user_data_type {ViewerUI*}
+                callback {int idx = o->value();
+
+switch(idx)
+{
+case 0:
+idx = 0; break;
+case 1:
+idx = 1; break;
+case 2:
+idx = 2; break;
+case 3:
+default:
+idx = 5; break;
+}
+CMedia::colorspace_override = idx;} open selected
+                tooltip {Controls the YUV Conversion of the movie in the shader to emulate different tv standards.
+Use File YUV Hint will take the value from the movie being loaded if the data is present.
+BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
+Unspecified is your standard computer translation of YUV.
+BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
+                xywh {142 35 167 25} box THIN_DOWN_BOX
+              } {
+                {fltk::Item} {} {
+                  label {Use File YUV Hint}
+                  }
+                {fltk::Item} {} {
+                  label {Always use BT709}
+                  }
+                {fltk::Item} {} {
+                  label {Always use Unspecified}
+                  }
+                {fltk::Item} {} {
+                  label {Always use BT470BG / SMPTE170M}
+                  }
+              }
+            }
           }
           {fltk::Group} {} {
-            label Audio open
+            label Audio
             xywh {13 22 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsAudioDevice {
@@ -1967,7 +2009,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
