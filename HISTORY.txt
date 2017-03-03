@@ -3,6 +3,13 @@ v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Made CTL listing list all ctl scripts alphabetically,
 	   regardless of what directory they are in.  Previously,
 	   each directory would list its files alphabetically.
+	 - Added a Ruby command-line script that converts .3dl lut
+	   (as created by Nuke) into a LMT CTL script. The script
+	   is called 3dl2ctl.rb and is in the bin/ directory of the
+	   distribution.
+	 - Added a Ruby command-line script that converts .cube lut
+	   into a LMT CTL script. The script is called cube2ctl.rb
+	   and is in the bin/ directory of the distribution.
 
 v3.5.0	 - There was a bug in the theme color selection which would
 	   show as random crashes on Windows, particularly when the
