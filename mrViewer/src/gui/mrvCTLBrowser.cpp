@@ -61,9 +61,16 @@ CTLBrowser::~CTLBrowser()
 
 bool SortByBasename( const std::string& a, const std::string& b )
 {
-    std::string baseA = fs::basename( a );
-    std::string baseB = fs::basename( b );
+    const std::string& baseA = fs::basename( a );
+    const std::string& baseB = fs::basename( b );
     return baseA < baseB;
+}
+
+bool EqualByBasename( const std::string& a, const std::string& b )
+{
+    const std::string& baseA = fs::basename( a );
+    const std::string& baseB = fs::basename( b );
+    return (baseA == baseB);
 }
 
 void CTLBrowser::fill()
@@ -117,6 +124,9 @@ void CTLBrowser::fill()
 
   
   std::sort( files.begin(), files.end(), SortByBasename );
+  stringArray::iterator last = std::unique( files.begin(), files.end(),
+                                            EqualByBasename );
+  files.erase( last, files.end() );
   
   stringArray::const_iterator itr = files.begin();
   stringArray::const_iterator e = files.end();
