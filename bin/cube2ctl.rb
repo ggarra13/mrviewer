@@ -67,15 +67,27 @@ for i in lines
   if i =~ /TITLE\s+"([^"]+)"/
     title = $1
   end
+  if i =~ /DOMAIN_MIN\s+*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)/
+    rmin = $1.to_f
+    gmin = $2.to_f
+    bmin = $3.to_f
+  end
+  if i =~ /DOMAIN_MAX\s+*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)/
+    rmax = $1.to_f
+    gmax = $2.to_f
+    bmax = $3.to_f
+  end
   if i =~ /LUT_3D_SIZE\s+(\d+)/
     size = $1.to_i
   end
 end
 
-lines.delete_if { |x| x =~ /^#.*/ }
-lines.delete_if { |x| x =~ /^\s*$/ }
+lines.delete_if { |x| x =~ /^#.*/ }  # remove comments
+lines.delete_if { |x| x =~ /^\s*$/ } # remove empty lines
+# Remove common command lines
 lines.delete_if { |x| x =~ /^\s*LUT_3D_SIZE/ }
 lines.delete_if { |x| x =~ /^\s*TITLE/ }
+lines.delete_if { |x| x =~ /^\s*DOMAIN/ }
 
 
 if output !~ /\.ctl$/
