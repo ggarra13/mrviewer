@@ -358,7 +358,6 @@ IF(WIN64) # defined in FindBuilDir
 ENDIF(WIN64)
 
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
-           ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/cube2ctl.rb 
       DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 	
 IF(UNIX)
