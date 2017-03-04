@@ -8,6 +8,8 @@ v3.5.1   - Fixed a memory leak in OpenEXR library.
 	   Colorspace conversion to something consistant (BT709,
 	   Unspecified, BT470BG, etc) instead of reading the
 	   information from the movie file.
+	 - CTL browser now has an Empty button to select an
+	   empty CTL (clear it).
 	 - Added a Ruby command-line script that converts .3dl lut
 	   (as created by Nuke) into a LMT CTL script. The script
 	   is called 3dl2ctl.rb and is in the bin/ directory of the
