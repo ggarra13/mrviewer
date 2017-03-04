@@ -93,7 +93,7 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
   code {std::string orig = ctl;} {}
   {fltk::Window} {} {
     label {CTL Browser} open
-    xywh {484 469 395 440} horizontal resizable hotspot modal visible
+    xywh {484 497 395 440} horizontal resizable hotspot modal visible
   } {
     {fltk::Group} {} {open
       xywh {10 25 375 405}
@@ -127,19 +127,22 @@ if ( !ctl.empty() )
 browser->deselect();
 browser->value(-1);
 browser->do_callback();
-v->make_exec_return(true);} selected
+v->make_exec_return(true);}
+        tooltip {Accept an empty CTL file.  This clears the CTL selection and sends an okay.}
         xywh {5 375 85 25}
       }
       {fltk::Button} {} {
         label Accept
         user_data w user_data_type {fltk::Window*}
         callback {v->make_exec_return(true);}
+        tooltip {Accept the selected CTL file.}
         xywh {195 375 85 25}
       }
       {fltk::Button} {} {
         label Cancel
         user_data w user_data_type {fltk::Window*}
-        callback {v->make_exec_return(false);}
+        callback {v->make_exec_return(false);} selected
+        tooltip {Cancel the CTL selection and don't change anything.}
         xywh {290 375 80 25}
       }
     }
