@@ -53,10 +53,10 @@ This section allows you to change the default Rendering Intent for ICC profiles.
 This setting specifies the resolution of the 3D Lut.  Higher settings are more accurate but your graphics card may not support it.<br>
       <br>
 
-      <div class="menu">Color Picker</div>
+      <div class="menu">Number of FStops</div>
       <br>
-
-The Algorithm setting selects the algorithm to use when displaying the color values in the pixel toolbar.  The default is using a Lut Table which is fast but has some rounding of values making it inaccurate.  Calculation will run the full pixel thru the CTL pipeline and return accurate values, but the color might not match the view exactly (which is approximated with the lut table).<br>
+The Number of Fstops controls how many fstops will the 3D Lut cover.  If you need more detail in the black levels, this is the setting to increase.  Note that even though black levels increase in quality, midtones diminish.  Use this setting together with Resolution for more control.
+<br>
 
 
       </td>
