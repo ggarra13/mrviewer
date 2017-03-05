@@ -63,6 +63,17 @@ begin
   lines = File.readlines(file)
   out = File.open( output, "w+" )
 
+rescue TypeError => e
+  if not file
+    $stderr.puts "No input file specified!"
+  elsif not output
+    $stderr.puts "No output file specified!"
+  else
+    puts e
+  end
+  puts
+  puts opt_parser
+  exit 1
 rescue => e
   puts e
   puts

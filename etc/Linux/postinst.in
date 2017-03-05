@@ -11,6 +11,8 @@ fi
 # Add mrViewer to path
 #
 ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
+ln -s @CPACK_INSTALL_PREFIX@/bin/3dl2ctl.rb /usr/bin/3dl2ctl.rb
+ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.rb /usr/bin/cube2ctl.rb
 
 #
 # Install Desktop icon
