@@ -1,3 +1,7 @@
+v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter 
+	   when 3d lut was a set of values up to 1023 or less.
+	 - Added support to 1D luts in cube2ctl.rb.
+
 v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Fixed a memory leak in audio buffer.
 	 - Made CTL listing list all ctl scripts alphabetically,
