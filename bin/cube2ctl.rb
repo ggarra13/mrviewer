@@ -2,7 +2,7 @@
 
 require 'optparse'
 
-VERSION=0.1
+Version=0.2
 
 maxValueSpline = 1.0
 rmin = gmin = bmin = 0.0
@@ -41,7 +41,7 @@ begin
     
     # Another typical switch to print the version.
     opts.on_tail("--version", "Show version") do
-      puts ::VERSION
+      puts ::Version
       exit
     end
   end
@@ -58,7 +58,7 @@ begin
     output << '.ctl'
   end
   
-  out = File.open( output, "w+" )
+  out = File.open( output, "w" )
 
 rescue TypeError => e
   if not file

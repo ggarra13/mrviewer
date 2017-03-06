@@ -2,7 +2,7 @@
 
 require 'optparse'
 
-VERSION=0.2
+Version=0.3
 
 idepth = 10
 odepth = 10
@@ -25,7 +25,7 @@ begin
       maxValueSpline = n
     end
     
-    opts.on("--maxValue [N]", Float, "Maximum Value in the 3D LUT (1023)") do |n|
+    opts.on("--maxValue [N]", Float, "Maximum Value in the 3D LUT (Auto)") do |n|
       maxValue = n
     end
 
@@ -50,7 +50,7 @@ begin
     
     # Another typical switch to print the version.
     opts.on_tail("--version", "Show version") do
-      puts ::VERSION
+      puts ::Version
       exit
     end
   end
@@ -68,7 +68,7 @@ begin
     output << '.ctl'
   end
   
-  out = File.open( output, "w+" )
+  out = File.open( output, "w" )
 
 rescue TypeError => e
   if not file
@@ -111,11 +111,6 @@ end
 lines.delete_if { |x| x =~ /^#.*/ }  #remove comment lines
 lines.delete_if { |x| x =~ /^\s*$/ } #remove empty lines
 
-output = output.dup
-
-if output !~ /\.ctl$/
-  output << '.ctl'
-end
 
 
 puts "#{file} -> #{output}"
@@ -175,6 +170,7 @@ if maxValue == 0.0
       max = $3.to_i if $3.to_i > max
   end
 
+  maxValue = 1023
   maxValue = 2047 if max > 1023
   maxValue = 4095 if max > 2047
 end
