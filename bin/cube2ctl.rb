@@ -4,6 +4,7 @@ require 'optparse'
 
 VERSION=0.1
 
+maxValueSpline = 1.0
 rmin = gmin = bmin = 0.0
 rmax = gmax = bmax = 1.0
 
@@ -16,6 +17,10 @@ begin
 
     opts.separator ""
  
+    opts.on("--maxValueSpline [N]", Float, "Maximum value in spline (1.0)") do |val|
+      maxValueSpline = val
+    end
+    
     opts.on("--min r,g,b", Array, "Mininum red, green, blue values (0,0,0)") do |list|
       rmin, gmin, bmin = list
       rmin = rmin.to_f
@@ -47,6 +52,12 @@ begin
   output = ARGV[1]
   
   lines = File.readlines(file)
+  output = output.dup
+  
+  if output !~ /\.ctl$/
+    output << '.ctl'
+  end
+  
   out = File.open( output, "w+" )
 
 rescue TypeError => e
@@ -66,10 +77,9 @@ rescue => e
   exit 1
 end
 
-output = output.dup
 
 
-
+lut1d = false
 size = [ 32, 32, 32 ]
 
 
@@ -87,6 +97,10 @@ for i in lines
     gmax = $2.to_f
     bmax = $3.to_f
   end
+  if i =~ /LUT_1D_SIZE\s+(\d+)/
+    size = $1.to_i
+    lut1d = true
+  end
   if i =~ /LUT_3D_SIZE\s+(\d+)/
     size = $1.to_i
   end
@@ -95,14 +109,12 @@ end
 lines.delete_if { |x| x =~ /^#.*/ }  # remove comments
 lines.delete_if { |x| x =~ /^\s*$/ } # remove empty lines
 # Remove common command lines
+lines.delete_if { |x| x =~ /^\s*LUT_1D_SIZE/ }
 lines.delete_if { |x| x =~ /^\s*LUT_3D_SIZE/ }
 lines.delete_if { |x| x =~ /^\s*TITLE/ }
 lines.delete_if { |x| x =~ /^\s*DOMAIN/ }
 
 
-if output !~ /\.ctl$/
-  output << '.ctl'
-end
 
 puts "#{file} -> #{output}"
 
@@ -110,70 +122,118 @@ out.puts "// #{title}"
 out.puts "// CTL 3d Lut from #{file}"
 out.puts "// Min: #{rmin}, #{gmin}, #{bmin}"
 out.puts "// Max: #{rmax}, #{gmax}, #{bmax}"
-out.puts "// Lut3D size #{size}x#{size}x#{size}"
+if lut1d
+  out.puts "// Lut1D size #{size}"
+  if lines.size != size
+    $stderr.puts "ERROR: Size of lines #{lines.size} different than 1d lut size #{size}"
+    size = lines.size
+  end
+else
+  out.puts "// Lut3D size #{size}x#{size}x#{size}"
+  out.puts "const float min3d[3] = { #{rmin}, #{gmin}, #{bmin} };"
+  out.puts "const float max3d[3] = { #{rmax}, #{gmax}, #{bmax} };"
+  
+  last = size * size * size
+  if lines.size != last
+    $stderr.puts "ERROR: Size of lines #{lines.size} different than cube size #{size}x#{size}x#{size} (#{last})"
+  end
+
+  out.puts "const float cube[#{size}][#{size}][#{size}][3] = "
+end
 out.puts
 
 
-out.puts "const float min3d[3] = { #{rmin}, #{gmin}, #{bmin} };"
-out.puts "const float max3d[3] = { #{rmax}, #{gmax}, #{bmax} };"
 
-
-last = size * size * size
-if lines.size != last
-  $stderr.puts "ERROR: Size of lines #{lines.size} different than cube size #{size}x#{size}x#{size} (#{last})"
-end
-
-out.puts "const float cube[#{size}][#{size}][#{size}][3] = "
-
-idx = 0
-rgb = []
-
-puts "First line: #{lines[0]}"
-
-for x in 1..size
-  for y in 1..size
-    for z in 1..size
-      lines[idx] =~ /^\s*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)/
-      r = rmax * $1.to_f
-      g = gmax * $2.to_f
-      b = bmax * $3.to_f
-      rgb[x-1] = [] if not rgb[x-1]
-      rgb[x-1][y-1] = [] if not rgb[x-1][y-1]
-      rgb[x-1][y-1][z-1] = "#{r}, #{g}, #{b}"
-      idx += 1
-    end
+if lut1d
+  r = []
+  g = []
+  b = []
+  for x in 0...size
+    lines[x] =~ /^\s*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)/
+    r << $1.to_f / maxValueSpline
+    g << $1.to_f / maxValueSpline
+    b << $1.to_f / maxValueSpline
   end
-end
+
+  out.print "const float splineR[#{size}] = { "
+  out.puts r.join(', ')
+  out.puts "};"
+  out.puts
+  out.print "const float splineG[#{size}] = { "
+  out.puts g.join(', ')
+  out.puts "};"
+  out.puts
+  out.print "const float splineB[#{size}] = { "
+  out.puts b.join(', ')
+  out.puts "};"
+  out.puts
+  out.puts <<"EOF"
+
+void main( varying float rIn,
+           varying float gIn,
+           varying float bIn,
+           varying float aIn,
+           output varying float rOut,
+           output varying float gOut,
+           output varying float bOut,
+           output varying float aOut )
+{
+rOut = lookup1D_f( splineR, #{rmin}, #{rmax}, rIn );
+gOut = lookup1D_f( splineG, #{gmin}, #{gmax}, gIn );
+bOut = lookup1D_f( splineB, #{bmin}, #{bmax}, bIn );
+aOut = aIn;
+}
+
+EOF
+  
+else
 
 
+  idx = 0
+  rgb = []
 
-for z in 0...size
-  out.print "{ " if z == 0
-  for y in 0...size
-    out.print "{ " if y == 0
-    for x in 0...size
-      out.print "{ " if x == 0
-      out.print "{ #{rgb[x][y][z]} }"
-      if x != size-1
-        out.print ", "
+  for x in 1..size
+    for y in 1..size
+      for z in 1..size
+        lines[idx] =~ /^\s*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)/
+        r = rmax * $1.to_f
+        g = gmax * $2.to_f
+        b = bmax * $3.to_f
+        rgb[x-1] = [] if not rgb[x-1]
+        rgb[x-1][y-1] = [] if not rgb[x-1][y-1]
+        rgb[x-1][y-1][z-1] = "#{r}, #{g}, #{b}"
+        idx += 1
       end
     end
+  end
+
+  for z in 0...size
+    out.print "{ " if z == 0
+    for y in 0...size
+      out.print "{ " if y == 0
+      for x in 0...size
+        out.print "{ " if x == 0
+        out.print "{ #{rgb[x][y][z]} }"
+        if x != size-1
+          out.print ", "
+        end
+      end
+      out.print " }"
+      if y != size-1
+        out.print ","
+      end
+      out.puts
+    end
     out.print " }"
-    if y != size-1
-      out.print ","
+    if z != size-1
+      out.print ", "
     end
     out.puts
   end
-  out.print " }"
-  if z != size-1
-    out.print ", "
-  end
-  out.puts
-end
-out.puts " };"
+  out.puts " };"
 
-out.puts
-out.puts <<"EOF"
+  out.puts
+  out.puts <<"EOF"
 
 void main( varying float rIn,
            varying float gIn,
@@ -189,5 +249,4 @@ aOut = aIn;
 }
 
 EOF
-
-$stderr.puts "LAST LINE: #{lines[idx]}"
+end
