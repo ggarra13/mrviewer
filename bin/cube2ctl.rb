@@ -128,10 +128,12 @@ if lut1d
     $stderr.puts "ERROR: Size of lines #{lines.size} different than 1d lut size #{size}"
     size = lines.size
   end
+  out.puts
 else
   out.puts "// Lut3D size #{size}x#{size}x#{size}"
   out.puts "const float min3d[3] = { #{rmin}, #{gmin}, #{bmin} };"
   out.puts "const float max3d[3] = { #{rmax}, #{gmax}, #{bmax} };"
+  out.puts
   
   last = size * size * size
   if lines.size != last
@@ -140,7 +142,6 @@ else
 
   out.puts "const float cube[#{size}][#{size}][#{size}][3] = "
 end
-out.puts
 
 
 
@@ -178,9 +179,9 @@ void main( varying float rIn,
            output varying float bOut,
            output varying float aOut )
 {
-rOut = lookup1D_f( splineR, #{rmin}, #{rmax}, rIn );
-gOut = lookup1D_f( splineG, #{gmin}, #{gmax}, gIn );
-bOut = lookup1D_f( splineB, #{bmin}, #{bmax}, bIn );
+rOut = lookup1D( splineR, #{rmin}, #{rmax}, rIn );
+gOut = lookup1D( splineG, #{gmin}, #{gmax}, gIn );
+bOut = lookup1D( splineB, #{bmin}, #{bmax}, bIn );
 aOut = aIn;
 }
 
