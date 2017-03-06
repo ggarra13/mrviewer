@@ -61,6 +61,13 @@ begin
   output = ARGV[1]
   
   lines = File.readlines(file)
+
+  output = output.dup
+  
+  if output !~ /\.ctl$/
+    output << '.ctl'
+  end
+  
   out = File.open( output, "w+" )
 
 rescue TypeError => e
