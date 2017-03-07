@@ -2799,13 +2799,14 @@ aviImage::audio_video_display( const boost::int64_t& frame )
          _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
     {
         float* data = (float*)result->data();
-
+        unsigned size = result->size();
         for (int ch = 0; ch < channels; ++ch)
         {
             i = i_start + ch;
             y1 = ch * h + ( h / 2 );
             for (unsigned x = 0; x < _w; ++x )
             {
+                if ( i >= size ) break;
                 y = (int(data[i] * 24000 * h2)) >> 15;
                 if (y < 0) {
                     y = -y;
@@ -2813,6 +2814,10 @@ aviImage::audio_video_display( const boost::int64_t& frame )
                 } else {
                     ys = y1;
                 }
+                // These two checks should not be needed
+                // but are here to avoid crashes on some samples
+                if ( ys < 0 ) ys = y1;
+                if ( y >= h/2 ) y = 0;
                 fill_rectangle(ptr, x, ys, 1, y);
                 i += channels;
             }
@@ -2836,6 +2841,10 @@ aviImage::audio_video_display( const boost::int64_t& frame )
                 } else {
                     ys = y1;
                 }
+                // These two checks should not be needed
+                // but are here to avoid crashes on some samples
+                if ( ys < 0 ) ys = y1;
+                if ( y >= h/2 ) y = 0;
                 fill_rectangle(ptr, x, ys, 1, y);
                 i += channels;
             }
