@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-03-06 18:02-0300\n"
+"POT-Creation-Date: 2017-03-07 20:26-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -161,7 +161,7 @@ msgstr " busca_imagen: cuadro "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:1972 core/aviImage.cpp:3190
+#: core/CMedia_audio.cpp:1972 core/aviImage.cpp:3199
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -209,7 +209,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3206
+#: core/aviImage.cpp:3215
 msgid " status: "
 msgstr " estatus: "
 
@@ -2176,11 +2176,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1970 core/aviImage.cpp:3188
+#: core/CMedia_audio.cpp:1970 core/aviImage.cpp:3197
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3204
+#: core/aviImage.cpp:3213
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -6480,8 +6480,12 @@ msgid "YUV Color Range"
 msgstr "Rango de Color de YUV"
 
 #: gui/mrvImageInformation.cpp:614
-msgid "YUV Color Space conversion"
-msgstr "Conversion de Espacio de Color YUV"
+msgid ""
+"YUV Color Space conversion.  This value is extracted from the movie file.  "
+"To lock it to always use the same color space, set the value in Preferences-"
+">Video->YUV Conversion"
+msgstr ""
+"Conversión del Espacio de Color YUV.  Este valor es por defecto extraído de la película si se puede.  Para fijarlo para usar siempre el mismo espacio de color, use el valor de Preferencias->Video->Conversión YUV"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-65-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2832
@@ -6926,6 +6930,9 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-65-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3758
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "YUV Color Space conversion"
+#~ msgstr "Conversion de Espacio de Color YUV"
 
 #~ msgid "Calculation (accurate, slow)"
 #~ msgstr "Calculo (preciso, lento)"
