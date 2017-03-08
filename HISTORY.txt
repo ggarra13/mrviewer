@@ -1,7 +1,10 @@
 v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter 
 	   when 3d lut was a set of values up to 1023 or less.
-	 - Added support to 1D luts in cube2ctl.rb.
-	 - Fixed a bug in audio display when audio was short.
+	   Now the script properly auto detects the depth to use.
+	 - Added support for 1D luts in cube2ctl.rb.  Previously
+	   only the 3d lut format was supported.
+	 - Fixed a crashing bug in audio display when audio was
+	   short.
 
 v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Fixed a memory leak in audio buffer.
@@ -17,13 +20,13 @@ v3.5.1   - Fixed a memory leak in OpenEXR library.
 	   empty CTL (clear it).  Previously you had to open the
 	   requester to click on an empty area.
 	 - Added a Ruby command-line script that converts .3dl lut
-	   (as created by Nuke) into a LMT CTL script. The script
+	   (as created by Nuke) into a (LMT) CTL script. The script
 	   is called 3dl2ctl.rb and is in the bin/ directory of the
 	   distribution.
 	 - Added a Ruby command-line script that converts .cube lut
-	   (as created by Flame) into a LMT CTL script. The script
-	   is called cube2ctl.rb and is in the bin/ directory of the
-	   distribution.
+	   (as created by Iridas and Adobe) into a (LMT) CTL script.
+	   The script is called cube2ctl.rb and is in the bin/
+	   directory of the distribution.
 
 v3.5.0	 - There was a bug in the theme color selection which would
 	   show as random crashes on Windows, particularly when the
