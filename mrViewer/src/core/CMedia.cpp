@@ -588,7 +588,8 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     _hires = pic;
     _frame = pic->frame();
     _w = pic->width(); 
-    _h = pic->height(); 
+    _h = pic->height();
+    std::cerr << "hires " << pic << " _w " << _w << " _h " << _h << std::endl;
     refresh();
 }
  
@@ -703,16 +704,16 @@ mrv::image_type_ptr CMedia::left() const
 
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
+
+    CMedia* img = const_cast< CMedia* >( this );
+    mrv::image_type_ptr pic = _hires;
     
-    if ( _is_sequence && _sequence[idx] )
-    {
-        return _sequence[idx];
-    }
-    else
-        if ( _stereo[0] )
-            return _stereo[0];
-        else
-            return _hires;
+    if ( _is_sequence && _sequence[idx] ) pic = _sequence[idx];
+    else if ( _stereo[0] ) pic = _stereo[0];
+    
+    img->_w = pic->width();
+    img->_h = pic->height();
+    return _hires;
 }
 
 mrv::image_type_ptr CMedia::right() const
