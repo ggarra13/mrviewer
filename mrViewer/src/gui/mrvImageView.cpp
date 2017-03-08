@@ -2220,9 +2220,26 @@ void ImageView::draw()
 
   if ( _hud & kHudResolution )
     {
-      sprintf( buf, "%d x %d", img->width(), img->height() );
-      draw_text( r, g, b, 5, y, buf );
-      y -= yi;
+        if ( img->data_window() != img->display_window() )
+        {
+            const mrv::Recti& d = img->data_window();
+            sprintf( buf, "DAW: %d,%d-%dx%d", d.x(), d.y(), d.w(), d.h() );
+            draw_text( r, g, b, 5, y, buf );
+            y -= yi;
+            {
+                const mrv::Recti& d = img->display_window();
+                sprintf( buf, "DYW: %d,%d-%dx%d", d.x(), d.y(), d.w(), d.h() );
+                draw_text( r, g, b, 5, y, buf );
+                y -= yi;
+            }
+        }
+        else
+        {
+            sprintf( buf, "RES: %dx%d", img->width(), img->height() );
+            draw_text( r, g, b, 5, y, buf );
+            y -= yi;
+        }
+
     }
 
   if ( _hud & kHudFrame )
