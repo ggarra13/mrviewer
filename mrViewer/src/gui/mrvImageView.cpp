@@ -584,6 +584,28 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 
 }
 
+void hud_all_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
+{
+  mrv::ImageView* view = uiMain->uiView;
+  int i;
+  int num = uiMain->uiPrefs->uiPrefsHud->children();
+  unsigned int hud = 0;
+  for ( i = 0; i < num; ++i )
+    {
+        if ( o->state() )
+        {
+            hud |= ( 1 << i );
+        }
+        else
+        {
+            hud = 0;
+        }
+    }
+
+  view->hud( (mrv::ImageView::HudDisplay) hud );
+  view->redraw();
+}
+
 void hud_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
@@ -2223,19 +2245,19 @@ void ImageView::draw()
         if ( img->data_window() != img->display_window() )
         {
             const mrv::Recti& d = img->data_window();
-            sprintf( buf, "DAW: %d,%d-%dx%d", d.x(), d.y(), d.w(), d.h() );
+            sprintf( buf, _("DAW: %d,%d-%dx%d"), d.x(), d.y(), d.w(), d.h() );
             draw_text( r, g, b, 5, y, buf );
             y -= yi;
             {
                 const mrv::Recti& d = img->display_window();
-                sprintf( buf, "DYW: %d,%d-%dx%d", d.x(), d.y(), d.w(), d.h() );
+                sprintf( buf, _("DYW: %d,%d-%dx%d"), d.x(), d.y(), d.w(), d.h() );
                 draw_text( r, g, b, 5, y, buf );
                 y -= yi;
             }
         }
         else
         {
-            sprintf( buf, "RES: %dx%d", img->width(), img->height() );
+            sprintf( buf, _("RES: %dx%d"), img->width(), img->height() );
             draw_text( r, g, b, 5, y, buf );
             y -= yi;
         }
@@ -2600,6 +2622,16 @@ int ImageView::leftMouseDown(int x, int y)
 	    }
 	    
 	    num = uiMain->uiPrefs->uiPrefsHud->children();
+            sprintf( buf, _("View/Hud/All") );
+            item = menu.add( buf, 0, (fltk::Callback*)hud_all_cb, uiMain );
+            item->type( fltk::Item::TOGGLE );
+            item->clear();
+            bool all = true;
+	    for ( i = 0; i < num; ++i )
+	    {
+                if ( (hud() & (1 << i)) == 0 ) {all=false; break; }
+            }
+            if ( all ) item->set();
 	    for ( i = 0; i < num; ++i )
 	    {
 	       tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
