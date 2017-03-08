@@ -13,7 +13,8 @@ begin
 
 
   opt_parser = OptionParser.new do |opts|
-    opts.banner = "Usage: cube2ctl.rb [options] <file.cube> <output.ctl>"
+    opts.banner = "CUBE LUT to CTL command-line converter.\n\n" +
+    "Usage: cube2ctl.rb [options] <file.cube> <output.ctl>"
 
     opts.separator ""
  
