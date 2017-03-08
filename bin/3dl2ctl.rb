@@ -16,7 +16,8 @@ begin
 
 
   opt_parser = OptionParser.new do |opts|
-    opts.banner = "Usage: 3dl2ctl.rb [options] <file.3dl> <output.ctl>"
+    opts.banner =  "3DL LUT to CTL command-line converter.\n\n" +
+                   "Usage: 3dl2ctl.rb [options] <file.3dl> <output.ctl>"
 
     opts.separator ""
     opts.separator "Specific options:"
