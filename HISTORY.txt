@@ -5,6 +5,9 @@ v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter
 	   only the 3d lut format was supported.
 	 - Fixed a crashing bug in audio display when audio was
 	   short.
+	 - Fixed HUD display of resolution when exr had crop
+	   areas.
+	 - Added a View->Hud->All to toggle on/off all hud settings.
 
 v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Fixed a memory leak in audio buffer.
