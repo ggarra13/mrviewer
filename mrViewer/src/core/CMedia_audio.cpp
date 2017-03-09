@@ -990,7 +990,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 // Just to be safe, we recalc data_size
                 data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
-#if 0
+#if 1
                 if ( _audio_channels >= 6 )
                 {
                     if ( fmt == AV_SAMPLE_FMT_FLT )
