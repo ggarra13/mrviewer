@@ -502,6 +502,10 @@ fltk::StyleSet*     newscheme = NULL;
 
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
+    
+    playback.get( "scrubbing_sensitivity", tmpF, 5.0f );
+    uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
+
 
     fltk::Preferences caches( base, "caches" );
 
@@ -1224,6 +1228,8 @@ static const char* kCLocale = "C";
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
+    playback.set( "scrubbing_sensitivity",
+                  uiPrefs->uiPrefsScrubbingSensitivity->value() );
 
 
     fltk::Preferences caches( base, "caches" );
