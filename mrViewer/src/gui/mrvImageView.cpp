@@ -4994,7 +4994,9 @@ int ImageView::handle(int event)
 
             if ( kScrub.match( fltk::event_key() ) )
             {
-                double dx = (fltk::event_x() - lastX) / 20.0;
+                double s;
+                s = uiMain->uiPrefs->uiPrefsScrubbingSensitivity->value();
+                double dx = (fltk::event_x() - lastX) / s;
                 if ( std::abs(dx) >= 1.0f )
                 {
                     scrub( dx );
