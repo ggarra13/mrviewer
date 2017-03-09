@@ -2245,12 +2245,12 @@ void ImageView::draw()
         if ( img->data_window() != img->display_window() )
         {
             const mrv::Recti& d = img->data_window();
-            sprintf( buf, _("DAW: %d,%d-%dx%d"), d.x(), d.y(), d.w(), d.h() );
+            sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
             draw_text( r, g, b, 5, y, buf );
             y -= yi;
             {
                 const mrv::Recti& d = img->display_window();
-                sprintf( buf, _("DYW: %d,%d-%dx%d"), d.x(), d.y(), d.w(), d.h() );
+                sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
                 draw_text( r, g, b, 5, y, buf );
                 y -= yi;
             }
