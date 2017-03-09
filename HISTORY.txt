@@ -8,6 +8,14 @@ v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter
 	 - Fixed HUD display of resolution when exr had crop
 	   areas.
 	 - Added a View->Hud->All to toggle on/off all hud settings.
+	 - Made scrubbing be more sensitive to drag. This allows
+	   viewing more frames before reseting the scrub with CTRL.
+	 - Added a new Preference setting:
+	   	 Playback->Defaults->Scrubbing Sensitivity
+	   which controls the speed of scrubbing when moving the
+	   mouse right and left after SHIFT clicking.
+	   The new setting is 4 times more sensitive than what
+	   was there before.
 
 v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Fixed a memory leak in audio buffer.
