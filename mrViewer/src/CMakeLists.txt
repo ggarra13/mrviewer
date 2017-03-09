@@ -242,7 +242,6 @@ SET( SOURCES
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
-  SET( SOURCES gui/resource.rc ${SOURCES} )
 ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
   SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -250,14 +249,19 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
 
+ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
+		    COMMAND xgettext
+		    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com  -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
+		    DEPENDS mrViewer
+		    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+		  )
+    
+IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  SET( SOURCES gui/resource.rc ${SOURCES} )
+ENDIF( WIN32 OR WIN64 OR CYGWIN OR MINGW )
+
 IF(NOT WIN32)
 
-  ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
-    COMMAND xgettext
-    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com  -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
-    DEPENDS mrViewer
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    )
 
 
   FIND_LIBRARY( Boost_locale_LIBRARY 
