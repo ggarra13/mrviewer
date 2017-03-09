@@ -92,11 +92,11 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
 } {
   code {std::string orig = ctl;} {}
   {fltk::Window} {} {
-    label {CTL Browser} open
-    xywh {57 24 1863 1056} hide resizable hotspot modal
+    label {CTL Browser} selected
+    xywh {312 387 395 447} horizontal resizable hotspot modal visible
   } {
     {fltk::Group} {} {open
-      xywh {47 60 1768 972} vertical
+      xywh {10 26 375 411}
     } {
       {fltk::Browser} browser {
         label {Select a CTL script}
@@ -1068,7 +1068,7 @@ v->refresh();}
           }
           {fltk::Group} Playback {
             label Playback open
-            xywh {15 21 424 360} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 21 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1134,7 +1134,7 @@ uiPrefsFPS->value( g );}
                 xywh {187 20 20 25} align 4 box UP_BOX
               }
               {fltk::ValueInput} uiPrefsScrubbingSensitivity {
-                label {Scrubbing Sensitivity} selected
+                label {Scrubbing Sensitivity}
                 tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.}
                 xywh {150 130 60 25} minimum 2 maximum 50 step 1 value 5
               }
