@@ -92,8 +92,8 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
 } {
   code {std::string orig = ctl;} {}
   {fltk::Window} {} {
-    label {CTL Browser} selected
-    xywh {312 387 395 447} horizontal resizable hotspot modal visible
+    label {CTL Browser}
+    xywh {312 387 395 447} horizontal hide resizable hotspot modal
   } {
     {fltk::Group} {} {open
       xywh {10 26 375 411}
@@ -693,19 +693,19 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {197 9 150 81} box UP_BOX
               } {
                 {fltk::RadioButton} {} {
-                  label Normal
+                  label Normal selected
                   tooltip {When selected, mrViewer will resize its window to the first image.}
-                  xywh {120 6 19 20} align 8 box ROUND_UP_BOX value 1
+                  xywh {8 6 19 20} align 8 box ROUND_UP_BOX value 1
                 }
                 {fltk::RadioButton} {} {
-                  label Fullscreen
+                  label Fullscreen selected
                   tooltip {When selected, mrViewer will start in full screen mode.}
-                  xywh {120 31 19 20} align 8 box ROUND_UP_BOX
+                  xywh {8 31 19 20} align 8 box ROUND_UP_BOX
                 }
                 {fltk::RadioButton} {} {
-                  label Presentation
+                  label Presentation selected
                   tooltip {When selected, mrViewer will start in presentation mode.}
-                  xywh {120 56 19 20} align 8 box ROUND_UP_BOX
+                  xywh {8 56 19 20} align 8 box ROUND_UP_BOX
                 }
               }
             }
@@ -1134,7 +1134,7 @@ uiPrefsFPS->value( g );}
                 xywh {187 20 20 25} align 4 box UP_BOX
               }
               {fltk::ValueInput} uiPrefsScrubbingSensitivity {
-                label {Scrubbing Sensitivity}
+                label {Scrub Sensitivity}
                 tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.}
                 xywh {150 130 60 25} minimum 2 maximum 50 step 1 value 5
               }
