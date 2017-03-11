@@ -2,10 +2,10 @@
 
 echo "Running uninstall script"
 
-if [ -e /usr/bin/mrViewer ]; then
-    echo "Removing /usr/bin/mrViewer"
-    rm -f /usr/bin/mrViewer
-fi
+rm -f /usr/bin/mrViewer
+rm -f /usr/bin/3dl2ctl.rb
+rm -f /usr/bin/cube2ctl.rb
+
 
 dir=$(xdg-user-dir DESKTOP)
 if [ -e "$dir/mrViewer-v@VERSION@.desktop" ]; then
