@@ -1647,15 +1647,17 @@ bool ImageView::preload()
     if ( r->edl )
     {
         fg = r->media_at( _preframe );
-        if ( !fg ) return false;
     }
     else
     {
         fg = foreground();
     }
 
+    if ( !fg ) return false;
+
     CMedia* img = fg->image();
     if (!img) return false;
+
 
     if ( !img->is_sequence() ) {
         _preframe = fg->position() + img->duration();
@@ -2242,7 +2244,8 @@ void ImageView::draw()
 
   if ( _hud & kHudResolution )
     {
-        if ( img->data_window() != img->display_window() )
+        if ( img->data_window() != img->display_window() &&
+             img->data_window().w() != 0 )
         {
             const mrv::Recti& d = img->data_window();
             sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
@@ -5334,20 +5337,19 @@ void ImageView::channel( unsigned short c )
 
   // If user selected the same channel again, toggle it with
   // other channel (diffuse.r goes to diffuse, for example)
-  static mrv::media m;
-  if ( c == _channel && m == foreground() ) {
+  if ( c == _channel && _old_fg == foreground() ) {
       c = _old_channel;
       _old_channel = _channel;
   }
   else
   {
-      if ( m != foreground() )
+      if ( _old_fg != foreground() )
       {
           _old_channel = c;
       }
   }
 
-  m = foreground();
+  _old_fg = foreground();
 
   char* lbl = get_layer_label( c );
   if ( !lbl ) return;
@@ -5905,6 +5907,7 @@ void ImageView::update_layers()
     mrv::media fg = foreground();
     if ( !fg )
     {
+        _old_fg.reset();
         uiColorChannel->clear();
         uiColorChannel->add( _("(no image)") );
         uiColorChannel->copy_label( _("(no image)") );
@@ -6061,7 +6064,6 @@ void ImageView::foreground( mrv::media fg )
 
     update_image_info();
     update_color_info( fg );
-
 
     redraw();
 }
