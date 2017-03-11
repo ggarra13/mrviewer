@@ -162,7 +162,6 @@ exrImage::exrImage() :
   _compression( (Imf::Compression) 0 ),
   _aces( false )
   {
-      Imf::setGlobalThreadCount( 4 );
       st[0] = st[1] = -1;
   }
 
