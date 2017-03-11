@@ -657,7 +657,7 @@ class server;
 
 
     mrv::media _fg;
-    mrv::media _old_fg;
+    CMedia* _old_fg;
     mrv::media _bg;
 
     int   _fg_reel;
