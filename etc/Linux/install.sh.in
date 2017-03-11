@@ -2,10 +2,12 @@
 
 echo "Running install script"
 
-if [ -e /usr/bin/mrViewer ]; then
-    echo "Removing /usr/bin/mrViewer"
-    rm -f /usr/bin/mrViewer
-fi
+echo "Removing /usr/bin/mrViewer"
+rm -f /usr/bin/mrViewer
+echo "Removing /usr/bin/3dl2ctl.rb"
+rm -f /usr/bin/3dl2ctl.rb
+echo "Removing /usr/bin/cube2ctl.rb"
+rm -f /usr/bin/cube2ctl.rb
 
 #
 # Add mrViewer to path
