@@ -26,6 +26,7 @@ namespace mrv {
   {
     public:
       Element( mrv::media& );
+      ~Element();
 
       const mrv::media& element() { return _elem; }
       mrv::media element() const { return _elem; }
