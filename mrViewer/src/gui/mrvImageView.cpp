@@ -914,6 +914,7 @@ _idle_callback( false ),
 _vr( false ),
 _event( 0 ),
 _timeout( NULL ),
+_old_fg( NULL ),
 _fg_reel( -1 ),
 _bg_reel( -1 ),
 _mode( kSelection ),
@@ -5337,19 +5338,23 @@ void ImageView::channel( unsigned short c )
 
   // If user selected the same channel again, toggle it with
   // other channel (diffuse.r goes to diffuse, for example)
-  if ( c == _channel && _old_fg == foreground() ) {
+  const mrv::media& fg = foreground();
+  if ( c == _channel && fg && _old_fg == fg->image() ) {
       c = _old_channel;
       _old_channel = _channel;
   }
   else
   {
-      if ( _old_fg != foreground() )
+      if ( fg && _old_fg != fg->image() )
       {
           _old_channel = c;
       }
   }
 
-  _old_fg = foreground();
+  if ( fg )
+      _old_fg = fg->image();
+  else
+      _old_fg = NULL;
 
   char* lbl = get_layer_label( c );
   if ( !lbl ) return;
@@ -5455,7 +5460,6 @@ void ImageView::channel( unsigned short c )
      }
   }
 
-  mrv::media fg = foreground();
   mrv::media bg = background();
 
   {
@@ -5907,7 +5911,7 @@ void ImageView::update_layers()
     mrv::media fg = foreground();
     if ( !fg )
     {
-        _old_fg.reset();
+        _old_fg = NULL;
         uiColorChannel->clear();
         uiColorChannel->add( _("(no image)") );
         uiColorChannel->copy_label( _("(no image)") );
