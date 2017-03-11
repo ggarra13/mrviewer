@@ -301,6 +301,9 @@ namespace mrv {
     copy_label( info );
   }
 
+Element::~Element()
+{
+}
 
   /** 
    * Constructor
@@ -902,7 +905,11 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
 
+    fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
+    delete w;
+    
+    reel->images[idx]->image()->clear_cache();
 
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
@@ -941,9 +948,10 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    mrv::MediaList::iterator i = std::find( reel->images.begin(),
-					    reel->images.end(), m );
-    if ( i == reel->images.end() )
+
+    mrv::MediaList::iterator end = reel->images.end();
+    mrv::MediaList::iterator i = std::find( reel->images.begin(), end, m );
+    if ( i == end )
       {
 	LOG_ERROR( _("Image") << " " << m->image()->filename() 
 		   << _(" not found in reel") );
@@ -960,9 +968,14 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
 
     int idx = (int) (i - reel->images.begin());
+    
+    fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
+    delete w;
 
+    reel->images[idx]->image()->clear_cache();
     reel->images.erase( i );
+
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -981,6 +994,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( p != ImageView::kStopped )
         view()->play( (CMedia::Playback) p );
+
 
     redraw();
   }
@@ -1091,6 +1105,7 @@ void ImageBrowser::clear_bg()
       {
 
           DBG( "Add images in browser" );
+          fltk::Browser::clear();
 
           mrv::MediaList::iterator i = reel->images.begin();
           MediaList::iterator j;
@@ -1918,7 +1933,8 @@ void ImageBrowser::load( const stringArray& files,
     int sel = value();
     if ( sel < 0 ) return;
 
-    this->remove( reel->images[sel] );
+    mrv::media& m = reel->images[sel];
+    this->remove( m );
 
     if ( sel < (int)reel->images.size() )
       {
