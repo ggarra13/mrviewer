@@ -521,11 +521,11 @@ ELSEIF (UNIX)
         ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postinst.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/postinst
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/postrm
         @ONLY)  
 
