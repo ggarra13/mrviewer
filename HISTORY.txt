@@ -20,6 +20,8 @@ v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter
 	   as it was leading to very quiet dialogues.
 	 - Fixed a huge memory leak when working with sequences.
 	   Deleting them from the reel was not clearing all memory.
+	 - Bug fixed requester in media browser asking if image is 
+	   to be removed when the reel is empty.
 
 v3.5.1   - Fixed a memory leak in OpenEXR library.
 	 - Fixed a memory leak in audio buffer.
