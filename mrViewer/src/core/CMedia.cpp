@@ -228,6 +228,7 @@ _audio_engine( NULL )
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
+    // std::cerr << "CMedia " << this << std::endl;
 }
 
 
@@ -452,7 +453,6 @@ boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 void CMedia::clear_cache()
 {
   if ( !_sequence ) return;
-
   
   SCOPED_LOCK( _mutex);
 
@@ -502,6 +502,8 @@ void CMedia::wait_for_threads()
  */
 CMedia::~CMedia()
 {
+    // std::cerr << "~CMedia " << this << std::endl;
+
   SCOPED_LOCK( _mutex );
   SCOPED_LOCK( _audio_mutex );
   SCOPED_LOCK( _subtitle_mutex );
@@ -589,7 +591,6 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     _frame = pic->frame();
     _w = pic->width(); 
     _h = pic->height();
-    std::cerr << "hires " << pic << " _w " << _w << " _h " << _h << std::endl;
     refresh();
 }
  
