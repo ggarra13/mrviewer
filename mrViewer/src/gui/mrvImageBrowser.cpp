@@ -1920,7 +1920,7 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::remove_current()
   {
     mrv::Reel reel = current_reel();
-    if (!reel) return;
+    if (!reel || reel->images.empty() ) return;
 
     if ( view()->playback() != ImageView::kStopped )
        view()->stop();
