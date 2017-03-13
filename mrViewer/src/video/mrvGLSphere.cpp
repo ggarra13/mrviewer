@@ -62,12 +62,6 @@
                            // with GL_BGR formats and high resolutions
 
 
-#ifdef DEBUG
-#  define CHECK_GL(x) GLEngine::handle_gl_errors(x)
-#else
-#  define CHECK_GL(x)
-#endif
-
 // PBO macro (see spec for details)
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -101,7 +95,7 @@ GLSphere::~GLSphere()
 
   void GLSphere::bind( const image_type_ptr& pic )
   {
-      CHECK_GL( "bind" );
+      CHECK_GL;
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( ! pic || dw <= 0 || dh <= 0 ) {
@@ -146,7 +140,7 @@ GLSphere::~GLSphere()
 	    glActiveTexture(GL_TEXTURE0 + idx);
 	    glEnable(GL_TEXTURE_2D);
 	    glBindTexture(GL_TEXTURE_2D, _texId[i] );
-            CHECK_GL( "shader bind_texture glBindTexture" );
+            CHECK_GL;
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	  }
       }
@@ -157,12 +151,12 @@ GLSphere::~GLSphere()
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, _texId[0] );
-        CHECK_GL( "no shader bind_texture glBindTexture" );
+        CHECK_GL;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
       }
 
 
-    CHECK_GL( "draw_sphere enable 2D textures" );
+    CHECK_GL;
 
     bool use_lut = _view->use_lut() && _lut && GLEW_EXT_texture3D;
     if ( use_lut && _lut )
@@ -291,7 +285,7 @@ GLSphere::~GLSphere()
               }
 	  }
 
-	CHECK_GL( "draw_sphere shader parameters" );
+	CHECK_GL;
       }
 
     glMatrixMode( GL_MODELVIEW );
@@ -337,7 +331,7 @@ GLSphere::~GLSphere()
 	_lut->disable();
       }
 
-    CHECK_GL( "draw_sphere" );
+    CHECK_GL;
   }
 
 
