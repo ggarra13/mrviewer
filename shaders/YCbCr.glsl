@@ -7,23 +7,22 @@
  * 
  */
 
-
 // Images
 uniform sampler2D YImage;
 uniform sampler2D UImage;
 uniform sampler2D VImage;
 uniform sampler3D lut;
 
-// Interlaced/Checkerboard controls
-uniform int mask;
-uniform int mask_value;
-uniform int height;
-uniform int width;
-
 // Standard controls
 uniform float gain;
 uniform float gamma;
 uniform int   channel;
+
+// Interlaced/Checkerboard controls (don't work)
+uniform int mask = 0;
+uniform int mask_value = 1000;
+uniform int height = 128;
+uniform int width  = 128;
 
 // Normalization variables
 uniform bool  premult;
@@ -81,8 +80,35 @@ void main()
       c.b = yuv.r + 2.017 * yuv.g;
   }
 
+  vec2 tc = gl_TexCoord[0].st;
   c.rgb = clamp( c.rgb, 0.0, 1.0 );
   c.a = 1.0;
+  int x = 0;
+  
+  if ( mask == 1 )  // even odd rows
+  {
+      float f = tc.y * height;
+      x = int( mod( f, 2 ) );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+  else if ( mask == 2 ) // even odd columns
+  {
+      float f2 = tc.x * width;
+      x = int( mod( f2, 2 ) );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+  else if ( mask == 3 ) // checkerboard
+  {
+      float f = tc.y * height;
+      float f2 = tc.x * width;
+      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+
+  if ( x == mask_value )
+  {
+      c.r = c.g = c.b = c.a = 0.0;
+  }
 
   //
   // Apply normalization
@@ -101,6 +127,11 @@ void main()
       c.rgb = exp( texture3D(lut, c.rgb).rgb ); 
     }
 
+  if ( unpremult )
+  {
+    c.rgb /= c.a;
+  }
+  
   //
   // Apply gain 
   //
@@ -141,6 +172,11 @@ void main()
     {
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
+
+  if ( premult )
+  {
+      c.rgb *= c.a;
+  }
 
   gl_FragColor = c;
 } 
