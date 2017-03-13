@@ -1,3 +1,12 @@
+v3.5.3   - Using a single instance of mrViewer was not removing
+	   the mrViewer.lock.prefs file.  Fixed.
+	 - OpenGL was crashing the program on loading an image
+	   when the graphics card was not an NVidia card.
+	   Fixed.
+	 - Removed sRGBColorspace hint from wandImage creator
+	   (png, tiffs, etc), as it was leading to two gamma
+	   corrections in other programs.
+
 v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter 
 	   when 3d lut was a set of values up to 1023 or less.
 	   Now the script properly auto detects the depth to use.
