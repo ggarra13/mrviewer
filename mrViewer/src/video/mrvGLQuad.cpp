@@ -61,11 +61,6 @@
                            // with GL_BGR formats and high resolutions
 
 
-#if 1
-#  define CHECK_GL(x) GLEngine::handle_gl_errors(x)
-#else
-#  define CHECK_GL(x)
-#endif
 
 // PBO macro (see spec for details)
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -248,18 +243,18 @@ namespace mrv {
       {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	CHECK_GL( "init_texture glTexParameter wrap clamp to edge" );
+	CHECK_GL;
       }
     else
       {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	CHECK_GL( "init_texture glTexParameter wrap clamp" );
+	CHECK_GL;
       }
 
     
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    CHECK_GL( "init_texture glTexEnv mode replace" );
+    CHECK_GL;
   }
 
   GLQuad::GLQuad( const ImageView* view ) :
@@ -292,11 +287,11 @@ namespace mrv {
 
     if ( GLEngine::pboTextures() ) {
        glGenBuffers( _num_textures, _pbo );
-       CHECK_GL( "glGenBuffers" );
+       CHECK_GL;
     }
 
     glGenTextures( _num_textures, _texId );
-    CHECK_GL( "glGenTextures" );
+    CHECK_GL;
 
 
     for ( unsigned i = 0; i < _num_textures; ++i )
@@ -304,15 +299,15 @@ namespace mrv {
 	if ( GLEngine::maxTexUnits() > 3 )
 	{
 	  glActiveTexture(GL_TEXTURE0 + i);
-	  CHECK_GL( "init_textures glActiveTexture" );
+	  CHECK_GL;
 	}
 
 	glEnable( GL_TEXTURE_2D );
-	CHECK_GL( "init_textures glEnable" );
+	CHECK_GL;
 	
 
 	glBindTexture(GL_TEXTURE_2D, _texId[i] );
-	CHECK_GL( "init_textures glBindTexture" );
+	CHECK_GL;
 
 	init_texture();
       }
@@ -323,10 +318,10 @@ namespace mrv {
       if ( GLEngine::pboTextures() )
       {
           glDeleteBuffers( _num_textures, _pbo );
-          CHECK_GL( "glDeleteBuffers" );
+          CHECK_GL;
       }
       glDeleteTextures( _num_textures, _texId );
-      CHECK_GL( "glDeleteTextures" );
+      CHECK_GL;
 
     // NOTE: we don't delete neither the shader nor the lut, as those
     //       are not managed by us.
@@ -367,7 +362,7 @@ namespace mrv {
               
 	      // bind pixel buffer
 	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
-              CHECK_GL( "glBindBuffer" );
+              CHECK_GL;
 
 	      //
 	      // This avoids a potential stall.
@@ -376,7 +371,7 @@ namespace mrv {
 	      //   	   rw*rh*pixel_size, NULL, GL_STREAM_DRAW);
 	      glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
 	        	   tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
-              CHECK_GL( "glBufferData" );
+              CHECK_GL;
 
 	      // Acquire a pointer to the first data item in this buffer object
 	      // by mapping it to the so-called unpack buffer target. The unpack
@@ -395,7 +390,7 @@ namespace mrv {
 	      //
 	      char* ioMem = (char*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, 
 						GL_WRITE_ONLY );
-              CHECK_GL( "glMapBuffer" );
+              CHECK_GL;
 	      if ( !ioMem ) 
 		{
 		  LOG_ERROR("Could not map pixel buffer #" << idx );
@@ -435,7 +430,7 @@ namespace mrv {
 	      //
 	      glTexSubImage2D(GL_TEXTURE_2D, 0, rx, ry, rw, rh, format, 
 			      pixel_type, BUFFER_OFFSET(0) );
-              CHECK_GL( "glTexSubImage2D" );
+              CHECK_GL;
 	      //
 	      // Unbind buffer object by binding it to zero.
 	      // This call is crucial, as doing the following computations
@@ -445,7 +440,7 @@ namespace mrv {
 	      // Refer to the specification to learn more about which 
 	      // GL calls act differently while a buffer is bound.
 	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-              CHECK_GL( "glBindBuffer" );
+              CHECK_GL;
 	    }
 	  else
 #endif // TEST_NO_PBO_TEXTURES
@@ -462,9 +457,9 @@ namespace mrv {
 			       format,        // format
 			       pixel_type, 
 			       pixels );
-              CHECK_GL( "no PBO glTexSubImage2D" );
+              CHECK_GL;
 	    }
-	CHECK_GL( "bind_texture glTexSubImage2D" );
+	CHECK_GL;
       }
     else
       {
@@ -485,10 +480,10 @@ namespace mrv {
         {
             glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry, rw, 1, format,
                              pixel_type, pixels );
-            CHECK_GL( "bind_texture glTexSubImage2D" );
+            CHECK_GL;
             glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry+off, rw, 1, format,
                              pixel_type, pixels );
-            CHECK_GL( "bind_texture glTexSubImage2D" );
+            CHECK_GL;
         }
       }
 
@@ -531,16 +526,16 @@ namespace mrv {
 	int idx = (i == 3 ? 4 : i);
 
 	glActiveTexture(GL_TEXTURE0 + idx);
-	CHECK_GL( "bind_texture_yuv glActiveTexture" );
+	CHECK_GL;
 
 	glEnable( GL_TEXTURE_2D );
-	CHECK_GL( "bind_texture_yuv glEnable" );
+	CHECK_GL;
 
 	glBindTexture(GL_TEXTURE_2D, _texId[i] );
-	CHECK_GL( "bind_texture_yuv glBindTexture" );
+	CHECK_GL;
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	CHECK_GL( "bind_texture_yuv glPixelStore" );
+	CHECK_GL;
 
 
 	unsigned int tw = dw;
@@ -633,7 +628,7 @@ namespace mrv {
 		// pass NULL for the image data leaves the texture image
 		// unspecified.
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-                CHECK_GL( "bind_texture_yuv glBindBuffer" );
+                CHECK_GL;
 	      }
 #endif
 
@@ -661,7 +656,7 @@ namespace mrv {
 			  pixel_type,         // texture pixel type
 			  NULL );        // texture pixel data
 
-	    CHECK_GL( "bind_texture_yuv glTexImage2D" );
+	    CHECK_GL;
 	  }
 
           unsigned off = 0;
@@ -748,16 +743,16 @@ namespace mrv {
     // Load & bind the texture
     if ( GLEW_ARB_multitexture )
     {
-        CHECK_GL( "Before glActiveTexture" );
+        CHECK_GL;
         glActiveTexture( GL_TEXTURE0 );
-        CHECK_GL( "glActiveTexture" );
+        CHECK_GL;
     }
 
     glBindTexture( GL_TEXTURE_2D, _texId[0] );
-    CHECK_GL( "!bind_texture glBindTexture" );
+    CHECK_GL;
 
     glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-    CHECK_GL( "bind_texture glPixelStore" );
+    CHECK_GL;
 
 
     unsigned tw = dw;
@@ -805,7 +800,7 @@ namespace mrv {
 	    // pass NULL for the image data leaves the texture image
 	    // unspecified.
 	    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-            CHECK_GL( "glBindBuffer" );
+            CHECK_GL;
 	  }
 #endif
 
@@ -833,7 +828,7 @@ namespace mrv {
 		      _pixel_type, 
 		      NULL );
 
-	CHECK_GL( "bind_texture glTexImage2D" );
+	CHECK_GL;
 
       }
 
@@ -902,7 +897,7 @@ namespace mrv {
 
   void GLQuad::bind( const image_type_ptr& pic )
   {
-      CHECK_GL( "bind" );
+      CHECK_GL;
     if ( ! pic ) {
         LOG_ERROR( _("Not a picture to be bound") );
         return;
@@ -961,10 +956,10 @@ namespace mrv {
 	  {
               short idx = (i == 3 ? (short) 4 : i ); 
               glActiveTexture(GL_TEXTURE0 + idx);
-              CHECK_GL( "shader bind_texture glActiveTexture" );
+              CHECK_GL;
               glEnable(GL_TEXTURE_2D);
               glBindTexture(GL_TEXTURE_2D, _texId[i] );
-              CHECK_GL( "shader bind_texture glBindTexture" );
+              CHECK_GL;
               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	  }
       }
@@ -975,12 +970,12 @@ namespace mrv {
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, _texId[0] );
-        CHECK_GL( "no shader bind_texture glBindTexture" );
+        CHECK_GL;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
       }
 
 
-    CHECK_GL( "draw_quad enable 2D textures" );
+    CHECK_GL;
 
     bool use_lut = _view->use_lut() && _lut && GLEW_EXT_texture3D;
     if ( use_lut && _lut )
@@ -999,6 +994,9 @@ namespace mrv {
 	    _shader->setTextureUnit( "YImage", 0 );
 	    _shader->setTextureUnit( "UImage", 1 );
 	    _shader->setTextureUnit( "VImage", 2 );
+            if ( _shader == GLEngine::YByRyAShader() ||
+                 _shader == GLEngine::YCbCrAShader() )
+                _shader->setTextureUnit( "AImage", 4 );
 	  }
 	else
 	  {
@@ -1006,35 +1004,49 @@ namespace mrv {
 	  }
 
 	_shader->setTextureUnit( "lut", 3 );
+	CHECK_GL;
 
         _shader->setUniform( "mask", (int) _mask );
+	CHECK_GL;
         _shader->setUniform( "mask_value", (int) _mask_value );
+	CHECK_GL;
          // if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
          //     _shader->setUniform( "width", (int) (_width/2) );
          // else
              _shader->setUniform( "width", (int) _width );
+	CHECK_GL;
          // if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
          //     _shader->setUniform( "height", (int) (_height/2) );
          // else
              _shader->setUniform( "height", (int) _height );
+	CHECK_GL;
 
 	_shader->setUniform( "gain",  _view->gain() );
+	CHECK_GL;
 	_shader->setUniform( "gamma", 1.0f/_gamma );
+	CHECK_GL;
 
 	_shader->setUniform( "channel", _view->channel_type() );
+	CHECK_GL;
 
 	if ( use_lut && _lut )
 	  {
 	    _shader->setUniform( "enableLut", 1 );
+	CHECK_GL;
 	    _shader->setUniform( "lutMin", _lut->lutMin );
+	CHECK_GL;
 	    _shader->setUniform( "lutMax", _lut->lutMax );
+	CHECK_GL;
 	    _shader->setUniform( "lutM", _lut->lutM );
+	CHECK_GL;
 	    _shader->setUniform( "lutT", _lut->lutT );
+	CHECK_GL;
 	    // 	  _shader->setUniform( "lutF", _lut->lutF );
 	  }
 	else
 	  {
 	    _shader->setUniform( "enableLut", 0 );
+	CHECK_GL;
 	  }
 
         const mrv::ViewerUI* v = _view->main();
@@ -1056,24 +1068,31 @@ namespace mrv {
         }
 
         _shader->setUniform( "premult", premult );
+	CHECK_GL;
         if ( _shader == GLEngine::rgbaShader() )
             _shader->setUniform( "unpremult", unpremult );
+	CHECK_GL;
 
 	if ( _view->normalize() )
 	  {
 	    _shader->setUniform( "enableNormalization", 1 );
+	CHECK_GL;
 	    _shader->setUniform( "normMin",  _normMin);
+	CHECK_GL;
 	    _shader->setUniform( "normSpan", _normMax - _normMin );
+	CHECK_GL;
 	  }
 	else
 	  {
 	    _shader->setUniform( "enableNormalization", 0 );
+	CHECK_GL;
 	  }
 
 	if ( _shader == GLEngine::YByRyShader() ||
 	     _shader == GLEngine::YByRyAShader() )
 	  {
 	    _shader->setUniform( "yw", _yw[0], _yw[1], _yw[2] );
+	CHECK_GL;
 	  }
 	else if ( _shader == GLEngine::YCbCrShader() ||
 		  _shader == GLEngine::YCbCrAShader() )
@@ -1085,37 +1104,53 @@ namespace mrv {
               if ( colorspace == "BT709" )
               {
                   _shader->setUniform( "coeffs", 1 );
+	CHECK_GL;
                   // HDTV  YCbCr coefficients
                   _shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
+	CHECK_GL;
                   _shader->setUniform( "Kr", 1.0f, 0.0f, 1.28033f );
+	CHECK_GL;
                   _shader->setUniform( "Kg", 1.0f, -0.21482f, -0.38059f );
+	CHECK_GL;
                   _shader->setUniform( "Kb", 1.0f, 2.12798f, 0.0f );
+	CHECK_GL;
               }
               else if ( colorspace == "BT470BG" || 
                         colorspace == "SMPTE170M" )
               {
                   _shader->setUniform( "coeffs", 1 );
+	CHECK_GL;
                   // STV  YCbCr coefficients
                   _shader->setUniform( "Koff", -16.0f/255.0f, -0.5f, -0.5f );
+	CHECK_GL;
                   _shader->setUniform( "Kr", 1.0f, 0.0f, 1.59602715f );
+	CHECK_GL;
                   _shader->setUniform( "Kg", 1.0f, -0.39465f, -0.58060f );
+	CHECK_GL;
                   _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
+	CHECK_GL;
               }
               else if ( colorspace == "YCOCG" )
               {
                   _shader->setUniform( "coeffs", 1 );
+	CHECK_GL;
                   _shader->setUniform( "Koff", 0.f, 0.f, 0.f );
+	CHECK_GL;
                   _shader->setUniform( "Kr", 1.0f, -1.0f, 1.0f );  // Y
+	CHECK_GL;
                   _shader->setUniform( "Kg", 1.0f,  1.0f, 0.0f );  // Cg
+	CHECK_GL;
                   _shader->setUniform( "Kb", 1.0f, -1.0f, -1.0f ); // Co
+	CHECK_GL;
               }
               else
               {
                   _shader->setUniform( "coeffs", 0 );
+	CHECK_GL;
               }
 	  }
 
-	CHECK_GL( "draw_quad shader parameters" );
+	CHECK_GL;
       }
 
 
@@ -1164,7 +1199,7 @@ namespace mrv {
 	_lut->disable();
       }
 
-    CHECK_GL( "draw_quad" );
+    CHECK_GL;
   }
 
 
@@ -1406,7 +1441,7 @@ namespace mrv {
 		      ptr );
       }
 
-    CHECK_GL("drawField");
+    CHECK_GL;
     if ( zoom_fraction < 1e-5 ) return;
 
     // To avoid floating point errors, we send two lines
@@ -1438,6 +1473,7 @@ namespace mrv {
 		      _pixel_type,	// type
 		      ptr );
       }
+    CHECK_GL;
   }
 
 
