@@ -38,8 +38,6 @@
 #include <GL/glut.h>
 // #include <GL/gl.h>
 
-#  define CHECK_GL(x) GLEngine::handle_gl_errors( N_( x ) )
-
 #include <fltk/gl.h>
 #include <fltk/Font.h>
 
