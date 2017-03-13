@@ -443,7 +443,7 @@ IF(WIN32)
   # sure there is at least one SET of four (4) backlasshes.
   SET(CPACK_NSIS_MODIFY_PATH ON)
   
-  SET(CPACK_GENERATOR NSIS ZIP )
+  SET(CPACK_GENERATOR ZIP NSIS )
 
   #  SET(CMAKE_INSTALL_DEBUG_LIBRARIES true)
   
