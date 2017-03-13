@@ -33,7 +33,7 @@
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
-#define USE_STEREO_GL
+//#define USE_STEREO_GL
 
 #include <vector>
 #include <iostream>
@@ -111,11 +111,6 @@ namespace fltk {
 
 
 
-#if 1
-#  define CHECK_GL(x) GLEngine::handle_gl_errors( N_( x ) )
-#else
-#  define CHECK_GL(x)
-#endif
 
 namespace mrv {
 
@@ -143,19 +138,18 @@ namespace mrv {
   //
   // Check for opengl errors and print function name where it happened.
   //
-  void GLEngine::handle_gl_errors(const char* where)
+void GLEngine::handle_gl_errors(const char* where, const unsigned line )
   {
       GLenum error = glGetError();
       if ( error == GL_NO_ERROR ) return;
 
       while (error != GL_NO_ERROR)
       {
-          LOG_ERROR( where << _(": Error ") << error << " " <<
-                     gluErrorString(error) );
+          LOG_ERROR( where << " (" << line << ")"
+                     << _(": Error ") << error << " "
+                     << gluErrorString(error) );
           error = glGetError();
       }
-
-      exit(1);
   }
 
 
@@ -248,7 +242,7 @@ void GLEngine::init_charset()
     XFreeFont( gdc, hfont );
 #endif
 
-  CHECK_GL("init_charset");
+  CHECK_GL;
 }
 
 
@@ -262,7 +256,7 @@ void GLEngine::init_textures()
   // Get maximum texture resolution for gfx card
   GLint glMaxTexDim;
   glGetIntegerv(GL_MAX_TEXTURE_SIZE, &glMaxTexDim);
-  CHECK_GL("init_textures get max texture size");
+  CHECK_GL;
 
 #ifndef TEST_NO_PBO_TEXTURES // test not using pbo textures
   _pboTextures = ( GLEW_ARB_pixel_buffer_object != GL_FALSE );
@@ -275,7 +269,7 @@ void GLEngine::init_textures()
     {
 #ifndef TEST_NO_YUV
       glGetIntegerv(GL_MAX_TEXTURE_UNITS, &_maxTexUnits);
-      CHECK_GL("init_textures get max tex units");
+      CHECK_GL;
 
       if ( _maxTexUnits >= 3 )  _has_yuv = true;
 #endif
@@ -403,9 +397,9 @@ void GLEngine::initialize()
       if ( _has_yuv )
 	{
 	  _has_yuva = false;
-	  if ( _maxTexUnits > 4 )
+	  if ( _maxTexUnits > 4 )  // @todo: bug fix
 	    {
-	      _has_yuva = true;
+                _has_yuva = true;
 	    }
 	}
 
@@ -524,7 +518,7 @@ void GLEngine::initialize()
       alloc_quads( 4 );
 
 
-  CHECK_GL("initGL");
+  CHECK_GL;
 }
 
 
@@ -546,25 +540,29 @@ void GLEngine::reset_view_matrix()
     ImageView* view = const_cast< ImageView* >( _view );
     if (! view->vr() )
     {
-        CHECK_GL( "view ortho next" );
+        CHECK_GL;
         view->ortho();
-        CHECK_GL( "view ortho returned" );
+        CHECK_GL;
     }
     else
     {
         unsigned w = _view->w();
         unsigned h = _view->h();
         glLoadIdentity();
+  CHECK_GL;
         glViewport(0, 0, w, h);
+  CHECK_GL;
         gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
+  CHECK_GL;
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
+  CHECK_GL;
     }
   
     // Makes gl a tad faster
     glDisable(GL_DEPTH_TEST);
-    CHECK_GL( "glDisable GL_DEPTH_TEST" );
+    CHECK_GL;
     glDisable(GL_LIGHTING);
-    CHECK_GL( "glDisable GL_LIGHTING" );
+    CHECK_GL;
 }
 
 void GLEngine::evaluate( const CMedia* img,
@@ -610,14 +608,17 @@ void GLEngine::refresh_luts()
  */
 void GLEngine::clear_canvas( float r, float g, float b, float a )
 {
-    CHECK_GL( "Clear canvas mask next" );
+    CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+  CHECK_GL;
     glClearColor(r, g, b, a );
-    CHECK_GL( "Clear canvas color" );
+    CHECK_GL;
     glClear( GL_STENCIL_BUFFER_BIT );
+  CHECK_GL;
     glClear( GL_COLOR_BUFFER_BIT );
+  CHECK_GL;
     glShadeModel( GL_FLAT );
-    CHECK_GL( "Clear canvas" );
+    CHECK_GL;
 }
 
 void GLEngine::set_blend_function( int source, int dest )
@@ -625,7 +626,7 @@ void GLEngine::set_blend_function( int source, int dest )
   // So compositing works properly
   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glBlendFunc( (GLenum) source, (GLenum) dest );
-  CHECK_GL( "glBlendFunc" );
+  CHECK_GL;
 }
 
 void GLEngine::color( uchar r, uchar g, uchar b, uchar a = 255 )
@@ -643,15 +644,15 @@ bool GLEngine::init_fbo( ImageList& images )
    if ( ! _fboRenderBuffer ) return false;
 
    glGenTextures(1, &textureId);
-   CHECK_GL( "glGenTextures" );
+   CHECK_GL;
    glBindTexture(GL_TEXTURE_2D, textureId);
-   CHECK_GL( "glBindTexture" );
+   CHECK_GL;
    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-   CHECK_GL( "glPixelStorei" );
+   CHECK_GL;
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-   CHECK_GL( "glTexParameterf" );
+   CHECK_GL;
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   CHECK_GL( "glTexParameterf" );
+   CHECK_GL;
 
    GLenum internalFormat = GL_RGBA32F_ARB;
    GLenum dataFormat = GL_RGBA;
@@ -673,17 +674,17 @@ bool GLEngine::init_fbo( ImageList& images )
 		dataFormat,  // texture data format
 		pixelType, // texture pixel type 
 		NULL);    // texture pixel data
-   CHECK_GL( "glTexImage2D" );
+   CHECK_GL;
 
    glGenFramebuffers(1, &id);
-   CHECK_GL( "glGenFramebuffers" );
+   CHECK_GL;
    glBindFramebuffer(GL_FRAMEBUFFER, id);
-   CHECK_GL( "glBindFramebuffer" );
+   CHECK_GL;
 
    glGenRenderbuffers(1, &rid);
-   CHECK_GL( "glGenRenderbuffers" );
+   CHECK_GL;
    glBindRenderbuffer( GL_RENDERBUFFER, rid );
-   CHECK_GL( "glBindRenderbuffer" );
+   CHECK_GL;
 
 
 
@@ -692,22 +693,22 @@ bool GLEngine::init_fbo( ImageList& images )
 
    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL, 
 			  w, h );
-   CHECK_GL( "glBindRenderbufferStorage" );
+   CHECK_GL;
    glBindRenderbuffer( GL_RENDERBUFFER, 0 );
-   CHECK_GL( "glBindRenderbuffer" );
+   CHECK_GL;
  
    // attach a texture to FBO color attachement point
    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
     			  GL_TEXTURE_2D, textureId, 0);
-   CHECK_GL( "glFramebufferTexture2D" );
+   CHECK_GL;
 
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
 			     GL_RENDERBUFFER, rid);
-   CHECK_GL( "glFramebufferRenderbuffer depth" );
+   CHECK_GL;
 
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, 
 			     GL_RENDERBUFFER, rid);
-   CHECK_GL( "glFramebufferRenderbuffer stencil" );
+   CHECK_GL;
 
    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
    if ( status != GL_FRAMEBUFFER_COMPLETE )
@@ -741,7 +742,7 @@ void GLEngine::end_fbo( ImageList& images )
    if ( ! _fboRenderBuffer ) return;
 
    glBindTexture(GL_TEXTURE_2D, textureId);
-   CHECK_GL( "end_fbo glBindTexture" );
+   CHECK_GL;
 
    Image_ptr img = images.back();
    mrv::image_type_ptr pic = img->hires();
@@ -750,16 +751,16 @@ void GLEngine::end_fbo( ImageList& images )
    unsigned w = pic->width();
    unsigned h = pic->height();
    glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
-   CHECK_GL( "glCopyTexSubImage2D" );
+   CHECK_GL;
    glBindTexture(GL_TEXTURE_2D, 0);
-   CHECK_GL( "glBindTexture 0" );
+   CHECK_GL;
 
    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-   CHECK_GL( "glBindFramebuffer" );
+   CHECK_GL;
    glDeleteFramebuffers(1, &id);
-   CHECK_GL( "glDeleteFramebuffers" );
+   CHECK_GL;
    glDeleteRenderbuffers(1, &rid);
-   CHECK_GL( "glDeleteRenderbuffers" );
+   CHECK_GL;
 
 }
 
@@ -771,24 +772,32 @@ void GLEngine::draw_title( const float size,
   void* font = GLUT_STROKE_MONO_ROMAN;
 
   glMatrixMode(GL_MODELVIEW);
+  CHECK_GL;
   glPushMatrix();
+  CHECK_GL;
   glLoadIdentity();
+  CHECK_GL;
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  CHECK_GL;
   glEnable(GL_BLEND);
+  CHECK_GL;
   glEnable(GL_LINE_SMOOTH);
+  CHECK_GL;
   
   glLineWidth(4.0);
+  CHECK_GL;
 
   int sum = 0;
   for (const char* p = text; *p; ++p)
       sum += glutStrokeWidth( font, *p );
-  CHECK_GL( "glutStrokeWidth" );
+  CHECK_GL;
   
   float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
 
   float rgb[4];
   glGetFloatv( GL_CURRENT_COLOR, rgb );
+  CHECK_GL;
 
   glColor4f( 0.f, 0.f, 0.f, 1.0f );
   glLoadIdentity();
@@ -796,22 +805,31 @@ void GLEngine::draw_title( const float size,
   glScalef( size, size, 1.0 );
   for (const char* p = text; *p; ++p)
     glutStrokeCharacter( font, *p );
-  CHECK_GL( "glutStrokeCharacter" );
+  CHECK_GL;
 
   glColor4f( rgb[0], rgb[1], rgb[2], rgb[3] );
+  CHECK_GL;
   glLoadIdentity();
+  CHECK_GL;
   glTranslatef( x-2, float(y+2), 0 );
+  CHECK_GL;
   glScalef( size, size, 1.0 );
+  CHECK_GL;
   for (const char* p = text; *p; ++p)
     glutStrokeCharacter( font, *p );
-  CHECK_GL( "glutStrokeCharacter" );
+  CHECK_GL;
 
   glMatrixMode( GL_MODELVIEW );
+  CHECK_GL;
   glPopMatrix();
 
+  CHECK_GL;
   glDisable(GL_BLEND);
+  CHECK_GL;
   glDisable(GL_LINE_SMOOTH);
+  CHECK_GL;
   glLineWidth(1.0);
+  CHECK_GL;
 }
 
 /** 
@@ -871,18 +889,18 @@ void GLEngine::draw_square_stencil( const int x, const int y,
                                     const int x2, const int y2)
 {
     glClear( GL_STENCIL_BUFFER_BIT );
-    CHECK_GL( "glClear STENCIL_BUFFER" );
+    CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-    CHECK_GL( "draw_square_stencil glColorMask" );
+    CHECK_GL;
     glDepthMask( GL_FALSE );
-    CHECK_GL( "draw_square_stencil glDepthMask" );
+    CHECK_GL;
     glColor4f( 0.0f, 0.0f, 0.0f, 0.0f );
     glEnable( GL_STENCIL_TEST );
-    CHECK_GL( "draw_square_stencil glEnable Stencil test" );
+    CHECK_GL;
     glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
-    CHECK_GL( "draw_square_stencil glStencilFunc" );
+    CHECK_GL;
     glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
-    CHECK_GL( "draw_square_stencil glStencilOp" );
+    CHECK_GL;
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -972,7 +990,7 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
         glScaled( 1.0, pr, 1.0 );
     }
 
-    CHECK_GL( "set_matrix flip" );
+    CHECK_GL;
 
 }
 
@@ -1219,7 +1237,7 @@ void GLEngine::translate( double x, double y )
 void GLEngine::draw_images( ImageList& images )
 {
     TRACE( "" );
-    CHECK_GL("draw_images");
+    CHECK_GL;
 
   // Check if lut types changed since last time
   static int  RT_lut_old_algorithm = Preferences::kLutPreferCTL;
@@ -1292,7 +1310,7 @@ void GLEngine::draw_images( ImageList& images )
 
     TRACE( "" );
 
-  CHECK_GL( "glPrealloc quads GL_BLEND" );
+  CHECK_GL;
 
   size_t num = _quads.size();
   if ( num_quads > num )
@@ -1324,7 +1342,7 @@ void GLEngine::draw_images( ImageList& images )
   const Image_ptr& bg = images.front();
 
   glDisable( GL_BLEND );
-  CHECK_GL( "glDisable GL_BLEND" );
+  CHECK_GL;
 
   for ( i = images.begin(); i != e; ++i, ++q )
     {
@@ -1392,14 +1410,18 @@ void GLEngine::draw_images( ImageList& images )
       }
 
       glDisable( GL_BLEND );
+  CHECK_GL;
 
       glMatrixMode(GL_MODELVIEW);
+  CHECK_GL;
       glPushMatrix();
+  CHECK_GL;
 
       if ( !_view->vr() )
       {
           glTranslatef( float(daw.x() - img->eye_separation()),
                         float(-daw.y()), 0 );
+  CHECK_GL;
 
           if ( _view->main()->uiPixelRatio->value() )
               glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
@@ -1407,8 +1429,9 @@ void GLEngine::draw_images( ImageList& images )
           else
               glScaled( double(texWidth), double(texHeight), 1.0 );
 
+          CHECK_GL;
           glTranslated( 0.5, -0.5, 0.0 );
-          CHECK_GL( "!view_vr translate" );
+          CHECK_GL;
       }
       
       GLQuad* quad = *q;
@@ -1455,12 +1478,13 @@ void GLEngine::draw_images( ImageList& images )
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+          CHECK_GL;
 
 #ifdef USE_STEREO_GL
          if ( stereo & CMedia::kStereoOpenGL )
          {
              glDrawBuffer( GL_BACK_LEFT );
-             CHECK_GL( "glDrawBuffer GL_BACK_LEFT" );
+             CHECK_GL;
          }
 #endif
 
@@ -1482,6 +1506,7 @@ void GLEngine::draw_images( ImageList& images )
          }
 
          glDisable( GL_BLEND );
+          CHECK_GL;
          if ( img->image_damage() & CMedia::kDamageContents )
          {
              if ( stereo & CMedia::kStereoRight )
@@ -1501,14 +1526,18 @@ void GLEngine::draw_images( ImageList& images )
          if ( stereo != CMedia::kStereoLeft &&
               stereo != CMedia::kStereoRight )
          {
+          CHECK_GL;
              glMatrixMode( GL_MODELVIEW );
+          CHECK_GL;
              glPopMatrix();
+          CHECK_GL;
          
              if ( stereo & CMedia::kStereoSideBySide )
                  glTranslated( dpw.w(), 0, 0 );
              else if ( stereo & CMedia::kStereoTopBottom )
                  glTranslated( 0, -dpw.h(), 0 );
 
+          CHECK_GL;
              mrv::Recti dpw2 = img->display_window2(frame);
              mrv::Recti daw2 = img->data_window2(frame);
 
@@ -1519,8 +1548,11 @@ void GLEngine::draw_images( ImageList& images )
              }
 
 
+          CHECK_GL;
              glMatrixMode(GL_MODELVIEW);
+          CHECK_GL;
              glPushMatrix();
+          CHECK_GL;
 
 
              if ( dpw2 != daw2 )
@@ -1567,6 +1599,7 @@ void GLEngine::draw_images( ImageList& images )
 
  
              glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
+          CHECK_GL;
 
 
              if ( _view->main()->uiPixelRatio->value() )
@@ -1575,8 +1608,11 @@ void GLEngine::draw_images( ImageList& images )
                            1.0 );
              else
                  glScaled( double(texWidth), double(texHeight), 1.0 );
+          CHECK_GL;
+
 
              glTranslated( 0.5, -0.5, 0 );
+          CHECK_GL;
 
          }
       }
@@ -1602,7 +1638,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( stereo & CMedia::kStereoOpenGL )
       {
           glDrawBuffer( GL_BACK_RIGHT );
-          CHECK_GL( "glDrawBuffer GL_BACK_RIGHT" );
+          CHECK_GL;
       }
 #endif
 
@@ -2422,7 +2458,7 @@ void GLEngine::release()
     TRACE("");
     if ( sCharset ) {
         glDeleteLists( sCharset, 255 );
-        CHECK_GL( "glDeleteLists" );
+        CHECK_GL;
     }
     
     TRACE("");
