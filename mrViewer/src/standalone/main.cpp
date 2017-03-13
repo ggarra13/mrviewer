@@ -25,7 +25,7 @@
  * 
  */
 
-//#define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+// #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 
 #include <string.h>
 #include <locale.h>
@@ -376,7 +376,6 @@ int main( int argc, char** argv )
           ok = -1;
       }
 
-#if 0
       if( fs::exists(lockfile) )
       {
           try {
@@ -396,7 +395,6 @@ int main( int argc, char** argv )
               LOG_ERROR( _("Unknown error") );
           }
       }
-#endif
       break;
   }
   MagickWandTerminus();
