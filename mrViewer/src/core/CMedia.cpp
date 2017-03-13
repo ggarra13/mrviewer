@@ -535,6 +535,8 @@ CMedia::~CMedia()
   delete [] _displayWindow2;
   _displayWindow2 = NULL;
 
+  _hires.reset();
+  
   clear_cache();
   delete [] _sequence;
   _sequence = NULL;
