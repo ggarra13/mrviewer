@@ -1006,20 +1006,42 @@ namespace mrv {
 	_shader->setTextureUnit( "lut", 3 );
 	CHECK_GL;
 
-        _shader->setUniform( "mask", _mask );
-	CHECK_GL;
-        _shader->setUniform( "mask_value", _mask_value );
-	CHECK_GL;
-         // if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
-         //     _shader->setUniform( "width", (int) (_width/2) );
-         // else
-        _shader->setUniform( "width", _width );
-	CHECK_GL;
-         // if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
-         //     _shader->setUniform( "height", (int) (_height/2) );
-         // else
-        _shader->setUniform( "height", _height );
-	CHECK_GL;
+        // @bug: these are defined as int in the shader but
+        //       GLSL sees them as floats.
+        if ( GLEngine::shader_type() == GLEngine::kGLSL )
+        {
+            _shader->setUniform( "mask", (float)_mask );
+            CHECK_GL;
+            _shader->setUniform( "mask_value", (float)_mask_value );
+            CHECK_GL;
+            // if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+            //     _shader->setUniform( "width", (int) (_width/2) );
+            // else
+            _shader->setUniform( "width", (float)_width );
+            CHECK_GL;
+            // if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+            //     _shader->setUniform( "height", (int) (_height/2) );
+            // else
+            _shader->setUniform( "height", (float)_height );
+            CHECK_GL;
+        }
+        else
+        {
+            _shader->setUniform( "mask", _mask );
+            CHECK_GL;
+            _shader->setUniform( "mask_value", _mask_value );
+            CHECK_GL;
+            // if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+            //     _shader->setUniform( "width", (int) (_width/2) );
+            // else
+            _shader->setUniform( "width", _width );
+            CHECK_GL;
+            // if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+            //     _shader->setUniform( "height", (int) (_height/2) );
+            // else
+            _shader->setUniform( "height", _height );
+            CHECK_GL;
+        }
 
 	_shader->setUniform( "gain",  _view->gain() );
 	CHECK_GL;
