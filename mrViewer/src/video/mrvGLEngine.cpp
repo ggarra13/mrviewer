@@ -138,18 +138,20 @@ namespace mrv {
   //
   // Check for opengl errors and print function name where it happened.
   //
-void GLEngine::handle_gl_errors(const char* where, const unsigned line )
+void GLEngine::handle_gl_errors(const char* where, const unsigned line,
+                                const bool print )
   {
       GLenum error = glGetError();
       if ( error == GL_NO_ERROR ) return;
 
       while (error != GL_NO_ERROR)
       {
-#ifdef  _DEBUG
-          LOG_ERROR( where << " (" << line << ")"
-                     << _(": Error ") << error << " "
-                     << gluErrorString(error) );
-#endif
+          if ( print )
+          {
+              LOG_ERROR( where << " (" << line << ")"
+                         << _(": Error ") << error << " "
+                         << gluErrorString(error) );
+          }
           error = glGetError();
       }
   }
