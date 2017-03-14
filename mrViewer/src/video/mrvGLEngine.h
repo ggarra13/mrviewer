@@ -40,6 +40,8 @@
 #  define CHECK_GL
 #endif
 
+#define FLUSH_GL_ERRORS GLEngine::handle_gl_errors( __FUNCTION__, __LINE__ )
+
 namespace mrv {
 
 
