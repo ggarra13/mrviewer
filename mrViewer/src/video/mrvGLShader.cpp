@@ -383,7 +383,7 @@ namespace mrv {
 
 
 
-  void GLShader::setUniform( const GLint location, const int x  )
+  void GLShader::setUniform( const GLint location, const GLint x  )
   {
       glUniform1i( location, x );
   }
@@ -415,7 +415,7 @@ namespace mrv {
       {
 	GLint location = glGetUniformLocation( _program, uniform );
 	CHECK_GL;
-	setUniform( location, x );
+ 	setUniform( location, x );
 	CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
