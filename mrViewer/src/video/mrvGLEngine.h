@@ -35,7 +35,7 @@
 #include "mrvDrawEngine.h"
 
 #if 0
-#  define CHECK_GL GLEngine::handle_gl_errors( __FUNCTION__, __LINE__ )
+#  define CHECK_GL GLEngine::handle_gl_errors( __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL
 #endif
@@ -130,7 +130,8 @@ namespace mrv {
 
 
     /// Auxiliary function used to check for openGL errors
-      static void handle_gl_errors(const char* function, const unsigned line);
+      static void handle_gl_errors(const char* function, const unsigned line,
+                                   const bool print = false);
 
   protected:
       void set_matrix( const ImageView::FlipDirection flip = 
