@@ -145,9 +145,11 @@ void GLEngine::handle_gl_errors(const char* where, const unsigned line )
 
       while (error != GL_NO_ERROR)
       {
+#ifdef  _DEBUG
           LOG_ERROR( where << " (" << line << ")"
                      << _(": Error ") << error << " "
                      << gluErrorString(error) );
+#endif
           error = glGetError();
       }
   }
