@@ -1721,6 +1721,7 @@ void GLEngine::draw_images( ImageList& images )
   glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
   glDisable( GL_SCISSOR_TEST );
   glDisable( GL_BLEND );
+  FLUSH_GL_ERRORS;
 }
 
 void GLEngine::draw_shape( GLShape* const shape )
