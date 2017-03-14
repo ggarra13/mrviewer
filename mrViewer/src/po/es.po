@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-03-13 15:58-0300\n"
+"POT-Creation-Date: 2017-03-14 09:47-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -667,7 +667,7 @@ msgstr ": No pude encontrar información de pistas."
 msgid ": Could not open filename."
 msgstr ": No pude abrir el archivo."
 
-#: video/mrvGLEngine.cpp:149
+#: video/mrvGLEngine.cpp:150
 msgid ": Error "
 msgstr ": Error "
 
@@ -1683,7 +1683,7 @@ msgstr "No pude localizar el perfil ICC \""
 msgid "Could not open ICC profile embedded in \""
 msgstr "No pude localizar el perfil ICC dentro de \""
 
-#: video/mrvGLEngine.cpp:232
+#: video/mrvGLEngine.cpp:234
 msgid "Could not open any font of size "
 msgstr "No pude abrir ningun font de tamaño "
 
@@ -2483,7 +2483,7 @@ msgstr "Vacía busqueda o preroll"
 msgid "End"
 msgstr "Fin"
 
-#: video/mrvGLEngine.cpp:476
+#: video/mrvGLEngine.cpp:478
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "Variable de entorno MRV_SHADER_PATH no encontrada, usando shader interno."
@@ -2743,7 +2743,7 @@ msgstr "Voltear en Y"
 msgid "Float"
 msgstr "Coma Flotante"
 
-#: video/mrvGLEngine.cpp:176
+#: video/mrvGLEngine.cpp:178
 msgid "Float Textures:\t"
 msgstr "Texturas de Coma Flotante:\t"
 
@@ -2827,19 +2827,19 @@ msgstr "Cuadro de finalización del clip en el archivo"
 msgid "Frame start of clip in file"
 msgstr "Cuadro de comienzo del clip en el archivo"
 
-#: video/mrvGLEngine.cpp:722
+#: video/mrvGLEngine.cpp:724
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Framebuffer incomplete: Atadura NO esta completa."
 
-#: video/mrvGLEngine.cpp:729
+#: video/mrvGLEngine.cpp:731
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Framebuffer incompleto: buffer de Dibujo."
 
-#: video/mrvGLEngine.cpp:726
+#: video/mrvGLEngine.cpp:728
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Framebuffer incompleto: No hay imagen atada al FBO."
 
-#: video/mrvGLEngine.cpp:733
+#: video/mrvGLEngine.cpp:735
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Framebuffer incompleto: Buffer de lectura."
 
@@ -2894,7 +2894,7 @@ msgstr "V"
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
-#: video/mrvGLEngine.cpp:292
+#: video/mrvGLEngine.cpp:294
 msgid "GLEW Initialize Error: "
 msgstr "Error de Inicializar GLEW: "
 
@@ -3016,15 +3016,15 @@ msgstr "HW"
 msgid "Half"
 msgstr "Half"
 
-#: video/mrvGLEngine.cpp:177
+#: video/mrvGLEngine.cpp:179
 msgid "Half Textures:\t"
 msgstr "Texturas Half:\t"
 
-#: video/mrvGLEngine.cpp:174
+#: video/mrvGLEngine.cpp:176
 msgid "Hardware Shaders:\t"
 msgstr "Shaders de Hardware:\t"
 
-#: video/mrvGLEngine.cpp:489
+#: video/mrvGLEngine.cpp:491
 msgid "Hardware shaders not available."
 msgstr "Hardware Shaders no disponibles."
 
@@ -3616,11 +3616,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:2418
+#: video/mrvGLEngine.cpp:2420
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:2423
+#: video/mrvGLEngine.cpp:2425
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -3716,7 +3716,7 @@ msgstr "Imagen Map"
 msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
-#: video/mrvGLEngine.cpp:180
+#: video/mrvGLEngine.cpp:182
 msgid "Max. Texture Size:\t"
 msgstr "Max. Tamaño Textura:\t"
 
@@ -3900,10 +3900,10 @@ msgstr "Próxima Imagen"
 
 #: gui/mrvFileRequester.cpp:813 gui/mrvImageBrowser.cpp:643
 #: gui/mrvImageBrowser.cpp:1930 gui/mrvImageInformation.cpp:1908
-#: video/mrvGLEngine.cpp:175 video/mrvGLEngine.cpp:176
-#: video/mrvGLEngine.cpp:177 video/mrvGLEngine.cpp:179
-#: video/mrvGLEngine.cpp:183 video/mrvGLEngine.cpp:184
-#: video/mrvGLEngine.cpp:185
+#: video/mrvGLEngine.cpp:177 video/mrvGLEngine.cpp:178
+#: video/mrvGLEngine.cpp:179 video/mrvGLEngine.cpp:181
+#: video/mrvGLEngine.cpp:185 video/mrvGLEngine.cpp:186
+#: video/mrvGLEngine.cpp:187
 msgid "No"
 msgstr "No"
 
@@ -3972,7 +3972,7 @@ msgstr "No existe una transformación RT válida para \""
 msgid "Non-Drop Frame Timecode"
 msgstr "Codigo de Tiempo Sin Derrochar Cuadros"
 
-#: video/mrvGLEngine.cpp:178
+#: video/mrvGLEngine.cpp:180
 msgid "Non-POT Textures:\t"
 msgstr "Texturas Non-POT:\t"
 
@@ -4276,7 +4276,7 @@ msgstr "Propietario"
 msgid "PAL Video"
 msgstr "Vídeo PAL"
 
-#: video/mrvGLEngine.cpp:175
+#: video/mrvGLEngine.cpp:177
 msgid "PBO Textures:\t"
 msgstr "Texturas PBO:\t"
 
@@ -4755,7 +4755,7 @@ msgstr "Transformación de Render"
 msgid "Render Transforms"
 msgstr "Transformación de Render"
 
-#: video/mrvGLEngine.cpp:172
+#: video/mrvGLEngine.cpp:174
 msgid "Renderer:\t"
 msgstr "Renderer:\t"
 
@@ -4839,7 +4839,7 @@ msgstr "Modo de Redondeo"
 msgid "S"
 msgstr "S"
 
-#: video/mrvGLEngine.cpp:185
+#: video/mrvGLEngine.cpp:187
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
@@ -5443,7 +5443,7 @@ msgstr "Sobreimpreso de Texto"
 msgid "Text Tool"
 msgstr "Herramienta de Texto"
 
-#: video/mrvGLEngine.cpp:182
+#: video/mrvGLEngine.cpp:184
 msgid "Texture Units:\t"
 msgstr "Unidades de Textura:\t"
 
@@ -5885,8 +5885,8 @@ msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
 #: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2077
-#: gui/mrvImageInformation.cpp:525 video/mrvGLEngine.cpp:163
-#: video/mrvGLEngine.cpp:166 video/mrvGLEngine.cpp:169
+#: gui/mrvImageInformation.cpp:525 video/mrvGLEngine.cpp:165
+#: video/mrvGLEngine.cpp:168 video/mrvGLEngine.cpp:171
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -5942,7 +5942,7 @@ msgstr "Formato de render de pixel desconocido"
 msgid "Unknown rounding mode"
 msgstr "Modo de Redondeo desconocido"
 
-#: video/mrvGLEngine.cpp:1828
+#: video/mrvGLEngine.cpp:1830
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -5952,7 +5952,7 @@ msgstr "Dirección de wipe desconocida"
 msgid "Unspecified"
 msgstr "Sin Especificar"
 
-#: video/mrvGLEngine.cpp:719
+#: video/mrvGLEngine.cpp:721
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
@@ -5989,7 +5989,7 @@ msgstr "Use multiples hilos (threads) cuando se carge un cuadro"
 msgid "User Interface"
 msgstr "Interfaz de Usuario"
 
-#: video/mrvGLEngine.cpp:393
+#: video/mrvGLEngine.cpp:395
 msgid "Using hardware shader profile: "
 msgstr "Usando perfil de shader de hardware: "
 
@@ -6027,11 +6027,11 @@ msgstr "Valores"
 msgid "Vectorscope"
 msgstr "Vectorscopio"
 
-#: video/mrvGLEngine.cpp:171
+#: video/mrvGLEngine.cpp:173
 msgid "Vendor:\t"
 msgstr "Vendedor:\t"
 
-#: video/mrvGLEngine.cpp:173
+#: video/mrvGLEngine.cpp:175
 msgid "Version:\t"
 msgstr "Versión:\t"
 
@@ -6501,7 +6501,7 @@ msgstr "YDbDr (SECAM/PAL-N Analógico)"
 msgid "YIQ (Analog NTSC)"
 msgstr "YIQ (NTSC Analógico)"
 
-#: video/mrvGLEngine.cpp:183
+#: video/mrvGLEngine.cpp:185
 msgid "YUV  Support:\t"
 msgstr "Soporte YUV:\t"
 
@@ -6544,16 +6544,16 @@ msgstr ""
 msgid "YUV444"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:184
+#: video/mrvGLEngine.cpp:186
 msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
 #: gui/mrvFileRequester.cpp:813 gui/mrvImageBrowser.cpp:643
 #: gui/mrvImageBrowser.cpp:1930 gui/mrvImageInformation.cpp:1908
-#: video/mrvGLEngine.cpp:175 video/mrvGLEngine.cpp:176
-#: video/mrvGLEngine.cpp:177 video/mrvGLEngine.cpp:179
-#: video/mrvGLEngine.cpp:183 video/mrvGLEngine.cpp:184
-#: video/mrvGLEngine.cpp:185
+#: video/mrvGLEngine.cpp:177 video/mrvGLEngine.cpp:178
+#: video/mrvGLEngine.cpp:179 video/mrvGLEngine.cpp:181
+#: video/mrvGLEngine.cpp:185 video/mrvGLEngine.cpp:186
+#: video/mrvGLEngine.cpp:187
 msgid "Yes"
 msgstr "Sí"
 
@@ -6765,7 +6765,7 @@ msgstr "mrViewer    FRENTE: %s"
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"
 
-#: video/mrvGLEngine.cpp:507
+#: video/mrvGLEngine.cpp:509
 msgid "mrViewer does not support YUV images."
 msgstr "mrViewer no soporta imágenes de YUV."
 
@@ -6785,11 +6785,11 @@ msgstr ""
 "mrViewer soporta scripts de CTL y Perfiles ICC cocinados en 3D luts.  Estos "
 "settings controlan la calidad del 3D Lut."
 
-#: video/mrvGLEngine.cpp:502
+#: video/mrvGLEngine.cpp:504
 msgid "mrViewer supports YUV images through shaders."
 msgstr "mrViewer soporta imágenes YUV con shaders."
 
-#: video/mrvGLEngine.cpp:498
+#: video/mrvGLEngine.cpp:500
 msgid "mrViewer supports YUVA images through shaders."
 msgstr "mrViewer soporta imágenes YUVA con shaders."
 
