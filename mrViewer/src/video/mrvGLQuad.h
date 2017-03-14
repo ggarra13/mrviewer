@@ -50,8 +50,8 @@ class GLQuad
     inline void right( bool x ) { _right = x; }
     inline bool right() const { return _right; }
 
-    inline void mask( unsigned int m ) { _mask = m; }
-    inline void mask_value( unsigned int m ) { _mask_value = m; }
+    inline void mask( int m ) { _mask = m; }
+    inline void mask_value( int m ) { _mask_value = m; }
     
     inline float gamma() const { return _gamma; }
     inline void gamma( const float f ) { _gamma = f; }
@@ -134,10 +134,10 @@ class GLQuad
     GLenum       _pixel_type;
 
     image_type::Format _format; 
-    unsigned int _mask;
-    unsigned int _mask_value;
-    unsigned int _width;
-    unsigned int _height;
+    int _mask;
+    int _mask_value;
+    int _width;
+    int _height;
     unsigned int _channels;
     uvCoords     _uvMax; 
 
