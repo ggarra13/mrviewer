@@ -1,11 +1,12 @@
 /**
- * @file   rgba.glsl
+ * @file   YCbCr.glsl
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  * 
  * @brief    simple YCbCr texture with 3D lut shader
  * 
  */
+
 
 // Images
 uniform sampler2D YImage;
@@ -19,10 +20,10 @@ uniform float gamma;
 uniform int   channel;
 
 // Interlaced/Checkerboard controls (don't work)
-uniform int mask = 0;
-uniform int mask_value = 1000;
-uniform int height = 128;
-uniform int width  = 128;
+uniform int mask;
+uniform int mask_value;
+uniform int height;
+uniform int width;
 
 // Normalization variables
 uniform bool  premult;
@@ -54,9 +55,10 @@ void main()
   //
   vec4 c;	
   vec3 pre;
-  pre.r = texture2D(YImage, gl_TexCoord[0].st).r;  // Y
-  pre.g = texture2D(UImage, gl_TexCoord[0].st).r;  // U
-  pre.b = texture2D(VImage, gl_TexCoord[0].st).r;  // V
+  vec2 uv = gl_TexCoord[0];
+  pre.r = texture2D(YImage, uv.st).r;  // Y
+  pre.g = texture2D(UImage, uv.st).r;  // U
+  pre.b = texture2D(VImage, uv.st).r;  // V
 
   if ( coeffs )
   {
