@@ -294,8 +294,17 @@ GLSphere::~GLSphere()
     ImageView* v = const_cast< ImageView* >( _view );
     double x = _view->rot_x();
     double y = _view->rot_y();
-    sp->_rotY += y;
-    sp->_rotX += x;
+    if ( x >= 1000.0 )
+    {
+        v->rot_x( 0.0 );
+        sp->_rotY = 0.0;
+        sp->_rotX = 0.0;
+    }
+    else
+    {
+        sp->_rotY += y;
+        sp->_rotX += x;
+    }
     
     glRotated( _rotX, 1, 0, 0 );
     glRotated( _rotY, 0, 1, 0 );

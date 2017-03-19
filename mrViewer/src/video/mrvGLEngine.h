@@ -97,6 +97,9 @@ namespace mrv {
 
     virtual void translate( double x, double y );
 
+    virtual void angle( const float x ) { vr_angle = x; }
+    virtual float angle() const { return vr_angle; }
+
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images );
 
@@ -189,14 +192,15 @@ namespace mrv {
 
       int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
-       GLuint textureId;       //!< The off-screen texture
-    GLuint lutId;              //!< The lut texture index
-    float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
+      GLuint textureId;       //!< The off-screen texture
+      GLuint lutId;              //!< The lut texture index
+      float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
 
-       GLuint id, rid;
+      GLuint id, rid;
       bool    vr;
-    QuadList  _quads;
-
+      float   vr_angle;
+      QuadList  _quads;
+      
 
     //
     // GFX card limits
