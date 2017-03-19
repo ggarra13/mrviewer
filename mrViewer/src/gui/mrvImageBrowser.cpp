@@ -1343,7 +1343,6 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     if ( first != mrv::kMaxFrame ) frame( first );
 
     CMedia* img;
-
     if ( start != AV_NOPTS_VALUE )
         img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     else
