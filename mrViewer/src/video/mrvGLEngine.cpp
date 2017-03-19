@@ -556,7 +556,7 @@ void GLEngine::reset_view_matrix()
   CHECK_GL;
         glViewport(0, 0, w, h);
   CHECK_GL;
-        gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
+        gluPerspective( vr_angle, (float)w / (float)h, 0.1, 3.0);
   CHECK_GL;
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
   CHECK_GL;
@@ -1258,7 +1258,7 @@ void GLEngine::draw_images( ImageList& images )
       int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
       const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->text();
       int lut_quality = uiPrefs->uiLUT_quality->value();
-      unsigned num_stops = uiPrefs->uiPrefsNumStops->value();
+      unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
 
       // Check if there was a change effecting lut.
       if ( ( RT_lut_algorithm != RT_lut_old_algorithm ) ||
@@ -2483,7 +2483,8 @@ GLEngine::GLEngine(const mrv::ImageView* v) :
 DrawEngine( v ),
 texWidth( 0 ),
 texHeight( 0 ),
-vr( false )
+vr( false ),
+vr_angle( 45.0 )
 {
   initialize();
 }
