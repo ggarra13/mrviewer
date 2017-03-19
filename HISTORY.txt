@@ -1,3 +1,25 @@
+v3.5.4	 - Restored sRGBColorspace hint as it was not the cause
+	   of double gamma.  It is a bug with Windows' photo
+	   app.
+	 - Allowed sequences without first periods, like:
+	   	   image0001.pic
+	   instead of image.0001.pic or image_0001.pic
+	 - Improved window positioning when image is too large.
+	   Previously, the borders would be placed outside the
+	   desktop.
+	 - Bug fixed VR 360 which had clipping planes too close
+	   to the enclosing sphere and could run into floating
+	   point errors ( leading to a cut off sphere ).
+	 - Added zooming into the VR 360 view with mousewheel
+	   or CTRL+ALT+RMB.  The zooming is always done on the
+	   center of the screen.  Not where the mouse is.
+	 - In VR, 'f' key will reset the view angle to 45 degrees.
+	 - In VR, 'c' key will center the rotation the view at 0
+	   degrees in X and Y.
+	 - Added name of maintainer in DEB file.
+	 - Made postrm and posinst scripts in DEB file be 0755
+	   permissions.
+
 v3.5.3   - Using a single instance of mrViewer was not removing
 	   the mrViewer.lock.prefs file.  Fixed.
 	 - OpenGL was crashing the program on loading an image
