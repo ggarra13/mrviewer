@@ -85,26 +85,24 @@ void main()
   vec2 tc = gl_TexCoord[0].st;
   c.rgb = clamp( c.rgb, 0.0, 1.0 );
   c.a = 1.0;
-  int x = 0;
+  
+  int x = 1000;
   
   if ( mask == 1 )  // even odd rows
   {
       float f = tc.y * height;
       x = int( mod( f, 2 ) );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
   else if ( mask == 2 ) // even odd columns
   {
       float f2 = tc.x * width;
       x = int( mod( f2, 2 ) );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
   else if ( mask == 3 ) // checkerboard
   {
       float f = tc.y * height;
       float f2 = tc.x * width;
       x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
 
   if ( x == mask_value )

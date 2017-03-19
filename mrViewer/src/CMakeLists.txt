@@ -486,30 +486,43 @@ ELSEIF (UNIX)
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
       "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
-    
-    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer-bin.desktop.in
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-bin-v${VERSION}.desktop" )
-    
 
     INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" 
       DESTINATION ${MRV_DESKTOP_DIR})
     
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-bin-v${VERSION}.desktop" 
-            DESTINATION ${MRV_DESKTOP_DIR})
 
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer.png 
             DESTINATION ${MRV_PIXMAPS_DIR})
 
-    # try to set up the menu system
 
     SET(CPACK_GENERATOR DEB TGZ RPM )
-    #SET(CPACK_GENERATOR RPM )
 
     # SET the installation directory.
     
     SET(CPACK_SET_DESTDIR ON) # Needed
     SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
 
+    # SET Debian options.
+    
+    # Configure install/uninstall scripts
+    CONFIGURE_FILE(
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
+        @ONLY)
+    CONFIGURE_FILE(
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
+        @ONLY)  
+
+    SET(CPACK_DEBIAN_PACKAGE_NAME mrviewer)
+    SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Gonzalo Garramuño <ggarra13@gmail.com>")
+
+    SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm)
+
+      # SET RPM options.
+    
     # Configure install/uninstall scripts
 
     CONFIGURE_FILE(
@@ -520,30 +533,12 @@ ELSEIF (UNIX)
         ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
         @ONLY)
-    CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
-        @ONLY)
-    CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
-        @ONLY)  
 
-      # SET RPM options.
     
     SET(CPACK_RPM_PACKAGE_NAME mrViewer)
     SET(CPACK_RPM_PACKAGE_RELOCATABLE ON)
     SET(CPACK_RPM_PACKAGE_RELEASE 2 )
     # SET(CPACK_RPM_PACKAGE_DEBUG 1 )
-    
-    # SET Debian options.
-    
-    SET(CPACK_DEBIAN_PACKAGE_NAME mrviewer)
-    SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ggarra13@gmail.com")
-
-    SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
-        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
-        ${PROJECT_BINARY_DIR}/etc/Linux/postrm)
 
     SET(
         CPACK_RPM_POST_INSTALL_SCRIPT_FILE

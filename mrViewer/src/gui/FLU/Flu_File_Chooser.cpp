@@ -3195,6 +3195,11 @@ void Flu_File_Chooser::value( const char *v )
 	  redraw();
 	  return;
 	}
+      else
+      {
+          e->clear_selected();
+          redraw();
+      }
     }
 }
 
