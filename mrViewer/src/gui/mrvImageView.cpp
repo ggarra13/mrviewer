@@ -3728,7 +3728,20 @@ void ImageView::mouseDrag(int x,int y)
 
       if ( flags & kZoom ) 
 	{
-            zoom( _zoom + float(dx)*_zoom / 500.0f );
+            if ( vr() )
+            {
+                float vr_angle = _engine->angle();
+                vr_angle -= float(dx) / 10.0;
+                if ( vr_angle >= 90.0 ||
+                     vr_angle <= 5.0 ) return;
+                _engine->angle( vr_angle );
+                valid(0);
+            }
+            else
+            {
+                zoom( _zoom + float(dx)*_zoom / 500.0f );
+            }
+
             lastX = x;
             lastY = y;
 	}
@@ -4175,11 +4188,20 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kCenterImage.match(rawkey) )
     {
+        if ( vr() )
+        {
+            rotx = 2000.0; // >= 1000.0 resets rotation in mrvGLSphere.cpp
+        }
         center_image();
         return 1;
     }
     else if ( kFitScreen.match( rawkey ) ) 
     {
+        if ( vr() )
+        {
+            _engine->angle( 45.0f );
+            valid(0);
+        }
         fit_image();
         return 1;
     }
@@ -4599,6 +4621,7 @@ void ImageView::toggle_fullscreen()
 
   take_focus();
 
+  
   fltk::check();
   
   char buf[128];
@@ -4696,6 +4719,7 @@ void ImageView::toggle_presentation()
   fltk_main()->take_focus();
 
   take_focus();
+
 
   fltk::check();
 
@@ -5035,15 +5059,26 @@ int ImageView::handle(int event)
             return keyUp(fltk::event_key());
         case fltk::MOUSEWHEEL:
             {
-                if ( fltk::event_dy() < 0.f )
+                if ( vr() )
                 {
-                    zoom_under_mouse( _zoom * 2.0f, 
-                                      fltk::event_x(), fltk::event_y() );
+                    float vr_angle = _engine->angle();
+                    vr_angle += fltk::event_dy();
+                    if ( vr_angle >= 90.0f || vr_angle <= 5.0f ) return 1;
+                    _engine->angle( vr_angle );
+                    valid(0);  // to reset matrix
                 }
                 else
                 {
-                    zoom_under_mouse( _zoom * 0.5f, 
-                                      fltk::event_x(), fltk::event_y() );
+                    if ( fltk::event_dy() < 0.f )
+                    {
+                        zoom_under_mouse( _zoom * 2.0f, 
+                                          fltk::event_x(), fltk::event_y() );
+                    }
+                    else
+                    {
+                        zoom_under_mouse( _zoom * 0.5f, 
+                                          fltk::event_x(), fltk::event_y() );
+                    }
                 }
                 return 1;
                 break;
@@ -5549,10 +5584,9 @@ void ImageView::gamma( const float f )
  */
 void ImageView::zoom( float z )
 {
+
   if ( z > kMaxZoom || z < kMinZoom ) return;
 
-  if ( vr() ) z = 1.0f;
-  
   static char tmp[128];
   if ( z >= 1.0f )
     {
@@ -5728,7 +5762,7 @@ void ImageView::exposure_change( float d )
  */
 void ImageView::zoom_under_mouse( float z, int x, int y )
 {
-  if ( z == _zoom || z > kMaxZoom || z < kMinZoom ) return;
+    if ( !vr() && (z == _zoom || z > kMaxZoom || z < kMinZoom) ) return;
   double mw = (double) w() / 2;
   double mh = (double) h() / 2;
   double offx = mw - x;
@@ -6238,10 +6272,12 @@ void ImageView::resize_main_window()
   if ( uiMain->uiBottomBar->visible() )
     h += uiMain->uiBottomBar->h();
 
+  const unsigned kMenus = 30;
+  
   fltk::Monitor monitor = fltk::Monitor::all();
   int minx = monitor.work.x();
-  int miny = monitor.work.y() + 8;
-  int maxh = monitor.work.h() - 8;
+  int miny = monitor.work.y() + kMenus;
+  int maxh = monitor.work.h() - kMenus - 6;
   int maxw = monitor.work.w();
 
   bool fit = false;
@@ -6252,11 +6288,12 @@ void ImageView::resize_main_window()
   if ( h > maxh ) { fit = true; h = maxh; }
   if ( h < 550 )  h = 550;
 
-  if ( posX < minx )     posX = minx;
   if ( posX + w > maxw ) posX = maxw - w;
+  if ( posX < minx )     posX = minx;
 
-  if ( posY < miny )     posY = miny;
   if ( posY + h > maxh ) posY = maxh - h;
+  if ( posY < miny )     posY = miny;
+
 
   fltk_main()->fullscreen_off( posX, posY, w, h );
 
