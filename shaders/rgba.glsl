@@ -12,10 +12,10 @@ uniform sampler2D fgImage;
 uniform sampler3D lut;
 
 // Interlaced/Checkerboard controls
-uniform float mask;
-uniform float mask_value;
-uniform float height;
-uniform float width;
+uniform int mask;
+uniform int mask_value = 1000;
+uniform int height;
+uniform int width;
 
 // Standard controls
 uniform float gain;
@@ -108,29 +108,28 @@ void main()
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
 
-  float x = 1000.0;
+  int x = 1000;
   if ( mask == 1.0 )  // even odd rows
   {
-      x = mod( gl_TexCoord[0].t * height, 2.0 );
+      float f = tc.y * height;
+      x = int( mod( f, 2 ) );
   }
   else if ( mask == 2.0 )  // even-odd columns
   {
-      x = mod( gl_TexCoord[0].s * width, 2.0 );
+      float f2 = tc.x * width;
+      x = int( mod( f2, 2 ) );
   }
   else if ( mask == 3.0 ) // checkerboard
   {
-	x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2.0 );
-	if ( x < 1.0 ) x = 1.0;
-	else x = 0.0;
+      float f = tc.y * height;
+      float f2 = tc.x * width;
+      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
   }
 
 
   if ( x == mask_value )
   { 
-      c.r = 0.0;
-      c.g = 0.0;
-      c.b = 0.0;
-      c.a = 0.0;
+      c.r = c.g = c.b = c.a = 0.0;
   }
 
   if ( premult )

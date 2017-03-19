@@ -6,8 +6,11 @@ set( ZIPFILE32 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-32/Release/tmp/
 set( ZIPFILE64 "${CMAKE_BINARY_DIR}/../../BUILD/Windows-6.3.9600-64/Release/tmp/mrViewer/src/${mrViewerPackageName64}.zip" )
 
 FILE( GLOB NUPACKAGES "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/*.nupkg" )
-execute_process( COMMAND ${CMAKE_COMMAND} -E copy ${NUPACKAGES} old/
-    		 WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
+
+IF( NOT "${NUPACKAGES}" STREQUAL "" )
+    execute_process( COMMAND ${CMAKE_COMMAND} -E copy ${NUPACKAGES} old/
+                     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
+ENDIF( NOT "${NUPACKAGES}" STREQUAL "" )
 		     
 IF( EXISTS ${ZIPFILE32} AND EXISTS ${ZIPFILE64} )
 
