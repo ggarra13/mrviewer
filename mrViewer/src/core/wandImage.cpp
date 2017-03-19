@@ -812,8 +812,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         MagickWand* w = NewMagickWand();
 
 
-        // ColorspaceType colorspace = sRGBColorspace;
-        // MagickSetImageColorspace( w, colorspace );
+        ColorspaceType colorspace = sRGBColorspace;
+        MagickSetImageColorspace( w, colorspace );
 
 
         status = MagickConstituteImage( w, dw, dh, channels, 
@@ -921,7 +921,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
             w = NewMagickWand();
 
-            // MagickSetImageColorspace( w, colorspace );
+            MagickSetImageColorspace( w, colorspace );
             unsigned width = dpw.w();
             unsigned height = dpw.h();
 
