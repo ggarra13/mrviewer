@@ -15,10 +15,10 @@ uniform sampler2D VImage;
 uniform sampler3D lut;
 
 // Interlaced/Checkerboard controls
-uniform float mask;
-uniform float mask_value;
-uniform float height;
-uniform float width;
+uniform int mask;
+uniform int mask_value;
+uniform int height;
+uniform int width;
 
 // Standard controls
 uniform float gain;
@@ -120,7 +120,7 @@ void main()
     }
 
 
-  float x = 1000.0;
+  int x = 1000;
   if ( mask == 1.0 )  // even odd rows
   {
       x = mod( gl_TexCoord[0].t * height, 2.0 );
