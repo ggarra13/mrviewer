@@ -6288,10 +6288,10 @@ void ImageView::resize_main_window()
   if ( h > maxh ) { fit = true; h = maxh; }
   if ( h < 550 )  h = 550;
 
-  if ( posX + w > maxw ) posX = maxw - w;
+  if ( posX + w > maxw ) { posX = minx; w = maxw - posX; }
   if ( posX < minx )     posX = minx;
 
-  if ( posY + h > maxh ) posY = maxh - h;
+  if ( posY + h > maxh ) { posY = miny; h = maxh - posY; }
   if ( posY < miny )     posY = miny;
 
 
