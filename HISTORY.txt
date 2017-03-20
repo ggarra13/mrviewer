@@ -1,3 +1,10 @@
+v3.5.5   - Made YUV Conversion preference actually work.  Now
+	   it sets the color space index upon loading of the movie.
+	   You can now still change it afterwards manually in
+	   the Media Information Window.
+	 - Changed algorithm to position window when first opened.
+	   This keeps window on the Desktop.
+
 v3.5.4	 - Restored sRGBColorspace hint as it was not the cause
 	   of double gamma.  It is a bug with Windows' photo
 	   app.
