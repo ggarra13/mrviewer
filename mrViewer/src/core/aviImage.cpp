@@ -190,11 +190,13 @@ const char* const kColorSpaces[] = {
 const size_t aviImage::colorspace_index() const
 {
     if ( !_av_frame ) return 2; // Unspecified
-    if ( colorspace_override ) return colorspace_override;
     aviImage* img = const_cast< aviImage* >( this );
     if ( _colorspace_index < 0 || 
          _colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
-        img->_colorspace_index = av_frame_get_colorspace(_av_frame);
+    {
+        if ( colorspace_override ) img->_colorspace_index = colorspace_override;
+        else img->_colorspace_index = av_frame_get_colorspace(_av_frame);
+    }
     return _colorspace_index;
 }
 
@@ -1561,8 +1563,9 @@ void aviImage::video_stream( int x )
 
   _ptype = VideoFrame::kByte;
   unsigned int w = ctx->width;
-
-  _colorspace_index = ctx->color_space;
+  
+  if ( colorspace_override ) _colorspace_index = colorspace_override;
+  else _colorspace_index = ctx->color_space;
 
   switch( _av_dst_pix_fmt )
   {
