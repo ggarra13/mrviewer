@@ -750,6 +750,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsBlendMode->value(tmp);
     video.get( "yuv_hint", tmp, 0 );
     uiPrefs->uiPrefsYUVConversion->value(tmp);
+    CMedia::colorspace_override = tmp;
 
     fltk::Preferences errors( base, "errors" );
     errors.get( "raise_log_window_on_error", tmp, 0 );
