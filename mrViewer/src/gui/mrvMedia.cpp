@@ -134,15 +134,17 @@ namespace mrv {
       // Audio only clip?  Return
       mrv::image_type_ptr pic = _image->hires();
 
+      if ( !pic ) return;
+      
       unsigned dw = pic->width();
       unsigned dh = pic->height();
+      if ( dw == 0 || dh == 0 ) return;
 
       unsigned int h = _thumbnail_height;
 
       float yScale = (float)(h+1) / (float)dh;
       unsigned int w = (float)(dw+1) * (float)yScale;
 
-      if ( !pic ) return;
 
       // Resize image to thumbnail size
       pic.reset( pic->quick_resize( w, h ) );
