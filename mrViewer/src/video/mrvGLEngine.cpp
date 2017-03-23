@@ -1456,6 +1456,7 @@ void GLEngine::draw_images( ImageList& images )
               (*(q+1))->lut( img );
           }
 
+          img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
       }
 
       if ( i+1 == e ) wipe_area();
