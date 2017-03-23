@@ -37,7 +37,7 @@ namespace mrv {open
         user_data this user_data_type {mrv::StereoUI*}
         callback {v->main()->uiView->send_network( "StereoOptions 0" );
 o->hide();} open
-        xywh {814 957 280 100} resizable
+        xywh {756 561 280 160} resizable
         extra_code {main_ = main;
 o->child_of( (fltk::Window*)main->uiMain );} visible
       } {
@@ -47,7 +47,7 @@ o->child_of( (fltk::Window*)main->uiMain );} visible
           callback {int x = o->value(); 
 CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
 v->uiView->stereo_input( in );}
-          xywh {80 20 175 25}
+          xywh {80 60 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
@@ -73,8 +73,8 @@ o->value( x );
           user_data main user_data_type {mrv::ViewerUI*}
           callback {int x = o->value(); 
 CMedia::StereoOutput out = CMedia::to_stereo_output( x ); 
-v->uiView->stereo_output( out );} open
-          xywh {80 60 175 25}
+v->uiView->stereo_output( out );}
+          xywh {80 100 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
@@ -130,6 +130,12 @@ else
             label {Cyan/red glasses}
             }
         }
+        {fltk::LightButton} {} {
+          label {VR 360}
+          user_data main user_data_type {ViewerUI*}
+          callback {v->uiView->vr( o->value() );} selected
+          xywh {110 20 80 30}
+        }
       }
     }
     Function {StereoUI( ViewerUI* main )} {} {
@@ -158,8 +164,7 @@ if ( m && m->uiView )
 		uiStereoOutput->value( x );
 	}
 
-}} {selected
-      }
+}} {}
     }
   }
 } 
