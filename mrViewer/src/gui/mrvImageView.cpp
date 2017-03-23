@@ -584,25 +584,25 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 
 }
 
-void hud_all_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
+void hud_toggle_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
   int i;
-  int num = uiMain->uiPrefs->uiPrefsHud->children();
-  unsigned int hud = 0;
-  for ( i = 0; i < num; ++i )
-    {
-        if ( o->state() )
-        {
-            hud |= ( 1 << i );
-        }
-        else
-        {
-            hud = 0;
-        }
-    }
+  static mrv::ImageView::HudDisplay hud_save = mrv::ImageView::kHudNone;
+  mrv::ImageView::HudDisplay hud;
+  
+  if ( hud_save == mrv::ImageView::kHudNone )
+  {
+      hud_save = view->hud();
+      hud = mrv::ImageView::kHudNone;
+  }
+  else
+  {
+      hud = hud_save;
+      hud_save = mrv::ImageView::kHudNone;
+  }
 
-  view->hud( (mrv::ImageView::HudDisplay) hud );
+  view->hud( hud );
   view->redraw();
 }
 
@@ -1956,28 +1956,6 @@ void ImageView::vr( bool t )
  */
 void ImageView::draw()
 {
-
-    
-    // if ( fg )
-    // {
-    //     CMedia* img = fg->image();
-    //     if ( img->vr() )
-    //     {
-    //         std::cerr << "img->vr  view->vr " << _vr << std::endl;
-    //         _vr = true;
-    //     }
-    //     else
-    //     {
-    //         std::cerr << "!img->vr  view->vr " << _vr << std::endl;
-    //         if ( _vr == true ) {
-    //             img->image_damage( img->image_damage() |
-    //                                CMedia::kDamageContents );
-    //             valid(0);
-    //         }
-    //         _vr = false;
-    //     }
-    // }
-
  
   if ( !valid() ) 
     {
@@ -2214,7 +2192,6 @@ void ImageView::draw()
   if ( _hud == kHudNone )
     return;
 
-  // _engine->end_fbo( images );
 
   std::ostringstream hud;
   hud.str().reserve( 512 );
@@ -2260,7 +2237,12 @@ void ImageView::draw()
 
   if ( _hud & kHudResolution )
   {
-      const mrv::Recti& d = img->data_window();
+      mrv::Recti d = img->data_window();
+      if ( d.w() == 0 )
+      {
+          // Work around for data window not set yet (use previous frame)
+          d = img->data_window( img->frame()-1 );
+      }
       sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
       draw_text( r, g, b, 5, y, buf );
       y -= yi;
@@ -2629,17 +2611,11 @@ int ImageView::leftMouseDown(int x, int y)
 	       if ( mask == _masking ) item->set();
 	    }
 	    
+            sprintf( buf, _("View/Hud/Toggle Selected") );
+            item = menu.add( buf, kHudToggle.hotkey(),
+                             (fltk::Callback*)hud_toggle_cb, uiMain );
+            
 	    num = uiMain->uiPrefs->uiPrefsHud->children();
-            sprintf( buf, _("View/Hud/All") );
-            item = menu.add( buf, 0, (fltk::Callback*)hud_all_cb, uiMain );
-            item->type( fltk::Item::TOGGLE );
-            item->clear();
-            bool all = true;
-	    for ( i = 0; i < num; ++i )
-	    {
-                if ( (hud() & (1 << i)) == 0 ) {all=false; break; }
-            }
-            if ( all ) item->set();
 	    for ( i = 0; i < num; ++i )
 	    {
 	       tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
@@ -4224,6 +4200,12 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kDisplayWindow.match( rawkey ) )
     {
         display_window( display_window() ^ true );
+        redraw();
+        return 1;
+    }
+    else if ( kHudToggle.match( rawkey ) )
+    {
+        hud_toggle_cb( NULL, uiMain );
         redraw();
         return 1;
     }
