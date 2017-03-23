@@ -712,6 +712,7 @@ mrv::image_type_ptr CMedia::left() const
     
     if ( _is_sequence && _sequence[idx] ) pic = _sequence[idx];
     else if ( _stereo[0] ) pic = _stereo[0];
+    if ( !pic ) return pic;
     
     img->_w = pic->width();
     img->_h = pic->height();
@@ -1349,7 +1350,6 @@ void CMedia::image_size( int w, int h )
   _w = w;
   _h = h;
 
-  vr_layers();
 }
 
 
@@ -1431,26 +1431,6 @@ void CMedia::lumma_layers()
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
-bool vr360_layer(const std::string& s )
-{
-    return ( s == _("VR 360") );
-}
-
-/** 
- * Add vr360 to list of layers
- * 
- */
-void CMedia::vr_layers()
-{
-    if ( _h * 2 == _w || _layers.size() < 6 )
-    {
-        if ( find_if( _layers.begin(), _layers.end(), vr360_layer) != _layers.end() )
-            return;
-        _layers.push_back( _("VR 360") );
-        image_damage( image_damage() | kDamageLayers | kDamageData );
-    }
-}
-
 /** 
  * Add image's default RGBA layers
  * 
@@ -1497,24 +1477,13 @@ void CMedia::channel( const char* c )
 
     if (c)
     {
+        
         ch = c;
-        if ( _vr360 )
-        {
-            _vr360 = false;
-            image_damage( image_damage() | kDamageContents );
-        }
-
+        
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
              ch == _("Blue")  || ch == "" ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") ) 
         {
-            c = NULL;
-            ch = "";
-        }
-        else if ( ch == _("VR 360") )
-        {
-            _vr360 = true;
-            image_damage( image_damage() | kDamageContents );
             c = NULL;
             ch = "";
         }
@@ -1523,8 +1492,6 @@ void CMedia::channel( const char* c )
 
     bool to_fetch = false;
 
-    // std::cerr << "channel " << (_channel ? _channel : "NULL" )
-    //           << " c " << ( c ? c : "NULL" ) << std::endl;
 
     if ( _channel != c )
     {
