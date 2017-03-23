@@ -1200,12 +1200,9 @@ namespace mrv {
 
 void GLQuad::lut( const CMedia* img )
 {
-    CMedia* image = const_cast<CMedia*>( img );
 
     // Check if already calculated
     if ( _lut && img == _image ) {
-        _lut_attempt = 0;
-        image->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
         return;
     }
     // Not calculated.  Count lut attempt
@@ -1224,6 +1221,7 @@ void GLQuad::lut( const CMedia* img )
 
     {
         typedef CMedia::Mutex Mutex;
+        CMedia* image = const_cast<CMedia*>( img );
         CMedia::Mutex& m = image->video_mutex();
         SCOPED_LOCK( m );
 
@@ -1233,11 +1231,7 @@ void GLQuad::lut( const CMedia* img )
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;
 
-    if ( _lut ) _lut_attempt = 0;
-    image->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
-
     _view->window()->cursor( fltk::CURSOR_DEFAULT );
-
 }
 
 
