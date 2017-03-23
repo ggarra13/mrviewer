@@ -117,12 +117,12 @@ class GLQuad
     const ImageView*   _view;
     GLShader*    _shader;
     GLLut3d*     _lut;
-    unsigned short _lut_attempt;
     const CMedia*   _image;
+    unsigned short _lut_attempt;
 
-    float        _gamma;
     bool         _right;
     bool         _blend;
+    float        _gamma;
     GLenum       _blend_mode;
     unsigned     _num_textures;
     GLuint       _pbo[4];
