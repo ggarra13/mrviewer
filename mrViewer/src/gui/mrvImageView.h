@@ -358,7 +358,7 @@ class server;
     void audio_stream( unsigned int idx );
 
       ///
-      void vr( bool t ) { _vr = t; valid(0); redraw(); }
+      void vr( bool t );
       bool vr() const { return _vr; }
       
     /// Attaches main window class to this viewer
