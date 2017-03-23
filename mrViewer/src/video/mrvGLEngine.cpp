@@ -1455,6 +1455,7 @@ void GLEngine::draw_images( ImageList& images )
                   (*(q+1))->clear_lut();
               (*(q+1))->lut( img );
           }
+
       }
 
       if ( i+1 == e ) wipe_area();
@@ -1716,7 +1717,6 @@ void GLEngine::draw_images( ImageList& images )
       glMatrixMode(GL_MODELVIEW);
       glPopMatrix();
 
-      img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
 
     }
 
