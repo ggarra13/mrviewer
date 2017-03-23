@@ -262,6 +262,7 @@ namespace mrv {
     _shader( NULL ),
     _lut( NULL ),
     _image( NULL ),
+    _lut_attempt( 0 ),
     _gamma( 1.f ),
     _right( false ),
     _blend( true ),
@@ -1197,32 +1198,47 @@ namespace mrv {
   }
 
 
-  void GLQuad::lut( const CMedia* img )
-  {
-    if ( _lut && img == _image ) return;
+void GLQuad::lut( const CMedia* img )
+{
+    CMedia* image = const_cast<CMedia*>( img );
 
+    // Check if already calculated
+    if ( _lut && img == _image ) {
+        _lut_attempt = 0;
+        image->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
+        return;
+    }
+    // Not calculated.  Count lut attempt
     if ( _lut == NULL && _image )
+    {
         ++_lut_attempt;
 
-    if ( _lut_attempt >= 2 ) return;
+        // If we failed twice or more, quick exit
+        if ( _lut_attempt >= 2 ) {
+            _lut_attempt = 1;
+            return;
+        }
+    }
 
     _view->window()->cursor( fltk::CURSOR_WAIT );
 
     {
         typedef CMedia::Mutex Mutex;
-        CMedia* image = const_cast<CMedia*>( img );
         CMedia::Mutex& m = image->video_mutex();
         SCOPED_LOCK( m );
 
-        fltk::check();
+        fltk::check();  // to display wait cursor
     }
 
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;
 
+    if ( _lut ) _lut_attempt = 0;
+    image->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
+
     _view->window()->cursor( fltk::CURSOR_DEFAULT );
 
-  }
+}
 
 
 
