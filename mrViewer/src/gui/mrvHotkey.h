@@ -186,6 +186,8 @@ extern Hotkey kClearCache;
 extern Hotkey kSetInPoint;
 extern Hotkey kSetOutPoint;
 
+extern Hotkey kHudToggle;
+
 struct HotkeyEntry
 {
      HotkeyEntry( const std::string n,
