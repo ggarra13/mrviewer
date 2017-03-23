@@ -1934,6 +1934,22 @@ void static_preload( mrv::ImageView* v )
     v->preload();
 }
 
+void ImageView::vr( bool t )
+{
+    _vr = t;
+    valid(0);
+    
+    const mrv::media& fg = foreground();
+
+    if ( fg )
+    {
+        CMedia* img = fg->image();
+        img->image_damage( img->image_damage() | CMedia::kDamageContents );
+    }
+    
+    redraw();
+}
+
 /** 
  * Main fltk drawing routine
  * 
@@ -1941,29 +1957,26 @@ void static_preload( mrv::ImageView* v )
 void ImageView::draw()
 {
 
-    const mrv::media& fg = foreground();
-    if ( fg )
-    {
-        CMedia* img = fg->image();
-        if ( img->vr() )
-        {
-            if ( _vr == false ) {
-                img->image_damage( img->image_damage() |
-                                   CMedia::kDamageContents );
-                valid(0);
-            }
-            _vr = true;
-        }
-        else
-        {
-            if ( _vr == true ) {
-                img->image_damage( img->image_damage() |
-                                   CMedia::kDamageContents );
-                valid(0);
-            }
-            _vr = false;
-        }
-    }
+    
+    // if ( fg )
+    // {
+    //     CMedia* img = fg->image();
+    //     if ( img->vr() )
+    //     {
+    //         std::cerr << "img->vr  view->vr " << _vr << std::endl;
+    //         _vr = true;
+    //     }
+    //     else
+    //     {
+    //         std::cerr << "!img->vr  view->vr " << _vr << std::endl;
+    //         if ( _vr == true ) {
+    //             img->image_damage( img->image_damage() |
+    //                                CMedia::kDamageContents );
+    //             valid(0);
+    //         }
+    //         _vr = false;
+    //     }
+    // }
 
  
   if ( !valid() ) 
@@ -2021,6 +2034,7 @@ void ImageView::draw()
   }
 
 
+    const mrv::media& fg = foreground();
   mrv::media bg = background();
   TRACE("");
 
@@ -2052,6 +2066,7 @@ void ImageView::draw()
   if ( images.empty() ) return;
   TRACE("");
   
+
   _engine->draw_images( images );
   TRACE("");
 
@@ -2244,28 +2259,17 @@ void ImageView::draw()
 
 
   if ( _hud & kHudResolution )
-    {
-        if ( img->data_window() != img->display_window() &&
-             img->data_window().w() != 0 )
-        {
-            const mrv::Recti& d = img->data_window();
-            sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
-            draw_text( r, g, b, 5, y, buf );
-            y -= yi;
-            {
-                const mrv::Recti& d = img->display_window();
-                sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
-                draw_text( r, g, b, 5, y, buf );
-                y -= yi;
-            }
-        }
-        else
-        {
-            sprintf( buf, _("RES: %dx%d"), img->width(), img->height() );
-            draw_text( r, g, b, 5, y, buf );
-            y -= yi;
-        }
-
+  {
+      const mrv::Recti& d = img->data_window();
+      sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+      draw_text( r, g, b, 5, y, buf );
+      y -= yi;
+      {
+          const mrv::Recti& d = img->display_window();
+          sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+          draw_text( r, g, b, 5, y, buf );
+          y -= yi;
+      }
     }
 
   if ( _hud & kHudFrame )
@@ -6029,8 +6033,7 @@ void ImageView::foreground( mrv::media fg )
 
             CMedia* right = img->right_eye();
             if ( right ) right->volume( _volume );
-        }
-        else
+        }       else
         {
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
@@ -6288,15 +6291,15 @@ void ImageView::resize_main_window()
   if ( h > maxh ) { fit = true; h = maxh; }
   if ( h < 550 )  h = 550;
 
+  if ( posX + w > maxw ) { posX = ( w + posX - maxw ) / 2; }
   if ( posX + w > maxw ) { posX = minx; w = maxw - posX; }
   if ( posX < minx )     posX = minx;
 
+  if ( posY + h > maxh ) { posY = ( h + posY - maxh ) / 2; }
   if ( posY + h > maxh ) { posY = miny; h = maxh - posY; }
   if ( posY < miny )     posY = miny;
 
-
   fltk_main()->fullscreen_off( posX, posY, w, h );
-
 #ifdef LINUX
   fltk_main()->hide();  // needed to show decorations under some window managers
   fltk_main()->show();
