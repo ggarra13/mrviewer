@@ -1688,6 +1688,7 @@ void GLEngine::draw_images( ImageList& images )
               quad->right( rightView );
           }
           quad->bind( pic );
+          img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
       
       quad->gamma( g );
@@ -1709,14 +1710,13 @@ void GLEngine::draw_images( ImageList& images )
                 quad->gamma( 1.0 );
                 quad->draw( texWidth, texHeight );
            }
+           img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
 	}
 
       glMatrixMode(GL_MODELVIEW);
       glPopMatrix();
 
-      img->image_damage( img->image_damage() & 
-			 ~(CMedia::kDamageContents | CMedia::kDamageLut |
-			   CMedia::kDamageSubtitle) );
+      img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
 
     }
 
