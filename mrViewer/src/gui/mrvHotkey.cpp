@@ -134,6 +134,8 @@ Hotkey kClearCache( false, false, false, false, 'k' );
 Hotkey kSetInPoint( false, false, false, false, 'i' );
 Hotkey kSetOutPoint( false, false, false, false, 'o' );
 
+Hotkey kHudToggle( true, false, false, false, 'h' );
+
 bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
@@ -278,6 +280,7 @@ HotkeyEntry( _("3dView Density Up"), kDensityUp),
 HotkeyEntry( _("3dView Density Down"), kDensityDown),
 HotkeyEntry( _("Set In Point"), kSetInPoint),
 HotkeyEntry( _("Set Out Point"), kSetOutPoint),
+HotkeyEntry( _("Toggle Hud"), kHudToggle),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 

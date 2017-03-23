@@ -1,13 +1,16 @@
-v3.5.5   - Made YUV Conversion preference actually work.  Now
-	   it sets the color space index upon loading of the movie.
-	   You can now still change it afterwards manually in
-	   the Media Information Window->Color Space.
+v3.5.5   - Made YUV Conversion preference actually work correctly.
+	   Now it sets the color space index upon loading of the movie.
+	   You can now still change it afterwards manually in the
+	   Media Information Window->Color Space.
 	 - Changed algorithm to position window when first opened.
 	   This keeps window on the Desktop and clips centered.
 	 - Consolidated not finding and loading of images.  Previously,
 	   this could crash the viewer, when creating the icons.
 	 - Moved VR360 layer as a button in 3D Stereo Window.  This
 	   allows putting any layer in 360, not just the color layer.
+	 - Added a menu and hotkey (ctrl+h) to toggle the hud display.
+	 - Removed toggle all hud as it is quite useless.
+	 - Bug fixed LUT turning itself off when switching to VR 360.
 
 v3.5.4	 - Restored sRGBColorspace hint as it was not the cause
 	   of double gamma.  It is a bug with Windows' photo
@@ -22,10 +25,10 @@ v3.5.4	 - Restored sRGBColorspace hint as it was not the cause
 	   to the enclosing sphere and could run into floating
 	   point errors ( leading to a cut off sphere ).
 	 - Added zooming into the VR 360 view with mousewheel
-	   or CTRL+ALT+RMB.  The zooming is always done on the
+	   or ALT+RMB.  The zooming is always done on the
 	   center of the screen.  Not where the mouse is.
 	 - In VR, 'f' key will reset the view angle to 45 degrees.
-	 - In VR, 'c' key will center the rotation the view at 0
+	 - In VR, 'h' key will center the rotation the view at 0
 	   degrees in X and Y.
 	 - Added name of maintainer in DEB file.
 	 - Made postrm and posinst scripts in DEB file be 0755
