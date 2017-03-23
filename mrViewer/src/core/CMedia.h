@@ -391,10 +391,6 @@ class CMedia
 
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
     void default_layers();
-    
-    // Add VR360 layer
-    void vr_layers();
-
 
 
     const mrv::Recti data_window( boost::int64_t f = AV_NOPTS_VALUE) const;
