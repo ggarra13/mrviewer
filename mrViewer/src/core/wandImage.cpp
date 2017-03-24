@@ -327,16 +327,18 @@ namespace mrv {
      image_type::PixelType pixel_type = image_type::kByte;
      StorageType storage = CharPixel;
 
-     if ( !_8bit_cache && depth == 16 && _gamma == 1.0f ) 
+     if ( !_8bit_cache )
      {
-	pixel_type = image_type::kShort;
-	storage = ShortPixel;
-     }
-
-     if ( !_8bit_cache && depth >= 32 && _gamma == 1.0f ) 
-     {
-	pixel_type = image_type::kFloat;
-	storage = FloatPixel;
+         if ( depth == 16 && _gamma == 1.0f ) 
+         {
+             pixel_type = image_type::kShort;
+             storage = ShortPixel;
+         }
+         else if ( depth >= 32 && _gamma == 1.0f ) 
+         {
+             pixel_type = image_type::kFloat;
+             storage = FloatPixel;
+         }
      }
 
      image_size( unsigned(dw), unsigned(dh) );
