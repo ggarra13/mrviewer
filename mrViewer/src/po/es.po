@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-03-24 10:35-0300\n"
+"POT-Creation-Date: 2017-03-24 10:56-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -2487,6 +2487,10 @@ msgstr "Fin"
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "Variable de entorno MRV_SHADER_PATH no encontrada, usando shader interno."
+
+#: core/aviImage.cpp:314
+msgid "Environment variable USE_FFMPEG_PNG="
+msgstr "Variable de entorno USE_FFMPEG_PNG="
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-66-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3258
 msgid "Eraser Tool"
