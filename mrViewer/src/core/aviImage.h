@@ -262,6 +262,7 @@ class aviImage : public CMedia
 
 
   protected:
+    static bool ffmpeg_use_png;
 
     std::string _format;
     std::string _compression;

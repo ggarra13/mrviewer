@@ -848,7 +848,8 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
   glLoadIdentity();
   glRasterPos2i( x, y );
 
-  glPushAttrib(GL_LIST_BIT);
+  glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST );
+  glDisable( GL_DEPTH_TEST );
   if ( sCharset )
   {
      glListBase(sCharset);
