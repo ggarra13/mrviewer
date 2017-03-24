@@ -165,6 +165,7 @@ fs::path relativePath( const fs::path &path, const fs::path &relative_to )
     return result;
 }
 
+bool aviImage::ffmpeg_use_png = false;
 int CMedia::colorspace_override = 0;
 
 const char* const kColorRange[] = {
@@ -234,7 +235,7 @@ aviImage::aviImage() :
   _compression = "";
 
   memset(&_sub, 0, sizeof(AVSubtitle));
-
+  
 }
 
 
@@ -300,13 +301,19 @@ bool aviImage::test_filename( const char* buf )
 bool aviImage::test(const boost::uint8_t *data, unsigned len)
 {
 
-
-
   if ( len < 12 ) return false;
 
 
+  ffmpeg_use_png = false;
+        
+  const char* ffmpeg = getenv( "USE_FFMPEG_PNG" );
+  if ( ffmpeg != NULL )
+  {
+      ffmpeg_use_png = (bool) atoi( ffmpeg );
+  }
+  LOG_INFO( "Environment variable USE_FFMPEG_PNG=" << ffmpeg_use_png );
+  
   unsigned int magic = ntohl( *((unsigned int*)data) );
-
 
   if ( magic == 0x000001ba || magic == 0x00000001 )
     {
@@ -378,7 +385,15 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
      if ( strncmp( (char*)data+4, "RED1", 4 ) != 0 )
 	return false;
      return true;
-  } 
+  }
+  else if ( ffmpeg_use_png && magic == 0x89504E47 )
+  {
+      // PNG
+      unsigned int tag = ntohl( *((unsigned int*)data+1) );
+      if ( tag != 0x0D0A1A0A ) return false;
+
+      return true;
+  }
   else if ( magic == 0x060E2B34 )
   {
       // MXF 
@@ -2136,12 +2151,11 @@ bool aviImage::initialize()
 
         avfilter_register_all();
 
+        
       AVDictionary *opts = NULL;
       av_dict_set(&opts, "initial_pause", "1", 0);
 
       AVInputFormat*     format = NULL;
-      // int error = avformat_open_input( &_context, filename(), 
-      //   			       format, &opts );
       int error = avformat_open_input( &_context, fileroot(), 
 				       format, &opts );
 
