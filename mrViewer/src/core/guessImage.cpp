@@ -96,8 +96,8 @@ namespace mrv {
     ImageTypes* type = image_filetypes;
     for ( ; type->get; ++type )
       {
-          if ( is_seq && type->test == aviImage::test )
-              continue;
+          // if ( is_seq && type->test == aviImage::test )
+          //     continue;
           if ( type->test )
 	  {
               if ( type->test( datas, size ) ) 
