@@ -337,6 +337,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
 
     
+    int64_t t2;
     while ( j <= max )
     {
         dx = NO_FRAME_VALUE;
@@ -345,6 +346,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         {
             if ( img->is_cache_filled( t ) >= c )
             {
+                t2 = t;
                 dx = rx + slider_position( double(j), ww );
                 break;
             }
@@ -472,8 +474,10 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 	    if ( frame + size < mn || frame > mx ) continue;
 
             if ( _draw_cache )
+            {
                 draw_cacheline( img, pos, size, int64_t(mn), int64_t(mx),
                                 frame, r );
+            }
 
 	    int dx = rx + slider_position( double(frame), ww );
 
@@ -493,8 +497,9 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                 CMedia* img = m->image();
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
-                draw_cacheline( img, 1, img->duration(), int64_t(mn),
-                                int64_t(mx), 1, r );
+                draw_cacheline( img, 1, 
+                                img->duration(), 
+                                int64_t(mn), int64_t(mx), 1, r );
             }
         }
     }

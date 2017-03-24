@@ -5,12 +5,24 @@ v3.5.5   - Made YUV Conversion preference actually work correctly.
 	 - Changed algorithm to position window when first opened.
 	   This keeps window on the Desktop and clips centered.
 	 - Consolidated not finding and loading of images.  Previously,
-	   this could crash the viewer, when creating the icons.
-	 - Moved VR360 layer as a button in 3D Stereo Window.  This
-	   allows putting any layer in 360, not just the color layer.
+	   this could crash the viewer when creating the icons.
+	 - Moved VR360 layer as a button in 3D Stereo Window from
+	   the channel pulldown.  This allows putting any layer in 360,
+	   not just the color layer.
+	 - Made caching of sequences independent of VR 360.  
+	   Previously, VR 360 would get deactivated for caching images.
 	 - Added a menu and hotkey (ctrl+h) to toggle the hud display.
 	 - Removed toggle all hud as it is quite useless.
 	 - Bug fixed LUT turning itself off when switching to VR 360.
+	 - Made HUD Resolution always display DAW (Data Window) and 
+	   DYW (Display Window).  Previously, when both were equal
+	   only a single line -RES (Resolution)- was displayed.
+	 - Added an environment variable ( USE_FFMPEG_PNG ) to switch
+	   PNG reader to that of FFMPEG.  The FFMPEG reader is faster
+	   and works like a movie file, but it fails when there are
+	   gaps in the sequence of frames and it always requires the
+	   sequence to start at frame 1.
+	 - Made HUD display in VR360 mode.
 
 v3.5.4	 - Restored sRGBColorspace hint as it was not the cause
 	   of double gamma.  It is a bug with Windows' photo
