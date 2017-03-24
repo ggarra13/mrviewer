@@ -304,6 +304,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   if ( len < 12 ) return false;
 
 
+  static bool printed = false;
   ffmpeg_use_png = false;
         
   const char* ffmpeg = getenv( "USE_FFMPEG_PNG" );
@@ -311,7 +312,12 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
       ffmpeg_use_png = (bool) atoi( ffmpeg );
   }
-  LOG_INFO( _("Environment variable USE_FFMPEG_PNG=") << ffmpeg_use_png );
+  
+  if (! printed )
+  {
+      LOG_INFO( _("Environment variable USE_FFMPEG_PNG=") << ffmpeg_use_png );
+      printed = true;
+  }
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
