@@ -311,7 +311,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
       ffmpeg_use_png = (bool) atoi( ffmpeg );
   }
-  LOG_INFO( "Environment variable USE_FFMPEG_PNG=" << ffmpeg_use_png );
+  LOG_INFO( _("Environment variable USE_FFMPEG_PNG=") << ffmpeg_use_png );
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
