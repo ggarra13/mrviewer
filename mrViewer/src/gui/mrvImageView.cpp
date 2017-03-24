@@ -587,7 +587,7 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 void hud_toggle_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
-  int i;
+
   static mrv::ImageView::HudDisplay hud_save = mrv::ImageView::kHudNone;
   mrv::ImageView::HudDisplay hud;
   
@@ -1163,7 +1163,7 @@ void ImageView::copy_pixel() const
           }
       }
       
-      if ( pic && xp < pic->width() && yp < pic->height() )
+      if ( pic && xp < (int)pic->width() && yp < (int)pic->height() )
       {
           float r = rgba.r;
           rgba = pic->pixel( xp, yp );
@@ -3460,7 +3460,6 @@ void ImageView::mouseMove(int x, int y)
   }
   else
   {
-      assert0( xp >= 0 && yp >= 0 && xp < pic->width() && yp < pic->height() );
 
       rgba = pic->pixel( xp, yp );
 
@@ -3731,9 +3730,9 @@ void ImageView::mouseDrag(int x,int y)
             if ( vr() )
             {
                 float vr_angle = _engine->angle();
-                vr_angle -= float(dx) / 10.0;
-                if ( vr_angle >= 90.0 ||
-                     vr_angle <= 5.0 ) return;
+                vr_angle -= float(dx) / 10.0f;
+                if ( vr_angle >= 90.0f || vr_angle <= 5.0f ) return;
+
                 _engine->angle( vr_angle );
                 valid(0);
             }
