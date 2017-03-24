@@ -1814,7 +1814,7 @@ void ImageView::timeout()
    {
        TRACE("");
       CMedia* img = fg->image();
-      delay = 1.0 / (img->play_fps() * 2.0);
+      delay = 0.5 / img->play_fps();
 
       // If not a video image check if image has changed on disk
 
@@ -1869,7 +1869,6 @@ void ImageView::timeout()
   }
   
   repeat_timeout( float(delay) );
-  TRACE( "delay " << float(delay) );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -2205,6 +2204,18 @@ void ImageView::draw()
   // Draw HUD
   //
 
+  if ( vr() )
+  {
+      glMatrixMode(GL_PROJECTION);
+      glPushMatrix();
+      glLoadIdentity();
+      ortho();
+      
+      glMatrixMode(GL_MODELVIEW);
+      glPushMatrix();
+      glLoadIdentity();
+  }
+  
   int y = h()-25;
   int yi = 25;
   static char buf[1024];
@@ -2371,6 +2382,15 @@ void ImageView::draw()
     }
 
   TRACE("");
+  
+  if ( vr() )
+  {
+      glMatrixMode(GL_PROJECTION);
+      glPopMatrix();
+      
+      glMatrixMode(GL_MODELVIEW);
+      glPopMatrix();
+  }
 }
 
 
