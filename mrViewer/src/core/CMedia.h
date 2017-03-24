@@ -968,9 +968,6 @@ class CMedia
 
     // Return the image as the right eye for stereo decoding or NULL if none
     inline CMedia* right_eye() const { return _right_eye; }
-
-    inline void vr( bool x ) { _vr360 = x; }
-    inline bool vr() const { return _vr360; }
     
     // Return if this image is the left eye on stereo decoding
     inline bool is_left_eye() const { return _is_left_eye; }
@@ -1372,8 +1369,6 @@ class CMedia
     mrv::image_type_ptr _hires;
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
-
-    bool      _vr360;  // V.R. 360 degrees
     
     bool      _is_left_eye;
     CMedia*   _right_eye;
