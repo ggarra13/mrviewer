@@ -845,17 +845,18 @@ void GLEngine::draw_title( const float size,
  */
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
-  glLoadIdentity();
-  glRasterPos2i( x, y );
+    if (! sCharset ) return;
 
-  glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST );
-  glDisable( GL_DEPTH_TEST );
-  if ( sCharset )
-  {
-     glListBase(sCharset);
-     glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
-  }
-  glPopAttrib();
+    glLoadIdentity();
+    glRasterPos2i( x, y );
+
+    glPushAttrib( GL_LIST_BIT | GL_DEPTH_TEST );
+    glDisable( GL_DEPTH_TEST );
+
+    glListBase(sCharset);
+    glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
+
+    glPopAttrib();
 }
 
 void GLEngine::draw_cursor( const double x, const double y )
