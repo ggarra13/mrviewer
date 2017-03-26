@@ -2164,7 +2164,7 @@ bool aviImage::initialize()
       av_dict_set(&opts, "initial_pause", "1", 0);
 
       AVInputFormat*     format = NULL;
-      int error = avformat_open_input( &_context, fileroot(), 
+      int error = avformat_open_input( &_context, filename(), 
 				       format, &opts );
 
 
