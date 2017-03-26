@@ -147,7 +147,8 @@ bool is_valid_movie( const char* ext )
         tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
         tmp == ".qt"  || tmp == ".mp4"  || tmp == ".vob"  ||
         tmp == ".rm"  || tmp == ".flv"  || tmp == ".webm" ||
-        tmp == ".gif" || tmp == ".mkv" )
+        tmp == ".gif" || tmp == ".mkv"  || tmp == ".ogv"  ||
+        tmp == ".ogg" )
       return true;
 
    return false;
