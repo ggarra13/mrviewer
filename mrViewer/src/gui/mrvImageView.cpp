@@ -6276,13 +6276,18 @@ void ImageView::resize_main_window()
   if ( uiMain->uiBottomBar->visible() )
     h += uiMain->uiBottomBar->h();
 
+#ifdef _WIN32
+  const unsigned kBorders = 8;
+#else
+  const unsigned kBorders = 2;
+#endif
   const unsigned kMenus = 30;
   
-  fltk::Monitor monitor = fltk::Monitor::all();
-  int minx = monitor.work.x();
+  fltk::Monitor monitor = fltk::Monitor::find( posX, posY );
+  int minx = monitor.work.x() + kBorders;
   int miny = monitor.work.y() + kMenus;
   int maxh = monitor.work.h() - kMenus - 6;
-  int maxw = monitor.work.w();
+  int maxw = monitor.work.w() - kBorders;
 
   bool fit = false;
 
