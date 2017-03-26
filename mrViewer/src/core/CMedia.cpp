@@ -707,13 +707,13 @@ mrv::image_type_ptr CMedia::left() const
     CMedia* img = const_cast< CMedia* >( this );
     mrv::image_type_ptr pic = _hires;
     
-    if ( _is_sequence && _sequence[idx] ) pic = _sequence[idx];
-    else if ( _stereo[0] ) pic = _stereo[0];
+    if ( _is_sequence && _sequence && _sequence[idx] )  pic = _sequence[idx];
+    else if ( _stereo[0] )  pic = _stereo[0];
     if ( !pic ) return pic;
     
     img->_w = pic->width();
     img->_h = pic->height();
-    return _hires;
+    return pic;
 }
 
 mrv::image_type_ptr CMedia::right() const
