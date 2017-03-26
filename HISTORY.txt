@@ -4,10 +4,12 @@ v3.5.5   - Made YUV Conversion preference actually work correctly.
 	   Media Information Window->Color Space.
 	 - Changed algorithm to position window when first opened.
 	   This keeps window on the Desktop and clips centered.
-	 - Consolidated not finding and loading of images.  Previously,
-	   this could crash the viewer when creating the icons.
-	 - **IMPORTANT** Moved VR360 channel layer as a button in 3D
-	   Stereo Window from the channel pulldown.  This allows
+	   It helps when window would span two monitors.
+	 - Consolidated not finding and loading of images in sequences.
+	   Previously, this could crash the viewer when creating the 
+	   icons.
+	 - **IMPORTANT** Moved VR360 channel layer from the channel
+	   pulldown as a button in 3D Stereo Window .  This allows
 	   putting any layer in 360, not just the color layer.
 	 - Made caching of sequences independent of VR 360.  
 	   Previously, VR 360 would get deactivated for caching images.
@@ -22,7 +24,7 @@ v3.5.5   - Made YUV Conversion preference actually work correctly.
 	   and works like a movie file, but it fails when there are
 	   gaps in the sequence of frames and it always requires the
 	   sequence to start at frame 1.
-	 - Made HUD display in VR360 mode.
+	 - Made HUD display in VR 360 mode.
 
 v3.5.4	 - Restored sRGBColorspace hint as it was not the cause
 	   of double gamma.  It is a bug with Windows' photo
