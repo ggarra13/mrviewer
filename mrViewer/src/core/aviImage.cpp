@@ -1953,6 +1953,7 @@ void aviImage::populate()
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
 
+
     _frame_offset = 0;
 
   
