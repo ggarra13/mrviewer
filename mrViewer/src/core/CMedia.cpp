@@ -1065,6 +1065,7 @@ void CMedia::sequence( const char* fileroot,
   if ( ! initialize() )
     return;
 
+
   if ( fetch( start ) )
   {
       cache( _hires );

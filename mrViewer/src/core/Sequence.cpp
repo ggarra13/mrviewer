@@ -56,7 +56,7 @@ using namespace std;
 namespace fs = boost::filesystem;
 
 
-#define LOG_ERROR(x) std::cerr << x << std::endl
+// #define LOG_ERROR(x) std::cerr << x << std::endl
 
 #include "gui/mrvImageView.h"
 #include "video/mrvGLShape.h"
@@ -65,6 +65,11 @@ namespace fs = boost::filesystem;
 #include "mrvI8N.h"
 #include "mrvOS.h"
 
+#include "gui/mrvIO.h"
+
+namespace {
+const char* kModule = "seq";
+}
 
 namespace mrv
 {
@@ -483,6 +488,7 @@ bool is_valid_view( std::string view )
                 frame = root.substr( i, count );
                 root  = root.substr( 0, i );
                 ext   = tmp;
+                
                 return true;
             }
         }
@@ -552,7 +558,7 @@ bool is_valid_view( std::string view )
 		      {
 			 char buf[64];
                          const char* pr = PRId64;
-                         if ( digits < 4 ) pr = "d";
+                         if ( digits < 5 ) pr = "d";
 			 sprintf( buf, "%%0%d%s", digits, pr );
 			 fileroot += buf;
 		      }
@@ -586,8 +592,10 @@ bool is_valid_view( std::string view )
 
         std::string tmp = (*i).path().leaf().string();
 
+        
         // Do not continue on false return of split_sequence
 	split_sequence( croot, cframe, cview, cext, tmp );
+        
 
 	if ( cext != ext || croot != root || cview != view )
         {
@@ -608,6 +616,7 @@ bool is_valid_view( std::string view )
     sprintf( buf, "%%0%d%s", pad, prdigits );
 
 
+    
     if ( ! split_sequence( root, frame, view, ext, fileroot ) )
         return false;
 
