@@ -1,4 +1,5 @@
- // $Id: Flu_File_Chooser.cpp,v 1.98 2004/11/02 00:33:31 jbryan Exp $
+
+// $Id: Flu_File_Chooser.cpp,v 1.98 2004/11/02 00:33:31 jbryan Exp $
 
 /***************************************************************
  *                FLU - FLTK Utility Widgets
@@ -372,17 +373,19 @@ static void loadRealIcon( RealIcon* e)
 
     int frameStart = atoi( e->entry->filesize.c_str() );
 
+    std::string file = e->entry->filename;
 
-    if ( view.size() )
+    
+    if ( ! view.empty() )
     {
-        std::string tmp = mrv::parse_view( e->entry->filename, true );
+        std::string tmp = mrv::parse_view( file, true );
         sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
                  tmp.c_str() );
     }
     else
     {
-      sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-	       e->entry->filename.c_str() );
+        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+                 file.c_str() );
     }
 
     sprintf( buf, fmt, frameStart );
@@ -4358,12 +4361,13 @@ void Flu_File_Chooser::cd( const char *path )
 			 tmp == N_(".divx") || tmp == N_(".mp3")  ||
 			 tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
 			 tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
-			 tmp == N_(".mxf")  || 
+			 tmp == N_(".mxf")  || tmp == N_(".ogv")  ||
+                         tmp == N_(".ogg")  ||
 			 tmp == N_(".qt")   || tmp == N_(".wav")  ||
 			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
 			 tmp == N_(".wav")  || tmp == N_(".icm")  ||
-                         tmp == N_(".vp9")  || tmp == N_(".ctl") || 
-                         tmp == N_(".xml")  || tmp == N_(".srt") ||
+                         tmp == N_(".vp9")  || tmp == N_(".ctl")  || 
+                         tmp == N_(".xml")  || tmp == N_(".srt")  ||
                          tmp == N_(".sub")  || tmp == N_(".ass") )
 		       is_sequence = false;
 		 }
