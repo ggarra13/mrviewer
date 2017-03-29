@@ -2284,7 +2284,11 @@ void ImageBrowser::handle_dnd()
 
     for ( ; i != e; ++i )
     {
+#ifdef LINUX
        std::string file = hex_to_char_filename( *i );
+#else
+       std::string file = *i;
+#endif
 
        if ( file.substr(0, 7) == "file://" && file.size() > 7 )
           file = file.substr( 7, file.size() );
@@ -2311,12 +2315,18 @@ void ImageBrowser::handle_dnd()
 
              file = root;
              file += view;
-             for ( size_t i = 0; i < frame.size(); ++i )
+             if ( frame[0] == '0' )
              {
-                if ( frame[i] == '0' ) file += '@';
-                else break;
+                 for ( size_t i = 0; i < frame.size(); ++i )
+                 {
+                     if ( frame[i] >= '0' && frame[i] <= '9' ) file += '@';
+                     else break;
+                 }
              }
-             file += '@';
+             else
+             {
+                 file += '@';
+             }
              file += ext;
 
              std::string fileroot;
