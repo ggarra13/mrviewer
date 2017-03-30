@@ -1005,10 +1005,6 @@ void CMedia::refresh()
 void  CMedia::first_frame(boost::int64_t x)
 {
    if ( x < _frame_start ) x = _frame_start;
-   if ( _is_sequence && has_video() )
-   {
-       _start_number = x - 1;
-   }
    _frameStart = x;
    if ( _frame < _frameStart ) _frame = _frameStart;
 }
@@ -1061,7 +1057,6 @@ void CMedia::sequence( const char* fileroot,
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
 
-  LOG_DEBUG( "_frameStart " << _frameStart );
   
   delete [] _sequence;
   _sequence = NULL;

@@ -1103,7 +1103,6 @@ void decode_thread( PlaybackData* data )
                                       uiMain, reel, timeline, status );
       }
 
-
       // If we could not get a frame (buffers full, usually),
       // wait a little.
       while ( !img->frame( frame ) )
@@ -1119,7 +1118,7 @@ void decode_thread( PlaybackData* data )
 
       if ( img->has_video() || img->has_audio() )
       {
-          frame = img->dts();
+          frame = img->dts() + img->start_number();
       }
 
 
