@@ -1462,9 +1462,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 
             uint64_t diff = abs(f - _hires->frame() );
 
-	    if ( !filter_graph &&
-                 _hires->frame() != f && 
-		 diff > 1 && diff < 10 )
+	    if ( !filter_graph && diff > 1 && diff < 10 )
             {
                 IMG_WARNING( _(" find_image: frame ") << frame 
                              << _(" not found, choosing ") << _hires->frame() 
