@@ -304,12 +304,12 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   if ( len < 12 ) return false;
 
 
-  ffmpeg_use_png = false;
+  ffmpeg_use_png = true;
         
-  const char* ffmpeg = getenv( "USE_FFMPEG_PNG" );
+  const char* ffmpeg = getenv( "DO_NOT_USE_FFMPEG_PNG" );
   if ( ffmpeg != NULL )
   {
-      ffmpeg_use_png = (bool) atoi( ffmpeg );
+      ffmpeg_use_png = ! (bool) atoi( ffmpeg );
   }
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
@@ -318,7 +318,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   static bool printed = false;
   if ( magic == 0x89504E47 && !printed )
   {
-      LOG_INFO( _("Environment variable USE_FFMPEG_PNG=") << ffmpeg_use_png );
+      LOG_INFO( _("Environment variable DO_NOT_USE_FFMPEG_PNG=") 
+                << !ffmpeg_use_png );
       printed = true;
   }
   
@@ -767,7 +768,7 @@ void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
 
 CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
-    bool ok = in_video_store( frame );
+    bool ok = in_video_store( frame - _start_number );
     if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
     return (CMedia::Cache) ok;
 }
@@ -793,6 +794,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _context == NULL ) return false;
     
+    LOG_DEBUG( " frame " << frame << " frameStart " << _frameStart );
 
     bool skip = false;
     bool got_audio = !has_audio();
@@ -962,7 +964,7 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
     if ( _w > mrv::GLEngine::maxTexWidth() )
         _w = mrv::GLEngine::maxTexWidth();
     if ( _h > mrv::GLEngine::maxTexHeight() )
-        _h = mrv::GLEngine::maxTexHeight() / aspect_ratio;
+        _h = (unsigned int) ( mrv::GLEngine::maxTexHeight() / aspect_ratio );
     return mrv::image_type_ptr( new image_type( frame,
                                                 width(), 
                                                 height(), 
@@ -1017,7 +1019,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
   int sws_flags = 0;
-  if ( w < _video_ctx->width || h < _video_ctx->height )
+  if ( (int)w < _video_ctx->width || (int)h < _video_ctx->height )
       sws_flags = SWS_BICUBIC;
   
   // We handle all cases directly except YUV410 and PAL8
@@ -1027,7 +1029,7 @@ void aviImage::store_image( const boost::int64_t frame,
                                       fmt, w, h,
                                       _av_dst_pix_fmt, sws_flags, 
                                       NULL, NULL, NULL);
-
+ 
   if ( _convert_ctx == NULL )
   {
       IMG_ERROR( _("Could not get image conversion context.") );
@@ -1411,11 +1413,12 @@ bool aviImage::find_image( const boost::int64_t frame )
   debug_video_stores(frame, "find_image");
 #endif
 
+
   _frame = frame;
 
   if ( !has_video() ) 
   {
-      _video_pts   = frame  / _fps;
+      _video_pts   = _frame  / _fps;
       _video_clock = double(av_gettime_relative()) / 1000000.0;
 
       update_video_pts(this, _video_pts, 0, 0);
@@ -1423,6 +1426,9 @@ bool aviImage::find_image( const boost::int64_t frame )
   }
 
   {
+      boost::int64_t f = frame - _start_number;
+
+      LOG_DEBUG( "frame " << frame << " f " << f );
 
     SCOPED_LOCK( _mutex );
 
@@ -1432,19 +1438,19 @@ bool aviImage::find_image( const boost::int64_t frame )
     if ( playback() == kBackwards )
     {
        i = std::upper_bound( _images.begin(), end, 
-			     frame, LessThanFunctor() );
+			     f, LessThanFunctor() );
     }
     else
     {
        i = std::lower_bound( _images.begin(), end, 
-			     frame, LessThanFunctor() );
+			     f, LessThanFunctor() );
     }
 
     if ( i != end && *i )
       {
 	_hires = *i;
 
-        boost::int64_t distance = frame - _hires->frame();
+        boost::int64_t distance = f - _hires->frame();
 
 
         if ( distance > _hires->repeat() )
@@ -1454,7 +1460,7 @@ bool aviImage::find_image( const boost::int64_t frame )
                                                             _images.end() );
             boost::int64_t last  = (*end)->frame();
             boost::uint64_t diff = last - first + 1;
-            IMG_ERROR( _("Video Sync master frame ") << frame 
+            IMG_ERROR( _("Video Sync master frame ") << f 
                        << " != " << _hires->frame()
                        << _(" video frame, cache ") << first << "-" << last
                        << " (" << diff << _(") cache size: ") << _images.size()
@@ -1474,10 +1480,10 @@ bool aviImage::find_image( const boost::int64_t frame )
 	  {
 	    _hires = _images.back();
 
-            uint64_t diff = abs(frame - _hires->frame() );
+            uint64_t diff = abs(f - _hires->frame() );
 
 	    if ( !filter_graph &&
-                 _hires->frame() != frame && 
+                 _hires->frame() != f && 
 		 diff > 1 && diff < 10 )
             {
                 IMG_WARNING( _(" find_image: frame ") << frame 
@@ -1495,9 +1501,9 @@ bool aviImage::find_image( const boost::int64_t frame )
 
 
     // Limit (clean) the video store as we play it
-    limit_video_store( frame );
+    limit_video_store( f );
 
-    _video_pts   = frame  / _fps; //av_q2d( get_video_stream()->avg_frame_rate );
+    _video_pts   = f  / _fps; //av_q2d( get_video_stream()->avg_frame_rate );
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
     update_video_pts(this, _video_pts, 0, 0);
@@ -1851,27 +1857,31 @@ void aviImage::populate()
 
     if ( _context->start_time != AV_NOPTS_VALUE )
     {
-        _frameStart = boost::int64_t( ( _fps * ( double )_context->start_time / 
+        _frameStart = boost::int64_t( ( _fps * 
+                                        ( double )_context->start_time / 
                                         ( double )AV_TIME_BASE ) + 1);
     }
     else
     {
         double start = std::numeric_limits< double >::max();
         if ( has_video() )
-	{
+        {
             start = _video_info[ _video_index ].start;
-	}
+        }
       
         if ( has_audio() )
-	{
+        {
             double d = _audio_info[ _audio_index ].start;
             if ( d < start ) start = d;
-	}
+        }
 
         _frameStart = (boost::int64_t)start + 1;
     }
+    
 
     _frame_start = _frame = _frameEnd = _frameStart;
+
+    LOG_DEBUG( "_frameStart " << _frameStart );
 
     //
     // BUG FIX for ffmpeg bugs with some codecs/containers.
@@ -1952,7 +1962,6 @@ void aviImage::populate()
     
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
-
 
     _frame_offset = 0;
 
@@ -2075,6 +2084,7 @@ void aviImage::populate()
 
     _dts = dts;
     _frame = _audio_frame = _frameStart;
+    LOG_DEBUG( "frameStart " << _frameStart );
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
@@ -2164,8 +2174,14 @@ bool aviImage::initialize()
       AVDictionary *opts = NULL;
       av_dict_set(&opts, "initial_pause", "1", 0);
 
+      char buf[64];
+      sprintf( buf, "%" PRId64, _frameStart );
+      
+      av_dict_set(&opts, "start_number", buf, 0);
+
       AVInputFormat*     format = NULL;
-      int error = avformat_open_input( &_context, filename(), 
+      // We must open fileroot for png sequences to work
+      int error = avformat_open_input( &_context, fileroot(), 
 				       format, &opts );
 
 
@@ -2489,7 +2505,8 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
 
-   int64_t f = frame;
+   int64_t f = frame - _start_number;
+   LOG_DEBUG( "f " << f );
 
    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
    {
@@ -2589,10 +2606,12 @@ bool aviImage::frame( const boost::int64_t f )
         return false;
     }
 
+
+    LOG_DEBUG( "f " << f << " frameStart " << _frameStart );
+    
     if ( f < _frameStart )    _dts = _adts = _frameStart;
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
     // else                      _dts = _adts = f;
-
 
 
   bool ok = fetch(f);
@@ -2832,7 +2851,7 @@ aviImage::audio_video_display( const boost::int64_t& frame )
             y1 = ch * h + ( h / 2 );
             for (unsigned x = 0; x < _w; ++x )
             {
-                if ( i >= size ) break;
+                if ( i >= (int)size ) break;
                 y = (int(data[i] * 24000 * h2)) >> 15;
                 if (y < 0) {
                     y = -y;
@@ -3191,6 +3210,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
+    LOG_DEBUG( " seek frame " << _seek_frame << " frameStart " << _frameStart );
     _seek_frame = handle_loops( _seek_frame );
 
     _dts = _adts = _seek_frame;
