@@ -794,7 +794,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _context == NULL ) return false;
     
-    LOG_DEBUG( " frame " << frame << " frameStart " << _frameStart );
 
     bool skip = false;
     bool got_audio = !has_audio();
@@ -1428,7 +1427,6 @@ bool aviImage::find_image( const boost::int64_t frame )
   {
       boost::int64_t f = frame - _start_number;
 
-      LOG_DEBUG( "frame " << frame << " f " << f );
 
     SCOPED_LOCK( _mutex );
 
@@ -1881,7 +1879,6 @@ void aviImage::populate()
 
     _frame_start = _frame = _frameEnd = _frameStart;
 
-    LOG_DEBUG( "_frameStart " << _frameStart );
 
     //
     // BUG FIX for ffmpeg bugs with some codecs/containers.
@@ -2084,7 +2081,6 @@ void aviImage::populate()
 
     _dts = dts;
     _frame = _audio_frame = _frameStart;
-    LOG_DEBUG( "frameStart " << _frameStart );
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
@@ -2176,7 +2172,8 @@ bool aviImage::initialize()
 
       char buf[64];
       sprintf( buf, "%" PRId64, _frameStart );
-      
+      _start_number = _frameStart - 1;
+
       av_dict_set(&opts, "start_number", buf, 0);
 
       AVInputFormat*     format = NULL;
@@ -2506,7 +2503,6 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_subtitle = !has_subtitle();
 
    int64_t f = frame - _start_number;
-   LOG_DEBUG( "f " << f );
 
    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
    {
@@ -2607,7 +2603,6 @@ bool aviImage::frame( const boost::int64_t f )
     }
 
 
-    LOG_DEBUG( "f " << f << " frameStart " << _frameStart );
     
     if ( f < _frameStart )    _dts = _adts = _frameStart;
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
@@ -3210,7 +3205,6 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-    LOG_DEBUG( " seek frame " << _seek_frame << " frameStart " << _frameStart );
     _seek_frame = handle_loops( _seek_frame );
 
     _dts = _adts = _seek_frame;
