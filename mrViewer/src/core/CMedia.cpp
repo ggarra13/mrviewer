@@ -61,6 +61,7 @@ namespace fs = boost::filesystem;
 
 
 #include "core/CMedia.h"
+#include "core/aviImage.h"
 #include "core/Sequence.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvPlayback.h"
@@ -184,6 +185,7 @@ _frameStart( 1 ),
 _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
+_start_number( 0 ),
 _audio_pts( 0 ),
 _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
 _video_pts( 0 ),
@@ -277,6 +279,7 @@ _frameStart( 1 ),
 _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
+_start_number( 0 ),
 _interlaced( kNoInterlace ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
@@ -376,6 +379,7 @@ _frameStart( other->_frameStart ),
 _frameEnd( other->_frameEnd ),
 _frame_start( other->_frame_start ),
 _frame_end( other->_frame_end ),
+_start_number( other->_start_number ),
 _interlaced( other->_interlaced ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
@@ -1001,6 +1005,10 @@ void CMedia::refresh()
 void  CMedia::first_frame(boost::int64_t x)
 {
    if ( x < _frame_start ) x = _frame_start;
+   if ( _is_sequence && has_video() )
+   {
+       _start_number = x - 1;
+   }
    _frameStart = x;
    if ( _frame < _frameStart ) _frame = _frameStart;
 }
@@ -1053,15 +1061,21 @@ void CMedia::sequence( const char* fileroot,
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
 
+  LOG_DEBUG( "_frameStart " << _frameStart );
+  
   delete [] _sequence;
   _sequence = NULL;
   delete [] _right;
   _right = NULL;
 
   boost::uint64_t num = _frame_end - _frame_start + 1;
-  _sequence = new mrv::image_type_ptr[ unsigned(num) ];
-  _right    = new mrv::image_type_ptr[ unsigned(num) ];
 
+  if ( dynamic_cast< aviImage* >( this ) == NULL )
+  {
+      _sequence = new mrv::image_type_ptr[ unsigned(num) ];
+      _right    = new mrv::image_type_ptr[ unsigned(num) ];
+  }
+  
   if ( ! initialize() )
     return;
 
@@ -2165,7 +2179,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   else if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
 
   
-  if ( seq[idx] ) return;
+  if ( !seq || seq[idx] ) return;
 
   mrv::image_type_ptr np;
 
