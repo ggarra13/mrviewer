@@ -85,7 +85,7 @@ namespace
 // #define DBG(x) std::cerr << x << std::endl
 
 
-//#define DEBUG_THREADS
+// #define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 typedef boost::condition_variable Condition;
@@ -634,6 +634,8 @@ void audio_thread( PlaybackData* data )
 
                   DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
+                  if ( img->stopped() ) continue;
+
                   CMedia::Barrier* barrier = img->loop_barrier();
                   // Wait until all threads loop and decode is restarted
                   barrier->wait();
@@ -771,6 +773,7 @@ void subtitle_thread( PlaybackData* data )
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
 
+              if ( img->stopped() ) continue;
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
 	    barrier->wait();
@@ -840,7 +843,7 @@ void video_thread( PlaybackData* data )
        }
    }
    
-   int64_t frame        = img->frame() - img->start_number();
+   int64_t frame        = img->frame();
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 #ifdef DEBUG_THREADS
@@ -859,7 +862,6 @@ void video_thread( PlaybackData* data )
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
-       // DBG( img->name() << " wait image " << frame );
        img->wait_image();
 
        // img->debug_video_stores( frame, "BACK" );
@@ -885,6 +887,8 @@ void video_thread( PlaybackData* data )
           case CMedia::kDecodeLoopStart:
 	    {
                DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
+
+               if ( img->stopped() ) continue;
 
                CMedia::Barrier* barrier = img->loop_barrier();
                // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
@@ -1077,6 +1081,8 @@ void decode_thread( PlaybackData* data )
 
       if ( status != CMedia::kDecodeOK )
       {
+          if ( img->stopped() ) continue;
+
           CMedia::Barrier* barrier = img->loop_barrier();
           DBG( img->name() << " BARRIER DECODE WAIT      gen: " 
                << barrier->generation() 
@@ -1107,7 +1113,8 @@ void decode_thread( PlaybackData* data )
       // wait a little.
       while ( !img->frame( frame ) )
       {
-          if ( img->stopped() ) break;
+          if ( img->stopped() || 
+               view->playback() == ImageView::kStopped ) break;
           sleep_ms( 10 );
       }
 
