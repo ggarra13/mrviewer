@@ -248,7 +248,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 
 	if ( is_seq )
 	{
-            LOG_DEBUG( "is seq " << frame << " " << lastFrame );
             image->sequence( root.c_str(), frame, lastFrame, false );
 	}
 	else
