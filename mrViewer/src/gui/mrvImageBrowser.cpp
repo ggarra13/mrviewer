@@ -1276,7 +1276,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     if ( img == NULL )
         return;
 
-    
+
     if ( first != mrv::kMaxFrame )
       {
 	img->first_frame( first );
@@ -1351,16 +1351,15 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     if ( img == NULL )
         return mrv::media();
 
-    
     if ( first != mrv::kMaxFrame )
-      {
-	img->first_frame( first );
-      }
+    {
+        img->first_frame( first );
+    }
 
     if ( last != mrv::kMinFrame )
-      {
-	img->last_frame( last );
-      }
+    {
+        img->last_frame( last );
+    }
 
     if ( img->has_video() || img->has_audio() )
     {
