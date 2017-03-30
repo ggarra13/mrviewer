@@ -840,7 +840,7 @@ void video_thread( PlaybackData* data )
        }
    }
    
-   int64_t frame        = img->frame();
+   int64_t frame        = img->frame() - img->start_number();
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 #ifdef DEBUG_THREADS
