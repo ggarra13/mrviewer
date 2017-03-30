@@ -1,12 +1,9 @@
 v3.5.6   - Made ogg and ogv be valid movie extensions.
 	 - Improved the FFMPEG PNG reader to allow it to start at
-	   any frame in the sequence. Gaps in the sequence are
-	   allowed as long as they don't exceed the number of
-	   threads in use.
-	 - Made the FFMPEG PNG reader the default one.  To use the
-	   older ImageMagick one, set the environment variable
-	   DO_NOT_USE_FFMPEG_PNG=1.
-
+	   any frame in the sequence.
+	 - Made the FFMPEG PNG reader the default one.  This makes
+	   reading PNGs about five (5x) times faster.
+	 
 v3.5.5   - Made YUV Conversion preference actually work correctly.
 	   Now it sets the color space index upon loading of the movie.
 	   You can now still change it afterwards manually in the
