@@ -1011,9 +1011,9 @@ void  CMedia::first_frame(boost::int64_t x)
 
 void  CMedia::last_frame(boost::int64_t x)
 {
-   if ( x > _frame_end ) x = _frame_end;
-   _frameEnd = x;
-   if ( _frame > _frameEnd ) _frame = _frameEnd;
+    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
+    _frameEnd = x;
+    if ( _frame > _frameEnd ) _frame = _frameEnd;
 }
 
 /** 
