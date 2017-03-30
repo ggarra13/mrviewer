@@ -1071,7 +1071,7 @@ static const char* kCLocale = "C";
 	view->toggle_presentation();
       }
 
-    GLLut3d::NUM_STOPS = uiPrefs->uiPrefsNumStops->value();
+    GLLut3d::NUM_STOPS = (unsigned) uiPrefs->uiPrefsNumStops->value();
     
     int num = (int)main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
     Imf::setGlobalThreadCount( num );
