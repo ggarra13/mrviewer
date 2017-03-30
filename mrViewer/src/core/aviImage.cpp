@@ -165,7 +165,6 @@ fs::path relativePath( const fs::path &path, const fs::path &relative_to )
     return result;
 }
 
-bool aviImage::ffmpeg_use_png = false;
 int CMedia::colorspace_override = 0;
 
 const char* const kColorRange[] = {
@@ -303,26 +302,9 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
   if ( len < 12 ) return false;
 
-
-  ffmpeg_use_png = true;
-        
-  const char* ffmpeg = getenv( "DO_NOT_USE_FFMPEG_PNG" );
-  if ( ffmpeg != NULL )
-  {
-      ffmpeg_use_png = ! (bool) atoi( ffmpeg );
-  }
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
-  // Print once on PNG lookup
-  static bool printed = false;
-  if ( magic == 0x89504E47 && !printed )
-  {
-      LOG_INFO( _("Environment variable DO_NOT_USE_FFMPEG_PNG=") 
-                << !ffmpeg_use_png );
-      printed = true;
-  }
-  
 
   if ( magic == 0x000001ba || magic == 0x00000001 )
     {
@@ -395,7 +377,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	return false;
      return true;
   }
-  else if ( ffmpeg_use_png && magic == 0x89504E47 )
+  else if ( magic == 0x89504E47 )
   {
       // PNG
       unsigned int tag = ntohl( *((unsigned int*)data+1) );
