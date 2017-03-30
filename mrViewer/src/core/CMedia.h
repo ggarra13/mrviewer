@@ -992,23 +992,28 @@ class CMedia
     virtual AVStream* get_subtitle_stream() const { return NULL; } ;
 
     // Return the video pts as a double
-    double video_pts() const { return _video_pts; }
+    inline double video_pts() const { return _video_pts; }
+
+    // Return FFMPEG's start number of sequences (PNG loader)
+    inline boost::int64_t start_number() const { return _start_number; }
+
     // Return the audio pts as a double
-    double audio_pts() const { return _audio_pts; }
+    inline double audio_pts() const { return _audio_pts; }
 
     // Return the shape list
-    const GLShapeList& shapes() const { return _shapes; }
+    inline const GLShapeList& shapes() const { return _shapes; }
     // Return the shape list
-    GLShapeList& shapes() { return _shapes; }
+    inline GLShapeList& shapes() { return _shapes; }
 
     // Return the undo shape list
-    const GLShapeList& undo_shapes() const { return _undo_shapes; }
+    inline const GLShapeList& undo_shapes() const { return _undo_shapes; }
 
     // Return the undo shape list
-    GLShapeList& undo_shapes() { return _undo_shapes; }
+    inline GLShapeList& undo_shapes() { return _undo_shapes; }
 
     // Add a GL drawn shape to image
     void add_shape( shape_type_ptr s );
+
 
     void fetch_audio( const boost::int64_t frame );
 
@@ -1343,11 +1348,13 @@ class CMedia
     boost::int64_t   _expected;    //!< expected next dts fetch
     boost::int64_t   _expected_audio; //!< expected next frame fetch
 
-    boost::int64_t   _frameStart;  //!< start frame for sequence or movie
-    boost::int64_t   _frameEnd;    //!< end frame for sequence or movie
+    boost::int64_t   _frameStart;  //!< user start frame for sequence or movie
+    boost::int64_t   _frameEnd;    //!< user end frame for sequence or movie
 
-    boost::int64_t   _frame_start;
-    boost::int64_t   _frame_end;
+    boost::int64_t   _frame_start; //!< real start frame for sequence or movie
+    boost::int64_t   _frame_end;   //!< real end frame for sequence or movie
+
+    boost::int64_t   _start_number; //!< ffmpeg's start number offset
 
     double     _audio_pts;
     double     _audio_clock;
