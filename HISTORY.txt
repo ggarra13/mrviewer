@@ -1,3 +1,8 @@
+v3.5.7   - ** IMPORTANT BUG FIX **  Fixes preloading of image sequences,
+	   which would crash v3.5.6 due to a debugging abort().  
+	   Regression.
+	 - Added missing ffmpeg utilities to win32.
+
 v3.5.6   - Made ogg and ogv be valid movie extensions.
 	 - Improved the FFMPEG PNG reader to allow it to start at
 	   any frame in the sequence.
