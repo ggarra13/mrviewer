@@ -350,14 +350,14 @@ SET_TARGET_PROPERTIES( mrViewer
 ######################################################
 
 IF(WIN32)
-	SET(EXE_DIR F:/code/lib/Windows_32/bin/ )
+	SET(EXE_DIR D:/code/lib/Windows_32/bin/ )
 ENDIF(WIN32)
 
 IF(WIN64) # defined in FindBuilDir
 	  IF ( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
-	     SET(EXE_DIR F:/code/lib/Windows_64_debug/bin/ )
+	     SET(EXE_DIR D:/code/lib/Windows_64_debug/bin/ )
 	  ELSE( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
-	     SET(EXE_DIR F:/code/lib/Windows_64/bin/ )
+	     SET(EXE_DIR D:/code/lib/Windows_64/bin/ )
 	  ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
 ENDIF(WIN64)
 
