@@ -593,7 +593,6 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     _frame = pic->frame();
     _w = pic->width(); 
     _h = pic->height();
-    ::abort();
     refresh();
 }
  
