@@ -966,11 +966,13 @@ void aviImage::store_image( const boost::int64_t frame,
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
 
+  
   mrv::image_type_ptr image;
   try {
 
-      image = allocate_image( frame, boost::int64_t( double(pts) * 
-                                                     av_q2d( _video_ctx->time_base )
+      image = allocate_image( frame,
+                              boost::int64_t( double(pts) * 
+                                              av_q2d( _video_ctx->time_base )
                               )
       );
   } catch ( const std::exception& e )
@@ -1407,10 +1409,10 @@ bool aviImage::find_image( const boost::int64_t frame )
   }
 
   {
-      boost::int64_t f = frame - _start_number;
-
 
     SCOPED_LOCK( _mutex );
+
+    boost::int64_t f = frame - _start_number;
 
     video_cache_t::iterator end = _images.end();
     video_cache_t::iterator i;

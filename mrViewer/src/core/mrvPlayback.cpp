@@ -1127,8 +1127,6 @@ void decode_thread( PlaybackData* data )
       {
           frame = img->dts() + img->start_number();
       }
-
-
    }
 
 #ifdef DEBUG_THREADS
