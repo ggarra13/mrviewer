@@ -1660,7 +1660,7 @@ bool ImageView::preload()
     if (!img) return false;
 
 
-    if ( !img->is_sequence() ) {
+    if ( !img->is_sequence() || img->has_video() ) {
         _preframe = fg->position() + img->duration();
         img = r->image_at( _preframe );
         if (!img) {
