@@ -1,7 +1,27 @@
+v3.5.9   - Bug fixed File->Open->Single Image.  It was not doing what
+	   it was supposed to do.  Now it loads a single image and
+	   the built-in file requester lists sequences as separate
+	   images.
+	 - Bug fixed translation of Open Single Image as Abrir Imagen.
+	   Previously it would say Grabar Imagen.
+	 - Improved performance of icon creation in the file requester
+	   by removing a mutex.
+
+v3.5.8   - Bug fixed preload cache of PNGs to do nothing like movie
+	   files.  This fixes loading of PNGs when they don't begin at
+	   frame 1.
+	 - Bug fixed a crash when a single PNG was attempted to be
+	   loaded.  It would raise a floating point exception.
+	 - Bug fixed listing and loading frames with no dots as possible 
+	   frame spec ( %, d, l ) as image sequences.  For example,
+	   ballred.png.  Now the check is more rigorous and they are 
+	   treated as single images.
+
 v3.5.7   - ** IMPORTANT BUG FIX **  Fixes preloading of image sequences,
 	   which would crash v3.5.6 due to a debugging abort().  
 	   Regression.
 	 - Added missing ffmpeg utilities to win32.
+	 - Added missing exr utilities to win32/win64.
 
 v3.5.6   - Made ogg and ogv be valid movie extensions.
 	 - Improved the FFMPEG PNG reader to allow it to start at
