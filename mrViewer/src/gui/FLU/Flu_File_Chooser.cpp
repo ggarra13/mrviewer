@@ -77,6 +77,7 @@ typedef __int64 int64_t;
 #include "Flu_File_Chooser.h"
 #include "flu_file_chooser_pixmaps.h"
 
+#include "core/threadpool/boost/threadpool.hpp"
 #include "core/mrvHome.h"
 #include "core/Sequence.h"
 #include "core/mrvThread.h"
@@ -90,8 +91,8 @@ using namespace fltk;
 
 static const char* kModule = "filereq";
 
-// #undef DBG
-// #define DBG(x) std::cerr << __FUNCTION__ << " " << __LINE__ << ": " << x << std::endl;
+//#undef DBG
+//#define DBG(x) std::cerr << __FUNCTION__ << " " << std::dec << __LINE__ << ": " << x << std::endl;
 
 // set default language strings
 std::string Flu_File_Chooser::favoritesTxt = _("Favorites");
@@ -348,14 +349,14 @@ static void loadRealIcon( RealIcon* e)
 
     DBG( "lri start " << e->entry << " chooser " << e->chooser );
 
-    Mutex::scoped_lock lk_m( e->chooser->mutex );
+    // Mutex::scoped_lock lk_m( e->chooser->mutex );
 
-    if ( e->chooser->quick_exit ) {
-        DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
+    if ( e->chooser->quick_exit )
+    {
         delete e;
         return;
     }
-
+    
     DBG( "lri process icon " << e->entry << " " << e->entry->filename 
          << " chooser " << e->chooser );
 
@@ -399,6 +400,11 @@ static void loadRealIcon( RealIcon* e)
 
     fltk::SharedImage* img;
     try {
+        if ( e->chooser->quick_exit )
+        {
+            delete e;
+            return;
+        }
         img = mrv::fltk_handler( buf, NULL, 0 );
     } catch( const std::exception& er )
     {
@@ -525,6 +531,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				    const bool compact )
   : fltk::DoubleBufferWindow( 600, 480, title ),
     quick_exit( false ),
+    tp( 10 ),
     _compact( compact )
 {
   int normal_size = 12;
@@ -1010,21 +1017,14 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
 void Flu_File_Chooser::clear_threads()
 {
-  quick_exit = true;
-
-  thread_pool_t::iterator it = threads.begin();
-  thread_pool_t::iterator ie = threads.end();
-
-  for ( ;it != ie; ++it )
-  {
-      (*it)->join();
-      delete *it;
-  }
+    quick_exit = true;
+    tp.clear();
+    tp.wait();
+    quick_exit = false;
 }
 
 void Flu_File_Chooser::clear_lists()
 {
-    quick_exit = true;
     SCOPED_LOCK( mutex );
     filelist->clear();
     filedetails->clear();
@@ -1701,11 +1701,7 @@ void Flu_File_Chooser::previewCB()
         // Make sure all other previews have finished
         clear_threads();
 
-        quick_exit = false;
-
-        // Clear the thread pool
-        threads.clear();
-
+        
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
@@ -1716,9 +1712,8 @@ void Flu_File_Chooser::previewCB()
                 RealIcon* ri = new RealIcon;
                 ri->entry = e;
                 ri->chooser = this;
-                boost::thread* t = new boost::thread( boost::bind( loadRealIcon,
-                                                                   ri ) );
-                threads.push_back( t );
+                //LOG_DEBUG( "tp schedule loadRealIcon " << e->filename );
+                tp.schedule( boost::bind( loadRealIcon, ri ) );
             }
         }
 
@@ -1727,7 +1722,7 @@ void Flu_File_Chooser::previewCB()
     }
     else
     {
-        quick_exit = true;
+        clear_threads();
         SCOPED_LOCK( mutex );
         for ( int i = 0; i < c; ++i )
         {
@@ -3845,8 +3840,7 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 
 void Flu_File_Chooser::cd( const char *path )
 {
-
-    quick_exit = true;
+    clear_threads();
 
   Entry *entry;
   char cwd[1024];
@@ -3931,6 +3925,7 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( _(favoritesTxt.c_str()) );
       updateLocationQJ();
 
+      clear_threads();
       clear_lists();
 
       for( int i = 0; i < favoritesList->children(); ++i )
@@ -4029,6 +4024,7 @@ void Flu_File_Chooser::cd( const char *path )
 
   int numDirs = 0, numFiles = 0;
 
+  clear_threads();
   clear_lists();
 
   cleanupPath( currentDir );
@@ -4388,7 +4384,8 @@ void Flu_File_Chooser::cd( const char *path )
 		  }
 		else
 		  {
-                      if ( root == croot && ext == cext && view == cview )
+                      if ( compact_files() &&
+                           root == croot && ext == cext && view == cview )
                           continue;
 
                       if ( root == "" )
@@ -4781,12 +4778,12 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
       {
           dir = dir.substr( 0, pos );
       }
+      fc->compact_files( compact_files );
       fc->currentDir = dir;
 
       fc->type( type );
       fc->clear_history();
       fc->label( message );
-      fc->compact_files( compact_files );
       if( !filename || filename[0] == '\0' )
 	{
 	  if( (!pattern || !fc->filter() || strcmp(pattern,fc->filter())) && fc->value() )
@@ -4805,6 +4802,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
 	    }
 	  fc->filter( pattern );
 	  fc->value( retname.c_str() );
+          fc->cd( "./" );
 	}
       else
 	{

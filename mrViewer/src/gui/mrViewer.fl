@@ -659,14 +659,14 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {867 332 670 450} resizable visible
+        xywh {867 360 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
           xywh {218 24 452 400}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {13 22 426 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -693,17 +693,17 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {197 9 150 81} box UP_BOX
               } {
                 {fltk::RadioButton} {} {
-                  label Normal selected
+                  label Normal
                   tooltip {When selected, mrViewer will resize its window to the first image.}
                   xywh {8 6 19 20} align 8 box ROUND_UP_BOX value 1
                 }
                 {fltk::RadioButton} {} {
-                  label Fullscreen selected
+                  label Fullscreen
                   tooltip {When selected, mrViewer will start in full screen mode.}
                   xywh {8 31 19 20} align 8 box ROUND_UP_BOX
                 }
                 {fltk::RadioButton} {} {
-                  label Presentation selected
+                  label Presentation
                   tooltip {When selected, mrViewer will start in presentation mode.}
                   xywh {8 56 19 20} align 8 box ROUND_UP_BOX
                 }
@@ -1068,7 +1068,7 @@ v->refresh();}
           }
           {fltk::Group} Playback {
             label Playback open
-            xywh {15 21 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 21 424 360} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1134,9 +1134,9 @@ uiPrefsFPS->value( g );}
                 xywh {187 20 20 25} align 4 box UP_BOX
               }
               {fltk::ValueInput} uiPrefsScrubbingSensitivity {
-                label {Scrub Sensitivity}
+                label {Scrub Sensitivity} selected
                 tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.}
-                xywh {150 130 60 25} minimum 2 maximum 50 step 1 value 5
+                xywh {230 120 60 25} minimum 2 maximum 50 step 1 value 5
               }
             }
             {fltk::Group} {} {
@@ -2027,19 +2027,19 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );} open
+            callback {o->update( v );}
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2550,7 +2550,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2583,17 +2584,17 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {354 146 640 530} when CHANGED hide resizable
+        xywh {354 174 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3191,7 +3192,7 @@ where Yn is the white reference (usually 1).
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );}
-                  tooltip {Timeline.}
+                  tooltip {Timeline. To scrub, press SHIFT, then move mouse left and right, CTRL (or other key) to exit scrub mode.}
                   xywh {5 3 610 21} type TICK_ABOVE resizable textfont 1 textcolor 0x2020200 textsize 12 minimum 1 maximum 50 step 1 value 1 slider_size 10
                   extra_code {o->main( this );}
                   class {mrv::Timeline}
