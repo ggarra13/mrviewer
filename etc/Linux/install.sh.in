@@ -2,25 +2,26 @@
 
 echo "Running install script"
 
-echo "Removing /usr/bin/mrViewer"
+# Remove old symlinks just in case
 rm -f /usr/bin/mrViewer
-echo "Removing /usr/bin/3dl2ctl.rb"
 rm -f /usr/bin/3dl2ctl.rb
-echo "Removing /usr/bin/cube2ctl.rb"
 rm -f /usr/bin/cube2ctl.rb
 
 #
 # Add mrViewer to path
 #
+echo "Installing /usr/bin/mrViewer"
 ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
+echo "Installing /usr/bin/3dl2ctl.rb"
 ln -s @CPACK_INSTALL_PREFIX@/bin/3dl2ctl.rb /usr/bin/3dl2ctl.rb
+echo "Installing /usr/bin/cube2ctl.rb"
 ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.rb /usr/bin/cube2ctl.rb
 
 #
 # Install Desktop icon
 #
 dir=$(xdg-user-dir DESKTOP)
-cp -f /usr/share/applications/mrViewer-v@VERSION@.desktop ${dir}
+cp -f /usr/share/applications/mrViewer-v@VERSION@.desktop "${dir}"
 
 xdg-mime default mrViewer-v@VERSION@.desktop video/mp4 video/mpeg video/quicktime video/x-javafx video/x-flv video/x-matroska video/x-ms-wmv video/x-msvideo image/x-avi image/x-mov image/x-mp4
 
