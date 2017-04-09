@@ -368,7 +368,7 @@ FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
 IF(UNIX)
 	SET(EXE_DIR /usr/local/bin )
 	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh 
-	      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+	  DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF(UNIX)
 
 FILE(GLOB ffmpegfiles ${EXE_DIR}/ff* )
@@ -683,6 +683,7 @@ include(CPack)
 # 		   COMMAND echo here we would run cpack
 # 		   DEPENDS ${PROJECT_NAME}
 # 		   )
+
 		   
 ADD_CUSTOM_TARGET( bundle
 		   COMMAND "${CMAKE_CPACK_COMMAND}" 
@@ -690,7 +691,7 @@ ADD_CUSTOM_TARGET( bundle
 			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
 			   COMMENT "Running CPack. Please wait..."
 			   USES_TERMINAL
-			   DEPENDS ${PROJECT_NAME})
+			   DEPENDS ${PROJECT_NAME} )
 
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
