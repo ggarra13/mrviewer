@@ -2571,7 +2571,7 @@ int ImageView::leftMouseDown(int x, int y)
 	 menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
 		   (fltk::Callback*)open_cb, browser() ); 
 	 menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
-		   (fltk::Callback*)open_single_cb, browser() );
+	           (fltk::Callback*)open_single_cb, browser() );
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
