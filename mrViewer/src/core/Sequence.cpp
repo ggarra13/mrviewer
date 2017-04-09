@@ -101,10 +101,20 @@ namespace mrv
 
      if ( *c == '%' )
      {
+         bool d = false;
+         bool l = false;
          for ( ++c; *c != 0; ++c )
          {
-             if (( *c >= '0' && *c <= '9' ) || *c == 'd' || *c == 'l' )
+             if (( *c >= '0' && *c <= '9' ) )
                  continue;
+             if ( !d && *c == 'd' )
+             {
+                 d = true; continue;
+             }
+             if ( !l && *c == 'l' )
+             {
+                 l = true; continue;
+             }
              return false;
          }
          return true;
@@ -470,11 +480,26 @@ bool is_valid_view( std::string view )
         size_t len = root.size();
         if ( len >= 2 && !valid )
         {
+            size_t pos;
+            std::string fspec;
+            if ( ( pos = root.find('#') ) != std::string::npos ||
+                 ( pos = root.find('@') ) != std::string::npos ||
+                 ( pos = root.find('%') ) != std::string::npos )
+            {
+                fspec = root.substr( pos, root.size() - pos - 1 );
+                if ( is_valid_frame_spec( fspec ) )
+                {
+                    frame = fspec;
+                    root  = root.substr( 0, pos );
+                    ext   = tmp;
+                    return true;
+                }
+            }
+        
             int count = 0;
-            int i = len - 2; // account for period
+            int i = (int)len - 2; // account for period
             const char* c = root.c_str();
-            while (  c[i] == '@' || c[i] == '%' || c[i] == 'd' || c[i] == 'l' ||
-                     c[i] == '#' || c[i] >= '0' && c[i] <= '9' )
+            while ( c[i] >= '0' && c[i] <= '9' )
             {
                 --i;
                 ++count;

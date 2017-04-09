@@ -31,6 +31,9 @@
 
 #include "mrvHotkey.h"
 
+namespace {
+const char* kModule = "key";
+}
 
 namespace mrv {
 // ctrl, meta, alt, shift, key
@@ -139,8 +142,9 @@ Hotkey kHudToggle( true, false, false, false, 'h' );
 bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
-    if ( (!text.empty()) && text == fltk::event_text() ) return true;
-    
+    if ( (!text.empty()) && text == fltk::event_text() ) {
+        return true;
+    }
 
     if ( ctrl )
 	{
@@ -188,7 +192,7 @@ bool Hotkey::match( unsigned rawkey )
     if ( meta )
     { 
         if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
-		fltk::event_key_state( fltk::RightMetaKey ) )
+             fltk::event_key_state( fltk::RightMetaKey ) )
             ok = true;
         else
             return false;
@@ -200,7 +204,7 @@ bool Hotkey::match( unsigned rawkey )
             return false;
     }
     
-    if ( rawkey != 0 )
+    if ( rawkey != 0 && (key != 0 || key2 != 0) )
     {
         if  ( rawkey == key || rawkey == key2 )
         {
