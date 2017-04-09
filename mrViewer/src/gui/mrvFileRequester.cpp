@@ -161,21 +161,28 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
   {
     stringArray filelist;
 
-    std::string title = _("Load Image");
-    if ( compact_images ) title = _("Load Movie or Sequence");
+    const std::string kREEL_PATTERN = _( "Reels (*.{" ) +
+                                      kReelPattern + "})\t";
+    const std::string kIMAGE_PATTERN = _("Images (*.{") + 
+                                       kImagePattern + "})";
+    const std::string kALL_PATTERN = _("All Recognized (*.{") + 
+                                     kImagePattern + "," + kMoviePattern +
+                                     "," + kReelPattern + "," +
+                                     kAudioPattern + "})\t" +
+                                     _("Images (*.{") + kImagePattern +
+                                     "})\t" +
+                                     _("Movies (*.{") + kMoviePattern +
+                                     "})\t" +
+                                     _("Audios (*.(") + kAudioPattern + 
+                                     "})\t" + kREEL_PATTERN;
 
-    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                                kReelPattern + "})\t";
-    std::string kIMAGE_PATTERN = _("All Recognized (*.{") + 
-                                 kImagePattern + "," + kMoviePattern +
-                                 "," + kReelPattern + "," +
-                                 kAudioPattern + "})\t" +
-                                 _("Images (*.{") + kImagePattern +
-                                 "})\t" +
-                                 _("Movies (*.{") + kMoviePattern +
-                                 "})\t" +
-                                 _("Audios (*.(") + kAudioPattern + 
-                                 "})\t" + kREEL_PATTERN;
+    std::string pattern = kIMAGE_PATTERN;
+    std::string title = _("Load Image");
+    if ( compact_images ) {
+        title = _("Load Movie or Sequence");
+        pattern = kALL_PATTERN;
+    }
+
 
 #ifdef _WIN32
     bool native = mrv::Preferences::native_file_chooser;
@@ -184,7 +191,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
     {
         if ( !startfile ) startfile = "";
         const char* file = fltk::file_chooser( title.c_str(),
-                                               kIMAGE_PATTERN.c_str(),
+                                               pattern.c_str(),
                                                startfile );
         if ( main && (!main->uiMain || !main->uiMain->visible())) {
             return filelist;
@@ -195,8 +202,8 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
     else
 #endif
     {
-        flu_multi_file_chooser( title.c_str(), 
-                                kIMAGE_PATTERN.c_str(), startfile,
+        flu_multi_file_chooser( title.c_str(),
+                                pattern.c_str(), startfile,
                                 filelist, compact_images );
     }
     return filelist;
