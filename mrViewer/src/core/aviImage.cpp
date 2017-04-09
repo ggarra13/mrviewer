@@ -253,8 +253,11 @@ aviImage::~aviImage()
   flush_subtitle();
 
   if ( _convert_ctx )
+  {
       sws_freeContext( _convert_ctx );
-
+      _convert_ctx = NULL;
+  }
+  
   if ( filter_graph )
       avfilter_graph_free(&filter_graph);
 
@@ -987,7 +990,7 @@ void aviImage::store_image( const boost::int64_t frame,
       return;
   }
 
-  AVFrame output;
+  AVFrame output = { 0 };
   boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
 
   unsigned int w = width();
@@ -1002,6 +1005,7 @@ void aviImage::store_image( const boost::int64_t frame,
   int sws_flags = 0;
   if ( (int)w < _video_ctx->width || (int)h < _video_ctx->height )
       sws_flags = SWS_BICUBIC;
+
   
   // We handle all cases directly except YUV410 and PAL8
   _convert_ctx = sws_getCachedContext(_convert_ctx,
@@ -1855,10 +1859,15 @@ void aviImage::populate()
             if ( d < start ) start = d;
         }
 
-        _frameStart = (boost::int64_t)start + 1;
+        if ( start != std::numeric_limits< double >::max() )
+        {
+            _frameStart = (boost::int64_t)start;
+            if ( _frameStart == 0 ) _frameStart = 1;
+        }
     }
     
 
+    
     _frame_start = _frame = _frameEnd = _frameStart;
 
 
@@ -1938,6 +1947,7 @@ void aviImage::populate()
         }
     }
 
+    if ( duration == 0 ) duration = 1;
     
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
