@@ -708,6 +708,7 @@ mrv::image_type_ptr CMedia::left() const
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+
     CMedia* img = const_cast< CMedia* >( this );
     mrv::image_type_ptr pic = _hires;
     
@@ -2917,17 +2918,23 @@ int64_t CMedia::handle_loops( const boost::int64_t frame ) const
   if ( looping() == kLoop )
   {
       int64_t len = duration();
-      f = (f-_frameStart) % len + _frameStart;
+      if ( len > 0 )
+      {
+          f = (f-_frameStart) % len + _frameStart;
+      }
   }
   else if ( looping() == kPingPong )
   {
       int64_t len = duration();
-      f -= _frameStart;
-      int64_t v   = f / len;
-      f = f % len + _frameStart;
-      if ( v % 2 == 1 )
+      if ( len > 0 )
       {
-          f = len - f + _frame_start;
+          f -= _frameStart;
+          int64_t v   = f / len;
+          f = f % len + _frameStart;
+          if ( v % 2 == 1 )
+          {
+              f = len - f + _frame_start;
+          }
       }
   }
   else
