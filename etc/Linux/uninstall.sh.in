@@ -2,8 +2,11 @@
 
 echo "Running uninstall script"
 
+echo "Remove /usr/bin/mrViewer"
 rm -f /usr/bin/mrViewer
+echo "Remove /usr/bin/3dl2ctl.rb"
 rm -f /usr/bin/3dl2ctl.rb
+echo "Remove /usr/bin/cube2ctl.rb"
 rm -f /usr/bin/cube2ctl.rb
 
 
