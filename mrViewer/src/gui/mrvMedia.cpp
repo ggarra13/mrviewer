@@ -156,6 +156,7 @@ namespace mrv {
       char buf[2048];
       sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
+
       _thumbnail = fltk::SharedImage::get( thumbImage::create, buf, 0);
 
       if ( !_thumbnail )
