@@ -349,7 +349,7 @@ static void loadRealIcon( RealIcon* e)
 
     DBG( "lri start " << e->entry << " chooser " << e->chooser );
 
-    // Mutex::scoped_lock lk_m( e->chooser->mutex );
+    Mutex::scoped_lock lk_m( e->chooser->mutex );
 
     if ( e->chooser->quick_exit )
     {
@@ -1690,6 +1690,9 @@ Flu_File_Chooser::PreviewTile::PreviewTile( int x, int y, int w, int h, Flu_File
 
 void Flu_File_Chooser::previewCB()
 {
+    // Make sure all other previews have finished
+    clear_threads();
+
     bool inFavorites = ( currentDir == FAVORITES_UNIQUE_STRING );
     if ( inFavorites ) return;
 
@@ -1698,10 +1701,6 @@ void Flu_File_Chooser::previewCB()
 
     if ( previewBtn->value() )
     {
-        // Make sure all other previews have finished
-        clear_threads();
-
-        
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
@@ -1722,7 +1721,6 @@ void Flu_File_Chooser::previewCB()
     }
     else
     {
-        clear_threads();
         SCOPED_LOCK( mutex );
         for ( int i = 0; i < c; ++i )
         {
@@ -3840,33 +3838,32 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 
 void Flu_File_Chooser::cd( const char *path )
 {
-    clear_threads();
-
-  Entry *entry;
-  char cwd[1024];
+    Entry *entry;
+    char cwd[1024];
 
 
-  if( !path || path[0] == '\0' )
+    if( !path || path[0] == '\0' )
     {
-      path = getcwd( cwd, 1024 );
-      if( !path )
-	path = "./";
+        path = getcwd( cwd, 1024 );
+        if( !path )
+            path = "./";
     }
 
-  if( path[0] == '~' )
+    if( path[0] == '~' )
     {
-      if( path[1] == '/' || path[1] == '\\' )
-	sprintf( cwd, "%s%s", userHome.c_str(), path+2 );
-      else
-	sprintf( cwd, "%s%s", userHome.c_str(), path+1 );
-      path = cwd;
+        if( path[1] == '/' || path[1] == '\\' )
+            sprintf( cwd, "%s%s", userHome.c_str(), path+2 );
+        else
+            sprintf( cwd, "%s%s", userHome.c_str(), path+1 );
+        path = cwd;
     }
 
-  lastSelected = 0;
+    lastSelected = 0;
 
   // filelist->scroll_to_beginning();
 
-  bool listMode = !fileDetailsBtn->value() || streq( path, FAVORITES_UNIQUE_STRING );
+    bool listMode = !fileDetailsBtn->value() || 
+                    streq( path, FAVORITES_UNIQUE_STRING );
 
 #ifdef WIN32
   // refresh the drives if viewing "My Computer"
