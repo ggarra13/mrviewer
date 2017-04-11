@@ -144,7 +144,7 @@ namespace mrv {
 
       float yScale = (float)(h+1) / (float)dh;
       unsigned int w = (float)(dw+1) * (float)yScale;
-
+      if ( w > 150 ) w = 150;
 
       // Resize image to thumbnail size
       pic.reset( pic->quick_resize( w, h ) );
