@@ -4,11 +4,11 @@ export ROOT="D:/code/applications/mrViewer"
 export DIST="D:/code/lib/Windows_64_debug"
 
 export BOOST_ROOT="$ROOT/dependencies/boost_1_60_0"
-export OPENEXR_LIBRARY_DIR=$DIST
+export OPENEXR_ROOT=$DIST
 export     CTL_ROOT=$DIST
 export TINYXML2_ROOT=$DIST
 
-export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20160718-450cf40-win64-shared"
+export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20170404-1229007-win64-shared"
 
 export  GLUT_ROOT_PATH=$DIST
 export FLTK2_DIR="$ROOT/dependencies/fltk-2.0-win64-debug"
