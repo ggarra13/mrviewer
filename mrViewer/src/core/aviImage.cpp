@@ -1870,7 +1870,6 @@ void aviImage::populate()
     
     _frame_start = _frame = _frameEnd = _frameStart;
 
-
     //
     // BUG FIX for ffmpeg bugs with some codecs/containers.
     //
@@ -1947,8 +1946,8 @@ void aviImage::populate()
         }
     }
 
-    if ( duration == 0 ) duration = 1;
-    
+    if ( duration <= 0 ) duration = 1;
+
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
 
