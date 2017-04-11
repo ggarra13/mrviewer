@@ -1,4 +1,5 @@
 
+
 // $Id: Flu_File_Chooser.cpp,v 1.98 2004/11/02 00:33:31 jbryan Exp $
 
 /***************************************************************
@@ -72,6 +73,7 @@ typedef __int64 int64_t;
 
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/function.hpp>
 
 #include "flu_pixmaps.h"
 #include "Flu_File_Chooser.h"
@@ -339,7 +341,7 @@ struct RealIcon
 {
     Flu_File_Chooser*  chooser;
     Flu_File_Chooser::Entry* entry;
-};
+ };
 
 
 static void loadRealIcon( RealIcon* e)
@@ -356,7 +358,7 @@ static void loadRealIcon( RealIcon* e)
         delete e;
         return;
     }
-    
+
     DBG( "lri process icon " << e->entry << " " << e->entry->filename 
          << " chooser " << e->chooser );
 
@@ -413,17 +415,30 @@ static void loadRealIcon( RealIcon* e)
         return;
     }
 
-    if ( !img ) {
+    if ( !img || e->chooser->quick_exit ) {
         delete e;
         return;
     }
+
 
 
     DBG( "lri processed icon " << e->entry << " " << e->entry->filename
          << " chooser " << e->chooser  );
     e->entry->icon = img;
     e->entry->updateSize();
+
+    fltk::remove_timeout( (fltk::TimeoutHandler) loadRealIcon, e );
+
     delete e;
+
+    static unsigned count = 0;
+    ++count;
+    if ( count == 10 )
+    {
+        count = 0;
+        fltk::check();
+    }
+
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -1025,9 +1040,11 @@ void Flu_File_Chooser::clear_threads()
 
 void Flu_File_Chooser::clear_lists()
 {
+    clear_threads();
     SCOPED_LOCK( mutex );
     filelist->clear();
     filedetails->clear();
+    quick_exit = false;
 }
 
 Flu_File_Chooser::~Flu_File_Chooser()
@@ -1039,10 +1056,6 @@ Flu_File_Chooser::~Flu_File_Chooser()
 
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
-
-  // Make sure all other previews have finished
-
-  clear_threads();
 
   clear_lists();
 
@@ -1701,18 +1714,22 @@ void Flu_File_Chooser::previewCB()
 
     if ( previewBtn->value() )
     {
+        // Make sure all other previews have finished
+        SCOPED_LOCK( mutex );
+
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
             e->set_colors();
-            if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
+            if ( ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE ) )
             {
                 // Add new thread to handle icon
                 RealIcon* ri = new RealIcon;
                 ri->entry = e;
                 ri->chooser = this;
-                //LOG_DEBUG( "tp schedule loadRealIcon " << e->filename );
-                tp.schedule( boost::bind( loadRealIcon, ri ) );
+                //tp.schedule( boost::bind( loadRealIcon, ri ) );
+                fltk::add_timeout( 0.2f, 
+                                   (fltk::TimeoutHandler)loadRealIcon, ri );
             }
         }
 
@@ -2166,8 +2183,9 @@ void Flu_File_Chooser::FileDetails::scroll_to( fltk::Widget *w )
     {
       if( child(i) == w )
 	{
-	  display(i);
-	  return;
+            chooser->previewCB();
+            display(i);
+            return;
 	}
     }
 }
@@ -2294,6 +2312,7 @@ void Flu_File_Chooser::Entry::set_colors() {
             color( kColorTwo );
         }
         redraw();
+        g->redraw();
         return;
     }
 }
@@ -3838,8 +3857,13 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 
 void Flu_File_Chooser::cd( const char *path )
 {
-    Entry *entry;
-    char cwd[1024];
+
+    quick_exit = true;
+
+    clear_threads();
+
+  Entry *entry;
+  char cwd[1024];
 
 
     if( !path || path[0] == '\0' )
@@ -3914,6 +3938,8 @@ void Flu_File_Chooser::cd( const char *path )
       currentDir = FAVORITES_UNIQUE_STRING;
       addToHistory();
 
+      clear_lists();
+
       newDirBtn->deactivate();
       previewBtn->deactivate();
       reloadBtn->deactivate();
@@ -3922,8 +3948,6 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( _(favoritesTxt.c_str()) );
       updateLocationQJ();
 
-      clear_threads();
-      clear_lists();
 
       for( int i = 0; i < favoritesList->children(); ++i )
 	{
