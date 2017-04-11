@@ -416,6 +416,9 @@ static void loadRealIcon( RealIcon* e)
          << " chooser " << e->chooser  );
     e->entry->icon = img;
     e->entry->updateSize();
+
+    fltk::remove_timeout( (fltk::TimeoutHandler) loadRealIcon, e );
+
     delete e;
 
     static unsigned count = 0;
@@ -1706,15 +1709,15 @@ void Flu_File_Chooser::previewCB()
         {
             Entry* e = (Entry*) g->child(i);
             e->set_colors();
-            if (  // e->visible_r() &&
-                 ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE ) )
+            if ( ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE ) )
             {
                 // Add new thread to handle icon
                 RealIcon* ri = new RealIcon;
                 ri->entry = e;
                 ri->chooser = this;
                 //tp.schedule( boost::bind( loadRealIcon, ri ) );
-                fltk::add_timeout( 0.2f, (fltk::TimeoutHandler)loadRealIcon, ri );
+                fltk::add_timeout( 0.2f, 
+                                   (fltk::TimeoutHandler)loadRealIcon, ri );
             }
         }
 
