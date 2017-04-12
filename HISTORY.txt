@@ -4,8 +4,9 @@ v3.5.9   - Bug fixed File->Open->Single Image.  It was not doing what
 	   images.
 	 - Bug fixed translation of Open Single Image as Abrir Imagen.
 	   Previously it would say Grabar Imagen.
-	 - Made icon creation be single threaded as this was crashing
-	   or hanging the file requester otherwise.
+	 - Bug fixed yellow line in file requester to always redraw
+	   properly and not leave a half line drawn.
+	 - Made thumbnail picture never exceed 150 pixels in width.
 
 v3.5.8   - Bug fixed preload cache of PNGs to do nothing like movie
 	   files.  This fixes loading of PNGs when they don't begin at
