@@ -447,10 +447,12 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
 
     for ( unsigned y = 0; y < h; ++y )
     {
+        unsigned y2 = y * fy;
+        assert( y2 < height() );
        for ( unsigned x = 0; x < w; ++x )
        {
-          Pixel p = this->pixel( unsigned( x*fx+.5 ), 
-                                 unsigned( y*fy+.5 ) );
+           assert( x*fx < width() );
+          Pixel p = this->pixel( unsigned( x*fx ), y2 );
           p.clamp();
           scaled->pixel( x, y, p );
        }
