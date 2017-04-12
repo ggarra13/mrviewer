@@ -37,7 +37,6 @@
 
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/thread.hpp>
-#include "core/threadpool/boost/threadpool.hpp"
 
 #include "FLU/flu_export.h"
 
@@ -124,7 +123,9 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   typedef boost::recursive_mutex Mutex;
   Mutex  mutex;
 
-  boost::threadpool::pool tp;
+  typedef std::vector< boost::thread* > thread_pool_t;
+
+  thread_pool_t threads;
 
   bool quick_exit;
 
