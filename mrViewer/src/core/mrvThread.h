@@ -34,15 +34,15 @@
 
 
 #define SCOPED_LOCK(x)                                                    \
-   std::cerr << "Lock   " << #x << " " << __FILE__ << " " << __LINE__     \
+ std::cerr << "Lock   " << #x << " " << &x << __FILE__ << " " << __LINE__ \
              << std::endl;                                                \
        Mutex::scoped_lock lk_##x(x);
 
 #define CONDITION_WAIT( cond, x ) if (1) {                                \
-       std::cerr << "Wait   " << #x << " " << __FILE__ << " " << __LINE__ \
+    std::cerr << "Wait   " << #x << " " << &x << __FILE__ << " " << __LINE__ \
                  << std::endl;                                            \
        cond.wait(lk_##x);                                                 \
-       std::cerr << "Got    " << #x << " " << __FILE__ << " " << __LINE__ \
+       std::cerr << "Got    " << #x << " " << &x << __FILE__ << " " << __LINE__ \
                  << std::endl; } 
 
 
