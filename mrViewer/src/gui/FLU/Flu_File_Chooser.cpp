@@ -1,5 +1,3 @@
-
-
 // $Id: Flu_File_Chooser.cpp,v 1.98 2004/11/02 00:33:31 jbryan Exp $
 
 /***************************************************************
@@ -73,13 +71,11 @@ typedef __int64 int64_t;
 
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
-#include <boost/function.hpp>
 
 #include "flu_pixmaps.h"
 #include "Flu_File_Chooser.h"
 #include "flu_file_chooser_pixmaps.h"
 
-#include "core/threadpool/boost/threadpool.hpp"
 #include "core/mrvHome.h"
 #include "core/Sequence.h"
 #include "core/mrvThread.h"
@@ -93,8 +89,8 @@ using namespace fltk;
 
 static const char* kModule = "filereq";
 
-//#undef DBG
-//#define DBG(x) std::cerr << __FUNCTION__ << " " << std::dec << __LINE__ << ": " << x << std::endl;
+// #undef DBG
+// #define DBG(x) std::cerr << __FUNCTION__ << " " << __LINE__ << ": " << x << std::endl;
 
 // set default language strings
 std::string Flu_File_Chooser::favoritesTxt = _("Favorites");
@@ -341,7 +337,10 @@ struct RealIcon
 {
     Flu_File_Chooser*  chooser;
     Flu_File_Chooser::Entry* entry;
- };
+    std::string dir;
+    std::string filename;
+    std::string filesize;
+};
 
 
 static void loadRealIcon( RealIcon* e)
@@ -353,13 +352,13 @@ static void loadRealIcon( RealIcon* e)
 
     Mutex::scoped_lock lk_m( e->chooser->mutex );
 
-    if ( e->chooser->quick_exit )
-    {
+    if ( e->chooser->quick_exit ) {
+        DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
         delete e;
         return;
     }
 
-    DBG( "lri process icon " << e->entry << " " << e->entry->filename 
+    DBG( "lri process icon " << e->entry << " " << e->filename 
          << " chooser " << e->chooser );
 
     char fmt[1024];
@@ -369,26 +368,24 @@ static void loadRealIcon( RealIcon* e)
 
     std::string view;
 
-    if ( e->entry->filename.find( "%v" ) )
+    if ( e->filename.find( "%v" ) )
         view = mrv::get_short_view(true);
-    else if ( e->entry->filename.find( "%V" ) )
+    else if ( e->filename.find( "%V" ) )
         view = mrv::get_long_view(true);
 
-    int frameStart = atoi( e->entry->filesize.c_str() );
+    int frameStart = atoi( e->filesize.c_str() );
 
-    std::string file = e->entry->filename;
+    std::string file = e->filename;
 
     
     if ( ! view.empty() )
     {
         std::string tmp = mrv::parse_view( file, true );
-        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-                 tmp.c_str() );
+        sprintf( fmt, "%s%s", e->dir.c_str(), tmp.c_str() );
     }
     else
     {
-        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-                 file.c_str() );
+        sprintf( fmt, "%s%s", e->dir.c_str(), file.c_str() );
     }
 
     sprintf( buf, fmt, frameStart );
@@ -402,11 +399,6 @@ static void loadRealIcon( RealIcon* e)
 
     fltk::SharedImage* img;
     try {
-        if ( e->chooser->quick_exit )
-        {
-            delete e;
-            return;
-        }
         img = mrv::fltk_handler( buf, NULL, 0 );
     } catch( const std::exception& er )
     {
@@ -415,30 +407,17 @@ static void loadRealIcon( RealIcon* e)
         return;
     }
 
-    if ( !img || e->chooser->quick_exit ) {
+    if ( !img ) {
         delete e;
         return;
     }
 
 
-
-    DBG( "lri processed icon " << e->entry << " " << e->entry->filename
+    DBG( "lri processed icon " << e->entry << " " << e->filename
          << " chooser " << e->chooser  );
     e->entry->icon = img;
     e->entry->updateSize();
-
-    fltk::remove_timeout( (fltk::TimeoutHandler) loadRealIcon, e );
-
     delete e;
-
-    static unsigned count = 0;
-    ++count;
-    if ( count == 10 )
-    {
-        count = 0;
-        fltk::check();
-    }
-
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -546,7 +525,6 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				    const bool compact )
   : fltk::DoubleBufferWindow( 600, 480, title ),
     quick_exit( false ),
-    tp( 10 ),
     _compact( compact )
 {
   int normal_size = 12;
@@ -1032,10 +1010,19 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
 void Flu_File_Chooser::clear_threads()
 {
-    quick_exit = true;
-    tp.clear();
-    tp.wait();
-    quick_exit = false;
+  quick_exit = true;
+  SCOPED_LOCK( mutex );
+
+  thread_pool_t::iterator it = threads.begin();
+  thread_pool_t::iterator ie = threads.end();
+
+  for ( ;it != ie; ++it )
+  {
+      (*it)->join();
+      delete *it;
+  }
+
+  threads.clear();
 }
 
 void Flu_File_Chooser::clear_lists()
@@ -1044,7 +1031,6 @@ void Flu_File_Chooser::clear_lists()
     SCOPED_LOCK( mutex );
     filelist->clear();
     filedetails->clear();
-    quick_exit = false;
 }
 
 Flu_File_Chooser::~Flu_File_Chooser()
@@ -1056,6 +1042,10 @@ Flu_File_Chooser::~Flu_File_Chooser()
 
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
+
+  // Make sure all other previews have finished
+
+  // clear_threads();
 
   clear_lists();
 
@@ -1703,9 +1693,6 @@ Flu_File_Chooser::PreviewTile::PreviewTile( int x, int y, int w, int h, Flu_File
 
 void Flu_File_Chooser::previewCB()
 {
-    // Make sure all other previews have finished
-    clear_threads();
-
     bool inFavorites = ( currentDir == FAVORITES_UNIQUE_STRING );
     if ( inFavorites ) return;
 
@@ -1715,21 +1702,27 @@ void Flu_File_Chooser::previewCB()
     if ( previewBtn->value() )
     {
         // Make sure all other previews have finished
-        SCOPED_LOCK( mutex );
+        clear_threads();
+
+        quick_exit = false;
+
 
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
             e->set_colors();
-            if ( ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE ) )
+            if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
             {
                 // Add new thread to handle icon
                 RealIcon* ri = new RealIcon;
                 ri->entry = e;
                 ri->chooser = this;
-                //tp.schedule( boost::bind( loadRealIcon, ri ) );
-                fltk::add_timeout( 0.2f, 
-                                   (fltk::TimeoutHandler)loadRealIcon, ri );
+                ri->dir = get_current_directory();
+                ri->filename = e->filename;
+                ri->filesize = e->filesize;
+                boost::thread* t = new boost::thread( boost::bind( loadRealIcon,
+                                                                   ri ) );
+                threads.push_back( t );
             }
         }
 
@@ -1738,6 +1731,7 @@ void Flu_File_Chooser::previewCB()
     }
     else
     {
+        quick_exit = true;
         SCOPED_LOCK( mutex );
         for ( int i = 0; i < c; ++i )
         {
@@ -2183,9 +2177,8 @@ void Flu_File_Chooser::FileDetails::scroll_to( fltk::Widget *w )
     {
       if( child(i) == w )
 	{
-            chooser->previewCB();
-            display(i);
-            return;
+	  display(i);
+	  return;
 	}
     }
 }
@@ -2312,7 +2305,6 @@ void Flu_File_Chooser::Entry::set_colors() {
             color( kColorTwo );
         }
         redraw();
-        g->redraw();
         return;
     }
 }
@@ -2704,6 +2696,7 @@ int Flu_File_Chooser::Entry::handle( int event )
      if (!selected()) {
 	color( fltk::YELLOW );
 	redraw();
+        chooser->redraw();
      }
      return 1;
   }
@@ -2718,6 +2711,7 @@ int Flu_File_Chooser::Entry::handle( int event )
          set_colors();
      }
      redraw();
+     chooser->redraw();
      return 1;
   }
 
@@ -3184,6 +3178,7 @@ void Flu_File_Chooser::value( const char *v )
 {
   if( !v )
     return;
+  
   // try to find the file and select it
   const char *slash = strrchr( v, '/' );
   if( slash )
@@ -3860,34 +3855,31 @@ void Flu_File_Chooser::cd( const char *path )
 
     quick_exit = true;
 
-    clear_threads();
-
   Entry *entry;
   char cwd[1024];
 
 
-    if( !path || path[0] == '\0' )
+  if( !path || path[0] == '\0' )
     {
-        path = getcwd( cwd, 1024 );
-        if( !path )
-            path = "./";
+      path = getcwd( cwd, 1024 );
+      if( !path )
+	path = "./";
     }
 
-    if( path[0] == '~' )
+  if( path[0] == '~' )
     {
-        if( path[1] == '/' || path[1] == '\\' )
-            sprintf( cwd, "%s%s", userHome.c_str(), path+2 );
-        else
-            sprintf( cwd, "%s%s", userHome.c_str(), path+1 );
-        path = cwd;
+      if( path[1] == '/' || path[1] == '\\' )
+	sprintf( cwd, "%s%s", userHome.c_str(), path+2 );
+      else
+	sprintf( cwd, "%s%s", userHome.c_str(), path+1 );
+      path = cwd;
     }
 
-    lastSelected = 0;
+  lastSelected = 0;
 
   // filelist->scroll_to_beginning();
 
-    bool listMode = !fileDetailsBtn->value() || 
-                    streq( path, FAVORITES_UNIQUE_STRING );
+  bool listMode = !fileDetailsBtn->value() || streq( path, FAVORITES_UNIQUE_STRING );
 
 #ifdef WIN32
   // refresh the drives if viewing "My Computer"
@@ -3947,7 +3939,6 @@ void Flu_File_Chooser::cd( const char *path )
       hiddenFiles->deactivate();
       location->text( _(favoritesTxt.c_str()) );
       updateLocationQJ();
-
 
       for( int i = 0; i < favoritesList->children(); ++i )
 	{
@@ -4018,12 +4009,12 @@ void Flu_File_Chooser::cd( const char *path )
 	  {
 	    // strip everything off the end to the next "/"
 	    size_t end = currentDir.size()-1;
-	    currentDir[end] = '\0';
+	    currentDir = currentDir.substr(0, end );
 	    while( currentDir[end] != '/' )
 	      {
-		currentDir[end] = '\0';
 		end--;
 	      }
+            currentDir = currentDir.substr(0, end );
 	  }
     }
   // check for absolute path
@@ -4045,7 +4036,6 @@ void Flu_File_Chooser::cd( const char *path )
 
   int numDirs = 0, numFiles = 0;
 
-  clear_threads();
   clear_lists();
 
   cleanupPath( currentDir );
@@ -4151,8 +4141,8 @@ void Flu_File_Chooser::cd( const char *path )
   // if so, make sure there is a trailing "/" and we're done
   if( fltk::filename_isdir( currentDir.c_str() ) || currentDir=="/" )
     {
-      if( currentDir[strlen(currentDir.c_str())-1] != '/' )
-	currentDir += "/";
+        if( currentDir[currentDir.size()-1] != '/' )
+            currentDir += "/";
     }
 
   // now we have the current directory and possibly a file at the end
@@ -4799,12 +4789,13 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
       {
           dir = dir.substr( 0, pos );
       }
-      fc->compact_files( compact_files );
       fc->currentDir = dir;
 
       fc->type( type );
       fc->clear_history();
       fc->label( message );
+      bool compact = fc->compact_files();
+      fc->compact_files( compact_files );
       if( !filename || filename[0] == '\0' )
 	{
 	  if( (!pattern || !fc->filter() || strcmp(pattern,fc->filter())) && fc->value() )
@@ -4823,7 +4814,6 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
 	    }
 	  fc->filter( pattern );
 	  fc->value( retname.c_str() );
-          fc->cd( "./" );
 	}
       else
 	{
@@ -4831,6 +4821,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
             fc->value( filename );
 	}
 
+      if ( compact != fc->compact_files() ) fc->cd( "." );
     }
 
   fc->exec();
