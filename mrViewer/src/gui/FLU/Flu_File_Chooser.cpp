@@ -89,6 +89,15 @@ using namespace fltk;
 
 static const char* kModule = "filereq";
 
+#ifdef __linux__
+#include <linux/version.h>
+
+#if LINUX_VERSION_CODE <= KERNEL_VERSION(4,4,0)
+#define ICONS_SINGLE_THREAD
+#endif
+
+#endif // __linux__
+
 // #undef DBG
 // #define DBG(x) std::cerr << __FUNCTION__ << " " << __LINE__ << ": " << x << std::endl;
 
@@ -340,6 +349,7 @@ struct RealIcon
     std::string dir;
     std::string filename;
     std::string filesize;
+    unsigned serial;
 };
 
 
@@ -415,10 +425,18 @@ static void loadRealIcon( RealIcon* e)
 
     DBG( "lri processed icon " << e->entry << " " << e->filename
          << " chooser " << e->chooser  );
-    e->entry->icon = img;
-    e->entry->updateSize();
+    if ( e->serial == e->chooser->serial )
+    {
+        e->entry->icon = img;
+        e->entry->updateSize();
+    }
+
     delete e;
 
+#ifdef ICONS_SINGLE_THREAD
+    fltk::check();
+#endif
+    
     // e->chooser->relayout();
     // e->chooser->redraw();
 }
@@ -524,6 +542,8 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				    const char *title,
 				    const bool compact )
   : fltk::DoubleBufferWindow( 600, 480, title ),
+    num_timeouts( 0 ),
+    serial( 0 ),
     quick_exit( false ),
     _compact( compact )
 {
@@ -1011,7 +1031,13 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 void Flu_File_Chooser::clear_threads()
 {
   quick_exit = true;
-  SCOPED_LOCK( mutex );
+  ++serial;
+
+#ifdef ICONS_SINGLE_THREAD
+    for (unsigned i = 0; i < num_timeouts; ++i )
+        fltk::remove_timeout( (fltk::TimeoutHandler) loadRealIcon );
+    num_timeouts = 0;
+#else
 
   thread_pool_t::iterator it = threads.begin();
   thread_pool_t::iterator ie = threads.end();
@@ -1023,6 +1049,7 @@ void Flu_File_Chooser::clear_threads()
   }
 
   threads.clear();
+#endif
 }
 
 void Flu_File_Chooser::clear_lists()
@@ -1720,9 +1747,14 @@ void Flu_File_Chooser::previewCB()
                 ri->dir = get_current_directory();
                 ri->filename = e->filename;
                 ri->filesize = e->filesize;
+                ri->serial   = serial;
+#ifdef ICONS_SINGLE_THREAD
+                fltk::add_timeout( 0.1f, (TimeoutHandler) loadRealIcon, ri );
+#else
                 boost::thread* t = new boost::thread( boost::bind( loadRealIcon,
                                                                    ri ) );
                 threads.push_back( t );
+#endif
             }
         }
 
