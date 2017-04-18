@@ -125,6 +125,9 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
   typedef std::vector< boost::thread* > thread_pool_t;
 
+  unsigned num_timeouts;
+  unsigned serial;
+
   thread_pool_t threads;
 
   bool quick_exit;
