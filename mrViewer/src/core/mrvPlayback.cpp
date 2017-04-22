@@ -85,7 +85,7 @@ namespace
 // #define DBG(x) std::cerr << x << std::endl
 
 
-// #define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 typedef boost::condition_variable Condition;
@@ -1125,9 +1125,8 @@ void decode_thread( PlaybackData* data )
 
       if ( img->has_video() || img->has_audio() )
       {
-          frame = img->dts() + img->start_number();
+          frame = img->dts();
       }
-
 
    }
 
