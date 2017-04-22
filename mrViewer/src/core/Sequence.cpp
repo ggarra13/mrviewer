@@ -583,7 +583,7 @@ bool is_valid_view( std::string view )
 		      {
 			 char buf[64];
                          const char* pr = PRId64;
-                         if ( digits < 7 ) pr = "d";
+                         if ( digits < 10 ) pr = "d";
 			 sprintf( buf, "%%0%d%s", digits, pr );
 			 fileroot += buf;
 		      }
@@ -636,7 +636,7 @@ bool is_valid_view( std::string view )
       }
 
     const char* prdigits = PRId64;
-    if ( pad < 7 ) prdigits = "d";
+    if ( pad < 10 ) prdigits = "d";
 
     sprintf( buf, "%%0%d%s", pad, prdigits );
 
@@ -902,7 +902,7 @@ bool fileroot( std::string& fileroot, const std::string& file,
 
     const char* digits = PRId64;
     int pad = padded_digits(frame);
-    if ( pad < 7 )
+    if ( pad < 10 )
     {
         digits = "d";
     }
