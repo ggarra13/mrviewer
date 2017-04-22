@@ -1872,7 +1872,7 @@ void aviImage::populate()
             if ( _frameStart == 0 ) _frameStart = 1;
         }
     }
-    
+
 
     
     _frame_start = _frame = _frameEnd = _frameStart;
@@ -2076,7 +2076,6 @@ void aviImage::populate()
             find_image( _frameStart );
     }
   
-
     _dts = dts;
     _frame = _audio_frame = _frameStart;
     _expected = dts + 1;
@@ -2174,6 +2173,7 @@ bool aviImage::initialize()
 
       av_dict_set(&opts, "start_number", buf, 0);
 
+
       AVInputFormat*     format = NULL;
       // We must open fileroot for png sequences to work
       int error = avformat_open_input( &_context, fileroot(), 
@@ -2200,9 +2200,10 @@ bool aviImage::initialize()
 	}
       else
 	{
-	  _context = NULL;
-          LOG_ERROR( filename() << _(" Could not open file") );
-	  return false;
+            LOG_ERROR( filename() << _(" Could not open file") );
+            avformat_free_context( _context );
+            _context = NULL;
+            return false;
 	}
     }
 
@@ -2343,7 +2344,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
         if ( has_video() && pkt.stream_index == video_stream_index() )
         {
-            boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )                                      - _frame_offset; // needed
+            boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )                                      - _frame_offset + _start_number; // needed
 
             if ( playback() == kBackwards )
             {
