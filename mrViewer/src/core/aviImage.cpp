@@ -797,20 +797,27 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // frame.  So we search for frame - 1.
     boost::int64_t start = frame;
 
-    if ( !skip ) --start;
-    if ( playback() == kBackwards ) --start;
-
-
+    if ( _start_number != 0 )
+    {
+        start -= _start_number;
+    }
+    else
+    {
+        if ( !skip ) --start;
+        if ( playback() == kBackwards ) --start;
+    }
+    
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
 
     if ( offset < 0 ) offset = 0;
 
+    
     int flag = AVSEEK_FLAG_BACKWARD;
     int ret = av_seek_frame( _context, -1, offset, flag );
     if (ret < 0)
     {
-        IMG_ERROR( _("Could not seek to frame ") << frame
+        IMG_ERROR( _("Could not seek to frame ") << start
                    << N_(": ") << get_error_text(ret) );
         return false;
     }
@@ -2171,8 +2178,7 @@ bool aviImage::initialize()
       // We must open fileroot for png sequences to work
       int error = avformat_open_input( &_context, fileroot(), 
 				       format, &opts );
-
-
+      
       if ( error >= 0 )
 	{
 	   // Change probesize and analyze duration to 30 secs 
@@ -2493,7 +2499,7 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
 
-   int64_t f = frame - _start_number;
+   int64_t f = frame;
 
    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
    {
@@ -2598,7 +2604,6 @@ bool aviImage::frame( const boost::int64_t f )
     if ( f < _frameStart )    _dts = _adts = _frameStart;
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
     // else                      _dts = _adts = f;
-
 
   bool ok = fetch(f);
 
