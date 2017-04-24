@@ -195,7 +195,7 @@ const size_t aviImage::colorspace_index() const
          _colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
     {
         if ( colorspace_override ) img->_colorspace_index = colorspace_override;
-        else img->_colorspace_index = av_frame_get_colorspace(_av_frame);
+        else img->_colorspace_index = _av_frame->colorspace;
     }
     return _colorspace_index;
 }
@@ -209,7 +209,7 @@ const char* const aviImage::colorspace() const
 const char* const aviImage::color_range() const
 {
     if ( !_av_frame ) return kColorRange[0];
-    return kColorRange[av_frame_get_color_range(_av_frame)];
+    return kColorRange[_av_frame->color_range];
 }
 
 
@@ -824,7 +824,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _acontext )
     {
-        offset = boost::int64_t( double(start + _audio_offset) * AV_TIME_BASE
+        offset = boost::int64_t( double(start + _audio_offset )
+                                 * AV_TIME_BASE
                                  / fps() );
         if ( offset < 0 ) offset = 0;
 
@@ -1119,7 +1120,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
 
      if ( got_pict ) {
-         ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+         ptsframe = _av_frame->best_effort_timestamp;
          
          if ( ptsframe == AV_NOPTS_VALUE )
          {
@@ -1668,7 +1669,7 @@ bool aviImage::readFrame(int64_t & pts)
         }
     }
 
-    pts = av_frame_get_best_effort_timestamp( _av_frame );
+    pts = _av_frame->best_effort_timestamp;
 
     if ( pts == AV_NOPTS_VALUE )
     {
@@ -1875,7 +1876,8 @@ void aviImage::populate()
 
 
     
-    _frame_start = _frame = _frameEnd = _frameStart;
+    _frame_start = _frame = _frameEnd = _frameStart + _start_number;
+
 
     //
     // BUG FIX for ffmpeg bugs with some codecs/containers.
@@ -1956,7 +1958,7 @@ void aviImage::populate()
     if ( duration <= 0 ) duration = 1;
 
     _frameEnd = _frameStart + duration - 1;
-    _frame_end = _frameEnd;
+    _frame_end = _frame_start + duration - 1;
 
     _frame_offset = 0;
 
@@ -2468,7 +2470,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     // For secondary audio
     if ( _acontext )
     {
-        _adts = CMedia::queue_packets( frame + _audio_offset, is_seek,
+        _adts = CMedia::queue_packets( frame + _audio_offset,
+                                       is_seek,
                                        got_video, got_audio, got_subtitle );
         _expected_audio = _adts + 1;
     }

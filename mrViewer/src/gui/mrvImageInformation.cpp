@@ -458,7 +458,6 @@ void ImageInformation::fill_data()
     m_curr = add_browser(m_image);
 
 
-    
     add_text( _("Directory"), _("Directory where clip resides"), img->directory() );
 
     char buf[1024];
