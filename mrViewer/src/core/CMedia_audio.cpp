@@ -990,7 +990,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 // Just to be safe, we recalc data_size
                 data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
-#if 1
                 if ( _audio_channels >= 6 )
                 {
                     if ( fmt == AV_SAMPLE_FMT_FLT )
@@ -1009,7 +1008,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                         t.do_it();
                     }
                 }
-#endif
 
             }
             else
@@ -1627,7 +1625,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = (result->frame() - _audio_offset ) / _orig_fps; //not av_q2d( get_audio_stream()->avg_frame_rate );
+  _audio_pts = (result->frame() - _audio_offset - _start_number) / _orig_fps; //not av_q2d( get_audio_stream()->avg_frame_rate );
 
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
   set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
