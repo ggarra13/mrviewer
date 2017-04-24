@@ -1,3 +1,10 @@
+v3.6.0   - Allowed image sequences with more than 4 digits in PNGs.
+	   Now up to 9 digits are allowed.  Previously, files like:
+	   MovieFrame00016.png would get rejected.
+	 - Fixed playback of PNGs due to new code seeking incorrectly.
+	 - Fixed a crash in Media Information window due to use of
+	   an unitialized pointer with PNGs among others.
+
 v3.5.9   - Bug fixed File->Open->Single Image.  It was not doing what
 	   it was supposed to do.  Now it loads a single image and
 	   the built-in file requester lists sequences as separate
