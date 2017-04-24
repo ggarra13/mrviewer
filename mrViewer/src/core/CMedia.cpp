@@ -736,7 +736,7 @@ mrv::image_type_ptr CMedia::right() const
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
     
-    if ( _is_sequence && _right[idx] )
+    if ( _is_sequence && _right && _right[idx] )
     {
         return _right[idx];
     }
