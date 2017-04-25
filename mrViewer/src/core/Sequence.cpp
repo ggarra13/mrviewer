@@ -483,8 +483,8 @@ bool is_valid_view( std::string view )
             size_t pos;
             std::string fspec;
             if ( ( pos = root.find('%') ) != std::string::npos ||
-                 ( pos = root.find('#') ) != std::string::npos ||
-                 ( pos = root.find('@') ) != std::string::npos )
+                 ( pos = root.find('@') ) != std::string::npos ||
+                 ( pos = root.find('#') ) != std::string::npos )
             {
                 fspec = root.substr( pos, root.size() - pos - 1 );
                 if ( is_valid_frame_spec( fspec ) )
