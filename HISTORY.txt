@@ -1,3 +1,9 @@
+v3.6.1   - Allowed file names like MovieFrame####20.png.
+	 - In command line, ILM format now correctly sets the start
+	   and end frame of sequence.
+	   So, for example, avatar.61-120.png will set
+	   avatar with a start frame of 61 up to 120.
+
 v3.6.0   - Allowed image sequences with more than 4 digits in PNGs.
 	   Now up to 9 digits are allowed.  Previously, files like:
 	   MovieFrame00016.png would get rejected.
