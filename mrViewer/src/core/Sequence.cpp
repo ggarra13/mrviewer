@@ -91,7 +91,7 @@ namespace mrv
     return true;
   }
 
-  bool is_valid_frame_spec( const std::string& framespec )
+  bool is_valid_frame_spec( std::string& framespec )
   {
      const char* c;
      if ( framespec.substr(0,1) == "." )
@@ -129,15 +129,20 @@ namespace mrv
          return true;
      }
 
+     int idx = 0;
     bool range_found = false;
     for ( ++c; *c != 0; ++c )
       {
-	 if ( !range_found && *c == '-' ) { range_found = true; continue; }
-
+          if ( !range_found ) {
+              ++idx;
+              if ( *c == '-' ) { range_found = true; continue; }
+          }
 	if ( *c != '+' && *c >= '0' && *c <= '9' ) continue;
 
 	return false;
       }
+
+    framespec = framespec.substr(0, idx);
 
     return range_found;
   }
@@ -427,12 +432,17 @@ bool is_valid_view( std::string view )
 
     if ( count == 2 && minus < 2 )
       {
-
 	root  = f.substr( 0, idx[1]+1 );
 	frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = f.substr( idx[0], file.size()-idx[0] );
 
-	bool ok = is_valid_frame( ext );
+        bool ok = is_valid_frame( frame );
+        if ( ok )
+        {
+            return true;
+        }
+
+        ok = is_valid_frame( ext );
 	if ( ok )
 	{
 	   frame = ext;
@@ -565,9 +575,8 @@ bool is_valid_view( std::string view )
 	  {
 	    stringArray frames;
 	    mrv::split_string( frames, range, "-" );
-	    if ( frames.size() > 1 && frames[0].size() > 0)
+	    if ( frames.size() > 1 && !frames[0].empty())
 	      {
-
 		unsigned digits = (unsigned) frames[0].size();
 
 		frameStart = atoi( frames[0].c_str() );
@@ -631,6 +640,7 @@ bool is_valid_view( std::string view )
             pad = (unsigned) cframe.size();
 
 	boost::int64_t f = atoi( cframe.c_str() );
+        
 	if ( f < frameStart ) frameStart = f;
 	if ( f > frameEnd )   frameEnd   = f;
       }
@@ -892,13 +902,12 @@ bool fileroot( std::string& fileroot, const std::string& file,
      fs::path path = fs::path( file );
 
 
-     split_sequence( root, frame, view, ext, file, change_view );
-     if ( root == "" || frame == "" ) 
+     bool ok = split_sequence( root, frame, view, ext, file, change_view );
+     if ( !ok || root == "" || frame == "" ) 
      {
         fileroot = file;
         return false;
      }
-
 
     const char* digits = PRId64;
     int pad = padded_digits(frame);
