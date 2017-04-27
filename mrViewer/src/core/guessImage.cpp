@@ -225,7 +225,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
             if ( is_seq )
 	    {
                 LOG_ERROR( _("Image sequence \"") << root
-                           << _("\" not found.") );
+                           << _("\" not found. Name tested ") << name );
 	    }
             else
 	    {
