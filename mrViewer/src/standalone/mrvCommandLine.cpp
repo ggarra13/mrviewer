@@ -492,10 +492,12 @@ void parse_command_line( const int argc, char** argv,
             else
             {
                mrv::fileroot( fileroot, arg );
-
                if ( mrv::is_valid_sequence( fileroot.c_str() ) )
                {
-                   mrv::get_sequence_limits( start, end, fileroot );
+                   // we use original file to get
+                   // start and end in case of ILM format
+                   std::string file = arg;
+                   mrv::get_sequence_limits( start, end, file );
                }
 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
