@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-04-24 17:51-0300\n"
+"POT-Creation-Date: 2017-04-27 19:45-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -243,9 +243,13 @@ msgstr "\" no tiene canales con el prefijo \""
 msgid "\" has no channels."
 msgstr " no tiene canales."
 
-#: core/guessImage.cpp:228 core/guessImage.cpp:232
+#: core/guessImage.cpp:232
 msgid "\" not found."
 msgstr "\" no encontrada."
+
+#: core/guessImage.cpp:228
+msgid "\" not found. Name tested "
+msgstr " no encontrada.  Nombre probado "
 
 #: core/mrSocket.cpp:111 core/mrSocket.cpp:156
 msgid "\" to protocol number"
@@ -295,7 +299,7 @@ msgstr "%d Hz."
 msgid "%d kb/s"
 msgstr "%d kb/s"
 
-#: core/Sequence.cpp:551
+#: core/Sequence.cpp:561
 msgid "' does not exist or no directory"
 msgstr "' no existe o no es una carpeta"
 
@@ -2299,7 +2303,7 @@ msgstr "Dispositivos"
 msgid "Directory"
 msgstr "Carpeta"
 
-#: core/Sequence.cpp:550
+#: core/Sequence.cpp:560
 msgid "Directory '"
 msgstr "Carpeta '"
 
