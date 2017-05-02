@@ -2385,6 +2385,37 @@ size_t CMedia::memory() const
  * 
  * @return stream type as a character string.
  */
+const char* CMedia::stream_type( const AVCodecParameters* codecpar )
+{
+  const char* stream;
+  switch( codecpar->codec_type ) 
+    {
+    case AVMEDIA_TYPE_VIDEO:
+       stream = _("video");
+      break;
+    case AVMEDIA_TYPE_AUDIO:
+       stream = _("audio");
+      break;
+    case AVMEDIA_TYPE_DATA:
+       stream = _("data");
+      break;
+    case AVMEDIA_TYPE_SUBTITLE:
+       stream = _("subtitle");
+      break;
+    default:
+       stream = _("unknown");
+      break;
+    }
+  return stream;
+}
+
+/** 
+ * Given a codec_context, returns the type of stream.
+ * 
+ * @param codec_context 
+ * 
+ * @return stream type as a character string.
+ */
 const char* CMedia::stream_type( const AVCodecContext* codec_context )
 {
   const char* stream;
@@ -2446,6 +2477,48 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
 }
 
 
+
+/** 
+ * Given a codec parameter, return the name of the codec if possible.
+ * 
+ * @param enc   codec context
+ * 
+ * @return      name of codec.
+ */
+std::string CMedia::codec_name( const AVCodecParameters* enc )
+{
+  AVCodec* p = avcodec_find_decoder(enc->codec_id);
+  const char* codec_name;
+  char buf[20];
+
+  if (p) {
+    codec_name = p->name;
+  } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
+    /* fake mpeg2 transport stream codec (currently not
+       registered) */
+     codec_name = N_("mpeg2ts");
+  } else {
+    /* output avi tags */
+    if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
+	  && isprint((enc->codec_tag>>16)&0xFF) && 
+	  isprint((enc->codec_tag>>24)&0xFF)){
+       snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
+	       enc->codec_tag & 0xff,
+	       (enc->codec_tag >> 8) & 0xff,
+	       (enc->codec_tag >> 16) & 0xff,
+	       (enc->codec_tag >> 24) & 0xff,
+	       enc->codec_tag);
+    } else {
+       snprintf(buf, sizeof(buf), N_("0x%04x"), enc->codec_tag);
+    }
+    codec_name = buf;
+  }
+  
+  if ( codec_name )
+      return std::string( codec_name );
+  else
+      return "";
+}
 
 /** 
  * Given a codec context, return the name of the codec if possible.
@@ -2546,7 +2619,7 @@ double CMedia::calculate_fps( const AVStream* stream )
 void CMedia::populate_stream_info( StreamInfo& s, 
 				   std::ostringstream& msg,
 				   const AVFormatContext* context,
-				   const AVCodecContext* ctx, 
+				   const AVCodecParameters* ctx, 
 				   const int stream_index )
 {
 
@@ -2619,6 +2692,88 @@ void CMedia::populate_stream_info( StreamInfo& s,
 }
 
 
+/** 
+ * Populate the stream information from a codec context
+ * 
+ * @param s              stream info
+ * @param msg            any error message
+ * @param codec_context  codec context
+ * @param stream_index   ffmpeg stream index
+ */
+void CMedia::populate_stream_info( StreamInfo& s, 
+				   std::ostringstream& msg,
+				   const AVFormatContext* context,
+				   const AVCodecContext* ctx, 
+				   const int stream_index )
+{
+
+  bool has_codec = true;
+
+  // Mark streams that we don't have a decoder for
+  AVCodec* codec = avcodec_find_decoder( ctx->codec_id );
+  if ( ! codec )
+    {
+      has_codec = false;
+      const char* type = stream_type( ctx );
+      msg << _("\n\nNot a known codec ") << codec_name(ctx) 
+	  << _(" for stream #") << stream_index << _(", type ") << type;
+    }
+
+  s.context      = context;
+  s.stream_index = stream_index;
+  s.has_codec    = has_codec;
+  s.codec_name   = codec_name( ctx );
+  s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
+
+  AVStream* st = context->streams[stream_index];
+  double time  = av_q2d( st->time_base );
+
+
+  AVDictionaryEntry* lang = av_dict_get(st->metadata, "language", NULL, 0);
+  if ( lang && lang->value )
+      s.language = lang->value;
+  else
+      s.language = _("und");
+  
+  if ( st->start_time == AV_NOPTS_VALUE )
+    {
+        s.start = 1;
+    }
+  else
+    {
+        s.start = ((double) st->start_time * time);
+    }
+
+  if ( st->duration != AV_NOPTS_VALUE )
+    {
+        s.duration = ((double) st->duration * time);
+    }
+  else
+    {
+        s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
+    }
+  
+    if (st->disposition & AV_DISPOSITION_DEFAULT)
+        s.disposition = _("default");
+    if (st->disposition & AV_DISPOSITION_DUB)
+        s.disposition = _("dub");
+    if (st->disposition & AV_DISPOSITION_ORIGINAL)
+        s.disposition = _("original");
+    if (st->disposition & AV_DISPOSITION_COMMENT)
+        s.disposition = _("comment");
+    if (st->disposition & AV_DISPOSITION_LYRICS)
+        s.disposition = _("lyrics");
+    if (st->disposition & AV_DISPOSITION_KARAOKE)
+        s.disposition = _("karaoke");
+    if (st->disposition & AV_DISPOSITION_FORCED)
+        s.disposition = _("forced");
+    if (st->disposition & AV_DISPOSITION_HEARING_IMPAIRED)
+        s.disposition = _("hearing impaired");
+    if (st->disposition & AV_DISPOSITION_VISUAL_IMPAIRED)
+        s.disposition = _("visual impaired");
+    if (st->disposition & AV_DISPOSITION_CLEAN_EFFECTS)
+        s.disposition = _("clean effects");
+}
 
 // Convert an FFMPEG pts into a frame number
 boost::int64_t CMedia::frame2pts( const AVStream* stream, 
