@@ -1235,6 +1235,12 @@ class CMedia
 			       const AVFormatContext* context,
 			       const AVCodecContext* ctx, 
 			       const int stream_index );
+    
+    void populate_stream_info( StreamInfo& s, 
+			       std::ostringstream& msg,
+			       const AVFormatContext* context,
+			       const AVCodecParameters* codecpar, 
+			       const int stream_index );
 
     void limit_audio_store( const boost::int64_t frame );
     void clear_stores();
@@ -1281,9 +1287,12 @@ class CMedia
                                   bool& got_subtitle );
 
     static const char* stream_type( const AVCodecContext* );
+    static const char* stream_type( const AVCodecParameters* );
 
     static std::string codec_tag2fourcc( unsigned int );
+    static std::string codec_name( const AVCodecParameters* enc );
     static std::string codec_name( const AVCodecContext* enc );
+    static unsigned int calculate_bitrate( const AVCodecParameters* enc );
     static unsigned int calculate_bitrate( const AVCodecContext* enc );
     static double calculate_fps( const AVStream* stream );
 

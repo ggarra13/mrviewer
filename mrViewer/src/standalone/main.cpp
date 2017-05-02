@@ -25,7 +25,7 @@
  * 
  */
 
-//#define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+// #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 
 #include <string.h>
 #include <locale.h>
@@ -157,10 +157,7 @@ void load_new_files( void* s )
 
 int main( int argc, char** argv ) 
 {
-#ifdef LINUX
-    XInitThreads();
-#endif
-    fltk::lock();
+    fltk::lock();  // This calls XInitThreads on Linux
 
     
     // Avoid repetition in ffmpeg's logs
