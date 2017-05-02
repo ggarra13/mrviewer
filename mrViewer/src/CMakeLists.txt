@@ -371,6 +371,11 @@ IF(UNIX)
 	  DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF(UNIX)
 
+IF(WIN32 OR WIN64)
+	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/fonts
+      	      DESTINATION ${CMAKE_BINARY_DIR}/../bin )
+ENDIF( WIN32 OR WIN64 )
+
 FILE(GLOB ffmpegfiles ${EXE_DIR}/ff* )
 FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
