@@ -117,7 +117,8 @@ namespace {
 namespace mrv {
 
 
-fs::path relativePath( const fs::path &path, const fs::path &relative_to )
+fs::path relativePath( const fs::path &path, const fs::path &relative_to,
+                       bool& absolute )
 {
     // create absolute paths
     std::string ps = fs::absolute(path).generic_string();
@@ -134,11 +135,15 @@ fs::path relativePath( const fs::path &path, const fs::path &relative_to )
     // if root paths are different, return absolute path
     if( p.root_path() != r.root_path() )
     {
-        LOG_ERROR( "Path " << p.root_path() << " different than "
-                   << r.root_path() );
+        LOG_INFO( _("Path ") << p.root_path() << _(" different than ")
+                  << r.root_path()
+                  << _(".  Will copy .srt file to local directory." ) );
+        absolute = true;
         return p;
     }
 
+    absolute = false;
+    
     // initialize relative path
     fs::path result;
 
@@ -155,6 +160,7 @@ fs::path relativePath( const fs::path &path, const fs::path &relative_to )
         result /= "..";
         ++itr_relative_to;
     }
+
 
     // add remaining path
     while( itr_path != p.end() ) {
@@ -586,14 +592,16 @@ void aviImage::subtitle_file( const char* f )
         _subtitle_file = f;
     
         fs::path sp = _subtitle_file;
-        _subtitle_file = sp.filename().string();
+        _subtitle_file = sp.filename().generic_string();
         sp = sp.parent_path();
 
-        fs::path p = relativePath( sp, fs::current_path() );
+        // Set the current dir to the subtitle path
+        fs::current_path( sp );
+            
 
         _filter_description = "subtitles=";
-        _subtitle_file = p.generic_string() + '/' + _subtitle_file;
 
+        
         LOG_INFO( "Current Path " << fs::current_path() );
         LOG_INFO( "Subtitle file " << _subtitle_file );
         _filter_description += _subtitle_file;
@@ -1775,7 +1783,6 @@ void aviImage::populate()
                 }
             case AVMEDIA_TYPE_SUBTITLE:
                 {
-		 
                     subtitle_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
                     s.bitrate    = calculate_bitrate( ctx );
@@ -2149,7 +2156,6 @@ void aviImage::populate()
         AVStream* stream = get_video_stream();
         if ( stream->metadata ) dump_metadata( stream->metadata, "Video " );
     }
-
 }
 
 void aviImage::probe_size( unsigned p ) 
@@ -3294,7 +3300,14 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   unsigned char a;
   ImagePixel yuv, rgb;
 
-  const unsigned* pal = (const unsigned*)rect.data[1];
+  unsigned* pal = (unsigned*)rect.data[1];
+  for ( unsigned i = 0; i < 16; i += 4 )
+  {
+      pal[i] = 0x00000000;
+      pal[i+1] = 0xFFFFFFFF;
+      pal[i+2] = 0xFF000000;
+      pal[i+3] = 0xFF000000;
+  }
 
   for ( int x = dstx; x < dstx + dstw; ++x )
   {
@@ -3312,7 +3325,8 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	yuv.g = float( (t >> 8) & 0xff );
 	yuv.r = float( t & 0xff );
 
-	rgb = mrv::color::yuv::to_rgb( yuv );
+	// rgb = mrv::color::yuv::to_rgb( yuv );
+	rgb = yuv;
 
         if ( rgb.r < 0x00 ) rgb.r = 0x00;
         else if ( rgb.r > 0xff ) rgb.r = 0xff;
@@ -3371,12 +3385,18 @@ void aviImage::subtitle_stream( int idx )
 void aviImage::store_subtitle( const boost::int64_t& frame,
 			       const boost::int64_t& repeat )
 {
-  // if ( _sub.format != 0 )
-  //   {
-  //     IMG_ERROR("Subtitle format " << _sub.format << " not yet handled");
-  //     subtitle_stream(-1);
-  //     return;
-  //   }
+  if ( _sub.format != 0 )
+    {
+        if ( _subtitle_file.empty() )
+        {
+            subtitle_file( filename() );
+            return;
+        }
+        else
+            IMG_ERROR( _("Subtitle type ") << _sub.format 
+                       << _(" not yet supported") );
+        return;
+    }
 
   unsigned w = width();
   unsigned h = height();
@@ -3414,12 +3434,11 @@ void aviImage::store_subtitle( const boost::int64_t& frame,
 	      subtitle_rect_to_image( *rect );
 	      break;
 	   case SUBTITLE_TEXT:
-	      // subtitle_text_to_image( *rect );
-	      std::cerr << rect->text << std::endl;
-	      break;
 	   case SUBTITLE_ASS:
-	      subtitle_rect_to_image( *rect );
-	      break;
+	      // subtitle_text_to_image( *rect );
+               if ( _subtitle_file.empty() )
+                   subtitle_file( filename() );
+               break;
 	}
 
      }
