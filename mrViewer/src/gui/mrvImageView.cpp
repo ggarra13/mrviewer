@@ -6973,12 +6973,15 @@ void ImageView::field( FieldDisplay p )
   _field = p;
 
   static const char* kFieldNames[] = {
-    _("F"),
-    _("T"),
-    _("B")
+    _("Frame"),
+    _("Top"),
+    _("Bottom")
   };
 
-  uiMain->uiField->label( kFieldNames[_field] );
+  std::string f = kFieldNames[_field];
+  f = f.substr( 0, 1 );
+  
+  uiMain->uiField->copy_label( f.c_str() );
 
   char buf[128];
   sprintf( buf, "FieldDisplay %d", _field );
