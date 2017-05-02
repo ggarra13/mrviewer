@@ -1,8 +1,13 @@
 v3.6.1   - Allowed file names like MovieFrame####20.png.
-	 - In command line, ILM format now correctly sets the start
-	   and end frame of sequence.
+	 - In command line, ILM format (not padded) now correctly sets 
+	   the start and end frame of sequence.
 	   So, for example, avatar.61-120.png will set
-	   avatar with a start frame of 61 up to 120.
+	   avatar with a start frame of 61 up to 120.  Note that
+	   padding is not supported in ILM format.
+	 - Subtitles now work regardless of the location of mrViewer.
+	   We change directories before loading a subtitle file.
+	 - Embedded subtitles are now loaded automatically.  No
+	   need to call Subtitle->Open for them.
 
 v3.6.0   - Allowed image sequences with more than 4 digits in PNGs.
 	   Now up to 9 digits are allowed.  Previously, files like:
