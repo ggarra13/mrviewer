@@ -368,9 +368,6 @@ static void loadRealIcon( RealIcon* e)
         return;
     }
 
-    DBG( "lri process icon " << e->entry << " " << e->filename 
-         << " chooser " << e->chooser );
-
     char fmt[1024];
     char buf[1024];
 
@@ -401,11 +398,16 @@ static void loadRealIcon( RealIcon* e)
     sprintf( buf, fmt, frameStart );
 
 
+    DBG( "lri file exists? " << buf );
+
 
     if ( ! fs::exists( buf ) ) {
         delete e;
         return;
     }
+
+    DBG( "lri process icon " << e->entry << " " << e->filename 
+         << " chooser " << e->chooser );
 
     fltk::SharedImage* img;
     try {
@@ -418,6 +420,7 @@ static void loadRealIcon( RealIcon* e)
     }
 
     if ( !img ) {
+        DBG( "Img is NULL" );
         delete e;
         return;
     }
