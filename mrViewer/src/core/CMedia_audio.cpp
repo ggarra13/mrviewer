@@ -176,7 +176,7 @@ void CMedia::open_audio_codec()
       return;
     }
 
-  AVCodecContext* ictx = stream->codec;
+  AVCodecParameters* ictx = stream->codecpar;
   if ( ictx == NULL )
   {
      IMG_ERROR( _("No codec context for audio stream.") );
@@ -194,7 +194,7 @@ void CMedia::open_audio_codec()
   }
   
   _audio_ctx = avcodec_alloc_context3(_audio_codec);
-  int r = avcodec_copy_context(_audio_ctx, ictx);
+  int r = avcodec_parameters_to_context(_audio_ctx, ictx);
   if ( r < 0 )
   {
       throw _("avcodec_copy_context failed for audio"); 
@@ -469,6 +469,50 @@ void CMedia::close_audio_codec()
  * 
  * @return bitrate
  */
+unsigned int CMedia::calculate_bitrate( const AVCodecParameters* enc )
+{
+  unsigned int bitrate;
+  /* for PCM codecs, compute bitrate directly */
+  switch(enc->codec_id) {
+  case AV_CODEC_ID_PCM_S32LE:
+  case AV_CODEC_ID_PCM_S32BE:
+  case AV_CODEC_ID_PCM_U32LE:
+  case AV_CODEC_ID_PCM_U32BE:
+    bitrate = enc->sample_rate * enc->channels * 32;
+    break;
+  case AV_CODEC_ID_PCM_S24LE:
+  case AV_CODEC_ID_PCM_S24BE:
+  case AV_CODEC_ID_PCM_U24LE:
+  case AV_CODEC_ID_PCM_U24BE:
+  case AV_CODEC_ID_PCM_S24DAUD:
+    bitrate = enc->sample_rate * enc->channels * 24;
+    break;
+  case AV_CODEC_ID_PCM_S16LE:
+  case AV_CODEC_ID_PCM_S16BE:
+  case AV_CODEC_ID_PCM_U16LE:
+  case AV_CODEC_ID_PCM_U16BE:
+    bitrate = enc->sample_rate * enc->channels * 16;
+    break;
+  case AV_CODEC_ID_PCM_S8:
+  case AV_CODEC_ID_PCM_U8:
+  case AV_CODEC_ID_PCM_ALAW:
+  case AV_CODEC_ID_PCM_MULAW:
+    bitrate = enc->sample_rate * enc->channels * 8;
+    break;
+  default:
+    bitrate = (unsigned int) enc->bit_rate;
+    break;
+  }
+  return bitrate;
+}
+
+/** 
+ * Given an audio codec context, calculate the approximate bitrate.
+ * 
+ * @param enc   codec context
+ * 
+ * @return bitrate
+ */
 unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
 {
   unsigned int bitrate;
@@ -550,7 +594,8 @@ void CMedia::populate_audio()
       const AVStream* stream = c->streams[ i ];
       assert( stream != NULL );
 
-      const AVCodecContext* ctx = stream->codec;
+      //const AVCodecContext* ctx = stream->codec;
+      const AVCodecParameters* ctx = stream->codecpar;
       assert( ctx != NULL );
 
       // Determine the type and obtain the first index of each type
@@ -579,7 +624,8 @@ void CMedia::populate_audio()
 		    s.language = "und";
 		 }
 
-		 const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
+		 const char* fmt = av_get_sample_fmt_name( (AVSampleFormat)
+                                                           ctx->format );
 		 if ( fmt ) s.format = fmt; 
 		 
 		 _audio_info.push_back( s );
@@ -780,6 +826,31 @@ void CMedia::audio_file( const char* file )
 
 
 
+static
+int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
+           bool eof)
+{
+    int ret;
+
+    *got_frame = 0;
+
+    if (!eof) {
+        ret = avcodec_send_packet(avctx, pkt);
+        // In particular, we don't expect AVERROR(EAGAIN), because we read all
+        // decoded frames with avcodec_receive_frame() until done.
+        if (ret < 0)
+            return ret == AVERROR_EOF ? 0 : ret;
+    }
+
+    ret = avcodec_receive_frame(avctx, frame);
+    if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF)
+        return ret;
+    if (ret >= 0)
+        *got_frame = 1;
+
+    return 0;
+}
+
 //
 // Limit the audio store to approx. max frames images on each side.
 // We have to check both where frame is as well as where _adts is.
@@ -867,13 +938,16 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
     int got_frame = 0;
     int ret = -1;
+    bool eof = false;
 
     while (!got_frame )
     {
         ret = avcodec_decode_audio4(ctx, _aframe, &got_frame, avpkt);
 
+        // ret = decode( ctx, _aframe, &got_frame, avpkt, eof );
+        // if ( ret == AVERROR_EOF ) eof = true;
+        
         if (ret >= 0 && got_frame) {
-
             assert( _aframe->nb_samples > 0 );
             assert( ctx->channels > 0 );
             int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
