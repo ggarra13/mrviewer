@@ -50,7 +50,7 @@ namespace mrv {
                       (int(*)(int))tolower);
 
       if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" || 
-           ext == "srt" || ext == "sub" || ext == "txt" || ext == "TXT" )
+           ext == "srt" || ext == "sub" || ext == "txt" )
           return NULL;
 
       CMedia* img = CMedia::guess_image( filename, header, len );
