@@ -187,9 +187,10 @@ namespace mrv {
 
   void set_root_path( const int argc, char** argv )
   {
-    char* root = getenv("MRV_ROOT");
+      std::string r;
+      char* root = getenv("MRV_ROOT");
 
-    if ( !root )
+      if ( !root )
       {
 	char binpath[ PATH_MAX ];  binpath[0] = 0;
 
@@ -204,11 +205,12 @@ namespace mrv {
 	rootdir = rootdir.remove_leaf();
 	rootdir = rootdir.branch_path();
 
-	std::string root = "MRV_ROOT=";
-	root += rootdir.string().c_str();
+	std::string mrvroot = "MRV_ROOT=";
+	mrvroot += rootdir.generic_string();
 
-
-	putenv( strdup( (char*)root.c_str() ) );
+	putenv( strdup( (char*)mrvroot.c_str() ) );
       }
+
   }
+
 }
