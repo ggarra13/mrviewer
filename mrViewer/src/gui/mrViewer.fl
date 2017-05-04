@@ -15,6 +15,8 @@ decl {\#include "core/mrvAudioEngine.h"} {}
 
 decl {\#include "core/exrImage.h"} {} 
 
+decl {\#include "core/aviImage.h"} {} 
+
 decl {\#include "core/stubImage.h"} {} 
 
 decl {\#include "core/mrvColorSpaces.h"} {} 
@@ -659,7 +661,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {867 360 670 450} resizable visible
+        xywh {867 444 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1067,8 +1069,8 @@ v->refresh();}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
-            xywh {15 21 424 360} align 5 box EMBOSSED_BOX labelsize 14
+            label Playback
+            xywh {15 21 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1134,7 +1136,7 @@ uiPrefsFPS->value( g );}
                 xywh {187 20 20 25} align 4 box UP_BOX
               }
               {fltk::ValueInput} uiPrefsScrubbingSensitivity {
-                label {Scrub Sensitivity} selected
+                label {Scrub Sensitivity}
                 tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.}
                 xywh {230 120 60 25} minimum 2 maximum 50 step 1 value 5
               }
@@ -1168,7 +1170,7 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches
+            label Caches open
             xywh {13 22 424 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
@@ -1765,7 +1767,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video open
+            label Video
             xywh {15 22 424 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
@@ -1905,7 +1907,33 @@ else
             }
           }
           {fltk::Group} {} {
-            label Errors
+            label Subtitles open
+            xywh {14 23 426 367} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Choice} uiPrefsSubtitleFont {
+              label Font
+              user_data m user_data_type {ViewerUI*}
+              callback {int idx = o->value();
+const char* font = o->child(idx)->label();
+mrv::media m = v->uiView->foreground();
+if (!m) return;
+CMedia* img = m->image();
+aviImage* avi = dynamic_cast< aviImage* >( img );
+if (!avi) return;
+avi->subtitle_font( font );} selected
+              xywh {114 37 275 31} box THIN_DOWN_BOX
+              extra_code {fltk::Font** fonts; // list returned by fltk
+int numfonts = fltk::list_fonts(fonts);
+for (int i = 0; i < numfonts; i++)
+{
+       o->add(fonts[i]->name());
+       if ( strcmp( fonts[i]->name(), "Arial" ) == 0 )
+           o->value(i);
+}}
+            } {}
+          }
+          {fltk::Group} {} {
+            label Errors open
             xywh {14 24 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -2033,13 +2061,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2081,6 +2109,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
             {fltk::Item} {} {
               label Audio
+              }
+            {fltk::Item} {} {
+              label Subtitle
               }
             {fltk::Item} {} {
               label Errors
@@ -2591,7 +2622,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {354 174 640 530} when CHANGED resizable
+        xywh {354 258 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2876,7 +2907,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::Group} uiViewGroup {
+          {fltk::Group} uiViewGroup {open
             xywh {0 28 640 430} resizable
             class {fltk::Group}
           } {

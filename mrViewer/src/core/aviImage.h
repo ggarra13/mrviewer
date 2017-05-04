@@ -142,6 +142,11 @@ class aviImage : public CMedia
 
     virtual void probe_size( unsigned p );
 
+    inline void subtitle_font( const char* f ) {
+        _subtitle_font = strdup(f);
+        subtitle_file( _subtitle_file.c_str() );
+    }
+    
     void debug_video_stores(const boost::int64_t frame, 
 			    const char* routine = "",
 			    const bool detail = false);
@@ -282,6 +287,8 @@ class aviImage : public CMedia
     unsigned int          _max_images;
 
 
+    char*                 _subtitle_font;
+    std::string           _subtitle_dir;
     std::string           _subtitle_file;
     std::string           _filter_description;
     AVFilterContext*      buffersink_ctx;
