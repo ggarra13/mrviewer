@@ -228,6 +228,7 @@ aviImage::aviImage() :
   _av_frame( NULL ),
   _filt_frame( NULL ),
   _video_codec( NULL ),
+  _subtitle_font( strdup( "Arial" ) ),
   _subtitle_ctx( NULL ),
   buffersink_ctx( NULL ),
   buffersrc_ctx( NULL ),
@@ -283,6 +284,7 @@ aviImage::~aviImage()
 
   avsubtitle_free( &_sub );
 
+  free( _subtitle_font );
 }
 
 
@@ -590,22 +592,28 @@ void aviImage::subtitle_file( const char* f )
         _subtitle_info.push_back( s );
 
         _subtitle_file = f;
-    
-        fs::path sp = _subtitle_file;
-        _subtitle_file = sp.filename().generic_string();
-        sp = sp.parent_path();
 
+        if ( _subtitle_dir.empty() )
+        {
+            fs::path sp = _subtitle_file;
+            _subtitle_file = sp.filename().generic_string();
+            sp = sp.parent_path();
+            _subtitle_dir = sp.generic_string();
+        }
+        
         // Set the current dir to the subtitle path
-        fs::current_path( sp );
-            
+        fs::current_path( _subtitle_dir );
 
         _filter_description = "subtitles=";
 
         
         LOG_INFO( "Current Path " << fs::current_path() );
         LOG_INFO( "Subtitle file " << _subtitle_file );
+        LOG_INFO( "Subtitle font " << _subtitle_font );
         _filter_description += _subtitle_file;
-
+        _filter_description += ":force_style='FontName=";
+        _filter_description += _subtitle_font;
+        _filter_description += "'";
 
         int ret;
         if ( ret = init_filters( _filter_description.c_str() ) < 0 )
