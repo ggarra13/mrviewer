@@ -752,6 +752,19 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
 
+    fltk::Preferences subtitles( base, "subtitles" );
+    subtitles.get( "font", tmpS, "Arial", 2048 );
+    for (unsigned i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
+    {
+        if ( strcmp( uiPrefs->uiPrefsSubtitleFont->child(i)->label(),
+                     tmpS ) == 0 )
+        {
+            uiPrefs->uiPrefsSubtitleFont->value(i);
+            std::cerr << "subtitle font is " << tmpS << std::endl;
+            break;
+        }
+    }
+    
     fltk::Preferences errors( base, "errors" );
     errors.get( "raise_log_window_on_error", tmp, 0 );
     uiPrefs->uiPrefsRaiseLogWindowOnError->value(tmp);
@@ -1091,6 +1104,14 @@ static const char* kCLocale = "C";
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
+    idx = main->uiPrefs->uiPrefsSubtitleFont->value();
+    num = main->uiPrefs->uiPrefsSubtitleFont->children();
+    if ( idx < num )
+    {
+        const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
+        CMedia::default_subtitle_font( font );
+    }
+    
     LogDisplay::prefs = (LogDisplay::ShowPreferences)
                         main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
     LogDisplay::shown = false;
@@ -1348,6 +1369,16 @@ static const char* kCLocale = "C";
       }
     }
 
+    {
+        fltk::Preferences subtitles( base, "subtitles" );
+        int idx = uiPrefs->uiPrefsSubtitleFont->value();
+        if ( idx >= 0 )
+        {
+            subtitles.set( "font",
+                           uiPrefs->uiPrefsSubtitleFont->child(idx)->label() );
+        }
+    }
+    
     fltk::Preferences errors( base, "errors" );
     errors.set( "raise_log_window_on_error", 
                 uiPrefs->uiPrefsRaiseLogWindowOnError->value() );
