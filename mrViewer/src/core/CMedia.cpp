@@ -114,6 +114,7 @@ std::string CMedia::icc_profile_float;
 unsigned CMedia::_audio_cache_size = 0;
 unsigned CMedia::_video_cache_size = 0;
 
+std::string CMedia::_default_subtitle_font = "Arial";
 bool CMedia::_aces_metadata = false;
 bool CMedia::_all_layers = false;
 bool CMedia::_cache_active = true;
@@ -214,6 +215,7 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
+_subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
@@ -226,6 +228,7 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
+    
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
@@ -303,6 +306,7 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
+_subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
@@ -403,6 +407,7 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
+_subtitle_font( strdup( other->_subtitle_font ) ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
@@ -583,6 +588,8 @@ CMedia::~CMedia()
     avformat_close_input( &_acontext );
   }
 
+  free( _subtitle_font ); _subtitle_font = NULL;
+  
   _context = _acontext = NULL;
 }
 
