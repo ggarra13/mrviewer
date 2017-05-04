@@ -142,6 +142,7 @@ class CMedia
     {
         const AVFormatContext* context;
         int          stream_index;
+        bool         play;
         bool         has_codec;
         std::string  codec_name;
         std::string  fourcc;
@@ -151,7 +152,8 @@ class CMedia
         double       duration;
 
         StreamInfo() : context( NULL ),
-                       stream_index(-1), 
+                       stream_index(-1),
+                       play( true ),
                        has_codec(false), 
                        start(0), 
                        duration(0) 
@@ -160,7 +162,8 @@ class CMedia
 
         StreamInfo( const StreamInfo& b ) :
         context( b.context ),
-        stream_index( b.stream_index ), 
+        stream_index( b.stream_index ),
+        play( b.play ),
         has_codec( b.has_codec ),
         codec_name( b.codec_name ),
         fourcc( b.fourcc ),
@@ -790,7 +793,8 @@ class CMedia
     inline bool has_subtitle() const
     {
         return ( _subtitle_index >= 0 && 
-                 _subtitle_info[ _subtitle_index ].has_codec );
+                 _subtitle_info[ _subtitle_index ].has_codec &&
+                 _subtitle_info[ _subtitle_index ].play );
     }
 
     const subtitle_info_t& subtitle_info( unsigned int i )
