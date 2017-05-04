@@ -583,14 +583,7 @@ void aviImage::subtitle_file( const char* f )
     else
     {
         std::ostringstream msg;
-  
-
-        subtitle_info_t s;
-        populate_stream_info( s, msg, _context, _video_ctx, 0 );
-        s.has_codec  = false;
-        s.bitrate    = 256;
-        _subtitle_info.push_back( s );
-
+        
         _subtitle_file = f;
 
         if ( _subtitle_dir.empty() )
@@ -603,6 +596,60 @@ void aviImage::subtitle_file( const char* f )
         
         // Set the current dir to the subtitle path
         fs::current_path( _subtitle_dir );
+
+        
+        AVFormatContext* scontext = NULL; //!< current read file context
+    
+        AVDictionary *opts = NULL;
+        AVInputFormat*     format = NULL;
+        int error = avformat_open_input( &scontext, _subtitle_file.c_str(), 
+                                         format, &opts );
+      
+        // Iterate through all the streams available
+        for( unsigned i = 0; i < scontext->nb_streams; ++i ) 
+        {
+            // Get the codec context
+            const AVStream* stream = scontext->streams[ i ];
+
+            if ( stream == NULL ) continue;
+
+            const AVCodecParameters* par = stream->codecpar;
+            if ( par == NULL ) continue;
+
+            AVCodecContext* ctx;
+
+            AVCodec* codec = avcodec_find_decoder( par->codec_id );
+            ctx = avcodec_alloc_context3( codec );
+            int err = avcodec_parameters_to_context( ctx, par );
+            if ( err < 0 )
+            {
+                LOG_ERROR( _("Could not copy parameters to context") );
+            }
+      
+            // Determine the type and obtain the first index of each type
+            switch( ctx->codec_type ) 
+            {
+                case AVMEDIA_TYPE_SUBTITLE:
+                {
+                    subtitle_info_t s;
+                     populate_stream_info( s, msg, scontext, ctx, i );
+                    s.bitrate    = calculate_bitrate( ctx );
+                    s.play = false;
+                    _subtitle_info.push_back( s );
+                    break;
+                }
+                case AVMEDIA_TYPE_ATTACHMENT:
+                case AVMEDIA_TYPE_DATA:
+                case AVMEDIA_TYPE_VIDEO:
+                default:
+                    break;
+            }
+
+            avcodec_free_context( &ctx );
+        }
+
+        if ( _subtitle_info.empty() )
+            return;
 
         _filter_description = "subtitles=";
 
