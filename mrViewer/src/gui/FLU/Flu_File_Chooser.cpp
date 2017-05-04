@@ -1736,8 +1736,6 @@ void Flu_File_Chooser::previewCB()
 
         quick_exit = false;
 
-        layout();
-
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
