@@ -143,6 +143,7 @@ class aviImage : public CMedia
     virtual void probe_size( unsigned p );
 
     inline void subtitle_font( const char* f ) {
+        free( _subtitle_font );
         _subtitle_font = strdup(f);
         subtitle_file( _subtitle_file.c_str() );
     }
@@ -287,7 +288,6 @@ class aviImage : public CMedia
     unsigned int          _max_images;
 
 
-    char*                 _subtitle_font;
     std::string           _subtitle_dir;
     std::string           _subtitle_file;
     std::string           _filter_description;
