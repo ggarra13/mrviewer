@@ -228,7 +228,6 @@ aviImage::aviImage() :
   _av_frame( NULL ),
   _filt_frame( NULL ),
   _video_codec( NULL ),
-  _subtitle_font( strdup( "Arial" ) ),
   _subtitle_ctx( NULL ),
   buffersink_ctx( NULL ),
   buffersrc_ctx( NULL ),
@@ -284,7 +283,6 @@ aviImage::~aviImage()
 
   avsubtitle_free( &_sub );
 
-  free( _subtitle_font );
 }
 
 
