@@ -1920,7 +1920,9 @@ if (!m) return;
 CMedia* img = m->image();
 aviImage* avi = dynamic_cast< aviImage* >( img );
 if (!avi) return;
-avi->subtitle_font( font );} selected
+avi->subtitle_font( font );
+CMedia::default_subtitle_font( font );
+} selected
               xywh {114 37 275 31} box THIN_DOWN_BOX
               extra_code {fltk::Font** fonts; // list returned by fltk
 int numfonts = fltk::list_fonts(fonts);
