@@ -409,29 +409,32 @@ static void loadRealIcon( RealIcon* e)
     DBG( "lri process icon " << e->entry << " " << e->filename 
          << " chooser " << e->chooser );
 
-    fltk::SharedImage* img;
-    try {
-        img = mrv::fltk_handler( buf, NULL, 0 );
-    } catch( const std::exception& er )
-    {
-        LOG_ERROR( er.what() );
-        delete e;
-        return;
-    }
-
-    if ( !img ) {
-        DBG( "Img is NULL" );
-        delete e;
-        return;
-    }
-
-
-    DBG( "lri processed icon " << e->entry << " " << e->filename
-         << " chooser " << e->chooser  );
     if ( e->serial == e->chooser->serial )
     {
-        e->entry->icon = img;
-        e->entry->updateSize();
+        fltk::SharedImage* img;
+        try {
+            img = mrv::fltk_handler( buf, NULL, 0 );
+        } catch( const std::exception& er )
+        {
+            LOG_ERROR( er.what() );
+            delete e;
+            return;
+        }
+
+        if ( !img ) {
+            DBG( "Img is NULL" );
+            delete e;
+            return;
+        }
+
+
+        DBG( "lri processed icon " << e->entry << " " << e->filename
+             << " chooser " << e->chooser  );
+        if ( e->serial == e->chooser->serial )
+        {
+            e->entry->icon = img;
+            e->entry->updateSize();
+        }
     }
 
     delete e;
