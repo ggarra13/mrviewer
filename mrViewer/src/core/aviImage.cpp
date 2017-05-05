@@ -468,7 +468,7 @@ int aviImage::init_filters(const char *filters_descr)
     enum AVPixelFormat pix_fmts[] = { _video_ctx->pix_fmt, AV_PIX_FMT_NONE };
 
     filter_graph = avfilter_graph_alloc();
-    if (!outputs || !inputs || !filter_graph) {
+    if (!outputs || !inputs || !filter_graph || !buffersrc || !buffersink) {
         LOG_ERROR( _("No memory to allocate filter graph") );
         ret = AVERROR(ENOMEM);
         goto end;
@@ -564,6 +564,8 @@ void aviImage::subtitle_file( const char* f )
 
     close_subtitle_codec();
 
+    SCOPED_LOCK( _subtitle_mutex );
+    
     avfilter_graph_free( &filter_graph );
     filter_graph = NULL;
 
@@ -572,7 +574,8 @@ void aviImage::subtitle_file( const char* f )
         av_frame_unref( _filt_frame );
         av_frame_free( &_filt_frame );
     }
-
+    
+    
     _subtitle_info.clear();
     _subtitle_index = -1;
 
@@ -582,15 +585,10 @@ void aviImage::subtitle_file( const char* f )
     {
         std::ostringstream msg;
         
-        _subtitle_file = f;
-
-        if ( _subtitle_dir.empty() )
-        {
-            fs::path sp = _subtitle_file;
-            _subtitle_file = sp.filename().generic_string();
-            sp = sp.parent_path();
-            _subtitle_dir = sp.generic_string();
-        }
+        fs::path sp = f;
+        _subtitle_file = sp.filename().generic_string();
+        sp = sp.parent_path();
+        _subtitle_dir = sp.generic_string();
         
         // Set the current dir to the subtitle path
         fs::current_path( _subtitle_dir );
@@ -680,6 +678,8 @@ void aviImage::subtitle_file( const char* f )
         {
             LOG_ERROR( _("Could not allocate filter frame") );
         }
+
+        avformat_free_context( scontext );
     }
 
 }
@@ -1203,6 +1203,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
          if ( filter_graph && _subtitle_index >= 0 )
          {
+             SCOPED_LOCK( _subtitle_mutex );
              /* push the decoded frame into the filtergraph */
              if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
                                               AV_BUFFERSRC_FLAG_KEEP_REF) < 0) {
