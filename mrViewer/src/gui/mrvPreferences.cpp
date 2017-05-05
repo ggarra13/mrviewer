@@ -760,7 +760,6 @@ fltk::StyleSet*     newscheme = NULL;
                      tmpS ) == 0 )
         {
             uiPrefs->uiPrefsSubtitleFont->value(i);
-            std::cerr << "subtitle font is " << tmpS << std::endl;
             break;
         }
     }
