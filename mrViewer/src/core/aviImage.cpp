@@ -588,12 +588,16 @@ void aviImage::subtitle_file( const char* f )
         fs::path sp = f;
         _subtitle_file = sp.filename().generic_string();
         sp = sp.parent_path();
-        _subtitle_dir = sp.generic_string();
-        
-        // Set the current dir to the subtitle path
-        fs::current_path( _subtitle_dir );
+        std::string dir = sp.generic_string();
 
+        // Set the current dir to the subtitle path
+        if ( ! dir.empty() )
+        {
+            _subtitle_dir = dir;
+            fs::current_path( dir );
+        }
         
+
         AVFormatContext* scontext = NULL; //!< current read file context
     
         AVDictionary *opts = NULL;
@@ -628,7 +632,7 @@ void aviImage::subtitle_file( const char* f )
                 case AVMEDIA_TYPE_SUBTITLE:
                 {
                     subtitle_info_t s;
-                     populate_stream_info( s, msg, scontext, ctx, i );
+                     populate_stream_info( s, msg, scontext, par, i );
                     s.bitrate    = calculate_bitrate( ctx );
                     s.play = false;
                     _subtitle_info.push_back( s );
@@ -680,6 +684,8 @@ void aviImage::subtitle_file( const char* f )
         }
 
         avformat_free_context( scontext );
+
+        image_damage( image_damage() | kDamageSubtitle );
     }
 
 }
@@ -710,12 +716,12 @@ void aviImage::open_video_codec()
   AVStream *stream = get_video_stream();
   if ( stream == NULL ) return;
 
-  AVCodecParameters* ictx = stream->codecpar;
+  AVCodecParameters* codecpar = stream->codecpar;
 
-  _video_codec = avcodec_find_decoder( ictx->codec_id );
+  _video_codec = avcodec_find_decoder( codecpar->codec_id );
 
   _video_ctx = avcodec_alloc_context3(_video_codec);
-  int r = avcodec_parameters_to_context(_video_ctx, ictx);
+  int r = avcodec_parameters_to_context(_video_ctx, codecpar);
   if ( r < 0 )
   {
       throw _("avcodec_context_from_parameters failed for video"); 
@@ -1390,11 +1396,11 @@ void aviImage::open_subtitle_codec()
   AVStream* stream = get_subtitle_stream();
   if (!stream) return;
 
-  AVCodecParameters* ictx = stream->codecpar;
-  _subtitle_codec = avcodec_find_decoder( ictx->codec_id );
+  AVCodecParameters* codecpar = stream->codecpar;
+  _subtitle_codec = avcodec_find_decoder( codecpar->codec_id );
 
   _subtitle_ctx = avcodec_alloc_context3(_subtitle_codec);
-  int r = avcodec_parameters_to_context(_subtitle_ctx, ictx);
+  int r = avcodec_parameters_to_context(_subtitle_ctx, codecpar);
   if ( r < 0 )
   {
       LOG_ERROR( _("avcodec_copy_context failed for subtitle") );
@@ -1447,7 +1453,7 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
   }
 
 
-  image_damage( image_damage() | kDamageSubtitle );
+  image_damage( image_damage() | kDamageContents | kDamageSubtitle );
 
   limit_subtitle_store( frame );
 
@@ -3434,6 +3440,8 @@ void aviImage::subtitle_stream( int idx )
       open_subtitle_codec();
       seek( _frame );
     }
+
+  image_damage( image_damage() | kDamageContents | kDamageSubtitle );
 }
 
 void aviImage::store_subtitle( const boost::int64_t& frame,
