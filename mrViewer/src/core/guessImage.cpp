@@ -275,6 +275,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     std::string root = file;
 
 
+     
     bool is_stereo = false;
     bool is_seq = false;
 
@@ -304,6 +305,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 
     CMedia* right = NULL;
     CMedia* image = NULL;
+
 
     try {
 
