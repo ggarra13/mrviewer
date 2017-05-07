@@ -160,6 +160,7 @@ void split(const std::string &s, char delim, StringList& elems) {
 bool is_valid_movie( const char* ext )
 {
    std::string tmp = ext;
+   if ( tmp[0] != '.' ) tmp = '.' + tmp;
    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
                    (int(*)(int)) tolower);
 
@@ -437,11 +438,12 @@ bool is_valid_view( std::string view )
 	ext   = f.substr( idx[0], file.size()-idx[0] );
 
         bool ok = is_valid_frame( frame );
-        if ( ok )
+        if ( ok && !is_valid_movie( ext.c_str() ) )
         {
             return true;
         }
 
+        
         ok = is_valid_frame( ext );
 	if ( ok )
 	{
@@ -466,6 +468,12 @@ bool is_valid_view( std::string view )
 	root = f.substr( 0, idx[0]+1 );
 	ext  = f.substr( idx[0]+1, file.size() );
 
+        if ( is_valid_movie( ext.c_str() ) )
+        {
+            frame = "";
+            return false;
+        }
+        
 	bool ok = is_valid_frame_spec( ext );
 	if (ok)
 	{
@@ -624,7 +632,7 @@ bool is_valid_view( std::string view )
       {
 	if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
 
-        std::string tmp = (*i).path().leaf().string();
+        std::string tmp = (*i).path().leaf().generic_string();
 
         
         // Do not continue on false return of split_sequence
@@ -899,11 +907,9 @@ bool fileroot( std::string& fileroot, const std::string& file,
                const bool change_view )
   {
      std::string root, frame, view, ext;
-     fs::path path = fs::path( file );
-
-
+     
      bool ok = split_sequence( root, frame, view, ext, file, change_view );
-     if ( !ok || root == "" || frame == "" ) 
+     if ( !ok || root == "" || frame == "" || is_valid_movie( ext.c_str() ) ) 
      {
         fileroot = file;
         return false;
