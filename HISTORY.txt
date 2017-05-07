@@ -2,6 +2,8 @@ v3.6.2   - Made subtitle always use Arial font by default.
 	 - Added selection of font for subtitle in the Preferences.
 	   Subtitle->Font.  It is interactive, you can change it while
 	   playing the movie.
+	 - Made sequence detection more strict by avoiding common movie
+	   extensions.
 
 v3.6.1   - Allowed file names like MovieFrame####20.png.
 	 - In command line, ILM format (not padded) now correctly sets 
