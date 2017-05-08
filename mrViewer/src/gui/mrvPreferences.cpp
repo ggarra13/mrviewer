@@ -497,6 +497,9 @@ fltk::StyleSet*     newscheme = NULL;
     playback.get( "auto_playback", tmp, 0 );
     uiPrefs->uiPrefsAutoPlayback->value(tmp);
 
+    playback.get( "override_fps", tmp, 0 );
+    uiPrefs->uiPrefsOverrideFPS->value(tmp);
+    
     playback.get( "fps", tmpF, 24.0 );
     uiPrefs->uiPrefsFPS->value(tmpF);
 
@@ -919,12 +922,6 @@ static const char* kCLocale = "C";
     //
     mrv::ImageView* view = main->uiView;
 
-    if ( !view->foreground() )
-    {
-        main->uiFPS->value( uiPrefs->uiPrefsFPS->value() );
-        main->uiFPS->do_callback();
-    }
-
     main->uiLoopMode->value( uiPrefs->uiPrefsLoopMode->value() );
     main->uiLoopMode->do_callback();
 
@@ -1247,6 +1244,7 @@ static const char* kCLocale = "C";
     //
     fltk::Preferences playback( base, "playback" );
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
+    playback.set( "override_fps", uiPrefs->uiPrefsOverrideFPS->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
     playback.set( "scrubbing_sensitivity",
