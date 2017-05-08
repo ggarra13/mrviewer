@@ -4351,15 +4351,6 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPlayBack.match( rawkey ) ) 
     {
-
-        mrv::media fg = foreground();
-        if ( ! fg ) return 1;
-
-        const CMedia* img = fg->image();
-        double FPS = 24;
-        if ( img ) FPS = img->play_fps();
-        fps( FPS );
-
         if ( playback() == kBackwards )
             stop();
         else
@@ -4400,14 +4391,6 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPlayFwd.match( rawkey ) ) 
     {
-        mrv::media fg = foreground();
-        if ( ! fg ) return 1;
-
-        const CMedia* img = fg->image();
-        double FPS = 24;
-        if ( img ) FPS = img->play_fps();
-        fps( FPS );
-
         if ( playback() != kStopped )
             stop();
         else
@@ -6022,6 +6005,13 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiMain->copy_label( bufs );
 
         double fps = img->fps();
+        if ( img->is_sequence() &&
+             uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
+        {
+            fps = uiMain->uiPrefs->uiPrefsFPS->value();
+            img->fps( fps );
+            img->play_fps( fps );
+        }
         timeline()->fps( fps );
         uiMain->uiFrame->fps( fps );
         uiMain->uiStartFrame->fps( fps );
@@ -6222,7 +6212,9 @@ void ImageView::background( mrv::media bg )
 
       img->refresh();
 
-      img->play_fps( fps() );
+      if ( img->is_sequence() )
+          img->play_fps( fps() );
+      
       img->image_damage( img->image_damage() | CMedia::kDamageContents );      
 
       if ( dynamic_cast< stubImage* >( img ) )
@@ -6881,10 +6873,10 @@ double ImageView::fps() const
 void ImageView::fps( double x )
 {
     if ( x <= 0 ) return;
-
+    
     mrv::media fg = foreground();
     if ( fg ) fg->image()->play_fps( x );
-
+    
     mrv::media bg = background();
     if ( bg ) bg->image()->play_fps( x );
 
