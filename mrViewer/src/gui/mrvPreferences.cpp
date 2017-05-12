@@ -491,7 +491,7 @@ fltk::StyleSet*     newscheme = NULL;
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
 
     //
-    // playback x
+    // playback
     //
     fltk::Preferences playback( base, "playback" );
     playback.get( "auto_playback", tmp, 0 );
@@ -502,6 +502,7 @@ fltk::StyleSet*     newscheme = NULL;
     
     playback.get( "fps", tmpF, 24.0 );
     uiPrefs->uiPrefsFPS->value(tmpF);
+    CMedia::default_fps = tmpF;
 
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
