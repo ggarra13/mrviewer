@@ -497,9 +497,10 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                 CMedia* img = m->image();
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
+                boost::int64_t first = img->first_frame();
                 draw_cacheline( img, 1, 
                                 img->duration() + img->start_number(), 
-                                int64_t(mn), int64_t(mx), 1, r );
+                                int64_t(mn), int64_t(mx), first, r );
             }
         }
     }
