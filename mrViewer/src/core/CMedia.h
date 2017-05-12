@@ -1067,6 +1067,7 @@ class CMedia
        
     static int colorspace_override; //!< Override YUV Hint always with this
     
+    static double default_fps;     //!< Default FPS when not selected
     static std::string rendering_transform_8bits;
     static std::string rendering_transform_16bits;
     static std::string rendering_transform_32bits;
