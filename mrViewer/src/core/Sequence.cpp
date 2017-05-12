@@ -78,14 +78,16 @@ namespace mrv
 
   bool is_valid_frame( const std::string& framespec )
   {
-    const char* c = framespec.c_str();
-    if ( *c == '.' ) ++c;
+      if ( framespec.size() > 9 ) return false;
+      
+      const char* c = framespec.c_str();
+      if ( *c == '.' ) ++c;
 
-    for ( ; *c != 0; ++c )
+      for ( ; *c != 0; ++c )
       {
-	 if ( *c == '+' || *c == '-' || (*c >= '0' && *c <= '9') ) continue;
-
-	return false;
+          if ( *c == '+' || *c == '-' || (*c >= '0' && *c <= '9') ) continue;
+          
+          return false;
       }
 
     return true;
@@ -98,6 +100,8 @@ namespace mrv
         c = framespec.c_str() + 1;
      else
         c = framespec.c_str();
+
+     if ( framespec.size() > 9 ) return false;
 
      if ( *c == '%' )
      {
