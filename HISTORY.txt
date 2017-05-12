@@ -1,6 +1,18 @@
 v3.6.3   - Added an Override FPS option to preferences.  With it,
 	   you override the FPS of the sequences to that value set in
-	   the preferences.
+	   the preferences.  If not active, FPS is tried to be extracted
+	   from the image sequence when possible or from the resolution
+	   and aspect ratio when not.  Finally, if it all fails, it
+	   uses the preferences' FPS setting.
+	 - Made framesPerSecond attribute in OpenEXRs be read as a
+	   string also, to support Nuke saving it as a string instead of
+	   a rational number.  This setting controls FPS when reading
+	   OpenEXRs.
+	 - Made film.frame_rate and television.frame_rate in DPX files 
+	   act correctly as a FPS setting.
+	 - Made television.gamma in DPX act correctly as a gamma 
+	   setting.
+	 - Fixed cache line for sequences that did not start at 1.
 
 v3.6.2   - Made subtitle always use Arial font by default.
 	 - Added selection of font for subtitle in the Preferences.
