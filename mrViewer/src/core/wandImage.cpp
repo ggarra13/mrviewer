@@ -385,7 +385,8 @@ namespace mrv {
          GetImageProperty( img, "exif:*", exception );
          ResetImagePropertyIterator( img );
          const char* property = GetNextImageProperty(img);
-         const char* c = setlocale( LC_NUMERIC, "C" );
+         const char* c = setlocale( LC_NUMERIC, NULL );
+         setlocale( LC_NUMERIC, "C" );
          while ( property )
          {
              const char* value = GetImageProperty( img, property, exception );
@@ -411,6 +412,7 @@ namespace mrv {
 
                      for ( ; *p != '\0'; ++p )
                      {
+                         // Make 'superDad' into 'super Dad'
                          if ( (isupper((int) ((unsigned char) *p)) != 0) &&
                               (islower((int) ((unsigned char) *(p+1))) != 0))
                              key += ' ';
