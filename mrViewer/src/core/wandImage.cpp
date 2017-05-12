@@ -381,42 +381,77 @@ namespace mrv {
 
      if ( _exif.empty() )
      {
-       ExceptionInfo* exception = NULL;
-       GetImageProperty( img, "exif:*", exception );
-	ResetImagePropertyIterator( img );
-	const char* property = GetNextImageProperty(img);
-	while ( property )
-	{
-	  const char* value = GetImageProperty( img, property, exception );
-	   if ( value )
-	   {
-	      //
-	      // Format for exif property in imagemagick is like:
-	      //       "Exif:InteroperabilityVersion"
-	      //       "dpx:InteroperabilityVersion"
-	      //
-	      // Make that string into something prettier
-	      //
-	      std::string key;
+         ExceptionInfo* exception = NULL;
+         GetImageProperty( img, "exif:*", exception );
+         ResetImagePropertyIterator( img );
+         const char* property = GetNextImageProperty(img);
+         const char* c = setlocale( LC_NUMERIC, "C" );
+         while ( property )
+         {
+             const char* value = GetImageProperty( img, property, exception );
+             if ( value )
+             {
+                 //
+                 // Format for exif property in imagemagick is like:
+                 //       "Exif:InteroperabilityVersion"
+                 //       "dpx:InteroperabilityVersion"
+                 //
+                 // Make that string into something prettier
+                 //
+                 std::string key = property;
 
-              // Skip until first ':'
-              const char* p = property;
-              for ( ; *p != ':' && *p != '\0'; ++p ) ;
+                 if ( key.substr(0,4) == "Exif" )
+                 {
+                     key.clear();
+                     // Skip until first ':'
+                     const char* p = property;
+                     for ( ; *p != ':' && *p != '\0'; ++p ) ;
 
-              if ( *p != '\0' ) ++p;
+                     if ( *p != '\0' ) ++p;
+
+                     for ( ; *p != '\0'; ++p )
+                     {
+                         if ( (isupper((int) ((unsigned char) *p)) != 0) &&
+                              (islower((int) ((unsigned char) *(p+1))) != 0))
+                             key += ' ';
+                         key += *p;
+                     }
+                 }
 
 
-	      for ( ; *p != '\0'; ++p )
-	      {
-		 if ( (isupper((int) ((unsigned char) *p)) != 0) &&
-		      (islower((int) ((unsigned char) *(p+1))) != 0))
-		    key += ' ';
-		 key += *p;
-	      }
-	      _exif.insert( std::make_pair( key, value ) );
-	   }
-	   property = GetNextImageProperty(img);
-	}
+                 if ( key == "dpx:film.frame_rate" )
+                 {
+                     float g = atof( value );
+                     if ( g > 0.0f && g < 250.0f )
+                     {
+                         _orig_fps = _fps = _play_fps = g;
+                     }
+                 }
+                 else if ( key == "dpx:television.frame_rate" )
+                 {
+                     float g = atof( value );
+                     if ( g > 0.0f && g < 250.0f )
+                     {
+                         _orig_fps = _fps = _play_fps = g;
+                     }
+                 }
+                 else if ( key == "dpx:television.gamma" )
+                 {
+                     float g = atof( value );
+                     if ( g > 0.0f && g < 128.0f )
+                     {
+                         _gamma = g;
+                     }
+                 }
+
+                 // We always add the EXIF attribute even if it passes
+                 // other tests so that if user saves the file all is kept
+                 _exif.insert( std::make_pair( key, value ) );
+             }
+             property = GetNextImageProperty(img);
+         }
+
+         setlocale( LC_NUMERIC, c );
      }
 
 
@@ -663,9 +698,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         if ( x == _("Lumma") || x == _("Alpha Overlay") ||
              x == _("Red") || x == _("Green") ||
              x == _("Blue") || x == _("Alpha") ||
-             x == N_("RY") || x == N_("BY") ||
-             x.find( _("anaglyph") ) != std::string::npos ||
-             x.find( _("stereo") ) != std::string::npos )
+             x == N_("RY") || x == N_("BY") )
         {
             continue;
         }
@@ -1020,10 +1053,18 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     {
         Attributes::const_iterator i = _exif.begin();
         Attributes::const_iterator e = _exif.end();
+        char buf[64];
         for ( ; i != e; ++i )
         {
             MagickSetImageProperty( wand, i->first.c_str(), i->second.c_str() );
         }
+
+        sprintf( buf, "%2.4f", _fps );
+        MagickSetImageProperty( wand, "dpx:film.frame_rate", buf );
+        MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
+
+        sprintf( buf, "%2.4f", _gamma );
+        MagickSetImageProperty( wand, "dpx:television.gamma", buf );
     }
 
     {
