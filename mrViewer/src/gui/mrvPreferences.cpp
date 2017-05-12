@@ -1057,7 +1057,10 @@ static const char* kCLocale = "C";
        main->uiMain->position( x, y );
     }
 
-
+    //
+    // Handle FPS
+    //
+    CMedia::default_fps = uiPrefs->uiPrefsFPS->value();
 
 
 #if defined(_WIN32) || defined(_WIN64)
