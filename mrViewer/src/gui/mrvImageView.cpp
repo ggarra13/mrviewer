@@ -6009,6 +6009,7 @@ void ImageView::foreground( mrv::media fg )
              uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
         {
             fps = uiMain->uiPrefs->uiPrefsFPS->value();
+            LOG_INFO( _("Override timeline fps to ") << fps );
             img->fps( fps );
             img->play_fps( fps );
         }
