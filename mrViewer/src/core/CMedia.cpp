@@ -100,6 +100,7 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 
+double      CMedia::default_fps = 24.f;
 std::string CMedia::rendering_transform_8bits;
 std::string CMedia::rendering_transform_16bits;
 std::string CMedia::rendering_transform_32bits;
@@ -1339,17 +1340,22 @@ void CMedia::image_size( int w, int h )
   else if ( w == 1920 && h == 1080 )
     {
       _pixel_ratio = 1.0f; // HDTV full
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
+  else if ( w == 2048 && h == 1556 )
+  {
+      _pixel_ratio = 1.0f; // 2K full
+  }
   else if ( w == 3840 && h == 2160 )
     {
-      _pixel_ratio = 1.0f; // 4K full
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+      _pixel_ratio = 1.0f; // 4K HD
     }
+  else if ( w == 4096 && h == 2304 )
+  {
+      _pixel_ratio = 1.0f; // 4K full
+  }
   else if ( w == 7680 && h == 4320 )
     {
       _pixel_ratio = 1.0f; // 8K full
-      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( (float)w/(float)h == 1.56 )
     {
@@ -1359,7 +1365,10 @@ void CMedia::image_size( int w, int h )
 
   if ( _fps == 0 )
     {
-      _orig_fps =_fps = _play_fps = 24; 
+        if ( default_fps > 0 )
+            _orig_fps =_fps = _play_fps = default_fps;
+        else
+            _orig_fps =_fps = _play_fps = 24.0f;
     }
 
   _w = w;
