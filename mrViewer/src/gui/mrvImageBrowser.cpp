@@ -372,7 +372,7 @@ void ImageBrowser::wait_on_threads()
 	if ( (*i)->name == name ) {
 	   if ( _reel >= 0 )
 	   {
-	      if ( view()->playback() != ImageView::kStopped )
+	      if ( view()->playback() != CMedia::kStopped )
 		 view()->stop();
 	   }
 	   _reel = idx;
@@ -633,7 +633,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
    */
   void ImageBrowser::remove_reel()
   {
-    if ( view()->playback() != ImageView::kStopped )
+    if ( view()->playback() != CMedia::kStopped )
        view()->stop();
 
     if ( _reels.empty() ) return;
@@ -958,7 +958,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 	return;
       }
   
-    ImageView::Playback p = view()->playback();
+    CMedia::Playback p = view()->playback();
     view()->stop();
 
     if ( view()->background() == m )
@@ -992,8 +992,8 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     view()->send_network( buf );
 
 
-    if ( p != ImageView::kStopped )
-        view()->play( (CMedia::Playback) p );
+    if ( p != CMedia::kStopped )
+        view()->play( p );
 
 
     redraw();
@@ -1440,7 +1440,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     size_t  numImages = 0;
     if ( oldreel ) numImages = oldreel->images.size();
 
-    if ( view()->playback() != ImageView::kStopped )
+    if ( view()->playback() != CMedia::kStopped )
        view()->stop();
 
     fltk::Window* main = uiMain->uiMain;
@@ -1920,7 +1920,7 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if (!reel || reel->images.empty() ) return;
 
-    if ( view()->playback() != ImageView::kStopped )
+    if ( view()->playback() != CMedia::kStopped )
        view()->stop();
 
     int ok = fltk::choice( _( "Are you sure you want to\n"
@@ -2005,7 +2005,8 @@ void ImageBrowser::load( const stringArray& files,
 
     DBG( "reel name " << reel->name );
 
-    if ( view()->playback() != ImageView::kStopped )
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )
        view()->stop();
 
     mrv::media fg = current_image();
@@ -2036,6 +2037,8 @@ void ImageBrowser::load( const stringArray& files,
     {
        DBG( "******* NOT REEL" );
     }
+
+    if ( play ) view()->play(play);
   }
 
 
@@ -2048,7 +2051,8 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    if ( view()->playback() != ImageView::kStopped )
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )
        view()->stop();
 
     mrv::media fg = current_image();
@@ -2072,6 +2076,8 @@ void ImageBrowser::load( const stringArray& files,
 	int64_t pos = m->position() + m->image()->duration() - 1;
 	seek( pos );
       }
+
+    if ( play ) view()->play(play);
   }
 
 
@@ -2089,7 +2095,8 @@ void ImageBrowser::load( const stringArray& files,
 
     int ok = fltk::Browser::handle( fltk::PUSH );
 
-    if ( view()->playback() != ImageView::kStopped )
+    CMedia::Playback play = (CMedia::Playback) view()->playback();
+    if ( play != CMedia::kStopped )
        view()->stop();
 
     int button = fltk::event_button();
@@ -2112,6 +2119,8 @@ void ImageBrowser::load( const stringArray& files,
 		uiMain->uiImageInfo->uiMain->show();
 		view()->update_image_info();
                 //view()->send_network( "MediaInfoWindow 1" );
+                if ( play != CMedia::kStopped )
+                    view()->play( play );
 		return ok;
 	      }
 
@@ -2130,6 +2139,8 @@ void ImageBrowser::load( const stringArray& files,
 		seek( s );
 	      }
 	  }
+        if ( play != CMedia::kStopped )
+            view()->play( play );
 	return 1;
       }
     else if ( button == 3 )
@@ -2515,7 +2526,7 @@ void ImageBrowser::handle_dnd()
 
      frame( tframe );
 
-    ImageView::Playback playback = view()->playback();
+    CMedia::Playback playback = view()->playback();
     mrv::Timeline* t = timeline();
 
     mrv::Reel reel = reel_at( view()->fg_reel() );
@@ -2549,7 +2560,7 @@ void ImageBrowser::handle_dnd()
 
 	if ( m != fg && fg )
 	  {
-	     if ( playback != ImageView::kStopped )
+	     if ( playback != CMedia::kStopped )
                  view()->stop();
 
 	     size_t i = reel->index( f );
@@ -2642,14 +2653,14 @@ void ImageBrowser::handle_dnd()
 	}
       }
 
-    if ( playback != ImageView::kStopped )
+    if ( playback != CMedia::kStopped )
     {
-        view()->play( (CMedia::Playback)playback);
+        view()->play( playback );
        // img->play( (CMedia::Playback)playback, uiMain, true);
     }
 
 
-    if ( view()->playback() != ImageView::kStopped )  return;
+    if ( view()->playback() != CMedia::kStopped )  return;
     
 
 
