@@ -42,7 +42,7 @@ playback and timeline works on start up.<br>
 When this option is turned on, as soon as mrViewer loads all the files,
 it will try to start playing them.<br>
 <br>
-As other defaults, you can change the default speed (FPS) of the timeline as well as its looping mode.  The FPS of the timeline only takes effect on sequences, not videos which already have an encoded FPS and it works only when you have Override FPS active.  When Override FPS is inactive, the FPS is attempted to be extracted from the image metadata (EXRs) and from the resolution (all else).
+As other defaults, you can change the default speed (FPS) of the timeline as well as its looping mode.  The FPS of the timeline only takes effect on sequences, not videos which already have an encoded FPS. When Override FPS is inactive, the FPS is attempted to be extracted from the image metadata (EXR, DPX) and from the resolution and aspect ratio (all other formats).  If that fails, then this preference setting is used.  If Override FPS is active, it overrides any other FPS with the preference setting.  
 <br>
 <br>
       </div>
