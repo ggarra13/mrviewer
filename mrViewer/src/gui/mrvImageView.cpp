@@ -919,7 +919,7 @@ _fg_reel( -1 ),
 _bg_reel( -1 ),
 _mode( kSelection ),
 _selection( mrv::Rectd(0,0) ),
-_playback( kStopped ),
+_playback( CMedia::kStopped ),
 _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
@@ -1591,7 +1591,7 @@ bool ImageView::should_update( mrv::media fg )
       }
   }
 
-  if ( update && _playback != kStopped ) {
+  if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
     int y = fltk::event_y();
     if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
@@ -1797,12 +1797,12 @@ void ImageView::timeout()
       }
 
 #if 0
-       if ( img->stopped() && playback() != kStopped )
+      if ( img->stopped() && playback() != CMedia::kStopped )
        {
            if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
            {
                img->seek( tframe );
-               img->play((CMedia::Playback) playback(), uiMain, false );
+               img->play( playback(), uiMain, false );
            }
        }
 #endif
@@ -2295,14 +2295,14 @@ void ImageView::draw()
        static int64_t unshown_frames = 0;
        int64_t frame = img->frame();
 
-       Playback p = playback();
+       CMedia::Playback p = playback();
 
-       if ( (p == kForwards && _lastFrame < frame) ||
-            (p == kBackwards && _lastFrame > frame ) )
+       if ( (p == CMedia::kForwards && _lastFrame < frame) ||
+            (p == CMedia::kBackwards && _lastFrame > frame ) )
 	{
 	  int64_t frame_diff = frame - _lastFrame;
 
-          if ( p == kForwards ) --frame_diff;
+          if ( p == CMedia::kForwards ) --frame_diff;
           else ++frame_diff;
 
           int64_t absdiff = std::abs(frame_diff);
@@ -4327,7 +4327,7 @@ int ImageView::keyDown(unsigned int rawkey)
         double FPS = 24;
         if ( img ) FPS = img->play_fps();
         fps( FPS * 2 );
-        if ( playback() == kBackwards )
+        if ( playback() == CMedia::kBackwards )
             stop();
         else
             play_backwards();
@@ -4343,7 +4343,7 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( img ) FPS = img->play_fps();
         fps( FPS / 2 );
 
-        if ( playback() == kBackwards )
+        if ( playback() == CMedia::kBackwards )
             stop();
         else
             play_backwards();
@@ -4351,7 +4351,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPlayBack.match( rawkey ) ) 
     {
-        if ( playback() == kBackwards )
+        if ( playback() == CMedia::kBackwards )
             stop();
         else
             play_backwards();
@@ -4367,7 +4367,7 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( img ) FPS = img->play_fps();
 
         fps( FPS * 2 );
-        if ( playback() == kForwards )
+        if ( playback() == CMedia::kForwards )
             stop();
         else
             play_forwards();
@@ -4383,7 +4383,7 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( img ) FPS = img->play_fps();
 
         fps( FPS / 2 );
-        if ( playback() != kStopped )
+        if ( playback() != CMedia::kStopped )
             stop();
         else
             play_forwards();
@@ -4391,7 +4391,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPlayFwd.match( rawkey ) ) 
     {
-        if ( playback() != kStopped )
+        if ( playback() != CMedia::kStopped )
             stop();
         else
             play_forwards();
@@ -4556,9 +4556,9 @@ int ImageView::keyUp(unsigned int key)
 {
   if ( key == fltk::LeftAltKey ) 
     {
-      if ( _playback == kScrubbing ) 
+        if ( _playback == CMedia::kScrubbing ) 
 	{
-	  _playback = kStopped;
+            _playback = CMedia::kStopped;
 	}
 
       flags &= ~kLeftAlt;
@@ -4727,7 +4727,7 @@ void ImageView::scrub( double dx )
 {
   stop();
 
-  //  _playback = kStopped; //kScrubbing;
+  //  _playback = CMedia::kStopped; // CMedia::kScrubbing;
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
@@ -6131,8 +6131,8 @@ void ImageView::refresh_audio_tracks() const
 void ImageView::audio_stream( unsigned int idx )
 {
 
-  Playback p = playback();
-  stop();
+    CMedia::Playback p = playback();
+    stop();
 
     mrv::Reel reel = browser()->current_reel();
     if ( !reel ) return;
@@ -6168,7 +6168,7 @@ void ImageView::audio_stream( unsigned int idx )
             img->audio_stream( idx );
     }
 
-    if ( p != kStopped ) play( (CMedia::Playback) p );
+    if ( p != CMedia::kStopped ) play( p );
 }
 
 
@@ -6708,19 +6708,19 @@ void ImageView::update_image_info() const
   img->image_damage( img->image_damage() & ~CMedia::kDamageData );
 }
 
-void ImageView::playback( const ImageView::Playback b )
+void ImageView::playback( const CMedia::Playback b )
 {
   _playback = b;
 
   _lastFrame = frame();
   _last_fps = 0.0;
 
-  if ( b == kForwards )
+  if ( b == CMedia::kForwards )
     {
       uiMain->uiPlayForwards->value(1);
       uiMain->uiPlayBackwards->value(0);
     }
-  else if ( b == kBackwards )
+  else if ( b == CMedia::kBackwards )
     {
       uiMain->uiPlayForwards->value(0);
       uiMain->uiPlayBackwards->value(1);
@@ -6770,7 +6770,7 @@ void ImageView::play( const CMedia::Playback dir )
    }
 
 
-   playback( (Playback) dir );
+   playback( dir );
 
    delete_timeout();
 
@@ -6807,8 +6807,8 @@ void ImageView::play_backwards()
 
 void ImageView::thumbnails()
 {
-  if ( playback() != kStopped &&
-       playback() != kScrubbing ) return;
+    if ( playback() != CMedia::kStopped &&
+         playback() != CMedia::kScrubbing ) return;
 
 
   mrv::media fg = foreground();
@@ -6828,9 +6828,9 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 { 
-    if ( playback() == kStopped ) return;
+    if ( playback() == CMedia::kStopped ) return;
 
-    _playback = kStopped;
+    _playback = CMedia::kStopped;
     _last_fps = 0.0;
     _real_fps = 0.0;
 
