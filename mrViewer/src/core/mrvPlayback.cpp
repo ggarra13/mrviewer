@@ -353,7 +353,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 step  = -1;
                 img->playback( CMedia::kBackwards );
                 if (fg)
-                    view->playback( ImageView::kBackwards );
+                    view->playback( CMedia::kBackwards );
                 status = kEndChangeDirection;
                 init_clock(&img->vidclk, NULL);
                 init_clock(&img->audclk, NULL);
@@ -363,7 +363,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             else
             {
                 if (fg)
-                    view->playback( ImageView::kStopped );
+                    view->playback( CMedia::kStopped );
                 img->playback( CMedia::kStopped );
             }
 	    break;
@@ -440,7 +440,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 step = 1;
                 img->playback( CMedia::kForwards );
                 if (fg)
-                    view->playback( ImageView::kForwards );
+                    view->playback( CMedia::kForwards );
                 status = kEndChangeDirection;
                 init_clock(&img->vidclk, NULL);
                 init_clock(&img->audclk, NULL);
@@ -451,7 +451,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 img->playback( CMedia::kStopped );
                 if (fg)
-                    view->playback( ImageView::kStopped );
+                    view->playback( CMedia::kStopped );
             }
 	    break;
 	 }
@@ -577,7 +577,7 @@ void audio_thread( PlaybackData* data )
    set_clock(&img->extclk, get_clock(&img->extclk), false);
 
 
-   while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
+   while ( !img->stopped() && view->playback() != CMedia::kStopped )
    {
 
       int step = (int) img->playback();
@@ -743,7 +743,7 @@ void subtitle_thread( PlaybackData* data )
 #endif
 
 
-    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
+    while ( !img->stopped() && view->playback() != CMedia::kStopped )
       {
 	int step = (int) img->playback();
 	if ( step == 0 ) break;
@@ -860,7 +860,7 @@ void video_thread( PlaybackData* data )
 
 
 
-   while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
+   while ( !img->stopped() && view->playback() != CMedia::kStopped )
    {
        img->wait_image();
 
@@ -1063,7 +1063,7 @@ void decode_thread( PlaybackData* data )
 
 
 
-   while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
+   while ( !img->stopped() && view->playback() != CMedia::kStopped )
    {
 
       if ( img->seek_request() )
@@ -1114,7 +1114,7 @@ void decode_thread( PlaybackData* data )
       while ( !img->frame( frame ) )
       {
           if ( img->stopped() || 
-               view->playback() == ImageView::kStopped ) break;
+               view->playback() == CMedia::kStopped ) break;
           sleep_ms( 10 );
       }
 
