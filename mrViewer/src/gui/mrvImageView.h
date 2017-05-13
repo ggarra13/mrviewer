@@ -84,13 +84,6 @@ class server;
     };
 
 
-    enum Playback {
-      kBackwards = -1,
-      kStopped = 0,
-      kForwards = 1,
-      kScrubbing = 4,
-    };
-
     enum FieldDisplay {
       kFrameDisplay,
       kTopField,
@@ -335,10 +328,10 @@ class server;
       void  looping( CMedia::Looping x );
 
     /// Set Playback status/direction
-    void playback( Playback b );
+      void playback( CMedia::Playback b );
 
     /// Return Playback status
-    Playback playback() const { return _playback; }
+      CMedia::Playback playback() const { return _playback; }
 
     void play( const CMedia::Playback dir );
 
@@ -674,7 +667,7 @@ class server;
     ///////////////////
     // Playback state
     ///////////////////
-    Playback   _playback;         //!< status of view
+      CMedia::Playback   _playback;         //!< status of view
 
     ///////////////////
     // FPS calculation
