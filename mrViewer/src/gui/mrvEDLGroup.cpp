@@ -314,7 +314,7 @@ int EDLGroup::handle( int event )
                 if ( img ) FPS = img->play_fps();
                 v->fps( FPS );
 
-                if ( v->playback() != ImageView::kStopped )
+                if ( v->playback() != CMedia::kStopped )
                     v->stop();
                 else
                     v->play_backwards();
@@ -332,7 +332,7 @@ int EDLGroup::handle( int event )
                 if ( img ) FPS = img->play_fps();
                 v->fps( FPS );
 
-                if ( v->playback() != ImageView::kStopped )
+                if ( v->playback() != CMedia::kStopped )
                     v->stop();
                 else
                     v->play_forwards();
