@@ -1,4 +1,5 @@
 
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -1358,10 +1359,10 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>("framesPerSecond");
             if ( attr )
             {
-                const char* c = setlocale( LC_NUMERIC, "C" );
+                setlocale( LC_NUMERIC, "C" );
                 const std::string& r = attr->value();
                 _fps = atof( r.c_str() );
-                setlocale( LC_NUMERIC, c );
+                setlocale( LC_NUMERIC, "" );
             }
         }
 
