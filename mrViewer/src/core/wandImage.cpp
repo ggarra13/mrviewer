@@ -385,7 +385,6 @@ namespace mrv {
          GetImageProperty( img, "exif:*", exception );
          ResetImagePropertyIterator( img );
          const char* property = GetNextImageProperty(img);
-         const char* c = setlocale( LC_NUMERIC, NULL );
          setlocale( LC_NUMERIC, "C" );
          while ( property )
          {
@@ -453,7 +452,7 @@ namespace mrv {
              property = GetNextImageProperty(img);
          }
 
-         setlocale( LC_NUMERIC, c );
+         setlocale( LC_NUMERIC, "" );
      }
 
 
