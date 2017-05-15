@@ -53,6 +53,7 @@
 #include <ImfVecAttribute.h>
 #include <ImfKeyCodeAttribute.h>
 #include <ImfTimeCodeAttribute.h>
+#include <ImfFramesPerSecond.h>
 #include <ImfRgbaYca.h>
 
 #include "core/mrvACES.h"
@@ -1353,18 +1354,6 @@ void exrImage::read_header_attr( const Imf::Header& h,
               Imf::Rational r = attr->value();
               _fps = (double) r.n / (double) r.d;
 	  }
-        else
-        {
-            const Imf::StringAttribute* attr =
-            h.findTypedAttribute<Imf::StringAttribute>("framesPerSecond");
-            if ( attr )
-            {
-                setlocale( LC_NUMERIC, "C" );
-                const std::string& r = attr->value();
-                _fps = atof( r.c_str() );
-                setlocale( LC_NUMERIC, "" );
-            }
-        }
 
 	if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps;
       }
