@@ -38,6 +38,9 @@ using namespace std;
 #endif
 
 #include <algorithm>
+
+#include <ImfFramesPerSecond.h>
+
 #include <MagickWand/MagickWand.h>
 
 #include "core/mrvImageOpts.h"
@@ -422,7 +425,8 @@ namespace mrv {
 
                  if ( key == "dpx:film.frame_rate" )
                  {
-                     float g = atof( value );
+                     Imf::Rational r = Imf::guessExactFps( atof( value ) );
+                     double g = (double) r.n / (double) r.d;
                      if ( g > 0.0f && g < 250.0f )
                      {
                          _orig_fps = _fps = _play_fps = g;
@@ -430,7 +434,8 @@ namespace mrv {
                  }
                  else if ( key == "dpx:television.frame_rate" )
                  {
-                     float g = atof( value );
+                     Imf::Rational r = Imf::guessExactFps( atof( value ) );
+                     double g = (double) r.n / (double) r.d;
                      if ( g > 0.0f && g < 250.0f )
                      {
                          _orig_fps = _fps = _play_fps = g;
