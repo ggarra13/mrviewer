@@ -1,9 +1,9 @@
 v3.6.4   - Made switching images respect the playback settings.
 	   Next Page and Previous Page keys switch images with playback
 	   still on.
-	 - Bug fixed setlocale in OpenEXRs' framesPerSecond string
-	   reading switching locale to C.  This made gamma, for example,
-	   switch to a 2.0 value instead of 2,2.
+	 - Removed framesPerSecond as a string value, since Nuke can save
+	   out a rational number just fine (must be set as modifyMetadata 
+	   input/frame_rate).
 
 v3.6.3   - Added an Override FPS option to preferences.  With it,
 	   you override the FPS of the sequences to that value set in
