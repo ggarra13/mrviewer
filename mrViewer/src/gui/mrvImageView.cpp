@@ -6272,7 +6272,7 @@ void ImageView::resize_main_window()
 #ifdef _WIN32
   const unsigned kBorders = 8;
 #else
-  const unsigned kBorders = 2;
+  const unsigned kBorders = 0;
 #endif
   const unsigned kMenus = 30;
   
@@ -6280,23 +6280,25 @@ void ImageView::resize_main_window()
   int minx = monitor.work.x() + kBorders;
   int miny = monitor.work.y() + kMenus;
   int maxh = monitor.work.h() - kMenus - 6;
-  int maxw = monitor.work.w() - kBorders;
+  int maxw = monitor.work.w() - kBorders * 2;
+  int maxx = minx + maxw;
+  int maxy = miny + maxh;
 
   bool fit = false;
 
   if ( w > maxw ) { fit = true; w = maxw; }
-  if ( w < 640 )  w = 640;
-
   if ( h > maxh ) { fit = true; h = maxh; }
-  if ( h < 550 )  h = 550;
 
-  if ( posX + w > maxw ) { posX = ( w + posX - maxw ) / 2; }
-  if ( posX + w > maxw ) { posX = minx; w = maxw - posX; }
+  if ( posX + w > maxx ) { posX = ( w + posX - maxw ) / 2; }
+  if ( posX + w > maxx ) { posX = minx; w = maxw; }
   if ( posX < minx )     posX = minx;
 
-  if ( posY + h > maxh ) { posY = ( h + posY - maxh ) / 2; }
-  if ( posY + h > maxh ) { posY = miny; h = maxh - posY; }
+  if ( posY + h > maxy ) { posY = ( h + posY - maxh ) / 2; }
+  if ( posY + h > maxy ) { posY = miny; h = maxh; }
   if ( posY < miny )     posY = miny;
+  
+  if ( w < 640 )  w = 640;
+  if ( h < 550 )  h = 550;
 
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
