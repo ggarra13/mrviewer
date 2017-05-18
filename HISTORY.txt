@@ -1,9 +1,12 @@
 v3.6.4   - Made switching images respect the playback settings.
 	   Next Page and Previous Page keys switch images with playback
 	   still on.
-	 - Removed framesPerSecond as a string value, since Nuke can save
-	   out a rational number just fine (must be set as modifyMetadata 
-	   input/frame_rate).
+	 - Bug fixed OpenEXR's framesPerSecond as a string value not
+	   respecting the user's locale.  Previously, floating point
+	   values with a comma would get turned into floating point
+	   values with a period.
+	 - Bug fixed opening the viewer in a second monitor through
+	   file associations.  Previously, the viewer would not open.
 
 v3.6.3   - Added an Override FPS option to preferences.  With it,
 	   you override the FPS of the sequences to that value set in
