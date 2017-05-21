@@ -1269,6 +1269,8 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
         return got_audio;
     }
 
+    if ( audio_frame == AV_NOPTS_VALUE ) audio_frame = frame;
+    
     got_audio = kDecodeMissingFrame;
 
 
