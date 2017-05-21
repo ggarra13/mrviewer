@@ -6271,10 +6271,11 @@ void ImageView::resize_main_window()
 
 #ifdef _WIN32
   const unsigned kBorders = 8;
+  const unsigned kMenus = 30;
 #else
   const unsigned kBorders = 0;
-#endif
   const unsigned kMenus = 30;
+#endif
   
   fltk::Monitor monitor = fltk::Monitor::find( posX, posY );
   int minx = monitor.work.x() + kBorders;
@@ -6300,9 +6301,13 @@ void ImageView::resize_main_window()
   if ( w < 640 )  w = 640;
   if ( h < 550 )  h = 550;
 
+  //  std::cerr << "posY " << posY << " " << h << std::endl;
+  //  std::cerr << "minY " << miny << " " << maxh << std::endl;
+  
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
   fltk_main()->hide();  // needed to show decorations under some window managers
+  fltk_main()->resize( posX, posY, w, h );
   fltk_main()->show();
 #endif
 
