@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-05-19 10:59-0300\n"
+"POT-Creation-Date: 2017-05-21 11:58-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -88,7 +88,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:883
+#: core/mrvPlayback.cpp:884
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
@@ -215,7 +215,7 @@ msgstr " no encontrado, eligiendo "
 msgid " not yet supported"
 msgstr " not soportado aún."
 
-#: core/mrvPlayback.cpp:884
+#: core/mrvPlayback.cpp:885
 msgid " returned "
 msgstr " retornó "
 
@@ -1137,7 +1137,7 @@ msgstr "Borrado para Atrás"
 msgid "Background"
 msgstr "Fondo"
 
-#: core/mrvPlayback.cpp:841
+#: core/mrvPlayback.cpp:842
 msgid ""
 "Background reel duration is too short.  Looping will not work correctly."
 msgstr ""
@@ -1187,7 +1187,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:6973
+#: gui/mrvImageView.cpp:6978
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -2821,7 +2821,7 @@ msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2085
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3666
-#: gui/mrvImageView.cpp:6971
+#: gui/mrvImageView.cpp:6976
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -3663,11 +3663,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:2426
+#: video/mrvGLEngine.cpp:2427
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:2431
+#: video/mrvGLEngine.cpp:2432
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -5055,7 +5055,9 @@ msgid ""
 "(using a letter or view prefix), as Top/Bottom in the same image or as Left/"
 "Right in the same image."
 msgstr ""
-"Seleccion como esta encodificado el estéreo en la imagen.  Puede ser capas separadas (usando una letra o prefijo de vista), como Superior/Inferior en la misma imagen o como Izquierda/Derecha en la misma imagen."
+"Seleccion como esta encodificado el estéreo en la imagen.  Puede ser capas "
+"separadas (usando una letra o prefijo de vista), como Superior/Inferior en "
+"la misma imagen o como Izquierda/Derecha en la misma imagen."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:72
 msgid ""
@@ -5064,7 +5066,10 @@ msgid ""
 "viceversa), interlaced rows or columns, checkerboard pattern, red/cyan "
 "glasses (and viceversa). "
 msgstr ""
-"Selecciona como ver las imagenes de estereo.  Podes verla sin estereo, una vista del par estereo, superior/inferior (y viceversa), izquierda/derecha (y viceversa), entrelaceado en renglones o columnas, en cuadriculado, lentes rojo/cian (y viceversa)."
+"Selecciona como ver las imagenes de estereo.  Podes verla sin estereo, una "
+"vista del par estereo, superior/inferior (y viceversa), izquierda/derecha (y "
+"viceversa), entrelaceado en renglones o columnas, en cuadriculado, lentes "
+"rojo/cian (y viceversa)."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2174
 msgid "Selected Text"
@@ -5902,13 +5907,14 @@ msgid ""
 "Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a "
 "sphere when this is active."
 msgstr ""
-"Permute la vista de RV 360 (Panorama) de la imagen.  La imagen es envuelta alrededor de una esfera cuando esta opción está activa." 
+"Permute la vista de RV 360 (Panorama) de la imagen.  La imagen es envuelta "
+"alrededor de una esfera cuando esta opción está activa."
 
 #: core/CMedia_audio.cpp:1156
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:6972
+#: gui/mrvImageView.cpp:6977
 msgid "Top"
 msgstr "Superior"
 
@@ -6071,7 +6077,7 @@ msgstr "Formato de render de pixel desconocido"
 msgid "Unknown rounding mode"
 msgstr "Modo de Redondeo desconocido"
 
-#: video/mrvGLEngine.cpp:1836
+#: video/mrvGLEngine.cpp:1837
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
