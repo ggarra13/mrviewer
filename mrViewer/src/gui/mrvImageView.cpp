@@ -6281,6 +6281,9 @@ void ImageView::resize_main_window()
   int minx = monitor.work.x() + kBorders;
   int miny = monitor.work.y() + kMenus;
   int maxh = monitor.work.h() - kMenus - 6;
+#ifdef LINUX
+  maxh -= kMenus * 2;
+#endif
   int maxw = monitor.work.w() - kBorders * 2;
   int maxx = minx + maxw;
   int maxy = miny + maxh;
