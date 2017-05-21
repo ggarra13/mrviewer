@@ -748,7 +748,7 @@ void subtitle_thread( PlaybackData* data )
 	int step = (int) img->playback();
 	if ( step == 0 ) break;
 
-	int64_t frame = img->frame();
+	int64_t frame = img->frame() + step;
 	CMedia::DecodeStatus status = img->decode_subtitle( frame );
 
 	if ( frame > img->last_frame() )
@@ -774,15 +774,16 @@ void subtitle_thread( PlaybackData* data )
 	  case CMedia::kDecodeLoopStart:
 
               if ( img->stopped() ) continue;
-	    CMedia::Barrier* barrier = img->loop_barrier();
-	    // Wait until all threads loop and decode is restarted
-	    barrier->wait();
+              
+              CMedia::Barrier* barrier = img->loop_barrier();
+              // Wait until all threads loop and decode is restarted
+              barrier->wait();
 
-            if ( img->stopped() ) continue;
+              if ( img->stopped() ) continue;
 
-            EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
-                                         reel, timeline, status );
-	    continue;
+              EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
+                                           reel, timeline, status );
+              continue;
 	  }
 	
 	double fps = img->play_fps();
