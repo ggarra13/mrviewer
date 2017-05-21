@@ -1135,7 +1135,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   assert( !_audio_packets.is_loop_start( pkt ) );
 
   ptsframe = get_frame( stream, pkt );
-
+  if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
 
   // Make sure audio frames are continous during playback to 
   // accomodate weird sample rates not evenly divisable by frame rate
@@ -1268,8 +1268,6 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
                    get_error_text( got_audio ) );
         return got_audio;
     }
-
-    if ( audio_frame == AV_NOPTS_VALUE ) audio_frame = frame;
     
     got_audio = kDecodeMissingFrame;
 
