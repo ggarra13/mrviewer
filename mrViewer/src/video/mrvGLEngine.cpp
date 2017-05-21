@@ -1230,7 +1230,7 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
     glEnable( GL_LINE_STIPPLE );
     draw_rectangle( r, _view->flip() );
     glDisable( GL_LINE_STIPPLE );
-    if ( _view->display_window() )
+    if ( _view->display_window() && !_view->vr() )
         glEnable( GL_STENCIL_TEST );
 }
 
@@ -1403,7 +1403,7 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( dpw != daw )
       {
-          if ( _view->display_window() )
+          if ( _view->display_window() && ! _view->vr() )
           {
               draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
           }
@@ -1567,7 +1567,8 @@ void GLEngine::draw_images( ImageList& images )
              {
                  if ( _view->display_window() &&
                       ( !( stereo & CMedia::kStereoAnaglyph ) &&
-                        ( !(stereo & CMedia::kStereoInterlaced ) ) ) )
+                        !( stereo & CMedia::kStereoInterlaced ) &&
+                        !( _view->vr() ) ) )
                  {
                      draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
                  }
