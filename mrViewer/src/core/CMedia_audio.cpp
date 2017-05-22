@@ -1064,24 +1064,77 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 // Just to be safe, we recalc data_size
                 data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
-                if ( _audio_channels >= 6 )
+#ifdef LINUX
+                if ( _audio_channels == 5 )
                 {
                     if ( fmt == AV_SAMPLE_FMT_FLT )
                     {
-                        Swizzle<float> t( samples, len2 );
+                        Swizzle50<float> t( samples, len2 );
                         t.do_it();
                     }
                     else if ( fmt == AV_SAMPLE_FMT_S32 )
                     {
-                        Swizzle<int32_t> t( samples, len2 );
+                        Swizzle50<int32_t> t( samples, len2 );
                         t.do_it();
                     }
                     else if ( fmt == AV_SAMPLE_FMT_S16 )
                     {
-                        Swizzle<int16_t> t( samples, len2 );
+                        Swizzle50<int16_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_U8 )
+                    {
+                        Swizzle50<uint8_t> t( samples, len2 );
                         t.do_it();
                     }
                 }
+                else if ( _audio_channels == 6 )
+                {
+                    if ( fmt == AV_SAMPLE_FMT_FLT )
+                    {
+                        Swizzle51<float> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_S32 )
+                    {
+                        Swizzle51<int32_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_S16 )
+                    {
+                        Swizzle51<int16_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_U8 )
+                    {
+                        Swizzle51<uint8_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                }
+                else if ( _audio_channels == 8 )
+                {
+                    if ( fmt == AV_SAMPLE_FMT_FLT )
+                    {
+                        Swizzle71<float> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_S32 )
+                    {
+                        Swizzle71<int32_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_S16 )
+                    {
+                        Swizzle71<int16_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_U8 )
+                    {
+                        Swizzle71<uint8_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                }
+#endif
 
             }
             else
