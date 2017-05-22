@@ -22,12 +22,38 @@
 namespace mrv {
 
 template< typename T >
-struct Swizzle
+struct Swizzle50
 {
     T* ptr;
     unsigned last;
 
-    inline Swizzle(void* data, unsigned data_size ) :
+    inline Swizzle50(void* data, unsigned data_size ) :
+    ptr( (T*) data ),
+    last( data_size )
+    {
+    }
+
+    inline void do_it() 
+    {
+	T tmp;
+	for (unsigned i = 0; i < last; i++, ptr += 5) {	
+            tmp = ptr[0];
+            ptr[0] = ptr[1];  // L
+            ptr[1] = ptr[2];  // R
+            ptr[2] = ptr[3];  // Ls
+            ptr[3] = ptr[4];  // Rs
+            ptr[4] = tmp;  // C
+	}
+    }
+};
+
+template< typename T >
+struct Swizzle51
+{
+    T* ptr;
+    unsigned last;
+
+    inline Swizzle51(void* data, unsigned data_size ) :
     ptr( (T*) data ),
     last( data_size )
     {
@@ -39,6 +65,28 @@ struct Swizzle
 	for (unsigned i = 0; i < last; i++, ptr += 6) {	
             tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = tmp;
             tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = tmp;
+	}
+    }
+};
+
+template< typename T >
+struct Swizzle71
+{
+    T* ptr;
+    unsigned last;
+
+    inline Swizzle71(void* data, unsigned data_size ) :
+    ptr( (T*) data ),
+    last( data_size )
+    {
+    }
+
+    inline void do_it() 
+    {
+	T tmp;
+	for (unsigned i = 0; i < last; i++, ptr += 8) {	
+            tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = ptr[6]; ptr[6] = tmp;
+            tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = ptr[7]; ptr[7] = tmp;
 	}
     }
 };
