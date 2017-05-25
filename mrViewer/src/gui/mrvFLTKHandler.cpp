@@ -53,7 +53,7 @@ namespace mrv {
            ext == "srt" || ext == "sub" || ext == "txt" )
           return NULL;
 
-      CMedia* img = CMedia::guess_image( filename, header, len );
+      CMedia* img = CMedia::guess_image( filename, header, len, true );
       if ( img == NULL ) return NULL;
 
 
@@ -63,6 +63,7 @@ namespace mrv {
       img->audio_stream( -1 );
       img->seek( f );
       img->fetch( f );
+      img->is_thumbnail( false );
 
       if ( ! img->hires() ) return NULL;
 
