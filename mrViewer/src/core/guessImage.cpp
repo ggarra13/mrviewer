@@ -185,7 +185,8 @@ void verify_stereo_resolution( const CMedia* const left,
 CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const std::string& root, const int64_t frame,
                const boost::uint8_t* datas, const int len,
-               const boost::int64_t& lastFrame )
+               const boost::int64_t& lastFrame,
+               const bool is_thumbnail = false )
 {
     std::string tmp;
     char name[1024];
@@ -244,6 +245,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 				(unsigned int)size, is_seq );
     if ( image ) 
     {
+        image->is_thumbnail( is_thumbnail );
         image->is_left_eye( left );
 
 	if ( is_seq )
@@ -264,6 +266,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
   CMedia* CMedia::guess_image( const char* file,
 			       const boost::uint8_t* datas,
 			       const int len,
+                               const bool is_thumbnail,
 			       const boost::int64_t start,
 			       const boost::int64_t end,
                                const bool use_threads )
@@ -310,11 +313,11 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     try {
 
         image = guess( is_stereo, is_seq, true, root, frame, datas, len,
-                       lastFrame );
+                       lastFrame, is_thumbnail );
         if ( is_stereo && image )
         {
             right = guess( is_stereo, is_seq, false, root, frame,
-                           NULL, 0, lastFrame );
+                           NULL, 0, lastFrame, is_thumbnail );
             if ( right )
             {
                 verify_stereo_resolution( image, right );
