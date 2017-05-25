@@ -538,6 +538,7 @@ class CMedia
     static CMedia* guess_image( const char* name,
 				const boost::uint8_t* datas = NULL,
 				const int size = 0,
+                                const bool is_thumbnail = false,
 				const boost::int64_t 
 				first = std::numeric_limits<boost::int64_t>::max(),
 				const boost::int64_t 
@@ -1019,6 +1020,8 @@ class CMedia
     // Add a GL drawn shape to image
     void add_shape( shape_type_ptr s );
 
+    inline void is_thumbnail(bool t) { _is_thumbnail = t; }
+    inline bool is_thumbnail() const { return _is_thumbnail; }
 
     void fetch_audio( const boost::int64_t frame );
 
@@ -1315,6 +1318,7 @@ class CMedia
 
     unsigned int  _w, _h;     //!< width and height of image
     bool   _internal;      //!< image is internal with no filename
+    bool   _is_thumbnail;     //!< image is a thumbnail (no printing of errors)
     bool   _is_sequence;      //!< true if a sequence
     bool   _is_stereo;        //!< true if part of stereo pair of images
     StereoInput  _stereo_input; //!< Stereo input (feed)
