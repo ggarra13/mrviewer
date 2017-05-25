@@ -1466,6 +1466,7 @@ bool aviImage::find_image( const boost::int64_t frame )
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
         _right_eye->find_image( frame );
 
+
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "find_image");
 #endif
@@ -1546,14 +1547,14 @@ bool aviImage::find_image( const boost::int64_t frame )
                  _hires->frame() != f && 
 		 diff > 1 && diff < 10 )
             {
-                IMG_WARNING( _(" find_image: frame ") << frame 
+                IMG_WARNING( _("find_image: frame ") << frame 
                              << _(" not found, choosing ") << _hires->frame() 
                              << _(" instead") );
             }
 	  }
 	else
 	  {
-              IMG_ERROR( _(" find_image: frame ") << frame << _(" not found") );
+              IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
               return false;
 	  }
       }
@@ -2141,7 +2142,7 @@ void aviImage::populate()
 	}
 
      
-        if ( has_picture() && (!has_audio() || audio_context() == _context) )
+        if ( got_video && (!has_audio() || audio_context() == _context) )
             find_image( _frameStart );
     }
   
