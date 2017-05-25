@@ -1269,9 +1269,9 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     CMedia* img;
 
     if ( start != AV_NOPTS_VALUE )
-        img = CMedia::guess_image( name, NULL, 0, start, end, false );
+        img = CMedia::guess_image( name, NULL, 0, false, start, end, false );
     else
-        img = CMedia::guess_image( name, NULL, 0, first, last, false );
+        img = CMedia::guess_image( name, NULL, 0, false, first, last, false );
 
     if ( img == NULL )
         return;
@@ -1344,9 +1344,11 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
-        img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
+        img = CMedia::guess_image( name, NULL, 0, false, 
+                                   start, end, use_threads );
     else
-        img = CMedia::guess_image( name, NULL, 0, first, last, use_threads );
+        img = CMedia::guess_image( name, NULL, 0, false,
+                                   first, last, use_threads );
 
     if ( img == NULL )
         return mrv::media();
