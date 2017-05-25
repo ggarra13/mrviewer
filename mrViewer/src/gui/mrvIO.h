@@ -160,8 +160,8 @@ namespace mrv {
                                     __FUNCTION__ << "(" << __LINE__ << ") " \
                                     << x << std::endl )
 #define LOG_CONN(x)    mrvCONN_INFO( kModule, x << std::endl )
-#define IMG_ERROR(x)   LOG_ERROR( name() << _(" frame ") << this->frame() << " - " << x )
-#define IMG_WARNING(x) LOG_WARNING( name() << _(" frame ") << this->frame() << " - " << x ) 
+#define IMG_ERROR(x)   do { if( !is_thumbnail() ) LOG_ERROR( name() << _(" frame ") << this->frame() << " - " << x ); } while(0)
+#define IMG_WARNING(x) do { if( !is_thumbnail() ) LOG_WARNING( name() << _(" frame ") << this->frame() << " - " << x ); } while(0)
 #define IMG_INFO_F(x) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << x )  
 #define IMG_INFO(x) LOG_INFO( name() << " - " << x ) 
 
