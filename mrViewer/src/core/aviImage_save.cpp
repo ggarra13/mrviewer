@@ -1096,8 +1096,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    samples_count = 0;
    frame_count = 0;
 
-   avcodec_register_all();
-   av_register_all();
+   //avcodec_register_all(); // called by av_register_all()
+   //av_register_all(); // called in mrVersion.cpp
 
 
    if ( strcmp( img->filename(), filename ) == 0 )
