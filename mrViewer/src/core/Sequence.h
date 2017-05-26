@@ -252,6 +252,26 @@ bool parse_reel( LoadList& sequences, bool& edl,
 
   /** 
    * Given a filename extension, return whether the extension is
+   * from an audio format.
+   * 
+   * @param ext Filename extension
+   * 
+   * @return true if a possible audio file, false if not.
+   */
+   bool is_valid_audio( const char* ext );
+
+  /** 
+   * Given a filename extension, return whether the extension is
+   * from a subtitle format.
+   * 
+   * @param ext Filename extension
+   * 
+   * @return true if a possible subtitle file, false if not.
+   */
+   bool is_valid_subtitle( const char* ext );
+
+  /** 
+   * Given a filename extension, return whether the extension is
    * from a picture format.
    * 
    * @param ext Filename extension
