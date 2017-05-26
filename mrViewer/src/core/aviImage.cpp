@@ -314,6 +314,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
+  std::cerr << std::hex << magic << std::dec << std::endl;
 
   if ( magic == 0x000001ba || magic == 0x00000001 )
     {
@@ -324,6 +325,12 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
      // Matroska
      return true;
+  }
+  else if ( magic == 0x113bf428 ||
+            magic == 0x471fff00 )
+  {
+      // AVCHD m2ts
+      return true;
   }
   else if ( magic == 0x3026B275 )
     {
@@ -2055,8 +2062,8 @@ void aviImage::populate()
 	{
             // Hack to exit loop if got_video or got_audio fails
             ++force_exit;
-            if ( force_exit == 200 ) break;
-
+            if ( force_exit == 200 )  break;
+            
             int error = av_read_frame( _context, &pkt );
             if ( error < 0 )
             {
@@ -2143,7 +2150,9 @@ void aviImage::populate()
 
      
         if ( got_video && (!has_audio() || audio_context() == _context) )
+        {
             find_image( _frameStart );
+        }
     }
   
     _dts = dts;
