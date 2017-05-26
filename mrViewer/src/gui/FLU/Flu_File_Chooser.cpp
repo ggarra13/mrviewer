@@ -586,6 +586,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("ogv"),   _( "Ogg Video"), &reel );
   add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
   add_type( N_("rm"),    _( "Real Media Movie"), &reel );
+  add_type( N_("ts"),    _( "AVCHD Video"), &reel );
   add_type( N_("vob"),   _( "VOB Movie"), &reel );
   add_type( N_("webm"),  _( "WebM Movie"), &reel );
   add_type( N_("wmv"),   _( "WMV Movie"), &reel );
