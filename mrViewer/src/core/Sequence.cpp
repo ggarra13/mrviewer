@@ -179,8 +179,9 @@ bool is_valid_movie( const char* ext )
         tmp == ".mvb"  || tmp == ".mxf"   ||
         tmp == ".ogg"  || tmp == ".ogv"   ||
         tmp == ".qt"   || tmp == ".rm"    ||
-        tmp == ".vob"  || tmp == ".vp9"   ||
-        tmp == ".webm" || tmp == ".wmv"  )
+        tmp == ".ts"   || tmp == ".vob"   ||
+        tmp == ".vp9"  || tmp == ".webm"  ||
+        tmp == ".wmv"  )
       return true;
 
    return false;
