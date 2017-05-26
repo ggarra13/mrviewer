@@ -314,7 +314,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
-  std::cerr << std::hex << magic << std::dec << std::endl;
+  // std::cerr << std::hex << magic << std::dec << std::endl;
 
   if ( magic == 0x000001ba || magic == 0x00000001 )
     {
@@ -325,13 +325,6 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
      // Matroska
      return true;
-  }
-  else if ( magic == 0x113bf428 ||
-            magic == 0x471fff00 ||
-            magic == 0x47600010 )
-  {
-      // AVCHD m2ts
-      return true;
   }
   else if ( magic == 0x3026B275 )
     {
@@ -417,6 +410,20 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
       return true;
   }
+  else if ( ( magic & 0x47000000 ) == 0x47000000 )
+  {
+      // AVCHD m2ts
+      AVProbeData d;
+      d.filename = NULL;
+      d.buf = (uint8_t*)malloc( len + AVPROBE_PADDING_SIZE );
+      memcpy( d.buf, data, sizeof(uint8_t)*len );
+      memset( d.buf+len, 0, sizeof(uint8_t)*AVPROBE_PADDING_SIZE );
+      d.buf_size = len;
+      d.mime_type = "video/MP2T";
+      AVInputFormat* input = av_probe_input_format( &d, 1 );
+      if ( input ) return true;
+      return false;
+  }
   else
     {
       // Check for Quicktime
@@ -430,7 +437,6 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
       return true;
     }
-
 #if 0
    uint8_t* d = new uint8_t[ len + AVPROBE_PADDING_SIZE ];
    memset( d+len, 0, AVPROBE_PADDING_SIZE );
