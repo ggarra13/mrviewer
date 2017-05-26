@@ -327,7 +327,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
      return true;
   }
   else if ( magic == 0x113bf428 ||
-            magic == 0x471fff00 )
+            magic == 0x471fff00 ||
+            magic == 0x47600010 )
   {
       // AVCHD m2ts
       return true;
