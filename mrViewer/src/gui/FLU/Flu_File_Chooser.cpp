@@ -567,19 +567,29 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
 
   add_type( NULL, _(directoryTxt.c_str()), &folder_closed );
-  add_type( N_("mov"),   _( "Quicktime Movie"), &reel );
-  add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
+  add_type( N_("3gp"),   _( "3GP Movie"), &reel );
+  add_type( N_("asf"),   _( "Advanced Systems Format Media"), &reel );
+  add_type( N_("avc"),   _( "AVCHD Video"), &reel );
+  add_type( N_("avchd"), _( "AVCHD Video"), &reel );
   add_type( N_("avi"),   _( "AVI Movie"), &reel );
   add_type( N_("divx"),  _( "DIVX Movie"), &reel );
-  add_type( N_("mkv"),   _( "Matroska Movie"), &reel );
-  add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
-  add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
-  add_type( N_("mxf"),   _( "MXF Movie"), &reel );
-  add_type( N_("wmv"),   _( "WMV Movie"), &reel );
-  add_type( N_("vob"),   _( "VOB Movie"), &reel );
-  add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
-  add_type( N_("webm"),  _( "WebM Movie"), &reel );
+  add_type( N_("dv"),    _( "Digital Video"), &reel );
   add_type( N_("flv"),   _( "Flash Movie"), &reel );
+  add_type( N_("m2ts"),  _( "AVCHD Video"), &reel );
+  add_type( N_("m2t"),   _( "AVCHD Video"), &reel );
+  add_type( N_("mkv"),   _( "Matroska Movie"), &reel );
+  add_type( N_("mov"),   _( "Quicktime Movie"), &reel );
+  add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
+  add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
+  add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
+  add_type( N_("mxf"),   _( "MXF Movie"), &reel );
+  add_type( N_("ogv"),   _( "Ogg Video"), &reel );
+  add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
+  add_type( N_("rm"),    _( "Real Media Movie"), &reel );
+  add_type( N_("vob"),   _( "VOB Movie"), &reel );
+  add_type( N_("webm"),  _( "WebM Movie"), &reel );
+  add_type( N_("wmv"),   _( "WMV Movie"), &reel );
+  
   add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
   add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
   add_type( N_("cin"),   _( "Cineon Picture"), &picture );
@@ -609,8 +619,9 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("tif"),   _( "TIFF Picture"), &picture );
   add_type( N_("tiff"),  _( "TIFF Picture"), &picture );
   add_type( N_("zt"),    _( "mental ray Z Depth Picture"), &picture );
+  
   add_type( N_("mp3"),   _( "MP3 music"), &music );
-  add_type( N_("ogg"),   _( "OGG music"), &music );
+  add_type( N_("ogg"),   _( "OGG Vorbis music"), &music );
   add_type( N_("wav"),   _( "Wave music"), &music );
 
   history = currentHist = NULL;
@@ -4401,18 +4412,13 @@ void Flu_File_Chooser::cd( const char *path )
 		    std::string tmp = ext;
 		    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 				    (int(*)(int)) tolower);
-		    if ( tmp == N_(".avi")  || tmp == N_(".mov")  || 
-			 tmp == N_(".divx") || tmp == N_(".mp3")  ||
-			 tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
-			 tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
-			 tmp == N_(".mxf")  || tmp == N_(".ogv")  ||
-                         tmp == N_(".ogg")  ||
-			 tmp == N_(".qt")   || tmp == N_(".wav")  ||
-			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
-			 tmp == N_(".wav")  || tmp == N_(".icm")  ||
-                         tmp == N_(".vp9")  || tmp == N_(".ctl")  || 
-                         tmp == N_(".xml")  || tmp == N_(".srt")  ||
-                         tmp == N_(".sub")  || tmp == N_(".ass") )
+		    if ( mrv::is_valid_movie( tmp.c_str() ) ||
+                         mrv::is_valid_audio( tmp.c_str() ) ||
+                         mrv::is_valid_subtitle( tmp.c_str() ) ||
+                         tmp == N_(".icc")  ||
+			 tmp == N_(".icm")  ||
+                         tmp == N_(".ctl")  || 
+                         tmp == N_(".xml") )
 		       is_sequence = false;
 		 }
 		 else
