@@ -164,21 +164,60 @@ void split(const std::string &s, char delim, StringList& elems) {
 bool is_valid_movie( const char* ext )
 {
    std::string tmp = ext;
-   if ( tmp[0] != '.' ) tmp = '.' + tmp;
    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
                    (int(*)(int)) tolower);
+   if ( tmp[0] != '.' ) tmp = '.' + tmp;
 
-   if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
-        tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
-        tmp == ".qt"  || tmp == ".mp4"  || tmp == ".vob"  ||
-        tmp == ".rm"  || tmp == ".flv"  || tmp == ".webm" ||
-        tmp == ".gif" || tmp == ".mkv"  || tmp == ".ogv"  ||
-        tmp == ".ogg" )
+   if ( tmp == ".3gp"  || tmp == ".asf"   ||
+        tmp == ".avc"  || tmp == ".avchd" ||
+        tmp == ".avi"  || tmp == ".divx"  ||
+        tmp == ".dv"   || tmp == ".flv"   ||
+        tmp == ".gif"  || tmp == ".m2ts"  ||
+        tmp == ".m2t"  || tmp == ".mkv"   ||
+        tmp == ".mov"  || tmp == ".mp4"   ||
+        tmp == ".mpeg" || tmp == ".mpg"   ||
+        tmp == ".mvb"  || tmp == ".mxf"   ||
+        tmp == ".ogg"  || tmp == ".ogv"   ||
+        tmp == ".qt"   || tmp == ".rm"    ||
+        tmp == ".vob"  || tmp == ".vp9"   ||
+        tmp == ".webm" || tmp == ".wmv"  )
       return true;
 
    return false;
 }
 
+
+// Given a frame extension, return true if a possible audio file.
+bool is_valid_audio( const char* ext )
+{
+   std::string tmp = ext;
+   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+                   (int(*)(int)) tolower);
+   if ( tmp[0] != '.' ) tmp = '.' + tmp;
+
+   if ( tmp == N_(".mp3") ||
+        tmp == N_(".ogg") ||
+        tmp == N_(".wav") )
+      return true;
+
+   return false;
+}
+
+// Given a frame extension, return true if a possible audio file.
+bool is_valid_subtitle( const char* ext )
+{
+   std::string tmp = ext;
+   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+                   (int(*)(int)) tolower);
+   if ( tmp[0] != '.' ) tmp = '.' + tmp;
+
+   if ( tmp == N_(".srt")  ||
+        tmp == N_(".sub")  ||
+        tmp == N_(".ass") )
+      return true;
+
+   return false;
+}
 
 // Given a frame extension, return true if a possible picture file.
 bool is_valid_picture( const char* ext )
