@@ -58,6 +58,7 @@ extern "C" {
 
 
 #include "core/CMedia.h"
+#include "core/Sequence.h"
 #include "core/mrvPacketQueue.h"
 #include "gui/mrvIO.h"
 #include "core/mrvException.h"
@@ -739,6 +740,24 @@ void CMedia::populate_audio()
 
 }
 
+void CMedia::process_timecode( const std::string text )
+{
+    StringList tc;
+    split( text, ':', tc );
+    if ( tc.size() != 4 ) return;
+
+
+    int hours = atoi( tc[0].c_str() );
+    int minutes = atoi( tc[1].c_str() );
+    int seconds = atoi( tc[2].c_str() );
+    int frames = atoi( tc[3].c_str() );
+
+    _tc_frame = ( hours * 60 * 60 * _fps +
+                  minutes * 60 * _fps +
+                  seconds * _fps +
+                  frames - 1 );
+}
+
 void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
 {
    if(!m) return;
@@ -748,6 +767,7 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       std::string name = prefix;
       name += tag->key;
+      if ( name == "timecode" ) process_timecode( tag->value );
       _iptc.insert( std::make_pair( name, tag->value ) ); 
    }
 }
