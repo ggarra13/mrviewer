@@ -305,7 +305,6 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
         }
         case kTimecodeNonDrop:
             {
-                int ifps = int(fps + 0.5f);
                 
                 int  hours  = 0;
                 int  mins   = 0;
@@ -313,9 +312,9 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                 int  frames = 0;
                 
                 // Convert current frame value to timecode based on fps
-                int frames_per_hour = 3600 * ifps;
-                int minbase  = 60 * ifps;
-                int secbase  = ifps;
+                int frames_per_hour = 3600 * fps;
+                int minbase  = 60 * fps;
+                int secbase  = fps + 0.5;
 	
                 int64_t x = f;
                 hours = int( x / frames_per_hour );
