@@ -877,6 +877,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
     boost::int64_t start = frame;
+    start -= _tc_frame;
 
     if ( _start_number != 0 )
     {
@@ -1061,8 +1062,9 @@ void aviImage::store_image( const boost::int64_t frame,
   mrv::image_type_ptr image;
   try {
 
-      image = allocate_image( frame, boost::int64_t( double(pts) * 
-                                                     av_q2d( _video_ctx->time_base )
+      image = allocate_image( frame,
+                              boost::int64_t( double(pts) * 
+                                              av_q2d( _video_ctx->time_base )
                               )
       );
   } catch ( const std::exception& e )
@@ -1220,6 +1222,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          {
              ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
          }
+
 
          if ( filter_graph && _subtitle_index >= 0 )
          {
@@ -1957,6 +1960,9 @@ void aviImage::populate()
     }
 
 
+    dump_metadata( _context->metadata ); // We get this here for timecode
+
+    _frameStart += _tc_frame;
     
     _frame_start = _frame = _frameEnd = _frameStart + _start_number;
 
@@ -2196,7 +2202,6 @@ void aviImage::populate()
     // Miscellaneous information
     //
 
-    dump_metadata( _context->metadata );
 
     char buf[128];
   
