@@ -1960,9 +1960,7 @@ void aviImage::populate()
     }
 
 
-    dump_metadata( _context->metadata ); // We get this here for timecode
 
-    _frameStart += _tc_frame;
     
     _frame_start = _frame = _frameEnd = _frameStart + _start_number;
 
@@ -2202,6 +2200,7 @@ void aviImage::populate()
     // Miscellaneous information
     //
 
+    dump_metadata( _context->metadata ); // We get this here for timecode
 
     char buf[128];
   
@@ -2238,15 +2237,16 @@ void aviImage::populate()
         AVStream* stream = get_video_stream();
         if ( stream->metadata ) dump_metadata( stream->metadata, "Video " );
 
-        if ( _tc_frame != 0 )
-        {
-            _frame += _tc_frame;
-            _frameStart += _tc_frame;
-            _frameEnd += _tc_frame;
-            _frame_start += _tc_frame;
-            _frame_end += _tc_frame;
-            _audio_frame += _tc_frame;
-        }
+    }
+    
+    if ( _tc_frame != 0 )
+    {
+        _frame += _tc_frame;
+        _frameStart += _tc_frame;
+        _frameEnd += _tc_frame;
+        _frame_start += _tc_frame;
+        _frame_end += _tc_frame;
+        _audio_frame += _tc_frame;
     }
 }
 
