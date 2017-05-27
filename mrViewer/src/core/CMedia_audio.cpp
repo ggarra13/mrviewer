@@ -767,7 +767,8 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       std::string name = prefix;
       name += tag->key;
-      if ( name == "timecode" ) process_timecode( tag->value );
+      if ( name == "timecode" || name == "Video timecode" )
+          process_timecode( tag->value );
       _iptc.insert( std::make_pair( name, tag->value ) ); 
    }
 }
