@@ -752,10 +752,10 @@ void CMedia::process_timecode( const std::string text )
     int seconds = atoi( tc[2].c_str() );
     int frames = atoi( tc[3].c_str() );
 
-    _tc_frame = ( hours * 60 * 60 * _fps +
-                  minutes * 60 * _fps +
-                  seconds * _fps +
-                  frames - 1 );
+    _tc_frame = (double)( hours * 3600 +
+                          minutes * 60 +
+                          seconds ) * _fps + frames - 1;
+
 }
 
 void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
