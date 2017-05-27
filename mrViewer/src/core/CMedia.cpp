@@ -182,6 +182,7 @@ _adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
 _frame( 1 ),
+_tc_frame( 0 ),
 _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
@@ -279,6 +280,7 @@ _adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
 _frame( 1 ),
+_tc_frame( 0 ),
 _expected( 1 ),
 _expected_audio( 1 ),
 _frameStart( 1 ),
@@ -381,6 +383,7 @@ _adts( other->_adts ),
 _audio_frame( 0 ),
 _audio_offset( 0 ),
 _frame( f ),
+_tc_frame( other->_tc_frame ),
 _expected( f+1 ),
 _expected_audio( 0 ),
 _frameStart( other->_frameStart ),
@@ -2825,6 +2828,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   p /= stream->time_base.den;
   p *= _orig_fps;
   boost::int64_t pts = boost::int64_t( p + 0.5 ) + 1;
+  pts += _tc_frame;
   return pts;
 }
 
