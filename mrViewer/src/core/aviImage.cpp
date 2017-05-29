@@ -313,8 +313,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
   
   unsigned int magic = ntohl( *((unsigned int*)data) );
-
-  // std::cerr << std::hex << magic << std::dec << std::endl;
+      
+  // std::cerr << std::hex << tag2 << std::dec << std::endl;
 
   if ( magic == 0x000001ba || magic == 0x00000001 )
     {
@@ -410,50 +410,44 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
       return true;
   }
-  else if ( ( magic & 0x47000000 ) == 0x47000000 )
-  {
-      // AVCHD m2ts
-      AVProbeData d;
-      d.filename = NULL;
-      d.buf = (uint8_t*)malloc( len + AVPROBE_PADDING_SIZE );
-      memcpy( d.buf, data, sizeof(uint8_t)*len );
-      memset( d.buf+len, 0, sizeof(uint8_t)*AVPROBE_PADDING_SIZE );
-      d.buf_size = len;
-      d.mime_type = "video/MP2T";
-      AVInputFormat* input = av_probe_input_format( &d, 1 );
-      if ( input ) return true;
-      return false;
-  }
   else
     {
       // Check for Quicktime
-      if ( strncmp( (char*)data+4, "ftyp", 4 ) != 0 && 
-	   strncmp( (char*)data+4, "moov", 4 ) != 0 &&
-	   strncmp( (char*)data+4, "free", 4 ) != 0 && 
-	   strncmp( (char*)data+4, "mdat", 4 ) != 0 &&
-	   strncmp( (char*)data+4, "wide", 4 ) != 0 )
-	return false;
-
-
-      return true;
+      if ( strncmp( (char*)data+4, "ftyp", 4 ) == 0 || 
+	   strncmp( (char*)data+4, "moov", 4 ) == 0 ||
+	   strncmp( (char*)data+4, "free", 4 ) == 0 || 
+	   strncmp( (char*)data+4, "mdat", 4 ) == 0 ||
+	   strncmp( (char*)data+4, "wide", 4 ) == 0 )
+	return true;
     }
-#if 0
-   uint8_t* d = new uint8_t[ len + AVPROBE_PADDING_SIZE ];
-   memset( d+len, 0, AVPROBE_PADDING_SIZE );
-   memcpy( d, data, len );
 
-   AVProbeData pd = { NULL, d, len };
-   int score_max = 0;
-   AVInputFormat* ctx = av_probe_input_format3(&pd, 1, &score_max);
+  // For M2TS (AVCHD), we search for 0x47 and if so, we do the full check
+  // in ffmpeg.
+  for ( int i = 0; i < len; i += 4 )
+  {
+      unsigned int magic = ntohl( *(unsigned int*)(data+i) );
+      if ( ( magic & 0x47000000 ) == 0x47000000 )
+      {
+          uint8_t* d = new uint8_t[ len + AVPROBE_PADDING_SIZE ];
+          memset( d+len, 0, AVPROBE_PADDING_SIZE );
+          memcpy( d, data, len );
 
-   delete [] d;
+          AVProbeData pd = { NULL, d, len, "video/MP2T" };
+          int score_max = 0;
+          AVInputFormat* ctx = av_probe_input_format3(&pd, 1, &score_max);
 
-   // if ( ctx && score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
-   if ( ctx && score_max > 10 )
-      return true;
+          delete [] d;
 
+          // if ( ctx && score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
+          
+          if ( ctx && score_max > 1 )
+              return true;
+
+          return false;
+      }
+  }
+  
   return false;
-#endif
 
 }
 
