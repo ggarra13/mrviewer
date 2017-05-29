@@ -423,7 +423,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
   // For M2TS (AVCHD), we search for 0x47 and if so, we do the full check
   // in ffmpeg.
-  for ( int i = 0; i < len; i += 4 )
+  for ( int i = 0; i < 8; i += 4 )
   {
       unsigned int magic = ntohl( *(unsigned int*)(data+i) );
       if ( ( magic & 0x47000000 ) == 0x47000000 )
