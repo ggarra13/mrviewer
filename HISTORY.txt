@@ -2,6 +2,7 @@ v3.6.6   - Added support for timecode in movies.  When a movie with
 	   a header entry of "timecode", or a video stream header entry
 	   of "timecode" is found, the timecode is interpreted as an
 	   offset of the current frame.
+	 - Added support for m2ts (AVCHD) movies.
 
 v3.6.5   - Added tooltips to 3d stereo options panel.
 	 - Made VR360 disregard the display window and wrap the
