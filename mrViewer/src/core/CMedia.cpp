@@ -147,6 +147,7 @@ const char* const CMedia::decode_error( DecodeStatus err )
  */
 CMedia::CMedia() :
 av_sync_type( CMedia::AV_SYNC_AUDIO_MASTER ),
+_has_deep_data( false ),
 _w( 0 ),
 _h( 0 ),
 _internal( false ),
@@ -248,6 +249,7 @@ _audio_engine( NULL )
  */
 CMedia::CMedia( const CMedia* other, int ws, int wh ) :
 av_sync_type( other->av_sync_type ),
+_has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
 _is_stereo( false ),
@@ -350,6 +352,7 @@ _audio_engine( NULL )
 
 CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
 av_sync_type( other->av_sync_type ),
+_has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
 _is_stereo( other->_is_stereo ),
@@ -1183,7 +1186,7 @@ const char* const CMedia::filename() const
  * 
  * @return filename of the file for current frame
  */
-std::string CMedia::sequence_filename( const boost::int64_t frame )
+std::string CMedia::sequence_filename( const boost::int64_t frame ) const
 {
   if ( !is_sequence() ) return _fileroot;
 
