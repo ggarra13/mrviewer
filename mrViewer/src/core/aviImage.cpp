@@ -423,7 +423,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
   // For M2TS (AVCHD), we search for 0x47 and if so, we do the full check
   // in ffmpeg.
-  for ( int i = 0; i < 8; i += 4 )
+  for ( int i = 0; i < 128; i += 4 )
   {
       unsigned int magic = ntohl( *(unsigned int*)(data+i) );
       if ( ( magic & 0x47000000 ) == 0x47000000 )
@@ -433,14 +433,11 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
           memcpy( d, data, len );
 
           AVProbeData pd = { NULL, d, len, "video/MP2T" };
-          int score_max = 0;
-          AVInputFormat* ctx = av_probe_input_format3(&pd, 1, &score_max);
+          AVInputFormat* ctx = av_probe_input_format(&pd, 1);
 
           delete [] d;
 
-          // if ( ctx && score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
-          
-          if ( ctx && score_max > 1 )
+          if ( ctx && ( strcmp( ctx->name, "mpegts" ) == 0 ) )
               return true;
 
           return false;
