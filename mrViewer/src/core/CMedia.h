@@ -985,7 +985,7 @@ class CMedia
     inline void looping( Looping x ) { _looping = x; }
     
     // Return the sequence filename for frame 'frame'
-    std::string sequence_filename( const boost::int64_t frame );
+    std::string sequence_filename( const boost::int64_t frame ) const;
 
     // Return the video clock as a double
     double video_clock() const { return _video_clock; }
@@ -1040,6 +1040,8 @@ class CMedia
 			    const char* routine = "",
 			    const bool detail = true);
 
+    bool has_deep_data() const { return _has_deep_data; }
+    
     static int from_stereo_input( StereoInput x );
     static StereoInput to_stereo_input( int x );
     
@@ -1089,6 +1091,8 @@ class CMedia
     Clock audclk;
     Clock vidclk;
     Clock extclk;
+    
+    bool _has_deep_data;
 
   protected:
 
