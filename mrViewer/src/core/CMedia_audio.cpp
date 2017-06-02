@@ -742,20 +742,59 @@ void CMedia::populate_audio()
 
 void CMedia::process_timecode( const std::string text )
 {
+    bool drop_frame = false;
     StringList tc;
     split( text, ':', tc );
-    if ( tc.size() != 4 ) return;
 
+    // DROP FRAME TIMECODE USES ; as SEPARATOR
+    // We accept 00;00;00;00 as well as 00:00:00;00
+    // We also accept 00.00.00.00 as well as 00:00:00.00
+    if ( tc.size() != 4 ) {
+        split( text, ';', tc );
+        if ( tc.empty() )
+        {
+            split( text, '.', tc );
+        }
+        if ( tc.size() == 2 )
+        {
+            std::string frames = tc[1].substr( 0, 2 );
+            StringList tc;
+            split( text, ':', tc );
+            if ( tc.size() != 3 ) return;
+            tc[2] = tc[2].substr( 0, 2 );  // this one contains the frames too
+            tc.push_back( frames );        // add frames to list
+        }
+        else
+        {
+            if ( tc.size() != 4 )
+                return;
+        }
+        drop_frame = true;
+    }
 
     int hours = atoi( tc[0].c_str() );
     int minutes = atoi( tc[1].c_str() );
     int seconds = atoi( tc[2].c_str() );
     int frames = atoi( tc[3].c_str() );
 
-    _tc_frame = (double)( hours * 3600 +
-                          minutes * 60 +
-                          seconds ) * _fps + frames - 1;
-
+    if ( drop_frame )
+    {
+        // ((30 * 60 - 2) * 10 + 2) * 6 drop-frame frames in 1 hour
+        _tc_frame = hours * 107892;
+        // 30 * 60 - 2 drop-frame frames in one minute
+        _tc_frame += minutes * 1798;
+        // for each minute except each 10th minute add 2 frames
+        _tc_frame += (minutes / 10) * 2;
+        // 30 drop-frame frames in one second
+        _tc_frame += seconds * 30;
+        _tc_frame += frames;              // frames
+    }
+    else
+    {
+        _tc_frame = (double)( hours * 3600 +
+                              minutes * 60 +
+                              seconds ) * _fps + frames; // - 1; 
+    }
 }
 
 void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
@@ -767,7 +806,8 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       std::string name = prefix;
       name += tag->key;
-      if ( name == "timecode" || name == "Video timecode" )
+      if ( name == "timecode" || name == "Video timecode" ||
+           name == "Timecode" )
           process_timecode( tag->value );
       _iptc.insert( std::make_pair( name, tag->value ) ); 
    }
