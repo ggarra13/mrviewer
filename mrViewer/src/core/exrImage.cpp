@@ -44,6 +44,10 @@
 #include <ImfDeepScanLineInputPart.h>
 #include <ImfDeepFrameBuffer.h>
 #include <ImfCompositeDeepScanLine.h>
+#include <ImfTiledInputPart.h>
+#include <ImfTiledOutputPart.h>
+#include <ImfDeepScanLineOutputPart.h>
+#include <ImfDeepTiledOutputPart.h>
 #include <ImfDeepCompositing.h>
 #include <ImfDeepTiledInputPart.h>
 #include <ImfOutputFile.h>
@@ -1253,12 +1257,22 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  {
               const Imf::TimeCode& tc = attr->value();
               char buf[128];
-              sprintf( buf, 
-                       N_("%02d:%02d:%02d:%02d"), tc.hours(),
-                       tc.minutes(), tc.seconds(), tc.frame());
-              _exif.insert( std::make_pair( _("Timecode"), buf) );
               sprintf( buf, N_("%d"),tc.dropFrame());
               _exif.insert( std::make_pair( _("TC Drop Frame"), buf) );
+              if ( tc.dropFrame() )
+              {
+                  sprintf( buf, 
+                           N_("%02d;%02d;%02d;%02d"), tc.hours(),
+                           tc.minutes(), tc.seconds(), tc.frame());
+              }
+              else
+              {
+                  sprintf( buf, 
+                           N_("%02d:%02d:%02d:%02d"), tc.hours(),
+                           tc.minutes(), tc.seconds(), tc.frame());
+              }
+              process_timecode( buf );
+              _exif.insert( std::make_pair( _("Timecode"), buf) );
               sprintf( buf, N_("%d"),tc.colorFrame());
               _exif.insert( std::make_pair( _("TC Color Frame"), buf) );
               sprintf( buf, N_("%d"),tc.fieldPhase());
@@ -1427,6 +1441,7 @@ void exrImage::loadDeepData( int& zsize,
 
         if ( ! inmaster.partComplete( _curpart ) ) return;
 
+
         const Imf::Header& h = inmaster.header( _curpart );
 
         _type = SCANLINEIMAGE;
@@ -1452,6 +1467,7 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
                              Imf::Array<unsigned int>& sampleCount,
                              bool deepComp )
 {
+    _has_deep_data = true;
 
     DeepTiledInputPart in (inmaster, _curpart);
     const Imf::Header& header = in.header();
@@ -1664,6 +1680,8 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
                                   bool deepComp)
 {
 
+    _has_deep_data = true;
+
     DeepScanLineInputPart in (inmaster, _curpart);
     const Imf::Header& header = in.header();
 
@@ -1803,6 +1821,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                      _type != DEEPSCANLINE &&
                      _type != DEEPTILE ) continue;
 
+                if ( _type == DEEPSCANLINE || _type == DEEPTILE )
+                {
+                    _has_deep_data = true;
+                    image_damage( image_damage() | kDamage3DData );
+                }
+
                 if ( ! _read_attr )
                     read_header_attr( header, frame );
 
@@ -1886,6 +1910,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                  _type != DEEPSCANLINE &&
                  _type != DEEPTILE ) continue;
 
+            if ( _type == DEEPSCANLINE || _type == DEEPTILE )
+            {
+                _has_deep_data = true;
+                image_damage( image_damage() | kDamage3DData );
+            }
+            
             const Imf::ChannelList& channels = header.channels();
 
             std::string name;
@@ -1910,10 +1940,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             std::string ext = name;
             if ( header.hasView() ) ext = header.view();
 
-#if 0
-            std::transform( ext.begin(), ext.end(), ext.begin(),
-                            (int(*)(int)) tolower);
-#endif
+// #if 0
+//             std::transform( ext.begin(), ext.end(), ext.begin(),
+//                             (int(*)(int)) tolower);
+// #endif
 	    // std::cerr << "layer #" << i << " of " << _numparts << std::endl;
             // std::cerr << "ext " << ext << std::endl;
             // std::cerr << "name " << name << std::endl;
@@ -1969,7 +1999,13 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     {
         const Imf::Header& header = inmaster.header(0);
         if ( header.hasType() ) _type = header.type();
-        
+
+        if ( _type == DEEPSCANLINE || _type == DEEPTILE )
+        {
+            _has_deep_data = true;
+            image_damage( image_damage() | kDamage3DData );
+        }
+
         if ( ! _read_attr )
             read_header_attr( header, frame );
 
@@ -2517,8 +2553,14 @@ void save_attributes( const CMedia* img, Header& hdr,
             int bgf0 = 0, bgf1 = 0, bgf2 = 0, userdata = 0;
             {
                 const std::string& value( it->second );
-                sscanf( value.c_str(), "%d:%d:%d:%d", 
-                        &hours, &mins, &secs, &frames );
+                int num = sscanf( value.c_str(), "%d:%d:%d:%d", 
+                                  &hours, &mins, &secs, &frames );
+                if ( num != 4 )
+                {
+                    num = sscanf( value.c_str(), "%d;%d;%d;%d", 
+                                  &hours, &mins, &secs, &frames );
+                    dropframe = 1;
+                }
             }
 
             it = exif.find( _( "TC Drop Frame" ) ); 
@@ -2606,6 +2648,7 @@ void save_attributes( const CMedia* img, Header& hdr,
 
 typedef std::vector< Imf::Header > HeaderList;
 typedef std::vector< Imf::FrameBuffer > FrameBufferList;
+typedef std::vector< Imf::DeepFrameBuffer > DeepFrameBufferList;
 typedef std::set< std::string > PartNames;
 typedef std::vector< std::string >   LayerList;
 
@@ -2722,7 +2765,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
         hdr.channels().insert( N_("RY"),
                                Channel( save_type, 2, 2 ) );
     }
-    else if ( x == _("Color") || x == N_("ColorZ") )
+    else if ( x == _("Color") || x == N_("ColorZ") || x == N_("ColorZBack") )
     {
         hdr.channels().insert( N_("R"),
                                Channel( save_type, 1, 1 ) );
@@ -2735,8 +2778,12 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
             hdr.channels().insert( N_("A"),
                                    Channel( save_type, 1, 1 ) );
 
-        if ( x == N_("ColorZ") )
+        if ( x == N_("ColorZ") || x == N_("ColorZBack") )
             hdr.channels().insert( N_("Z"),
+                                   Channel( save_type, 1, 1 ) );
+
+        if ( x == N_("ColorZBack") )
+            hdr.channels().insert( N_("ZBack"),
                                    Channel( save_type, 1, 1 ) );
     }
 
@@ -2765,6 +2812,19 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     fbs.push_back( fb );
 }
 
+struct SetAttr
+{
+    string      name;
+    int         part;
+    Attribute * attr;
+    
+    SetAttr (const string &name, int part, Attribute *attr):
+        name (name), part (part), attr (attr) {}
+};
+
+typedef vector <SetAttr> SetAttrVector;
+
+
 bool exrImage::save( const char* file, const CMedia* img, 
                      const ImageOpts* const ipts )
 {
@@ -2776,8 +2836,93 @@ bool exrImage::save( const char* file, const CMedia* img,
         return false;
     }
 
-    const char* orig = img->channel();
+    // if ( opts->save_deep_data() && img->has_deep_data() )
+    if ( 0 ) // if ( img->has_deep_data() )
+    {
+        using namespace Imf;
+        using namespace std;
+
+	SetAttrVector attrs;
+	int part = -1;
+	int i = 1;
+        
+        std::string input = img->sequence_filename( img->frame() );
+        MultiPartInputFile in( input.c_str() );
+	int numParts = in.parts();
+        vector <Header> headers;
+
+        for (int part = 0; part < numParts; ++part)
+        {
+            Header h = in.header (part);
+
+            for (int i = 0; i < attrs.size(); ++i)
+            {
+                const SetAttr &attr = attrs[i];
+
+                if (attr.part == -1 || attr.part == part)
+                {
+                    h.insert (attr.name, *attr.attr);
+                }
+                else if (attr.part < 0 || attr.part >= numParts)
+                {
+                    cerr << "Invalid part number " << attr.part << ". "
+                            "Part numbers in file " << file << " "
+                            "go from 0 to " << numParts - 1 << "." << endl;
+
+                    return 1;
+                }
+            }
+
+            headers.push_back(h);
+        }
+        
+        save_attributes( img, headers[0], opts );
+
+        try
+        {
+
+            MultiPartOutputFile out (file, &headers[0], numParts);
+            for (int p = 0; p < numParts; ++p)
+            {
+                const Header &h = in.header (p);
+                const string &type = h.type();
+
+                if (type == SCANLINEIMAGE)
+                {
+                    InputPart  inPart  (in,  p);
+                    OutputPart outPart (out, p);
+                    outPart.copyPixels (inPart);
+                }
+                else if (type == TILEDIMAGE)
+                {
+                    TiledInputPart  inPart  (in,  p);
+                    TiledOutputPart outPart (out, p);
+                    outPart.copyPixels (inPart);
+                }
+                else if (type == DEEPSCANLINE)
+                {
+                    DeepScanLineInputPart  inPart  (in,  p);
+                    DeepScanLineOutputPart outPart (out, p);
+                    outPart.copyPixels (inPart);
+                }
+                else if (type == DEEPTILE)
+                {
+                    DeepTiledInputPart  inPart  (in,  p);
+                    DeepTiledOutputPart outPart (out, p);
+                    outPart.copyPixels (inPart);
+                }
+            }
+        }
+        catch ( const std::exception& e )
+        {
+            LOG_ERROR( img->name() << ": Could not save file. " << e.what() );
+        }
+
+        return true;
+    }
+
     std::string old_channel;
+    const char* orig = img->channel();
     if ( orig ) old_channel = orig;
 
 
@@ -2786,6 +2931,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     HeaderList headers;
 
+    DeepFrameBufferList dfbs;
     FrameBufferList fbs;
 
     Buffers bufs;
@@ -2806,6 +2952,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         stringArray::const_iterator s = i;
 
         bool has_z = false;
+        bool has_zback = false;
         bool has_y = false;
         bool has_yca = false;
         for ( ; i != e; ++i )
@@ -2818,6 +2965,10 @@ bool exrImage::save( const char* file, const CMedia* img,
             else if ( x == "Z" )
             {
                 has_z = true;
+            }
+            else if ( x == "ZBack" )
+            {
+                has_zback = true;
             }
             else if ( x == "RY" || x == "BY" )
             {
@@ -2882,7 +3033,8 @@ bool exrImage::save( const char* file, const CMedia* img,
                     continue;
                 }
 
-                if ( x == N_("RY") || x == N_("BY") || x == N_("Z") )
+                if ( x == N_("RY") || x == N_("BY") || x == N_("Z") ||
+                     x == N_("ZBack") )
                     continue;
 
                 if ( x == _("Color") && has_y ) continue;
@@ -2901,8 +3053,10 @@ bool exrImage::save( const char* file, const CMedia* img,
                      root == N_("YBYRY") ||
                      root == N_("Y") ) root = "";
 
-                // If RGBAZ exists, mark it as ColorZ
-                if ( x == _("Color") && has_z ) x = N_("ColorZ");
+                // If R,G,B,A,Z,ZBack exists, mark it as ColorZBack
+                if ( x == _("Color") && has_zback ) x = N_("ColorZBack");
+                // If R,G,B,A,Z exists, mark it as ColorZ
+                else if ( x == _("Color") && has_z ) x = N_("ColorZ");
 
                 // If dealing with a multipart remove the #number from root
                 // name
@@ -2999,13 +3153,13 @@ bool exrImage::save( const char* file, const CMedia* img,
         unsigned dw = pic->width();
         unsigned dh = pic->height();
 
-        int xsampling[5], ysampling[5];
-        for ( int i = 0; i < 5; ++i )
+        int xsampling[6], ysampling[6];
+        for ( int i = 0; i < 6; ++i )
         {
             xsampling[i] = ysampling[i] = 1;
         }
-        unsigned offsets[5];
-        offsets[0] = offsets[4] = 0;
+        unsigned offsets[6];
+        offsets[0] = offsets[4] = offsets[5] = 0;
 
         size_t size;
         switch( save_type )
@@ -3173,8 +3327,8 @@ bool exrImage::save( const char* file, const CMedia* img,
 
         size_t t = size;
 
-        int order[5]; // RGBAZ
-        order[0] = order[1] = order[2] = order[3] = order[4] = -1;
+        int order[6]; // R,G,B,A,Z,Zback
+        order[0] = order[1] = order[2] = order[3] = order[4] = order[5] = -1;
 
 
         bool no_layer = false;
@@ -3233,8 +3387,12 @@ bool exrImage::save( const char* file, const CMedia* img,
             {
                 order[4] = idx;
             }
+            else if ( order[5] == -1 && ext == N_("ZBACK") ) 
+            {
+                order[5] = idx;
+            }
             else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
-                      order[3] == -1 && order[4] == -1 &&
+                      order[3] == -1 && order[4] == -1 && order[5] == -1 &&
                       (no_layer || ext.size() > 1) )
             {
                 order[0] = idx;
@@ -3264,7 +3422,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         {
             unsigned pixels = (unsigned)size * channels;
 
-            for ( unsigned j = 0; j < 5; ++j )
+            for ( unsigned j = 0; j < 6; ++j )
             {
                 int k = order[j];
                 if ( k == -1 ) continue;
@@ -3293,10 +3451,10 @@ bool exrImage::save( const char* file, const CMedia* img,
             //           << xsampling[k] << ", " << ysampling[k] << std::endl;
 
             //
-            // When idx == 4, we are dealing with RGBAZ in one layer
+            // When idx == 4 or idx == 5, we are dealing with RGBAZ in one layer
             // so get Z channel and save it in same layer.
             //
-            if ( idx == 4 ) {
+            if ( idx == 4 || idx == 5 ) {
                 std::string c;
                 if ( layer[0] == '#' )
                     c = layer + '.' + ci.name(); 
@@ -3327,9 +3485,9 @@ bool exrImage::save( const char* file, const CMedia* img,
                 int start = (int)( (-dx - dy * dw) * size );
                 base += start;
 
-                k = 4;
-                xs[4] = size;
-                ys[4] = size * dw;
+                k = idx;
+                xs[idx] = size;
+                ys[idx] = size * dw;
             }
 
 
