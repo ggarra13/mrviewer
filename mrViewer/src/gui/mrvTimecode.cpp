@@ -144,7 +144,7 @@ int64_t Timecode::value() const
         assert( mins < 60 );
 
 	int ifps  = int(_fps + 0.5);
-	int64_t r = frames;
+	int64_t r = frames + 1;
 	r += int64_t(secs * ifps);
 	r += int64_t(mins * 60 * ifps);
 	r += int64_t(hours * 3600 * ifps);
@@ -153,7 +153,7 @@ int64_t Timecode::value() const
     case kTimecodeDropFrame:
       {
 	int hours = 0, mins = 0, secs = 0, frames = 0;
-	sscanf( text(), "%02d:%02d:%02d:%02d",
+	sscanf( text(), "%02d;%02d;%02d;%02d",
 		&hours, &mins, &secs, &frames );
 
         assert( frames < _fps + 0.5 );
@@ -217,9 +217,10 @@ int64_t Timecode::value() const
 	      }
 	  }
 
-	/* now, we can just add in the frames!!!
+	/* now, we can just add in the frames!!! +1 to compensate timecode
+           starting at 0.
 	 */
-	r += frames;
+	r += frames + 1;
 
 	return r;
       }
@@ -316,7 +317,7 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                 int minbase  = 60 * fps;
                 int secbase  = fps + 0.5;
 	
-                int64_t x = f;
+                int64_t x = f - 1;  // timecode starts at 0
                 hours = int( x / frames_per_hour );
                 x -= int64_t(hours * frames_per_hour);
                 mins = int( x / minbase );
@@ -355,7 +356,7 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                 // Convert current frame value to timecode based on fps
                 int frames_per_hour = int(3600 * fps);
 	
-                int64_t x = f;
+                int64_t x = f - 1; // timecode starts at 0
                 hours = int( x / frames_per_hour );
                 x -= int64_t(hours * frames_per_hour);
 
@@ -435,12 +436,12 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
 	
                 if ( withFrames )
                 {
-                    return sprintf( buf, "%02d:%02d:%02d:%02d", 
+                    return sprintf( buf, "%02d;%02d;%02d;%02d", 
                                     hours, mins, secs, frames );
                 }
                 else
                 {
-                    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
+                    return sprintf( buf, "%02d;%02d;%02d", hours, mins, secs );
                 }
             }
         default:
@@ -471,12 +472,14 @@ bool Timecode::replace(int b, int e, const char* text, int ilen) {
       if (!strchr(this->text(), ascii))
         continue;
     } else
-    // This is complex to allow "00:00:01" timecode to be typed:
-    if (b+n==0 && (ascii == '+' || ascii == '-') ||
-	(ascii >= '0' && ascii <= '9') ||
-	(type()==FLOAT && ascii && strchr(".,eE+-", ascii)) ||
-	((type()==NORMAL) && ascii && (ascii == ':' || ascii == '.')))
-      continue; // it's ok;
+        // This is complex to allow "00:00:01" or "00;00;00;22" timecode
+        // to be typed:
+        if (b+n==0 && (ascii == '+' || ascii == '-') ||
+            (ascii >= '0' && ascii <= '9') ||
+            (type()==FLOAT && ascii && strchr(".,eE+-", ascii)) ||
+            ((type()==NORMAL) && ascii && (ascii == ';' || ascii == ':' ||
+                                           ascii == '.')))
+            continue; // it's ok;
 
     return false;
   }
