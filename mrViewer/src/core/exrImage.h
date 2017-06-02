@@ -105,6 +105,7 @@ namespace mrv {
                        Imf::Array<unsigned int>& sampleCount );
 
   protected:
+      
       void loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
                               int &zsize,
                               Imf::Array<float*>&       zbuff,
