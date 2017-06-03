@@ -1085,6 +1085,8 @@ class CMedia
     static std::string icc_profile_16bits;
     static std::string icc_profile_32bits;
     static std::string icc_profile_float;
+    
+    static bool use_timecode; //!< whether to use the timecode from file
 
   public:
     AV_SYNC_TYPE av_sync_type;
@@ -1492,6 +1494,7 @@ class CMedia
     static bool _cache_active;
     static bool _preload_cache;
     static int  _cache_scale;
+ 
 };
 
 
