@@ -112,6 +112,8 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
+bool CMedia::use_timecode = true;
+
 unsigned CMedia::_audio_cache_size = 0;
 unsigned CMedia::_video_cache_size = 0;
 
