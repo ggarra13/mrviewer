@@ -791,9 +791,10 @@ void CMedia::process_timecode( const std::string& text )
     }
     else
     {
-        _tc_frame = ( hours * 3600 +
-                      minutes * 60 +
-                      seconds ) * _fps + frames;
+        double hh = floor(hours*3600.0*_fps);
+        double mm = floor(minutes*60*_fps);
+        double ss = floor(seconds*_fps);
+        _tc_frame = (double)( hh + mm + ss ) + frames;
     }
 }
 
