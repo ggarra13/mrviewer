@@ -843,10 +843,16 @@ void video_thread( PlaybackData* data )
                          "Looping will not work correctly." ) );
        }
    }
-   
-   int64_t frame        = img->frame();
-   int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
+   int64_t failed_frame = std::numeric_limits< int64_t >::min();
+   int64_t frame;
+   {
+       // We lock the video mutex to make sure frame was properly updated
+       boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
+   
+       frame = img->frame();
+   }
+   
 #ifdef DEBUG_THREADS
    cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << " timeline frame " << timeline->value() 
