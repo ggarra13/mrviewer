@@ -47,18 +47,18 @@ namespace mrv
   }
 
 
-  class Timeline : public fltk::Slider
-  {
-    public:
-      typedef CMedia::Mutex   Mutex;
+class Timeline : public fltk::Slider
+{
+  public:
+    typedef CMedia::Mutex   Mutex;
 
   public:
     enum DisplayMode
-      {
-	kSingle,
-	kEDL_Single,
-	kEDL_All
-      };
+    {
+    kSingle,
+    kEDL_Single,
+    kEDL_All
+    };
 
   public:
     Timeline( int x, int y, int w, int h, char* l = 0 );
@@ -79,6 +79,7 @@ namespace mrv
     double minimum() const { return fltk::Slider::minimum(); }
     void minimum( double x );
 
+    void timecode( const int64_t& tc ) { _tc = tc; }
 
     virtual void draw();
 
@@ -86,7 +87,7 @@ namespace mrv
     uint64_t location( const CMedia* img ) const { return offset(img) + 1; }
 
     void main( ViewerUI* m ) { uiMain = m; }
-       ViewerUI* main() const { return uiMain; }
+    ViewerUI* main() const { return uiMain; }
 
 
     size_t index( const int64_t frame ) const;
@@ -95,8 +96,8 @@ namespace mrv
 
     int64_t global_to_local( const int64_t frame ) const;
 
-      void draw_cache( const bool t ) { _draw_cache = t; }
-      bool draw_cache() const { return _draw_cache; }
+    void draw_cache( const bool t ) { _draw_cache = t; }
+    bool draw_cache() const { return _draw_cache; }
 
   protected:
     bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
@@ -108,15 +109,16 @@ namespace mrv
 
     ImageBrowser* browser() const;
 
-       static mrv::Timecode::Display _display;
+    static mrv::Timecode::Display _display;
     bool   _edl;
-      bool _draw_cache;
+    bool _draw_cache;
+    int64_t _tc;
     double _fps;
     double _display_min;
     double _display_max;
 
     ViewerUI* uiMain;
-  };
+};
 
 
   void change_timeline_display( ViewerUI* uiMain );

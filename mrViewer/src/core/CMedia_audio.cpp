@@ -740,7 +740,7 @@ void CMedia::populate_audio()
 
 }
 
-void CMedia::process_timecode( const std::string text )
+void CMedia::process_timecode( const std::string& text )
 {
     bool drop_frame = false;
     StringList tc;
@@ -791,9 +791,9 @@ void CMedia::process_timecode( const std::string text )
     }
     else
     {
-        _tc_frame = (double)( hours * 3600 +
-                              minutes * 60 +
-                              seconds ) * _fps + frames; // - 1; 
+        _tc_frame = ( hours * 3600 +
+                      minutes * 60 +
+                      seconds ) * _fps + frames;
     }
 }
 
@@ -806,8 +806,8 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       std::string name = prefix;
       name += tag->key;
-      if ( use_timecode && ( name == "timecode" || name == "Video timecode" ||
-                             name == "Timecode" ) )
+      if ( name == N_("timecode") || name == N_("Video timecode") ||
+           name == N_("Timecode") || name == N_("timeCode") )
           process_timecode( tag->value );
       _iptc.insert( std::make_pair( name, tag->value ) ); 
    }
