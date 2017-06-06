@@ -661,7 +661,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {867 584 670 450} resizable visible
+        xywh {867 612 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1760,9 +1760,9 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Loading open
-            xywh {15 22 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 16 424 360} align 5 box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Group} {} {open selected
+            {fltk::Group} {} {
               xywh {12 45 400 84} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequence {
@@ -1772,16 +1772,7 @@ uiICC_float_profile->do_callback();}
               }
             }
             {fltk::Group} {} {open
-              xywh {12 140 400 84} box ROUNDED_BOX
-            } {
-              {fltk::CheckButton} uiPrefsLoadTimecode {
-                label {Load Timecode when possible}
-                tooltip {When loading a movie or OpenEXR file, this setting loads the movie or frame at the timecode specified instead of starting at 1.}
-                xywh {20 29 25 25} box UP_BOX value 1
-              }
-            }
-            {fltk::Group} {} {open
-              xywh {12 235 400 79} box ROUNDED_BOX
+              xywh {12 144 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
                 label {Auto load images as they change on disk}
@@ -2093,7 +2084,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2150,7 +2141,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {223 419 426 31}
         } {
           {fltk::Button} {} {
@@ -2171,7 +2162,7 @@ mrv::Preferences prefs(v);}
             label OK
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiPrefs->uiMain->hide();
-v->uiPrefs->run(v);}
+v->uiPrefs->run(v);} selected
             tooltip {Accept settings but don't save.}
             xywh {270 3 132 27}
           }
