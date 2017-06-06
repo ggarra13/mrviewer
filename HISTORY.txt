@@ -1,9 +1,22 @@
+v3.6.7   - Made timecode be a separate variable, instead of modifying
+	   frame directly.  This means frame display starts at 1, while
+	   timecode starts at whatever the encoded timecode says.
+	 - Bug fixed OpenEXR timecode ( "timeCode" attribute ) to work
+	   as said in v3.6.6.
+	 - Made playback not start at the point of a preloading cache,
+	   but from the cursor location (start of movie usually).
+	 - Frames, Seconds and Time do not take the timecode start into
+	   account.
+	 - Timecode Drop Frame and Timecode Non-Drop Frame take timecode
+	   start into account.
+	 - Bug fixed timecode being incorrect on some movie files.
+
 v3.6.6   - Added support for timecode in movies.  When a movie with
 	   a header entry of "timecode", or a video stream header entry
 	   of "timecode" is found, the timecode is interpreted as an
 	   offset of the current frame.
 	 - Added support for timecode in OpenEXR pictures.  When the
-	   tag "Timecode" is found, the timecode is interpreted.
+	   tag "timeCode" is found, the timecode is interpreted.
 	 - Added support for m2ts (AVCHD) [Blu Ray] movies.
 	 - Added support for saving OpenEXRs with both Z and ZBack 
 	   channels in a layer.  Previously, the saving would fail.
