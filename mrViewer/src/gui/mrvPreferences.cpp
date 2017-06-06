@@ -744,9 +744,6 @@ fltk::StyleSet*     newscheme = NULL;
     loading.get( "autoload_images", tmp, 0 );
     uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
     
-    loading.get( "load_timecode", tmp, 1 );
-    uiPrefs->uiPrefsLoadTimecode->value( (bool) tmp );
-    CMedia::use_timecode = (bool) tmp; 
  
     loading.get( "native_file_chooser", tmp, 0 );
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
@@ -1108,9 +1105,6 @@ static const char* kCLocale = "C";
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
-    b = (bool)main->uiPrefs->uiPrefsLoadTimecode->value();
-    CMedia::use_timecode = b;
-    
     idx = main->uiPrefs->uiPrefsSubtitleFont->value();
     num = main->uiPrefs->uiPrefsSubtitleFont->children();
     if ( idx < num )
@@ -1275,8 +1269,6 @@ static const char* kCLocale = "C";
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "autoload_images",
                  (int) uiPrefs->uiPrefsAutoLoadImages->value() );
-    loading.set( "load_timecode", (int) uiPrefs->uiPrefsLoadTimecode->value() );
-    
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
 
     fltk::Preferences video( base, "video" );
