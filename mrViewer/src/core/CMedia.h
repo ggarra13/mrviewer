@@ -1023,7 +1023,7 @@ class CMedia
     inline void is_thumbnail(bool t) { _is_thumbnail = t; }
     inline bool is_thumbnail() const { return _is_thumbnail; }
 
-    inline double timecode_frame() const { return _tc_frame; }
+    inline int64_t timecode() const { return _tc_frame; }
     
     void fetch_audio( const boost::int64_t frame );
 
@@ -1086,7 +1086,6 @@ class CMedia
     static std::string icc_profile_32bits;
     static std::string icc_profile_float;
     
-    static bool use_timecode; //!< whether to use the timecode from file
 
   public:
     AV_SYNC_TYPE av_sync_type;
@@ -1231,8 +1230,8 @@ class CMedia
     void audio_initialize();
     void audio_shutdown();
 
-    // Process a string like HH:MM:SS:FF unto _tc_frame
-    void process_timecode( const std::string text );
+    // Process a string like HH:MM:SS:FF or HH;MM;SS;FF unto _tc_frame
+    void process_timecode( const std::string& text );
 
 
     // Extract frame from pts or dts
@@ -1377,7 +1376,7 @@ class CMedia
     boost::int64_t   _audio_offset;//!< offset of additional audio
 
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
-    double           _tc_frame;    //!< timecode frame offset
+    boost::int64_t   _tc_frame;    //!< timecode frame offset
     boost::int64_t   _expected;    //!< expected next dts fetch
     boost::int64_t   _expected_audio; //!< expected next frame fetch
 
