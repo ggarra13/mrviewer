@@ -112,7 +112,6 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
-bool CMedia::use_timecode = true;
 
 unsigned CMedia::_audio_cache_size = 0;
 unsigned CMedia::_video_cache_size = 0;
@@ -2819,7 +2818,7 @@ boost::int64_t CMedia::frame2pts( const AVStream* stream,
 }
 
 
-// Convert an FFMPEG pts into a frame number
+// Convert an FFMPEG pts into a frame number 
 boost::int64_t CMedia::pts2frame( const AVStream* stream, 
 				  const boost::int64_t dts ) const
 {
@@ -2833,7 +2832,6 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   p /= stream->time_base.den;
   p *= _orig_fps;
   boost::int64_t pts = boost::int64_t( p + 0.5 ) + 1;
-  pts += _tc_frame;
   return pts;
 }
 
