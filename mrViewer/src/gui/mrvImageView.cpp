@@ -1704,6 +1704,7 @@ bool ImageView::preload()
 
     if ( found )
     {
+        boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
         img->find_image( i );  // this loads the frame if not present
@@ -6013,10 +6014,15 @@ void ImageView::foreground( mrv::media fg )
             img->fps( fps );
             img->play_fps( fps );
         }
+        const int64_t& tc = img->timecode();
         timeline()->fps( fps );
+        timeline()->timecode( tc );
+        uiMain->uiFrame->timecode( tc );
         uiMain->uiFrame->fps( fps );
         uiMain->uiStartFrame->fps( fps );
+        uiMain->uiStartFrame->timecode( tc );
         uiMain->uiEndFrame->fps( fps );
+        uiMain->uiEndFrame->timecode( tc );
         uiMain->uiFPS->value( img->play_fps() );
         
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
@@ -6603,14 +6609,14 @@ void ImageView::first_frame()
     {
        f = fg->position();
 
-       if ( int64_t( uiMain->uiFrame->value() ) == f )
+       if ( int64_t( frame() ) == f )
        {
 	  browser()->previous_image();
           fit_image();
 	  return;
        }
 
-       uiMain->uiFrame->value( f );
+       uiMain->uiFrame->frame( f );
     }
 
   int64_t t = int64_t( timeline()->minimum() );
@@ -6635,14 +6641,14 @@ void ImageView::last_frame()
     {
       f -= img->first_frame();
       f += fg->position();
-      if ( int64_t( uiMain->uiFrame->value() ) == f )
+      if ( int64_t( frame() ) == f )
 	{
 	  browser()->next_image();
           fit_image();
 	  return;
 	}
       
-      uiMain->uiFrame->value( f );
+      uiMain->uiFrame->frame( f );
 
     }
 
