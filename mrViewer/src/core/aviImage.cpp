@@ -868,7 +868,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
     boost::int64_t start = frame;
-    start -= _tc_frame;
 
     if ( _start_number != 0 )
     {
@@ -2230,15 +2229,6 @@ void aviImage::populate()
 
     }
     
-    if ( _tc_frame != 0 )
-    {
-        _frame += _tc_frame;
-        _frameStart += _tc_frame;
-        _frameEnd += _tc_frame;
-        _frame_start += _tc_frame;
-        _frame_end += _tc_frame;
-        _audio_frame += _tc_frame;
-    }
 }
 
 void aviImage::probe_size( unsigned p ) 
