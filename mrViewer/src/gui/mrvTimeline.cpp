@@ -54,6 +54,7 @@ Timeline::Timeline( int x, int y, int w, int h, char* l ) :
 fltk::Slider( x, y, w, h, l ),
 _draw_cache( true ),
 _edl( false ),
+_tc( 0 ),
 _fps( 24 ),
 _display_min(1),
 _display_max(50),
@@ -112,9 +113,9 @@ Timeline::~Timeline()
 	// Calculate frame range for timeline
 	minimum( 1 );
 	if ( uiMain->uiStartFrame ) 
-	  uiMain->uiStartFrame->value( 1 );
-	if ( uiMain->uiFrame && uiMain->uiFrame->value() < 1 ) 
-	  uiFrame->value(1);
+	  uiMain->uiStartFrame->frame( 1 );
+	if ( uiMain->uiFrame && uiMain->uiFrame->frame() < 1 ) 
+	  uiFrame->frame(1);
 
 	uint64_t total = 0;
 
@@ -133,9 +134,9 @@ Timeline::~Timeline()
 	  }
 
 	maximum( double(total) );
-	if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->value( total );
-	if ( uiFrame && uiFrame->value() > int64_t(total) ) 
-	   uiFrame->value(total);
+	if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->frame( total );
+	if ( uiFrame && uiFrame->frame() > int64_t(total) ) 
+	   uiFrame->frame(total);
       }
 
     redraw();
@@ -198,31 +199,33 @@ Timeline::~Timeline()
       if (v >= A && v <= B) {
 	int t = slider_position(v, w);
         drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
-	if (n%nummod == 0) {
-	  mrv::Timecode::format( buffer, _display, boost::int64_t(v), _fps );
-	  char* p = buffer;
-	  setfont(textfont(), textsize());
-	  setcolor(textcolor);
-	  int wt = 0, ht = 0;
-	  measure( p, wt, ht );
-	  drawtext(p, float(x1+dx*t-wt/2), 
-		   float(y1+dy*t+getsize()-getdescent()));
-	  setcolor(linecolor);
+	if (n-1 != 0 && (n-1)%nummod == 0) {
+            mrv::Timecode::format( buffer, _display, boost::int64_t(v),
+                                   _tc, _fps );
+            char* p = buffer;
+            setfont(textfont(), textsize());
+            setcolor(textcolor);
+            int wt = 0, ht = 0;
+            measure( p, wt, ht );
+            drawtext(p, float(x1+dx*t-wt/2), 
+                     float(y1+dy*t+getsize()-getdescent()));
+            setcolor(linecolor);
 	}
       }
       if (v && -v >= A && -v <= B) {
 	int t = slider_position(-v, w);
         drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
 	if (n%nummod == 0) {
-	  mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _fps );
-	  char* p = buffer;
-	  setfont(textfont(), textsize());
-	  setcolor(textcolor);
-	  // int wt = 0, ht = 0;
-	  // measure( p, wt, ht );
-	  drawtext(p, float(x1+dx*t),
-		   float(y1+dy*t+getsize()-getdescent()));
-	  setcolor(linecolor);
+            mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _tc,
+                                   _fps );
+            char* p = buffer;
+            setfont(textfont(), textsize());
+            setcolor(textcolor);
+            // int wt = 0, ht = 0;
+            // measure( p, wt, ht );
+            drawtext(p, float(x1+dx*t),
+                     float(y1+dy*t+getsize()-getdescent()));
+            setcolor(linecolor);
 	}
       }
     }
