@@ -26,7 +26,6 @@ $packageArgs = @{
   fileType      = 'exe'
   url           = $url
   url64bit      = $url64
-  file         = $fileLocation
 
   softwareName  = 'mrViewer*'
 
