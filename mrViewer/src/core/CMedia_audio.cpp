@@ -202,8 +202,9 @@ void CMedia::open_audio_codec()
   }
 
   AVDictionary* opts = NULL;
+  av_dict_set(&opts, "refcounted_frames", "1", 0);
 
-  if ( avcodec_open2( _audio_ctx, _audio_codec, NULL ) < 0 )
+  if ( avcodec_open2( _audio_ctx, _audio_codec, &opts ) < 0 )
   {
      IMG_ERROR( _("Could not open audio codec.") );
      _audio_index = -1;
