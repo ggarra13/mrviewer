@@ -121,9 +121,9 @@ int64_t Timecode::value() const
     switch( _display )
     {
         case kFrames:
-            return _frame;
+            return atoi( text() );
         case kSeconds:
-            return int64_t( _frame * _fps + 0.5 );
+            return int64_t( atof( text() ) * _fps + 0.5 );
         case kTime:
             {
                 int hours = 0, mins = 0, secs = 0, msecs = 0;
