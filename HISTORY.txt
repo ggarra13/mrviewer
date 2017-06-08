@@ -7,8 +7,10 @@ v3.6.7   - Made timecode be a separate variable, instead of modifying
 	 - Bug fixed OpenEXR timecode ( "timeCode" attribute ) to work
 	   as said in v3.6.6.
 	 - Made playback not start at the point of a preloading cache,
-	   but from the cursor location (start of movie usually).
+	   but from the cursor location (start of sequence usually).
 	 - Bug fixed timecode being incorrect.
+	 - Bug fixed Opus audio decoding, which would previously
+	   raise tons of errors.
 
 v3.6.6   - Added support for timecode in movies.  When a movie with
 	   a header entry of "timecode", or a video stream header entry
