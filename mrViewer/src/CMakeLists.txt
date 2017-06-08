@@ -699,10 +699,12 @@ ADD_CUSTOM_TARGET( bundle
 			   DEPENDS ${PROJECT_NAME} )
 
 IF (WIN32)
-   ADD_CUSTOM_COMMAND( TARGET bundle
-   		       POST_BUILD
-   		       COMMAND ${CMAKE_COMMAND} -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
-		       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" 
+   ADD_CUSTOM_TARGET( choco
+   		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
+		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+		      COMMENT "Running choco build..."
+		      USES_TERMINAL
+		      DEPENDS bundle
    		      )
 ENDIF( WIN32 )
 
