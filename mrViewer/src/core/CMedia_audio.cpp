@@ -1306,7 +1306,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
 
       // If no samples are returned, then break now
-      if ( ret <= 0 )
+      if ( ret < 0 )
 	{
 	   pkt_temp.size = 0;
 
@@ -1337,11 +1337,11 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       _audio_buf_used += audio_size;
     }
 
-  if ( pkt_temp.size == 0 ) {
-
+  if ( audio_size == 0 ) {
 
       if ( _audio_ctx->codec->capabilities & CODEC_CAP_DELAY )
       {
+          pkt_temp.size = 0;
           pkt_temp.data = NULL;
           int ret = decode_audio3( _audio_ctx, 
                                    ( int16_t * )( (char*)_audio_buf + 
@@ -1354,12 +1354,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
           }
       }
 
-      return kDecodeOK;
   }
 
-  IMG_ERROR( _("decode_audio - missed decoding some samples") );
-
-  return kDecodeMissingSamples;
+  return kDecodeOK;
 }
 
 
