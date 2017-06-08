@@ -97,7 +97,7 @@ void Timecode::value( const int hours, const int mins, const int secs,
 		      const int frames )
 {
   int64_t x = frames;
-  int ifps = round(_fps);
+  int ifps = (int)round(_fps);
   x += secs * ifps;
   x += mins * 60 * ifps;
   x += hours * 3600 * ifps;
@@ -150,7 +150,7 @@ int64_t Timecode::value() const
                 assert( secs < 60 );
                 assert( mins < 60 );
 
-                int ifps = round(_fps);
+                int ifps = (int)round(_fps);
 
                 int64_t r = frames + 1;  // timecode starts at 0, frames at 1
                 r += secs * ifps;
@@ -323,7 +323,7 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                 int  frames = 0;
 
                 // Convert current frame value to timecode based on fps
-                int ifps = round(fps);
+                int ifps = (int)round(fps);
                 int frames_per_hour = 3600 * ifps;
                 int minbase  = 60 * ifps;
                 int secbase  = ifps;
@@ -331,13 +331,13 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
 
                 // timecode starts at 0 so we substract 1 from frame
                 int64_t x = f - 1 + tc;
-                hours = x / frames_per_hour;
+                hours = int( x / frames_per_hour );
                 x -= hours * frames_per_hour;
-                mins = x / minbase;
+                mins = int( x / minbase );
                 x -= mins * minbase;
-                secs = x / secbase;
+                secs = int( x / secbase );
                 x -= secs * secbase;
-                frames = x;
+                frames = int(x);
 
                 // If negative timecode, make hour negative only
                 hours = abs(hours); mins = abs(mins); secs = abs(secs);
