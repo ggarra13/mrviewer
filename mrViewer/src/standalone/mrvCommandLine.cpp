@@ -38,6 +38,7 @@
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvMainWindow.h"
 #include "gui/mrvVersion.h"
 #include "mrViewer.h"
 #include "standalone/mrvCommandLine.h"
@@ -171,8 +172,7 @@ void parse_directory( const std::string& fileroot,
 
          mrv::fileroot( fileroot, *i );
          bool ok = mrv::split_sequence( root, frame, view,
-                                        ext, fileroot );
-         
+                                        ext, *i );
 
          if ( mrv::is_valid_movie( ext.c_str() ) )
          {
@@ -291,12 +291,12 @@ void parse_directory( const std::string& fileroot,
 
            for ( ; i != e; ++i )
            {
-              boost::int64_t frameStart = kMaxFrame;
-              boost::int64_t frameEnd   = kMinFrame;
-              std::string file = (*i).root;
-              get_sequence_limits( frameStart, frameEnd, file );
-              opts.files.push_back( mrv::LoadInfo( file, frameStart, 
-                                                   frameEnd ) );
+               int64_t frameStart = kMaxFrame;
+               int64_t frameEnd   = kMinFrame;
+               std::string file = (*i).root;
+               get_sequence_limits( frameStart, frameEnd, file );
+               opts.files.push_back( mrv::LoadInfo( file, frameStart, 
+                                                    frameEnd ) );
            }
 
         }
@@ -491,14 +491,24 @@ void parse_command_line( const int argc, char** argv,
             }
             else
             {
-               mrv::fileroot( fileroot, arg );
-               if ( mrv::is_valid_sequence( fileroot.c_str() ) )
-               {
-                   // we use original file to get
-                   // start and end in case of ILM format
-                   std::string file = arg;
-                   mrv::get_sequence_limits( start, end, file );
-               }
+                bool avoid_seq = !ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value();
+                if ( avoid_seq )
+                {
+                    fileroot = arg;
+                }
+                else
+                {
+                    mrv::fileroot( fileroot, arg );
+                    if ( mrv::is_valid_sequence( fileroot.c_str() ) )
+                    {
+                        // we use original file to get
+                        // start and end in case of ILM format
+                        if (! mrv::get_sequence_limits( start, end, fileroot ) )
+                        {
+                            fileroot = arg; 
+                        }
+                    }
+                }
 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
                {
