@@ -1519,6 +1519,14 @@ bool ImageView::should_update( mrv::media fg )
 	  uiMain->uiICCProfiles->fill();
       }
       
+      if ( img->image_damage() & CMedia::kDamageTimecode )
+      {
+          uiMain->uiFrame->timecode( img->timecode() );
+          uiMain->uiStartFrame->timecode( img->timecode() );
+          uiMain->uiEndFrame->timecode( img->timecode() );
+          uiMain->uiTimeline->timecode( img->timecode() );
+      }
+      
       if ( img->image_damage() & CMedia::kDamageCache )
       {
 	  uiMain->uiTimeline->redraw();
