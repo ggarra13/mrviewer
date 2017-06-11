@@ -217,6 +217,28 @@ void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
     m->label( m->child( m->value() )->label() );
 }
 
+static void timecode_cb( fltk::Input* w, ImageInformation* info )
+{
+    CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
+    if ( !img ) return;
+
+    CMedia::Attributes& attrs = img->iptc();
+    CMedia::Attributes::iterator i = attrs.begin();
+    CMedia::Attributes::iterator e = attrs.end();
+    for ( ; i != e; ++i )
+    {
+        if ( i->first == N_("timecode") ||
+             i->first == N_("Video timecode") ||
+             i->first == N_("Timecode") )
+        {
+            i->second = w->text();
+        }
+    }
+    img->process_timecode( w->text() );
+    img->image_damage( img->image_damage() | CMedia::kDamageData |
+                       CMedia::kDamageTimecode );
+}
+
 // Update int slider from int input
 static void update_int_slider( fltk::IntInput* w )
 {
@@ -817,8 +839,22 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
-            add_text( i->first.c_str(), i->first.c_str(),
-                      i->second.c_str(), false );
+        {
+            if ( i->first == N_("timecode") ||
+                 i->first == N_("Timecode") || 
+                 i->first == N_("Video timecode") )
+            {
+                add_text( i->first.c_str(),
+                          "Timecode start (editable) press TAB to accept",
+                          i->second.c_str(), true,
+                          (fltk::Callback*)timecode_cb );
+            }
+            else
+            {
+                add_text( i->first.c_str(), i->first.c_str(),
+                          i->second.c_str(), false );
+            }
+        }
 
 	m_curr->relayout();
 	m_curr->parent()->relayout();
@@ -845,7 +881,7 @@ void ImageInformation::fill_data()
                       exr->levelY( exr->levelX() );
                   }
               }
-              if ( i->first == _("X Ripmap Levels") )
+              else if ( i->first == _("X Ripmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
@@ -855,7 +891,7 @@ void ImageInformation::fill_data()
                                (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
                   }
               }
-              if ( i->first == _("Y Ripmap Levels") )
+              else if ( i->first == _("Y Ripmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
@@ -865,9 +901,11 @@ void ImageInformation::fill_data()
                                (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
                   }
               }
-
-              add_text( i->first.c_str(), i->first.c_str(),
-                        i->second.c_str(), false );
+              else
+              {
+                  add_text( i->first.c_str(), i->first.c_str(),
+                            i->second.c_str(), false );
+              }
 	  }
 	m_curr->relayout();
 
@@ -1362,6 +1400,7 @@ void ImageInformation::fill_data()
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
@@ -1398,7 +1437,9 @@ void ImageInformation::fill_data()
       else 
 	{
 	  if ( callback )
-	    widget->callback( callback, img );
+          {
+	    widget->callback( callback, this );
+          }
 	}
       g->add( widget );
       g->resizable( widget );
@@ -1414,7 +1455,7 @@ void ImageInformation::fill_data()
 				   const bool editable,
 				   fltk::Callback* callback )
   {
-      add_text( name, tooltip, content.c_str(), editable );
+      add_text( name, tooltip, content.c_str(), editable, callback );
   }
 
 void ImageInformation::add_int( const char* name, const char* tooltip,
