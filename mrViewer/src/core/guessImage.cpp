@@ -269,7 +269,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                                const bool is_thumbnail,
 			       const boost::int64_t start,
 			       const boost::int64_t end,
-                               const bool use_threads )
+                               const bool avoid_seq )
   {
     int64_t lastFrame = end;
     int64_t frame = start;
@@ -289,8 +289,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     }
 
     
-    if ( start != std::numeric_limits<boost::int64_t>::max() ||
-         end   != std::numeric_limits<boost::int64_t>::min() )
+    if ( start != AV_NOPTS_VALUE ||
+         end   != AV_NOPTS_VALUE )
     {
         if ( mrv::fileroot( tmp, root ) )
         {
@@ -311,7 +311,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 
 
     try {
-
         image = guess( is_stereo, is_seq, true, root, frame, datas, len,
                        lastFrame, is_thumbnail );
         if ( is_stereo && image )
