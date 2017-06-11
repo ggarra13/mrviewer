@@ -339,18 +339,23 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                 x -= secs * secbase;
                 frames = int(x);
 
-                // If negative timecode, make hour negative only
+                // If negative timecode, add negative sign
+                const char* c = "";
+                if ( frames < 0 || secs < 0 || mins < 0 || hours < 0 )
+                    c = "-";
+                
                 hours = abs(hours); mins = abs(mins); secs = abs(secs);
-                if ( frames < 0 ) { hours = -hours; frames = -frames; }
+                frames = abs(frames);
 	
                 if ( withFrames )
                 {
-                    return sprintf( buf, "%02d:%02d:%02d:%02d", 
-                                    hours, mins, secs, frames );
+                    return sprintf( buf, "%s%02d:%02d:%02d:%02d", 
+                                    c, hours, mins, secs, frames );
                 }
                 else
                 {
-                    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
+                    return sprintf( buf, "%s%02d:%02d:%02d",
+                                    c, hours, mins, secs );
                 }
             }
         case kTimecodeDropFrame:
@@ -440,21 +445,26 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
                     frames = int(x);
                 }
 	
-                // If negative timecode, make hour negative only
+                // If negative timecode, add negative sign
+                const char* c = "";
+                if ( frames < 0 || secs < 0 || mins < 0 || hours < 0 )
+                    c = "-";
+                
                 hours = abs(hours); mins = abs(mins); secs = abs(secs);
-                if ( frames < 0 ) { hours = -hours; frames = -frames; }
+                frames = abs(frames);
 
                 // Sanity check
                 assert( valid_drop_frame( hours, mins, secs, frames, fps ) ); 
 	
                 if ( withFrames )
                 {
-                    return sprintf( buf, "%02d;%02d;%02d;%02d", 
-                                    hours, mins, secs, frames );
+                    return sprintf( buf, "%s%02d;%02d;%02d;%02d", 
+                                    c, hours, mins, secs, frames );
                 }
                 else
                 {
-                    return sprintf( buf, "%02d;%02d;%02d", hours, mins, secs );
+                    return sprintf( buf, "%s%02d;%02d;%02d",
+                                    c, hours, mins, secs );
                 }
             }
         default:
