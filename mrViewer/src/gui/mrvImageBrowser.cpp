@@ -1277,12 +1277,12 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         return;
 
 
-    if ( first != mrv::kMaxFrame )
+    if ( first != AV_NOPTS_VALUE )
       {
 	img->first_frame( first );
       }
 
-    if ( last != mrv::kMinFrame )
+    if ( last != AV_NOPTS_VALUE )
       {
 	img->last_frame( last );
       }
@@ -1335,30 +1335,30 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 				       const boost::int64_t last,
 				       const boost::int64_t start, 
 				       const boost::int64_t end,
-                                       const bool use_threads )
+                                       const bool avoid_seq )
   {
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
-    if ( first != mrv::kMaxFrame ) frame( first );
+    if ( first != AV_NOPTS_VALUE ) frame( first );
 
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
         img = CMedia::guess_image( name, NULL, 0, false, 
-                                   start, end, use_threads );
+                                   start, end, avoid_seq );
     else
         img = CMedia::guess_image( name, NULL, 0, false,
-                                   first, last, use_threads );
+                                   first, last, avoid_seq );
 
     if ( img == NULL )
         return mrv::media();
 
-    if ( first != mrv::kMaxFrame )
+    if ( first != AV_NOPTS_VALUE )
     {
         img->first_frame( first );
     }
 
-    if ( last != mrv::kMinFrame )
+    if ( last != AV_NOPTS_VALUE )
     {
         img->last_frame( last );
     }
@@ -1423,8 +1423,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
 {
     if ( bgimage != "" )
     {
-        int64_t start = mrv::kMaxFrame;
-        int64_t end   = mrv::kMinFrame;
+        int64_t start = AV_NOPTS_VALUE;
+        int64_t end   = AV_NOPTS_VALUE;
         if ( mrv::is_valid_sequence( bgimage.c_str() ) )
         {
             mrv::get_sequence_limits( start, end, bgimage );
@@ -1731,8 +1731,8 @@ void ImageBrowser::load( const stringArray& files,
 	  }
 	else
 	  {
-	    int64_t start = mrv::kMaxFrame;
-	    int64_t end   = mrv::kMinFrame;
+	    int64_t start = AV_NOPTS_VALUE;
+	    int64_t end   = AV_NOPTS_VALUE;
 
             std::string fileroot = file;
             bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
@@ -1740,7 +1740,6 @@ void ImageBrowser::load( const stringArray& files,
             {
                 mrv::fileroot( fileroot, file );
             }
-
 	    mrv::get_sequence_limits( start, end, fileroot );
 	    loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
 	  }
@@ -1793,8 +1792,8 @@ void ImageBrowser::load( const stringArray& files,
      }
      else
      {
-         int64_t start = mrv::kMaxFrame;
-         int64_t end   = mrv::kMinFrame;
+         int64_t start = AV_NOPTS_VALUE;
+         int64_t end   = AV_NOPTS_VALUE;
          mrv::get_sequence_limits( start, end, file );
          loadlist.push_back( mrv::LoadInfo( file, start, end ) );
      }
@@ -2284,8 +2283,8 @@ void ImageBrowser::handle_dnd()
     std::sort( files.begin(), files.end() );
 
     mrv::Options opts;
-    boost::int64_t frameStart = kMaxFrame;
-    boost::int64_t frameEnd   = kMinFrame;
+    boost::int64_t frameStart = AV_NOPTS_VALUE;
+    boost::int64_t frameEnd   = AV_NOPTS_VALUE;
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();
     std::string oldroot, oldview, oldext;
