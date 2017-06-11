@@ -1338,24 +1338,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       _audio_buf_used += audio_size;
     }
 
-  if ( audio_size == 0 ) {
-
-      if ( _audio_ctx->codec->capabilities & CODEC_CAP_DELAY )
-      {
-          pkt_temp.size = 0;
-          pkt_temp.data = NULL;
-          int ret = decode_audio3( _audio_ctx, 
-                                   ( int16_t * )( (char*)_audio_buf + 
-                                              _audio_buf_used ), 
-                                   &audio_size, &pkt_temp );
-          if ( ret > 0 )
-          {
-              assert( audio_size + _audio_buf_used <= _audio_max );
-              _audio_buf_used += audio_size;
-          }
-      }
-
-  }
 
   return kDecodeOK;
 }
