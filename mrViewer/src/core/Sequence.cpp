@@ -73,8 +73,8 @@ const char* kModule = "seq";
 
 namespace mrv
 {
-  const boost::int64_t kMinFrame = std::numeric_limits< boost::int64_t >::min();
-  const boost::int64_t kMaxFrame = std::numeric_limits< boost::int64_t >::max();
+  const boost::int64_t kMinFrame = AV_NOPTS_VALUE;
+  const boost::int64_t kMaxFrame = AV_NOPTS_VALUE;
 
   bool is_valid_frame( const std::string& framespec )
   {
@@ -551,8 +551,15 @@ bool is_valid_view( std::string view )
                 fspec = root.substr( pos, root.size() - pos - 1 );
                 if ( is_valid_frame_spec( fspec ) )
                 {
-                    frame = fspec;
                     root  = root.substr( 0, pos );
+                    if ( root.empty() ||
+                         ( pos = root.rfind('/') ) != std::string::npos )
+                    {
+                        // Check if filename is empty, like image: 324.exr
+                        std::string file = root.substr( pos+1, root.size() );
+                        if ( file == "" ) return false;
+                    }
+                    frame = fspec;
                     ext   = tmp;
                     return true;
                 }
@@ -568,18 +575,23 @@ bool is_valid_view( std::string view )
                 if ( i == -1 ) break;
             }
 
-        
-            if ( i != -1 && i < root.size() - 2 )
+            if ( count > 0 && i < int( root.size() - 2 ) )
             {
                 ++i;
                 frame = root.substr( i, count );
                 root  = root.substr( 0, i );
+                if ( root.empty() ||
+                     ( pos = root.rfind('/') ) != std::string::npos )
+                {
+                    // Check if filename is empty, like image: 324.exr
+                    std::string file = root.substr( pos+1, root.size() );
+                    if ( file == "" ) return false;
+                }
                 ext   = tmp;
-                
                 return true;
             }
         }
-        
+
 	frame = "";
 	return false;
       }
@@ -680,8 +692,10 @@ bool is_valid_view( std::string view )
 
         
         // Do not continue on false return of split_sequence
-	split_sequence( croot, cframe, cview, cext, tmp );
-        
+        if ( ! split_sequence( croot, cframe, cview, cext, tmp ) )
+        {
+            continue;
+        }
 
 	if ( cext != ext || croot != root || cview != view )
         {
@@ -691,10 +705,11 @@ bool is_valid_view( std::string view )
 	if ( cframe[0] == '0' && cframe.size() > 1 )
             pad = (unsigned) cframe.size();
 
+        
 	boost::int64_t f = atoi( cframe.c_str() );
         
-	if ( f < frameStart ) frameStart = f;
-	if ( f > frameEnd )   frameEnd   = f;
+	if ( f < frameStart || frameStart == AV_NOPTS_VALUE ) frameStart = f;
+	if ( f > frameEnd || frameEnd == AV_NOPTS_VALUE  )   frameEnd   = f;
       }
 
     const char* prdigits = PRId64;
@@ -702,7 +717,7 @@ bool is_valid_view( std::string view )
 
     sprintf( buf, "%%0%d%s", pad, prdigits );
 
-
+    
     
     if ( ! split_sequence( root, frame, view, ext, fileroot ) )
         return false;
@@ -712,7 +727,7 @@ bool is_valid_view( std::string view )
     fileroot += view;
     fileroot += buf;
     fileroot += ext;
-
+    
     return true;
   }
 
@@ -958,6 +973,7 @@ bool fileroot( std::string& fileroot, const std::string& file,
         fileroot = file;
         return false;
      }
+
 
     const char* digits = PRId64;
     int pad = padded_digits(frame);

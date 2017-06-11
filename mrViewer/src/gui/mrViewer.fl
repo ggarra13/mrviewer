@@ -1762,7 +1762,7 @@ uiICC_float_profile->do_callback();}
             label Loading open
             xywh {15 16 424 360} align 5 box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {12 45 400 84} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequence {
@@ -1772,7 +1772,16 @@ uiICC_float_profile->do_callback();}
               }
             }
             {fltk::Group} {} {open
-              xywh {12 144 400 79} box ROUNDED_BOX
+              xywh {12 136 400 84} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsLoadSequenceOnAssoc {
+                label {Load Sequence on File Association & CommandLine} selected
+                tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.}
+                xywh {21 29 25 25} box UP_BOX value 1
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {12 226 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
                 label {Auto load images as they change on disk}
@@ -2084,7 +2093,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2162,7 +2171,7 @@ mrv::Preferences prefs(v);}
             label OK
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiPrefs->uiMain->hide();
-v->uiPrefs->run(v);} selected
+v->uiPrefs->run(v);}
             tooltip {Accept settings but don't save.}
             xywh {270 3 132 27}
           }
