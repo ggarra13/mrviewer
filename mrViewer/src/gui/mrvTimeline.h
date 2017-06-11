@@ -79,7 +79,7 @@ class Timeline : public fltk::Slider
     double minimum() const { return fltk::Slider::minimum(); }
     void minimum( double x );
 
-    void timecode( const int64_t& tc ) { _tc = tc; }
+    void timecode( const int64_t& tc ) { _tc = tc; redraw(); }
 
     virtual void draw();
 
