@@ -44,10 +44,10 @@ namespace mrv
 
 struct Sequence
 {
-     std::string root;
-     std::string number;
-     std::string view;
-     std::string ext;
+    std::string root;
+    std::string number;
+    std::string view;
+    std::string ext;
 };
 
 typedef std::vector< Sequence > Sequences;
