@@ -302,9 +302,10 @@ class CMedia
     kDamageLut       = 1 << 6,
     kDamage3DData    = 1 << 7,
     kDamageCache     = 1 << 8,
+    kDamageTimecode  = 1 << 9,
     kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut | 
                         kDamageThumbnail | kDamageData | kDamageSubtitle |
-                        kDamage3DData | kDamageCache )
+                        kDamage3DData | kDamageCache | kDamageTimecode)
     };
 
     enum DecodeStatus {
@@ -540,10 +541,10 @@ class CMedia
 				const int size = 0,
                                 const bool is_thumbnail = false,
 				const boost::int64_t 
-				first = std::numeric_limits<boost::int64_t>::max(),
+				first = AV_NOPTS_VALUE,
 				const boost::int64_t 
-				end = std::numeric_limits<boost::int64_t>::min(),
-                                const bool use_threads = false );
+				end = AV_NOPTS_VALUE,
+                                const bool avoid_seq = false );
 
     ////////////////////////
     // Image information
@@ -906,7 +907,9 @@ class CMedia
 
     void thread_exit();
 
+    Attributes& exif()  { return _exif; }
     const Attributes& exif() const { return _exif; }
+    Attributes& iptc() { return _iptc; }
     const Attributes& iptc() const { return _iptc; }
 
     static void default_profile( const char* c );
@@ -1024,6 +1027,9 @@ class CMedia
     inline bool is_thumbnail() const { return _is_thumbnail; }
 
     inline int64_t timecode() const { return _tc_frame; }
+    
+    // Process a string like HH:MM:SS:FF or HH;MM;SS;FF unto _tc_frame
+    void process_timecode( const std::string& text );
     
     void fetch_audio( const boost::int64_t frame );
 
@@ -1230,8 +1236,6 @@ class CMedia
     void audio_initialize();
     void audio_shutdown();
 
-    // Process a string like HH:MM:SS:FF or HH;MM;SS;FF unto _tc_frame
-    void process_timecode( const std::string& text );
 
 
     // Extract frame from pts or dts
