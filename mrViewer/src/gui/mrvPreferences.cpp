@@ -740,6 +740,9 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences loading( base, "loading" );
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
+    
+    loading.get( "file_assoc_load_seq", tmp, 1 );
+    uiPrefs->uiPrefsLoadSequenceOnAssoc->value( (bool) tmp );
 
     loading.get( "autoload_images", tmp, 0 );
     uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
@@ -1267,6 +1270,8 @@ static const char* kCLocale = "C";
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
+    loading.set( "file_assoc_load_seq",
+                 (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
     loading.set( "autoload_images",
                  (int) uiPrefs->uiPrefsAutoLoadImages->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
