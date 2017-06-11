@@ -1,3 +1,17 @@
+v3.6.8   - Made timecode start editable in the Media Info Window.
+	   Just type a new timecode and press TAB.
+	 - Allowed to load images which have only a number in them,
+	   like: 2304.exr.  They are treated as single images, not
+	   as sequences.
+	 - Bug fixed loading of images that are like: t09.exr, when
+	   the image loaded is full content, like: t10.exr.  Now
+	   they are both properly recognized as t%02d.exr
+	 - Added an option to Preferences->Loading to allow controlling
+	   how file asocciations behave when loading a single image
+	   or loading it command line.  The option is to load the
+	   whole sequence or just the image.  This is similar to
+	   the Drag&Drop option in the same Preferences->Loading.
+
 v3.6.7   - Made timecode be a separate variable, instead of modifying
 	   frame directly.  This means:
 	      * Frames, Seconds and Time do not take the timecode 
