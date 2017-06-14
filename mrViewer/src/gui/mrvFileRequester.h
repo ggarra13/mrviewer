@@ -37,6 +37,9 @@ namespace mrv
 
   class CMedia;
 
+std::string open_directory( const char* startfile = NULL,
+                            const mrv::ViewerUI* main = NULL );
+
   /** 
    * Opens a file requester to load a reel
    * 
