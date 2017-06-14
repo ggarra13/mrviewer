@@ -53,6 +53,8 @@ using namespace std;
 #include "mrvMath.h"
 #include "mrvMedia.h"
 #include "mrvImageView.h"
+#include "gui/mrvHotkey.h"
+#include "gui/mrvIPTCGroup.h"
 #include "mrViewer.h"
 #include "CMedia.h"
 #include "core/aviImage.h"
@@ -125,6 +127,143 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
     info->refresh();
 }
 
+fltk::Input *uiKey=(fltk::Input *)0;
+
+fltk::Input *uiValue=(fltk::Input *)0;
+
+fltk::Choice *uiKeyRemove=(fltk::Choice *)0;
+
+void cb_OK(fltk::Button*, fltk::Window* v) {
+  v->make_exec_return(true);
+}
+
+void cb_Cancel(fltk::Button*, fltk::Window* v) {
+  v->make_exec_return(false);
+}
+
+fltk::Window* make_iptc_add_window() {
+  fltk::Window* w;
+   {fltk::Window* o = new fltk::Window(405, 100);
+    w = o;
+    o->shortcut(0xff1b);
+    o->label( _("Add Attribute") );
+    o->begin();
+    {fltk::Input* o = uiKey = new fltk::Input(10, 35, 192, 25, _("Name"));
+        o->text( N_("timecode") );
+        o->align(fltk::ALIGN_TOP);
+    }
+    {fltk::Input* o = uiValue = new fltk::Input(208, 35, 192, 25, _("Value"));
+        o->text( N_("00:00:00:00") );
+        o->align(fltk::ALIGN_TOP);
+    }
+     {fltk::Button* o = new fltk::Button(115, 60, 86, 41, _("OK"));
+      o->callback((fltk::Callback*)cb_OK, (void*)(w));
+    }
+     {fltk::Button* o = new fltk::Button(224, 60, 93, 41, _("Cancel"));
+      o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+    }
+    o->end();
+    o->set_modal();
+    o->resizable(o);
+  }
+  return  w;
+}
+
+fltk::Window* make_iptc_remove_window( CMedia::Attributes& attrs ) {
+  fltk::Window* w;
+   {fltk::Window* o = new fltk::Window(405, 100);
+    w = o;
+    o->shortcut(0xff1b);
+    o->label( _("Remove Attribute") );
+    o->begin();
+    {fltk::Choice* o =
+        uiKeyRemove = new fltk::Choice(10, 35, 192, 25, _("Name"));
+        o->align(fltk::ALIGN_TOP);
+        o->begin();
+        CMedia::Attributes::const_iterator i = attrs.begin();
+        CMedia::Attributes::const_iterator e = attrs.end();
+        for ( ; i != e; ++i )
+        {
+            new fltk::Item( i->first.c_str() ); 
+        }
+        o->end();
+    }
+     {fltk::Button* o = new fltk::Button(115, 60, 86, 41, _("OK"));
+      o->callback((fltk::Callback*)cb_OK, (void*)(w));
+    }
+     {fltk::Button* o = new fltk::Button(224, 60, 93, 41, _("Cancel"));
+      o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+    }
+    o->end();
+    o->set_modal();
+    o->resizable(o);
+  }
+  return  w;
+}
+
+void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    if (!img) return;
+
+    fltk::Window* w = make_iptc_add_window();
+    if ( ! w->exec() ) return;
+
+    std::string key = uiKey->value();
+    std::string value = uiValue->value();
+  
+    CMedia::Attributes& attrs = img->iptc();
+    if ( attrs.find( key ) != attrs.end() )
+    {
+        char buf[128];
+        sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
+        mrvALERT( buf );
+        return;
+    }
+    else if ( key.find("timecode") != std::string::npos )
+    {
+        if ( attrs.find( N_("timecode") ) != attrs.end() ||
+             attrs.find( N_("Video timecode") ) != attrs.end() )
+        {
+            mrvALERT( _("timecode or Video timecode attribute already exists") );
+            return;
+        }
+        img->process_timecode( value.c_str() );
+        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
+    }
+    attrs.insert( std::make_pair(key, value) );
+    info->refresh();
+}
+
+
+void remove_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    if (!img) return;
+    
+    CMedia::Attributes& attrs = img->iptc();
+
+    fltk::Window* w = make_iptc_remove_window(attrs);
+    if ( ! w->exec() ) return;
+
+    std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
+  
+    CMedia::Attributes::iterator i = attrs.find( key );
+    if ( i == attrs.end() )
+    {
+        char buf[128];
+        sprintf( buf, _("No attribute named '%s'"), key.c_str() );
+        mrvALERT( buf );
+        return;
+    }
+    if ( key.find( "timecode" ) != std::string::npos )
+    {
+        img->timecode( 0 );
+        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
+    }
+    attrs.erase( i );
+    info->refresh();
+}
 
   ImageInformation::ImageInformation( int x, int y, int w, int h, 
 				      const char* l ) :
@@ -174,6 +313,24 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
         fltk::e_dy = fltk::event_dy() * 8;
      }
 
+     if ( event == fltk::PUSH && fltk::event_button() == 3 && img )
+     {
+     
+	 fltk::Menu menu(0,0,0,0);
+
+	  menu.add( _("Add/IPTC/Metadata"), 0,
+                    (fltk::Callback*)add_iptc_string_cb,
+                    this);
+          
+	  menu.add( _("Remove/IPTC/Metadata"), 0,
+                    (fltk::Callback*)remove_iptc_string_cb,
+                    this);
+         
+         menu.popup( fltk::Rectangle( fltk::event_x(),
+                                      fltk::event_y(), 80, 1) );
+         return 1;
+     }
+     
      return ImageInfoParent::handle( event );
   }
 
@@ -1429,7 +1586,7 @@ void ImageInformation::fill_data()
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
-      widget->tooltip( tooltip );
+      widget->tooltip( strdup(tooltip) );
       if ( !editable )
 	{
 	  widget->box( fltk::FLAT_BOX );

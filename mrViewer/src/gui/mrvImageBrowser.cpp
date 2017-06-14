@@ -1815,6 +1815,16 @@ void ImageBrowser::load( const stringArray& files,
      load( files, false );
   }
 
+  void ImageBrowser::open_directory()
+  {
+      std::string dir = mrv::open_directory(NULL, uiMain);
+      if (dir.empty()) return;
+
+      mrv::Options opts;
+      parse_directory( dir, opts );
+      load( opts.files );
+  }
+
   /** 
    * Save current image buffer being displayed,
    * giving it a new dummy filename.
