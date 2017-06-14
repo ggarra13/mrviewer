@@ -71,7 +71,7 @@ class Timecode : public fltk::FloatInput
     int64_t frame() const { return _frame; }
     void frame( const int64_t& f ) { value(f); }
 
-    void timecode( const int64_t& f ) { _tc_frame = f; update(); }
+    void timecode( const int64_t& f ) { _tc_frame = f; update();  }
     int64_t timecode() const          { return _tc_frame; }
 
     int64_t value() const;

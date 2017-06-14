@@ -1,5 +1,8 @@
 v3.6.8   - Made timecode start editable in the Media Info Window.
 	   Just type a new timecode and press TAB.
+	 - Added creation and removal of IPTC metadata.  In the
+	   Media Info Window, use the right mouse button and select
+	   Add->IPTC->Metadata or Remove->IPTC->Metadata.
 	 - Allowed to load images which have only a number in them,
 	   like: 2304.exr.  They are treated as single images, not
 	   as sequences.
@@ -11,6 +14,11 @@ v3.6.8   - Made timecode start editable in the Media Info Window.
 	   or loading it command line.  The option is to load the
 	   whole sequence or just the image.  This is similar to
 	   the Drag&Drop option in the same Preferences->Loading.
+	 - Bug fixed HUD Timecode display.  Previously, the values were
+	   wrong.
+	 - Bug fixed some memory trashing on the Media Info Window's
+	   tooltips.
+	 - Bug fixed reading of timecode in OpenEXR pictures.
 
 v3.6.7   - Made timecode be a separate variable, instead of modifying
 	   frame directly.  This means:
