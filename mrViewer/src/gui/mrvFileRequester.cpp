@@ -156,6 +156,22 @@ stringArray open_reel( const char* startfile,
    * 
    * @return Each file to be opened
    */
+std::string open_directory( const char* startfile, const mrv::ViewerUI* main )
+{
+    std::string dir;
+    std::string title = _("Load Directory");
+    const char* d = flu_dir_chooser( title.c_str(), startfile );
+    if (d) dir = d;
+    return dir;
+}
+
+  /** 
+   * Opens a file requester to load image files
+   * 
+   * @param startfile  start filename (directory)
+   * 
+   * @return Each file to be opened
+   */
 stringArray open_image_file( const char* startfile, const bool compact_images, 
                              const mrv::ViewerUI* main )
   {
