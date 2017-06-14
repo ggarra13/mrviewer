@@ -79,6 +79,7 @@ class ImageBrowser : public fltk::Browser
 
      void clone_all_current();
      void clone_current();
+     void open_directory();
      void open();
      void open_stereo();
      void open_single();
