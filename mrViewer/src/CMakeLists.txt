@@ -213,6 +213,7 @@ SET( SOURCES
   gui/mrvImageBrowser.cpp
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
+  gui/mrvIPTCGroup.cpp
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
