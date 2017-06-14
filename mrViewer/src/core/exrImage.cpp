@@ -1056,6 +1056,30 @@ void exrImage::read_header_attr( const Imf::Header& h,
                                  const boost::int64_t& frame )
 {
     _read_attr = true;
+      {
+	const Imf::RationalAttribute* attr =
+	  h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
+	if ( attr )
+	  {
+              Imf::Rational r = attr->value();
+              _fps = (double) r.n / (double) r.d;
+	  }
+        else
+        {
+            const Imf::StringAttribute* attr =
+            h.findTypedAttribute<Imf::StringAttribute>("framesPerSecond");
+            if ( attr )
+            {
+                setlocale( LC_NUMERIC, "C" );
+                const std::string& r = attr->value();
+                _fps = atof( r.c_str() );
+                setlocale( LC_NUMERIC, "" );
+            }
+        }
+
+	if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps;
+      }
+
 
       {
 	const Imf::IntAttribute *attr =
@@ -1258,7 +1282,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
               const Imf::TimeCode& tc = attr->value();
               char buf[128];
               sprintf( buf, N_("%d"),tc.dropFrame());
-              _exif.insert( std::make_pair( _("TC Drop Frame"), buf) );
+              _exif.insert( std::make_pair( N_("TC Drop Frame"), buf) );
               if ( tc.dropFrame() )
               {
                   sprintf( buf, 
@@ -1272,19 +1296,19 @@ void exrImage::read_header_attr( const Imf::Header& h,
                            tc.minutes(), tc.seconds(), tc.frame());
               }
               process_timecode( buf );
-              _exif.insert( std::make_pair( _("Timecode"), buf) );
+              _iptc.insert( std::make_pair( N_("timecode"), buf) );
               sprintf( buf, N_("%d"),tc.colorFrame());
-              _exif.insert( std::make_pair( _("TC Color Frame"), buf) );
+              _iptc.insert( std::make_pair( N_("TC Color Frame"), buf) );
               sprintf( buf, N_("%d"),tc.fieldPhase());
-              _exif.insert( std::make_pair( _("TC Field/Phase"), buf) );
+              _iptc.insert( std::make_pair( N_("TC Field/Phase"), buf) );
               sprintf( buf, N_("%d"),tc.bgf0());
-              _exif.insert( std::make_pair( _("TC bgf0"), buf) );
+              _iptc.insert( std::make_pair( N_("TC bgf0"), buf) );
               sprintf( buf, N_("%d"),tc.bgf1());
-              _exif.insert( std::make_pair( _("TC bgf1"), buf) );
+              _iptc.insert( std::make_pair( N_("TC bgf1"), buf) );
               sprintf( buf, N_("%d"),tc.bgf2());
-              _exif.insert( std::make_pair( _("TC bgf2"), buf) );
+              _iptc.insert( std::make_pair( N_("TC bgf2"), buf) );
               sprintf( buf, N_("0x%x"), tc.userData());
-              _exif.insert( std::make_pair( _("TC User Data"), buf) );
+              _iptc.insert( std::make_pair( N_("TC User Data"), buf) );
 	  }
       }
 
@@ -1359,30 +1383,6 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    }
 	}
 
-
-      {
-	const Imf::RationalAttribute* attr =
-	  h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
-	if ( attr )
-	  {
-              Imf::Rational r = attr->value();
-              _fps = (double) r.n / (double) r.d;
-	  }
-        else
-        {
-            const Imf::StringAttribute* attr =
-            h.findTypedAttribute<Imf::StringAttribute>("framesPerSecond");
-            if ( attr )
-            {
-                setlocale( LC_NUMERIC, "C" );
-                const std::string& r = attr->value();
-                _fps = atof( r.c_str() );
-                setlocale( LC_NUMERIC, "" );
-            }
-        }
-
-	if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps;
-      }
 
 }
 
@@ -2341,6 +2341,83 @@ void save_attributes( const CMedia* img, Header& hdr,
     }
 
 
+    it = iptc.find( N_( "timecode" ) ); 
+    if ( it != iptc.end() )
+        {
+            int hours = 0, mins = 0, secs = 0, frames = 0, dropframe = 0, 
+           colorframe = 0, fieldphase = 0;
+            int bgf0 = 0, bgf1 = 0, bgf2 = 0, userdata = 0;
+            {
+                const std::string& value( it->second );
+                int num = sscanf( value.c_str(), "%d:%d:%d:%d", 
+                                  &hours, &mins, &secs, &frames );
+                if ( num != 4 )
+                {
+                    num = sscanf( value.c_str(), "%d;%d;%d;%d", 
+                                  &hours, &mins, &secs, &frames );
+                    if ( num == 4 ) dropframe = 1;
+                }
+            }
+
+            it = iptc.find( N_( "TC Drop Frame" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &dropframe );
+            }
+
+            it = iptc.find( N_( "TC Color Frame" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &colorframe );
+            }
+
+            it = iptc.find( N_( "TC Field/Phase" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &fieldphase );
+            }
+
+            it = iptc.find( N_( "TC bgf0" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &bgf0 );
+            }
+
+
+            it = iptc.find( N_( "TC bgf1" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &bgf1 );
+            }
+
+            it = iptc.find( N_( "TC bgf2" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &bgf2 );
+            }
+
+            it = iptc.find( N_( "TC User Data" ) ); 
+            if ( it != iptc.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "0x%x", &userdata );
+            }
+
+            Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
+                               (bool)colorframe, (bool)fieldphase,
+                               (bool)bgf0, (bool)bgf1, (bool)bgf2,
+                               userdata,
+                               userdata, userdata, userdata, userdata, userdata,
+                               userdata, userdata);
+            Imf::TimeCodeAttribute attr(key);
+            hdr.insert( N_("timeCode"), attr );
+        }
 
     const CMedia::Attributes& exif = img->exif();
     
@@ -2559,7 +2636,7 @@ void save_attributes( const CMedia* img, Header& hdr,
                 {
                     num = sscanf( value.c_str(), "%d;%d;%d;%d", 
                                   &hours, &mins, &secs, &frames );
-                    dropframe = 1;
+                    if ( num == 4 ) dropframe = 1;
                 }
             }
 
