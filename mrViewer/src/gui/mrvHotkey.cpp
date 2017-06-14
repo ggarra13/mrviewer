@@ -37,6 +37,7 @@ const char* kModule = "key";
 
 namespace mrv {
 // ctrl, meta, alt, shift, key
+Hotkey kOpenDirectory( true, false, false, true, 'o' );
 Hotkey kOpenImage( true, false, false, false, 'o' );
 Hotkey kOpenSingleImage( true, false, true, false, 'o' );
 Hotkey kOpenStereoImage( false, false, true, false, 'o' );
@@ -116,6 +117,8 @@ Hotkey kGammaLess( false, false, false, false, 0, "(" );
 Hotkey kSetAsBG( false, false, false, false, 0 );
 Hotkey kToggleLUT( false, false, false, false, 0 );
 
+Hotkey kAddIPTCMetadata( false, false, false, false, 0 );
+Hotkey kRemoveIPTCMetadata( false, false, false, false, 0 );
 
 Hotkey kZDepthUp( false, false, false, false, 's' );
 Hotkey kZDepthDown( false, false, false, false, 'a' );
@@ -220,6 +223,7 @@ bool Hotkey::match( unsigned rawkey )
 
 
 HotkeyEntry hotkeys[] = {
+HotkeyEntry( _("Open Directory"), kOpenDirectory),
 HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
 HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
 HotkeyEntry( _("Open Clip XML Metadata"), kOpenClipXMLMetadata),
@@ -274,6 +278,8 @@ HotkeyEntry( _("Gamma More"), kGammaMore),
 HotkeyEntry( _("Gamma Less"), kGammaLess),
 HotkeyEntry( _("Set As BG Image"), kSetAsBG),
 HotkeyEntry( _("Toggle LUT"), kToggleLUT),
+HotkeyEntry( _("Add IPTC Metadata"), kAddIPTCMetadata),
+HotkeyEntry( _("Remove IPTC Metadata"), kRemoveIPTCMetadata),
 HotkeyEntry( _("Attach Audio File"), kAttachAudio),
 HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
 HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
