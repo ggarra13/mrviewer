@@ -741,7 +741,7 @@ void CMedia::populate_audio()
 
 }
 
-void CMedia::process_timecode( const std::string& text )
+void CMedia::process_timecode( const std::string text )
 {
     bool drop_frame = false;
     StringList tc;
@@ -778,6 +778,7 @@ void CMedia::process_timecode( const std::string& text )
     int seconds = atoi( tc[2].c_str() );
     int frames = atoi( tc[3].c_str() );
 
+    
     if ( drop_frame )
     {
         // ((30 * 60 - 2) * 10 + 2) * 6 drop-frame frames in 1 hour
@@ -792,7 +793,7 @@ void CMedia::process_timecode( const std::string& text )
     }
     else
     {
-        int ifps = round(_fps);
+        int ifps = (int)round(_fps);
         int hh = hours*3600*ifps;
         int mm = minutes*60*ifps;
         int ss = seconds*ifps;

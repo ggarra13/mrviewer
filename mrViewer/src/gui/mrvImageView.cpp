@@ -349,6 +349,11 @@ void toggle_background_cb( fltk::Widget* o, mrv::ImageView* view )
   view->toggle_background();
 }
 
+void open_dir_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
+{
+  uiReelWindow->open_directory();
+}
+
 void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
   uiReelWindow->open();
@@ -1511,6 +1516,7 @@ bool ImageView::should_update( mrv::media fg )
 	  // Redraw browser to update thumbnail
           mrv::ImageBrowser* b = browser();
 	  if (b) b->redraw();
+          img->image_damage( img->image_damage() & ~CMedia::kDamageThumbnail );
       }
 
       if ( img->image_damage() & CMedia::kDamageData )
@@ -1521,15 +1527,22 @@ bool ImageView::should_update( mrv::media fg )
       
       if ( img->image_damage() & CMedia::kDamageTimecode )
       {
-          uiMain->uiFrame->timecode( img->timecode() );
-          uiMain->uiStartFrame->timecode( img->timecode() );
-          uiMain->uiEndFrame->timecode( img->timecode() );
-          uiMain->uiTimeline->timecode( img->timecode() );
+          int64_t start = uiMain->uiStartFrame->frame();  // needed not sure why
+          int64_t end   = uiMain->uiEndFrame->frame();  // needed not sure why
+          int64_t   tc  = img->timecode();
+          uiMain->uiFrame->timecode( tc );
+          uiMain->uiStartFrame->timecode( tc );
+          uiMain->uiStartFrame->frame( start );  // needed not sure why
+          uiMain->uiEndFrame->timecode( tc );
+          uiMain->uiEndFrame->frame( end );  // needed not sure why
+          uiMain->uiTimeline->timecode( tc );
+          img->image_damage( img->image_damage() & ~CMedia::kDamageTimecode );
       }
       
       if ( img->image_damage() & CMedia::kDamageCache )
       {
 	  uiMain->uiTimeline->redraw();
+          img->image_damage( img->image_damage() & ~CMedia::kDamageCache );
       }
 
       if ( uiMain->uiGL3dView->uiMain->visible() && 
@@ -1596,6 +1609,7 @@ bool ImageView::should_update( mrv::media fg )
           // Redraw browser to update thumbnail
           mrv::ImageBrowser* b = browser();
 	  if (b) b->redraw();
+          img->image_damage( img->image_damage() & ~CMedia::kDamageThumbnail );
       }
   }
 
@@ -2281,12 +2295,16 @@ void ImageView::draw()
     }
 
   if ( _hud & kHudTimecode )
-    {
-      mrv::Timecode::format( buf, mrv::Timecode::kTimecodeNonDrop, 
-			     img->frame(), img->play_fps(), true );
+  {
+      mrv::Timecode::Display d = uiMain->uiFrame->display();
+      if ( d != mrv::Timecode::kTimecodeDropFrame )
+          d = mrv::Timecode::kTimecodeNonDrop;
+
+      mrv::Timecode::format( buf, d, img->frame(), img->timecode(),
+                             img->play_fps(), true );
       if ( !hud.str().empty() ) hud << " ";
       hud << _("T: ") << buf;
-    }
+  }
 
   if ( (_hud & kHudAVDifference) && img->has_audio() )
     {
@@ -2582,6 +2600,11 @@ int ImageView::leftMouseDown(int x, int y)
 	 menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
 	           (fltk::Callback*)open_single_cb, browser() );
 	 mrv::media fg = foreground();
+         if ( !fg )
+         {
+             menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                       (fltk::Callback*)open_dir_cb, browser() ); 
+         }
 	 if ( fg )
 	 {
              menu.add( _("File/Open/Stereo Sequence or Movie"),
@@ -2590,6 +2613,8 @@ int ImageView::leftMouseDown(int x, int y)
              menu.add( _("File/Open/Clip XML Metadata"),
                        kOpenClipXMLMetadata.hotkey(),
                        (fltk::Callback*)open_clip_xml_metadata_cb, this );
+             menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                       (fltk::Callback*)open_dir_cb, browser() ); 
 	    menu.add( _("File/Save/Movie or Sequence As"), 
                       kSaveSequence.hotkey(),
 		      (fltk::Callback*)save_sequence_cb, this ); 
