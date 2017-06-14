@@ -97,6 +97,7 @@ struct Hotkey
      unsigned key2;
 };
 
+extern Hotkey kOpenDirectory;
 extern Hotkey kOpenImage;
 extern Hotkey kOpenSingleImage;
 extern Hotkey kOpenStereoImage;
@@ -170,6 +171,9 @@ extern Hotkey kGammaLess;
 
 extern Hotkey kSetAsBG;
 extern Hotkey kToggleLUT;
+
+extern Hotkey kAddIPTCMetadata;
+extern Hotkey kRemoveIPTCMetadata;
 
 extern Hotkey kSOPSatNodes;
 
