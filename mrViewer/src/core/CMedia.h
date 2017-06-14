@@ -1026,10 +1026,12 @@ class CMedia
     inline void is_thumbnail(bool t) { _is_thumbnail = t; }
     inline bool is_thumbnail() const { return _is_thumbnail; }
 
+    inline void    timecode( const int64_t& f ) { _tc_frame = 0; }
+    
     inline int64_t timecode() const { return _tc_frame; }
     
     // Process a string like HH:MM:SS:FF or HH;MM;SS;FF unto _tc_frame
-    void process_timecode( const std::string& text );
+    void process_timecode( const std::string text );
     
     void fetch_audio( const boost::int64_t frame );
 
