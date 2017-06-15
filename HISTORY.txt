@@ -1,17 +1,23 @@
 v3.6.9   - Bug fixed saving OpenEXR's with deep data.  Now it is
-	   a saving option.
+	   a saving option.  Note that this mainly copies the
+	   file.
 	 - Made all metadata be saved in OpenEXR.  Made it also
 	   retrievable.
 	 - Added an Update Frame in Cache (shortcut 'u') to update
 	   only a single frame in the cache.
 	 - Bug fixed saving of all layers when OpenEXR image had
-	   Z and ZBack channels.
+	   Z and ZBack channels.  Previously, this would crash.
+	 - Added both EXIF and IPTC adding and removing of
+	   attributes.
 
 v3.6.8   - Made timecode start editable in the Media Info Window.
 	   Just type a new timecode and press TAB.
 	 - Added creation and removal of IPTC metadata.  In the
 	   Media Info Window, use the right mouse button and select
 	   Add->IPTC->Metadata or Remove->IPTC->Metadata.
+	 - Added creation and removal of EXIF metadata.  In the
+	   Media Info Window, use the right mouse button and select
+	   Add->EXIF->Metadata or Remove->EXIF->Metadata.
 	 - Allowed to load images which have only a number in them,
 	   like: 2304.exr.  They are treated as single images, not
 	   as sequences.
