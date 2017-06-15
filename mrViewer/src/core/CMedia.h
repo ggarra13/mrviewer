@@ -467,6 +467,9 @@ class CMedia
     // Clear the sequence 8-bit cache
     virtual void clear_cache();
 
+    // Clear one frame of the sequence 8-bit cache
+    void update_frame( const int64_t& frame );
+
     inline bool has_sequence() const { return (_sequence != NULL); }
 
     // Returns true if cache for the frame is already filled, false if not
