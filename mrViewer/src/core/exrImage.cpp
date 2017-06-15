@@ -1056,6 +1056,10 @@ void exrImage::read_header_attr( const Imf::Header& h,
                                  const boost::int64_t& frame )
 {
     _read_attr = true;
+
+    stringSet attrs;
+    attrs.insert( "type" );
+    
       {
 	const Imf::RationalAttribute* attr =
 	  h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
@@ -1087,6 +1091,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
               _aces = (bool)attr->value();
+              attrs.insert( N_("acesImageContainerFlag") );
 	  }
       }
 
@@ -1106,6 +1111,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  {
 	    _exif.insert( std::make_pair( _("Chromaticities Name"),
                                           attr->value()) );
+            attrs.insert( N_("chromaticitiesName") );
 	  }
       }
 
@@ -1118,6 +1124,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
               V2f va = attr->value();
               sprintf( buf, "%f %f", va.x, va.y );
               _exif.insert( std::make_pair( _("Adopted Neutral"), buf ) );
+              attrs.insert( N_("adoptedNeutral") );
 	  }
       }
 
@@ -1130,6 +1137,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
               int i = attr->value();
               sprintf( buf, "%d", i );
               _exif.insert( std::make_pair( _("Image State"), buf ) );
+              attrs.insert( N_("imageState") );
 	  }
       }
 
@@ -1139,6 +1147,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _exif.insert( std::make_pair( _("Owner"), attr->value()) );
+            attrs.insert( N_("owner") );
 	  }
       }
 
@@ -1148,6 +1157,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _exif.insert( std::make_pair( _("Comments"), attr->value()) );
+            attrs.insert( N_("Comments") );
 	  }
       }
 
@@ -1157,6 +1167,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _iptc.insert( std::make_pair( _("Capture Date"), attr->value()) );
+            attrs.insert( N_("capDate") );
 	  }
       }
 
@@ -1168,6 +1179,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("UTC Offset"), buf) );
+            attrs.insert( N_("utcOffset") );
 	  }
       }
 
@@ -1179,6 +1191,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("Longitude"), buf) );
+            attrs.insert( N_("longitude") );
 	  }
       }
 
@@ -1190,6 +1203,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("Latitude"), buf) );
+            attrs.insert( N_("latitude") );
 	  }
       }
 
@@ -1201,6 +1215,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("Altitude"), buf) );
+            attrs.insert( N_("altitude") );
 	  }
       }
 
@@ -1212,6 +1227,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _exif.insert( std::make_pair( _("Focus"), buf) );
+            attrs.insert( N_("focus") );
 	  }
       }
 
@@ -1223,6 +1239,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _exif.insert( std::make_pair( _("Exposure Time"), buf) );
+            attrs.insert( N_("expTime") );
 	  }
       }
 
@@ -1234,6 +1251,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _exif.insert( std::make_pair( _("Aperture"), buf) );
+            attrs.insert( N_("aperture") );
 	  }
       }
 
@@ -1246,6 +1264,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _exif.insert( std::make_pair( _("ISO Speed"), buf) );
+            attrs.insert( N_("isoSpeed") );
 	  }
       }
 
@@ -1271,6 +1290,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
               _exif.insert( std::make_pair( _("Perfs per Frame"), buf) );
              sprintf( buf, N_("%d"), k.perfsPerCount() );
               _exif.insert( std::make_pair( _("Perfs per Count"), buf) );
+              attrs.insert( N_("keyCode") );
 	  }
       }
 
@@ -1309,6 +1329,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
               _iptc.insert( std::make_pair( N_("TC bgf2"), buf) );
               sprintf( buf, N_("0x%x"), tc.userData());
               _iptc.insert( std::make_pair( N_("TC User Data"), buf) );
+              attrs.insert( N_("timeCode") );
 	  }
       }
 
@@ -1318,6 +1339,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _exif.insert( std::make_pair( _("Writer"), attr->value()) );
+            attrs.insert( N_("writer") );
 	  }
       }
 
@@ -1327,6 +1349,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _exif.insert( std::make_pair( _("ICC Profile"), attr->value()) );
+            attrs.insert( N_("iccProfile") );
 	  }
       }
 
@@ -1336,6 +1359,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _exif.insert( std::make_pair( _("Wrap Modes"), attr->value()) );
+            attrs.insert( N_("wrapmodes") );
 	  }
       }
 
@@ -1383,6 +1407,26 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    }
 	}
 
+      Imf::Header::ConstIterator i = h.begin();
+      Imf::Header::ConstIterator e = h.end();
+
+      stringSet::const_iterator end = attrs.end();
+      
+      for ( ; i != e; ++i )
+      {
+          const std::string& name = i.name();
+          if ( attrs.find( name ) != end ) continue;
+
+          
+          const Attribute& attr = i.attribute();
+          const Imf::StringAttribute* str =
+          dynamic_cast< const Imf::StringAttribute* >( &attr );
+
+          if ( str )
+          {
+              _iptc.insert( std::make_pair( name, str->value() ) );
+          }
+      }
 
 }
 
@@ -2281,6 +2325,11 @@ static
 void save_attributes( const CMedia* img, Header& hdr,
                       const EXROpts* opts )
 {
+    stringSet attrs;
+    attrs.insert( "type" );
+    attrs.insert( "compression" );
+    attrs.insert( "channels" );
+    
     if ( opts->ACES_metadata() )
     {
         Imf::IntAttribute attr = 1;
@@ -2291,6 +2340,7 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         Imf::ChromaticitiesAttribute attr( img->chromaticities() );
         hdr.insert( N_("Chromaticities"), attr );
+        attrs.insert( N_("Chromaticities") );
     }
 
 
@@ -2302,6 +2352,7 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         Imf::StringAttribute attr( it->second );
         hdr.insert( N_("capDate"), attr );
+        attrs.insert( _("Capture Date") );
     }
 
     it = iptc.find( _( "UTC Offset" ) ); 
@@ -2311,6 +2362,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         sscanf( it->second.c_str(), "%g", &v );
         Imf::FloatAttribute attr( v );
         hdr.insert( N_("utcOffset"), attr );
+        attrs.insert( _("UTC Offset") );
     }
 
     it = iptc.find( _( "Longitude" ) ); 
@@ -2320,6 +2372,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         sscanf( it->second.c_str(), "%g", &v );
         Imf::FloatAttribute attr( v );
         hdr.insert( N_("longitude"), attr );
+        attrs.insert( _("Longitude") );
     }
 
     it = iptc.find( _( "Latitude" ) ); 
@@ -2329,6 +2382,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         sscanf( it->second.c_str(), "%g", &v );
         Imf::FloatAttribute attr( v );
         hdr.insert( N_("latitude"), attr );
+        attrs.insert( _("Latitude") );
     }
 
     it = iptc.find( _( "Altitude" ) ); 
@@ -2338,6 +2392,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         sscanf( it->second.c_str(), "%g", &v );
         Imf::FloatAttribute attr( v );
         hdr.insert( N_("altitude"), attr );
+        attrs.insert( _("Altitude") );
     }
 
 
@@ -2364,6 +2419,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &dropframe );
+                attrs.insert( N_("TC Drop Frame") );
             }
 
             it = iptc.find( N_( "TC Color Frame" ) ); 
@@ -2371,6 +2427,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &colorframe );
+                attrs.insert( N_("TC Color Frame") );
             }
 
             it = iptc.find( N_( "TC Field/Phase" ) ); 
@@ -2378,6 +2435,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &fieldphase );
+                attrs.insert( N_("TC Field/Phase") );
             }
 
             it = iptc.find( N_( "TC bgf0" ) ); 
@@ -2385,6 +2443,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &bgf0 );
+                attrs.insert( N_("TC bgf0") );
             }
 
 
@@ -2393,6 +2452,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &bgf1 );
+                attrs.insert( N_("TC bgf1") );
             }
 
             it = iptc.find( N_( "TC bgf2" ) ); 
@@ -2400,6 +2460,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &bgf2 );
+                attrs.insert( N_("TC bgf2") );
             }
 
             it = iptc.find( N_( "TC User Data" ) ); 
@@ -2407,6 +2468,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "0x%x", &userdata );
+                attrs.insert( N_("TC User Data") );
             }
 
             Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
@@ -2417,7 +2479,23 @@ void save_attributes( const CMedia* img, Header& hdr,
                                userdata, userdata);
             Imf::TimeCodeAttribute attr(key);
             hdr.insert( N_("timeCode"), attr );
+            attrs.insert( N_("timecode") );
         }
+
+
+    CMedia::Attributes::const_iterator i = iptc.begin();
+    CMedia::Attributes::const_iterator e = iptc.end();
+    stringSet::const_iterator end = attrs.end();
+    for ( ; i != e; ++i )
+    {
+        // Avoid adding attributes we already parsed
+        const std::string& name = i->first;
+        if ( attrs.find( name ) != end ) continue;
+        Imf::StringAttribute attr = i->second;
+        hdr.insert( name, attr );
+    }
+
+    attrs.clear();
 
     const CMedia::Attributes& exif = img->exif();
     
@@ -2426,13 +2504,15 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         Imf::StringAttribute attr( it->second );
         hdr.insert( N_("Chromaticities Name"), attr );
+        attrs.insert( _("Chromaticities Name") );
     }
 
     it = exif.find( _( "Comments" ) ); 
     if ( it != exif.end() )
     {
         Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("Comments"), attr );
+        hdr.insert( _("Comments"), attr );
+        attrs.insert( _("Comments") );
     }
     
     it = exif.find( _( "Adopted Neutral" ) ); 
@@ -2443,6 +2523,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         sscanf( value.c_str(), "%g %g", &v.x, &v.y );
         Imf::V2fAttribute attr( v );
         hdr.insert( N_("adoptedNeutral"), attr );
+        attrs.insert( _("Adopted Neutral") );
     }
 
     it = exif.find( _( "Image State" ) ); 
@@ -2453,6 +2534,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%d", &v );
             Imf::IntAttribute attr( v );
             hdr.insert( N_("imageState"), attr );
+            attrs.insert( _("Image State") );
         }
 
         it = exif.find( _( "Owner" ) ); 
@@ -2460,6 +2542,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         {
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("owner"), attr );
+            attrs.insert( _("Owner") );
         }
 
         it = exif.find( _( "Comments" ) ); 
@@ -2467,6 +2550,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         {
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("comments"), attr );
+            attrs.insert( _("Comments") );
         }
 
         it = exif.find( _( "Capture Date" ) ); 
@@ -2474,6 +2558,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         {
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("capDate"), attr );
+            attrs.insert( _("Capture Date") );
         }
 
         it = exif.find( _( "UTC Offset") ); 
@@ -2484,6 +2569,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("utcOffset"), attr );
+            attrs.insert( _("UTC Offset") );
         }
 
         it = exif.find( _( "Longitude") ); 
@@ -2494,6 +2580,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("longitude"), attr );
+            attrs.insert( _("Longitude") );
         }
 
         it = exif.find( _( "Latitude") ); 
@@ -2504,6 +2591,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("latitude"), attr );
+            attrs.insert( _("Latitude") );
         }
 
 
@@ -2515,6 +2603,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("altitude"), attr );
+            attrs.insert( _("Altitude") );
         }
 
 
@@ -2526,6 +2615,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("focus"), attr );
+            attrs.insert( _("Focus") );
         }
 
 
@@ -2537,6 +2627,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("expTime"), attr );
+            attrs.insert( _("Exposure Time") );
         }
 
         it = exif.find( _( "Aperture") ); 
@@ -2547,6 +2638,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("aperture"), attr );
+            attrs.insert( _("Aperture") );
         }
 
         it = exif.find( _( "ISO Speed") ); 
@@ -2557,12 +2649,14 @@ void save_attributes( const CMedia* img, Header& hdr,
             sscanf( value.c_str(), "%g", &v );
             Imf::FloatAttribute attr( v );
             hdr.insert( N_("isoSpeed"), attr );
+            attrs.insert( _("ISO Speed") );
         }
 
         {
             Imf::Rational r( int( img->fps() * 1000 ), 1000 );
             Imf::RationalAttribute attr( r );
             hdr.insert( N_("framesPerSecond"), attr );
+            attrs.insert( N_("framesPerSecond") );
         }
 
         it = exif.find( _( "Film Manufacturer Code" ) ); 
@@ -2573,12 +2667,14 @@ void save_attributes( const CMedia* img, Header& hdr,
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &fmfc );
             }
+            attrs.insert( _("Film Manufacturer Code") );
 
             it = exif.find( _( "Film Type Code" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &ftc );
+                attrs.insert( _("Film Type Code") );
             }
 
             it = exif.find( _( "Prefix Code" ) ); 
@@ -2586,6 +2682,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &pc );
+                attrs.insert( _("Prefix Code") );
             }
 
             it = exif.find( _( "Count" ) ); 
@@ -2593,6 +2690,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &count );
+                attrs.insert( _("Count") );
             }
 
             it = exif.find( _( "Perf Offset" ) ); 
@@ -2600,6 +2698,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &poff );
+                attrs.insert( _("Perf Offset") );
             }
 
             it = exif.find( _( "Perfs per Frame" ) ); 
@@ -2607,6 +2706,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &ppf );
+                attrs.insert( _("Perfs per Frame") );
             }
 
             it = exif.find( _( "Perfs per Count" ) ); 
@@ -2614,6 +2714,7 @@ void save_attributes( const CMedia* img, Header& hdr,
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &ppc );
+                attrs.insert( _("Perfs per Count") );
             }
 
             Imf::KeyCode key( fmfc, ftc, pc, count, poff, ppf, ppc );
@@ -2622,7 +2723,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         }
 
 
-        it = exif.find( _( "Timecode" ) ); 
+        it = exif.find( N_( "timecode" ) ); 
         if ( it != exif.end() )
         {
             int hours = 0, mins = 0, secs = 0, frames = 0, dropframe = 0, 
@@ -2640,54 +2741,63 @@ void save_attributes( const CMedia* img, Header& hdr,
                 }
             }
 
-            it = exif.find( _( "TC Drop Frame" ) ); 
+            attrs.insert( N_("timecode") );
+            
+            it = exif.find( N_( "TC Drop Frame" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &dropframe );
+                attrs.insert( N_("TC Drop Frame") );
             }
 
-            it = exif.find( _( "TC Color Frame" ) ); 
+            it = exif.find( N_( "TC Color Frame" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &colorframe );
+                attrs.insert( N_("TC Color Frame") );
             }
 
-            it = exif.find( _( "TC Field/Phase" ) ); 
+            it = exif.find( N_( "TC Field/Phase" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &fieldphase );
+                attrs.insert( N_("TC Field/Phase") );
             }
 
-            it = exif.find( _( "TC bgf0" ) ); 
+            it = exif.find( N_( "TC bgf0" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &bgf0 );
+                attrs.insert( N_("TC bgf0") );
             }
 
 
-            it = exif.find( _( "TC bgf1" ) ); 
+            it = exif.find( N_( "TC bgf1" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &bgf1 );
+                attrs.insert( N_("TC bgf1") );
             }
 
-            it = exif.find( _( "TC bgf2" ) ); 
+            it = exif.find( N_( "TC bgf2" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "%d", &bgf2 );
+                attrs.insert( N_("TC bgf2") );
             }
 
-            it = exif.find( _( "TC User Data" ) ); 
+            it = exif.find( N_( "TC User Data" ) ); 
             if ( it != exif.end() )
             {
                 const std::string& value( it->second );
                 sscanf( value.c_str(), "0x%x", &userdata );
+                attrs.insert( N_("TC User Data") );
             }
 
             Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
@@ -2705,6 +2815,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         {
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("writer"), attr );
+            attrs.insert( _("Writer") );
         }
 
         it = exif.find( _( "ICC Profile" ) ); 
@@ -2712,6 +2823,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         {
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("iccProfile"), attr );
+            attrs.insert( _("ICC Profile") );
         }
 
         it = exif.find( _( "Wrap Modes" ) ); 
@@ -2719,6 +2831,19 @@ void save_attributes( const CMedia* img, Header& hdr,
         {
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("wrapmodes"), attr );
+            attrs.insert( _("Wrap Modes") );
+        }
+        
+        i = exif.begin();
+        e = exif.end();
+        end = attrs.end();
+        for ( ; i != e; ++i )
+        {
+            const std::string& name = i->first;
+            // Avoid adding attributes we already parsed
+            if ( attrs.find( name ) != end ) continue;
+            Imf::StringAttribute attr = i->second;
+            hdr.insert( name, attr );
         }
 }
 
@@ -2880,8 +3005,6 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
                                      opts->compression_level() );
     }
 
-    if ( headers.size() == 0 )
-        save_attributes( img, hdr, opts );
 
     layers.push_back( layer );
     headers.push_back( hdr );
@@ -2913,8 +3036,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         return false;
     }
 
-    // if ( opts->save_deep_data() && img->has_deep_data() )
-    if ( 0 ) // if ( img->has_deep_data() )
+    if ( opts->save_deep_data() && img->has_deep_data() )
     {
         using namespace Imf;
         using namespace std;
@@ -2942,18 +3064,24 @@ bool exrImage::save( const char* file, const CMedia* img,
                 }
                 else if (attr.part < 0 || attr.part >= numParts)
                 {
-                    cerr << "Invalid part number " << attr.part << ". "
-                            "Part numbers in file " << file << " "
-                            "go from 0 to " << numParts - 1 << "." << endl;
+                    LOG_ERROR( "Invalid part number " << attr.part << ". "
+                               "Part numbers in file " << file << " "
+                               "go from 0 to " << numParts - 1 << "." );
 
-                    return 1;
+                    return false;
                 }
             }
 
             headers.push_back(h);
         }
+
+        if ( headers.empty() )
+        {
+            LOG_ERROR( "Empty headers for " << img->name() );
+            return false;
+        }
         
-        save_attributes( img, headers[0], opts );
+        //save_attributes( img, headers[0], opts );
 
         try
         {
@@ -3019,7 +3147,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     Imf::PixelType save_type = opts->pixel_type();
 
-
+    
 
     if ( opts->all_layers() )
     {
@@ -3061,7 +3189,6 @@ bool exrImage::save( const char* file, const CMedia* img,
             if ( name.find(x + '.') == 0 )
             {
                 std::string root = name;
-                // std::cerr << "FOUND " << root << " with " << x << std::endl;
 
                 if ( root[0] == '#' && x.size() < name.size() )
                 {
@@ -3082,18 +3209,17 @@ bool exrImage::save( const char* file, const CMedia* img,
                     }
                 }
 
-                Header& hdr = headers.back();
+                if ( headers.empty() ) continue; // should never happen
 
+                Header& hdr = headers.back();
+                
                 if ( !suffix.empty() )
                 {
-                    // std::cerr << "channel " << root << '#' << suffix
-                    //           << std::endl;
                     hdr.channels().insert( root + '.' + suffix,
                                            Channel( save_type,1,1 ) );
                 }
                 else
                 {
-                    // std::cerr << "channel " << root << " empty" << std::endl;
                     hdr.channels().insert( root,
                                            Channel( save_type,1,1 ) );
                 }
@@ -3236,7 +3362,8 @@ bool exrImage::save( const char* file, const CMedia* img,
             xsampling[i] = ysampling[i] = 1;
         }
         unsigned offsets[6];
-        offsets[0] = offsets[4] = offsets[5] = 0;
+        offsets[0] = offsets[1] = offsets[2] = offsets[3] =
+        offsets[4] = offsets[5] = 0;
 
         size_t size;
         switch( save_type )
@@ -3392,7 +3519,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
 
-        uint8_t* base = (uint8_t*) new uint8_t[total_size];
+        uint8_t* base = (uint8_t*) new aligned16_uint8_t[total_size];
         bufs.push_back( base );
 
 
@@ -3400,7 +3527,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         if ( channels == 4 ) use_alpha = true;
 
         copy_pixel_data( pic, save_type, base, total_size, use_alpha );
-
 
         size_t t = size;
 
@@ -3477,7 +3603,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
 
 
-        size_t xs[5], ys[5];
+        size_t xs[6], ys[6];
 
         if ( has_yca )
         {
@@ -3494,12 +3620,14 @@ bool exrImage::save( const char* file, const CMedia* img,
             if ( order[2] != -1 ) ys[2] = t * dw2; // for RY channel
             if ( order[3] != -1 ) ys[3] = t * dw; // for Alpha channel
             if ( order[4] != -1 ) ys[4] = t * dw; // for Z channel
+            if ( order[5] != -1 ) ys[5] = t * dw; // for ZBack channel
         }
         else
         {
             unsigned pixels = (unsigned)size * channels;
 
-            for ( unsigned j = 0; j < 6; ++j )
+            // xs[4], ys[4], xs[5], ys[5] are set later
+            for ( unsigned j = 0; j < 4; ++j )
             {
                 int k = order[j];
                 if ( k == -1 ) continue;
@@ -3520,7 +3648,6 @@ bool exrImage::save( const char* file, const CMedia* img,
 
             const std::string& name = ci.name();
 
-
             // std::cerr << "SAVE " << idx << ") " << name << " has order " << k
             //           << " offset " << offsets[k] 
             //           << " xs " << xs[k] << " ys " 
@@ -3534,9 +3661,9 @@ bool exrImage::save( const char* file, const CMedia* img,
             if ( idx == 4 || idx == 5 ) {
                 std::string c;
                 if ( layer[0] == '#' )
-                    c = layer + '.' + ci.name(); 
+                    c = layer + '.' + name; 
                 else
-                    c = ci.name();
+                    c = name;
 
                 p->channel( c.c_str() );
 
@@ -3552,9 +3679,9 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 dw = pic->width();
                 dh = pic->height();
-                total_size = dw*dh*size*channels;
+                total_size = dw*dh*size; // *1 (channels)
 
-                base = (uint8_t*) new uint8_t[total_size];
+                base = (uint8_t*) new aligned16_uint8_t[total_size];
                 bufs.push_back( base );
 
                 copy_pixel_data( pic, save_type, base, total_size, false );
@@ -3562,9 +3689,8 @@ bool exrImage::save( const char* file, const CMedia* img,
                 int start = (int)( (-dx - dy * dw) * size );
                 base += start;
 
-                k = idx;
-                xs[idx] = size;
-                ys[idx] = size * dw;
+                xs[k] = size;
+                ys[k] = size * dw;
             }
 
 
@@ -3598,6 +3724,8 @@ bool exrImage::save( const char* file, const CMedia* img,
         LOG_ERROR( e.what() );
         return false;
     }
+
+    assert0( fbs.size() == headers.size() );
 
     Buffers::iterator i = bufs.begin();
     Buffers::iterator e = bufs.end();
