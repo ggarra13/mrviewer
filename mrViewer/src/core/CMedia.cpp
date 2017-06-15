@@ -489,6 +489,28 @@ void CMedia::clear_cache()
 
 }
 
+void CMedia::update_frame( const int64_t& f )
+{
+  if ( !_sequence ) return;
+
+  if ( f < _frame_start || f > _frame_end ) return;
+  
+  SCOPED_LOCK( _mutex);
+
+  boost::uint64_t i = f - _frame_start;
+  if ( _sequence[i] )        _sequence[i].reset();
+  if ( _right && _right[i] )    _right[i].reset();
+
+  _hires.reset();
+  _stereo[0].reset();
+  _stereo[1].reset();
+
+  fetch( f );
+
+  image_damage( image_damage() | kDamageCache | kDamageContents );
+
+}
+
 /** 
  */
 void CMedia::wait_for_load_threads()
@@ -1051,7 +1073,7 @@ void CMedia::sequence( const char* fileroot,
   SCOPED_LOCK( _mutex );
 
   assert( fileroot != NULL );
-  assert( start < end );
+  assert( start <= end );
 
   if ( _fileroot && strcmp( fileroot, _fileroot ) == 0 && 
        start == _frame_start && end == _frame_end )
