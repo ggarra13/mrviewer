@@ -186,6 +186,7 @@ extern Hotkey kCloneImage;
 
 extern Hotkey kPreloadCache;
 extern Hotkey kClearCache;
+extern Hotkey kClearSingleFrameCache;
 
 extern Hotkey kSetInPoint;
 extern Hotkey kSetOutPoint;
