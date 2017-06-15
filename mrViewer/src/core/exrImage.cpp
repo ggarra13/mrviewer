@@ -604,7 +604,7 @@ bool exrImage::find_layers( const Imf::Header& h )
            std::string ch = c;
            if ( c[0] == '#' )
            {
-               int idx = c.find( ' ' );
+               size_t idx = c.find( ' ' );
                if ( idx != std::string::npos )
                {
                    c = c.substr( idx+1, c.size() );
@@ -612,7 +612,7 @@ bool exrImage::find_layers( const Imf::Header& h )
            }
 
            std::string match, discard;
-           int idx = c.find( left );
+           size_t idx = c.find( left );
            if ( idx != std::string::npos )
            {
                _has_left_eye = strdup( c.c_str() );
@@ -1810,14 +1810,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         {
             if ( c[0] == '#' )
             {
-                int idx = c.find( ' ' );
+                size_t idx = c.find( ' ' );
                 if ( idx != std::string::npos )
                 {
                     c = c.substr( idx+1, c.size() );
                 }
             }
 
-            int idx = c.find( left );
+            size_t idx = c.find( left );
             if ( idx != std::string::npos )
             {
                 suffix = c.substr( idx+left.size(), c.size() );
@@ -3081,7 +3081,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             return false;
         }
         
-        //save_attributes( img, headers[0], opts );
+        save_attributes( img, headers[0], opts );
 
         try
         {
@@ -3386,11 +3386,12 @@ bool exrImage::save( const char* file, const CMedia* img,
         switch( pf )
         {
             case image_type::kLumma:
-                offsets[3] = total_size = (unsigned)dw*dh*size;
+                total_size = dw*dh*size;
+                offsets[3] = (unsigned)total_size;
                 offsets[1] = offsets[2] = 0;
                 break;
             case image_type::kLummaA:
-                offsets[3] = (unsigned)dw*dh*size;
+                offsets[3] = dw*dh*(unsigned)size;
                 offsets[1] = offsets[2] = 0;
                 total_size = offsets[3]*2;
                 break;
@@ -3517,7 +3518,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
 
-        uint8_t* base = (uint8_t*) new aligned16_uint8_t[total_size];
+        uint8_t* base = (uint8_t*) new uint8_t[total_size];
         bufs.push_back( base );
 
 
@@ -3607,7 +3608,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         {
             size_t t = size;
 
-            for ( unsigned j = 0; j < 5; ++j )
+            for ( unsigned j = 0; j < 6; ++j )
             {
                 xs[j] = t;
             }
@@ -3635,7 +3636,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
 
 
-        int start = (-dx - dy * dw) * size * channels;
+        int start = (-dx - dy * dw) * (int)size * channels;
         base += start;
 
         int idx = 0;
@@ -3679,7 +3680,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                 dh = pic->height();
                 total_size = dw*dh*size; // *1 (channels)
 
-                base = (uint8_t*) new aligned16_uint8_t[total_size];
+                base = (uint8_t*) new uint8_t[total_size];
                 bufs.push_back( base );
 
                 copy_pixel_data( pic, save_type, base, total_size, false );
@@ -3701,13 +3702,14 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
 
-
     }
 
+    assert0( headers.size() == fbs.size() );
+    assert0( fbs.size() == numParts );
 
     try {
         MultiPartOutputFile multi( file, &(headers[0]), 
-                                   headers.size() );
+                                   (int)headers.size() );
         for ( unsigned part = 0; part < numParts; ++part )
         {
             OutputPart out( multi, part );
@@ -3722,8 +3724,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         LOG_ERROR( e.what() );
         return false;
     }
-
-    assert0( fbs.size() == headers.size() );
 
     Buffers::iterator i = bufs.begin();
     Buffers::iterator e = bufs.end();
