@@ -650,7 +650,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
 		   (int(*)(int)) tolower);
    std::string ext = tmp.c_str() + tmp.size() - 4;
 
-   ImageOpts* opts = ImageOpts::build( ext );
+   ImageOpts* opts = ImageOpts::build( ext, image->has_deep_data() );
    if ( opts->active() )
    {
        // Set icon back to WAIT
@@ -773,15 +773,18 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    {
        mrv::media fg = uiMain->uiView->foreground();
 
-       ipts = ImageOpts::build( ext );
+       img = fg->image();
+
+       bool has_deep_data = false;
+       if ( img ) has_deep_data = img->has_deep_data();
+
+       ipts = ImageOpts::build( ext, has_deep_data );
        if ( !fg || !ipts->active() ) {
            delete ipts;
            return;
        }
        // ipts->opengl( opengl );
 
-
-       img = fg->image();
 
        save_xml( img, ipts, file );
    }
