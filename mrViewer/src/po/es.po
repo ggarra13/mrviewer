@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-06-15 08:56-0300\n"
+"POT-Creation-Date: 2017-06-15 09:12-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -913,13 +913,13 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1458 core/CMedia.cpp:1541 core/exrImage.cpp:3233
+#: core/CMedia.cpp:1458 core/CMedia.cpp:1541 core/exrImage.cpp:3231
 #: core/wandImage.cpp:702 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5503
 #: gui/mrvImageView.cpp:5899 gui/mrvImageView.cpp:5917
 msgid "Alpha"
 msgstr "Alfa"
 
-#: core/CMedia.cpp:1460 core/CMedia.cpp:1541 core/exrImage.cpp:3231
+#: core/CMedia.cpp:1460 core/CMedia.cpp:1541 core/exrImage.cpp:3229
 #: core/wandImage.cpp:700 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5484
 #: gui/mrvImageView.cpp:5900
 msgid "Alpha Overlay"
@@ -1200,7 +1200,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1798
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2573
-#: core/CMedia.cpp:1474 core/CMedia.cpp:1540 core/exrImage.cpp:3233
+#: core/CMedia.cpp:1474 core/CMedia.cpp:1540 core/exrImage.cpp:3231
 #: core/wandImage.cpp:702 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5498
 #: gui/mrvImageView.cpp:5899
 msgid "Blue"
@@ -1479,9 +1479,9 @@ msgstr "Codecs"
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:125
 #: core/CMedia.cpp:1471 core/CMedia.cpp:1539 core/exrImage.cpp:2970
-#: core/exrImage.cpp:3235 core/exrImage.cpp:3243 core/exrImage.cpp:3255
-#: core/exrImage.cpp:3260 core/exrImage.cpp:3262 core/exrImage.cpp:3298
-#: core/exrImage.cpp:3329 core/wandImage.cpp:661 core/wandImage.cpp:723
+#: core/exrImage.cpp:3233 core/exrImage.cpp:3241 core/exrImage.cpp:3253
+#: core/exrImage.cpp:3258 core/exrImage.cpp:3260 core/exrImage.cpp:3296
+#: core/exrImage.cpp:3327 core/wandImage.cpp:661 core/wandImage.cpp:723
 #: gui/mrvImageView.cpp:173 gui/mrvImageView.cpp:5306 gui/mrvImageView.cpp:5903
 #: gui/mrvImageView.cpp:6000
 msgid "Color"
@@ -2684,7 +2684,7 @@ msgstr "CPS: %.3f"
 msgid "Failed "
 msgstr "Falló "
 
-#: core/exrImage.cpp:3331
+#: core/exrImage.cpp:3329
 msgid "Failed setting layer to "
 msgstr "Falló setear la capa a "
 
@@ -3060,7 +3060,7 @@ msgstr "Obtuve: "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1797
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2555
-#: core/CMedia.cpp:1473 core/CMedia.cpp:1539 core/exrImage.cpp:3232
+#: core/CMedia.cpp:1473 core/CMedia.cpp:1539 core/exrImage.cpp:3230
 #: core/wandImage.cpp:701 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5493
 #: gui/mrvImageView.cpp:5898
 msgid "Green"
@@ -3772,7 +3772,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1799
-#: core/CMedia.cpp:1486 core/CMedia.cpp:1541 core/exrImage.cpp:3231
+#: core/CMedia.cpp:1486 core/CMedia.cpp:1541 core/exrImage.cpp:3229
 #: core/wandImage.cpp:700 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:5507
 #: gui/mrvImageView.cpp:5901 gui/mrvImageInformation.cpp:807
 msgid "Lumma"
@@ -4794,7 +4794,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1796
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-75-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2537
-#: core/CMedia.cpp:1472 core/CMedia.cpp:1539 core/exrImage.cpp:3232
+#: core/CMedia.cpp:1472 core/CMedia.cpp:1539 core/exrImage.cpp:3230
 #: core/wandImage.cpp:701 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:5488
 #: gui/mrvImageView.cpp:5898
 msgid "Red"
