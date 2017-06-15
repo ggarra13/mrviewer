@@ -3209,8 +3209,6 @@ bool exrImage::save( const char* file, const CMedia* img,
                     }
                 }
 
-                if ( headers.empty() ) continue; // should never happen
-
                 Header& hdr = headers.back();
                 
                 if ( !suffix.empty() )
