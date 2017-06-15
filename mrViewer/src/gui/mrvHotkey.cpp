@@ -136,6 +136,7 @@ Hotkey kCloneImage( false, false, false, false, 0 );
 
 Hotkey kPreloadCache( false, false, false, false, 'p' );
 Hotkey kClearCache( false, false, false, false, 'k' );
+Hotkey kClearSingleFrameCache( false, false, false, false, 'u' );
 
 Hotkey kSetInPoint( false, false, false, false, 'i' );
 Hotkey kSetOutPoint( false, false, false, false, 'o' );
@@ -258,6 +259,7 @@ HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
 HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
 HotkeyEntry( _("Preload Image Cache"), kPreloadCache),
 HotkeyEntry( _("Clear Image Cache"), kClearCache),
+HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
 HotkeyEntry( _("Stop"), kStop),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
 HotkeyEntry( _("Next Image"), kNextImage ),

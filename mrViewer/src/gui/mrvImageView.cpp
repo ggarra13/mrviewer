@@ -313,6 +313,17 @@ void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
     v->clear_caches();
 }
 
+void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media fg = v->foreground();
+    if (!fg) return;
+
+    mrv::CMedia* img = fg->image();
+    img->update_frame( img->frame() );
+    img->cache( img->hires() );
+    v->redraw();
+}
+
 void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
   b->next_image();
@@ -2707,7 +2718,11 @@ int ImageView::leftMouseDown(int x, int y)
             if ( CMedia::preload_cache() ) item->set();
 
             menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
-                      (fltk::Callback*)clear_image_cache_cb, this,
+                      (fltk::Callback*)clear_image_cache_cb, this );
+
+            menu.add( _("Image/Update Single Frame in Cache"),
+                      kClearSingleFrameCache.hotkey(),
+                      (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
 
@@ -4456,6 +4471,11 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kClearCache.match( rawkey ) )
     {
         clear_image_cache_cb( NULL, this );
+        return 1;
+    }
+    else if ( kClearSingleFrameCache.match( rawkey ) )
+    {
+        update_frame_cb( NULL, this );
         return 1;
     }
     else if ( kFirstFrame.match( rawkey ) ) 
