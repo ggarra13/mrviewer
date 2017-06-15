@@ -59,7 +59,7 @@ class ImageOpts
     bool ACES_metadata() const { return _ACESmetadata; }
     void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
-    static ImageOpts* build( std::string ext );
+    static ImageOpts* build( std::string ext, const bool has_deep_data );
 };
 
 
@@ -69,12 +69,14 @@ class EXROpts : public ImageOpts
     Imf::Compression _compression;
     Imf::PixelType   _pixel_type;
     float            _dwa_compression_level;
+    bool             _save_deep_data;
   public:
     EXROpts( bool aces, bool all_layers ) : 
     ImageOpts( aces, all_layers ),
     _compression( Imf::ZIPS_COMPRESSION ),
     _pixel_type( Imf::HALF ),
-    _dwa_compression_level( 45.0f )
+    _dwa_compression_level( 45.0f ),
+    _save_deep_data( false )
     {
     }
 
@@ -87,6 +89,8 @@ class EXROpts : public ImageOpts
     float compression_level() const { return _dwa_compression_level; }
     void compression_level( float p ) { _dwa_compression_level = p; }
 
+    bool save_deep_data() const { return _save_deep_data; }
+    void save_deep_data( const bool t ) { _save_deep_data = t; }
 
 };
 
