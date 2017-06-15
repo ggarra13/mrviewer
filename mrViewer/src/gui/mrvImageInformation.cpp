@@ -141,12 +141,80 @@ void cb_Cancel(fltk::Button*, fltk::Window* v) {
   v->make_exec_return(false);
 }
 
+
+static void cb_Quick(fltk::Choice* o, void*) {
+  uiKey->text( o->child( o->value() )->label() );
+}
+
 fltk::Window* make_iptc_add_window() {
+  fltk::Window* w;
+   {fltk::Window* o = new fltk::Window(435, 260, _("Add IPTC Attribute"));
+    w = o;
+    o->shortcut(0xff1b);
+    o->begin();
+     {fltk::Choice* o = new fltk::Choice(70, 53, 270, 26, _("Quick Selection"));
+      o->callback((fltk::Callback*)cb_Quick);
+      o->align(fltk::ALIGN_TOP);
+      o->begin();
+      new fltk::Item(_("Image Name"));
+      new fltk::Item(_("Edit Status"));
+      new fltk::Item(_("Priority"));
+      new fltk::Item(_("Category"));
+      new fltk::Item(_("Supplemental Category"));
+      new fltk::Item(_("Fixture Identifier"));
+      new fltk::Item(_("Keyword"));
+      new fltk::Item(_("Release Date"));
+      new fltk::Item(_("Release Time"));
+      new fltk::Item(_("Special Instructions"));
+      new fltk::Item(_("Reference Service"));
+      new fltk::Item(_("Reference Date"));
+      new fltk::Item(_("Reference Number"));
+      new fltk::Item(_("Created Date"));
+      new fltk::Item(_("Created Time"));
+      new fltk::Item(_("Originating Program"));
+      new fltk::Item(_("Program Version"));
+      new fltk::Item(_("Object Cycle"));
+      new fltk::Item(_("Byline"));
+      new fltk::Item(_("Byline Title"));
+      new fltk::Item(_("City"));
+      new fltk::Item(_("Province State"));
+      new fltk::Item(_("Country Code"));
+      new fltk::Item(_("Country"));
+      new fltk::Item(_("Original Transmission Reference"));
+      new fltk::Item(_("Headline"));
+      new fltk::Item(_("Credit"));
+      new fltk::Item(_("Src"));
+      new fltk::Item(_("Copyright String"));
+      new fltk::Item(_("Caption"));
+      new fltk::Item(_("Local Caption"));
+      new fltk::Item(_("Caption Writer"));
+      o->end();
+    }
+     {fltk::Input* o = uiKey = new fltk::Input(70, 101, 270, 27, _("Keyword"));
+      o->align(fltk::ALIGN_TOP);
+    }
+     {fltk::Input* o = uiValue = new fltk::Input(70, 148, 270, 27, _("Value"));
+      o->align(fltk::ALIGN_TOP);
+    }
+     {fltk::Button* o = new fltk::Button(115, 190, 86, 41, _("OK"));
+      o->callback((fltk::Callback*)cb_OK, (void*)(w));
+    }
+     {fltk::Button* o = new fltk::Button(224, 190, 93, 41, _("Cancel"));
+      o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+    }
+    o->end();
+    o->set_modal();
+    o->resizable(o);
+  }
+  return  w;
+}
+
+fltk::Window* make_exif_add_window() {
   fltk::Window* w;
    {fltk::Window* o = new fltk::Window(405, 100);
     w = o;
     o->shortcut(0xff1b);
-    o->label( _("Add Attribute") );
+    o->label( _("Add EXIF Attribute") );
     o->begin();
     {fltk::Input* o = uiKey = new fltk::Input(10, 35, 192, 25, _("Name"));
         o->text( N_("timecode") );
@@ -169,12 +237,14 @@ fltk::Window* make_iptc_add_window() {
   return  w;
 }
 
-fltk::Window* make_iptc_remove_window( CMedia::Attributes& attrs ) {
+fltk::Window* make_remove_window( CMedia::Attributes& attrs, const char* lbl ) {
   fltk::Window* w;
    {fltk::Window* o = new fltk::Window(405, 100);
     w = o;
     o->shortcut(0xff1b);
-    o->label( _("Remove Attribute") );
+    char buf[128];
+    sprintf( buf, _( "Remove %s Attribute" ), lbl );
+    o->label( buf );
     o->begin();
     {fltk::Choice* o =
         uiKeyRemove = new fltk::Choice(10, 35, 192, 25, _("Name"));
@@ -213,7 +283,8 @@ void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
     std::string value = uiValue->value();
   
     CMedia::Attributes& attrs = img->iptc();
-    if ( attrs.find( key ) != attrs.end() )
+    CMedia::Attributes& exifs = img->exif();
+    if ( attrs.find( key ) != attrs.end() || exifs.find( key ) != exifs.end() )
     {
         char buf[128];
         sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
@@ -222,16 +293,82 @@ void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
     }
     else if ( key.find("timecode") != std::string::npos )
     {
-        if ( attrs.find( N_("timecode") ) != attrs.end() ||
-             attrs.find( N_("Video timecode") ) != attrs.end() )
+        if ( attrs.find( N_("Video timecode") ) != attrs.end() ||
+             exifs.find( N_("Video timecode") ) != exifs.end() )
         {
-            mrvALERT( _("timecode or Video timecode attribute already exists") );
+            mrvALERT( _("Video timecode attribute already exists") );
             return;
         }
         img->process_timecode( value.c_str() );
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
     }
     attrs.insert( std::make_pair(key, value) );
+    info->refresh();
+}
+
+
+void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    if (!img) return;
+
+    fltk::Window* w = make_exif_add_window();
+    if ( ! w->exec() ) return;
+
+    std::string key = uiKey->value();
+    std::string value = uiValue->value();
+  
+    CMedia::Attributes& attrs = img->exif();
+    CMedia::Attributes& iptcs = img->iptc();
+    if ( attrs.find( key ) != attrs.end() || iptcs.find( key ) != iptcs.end() )
+    {
+        char buf[128];
+        sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
+        mrvALERT( buf );
+        return;
+    }
+    else if ( key.find("timecode") != std::string::npos )
+    {
+        if ( attrs.find( N_("Video timecode") ) != attrs.end() ||
+             iptcs.find( N_("Video timecode") ) != iptcs.end() )
+        {
+            mrvALERT( _("Video timecode attribute already exists") );
+            return;
+        }
+        img->process_timecode( value.c_str() );
+        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
+    }
+    attrs.insert( std::make_pair(key, value) );
+    info->refresh();
+}
+
+
+void remove_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    if (!img) return;
+    
+    CMedia::Attributes& attrs = img->exif();
+
+    fltk::Window* w = make_remove_window(attrs, "EXIF");
+    if ( ! w->exec() ) return;
+
+    std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
+  
+    CMedia::Attributes::iterator i = attrs.find( key );
+    if ( i == attrs.end() )
+    {
+        char buf[128];
+        sprintf( buf, _("No attribute named '%s'"), key.c_str() );
+        mrvALERT( buf );
+        return;
+    }
+    if ( key.find( "timecode" ) != std::string::npos )
+    {
+        img->timecode( 0 );
+        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
+    }
+    attrs.erase( i );
     info->refresh();
 }
 
@@ -243,7 +380,7 @@ void remove_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
     
     CMedia::Attributes& attrs = img->iptc();
 
-    fltk::Window* w = make_iptc_remove_window(attrs);
+    fltk::Window* w = make_remove_window(attrs, "IPTC");
     if ( ! w->exec() ) return;
 
     std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
@@ -318,6 +455,14 @@ void remove_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
      
 	 fltk::Menu menu(0,0,0,0);
 
+	  menu.add( _("Add/EXIF/Metadata"), 0,
+                    (fltk::Callback*)add_exif_string_cb,
+                    this);
+          
+	  menu.add( _("Remove/EXIF/Metadata"), 0,
+                    (fltk::Callback*)remove_exif_string_cb,
+                    this);
+          
 	  menu.add( _("Add/IPTC/Metadata"), 0,
                     (fltk::Callback*)add_iptc_string_cb,
                     this);
@@ -379,9 +524,22 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) return;
 
-    CMedia::Attributes& attrs = img->iptc();
+    CMedia::Attributes& attrs = img->exif();
     CMedia::Attributes::iterator i = attrs.begin();
     CMedia::Attributes::iterator e = attrs.end();
+    for ( ; i != e; ++i )
+    {
+        if ( i->first == N_("timecode") ||
+             i->first == N_("Video timecode") ||
+             i->first == N_("Timecode") )
+        {
+            i->second = w->text();
+        }
+    }
+
+    CMedia::Attributes& atts = img->iptc();
+    i = atts.begin();
+    e = atts.end();
     for ( ; i != e; ++i )
     {
         if ( i->first == N_("timecode") ||
@@ -997,20 +1155,20 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
         {
-            if ( i->first == N_("timecode") ||
-                 i->first == N_("Timecode") || 
-                 i->first == N_("Video timecode") )
-            {
-                add_text( i->first.c_str(),
-                          "Timecode start (editable) press TAB to accept",
-                          i->second.c_str(), true,
-                          (fltk::Callback*)timecode_cb );
-            }
-            else
-            {
-                add_text( i->first.c_str(), i->first.c_str(),
-                          i->second.c_str(), false );
-            }
+              if ( i->first == N_("timecode") ||
+                   i->first == N_("Timecode") || 
+                   i->first == N_("Video timecode") )
+              {
+                  add_text( i->first.c_str(),
+                            "Timecode start (editable) press TAB to accept",
+                            i->second.c_str(), true,
+                            (fltk::Callback*)timecode_cb );
+              }
+              else
+              {
+                  add_text( i->first.c_str(), i->first.c_str(),
+                            i->second.c_str(), false );
+              }
         }
 
 	m_curr->relayout();
@@ -1027,7 +1185,16 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	  {
-              if ( i->first == _("Mipmap Levels") )
+              if ( i->first == N_("timecode") ||
+                   i->first == N_("Timecode") || 
+                   i->first == N_("Video timecode") )
+              {
+                  add_text( i->first.c_str(),
+                            "Timecode start (editable) press TAB to accept",
+                            i->second.c_str(), true,
+                            (fltk::Callback*)timecode_cb );
+              }
+              else if ( i->first == _("Mipmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
