@@ -103,6 +103,7 @@ void fill_ignore_attr()
     ignore.insert( "chunkCount" );
     ignore.insert( "dataWindow" );
     ignore.insert( "displayWindow" );
+    ignore.insert( "framesPerSecond" );
     ignore.insert( "lineOrder" );
     ignore.insert( "pixelAspectRatio" );
     ignore.insert( "screenWindowCenter" );
@@ -339,12 +340,12 @@ bool exrImage::channels_order(
    if ( numChannels == 0 )
    {
        if ( channel() )
-           LOG_ERROR( _("Image file \"") << filename() << 
+           IMG_ERROR( _("Image file \"") << filename() << 
                       _("\" has no channels named with prefix \"") 
                       << channel() << "\"." );
        else
        {
-           LOG_ERROR( _("Image file \"") << filename() << 
+           IMG_ERROR( _("Image file \"") << filename() << 
                       _("\" has no channels.") );
        }
        return false;
@@ -2351,7 +2352,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
            catch( const std::exception& e )
            {
-               LOG_ERROR( e.what() );
+               IMG_ERROR( e.what() );
                return false;
            }
 
@@ -2442,7 +2443,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          }
          catch( const std::exception& e )
          {
-             LOG_ERROR( e.what() );
+             IMG_ERROR( e.what() );
              return false;
          }
       }
@@ -2455,7 +2456,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          }
          catch( const std::exception& e )
          {
-             LOG_ERROR( e.what() );
+             IMG_ERROR( e.what() );
              return false;
          }
       }
@@ -3480,6 +3481,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
         add_layer( headers, fbs, names, layers,
                    save_type, img, opts, root, layer, x );
+        save_attributes( img, headers[0], opts );
     }
 
 
