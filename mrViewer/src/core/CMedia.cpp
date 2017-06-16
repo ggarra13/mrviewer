@@ -1239,7 +1239,6 @@ std::string CMedia::sequence_filename( const boost::int64_t frame ) const
  */
 bool CMedia::has_changed()
 {
-    return false;
   struct stat sbuf;
 
   SCOPED_LOCK( _mutex );
@@ -1268,14 +1267,17 @@ bool CMedia::has_changed()
 	   // update frame...
 	   _sequence[idx].reset();
 
+           _is_thumbnail = true;  // to avoid printing errors
            if ( fetch( f ) )
            {
+               _is_thumbnail = false;
                _mtime = sbuf.st_mtime;
                _ctime = sbuf.st_ctime;
                cache( _hires );
                refresh();
                return true;
            }
+           _is_thumbnail = false;
            return false;
 	}
     }
@@ -1290,15 +1292,17 @@ bool CMedia::has_changed()
            ( _ctime != sbuf.st_ctime ) )
       {
           boost::int64_t f = handle_loops( _frame );
+          _is_thumbnail = true; // to avoid printing errors
           if ( fetch( f ) )
           {
               _mtime = sbuf.st_mtime;
               _ctime = sbuf.st_ctime;
               cache( _hires );
               refresh();
+              _is_thumbnail = false;
               return true;
           }
-               
+          _is_thumbnail = false;
           return false;
       }
     }
