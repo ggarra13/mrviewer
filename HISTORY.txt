@@ -1,15 +1,20 @@
 v3.6.9   - Bug fixed saving OpenEXR's with deep data.  Now it is
 	   a saving option.  Note that this mainly copies the
-	   file.
+	   file and changes the metadata only.
 	 - mrViewer now retrieves all metadata from an OpenEXR file.
+	   It converts all of the data to strings.
 	 - mrViewer saves all metadata but as string attributes.
+	 - Fixed Preferences->Loading->Auto loading of images when
+	   changed on disk. Previously, it was a no-op.  Now it
+	   properly updates the changed image.
 	 - Added an Update Frame in Cache (shortcut 'u') to update
-	   only a single frame in the cache.
+	   only a single frame in the cache.  It reloads the image
+	   from disk.
 	 - Bug fixed saving of all layers when OpenEXR image had
 	   Z and ZBack channels.  Previously, this would crash.
 	 - Added both EXIF and IPTC adding and removing of
 	   attributes.
-	 - Fixed saving of floating point in wand images.
+	 - Fixed saving of metadata on OpenEXR images with no layers.
 
 v3.6.8   - Made timecode start editable in the Media Info Window.
 	   Just type a new timecode and press TAB.
