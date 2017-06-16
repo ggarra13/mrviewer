@@ -1055,18 +1055,20 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     {
         Attributes::const_iterator i = _exif.begin();
         Attributes::const_iterator e = _exif.end();
-        char buf[64];
         for ( ; i != e; ++i )
         {
             MagickSetImageProperty( wand, i->first.c_str(), i->second.c_str() );
         }
 
+        char buf[12];
+        setlocale( LC_NUMERIC, "C" );  // Set locale to C
         sprintf( buf, "%2.4f", _fps );
         MagickSetImageProperty( wand, "dpx:film.frame_rate", buf );
         MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
+        setlocale( LC_NUMERIC, "" );  // Return to our locale
 
-        sprintf( buf, "%2.4f", _gamma );
-        MagickSetImageProperty( wand, "dpx:television.gamma", buf );
+        //sprintf( buf, "%2.4f", _gamma );
+        //MagickSetImageProperty( wand, "dpx:television.gamma", buf );
     }
 
     {
