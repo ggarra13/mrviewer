@@ -91,6 +91,31 @@ float exrImage::_default_gamma = 2.2f;
 Imf::Compression exrImage::_default_compression = Imf::PIZ_COMPRESSION;
 float exrImage::_default_dwa_compression = 45.0f;
 
+static stringSet ignore;
+
+void fill_ignore_attr()
+{
+    ignore.insert( "CameraFilmApertureHorizontal" );
+    ignore.insert( "CameraFilmApertureVertical" );
+    ignore.insert( "CameraFocalLength" );
+    ignore.insert( "channels" );
+    ignore.insert( "compression" );
+    ignore.insert( "chunkCount" );
+    ignore.insert( "dataWindow" );
+    ignore.insert( "displayWindow" );
+    ignore.insert( "lineOrder" );
+    ignore.insert( "pixelAspectRatio" );
+    ignore.insert( "screenWindowCenter" );
+    ignore.insert( "screenWindowWidth" );
+    ignore.insert( "name" );
+    ignore.insert( "type" );
+    ignore.insert( "version" );
+    ignore.insert( "view" );
+    // ignore.insert( "worldToCamera" );
+    // ignore.insert( "worldToNDC" );
+}
+
+
   const char* exrImage::kCompression[] = {
     _("None"),
     _("RLE"),
@@ -169,6 +194,8 @@ exrImage::exrImage() :
   _aces( false )
   {
       st[0] = st[1] = -1;
+
+      if ( ignore.empty() ) fill_ignore_attr();
   }
 
   exrImage::~exrImage()
@@ -1411,16 +1438,181 @@ void exrImage::read_header_attr( const Imf::Header& h,
       Imf::Header::ConstIterator e = h.end();
 
       stringSet::const_iterator end = attrs.end();
-      
+       
       for ( ; i != e; ++i )
       {
           const std::string& name = i.name();
           if ( attrs.find( name ) != end ) continue;
-
+          if ( ignore.find( name ) != ignore.end() ) continue;
           
           const Attribute& attr = i.attribute();
+          
+          const Imf::Box2iAttribute* b2i =
+          dynamic_cast< const Imf::Box2iAttribute* >( &attr );
+          const Imf::Box2fAttribute* b2f =
+          dynamic_cast< const Imf::Box2fAttribute* >( &attr );
+          const Imf::TimeCodeAttribute* tm =
+          dynamic_cast< const Imf::TimeCodeAttribute* >( &attr );
+          const Imf::M33dAttribute* m33d =
+          dynamic_cast< const Imf::M33dAttribute* >( &attr );
+          const Imf::M33fAttribute* m33f =
+          dynamic_cast< const Imf::M33fAttribute* >( &attr );
+          const Imf::M44dAttribute* m44d =
+          dynamic_cast< const Imf::M44dAttribute* >( &attr );
+          const Imf::M44fAttribute* m44f =
+          dynamic_cast< const Imf::M44fAttribute* >( &attr );
+          const Imf::V3dAttribute* v3d =
+          dynamic_cast< const Imf::V3dAttribute* >( &attr );
+          const Imf::V3fAttribute* v3f =
+          dynamic_cast< const Imf::V3fAttribute* >( &attr );
+          const Imf::V3iAttribute* v3i =
+          dynamic_cast< const Imf::V3iAttribute* >( &attr );
+          const Imf::RationalAttribute* rat =
+          dynamic_cast< const Imf::RationalAttribute* >( &attr );
+          const Imf::V2dAttribute* v2d =
+          dynamic_cast< const Imf::V2dAttribute* >( &attr );
+          const Imf::V2fAttribute* v2f =
+          dynamic_cast< const Imf::V2fAttribute* >( &attr );
+          const Imf::V2iAttribute* v2i =
+          dynamic_cast< const Imf::V2iAttribute* >( &attr );
+          const Imf::IntAttribute* intg =
+          dynamic_cast< const Imf::IntAttribute* >( &attr );
+          const Imf::FloatAttribute* flt =
+          dynamic_cast< const Imf::FloatAttribute* >( &attr );
           const Imf::StringAttribute* str =
           dynamic_cast< const Imf::StringAttribute* >( &attr );
+          
+          if ( b2i )
+          {
+              const Imath::Box2i& t = b2i->value();
+              char buf[128];
+              sprintf( buf, "%d %d %d %d", t.min.x, t.min.y, t.max.x, t.max.y );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( b2f )
+          {
+              const Imath::Box2f& t = b2f->value();
+              char buf[128];
+              sprintf( buf, "%g %g %g %g", t.min.x, t.min.y, t.max.x, t.max.y );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( tm )
+          {
+              const Imf::TimeCode& t = tm->value();
+              char buf[16];
+              if ( t.dropFrame() )
+              {
+                  sprintf( buf, "%02d;%02d;%02d;%02d", t.hours(),
+                           t.minutes(), t.seconds(), t.frame() );
+              }
+              else
+              {
+                  sprintf( buf, "%02d:%02d:%02d:%02d", t.hours(),
+                           t.minutes(), t.seconds(), t.frame() );
+              }
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( m33d )
+          {
+              const Imath::M33d& m = m33d->value();
+              char buf[256];
+              sprintf( buf, "%g %g %g %g %g %g %g %g %g",
+                       m[0][0], m[0][1], m[0][2], 
+                       m[1][0], m[1][1], m[1][2],
+                       m[2][0], m[2][1], m[2][2] );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( m33f )
+          {
+              const Imath::M33f& m = m33f->value();
+              char buf[256];
+              sprintf( buf, "%g %g %g %g %g %g %g %g %g",
+                       m[0][0], m[0][1], m[0][2], 
+                       m[1][0], m[1][1], m[1][2],
+                       m[2][0], m[2][1], m[2][2] );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( m44d )
+          {
+              const Imath::M44d& m = m44d->value();
+              char buf[256];
+              sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
+                       m[0][0], m[0][1], m[0][2], m[0][3],
+                       m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
+                       m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( m44f )
+          {
+              const Imath::M44f& m = m44f->value();
+              char buf[256];
+              sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
+                       m[0][0], m[0][1], m[0][2], m[0][3],
+                       m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
+                       m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( v3d )
+          {
+              const Imath::V3d& v = v3d->value();
+              char buf[64];
+              sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( v3f )
+          {
+              const Imath::V3f& v = v3f->value();
+              char buf[64];
+              sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( v3i )
+          {
+              const Imath::V3i& v = v3i->value();
+              char buf[64];
+              sprintf( buf, "%d %d %d", v.x, v.y, v.z );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( rat )
+          {
+              const Imf::Rational& r = rat->value();
+              char buf[64];
+              sprintf( buf, "%d/%d", r.n, r.d );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( v2d )
+          {
+              const Imath::V2d& v = v2d->value();
+              char buf[64];
+              sprintf( buf, "%g %g", v.x, v.y );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( v2f )
+          {
+              const Imath::V2f& v = v2f->value();
+              char buf[64];
+              sprintf( buf, "%g %g", v.x, v.y );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( v2i )
+          {
+              const Imath::V2i& v = v2i->value();
+              char buf[64];
+              sprintf( buf, "%d %d", v.x, v.y );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( intg )
+          {
+              char buf[64];
+              sprintf( buf, "%d", intg->value() );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
+          else if ( flt )
+          {
+              char buf[64];
+              sprintf( buf, "%.8g", flt->value() );
+              _iptc.insert( std::make_pair( name, buf ) );
+          }
 
           if ( str )
           {
@@ -3012,17 +3204,6 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     fbs.push_back( fb );
 }
 
-struct SetAttr
-{
-    string      name;
-    int         part;
-    Attribute * attr;
-    
-    SetAttr (const string &name, int part, Attribute *attr):
-        name (name), part (part), attr (attr) {}
-};
-
-typedef vector <SetAttr> SetAttrVector;
 
 
 bool exrImage::save( const char* file, const CMedia* img, 
@@ -3041,9 +3222,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         using namespace Imf;
         using namespace std;
 
-	SetAttrVector attrs;
-	int part = -1;
-	int i = 1;
         
         std::string input = img->sequence_filename( img->frame() );
         MultiPartInputFile in( input.c_str() );
@@ -3052,26 +3230,29 @@ bool exrImage::save( const char* file, const CMedia* img,
 
         for (int part = 0; part < numParts; ++part)
         {
-            Header h = in.header (part);
-
-            for (int i = 0; i < attrs.size(); ++i)
+            const Header& hdr = in.header (part);
+            Header& h = const_cast< Header& >( hdr );
             {
-                const SetAttr &attr = attrs[i];
-
-                if (attr.part == -1 || attr.part == part)
+                Header::Iterator i = h.begin();
+                Header::Iterator e = h.end();
+                stringSet names;
+                for ( ; i != e; ++i )
                 {
-                    h.insert (attr.name, *attr.attr);
+                    const std::string& name = i.name();
+                    if ( ignore.find(name) != ignore.end() )
+                        continue;
+                    names.insert( name );
                 }
-                else if (attr.part < 0 || attr.part >= numParts)
+                stringSet::const_iterator j = names.begin();
+                stringSet::const_iterator je = names.end();
+                for ( ; j != je; ++j )
                 {
-                    LOG_ERROR( "Invalid part number " << attr.part << ". "
-                               "Part numbers in file " << file << " "
-                               "go from 0 to " << numParts - 1 << "." );
-
-                    return false;
+                    h.erase( *j );
                 }
             }
-
+            
+            save_attributes( img, h, opts );
+            
             headers.push_back(h);
         }
 
@@ -3081,7 +3262,6 @@ bool exrImage::save( const char* file, const CMedia* img,
             return false;
         }
         
-        save_attributes( img, headers[0], opts );
 
         try
         {
@@ -3272,6 +3452,8 @@ bool exrImage::save( const char* file, const CMedia* img,
                 add_layer( headers, fbs, names, layers,
                            save_type, img, opts, root, name, x );
 
+                if ( headers.size() == 1 )
+                    save_attributes( img, headers[0], opts );
             }
         }
     }
