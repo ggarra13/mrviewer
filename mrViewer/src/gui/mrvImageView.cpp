@@ -319,8 +319,7 @@ void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
     if (!fg) return;
 
     mrv::CMedia* img = fg->image();
-    img->update_frame( img->frame() );
-    img->cache( img->hires() );
+    img->has_changed();
     v->redraw();
 }
 
