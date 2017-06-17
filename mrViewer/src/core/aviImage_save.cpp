@@ -400,8 +400,9 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     {
         if ( i->first.find( "Audio " ) == 0 )
         {
-            std::string key = i->first;
-            std::string val = i->second;
+            std::string      key = i->first;
+            Imf::Attribute*  attr = i->second;
+            std::string      val  = CMedia::attr2str( attr );
             key = key.substr( 6, key.size() );
             av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
         }
@@ -861,7 +862,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
             ( i->first.find( "Audio " ) == 0 ) ) continue;
 
         std::string key = i->first;
-        std::string val = i->second;
+        Imf::Attribute*  attr = i->second;
+        std::string      val  = CMedia::attr2str( attr );
         if ( key.size() > 6 )
             key = key.substr( 6, key.size() );
         av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
@@ -875,7 +877,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         if ( i->first.find( "Video " ) == 0 )
         {
             std::string key = i->first;
-            std::string val = i->second;
+            Imf::Attribute*  attr = i->second;
+            std::string      val  = CMedia::attr2str( attr );
             if ( key.size() > 6 )
                 key = key.substr( 6, key.size() );
             av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
