@@ -59,6 +59,14 @@ extern "C" {
 #include <boost/exception/diagnostic_information.hpp>
 namespace fs = boost::filesystem;
 
+#include "ImfBoxAttribute.h"
+#include "ImfVecAttribute.h"
+#include "ImfMatrixAttribute.h"
+#include "ImfIntAttribute.h"
+#include "ImfRationalAttribute.h"
+#include "ImfTimeCodeAttribute.h"
+#include "ImfFloatAttribute.h"
+#include "ImfStringAttribute.h"
 
 #include "core/CMedia.h"
 #include "core/aviImage.h"
@@ -140,6 +148,170 @@ _("Decode Buffer Full"),
 const char* const CMedia::decode_error( DecodeStatus err )
 {
     return _( kDecodeStatus[err] );
+}
+
+std::string CMedia::attr2str( const Imf::Attribute* attr )
+{
+    std::string r;
+    char buf[256];
+    
+    const Imf::Box2iAttribute* b2i =
+    dynamic_cast< const Imf::Box2iAttribute* >( attr );
+    const Imf::Box2fAttribute* b2f =
+    dynamic_cast< const Imf::Box2fAttribute* >( attr );
+    const Imf::TimeCodeAttribute* tm =
+    dynamic_cast< const Imf::TimeCodeAttribute* >( attr );
+    const Imf::M33dAttribute* m33d =
+    dynamic_cast< const Imf::M33dAttribute* >( attr );
+    const Imf::M33fAttribute* m33f =
+    dynamic_cast< const Imf::M33fAttribute* >( attr );
+    const Imf::M44dAttribute* m44d =
+    dynamic_cast< const Imf::M44dAttribute* >( attr );
+    const Imf::M44fAttribute* m44f =
+    dynamic_cast< const Imf::M44fAttribute* >( attr );
+    const Imf::V3dAttribute* v3d =
+    dynamic_cast< const Imf::V3dAttribute* >( attr );
+    const Imf::V3fAttribute* v3f =
+    dynamic_cast< const Imf::V3fAttribute* >( attr );
+    const Imf::V3iAttribute* v3i =
+    dynamic_cast< const Imf::V3iAttribute* >( attr );
+    const Imf::RationalAttribute* rat =
+    dynamic_cast< const Imf::RationalAttribute* >( attr );
+    const Imf::V2dAttribute* v2d =
+    dynamic_cast< const Imf::V2dAttribute* >( attr );
+    const Imf::V2fAttribute* v2f =
+    dynamic_cast< const Imf::V2fAttribute* >( attr );
+    const Imf::V2iAttribute* v2i =
+    dynamic_cast< const Imf::V2iAttribute* >( attr );
+    const Imf::IntAttribute* intg =
+    dynamic_cast< const Imf::IntAttribute* >( attr );
+    const Imf::FloatAttribute* flt =
+    dynamic_cast< const Imf::FloatAttribute* >( attr );
+    const Imf::StringAttribute* str =
+    dynamic_cast< const Imf::StringAttribute* >( attr );
+          
+    if ( b2i )
+    {
+        const Imath::Box2i& t = b2i->value();
+        sprintf( buf, "%d %d %d %d", t.min.x, t.min.y, t.max.x, t.max.y );
+        r = buf;
+    }
+    else if ( b2f )
+    {
+        const Imath::Box2f& t = b2f->value();
+        sprintf( buf, "%g %g %g %g", t.min.x, t.min.y, t.max.x, t.max.y );
+        r = buf;
+    }
+    else if ( tm )
+    {
+        const Imf::TimeCode& t = tm->value();
+        if ( t.dropFrame() )
+        {
+            sprintf( buf, "%02d;%02d;%02d;%02d", t.hours(),
+                     t.minutes(), t.seconds(), t.frame() );
+        }
+        else
+        {
+            sprintf( buf, "%02d:%02d:%02d:%02d", t.hours(),
+                     t.minutes(), t.seconds(), t.frame() );
+        }
+        r = buf;
+    }
+    else if ( m33d )
+    {
+        const Imath::M33d& m = m33d->value();
+        sprintf( buf, "%g %g %g %g %g %g %g %g %g",
+                 m[0][0], m[0][1], m[0][2], 
+                 m[1][0], m[1][1], m[1][2],
+                 m[2][0], m[2][1], m[2][2] );
+        r = buf;
+    }
+    else if ( m33f )
+    {
+        const Imath::M33f& m = m33f->value();
+        sprintf( buf, "%g %g %g %g %g %g %g %g %g",
+                 m[0][0], m[0][1], m[0][2], 
+                 m[1][0], m[1][1], m[1][2],
+                 m[2][0], m[2][1], m[2][2] );
+        r = buf;
+    }
+    else if ( m44d )
+    {
+        const Imath::M44d& m = m44d->value();
+        sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
+                 m[0][0], m[0][1], m[0][2], m[0][3],
+                 m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
+                 m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
+        r = buf;
+    }
+    else if ( m44f )
+    {
+        const Imath::M44f& m = m44f->value();
+        sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
+                 m[0][0], m[0][1], m[0][2], m[0][3],
+                 m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
+                 m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
+        r = buf;
+    }
+    else if ( v3d )
+    {
+        const Imath::V3d& v = v3d->value();
+        sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+        r = buf;
+    }
+    else if ( v3f )
+    {
+        const Imath::V3f& v = v3f->value();
+        sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+        r = buf;
+    }
+    else if ( v3i )
+    {
+        const Imath::V3i& v = v3i->value();
+        char buf[64];
+        sprintf( buf, "%d %d %d", v.x, v.y, v.z );
+        r = buf;
+    }
+    else if ( rat )
+    {
+        const Imf::Rational& rt = rat->value();
+        sprintf( buf, "%d/%d", rt.n, rt.d );
+        r = buf;
+    }
+    else if ( v2d )
+    {
+        const Imath::V2d& v = v2d->value();
+        char buf[64];
+        sprintf( buf, "%g %g", v.x, v.y );
+        r = buf;
+    }
+    else if ( v2f )
+    {
+        const Imath::V2f& v = v2f->value();
+        sprintf( buf, "%g %g", v.x, v.y );
+        r = buf;
+    }
+    else if ( v2i )
+    {
+        const Imath::V2i& v = v2i->value();
+        sprintf( buf, "%d %d", v.x, v.y );
+        r = buf;
+    }
+    else if ( intg )
+    {
+        sprintf( buf, "%d", intg->value() );
+        r = buf;
+    }
+    else if ( flt )
+    {
+        sprintf( buf, "%.8g", flt->value() );
+        r = buf;
+    }
+    else if ( str )
+    {
+        r = str->value();
+    }
+    return r;
 }
 
 /** 
@@ -622,6 +794,23 @@ CMedia::~CMedia()
   }
 
   free( _subtitle_font ); _subtitle_font = NULL;
+
+  {
+      Attributes::iterator i = _exif.begin();
+      Attributes::iterator e = _exif.end();
+      for ( ; i != e; ++i )
+      {
+          delete i->second;
+      }
+  }
+  {
+      Attributes::iterator i = _iptc.begin();
+      Attributes::iterator e = _iptc.end();
+      for ( ; i != e; ++i )
+      {
+          delete i->second;
+      }
+  }
   
   _context = _acontext = NULL;
 }
@@ -2366,19 +2555,6 @@ CMedia::Cache CMedia::is_cache_filled(boost::int64_t frame)
 
 
 
-/** 
- * Return an EXIF attribute.
- * 
- * @param name   attribute to find
- * 
- * @return  exif attribute value or NULL if not found
- */
-const char* const CMedia::exif( const std::string& name ) const
-{
-  Attributes::const_iterator i = _exif.find( name );
-  if ( i == _exif.end() ) return NULL;
-  return i->second.c_str();
-}
 
 
 /** 
