@@ -41,6 +41,8 @@ using namespace std;
 
 #include <MagickWand/MagickWand.h>
 
+#include <ImfStringAttribute.h>
+
 #include "core/mrvImageOpts.h"
 #include "core/Sequence.h"
 #include "core/mrvColorProfile.h"
@@ -448,7 +450,8 @@ namespace mrv {
 
                  // We always add the EXIF attribute even if it passes
                  // other tests so that if user saves the file all is kept
-                 _exif.insert( std::make_pair( key, value ) );
+                 Imf::StringAttribute attr( value );
+                 _exif.insert( std::make_pair( key, attr.copy() ) );
              }
              property = GetNextImageProperty(img);
          }
@@ -548,7 +551,8 @@ namespace mrv {
 	      {
 		 (void) CopyMagickString(attribute,(char *) tmp+i,
 					 length+1);
-		 _iptc.insert( std::make_pair( tag, attribute ) );
+                 Imf::StringAttribute attr( attribute );
+		 _iptc.insert( std::make_pair( tag, attr.copy() ) );
 		 attribute=(char *) RelinquishMagickMemory(attribute);
 	      }
 	   }
@@ -1057,7 +1061,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         Attributes::const_iterator e = _exif.end();
         for ( ; i != e; ++i )
         {
-            MagickSetImageProperty( wand, i->first.c_str(), i->second.c_str() );
+            Imf::StringAttribute* attr =
+            dynamic_cast< Imf::StringAttribute* >( i->second );
+            if ( !attr ) continue;
+            
+            MagickSetImageProperty( wand, i->first.c_str(),
+                                    attr->value().c_str() );
         }
 
         char buf[12];
@@ -1076,7 +1085,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         Attributes::const_iterator e = _iptc.end();
         for ( ; i != e; ++i )
         {
-            MagickSetImageProperty( wand, i->first.c_str(), i->second.c_str() );
+            Imf::StringAttribute* attr =
+            dynamic_cast< Imf::StringAttribute* >( i->second );
+            if ( !attr ) continue;
+            
+            MagickSetImageProperty( wand, i->first.c_str(),
+                                    attr->value().c_str() );
         }
 
         // CIccProfile* p = mrv::colorProfile::get( file.c_str() );
