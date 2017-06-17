@@ -54,6 +54,8 @@
 #include <boost/thread/recursive_mutex.hpp>
 
 #include <ImfChromaticities.h>
+#include <ImfAttribute.h>
+#include <ImfTimeCode.h>
 #include <ACESclipReader.h>
 
 #include "core/mrvAlignedData.h"
@@ -118,7 +120,8 @@ class CMedia
 {
   public:
     typedef mrv::ImagePixel    Pixel;
-    typedef  std::map< std::string, std::string > Attributes;
+    // typedef  std::map< std::string, std::string > Attributes;
+    typedef  std::map< std::string, Imf::Attribute* > Attributes;
 
     typedef boost::recursive_mutex              Mutex;
     typedef boost::condition_variable_any       Condition;
@@ -897,8 +900,6 @@ class CMedia
 
     void close_audio();
 
-    const char* const exif( const std::string& name ) const;
-
     void    wait_audio();
     bool    find_audio( const boost::int64_t frame);
 
@@ -1033,8 +1034,13 @@ class CMedia
     
     inline int64_t timecode() const { return _tc_frame; }
     
+    // Process a timecode object unto _tc_frame
+    void process_timecode( const Imf::TimeCode& tc );
+    
     // Process a string like HH:MM:SS:FF or HH;MM;SS;FF unto _tc_frame
     void process_timecode( const std::string text );
+
+    static Imf::TimeCode str2timecode( const std::string text );
     
     void fetch_audio( const boost::int64_t frame );
 
@@ -1096,6 +1102,8 @@ class CMedia
     static std::string icc_profile_16bits;
     static std::string icc_profile_32bits;
     static std::string icc_profile_float;
+
+    static std::string attr2str( const Imf::Attribute* attr );
     
 
   public:
