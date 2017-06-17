@@ -86,8 +86,8 @@ static Atom fl_NET_WM_STATE;
 static Atom fl_NET_WM_STATE_FULLSCREEN;
 #endif
 
-#include "ImathMath.h" // for Math:: functions
-
+#include <ImathMath.h> // for Math:: functions
+#include <ImfRationalAttribute.h>
 
 // CORE classes
 #include "core/mrvClient.h"
@@ -2412,9 +2412,10 @@ void ImageView::draw()
       CMedia::Attributes::const_iterator e = img->iptc().end();
       for ( ; i != e; ++i )
 	{
-	  std::string text = i->first + ": " + i->second;
-	  draw_text( r, g, b, 5, y, text.c_str() );
-	  y -= yi;
+            std::string val = CMedia::attr2str( i->second );
+            std::string text = i->first + ": " + val;
+            draw_text( r, g, b, 5, y, text.c_str() );
+            y -= yi;
 	}
     }
 
@@ -5668,19 +5669,22 @@ float ImageView::calculate_fstop( float exposure ) const
     {
       CMedia* img = fg->image();
 
-      const char* fnumber = img->exif( "F Number" );
-      if ( fnumber == NULL )
-	fnumber = img->exif( "Aperture Value" );
+      CMedia::Attributes& attrs = img->exif();
+      CMedia::Attributes::const_iterator i = attrs.find( N_("F Number") );
+      if ( i == attrs.end() )
+      {
+          i = attrs.find( N_("Aperture Value") );
+      }
 
-      if ( fnumber )
-	{
-	  stringArray tokens;
-	  mrv::split_string( tokens, fnumber, "/" );
-	  if ( tokens.size() == 2 )
-	    {
-	      int num = atoi( tokens[0].c_str() );
-	      int den = atoi( tokens[1].c_str() );
-	      float exp = (float) num / (float) den;
+      if ( i != attrs.end() )
+      {
+          Imf::RationalAttribute* attr =
+          dynamic_cast< Imf::RationalAttribute* >( i->second );
+          if ( attr )
+          {
+              Imf::Rational& r = attr->value();
+
+	      float exp = (float) r.n / (float) r.d;
 
 	      seq1 = seq2 = 0.0f;
 	      base = 0.0f;
