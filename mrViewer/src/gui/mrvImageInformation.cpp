@@ -133,6 +133,8 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
     info->refresh();
 }
 
+fltk::Choice *uiType=(fltk::Choice *)0;
+
 fltk::Input *uiKey=(fltk::Input *)0;
 
 fltk::Input *uiValue=(fltk::Input *)0;
@@ -147,6 +149,26 @@ void cb_Cancel(fltk::Button*, fltk::Window* v) {
   v->make_exec_return(false);
 }
 
+
+static void cb_uiType(fltk::Choice* o, void*) {
+    std::string type = o->child( o->value() )->label();
+    if ( type == _("String") )
+        uiValue->text( _("Text") );
+    else if ( type == _("Integer") )
+        uiValue->text( N_("15") );
+    else if ( type == _("Float") || type == _("Double") )
+        uiValue->text( _("2.2") );
+    else if ( type == _("Timecode") )
+        uiValue->text( _("00:00:00:00") );
+    else if ( type == _("Vector2 Integer") )
+        uiValue->text( N_("2 5") );
+    else if ( type == _("Vector2 Float") )
+        uiValue->text( _("2.2 5.1") );
+    else if ( type == _("Vector3 Integer") )
+        uiValue->text( N_("2 5 1") );
+    else if ( type == _("Vector3 Float") )
+        uiValue->text( _("2.2 5.1 1.4") );
+}
 
 static void cb_Quick(fltk::Choice* o, void*) {
   uiKey->text( o->child( o->value() )->label() );
@@ -217,23 +239,42 @@ fltk::Window* make_iptc_add_window() {
 
 fltk::Window* make_exif_add_window() {
   fltk::Window* w;
-   {fltk::Window* o = new fltk::Window(405, 100);
+   {fltk::Window* o = new fltk::Window(405, 150);
     w = o;
     o->shortcut(0xff1b);
     o->label( _("Add EXIF Attribute") );
     o->begin();
-    {fltk::Input* o = uiKey = new fltk::Input(10, 35, 192, 25, _("Name"));
+    { fltk::Choice* o = uiType = new fltk::Choice( 10, 30, 192, 25, _("Type") );
+        o->align(fltk::ALIGN_TOP);
+        o->begin();
+        new fltk::Item( _("String") );
+        new fltk::Item( _("Integer") );
+        new fltk::Item( _("Float") );
+        new fltk::Item( _("Double") );
+        // new fltk::Item( _("Keycode") );
+        // new fltk::Item( _("Matrix33") );
+        // new fltk::Item( _("Matrix44") );
+        new fltk::Item( _("Timecode") );
+        new fltk::Item( _("Vector2 Integer") );
+        new fltk::Item( _("Vector2 Float") );
+        new fltk::Item( _("Vector3 Integer") );
+        new fltk::Item( _("Vector3 Float") );
+        o->end();
+        o->callback( (fltk::Callback*) cb_uiType, (void*)w );
+        o->value( 4 );
+    }
+    {fltk::Input* o = uiKey = new fltk::Input(10, 70, 192, 25, _("Name"));
         o->text( N_("timecode") );
         o->align(fltk::ALIGN_TOP);
     }
-    {fltk::Input* o = uiValue = new fltk::Input(208, 35, 192, 25, _("Value"));
+    {fltk::Input* o = uiValue = new fltk::Input(208, 70, 192, 25, _("Value"));
         o->text( N_("00:00:00:00") );
         o->align(fltk::ALIGN_TOP);
     }
-     {fltk::Button* o = new fltk::Button(115, 60, 86, 41, _("OK"));
+     {fltk::Button* o = new fltk::Button(115, 100, 86, 41, _("OK"));
       o->callback((fltk::Callback*)cb_OK, (void*)(w));
     }
-     {fltk::Button* o = new fltk::Button(224, 60, 93, 41, _("Cancel"));
+     {fltk::Button* o = new fltk::Button(224, 100, 93, 41, _("Cancel"));
       o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
     }
     o->end();
@@ -277,6 +318,109 @@ fltk::Window* make_remove_window( CMedia::Attributes& attrs, const char* lbl ) {
   return  w;
 }
 
+void add_attribute( CMedia::Attributes& attrs,
+                    CMedia::Attributes& other,
+                    CMedia* img )
+{
+    std::string type = uiType->child( uiType->value() )->label();
+    std::string key = uiKey->value();
+    std::string value = uiValue->value();
+    if ( attrs.find( key ) != attrs.end() || other.find( key ) != other.end() )
+    {
+        char buf[128];
+        sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
+        mrvALERT( buf );
+        return;
+    }
+    else if ( type == _("Timecode") )
+    {
+        if ( attrs.find( N_("Video timecode") ) != attrs.end() ||
+             other.find( N_("Video timecode") ) != other.end() )
+        {
+            mrvALERT( _("Video timecode attribute already exists") );
+            return;
+        }
+
+        Imf::TimeCode t = CMedia::str2timecode( value );
+        if ( key.find("timecode") != std::string::npos )
+            img->process_timecode( t );
+        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
+        Imf::TimeCodeAttribute attr( t );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("String") )
+    {
+        Imf::StringAttribute attr( value );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Integer") )
+    {
+        int v = atoi( value.c_str() );
+        Imf::IntAttribute attr( v );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Float") )
+    {
+        float v = (float)atof( value.c_str() );
+        Imf::FloatAttribute attr( v );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Double") )
+    {
+        double v = atof( value.c_str() );
+        Imf::DoubleAttribute attr( v );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Vector2 Integer") )
+    {
+        int x,y;
+        int n = sscanf( value.c_str(), "%d %d", &x, &y );
+        if ( n != 2 )
+        {
+            mrvALERT("Could not find two integers for vector" );
+            return;
+        }
+        Imf::V2iAttribute attr( Imath::V2i( x, y ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Vector2 Float") )
+    {
+        double x,y;
+        int n = sscanf( value.c_str(), "%g %g", &x, &y );
+        if ( n != 2 )
+        {
+            mrvALERT("Could not find two floats for vector" );
+            return;
+        }
+        Imf::V2fAttribute attr( Imath::V2f( x, y ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Vector3 Integer") )
+    {
+        int x,y,z;
+        int n = sscanf( value.c_str(), "%d %d %d", &x, &y, &z );
+        if ( n != 3 )
+        {
+            mrvALERT("Could not find three integers for vector" );
+            return;
+        }
+        Imf::V3iAttribute attr( Imath::V3i( x, y, z ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Vector3 Float") )
+    {
+        double x,y,z;
+        int n = sscanf( value.c_str(), "%g %g %g", &x, &y, &z );
+        if ( n != 3 )
+        {
+            mrvALERT("Could not find three floats for vector" );
+            return;
+        }
+        Imf::V3fAttribute attr( Imath::V3f( x, y, z ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+}
+
 void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
@@ -285,35 +429,42 @@ void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
     fltk::Window* w = make_iptc_add_window();
     if ( ! w->exec() ) return;
 
-    std::string key = uiKey->value();
-    std::string value = uiValue->value();
   
     CMedia::Attributes& attrs = img->iptc();
     CMedia::Attributes& exifs = img->exif();
-    if ( attrs.find( key ) != attrs.end() || exifs.find( key ) != exifs.end() )
-    {
-        char buf[128];
-        sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
-        mrvALERT( buf );
-        return;
-    }
-    else if ( key.find("timecode") != std::string::npos )
-    {
-        if ( attrs.find( N_("Video timecode") ) != attrs.end() ||
-             exifs.find( N_("Video timecode") ) != exifs.end() )
-        {
-            mrvALERT( _("Video timecode attribute already exists") );
-            return;
-        }
-        img->process_timecode( value.c_str() );
-        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
-    }
-    const Imf::TimeCode tc = CMedia::str2timecode( value );
-    Imf::TimeCodeAttribute attr( tc );
-    attrs.insert( std::make_pair(key, attr.copy() ) );
+    add_attribute( attrs, exifs, img );
     info->refresh();
+    delete w;
 }
 
+
+void toggle_modify_iptc_cb( fltk::Widget* widget, ImageInformation* info )
+{
+    std::string key = widget->label();
+    fltk::Group* g = widget->parent();
+    for ( ; g != NULL; g = g->parent() )
+    {
+        if ( !g->label() ) break;
+        std::string label = g->label();
+        if ( label == "IPTC" || label == "EXIF" ) break;
+        key = label + "/" + key;
+    }
+
+    g = (fltk::Group*)info->m_iptc->child(1);
+    g = (fltk::Group*)g->child(0);
+    for ( int i = 0; i < g->children(); ++i )
+    {
+        fltk::Group* sg = (fltk::Group*)g->child(i);
+        fltk::Widget* w = sg->child(0);
+        if ( key == w->label() )
+        {
+            if ( sg->active() )
+                sg->deactivate();
+            else
+                sg->activate();
+        }
+    }
+}
 
 void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
 {
@@ -328,28 +479,9 @@ void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
   
     CMedia::Attributes& attrs = img->exif();
     CMedia::Attributes& iptcs = img->iptc();
-    if ( attrs.find( key ) != attrs.end() || iptcs.find( key ) != iptcs.end() )
-    {
-        char buf[128];
-        sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
-        mrvALERT( buf );
-        return;
-    }
-    else if ( key.find("timecode") != std::string::npos )
-    {
-        if ( attrs.find( N_("Video timecode") ) != attrs.end() ||
-             iptcs.find( N_("Video timecode") ) != iptcs.end() )
-        {
-            mrvALERT( _("Video timecode attribute already exists") );
-            return;
-        }
-        img->process_timecode( value.c_str() );
-        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
-    }
-    Imf::TimeCode t = CMedia::str2timecode( value );
-    Imf::TimeCodeAttribute attr( t );
-    attrs.insert( std::make_pair(key, attr.copy() ) );
+    add_attribute( attrs, iptcs, img );
     info->refresh();
+    delete w;
 }
 
 
@@ -360,7 +492,7 @@ void remove_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
     
     CMedia::Attributes& attrs = img->exif();
 
-    fltk::Window* w = make_remove_window(attrs, "EXIF");
+    fltk::Window* w = make_remove_window(attrs, _("EXIF") );
     if ( ! w->exec() ) return;
 
     std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
@@ -469,12 +601,24 @@ m_main( NULL )
                     (fltk::Callback*)add_exif_string_cb,
                     this);
           
-	  menu.add( _("Remove/EXIF/Metadata"), 0,
-                    (fltk::Callback*)remove_exif_string_cb,
-                    this);
-          
 	  menu.add( _("Add/IPTC/Metadata"), 0,
                     (fltk::Callback*)add_iptc_string_cb,
+                    this);
+
+
+          CMedia::Attributes& attrs = img->iptc();
+          CMedia::Attributes::iterator i = attrs.begin();
+          CMedia::Attributes::iterator e = attrs.end();
+
+          for ( ; i != e; ++i )
+          {
+              char buf[256];
+              sprintf( buf,  _("Toggle Modify/IPTC/%s"), i->first.c_str() );
+              menu.add( buf, 0, (fltk::Callback*)toggle_modify_iptc_cb, this );
+          }
+
+	  menu.add( _("Remove/EXIF/Metadata"), 0,
+                    (fltk::Callback*)remove_exif_string_cb,
                     this);
           
 	  menu.add( _("Remove/IPTC/Metadata"), 0,
@@ -544,8 +688,8 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
              i->first == N_("Timecode") )
         {
             const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
-            Imf::TimeCodeAttribute* attr = new Imf::TimeCodeAttribute( t );
-            i->second = attr;
+            Imf::TimeCodeAttribute attr( t );
+            i->second = attr.copy();
         }
     }
 
@@ -558,26 +702,9 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
              i->first == N_("Video timecode") ||
              i->first == N_("Timecode") )
         {
-            int hh, mm, ss, ff;
-            int num = sscanf( w->text(), "%02d:%02d:%02d:%02d",
-                              &hh, &mm, &ss, &ff );
-            if ( num == 4 )
-            {
-                Imf::TimeCode t( hh, mm, ss, ff );
-                Imf::TimeCodeAttribute* attr = new Imf::TimeCodeAttribute( t );
-                i->second = attr;
-            }
-            else
-            {
-                int num = sscanf( w->text(), "%02d;%02d;%02d;%02d",
-                                  &hh, &mm, &ss, &ff );
-                if ( num == 4 )
-                {
-                    Imf::TimeCode t( hh, mm, ss, ff, true );
-                    Imf::TimeCodeAttribute* attr = new Imf::TimeCodeAttribute( t );
-                    i->second = attr;
-                }
-            }
+            const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
+            Imf::TimeCodeAttribute attr( t );
+            i->second = attr.copy();
         }
     }
     img->process_timecode( w->text() );
@@ -613,6 +740,313 @@ void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
     fltk::IntInput* n = (fltk::IntInput*) data;
     n->value( (int)s->value() );
     n->do_callback();
+}
+
+static bool modify_string( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    Imf::StringAttribute attr( w->text() );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_v2i( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    int x, y;
+    int num = sscanf( w->text(), "%d %d", &x, &y );
+    if ( num != 2 ) return false;
+
+    Imath::V2i val( x, y );
+    Imf::V2iAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_v2f( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    float x, y;
+    int num = sscanf( w->text(), "%g %g %g", &x, &y );
+    if ( num != 2 ) return false;
+
+    Imath::V2f val( x, y );
+    Imf::V2fAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_v2d( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    double x, y;
+    int num = sscanf( w->text(), "%g %g %g", &x, &y );
+    if ( num != 2 ) return false;
+
+    Imath::V2d val( x, y );
+    Imf::V2dAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_v3i( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    int x, y, z;
+    int num = sscanf( w->text(), "%d %d %d", &x, &y, &z );
+    if ( num != 3 ) return false;
+
+    Imath::V3i val( x, y, z );
+    Imf::V3iAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_v3f( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    float x, y, z;
+    int num = sscanf( w->text(), "%g %g %g", &x, &y, &z );
+    if ( num != 3 ) return false;
+
+    Imath::V3f val( x, y, z );
+    Imf::V3fAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_v3d( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    double x, y, z;
+    int num = sscanf( w->text(), "%g %g %g", &x, &y, &z );
+    if ( num != 3 ) return false;
+
+    Imath::V3d val( x, y, z );
+    Imf::V3dAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_m33f( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    float m00,m01,m02,m10,m11,m12,m20,m21,m22;
+    int num = sscanf( w->text(), 
+                      "%g %g %g  %g %g %g  %g %g %g",
+                      &m00, &m01, &m02,
+                      &m10, &m11, &m12,
+                      &m20, &m21, &m22 );
+    if ( num != 9 ) return false;
+    
+    Imath::M33f val( m00,m01,m02,
+                     m10,m11,m12,
+                     m20,m21,m22 );
+    Imf::M33fAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_m33d( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    double m00,m01,m02,m10,m11,m12,m20,m21,m22;
+    int num = sscanf( w->text(), 
+                      "%g %g %g  %g %g %g  %g %g %g",
+                      &m00, &m01, &m02,
+                      &m10, &m11, &m12,
+                      &m20, &m21, &m22 );
+    if ( num != 9 ) return false;
+    
+    Imath::M33d val( m00,m01,m02,
+                     m10,m11,m12,
+                     m20,m21,m22 );
+    Imf::M33dAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_m44f( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    float m00,m01,m02,m03,m10,m11,m12,m13,m20,m21,m22,m23,m30,m31,m32,m33;
+    int num = sscanf( w->text(), 
+                      "%g %g %g %g  %g %g %g %g  %g %g %g %g  %g %g %g %g",
+                      &m00, &m01, &m02, &m03, 
+                      &m10, &m11, &m12, &m13, 
+                      &m20, &m21, &m22, &m23, 
+                      &m30, &m31, &m32, &m33 );
+    if ( num != 16 ) return false;
+    
+    Imath::M44f val( m00,m01,m02,m03,
+                     m10,m11,m12,m13,
+                     m20,m21,m22,m23,
+                     m30,m31,m32,m33 );
+    Imf::M44fAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_m44d( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    double m00,m01,m02,m03,m10,m11,m12,m13,m20,m21,m22,m23,m30,m31,m32,m33;
+    int num = sscanf( w->text(), 
+                      "%g %g %g %g  %g %g %g %g  %g %g %g %g  %g %g %g %g",
+                      &m00, &m01, &m02, &m03, 
+                      &m10, &m11, &m12, &m13, 
+                      &m20, &m21, &m22, &m23, 
+                      &m30, &m31, &m32, &m33 );
+    if ( num != 16 ) return false;
+    
+    Imath::M44d val( m00,m01,m02,m03,
+                     m10,m11,m12,m13,
+                     m20,m21,m22,m23,
+                     m30,m31,m32,m33 );
+    Imf::M44dAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
+{
+    if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
+        return modify_string( w, i );
+    else if ( dynamic_cast< Imf::M44dAttribute* >( i->second ) != NULL )
+        return modify_m44d( w, i );
+    else if ( dynamic_cast< Imf::M44fAttribute* >( i->second ) != NULL )
+        return modify_m44f( w, i );
+    else if ( dynamic_cast< Imf::M33dAttribute* >( i->second ) != NULL )
+        return modify_m33d( w, i );
+    else if ( dynamic_cast< Imf::M33fAttribute* >( i->second ) != NULL )
+        return modify_m33f( w, i );
+    else if ( dynamic_cast< Imf::V3dAttribute* >( i->second ) != NULL )
+        return modify_v3d( w, i );
+    else if ( dynamic_cast< Imf::V3fAttribute* >( i->second ) != NULL )
+        return modify_v3f( w, i );
+    else if ( dynamic_cast< Imf::V3iAttribute* >( i->second ) != NULL )
+        return modify_v3i( w, i );
+    else if ( dynamic_cast< Imf::V2dAttribute* >( i->second ) != NULL )
+        return modify_v2d( w, i );
+    else if ( dynamic_cast< Imf::V2fAttribute* >( i->second ) != NULL )
+        return modify_v2f( w, i );
+    else if ( dynamic_cast< Imf::V2iAttribute* >( i->second ) != NULL )
+        return modify_v2i( w, i );
+    else
+        LOG_ERROR( _("Unknown attribute to convert from string") );
+}
+
+static bool modify_int( fltk::IntInput* w, CMedia::Attributes::iterator& i)
+{
+    Imf::IntAttribute attr( atoi( w->text() ) );
+    delete i->second;
+    i->second = attr.copy();
+    update_int_slider( w );
+    return true;
+}
+
+static bool modify_float( fltk::FloatInput* w, CMedia::Attributes::iterator& i)
+{
+    Imf::FloatAttribute attr( w->fvalue() );
+    delete i->second;
+    i->second = attr.copy();
+    update_float_slider( w );
+    return true;
+}
+
+static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
+    if ( !img ) return;
+
+    fltk::Group* g = (fltk::Group*)w->parent()->parent();
+    fltk::Widget* widget = g->child(0);
+    if ( !widget->label() ) return;
+
+    std::string key = widget->label();
+    CMedia::Attributes& exif = img->exif();
+    CMedia::Attributes::iterator i = exif.find( key );
+    if ( i != exif.end() )
+    {
+        modify_float( w, i );
+        return;
+    }
+    CMedia::Attributes& iptc = img->iptc();
+    i = iptc.find( key );
+    if ( i != iptc.end() )
+    {
+        modify_float( w, i );
+        return;
+    }
+}
+
+static void change_string_cb( fltk::Input* w, ImageInformation* info )
+{
+    CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
+    if ( !img ) {
+        LOG_ERROR( "Image is invalid" );
+        return;
+    }
+
+    fltk::Group* g = (fltk::Group*)w->parent();
+    fltk::Widget* widget = g->child(0);
+
+    if ( !widget->label() ) {
+        LOG_ERROR( "Widget has no label" );
+        return;
+    }
+
+    std::string key = widget->label();
+    CMedia::Attributes& exif = img->exif();
+    CMedia::Attributes::iterator i = exif.find( key );
+    if ( i != exif.end() )
+    {
+        bool ok = modify_value( w, i );
+        if (!ok) {
+            LOG_ERROR( _("Could not convert EXIF ") << i->first
+                       << _(" from string") );
+            info->refresh();
+        }
+        return;
+    }
+    CMedia::Attributes& iptc = img->iptc();
+    i = iptc.find( key );
+    if ( i != iptc.end() )
+    {
+        bool ok = modify_value( w, i );
+        if (!ok) {
+            LOG_ERROR( _("Could not convert IPTC ") << i->first 
+                       << _( " from string" ) );
+            info->refresh();
+        }
+        return;
+    }
+}
+
+static void change_int_cb( fltk::IntInput* w, ImageInformation* info )
+{
+    CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
+    if ( !img ) return;
+
+    fltk::Group* g = (fltk::Group*)w->parent()->parent();
+    fltk::Widget* widget = g->child(0);
+    if ( !widget->label() ) return;
+
+    std::string key = widget->label();
+    CMedia::Attributes& exif = img->exif();
+    CMedia::Attributes::iterator i = exif.find( key );
+    if ( i != exif.end() )
+    {
+        modify_int( w, i );
+        return;
+    }
+    CMedia::Attributes& iptc = img->iptc();
+    i = iptc.find( key );
+    if ( i != iptc.end() )
+    {
+        modify_int( w, i );
+        return;
+    }
 }
 
 static void change_colorspace( fltk::PopupMenu* w, ImageInformation* info )
@@ -760,15 +1194,6 @@ static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
     view->redraw();
 }
 
-static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
-{
-    CMedia* img = info->get_image();
-    float x = float( w->fvalue() );
-    CMedia::Attributes& attrs = img->exif();
-    CMedia::Attributes::iterator i = attrs.begin();
-    CMedia::Attributes::iterator e = attrs.end();
-}
-
 double ImageInformation::to_memory( long double value,
                                     const char*& extension )
 {
@@ -846,7 +1271,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->play_fps(), true );
             add_text( i->first.c_str(),
                       "Timecode start (editable) press TAB to accept",
-                      buf, true, (fltk::Callback*)timecode_cb );
+                      buf, true, true, (fltk::Callback*)timecode_cb );
             return;
         }
     }
@@ -856,7 +1281,8 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_float( i->first.c_str(), i->first.c_str(),
-                       attr->value(), false );
+                       attr->value(), true, false,
+                       (fltk::Callback*)change_float_cb );
             return;
         }
     }
@@ -866,7 +1292,8 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_float( i->first.c_str(), i->first.c_str(),
-                       attr->value(), false );
+                       attr->value(), true, false,
+                       (fltk::Callback*)change_float_cb );
             return;
         }
     }
@@ -875,8 +1302,153 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         dynamic_cast< Imf::IntAttribute* >( i->second );
         if ( attr )
         {
-            add_float( i->first.c_str(), i->first.c_str(),
-                       attr->value(), false );
+            add_int( i->first.c_str(), i->first.c_str(),
+                     attr->value(), true, false,
+                     (fltk::Callback*)change_int_cb );
+            return;
+        }
+    }
+    {
+        Imf::V2iAttribute* attr =
+        dynamic_cast< Imf::V2iAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[64];
+            const Imath::V2i& v = attr->value();
+            sprintf( buf, "%d %d", v.x, v.y );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::V2dAttribute* attr =
+        dynamic_cast< Imf::V2dAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[64];
+            const Imath::V2d& v = attr->value();
+            sprintf( buf, "%g %g", v.x, v.y );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::V2fAttribute* attr =
+        dynamic_cast< Imf::V2fAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[64];
+            const Imath::V2f& v = attr->value();
+            sprintf( buf, "%g %g", v.x, v.y );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::V3iAttribute* attr =
+        dynamic_cast< Imf::V3iAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[64];
+            const Imath::V3i& v = attr->value();
+            sprintf( buf, "%d %d %d", v.x, v.y, v.z );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::V3dAttribute* attr =
+        dynamic_cast< Imf::V3dAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[64];
+            const Imath::V3d& v = attr->value();
+            sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::V3fAttribute* attr =
+        dynamic_cast< Imf::V3fAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[64];
+            const Imath::V3f& v = attr->value();
+            sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::M33dAttribute* attr =
+        dynamic_cast< Imf::M33dAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[256];
+            const Imath::M33d& v = attr->value();
+            sprintf( buf, "%g %g %g  %g %g %g  %g %g %g", 
+                     v[0][0], v[0][1], v[0][2],
+                     v[1][0], v[1][1], v[1][2],
+                     v[2][0], v[2][1], v[2][2] );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::M33fAttribute* attr =
+        dynamic_cast< Imf::M33fAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[256];
+            const Imath::M33f& v = attr->value();
+            sprintf( buf, "%g %g %g  %g %g %g  %g %g %g", 
+                     v[0][0], v[0][1], v[0][2],
+                     v[1][0], v[1][1], v[1][2],
+                     v[2][0], v[2][1], v[2][2] );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::M44dAttribute* attr =
+        dynamic_cast< Imf::M44dAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[256];
+            const Imath::M44d& v = attr->value();
+            sprintf( buf, "%g %g %g %g  %g %g %g %g  %g %g %g %g  %g %g %g %g", 
+                     v[0][0], v[0][1], v[0][2], v[0][3],
+                     v[1][0], v[1][1], v[1][2], v[1][3],
+                     v[2][0], v[2][1], v[2][2], v[2][3],
+                     v[3][0], v[3][1], v[3][2], v[3][3] );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::M44fAttribute* attr =
+        dynamic_cast< Imf::M44fAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[256];
+            const Imath::M44f& v = attr->value();
+            sprintf( buf, "%g %g %g %g  %g %g %g %g  %g %g %g %g  %g %g %g %g", 
+                     v[0][0], v[0][1], v[0][2], v[0][3],
+                     v[1][0], v[1][1], v[1][2], v[1][3],
+                     v[2][0], v[2][1], v[2][2], v[2][3],
+                     v[3][0], v[3][1], v[3][2], v[3][3] );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
     }
@@ -886,7 +1458,8 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_text( i->first.c_str(), i->first.c_str(),
-                      attr->value().c_str(), false );
+                      attr->value().c_str(), true, false,
+                      (fltk::Callback*) change_string_cb );
             return;
         }
     }
@@ -927,10 +1500,10 @@ void ImageInformation::fill_data()
     if ( img->first_frame() != img->last_frame() )
       {
           add_int( _("First Frame"), _("First frame of clip - User selected"), 
-                   (int)img->first_frame(), true,
+                   (int)img->first_frame(), true, true,
 		  (fltk::Callback*)change_first_frame_cb, 1, 50 );
           add_int( _("Last Frame"), _("Last frame of clip - User selected"),
-                   (int)img->last_frame(), true,
+                   (int)img->last_frame(), true, true,
                    (fltk::Callback*)change_last_frame_cb, 2, 55 );
       }
 
@@ -940,7 +1513,7 @@ void ImageInformation::fill_data()
     add_int64( _("Frame End"), _("Frame end of clip in file"), img->end_frame() );
 
 
-    add_float( _("FPS"), _("Frames Per Second"), (float) img->fps(), true, 
+    add_float( _("FPS"), _("Frames Per Second"), (float) img->fps(), true, true,
                (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
 
 
@@ -978,7 +1551,7 @@ void ImageInformation::fill_data()
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
     add_text( _("Aspect Ratio"), _("Aspect ratio of clip"), buf );
     add_float( _("Pixel Ratio"), _("Pixel ratio of clip"),
-               float(img->pixel_ratio()), true,
+               float(img->pixel_ratio()), true, true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
 
@@ -1012,13 +1585,13 @@ void ImageInformation::fill_data()
 
         if ( img->right() )
             add_float( _("Eye Separation"), _("Stereo eye separation"),
-                       img->eye_separation(), true,
+                       img->eye_separation(), true, true,
                        (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
     else
     {
         add_float( _("Eye Separation"), _("Stereo eye separation"), 
-                   img->eye_separation(), true,
+                   img->eye_separation(), true, true,
                    (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
 
@@ -1139,7 +1712,7 @@ void ImageInformation::fill_data()
     
 
     add_float( _("Gamma"), _("Display Gamma of Image"), img->gamma(), true, 
-	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
+	       true, (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
 
 
     if ( img->has_chromaticities() )
@@ -1281,7 +1854,7 @@ void ImageInformation::fill_data()
                   if ( exr )
                   {
                       add_int( _("Mipmap Level"), _("Mipmap Level"),
-                               exr->levelX(), true,
+                               exr->levelX(), true, true,
                                (fltk::Callback*)change_mipmap_cb, 0, 20 );
                       exr->levelY( exr->levelX() );
                   }
@@ -1292,7 +1865,7 @@ void ImageInformation::fill_data()
                   if ( exr )
                   {
                       add_int( _("X Ripmap Level"), _("X Ripmap Level"), 
-                               exr->levelX(), true,
+                               exr->levelX(), true, true,
                                (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
                   }
               }
@@ -1302,7 +1875,7 @@ void ImageInformation::fill_data()
                   if ( exr )
                   {
                       add_int( _("Y Ripmap Level"), _("Y Ripmap Level"), 
-                               exr->levelY(), true,
+                               exr->levelY(), true, true,
                                (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
                   }
               }
@@ -1803,6 +2376,7 @@ void ImageInformation::fill_data()
                                    const char* tooltip,
 				   const char* content,
 				   const bool editable,
+				   const bool active,
 				   fltk::Callback* callback )
   { 
     fltk::Color colA = get_title_color();
@@ -1841,13 +2415,13 @@ void ImageInformation::fill_data()
       if ( !editable )
 	{
 	  widget->box( fltk::FLAT_BOX );
+          g->deactivate();
 	}
       else 
 	{
 	  if ( callback )
-          {
-	    widget->callback( callback, this );
-          }
+              widget->callback( callback, this );
+          if (!active) g->deactivate();
 	}
       g->add( widget );
       g->resizable( widget );
@@ -1861,13 +2435,15 @@ void ImageInformation::fill_data()
                                    const char* tooltip,
 				   const std::string& content,
 				   const bool editable,
+                                   const bool active,
 				   fltk::Callback* callback )
   {
-      add_text( name, tooltip, content.c_str(), editable, callback );
+      add_text( name, tooltip, content.c_str(), editable, active, callback );
   }
 
 void ImageInformation::add_int( const char* name, const char* tooltip,
                                 const int content, const bool editable,
+                                const bool active,
                                 fltk::Callback* callback, 
                                 const int minV, const int maxV )
 {
@@ -1915,13 +2491,13 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
 	  slider->minimum( minV );
-	  unsigned maxS = maxV;
+	  int maxS = maxV;
 
 	  if ( content > 100000 && maxV <= 100000 ) maxS = 1000000;
 	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
 	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
 	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
-          else if ( content > maxV ) maxS = content+50;
+          else if ( content > maxS ) maxS = content+50;
 	  slider->maximum( maxS );
 
 	  slider->value( content );
@@ -1937,6 +2513,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
       p->end();
       g->add( p );
       g->resizable( p );
+      if ( !active ) g->deactivate();
     }
     m_curr->add( g );
   }
@@ -2033,6 +2610,7 @@ void ImageInformation::add_int( const char* name,
                                 const char* tooltip,
                                 const unsigned int content,
                                 const bool editable,
+                                const bool active,
                                 fltk::Callback* callback, 
                                 const unsigned int minV,
                                 const unsigned int maxV )
@@ -2086,7 +2664,10 @@ void ImageInformation::add_int( const char* name,
 	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
 	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
 	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
-          else if ( content > maxV ) maxS = content+50;
+	  else if ( content > 10 && maxV <= 10 ) maxS = 100;
+          else if ( content > maxS ) maxS = content+50;
+
+
 	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );
@@ -2272,6 +2853,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
   void ImageInformation::add_float( const char* name,
                                     const char* tooltip,
 				    const float content, const bool editable,
+                                    const bool active,
 				    fltk::Callback* callback, 
 				    const float minV, float maxV )
   {
@@ -2319,7 +2901,16 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
 	  slider->type(fltk::Slider::TICK_ABOVE);
 	  slider->step( 0.01 );
 	  slider->minimum( minV );
-	  slider->maximum( maxV );
+
+	  double maxS = maxV;
+	  if ( content > 100000 && maxV <= 100000 ) maxS = 1000000;
+	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
+	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
+	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
+	  else if ( content > 10 && maxV <= 10 ) maxS = 100;
+          else if ( content > maxS ) maxS = content+50;
+
+	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->linesize(1);
 	  // slider->slider_size(10);
@@ -2332,6 +2923,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
       p->end();
       g->add( p );
       g->resizable( p );
+      if ( !active ) g->deactivate();
     }
     m_curr->add( g );
   }
