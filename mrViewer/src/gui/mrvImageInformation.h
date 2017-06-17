@@ -32,6 +32,7 @@
 
 #include <fltk/ScrollGroup.h>
 
+#include "core/CMedia.h"
 #include "core/mrvRectangle.h"
 #include "core/mrvString.h"
 #include "gui/mrvBrowser.h"
@@ -170,6 +171,7 @@ class ImageInformation : public ImageInfoParent
 
     int line_height();
     void fill_data();
+    void process_attributes( mrv::CMedia::Attributes::const_iterator& i );
 
     ViewerUI*    uiMain;
     CMedia*   img;
