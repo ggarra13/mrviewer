@@ -61,6 +61,8 @@ extern "C" {
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+#include <ImfStringAttribute.h>
+
 #include "core/mrvPlayback.h"
 #include "core/aviImage.h"
 #include "core/mrvFrameFunctors.h"
@@ -2209,7 +2211,8 @@ void aviImage::populate()
         if ( tag ) 
         {
             sprintf( buf, "Program %d: %s", i+1, tag->key );
-            _iptc.insert( std::make_pair(buf, tag->value) );
+            Imf::StringAttribute* value = new Imf::StringAttribute( tag->value );
+            _iptc.insert( std::make_pair(buf, value) );
         }
         sprintf( buf, "Program %d ", i+1 );
         dump_metadata( _context->programs[i]->metadata, buf );
