@@ -120,14 +120,17 @@ class ImageInformation : public ImageInfoParent
     void add_text( const char* name, const char* tooltip,
                    const char* content, 
                    const bool editable = false, 
+                   const bool active = false, 
                    fltk::Callback* callback = NULL );
     void add_text( const char* name, const char* tooltip,
                    const std::string& content, 
                    const bool editable = false,
+                   const bool active = false, 
                    fltk::Callback* callback = NULL );
     void add_float( const char* name, const char* tooltip,
                     const float content, 
                     const bool editable = false, 
+                    const bool active = false, 
                     fltk::Callback* callback = NULL, 
                     const float minV = 0.0f, const float maxV = 1.0f );
     void add_rect( const char* name, const char* tooltip,
@@ -156,11 +159,13 @@ class ImageInformation : public ImageInfoParent
     void add_int( const char* name, const char* tooltip,
                   const int content, 
                   const bool editable = false,
+                  const bool active = false,
                   fltk::Callback* callback = NULL,
-		  const int minV = -9999, const int maxV = 9999 );
+		  const int minV = 0, const int maxV = 10 );
     void add_int( const char* name, const char* tooltip,
                   const unsigned int content, 
                   const bool editable = false, 
+                  const bool active = false,
                   fltk::Callback* callback = NULL,
                   const unsigned int minV = 0, 
                   const unsigned int maxV = 9999 );
@@ -181,8 +186,6 @@ class ImageInformation : public ImageInfoParent
     mrv::CollapsableGroup*       m_video;
     mrv::CollapsableGroup*       m_audio;
     mrv::CollapsableGroup*       m_subtitle;
-    mrv::CollapsableGroup*       m_iptc;
-    mrv::CollapsableGroup*       m_exif;
 
     fltk::PackedGroup* m_all;
     fltk::PackedGroup* m_main;
@@ -190,6 +193,10 @@ class ImageInformation : public ImageInfoParent
     fltk::Color        m_color;
     unsigned int group;
     unsigned int row;
+
+  public:
+    mrv::CollapsableGroup*       m_iptc;
+    mrv::CollapsableGroup*       m_exif;
 };
 
 } // namespace mrv

@@ -1096,18 +1096,6 @@ void exrImage::read_header_attr( const Imf::Header& h,
               Imf::Rational r = attr->value();
               _fps = (double) r.n / (double) r.d;
 	  }
-        else
-        {
-            const Imf::StringAttribute* attr =
-            h.findTypedAttribute<Imf::StringAttribute>("framesPerSecond");
-            if ( attr )
-            {
-                setlocale( LC_NUMERIC, "C" );
-                const std::string& r = attr->value();
-                _fps = atof( r.c_str() );
-                setlocale( LC_NUMERIC, "" );
-            }
-        }
 
 	if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps;
       }
@@ -1381,12 +1369,10 @@ void exrImage::read_header_attr( const Imf::Header& h,
       Imf::Header::ConstIterator i = h.begin();
       Imf::Header::ConstIterator e = h.end();
 
-      stringSet::const_iterator end = attrs.end();
-       
       for ( ; i != e; ++i )
       {
           const std::string& name = i.name();
-          if ( attrs.find( name ) != end ) continue;
+          if ( attrs.find( name ) != attrs.end() ) continue;
           if ( ignore.find( name ) != ignore.end() ) continue;
           
           const Attribute& attr = i.attribute();
