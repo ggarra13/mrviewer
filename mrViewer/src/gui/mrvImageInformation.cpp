@@ -47,6 +47,11 @@ using namespace std;
 #include <fltk/ItemGroup.h>
 #include <fltk/PackedGroup.h>
 
+#include <ImfTimeCodeAttribute.h>
+#include <ImfIntAttribute.h>
+#include <ImfDoubleAttribute.h>
+#include <ImfStandardAttributes.h>
+
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
@@ -54,6 +59,7 @@ using namespace std;
 #include "mrvMedia.h"
 #include "mrvImageView.h"
 #include "gui/mrvHotkey.h"
+#include "gui/mrvTimecode.h"
 #include "gui/mrvIPTCGroup.h"
 #include "mrViewer.h"
 #include "CMedia.h"
@@ -302,7 +308,9 @@ void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
         img->process_timecode( value.c_str() );
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
     }
-    attrs.insert( std::make_pair(key, value) );
+    const Imf::TimeCode tc = CMedia::str2timecode( value );
+    Imf::TimeCodeAttribute attr( tc );
+    attrs.insert( std::make_pair(key, attr.copy() ) );
     info->refresh();
 }
 
@@ -338,7 +346,9 @@ void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
         img->process_timecode( value.c_str() );
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
     }
-    attrs.insert( std::make_pair(key, value) );
+    Imf::TimeCode t = CMedia::str2timecode( value );
+    Imf::TimeCodeAttribute attr( t );
+    attrs.insert( std::make_pair(key, attr.copy() ) );
     info->refresh();
 }
 
@@ -402,12 +412,12 @@ void remove_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
     info->refresh();
 }
 
-  ImageInformation::ImageInformation( int x, int y, int w, int h, 
-				      const char* l ) :
-    ImageInfoParent( x, y, w, h, l ),
-    img( NULL ),
-    m_main( NULL )
-  {
+ImageInformation::ImageInformation( int x, int y, int w, int h, 
+                                    const char* l ) :
+ImageInfoParent( x, y, w, h, l ),
+img( NULL ),
+m_main( NULL )
+{
     begin();
 
 
@@ -533,7 +543,9 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
              i->first == N_("Video timecode") ||
              i->first == N_("Timecode") )
         {
-            i->second = w->text();
+            const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
+            Imf::TimeCodeAttribute* attr = new Imf::TimeCodeAttribute( t );
+            i->second = attr;
         }
     }
 
@@ -546,7 +558,26 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
              i->first == N_("Video timecode") ||
              i->first == N_("Timecode") )
         {
-            i->second = w->text();
+            int hh, mm, ss, ff;
+            int num = sscanf( w->text(), "%02d:%02d:%02d:%02d",
+                              &hh, &mm, &ss, &ff );
+            if ( num == 4 )
+            {
+                Imf::TimeCode t( hh, mm, ss, ff );
+                Imf::TimeCodeAttribute* attr = new Imf::TimeCodeAttribute( t );
+                i->second = attr;
+            }
+            else
+            {
+                int num = sscanf( w->text(), "%02d;%02d;%02d;%02d",
+                                  &hh, &mm, &ss, &ff );
+                if ( num == 4 )
+                {
+                    Imf::TimeCode t( hh, mm, ss, ff, true );
+                    Imf::TimeCodeAttribute* attr = new Imf::TimeCodeAttribute( t );
+                    i->second = attr;
+                }
+            }
         }
     }
     img->process_timecode( w->text() );
@@ -729,6 +760,15 @@ static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
     view->redraw();
 }
 
+static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    float x = float( w->fvalue() );
+    CMedia::Attributes& attrs = img->exif();
+    CMedia::Attributes::iterator i = attrs.begin();
+    CMedia::Attributes::iterator e = attrs.end();
+}
+
 double ImageInformation::to_memory( long double value,
                                     const char*& extension )
 {
@@ -787,6 +827,69 @@ void ImageInformation::hide_tabs()
     m_subtitle->hide();
     m_iptc->hide();
     m_exif->hide();
+}
+
+void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterator& i )
+{
+    {
+        Imf::TimeCodeAttribute* attr =
+        dynamic_cast< Imf::TimeCodeAttribute*>( i->second );
+        if (attr)
+        {
+            mrv::Timecode::Display d =
+            mrv::Timecode::kTimecodeNonDrop;
+            if ( attr->value().dropFrame() )
+                d = mrv::Timecode::kTimecodeDropFrame;
+            char* buf = new char[64];
+            int n = mrv::Timecode::format( buf, d, img->frame(),
+                                           img->timecode(),
+                                           img->play_fps(), true );
+            add_text( i->first.c_str(),
+                      "Timecode start (editable) press TAB to accept",
+                      buf, true, (fltk::Callback*)timecode_cb );
+            return;
+        }
+    }
+    {
+        Imf::DoubleAttribute* attr =
+        dynamic_cast< Imf::DoubleAttribute* >( i->second );
+        if ( attr )
+        {
+            add_float( i->first.c_str(), i->first.c_str(),
+                       attr->value(), false );
+            return;
+        }
+    }
+    {
+        Imf::FloatAttribute* attr =
+        dynamic_cast< Imf::FloatAttribute* >( i->second );
+        if ( attr )
+        {
+            add_float( i->first.c_str(), i->first.c_str(),
+                       attr->value(), false );
+            return;
+        }
+    }
+    {
+        Imf::IntAttribute* attr =
+        dynamic_cast< Imf::IntAttribute* >( i->second );
+        if ( attr )
+        {
+            add_float( i->first.c_str(), i->first.c_str(),
+                       attr->value(), false );
+            return;
+        }
+    }
+    {
+        Imf::StringAttribute* attr =
+        dynamic_cast< Imf::StringAttribute* >( i->second );
+        if ( attr )
+        {
+            add_text( i->first.c_str(), i->first.c_str(),
+                      attr->value().c_str(), false );
+            return;
+        }
+    }
 }
 
 void ImageInformation::fill_data()
@@ -1155,20 +1258,7 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
         {
-              if ( i->first == N_("timecode") ||
-                   i->first == N_("Timecode") || 
-                   i->first == N_("Video timecode") )
-              {
-                  add_text( i->first.c_str(),
-                            "Timecode start (editable) press TAB to accept",
-                            i->second.c_str(), true,
-                            (fltk::Callback*)timecode_cb );
-              }
-              else
-              {
-                  add_text( i->first.c_str(), i->first.c_str(),
-                            i->second.c_str(), false );
-              }
+            process_attributes( i );
         }
 
 	m_curr->relayout();
@@ -1185,16 +1275,7 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	  {
-              if ( i->first == N_("timecode") ||
-                   i->first == N_("Timecode") || 
-                   i->first == N_("Video timecode") )
-              {
-                  add_text( i->first.c_str(),
-                            "Timecode start (editable) press TAB to accept",
-                            i->second.c_str(), true,
-                            (fltk::Callback*)timecode_cb );
-              }
-              else if ( i->first == _("Mipmap Levels") )
+            if ( i->first == _("Mipmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
@@ -1227,8 +1308,7 @@ void ImageInformation::fill_data()
               }
               else
               {
-                  add_text( i->first.c_str(), i->first.c_str(),
-                            i->second.c_str(), false );
+                  process_attributes( i );
               }
 	  }
 	m_curr->relayout();
@@ -1510,10 +1590,11 @@ void ImageInformation::fill_data()
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       g->add( widget );
     }
 
@@ -1558,10 +1639,11 @@ void ImageInformation::fill_data()
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       g->add( widget );
     }
 
@@ -1608,10 +1690,11 @@ void ImageInformation::fill_data()
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       g->add( widget );
     }
 
@@ -1659,10 +1742,11 @@ void ImageInformation::fill_data()
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       g->add( widget );
     }
 
@@ -1728,11 +1812,11 @@ void ImageInformation::fill_data()
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, 
-					       strdup( name ) );
+      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       g->add( widget );
     }
 
@@ -1794,9 +1878,10 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       widget->color( colA );
       g->add( widget );
     }
@@ -1871,9 +1956,10 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       widget->color( colA );
       g->add( widget );
     }
@@ -1957,9 +2043,10 @@ void ImageInformation::add_int( const char* name,
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       widget->color( colA );
       g->add( widget );
     }
@@ -2074,9 +2161,10 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       widget->color( colA );
       g->add( widget );
     }
@@ -2193,9 +2281,10 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
       widget->color( colA );
       g->add( widget );
     }
@@ -2260,8 +2349,9 @@ void ImageInformation::add_bool( const char* name,
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
 
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
+      widget->copy_label( name );
       widget->labelcolor( fltk::BLACK );
       widget->color( colA );
       g->add( widget );
