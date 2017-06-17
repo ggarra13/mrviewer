@@ -33,7 +33,9 @@
 
 #include <fltk/run.h>
 
-#include "ImathMath.h" // for Math:: functions
+#include <ImathMath.h> // for Math:: functions
+#include <ImfStringAttribute.h>
+
 #include "hdrImage.h"
 #include "mrvException.h"
 
@@ -152,7 +154,8 @@ namespace mrv {
 	  {
 	    static const std::string key = "Owner";
 	    std::string val = strtok_r( NULL, "=", &state );
-	    _exif.insert( std::make_pair( key, val ) ); 
+            Imf::StringAttribute attr( val );
+	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
 	  }
 	else if ( strcasecmp( keyword, "CAPDATE" ) == 0 )
 	  {
@@ -175,15 +178,16 @@ namespace mrv {
 	    
 	    std::string val = now;
 
-	    _exif.insert( std::make_pair( key, val ) ); 
+            Imf::StringAttribute attr( val );
+	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
 	    continue;
 	  }
 	else if ( strcasecmp( keyword, "EXPOSURE" ) == 0 )
 	  {
 	    static const std::string key = "Exposure";
 	    char* val = strtok_r( NULL, "=", &state );
-
-	    _exif.insert( std::make_pair( key, std::string(val) ) ); 
+            Imf::StringAttribute attr( val );
+	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
 
 	    exposure = (float) atof( val );
 	    continue;
@@ -201,7 +205,8 @@ namespace mrv {
 	  {
 	    static const std:: string key = "Software";
 	    std::string val = strtok_r( NULL, "=", &state );
-	    _exif.insert( std::make_pair( key, val ) ); 
+            Imf::StringAttribute attr( val );
+	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
 	    continue;
 	  }
 	else if ( strcasecmp( keyword, "PIXASPECT" ) == 0 )
