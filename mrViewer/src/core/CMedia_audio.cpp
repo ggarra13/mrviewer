@@ -56,6 +56,9 @@ extern "C" {
 #include <algorithm>  // for std::min, std::abs
 #include <limits>
 
+#include <ImfTimeCodeAttribute.h>
+#include <ImfStringAttribute.h>
+
 
 #include "core/CMedia.h"
 #include "core/Sequence.h"
@@ -741,6 +744,36 @@ void CMedia::populate_audio()
 
 }
 
+void CMedia::process_timecode( const Imf::TimeCode& tc )
+{     
+    int hours = tc.hours();
+    int minutes = tc.minutes();
+    int seconds = tc.seconds();
+    int frames = tc.frame();
+
+    
+    if ( tc.dropFrame() )
+    {
+        // ((30 * 60 - 2) * 10 + 2) * 6 drop-frame frames in 1 hour
+        _tc_frame = hours * 107892;
+        // 30 * 60 - 2 drop-frame frames in one minute
+        _tc_frame += minutes * 1798;
+        // for each minute except each 10th minute add 2 frames
+        _tc_frame += (minutes / 10) * 2;
+        // 30 drop-frame frames in one second
+        _tc_frame += seconds * 30;
+        _tc_frame += frames;              // frames
+    }
+    else
+    {
+        int ifps = (int)round(_fps);
+        int hh = hours*3600*ifps;
+        int mm = minutes*60*ifps;
+        int ss = seconds*ifps;
+        _tc_frame = hh + mm + ss + frames;
+    }
+}
+
 void CMedia::process_timecode( const std::string text )
 {
     bool drop_frame = false;
@@ -801,6 +834,49 @@ void CMedia::process_timecode( const std::string text )
     }
 }
 
+Imf::TimeCode CMedia::str2timecode( const std::string text )
+{
+    bool drop_frame = false;
+    StringList tc;
+    split( text, ':', tc );
+
+    // DROP FRAME TIMECODE USES ; as SEPARATOR
+    // We accept 00;00;00;00 as well as 00:00:00;00
+    // We also accept 00.00.00.00 as well as 00:00:00.00
+    if ( tc.size() != 4 ) {
+        split( text, ';', tc );
+        if ( tc.empty() )
+        {
+            split( text, '.', tc );
+        }
+        if ( tc.size() == 2 )
+        {
+            std::string frames = tc[1].substr( 0, 2 );
+            StringList tc;
+            split( text, ':', tc );
+            if ( tc.size() != 3 )
+                return Imf::TimeCode();
+            
+            tc[2] = tc[2].substr( 0, 2 );  // this one contains the frames too
+            tc.push_back( frames );        // add frames to list
+        }
+        else
+        {
+            if ( tc.size() != 4 )
+                return Imf::TimeCode();
+        }
+        drop_frame = true;
+    }
+
+    int hours = atoi( tc[0].c_str() );
+    int minutes = atoi( tc[1].c_str() );
+    int seconds = atoi( tc[2].c_str() );
+    int frames = atoi( tc[3].c_str() );
+
+    Imf::TimeCode t( hours, minutes, seconds, frames, drop_frame );
+    return t;
+}
+
 void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
 {
    if(!m) return;
@@ -812,8 +888,17 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
       name += tag->key;
       if ( name == N_("timecode") || name == N_("Video timecode") ||
            name == N_("Timecode") || name == N_("timeCode") )
-          process_timecode( tag->value );
-      _iptc.insert( std::make_pair( name, tag->value ) ); 
+      {
+          Imf::TimeCode t = str2timecode( tag->value );
+          process_timecode( t );
+          Imf::TimeCodeAttribute attr( t );
+          _iptc.insert( std::make_pair( name, attr.copy() ) );
+      }
+      else
+      {
+          Imf::StringAttribute attr( tag->value );
+          _iptc.insert( std::make_pair( name, attr.copy() ) );
+      }
    }
 }
 
