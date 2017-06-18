@@ -1760,14 +1760,14 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Loading open
-            xywh {15 16 424 360} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 16 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {12 45 400 84} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequence {
                 label { Load Sequence on Drag&&Drop}
-                tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
+                tooltip {When dragging and dropping a frame from a sequence, make mrViewer load the full sequence.   Otherwise it loads the frame only.}
                 xywh {20 30 25 25} box UP_BOX value 1
               }
             }
@@ -1775,7 +1775,7 @@ uiICC_float_profile->do_callback();}
               xywh {12 136 400 84} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequenceOnAssoc {
-                label {Load Sequence on File Association & CommandLine} selected
+                label {Load Sequence on File Association & CommandLine}
                 tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.}
                 xywh {21 29 25 25} box UP_BOX value 1
               }
@@ -1784,8 +1784,8 @@ uiICC_float_profile->do_callback();}
               xywh {12 226 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
-                label {Auto load images as they change on disk}
-                tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
+                label {Auto load images as they change on disk} selected
+                tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.}
                 xywh {20 25 25 25} box UP_BOX value 1
               }
             }
