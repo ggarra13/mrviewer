@@ -38,6 +38,8 @@
 #include <fltk/run.h>
 #include <boost/bind.hpp>
 
+#include <ImfStringAttribute.h>
+
 #include "stubImage.h"
 #include "byteSwap.h"
 #include "mrvString.h"
@@ -1102,7 +1104,8 @@ void stubImage::thread_exit()
     _label = (char*) malloc( strlen(buf) + 1 );
     strcpy( _label, buf );
 
-    _exif[ N_("Render Time") ] = render_time;
+    Imf::StringAttribute attr( render_time );
+    _exif[ N_("Render Time") ] = attr.copy();
   }
 
 
