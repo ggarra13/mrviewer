@@ -1187,7 +1187,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  {
 	    _exif.insert( std::make_pair( _("Comments"),    
                                           attr->copy() ) );
-            attrs.insert( N_("Comments") );
+            attrs.insert( N_("comments") );
 	  }
       }
 
@@ -1379,8 +1379,9 @@ void exrImage::read_header_attr( const Imf::Header& h,
       for ( ; i != e; ++i )
       {
           const std::string& name = i.name();
-          if ( attrs.find( name ) != attrs.end() ) continue;
-          if ( ignore.find( name ) != ignore.end() ) continue;
+          if ( attrs.find( name ) != attrs.end() ||
+               _exif.find( name ) != _exif.end() ||
+               ignore.find( name ) != ignore.end() ) continue;
           
           const Attribute& attr = i.attribute();
           _iptc.insert( std::make_pair( name, attr.copy() ) );
