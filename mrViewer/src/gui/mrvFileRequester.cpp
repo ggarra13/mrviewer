@@ -639,7 +639,8 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
                                 "})\t" + kREEL_PATTERN;
 
    const char* file = flu_save_chooser( _("Save Image"), 
-				       kIMAGE_PATTERN.c_str(), startdir);
+                                        kIMAGE_PATTERN.c_str(), startdir,
+                                        false );
    if ( main && (!main->uiMain || !main->uiMain->visible())) {
        return;
    }
