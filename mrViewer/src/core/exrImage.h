@@ -56,11 +56,14 @@ namespace mrv {
 
     static const char* kLineOrder[];
 
+      
   public:
     static bool test(const boost::uint8_t* datas, unsigned size=0);
     static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
       return CMedia::get(create, name, datas);
     }
+
+    typedef std::map< int64_t, std::string > CapDates;
 
     virtual const char* const format() const { return "ILM OpenEXR"; }
 
@@ -104,6 +107,13 @@ namespace mrv {
                        Imf::Array<float*>&       zbuff,
                        Imf::Array<unsigned int>& sampleCount );
 
+      const std::string& capture_date( const int64_t& f ) const {
+          static std::string unknown = _("Unknown Date");
+          CapDates::const_iterator i = _cap_date.find(f);
+          if ( i == _cap_date.end() ) return unknown;
+          return i->second;
+      }
+      
   protected:
       
       void loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
@@ -138,10 +148,14 @@ namespace mrv {
 			   const boost::int64_t& frame );
       void read_header_attr( const Imf::Header& h, 
                              const boost::int64_t& frame );
+      void read_forced_header_attr( const Imf::Header& h, 
+                                    const boost::int64_t& frame );
 
       /// Returns true if image has an alpha channel
       virtual bool  has_alpha() const { return _has_alpha; }
 
+      
+    public:
       static void copy_pixel_data( mrv::image_type_ptr pic,
                                    Imf::PixelType save_type,
                                    uint8_t* base,
@@ -152,6 +166,8 @@ namespace mrv {
       static Imf::PixelType pixel_type_to_exr( image_type::PixelType pixel_type );
 
      protected:
+
+      CapDates _cap_date;
 
       int _levelX, _levelY; //<- r/mipmap levels
       bool _multiview;
