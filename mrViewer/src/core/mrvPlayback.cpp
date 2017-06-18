@@ -1004,10 +1004,9 @@ void video_thread( PlaybackData* data )
 
       img->real_fps( timer.actualFrameRate() );
 
-
       img->find_image( frame );
 
-      if ( fg && reel->edl && img->is_left_eye() )
+      if ( reel->edl && fg && img->is_left_eye() )
       {
           int64_t f = frame + reel->location(img) - img->first_frame();
           view->frame( f );
