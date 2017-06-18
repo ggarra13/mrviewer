@@ -55,7 +55,7 @@ extern std::string retname;
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
 FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact );
-FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename );
+FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact = true );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles );
 FLU_EXPORT const char* flu_file_and_dir_chooser( const char *message, const char *filename );
