@@ -100,6 +100,7 @@ void fill_ignore_attr()
     ignore.insert( "CameraFocalLength" );
     ignore.insert( "channels" );
     ignore.insert( "compression" );
+    ignore.insert( "dwaCompressionLevel" );
     ignore.insert( "chunkCount" );
     ignore.insert( "dataWindow" );
     ignore.insert( "displayWindow" );
@@ -559,6 +560,8 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
                         displayWindow.max.x, displayWindow.max.y, frame );
 
 
+        read_forced_header_attr( h, frame );
+        
 	if ( ! _read_attr )
            read_header_attr( h, frame );
 
@@ -1080,13 +1083,27 @@ bool exrImage::find_channels( const Imf::Header& h,
     }
 }
 
+void exrImage::read_forced_header_attr( const Imf::Header& h, 
+                                        const boost::int64_t& frame )
+{
+    
+    const Imf::StringAttribute *attr =
+    h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
+    if ( attr )
+    {
+        _cap_date[frame] = attr->value();
+    }
+    
+}
+
 void exrImage::read_header_attr( const Imf::Header& h, 
                                  const boost::int64_t& frame )
 {
     _read_attr = true;
 
     stringSet attrs;
-    attrs.insert( "type" );
+    attrs.insert( N_("type") );
+    attrs.insert( N_("capDate") );
     
       {
 	const Imf::RationalAttribute* attr =
@@ -1096,18 +1113,6 @@ void exrImage::read_header_attr( const Imf::Header& h,
               Imf::Rational r = attr->value();
               _fps = (double) r.n / (double) r.d;
 	  }
-        else
-        {
-            const Imf::StringAttribute* attr =
-            h.findTypedAttribute<Imf::StringAttribute>("framesPerSecond");
-            if ( attr )
-            {
-                setlocale( LC_NUMERIC, "C" );
-                const std::string& r = attr->value();
-                _fps = atof( r.c_str() );
-                setlocale( LC_NUMERIC, "" );
-            }
-        }
 
 	if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps;
       }
@@ -1138,7 +1143,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
 	    _exif.insert( std::make_pair( _("Chromaticities Name"),
-                                          attr->value()) );
+                                          attr->copy() ) );
             attrs.insert( N_("chromaticitiesName") );
 	  }
       }
@@ -1148,10 +1153,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
 	if ( attr )
 	  {
-              char buf[128];
-              V2f va = attr->value();
-              sprintf( buf, "%f %f", va.x, va.y );
-              _exif.insert( std::make_pair( _("Adopted Neutral"), buf ) );
+              _exif.insert( std::make_pair( _("Adopted Neutral"), 
+                                            attr->copy() ) );
               attrs.insert( N_("adoptedNeutral") );
 	  }
       }
@@ -1161,10 +1164,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
 	if ( attr )
 	  {
-              char buf[128];
-              int i = attr->value();
-              sprintf( buf, "%d", i );
-              _exif.insert( std::make_pair( _("Image State"), buf ) );
+              _exif.insert( std::make_pair( _("Image State"), 
+                                            attr->copy() ) );
               attrs.insert( N_("imageState") );
 	  }
       }
@@ -1174,8 +1175,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Owner"), attr->value()) );
-            attrs.insert( N_("owner") );
+              _exif.insert( std::make_pair( _("Owner"), attr->copy() ) );
+              attrs.insert( N_("owner") );
 	  }
       }
 
@@ -1184,18 +1185,9 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Comments"), attr->value()) );
+	    _exif.insert( std::make_pair( _("Comments"),    
+                                          attr->copy() ) );
             attrs.insert( N_("Comments") );
-	  }
-      }
-
-      {
-	const Imf::StringAttribute *attr =
-	  h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
-	if ( attr )
-	  {
-	    _iptc.insert( std::make_pair( _("Capture Date"), attr->value()) );
-            attrs.insert( N_("capDate") );
 	  }
       }
 
@@ -1204,10 +1196,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _iptc.insert( std::make_pair( _("UTC Offset"), buf) );
-            attrs.insert( N_("utcOffset") );
+              _iptc.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
+              attrs.insert( N_("utcOffset") );
 	  }
       }
 
@@ -1216,10 +1206,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _iptc.insert( std::make_pair( _("Longitude"), buf) );
-            attrs.insert( N_("longitude") );
+              _iptc.insert( std::make_pair( _("Longitude"), attr->copy() ) );
+              attrs.insert( N_("longitude") );
 	  }
       }
 
@@ -1228,9 +1216,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _iptc.insert( std::make_pair( _("Latitude"), buf) );
+	    _iptc.insert( std::make_pair( _("Latitude"), attr->copy() ) );
             attrs.insert( N_("latitude") );
 	  }
       }
@@ -1240,9 +1226,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _iptc.insert( std::make_pair( _("Altitude"), buf) );
+	    _iptc.insert( std::make_pair( _("Altitude"), attr->copy() ) );
             attrs.insert( N_("altitude") );
 	  }
       }
@@ -1252,9 +1236,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Focus"), buf) );
+	    _exif.insert( std::make_pair( _("Focus"), attr->copy() ) );
             attrs.insert( N_("focus") );
 	  }
       }
@@ -1263,12 +1245,10 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	const Imf::FloatAttribute *attr =
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
 	if ( attr )
-	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Exposure Time"), buf) );
+        {
+            _exif.insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
             attrs.insert( N_("expTime") );
-	  }
+        }
       }
 
       {
@@ -1276,9 +1256,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Aperture"), buf) );
+	    _exif.insert( std::make_pair( _("Aperture"), attr->copy() ) );
             attrs.insert( N_("aperture") );
 	  }
       }
@@ -1289,9 +1267,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("ISO Speed"), buf) );
+	    _exif.insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
             attrs.insert( N_("isoSpeed") );
 	  }
       }
@@ -1302,22 +1278,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::KeyCodeAttribute>( N_("keyCode") );
 	if ( attr )
 	  {
-              const KeyCode& k = attr->value();
-              char buf[128];
-              sprintf( buf, N_("%d"), k.filmMfcCode() );
-              _exif.insert( std::make_pair( _("Film Manufacturer Code"), buf) );
-              sprintf( buf, N_("%d"), k.filmType() );
-              _exif.insert( std::make_pair( _("Film Type Code"), buf) );
-              sprintf( buf, N_("%d"), k.prefix() );
-              _exif.insert( std::make_pair( _("Prefix Code"), buf) );
-             sprintf( buf, N_("%d"), k.count() );
-              _exif.insert( std::make_pair( _("Count"), buf) );
-             sprintf( buf, N_("%d"), k.perfOffset() );
-              _exif.insert( std::make_pair( _("Perf Offset"), buf) );
-             sprintf( buf, N_("%d"), k.perfsPerFrame() );
-              _exif.insert( std::make_pair( _("Perfs per Frame"), buf) );
-             sprintf( buf, N_("%d"), k.perfsPerCount() );
-              _exif.insert( std::make_pair( _("Perfs per Count"), buf) );
+              _exif.insert( std::make_pair( N_("keyCode"), attr->copy() ) );
               attrs.insert( N_("keyCode") );
 	  }
       }
@@ -1327,36 +1288,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::TimeCodeAttribute>( N_("timeCode") );
 	if ( attr )
 	  {
-              const Imf::TimeCode& tc = attr->value();
-              char buf[128];
-              sprintf( buf, N_("%d"),tc.dropFrame());
-              _exif.insert( std::make_pair( N_("TC Drop Frame"), buf) );
-              if ( tc.dropFrame() )
-              {
-                  sprintf( buf, 
-                           N_("%02d;%02d;%02d;%02d"), tc.hours(),
-                           tc.minutes(), tc.seconds(), tc.frame());
-              }
-              else
-              {
-                  sprintf( buf, 
-                           N_("%02d:%02d:%02d:%02d"), tc.hours(),
-                           tc.minutes(), tc.seconds(), tc.frame());
-              }
-              process_timecode( buf );
-              _iptc.insert( std::make_pair( N_("timecode"), buf) );
-              sprintf( buf, N_("%d"),tc.colorFrame());
-              _iptc.insert( std::make_pair( N_("TC Color Frame"), buf) );
-              sprintf( buf, N_("%d"),tc.fieldPhase());
-              _iptc.insert( std::make_pair( N_("TC Field/Phase"), buf) );
-              sprintf( buf, N_("%d"),tc.bgf0());
-              _iptc.insert( std::make_pair( N_("TC bgf0"), buf) );
-              sprintf( buf, N_("%d"),tc.bgf1());
-              _iptc.insert( std::make_pair( N_("TC bgf1"), buf) );
-              sprintf( buf, N_("%d"),tc.bgf2());
-              _iptc.insert( std::make_pair( N_("TC bgf2"), buf) );
-              sprintf( buf, N_("0x%x"), tc.userData());
-              _iptc.insert( std::make_pair( N_("TC User Data"), buf) );
+              process_timecode( attr->value() );
+              _iptc.insert( std::make_pair( N_("timecode"), attr->copy() ));
               attrs.insert( N_("timeCode") );
 	  }
       }
@@ -1366,8 +1299,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::StringAttribute>( N_("writer") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Writer"), attr->value()) );
-            attrs.insert( N_("writer") );
+              _exif.insert( std::make_pair( _("Writer"), attr->copy() ));
+              attrs.insert( N_("writer") );
 	  }
       }
 
@@ -1376,8 +1309,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::StringAttribute>( N_("iccProfile") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("ICC Profile"), attr->value()) );
-            attrs.insert( N_("iccProfile") );
+              _exif.insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
+              attrs.insert( N_("iccProfile") );
 	  }
       }
 
@@ -1386,8 +1319,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::StringAttribute>( N_("wrapmodes") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Wrap Modes"), attr->value()) );
-            attrs.insert( N_("wrapmodes") );
+              _exif.insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
+              attrs.insert( N_("wrapmodes") );
 	  }
       }
 
@@ -1403,17 +1336,20 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	    case Imf::MIPMAP_LEVELS:
 	       {
 		  TiledInputFile tin( sequence_filename(frame).c_str() );
-		  sprintf( buf, N_("%d"), tin.numLevels() );
-		  _exif.insert( std::make_pair( _("Mipmap Levels"), buf) );
+                  Imf::IntAttribute attr( tin.numLevels() );
+		  _exif.insert( std::make_pair( _("Mipmap Levels"),
+                                                attr.copy() ) );
 		  break;
 	       }
 	     case Imf::RIPMAP_LEVELS:
 		{
 		   TiledInputFile tin( sequence_filename(frame).c_str() );
-		   sprintf( buf, N_("%d"), tin.numXLevels() );
-		   _exif.insert( std::make_pair( _("X Ripmap Levels"), buf) );
-		   sprintf( buf, N_("%d"), tin.numYLevels() );
-		   _exif.insert( std::make_pair( _("Y Ripmap Levels"), buf) );
+                   Imf::IntAttribute xat( tin.numXLevels() );
+                   Imf::IntAttribute yat( tin.numYLevels() );
+		   _exif.insert( std::make_pair( _("X Ripmap Levels"),
+                                                 xat.copy() )); 
+                   _exif.insert( std::make_pair( _("Y Ripmap Levels"),
+                                                 yat.copy() ));
 		   break;
 		}
 	    default:
@@ -1424,10 +1360,12 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  switch( desc.roundingMode )
 	    {
 	    case Imf::ROUND_DOWN:
-	      _exif.insert( std::make_pair( _("Rounding Mode"), _("Down") ) );
+                _exif.insert( std::make_pair( _("Rounding Mode"), 
+                                              new Imf::StringAttribute( _("Down") ) ) );
 	      break;
 	    case Imf::ROUND_UP:
-	      _exif.insert( std::make_pair( _("Rounding Mode"), _("Up") ) );
+	      _exif.insert( std::make_pair( _("Rounding Mode"), 
+                                            new Imf::StringAttribute( _("Up") ) ) );
 	      break;
 	    default:
 	      IMG_ERROR( _("Unknown rounding mode") );
@@ -1438,189 +1376,15 @@ void exrImage::read_header_attr( const Imf::Header& h,
       Imf::Header::ConstIterator i = h.begin();
       Imf::Header::ConstIterator e = h.end();
 
-      stringSet::const_iterator end = attrs.end();
-       
       for ( ; i != e; ++i )
       {
           const std::string& name = i.name();
-          if ( attrs.find( name ) != end ) continue;
+          if ( attrs.find( name ) != attrs.end() ) continue;
           if ( ignore.find( name ) != ignore.end() ) continue;
           
           const Attribute& attr = i.attribute();
-          
-          const Imf::Box2iAttribute* b2i =
-          dynamic_cast< const Imf::Box2iAttribute* >( &attr );
-          const Imf::Box2fAttribute* b2f =
-          dynamic_cast< const Imf::Box2fAttribute* >( &attr );
-          const Imf::TimeCodeAttribute* tm =
-          dynamic_cast< const Imf::TimeCodeAttribute* >( &attr );
-          const Imf::M33dAttribute* m33d =
-          dynamic_cast< const Imf::M33dAttribute* >( &attr );
-          const Imf::M33fAttribute* m33f =
-          dynamic_cast< const Imf::M33fAttribute* >( &attr );
-          const Imf::M44dAttribute* m44d =
-          dynamic_cast< const Imf::M44dAttribute* >( &attr );
-          const Imf::M44fAttribute* m44f =
-          dynamic_cast< const Imf::M44fAttribute* >( &attr );
-          const Imf::V3dAttribute* v3d =
-          dynamic_cast< const Imf::V3dAttribute* >( &attr );
-          const Imf::V3fAttribute* v3f =
-          dynamic_cast< const Imf::V3fAttribute* >( &attr );
-          const Imf::V3iAttribute* v3i =
-          dynamic_cast< const Imf::V3iAttribute* >( &attr );
-          const Imf::RationalAttribute* rat =
-          dynamic_cast< const Imf::RationalAttribute* >( &attr );
-          const Imf::V2dAttribute* v2d =
-          dynamic_cast< const Imf::V2dAttribute* >( &attr );
-          const Imf::V2fAttribute* v2f =
-          dynamic_cast< const Imf::V2fAttribute* >( &attr );
-          const Imf::V2iAttribute* v2i =
-          dynamic_cast< const Imf::V2iAttribute* >( &attr );
-          const Imf::IntAttribute* intg =
-          dynamic_cast< const Imf::IntAttribute* >( &attr );
-          const Imf::FloatAttribute* flt =
-          dynamic_cast< const Imf::FloatAttribute* >( &attr );
-          const Imf::StringAttribute* str =
-          dynamic_cast< const Imf::StringAttribute* >( &attr );
-          
-          if ( b2i )
-          {
-              const Imath::Box2i& t = b2i->value();
-              char buf[128];
-              sprintf( buf, "%d %d %d %d", t.min.x, t.min.y, t.max.x, t.max.y );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( b2f )
-          {
-              const Imath::Box2f& t = b2f->value();
-              char buf[128];
-              sprintf( buf, "%g %g %g %g", t.min.x, t.min.y, t.max.x, t.max.y );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( tm )
-          {
-              const Imf::TimeCode& t = tm->value();
-              char buf[16];
-              if ( t.dropFrame() )
-              {
-                  sprintf( buf, "%02d;%02d;%02d;%02d", t.hours(),
-                           t.minutes(), t.seconds(), t.frame() );
-              }
-              else
-              {
-                  sprintf( buf, "%02d:%02d:%02d:%02d", t.hours(),
-                           t.minutes(), t.seconds(), t.frame() );
-              }
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( m33d )
-          {
-              const Imath::M33d& m = m33d->value();
-              char buf[256];
-              sprintf( buf, "%g %g %g %g %g %g %g %g %g",
-                       m[0][0], m[0][1], m[0][2], 
-                       m[1][0], m[1][1], m[1][2],
-                       m[2][0], m[2][1], m[2][2] );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( m33f )
-          {
-              const Imath::M33f& m = m33f->value();
-              char buf[256];
-              sprintf( buf, "%g %g %g %g %g %g %g %g %g",
-                       m[0][0], m[0][1], m[0][2], 
-                       m[1][0], m[1][1], m[1][2],
-                       m[2][0], m[2][1], m[2][2] );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( m44d )
-          {
-              const Imath::M44d& m = m44d->value();
-              char buf[256];
-              sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
-                       m[0][0], m[0][1], m[0][2], m[0][3],
-                       m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
-                       m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( m44f )
-          {
-              const Imath::M44f& m = m44f->value();
-              char buf[256];
-              sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
-                       m[0][0], m[0][1], m[0][2], m[0][3],
-                       m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
-                       m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( v3d )
-          {
-              const Imath::V3d& v = v3d->value();
-              char buf[64];
-              sprintf( buf, "%g %g %g", v.x, v.y, v.z );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( v3f )
-          {
-              const Imath::V3f& v = v3f->value();
-              char buf[64];
-              sprintf( buf, "%g %g %g", v.x, v.y, v.z );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( v3i )
-          {
-              const Imath::V3i& v = v3i->value();
-              char buf[64];
-              sprintf( buf, "%d %d %d", v.x, v.y, v.z );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( rat )
-          {
-              const Imf::Rational& r = rat->value();
-              char buf[64];
-              sprintf( buf, "%d/%d", r.n, r.d );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( v2d )
-          {
-              const Imath::V2d& v = v2d->value();
-              char buf[64];
-              sprintf( buf, "%g %g", v.x, v.y );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( v2f )
-          {
-              const Imath::V2f& v = v2f->value();
-              char buf[64];
-              sprintf( buf, "%g %g", v.x, v.y );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( v2i )
-          {
-              const Imath::V2i& v = v2i->value();
-              char buf[64];
-              sprintf( buf, "%d %d", v.x, v.y );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( intg )
-          {
-              char buf[64];
-              sprintf( buf, "%d", intg->value() );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-          else if ( flt )
-          {
-              char buf[64];
-              sprintf( buf, "%.8g", flt->value() );
-              _iptc.insert( std::make_pair( name, buf ) );
-          }
-
-          if ( str )
-          {
-              _iptc.insert( std::make_pair( name, str->value() ) );
-          }
+          _iptc.insert( std::make_pair( name, attr.copy() ) );
       }
-
 }
 
 
@@ -2064,6 +1828,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     image_damage( image_damage() | kDamage3DData );
                 }
 
+                read_forced_header_attr( header, frame );
+           
                 if ( ! _read_attr )
                     read_header_attr( header, frame );
 
@@ -2243,6 +2009,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             image_damage( image_damage() | kDamage3DData );
         }
 
+        read_forced_header_attr( header, frame );
+        
         if ( ! _read_attr )
             read_header_attr( header, frame );
 
@@ -2378,6 +2146,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            if ( ! find_layers( header ) )
                return false;
 
+           read_forced_header_attr( header, frame );
+           
            if ( ! _read_attr )
                read_header_attr( header, frame );
 
@@ -2539,54 +2309,40 @@ void save_attributes( const CMedia* img, Header& hdr,
     }
 
 
-    const CMedia::Attributes& iptc = img->iptc();
-
-    CMedia::Attributes::const_iterator it = 
-    iptc.find( _( "Capture Date" ) ); 
-    if ( it != iptc.end() )
+    const exrImage* exr = dynamic_cast< const exrImage* >( img );
+    if ( exr )
     {
-        Imf::StringAttribute attr( it->second );
+        const std::string& date = exr->capture_date( img->frame() );
+        Imf::StringAttribute attr( date );
         hdr.insert( N_("capDate"), attr );
-        attrs.insert( _("Capture Date") );
     }
-
-    it = iptc.find( _( "UTC Offset" ) ); 
+    
+    const CMedia::Attributes& iptc = img->iptc();
+    CMedia::Attributes::const_iterator it = iptc.find( _( "UTC Offset" ) ); 
     if ( it != iptc.end() )
     {
-        float v = 0;
-        sscanf( it->second.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("utcOffset"), attr );
+        hdr.insert( N_("utcOffset"), *it->second );
         attrs.insert( _("UTC Offset") );
     }
 
     it = iptc.find( _( "Longitude" ) ); 
     if ( it != iptc.end() )
     {
-        float v = 0;
-        sscanf( it->second.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("longitude"), attr );
+        hdr.insert( N_("longitude"), *it->second );
         attrs.insert( _("Longitude") );
     }
 
     it = iptc.find( _( "Latitude" ) ); 
     if ( it != iptc.end() )
     {
-        float v = 0;
-        sscanf( it->second.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("latitude"), attr );
+        hdr.insert( N_("latitude"), *it->second );
         attrs.insert( _("Latitude") );
     }
 
     it = iptc.find( _( "Altitude" ) ); 
     if ( it != iptc.end() )
     {
-        float v = 0;
-        sscanf( it->second.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("altitude"), attr );
+        hdr.insert( N_("altitude"), *it->second );
         attrs.insert( _("Altitude") );
     }
 
@@ -2594,86 +2350,14 @@ void save_attributes( const CMedia* img, Header& hdr,
     it = iptc.find( N_( "timecode" ) ); 
     if ( it != iptc.end() )
         {
-            int hours = 0, mins = 0, secs = 0, frames = 0, dropframe = 0, 
-           colorframe = 0, fieldphase = 0;
-            int bgf0 = 0, bgf1 = 0, bgf2 = 0, userdata = 0;
+            Imf::TimeCodeAttribute* attr =
+            dynamic_cast< Imf::TimeCodeAttribute* >( it->second );
+            if ( attr )
             {
-                const std::string& value( it->second );
-                int num = sscanf( value.c_str(), "%d:%d:%d:%d", 
-                                  &hours, &mins, &secs, &frames );
-                if ( num != 4 )
-                {
-                    num = sscanf( value.c_str(), "%d;%d;%d;%d", 
-                                  &hours, &mins, &secs, &frames );
-                    if ( num == 4 ) dropframe = 1;
-                }
+                Imf::TimeCode key( attr->value() );
+                Imf::TimeCodeAttribute val(key);
+                hdr.insert( N_("timeCode"), val );
             }
-
-            it = iptc.find( N_( "TC Drop Frame" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &dropframe );
-                attrs.insert( N_("TC Drop Frame") );
-            }
-
-            it = iptc.find( N_( "TC Color Frame" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &colorframe );
-                attrs.insert( N_("TC Color Frame") );
-            }
-
-            it = iptc.find( N_( "TC Field/Phase" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &fieldphase );
-                attrs.insert( N_("TC Field/Phase") );
-            }
-
-            it = iptc.find( N_( "TC bgf0" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &bgf0 );
-                attrs.insert( N_("TC bgf0") );
-            }
-
-
-            it = iptc.find( N_( "TC bgf1" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &bgf1 );
-                attrs.insert( N_("TC bgf1") );
-            }
-
-            it = iptc.find( N_( "TC bgf2" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &bgf2 );
-                attrs.insert( N_("TC bgf2") );
-            }
-
-            it = iptc.find( N_( "TC User Data" ) ); 
-            if ( it != iptc.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "0x%x", &userdata );
-                attrs.insert( N_("TC User Data") );
-            }
-
-            Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
-                               (bool)colorframe, (bool)fieldphase,
-                               (bool)bgf0, (bool)bgf1, (bool)bgf2,
-                               userdata,
-                               userdata, userdata, userdata, userdata, userdata,
-                               userdata, userdata);
-            Imf::TimeCodeAttribute attr(key);
-            hdr.insert( N_("timeCode"), attr );
             attrs.insert( N_("timecode") );
         }
 
@@ -2686,8 +2370,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         // Avoid adding attributes we already parsed
         const std::string& name = i->first;
         if ( attrs.find( name ) != end ) continue;
-        Imf::StringAttribute attr = i->second;
-        hdr.insert( name, attr );
+        hdr.insert( name, *i->second );
     }
 
     attrs.clear();
@@ -2697,95 +2380,70 @@ void save_attributes( const CMedia* img, Header& hdr,
     it = exif.find( _( "Chromaticities Name" ) ); 
     if ( it != exif.end() )
     {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("Chromaticities Name"), attr );
+        hdr.insert( N_("Chromaticities Name"), *it->second );
         attrs.insert( _("Chromaticities Name") );
     }
 
     it = exif.find( _( "Comments" ) ); 
     if ( it != exif.end() )
     {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( _("Comments"), attr );
+        hdr.insert( _("Comments"), *it->second );
         attrs.insert( _("Comments") );
     }
     
     it = exif.find( _( "Adopted Neutral" ) ); 
     if ( it != exif.end() )
     {
-        std::string value( it->second );
-        Imath::V2f v;
-        sscanf( value.c_str(), "%g %g", &v.x, &v.y );
-        Imf::V2fAttribute attr( v );
-        hdr.insert( N_("adoptedNeutral"), attr );
+        hdr.insert( N_("adoptedNeutral"), *it->second );
         attrs.insert( _("Adopted Neutral") );
     }
 
     it = exif.find( _( "Image State" ) ); 
     if ( it != exif.end() )
         {
-            std::string value( it->second );
-            int v;
-            sscanf( value.c_str(), "%d", &v );
-            Imf::IntAttribute attr( v );
-            hdr.insert( N_("imageState"), attr );
+            hdr.insert( N_("imageState"), *it->second );
             attrs.insert( _("Image State") );
         }
 
         it = exif.find( _( "Owner" ) ); 
         if ( it != exif.end() )
         {
-            Imf::StringAttribute attr( it->second );
-            hdr.insert( N_("owner"), attr );
+            hdr.insert( N_("owner"), *it->second );
             attrs.insert( _("Owner") );
         }
 
         it = exif.find( _( "Comments" ) ); 
         if ( it != exif.end() )
         {
-            Imf::StringAttribute attr( it->second );
-            hdr.insert( N_("comments"), attr );
+            hdr.insert( N_("comments"), *it->second );
             attrs.insert( _("Comments") );
         }
 
         it = exif.find( _( "Capture Date" ) ); 
         if ( it != exif.end() )
         {
-            Imf::StringAttribute attr( it->second );
-            hdr.insert( N_("capDate"), attr );
+            hdr.insert( N_("capDate"), *it->second );
             attrs.insert( _("Capture Date") );
         }
 
         it = exif.find( _( "UTC Offset") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("utcOffset"), attr );
+            hdr.insert( N_("utcOffset"), *it->second );
             attrs.insert( _("UTC Offset") );
         }
 
         it = exif.find( _( "Longitude") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("longitude"), attr );
+            hdr.insert( N_("longitude"), *it->second );
             attrs.insert( _("Longitude") );
         }
 
         it = exif.find( _( "Latitude") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("latitude"), attr );
+            hdr.insert( N_("latitude"), *it->second );
             attrs.insert( _("Latitude") );
         }
 
@@ -2793,11 +2451,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         it = exif.find( _( "Altitude") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("altitude"), attr );
+            hdr.insert( N_("altitude"), *it->second );
             attrs.insert( _("Altitude") );
         }
 
@@ -2805,11 +2459,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         it = exif.find( _( "Focus") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("focus"), attr );
+            hdr.insert( N_("focus"), *it->second );
             attrs.insert( _("Focus") );
         }
 
@@ -2817,33 +2467,21 @@ void save_attributes( const CMedia* img, Header& hdr,
         it = exif.find( _( "Exposure Time") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("expTime"), attr );
+            hdr.insert( N_("expTime"), *it->second );
             attrs.insert( _("Exposure Time") );
         }
 
         it = exif.find( _( "Aperture") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("aperture"), attr );
+            hdr.insert( N_("aperture"), *it->second );
             attrs.insert( _("Aperture") );
         }
 
         it = exif.find( _( "ISO Speed") ); 
         if ( it != exif.end() )
         {
-            const std::string& value( it->second );
-            float v;
-            sscanf( value.c_str(), "%g", &v );
-            Imf::FloatAttribute attr( v );
-            hdr.insert( N_("isoSpeed"), attr );
+            hdr.insert( N_("isoSpeed"), *it->second );
             attrs.insert( _("ISO Speed") );
         }
 
@@ -2857,175 +2495,47 @@ void save_attributes( const CMedia* img, Header& hdr,
         it = exif.find( _( "Film Manufacturer Code" ) ); 
         if ( it != exif.end() )
         {
-            int fmfc = 0, ftc = 0, pc = 0, count = 0, poff = 0, ppf = 0, ppc = 0;
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &fmfc );
-            }
             attrs.insert( _("Film Manufacturer Code") );
-
-            it = exif.find( _( "Film Type Code" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &ftc );
-                attrs.insert( _("Film Type Code") );
-            }
-
-            it = exif.find( _( "Prefix Code" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &pc );
-                attrs.insert( _("Prefix Code") );
-            }
-
-            it = exif.find( _( "Count" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &count );
-                attrs.insert( _("Count") );
-            }
-
-            it = exif.find( _( "Perf Offset" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &poff );
-                attrs.insert( _("Perf Offset") );
-            }
-
-            it = exif.find( _( "Perfs per Frame" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &ppf );
-                attrs.insert( _("Perfs per Frame") );
-            }
-
-            it = exif.find( _( "Perfs per Count" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &ppc );
-                attrs.insert( _("Perfs per Count") );
-            }
-
-            Imf::KeyCode key( fmfc, ftc, pc, count, poff, ppf, ppc );
-            Imf::KeyCodeAttribute attr(key);
-            hdr.insert( N_("keyCode"), attr );
+            hdr.insert( N_("keyCode"), *it->second );
+            attrs.insert( _("keyCode") );
         }
 
 
         it = exif.find( N_( "timecode" ) ); 
         if ( it != exif.end() )
         {
-            int hours = 0, mins = 0, secs = 0, frames = 0, dropframe = 0, 
-           colorframe = 0, fieldphase = 0;
-            int bgf0 = 0, bgf1 = 0, bgf2 = 0, userdata = 0;
-            {
-                const std::string& value( it->second );
-                int num = sscanf( value.c_str(), "%d:%d:%d:%d", 
-                                  &hours, &mins, &secs, &frames );
-                if ( num != 4 )
-                {
-                    num = sscanf( value.c_str(), "%d;%d;%d;%d", 
-                                  &hours, &mins, &secs, &frames );
-                    if ( num == 4 ) dropframe = 1;
-                }
-            }
 
-            attrs.insert( N_("timecode") );
+            Imf::TimeCodeAttribute* attr =
+            dynamic_cast< Imf::TimeCodeAttribute* >( it->second );
+
+            if ( attr )
+            {
+                Imf::TimeCode key( attr->value() );
+                attrs.insert( N_("timecode") );
             
-            it = exif.find( N_( "TC Drop Frame" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &dropframe );
-                attrs.insert( N_("TC Drop Frame") );
+                Imf::TimeCodeAttribute val(key);
+                hdr.insert( N_("timeCode"), val );
             }
-
-            it = exif.find( N_( "TC Color Frame" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &colorframe );
-                attrs.insert( N_("TC Color Frame") );
-            }
-
-            it = exif.find( N_( "TC Field/Phase" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &fieldphase );
-                attrs.insert( N_("TC Field/Phase") );
-            }
-
-            it = exif.find( N_( "TC bgf0" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &bgf0 );
-                attrs.insert( N_("TC bgf0") );
-            }
-
-
-            it = exif.find( N_( "TC bgf1" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &bgf1 );
-                attrs.insert( N_("TC bgf1") );
-            }
-
-            it = exif.find( N_( "TC bgf2" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "%d", &bgf2 );
-                attrs.insert( N_("TC bgf2") );
-            }
-
-            it = exif.find( N_( "TC User Data" ) ); 
-            if ( it != exif.end() )
-            {
-                const std::string& value( it->second );
-                sscanf( value.c_str(), "0x%x", &userdata );
-                attrs.insert( N_("TC User Data") );
-            }
-
-            Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
-                               (bool)colorframe, (bool)fieldphase,
-                               (bool)bgf0, (bool)bgf1, (bool)bgf2,
-                               userdata,
-                               userdata, userdata, userdata, userdata, userdata,
-                               userdata, userdata);
-            Imf::TimeCodeAttribute attr(key);
-            hdr.insert( N_("timeCode"), attr );
         }
 
         it = exif.find( _( "Writer" ) ); 
         if ( it != exif.end() )
         {
-            Imf::StringAttribute attr( it->second );
-            hdr.insert( N_("writer"), attr );
+            hdr.insert( N_("writer"), *it->second );
             attrs.insert( _("Writer") );
         }
 
         it = exif.find( _( "ICC Profile" ) ); 
         if ( it != exif.end() )
         {
-            Imf::StringAttribute attr( it->second );
-            hdr.insert( N_("iccProfile"), attr );
+            hdr.insert( N_("iccProfile"), *it->second );
             attrs.insert( _("ICC Profile") );
         }
 
         it = exif.find( _( "Wrap Modes" ) ); 
         if ( it != exif.end() )
         {
-            Imf::StringAttribute attr( it->second );
-            hdr.insert( N_("wrapmodes"), attr );
+            hdr.insert( N_("wrapmodes"), *it->second );
             attrs.insert( _("Wrap Modes") );
         }
         
@@ -3037,12 +2547,12 @@ void save_attributes( const CMedia* img, Header& hdr,
             const std::string& name = i->first;
             // Avoid adding attributes we already parsed
             if ( attrs.find( name ) != end ) continue;
-            Imf::StringAttribute attr = i->second;
+            const Imf::Attribute& attr = *(i->second);
             hdr.insert( name, attr );
         }
 }
 
-
+ 
 typedef std::vector< Imf::Header > HeaderList;
 typedef std::vector< Imf::FrameBuffer > FrameBufferList;
 typedef std::vector< Imf::DeepFrameBuffer > DeepFrameBufferList;
