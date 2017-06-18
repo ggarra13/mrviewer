@@ -3158,7 +3158,6 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
       _right_eye->find_image(frame);
 
-  SCOPED_LOCK( _mutex );
   boost::int64_t f = handle_loops( frame );
 
   _video_pts   = f / _orig_fps;
