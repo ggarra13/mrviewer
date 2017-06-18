@@ -92,9 +92,9 @@ static const char* kModule = "filereq";
 #ifdef __linux__
 #include <linux/version.h>
 
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(4,4,0)
+//#if LINUX_VERSION_CODE <= KERNEL_VERSION(4,4,0)
 #  define ICONS_SINGLE_THREAD
-#endif
+//#endif
 
 #endif // __linux__
 
@@ -4900,9 +4900,9 @@ const char* flu_file_chooser( const char *message, const char *pattern, const ch
   return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE );
 }
 
-const char* flu_save_chooser( const char *message, const char *pattern, const char *filename )
+const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files )
 {
-  return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE | Flu_File_Chooser::SAVING );
+    return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE | Flu_File_Chooser::SAVING, 0, 0, compact_files );
 }
 
 const char* flu_dir_chooser( const char *message, const char *filename )
