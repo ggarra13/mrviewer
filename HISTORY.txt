@@ -18,6 +18,8 @@ v3.6.9   - Bug fixed saving OpenEXR's with deep data.  Now it is
 	   OpenEXR images be too slow to update the display.
 	 - Added the ability to create/remove/modify the metadata of
 	   a movie or OpenEXR image.
+	 - Removed the saving of dpx:television gamma in dpx saving
+	   as it was gamma'ing twice the image.
 
 v3.6.8   - Made timecode start editable in the Media Info Window.
 	   Just type a new timecode and press TAB.
