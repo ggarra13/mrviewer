@@ -1900,7 +1900,7 @@ void ImageView::timeout()
       
       redraw();
   }
-  
+
   repeat_timeout( float(delay) );
 }
 
@@ -1988,7 +1988,7 @@ void ImageView::vr( bool t )
  */
 void ImageView::draw()
 {
- 
+  
   if ( !valid() ) 
     {
        if ( ! _engine )
