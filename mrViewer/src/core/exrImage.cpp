@@ -2412,6 +2412,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
       if ( _curpart != oldpart )
       {
+          std::cerr << "curpart " << _curpart << " oldpart "
+                    << oldpart << std::endl;
          InputPart in (inmaster, _curpart);
          const Header& header = in.header();
 
