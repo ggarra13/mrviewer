@@ -41,7 +41,12 @@ using namespace std;
 
 #include <MagickWand/MagickWand.h>
 
-#include <ImfStringAttribute.h>
+#include <ImfStandardAttributes.h>
+#include <ImfIntAttribute.h>
+#include <ImfDoubleAttribute.h>
+#include <ImfVecAttribute.h>
+#include <ImfMatrixAttribute.h>
+
 
 #include "core/mrvImageOpts.h"
 #include "core/Sequence.h"
@@ -614,6 +619,212 @@ static void destroyPixels( Buffers& bufs )
     }
 }
 
+static void save_attribute( MagickWand* wand, 
+                            const CMedia::Attributes::const_iterator& i )
+{
+    char buf[256];
+    {
+        Imf::StringAttribute* attr =
+        dynamic_cast< Imf::StringAttribute* >( i->second );
+        if ( attr )
+        {
+            MagickSetImageProperty( wand, i->first.c_str(),
+                                    attr->value().c_str() );
+            return;
+        }
+    }
+    {
+        Imf::IntAttribute* attr = 
+        dynamic_cast< Imf::IntAttribute* >( i->second );
+        if ( attr )
+        {
+            sprintf( buf, "%d", attr->value() );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::FloatAttribute* attr = 
+        dynamic_cast< Imf::FloatAttribute* >( i->second );
+        if ( attr )
+        {
+            sprintf( buf, "%g", attr->value() );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::DoubleAttribute* attr = 
+        dynamic_cast< Imf::DoubleAttribute* >( i->second );
+        if ( attr )
+        {
+            sprintf( buf, "%lg", attr->value() );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::V2iAttribute* attr = 
+        dynamic_cast< Imf::V2iAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::V2i& v = attr->value();
+            sprintf( buf, "%d %d", v.x, v.y );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::V2fAttribute* attr = 
+        dynamic_cast< Imf::V2fAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::V2f& v = attr->value();
+            sprintf( buf, "%g %g", v.x, v.y );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::V2dAttribute* attr = 
+        dynamic_cast< Imf::V2dAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::V2d& v = attr->value();
+            sprintf( buf, "%lg %lg", v.x, v.y );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::V3iAttribute* attr = 
+        dynamic_cast< Imf::V3iAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::V3i& v = attr->value();
+            sprintf( buf, "%d %d %d", v.x, v.y, v.z );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::V3fAttribute* attr = 
+        dynamic_cast< Imf::V3fAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::V3f& v = attr->value();
+            sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::V3dAttribute* attr = 
+        dynamic_cast< Imf::V3dAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::V3d& v = attr->value();
+            sprintf( buf, "%lg %lg %lg", v.x, v.y, v.z );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::M33fAttribute* attr = 
+        dynamic_cast< Imf::M33fAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::M33f& v = attr->value();
+            sprintf( buf, 
+                     "%g %g %g  "
+                     "%g %g %g  "
+                     "%g %g %g",
+                     v[0][0], v[0][1], v[0][2],
+                     v[1][0], v[1][1], v[1][2],
+                     v[2][0], v[2][1], v[2][2] );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::M33dAttribute* attr = 
+        dynamic_cast< Imf::M33dAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::M33d& v = attr->value();
+            sprintf( buf, 
+                     "%lg %lg %lg  "
+                     "%lg %lg %lg  "
+                     "%lg %lg %lg",
+                     v[0][0], v[0][1], v[0][2],
+                     v[1][0], v[1][1], v[1][2],
+                     v[2][0], v[2][1], v[2][2] );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::M44fAttribute* attr = 
+        dynamic_cast< Imf::M44fAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::M44f& v = attr->value();
+            sprintf( buf, 
+                     "%g %g %g %g  "
+                     "%g %g %g %g  "
+                     "%g %g %g %g  "
+                     "%g %g %g %g",
+                     v[0][0], v[0][1], v[0][2], v[0][3], 
+                     v[1][0], v[1][1], v[1][2], v[1][3], 
+                     v[2][0], v[2][1], v[2][2], v[2][3], 
+                     v[3][0], v[3][1], v[3][2], v[3][3] );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::M44dAttribute* attr = 
+        dynamic_cast< Imf::M44dAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::M44d& v = attr->value();
+            sprintf( buf, 
+                     "%lg %lg %lg %lg  "
+                     "%lg %lg %lg %lg  "
+                     "%lg %lg %lg %lg  "
+                     "%lg %lg %lg %lg",
+                     v[0][0], v[0][1], v[0][2], v[0][3], 
+                     v[1][0], v[1][1], v[1][2], v[1][3], 
+                     v[2][0], v[2][1], v[2][2], v[2][3], 
+                     v[3][0], v[3][1], v[3][2], v[3][3] );
+            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            return;
+        }
+    }
+    {
+        Imf::TimeCodeAttribute* attr = 
+        dynamic_cast< Imf::TimeCodeAttribute* >( i->second );
+    if ( attr )
+    {
+        const Imf::TimeCode& t = attr->value();
+        if ( t.dropFrame() )
+        {
+            sprintf( buf, "%02d;%02d;%02d;02d", 
+                     t.hours(), t.minutes(), t.seconds(),
+                     t.frame() );
+        }
+        else
+        {
+            sprintf( buf, "%02d:%02d:%02d:02d", 
+                     t.hours(), t.minutes(), t.seconds(),
+                     t.frame() );
+        }
+        MagickSetImageProperty( wand, i->first.c_str(), buf );
+        return;
+    }
+}
+}
+
 bool CMedia::save( const char* file, const ImageOpts* opts ) const
 {
     if ( dynamic_cast< const EXROpts* >( opts ) != NULL )
@@ -1057,20 +1268,15 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     // Store EXIF and IPTC data (if any)
     //
     {
+        setlocale( LC_NUMERIC, "C" );  // Set locale to C
         Attributes::const_iterator i = _exif.begin();
         Attributes::const_iterator e = _exif.end();
         for ( ; i != e; ++i )
         {
-            Imf::StringAttribute* attr =
-            dynamic_cast< Imf::StringAttribute* >( i->second );
-            if ( !attr ) continue;
-            
-            MagickSetImageProperty( wand, i->first.c_str(),
-                                    attr->value().c_str() );
+            save_attribute( wand, i );
         }
 
-        char buf[12];
-        setlocale( LC_NUMERIC, "C" );  // Set locale to C
+        char buf[32];
         sprintf( buf, "%2.4f", _fps );
         MagickSetImageProperty( wand, "dpx:film.frame_rate", buf );
         MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
@@ -1085,12 +1291,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         Attributes::const_iterator e = _iptc.end();
         for ( ; i != e; ++i )
         {
-            Imf::StringAttribute* attr =
-            dynamic_cast< Imf::StringAttribute* >( i->second );
-            if ( !attr ) continue;
-            
-            MagickSetImageProperty( wand, i->first.c_str(),
-                                    attr->value().c_str() );
+            save_attribute( wand, i );
         }
 
         // CIccProfile* p = mrv::colorProfile::get( file.c_str() );
