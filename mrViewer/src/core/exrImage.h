@@ -108,9 +108,9 @@ namespace mrv {
                        Imf::Array<unsigned int>& sampleCount );
 
       const std::string& capture_date( const int64_t& f ) const {
-          static std::string unknown = _("Unknown Date");
+          static std::string kUnknown = "";
           CapDates::const_iterator i = _cap_date.find(f);
-          if ( i == _cap_date.end() ) return unknown;
+          if ( i == _cap_date.end() ) return kUnknown;
           return i->second;
       }
       
