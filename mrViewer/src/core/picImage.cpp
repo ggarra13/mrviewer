@@ -39,6 +39,8 @@
 
 #include <fltk/run.h>  // for fltk_fopen
 
+#include <ImfStringAttribute.h>
+
 #include "picImage.h"
 #include "byteSwap.h"
 
@@ -248,7 +250,8 @@ bool picImage::fetch(const boost::int64_t frame)
     size_t read = fread(buf, 80, 1, file );
     if ( buf[0] != 0 )
     {
-        _iptc.insert( std::make_pair( "Creator", buf ) );
+        Imf::StringAttribute attr( buf );
+        _iptc.insert( std::make_pair( "Creator", attr.copy() ) );
     }
 
     tmp = readInt(file);		// File identifier 'PICT'
