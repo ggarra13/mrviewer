@@ -549,7 +549,7 @@ void remove_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
         mrvALERT( buf );
         return;
     }
-    if ( key.find( "timecode" ) != std::string::npos )
+    if ( key.find( N_("timecode") ) != std::string::npos )
     {
         img->timecode( 0 );
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
@@ -579,7 +579,7 @@ void remove_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
         mrvALERT( buf );
         return;
     }
-    if ( key.find( "timecode" ) != std::string::npos )
+    if ( key.find( N_("timecode") ) != std::string::npos )
     {
         img->timecode( 0 );
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
@@ -778,6 +778,7 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
              i->first == N_("Timecode") )
         {
             const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
+            img->process_timecode( t );
             Imf::TimeCodeAttribute attr( t );
             i->second = attr.copy();
         }
@@ -793,13 +794,12 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
              i->first == N_("Timecode") )
         {
             const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
+            img->process_timecode( t );
             Imf::TimeCodeAttribute attr( t );
             i->second = attr.copy();
         }
     }
-    img->process_timecode( w->text() );
-    img->image_damage( img->image_damage() | CMedia::kDamageData |
-                       CMedia::kDamageTimecode );
+    img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
 }
 
 // Update int slider from int input
@@ -1353,6 +1353,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         dynamic_cast< Imf::TimeCodeAttribute*>( i->second );
         if (attr)
         {
+            ++group;
             mrv::Timecode::Display d =
             mrv::Timecode::kTimecodeNonDrop;
             if ( attr->value().dropFrame() )
@@ -1362,7 +1363,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->timecode(),
                                            img->play_fps(), true );
             add_text( i->first.c_str(),
-                      "Timecode start (editable) press TAB to accept",
+                      "Timecode start",
                       buf, true, false, (fltk::Callback*)timecode_cb );
             return;
         }
@@ -1925,6 +1926,12 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
         {
+            if ( i->first.find( _("Video") ) != std::string::npos )
+                group = 1;
+            else if ( i->first.find( _("Audio") ) != std::string::npos )
+                group = 2;
+            else
+                group = 3;
             process_attributes( i );
         }
 
@@ -1975,6 +1982,12 @@ void ImageInformation::fill_data()
               }
               else
               {
+                  if ( i->first.find( _("Video") ) != std::string::npos )
+                      group = 1;
+                  else if ( i->first.find( _("Audio") ) != std::string::npos )
+                      group = 2;
+                  else
+                      group = 3;
                   process_attributes( i );
               }
 	  }
