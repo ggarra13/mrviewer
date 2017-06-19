@@ -623,13 +623,17 @@ static void save_attribute( MagickWand* wand,
                             const CMedia::Attributes::const_iterator& i )
 {
     char buf[256];
+    MagickBooleanType status;
+    std::string key = "exif:" + i->first;
     {
         Imf::StringAttribute* attr =
         dynamic_cast< Imf::StringAttribute* >( i->second );
         if ( attr )
         {
-            MagickSetImageProperty( wand, i->first.c_str(),
-                                    attr->value().c_str() );
+            status = MagickSetImageProperty( wand, key.c_str(),
+                                             attr->value().c_str() );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -639,7 +643,9 @@ static void save_attribute( MagickWand* wand,
         if ( attr )
         {
             sprintf( buf, "%d", attr->value() );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -649,8 +655,10 @@ static void save_attribute( MagickWand* wand,
         if ( attr )
         {
             sprintf( buf, "%g", attr->value() );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
-            return;
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+           return;
         }
     }
     {
@@ -659,8 +667,10 @@ static void save_attribute( MagickWand* wand,
         if ( attr )
         {
             sprintf( buf, "%lg", attr->value() );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
-            return;
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+           return;
         }
     }
     {
@@ -670,7 +680,9 @@ static void save_attribute( MagickWand* wand,
         {
             const Imath::V2i& v = attr->value();
             sprintf( buf, "%d %d", v.x, v.y );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -681,8 +693,10 @@ static void save_attribute( MagickWand* wand,
         {
             const Imath::V2f& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
-            return;
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+           return;
         }
     }
     {
@@ -692,7 +706,9 @@ static void save_attribute( MagickWand* wand,
         {
             const Imath::V2d& v = attr->value();
             sprintf( buf, "%lg %lg", v.x, v.y );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -703,8 +719,10 @@ static void save_attribute( MagickWand* wand,
         {
             const Imath::V3i& v = attr->value();
             sprintf( buf, "%d %d %d", v.x, v.y, v.z );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
-            return;
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+           return;
         }
     }
     {
@@ -714,7 +732,9 @@ static void save_attribute( MagickWand* wand,
         {
             const Imath::V3f& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -725,7 +745,9 @@ static void save_attribute( MagickWand* wand,
         {
             const Imath::V3d& v = attr->value();
             sprintf( buf, "%lg %lg %lg", v.x, v.y, v.z );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -742,8 +764,10 @@ static void save_attribute( MagickWand* wand,
                      v[0][0], v[0][1], v[0][2],
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
-            return;
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+           return;
         }
     }
     {
@@ -759,7 +783,9 @@ static void save_attribute( MagickWand* wand,
                      v[0][0], v[0][1], v[0][2],
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
@@ -778,7 +804,7 @@ static void save_attribute( MagickWand* wand,
                      v[1][0], v[1][1], v[1][2], v[1][3], 
                      v[2][0], v[2][1], v[2][2], v[2][3], 
                      v[3][0], v[3][1], v[3][2], v[3][3] );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
             return;
         }
     }
@@ -797,32 +823,37 @@ static void save_attribute( MagickWand* wand,
                      v[1][0], v[1][1], v[1][2], v[1][3], 
                      v[2][0], v[2][1], v[2][2], v[2][3], 
                      v[3][0], v[3][1], v[3][2], v[3][3] );
-            MagickSetImageProperty( wand, i->first.c_str(), buf );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
             return;
         }
     }
     {
         Imf::TimeCodeAttribute* attr = 
         dynamic_cast< Imf::TimeCodeAttribute* >( i->second );
-    if ( attr )
-    {
-        const Imf::TimeCode& t = attr->value();
-        if ( t.dropFrame() )
+        if ( attr )
         {
-            sprintf( buf, "%02d;%02d;%02d;02d", 
-                     t.hours(), t.minutes(), t.seconds(),
-                     t.frame() );
+            const Imf::TimeCode& t = attr->value();
+            if ( t.dropFrame() )
+            {
+                sprintf( buf, "%02d;%02d;%02d;02d", 
+                         t.hours(), t.minutes(), t.seconds(),
+                         t.frame() );
+            }
+            else
+            {
+                sprintf( buf, "%02d:%02d:%02d:02d", 
+                         t.hours(), t.minutes(), t.seconds(),
+                         t.frame() );
+            }
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+            return;
         }
-        else
-        {
-            sprintf( buf, "%02d:%02d:%02d:02d", 
-                     t.hours(), t.minutes(), t.seconds(),
-                     t.frame() );
-        }
-        MagickSetImageProperty( wand, i->first.c_str(), buf );
-        return;
     }
-}
+    mrvALERT( _("Unknown data type to convert to string") );
 }
 
 bool CMedia::save( const char* file, const ImageOpts* opts ) const
