@@ -1363,7 +1363,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->play_fps(), true );
             add_text( i->first.c_str(),
                       "Timecode start (editable) press TAB to accept",
-                      buf, true, true, (fltk::Callback*)timecode_cb );
+                      buf, true, false, (fltk::Callback*)timecode_cb );
             return;
         }
     }
@@ -1372,7 +1372,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         dynamic_cast< Imf::DoubleAttribute* >( i->second );
         if ( attr )
         {
-            add_float( i->first.c_str(), i->first.c_str(),
+            add_float( i->first.c_str(), NULL,
                        attr->value(), true, false,
                        (fltk::Callback*)change_float_cb );
             return;
@@ -1383,7 +1383,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         dynamic_cast< Imf::FloatAttribute* >( i->second );
         if ( attr )
         {
-            add_float( i->first.c_str(), i->first.c_str(),
+            add_float( i->first.c_str(), NULL,
                        attr->value(), true, false,
                        (fltk::Callback*)change_float_cb );
             return;
@@ -1394,7 +1394,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         dynamic_cast< Imf::IntAttribute* >( i->second );
         if ( attr )
         {
-            add_int( i->first.c_str(), i->first.c_str(),
+            add_int( i->first.c_str(), NULL,
                      attr->value(), true, false,
                      (fltk::Callback*)change_int_cb );
             return;
@@ -1408,7 +1408,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             const Imath::V2i& v = attr->value();
             sprintf( buf, "%d %d", v.x, v.y );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1421,7 +1421,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             const Imath::V2d& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1434,7 +1434,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             const Imath::V2f& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1447,7 +1447,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             const Imath::V3i& v = attr->value();
             sprintf( buf, "%d %d %d", v.x, v.y, v.z );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1460,7 +1460,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             const Imath::V3d& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1473,7 +1473,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             const Imath::V3f& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1489,7 +1489,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[0][0], v[0][1], v[0][2],
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1505,7 +1505,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[0][0], v[0][1], v[0][2],
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1522,7 +1522,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[1][0], v[1][1], v[1][2], v[1][3],
                      v[2][0], v[2][1], v[2][2], v[2][3],
                      v[3][0], v[3][1], v[3][2], v[3][3] );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1539,7 +1539,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[1][0], v[1][1], v[1][2], v[1][3],
                      v[2][0], v[2][1], v[2][2], v[2][3],
                      v[3][0], v[3][1], v[3][2], v[3][3] );
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
         }
@@ -1549,7 +1549,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         dynamic_cast< Imf::StringAttribute* >( i->second );
         if ( attr )
         {
-            add_text( i->first.c_str(), i->first.c_str(),
+            add_text( i->first.c_str(), NULL,
                       attr->value().c_str(), true, false,
                       (fltk::Callback*) change_string_cb );
             return;
@@ -1825,7 +1825,7 @@ void ImageInformation::fill_data()
         for ( unsigned i = 0; i <= count; ++i )
         {
             sprintf( buf, _("LMTransform %u"), i+1 );
-            add_ctl_lmt( strdup( buf ), _("(LMT) Look Mod Transform"), 
+            add_ctl_lmt( buf, _("(LMT) Look Mod Transform"), 
                          img->look_mod_transform(i), i );
         }
     }
@@ -2254,10 +2254,12 @@ void ImageInformation::fill_data()
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
+
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
@@ -2273,7 +2275,8 @@ void ImageInformation::fill_data()
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
-      widget->tooltip( strdup(tooltip) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
       if ( callback )
 	widget->callback( (fltk::Callback*)icc_callback, (void*)this );
 
@@ -2303,10 +2306,11 @@ void ImageInformation::fill_data()
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
@@ -2322,7 +2326,8 @@ void ImageInformation::fill_data()
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
-      widget->tooltip( strdup(tooltip) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
       if ( callback )
 	widget->callback( (fltk::Callback*)ctl_callback, (void*)this );
 
@@ -2354,10 +2359,11 @@ void ImageInformation::fill_data()
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
@@ -2373,7 +2379,8 @@ void ImageInformation::fill_data()
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
-      widget->tooltip( strdup(tooltip) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
       if ( callback )
 	widget->callback( (fltk::Callback*)ctl_idt_callback, (void*)this );
 
@@ -2406,10 +2413,11 @@ void ImageInformation::fill_data()
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+      fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
@@ -2425,7 +2433,8 @@ void ImageInformation::fill_data()
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
-      widget->tooltip( strdup(tooltip) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
 
       CtlLMTData* c = new CtlLMTData;
       c->widget = this;
@@ -2476,11 +2485,11 @@ void ImageInformation::fill_data()
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
-
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+      fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
@@ -2505,7 +2514,8 @@ void ImageInformation::fill_data()
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
-      widget->tooltip( strdup(tooltip) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
       if ( !editable )
 	{
 	  widget->box( fltk::FLAT_BOX );
@@ -2545,15 +2555,16 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
-      widget->copy_label( name );
-      widget->color( colA );
-      g->add( widget );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
+        widget->box( fltk::FLAT_BOX );
+        widget->labelcolor( fltk::BLACK );
+        widget->copy_label( name );
+        widget->color( colA );
+        g->add( widget );
     }
 
     {
@@ -2570,7 +2581,8 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( fltk::FLAT_BOX );
-          widget->tooltip( strdup( tooltip ) );
+          if ( tooltip ) widget->tooltip( tooltip );
+          else widget->tooltip( lbl->label() );
 	}
       else 
 	{
@@ -2578,7 +2590,8 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	  widget->value( content );
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
-          widget->tooltip( strdup( tooltip ) );
+          if ( tooltip ) widget->tooltip( tooltip );
+          else widget->tooltip( lbl->label() );
 
 	  if ( callback ) widget->callback( callback, this );
 
@@ -2598,7 +2611,8 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	  slider->step( 1.0 );
 	  slider->linesize(1);
 	  // slider->slider_size(10);
-          slider->tooltip( strdup( tooltip ) );
+          if ( tooltip ) slider->tooltip( tooltip );
+          else slider->tooltip( lbl->label() );
 	  slider->when( fltk::WHEN_RELEASE );
 	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
 
@@ -2624,10 +2638,11 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
       widget->copy_label( name );
@@ -2646,7 +2661,8 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	}
       widget->value( unsigned(content) );
       widget->copy_label( _( options[content] ) );
-      widget->tooltip( strdup( tooltip ) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
 
       if ( !editable )
 	{
@@ -2712,10 +2728,11 @@ void ImageInformation::add_int( const char* name,
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
       widget->copy_label( name );
@@ -2737,7 +2754,8 @@ void ImageInformation::add_int( const char* name,
 	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( fltk::FLAT_BOX );
-          widget->tooltip( strdup( tooltip ) );
+          if ( tooltip ) widget->tooltip( tooltip );
+          else widget->tooltip( lbl->label() );
 	}
       else 
 	{
@@ -2745,7 +2763,8 @@ void ImageInformation::add_int( const char* name,
 	  widget->value( (int)content );
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
-          widget->tooltip( strdup( tooltip ) );
+          if ( tooltip ) widget->tooltip( tooltip );
+          else widget->tooltip( lbl->label() );
 
 	  if ( callback ) widget->callback( callback, this );
 
@@ -2766,7 +2785,8 @@ void ImageInformation::add_int( const char* name,
 	  slider->value( content );
 	  slider->step( 1.0 );
 	  slider->linesize(1);
-          slider->tooltip( strdup( tooltip ) );
+          if ( tooltip ) slider->tooltip( tooltip );
+          else slider->tooltip( lbl->label() );
 	  // slider->slider_size(10);
 	  slider->when( fltk::WHEN_RELEASE );
 	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
@@ -2833,10 +2853,11 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
       widget->copy_label( name );
@@ -2846,7 +2867,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
 
     unsigned dw = (w() - kMiddle) / 6;
     fltk::Group* g2 = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-    g2->tooltip( strdup( tooltip ) );
+    if ( tooltip ) g2->tooltip( tooltip );
+    else g2->tooltip( lbl->label() );
     {
       fltk::IntInput* widget = new fltk::IntInput( 0, 0, dw, hh );
       widget->value( content.l() );
@@ -2954,10 +2976,11 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+      fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->labelcolor( fltk::BLACK );
       widget->copy_label( name );
@@ -2979,7 +3002,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
 	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( fltk::FLAT_BOX );
-          widget->tooltip( strdup( tooltip ) );
+          if ( tooltip ) widget->tooltip( tooltip );
+          else widget->tooltip( lbl->label() );
 	}
       else 
 	{
@@ -2987,7 +3011,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
 	  widget->value( content );
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
-          widget->tooltip( strdup( tooltip ) );
+          if ( tooltip ) widget->tooltip( tooltip );
+          else widget->tooltip( lbl->label() );
 
 	  if ( callback ) widget->callback( callback, this );
 
@@ -3008,7 +3033,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
 	  slider->value( content );
 	  slider->linesize(1);
 	  // slider->slider_size(10);
-          slider->tooltip( strdup( tooltip ) );
+          if ( tooltip ) slider->tooltip( tooltip );
+          else slider->tooltip( lbl->label() );
 	  slider->when( fltk::WHEN_CHANGED );
 	  slider->callback( (fltk::Callback*)float_slider_cb, widget );
 
@@ -3031,11 +3057,13 @@ void ImageInformation::add_bool( const char* name,
     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
+    fltk::Widget* lbl;
+
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
 
     {
-        fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh );
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
       widget->box( fltk::FLAT_BOX );
       widget->copy_label( name );
       widget->labelcolor( fltk::BLACK );
@@ -3049,7 +3077,8 @@ void ImageInformation::add_bool( const char* name,
       widget->box( fltk::FLAT_BOX );
       widget->align(fltk::ALIGN_LEFT);
       widget->color( colB );
-      widget->tooltip( strdup( tooltip ) );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
       if ( !editable )
 	{
 	  widget->deactivate();
