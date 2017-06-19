@@ -1037,9 +1037,7 @@ class CMedia
     // Process a timecode object unto _tc_frame
     void process_timecode( const Imf::TimeCode& tc );
     
-    // Process a string like HH:MM:SS:FF or HH;MM;SS;FF unto _tc_frame
-    void process_timecode( const std::string text );
-
+    // Conver a string like HH:MM:SS:FF or HH;MM;SS;FF into Imf::TimeCode
     static Imf::TimeCode str2timecode( const std::string text );
     
     void fetch_audio( const boost::int64_t frame );
