@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-06-18 16:57-0300\n"
+"POT-Creation-Date: 2017-06-19 08:29-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -83,7 +83,7 @@ msgstr "==>  Usando "
 msgid "  INF.  "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:2812
+#: gui/mrvImageInformation.cpp:2832
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
@@ -128,6 +128,15 @@ msgstr " CNM: %<PRId64> "
 #: core/stubImage.cpp:879
 msgid " at port "
 msgstr " en el puerto "
+
+#: core/wandImage.cpp:636 core/wandImage.cpp:648 core/wandImage.cpp:660
+#: core/wandImage.cpp:672 core/wandImage.cpp:685 core/wandImage.cpp:698
+#: core/wandImage.cpp:711 core/wandImage.cpp:724 core/wandImage.cpp:737
+#: core/wandImage.cpp:750 core/wandImage.cpp:769 core/wandImage.cpp:788
+#: core/wandImage.cpp:828 core/wandImage.cpp:852
+#, fuzzy
+msgid " attribute"
+msgstr "Atributo"
 
 #: core/aviImage_save.cpp:482 core/aviImage_save.cpp:488
 msgid " channels "
@@ -284,7 +293,7 @@ msgstr ""
 msgid "%.2g %%"
 msgstr "%.2g %%"
 
-#: gui/mrvImageInformation.cpp:2800
+#: gui/mrvImageInformation.cpp:2820
 #, c-format
 msgid "%<PRId64> seconds %d ms."
 msgstr "%<PRId64> segundos %d ms."
@@ -375,7 +384,7 @@ msgstr ", tipo "
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "La opción --stereo debe ser especificada en un múltiplo de dos veces."
 
-#: core/wandImage.cpp:1005
+#: core/wandImage.cpp:1036
 msgid ".  Saving pixel type is "
 msgstr ".  Tipo de pixel a grabar es "
 
@@ -932,13 +941,13 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1651 core/CMedia.cpp:1734 core/exrImage.cpp:2925
-#: core/wandImage.cpp:917 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5503
+#: core/wandImage.cpp:948 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5503
 #: gui/mrvImageView.cpp:5902 gui/mrvImageView.cpp:5920
 msgid "Alpha"
 msgstr "Alfa"
 
 #: core/CMedia.cpp:1653 core/CMedia.cpp:1734 core/exrImage.cpp:2923
-#: core/wandImage.cpp:915 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5484
+#: core/wandImage.cpp:946 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5484
 #: gui/mrvImageView.cpp:5903
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
@@ -1219,7 +1228,7 @@ msgstr "Modo de Mezcla"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1798
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2573
 #: core/CMedia.cpp:1667 core/CMedia.cpp:1733 core/exrImage.cpp:2925
-#: core/wandImage.cpp:917 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5498
+#: core/wandImage.cpp:948 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5498
 #: gui/mrvImageView.cpp:5902
 msgid "Blue"
 msgstr "Azul"
@@ -1499,7 +1508,7 @@ msgstr "Codecs"
 #: core/CMedia.cpp:1664 core/CMedia.cpp:1732 core/exrImage.cpp:2676
 #: core/exrImage.cpp:2927 core/exrImage.cpp:2935 core/exrImage.cpp:2947
 #: core/exrImage.cpp:2952 core/exrImage.cpp:2954 core/exrImage.cpp:2992
-#: core/exrImage.cpp:3024 core/wandImage.cpp:876 core/wandImage.cpp:938
+#: core/exrImage.cpp:3024 core/wandImage.cpp:907 core/wandImage.cpp:969
 #: gui/mrvImageView.cpp:173 gui/mrvImageView.cpp:5306
 #: gui/mrvImageView.cpp:5906 gui/mrvImageView.cpp:6003
 msgid "Color"
@@ -1592,7 +1601,7 @@ msgstr ""
 "Unspecified es el standard de conversión de computadora de YUV.\n"
 "BT470BG/SMPTE170M emulan ITU-R BT 601-6 625 (PAL/SECAM)."
 
-#: core/wandImage.cpp:1090
+#: core/wandImage.cpp:1121
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "Se necesita conversion.  Gama: 1,0"
 
@@ -1859,6 +1868,15 @@ msgstr ""
 #: core/CMedia.cpp:2170 core/aviImage.cpp:891 core/aviImage.cpp:907
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
+
+#: core/wandImage.cpp:636 core/wandImage.cpp:648 core/wandImage.cpp:660
+#: core/wandImage.cpp:672 core/wandImage.cpp:685 core/wandImage.cpp:698
+#: core/wandImage.cpp:711 core/wandImage.cpp:724 core/wandImage.cpp:737
+#: core/wandImage.cpp:750 core/wandImage.cpp:769 core/wandImage.cpp:788
+#: core/wandImage.cpp:828 core/wandImage.cpp:852
+#, fuzzy
+msgid "Could not set "
+msgstr "No pude grabar '"
 
 #: gui/mrvPreferences.cpp:1460
 msgid "Could not set Browser style"
@@ -2919,7 +2937,7 @@ msgstr "CuatroCC"
 msgid "Frame"
 msgstr "Cuadro"
 
-#: gui/mrvImageInformation.cpp:2797
+#: gui/mrvImageInformation.cpp:2817
 #, c-format
 msgid "Frame %<PRId64> "
 msgstr "Cuadro %<PRId64> "
@@ -3113,7 +3131,7 @@ msgstr "Obtuve: "
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1797
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2555
 #: core/CMedia.cpp:1666 core/CMedia.cpp:1732 core/exrImage.cpp:2924
-#: core/wandImage.cpp:916 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5493
+#: core/wandImage.cpp:947 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5493
 #: gui/mrvImageView.cpp:5901
 msgid "Green"
 msgstr "Verde"
@@ -3723,7 +3741,7 @@ msgstr "Modo de Listado"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2762
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2777
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2792
-#: gui/mrvImageInformation.cpp:2282
+#: gui/mrvImageInformation.cpp:2285
 msgid "Load"
 msgstr "Cargar"
 
@@ -3829,7 +3847,7 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1799
 #: core/CMedia.cpp:1679 core/CMedia.cpp:1734 core/exrImage.cpp:2923
-#: core/wandImage.cpp:915 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:5507
+#: core/wandImage.cpp:946 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:5507
 #: gui/mrvImageView.cpp:5904 gui/mrvImageInformation.cpp:1726
 msgid "Lumma"
 msgstr "Luma"
@@ -4058,7 +4076,7 @@ msgid "Next Image"
 msgstr "Próxima Imagen"
 
 #: gui/mrvFileRequester.cpp:840 gui/mrvImageBrowser.cpp:643
-#: gui/mrvImageBrowser.cpp:1939 gui/mrvImageInformation.cpp:3048
+#: gui/mrvImageBrowser.cpp:1939 gui/mrvImageInformation.cpp:3076
 #: video/mrvGLEngine.cpp:179 video/mrvGLEngine.cpp:180
 #: video/mrvGLEngine.cpp:181 video/mrvGLEngine.cpp:183
 #: video/mrvGLEngine.cpp:187 video/mrvGLEngine.cpp:188
@@ -4099,7 +4117,7 @@ msgstr "Ningun audio o video creado"
 msgid "No codec context for audio stream."
 msgstr "Sin contexto de codec para audio."
 
-#: core/wandImage.cpp:1082
+#: core/wandImage.cpp:1113
 msgid "No conversion needed.  Gamma: "
 msgstr "No se necesita conversión.  Gama: "
 
@@ -4395,7 +4413,7 @@ msgstr "Original"
 msgid "Original Transmission Reference"
 msgstr "Referencia de Transmisión Original"
 
-#: core/wandImage.cpp:1003
+#: core/wandImage.cpp:1034
 msgid "Original pixel type is "
 msgstr "Tipo de pixel original es "
 
@@ -4542,8 +4560,8 @@ msgstr "Imagen de Photoshop"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2697
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2712
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2727
-#: gui/mrvImageInformation.cpp:2331 gui/mrvImageInformation.cpp:2382
-#: gui/mrvImageInformation.cpp:2456
+#: gui/mrvImageInformation.cpp:2336 gui/mrvImageInformation.cpp:2389
+#: gui/mrvImageInformation.cpp:2465
 msgid "Pick"
 msgstr "Elegir"
 
@@ -4837,7 +4855,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1796
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2537
 #: core/CMedia.cpp:1665 core/CMedia.cpp:1732 core/exrImage.cpp:2924
-#: core/wandImage.cpp:916 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:5488
+#: core/wandImage.cpp:947 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:5488
 #: gui/mrvImageView.cpp:5901
 msgid "Red"
 msgstr "Rojo"
@@ -6185,6 +6203,11 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown data type for keyword '"
 msgstr ""
 
+#: core/wandImage.cpp:856
+#, fuzzy
+msgid "Unknown data type to convert to string"
+msgstr "Atributo desconocido para convertir de texto"
+
 #: core/aviImage.cpp:1711
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
@@ -6197,7 +6220,7 @@ msgstr "Error Desconocido"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
-#: core/wandImage.cpp:848
+#: core/wandImage.cpp:879
 msgid "Unknown image format to save"
 msgstr "Formato de imagen desconocido"
 
@@ -6297,7 +6320,7 @@ msgstr "Valor"
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "Valor (Intensidad) del pixel de la imagen bajo el ratón."
 
-#: gui/mrvImageInformation.cpp:2449
+#: gui/mrvImageInformation.cpp:2458
 msgid "Values"
 msgstr "Valores"
 
@@ -6896,7 +6919,7 @@ msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
 #: gui/mrvFileRequester.cpp:840 gui/mrvImageBrowser.cpp:643
-#: gui/mrvImageBrowser.cpp:1939 gui/mrvImageInformation.cpp:3048
+#: gui/mrvImageBrowser.cpp:1939 gui/mrvImageInformation.cpp:3076
 #: video/mrvGLEngine.cpp:179 video/mrvGLEngine.cpp:180
 #: video/mrvGLEngine.cpp:181 video/mrvGLEngine.cpp:183
 #: video/mrvGLEngine.cpp:187 video/mrvGLEngine.cpp:188
