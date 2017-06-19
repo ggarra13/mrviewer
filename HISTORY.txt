@@ -19,8 +19,9 @@ v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
 	   as it was gamma'ing twice the image.
 	 - Made the OpenEXR attribute 'capDate' be stored and update
 	   on every frame.
-	 - Improved wandImage saving to save all types of attributes,
-	   but ImageMagick is broken and won't save them.
+	 - Improved wandImage saving to save all types of attributes
+	   in PNG and MIFF formats only.  PSD, TIFF and DPX do not keep
+	   the additional attributes.
 
 v3.6.8   - Made timecode start editable in the Media Info Window.
 	   Just type a new timecode and press TAB.
