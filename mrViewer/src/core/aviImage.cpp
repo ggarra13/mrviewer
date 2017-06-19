@@ -2207,11 +2207,11 @@ void aviImage::populate()
                     "name", NULL, 0);
         if ( tag ) 
         {
-            sprintf( buf, "Program %d: %s", i+1, tag->key );
+            sprintf( buf, _("Program %d: %s"), i+1, tag->key );
             Imf::StringAttribute* value = new Imf::StringAttribute( tag->value );
             _iptc.insert( std::make_pair(buf, value) );
         }
-        sprintf( buf, "Program %d ", i+1 );
+        sprintf( buf, _("Program %d "), i+1 );
         dump_metadata( _context->programs[i]->metadata, buf );
     }
  
@@ -2219,13 +2219,13 @@ void aviImage::populate()
     if ( has_audio() )
     {
         AVStream* stream = get_audio_stream();
-        if ( stream->metadata ) dump_metadata( stream->metadata, "Audio " );
+        if ( stream->metadata ) dump_metadata( stream->metadata, _("Audio ") );
     }
   
     if ( has_video() )
     {
         AVStream* stream = get_video_stream();
-        if ( stream->metadata ) dump_metadata( stream->metadata, "Video " );
+        if ( stream->metadata ) dump_metadata( stream->metadata, _("Video ") );
 
     }
     
