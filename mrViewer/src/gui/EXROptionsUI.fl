@@ -133,6 +133,7 @@ v->uiDWACompression->deactivate();
         }
         {fltk::LightButton} uiDeepData {
           label {Deep Data} selected
+          tooltip {With this option, you can save all the deep data of the image.  Note that this copies the original image onto a new image.  If you save over the same image, you will corrupt it.}
           xywh {139 276 186 34}
           extra_code {o->value( deep_data );
 if (!deep_data) 
