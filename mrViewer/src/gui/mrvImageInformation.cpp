@@ -1363,7 +1363,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->timecode(),
                                            img->play_fps(), true );
             add_text( i->first.c_str(),
-                      "Timecode start",
+                      _("Timecode start"),
                       buf, true, false, (fltk::Callback*)timecode_cb );
             return;
         }
