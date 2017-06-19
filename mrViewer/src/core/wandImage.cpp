@@ -452,6 +452,17 @@ namespace mrv {
                          _gamma = g;
                      }
                  }
+                 else if ( key == "dpx:television.time.code" ||
+                           key.rfind( "timecode" ) != std::string::npos )
+                 {
+                     Imf::TimeCode t = CMedia::str2timecode( value );
+                     process_timecode( t );
+                     Imf::TimeCodeAttribute attr( t );
+                     _exif.insert( std::make_pair( N_("timecode"), 
+                                                   attr.copy() ) );
+                     property = GetNextImageProperty(img);
+                     continue;
+                 }
 
                  // We always add the EXIF attribute even if it passes
                  // other tests so that if user saves the file all is kept
@@ -1309,8 +1320,13 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         char buf[32];
         sprintf( buf, "%2.4f", _fps );
-        MagickSetImageProperty( wand, "dpx:film.frame_rate", buf );
-        MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
+
+        if ( filename.rfind( ".dpx" ) != std::string::npos )
+        {
+            MagickSetImageProperty( wand, "dpx:film.frame_rate", buf );
+            MagickSetImageProperty( wand, "dpx:television.frame_rate", buf );
+        }
+
         setlocale( LC_NUMERIC, "" );  // Return to our locale
 
         //sprintf( buf, "%2.4f", _gamma );
