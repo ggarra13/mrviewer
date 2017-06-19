@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-06-19 08:29-0300\n"
+"POT-Creation-Date: 2017-06-19 08:50-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -129,14 +129,14 @@ msgstr " CNM: %<PRId64> "
 msgid " at port "
 msgstr " en el puerto "
 
+#
 #: core/wandImage.cpp:636 core/wandImage.cpp:648 core/wandImage.cpp:660
 #: core/wandImage.cpp:672 core/wandImage.cpp:685 core/wandImage.cpp:698
 #: core/wandImage.cpp:711 core/wandImage.cpp:724 core/wandImage.cpp:737
 #: core/wandImage.cpp:750 core/wandImage.cpp:769 core/wandImage.cpp:788
 #: core/wandImage.cpp:828 core/wandImage.cpp:852
-#, fuzzy
 msgid " attribute"
-msgstr "Atributo"
+msgstr " atributo"
 
 #: core/aviImage_save.cpp:482 core/aviImage_save.cpp:488
 msgid " channels "
@@ -1869,14 +1869,14 @@ msgstr ""
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
+#
 #: core/wandImage.cpp:636 core/wandImage.cpp:648 core/wandImage.cpp:660
 #: core/wandImage.cpp:672 core/wandImage.cpp:685 core/wandImage.cpp:698
 #: core/wandImage.cpp:711 core/wandImage.cpp:724 core/wandImage.cpp:737
 #: core/wandImage.cpp:750 core/wandImage.cpp:769 core/wandImage.cpp:788
 #: core/wandImage.cpp:828 core/wandImage.cpp:852
-#, fuzzy
 msgid "Could not set "
-msgstr "No pude grabar '"
+msgstr "No pude setear "
 
 #: gui/mrvPreferences.cpp:1460
 msgid "Could not set Browser style"
@@ -6203,10 +6203,10 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown data type for keyword '"
 msgstr ""
 
+#
 #: core/wandImage.cpp:856
-#, fuzzy
 msgid "Unknown data type to convert to string"
-msgstr "Atributo desconocido para convertir de texto"
+msgstr "Tipo de dato desconocido para convertir de texto"
 
 #: core/aviImage.cpp:1711
 msgid "Unknown destination video frame format: "
