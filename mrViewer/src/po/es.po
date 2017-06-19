@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-06-19 12:35-0300\n"
+"POT-Creation-Date: 2017-06-19 13:02-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -1331,7 +1331,7 @@ msgstr "Caches"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:222
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:60
-#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:114
+#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:117
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrvAudioOffset.cxx:47
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:97
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:111
@@ -4280,7 +4280,7 @@ msgstr "Música OGG Vorbis"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:219
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:57
-#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:111
+#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:114
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrvAudioOffset.cxx:44
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3117
 #: gui/mrvImageInformation.cpp:228 gui/mrvImageInformation.cpp:277
@@ -5999,6 +5999,11 @@ msgstr "Tiempo"
 msgid "Timecode"
 msgstr "Código de Tiempo"
 
+#: gui/mrvImageInformation.cpp:1366
+#
+msgid "Timecode start"
+msgstr "Comienzo de Código de Tiempo"
+
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1934
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2306
 msgid "Timeline"
@@ -6804,6 +6809,14 @@ msgstr ""
 "directamente en vez de en una 3D Lut.  Esta operación no es en tiempo real y "
 "su velocidad depende del tamaño de la imagen y puede solo ser usada cuando "
 "no se reproduce una película.\n"
+
+#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:105
+msgid ""
+"With this option, you can save all the deep data of the image.  Note that "
+"this copies the original image onto a new image.  If you save over the same "
+"image, you will corrupt it."
+msgstr ""
+"Con esta opción, puede grabar todos los datos de profundidad de la imagen.  Nótese que esto copia la imagen original a la nueva imagen.  Si graba sobre la misma imagen, la dañará."
 
 #: core/exrImage.cpp:1322 core/exrImage.cpp:2522 core/exrImage.cpp:2526
 msgid "Wrap Modes"
