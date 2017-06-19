@@ -2497,10 +2497,10 @@ void save_attributes( const CMedia* img, Header& hdr,
 
         if ( attr )
         {
-            Imf::TimeCode key( attr->value() );
+            Imf::TimeCode t( attr->value() );
             attrs.insert( N_("timecode") );
             
-            Imf::TimeCodeAttribute val(key);
+            Imf::TimeCodeAttribute val(t);
             hdr.insert( N_("timeCode"), val );
         }
     }
@@ -3402,8 +3402,8 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     }
 
-    assert0( headers.size() == fbs.size() );
-    assert0( fbs.size() == numParts );
+    assert( headers.size() == fbs.size() );
+    assert( fbs.size() == numParts );
 
     try {
         MultiPartOutputFile multi( file, &(headers[0]), 
