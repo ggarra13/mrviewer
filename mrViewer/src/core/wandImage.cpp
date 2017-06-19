@@ -624,7 +624,7 @@ static void save_attribute( MagickWand* wand,
 {
     char buf[256];
     MagickBooleanType status;
-    std::string key = "exif:" + i->first;
+    std::string key = i->first;
     {
         Imf::StringAttribute* attr =
         dynamic_cast< Imf::StringAttribute* >( i->second );
@@ -837,13 +837,13 @@ static void save_attribute( MagickWand* wand,
             const Imf::TimeCode& t = attr->value();
             if ( t.dropFrame() )
             {
-                sprintf( buf, "%02d;%02d;%02d;02d", 
+                sprintf( buf, "%02d;%02d;%02d;%02d", 
                          t.hours(), t.minutes(), t.seconds(),
                          t.frame() );
             }
             else
             {
-                sprintf( buf, "%02d:%02d:%02d:02d", 
+                sprintf( buf, "%02d:%02d:%02d:%02d", 
                          t.hours(), t.minutes(), t.seconds(),
                          t.frame() );
             }
