@@ -50,6 +50,7 @@ using namespace std;
 #include <ImfTimeCodeAttribute.h>
 #include <ImfIntAttribute.h>
 #include <ImfDoubleAttribute.h>
+#include <ImfBoxAttribute.h>
 #include <ImfStandardAttributes.h>
 
 #include "mrvImageInformation.h"
@@ -60,7 +61,6 @@ using namespace std;
 #include "mrvImageView.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvTimecode.h"
-#include "gui/mrvIPTCGroup.h"
 #include "mrViewer.h"
 #include "CMedia.h"
 #include "core/aviImage.h"
@@ -168,74 +168,15 @@ static void cb_uiType(fltk::Choice* o, void*) {
         uiValue->text( N_("2 5 1") );
     else if ( type == _("Vector3 Float") || type == _("Vector3 Double") )
         uiValue->text( _("2.2 5.1 1.4") );
-}
-
-static void cb_Quick(fltk::Choice* o, void*) {
-  uiKey->text( o->child( o->value() )->label() );
-}
-
-fltk::Window* make_iptc_add_window() {
-  fltk::Window* w;
-   {fltk::Window* o = new fltk::Window(435, 260, _("Add IPTC Attribute"));
-    w = o;
-    o->shortcut(0xff1b);
-    o->begin();
-     {fltk::Choice* o = new fltk::Choice(70, 53, 270, 26, _("Quick Selection"));
-      o->callback((fltk::Callback*)cb_Quick);
-      o->align(fltk::ALIGN_TOP);
-      o->begin();
-      new fltk::Item(_("Image Name"));
-      new fltk::Item(_("Edit Status"));
-      new fltk::Item(_("Priority"));
-      new fltk::Item(_("Category"));
-      new fltk::Item(_("Supplemental Category"));
-      new fltk::Item(_("Fixture Identifier"));
-      new fltk::Item(_("Keyword"));
-      new fltk::Item(_("Release Date"));
-      new fltk::Item(_("Release Time"));
-      new fltk::Item(_("Special Instructions"));
-      new fltk::Item(_("Reference Service"));
-      new fltk::Item(_("Reference Date"));
-      new fltk::Item(_("Reference Number"));
-      new fltk::Item(_("Created Date"));
-      new fltk::Item(_("Created Time"));
-      new fltk::Item(_("Originating Program"));
-      new fltk::Item(_("Program Version"));
-      new fltk::Item(_("Object Cycle"));
-      new fltk::Item(_("Byline"));
-      new fltk::Item(_("Byline Title"));
-      new fltk::Item(_("City"));
-      new fltk::Item(_("Province State"));
-      new fltk::Item(_("Country Code"));
-      new fltk::Item(_("Country"));
-      new fltk::Item(_("Original Transmission Reference"));
-      new fltk::Item(_("Headline"));
-      new fltk::Item(_("Credit"));
-      new fltk::Item(_("Src"));
-      new fltk::Item(_("Copyright String"));
-      new fltk::Item(_("Caption"));
-      new fltk::Item(_("Local Caption"));
-      new fltk::Item(_("Caption Writer"));
-      o->end();
-    }
-     uiType = 0;
-     {fltk::Input* o = uiKey = new fltk::Input(70, 101, 270, 27, _("Keyword"));
-      o->align(fltk::ALIGN_TOP);
-    }
-     {fltk::Input* o = uiValue = new fltk::Input(70, 148, 270, 27, _("Value"));
-      o->align(fltk::ALIGN_TOP);
-    }
-     {fltk::Button* o = new fltk::Button(115, 190, 86, 41, _("OK"));
-      o->callback((fltk::Callback*)cb_OK, (void*)(w));
-    }
-     {fltk::Button* o = new fltk::Button(224, 190, 93, 41, _("Cancel"));
-      o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
-    }
-    o->end();
-    o->set_modal();
-    o->resizable(o);
-  }
-  return  w;
+    else if ( type == _("Box2 Integer") )
+        uiValue->text( N_("2 5  10 20") );
+    else if ( type == _("Box2 Float")  )
+        uiValue->text( N_("0.2 5.1  10.5 20.2") );
+    else if ( type == _("M33 Float") || type == _("M33 Double")  )
+        uiValue->text( N_("1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0") );
+    else if ( type == _("M44 Float") || type == _("M44 Double") )
+        uiValue->text( N_("1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  "
+                          "0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0") );
 }
 
 fltk::Window* make_exif_add_window() {
@@ -243,7 +184,7 @@ fltk::Window* make_exif_add_window() {
    {fltk::Window* o = new fltk::Window(405, 150);
     w = o;
     o->shortcut(0xff1b);
-    o->label( _("Add EXIF Attribute") );
+    o->label( _("Add Attribute") );
     o->begin();
     { fltk::Choice* o = uiType = new fltk::Choice( 10, 30, 192, 25, _("Type") );
         o->align(fltk::ALIGN_TOP);
@@ -253,9 +194,13 @@ fltk::Window* make_exif_add_window() {
         new fltk::Item( _("Float") );
         new fltk::Item( _("Double") );
         // new fltk::Item( _("Keycode") );
-        // new fltk::Item( _("Matrix33") );
-        // new fltk::Item( _("Matrix44") );
+        new fltk::Item( _("M33 Float") );
+        new fltk::Item( _("M44 Float") );
+        new fltk::Item( _("M33 Double") );
+        new fltk::Item( _("M44 Double") );
         new fltk::Item( _("Timecode") );
+        new fltk::Item( _("Box2 Integer") );
+        new fltk::Item( _("Box2 Float") );
         new fltk::Item( _("Vector2 Integer") );
         new fltk::Item( _("Vector2 Float") );
         new fltk::Item( _("Vector2 Double") );
@@ -322,14 +267,13 @@ fltk::Window* make_remove_window( CMedia::Attributes& attrs, const char* lbl ) {
 }
 
 void add_attribute( CMedia::Attributes& attrs,
-                    CMedia::Attributes& other,
                     CMedia* img )
 {
     std::string type = _("String");
     if ( uiType ) type = uiType->child( uiType->value() )->label();
     std::string key = uiKey->value();
     std::string value = uiValue->value();
-    if ( attrs.find( key ) != attrs.end() || other.find( key ) != other.end() )
+    if ( attrs.find( key ) != attrs.end() )
     {
         char buf[128];
         sprintf( buf, _("'%s' attribute already exists"), key.c_str() );
@@ -338,8 +282,7 @@ void add_attribute( CMedia::Attributes& attrs,
     }
     else if ( type == _("Timecode") )
     {
-        if ( attrs.find( N_("Video timecode") ) != attrs.end() ||
-             other.find( N_("Video timecode") ) != other.end() )
+        if ( attrs.find( _("Video timecode") ) != attrs.end() )
         {
             mrvALERT( _("Video timecode attribute already exists") );
             return;
@@ -447,30 +390,127 @@ void add_attribute( CMedia::Attributes& attrs,
         Imf::V3dAttribute attr( Imath::V3d( x, y, z ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
     }
+    else if ( type == _("Box2 Integer") )
+    {
+        int x, y, w, h;
+        int n = sscanf( value.c_str(), "%d %d  %d %d", &x, &y, &w, &h );
+        if ( n != 4 )
+        {
+            mrvALERT( _("Could not find four integers for box") );
+            return;
+        }
+        Imf::Box2iAttribute attr( Imath::Box2i( Imath::V2i( x, y ),
+                                                Imath::V2i( w, h ) ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("Box2 Float") )
+    {
+        float x, y, w, h;
+        int n = sscanf( value.c_str(), "%g %g  %g %g", &x, &y, &w, &h );
+        if ( n != 4 )
+        {
+            mrvALERT( _("Could not find four floats for box") );
+            return;
+        }
+        Imf::Box2fAttribute attr( Imath::Box2f( Imath::V2f( x, y ),
+                                                Imath::V2f( w, h ) ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("M33 Float") )
+    {
+        float m00, m01, m02, m10, m11, m12, m20, m21, m22;
+        int n = sscanf( value.c_str(), "%g %g %g  %g %g %g  %g %g %g",
+                        &m00, &m01, &m02,
+                        &m10, &m11, &m12,
+                        &m20, &m21, &m22);
+        if ( n != 9 )
+        {
+            mrvALERT( _("Could not find nine floats for matrix 3x3") );
+            return;
+        }
+        Imf::M33fAttribute attr( Imath::M33f( m00, m01, m02,
+                                              m10, m11, m12,
+                                              m20, m21, m22 ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("M33 Double") )
+    {
+        double m00, m01, m02, m10, m11, m12, m20, m21, m22;
+        int n = sscanf( value.c_str(), "%lg %lg %lg  %lg %lg %lg  %lg %lg %lg",
+                        &m00, &m01, &m02,
+                        &m10, &m11, &m12,
+                        &m20, &m21, &m22);
+        if ( n != 9 )
+        {
+            mrvALERT( _("Could not find nine doubles for matrix 3x3") );
+            return;
+        }
+        Imf::M33dAttribute attr( Imath::M33d( m00, m01, m02,
+                                              m10, m11, m12,
+                                              m20, m21, m22 ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("M44 Float") )
+    {
+        float m00, m01, m02, m03,
+        m10, m11, m12, m13,
+        m20, m21, m22, m23,
+        m30, m31, m32, m33;
+        int n = sscanf( value.c_str(),
+                        "%g %g %g %g  "
+                        "%g %g %g %g  "
+                        "%g %g %g %g  "
+                        "%g %g %g %g",
+                        &m00, &m01, &m02, &m03,
+                        &m10, &m11, &m12, &m13,
+                        &m20, &m21, &m22, &m23,
+                        &m30, &m31, &m32, &m33 );
+        if ( n != 16 )
+        {
+            mrvALERT( _("Could not find sixteen floats for matrix 4x4") );
+            return;
+        }
+        Imf::M44fAttribute attr( Imath::M44f( m00, m01, m02, m03,
+                                              m10, m11, m12, m13,
+                                              m20, m21, m22, m23,
+                                              m30, m31, m32, m33 ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
+    else if ( type == _("M33 Double") )
+    {
+        double m00, m01, m02, m03,
+        m10, m11, m12, m13,
+        m20, m21, m22, m23,
+        m30, m31, m32, m33;
+        int n = sscanf( value.c_str(),
+                        "%lg %lg %lg %lg  "
+                        "%lg %lg %lg %lg  "
+                        "%lg %lg %lg %lg  "
+                        "%lg %lg %lg %lg",
+                        &m00, &m01, &m02, &m03,
+                        &m10, &m11, &m12, &m13,
+                        &m20, &m21, &m22, &m23,
+                        &m30, &m31, &m32, &m33 );
+        if ( n != 16 )
+        {
+            mrvALERT( _("Could not find sixteen doubles for matrix 4x4") );
+            return;
+        }
+        Imf::M44dAttribute attr( Imath::M44d( m00, m01, m02, m03,
+                                              m10, m11, m12, m13,
+                                              m20, m21, m22, m23,
+                                              m30, m31, m32, m33 ) );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+    }
     else
     {
         mrvALERT( _("Unknown data type for keyword '") << key << "'" ); 
     }
 }
 
-void add_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
-{
-    CMedia* img = info->get_image();
-    if (!img) return;
-
-    fltk::Window* w = make_iptc_add_window();
-    if ( ! w->exec() ) return;
-
-  
-    CMedia::Attributes& attrs = img->iptc();
-    CMedia::Attributes& exifs = img->exif();
-    add_attribute( attrs, exifs, img );
-    info->refresh();
-    delete w;
-}
 
 
-void toggle_modify_iptc_exif_cb( fltk::Widget* widget, ImageInformation* info )
+void toggle_modify_exif_cb( fltk::Widget* widget, ImageInformation* info )
 {
     std::string key = widget->label();
     fltk::Group* g = widget->parent();
@@ -479,14 +519,12 @@ void toggle_modify_iptc_exif_cb( fltk::Widget* widget, ImageInformation* info )
     {
         if ( !g->label() ) break;
         label = g->label();
-        if ( label == "IPTC" || label == "EXIF" ) break;
+        if ( label == _("Toggle Modify") ) break;
+        std::cerr << label << std::endl;
         key = label + "/" + key;
     }
 
-    if ( label == "IPTC" )
-        g = (fltk::Group*)info->m_iptc;
-    else
-        g = (fltk::Group*)info->m_exif;
+    g = (fltk::Group*)info->m_exif;
 
     if ( g == NULL ) return;
     
@@ -522,8 +560,7 @@ void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
     std::string value = uiValue->value();
   
     CMedia::Attributes& attrs = img->exif();
-    CMedia::Attributes& iptcs = img->iptc();
-    add_attribute( attrs, iptcs, img );
+    add_attribute( attrs, img );
     info->refresh();
     delete w;
 }
@@ -536,7 +573,7 @@ void remove_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
     
     CMedia::Attributes& attrs = img->exif();
 
-    fltk::Window* w = make_remove_window(attrs, _("EXIF") );
+    fltk::Window* w = make_remove_window(attrs, _("Attribute") );
     if ( ! w->exec() ) return;
 
     std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
@@ -559,34 +596,6 @@ void remove_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
 }
 
 
-void remove_iptc_string_cb( fltk::Widget* widget, ImageInformation* info )
-{
-    CMedia* img = info->get_image();
-    if (!img) return;
-    
-    CMedia::Attributes& attrs = img->iptc();
-
-    fltk::Window* w = make_remove_window(attrs, "IPTC");
-    if ( ! w->exec() ) return;
-
-    std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
-  
-    CMedia::Attributes::iterator i = attrs.find( key );
-    if ( i == attrs.end() )
-    {
-        char buf[128];
-        sprintf( buf, _("No attribute named '%s'"), key.c_str() );
-        mrvALERT( buf );
-        return;
-    }
-    if ( key.find( N_("timecode") ) != std::string::npos )
-    {
-        img->timecode( 0 );
-        img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
-    }
-    attrs.erase( i );
-    info->refresh();
-}
 
 ImageInformation::ImageInformation( int x, int y, int w, int h, 
                                     const char* l ) :
@@ -613,8 +622,7 @@ m_main( NULL )
     m_button->hide();
 
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
-    m_iptc  = new mrv::CollapsableGroup( 0, 0, w, 200, _("IPTC")  );
-    m_exif  = new mrv::CollapsableGroup( 0, 0, w, 200, _("EXIF")  );
+    m_exif  = new mrv::CollapsableGroup( 0, 0, w, 200, _("Attributes")  );
     m_video = new mrv::CollapsableGroup( 0, 0, w, 100, _("Video") );
     m_audio = new mrv::CollapsableGroup( 0, 0, w, 100, _("Audio") );
     m_subtitle = new mrv::CollapsableGroup( 0, 0, w, 100, _("Subtitle") );
@@ -641,14 +649,9 @@ m_main( NULL )
      
 	 fltk::Menu menu(0,0,0,0);
 
-	  menu.add( _("Add/EXIF/Metadata"), 0,
+	  menu.add( _("Add/Attribute"), 0,
                     (fltk::Callback*)add_exif_string_cb,
                     this);
-          
-	  menu.add( _("Add/IPTC/Metadata"), 0,
-                    (fltk::Callback*)add_iptc_string_cb,
-                    this);
-
           {
               CMedia::Attributes& attrs = img->exif();
               if ( !attrs.empty() )
@@ -656,64 +659,32 @@ m_main( NULL )
                   CMedia::Attributes::iterator i = attrs.begin();
                   CMedia::Attributes::iterator e = attrs.end();
 
-                  menu.add( _("Toggle Modify/EXIF/All"), 0,
-                            (fltk::Callback*)toggle_modify_iptc_exif_cb,
+                  menu.add( _("Toggle Modify/All"), 0,
+                            (fltk::Callback*)toggle_modify_exif_cb,
                             this, fltk::MENU_DIVIDER );
                   for ( ; i != e; ++i )
                   {
                       char buf[256];
-                      sprintf( buf,  _("Toggle Modify/EXIF/%s"),
+                      sprintf( buf,  _("Toggle Modify/%s"),
                                i->first.c_str() );
                       menu.add( buf, 0,
-                                (fltk::Callback*)toggle_modify_iptc_exif_cb,
+                                (fltk::Callback*)toggle_modify_exif_cb,
                                 this );
                   }
               }
           }
           
-          {
-              CMedia::Attributes& attrs = img->iptc();
-
-              if ( !attrs.empty() )
-              {
-                  CMedia::Attributes::iterator i = attrs.begin();
-                  CMedia::Attributes::iterator e = attrs.end();
-                  
-                  menu.add( _("Toggle Modify/IPTC/All"), 0,
-                            (fltk::Callback*)toggle_modify_iptc_exif_cb,
-                            this, fltk::MENU_DIVIDER );
-                  for ( ; i != e; ++i )
-                  {
-                      char buf[256];
-                      sprintf( buf,  _("Toggle Modify/IPTC/%s"),
-                               i->first.c_str() );
-                      menu.add( buf, 0,
-                                (fltk::Callback*)toggle_modify_iptc_exif_cb,
-                                this );
-                  }
-              }
-          }
-
           
           {
               CMedia::Attributes& attrs = img->exif();
               if ( !attrs.empty() )
               {
-                  menu.add( _("Remove/EXIF/Metadata"), 0,
+                  menu.add( _("Remove/Attribute"), 0,
                             (fltk::Callback*)remove_exif_string_cb,
                             this);
               }
           }
 
-          {
-              CMedia::Attributes& attrs = img->iptc();
-              if ( !attrs.empty() )
-              {
-                  menu.add( _("Remove/IPTC/Metadata"), 0,
-                            (fltk::Callback*)remove_iptc_string_cb,
-                            this);
-              }
-          }
           
          menu.popup( fltk::Rectangle( fltk::event_x(),
                                       fltk::event_y(), 80, 1) );
@@ -784,21 +755,6 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
         }
     }
 
-    CMedia::Attributes& atts = img->iptc();
-    i = atts.begin();
-    e = atts.end();
-    for ( ; i != e; ++i )
-    {
-        if ( i->first == N_("timecode") ||
-             i->first == N_("Video timecode") ||
-             i->first == N_("Timecode") )
-        {
-            const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
-            img->process_timecode( t );
-            Imf::TimeCodeAttribute attr( t );
-            i->second = attr.copy();
-        }
-    }
     img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
 }
 
@@ -999,6 +955,34 @@ static bool modify_m44d( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
+
+static bool modify_box2i( fltk::Input* widget, CMedia::Attributes::iterator& i)
+{
+    int x, y, w, h;
+    int num = sscanf( widget->text(), 
+                      "%d %d  %d %d", &x, &y, &w, &h );
+    if ( num != 4 ) return false;
+    
+    Imath::Box2i val( Imath::V2i( x, y ), Imath::V2i( w, h ) );
+    Imf::Box2iAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+static bool modify_box2f( fltk::Input* widget, CMedia::Attributes::iterator& i)
+{
+    float x, y, w, h;
+    int num = sscanf( widget->text(), 
+                      "%g %g  %g %g", &x, &y, &w, &h );
+    if ( num != 4 ) return false;
+    
+    Imath::Box2f val( Imath::V2f( x, y ), Imath::V2f( w, h ) );
+    Imf::Box2fAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
 static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
@@ -1011,6 +995,10 @@ static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
         return modify_m33d( w, i );
     else if ( dynamic_cast< Imf::M33fAttribute* >( i->second ) != NULL )
         return modify_m33f( w, i );
+    else if ( dynamic_cast< Imf::Box2iAttribute* >( i->second ) != NULL )
+        return modify_box2i( w, i );
+    else if ( dynamic_cast< Imf::Box2fAttribute* >( i->second ) != NULL )
+        return modify_box2f( w, i );
     else if ( dynamic_cast< Imf::V3dAttribute* >( i->second ) != NULL )
         return modify_v3d( w, i );
     else if ( dynamic_cast< Imf::V3fAttribute* >( i->second ) != NULL )
@@ -1039,7 +1027,7 @@ static bool modify_int( fltk::IntInput* w, CMedia::Attributes::iterator& i)
 
 static bool modify_float( fltk::FloatInput* w, CMedia::Attributes::iterator& i)
 {
-    Imf::FloatAttribute attr( w->fvalue() );
+    Imf::FloatAttribute attr( (float)w->fvalue() );
     delete i->second;
     i->second = attr.copy();
     update_float_slider( w );
@@ -1059,13 +1047,6 @@ static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
     CMedia::Attributes& exif = img->exif();
     CMedia::Attributes::iterator i = exif.find( key );
     if ( i != exif.end() )
-    {
-        modify_float( w, i );
-        return;
-    }
-    CMedia::Attributes& iptc = img->iptc();
-    i = iptc.find( key );
-    if ( i != iptc.end() )
     {
         modify_float( w, i );
         return;
@@ -1095,20 +1076,8 @@ static void change_string_cb( fltk::Input* w, ImageInformation* info )
     {
         bool ok = modify_value( w, i );
         if (!ok) {
-            LOG_ERROR( _("Could not convert EXIF ") << i->first
+            LOG_ERROR( _("Could not convert attribute ") << i->first
                        << _(" from string") );
-            info->refresh();
-        }
-        return;
-    }
-    CMedia::Attributes& iptc = img->iptc();
-    i = iptc.find( key );
-    if ( i != iptc.end() )
-    {
-        bool ok = modify_value( w, i );
-        if (!ok) {
-            LOG_ERROR( _("Could not convert IPTC ") << i->first 
-                       << _( " from string" ) );
             info->refresh();
         }
         return;
@@ -1128,13 +1097,6 @@ static void change_int_cb( fltk::IntInput* w, ImageInformation* info )
     CMedia::Attributes& exif = img->exif();
     CMedia::Attributes::iterator i = exif.find( key );
     if ( i != exif.end() )
-    {
-        modify_int( w, i );
-        return;
-    }
-    CMedia::Attributes& iptc = img->iptc();
-    i = iptc.find( key );
-    if ( i != iptc.end() )
     {
         modify_int( w, i );
         return;
@@ -1342,7 +1304,6 @@ void ImageInformation::hide_tabs()
     m_video->hide();
     m_audio->hide();
     m_subtitle->hide();
-    m_iptc->hide();
     m_exif->hide();
 }
 
@@ -1362,8 +1323,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             int n = mrv::Timecode::format( buf, d, img->frame(),
                                            img->timecode(),
                                            img->play_fps(), true );
-            add_text( i->first.c_str(),
-                      _("Timecode start"),
+            add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*)timecode_cb );
             return;
         }
@@ -1374,7 +1334,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         if ( attr )
         {
             add_float( i->first.c_str(), NULL,
-                       attr->value(), true, false,
+                       (float)attr->value(), true, false,
                        (fltk::Callback*)change_float_cb );
             return;
         }
@@ -1905,14 +1865,10 @@ void ImageInformation::fill_data()
     m_image->show();
 
 
-    
-
-
-    CMedia::Attributes attrs = img->iptc();
+    const CMedia::Attributes& attrs = img->exif();
     if ( ! attrs.empty() )
       {
-
-	m_curr = add_browser(m_iptc);
+	m_curr = add_browser( m_exif );
 
         exrImage* exr = dynamic_cast< exrImage* >( img );
         if ( exr )
@@ -1922,29 +1878,6 @@ void ImageInformation::fill_data()
             add_text( _("Capture Date"), _("Capture Date"), date.c_str() );
         }
         
-	CMedia::Attributes::const_iterator i = attrs.begin();
-	CMedia::Attributes::const_iterator e = attrs.end();
-	for ( ; i != e; ++i )
-        {
-            if ( i->first.find( _("Video") ) != std::string::npos )
-                group = 1;
-            else if ( i->first.find( _("Audio") ) != std::string::npos )
-                group = 2;
-            else
-                group = 3;
-            process_attributes( i );
-        }
-
-	m_curr->relayout();
-	m_curr->parent()->relayout();
-      }
-    
-
-    attrs = img->exif();
-    if ( ! attrs.empty() )
-      {
-	m_curr = add_browser( m_exif );
-
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
@@ -2152,7 +2085,6 @@ void ImageInformation::fill_data()
     m_video->clear();
     m_audio->clear();
     m_subtitle->clear();
-    m_iptc->clear();
     m_exif->clear();
 
     if ( img == NULL || !visible_r() ) return;

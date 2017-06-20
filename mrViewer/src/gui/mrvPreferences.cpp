@@ -474,8 +474,8 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsHudFrameRange->value( (bool) tmp );
     hud.get("memory", tmp, 0 );
     uiPrefs->uiPrefsHudMemory->value( (bool) tmp );
-    hud.get("iptc", tmp, 0 );
-    uiPrefs->uiPrefsHudIPTC->value( (bool) tmp );
+    hud.get("exif", tmp, 0 );
+    uiPrefs->uiPrefsHudEXIF->value( (bool) tmp );
 
     fltk::Preferences win( view, "window" );
     win.get("fixed_position", tmp, 0 );
@@ -1031,8 +1031,8 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsHudMemory->value() )
       hud |= mrv::ImageView::kHudMemoryUse;
 
-    if ( uiPrefs->uiPrefsHudIPTC->value() )
-      hud |= mrv::ImageView::kHudIPTC;
+    if ( uiPrefs->uiPrefsHudEXIF->value() )
+      hud |= mrv::ImageView::kHudEXIF;
 
     view->hud( (mrv::ImageView::HudDisplay) hud );
 
@@ -1218,7 +1218,7 @@ static const char* kCLocale = "C";
     hud.set("resolution", uiPrefs->uiPrefsHudResolution->value() );
     hud.set("frame_range", uiPrefs->uiPrefsHudFrameRange->value() );
     hud.set("memory", uiPrefs->uiPrefsHudMemory->value() );
-    hud.set("iptc", uiPrefs->uiPrefsHudIPTC->value() );
+    hud.set("exif", uiPrefs->uiPrefsHudEXIF->value() );
 
     {
        fltk::Preferences win( view, "window" );
