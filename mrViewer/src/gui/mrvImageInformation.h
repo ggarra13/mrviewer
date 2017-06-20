@@ -161,7 +161,8 @@ class ImageInformation : public ImageInfoParent
                   const bool editable = false,
                   const bool active = false,
                   fltk::Callback* callback = NULL,
-		  const int minV = 0, const int maxV = 10 );
+		  const int minV = 0, const int maxV = 10,
+                  const int when = fltk::WHEN_RELEASE );
     void add_int( const char* name, const char* tooltip,
                   const unsigned int content, 
                   const bool editable = false, 
