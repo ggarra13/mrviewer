@@ -803,14 +803,6 @@ CMedia::~CMedia()
           delete i->second;
       }
   }
-  {
-      Attributes::iterator i = _iptc.begin();
-      Attributes::iterator e = _iptc.end();
-      for ( ; i != e; ++i )
-      {
-          delete i->second;
-      }
-  }
   
   _context = _acontext = NULL;
 }
