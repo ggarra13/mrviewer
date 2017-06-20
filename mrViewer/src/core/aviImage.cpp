@@ -2209,7 +2209,7 @@ void aviImage::populate()
         {
             sprintf( buf, _("Program %d: %s"), i+1, tag->key );
             Imf::StringAttribute* value = new Imf::StringAttribute( tag->value );
-            _iptc.insert( std::make_pair(buf, value) );
+            _exif.insert( std::make_pair(buf, value) );
         }
         sprintf( buf, _("Program %d "), i+1 );
         dump_metadata( _context->programs[i]->metadata, buf );

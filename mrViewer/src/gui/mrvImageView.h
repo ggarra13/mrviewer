@@ -111,7 +111,7 @@ class server;
       kHudFrameRange    = 1 << 3,
       kHudResolution    = 1 << 4,
       kHudFPS           = 1 << 5,
-      kHudIPTC          = 1 << 6,
+      kHudEXIF          = 1 << 6,
       kHudAVDifference  = 1 << 7,
       kHudTimecode      = 1 << 8,
       kHudWipe          = 1 << 9,
