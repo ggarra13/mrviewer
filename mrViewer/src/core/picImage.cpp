@@ -251,7 +251,7 @@ bool picImage::fetch(const boost::int64_t frame)
     if ( buf[0] != 0 )
     {
         Imf::StringAttribute attr( buf );
-        _iptc.insert( std::make_pair( "Creator", attr.copy() ) );
+        _exif.insert( std::make_pair( "Creator", attr.copy() ) );
     }
 
     tmp = readInt(file);		// File identifier 'PICT'
