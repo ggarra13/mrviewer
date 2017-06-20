@@ -1196,7 +1196,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
 	if ( attr )
 	  {
-              _iptc.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
+              _exif.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
               attrs.insert( N_("utcOffset") );
 	  }
       }
@@ -1206,7 +1206,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
 	if ( attr )
 	  {
-              _iptc.insert( std::make_pair( _("Longitude"), attr->copy() ) );
+              _exif.insert( std::make_pair( _("Longitude"), attr->copy() ) );
               attrs.insert( N_("longitude") );
 	  }
       }
@@ -1216,7 +1216,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
 	if ( attr )
 	  {
-	    _iptc.insert( std::make_pair( _("Latitude"), attr->copy() ) );
+	    _exif.insert( std::make_pair( _("Latitude"), attr->copy() ) );
             attrs.insert( N_("latitude") );
 	  }
       }
@@ -1226,7 +1226,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
 	if ( attr )
 	  {
-	    _iptc.insert( std::make_pair( _("Altitude"), attr->copy() ) );
+	    _exif.insert( std::make_pair( _("Altitude"), attr->copy() ) );
             attrs.insert( N_("altitude") );
 	  }
       }
@@ -1384,7 +1384,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
                ignore.find( name ) != ignore.end() ) continue;
           
           const Attribute& attr = i.attribute();
-          _iptc.insert( std::make_pair( name, attr.copy() ) );
+          _exif.insert( std::make_pair( name, attr.copy() ) );
       }
 }
 
@@ -2318,52 +2318,35 @@ void save_attributes( const CMedia* img, Header& hdr,
         hdr.insert( N_("capDate"), attr );
     }
     
-    const CMedia::Attributes& iptc = img->iptc();
-    CMedia::Attributes::const_iterator it = iptc.find( _( "UTC Offset" ) ); 
-    if ( it != iptc.end() )
+    const CMedia::Attributes& exif = img->exif();
+    CMedia::Attributes::const_iterator it = exif.find( _( "UTC Offset" ) ); 
+    if ( it != exif.end() )
     {
         hdr.insert( N_("utcOffset"), *it->second );
         attrs.insert( _("UTC Offset") );
     }
 
-    it = iptc.find( _( "Longitude" ) ); 
-    if ( it != iptc.end() )
+    it = exif.find( _( "Longitude" ) ); 
+    if ( it != exif.end() )
     {
         hdr.insert( N_("longitude"), *it->second );
         attrs.insert( _("Longitude") );
     }
 
-    it = iptc.find( _( "Latitude" ) ); 
-    if ( it != iptc.end() )
+    it = exif.find( _( "Latitude" ) ); 
+    if ( it != exif.end() )
     {
         hdr.insert( N_("latitude"), *it->second );
         attrs.insert( _("Latitude") );
     }
 
-    it = iptc.find( _( "Altitude" ) ); 
-    if ( it != iptc.end() )
+    it = exif.find( _( "Altitude" ) ); 
+    if ( it != exif.end() )
     {
         hdr.insert( N_("altitude"), *it->second );
         attrs.insert( _("Altitude") );
     }
 
-
-
-    CMedia::Attributes::const_iterator i = iptc.begin();
-    CMedia::Attributes::const_iterator e = iptc.end();
-    stringSet::const_iterator end = attrs.end();
-    for ( ; i != e; ++i )
-    {
-        // Avoid adding attributes we already parsed
-        const std::string& name = i->first;
-        if ( attrs.find( name ) != end ) continue;
-        hdr.insert( name, *i->second );
-    }
-
-    attrs.clear();
-
-    const CMedia::Attributes& exif = img->exif();
-    
     it = exif.find( _( "Chromaticities Name" ) ); 
     if ( it != exif.end() )
     {
@@ -2541,9 +2524,9 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( N_("timecode") );
     }
 
-    i = exif.begin();
-    e = exif.end();
-    end = attrs.end();
+    CMedia::Attributes::const_iterator i = exif.begin();
+    CMedia::Attributes::const_iterator e = exif.end();
+    stringSet::const_iterator end = attrs.end();
     for ( ; i != e; ++i )
         {
             const std::string& name = i->first;
