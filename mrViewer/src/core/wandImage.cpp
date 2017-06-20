@@ -473,15 +473,7 @@ namespace mrv {
          }
 
          setlocale( LC_NUMERIC, "" );
-     }
-
-
-     _rendering_intent = (CMedia::RenderingIntent) 
-     MagickGetImageRenderingIntent( wand );
-
-     if ( _iptc.empty() )
-     {
-
+         
 	tmp = MagickGetImageProfile( wand, "iptc", &profileSize );
 	if ( profileSize > 0 )
 	{
@@ -568,12 +560,17 @@ namespace mrv {
 		 (void) CopyMagickString(attribute,(char *) tmp+i,
 					 length+1);
                  Imf::StringAttribute attr( attribute );
-		 _iptc.insert( std::make_pair( tag, attr.copy() ) );
+		 _exif.insert( std::make_pair( tag, attr.copy() ) );
 		 attribute=(char *) RelinquishMagickMemory(attribute);
 	      }
 	   }
 	}
      }
+
+
+     _rendering_intent = (CMedia::RenderingIntent) 
+     MagickGetImageRenderingIntent( wand );
+
      DestroyMagickWand( wand );
 
      
@@ -1331,18 +1328,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         //sprintf( buf, "%2.4f", _gamma );
         //MagickSetImageProperty( wand, "dpx:television.gamma", buf );
-    }
-
-    {
-        Attributes::const_iterator i = _iptc.begin();
-        Attributes::const_iterator e = _iptc.end();
-        for ( ; i != e; ++i )
-        {
-            save_attribute( wand, i );
-        }
-
-        // CIccProfile* p = mrv::colorProfile::get( file.c_str() );
-        // MagickSetImageProfile( wand, "icc", profile, len );
     }
 
     /**
