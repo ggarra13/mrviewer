@@ -193,7 +193,7 @@ fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("Integer") );
         new fltk::Item( _("Float") );
         new fltk::Item( _("Double") );
-        // new fltk::Item( _("Keycode") );
+        new fltk::Item( _("Keycode") );
         new fltk::Item( _("M33 Float") );
         new fltk::Item( _("M44 Float") );
         new fltk::Item( _("M33 Double") );
@@ -209,7 +209,7 @@ fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("Vector3 Double") );
         o->end();
         o->callback( (fltk::Callback*) cb_uiType, (void*)w );
-        o->value( 8 );
+        o->value( 9 );
     }
     {fltk::Input* o = uiKey = new fltk::Input(10, 70, 192, 25, _("Keyword"));
         o->text( N_("timecode") );
@@ -294,29 +294,34 @@ void add_attribute( CMedia::Attributes& attrs,
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
         Imf::TimeCodeAttribute attr( t );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("String") )
     {
         Imf::StringAttribute attr( value );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Integer") )
     {
         int v = atoi( value.c_str() );
         Imf::IntAttribute attr( v );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Float") )
     {
         float v = (float)atof( value.c_str() );
         Imf::FloatAttribute attr( v );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Double") )
     {
         double v = atof( value.c_str() );
         Imf::DoubleAttribute attr( v );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Vector2 Integer") )
     {
@@ -329,6 +334,7 @@ void add_attribute( CMedia::Attributes& attrs,
         }
         Imf::V2iAttribute attr( Imath::V2i( x, y ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Vector2 Float") )
     {
@@ -341,6 +347,7 @@ void add_attribute( CMedia::Attributes& attrs,
         }
         Imf::V2fAttribute attr( Imath::V2f( x, y ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Vector2 Double") )
     {
@@ -353,6 +360,7 @@ void add_attribute( CMedia::Attributes& attrs,
         }
         Imf::V2dAttribute attr( Imath::V2d( x, y ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Vector3 Integer") )
     {
@@ -365,6 +373,7 @@ void add_attribute( CMedia::Attributes& attrs,
         }
         Imf::V3iAttribute attr( Imath::V3i( x, y, z ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Vector3 Float") )
     {
@@ -377,6 +386,7 @@ void add_attribute( CMedia::Attributes& attrs,
         }
         Imf::V3fAttribute attr( Imath::V3f( x, y, z ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Vector3 Double") )
     {
@@ -389,6 +399,7 @@ void add_attribute( CMedia::Attributes& attrs,
         }
         Imf::V3dAttribute attr( Imath::V3d( x, y, z ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Box2 Integer") )
     {
@@ -402,6 +413,7 @@ void add_attribute( CMedia::Attributes& attrs,
         Imf::Box2iAttribute attr( Imath::Box2i( Imath::V2i( x, y ),
                                                 Imath::V2i( w, h ) ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("Box2 Float") )
     {
@@ -415,6 +427,7 @@ void add_attribute( CMedia::Attributes& attrs,
         Imf::Box2fAttribute attr( Imath::Box2f( Imath::V2f( x, y ),
                                                 Imath::V2f( w, h ) ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("M33 Float") )
     {
@@ -432,6 +445,7 @@ void add_attribute( CMedia::Attributes& attrs,
                                               m10, m11, m12,
                                               m20, m21, m22 ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("M33 Double") )
     {
@@ -449,6 +463,7 @@ void add_attribute( CMedia::Attributes& attrs,
                                               m10, m11, m12,
                                               m20, m21, m22 ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("M44 Float") )
     {
@@ -475,6 +490,7 @@ void add_attribute( CMedia::Attributes& attrs,
                                               m20, m21, m22, m23,
                                               m30, m31, m32, m33 ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
     }
     else if ( type == _("M44 Double") )
     {
@@ -501,10 +517,21 @@ void add_attribute( CMedia::Attributes& attrs,
                                               m20, m21, m22, m23,
                                               m30, m31, m32, m33 ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
+    }
+    else if ( type == _("keyCode") )
+    {
+        {
+            Imf::KeyCode k;
+            Imf::KeyCodeAttribute attr( k );
+            attrs.insert( std::make_pair( key, attr.copy() ) );
+        }
+        return;
     }
     else
     {
-        mrvALERT( _("Unknown data type for keyword '") << key << "'" ); 
+        mrvALERT( _("Unknown data type for keyword '") << key << "' type '"
+                  << type << "' " << _("keyCode") ); 
     }
 }
 
@@ -634,93 +661,93 @@ m_main( NULL )
 
     hide_tabs();
 
-  }
+}
 
 
-  int ImageInformation::handle( int event )
-  {
-     if ( event == fltk::MOUSEWHEEL )
-     {
+int ImageInformation::handle( int event )
+{
+    if ( event == fltk::MOUSEWHEEL )
+    {
         fltk::e_dy = fltk::event_dy() * 8;
-     }
+    }
 
-     if ( event == fltk::PUSH && fltk::event_button() == 3 && img )
-     {
+    if ( event == fltk::PUSH && fltk::event_button() == 3 && img )
+    {
      
-	 fltk::Menu menu(0,0,0,0);
+        fltk::Menu menu(0,0,0,0);
 
-	  menu.add( _("Add Attribute"), 0,
-                    (fltk::Callback*)add_attribute_cb,
-                    this);
-          {
-              CMedia::Attributes& attrs = img->exif();
-              if ( !attrs.empty() )
-              {
-                  CMedia::Attributes::iterator i = attrs.begin();
-                  CMedia::Attributes::iterator e = attrs.end();
+        menu.add( _("Add Attribute"), 0,
+                  (fltk::Callback*)add_attribute_cb,
+                  this);
+        {
+            CMedia::Attributes& attrs = img->exif();
+            if ( !attrs.empty() )
+            {
+                CMedia::Attributes::iterator i = attrs.begin();
+                CMedia::Attributes::iterator e = attrs.end();
 
-                  menu.add( _("Toggle Modify/All"), 0,
-                            (fltk::Callback*)toggle_modify_attribute_cb,
-                            this, fltk::MENU_DIVIDER );
-                  for ( ; i != e; ++i )
-                  {
-                      char buf[256];
-                      sprintf( buf,  _("Toggle Modify/%s"),
-                               i->first.c_str() );
-                      menu.add( buf, 0,
-                                (fltk::Callback*)toggle_modify_attribute_cb,
-                                this );
-                  }
+                menu.add( _("Toggle Modify/All"), 0,
+                          (fltk::Callback*)toggle_modify_attribute_cb,
+                          this, fltk::MENU_DIVIDER );
+                for ( ; i != e; ++i )
+                {
+                    char buf[256];
+                    sprintf( buf,  _("Toggle Modify/%s"),
+                             i->first.c_str() );
+                    menu.add( buf, 0,
+                              (fltk::Callback*)toggle_modify_attribute_cb,
+                              this );
+                }
                   
-                  menu.add( _("Remove Attribute"), 0,
-                            (fltk::Callback*)remove_attribute_cb,
-                            this);
-              }
-          }
+                menu.add( _("Remove Attribute"), 0,
+                          (fltk::Callback*)remove_attribute_cb,
+                          this);
+            }
+        }
 
           
-         menu.popup( fltk::Rectangle( fltk::event_x(),
-                                      fltk::event_y(), 80, 1) );
-         return 1;
-     }
+        menu.popup( fltk::Rectangle( fltk::event_x(),
+                                     fltk::event_y(), 80, 1) );
+        return 1;
+    }
      
-     return ImageInfoParent::handle( event );
-  }
+    return ImageInfoParent::handle( event );
+}
 
-  void ImageInformation::layout()
-  {
+void ImageInformation::layout()
+{
     if ( w()-20 != m_all->w() )
-      m_all->resize( 0, 0, w()-20, m_all->h() );
+        m_all->resize( 0, 0, w()-20, m_all->h() );
     ImageInfoParent::layout();
-  }
+}
 
-  struct aspectName_t
-  {
+struct aspectName_t
+{
     double     ratio;
     const char* name;
-  };
+};
 
-  static const aspectName_t kAspectRatioNames[] =
-    {
-      { 640.0/480.0, _("Video") },
-      { 680.0/550.0, _("PAL Video") },
-      { 720.0/576.0, _("PAL Video") },
-      { 768.0/576.0, _("PAL Video") },
-      { 720.0/486.0, _("NTSC Video") },
-      { 720.0/540.0, _("NTSC Video") },
-      { 1.5,  _("NTSC Video") },
-      { 1.37, _("35mm Academy") },
-      { 1.56, _("Widescreen (HDTV + STV)") },
-      { 1.66, _("35mm European Widescreen") },
-      { 1.75, _("Early 35mm") },
-      { 1.77, _("HDTV / Widescreen 16:9") },
-      { 1.85, _("35mm Flat") },
-      { 2.2,  _("70mm") },
-      { 2.35, _("35mm Anamorphic") },
-      { 2.39, _("35mm Panavision") },
-      { 2.55, _("Cinemascope") },
-      { 2.76, _("MGM Camera 65") },
-    };
+static const aspectName_t kAspectRatioNames[] =
+{
+{ 640.0/480.0, _("Video") },
+{ 680.0/550.0, _("PAL Video") },
+{ 720.0/576.0, _("PAL Video") },
+{ 768.0/576.0, _("PAL Video") },
+{ 720.0/486.0, _("NTSC Video") },
+{ 720.0/540.0, _("NTSC Video") },
+{ 1.5,  _("NTSC Video") },
+{ 1.37, _("35mm Academy") },
+{ 1.56, _("Widescreen (HDTV + STV)") },
+{ 1.66, _("35mm European Widescreen") },
+{ 1.75, _("Early 35mm") },
+{ 1.77, _("HDTV / Widescreen 16:9") },
+{ 1.85, _("35mm Flat") },
+{ 2.2,  _("70mm") },
+{ 2.35, _("35mm Anamorphic") },
+{ 2.39, _("35mm Panavision") },
+{ 2.55, _("Cinemascope") },
+{ 2.76, _("MGM Camera 65") },
+};
 
 void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
 {
@@ -1009,6 +1036,62 @@ static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
     return false;
 }
 
+static bool modify_keycode( fltk::IntInput* w,
+                            CMedia::Attributes::iterator& i,
+                            const std::string& subattr )
+{
+    Imf::KeyCodeAttribute* attr(
+    dynamic_cast<Imf::KeyCodeAttribute*>(i->second ) );
+    if ( !attr ) return false;
+    
+    Imf::KeyCode t = attr->value();
+    try
+    {
+        if ( subattr == "filmMfcCode" )
+        {
+            t.setFilmMfcCode( w->ivalue() );
+        }
+        else if ( subattr == "filmType" )
+        {
+            t.setFilmType( w->ivalue() );
+        }
+        else if ( subattr == "prefix" )
+        {
+            t.setPrefix( w->ivalue() );
+        }
+        else if ( subattr == "count" )
+        {
+            t.setCount( w->ivalue() );
+        }
+        else if ( subattr == "perfOffset" )
+        {
+            t.setPerfOffset( w->ivalue() );
+        }
+        else if ( subattr == "perfsPerFrame" )
+        {
+            t.setPerfsPerFrame( w->ivalue() );
+        }
+        else if ( subattr == "perfsPerCount" )
+        {
+            t.setPerfsPerCount( w->ivalue() );
+        }
+        else
+        {
+            mrvALERT( _("Unknown keycode subattr") );
+            return false;
+        }
+        Imf::KeyCodeAttribute nattr( t );
+        delete i->second;
+        i->second = nattr.copy();
+        update_int_slider( w );
+    } catch ( const std::exception& e )
+    {
+        mrvALERT( e.what() );
+    }
+    
+    return true;
+}
+
 static bool modify_int( fltk::IntInput* w, CMedia::Attributes::iterator& i)
 {
     Imf::IntAttribute attr( atoi( w->text() ) );
@@ -1092,6 +1175,32 @@ static void change_int_cb( fltk::IntInput* w, ImageInformation* info )
     if ( i != exif.end() )
     {
         modify_int( w, i );
+        return;
+    }
+}
+
+static void change_keycode_cb( fltk::IntInput* w, ImageInformation* info )
+{
+    CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
+    if ( !img ) return;
+
+    fltk::Group* g = (fltk::Group*)w->parent()->parent();
+    fltk::Widget* widget = g->child(0);
+    if ( !widget->label() ) return;
+
+    std::string key = widget->label();
+    std::string subattr;
+    size_t p = key.rfind( '.' );
+    if ( p != std::string::npos )
+    {
+        subattr = key.substr( p+1, key.size() );
+        key  = key.substr( 0, p );
+    }
+    CMedia::Attributes& exif = img->exif();
+    CMedia::Attributes::iterator i = exif.find( key );
+    if ( i != exif.end() )
+    {
+        modify_keycode( w, i, subattr );
         return;
     }
 }
@@ -1181,16 +1290,16 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-  static void eye_separation_cb( fltk::FloatInput* w, ImageInformation* info )
-  {
-      CMedia* img = info->get_image();
-      if ( img )
-      {
-          img->eye_separation( (float)w->fvalue() );
-          update_float_slider( w );
-          info->main()->uiView->redraw();
-      }
-  }
+static void eye_separation_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    if ( img )
+    {
+        img->eye_separation( (float)w->fvalue() );
+        update_float_slider( w );
+        info->main()->uiView->redraw();
+    }
+}
 
 static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
 {
@@ -1533,6 +1642,37 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             add_text( i->first.c_str(), NULL,
                       attr->value().c_str(), true, false,
                       (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::KeyCodeAttribute* attr =
+        dynamic_cast< Imf::KeyCodeAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imf::KeyCode& k = attr->value();
+            std::string key = i->first;
+            add_int( (key + ".filmMfcCode").c_str(), NULL,
+                     k.filmMfcCode(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 0, 99 );
+            add_int( (key + ".filmType").c_str(), NULL,
+                     k.filmType(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 0, 99 );
+            add_int( (key + ".prefix").c_str(), NULL,
+                     k.prefix(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 0, 999999 );
+            add_int( (key + ".count").c_str(), NULL,
+                     k.count(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 0, 9999 );
+            add_int( (key + ".perfOffset").c_str(), NULL,
+                     k.perfOffset(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 0, 119 );
+            add_int( (key + ".perfsPerFrame").c_str(), NULL,
+                     k.perfsPerFrame(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 1, 15 );
+            add_int( (key + ".perfsPerCount").c_str(), NULL,
+                     k.perfsPerCount(), true, false,
+                     (fltk::Callback*) change_keycode_cb, 20, 120 );
             return;
         }
     }
