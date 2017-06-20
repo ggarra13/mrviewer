@@ -196,7 +196,6 @@ class ImageInformation : public ImageInfoParent
     unsigned int row;
 
   public:
-    mrv::CollapsableGroup*       m_iptc;
     mrv::CollapsableGroup*       m_exif;
 };
 
