@@ -2406,11 +2406,12 @@ void ImageView::draw()
       y -= yi;
   }
 
-  if ( _hud & kHudIPTC )
+  if ( _hud & kHudEXIF )
     {
-      CMedia::Attributes::const_iterator i = img->iptc().begin();
-      CMedia::Attributes::const_iterator e = img->iptc().end();
-      for ( ; i != e; ++i )
+        const CMedia::Attributes& exif = img->exif();
+        CMedia::Attributes::const_iterator i = exif.begin();
+        CMedia::Attributes::const_iterator e = exif.end();
+        for ( ; i != e; ++i )
 	{
             std::string val = CMedia::attr2str( i->second );
             std::string text = i->first + ": " + val;

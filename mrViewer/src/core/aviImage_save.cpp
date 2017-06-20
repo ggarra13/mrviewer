@@ -389,7 +389,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
-    const CMedia::Attributes& attrs = img->iptc();
+    const CMedia::Attributes& attrs = img->exif();
     CMedia::Attributes::const_iterator i = attrs.begin();
     CMedia::Attributes::const_iterator e = attrs.end();
 
@@ -398,7 +398,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     //
     for ( ; i != e; ++i )
     {
-        if ( i->first.find( "Audio " ) == 0 )
+        if ( i->first.find( _("Audio ") ) == 0 )
         {
             std::string      key = i->first;
             Imf::Attribute*  attr = i->second;
@@ -849,7 +849,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         return false;
     }
 
-    const CMedia::Attributes& attrs = img->iptc();
+    const CMedia::Attributes& attrs = img->exif();
     CMedia::Attributes::const_iterator i = attrs.begin();
     CMedia::Attributes::const_iterator e = attrs.end();
 
@@ -858,29 +858,28 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     //
     for ( ; i != e; ++i )
     {
-        if (( i->first.find( "Video " ) == 0 ) || 
-            ( i->first.find( "Audio " ) == 0 ) ) continue;
+        if (( i->first.find( _("Video ") ) == 0 ) || 
+            ( i->first.find( _("Audio ") ) == 0 ) ) {
+            continue;
+        }
 
         std::string key = i->first;
         Imf::Attribute*  attr = i->second;
         std::string      val  = CMedia::attr2str( attr );
-        if ( key.size() > 6 )
-            key = key.substr( 6, key.size() );
         av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
     }
 
     //
     // Save Video Attributes
     //
-    for ( ; i != e; ++i )
+    for ( i = attrs.begin(); i != e; ++i )
     {
-        if ( i->first.find( "Video " ) == 0 )
+        if ( i->first.find( _("Video ") ) == 0 )
         {
             std::string key = i->first;
             Imf::Attribute*  attr = i->second;
             std::string      val  = CMedia::attr2str( attr );
-            if ( key.size() > 6 )
-                key = key.substr( 6, key.size() );
+            key = key.substr( 6, key.size() );
             av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
         }
     }
