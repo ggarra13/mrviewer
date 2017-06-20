@@ -94,21 +94,6 @@ namespace mrv {
   
     { // Copy attributes
       _exif = other->exif();
-      _iptc = other->iptc();
-      //     Attributes::const_iterator i = other->exif().begin();
-      //     Attributes::const_iterator e = other->exif().end();
-      //     for ( ; i != e; ++i )
-      //       {
-      // 	_exif.insert( std::make_pair( (*i).first, (*i).second ) );
-      //       }
-
-      // Copy attributes
-      //     Attributes::const_iterator i = other->exif().begin();
-      //     Attributes::const_iterator e = other->exif().end();
-      //     for ( ; i != e; ++i )
-      //       {
-      // 	_exif.insert( std::make_pair( (*i).first, (*i).second ) );
-      //       }
     }
 
     const char* profile = other->icc_profile();
