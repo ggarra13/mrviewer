@@ -913,8 +913,6 @@ class CMedia
 
     Attributes& exif()  { return _exif; }
     const Attributes& exif() const { return _exif; }
-    Attributes& iptc() { return _iptc; }
-    const Attributes& iptc() const { return _iptc; }
 
     static void default_profile( const char* c );
 
@@ -1460,8 +1458,7 @@ class CMedia
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.
 
-    Attributes _exif;                    //!< EXIF attributes
-    Attributes _iptc;                    //!< IPTC attributes
+    Attributes _exif;                    //!< All attributes
 
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
