@@ -734,13 +734,10 @@ void CMedia::populate_audio()
   //
   // Miscellaneous information
   //
-  AVDictionary* m = NULL;
-
   stream = get_audio_stream();
-  if ( stream->metadata ) m = stream->metadata;
 
   dump_metadata( c->metadata );
-  dump_metadata( m, "Audio " );
+  if ( stream ) dump_metadata( stream->metadata, _("Audio ") );
 
 }
 
@@ -837,12 +834,12 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
           Imf::TimeCode t = str2timecode( tag->value );
           process_timecode( t );
           Imf::TimeCodeAttribute attr( t );
-          _iptc.insert( std::make_pair( name, attr.copy() ) );
+          _exif.insert( std::make_pair( name, attr.copy() ) );
       }
       else
       {
           Imf::StringAttribute attr( tag->value );
-          _iptc.insert( std::make_pair( name, attr.copy() ) );
+          _exif.insert( std::make_pair( name, attr.copy() ) );
       }
    }
 }
