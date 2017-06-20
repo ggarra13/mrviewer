@@ -760,6 +760,58 @@ static void save_attribute( MagickWand* wand,
         }
     }
     {
+        Imf::Box2iAttribute* attr = 
+        dynamic_cast< Imf::Box2iAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::Box2i& v = attr->value();
+            sprintf( buf, "%d %d  %d %d", v.min.x, v.min.y, v.max.x, v.max.y );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+            return;
+        }
+    }
+    {
+        Imf::Box2fAttribute* attr = 
+        dynamic_cast< Imf::Box2fAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imath::Box2f& v = attr->value();
+            sprintf( buf, "%f %f  %f %f", v.min.x, v.min.y, v.max.x, v.max.y );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+            return;
+        }
+    }
+    {
+        Imf::KeyCodeAttribute* attr = 
+        dynamic_cast< Imf::KeyCodeAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imf::KeyCode& k = attr->value();
+            std::string key;
+
+#define SET_KEYCODE( attr ) \
+            key = i->first + "." + #attr; \
+            sprintf( buf, "%d", k.attr() ); \
+            status = MagickSetImageProperty( wand, key.c_str(), buf ); \
+            if ( status != MagickTrue ) \
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+
+            SET_KEYCODE( filmMfcCode );
+            SET_KEYCODE( filmType );
+            SET_KEYCODE( prefix );
+            SET_KEYCODE( count );
+            SET_KEYCODE( perfOffset );
+            SET_KEYCODE( perfsPerFrame );
+            SET_KEYCODE( perfsPerCount );
+#undef SET_KEYCODE
+            return;
+        }
+    }
+    {
         Imf::M33fAttribute* attr = 
         dynamic_cast< Imf::M33fAttribute* >( i->second );
         if ( attr )
