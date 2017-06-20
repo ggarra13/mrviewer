@@ -3,6 +3,8 @@ v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
 	 - Made int attributes' slider update when changed instead of
 	   when released, except for ripmap/mipmap attribute which
 	   remains when released.
+	 - Added the missing attribute types (matrices, boxes, etc) to
+	   RMB->Add->Attributes panel in the Media Info Window.
 
 v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
 	   copies the file and changes the metadata only.
