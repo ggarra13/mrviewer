@@ -1,3 +1,6 @@
+v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
+	   never clear.  Now they are all called Attributes.
+
 v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
 	   copies the file and changes the metadata only.
 	 - mrViewer now retrieves all metadata from an OpenEXR file.
