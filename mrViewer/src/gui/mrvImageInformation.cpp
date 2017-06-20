@@ -171,15 +171,15 @@ static void cb_uiType(fltk::Choice* o, void*) {
     else if ( type == _("Box2 Integer") )
         uiValue->text( N_("2 5  10 20") );
     else if ( type == _("Box2 Float")  )
-        uiValue->text( N_("0.2 5.1  10.5 20.2") );
+        uiValue->text( _("0.2 5.1  10.5 20.2") );
     else if ( type == _("M33 Float") || type == _("M33 Double")  )
-        uiValue->text( N_("1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0") );
+        uiValue->text( _("1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0") );
     else if ( type == _("M44 Float") || type == _("M44 Double") )
-        uiValue->text( N_("1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  "
-                          "0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0") );
+        uiValue->text( _("1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  "
+                         "0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0") );
 }
 
-fltk::Window* make_exif_add_window() {
+fltk::Window* make_attribute_add_window() {
   fltk::Window* w;
    {fltk::Window* o = new fltk::Window(405, 150);
     w = o;
@@ -209,7 +209,7 @@ fltk::Window* make_exif_add_window() {
         new fltk::Item( _("Vector3 Double") );
         o->end();
         o->callback( (fltk::Callback*) cb_uiType, (void*)w );
-        o->value( 4 );
+        o->value( 8 );
     }
     {fltk::Input* o = uiKey = new fltk::Input(10, 70, 192, 25, _("Keyword"));
         o->text( N_("timecode") );
@@ -476,7 +476,7 @@ void add_attribute( CMedia::Attributes& attrs,
                                               m30, m31, m32, m33 ) );
         attrs.insert( std::make_pair(key, attr.copy() ) );
     }
-    else if ( type == _("M33 Double") )
+    else if ( type == _("M44 Double") )
     {
         double m00, m01, m02, m03,
         m10, m11, m12, m13,
@@ -510,7 +510,7 @@ void add_attribute( CMedia::Attributes& attrs,
 
 
 
-void toggle_modify_exif_cb( fltk::Widget* widget, ImageInformation* info )
+void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 {
     std::string key = widget->label();
     fltk::Group* g = widget->parent();
@@ -548,12 +548,12 @@ void toggle_modify_exif_cb( fltk::Widget* widget, ImageInformation* info )
     }
 }
 
-void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
+void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if (!img) return;
 
-    fltk::Window* w = make_exif_add_window();
+    fltk::Window* w = make_attribute_add_window();
     if ( ! w->exec() ) return;
 
     std::string key = uiKey->value();
@@ -566,7 +566,7 @@ void add_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
 }
 
 
-void remove_exif_string_cb( fltk::Widget* widget, ImageInformation* info )
+void remove_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if (!img) return;
@@ -650,7 +650,7 @@ m_main( NULL )
 	 fltk::Menu menu(0,0,0,0);
 
 	  menu.add( _("Add Attribute"), 0,
-                    (fltk::Callback*)add_exif_string_cb,
+                    (fltk::Callback*)add_attribute_cb,
                     this);
           {
               CMedia::Attributes& attrs = img->exif();
@@ -660,7 +660,7 @@ m_main( NULL )
                   CMedia::Attributes::iterator e = attrs.end();
 
                   menu.add( _("Toggle Modify/All"), 0,
-                            (fltk::Callback*)toggle_modify_exif_cb,
+                            (fltk::Callback*)toggle_modify_attribute_cb,
                             this, fltk::MENU_DIVIDER );
                   for ( ; i != e; ++i )
                   {
@@ -668,19 +668,12 @@ m_main( NULL )
                       sprintf( buf,  _("Toggle Modify/%s"),
                                i->first.c_str() );
                       menu.add( buf, 0,
-                                (fltk::Callback*)toggle_modify_exif_cb,
+                                (fltk::Callback*)toggle_modify_attribute_cb,
                                 this );
                   }
-              }
-          }
-          
-          
-          {
-              CMedia::Attributes& attrs = img->exif();
-              if ( !attrs.empty() )
-              {
+                  
                   menu.add( _("Remove Attribute"), 0,
-                            (fltk::Callback*)remove_exif_string_cb,
+                            (fltk::Callback*)remove_attribute_cb,
                             this);
               }
           }
@@ -1441,6 +1434,32 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         }
     }
     {
+        Imf::Box2iAttribute* attr =
+        dynamic_cast< Imf::Box2iAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[128];
+            const Imath::Box2i& v = attr->value();
+            sprintf( buf, "%d %d %d %d", v.min.x, v.min.y, v.max.x, v.max.x );
+            add_text( i->first.c_str(), NULL,
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::Box2fAttribute* attr =
+        dynamic_cast< Imf::Box2fAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[128];
+            const Imath::Box2f& v = attr->value();
+            sprintf( buf, "%g %g %g %g", v.min.x, v.min.y, v.max.x, v.max.x );
+            add_text( i->first.c_str(), NULL,
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
         Imf::M33dAttribute* attr =
         dynamic_cast< Imf::M33dAttribute* >( i->second );
         if ( attr )
@@ -1517,6 +1536,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             return;
         }
     }
+    mrvALERT( _("Unknown attribute type for '") << i->first << _("'") );
 }
 
 void ImageInformation::fill_data()
