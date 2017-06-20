@@ -649,7 +649,7 @@ m_main( NULL )
      
 	 fltk::Menu menu(0,0,0,0);
 
-	  menu.add( _("Add/Attribute"), 0,
+	  menu.add( _("Add Attribute"), 0,
                     (fltk::Callback*)add_exif_string_cb,
                     this);
           {
@@ -679,7 +679,7 @@ m_main( NULL )
               CMedia::Attributes& attrs = img->exif();
               if ( !attrs.empty() )
               {
-                  menu.add( _("Remove/Attribute"), 0,
+                  menu.add( _("Remove Attribute"), 0,
                             (fltk::Callback*)remove_exif_string_cb,
                             this);
               }
@@ -1357,7 +1357,8 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         {
             add_int( i->first.c_str(), NULL,
                      attr->value(), true, false,
-                     (fltk::Callback*)change_int_cb );
+                     (fltk::Callback*)change_int_cb, 0, 10,
+                     fltk::WHEN_CHANGED );
             return;
         }
     }
@@ -2494,7 +2495,8 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
                                 const int content, const bool editable,
                                 const bool active,
                                 fltk::Callback* callback, 
-                                const int minV, const int maxV )
+                                const int minV, const int maxV,
+                                const int when )
 {
 
     fltk::Color colA = get_title_color();
@@ -2558,7 +2560,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	  // slider->slider_size(10);
           if ( tooltip ) slider->tooltip( tooltip );
           else slider->tooltip( lbl->label() );
-	  slider->when( fltk::WHEN_RELEASE );
+	  slider->when( when );
 	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
 
 	  p->resizable(slider);
