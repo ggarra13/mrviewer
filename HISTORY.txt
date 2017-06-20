@@ -1,5 +1,8 @@
 v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
 	   never clear.  Now they are all called Attributes.
+	 - Made int attributes' slider update when changed instead of
+	   when released, except for ripmap/mipmap attribute which
+	   remains when released.
 
 v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
 	   copies the file and changes the metadata only.
