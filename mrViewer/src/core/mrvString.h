@@ -28,6 +28,7 @@
 #ifndef mrvString_h
 #define mrvString_h
 
+#include <sstream>
 #include <string>
 #include <vector>
 #include <set>
@@ -41,6 +42,14 @@ namespace mrv
 
   void split_string(stringArray& output,
 		    const std::string& str, const std::string& delim );
+
+inline void split( stringArray& elems, const std::string &s, char delim ) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+}
 
 } // namespace mrv
 
