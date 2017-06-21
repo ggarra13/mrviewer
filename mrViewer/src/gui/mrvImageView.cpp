@@ -2406,11 +2406,11 @@ void ImageView::draw()
       y -= yi;
   }
 
-  if ( _hud & kHudEXIF )
+  if ( _hud & kHudAttributes )
     {
-        const CMedia::Attributes& exif = img->exif();
-        CMedia::Attributes::const_iterator i = exif.begin();
-        CMedia::Attributes::const_iterator e = exif.end();
+        const CMedia::Attributes& attributes = img->attributes();
+        CMedia::Attributes::const_iterator i = attributes.begin();
+        CMedia::Attributes::const_iterator e = attributes.end();
         for ( ; i != e; ++i )
 	{
             std::string val = CMedia::attr2str( i->second );
@@ -5664,13 +5664,13 @@ float ImageView::calculate_fstop( float exposure ) const
 
   float seq1, seq2;
 
-  // Chack if image has an F Stop or Aperture EXIF attribute
+  // Chack if image has an F Stop or Aperture ATTRIBUTES attribute
   mrv::media fg = foreground();
   if ( fg )
     {
       CMedia* img = fg->image();
 
-      CMedia::Attributes& attrs = img->exif();
+      CMedia::Attributes& attrs = img->attributes();
       CMedia::Attributes::const_iterator i = attrs.find( N_("F Number") );
       if ( i == attrs.end() )
       {
