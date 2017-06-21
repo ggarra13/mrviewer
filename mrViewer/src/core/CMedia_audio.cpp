@@ -774,23 +774,22 @@ void CMedia::process_timecode( const Imf::TimeCode& tc )
 Imf::TimeCode CMedia::str2timecode( const std::string text )
 {
     bool drop_frame = false;
-    StringList tc;
-    split( text, ':', tc );
+    stringArray tc;
+    split( tc, text, ':' );
 
     // DROP FRAME TIMECODE USES ; as SEPARATOR
     // We accept 00;00;00;00 as well as 00:00:00;00
     // We also accept 00.00.00.00 as well as 00:00:00.00
     if ( tc.size() != 4 ) {
-        split( text, ';', tc );
+        split( tc, text, ';' );
         if ( tc.empty() )
         {
-            split( text, '.', tc );
+            split( tc, text, '.' );
         }
         if ( tc.size() == 2 )
         {
             std::string frames = tc[1].substr( 0, 2 );
-            StringList tc;
-            split( text, ':', tc );
+            split( tc, text, ':' );
             if ( tc.size() != 3 )
                 return Imf::TimeCode();
             
