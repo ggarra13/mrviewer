@@ -634,7 +634,14 @@ static void save_attribute( MagickWand* wand,
 {
     char buf[256];
     MagickBooleanType status;
-    std::string key = "exif:" + i->first;
+    std::string key = i->first;
+    // size_t pos;
+    // while ( ( pos = key.find(' ') ) != std::string::npos )
+    // {
+    //     key = key.substr( 0, pos ) + key.substr( pos+1, key.size() );
+    // }
+    // key = "exif:" + key;
+
     {
         Imf::StringAttribute* attr =
         dynamic_cast< Imf::StringAttribute* >( i->second );
