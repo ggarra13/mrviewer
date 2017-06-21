@@ -1142,7 +1142,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::StringAttribute>( N_("chromaticitiesName") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Chromaticities Name"),
+	    _attrs.insert( std::make_pair( _("Chromaticities Name"),
                                           attr->copy() ) );
             attrs.insert( N_("chromaticitiesName") );
 	  }
@@ -1153,7 +1153,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("Adopted Neutral"), 
+              _attrs.insert( std::make_pair( _("Adopted Neutral"), 
                                             attr->copy() ) );
               attrs.insert( N_("adoptedNeutral") );
 	  }
@@ -1164,7 +1164,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("Image State"), 
+              _attrs.insert( std::make_pair( _("Image State"), 
                                             attr->copy() ) );
               attrs.insert( N_("imageState") );
 	  }
@@ -1175,7 +1175,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("Owner"), attr->copy() ) );
+              _attrs.insert( std::make_pair( _("Owner"), attr->copy() ) );
               attrs.insert( N_("owner") );
 	  }
       }
@@ -1185,7 +1185,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Comments"),    
+	    _attrs.insert( std::make_pair( _("Comments"),    
                                           attr->copy() ) );
             attrs.insert( N_("comments") );
 	  }
@@ -1196,7 +1196,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
+              _attrs.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
               attrs.insert( N_("utcOffset") );
 	  }
       }
@@ -1206,7 +1206,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("Longitude"), attr->copy() ) );
+              _attrs.insert( std::make_pair( _("Longitude"), attr->copy() ) );
               attrs.insert( N_("longitude") );
 	  }
       }
@@ -1216,7 +1216,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Latitude"), attr->copy() ) );
+	    _attrs.insert( std::make_pair( _("Latitude"), attr->copy() ) );
             attrs.insert( N_("latitude") );
 	  }
       }
@@ -1226,7 +1226,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Altitude"), attr->copy() ) );
+	    _attrs.insert( std::make_pair( _("Altitude"), attr->copy() ) );
             attrs.insert( N_("altitude") );
 	  }
       }
@@ -1236,7 +1236,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Focus"), attr->copy() ) );
+	    _attrs.insert( std::make_pair( _("Focus"), attr->copy() ) );
             attrs.insert( N_("focus") );
 	  }
       }
@@ -1246,7 +1246,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
 	if ( attr )
         {
-            _exif.insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
+            _attrs.insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
             attrs.insert( N_("expTime") );
         }
       }
@@ -1256,7 +1256,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("Aperture"), attr->copy() ) );
+	    _attrs.insert( std::make_pair( _("Aperture"), attr->copy() ) );
             attrs.insert( N_("aperture") );
 	  }
       }
@@ -1267,7 +1267,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
 	if ( attr )
 	  {
-	    _exif.insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
+	    _attrs.insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
             attrs.insert( N_("isoSpeed") );
 	  }
       }
@@ -1278,7 +1278,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::KeyCodeAttribute>( N_("keyCode") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( N_("keyCode"), attr->copy() ) );
+              _attrs.insert( std::make_pair( N_("keyCode"), attr->copy() ) );
               attrs.insert( N_("keyCode") );
 	  }
       }
@@ -1289,7 +1289,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	if ( attr )
 	  {
               process_timecode( attr->value() );
-              _exif.insert( std::make_pair( N_("timecode"), attr->copy() ));
+              _attrs.insert( std::make_pair( N_("timecode"), attr->copy() ));
               attrs.insert( N_("timeCode") );
 	  }
       }
@@ -1299,7 +1299,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::StringAttribute>( N_("writer") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("Writer"), attr->copy() ));
+              _attrs.insert( std::make_pair( _("Writer"), attr->copy() ));
               attrs.insert( N_("writer") );
 	  }
       }
@@ -1309,7 +1309,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::StringAttribute>( N_("iccProfile") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
+              _attrs.insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
               attrs.insert( N_("iccProfile") );
 	  }
       }
@@ -1319,7 +1319,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	h.findTypedAttribute<Imf::StringAttribute>( N_("wrapmodes") );
 	if ( attr )
 	  {
-              _exif.insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
+              _attrs.insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
               attrs.insert( N_("wrapmodes") );
 	  }
       }
@@ -1337,7 +1337,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	       {
 		  TiledInputFile tin( sequence_filename(frame).c_str() );
                   Imf::IntAttribute attr( tin.numLevels() );
-		  _exif.insert( std::make_pair( _("Mipmap Levels"),
+		  _attrs.insert( std::make_pair( _("Mipmap Levels"),
                                                 attr.copy() ) );
 		  break;
 	       }
@@ -1346,9 +1346,9 @@ void exrImage::read_header_attr( const Imf::Header& h,
 		   TiledInputFile tin( sequence_filename(frame).c_str() );
                    Imf::IntAttribute xat( tin.numXLevels() );
                    Imf::IntAttribute yat( tin.numYLevels() );
-		   _exif.insert( std::make_pair( _("X Ripmap Levels"),
+		   _attrs.insert( std::make_pair( _("X Ripmap Levels"),
                                                  xat.copy() )); 
-                   _exif.insert( std::make_pair( _("Y Ripmap Levels"),
+                   _attrs.insert( std::make_pair( _("Y Ripmap Levels"),
                                                  yat.copy() ));
 		   break;
 		}
@@ -1360,11 +1360,11 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  switch( desc.roundingMode )
 	    {
 	    case Imf::ROUND_DOWN:
-                _exif.insert( std::make_pair( _("Rounding Mode"), 
+                _attrs.insert( std::make_pair( _("Rounding Mode"), 
                                               new Imf::StringAttribute( _("Down") ) ) );
 	      break;
 	    case Imf::ROUND_UP:
-	      _exif.insert( std::make_pair( _("Rounding Mode"), 
+	      _attrs.insert( std::make_pair( _("Rounding Mode"), 
                                             new Imf::StringAttribute( _("Up") ) ) );
 	      break;
 	    default:
@@ -1380,11 +1380,11 @@ void exrImage::read_header_attr( const Imf::Header& h,
       {
           const std::string& name = i.name();
           if ( attrs.find( name ) != attrs.end() ||
-               _exif.find( name ) != _exif.end() ||
+               _attrs.find( name ) != _attrs.end() ||
                ignore.find( name ) != ignore.end() ) continue;
           
           const Attribute& attr = i.attribute();
-          _exif.insert( std::make_pair( name, attr.copy() ) );
+          _attrs.insert( std::make_pair( name, attr.copy() ) );
       }
 }
 
@@ -2318,138 +2318,138 @@ void save_attributes( const CMedia* img, Header& hdr,
         hdr.insert( N_("capDate"), attr );
     }
     
-    const CMedia::Attributes& exif = img->exif();
-    CMedia::Attributes::const_iterator it = exif.find( _( "UTC Offset" ) ); 
-    if ( it != exif.end() )
+    const CMedia::Attributes& attributes = img->attributes();
+    CMedia::Attributes::const_iterator it = attributes.find( _( "UTC Offset" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("utcOffset"), *it->second );
         attrs.insert( _("UTC Offset") );
     }
 
-    it = exif.find( _( "Longitude" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Longitude" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("longitude"), *it->second );
         attrs.insert( _("Longitude") );
     }
 
-    it = exif.find( _( "Latitude" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Latitude" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("latitude"), *it->second );
         attrs.insert( _("Latitude") );
     }
 
-    it = exif.find( _( "Altitude" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Altitude" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("altitude"), *it->second );
         attrs.insert( _("Altitude") );
     }
 
-    it = exif.find( _( "Chromaticities Name" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Chromaticities Name" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("Chromaticities Name"), *it->second );
         attrs.insert( _("Chromaticities Name") );
     }
 
-    it = exif.find( _( "Comments" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Comments" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( _("Comments"), *it->second );
         attrs.insert( _("Comments") );
     }
     
-    it = exif.find( _( "Adopted Neutral" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Adopted Neutral" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("adoptedNeutral"), *it->second );
         attrs.insert( _("Adopted Neutral") );
     }
 
-    it = exif.find( _( "Image State" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Image State" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("imageState"), *it->second );
         attrs.insert( _("Image State") );
     }
 
-    it = exif.find( _( "Owner" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Owner" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("owner"), *it->second );
         attrs.insert( _("Owner") );
     }
 
-    it = exif.find( _( "Comments" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Comments" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("comments"), *it->second );
         attrs.insert( _("Comments") );
     }
 
-    it = exif.find( _( "Capture Date" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Capture Date" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("capDate"), *it->second );
         attrs.insert( _("Capture Date") );
     }
 
-    it = exif.find( _( "UTC Offset") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "UTC Offset") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("utcOffset"), *it->second );
         attrs.insert( _("UTC Offset") );
     }
 
-    it = exif.find( _( "Longitude") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Longitude") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("longitude"), *it->second );
         attrs.insert( _("Longitude") );
     }
 
-    it = exif.find( _( "Latitude") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Latitude") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("latitude"), *it->second );
         attrs.insert( _("Latitude") );
     }
 
 
-    it = exif.find( _( "Altitude") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Altitude") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("altitude"), *it->second );
         attrs.insert( _("Altitude") );
     }
 
 
-    it = exif.find( _( "Focus") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Focus") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("focus"), *it->second );
         attrs.insert( _("Focus") );
     }
 
 
-    it = exif.find( _( "Exposure Time") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Exposure Time") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("expTime"), *it->second );
         attrs.insert( _("Exposure Time") );
     }
 
-    it = exif.find( _( "Aperture") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Aperture") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("aperture"), *it->second );
         attrs.insert( _("Aperture") );
     }
 
-    it = exif.find( _( "ISO Speed") ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "ISO Speed") ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("isoSpeed"), *it->second );
         attrs.insert( _("ISO Speed") );
@@ -2462,8 +2462,8 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( N_("framesPerSecond") );
     }
 
-    it = exif.find( _( "Film Manufacturer Code" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Film Manufacturer Code" ) ); 
+    if ( it != attributes.end() )
     {
         attrs.insert( _("Film Manufacturer Code") );
         hdr.insert( N_("keyCode"), *it->second );
@@ -2471,8 +2471,8 @@ void save_attributes( const CMedia* img, Header& hdr,
     }
 
 
-    it = exif.find( N_( "timecode" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( N_( "timecode" ) ); 
+    if ( it != attributes.end() )
     {
 
         Imf::TimeCodeAttribute* attr =
@@ -2488,30 +2488,30 @@ void save_attributes( const CMedia* img, Header& hdr,
         }
     }
 
-    it = exif.find( _( "Writer" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Writer" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("writer"), *it->second );
         attrs.insert( _("Writer") );
     }
 
-    it = exif.find( _( "ICC Profile" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "ICC Profile" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("iccProfile"), *it->second );
         attrs.insert( _("ICC Profile") );
     }
 
-    it = exif.find( _( "Wrap Modes" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( _( "Wrap Modes" ) ); 
+    if ( it != attributes.end() )
     {
         hdr.insert( N_("wrapmodes"), *it->second );
         attrs.insert( _("Wrap Modes") );
     }
         
 
-    it = exif.find( N_( "timecode" ) ); 
-    if ( it != exif.end() )
+    it = attributes.find( N_( "timecode" ) ); 
+    if ( it != attributes.end() )
     {
         Imf::TimeCodeAttribute* attr =
         dynamic_cast< Imf::TimeCodeAttribute* >( it->second );
@@ -2524,8 +2524,8 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( N_("timecode") );
     }
 
-    CMedia::Attributes::const_iterator i = exif.begin();
-    CMedia::Attributes::const_iterator e = exif.end();
+    CMedia::Attributes::const_iterator i = attributes.begin();
+    CMedia::Attributes::const_iterator e = attributes.end();
     stringSet::const_iterator end = attrs.end();
     for ( ; i != e; ++i )
         {
