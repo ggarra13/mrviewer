@@ -389,7 +389,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
-    const CMedia::Attributes& attrs = img->exif();
+    const CMedia::Attributes& attrs = img->attributes();
     CMedia::Attributes::const_iterator i = attrs.begin();
     CMedia::Attributes::const_iterator e = attrs.end();
 
@@ -849,7 +849,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         return false;
     }
 
-    const CMedia::Attributes& attrs = img->exif();
+    const CMedia::Attributes& attrs = img->attributes();
     CMedia::Attributes::const_iterator i = attrs.begin();
     CMedia::Attributes::const_iterator e = attrs.end();
 
