@@ -5696,10 +5696,10 @@ float ImageView::calculate_fstop( float exposure ) const
               dynamic_cast< Imf::StringAttribute* >( i->second );
               if ( attr )
               {
-                  int n;
-                  unsigned d;
-                  sscanf( attr->value().c_str(), "%d / %d", &n, &d );
-                  exp = (float) n / (float) d;
+                  int n = 8;
+                  unsigned d = 1;
+                  int num = sscanf( attr->value().c_str(), "%d / %d", &n, &d );
+                  if ( num == 2 ) exp = (float) n / (float) d;
               }
           }
           seq1 = seq2 = 0.0f;
