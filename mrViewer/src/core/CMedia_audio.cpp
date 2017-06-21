@@ -833,12 +833,12 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
           Imf::TimeCode t = str2timecode( tag->value );
           process_timecode( t );
           Imf::TimeCodeAttribute attr( t );
-          _exif.insert( std::make_pair( name, attr.copy() ) );
+          _attrs.insert( std::make_pair( name, attr.copy() ) );
       }
       else
       {
           Imf::StringAttribute attr( tag->value );
-          _exif.insert( std::make_pair( name, attr.copy() ) );
+          _attrs.insert( std::make_pair( name, attr.copy() ) );
       }
    }
 }
