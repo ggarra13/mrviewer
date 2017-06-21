@@ -748,7 +748,7 @@ void stubImage::thread_exit()
 
     std::string stub( data + 3 );
     stringArray tokens;
-    mrv::split_string( tokens, stub, N_(",") );
+    mrv::split( tokens, stub, ',' );
 
     _version = (float) atof( tokens[0].c_str() );
     unsigned int W = atoi( tokens[1].c_str() );
@@ -1105,7 +1105,7 @@ void stubImage::thread_exit()
     strcpy( _label, buf );
 
     Imf::StringAttribute attr( render_time );
-    _exif[ N_("Render Time") ] = attr.copy();
+    _attrs[ N_("Render Time") ] = attr.copy();
   }
 
 
