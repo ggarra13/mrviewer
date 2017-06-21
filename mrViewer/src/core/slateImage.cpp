@@ -247,7 +247,7 @@ bool slateImage::release()
     std::string file = name();
     stringArray tokens;
 
-    mrv::split_string( tokens, file, "." );
+    split( tokens, file, '.' );
     size_t numTokens = tokens.size();
     if ( numTokens >= 4 && numTokens <= 5 )
       {
