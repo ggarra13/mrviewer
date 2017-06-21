@@ -152,14 +152,6 @@ namespace mrv
   }
 
 
-void split(const std::string &s, char delim, StringList& elems) {
-    std::stringstream ss(s);
-    std::string item;
-    while (std::getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-}
-
 // Given a frame extension, return true if a possible movie file.
 bool is_valid_movie( const char* ext )
 {
@@ -377,8 +369,8 @@ bool is_valid_view( std::string view )
     size_t len = i - e + 1;
     f = f.substr( len, f.size() );
 
-    StringList periods;
-    split(f, '.', periods);
+    stringArray periods;
+    split(periods, f, '.');
 
     if ( periods.size() == 4 )
     {
@@ -628,7 +620,7 @@ bool is_valid_view( std::string view )
 
     // Check if sequence is in ILM format first  ( image.1-30.exr )
     stringArray tokens;
-    mrv::split_string( tokens, fileroot, "." );
+    split( tokens, fileroot, '.' );
     if ( tokens.size() > 2 )
       {
          int idx = 2;
@@ -638,7 +630,7 @@ bool is_valid_view( std::string view )
 	if ( mrv::matches_chars(range.c_str(), "0123456789-") )
 	  {
 	    stringArray frames;
-	    mrv::split_string( frames, range, "-" );
+	    split( frames, range, '-' );
 	    if ( frames.size() > 1 && !frames[0].empty())
 	      {
 		unsigned digits = (unsigned) frames[0].size();
