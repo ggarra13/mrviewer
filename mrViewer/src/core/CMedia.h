@@ -911,8 +911,8 @@ class CMedia
 
     void thread_exit();
 
-    Attributes& exif()  { return _exif; }
-    const Attributes& exif() const { return _exif; }
+    Attributes& attributes()  { return _attrs; }
+    const Attributes& attributes() const { return _attrs; }
 
     static void default_profile( const char* c );
 
@@ -1458,7 +1458,7 @@ class CMedia
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.
 
-    Attributes _exif;                    //!< All attributes
+    Attributes _attrs;                    //!< All attributes
 
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
