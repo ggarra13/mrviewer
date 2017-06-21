@@ -903,7 +903,7 @@ If you try to open several mrViewers with different images, all these images wil
                 user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {16 10 20 20} align 8 box UP_BOX
               }
-              {fltk::CheckButton} uiPrefsHudEXIF {
+              {fltk::CheckButton} uiPrefsHudAttributes {
                 label {Attributes}
                 user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {272 11 20 20} align 8 box UP_BOX
