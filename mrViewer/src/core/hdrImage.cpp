@@ -155,7 +155,7 @@ namespace mrv {
 	    static const std::string key = "Owner";
 	    std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
+	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
 	  }
 	else if ( strcasecmp( keyword, "CAPDATE" ) == 0 )
 	  {
@@ -179,7 +179,7 @@ namespace mrv {
 	    std::string val = now;
 
             Imf::StringAttribute attr( val );
-	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
+	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
 	    continue;
 	  }
 	else if ( strcasecmp( keyword, "EXPOSURE" ) == 0 )
@@ -187,7 +187,7 @@ namespace mrv {
 	    static const std::string key = "Exposure";
 	    char* val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
+	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
 
 	    exposure = (float) atof( val );
 	    continue;
@@ -206,7 +206,7 @@ namespace mrv {
 	    static const std:: string key = "Software";
 	    std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-	    _exif.insert( std::make_pair( key, attr.copy() ) ); 
+	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
 	    continue;
 	  }
 	else if ( strcasecmp( keyword, "PIXASPECT" ) == 0 )
