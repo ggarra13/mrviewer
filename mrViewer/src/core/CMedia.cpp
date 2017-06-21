@@ -65,6 +65,7 @@ namespace fs = boost::filesystem;
 #include "ImfIntAttribute.h"
 #include "ImfRationalAttribute.h"
 #include "ImfTimeCodeAttribute.h"
+#include "ImfKeyCodeAttribute.h"
 #include "ImfFloatAttribute.h"
 #include "ImfStringAttribute.h"
 
@@ -159,6 +160,8 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     dynamic_cast< const Imf::Box2iAttribute* >( attr );
     const Imf::Box2fAttribute* b2f =
     dynamic_cast< const Imf::Box2fAttribute* >( attr );
+    const Imf::KeyCodeAttribute* kc =
+    dynamic_cast< const Imf::KeyCodeAttribute* >( attr );
     const Imf::TimeCodeAttribute* tm =
     dynamic_cast< const Imf::TimeCodeAttribute* >( attr );
     const Imf::M33dAttribute* m33d =
@@ -183,6 +186,10 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     dynamic_cast< const Imf::V2fAttribute* >( attr );
     const Imf::V2iAttribute* v2i =
     dynamic_cast< const Imf::V2iAttribute* >( attr );
+    const Imf::Box2iAttribute* box2i =
+    dynamic_cast< const Imf::Box2iAttribute* >( attr );
+    const Imf::Box2fAttribute* box2f =
+    dynamic_cast< const Imf::Box2fAttribute* >( attr );
     const Imf::IntAttribute* intg =
     dynamic_cast< const Imf::IntAttribute* >( attr );
     const Imf::FloatAttribute* flt =
@@ -193,13 +200,21 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     if ( b2i )
     {
         const Imath::Box2i& t = b2i->value();
-        sprintf( buf, "%d %d %d %d", t.min.x, t.min.y, t.max.x, t.max.y );
+        sprintf( buf, "%d %d  %d %d", t.min.x, t.min.y, t.max.x, t.max.y );
         r = buf;
     }
     else if ( b2f )
     {
         const Imath::Box2f& t = b2f->value();
-        sprintf( buf, "%g %g %g %g", t.min.x, t.min.y, t.max.x, t.max.y );
+        sprintf( buf, "%g %g  %g %g", t.min.x, t.min.y, t.max.x, t.max.y );
+        r = buf;
+    }
+    else if ( kc )
+    {
+        const Imf::KeyCode& k = kc->value();
+        sprintf( buf, "%d %d %d %d %d %d %d", k.filmMfcCode(),
+                 k.filmType(), k.prefix(), k.count(), k.perfOffset(),
+                 k.perfsPerFrame(), k.perfsPerCount() );
         r = buf;
     }
     else if ( tm )
