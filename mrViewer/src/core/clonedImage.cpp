@@ -93,7 +93,7 @@ namespace mrv {
     //   setsize( -1, -1 );
   
     { // Copy attributes
-      _exif = other->exif();
+      _attrs = other->attributes();
     }
 
     const char* profile = other->icc_profile();

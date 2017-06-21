@@ -568,7 +568,7 @@ void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
         key = label + "/" + key;
     }
 
-    g = (fltk::Group*)info->m_exif;
+    g = (fltk::Group*)info->m_attributes;
 
     if ( g == NULL ) return;
     
@@ -610,7 +610,7 @@ void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
     std::string key = uiKey->value();
     std::string value = uiValue->value();
   
-    CMedia::Attributes& attrs = img->exif();
+    CMedia::Attributes& attrs = img->attributes();
     add_attribute( attrs, img );
     info->refresh();
     delete w;
@@ -622,7 +622,7 @@ void remove_attribute_cb( fltk::Widget* widget, ImageInformation* info )
     CMedia* img = info->get_image();
     if (!img) return;
     
-    CMedia::Attributes& attrs = img->exif();
+    CMedia::Attributes& attrs = img->attributes();
 
     fltk::Window* w = make_remove_window(attrs, _("Attribute") );
     if ( ! w->exec() ) return;
@@ -673,7 +673,7 @@ m_main( NULL )
     m_button->hide();
 
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
-    m_exif  = new mrv::CollapsableGroup( 0, 0, w, 200, _("Attributes")  );
+    m_attributes  = new mrv::CollapsableGroup( 0, 0, w, 200, _("Attributes")  );
     m_video = new mrv::CollapsableGroup( 0, 0, w, 100, _("Video") );
     m_audio = new mrv::CollapsableGroup( 0, 0, w, 100, _("Audio") );
     m_subtitle = new mrv::CollapsableGroup( 0, 0, w, 100, _("Subtitle") );
@@ -704,7 +704,7 @@ int ImageInformation::handle( int event )
                   (fltk::Callback*)add_attribute_cb,
                   this);
         {
-            CMedia::Attributes& attrs = img->exif();
+            CMedia::Attributes& attrs = img->attributes();
             if ( !attrs.empty() )
             {
                 CMedia::Attributes::iterator i = attrs.begin();
@@ -783,7 +783,7 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) return;
 
-    CMedia::Attributes& attrs = img->exif();
+    CMedia::Attributes& attrs = img->attributes();
     CMedia::Attributes::iterator i = attrs.begin();
     CMedia::Attributes::iterator e = attrs.end();
     for ( ; i != e; ++i )
@@ -1161,9 +1161,9 @@ static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
     if ( !widget->label() ) return;
 
     std::string key = widget->label();
-    CMedia::Attributes& exif = img->exif();
-    CMedia::Attributes::iterator i = exif.find( key );
-    if ( i != exif.end() )
+    CMedia::Attributes& attributes = img->attributes();
+    CMedia::Attributes::iterator i = attributes.find( key );
+    if ( i != attributes.end() )
     {
         modify_float( w, i );
         return;
@@ -1187,9 +1187,9 @@ static void change_string_cb( fltk::Input* w, ImageInformation* info )
     }
 
     std::string key = widget->label();
-    CMedia::Attributes& exif = img->exif();
-    CMedia::Attributes::iterator i = exif.find( key );
-    if ( i != exif.end() )
+    CMedia::Attributes& attributes = img->attributes();
+    CMedia::Attributes::iterator i = attributes.find( key );
+    if ( i != attributes.end() )
     {
         bool ok = modify_value( w, i );
         if (!ok) {
@@ -1211,9 +1211,9 @@ static void change_int_cb( fltk::IntInput* w, ImageInformation* info )
     if ( !widget->label() ) return;
 
     std::string key = widget->label();
-    CMedia::Attributes& exif = img->exif();
-    CMedia::Attributes::iterator i = exif.find( key );
-    if ( i != exif.end() )
+    CMedia::Attributes& attributes = img->attributes();
+    CMedia::Attributes::iterator i = attributes.find( key );
+    if ( i != attributes.end() )
     {
         modify_int( w, i );
         return;
@@ -1237,9 +1237,9 @@ static void change_keycode_cb( fltk::IntInput* w, ImageInformation* info )
         subattr = key.substr( p+1, key.size() );
         key  = key.substr( 0, p );
     }
-    CMedia::Attributes& exif = img->exif();
-    CMedia::Attributes::iterator i = exif.find( key );
-    if ( i != exif.end() )
+    CMedia::Attributes& attributes = img->attributes();
+    CMedia::Attributes::iterator i = attributes.find( key );
+    if ( i != attributes.end() )
     {
         modify_keycode( w, i, subattr );
         return;
@@ -1447,7 +1447,7 @@ void ImageInformation::hide_tabs()
     m_video->hide();
     m_audio->hide();
     m_subtitle->hide();
-    m_exif->hide();
+    m_attributes->hide();
 }
 
 void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterator& i )
@@ -2080,10 +2080,10 @@ void ImageInformation::fill_data()
     m_image->show();
 
 
-    const CMedia::Attributes& attrs = img->exif();
+    const CMedia::Attributes& attrs = img->attributes();
     if ( ! attrs.empty() )
       {
-	m_curr = add_browser( m_exif );
+	m_curr = add_browser( m_attributes );
 
         exrImage* exr = dynamic_cast< exrImage* >( img );
         if ( exr )
@@ -2300,7 +2300,7 @@ void ImageInformation::fill_data()
     m_video->clear();
     m_audio->clear();
     m_subtitle->clear();
-    m_exif->clear();
+    m_attributes->clear();
 
     if ( img == NULL || !visible_r() ) return;
 
