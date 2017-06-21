@@ -196,7 +196,7 @@ class ImageInformation : public ImageInfoParent
     unsigned int row;
 
   public:
-    mrv::CollapsableGroup*       m_exif;
+    mrv::CollapsableGroup*       m_attributes;
 };
 
 } // namespace mrv
