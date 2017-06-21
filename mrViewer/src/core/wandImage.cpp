@@ -387,7 +387,7 @@ namespace mrv {
 	_chromaticities.white.y = float(wy);
      }
 
-     if ( _exif.empty() )
+     if ( _attrs.empty() )
      {
          ExceptionInfo* exception = NULL;
          GetImageProperty( img, "exif:*", exception );
@@ -458,7 +458,7 @@ namespace mrv {
                      Imf::TimeCode t = CMedia::str2timecode( value );
                      process_timecode( t );
                      Imf::TimeCodeAttribute attr( t );
-                     _exif.insert( std::make_pair( N_("timecode"), 
+                     _attrs.insert( std::make_pair( N_("timecode"), 
                                                    attr.copy() ) );
                      property = GetNextImageProperty(img);
                      continue;
@@ -467,7 +467,7 @@ namespace mrv {
                  // We always add the EXIF attribute even if it passes
                  // other tests so that if user saves the file all is kept
                  Imf::StringAttribute attr( value );
-                 _exif.insert( std::make_pair( key, attr.copy() ) );
+                 _attrs.insert( std::make_pair( key, attr.copy() ) );
              }
              property = GetNextImageProperty(img);
          }
@@ -560,7 +560,7 @@ namespace mrv {
 		 (void) CopyMagickString(attribute,(char *) tmp+i,
 					 length+1);
                  Imf::StringAttribute attr( attribute );
-		 _exif.insert( std::make_pair( tag, attr.copy() ) );
+		 _attrs.insert( std::make_pair( tag, attr.copy() ) );
 		 attribute=(char *) RelinquishMagickMemory(attribute);
 	      }
 	   }
@@ -1360,8 +1360,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     //
     {
         setlocale( LC_NUMERIC, "C" );  // Set locale to C
-        Attributes::const_iterator i = _exif.begin();
-        Attributes::const_iterator e = _exif.end();
+        Attributes::const_iterator i = _attrs.begin();
+        Attributes::const_iterator e = _attrs.end();
         for ( ; i != e; ++i )
         {
             save_attribute( wand, i );
