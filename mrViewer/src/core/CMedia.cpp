@@ -811,8 +811,8 @@ CMedia::~CMedia()
   free( _subtitle_font ); _subtitle_font = NULL;
 
   {
-      Attributes::iterator i = _exif.begin();
-      Attributes::iterator e = _exif.end();
+      Attributes::iterator i = _attrs.begin();
+      Attributes::iterator e = _attrs.end();
       for ( ; i != e; ++i )
       {
           delete i->second;
