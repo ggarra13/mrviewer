@@ -53,6 +53,7 @@ using namespace std;
 #include <ImfBoxAttribute.h>
 #include <ImfStandardAttributes.h>
 
+#include "core/mrvString.h"
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
@@ -160,6 +161,8 @@ static void cb_uiType(fltk::Choice* o, void*) {
         uiValue->text( _("2.2") );
     else if ( type == _("Timecode") )
         uiValue->text( _("00:00:00:00") );
+    else if ( type == _("Rational") )
+        uiValue->text( _("24000/1001") );
     else if ( type == _("Vector2 Integer") )
         uiValue->text( N_("2 5") );
     else if ( type == _("Vector2 Float") || type == _("Vector2 Double") )
@@ -193,7 +196,7 @@ fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("Integer") );
         new fltk::Item( _("Float") );
         new fltk::Item( _("Double") );
-        new fltk::Item( _("Keycode") );
+        new fltk::Item( _("Rational") );
         new fltk::Item( _("M33 Float") );
         new fltk::Item( _("M44 Float") );
         new fltk::Item( _("M33 Double") );
@@ -207,6 +210,7 @@ fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("Vector3 Integer") );
         new fltk::Item( _("Vector3 Float") );
         new fltk::Item( _("Vector3 Double") );
+        new fltk::Item( _("Keycode") );
         o->end();
         o->callback( (fltk::Callback*) cb_uiType, (void*)w );
         o->value( 9 );
@@ -322,6 +326,20 @@ void add_attribute( CMedia::Attributes& attrs,
         Imf::DoubleAttribute attr( v );
         attrs.insert( std::make_pair(key, attr.copy() ) );
         return;
+    }
+    else if ( type == _("Rational") )
+    {
+        stringArray comp;
+        split( comp, value, '/' );
+        if ( comp.size() == 2 )
+        {
+            int n = atoi( comp[0].c_str() );
+            unsigned d = (unsigned)atoi( comp[1].c_str() );
+            Imf::Rational v( n, d );
+            Imf::RationalAttribute attr( v );
+            attrs.insert( std::make_pair(key, attr.copy() ) );
+            return;
+        }
     }
     else if ( type == _("Vector2 Integer") )
     {
@@ -547,7 +565,6 @@ void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
         if ( !g->label() ) break;
         label = g->label();
         if ( label == _("Toggle Modify") ) break;
-        std::cerr << label << std::endl;
         key = label + "/" + key;
     }
 
@@ -565,7 +582,14 @@ void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
         fltk::Group* sg = (fltk::Group*)g->child(i);
         fltk::Widget* w = sg->child(0);
         if ( key.rfind( _("All") ) != std::string::npos ||
-             key == w->label() )
+             key == w->label() ||
+             key + ".filmMfcCode" == w->label() ||
+             key + ".filmType" == w->label() ||
+             key + ".prefix" == w->label() ||
+             key + ".count" == w->label() ||
+             key + ".perfOffset" == w->label() ||
+             key + ".perfsPerFrame" == w->label() ||
+             key + ".perfsPerCount" == w->label() )
         {
             if ( sg->active() )
                 sg->deactivate();
@@ -1003,6 +1027,21 @@ static bool modify_box2f( fltk::Input* widget, CMedia::Attributes::iterator& i)
     return true;
 }
 
+static bool modify_rational( fltk::Input* widget,
+                             CMedia::Attributes::iterator& i)
+{
+    int n, d;
+    int num = sscanf( widget->text(), 
+                      "%d / %d", &n, &d );
+    if ( num != 2 ) return false;
+    
+    Imf::Rational val( n, d );
+    Imf::RationalAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
 static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
@@ -1031,6 +1070,8 @@ static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
         return modify_v2f( w, i );
     else if ( dynamic_cast< Imf::V2iAttribute* >( i->second ) != NULL )
         return modify_v2i( w, i );
+    else if ( dynamic_cast< Imf::RationalAttribute* >( i->second ) != NULL )
+        return modify_rational( w, i );
     else
         LOG_ERROR( _("Unknown attribute to convert from string") );
     return false;
@@ -1427,6 +1468,19 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->play_fps(), true );
             add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*)timecode_cb );
+            return;
+        }
+    }
+    {
+        Imf::RationalAttribute* attr =
+        dynamic_cast< Imf::RationalAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imf::Rational& r = attr->value();
+            char buf[64];
+            sprintf( buf, "%d / %d", r.n, r.d );
+            add_text( i->first.c_str(), NULL,
+                      buf, true, false, (fltk::Callback*)change_string_cb );
             return;
         }
     }
