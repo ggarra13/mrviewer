@@ -88,6 +88,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 
 #include <ImathMath.h> // for Math:: functions
 #include <ImfRationalAttribute.h>
+#include <ImfStringAttribute.h>
 
 // CORE classes
 #include "core/mrvClient.h"
@@ -5679,46 +5680,59 @@ float ImageView::calculate_fstop( float exposure ) const
 
       if ( i != attrs.end() )
       {
-          Imf::RationalAttribute* attr =
-          dynamic_cast< Imf::RationalAttribute* >( i->second );
-          if ( attr )
+          float exp = 1.0f;
           {
-              Imf::Rational& r = attr->value();
+              Imf::RationalAttribute* attr =
+              dynamic_cast< Imf::RationalAttribute* >( i->second );
+              if ( attr )
+              {
+                  Imf::Rational& r = attr->value();
 
-	      float exp = (float) r.n / (float) r.d;
+                  exp = (float) r.n / (float) r.d;
+              }
+          }
+          {
+              Imf::StringAttribute* attr =
+              dynamic_cast< Imf::StringAttribute* >( i->second );
+              if ( attr )
+              {
+                  int n;
+                  unsigned d;
+                  sscanf( attr->value().c_str(), "%d / %d", &n, &d );
+                  exp = (float) n / (float) d;
+              }
+          }
+          seq1 = seq2 = 0.0f;
+          base = 0.0f;
 
-	      seq1 = seq2 = 0.0f;
-	      base = 0.0f;
+          for ( ; seq1 < exp && seq2 < exp; base += 1.0f )
+          {
+              seq1 = Imath::Math<float>::pow( 2.0f, base+1);
+              seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, base);
+          }
 
-	      for ( ; seq1 < exp && seq2 < exp; base += 1.0f )
-		{
-		  seq1 = Imath::Math<float>::pow( 2.0f, base+1);
-		  seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, base);
-		}
+          float t = seq1 - exp;
+          if ( fabs(t) < fabs(seq2 - exp) )
+          {
+              exposure += t / fabs(seq2 - seq1);
+          }
+          else
+          {
+              --base;
+              seq1 = Imath::Math<float>::pow( 2.0f, base);
 
-	      float t = seq1 - exp;
-	      if ( fabs(t) < fabs(seq2 - exp) )
-		{
-		  exposure += t / fabs(seq2 - seq1);
-		}
-	      else
-		{
-		  --base;
-		  seq1 = Imath::Math<float>::pow( 2.0f, base);
-
-		  t = fabs(seq2 - exp);
-		  if ( t >= fabs(seq1 - exp) )
-		    {
-		      t = fabs(seq1-exp) / fabs(seq2 - seq1);
-		    }
-		  else
-		    {
-		      t = 1.0f - t / fabs(seq2 - seq1);
-		    }
-		  exposure -= t;
-		}
-	    }
-	}
+              t = fabs(seq2 - exp);
+              if ( t >= fabs(seq1 - exp) )
+              {
+                  t = fabs(seq1-exp) / fabs(seq2 - seq1);
+              }
+              else
+              {
+                  t = 1.0f - t / fabs(seq2 - seq1);
+              }
+              exposure -= t;
+          }
+      }
     }
 
 
