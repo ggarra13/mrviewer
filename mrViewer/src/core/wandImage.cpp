@@ -408,7 +408,8 @@ namespace mrv {
                  //
                  std::string key = property;
 
-                 if ( key.substr(0,4) == "Exif" )
+                 if ( key.substr(0,4) == "Exif" ||
+                      key.substr(0,4) == "exif" )
                  {
                      key.clear();
                      // Skip until first ':'
@@ -420,7 +421,8 @@ namespace mrv {
                      for ( ; *p != '\0'; ++p )
                      {
                          // Make 'superDad' into 'super Dad'
-                         if ( (isupper((int) ((unsigned char) *p)) != 0) &&
+                         if ( !key.empty() &&
+                              (isupper((int) ((unsigned char) *p)) != 0) &&
                               (islower((int) ((unsigned char) *(p+1))) != 0))
                              key += ' ';
                          key += *p;
@@ -632,7 +634,7 @@ static void save_attribute( MagickWand* wand,
 {
     char buf[256];
     MagickBooleanType status;
-    std::string key = i->first;
+    std::string key = "exif:" + i->first;
     {
         Imf::StringAttribute* attr =
         dynamic_cast< Imf::StringAttribute* >( i->second );
