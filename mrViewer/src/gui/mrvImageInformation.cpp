@@ -47,16 +47,18 @@ using namespace std;
 #include <fltk/ItemGroup.h>
 #include <fltk/PackedGroup.h>
 
-#include "ImfBoxAttribute.h"
-#include "ImfDoubleAttribute.h"
-#include "ImfFloatAttribute.h"
-#include "ImfIntAttribute.h"
-#include "ImfKeyCodeAttribute.h"
-#include "ImfMatrixAttribute.h"
-#include "ImfRationalAttribute.h"
-#include "ImfStringAttribute.h"
-#include "ImfTimeCodeAttribute.h"
-#include "ImfVecAttribute.h"
+#include <ImfBoxAttribute.h>
+#include <ImfChromaticitiesAttribute.h>
+#include <ImfDoubleAttribute.h>
+#include <ImfFloatAttribute.h>
+#include <ImfIntAttribute.h>
+#include <ImfKeyCodeAttribute.h>
+#include <ImfMatrixAttribute.h>
+#include <ImfRationalAttribute.h>
+#include <ImfStringAttribute.h>
+#include <ImfTimeCodeAttribute.h>
+#include <ImfVecAttribute.h>
+
 
 #include "core/mrvString.h"
 #include "mrvImageInformation.h"
@@ -180,6 +182,8 @@ static void cb_uiType(fltk::Choice* o, void*) {
         uiValue->text( N_("2 5  10 20") );
     else if ( type == _("Box2 Float")  )
         uiValue->text( _("0.2 5.1  10.5 20.2") );
+    else if ( type == _("Chromaticities") )
+        uiValue->text( _("0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290") );
     else if ( type == _("M33 Float") || type == _("M33 Double")  )
         uiValue->text( _("1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0") );
     else if ( type == _("M44 Float") || type == _("M44 Double") )
@@ -215,6 +219,7 @@ fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("Vector3 Integer") );
         new fltk::Item( _("Vector3 Float") );
         new fltk::Item( _("Vector3 Double") );
+        new fltk::Item( _("Chromaticities") );
         new fltk::Item( _("Keycode") );
         o->end();
         o->callback( (fltk::Callback*) cb_uiType, (void*)w );
@@ -470,6 +475,24 @@ void add_attribute( CMedia::Attributes& attrs,
         attrs.insert( std::make_pair(key, attr.copy() ) );
         return;
     }
+    else if ( type == _("Chromaticities") )
+    {
+        float rx, ry, gx, gy, bx, by, wx, wy;
+        int n = sscanf( value.c_str(), "%g %g  %g %g  %g %g  %g %g",
+                        &rx, &ry, &gx, &gy, &bx, &by, &wx, &wy );
+        if ( n != 8 )
+        {
+            mrvALERT( _("Could not find eight floats for chromaticities") );
+            return;
+        }
+        Imf::Chromaticities val( Imath::V2f( rx, ry ),
+                                 Imath::V2f( gx, gy ),
+                                 Imath::V2f( bx, by ),
+                                 Imath::V2f( wx, wy ) );
+        Imf::ChromaticitiesAttribute attr( val );
+        attrs.insert( std::make_pair(key, attr.copy() ) );
+        return;
+    }
     else if ( type == _("M33 Double") )
     {
         double m00, m01, m02, m10, m11, m12, m20, m21, m22;
@@ -559,21 +582,9 @@ void add_attribute( CMedia::Attributes& attrs,
 }
 
 
-
-void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 {
-    std::string key = widget->label();
-    fltk::Group* g = widget->parent();
-    std::string label;
-    for ( ; g != NULL; g = g->parent() )
-    {
-        if ( !g->label() ) break;
-        label = g->label();
-        if ( label == _("Toggle Modify") ) break;
-        key = label + "/" + key;
-    }
-
-    g = (fltk::Group*)info->m_attributes;
+    fltk::Group* g = (fltk::Group*)info->m_attributes;
 
     if ( g == NULL ) return;
     
@@ -602,6 +613,23 @@ void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
                 sg->activate();
         }
     }
+}
+
+
+void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+{
+    std::string key = widget->label();
+    fltk::Group* g = widget->parent();
+    std::string label;
+    for ( ; g != NULL; g = g->parent() )
+    {
+        if ( !g->label() ) break;
+        label = g->label();
+        if ( label == _("Toggle Modify") ) break;
+        key = label + "/" + key;
+    }
+    
+    toggle_modify_attribute( key, info );
 }
 
 void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
@@ -849,8 +877,11 @@ static bool modify_v2i( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     int x, y;
     int num = sscanf( w->text(), "%d %d", &x, &y );
-    if ( num != 2 ) return false;
-
+    if ( num != 2 ) {
+        mrvALERT( _("Could not find two integers for vector ") << i->first );
+        return false;
+    }
+    
     Imath::V2i val( x, y );
     Imf::V2iAttribute attr( val );
     delete i->second;
@@ -862,7 +893,10 @@ static bool modify_v2f( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     float x, y;
     int num = sscanf( w->text(), "%g %g", &x, &y );
-    if ( num != 2 ) return false;
+    if ( num != 2 ) {
+        mrvALERT( _("Could not find two floats for vector ") << i->first );
+        return false;
+    }
 
     Imath::V2f val( x, y );
     Imf::V2fAttribute attr( val );
@@ -875,7 +909,10 @@ static bool modify_v2d( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     double x, y;
     int num = sscanf( w->text(), "%lg %lg", &x, &y );
-    if ( num != 2 ) return false;
+    if ( num != 2 ) {
+        mrvALERT( _("Could not find two doubles for vector ") << i->first );
+        return false;
+    }
 
     Imath::V2d val( x, y );
     Imf::V2dAttribute attr( val );
@@ -888,7 +925,10 @@ static bool modify_v3i( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     int x, y, z;
     int num = sscanf( w->text(), "%d %d %d", &x, &y, &z );
-    if ( num != 3 ) return false;
+    if ( num != 3 ) {
+        mrvALERT( _("Could not find three integers for vector ") << i->first );
+        return false;
+    }
 
     Imath::V3i val( x, y, z );
     Imf::V3iAttribute attr( val );
@@ -901,7 +941,10 @@ static bool modify_v3f( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     float x, y, z;
     int num = sscanf( w->text(), "%g %g %g", &x, &y, &z );
-    if ( num != 3 ) return false;
+    if ( num != 3 ) {
+        mrvALERT( _("Could not find three floats for vector ") << i->first );
+        return false;
+    }
 
     Imath::V3f val( x, y, z );
     Imf::V3fAttribute attr( val );
@@ -914,10 +957,35 @@ static bool modify_v3d( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     double x, y, z;
     int num = sscanf( w->text(), "%lg %lg %lg", &x, &y, &z );
-    if ( num != 3 ) return false;
+    if ( num != 3 ) {
+        mrvALERT( _("Could not find three doubles for vector ") << i->first );
+        return false;
+    }
 
     Imath::V3d val( x, y, z );
     Imf::V3dAttribute attr( val );
+    delete i->second;
+    i->second = attr.copy();
+    return true;
+}
+
+static bool modify_chromaticities( fltk::Input* w,
+                                   CMedia::Attributes::iterator& i)
+{
+    float rx, ry, gx, gy, bx, by, wx, wy;
+    int num = sscanf( w->text(), "%g %g  %g %g  %g %g  %g %g",
+                      &rx, &ry, &gx, &gy, &bx, &by, &wx, &wy );
+    if ( num != 8 ) {
+        mrvALERT( _("Could not find eight floats for chromaticities ")
+                  << i->first );
+        return false;
+    }
+    
+    Imf::Chromaticities val( Imath::V2f( rx, ry ),
+                             Imath::V2f( gx, gy ),
+                             Imath::V2f( bx, by ),
+                             Imath::V2f( wx, wy ) );
+    Imf::ChromaticitiesAttribute attr( val );
     delete i->second;
     i->second = attr.copy();
     return true;
@@ -931,7 +999,11 @@ static bool modify_m33f( fltk::Input* w, CMedia::Attributes::iterator& i)
                       &m00, &m01, &m02,
                       &m10, &m11, &m12,
                       &m20, &m21, &m22 );
-    if ( num != 9 ) return false;
+    if ( num != 9 ) {
+        mrvALERT( _("Could not find nine floats for matrix 3x3 ")
+                  << i->first );
+        return false;
+    }
     
     Imath::M33f val( m00,m01,m02,
                      m10,m11,m12,
@@ -950,7 +1022,11 @@ static bool modify_m33d( fltk::Input* w, CMedia::Attributes::iterator& i)
                       &m00, &m01, &m02,
                       &m10, &m11, &m12,
                       &m20, &m21, &m22 );
-    if ( num != 9 ) return false;
+    if ( num != 9 ) {
+        mrvALERT( _("Could not find nine doubles for matrix 3x3 ")
+                  << i->first );
+        return false;
+    }
     
     Imath::M33d val( m00,m01,m02,
                      m10,m11,m12,
@@ -970,8 +1046,12 @@ static bool modify_m44f( fltk::Input* w, CMedia::Attributes::iterator& i)
                       &m10, &m11, &m12, &m13, 
                       &m20, &m21, &m22, &m23, 
                       &m30, &m31, &m32, &m33 );
-    if ( num != 16 ) return false;
-    
+    if ( num != 16 ) {
+        mrvALERT( _("Could not find sixteen floats for matrix 4x4 ")
+                  << i->first );
+        return false;
+    }
+
     Imath::M44f val( m00,m01,m02,m03,
                      m10,m11,m12,m13,
                      m20,m21,m22,m23,
@@ -992,8 +1072,12 @@ static bool modify_m44d( fltk::Input* w, CMedia::Attributes::iterator& i)
                       &m10, &m11, &m12, &m13, 
                       &m20, &m21, &m22, &m23, 
                       &m30, &m31, &m32, &m33 );
-    if ( num != 16 ) return false;
-    
+    if ( num != 16 ) {
+        mrvALERT( _("Could not find sixteen doubles for matrix 4x4 ")
+                  << i->first );
+        return false;
+    }
+
     Imath::M44d val( m00,m01,m02,m03,
                      m10,m11,m12,m13,
                      m20,m21,m22,m23,
@@ -1010,8 +1094,12 @@ static bool modify_box2i( fltk::Input* widget, CMedia::Attributes::iterator& i)
     int x, y, w, h;
     int num = sscanf( widget->text(), 
                       "%d %d  %d %d", &x, &y, &w, &h );
-    if ( num != 4 ) return false;
-    
+    if ( num != 4 ) {
+        mrvALERT( _("Could not find four integers for box ")
+                  << i->first );
+        return false;
+    }
+
     Imath::Box2i val( Imath::V2i( x, y ), Imath::V2i( w, h ) );
     Imf::Box2iAttribute attr( val );
     delete i->second;
@@ -1023,7 +1111,11 @@ static bool modify_box2f( fltk::Input* widget, CMedia::Attributes::iterator& i)
     float x, y, w, h;
     int num = sscanf( widget->text(), 
                       "%g %g  %g %g", &x, &y, &w, &h );
-    if ( num != 4 ) return false;
+    if ( num != 4 ) {
+        mrvALERT( _("Could not find four floats for box ")
+                  << i->first );
+        return false;
+    }
     
     Imath::Box2f val( Imath::V2f( x, y ), Imath::V2f( w, h ) );
     Imf::Box2fAttribute attr( val );
@@ -1038,7 +1130,11 @@ static bool modify_rational( fltk::Input* widget,
     int n, d;
     int num = sscanf( widget->text(), 
                       "%d / %d", &n, &d );
-    if ( num != 2 ) return false;
+    if ( num != 2 ) {
+        mrvALERT( _("Could not find two integers for rational ")
+                  << i->first );
+        return false;
+    }
     
     Imf::Rational val( n, d );
     Imf::RationalAttribute attr( val );
@@ -1059,6 +1155,8 @@ static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
         return modify_m33d( w, i );
     else if ( dynamic_cast< Imf::M33fAttribute* >( i->second ) != NULL )
         return modify_m33f( w, i );
+    else if ( dynamic_cast< Imf::ChromaticitiesAttribute* >( i->second ) )
+        return modify_chromaticities( w, i );
     else if ( dynamic_cast< Imf::Box2iAttribute* >( i->second ) != NULL )
         return modify_box2i( w, i );
     else if ( dynamic_cast< Imf::Box2fAttribute* >( i->second ) != NULL )
@@ -1198,9 +1296,8 @@ static void change_string_cb( fltk::Input* w, ImageInformation* info )
     {
         bool ok = modify_value( w, i );
         if (!ok) {
-            LOG_ERROR( _("Could not convert attribute ") << i->first
-                       << _(" from string") );
             info->refresh();
+            toggle_modify_attribute( key, info );
         }
         return;
     }
@@ -1622,6 +1719,21 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[128];
             const Imath::Box2f& v = attr->value();
             sprintf( buf, "%g %g %g %g", v.min.x, v.min.y, v.max.x, v.max.x );
+            add_text( i->first.c_str(), NULL,
+                      buf, true, false, (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::ChromaticitiesAttribute* attr =
+        dynamic_cast< Imf::ChromaticitiesAttribute* >( i->second );
+        if ( attr )
+        {
+            char buf[128];
+            const Imf::Chromaticities& v = attr->value();
+            sprintf( buf, "%g %g  %g %g  %g %g  %g %g",
+                     v.red.x, v.red.y, v.green.x, v.green.y,
+                     v.blue.x, v.blue.y, v.white.x, v.white.y );
             add_text( i->first.c_str(), NULL,
                       buf, true, false, (fltk::Callback*) change_string_cb );
             return;
