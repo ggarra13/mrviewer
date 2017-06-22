@@ -47,11 +47,16 @@ using namespace std;
 #include <fltk/ItemGroup.h>
 #include <fltk/PackedGroup.h>
 
-#include <ImfTimeCodeAttribute.h>
-#include <ImfIntAttribute.h>
-#include <ImfDoubleAttribute.h>
-#include <ImfBoxAttribute.h>
-#include <ImfStandardAttributes.h>
+#include "ImfBoxAttribute.h"
+#include "ImfDoubleAttribute.h"
+#include "ImfFloatAttribute.h"
+#include "ImfIntAttribute.h"
+#include "ImfKeyCodeAttribute.h"
+#include "ImfMatrixAttribute.h"
+#include "ImfRationalAttribute.h"
+#include "ImfStringAttribute.h"
+#include "ImfTimeCodeAttribute.h"
+#include "ImfVecAttribute.h"
 
 #include "core/mrvString.h"
 #include "mrvImageInformation.h"
