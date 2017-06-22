@@ -60,14 +60,15 @@ extern "C" {
 namespace fs = boost::filesystem;
 
 #include "ImfBoxAttribute.h"
-#include "ImfVecAttribute.h"
-#include "ImfMatrixAttribute.h"
-#include "ImfIntAttribute.h"
-#include "ImfRationalAttribute.h"
-#include "ImfTimeCodeAttribute.h"
-#include "ImfKeyCodeAttribute.h"
+#include "ImfDoubleAttribute.h"
 #include "ImfFloatAttribute.h"
+#include "ImfIntAttribute.h"
+#include "ImfKeyCodeAttribute.h"
+#include "ImfMatrixAttribute.h"
+#include "ImfRationalAttribute.h"
 #include "ImfStringAttribute.h"
+#include "ImfTimeCodeAttribute.h"
+#include "ImfVecAttribute.h"
 
 #include "core/CMedia.h"
 #include "core/aviImage.h"
@@ -194,6 +195,8 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     dynamic_cast< const Imf::IntAttribute* >( attr );
     const Imf::FloatAttribute* flt =
     dynamic_cast< const Imf::FloatAttribute* >( attr );
+    const Imf::DoubleAttribute* dbl =
+    dynamic_cast< const Imf::DoubleAttribute* >( attr );
     const Imf::StringAttribute* str =
     dynamic_cast< const Imf::StringAttribute* >( attr );
           
@@ -315,6 +318,11 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     else if ( intg )
     {
         sprintf( buf, "%d", intg->value() );
+        r = buf;
+    }
+    else if ( dbl )
+    {
+        sprintf( buf, "%.8lg", dbl->value() );
         r = buf;
     }
     else if ( flt )
