@@ -46,6 +46,7 @@ namespace mrv
 inline void split( stringArray& elems, const std::string &s, char delim ) {
     std::stringstream ss(s);
     std::string item;
+    elems.clear();
     while (std::getline(ss, item, delim)) {
         elems.push_back(item);
     }
