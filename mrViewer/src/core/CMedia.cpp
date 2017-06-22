@@ -59,16 +59,17 @@ extern "C" {
 #include <boost/exception/diagnostic_information.hpp>
 namespace fs = boost::filesystem;
 
-#include "ImfBoxAttribute.h"
-#include "ImfDoubleAttribute.h"
-#include "ImfFloatAttribute.h"
-#include "ImfIntAttribute.h"
-#include "ImfKeyCodeAttribute.h"
-#include "ImfMatrixAttribute.h"
-#include "ImfRationalAttribute.h"
-#include "ImfStringAttribute.h"
-#include "ImfTimeCodeAttribute.h"
-#include "ImfVecAttribute.h"
+#include <ImfBoxAttribute.h>
+#include <ImfChromaticitiesAttribute.h>
+#include <ImfDoubleAttribute.h>
+#include <ImfFloatAttribute.h>
+#include <ImfIntAttribute.h>
+#include <ImfKeyCodeAttribute.h>
+#include <ImfMatrixAttribute.h>
+#include <ImfRationalAttribute.h>
+#include <ImfStringAttribute.h>
+#include <ImfTimeCodeAttribute.h>
+#include <ImfVecAttribute.h>
 
 #include "core/CMedia.h"
 #include "core/aviImage.h"
