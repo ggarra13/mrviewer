@@ -775,32 +775,36 @@ Imf::TimeCode CMedia::str2timecode( const std::string text )
 {
     bool drop_frame = false;
     stringArray tc;
+
+    // Parse 00:00:00:00
     split( tc, text, ':' );
 
     // DROP FRAME TIMECODE USES ; as SEPARATOR
     // We accept 00;00;00;00 as well as 00:00:00;00
     // We also accept 00.00.00.00 as well as 00:00:00.00
     if ( tc.size() != 4 ) {
+        // Parse 00;00;00;00
         split( tc, text, ';' );
-        if ( tc.empty() )
+        if ( tc.size() != 4 )
         {
+            // Parse 00.00.00.00 as well as 00:00:00.00
             split( tc, text, '.' );
+            if ( tc.size() == 2 )
+            {
+                std::string frames = tc[1].substr( 0, 2 );
+                // Parse 00:00:00.00
+                split( tc, text, ':' );
+                if ( tc.size() != 3 )
+                    return Imf::TimeCode();
+
+                // tc[2] contains the .00 frames too, so we remove them
+                tc[2] = tc[2].substr( 0, 2 );
+ 
+                tc.push_back( frames );  // add frames to list
+            }
         }
-        if ( tc.size() == 2 )
-        {
-            std::string frames = tc[1].substr( 0, 2 );
-            split( tc, text, ':' );
-            if ( tc.size() != 3 )
-                return Imf::TimeCode();
-            
-            tc[2] = tc[2].substr( 0, 2 );  // this one contains the frames too
-            tc.push_back( frames );        // add frames to list
-        }
-        else
-        {
-            if ( tc.size() != 4 )
-                return Imf::TimeCode();
-        }
+        if ( tc.size() != 4 )
+            return Imf::TimeCode();
         drop_frame = true;
     }
 
