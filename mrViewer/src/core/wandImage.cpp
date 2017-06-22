@@ -821,6 +821,27 @@ static void save_attribute( MagickWand* wand,
         }
     }
     {
+        Imf::ChromaticitiesAttribute* attr = 
+        dynamic_cast< Imf::ChromaticitiesAttribute* >( i->second );
+        if ( attr )
+        {
+            const Imf::Chromaticities& v = attr->value();
+            sprintf( buf, 
+                     "%g %g  "
+                     "%g %g  "
+                     "%g %g  "
+                     "%g %g",
+                     v.red.x, v.red.y,
+                     v.green.x, v.green.y,
+                     v.blue.x, v.blue.y,
+                     v.white.x, v.white.y );
+            status = MagickSetImageProperty( wand, key.c_str(), buf );
+            if ( status != MagickTrue )
+                LOG_ERROR( _("Could not set ") << key << _(" attribute") );
+           return;
+        }
+    }
+    {
         Imf::M33fAttribute* attr = 
         dynamic_cast< Imf::M33fAttribute* >( i->second );
         if ( attr )
