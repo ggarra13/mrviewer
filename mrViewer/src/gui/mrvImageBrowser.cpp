@@ -289,13 +289,14 @@ namespace mrv {
 		 _("Directory: %s\n"
 		   "Name: %s\n"
 		   "Resolution: %dx%d\n"
-		   "Frames: %" PRId64 "-%" PRId64),
+		   "Frames: %" PRId64 "-%" PRId64 " FPS %g"),
 		 img->directory().c_str(),
 		 img->name().c_str(),
 		 img->width(),
 		 img->height(),
 		 img->start_frame(),
-		 img->end_frame()
+		 img->end_frame(),
+                 img->fps()
 		 );
       }
     copy_label( info );
