@@ -489,7 +489,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
     o << "mrViewer " << kArch << " bits - v" << kVersion << " " 
       << kBuild << endl
-      << "(C) 2007-2016 Film Aura, LLC." << endl
+      << "(C) 2007-2017 Film Aura, LLC." << endl
       << endl
       << "mrViewer depends on:" << endl
       << endl
@@ -499,7 +499,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
       << "FLTK 2.0" << endl
       << "http://www.fltk.org/" << endl
-      << "(C) 2000-2015 Bill Spitzak & others" << endl
+      << "(C) 2000-2017 Bill Spitzak & others" << endl
       << endl
       << "GLEW " << glewGetString( GLEW_VERSION ) << endl
       << "http://glew.sourceforge.net/" << endl
@@ -516,19 +516,19 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "libswscale       v" << AV_STRINGIFY( LIBSWSCALE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "License: " << avcodec_license() << endl
-      << "(C) 2000-2015 Fabrice Bellard, et al." << endl
+      << "(C) 2000-2017 Fabrice Bellard, et al." << endl
       << "Configuration: " << avcodec_configuration() << endl << endl
       << "ILM OpenEXR v" << OPENEXR_VERSION_STRING <<  " or later" << endl
       << "http://www.openexr.org/" << endl
-      << "(C) 2005-2015 Industrial Light & Magic" << endl
+      << "(C) 2005-2017 Industrial Light & Magic" << endl
       << endl
       << "AMPAS ACES v1.0 or later" << endl
       << "https://github.com/ampas/aces-dev" << endl
-      << "(C) 2015 AMPAS" << endl
+      << "(C) 2017 AMPAS" << endl
       << endl
       << "AMPAS CTL v1.5 or later" << endl
       << "https://github.com/ampas/CTL" << endl
-      << "(C) 2014-2015 AMPAS" << endl
+      << "(C) 2014-2017 AMPAS" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl
@@ -537,7 +537,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
 #endif
       << "IccProfLib (ICC v4.2)" << endl
-      << "(C) 2003-2015 - The International Color Consortium" << endl
+      << "(C) 2003-2017 - The International Color Consortium" << endl
       << endl
       << endl;
 
