@@ -37,6 +37,7 @@
 #include <fltk/run.h>
 #include <fltk/ask.h>
 
+#include "core/mrvString.h"
 #include "core/CMedia.h"
 #include "core/mrvImageOpts.h"
 #include "core/aviImage.h"
@@ -136,7 +137,7 @@ stringArray open_reel( const char* startfile,
                                                startfile );
         if ( main && !main->uiView->visible() ) return filelist;
         if ( file )
-            split( file, '\n', filelist );
+            split( filelist, file, '\n' );
       }
       else
 #endif
@@ -213,7 +214,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
             return filelist;
         }
         if ( file )
-            split( file, '\n', filelist );
+            split( filelist, file, '\n' );
     }
     else
 #endif
@@ -277,7 +278,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
             return NULL;
         }
         if ( file )
-            split( file, '\n', filelist );
+            split( filelist, file, '\n' );
         profile = filelist[0].c_str();
     }
     else
@@ -559,7 +560,7 @@ void save_clip_xml_metadata( const CMedia* img,
                                    kXML_PATTERN.c_str(),
                                    xml.c_str(), true );
         if ( !file ) return;
-        split( file, '\n', filelist );
+        split( filelist, file, '\n' );
         file = filelist[0].c_str();
     }
     else
@@ -706,7 +707,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
         }
         if ( !file ) return;
 
-        split( file, '\n', filelist );
+        split( filelist, file, '\n' );
         file = filelist[0].c_str();
     }
     else
