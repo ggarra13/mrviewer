@@ -194,8 +194,10 @@ class ColorWidget : public fltk::Widget
 
 
 ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
-  fltk::Group( x, y, w, h, l )
+fltk::Group( x, y, w, h, l )
 {
+    tooltip( _("Mark an area in the image with the left mouse button") );
+    
     dcol = new ColorWidget( 16, 10, 32, 32 );
 
     area = new fltk::Widget( 100, 0, w, 50 );
@@ -485,7 +487,7 @@ void ColorInfo::update( const CMedia* img,
                   else pic = img->left();
               }
 
-              if ( x >= pic->width() || y >= pic->height() )
+              if ( x >= (int)pic->width() || y >= (int)pic->height() )
               {
                   --count;
                   continue;

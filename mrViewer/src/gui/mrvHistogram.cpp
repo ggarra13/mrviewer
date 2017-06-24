@@ -118,14 +118,20 @@ namespace mrv
   void Histogram::count_pixels()
   {
     media m = uiMain->uiView->foreground();
-    if (!m) return;
-
+    if (!m) {
+        tooltip( _("Mark an area in the image with the left mouse button") );
+        return;
+    }
+    
     CMedia* img = m->image();
-    if (!img) return;
-
+    if (!img) {
+        return;
+    }
 
     mrv::image_type_ptr pic = img->hires();
     if (!pic) return;
+
+    tooltip( NULL );
 
     // @todo: avoid recalculating on stopped image
     //        commented out as it was preventing histogram update of renders
