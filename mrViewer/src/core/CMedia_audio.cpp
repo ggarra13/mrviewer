@@ -204,6 +204,8 @@ void CMedia::open_audio_codec()
       throw _("avcodec_copy_context failed for audio"); 
   }
 
+  av_codec_set_pkt_timebase(_audio_ctx, get_audio_stream()->time_base);
+
   AVDictionary* opts = NULL;
   av_dict_set(&opts, "refcounted_frames", "1", 0);
 
@@ -1039,8 +1041,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     {
         ret = avcodec_decode_audio4(ctx, _aframe, &got_frame, avpkt);
 
-        // ret = decode( ctx, _aframe, &got_frame, avpkt, eof );
-        // if ( ret == AVERROR_EOF ) eof = true;
+        //ret = decode( ctx, _aframe, &got_frame, avpkt, eof );
         
         if (ret >= 0 && got_frame) {
             assert( _aframe->nb_samples > 0 );
@@ -1351,7 +1352,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
            //                << _(" Audio used: ") << audio_size
            //                << _(" Audio max: ")  << _audio_max );
            // }
-	  return kDecodeMissingSamples;
+           if ( this->frame() > frame )
+               return kDecodeOK;
+           return kDecodeMissingSamples;
 	}
 
       assert( audio_size > 0 );
@@ -1391,8 +1394,8 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
                                                           frame, pkt );
     if ( got_audio != kDecodeOK ) {
-        IMG_ERROR( _("decode_audio_packet ") << frame << _(" failed with ") <<
-                   get_error_text( got_audio ) );
+        IMG_ERROR( _("decode_audio_packet ") << frame << _(" failed with ") 
+                   << get_error_text( got_audio ) );
         return got_audio;
     }
     
