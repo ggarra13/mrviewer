@@ -44,6 +44,7 @@ namespace mrv
   {
     color( fltk::BLACK );
     buttoncolor( fltk::BLACK );
+    tooltip( _("Mark an area in the image with the left mouse button") );
   }
 
 
@@ -66,7 +67,7 @@ namespace mrv
     int W2 = r.w() / 2;
     int H2 = r.h() / 2;
     int R2 = diameter_ / 2;
-    int angle = 32;
+    float angle = 32;
     for ( i = 0; i < 4; ++i, angle += 90 )
       {
 	fltk::push_matrix();
@@ -157,12 +158,15 @@ namespace mrv
   void Vectorscope::draw_pixels( const fltk::Rectangle& r )
   {
     mrv::media m = uiMain->uiView->foreground();
-    if (!m) return;
-
+    if (!m) {
+        tooltip( _("Mark an area in the image with the left mouse button") );
+        return;
+    }
     CMedia* img = m->image();
     mrv::image_type_ptr pic = img->hires();
     if ( !pic ) return;
 
+    tooltip( NULL );
 
     int xmin, ymin, xmax, ymax;
     bool right, bottom;
@@ -189,11 +193,11 @@ namespace mrv
             pic = img->right();
         if (!pic) return;
     }
-    if ( xmin >= pic->width() ) xmin = pic->width()-1;
-    if ( ymin >= pic->height() ) ymin = pic->height()-1;
+    if ( xmin >= (int)pic->width() ) xmin = (int)pic->width()-1;
+    if ( ymin >= (int)pic->height() ) ymin = (int)pic->height()-1;
 
-    if ( xmax >= pic->width() ) xmax = pic->width()-1;
-    if ( ymax >= pic->height() ) ymax = pic->height()-1;
+    if ( xmax >= (int)pic->width() ) xmax = (int)pic->width()-1;
+    if ( ymax >= (int)pic->height() ) ymax = (int)pic->height()-1;
 
 
     unsigned stepX = (xmax - xmin + 1) / w();
@@ -214,9 +218,9 @@ namespace mrv
     float one_gamma = 1.0f / gamma;
 
     CMedia::Pixel rp;
-    for ( unsigned y = ymin; y <= ymax; y += stepY )
+    for ( unsigned y = ymin; y <= (unsigned)ymax; y += stepY )
       {
-	for ( unsigned x = xmin; x <= xmax; x += stepX )
+          for ( unsigned x = xmin; x <= (unsigned)xmax; x += stepX )
 	  {
 	    CMedia::Pixel op = pic->pixel( x, y );
 

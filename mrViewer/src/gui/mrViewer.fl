@@ -2679,7 +2679,7 @@ v->uiReelWindow->uiMain->show();}
 v->uiView->update_image_info();}
                 }
               {fltk::Item} {} {
-                label {Color Info}
+                label {Color Area}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
 v->uiView->update_color_info();}
