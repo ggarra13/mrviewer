@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-06-24 07:52-0300\n"
+"POT-Creation-Date: 2017-06-24 09:01-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -802,12 +802,12 @@ msgstr "A/V Difference"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2994
 msgid "ACES Clip Metadata"
-msgstr "Metadata ACES Clip"
+msgstr "Metadatos ACES Clip"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:52
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:97
 msgid "ACES metadata"
-msgstr "Metadata ACES"
+msgstr "Metadatos ACES"
 
 #: gui/mrvImageView.cpp:252
 msgid "ALPHA"
@@ -1069,7 +1069,6 @@ msgid "Attribute"
 msgstr "Atributo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2105
-#: gui/mrvImageInformation.cpp:711
 msgid "Attributes"
 msgstr "Atributos"
 
@@ -4130,6 +4129,10 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:107
 msgid "Meta"
 msgstr "Meta"
+
+#: gui/mrvImageInformation.cpp:711
+msgid "Metadata"
+msgstr "Metadatos"
 
 #: gui/mrvColorInfo.cpp:675 gui/mrvColorInfo.cpp:786
 msgid "Minimum"
