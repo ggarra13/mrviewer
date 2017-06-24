@@ -189,16 +189,18 @@ static void cb_uiType(fltk::Choice* o, void*) {
     else if ( type == _("M44 Float") || type == _("M44 Double") )
         uiValue->text( _("1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  "
                          "0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0") );
+    else if ( type == _("KeyCode") )
+        uiValue->text( _("** multivalue **") );
 }
 
 fltk::Window* make_attribute_add_window() {
   fltk::Window* w;
-   {fltk::Window* o = new fltk::Window(405, 150);
+   {fltk::Window* o = new fltk::Window(405, 250);
     w = o;
     o->shortcut(0xff1b);
     o->label( _("Add Attribute") );
     o->begin();
-    { fltk::Choice* o = uiType = new fltk::Choice( 10, 30, 192, 25, _("Type") );
+    { fltk::Choice* o = uiType = new fltk::Choice( 10, 30, 390, 25, _("Type") );
         o->align(fltk::ALIGN_TOP);
         o->begin();
         new fltk::Item( _("String") );
@@ -220,23 +222,23 @@ fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("Vector3 Float") );
         new fltk::Item( _("Vector3 Double") );
         new fltk::Item( _("Chromaticities") );
-        new fltk::Item( _("Keycode") );
+        new fltk::Item( _("KeyCode") );
         o->end();
         o->callback( (fltk::Callback*) cb_uiType, (void*)w );
         o->value( 9 );
     }
-    {fltk::Input* o = uiKey = new fltk::Input(10, 70, 192, 25, _("Keyword"));
+    {fltk::Input* o = uiKey = new fltk::Input(10, 70, 390, 25, _("Keyword"));
         o->text( N_("timecode") );
         o->align(fltk::ALIGN_TOP);
     }
-    {fltk::Input* o = uiValue = new fltk::Input(208, 70, 192, 25, _("Value"));
+    {fltk::Input* o = uiValue = new fltk::Input(10, 110, 390, 25, _("Value"));
         o->text( N_("00:00:00:00") );
         o->align(fltk::ALIGN_TOP);
     }
-     {fltk::Button* o = new fltk::Button(115, 100, 86, 41, _("OK"));
+     {fltk::Button* o = new fltk::Button(115, 150, 86, 41, _("OK"));
       o->callback((fltk::Callback*)cb_OK, (void*)(w));
     }
-     {fltk::Button* o = new fltk::Button(224, 100, 93, 41, _("Cancel"));
+     {fltk::Button* o = new fltk::Button(224, 150, 93, 41, _("Cancel"));
       o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
     }
     o->end();
@@ -565,7 +567,7 @@ void add_attribute( CMedia::Attributes& attrs,
         attrs.insert( std::make_pair(key, attr.copy() ) );
         return;
     }
-    else if ( type == _("keyCode") )
+    else if ( type == _("KeyCode") )
     {
         {
             Imf::KeyCode k;
@@ -1221,7 +1223,7 @@ static bool modify_keycode( fltk::IntInput* w,
         }
         else
         {
-            mrvALERT( _("Unknown keycode subattr") );
+            mrvALERT( _("Unknown KeyCode subattr") );
             return false;
         }
         Imf::KeyCodeAttribute nattr( t );
@@ -1545,6 +1547,7 @@ void ImageInformation::clear_callback_data()
 
 void ImageInformation::hide_tabs()
 {
+    tooltip( _("Load an image or movie file") );
     m_image->hide();
     m_video->hide();
     m_audio->hide();
@@ -2195,7 +2198,7 @@ void ImageInformation::fill_data()
 
     m_image->relayout();
     m_image->show();
-
+    tooltip( NULL );
 
     const CMedia::Attributes& attrs = img->attributes();
     if ( ! attrs.empty() )
