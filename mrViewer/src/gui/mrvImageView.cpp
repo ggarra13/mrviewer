@@ -6772,7 +6772,7 @@ void ImageView::update_color_info( const mrv::media& fg ) const
 
 void ImageView::update_color_info() const
 {
-  mrv::media fg = uiMain->uiView->foreground();
+  mrv::media fg = foreground();
   if ( !fg ) return; 
 
   update_color_info(fg);
