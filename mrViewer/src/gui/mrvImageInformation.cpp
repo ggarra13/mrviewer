@@ -708,7 +708,7 @@ m_main( NULL )
     m_button->hide();
 
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
-    m_attributes  = new mrv::CollapsableGroup( 0, 0, w, 200, _("Attributes")  );
+    m_attributes  = new mrv::CollapsableGroup( 0, 0, w, 200, _("Metadata")  );
     m_video = new mrv::CollapsableGroup( 0, 0, w, 100, _("Video") );
     m_audio = new mrv::CollapsableGroup( 0, 0, w, 100, _("Audio") );
     m_subtitle = new mrv::CollapsableGroup( 0, 0, w, 100, _("Subtitle") );
