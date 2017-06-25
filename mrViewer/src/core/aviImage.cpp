@@ -221,19 +221,18 @@ const char* const aviImage::color_range() const
 aviImage::aviImage() :
   CMedia(),
   _video_index(-1),
+  _stereo_index(-1),
   _av_dst_pix_fmt( AV_PIX_FMT_RGB24 ),
   _pix_fmt( VideoFrame::kRGB ),
-  _ptype( VideoFrame::kHalf ),
+  _ptype( VideoFrame::kByte ),
   _av_frame( NULL ),
   _filt_frame( NULL ),
-  _video_codec( NULL ),
   _subtitle_ctx( NULL ),
   buffersink_ctx( NULL ),
   buffersrc_ctx( NULL ),
   filter_graph( NULL ),
   _convert_ctx( NULL ),
-  _max_images( kMaxCacheImages ),
-  _subtitle_codec( NULL )
+  _max_images( kMaxCacheImages )
 {
   _gamma = 1.0f;
   _compression = "";
@@ -722,9 +721,9 @@ void aviImage::open_video_codec()
 
   AVCodecParameters* codecpar = stream->codecpar;
 
-  _video_codec = avcodec_find_decoder( codecpar->codec_id );
+  AVCodec* video_codec = avcodec_find_decoder( codecpar->codec_id );
 
-  _video_ctx = avcodec_alloc_context3(_video_codec);
+  _video_ctx = avcodec_alloc_context3(video_codec);
   int r = avcodec_parameters_to_context(_video_ctx, codecpar);
   if ( r < 0 )
   {
@@ -739,7 +738,7 @@ void aviImage::open_video_codec()
   static int idct = FF_IDCT_AUTO;
   static int error_concealment = 3;
 
-  _video_ctx->codec_id        = _video_codec->id;
+  _video_ctx->codec_id        = video_codec->id;
   _video_ctx->workaround_bugs = workaround_bugs;
   // _video_ctx->skip_frame= skip_frame;
   // _video_ctx->skip_idct = skip_idct;
@@ -747,7 +746,7 @@ void aviImage::open_video_codec()
   // _video_ctx->idct_algo = idct;
 
 
-  if(_video_codec->capabilities & CODEC_CAP_DR1)
+  if(video_codec->capabilities & CODEC_CAP_DR1)
      _video_ctx->flags |= CODEC_FLAG_EMU_EDGE;
 
   double aspect_ratio;
@@ -777,8 +776,8 @@ void aviImage::open_video_codec()
   // recounted frames needed for subtitles
   av_dict_set(&info, "refcounted_frames", "1", 0);
 
-  if ( _video_codec == NULL ||
-       avcodec_open2( _video_ctx, _video_codec, &info ) < 0 )
+  if ( video_codec == NULL ||
+       avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
     _video_index = -1;
 
 
@@ -788,7 +787,6 @@ void aviImage::close_video_codec()
 {
     if ( _video_ctx && _video_index >= 0 )
     {
-        avcodec_close( _video_ctx );
         avcodec_free_context( &_video_ctx );
     }
 }
@@ -1403,9 +1401,9 @@ void aviImage::open_subtitle_codec()
   if (!stream) return;
 
   AVCodecParameters* codecpar = stream->codecpar;
-  _subtitle_codec = avcodec_find_decoder( codecpar->codec_id );
+  AVCodec* subtitle_codec = avcodec_find_decoder( codecpar->codec_id );
 
-  _subtitle_ctx = avcodec_alloc_context3(_subtitle_codec);
+  _subtitle_ctx = avcodec_alloc_context3(subtitle_codec);
   int r = avcodec_parameters_to_context(_subtitle_ctx, codecpar);
   if ( r < 0 )
   {
@@ -1427,8 +1425,8 @@ void aviImage::open_subtitle_codec()
   _subtitle_ctx->error_concealment= error_concealment;
 
   AVDictionary* info = NULL;
-  if ( _subtitle_codec == NULL || 
-       avcodec_open2( _subtitle_ctx, _subtitle_codec, &info ) < 0 )
+  if ( subtitle_codec == NULL || 
+       avcodec_open2( _subtitle_ctx, subtitle_codec, &info ) < 0 )
     _subtitle_index = -1;
 }
 
@@ -1436,7 +1434,6 @@ void aviImage::close_subtitle_codec()
 {
     if ( _subtitle_ctx && _subtitle_index >= 0 )
     {
-        avcodec_close( _subtitle_ctx );
         avcodec_free_context( &_subtitle_ctx );
     }
 }
@@ -1603,9 +1600,24 @@ void aviImage::video_stream( int x )
     return;
   }
 
+  if ( x == _video_index ) return;  // same stream, no change
+
+  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+  SCOPED_LOCK( vpm );
+
+  if ( has_video() )
+  {
+      flush_video();
+      close_video_codec();
+      _video_packets.clear();
+  }
+
+  int old = _video_index;
+  
   _video_index  = x;
   _num_channels = 0;
   if ( x < 0 ) return;
+
 
   static AVPixelFormat fmt[] = { AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32, AV_PIX_FMT_NONE };
   AVPixelFormat* fmts = fmt;
@@ -1658,8 +1670,7 @@ void aviImage::video_stream( int x )
   // }
 
   _ptype = VideoFrame::kByte;
-  unsigned int w = ctx->width;
-  
+
   if ( colorspace_override ) _colorspace_index = colorspace_override;
   else _colorspace_index = ctx->color_space;
 
@@ -1716,7 +1727,35 @@ void aviImage::video_stream( int x )
   }
 
 
+  if ( old >= 0 )
+  {
+      open_video_codec();
 
+      {
+          SCOPED_LOCK( _mutex );
+
+          if ( stopped() ) _images.clear();
+          else
+          {
+              // Keep the current frame which won't get replaced
+              video_cache_t::iterator i = _images.begin();
+              for ( ; i != _images.end(); )
+              {
+                  if ( (*i)->frame() == _frame ) {
+                      ++i;
+                      continue;
+                  }
+                  _images.erase( i );
+              }
+              assert( _images.size() == 1 );
+          }
+
+          _dts = _frame - 1;
+          _expected = _frame-2;
+      }
+      int64_t f = _frame;
+      seek( f );
+  }
 }
 
 bool aviImage::readFrame(int64_t & pts)
@@ -1822,10 +1861,30 @@ void aviImage::populate()
                     _video_info.push_back( s );
                     if ( _video_index < 0 && s.has_codec )
                     {
-                        video_stream( 0 );
+                        video_stream( _video_info.size()-1 );
                         int w = ctx->width;
                         int h = ctx->height;
                         image_size( w, h );
+                    }
+                    else if ( _video_info.size() == 2 )
+                    {
+                        static std::string file;
+                        double diff1 = fabs( _video_info[0].fps - s.fps );
+                        double diff2 = fabs( _video_info[0].duration -
+                                             s.duration );
+                        if ( file != filename() &&
+                             _w == ctx->width && _h == ctx->height &&
+                             diff1 <= 0.0001 && diff2 <= 0.0001 )
+                        {
+                            _is_stereo = true;
+                            _is_left_eye = true;
+                            file = filename();
+                            _right_eye = CMedia::guess_image( filename() );
+                            _right_eye->is_stereo( true );
+                            _right_eye->is_left_eye( false );
+                            _right_eye->video_stream( 1 );
+                            _right_eye->audio_stream( -1 );
+                        }
                     }
                     break;
                 }
@@ -1845,7 +1904,7 @@ void aviImage::populate()
 
                     _audio_info.push_back( s );
                     if ( _audio_index < 0 && s.has_codec )
-                        _audio_index = 0;
+                        _audio_index = _audio_info.size()-1;
                     break;
                 }
             case AVMEDIA_TYPE_SUBTITLE:
@@ -1855,7 +1914,7 @@ void aviImage::populate()
                     s.bitrate    = calculate_bitrate( ctx );
                     _subtitle_info.push_back( s );
                     if ( _subtitle_index < 0 )
-                        _subtitle_index = 0;
+                        _subtitle_index = _subtitle_info.size()-1;
                     break;
                 }
             default:
