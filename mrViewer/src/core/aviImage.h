@@ -272,13 +272,13 @@ class aviImage : public CMedia
     std::string _format;
     std::string _compression;
 
-    int                _video_index;
+    int                _video_index;    // Index to primary video stream
+    int                _stereo_index;   // Index to stereo video stream
     AVPixelFormat      _av_dst_pix_fmt;
     VideoFrame::Format _pix_fmt;
     VideoFrame::PixelType _ptype;
     AVFrame*              _av_frame;
     AVFrame*              _filt_frame;
-    AVCodec*              _video_codec;
     AVCodecContext*       _subtitle_ctx;           //!< current video context
     SwsContext*           _convert_ctx;
 
@@ -294,7 +294,6 @@ class aviImage : public CMedia
     AVFilterContext*      buffersink_ctx;
     AVFilterContext*      buffersrc_ctx;
     AVFilterGraph*        filter_graph;
-    AVCodec*              _subtitle_codec;
     subtitle_cache_t      _subtitles;
     AVSubtitle            _sub;
 };
