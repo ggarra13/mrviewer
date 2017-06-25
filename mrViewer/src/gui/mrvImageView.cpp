@@ -583,6 +583,23 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 }
 
 
+void change_video_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+   fltk::Group* g = o->parent();
+   if ( !g ) return;
+   fltk::Menu* p = dynamic_cast< fltk::Menu* >( g );
+   if ( !p ) return;
+
+   if ( !view) return;
+
+   mrv::media fg = view->foreground();
+   if ( !fg ) return;
+
+   int i = p->value();  // Video Track #
+   fg->image()->video_stream(i);
+}
+
+
 void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 {
    fltk::Group* g = o->parent();
@@ -2766,7 +2783,24 @@ int ImageView::leftMouseDown(int x, int y)
 	    Image_ptr image = fg->image();
 
    
-	    size_t num = image->number_of_subtitle_streams();
+	    size_t num = image->number_of_video_streams();
+            if ( num > 1 )
+            {
+	       for ( unsigned i = 0; i < num; ++i )
+	       {
+		  char buf[256];
+		  sprintf( buf, _("Video/Track #%d - %s"), i,
+			   image->video_info(i).language.c_str() );
+
+		  item = menu.add( buf, 0,
+				   (fltk::Callback*)change_video_cb, this );
+		  item->type( fltk::Item::TOGGLE );
+		  if ( image->video_stream() == i )
+		     item->set();
+	       }
+            }
+
+	    num = image->number_of_subtitle_streams();
 
             if ( dynamic_cast< aviImage* >( image ) != NULL )
             {
