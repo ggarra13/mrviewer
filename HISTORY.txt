@@ -1,12 +1,19 @@
 v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
-	   never clear.  Now they are all called Attributes.
-	 - Made int attributes' slider update when changed instead of
-	   when released, except for ripmap/mipmap attribute which
-	   remains when released.
+	   never clear.  Now they are all called Metadata.
+	 - Made int attributes' slider in Media Info Window update when
+	   changed instead of when released, except for ripmap/mipmap
+	   attribute which remains when released.
 	 - Added the missing attribute types (matrices, boxes, etc) to
 	   RMB->Add->Attributes panel in the Media Info Window.
 	 - Bug fixed timecode parsing of drop frame timecode.
 	   Valid Examples: 00;01;00;02, 00.01.00.02 or 00:01:00.02.
+	 - Added support for multiple video tracks, switching them as
+	   you do with subtitles (RMB->Video->Track #).
+	 - Added stereo from multiple video tracks in a movie file, when
+	   they are the same resolution and have the same frames per
+	   second (fps) and duration.
+	 - Bug fixed video/audio/subtitle selection when the codec
+	   could not be located.
 
 v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
 	   copies the file and changes the metadata only.
