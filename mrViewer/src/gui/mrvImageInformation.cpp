@@ -49,14 +49,22 @@ using namespace std;
 
 #include <ImfBoxAttribute.h>
 #include <ImfChromaticitiesAttribute.h>
+#include <ImfCompressionAttribute.h>
+#include <ImfDeepImageStateAttribute.h>
 #include <ImfDoubleAttribute.h>
+#include <ImfEnvmapAttribute.h>
 #include <ImfFloatAttribute.h>
 #include <ImfIntAttribute.h>
 #include <ImfKeyCodeAttribute.h>
+#include <ImfLineOrderAttribute.h>
 #include <ImfMatrixAttribute.h>
+#include <ImfOpaqueAttribute.h>
+#include <ImfPreviewImageAttribute.h>
 #include <ImfRationalAttribute.h>
 #include <ImfStringAttribute.h>
+#include <ImfStringVectorAttribute.h>
 #include <ImfTimeCodeAttribute.h>
+#include <ImfTileDescriptionAttribute.h>
 #include <ImfVecAttribute.h>
 
 
@@ -118,7 +126,7 @@ typedef std::vector< CtlLMTData* > LMTData;
 
   static const int kMiddle = 200;
 
-void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
+static void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
 {
     static CMedia* last = NULL;
     CMedia* img = info->get_image();
@@ -149,11 +157,11 @@ fltk::Input *uiValue=(fltk::Input *)0;
 
 fltk::Choice *uiKeyRemove=(fltk::Choice *)0;
 
-void cb_OK(fltk::Button*, fltk::Window* v) {
+static void cb_OK(fltk::Button*, fltk::Window* v) {
   v->make_exec_return(true);
 }
 
-void cb_Cancel(fltk::Button*, fltk::Window* v) {
+static void cb_Cancel(fltk::Button*, fltk::Window* v) {
   v->make_exec_return(false);
 }
 
@@ -193,9 +201,9 @@ static void cb_uiType(fltk::Choice* o, void*) {
         uiValue->text( _("** multivalue **") );
 }
 
-fltk::Window* make_attribute_add_window() {
+static fltk::Window* make_attribute_add_window() {
   fltk::Window* w;
-   {fltk::Window* o = new fltk::Window(405, 250);
+   {fltk::Window* o = new fltk::Window(405, 200);
     w = o;
     o->shortcut(0xff1b);
     o->label( _("Add Attribute") );
@@ -248,17 +256,15 @@ fltk::Window* make_attribute_add_window() {
   return  w;
 }
 
-fltk::Window* make_remove_window( CMedia::Attributes& attrs, const char* lbl ) {
+static fltk::Window* make_remove_window( CMedia::Attributes& attrs ) {
   fltk::Window* w;
-   {fltk::Window* o = new fltk::Window(405, 100);
+   {fltk::Window* o = new fltk::Window(405, 120);
     w = o;
     o->shortcut(0xff1b);
-    char buf[128];
-    sprintf( buf, _( "Remove %s Attribute" ), lbl );
-    o->label( buf );
+    o->label( _( "Remove Attribute" ) );
     o->begin();
     {fltk::Choice* o =
-        uiKeyRemove = new fltk::Choice(10, 35, 192, 25, _("Keyword"));
+        uiKeyRemove = new fltk::Choice(10, 35, 390, 25, _("Keyword"));
         o->align(fltk::ALIGN_TOP);
         o->begin();
         CMedia::Attributes::const_iterator i = attrs.begin();
@@ -269,10 +275,10 @@ fltk::Window* make_remove_window( CMedia::Attributes& attrs, const char* lbl ) {
         }
         o->end();
     }
-     {fltk::Button* o = new fltk::Button(115, 60, 86, 41, _("OK"));
+     {fltk::Button* o = new fltk::Button(115, 70, 86, 41, _("OK"));
       o->callback((fltk::Callback*)cb_OK, (void*)(w));
     }
-     {fltk::Button* o = new fltk::Button(224, 60, 93, 41, _("Cancel"));
+     {fltk::Button* o = new fltk::Button(224, 70, 93, 41, _("Cancel"));
       o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
     }
     o->end();
@@ -282,8 +288,8 @@ fltk::Window* make_remove_window( CMedia::Attributes& attrs, const char* lbl ) {
   return  w;
 }
 
-void add_attribute( CMedia::Attributes& attrs,
-                    CMedia* img )
+static void add_attribute( CMedia::Attributes& attrs,
+                           CMedia* img )
 {
     std::string type = _("String");
     if ( uiType ) type = uiType->child( uiType->value() )->label();
@@ -569,21 +575,20 @@ void add_attribute( CMedia::Attributes& attrs,
     }
     else if ( type == _("KeyCode") )
     {
-        {
-            Imf::KeyCode k;
-            Imf::KeyCodeAttribute attr( k );
-            attrs.insert( std::make_pair( key, attr.copy() ) );
-        }
+        Imf::KeyCode k;
+        Imf::KeyCodeAttribute attr( k );
+        attrs.insert( std::make_pair( key, attr.copy() ) );
         return;
     }
     else
     {
-        mrvALERT( _("Unknown data type for keyword '") << key << "' type '"
-                  << type << "' " << _("keyCode") ); 
+        mrvALERT( _("Unknown data type for keyword '") << key << _("' type '")
+                  << type << "'" ); 
     }
 }
 
 
+static
 void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 {
     fltk::Group* g = (fltk::Group*)info->m_attributes;
@@ -618,6 +623,7 @@ void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 }
 
 
+static
 void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 {
     std::string key = widget->label();
@@ -634,7 +640,7 @@ void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
     toggle_modify_attribute( key, info );
 }
 
-void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+static void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if (!img) return;
@@ -652,14 +658,14 @@ void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 }
 
 
-void remove_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+static void remove_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if (!img) return;
     
     CMedia::Attributes& attrs = img->attributes();
 
-    fltk::Window* w = make_remove_window(attrs, _("Attribute") );
+    fltk::Window* w = make_remove_window( attrs );
     if ( ! w->exec() ) return;
 
     std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
@@ -865,6 +871,39 @@ void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
     fltk::IntInput* n = (fltk::IntInput*) data;
     n->value( (int)s->value() );
     n->do_callback();
+}
+
+static bool modify_string_vector( fltk::Input* w,
+                                  CMedia::Attributes::iterator& i)
+{
+    std::string val( w->text() );
+    std::string key = i->first;
+    size_t pos;
+    if ( ( pos = key.rfind( '#' ) ) == std::string::npos )
+        return false;
+
+    std::string num = key.substr( pos+1, key.size() );
+    int idx = atoi( num.c_str() ) - 1;
+    if ( idx < 0 ) return false;
+
+    Imf::StringVectorAttribute* attr =
+    dynamic_cast< Imf::StringVectorAttribute* >( i->second );
+    if ( attr == NULL ) return false;
+
+    Imf::StringVector& value = attr->value();
+    
+    Imf::StringVector::iterator it = value.begin();
+    Imf::StringVector::iterator ib = it;
+    Imf::StringVector::iterator ie = value.end();
+
+    // Loop thru indexes.  We do nothing until we find the index we want
+    for ( ; it != ie && (it-ib) != idx; ++it )  ;
+
+
+    if ( it == ie ) return false;
+
+    *it = val;
+    return true;
 }
 
 static bool modify_string( fltk::Input* w, CMedia::Attributes::iterator& i)
@@ -1147,7 +1186,9 @@ static bool modify_rational( fltk::Input* widget,
 
 static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
-    if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
+    if ( dynamic_cast< Imf::StringVectorAttribute* >( i->second ) != NULL )
+        return modify_string_vector( w, i );
+    else if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
         return modify_string( w, i );
     else if ( dynamic_cast< Imf::M44dAttribute* >( i->second ) != NULL )
         return modify_m44d( w, i );
@@ -1809,6 +1850,25 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         }
     }
     {
+        Imf::StringVectorAttribute* attr =
+        dynamic_cast< Imf::StringVectorAttribute* >( i->second );
+        if ( attr )
+        {
+            Imf::StringVector::const_iterator it = attr->value().begin();
+            Imf::StringVector::const_iterator ib = it;
+            Imf::StringVector::const_iterator et = attr->value().end();
+            char buf[256];
+            for ( ; it != et; ++it )
+            {
+                sprintf( buf, "%s #%d", i->first.c_str(), (it - ib)+1 );
+                add_text( buf, NULL,
+                          *it, true, false,
+                          (fltk::Callback*) change_string_cb );
+            }
+            return;
+        }
+    }
+    {
         Imf::StringAttribute* attr =
         dynamic_cast< Imf::StringAttribute* >( i->second );
         if ( attr )
@@ -1816,6 +1876,16 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             add_text( i->first.c_str(), NULL,
                       attr->value().c_str(), true, false,
                       (fltk::Callback*) change_string_cb );
+            return;
+        }
+    }
+    {
+        Imf::OpaqueAttribute* attr =
+        dynamic_cast< Imf::OpaqueAttribute* >( i->second );
+        if ( attr )
+        {
+            add_text( i->first.c_str(), NULL,
+                      "opaque", false, false );
             return;
         }
     }
@@ -1850,7 +1920,38 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             return;
         }
     }
-    mrvALERT( _("Unknown attribute type for '") << i->first << _("'") );
+    {
+        Imf::CompressionAttribute* attr =
+        dynamic_cast< Imf::CompressionAttribute* >( i->second );
+        if ( attr ) return;  // Nothing to do here
+    }
+    {
+        Imf::DeepImageStateAttribute* attr =
+        dynamic_cast< Imf::DeepImageStateAttribute* >( i->second );
+        if ( attr ) return;  // Nothing to do here
+    }
+    {
+        Imf::EnvmapAttribute* attr =
+        dynamic_cast< Imf::EnvmapAttribute* >( i->second );
+        if ( attr ) return;  // Nothing to do here
+    }
+    {
+        Imf::LineOrderAttribute* attr =
+        dynamic_cast< Imf::LineOrderAttribute* >( i->second );
+        if ( attr ) return;  // Nothing to do here
+    }
+    {
+        Imf::PreviewImageAttribute* attr =
+        dynamic_cast< Imf::PreviewImageAttribute* >( i->second );
+        if ( attr ) return;  // Nothing to do here
+    }
+    {
+        Imf::TileDescriptionAttribute* attr = 
+        dynamic_cast< Imf::TileDescriptionAttribute* >( i->second );
+        if ( attr ) return;  // Nothing to do here
+    }
+    mrvALERT( _("Unknown attribute type for '") << i->first << _("' type '")
+              << i->second->typeName() << "'");
 }
 
 void ImageInformation::fill_data()
@@ -2209,8 +2310,8 @@ void ImageInformation::fill_data()
         if ( exr )
         {
             std::string date = exr->capture_date( img->frame() );
-            if ( date == "" ) date = img->creation_date();
-            add_text( _("Capture Date"), _("Capture Date"), date.c_str() );
+            if ( !date.empty() )
+                add_text( _("Capture Date"), _("Capture Date"), date.c_str() );
         }
         
 	CMedia::Attributes::const_iterator i = attrs.begin();
