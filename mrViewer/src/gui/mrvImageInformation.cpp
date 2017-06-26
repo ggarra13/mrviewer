@@ -873,39 +873,6 @@ void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
     n->do_callback();
 }
 
-static bool modify_string_vector( fltk::Input* w,
-                                  CMedia::Attributes::iterator& i)
-{
-    std::string val( w->text() );
-    std::string key = i->first;
-    size_t pos;
-    if ( ( pos = key.rfind( '#' ) ) == std::string::npos )
-        return false;
-
-    std::string num = key.substr( pos+1, key.size() );
-    int idx = atoi( num.c_str() ) - 1;
-    if ( idx < 0 ) return false;
-
-    Imf::StringVectorAttribute* attr =
-    dynamic_cast< Imf::StringVectorAttribute* >( i->second );
-    if ( attr == NULL ) return false;
-
-    Imf::StringVector& value = attr->value();
-    
-    Imf::StringVector::iterator it = value.begin();
-    Imf::StringVector::iterator ib = it;
-    Imf::StringVector::iterator ie = value.end();
-
-    // Loop thru indexes.  We do nothing until we find the index we want
-    for ( ; it != ie && (it-ib) != idx; ++it )  ;
-
-
-    if ( it == ie ) return false;
-
-    *it = val;
-    return true;
-}
-
 static bool modify_string( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
     Imf::StringAttribute attr( w->text() );
@@ -1186,9 +1153,7 @@ static bool modify_rational( fltk::Input* widget,
 
 static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
 {
-    if ( dynamic_cast< Imf::StringVectorAttribute* >( i->second ) != NULL )
-        return modify_string_vector( w, i );
-    else if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
+    if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
         return modify_string( w, i );
     else if ( dynamic_cast< Imf::M44dAttribute* >( i->second ) != NULL )
         return modify_m44d( w, i );
@@ -1862,7 +1827,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             {
                 sprintf( buf, "%s #%d", i->first.c_str(), (it - ib)+1 );
                 add_text( buf, NULL,
-                          *it, true, false,
+                          *it, false, false,
                           (fltk::Callback*) change_string_cb );
             }
             return;
