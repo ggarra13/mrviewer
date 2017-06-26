@@ -528,8 +528,6 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
      try {
 
-	SCOPED_LOCK( _mutex );
-	
 
 	std::string fileName = sequence_filename(frame);
 
