@@ -11,9 +11,12 @@ v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
 	   you do with subtitles (RMB->Video->Track #).
 	 - Added stereo from multiple video tracks in a movie file, when
 	   they are the same resolution and have the same frames per
-	   second (fps) and duration.
+	   second (fps) and duration.  You still need to go to the
+	   3D Stereo Window and select the stereo output type. 
 	 - Bug fixed video/audio/subtitle selection when the codec
 	   could not be located.
+	 - Added support for OpenEXR's opaque attributes.  They are
+	   attributes which cannot be modified.
 
 v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
 	   copies the file and changes the metadata only.
