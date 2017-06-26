@@ -269,13 +269,37 @@ de compresión ( es decir, la diferencia entre el espacio que la imagen usa en m
 <h3><a name="Metadata_Tab"></a>Ficha de Metadatos</h3>
 Si la imagen contiene metadatos EXIF, IPTC u otros atributos, serán listados en esta ficha.<br>
 Con el botón derecho del mouse, se accede a un menu que permite agregar, borrar y permutar la modificación de cualquiera de los atributos.<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tr>
+<td>
+<img style="width: 407px; height: 250px; float: left;" alt="" src="images/Add_Attribute.png" hspace="20">
+</td>
+<td>
 <h4><a name="Adding_Attributes"></a>Agregando un Atributo</h4>
+Puede agregar un atributo llendo a <div class="menu">BDR->Agregar Atributo</div> en la ventana de información del medio.
 Cuando se agrega un atributo, debes especificar el tipo de atributo, el nombre clave para el, así como su valor.  Nótese que el tipo de atributo solo se mantiene en imágenes de OpenEXR.  Todos los demás formatos que soportan atributos (MIFF, PNG) modificarán el atributo a tipo de texto.
+</td>
+</tr>
+<tr>
+  <td>
+    <img style="width: 143px; height: 64px; float: left;" alt="" src="images/Modify_Attribute.png" hspace="20">
+</td>
+<td>
 <h4><a name="Modifying_Attributes"></a>Modificando un Atributo</h4>
 Si usted quiere modificar un atributo, debe permutar su estado con <div class="menu">BDR->Permutar Modificar->Attribute</div>.  Como un atajo, puede seleccionar <div class="menu">BDR->Permutar Modificar->Todo</div> que permutará todos los atributos.  Una vez que el atributo está activo, puede tipear el nuevo valor para él y luego presionar TAB para salir y hacer que el nuevo valor esté vigente.  Si el nuevo valor no es compatible con el tipo de atributo, usted verá un mensaje de error a tal efecto.
-
+</td>
+</tr>
+<tr>
+<td>
+<img style="width: 407px; height: 129px; float: left;" alt="" src="images/Remove_Attribute.png" hspace="20">
+</td>
+<td>
 <h4><a name="Removing_Attributes"></a>Removiendo un Atributo</h4>
+Puede remover un atributo llendo a <div class="menu">BDR->Remover Atributo</div> en la ventana de información del medio.
 Cuando se remueve un atributo, necesita seleccionar el nombre clave del mismo.
+</td>
+</tr>
+</table>
 
 <h3><a name="Video_Tab"></a>Ficha de la Pista de Video<br>
 </h3>
