@@ -746,8 +746,6 @@ CMedia::~CMedia()
   if ( !stopped() )
     stop();
 
-  if ( _right_eye ) _right_eye->stop();
-
   delete _right_eye;
   _right_eye = NULL;
 
@@ -790,9 +788,6 @@ CMedia::~CMedia()
 
     }
 
-  if ( _aframe )
-      av_frame_unref(_aframe);
-
   audio_shutdown();
 
   if ( forw_ctx )
@@ -801,6 +796,12 @@ CMedia::~CMedia()
      forw_ctx = NULL;
   }
 
+
+  if ( _aframe )
+  {
+      av_frame_unref(_aframe);
+      av_frame_free(&_aframe);
+  }
 
   free( _fileroot );
   _fileroot = NULL;
