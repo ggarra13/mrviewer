@@ -906,6 +906,12 @@ void video_thread( PlaybackData* data )
                // Wait until all threads loop and decode is restarted
                bool ok = barrier->wait();
 
+               barrier = img->stereo_barrier();
+               if ( barrier )
+               {
+                   barrier->wait();
+               }
+
                DBG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
                     << img->stopped() << " frame: " << frame );
 
