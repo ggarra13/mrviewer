@@ -937,8 +937,12 @@ class CMedia
     float eye_separation() const { return _eye_separation; }
     void eye_separation(float b) { _eye_separation = b; refresh(); }
 
+    Barrier* stereo_barrier()     {
+        if (_right_eye && _stereo_output != kNoStereo)
+            return _right_eye->_stereo_barrier;
+        return _stereo_barrier;
+    }
     Barrier* loop_barrier()       { return _loop_barrier; }
-    Mutex& decode_mutex()         { return _decode_mutex; }
     Mutex& video_mutex()          { return _mutex; };
 
     virtual void clear_packets();
@@ -1354,12 +1358,12 @@ class CMedia
     Mutex     _mutex;          //!< to mark image routines
     Mutex     _subtitle_mutex; //!< to mark subtitle routines
     Mutex     _audio_mutex;    //!< to mark audio routines
-    Mutex     _decode_mutex;   //!< to mark looping section routines
 
     int _colorspace_index;    //!< YUV Hint for conversion
 
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
+    Barrier*  _stereo_barrier;   //!< Barrier used to sync stereo threads
  
     bool    _seek_req;        //!< set internally for seeking
     boost::int64_t _seek_frame;      //!< seek frame requested
@@ -1420,14 +1424,14 @@ class CMedia
     // Hi-res/quality image (usually floating point)
     mrv::image_type_ptr _hires;
     mrv::image_type_ptr _stereo[2]; // stereo image
-    mrv::image_type_ptr _subtitle;
+    mrv::image_type_ptr _subtitle;  // subtitle image (when decoding VOBs)
     
-    bool      _is_left_eye;
-    CMedia*   _right_eye;
+    bool      _is_left_eye;         // is this image the left eye?
+    CMedia*   _right_eye;           // Pointer to right class in stereo
 
-    float     _eye_separation;
+    float     _eye_separation;      // eye separation when stereo is on
 
-    //
+    // Audio file when different from video
     std::string _audio_file;
 
     // Image color profile for ICC
@@ -1436,7 +1440,7 @@ class CMedia
     // Rendering transform for CTL
     char*     _rendering_transform;
 
-    // Look Mod Transform for CTL
+    // Look Mod Transform(s) for CTL
     LMT   _look_mod_transform;
 
     // Input Device Transform for CTL
