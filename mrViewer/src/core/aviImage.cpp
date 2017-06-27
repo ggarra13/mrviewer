@@ -1872,14 +1872,15 @@ void aviImage::populate()
                         double diff1 = fabs( _video_info[0].fps - s.fps );
                         double diff2 = fabs( _video_info[0].duration -
                                              s.duration );
-                        if ( file != filename() &&
+                        if ( !_is_thumbnail && file != filename() &&
                              _w == ctx->width && _h == ctx->height &&
                              diff1 <= 0.0001 && diff2 <= 0.0001 )
                         {
                             _is_stereo = true;
                             _is_left_eye = true;
                             file = filename();
-                            _right_eye = CMedia::guess_image( filename() );
+                            _right_eye = CMedia::guess_image( filename(),
+                                                              NULL, 0, true );
                             _right_eye->is_stereo( true );
                             _right_eye->is_left_eye( false );
                             _right_eye->video_stream( 1 );
