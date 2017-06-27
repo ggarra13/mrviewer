@@ -2212,13 +2212,14 @@ void CMedia::play(const CMedia::Playback dir,
 	  frame( _frame );
 	}
 
-      delete _loop_barrier;
-      unsigned num = 1 + valid_a + valid_v + valid_s;
       if ( _is_stereo && _is_left_eye == false &&
            _stereo_output != kNoStereo )
       {
           _stereo_barrier = new Barrier( 2 );
       }
+      
+      unsigned num = 1 + valid_a + valid_v + valid_s;
+      delete _loop_barrier;
       _loop_barrier = new Barrier( num );
 
       if ( valid_v || valid_a )
