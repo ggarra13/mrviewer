@@ -362,6 +362,7 @@ _disk_space( 0 ),
 _colorspace_index( -1 ),
 _avdiff( 0.0 ),
 _loop_barrier( NULL ),
+_stereo_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _channel( NULL ),
@@ -461,6 +462,7 @@ _ctime( 0 ),
 _mtime( 0 ),
 _disk_space( 0 ),
 _loop_barrier( NULL ),
+_stereo_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _channel( NULL ),
@@ -564,6 +566,7 @@ _ctime( other->_ctime ),
 _mtime( other->_mtime ),
 _disk_space( 0 ),
 _loop_barrier( NULL ),
+_stereo_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _channel( NULL ),
@@ -599,7 +602,7 @@ _dataWindow( NULL ),
 _displayWindow( NULL ),
 _dataWindow2( NULL ),
 _displayWindow2( NULL ),
-_is_left_eye( false ),
+_is_left_eye( other->_is_left_eye ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
 _profile( NULL ),
@@ -2210,7 +2213,13 @@ void CMedia::play(const CMedia::Playback dir,
 	}
 
       delete _loop_barrier;
-      _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
+      unsigned num = 1 + valid_a + valid_v + valid_s;
+      if ( _is_stereo && _is_left_eye == false &&
+           _stereo_output != kNoStereo )
+      {
+          _stereo_barrier = new Barrier( 2 );
+      }
+      _loop_barrier = new Barrier( num );
 
       if ( valid_v || valid_a )
       {
