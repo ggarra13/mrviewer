@@ -2215,6 +2215,7 @@ void CMedia::play(const CMedia::Playback dir,
       if ( _is_stereo && _is_left_eye == false &&
            _stereo_output != kNoStereo )
       {
+          delete _stereo_barrier;
           _stereo_barrier = new Barrier( 2 );
       }
       
@@ -2284,9 +2285,8 @@ void CMedia::stop()
   // Notify loop barrier, to exit any wait on a loop
   //
   DBG( name() << " Notify all loop barrier" );
-  if ( _loop_barrier ) {
-      _loop_barrier->notify_all();
-  }
+  if ( _loop_barrier )  _loop_barrier->notify_all();
+  if ( _stereo_barrier )  _stereo_barrier->notify_all();
 
   // Notify packets, to make sure that audio thread exits any wait lock
   // This needs to be done even if no audio is playing, as user might
@@ -2305,6 +2305,7 @@ void CMedia::stop()
   // Clear barrier
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
+  delete _stereo_barrier; _stereo_barrier = NULL;
 
   DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
