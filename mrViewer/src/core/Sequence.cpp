@@ -572,12 +572,22 @@ bool is_valid_view( std::string view )
                 ++i;
                 frame = root.substr( i, count );
                 root  = root.substr( 0, i );
-                if ( root.empty() ||
-                     ( pos = root.rfind('/') ) != std::string::npos )
+
+                size_t pos = root.rfind('/');
+                size_t pos2 = root.rfind('\\');
+                if ( pos == std::string::npos ||
+                     ( pos2 != std::string::npos && pos2 > pos ) ) pos = pos2;
+                
+                if ( root.empty() || pos != std::string::npos )
                 {
                     // Check if filename is empty, like image: 324.exr
-                    std::string file = root.substr( pos+1, root.size() );
-                    if ( file == "" ) return false;
+                    std::string file;
+                    if ( !root.empty() )
+                        file = root.substr( pos+1, root.size() );
+                    if ( file.empty() ) {
+                        root = frame = ext = "";
+                        return false;
+                    }
                 }
                 ext   = tmp;
                 return true;
