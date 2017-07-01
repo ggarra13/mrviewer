@@ -2325,11 +2325,11 @@ void ImageBrowser::handle_dnd()
        else
        {
           std::string root, frame, view, ext;
-          mrv::split_sequence( root, frame, view, ext, file );
-
+          bool ok = mrv::split_sequence( root, frame, view, ext, file );
+          
           bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
 
-          if ( load_seq && 
+          if ( load_seq && ok &&
                root != "" && frame != "" && root != oldroot && ext != oldext )
           {
              oldroot = root;
