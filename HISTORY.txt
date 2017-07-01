@@ -1,3 +1,10 @@
+v3.7.1   - Bug fixed 3D stereo playback to sync the two tracks on loops.
+	 - Bug fixed a sequence detection when files were called
+	   1234.psd or 12345.psd.  Now they are treated as single images,
+	   regardless. Previously, you had to turn off
+	   Preferences/Loading/Load Sequence on File Association &
+	   CommandLine.
+
 v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
 	   never clear.  Now they are all called Metadata.
 	 - Made int attributes' slider in Media Info Window update when
