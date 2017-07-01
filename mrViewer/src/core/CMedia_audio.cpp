@@ -100,8 +100,6 @@ namespace {
 //#define DEBUG_SEEK_AUDIO_PACKETS
 
 
-// #define FFMPEG_STREAM_BUG_FIX
-
 std::ostream& operator<<( std::ostream& o, mrv::AudioEngine::AudioFormat s )
 {
    switch( s )
@@ -857,9 +855,9 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
  */
 void CMedia::audio_file( const char* file )
 {
-   SCOPED_LOCK( _audio_mutex );
-
    flush_audio();
+
+   SCOPED_LOCK( _audio_mutex );
 
    _audio_file.clear();
    close_audio();
@@ -1343,17 +1341,10 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 	{
 	   pkt_temp.size = 0;
 
-           // if ( ptsframe > 1 ) // needed for Essa.wmv audio replacement
-           // {
-           //     IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
-           //                << _(" frame: ") << frame );
-           //     IMG_ERROR(  get_error_text(ret) );
-           //     IMG_ERROR( _("Audio total: ") << _audio_buf_used
-           //                << _(" Audio used: ") << audio_size
-           //                << _(" Audio max: ")  << _audio_max );
-           // }
-           if ( this->frame() > frame )
-               return kDecodeOK;
+           // Not sure what this was for:
+           //
+           // if ( this->frame() > frame )
+           //     return kDecodeOK;
            return kDecodeMissingSamples;
 	}
 
@@ -1361,7 +1352,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       assert( audio_size + _audio_buf_used <= _audio_max );
 
       // Decrement the length by the number of bytes parsed
-      //assert0( pkt_temp.size >= ret );
+      assert( pkt_temp.size >= ret );
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
 
@@ -1819,6 +1810,9 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   }
 
+  assert( result->frame() == frame );
+  assert( result->size() > 0 );
+  assert( result->data() != NULL );
   
   bool ok = play_audio( result );
   if ( !ok )
@@ -1857,6 +1851,7 @@ void CMedia::close_audio()
 {
   SCOPED_LOCK( _audio_mutex);
 
+  
   if ( _audio_engine ) _audio_engine->close();
   _samples_per_sec = 0;
 }
