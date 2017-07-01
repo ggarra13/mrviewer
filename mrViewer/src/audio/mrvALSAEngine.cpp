@@ -722,7 +722,13 @@ float ALSAEngine::volume() const
   void ALSAEngine::flush()
   {
     if ( _pcm_handle ) {
-      snd_pcm_drop( _pcm_handle ); 
+        int err = snd_pcm_drop( _pcm_handle );
+        if ( err < 0 )
+        {
+            std::cerr << "ERROR: [alsa] snd_pcm_drop failed with "
+                      << snd_strerror(err)
+                      << std::endl;
+        }
     }
   }
 
@@ -732,14 +738,9 @@ float ALSAEngine::volume() const
 
       if ( _pcm_handle )
       {
-          int err = snd_pcm_drop( _pcm_handle );
-          if ( err < 0 )
-          {
-              std::cerr << "ERROR: [alsa] snd_pcm_drop failed with "
-                        << snd_strerror(err)
-                        << std::endl;
-          }
-          err = snd_pcm_close( _pcm_handle );
+          flush();
+
+          int err = snd_pcm_close( _pcm_handle );
           if ( err < 0 )
           {
               std::cerr << "ERROR: [alsa] snd_pcm_close failed with "
@@ -747,6 +748,7 @@ float ALSAEngine::volume() const
                         << std::endl;
           }
           _pcm_handle = NULL;
+          _enabled = false;
       }
 
       return true;
