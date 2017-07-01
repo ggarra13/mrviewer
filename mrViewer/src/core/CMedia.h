@@ -945,11 +945,12 @@ class CMedia
             bool has_barrier = ( _bg_image->_bg_barrier != NULL );
             if ( has_barrier )
             {
+                unsigned num = _bg_image->_bg_barrier->threshold();
                 delete _bg_image->_bg_barrier;
                 _bg_image->_bg_barrier = NULL;
 
                 if ( !c->_bg_barrier )
-                    c->_bg_barrier = new Barrier(2);
+                    c->_bg_barrier = new Barrier( num );
             }
         }
         _bg_image = c;
