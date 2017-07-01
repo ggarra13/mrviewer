@@ -622,7 +622,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
       {
 	MMerror( "waveOutClose", result);
       }
-    
+
     _enabled = false;
     _audio_device = NULL;
     return true;
