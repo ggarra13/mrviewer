@@ -1024,6 +1024,7 @@ const fltk::Window* ImageView::fltk_main() const
 ImageBrowser* 
 ImageView::browser() {
    if ( !uiMain ) return NULL;
+   if ( !uiMain->uiReelWindow ) return NULL;
    assert( uiMain->uiReelWindow );
    assert( uiMain->uiReelWindow->uiBrowser );
    return uiMain->uiReelWindow->uiBrowser;
@@ -1522,11 +1523,10 @@ bool ImageView::should_update( mrv::media fg )
   bool update = false;
 
 
+  CMedia* img = NULL;
   if ( fg )
   {
-
-      CMedia* img = fg->image();
-
+      img = fg->image();
 
       if ( img->image_damage() & CMedia::kDamageLayers )
       {
@@ -1622,25 +1622,29 @@ bool ImageView::should_update( mrv::media fg )
   mrv::media bg = background();
   if ( bg )
   {
-      CMedia* img = bg->image();
+      CMedia* bimg = bg->image();
+      if ( img ) img->background_image( bimg );
 
-
-      if ( img->image_damage() & CMedia::kDamageContents )
+      if ( bimg->image_damage() & CMedia::kDamageContents )
       {
           // resize_background();
           redraw();
           update = true;
       }
 
-      if ( img->image_damage() & CMedia::kDamageThumbnail )
+      if ( bimg->image_damage() & CMedia::kDamageThumbnail )
       {
           // Redraw browser to update thumbnail
           mrv::ImageBrowser* b = browser();
 	  if (b) b->redraw();
-          img->image_damage( img->image_damage() & ~CMedia::kDamageThumbnail );
+          bimg->image_damage( bimg->image_damage() & ~CMedia::kDamageThumbnail );
       }
   }
-
+  else
+  {
+      if ( img ) img->background_image( NULL );
+  }
+  
   if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
     int y = fltk::event_y();
@@ -6085,11 +6089,14 @@ void ImageView::foreground( mrv::media fg )
 
     
     CMedia* img = NULL;
-    if (old)
-    {
-        CMedia* img = old->image();
-        img->close_audio();
-    }
+    // if (old)
+    // {
+    //     typedef CMedia::Mutex Mutex;
+    //     CMedia* img = old->image();
+    //     Mutex& m = img->audio_mutex();
+    //     SCOPED_LOCK( m );
+    //     img->close_audio();
+    // }
     if ( fg ) 
     {
         img = fg->image();
@@ -6298,11 +6305,14 @@ void ImageView::background( mrv::media bg )
   mrv::media fg = foreground();
 
   CMedia* img = NULL;
-  if (old && old != fg)
-  {
-      CMedia* img = old->image();
-      img->close_audio();
-  }
+  // if (old && old != fg)
+  // {
+  //     typedef CMedia::Mutex Mutex;
+  //     CMedia* img = old->image();
+  //     Mutex& m = img->audio_mutex();
+  //     SCOPED_LOCK( m );
+  //     img->close_audio();
+  // }
     
   _bg = bg;
   if ( bg ) 
