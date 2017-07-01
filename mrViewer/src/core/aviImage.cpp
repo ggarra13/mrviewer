@@ -1176,8 +1176,9 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   while(  pkt->size > 0 || pkt->data == NULL )
   {
-     int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
-     
+      int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
+
+      // int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, pkt );
      if ( err < 0 ) {
          IMG_ERROR( "Decode video error: " << get_error_text(err) );
          return kDecodeError;
