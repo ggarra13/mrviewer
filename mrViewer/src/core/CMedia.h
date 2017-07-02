@@ -937,31 +937,6 @@ class CMedia
     float eye_separation() const { return _eye_separation; }
     void eye_separation(float b) { _eye_separation = b; refresh(); }
 
-    void background_image( CMedia* c )
-    {
-        if ( c == _bg_image || c == this ) return;
-        if ( _bg_image )
-        {
-            bool has_barrier = ( _bg_image->_bg_barrier != NULL );
-            if ( has_barrier )
-            {
-                unsigned num = _bg_image->_bg_barrier->threshold();
-                delete _bg_image->_bg_barrier;
-                _bg_image->_bg_barrier = NULL;
-
-                if ( !c->_bg_barrier )
-                    c->_bg_barrier = new Barrier( num );
-            }
-        }
-        _bg_image = c;
-    }
-    
-    Barrier* background_barrier()
-    {
-        if ( _bg_image ) return _bg_image->_bg_barrier;
-        return _bg_barrier;
-    }
-    
     Barrier* stereo_barrier()     {
         if (_right_eye && _stereo_output != kNoStereo)
             return _right_eye->_stereo_barrier;
@@ -1390,8 +1365,6 @@ class CMedia
 
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
-    CMedia*   _bg_image;     //!< Background image
-    Barrier*  _bg_barrier;   //!< Barrier used to sync bg image
     Barrier*  _stereo_barrier;   //!< Barrier used to sync stereo threads
  
     bool    _seek_req;        //!< set internally for seeking

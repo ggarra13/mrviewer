@@ -1623,7 +1623,6 @@ bool ImageView::should_update( mrv::media fg )
   if ( bg )
   {
       CMedia* bimg = bg->image();
-      if ( img ) img->background_image( bimg );
 
       if ( bimg->image_damage() & CMedia::kDamageContents )
       {
@@ -1639,10 +1638,6 @@ bool ImageView::should_update( mrv::media fg )
 	  if (b) b->redraw();
           bimg->image_damage( bimg->image_damage() & ~CMedia::kDamageThumbnail );
       }
-  }
-  else
-  {
-      if ( img ) img->background_image( NULL );
   }
   
   if ( update && _playback != CMedia::kStopped ) {
@@ -1834,7 +1829,9 @@ void ImageView::timeout()
 
       if ( bg && bg != background() ) 
       {
-         background( bg );
+          CMedia* img = bg->image();
+          if ( img->playback() == playback() )
+              background( bg );
       }
    }
 
@@ -6089,14 +6086,6 @@ void ImageView::foreground( mrv::media fg )
 
     
     CMedia* img = NULL;
-    // if (old)
-    // {
-    //     typedef CMedia::Mutex Mutex;
-    //     CMedia* img = old->image();
-    //     Mutex& m = img->audio_mutex();
-    //     SCOPED_LOCK( m );
-    //     img->close_audio();
-    // }
     if ( fg ) 
     {
         img = fg->image();
@@ -6305,14 +6294,6 @@ void ImageView::background( mrv::media bg )
   mrv::media fg = foreground();
 
   CMedia* img = NULL;
-  // if (old && old != fg)
-  // {
-  //     typedef CMedia::Mutex Mutex;
-  //     CMedia* img = old->image();
-  //     Mutex& m = img->audio_mutex();
-  //     SCOPED_LOCK( m );
-  //     img->close_audio();
-  // }
     
   _bg = bg;
   if ( bg ) 
