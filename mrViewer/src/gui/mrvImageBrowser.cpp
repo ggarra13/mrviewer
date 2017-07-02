@@ -2655,6 +2655,7 @@ void ImageBrowser::handle_dnd()
            f = tframe;
 
 	   img = bg->image();
+           f = bgreel->global_to_local( tframe );
 
            if ( ! img->saving() && !img->stopped() ) {
                img->stop();
