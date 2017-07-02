@@ -362,8 +362,6 @@ _disk_space( 0 ),
 _colorspace_index( -1 ),
 _avdiff( 0.0 ),
 _loop_barrier( NULL ),
-_bg_image( NULL ),
-_bg_barrier( NULL ),
 _stereo_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
@@ -464,8 +462,6 @@ _ctime( 0 ),
 _mtime( 0 ),
 _disk_space( 0 ),
 _loop_barrier( NULL ),
-_bg_image( NULL ),
-_bg_barrier( NULL ),
 _stereo_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
@@ -570,8 +566,6 @@ _ctime( other->_ctime ),
 _mtime( other->_mtime ),
 _disk_space( 0 ),
 _loop_barrier( NULL ),
-_bg_image( NULL ),
-_bg_barrier( NULL ),
 _stereo_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
@@ -2219,14 +2213,6 @@ void CMedia::play(const CMedia::Playback dir,
 	  frame( _frame );
 	}
 
-      if ( _bg_image )
-      {
-          delete _bg_image->_bg_barrier;
-          _bg_image->_bg_barrier = new Barrier( valid_v + valid_a +
-                                                _bg_image->valid_video() +
-                                                _bg_image->valid_audio() );
-      }
-      
       if ( _is_stereo && _is_left_eye == false &&
            _stereo_output != kNoStereo )
       {
@@ -2301,7 +2287,6 @@ void CMedia::stop()
   //
   DBG( name() << " Notify all loop barrier" );
   if ( _loop_barrier )  _loop_barrier->notify_all();
-  if ( _bg_barrier )      _bg_barrier->notify_all();
   if ( _stereo_barrier )  _stereo_barrier->notify_all();
 
   // Notify packets, to make sure that audio thread exits any wait lock
@@ -2321,7 +2306,6 @@ void CMedia::stop()
   // Clear barrier
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
-  delete _bg_barrier; _bg_barrier = NULL;
   delete _stereo_barrier; _stereo_barrier = NULL;
 
   DBG( name() << " Clear packets" );
