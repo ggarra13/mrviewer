@@ -3372,11 +3372,7 @@ void aviImage::do_seek()
                IMG_ERROR( _("Decode audio error: ") 
                           << decode_error( status ) 
                           << _(" for frame ") << _seek_frame );
-#ifdef WIN32
-           // needed since audio descriptors in windows have a
-           // limit of 8 or so
-           close_audio();
-#endif
+
            find_audio( _seek_frame + _audio_offset );
        }
        
