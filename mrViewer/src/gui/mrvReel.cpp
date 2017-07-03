@@ -16,7 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "gui/mrvIO.h"
 #include "mrvReel.h"
+
+namespace {
+const char* kModule = "reel_t";
+}
+
 
 namespace mrv {
 
@@ -187,6 +193,8 @@ boost::int64_t Reel_t::offset( const CMedia* const img ) const
 
 	t += timg->duration();
       }
+    if ( i == e ) LOG_ERROR("Invalid image " << img->name() << " for reel "
+                            << name );
     return t;
   }
 
