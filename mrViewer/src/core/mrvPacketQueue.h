@@ -97,7 +97,6 @@ namespace mrv {
 
       inline iterator begin()
       {
-          Mutex::scoped_lock lk( _mutex );
           return _packets.begin();
       }
 
