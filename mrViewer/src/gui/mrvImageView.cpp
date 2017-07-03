@@ -1829,8 +1829,8 @@ void ImageView::timeout()
 
       if ( bg && bg != background() ) 
       {
-          CMedia* img = bg->image();
-          if ( img->playback() == playback() )
+          // CMedia* img = bg->image();
+          // if ( img->playback() == playback() )
               background( bg );
       }
    }
@@ -6093,7 +6093,7 @@ void ImageView::foreground( mrv::media fg )
         char bufs[256];  bufs[0] = 0;
 
         mrv::media bg = background();
-        if ( bg )
+        if ( bg && fg != bg )
         {
             sprintf( bufs, _("mrViewer    FG: %s   BG: %s"), 
                      img->name().c_str(),
@@ -6300,7 +6300,7 @@ void ImageView::background( mrv::media bg )
     {
       img = bg->image();
 
-      if ( fg )
+      if ( fg && bg != fg )
       {
           sprintf( buf, _("mrViewer    FG: %s   BG: %s"), 
                    fg->image()->name().c_str(),
