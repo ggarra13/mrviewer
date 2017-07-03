@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-07-02 12:07-0300\n"
+"POT-Creation-Date: 2017-07-03 11:47-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -88,15 +88,15 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:893
+#: core/mrvPlayback.cpp:911
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:604
+#: core/mrvPlayback.cpp:609
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:609
+#: core/mrvPlayback.cpp:614
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -213,15 +213,15 @@ msgstr " no encontrada en el carrete"
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:3528
+#: core/aviImage.cpp:3524
 msgid " not yet supported"
 msgstr " no soportado aún"
 
-#: core/mrvPlayback.cpp:894
+#: core/mrvPlayback.cpp:912
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3390
+#: core/aviImage.cpp:3386
 msgid " status: "
 msgstr " estatus: "
 
@@ -1215,7 +1215,23 @@ msgstr "Borrado para Atrás"
 msgid "Background"
 msgstr "Fondo"
 
-#: core/mrvPlayback.cpp:846
+#: core/mrvPlayback.cpp:853
+#
+msgid ""
+"Background image duration is too short.  Looping will not work correctly."
+msgstr ""
+"La duración de la imagen de fondo es muy corta.  Repetir en ciclos no funcionará "
+"correctamente."
+
+#: core/mrvPlayback.cpp:859
+#, c-format
+msgid ""
+"Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
+"Looping will not work correctly."
+msgstr ""
+"El CPS de reproducción de la imagen de fondo ( %lg ) no es igual al de la de frente ( %lg ).  Repetir en ciclos no funcionará correctamente."
+
+#: core/mrvPlayback.cpp:840
 msgid ""
 "Background reel duration is too short.  Looping will not work correctly."
 msgstr ""
@@ -2496,7 +2512,7 @@ msgstr "Decodificación OK"
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3388
+#: core/aviImage.cpp:3384
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -5718,7 +5734,7 @@ msgstr "Pista de Subtítulo #%d"
 msgid "Subtitle Streams"
 msgstr "Pistas de Subtítulo"
 
-#: core/aviImage.cpp:3527
+#: core/aviImage.cpp:3523
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -7572,6 +7588,16 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-83-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3830
 msgid "xyY CIE xyY"
 msgstr ""
+
+#, fuzzy
+#~ msgid " ).  Looping will not work correctly."
+#~ msgstr ""
+#~ "El carrete de fondo es muy corto.  Repetir en ciclos no funcionará "
+#~ "correctamente."
+
+#, fuzzy
+#~ msgid "Background image fps( "
+#~ msgstr "Fondo"
 
 #~ msgid "Remove %s Attribute"
 #~ msgstr "Remover Atributo %s"
