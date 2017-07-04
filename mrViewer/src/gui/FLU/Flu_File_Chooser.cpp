@@ -98,6 +98,7 @@ static const char* kModule = "filereq";
 
 #endif // __linux__
 
+
 // #undef DBG
 // #define DBG(x) std::cerr << __FUNCTION__ << " " << __LINE__ << ": " << x << std::endl;
 
@@ -1865,6 +1866,7 @@ void Flu_File_Chooser::okCB()
   // cd to that directory.
   if( !( selectionType & DIRECTORY ) && !( selectionType & STDFILE ) )
     {
+        
       fltk::Group *g = getEntryGroup();
       std::string dir;
       int count = 0;
@@ -1878,6 +1880,7 @@ void Flu_File_Chooser::okCB()
 	}
       if( count == 1 )
 	{
+        
 	  std::string path = currentDir + dir;
 	  if( fltk::filename_isdir( path.c_str() ) )
 	    {
@@ -1894,6 +1897,7 @@ void Flu_File_Chooser::okCB()
       ( (selectionType & STDFILE) && fltk::filename_isdir( (currentDir+filename->value()).c_str() ) )
       )
     {
+        
 #ifdef WIN32
       if( myComputerTxt == filename->value() )
 	{
@@ -1901,14 +1905,17 @@ void Flu_File_Chooser::okCB()
 	  return;
 	}
 #endif
-      if( !(selectionType & MULTI ) )
+      if( !(selectionType & MULTI) )
 	{
+        
 	  if( strlen( filename->value() ) != 0 )
 	    cd( filename->value() );
 	  filename->value( currentDir.c_str() );
 	  filename->position( filename->size(), filename->size() );
 	}
+        
       do_callback();
+        
       hide();
     }
   else
@@ -1922,17 +1929,21 @@ void Flu_File_Chooser::okCB()
 #endif
 	    if( fltk::filename_isdir( filename->value() ) )
 	      {
+        
 		filename->value( "" );
 		return;
 	      }
 
+          
 	  // prepend the path
 	  std::string path = currentDir + filename->value();
 
           value( path.c_str() );
           filename->value( path.c_str() );
           filename->position( filename->size(), filename->size() );
+        
           do_callback();
+        
           hide();
 	}
     }
@@ -2362,6 +2373,20 @@ void Flu_File_Chooser::Entry::clear_selected() {
     selected_ = false; 
     textcolor( fltk::BLACK );
     set_colors();
+}
+
+void Flu_File_Chooser::debug()
+{
+    std::cerr << "--" << std::endl;
+    fltk::Group *g = getEntryGroup();
+    for (int i = 0; i < g->children(); ++i )
+    {
+        Entry* e = (Entry*)g->child(i);
+        if ( e->selected() )
+        {
+            std::cerr << e->filename << " selected" << std::endl;
+        }
+    }
 }
 
 Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d, 
@@ -2845,18 +2870,21 @@ int Flu_File_Chooser::Entry::handle( int event )
 	{
 	  if( fltk::event_state(fltk::CTRL) )
 	    {
-	      selected() ? clear_selected() : set_selected();
-	      chooser->lastSelected = this;
-	      chooser->redraw();
+                if ( selected() )
+                    clear_selected();
+                else 
+                    set_selected();
+                chooser->lastSelected = this;
+                chooser->redraw();
 	    }
 	  else if( fltk::event_state(fltk::SHIFT) )
 	    {
 	      // toggle all items from the last selected item to this one
 	      if( chooser->lastSelected == NULL )
 		{
-		  set_selected();
-		  chooser->lastSelected = this;
-		  chooser->redraw();
+                    set_selected();
+                    chooser->lastSelected = this;
+                    chooser->redraw();
 		}
 	      else
               {
@@ -2875,16 +2903,19 @@ int Flu_File_Chooser::Entry::handle( int event )
                     if( lastindex >= 0 && thisindex >= 0 )
 		    {
 		      // loop from this item to the last item, toggling each item except the last
-			      int inc;
-		      if( thisindex > lastindex )
-			inc = -1;
-		      else
-			inc = 1;
-		      Entry *e;
-		      for( i = thisindex; i != lastindex; i += inc )
+                        int inc;
+                        if( thisindex > lastindex )
+                            inc = -1;
+                        else
+                            inc = 1;
+                        Entry *e;
+                        for( i = thisindex; i != lastindex; i += inc )
 			{
 			  e = (Entry*)g->child(i);
-			  e->selected() ? e->clear_selected() : e->set_selected();
+			  if ( e->selected() )
+                              e->clear_selected();
+                          else
+                              e->set_selected();
 			  e->redraw();
 			}
                       chooser->lastSelected = this;
@@ -3215,12 +3246,16 @@ int Flu_File_Chooser::count()
 	    continue;
 #endif
 	  if( ((Entry*)g->child(i))->selected() )
+          {
 	    n++;
+          }
 	}
       return n;
     }
   else
+  {
     return (strlen(filename->value())==0)? 0 : 1;
+  }
 }
 
 void Flu_File_Chooser::value( const char *v )
@@ -3254,11 +3289,6 @@ void Flu_File_Chooser::value( const char *v )
 	  redraw();
 	  return;
 	}
-      else
-      {
-          e->clear_selected();
-          redraw();
-      }
     }
 }
 
