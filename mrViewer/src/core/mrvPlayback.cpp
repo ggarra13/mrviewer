@@ -605,12 +605,12 @@ void audio_thread( PlaybackData* data )
         switch( status )
         {
             case CMedia::kDecodeError:
-                DBG_ERROR( img->name() 
+                LOG_ERROR( img->name() 
                            << _(" - decode Error audio frame ") << frame );
                 frame += step;
                 continue;
             case CMedia::kDecodeMissingFrame:
-                DBG_WARNING( img->name() 
+                LOG_WARNING( img->name() 
                              << _(" - decode missing audio frame ") << frame );
                 timer.setDesiredFrameRate( img->play_fps() );
                 timer.waitUntilNextFrameIsDue();
@@ -837,7 +837,7 @@ void video_thread( PlaybackData* data )
         if ( fgreel->duration() > reel->duration() &&
              view->looping() != CMedia::kNoLoop )
         {
-            DBG_WARNING( _( "Background reel duration is too short.  "
+            LOG_WARNING( _( "Background reel duration is too short.  "
                             "Looping will not work correctly." ) );
         }
         else if ( fgreel == reel )
@@ -850,7 +850,7 @@ void video_thread( PlaybackData* data )
                 CMedia* bimg = bg->image();
                 if ( img->duration() > bimg->duration() )
                 {
-                    DBG_WARNING( _( "Background image duration is too short.  "
+                    LOG_WARNING( _( "Background image duration is too short.  "
                                     "Looping will not work correctly." ) );
                 }
                 if ( fabs( img->play_fps() - bimg->play_fps() ) > 0.001 )
@@ -860,7 +860,7 @@ void video_thread( PlaybackData* data )
                                      "not match foreground's ( %lg ).  Looping "
                                      "will not work correctly." ),
                              bimg->play_fps(), img->play_fps() );
-                    DBG_WARNING( buf );
+                    LOG_WARNING( buf );
                 }
             }
         }
@@ -908,7 +908,7 @@ void video_thread( PlaybackData* data )
             // case CMedia::DecodeDone:
             //    continue;
             case CMedia::kDecodeError:
-                DBG_ERROR( img->name() << _(" - Decode of image frame ") << frame 
+                LOG_ERROR( img->name() << _(" - Decode of image frame ") << frame 
                            << _(" returned ") << CMedia::decode_error( status ) );
                 break;
             case CMedia::kDecodeLoopEnd:
@@ -931,7 +931,7 @@ void video_thread( PlaybackData* data )
                     if ( img->stopped() ) continue;
                
                     CMedia::Barrier* barrier = img->loop_barrier();
-                    // DBG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
+                    // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
                     //           << barrier->generation() 
                     //           << " count: " << barrier->count() 
                     //           << " threshold: " << barrier->threshold() 
