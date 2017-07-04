@@ -422,6 +422,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
     { ((Flu_File_Chooser*)arg)->hideCB(); }
   void hideCB();
   void do_callback();
+  void debug();
 
   enum {
     SORT_NAME = 1,
