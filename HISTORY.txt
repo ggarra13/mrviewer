@@ -6,6 +6,8 @@ v3.7.1   - Bug fixed 3D stereo playback to sync the two tracks on loops.
 	   CommandLine.
 	 - Bug fixed a crash in audio playback, which would appear when
 	   switching images, usually in the background.
+	 - Improved looping with audio.  No longer audio continues in
+	   the background once the last frame is reached.
 
 v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
 	   never clear.  Now they are all called Metadata.
