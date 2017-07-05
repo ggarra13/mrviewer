@@ -575,8 +575,11 @@ bool is_valid_view( std::string view )
 
                 size_t pos = root.rfind('/');
                 size_t pos2 = root.rfind('\\');
+                size_t pos3 = root.find( ':' );
                 if ( pos == std::string::npos ||
                      ( pos2 != std::string::npos && pos2 > pos ) ) pos = pos2;
+                if ( pos == std::string::npos ||
+                     ( pos3 != std::string::npos && pos3 > pos ) ) pos = pos3;
                 
                 if ( root.empty() || pos != std::string::npos )
                 {
