@@ -180,10 +180,10 @@ void main( varying float rIn,
            output varying float bOut,
            output varying float aOut )
 {
-rOut = lookup1D( splineR, #{rmin}, #{rmax}, rIn );
-gOut = lookup1D( splineG, #{gmin}, #{gmax}, gIn );
-bOut = lookup1D( splineB, #{bmin}, #{bmax}, bIn );
-aOut = aIn;
+  rOut = lookup1D( splineR, #{rmin}, #{rmax}, rIn );
+  gOut = lookup1D( splineG, #{gmin}, #{gmax}, gIn );
+  bOut = lookup1D( splineB, #{bmin}, #{bmax}, bIn );
+  aOut = aIn;
 }
 
 EOF
