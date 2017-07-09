@@ -219,12 +219,12 @@ void main( varying float rIn,
            output varying float bOut,
            output varying float aOut )
 {
-float rgb[3];
-rgb[0] = lookup1D( spline, 0.0, 1.0, rIn );
-rgb[1] = lookup1D( spline, 0.0, 1.0, gIn );
-rgb[2] = lookup1D( spline, 0.0, 1.0, bIn );
-lookup3D_f( cube, min3d, max3d, rgb[0], rgb[1], rgb[2], rOut, gOut, bOut );
-aOut = aIn;
+  float rgb[3];
+  rgb[0] = lookup1D( spline, 0.0, 1.0, rIn );
+  rgb[1] = lookup1D( spline, 0.0, 1.0, gIn );
+  rgb[2] = lookup1D( spline, 0.0, 1.0, bIn );
+  lookup3D_f( cube, min3d, max3d, rgb[0], rgb[1], rgb[2], rOut, gOut, bOut );
+  aOut = aIn;
 }
 
 EOF
