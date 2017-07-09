@@ -43,6 +43,7 @@ begin
       gmax = gmax.to_f
       bmax = bmax.to_f
     end
+    
  
     opts.on_tail("-h", "--help", "Show this message") do
       puts opts
@@ -54,6 +55,7 @@ begin
       puts ::Version
       exit
     end
+
   end
 
   opt_parser.parse!(ARGV)
