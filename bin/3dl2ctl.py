@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import argparse, re
+import argparse, re, sys
 
-parser = argparse.ArgumentParser(description="3DL LUT to CTL command-line converter.")
+parser = argparse.ArgumentParser(description='3DL LUT to CTL command-line converter.', epilog="Example: 3dl2ctl.py tint.3dl LMT.tint.ctl")
 parser.add_argument("--maxValueSpline",
                         help="Maximum Value in the 1D LUT (1023)",
                         type=float, default=1023.0)
@@ -12,7 +12,7 @@ parser.add_argument("--min", help="Minimum red, green, blue values (0 0 0)",
                         type=float, nargs=3, default=[0.0, 0.0, 0.0])
 parser.add_argument("--max", help="Maximum red, green, blue values (1 1 1)",
                         type=float, nargs=3, default=[1.0, 1.0, 1.0])
-parser.add_argument("file", help="Input 3dl file" )
+parser.add_argument("input", help="Input 3dl file" )
 parser.add_argument("output", help="Output CTL file" )
 args = parser.parse_args()
 
@@ -20,7 +20,7 @@ maxValueSpline = args.maxValueSpline
 maxValue = args.maxValue
 rgbmin   = args.min
 rgbmax   = args.max
-filename = args.file
+filename = args.input
 output   = args.output
 
 with open(filename) as x: lines = x.readlines()
@@ -29,7 +29,12 @@ m = re.search('\.ctl$', output)
 if not m:
     output += '.ctl'
 
-out = open( output, 'w' )
+try:
+    out = open( output, 'w' )
+except (IOError, OSError) as e:
+    sys.stderr.write( "Opening output ctl file '%s' failed: " % output + str(e) )
+    sys.stderr.write( '\n' )
+    exit(-1)
 
 size = [0, 0, 0]
 lines2 = []
