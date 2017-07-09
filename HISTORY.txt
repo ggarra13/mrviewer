@@ -1,6 +1,9 @@
 v3.7.2   - Bug fixed setting image as background when it was done thru
 	   the menu in the view or reel window.  Previously, the reel
-	   would not get stored.
+	   would not get stored and this would lead to a crash.
+	 - Bug fixed channel selection on network connections.
+	 - Bug fixed gamma setting on network connections, when switching
+	   images.
 
 v3.7.1   - Bug fixed 3D stereo playback to sync the two tracks on loops.
 	 - Bug fixed a sequence detection when files were called
