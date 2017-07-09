@@ -1037,6 +1037,7 @@ void aviImage::store_image( const boost::int64_t frame,
 {
 
   SCOPED_LOCK( _mutex );
+
   
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
@@ -1112,7 +1113,7 @@ void aviImage::store_image( const boost::int64_t frame,
      video_cache_t::iterator at = std::lower_bound( _images.begin(), 
 						    _images.end(),
 						    frame, 
-						    LessThanFunctor() );
+						    LessPTSThanFunctor() );
 
      // Avoid storing duplicate frames, replace old frame with this one
      if ( at != _images.end() )
@@ -1193,8 +1194,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              ptsframe = _av_frame->pkt_dts;
          }
 
-         //_av_frame->pts = ptsframe;
-
+         _av_frame->pts = ptsframe;
+         
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
          {
@@ -1209,6 +1210,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
          if ( filter_graph && _subtitle_index >= 0 )
          {
+             
              SCOPED_LOCK( _subtitle_mutex );
              /* push the decoded frame into the filtergraph */
              if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
@@ -1471,7 +1473,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
-  debug_video_stores(frame, "find_image");
+  debug_video_stores(frame, "find_image", true);
 #endif
 
 

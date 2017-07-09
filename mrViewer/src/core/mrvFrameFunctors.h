@@ -125,6 +125,22 @@ struct LessThanFunctor
   }
 };
 
+
+struct LessPTSThanFunctor
+{
+  bool operator()( const int64_t a, const image_type_ptr& b ) const
+  {
+    if ( !b ) return false;
+    return a < b->pts();
+  }
+  bool operator()( const image_type_ptr& a, const int64_t b ) const
+  {
+    if ( !a ) return false;
+    return a->pts() < b;
+  }
+};
+
+
 struct NotInRangeFunctor
 {
   const int64_t _start;
