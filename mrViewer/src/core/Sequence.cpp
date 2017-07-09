@@ -169,7 +169,8 @@ bool is_valid_movie( const char* ext )
         tmp == ".mov"  || tmp == ".mp4"   ||
         tmp == ".mpeg" || tmp == ".mpg"   ||
         tmp == ".mvb"  || tmp == ".mxf"   ||
-        tmp == ".ogg"  || tmp == ".ogv"   ||
+        tmp == ".ogg"  || tmp == ".ogm"   ||
+        tmp == ".ogv"  ||
         tmp == ".qt"   || tmp == ".rm"    ||
         tmp == ".ts"   || tmp == ".vob"   ||
         tmp == ".vp9"  || tmp == ".webm"  ||
@@ -384,7 +385,7 @@ bool is_valid_view( std::string view )
            bool ok = replace_view( view );
        }
 
-       if ( view.size() ) view += ".";
+       if ( !view.empty() ) view += ".";
        if ( mrv::is_valid_movie( ext.c_str() ) )
        {
            if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
@@ -397,7 +398,10 @@ bool is_valid_view( std::string view )
        }
        else
        {
-           return true;
+           if ( is_valid_frame( frame ) ||
+                is_valid_frame_spec( frame ) )
+               return true;
+           return false;
        }
     }
     else if ( periods.size() == 3 )
