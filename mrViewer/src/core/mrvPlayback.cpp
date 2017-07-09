@@ -834,7 +834,8 @@ void video_thread( PlaybackData* data )
     if (!fg)
     {
         mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
-        if ( fgreel->duration() > reel->duration() &&
+        int64_t d = reel->duration();
+        if ( fgreel->duration() > d && d > 1 &&
              view->looping() != CMedia::kNoLoop )
         {
             LOG_WARNING( _( "Background reel duration is too short.  "
@@ -848,7 +849,9 @@ void video_thread( PlaybackData* data )
             {
                 CMedia* img  = fg->image();
                 CMedia* bimg = bg->image();
-                if ( img->duration() > bimg->duration() )
+                int64_t d = bimg->duration();
+                if ( img->duration() > d && d > 1 &&
+                     view->looping() != CMedia::kNoLoop )
                 {
                     LOG_WARNING( _( "Background image duration is too short.  "
                                     "Looping will not work correctly." ) );
