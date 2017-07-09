@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import argparse, re
+import argparse, re, sys
 
-parser = argparse.ArgumentParser(description="CUBE LUT to CTL command-line converter.")
+parser = argparse.ArgumentParser(description="CUBE LUT to CTL command-line converter.", epilog='Example: cube2ctl.py tint.cube LMT.tint.ctl')
 parser.add_argument("--maxValueSpline",
                         help="Maximum Value in the 1D LUT (1023)",
                         type=float, default=1.0)
@@ -10,14 +10,14 @@ parser.add_argument("--min", help="Minimum red, green, blue values (0 0 0)",
                         type=float, nargs=3, default=[0.0, 0.0, 0.0])
 parser.add_argument("--max", help="Maximum red, green, blue values (1 1 1)",
                         type=float, nargs=3, default=[1.0, 1.0, 1.0])
-parser.add_argument("file", help="Input 3dl file" )
+parser.add_argument("input", help="Input .cube file" )
 parser.add_argument("output", help="Output CTL file" )
 args = parser.parse_args()
 
 maxValueSpline = args.maxValueSpline
 rgbmin   = args.min
 rgbmax   = args.max
-filename = args.file
+filename = args.input
 output   = args.output
 
 with open(filename) as x: lines = x.readlines()
@@ -26,7 +26,12 @@ m = re.search('\.ctl$', output)
 if not m:
     output += '.ctl'
 
-out = open( output, 'w' )
+try:
+    out = open( output, 'w' )
+except (IOError, OSError) as e:
+    sys.stderr.write( "Could not open ctl file '%s' for saving.\n" % output + str(e))
+    sys.stderr.write( '\n' )
+    exit(-1)
 
 lut1d = False
 size = [32, 32, 32]
@@ -94,7 +99,8 @@ else:
 
     last = size * size * size
     if len(lines) != last:
-        sys.stderr.write( 'ERROR: Size of lines %d different than cube size %dx%dx%d (%d)\n' % ( len(lines), size, size, size, last ) )
+        sys.stderr.write( 'ERROR: Size of lines %d different than cube size %dx%dx%d (%d)\n' %
+                              ( len(lines), size, size, size, last ) )
 
     out.write('const float cube[%d][%d][%d][3] = \n' %
                   (size, size, size) )
@@ -106,7 +112,8 @@ if lut1d:
     g = []
     b = []
     for x in range(0, size):
-        m = re.search( r'^\s*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)', lines[x] )
+        m = re.search( r'^\s*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)',
+                           lines[x] )
         r.append( float(m.group(1)) / maxValueSpline )
         g.append( float(m.group(2)) / maxValueSpline )
         b.append( float(m.group(3)) / maxValueSpline )
