@@ -1194,7 +1194,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              ptsframe = _av_frame->pkt_dts;
          }
 
-         _av_frame->pts = ptsframe;
+         _av_frame->pts = ptsframe;  // needed for some corrupt movies
          
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
