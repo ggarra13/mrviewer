@@ -8,6 +8,10 @@ echo "Remove /usr/bin/3dl2ctl.rb"
 rm -f /usr/bin/3dl2ctl.rb
 echo "Remove /usr/bin/cube2ctl.rb"
 rm -f /usr/bin/cube2ctl.rb
+echo "Remove /usr/bin/3dl2ctl.py"
+rm -f /usr/bin/3dl2ctl.py
+echo "Remove /usr/bin/cube2ctl.py"
+rm -f /usr/bin/cube2ctl.py
 
 
 dir=$(xdg-user-dir DESKTOP)

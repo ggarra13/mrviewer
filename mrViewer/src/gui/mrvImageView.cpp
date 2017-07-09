@@ -5446,9 +5446,34 @@ void ImageView::channel( unsigned short c )
 
   if ( c >= idx ) 
   {
-      LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum: " )
-                 << idx );
-      return;
+      const char* lbl = uiColorChannel->label();
+      if ( lbl )
+      {
+          c = 0;
+          num = uiColorChannel->children();
+          for ( unsigned short i = 0; i < num; ++i, ++c )
+          {
+              fltk::Widget* w = uiColorChannel->child(i);
+              if ( strcmp( w->label(), lbl ) == 0 ) break;
+              if ( w->is_group() )
+              {
+                  fltk::Group* g = (fltk::Group*) w;
+                  unsigned n = g->children();
+                  for ( unsigned j = 0; j < n; ++j, ++c )
+                  {
+                      w = g->child(i);
+                      if ( strcmp( w->label(), lbl ) == 0 ) break;
+                  }
+              }
+          }
+      }
+
+      if ( c >= idx )
+      {
+          LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum: " )
+                     << idx );
+          return;
+      }
   }
 
   // If user selected the same channel again, toggle it with
@@ -5642,18 +5667,19 @@ void ImageView::gamma( const float f )
   if ( fg )
   {
      fg->image()->gamma( f );
+
+     char buf[256];
+     sprintf( buf, "Gamma %g", f );
+     send_network( buf );
+
+     uiMain->uiGamma->value( f );
+     uiMain->uiGammaInput->value( f );
+
+     flush_caches();
+     smart_refresh();
+     update_color_info();
+     redraw();
   }
-
-  char buf[256];
-  sprintf( buf, "Gamma %g", f );
-  send_network( buf );
-
-  uiMain->uiGamma->value( f );
-  uiMain->uiGammaInput->value( f );
-
-  flush_caches();
-  smart_refresh();
-  update_color_info();
 }
 
 
@@ -6133,7 +6159,8 @@ void ImageView::foreground( mrv::media fg )
 
             CMedia* right = img->right_eye();
             if ( right ) right->volume( _volume );
-        }       else
+        }
+        else
         {
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
@@ -6151,6 +6178,11 @@ void ImageView::foreground( mrv::media fg )
       
         if ( img )
         {
+            char buf[1024];
+            sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64, 
+                     img->fileroot(), img->first_frame(), img->last_frame() );
+            send_network( buf );
+      
             if ( img->looping() == CMedia::kUnknownLoop )
             {
                 img->looping( looping() );
