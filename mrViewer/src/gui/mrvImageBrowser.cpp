@@ -1985,7 +1985,7 @@ void ImageBrowser::load( const stringArray& files,
        DBG( "BG REEL ************* " << _reel << "  SEL " << sel
 	    << " " << reel->images[sel]->image()->name() );
        view()->bg_reel( _reel );
-       mrv::media& bg = reel->images[sel];
+       mrv::media bg = reel->images[sel];
        view()->background( bg );
        set_bg();
     }
@@ -2655,7 +2655,8 @@ void ImageBrowser::handle_dnd()
            f = tframe;
 
 	   img = bg->image();
-           f = bgreel->global_to_local( tframe );
+           if ( bgreel )
+               f = bgreel->global_to_local( tframe );
 
            if ( ! img->saving() && !img->stopped() ) {
                img->stop();
