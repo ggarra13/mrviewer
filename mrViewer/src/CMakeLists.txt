@@ -363,6 +363,8 @@ ENDIF(WIN64)
 
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
   ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/cube2ctl.rb
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.py
+  ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/cube2ctl.py
   DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 	
 IF(UNIX)
