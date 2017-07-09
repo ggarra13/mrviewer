@@ -28,6 +28,7 @@
 
 //#define BOOST_ASIO_ENABLE_HANDLER_TRACKING
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
+//#define DEBUG_COMMANDS
 
 #include <algorithm>
 #include <cstdlib>
@@ -109,14 +110,25 @@ void Parser::write( const std::string& s, const std::string& id )
 
    for ( ; i != e; ++i )
    {
-      std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
+       try
+       {
+           std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
       
-      if ( p == id )
-      {
-          continue;
-      }
+           if ( p == id )
+           {
+               continue;
+           }
       // LOG_CONN( s << " sent to " << *i << " " << p );
-      (*i)->deliver( s );
+           (*i)->deliver( s );
+       }
+       catch( const std::exception& e )
+       {
+           LOG_CONN( "Parser::write " << e.what() );
+       }
+       catch( ... )
+       {
+           LOG_CONN( "Parser::write unhandled exception" );
+       }
    }
 }
 
@@ -162,7 +174,7 @@ bool Parser::parse( const std::string& s )
 
 
 #ifdef DEBUG_COMMANDS
-   DBG( "received: " << cmd );
+   LOG_INFO( "received: " << cmd );
 #endif
 
    if ( cmd == N_("GLPathShape") )
@@ -357,6 +369,11 @@ bool Parser::parse( const std::string& s )
       v->offset_y( y );
       v->redraw();
       ok = true;
+   }
+   else if ( cmd == N_("UpdateLayers") )
+   {
+       v->update_layers();
+       ok = true;
    }
    else if ( cmd == N_("Channel") )
    {
@@ -1096,6 +1113,9 @@ bool Parser::parse( const std::string& s )
       sprintf( buf, N_("FPS %g"), v->fps() );
       deliver( buf );
 
+      sprintf( buf, N_("UpdateLayers") );
+      deliver( buf );
+
       sprintf(buf, N_("Channel %d %s"), v->channel(),
               v->get_layer_label(v->channel()) );
       deliver( buf );
@@ -1435,27 +1455,33 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 void tcp_session::await_output()
 {
 
-   if (stopped())
-      return;
+    if (stopped())
+        return;
 
 
-   if (output_queue_.empty())
-   {
-      // There are no messages that are ready to be sent. The actor goes to
-      // sleep by waiting on the non_empty_output_queue_ timer. When a new
-      // message is added, the timer will be modified and the actor will
-      // wake.
+    try {
+        if (output_queue_.empty())
+        {
+            // There are no messages that are ready to be sent. The actor goes to
+            // sleep by waiting on the non_empty_output_queue_ timer. When a new
+            // message is added, the timer will be modified and the actor will
+            // wake.
 
-      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
-      non_empty_output_queue_.async_wait(
-					 boost::bind(&tcp_session::await_output,
-						     shared_from_this())
-					 );
-   }
-   else
-   {
-      start_write();
-   }
+            non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
+            non_empty_output_queue_.async_wait(
+            boost::bind(&tcp_session::await_output,
+                        shared_from_this())
+            );
+        }
+        else
+        {
+            start_write();
+        }
+    }
+    catch( const std::exception& e )
+    {
+        LOG_ERROR( "await_output exception.  " << e.what() );
+    }
 }
 
 void tcp_session::start_write()
