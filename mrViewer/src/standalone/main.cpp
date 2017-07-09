@@ -159,6 +159,9 @@ void load_new_files( void* s )
 
 int main( int argc, char** argv ) 
 {
+#ifdef LINUX
+    XInitThreads();
+#endif
     fltk::lock();  // This calls XInitThreads on Linux
 
     
@@ -396,6 +399,7 @@ int main( int argc, char** argv )
       }
       break;
   }
+  
   MagickWandTerminus();
   Imf::staticUninitialize();
 
