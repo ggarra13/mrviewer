@@ -150,6 +150,7 @@ void client::stop()
 {
    connected = false;
    stopped_ = true;
+   LOG_CONN( _("Disconnected from ") << socket_.remote_endpoint() );
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
    deadline_.cancel();
@@ -161,7 +162,7 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 {
    if (endpoint_iter != tcp::resolver::iterator())
    {
-       LOG_CONN( "Trying " << endpoint_iter->endpoint() << "..." );
+       LOG_CONN( _("Trying ") << endpoint_iter->endpoint() << "..." );
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
@@ -214,7 +215,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Otherwise we have successfully established a connection.
    else
    {
-      LOG_CONN( "Connected to " << endpoint_iter->endpoint() );
+       LOG_CONN( _("Connected to ") << endpoint_iter->endpoint() );
 
       connected = true;
 
@@ -294,11 +295,15 @@ void client::handle_read(const boost::system::error_code& ec)
         } 
         catch ( const std::ios_base::failure& e )
         {
-            LOG_ERROR( "Parse failure " << e.what() );
+            LOG_ERROR( _("Parse failure ") << e.what() );
         }
         catch ( const std::exception& e )
         {
-            LOG_ERROR( "Parse std failure " << e.what() );
+            LOG_ERROR( _("Parse std failure ") << e.what() );
+        }
+        catch ( ... )
+        {
+            LOG_ERROR( _("Unknown exception thrown") );
         }
        
 
@@ -365,7 +370,7 @@ void client::handle_write(const boost::system::error_code& ec)
    }
    else
    {
-       LOG_CONN( "Error on send: " << ec.message() );
+       LOG_CONN( _("Error on send: ") << ec.message() );
       
       stop();
    }
@@ -458,7 +463,7 @@ void client_thread( const ServerData* s )
    }
    catch (const std::exception& e)
    {
-       LOG_ERROR( "Client Exception: " << e.what() );
+       LOG_ERROR( _("Client Exception: ") << e.what() );
    }
 }
 
