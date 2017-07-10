@@ -1508,7 +1508,9 @@ void CMedia::audio_stream( int idx )
   if ( _audio_index >= 0 )
     {
       open_audio_codec();
+      _audio_start = true;
       seek( _frame );
+      _audio_start = false;
     }
 
 }
@@ -2167,7 +2169,7 @@ void CMedia::do_seek()
              IMG_ERROR( _("Decode audio error: ") 
                         << decode_error( status ) 
 			<< _(" for frame ") << x );
-         if ( status != kDecodeNoStream )
+         if ( status != kDecodeNoStream && !_audio_start )
              find_audio( x );
      }
   }
