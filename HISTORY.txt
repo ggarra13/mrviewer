@@ -4,11 +4,13 @@ v3.7.2   - Bug fixed setting image as background when it was done thru
 	 - Bug fixed channel selection on network connections.
 	 - Bug fixed gamma setting on network connections, when switching
 	   images.
-	 - Added cube2ctl.py and 3dl2ctl.py.  These are python ports of
+	 - Added cube2ctl.py and 3dl2ctl.py.  These are Python ports of
 	   the Ruby versions (cube2ctl.rb and 3dl2ctl.rb).  They both work
-	   the same, albeit the Ruby ones are currently more mature.
+	   the same, albeit the Ruby ones are currently more tested.
 	 - Fixed movie files with 3 periods in them being recognized as
 	   image sequences when the extension was unknown.
+	 - Fixed loading many movies and reaching the maximum of audio
+	   file descriptors.
 
 v3.7.1   - Bug fixed 3D stereo playback to sync the two tracks on loops.
 	 - Bug fixed a sequence detection when files were called
