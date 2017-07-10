@@ -1253,7 +1253,6 @@ class CMedia
     void audio_shutdown();
 
 
-
     // Extract frame from pts or dts
     boost::int64_t get_frame( const AVStream* s, const AVPacket& pkt );
 
@@ -1368,8 +1367,9 @@ class CMedia
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
     Barrier*  _stereo_barrier;   //!< Barrier used to sync stereo threads
  
+    bool    _audio_start;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
-    boost::int64_t _seek_frame;      //!< seek frame requested
+    int64_t _seek_frame;      //!< seek frame requested
 
     char*  _channel;          //!< current channel/layer being shown
 
