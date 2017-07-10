@@ -593,6 +593,8 @@ void aviImage::subtitle_file( const char* f )
         sp = sp.parent_path();
         std::string dir = sp.generic_string();
 
+        fs::path orig_dir = fs::current_path();
+        
         // Set the current dir to the subtitle path
         if ( ! dir.empty() )
         {
@@ -689,6 +691,7 @@ void aviImage::subtitle_file( const char* f )
         avformat_free_context( scontext );
 
         image_damage( image_damage() | kDamageSubtitle );
+        fs::current_path( orig_dir );
     }
 
 }
@@ -975,10 +978,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
-
     boost::int64_t dts = queue_packets( frame, true, got_video,
                                         got_audio, got_subtitle );
-
 
     _dts = _adts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
@@ -1044,12 +1045,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   mrv::image_type_ptr image;
   try {
-
-      image = allocate_image( frame,
-                              boost::int64_t( double(pts) * 
-                                              av_q2d( _video_ctx->time_base )
-                              )
-      );
+      image = allocate_image( frame, pts );
   } catch ( const std::exception& e )
   {
       LOG_ERROR( "Problem allocating image " << e.what() );
@@ -1103,7 +1099,6 @@ void aviImage::store_image( const boost::int64_t frame,
 		    kTopFieldFirst : kBottomFieldFirst );
 
 
-
   if ( _images.empty() || _images.back()->frame() < frame )
   {
      _images.push_back( image );
@@ -1112,7 +1107,7 @@ void aviImage::store_image( const boost::int64_t frame,
   {
      video_cache_t::iterator at = std::lower_bound( _images.begin(), 
 						    _images.end(),
-						    frame, 
+						    pts, 
 						    LessPTSThanFunctor() );
 
      // Avoid storing duplicate frames, replace old frame with this one
@@ -1120,7 +1115,7 @@ void aviImage::store_image( const boost::int64_t frame,
      {
 	if ( (*at)->frame() == frame )
 	{
-	   at = _images.erase(at);
+            at = _images.erase(at);
 	}
      }
 
@@ -1194,7 +1189,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              ptsframe = _av_frame->pkt_dts;
          }
 
-         _av_frame->pts = ptsframe;  // needed for some corrupt movies
+         // needed for some corrupt movies
+         _av_frame->pts = ptsframe;
          
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
@@ -1219,7 +1215,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
                  close_subtitle_codec();
                  break;
              }
-
+             
              int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
              if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
                  break;
@@ -1232,6 +1228,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
              av_frame_unref( _av_frame );
              _av_frame = av_frame_clone( _filt_frame );
+             av_frame_unref( _filt_frame );
              if (!_av_frame )
              {
                  LOG_ERROR( _("Could not clone subtitle frame") );
@@ -1301,7 +1298,7 @@ void aviImage::clear_packets()
 {
 
 #ifdef DEBUG_AUDIO_PACKETS
-   cerr << "+++++++++++++ CLEAR VIDEO/AUDIO PACKETS " << _frame 
+   cerr << "+++++++++++++ CLEAR VIDEO/AUDIO/SUBTITLE PACKETS " << _frame 
 	<< " expected: " << _expected << endl;
 #endif
 
@@ -2306,12 +2303,19 @@ bool aviImage::initialize()
       AVDictionary *opts = NULL;
       av_dict_set(&opts, "initial_pause", "1", 0);
 
-      char buf[64];
-      sprintf( buf, "%" PRId64, _frameStart );
-      _start_number = _frameStart - 1;
+      std::string ext = name();
+      
+      std::transform( ext.begin(), ext.end(), ext.begin(),
+                      (int(*)(int)) tolower);
+   
+      if ( ext.rfind( ".png" ) != std::string::npos )
+      {
+          char buf[64];
+          sprintf( buf, "%" PRId64, _frameStart );
+          _start_number = _frameStart - 1;
 
-      av_dict_set(&opts, "start_number", buf, 0);
-
+          av_dict_set(&opts, "start_number", buf, 0);
+      }
 
       AVInputFormat*     format = NULL;
       // We must open fileroot for png sequences to work
@@ -2719,7 +2723,7 @@ bool aviImage::frame( const boost::int64_t f )
     
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
-    
+
     if ( playback() != kStopped && playback() != kSaving &&
          ( (_video_packets.bytes() +  _audio_packets.bytes() + 
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
@@ -2739,7 +2743,6 @@ bool aviImage::frame( const boost::int64_t f )
         // 		 << std::endl;
         return false;
     }
-
 
     
     if ( f < _frameStart )    _dts = _adts = _frameStart;
@@ -2903,6 +2906,7 @@ void aviImage::wait_image()
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
 
+  
   for(;;)
     {
         if ( stopped() || saving() || ! _video_packets.empty() ) break;
@@ -3742,7 +3746,7 @@ int64_t aviImage::wait_subtitle()
       if ( ! _subtitle_packets.empty() )
 	{
 	  const AVPacket& pkt = _subtitle_packets.front();
-	  return pts2frame( get_subtitle_stream(), pkt.pts );
+          return pts2frame( get_subtitle_stream(), pkt.pts );
 	}
 
       CONDITION_WAIT( _subtitle_packets.cond(), spm );
