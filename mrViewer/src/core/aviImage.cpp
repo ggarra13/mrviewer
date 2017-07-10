@@ -1098,7 +1098,7 @@ void aviImage::store_image( const boost::int64_t frame,
     _interlaced = ( _av_frame->top_field_first ? 
 		    kTopFieldFirst : kBottomFieldFirst );
 
-
+#if 1
   if ( _images.empty() || _images.back()->frame() < frame )
   {
      _images.push_back( image );
@@ -1109,6 +1109,7 @@ void aviImage::store_image( const boost::int64_t frame,
 						    _images.end(),
 						    pts, 
 						    LessPTSThanFunctor() );
+#endif
 
      // Avoid storing duplicate frames, replace old frame with this one
      if ( at != _images.end() )
@@ -1240,7 +1241,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          if ( eof )
          {
              eof_found = true;
-             store_image( ptsframe, p.dts );
+             store_image( ptsframe, _av_frame->pts + 1 );
              av_frame_unref( _av_frame );
              av_frame_unref( _filt_frame );
              continue;
@@ -3379,7 +3380,8 @@ void aviImage::do_seek()
                           << decode_error( status ) 
                           << _(" for frame ") << _seek_frame );
 
-           find_audio( _seek_frame + _audio_offset );
+           if ( !_audio_start )
+               find_audio( _seek_frame + _audio_offset );
        }
        
        if ( has_video() || has_audio() )
@@ -3534,6 +3536,7 @@ void aviImage::store_subtitle( const boost::int64_t& frame,
   unsigned w = width();
   unsigned h = height();
 
+  
   image_type_ptr pic( new image_type(
 				     frame,
 				     w, h, 4,
@@ -3547,6 +3550,7 @@ void aviImage::store_subtitle( const boost::int64_t& frame,
      SCOPED_LOCK( _subtitle_mutex );
      _subtitles.push_back( pic );
 
+     
      boost::uint8_t* data = (boost::uint8_t*)
      _subtitles.back()->data().get();
 
@@ -3593,7 +3597,7 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
   AVStream* stream = get_subtitle_stream();
 
   boost::int64_t endframe;
-  if ( pkt.pts != MRV_NOPTS_VALUE )
+  if ( pkt.pts != AV_NOPTS_VALUE )
     { 
         ptsframe = pts2frame( stream, boost::int64_t( double(pkt.pts) + 
 						     _sub.start_display_time /
@@ -3608,12 +3612,12 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
         ptsframe = pts2frame( stream, boost::int64_t( double(pkt.dts) + 
 						    _sub.start_display_time /
 						    1000.0 ) );
-      endframe = pts2frame( stream, boost::int64_t( double(pkt.dts) + 
-						    _sub.end_display_time / 
-						    1000.0 ) );
-      repeat = endframe - ptsframe + 1;
-      IMG_ERROR("Could not determine pts for subtitle frame, "
-		"using " << ptsframe );
+        endframe = pts2frame( stream, boost::int64_t( double(pkt.dts) + 
+                                                      _sub.end_display_time / 
+                                                      1000.0 ) );
+        repeat = endframe - ptsframe + 1;
+        IMG_ERROR("Could not determine pts for subtitle frame, "
+                  "using " << ptsframe );
     }
 
   if ( repeat <= 1 )
@@ -3625,7 +3629,6 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
   avcodec_decode_subtitle2( _subtitle_ctx, &_sub, &got_sub, 
 			    (AVPacket*)&pkt );
   if ( got_sub == 0 ) return kDecodeError;
-
 
   // AVSubtitle has a start display time in ms. relative to pts
   // ptsframe = ptsframe + boost::int64_t( _sub.start_display_time * fps() / 
@@ -3670,15 +3673,18 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
 
   Mutex& mutex = _subtitle_packets.mutex();
   SCOPED_LOCK( mutex );
-
+  
   if ( _subtitle_packets.is_seek() || _subtitle_packets.is_preroll() )
       _subtitle_packets.pop_front();  // pop seek begin packet
 
   DecodeStatus got_subtitle = kDecodeMissingFrame;
-
+  DecodeStatus status;
+  unsigned count = 0;
+  
   while ( !_subtitle_packets.empty() && !_subtitle_packets.is_seek_end() )
     {
       const AVPacket& pkt = _subtitle_packets.front();
+      ++count;
       
       boost::int64_t repeat = 0;
       boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
@@ -3686,34 +3692,42 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
 
       if ( !is_seek && _playback == kBackwards && 
 	   pktframe >= frame )
-	{
-	   boost::int64_t ptsframe, repeat;
-	   DecodeStatus status = decode_subtitle_packet( ptsframe, repeat, 
-							 frame, pkt );
-	   if ( status == kDecodeOK || status == kDecodeMissingFrame )
-	   {
+      {
+          boost::int64_t ptsframe, repeat;
+          status = decode_subtitle_packet( ptsframe, repeat, 
+                                           frame, pkt );
+          if ( status == kDecodeOK || status == kDecodeMissingFrame )
+          {
 	      store_subtitle( ptsframe, repeat );
-
+              
 	      if ( status == kDecodeOK ) got_subtitle = status;
-	   }
-	}
+          }
+      }
       else
-	{
+      {
 	  if ( pktframe >= frame )
-	    {
-	      got_subtitle = decode_subtitle( frame, pkt );
-	    }
+          {
+	      status = decode_subtitle( frame, pkt );
+          }
 	  else
-	    {
-	       decode_subtitle_packet( pktframe, repeat, frame, pkt );
-	    }
-	}
+          {
+              status = decode_subtitle_packet( pktframe, repeat, frame, pkt );
+          }
+      }
 
+      if ( status == kDecodeOK && pktframe <= frame &&
+           pktframe + repeat >= frame )  got_subtitle = status;
+      
       _subtitle_packets.pop_front();
     }
 
-  if ( _subtitle_packets.empty() ) return kDecodeError;
-
+  if ( _subtitle_packets.empty() )
+  {
+      //LOG_ERROR( _("Empty packets for subtitle seek") );
+      return kDecodeMissingFrame;
+  }
+  
+  if ( count > 0 && is_seek )
   {
     const AVPacket& pkt = _subtitle_packets.front();
     frame = get_frame( get_subtitle_stream(), pkt );
@@ -3723,6 +3737,10 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
      _subtitle_packets.pop_front();  // pop seek end packet
 
       
+  if ( count == 0 ) {
+      LOG_ERROR( _("Empty seek or preroll") );
+      return kDecodeMissingFrame;
+  }
 #ifdef DEBUG_PACKETS
   debug_subtitle_packets(frame, "AFTER PREROLL");
 #endif
