@@ -389,22 +389,25 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
-    const CMedia::Attributes& attrs = img->attributes();
-    CMedia::Attributes::const_iterator i = attrs.begin();
-    CMedia::Attributes::const_iterator e = attrs.end();
-
-    //
-    // Save Audio Attributes
-    //
-    for ( ; i != e; ++i )
+    if ( opts->metadata )
     {
-        if ( i->first.find( _("Audio ") ) == 0 )
+        const CMedia::Attributes& attrs = img->attributes();
+        CMedia::Attributes::const_iterator i = attrs.begin();
+        CMedia::Attributes::const_iterator e = attrs.end();
+
+        //
+        // Save Audio Attributes
+        //
+        for ( ; i != e; ++i )
         {
-            std::string      key = i->first;
-            Imf::Attribute*  attr = i->second;
-            std::string      val  = CMedia::attr2str( attr );
-            key = key.substr( 6, key.size() );
-            av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
+            if ( i->first.find( _("Audio ") ) == 0 )
+            {
+                std::string      key = i->first;
+                Imf::Attribute*  attr = i->second;
+                std::string      val  = CMedia::attr2str( attr );
+                key = key.substr( 6, key.size() );
+                av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
+            }
         }
     }
 
@@ -836,8 +839,13 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 {
     AVCodecContext* c = st->codec;
 
+    AVDictionary* info = NULL;
+
+    if ( opts->metadata )
+        av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
+    
     /* open the codec */
-    if (avcodec_open2(c, codec, NULL) < 0) {
+    if (avcodec_open2(c, codec, &info) < 0) {
        LOG_ERROR( _("Could not open video codec") );
        return false;
     }
@@ -849,42 +857,44 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         return false;
     }
 
-    const CMedia::Attributes& attrs = img->attributes();
-    CMedia::Attributes::const_iterator i = attrs.begin();
-    CMedia::Attributes::const_iterator e = attrs.end();
-
-    //
-    // Save Main Attributes
-    //
-    for ( ; i != e; ++i )
+    if ( opts->metadata )
     {
-        if (( i->first.find( _("Video ") ) == 0 ) || 
-            ( i->first.find( _("Audio ") ) == 0 ) ) {
-            continue;
-        }
+        const CMedia::Attributes& attrs = img->attributes();
+        CMedia::Attributes::const_iterator i = attrs.begin();
+        CMedia::Attributes::const_iterator e = attrs.end();
 
-        std::string key = i->first;
-        Imf::Attribute*  attr = i->second;
-        std::string      val  = CMedia::attr2str( attr );
-        av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
-    }
-
-    //
-    // Save Video Attributes
-    //
-    for ( i = attrs.begin(); i != e; ++i )
-    {
-        if ( i->first.find( _("Video ") ) == 0 )
+        //
+        // Save Main Attributes
+        //
+        for ( ; i != e; ++i )
         {
+            if (( i->first.find( _("Video ") ) == 0 ) || 
+                ( i->first.find( _("Audio ") ) == 0 ) ) {
+                continue;
+            }
+
             std::string key = i->first;
             Imf::Attribute*  attr = i->second;
             std::string      val  = CMedia::attr2str( attr );
-            key = key.substr( 6, key.size() );
-            av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
+            av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
         }
+
+        //
+        // Save Video Attributes
+        //
+        for ( i = attrs.begin(); i != e; ++i )
+        {
+            if ( i->first.find( _("Video ") ) == 0 )
+            {
+                std::string key = i->first;
+                Imf::Attribute*  attr = i->second;
+                std::string      val  = CMedia::attr2str( attr );
+                key = key.substr( 6, key.size() );
+                av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
+            }
+        }
+
     }
-
-
 
     /* Allocate the encoded raw frame. */
     picture = alloc_picture(c->pix_fmt, c->width, c->height);
@@ -1199,8 +1209,12 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
       }
    }
    
+    AVDictionary* info = NULL;
+    
+    av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
+    
    /* Write the stream header, if any. */
-   err = avformat_write_header(oc, NULL);
+   err = avformat_write_header(oc, &info);
    if ( err < 0 )
    {
       LOG_ERROR( _("Error occurred when opening output file: ") << 
