@@ -2,7 +2,7 @@
 
 require 'optparse'
 
-Version=0.2
+Version=0.3
 
 maxValueSpline = 1.0
 rmin = gmin = bmin = 0.0
@@ -41,8 +41,8 @@ begin
     end
     
     # Another typical switch to print the version.
-    opts.on_tail("--version", "Show version") do
-      puts ::Version
+    opts.on_tail("-v", "--version", "Show version") do
+      puts "#$0 v#{::Version}"
       exit
     end
   end
@@ -121,8 +121,8 @@ puts "#{file} -> #{output}"
 
 out.puts "// #{title}"
 out.puts "// CTL 3d Lut from #{file}"
-out.puts "// Min: #{rmin}, #{gmin}, #{bmin}"
-out.puts "// Max: #{rmax}, #{gmax}, #{bmax}"
+out.puts "// Min: %.6f, %.6f, %.6f" % [rmin, gmin, bmin ]
+out.puts "// Max: %.6f, %.6f, %.6f" % [rmax, gmax, bmax ]
 if lut1d
   out.puts "// Lut1D size #{size}"
   if lines.size != size
@@ -132,8 +132,8 @@ if lut1d
   out.puts
 else
   out.puts "// Lut3D size #{size}x#{size}x#{size}"
-  out.puts "const float min3d[3] = { #{rmin}, #{gmin}, #{bmin} };"
-  out.puts "const float max3d[3] = { #{rmax}, #{gmax}, #{bmax} };"
+  out.puts "const float min3d[3] = { %.6f, %.6f, %.6f };" % [rmin, gmin, bmin ]
+  out.puts "const float max3d[3] = { %.6f, %.6f, %.6f };" % [rmax, gmax, bmax ]
   out.puts
   
   last = size * size * size
@@ -217,20 +217,18 @@ else
         out.print "{ " if x == 0
         out.print "{ #{rgb[x][y][z]} }"
         if x != size-1
-          out.print ", "
+          out.print ",\n"
         end
       end
       out.print " }"
       if y != size-1
-        out.print ","
+        out.print ",\n"
       end
-      out.puts
     end
     out.print " }"
     if z != size-1
-      out.print ", "
+      out.print ",\n"
     end
-    out.puts
   end
   out.puts " };"
 
@@ -246,8 +244,8 @@ void main( varying float rIn,
            output varying float bOut,
            output varying float aOut )
 {
-lookup3D_f( cube, min3d, max3d, rIn, gIn, bIn, rOut, gOut, bOut );
-aOut = aIn;
+    lookup3D_f( cube, min3d, max3d, rIn, gIn, bIn, rOut, gOut, bOut );
+    aOut = aIn;
 }
 
 EOF
