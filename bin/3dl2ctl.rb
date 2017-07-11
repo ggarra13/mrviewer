@@ -2,7 +2,7 @@
 
 require 'optparse'
 
-Version=0.3
+Version=0.4
 
 idepth = 10
 odepth = 10
@@ -51,8 +51,8 @@ begin
     end
     
     # Another typical switch to print the version.
-    opts.on_tail("--version", "Show version") do
-      puts ::Version
+    opts.on_tail("-v", "--version", "Show version") do
+      puts "#$0 v#{::Version}"
       exit
     end
 
@@ -119,8 +119,8 @@ lines.delete_if { |x| x =~ /^\s*$/ } #remove empty lines
 puts "#{file} -> #{output}"
 
 out.puts "// CTL 3d Lut from #{file}"
-out.puts "// Min: #{rmin}, #{gmin}, #{bmin}"
-out.puts "// Max: #{rmax}, #{gmax}, #{bmax}"
+out.puts "// Min: %.6f, %.6f, %.6f" % [rmin, gmin, bmin ]
+out.puts "// Max: %.6f, %.6f, %.6f" % [rmax, gmax, bmax ]
 out.puts
 
 spline = lines[0]
@@ -140,7 +140,7 @@ out.puts "// Lut3D size #{size[0]}x#{size[1]}x#{size[2]}"
 fvalues = []
 for v in values
   v = v.to_i / maxValueSpline
-  fvalues << v
+  fvalues << v.round(12)
 end
 
 fvals = fvalues.join(', ')
@@ -150,9 +150,8 @@ out.puts
 
 lines.shift
 
-
-out.puts "const float min3d[3] = { #{rmin}, #{gmin}, #{bmin} };"
-out.puts "const float max3d[3] = { #{rmax}, #{gmax}, #{bmax} };"
+out.puts "const float min3d[3] = { %.6f, %.6f, %.6f };" % [rmin, gmin, bmin ]
+out.puts "const float max3d[3] = { %.6f, %.6f, %.6f };" % [rmax, gmax, bmax ]
 
 out.puts "const float cube[#{size[0]}][#{size[1]}][#{size[2]}][3] = "
 
@@ -188,21 +187,21 @@ for x in 1..size[0]
       r = rmax * $1.to_f / maxValue
       g = gmax * $2.to_f / maxValue
       b = bmax * $3.to_f / maxValue
-      out.print "{ #{r}, #{g}, #{b} }"
+      out.print "{ %.7f, %.7f, %.7f }" % [ r, g, b ]
       if z != size[2]
-        out.print ", "
+        out.print ",\n"
       end
       idx += 1
     end
     out.print " }"
     if y != size[1]
-      out.print ","
+      out.print ",\n"
     end
     out.puts
   end
   out.print " }"
   if x != size[0]
-    out.print ", "
+    out.print ",\n"
   end
   out.puts
 end
