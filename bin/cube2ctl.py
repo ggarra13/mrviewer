@@ -2,6 +2,8 @@
 
 import argparse, re, sys
 
+VERSION=0.3
+
 parser = argparse.ArgumentParser(description="CUBE LUT to CTL command-line converter.", epilog='Example: cube2ctl.py tint.cube LMT.tint.ctl')
 parser.add_argument("--maxValueSpline",
                         help="Maximum Value in the 1D LUT (1023)",
@@ -10,15 +12,22 @@ parser.add_argument("--min", help="Minimum red, green, blue values (0 0 0)",
                         type=float, nargs=3, default=[0.0, 0.0, 0.0])
 parser.add_argument("--max", help="Maximum red, green, blue values (1 1 1)",
                         type=float, nargs=3, default=[1.0, 1.0, 1.0])
+parser.add_argument('-v', '--version', help="Print version of the script",
+                        action="store_true")
 parser.add_argument("input", help="Input .cube file" )
 parser.add_argument("output", help="Output CTL file" )
 args = parser.parse_args()
 
+version  = args.version
 maxValueSpline = args.maxValueSpline
 rgbmin   = args.min
 rgbmax   = args.max
 filename = args.input
 output   = args.output
+
+if version:
+    print "%s v%.2f" % ( sys.argv[0], VERSION )
+    exit(-1)
 
 with open(filename) as x: lines = x.readlines()
 
@@ -77,9 +86,9 @@ print filename, '->', output
 
 out.write( '// %s\n' % title )
 out.write( '// CTL 3d Lut from %s\n' % filename )
-out.write( '// Min: %g, %g, %g\n' % (rgbmin[0], rgbmin[1], rgbmin[2]) )
-out.write( '// Max: %g, %g, %g\n' % (rgbmax[0], rgbmax[1], rgbmax[2]) )
-out.write( '\n' )
+out.write( '// Min: %.6f, %.6f, %.6f\n' % (rgbmin[0], rgbmin[1], rgbmin[2]) )
+out.write( '// Max: %.6f, %.6f, %.6f\n' % (rgbmax[0], rgbmax[1], rgbmax[2]) )
+
 
 if lut1d:
     out.write( '// Lut1D size %d\n' % size )
@@ -91,9 +100,9 @@ if lut1d:
     out.write( '\n' )
 else:
     out.write( '// Lut3D size %dx%dx%d\n' % ( size, size, size ) )
-    out.write('const float min3d[3] = { %g, %g, %g };\n' %
+    out.write('const float min3d[3] = { %.6f, %.6f, %.6f };\n' %
                 (rgbmin[0], rgbmin[1], rgbmin[2] ))
-    out.write('const float max3d[3] = { %g, %g, %g };\n' %
+    out.write('const float max3d[3] = { %.6f, %.6f, %.6f };\n' %
                 (rgbmax[0], rgbmax[1], rgbmax[2] ))
     out.write( '\n' )
 
@@ -131,7 +140,6 @@ if lut1d:
     out.write( '};\n\n' )
 
     out.write( '''
-
 void main( varying float rIn,
            varying float gIn,
            varying float bIn,
@@ -177,19 +185,16 @@ else:
                 if x == 0: out.write( '{ ' )
                 out.write( '{ %s }' % rgb[x][y][z] )
                 if x != size-1:
-                    out.write( ', ' )
+                    out.write( ',\n' )
             out.write( ' }' )
             if y != size-1:
-                out.write( ', ' )
-            out.write( '\n' )
+                out.write( ',\n' )
         out.write( ' }' )
         if z != size-1:
-            out.write( ', ' )
-        out.write( '\n' )
+            out.write( ',\n' )
     out.write( ' };\n\n' )
 
     out.write('''
-
 void main( varying float rIn,
            varying float gIn,
            varying float bIn,
