@@ -40,15 +40,17 @@ namespace mrv {open
     }
     decl {int audio_bitrate;} {public
     }
+    decl {bool metadata;} {public
+    }
     Function {make_window()} {open
     } {
       {fltk::Window} uiMain {
         label {Movie Saving Preferences} open
-        xywh {510 73 300 495} horizontal resizable modal noborder visible
+        xywh {510 157 300 595} horizontal resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Video Options} open
-          xywh {50 46 185 279} box UP_BOX
+          xywh {20 56 255 294} box UP_BOX
         } {
           {fltk::Choice} uiVideoCodec {
             label Codec
@@ -106,7 +108,7 @@ item->deactivate();
 p->value(3);
 }}
             tooltip {Codec (encoder) used to encode the movie.  h264 is the preferred codec in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
-            xywh {75 15 91 26}
+            xywh {120 15 91 26}
             extra_code {video_codec = "h264";}
           } {
             {fltk::Item} {} {
@@ -125,7 +127,7 @@ p->value(3);
           {fltk::Choice} uiVideoColor {
             label Color
             tooltip {This setting controls the YUV color subsampling of the movie.  YUV444 is the best, with no subsampling, just 3 bytes per pixel.  YUV422 uses 4 bytes per 2 pixels, and YUV420 uses 6 bytes per 4 pixels.}
-            xywh {75 46 90 25}
+            xywh {120 46 90 25}
             extra_code {video_color = "YUV420";}
           } {
             {fltk::Item} {} {
@@ -141,12 +143,12 @@ p->value(3);
           {fltk::ValueInput} uiVideoBitrate {
             label Bitrate
             tooltip {This setting controls the quality of the movie file.  A smaller bitrate has more compression and artifacts.}
-            xywh {75 76 90 25} selection_color 0xffff0000 minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
+            xywh {120 76 90 25} selection_color 0xffff0000 minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
           }
           {fltk::Choice} uiVideoProfile {
             label Profile
             tooltip {The profile controls the characteristics and quality of the codec.  If in doubt, set it to the highest setting.}
-            xywh {75 119 90 25}
+            xywh {120 119 90 25}
             extra_code {o->value(4);}
           } {
             {fltk::Item} {} {
@@ -168,7 +170,7 @@ p->value(3);
           {fltk::Choice} uiYUVHint {
             label {YUV Hint}
             tooltip {This setting controls how the YUV->RGB conversion is done once the movie is decoded.  It is a hint to the viewer program and does not effect the colors saved in the movie file.}
-            xywh {75 164 90 25}
+            xywh {120 164 90 25}
             extra_code {o->value(2);}
           } {
             {fltk::Item} {} {
@@ -206,24 +208,24 @@ p->value(3);
               }
           }
           {fltk::CheckButton} uiOverrideFPS {
-            label {Override FPS} selected
+            label {Override FPS}
             tooltip {When this setting is on, Media Information Window's FPS setting is not taken into account, but the setting from this GUI is.}
-            xywh {55 199 20 25}
+            xywh {100 199 20 25}
           }
           {fltk::ValueInput} uiFPS {
             label FPS
             tooltip {When Override FPS is on, this setting controls the FPS of all movie files saved, instead of relying in Media Information->FPS.}
-            xywh {75 229 90 25} selection_color 0xffff0000 minimum 0.1 maximum 180 step 0.001 linesize 10 value 24
+            xywh {120 229 90 25} selection_color 0xffff0000 minimum 0.1 maximum 180 step 0.001 linesize 10 value 24
           }
         }
         {fltk::Group} {} {
-          label {Audio Options} open
-          xywh {65 339 160 101} box UP_BOX
+          label {Audio Options} open selected
+          xywh {20 369 255 87} box UP_BOX
         } {
           {fltk::Choice} uiAudioCodec {
-            label Codec open
+            label Codec
             tooltip {This setting controls the encoder (codec) used for audio saving.  ac3 and aac are the best codecs to use.  mp3 is popular as it is commonly used for compressing CDs.}
-            xywh {55 20 91 26}
+            xywh {120 16 91 26}
             extra_code {audio_codec = "ac3";}
           } {
             {fltk::Item} {} {
@@ -242,8 +244,13 @@ p->value(3);
           {fltk::ValueInput} uiAudioBitrate {
             label Bitrate
             tooltip {This setting controls the quality of the audio encoding.  A smaller setting yields less quality but smaller sizes.}
-            xywh {55 50 90 25} selection_color 0xffff0000 minimum 100 maximum 4.48e+06 step 1000 value 128000
+            xywh {120 46 90 25} selection_color 0xffff0000 minimum 100 maximum 4.48e+06 step 1000 value 128000
           }
+        }
+        {fltk::LightButton} uiMetadata {
+          label {Save Metadata}
+          xywh {20 469 255 43}
+          extra_code {o->value(1);}
         }
         {fltk::Button} {} {
           label OK
@@ -260,9 +267,9 @@ if ( v->uiOverrideFPS->value() )
 }
 audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
 audio_bitrate = (unsigned)v->uiAudioBitrate->value();
-
+metadata = v->uiMetadata->value();
 this->uiMain->make_exec_return(true);}
-          xywh {75 444 55 46}
+          xywh {75 543 55 35}
         }
         {fltk::Button} {} {
           label Cancel
@@ -275,9 +282,10 @@ fps = -1.0;
 
 audio_codec = "";
 audio_bitrate = 0;
+metadata = false;
 
 v->uiMain->make_exec_return(false);}
-          xywh {145 444 60 46}
+          xywh {145 543 60 35}
         }
       }
     }
