@@ -762,7 +762,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences subtitles( base, "subtitles" );
     subtitles.get( "font", tmpS, "Arial", 2048 );
-    for (unsigned i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
+    for (int i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
     {
         if ( strcmp( uiPrefs->uiPrefsSubtitleFont->child(i)->label(),
                      tmpS ) == 0 )
@@ -1110,7 +1110,7 @@ static const char* kCLocale = "C";
 
     idx = main->uiPrefs->uiPrefsSubtitleFont->value();
     num = main->uiPrefs->uiPrefsSubtitleFont->children();
-    if ( idx < num )
+    if ( (int)idx < num )
     {
         const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
         CMedia::default_subtitle_font( font );
