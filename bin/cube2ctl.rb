@@ -71,11 +71,12 @@ rescue TypeError => e
   end
   puts
   puts opt_parser
-  exit 1
-rescue => e
+  exit -1
+rescue StandardError => e
+  $stderr.puts "Could not open file. " + e.to_s
   puts
   puts opt_parser
-  exit 1
+  exit -1
 end
 
 
