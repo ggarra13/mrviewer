@@ -1114,7 +1114,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
    if ( strcmp( img->filename(), filename ) == 0 )
    {
-       mrvALERT( "You are saving over the movie you are playing. Aborting..." );
+       mrvALERT( _("You are saving over the movie you are playing. "
+                   "Aborting...") );
        return false;
    }
 
