@@ -32,8 +32,13 @@ if version:
     print "%s v%.2f" % ( sys.argv[0], VERSION )
     exit(-1)
 
-with open(filename) as x: lines = x.readlines()
-
+try:
+    with open(filename) as x: lines = x.readlines()
+except (IOError, OSError) as e:
+    sys.stderr.write( "Could not open '%s' for reading" % filename + ".\n" +
+                          str(e) + "\n")
+    exit(-1)
+    
 m = re.search('\.ctl$', output)
 if not m:
     output += '.ctl'
@@ -41,8 +46,8 @@ if not m:
 try:
     out = open( output, 'w' )
 except (IOError, OSError) as e:
-    sys.stderr.write( "Opening output ctl file '%s' failed: " % output + str(e) )
-    sys.stderr.write( '\n' )
+    sys.stderr.write( "Opening output ctl file '%s' failed: " % output + "\n" +
+                          str(e) + "\n" )
     exit(-1)
 
 size = [0, 0, 0]
