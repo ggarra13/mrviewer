@@ -67,12 +67,12 @@ rescue TypeError => e
   elsif not output
     $stderr.puts "No output file specified!"
   else
-    puts e
+    $stderr.puts e
   end
   puts
   puts opt_parser
   exit -1
-rescue StandardError => e
+rescue => e
   $stderr.puts "Could not open file. " + e.to_s
   puts
   puts opt_parser
