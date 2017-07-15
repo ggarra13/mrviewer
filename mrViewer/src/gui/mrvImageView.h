@@ -353,6 +353,9 @@ class server;
       ///
       void vr( bool t );
       bool vr() const { return _vr; }
+
+      float vr_angle() const;
+      void vr_angle( const float t );
       
     /// Attaches main window class to this viewer
     void main( mrv::ViewerUI* b ) { uiMain = b; }
@@ -405,11 +408,17 @@ class server;
       inline double offset_x() const { return xoffset; }
       inline double offset_y() const { return yoffset; }
       
-      inline void rot_x( double x ) { rotx = x; }
-      inline void rot_y( double x ) { roty = x; }
+      void rot_x( double x );
+      void rot_y( double x );
+
+      double rot_x() const;
+      double rot_y() const;
       
-      inline double rot_x() const { return rotx; }
-      inline double rot_y() const { return roty; }
+      inline void spin_x( double x ) { spinx = x; }
+      inline void spin_y( double x ) { spiny = x; }
+      
+      inline double spin_x() const { return spinx; }
+      inline double spin_y() const { return spiny; }
     double pixel_ratio() const;
 
     DrawEngine* const engine() const { return _engine; }
@@ -596,7 +605,7 @@ class server;
     float        _gain;       //<- display gain (exposure)
     float	 _zoom;       //<- display zoom
     double	 xoffset, yoffset; //<- display offsets
-      double     rotx, roty;   //<- VR's rotation offsets
+      double     spinx, spiny;   //<- VR's rotation offsets
 
 
     //
