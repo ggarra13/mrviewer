@@ -25,9 +25,9 @@
  * 
  */
 
-#ifdef DEBUG
+//#ifdef DEBUG
  #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
-#endif
+//#endif
 
 #include <string.h>
 #include <locale.h>
