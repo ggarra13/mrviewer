@@ -1,3 +1,9 @@
+v3.7.3   - Made VR360 work in network connections.  Note that there's
+	   some intermitent problems when the view is already in VR360,
+	   and the sync is made.
+	 - Made VR360 not take so many CPU cycles.  Now it is a light
+	   process.
+
 v3.7.2   - Bug fixed setting image as background when it was done thru
 	   the menu in the view or reel window.  Previously, the reel
 	   would not get stored and this would lead to a crash.
