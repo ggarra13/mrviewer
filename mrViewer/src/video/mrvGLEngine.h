@@ -62,6 +62,12 @@ namespace mrv {
     virtual const char* name() { return "OpenGL"; }
     virtual std::string options();
 
+      virtual double rot_x() const;
+      virtual double rot_y() const;
+      
+      virtual void rot_x(double t);
+      virtual void rot_y(double t);
+
       virtual void evaluate( const CMedia* img,
                              const Imath::V3f& rgb, Imath::V3f& out ); 
 
@@ -73,7 +79,7 @@ namespace mrv {
     virtual void color( uchar r, uchar g, uchar b, uchar a  );
     virtual void color( float r, float g, float b, float a );
 
-    // Init FB0 Drawing   
+    // Init FBO Drawing   
        virtual bool init_fbo( ImageList& images );
        virtual void end_fbo( ImageList& images );
 
@@ -199,6 +205,7 @@ namespace mrv {
       GLuint id, rid;
       bool    vr;
       float   vr_angle;
+      double  _rotX, _rotY; // Sphere start rotation
       QuadList  _quads;
       
 
