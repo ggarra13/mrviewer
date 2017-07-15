@@ -112,6 +112,12 @@ namespace mrv {
     virtual const char* name() = 0;
     virtual std::string options() = 0;
 
+      virtual double rot_x() const = 0;
+      virtual double rot_y() const = 0;
+      
+      virtual void rot_x(double t) = 0;
+      virtual void rot_y(double t) = 0;
+      
       // Evaluate pixel with LUT 
       virtual void evaluate( const CMedia* img,
                              const Imath::V3f& rgb, Imath::V3f& out ) = 0;
