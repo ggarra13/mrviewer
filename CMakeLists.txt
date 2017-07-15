@@ -31,7 +31,7 @@ ENDIF( UNIX )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 7 )
-SET( VersionPatch 2 )
+SET( VersionPatch 3 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
