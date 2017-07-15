@@ -922,8 +922,8 @@ _gain( 1.0f ),
 _zoom( 1 ),
 xoffset( 0 ),
 yoffset( 0 ),
-spinx( 0 ),
-spiny( 0 ),
+spinx( 0.0 ),
+spiny( 0.0 ),
 posX( 4 ),
 posY( 22 ),
 flags( 0 ),
@@ -1915,7 +1915,10 @@ void ImageView::timeout()
       else if ( spiny <= -sumY ) { spiny += sumY; changed = true; }
       else spiny = 0.0;
 
-      if ( changed ) redraw();
+      if ( changed ) {
+          if ( delay > 0.03 ) delay = 0.03;
+          redraw();
+      }
   }
 
   repeat_timeout( float(delay) );
