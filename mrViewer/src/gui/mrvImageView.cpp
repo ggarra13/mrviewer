@@ -922,8 +922,8 @@ _gain( 1.0f ),
 _zoom( 1 ),
 xoffset( 0 ),
 yoffset( 0 ),
-rotx( 0 ),
-roty( 0 ),
+spinx( 0 ),
+spiny( 0 ),
 posX( 4 ),
 posY( 22 ),
 flags( 0 ),
@@ -1782,6 +1782,12 @@ bool ImageView::preload()
 
 }
 
+void ImageView::rot_x( double x ) { _engine->rot_x(x); valid(0); }
+void ImageView::rot_y( double x ) { _engine->rot_y(x); valid(0); }
+      
+double ImageView::rot_x() const { return _engine->rot_x(); }
+double ImageView::rot_y() const { return _engine->rot_y(); }
+
 void ImageView::timeout()
 {
     TRACE( "" );
@@ -1849,16 +1855,6 @@ void ImageView::timeout()
           img->has_changed();
       }
 
-#if 0
-      if ( img->stopped() && playback() != CMedia::kStopped )
-       {
-           if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
-           {
-               img->seek( tframe );
-               img->play( playback(), uiMain, false );
-           }
-       }
-#endif
    }
 
    
@@ -1910,15 +1906,16 @@ void ImageView::timeout()
   {
 #define sumX 0.005
 #define sumY 0.005
-      if (rotx >= sumX ) rotx -= sumX;
-      else if ( rotx <= -sumX ) rotx += sumX;
-      else rotx = 0.0;
+      bool changed = false;
+      if (spinx >= sumX ) { spinx -= sumX; changed = true; }
+      else if ( spinx <= -sumX ) { spinx += sumX; changed = true; }
+      else spinx = 0.0;
       
-      if (roty >= sumY ) roty -= sumY;
-      else if ( roty <= -sumY ) roty += sumY;
-      else roty = 0.0;
-      
-      redraw();
+      if (spiny >= sumY ) { spiny -= sumY; changed = true; }
+      else if ( spiny <= -sumY ) { spiny += sumY; changed = true; }
+      else spiny = 0.0;
+
+      if ( changed ) redraw();
   }
 
   repeat_timeout( float(delay) );
@@ -1990,7 +1987,7 @@ void ImageView::vr( bool t )
 {
     _vr = t;
     valid(0);
-    
+         
     const mrv::media& fg = foreground();
 
     if ( fg )
@@ -1999,7 +1996,19 @@ void ImageView::vr( bool t )
         img->image_damage( img->image_damage() | CMedia::kDamageContents );
     }
     
+    const mrv::media& bg = foreground();
+
+    if ( bg )
+    {
+        CMedia* img = bg->image();
+        img->image_damage( img->image_damage() | CMedia::kDamageContents );
+    }
+    
     redraw();
+    
+    char buf[16];
+    sprintf( buf, "VR %d", t );
+    send_network( buf );
 }
 
 /** 
@@ -2008,7 +2017,6 @@ void ImageView::vr( bool t )
  */
 void ImageView::draw()
 {
-  
   if ( !valid() ) 
     {
        if ( ! _engine )
@@ -2018,7 +2026,6 @@ void ImageView::draw()
 
         if ( !_engine ) return;
 
-        
         _engine->reset_view_matrix();
 
         valid(1);
@@ -2096,7 +2103,6 @@ void ImageView::draw()
   if ( images.empty() ) return;
   TRACE("");
   
-
   _engine->draw_images( images );
   TRACE("");
 
@@ -3798,6 +3804,24 @@ void ImageView::mouseMove(int x, int y)
   uiMain->uiPixelL->text( float_printf( hsv.a ).c_str() );
 }
 
+float ImageView::vr_angle() const
+{
+    if (!_engine) return 45.0;
+    return _engine->angle();
+}
+
+void ImageView::vr_angle( const float t )
+{
+    if ( t >= 90.0f || t <= 5.0f || !_engine ) return;
+
+    char buf[32];
+    sprintf( buf, "VRangle %g", t );
+    send_network( buf );
+
+    _engine->angle( t );
+    valid(0);
+    redraw();
+}
 
 /** 
  * Handle a mouse drag
@@ -3816,12 +3840,9 @@ void ImageView::mouseDrag(int x,int y)
 	{
             if ( vr() )
             {
-                float vr_angle = _engine->angle();
-                vr_angle -= float(dx) / 10.0f;
-                if ( vr_angle >= 90.0f || vr_angle <= 5.0f ) return;
-
-                _engine->angle( vr_angle );
-                valid(0);
+                float angle = vr_angle();
+                angle -= float(dx) / 10.0f;
+                vr_angle( angle );
             }
             else
             {
@@ -3836,21 +3857,21 @@ void ImageView::mouseDrag(int x,int y)
 	   window()->cursor( fltk::CURSOR_MOVE );
            if ( vr() )
            {
-#define ROTY_MIN 0.005
-#define ROTX_MIN 0.005
-#define ROTY_MAX 1.0
-#define ROTX_MAX 0.5
-               roty += double(dx) / 360.0;
-               if ( roty > ROTY_MAX ) roty = ROTY_MAX;
-               else if ( roty < -ROTY_MAX ) roty = -ROTY_MAX;
-               else if ( std::abs(roty) <= ROTY_MIN ) roty = 0.0;
-               rotx += double(dy) / 90.0;
-               if ( rotx > ROTX_MAX ) rotx = ROTX_MAX;
-               else if ( rotx < -ROTX_MAX ) rotx = -ROTX_MAX;
-               else if ( std::abs(rotx) <= ROTX_MIN ) rotx = 0.0;
+#define SPINY_MIN 0.005
+#define SPINX_MIN 0.005
+#define SPINY_MAX 1.0
+#define SPINX_MAX 0.5
+               spiny += double(dx) / 360.0;
+               if ( spiny > SPINY_MAX ) spiny = SPINY_MAX;
+               else if ( spiny < -SPINY_MAX ) spiny = -SPINY_MAX;
+               else if ( std::abs(spiny) <= SPINY_MIN ) spiny = 0.0;
+               spinx += double(dy) / 90.0;
+               if ( spinx > SPINX_MAX ) spinx = SPINX_MAX;
+               else if ( spinx < -SPINX_MAX ) spinx = -SPINX_MAX;
+               else if ( std::abs(spinx) <= SPINX_MIN ) spinx = 0.0;
                
                char buf[128];
-               sprintf( buf, "Spin %g %g", rotx, roty );
+               sprintf( buf, "Spin %g %g", spinx, spiny );
                send_network( buf );
            }
            else
@@ -4276,7 +4297,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( vr() )
         {
-            rotx = 2000.0; // >= 1000.0 resets rotation in mrvGLSphere.cpp
+            spinx = 2000.0; // >= 1000.0 resets rotation in mrvGLSphere.cpp
         }
         center_image();
         return 1;
@@ -4285,8 +4306,8 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( vr() )
         {
-            _engine->angle( 45.0f );
-            valid(0);
+            vr_angle( 45.0f );
+            return 1;
         }
         fit_image();
         return 1;
@@ -5141,11 +5162,9 @@ int ImageView::handle(int event)
             {
                 if ( vr() )
                 {
-                    float vr_angle = _engine->angle();
-                    vr_angle += fltk::event_dy();
-                    if ( vr_angle >= 90.0f || vr_angle <= 5.0f ) return 1;
-                    _engine->angle( vr_angle );
-                    valid(0);  // to reset matrix
+                    float t = vr_angle();
+                    t += fltk::event_dy();
+                    vr_angle( t );
                 }
                 else
                 {
