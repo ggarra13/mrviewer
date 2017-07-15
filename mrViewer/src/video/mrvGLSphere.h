@@ -17,6 +17,12 @@ class GLSphere : public GLQuad
     
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
+    void rot_x( double t ) { _rotX = t; }
+    void rot_y( double t ) { _rotY = t; }
+    
+    double rot_x() const { return _rotX; }
+    double rot_y() const { return _rotY; }
+    
   protected:
     void draw_sphere( const unsigned dw, const unsigned dh ) const;
   protected:
