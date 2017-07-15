@@ -314,7 +314,7 @@ GLSphere::~GLSphere()
     glRotated( _rotY, 0, 1, 0 );
     glRotated( 90.0, 1, 0, 0 );
 
-    gluSphere( qObj, 1.0f, 20, 20 );
+    gluSphere( qObj, 1.0f, 30, 30 );
 
     if ( _shader )
     {
