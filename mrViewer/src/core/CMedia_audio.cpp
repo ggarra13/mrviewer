@@ -1742,8 +1742,10 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
     }
 
-  if ( ! _audio_engine ) return false;
-
+  if ( ! _audio_engine ) {
+      IMG_ERROR( _("Could not initialize audio engine" ) );
+      return false;
+  }
   
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
@@ -1812,9 +1814,9 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   }
 
-  assert( result->frame() == frame );
-  assert( result->size() > 0 );
-  assert( result->data() != NULL );
+  assert0( result->frame() == frame );
+  assert0( result->size() > 0 );
+  assert0( result->data() != NULL );
   
   bool ok = play_audio( result );
   if ( !ok )
@@ -1825,8 +1827,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = (result->frame() - _audio_offset - _start_number) / _orig_fps; //not av_q2d( get_audio_stream()->avg_frame_rate );
-
+  _audio_pts = (result->frame() - _audio_offset - _start_number) / _orig_fps; 
+  
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
   set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
 
