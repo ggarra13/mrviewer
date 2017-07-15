@@ -43,6 +43,12 @@
 #include "gui/mrvMedia.h"
 #include "gui/mrvMediaList.h"
 
+namespace
+{
+// Maximum number of frames to show cacheline.  Setting it too high can
+// impact GUI playback when the image/movies are that long.
+unsigned kMAX_FRAMES = 5000;
+}
 
 
 namespace mrv
@@ -314,7 +320,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     if ( mx < max ) max = mx;
 
     // If too many frames, playback suffers, so we exit here
-    if ( max - j > 5000 ) return;
+    if ( max - j > kMAX_FRAMES ) return;
 
     int rx = r.x() + (slider_size()-1)/2;
     int r2 = r.b()/2;
