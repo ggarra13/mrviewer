@@ -68,7 +68,7 @@
 
 namespace 
 {
-  const char* kModule = "glquad";
+  const char* kModule = "glsphr";
 }
 
 
@@ -104,6 +104,7 @@ GLSphere::~GLSphere()
     }
 
     _width = _height = 0;
+    _uvMax.u = _uvMax.v = 1.0f;
 
 
     //
@@ -114,6 +115,9 @@ GLSphere::~GLSphere()
     {
       poww = calculate_pow2( dw );
       powh = calculate_pow2( dh );
+      
+      _uvMax.u  = (float) dw / (float) poww;
+      _uvMax.v  = (float) dh / (float) powh;
     }
 
 
@@ -132,29 +136,28 @@ GLSphere::~GLSphere()
     GLenum filter = GL_LINEAR;
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
-      {
-          short i = short(_channels - 1);
-	for ( ; i >= 0 ; --i )
-	  {
-              short idx = (i == 3 ? (short) 4 : i ); 
-	    glActiveTexture(GL_TEXTURE0 + idx);
-	    glEnable(GL_TEXTURE_2D);
-	    glBindTexture(GL_TEXTURE_2D, _texId[i] );
+    {
+        short i = short(_channels - 1);
+        for ( ; i >= 0 ; --i )
+        {
+            short idx = (i == 3 ? 4 : i ); 
+            glActiveTexture(GL_TEXTURE0 + idx);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, _texId[i] );
             CHECK_GL;
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-	  }
-      }
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+        }
+    }
     else
-      {
-	if ( GLEW_ARB_multitexture )
-	  glActiveTexture(GL_TEXTURE0);
+    {
+        if ( GLEW_ARB_multitexture )
+            glActiveTexture(GL_TEXTURE0);
 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _texId[0] );
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, _texId[0] );
         CHECK_GL;
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-      }
-
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+    }
 
     CHECK_GL;
 
@@ -292,11 +295,12 @@ GLSphere::~GLSphere()
     glLoadIdentity();
     GLSphere* sp = const_cast< GLSphere* >( this );
     ImageView* v = const_cast< ImageView* >( _view );
-    double x = _view->rot_x();
-    double y = _view->rot_y();
-    if ( x >= 1000.0 )
+    double x = _view->spin_x();
+    double y = _view->spin_y();
+    if ( x >= 1000.0 )  // dummy value used to reset view
     {
-        v->rot_x( 0.0 );
+        v->spin_x( 0.0 );
+        v->spin_y( 0.0 );
         sp->_rotY = 0.0;
         sp->_rotX = 0.0;
     }
@@ -305,40 +309,39 @@ GLSphere::~GLSphere()
         sp->_rotY += y;
         sp->_rotX += x;
     }
-    
+
     glRotated( _rotX, 1, 0, 0 );
     glRotated( _rotY, 0, 1, 0 );
     glRotated( 90.0, 1, 0, 0 );
 
-    
-    gluSphere( qObj, 1.0f, 30, 30 );
+    gluSphere( qObj, 1.0f, 20, 20 );
 
     if ( _shader )
-      {
+    {
 	_shader->disable();
-      }
+    }
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
-      {
-          short i = short( _channels - 1 );
-	for ( ; i >= 0 ; --i )
-	  {
-              short idx = (i == 3 ? (short) 4 : i ); 
-	    glActiveTexture(GL_TEXTURE0 + idx);
-	    glDisable( GL_TEXTURE_2D );
-	  }
-      }
+    {
+        short i = short( _channels - 1 );
+        for ( ; i >= 0 ; --i )
+        {
+            short idx = (i == 3 ? (short) 4 : i ); 
+            glActiveTexture(GL_TEXTURE0 + idx);
+            glDisable( GL_TEXTURE_2D );
+        }
+    }
     else
-      {
+    {
 	if ( GLEngine::maxTexUnits() > 3 )
-	  glActiveTexture( GL_TEXTURE0 );
+            glActiveTexture( GL_TEXTURE0 );
 	glDisable( GL_TEXTURE_2D );
-      }
+    }
 
     if ( use_lut && _lut )
-      {
+    {
 	_lut->disable();
-      }
+    }
 
     CHECK_GL;
   }

@@ -352,12 +352,21 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
-   else if ( cmd == N_("Spin") )
+   else if ( cmd == N_("Rotation") )
    {
       double x, y;
       is >> x >> y;
       v->rot_x( x );
       v->rot_y( y );
+      v->redraw();
+      ok = true;
+   }
+   else if ( cmd == N_("Spin") )
+   {
+      double x, y;
+      is >> x >> y;
+      v->spin_x( x );
+      v->spin_y( y );
       v->redraw();
       ok = true;
    }
@@ -384,12 +393,6 @@ bool Parser::parse( const std::string& s )
       if ( v->foreground() )
 	 v->channel( ch );
       v->redraw();
-      ok = true;
-   }
-   else if ( cmd == N_("VR") )
-   {
-      // unsigned short value;
-      // is >> value;
       ok = true;
    }
    else if ( cmd == N_("FieldDisplay") )
@@ -558,18 +561,36 @@ bool Parser::parse( const std::string& s )
        ui->uiStartFrame->redraw();
        ok = true;
    }
+   else if ( cmd == N_("VR") )
+   {
+       bool t;
+       is >> t;
+       if ( ui->uiStereo )
+           ui->uiStereo->uiVR360->value( t );
+       v->vr( t );
+       v->redraw();
+       ok = true;
+   }
+   else if ( cmd == N_("VRangle") )
+   {
+       float t;
+       is >> t;
+       v->vr_angle( t );
+       v->redraw();
+       ok = true;
+   }
    else if ( cmd == N_("FullScreen") )
    {
        int on;
        is >> on;
-       ui->uiView->send( mrv::kFULLSCREEN );
+       v->send( mrv::kFULLSCREEN );
        ok = true;
    }
    else if ( cmd == N_("PresentationMode" ) )
    {
        int on;
        is >> on;
-       ui->uiView->send( mrv::kPRESENTATION );
+       v->send( mrv::kPRESENTATION );
        ok = true;
    }
    else if ( cmd == N_("ShiftAudio") )
@@ -963,6 +984,7 @@ bool Parser::parse( const std::string& s )
           return true;
       }
 
+      
       r = browser()->current_reel();
       if (r)
       {
@@ -1057,6 +1079,12 @@ bool Parser::parse( const std::string& s )
           cmd += buf;
           deliver( cmd );
 
+          sprintf(buf, N_("VR %d"), v->vr() );
+          deliver( buf );
+          
+          sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
+          deliver( buf );
+      
           sprintf( buf, N_("Looping %d"), (int)img->looping() );
           deliver( buf );
       
@@ -1081,7 +1109,10 @@ bool Parser::parse( const std::string& s )
       sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
       deliver( buf );
       
-      sprintf(buf, N_("Spin %g %g"), v->rot_x(), v->rot_y() );
+      sprintf(buf, N_("Rotation %g %g"), v->rot_x(), v->rot_y() );
+      deliver( buf );
+      
+      sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
       deliver( buf );
 
       
@@ -1120,8 +1151,6 @@ bool Parser::parse( const std::string& s )
               v->get_layer_label(v->channel()) );
       deliver( buf );
       
-      sprintf(buf, N_("VR %d"), v->vr() );
-      deliver( buf );
       
       const mrv::Rectd& s = v->selection();
       if ( s.w() != 0 )
@@ -1133,7 +1162,7 @@ bool Parser::parse( const std::string& s )
 
       browser()->redraw();
       v->redraw();
-
+      
       ok = true;
    }
    else if ( cmd == N_("stop") )

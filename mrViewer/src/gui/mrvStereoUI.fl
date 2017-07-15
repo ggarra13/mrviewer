@@ -30,12 +30,13 @@ namespace mrv {open
     } {
       code {return main_;} {}
     }
-    Function {make_window( mrv::ViewerUI* main )} {} {
+    Function {make_window( mrv::ViewerUI* main )} {open
+    } {
       {fltk::Window} uiMain {
         label {3D Stereo Options}
         user_data this user_data_type {mrv::StereoUI*}
         callback {v->main()->uiView->send_network( "StereoOptions 0" );
-o->hide();}
+o->hide();} open
         xywh {757 587 280 160} hide resizable
         extra_code {main_ = main;
 o->child_of( (fltk::Window*)main->uiMain );}
@@ -45,7 +46,7 @@ o->child_of( (fltk::Window*)main->uiMain );}
           user_data main user_data_type {mrv::ViewerUI*}
           callback {int x = o->value(); 
 CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
-v->uiView->stereo_input( in );} open
+v->uiView->stereo_input( in );}
           tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.}
           xywh {80 60 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
@@ -73,7 +74,7 @@ o->value( x );
           user_data main user_data_type {mrv::ViewerUI*}
           callback {int x = o->value(); 
 CMedia::StereoOutput out = CMedia::to_stereo_output( x ); 
-v->uiView->stereo_output( out );} open selected
+v->uiView->stereo_output( out );}
           tooltip {Select how to view the stereo images.  You can select no stereo viewing, a view of the stereo pair, top/bottom (and viceversa), left/right (and viceversa), interlaced rows or columns, checkerboard pattern, red/cyan glasses (and viceversa). }
           xywh {80 100 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
@@ -131,16 +132,17 @@ else
             label {Cyan/red glasses}
             }
         }
-        {fltk::LightButton} {} {
+        {fltk::LightButton} uiVR360 {
           label {VR 360}
           user_data main user_data_type {ViewerUI*}
-          callback {v->uiView->vr( o->value() );}
+          callback {v->uiView->vr( o->value() );} selected
           tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.}
           xywh {110 20 80 30}
         }
       }
     }
-    Function {StereoUI( ViewerUI* main )} {} {
+    Function {StereoUI( ViewerUI* main )} {open
+    } {
       code {make_window(main);} {}
     }
     Function {~StereoUI()} {} {
