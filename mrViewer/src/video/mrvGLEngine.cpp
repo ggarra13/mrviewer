@@ -546,6 +546,7 @@ void GLEngine::reset_view_matrix()
     {
         CHECK_GL;
         view->ortho();
+        _rotX = _rotY = 0.0;
         CHECK_GL;
     }
     else
@@ -645,8 +646,10 @@ void GLEngine::color( float r, float g, float b, float a = 1.0 )
 
 bool GLEngine::init_fbo( ImageList& images )
 {
+   
    if ( ! _fboRenderBuffer ) return false;
 
+   
    glGenTextures(1, &textureId);
    CHECK_GL;
    glBindTexture(GL_TEXTURE_2D, textureId);
@@ -1199,14 +1202,54 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
 
 
+double GLEngine::rot_y() const
+{
+    QuadList::const_iterator i = _quads.begin();
+    QuadList::const_iterator e = _quads.end();
+    for ( ; i != e; ++i )
+    {
+        mrv::GLSphere* s = dynamic_cast< mrv::GLSphere* >( *i );
+        if ( !s ) continue;
+        return s->rot_y();
+    }
+    return 0;
+}
+
+double GLEngine::rot_x() const
+{
+    QuadList::const_iterator i = _quads.begin();
+    QuadList::const_iterator e = _quads.end();
+    for ( ; i != e; ++i )
+    {
+        mrv::GLSphere* s = dynamic_cast< mrv::GLSphere* >( *i );
+        if ( !s ) continue;
+        return s->rot_x();
+    }
+    return 0;
+}
+
+
+
+void GLEngine::rot_x( double t )
+{
+    _rotX = t;
+}
+
+void GLEngine::rot_y( double t )
+{
+    _rotY = t;
+}
+
 void GLEngine::alloc_spheres( size_t num )
 {
   size_t num_quads = _quads.size();
   _quads.reserve( num );
   for ( size_t q = num_quads; q < num; ++q )
     {
-      mrv::GLSphere* quad = new mrv::GLSphere( _view );
-      _quads.push_back( quad );
+      mrv::GLSphere* s = new mrv::GLSphere( _view );
+      s->rot_x( _rotX );
+      s->rot_y( _rotY );
+      _quads.push_back( s );
     }
 }
 
@@ -1321,9 +1364,15 @@ void GLEngine::draw_images( ImageList& images )
   size_t num = _quads.size();
   if ( num_quads > num )
     {
-        if ( vr )
+        if ( _view->vr() )
         {
             alloc_spheres( num_quads );
+            for ( i = images.begin(); i != e; ++i )
+            {
+                const Image_ptr& img = *i;
+                img->image_damage( img->image_damage() |
+                                   CMedia::kDamageContents );
+            }
         }
         else
         {
@@ -2488,7 +2537,9 @@ DrawEngine( v ),
 texWidth( 0 ),
 texHeight( 0 ),
 vr( false ),
-vr_angle( 45.0 )
+vr_angle( 45.0 ),
+_rotX( 0.0 ),
+_rotY( 0.0 )
 {
   initialize();
 }
