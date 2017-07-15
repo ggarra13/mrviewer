@@ -484,7 +484,7 @@ IF(WIN32)
 ELSEIF (UNIX)
 
     # SET the type of package to build.
-    INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/ DESTINATION bin )
+    #INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/ DESTINATION bin )
 
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
