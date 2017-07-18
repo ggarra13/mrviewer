@@ -1082,6 +1082,9 @@ bool Parser::parse( const std::string& s )
           sprintf(buf, N_("VR %d"), v->vr() );
           deliver( buf );
           
+          sprintf(buf, N_("VRangle %g"), v->vr_angle() );
+          deliver( buf );
+          
           sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
           deliver( buf );
       
