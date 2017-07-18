@@ -53,6 +53,8 @@ namespace mrv {
     // Name of audio engine
     virtual const char* name() { return "Windows Multimedia"; }
 
+      virtual void buffers( int num ) { _num_buffers = num; }
+      
     // Open an audio stream for playback
     virtual bool open( 
 		      const unsigned int channels,
@@ -86,7 +88,7 @@ namespace mrv {
     // device for playback
     virtual bool initialize();
 
-    WAVEHDR* get_header();
+    inline WAVEHDR* get_header();
 
     void free_headers();
     void wait_audio();
@@ -98,7 +100,8 @@ namespace mrv {
     aligned16_uint8_t* _data;
     unsigned int _idx;
     unsigned int _samples_per_block;
-    unsigned int bytesPerBlock;
+      unsigned int _num_buffers;
+    size_t        bytesPerBlock;
 
   protected:
     static unsigned int     _instances;

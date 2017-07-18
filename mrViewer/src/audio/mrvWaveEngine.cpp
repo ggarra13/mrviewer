@@ -37,6 +37,9 @@
 
 #include <mmreg.h>   // for manufacturer and product IDs
 
+#undef assert
+#define assert(x) if ( !(x) ) abort();
+
 namespace 
 {
   const char* kModule = "wmm";
@@ -45,7 +48,8 @@ namespace
 
 namespace mrv {
 
-#define kNUM_BUFFERS 3  // should be 2, was 5, previous was 32
+#define kNUM_BUFFERS 16  // has to be 16 to cope for very fast frame rates
+                         // see IMG_4596.MOV 
 
 #define THROW(x) throw( exception(x) )
 
@@ -97,10 +101,11 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
     AudioEngine(),
     _sample_size(0),
     _audio_device( NULL ),
-    _buffer( new WAVEHDR[ kNUM_BUFFERS ] ),
+    _buffer( NULL ),
     _data( NULL ),
     _samples_per_block( 48000 ),  // 1 second of 48khz audio
     bytesPerBlock( 0 ),
+    _num_buffers( 3 ),
     _idx( 0 )
   {
     initialize();
@@ -387,7 +392,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
   }
 
 
-  WAVEHDR* WaveEngine::get_header()
+inline WAVEHDR* WaveEngine::get_header()
   {
     return &( _buffer[ _idx ] );
   }
@@ -429,6 +434,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	wavefmt.Format.nBlockAlign = wavefmt.Format.wBitsPerSample * ch / 8;
 	wavefmt.Format.nAvgBytesPerSec = freq * wavefmt.Format.nBlockAlign;
 
+        
 	/* Only use the new WAVE_FORMAT_EXTENSIBLE format for
            multichannel audio */
 	if( ch <= 2 )
@@ -478,13 +484,16 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
 	// Allocate internal sound buffer
 	bytesPerBlock = wavefmt.Format.nBlockAlign * _samples_per_block;
-	unsigned int bytes = kNUM_BUFFERS * bytesPerBlock;
+	unsigned int bytes = _num_buffers * bytesPerBlock;
 	_data = new aligned16_uint8_t[ bytes ];
 	memset( _data, 0, bytes );
 
+        delete [] _buffer;
+        _buffer = new WAVEHDR[ _num_buffers ];
+        
 	// Set header memory
 	char* ptr = (char*)_data;
-	for ( unsigned i = 0; i < kNUM_BUFFERS; ++i )
+	for ( unsigned i = 0; i < _num_buffers; ++i )
 	  {
 	    WAVEHDR& hdr = _buffer[i];
 	    memset( &hdr, 0, sizeof(WAVEHDR) );
@@ -516,7 +525,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	    _enabled &&
 	    ( ( _buffer[ _idx ].dwFlags & WHDR_DONE ) == 0 ) ) 
       {
-	Sleep(20);
+	Sleep(10);
       }
   }
 
@@ -540,18 +549,19 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
     assert( data != NULL );
     assert( hdr->lpData != NULL );
 
+    
     // Copy data 
     memcpy( hdr->lpData, data, size );
 
     hdr->dwBufferLength = (DWORD)size;
     hdr->dwLoops        = 1;
-    hdr->dwFlags       &= ~WHDR_DONE;
+    hdr->dwFlags        = 0;
 
-    _idx = ( _idx + 1 ) % kNUM_BUFFERS;
+    _idx = ( _idx + 1 ) % _num_buffers;
 
     result = waveOutPrepareHeader(_audio_device, hdr, sizeof(WAVEHDR));
 
-    if ( result != MMSYSERR_NOERROR )
+    if ( result != MMSYSERR_NOERROR || !(hdr->dwFlags & WHDR_PREPARED) )
       {
 	_enabled = false;
 	MMerror( "waveOutPrepareHeader", result);
@@ -578,7 +588,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
     MMRESULT result;
 
-    for ( unsigned i = 0; i < kNUM_BUFFERS; ++i )
+    for ( unsigned i = 0; i < _num_buffers; ++i )
       { 
 	if ( _buffer[i].dwFlags & WHDR_PREPARED )
 	  {
