@@ -415,7 +415,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	   strncmp( (char*)data+4, "moov", 4 ) == 0 ||
 	   strncmp( (char*)data+4, "free", 4 ) == 0 || 
 	   strncmp( (char*)data+4, "mdat", 4 ) == 0 ||
-	   strncmp( (char*)data+4, "wide", 4 ) == 0 )
+	   strncmp( (char*)data+4, "wide", 4 ) == 0 ||
+	   strncmp( (char*)data+4, "pnot", 4 ) == 0 )
 	return true;
     }
 
@@ -1805,7 +1806,6 @@ int aviImage::video_stream_index() const
 // Analyse streams and set input values
 void aviImage::populate()
 {
-
     std::ostringstream msg;
   
     if ( _context == NULL ) return;
@@ -2339,7 +2339,6 @@ bool aviImage::initialize()
 
 	  // Allocate an av frame
 	  _av_frame = av_frame_alloc();
-
 	  populate();
 	}
       else
