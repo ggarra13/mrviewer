@@ -3083,7 +3083,7 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.b *= _gain;
 
     
-    float one_gamma = 1.0f / _gamma;
+    float one_gamma = 1.0f / img->gamma();
     // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
     // but faster.
     if ( rgba.r > 0.0f && isfinite(rgba.r) )
@@ -3659,18 +3659,21 @@ void ImageView::mouseMove(int x, int y)
           }
           else
           {
-              double px, py;
-              if ( dpw.w() > 0 )
+              double px = 1.0, py = 1.0;
+              if ( uiMain->uiPrefs->uiPrefsResizeBackground->value() )
               {
-                  px = (double) picb->width() / (double) dpw.w();
-                  py = (double) picb->height() / (double) dpw.h();
+                  if ( dpw.w() > 0 )
+                  {
+                      px = (double) picb->width() / (double) dpw.w();
+                      py = (double) picb->height() / (double) dpw.h();
+                  }
+                  else
+                  {
+                      px = (double) picb->width() / (double) pic->width();
+                      py = (double) picb->height() / (double) pic->height();
+                  }
               }
-              else
-              {
-                  px = (double) picb->width() / (double) pic->width();
-                  py = (double) picb->height() / (double) pic->height();
-              }
-
+              
               xp += daw.x();
               yp += daw.y();
               xp = (int)floor( xp * px );
