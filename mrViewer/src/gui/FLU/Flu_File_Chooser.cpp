@@ -384,7 +384,23 @@ static void loadRealIcon( RealIcon* e)
     int frameStart = atoi( e->filesize.c_str() );
 
     std::string file = e->filename;
+    
+    std::string ext;
+    size_t p = file.rfind( '.' );
+    if ( p != std::string::npos )
+    {
+        ext = file.substr( p, file.size() );
+    }
 
+    if ( mrv::is_valid_movie( ext.c_str() ) )
+    {
+        size_t p = 0;
+        while ( (p = file.find( '%', p )) != std::string::npos )
+        {
+            file.replace( p, 1, "%%" );
+            p += 2;
+        }
+    }
     
     if ( ! view.empty() )
     {
@@ -402,10 +418,11 @@ static void loadRealIcon( RealIcon* e)
     DBG( "lri file exists? " << buf );
 
 
-    if ( ! fs::exists( buf ) ) {
-        delete e;
-        return;
-    }
+    // if ( ! fs::exists( buf ) ) {
+    //     LOG_INFO( buf << " does not exist" );
+    //     delete e;
+    //     return;
+    // }
 
     DBG( "lri process icon " << e->entry << " " << e->filename 
          << " chooser " << e->chooser );
@@ -688,6 +705,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   configFilename += "mrViewer.favorites";
 
+  
   selectionType = type;
   filenameEnterCallback = filenameTabCallback = false;
   sortMethod = SORT_NAME;
@@ -3052,6 +3070,11 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
     case ENTRY_SEQUENCE:
       break;
     }
+
+  if ( entryPopup.size() == 0 )
+  {
+      return 1;
+  }
 
   // add the programmable context handlers
   for( unsigned int i = 0; i < contextHandlers.size(); i++ )
