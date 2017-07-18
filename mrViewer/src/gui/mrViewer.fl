@@ -904,7 +904,7 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {16 10 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudAttributes {
-                label {Attributes}
+                label Attributes
                 user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {272 11 20 20} align 8 box UP_BOX
               }
@@ -1759,7 +1759,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading open
+            label Loading
             xywh {15 16 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -1784,7 +1784,7 @@ uiICC_float_profile->do_callback();}
               xywh {12 226 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
-                label {Auto load images as they change on disk} selected
+                label {Auto load images as they change on disk}
                 tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.}
                 xywh {20 25 25 25} box UP_BOX value 1
               }
@@ -1795,7 +1795,7 @@ uiICC_float_profile->do_callback();}
             xywh {15 22 424 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
-              label Driver open
+              label Driver
               xywh {78 37 290 25} box THIN_DOWN_BOX
             } {
               {fltk::Item} {} {
@@ -1813,35 +1813,7 @@ uiICC_float_profile->do_callback();}
               }
             }
             {fltk::Group} {} {open
-              xywh {43 272 325 65} box ROUNDED_BOX
-            } {
-              {fltk::Choice} uiPrefsBlendMode {
-                label {Blend Mode}
-                user_data uiMain user_data_type {ViewerUI*}
-                tooltip {OpenGL blend compositing mode.
-Traditional:
-SC x SA + DC x ( 1 - SA)
-Premult:
-SC + DC x ( 1 - SA )
-where SC is source color, SA is source alpha, and DC is destination color.}
-                xywh {132 25 167 25} box THIN_DOWN_BOX
-              } {
-                {fltk::Item} {} {
-                  label Traditional
-                  }
-                {fltk::Item} {} {
-                  label Premult
-                  }
-                {fltk::Item} {} {
-                  label {Traditional No Gamma}
-                  }
-                {fltk::Item} {} {
-                  label {Premult No Gamma}
-                  }
-              }
-            }
-            {fltk::Group} {} {open
-              xywh {47 182 321 72} box ROUNDED_BOX
+              xywh {47 190 321 72} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsYUVConversion {
                 label {YUV Conversion}
@@ -1866,7 +1838,7 @@ Use File YUV Hint will take the value from the movie being loaded if the data is
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
 Unspecified is your standard computer translation of YUV.
 BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
-                xywh {142 35 167 25} box THIN_DOWN_BOX
+                xywh {141 30 167 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Use File YUV Hint}
@@ -1880,6 +1852,47 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
                 {fltk::Item} {} {
                   label {Always use BT470BG / SMPTE170M}
                   }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label Compositing open
+            xywh {14 24 424 361} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {open
+              xywh {58 172 320 65} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiPrefsBlendMode {
+                label {Blend Mode}
+                user_data uiMain user_data_type {ViewerUI*} open
+                tooltip {OpenGL blend compositing mode.
+Traditional:
+SC x SA + DC x ( 1 - SA)
+Premult:
+SC + DC x ( 1 - SA )
+where SC is source color, SA is source alpha, and DC is destination color.}
+                xywh {142 20 167 25} box THIN_DOWN_BOX
+              } {
+                {fltk::Item} {} {
+                  label Traditional
+                  }
+                {fltk::Item} {} {
+                  label Premult
+                  }
+                {fltk::Item} {} {
+                  label {Traditional No Gamma}
+                  }
+                {fltk::Item} {} {
+                  label {Premult No Gamma}
+                  }
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {57 97 321 65} box ROUNDED_BOX
+            } {
+              {fltk::LightButton} uiPrefsResizeBackground {
+                label {Resize Background to Match Foreground} selected
+                xywh {25 20 275 30}
               }
             }
           }
@@ -1931,7 +1944,7 @@ else
             }
           }
           {fltk::Group} {} {
-            label Subtitles open
+            label Subtitles
             xywh {14 23 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsSubtitleFont {
@@ -1959,7 +1972,7 @@ for (int i = 0; i < numfonts; i++)
             } {}
           }
           {fltk::Group} {} {
-            label Errors open
+            label Errors
             xywh {14 24 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -2081,13 +2094,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );} open
+            callback {o->update( v );}
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
@@ -2132,6 +2145,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
             {fltk::Item} {} {
               label Video
+              }
+            {fltk::Item} {} {
+              label Compositing
               }
             {fltk::Item} {} {
               label Audio
@@ -2607,8 +2623,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
