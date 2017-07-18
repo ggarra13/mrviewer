@@ -1422,10 +1422,19 @@ void GLEngine::draw_images( ImageList& images )
       // Handle background image size
       if ( fg != img && stereo == CMedia::kNoStereo )
       {
-          // NOT display_window(frame)
-          const mrv::Recti& dp = fg->display_window();
-          texWidth = dp.w();
-          texHeight = dp.h();
+          mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+          if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
+          {   // DO NOT SCALE BG IMAGE 
+              texWidth = dpw.w();
+              texHeight = dpw.h();
+          }
+          else
+          {
+              // NOT display_window(frame)
+              const mrv::Recti& dp = fg->display_window();
+              texWidth = dp.w();
+              texHeight = dp.h();
+          }
       }
       else
       {
@@ -1441,7 +1450,7 @@ void GLEngine::draw_images( ImageList& images )
       set_matrix( flip, false );
 
       mrv::Recti dp = fg->display_window();
-      if ( flip )
+      if ( flip && !_view->vr() )
       {
           float x = 0.0f, y = 0.0f;
           if ( flip & ImageView::kFlipVertical )   x = (float) -dp.w();
