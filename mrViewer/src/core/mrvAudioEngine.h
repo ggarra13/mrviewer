@@ -121,6 +121,8 @@ class ViewerUI;
     // Name of audio engine
     virtual const char* name() = 0;
 
+    virtual void buffers( int num ) {}
+      
     // Open an audio stream for playback
     virtual bool open( 
 		      const unsigned int channels,
