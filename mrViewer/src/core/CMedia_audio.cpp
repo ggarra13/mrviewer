@@ -1701,6 +1701,13 @@ bool CMedia::open_audio( const short channels,
      format = AudioEngine::kS16LSB;
   }
 
+  if ( _fps > 100.0 || _audio_ctx->channels == 1 )
+  {
+      // At this speed, we consume buffers really fast.  Use more buffers
+      // This fixes a bug in Windows where sound would not play.
+      // On Linux, this does nothing.
+      _audio_engine->buffers( 16 );
+  }
 
   AVSampleFormat ft = AudioEngine::ffmpeg_format( format );
   unsigned bps = av_get_bytes_per_sample( ft ) * 8;
