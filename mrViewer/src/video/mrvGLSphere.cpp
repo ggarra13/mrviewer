@@ -310,10 +310,22 @@ GLSphere::~GLSphere()
         sp->_rotX += x;
     }
 
+    {
+        ImageView::FlipDirection f = v->flip();
+        if ( f )
+        {
+            float x = 1.0f, y = 1.0f;
+            if ( f & ImageView::kFlipVertical )   x = -1.0f;
+            if ( f & ImageView::kFlipHorizontal ) y = -1.0f;
+            glScalef( x, y, 1.0f );
+        }
+    }
+    
     glRotated( _rotX, 1, 0, 0 );
     glRotated( _rotY, 0, 1, 0 );
     glRotated( 90.0, 1, 0, 0 );
 
+    
     gluSphere( qObj, 1.0f, 30, 30 );
 
     if ( _shader )
