@@ -754,11 +754,15 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences video( base, "video" );
     video.get( "stereo_right_eye_inverted", tmp, 0 );
     uiPrefs->uiPrefsStereoRightEyeInverted->value(tmp);
-    video.get( "blend_mode", tmp, 0 );
-    uiPrefs->uiPrefsBlendMode->value(tmp);
     video.get( "yuv_hint", tmp, 0 );
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
+    
+    fltk::Preferences comp( base, "compositing" );
+    comp.get( "blend_mode", tmp, 0 );
+    uiPrefs->uiPrefsBlendMode->value(tmp);
+    comp.get( "resize_bg", tmp, 1 );
+    uiPrefs->uiPrefsResizeBackground->value(tmp);
 
     fltk::Preferences subtitles( base, "subtitles" );
     subtitles.get( "font", tmpS, "Arial", 2048 );
@@ -1279,9 +1283,12 @@ static const char* kCLocale = "C";
     fltk::Preferences video( base, "video" );
     video.set( "stereo_right_eye_inverted", 
                (int) uiPrefs->uiPrefsStereoRightEyeInverted->value() );
-    video.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
     video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
 
+    fltk::Preferences comp( base, "compositing" );
+    comp.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
+    comp.set( "resize_bg", (int) uiPrefs->uiPrefsResizeBackground->value() );
+    
     //
     // Audio prefs
     //
