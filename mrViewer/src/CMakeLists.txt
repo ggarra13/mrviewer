@@ -74,9 +74,10 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     # 
     # ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 ) 
     # ADD_DEFINITIONS( -DLINUX -msse -fdiagnostics-color=always  ) 
+    #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread ) 
     ADD_DEFINITIONS( -DLINUX -msse -w ) 
     SET(OS_LIBRARIES
-      asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
+      asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m 
       )
 
     
