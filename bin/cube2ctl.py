@@ -42,6 +42,7 @@ except (IOError, OSError) as e:
     sys.stderr.write( '\n' )
     exit(-1)
 
+title = 'Unknown title'
 lut1d = False
 size = [32, 32, 32]
 lines2 = []
@@ -123,19 +124,19 @@ if lut1d:
     for x in range(0, size):
         m = re.search( r'^\s*([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)\s+([-+]?[\d\.eE\+-]+)',
                            lines[x] )
-        r.append( float(m.group(1)) / maxValueSpline )
-        g.append( float(m.group(2)) / maxValueSpline )
-        b.append( float(m.group(3)) / maxValueSpline )
+        r.append( '%g' % (float(m.group(1)) / maxValueSpline ))
+        g.append( '%g' % (float(m.group(2)) / maxValueSpline ))
+        b.append( '%g' % (float(m.group(3)) / maxValueSpline ))
 
-    out.write( 'const float splineR[%d] = { ' )
+    out.write( 'const float splineR[%d] = { ' % size )
     out.write( ', '.join(r) )
     out.write( '};\n\n' )
     
-    out.write( 'const float splineG[%d] = { ' )
+    out.write( 'const float splineG[%d] = { ' % size )
     out.write( ', '.join(g) )
     out.write( '};\n\n' )
     
-    out.write( 'const float splineB[%d] = { ' )
+    out.write( 'const float splineB[%d] = { ' % size )
     out.write( ', '.join(b) )
     out.write( '};\n\n' )
 
@@ -149,12 +150,12 @@ void main( varying float rIn,
            output varying float bOut,
            output varying float aOut )
 {
-    rOut = lookup1D( splineR, #{rmin}, #{rmax}, rIn );
-    gOut = lookup1D( splineG, #{gmin}, #{gmax}, gIn );
-    bOut = lookup1D( splineB, #{bmin}, #{bmax}, bIn );
+    rOut = lookup1D( splineR, %g, %g, rIn );
+    gOut = lookup1D( splineG, %g, %g, gIn );
+    bOut = lookup1D( splineB, %g, %g, bIn );
     aOut = aIn;
 }
-''')
+''' % ( rgbmin[0], rgbmax[0], rgbmin[1], rgbmax[1], rgbmin[2], rgbmax[2] ) )
 
 else:
     
