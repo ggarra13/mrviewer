@@ -58,6 +58,7 @@ using namespace std;
 #include "core/aviImage.h"
 #include "core/mrvThread.h"
 #include "core/mrvI8N.h"
+#include "gui/mrvTimecode.h"
 #include "gui/mrvIO.h"
 
 
@@ -629,7 +630,8 @@ static void destroyPixels( Buffers& bufs )
     }
 }
 
-static void save_attribute( MagickWand* wand, 
+static void save_attribute( const CMedia* img,
+                            MagickWand* wand, 
                             const CMedia::Attributes::const_iterator& i )
 {
     char buf[256];
@@ -924,19 +926,14 @@ static void save_attribute( MagickWand* wand,
         dynamic_cast< Imf::TimeCodeAttribute* >( i->second );
         if ( attr )
         {
-            const Imf::TimeCode& t = attr->value();
-            if ( t.dropFrame() )
-            {
-                sprintf( buf, "%02d;%02d;%02d;%02d", 
-                         t.hours(), t.minutes(), t.seconds(),
-                         t.frame() );
-            }
-            else
-            {
-                sprintf( buf, "%02d:%02d:%02d:%02d", 
-                         t.hours(), t.minutes(), t.seconds(),
-                         t.frame() );
-            }
+            Imf::TimeCode t( attr->value() );
+
+            mrv::Timecode::Display d = mrv::Timecode::kTimecodeNonDrop;
+            if ( t.dropFrame() ) d = mrv::Timecode::kTimecodeDropFrame;
+            char buf[64];
+            mrv::Timecode::format( buf, d, img->frame(), img->timecode(),
+                                   img->fps(), true );
+            
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
@@ -1394,7 +1391,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         Attributes::const_iterator e = _attrs.end();
         for ( ; i != e; ++i )
         {
-            save_attribute( wand, i );
+            save_attribute( this, wand, i );
         }
 
         char buf[32];
