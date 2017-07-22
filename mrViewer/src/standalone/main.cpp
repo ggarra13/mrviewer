@@ -311,7 +311,7 @@ int main( int argc, char** argv )
      
           }
 
-          Imf::staticInitialize();
+          // Imf::staticInitialize();
           MagickWandGenesis();
 
       // mrv::open_license( argv[0] );
@@ -401,7 +401,7 @@ int main( int argc, char** argv )
   }
   
   MagickWandTerminus();
-  Imf::staticUninitialize();
+  // Imf::staticUninitialize();
 
   return ok;
 }
