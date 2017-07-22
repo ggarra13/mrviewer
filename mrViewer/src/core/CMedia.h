@@ -934,18 +934,18 @@ class CMedia
     virtual DecodeStatus decode_subtitle( const boost::int64_t frame );
 
 
-    float eye_separation() const { return _eye_separation; }
-    void eye_separation(float b) { _eye_separation = b; refresh(); }
+    inline float eye_separation() const { return _eye_separation; }
+    inline void eye_separation(float b) { _eye_separation = b; refresh(); }
 
-    Barrier* stereo_barrier()     {
+    inline Barrier* stereo_barrier()     {
         if (_right_eye && _stereo_output != kNoStereo)
             return _right_eye->_stereo_barrier;
         return _stereo_barrier;
     }
-    Barrier* loop_barrier()       { return _loop_barrier; }
-    Mutex& video_mutex()          { return _mutex; };
-    Mutex& audio_mutex()          { return _audio_mutex; };
-    Mutex& subtitle_mutex()       { return _subtitle_mutex; };
+    inline Barrier* loop_barrier()       { return _loop_barrier; }
+    inline Mutex& video_mutex()          { return _mutex; };
+    inline Mutex& audio_mutex()          { return _audio_mutex; };
+    inline Mutex& subtitle_mutex()       { return _subtitle_mutex; };
 
     virtual void clear_packets();
 
