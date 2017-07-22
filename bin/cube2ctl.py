@@ -2,7 +2,7 @@
 
 import argparse, re, sys
 
-VERSION=0.3
+VERSION=0.4
 
 parser = argparse.ArgumentParser(description="CUBE LUT to CTL command-line converter.", epilog='Example: cube2ctl.py tint.cube LMT.tint.ctl')
 parser.add_argument("--maxValueSpline",
