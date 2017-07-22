@@ -90,7 +90,6 @@ namespace
 //#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
-typedef boost::condition_variable Condition;
 
 
 
