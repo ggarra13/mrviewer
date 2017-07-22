@@ -1,3 +1,9 @@
+v3.7.4   - Made saving of frames in OpenEXR save out the
+	   current timecode for the frame instead of the start timecode
+	   for the sequence.
+	 - Bug fixed 1D LUTs in cube2ctl.py.  Previously there were
+	   syntax errors.
+
 v3.7.3   - Made VR360 work in network connections.
 	 - Made VR360 not take so many CPU cycles.  Now it is a light
 	   process.
