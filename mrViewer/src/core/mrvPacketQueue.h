@@ -71,12 +71,12 @@ namespace mrv {
       typedef Packets_t::iterator       iterator;
       typedef Packets_t::const_iterator const_iterator;
       typedef boost::recursive_mutex    Mutex;
-      typedef boost::condition          Condition;
+      typedef boost::condition_variable_any Condition;
       
       static const char* kModule;
  
 
-      PacketQueue() : _bytes(0)
+      inline PacketQueue() : _bytes(0)
       {
       }
 
