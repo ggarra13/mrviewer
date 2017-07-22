@@ -802,6 +802,7 @@ CMedia::~CMedia()
      forw_ctx = NULL;
   }
 
+  flush_audio();
 
   if ( _aframe )
   {

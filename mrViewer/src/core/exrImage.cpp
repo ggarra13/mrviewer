@@ -65,6 +65,7 @@
 #include "core/Sequence.h"
 #include "core/exrImage.h"
 #include "core/mrvImageOpts.h"
+#include "gui/mrvTimecode.h"
 #include "gui/mrvProgressReport.h"
 #include "gui/mrvIO.h"
 
@@ -2479,6 +2480,29 @@ void save_attributes( const CMedia* img, Header& hdr,
         if ( attr )
         {
             Imf::TimeCode t( attr->value() );
+
+            mrv::Timecode::Display d = mrv::Timecode::kTimecodeNonDrop;
+            if ( t.dropFrame() ) d = mrv::Timecode::kTimecodeDropFrame;
+            char buf[64];
+            mrv::Timecode::format( buf, d, img->frame(), img->timecode(),
+                                   img->fps(), true );
+            int hours, minutes, seconds, frames;
+            if ( t.dropFrame() )
+            {
+                sscanf( buf, "%02d;%02d;%02d;%02d",
+                        &hours, &minutes, &seconds, &frames );
+            }
+            else
+            {
+                sscanf( buf, "%02d:%02d:%02d:%02d",
+                        &hours, &minutes, &seconds, &frames );
+            }
+            
+            t.setHours( hours );
+            t.setMinutes( minutes );
+            t.setSeconds( seconds );
+            t.setFrame( frames );
+            
             attrs.insert( N_("timecode") );
             
             Imf::TimeCodeAttribute val(t);
@@ -2505,21 +2529,6 @@ void save_attributes( const CMedia* img, Header& hdr,
     {
         hdr.insert( N_("wrapmodes"), *it->second );
         attrs.insert( _("Wrap Modes") );
-    }
-        
-
-    it = attributes.find( N_( "timecode" ) ); 
-    if ( it != attributes.end() )
-    {
-        Imf::TimeCodeAttribute* attr =
-        dynamic_cast< Imf::TimeCodeAttribute* >( it->second );
-        if ( attr )
-        {
-            Imf::TimeCode key( attr->value() );
-            Imf::TimeCodeAttribute val(key);
-            hdr.insert( N_("timeCode"), val );
-        }
-        attrs.insert( N_("timecode") );
     }
 
     CMedia::Attributes::const_iterator i = attributes.begin();
