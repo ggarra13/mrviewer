@@ -895,7 +895,11 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   previewBtn = new fltk::ToggleButton( 372, 3, 23, 25 );
   previewBtn->image( preview_img );
+#ifdef THREAD_SANITIZER
+  previewBtn->value(false);
+#else
   previewBtn->value(true);
+#endif
   previewBtn->callback( _previewCB, this );
   previewBtn->tooltip( _(previewTTxt.c_str()) );
 
