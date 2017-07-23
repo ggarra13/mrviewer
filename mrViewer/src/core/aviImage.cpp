@@ -3381,6 +3381,7 @@ void aviImage::do_seek()
 
            if ( !_audio_start )
                find_audio( _seek_frame + _audio_offset );
+           _audio_start = false;
        }
        
        if ( has_video() || has_audio() )
