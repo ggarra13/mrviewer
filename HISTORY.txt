@@ -3,6 +3,7 @@ v3.7.4   - Made saving of frames in OpenEXR save out the
 	   for the sequence.
 	 - Bug fixed 1D LUTs in cube2ctl.py.  Previously there were
 	   syntax errors.
+	 - Bug fixed audio scrubbing not working anymore since v3.7.2.
 
 v3.7.3   - Made VR360 work in network connections.
 	 - Made VR360 not take so many CPU cycles.  Now it is a light
