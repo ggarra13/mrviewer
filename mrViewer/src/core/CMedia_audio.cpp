@@ -1483,8 +1483,10 @@ void CMedia::audio_stream( int idx )
 
   if ( _right_eye ) _right_eye->audio_stream(idx);
 
-  if ( idx == _audio_index ) return;
 
+  if ( idx == _audio_index ) {
+      return;
+  }
 
   mrv::PacketQueue::Mutex& am  = _audio_packets.mutex();
   SCOPED_LOCK( am );
@@ -1821,10 +1823,10 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   }
 
-  assert0( result->frame() == frame );
-  assert0( result->size() > 0 );
-  assert0( result->data() != NULL );
-  
+  assert( result->frame() == frame );
+  assert( result->size() > 0 );
+  assert( result->data() != NULL );
+
   bool ok = play_audio( result );
   if ( !ok )
   {
@@ -2178,8 +2180,10 @@ void CMedia::do_seek()
              IMG_ERROR( _("Decode audio error: ") 
                         << decode_error( status ) 
 			<< _(" for frame ") << x );
-         if ( status != kDecodeNoStream && !_audio_start )
+         if ( status != kDecodeNoStream && !_audio_start  )
              find_audio( x );
+         else
+             _audio_start = false;
      }
   }
 
