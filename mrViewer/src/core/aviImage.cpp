@@ -921,7 +921,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
         _dts = _adts = dts;
-        _expected = _expected_audio = _dts;
+        _expected = _expected_audio = _frame_start-1;
         _seek_req = false;
         return true;
     }
@@ -1099,7 +1099,6 @@ void aviImage::store_image( const boost::int64_t frame,
     _interlaced = ( _av_frame->top_field_first ? 
 		    kTopFieldFirst : kBottomFieldFirst );
 
-#if 1
   if ( _images.empty() || _images.back()->frame() < frame )
   {
      _images.push_back( image );
@@ -1108,9 +1107,9 @@ void aviImage::store_image( const boost::int64_t frame,
   {
      video_cache_t::iterator at = std::lower_bound( _images.begin(), 
 						    _images.end(),
-						    pts, 
-						    LessPTSThanFunctor() );
-#endif
+						    frame, 
+						    LessThanFunctor() );
+
 
      // Avoid storing duplicate frames, replace old frame with this one
      if ( at != _images.end() )
