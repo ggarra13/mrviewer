@@ -1,3 +1,7 @@
+v3.7.5   - Bug fixed audio scrubbing not choosing the right frames.
+	   Sorting by the pts of the packet rather than the frame would
+	   not work.
+
 v3.7.4   - Made saving of frames in OpenEXR save out the
 	   current timecode for the frame instead of the start timecode
 	   for the sequence.
