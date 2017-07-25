@@ -85,7 +85,7 @@ struct MoreThanFunctor
   bool operator()( const audio_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
-    return *a > b;
+    return a->frame() > b;
   }
 
   bool operator()( const int64_t a, const image_type_ptr& b ) const
@@ -110,7 +110,7 @@ struct LessThanFunctor
   bool operator()( const audio_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
-    return *a < b;
+    return a->frame() < b;
   }
 
   bool operator()( const int64_t a, const image_type_ptr& b ) const
