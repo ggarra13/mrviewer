@@ -88,7 +88,7 @@ namespace {
 //#undef DBG
 //#define DBG(x) std::cerr << x << std::endl;
 
-// #define DEBUG_AUDIO_PACKETS
+//#define DEBUG_AUDIO_PACKETS
 // #define DEBUG_AUDIO_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
@@ -1286,7 +1286,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   // Make sure audio frames are continous during playback to 
   // accomodate weird sample rates not evenly divisable by frame rate
-  if ( _audio_buf_used != 0 && (!_audio.empty()) )
+  if (  _audio_buf_used != 0 && (!_audio.empty()) )
     {
         int64_t tmp = std::abs(ptsframe - _audio_last_frame);
         if ( tmp >= 0 && tmp <= 10 )
@@ -1294,7 +1294,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
             ptsframe = _audio_last_frame + 1;
         }
     }
-
 
 
 #ifdef DEBUG
@@ -1356,8 +1355,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
 
-      // if ( pkt_temp.size == 0 ) pkt_temp.data = NULL;
-
       if ( audio_size <= 0 ) break;
 
       _audio_buf_used += audio_size;
@@ -1400,13 +1397,15 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
     
-    if ( last == first_frame() )
+    //if ( last == first_frame() )
     {
         if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
         {
             bytes_per_frame = _audio_buf_used;
         }
     }
+
+    //std::cerr << last << " " << bytes_per_frame << std::endl;
 
     // Split audio read into frame chunks
     for (;;)
@@ -1438,17 +1437,17 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
 
         ++last;
 
-// #ifdef DEBUG
-//       if ( got_audio != kDecodeOK )
-//       {
-//           IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
-//                        << _(" last ") << last
-//                        << _(" from ") << frame << _(" used: ") 
-//                        << _audio_buf_used
-//                        << _(" need ") 
-//                        << bytes_per_frame );
-//       }
-// #endif
+#ifdef DEBUG
+      if ( got_audio != kDecodeOK )
+      {
+          IMG_WARNING( N_("Did not fill audio frame ") << audio_frame 
+                       << N_(" last ") << last
+                       << N_(" from ") << frame << N_(" used: ") 
+                       << _audio_buf_used
+                       << N_(" need ") 
+                       << bytes_per_frame );
+      }
+#endif
     }
   
 
