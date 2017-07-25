@@ -1397,7 +1397,7 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
     
-    //if ( last == first_frame() )
+    if ( last == first_frame() || playback() == kStopped )
     {
         if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
         {
