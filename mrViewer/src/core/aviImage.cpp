@@ -921,6 +921,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
         _dts = _adts = dts;
+        // Set the expected to an impossible frame
         _expected = _expected_audio = _frame_start-1;
         _seek_req = false;
         return true;
