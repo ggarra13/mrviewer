@@ -4675,11 +4675,6 @@ int ImageView::keyUp(unsigned int key)
 {
   if ( key == fltk::LeftAltKey ) 
     {
-        if ( _playback == CMedia::kScrubbing ) 
-	{
-            _playback = CMedia::kStopped;
-	}
-
       flags &= ~kLeftAlt;
       flags &= ~kZoom;
       return 1;
@@ -6977,8 +6972,7 @@ void ImageView::play_backwards()
 
 void ImageView::thumbnails()
 {
-    if ( playback() != CMedia::kStopped &&
-         playback() != CMedia::kScrubbing ) return;
+    if ( playback() != CMedia::kStopped ) return;
 
 
   mrv::media fg = foreground();
