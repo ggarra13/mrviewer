@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-07-26 10:03-0300\n"
+"POT-Creation-Date: 2017-07-26 13:10-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:645 core/aviImage.cpp:1933
+#: core/CMedia_audio.cpp:645 core/aviImage.cpp:1931
 msgid ""
 "\n"
 "\n"
@@ -100,7 +100,7 @@ msgstr "- error de decodificacion del cuadro de audio "
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
-#: core/aviImage.cpp:2359
+#: core/aviImage.cpp:2357
 msgid " Could not open file"
 msgstr " No pude abrir el archivo avi"
 
@@ -116,7 +116,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " Load Sequence on Drag&&Drop"
 msgstr " Cargar secuencia en Drag&&Drop"
 
-#: core/aviImage.cpp:1950
+#: core/aviImage.cpp:1948
 msgid " No audio or video stream in file"
 msgstr " No hay audio o video en el archivo"
 
@@ -169,7 +169,7 @@ msgstr " falló. "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2181 core/aviImage.cpp:3393
+#: core/CMedia_audio.cpp:2181 core/aviImage.cpp:3391
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -193,7 +193,7 @@ msgstr " frecuencia: "
 msgid " has different display window than "
 msgstr "  tiene diferente ventana de vista que "
 
-#: core/aviImage.cpp:1565
+#: core/aviImage.cpp:1563
 msgid " instead"
 msgstr " en remplazo"
 
@@ -201,7 +201,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1817 core/aviImage.cpp:1570
+#: core/CMedia_audio.cpp:1817 core/aviImage.cpp:1568
 msgid " not found"
 msgstr " no encontrado"
 
@@ -209,11 +209,11 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrada en el carrete"
 
-#: core/aviImage.cpp:1564
+#: core/aviImage.cpp:1562
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:3545
+#: core/aviImage.cpp:3543
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -221,7 +221,7 @@ msgstr " no soportado aún"
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3407
+#: core/aviImage.cpp:3405
 msgid " status: "
 msgstr " estatus: "
 
@@ -233,11 +233,11 @@ msgstr " a "
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:1300
+#: core/aviImage.cpp:1298
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1539
+#: core/aviImage.cpp:1537
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -353,7 +353,7 @@ msgstr "Transformación de Render"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1540
+#: core/aviImage.cpp:1538
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -1081,7 +1081,7 @@ msgid "Audio"
 msgstr "Audio"
 
 #
-#: core/CMedia_audio.cpp:740 core/aviImage.cpp:2291 core/aviImage_save.cpp:403
+#: core/CMedia_audio.cpp:740 core/aviImage.cpp:2289 core/aviImage_save.cpp:403
 #: core/aviImage_save.cpp:872
 msgid "Audio "
 msgstr "Audio "
@@ -1734,7 +1734,7 @@ msgstr "No pude alojar pista"
 msgid "Could not allocate thumbnail buffer"
 msgstr "No pude reservar buffer de dibujo de miniatura"
 
-#: core/aviImage.cpp:1249
+#: core/aviImage.cpp:1247
 msgid "Could not clone subtitle frame"
 msgstr "No pude clonar cuadro de subtítulos"
 
@@ -1742,7 +1742,7 @@ msgstr "No pude clonar cuadro de subtítulos"
 msgid "Could not copy context to parameters"
 msgstr "No pude copiar el contexto a los parámetros"
 
-#: core/aviImage.cpp:632 core/aviImage.cpp:1844
+#: core/aviImage.cpp:632 core/aviImage.cpp:1842
 msgid "Could not copy parameters to context"
 msgstr "No pude copiar los parámetros al contexto de codec"
 
@@ -1771,7 +1771,7 @@ msgstr "No pude crear dibujo en miniatura para '"
 msgid "Could not create wand"
 msgstr "No pude crear varita"
 
-#: core/aviImage.cpp:1299
+#: core/aviImage.cpp:1297
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video "
 
@@ -2527,11 +2527,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2179 core/aviImage.cpp:3391
+#: core/CMedia_audio.cpp:2179 core/aviImage.cpp:3389
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3405
+#: core/aviImage.cpp:3403
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2823,11 +2823,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:2884
+#: core/aviImage.cpp:2882
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2901 core/aviImage.cpp:3754
+#: core/aviImage.cpp:2899 core/aviImage.cpp:3752
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -2868,7 +2868,7 @@ msgstr "Error mientras se convertia el audio: "
 msgid "Error while encoding video frame: "
 msgstr "Error codificando el cuadro de video: "
 
-#: core/aviImage.cpp:1229
+#: core/aviImage.cpp:1227
 msgid "Error while feeding the filtergraph"
 msgstr "Error alimentando la gráfica de filtros"
 
@@ -3725,7 +3725,7 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
-#: core/aviImage.cpp:1609
+#: core/aviImage.cpp:1607
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
@@ -4960,12 +4960,12 @@ msgstr "Problema con azulejo"
 msgid "Profile"
 msgstr "Perfil"
 
-#: core/aviImage.cpp:2283
+#: core/aviImage.cpp:2281
 #, c-format
 msgid "Program %d "
 msgstr "Programa %d "
 
-#: core/aviImage.cpp:2279
+#: core/aviImage.cpp:2277
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programa %d: %s"
@@ -5778,7 +5778,7 @@ msgstr "Pista de Subtítulo #%d"
 msgid "Subtitle Streams"
 msgstr "Pistas de Subtítulo"
 
-#: core/aviImage.cpp:3544
+#: core/aviImage.cpp:3542
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -6426,7 +6426,7 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2255
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2253
 #: gui/mrvImageInformation.cpp:1991 video/mrvGLEngine.cpp:167
 #: video/mrvGLEngine.cpp:170 video/mrvGLEngine.cpp:173
 msgid "Unknown"
@@ -6476,7 +6476,7 @@ msgstr "Tipo de dato desconocido para clave '"
 msgid "Unknown data type to convert to string"
 msgstr "Tipo de dato desconocido para convertir de texto"
 
-#: core/aviImage.cpp:1732
+#: core/aviImage.cpp:1730
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -6654,7 +6654,7 @@ msgstr "Versión:\t"
 msgid "Video"
 msgstr "Vídeo"
 
-#: core/aviImage.cpp:2297 core/aviImage_save.cpp:871 core/aviImage_save.cpp:887
+#: core/aviImage.cpp:2295 core/aviImage_save.cpp:871 core/aviImage_save.cpp:887
 msgid "Video "
 msgstr "Vídeo "
 
@@ -6671,7 +6671,7 @@ msgstr "Pista de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
-#: core/aviImage.cpp:1537
+#: core/aviImage.cpp:1535
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -7092,7 +7092,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2808
+#: core/aviImage.cpp:2806
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -7278,7 +7278,7 @@ msgstr "avcodec_context_from_parameters falló para el video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context falló para el audio"
 
-#: core/aviImage.cpp:1420
+#: core/aviImage.cpp:1418
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
@@ -7323,7 +7323,7 @@ msgstr "doblaje"
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1563 core/aviImage.cpp:1570
+#: core/aviImage.cpp:1561 core/aviImage.cpp:1568
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
