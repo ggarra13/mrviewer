@@ -1189,15 +1189,21 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          if ( ptsframe == AV_NOPTS_VALUE )
          {
              ptsframe = pkt->pts;
+             if ( ptsframe == AV_NOPTS_VALUE )
+             {
+                 ptsframe = pkt->dts;
+             }
          }
-         if ( ptsframe == AV_NOPTS_VALUE )
+
+         if ( playback() != kStopped && pkt->dts != AV_NOPTS_VALUE &&
+              pkt->dts < ptsframe  )
          {
              ptsframe = pkt->dts;
          }
 
-
          // needed for some corrupt movies
          _av_frame->pts = ptsframe;
+
 
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
