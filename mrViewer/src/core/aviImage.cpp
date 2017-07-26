@@ -1195,14 +1195,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              ptsframe = pkt->dts;
          }
 
-         // This is a workaround for bgc.sub.dub.ogm
-         if ( playback() != kStopped && pkt->dts != AV_NOPTS_VALUE &&
-              pkt->dts < ptsframe )
-         {
-             // IMG_WARNING( _("Packet dts is invalid: ") << pkt->dts
-             //              << " < " << ptsframe );
-             ptsframe = pkt->dts;
-         }
 
          // needed for some corrupt movies
          _av_frame->pts = ptsframe;
