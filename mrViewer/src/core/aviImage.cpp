@@ -1188,12 +1188,25 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          
          if ( ptsframe == AV_NOPTS_VALUE )
          {
-             ptsframe = _av_frame->pkt_dts;
+             ptsframe = pkt->pts;
+         }
+         if ( ptsframe == AV_NOPTS_VALUE )
+         {
+             ptsframe = pkt->dts;
+         }
+
+         // This is a workaround for bgc.sub.dub.ogm
+         if ( playback() != kStopped && pkt->dts != AV_NOPTS_VALUE &&
+              pkt->dts < ptsframe )
+         {
+             // IMG_WARNING( _("Packet dts is invalid: ") << pkt->dts
+             //              << " < " << ptsframe );
+             ptsframe = pkt->dts;
          }
 
          // needed for some corrupt movies
          _av_frame->pts = ptsframe;
-         
+
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
          {
@@ -1272,7 +1285,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status == kDecodeOK )
   {
-      store_image( ptsframe, pkt.dts );
+      store_image( ptsframe, _av_frame->pts );
       av_frame_unref(_av_frame);
       av_frame_unref(_filt_frame);
       if ( ( stopped() || saving() ) && ptsframe != frame &&
@@ -2761,15 +2774,15 @@ bool aviImage::frame( const boost::int64_t f )
   return ok;
 }
 
-CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& pktframe,
+CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& ptsframe,
                                                const boost::int64_t& frame,
                                                const AVPacket& pkt )
 {
     //boost::int64_t oldpktframe = pktframe;
-    CMedia::DecodeStatus status = decode_video_packet( pktframe, frame, pkt );
-    if ( status == kDecodeOK && !in_video_store(pktframe) )
+    CMedia::DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
+    if ( status == kDecodeOK && !in_video_store(ptsframe) )
     {
-        store_image( pktframe, pkt.dts );
+        store_image( ptsframe, _av_frame->pts );
     }
     av_frame_unref(_av_frame);
     av_frame_unref(_filt_frame);
@@ -3258,7 +3271,7 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
 	if ( f == frame )  std::cerr << "S";
 	if ( f == _dts )   std::cerr << "D";
 	if ( f == _frame ) std::cerr << "F";
-	std::cerr << f << " ";
+	std::cerr << f << " (" << (*iter)->pts() << ") ";
      }
      std::cerr << endl;
   }
