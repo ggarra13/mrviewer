@@ -1195,6 +1195,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              }
          }
 
+         // The following is a work around for bug in decoding
+         // bgc.sub.dub.ogm
          if ( playback() != kStopped && pkt->dts != AV_NOPTS_VALUE &&
               pkt->dts < ptsframe  )
          {
