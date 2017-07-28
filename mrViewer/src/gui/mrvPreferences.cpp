@@ -484,6 +484,12 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiWindowXPosition->value( tmp );
     win.get("y_position", tmp, 0 );
     uiPrefs->uiWindowYPosition->value( tmp );
+    win.get("fixed_size", tmp, 0 );
+    uiPrefs->uiWindowFixedSize->value( (bool) tmp );
+    win.get("x_size", tmp, 640 );
+    uiPrefs->uiWindowXSize->value( tmp );
+    win.get("y_size", tmp, 530 );
+    uiPrefs->uiWindowYSize->value( tmp );
 
     fltk::Preferences flu( ui, "file_requester" );
     flu.get("quick_folder_travel", tmp, 1 );
@@ -1064,6 +1070,12 @@ static const char* kCLocale = "C";
        int y = int(uiPrefs->uiWindowYPosition->value());
        main->uiMain->position( x, y );
     }
+    if ( uiPrefs->uiWindowFixedSize->value() )
+    {
+       int x = int(uiPrefs->uiWindowXSize->value());
+       int y = int(uiPrefs->uiWindowYSize->value());
+       main->uiMain->resize( x, y );
+    }
 
     //
     // Handle FPS
@@ -1229,6 +1241,9 @@ static const char* kCLocale = "C";
        win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
        win.set("x_position", uiPrefs->uiWindowXPosition->value() );
        win.set("y_position", uiPrefs->uiWindowYPosition->value() );
+       win.set("fixed_size", uiPrefs->uiWindowFixedSize->value() );
+       win.set("x_size", uiPrefs->uiWindowXSize->value() );
+       win.set("y_size", uiPrefs->uiWindowYSize->value() );
     }
 
     //
