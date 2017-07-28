@@ -664,15 +664,15 @@ o->label( o->child( o->value() )->label() );}
         xywh {867 612 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings open
+          label Settings
           xywh {218 24 452 400}
         } {
           {fltk::Group} {} {
-            label {User Interface}
-            xywh {13 22 426 364} align 5 box EMBOSSED_BOX labelsize 14
+            label {User Interface} open
+            xywh {13 22 424 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Window Behavior} open
+              label {Window Behavior}
               xywh {9 44 410 100} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAlwaysOnTop {
@@ -691,7 +691,7 @@ If you try to open several mrViewers with different images, all these images wil
                 tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.}
                 xywh {24 67 20 25} align 8 box UP_BOX value 1
               }
-              {fltk::Group} uiPrefsOpenMode {open
+              {fltk::Group} uiPrefsOpenMode {
                 xywh {197 9 150 81} box UP_BOX
               } {
                 {fltk::RadioButton} {} {
@@ -712,7 +712,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label {UI Elements} open
+              label {UI Elements}
               xywh {9 196 410 123} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
@@ -774,7 +774,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           {fltk::Group} {} {
             label {View Window}
-            xywh {15 22 424 377} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 422 377} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -869,7 +869,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
             {fltk::Group} uiPrefsHud {
               label HUD
-              user_data this user_data_type {mrv::PreferencesUI*} open
+              user_data this user_data_type {mrv::PreferencesUI*}
               tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.}
               xywh {15 187 397 122} box UP_BOX
             } {
@@ -929,27 +929,10 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {273 62 20 20} align 8 box UP_BOX
               }
             }
-            {fltk::Group} {} {
-              label Positioning open
-              xywh {18 324 355 40} box ROUNDED_BOX
-            } {
-              {fltk::CheckButton} uiWindowFixedPosition {
-                label {Fixed Position}
-                xywh {20 10 100 20} box UP_BOX
-              }
-              {fltk::ValueInput} uiWindowXPosition {
-                label {X:}
-                xywh {180 5 60 25}
-              }
-              {fltk::ValueInput} uiWindowYPosition {
-                label {Y:}
-                xywh {260 5 60 25}
-              }
-            }
           }
           {fltk::Group} {} {
             label Colors
-            xywh {15 22 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 422 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label UI open
@@ -1056,7 +1039,7 @@ v->refresh();}
           }
           {fltk::Group} {} {
             label {File Requester}
-            xywh {13 22 424 361} align 5 hide box EMBOSSED_BOX
+            xywh {13 22 422 361} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
               label {Single Click to Travel Drawers}
@@ -1068,9 +1051,55 @@ v->refresh();}
               xywh {61 64 25 25} box UP_BOX
             }
           }
+          {fltk::Group} {} {
+            label Positioning open
+            xywh {12 25 427 375} hide box EMBOSSED_BOX
+          } {
+            {fltk::Group} {} {open
+              xywh {22 36 355 40} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiWindowFixedPosition {
+                label {Fixed Position}
+                xywh {25 15 100 20} box UP_BOX
+              }
+              {fltk::ValueInput} uiWindowXPosition {
+                label {X:}
+                xywh {185 10 60 25}
+              }
+              {fltk::ValueInput} uiWindowYPosition {
+                label {Y:}
+                xywh {265 10 60 25}
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {20 106 355 45} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiWindowFixedSize {
+                label {Fixed Size}
+                xywh {30 15 100 20} box UP_BOX
+              }
+              {fltk::ValueInput} uiWindowXSize {
+                label {X:}
+                xywh {190 10 60 25} minimum 640 maximum 4096 step 1 value 640
+              }
+              {fltk::ValueInput} uiWindowYSize {
+                label {Y:}
+                xywh {270 10 60 25} minimum 480 maximum 3680 step 1 value 480
+              }
+            }
+            {fltk::Button} {} {
+              label {Take Current Window Values}
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {uiWindowXPosition->value( v->uiMain->x() );
+uiWindowYPosition->value( v->uiMain->y() );
+uiWindowXSize->value( v->uiMain->w() );
+uiWindowYSize->value( v->uiMain->h() );} selected
+              xywh {20 176 355 40}
+            }
+          }
           {fltk::Group} Playback {
             label Playback
-            xywh {15 21 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 21 422 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1186,7 +1215,7 @@ uiPrefsFPS->value( g );}
           }
           {fltk::Group} {} {
             label Caches
-            xywh {13 22 424 364} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 422 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1242,7 +1271,7 @@ This setting thus allows caching more pictures in memory for float and half pict
           }
           {fltk::Group} {} {
             label {3D Luts}
-            xywh {13 25 424 366} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 25 422 366} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
@@ -1384,7 +1413,7 @@ The "No Baking" setting performs the color correction on the image directly inst
           }
           {fltk::Group} {} {
             label {CTL Paths}
-            xywh {15 22 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 422 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
@@ -1397,7 +1426,7 @@ The "No Baking" setting performs the color correction on the image directly inst
           }
           {fltk::Group} {} {
             label {Default Output Device Transform (ODT)}
-            xywh {15 22 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 422 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Display open
@@ -1573,7 +1602,7 @@ uiODT_ICC_profile->do_callback();}
           }
           {fltk::Group} {} {
             label {Default Rendering Transform (RT)}
-            xywh {15 22 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 422 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
               label {Render Transforms}
@@ -1760,7 +1789,7 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Loading
-            xywh {15 16 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 16 422 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {12 45 400 84} box ROUNDED_BOX
@@ -1792,7 +1821,7 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Video
-            xywh {15 22 424 361} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 422 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver
@@ -1856,8 +1885,8 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
             }
           }
           {fltk::Group} {} {
-            label Compositing open
-            xywh {14 24 424 361} align 5 box EMBOSSED_BOX labelsize 14
+            label Compositing
+            xywh {14 24 422 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {58 172 320 65} box ROUNDED_BOX
@@ -1891,14 +1920,14 @@ where SC is source color, SA is source alpha, and DC is destination color.}
               xywh {57 97 321 65} box ROUNDED_BOX
             } {
               {fltk::LightButton} uiPrefsResizeBackground {
-                label {Resize Background to Match Foreground} selected
+                label {Resize Background to Match Foreground}
                 xywh {25 20 275 30}
               }
             }
           }
           {fltk::Group} {} {
             label Audio
-            xywh {13 22 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsAudioDevice {
               label Device
@@ -1945,7 +1974,7 @@ else
           }
           {fltk::Group} {} {
             label Subtitles
-            xywh {14 23 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {14 23 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsSubtitleFont {
               label Font
@@ -1973,7 +2002,7 @@ for (int i = 0; i < numfonts; i++)
           }
           {fltk::Group} {} {
             label Errors
-            xywh {14 24 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {14 24 423 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {43 32 355 227} box ENGRAVED_BOX
@@ -1997,7 +2026,7 @@ for (int i = 0; i < numfonts; i++)
           {fltk::Group} {} {
             label Images
             tooltip {Options controlling the OpenEXR reader/writer}
-            xywh {12 24 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {12 24 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Saving open
@@ -2018,7 +2047,7 @@ for (int i = 0; i < numfonts; i++)
           {fltk::Group} {} {
             label OpenEXR open
             tooltip {Options controlling the OpenEXR reader/writer}
-            xywh {13 23 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 23 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Loading
@@ -2094,18 +2123,18 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface}
+              label {User Interface} open
               vertical value 1
             } {
               {fltk::ItemGroup} {} {
@@ -2118,6 +2147,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
               {fltk::Item} {} {
                 label {File Requester}
+                }
+              {fltk::Item} {} {
+                label Positioning
                 }
             }
             {fltk::Item} {} {
@@ -2166,8 +2198,8 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
           }
         }
-        {fltk::Group} {} {open
-          xywh {223 419 426 31}
+        {fltk::Group} {} {
+          xywh {223 419 424 31}
         } {
           {fltk::Button} {} {
             label Revert
