@@ -6457,10 +6457,11 @@ void ImageView::resize_main_window()
   if ( posY < miny )     posY = miny;
   
   if ( w < 640 )  w = 640;
-  if ( h < 550 )  h = 550;
+  if ( h < 530 )  h = 530;
 
   //  std::cerr << "posY " << posY << " " << h << std::endl;
   //  std::cerr << "minY " << miny << " " << maxh << std::endl;
+
   
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
