@@ -245,7 +245,15 @@ void client::handle_connect(const boost::system::error_code& ec,
 
       connected = true;
 
-      ui->uiView->_clients.push_back( this );
+      {
+          mrv::ImageView* v = ui->uiView;
+
+          Mutex& m = v->_clients_mtx;
+          SCOPED_LOCK( m );
+
+          v->_clients.push_back( this );
+      }
+
       ui->uiConnection->uiServerGroup->deactivate();
       ui->uiConnection->uiConnect->label( _("Disconnect") );
 
