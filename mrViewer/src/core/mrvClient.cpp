@@ -155,6 +155,32 @@ void client::stop()
    socket_.close(ignored_ec);
    deadline_.cancel();
    non_empty_output_queue_.cancel();
+
+   if ( ui && ui->uiView )
+   {
+       Mutex& m = ui->uiView->_clients_mtx;
+       SCOPED_LOCK( m );
+       
+       ParserList& v = ui->uiView->_clients;
+       ParserList::iterator i = v.begin();
+       ParserList::iterator e = v.end();
+
+       for ( ; i != e; ++i )
+       {
+           if ( *i == this )
+           {
+               LOG_CONN( _("Removed client ") << this );
+               v.erase( i );
+               break;
+           }
+       }
+   
+       if ( ui->uiConnection )
+       {
+           ui->uiConnection->uiServerGroup->activate();
+           ui->uiConnection->uiConnect->label( _("Connect") );
+       }
+   }
 }
 
 
@@ -459,7 +485,7 @@ void client_thread( const ServerData* s )
     
     size_t runs = io_service.run();
 
-
+    
    }
    catch (const std::exception& e)
    {
