@@ -495,6 +495,7 @@ class server;
       
      public:
       bool           _broadcast;
+      CMedia::Mutex  _clients_mtx;
       ParserList     _clients;
       tcp_server_ptr _server;
 
