@@ -451,6 +451,9 @@ void client::remove( mrv::ViewerUI* ui )
     
     mrv::ImageView* v = ui->uiView;
 
+    Mutex& m = v->_clients_mtx;
+    SCOPED_LOCK( m );
+    
    ParserList::iterator i = v->_clients.begin();
    ParserList::iterator e = v->_clients.end();
 
