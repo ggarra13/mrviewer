@@ -87,6 +87,7 @@ const char* const kModule = "parser";
 
 namespace mrv {
 
+typedef CMedia::Mutex Mutex;
 
 Parser::Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v ) :
 connected( false ),
@@ -107,18 +108,19 @@ void Parser::write( const std::string& s, const std::string& id )
 
    ParserList::const_iterator i = ui->uiView->_clients.begin();
    ParserList::const_iterator e = ui->uiView->_clients.end();
-
+   
    for ( ; i != e; ++i )
    {
        try
        {
+           if ( !(*i)->socket_.is_open() ) continue;
            std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
       
            if ( p == id )
            {
                continue;
            }
-      // LOG_CONN( s << " sent to " << *i << " " << p );
+           // LOG_CONN( s << " sent to " << *i << " " << p );
            (*i)->deliver( s );
        }
        catch( const std::exception& e )
@@ -168,6 +170,9 @@ bool Parser::parse( const std::string& s )
    bool ok = false;
 
    mrv::ImageView* v = view();
+
+   Mutex& cmtx = v->_clients_mtx;
+   SCOPED_LOCK( cmtx );
    
    ParserList c = v->_clients;
    v->_clients.clear();
@@ -1399,6 +1404,10 @@ void tcp_session::stop()
    if ( ui && ui->uiView )
    {
        mrv::ImageView* v = ui->uiView;
+
+       Mutex& m = v->_clients_mtx;
+       SCOPED_LOCK( m );
+       
        ParserList::iterator i = v->_clients.begin();
        ParserList::iterator e = v->_clients.end();
 
@@ -1406,6 +1415,7 @@ void tcp_session::stop()
        {
            if ( *i == this )
            {
+               LOG_CONN( _("Removed client ") << this );
                v->_clients.erase( i );
                break;
            }
@@ -1700,9 +1710,14 @@ void server::create(mrv::ViewerUI* ui)
 void server::remove( mrv::ViewerUI* ui )
 {
     if ( !ui || !ui->uiView ) return;
-    
-    mrv::ImageView* v = ui->uiView;
 
+    using namespace mrv;
+    
+    ImageView* v = ui->uiView;
+
+    Mutex& m = v->_clients_mtx;
+    SCOPED_LOCK( m );
+    
    ParserList::iterator i = v->_clients.begin();
    ParserList::iterator e = v->_clients.end();
 
