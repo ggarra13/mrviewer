@@ -1501,7 +1501,6 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
    }
    else
    {
-       LOG_ERROR( "handle_read " << ec );
        stop();
    }
 }
