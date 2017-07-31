@@ -3,6 +3,8 @@ v3.7.6   - Added a Positioning tab to Preferences.  In it, you can set
 	   opens in the same place and at the same size.
 	 - Added a button to take the position and size parameters from
 	   the current settings in the view window.
+	 - Removed crashes on network connections when the server is
+	   closed.
 
 v3.7.5   - Bug fixed audio scrubbing not choosing the right frames.
 	   Sorting by the pts of the packet rather than the frame would
