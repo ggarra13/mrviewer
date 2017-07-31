@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-07-31 13:09-0300\n"
+"POT-Creation-Date: 2017-07-31 13:18-0300\n"
 "PO-Revision-Date: 2017-06-18 09:59-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -1499,7 +1499,7 @@ msgstr "Borrar el Cache de la Imagen"
 msgid "Client"
 msgstr "Cliente"
 
-#: core/mrvClient.cpp:495
+#: core/mrvClient.cpp:503
 msgid "Client Exception: "
 msgstr "Excepción del cliente: "
 
@@ -1533,7 +1533,7 @@ msgstr ""
 "Resolución: %dx%d"
 
 #
-#: core/mrvServer.cpp:1762
+#: core/mrvServer.cpp:1774
 msgid "Closed server at port "
 msgstr "Cerré el servidor en el puerto "
 
@@ -1638,7 +1638,7 @@ msgstr "Compresión a usar cuando se graba un exr."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-87-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:905
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-87-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3510
-#: core/mrvClient.cpp:181 core/mrvClient.cpp:468
+#: core/mrvClient.cpp:181 core/mrvClient.cpp:476
 msgid "Connect"
 msgstr "Conectar"
 
@@ -2236,7 +2236,7 @@ msgstr "Código de País"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-87-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:895
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-87-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3494
-#: core/mrvServer.cpp:1731
+#: core/mrvServer.cpp:1743
 msgid "Create"
 msgstr "Crear"
 
@@ -2312,7 +2312,7 @@ msgstr "Fecha Creado"
 msgid "Created Time"
 msgstr "Tiempo Creado"
 
-#: core/mrvServer.cpp:1759
+#: core/mrvServer.cpp:1771
 msgid "Created server at port "
 msgstr "Creé un servidor en el puerto "
 
@@ -2668,7 +2668,7 @@ msgstr ""
 "Resolución: %dx%d\n"
 "Cuadros: %<PRId64>-%<PRId64> CPS %g"
 
-#: core/mrvClient.cpp:250 core/mrvServer.cpp:1756
+#: core/mrvClient.cpp:258 core/mrvServer.cpp:1768
 msgid "Disconnect"
 msgstr "Desconectar"
 
@@ -2856,7 +2856,7 @@ msgstr "Error configurando la gráfica de filtros"
 msgid "Error occurred when opening output file: "
 msgstr "Un error ocurrió al abrir el archivo de salida: "
 
-#: core/mrvClient.cpp:399
+#: core/mrvClient.cpp:407
 msgid "Error on send: "
 msgstr ""
 
@@ -4772,11 +4772,11 @@ msgstr "Pintar"
 msgid "Paint Tools"
 msgstr "Herramientas de Pintar"
 
-#: core/mrvClient.cpp:324
+#: core/mrvClient.cpp:332
 msgid "Parse failure "
 msgstr "Análisis gramatical falló "
 
-#: core/mrvClient.cpp:328
+#: core/mrvClient.cpp:336
 msgid "Parse std failure "
 msgstr "Fallo de análisis gramatical standard "
 
@@ -5209,7 +5209,7 @@ msgstr "Remover Metadata IPTC"
 msgid "Remove current image from reel."
 msgstr "Borré la imagen actual del carrete."
 
-#: core/mrvClient.cpp:172 core/mrvServer.cpp:1418
+#: core/mrvClient.cpp:172 core/mrvServer.cpp:1430
 msgid "Removed client "
 msgstr "Borré el cliente "
 
@@ -6524,7 +6524,7 @@ msgstr "Error Desconocido"
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
-#: core/mrvClient.cpp:332
+#: core/mrvClient.cpp:340
 msgid "Unknown exception thrown"
 msgstr "Excepción desconocida arrojada"
 
