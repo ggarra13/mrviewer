@@ -106,8 +106,13 @@ void Parser::write( const std::string& s, const std::string& id )
         return;
     }
 
-   ParserList::const_iterator i = ui->uiView->_clients.begin();
-   ParserList::const_iterator e = ui->uiView->_clients.end();
+    mrv::ImageView* v = view();
+    
+    Mutex& m = v->_clients_mtx;
+    SCOPED_LOCK( m );
+
+   ParserList::const_iterator i = v->_clients.begin();
+   ParserList::const_iterator e = v->_clients.end();
    
    for ( ; i != e; ++i )
    {
@@ -1357,8 +1362,15 @@ void tcp_session::start()
 {
    connected = true;
 
-   ui->uiView->_clients.push_back( this );
+   mrv::ImageView* v = view();
 
+   {
+       Mutex& m = v->_clients_mtx;
+       SCOPED_LOCK( m );
+   
+       v->_clients.push_back( this );
+   }
+   
    start_read();
    
    //	std::cerr << "start1: " << socket_.native_handle() << std::endl;
