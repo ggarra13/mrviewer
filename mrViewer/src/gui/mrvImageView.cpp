@@ -5615,7 +5615,7 @@ void ImageView::channel( unsigned short c )
         std::string temp2 = oldChannel.substr( 0, pos2 );
         if ( temp1 != temp2 || ( oext != "R" && oext != "G" &&
                                  oext != "B" && oext != "A") ) {
-           ext = "";
+            ext = "";
         }
      }
   }
@@ -5636,6 +5636,7 @@ void ImageView::channel( unsigned short c )
   // When changing channels, the cache may get thrown away.  Reflect that
   // in the timeline.
   timeline()->redraw();
+  _reel = 0;
 
   smart_refresh();
 }
