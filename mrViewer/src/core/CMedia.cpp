@@ -1773,9 +1773,7 @@ void CMedia::channel( const char* c )
         if ( _channel ) ch2 = _channel;
 
         // If stereo not set, don't fetch anything.
-        if ( ((_channel == NULL && _right_eye ) || 
-              ch2.find(_("stereo")) != std::string::npos ||
-              ch2.find(_("anaglyph")) != std::string::npos ) &&
+        if ( _channel == NULL && _right_eye &&
              _stereo_output != kNoStereo ) to_fetch = false;
         else
         {
@@ -1786,7 +1784,7 @@ void CMedia::channel( const char* c )
             {
                 ext = ch.substr( pos+1, ch.size() );
                 ch = ch.substr( 0, pos );
-                if ( ( ext == "Z" || ext.size() > 1 ) ) ch += "." + ext;
+                if ( ext.size() > 1 ) ch += '.' + ext;
             }
 
             pos = ch2.rfind( '.' );
@@ -1794,12 +1792,49 @@ void CMedia::channel( const char* c )
             {
                 ext2 = ch2.substr( pos+1, ch2.size() );
                 ch2 = ch2.substr( 0, pos );
-                if ( ( ext2 == "Z" || ext2.size() > 1 ) ) ch2 += "." + ext2;
+                if ( ext2.size() > 1 ) ch2 += '.' + ext2;
             }
 
-            if ( ch2.find(ch) != 0 || ext == "Z" || ext2 == "Z" ||
-                 ch.find(ch2) != 0 || _channel == NULL || c == NULL)
+            //
+            // Compare root name of layer to be more than 3 letters, to avoid
+            // #0 N.N.Z (for example) from triggering a recache.
+            //
+            std::string chl = ch;
+            pos = ch.find( '#' );
+            if ( pos == 0 )
+            {
+                pos = ch.find( ' ' );
+                chl = ch.substr( pos+1, ch.size() );
+                pos = chl.find( '.' );
+                if ( pos != std::string::npos )
+                {
+                    chl = chl.substr( 0, pos-1 );
+                }
+            }
+            
+            std::string chl2 = ch2;
+            pos = ch2.find( '#' );
+            if ( pos == 0 )
+            {
+                pos = ch2.find( ' ' );
+                chl2 = ch2.substr( pos+1, ch2.size() ); 
+                pos = chl2.find( '.' );
+                if ( pos != std::string::npos )
+                {
+                    chl2 = chl2.substr( 0, pos-1 );
+                }
+            }
+            
+            if ( ( ch.find(ch2) == std::string::npos &&
+                   ch2.find(ch) == std::string::npos ) ||
+                 ( ext == "Z" && chl.size() > 1 ) ||
+                 ( ext2 == "Z" && chl2.size() > 1 ) ||
+                 _channel == NULL || c == NULL)
+            {
+                // To fetch Z channel, we must make it part of the channel name
+                if ( ext == "Z" ) ch += '.' + ext;
                 to_fetch = true;
+            }
         }
     }
     
