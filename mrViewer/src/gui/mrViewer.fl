@@ -356,7 +356,8 @@ main_ = main;}
       code {return main_;} {}
     }
   }
-  class AboutUI {} {
+  class AboutUI {selected
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -664,7 +665,7 @@ o->label( o->child( o->value() )->label() );}
         xywh {867 612 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings
+          label Settings open
           xywh {218 24 452 400}
         } {
           {fltk::Group} {} {
@@ -1053,13 +1054,14 @@ v->refresh();}
           }
           {fltk::Group} {} {
             label Positioning open
-            xywh {12 25 427 375} hide box EMBOSSED_BOX
+            xywh {12 25 427 375} box EMBOSSED_BOX
           } {
             {fltk::Group} {} {open
               xywh {22 36 355 40} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiWindowFixedPosition {
                 label {Fixed Position}
+                tooltip {When this option is set, mrViewer will open in the position you set here (except if the window goes out of the Desktop).}
                 xywh {25 15 100 20} box UP_BOX
               }
               {fltk::ValueInput} uiWindowXPosition {
@@ -1076,14 +1078,15 @@ v->refresh();}
             } {
               {fltk::CheckButton} uiWindowFixedSize {
                 label {Fixed Size}
+                tooltip {When this option is on, mrViewer will always open to the size you set in W and H.}
                 xywh {30 15 100 20} box UP_BOX
               }
               {fltk::ValueInput} uiWindowXSize {
-                label {X:}
+                label {W:}
                 xywh {190 10 60 25} minimum 640 maximum 4096 step 1 value 640
               }
               {fltk::ValueInput} uiWindowYSize {
-                label {Y:}
+                label {H:}
                 xywh {270 10 60 25} minimum 480 maximum 3680 step 1 value 480
               }
             }
@@ -1093,7 +1096,7 @@ v->refresh();}
               callback {uiWindowXPosition->value( v->uiMain->x() );
 uiWindowYPosition->value( v->uiMain->y() );
 uiWindowXSize->value( v->uiMain->w() );
-uiWindowYSize->value( v->uiMain->h() );} selected
+uiWindowYSize->value( v->uiMain->h() );}
               xywh {20 176 355 40}
             }
           }
@@ -2123,7 +2126,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -2134,11 +2137,11 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface} open
+              label {User Interface}
               vertical value 1
             } {
               {fltk::ItemGroup} {} {
-                label {View Window} open
+                label {View Window}
                 vertical
               } {
                 {fltk::Item} {} {

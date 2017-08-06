@@ -1,7 +1,11 @@
 v3.7.7   - Preload cache now works when changing channels.  Previously,
-	   the cache would not get loaded.
-	 - Cache is smarter to not reload changes on X,Y,Z or U,V,W or
-	   S, T.
+	   the cache would not get reloaded.
+	 - Cache is smart enough to not reload channel changes to
+	   U, V, W or R, G, B, A or X, Y, Z (albeit Z channel sometimes
+	   may trigger a reload).
+	 - Preferences->Positioning: Fixed Size will now keep the size of
+	   the window even when loading a large image.
+	   Same with Fixed Position.  It will keep the window position.
 
 v3.7.6   - Added a Positioning tab to Preferences.  In it, you can set
 	   the position and size of the view window so that it always
