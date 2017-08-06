@@ -1702,7 +1702,7 @@ bool CMedia::open_audio( const short channels,
      format = AudioEngine::kS16LSB;
   }
 
-  if ( _fps > 100.0 || _audio_ctx->channels == 1 )
+  if ( _fps > 100.0 )
   {
       // At this speed, we consume buffers really fast.  Use more buffers
       // This fixes a bug in Windows where sound would not play.
