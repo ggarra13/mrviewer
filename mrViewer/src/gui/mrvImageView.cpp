@@ -6425,6 +6425,19 @@ void ImageView::resize_main_window()
   if ( uiMain->uiBottomBar->visible() )
     h += uiMain->uiBottomBar->h();
 
+  PreferencesUI* uiPrefs = uiMain->uiPrefs;
+  if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
+  {
+      posX = (int) uiPrefs->uiWindowXPosition->value();
+      posY = (int) uiPrefs->uiWindowYPosition->value();
+  }
+  
+  if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
+  {
+      w = (int) uiPrefs->uiWindowXSize->value();
+      h = (int) uiPrefs->uiWindowYSize->value();
+  }
+  
 #ifdef _WIN32
   const unsigned kBorders = 8;
   const unsigned kMenus = 30;
@@ -6462,7 +6475,6 @@ void ImageView::resize_main_window()
 
   //  std::cerr << "posY " << posY << " " << h << std::endl;
   //  std::cerr << "minY " << miny << " " << maxh << std::endl;
-
   
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
