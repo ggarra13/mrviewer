@@ -654,6 +654,8 @@ static void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
     CMedia::Attributes& attrs = img->attributes();
     add_attribute( attrs, img );
     info->refresh();
+    ViewerUI* ui = info->main();
+    ui->uiView->redraw();
     delete w;
 }
 
@@ -841,6 +843,8 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
     }
 
     img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
+    ViewerUI* ui = info->main();
+    ui->uiView->redraw();
 }
 
 // Update int slider from int input
