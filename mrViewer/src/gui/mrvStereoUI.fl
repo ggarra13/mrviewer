@@ -37,9 +37,9 @@ namespace mrv {open
         user_data this user_data_type {mrv::StereoUI*}
         callback {v->main()->uiView->send_network( "StereoOptions 0" );
 o->hide();} open
-        xywh {757 587 280 160} hide resizable
+        xywh {757 671 280 160} resizable
         extra_code {main_ = main;
-o->child_of( (fltk::Window*)main->uiMain );}
+o->child_of( (fltk::Window*)main->uiMain );} visible
       } {
         {fltk::Choice} uiStereoInput {
           label Input
@@ -132,12 +132,31 @@ else
             label {Cyan/red glasses}
             }
         }
-        {fltk::LightButton} uiVR360 {
-          label {VR 360}
+        {fltk::LightButton} uiVR360Sphere {
+          label {VR 360 Sphere}
           user_data main user_data_type {ViewerUI*}
-          callback {v->uiView->vr( o->value() );} selected
+          callback {ImageView::VRType t = ImageView::kNoVR;
+if ( o->value() ) {
+  t = ImageView::kVRSphericalMap;
+  uiVR360Cube->value(0);
+}
+v->uiView->vr( t );
+v->uiView->redraw();} selected
           tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.}
-          xywh {110 20 80 30}
+          xywh {10 20 135 30}
+        }
+        {fltk::LightButton} uiVR360Cube {
+          label {VR 360 Cube}
+          user_data main user_data_type {ViewerUI*}
+          callback {ImageView::VRType t = ImageView::kNoVR;
+if ( o->value() ) {
+  t = ImageView::kVRCubeMap;
+  uiVR360Sphere->value(0);
+}
+v->uiView->vr( t );
+v->uiView->redraw();}
+          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.}
+          xywh {150 20 105 30}
         }
       }
     }
