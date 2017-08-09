@@ -945,7 +945,7 @@ _old_fg_frame( 0 ),
 _old_bg_frame( 0 ),
 _reel( 0 ),
 _idle_callback( false ),
-_vr( false ),
+_vr( kNoVR ),
 _event( 0 ),
 _timeout( NULL ),
 _old_fg( NULL ),
@@ -1986,7 +1986,7 @@ void static_preload( mrv::ImageView* v )
     v->preload();
 }
 
-void ImageView::vr( bool t )
+void ImageView::vr( VRType t )
 {
     _vr = t;
     valid(0);
@@ -2009,8 +2009,17 @@ void ImageView::vr( bool t )
     
     redraw();
     
-    char buf[16];
-    sprintf( buf, "VR %d", t );
+    char buf[32];
+    if ( t == kVRSphericalMap )
+        sprintf( buf, "VRSpherical 1" );
+    else if ( t == kVRCubeMap )
+        sprintf( buf, "VRCubic 1" );
+    else
+    {
+        sprintf( buf, "VRSpherical 0" );
+        send_network( buf );
+        sprintf( buf, "VRCubic 0" );
+    }
     send_network( buf );
 }
 
