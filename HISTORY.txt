@@ -1,4 +1,7 @@
 v3.7.8   - Removed filtering on VR 360 Cube to avoid seams.
+	 - Fixed rotation of VR360 cube/sphere when a background image was
+	   present and then turned off.  Previously, the geometry would get
+	   the rotation wrong.  Also, the code is now faster.
 
 v3.7.7   - Preload cache now works when changing channels.  Previously,
 	   the cache would not get refreshed.
@@ -13,7 +16,7 @@ v3.7.7   - Preload cache now works when changing channels.  Previously,
 	 - Added a first pass at VR 360 Cube Map.  You can find it in
 	   the Stereo 3D Options panel.  This setting takes a
 	   strip of 6 images as OpenEXR uses and maps them onto a cube,
-	   similar to VR360 Spherical.  Note that there are currently
+	   similar to VR360 Sphere.  Note that there are currently
 	   seams in the edges of the cube map.
 
 v3.7.6   - Added a Positioning tab to Preferences.  In it, you can set
