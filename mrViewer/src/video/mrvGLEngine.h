@@ -159,7 +159,10 @@ namespace mrv {
                                const double th,
                                const char* name = 0 );
 
-    /// Allocate a number of quads
+    /// Allocate a number of cube maps
+    void alloc_cubes( size_t num );
+      
+    /// Allocate a number of spherical maps
     void alloc_spheres( size_t num );
       
     /// Allocate a number of quads
@@ -203,7 +206,7 @@ namespace mrv {
       float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
 
       GLuint id, rid;
-      bool    vr;
+      ImageView::VRType    vr;
       float   vr_angle;
       double  _rotX, _rotY; // Sphere start rotation
       QuadList  _quads;
