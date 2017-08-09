@@ -87,6 +87,7 @@
 #include "video/mrvGLEngine.h"
 #include "video/mrvGLQuad.h"
 #include "video/mrvGLSphere.h"
+#include "video/mrvGLCube.h"
 #include "video/mrvGLLut3d.h"
 
 #undef TRACE
@@ -516,8 +517,11 @@ void GLEngine::initialize()
   _pow2Textures      = !GLEW_ARB_texture_non_power_of_two;
   _fboRenderBuffer   = ( GLEW_ARB_framebuffer_object != GL_FALSE );
 
-  if ( _view->vr() )
+  ImageView::VRType t = _view->vr();
+  if ( t == ImageView::kVRSphericalMap )
       alloc_spheres( 4 );
+  else if ( t == ImageView::kVRCubeMap )
+      alloc_cubes( 4 );
   else
       alloc_quads( 4 );
 
@@ -1208,6 +1212,8 @@ double GLEngine::rot_y() const
     QuadList::const_iterator e = _quads.end();
     for ( ; i != e; ++i )
     {
+        mrv::GLCube* c = dynamic_cast< mrv::GLCube* >( *i );
+        if ( c ) return c->rot_y();
         mrv::GLSphere* s = dynamic_cast< mrv::GLSphere* >( *i );
         if ( !s ) continue;
         return s->rot_y();
@@ -1221,6 +1227,8 @@ double GLEngine::rot_x() const
     QuadList::const_iterator e = _quads.end();
     for ( ; i != e; ++i )
     {
+        mrv::GLCube* c = dynamic_cast< mrv::GLCube* >( *i );
+        if ( c ) return c->rot_x();
         mrv::GLSphere* s = dynamic_cast< mrv::GLSphere* >( *i );
         if ( !s ) continue;
         return s->rot_x();
@@ -1238,6 +1246,19 @@ void GLEngine::rot_x( double t )
 void GLEngine::rot_y( double t )
 {
     _rotY = t;
+}
+
+void GLEngine::alloc_cubes( size_t num )
+{
+  size_t num_quads = _quads.size();
+  _quads.reserve( num );
+  for ( size_t q = num_quads; q < num; ++q )
+    {
+      mrv::GLCube* s = new mrv::GLCube( _view );
+      s->rot_x( _rotX );
+      s->rot_y( _rotY );
+      _quads.push_back( s );
+    }
 }
 
 void GLEngine::alloc_spheres( size_t num )
@@ -1364,9 +1385,20 @@ void GLEngine::draw_images( ImageList& images )
   size_t num = _quads.size();
   if ( num_quads > num )
     {
-        if ( _view->vr() )
+        ImageView::VRType t = _view->vr();
+        if ( t == ImageView::kVRSphericalMap )
         {
             alloc_spheres( num_quads );
+            for ( i = images.begin(); i != e; ++i )
+            {
+                const Image_ptr& img = *i;
+                img->image_damage( img->image_damage() |
+                                   CMedia::kDamageContents );
+            }
+        }
+        else if ( t == ImageView::kVRCubeMap )
+        {
+            alloc_cubes( num_quads );
             for ( i = images.begin(); i != e; ++i )
             {
                 const Image_ptr& img = *i;
@@ -2545,7 +2577,7 @@ GLEngine::GLEngine(const mrv::ImageView* v) :
 DrawEngine( v ),
 texWidth( 0 ),
 texHeight( 0 ),
-vr( false ),
+vr( ImageView::kNoVR ),
 vr_angle( 45.0 ),
 _rotX( 0.0 ),
 _rotY( 0.0 )
