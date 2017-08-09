@@ -290,25 +290,8 @@ GLCube::~GLCube()
 
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
-    GLCube* sp = const_cast< GLCube* >( this );
-    ImageView* v = const_cast< ImageView* >( _view );
-    double x = _view->spin_x();
-    double y = _view->spin_y();
-    if ( x >= 1000.0 )  // dummy value used to reset view
     {
-        v->spin_x( 0.0 );
-        v->spin_y( 0.0 );
-        sp->_rotY = 0.0;
-        sp->_rotX = 0.0;
-    }
-    else
-    {
-        sp->_rotY += y;
-        sp->_rotX += x;
-    }
-
-    {
-        ImageView::FlipDirection f = v->flip();
+        ImageView::FlipDirection f = _view->flip();
         if ( f )
         {
             float x = 1.0f, y = 1.0f;
