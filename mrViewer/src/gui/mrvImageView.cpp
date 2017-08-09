@@ -4312,7 +4312,9 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( vr() )
         {
-            spinx = 2000.0; // >= 1000.0 resets rotation in mrvGLSphere.cpp
+            spinx = 2000.0; // >= 1000.0 resets rotation in mrvGLSphere/Cube.cpp
+            redraw();
+            return 1;
         }
         center_image();
         return 1;
