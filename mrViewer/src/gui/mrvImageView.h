@@ -137,6 +137,11 @@ class server;
       kBlendPremultNonGamma = 3,
     };
 
+      enum VRType {
+      kNoVR = 0,
+      kVRSphericalMap,
+      kVRCubeMap,
+      };
 
   public:
     ImageView(int X, int Y, int W, int H, const char *l=0);
@@ -351,8 +356,8 @@ class server;
     void audio_stream( unsigned int idx );
 
       ///
-      void vr( bool t );
-      bool vr() const { return _vr; }
+      void vr( VRType t );
+      VRType vr() const { return _vr; }
 
       float vr_angle() const;
       void vr_angle( const float t );
@@ -639,7 +644,7 @@ class server;
       unsigned    _reel;
       bool        _idle_callback;
 
-      bool        _vr;  // Spherical VR 360
+      VRType        _vr;  // Cube/Spherical VR 360
       
       ////////////////////////////////////////////////
       // Events needed to be handled in main thread
