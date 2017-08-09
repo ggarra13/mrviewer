@@ -1,5 +1,7 @@
+v3.7.8   - Removed filtering on VR 360 Cube to avoid seams.
+
 v3.7.7   - Preload cache now works when changing channels.  Previously,
-	   the cache would not get reloaded.
+	   the cache would not get refreshed.
 	 - Cache is smart enough to not reload channel changes to
 	   U, V, W or R, G, B, A or X, Y, Z (albeit Z channel sometimes
 	   may trigger a reload).
@@ -8,6 +10,11 @@ v3.7.7   - Preload cache now works when changing channels.  Previously,
 	   Same with Fixed Position.  It will keep the window position.
 	 - Made Add Attribute refresh the view window.  This updates
 	   things like the timecode HUD display.
+	 - Added a first pass at VR 360 Cube Map.  You can find it in
+	   the Stereo 3D Options panel.  This setting takes a
+	   strip of 6 images as OpenEXR uses and maps them onto a cube,
+	   similar to VR360 Spherical.  Note that there are currently
+	   seams in the edges of the cube map.
 
 v3.7.6   - Added a Positioning tab to Preferences.  In it, you can set
 	   the position and size of the view window so that it always
