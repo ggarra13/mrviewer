@@ -236,6 +236,7 @@ SET( SOURCES
   video/mrvGLShader.cpp
   video/mrvGLQuad.cpp
   video/mrvGLSphere.cpp
+  video/mrvGLCube.cpp
   video/mrvGLLut3d.cpp
   video/mrvGLShape.cpp
 
