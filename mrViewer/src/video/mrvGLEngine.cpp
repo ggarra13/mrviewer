@@ -546,7 +546,7 @@ void GLEngine::reset_view_matrix()
     }
     
     ImageView* view = const_cast< ImageView* >( _view );
-    if (! view->vr() )
+    if ( view->vr() == ImageView::kNoVR )
     {
         CHECK_GL;
         view->ortho();
@@ -558,13 +558,10 @@ void GLEngine::reset_view_matrix()
         unsigned w = _view->w();
         unsigned h = _view->h();
         glLoadIdentity();
-  CHECK_GL;
         glViewport(0, 0, w, h);
-  CHECK_GL;
         gluPerspective( vr_angle, (float)w / (float)h, 0.1, 3.0);
-  CHECK_GL;
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
-  CHECK_GL;
+        CHECK_GL;
     }
   
     // Makes gl a tad faster
@@ -1208,32 +1205,12 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
 double GLEngine::rot_y() const
 {
-    QuadList::const_iterator i = _quads.begin();
-    QuadList::const_iterator e = _quads.end();
-    for ( ; i != e; ++i )
-    {
-        mrv::GLCube* c = dynamic_cast< mrv::GLCube* >( *i );
-        if ( c ) return c->rot_y();
-        mrv::GLSphere* s = dynamic_cast< mrv::GLSphere* >( *i );
-        if ( !s ) continue;
-        return s->rot_y();
-    }
-    return 0;
+    return _rotY;
 }
 
 double GLEngine::rot_x() const
 {
-    QuadList::const_iterator i = _quads.begin();
-    QuadList::const_iterator e = _quads.end();
-    for ( ; i != e; ++i )
-    {
-        mrv::GLCube* c = dynamic_cast< mrv::GLCube* >( *i );
-        if ( c ) return c->rot_x();
-        mrv::GLSphere* s = dynamic_cast< mrv::GLSphere* >( *i );
-        if ( !s ) continue;
-        return s->rot_x();
-    }
-    return 0;
+    return _rotX;
 }
 
 
@@ -1255,8 +1232,6 @@ void GLEngine::alloc_cubes( size_t num )
   for ( size_t q = num_quads; q < num; ++q )
     {
       mrv::GLCube* s = new mrv::GLCube( _view );
-      s->rot_x( _rotX );
-      s->rot_y( _rotY );
       _quads.push_back( s );
     }
 }
@@ -1268,8 +1243,6 @@ void GLEngine::alloc_spheres( size_t num )
   for ( size_t q = num_quads; q < num; ++q )
     {
       mrv::GLSphere* s = new mrv::GLSphere( _view );
-      s->rot_x( _rotX );
-      s->rot_y( _rotY );
       _quads.push_back( s );
     }
 }
@@ -1389,26 +1362,19 @@ void GLEngine::draw_images( ImageList& images )
         if ( t == ImageView::kVRSphericalMap )
         {
             alloc_spheres( num_quads );
-            for ( i = images.begin(); i != e; ++i )
-            {
-                const Image_ptr& img = *i;
-                img->image_damage( img->image_damage() |
-                                   CMedia::kDamageContents );
-            }
         }
         else if ( t == ImageView::kVRCubeMap )
         {
             alloc_cubes( num_quads );
-            for ( i = images.begin(); i != e; ++i )
-            {
-                const Image_ptr& img = *i;
-                img->image_damage( img->image_damage() |
-                                   CMedia::kDamageContents );
-            }
         }
         else
         {
             alloc_quads( num_quads );
+        }
+        for ( i = images.begin(); i != e; ++i )
+        {
+            const Image_ptr& img = *i;
+            img->image_damage( img->image_damage() | CMedia::kDamageContents );
         }
     }
 
@@ -1419,8 +1385,23 @@ void GLEngine::draw_images( ImageList& images )
 
 
     TRACE( "" );
-  QuadList::iterator q = _quads.begin();
+  
+  double x = _view->spin_x();
+  double y = _view->spin_y();
+  if ( x >= 1000.0 )  // dummy value used to reset view
+  {
+      ImageView* v = const_cast< ImageView* >( _view );
+      v->spin_x( 0.0 );
+      v->spin_y( 0.0 );
+      _rotX = _rotY = 0.0;
+  }
+  else
+  {
+      _rotX += x;
+      _rotY += y;
+  }
 
+  QuadList::iterator q = _quads.begin();
   assert( q != _quads.end() );
 
   e = images.end();
@@ -1436,6 +1417,10 @@ void GLEngine::draw_images( ImageList& images )
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
       if (!pic)  continue;
+
+      GLQuad* const c = *q;
+      c->rot_x( _rotX );
+      c->rot_y( _rotY );
 
       CMedia::StereoOutput stereo = img->stereo_output();
 
