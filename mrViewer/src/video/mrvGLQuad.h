@@ -47,6 +47,11 @@ class GLQuad
     GLQuad( const ImageView* view );
     ~GLQuad();
 
+    virtual void rot_x( double x ) {};
+    virtual void rot_y( double x ) {};
+    virtual double rot_x() const { return 0.0; };
+    virtual double rot_y() const { return 0.0; };
+
     inline void right( bool x ) { _right = x; }
     inline bool right() const { return _right; }
 
