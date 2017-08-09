@@ -571,13 +571,23 @@ bool Parser::parse( const std::string& s )
        ui->uiStartFrame->redraw();
        ok = true;
    }
-   else if ( cmd == N_("VR") )
+   else if ( cmd == N_("VRCubic") )
    {
        bool t;
        is >> t;
        if ( ui->uiStereo )
-           ui->uiStereo->uiVR360->value( t );
-       v->vr( t );
+           ui->uiStereo->uiVR360Cube->value( t );
+       v->vr( ImageView::kVRCubeMap );
+       v->redraw();
+       ok = true;
+   }
+   else if ( cmd == N_("VRSpherical") )
+   {
+       bool t;
+       is >> t;
+       if ( ui->uiStereo )
+           ui->uiStereo->uiVR360Sphere->value( t );
+       v->vr( ImageView::kVRSphericalMap );
        v->redraw();
        ok = true;
    }
@@ -1089,7 +1099,18 @@ bool Parser::parse( const std::string& s )
           cmd += buf;
           deliver( cmd );
 
-          sprintf(buf, N_("VR %d"), v->vr() );
+          ImageView::VRType t = v->vr();
+          if ( t == ImageView::kVRSphericalMap )
+              sprintf(buf, N_("VRSpherical 1"));
+          else if ( t == ImageView::kVRCubeMap )
+              sprintf(buf, N_("VRCubic 1"));
+          else
+          {
+              sprintf(buf, N_("VRSpherical 0"));
+              deliver( buf );
+              sprintf(buf, N_("VRCubic 0"));
+              deliver( buf );
+          }
           deliver( buf );
           
           sprintf(buf, N_("VRangle %g"), v->vr_angle() );
