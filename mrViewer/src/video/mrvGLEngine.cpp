@@ -1418,6 +1418,7 @@ void GLEngine::draw_images( ImageList& images )
       mrv::image_type_ptr pic = img->hires();
       if (!pic)  continue;
 
+      // Handle rotation of cube/sphere
       GLQuad* const c = *q;
       c->rot_x( _rotX );
       c->rot_y( _rotY );
