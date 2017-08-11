@@ -31,7 +31,7 @@ using namespace std;
 #include <cstdio>
 #define __STDC_LIMIT_MACROS
 #include <inttypes.h>
-#include <math.h>
+#include <cmath>
 #ifdef _WIN32
 # include <float.h>
 # define isfinite(x) _finite(x)
