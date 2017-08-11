@@ -2,6 +2,13 @@
 
 require 'optparse'
 
+version, patch, teeny = RUBY_VERSION.split('.').map { |e| e.to_i }
+if version <= 1 and patch <= 8
+  $stderr.puts "The #{$0} script requires ruby1.9 or later."
+  $stderr.puts "Your ruby version is #{RUBY_VERSION}."
+  exit 1
+end
+
 Version=0.3
 
 maxValueSpline = 1.0
