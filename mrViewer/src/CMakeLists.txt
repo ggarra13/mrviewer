@@ -1,5 +1,5 @@
 
-cmake_minimum_required( VERSION 3.1 )
+cmake_minimum_required( VERSION 3.1 FATAL_ERROR )
 
 PROJECT( mrViewer )
 
@@ -75,7 +75,13 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     # ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 ) 
     # ADD_DEFINITIONS( -DLINUX -msse -fdiagnostics-color=always  ) 
     #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread ) 
-    ADD_DEFINITIONS( -DLINUX -msse -w ) 
+    # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11) 
+    # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x) 
+    IF( CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0" )
+      ADD_DEFINITIONS( -DLINUX -msse -w ) 
+    ELSE( CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0" )
+      ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11 ) 
+    ENDIF( CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0" )
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m 
       )
@@ -162,7 +168,6 @@ SET( SOURCES
   core/stubImage.cpp
   core/wandImage.cpp
   core/picImage.cpp
-  # core/magickImage.cpp
 
   core/mrSocket.cpp
   core/mrvClient.cpp
@@ -174,22 +179,16 @@ SET( SOURCES
   core/mrvLicensing.cpp
   core/mrvPacketQueue.cpp
   core/mrvPlayback.cpp
-  # core/mrvScale.cpp
   core/mrvString.cpp
   core/mrvTimer.cpp
   core/mrvACES.cpp
-  # core/generic/mrEvent.cpp
 
-  # core/mrvPC1.cpp
   core/Sequence.cpp
   core/mrStackTrace.cpp
   core/mrvCPU.cpp
   core/mrvColorProfile.cpp
   core/mrvImageOpts.cpp
 
- # db/mrvDatabase.cpp
- # db/mrvPostgreSQL.cpp
-  #   #db/mrvMySQL.cpp # unneeded
 
   gui/FLU/Flu_Combo_Box.cpp      # needed?
   gui/FLU/Flu_Combo_Tree.cpp     # needed?
@@ -198,7 +197,6 @@ SET( SOURCES
   gui/FLU/Flu_File_Chooser.cpp  
   gui/FLU/flu_pixmaps.cpp               
   gui/FLU/GridGroup.cpp
-  #   #   FLU/Flu_Combo_List.cpp # unneeded
 
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
@@ -208,7 +206,6 @@ SET( SOURCES
   gui/mrvCTLBrowser.cpp
   gui/mrvCollapsableGroup.cpp
   gui/mrvColorInfo.cpp
-  # gui/mrvDatabaseBrowser.cpp
   gui/mrvEDLGroup.cpp
   gui/mrvFileRequester.cpp
   gui/mrvFLTKHandler.cpp
