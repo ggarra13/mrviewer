@@ -2,6 +2,8 @@ v3.7.8   - Removed filtering on VR 360 Cube to avoid seams.
 	 - Fixed rotation of VR360 cube/sphere when a background image was
 	   present and then turned off.  Previously, the geometry would get
 	   the rotation wrong.  Also, the code is now faster.
+	 - Added a version check to cube2ctl.rb and 3dl2ctl.rb, as they
+	   require at least v1.9 of ruby.
 
 v3.7.7   - Preload cache now works when changing channels.  Previously,
 	   the cache would not get refreshed.
