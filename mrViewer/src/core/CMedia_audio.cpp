@@ -1692,6 +1692,7 @@ bool CMedia::open_audio( const short channels,
 {
   close_audio();
 
+  DBG("open audio - audio closed" );
 
   AudioEngine::AudioFormat format = AudioEngine::kFloatLSB;
 
@@ -1707,6 +1708,7 @@ bool CMedia::open_audio( const short channels,
       // At this speed, we consume buffers really fast.  Use more buffers
       // This fixes a bug in Windows where sound would not play.
       // On Linux, this does nothing.
+      DBG("16 audio buffers" );
       _audio_engine->buffers( 16 );
   }
 
