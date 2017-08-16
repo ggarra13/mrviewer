@@ -1006,6 +1006,10 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
               size = 96; break;
           case kLut128:
               size = 128; break;
+          case kLut192:
+              size = 192; break;
+          case kLut256:
+              size = 256; break;
           case kNoBake:
               break;
       }
