@@ -32,13 +32,12 @@
 
 #include <iostream>
 
+
 #include "gui/mrvIO.h"
 #include "audio/mrvWaveEngine.h"
 
 #include <mmreg.h>   // for manufacturer and product IDs
 
-#undef assert
-#define assert(x) if ( !(x) ) abort();
 
 namespace 
 {
@@ -47,9 +46,6 @@ namespace
 
 
 namespace mrv {
-
-#define kNUM_BUFFERS 16  // has to be 16 to cope for very fast frame rates
-                         // see IMG_4596.MOV 
 
 #define THROW(x) throw( exception(x) )
 
@@ -455,11 +451,13 @@ inline WAVEHDR* WaveEngine::get_header()
         else
             device -= 1;
 
+        DBG( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
 
 	MMRESULT result = 
 	waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
                     //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
                     0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
+        DBG( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
 	if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
 	  {
 	     if( result == WAVERR_BADFORMAT )
@@ -474,8 +472,8 @@ inline WAVEHDR* WaveEngine::get_header()
 	     {
 		LOG_ERROR( "waveOutOpen invalid flag" );
 	     }
-	    close();
 	    MMerror( "waveOutOpen", result );
+	    close();
 	    _enabled = false;
 	    return false;
 	  }
@@ -484,29 +482,35 @@ inline WAVEHDR* WaveEngine::get_header()
 
 	// Allocate internal sound buffer
 	bytesPerBlock = wavefmt.Format.nBlockAlign * _samples_per_block;
-	unsigned int bytes = _num_buffers * bytesPerBlock;
+        assert( bytesPerBlock > 16 );
+	size_t bytes = _num_buffers * bytesPerBlock;
 	_data = new aligned16_uint8_t[ bytes ];
 	memset( _data, 0, bytes );
+        DBG( "allocated data at " << _data << " bytes " << bytes
+             << " / num " << bytes / _num_buffers);
 
         delete [] _buffer;
         _buffer = new WAVEHDR[ _num_buffers ];
         
+        DBG( "fill headers " << _num_buffers );
+        
 	// Set header memory
-	char* ptr = (char*)_data;
+	uint8_t* ptr = (uint8_t*)_data;
 	for ( unsigned i = 0; i < _num_buffers; ++i )
 	  {
 	    WAVEHDR& hdr = _buffer[i];
 	    memset( &hdr, 0, sizeof(WAVEHDR) );
 
-	    assert( (((unsigned long)ptr) % wavefmt.Format.nBlockAlign) == 0 );
-	    assert( (((unsigned long)ptr) % 16) == 0 );
+	    // assert( ((ptr % wavefmt.Format.nBlockAlign) == 0 );
+	    // assert( ((ptr % 16) == 0 );
 
-	    hdr.lpData  = ptr;
+	    hdr.lpData  = (LPSTR)ptr;
 	    hdr.dwFlags = WHDR_DONE;
 
 	    ptr += bytesPerBlock;
 	  }
 
+        DBG( "enabled ok" );
 	// All okay, enable device
 	_enabled = true;
 	return true;
@@ -611,9 +615,9 @@ inline WAVEHDR* WaveEngine::get_header()
     if ( !_audio_device ) return;
 
     MMRESULT result = waveOutReset( _audio_device );
+    _enabled = false;
     if ( result != MMSYSERR_NOERROR )
       {
-	_enabled = false;
 	MMerror( "waveOutReset", result);
       }
     
