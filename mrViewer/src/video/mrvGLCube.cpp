@@ -150,10 +150,12 @@ GLCube::~GLCube()
         CHECK_GL;
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                        GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                        GL_CLAMP_TO_EDGE);
+
+	GLenum clamp = GL_CLAMP;
+	if ( GLEW_EXT_texture_edge_clamp )
+	  clamp = GL_CLAMP_TO_EDGE;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, clamp );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, clamp );
     }
 
     CHECK_GL;
