@@ -356,8 +356,7 @@ main_ = main;}
       code {return main_;} {}
     }
   }
-  class AboutUI {selected
-  } {
+  class AboutUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -662,14 +661,14 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {867 612 670 450} resizable visible
+        xywh {534 207 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
           xywh {218 24 452 400}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {13 22 424 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1053,8 +1052,8 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label Positioning open
-            xywh {12 25 427 375} box EMBOSSED_BOX
+            label Positioning
+            xywh {12 25 427 375} hide box EMBOSSED_BOX
           } {
             {fltk::Group} {} {open
               xywh {22 36 355 40} box ROUNDED_BOX
@@ -1273,7 +1272,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
+            label {3D Luts} open
             xywh {13 25 422 366} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1349,23 +1348,24 @@ If unsure what this means, keep your display and images setting always using the
               {fltk::Choice} uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();} open
+                callback {v->refresh();} selected
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.  
 
 Size     Memory    Max. Error
-32        1/3 Mb     12.5%
-64          3 Mb      1.6%
-128       24 Mb       0.7%
+32        1/2 Mb     12.5%
+64          4 Mb      1.6%
+128      32 Mb      0.7%
+192      110.5 Mb      0.5%
+256       262 Mb      0.2%
 
-It is recommended this setting is left at 64x64x64.
+It is recommended this setting is left at 64x64x64 or 128x128x128.
 
-The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
 }
                 xywh {120 25 170 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
-                  label {No Baking}
+                  label {No Lut}
                   }
                 {fltk::Item} {} {
                   label 32x32x32
@@ -1378,6 +1378,12 @@ The "No Baking" setting performs the color correction on the image directly inst
                   }
                 {fltk::Item} {} {
                   label 128x128x128
+                  }
+                {fltk::Item} {} {
+                  label 192x192x192
+                  }
+                {fltk::Item} {} {
+                  label 256x256x256
                   }
               }
               {fltk::ValueInput} uiPrefsNumStops {
@@ -2048,7 +2054,7 @@ for (int i = 0; i < numfonts; i++)
             }
           }
           {fltk::Group} {} {
-            label OpenEXR open
+            label OpenEXR
             tooltip {Options controlling the OpenEXR reader/writer}
             xywh {13 23 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
@@ -2126,7 +2132,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
