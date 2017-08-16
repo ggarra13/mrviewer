@@ -95,6 +95,8 @@ namespace mrv {
 	kLut64,
         kLut96,
 	kLut128,
+	kLut192,
+	kLut256,
       };
 
     typedef std::vector< Transform >         Transforms;
