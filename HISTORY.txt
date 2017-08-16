@@ -4,6 +4,12 @@ v3.7.8   - Removed filtering on VR 360 Cube to avoid seams.
 	   the rotation wrong.  Also, the code is now faster.
 	 - Added a version check to cube2ctl.rb and 3dl2ctl.rb, as they
 	   require at least v1.9 of ruby.
+	 - Added 192x192x192 and 256x256x256 to LUT sizes.  The new sizes
+	   consume a lot of memory but they are really accurate.
+	 - Removed a crash on windows on an assert() of audio buffers
+	   being aligned in mrvWaveEngine.cppp.
+	   The assert was wrong as it was casting the pointer to unsigned
+	   long.
 
 v3.7.7   - Preload cache now works when changing channels.  Previously,
 	   the cache would not get refreshed.
