@@ -940,7 +940,7 @@ _showPixelRatio( false ),
 _useLUT( false ),
 _volume( 1.0f ),
 _flip( kFlipNone ),
-_preframe( 1),
+_preframe( 1 ),
 _old_fg_frame( 0 ),
 _old_bg_frame( 0 ),
 _reel( 0 ),
@@ -1709,7 +1709,7 @@ bool ImageView::preload()
     CMedia* img = fg->image();
     if (!img) return false;
 
-
+    // Exit early if we are dealing with a video instead of a sequence
     if ( !img->is_sequence() || img->has_video() ) {
         _preframe = fg->position() + img->duration();
         img = r->image_at( _preframe );
@@ -5648,6 +5648,7 @@ void ImageView::channel( unsigned short c )
   // in the timeline.
   timeline()->redraw();
   _reel = 0;
+  _preframe = 1;
 
   smart_refresh();
 }
