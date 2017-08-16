@@ -594,6 +594,9 @@ void audio_thread( PlaybackData* data )
 
         if ( status == CMedia::kDecodeOK )
         {
+            assert( img != NULL );
+            assert( reel != NULL );
+            assert( timeline != NULL );
             int64_t first, last;
             status = check_loop( frame, img, reel, timeline, first, last );
         }
@@ -689,7 +692,6 @@ void audio_thread( PlaybackData* data )
         if ( !img->stopped() )
         {
             img->find_audio(frame);
-            DBG( "found audio " << frame );
         }
 
         frame += step;
