@@ -2347,11 +2347,11 @@ void CMedia::stop()
   delete _loop_barrier; _loop_barrier = NULL;
   delete _stereo_barrier; _stereo_barrier = NULL;
 
+  close_audio();
+  
   DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
   clear_packets();
-
-  close_audio();
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
