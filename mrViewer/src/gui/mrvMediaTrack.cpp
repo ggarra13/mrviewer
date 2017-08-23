@@ -22,6 +22,7 @@
 #include <fltk/events.h>
 #include <fltk/Cursor.h>
 
+#include "core/mrvI8N.h"
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
@@ -31,7 +32,6 @@
 #include "gui/mrvImageInformation.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvIO.h"
-#include "core/mrvI8N.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
 
@@ -796,7 +796,7 @@ void media_track::draw()
 
           int aw = 0, ah = 0;
           char buf[128];
-          sprintf( buf, _("Offset: %" PRId64 ), offset );
+          sprintf( buf, _("Audio: %" PRId64 ), offset );
           fltk::setfont( textfont(), textsize() );
           fltk::measure( buf, aw, ah );
 
