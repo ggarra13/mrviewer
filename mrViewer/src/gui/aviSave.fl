@@ -6,15 +6,19 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
-decl {\#include <iostream>} {} 
-
-decl {\#include <gui/mrvIO.h>} {public
+decl {\#include <iostream>} {selected
 } 
 
-decl {\#include <mrViewer.h>} {public
+decl {\#include <gui/mrvIO.h>} {selected public
+} 
+
+decl {\#include <mrViewer.h>} {selected public
 } 
 
 decl {\#include "gui/mrvImageView.h"} {public
+} 
+
+decl {\#include "gui/mrvMainWindow.h"} {public
 } 
 
 decl {\#include <string>} {public
@@ -107,10 +111,13 @@ item = p->child(4);
 item->deactivate();
 p->value(3);
 }}
-            tooltip {Codec (encoder) used to encode the movie.  h264 is the preferred codec in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
+            tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
             xywh {120 15 91 26}
-            extra_code {video_codec = "h264";}
+            extra_code {video_codec = "hevc";}
           } {
+            {fltk::Item} {} {
+              label hevc
+              }
             {fltk::Item} {} {
               label h264
               }
@@ -219,7 +226,7 @@ p->value(3);
           }
         }
         {fltk::Group} {} {
-          label {Audio Options} open selected
+          label {Audio Options} open
           xywh {20 369 255 87} box UP_BOX
         } {
           {fltk::Choice} uiAudioCodec {
@@ -292,6 +299,10 @@ v->uiMain->make_exec_return(false);}
     Function {AviSaveUI(const mrv::ViewerUI* main)} {} {
       code {fltk::Window* w = make_window();
 uiFPS->value( main->uiFPS->value() );
+mrv::MainWindow* m = main->uiMain;
+int x = ( m->x() + m->w() - w->w() ) / 2;
+int y = m->y() + 64;
+w->position( x, y );
 w->exec();} {}
     }
   }
