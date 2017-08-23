@@ -9,8 +9,9 @@ export     CTL_ROOT=$DIST
 export TINYXML2_ROOT=$DIST
 
 
-#export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20170404-1229007-win32-shared""
-export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20170711-0780ad9-win32-shared"
+#export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20170404-1229007-win32-shared"
+#export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20170711-0780ad9-win32-shared"
+export FFMPEG_ROOT="$ROOT/dependencies/ffmpeg-20170815-62dfa2b-win32-shared"
 
 
 export  GLUT_ROOT_PATH=$DIST
