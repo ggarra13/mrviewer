@@ -26,6 +26,7 @@
 
 namespace mrv {
 
+  class ViewerUI;
 
 class ImageOpts
 {
@@ -59,7 +60,8 @@ class ImageOpts
     bool ACES_metadata() const { return _ACESmetadata; }
     void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
-    static ImageOpts* build( std::string ext, const bool has_deep_data );
+  static ImageOpts* build( const mrv::ViewerUI* main, std::string ext,
+			   const bool has_deep_data );
 };
 
 
