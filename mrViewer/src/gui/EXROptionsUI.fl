@@ -11,7 +11,11 @@ decl {\#include <iostream>} {}
 decl {\#include <fltk/run.h>} {} 
 
 decl {\#include <gui/mrvPreferences.h>} {public
+}
+
+decl {\#include <gui/mrvMainWindow.h>} {public
 } 
+
 
 decl {\#include <gui/mrvIO.h>} {public
 } 
@@ -29,6 +33,9 @@ decl {\#include <ImfPixelType.h>} {public
 } 
 
 decl {\#include <string>} {public
+} 
+
+decl {\#include <mrViewer.h>} {public
 } 
 
 namespace mrv {open
@@ -168,9 +175,12 @@ _save_deep_data = uiDeepData->value();} {}
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
     }
-    Function {EXROptionsUI(bool aces = false, bool all_layers = false, bool has_deep_data = false) : EXROpts(aces, all_layers)} {open
+    Function {EXROptionsUI(const mrv::ViewerUI* main, bool aces = false, bool all_layers = false, bool has_deep_data = false) : EXROpts(aces, all_layers)} {open
     } {
       code {fltk::Window* w = make_window(aces, all_layers, has_deep_data);
+      mrv::MainWindow* m = main->uiMain;
+      int x = m->x() + ( m->w() - w->w() ) / 2;
+      int y = m->y() + ( m->h() - w->h() ) / 2;
 if ( w->exec() ) {
 	w->hide();
 	fltk::check();
@@ -178,4 +188,4 @@ if ( w->exec() ) {
 }} {}
     }
   }
-} 
+}
