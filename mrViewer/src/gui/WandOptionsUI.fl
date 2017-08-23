@@ -16,12 +16,18 @@ decl {\#include <gui/mrvIO.h>} {public
 } 
 
 decl {\#include <core/mrvImageOpts.h>} {public
-} 
+}
+
+decl {\#include <gui/mrvMainWindow.h>} {public
+}
 
 decl {\#include <MagickWand/MagickWand.h>} {public
 } 
 
 decl {\#include <string>} {public
+} 
+
+decl {\#include <mrViewer.h>} {public
 } 
 
 namespace mrv {open
@@ -94,8 +100,11 @@ else if ( pixel_type == _("Integer") ) _pixel_type = LongPixel;
 _ACESmetadata = uiACESmetadata->value();
 _all_layers = uiAllLayers->value();} {}
     }
-    Function {WandOptionsUI(bool aces, bool all_layers) : WandOpts(aces, all_layers)} {} {
+    Function {WandOptionsUI(const mrv::ViewerUI* main, bool aces, bool all_layers) : WandOpts(aces, all_layers)} {} {
       code {fltk::Window* w = make_window(aces, all_layers);
+      mrv::MainWindow* m = main->uiMain;
+      int x = m->x() + ( m->w() - w->w() ) / 2;
+      int y = m->y() + ( m->h() - w->h() ) / 2;
 if ( w->exec() ) convert();} {}
     }
   }
