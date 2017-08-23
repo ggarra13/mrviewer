@@ -300,8 +300,8 @@ v->uiMain->make_exec_return(false);}
       code {fltk::Window* w = make_window();
 uiFPS->value( main->uiFPS->value() );
 mrv::MainWindow* m = main->uiMain;
-int x = ( m->x() + m->w() - w->w() ) / 2;
-int y = m->y() + 64;
+int x = m->x() + ( m->w() - w->w() ) / 2;
+int y = m->y() + ( m->h() - w->h() ) / 2;
 w->position( x, y );
 w->exec();} {}
     }
