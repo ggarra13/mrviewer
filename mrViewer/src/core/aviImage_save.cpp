@@ -278,7 +278,22 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                c->profile = opts->video_profile;
                c->colorspace = (AVColorSpace) opts->yuv_hint;
 
-               if ( c->codec_id == AV_CODEC_ID_H264 )
+               if ( c->codec_id == AV_CODEC_ID_HEVC )
+               {
+                   switch( opts->video_profile )
+                   {
+                       case 0:
+                       case 1:
+                           c->profile = FF_PROFILE_HEVC_MAIN; break;
+                       case 2:
+                       case 3:
+                           c->profile = FF_PROFILE_HEVC_MAIN_10; break;
+                       case 4:
+                       default:
+                           c->profile = FF_PROFILE_HEVC_REXT; break;
+                   }
+               }
+               else if ( c->codec_id == AV_CODEC_ID_H264 )
                {
                    switch( opts->video_profile )
                    {
@@ -314,7 +329,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                }
 
                const char* name = avcodec_profile_name( codec_id, c->profile );
-               if (name) LOG_INFO( "Profile name " << name );
+               if (name) LOG_INFO( _("Profile name ") << name );
 
 
                if ( c->codec_id == AV_CODEC_ID_PRORES )
@@ -838,7 +853,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 		       const CMedia* img, const AviSaveUI* opts )
 {
     AVCodecContext* c = st->codec;
-
+    
     AVDictionary* info = NULL;
 
     if ( opts->metadata )
@@ -1111,7 +1126,6 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    //avcodec_register_all(); // called by av_register_all()
    //av_register_all(); // called in mrVersion.cpp
 
-
    if ( strcmp( img->filename(), filename ) == 0 )
    {
        mrvALERT( _("You are saving over the movie you are playing. "
@@ -1148,7 +1162,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    fmt = oc->oformat;
    assert( fmt != NULL );
 
-   if ( opts->video_codec == "h264" )
+   if ( opts->video_codec == "hevc" )
+       fmt->video_codec = AV_CODEC_ID_HEVC;
+   else if ( opts->video_codec == "h264" )
        fmt->video_codec = AV_CODEC_ID_H264;
    else if ( opts->video_codec == "mpeg4" )
        fmt->video_codec = AV_CODEC_ID_MPEG4;
@@ -1192,9 +1208,11 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    /* Now that all the parameters are set, we can open the audio and
     * video codecs and allocate the necessary encode buffers. */
    if (video_st)
+     {
        if ( ! open_video(oc, video_codec, video_st, img, opts ) )
 	 return false;
-
+     }
+   
    if (audio_st)
        if ( ! open_audio_static(oc, audio_cdc, audio_st, img, opts) )
       {
@@ -1209,11 +1227,11 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 	 return false;
       }
    }
-   
+
     AVDictionary* info = NULL;
-    
+
     av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
-    
+
    /* Write the stream header, if any. */
    err = avformat_write_header(oc, &info);
    if ( err < 0 )
