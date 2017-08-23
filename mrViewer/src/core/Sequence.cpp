@@ -155,29 +155,32 @@ namespace mrv
 // Given a frame extension, return true if a possible movie file.
 bool is_valid_movie( const char* ext )
 {
-   std::string tmp = ext;
-   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-                   (int(*)(int)) tolower);
-   if ( tmp[0] != '.' ) tmp = '.' + tmp;
-
-   if ( tmp == ".3gp"  || tmp == ".asf"   ||
-        tmp == ".avc"  || tmp == ".avchd" ||
-        tmp == ".avi"  || tmp == ".divx"  ||
-        tmp == ".dv"   || tmp == ".flv"   ||
-        tmp == ".gif"  || tmp == ".m2ts"  ||
-        tmp == ".m2t"  || tmp == ".mkv"   ||
-        tmp == ".mov"  || tmp == ".mp4"   ||
-        tmp == ".mpeg" || tmp == ".mpg"   ||
-        tmp == ".mvb"  || tmp == ".mxf"   ||
-        tmp == ".ogg"  || tmp == ".ogm"   ||
-        tmp == ".ogv"  ||
-        tmp == ".qt"   || tmp == ".rm"    ||
-        tmp == ".ts"   || tmp == ".vob"   ||
-        tmp == ".vp9"  || tmp == ".webm"  ||
-        tmp == ".wmv"  )
+  if ( ext == NULL ) return false;
+  
+  std::string tmp = ext;
+  std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+		  (int(*)(int)) tolower);
+  if ( tmp[0] != '.' ) tmp = '.' + tmp;
+  
+  if ( tmp == ".3gp"  || tmp == ".asf"   ||
+       tmp == ".avc"  || tmp == ".avchd" ||
+       tmp == ".avi"  || tmp == ".divx"  ||
+       tmp == ".dv"   || tmp == ".flv"   ||
+       tmp == ".gif"  || tmp == ".m2ts"  ||
+       tmp == ".m2t"  || tmp == ".mkv"   ||
+       tmp == ".mov"  || tmp == ".mp4"   ||
+       tmp == ".mpeg" || tmp == ".mpg"   ||
+       tmp == ".mvb"  || tmp == ".mxf"   ||
+       tmp == ".ogg"  || tmp == ".ogm"   ||
+       tmp == ".ogv"  ||
+       tmp == ".qt"   || tmp == ".rm"    ||
+       tmp == ".ts"   || tmp == ".vob"   ||
+       tmp == ".vp9"  || tmp == ".webm"  ||
+       tmp == ".wmv"  )
+    {
       return true;
-
-   return false;
+    }
+  return false;
 }
 
 

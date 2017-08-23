@@ -652,7 +652,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
 		   (int(*)(int)) tolower);
    std::string ext = tmp.c_str() + tmp.size() - 4;
 
-   ImageOpts* opts = ImageOpts::build( ext, image->has_deep_data() );
+   ImageOpts* opts = ImageOpts::build( main, ext, image->has_deep_data() );
    if ( opts->active() )
    {
        // Set icon back to WAIT
@@ -718,17 +718,14 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
         if ( !file ) return;
     }
    
-   std::string tmp = file;
-   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-		   (int(*)(int)) tolower);
-   std::string ext = tmp.c_str() + tmp.size() - 4;
+   std::string ext = file;
+   size_t pos = ext.rfind( '.' );
+   if ( pos != std::string::npos )
+     {
+       ext = ext.substr( pos, ext.size() );
+     }
 
-   bool movie = false;
-
-   if ( is_valid_movie( ext.c_str() ) );
-   {
-      movie = true;
-   }
+   bool movie = is_valid_movie( ext.c_str() );
 
    std::string root, fileseq = file;
    bool ok = mrv::fileroot( root, fileseq, false );
@@ -778,7 +775,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        bool has_deep_data = false;
        if ( img ) has_deep_data = img->has_deep_data();
 
-       ipts = ImageOpts::build( ext, has_deep_data );
+       ipts = ImageOpts::build( uiMain, ext, has_deep_data );
        if ( !fg || !ipts->active() ) {
            delete ipts;
            return;
