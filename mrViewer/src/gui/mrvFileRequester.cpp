@@ -725,9 +725,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    bool movie = false;
 
-   if ( ext == ".mp3" || ext == ".ogg" || ext == ".webm" || ext == ".vorbis" ||
-        ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
-	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" || ext == ".mxf" )
+   if ( is_valid_movie( ext.c_str() ) );
    {
       movie = true;
    }
