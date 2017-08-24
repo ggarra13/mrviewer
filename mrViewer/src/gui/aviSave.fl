@@ -49,11 +49,12 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Movie Saving Preferences} open
-        xywh {510 297 300 595} horizontal resizable modal noborder visible
+        xywh {510 381 300 595} horizontal resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Video Options} open
           xywh {20 56 255 294} box UP_BOX
+          extra_code {uiVideoCodec->do_callback();}
         } {
           {fltk::Choice} uiVideoCodec {
             label Codec
@@ -121,10 +122,11 @@ p->add( N_("LT") );
 p->add( N_("SQ") );
 p->add( N_("HQ") );
 p->value(3);
-}}
+}} selected
             tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
             xywh {120 15 91 26}
-            extra_code {video_codec = "hevc";}
+            extra_code {video_codec = "hevc";
+o->value(0);}
           } {
             {fltk::Item} {} {
               label hevc
@@ -164,7 +166,7 @@ p->value(3);
             xywh {120 76 90 25} selection_color 0xffff0000 minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
           }
           {fltk::Choice} uiVideoProfile {
-            label Profile open selected
+            label Profile
             tooltip {The profile controls the characteristics and quality of the codec.  If in doubt, set it to the highest setting.}
             xywh {120 119 90 25}
             extra_code {o->value(2);}
