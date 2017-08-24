@@ -1,9 +1,12 @@
 v3.7.9   - Allowed saving movies in all formats, not just avi, mov and wmv.
 	   This includes mkv, ogv, etc.
 	 - Added support for x265 (HEVC) saving ( Profiles Main, Main10 and
-	   Rext ).  Loading was already working.
-	 - Made the movie saving popup window appear on the center of the
-	   screen, instead of randomly placing it.
+	   RExt ).  Loading was already working.
+	 - Made the movie and image saving popup windows appear on the
+	   center of the screen, instead of randomly placing it.
+	 - Made profiles change when the codec is changed in the movie
+	   saving window.  Now the profile reflects the available profiles
+	   for a codec.
 	 
 
 v3.7.8   - Removed filtering on VR 360 Cube to avoid seams.
