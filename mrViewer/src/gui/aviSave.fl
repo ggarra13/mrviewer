@@ -6,13 +6,12 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
-decl {\#include <iostream>} {selected
+decl {\#include <iostream>} {} 
+
+decl {\#include <gui/mrvIO.h>} {public
 } 
 
-decl {\#include <gui/mrvIO.h>} {selected public
-} 
-
-decl {\#include <mrViewer.h>} {selected public
+decl {\#include <mrViewer.h>} {public
 } 
 
 decl {\#include "gui/mrvImageView.h"} {public
@@ -50,7 +49,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Movie Saving Preferences} open
-        xywh {510 157 300 595} horizontal resizable modal noborder visible
+        xywh {510 297 300 595} horizontal resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Video Options} open
@@ -61,6 +60,7 @@ namespace mrv {open
             user_data this user_data_type {AviSaveUI*}
             callback {fltk::Choice* c = v->uiVideoColor;
 fltk::Choice* p = v->uiVideoProfile;
+p->clear();
 
 if ( o->value() == 0)
 {
@@ -70,14 +70,28 @@ item = c->child(1);
 item->activate();
 item = c->child(2);
 item->activate();
-  for ( int i = 0; i < 5; ++i )
-  {
-    item = p->child(i);
-    item->activate();
-  }
+p->add( _("Main") );
+p->add( _("Main 10") );
+p->add( _("RExt") );
+p->value( 2 );
+}
+else if ( o->value() == 1)
+{
+fltk::Widget* item = c->child(0);
+item->activate();
+item = c->child(1);
+item->activate();
+item = c->child(2);
+item->activate();
+p->add( _("Baseline") );
+p->add( _("Constrained Baseline") );
+p->add( _("Main") );
+p->add( _("Extended") );
+p->add( _("High") );
+p->add( _("High 10") );
 p->value(4);
 }
-else if ( o->value() == 1 )
+else if ( o->value() == 2 )
 {
 fltk::Widget* item = c->child(1);
 item->deactivate();
@@ -86,14 +100,14 @@ item->activate();
 item = c->child(2);
 item->activate();
 c->value(0);
-  for ( int i = 0; i < 5; ++i )
-  {
-    item = p->child(i);
-    item->activate();
-  }
+p->add( _("Simple") );
+p->add( _("Core") );
+p->add( _("Main") );
+p->add( _("Hybrid") );
+p->add( _("Advanced Core") );
 p->value(4);
 }
-else if ( o->value() == 2 )
+else if ( o->value() == 3 )
 {
 fltk::Widget* item = c->child(1);
 item->activate();
@@ -102,13 +116,10 @@ item->deactivate();
 item = c->child(2);
 item->activate();
 c->value(1);
-  for ( int i = 0; i < 4; ++i )
-  {
-    item = p->child(i);
-    item->activate();
-  }
-item = p->child(4);
-item->deactivate();
+p->add( N_("Proxy") );
+p->add( N_("LT") );
+p->add( N_("SQ") );
+p->add( N_("HQ") );
 p->value(3);
 }}
             tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
@@ -153,25 +164,19 @@ p->value(3);
             xywh {120 76 90 25} selection_color 0xffff0000 minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
           }
           {fltk::Choice} uiVideoProfile {
-            label Profile
+            label Profile open selected
             tooltip {The profile controls the characteristics and quality of the codec.  If in doubt, set it to the highest setting.}
             xywh {120 119 90 25}
-            extra_code {o->value(4);}
+            extra_code {o->value(2);}
           } {
-            {fltk::Item} {} {
-              label Baseline
-              }
-            {fltk::Item} {} {
-              label Simple
-              }
-            {fltk::Item} {} {
-              label Core
-              }
             {fltk::Item} {} {
               label Main
               }
             {fltk::Item} {} {
-              label High
+              label {Main 10}
+              }
+            {fltk::Item} {} {
+              label RExt
               }
           }
           {fltk::Choice} uiYUVHint {
