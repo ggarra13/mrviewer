@@ -31,7 +31,7 @@ namespace mrv {open
     }
     decl {std::string video_color;} {public
     }
-    decl {unsigned video_bitrate;} {public
+    decl {unsigned video_bitrate;} {selected public
     }
     decl {unsigned video_profile;} {public
     }
@@ -49,7 +49,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Movie Saving Preferences} open
-        xywh {510 381 300 595} horizontal resizable modal noborder visible
+        xywh {510 437 300 595} horizontal resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Video Options} open
@@ -122,11 +122,9 @@ p->add( N_("LT") );
 p->add( N_("SQ") );
 p->add( N_("HQ") );
 p->value(3);
-}} selected
+}}
             tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
             xywh {120 15 91 26}
-            extra_code {video_codec = "hevc";
-o->value(0);}
           } {
             {fltk::Item} {} {
               label hevc
@@ -303,13 +301,19 @@ v->uiMain->make_exec_return(false);}
         }
       }
     }
-    Function {AviSaveUI(const mrv::ViewerUI* main)} {} {
+    Function {AviSaveUI(const mrv::ViewerUI* main)} {open
+    } {
       code {fltk::Window* w = make_window();
 uiFPS->value( main->uiFPS->value() );
 mrv::MainWindow* m = main->uiMain;
 int x = m->x() + ( m->w() - w->w() ) / 2;
 int y = m->y() + ( m->h() - w->h() ) / 2;
 w->position( x, y );
+mrv::PreferencesUI* uiPrefs = main->uiPrefs;
+int idx = uiPrefs->uiPrefsVideoCodec->value();
+uiVideoCodec->value(idx);
+video_codec = uiVideoCodec->child(idx)->label();
+uiVideoCodec->do_callback();
 w->exec();} {}
     }
   }
