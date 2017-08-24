@@ -661,7 +661,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {534 207 670 450} resizable visible
+        xywh {534 235 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1272,7 +1272,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open
+            label {3D Luts}
             xywh {13 25 422 366} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1348,7 +1348,7 @@ If unsure what this means, keep your display and images setting always using the
               {fltk::Choice} uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();} selected
+                callback {v->refresh();}
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.  
 
@@ -1829,8 +1829,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video
-            xywh {15 22 422 361} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Video open
+            xywh {15 22 422 361} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver
@@ -1851,8 +1851,31 @@ uiICC_float_profile->do_callback();}
               }
             }
             {fltk::Group} {} {open
-              xywh {47 190 321 72} box ROUNDED_BOX
+              xywh {52 272 321 72} box ROUNDED_BOX
+            } {}
+            {fltk::Group} {} {
+              label Saving open
+              xywh {52 187 321 162} box ROUNDED_BOX
             } {
+              {fltk::Choice} uiPrefsVideoCodec {
+                label {Video Codec}
+                user_data uiMain user_data_type {ViewerUI*} open selected
+                tooltip {Controls the codec used by default in saving a movie file.}
+                xywh {135 17 167 25} box THIN_DOWN_BOX
+              } {
+                {fltk::Item} {} {
+                  label hevc
+                  }
+                {fltk::Item} {} {
+                  label h264
+                  }
+                {fltk::Item} {} {
+                  label mpeg4
+                  }
+                {fltk::Item} {} {
+                  label prores_ks
+                  }
+              }
               {fltk::Choice} uiPrefsYUVConversion {
                 label {YUV Conversion}
                 user_data uiMain user_data_type {ViewerUI*}
@@ -1876,7 +1899,7 @@ Use File YUV Hint will take the value from the movie being loaded if the data is
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
 Unspecified is your standard computer translation of YUV.
 BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
-                xywh {141 30 167 25} box THIN_DOWN_BOX
+                xywh {135 77 167 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Use File YUV Hint}
@@ -1894,7 +1917,7 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
             }
           }
           {fltk::Group} {} {
-            label Compositing
+            label Compositing open
             xywh {14 24 422 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -2144,7 +2167,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -2207,7 +2230,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {223 419 424 31}
         } {
           {fltk::Button} {} {
