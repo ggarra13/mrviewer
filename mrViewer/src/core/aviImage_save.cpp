@@ -283,33 +283,57 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    switch( opts->video_profile )
                    {
                        case 0:
-                       case 1:
                            c->profile = FF_PROFILE_HEVC_MAIN; break;
-                       case 2:
-                       case 3:
+                       case 1:
                            c->profile = FF_PROFILE_HEVC_MAIN_10; break;
-                       case 4:
+                       case 2:
                        default:
                            c->profile = FF_PROFILE_HEVC_REXT; break;
                    }
                }
                else if ( c->codec_id == AV_CODEC_ID_H264 )
-               {
+		 {
                    switch( opts->video_profile )
-                   {
-                       case 0:
-                           c->profile = FF_PROFILE_H264_BASELINE; break;
-                       case 1:
-                           c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
-                       case 2:
-                           c->profile = FF_PROFILE_H264_MAIN; break;
-                       case 3:
-                           c->profile = FF_PROFILE_H264_EXTENDED; break;
-                       case 4:
-                       default:
-                           c->profile = FF_PROFILE_H264_HIGH; break;
-                   }
-               }
+		     {
+		     case 0:
+		       c->profile = FF_PROFILE_H264_BASELINE; break;
+		     case 1:
+		       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
+		     case 2:
+		       c->profile = FF_PROFILE_H264_MAIN; break;
+		     case 3:
+		       c->profile = FF_PROFILE_H264_EXTENDED; break;
+		     case 5:
+		       c->profile = FF_PROFILE_H264_HIGH_10;
+		       if ( opts->video_color == "YUV420" )
+			 c->pix_fmt = AV_PIX_FMT_YUV420P10;
+		       else if ( opts->video_color == "YUV422" )
+			 {
+			   c->profile = FF_PROFILE_H264_HIGH_422;
+			   c->pix_fmt = AV_PIX_FMT_YUV422P;
+			 }
+		       else if ( opts->video_color == "YUV444" )
+			 {
+			   c->profile = FF_PROFILE_H264_HIGH_444;
+			   c->pix_fmt = AV_PIX_FMT_YUV444P;
+			 }
+		       break;
+		     case 4:
+		     default:
+		       c->profile = FF_PROFILE_H264_HIGH;
+		       if ( opts->video_color == "YUV422" )
+			 {
+			   c->profile = FF_PROFILE_H264_HIGH_422;
+			   c->pix_fmt = AV_PIX_FMT_YUV422P;
+			 }
+		       else if ( opts->video_color == "YUV444" )
+			 {
+			   c->profile = FF_PROFILE_H264_HIGH_444;
+			   c->pix_fmt = AV_PIX_FMT_YUV444P;
+			 }
+		       break;
+		     }
+		 }
                else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
                {
                    switch( opts->video_profile )
@@ -340,6 +364,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                        c->pix_fmt = AV_PIX_FMT_YUV422P10;
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P10;
+		   
+		   // Profiles are taken from opts->video_profile
                }
                else
                {
