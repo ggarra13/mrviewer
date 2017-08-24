@@ -760,6 +760,8 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences video( base, "video" );
     video.get( "stereo_right_eye_inverted", tmp, 0 );
     uiPrefs->uiPrefsStereoRightEyeInverted->value(tmp);
+    video.get( "video_codec", tmp, 0 );
+    uiPrefs->uiPrefsVideoCodec->value(tmp);
     video.get( "yuv_hint", tmp, 0 );
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
@@ -1298,6 +1300,7 @@ static const char* kCLocale = "C";
     fltk::Preferences video( base, "video" );
     video.set( "stereo_right_eye_inverted", 
                (int) uiPrefs->uiPrefsStereoRightEyeInverted->value() );
+    video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
     video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
 
     fltk::Preferences comp( base, "compositing" );
