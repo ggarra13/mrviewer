@@ -758,8 +758,6 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
     fltk::Preferences video( base, "video" );
-    video.get( "stereo_right_eye_inverted", tmp, 0 );
-    uiPrefs->uiPrefsStereoRightEyeInverted->value(tmp);
     video.get( "video_codec", tmp, 0 );
     uiPrefs->uiPrefsVideoCodec->value(tmp);
     video.get( "yuv_hint", tmp, 0 );
@@ -1298,8 +1296,6 @@ static const char* kCLocale = "C";
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
 
     fltk::Preferences video( base, "video" );
-    video.set( "stereo_right_eye_inverted", 
-               (int) uiPrefs->uiPrefsStereoRightEyeInverted->value() );
     video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
     video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
 
