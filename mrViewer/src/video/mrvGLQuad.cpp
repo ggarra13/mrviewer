@@ -1027,16 +1027,16 @@ namespace mrv {
 	if ( use_lut && _lut )
 	  {
 	    _shader->setUniform( "enableLut", 1 );
-	CHECK_GL;
+	    CHECK_GL;
 	    _shader->setUniform( "lutMin", _lut->lutMin );
-	CHECK_GL;
+	    CHECK_GL;
 	    _shader->setUniform( "lutMax", _lut->lutMax );
-	CHECK_GL;
+	    CHECK_GL;
 	    _shader->setUniform( "lutM", _lut->lutM );
-	CHECK_GL;
+	    CHECK_GL;
 	    _shader->setUniform( "lutT", _lut->lutT );
-	CHECK_GL;
-	    // 	  _shader->setUniform( "lutF", _lut->lutF );
+	    CHECK_GL;
+	    _shader->setUniform( "lutF", false );
 	  }
 	else
 	  {
@@ -1050,17 +1050,17 @@ namespace mrv {
         int premult = 0, unpremult = 0;
 
         switch ( v->uiPrefs->uiPrefsBlendMode->value() )
-        {
-            case ImageView::kBlendPremultNonGamma:
-                unpremult = premult = 1;
-                break;
-            case ImageView::kBlendTraditionalNonGamma:
-                unpremult = premult = 1;
-                break;
-            default:
-                unpremult = premult = 0;
-                break;
-        }
+	  {
+	  case ImageView::kBlendPremultNonGamma:
+	    unpremult = premult = 1;
+	    break;
+	  case ImageView::kBlendTraditionalNonGamma:
+	    unpremult = premult = 1;
+	    break;
+	  default:
+	    unpremult = premult = 0;
+	    break;
+	  }
 
         _shader->setUniform( "premult", premult );
 	CHECK_GL;
