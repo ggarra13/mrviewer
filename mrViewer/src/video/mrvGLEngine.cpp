@@ -1583,10 +1583,7 @@ void GLEngine::draw_images( ImageList& images )
              else if ( stereo == CMedia::kStereoCheckerboard )
                  mask = 3; // checkerboard
              quad->mask( mask );
-             if ( _view->main()->uiPrefs->uiPrefsStereoRightEyeInverted->value() )
-                 quad->mask_value( 0 );
-             else
-                 quad->mask_value( 1 );
+	     quad->mask_value( 1 );
          }
 
          glDisable( GL_BLEND );
@@ -1738,10 +1735,7 @@ void GLEngine::draw_images( ImageList& images )
           else if ( stereo == CMedia::kStereoCheckerboard )
               mask = 3; // checkerboard
           quad->mask( mask );
-          if ( _view->main()->uiPrefs->uiPrefsStereoRightEyeInverted->value() )
-              quad->mask_value( 1 );
-          else
-              quad->mask_value( 0 );
+	  quad->mask_value( 0 );
           glEnable( GL_BLEND );
       }
 
