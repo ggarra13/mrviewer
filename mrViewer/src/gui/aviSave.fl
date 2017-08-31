@@ -31,7 +31,7 @@ namespace mrv {open
     }
     decl {std::string video_color;} {public
     }
-    decl {unsigned video_bitrate;} {selected public
+    decl {unsigned video_bitrate;} {public
     }
     decl {unsigned video_profile;} {public
     }
@@ -49,7 +49,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Movie Saving Preferences} open
-        xywh {510 437 300 595} horizontal resizable modal noborder visible
+        xywh {510 465 300 595} horizontal resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Video Options} open
@@ -63,7 +63,7 @@ namespace mrv {open
 fltk::Choice* p = v->uiVideoProfile;
 p->clear();
 
-if ( o->value() == 0)
+if ( o->value() == 0 )
 {
 fltk::Widget* item = c->child(0);
 item->activate();
@@ -122,7 +122,7 @@ p->add( N_("LT") );
 p->add( N_("SQ") );
 p->add( N_("HQ") );
 p->value(3);
-}}
+}} selected
             tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
             xywh {120 15 91 26}
           } {
