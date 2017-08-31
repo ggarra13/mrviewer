@@ -886,7 +886,8 @@ void CMedia::audio_file( const char* file )
       _acontext = NULL;
    }
 
-   if ( file == NULL )
+   
+   if ( file == NULL || strlen(file) == 0 )
    {
       file = filename();
       return;
@@ -899,7 +900,7 @@ void CMedia::audio_file( const char* file )
 				   format, NULL );
   if ( error < 0 || _acontext == NULL )
   {
-     mrvALERT( file << _(": Could not open filename.") );
+     LOG_ERROR( file << _(": Could not open filename.") );
      return;
   }
 
