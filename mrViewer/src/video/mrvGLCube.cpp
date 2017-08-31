@@ -202,7 +202,7 @@ GLCube::~GLCube()
 	    _shader->setUniform( "lutMax", _lut->lutMax );
 	    _shader->setUniform( "lutM", _lut->lutM );
 	    _shader->setUniform( "lutT", _lut->lutT );
-	    // 	  _shader->setUniform( "lutF", _lut->lutF );
+	    _shader->setUniform( "lutF", false );
 	  }
 	else
 	  {
@@ -215,17 +215,17 @@ GLCube::~GLCube()
         int premult = 0, unpremult = 0;
 
         switch ( v->uiPrefs->uiPrefsBlendMode->value() )
-        {
-            case ImageView::kBlendPremultNonGamma:
-                unpremult = premult = 1;
-                break;
-            case ImageView::kBlendTraditionalNonGamma:
-                unpremult = premult = 1;
-                break;
-            default:
-                unpremult = premult = 0;
-                break;
-        }
+	  {
+	  case ImageView::kBlendPremultNonGamma:
+	    unpremult = premult = 1;
+	    break;
+	  case ImageView::kBlendTraditionalNonGamma:
+	    unpremult = premult = 1;
+	    break;
+	  default:
+	    unpremult = premult = 0;
+	    break;
+	  }
 
         _shader->setUniform( "premult", premult );
         if ( _shader == GLEngine::rgbaShader() )
