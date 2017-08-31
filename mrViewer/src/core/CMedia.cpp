@@ -586,8 +586,8 @@ _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts ),
 _adts( other->_adts ),
-_audio_frame( 0 ),
-_audio_offset( 0 ),
+_audio_frame( other->_audio_frame ),
+_audio_offset( other->_audio_offset ),
 _frame( f ),
 _tc_frame( other->_tc_frame ),
 _expected( f+1 ),
@@ -621,7 +621,7 @@ _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_font( strdup( other->_subtitle_font ) ),
-_audio_index(-1),
+_audio_index( other->_audio_index ),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
@@ -642,8 +642,13 @@ _audio_engine( NULL )
   audio_initialize();
   mrv::PacketQueue::initialize();
 
-  audio_file( other->audio_file().c_str() );
+  if ( other->audio_file().empty() )
+    audio_file( NULL );
+  else
+    audio_file( other->audio_file().c_str() );
   _audio_offset = other->audio_offset() + f - 1;
+  audio_stream( other->_audio_index );
+  std::cerr << _audio_index << std::endl;
 
   fetch( f );
 }

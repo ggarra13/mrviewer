@@ -1,3 +1,7 @@
+v3.8.0   - Bug fixed cutting of clips leaving the right clip with no audio.
+	 - Changing OpenGL Blend Mode in Preferences now updates the view
+	   interactively, without having to press OK.
+
 v3.7.9   - Allowed saving movies in all formats, not just avi, mov and wmv.
 	   This includes mkv, ogv, etc.
 	 - Added support for x265 (HEVC) saving ( Profiles Main, Main10 and
