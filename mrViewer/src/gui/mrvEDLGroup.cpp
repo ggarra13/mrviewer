@@ -642,7 +642,9 @@ void EDLGroup::cut( boost::int64_t frame )
     right->decode_video( f );
     right->find_image( f );
 
-    right->audio_file( img->audio_file().c_str() );
+    const std::string& file = img->audio_file();
+    if (! file.empty() )
+      right->audio_file( file.c_str() );
     right->audio_offset( img->audio_offset() );
     right->last_frame( img->last_frame() );
 
