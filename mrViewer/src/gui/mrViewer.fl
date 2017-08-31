@@ -661,15 +661,15 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {534 235 670 450} resizable visible
+        xywh {534 543 700 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
-          xywh {218 24 452 400}
+          xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
             label {User Interface}
-            xywh {13 22 424 364} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label {Window Behavior}
@@ -774,7 +774,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           {fltk::Group} {} {
             label {View Window}
-            xywh {15 22 422 377} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -932,7 +932,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           {fltk::Group} {} {
             label Colors
-            xywh {15 22 422 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label UI open
@@ -1039,7 +1039,7 @@ v->refresh();}
           }
           {fltk::Group} {} {
             label {File Requester}
-            xywh {13 22 422 361} align 5 hide box EMBOSSED_BOX
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
               label {Single Click to Travel Drawers}
@@ -1053,7 +1053,7 @@ v->refresh();}
           }
           {fltk::Group} {} {
             label Positioning
-            xywh {12 25 427 375} hide box EMBOSSED_BOX
+            xywh {13 22 423 350} hide box EMBOSSED_BOX
           } {
             {fltk::Group} {} {open
               xywh {22 36 355 40} box ROUNDED_BOX
@@ -1101,7 +1101,7 @@ uiWindowYSize->value( v->uiMain->h() );}
           }
           {fltk::Group} Playback {
             label Playback
-            xywh {15 21 422 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1217,7 +1217,7 @@ uiPrefsFPS->value( g );}
           }
           {fltk::Group} {} {
             label Caches
-            xywh {13 22 422 364} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1273,7 +1273,7 @@ This setting thus allows caching more pictures in memory for float and half pict
           }
           {fltk::Group} {} {
             label {3D Luts}
-            xywh {13 25 422 366} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
@@ -1422,7 +1422,7 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
           }
           {fltk::Group} {} {
             label {CTL Paths}
-            xywh {15 22 422 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
@@ -1430,21 +1430,21 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             } {}
             {fltk::Browser} uiPrefsCTLScripts {
               label {CTL scripts} open
-              xywh {13 177 380 190}
+              xywh {13 177 380 168}
             } {}
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)}
-            xywh {15 22 422 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {Default Output Device Transform (ODT)} open
+            xywh {13 22 423 354} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Display open
-              xywh {13 22 370 345} box ROUNDED_BOX
+              xywh {13 22 370 327} box ROUNDED_BOX
             } {
-              {fltk::Group} uiODT_CTL {
+              {fltk::Group} uiODT_CTL {open
                 xywh {104 10 255 265} horizontal
               } {
-                {fltk::Group} {} {open
+                {fltk::Group} {} {
                   xywh {0 0 255 35}
                 } {
                   {fltk::Input} uiODT_CTL_transform {
@@ -1473,11 +1473,11 @@ uiODT_CTL_transform->do_callback();}
 (Environment variable: MRV_ODT_CTL_CHROMATICITIES)}
                   xywh {5 35 250 155} align 132 box ENGRAVED_BOX
                 } {
-                  {fltk::InvisibleBox} {} {
-                    label X
+                  {fltk::Widget} {} {
+                    label X selected
                     xywh {100 8 25 25}
                   }
-                  {fltk::InvisibleBox} {} {
+                  {fltk::Widget} {} {
                     label Y
                     xywh {175 8 25 25}
                   }
@@ -1587,7 +1587,7 @@ MRV_ODT_CTL_SURROUND_LUMINANCE)}
                 }
               }
               {fltk::Group} uiODT_ICC {open
-                xywh {35 285 312 45}
+                xywh {35 277 312 45}
               } {
                 {fltk::Input} uiODT_ICC_profile {
                   label {ICC profile}
@@ -1611,14 +1611,14 @@ uiODT_ICC_profile->do_callback();}
           }
           {fltk::Group} {} {
             label {Default Rendering Transform (RT)}
-            xywh {15 22 422 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
-              label {Render Transforms}
-              xywh {15 24 375 155} box ROUNDED_BOX
+              label {Render Transforms} open
+              xywh {15 24 375 135} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
-                xywh {100 15 255 30}
+                xywh {100 9 255 30}
               } {
                 {fltk::Input} uiCTL_8bits_load_transform {
                   label {8-bits}
@@ -1640,7 +1640,7 @@ uiCTL_8bits_load_transform->do_callback();}
                 }
               }
               {fltk::Group} {} {open
-                xywh {100 45 255 30}
+                xywh {100 39 255 30}
               } {
                 {fltk::Input} uiCTL_16bits_load_transform {
                   label {16-bits}
@@ -1662,7 +1662,7 @@ uiCTL_16bits_load_transform->do_callback();}
                 }
               }
               {fltk::Group} {} {open
-                xywh {100 75 255 30}
+                xywh {100 69 255 30}
               } {
                 {fltk::Input} uiCTL_32bits_load_transform {
                   label {32-bits}
@@ -1684,7 +1684,7 @@ uiCTL_16bits_load_transform->do_callback();}
                 }
               }
               {fltk::Group} {} {open
-                xywh {100 105 255 30}
+                xywh {100 99 255 30}
               } {
                 {fltk::Input} uiCTL_float_load_transform {
                   label float
@@ -1707,11 +1707,11 @@ uiCTL_float_load_transform->do_callback();}
               }
             }
             {fltk::Group} uiRT_ICC {
-              label {ICC Profiles}
-              xywh {15 204 375 155} box ROUNDED_BOX
+              label {ICC Profiles} open
+              xywh {15 204 375 135} box ROUNDED_BOX
             } {
-              {fltk::Group} {} {open
-                xywh {100 15 255 30}
+              {fltk::Group} {} {
+                xywh {100 10 255 30}
               } {
                 {fltk::Input} uiICC_8bits_profile {
                   label {8-bits}
@@ -1731,8 +1731,8 @@ uiICC_8bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {open
-                xywh {100 45 255 30}
+              {fltk::Group} {} {
+                xywh {100 40 255 30}
               } {
                 {fltk::Input} uiICC_16bits_profile {
                   label {16-bits}
@@ -1752,8 +1752,8 @@ uiICC_16bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {open
-                xywh {100 75 255 30}
+              {fltk::Group} {} {
+                xywh {100 70 255 30}
               } {
                 {fltk::Input} uiICC_32bits_profile {
                   label {32-bits}
@@ -1773,8 +1773,8 @@ uiICC_32bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {open
-                xywh {100 105 255 30}
+              {fltk::Group} {} {
+                xywh {100 100 255 30}
               } {
                 {fltk::Input} uiICC_float_profile {
                   label float
@@ -1798,7 +1798,7 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Loading
-            xywh {15 16 422 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {12 45 400 84} box ROUNDED_BOX
@@ -1829,8 +1829,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video open
-            xywh {15 22 422 361} align 5 box EMBOSSED_BOX labelsize 14
+            label Video
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver
@@ -1841,41 +1841,9 @@ uiICC_float_profile->do_callback();}
                 }
             }
             {fltk::Group} {} {
-              label Stereo open
-              xywh {48 97 318 65} box ROUNDED_BOX
+              label Loading
+              xywh {48 114 318 65} box ROUNDED_BOX
             } {
-              {fltk::LightButton} uiPrefsStereoRightEyeInverted {
-                label {Right Eye Inverted}
-                tooltip {This option controls stereo viewing of interlaced and checkerboard.}
-                xywh {57 15 212 35}
-              }
-            }
-            {fltk::Group} {} {open
-              xywh {52 272 321 72} box ROUNDED_BOX
-            } {}
-            {fltk::Group} {} {
-              label Saving open
-              xywh {52 187 321 162} box ROUNDED_BOX
-            } {
-              {fltk::Choice} uiPrefsVideoCodec {
-                label {Video Codec}
-                user_data uiMain user_data_type {ViewerUI*} open selected
-                tooltip {Controls the codec used by default in saving a movie file.}
-                xywh {135 17 167 25} box THIN_DOWN_BOX
-              } {
-                {fltk::Item} {} {
-                  label hevc
-                  }
-                {fltk::Item} {} {
-                  label h264
-                  }
-                {fltk::Item} {} {
-                  label mpeg4
-                  }
-                {fltk::Item} {} {
-                  label prores_ks
-                  }
-              }
               {fltk::Choice} uiPrefsYUVConversion {
                 label {YUV Conversion}
                 user_data uiMain user_data_type {ViewerUI*}
@@ -1893,13 +1861,13 @@ case 3:
 default:
 idx = 5; break;
 }
-CMedia::colorspace_override = idx;} open
+CMedia::colorspace_override = idx;}
                 tooltip {Controls the YUV Conversion of the movie in the shader to emulate different tv standards.
 Use File YUV Hint will take the value from the movie being loaded if the data is present.
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
 Unspecified is your standard computer translation of YUV.
 BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
-                xywh {135 77 167 25} box THIN_DOWN_BOX
+                xywh {130 27 167 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Use File YUV Hint}
@@ -1915,17 +1883,42 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
                   }
               }
             }
+            {fltk::Group} {} {
+              label Saving open
+              xywh {48 219 318 65} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiPrefsVideoCodec {
+                label {Video Codec}
+                user_data uiMain user_data_type {ViewerUI*}
+                tooltip {Controls the codec used by default in saving a movie file.}
+                xywh {135 17 167 25} box THIN_DOWN_BOX
+              } {
+                {fltk::Item} {} {
+                  label hevc
+                  }
+                {fltk::Item} {} {
+                  label h264
+                  }
+                {fltk::Item} {} {
+                  label mpeg4
+                  }
+                {fltk::Item} {} {
+                  label prores_ks
+                  }
+              }
+            }
           }
           {fltk::Group} {} {
-            label Compositing open
-            xywh {14 24 422 361} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Compositing
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {58 172 320 65} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsBlendMode {
                 label {Blend Mode}
-                user_data uiMain user_data_type {ViewerUI*} open
+                user_data m user_data_type {ViewerUI*}
+                callback {v->uiView->redraw();} open
                 tooltip {OpenGL blend compositing mode.
 Traditional:
 SC x SA + DC x ( 1 - SA)
@@ -1959,7 +1952,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
           }
           {fltk::Group} {} {
             label Audio
-            xywh {13 22 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsAudioDevice {
               label Device
@@ -2006,7 +1999,7 @@ else
           }
           {fltk::Group} {} {
             label Subtitles
-            xywh {14 23 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsSubtitleFont {
               label Font
@@ -2034,7 +2027,7 @@ for (int i = 0; i < numfonts; i++)
           }
           {fltk::Group} {} {
             label Errors
-            xywh {14 24 423 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {43 32 355 227} box ENGRAVED_BOX
@@ -2058,7 +2051,7 @@ for (int i = 0; i < numfonts; i++)
           {fltk::Group} {} {
             label Images
             tooltip {Options controlling the OpenEXR reader/writer}
-            xywh {12 24 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Saving open
@@ -2079,7 +2072,7 @@ for (int i = 0; i < numfonts; i++)
           {fltk::Group} {} {
             label OpenEXR
             tooltip {Options controlling the OpenEXR reader/writer}
-            xywh {13 23 424 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Loading
@@ -2167,7 +2160,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -2231,7 +2224,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           }
         }
         {fltk::Group} {} {open
-          xywh {223 419 424 31}
+          xywh {223 419 423 31}
         } {
           {fltk::Button} {} {
             label Revert
