@@ -27,46 +27,32 @@ works.<br>
       <td><img style="width: 640px; height: 487px;" alt="" src="images/PreferencesVideo.png"></td>
 
       <td>
-      <div class="menu">Driver</div>
-      <br>
+	<div class="menu">Driver</div>
+	<br>
+	
+	Here you can change the default driver when the viewer starts.  By default, and for now, the only driver is OpenGL.<br>
+	<br>
+	<br>
+	
+	<div class="hotkey">Loading</div>
+	<br>
+	<br>
+	<div class="menu">YUV Conversion</div>
+	
+	<br>
+	This setting allows you to control how the YUV to RGB conversion is done.  By default, mrViewer picks the YUV to RGB conversion from the file, but this can lead to black levels being high in some modes.  By forcing a YUV conversion, you make sure that the display of the movie is as you want, regardless of what it says in the file.
+	<br>
+	<br>
+	<div class="hotkey">Saving</div>
+	<br>
+	<br>
+	  <div class="menu">Video Codec</div>
+	  <br>
+	  With this option, you can set the default video codec used for saving a movie file from mrViewer.
 
-Here you can change the default driver when the viewer starts.  By default, and for now, the only driver is OpenGL.<br>
-
+      </td>
     </tr>
-
   </tbody>
 </table>
-
-      <br>
-
-      <div class="menu">Stereo</div>
-
-      <br>
-
-Here you can set the default behavior for stereo images.  Currently only Red-Cyan Anaglyphs are supported.<br>
-
-      <br>
-      <div class="menu">YUV Conversion</div>
-      
-      <br>
-      This setting allows you to control how the YUV to RGB conversion is done.  By default, mrViewer picks the YUV to RGB conversion from the file, but this can lead to black levels being high in some modes.  By forcing a YUV conversion, you make sure that the display of the movie is as you want, regardless of what it says in the file.
-      <br>
-      <br>
-      <div class="menu">Blend Mode</div>
-
-      <br>
-
-Here you can set the default behavior when compositing one foreground image or video over a background image or movie.  The traditional mode blends images with the following formula:<br>
-      <b>FG*alpha + (1-alpha)*BG</b><br><br>
-The Premult option blends as if alpha is already premultiplied, like:<br>
-      <b>FG + (1-alpha)*BG</b><br><br>
-
-where FG is the rgb channels of the foreground image, alpha is its alpha channel, and BG is the rgb channels of the background image.  Note that the multiplication happens AFTER gamma correction, which can leave some fringing around the edges.
-<br>
-The Traditional No Gamma method unpremults the alpha channel before gamma correction
-and premults it after it.  Then it uses the Traditional method to composite it.
-
-<br>
-The Premult No Gamma unpremults by the alpha channel before gamma correction and premults it after it. Then uses the Premult method to compose the image.
 </body>
 </html>
