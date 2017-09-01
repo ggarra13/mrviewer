@@ -46,6 +46,7 @@ namespace fs = boost::filesystem;
 #include <fltk/ProgressBar.h>
 #include <fltk/run.h>
 
+#include "core/aviImage.h"
 #include "core/stubImage.h"
 #include "core/smpteImage.h"
 #include "core/clonedImage.h"
@@ -1588,6 +1589,21 @@ void ImageBrowser::load( const mrv::LoadList& files,
                      img->audio_offset( load.audio_offset );
                      view()->refresh_audio_tracks();
                  }
+
+		 if ( load.subtitle != "" )
+		   {
+		     aviImage* avi = dynamic_cast< aviImage* >( fg->image() );
+		     if ( !avi )
+		       {
+			 LOG_ERROR( img->name() <<
+				    ": Subtitles are valid on movie files only."
+				    );
+		       }
+		     else
+		       {
+			 avi->subtitle_file( load.subtitle.c_str() );
+		       }
+		   }
 
                  GLShapeList& shapes = img->shapes();
                  shapes = load.shapes;
