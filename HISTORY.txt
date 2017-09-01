@@ -1,6 +1,15 @@
 v3.8.0   - Bug fixed cutting of clips leaving the right clip with no audio.
 	 - Changing OpenGL Blend Mode in Preferences now updates the view
 	   interactively, without having to press OK.
+	 - Bug fixed 3D Stereo view when in VR Sphere mode.  Previously,
+	   moving the view would only move one eye (leaving the cyan, for
+	   example, in the same place).  This was a regression from v3.7.8.
+	 - Made preferences a tad more pretty (boxes aligning, etc).
+	 - Allowed loading of subtitles from the command-line
+	   ( -u <srtfile> or --sub <srtfile> ).  It can be specified
+	   multiple times to load subtitles for multiple images.  Only one
+	   subtitle per image is allowed.
+	 
 
 v3.7.9   - Allowed saving movies in all formats, not just avi, mov and wmv.
 	   This includes mkv, ogv, etc.
