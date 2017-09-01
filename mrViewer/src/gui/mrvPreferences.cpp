@@ -1559,6 +1559,8 @@ static const char* kCLocale = "C";
 	style->buttoncolor( bgcolor );
 	style->textsize( 10 );
 	style->labelcolor( textcolor );
+	style->highlight_color( selectioncolor );
+	style->highlight_textcolor( selectiontextcolor );
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
     }
