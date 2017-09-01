@@ -97,13 +97,16 @@ struct SequenceSort
       GLShapeList shapes;
       boost::int64_t audio_offset;
 
+      std::string subtitle;
+    
       LoadInfo( const std::string& fileroot,
                 const boost::int64_t sf, const boost::int64_t ef, 
                 const boost::int64_t s = AV_NOPTS_VALUE,
                 const boost::int64_t e = AV_NOPTS_VALUE,
                 const std::string& a = "",
                 const std::string& right = "",
-                const boost::int64_t aoffset = 0) :
+                const boost::int64_t aoffset = 0,
+		const std::string& sub = "" ) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
@@ -112,7 +115,8 @@ struct SequenceSort
       start( s ),
       end( e ),
       reel( false ),
-      audio_offset( aoffset )
+      audio_offset( aoffset ),
+      subtitle( sub )
       {
 	size_t len = filename.size();
 	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
@@ -128,7 +132,8 @@ struct SequenceSort
                 const boost::int64_t e = AV_NOPTS_VALUE,
                 const std::string& a = "",
                 const std::string& right = "",
-                const boost::int64_t aoffset = 0 ) :
+                const boost::int64_t aoffset = 0,
+		const std::string& sub = "" ) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
@@ -138,7 +143,8 @@ struct SequenceSort
       end( e ),
       reel( false ),
       shapes( shl ),
-      audio_offset( aoffset )
+      audio_offset( aoffset ),
+      subtitle( sub )
       {
 	size_t len = filename.size();
 	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
@@ -166,7 +172,8 @@ struct SequenceSort
       last( b.last ),
       reel( b.reel ),
       shapes( b.shapes ),
-      audio_offset( b.audio_offset )
+      audio_offset( b.audio_offset ),
+      subtitle( b.subtitle )
       {
       }
 
