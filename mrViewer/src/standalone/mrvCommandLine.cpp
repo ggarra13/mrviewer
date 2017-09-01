@@ -361,6 +361,7 @@ void parse_command_line( const int argc, char** argv,
 	     _("Set viewer's default server/client port."), false, 
 	     opts.port, "string");
 
+    
     UnlabeledMultiArg< std::string > 
     afiles(_("files"),
 	   _("Images, sequences or movies to display."), false, "images");
@@ -383,6 +384,10 @@ void parse_command_line( const int argc, char** argv,
             _("Provide two sequences or movies for stereo."), false, "images");
 #endif
 
+    MultiArg< std::string > 
+    asub( "u", N_("sub"), 
+	  _("Set subtitle for movie(s)."), false, "subtitles");
+    
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(ahostname);
@@ -394,6 +399,7 @@ void parse_command_line( const int argc, char** argv,
 #ifdef USE_STEREO
     cmd.add(astereo);
 #endif
+    cmd.add(asub);
     cmd.add(abg);
     cmd.add(afiles);
 
@@ -440,6 +446,10 @@ void parse_command_line( const int argc, char** argv,
 
 #endif
 
+    const stringArray& subs = asub.getValue();
+    if ( subs.size() > files.size() )
+      LOG_ERROR( "Too many subtitles for image file(s)." );
+    
     const stringArray& audios = aaudio.getValue();
     const IntArray& aoffsets = aoffset.getValue();
 
@@ -451,6 +461,8 @@ void parse_command_line( const int argc, char** argv,
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
     stringArray::const_iterator ae = audios.end();
+    stringArray::const_iterator si = subs.begin();
+    stringArray::const_iterator se = subs.end();
     IntArray::const_iterator oi = aoffsets.begin();
     IntArray::const_iterator oe = aoffsets.end();
     for ( ; i != e; ++i )
@@ -510,50 +522,42 @@ void parse_command_line( const int argc, char** argv,
                     }
                 }
 
+		std::string sub;
+		if ( si != se )
+		  {
+		    sub = *si;
+		    ++si;
+		  }
+
+		std::string audio;
+		if ( ai != ae )
+		  {
+		    audio = *ai;
+		  }
+		
+		int offset = 0;
+		if ( oi != oe ) {
+		  offset = *oi;
+		  ++oi;
+		}
+
+		 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
                {
                   // Add audio file to last stereo fileroot
-                  if ( ai != ae )
-                  {
-                      int offset = 0;
-                      if ( oi != oe ) {
-                          offset = *oi;
-                          ++oi;
-                      }
-
-                      opts.stereo.push_back( mrv::LoadInfo( fileroot, start, 
-                                                            end, start, end,
-                                                            *ai, "", offset ) );
-                     ++ai;
-                  }
-                  else
-                  {
-                     opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
-                                                           end, start, end ) );
-                  }
+		 opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
+						       end, start, end,
+						       audio, "", offset,
+						       sub ) );
                }
                else
                {
-                  // Add audio file to last fileroot
-                  if ( ai != ae )
-                  {
-                      int offset = 0;
-                      if ( oi != oe ) {
-                          offset = *oi;
-                          ++oi;
-                      }
-
-                      opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                           end, AV_NOPTS_VALUE,
-                                                           AV_NOPTS_VALUE, 
-                                                           *ai, "", offset ) );
-                     ++ai;
-                  }
-                  else
-                  {
-                     opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                          end ) );
-                  }
+		 // Add audio file to last fileroot
+		 opts.files.push_back( mrv::LoadInfo( fileroot, start, 
+						      end, AV_NOPTS_VALUE,
+						      AV_NOPTS_VALUE,
+						      audio, "", offset,
+						      sub ) );
                }
             }
 	  }
