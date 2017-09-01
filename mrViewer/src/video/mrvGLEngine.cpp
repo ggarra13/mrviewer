@@ -1418,10 +1418,6 @@ void GLEngine::draw_images( ImageList& images )
       mrv::image_type_ptr pic = img->hires();
       if (!pic)  continue;
 
-      // Handle rotation of cube/sphere
-      GLQuad* const c = *q;
-      c->rot_x( _rotX );
-      c->rot_y( _rotY );
 
       CMedia::StereoOutput stereo = img->stereo_output();
 
@@ -1519,6 +1515,9 @@ void GLEngine::draw_images( ImageList& images )
       GLQuad* quad = *q;
       quad->minmax( _normMin, _normMax );
       quad->image( img );
+      // Handle rotation of cube/sphere
+      quad->rot_x( _rotX );
+      quad->rot_y( _rotY );
 
       if ( _view->use_lut() )
       {
@@ -1603,6 +1602,9 @@ void GLEngine::draw_images( ImageList& images )
          quad = *q;
          quad->minmax( _normMin, _normMax );
          quad->image( img );
+	 // Handle rotation of cube/sphere
+	 quad->rot_x( _rotX );
+	 quad->rot_y( _rotY );
 
          if ( stereo != CMedia::kStereoLeft &&
               stereo != CMedia::kStereoRight )
@@ -1783,6 +1785,9 @@ void GLEngine::draw_images( ImageList& images )
                 quad->mask_value( -10 );
                 quad->bind( sub );
                 quad->gamma( 1.0 );
+		// Handle rotation of cube/sphere
+		quad->rot_x( _rotX );
+		quad->rot_y( _rotY );
                 quad->draw( texWidth, texHeight );
            }
            img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
