@@ -1307,14 +1307,25 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     if ( fg )
     {
         CMedia* m = fg->image();
+
+        verify_stereo_resolution( img, m );
+        
         m->right_eye( img );  // Set image as right image of fg
         m->is_stereo( true );
         m->is_left_eye( true );
 
-        verify_stereo_resolution( img, m );
 
         img->is_stereo( true );
         img->is_left_eye( false );
+
+        aviImage* aviL = dynamic_cast< aviImage* >( m );
+        aviImage* aviR = dynamic_cast< aviImage* >( img );
+
+        if ( aviL && aviR )
+        {
+            aviR->subtitle_file( aviL->subtitle_file().c_str() );
+        }
+
         view()->update_layers();
     }
     else
