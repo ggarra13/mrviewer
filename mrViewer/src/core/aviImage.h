@@ -131,7 +131,8 @@ class aviImage : public CMedia
 
     virtual void subtitle_stream( int idx );
     void subtitle_file( const char* f );
-
+    std::string subtitle_file() const { return _subtitle_file; }
+    
     int init_filters(const char *filters_descr);
 
     virtual const char* const colorspace() const;
@@ -142,6 +143,13 @@ class aviImage : public CMedia
 
     virtual void probe_size( unsigned p );
 
+    inline void subtitle_encoding( const char* f )
+    {
+        free( _subtitle_encoding );
+        _subtitle_encoding = strdup( f );
+        subtitle_file( _subtitle_file.c_str() );
+    }
+    
     inline void subtitle_font( const char* f ) {
         free( _subtitle_font );
         _subtitle_font = strdup(f);
