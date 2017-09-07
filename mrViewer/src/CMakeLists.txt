@@ -440,7 +440,7 @@ ENDFOREACH( lang )
 
 ADD_CUSTOM_TARGET( 
   "translations" ALL
-  DEPENDS ${output_files}
+  DEPENDS ${output_files} ${PROJECT_NAME}
   )
 
 
@@ -701,7 +701,7 @@ ADD_CUSTOM_TARGET( bundle
 			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
 			   COMMENT "Running CPack. Please wait..."
 			   USES_TERMINAL
-			   DEPENDS ${PROJECT_NAME} )
+			   DEPENDS translations )
 
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
