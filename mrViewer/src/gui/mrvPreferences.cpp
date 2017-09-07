@@ -367,7 +367,7 @@ fltk::StyleSet*     newscheme = NULL;
     {
        fltk::Preferences win( ui, "window" );
        
-       win.get( "auto_fit_image", tmp, 0 );
+       win.get( "auto_fit_image", tmp, 1 );
        uiPrefs->uiPrefsAutoFitImage->value( tmp );
 
        win.get( "always_on_top", tmp, 0 );
@@ -781,6 +781,8 @@ fltk::StyleSet*     newscheme = NULL;
             break;
         }
     }
+    subtitles.get( "encoding", tmpS, "ISO-8859-1", 2048 );
+    uiPrefs->uiPrefsSubtitleEncoding->text( tmpS );
     
     fltk::Preferences errors( base, "errors" );
     errors.get( "raise_log_window_on_error", tmp, 0 );
@@ -1131,6 +1133,8 @@ static const char* kCLocale = "C";
         const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
         CMedia::default_subtitle_font( font );
     }
+    const char* enc = main->uiPrefs->uiPrefsSubtitleEncoding->text();
+    CMedia::default_subtitle_encoding( enc );
     
     LogDisplay::prefs = (LogDisplay::ShowPreferences)
                         main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
@@ -1405,6 +1409,8 @@ static const char* kCLocale = "C";
             subtitles.set( "font",
                            uiPrefs->uiPrefsSubtitleFont->child(idx)->label() );
         }
+        subtitles.set( "encoding",
+                       uiPrefs->uiPrefsSubtitleEncoding->text() );
     }
     
     fltk::Preferences errors( base, "errors" );
