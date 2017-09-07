@@ -1346,9 +1346,10 @@ void GLEngine::draw_images( ImageList& images )
   for ( ; i != e; ++i )
     {
       const Image_ptr& img = *i;
-      if ( img->has_subtitle() ) ++num_quads;
+      bool stereo = img->stereo_output() != CMedia::kNoStereo;
+      if ( img->has_subtitle() ) num_quads += 1 + stereo;
       if ( img->has_picture()  ) ++num_quads;
-      if ( img->stereo_output() != CMedia::kNoStereo )    ++num_quads;
+      if ( stereo )    ++num_quads;
     }
 
     TRACE( "" );
@@ -1597,6 +1598,27 @@ void GLEngine::draw_images( ImageList& images )
          }
          quad->gamma( g );
          quad->draw( texWidth, texHeight );
+         
+         if ( img->has_subtitle() )
+         {
+            image_type_ptr sub = img->subtitle();
+            if ( sub )
+            {
+                glEnable( GL_BLEND );
+                glDisable( GL_SCISSOR_TEST );
+                ++q;
+                quad = *q;
+                quad->mask( 0 );
+                quad->mask_value( -10 );
+                quad->bind( sub );
+                quad->gamma( 1.0 );
+		// Handle rotation of cube/sphere
+		quad->rot_x( _rotX );
+		quad->rot_y( _rotY );
+                quad->draw( texWidth, texHeight );
+            }
+            img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
+         }
 
          ++q;
          quad = *q;
