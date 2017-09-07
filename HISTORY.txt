@@ -1,4 +1,5 @@
-v3.8.0   - Bug fixed cutting of clips leaving the right clip with no audio.
+v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
+	   with no audio.
 	 - Changing OpenGL Blend Mode in Preferences now updates the view
 	   interactively, without having to press OK.
 	 - Bug fixed 3D Stereo view when in VR Sphere mode.  Previously,
@@ -7,9 +8,26 @@ v3.8.0   - Bug fixed cutting of clips leaving the right clip with no audio.
 	 - Made preferences a tad more pretty (boxes aligning, etc).
 	 - Allowed loading of subtitles from the command-line
 	   ( -u <srtfile> or --sub <srtfile> ).  It can be specified
-	   multiple times to load subtitles for multiple images.  Only one
-	   subtitle per image is allowed.
-	 
+	   multiple times to load subtitles for multiple movies.  Only one
+	   subtitle per movie is allowed.
+	 - Made subtitle appear on both images of a stereo video when the
+	   stereo comes from two movie files or a movie with two tracks.
+	   Previously only the left eye would show subtitles.
+	   Movies which encode both stereo images in a single image
+	   (top/bottom, left/right) do not yet work.
+	 - Made Preferences->Auto Refit Image more intelligent.  When
+	   switching images with PgUp/PgDown they will not refit themselves
+	   if zoomed and the two images have the same display window.
+	   Previously, if Auto Refit was set in the preferences, the refit
+	   would happen regardless.
+	 - Made maximum zoom reach x64 times to match the small resolution
+	   of some samples in ffmpeg.
+	 - Added support to encoding in subtitles in the
+	   Preferences/Subtitles, to allow for subtitles in different
+	   languages other than English.  ISO-8191-1 and UTF-8/16
+	   are supported.  You can also type in the encoding yourself.
+	 - Added a work-around to play subtitle files with ' in their names.
+	   Basically, the subtitle is copied to $TEMP without the '.
 
 v3.7.9   - Allowed saving movies in all formats, not just avi, mov and wmv.
 	   This includes mkv, ogv, etc.
