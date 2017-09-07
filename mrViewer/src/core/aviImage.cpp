@@ -639,8 +639,8 @@ void aviImage::subtitle_file( const char* f )
         {
             if ( *s == '\'' || *s == ':' )
             {
-                for ( int i = 0; i < 2; ++i )
-                    sub += '\\';
+                // Double quote this so a \ gets passed in first escape path
+                sub += "\\\\";
             }
             if ( *s == ' ' || *s == '('  || *s == ')'  || *s == ',' ||
                  *s == ':' || *s == '\\' || *s == '\'' || *s == '[' ||
