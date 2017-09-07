@@ -122,57 +122,6 @@ namespace {
 namespace mrv {
 
 
-fs::path relativePath( const fs::path &path, const fs::path &relative_to,
-                       bool& absolute )
-{
-    // create absolute paths
-    std::string ps = fs::absolute(path).generic_string();
-    std::string rs = fs::absolute(relative_to).generic_string();
-
-#ifdef _WIN32
-    std::transform( ps.begin(), ps.end(), ps.begin(), toupper );
-    std::transform( rs.begin(), rs.end(), rs.begin(), toupper );
-#endif
-
-    fs::path p = ps;
-    fs::path r = rs;
-
-    // if root paths are different, return absolute path
-    if( p.root_path() != r.root_path() )
-    {
-        absolute = true;
-        return p;
-    }
-
-    absolute = false;
-    
-    // initialize relative path
-    fs::path result;
-
-    // find out where the two paths diverge
-    fs::path::const_iterator itr_path = p.begin();
-    fs::path::const_iterator itr_relative_to = r.begin();
-    while( *itr_path == *itr_relative_to && itr_path != p.end() && itr_relative_to != r.end() ) {
-        ++itr_path;
-        ++itr_relative_to;
-    }
-
-    // add "../" for each remaining token in relative_to
-    while( itr_relative_to != r.end() ) {
-        result /= "..";
-        ++itr_relative_to;
-    }
-
-
-    // add remaining path
-    while( itr_path != p.end() ) {
-        result /= *itr_path;
-        ++itr_path;
-    }
-
-    return result;
-}
-
 int CMedia::colorspace_override = 0;
 
 const char* const kColorRange[] = {
@@ -681,55 +630,21 @@ void aviImage::subtitle_file( const char* f )
         }
         
 
-        // Comment complicated characters in subtitle file
-        bool copy = false;
+        // Comment complicated characters in subtitle file.
+        // Be wary of ' (single quote) which is special.
         std::string sub;
         const char* s = _subtitle_file.c_str();
-        for ( ; *s != 0; ++s )
-        {
-            if ( *s == '\'' )
-            {
-                size_t pos = _subtitle_file.rfind( '.' );
-                if ( pos != std::string::npos )
-                {
-                    const char* c = _subtitle_file.c_str();
-                    c += pos;
-                    if ( is_valid_subtitle( c ) )
-                        copy = true;
-                }
-                continue;
-            }
-            sub += *s;
-        }
 
-        if ( copy )
-        {
-            LOG_INFO( _("Copy subtitle to work around ' in name") );
-            try
-            {
-                std::string newcopy = tmppath() + '/' + sub;
-            
-                if ( fs::exists( newcopy ) )
-                {
-                    fs::remove( newcopy );
-                }
-                fs::copy_file( _subtitle_file, newcopy );
-                
-                _subtitle_file = sub;
-                fs::current_path( tmppath() );
-            }
-            catch( const std::exception& e )
-            {
-                LOG_ERROR( e.what() );
-            }
-        }
-        
-        sub.clear();
-        s = _subtitle_file.c_str();
         for ( ; *s != 0; ++s )
         {
-            if ( *s == ' ' || *s == '('  || *s == ')' || *s == ',' ||
-                 *s == ':' || *s == '\\' )
+            if ( *s == '\'' || *s == ':' )
+            {
+                for ( int i = 0; i < 2; ++i )
+                    sub += '\\';
+            }
+            if ( *s == ' ' || *s == '('  || *s == ')'  || *s == ',' ||
+                 *s == ':' || *s == '\\' || *s == '\'' || *s == '[' ||
+                 *s == ']' )
             {
                 sub += '\\';
             }
