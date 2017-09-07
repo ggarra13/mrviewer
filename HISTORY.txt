@@ -1,3 +1,6 @@
+v3.8.1   - Removed work-around for subtitles with ' as a sea of backslashes
+	   quotes the file just fine.
+
 v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
 	   with no audio.
 	 - Changing OpenGL Blend Mode in Preferences now updates the view
@@ -24,8 +27,9 @@ v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
 	   of some samples in ffmpeg.
 	 - Added support to encoding in subtitles in the
 	   Preferences/Subtitles, to allow for subtitles in different
-	   languages other than English.  ISO-8191-1 and UTF-8/16
-	   are supported.  You can also type in the encoding yourself.
+	   languages other than English.  ISO-8859-1/2 and UTF-8/16
+	   are supported as pulldowns but they are not the only ones.
+	   You can also type in the encoding yourself.
 	 - Added a work-around to play subtitle files with ' in their names.
 	   Basically, the subtitle is copied to $TEMP without the '.
 
