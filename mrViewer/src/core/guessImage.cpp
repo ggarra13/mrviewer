@@ -326,6 +326,12 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 image->is_left_eye( true );
                 right->is_stereo( true );
                 right->is_left_eye( false );
+                aviImage* aviL = dynamic_cast< aviImage* >( image );
+                aviImage* aviR = dynamic_cast< aviImage* >( right );
+                if ( aviL && aviR )
+                {
+                    aviR->subtitle_file( aviL->subtitle_file().c_str() );
+                }
             }
         }
     }

@@ -2,7 +2,7 @@
 
 import argparse, re, sys
 
-VERSION=0.4
+VERSION=0.5
 
 parser = argparse.ArgumentParser(description='3DL LUT to CTL command-line converter.', epilog="Example: 3dl2ctl.py tint.3dl LMT.tint.ctl")
 parser.add_argument("--maxValueSpline",
@@ -178,4 +178,4 @@ void main( varying float rIn,
 
 ''' )
 
-print "MAXIMUM VALUE IN 3D LUT %g" % maxv
+print "MAXIMUM VALUE IN 3D LUT %g, using %g" % ( maxv, maxValue )
