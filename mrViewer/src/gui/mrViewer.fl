@@ -661,7 +661,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {534 543 700 450} resizable visible
+        xywh {530 608 700 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1434,8 +1434,8 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             } {}
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)} open
-            xywh {13 22 423 354} align 5 box EMBOSSED_BOX labelsize 14
+            label {Default Output Device Transform (ODT)}
+            xywh {13 22 423 354} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Display open
@@ -1474,7 +1474,7 @@ uiODT_CTL_transform->do_callback();}
                   xywh {5 35 250 155} align 132 box ENGRAVED_BOX
                 } {
                   {fltk::Widget} {} {
-                    label X selected
+                    label X
                     xywh {100 8 25 25}
                   }
                   {fltk::Widget} {} {
@@ -1998,7 +1998,7 @@ else
             }
           }
           {fltk::Group} {} {
-            label Subtitles
+            label Subtitles open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsSubtitleFont {
@@ -2024,6 +2024,40 @@ for (int i = 0; i < numfonts; i++)
            o->value(i);
 }}
             } {}
+            {fltk::Choice} uiPrefsSubtitleEncodingChoices {
+              user_data m user_data_type {ViewerUI*}
+              callback {int i = o->value();
+uiPrefsSubtitleEncoding->text( o->child(i)->label() );
+uiPrefsSubtitleEncoding->do_callback();} open
+              xywh {239 88 150 31} box THIN_DOWN_BOX
+            } {
+              {fltk::Item} {} {
+                label {ISO-8859-1}
+                }
+              {fltk::Item} {} {
+                label {ISO-8859-2}
+                }
+              {fltk::Item} {} {
+                label {UTF-8}
+                }
+              {fltk::Item} {} {
+                label {UTF-16}
+                }
+            }
+            {fltk::Input} uiPrefsSubtitleEncoding {
+              label Encoding
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {const char* enc = o->text();
+mrv::media m = v->uiView->foreground();
+if (!m) return;
+CMedia* img = m->image();
+aviImage* avi = dynamic_cast< aviImage* >( img );
+if (!avi) return;
+avi->subtitle_encoding( enc );
+CMedia::default_subtitle_encoding( enc );
+v->uiView->redraw();} selected
+              xywh {114 89 120 30}
+            }
           }
           {fltk::Group} {} {
             label Errors
