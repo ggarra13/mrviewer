@@ -9,7 +9,7 @@ if version <= 1 and patch <= 8
   exit 1
 end
 
-Version=0.4
+Version=0.5
 
 idepth = 10
 odepth = 10
@@ -238,4 +238,4 @@ void main( varying float rIn,
 EOF
 
 
-puts "MAXIMUM VALUE IN 3D LUT #{max}"
+puts "MAXIMUM VALUE IN 3D LUT #{max}, using #{maxValue}"
