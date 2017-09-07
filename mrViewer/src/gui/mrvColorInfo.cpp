@@ -641,7 +641,7 @@ void ColorInfo::update( const CMedia* img,
           if ( b < 0.f ) b = 0.0f;
           else if ( b > 1.f ) b = 1.0f;
           
-          if ( r <= 0.001f && g <= 0.001f && b <= 0.001f )
+          if ( r <= 0.01f && g <= 0.01f && b <= 0.01f )
               col = fltk::BLACK;
           else
           {
