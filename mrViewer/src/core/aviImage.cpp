@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2016  Gonzalo Garramuño
@@ -64,6 +65,8 @@ namespace fs = boost::filesystem;
 #include <ImfStringAttribute.h>
 
 #include "core/mrvPlayback.h"
+#include "core/mrvHome.h"
+#include "core/Sequence.h"
 #include "core/aviImage.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvThread.h"
@@ -478,6 +481,7 @@ int aviImage::init_filters(const char *filters_descr)
         goto end;
     }
 
+
     /* buffer video source: the decoded frames from the decoder will be inserted here. */
     snprintf(args, sizeof(args),
              "video_size=%dx%d:pix_fmt=%d:time_base=%d/%d:pixel_aspect=%d/%d",
@@ -564,6 +568,16 @@ end:
 
 void aviImage::subtitle_file( const char* f )
 {
+    if ( _right_eye )
+    {
+        aviImage* aviR = dynamic_cast< aviImage* >( _right_eye );
+        if ( aviR )
+        {
+            aviR->subtitle_file( f );
+        }
+    }
+
+    
     flush_subtitle();
 
     close_subtitle_codec();
@@ -583,7 +597,7 @@ void aviImage::subtitle_file( const char* f )
     _subtitle_info.clear();
     _subtitle_index = -1;
 
-    if ( f == NULL )
+    if ( f == NULL || strlen(f) == 0 )
         _subtitle_file.clear();
     else
     {
@@ -593,7 +607,6 @@ void aviImage::subtitle_file( const char* f )
         _subtitle_file = sp.filename().generic_string();
         sp = sp.parent_path();
         std::string dir = sp.generic_string();
-
         fs::path orig_dir = fs::current_path();
         
         // Set the current dir to the subtitle path
@@ -602,14 +615,20 @@ void aviImage::subtitle_file( const char* f )
             _subtitle_dir = dir;
             fs::current_path( dir );
         }
-        
 
         AVFormatContext* scontext = NULL; //!< current read file context
-    
+        
         AVDictionary *opts = NULL;
         AVInputFormat*     format = NULL;
         int error = avformat_open_input( &scontext, _subtitle_file.c_str(), 
                                          format, &opts );
+        if ( error < 0 )
+        {
+            char errbuf[256];
+            av_make_error_string( errbuf, 255, error );
+            LOG_ERROR( name() << ": " << _subtitle_file << " " <<  errbuf );
+            return;
+        }
       
         // Iterate through all the streams available
         for( unsigned i = 0; i < scontext->nb_streams; ++i ) 
@@ -655,15 +674,78 @@ void aviImage::subtitle_file( const char* f )
         }
 
         if ( _subtitle_info.empty() )
+        {
+            IMG_ERROR( _("Could not find subtitle in '")
+                       << _subtitle_file << "'" );
             return;
+        }
+        
 
-        _filter_description = "subtitles=";
+        // Comment complicated characters in subtitle file
+        bool copy = false;
+        std::string sub;
+        const char* s = _subtitle_file.c_str();
+        for ( ; *s != 0; ++s )
+        {
+            if ( *s == '\'' )
+            {
+                size_t pos = _subtitle_file.rfind( '.' );
+                if ( pos != std::string::npos )
+                {
+                    const char* c = _subtitle_file.c_str();
+                    c += pos;
+                    if ( is_valid_subtitle( c ) )
+                        copy = true;
+                }
+                continue;
+            }
+            sub += *s;
+        }
+
+        if ( copy )
+        {
+            LOG_INFO( _("Copy subtitle to work around ' in name") );
+            try
+            {
+                std::string newcopy = tmppath() + '/' + sub;
+            
+                if ( fs::exists( newcopy ) )
+                {
+                    fs::remove( newcopy );
+                }
+                fs::copy_file( _subtitle_file, newcopy );
+                
+                _subtitle_file = sub;
+                fs::current_path( tmppath() );
+            }
+            catch( const std::exception& e )
+            {
+                LOG_ERROR( e.what() );
+            }
+        }
+        
+        sub.clear();
+        s = _subtitle_file.c_str();
+        for ( ; *s != 0; ++s )
+        {
+            if ( *s == ' ' || *s == '('  || *s == ')' || *s == ',' ||
+                 *s == ':' || *s == '\\' )
+            {
+                sub += '\\';
+            }
+            sub += *s;
+        }
 
         
-        LOG_INFO( "Current Path " << fs::current_path() );
-        LOG_INFO( "Subtitle file " << _subtitle_file );
-        LOG_INFO( "Subtitle font " << _subtitle_font );
-        _filter_description += _subtitle_file;
+        LOG_INFO( _("Current Path ") << fs::current_path() );
+        LOG_INFO( _("Subtitle file ") << _subtitle_file );
+        LOG_INFO( _("Subtitle font ") << _subtitle_font );
+        LOG_INFO( _("Subtitle encoding ") << _subtitle_encoding );
+        LOG_INFO( _("Subtitle quoted ") << sub );
+        _filter_description = "subtitles=";
+        _filter_description += sub;
+        _filter_description += ":charenc=";
+        _filter_description += _subtitle_encoding;
         _filter_description += ":force_style='FontName=";
         _filter_description += _subtitle_font;
         _filter_description += "'";
@@ -680,6 +762,8 @@ void aviImage::subtitle_file( const char* f )
         }
         else
         {
+            _subtitle_file = fs::current_path().generic_string() + "/" +
+                             _subtitle_file;
             _subtitle_index = 0;
         }
 
