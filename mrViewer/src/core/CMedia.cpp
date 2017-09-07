@@ -128,6 +128,7 @@ unsigned CMedia::_audio_cache_size = 0;
 unsigned CMedia::_video_cache_size = 0;
 
 std::string CMedia::_default_subtitle_font = "Arial";
+std::string CMedia::_default_subtitle_encoding = "iso-8859-1";
 bool CMedia::_aces_metadata = false;
 bool CMedia::_all_layers = false;
 bool CMedia::_cache_active = true;
@@ -418,6 +419,7 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
+_subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
@@ -514,6 +516,7 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
+_subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
@@ -620,6 +623,7 @@ _acontext(NULL),
 _audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
+_subtitle_encoding( strdup( other->_subtitle_encoding ) ),
 _subtitle_font( strdup( other->_subtitle_font ) ),
 _audio_index( other->_audio_index ),
 _samples_per_sec( 0 ),
@@ -831,6 +835,7 @@ CMedia::~CMedia()
   }
 
   free( _subtitle_font ); _subtitle_font = NULL;
+  free( _subtitle_encoding); _subtitle_encoding = NULL;
 
   {
       Attributes::iterator i = _attrs.begin();
