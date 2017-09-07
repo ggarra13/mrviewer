@@ -27,6 +27,7 @@ namespace mrv
 std::string homepath();
 std::string prefspath();
 std::string lockfile();
+std::string tmppath();
 }
 
 #endif

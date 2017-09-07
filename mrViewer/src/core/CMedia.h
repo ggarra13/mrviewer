@@ -1071,6 +1071,9 @@ class CMedia
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
 
+    static void default_subtitle_encoding( const char* f )
+    { if (f) _default_subtitle_encoding = f; }
+    
     static void default_subtitle_font( const char* f )
     { if (f) _default_subtitle_font = f; }
     
@@ -1485,6 +1488,7 @@ class CMedia
 
     int              _subtitle_index;
     subtitle_info_list_t _subtitle_info;   //!< list of subtitle stream infos
+    char*                _subtitle_encoding;
     char*                _subtitle_font;
 
     
@@ -1506,6 +1510,7 @@ class CMedia
     mrv::AudioEngine*  _audio_engine;
 
     static std::string _default_subtitle_font;
+    static std::string _default_subtitle_encoding;
     static bool _aces_metadata;
     static bool _all_layers;
     static bool _8bit_cache;
