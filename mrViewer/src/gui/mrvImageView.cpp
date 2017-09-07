@@ -679,7 +679,7 @@ void data_window_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 static const float kMinZoom = 0.01f;  // Zoom 1/64
-static const float kMaxZoom = 32.f;   // Zoom 32x
+static const float kMaxZoom = 64.f;   // Zoom 64x
 
 
 
@@ -1419,7 +1419,7 @@ void ImageView::fit_image()
 
   double w = (double) fltk_main()->w();
   double z = w / (double)W;
-  
+
   double h = (double) fltk_main()->h();
   if ( uiMain->uiTopBar->visible() )
     h -= uiMain->uiTopBar->h();
@@ -6238,7 +6238,21 @@ void ImageView::foreground( mrv::media fg )
             }
 
             if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-                fit_image();
+            {
+                if ( _zoom < 1.0f )
+                {
+                    fit_image();
+                }
+                else if ( old )
+                {
+                    CMedia* o = old->image();
+                    if (o)
+                    {
+                        if ( o->display_window() != img->display_window() )
+                            fit_image();
+                    }
+                }
+            }
 
             img->image_damage( img->image_damage() | CMedia::kDamageContents |
                                CMedia::kDamageLut | CMedia::kDamage3DData );
