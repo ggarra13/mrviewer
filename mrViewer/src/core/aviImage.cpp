@@ -550,20 +550,8 @@ void aviImage::subtitle_file( const char* f )
         _subtitle_file.clear();
     else
     {
-        std::ostringstream msg;
         
-        fs::path sp = f;
-        _subtitle_file = sp.filename().generic_string();
-        sp = sp.parent_path();
-        std::string dir = sp.generic_string();
-        fs::path orig_dir = fs::current_path();
-        
-        // Set the current dir to the subtitle path
-        if ( ! dir.empty() )
-        {
-            _subtitle_dir = dir;
-            fs::current_path( dir );
-        }
+        _subtitle_file = f;
 
         AVFormatContext* scontext = NULL; //!< current read file context
         
@@ -606,7 +594,8 @@ void aviImage::subtitle_file( const char* f )
                 case AVMEDIA_TYPE_SUBTITLE:
                 {
                     subtitle_info_t s;
-                     populate_stream_info( s, msg, scontext, par, i );
+                    std::ostringstream msg;
+                    populate_stream_info( s, msg, scontext, par, i );
                     s.bitrate    = calculate_bitrate( ctx );
                     s.play = false;
                     _subtitle_info.push_back( s );
@@ -637,7 +626,7 @@ void aviImage::subtitle_file( const char* f )
 
         for ( ; *s != 0; ++s )
         {
-            if ( *s == '\'' || *s == ':' )
+            if ( *s == '\'' || *s == ':' || *s == '\\' )
             {
                 // Double quote this so a \ gets passed in first escape path
                 sub += "\\\\";
@@ -652,11 +641,9 @@ void aviImage::subtitle_file( const char* f )
         }
 
         
-        LOG_INFO( _("Current Path ") << fs::current_path() );
-        LOG_INFO( _("Subtitle file ") << _subtitle_file );
+        LOG_INFO( _("Subtitle file ") << sub );
         LOG_INFO( _("Subtitle font ") << _subtitle_font );
         LOG_INFO( _("Subtitle encoding ") << _subtitle_encoding );
-        LOG_INFO( _("Subtitle quoted ") << sub );
         _filter_description = "subtitles=";
         _filter_description += sub;
         _filter_description += ":charenc=";
@@ -677,8 +664,6 @@ void aviImage::subtitle_file( const char* f )
         }
         else
         {
-            _subtitle_file = fs::current_path().generic_string() + "/" +
-                             _subtitle_file;
             _subtitle_index = 0;
         }
 
@@ -691,7 +676,6 @@ void aviImage::subtitle_file( const char* f )
         avformat_free_context( scontext );
 
         image_damage( image_damage() | kDamageSubtitle );
-        fs::current_path( orig_dir );
     }
 
 }
