@@ -563,7 +563,7 @@ void aviImage::subtitle_file( const char* f )
         {
             char errbuf[256];
             av_make_error_string( errbuf, 255, error );
-            LOG_ERROR( name() << ": " << _subtitle_file << " " <<  errbuf );
+            LOG_ERROR( name() << " - " << _subtitle_file << ": " <<  errbuf );
             return;
         }
       
@@ -578,10 +578,9 @@ void aviImage::subtitle_file( const char* f )
             const AVCodecParameters* par = stream->codecpar;
             if ( par == NULL ) continue;
 
-            AVCodecContext* ctx;
 
             AVCodec* codec = avcodec_find_decoder( par->codec_id );
-            ctx = avcodec_alloc_context3( codec );
+            AVCodecContext* ctx = avcodec_alloc_context3( codec );
             int err = avcodec_parameters_to_context( ctx, par );
             if ( err < 0 )
             {
@@ -620,7 +619,7 @@ void aviImage::subtitle_file( const char* f )
         
 
         // Comment complicated characters in subtitle file.
-        // Be wary of ' (single quote) which is special.
+        // Be wary of ' (single quote) \ and : which are special.
         std::string sub;
         const char* s = _subtitle_file.c_str();
 
