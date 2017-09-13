@@ -1,5 +1,12 @@
 v3.8.1   - Removed work-around for subtitles with ' as a sea of backslashes
 	   quotes the file just fine.
+	 - Bug fixed adding subtitles to audio files only.  This is not yet
+	   allowed.
+	 - Added missing movie extensions to file requester.  Now: asf,
+	   avc, avchd, m2ts, m2t, ogm, ogv and ts are listed as movie files.
+	   Previously, they would be hidden.
+	 - Made file requester list appropiate files for file extensions
+	   when the file requester has already been opened once.
 
 v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
 	   with no audio.
