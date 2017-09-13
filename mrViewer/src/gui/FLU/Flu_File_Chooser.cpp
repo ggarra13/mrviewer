@@ -601,6 +601,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
   add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
   add_type( N_("mxf"),   _( "MXF Movie"), &reel );
+  add_type( N_("ogm"),   _( "Ogg Movie"), &reel );
   add_type( N_("ogv"),   _( "Ogg Video"), &reel );
   add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
   add_type( N_("rm"),    _( "Real Media Movie"), &reel );
@@ -1256,6 +1257,8 @@ void Flu_File_Chooser::pattern( const char *p )
   // choose the first added item
   filePattern->value(0);
   filePattern->text( filePattern->child(0)->label() );
+
+  cd( "./" );
 }
 
 int Flu_File_Chooser::handle( int event )
