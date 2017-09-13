@@ -542,6 +542,10 @@ void aviImage::subtitle_file( const char* f )
         av_frame_free( &_filt_frame );
     }
     
+    if ( !has_video() )
+    {
+        return; 
+    }
     
     _subtitle_info.clear();
     _subtitle_index = -1;
