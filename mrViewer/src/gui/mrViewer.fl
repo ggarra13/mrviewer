@@ -655,13 +655,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {530 608 700 450} resizable visible
+        xywh {530 608 700 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2055,7 +2054,7 @@ aviImage* avi = dynamic_cast< aviImage* >( img );
 if (!avi) return;
 avi->subtitle_encoding( enc );
 CMedia::default_subtitle_encoding( enc );
-v->uiView->redraw();} selected
+v->uiView->redraw();}
               xywh {114 89 120 30}
             }
           }
@@ -2480,42 +2479,57 @@ o->child_of( main->uiMain );} modal
   }
   class PaintUI {} {
     decl {mrv::ViewerUI* main_;} {}
-    Function {make_window( ViewerUI* m )} {open
-    } {
+    Function {make_window( ViewerUI* m )} {} {
       {fltk::Window} uiMain {
         label Paint
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {451 542 150 395} horizontal hide resizable
+        xywh {451 557 150 520} horizontal hide resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;}
       } {
         {fltk::Group} {} {open
-          xywh {0 9 145 376}
+          xywh {0 11 145 495}
         } {
+          {fltk::Button} uiScrub {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->scrub_mode();
+o->value(1);
+uiSelection->value(0);
+uiDraw->value(0);
+uiErase->value(0);
+uiText->value(0);}
+            tooltip {Scrubbing Tool}
+            xywh {30 14 43 35}
+            image {/media/gga/Datos/code/applications/mrViewer/mrViewer/icons/scrub.xpm} value 1
+            extra_code {o->value(1);
+o->image( scrub );}
+          }
           {fltk::Button} uiSelection {
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->selection_mode();
 o->value(1);
+uiScrub->value(0);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);}
             tooltip {Area Select Tool}
-            xywh {29 15 43 35}
-            image not_inlined {../../icons/select.xpm} value 1
-            extra_code {o->value(1);
-o->image( select_pic );}
+            xywh {29 53 43 35}
+            image {/media/gga/Datos/code/applications/mrViewer/mrViewer/icons/select.xpm} value 1
+            extra_code {o->image( select_pic );
+o->value( 0 );}
           }
           {fltk::Button} uiDraw {
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->draw_mode();
 o->value(1);
+uiScrub->value(0);
 uiSelection->value(0);
 uiErase->value(0);
 uiText->value(0);}
             tooltip {Freehand Drawing Tool}
-            xywh {77 15 40 35}
+            xywh {77 53 40 35}
             image not_inlined {../../icons/draw.xpm}
             extra_code {o->image( draw );}
           }
@@ -2523,11 +2537,12 @@ uiText->value(0);}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->erase_mode();
 o->value(1);
+uiScrub->value(0);
 uiSelection->value(0);
 uiDraw->value(0);
 uiText->value(0);}
             tooltip {Eraser Tool}
-            xywh {77 56 40 35}
+            xywh {77 94 40 35}
             image not_inlined {../../icons/erase.xpm}
             extra_code {o->image( erase );}
           }
@@ -2537,15 +2552,15 @@ uiText->value(0);}
             callback {o->value(1);
 v->uiView->text_mode();}
             tooltip {Text Tool}
-            xywh {28 55 45 35} align 32 labelfont 8 labelsize 24
+            xywh {28 93 45 35} align 32 labelfont 8 labelsize 24
           }
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
             tooltip {Selects the size of brush.}
-            xywh {32 106 85 30} align 1 minimum 1 maximum 10 step 1 value 5
+            xywh {32 144 85 30} align 1 minimum 1 maximum 10 step 1 value 5
           }
           {fltk::Group} {} {open
-            xywh {30 336 82 40}
+            xywh {30 374 82 50}
           } {
             {fltk::Button} uiUndoDraw {
               user_data m user_data_type {mrv::ViewerUI*}
@@ -2554,7 +2569,7 @@ v->uiView->text_mode();}
 if ( !v->uiView->has_undo() )
  o->deactivate();}
               tooltip {Undo Last Shape Drawn}
-              xywh {5 2 34 35}
+              xywh {5 15 34 35}
               image not_inlined {../../icons/undo.xpm}
               extra_code {o->image( undo );
 if ( !m->uiView->has_undo() )
@@ -2570,7 +2585,7 @@ if ( !v->uiView->has_redo() )
 else
    o->activate();}
               tooltip {Redo Previous Shape Drawn}
-              xywh {45 2 34 35}
+              xywh {45 15 34 35}
               image not_inlined {../../icons/redo.xpm}
               extra_code {o->image( redo );
 if ( !m->uiView->has_redo() )
@@ -2590,11 +2605,11 @@ else
   o->color( fltk::color( r,g,b ) );
 o->redraw();}
             tooltip {Selects the current pen color.}
-            xywh {87 151 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
+            xywh {87 189 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
           }
           {fltk::Group} {} {
             label Frames open
-            xywh {25 196 95 55} box UP_BOX
+            xywh {25 234 95 55} box UP_BOX
           } {
             {fltk::RadioButton} uiAllFrames {
               label All
@@ -2609,7 +2624,7 @@ o->redraw();}
           }
           {fltk::Group} {} {
             label Ghosting open
-            xywh {25 266 95 60} box UP_BOX
+            xywh {25 314 95 65} box UP_BOX
           } {
             {fltk::CheckButton} {} {
               label Previous
@@ -2617,7 +2632,7 @@ o->redraw();}
               callback {v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
               tooltip {Show shapes of previous frame ghosted.}
-              xywh {10 5 25 25} value 1
+              xywh {10 10 25 25} value 1
             }
             {fltk::CheckButton} {} {
               label Next
@@ -2625,7 +2640,7 @@ v->uiView->redraw();}
               callback {v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
               tooltip {Show next frame shapes ghosted.}
-              xywh {10 25 25 25} value 1
+              xywh {10 30 25 25} value 1
             }
           }
         }
@@ -2714,7 +2729,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2747,13 +2763,13 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
+        callback {delete v;} open
         xywh {354 370 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
@@ -3342,7 +3358,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {open
+          {fltk::PackedGroup} uiBottomBar {selected
             xywh {0 486 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
