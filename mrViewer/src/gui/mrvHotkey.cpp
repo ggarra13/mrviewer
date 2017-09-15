@@ -104,8 +104,6 @@ Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
 Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
 Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 
-Hotkey kScrub( false, false, false, false, fltk::LeftShiftKey, "",
-               fltk::RightShiftKey );
 
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
@@ -273,7 +271,6 @@ HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
 HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
 HotkeyEntry( _("Toggle Full Screen"), kFullScreen),
 HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
-HotkeyEntry( _("Scrub"), kScrub),
 HotkeyEntry( _("Exposure More"), kExposureMore),
 HotkeyEntry( _("Exposure Less"), kExposureLess),
 HotkeyEntry( _("Gamma More"), kGammaMore),
