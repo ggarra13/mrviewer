@@ -765,8 +765,8 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {6 92 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsPaintTools {
-                label {Paint Tools}
-                tooltip {When selected, mrViewer will start with the stereo options window already open.}
+                label {Action Tools}
+                tooltip {When selected, mrViewer will start with the action tools already showing.}
                 xywh {217 91 25 25} align 8 box UP_BOX
               }
             }
@@ -2481,7 +2481,7 @@ o->child_of( main->uiMain );} modal
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window( ViewerUI* m )} {} {
       {fltk::Window} uiMain {
-        label Paint
+        label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
@@ -2502,7 +2502,7 @@ uiErase->value(0);
 uiText->value(0);}
             tooltip {Scrubbing Tool}
             xywh {30 14 43 35}
-            image {/media/gga/Datos/code/applications/mrViewer/mrViewer/icons/scrub.xpm} value 1
+            image not_inlined {../../icons/scrub.xpm} value 1
             extra_code {o->value(1);
 o->image( scrub );}
           }
@@ -2516,7 +2516,7 @@ uiErase->value(0);
 uiText->value(0);}
             tooltip {Area Select Tool}
             xywh {29 53 43 35}
-            image {/media/gga/Datos/code/applications/mrViewer/mrViewer/icons/select.xpm} value 1
+            image not_inlined {../../icons/select.xpm} value 1
             extra_code {o->image( select_pic );
 o->value( 0 );}
           }
@@ -2817,7 +2817,7 @@ v->uiView->update_color_info();}
                 callback {v->uiEDLWindow->uiMain->show();}
                 }
               {fltk::Item} {} {
-                label {Paint Tools}
+                label {Action Tools}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiPaint->uiMain->show();}
                 }
@@ -3371,7 +3371,7 @@ where Yn is the white reference (usually 1).
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );}
-                  tooltip {Timeline. To scrub, press SHIFT, then move mouse left and right, CTRL (or other key) to exit scrub mode.}
+                  tooltip {Timeline. To scrub, you must be in scrubbing mode.  Then use LMB and drag left/right.}
                   xywh {5 3 610 21} type TICK_ABOVE resizable textfont 1 textcolor 0x2020200 textsize 12 minimum 1 maximum 50 step 1 value 1 slider_size 10
                   extra_code {o->main( this );}
                   class {mrv::Timeline}
@@ -3473,7 +3473,7 @@ v->uiView->seek( f );}
                         label {@||}
                         user_data this user_data_type {mrv::ViewerUI*}
                         callback {v->uiView->stop();}
-                        tooltip {Stop playback.  You can use SHIFT and then the mouse for scrubbing.}
+                        tooltip {Stop playback.  You can use LMB and Drag to scrub when in scrubbing mode (default).}
                         xywh {93 2 30 18} labelcolor 0x98a8a800
                       }
                       {fltk::Button} {} {
