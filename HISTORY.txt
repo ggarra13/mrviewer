@@ -7,6 +7,13 @@ v3.8.1   - Removed work-around for subtitles with ' as a sea of backslashes
 	   Previously, they would be hidden.
 	 - Made file requester list appropiate files for file extensions
 	   when the file requester has already been opened once.
+	 - Made the EDL timeline follow the viewer's timeline so it will
+	   show the current frame when the EDL Window is opened.
+	 - Made Scrubbing work with the left mouse button only.
+	   There's no need to use SHIFT/CTRL combo.
+	   The default behavior of the left mouse drag is now scrubbing.
+	   You can use the Paint Tools Window to change it to selection
+	   (the old LMB behavior), draw pencil, text or eraser.
 
 v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
 	   with no audio.
