@@ -857,6 +857,7 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 
 }
 
+
 void ImageView::text_mode()
 {
    bool ok = mrv::make_window();
@@ -867,14 +868,16 @@ void ImageView::text_mode()
       uiMain->uiPaint->uiDraw->value(false);
       uiMain->uiPaint->uiText->value(true);
       uiMain->uiPaint->uiSelection->value(false);
+      uiMain->uiPaint->uiScrub->value(false);
    }
    else
    {
-      _mode = kSelection;
+      _mode = kScrub;
+      uiMain->uiPaint->uiSelection->value(false);
       uiMain->uiPaint->uiErase->value(false);
       uiMain->uiPaint->uiDraw->value(false);
       uiMain->uiPaint->uiText->value(false);
-      uiMain->uiPaint->uiSelection->value(true);
+      uiMain->uiPaint->uiScrub->value(true);
    }
 }
 
@@ -951,7 +954,7 @@ _timeout( NULL ),
 _old_fg( NULL ),
 _fg_reel( -1 ),
 _bg_reel( -1 ),
-_mode( kSelection ),
+_mode( kNoAction ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _lastFrame( 0 )
@@ -2505,7 +2508,6 @@ int ImageView::leftMouseDown(int x, int y)
    
 
   flags		|= kMouseDown;
-	
 
   int button = fltk::event_button();
   if (button == 1) 
@@ -2612,11 +2614,13 @@ int ImageView::leftMouseDown(int x, int y)
 
 	 add_shape( mrv::shape_type_ptr(s) );
       }
+      else
+      {
+          _mode = kScrub;
+      }
 
       if ( _wipe_dir != kNoWipe )
       {
-   
-
 	 _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
 	 window()->cursor(fltk::CURSOR_CROSS);
 	 fltk::check();
@@ -2968,6 +2972,10 @@ void ImageView::leftMouseUp( int x, int y )
      {
          send_network( s->send() );
      }
+  }
+  else if ( _mode == kScrub )
+  {
+      _mode = kNoAction;
   }
 
 }
@@ -3904,6 +3912,17 @@ void ImageView::mouseDrag(int x,int y)
 
 
 	}
+      else if ( _mode == kScrub )
+      {
+          double s;
+          s = uiMain->uiPrefs->uiPrefsScrubbingSensitivity->value();
+          double dx = (fltk::event_x() - lastX) / s;
+          if ( std::abs(dx) >= 1.0f )
+          {
+              scrub( dx );
+              lastX = fltk::event_x();
+          }
+      }
       else
 	{
 
@@ -5133,21 +5152,7 @@ int ImageView::handle(int event)
                 return 1;
             }
 
-            if ( kScrub.match( fltk::event_key() ) )
-            {
-                double s;
-                s = uiMain->uiPrefs->uiPrefsScrubbingSensitivity->value();
-                double dx = (fltk::event_x() - lastX) / s;
-                if ( std::abs(dx) >= 1.0f )
-                {
-                    scrub( dx );
-                    lastX = fltk::event_x();
-                }
-            }
-            else
-            {
-                mouseMove(fltk::event_x(), fltk::event_y());
-            }
+            mouseMove(fltk::event_x(), fltk::event_y());
 
             if ( _mode == kDraw || _mode == kErase )
                 redraw();
