@@ -116,13 +116,13 @@ mrv::media Reel_t::media_at( const boost::int64_t f ) const
     mrv::MediaList::const_iterator e = images.end();
 
     mrv::media m = images.front();
-    double mn = m->position();
+    int64_t mn = m->position();
 
     m = images.back();
-    double mx = m->position() + m->image()->duration() - 1;
+    int64_t mx = m->position() + m->image()->duration() - 1;
     if ( mn > mx ) 
     {
-       double t = mx;
+       int64_t t = mx;
        mx = mn; mn = t;
     }
 
