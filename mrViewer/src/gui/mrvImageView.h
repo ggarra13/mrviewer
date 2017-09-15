@@ -77,10 +77,12 @@ class server;
     };
 
     enum Mode {
-    kSelection = 1 << 0,
-    kDraw      = 1 << 1,
-    kErase     = 1 << 2,
-    kText      = 1 << 3,
+    kNoAction  = 0,
+    kScrub     = 1 << 0,
+    kSelection = 1 << 1,
+    kDraw      = 1 << 2,
+    kErase     = 1 << 3,
+    kText      = 1 << 4,
     };
 
 
@@ -452,6 +454,7 @@ class server;
 
 
        void text_mode();
+       void scrub_mode()     { _mode = kScrub; }
        void selection_mode() { _mode = kSelection; }
        void draw_mode()      { _mode = kDraw; }
        void erase_mode()     { _mode = kErase; }
