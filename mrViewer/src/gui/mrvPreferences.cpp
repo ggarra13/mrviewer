@@ -851,6 +851,11 @@ static const char* kCLocale = "C";
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     main->uiMain->show();
+
+    // fltk::Widget* w = new fltk::Widget( 0, 48, 639, 40, "Eye1" );
+    // main->uiBottomBar->add( w );
+    // w = new fltk::Widget( 0, 88, 639, 40, "Eye2" );
+    // main->uiBottomBar->add( w );
     
     fltk::check();
 
