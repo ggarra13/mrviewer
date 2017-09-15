@@ -156,7 +156,6 @@ extern Hotkey kTogglePixelBar;
 extern Hotkey kToggleTimeline;
 extern Hotkey kTogglePresentation;
 
-extern Hotkey kScrub;
 
 extern Hotkey kZDepthUp;
 extern Hotkey kZDepthDown;
