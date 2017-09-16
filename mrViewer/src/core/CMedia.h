@@ -177,10 +177,10 @@ class CMedia
         {
         }
 
-        bool has_data( const boost::int64_t& frame, const int64_t offset,
+        bool has_data( const int64_t& frame, const int64_t offset,
                        const double& fps ) const
         {
-            int64_t last = boost::int64_t( ( duration + start ) * fps );
+            int64_t last = int64_t( ( duration + start ) * fps );
             last -= offset;
             return frame <= last;
         }
@@ -356,7 +356,7 @@ class CMedia
 
   public:
     /// Fetch (load) the image for a frame
-    virtual bool fetch(const boost::int64_t frame) { return true; }
+    virtual bool fetch(const int64_t frame) { return true; }
 
 
     /// Constructor used to create a resized image from another image.
@@ -364,7 +364,7 @@ class CMedia
     
     /// Constructor used to split a video or sequence in two
     //  (cut_frame - last_frame)
-    CMedia( const CMedia* other, boost::int64_t cut_frame );
+    CMedia( const CMedia* other, int64_t cut_frame );
 
 
     virtual ~CMedia();
@@ -401,23 +401,23 @@ class CMedia
     void default_layers();
 
 
-    const mrv::Recti data_window( boost::int64_t f = AV_NOPTS_VALUE) const;
-    const mrv::Recti display_window( boost::int64_t f = AV_NOPTS_VALUE) const;
-    const mrv::Recti data_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
-    const mrv::Recti display_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti data_window( int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti display_window( int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti data_window2(int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti display_window2(int64_t f = AV_NOPTS_VALUE) const;
 
     void data_window( const int xmin, const int ymin,
 		      const int xmax, const int ymax,
-                      const boost::int64_t& frame );
+                      const int64_t& frame );
     void display_window( const int xmin, const int ymin,
 			 const int xmax, const int ymax,
-                         const boost::int64_t& frame );
+                         const int64_t& frame );
     void data_window2( const int xmin, const int ymin,
                        const int xmax, const int ymax,
-                       const boost::int64_t& frame );
+                       const int64_t& frame );
     void display_window2( const int xmin, const int ymin,
                           const int xmax, const int ymax,
-                          const boost::int64_t& frame );
+                          const int64_t& frame );
 
     ////////////////// Return the list of available layers in the image
     inline const stringArray& layers() const { return _layers; }
@@ -460,8 +460,8 @@ class CMedia
     void filename( const char* n );
 
     virtual void sequence( const char* fileroot, 
-			   const boost::int64_t start, 
-			   const boost::int64_t end,
+			   const int64_t start, 
+			   const int64_t end,
                            const bool use_threads );
 
     ////////////////// Check if image has changed on disk or network
@@ -515,29 +515,29 @@ class CMedia
     inline void label( const char* x ) { _label = strdup(x); }
 
     ////////////////// Set the frame for the current image (sequence)
-    virtual bool    frame( const boost::int64_t frame );
-    virtual boost::int64_t frame() const { return _frame; }
+    virtual bool    frame( const int64_t frame );
+    virtual int64_t frame() const { return _frame; }
 
     ///////////////// Decoding time stamp
-    inline boost::int64_t   dts()                      { return _dts; }
-    //inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
+    inline int64_t   dts()                      { return _dts; }
+    //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
 
     ///////////////// Audio frame
-    inline void audio_frame( const boost::int64_t f ) { _audio_frame = f; }
-    inline boost::int64_t   audio_frame() const { return _audio_frame; }
+    inline void audio_frame( const int64_t f ) { _audio_frame = f; }
+    inline int64_t   audio_frame() const { return _audio_frame; }
 
     ////////////////// Seek to a specific frame in current image. 
     ////////////////// Frame is local to the video/sequence, not timeline.
-    void seek( const boost::int64_t frame );
+    void seek( const int64_t frame );
 
     ////////////////// Pre-roll sequence for playback
     ////////////////// Frame is local to the video/sequence, not timeline.
-    virtual void preroll( const boost::int64_t frame );
+    virtual void preroll( const int64_t frame );
 
     ////////////////// Add a loop to packet lists
     ////////////////// Frame is local to the video/sequence, not timeline.
-    virtual void loop_at_start( const boost::int64_t frame ); 
-    virtual void loop_at_end( const boost::int64_t frame ); 
+    virtual void loop_at_start( const int64_t frame ); 
+    virtual void loop_at_end( const int64_t frame ); 
 
     static const char* const decode_error( DecodeStatus err );
 
@@ -546,9 +546,9 @@ class CMedia
 				const boost::uint8_t* datas = NULL,
 				const int size = 0,
                                 const bool is_thumbnail = false,
-				const boost::int64_t 
+				const int64_t 
 				first = AV_NOPTS_VALUE,
-				const boost::int64_t 
+				const int64_t 
 				end = AV_NOPTS_VALUE,
                                 const bool avoid_seq = false );
 
@@ -691,22 +691,22 @@ class CMedia
 
 
     /// Sets the first frame in the sequence
-    void  first_frame(boost::int64_t x);
+    void  first_frame(int64_t x);
 
     /// Sets the first frame in the sequence
-    void  last_frame(boost::int64_t x);
+    void  last_frame(int64_t x);
 
     /// Returns the first frame in the range of playback
-    inline boost::int64_t   first_frame() const { return _frameStart; }
+    inline int64_t   first_frame() const { return _frameStart; }
 
     /// Returns the last frame in the range of playback
-    inline boost::int64_t   last_frame()  const { return _frameEnd; }
+    inline int64_t   last_frame()  const { return _frameEnd; }
 
     /// Returns the first frame in the video or sequence
-    inline boost::int64_t   start_frame() const { return _frame_start; }
+    inline int64_t   start_frame() const { return _frame_start; }
 
     /// Returns the last frame in the video or sequence
-    inline boost::int64_t   end_frame()  const { return _frame_end; }
+    inline int64_t   end_frame()  const { return _frame_end; }
 
     inline InterlaceType interlaced() const { return _interlaced; }
 
@@ -886,7 +886,7 @@ class CMedia
      * 
      * @return frame number in _frame_start - _frame_end range
      */
-    int64_t handle_loops( const boost::int64_t frame ) const;
+    int64_t handle_loops( const int64_t frame ) const;
     
 
     static void video_cache_size( unsigned x ) { _video_cache_size = x; }
@@ -896,17 +896,17 @@ class CMedia
     void audio_file( const char* file );
     std::string audio_file() const { return _audio_file; }
 
-    audio_type_ptr get_audio_frame( const boost::int64_t f );  // const
+    audio_type_ptr get_audio_frame( const int64_t f );  // const
 
     void close_audio();
 
     void    wait_audio();
-    bool    find_audio( const boost::int64_t frame);
+    bool    find_audio( const int64_t frame);
 
-    virtual boost::int64_t wait_subtitle() { return _frameStart; }
-    virtual bool find_subtitle( const boost::int64_t frame );
+    virtual int64_t wait_subtitle() { return _frameStart; }
+    virtual bool find_subtitle( const int64_t frame );
     virtual void wait_image();
-    virtual bool find_image( const boost::int64_t frame );
+    virtual bool find_image( const int64_t frame );
 
 
     void thread_exit();
@@ -922,16 +922,16 @@ class CMedia
     bool seek_request()         { return _seek_req; }
 
     // Convert a frame into stream's pts
-    boost::int64_t frame2pts( const AVStream* stream,
-                              const boost::int64_t frame ) const;
+    int64_t frame2pts( const AVStream* stream,
+                              const int64_t frame ) const;
 
     virtual void do_seek();
 
-    DecodeStatus decode_audio( boost::int64_t& frame );
-    DecodeStatus handle_video_seek( boost::int64_t& frame, 
+    DecodeStatus decode_audio( int64_t& frame );
+    DecodeStatus handle_video_seek( int64_t& frame, 
                                     const bool is_seek = true );
-    virtual DecodeStatus decode_video( boost::int64_t& frame );
-    virtual DecodeStatus decode_subtitle( const boost::int64_t frame );
+    virtual DecodeStatus decode_video( int64_t& frame );
+    virtual DecodeStatus decode_subtitle( const int64_t frame );
 
 
     inline float eye_separation() const { return _eye_separation; }
@@ -958,19 +958,19 @@ class CMedia
      * 
      * @return true or false
      */
-    bool in_audio_store( const boost::int64_t frame );
+    bool in_audio_store( const int64_t frame );
 
 
-    void debug_audio_packets(const boost::int64_t frame, 
+    void debug_audio_packets(const int64_t frame, 
 			     const char* routine = "",
 			     const bool detail = true);
-    virtual void debug_video_packets(const boost::int64_t frame, 
+    virtual void debug_video_packets(const int64_t frame, 
 				     const char* routine = "",
 				     const bool detail = false);
-    virtual void debug_video_stores(const boost::int64_t frame, 
+    virtual void debug_video_stores(const int64_t frame, 
 				    const char* routine = "",
 				    const bool detail = false) {};
-    virtual void debug_subtitle_stores(const boost::int64_t frame, 
+    virtual void debug_subtitle_stores(const int64_t frame, 
 				       const char* routine = "",
 				       const bool detail = false) {};
 
@@ -997,7 +997,7 @@ class CMedia
     inline void looping( Looping x ) { _looping = x; }
     
     // Return the sequence filename for frame 'frame'
-    std::string sequence_filename( const boost::int64_t frame ) const;
+    std::string sequence_filename( const int64_t frame ) const;
 
     // Return the video clock as a double
     double video_clock() const { return _video_clock; }
@@ -1013,7 +1013,7 @@ class CMedia
     inline double video_pts() const { return _video_pts; }
 
     // Return FFMPEG's start number of sequences (PNG loader)
-    inline boost::int64_t start_number() const { return _start_number; }
+    inline int64_t start_number() const { return _start_number; }
 
     // Return the audio pts as a double
     inline double audio_pts() const { return _audio_pts; }
@@ -1045,7 +1045,7 @@ class CMedia
     // Conver a string like HH:MM:SS:FF or HH;MM;SS;FF into Imf::TimeCode
     static Imf::TimeCode str2timecode( const std::string text );
     
-    void fetch_audio( const boost::int64_t frame );
+    void fetch_audio( const int64_t frame );
 
     // Wait for load threads to exit (unused)
     void wait_for_load_threads();
@@ -1053,10 +1053,10 @@ class CMedia
     // Wait for all threads to exit
     void wait_for_threads();
 
-    void audio_offset( const boost::int64_t f ) { _audio_offset = f; }
-    boost::int64_t audio_offset() const { return _audio_offset; }
+    void audio_offset( const int64_t f ) { _audio_offset = f; }
+    int64_t audio_offset() const { return _audio_offset; }
 
-    void debug_audio_stores(const boost::int64_t frame,
+    void debug_audio_stores(const int64_t frame,
 			    const char* routine = "",
 			    const bool detail = true);
 
@@ -1133,8 +1133,8 @@ class CMedia
      * @return offset to bring local frame as returned by handle_loops
      *                to timeline frame
      */
-    int64_t loops_offset( boost::int64_t f,
-                          const boost::int64_t frame ) const;
+    int64_t loops_offset( int64_t f,
+                          const int64_t frame ) const;
     
     /** 
      * Given a frame number, returns whether subtitle for that frame is already
@@ -1144,7 +1144,7 @@ class CMedia
      * 
      * @return true or false
      */
-    bool in_subtitle_packets( const boost::int64_t frame );
+    bool in_subtitle_packets( const int64_t frame );
 
     /** 
      * Given a frame number, returns whether video for that frame is already
@@ -1154,7 +1154,7 @@ class CMedia
      * 
      * @return true or false
      */
-    bool in_video_packets( const boost::int64_t frame );
+    bool in_video_packets( const int64_t frame );
 
 
     /** 
@@ -1166,7 +1166,7 @@ class CMedia
      * 
      * @return true if packets could be skipped, false if not.
      */
-    DecodeStatus handle_audio_packet_seek( boost::int64_t& frame, 
+    DecodeStatus handle_audio_packet_seek( int64_t& frame, 
 					   const bool is_seek );
 
 
@@ -1190,7 +1190,7 @@ class CMedia
      * 
      * @return true or false
      */
-    bool in_audio_packets( const boost::int64_t frame );
+    bool in_audio_packets( const int64_t frame );
 
     /** 
      * Given an audio packet, decode it into internal buffer
@@ -1201,8 +1201,8 @@ class CMedia
      * 
      * @return decode status for packet
      */
-    DecodeStatus decode_audio_packet( boost::int64_t& ptsframe, 
-                                      const boost::int64_t frame, 
+    DecodeStatus decode_audio_packet( int64_t& ptsframe, 
+                                      const int64_t frame, 
 				      const AVPacket& pkt );
 
     /** 
@@ -1214,7 +1214,7 @@ class CMedia
      * 
      * @return true if we get audio for current frame
      */
-    DecodeStatus decode_audio( const boost::int64_t frame, const AVPacket& pkt );
+    DecodeStatus decode_audio( const int64_t frame, const AVPacket& pkt );
 
 
 
@@ -1243,7 +1243,7 @@ class CMedia
     void timestamp();
 
     /// Allocate hires image pixels
-    void allocate_pixels( const boost::int64_t& frame,
+    void allocate_pixels( const int64_t& frame,
 			  const unsigned short channels = 4,
 			  const image_type::Format format = image_type::kRGBA,
 			  const image_type::PixelType pixel_type = image_type::kFloat,
@@ -1257,11 +1257,11 @@ class CMedia
 
 
     // Extract frame from pts or dts
-    boost::int64_t get_frame( const AVStream* s, const AVPacket& pkt );
+    int64_t get_frame( const AVStream* s, const AVPacket& pkt );
 
     // Convert an FFMPEG pts into a frame number
-    boost::int64_t pts2frame( const AVStream* stream, 
-			      const boost::int64_t pts ) const;
+    int64_t pts2frame( const AVStream* stream, 
+			      const int64_t pts ) const;
 
     void open_audio_codec();
     void close_audio_codec();
@@ -1285,7 +1285,7 @@ class CMedia
 			       const AVCodecParameters* codecpar, 
 			       const int stream_index );
 
-    void limit_audio_store( const boost::int64_t frame );
+    void limit_audio_store( const int64_t frame );
     void clear_stores();
     // Return the maximum number of audio frames cached for jog/shuttle
     unsigned int max_audio_frames();
@@ -1301,11 +1301,11 @@ class CMedia
      * 
      * @return number of bytes stored
      */
-    unsigned int store_audio( const boost::int64_t audio_frame, 
+    unsigned int store_audio( const int64_t audio_frame, 
 			      const boost::uint8_t* buf, const unsigned int size );
 
 
-    virtual bool seek_to_position( const boost::int64_t frame );
+    virtual bool seek_to_position( const int64_t frame );
 
 
     virtual void flush_video() {};
@@ -1323,7 +1323,7 @@ class CMedia
 
     void fill_rectangle( uint8_t* buf, int xh, int yh, int xl, int yl );
 
-    boost::int64_t queue_packets( const boost::int64_t frame,
+    int64_t queue_packets( const int64_t frame,
                                   const bool is_seek,
                                   bool& got_video,
                                   bool& got_audio,
@@ -1392,24 +1392,24 @@ class CMedia
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
-    boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
-    boost::int64_t   _adts;        //!< decoding time stamp of audio
+    int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
+    int64_t   _adts;        //!< decoding time stamp of audio
                                    //   (current fetch pkt)
-    boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
-    boost::int64_t   _audio_offset;//!< offset of additional audio
+    int64_t   _audio_frame; //!< presentation time stamp (current audio)
+    int64_t   _audio_offset;//!< offset of additional audio
 
-    boost::int64_t   _frame;       //!< presentation time stamp (current video)
-    boost::int64_t   _tc_frame;    //!< timecode frame offset
-    boost::int64_t   _expected;    //!< expected next dts fetch
-    boost::int64_t   _expected_audio; //!< expected next frame fetch
+    int64_t   _frame;       //!< presentation time stamp (current video)
+    int64_t   _tc_frame;    //!< timecode frame offset
+    int64_t   _expected;    //!< expected next dts fetch
+    int64_t   _expected_audio; //!< expected next frame fetch
 
-    boost::int64_t   _frameStart;  //!< user start frame for sequence or movie
-    boost::int64_t   _frameEnd;    //!< user end frame for sequence or movie
+    int64_t   _frameStart;  //!< user start frame for sequence or movie
+    int64_t   _frameEnd;    //!< user end frame for sequence or movie
 
-    boost::int64_t   _frame_start; //!< real start frame for sequence or movie
-    boost::int64_t   _frame_end;   //!< real end frame for sequence or movie
+    int64_t   _frame_start; //!< real start frame for sequence or movie
+    int64_t   _frame_end;   //!< real end frame for sequence or movie
 
-    boost::int64_t   _start_number; //!< ffmpeg's start number offset
+    int64_t   _start_number; //!< ffmpeg's start number offset
 
     double     _audio_pts;
     double     _audio_clock;
@@ -1497,7 +1497,7 @@ class CMedia
     unsigned         _samples_per_sec;   //!< last samples per sec
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
-    boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
+    int64_t          _audio_last_frame;  //!< last audio frame decoded
     unsigned short   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
     int64_t          audio_callback_time;
