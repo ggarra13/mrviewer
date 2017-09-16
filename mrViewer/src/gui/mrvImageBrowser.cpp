@@ -1263,10 +1263,10 @@ int ImageBrowser::value() const
    */
 void ImageBrowser::load_stereo( mrv::media& fg,
                                 const char* name,
-                                const boost::int64_t first, 
-                                const boost::int64_t last,
-                                const boost::int64_t start, 
-                                const boost::int64_t end )
+                                const int64_t first, 
+                                const int64_t last,
+                                const int64_t start, 
+                                const int64_t end )
 {
     CMedia* img;
 
@@ -1344,10 +1344,10 @@ void ImageBrowser::load_stereo( mrv::media& fg,
    * @return new image
    */
   mrv::media ImageBrowser::load_image( const char* name,
-				       const boost::int64_t first, 
-				       const boost::int64_t last,
-				       const boost::int64_t start, 
-				       const boost::int64_t end,
+				       const int64_t first, 
+				       const int64_t last,
+				       const int64_t start, 
+				       const int64_t end,
                                        const bool avoid_seq )
   {
     mrv::Reel reel = current_reel();
@@ -2112,7 +2112,7 @@ void ImageBrowser::load( const stringArray& files,
     if ( timeline()->edl() )
       {
 	mrv::media m = reel->images[sel];
-	int64_t pos = m->position() + m->image()->duration() - 1;
+	int64_t pos = m->position() + m->duration() - 1;
 	seek( pos );
       }
 
@@ -2321,8 +2321,8 @@ void ImageBrowser::handle_dnd()
     std::sort( files.begin(), files.end() );
 
     mrv::Options opts;
-    boost::int64_t frameStart = AV_NOPTS_VALUE;
-    boost::int64_t frameEnd   = AV_NOPTS_VALUE;
+    int64_t frameStart = AV_NOPTS_VALUE;
+    int64_t frameEnd   = AV_NOPTS_VALUE;
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();
     std::string oldroot, oldview, oldext;
@@ -2556,7 +2556,7 @@ void ImageBrowser::handle_dnd()
    */
   void ImageBrowser::seek( const int64_t tframe )
   {
-     boost::int64_t f = tframe;
+     int64_t f = tframe;
 
      char buf[64];
      sprintf( buf, "seek %" PRId64, f );
@@ -2835,7 +2835,7 @@ void ImageBrowser::handle_dnd()
   void ImageBrowser::adjust_timeline()
   {
 
-     boost::int64_t first, last, f;
+     int64_t first, last, f;
      
      mrv::Reel reel = current_reel();
      if ( !reel || reel->images.empty() ) return;
@@ -2849,7 +2849,7 @@ void ImageBrowser::handle_dnd()
         
         for ( j = i, ++i; i != e; j = i, ++i )
         {
-           int64_t frame = (*j)->position() + (*j)->image()->duration();
+           int64_t frame = (*j)->position() + (*j)->duration();
            DBG( (*i)->image()->name() << " moved to frame " << frame );
            (*i)->position( frame );
         }
@@ -2877,10 +2877,10 @@ void ImageBrowser::handle_dnd()
             e->redraw();
         }
 
-          first = 1;
+        first = 1;
 
-          mrv::media m = current_image();
-          if (! m ) return;
+        mrv::media m = current_image();
+        if (! m ) return;
 
 	CMedia* img = m->image();
 
@@ -2889,10 +2889,8 @@ void ImageBrowser::handle_dnd()
 	m = reel->images.back();
 	if (! m ) return;
 
-	img  = m->image();
-	last = m->position() + img->duration() - 1;
-
-      }
+	last = m->position() + m->duration() - 1;
+    }
 
      // for ( int i = 0; i < reel->images.size(); ++i )
      // {
