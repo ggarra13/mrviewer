@@ -58,7 +58,7 @@ namespace mrv
        boost::int64_t offset( const CMedia* const img ) const;
        inline boost::int64_t location( const CMedia* const img ) const
        {
-	  return offset( img ) + 1;
+          return offset( img ) + 1;
        }
 
        int64_t minimum() const;

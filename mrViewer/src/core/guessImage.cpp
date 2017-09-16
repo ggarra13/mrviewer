@@ -185,7 +185,7 @@ void verify_stereo_resolution( const CMedia* const left,
 CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const std::string& root, const int64_t frame,
                const boost::uint8_t* datas, const int len,
-               const boost::int64_t& lastFrame,
+               const int64_t& lastFrame,
                const bool is_thumbnail = false )
 {
     std::string tmp;
@@ -267,8 +267,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 			       const boost::uint8_t* datas,
 			       const int len,
                                const bool is_thumbnail,
-			       const boost::int64_t start,
-			       const boost::int64_t end,
+			       const int64_t start,
+			       const int64_t end,
                                const bool avoid_seq )
   {
     int64_t lastFrame = end;
