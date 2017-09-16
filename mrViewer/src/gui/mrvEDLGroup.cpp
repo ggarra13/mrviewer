@@ -348,6 +348,16 @@ int EDLGroup::handle( int event )
                 view()->step_frame( -1 );
                 return 1;
             }
+            else if ( kPreviousImage.match(key) )
+            {
+                browser()->previous_image();
+                return 1;
+            }
+            else if ( kNextImage.match(key) )
+            {
+                browser()->next_image();
+                return 1;
+            }
 	    else if ( key == 'f' || key == 'a' )
 	    {
 	       unsigned i = 0;
@@ -390,7 +400,7 @@ int EDLGroup::handle( int event )
                         if (m == fg)
                         {
                            int64_t tmi = m->position();
-                           int64_t tma = m->position() + m->image()->duration();
+                           int64_t tma = m->position() + m->duration();
                            if ( tmi < tmin ) tmin = tmi;
                            if ( tma > tmax ) tmax = tma;
                            break;
@@ -411,7 +421,7 @@ int EDLGroup::handle( int event )
                      {
                         const mrv::media& m = *j;
                         int64_t tmi = m->position();
-                        int64_t tma = m->position() + m->image()->duration();
+                        int64_t tma = m->position() + m->duration();
                         if ( tmi < tmin ) tmin = tmi;
                         if ( tma > tmax ) tmax = tma;
                      }
