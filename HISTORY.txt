@@ -1,6 +1,6 @@
 v3.8.1   - Removed work-around for subtitles with ' as a sea of backslashes
 	   quotes the file just fine.
-	 - Bug fixed adding subtitles to audio files only.  This is not yet
+	 - Bug fixed adding subtitles to audio files only.  This is not
 	   allowed.
 	 - Added missing movie extensions to file requester.  Now: asf,
 	   avc, avchd, m2ts, m2t, ogm, ogv and ts are listed as movie files.
@@ -9,13 +9,19 @@ v3.8.1   - Removed work-around for subtitles with ' as a sea of backslashes
 	   when the file requester has already been opened once.
 	 - Made the EDL timeline follow the viewer's timeline so it will
 	   show the current frame when the EDL Window is opened.
+	 - Made EDL Edit window support PageUp/PageDown shortcuts to go to
+	   the next or previous image sequence/movie.
 	 - ***IMPORTANT***
 	   Made Scrubbing work with the left mouse button only.
-	   There's no need to use SHIFT/CTRL combo.
 	   The default behavior of the left mouse drag is now scrubbing.
-	   You can use the Action Tools Window (the old Paint Tools Window)
-	   to change it to area selection, draw pencil, draw text or
-	   eraser.
+	   There's no need to use SHIFT/CTRL combo.
+	   You can use the Action Tools Window (renamed from Paint Tools
+	   Window) to change it back to area selection, draw pencil, draw
+	   text or eraser, besides scrubbing.
+	   Removed the scrubbing shortcut.
+	 - Made Compositing->Scale the BG image to the FG image size, when
+	   unselected, place the BG image in the center of the screen,
+	   instead of in a corner.
 
 v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
 	   with no audio.
