@@ -89,7 +89,7 @@ void media_track::add( mrv::media m, boost::int64_t frame )
       {
 	 mrv::media o = reel->images[e-2];
 	 frame = o->position();
-	 frame += o->image()->duration();
+	 frame += o->duration();
       }
    }
    m->position( frame );
@@ -97,7 +97,7 @@ void media_track::add( mrv::media m, boost::int64_t frame )
    if ( e >= 1 )
    {
        mrv::media o = reel->images[ e-1 ];
-       timeline()->maximum( double( frame + o->image()->duration() - 1 ) );
+       timeline()->maximum( double( frame + o->duration() - 1 ) );
    }
    
    timeline()->redraw();
@@ -164,27 +164,28 @@ int media_track::index_at( const boost::int64_t frame )
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return -1;
 
-   unsigned e = (unsigned) reel->images.size();
-   if ( e > 0 )
-   {
-      if ( frame < reel->images[0]->position() )
-	 return 0;
-   }
+   return reel->index( frame );
+   
+   // unsigned e = (unsigned) reel->images.size();
+   // if ( e > 0 )
+   // {
+   //    if ( frame < reel->images[0]->position() )
+   //       return 0;
+   // }
 
-   for (unsigned i = 0; i < e; ++i )
-   {
-      mrv::media m = reel->images[i];
-      if ( !m ) continue;
+   // for (unsigned i = 0; i < e; ++i )
+   // {
+   //    mrv::media m = reel->images[i];
+   //    if ( !m ) continue;
 
-      boost::int64_t start = m->position();
-      boost::int64_t end   = m->position();
-      end   += m->image()->duration();
-      if ( frame >= start && frame < end )
-      {
-	 return i;
-      }
-   }
-   return e;
+   //    boost::int64_t start = m->position();
+   //    boost::int64_t end   = start + m->duration();
+   //    if ( frame >= start && frame < end )
+   //    {
+   //       return i;
+   //    }
+   // }
+   // return e;
 }
 
 mrv::media media_track::media_at( const boost::int64_t frame )
@@ -267,7 +268,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    for (size_t i = idx+1; i < e; ++i )
    {
       mrv::media& fg = reel->images[i-1];
-      boost::int64_t end = fg->position() + fg->image()->duration() - 1;
+      boost::int64_t end = fg->position() + fg->duration() - 1;
       reel->images[i]->position( end );
    }
 
@@ -281,7 +282,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    {
       boost::int64_t start = reel->images[i+1]->position();
       mrv::media& o = reel->images[i];
-      boost::int64_t ee = o->position() + o->image()->duration() - 1;
+      boost::int64_t ee = o->position() + o->duration() - 1;
       boost::int64_t ss = o->position();
       
       // Shift indexes of position
@@ -340,7 +341,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
        {
            idx = i;
            int64_t newpos = m->position() + diff;
-           if ( newpos < (int64_t) ( m->position() + m->image()->duration() ) )
+           if ( newpos < (int64_t) ( m->position() + m->duration() ) )
            {
                CMedia* img = m->image();
                img->first_frame( img->first_frame() + diff );
@@ -366,7 +367,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    for (size_t i = idx+1; i < e; ++i )
    {
       mrv::media& o = reel->images[i-1];
-      boost::int64_t end = o->position() + o->image()->duration();
+      boost::int64_t end = o->position() + o->duration();
       mrv::media& fg = reel->images[i];
       fg->position( end );
    }
@@ -381,7 +382,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    {
       boost::int64_t start = reel->images[i+1]->position();
       mrv::media& o = reel->images[i];
-      boost::int64_t ee = o->position() + o->image()->duration() - 1;
+      boost::int64_t ee = o->position() + o->duration() - 1;
       boost::int64_t ss = o->position();
       
       // Shift indexes of position
@@ -492,7 +493,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
    for ( ; i < e-1; ++i )
    {
       boost::int64_t start = reel->images[i]->position();
-      boost::int64_t ee = reel->images[i]->image()->duration();
+      boost::int64_t ee = reel->images[i]->duration();
       
       // Shift indexes of position
       reel->images[i+1]->position(start + ee );
@@ -525,7 +526,7 @@ void media_track::refresh()
 
       for ( j = i, ++i; i != end; j = i, ++i )
       {
-	 int64_t frame = (*j)->position() + (*j)->image()->duration();
+	 int64_t frame = (*j)->position() + (*j)->duration();
          DBG( (*i)->image()->name() << " set to frame " << frame );
 	 (*i)->position( frame );
       }
@@ -685,7 +686,7 @@ int64_t media_track::maximum() const
    if ( e == 0 ) return MRV_NOPTS_VALUE;
 
    e = e - 1;
-   return reel->images[e]->position() + reel->images[e]->image()->duration();
+   return reel->images[e]->position() + reel->images[e]->duration();
 }
 
 void media_track::draw()
