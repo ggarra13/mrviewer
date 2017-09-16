@@ -64,7 +64,7 @@ namespace mrv {
 
 
 static AVFrame *picture = NULL;
-static boost::int64_t frame_count = 0;
+static int64_t frame_count = 0;
 
 /* just pick the highest supported samplerate */
 static int select_sample_rate(AVCodec *codec, unsigned sample_rate)
@@ -173,7 +173,7 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
 
 AVSampleFormat aformat;
 AVFrame* audio_frame;
-static boost::int64_t frame_audio = 0;
+static int64_t frame_audio = 0;
 static AVAudioFifo* fifo = NULL;
 static uint8_t **src_samples_data = NULL;
 static int       src_samples_linesize;
@@ -1101,9 +1101,9 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 
 /* prepare an audio frame of 'frame_size' samples and
    'nb_channels' channels */
-audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
+audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 {
-    boost::int64_t x = f + audio_offset() - 1;
+    int64_t x = f + audio_offset() - 1;
 
     if ( x < first_frame() )
     {
