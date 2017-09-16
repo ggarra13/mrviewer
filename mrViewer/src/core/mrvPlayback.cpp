@@ -840,7 +840,7 @@ void video_thread( PlaybackData* data )
              view->looping() != CMedia::kNoLoop )
         {
             LOG_WARNING( _( "Background reel duration is too short.  "
-                            "Looping will not work correctly." ) );
+                            "Looping may not work correctly." ) );
         }
         else if ( fgreel == reel )
         {
@@ -855,7 +855,7 @@ void video_thread( PlaybackData* data )
                      view->looping() != CMedia::kNoLoop )
                 {
                     LOG_WARNING( _( "Background image duration is too short.  "
-                                    "Looping will not work correctly." ) );
+                                    "Looping may not work correctly." ) );
                 }
                 if ( fabs( img->play_fps() - bimg->play_fps() ) > 0.001 )
                 {

@@ -67,15 +67,15 @@ class aviImage : public CMedia
     virtual const char* const compression() const { return _compression.c_str(); }
 
     ////////////////// Set the frame for the current image (sequence)
-    virtual bool           frame( const boost::int64_t f );
-    virtual boost::int64_t frame() const { return _frame; }
+    virtual bool           frame( const int64_t f );
+    virtual int64_t frame() const { return _frame; }
 
     /// Returns true if image has an alpha channel
     virtual bool  has_alpha() const { return (_num_channels == 4); };
 
     ////////////////// Pre-roll sequence for playback
-    virtual void preroll( const boost::int64_t frame );
-    virtual bool fetch( const boost::int64_t frame );
+    virtual void preroll( const int64_t frame );
+    virtual bool fetch( const int64_t frame );
     /// VCR play (and cache frames if needed) sequence
     virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
                        const bool fg );
@@ -84,11 +84,11 @@ class aviImage : public CMedia
 
     virtual Cache is_cache_filled( int64_t frame );
 
-    virtual boost::int64_t wait_subtitle();
+    virtual int64_t wait_subtitle();
 
     virtual void wait_image();
 
-    virtual bool find_image( const boost::int64_t frame );
+    virtual bool find_image( const int64_t frame );
 
     virtual boost::uint64_t video_pts() { 
         return frame2pts( get_video_stream(), _frame ); 
@@ -124,8 +124,8 @@ class aviImage : public CMedia
 
 
     virtual void flush_video();
-    virtual DecodeStatus decode_video( boost::int64_t& frame );
-    virtual DecodeStatus decode_subtitle( const boost::int64_t frame );
+    virtual DecodeStatus decode_video( int64_t& frame );
+    virtual DecodeStatus decode_subtitle( const int64_t frame );
 
     virtual void clear_packets();
 
@@ -156,14 +156,14 @@ class aviImage : public CMedia
         subtitle_file( _subtitle_file.c_str() );
     }
     
-    void debug_video_stores(const boost::int64_t frame, 
+    void debug_video_stores(const int64_t frame, 
 			    const char* routine = "",
 			    const bool detail = false);
 
-    void debug_subtitle_packets(const boost::int64_t frame, 
+    void debug_subtitle_packets(const int64_t frame, 
 				const char* routine = "",
 				const bool detail = false);
-    void debug_subtitle_stores(const boost::int64_t frame, 
+    void debug_subtitle_stores(const int64_t frame, 
 			       const char* routine = "",
 			       const bool detail = false);
 
@@ -172,7 +172,7 @@ class aviImage : public CMedia
     // For counting frames
     bool readFrame(int64_t & pts);
 
-    boost::int64_t queue_packets( const boost::int64_t frame,
+    int64_t queue_packets( const int64_t frame,
                                   const bool is_seek,
                                   bool& got_video,
                                   bool& got_audio,
@@ -181,11 +181,11 @@ class aviImage : public CMedia
     void open_video_codec();
     void close_video_codec();
        
-    DecodeStatus handle_video_packet_seek( boost::int64_t& frame, 
+    DecodeStatus handle_video_packet_seek( int64_t& frame, 
 					   const bool is_seek );
 
     // Check if a frame is already in video store.
-    bool in_video_store( const boost::int64_t frame );
+    bool in_video_store( const int64_t frame );
 
     /** 
      * Decode and store an image from a packet if possible
@@ -195,14 +195,14 @@ class aviImage : public CMedia
      * 
      * @return true if decoded and stored, false if not
      */
-    DecodeStatus decode_image( const boost::int64_t frame, 
+    DecodeStatus decode_image( const int64_t frame, 
 			       AVPacket& pkt );
 
     void open_subtitle_codec();
     void close_subtitle_codec();
     void subtitle_rect_to_image( const AVSubtitleRect& rect );
 
-    DecodeStatus decode_subtitle( const boost::int64_t frame, 
+    DecodeStatus decode_subtitle( const int64_t frame, 
 				  const AVPacket& pkt );
 
     virtual bool initialize();
@@ -218,8 +218,8 @@ class aviImage : public CMedia
      * @param pts          video pts to store
      * 
      */
-    void store_image( boost::int64_t frame,
-                      const boost::int64_t pts );
+    void store_image( int64_t frame,
+                      const int64_t pts );
 
     /** 
      * Decode a video packet, returning success or not.
@@ -231,8 +231,8 @@ class aviImage : public CMedia
      * 
      * @return DecodeOK if decoded, other if not
      */
-    DecodeStatus decode_vpacket( boost::int64_t& pktframe,
-                                 const boost::int64_t& frame,
+    DecodeStatus decode_vpacket( int64_t& pktframe,
+                                 const int64_t& frame,
                                  const AVPacket& pkt );
 
     /** 
@@ -244,35 +244,35 @@ class aviImage : public CMedia
      * 
      * @return DecodeOK if decoded, other if not
      */
-    DecodeStatus decode_video_packet( boost::int64_t& pktframe,
-				      const boost::int64_t frame,
+    DecodeStatus decode_video_packet( int64_t& pktframe,
+				      const int64_t frame,
 				      const AVPacket& pkt
     );
 
-    DecodeStatus audio_video_display( const boost::int64_t& frame );
-    void limit_video_store( const boost::int64_t frame );
-    void limit_subtitle_store( const boost::int64_t frame );
+    DecodeStatus audio_video_display( const int64_t& frame );
+    void limit_video_store( const int64_t frame );
+    void limit_subtitle_store( const int64_t frame );
 
-    virtual bool seek_to_position( const boost::int64_t frame );
+    virtual bool seek_to_position( const int64_t frame );
     int video_stream_index() const;
-    mrv::image_type_ptr allocate_image(const boost::int64_t& frame,
-                                       const boost::int64_t& pts);
+    mrv::image_type_ptr allocate_image(const int64_t& frame,
+                                       const int64_t& pts);
 
 
     AVStream* get_subtitle_stream() const;
     void flush_subtitle();
-    bool in_subtitle_store( const boost::int64_t frame );
+    bool in_subtitle_store( const int64_t frame );
     int  subtitle_stream_index() const;
-    void store_subtitle( const boost::int64_t& frame,
-                         const boost::int64_t& repeat );
-    DecodeStatus handle_subtitle_packet_seek( boost::int64_t& frame, 
+    void store_subtitle( const int64_t& frame,
+                         const int64_t& repeat );
+    DecodeStatus handle_subtitle_packet_seek( int64_t& frame, 
 					      const bool is_seek );
-    DecodeStatus decode_subtitle_packet( boost::int64_t& pktframe,
-					 boost::int64_t& repeat,
-					 const boost::int64_t frame,
+    DecodeStatus decode_subtitle_packet( int64_t& pktframe,
+					 int64_t& repeat,
+					 const int64_t frame,
 					 const AVPacket& pkt
     );
-    virtual bool    find_subtitle( const boost::int64_t frame );
+    virtual bool    find_subtitle( const int64_t frame );
 
 
   protected:
