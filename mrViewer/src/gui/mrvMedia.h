@@ -53,19 +53,21 @@ namespace mrv {
         ~media();
 
 
-        void position( boost::int64_t x ) { _pos = x; }
-        boost::int64_t position() const { return _pos; }
+        inline void position( int64_t x ) { _pos = x; }
+        inline int64_t position() const { return _pos; }
 
-        CMedia* image()             { return _image; }
-        const CMedia* image() const { return _image; }
+        inline int64_t duration() const { return _image->duration(); }
 
-        std::string name() const { return _image->name(); }
+        inline CMedia* image()             { return _image; }
+        inline const CMedia* image() const { return _image; }
 
-        fltk::Image* thumbnail()             { return _thumbnail; }
-        const fltk::Image* thumbnail() const { return _thumbnail; }
+        inline std::string name() const { return _image->name(); }
 
-        bool thumbnail_frozen() const    { return _thumbnail_frozen; }
-        void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
+        inline fltk::Image* thumbnail()             { return _thumbnail; }
+        inline const fltk::Image* thumbnail() const { return _thumbnail; }
+
+        inline bool thumbnail_frozen() const    { return _thumbnail_frozen; }
+        inline void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
 
         void create_thumbnail();
 
@@ -73,8 +75,8 @@ namespace mrv {
         void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
                               uchar r, uchar g, uchar b );
         
-        boost::int64_t  _start;
-        boost::int64_t  _pos;
+        int64_t  _start;
+        int64_t  _pos;
         CMedia*   _image;
         fltk::Image* _thumbnail;
         bool         _thumbnail_frozen;

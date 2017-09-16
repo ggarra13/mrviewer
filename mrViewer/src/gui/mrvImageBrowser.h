@@ -125,8 +125,8 @@ class ImageBrowser : public fltk::Browser
      mrv::media add( mrv::media& m );
      mrv::media add( CMedia* img );
      mrv::media add( const char* filename, 
-                     const boost::int64_t start = -999999,
-                     const boost::int64_t end = -999999 );
+                     const int64_t start = -999999,
+                     const int64_t end = -999999 );
     
 
      void load( const LoadList& files, const bool stereo = false,
