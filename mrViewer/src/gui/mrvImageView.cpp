@@ -1813,7 +1813,7 @@ void ImageView::timeout()
 
    mrv::media fg = foreground();
 
-   int64_t tframe = boost::int64_t( timeline->value() );
+   int64_t tframe = int64_t( timeline->value() );
 
    if ( reel && reel->edl )
    {
@@ -4876,7 +4876,7 @@ void ImageView::scrub( double dx )
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
-  step_frame( boost::int64_t(dx) );
+  step_frame( int64_t(dx) );
 
   update_color_info();
 }
