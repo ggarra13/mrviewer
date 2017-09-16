@@ -3597,7 +3597,7 @@ o->value(24);}
                     {fltk::Input} uiStartFrame {
                       label S
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {double f = (double) o->value();
+                      callback {int64_t f = o->value();
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
@@ -3621,12 +3621,12 @@ v->uiTimeline->redraw();}
                     {fltk::Button} uiStartButton {
                       label S
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {double f = 1;
+                      callback {int64_t f = 1;
 
 if ( !o->value() )
 {
   o->value(1);
-  f = (double) v->uiFrame->value();
+  f = v->uiFrame->value();
 }
 else
 {
@@ -3660,11 +3660,11 @@ v->uiTimeline->redraw();}
                     {fltk::Button} uiEndButton {
                       label E
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {double f;
+                      callback {int64_t f;
 if ( !o->value() )
 {
   o->value(1);
-  f = (double) v->uiFrame->value();
+  f = v->uiFrame->value();
 }
 else
 {
@@ -3686,7 +3686,7 @@ else
      if ( !reel || size == 0 ) return;
 
      mrv::media fg = reel->images[ size - 1 ];
-     if ( fg ) f = fg->position() + fg->image()->duration() - 1;
+     if ( fg ) f = fg->position() + fg->duration() - 1;
    }
 }
 

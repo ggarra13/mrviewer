@@ -1442,6 +1442,11 @@ void GLEngine::draw_images( ImageList& images )
           {   // DO NOT SCALE BG IMAGE 
               texWidth = dpw.w();
               texHeight = dpw.h();
+              const mrv::Recti& dp = fg->display_window();
+              daw.x( daw.x() + dp.w()/2 - texWidth / 2 );
+              daw.y( daw.y() + dp.h()/2 - texHeight / 2 );
+              dpw.x( daw.x() );
+              dpw.y( daw.y() );
           }
           else
           {
@@ -1464,13 +1469,13 @@ void GLEngine::draw_images( ImageList& images )
 
       set_matrix( flip, false );
 
-      mrv::Recti dp = fg->display_window();
+      const mrv::Recti& dp = fg->display_window();
       if ( flip && !_view->vr() )
       {
-          float x = 0.0f, y = 0.0f;
-          if ( flip & ImageView::kFlipVertical )   x = (float) -dp.w();
-          if ( flip & ImageView::kFlipHorizontal ) y = (float) dp.h();
-          glTranslatef( x, y, 0.0f );
+          double x = 0.0, y = 0.0;
+          if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
+          if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
+          glTranslated( x, y, 0.0f );
       }
 
 
