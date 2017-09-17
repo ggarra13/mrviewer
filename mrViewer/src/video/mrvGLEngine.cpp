@@ -616,13 +616,13 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
 {
     CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-  CHECK_GL;
+    CHECK_GL;
     glClearColor(r, g, b, a );
     CHECK_GL;
     glClear( GL_STENCIL_BUFFER_BIT );
-  CHECK_GL;
+    CHECK_GL;
     glClear( GL_COLOR_BUFFER_BIT );
-  CHECK_GL;
+    CHECK_GL;
     glShadeModel( GL_FLAT );
     CHECK_GL;
 }
@@ -1007,7 +1007,7 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
 /** 
  * Draws the mask
  * 
- * @param pct 
+ * @param pct percent of mask to draw 
  */
 void GLEngine::draw_mask( const float pct )
 {
@@ -1058,8 +1058,7 @@ void GLEngine::draw_mask( const float pct )
 
   //
   // Top mask
-  // //
-  // glRectd( -0.5, 0.5 - amount, 0.5, 0.5 );
+  //
   glBegin( GL_POLYGON );
   {
     glVertex3d( -0.5,  0.5, 0. );
@@ -1203,24 +1202,24 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
 
 
-double GLEngine::rot_y() const
+inline double GLEngine::rot_y() const
 {
     return _rotY;
 }
 
-double GLEngine::rot_x() const
+inline double GLEngine::rot_x() const
 {
     return _rotX;
 }
 
 
 
-void GLEngine::rot_x( double t )
+inline void GLEngine::rot_x( double t )
 {
     _rotX = t;
 }
 
-void GLEngine::rot_y( double t )
+inline void GLEngine::rot_y( double t )
 {
     _rotY = t;
 }
@@ -1331,33 +1330,33 @@ void GLEngine::draw_images( ImageList& images )
 
 
     TRACE( "" );
-  if ( _view->normalize() )
-  {
-      minmax(); // calculate min-max
-      minmax( _normMin, _normMax ); // retrieve them
-  }
-
-
-    TRACE( "" );
-  size_t num_quads = 0;
-  ImageList::iterator i = images.begin();
-  ImageList::iterator e = images.end();
-
-  for ( ; i != e; ++i )
+    if ( _view->normalize() )
     {
-      const Image_ptr& img = *i;
-      bool stereo = img->stereo_output() != CMedia::kNoStereo;
-      if ( img->has_subtitle() ) num_quads += 1 + stereo;
-      if ( img->has_picture()  ) ++num_quads;
-      if ( stereo )    ++num_quads;
+        minmax(); // calculate min-max
+        minmax( _normMin, _normMax ); // retrieve them
     }
 
+
+    TRACE( "" );
+    size_t num_quads = 0;
+    ImageList::iterator i = images.begin();
+    ImageList::iterator e = images.end();
+    
+    for ( ; i != e; ++i )
+    {
+        const Image_ptr& img = *i;
+        bool stereo = img->stereo_output() != CMedia::kNoStereo;
+        if ( img->has_subtitle() ) num_quads += 1 + stereo;
+        if ( img->has_picture()  ) ++num_quads;
+        if ( stereo )    ++num_quads;
+    }
+    
     TRACE( "" );
 
-  CHECK_GL;
+    CHECK_GL;
 
-  size_t num = _quads.size();
-  if ( num_quads > num )
+    size_t num = _quads.size();
+    if ( num_quads > num )
     {
         ImageView::VRType t = _view->vr();
         if ( t == ImageView::kVRSphericalMap )
@@ -1381,362 +1380,363 @@ void GLEngine::draw_images( ImageList& images )
 
 
 
-  glColor4f(1.0f,1.0f,1.0f,1.0f);
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
 
 
 
     TRACE( "" );
   
-  double x = _view->spin_x();
-  double y = _view->spin_y();
-  if ( x >= 1000.0 )  // dummy value used to reset view
-  {
-      ImageView* v = const_cast< ImageView* >( _view );
-      v->spin_x( 0.0 );
-      v->spin_y( 0.0 );
-      _rotX = _rotY = 0.0;
-  }
-  else
-  {
-      _rotX += x;
-      _rotY += y;
-  }
-
-  QuadList::iterator q = _quads.begin();
-  assert( q != _quads.end() );
-
-  e = images.end();
-
-  const Image_ptr& fg = images.back();
-  const Image_ptr& bg = images.front();
-
-  glDisable( GL_BLEND );
-  CHECK_GL;
-
-  for ( i = images.begin(); i != e; ++i, ++q )
+    double x = _view->spin_x();
+    double y = _view->spin_y();
+    if ( x >= 1000.0 )  // dummy value used to reset view
     {
-      const Image_ptr& img = *i;
-      mrv::image_type_ptr pic = img->hires();
-      if (!pic)  continue;
+        ImageView* v = const_cast< ImageView* >( _view );
+        v->spin_x( 0.0 );
+        v->spin_y( 0.0 );
+        _rotX = _rotY = 0.0;
+    }
+    else
+    {
+        _rotX += x;
+        _rotY += y;
+    }
+
+    QuadList::iterator q = _quads.begin();
+    assert( q != _quads.end() );
+
+    e = images.end();
+
+    const Image_ptr& fg = images.back();
+    const Image_ptr& bg = images.front();
+
+    glDisable( GL_BLEND );
+    CHECK_GL;
+
+    for ( i = images.begin(); i != e; ++i, ++q )
+    {
+        const Image_ptr& img = *i;
+        mrv::image_type_ptr pic = img->hires();
+        if (!pic)  continue;
 
 
-      CMedia::StereoOutput stereo = img->stereo_output();
+        CMedia::StereoOutput stereo = img->stereo_output();
 
-      const boost::int64_t& frame = pic->frame();
+        const boost::int64_t& frame = pic->frame();
 
-      mrv::Recti dpw = img->display_window(frame);
-      mrv::Recti daw = img->data_window(frame);
+        mrv::Recti dpw = img->display_window(frame);
+        mrv::Recti daw = img->data_window(frame);
 
 
-      if ( stereo & CMedia::kStereoRight )
-      {
-          dpw = img->display_window2(frame);
-          daw = img->data_window2(frame);
-      }
+        if ( stereo & CMedia::kStereoRight )
+        {
+            dpw = img->display_window2(frame);
+            daw = img->data_window2(frame);
+        }
 
       // Handle background image size
-      if ( fg != img && stereo == CMedia::kNoStereo )
-      {
-          mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
-          if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
-          {   // DO NOT SCALE BG IMAGE 
-              texWidth = dpw.w();
-              texHeight = dpw.h();
-              const mrv::Recti& dp = fg->display_window();
-              daw.x( daw.x() + dp.w()/2 - texWidth / 2 );
-              daw.y( daw.y() + dp.h()/2 - texHeight / 2 );
-              dpw.x( daw.x() );
-              dpw.y( daw.y() );
-          }
-          else
-          {
-              // NOT display_window(frame)
-              const mrv::Recti& dp = fg->display_window();
-              texWidth = dp.w();
-              texHeight = dp.h();
-          }
-      }
-      else
-      {
-          texWidth = daw.w();
-          texHeight = daw.h();
-      }
+        if ( fg != img && stereo == CMedia::kNoStereo )
+        {
+            mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+            if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
+            {   // DO NOT SCALE BG IMAGE 
+                texWidth = dpw.w();
+                texHeight = dpw.h();
+                const mrv::Recti& dp = fg->display_window();
+                daw.x( daw.x() + dp.w()/2 - texWidth / 2 );
+                daw.y( daw.y() + dp.h()/2 - texHeight / 2 );
+                dpw.x( daw.x() );
+                dpw.y( daw.y() );
+            }
+            else
+            {
+                // NOT display_window(frame)
+                const mrv::Recti& dp = fg->display_window();
+                texWidth = dp.w();
+                texHeight = dp.h();
+            }
+        }
+        else
+        {
+            texWidth = daw.w();
+            texHeight = daw.h();
+        }
 
-      if ( texWidth == 0 ) texWidth = fg->width();
-      if ( texHeight == 0 ) texHeight = fg->height();
+        if ( texWidth == 0 ) texWidth = fg->width();
+        if ( texHeight == 0 ) texHeight = fg->height();
 
-      ImageView::FlipDirection flip = _view->flip();
+        ImageView::FlipDirection flip = _view->flip();
 
-      set_matrix( flip, false );
+        set_matrix( flip, false );
 
-      const mrv::Recti& dp = fg->display_window();
-      if ( flip && !_view->vr() )
-      {
-          double x = 0.0, y = 0.0;
-          if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
-          if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
-          glTranslated( x, y, 0.0f );
-      }
+        const mrv::Recti& dp = fg->display_window();
+        if ( flip && !_view->vr() )
+        {
+            double x = 0.0, y = 0.0;
+            if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
+            if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
+            glTranslated( x, y, 0.0f );
+        }
 
 
-      if ( dpw != daw )
-      {
-          if ( _view->display_window() && ! _view->vr() )
-          {
-              draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
-          }
+        if ( dpw != daw )
+        {
+            if ( _view->display_window() && ! _view->vr() )
+            {
+                draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+            }
 
-          if ( _view->data_window()  )
-          {
-              mrv::Rectd r( daw.x(), daw.y(), daw.w(), daw.h() );
-              draw_data_window( r );
-          }
-      }
+            if ( _view->data_window()  )
+            {
+                mrv::Rectd r( daw.x(), daw.y(), daw.w(), daw.h() );
+                draw_data_window( r );
+            }
+        }
 
-      glDisable( GL_BLEND );
-  CHECK_GL;
+        glDisable( GL_BLEND );
+        CHECK_GL;
 
-      glMatrixMode(GL_MODELVIEW);
-  CHECK_GL;
-      glPushMatrix();
-  CHECK_GL;
+        glMatrixMode(GL_MODELVIEW);
+        CHECK_GL;
+        glPushMatrix();
+        CHECK_GL;
 
-      if ( !_view->vr() )
-      {
-          glTranslatef( float(daw.x() - img->eye_separation()),
-                        float(-daw.y()), 0 );
-  CHECK_GL;
+        if ( !_view->vr() )
+        {
+            glTranslatef( float(daw.x() - img->eye_separation()),
+                          float(-daw.y()), 0 );
+            CHECK_GL;
 
-          if ( _view->main()->uiPixelRatio->value() )
-              glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
-                        1.0 );
-          else
-              glScaled( double(texWidth), double(texHeight), 1.0 );
+            if ( _view->main()->uiPixelRatio->value() )
+                glScaled( double(texWidth),
+                          double(texHeight) / _view->pixel_ratio(),
+                          1.0 );
+            else
+                glScaled( double(texWidth), double(texHeight), 1.0 );
 
-          CHECK_GL;
-          glTranslated( 0.5, -0.5, 0.0 );
-          CHECK_GL;
-      }
-      
-      GLQuad* quad = *q;
-      quad->minmax( _normMin, _normMax );
-      quad->image( img );
-      // Handle rotation of cube/sphere
-      quad->rot_x( _rotX );
-      quad->rot_y( _rotY );
+            CHECK_GL;
+            glTranslated( 0.5, -0.5, 0.0 );
+            CHECK_GL;
+        }
 
-      if ( _view->use_lut() )
-      {
-	  if ( img->image_damage() & CMedia::kDamageLut )
-              quad->clear_lut();
+        GLQuad* quad = *q;
+        quad->minmax( _normMin, _normMax );
+        quad->image( img );
+        // Handle rotation of cube/sphere
+        quad->rot_x( _rotX );
+        quad->rot_y( _rotY );
 
-	  quad->lut( img );
+        if ( _view->use_lut() )
+        {
+            if ( img->image_damage() & CMedia::kDamageLut )
+                quad->clear_lut();
 
-          if ( stereo != CMedia::kNoStereo )
-          {
-              if ( img->image_damage() & CMedia::kDamageLut )
-                  (*(q+1))->clear_lut();
-              (*(q+1))->lut( img );
-          }
+            quad->lut( img );
 
-          img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
-      }
+            if ( stereo != CMedia::kNoStereo )
+            {
+                if ( img->image_damage() & CMedia::kDamageLut )
+                    (*(q+1))->clear_lut();
+                (*(q+1))->lut( img );
+            }
 
-      if ( i+1 == e ) wipe_area();
+            img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
+        }
 
-      float g = img->gamma();
+        if ( i+1 == e ) wipe_area();
 
-      int mask = 0;
+        float g = img->gamma();
 
-      if ( stereo != CMedia::kNoStereo && 
-           img->left() && img->right() )
-      {
-         if ( stereo & CMedia::kStereoRight )
-         {
-             pic = img->right();
-             CMedia* right = img->right_eye();
-             if ( right ) g = right->gamma();
-         }
-         else
-         {
-             pic = img->left();
-         }
-         
+        int mask = 0;
 
-         if ( stereo & CMedia::kStereoAnaglyph )
-             glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
-         else
-             glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-          CHECK_GL;
+        if ( stereo != CMedia::kNoStereo && 
+             img->left() && img->right() )
+        {
+            if ( stereo & CMedia::kStereoRight )
+            {
+                pic = img->right();
+                CMedia* right = img->right_eye();
+                if ( right ) g = right->gamma();
+            }
+            else
+            {
+                pic = img->left();
+            }
+
+
+            if ( stereo & CMedia::kStereoAnaglyph )
+                glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
+            else
+                glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+            CHECK_GL;
 
 #ifdef USE_STEREO_GL
-         if ( stereo & CMedia::kStereoOpenGL )
-         {
-             glDrawBuffer( GL_BACK_LEFT );
-             CHECK_GL;
-         }
+            if ( stereo & CMedia::kStereoOpenGL )
+            {
+                glDrawBuffer( GL_BACK_LEFT );
+                CHECK_GL;
+            }
 #endif
 
-         quad->mask( 0 );
-         quad->mask_value( 10 );
-         if ( stereo & CMedia::kStereoInterlaced )
-         {
-             if ( stereo == CMedia::kStereoInterlaced )
-                 mask = 1; // odd even rows
-             else if ( stereo == CMedia::kStereoInterlacedColumns )
-                 mask = 2; // odd even columns
-             else if ( stereo == CMedia::kStereoCheckerboard )
-                 mask = 3; // checkerboard
-             quad->mask( mask );
-	     quad->mask_value( 1 );
-         }
-
-         glDisable( GL_BLEND );
-          CHECK_GL;
-         if ( img->image_damage() & CMedia::kDamageContents )
-         {
-             if ( stereo & CMedia::kStereoRight )
-                 quad->right( true );
-             else
-                 quad->right( false );
-             quad->bind( pic );
-         }
-         quad->gamma( g );
-         quad->draw( texWidth, texHeight );
-         
-         if ( img->has_subtitle() )
-         {
-            image_type_ptr sub = img->subtitle();
-            if ( sub )
+            quad->mask( 0 );
+            quad->mask_value( 10 );
+            if ( stereo & CMedia::kStereoInterlaced )
             {
-                glEnable( GL_BLEND );
-                glDisable( GL_SCISSOR_TEST );
-                ++q;
-                quad = *q;
-                quad->mask( 0 );
-                quad->mask_value( -10 );
-                quad->bind( sub );
-                quad->gamma( 1.0 );
-		// Handle rotation of cube/sphere
-		quad->rot_x( _rotX );
-		quad->rot_y( _rotY );
-                quad->draw( texWidth, texHeight );
+                if ( stereo == CMedia::kStereoInterlaced )
+                    mask = 1; // odd even rows
+                else if ( stereo == CMedia::kStereoInterlacedColumns )
+                    mask = 2; // odd even columns
+                else if ( stereo == CMedia::kStereoCheckerboard )
+                    mask = 3; // checkerboard
+                quad->mask( mask );
+                quad->mask_value( 1 );
             }
-            img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
-         }
 
-         ++q;
-         quad = *q;
-         quad->minmax( _normMin, _normMax );
-         quad->image( img );
-	 // Handle rotation of cube/sphere
-	 quad->rot_x( _rotX );
-	 quad->rot_y( _rotY );
+            glDisable( GL_BLEND );
+            CHECK_GL;
+            if ( img->image_damage() & CMedia::kDamageContents )
+            {
+                if ( stereo & CMedia::kStereoRight )
+                    quad->right( true );
+                else
+                    quad->right( false );
+                quad->bind( pic );
+            }
+            quad->gamma( g );
+            quad->draw( texWidth, texHeight );
 
-         if ( stereo != CMedia::kStereoLeft &&
-              stereo != CMedia::kStereoRight )
-         {
-          CHECK_GL;
-             glMatrixMode( GL_MODELVIEW );
-          CHECK_GL;
-             glPopMatrix();
-          CHECK_GL;
-         
-             if ( stereo & CMedia::kStereoSideBySide )
-                 glTranslated( dpw.w(), 0, 0 );
-             else if ( stereo & CMedia::kStereoTopBottom )
-                 glTranslated( 0, -dpw.h(), 0 );
+            if ( img->has_subtitle() )
+            {
+                image_type_ptr sub = img->subtitle();
+                if ( sub )
+                {
+                    glEnable( GL_BLEND );
+                    glDisable( GL_SCISSOR_TEST );
+                    ++q;
+                    quad = *q;
+                    quad->mask( 0 );
+                    quad->mask_value( -10 );
+                    quad->bind( sub );
+                    quad->gamma( 1.0 );
+                    // Handle rotation of cube/sphere
+                    quad->rot_x( _rotX );
+                    quad->rot_y( _rotY );
+                    quad->draw( texWidth, texHeight );
+                }
+                img->image_damage( img->image_damage() &
+                                   ~CMedia::kDamageSubtitle );
+            }
 
-          CHECK_GL;
-             mrv::Recti dpw2 = img->display_window2(frame);
-             mrv::Recti daw2 = img->data_window2(frame);
+            ++q;
+            quad = *q;
+            quad->minmax( _normMin, _normMax );
+            quad->image( img );
+            // Handle rotation of cube/sphere
+            quad->rot_x( _rotX );
+            quad->rot_y( _rotY );
 
-             if ( stereo & CMedia::kStereoRight )
-             {
-                 dpw2 = img->display_window(frame);
-                 daw2 = img->data_window(frame);
-             }
+            if ( stereo != CMedia::kStereoLeft &&
+                 stereo != CMedia::kStereoRight )
+            {
+                CHECK_GL;
+                glMatrixMode( GL_MODELVIEW );
+                CHECK_GL;
+                glPopMatrix();
+                CHECK_GL;
 
+                if ( stereo & CMedia::kStereoSideBySide )
+                    glTranslated( dpw.w(), 0, 0 );
+                else if ( stereo & CMedia::kStereoTopBottom )
+                    glTranslated( 0, -dpw.h(), 0 );
 
-          CHECK_GL;
-             glMatrixMode(GL_MODELVIEW);
-          CHECK_GL;
-             glPushMatrix();
-          CHECK_GL;
+                CHECK_GL;
+                mrv::Recti dpw2 = img->display_window2(frame);
+                mrv::Recti daw2 = img->data_window2(frame);
 
-
-             if ( dpw2 != daw2 )
-             {
-                 if ( _view->display_window() &&
-                      ( !( stereo & CMedia::kStereoAnaglyph ) &&
-                        !( stereo & CMedia::kStereoInterlaced ) &&
-                        !( _view->vr() ) ) )
-                 {
-                     draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
-                 }
-
-                 if ( _view->data_window() )
-                 {
-                 
-                     double x = 0;
-                     double y = 0;
-                 
-                     if ( stereo & CMedia::kStereoSideBySide )
-                         x = dpw.w();
-                     else if ( stereo & CMedia::kStereoTopBottom )
-                         y = dpw.h();
-
-                     mrv::Rectd r( daw2.x() + x, daw2.y() + y, daw2.w(), daw2.h() );
-                     draw_data_window( r );
-                 }
-             }
-
-             g = img->gamma();
-
-             if ( stereo & CMedia::kStereoRight )
-             {
-                 pic = img->left();
-             }
-             else
-             {
-                 pic = img->right();
-                 CMedia* right = img->right_eye();
-                 if ( right ) g = right->gamma();
-             }
+                if ( stereo & CMedia::kStereoRight )
+                {
+                    dpw2 = img->display_window(frame);
+                    daw2 = img->data_window(frame);
+                }
 
 
-             texWidth = daw2.w();
-             texHeight = daw2.h();
+                CHECK_GL;
+                glMatrixMode(GL_MODELVIEW);
+                CHECK_GL;
+                glPushMatrix();
+                CHECK_GL;
 
+
+                if ( dpw2 != daw2 )
+                {
+                    if ( _view->display_window() &&
+                         ( !( stereo & CMedia::kStereoAnaglyph ) &&
+                           !( stereo & CMedia::kStereoInterlaced ) &&
+                           !( _view->vr() ) ) )
+                    {
+                        draw_square_stencil( dpw2.l(), dpw2.t(),
+                                             dpw2.r(), dpw2.b() );
+                    }
+
+                    if ( _view->data_window() )
+                    {
+                        double x = 0, y = 0;
+                        if ( stereo & CMedia::kStereoSideBySide )
+                            x = dpw.w();
+                        else if ( stereo & CMedia::kStereoTopBottom )
+                            y = dpw.h();
+
+                        mrv::Rectd r( daw2.x() + x, daw2.y() + y,
+                                      daw2.w(), daw2.h() );
+                        draw_data_window( r );
+                    }
+                }
+
+                g = img->gamma();
+
+                if ( stereo & CMedia::kStereoRight )
+                {
+                    pic = img->left();
+                }
+                else
+                {
+                    pic = img->right();
+                    CMedia* right = img->right_eye();
+                    if ( right ) g = right->gamma();
+                }
+
+
+                texWidth = daw2.w();
+                texHeight = daw2.h();
+
+
+                glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
+                CHECK_GL;
+
+
+                if ( _view->main()->uiPixelRatio->value() )
+                    glScaled( double(texWidth), 
+                              double(texHeight) / _view->pixel_ratio(),
+                              1.0 );
+                else
+                    glScaled( double(texWidth), double(texHeight), 1.0 );
+                CHECK_GL;
+
+
+                glTranslated( 0.5, -0.5, 0 );
+                CHECK_GL;
+
+            }
+        }
+        else if ( img->hires() || img->has_subtitle() )
+        {
+            stereo = CMedia::kNoStereo;
+            pic = img->hires();
  
-             glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
-          CHECK_GL;
-
-
-             if ( _view->main()->uiPixelRatio->value() )
-                 glScaled( double(texWidth), 
-                           double(texHeight) / _view->pixel_ratio(),
-                           1.0 );
-             else
-                 glScaled( double(texWidth), double(texHeight), 1.0 );
-          CHECK_GL;
-
-
-             glTranslated( 0.5, -0.5, 0 );
-          CHECK_GL;
-
-         }
-      }
-      else if ( img->hires() || img->has_subtitle() )
-      {
-          stereo = CMedia::kNoStereo;
-          pic = img->hires();
-          
-          if ( shader_type() == kNone && img->stopped() && 
-               pic->pixel_type() != image_type::kByte )
-          {
-	      pic = display( pic, img );
-          }
+            if ( shader_type() == kNone && img->stopped() && 
+                 pic->pixel_type() != image_type::kByte )
+            {
+                pic = display( pic, img );
+            }
 
       }
 

@@ -757,6 +757,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 
     if ( img->number_of_lmts() )
       {
+          char buf[128];
           size_t i = 0;
           size_t num = img->number_of_lmts();
 
@@ -766,6 +767,23 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
               Transform t( name, Transform::kCTL );
               if ( !key.empty() ) key += " -> ";
               key += name;
+              if ( name == "LMT.SOPNode" )
+              {
+                  const ACES::ASC_CDL& m = img->asc_cdl();
+                  sprintf( buf, "%g %g %g - %g %g %g - %g %g %g",
+                           m.slope(0), m.slope(1), m.slope(2),
+                           m.offset(0), m.offset(1), m.offset(2),
+                           m.power(0), m.power(1), m.power(2) );
+                  key += " ";
+                  key += buf;
+              }
+              else if ( name == "LMT.SatNode" )
+              {
+                  const ACES::ASC_CDL& m = img->asc_cdl();
+                  sprintf( buf, "%g", m.saturation() );
+                  key += " ";
+                  key += buf;
+              }
               key += " (C)";
               transforms.push_back( t );
               ok = true;

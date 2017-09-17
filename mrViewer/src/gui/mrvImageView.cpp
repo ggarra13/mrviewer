@@ -766,7 +766,11 @@ static void modify_sop_sat( mrv::ImageView* view )
     }
 
     mrv::ViewerUI* main = view->main();
-    if ( main->uiSOPNode ) main->uiSOPNode->uiMain->show();
+    if ( main->uiSOPNode )
+    {
+        main->uiSOPNode->media( fg );
+        main->uiSOPNode->uiMain->show();
+    }
     else 
       {
 	main->uiSOPNode = new mrv::SopNode( view );
@@ -4772,11 +4776,12 @@ void ImageView::toggle_presentation()
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
   fltk::Window* uiStereo = uiMain->uiStereo->uiMain;
   fltk::Window* uiPaint = uiMain->uiPaint->uiMain;
+  fltk::Window* uiSOP = uiMain->uiSOPNode->uiMain;
 
 
   static bool has_image_info, has_color_area, has_reel, has_edl_edit,
   has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-  has_stereo, has_paint;
+  has_stereo, has_paint, has_sop;
 
   if ( !presentation )
     {
@@ -4794,7 +4799,9 @@ void ImageView::toggle_presentation()
       has_pixel_bar  = uiMain->uiPixelBar->visible();
       has_paint      = uiPaint->visible();
       has_stereo     = uiStereo->visible();
+      has_sop        = uiSOP->visible();
 
+      uiSOP->hide();
       uiPaint->hide();
       uiStereo->hide();
       uiImageInfo->hide();
@@ -4830,6 +4837,7 @@ void ImageView::toggle_presentation()
       if ( has_about )      uiAbout->show();
       if ( has_paint )      uiPaint->show();
       if ( has_stereo )     uiStereo->show();
+      if ( has_sop )        uiSOP->show();
 
       if ( has_top_bar )    uiMain->uiTopBar->show();
       if ( has_bottom_bar)  uiMain->uiBottomBar->show();
@@ -6880,6 +6888,12 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       if ( uiColorWindow->visible() ) 
           uiMain->uiColorArea->uiColorText->update();
     }
+
+  if ( uiMain->uiSOPNode )
+  {
+      fltk::Window* uiSOPNode = uiMain->uiSOPNode->uiMain;
+      if ( uiSOPNode->visible() ) uiMain->uiSOPNode->media( fg );
+  }
 
   if ( uiMain->uiVectorscope )
     {
