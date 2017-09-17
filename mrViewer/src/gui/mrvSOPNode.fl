@@ -22,11 +22,11 @@ namespace mrv {open
     decl {mrv::media m;} {}
     Function {make_window(mrv::ImageView* view)} {open
     } {
-      {fltk::Window} uiMain {
+      {fltk::Window} uiMain {open
         xywh {500 752 560 325} hide resizable non_modal
       } {
         {fltk::Group} {} {
-          label Slope open
+          label Slope
           xywh {56 16 209 135} box ROUNDED_BOX
         } {
           {fltk::ValueSlider} SlopeRUI {
@@ -73,7 +73,7 @@ v->redraw();}
           }
         }
         {fltk::Group} {} {
-          label Power open
+          label Power
           xywh {56 170 209 134} box ROUNDED_BOX
         } {
           {fltk::ValueSlider} PowerRUI {
@@ -120,7 +120,7 @@ v->redraw();}
           }
         }
         {fltk::Group} {} {
-          label Offset open
+          label Offset
           xywh {290 16 209 134} box ROUNDED_BOX
         } {
           {fltk::ValueSlider} OffsetRUI {
@@ -177,10 +177,25 @@ CMedia* img = m->image();
 ACES::ASC_CDL& a = img->asc_cdl();
 a.saturation( o->value() );
 img->image_damage( img->image_damage() | CMedia::kDamageLut );
-v->redraw();}
+v->redraw();} selected
           xywh {355 215 135 25} align 4 when RELEASE value 1
         }
       }
+      code {refresh();} {}
+      code {w->child_of( view->fltk_main() );
+w->show();} {}
+    }
+    Function {SopNode( mrv::ImageView* view )} {open
+    } {
+      code {m = view->foreground();
+make_window(view);} {}
+    }
+    Function {~SopNode()} {open
+    } {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {refresh()} {open
+    } {
       code {CMedia* img = m->image();
 const ACES::ASC_CDL& cdl = img->asc_cdl();
 SaturationUI->value( cdl.saturation() );
@@ -193,18 +208,11 @@ OffsetBUI->value( cdl.offset(2) );
 PowerRUI->value( cdl.power(0) );
 PowerGUI->value( cdl.power(1) );
 PowerBUI->value( cdl.power(2) );} {}
-      code {w->child_of( view->fltk_main() );
-w->show();} {selected
-      }
     }
-    Function {SopNode( mrv::ImageView* view )} {open
+    Function {media( const mrv::media& fg )} {open
     } {
-      code {m = view->foreground();
-make_window(view);} {}
-    }
-    Function {~SopNode()} {open
-    } {
-      code {delete uiMain; uiMain = NULL;} {}
+      code {m = fg;
+refresh();} {}
     }
   }
 } 
