@@ -111,8 +111,16 @@ bool load_aces_xml( CMedia* img, const char* filename )
       }
 
     if ( c.ODT.status == ACES::kPreview && !c.ODT.name.empty() )
+    {
+        if ( ( ! mrv::Preferences::ODT_CTL_transform.empty() ) &&
+             mrv::Preferences::ODT_CTL_transform != c.ODT.name )
+        {
+            LOG_ERROR( _("Image has a different Output Device Transform (ODT) than the one set already.") );
+            LOG_ERROR( _("At least one LUT will not look correctly.") );
+        }
         mrv::Preferences::ODT_CTL_transform = c.ODT.name;
-
+    }
+    
     LOG_INFO( _("Loaded ACES clip metadata file '") << filename << "'" );
     return true;
 }
