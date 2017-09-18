@@ -44,14 +44,19 @@ namespace mrv
 {
   class CMedia;
   class ColorWidget;
+  class ColorBrowser;
+  class ImageView;
 
   class ColorInfo : public fltk::Group
   {
   public:
     ColorInfo( int x, int y, int w, int h, const char* l = 0 );
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
+      void main( mrv::ViewerUI* m );
+      ImageView* view() const;
 
+      virtual int handle( int event );
+      
     void update();
     void update( const CMedia* img,
 		 const mrv::Rectd& selection );
@@ -64,7 +69,7 @@ namespace mrv
   protected:
     ColorWidget*    dcol;
     fltk::Widget*    area;
-    fltk::Browser*   browser;
+    ColorBrowser*   browser;
     fltk::PopupMenu* uiColorB;
     static mrv::ViewerUI*   uiMain;
   };

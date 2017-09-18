@@ -1039,6 +1039,11 @@ class CMedia
     
     inline int64_t timecode() const { return _tc_frame; }
     
+    inline void x( double t ) { _x = t; refresh(); }
+    inline void y( double t ) { _y = t; refresh(); }
+    inline double x() const { return _x; }
+    inline double y() const { return _y; }
+    
     // Process a timecode object unto _tc_frame
     void process_timecode( const Imf::TimeCode& tc );
     
@@ -1318,6 +1323,7 @@ class CMedia
                       int* frame_size_ptr, AVPacket* avpkt);
 
 
+    
 
   protected:
 
@@ -1422,6 +1428,7 @@ class CMedia
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
     boost::uint64_t _numWindows;   //!< number of data/display windows
+    double      _x, _y;            //!< x,y coordinates in canvas
     mrv::Recti* _dataWindow;       //!< data window of sequence
     mrv::Recti* _displayWindow;    //!< display window of sequence
     mrv::Recti* _dataWindow2;       //!< data window of stereo sequence
