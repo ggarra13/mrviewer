@@ -198,10 +198,10 @@ SET( SOURCES
   gui/FLU/flu_pixmaps.cpp               
   gui/FLU/GridGroup.cpp
 
+  gui/mrvActionWindow.cpp
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
   gui/mrvColorOps.cpp
-  gui/mrvMedia.cpp
   gui/mrvBrowser.cpp
   gui/mrvCTLBrowser.cpp
   gui/mrvCollapsableGroup.cpp
@@ -218,11 +218,13 @@ SET( SOURCES
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
+  gui/mrvMedia.cpp
   gui/mrvPopupMenu.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp
   gui/mrvProgressReport.cpp
   gui/mrvReel.cpp
+  gui/mrvStereoWindow.cpp
   gui/mrvTimecode.cpp
   gui/mrvTimeline.cpp
   gui/mrvVectorscope.cpp
