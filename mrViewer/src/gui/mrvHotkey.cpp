@@ -141,6 +141,25 @@ Hotkey kSetOutPoint( false, false, false, false, 'o' );
 
 Hotkey kHudToggle( true, false, false, false, 'h' );
 
+
+Hotkey kToggleReel( false, false, false, false, fltk::F4Key );
+Hotkey kToggleMediaInfo( false, false, false, false, fltk::F5Key );
+Hotkey kToggleColorInfo( false, false, false, false, fltk::F6Key );
+Hotkey kToggleAction( false, false, false, false, fltk::F7Key );
+Hotkey kToggleStereoOptions( false, false, false, false, fltk::F8Key );
+Hotkey kTogglePreferences( false, false, false, false, fltk::F9Key );;
+Hotkey kToggleEDLEdit( false, false, false, false, 0 );
+Hotkey kToggle3dView( false, false, false, false, 0 );
+Hotkey kToggleHistogram( false, false, false, false, 0 );
+Hotkey kToggleVectorscope( false, false, false, false, 0 );
+Hotkey kToggleICCProfiles( false, false, false, false, 0 );
+Hotkey kToggleConnections( false, false, false, false, 0 );
+Hotkey kToggleHotkeys( false, false, false, false, 0 );
+Hotkey kToggleLogs( false, false, false, false, fltk::F10Key );
+Hotkey kToggleAbout( false, false, false, false, 0 );
+
+
+
 bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
@@ -290,6 +309,21 @@ HotkeyEntry( _("3dView Density Down"), kDensityDown),
 HotkeyEntry( _("Set In Point"), kSetInPoint),
 HotkeyEntry( _("Set Out Point"), kSetOutPoint),
 HotkeyEntry( _("Toggle Hud"), kHudToggle),
+HotkeyEntry( _("Toggle Reel Window"), kToggleReel),
+HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
+HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
+HotkeyEntry( _("Toggle Action Window"), kToggleAction),
+HotkeyEntry( _("Toggle 3D Stereo Options Window"), kToggleStereoOptions),
+HotkeyEntry( _("Toggle EDL Edit Window"), kToggleEDLEdit),
+HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
+HotkeyEntry( _("Toggle 3D View Window"), kToggle3dView),
+HotkeyEntry( _("Toggle Histogram Window"), kToggleHistogram),
+HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
+HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
+HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
+HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
+HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
+HotkeyEntry( _("Toggle About Window"), kToggleAbout),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 
