@@ -109,45 +109,58 @@ namespace mrv
 
   class ColorBrowser : public mrv::Browser
   {
-  public:
-    ColorBrowser( int x, int y, int w, int h, const char* l = 0 ) :
+      mrv::ViewerUI*   uiMain;
+    public:
+      ColorBrowser( int x, int y, int w, int h, const char* l = 0 ) :
       mrv::Browser( x, y, w, h, l )
-    {
-    }
+      {
+      }
 
-    int mousePush( int x, int y )
-    {
-      if ( value() < 0 ) return 0;
+      void main( mrv::ViewerUI* v ) { uiMain = v; }
+      ImageView* view() const { return uiMain->uiView; }
 
-      fltk::Menu menu(0,0,0,0);
+      int mousePush( int x, int y )
+      {
+          if ( value() < 0 ) return 0;
 
-      menu.add( _("Copy/Color"), 
-	       fltk::COMMAND + 'C', 
-	       (fltk::Callback*)copy_color_cb, (void*)this, 0);
+          fltk::Menu menu(0,0,0,0);
 
-      menu.popup( fltk::Rectangle( x, y, 80, 1) );
-      return 1;
-    }
+          menu.add( _("Copy/Color"), 
+                    fltk::COMMAND + 'C', 
+                    (fltk::Callback*)copy_color_cb, (void*)this, 0);
+
+          menu.popup( fltk::Rectangle( x, y, 80, 1) );
+          return 1;
+      }
 
     int handle( int event )
     {
+        int ok = 0;
       switch( event )
 	{
-	case fltk::PUSH:
-	  if ( fltk::event_button() == 3 )
-	    return mousePush( fltk::event_x(), fltk::event_y() );
-	default:
-	  int ok = fltk::Browser::handle( event );
+            case fltk::PUSH:
+                if ( fltk::event_button() == 3 )
+                    return mousePush( fltk::event_x(), fltk::event_y() );
+            case fltk::ENTER:
+                take_focus();
+                return 1;
+            case fltk::FOCUS:
+                return 1;
+            case fltk::KEY:
+                ok = view()->handle( event );
+                if (!ok) ok = fltk::Browser::handle( event );
+                return ok;
+            default:
+                ok = fltk::Browser::handle( event );
 
-	  int line = value();
-	  if (( line < 1 || line > 10 ) ||
-	      ( line > 4 && line < 7 ))
-	    {
-	      value(-1);
-	      return 0;
-	    }
-
-	  return ok;
+                int line = value();
+                if (( line < 1 || line > 10 ) ||
+                    ( line > 4 && line < 7 ))
+                {
+                    value(-1);
+                    return 0;
+                }
+                return ok;
 	}
     }
   };
@@ -213,6 +226,20 @@ fltk::Group( x, y, w, h, l )
 
   dcol->color_browser( browser );
 
+}
+
+void ColorInfo::main( mrv::ViewerUI* m ) {
+    uiMain = m; browser->main(m);
+}
+
+ImageView* ColorInfo::view() const
+{
+    return uiMain->uiView;
+}
+
+int  ColorInfo::handle( int event )
+{
+    return fltk::Group::handle( event );
 }
 
 void ColorInfo::update()
