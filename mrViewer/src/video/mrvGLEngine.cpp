@@ -1502,6 +1502,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( !_view->vr() )
         {
+            glTranslated( img->x(), img->y(), 0 );
             glTranslatef( float(daw.x() - img->eye_separation()),
                           float(-daw.y()), 0 );
             CHECK_GL;
