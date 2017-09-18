@@ -54,6 +54,9 @@ decl {\#include "gui/mrvHistogram.h"} {}
 decl {\#include "gui/mrvValueInput.h"} {public
 } 
 
+decl {\#include "gui/mrvActionWindow.h"} {public
+} 
+
 decl {\#include "gui/mrvVectorscope.h"} {} 
 
 decl {\#include "gui/mrvImageInformation.h"} {} 
@@ -655,12 +658,15 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences open
-        xywh {530 608 700 450} hide resizable
+        label Preferences selected
+        xywh {530 608 700 450} resizable
+        extra_code {o->main(m);}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1211,6 +1217,36 @@ uiPrefsFPS->value( g );}
                 {fltk::Item} {} {
                   label {Drop Frame Timecode}
                   }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label Actions
+            xywh {14 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label {Default Action} open
+              xywh {57 35 317 200} align 5 box ROUNDED_BOX
+            } {
+              {fltk::RadioButton} uiScrub {
+                label { Scrub}
+                xywh {31 20 20 25}
+              }
+              {fltk::RadioButton} uiSelection {
+                label { Color Area Selection}
+                xywh {31 49 20 25}
+              }
+              {fltk::RadioButton} uiDraw {
+                label { Pencil}
+                xywh {31 79 20 25}
+              }
+              {fltk::RadioButton} uiText {
+                label { Text}
+                xywh {31 109 20 25}
+              }
+              {fltk::RadioButton} uiErase {
+                label { Eraser}
+                xywh {31 139 20 25}
               }
             }
           }
@@ -2181,7 +2217,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -2212,6 +2248,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
             {fltk::Item} {} {
               label Playback
+              }
+            {fltk::Item} {} {
+              label Actions
               }
             {fltk::Item} {} {
               label Caches
@@ -2479,55 +2518,41 @@ o->child_of( main->uiMain );} modal
   }
   class PaintUI {} {
     decl {mrv::ViewerUI* main_;} {}
-    Function {make_window( ViewerUI* m )} {} {
+    Function {make_window( ViewerUI* m )} {open
+    } {
       {fltk::Window} uiMain {
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {451 557 150 520} horizontal hide resizable
+        xywh {451 557 150 520} horizontal resizable
         extra_code {o->child_of( m->uiMain );
-main_ = m;}
+main_ = m;
+o->main( m );}
+        class {mrv::ActionWindow} visible
       } {
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {0 11 145 495}
         } {
           {fltk::Button} uiScrub {
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->scrub_mode();
-o->value(1);
-uiSelection->value(0);
-uiDraw->value(0);
-uiErase->value(0);
-uiText->value(0);}
+            callback {v->uiView->scrub_mode();}
             tooltip {Scrubbing Tool}
             xywh {30 14 43 35}
             image not_inlined {../../icons/scrub.xpm} value 1
-            extra_code {o->value(1);
-o->image( scrub );}
+            extra_code {o->image( scrub );}
           }
           {fltk::Button} uiSelection {
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->selection_mode();
-o->value(1);
-uiScrub->value(0);
-uiDraw->value(0);
-uiErase->value(0);
-uiText->value(0);}
+            callback {v->uiView->selection_mode();}
             tooltip {Area Select Tool}
             xywh {29 53 43 35}
-            image not_inlined {../../icons/select.xpm} value 1
-            extra_code {o->image( select_pic );
-o->value( 0 );}
+            image not_inlined {../../icons/select.xpm}
+            extra_code {o->image( select_pic );}
           }
           {fltk::Button} uiDraw {
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->draw_mode();
-o->value(1);
-uiScrub->value(0);
-uiSelection->value(0);
-uiErase->value(0);
-uiText->value(0);}
+            callback {v->uiView->draw_mode();}
             tooltip {Freehand Drawing Tool}
             xywh {77 53 40 35}
             image not_inlined {../../icons/draw.xpm}
@@ -2535,12 +2560,7 @@ uiText->value(0);}
           }
           {fltk::Button} uiErase {
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->erase_mode();
-o->value(1);
-uiScrub->value(0);
-uiSelection->value(0);
-uiDraw->value(0);
-uiText->value(0);}
+            callback {v->uiView->erase_mode();}
             tooltip {Eraser Tool}
             xywh {77 94 40 35}
             image not_inlined {../../icons/erase.xpm}
@@ -2549,8 +2569,7 @@ uiText->value(0);}
           {fltk::Button} uiText {
             label T
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {o->value(1);
-v->uiView->text_mode();}
+            callback {v->uiView->text_mode();}
             tooltip {Text Tool}
             xywh {28 93 45 35} align 32 labelfont 8 labelsize 24
           }
@@ -2608,7 +2627,7 @@ o->redraw();}
             xywh {87 189 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
           }
           {fltk::Group} {} {
-            label Frames open
+            label Frames
             xywh {25 234 95 55} box UP_BOX
           } {
             {fltk::RadioButton} uiAllFrames {
@@ -2729,8 +2748,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3358,7 +3376,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::PackedGroup} uiBottomBar {selected
+          {fltk::PackedGroup} uiBottomBar {
             xywh {0 486 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
