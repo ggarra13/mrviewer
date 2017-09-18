@@ -442,126 +442,6 @@ void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view )
   view->browser()->save_sequence();
 }
 
-enum WindowList
-{
-kReelWindow = 0,
-kMediaInfo = 1,
-kColorInfo = 2,
-k3DStereoOptions = 3,
-kEDLEdit = 4,
-kPaintTools = 5,
-k3dView = 6,
-kHistogram = 7,
-kVectorscope = 8,
-kICCProfiles = 9,
-kConnections = 10,
-kPreferences = 11,
-kHotkeys = 12,
-kLogs = 13,
-kAbout = 14,
-kLastWindow
-};
-
-void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
-{
-   int idx = -1;
-   fltk::Group* g = o->parent();
-   for ( int i = 0; i < g->children(); ++i )
-   {
-      if ( o == g->child(i) ) {
-	 idx = i; break;
-      }
-   }
-
-  if ( idx == kReelWindow )
-    {
-       // Reel window
-      uiMain->uiReelWindow->uiMain->show();
-    }
-  else if ( idx == kMediaInfo )
-  {
-       // Media Info
-      uiMain->uiImageInfo->uiMain->show();
-      uiMain->uiView->update_image_info();
-      uiMain->uiView->send_network( "MediaInfoWindow 1" );
-  }
-  else if ( idx == kColorInfo )
-    {
-       // Color Area
-      uiMain->uiColorArea->uiMain->show();
-      uiMain->uiView->update_color_info();
-      uiMain->uiView->send_network( "ColorInfoWindow 1" );
-    }
-  else if ( idx == k3DStereoOptions )
-  {
-      uiMain->uiStereo->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiStereo->uiMain->show();
-      uiMain->uiView->send_network( "StereoOptions 1" );
-  }
-  else if ( idx == kEDLEdit )
-  {
-     uiMain->uiReelWindow->uiBrowser->set_edl();
-     uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
-     uiMain->uiEDLWindow->uiMain->show();
-  }
-  else if ( idx == k3dView )
-  {
-      uiMain->uiGL3dView->uiMain->show();
-      uiMain->uiView->send_network( "GL3dView 1" );
-  }
-  else if ( idx == kPaintTools )
-    {
-       // Paint Tools
-      uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiView->send_network( "PaintTools 1" );
-      uiMain->uiPaint->uiMain->show();
-    }
-  else if ( idx == kHistogram )
-    {
-      uiMain->uiHistogram->uiMain->show();
-      uiMain->uiView->send_network( "HistogramWindow 1" );
-    }
-  else if ( idx == kVectorscope )
-    {
-      uiMain->uiVectorscope->uiMain->show();
-      uiMain->uiView->send_network( "VectorscopeWindow 1" );
-    }
-  else if ( idx == kICCProfiles )
-    {
-      uiMain->uiICCProfiles->uiMain->show();
-      uiMain->uiICCProfiles->fill();
-    }
-  else if ( idx == kConnections )
-    {
-      uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiConnection->uiMain->show();
-    }
-  else if ( idx == kPreferences )
-    {
-      uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiPrefs->uiMain->show();
-    }
-  else if ( idx == kHotkeys )
-    {
-      uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiHotkey->uiMain->show();
-    }
-  else if ( idx == kLogs )
-    {
-      uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiLog->uiMain->show();
-    }
-  else if ( idx == kAbout )
-    {
-      uiMain->uiAbout->uiMain->show();
-    }
-  else
-    {
-       const char* name = o->label();
-       LOG_ERROR( _("Unknown Window \"") << name << "\"" );
-    }
-}
-
 
 
 void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
@@ -684,6 +564,226 @@ static const float kMaxZoom = 64.f;   // Zoom 64x
 
 
 namespace mrv {
+
+void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
+{
+   int idx = -1;
+   fltk::Group* g = o->parent();
+   for ( int i = 0; i < g->children(); ++i )
+   {
+      if ( o == g->child(i) ) {
+	 idx = i; break;
+      }
+   }
+
+   if ( idx == -1 )
+   {
+       const char* name = o->label();
+       LOG_ERROR( _("Unknown Window \"") << name << "\"" );
+       return;
+   }
+   
+   uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
+}
+
+void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
+{
+  if ( idx == kReelWindow )
+    {
+       // Reel window
+        if ( force || !uiMain->uiReelWindow->uiMain->visible() )
+            uiMain->uiReelWindow->uiMain->show();
+        else
+            uiMain->uiReelWindow->uiMain->hide();
+    }
+  else if ( idx == kMediaInfo )
+  {
+       // Media Info
+        if ( force || !uiMain->uiImageInfo->uiMain->visible() )
+        {
+            uiMain->uiImageInfo->uiMain->show();
+            update_image_info();
+            send_network( "MediaInfoWindow 1" );
+        }
+        else
+        {
+            uiMain->uiImageInfo->uiMain->hide();
+            send_network( "MediaInfoWindow 0" );
+        }
+  }
+  else if ( idx == kColorInfo )
+    {
+        if ( force || !uiMain->uiColorArea->uiMain->visible() )
+        {
+            // Color Area
+            uiMain->uiColorArea->uiMain->show();
+            update_color_info();
+            send_network( "ColorInfoWindow 1" );
+        }
+        else
+        {
+            uiMain->uiColorArea->uiMain->hide();
+            send_network( "ColorInfoWindow 0" );
+        }
+    }
+  else if ( idx == k3DStereoOptions )
+  {
+        if ( force || !uiMain->uiStereo->uiMain->visible() )
+        {
+            uiMain->uiStereo->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiStereo->uiMain->show();
+            send_network( "StereoOptions 1" );
+        }
+        else
+        {
+            uiMain->uiStereo->uiMain->hide();
+            send_network( "StereoOptions 0" );
+        }
+  }
+  else if ( idx == kEDLEdit )
+  {
+      if ( force || !uiMain->uiEDLWindow->uiMain->visible() )
+      {
+          uiMain->uiReelWindow->uiBrowser->set_edl();
+          uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
+          uiMain->uiEDLWindow->uiMain->show();
+      }
+      else
+      {
+          uiMain->uiEDLWindow->uiMain->hide();
+      }
+  }
+  else if ( idx == k3dView )
+  {
+      if ( force || !uiMain->uiGL3dView->uiMain->visible() )
+      {
+          uiMain->uiGL3dView->uiMain->show();
+          send_network( "GL3dView 1" );
+      }
+      else
+      {
+          uiMain->uiGL3dView->uiMain->hide();
+          send_network( "GL3dView 0" );
+      }
+  }
+  else if ( idx == kActionTools )
+    {
+      if ( force || !uiMain->uiPaint->uiMain->visible() )
+      {
+          // Paint Tools
+          uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
+          uiMain->uiPaint->uiMain->show();
+          send_network( "PaintTools 1" );
+      }
+      else
+      {
+          uiMain->uiPaint->uiMain->hide();
+          send_network( "PaintTools 0" );
+      }
+    }
+  else if ( idx == kHistogram )
+    {
+      if ( force || !uiMain->uiHistogram->uiMain->visible() )
+      {
+          uiMain->uiHistogram->uiMain->show();
+          uiMain->uiView->send_network( "HistogramWindow 1" );
+      }
+      else
+      {
+          uiMain->uiHistogram->uiMain->hide();
+          uiMain->uiView->send_network( "HistogramWindow 0" );
+      }
+    }
+  else if ( idx == kVectorscope )
+    {
+      if ( force || !uiMain->uiVectorscope->uiMain->visible() )
+      {
+          uiMain->uiVectorscope->uiMain->show();
+          uiMain->uiView->send_network( "VectorscopeWindow 1" );
+      }
+      else
+      {
+          uiMain->uiVectorscope->uiMain->hide();
+          uiMain->uiView->send_network( "VectorscopeWindow 0" );
+      }
+    }
+  else if ( idx == kICCProfiles )
+    {
+      if ( force || !uiMain->uiICCProfiles->uiMain->visible() )
+      {
+          uiMain->uiICCProfiles->uiMain->show();
+          uiMain->uiICCProfiles->fill();
+      }
+      else
+      {
+          uiMain->uiICCProfiles->uiMain->hide();
+      }
+    }
+  else if ( idx == kConnections )
+    {
+      if ( force || !uiMain->uiConnection->uiMain->visible() )
+      {
+          uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
+          uiMain->uiConnection->uiMain->show();
+      }
+      else
+      {
+          uiMain->uiConnection->uiMain->hide();
+      }
+    }
+  else if ( idx == kPreferences )
+    {
+      if ( force || !uiMain->uiPrefs->uiMain->visible() )
+      {
+          uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
+          uiMain->uiPrefs->uiMain->show();
+      }
+      else
+      {
+          uiMain->uiPrefs->uiMain->hide();
+      }
+    }
+  else if ( idx == kHotkeys )
+    {
+      if ( force || !uiMain->uiHotkey->uiMain->visible() )
+      {
+          uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
+          uiMain->uiHotkey->uiMain->show();
+      }
+      else
+      {
+          uiMain->uiHotkey->uiMain->hide();
+      }
+    }
+  else if ( idx == kLogs )
+    {
+      if ( force || !uiMain->uiLog->uiMain->visible() )
+      {
+          uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
+          uiMain->uiLog->uiMain->show();
+      }
+      else
+      {
+          uiMain->uiLog->uiMain->hide();
+      }
+    }
+  else if ( idx == kAbout )
+    {
+      if ( force || !uiMain->uiAbout->uiMain->visible() )
+      {
+          uiMain->uiAbout->uiMain->show();
+      }
+      else
+      {
+          uiMain->uiAbout->uiMain->hide();
+      }
+    }
+  else
+  {
+      LOG_ERROR( _("Unknown Window ") << idx );
+  }
+}
+
 
 static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -862,6 +962,46 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+void ImageView::scrub_mode()
+{
+    _mode = kScrub;
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(true);
+}
+
+void ImageView::selection_mode()
+{
+    _mode = kSelection;
+    uiMain->uiPaint->uiSelection->value(true);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+}
+
+void ImageView::draw_mode()
+{
+    _mode = kDraw;
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiDraw->value(true);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+}
+
+void ImageView::erase_mode()
+{
+    _mode = kErase;
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(true);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+}
+
 void ImageView::text_mode()
 {
    bool ok = mrv::make_window();
@@ -1010,6 +1150,9 @@ ImageView::~ImageView()
 
    delete _engine; _engine = NULL;
 
+   delete uiMain->uiSOPNode;
+   uiMain->uiSOPNode = NULL;
+   
    uiMain = NULL;
 }
 
@@ -4632,6 +4775,82 @@ int ImageView::keyDown(unsigned int rawkey)
                                     fltk::LAYOUT_DAMAGE |
                                     fltk::LAYOUT_CHILD );
         uiMain->uiRegion->redraw();
+        return 1;
+    }
+    else if ( kToggleReel.match( rawkey ) )
+    {
+        // f4
+        toggle_window( kReelWindow );
+        return 1;
+    }
+    else if ( kToggleMediaInfo.match( rawkey ) )
+    {
+        toggle_window( kMediaInfo );
+        return 1;
+    }
+    else if ( kToggleColorInfo.match( rawkey ) )
+    {
+        toggle_window( kColorInfo );
+        return 1;
+    }
+    else if ( kToggleAction.match( rawkey ) )
+    {
+        toggle_window( kActionTools );
+        return 1;
+    }
+    else if ( kToggleStereoOptions.match( rawkey ) )
+    {
+        toggle_window( k3DStereoOptions );
+        return 1;
+    }
+    else if ( kToggleEDLEdit.match( rawkey ) )
+    {
+        toggle_window( kEDLEdit );
+        return 1;
+    }
+    else if ( kTogglePreferences.match( rawkey ) )
+    {
+        toggle_window( kPreferences );
+        return 1;
+    }
+    else if ( kToggle3dView.match( rawkey ) )
+    {
+        toggle_window( k3dView );
+        return 1;
+    }
+    else if ( kToggleHistogram.match( rawkey ) )
+    {
+        toggle_window( kHistogram );
+        return 1;
+    }
+    else if ( kToggleVectorscope.match( rawkey ) )
+    {
+        toggle_window( kVectorscope );
+        return 1;
+    }
+    else if ( kToggleICCProfiles.match( rawkey ) )
+    {
+        toggle_window( kICCProfiles );
+        return 1;
+    }
+    else if ( kToggleConnections.match( rawkey ) )
+    {
+        toggle_window( kConnections );
+        return 1;
+    }
+    else if ( kToggleHotkeys.match( rawkey ) )
+    {
+        toggle_window( kHotkeys );
+        return 1;
+    }
+    else if ( kToggleLogs.match( rawkey ) )
+    {
+        toggle_window( kLogs );
+        return 1;
+    }
+    else if ( kToggleAbout.match( rawkey ) )
+    {
+        toggle_window( kAbout );
         return 1;
     }
     else if ( kTogglePresentation.match( rawkey ) )
