@@ -145,6 +145,26 @@ class server;
       kVRCubeMap,
       };
 
+      enum WindowList
+      {
+      kReelWindow = 0,
+      kMediaInfo = 1,
+      kColorInfo = 2,
+      k3DStereoOptions = 3,
+      kEDLEdit = 4,
+      kActionTools = 5,
+      k3dView = 6,
+      kHistogram = 7,
+      kVectorscope = 8,
+      kICCProfiles = 9,
+      kConnections = 10,
+      kPreferences = 11,
+      kHotkeys = 12,
+      kLogs = 13,
+      kAbout = 14,
+      kLastWindow
+      };
+      
   public:
     ImageView(int X, int Y, int W, int H, const char *l=0);
   
@@ -379,6 +399,8 @@ class server;
     /// Auxiliary function to return viewer's main fltk window
     const fltk::Window* fltk_main() const;
 
+      void toggle_window( const WindowList idx, const bool force = false );
+      
     /// Auxiliary function to return reel list's browser for this view
     ImageBrowser* browser();
 
@@ -454,10 +476,10 @@ class server;
 
 
        void text_mode();
-       void scrub_mode()     { _mode = kScrub; }
-       void selection_mode() { _mode = kSelection; }
-       void draw_mode()      { _mode = kDraw; }
-       void erase_mode()     { _mode = kErase; }
+       void scrub_mode();
+       void selection_mode();
+       void draw_mode();
+       void erase_mode();
 
       bool has_redo() const;
       bool has_undo() const;

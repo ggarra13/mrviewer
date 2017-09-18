@@ -18,6 +18,9 @@ decl {\#include "fltk/visual.h"} {public
 decl {\#include "gui/mrvImageView.h"} {public
 } 
 
+decl {\#include "gui/mrvStereoWindow.h"} {selected public
+} 
+
 decl {\#include "mrViewer.h"} {public
 } 
 
@@ -36,10 +39,12 @@ namespace mrv {open
         label {3D Stereo Options}
         user_data this user_data_type {mrv::StereoUI*}
         callback {v->main()->uiView->send_network( "StereoOptions 0" );
-o->hide();} open
-        xywh {757 699 280 160} resizable
+o->hide();}
+        xywh {757 727 280 160} resizable
         extra_code {main_ = main;
-o->child_of( (fltk::Window*)main->uiMain );} visible
+o->child_of( (fltk::Window*)main->uiMain );
+o->main( main );}
+        class {mrv::StereoWindow} visible
       } {
         {fltk::Choice} uiStereoInput {
           label Input
@@ -154,7 +159,7 @@ if ( o->value() ) {
   uiVR360Sphere->value(0);
 }
 v->uiView->vr( t );
-v->uiView->redraw();} selected
+v->uiView->redraw();}
           tooltip {Toggle VR 360 (Panoramic) view of the image.   The image, which should be composed of 6 images, is wrapped around a cube when this is active.}
           xywh {150 20 105 30}
         }

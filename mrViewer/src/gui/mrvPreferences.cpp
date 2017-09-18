@@ -341,7 +341,7 @@ fltk::StyleSet*     newscheme = NULL;
     ui.get( "stereo3d_options", tmp, 0 );
     uiPrefs->uiPrefsStereoOptions->value(tmp);
     
-    ui.get( "paint_tools", tmp, 0 );
+    ui.get( "action_tools", tmp, 0 );
     uiPrefs->uiPrefsPaintTools->value(tmp);
 
 
@@ -517,6 +517,18 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
 
 
+    fltk::Preferences action( base, "action" );
+    action.get( "scrubbing", tmp, 1 );
+    uiPrefs->uiScrub->value( (bool) tmp );
+    action.get( "color_area", tmp, 0 );
+    uiPrefs->uiSelection->value( (bool) tmp );
+    action.get( "pencil", tmp, 0 );
+    uiPrefs->uiDraw->value( (bool) tmp );
+    action.get( "text", tmp, 0 );
+    uiPrefs->uiText->value( (bool) tmp );
+    action.get( "eraser", tmp, 0 );
+    uiPrefs->uiErase->value( (bool) tmp );
+    
     fltk::Preferences caches( base, "caches" );
 
     caches.get( "active", tmp, 1 );
@@ -870,12 +882,13 @@ static const char* kCLocale = "C";
     else
       main->uiEDLWindow->uiMain->hide();
     
+    mrv::PaintUI* uiPaint = main->uiPaint;
     if ( uiPrefs->uiPrefsPaintTools->value() )
     {
-        main->uiPaint->uiMain->show();
+        uiPaint->uiMain->show();
     }
     else
-      main->uiPaint->uiMain->hide();
+        uiPaint->uiMain->hide();
     
 
     if ( uiPrefs->uiPrefsStereoOptions->value() )
@@ -959,6 +972,17 @@ static const char* kCLocale = "C";
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
 
+    if ( uiPrefs->uiScrub->value() )
+        view->scrub_mode();
+    else if ( uiPrefs->uiSelection->value() )
+        view->selection_mode();
+    else if ( uiPrefs->uiDraw->value() )
+        view->draw_mode();
+    else if ( uiPrefs->uiText->value() )
+        view->text_mode();
+    else if ( uiPrefs->uiErase->value() )
+        view->erase_mode();
+    
     if ( !view->use_lut() )
     {
         bool use = uiPrefs->uiPrefsViewLut->value();
@@ -1110,7 +1134,7 @@ static const char* kCLocale = "C";
 	// Go to presentation mode - window must be shown first, thou.
 	view->toggle_presentation();
       }
-
+    
     GLLut3d::NUM_STOPS = (unsigned) uiPrefs->uiPrefsNumStops->value();
     
     int num = (int)main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
@@ -1190,7 +1214,7 @@ static const char* kCLocale = "C";
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );
-    ui.set( "paint_tools", (int) uiPrefs->uiPrefsPaintTools->value() );
+    ui.set( "action_tools", (int) uiPrefs->uiPrefsPaintTools->value() );
     ui.set( "image_info", (int) uiPrefs->uiPrefsImageInfo->value() );
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
@@ -1286,6 +1310,13 @@ static const char* kCLocale = "C";
     playback.set( "scrubbing_sensitivity",
                   uiPrefs->uiPrefsScrubbingSensitivity->value() );
 
+    fltk::Preferences action( base, "action" );
+
+    action.set( "scrubbing", (int)uiPrefs->uiScrub->value() );
+    action.set( "color_area", (int)uiPrefs->uiSelection->value() );
+    action.set( "pencil", (int)uiPrefs->uiDraw->value() );
+    action.set( "text", (int) uiPrefs->uiText->value() );
+    action.set( "eraser", (int)  uiPrefs->uiErase->value() );
 
     fltk::Preferences caches( base, "caches" );
     caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
