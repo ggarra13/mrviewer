@@ -192,6 +192,25 @@ extern Hotkey kSetOutPoint;
 
 extern Hotkey kHudToggle;
 
+// Windows hotkeys
+extern Hotkey kToggleReel;
+extern Hotkey kToggleMediaInfo;
+extern Hotkey kToggleColorInfo;
+extern Hotkey kToggleAction;
+extern Hotkey kToggleStereoOptions;
+extern Hotkey kToggleEDLEdit;
+extern Hotkey kTogglePreferences;
+extern Hotkey kToggle3dView;
+extern Hotkey kToggleHistogram;
+extern Hotkey kToggleVectorscope;
+extern Hotkey kToggleICCProfiles;
+extern Hotkey kToggleConnections;
+extern Hotkey kToggleHotkeys;
+extern Hotkey kToggleLogs;
+extern Hotkey kToggleAbout;
+
+
+
 struct HotkeyEntry
 {
      HotkeyEntry( const std::string n,

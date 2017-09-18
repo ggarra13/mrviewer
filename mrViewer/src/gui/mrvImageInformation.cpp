@@ -690,6 +690,11 @@ static void remove_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 }
 
 
+ImageView* ImageInformation::view() const
+{
+    return uiMain->uiView;
+}
+
 
 ImageInformation::ImageInformation( int x, int y, int w, int h, 
                                     const char* l ) :
@@ -776,6 +781,12 @@ int ImageInformation::handle( int event )
         menu.popup( fltk::Rectangle( fltk::event_x(),
                                      fltk::event_y(), 80, 1) );
         return 1;
+    }
+
+    if ( event == fltk::KEY )
+    {
+        int ok = view()->handle( event );
+        if (ok) return ok;
     }
      
     return ImageInfoParent::handle( event );

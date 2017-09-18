@@ -2520,24 +2520,30 @@ void ImageBrowser::handle_dnd()
   {
     switch( event )
       {
-      case fltk::ENTER:
-	take_focus();
-	window()->show();
-	return 1;
-      case fltk::PUSH:
-	return mousePush( fltk::event_x(), fltk::event_y() );
-      case fltk::DRAG:
-	return mouseDrag( fltk::event_x(), fltk::event_y() );
-      case fltk::RELEASE:
-	return mouseRelease( fltk::event_x(), fltk::event_y() );
-      case fltk::DND_ENTER:
-      case fltk::DND_LEAVE:
-      case fltk::DND_DRAG:
-      case fltk::DND_RELEASE:
-	return 1;
-      case fltk::PASTE:
-	handle_dnd();
-	return 1;
+          case fltk::KEY:
+              {
+                  int ok = view()->handle( event );
+                  if (!ok) ok = fltk::Browser::handle( event );
+                  return ok;
+              }
+          case fltk::ENTER:
+              take_focus();
+              window()->show();
+              return 1;
+          case fltk::PUSH:
+              return mousePush( fltk::event_x(), fltk::event_y() );
+          case fltk::DRAG:
+              return mouseDrag( fltk::event_x(), fltk::event_y() );
+          case fltk::RELEASE:
+              return mouseRelease( fltk::event_x(), fltk::event_y() );
+          case fltk::DND_ENTER:
+          case fltk::DND_LEAVE:
+          case fltk::DND_DRAG:
+          case fltk::DND_RELEASE:
+              return 1;
+          case fltk::PASTE:
+              handle_dnd();
+              return 1;
       }
     int old_sel = value();
     int ok = fltk::Browser::handle( event );

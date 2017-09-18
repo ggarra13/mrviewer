@@ -55,6 +55,8 @@ namespace mrv
   class ViewerUI;
   class CMedia;
   struct CtlLMTData;
+  class ImageView;
+
 
 class ImageInformation : public ImageInfoParent
 {
@@ -71,6 +73,8 @@ class ImageInformation : public ImageInfoParent
 
     void main( mrv::ViewerUI* m ) { uiMain = m; }
     mrv::ViewerUI* main() { return uiMain; }
+
+    ImageView*  view() const;
 
   protected:
     fltk::Color get_title_color();
