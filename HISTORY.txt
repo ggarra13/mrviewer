@@ -6,6 +6,9 @@ v3.8.2   - Added Actions to Preferences.  With them you can select the
 	   window with F5, the Color Area Window with F6, The Action
 	   Window with F7, the 3D Stereo VR360 options with F8
 	   and Preferences with F9.
+	 - Reverted back to VC2013 on Windows, to make the compilation
+	   work under Windows 7 and Vista.  Windows 7 was broken due
+	   to the switch to VC2015 (which would compile with the 10 SDK).
 
 v3.8.1   - ***IMPORTANT***
 	   Made Scrubbing work with the left mouse button only.
