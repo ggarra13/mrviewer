@@ -3645,9 +3645,11 @@ void Flu_File_Chooser::buildLocationCombo()
 	    switch( type )
 	      {
 	      case DRIVE_REMOVABLE:
-                  disk = strlen(volumeName)?
-                         volumeName :  _(diskTypesTxt[0].c_str());
-		driveIcons[i] = &floppy_drive;
+                  {
+                      disk = strlen(volumeName)?
+                             volumeName :  _(diskTypesTxt[0].c_str());
+                      driveIcons[i] = &floppy_drive;
+                  }
 		break;
 	      case DRIVE_FIXED:
                   disk = strlen(volumeName)?
