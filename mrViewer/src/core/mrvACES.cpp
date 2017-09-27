@@ -116,6 +116,8 @@ bool load_aces_xml( CMedia* img, const char* filename )
              mrv::Preferences::ODT_CTL_transform != c.ODT.name )
         {
             LOG_ERROR( _("Image has a different Output Device Transform (ODT) than the one set already.") );
+            LOG_ERROR( mrv::Preferences::ODT_CTL_transform
+                       << _(" is set.  Loaded ") << c.ODT.name );
             LOG_ERROR( _("At least one LUT will not look correctly.") );
         }
         mrv::Preferences::ODT_CTL_transform = c.ODT.name;
