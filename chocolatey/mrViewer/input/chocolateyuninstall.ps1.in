@@ -78,4 +78,4 @@ $AssembledNewPath = ($newpath -join(';')).trimend(';')
 
 $target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}"
 
-Remove-Item $target -Force
+Remove-Item -Path "$target" -Force
