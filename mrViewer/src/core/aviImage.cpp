@@ -359,6 +359,10 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
       return true;
   }
+  else if ( strncmp( (char*)data, "DHAV", 4 ) == 0 )
+  {
+      return true;
+  }
   else
     {
       // Check for Quicktime
