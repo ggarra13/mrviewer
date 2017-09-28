@@ -2,6 +2,9 @@ v3.8.3   - Made choco uninstall remove the mrViewer directory.
 	 - Improved bug error reporting of different ODTs when loading one
 	   incompatible from the ACESclip file.  Now the message names both
 	   ODT names.
+	 - Added TIFF with JPEG support to ctlrender standalone executable
+	   on 64 bits Windows.
+	 - Bug fixed a crash in presentation mode (F12).
 
 v3.8.2   - Added Actions to Preferences.  With them you can select the
 	   action that opens at start-up (scrubbing, drawing, color area
