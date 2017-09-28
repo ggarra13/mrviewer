@@ -4995,7 +4995,7 @@ void ImageView::toggle_presentation()
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
   fltk::Window* uiStereo = uiMain->uiStereo->uiMain;
   fltk::Window* uiPaint = uiMain->uiPaint->uiMain;
-  fltk::Window* uiSOP = uiMain->uiSOPNode->uiMain;
+  fltk::Window* uiSOP = uiMain->uiSOPNode ? uiMain->uiSOPNode->uiMain : NULL;
 
 
   static bool has_image_info, has_color_area, has_reel, has_edl_edit,
@@ -5007,20 +5007,20 @@ void ImageView::toggle_presentation()
       posX = fltk_main()->x();
       posY = fltk_main()->y();
 
-      has_image_info = uiImageInfo->visible();
-      has_color_area = uiColorArea->visible();
-      has_reel       = uiReel->visible();
-      has_edl_edit   = uiEDLWindow->visible();
-      has_prefs      = uiPrefs->visible();
-      has_about      = uiAbout->visible();
+      has_image_info = uiImageInfo ? uiImageInfo->visible() : false;
+      has_color_area = uiColorArea ? uiColorArea->visible() : false;
+      has_reel       = uiReel ? uiReel->visible() : false;
+      has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
+      has_prefs      = uiPrefs ? uiPrefs->visible() : false;
+      has_about      = uiAbout ? uiAbout->visible() : false;
       has_top_bar    = uiMain->uiTopBar->visible();
       has_bottom_bar = uiMain->uiBottomBar->visible();
       has_pixel_bar  = uiMain->uiPixelBar->visible();
-      has_paint      = uiPaint->visible();
-      has_stereo     = uiStereo->visible();
-      has_sop        = uiSOP->visible();
+      has_paint      = uiPaint ? uiPaint->visible() : false;
+      has_stereo     = uiStereo ? uiStereo->visible() : false;
+      has_sop        = uiSOP ? uiSOP->visible() : false;
 
-      uiSOP->hide();
+      if (uiSOP) uiSOP->hide();
       uiPaint->hide();
       uiStereo->hide();
       uiImageInfo->hide();
