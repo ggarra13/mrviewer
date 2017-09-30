@@ -83,6 +83,7 @@ class server;
     kDraw      = 1 << 2,
     kErase     = 1 << 3,
     kText      = 1 << 4,
+    kMovePicture = 1 << 5,
     };
 
 
@@ -475,11 +476,12 @@ class server;
        float wipe_amount() const { return _wipe; }
 
 
-       void text_mode();
-       void scrub_mode();
-       void selection_mode();
-       void draw_mode();
-       void erase_mode();
+      void text_mode();
+      void scrub_mode();
+      void selection_mode();
+      void draw_mode();
+      void erase_mode();
+      void move_pic_mode();
 
       bool has_redo() const;
       bool has_undo() const;
