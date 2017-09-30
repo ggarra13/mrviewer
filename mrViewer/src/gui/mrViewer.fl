@@ -663,10 +663,10 @@ o->label( o->child( o->value() )->label() );}
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences selected
-        xywh {530 608 700 450} resizable
+        label Preferences
+        xywh {530 608 700 450} hide resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2516,7 +2516,8 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window( ViewerUI* m )} {open
     } {
@@ -2524,14 +2525,14 @@ o->child_of( main->uiMain );} modal
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
-o->hide();}
+o->hide();} open
         xywh {451 557 150 520} horizontal resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
         class {mrv::ActionWindow} visible
       } {
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {0 11 145 495}
         } {
           {fltk::Button} uiScrub {
@@ -2541,6 +2542,14 @@ o->main( m );}
             xywh {30 14 43 35}
             image not_inlined {../../icons/scrub.xpm} value 1
             extra_code {o->image( scrub );}
+          }
+          {fltk::Button} uiMovePic {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->move_pic_mode();} selected
+            tooltip {Move Picture Tool}
+            xywh {74 14 43 35}
+            image not_inlined {../../icons/move_pic.xpm}
+            extra_code {o->image( move_pic );}
           }
           {fltk::Button} uiSelection {
             user_data m user_data_type {mrv::ViewerUI*}
