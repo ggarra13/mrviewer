@@ -1179,6 +1179,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     double tw = dpw.w() / 2.0;
     double th = dpw.h() / 2.0;
 
+    glTranslated( img->x(), img->y(), 0 );
     glTranslated( dpw.x() + tw, -dpw.y() - th, 0 );
 
     tw *= percentX;
