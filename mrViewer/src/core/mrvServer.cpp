@@ -389,6 +389,17 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
+   else if ( cmd == N_("MovePicture") )
+   {
+      double x, y;
+      is >> x >> y;
+      mrv::media fg = v->foreground();
+      if ( !fg ) return false;
+      CMedia* img = fg->image();
+      img->x( x );
+      img->y( y );
+      ok = true;
+   }
    else if ( cmd == N_("UpdateLayers") )
    {
        v->update_layers();
