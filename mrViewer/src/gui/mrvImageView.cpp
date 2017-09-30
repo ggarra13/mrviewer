@@ -962,9 +962,22 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+void ImageView::move_pic_mode()
+{
+    _mode = kMovePicture;
+    uiMain->uiPaint->uiMovePic->value(true);
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+}
+
+
 void ImageView::scrub_mode()
 {
     _mode = kScrub;
+    uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
     uiMain->uiPaint->uiDraw->value(false);
@@ -975,6 +988,7 @@ void ImageView::scrub_mode()
 void ImageView::selection_mode()
 {
     _mode = kSelection;
+    uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(true);
     uiMain->uiPaint->uiErase->value(false);
     uiMain->uiPaint->uiDraw->value(false);
@@ -985,6 +999,7 @@ void ImageView::selection_mode()
 void ImageView::draw_mode()
 {
     _mode = kDraw;
+    uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(false);
     uiMain->uiPaint->uiDraw->value(true);
@@ -995,6 +1010,7 @@ void ImageView::draw_mode()
 void ImageView::erase_mode()
 {
     _mode = kErase;
+    uiMain->uiPaint->uiMovePic->value(false);
     uiMain->uiPaint->uiSelection->value(false);
     uiMain->uiPaint->uiErase->value(true);
     uiMain->uiPaint->uiDraw->value(false);
@@ -1008,6 +1024,7 @@ void ImageView::text_mode()
    if ( ok )
    {
       _mode = kText;
+      uiMain->uiPaint->uiMovePic->value(false);
       uiMain->uiPaint->uiErase->value(false);
       uiMain->uiPaint->uiDraw->value(false);
       uiMain->uiPaint->uiText->value(true);
@@ -1017,6 +1034,7 @@ void ImageView::text_mode()
    else
    {
       _mode = kScrub;
+      uiMain->uiPaint->uiMovePic->value(false);
       uiMain->uiPaint->uiSelection->value(false);
       uiMain->uiPaint->uiErase->value(false);
       uiMain->uiPaint->uiDraw->value(false);
@@ -2676,6 +2694,10 @@ int ImageView::leftMouseDown(int x, int y)
       {
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
       }
+      else if ( _mode == kMovePicture )
+      {
+          return 1;
+      }
       else if ( _mode == kDraw || _mode == kErase || _mode == kText )
       {
    
@@ -3121,7 +3143,7 @@ void ImageView::leftMouseUp( int x, int y )
          send_network( s->send() );
      }
   }
-  else if ( _mode == kScrub )
+  else if ( _mode == kScrub || _mode == kMovePicture )
   {
       _mode = kNoAction;
   }
@@ -4070,6 +4092,29 @@ void ImageView::mouseDrag(int x,int y)
               scrub( dx );
               lastX = fltk::event_x();
           }
+      }
+      else if ( _mode == kMovePicture )
+      {
+          mrv::media fg = foreground();
+          if ( ! fg ) return;
+
+          CMedia* img = fg->image();
+          double px = img->x();
+          double py = img->y();
+          
+          px += double(dx) / _zoom;
+          py -= double(dy) / _zoom;
+
+          img->x( px );
+          img->y( py );
+          
+          char buf[128];
+          sprintf( buf, "MovePicture %g %g", px, py );
+          send_network( buf );
+          
+          lastX = x;
+          lastY = y;
+
       }
       else
 	{
@@ -5099,7 +5144,6 @@ void ImageView::scrub( double dx )
 {
   stop();
 
-  //  _playback = CMedia::kStopped; // CMedia::kScrubbing;
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
