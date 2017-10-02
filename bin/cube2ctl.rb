@@ -122,6 +122,7 @@ lines.delete_if { |x| x =~ /^\s*LUT_1D_SIZE/ }
 lines.delete_if { |x| x =~ /^\s*LUT_3D_SIZE/ }
 lines.delete_if { |x| x =~ /^\s*TITLE/ }
 lines.delete_if { |x| x =~ /^\s*DOMAIN/ }
+lines.delete_if { |x| x =~ /CUBE/ }
 
 
 
@@ -135,7 +136,9 @@ if lut1d
   out.puts "// Lut1D size #{size}"
   if lines.size != size
     $stderr.puts "ERROR: Size of lines #{lines.size} different than 1d lut size #{size}"
-    size = lines.size
+    if size == 0
+      size = lines.size
+    end
   end
   out.puts
 else
