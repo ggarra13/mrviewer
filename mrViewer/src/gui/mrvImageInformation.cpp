@@ -1496,6 +1496,22 @@ static void change_last_frame_cb( fltk::IntInput* w,
     }
 }
 
+static void change_x_cb( fltk::IntInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    img->x( w->ivalue() );
+    info->main()->uiView->redraw();
+    update_int_slider( w );
+}
+
+static void change_y_cb( fltk::IntInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    img->y( w->ivalue() );
+    info->main()->uiView->redraw();
+    update_int_slider( w );
+}
+
 static void change_pixel_ratio_cb( fltk::FloatInput* w,
                                    ImageInformation* info )
 {
@@ -2023,6 +2039,13 @@ void ImageInformation::fill_data()
                float(img->pixel_ratio()), true, true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
+    add_int( _("X Position"), _("Image X Position in Canvas"),
+             img->x(), true, true,
+             (fltk::Callback*)change_x_cb, 0.0f, 720.0f );
+    
+    add_int( _("Y Position"), _("Image Y Position in Canvas"),
+             img->y(), true, true,
+             (fltk::Callback*)change_y_cb, 0.0f, 720.0f );
 
     const mrv::Recti& window = img->data_window();
     if ( dpw != window && dpw.w() != 0 )
