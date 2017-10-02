@@ -520,6 +520,8 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences action( base, "action" );
     action.get( "scrubbing", tmp, 1 );
     uiPrefs->uiScrub->value( (bool) tmp );
+    action.get( "move_picture", tmp, 0 );
+    uiPrefs->uiMovePicture->value( (bool) tmp );
     action.get( "color_area", tmp, 0 );
     uiPrefs->uiSelection->value( (bool) tmp );
     action.get( "pencil", tmp, 0 );
@@ -974,6 +976,8 @@ static const char* kCLocale = "C";
 
     if ( uiPrefs->uiScrub->value() )
         view->scrub_mode();
+    else if ( uiPrefs->uiMovePicture->value() )
+        view->move_pic_mode();
     else if ( uiPrefs->uiSelection->value() )
         view->selection_mode();
     else if ( uiPrefs->uiDraw->value() )
@@ -1313,6 +1317,7 @@ static const char* kCLocale = "C";
     fltk::Preferences action( base, "action" );
 
     action.set( "scrubbing", (int)uiPrefs->uiScrub->value() );
+    action.set( "move_picture", (int)uiPrefs->uiMovePicture->value() );
     action.set( "color_area", (int)uiPrefs->uiSelection->value() );
     action.set( "pencil", (int)uiPrefs->uiDraw->value() );
     action.set( "text", (int) uiPrefs->uiText->value() );

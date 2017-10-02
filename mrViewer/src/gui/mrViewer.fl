@@ -663,10 +663,10 @@ o->label( o->child( o->value() )->label() );}
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences
-        xywh {530 608 700 450} hide resizable
+        label Preferences open
+        xywh {530 608 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1221,32 +1221,36 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Actions
-            xywh {14 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Actions open
+            xywh {14 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Default Action} open
+              label {Default Action} open selected
               xywh {57 35 317 200} align 5 box ROUNDED_BOX
             } {
               {fltk::RadioButton} uiScrub {
                 label { Scrub}
-                xywh {31 20 20 25}
+                xywh {31 14 20 25}
+              }
+              {fltk::RadioButton} uiMovePicture {
+                label { Move Picture}
+                xywh {31 39 20 25}
               }
               {fltk::RadioButton} uiSelection {
                 label { Color Area Selection}
-                xywh {31 49 20 25}
+                xywh {31 64 20 25}
               }
               {fltk::RadioButton} uiDraw {
                 label { Pencil}
-                xywh {31 79 20 25}
+                xywh {31 94 20 25}
               }
               {fltk::RadioButton} uiText {
                 label { Text}
-                xywh {31 109 20 25}
+                xywh {31 124 20 25}
               }
               {fltk::RadioButton} uiErase {
                 label { Eraser}
-                xywh {31 139 20 25}
+                xywh {31 154 20 25}
               }
             }
           }
@@ -2033,7 +2037,7 @@ else
             }
           }
           {fltk::Group} {} {
-            label Subtitles open
+            label Subtitles
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsSubtitleFont {
@@ -2516,16 +2520,14 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {open
-  } {
+  class PaintUI {} {
     decl {mrv::ViewerUI* main_;} {}
-    Function {make_window( ViewerUI* m )} {open
-    } {
+    Function {make_window( ViewerUI* m )} {} {
       {fltk::Window} uiMain {
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
-o->hide();} open
+o->hide();}
         xywh {451 557 150 520} horizontal resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
@@ -2545,7 +2547,7 @@ o->main( m );}
           }
           {fltk::Button} uiMovePic {
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->move_pic_mode();} selected
+            callback {v->uiView->move_pic_mode();}
             tooltip {Move Picture Tool}
             xywh {74 14 43 35}
             image not_inlined {../../icons/move_pic.xpm}
@@ -2828,6 +2830,11 @@ v->uiReelWindow->uiMain->show();}
 v->uiView->update_image_info();}
                 }
               {fltk::Item} {} {
+                label {Action Tools}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiPaint->uiMain->show();}
+                }
+              {fltk::Item} {} {
                 label {Color Area}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
@@ -2842,11 +2849,6 @@ v->uiView->update_color_info();}
                 label {EDL Edit}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiEDLWindow->uiMain->show();}
-                }
-              {fltk::Item} {} {
-                label {Action Tools}
-                user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiPaint->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label 3dView
