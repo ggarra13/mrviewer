@@ -150,10 +150,10 @@ class server;
       {
       kReelWindow = 0,
       kMediaInfo = 1,
-      kColorInfo = 2,
-      k3DStereoOptions = 3,
-      kEDLEdit = 4,
-      kActionTools = 5,
+      kActionTools = 2,
+      kColorInfo = 3,
+      k3DStereoOptions = 4,
+      kEDLEdit = 5,
       k3dView = 6,
       kHistogram = 7,
       kVectorscope = 8,
@@ -289,61 +289,61 @@ class server;
     /// Return current zoom factor
     float zoom() const { return _zoom; };
 
-    /// Resize main window to current displayed image
-    void resize_main_window();
+      /// Resize main window to current displayed image
+      void resize_main_window();
 
-    /// Update the layer list
-    void update_layers();
+      /// Update the layer list
+      void update_layers();
 
-    /// Turn on or off safe areas
-       void safe_areas( const bool t );
+      /// Turn on or off safe areas
+      void safe_areas( const bool t );
 
-    /// Return status of safe areas
-    bool safe_areas() { return _safeAreas; }
+      /// Return status of safe areas
+      inline bool safe_areas() { return _safeAreas; }
 
       /// Turn on or off display window
       void display_window( const bool t );
 
       /// Return status of safe areas
-      bool display_window() const { return _displayWindow; }
+      inline bool display_window() const { return _displayWindow; }
 
       /// Turn on or off data window
       void data_window( const bool t );
 
       /// Return status of safe areas
-      bool data_window() const { return _dataWindow; }
+      inline bool data_window() const { return _dataWindow; }
   
-    /// Normalize value
-    bool normalize() const;
+      /// Normalize value
+      bool normalize() const;
 
-    void normalize( const bool b );
+      void normalize( const bool b );
 
-    /// Toggle pixel normalization on and off
-    void toggle_normalize();
+      /// Toggle pixel normalization on and off
+      void toggle_normalize();
 
-    /// Normalize a pixel value
+      /// Normalize a pixel value
       void normalize( CMedia::Pixel& rgba, unsigned short idx = 0 ) const;
       
-    /// Toggle 3D LUT on and off
-    void toggle_lut();
+      /// Toggle 3D LUT on and off
+      void toggle_lut();
 
-    /// True if 3D LUT is on, false if not.
-    inline bool use_lut() const { return _useLUT; }
+      /// True if 3D LUT is on, false if not.
+      inline bool use_lut() const { return _useLUT; }
 
-    /// Set 3D LUT to on, false if not.
-      void use_lut(const bool t) {  _useLUT = !t; toggle_lut(); }
+      /// Set 3D LUT to on, false if not.
+      inline void use_lut(const bool t) {  _useLUT = !t; toggle_lut(); }
 
-    /// True if background is active
-    bool show_background() const { return _showBG; }
+      /// True if background is active
+      inline bool show_background() const { return _showBG; }
 
-    void show_background( const bool b );
+      void show_background( const bool b );
 
-    /// Update the image window display
-    void update_image_info() const;
+      /// Update the image window display
+      void update_image_info() const;
 
-    /// Update the color information display
-    void update_color_info( const mrv::media& fg ) const;
-    void update_color_info() const;
+      /// Update the color information display
+      void update_color_info( const mrv::media& fg ) const;
+      void update_color_info() const;
 
       // Channel navigation (for hotkeys)
       bool next_channel();
@@ -352,70 +352,70 @@ class server;
       /// Get Playback looping mode from timeline widget
       CMedia::Looping looping() const;
       
-    /// Set Playback looping mode
+      /// Set Playback looping mode
       void  looping( CMedia::Looping x );
 
-    /// Set Playback status/direction
+      /// Set Playback status/direction
       void playback( CMedia::Playback b );
 
-    /// Return Playback status
+      /// Return Playback status
       CMedia::Playback playback() const { return _playback; }
 
-    void play( const CMedia::Playback dir );
+      void play( const CMedia::Playback dir );
 
-    /// Play forwards
-    void play_forwards();
+      /// Play forwards
+      void play_forwards();
 
-    /// Play backwards
-    void play_backwards();
+      /// Play backwards
+      void play_backwards();
 
-    /// Scrub sequence
-    void scrub( double dy );
+      /// Scrub sequence
+      void scrub( double dy );
 
-    /// Stop
-    void stop();
+      /// Stop
+      void stop();
 
-    /// Change audio stream
-    void audio_stream( unsigned int idx );
+      /// Change audio stream
+      void audio_stream( unsigned int idx );
 
       ///
       void vr( VRType t );
-      VRType vr() const { return _vr; }
+      inline VRType vr() const { return _vr; }
 
       float vr_angle() const;
       void vr_angle( const float t );
       
-    /// Attaches main window class to this viewer
-    void main( mrv::ViewerUI* b ) { uiMain = b; }
+      /// Attaches main window class to this viewer
+      void main( mrv::ViewerUI* b ) { uiMain = b; }
 
-    /// Returns the main window class associated to this view
-    mrv::ViewerUI* main() { return uiMain; }
+      /// Returns the main window class associated to this view
+      mrv::ViewerUI* main() { return uiMain; }
 
-    /// Returns the main window class associated to this view
-    const mrv::ViewerUI* main() const { return uiMain; }
+      /// Returns the main window class associated to this view
+      const mrv::ViewerUI* main() const { return uiMain; }
 
-    /// Auxiliary function to return viewer's main fltk window
-    fltk::Window* fltk_main();
+      /// Auxiliary function to return viewer's main fltk window
+      fltk::Window* fltk_main();
 
-    /// Auxiliary function to return viewer's main fltk window
-    const fltk::Window* fltk_main() const;
+      /// Auxiliary function to return viewer's main fltk window
+      const fltk::Window* fltk_main() const;
 
       void toggle_window( const WindowList idx, const bool force = false );
       
-    /// Auxiliary function to return reel list's browser for this view
-    ImageBrowser* browser();
+      /// Auxiliary function to return reel list's browser for this view
+      ImageBrowser* browser();
 
-    /// Auxiliary function to return timeline for this view
-    Timeline* timeline();
+      /// Auxiliary function to return timeline for this view
+      Timeline* timeline();
 
-    /// Copy pixel values of image under cursor
-    void copy_pixel() const;
+      /// Copy pixel values of image under cursor
+      void copy_pixel() const;
 
-    // Toggle between fullscreen and normal resolution
-    void toggle_fullscreen();
+      // Toggle between fullscreen and normal resolution
+      void toggle_fullscreen();
 
-    // Toggle between fullscreen presentation and normal resolution
-    void toggle_presentation();
+      // Toggle between fullscreen presentation and normal resolution
+      void toggle_presentation();
 
       void toggle_media_info(bool show);
       void toggle_color_area(bool show);
@@ -449,31 +449,34 @@ class server;
       
       inline double spin_x() const { return spinx; }
       inline double spin_y() const { return spiny; }
-    double pixel_ratio() const;
+      double pixel_ratio() const;
 
-    DrawEngine* const engine() const { return _engine; }
+      DrawEngine* const engine() const { return _engine; }
 
-    FlipDirection flip() const { return _flip; }
-    void flip( const FlipDirection f )  { _flip = f; }
+      FlipDirection flip() const { return _flip; }
+      void flip( const FlipDirection f )  { _flip = f; }
 
-    float masking() const { return _masking; }
-    void masking( float f ) { _masking = f; }
+      float masking() const { return _masking; }
+      void masking( float f ) { _masking = f; }
 
-    HudDisplay hud() const         { return _hud; }
-    void hud( const HudDisplay x ) { _hud = x; }
+      HudDisplay hud() const         { return _hud; }
+      void hud( const HudDisplay x ) { _hud = x; }
 
-    void timeout();
+      void timeout();
 
+      CMedia* selected_image() const { return _selected_image; }
+      void select_image(CMedia* img) { _selected_image = img; redraw(); }
+      
       void selection( const mrv::Rectd& r );
-    const mrv::Rectd& selection() { return _selection; }
+      const mrv::Rectd& selection() { return _selection; }
 
-    /// Refresh audio tracks
-    void refresh_audio_tracks() const;
-
-       void wipe_direction( const WipeDirection& w ) { _wipe_dir = w; }
-       WipeDirection wipe_direction() const { return _wipe_dir; }
-       void wipe_amount(float w) { _wipe = w; }
-       float wipe_amount() const { return _wipe; }
+      /// Refresh audio tracks
+      void refresh_audio_tracks() const;
+      
+      void wipe_direction( const WipeDirection& w ) { _wipe_dir = w; }
+      WipeDirection wipe_direction() const { return _wipe_dir; }
+      void wipe_amount(float w) { _wipe = w; }
+      float wipe_amount() const { return _wipe; }
 
 
       void text_mode();
@@ -524,6 +527,8 @@ class server;
 
       // Return if in presentation mode or not
       bool in_presentation() const;
+
+      Mode action_mode() const { return _mode; }
       
      public:
       bool           _broadcast;
@@ -703,7 +708,7 @@ class server;
     ///////////////////
     Mode _mode;
 
-
+      CMedia*  _selected_image;
     mrv::Rectd _selection;
 
     ///////////////////
