@@ -971,6 +971,7 @@ void ImageView::move_pic_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    redraw();
 }
 
 
@@ -983,6 +984,7 @@ void ImageView::scrub_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(true);
+    redraw();
 }
 
 void ImageView::selection_mode()
@@ -994,6 +996,7 @@ void ImageView::selection_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    redraw();
 }
 
 void ImageView::draw_mode()
@@ -1005,6 +1008,7 @@ void ImageView::draw_mode()
     uiMain->uiPaint->uiDraw->value(true);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    redraw();
 }
 
 void ImageView::erase_mode()
@@ -1016,6 +1020,7 @@ void ImageView::erase_mode()
     uiMain->uiPaint->uiDraw->value(false);
     uiMain->uiPaint->uiText->value(false);
     uiMain->uiPaint->uiScrub->value(false);
+    redraw();
 }
 
 void ImageView::text_mode()
@@ -1024,23 +1029,21 @@ void ImageView::text_mode()
    if ( ok )
    {
       _mode = kText;
-      uiMain->uiPaint->uiMovePic->value(false);
-      uiMain->uiPaint->uiErase->value(false);
-      uiMain->uiPaint->uiDraw->value(false);
       uiMain->uiPaint->uiText->value(true);
-      uiMain->uiPaint->uiSelection->value(false);
       uiMain->uiPaint->uiScrub->value(false);
    }
    else
    {
       _mode = kScrub;
-      uiMain->uiPaint->uiMovePic->value(false);
-      uiMain->uiPaint->uiSelection->value(false);
-      uiMain->uiPaint->uiErase->value(false);
-      uiMain->uiPaint->uiDraw->value(false);
       uiMain->uiPaint->uiText->value(false);
       uiMain->uiPaint->uiScrub->value(true);
    }
+   
+   uiMain->uiPaint->uiMovePic->value(false);
+   uiMain->uiPaint->uiErase->value(false);
+   uiMain->uiPaint->uiDraw->value(false);
+   uiMain->uiPaint->uiSelection->value(false);
+   redraw();
 }
 
 bool ImageView::in_presentation() const
@@ -1320,7 +1323,7 @@ void ImageView::copy_pixel() const
     return;
 
   mrv::image_type_ptr pic;
-  bool outside;
+  bool outside = false;
   int xp, yp, w, h;
   picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
 
@@ -2696,6 +2699,58 @@ int ImageView::leftMouseDown(int x, int y)
       }
       else if ( _mode == kMovePicture )
       {
+          ImageList images;
+          images.reserve(2);
+
+          mrv::media fg = foreground();
+          mrv::media bg = background();
+          
+          if ( fg )
+          {
+              TRACE("");
+              CMedia* img = fg->image();
+              if ( img->has_picture() )
+              {
+                  images.push_back( img );
+              }
+              TRACE("");
+          }
+          
+          if ( _showBG && bg && bg != fg && bg->image()  )
+          {
+              TRACE("");
+              CMedia* img = bg->image();
+              TRACE("");
+              if ( img->has_picture() )
+                  images.push_back( img );
+              TRACE("");
+          }
+
+          ImageList::const_iterator i = images.begin();
+          ImageList::const_iterator e = images.end();
+
+
+          _selected_image = NULL;
+          
+          for ( ; i != e; ++i )
+          {
+              CMedia* img = *i;
+
+              mrv::image_type_ptr pic;
+              bool outside = false;
+              int xp, yp, w, h;
+              picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+
+              
+              if ( outside || !pic ) {
+                  continue;
+              }
+              
+              
+              _selected_image = img;
+              break;
+          }
+          
           return 1;
       }
       else if ( _mode == kDraw || _mode == kErase || _mode == kText )
@@ -3556,6 +3611,9 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   xp += daw[idx].x();
   yp += daw[idx].y();
   
+  xp -= img->x();
+  yp += img->y();
+  
   mrv::Recti dpm = dpw[idx];
   w = dpm.w();
   h = dpm.h();
@@ -3680,6 +3738,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   if (!pic) return;
   
+
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
   {
@@ -4095,18 +4154,19 @@ void ImageView::mouseDrag(int x,int y)
       }
       else if ( _mode == kMovePicture )
       {
-          mrv::media fg = foreground();
-          if ( ! fg ) return;
+          CMedia* img = selected_image();
+          if ( ! img ) return;
 
-          CMedia* img = fg->image();
-          double px = img->x();
-          double py = img->y();
+          int px = img->x();
+          int py = img->y();
           
           px += double(dx) / _zoom;
           py -= double(dy) / _zoom;
 
           img->x( px );
           img->y( py );
+
+          update_image_info();
           
           char buf[128];
           sprintf( buf, "MovePicture %g %g", px, py );
