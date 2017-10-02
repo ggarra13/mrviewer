@@ -75,6 +75,10 @@ for i in lines:
         size = int( m.group(1) )
         match = True
         
+    m = re.search( r'CUBE', i )
+    if m:
+        match = True
+        
     if re.search( r'^#.*', i ):
         continue
     if re.search( r'^\s*$', i ):
@@ -97,7 +101,8 @@ if lut1d:
         sys.stderr.write(
             'ERROR: Size of lines %d different than 1d lut size %d' %
             ( len(lines), size ) )
-        size = lines.size
+        if size == 0:
+            size = lines.size
     out.write( '\n' )
 else:
     out.write( '// Lut3D size %dx%dx%d\n' % ( size, size, size ) )
