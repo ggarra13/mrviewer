@@ -2731,7 +2731,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 
           _selected_image = NULL;
-          
+ 
           for ( ; i != e; ++i )
           {
               CMedia* img = *i;
@@ -2741,16 +2741,14 @@ int ImageView::leftMouseDown(int x, int y)
               int xp, yp, w, h;
               picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
 
-              
               if ( outside || !pic ) {
                   continue;
               }
-              
-              
+
               _selected_image = img;
               break;
           }
-          
+
           return 1;
       }
       else if ( _mode == kDraw || _mode == kErase || _mode == kText )
