@@ -320,7 +320,7 @@ int main( int argc, char** argv )
           load_files( opts.files, ui, false, opts.bgfile );
 
           if ( opts.stereo.size() > 1 )
-              load_files( opts.stereo, ui, true, opts.bgfile );
+              load_files( opts.stereo, ui, true );
 
           if ( opts.edl )
           {
