@@ -1496,20 +1496,20 @@ static void change_last_frame_cb( fltk::IntInput* w,
     }
 }
 
-static void change_x_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_x_cb( fltk::FloatInput* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->x( w->ivalue() );
+    img->x( w->fvalue() );
     info->main()->uiView->redraw();
-    update_int_slider( w );
+    update_float_slider( w );
 }
 
-static void change_y_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_y_cb( fltk::FloatInput* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->y( w->ivalue() );
+    img->y( w->fvalue() );
     info->main()->uiView->redraw();
-    update_int_slider( w );
+    update_float_slider( w );
 }
 
 static void change_pixel_ratio_cb( fltk::FloatInput* w,
@@ -2039,11 +2039,11 @@ void ImageInformation::fill_data()
                float(img->pixel_ratio()), true, true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
-    add_int( _("X Position"), _("Image X Position in Canvas"),
+    add_float( _("X Position"), _("Image X Position in Canvas"),
              img->x(), true, true,
              (fltk::Callback*)change_x_cb, 0.0f, 720.0f );
     
-    add_int( _("Y Position"), _("Image Y Position in Canvas"),
+    add_float( _("Y Position"), _("Image Y Position in Canvas"),
              img->y(), true, true,
              (fltk::Callback*)change_y_cb, 0.0f, 720.0f );
 
