@@ -1259,11 +1259,10 @@ void GLEngine::alloc_quads( size_t num )
 
 
 void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
-{
-    mrv::media fg = _view->foreground();
-    if (!fg) return;
+{   
+    Image_ptr img = _view->selected_image();
+    if ( img == NULL ) return;
     
-    Image_ptr img = fg->image();
     ImageView::FlipDirection flip = _view->flip();
     
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
@@ -1327,11 +1326,9 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     glEnd();
 
     char buf[128];
-    int xi = (int)img->x();
-    int yi = (int)img->y();
+    int xi = round(img->x());
+    int yi = round(img->y());
     sprintf( buf, "%d, %d", xi, yi );
-    img->x( xi );
-    img->y( yi );
     
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -1531,8 +1528,8 @@ void GLEngine::draw_images( ImageList& images )
                 texWidth = dpw.w();
                 texHeight = dpw.h();
                 const mrv::Recti& dp = fg->display_window();
-                daw.x( daw.x() + dp.w()/2 - texWidth / 2 );
-                daw.y( daw.y() + dp.h()/2 - texHeight / 2 );
+                daw.x( img->x() + daw.x() );
+                daw.y(-img->y() + daw.y() );
                 dpw.x( daw.x() );
                 dpw.y( daw.y() );
             }
@@ -1557,9 +1554,9 @@ void GLEngine::draw_images( ImageList& images )
 
         set_matrix( flip, false );
 
-        const mrv::Recti& dp = fg->display_window();
         if ( flip && !_view->vr() )
         {
+            const mrv::Recti& dp = fg->display_window();
             double x = 0.0, y = 0.0;
             if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
             if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
@@ -1591,7 +1588,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( !_view->vr() )
         {
-            glTranslated( img->x(), img->y(), 0 );
+            glTranslatef( img->x(), img->y(), 0 );
             glTranslatef( float(daw.x() - img->eye_separation()),
                           float(-daw.y()), 0 );
             CHECK_GL;
@@ -1799,6 +1796,7 @@ void GLEngine::draw_images( ImageList& images )
                 texHeight = daw2.h();
 
 
+                glTranslatef( img->x(), img->y(), 0 );
                 glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
                 CHECK_GL;
 
