@@ -1039,10 +1039,16 @@ class CMedia
     
     inline int64_t timecode() const { return _tc_frame; }
     
-    inline void x( int t ) { _x = t; refresh(); }
-    inline void y( int t ) { _y = t; refresh(); }
-    inline int x() const { return _x; }
-    inline int y() const { return _y; }
+    inline void x( double t ) {
+        _x = t; if (_right_eye) _right_eye->x(t);
+        refresh();
+    }
+    inline void y( double t ) {
+        _y = t; if (_right_eye) _right_eye->y(t);
+        refresh();
+    }
+    inline double x() const { return _x; }
+    inline double y() const { return _y; }
     
     // Process a timecode object unto _tc_frame
     void process_timecode( const Imf::TimeCode& tc );
