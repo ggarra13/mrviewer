@@ -1221,11 +1221,11 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Actions open
-            xywh {14 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            label Actions
+            xywh {14 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Default Action} open selected
+              label {Default Action} open
               xywh {57 35 317 200} align 5 box ROUNDED_BOX
             } {
               {fltk::RadioButton} uiScrub {
@@ -1460,17 +1460,25 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths}
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {CTL Paths} open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
-              xywh {13 32 380 110}
+              xywh {13 76 380 83}
             } {}
             {fltk::Browser} uiPrefsCTLScripts {
               label {CTL scripts} open
-              xywh {13 177 380 168}
+              xywh {13 189 380 156}
             } {}
+            {fltk::Output} uiPrefsOCIOConfig {
+              label {OCIO Config File} selected
+              xywh {19 24 320 30} align 1
+            }
+            {fltk::Button} {} {
+              label Pick
+              xywh {339 23 55 31}
+            }
           }
           {fltk::Group} {} {
             label {Default Output Device Transform (ODT)}
