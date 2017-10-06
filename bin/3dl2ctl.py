@@ -101,7 +101,8 @@ for v in values:
 
 fvals = ', '.join( map(str, fvalues) )
 
-out.write( 'const float spline[%d] = { %s };\n\n' % (len(values), fvals) ) 
+if len(values) > 0:
+    out.write( 'const float spline[%d] = { %s };\n\n' % (len(values), fvals) ) 
 
 out.write('const float min3d[3] = { %f, %f, %f };\n' %
               (rgbmin[0], rgbmin[1], rgbmin[2] ))
