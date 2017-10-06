@@ -309,6 +309,26 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
+    const char* var = getenv( "OCIO" );
+    if ( var )
+    {
+        if ( !fs::exists( var ) )
+        {
+            LOG_ERROR( _("OCIO environment variable points to "
+                         "missing file:") );
+            LOG_ERROR( var );
+        }
+        else
+        {
+            uiPrefs->uiPrefsOCIOConfig->text( var );
+        }
+    }
+    else
+    {
+#ifdef USE_OCIO
+        LOG_INFO( "OCIO variable not set.  Not using OCIO" );
+#endif
+    }
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
@@ -1440,6 +1460,7 @@ static const char* kCLocale = "C";
 	  icc.set( "float",  uiPrefs->uiICC_float_profile->text() );
 	}
       }
+
     }
 
     {
