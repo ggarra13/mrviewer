@@ -185,6 +185,11 @@ namespace mrv {
     Imf::Array<float> lut;                  //!< The lut data
     bool _inited;
 
+      // OCIO
+      std::string g_display;
+      std::string g_transformName;
+      std::string g_inputColorSpace;
+      
     static LutsMap _luts;                   //!< The list of luts
   };
 
