@@ -105,12 +105,6 @@ void attach_icc_profile( CMedia* image, const char* startfile,
   void monitor_icc_profile( const mrv::ViewerUI* main = NULL,
 			    const unsigned index = 0 );
 
-void attach_ocio_view( CMedia* img );
-
-void attach_ocio_display( CMedia* img );
-
-// Attach an OCIO input color space to image
-void attach_ocio_input_color_space( CMedia* image );
 
   /** 
    * Attach a CTL (Color Transform Language) RT script to an image for display.
