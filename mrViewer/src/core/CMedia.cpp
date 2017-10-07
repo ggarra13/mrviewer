@@ -71,6 +71,8 @@ namespace fs = boost::filesystem;
 #include <ImfTimeCodeAttribute.h>
 #include <ImfVecAttribute.h>
 
+#include <OpenColorIO/OpenColorIO.h>
+
 #include "core/CMedia.h"
 #include "core/aviImage.h"
 #include "core/Sequence.h"

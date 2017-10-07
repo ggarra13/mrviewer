@@ -4,6 +4,9 @@ v3.8.4   - Add a CUBE regex line in cube2ctl.rb/py for compatability with
 	   moving the pictures in the canvas to, for example, position two
 	   shots side by side.
 	   Currently, only two images can be placed (front and back).
+	 - Added OCIO support.  Currently this means it reads the OCIO
+	   environment variable, and a new RMB menu called OCIO appears,
+	   while all the CTL/ICC menus disappear.
 
 v3.8.3   - Made choco uninstall remove the mrViewer directory.
 	 - Improved bug error reporting of different ODTs when loading one
