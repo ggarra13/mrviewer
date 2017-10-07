@@ -907,6 +907,35 @@ static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_idt_script( fg->image() );
 }
 
+static void attach_ocio_view_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+    
+    attach_ocio_view( fg->image() );
+    view->redraw();
+}
+
+static void attach_ocio_display_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+    
+    attach_ocio_display( fg->image() );
+    view->redraw();
+}
+
+static void attach_ocio_input_color_space_cb( fltk::Widget* o,
+                                              mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
+
+    attach_ocio_input_color_space( fg->image() );
+    view->redraw();
+}
+
+
 static void monitor_icc_profile_cb( fltk::Widget* o, ViewerUI* uiMain )
 {
   monitor_icc_profile(uiMain);
@@ -3017,27 +3046,44 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
-
-	    menu.add( _("Image/Attach CTL Input Device Transform"),
-		      kIDTScript.hotkey(),
-		      (fltk::Callback*)attach_ctl_idt_script_cb,
-		      this);
-            menu.add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
-                      kSOPSatNodes.hotkey(),
-	              (fltk::Callback*)modify_sop_sat_cb,
-	              this);
-	    menu.add( _("Image/Add CTL Look Mod Transform"),
-		      kLookModScript.hotkey(),
-		      (fltk::Callback*)attach_ctl_lmt_script_cb,
-		      this);
-	    menu.add( _("Image/Attach CTL Rendering Transform"),
-		      kCTLScript.hotkey(),
-		      (fltk::Callback*)attach_ctl_script_cb,
-		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Attach ICC Color Profile"),
-		      kIccProfile.hotkey(),
-		      (fltk::Callback*)attach_color_profile_cb,
-		      this, fltk::MENU_DIVIDER);
+            if ( Preferences::use_ocio )
+            {
+                menu.add( _("OCIO/Input Color Space"),
+                          kOCIOInputColorSpace.hotkey(),
+                          (fltk::Callback*)attach_ocio_input_color_space_cb,
+                          this);
+                menu.add( _("OCIO/Display"), kOCIODisplay.hotkey(),
+                          (fltk::Callback*)attach_ocio_display_cb,
+                          this);
+                menu.add( _("OCIO/View"),
+                          kOCIOView.hotkey(),
+                          (fltk::Callback*)attach_ocio_view_cb,
+                          this);
+            }
+            else
+            {
+                menu.add( _("Image/Attach CTL Input Device Transform"),
+                          kIDTScript.hotkey(),
+                          (fltk::Callback*)attach_ctl_idt_script_cb,
+                          this);
+                menu.add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
+                          kSOPSatNodes.hotkey(),
+                          (fltk::Callback*)modify_sop_sat_cb,
+                          this);
+                menu.add( _("Image/Add CTL Look Mod Transform"),
+                          kLookModScript.hotkey(),
+                          (fltk::Callback*)attach_ctl_lmt_script_cb,
+                          this);
+                menu.add( _("Image/Attach CTL Rendering Transform"),
+                          kCTLScript.hotkey(),
+                          (fltk::Callback*)attach_ctl_script_cb,
+                          this, fltk::MENU_DIVIDER);
+                menu.add( _("Image/Attach ICC Color Profile"),
+                          kIccProfile.hotkey(),
+                          (fltk::Callback*)attach_color_profile_cb,
+                          this, fltk::MENU_DIVIDER);
+            }
+            
 	    menu.add( _("Image/Mirror/Horizontal"),
 		      kFlipX.hotkey(),
 		      (fltk::Callback*)flip_x_cb,
@@ -3120,16 +3166,17 @@ int ImageView::leftMouseDown(int x, int y)
 	 }
 
 
-
-	  menu.add( _("Monitor/Attach CTL Display Transform"),
-		    kMonitorCTLScript.hotkey(),
-		   (fltk::Callback*)monitor_ctl_script_cb,
-		   uiMain);
-	  menu.add( _("Monitor/Attach ICC Color Profile"),
-		    kMonitorIccProfile.hotkey(),
-		    (fltk::Callback*)monitor_icc_profile_cb,
-		    uiMain, fltk::MENU_DIVIDER);
-
+         if ( ! Preferences::use_ocio )
+         {
+             menu.add( _("Monitor/Attach CTL Display Transform"),
+                       kMonitorCTLScript.hotkey(),
+                       (fltk::Callback*)monitor_ctl_script_cb,
+                       uiMain);
+             menu.add( _("Monitor/Attach ICC Color Profile"),
+                       kMonitorIccProfile.hotkey(),
+                       (fltk::Callback*)monitor_icc_profile_cb,
+                       uiMain, fltk::MENU_DIVIDER);
+         }
    
 	  menu.popup( fltk::Rectangle( fltk::event_x(),
 				       fltk::event_y(), 80, 1) );
