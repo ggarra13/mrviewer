@@ -51,7 +51,7 @@ namespace mrv {
     _frag_shader( 0 ),
     _program( 0 )
   {
-    load( filename );
+      load( filename );
   }
 
   const char* GLShader::get_error(const char *data, int pos) 
@@ -548,7 +548,7 @@ namespace mrv {
 
   GLShader::~GLShader()
   {
-    glDeleteObjectARB( _program );
+      glDeleteObjectARB( _program ); _program = 0;
   }
 
 }
