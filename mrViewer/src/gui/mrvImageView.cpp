@@ -1479,7 +1479,7 @@ void ImageView::image_coordinates( const CMedia* const img,
     double W = dpw.w();
     double H = dpw.h();
 
-    if ( _showPixelRatio ) H = (int) (H / pixel_ratio());
+    if ( _showPixelRatio ) H /= pixel_ratio();
 
     double tw = (W / 2.0);
     double th = (H / 2.0);
