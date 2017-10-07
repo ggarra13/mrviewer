@@ -70,6 +70,9 @@ decl {\#include "gui/mrvGlWindow3d.h"} {public
 
 decl {\#include "gui/mrvHotkey.h"} {} 
 
+decl {\#include "gui/mrvOCIOBrowser.h"} {public
+} 
+
 decl {\#include "mrvSOPNode.h"} {} 
 
 decl {\#include "mrvPlayback.h"} {} 
@@ -93,11 +96,11 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
   code {std::string orig = ctl;} {}
   {fltk::Window} {} {
-    label {CTL Browser}
+    label {CTL Browser} open
     xywh {312 387 395 447} horizontal hide resizable hotspot modal
   } {
     {fltk::Group} {} {open
@@ -664,7 +667,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {530 608 700 450} resizable
+        xywh {557 428 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
       } {
@@ -1221,11 +1224,11 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Actions open
-            xywh {14 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            label Actions
+            xywh {14 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Default Action} open selected
+              label {Default Action} open
               xywh {57 35 317 200} align 5 box ROUNDED_BOX
             } {
               {fltk::RadioButton} uiScrub {
@@ -1315,7 +1318,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Algorithm open
+              label Algorithm
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
               xywh {40 21 343 105} box ROUNDED_BOX
             } {
@@ -1380,7 +1383,7 @@ If unsure what this means, keep your display and images setting always using the
               }
             }
             {fltk::Group} {} {
-              label Quality open
+              label Quality
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
               xywh {44 240 339 96} box ROUNDED_BOX
             } {
@@ -1432,7 +1435,7 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
               }
             }
             {fltk::Group} {} {
-              label {Rendering Intent} open
+              label {Rendering Intent}
               xywh {43 151 340 45} box ROUNDED_BOX
             } {
               {fltk::Choice} uiICC_intent {
@@ -1460,16 +1463,25 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths}
+            label OCIO open selected
+            xywh {12 21 423 355} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Output} uiPrefsOCIOConfig {
+              label {OCIO Config}
+              xywh {24 34 380 30} align 1
+            }
+          }
+          {fltk::Group} {} {
+            label {CTL Paths} open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
-              xywh {13 32 380 110}
+              xywh {14 29 380 125}
             } {}
             {fltk::Browser} uiPrefsCTLScripts {
               label {CTL scripts} open
-              xywh {13 177 380 168}
+              xywh {14 173 379 166}
             } {}
           }
           {fltk::Group} {} {
@@ -2260,9 +2272,12 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               label Caches
               }
             {fltk::ItemGroup} {} {
-              label {3D Luts}
+              label {3D Luts} open
               vertical
             } {
+              {fltk::Item} {} {
+                label OCIO
+                }
               {fltk::Item} {} {
                 label Paths
                 }
@@ -2327,8 +2342,7 @@ v->uiPrefs->run(v);}
         }
       }
     }
-    Function {PreferencesUI(mrv::ViewerUI* m)} {open
-    } {
+    Function {PreferencesUI(mrv::ViewerUI* m)} {} {
       code {make_window(m);} {}
     }
     Function {~PreferencesUI()} {} {
@@ -2339,8 +2353,7 @@ v->uiPrefs->run(v);}
 for ( ; w ; w = w->next() )
    w->redraw();} {}
     }
-    Function {run(mrv::ViewerUI* m)} {open
-    } {
+    Function {run(mrv::ViewerUI* m)} {} {
       code {mrv::Preferences::run( m );
 fltk::Window* w = fltk::Window::first();
 for ( ; w ; w = w->next() )
@@ -2522,17 +2535,18 @@ o->child_of( main->uiMain );} modal
   }
   class PaintUI {} {
     decl {mrv::ViewerUI* main_;} {}
-    Function {make_window( ViewerUI* m )} {} {
+    Function {make_window( ViewerUI* m )} {open
+    } {
       {fltk::Window} uiMain {
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {451 557 150 520} horizontal resizable
+        xywh {451 557 150 520} horizontal hide resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::Group} {} {open
           xywh {0 11 145 495}
@@ -3778,4 +3792,57 @@ delete uiSOPNode; uiSOPNode = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
+} 
+
+Function {make_ocio_browser(std::string ocio,  mrv::OCIOBrowser::Type type)} {return_type {std::string}
+} {
+  code {std::string orig = ocio;} {}
+  {fltk::Window} {} {
+    label {OCIO Browser} open
+    xywh {837 522 395 447} horizontal hide resizable hotspot modal
+  } {
+    {fltk::Group} {} {open
+      xywh {10 26 375 411}
+    } {
+      {fltk::Browser} {} {
+        label {Select an OCIO Transform}
+        user_data {&ocio} user_data_type {std::string*}
+        callback {int elem = o->value();
+if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
+*v = o->child(elem)->label();} open
+        xywh {0 0 375 365}
+        extra_code {o->set_type(type);
+o->value(-1);
+if ( !ocio.empty() )
+{
+  fltk::Widget* elem = o->find( ocio.c_str() );
+
+  for (int i = 0; i < o->children(); ++i )
+  {
+    if ( o->child(i) == elem ) {
+      o->value(i); break;
+    }
+  }
+}}
+        class {mrv::OCIOBrowser}
+      } {}
+      {fltk::Button} {} {
+        label Accept
+        user_data w user_data_type {fltk::Window*}
+        callback {v->make_exec_return(true);}
+        tooltip {Accept the selected CTL file.}
+        xywh {195 375 85 25}
+      }
+      {fltk::Button} {} {
+        label Cancel
+        user_data w user_data_type {fltk::Window*}
+        callback {v->make_exec_return(false);}
+        tooltip {Cancel the CTL selection and don't change anything.}
+        xywh {290 375 80 25}
+      }
+    }
+  }
+  code {if (!w->exec())
+	return orig;
+return ocio;} {}
 } 
