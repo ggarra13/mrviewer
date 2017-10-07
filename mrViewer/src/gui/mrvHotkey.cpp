@@ -141,6 +141,9 @@ Hotkey kSetOutPoint( false, false, false, false, 'o' );
 
 Hotkey kHudToggle( true, false, false, false, 'h' );
 
+Hotkey kOCIOInputColorSpace( false, false, false, false, 0 );
+Hotkey kOCIODisplay( false, false, false, false, 0 );
+Hotkey kOCIOView( false, false, false, false, 0 );
 
 Hotkey kToggleReel( false, false, false, false, fltk::F4Key );
 Hotkey kToggleMediaInfo( false, false, false, false, fltk::F5Key );
@@ -309,6 +312,9 @@ HotkeyEntry( _("3dView Density Down"), kDensityDown),
 HotkeyEntry( _("Set In Point"), kSetInPoint),
 HotkeyEntry( _("Set Out Point"), kSetOutPoint),
 HotkeyEntry( _("Toggle Hud"), kHudToggle),
+HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
+HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
+HotkeyEntry( _("OCIO View"), kOCIOView ),
 HotkeyEntry( _("Toggle Reel Window"), kToggleReel),
 HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
 HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
