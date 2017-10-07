@@ -45,6 +45,9 @@ std::string aces_xml_filename( const char* file )
 
 bool load_aces_xml( CMedia* img, const char* filename )
 {
+    // If using OCIO, we do not load the ACES XML file.
+    if ( Preferences::use_ocio ) return false;
+    
     using namespace ACES;
 
     if(! fs::exists(filename) )
