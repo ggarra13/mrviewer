@@ -71,6 +71,10 @@ begin
   output = ARGV[1]
   
   lines = File.readlines(file)
+  if lines.empty?
+    $stderr.puts "Empty input file specified!"
+    exit 1
+  end
 
   output = output.dup
   
@@ -129,7 +133,6 @@ out.puts "// CTL 3d Lut from #{file}"
 out.puts "// Min: %.6f, %.6f, %.6f" % [rmin, gmin, bmin ]
 out.puts "// Max: %.6f, %.6f, %.6f" % [rmax, gmax, bmax ]
 out.puts
-
 spline = lines[0]
 
 
@@ -152,8 +155,10 @@ end
 
 fvals = fvalues.join(', ')
 
-out.puts "const float spline[#{values.size}] = { #{fvals} };"
-out.puts
+if not values.empty?
+  out.puts "const float spline[#{values.size}] = { #{fvals} };"
+  out.puts
+end
 
 lines.shift
 
