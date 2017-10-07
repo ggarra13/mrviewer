@@ -52,6 +52,10 @@ namespace fs = boost::filesystem;
 // OpenEXR threadcount
 #include <OpenEXR/ImfThreading.h>
 
+// OpenColorIO
+#include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
+
 // CORE classes
 #include "core/exrImage.h"
 #include "core/mrvAudioEngine.h"
@@ -270,7 +274,10 @@ fltk::StyleSet*     newscheme = NULL;
   ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
   HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
+  bool                Preferences::use_ocio = false;
   bool                Preferences::native_file_chooser;
+  std::string         Preferences::OCIO_Display;
+  std::string         Preferences::OCIO_View;
   std::string         Preferences::ODT_CTL_transform;
   std::string         Preferences::ODT_ICC_profile;
   Imf::Chromaticities Preferences::ODT_CTL_chromaticities;
@@ -998,6 +1005,21 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsSafeAreas->value() )
       view->safe_areas(true);
 
+    use_ocio = false;
+    const char* var = getenv( "OCIO" );
+    if ( var )
+    {
+        use_ocio = true;
+        uiPrefs->uiPrefsOCIOConfig->text( var );
+        
+        std::locale::global( std::locale("C") );
+        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+
+        OCIO_Display = config->getDefaultDisplay();
+        OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
+        std::locale::global( std::locale("") );
+    }
+    
     //
     // Handle file requester
     //
@@ -1725,7 +1747,6 @@ static const char* kCLocale = "C";
     //
     // This changes up/down buttons to draw a tad darker
     //
-#if 1
     fltk::FrameBox* box;
     box = (fltk::FrameBox*) fltk::Symbol::find( "down_" );
     if ( box ) box->data( "2HHOODD" );
@@ -1742,7 +1763,6 @@ static const char* kCLocale = "C";
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "embossed" );
     if ( box ) box->data( "LLOO" );
-#endif
 
     // this has default_style
     style = fltk::Style::find( "PopupMenu" );
