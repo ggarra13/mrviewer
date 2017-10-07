@@ -191,6 +191,11 @@ namespace mrv {
       std::string g_transformName;
       std::string g_inputColorSpace;
 
+      // OCIO
+      std::string g_display;
+      std::string g_transformName;
+      std::string g_inputColorSpace;
+      
     static LutsMap _luts;                   //!< The list of luts
   };
 
