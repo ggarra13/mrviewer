@@ -632,6 +632,15 @@ class CMedia
     /// Add default icc profile for this image bit depth.
     void default_icc_profile();
 
+    std::string ocio_input_color_space() const {
+        return _input_color_space;
+    }
+    
+    void ocio_input_color_space( const std::string& n ) {
+        _input_color_space = n;
+        image_damage( kDamageAll );
+    }
+    
     /// Returns input device transform name ( CTL script )
     const char* idt_transform() const;
 
@@ -1465,6 +1474,10 @@ class CMedia
     // Input Device Transform for CTL
     char*     _idt_transform;
 
+
+    // OCIO
+    std::string _input_color_space;
+    
     unsigned int _frame_offset;      //!< hack to get ffmpeg to behave correctly
 
     Playback       _playback;        //!< playback direction or stopped
