@@ -117,6 +117,8 @@ namespace mrv {
       // Evaluate a pixel color and return the pixel color from the active LUT
       void evaluate( const Imath::V3f& rgba, Imath::V3f& out ) const;
 
+    virtual bool calculate_ocio( const CMedia* img );
+      
     virtual bool calculate_ctl( const Transforms::const_iterator& start,
 				const Transforms::const_iterator& end,
 				const CMedia* img,
@@ -177,13 +179,17 @@ namespace mrv {
 					const bool warn = false );
 
   public:
-    float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
+      float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
+      std::string  cacheId;
 
   protected:
     GLuint texId;                          //!< The lut opengl texture index
     unsigned         _lutN;                //!< Size of lut (one axis)
     Imf::Array<float> lut;                  //!< The lut data
     bool _inited;
+      std::string g_display;
+      std::string g_transformName;
+      std::string g_inputColorSpace;
 
     static LutsMap _luts;                   //!< The list of luts
   };
