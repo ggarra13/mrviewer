@@ -421,6 +421,35 @@ const char* open_ctl_dir( const char* startfile,
   }
 
 
+void attach_ocio_view( CMedia* img )
+{
+    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_View,
+                                         mrv::OCIOBrowser::kView );
+    if ( ret.empty() ) return;
+    
+    mrv::Preferences::OCIO_View = ret;
+    img->image_damage( CMedia::kDamageAll );
+}
+
+void attach_ocio_display( CMedia* img )
+{
+    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_Display,
+                                         mrv::OCIOBrowser::kDisplay );
+    if ( ret.empty() ) return;
+
+    mrv::Preferences::OCIO_Display = ret;
+    img->image_damage( CMedia::kDamageAll );
+}
+
+void attach_ocio_input_color_space( CMedia* img )
+{
+    if (!img) return;
+
+    std::string ret = make_ocio_browser( img->ocio_input_color_space(),
+                                         mrv::OCIOBrowser::kInputColorSpace );
+    img->ocio_input_color_space( ret );
+}
+
 
   void attach_icc_profile( CMedia* image, 
                            const mrv::ViewerUI* main )
