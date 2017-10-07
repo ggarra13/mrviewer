@@ -192,6 +192,11 @@ extern Hotkey kSetOutPoint;
 
 extern Hotkey kHudToggle;
 
+// OCIO Hotkets
+extern Hotkey kOCIOInputColorSpace;
+extern Hotkey kOCIODisplay;
+extern Hotkey kOCIOView;
+
 // Windows hotkeys
 extern Hotkey kToggleReel;
 extern Hotkey kToggleMediaInfo;
