@@ -1,3 +1,13 @@
+v3.8.5   - Added tooltips to all OCIO color spaces and to the Config line.
+	 - Allowed changing OCIO config file from the Preference window.
+	 - Added a button to toggle OCIO on and off.  By default, it is
+	   on.
+	 - Added the environment variable MRV_OCIO_8bits_ICS,
+	   MRV_OCIO_16bits_ICS, MRV_OCIO_32bits_ICS, MRV_OCIO_float_ICS
+	   to control the default input color space for the corresponding
+	   type of image.
+	 
+
 v3.8.4   - Add a CUBE regex line in cube2ctl.rb/py for compatability with
 	   some cube luts.
 	 - Added Move Picture Tool to the Action's toolbar.  This tool allows
@@ -6,6 +16,9 @@ v3.8.4   - Add a CUBE regex line in cube2ctl.rb/py for compatability with
 	   Currently, only two images can be placed (front and back).
 	 - Bug Fixed bg image being loaded twice when stereo images were
 	   loaded command-line.
+	 - Added OCIO support.  Currently this means it reads the OCIO
+	   environment variable, and a new RMB menu called OCIO appears,
+	   while all the CTL/ICC menus disappear.
 
 v3.8.3   - Made choco uninstall remove the mrViewer directory.
 	 - Improved bug error reporting of different ODTs when loading one
