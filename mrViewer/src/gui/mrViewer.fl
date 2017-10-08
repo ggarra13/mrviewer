@@ -61,6 +61,9 @@ decl {\#include "gui/mrvVectorscope.h"} {}
 
 decl {\#include "gui/mrvImageInformation.h"} {} 
 
+decl {\#include "gui/mrvOCIOBrowser.h"} {public
+} 
+
 decl {\#include "gui/mrvPreferences.h"} {} 
 
 decl {\#include "gui/mrvLogDisplay.h"} {} 
@@ -664,7 +667,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {530 608 700 450} resizable
+        xywh {530 630 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
       } {
@@ -1460,8 +1463,21 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             }
           }
           {fltk::Group} {} {
+            label OCIO
+            xywh {12 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Output} uiPrefsOCIOConfig {
+              label {OCIO Config File}
+              xywh {29 34 320 30} align 1
+            }
+            {fltk::Button} {} {
+              label Pick
+              xywh {349 33 55 31}
+            }
+          }
+          {fltk::Group} {} {
             label {CTL Paths} open
-            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
@@ -1471,10 +1487,6 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
               label {CTL scripts} open
               xywh {13 189 380 156}
             } {}
-            {fltk::Output} uiPrefsOCIOConfig {
-              label {OCIO Config File} selected
-              xywh {19 24 320 30} align 1
-            }
             {fltk::Button} {} {
               label Pick
               xywh {339 23 55 31}
@@ -2268,9 +2280,12 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               label Caches
               }
             {fltk::ItemGroup} {} {
-              label {3D Luts}
+              label {3D Luts} open
               vertical
             } {
+              {fltk::Item} {} {
+                label OCIO
+                }
               {fltk::Item} {} {
                 label Paths
                 }
@@ -2536,11 +2551,11 @@ o->child_of( main->uiMain );} modal
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {451 557 150 520} horizontal resizable
+        xywh {451 557 150 520} horizontal hide resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::Group} {} {open
           xywh {0 11 145 495}
@@ -3786,4 +3801,57 @@ delete uiSOPNode; uiSOPNode = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
+} 
+
+Function {make_ocio_browser(std::string ctl, mrv::OCIOBrowser::Type type )} {open return_type {std::string}
+} {
+  code {std::string orig = ctl;} {}
+  {fltk::Window} {} {
+    label {CTL Browser} open
+    xywh {691 356 395 447} horizontal resizable hotspot modal visible
+  } {
+    {fltk::Group} {} {open
+      xywh {5 26 385 411}
+    } {
+      {fltk::Browser} uiOCIOBrowser {
+        label {Select an OCIO Transform}
+        user_data {&ctl} user_data_type {std::string*}
+        callback {int elem = o->value();
+if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
+*v = o->child(elem)->label();} selected
+        xywh {5 0 375 365}
+        extra_code {o->set_type(type);
+o->value(-1);
+if ( !ctl.empty() )
+{
+  fltk::Widget* elem = o->find( ctl.c_str() );
+
+  for (int i = 0; i < o->children(); ++i )
+  {
+    if ( o->child(i) == elem ) {
+      o->value(i); break;
+    }
+  }
+}}
+        class {mrv::OCIOBrowser}
+      } {}
+      {fltk::Button} {} {
+        label Accept
+        user_data w user_data_type {fltk::Window*}
+        callback {v->make_exec_return(true);}
+        tooltip {Accept the selected CTL file.}
+        xywh {200 375 85 25}
+      }
+      {fltk::Button} {} {
+        label Cancel
+        user_data w user_data_type {fltk::Window*}
+        callback {v->make_exec_return(false);}
+        tooltip {Cancel the CTL selection and don't change anything.}
+        xywh {295 375 80 25}
+      }
+    }
+  }
+  code {if (!w->exec())
+	return orig;
+return ctl;} {}
 } 
