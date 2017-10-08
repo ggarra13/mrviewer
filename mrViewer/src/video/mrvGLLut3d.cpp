@@ -490,7 +490,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
       }
       catch( ... )
       {
-          LOG_ERROR( _("Unknown error returned from ctlToLut") );
+          LOG_ERROR( _("Unknown error returned from OCIO processor") );
           return false;
       }
       return true;
