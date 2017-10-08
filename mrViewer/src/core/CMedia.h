@@ -639,10 +639,8 @@ class CMedia
         return _input_color_space;
     }
     
-    void ocio_input_color_space( const std::string& n ) {
-        _input_color_space = n;
-        image_damage( kDamageAll );
-    }
+    void ocio_input_color_space( const std::string& n );
+    
     
     /// Returns input device transform name ( CTL script )
     const char* idt_transform() const;
