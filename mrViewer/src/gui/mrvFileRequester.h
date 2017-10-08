@@ -77,6 +77,7 @@ stringArray open_image_file( const char* startfile = NULL,
                              const mrv::ViewerUI* main = NULL);
 
 
+void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view );
 void attach_ocio_input_color_space( CMedia* img, ImageView* view );
 void attach_ocio_display( CMedia* img, ImageView* view );
 void attach_ocio_view( CMedia* img, ImageView* view );
@@ -177,6 +178,9 @@ void save_clip_xml_metadata( const CMedia* image,
    */
   void attach_audio( CMedia* image, const char* startfile, 
                      const mrv::ViewerUI* main = NULL );
+
+
+std::string open_ocio_config( const char* startfile );
 
   /** 
    * Save an image under a new filename
