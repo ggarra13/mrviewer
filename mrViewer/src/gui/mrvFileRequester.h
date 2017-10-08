@@ -76,6 +76,11 @@ stringArray open_image_file( const char* startfile = NULL,
                             const char* title = "Append CTL Directory",
                              const mrv::ViewerUI* main = NULL);
 
+
+void attach_ocio_input_color_space( CMedia* img, ImageView* view );
+void attach_ocio_display( CMedia* img, ImageView* view );
+void attach_ocio_view( CMedia* img, ImageView* view );
+
   /** 
    * Attach an ICC/ICM color profile to a loaded image
    * 
