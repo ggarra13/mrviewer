@@ -626,6 +626,9 @@ class CMedia
     /// Assigns a new rendering transform ( CTL script ) 
     void rendering_transform( const char* cfile );
 
+    /// Add default OCIO Input Color Space for this image bit depth. 
+    void default_ocio_input_color_space();
+    
     /// Add default rendering transform (CTL script) for this image bit depth. 
     void default_rendering_transform();
 
@@ -1119,6 +1122,11 @@ class CMedia
     static int colorspace_override; //!< Override YUV Hint always with this
     
     static double default_fps;     //!< Default FPS when not selected
+    static std::string ocio_8bits_ics;
+    static std::string ocio_16bits_ics;
+    static std::string ocio_32bits_ics;
+    static std::string ocio_float_ics;
+    
     static std::string rendering_transform_8bits;
     static std::string rendering_transform_16bits;
     static std::string rendering_transform_32bits;
