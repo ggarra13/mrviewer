@@ -462,13 +462,16 @@ fltk::StyleSet*     newscheme = NULL;
     ocio.get( "use_ocio", tmp, 1 );
     uiPrefs->uiPrefsUseOcio->value( tmp );
     use_ocio = (bool)tmp;
+    ocio.get( "config", tmpS, "", 2048 );
+    uiPrefs->uiPrefsOCIOConfig->text( tmpS );
     
     fltk::Preferences ics( ocio, "ICS" );
     {
 #define OCIO_ICS(x, d)						\
 	  ok = ics.get( #x, tmpS, d, 2048 );				\
 	  CMedia::ocio_##x##_ics = environmentSetting( "MRV_OCIO_" #x "_ICS" , \
-                                                       tmpS, ok )
+                                                       tmpS, ok ); \
+          uiPrefs->uiOCIO_##x##_ics->text( tmpS );
       
 	  OCIO_ICS( 8bits,  "" );
 	  OCIO_ICS( 16bits, "" );
@@ -1026,8 +1029,23 @@ static const char* kCLocale = "C";
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
     
     const char* var = getenv( "OCIO" );
+    if ( !var )
+    {
+        var = uiPrefs->uiPrefsOCIOConfig->text();
+        if ( var == NULL || strlen(var) == 0 || !fs::exists(var) )
+            var = NULL;
+        else
+        {
+            mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to ")
+                         << var << std::endl );
+            char buf[2048];
+            sprintf( buf, "OCIO=%s", var );
+            putenv( buf );
+        }
+    }
     if ( var )
     {
+        
         uiPrefs->uiPrefsOCIOConfig->text( var );
         
         std::locale::global( std::locale("C") );
@@ -1041,10 +1059,12 @@ static const char* kCLocale = "C";
         
             OCIO_Display = config->getDefaultDisplay();
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
+            use_ocio = true;
         }
         catch( const OCIO::Exception& e )
         {
             LOG_ERROR( e.what() );
+            use_ocio = false;
         }
         
         std::locale::global( std::locale("") );
@@ -1053,6 +1073,7 @@ static const char* kCLocale = "C";
     {
         LOG_INFO( _("OCIO environment variable is not set.  "
                     "Defaulting to CTL. ") );
+        use_ocio = false;
     }
     //
     // Handle file requester
@@ -1317,6 +1338,8 @@ static const char* kCLocale = "C";
         fltk::Preferences ocio( view, "ocio" );
         int tmp = uiPrefs->uiPrefsUseOcio->value();
         ocio.set( "use_ocio", tmp );
+
+        ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
         
 	fltk::Preferences ics( ocio, "ICS" );
 	{
