@@ -114,6 +114,12 @@ unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 
 double      CMedia::default_fps = 24.f;
+
+std::string CMedia::ocio_8bits_ics;
+std::string CMedia::ocio_16bits_ics;
+std::string CMedia::ocio_32bits_ics;
+std::string CMedia::ocio_float_ics;
+
 std::string CMedia::rendering_transform_8bits;
 std::string CMedia::rendering_transform_16bits;
 std::string CMedia::rendering_transform_32bits;
@@ -1355,6 +1361,7 @@ void CMedia::sequence( const char* fileroot,
   
   default_icc_profile();
   default_rendering_transform();
+  default_ocio_input_color_space();
 
   if ( has_audio() )
     {
@@ -3485,6 +3492,9 @@ bool CMedia::find_image( const int64_t frame )
          if ( fetch( f ) )
          {
              cache( _hires );
+             default_icc_profile();
+             default_rendering_transform();
+             default_ocio_input_color_space();
          }
      }
      else
@@ -3534,6 +3544,38 @@ void CMedia::default_icc_profile()
     }
 }
 
+
+void CMedia::default_ocio_input_color_space()
+{
+    if ( !ocio_input_color_space().empty() ) return;
+
+    if ( internal() ) return;
+
+    
+    switch( depth() )
+    {
+        case image_type::kByte:
+            if ( !ocio_8bits_ics.empty() )
+                ocio_input_color_space( ocio_8bits_ics.c_str() );
+            break;
+        case image_type::kShort:
+            if ( !ocio_16bits_ics.empty() )
+                ocio_input_color_space( ocio_16bits_ics.c_str() );
+            break;
+        case image_type::kInt:
+            if ( !ocio_32bits_ics.empty() )
+                ocio_input_color_space( ocio_32bits_ics.c_str() );
+            break;
+        case image_type::kHalf:
+        case image_type::kFloat:
+            if ( !ocio_float_ics.empty() )
+                ocio_input_color_space( ocio_float_ics.c_str() );
+            break;
+        default:
+            IMG_ERROR("default_ocio_input_color_space - unknown bit depth");
+            break;
+    }
+}
 
 void CMedia::default_rendering_transform()
 {
