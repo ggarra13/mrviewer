@@ -457,8 +457,13 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           OCIO::DisplayTransform::Create();
           
           std::string ics = img->ocio_input_color_space();
-          if  (ics.empty() )
-              ics = OCIO::ROLE_SCENE_LINEAR;
+          if  ( ics.empty() )
+          {
+              OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
+              if(!defaultcs)
+                  throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
+              ics = defaultcs->getName();
+          }
           transform->setInputColorSpaceName( ics.c_str() );
           transform->setDisplay( display.c_str() );
           transform->setView( view.c_str() );
