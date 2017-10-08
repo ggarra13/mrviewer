@@ -117,6 +117,7 @@ namespace mrv {
       // Evaluate a pixel color and return the pixel color from the active LUT
       void evaluate( const Imath::V3f& rgba, Imath::V3f& out ) const;
 
+    bool calculate_ocio( const CMedia* img );
     virtual bool calculate_ctl( const Transforms::const_iterator& start,
 				const Transforms::const_iterator& end,
 				const CMedia* img,
