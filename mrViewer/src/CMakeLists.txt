@@ -224,6 +224,7 @@ SET( SOURCES
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
   gui/mrvMedia.cpp
+  gui/mrvOCIOBrowser.cpp
   gui/mrvPopupMenu.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp
