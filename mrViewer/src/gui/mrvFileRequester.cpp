@@ -53,6 +53,7 @@
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvProgressReport.h"
 #include "gui/mrvMainWindow.h"
+#include "gui/mrvOCIOBrowser.h"
 #include "mrViewer.h"
 #include "aviSave.h"
 
@@ -228,6 +229,36 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
 
 
 
+
+void attach_ocio_input_color_space( CMedia* img, ImageView* view )
+{
+    std::string ret = make_ocio_browser( img->ocio_input_color_space(),
+                                         mrv::OCIOBrowser::kInputColorSpace );
+    if ( ret.empty() ) return;
+
+    img->ocio_input_color_space( ret );
+    view->redraw();
+}
+
+void attach_ocio_display( CMedia* img, ImageView* view )
+{
+    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_Display,
+                                         mrv::OCIOBrowser::kDisplay );
+    if ( ret.empty() ) return;
+    mrv::Preferences::OCIO_Display = ret;
+    img->image_damage( CMedia::kDamageAll );
+    view->redraw();
+}
+
+void attach_ocio_view( CMedia* img, ImageView* view )
+{
+    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_View,
+                                         mrv::OCIOBrowser::kView );
+    if ( ret.empty() ) return;
+    mrv::Preferences::OCIO_View = ret;
+    img->image_damage( CMedia::kDamageAll );
+    view->redraw();
+}
 
   /** 
    * Opens a file requester to load an icc profile
