@@ -3577,6 +3577,14 @@ void CMedia::default_ocio_input_color_space()
     }
 }
 
+void CMedia::ocio_input_color_space( const std::string& n )
+{
+    mrvLOG_INFO( "ocio", name() << _(" : Setting input color space to ")
+                 << n << std::endl );
+    _input_color_space = n;
+    image_damage( kDamageAll );
+}
+
 void CMedia::default_rendering_transform()
 {
   if ( rendering_transform() ) return;
