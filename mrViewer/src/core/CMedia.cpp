@@ -72,6 +72,7 @@ namespace fs = boost::filesystem;
 #include <ImfVecAttribute.h>
 
 #include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
 
 #include "core/CMedia.h"
 #include "core/aviImage.h"
@@ -3574,6 +3575,26 @@ void CMedia::default_ocio_input_color_space()
         default:
             IMG_ERROR("default_ocio_input_color_space - unknown bit depth");
             break;
+    }
+
+    if (! ocio_input_color_space().empty() ) return;
+
+    std::string n = name();
+    if ( n.rfind( ".dpx" ) != std::string::npos ||
+         n.rfind( ".cin")  != std::string::npos )
+    {
+        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+        OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("Cineon");
+        if ( !defaultcs )
+        {
+            defaultcs = config->getColorSpace("log10");
+        }
+        if ( !defaultcs )
+        {
+            defaultcs = config->getColorSpace("logf");
+        }
+        if ( defaultcs )
+            ocio_input_color_space( defaultcs->getName() );
     }
 }
 
