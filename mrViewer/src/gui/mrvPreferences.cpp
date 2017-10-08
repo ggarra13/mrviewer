@@ -316,31 +316,11 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
-    const char* var = getenv( "OCIO" );
-    if ( var )
-    {
-        if ( !fs::exists( var ) )
-        {
-            LOG_ERROR( _("OCIO environment variable points to "
-                         "missing file:") );
-            LOG_ERROR( var );
-        }
-        else
-        {
-            uiPrefs->uiPrefsOCIOConfig->text( var );
-        }
-    }
-    else
-    {
-#ifdef USE_OCIO
-        LOG_INFO( "OCIO variable not set.  Not using OCIO" );
-#endif
-    }
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
 
-    base.get( "version", version, 1 );
+    base.get( "version", version, 3 );
 
     //
     // Get ui preferences
@@ -478,7 +458,25 @@ fltk::StyleSet*     newscheme = NULL;
       uiPrefs->uiPrefsViewHud->color( tmp );
     }
 
-
+    fltk::Preferences ocio( view, "ocio" );
+    ocio.get( "use_ocio", tmp, 1 );
+    uiPrefs->uiPrefsUseOcio->value( tmp );
+    use_ocio = (bool)tmp;
+    
+    fltk::Preferences ics( ocio, "ICS" );
+    {
+#define OCIO_ICS(x, d)						\
+	  ok = ics.get( #x, tmpS, d, 2048 );				\
+	  CMedia::ocio_##x##_ics = environmentSetting( "MRV_OCIO_" #x "_ICS" , \
+                                                       tmpS, ok )
+      
+	  OCIO_ICS( 8bits,  "" );
+	  OCIO_ICS( 16bits, "" );
+	  OCIO_ICS( 32bits, "" );
+	  OCIO_ICS( float,  "" );
+          
+    }
+    
     //
     // ui/view/hud
     //
@@ -692,8 +690,8 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences lut( base, "lut" );
-    lut.get("quality", tmpS, "64x64x64", 2047 );
-    uiPrefs->uiLUT_quality->value(2);
+    lut.get("quality", tmpS, "128x128x128", 2047 );
+    uiPrefs->uiLUT_quality->value(3);
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
       {
@@ -835,8 +833,8 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences keys( base, "hotkeys" );
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
-        // If version 1 of preferences, do not set scrub
-        if ( version == 1 && hotkeys[i].name == "Scrub" )
+        // If version >= 1 of preferences, do not set scrub
+        if ( version >= 1 && hotkeys[i].name == "Scrub" )
             continue;
 
        keys.get( (hotkeys[i].name + " ctrl").c_str(), 
@@ -1025,21 +1023,37 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsSafeAreas->value() )
       view->safe_areas(true);
 
-    use_ocio = false;
+    use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
+    
     const char* var = getenv( "OCIO" );
     if ( var )
     {
-        use_ocio = true;
         uiPrefs->uiPrefsOCIOConfig->text( var );
         
         std::locale::global( std::locale("C") );
-        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
 
-        OCIO_Display = config->getDefaultDisplay();
-        OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
+        try
+        {
+            OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromEnv();
+            OCIO::SetCurrentConfig( config );
+            config = OCIO::GetCurrentConfig();
+            uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
+        
+            OCIO_Display = config->getDefaultDisplay();
+            OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
+        }
+        catch( const OCIO::Exception& e )
+        {
+            LOG_ERROR( e.what() );
+        }
+        
         std::locale::global( std::locale("") );
     }
-    
+    else
+    {
+        LOG_INFO( _("OCIO environment variable is not set.  "
+                    "Defaulting to CTL. ") );
+    }
     //
     // Handle file requester
     //
@@ -1228,7 +1242,7 @@ static const char* kCLocale = "C";
     
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
-    base.set( "version", 2 );
+    base.set( "version", 3 );
 
     // Save ui preferences
     fltk::Preferences ui( base, "ui" );
@@ -1299,6 +1313,20 @@ static const char* kCLocale = "C";
        colors.set("hud_color", tmp );
     }
 
+    {
+        fltk::Preferences ocio( view, "ocio" );
+        int tmp = uiPrefs->uiPrefsUseOcio->value();
+        ocio.set( "use_ocio", tmp );
+        
+	fltk::Preferences ics( ocio, "ICS" );
+	{
+	  ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->text() );
+	  ics.set( "16bits", uiPrefs->uiOCIO_16bits_ics->text() );
+	  ics.set( "32bits", uiPrefs->uiOCIO_32bits_ics->text() );
+	  ics.set( "float",  uiPrefs->uiOCIO_float_ics->text() );
+	}
+
+    }
 
     //
     // view/hud prefs
