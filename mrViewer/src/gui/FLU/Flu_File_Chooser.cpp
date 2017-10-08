@@ -1783,12 +1783,16 @@ void Flu_File_Chooser::previewCB()
             e->set_colors();
             if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
             {
+                
+                
                 // Add new thread to handle icon
                 RealIcon* ri = new RealIcon;
                 ri->entry = e;
                 ri->chooser = this;
                 ri->dir = get_current_directory();
                 ri->filename = e->filename;
+                if ( ri->filename.find( ".ocio" ) != std::string::npos )
+                    continue;
                 ri->filesize = e->filesize;
                 ri->serial   = serial;
 #ifdef ICONS_SINGLE_THREAD
@@ -4481,7 +4485,8 @@ void Flu_File_Chooser::cd( const char *path )
                          tmp == N_(".icc")  ||
 			 tmp == N_(".icm")  ||
                          tmp == N_(".ctl")  || 
-                         tmp == N_(".xml") )
+                         tmp == N_(".xml")  || 
+                         tmp == N_(".ocio") )
 		       is_sequence = false;
 		 }
 		 else
@@ -4875,7 +4880,8 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
    static Flu_File_Chooser *fc = NULL;
 
 
-  filename = retname.c_str();
+   if (! retname.empty() )
+       filename = retname.c_str();
 
   if( !fc )
     {
