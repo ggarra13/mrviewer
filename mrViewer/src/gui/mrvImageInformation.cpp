@@ -2212,32 +2212,39 @@ void ImageInformation::fill_data()
     }
 
 
-
-    add_ctl_idt( _("Input Device Transform"), 
-                 _("(IDT) Input Device Transform"), 
-                 img->idt_transform() );
-
-    clear_callback_data();
-
+    if ( Preferences::use_ocio )
     {
-
-        unsigned count = (unsigned) img->number_of_lmts();
-        for ( unsigned i = 0; i <= count; ++i )
-        {
-            sprintf( buf, _("LMTransform %u"), i+1 );
-            add_ctl_lmt( buf, _("(LMT) Look Mod Transform"), 
-                         img->look_mod_transform(i), i );
-        }
+        add_ocio_ics( _("Input Color Space"),
+                      _("OCIO Input Color Space"),
+                      img->ocio_input_color_space().c_str() );
     }
+    else
+    {
+        add_ctl_idt( _("Input Device Transform"), 
+                     _("(IDT) Input Device Transform"), 
+                     img->idt_transform() );
+
+        clear_callback_data();
+
+        {
+
+            unsigned count = (unsigned) img->number_of_lmts();
+            for ( unsigned i = 0; i <= count; ++i )
+            {
+                sprintf( buf, _("LMTransform %u"), i+1 );
+                add_ctl_lmt( buf, _("(LMT) Look Mod Transform"), 
+                             img->look_mod_transform(i), i );
+            }
+        }
     
 
 
-    add_ctl( _("Render Transform"), _("(RT) Render Transform"), 
-             img->rendering_transform() );
+        add_ctl( _("Render Transform"), _("(RT) Render Transform"), 
+                 img->rendering_transform() );
     
 
-    add_icc( _("ICC Profile"), _("ICC Profile"), img->icc_profile() );
-    
+        add_icc( _("ICC Profile"), _("ICC Profile"), img->icc_profile() );
+    }
 
     ++group;
 
@@ -2729,6 +2736,59 @@ void ImageInformation::fill_data()
     m_curr->add( g );
   }
 
+
+
+  void ImageInformation::add_ocio_ics( const char* name,
+                                      const char* tooltip,
+                                      const char* content,
+                                      const bool editable,
+                                      fltk::Callback* callback )
+  { 
+    if ( !editable )
+        return add_text( name, tooltip, content );
+
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
+
+    fltk::Widget* lbl;
+    int hh = line_height();
+    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    {
+        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
+      widget->box( fltk::FLAT_BOX );
+      widget->color( colA );
+      widget->labelcolor( fltk::BLACK );
+      widget->copy_label( name );
+      g->add( widget );
+    }
+
+    {
+      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+
+      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      widget->value( content );
+      widget->align(fltk::ALIGN_LEFT);
+      widget->box( fltk::FLAT_BOX );
+      widget->color( colB );
+      if ( tooltip ) widget->tooltip( tooltip );
+      else widget->tooltip( lbl->label() );
+      if ( callback )
+          widget->callback( (fltk::Callback*)attach_ocio_ics_cb,
+                            (void*)view() );
+
+      sg->add( widget );
+      
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
+      pick->callback( (fltk::Callback*)attach_ocio_ics_cb, view() );
+      sg->add( pick );
+      sg->resizable(widget);
+
+      g->add( sg );
+      g->resizable( sg );
+    }
+
+    m_curr->add( g );
+  }
 
 
   void ImageInformation::add_ctl_idt( const char* name,

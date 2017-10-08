@@ -1463,8 +1463,8 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             }
           }
           {fltk::Group} {} {
-            label OCIO
-            xywh {12 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+            label OCIO open
+            xywh {7 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Output} uiPrefsOCIOConfig {
               label {OCIO Config File}
@@ -1472,11 +1472,117 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             }
             {fltk::Button} {} {
               label Pick
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {mrv::PreferencesUI* uiPrefs = v->uiPrefs;
+	      std::string r = open_ocio_config( uiPrefs->uiPrefsOCIOConfig->text() );
+if ( r.empty() ) return;
+
+char buf[1024];
+sprintf( buf, "OCIO=%s", strdup( r.c_str() ) );
+putenv(buf);}
               xywh {349 33 55 31}
+            }
+            {fltk::CheckButton} uiPrefsUseOcio {
+              label {Use OCIO}
+              callback {mrv::Preferences::use_ocio = o->value();}
+              xywh {30 75 25 25}
+            }
+            {fltk::Group} uiOCIO_ICS {
+              label {Input Color Space} open
+              xywh {42 152 375 154} box ROUNDED_BOX
+            } {
+              {fltk::Group} {} {open
+                xywh {115 19 260 45}
+              } {
+                {fltk::Input} uiOCIO_8bits_ics {
+                  label {8-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::ocio_8bits_ics = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for 8 bit images (jpg, bmp, etc)
+(Environment variable: MRV_CTL_RT_8bits)}
+                  xywh {8 5 190 25} align 132 box THIN_DOWN_BOX labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ocio_browser(uiOCIO_8bits_ics->text(), OCIOBrowser::kInputColorSpace);
+if (c.empty()) return;
+uiOCIO_8bits_ics->text(c.c_str());
+uiOCIO_8bits_ics->do_callback();}
+                  xywh {205 5 55 25}
+                }
+              }
+              {fltk::Group} {} {open
+                xywh {115 49 260 45}
+              } {
+                {fltk::Input} uiOCIO_16bits_ics {
+                  label {16-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::ocio_16bits_ics = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for 16-bit images (cin, tiff, etc)
+(Environment variable: MRV_CTL_RT_16bits)}
+                  xywh {8 5 190 25} align 132 box THIN_DOWN_BOX labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ocio_browser(uiOCIO_16bits_ics->text(), OCIOBrowser::kInputColorSpace);
+if (c.empty()) return;
+uiOCIO_16bits_ics->text(c.c_str());
+uiOCIO_16bits_ics->do_callback();}
+                  xywh {205 5 55 25}
+                }
+              }
+              {fltk::Group} {} {open
+                xywh {115 79 260 45}
+              } {
+                {fltk::Input} uiOCIO_32bits_ics {
+                  label {32-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::ocio_32bits_ics = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for 32-bit int images (openexr integers, etc)
+(Environment variable: MRV_CTL_RT_32bits)}
+                  xywh {8 5 190 25} align 132 box THIN_DOWN_BOX labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ocio_browser(uiOCIO_32bits_ics->text(), OCIOBrowser::kInputColorSpace);
+if (c.empty()) return;
+uiOCIO_32bits_ics->text(c.c_str());
+uiOCIO_32bits_ics->do_callback();}
+                  xywh {205 5 55 25}
+                }
+              }
+              {fltk::Group} {} {open
+                xywh {115 109 260 45}
+              } {
+                {fltk::Input} uiOCIO_float_ics {
+                  label float
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::ocio_float_ics = o->text();
+v->refresh();} selected
+                  tooltip {The name of the CTL default image transform for half and float images (OpenEXR, dpx, etc)
+(Environment variable: MRV_CTL_RT_float)}
+                  xywh {8 5 190 25} align 132 box THIN_DOWN_BOX labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ocio_browser(uiOCIO_float_ics->text(), OCIOBrowser::kInputColorSpace);
+if (c.empty()) return;
+uiOCIO_float_ics->text(c.c_str());
+uiOCIO_float_ics->do_callback();}
+                  xywh {205 5 55 25}
+                }
+              }
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths} open
+            label {CTL Paths}
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
@@ -1493,14 +1599,14 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
             }
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)}
+            label {Default Output Device Transform (ODT)} open
             xywh {13 22 423 354} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Display open
+              label Display
               xywh {13 22 370 327} box ROUNDED_BOX
             } {
-              {fltk::Group} uiODT_CTL {open
+              {fltk::Group} uiODT_CTL {
                 xywh {104 10 255 265} horizontal
               } {
                 {fltk::Group} {} {
@@ -1525,7 +1631,7 @@ uiODT_CTL_transform->do_callback();}
                   }
                 }
                 {fltk::Group} {} {
-                  label {Chromaticities (CIE)} open
+                  label {Chromaticities (CIE)}
                   tooltip {The CIE x,y coordinates of the primaries and white point of the display
 (like Rec. ITU-R BT.709-3)
 
@@ -1645,7 +1751,7 @@ MRV_ODT_CTL_SURROUND_LUMINANCE)}
                   }
                 }
               }
-              {fltk::Group} uiODT_ICC {open
+              {fltk::Group} uiODT_ICC {
                 xywh {35 277 312 45}
               } {
                 {fltk::Input} uiODT_ICC_profile {
@@ -1766,7 +1872,7 @@ uiCTL_float_load_transform->do_callback();}
               }
             }
             {fltk::Group} uiRT_ICC {
-              label {ICC Profiles} open
+              label {ICC Profiles}
               xywh {15 204 375 135} box ROUNDED_BOX
             } {
               {fltk::Group} {} {
@@ -2247,12 +2353,12 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );} open
+            callback {o->update( v );}
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface}
+              label {User Interface} open
               vertical value 1
             } {
               {fltk::ItemGroup} {} {
@@ -3808,7 +3914,7 @@ Function {make_ocio_browser(std::string ctl, mrv::OCIOBrowser::Type type )} {ope
   code {std::string orig = ctl;} {}
   {fltk::Window} {} {
     label {CTL Browser} open
-    xywh {691 356 395 447} horizontal resizable hotspot modal visible
+    xywh {691 384 395 447} horizontal hide resizable hotspot modal
   } {
     {fltk::Group} {} {open
       xywh {5 26 385 411}
@@ -3818,7 +3924,7 @@ Function {make_ocio_browser(std::string ctl, mrv::OCIOBrowser::Type type )} {ope
         user_data {&ctl} user_data_type {std::string*}
         callback {int elem = o->value();
 if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
-*v = o->child(elem)->label();} selected
+*v = o->child(elem)->label();}
         xywh {5 0 375 365}
         extra_code {o->set_type(type);
 o->value(-1);
