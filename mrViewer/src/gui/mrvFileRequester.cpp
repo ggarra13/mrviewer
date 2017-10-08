@@ -92,6 +92,8 @@ static const char* kModule = "file";
 
   static const std::string kXMLPattern = "xml,XML";
 
+  static const std::string kOCIOPattern = "ocio,OCIO";
+
 
   // Actual FLTK file requester patterns
 
@@ -530,6 +532,33 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
 }
 
 
+std::string open_ocio_config( const char* startfile )
+{
+    std::string kOCIO_PATTERN = _("OCIO config (*.{") + 
+                               kOCIOPattern + "})\t";
+    std::string title = _("Load OCIO Config");
+    
+    const char* file = NULL;
+#ifdef _WIN32
+    bool native = mrv::Preferences::native_file_chooser;
+    fltk::use_system_file_chooser( native );
+    if ( native )
+    {
+        file = fltk::file_chooser( title.c_str(),
+                                   kOCIO_PATTERN.c_str(),
+                                   startfile );
+    }
+    else
+#endif
+    {
+        file = flu_file_chooser( title.c_str(), 
+                                 kOCIO_PATTERN.c_str(), startfile );
+    }
+
+    if ( !file ) return "";
+
+    return file;
+}
 
   void read_clip_xml_metadata( CMedia* img, 
                                const mrv::ViewerUI* main )
