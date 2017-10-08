@@ -41,6 +41,9 @@
 
 #include <fltk/Cursor.h>
 
+#include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
+
 #include "IccProfile.h"
 #include "IccCmm.h"
  
@@ -60,6 +63,8 @@ namespace
 {
   const char* kModule = N_("cmm");
 }
+
+#define OCIO_ERROR(x) LOG_ERROR( "[ocio] " << x );
 
 
 namespace mrv {
@@ -401,6 +406,89 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 	      }
 	  }
       }
+  }
+
+bool GLLut3d::calculate_ocio( const CMedia* img )
+  {
+    //
+    // We build a 3D color lookup table by running a set of color
+    // samples through a series of OCIO transforms.
+    //
+    // The 3D lookup table covers a range from lutMin to lutMax or
+    // NUM_STOPS f-stops above and below 0.18 or MIDDLE_GRAY.  The
+    // size of the table is _lutN by _lutN by _lutN samples.
+    //
+    // In order make the distribution of the samples in the table
+    // approximately perceptually uniform, the Cg shaders that use
+    // the table perform lookups in "log space":
+    // In a Cg shader, the lookup table is represented as a 3D texture.
+    // In order to apply the table to a pixel value, the Cg shader takes
+    // the logarithm of the pixel value and scales and offsets the result
+    // so that lutMin and lutMax map to 0 and 1 respectively.  The scaled
+    // value is used to perform a texture lookup and the shader computes
+    // e raised to the power of the result of the texture lookup.
+    //
+    //
+    // Generate output pixel values by applying CTL transforms
+    // to the pixel values.  (If the CTL transforms fail to
+    // write to the output values, zero-initialization, above,
+    // causes the displayed image to be black.)
+    //
+      if ( !_inited )
+      {
+          //
+          // Init lut table to 0
+          //
+          clear_lut();
+
+          //
+          // Init table of pixel values
+          //
+          init_pixel_values( lut );
+      }
+ 
+      try
+      {
+          OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+          const std::string& display = mrv::Preferences::OCIO_Display;
+          const std::string& view = mrv::Preferences::OCIO_View;
+              
+          OCIO::DisplayTransformRcPtr transform =
+          OCIO::DisplayTransform::Create();
+          
+          std::string ics = img->ocio_input_color_space();
+          if  (ics.empty() )
+              ics = OCIO::ROLE_SCENE_LINEAR;
+          transform->setInputColorSpaceName( ics.c_str() );
+          transform->setDisplay( display.c_str() );
+          transform->setView( view.c_str() );
+        
+          OCIO::ConstContextRcPtr context = config->getCurrentContext();
+          OCIO::ConstProcessorRcPtr processor =
+          config->getProcessor(context, transform,
+                               OCIO::TRANSFORM_DIR_FORWARD);
+
+          OCIO::PackedImageDesc img(&lut[0], lut_size()/4,
+                                    /*height*/ 1, /*channels*/ 4);
+          processor->apply( img );
+          _inited = true;
+      }
+      catch(OCIO::Exception& e)
+      {
+          OCIO_ERROR( e.what() );
+          return false;
+      }
+      catch( const std::exception& e )
+      {
+          LOG_ERROR( e.what() );
+          return false;
+      }
+      catch( ... )
+      {
+          LOG_ERROR( _("Unknown error returned from ctlToLut") );
+          return false;
+      }
+      return true;
   }
 
 
@@ -901,101 +989,112 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-  GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
-			     const CMedia* img )
-  {
-      std::string path; 
-      GLLut3d::Transforms transforms;
+GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
+                           const CMedia* img )
+{
+    std::string path; 
+    GLLut3d::Transforms transforms;
 
-      unsigned int algorithm = uiPrefs->RT_algorithm->value();
+    if ( !Preferences::use_ocio )
+    {
+      
+        unsigned int algorithm = uiPrefs->RT_algorithm->value();
 
-      bool find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
-                       algorithm == Preferences::kLutPreferCTL );
-      bool find_icc = (algorithm == Preferences::kLutOnlyICC ||
-                       algorithm == Preferences::kLutPreferICC );
+        bool find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
+                         algorithm == Preferences::kLutPreferCTL );
+        bool find_icc = (algorithm == Preferences::kLutOnlyICC ||
+                         algorithm == Preferences::kLutPreferICC );
 
-      bool found;
-      if ( find_ctl )
-      {
-	found = RT_ctl_transforms( path, transforms, img );
-	if ( !found && algorithm == Preferences::kLutPreferCTL )
-	  RT_icc_transforms( path, transforms, img, true );
-      }
-    else
-      {
-	found = RT_icc_transforms( path, transforms, img );
-	if ( !found && algorithm == Preferences::kLutPreferICC )
-	  RT_ctl_transforms( path, transforms, img, true );
-      }
+        bool found;
+        if ( find_ctl )
+        {
+            found = RT_ctl_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferCTL )
+                RT_icc_transforms( path, transforms, img, true );
+        }
+        else
+        {
+            found = RT_icc_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferICC )
+                RT_ctl_transforms( path, transforms, img, true );
+        }
 
-    if ( transforms.empty() ) 
-      {
-	 static const CMedia* lastImg = NULL;
+        if ( transforms.empty() ) 
+        {
+            static const CMedia* lastImg = NULL;
 
-	 if ( img != lastImg )
-	 {
+            if ( img != lastImg )
+            {
 
-	    const char* err = N_("");
-	    if ( algorithm == Preferences::kLutPreferICC ||
-		 algorithm == Preferences::kLutPreferCTL )
-	       err = _("No CTL script or ICC profile");
-	    else if ( find_ctl )
-	       err = _("No CTL script");
-	    else if ( find_icc )
-	       err = _("No ICC profile");
+                const char* err = N_("");
+                if ( algorithm == Preferences::kLutPreferICC ||
+                     algorithm == Preferences::kLutPreferCTL )
+                    err = _("No CTL script or ICC profile");
+                else if ( find_ctl )
+                    err = _("No CTL script");
+                else if ( find_icc )
+                    err = _("No ICC profile");
 	    
-	    LOG_ERROR( _("No valid RT transform for \"") 
-		       << img->name() << N_("\": ") << err << N_(".") );
-	 }
+                LOG_ERROR( _("No valid RT transform for \"") 
+                           << img->name() << N_("\": ") << err << N_(".") );
+            }
 
-	lastImg = img;
+            lastImg = img;
 
-	return NULL;
-      }
+            return NULL;
+        }
 
-    size_t num = transforms.size();
+        size_t num = transforms.size();
 
-    algorithm = uiPrefs->ODT_algorithm->value();
-    find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
-		algorithm == Preferences::kLutPreferCTL );
-    find_icc = (algorithm == Preferences::kLutOnlyICC ||
-		algorithm == Preferences::kLutPreferICC );
+        algorithm = uiPrefs->ODT_algorithm->value();
+        find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
+                    algorithm == Preferences::kLutPreferCTL );
+        find_icc = (algorithm == Preferences::kLutOnlyICC ||
+                    algorithm == Preferences::kLutPreferICC );
 
-    if ( find_ctl )
-      {
-	found = ODT_ctl_transforms( path, transforms, img );
-	if ( !found && algorithm == Preferences::kLutPreferCTL )
-	  ODT_icc_transforms( path, transforms, img, true );
-      }
+        if ( find_ctl )
+        {
+            found = ODT_ctl_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferCTL )
+                ODT_icc_transforms( path, transforms, img, true );
+        }
+        else
+        {
+            found = ODT_icc_transforms( path, transforms, img );
+            if ( !found && algorithm == Preferences::kLutPreferICC )
+                ODT_ctl_transforms( path, transforms, img, true );
+        }
+
+        if ( transforms.size() == num )
+        {
+            static const CMedia* lastImg = NULL;
+
+            if ( img != lastImg )
+            {
+                const char* err = N_("");
+                if ( algorithm == Preferences::kLutPreferICC ||
+                     algorithm == Preferences::kLutPreferCTL )
+                    err = _("No CTL script or ICC profile");
+                else if ( find_ctl )
+                    err = _("No CTL script");
+                else if ( find_icc )
+                    err = _("No ICC profile");
+
+                LOG_ERROR( _("No valid ODT transform: ") << err << N_(".") );
+            }
+
+            lastImg = img;
+            return NULL;
+        }
+    }
     else
-      {
-	found = ODT_icc_transforms( path, transforms, img );
-	if ( !found && algorithm == Preferences::kLutPreferICC )
-	  ODT_ctl_transforms( path, transforms, img, true );
-      }
-
-    if ( transforms.size() == num )
-      {
-	 static const CMedia* lastImg = NULL;
-
-	 if ( img != lastImg )
-	 {
-	    const char* err = N_("");
-	    if ( algorithm == Preferences::kLutPreferICC ||
-		 algorithm == Preferences::kLutPreferCTL )
-	       err = _("No CTL script or ICC profile");
-	    else if ( find_ctl )
-	       err = _("No CTL script");
-	    else if ( find_icc )
-	       err = _("No ICC profile");
-
-	    LOG_ERROR( _("No valid ODT transform: ") << err << N_(".") );
-	 }
-
-	lastImg = img;
-	return NULL;
-      }
-
+    {
+        std::string ics = img->ocio_input_color_space();
+        if ( ics.empty() ) ics = OCIO::ROLE_SCENE_LINEAR;
+        path = ics;
+        path += " -> " + Preferences::OCIO_Display;
+        path += " -> " + Preferences::OCIO_View;
+    }
     //
     // Check if this lut path was already calculated by some other
     // image.
@@ -1038,44 +1137,52 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     LOG_INFO( _("3D Lut for ") << img->name() << N_(":") );
     LOG_INFO( path );
 
-
     GLLut3d_ptr lut( new GLLut3d(size) );
 
+    if ( Preferences::use_ocio )
+    {
+        
+        std::locale::global( std::locale("C") );
+        lut->calculate_ocio( img );
+        std::locale::global( std::locale("") );
+    }
+    else
+    {
 
+        //
+        // Create Luts
+        unsigned int flags = kXformFirst;
 
-    //
-    // Create Luts
-    unsigned int flags = kXformFirst;
+        Transforms::const_iterator i = transforms.begin();
+        Transforms::const_iterator e = transforms.end();
+        Transforms::const_iterator start = i;
 
-    Transforms::const_iterator i = transforms.begin();
-    Transforms::const_iterator e = transforms.end();
-    Transforms::const_iterator start = i;
-
-    for ( ++i; i != e; ++i )
-      {
-	if ( (*i).type != (*start).type )
-	  {
-	    if ( ! lut->calculate( lut, start, i, img, 
-				   (XformFlags)flags ) )
+        for ( ++i; i != e; ++i )
+        {
+            if ( (*i).type != (*start).type )
             {
-              LOG_ERROR( "Lut calculate failed" );
-	      return NULL;
+                if ( ! lut->calculate( lut, start, i, img, 
+                                       (XformFlags)flags ) )
+                {
+                    LOG_ERROR( "Lut calculate failed" );
+                    return NULL;
+                }
+                start = i;
+                flags = kXformNone;
             }
-	    start = i;
-	    flags = kXformNone;
-	  }
-      }
+        }
 
-    if ( (e - start) != 0 )
-      {
-          flags |= kXformLast;
-          if ( ! lut->calculate( lut, start, e, img, (XformFlags)flags ) )
-          {
-              LOG_ERROR( "Lut calculate failed" );
-              return NULL;
-          }
-      }
-
+        if ( (e - start) != 0 )
+        {
+            flags |= kXformLast;
+            if ( ! lut->calculate( lut, start, e, img, (XformFlags)flags ) )
+            {
+                LOG_ERROR( "Lut calculate failed" );
+                return NULL;
+            }
+        }
+    }
+    
     lut->create_gl_texture();
 
     if ( _luts.find( path ) != _luts.end() ) _luts.erase( path );
