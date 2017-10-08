@@ -1464,7 +1464,7 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
           }
           {fltk::Group} {} {
             label OCIO open
-            xywh {7 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {7 26 423 355} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Output} uiPrefsOCIOConfig {
               label {OCIO Config File}
@@ -1474,12 +1474,11 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
               label Pick
               user_data m user_data_type {mrv::ViewerUI*}
               callback {mrv::PreferencesUI* uiPrefs = v->uiPrefs;
-	      std::string r = open_ocio_config( uiPrefs->uiPrefsOCIOConfig->text() );
+std::string r = open_ocio_config( uiPrefs->uiPrefsOCIOConfig->text() );
 if ( r.empty() ) return;
 
-char buf[1024];
-sprintf( buf, "OCIO=%s", strdup( r.c_str() ) );
-putenv(buf);}
+uiPrefs->uiPrefsOCIOConfig->text( r.c_str() );
+uiPrefs->run(v);}
               xywh {349 33 55 31}
             }
             {fltk::CheckButton} uiPrefsUseOcio {
@@ -1488,11 +1487,11 @@ putenv(buf);}
               xywh {30 75 25 25}
             }
             {fltk::Group} uiOCIO_ICS {
-              label {Input Color Space} open
+              label {Input Color Space} open selected
               xywh {42 152 375 154} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
-                xywh {115 19 260 45}
+                xywh {78 19 270 45}
               } {
                 {fltk::Input} uiOCIO_8bits_ics {
                   label {8-bits}
@@ -1510,11 +1509,11 @@ v->refresh();}
 if (c.empty()) return;
 uiOCIO_8bits_ics->text(c.c_str());
 uiOCIO_8bits_ics->do_callback();}
-                  xywh {205 5 55 25}
+                  xywh {205 5 65 25}
                 }
               }
               {fltk::Group} {} {open
-                xywh {115 49 260 45}
+                xywh {78 49 270 45}
               } {
                 {fltk::Input} uiOCIO_16bits_ics {
                   label {16-bits}
@@ -1532,11 +1531,11 @@ v->refresh();}
 if (c.empty()) return;
 uiOCIO_16bits_ics->text(c.c_str());
 uiOCIO_16bits_ics->do_callback();}
-                  xywh {205 5 55 25}
+                  xywh {205 5 65 25}
                 }
               }
               {fltk::Group} {} {open
-                xywh {115 79 260 45}
+                xywh {78 79 270 45}
               } {
                 {fltk::Input} uiOCIO_32bits_ics {
                   label {32-bits}
@@ -1554,17 +1553,17 @@ v->refresh();}
 if (c.empty()) return;
 uiOCIO_32bits_ics->text(c.c_str());
 uiOCIO_32bits_ics->do_callback();}
-                  xywh {205 5 55 25}
+                  xywh {205 5 65 25}
                 }
               }
               {fltk::Group} {} {open
-                xywh {115 109 260 45}
+                xywh {78 109 270 45}
               } {
                 {fltk::Input} uiOCIO_float_ics {
                   label float
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {mrv::CMedia::ocio_float_ics = o->text();
-v->refresh();} selected
+v->refresh();}
                   tooltip {The name of the CTL default image transform for half and float images (OpenEXR, dpx, etc)
 (Environment variable: MRV_CTL_RT_float)}
                   xywh {8 5 190 25} align 132 box THIN_DOWN_BOX labelsize 11
@@ -1576,7 +1575,7 @@ v->refresh();} selected
 if (c.empty()) return;
 uiOCIO_float_ics->text(c.c_str());
 uiOCIO_float_ics->do_callback();}
-                  xywh {205 5 55 25}
+                  xywh {205 5 65 25}
                 }
               }
             }
@@ -2359,7 +2358,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
