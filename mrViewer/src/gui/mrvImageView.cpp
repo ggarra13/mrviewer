@@ -899,7 +899,7 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
-static void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
+void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;

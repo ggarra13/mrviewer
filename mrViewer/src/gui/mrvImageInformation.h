@@ -121,6 +121,11 @@ class ImageInformation : public ImageInfoParent
                       fltk::Callback* callback = NULL );
 
 
+    void add_ocio_ics( const char* name, const char* tooltip,
+                       const char* content, 
+                       const bool editable = true, 
+                       fltk::Callback* callback = NULL );
+    
     void add_text( const char* name, const char* tooltip,
                    const char* content, 
                    const bool editable = false, 
