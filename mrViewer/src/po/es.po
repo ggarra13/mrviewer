@@ -4654,13 +4654,13 @@ msgstr "Numero de flujos de video en el archivo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2598
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3247
-#, fuzzy
+#
 msgid "OCIO"
-msgstr "Vista OCIO"
+msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2604
 msgid "OCIO Config File"
-msgstr ""
+msgstr "Archivo de Configuracion de OCIO"
 
 #
 #: gui/mrvHotkey.cpp:316
@@ -4681,19 +4681,19 @@ msgstr "La variable de entorno OCIO apunta a un archivo inexistente:"
 
 #
 #: gui/mrvImageView.cpp:3088
-#, fuzzy
+#
 msgid "OCIO/Display"
-msgstr "Display OCIO"
+msgstr "OCIO/Display"
 
 #: gui/mrvImageView.cpp:3085
-#, fuzzy
+#
 msgid "OCIO/Input Color Space"
-msgstr "Espacio de Color de Entrada de OCIO"
+msgstr "OCIO/Espacio de Color de Entrada"
 
 #: gui/mrvImageView.cpp:3091
-#, fuzzy
+#
 msgid "OCIO/View"
-msgstr "Vista OCIO"
+msgstr "OCIO/Vista"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2503
 msgid "ODT"
@@ -5667,9 +5667,8 @@ msgid "Select a CTL script"
 msgstr "Seleccionar una escritura CTL"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4383
-#, fuzzy
 msgid "Select an OCIO Transform"
-msgstr "Seleccionar una escritura CTL"
+msgstr "Seleccionar una transformación OCIO"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2360
 msgid "Select default looping mode in timeline."
@@ -6841,9 +6840,8 @@ msgid "Unknown rounding mode"
 msgstr "Modo de Redondeo desconocido"
 
 #: gui/mrvOCIOBrowser.cpp:129
-#, fuzzy
 msgid "Unknown type for mrvOCIOBrowser"
-msgstr "Tipo de dato desconocido para clave '"
+msgstr "Tipo de dato desconocido para mrvOCIOBrowser"
 
 #: video/mrvGLEngine.cpp:2035
 msgid "Unknown wipe direction"
