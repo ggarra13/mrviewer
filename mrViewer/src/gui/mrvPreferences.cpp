@@ -1028,23 +1028,16 @@ static const char* kCLocale = "C";
 
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
     
-    const char* var = getenv( "OCIO" );
-    if ( !var )
+    const char* var = environmentSetting( "OCIO",
+                                          uiPrefs->uiPrefsOCIOConfig->text(),
+                                          true);
+    if ( var && use_ocio )
     {
-        var = uiPrefs->uiPrefsOCIOConfig->text();
-        if ( var == NULL || strlen(var) == 0 || !fs::exists(var) )
-            var = NULL;
-        else
-        {
-            mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to ")
-                         << var << std::endl );
-            char buf[2048];
-            sprintf( buf, "OCIO=%s", var );
-            putenv( buf );
-        }
-    }
-    if ( var )
-    {
+        mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to ")
+                     << var << std::endl );
+        char buf[2048];
+        sprintf( buf, "OCIO=%s", var );
+        putenv( buf );
         
         uiPrefs->uiPrefsOCIOConfig->text( var );
         
@@ -1059,7 +1052,6 @@ static const char* kCLocale = "C";
         
             OCIO_Display = config->getDefaultDisplay();
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
-            use_ocio = true;
         }
         catch( const OCIO::Exception& e )
         {
@@ -1071,8 +1063,9 @@ static const char* kCLocale = "C";
     }
     else
     {
-        LOG_INFO( _("OCIO environment variable is not set.  "
-                    "Defaulting to CTL. ") );
+        if ( !var )
+            LOG_INFO( _("OCIO environment variable is not set.  "
+                        "Defaulting to CTL. ") );
         use_ocio = false;
     }
     //
