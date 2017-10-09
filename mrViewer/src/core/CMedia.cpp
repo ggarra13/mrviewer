@@ -3585,14 +3585,10 @@ void CMedia::default_ocio_input_color_space()
     {
         OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
         OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("Cineon");
-        if ( !defaultcs )
-        {
-            defaultcs = config->getColorSpace("log10");
-        }
-        if ( !defaultcs )
-        {
-            defaultcs = config->getColorSpace("logf");
-        }
+        if ( ! defaultcs )
+            defaultcs = config->getColorSpace("lgf");
+        if ( ! defaultcs )
+            defaultcs = config->getColorSpace("lg10");
         if ( defaultcs )
             ocio_input_color_space( defaultcs->getName() );
     }
