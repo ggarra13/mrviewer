@@ -1031,10 +1031,11 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
-    if ( var && use_ocio )
+    if ( var && use_ocio && strlen(var) > 0 )
     {
-        mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to ")
-                     << var << std::endl );
+        mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
+                     << std::endl );
+        mrvLOG_INFO( "ocio", var << std::endl );
         char buf[2048];
         sprintf( buf, "OCIO=%s", var );
         putenv( buf );
@@ -1063,7 +1064,7 @@ static const char* kCLocale = "C";
     }
     else
     {
-        if ( !var )
+        if ( !var || strlen(var) == 0 )
             LOG_INFO( _("OCIO environment variable is not set.  "
                         "Defaulting to CTL. ") );
         use_ocio = false;
