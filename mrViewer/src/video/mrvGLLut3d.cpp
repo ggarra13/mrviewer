@@ -408,41 +408,10 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
     lutMin = MIDDLE_GRAY / (1 << NUM_STOPS);
     lutMax = MIDDLE_GRAY * (1 << NUM_STOPS);
 
-#if 0
-    float logLutMin = logf (lutMin);
-    float logLutMax = logf (lutMax);
-    
-    lutM = 1 / (logLutMax - logLutMin);
-    lutT = -lutM * logLutMin;
-
-    //
-    // Build a 3D array of RGB input pixel values.
-    // such that R, G and B are between lutMin and lutMax.
-    //
-    for (size_t ib = 0; ib < _lutN; ++ib)
-    {
-        float B = float(ib) / float(_lutN - 1.0);
-
-	for (size_t ig = 0; ig < _lutN; ++ig)
-	  {
-              float G = float(ig) / float(_lutN - 1.0);
-
-	    for (size_t ir = 0; ir < _lutN; ++ir)
-	      {
-                  float R = float(ir) / float(_lutN - 1.0);
-
-                  size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * 3;
-                  pixelValues[i + 0] = R;
-                  pixelValues[i + 1] = G;
-                  pixelValues[i + 2] = B;
-	      }
-	  }
-      }
-#else
     float logLutMin = logf (lutMin);
     float logLutMax = logf (lutMax);
 
-    lutM = 1 / (logLutMax - logLutMin);
+    lutM = 1.0 / (logLutMax - logLutMin);
     lutT = -lutM * logLutMin;
     
     for (size_t ib = 0; ib < _lutN; ++ib)
@@ -467,9 +436,7 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
                   pixelValues[i + 3] = 1.0f;
 	      }
 	  }
-      }
-#endif
-    
+    }
   }
 
 
@@ -534,18 +501,15 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           transform->setView( view.c_str() );
         
           OCIO::ConstContextRcPtr context = config->getCurrentContext();
-          processor = config->getProcessor(context, transform,
-                                           OCIO::TRANSFORM_DIR_FORWARD);
+          
+          OCIO::ConstProcessorRcPtr processor =
+          config->getProcessor(context, transform,
+                               OCIO::TRANSFORM_DIR_FORWARD);
 
           OCIO::PackedImageDesc img(&lut[0], _lutN,
                                     /*height*/ 1, /*channels*/ 4);
           processor->apply( img );
           
-          // OCIO::GpuShaderDesc shaderDesc;
-          // shaderDesc.setLanguage(OCIO::GPU_LANGUAGE_GLSL_1_0);
-          // shaderDesc.setFunctionName("OCIODisplay");
-          // shaderDesc.setLut3DEdgeLen(_lutN);
-          // processor->getGpuLut3D(&lut[0], shaderDesc);
 
           // std::ostringstream os;
           // os << processor->getGpuShaderText(shaderDesc) << std::endl;
@@ -656,7 +620,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           }
           catch( const std::exception& e )
           {
-              LOG_ERROR( e.what() );
+              LOG_ERROR( "ctlToLut: " << e.what() );
               return false;
           }
           catch( ... )
