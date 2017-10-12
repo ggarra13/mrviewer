@@ -1,97 +1,75 @@
 #-*-cmake-*-
 #
-# Test for CTL (Color Transform Language)
+# Test for OCIO (Color Transform Language)
 #
 # Once loaded this will define
-#  CTL_FOUND        - system has OpenEXR
-#  CTL_INCLUDE_DIR  - include directory for OpenEXR
-#  CTL_LIBRARIES    - libraries you need to link to
+#  OCIO_FOUND        - system has OpenEXR
+#  OCIO_INCLUDE_DIR  - include directory for OpenEXR
+#  OCIO_LIBRARIES    - libraries you need to link to
 #
 
-SET(CTL_FOUND "NO")
+SET(OCIO_FOUND "NO")
 
 
-IF( CTL_LIBRARY_DIR )
-  SET( SEARCH_DIRS "${CTL_LIBRARY_DIR}" )
-ELSE( CTL_LIBRARY_DIR )
+IF( OCIO_LIBRARY_DIR )
+  SET( SEARCH_DIRS "${OCIO_LIBRARY_DIR}" )
+ELSE( OCIO_LIBRARY_DIR )
   SET( SEARCH_DIRS 
-    "$ENV{CTL_ROOT}/${CMAKE_BUILD_TYPE}/lib/"
-    "$ENV{CTL_ROOT}/lib/${CMAKE_BUILD_TYPE}"
-    "$ENV{CTL_ROOT}/lib"
-    "$ENV{CTL_ROOT}/${CMAKE_BUILD_TYPE}/bin"
-    "$ENV{CTL_ROOT}/bin/${CMAKE_BUILD_TYPE}"
-    "$ENV{CTL_ROOT}/lib/"
-    "$ENV{CTL_ROOT}/bin"
+    "$ENV{OCIO_ROOT}/${CMAKE_BUILD_TYPE}/lib/"
+    "$ENV{OCIO_ROOT}/lib/${CMAKE_BUILD_TYPE}"
+    "$ENV{OCIO_ROOT}/lib"
+    "$ENV{OCIO_ROOT}/${CMAKE_BUILD_TYPE}/bin"
+    "$ENV{OCIO_ROOT}/bin/${CMAKE_BUILD_TYPE}"
+    "$ENV{OCIO_ROOT}/lib/"
+    "$ENV{OCIO_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
     /usr/lib
     )
-ENDIF( CTL_LIBRARY_DIR )
+ENDIF( OCIO_LIBRARY_DIR )
 
 
-FIND_PATH( CTL_INCLUDE_DIR CtlModule.h
-  "$ENV{CTL_ROOT}/include/OpenEXR"
-  "$ENV{CTL_ROOT}/include/IlmCtl"
-  "$ENV{CTL_ROOT}/include/IlmCtlSimd"
-  "$ENV{CTL_ROOT}/include/IlmCtlMath"
-  "$ENV{CTL_ROOT}/include/CTL"
-  "$ENV{CTL_ROOT}/include"
-  /usr/local/include/CTL
-  /usr/include/CTL
-  DOC   "CTL includes" 
+FIND_PATH( OCIO_INCLUDE_DIR OpenColorIO/OpenColorIO.h
+  "$ENV{OCIO_ROOT}/include"
+  /usr/local/include/OpenColorIO
+  /usr/include/
+  DOC   "OCIO includes" 
  )
 
-FIND_LIBRARY( IlmCtl
-  NAMES IlmCtl_dll IlmCtl_dll_d IlmCtl IlmCtld libIlmCtl 
+FIND_LIBRARY( OpenColorIO
+  NAMES OpenColorIO
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
-  DOC   "CTL IlmCtl library"
-)
-
-FIND_LIBRARY( IlmCtlMath
-  NAMES IlmCtlMath_dll IlmCtlMath_dll_d IlmCtlMath IlmCtlMathd libIlmCtlMath
-  PATHS ${SEARCH_DIRS}
-  NO_SYSTEM_PATH
-  DOC   "CTL IlmCtlMath library"
-)
-
-FIND_LIBRARY( IlmCtlSimd
-  NAMES IlmCtlSimd_dll IlmCtlSimd_dll_d IlmCtlSimd IlmCtlSimdd libIlmCtlSimd 
-  PATHS ${SEARCH_DIRS}
-  NO_SYSTEM_PATH
-  DOC   "CTL IlmCtlSimd library"
+  DOC   "OCIO IlmCtlSimd library"
 )
 
 
-SET(CTL_LIBRARIES ${IlmCtlSimd} ${IlmCtlMath} ${IlmCtl} )
-
-IF(WIN32 OR WIN64)
-  ADD_DEFINITIONS( "-DCTL_DLL" )
-ENDIF(WIN32 OR WIN64)
+SET(OCIO_LIBRARIES ${OpenColorIO} )
 
 
-IF(NOT CTL_FOUND)
-  IF (CTL_INCLUDE_DIR)
-    IF(CTL_LIBRARIES)
-      SET(CTL_FOUND "YES")
-    ENDIF(CTL_LIBRARIES)
-  ENDIF(CTL_INCLUDE_DIR)
-ENDIF(NOT CTL_FOUND)
 
-IF(NOT CTL_FOUND)
+IF(NOT OCIO_FOUND)
+  IF (OCIO_INCLUDE_DIR)
+    IF(OCIO_LIBRARIES)
+      SET(OCIO_FOUND "YES")
+    ENDIF(OCIO_LIBRARIES)
+  ENDIF(OCIO_INCLUDE_DIR)
+ENDIF(NOT OCIO_FOUND)
+
+IF(NOT OCIO_FOUND)
   # make FIND_PACKAGE friendly
-  IF(NOT CTL_FIND_QUIETLY)
-    IF(CTL_FIND_REQUIRED)
-      MESSAGE( STATUS "CTL_INCLUDE_DIR ${CTL_INCLUDE_DIR}" )
-      MESSAGE( STATUS "CTL_LIBRARIES   ${CTL_LIBRARIES}" )
+  IF(NOT OCIO_FIND_QUIETLY)
+    IF(OCIO_FIND_REQUIRED)
+      MESSAGE( STATUS "OCIO_INCLUDE_DIR ${OCIO_INCLUDE_DIR}" )
+      MESSAGE( STATUS "OCIO_LIBRARIES   ${OCIO_LIBRARIES}" )
       MESSAGE(FATAL_ERROR
-              "CTL required, please specify its location with CTL_ROOT.")
-    ELSE(CTL_FIND_REQUIRED)
-      MESSAGE(STATUS "CTL was not found.")
-    ENDIF(CTL_FIND_REQUIRED)
-  ENDIF(NOT CTL_FIND_QUIETLY)
-ENDIF(NOT CTL_FOUND)
+              "OCIO required, please specify its location with OCIO_ROOT.")
+    ELSE(OCIO_FIND_REQUIRED)
+      MESSAGE(STATUS "OCIO was not found.")
+    ENDIF(OCIO_FIND_REQUIRED)
+  ENDIF(NOT OCIO_FIND_QUIETLY)
+ENDIF(NOT OCIO_FOUND)
 
 #####
 
