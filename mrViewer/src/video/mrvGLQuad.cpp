@@ -1037,6 +1037,13 @@ namespace mrv {
 	    _shader->setUniform( "lutT", _lut->lutT );
 	    CHECK_GL;
 	    _shader->setUniform( "lutF", false );
+
+            unsigned len = lut()->edge_len();
+            float scale = ( (float) len - 1.0f ) / (float) len;
+            float offset = 1.0f / ( 2.0f * len );
+            
+	    _shader->setUniform( "scale", scale );
+	    _shader->setUniform( "offset", offset );
 	  }
 	else
 	  {
