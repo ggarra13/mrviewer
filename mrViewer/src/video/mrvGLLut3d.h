@@ -39,10 +39,13 @@
 #include <ImathVec.h>
 #include <ImfArray.h>
 
-#include "IccCmm.h"
+#include <IccCmm.h>
+
+#include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
 
 #include <boost/shared_ptr.hpp>
-
+#include "core/mrvFrame.h"
 
 class CIccProfile;
 
@@ -114,6 +117,12 @@ namespace mrv {
     void enable();
     void disable();
 
+
+      unsigned edge_len() const { return _lutN; }
+      
+      // calculate lutMin and lutMax based on image
+      void calculate_range( const mrv::image_type_ptr& pic );
+      
       // Evaluate a pixel color and return the pixel color from the active LUT
       void evaluate( const Imath::V3f& rgba, Imath::V3f& out ) const;
 
@@ -177,21 +186,23 @@ namespace mrv {
 					const CMedia* img,
 					const bool warn = false );
 
-  public:
-    float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
-
-  protected:
-    GLuint texId;                          //!< The lut opengl texture index
-    unsigned         _lutN;                //!< Size of lut (one axis)
-    Imf::Array<float> lut;                  //!< The lut data
-    bool _inited;
+    public:
+      float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters 
+      OCIO::ConstProcessorRcPtr processor; 
+      OCIO::GpuShaderDesc shaderDesc;
+      
+    protected:
+      GLuint texId;                          //!< The lut opengl texture index
+      unsigned         _lutN;                //!< Size of lut (one axis)
+      Imf::Array<float> lut;                  //!< The lut data
+      bool _inited;
 
       // OCIO
       std::string g_display;
       std::string g_transformName;
       std::string g_inputColorSpace;
-      
-    static LutsMap _luts;                   //!< The list of luts
+
+      static LutsMap _luts;                   //!< The list of luts
   };
 
 } // namespace mrv
