@@ -188,7 +188,6 @@ namespace mrv {
 
     public:
       float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters 
-      OCIO::ConstProcessorRcPtr processor; 
       OCIO::GpuShaderDesc shaderDesc;
       
     protected:
