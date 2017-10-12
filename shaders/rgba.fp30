@@ -24,6 +24,8 @@
 #semantic main.lutF
 #semantic main.lutMin
 #semantic main.lutMax
+#semantic main.scale
+#semantic main.offset
 #semantic main.lutM
 #semantic main.lutT
 #var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
@@ -45,8 +47,10 @@
 #var bool lutF :  : lutF : 16 : 1
 #var half lutMin :  : lutMin : 17 : 1
 #var half lutMax :  : lutMax : 18 : 1
-#var half lutM :  : lutM : 19 : 1
-#var half lutT :  : lutT : 20 : 1
+#var half scale :  : scale : 19 : 1
+#var half offset :  : offset : 20 : 1
+#var half lutM :  : lutM : 21 : 1
+#var half lutT :  : lutT : 22 : 1
 #var half4 main.pixel : $vout.COLOR : COL : -1 : 1
 #default mask = 0
 #default mask_value = 0
@@ -62,6 +66,8 @@
 #default normSpan = 1
 #default enableLut = 0
 #default lutF = 0
+#default scale = 1
+#default offset = 0
 DECLARE enableNormalization = {0};
 DECLARE normMin = {0};
 DECLARE normSpan = {1};
@@ -71,6 +77,8 @@ DECLARE lutMax;
 DECLARE lutMin;
 DECLARE lutT;
 DECLARE lutM;
+DECLARE scale = {1};
+DECLARE offset = {0};
 DECLARE unpremult = {0};
 DECLARE gain = {1};
 DECLARE gamma = {0.44995117};
@@ -153,7 +161,9 @@ LG2H  H0.z, H0.z;
 LG2H  H0.y, H0.y;
 MULH  H0.xyz, H0, lutM.x;
 MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H2.w;
-TEX   R0.xyz, H1, TEX3, 3D;
+MOVH  H0.x, offset;
+MADH  H0.xyz, H1, scale.x, H0.x;
+TEX   R0.xyz, H0, TEX3, 3D;
 POWR  H0.x, {2.718282}.x, R0.x;
 POWR  H0.y, {2.718282}.x, R0.y;
 POWR  H0.z, {2.718282}.x, R0.z;
@@ -263,4 +273,4 @@ MOVXC RC.x, premult;
 MULH  o[COLH].xyz(NE.x), H0, H0.w;
 MOVH  o[COLH].w, H0;
 END
-# 182 instructions, 2 R-regs, 8 H-regs
+# 184 instructions, 2 R-regs, 8 H-regs
