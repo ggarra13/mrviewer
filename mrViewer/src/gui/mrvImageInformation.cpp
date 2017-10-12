@@ -2211,7 +2211,7 @@ void ImageInformation::fill_data()
         add_text( _("CIExy White Point"), _("CIExy White Point"), buf );
     }
 
-
+    //std::cerr << "prefs:use_ocio " << Preferences::use_ocio << std::endl;
     if ( Preferences::use_ocio )
     {
         add_ocio_ics( _("Input Color Space"),
