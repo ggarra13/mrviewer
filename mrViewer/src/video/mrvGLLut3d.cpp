@@ -272,7 +272,7 @@ lookup3D
      //       We pad it with 4 additional values and all seems fine.
      unsigned long num = lut_size() + 4;
      lut.resizeErase( num );
-     // memset( &lut[0], 0, num*sizeof(float) );
+     memset( &lut[0], 0x00, num*sizeof(float) );
   }
 
 
@@ -282,62 +282,71 @@ lookup3D
   //
   void GLLut3d::create_gl_texture()
   {
+
     //
     // Take the logarithm of the output values that were
     // produced by the CTL transforms.
     //
-
       size_t num = lut_size();
       for ( size_t i = 0; i < num; ++i )
       {
-          if ( lut[i] >= std::numeric_limits<float>::min()
-               && lut[i] <= std::numeric_limits<float>::max() )
-	  {
+          if (lut[i] >= HALF_MIN && lut[i] <= HALF_MAX)
+          {
 	    //
 	    // lut[i] is finite and positive.
 	    //
             lut[i] = (float) logf(lut[i]);
-	  }
+          }
           else
 	  {
 	    //
 	    // lut[i] is zero, negative or not finite;
 	    // log (lut[i]) is undefined.
 	    //
-             lut[i] = (float) logf( std::numeric_limits<float>::min() );
+             lut[i] = (float) logf( HALF_MIN );
 	  }
       }
 
-    //
-    // Convert the output values into a 3D texture.
-    //
+      //
+      // Convert the output values into a 3D texture.
+      //
       glPixelStorei( GL_UNPACK_ROW_LENGTH, 0 );
       glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+      
+      glActiveTexture( GL_TEXTURE3 );
 
-    glActiveTexture( GL_TEXTURE3 );
+      glBindTexture( GL_TEXTURE_3D, texId );
 
-    glBindTexture( GL_TEXTURE_3D, texId );
+      glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+      glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
-    glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+      GLenum gl_clamp = GL_CLAMP;
+      if ( GLEW_EXT_texture_edge_clamp )
+          gl_clamp = GL_CLAMP_TO_EDGE;
 
-    GLenum gl_clamp = GL_CLAMP;
-    if ( GLEW_EXT_texture_edge_clamp )
-      gl_clamp = GL_CLAMP_TO_EDGE;
+      glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, gl_clamp );
+      glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, gl_clamp );
+      glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, gl_clamp );
 
-    glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, gl_clamp );
-    glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, gl_clamp );
-    glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, gl_clamp );
-
-
-    glTexImage3D( GL_TEXTURE_3D,
-		  0,			// level
-                  GL_RGBA32F,           // internal format
-		  _lutN, _lutN, _lutN,	// width, height, depth
-		  0,			// border
-		  GL_RGBA,		// format
-		  GL_FLOAT,	// type
-		  (char *) &lut[0] );
+#if 0
+      glTexImage3D( GL_TEXTURE_3D,
+                    0,			// level
+                    GL_RGB32F,           // internal format
+                    _lutN, _lutN, _lutN,	// width, height, depth
+                    0,			// border
+                    GL_RGB,		// format
+                    GL_FLOAT,	// type
+                    (char *) &lut[0] );
+#else
+      glTexImage3D( GL_TEXTURE_3D,
+                    0,			// level
+                    GL_RGBA32F,           // internal format
+                    _lutN, _lutN, _lutN,	// width, height, depth
+                    0,			// border
+                    GL_RGBA,		// format
+                    GL_FLOAT,	// type
+                    (char *) &lut[0] );
+#endif
   }
 
 
@@ -358,6 +367,31 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 
 }
 
+void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
+{
+    // lutMin = std::numeric_limits<float>::max();
+    // lutMax = std::numeric_limits<float>::min();
+
+    // unsigned w = pic->width();
+    // unsigned h = pic->height();
+    
+    // for ( unsigned y = 0; y < h; ++y )
+    //     for ( unsigned x = 0; x < w; ++x )
+    //     {
+    //         const ImagePixel& p = pic->pixel( x, y );
+    //         if ( p.r < lutMin && p.r > 0 ) lutMin = p.r;
+    //         if ( p.g < lutMin && p.g > 0 ) lutMin = p.g;
+    //         if ( p.b < lutMin && p.b > 0 ) lutMin = p.b;
+            
+    //         if ( p.r > lutMax ) lutMax = p.r;
+    //         if ( p.g > lutMax ) lutMax = p.g;
+    //         if ( p.b > lutMax ) lutMax = p.b;
+    //     }
+    //
+    // std::cerr << "lutMin " << lutMin << " lutMax " << lutMax << std::endl;
+
+}
+
   void GLLut3d::init_pixel_values( Imf::Array< float >& pixelValues )
   {
     //
@@ -368,14 +402,16 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     //	lutM * lutMax + lutT == 1
     //
 
+
     static const float MIDDLE_GRAY = 0.18f;
 
     lutMin = MIDDLE_GRAY / (1 << NUM_STOPS);
     lutMax = MIDDLE_GRAY * (1 << NUM_STOPS);
 
+#if 0
     float logLutMin = logf (lutMin);
     float logLutMax = logf (lutMax);
-
+    
     lutM = 1 / (logLutMax - logLutMin);
     lutT = -lutM * logLutMin;
 
@@ -383,6 +419,32 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     // Build a 3D array of RGB input pixel values.
     // such that R, G and B are between lutMin and lutMax.
     //
+    for (size_t ib = 0; ib < _lutN; ++ib)
+    {
+        float B = float(ib) / float(_lutN - 1.0);
+
+	for (size_t ig = 0; ig < _lutN; ++ig)
+	  {
+              float G = float(ig) / float(_lutN - 1.0);
+
+	    for (size_t ir = 0; ir < _lutN; ++ir)
+	      {
+                  float R = float(ir) / float(_lutN - 1.0);
+
+                  size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * 3;
+                  pixelValues[i + 0] = R;
+                  pixelValues[i + 1] = G;
+                  pixelValues[i + 2] = B;
+	      }
+	  }
+      }
+#else
+    float logLutMin = logf (lutMin);
+    float logLutMax = logf (lutMax);
+
+    lutM = 1 / (logLutMax - logLutMin);
+    lutT = -lutM * logLutMin;
+    
     for (size_t ib = 0; ib < _lutN; ++ib)
     {
         float b = float(ib) / float(_lutN - 1.0);
@@ -406,7 +468,10 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 	      }
 	  }
       }
+#endif
+    
   }
+
 
 bool GLLut3d::calculate_ocio( const CMedia* img )
   {
@@ -469,16 +534,26 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           transform->setView( view.c_str() );
         
           OCIO::ConstContextRcPtr context = config->getCurrentContext();
-          OCIO::ConstProcessorRcPtr processor =
-          config->getProcessor(context, transform,
-                               OCIO::TRANSFORM_DIR_FORWARD);
+          processor = config->getProcessor(context, transform,
+                                           OCIO::TRANSFORM_DIR_FORWARD);
 
-          OCIO::PackedImageDesc img(&lut[0], lut_size()/4,
+          OCIO::PackedImageDesc img(&lut[0], _lutN,
                                     /*height*/ 1, /*channels*/ 4);
           processor->apply( img );
+          
+          // OCIO::GpuShaderDesc shaderDesc;
+          // shaderDesc.setLanguage(OCIO::GPU_LANGUAGE_GLSL_1_0);
+          // shaderDesc.setFunctionName("OCIODisplay");
+          // shaderDesc.setLut3DEdgeLen(_lutN);
+          // processor->getGpuLut3D(&lut[0], shaderDesc);
+
+          // std::ostringstream os;
+          // os << processor->getGpuShaderText(shaderDesc) << std::endl;
+          // std::cerr << os.str() << std::endl;
+          
           _inited = true;
       }
-      catch(OCIO::Exception& e)
+      catch( const OCIO::Exception& e)
       {
           OCIO_ERROR( e.what() );
           return false;
@@ -1144,6 +1219,8 @@ GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs,
 
     GLLut3d_ptr lut( new GLLut3d(size) );
 
+    //lut->calculate_range( img->hires() );
+    
     if ( Preferences::use_ocio )
     {
         
