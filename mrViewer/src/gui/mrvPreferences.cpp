@@ -459,11 +459,23 @@ fltk::StyleSet*     newscheme = NULL;
     }
 
     fltk::Preferences ocio( view, "ocio" );
-    ocio.get( "use_ocio", tmp, 1 );
+    if ( version < 3 )
+    {
+        ocio.get( "use_ocio", tmp, 0 );
+        const char* var = getenv( "OCIO" );
+
+        if ( var && strlen(var) > 0 )
+            tmp = true;
+    }
+    else
+    {
+        ocio.get( "use_ocio", tmp, 1 );
+    }
     uiPrefs->uiPrefsUseOcio->value( tmp );
     use_ocio = (bool)tmp;
     ocio.get( "config", tmpS, "", 2048 );
     uiPrefs->uiPrefsOCIOConfig->text( tmpS );
+    
     
     fltk::Preferences ics( ocio, "ICS" );
     {
