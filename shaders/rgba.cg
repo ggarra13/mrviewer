@@ -34,7 +34,9 @@ Out main(
 	 uniform bool   enableLut = 0,
 	 uniform bool   lutF = 0,
 	 uniform half   lutMin, 
-	 uniform half   lutMax, 
+	 uniform half   lutMax,
+         uniform half   scale = 1.0,
+         uniform half   offset = 0,
 	 uniform half   lutM, 
 	 uniform half   lutT
 	  )
@@ -58,7 +60,7 @@ Out main(
   // Apply 3D color lookup table (in log space).
   //
   if (enableLut)
-    {
+    { 
       if ( lutF )
 	{
 	  //
@@ -94,7 +96,7 @@ Out main(
       else
       {
 	c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      	c.rgb = exp( tex3D(lut, c.rgb).rgb );
+      	c.rgb = exp( tex3D(lut, c.rgb * scale + offset ).rgb );
       }
     }
 
