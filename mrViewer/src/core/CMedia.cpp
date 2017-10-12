@@ -86,6 +86,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/mrvOS.h"
 #include "core/mrvTimer.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 
 namespace {
 
@@ -3552,6 +3553,7 @@ void CMedia::default_ocio_input_color_space()
 
     if ( internal() ) return;
 
+    if ( ! Preferences::use_ocio ) return;
     
     switch( depth() )
     {
