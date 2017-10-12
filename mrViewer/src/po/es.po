@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-10-09 13:28-0300\n"
+"POT-Creation-Date: 2017-10-11 13:13-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2956 core/CMedia.cpp:3040
+#: core/CMedia.cpp:2957 core/CMedia.cpp:3041
 msgid ""
 "\n"
 "\n"
@@ -101,7 +101,7 @@ msgstr "- error de decodificacion del cuadro de audio "
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
-#: core/CMedia.cpp:3599
+#: core/CMedia.cpp:3601
 msgid " : Setting input color space to "
 msgstr " : Seteando Espacio de Color de Entrada a "
 
@@ -207,7 +207,7 @@ msgstr " para el canal.  Máximo: "
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2957 core/CMedia.cpp:3041
+#: core/CMedia.cpp:2958 core/CMedia.cpp:3042
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -231,7 +231,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:3505
+#: core/CMedia.cpp:3506
 msgid " is missing."
 msgstr " está faltante."
 
@@ -419,7 +419,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2957 core/CMedia.cpp:3041
+#: core/CMedia.cpp:2958 core/CMedia.cpp:3042
 msgid ", type "
 msgstr ", tipo "
 
@@ -680,7 +680,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1142
+#: video/mrvGLLut3d.cpp:1217
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -1025,13 +1025,13 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1702 core/CMedia.cpp:1785 core/exrImage.cpp:2916
+#: core/CMedia.cpp:1703 core/CMedia.cpp:1786 core/exrImage.cpp:2916
 #: core/wandImage.cpp:1035 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5998
 #: gui/mrvImageView.cpp:6413 gui/mrvImageView.cpp:6431
 msgid "Alpha"
 msgstr "Alfa"
 
-#: core/CMedia.cpp:1704 core/CMedia.cpp:1785 core/exrImage.cpp:2914
+#: core/CMedia.cpp:1705 core/CMedia.cpp:1786 core/exrImage.cpp:2914
 #: core/wandImage.cpp:1033 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:5979
 #: gui/mrvImageView.cpp:6414
 msgid "Alpha Overlay"
@@ -1091,7 +1091,7 @@ msgstr "Un error ocurrió al intentar borrar '%s'."
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:789
+#: video/mrvGLLut3d.cpp:864
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1348,7 +1348,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2856
-#: core/CMedia.cpp:1718 core/CMedia.cpp:1784 core/exrImage.cpp:2916
+#: core/CMedia.cpp:1719 core/CMedia.cpp:1785 core/exrImage.cpp:2916
 #: core/wandImage.cpp:1035 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5993
 #: gui/mrvImageView.cpp:6413
 msgid "Blue"
@@ -1651,7 +1651,7 @@ msgstr "Codecs"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:138
-#: core/CMedia.cpp:1715 core/CMedia.cpp:1783 core/exrImage.cpp:2667
+#: core/CMedia.cpp:1716 core/CMedia.cpp:1784 core/exrImage.cpp:2667
 #: core/exrImage.cpp:2918 core/exrImage.cpp:2926 core/exrImage.cpp:2938
 #: core/exrImage.cpp:2943 core/exrImage.cpp:2945 core/exrImage.cpp:2983
 #: core/exrImage.cpp:3015 core/wandImage.cpp:994 core/wandImage.cpp:1056
@@ -1783,7 +1783,7 @@ msgstr "Texto de Copyright"
 msgid "Core"
 msgstr "Central"
 
-#: video/mrvGLLut3d.cpp:704
+#: video/mrvGLLut3d.cpp:779
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -2076,7 +2076,7 @@ msgstr "No pude obtener contexto de conversion de imagen."
 msgid "Could not get profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: video/mrvGLLut3d.cpp:779
+#: video/mrvGLLut3d.cpp:854
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -2096,7 +2096,7 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:695
+#: video/mrvGLLut3d.cpp:770
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -2165,7 +2165,7 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:2256 core/aviImage.cpp:882 core/aviImage.cpp:898
+#: core/CMedia.cpp:2257 core/aviImage.cpp:882 core/aviImage.cpp:898
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -2179,51 +2179,51 @@ msgstr "No pude buscar al cuadro "
 msgid "Could not set "
 msgstr "No pude setear "
 
-#: gui/mrvPreferences.cpp:1616
+#: gui/mrvPreferences.cpp:1628
 msgid "Could not set Browser style"
 msgstr "No pude setear el estilo del Browser"
 
-#: gui/mrvPreferences.cpp:1752
+#: gui/mrvPreferences.cpp:1764
 msgid "Could not set Button style"
 msgstr "No pude setear el estilo del Button"
 
-#: gui/mrvPreferences.cpp:1774
+#: gui/mrvPreferences.cpp:1786
 msgid "Could not set CheckButton style"
 msgstr "No pude setear el estilo del CheckButton"
 
-#: gui/mrvPreferences.cpp:1704
+#: gui/mrvPreferences.cpp:1716
 msgid "Could not set Choice style"
 msgstr "No pude setear el estilo del Choice"
 
-#: gui/mrvPreferences.cpp:1685
+#: gui/mrvPreferences.cpp:1697
 msgid "Could not set Group style"
 msgstr "No pude setear el estilo del Group"
 
-#: gui/mrvPreferences.cpp:1651
+#: gui/mrvPreferences.cpp:1663
 msgid "Could not set InputBrowser style"
 msgstr "No pude setear el estilo del InputBrowser"
 
-#: gui/mrvPreferences.cpp:1734
+#: gui/mrvPreferences.cpp:1746
 msgid "Could not set InvisibleBox style"
 msgstr "No pude setear el estilo de la InvisibleBox"
 
-#: gui/mrvPreferences.cpp:1668
+#: gui/mrvPreferences.cpp:1680
 msgid "Could not set Item style"
 msgstr "No pude setear el estilo del Item"
 
-#: gui/mrvPreferences.cpp:1721
+#: gui/mrvPreferences.cpp:1733
 msgid "Could not set Message style"
 msgstr "No pude setear el estilo del Message"
 
-#: gui/mrvPreferences.cpp:1791
+#: gui/mrvPreferences.cpp:1803
 msgid "Could not set RadioButton style"
 msgstr "No pude setear el estilo del RadioButton"
 
-#: gui/mrvPreferences.cpp:1808
+#: gui/mrvPreferences.cpp:1820
 msgid "Could not set Tooltip style"
 msgstr "No pude setear el estilo del Tooltip"
 
-#: gui/mrvPreferences.cpp:1634
+#: gui/mrvPreferences.cpp:1646
 msgid "Could not set ValueInput style"
 msgstr "No pude setear el estilo del ValueInput"
 
@@ -2589,39 +2589,39 @@ msgstr "Fecha"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/CMedia.cpp:157 core/CMedia.cpp:3866
+#: core/CMedia.cpp:158 core/CMedia.cpp:3868
 msgid "Decode Buffer Full"
 msgstr "Buffer de Decodificación Lleno"
 
-#: core/CMedia.cpp:151 core/CMedia.cpp:3848
+#: core/CMedia.cpp:152 core/CMedia.cpp:3850
 msgid "Decode Done"
 msgstr "Decodificación Terminada"
 
-#: core/CMedia.cpp:152 core/CMedia.cpp:3851
+#: core/CMedia.cpp:153 core/CMedia.cpp:3853
 msgid "Decode Error"
 msgstr "Error de Decodificación"
 
-#: core/CMedia.cpp:156 core/CMedia.cpp:3863
+#: core/CMedia.cpp:157 core/CMedia.cpp:3865
 msgid "Decode Loop End"
 msgstr "Loop de Final en Decodificación"
 
-#: core/CMedia.cpp:155 core/CMedia.cpp:3860
+#: core/CMedia.cpp:156 core/CMedia.cpp:3862
 msgid "Decode Loop Start"
 msgstr "Loop de Comienzo en Decodificación"
 
-#: core/CMedia.cpp:149 core/CMedia.cpp:3842
+#: core/CMedia.cpp:150 core/CMedia.cpp:3844
 msgid "Decode Missing Frame"
 msgstr "Decodificación Faltante de Cuadro"
 
-#: core/CMedia.cpp:153 core/CMedia.cpp:3854
+#: core/CMedia.cpp:154 core/CMedia.cpp:3856
 msgid "Decode Missing Samples"
 msgstr "Decodificacion Faltante de Samples"
 
-#: core/CMedia.cpp:154 core/CMedia.cpp:3857
+#: core/CMedia.cpp:155 core/CMedia.cpp:3859
 msgid "Decode No Stream"
 msgstr "Decodificacion sin Pista"
 
-#: core/CMedia.cpp:150 core/CMedia.cpp:3845
+#: core/CMedia.cpp:151 core/CMedia.cpp:3847
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
@@ -2714,7 +2714,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:766
+#: video/mrvGLLut3d.cpp:841
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -2722,7 +2722,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:772
+#: video/mrvGLLut3d.cpp:847
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -3378,7 +3378,7 @@ msgstr "Imagen GIF"
 msgid "GLEW Initialize Error: "
 msgstr "Error de Inicializar GLEW: "
 
-#: video/mrvGLShader.cpp:240
+#: video/mrvGLShader.cpp:241
 msgid "GLSL error in file "
 msgstr "Error GLSL en archivo "
 
@@ -3455,7 +3455,7 @@ msgstr "Obtuve: "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2838
-#: core/CMedia.cpp:1717 core/CMedia.cpp:1783 core/exrImage.cpp:2915
+#: core/CMedia.cpp:1718 core/CMedia.cpp:1784 core/exrImage.cpp:2915
 #: core/wandImage.cpp:1034 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5988
 #: gui/mrvImageView.cpp:6412
 msgid "Green"
@@ -3856,11 +3856,11 @@ msgstr "Entero"
 msgid "Internal error in wizard selection: "
 msgstr "Error interno en selección del wizard: "
 
-#: video/mrvGLLut3d.cpp:716
+#: video/mrvGLLut3d.cpp:791
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
-#: video/mrvGLLut3d.cpp:760
+#: video/mrvGLLut3d.cpp:835
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -3880,7 +3880,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:731
+#: video/mrvGLLut3d.cpp:806
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -4165,11 +4165,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:2625
+#: video/mrvGLEngine.cpp:2762
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:2630
+#: video/mrvGLEngine.cpp:2767
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -4219,7 +4219,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1932
-#: core/CMedia.cpp:1730 core/CMedia.cpp:1785 core/exrImage.cpp:2914
+#: core/CMedia.cpp:1731 core/CMedia.cpp:1786 core/exrImage.cpp:2914
 #: core/wandImage.cpp:1033 gui/mrvImageView.cpp:184 gui/mrvImageView.cpp:6002
 #: gui/mrvImageView.cpp:6415 gui/mrvImageInformation.cpp:2126
 msgid "Lumma"
@@ -4500,15 +4500,15 @@ msgstr "Próxima Imagen"
 msgid "No"
 msgstr "No"
 
-#: video/mrvGLLut3d.cpp:1039 video/mrvGLLut3d.cpp:1084
+#: video/mrvGLLut3d.cpp:1114 video/mrvGLLut3d.cpp:1159
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:1037 video/mrvGLLut3d.cpp:1082
+#: video/mrvGLLut3d.cpp:1112 video/mrvGLLut3d.cpp:1157
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:1041 video/mrvGLLut3d.cpp:1086
+#: video/mrvGLLut3d.cpp:1116 video/mrvGLLut3d.cpp:1161
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -4558,11 +4558,11 @@ msgstr "Sin memoria para grafica de filtro"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:1088
+#: video/mrvGLLut3d.cpp:1163
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:1043
+#: video/mrvGLLut3d.cpp:1118
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -4697,7 +4697,7 @@ msgid "OCIO config (*.{"
 msgstr "Configuracion de OCIO (*.{"
 
 #
-#: gui/mrvPreferences.cpp:1068
+#: gui/mrvPreferences.cpp:1080
 msgid "OCIO environment variable is not set.  Defaulting to CTL. "
 msgstr "La variable de entorno OCIO no existe.  Usando CTL."
 
@@ -4721,13 +4721,13 @@ msgstr "OCIO/Vista"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:981
+#: video/mrvGLLut3d.cpp:1056
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:957
+#: video/mrvGLLut3d.cpp:1032
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -5210,7 +5210,7 @@ msgstr "Programa %d: %s"
 msgid "Program Version"
 msgstr "Versión del Programa"
 
-#: video/mrvGLShader.cpp:230
+#: video/mrvGLShader.cpp:231
 msgid "Program did not link. Error: "
 msgstr "Programa no linqueó.  Error: "
 
@@ -5286,7 +5286,7 @@ msgstr "RGBA"
 msgid "RLE"
 msgstr "RLE"
 
-#: video/mrvGLLut3d.cpp:464
+#: video/mrvGLLut3d.cpp:529
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr "ROLE_SCENE_LINEAR no está definido."
 
@@ -5294,13 +5294,13 @@ msgstr "ROLE_SCENE_LINEAR no está definido."
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:932
+#: video/mrvGLLut3d.cpp:1007
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:901
+#: video/mrvGLLut3d.cpp:976
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -5354,7 +5354,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1929
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2820
-#: core/CMedia.cpp:1716 core/CMedia.cpp:1783 core/exrImage.cpp:2915
+#: core/CMedia.cpp:1717 core/CMedia.cpp:1784 core/exrImage.cpp:2915
 #: core/wandImage.cpp:1034 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5983
 #: gui/mrvImageView.cpp:6412
 msgid "Red"
@@ -5843,7 +5843,7 @@ msgstr "Setea la ganancia por defecto cuando mrViewer empieza."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "Setea la gama por defecto cuando mrViewer comienza."
 
-#: gui/mrvPreferences.cpp:1036
+#: gui/mrvPreferences.cpp:1048
 msgid "Setting OCIO environment variable to:"
 msgstr "Seteando la variable de entorno OCIO a:"
 
@@ -5851,7 +5851,7 @@ msgstr "Seteando la variable de entorno OCIO a:"
 msgid "Settings"
 msgstr "Seteos"
 
-#: video/mrvGLShader.cpp:215
+#: video/mrvGLShader.cpp:216
 msgid "Shader did not compile. Error: "
 msgstr "Shader no compiló.  Error: "
 
@@ -6915,11 +6915,11 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLLut3d.cpp:493
+#: video/mrvGLLut3d.cpp:568
 msgid "Unknown error returned from OCIO processor"
 msgstr "Error desconocido retornado del procesador de OCIo"
 
-#: video/mrvGLLut3d.cpp:589
+#: video/mrvGLLut3d.cpp:664
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
@@ -6956,7 +6956,7 @@ msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-96-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:175
-#: core/aviImage.cpp:127 core/aviImage.cpp:135 video/mrvGLQuad.cpp:1095
+#: core/aviImage.cpp:127 core/aviImage.cpp:135 video/mrvGLQuad.cpp:1102
 #: video/mrvGLSphere.cpp:254 video/mrvGLCube.cpp:253
 msgid "Unspecified"
 msgstr "Sin Especificar"
@@ -7759,7 +7759,7 @@ msgstr ""
 msgid "ac3"
 msgstr ""
 
-#: core/CMedia.cpp:2719 core/CMedia.cpp:2750
+#: core/CMedia.cpp:2720 core/CMedia.cpp:2751
 msgid "audio"
 msgstr "audio"
 
@@ -7784,15 +7784,15 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:3013 core/CMedia.cpp:3097
+#: core/CMedia.cpp:3014 core/CMedia.cpp:3098
 msgid "clean effects"
 msgstr "efectos en limpio"
 
-#: core/CMedia.cpp:3001 core/CMedia.cpp:3085
+#: core/CMedia.cpp:3002 core/CMedia.cpp:3086
 msgid "comment"
 msgstr "comentarios"
 
-#: core/CMedia.cpp:2722 core/CMedia.cpp:2753
+#: core/CMedia.cpp:2723 core/CMedia.cpp:2754
 msgid "data"
 msgstr "datos"
 
@@ -7804,11 +7804,11 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
-#: core/CMedia.cpp:2995 core/CMedia.cpp:3079
+#: core/CMedia.cpp:2996 core/CMedia.cpp:3080
 msgid "default"
 msgstr "defecto"
 
-#: core/CMedia.cpp:2997 core/CMedia.cpp:3081
+#: core/CMedia.cpp:2998 core/CMedia.cpp:3082
 msgid "dub"
 msgstr "doblaje"
 
@@ -7830,7 +7830,7 @@ msgstr "coma flotante"
 msgid "float (32-bits per channel)"
 msgstr "coma flotante (32-bits por canal)"
 
-#: core/CMedia.cpp:3007 core/CMedia.cpp:3091
+#: core/CMedia.cpp:3008 core/CMedia.cpp:3092
 msgid "forced"
 msgstr "forzado"
 
@@ -7855,7 +7855,7 @@ msgstr "tiene un numero mágico inválido en el encabezado."
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3009 core/CMedia.cpp:3093
+#: core/CMedia.cpp:3010 core/CMedia.cpp:3094
 msgid "hearing impaired"
 msgstr "deficiencias auditivas"
 
@@ -7868,7 +7868,7 @@ msgstr ""
 msgid "is a Softimage file, but not a PIC file."
 msgstr "is un archivo Softimage, pero no un archivo PIC."
 
-#: core/CMedia.cpp:3005 core/CMedia.cpp:3089
+#: core/CMedia.cpp:3006 core/CMedia.cpp:3090
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -7885,7 +7885,7 @@ msgstr "Código de Llave"
 msgid "listen to socket failed\n"
 msgstr "Escuchar al enchufe falló\n"
 
-#: core/CMedia.cpp:3003 core/CMedia.cpp:3087
+#: core/CMedia.cpp:3004 core/CMedia.cpp:3088
 msgid "lyrics"
 msgstr "letra lírica"
 
@@ -8036,7 +8036,7 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame No hay datos de pixel a cambiar"
 
-#: core/CMedia.cpp:2999 core/CMedia.cpp:3083
+#: core/CMedia.cpp:3000 core/CMedia.cpp:3084
 msgid "original"
 msgstr "original"
 
@@ -8061,7 +8061,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:2725 core/CMedia.cpp:2756
+#: core/CMedia.cpp:2726 core/CMedia.cpp:2757
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -8073,11 +8073,11 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2974 core/CMedia.cpp:3058
+#: core/CMedia.cpp:2975 core/CMedia.cpp:3059
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:2728 core/CMedia.cpp:2759 core/wandImage.cpp:555
+#: core/CMedia.cpp:2729 core/CMedia.cpp:2760 core/wandImage.cpp:555
 msgid "unknown"
 msgstr "desconocido"
 
@@ -8093,11 +8093,11 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2716 core/CMedia.cpp:2747
+#: core/CMedia.cpp:2717 core/CMedia.cpp:2748
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3011 core/CMedia.cpp:3095
+#: core/CMedia.cpp:3012 core/CMedia.cpp:3096
 msgid "visual impaired"
 msgstr "discapacitado visual"
 

@@ -2603,6 +2603,140 @@ const char* ARBFP1Shader =
 "# 182 instructions, 2 R-regs, 8 H-regs\n"
 ;
 
+const char* fragText =
+"// Images\n"
+"uniform sampler2D fgImage;\n"
+"uniform sampler3D lut;\n"
+"\n"
+"// Interlaced/Checkerboard controls\n"
+"uniform int mask;\n"
+"uniform int mask_value = 1000;\n"
+"uniform int height;\n"
+"uniform int width;\n"
+"\n"
+"// Standard controls\n"
+"uniform float gain;\n"
+"uniform float gamma;\n"
+"uniform int   channel;\n"
+"\n"
+"// Normalization variables\n"
+"uniform bool  unpremult;\n"
+"uniform bool  premult;\n"
+"uniform bool  enableNormalization;\n"
+"uniform float normMin;\n"
+"uniform float normSpan;\n"
+"\n"
+"// Lut variables\n"
+"uniform bool  enableLut;\n"
+"uniform bool  lutF;\n"
+"uniform float lutMin;\n"
+"uniform float lutMax;\n"
+"uniform float lutM;\n"
+"uniform float lutT;\n"
+"\n"
+"\n"
+"void main()\n"
+"{ \n"
+"  //\n"
+"  // Sample RGBA texture. \n"
+"  //\n"
+"  vec4 c = texture2D(fgImage, gl_TexCoord[0].st);\n"
+"\n"
+"  //\n"
+"  // Apply normalization\n"
+"  //\n"
+"  if (enableNormalization)\n"
+"    {\n"
+"      c.rgb = (c.rgb - normMin) / normSpan;\n"
+"    }\n"
+"\n"
+"  //\n"
+"  // Apply 3D color lookup table (in log space).\n"
+"  //\n"
+"  if (enableLut)\n"
+"    {\n"
+"      c.rgb = OCIODisplay( c, lut ); \n"
+"    }\n"
+"\n"
+"  if ( unpremult && c.a != 0.0 )\n"
+"  {\n"
+"      c.rgb /= c.a;\n"
+"  }\n"
+"\n"
+"  //\n"
+"  // Apply gain \n"
+"  //\n"
+"  c.rgb *= gain;\n"
+"\n"
+"  //\n"
+"  // Apply video gamma correction.\n"
+"  // \n"
+"  c.r = pow( c.r, gamma );\n"
+"  c.g = pow( c.g, gamma );\n"
+"  c.b = pow( c.b, gamma );\n"
+"\n"
+"  //\n"
+"  // Apply channel selection\n"
+"  // \n"
+"  if ( channel == 1 )\n"
+"    {\n"
+"      c.rgb = c.rrr;\n"
+"    }\n"
+"  else if ( channel == 2 )\n"
+"    {\n"
+"      c.rgb = c.ggg;\n"
+"    }\n"
+"  else if ( channel == 3 )\n"
+"    {\n"
+"      c.rgb = c.bbb;\n"
+"    }\n"
+"  else if ( channel == 4 )\n"
+"    {\n"
+"      c.rgb = c.aaa;\n"
+"    }\n"
+"  else if ( channel == 5 )\n"
+"    {\n"
+"      c.r *= 0.5;\n"
+"      c.r += c.a * 0.5;\n"
+"    }\n"
+"  else if ( channel == 6 )\n"
+"    {\n"
+"      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
+"    }\n"
+"\n"
+"  int x = 1000;\n"
+"  if ( mask == 1.0 )  // even odd rows\n"
+"  {\n"
+"      float f = tc.y * height;\n"
+"      x = int( mod( f, 2 ) );\n"
+"  }\n"
+"  else if ( mask == 2.0 )  // even-odd columns\n"
+"  {\n"
+"      float f2 = tc.x * width;\n"
+"      x = int( mod( f2, 2 ) );\n"
+"  }\n"
+"  else if ( mask == 3.0 ) // checkerboard\n"
+"  {\n"
+"      float f = tc.y * height;\n"
+"      float f2 = tc.x * width;\n"
+"      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );\n"
+"  }\n"
+"\n"
+"\n"
+"  if ( x == mask_value )\n"
+"  { \n"
+"      c.r = c.g = c.b = c.a = 0.0;\n"
+"  }\n"
+"\n"
+"  if ( premult )\n"
+"  {\n"
+"      c.rgb *= c.a;\n"
+"  }\n"
+"\n"
+"  gl_FragColor = c;\n"
+"\n"
+"}\n";
+
 }
 
 void GLEngine::handle_cg_errors()
@@ -2617,25 +2751,28 @@ void
 GLEngine::loadBuiltinFragShader()
 {
 
-  _rgba = new GLShader();
+    if ( _hardwareShaders = kGLSL )
+        return;
+    
+    _rgba = new GLShader();
 
-  try {
-      if ( _hardwareShaders == kNV30 )
-      {
-          LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
-          _rgba->load( N_("builtin"), NVShader );
-      }
-      else 
-      {
-          LOG_INFO( _("Loading built-in arbfp1 rgba shader") );
-          _hardwareShaders = kARBFP1;
-          _rgba->load( N_("builtin"), ARBFP1Shader );
-      }
-  }
-  catch( const std::exception& e )
-  {
+    try {
+        if ( _hardwareShaders == kNV30 )
+        {
+            LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
+            _rgba->load( N_("builtin"), NVShader );
+        }
+        else 
+        {
+            LOG_INFO( _("Loading built-in arbfp1 rgba shader") );
+            _hardwareShaders = kARBFP1;
+            _rgba->load( N_("builtin"), ARBFP1Shader );
+        }
+    }
+    catch( const std::exception& e )
+    {
       LOG_ERROR( e.what() );
-  }
+    }
 
 }
 
