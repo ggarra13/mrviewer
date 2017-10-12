@@ -203,7 +203,8 @@ namespace mrv {
 
 	GLhandleARB shader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
 
-	glShaderSource( shader, 1, (const GLcharARB**)&code, &len ); 
+	glShaderSource( shader, 1, (const GLcharARB**)&code, &len );
+        
 	glCompileShaderARB( shader );
 
 	GLint bDidCompile;
