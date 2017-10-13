@@ -328,16 +328,6 @@ lookup3D
       glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, gl_clamp );
       glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, gl_clamp );
 
-#if 0
-      glTexImage3D( GL_TEXTURE_3D,
-                    0,			// level
-                    GL_RGB32F,           // internal format
-                    _lutN, _lutN, _lutN,	// width, height, depth
-                    0,			// border
-                    GL_RGB,		// format
-                    GL_FLOAT,	// type
-                    (char *) &lut[0] );
-#else
       glTexImage3D( GL_TEXTURE_3D,
                     0,			// level
                     GL_RGBA32F,           // internal format
@@ -346,7 +336,6 @@ lookup3D
                     GL_RGBA,		// format
                     GL_FLOAT,	// type
                     (char *) &lut[0] );
-#endif
   }
 
 
@@ -413,7 +402,7 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
 
     lutM = 1.0 / (logLutMax - logLutMin);
     lutT = -lutM * logLutMin;
-    
+
     for (size_t ib = 0; ib < _lutN; ++ib)
     {
         float b = float(ib) / float(_lutN - 1.0);
@@ -499,15 +488,15 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           transform->setInputColorSpaceName( ics.c_str() );
           transform->setDisplay( display.c_str() );
           transform->setView( view.c_str() );
-        
-          OCIO::ConstContextRcPtr context = config->getCurrentContext();
           
           OCIO::ConstProcessorRcPtr processor =
-          config->getProcessor(context, transform,
-                               OCIO::TRANSFORM_DIR_FORWARD);
+          config->getProcessor( transform );
 
-          OCIO::PackedImageDesc img(&lut[0], _lutN,
-                                    /*height*/ 1, /*channels*/ 4);
+          
+          OCIO::PackedImageDesc img(&lut[0],
+                                    /* width */ lut_size()/4,
+                                    /*height*/ 1,
+                                    /*channels*/ 4);
           processor->apply( img );
           
 
