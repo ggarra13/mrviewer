@@ -1,3 +1,5 @@
+v3.8.6   - Made OCIO environment setting print only once on change.
+
 v3.8.5   - Added tooltips to all OCIO color spaces and to the Config line.
 	 - Allowed changing OCIO config file from the Preference window.
 	 - Added a button to toggle OCIO on and off.  By default, it is
@@ -6,6 +8,11 @@ v3.8.5   - Added tooltips to all OCIO color spaces and to the Config line.
 	   MRV_OCIO_16bits_ICS, MRV_OCIO_32bits_ICS, MRV_OCIO_float_ICS
 	   to control the default input color space for the corresponding
 	   type of image.
+	 - For OCIO to perform better, it is recommended you use a 64x64x64
+	   lattice and a num stops of 8.  mrViewer will set that to the
+	   default when loaded the first time.
+	 - Made the ODT.Academy.RGBmonitor_D60sim_100nits_dim the default
+	   ODT for CTL.
 	 
 
 v3.8.4   - Add a CUBE regex line in cube2ctl.rb/py for compatability with
