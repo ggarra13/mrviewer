@@ -4880,7 +4880,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
    static Flu_File_Chooser *fc = NULL;
 
 
-   if (! retname.empty() )
+   if ( filename == NULL )
        filename = retname.c_str();
 
   if( !fc )
@@ -4895,7 +4895,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
     }
   else
   {
-      std::string dir = retname;
+      std::string dir = filename;
       size_t pos = dir.rfind( '/' );
       if ( pos != std::string::npos )
       {
