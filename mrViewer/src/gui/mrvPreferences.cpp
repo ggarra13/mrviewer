@@ -465,7 +465,9 @@ fltk::StyleSet*     newscheme = NULL;
         const char* var = getenv( "OCIO" );
 
         if ( var && strlen(var) > 0 )
+        {
             tmp = true;
+        }
     }
     else
     {
@@ -474,7 +476,9 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsUseOcio->value( tmp );
     use_ocio = (bool)tmp;
     ocio.get( "config", tmpS, "", 2048 );
-    uiPrefs->uiPrefsOCIOConfig->text( tmpS );
+    
+    const char* var = environmentSetting( "OCIO", tmpS, true);
+    if ( var ) uiPrefs->uiPrefsOCIOConfig->text( var );
     
     
     fltk::Preferences ics( ocio, "ICS" );
@@ -705,8 +709,8 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences lut( base, "lut" );
-    lut.get("quality", tmpS, "128x128x128", 2047 );
-    uiPrefs->uiLUT_quality->value(3);
+    lut.get("quality", tmpS, "64x64x64", 2047 );
+    uiPrefs->uiLUT_quality->value(2);
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
       {
@@ -717,9 +721,17 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
-    lut.get("number_stops", tmp, 10 );
-    uiPrefs->uiPrefsNumStops->value( tmp );
- 
+    lut.get("number_stops", tmp, 8 );
+    if ( use_ocio && version < 3 )
+    {
+        uiPrefs->uiPrefsNumStops->value(8);
+        uiPrefs->uiLUT_quality->value(2);
+    }
+    else
+    {
+        uiPrefs->uiPrefsNumStops->value( tmp );
+    }
+    
     {
       fltk::Preferences odt( lut, "ODT" );
       {
@@ -728,7 +740,7 @@ fltk::StyleSet*     newscheme = NULL;
 
 	fltk::Preferences ctl( odt, "CTL" );
 	{
-	  ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim.a1.0.0", 2048 );
+	  ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
 	  ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM", 
 						  tmpS, ok );
 
@@ -1040,18 +1052,22 @@ static const char* kCLocale = "C";
 
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
     
-    const char* var = environmentSetting( "OCIO",
-                                          uiPrefs->uiPrefsOCIOConfig->text(),
-                                          true);
+    const char* var = uiPrefs->uiPrefsOCIOConfig->text();
+    
     if ( var && use_ocio && strlen(var) > 0 )
     {
-        mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
-                     << std::endl );
-        mrvLOG_INFO( "ocio", var << std::endl );
+        static std::string ocioconfig ;
         char buf[2048];
         sprintf( buf, "OCIO=%s", var );
         putenv( buf );
         
+        if ( ocioconfig != var )
+        {
+            mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
+                         << std::endl );
+            mrvLOG_INFO( "ocio", var << std::endl );
+            ocioconfig = var;
+        }
         uiPrefs->uiPrefsOCIOConfig->text( var );
         
         std::locale::global( std::locale("C") );
