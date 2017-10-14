@@ -1039,18 +1039,27 @@ static const char* kCLocale = "C";
       view->safe_areas(true);
 
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
+
     
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
     if ( var && use_ocio && strlen(var) > 0 )
     {
-        mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
-                     << std::endl );
-        mrvLOG_INFO( "ocio", var << std::endl );
+        static std::string old_ocio;
+
+        if ( old_ocio != var )
+        {
+            mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
+                         << std::endl );
+            mrvLOG_INFO( "ocio", var << std::endl );
+            old_ocio = var;
+        }
+        
         char buf[2048];
         sprintf( buf, "OCIO=%s", var );
         putenv( buf );
+
         
         uiPrefs->uiPrefsOCIOConfig->text( var );
         
