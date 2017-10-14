@@ -1314,13 +1314,13 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {3D Luts} open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Algorithm open
+              label Algorithm open selected
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
-              xywh {40 21 343 105} box ROUNDED_BOX
+              xywh {40 96 343 95} box ROUNDED_BOX
             } {
               {fltk::Choice} ODT_algorithm {
                 label ODT
@@ -1332,11 +1332,11 @@ if ( x == Preferences::kLutOnlyCTL )
     uiODT_ICC->deactivate();
 if ( x == Preferences::kLutOnlyICC )
     uiODT_CTL->deactivate();
-v->refresh();}
+v->refresh();} open
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
 When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
-                xywh {95 18 195 25} box THIN_DOWN_BOX
+                xywh {95 20 195 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1366,7 +1366,7 @@ v->refresh();}
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
-                xywh {95 70 195 25} box THIN_DOWN_BOX
+                xywh {95 55 195 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1385,7 +1385,7 @@ If unsure what this means, keep your display and images setting always using the
             {fltk::Group} {} {
               label Quality open
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
-              xywh {44 240 339 96} box ROUNDED_BOX
+              xywh {44 269 339 76} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
                 label Resolution
@@ -1404,7 +1404,7 @@ Size     Memory    Max. Error
 It is recommended this setting is left at 64x64x64 or 128x128x128.
 
 }
-                xywh {120 25 170 25} box THIN_DOWN_BOX
+                xywh {120 14 170 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {No Lut}
@@ -1431,12 +1431,12 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
               {fltk::ValueInput} uiPrefsNumStops {
                 label {Number of Fstops}
                 tooltip {Number of FStops the LUT will cover.  Higher numbers show more detail in the black levels, while it makes the midrange be less defined.}
-                xywh {224 56 65 25} minimum 1 maximum 20 step 1 value 10
+                xywh {224 45 65 25} minimum 1 maximum 20 step 1 value 10
               }
             }
             {fltk::Group} {} {
               label {Rendering Intent} open
-              xywh {43 151 340 45} box ROUNDED_BOX
+              xywh {43 209 340 45} box ROUNDED_BOX
             } {
               {fltk::Choice} uiICC_intent {
                 label ICC
@@ -1461,35 +1461,43 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
                   }
               }
             }
-          }
-          {fltk::Group} {} {
-            label OCIO open
-            xywh {7 26 423 355} align 5 box EMBOSSED_BOX labelsize 14
-          } {
-            {fltk::Input} uiPrefsOCIOConfig {
-              label {OCIO Config File} selected
-              tooltip {This is the path to your config.ocio file.  It can be set with the environment variable OCIO, which takes precedence over any saved setting.}
-              xywh {29 34 320 30} align 1
-            }
-            {fltk::Button} {} {
-              label Pick
-              user_data m user_data_type {mrv::ViewerUI*}
-              callback {mrv::PreferencesUI* uiPrefs = v->uiPrefs;
+            {fltk::Group} {} {open
+              xywh {29 4 380 75}
+            } {
+              {fltk::CheckButton} uiPrefsUseOcio {
+                label {Use OCIO}
+                callback {mrv::Preferences::use_ocio = o->value();}
+                tooltip {Use OCIO or revert to CTL/ICC.}
+                xywh {5 5 25 25}
+              }
+              {fltk::Group} {} {open
+                xywh {5 44 375 31}
+              } {
+                {fltk::Input} uiPrefsOCIOConfig {
+                  label {OCIO Config File}
+                  tooltip {This is the path to your config.ocio file.  It can be set with the environment variable OCIO, which takes precedence over any saved setting.}
+                  xywh {0 0 320 30} align 1
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data m user_data_type {mrv::ViewerUI*}
+                  callback {mrv::PreferencesUI* uiPrefs = v->uiPrefs;
 std::string r = open_ocio_config( uiPrefs->uiPrefsOCIOConfig->text() );
 if ( r.empty() ) return;
 
 uiPrefs->uiPrefsOCIOConfig->text( r.c_str() );
 uiPrefs->run(v);}
-              tooltip {Pick a config.ocio file from disk.
+                  tooltip {Pick a config.ocio file from disk.
 }
-              xywh {349 33 55 31}
+                  xywh {320 0 55 31}
+                }
+              }
             }
-            {fltk::CheckButton} uiPrefsUseOcio {
-              label {Use OCIO}
-              callback {mrv::Preferences::use_ocio = o->value();}
-              tooltip {Use OCIO or revert to CTL/ICC.}
-              xywh {30 75 25 25}
-            }
+          }
+          {fltk::Group} {} {
+            label OCIO
+            xywh {7 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
             {fltk::Group} uiOCIO_ICS {
               label {Input Color Space} open
               xywh {42 152 375 154} box ROUNDED_BOX
@@ -2362,7 +2370,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
