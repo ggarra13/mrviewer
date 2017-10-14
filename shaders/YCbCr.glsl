@@ -46,8 +46,7 @@ uniform float lutMin;
 uniform float lutMax;
 uniform float lutM;
 uniform float lutT;
-uniform float scale;
-uniform float offset;
+
 
 void main()
 { 
@@ -125,7 +124,7 @@ void main()
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
+      c.rgb = exp( texture3D(lut, c.rgb).rgb ); 
     }
 
   if ( unpremult )
