@@ -6,6 +6,8 @@ v3.8.5   - Added tooltips to all OCIO color spaces and to the Config line.
 	   MRV_OCIO_16bits_ICS, MRV_OCIO_32bits_ICS, MRV_OCIO_float_ICS
 	   to control the default input color space for the corresponding
 	   type of image.
+	 - Reversed image coordinates to match Nuke/Natron.  Now the left
+	   bottom corner is 0,0, while the top right one is width/height.
 	 
 
 v3.8.4   - Add a CUBE regex line in cube2ctl.rb/py for compatability with
