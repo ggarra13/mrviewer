@@ -1,9 +1,9 @@
 !!FP1.0
-# cgc version 3.0.0016, build date Feb 13 2011
+# cgc version 3.1.0013, build date Apr 24 2012
 # command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile fp30
 # source file: YCbCr.cg
 #vendor NVIDIA Corporation
-#version 3.0.0.16
+#version 3.1.0.13
 #profile fp30
 #program main
 #semantic main.YImage : TEXUNIT0
@@ -33,8 +33,6 @@
 #semantic main.lutMax
 #semantic main.lutM
 #semantic main.lutT
-#semantic main.scale
-#semantic main.offset
 #var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
 #var sampler2D YImage : TEXUNIT0 : texunit 0 : 1 : 1
 #var sampler2D UImage : TEXUNIT1 : texunit 1 : 2 : 1
@@ -63,8 +61,6 @@
 #var half lutMax :  : lutMax : 25 : 1
 #var half lutM :  : lutM : 26 : 1
 #var half lutT :  : lutT : 27 : 1
-#var half scale :  : scale : 28 : 1
-#var half offset :  : offset : 29 : 1
 #var half4 main.pixel : $vout.COLOR : COL : -1 : 1
 #default mask = 0
 #default mask_value = 0
@@ -85,8 +81,6 @@
 #default Kr = 1.1640625 0 1.5957031
 #default Kg = 1.1640625 -0.3918457 -0.81298828
 #default Kb = 1.1640625 2.0175781 0
-#default scale = 1
-#default offset = 0
 DECLARE coeffs = {0};
 DECLARE Koff = {-0.0625,-0.5,-0.5};
 DECLARE Kr = {1.1640625,0,1.5957031};
@@ -101,8 +95,6 @@ DECLARE lutMax;
 DECLARE lutMin;
 DECLARE lutT;
 DECLARE lutM;
-DECLARE scale = {1};
-DECLARE offset = {0};
 DECLARE gain = {1};
 DECLARE gamma = {1};
 DECLARE channel = {0};
@@ -202,9 +194,7 @@ LG2H  H0.z, H0.z;
 LG2H  H0.y, H0.y;
 MULH  H0.xyz, H0, lutM.x;
 MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H1.w;
-MOVH  H0.x, offset;
-MADH  H0.xyz, H1, scale.x, H0.x;
-TEX   R0.xyz, H0, TEX3, 3D;
+TEX   R0.xyz, H1, TEX3, 3D;
 POWR  H0.x, {2.718282}.x, R0.x;
 POWR  H0.y, {2.718282}.x, R0.y;
 POWR  H0.z, {2.718282}.x, R0.z;
@@ -310,4 +300,4 @@ MOVXC RC.x, premult;
 MULH  o[COLH].xyz(NE.x), H0, H0.w;
 MOVH  o[COLH].w, H0;
 END
-# 198 instructions, 2 R-regs, 8 H-regs
+# 196 instructions, 2 R-regs, 8 H-regs
