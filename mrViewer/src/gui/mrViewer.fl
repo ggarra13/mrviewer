@@ -667,9 +667,9 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {438 303 700 450} hide resizable
+        xywh {530 630 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1464,10 +1464,10 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
           }
           {fltk::Group} {} {
             label OCIO open
-            xywh {7 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {7 26 423 355} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Input} uiPrefsOCIOConfig {
-              label {OCIO Config File}
+              label {OCIO Config File} selected
               tooltip {This is the path to your config.ocio file.  It can be set with the environment variable OCIO, which takes precedence over any saved setting.}
               xywh {29 34 320 30} align 1
             }
@@ -1479,7 +1479,7 @@ std::string r = open_ocio_config( uiPrefs->uiPrefsOCIOConfig->text() );
 if ( r.empty() ) return;
 
 uiPrefs->uiPrefsOCIOConfig->text( r.c_str() );
-uiPrefs->run(v);} selected
+uiPrefs->run(v);}
               tooltip {Pick a config.ocio file from disk.
 }
               xywh {349 33 55 31}
@@ -2575,8 +2575,7 @@ for ( ; w ; w = w->next() )
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class LogUI {open
-  } {
+  class LogUI {} {
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
