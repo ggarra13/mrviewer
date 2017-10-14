@@ -37,9 +37,7 @@ Out main(
 	 uniform half   lutMin, 
 	 uniform half   lutMax, 
 	 uniform half   lutM, 
-	 uniform half   lutT,
-         uniform half   scale = 1.0,
-         uniform half   offset = 0.0
+	 uniform half   lutT
 	  )
 { 
   //
@@ -108,7 +106,7 @@ Out main(
       else
 	{
 	  c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-	  c.rgb = exp( tex3D(lut, scale * c.rgb + offset ).rgb );
+	  c.rgb = exp( tex3D(lut, c.rgb).rgb );
 	}
     }
 
