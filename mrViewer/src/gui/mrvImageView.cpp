@@ -1351,7 +1351,9 @@ void ImageView::copy_pixel() const
 
   if ( outside || !pic ) return;
 
-  CMedia::Pixel rgba = pic->pixel( xp, yp );
+  int ypr = pic->height() - yp - 1;
+  
+  CMedia::Pixel rgba = pic->pixel( xp, ypr );
   pixel_processed( img, rgba );
 
   mrv::Recti daw[2];
@@ -1394,7 +1396,8 @@ void ImageView::copy_pixel() const
       if ( pic && xp < (int)pic->width() && yp < (int)pic->height() )
       {
           float r = rgba.r;
-          rgba = pic->pixel( xp, yp );
+          ypr = pic->height() - yp - 1;
+          rgba = pic->pixel( xp, ypr );
           pixel_processed( img, rgba );
           rgba.r = r;
       }
@@ -2820,15 +2823,6 @@ int ImageView::leftMouseDown(int x, int y)
 	 double yf = y;
 
 	 data_window_coordinates( img, xf, yf );
-
-         const mrv::Recti& dpw = img->display_window();
-
-         unsigned int H = dpw.h();
-         if ( H == 0 ) H = img->height();
-
-         // yf = -yf;
-         // yf = H - yf;
-         // yf -= H;
 
          const mrv::Recti& daw = img->data_window();
          xf += daw.x();
@@ -4296,9 +4290,13 @@ void ImageView::mouseDrag(int x,int y)
                if ( xf >= W - daw[0].x() )
                {
                    right = true;
-                   xf -= W;
-                   //xn -= W;
 
+                   if ( _mode == kSelection )
+                   {
+                       xf -= W;
+                       xn -= W;
+                   }
+                   
                    if ( stereo_out & CMedia::kStereoRight )
                    {
                        idx = 0;
@@ -4322,9 +4320,14 @@ void ImageView::mouseDrag(int x,int y)
                if ( yf >= H - daw[0].y() )
                {
                    bottom = true;
-                   // yf -= H;
-                   // yn -= H;
 
+                   if ( _mode == kSelection )
+                   {
+                       yf -= H;
+                       yn -= H;
+                   }
+
+                   
                    if ( stereo_out & CMedia::kStereoRight )
                    {
                        idx = 0;
