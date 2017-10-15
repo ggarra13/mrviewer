@@ -1314,11 +1314,11 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open
-            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            label {3D Luts} open selected
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Algorithm open selected
+              label Algorithm open
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
               xywh {40 96 343 95} box ROUNDED_BOX
             } {
@@ -1496,11 +1496,11 @@ uiPrefs->run(v);}
           }
           {fltk::Group} {} {
             label OCIO
-            xywh {7 26 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 355} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
               label {Input Color Space} open
-              xywh {42 152 375 154} box ROUNDED_BOX
+              xywh {30 56 375 154} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
                 xywh {78 19 270 45}
@@ -1593,7 +1593,7 @@ uiOCIO_float_ics->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths}
+            label {CTL Paths} open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
