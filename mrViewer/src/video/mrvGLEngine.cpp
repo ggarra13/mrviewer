@@ -1024,7 +1024,7 @@ void GLEngine::draw_mask( const float pct )
   {
       dpw.w( dpw.w() + dpw2.w() );
   }
-  else if ( img->stereo_output() & CMedia::kStereoTopBottom )
+  else if ( img->stereo_output() & CMedia::kStereoBottomTop )
   {
       dpw.h( dpw.h() + dpw2.h() );
   }
@@ -1191,7 +1191,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
         glTranslated( dpw.w(), 0, 0 );
         draw_safe_area_inner( tw, th, name );
     }
-    else if ( img->stereo_output() & CMedia::kStereoTopBottom )
+    else if ( img->stereo_output() & CMedia::kStereoBottomTop )
     {
         glTranslated( 0, dpw.h(), 0 );
         draw_safe_area_inner( tw, th, name );
@@ -1529,7 +1529,7 @@ void GLEngine::draw_images( ImageList& images )
                 texHeight = dpw.h();
                 const mrv::Recti& dp = fg->display_window();
                 daw.x( img->x() + daw.x() );
-                daw.y(-img->y() + daw.y() );
+                daw.y( img->y() + daw.y() );
                 dpw.x( daw.x() );
                 dpw.y( daw.y() );
             }
@@ -1732,7 +1732,7 @@ void GLEngine::draw_images( ImageList& images )
 
                 if ( stereo & CMedia::kStereoSideBySide )
                     glTranslated( dpw.w(), 0, 0 );
-                else if ( stereo & CMedia::kStereoTopBottom )
+                else if ( stereo & CMedia::kStereoBottomTop )
                     glTranslated( 0, dpw.h(), 0 );
 
                 CHECK_GL;
@@ -1769,7 +1769,7 @@ void GLEngine::draw_images( ImageList& images )
                         double x = 0, y = 0;
                         if ( stereo & CMedia::kStereoSideBySide )
                             x = dpw.w();
-                        else if ( stereo & CMedia::kStereoTopBottom )
+                        else if ( stereo & CMedia::kStereoBottomTop )
                             y = dpw.h();
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() + y,
