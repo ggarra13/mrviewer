@@ -4347,19 +4347,19 @@ void ImageView::mouseDrag(int x,int y)
 	   xf = floor(xf);
 	   yf = floor(yf);
 
-           xf -= daw[0].x();
-           yf -= daw[0].y();
-           
 	   xn = floor(xn+0.5f);
 	   yn = floor(yn+0.5f);
            
-           xn -= daw[0].x();
-           yn -= daw[0].y();
 
 
 
 	   if ( _mode == kSelection )
 	   {
+               xf -= daw[0].x();
+               yf -= daw[0].y();
+               xn -= daw[0].x();
+               yn -= daw[0].y();
+           
 
                if ( xn < xf )
                {
