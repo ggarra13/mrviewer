@@ -1439,11 +1439,11 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     }
 
 
-    {
-        const mrv::Recti& daw = img->data_window();
-        x -= daw.x();
-        y -= daw.y();
-    }
+    // {
+    //     const mrv::Recti& daw = img->data_window();
+    //     x -= daw.x();
+    //     y -= daw.y();
+    // }
     
     //
     // If image is smaller than display window, we are dealing
@@ -2478,9 +2478,9 @@ void ImageView::draw()
 
      data_window_coordinates( img, xf, yf );
 
-     const mrv::Recti& daw = img->data_window();
-     xf += daw.x();
-     yf += daw.y();
+     // const mrv::Recti& daw = img->data_window();
+     // xf += daw.x();
+     // yf += daw.y();
 
      _engine->draw_cursor( xf, yf );
   }
@@ -2824,9 +2824,9 @@ int ImageView::leftMouseDown(int x, int y)
 
 	 data_window_coordinates( img, xf, yf );
 
-         const mrv::Recti& daw = img->data_window();
-         xf += daw.x();
-         yf += daw.y();
+         // const mrv::Recti& daw = img->data_window();
+         // xf += daw.x();
+         // yf += daw.y();
 
 	 std::string str;
 	 GLPathShape* s;
@@ -3666,11 +3666,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   xp = (int)floor(xf);
   yp = (int)floor(yf);
 
-  xp += daw[0].x();  // must be daw[0]
-  yp += daw[0].y();
-  
-  xp -= img->x();
-  yp -= img->y();
+  xp += img->x();
+  yp += img->y();
   
   mrv::Recti dpm = dpw[idx];
   w = dpm.w();
@@ -4347,14 +4344,17 @@ void ImageView::mouseDrag(int x,int y)
                }
            }
            
-	   W = dpw[idx].w();
-	   H = dpw[idx].h();
-
 	   xf = floor(xf);
 	   yf = floor(yf);
 
+           xf -= daw[0].x();
+           yf -= daw[0].y();
+           
 	   xn = floor(xn+0.5f);
 	   yn = floor(yn+0.5f);
+           
+           xn -= daw[0].x();
+           yn -= daw[0].y();
 
 
 
@@ -4419,7 +4419,6 @@ void ImageView::mouseDrag(int x,int y)
                double xt = xf + daw[0].x() + dpw[0].w() * right;
                double yt = yf + daw[0].y() + dpw[0].h() * bottom;
 
-               
                _selection = mrv::Rectd( xt, yt, dx, dy );
                
                char buf[128];
@@ -4445,10 +4444,6 @@ void ImageView::mouseDrag(int x,int y)
                }
                else
                {
-
-                   xn += daw[0].x();
-                   yn += daw[0].y();
-
                    mrv::Point p( xn, yn );
                    s->pts.push_back( p );
                }
@@ -4466,13 +4461,6 @@ void ImageView::mouseDrag(int x,int y)
                }
                else
                {
-                   //yn = -yn;
-                   //yn = H - yn;
-                   //yn -= H;
-
-                   xn += daw[idx].x();
-                   yn += daw[idx].y();
-
                    s->position( int(xn), int(yn) );
                }
            }
