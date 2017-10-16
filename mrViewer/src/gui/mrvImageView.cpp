@@ -1439,12 +1439,6 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     }
 
 
-    // {
-    //     const mrv::Recti& daw = img->data_window();
-    //     x -= daw.x();
-    //     y -= daw.y();
-    // }
-    
     //
     // If image is smaller than display window, we are dealing
     // with a RY or BY image.  We divide the window coordinates by 2.
@@ -1490,6 +1484,9 @@ void ImageView::image_coordinates( const CMedia* const img,
     x += tw; y += th;
     x -= xoffset; y -= yoffset;
 
+
+    x -= img->x();
+    y -= img->y();
 
     //y = H - y;
     if ( _showPixelRatio ) y *= pixel_ratio();
@@ -3662,13 +3659,10 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   daw[1] = img->data_window2();
   dpw[0] = img->display_window();
   dpw[1] = img->display_window2();
-
+  
   xp = (int)floor(xf);
   yp = (int)floor(yf);
 
-  xp += img->x();
-  yp += img->y();
-  
   mrv::Recti dpm = dpw[idx];
   w = dpm.w();
   h = dpm.h();
@@ -3986,9 +3980,9 @@ void ImageView::mouseMove(int x, int y)
                   }
               }
               
-              xp += daw.x();
-              yp += daw.y();
               xp = (int)floor( xp * px );
+              
+              yp = pic->height() - yp - 1;
               yp = (int)floor( yp * py );
           }
 
