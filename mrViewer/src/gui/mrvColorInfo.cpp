@@ -280,8 +280,6 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
       if ( output == CMedia::kStereoRight )
       {
-          W = dpw2.w();
-          H = dpw2.h();
           xmin -= daw2.x();
           ymin -= daw2.y();
           right = true;
@@ -289,28 +287,25 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       else if ( selection.x() >= W && 
                 ( output & CMedia::kStereoSideBySide ) )
       {
-          W = dpw2.w();
-          H = dpw2.h();
           if ( output & CMedia::kStereoRight )
           {
               xmin -= daw.x();
               ymin -= daw.y();
               if ( input & CMedia::kTopBottomStereoInput )
                   ymin -= ht;
+              if ( input & CMedia::kLeftRightStereoInput )
+                  xmin -= wt;
           }
           else
           {
               xmin -= daw2.x();
               ymin -= daw2.y();
           }
-          xmin -= wt;
           right = true;
       }
       else if ( selection.y() >= H &&
                 (output & CMedia::kStereoTopBottom) )
       {
-          W = dpw2.w();
-          H = dpw2.h();
           if ( output & CMedia::kStereoRight )
           {
               xmin -= daw.x();
@@ -345,7 +340,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       {
           ymin += ht;
       }
-      else if ( input == CMedia::kLeftRightStereoInput &&
+      else if (  selection.x() < W &&
+                 input == CMedia::kLeftRightStereoInput &&
                 ( ( output & CMedia::kStereoRight ) || bottom ) )
       {
           xmin += wt;
