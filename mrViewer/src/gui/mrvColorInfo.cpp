@@ -274,6 +274,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       xmin = (int) selection.x();
       ymin = (int) selection.y();
 
+      
       CMedia::StereoOutput output = uiMain->uiView->stereo_output();
       CMedia::StereoInput  input = uiMain->uiView->stereo_input();
 
@@ -353,9 +354,11 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       if ( selection.w() > 0 ) W = (int)selection.w();
       if ( selection.h() > 0 ) H = (int)selection.h();
       
-      xmax = xmin + W - 1;      
+      xmax = xmin + W - 1;
       ymax = ymin + H - 1;
       
+
+      ht = daw.h();
       ymin = ht - ymin - 1;
       ymax = ht - ymax - 1;
 
@@ -412,6 +415,7 @@ void ColorInfo::update( const CMedia* img,
       bool bottom = false;
       selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
                           right, bottom );
+
 
       CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
       if ( right )
