@@ -1308,7 +1308,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     glEnd();
 
     double rw = r.w() / 2.0;
-    double rh = -r.h() / 2.0;
+    double rh = r.h() / 2.0;
     glBegin( GL_LINES );
     {
         glVertex2d( rw, rh );
@@ -1889,7 +1889,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( _view->action_mode() == ImageView::kMovePicture &&
            _view->selected_image() == img )
       {
-          mrv::Rectd r( img->x() + dpw.x(), dpw.y() - img->y(),
+          mrv::Rectd r( img->x() + dpw.x(), dpw.y() + img->y(),
                         dpw.w(), dpw.h() );
           draw_selection_marquee( r );
       }
