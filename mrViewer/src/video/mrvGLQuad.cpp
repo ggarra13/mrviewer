@@ -49,11 +49,12 @@
 
 #include "mrViewer.h"  // yuck
 
-#include "mrvGLShader.h"
-#include "mrvGLEngine.h"
-#include "mrvGLQuad.h"
-#include "mrvGLLut3d.h"
+#include "video/mrvGLShader.h"
+#include "video/mrvGLEngine.h"
+#include "video/mrvGLQuad.h"
+#include "video/mrvGLLut3d.h"
 
+#include <libavutil/avassert.h>
 
 //#define TEST_NO_QUAD         // test not using textures
 //#define TEST_NO_PBO_TEXTURES // test not using pbo textures
@@ -337,13 +338,13 @@ namespace mrv {
 			      unsigned short  pixel_size, 
 			      boost::uint8_t* pixels )
   {
-    assert( pixels != NULL );
-    assert( rx <  tw );
-    assert( ry <  th );
-    assert( rw > 0 );
-    assert( rh > 0 );
-    assert( rx+rw <= tw );
-    assert( ry+rh <= th );
+    av_assert0( pixels != NULL );
+    av_assert0( rx <  tw );
+    av_assert0( ry <  th );
+    av_assert0( rw > 0 );
+    av_assert0( rh > 0 );
+    av_assert0( rx+rw <= tw );
+    av_assert0( ry+rh <= th );
 
     if ( _view->field() == ImageView::kFrameDisplay )
       {
