@@ -293,8 +293,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
               ymin -= daw.y();
               if ( input & CMedia::kTopBottomStereoInput )
                   ymin -= ht;
-              if ( input & CMedia::kLeftRightStereoInput )
-                  xmin -= wt;
+              xmin -= wt;
           }
           else
           {
