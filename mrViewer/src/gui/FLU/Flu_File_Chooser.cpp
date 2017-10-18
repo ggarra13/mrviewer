@@ -1509,6 +1509,8 @@ void Flu_File_Chooser::trashCB( bool recycle )
                if (!e) continue;
 	       if( e->selected() )
 		 {
+                     std::cerr << "removing " << i << " "
+                               << e->filename << std::endl;
 		   favoritesList->remove(i);
 		   g->remove( *e );
 		   delete e;
