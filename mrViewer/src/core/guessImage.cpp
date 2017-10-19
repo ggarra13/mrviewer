@@ -43,6 +43,7 @@
 #include "ddsImage.h"
 #include "hdrImage.h"
 #include "picImage.h"
+#include "rawImage.h"
 
 #include "Sequence.h"
 #include "mrvIO.h"
@@ -80,6 +81,7 @@ namespace mrv {
       { hdrImage::test,   NULL,            hdrImage::get },
       { picImage::test,   NULL,            picImage::get },
       { aviImage::test,   NULL,            aviImage::get },
+      { NULL,             rawImage::test,  rawImage::get },
       { NULL,             wandImage::test, wandImage::get },
       { ddsImage::test,   NULL,            ddsImage::get },
       { shmapImage::test, NULL,            shmapImage::get },
