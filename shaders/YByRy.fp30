@@ -29,6 +29,8 @@
 #semantic main.lutMax
 #semantic main.lutM
 #semantic main.lutT
+#semantic main.scale
+#semantic main.offset
 #var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
 #var sampler2D YImage : TEXUNIT0 : texunit 0 : 1 : 1
 #var sampler2D BYImage : TEXUNIT1 : texunit 1 : 2 : 1
@@ -53,6 +55,8 @@
 #var half lutMax :  : lutMax : 21 : 1
 #var half lutM :  : lutM : 22 : 1
 #var half lutT :  : lutT : 23 : 1
+#var half scale :  : scale : 24 : 1
+#var half offset :  : offset : 25 : 1
 #var half4 main.pixel : $vout.COLOR : COL : -1 : 1
 #default yw = 0.21264648 0.71533203 0.07220459
 #default mask = 0
@@ -79,6 +83,8 @@ DECLARE lutMax;
 DECLARE lutMin;
 DECLARE lutT;
 DECLARE lutM;
+DECLARE scale;
+DECLARE offset;
 DECLARE gain = {1};
 DECLARE gamma = {1};
 DECLARE channel = {0};
@@ -173,7 +179,9 @@ LG2H  H0.z, H0.z;
 LG2H  H0.y, H0.y;
 MULH  H0.xyz, H0, lutM.x;
 MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H1.w;
-TEX   R0.xyz, H1, TEX3, 3D;
+MOVH  H0.x, offset;
+MADH  H0.xyz, H1, scale.x, H0.x;
+TEX   R0.xyz, H0, TEX3, 3D;
 POWR  H0.x, {2.718282}.x, R0.x;
 POWR  H0.y, {2.718282}.x, R0.y;
 POWR  H0.z, {2.718282}.x, R0.z;
@@ -279,4 +287,4 @@ MOVXC RC.x, premult;
 MULH  o[COLH].xyz(NE.x), H0, H0.w;
 MOVH  o[COLH].w, H0;
 END
-# 191 instructions, 2 R-regs, 8 H-regs
+# 193 instructions, 2 R-regs, 8 H-regs
