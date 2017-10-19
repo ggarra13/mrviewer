@@ -460,10 +460,12 @@ void GLEngine::initialize()
 
 	      if ( _has_yuva )
 		{
-		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
+                    // Should be YCbCrA but I have no way to test it.
+		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
 		  _YCbCrA = new GLShader( shaderFile );
 
-		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
+                    // Should be YByRyA but I have no way to test it.
+		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
 		  _YByRyA = new GLShader( shaderFile );
 		}
 
