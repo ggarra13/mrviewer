@@ -34,6 +34,7 @@ FIND_PACKAGE( LibIntl     REQUIRED )
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
 FIND_PACKAGE( OCIO        REQUIRED )
+FIND_PACKAGE( LibRaw      REQUIRED )    # for cr2/dng/nikon formats
 
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
 
@@ -125,6 +126,7 @@ INCLUDE_DIRECTORIES(
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
   ${OCIO_INCLUDE_DIR}
+  ${LibRaw_INCLUDE_DIR}
   )
 
 
@@ -168,6 +170,7 @@ SET( SOURCES
   core/mrayImage.cpp
   core/mrvColorBarsImage.cpp
   core/pxrzImage.cpp
+  core/rawImage.cpp
   core/shmapImage.cpp
   core/slateImage.cpp
   core/smpteImage.cpp
@@ -328,6 +331,7 @@ SET( LIBRARIES
   ${SampleICC_LIBRARIES}
   ${TINYXML2_LIBRARIES}
   ${OCIO_LIBRARIES}
+  ${LibRaw_LIBRARIES}
   )
 
 
