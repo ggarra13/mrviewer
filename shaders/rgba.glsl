@@ -13,7 +13,7 @@ uniform sampler3D lut;
 
 // Interlaced/Checkerboard controls
 uniform int mask;
-uniform int mask_value = 1000;
+uniform int mask_value;
 uniform int height;
 uniform int width;
 
@@ -44,7 +44,8 @@ void main()
   //
   // Sample RGBA texture. 
   //
-  vec4 c = texture2D(fgImage, gl_TexCoord[0].st);
+  vec2 tc = gl_TexCoord[0].st;
+  vec4 c = texture2D(fgImage, tc );
 
   //
   // Apply normalization
