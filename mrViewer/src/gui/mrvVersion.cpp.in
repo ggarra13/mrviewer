@@ -52,6 +52,7 @@ extern "C" {
 #include <GL/glew.h>
 #include <MagickWand/MagickWand.h>
 
+#include <libraw/libraw.h>
 
 #include <fltk/visual.h>
 #include <fltk/Monitor.h>
@@ -538,6 +539,8 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 #endif
       << "IccProfLib (ICC v4.2)" << endl
       << "(C) 2003-2017 - The International Color Consortium" << endl
+      << endl
+      << "LibRaw " << libraw_version()
       << endl
       << endl;
 
