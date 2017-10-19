@@ -41,7 +41,7 @@ FIND_LIBRARY( OpenColorIO
   NAMES OpenColorIO
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
-  DOC   "OCIO IlmCtlSimd library"
+  DOC   "OCIO library"
 )
 
 
