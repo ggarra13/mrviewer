@@ -613,6 +613,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
   add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
   add_type( N_("cin"),   _( "Cineon Picture"), &picture );
+  add_type( N_("cr2"),   _( "Canon Raw Picture"), &picture );
   add_type( N_("ct"),    _( "mental ray Contour Picture"), &picture );
   add_type( N_("dng"),   _( "Kodak Digital Negative"), &picture );
   add_type( N_("dpx"),   _( "DPX Picture"), &picture );
@@ -4486,8 +4487,8 @@ void Flu_File_Chooser::cd( const char *path )
                          mrv::is_valid_subtitle( tmp.c_str() ) ||
                          tmp == N_(".icc")  ||
 			 tmp == N_(".icm")  ||
-                         tmp == N_(".ctl")  || 
-                         tmp == N_(".xml")  || 
+                         tmp == N_(".ctl")  ||
+                         tmp == N_(".xml")  ||
                          tmp == N_(".ocio") )
 		       is_sequence = false;
 		 }
