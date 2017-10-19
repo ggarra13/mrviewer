@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-10-18 09:20-0300\n"
+"POT-Creation-Date: 2017-10-19 10:09-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -223,7 +223,7 @@ msgstr " cuadros"
 msgid " frequency: "
 msgstr " frecuencia: "
 
-#: core/guessImage.cpp:150
+#: core/guessImage.cpp:152
 msgid " has different display window than "
 msgstr "  tiene diferente ventana de vista que "
 
@@ -267,7 +267,7 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4657
+#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4658
 msgid " to "
 msgstr " a "
 
@@ -279,7 +279,7 @@ msgstr " tipo "
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
-#: core/guessImage.cpp:153
+#: core/guessImage.cpp:155
 msgid " vs. "
 msgstr ""
 
@@ -291,12 +291,12 @@ msgstr "\" no tiene canales con el prefijo \""
 msgid "\" has no channels."
 msgstr " no tiene canales."
 
-#: core/guessImage.cpp:233
+#: core/guessImage.cpp:235
 msgid "\" not found."
 msgstr "\" no encontrada."
 
 #
-#: core/guessImage.cpp:229
+#: core/guessImage.cpp:231
 msgid "\" not found. Name tested "
 msgstr "\" no encontrada.  Nombre probado "
 
@@ -694,7 +694,7 @@ msgstr "3D Luts"
 msgid "3D Stereo Options"
 msgstr "Opciones de Estéreo 3D"
 
-#: core/guessImage.cpp:155
+#: core/guessImage.cpp:157
 msgid "3D Stereo will most likely not work properly."
 msgstr "Estéreo 3D probablemente no funcione apropiadamente"
 
@@ -1485,6 +1485,10 @@ msgstr "No pude crear buffer sink"
 msgid "Cannot create buffer source"
 msgstr "No pude crear buffer source"
 
+#: core/rawImage.cpp:104 core/rawImage.cpp:136
+msgid "Cannot create libraw handle"
+msgstr "No pude crear manejo de librawx"
+
 #: core/mrSocket.cpp:111 core/mrSocket.cpp:156
 msgid "Cannot map \""
 msgstr "No puedo mapear \""
@@ -1492,6 +1496,11 @@ msgstr "No puedo mapear \""
 #: core/aviImage.cpp:468
 msgid "Cannot set output pixel format"
 msgstr "No pude setear formato de render de pixel de salida"
+
+#: gui/FLU/Flu_File_Chooser.cpp:616
+#, fuzzy
+msgid "Canon Raw Picture"
+msgstr "Imagen Cineon"
 
 #: gui/mrvHotkey.cpp:363
 msgid "CapsLock"
@@ -2533,7 +2542,7 @@ msgstr "VDA: %d,%d %dx%d"
 msgid "DIVX Movie"
 msgstr "Película DIVX"
 
-#: gui/FLU/Flu_File_Chooser.cpp:618
+#: gui/FLU/Flu_File_Chooser.cpp:619
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
@@ -2899,7 +2908,7 @@ msgstr "Editar LDE"
 msgid "EDL Window"
 msgstr "Ventana de LDE"
 
-#: gui/FLU/Flu_File_Chooser.cpp:619
+#: gui/FLU/Flu_File_Chooser.cpp:620
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
@@ -2944,7 +2953,7 @@ msgstr "Encodificado"
 msgid "End"
 msgstr "Fin"
 
-#: video/mrvGLEngine.cpp:481
+#: video/mrvGLEngine.cpp:483
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "Variable de entorno MRV_SHADER_PATH no encontrada, usando shader interno."
@@ -3307,19 +3316,19 @@ msgstr "Cuadro de finalización del clip en el archivo"
 msgid "Frame start of clip in file"
 msgstr "Cuadro de comienzo del clip en el archivo"
 
-#: video/mrvGLEngine.cpp:730
+#: video/mrvGLEngine.cpp:732
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Framebuffer incomplete: Atadura NO esta completa."
 
-#: video/mrvGLEngine.cpp:737
+#: video/mrvGLEngine.cpp:739
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Framebuffer incompleto: buffer de Dibujo."
 
-#: video/mrvGLEngine.cpp:734
+#: video/mrvGLEngine.cpp:736
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Framebuffer incompleto: No hay imagen atada al FBO."
 
-#: video/mrvGLEngine.cpp:741
+#: video/mrvGLEngine.cpp:743
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Framebuffer incompleto: Buffer de lectura."
 
@@ -3370,7 +3379,7 @@ msgstr "Función"
 msgid "G"
 msgstr "V"
 
-#: gui/FLU/Flu_File_Chooser.cpp:626
+#: gui/FLU/Flu_File_Chooser.cpp:627
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
@@ -3469,7 +3478,7 @@ msgstr "Valor de Verde del pixel bajo el mouse."
 msgid "H:"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:620
+#: gui/FLU/Flu_File_Chooser.cpp:621
 msgid "HDRI Picture"
 msgstr "Imagen HDRI"
 
@@ -3508,7 +3517,7 @@ msgstr "Texturas Half:\t"
 msgid "Hardware Shaders:\t"
 msgstr "Shaders de Hardware:\t"
 
-#: video/mrvGLEngine.cpp:494
+#: video/mrvGLEngine.cpp:496
 msgid "Hardware shaders not available."
 msgstr "Hardware Shaders no disponibles."
 
@@ -3594,7 +3603,7 @@ msgstr "Intención de Render de ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/FLU/Flu_File_Chooser.cpp:622
+#: gui/FLU/Flu_File_Chooser.cpp:623
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
@@ -3622,7 +3631,7 @@ msgstr "ITU-709 (HDTV YCbCr Digital)"
 msgid "Image"
 msgstr "Imagen"
 
-#: core/guessImage.cpp:233
+#: core/guessImage.cpp:235
 msgid "Image \""
 msgstr "Imagen \""
 
@@ -3673,7 +3682,7 @@ msgstr ""
 "La imagen tiene una Transformacion de Display de Salida (ODT) diferente de "
 "la que ya está seteada."
 
-#: core/guessImage.cpp:228
+#: core/guessImage.cpp:230
 msgid "Image sequence \""
 msgstr "Secuencia de Imagen \""
 
@@ -3789,20 +3798,20 @@ msgstr "Imágenes"
 msgid "Images (*.{"
 msgstr "Imágenes (*.{"
 
-#: core/guessImage.cpp:179
+#: core/guessImage.cpp:181
 msgid ""
 "Images in stereo have different frame lengths.  They will not loop properly."
 msgstr ""
 "Las imágenes en estéreo tienen diferente longitud de cuadros.  No se "
 "repetirán apropiadamente."
 
-#: core/guessImage.cpp:170
+#: core/guessImage.cpp:172
 msgid "Images in stereo have different lengths.  They will not loop properly."
 msgstr ""
 "Las imágenes en estéreo tienen diferente longitud.  No se repetirán "
 "apropiadamente."
 
-#: core/guessImage.cpp:160
+#: core/guessImage.cpp:162
 msgid "Images in stereo have different velocities (fps)."
 msgstr ""
 "Las imágenes en estéreo tienen distintas velocidades (cuadros por segundo)."
@@ -3888,7 +3897,7 @@ msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
-#: gui/FLU/Flu_File_Chooser.cpp:623 gui/FLU/Flu_File_Chooser.cpp:624
+#: gui/FLU/Flu_File_Chooser.cpp:624 gui/FLU/Flu_File_Chooser.cpp:625
 msgid "JPEG Picture"
 msgstr "Imagen JPEG"
 
@@ -3964,7 +3973,7 @@ msgstr "Palabra clave"
 msgid "Known Codec"
 msgstr "Codec Conocido"
 
-#: gui/FLU/Flu_File_Chooser.cpp:617
+#: gui/FLU/Flu_File_Chooser.cpp:618
 msgid "Kodak Digital Negative"
 msgstr "Negativo Digital de Kodak"
 
@@ -4165,11 +4174,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:2641
+#: video/mrvGLEngine.cpp:2643
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:2646
+#: video/mrvGLEngine.cpp:2648
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -4258,7 +4267,7 @@ msgstr "M44 Coma Flotante"
 msgid "MGM Camera 65"
 msgstr "MGM Camara 65"
 
-#: gui/FLU/Flu_File_Chooser.cpp:643
+#: gui/FLU/Flu_File_Chooser.cpp:644
 msgid "MP3 music"
 msgstr "Música MP3"
 
@@ -4287,7 +4296,7 @@ msgstr "Principal"
 msgid "Main 10"
 msgstr "Principal 10"
 
-#: gui/FLU/Flu_File_Chooser.cpp:625
+#: gui/FLU/Flu_File_Chooser.cpp:626
 msgid "Map Picture"
 msgstr "Imagen Map"
 
@@ -4733,7 +4742,7 @@ msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
 "fue encontrada en ODT."
 
-#: gui/FLU/Flu_File_Chooser.cpp:644
+#: gui/FLU/Flu_File_Chooser.cpp:645
 msgid "OGG Vorbis music"
 msgstr "Música OGG Vorbis"
 
@@ -4959,7 +4968,7 @@ msgstr ""
 msgid "PMem: %<PRId64>/%<PRId64> MB  VMem: %<PRId64>/%<PRId64> MB"
 msgstr "MemF: %<PRId64>/%<PRId64> MB  MemV: %<PRId64>/%<PRId64> MB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:630
+#: gui/FLU/Flu_File_Chooser.cpp:631
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
@@ -5015,7 +5024,7 @@ msgstr "Perceptual"
 msgid "Permissions"
 msgstr "Permisos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:631
+#: gui/FLU/Flu_File_Chooser.cpp:632
 msgid "Photoshop Picture"
 msgstr "Imagen de Photoshop"
 
@@ -5270,7 +5279,7 @@ msgstr ""
 msgid "RGB"
 msgstr "RGB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:632
+#: gui/FLU/Flu_File_Chooser.cpp:633
 msgid "RGB Picture"
 msgstr "Imagen RGB"
 
@@ -5332,22 +5341,22 @@ msgstr "Leer"
 msgid "Real Media Movie"
 msgstr "Película Real Media"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1486
+#: gui/FLU/Flu_File_Chooser.cpp:1487
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1499
+#: gui/FLU/Flu_File_Chooser.cpp:1500
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1480
+#: gui/FLU/Flu_File_Chooser.cpp:1481
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1494
+#: gui/FLU/Flu_File_Chooser.cpp:1495
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
@@ -5500,7 +5509,7 @@ msgstr "Revertir"
 msgid "Revert settings to last saved preferences."
 msgstr "Revertir seteos a la la ultima preferencias grabadas."
 
-#: gui/FLU/Flu_File_Chooser.cpp:633
+#: gui/FLU/Flu_File_Chooser.cpp:634
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
@@ -5549,7 +5558,7 @@ msgstr "S"
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
-#: gui/FLU/Flu_File_Chooser.cpp:635
+#: gui/FLU/Flu_File_Chooser.cpp:636
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
@@ -5913,7 +5922,7 @@ msgstr "Creación de enchufe falló\n"
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
-#: gui/FLU/Flu_File_Chooser.cpp:629
+#: gui/FLU/Flu_File_Chooser.cpp:630
 msgid "Softimage Picture"
 msgstr "Imagen Softimage"
 
@@ -5979,7 +5988,7 @@ msgstr "Estadísticas"
 msgid "Stereo 3D Options"
 msgstr "Opciones de Estéreo 3D"
 
-#: gui/FLU/Flu_File_Chooser.cpp:637
+#: gui/FLU/Flu_File_Chooser.cpp:638
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
@@ -6151,8 +6160,8 @@ msgstr "T"
 msgid "T: "
 msgstr "T: "
 
-#: gui/FLU/Flu_File_Chooser.cpp:621 gui/FLU/Flu_File_Chooser.cpp:639
-#: gui/FLU/Flu_File_Chooser.cpp:640
+#: gui/FLU/Flu_File_Chooser.cpp:622 gui/FLU/Flu_File_Chooser.cpp:640
+#: gui/FLU/Flu_File_Chooser.cpp:641
 msgid "TIFF Picture"
 msgstr "Imagen TIFF"
 
@@ -6168,7 +6177,7 @@ msgstr "Tags"
 msgid "Take Current Window Values"
 msgstr "Tomar Valores de la Ventana"
 
-#: gui/FLU/Flu_File_Chooser.cpp:638
+#: gui/FLU/Flu_File_Chooser.cpp:639
 msgid "Targa Picture"
 msgstr "Imagen Targa"
 
@@ -6951,7 +6960,7 @@ msgstr "Modo de Redondeo desconocido"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Tipo de dato desconocido para mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2035
+#: video/mrvGLEngine.cpp:2037
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -6961,7 +6970,7 @@ msgstr "Dirección de wipe desconocida"
 msgid "Unspecified"
 msgstr "Sin Especificar"
 
-#: video/mrvGLEngine.cpp:727
+#: video/mrvGLEngine.cpp:729
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
@@ -7216,7 +7225,7 @@ msgstr "Película WMV"
 msgid "WSA not ready\n"
 msgstr "WSA no esta listo\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:645
+#: gui/FLU/Flu_File_Chooser.cpp:646
 msgid "Wave music"
 msgstr "Musica WAVE"
 
@@ -7893,27 +7902,27 @@ msgstr "letra lírica"
 msgid "mental ray Bit Picture"
 msgstr "Imagen de mental ray de 1 Bit"
 
-#: gui/FLU/Flu_File_Chooser.cpp:616
+#: gui/FLU/Flu_File_Chooser.cpp:617
 msgid "mental ray Contour Picture"
 msgstr "Imagen de Contornos de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:628
+#: gui/FLU/Flu_File_Chooser.cpp:629
 msgid "mental ray Motion Picture"
 msgstr "Imagen de Movimiento de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:627
+#: gui/FLU/Flu_File_Chooser.cpp:628
 msgid "mental ray Normal Picture"
 msgstr "Imagen de Normales de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:636
+#: gui/FLU/Flu_File_Chooser.cpp:637
 msgid "mental ray Scalar Picture"
 msgstr "Imagen de coma flotante de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:634
+#: gui/FLU/Flu_File_Chooser.cpp:635
 msgid "mental ray Shadow Map"
 msgstr "Imagen de sombras de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:641
+#: gui/FLU/Flu_File_Chooser.cpp:642
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de profundidad Z de mental ray"
 
@@ -7941,7 +7950,7 @@ msgstr "mrViewer    FRENTE: %s"
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"
 
-#: video/mrvGLEngine.cpp:512
+#: video/mrvGLEngine.cpp:514
 msgid "mrViewer does not support YUV images."
 msgstr "mrViewer no soporta imágenes de YUV."
 
@@ -7961,11 +7970,11 @@ msgstr ""
 "mrViewer soporta scripts de CTL y Perfiles ICC cocinados en 3D luts.  Estos "
 "settings controlan la calidad del 3D Lut."
 
-#: video/mrvGLEngine.cpp:507
+#: video/mrvGLEngine.cpp:509
 msgid "mrViewer supports YUV images through shaders."
 msgstr "mrViewer soporta imágenes YUV con shaders."
 
-#: video/mrvGLEngine.cpp:503
+#: video/mrvGLEngine.cpp:505
 msgid "mrViewer supports YUVA images through shaders."
 msgstr "mrViewer soporta imágenes YUVA con shaders."
 
