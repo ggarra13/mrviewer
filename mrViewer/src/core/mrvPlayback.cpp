@@ -23,7 +23,7 @@
  * 
  * @brief  This file implements a callback that is used to play videos or
  *         image sequences.  This callback is usually run as part of a new
- *         thread.
+ *         playback.
  * 
  * 
  */
@@ -44,7 +44,6 @@ extern "C" {
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/shared_array.hpp>
-using namespace std;
 
 #include "core/CMedia.h"
 #include "core/aviImage.h"
@@ -167,6 +166,10 @@ void sync_clock_to_slave(Clock *c, Clock *slave)
 {
     double clock = get_clock(c);
     double slave_clock = get_clock(slave);
+    
+#if __cplusplus >= 201103L
+    using std::isnan;
+#endif
     if (!isnan(slave_clock) && (isnan(clock) || fabs(clock - slave_clock) > AV_NOSYNC_THRESHOLD))
         set_clock(c, slave_clock, -1);
 }
@@ -1013,6 +1016,9 @@ void video_thread( PlaybackData* data )
 
          if ( absdiff > 1000.0 ) diff = 0.0;
 
+#if __cplusplus >= 201103L
+         using std::isnan;
+#endif
           if (! isnan(diff) ) 
           {
 
