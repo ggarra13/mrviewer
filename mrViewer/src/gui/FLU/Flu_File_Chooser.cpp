@@ -333,9 +333,13 @@ static int flu_filename_match(const char *s, const char *p,
       if (tolower(*s) != tolower(*(p-1))) return 0;
 #else
       if ( downcase )
+      {
 	 if (tolower(*s) != tolower(*(p-1))) return 0;
+      }
       else
+      {
 	 if( *s != *(p-1) ) return 0;
+      }
 #endif
       s++;
       break;
@@ -1510,8 +1514,6 @@ void Flu_File_Chooser::trashCB( bool recycle )
                if (!e) continue;
 	       if( e->selected() )
 		 {
-                     std::cerr << "removing " << i << " "
-                               << e->filename << std::endl;
 		   favoritesList->remove(i);
 		   g->remove( *e );
 		   delete e;
@@ -4443,13 +4445,14 @@ void Flu_File_Chooser::cd( const char *path )
 		  bool cull = true;
 		  for( unsigned int i = 0; i < currentPatterns.size(); i++ )
 		    {
-		      if( flu_filename_match( name,
-					      currentPatterns[i].c_str(),
-					      true ) != 0 )
+                        char* pat = strdup( currentPatterns[i].c_str() );
+                        if( flu_filename_match( name, pat, true ) != 0 )
 			{
-			  cull = false;
-			  break;
+                            free(pat);
+                            cull = false;
+                            break;
 			}
+                        free(pat);
 		    }
 		  if( cull )
 		    {
