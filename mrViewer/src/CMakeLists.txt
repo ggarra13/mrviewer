@@ -34,6 +34,7 @@ FIND_PACKAGE( LibIntl     REQUIRED )
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
 FIND_PACKAGE( OCIO        REQUIRED )
+FIND_PACKAGE( OIIO        REQUIRED )
 FIND_PACKAGE( LibRaw      REQUIRED )    # for cr2/dng/nikon formats
 
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
@@ -83,11 +84,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread ) 
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11) 
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x) 
-    IF( CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0" )
-      ADD_DEFINITIONS( -DLINUX -msse -w ) 
-    ELSE( CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0" )
-      ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11 ) 
-    ENDIF( CMAKE_CXX_COMPILER_VERSION VERSION_LESS "5.0" )
+    ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11 ) 
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m 
       )
@@ -126,8 +123,10 @@ INCLUDE_DIRECTORIES(
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
   ${OCIO_INCLUDE_DIR}
+  ${OIIO_INCLUDE_DIR}
   ${LibRaw_INCLUDE_DIR}
   )
+
 
 
 FLTK_WRAP_UI( mrViewer
@@ -169,6 +168,7 @@ SET( SOURCES
   core/mapImage.cpp
   core/mrayImage.cpp
   core/mrvColorBarsImage.cpp
+  core/oiioImage.cpp 
   core/pxrzImage.cpp
   core/rawImage.cpp
   core/shmapImage.cpp
@@ -324,7 +324,6 @@ SET( LIBRARIES
   ${OpenEXRCTL_LIBRARIES}
   ${CTL_LIBRARIES}
   ${OPENEXR_LIBRARIES}
-  ${OS_LIBRARIES}
   ${FLTK2_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
@@ -332,7 +331,12 @@ SET( LIBRARIES
   ${TINYXML2_LIBRARIES}
   ${OCIO_LIBRARIES}
   ${LibRaw_LIBRARIES}
+  ${OS_LIBRARIES}
   )
+
+IF(OIIO_LIBRARIES)
+  SET( LIBRARIES ${OIIO_LIBRARIES} ${LIBRARIES} )
+ENDIF(OIIO_LIBRARIES)
 
 
 #
@@ -687,6 +691,15 @@ IF(TINYXML2_FOUND)
   MESSAGE( STATUS "TinyXML2 libraries:  ${TINYXML2_LIBRARIES}" )
 ENDIF(TINYXML2_FOUND)
 
+IF(LibRaw_FOUND)
+  MESSAGE( STATUS "LibRaw include:    ${LibRaw_INCLUDE_DIR}" )
+  MESSAGE( STATUS "LibRaw library:    ${LibRaw_LIBRARY_DIR}" )
+  MESSAGE( STATUS "LibRaw libraries:  ${LibRaw_LIBRARIES}" )
+ENDIF(LibRaw_FOUND)
+
+  MESSAGE( STATUS "OIIO include:    ${OIIO_INCLUDE_DIR}" )
+  MESSAGE( STATUS "OIIO library:    ${OIIO_LIBRARY_DIR}" )
+  MESSAGE( STATUS "OIIO libraries:  ${OIIO_LIBRARIES}" )
 
 MESSAGE( STATUS "mrViewer version: " ${VERSION} )
 
