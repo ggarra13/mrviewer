@@ -113,7 +113,9 @@ namespace mrv {
       if ( pos != std::string::npos && pos != f.size() )
       {
           std::string ext = f.substr( pos+1, f.size() );
-          if ( ext == "PDF" || ext == "pdf" )
+          std::transform( ext.begin(), ext.end(), ext.begin(),
+                          (int(*)(int))tolower );
+          if ( ext == "pdf" || ext == "tx" )
               return false;
       }
 
