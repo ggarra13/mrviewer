@@ -354,8 +354,11 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       
 
       ht = daw.h();
-      ymin = ht - ymin - 1;
-      ymax = ht - ymax - 1;
+      // Reverse coordinates.
+      int tmp = ht - ymin - 1;
+      ymin = ht - ymax - 1;
+      ymax = tmp;
+
 
 
       if ( xmin < 0 ) xmin = 0;
@@ -453,17 +456,6 @@ void ColorInfo::update( const CMedia* img,
       if ( xmax >= (int) pic->width() ) xmax = (int) pic->width()-1;
       if ( ymax >= (int) pic->height() ) ymax = (int) pic->height()-1;
 
-      if ( xmax < xmin ) {
-	 int tmp = xmax;
-	 xmax = xmin;
-	 xmin = tmp;
-      }
-
-      if ( ymax < ymin ) { 
-	 int tmp = ymax;
-	 ymax = ymin;
-	 ymin = tmp;
-      }
 
       unsigned spanX = xmax-xmin+1;
       unsigned spanY = ymax-ymin+1;
