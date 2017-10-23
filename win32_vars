@@ -2,7 +2,9 @@
 
 export ROOT="D:/code/applications/mrViewer"
 export DIST=D:/code/lib/Windows_32
+
 export BOOST_ROOT="$ROOT/dependencies/boost_1_60_0"
+export Boost_LIBRARY_DIRS=$BOOST_ROOT/stage64/lib
 
 export OPENEXR_ROOT=$DIST
 export     CTL_ROOT=$DIST
