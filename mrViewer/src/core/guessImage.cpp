@@ -42,6 +42,7 @@
 #include "mrayImage.h"
 #include "ddsImage.h"
 #include "hdrImage.h"
+#include "oiioImage.h"
 #include "picImage.h"
 #include "rawImage.h"
 
@@ -83,6 +84,7 @@ namespace mrv {
       { aviImage::test,   NULL,            aviImage::get },
       { NULL,             rawImage::test,  rawImage::get },
       { NULL,             wandImage::test, wandImage::get },
+      { NULL,             oiioImage::test, oiioImage::get },
       { ddsImage::test,   NULL,            ddsImage::get },
       { shmapImage::test, NULL,            shmapImage::get },
       { mrayImage::test,  NULL,            mrayImage::get },

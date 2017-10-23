@@ -77,22 +77,22 @@ static const char* kModule = "file";
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "3gp,3GP,asf,ASF,avc,AVC,avchd,AVCHD,avi,AVI,divx,DIVX,dv,DV,flv,FLV,m2ts,M2TS,m2t,M2T,mkv,MKV,m4v,M4V,mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,ogm,OGM,ogv,OGV,qt,QT,ts,TS,vob,VOB,vp9,VP9,webm,WEBM,wmv,WMV,y4m,Y4M";
+  static const std::string kMoviePattern = "3gp,asf,avc,avchd,avi,divx,dv,flv,m2ts,m2t,mkv,m4v,mp4,mpg,mpeg,mov,mxf,ogm,ogv,qt,ts,vob,vp9,webm,wmv,y4m,";
 
   static const std::string kImagePattern =
-    "bmp,bit,cin,CIN,cr2,CR2,ct,dng,DNG,dpx,DPX,exr,EXR,gif,GIF,hdr,HDR,hdri,HDRI,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,miff,MIFF,mt,pic,PIC,png,PNG,ppm,pnm,pgm,pbm,psd,PSD,ras,RAS,rgb,RGB,rla,RLA,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
+    "bay,bmp,bit,cin,cr2,crw,ct,dng,dpx,exr,gif,hdr,hdri,iff,jpg,jpeg,map,nt,miff,mt,pic,png,ppm,pnm,pgm,pbm,psd,ras,rgb,rla,rpf,shmap,sgi,st,sun,sxr,tga,tif,tiff,tx,zt";
 
-  static const std::string kProfilePattern = "icc,icm,ICC,ICM";
+  static const std::string kProfilePattern = "icc,icm";
 
-  static const std::string kAudioPattern = "m4a,mp3,MP3,ogg,OGG,wav,WAV";
+  static const std::string kAudioPattern = "m4a,mp3,ogg,wav";
 
-  static const std::string kSubtitlePattern = "srt,SRT,sub,SUB,ass,ASS";
+  static const std::string kSubtitlePattern = "srt,sub,ass";
 
-  static const std::string kCTLPattern = "ctl,CTL";
+  static const std::string kCTLPattern = "ctl";
 
-  static const std::string kXMLPattern = "xml,XML";
+  static const std::string kXMLPattern = "xml";
 
-  static const std::string kOCIOPattern = "ocio,OCIO";
+  static const std::string kOCIOPattern = "ocio";
 
 
   // Actual FLTK file requester patterns
