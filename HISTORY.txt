@@ -1,7 +1,10 @@
 v3.8.6   - Bug fixed GLSL shaders to support scale and offset.
-	 - Added support for CR2 and DNG formats through ucraw-batch and
-	   dcraw (ImageMagick).
-	 - Added ImageMagick's utilities to the distribution.
+	 - Added support for CR2, DNG, NEF, RAF formats through libraw.
+	 - Added support for Arnold's .tx format thru OIIO on Windows.
+	   Linux does not yet support it due to an old compiler.
+	 - Reversed coordinate system to make it compatible with Nuke
+	   and Natron.  Now 0,0 is the bottom left corner insted of the
+	   top left corner.
 
 v3.8.5   - Added tooltips to all OCIO color spaces and to the Config line.
 	 - Allowed changing OCIO config file from the Preference window.

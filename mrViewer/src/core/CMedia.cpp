@@ -668,7 +668,6 @@ _audio_engine( NULL )
     audio_file( other->audio_file().c_str() );
   _audio_offset = other->audio_offset() + f - 1;
   audio_stream( other->_audio_index );
-  std::cerr << _audio_index << std::endl;
 
   fetch( f );
 }
