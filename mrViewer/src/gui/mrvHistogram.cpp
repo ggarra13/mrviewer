@@ -182,17 +182,6 @@ namespace mrv
     if ( xmax >= (int)pic->width() ) xmax = (int) pic->width()-1;
     if ( ymax >= (int)pic->height() ) ymax =(int)  pic->height()-1;
 
-      if ( xmax < xmin ) {
-	 int tmp = xmax;
-	 xmax = xmin;
-	 xmin = tmp;
-      }
-
-      if ( ymax < ymin ) { 
-	 int tmp = ymax;
-	 ymax = ymin;
-	 ymin = tmp;
-      }
 
     unsigned int stepY = (ymax - ymin + 1) / w();
     unsigned int stepX = (xmax - xmin + 1) / h();
