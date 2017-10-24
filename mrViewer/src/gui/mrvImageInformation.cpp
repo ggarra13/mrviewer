@@ -79,6 +79,7 @@ using namespace std;
 #include "gui/mrvTimecode.h"
 #include "mrViewer.h"
 #include "CMedia.h"
+#include "core/oiioImage.h"
 #include "core/aviImage.h"
 #include "core/exrImage.h"
 #include "mrvIO.h"
@@ -1399,6 +1400,23 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
             view->redraw();
         }
     }
+    else
+    {
+        oiioImage* img = dynamic_cast<oiioImage*>( info->get_image() );
+        if ( img )
+        {
+            mrv::ImageView* view = info->main()->uiView;
+            img->level( w->ivalue() );
+            update_int_slider( w );
+            bool ok = img->fetch( view->frame() );
+            if (ok)
+            {
+                img->refresh();
+                view->fit_image();
+                view->redraw();
+            }
+        }
+    }
 }
 
 static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
@@ -2337,6 +2355,14 @@ void ImageInformation::fill_data()
                                exr->levelX(), true, true,
                                (fltk::Callback*)change_mipmap_cb, 0, 20 );
                       exr->levelY( exr->levelX() );
+                  }
+                  oiioImage* oiio = dynamic_cast< oiioImage* >( img );
+                  if ( oiio )
+                  {
+                      add_int( _("Mipmap Level"), _("Mipmap Level"),
+                               oiio->level(), true, true,
+                               (fltk::Callback*)change_mipmap_cb, 0,
+                               (int)oiio->mipmap_levels()-1 );
                   }
               }
               else if ( i->first == _("X Ripmap Levels") )
