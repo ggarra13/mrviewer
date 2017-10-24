@@ -112,8 +112,10 @@ namespace mrv {
 	  }
           else
 	  {
-              if ( type->test_filename( name ) ) 
+              if ( type->test_filename( name ) )
+              {
                   return type->get( name, datas );
+              }
 	  }
       }
     return NULL;
