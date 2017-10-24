@@ -1590,10 +1590,12 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( !_view->vr() )
         {
+            
             glTranslatef( img->x(), img->y(), 0 );
             glTranslatef( float(daw.x() - img->eye_separation()),
                           float(daw.y()), 0 );
             CHECK_GL;
+
 
             if ( _view->main()->uiPixelRatio->value() )
                 glScaled( double(texWidth),
@@ -1604,6 +1606,7 @@ void GLEngine::draw_images( ImageList& images )
 
             CHECK_GL;
             glTranslated( 0.5, 0.5, 0.0 );
+            glRotated( img->rot_z(), 0, 0, 1 );
             CHECK_GL;
         }
 
@@ -1813,6 +1816,7 @@ void GLEngine::draw_images( ImageList& images )
 
 
                 glTranslated( 0.5, 0.5, 0 );
+                glRotated( img->rot_z(), 0, 0, 1 );
                 CHECK_GL;
 
             }
