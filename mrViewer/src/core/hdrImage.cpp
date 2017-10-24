@@ -60,6 +60,9 @@ using namespace std;
 #define  MAXELEN	0x7fff	/* maximum scanline length for encoding */
 #define  MINRUN		4	/* minimum run length */
 
+namespace {
+const char* kModule = "hdr";
+}
 
 
 #define  copycolr(c1,c2)	(c1[0]=c2[0],c1[1]=c2[1], \
@@ -88,7 +91,8 @@ namespace mrv {
   */
   bool hdrImage::test(const boost::uint8_t *data, unsigned)
   {
-    if ( strncmp( (char*)data, "#?RADIANCE", 10 ) != 0 ) return false;
+    if ( strncmp( (char*)data, "#?RADIANCE", 10 ) != 0 &&
+         strncmp( (char*)data, "#?RGBE", 6 ) != 0 ) return false;
 
     return true;
   }
