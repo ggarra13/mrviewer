@@ -118,15 +118,15 @@ namespace mrv {
       if (!in)
       {
         std::string err = geterror();
-        IMG_ERROR( (err.length() ? err : Strutil::format("Could not open \"%s\"", file)) );
-        delete in;
+        IMG_ERROR( (err.length() ? err : 
+                    Strutil::format("Could not open \"%s\"", file)) );
         return false;
       }
 
       const ImageSpec &s = in->spec();
       ImageSpec& spec = const_cast< ImageSpec& >( s );
       
-      _format = strdup( "OIIO" );
+      _format = strdup( in->format_name() );
 
       if ( _level < 0 )
       {
