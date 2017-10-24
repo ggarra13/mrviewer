@@ -1,3 +1,7 @@
+v3.8.7   - Improved detection of .hdri images to support those saved
+	   from Photoshop.
+	 - Removed error when creating thumbnails of RAW formats.
+
 v3.8.6   - Bug fixed GLSL shaders to support scale and offset.
 	 - Removed a syntax error in GLSL rgba shader.
 	 - Added support for CR2, DNG, NEF, RAF formats through libraw.
