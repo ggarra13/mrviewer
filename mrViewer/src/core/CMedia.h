@@ -1061,6 +1061,8 @@ class CMedia
     inline double x() const { return _x; }
     inline double y() const { return _y; }
     
+    inline double rot_z() const { return _rot_z; }
+    
     // Process a timecode object unto _tc_frame
     void process_timecode( const Imf::TimeCode& tc );
     
@@ -1451,6 +1453,7 @@ class CMedia
 
     boost::uint64_t _numWindows;   //!< number of data/display windows
     double      _x, _y;            //!< x,y coordinates in canvas
+    double      _rot_z;            //!< z quad rotation in canvas
     mrv::Recti* _dataWindow;       //!< data window of sequence
     mrv::Recti* _displayWindow;    //!< display window of sequence
     mrv::Recti* _dataWindow2;       //!< data window of stereo sequence
