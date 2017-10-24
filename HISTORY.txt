@@ -1,6 +1,8 @@
 v3.8.7   - Improved detection of .hdri images to support those saved
 	   from Photoshop.
 	 - Removed error when creating thumbnails of RAW formats.
+	 - Added support for mipmaps in .tx files.  Now Media Info
+	   Window has a slider to change mipmap levels.
 
 v3.8.6   - Bug fixed GLSL shaders to support scale and offset.
 	 - Removed a syntax error in GLSL rgba shader.
