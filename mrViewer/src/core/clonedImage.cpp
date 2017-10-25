@@ -19,10 +19,10 @@
  * @file   clonedImage.cpp
  * @author gga
  * @date   Thu Nov 02 05:41:09 2006
- * 
+ *
  * @brief  Cloned image class
- * 
- * 
+ *
+ *
  */
 
 #include <iostream>
@@ -41,13 +41,14 @@ namespace mrv {
     CMedia()
   {
 
-    char* orig = strdup( other->filename() );
-    for ( char* s = orig; *s != 0; ++s )
+      char* file = strdup( other->filename() );
+      char* orig = file;
+      for ( char* s = orig; *s != 0; ++s )
       {
-	if ( *s == '\t' )
-	  {
-	    orig = s + 1; break;
-	  }
+          if ( *s == '\t' )
+          {
+              orig = s + 1; break;
+          }
       }
 
     char now[128];
@@ -71,14 +72,14 @@ namespace mrv {
     const char* channel = other->channel();
     if ( channel )
       {
-	_layers.push_back( channel );
-	++_num_channels;
-	_channel = strdup( channel );
+        _layers.push_back( channel );
+        ++_num_channels;
+        _channel = strdup( channel );
       }
     else
       {
-	default_layers();
-	_num_channels = 4;
+        default_layers();
+        _num_channels = 4;
       }
 
     {
@@ -91,9 +92,15 @@ namespace mrv {
 
 
     //   setsize( -1, -1 );
-  
+
     { // Copy attributes
-      _attrs = other->attributes();
+        const CMedia::Attributes& attrs = other->attributes();
+        CMedia::Attributes::const_iterator i = attrs.begin();
+        CMedia::Attributes::const_iterator e = attrs.end();
+        for ( ; i != e; ++i )
+        {
+            _attrs.insert( std::make_pair( i->first, i->second->copy() ) );
+        }
     }
 
     const char* profile = other->icc_profile();
@@ -117,7 +124,7 @@ namespace mrv {
     const char* lbl = other->label();
     if ( lbl )  _label = strdup( lbl );
 
-    free( orig );
+    free( file );
     _disk_space = 0;
 
     // thumbnail_create();
