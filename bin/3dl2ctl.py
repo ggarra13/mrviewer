@@ -38,7 +38,7 @@ except (IOError, OSError) as e:
     sys.stderr.write( "Could not open '%s' for reading" % filename + ".\n" +
                           str(e) + "\n")
     exit(-1)
-    
+
 m = re.search('\.ctl$', output)
 if not m:
     output += '.ctl'
@@ -58,11 +58,11 @@ for i in lines:
         size[0] = int(m.group(1))
         size[1] = int(m.group(2))
         size[2] = int(m.group(3))
-        
+
     m = re.search( r'Input bit depth (\d+)', i )
     if m:
         idepth = int(m.group(1))
-        
+
     m = re.search( r'Output bit depth (\d+)', i )
     if m:
         odepth = int(m.group(1))
@@ -102,7 +102,7 @@ for v in values:
 fvals = ', '.join( map(str, fvalues) )
 
 if len(values) > 0:
-    out.write( 'const float spline[%d] = { %s };\n\n' % (len(values), fvals) ) 
+    out.write( 'const float spline[%d] = { %s };\n\n' % (len(values), fvals) )
 
 out.write('const float min3d[3] = { %f, %f, %f };\n' %
               (rgbmin[0], rgbmin[1], rgbmin[2] ))
@@ -132,7 +132,7 @@ if maxValue == 0.0:
             maxv = int(m.group(3))
 
     maxValue = 1023
-    if maxv > 1023: maxValue = 2047 
+    if maxv > 1023: maxValue = 2047
     if maxv > 2047: maxValue = 4095
 
 for x in range( 1, size[0]+1 ):

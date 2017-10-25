@@ -19,10 +19,10 @@
  * @file   rawImage.cpp
  * @author gga
  * @date   Fri Nov 03 15:38:30 2006
- * 
+ *
  * @brief  A simple wrapper class to read all of ImageMagick's image formats
  *         using the raw interface.
- * 
+ *
  */
 
 #include <iostream>
@@ -54,7 +54,7 @@ OIIO_NAMESPACE_USING;
 #include "gui/mrvIO.h"
 
 
-namespace 
+namespace
 {
   const char* kModule = "oiio";
 
@@ -85,7 +85,7 @@ namespace mrv {
   bool oiioImage::test(const char* file)
   {
       if ( file == NULL ) return false;
-      
+
       ImageInput* in = ImageInput::open( file );
       if(!in)
       {
@@ -106,7 +106,7 @@ namespace mrv {
     return true;
   }
 
-  bool oiioImage::fetch( const boost::int64_t frame ) 
+  bool oiioImage::fetch( const boost::int64_t frame )
   {
 
       _layers.clear();
@@ -118,14 +118,15 @@ namespace mrv {
       if (!in)
       {
         std::string err = geterror();
-        IMG_ERROR( (err.length() ? err : 
+        IMG_ERROR( (err.length() ? err :
                     Strutil::format("Could not open \"%s\"", file)) );
         return false;
       }
 
+      // This is wrong in the demo example.  We need a const free ImageSpec.
       const ImageSpec &s = in->spec();
       ImageSpec& spec = const_cast< ImageSpec& >( s );
-      
+
       _format = strdup( in->format_name() );
 
       if ( _level < 0 )
@@ -141,22 +142,20 @@ namespace mrv {
               _attrs.insert( std::make_pair( _("Mipmap Levels"),
                                              attr.copy() ) );
           }
-          in->seek_subimage( 0, 0, spec );
           _level = 0;
       }
-      else
+
+      if ( ! in->seek_subimage( 0, _level, spec ) )
       {
-          if ( ! in->seek_subimage( 0, _level, spec ) )
-          {
-              LOG_ERROR( _("Invalid mipmap level") );
-          }
+          IMG_ERROR( _("Invalid mipmap level") );
+          return false;
       }
-      
+
       unsigned dw = spec.width;
       unsigned dh = spec.height;
       int channels = spec.nchannels;
       TypeDesc format = spec.format;
-      
+
       rgb_layers();
       lumma_layers();
       alpha_layers();
@@ -172,44 +171,39 @@ namespace mrv {
       {
           pixel_type = image_type::kHalf;
       }
-      else if ( format == TypeDesc::UINT16 ||
-                format == TypeDesc::INT16 )
-      {
-          pixel_type = image_type::kInt;
-      }
-      else if ( format == TypeDesc::UINT ||
-                format == TypeDesc::INT )
-      {
-          pixel_type = image_type::kInt;
-      }
       else if ( format == TypeDesc::FLOAT )
       {
           pixel_type = image_type::kFloat;
+      }
+      else if ( format == TypeDesc::UINT16 || format == TypeDesc::INT16 )
+      {
+          pixel_type = image_type::kInt;
+      }
+      else if ( format == TypeDesc::UINT || format == TypeDesc::INT )
+      {
+          pixel_type = image_type::kInt;
       }
       else
       {
           IMG_ERROR( _("Unknown pixel type" ) );
           return false;
       }
-      
+
       image_type::Format type;
-      
+
       switch( channels )
       {
           case 1:
-              type = image_type::kLumma;
-              break;
+              type = image_type::kLumma; break;
           case 3:
-              type = image_type::kRGB;
-              break;
+              type = image_type::kRGB;   break;
           case 4:
-              type = image_type::kRGBA;
-              break;
+              type = image_type::kRGBA;  break;
           default:
               IMG_ERROR( _("Unknown number of channels") );
               return false;
       }
-      
+
       allocate_pixels( frame, channels, type, pixel_type, dw, dh );
 
       {
@@ -218,10 +212,10 @@ namespace mrv {
           Pixel* pixels = (Pixel*)_hires->data().get();
           in->read_image (format, &pixels[0]);
       }
-      
-      in->close ();
-      ImageInput::destroy (in);
-      
+
+      in->close();
+      ImageInput::destroy(in);
+
       return true;
   }
 
@@ -229,4 +223,3 @@ namespace mrv {
 
 
 } // namespace mrv
-
