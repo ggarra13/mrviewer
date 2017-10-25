@@ -31,7 +31,7 @@ ENDIF( UNIX )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 8 )
-SET( VersionPatch 6 )
+SET( VersionPatch 7 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -48,7 +48,6 @@ ADD_SUBDIRECTORY( tools )
 
 IF( UNIX )
   ADD_SUBDIRECTORY( shaders )
-  EXECUTE_PROCESS( COMMAND ${CMAKE_SOURCE_DIR}/bin/release 
+  EXECUTE_PROCESS( COMMAND ${CMAKE_SOURCE_DIR}/bin/release
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 ENDIF( UNIX )
-
