@@ -263,7 +263,8 @@ int verbose=1,use_camera_wb=1,use_auto_wb=1,tiff_mode=0;
           }
           {
               //   Imf::FloatAttribute attr( o.aperture );
-              Imf::RationalAttribute attr( Imf::Rational( o.aperture, 1 ) );
+              Imf::RationalAttribute attr( Imf::Rational( o.aperture*100,
+                                                          100 ) );
               _attrs.insert( std::make_pair( "F Number", attr.copy() ) );
           }
           {
