@@ -556,7 +556,20 @@ fltk::StyleSet*     newscheme = NULL;
     playback.get( "scrubbing_sensitivity", tmpF, 5.0f );
     uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
 
+    fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
+    pixel_toolbar.get( "RGBA_pixel", tmp, 0 );
+    uiPrefs->uiPrefsPixelRGBA->value( tmp );
 
+    pixel_toolbar.get( "pixel_values", tmp, 0 );
+    uiPrefs->uiPrefsPixelValues->value( tmp );
+    
+    pixel_toolbar.get( "HSV_pixel", tmp, 0 );
+    uiPrefs->uiPrefsPixelHSV->value( tmp );
+    
+    pixel_toolbar.get( "Lumma_pixel", tmp, 0 );
+    uiPrefs->uiPrefsPixelLumma->value( tmp );
+
+    
     fltk::Preferences action( base, "action" );
     action.get( "scrubbing", tmp, 1 );
     uiPrefs->uiScrub->value( (bool) tmp );
@@ -1129,6 +1142,22 @@ static const char* kCLocale = "C";
 
 
     //
+    // Handle pixel values
+    //
+    main->uiAColorType->value( uiPrefs->uiPrefsPixelRGBA->value() );
+    main->uiAColorType->redraw();
+    main->uiAColorType->do_callback();
+    main->uiPixelValue->value( uiPrefs->uiPrefsPixelValues->value() );
+    main->uiPixelValue->redraw();
+    main->uiPixelValue->do_callback();
+    main->uiBColorType->value( uiPrefs->uiPrefsPixelHSV->value() );
+    main->uiBColorType->redraw();
+    main->uiBColorType->do_callback();
+    main->uiLType->value( uiPrefs->uiPrefsPixelLumma->value() );
+    main->uiLType->redraw();
+    main->uiLType->do_callback();
+    
+    //
     // Handle crop area (masking)
     //
     int crop = uiPrefs->uiPrefsCropArea->value();
@@ -1422,6 +1451,13 @@ static const char* kCLocale = "C";
     playback.set( "scrubbing_sensitivity",
                   uiPrefs->uiPrefsScrubbingSensitivity->value() );
 
+    fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
+    pixel_toolbar.set( "RGBA_pixel", uiPrefs->uiPrefsPixelRGBA->value() );
+    pixel_toolbar.set( "pixel_values", uiPrefs->uiPrefsPixelValues->value() );
+    pixel_toolbar.set( "HSV_pixel", uiPrefs->uiPrefsPixelHSV->value() );
+    pixel_toolbar.set( "Lumma_pixel", uiPrefs->uiPrefsPixelLumma->value() );
+
+    
     fltk::Preferences action( base, "action" );
 
     action.set( "scrubbing", (int)uiPrefs->uiScrub->value() );
