@@ -51,14 +51,15 @@ namespace mrv {
 
     virtual const char* const format() const { return _format; }
 
-    /// Returns the image compression (if any)
+    /// Returns the image compression (if any)w
     virtual const char* const compression() const { 
-       return ""; 
+        return _compression.c_str();
     }
 
     virtual bool initialize();
     virtual bool release();
 
+      
       void level( int x ) { _level = x; refresh(); }
       int level() const { return _level; }
       
@@ -68,6 +69,7 @@ namespace mrv {
 
   protected:
       char* _format;
+      std::string _compression;
       int _level;  // current mipmap level
       unsigned _mipmaps;
   };
