@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,7 +39,11 @@ using namespace std;
 
 #include <algorithm>
 
+#include <ImfStandardAttributes.h>
+#include <ImfFloatAttribute.h>
 #include <ImfIntAttribute.h>
+#include <ImfStringAttribute.h>
+#include <ImfMatrixAttribute.h>
 
 #include <OpenImageIO/imageio.h>
 OIIO_NAMESPACE_USING;
@@ -106,6 +110,7 @@ namespace mrv {
     return true;
   }
 
+
   bool oiioImage::fetch( const boost::int64_t frame )
   {
 
@@ -127,7 +132,9 @@ namespace mrv {
       const ImageSpec &s = in->spec();
       ImageSpec& spec = const_cast< ImageSpec& >( s );
 
-      _format = strdup( in->format_name() );
+      std::string fmt = in->format_name();
+      fmt = "OIIO (" + fmt + ")";
+      _format = strdup( fmt.c_str() );
 
       if ( _level < 0 )
       {
@@ -155,10 +162,57 @@ namespace mrv {
       unsigned dh = spec.height;
       int channels = spec.nchannels;
       TypeDesc format = spec.format;
+      
+      {
+          _compression = spec.get_string_attribute( "compression",
+                                                    "Zip" );
+      }
+      for (size_t i = 0; i < spec.extra_attribs.size(); ++i) {
+          const ParamValue &p (spec.extra_attribs[i]);
+          if ( p.name() == "compression" ) continue;
+          if (p.type() == TypeString)
+          {
+              Imf::StringAttribute attr( *(const char **)p.data() );
+              _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+          }
+          else if (p.type() == TypeFloat)
+          {
+              Imf::FloatAttribute attr( *(const float*)p.data() );
+              _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+          }
+          else if (p.type() == TypeInt)
+          {
+              Imf::IntAttribute attr( *(const int*)p.data() );
+              _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+          }
+          else if (p.type() == TypeDesc::UINT)
+          {
+              Imf::IntAttribute attr( *(const unsigned int*)p.data() );
+              _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+          }
+          else if (p.type() == TypeMatrix)
+          {
+              const float *f = (const float *)p.data();
+              Imath::M44f m(f[0], f[1], f[2], f[3],
+                            f[4], f[5], f[6], f[7],
+                            f[8], f[9], f[10], f[11],
+                            f[12], f[13], f[14], f[15]);
+              Imf::M44fAttribute attr( m );
+              _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+          }
+      }
 
-      rgb_layers();
-      lumma_layers();
-      alpha_layers();
+      if ( channels >= 3 )
+      {
+          rgb_layers();
+          lumma_layers();
+      }
+
+      if ( channels >= 4 )
+      {
+          alpha_layers();
+      }
+      
       image_size( dw, dh );
 
       image_type::PixelType pixel_type;
