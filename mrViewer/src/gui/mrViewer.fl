@@ -561,7 +561,8 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class HistogramUI {} {
+  class HistogramUI {open
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(mrv::ViewerUI* main)} {open private
     } {
@@ -667,9 +668,9 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {530 630 700 450} resizable
+        xywh {1097 649 700 450} hide resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1224,6 +1225,98 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
+            label {Pixel Toolbar} open
+            xywh {14 23 423 350} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Choice} uiPrefsPixelRGBA {
+              label {RGBA Display}
+              xywh {138 50 190 25}
+            } {
+              {fltk::Item} {} {
+                label {Float Values}
+                }
+              {fltk::Item} {} {
+                label {Hex Values}
+                }
+              {fltk::Item} {} {
+                label {8-bit Values}
+                }
+            }
+            {fltk::Choice} uiPrefsPixelValues {
+              label {Pixel Values}
+              xywh {138 118 190 25}
+            } {
+              {fltk::Item} {} {
+                label {Full Lut and Gamma}
+                }
+              {fltk::Item} {} {
+                label {Gamma without Lut}
+                }
+              {fltk::Item} {} {
+                label {Original without Gamma or Lut}
+                }
+            }
+            {fltk::Choice} uiPrefsPixelHSV {
+              label {Secondary Display} open
+              xywh {138 193 190 25}
+            } {
+              {fltk::Item} {} {
+                label HSV
+                }
+              {fltk::Item} {} {
+                label HSL
+                }
+              {fltk::Item} {} {
+                label {CIE XYZ}
+                }
+              {fltk::Item} {} {
+                label {CIE xyY}
+                }
+              {fltk::Item} {} {
+                label {Lab CIELAB (L*a*b*)}
+                align 172
+              }
+              {fltk::Item} {} {
+                label {Luv CIELUV (L*u*v*)} selected
+                align 172
+              }
+              {fltk::Item} {} {
+                label {YUV (Analog PAL)}
+                align 172
+              }
+              {fltk::Item} {} {
+                label {YDbDr (Analog SECAM/PAL-N)}
+                align 172
+              }
+              {fltk::Item} {} {
+                label {YIQ (Analog NTSC)}
+                align 172
+              }
+              {fltk::Item} {} {
+                label {ITU-601 (Digital PAL/NTSC YCbCr)}
+                align 172
+              }
+              {fltk::Item} {} {
+                label {ITU-709 (Digital HDTV YCbCr)}
+                align 172
+              }
+            }
+            {fltk::Choice} uiPrefsPixelLumma {
+              label {Pixel Values}
+              xywh {138 253 190 25}
+            } {
+              {fltk::Item} {} {
+                label {Y (Luminance)}
+                }
+              {fltk::Item} {} {
+                label {Y' (Lumma)}
+                }
+              {fltk::Item} {} {
+                label {L (Lightness)}
+                }
+            }
+          }
+          {fltk::Group} {} {
             label Actions
             xywh {14 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
@@ -1314,7 +1407,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open selected
+            label {3D Luts}
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1496,7 +1589,7 @@ uiPrefs->run(v);}
           }
           {fltk::Group} {} {
             label OCIO
-            xywh {13 22 423 355} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
               label {Input Color Space} open
@@ -1593,7 +1686,7 @@ uiOCIO_float_ics->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths} open
+            label {CTL Paths}
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
@@ -2364,13 +2457,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -2389,6 +2482,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
             {fltk::Item} {} {
               label Playback
+              }
+            {fltk::Item} {} {
+              label {Pixel Toolbar}
               }
             {fltk::Item} {} {
               label Actions
@@ -2899,7 +2995,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3234,7 +3331,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {
+          {fltk::Group} uiPixelBar {open
             xywh {0 458 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
@@ -3321,7 +3418,7 @@ o->disable_glyph();}
                   label FIT
                   }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {29 0 605 25}
               } {
                 {fltk::Output} uiCoord {
@@ -3329,13 +3426,13 @@ o->disable_glyph();}
                   tooltip {Image coordinate of pixel under mouse.}
                   xywh {0 3 85 20} align 36 box NO_BOX labelfont 4 color 56 textcolor 0xababab00 labelcolor 0xababab00 labelsize 10 textsize 10
                 }
-                {fltk::Group} {} {
+                {fltk::Group} {} {open
                   xywh {85 0 520 25}
                 } {
-                  {fltk::Group} {} {
+                  {fltk::Group} {} {open
                     xywh {0 0 520 25}
                   } {
-                    {fltk::Group} {} {
+                    {fltk::Group} {} {open
                       xywh {0 3 230 22}
                     } {
                       {fltk::PopupMenu} uiAColorType {
@@ -3453,7 +3550,7 @@ char t[2];
 t[1] = 0;
 t[0] = o->child(i)->label()[0];
 o->label( strdup(t) );
-v->update_color_info();}
+v->update_color_info();} open
                       tooltip {Type of pixel values to show:
 + Full:  pixel with gamma, gain and lut.
 + Gamma: pixel with gamma and gain but no lut.
@@ -3473,7 +3570,7 @@ o->disable_glyph();}
                         label Original
                         }
                     }
-                    {fltk::Group} {} {
+                    {fltk::Group} {} {open
                       xywh {451 3 65 22}
                     } {
                       {fltk::PopupMenu} uiLType {
