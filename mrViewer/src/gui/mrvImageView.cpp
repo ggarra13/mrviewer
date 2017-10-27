@@ -143,6 +143,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 
 // Audio
 
+// #define ALLOW_ROTATE // Turn on rotate hotkeys and menus
 
 using namespace std;
 
@@ -314,6 +315,27 @@ void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
     v->clear_caches();
 }
 
+void rotate_plus_90_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media fg = v->foreground();
+    if (!fg) return;
+
+    mrv::CMedia* img = fg->image();
+    img->rotate( 90.0 );
+    img->has_changed();
+    v->redraw();
+}
+
+void rotate_minus_90_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media fg = v->foreground();
+    if (!fg) return;
+
+    mrv::CMedia* img = fg->image();
+    img->rotate( -90.0 );
+    img->has_changed();
+    v->redraw();
+}
 void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
 {
     mrv::media fg = v->foreground();
@@ -3036,6 +3058,16 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
+#ifdef ALLOW_ROTATE
+            menu.add( _("Image/Rotate +90"),
+                      kRotatePlus90.hotkey(),
+                      (fltk::Callback*)rotate_plus_90_cb, this );
+            menu.add( _("Image/Rotate -90"),
+                      kRotateMinus90.hotkey(),
+                      (fltk::Callback*)rotate_minus_90_cb, this,
+                      fltk::MENU_DIVIDER );
+#endif
+            
             if ( !Preferences::use_ocio )
             {
                 menu.add( _("Image/Attach CTL Input Device Transform"),
@@ -4884,6 +4916,18 @@ int ImageView::keyDown(unsigned int rawkey)
         update_frame_cb( NULL, this );
         return 1;
     }
+#ifdef ALLOW_ROTATE
+    else if ( kRotatePlus90.match( rawkey ) )
+    {
+        rotate_plus_90_cb( NULL, this );
+        return 1;
+    }
+    else if ( kRotateMinus90.match( rawkey ) )
+    {
+        rotate_minus_90_cb( NULL, this );
+        return 1;
+    }
+#endif
     else if ( kFirstFrame.match( rawkey ) ) 
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
