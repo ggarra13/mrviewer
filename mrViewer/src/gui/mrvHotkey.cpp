@@ -161,7 +161,8 @@ Hotkey kToggleHotkeys( false, false, false, false, 0 );
 Hotkey kToggleLogs( false, false, false, false, fltk::F10Key );
 Hotkey kToggleAbout( false, false, false, false, 0 );
 
-
+Hotkey kRotatePlus90( false, false, false, false, '+' );
+Hotkey kRotateMinus90( false, false, false, false, '-' );
 
 bool Hotkey::match( unsigned rawkey )
 {
@@ -330,6 +331,8 @@ HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
 HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
 HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
 HotkeyEntry( _("Toggle About Window"), kToggleAbout),
+HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
+HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 

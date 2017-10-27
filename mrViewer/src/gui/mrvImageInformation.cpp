@@ -2308,7 +2308,7 @@ void ImageInformation::fill_data()
         if ( !img->has_video() )
         {
             double ratio = 100.0 - double(pct);
-            sprintf( buf, _("%.2g %%"), ratio );
+            sprintf( buf, _("%4.8g %%"), ratio );
             add_text( _("Compression Ratio"), _("Compression Ratio"), buf );
         }
       }
