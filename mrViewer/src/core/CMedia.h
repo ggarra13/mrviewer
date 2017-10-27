@@ -1060,7 +1060,8 @@ class CMedia
     }
     inline double x() const { return _x; }
     inline double y() const { return _y; }
-    
+
+    inline void rotate( float t ) { _rot_z += t; }
     inline double rot_z() const { return _rot_z; }
     
     // Process a timecode object unto _tc_frame
