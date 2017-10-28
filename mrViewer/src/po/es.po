@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-10-27 17:24-0300\n"
-"PO-Revision-Date: 2017-09-18 11:12-0300\n"
+"POT-Creation-Date: 2017-10-27 19:04-0300\n"
+"PO-Revision-Date: 2017-10-28 09:55-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
 "Language: es_AR\n"
@@ -680,7 +680,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1178
+#: video/mrvGLLut3d.cpp:1179
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -1095,7 +1095,7 @@ msgstr "Un error ocurrió al intentar borrar '%s'."
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:825
+#: video/mrvGLLut3d.cpp:826
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1803,7 +1803,7 @@ msgstr "Texto de Copyright"
 msgid "Core"
 msgstr "Central"
 
-#: video/mrvGLLut3d.cpp:740
+#: video/mrvGLLut3d.cpp:741
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -2096,7 +2096,7 @@ msgstr "No pude obtener contexto de conversion de imagen."
 msgid "Could not get profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: video/mrvGLLut3d.cpp:815
+#: video/mrvGLLut3d.cpp:816
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -2116,7 +2116,7 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:731
+#: video/mrvGLLut3d.cpp:732
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -2734,7 +2734,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:802
+#: video/mrvGLLut3d.cpp:803
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -2742,7 +2742,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:808
+#: video/mrvGLLut3d.cpp:809
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -3380,7 +3380,7 @@ msgstr "Completo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2504
 msgid "Full Lut and Gamma"
-msgstr ""
+msgstr "Lut completo y Gama"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2035
 msgid "Fullscreen"
@@ -3451,7 +3451,7 @@ msgstr "Gama a usar cuando se carga un exr."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2505
 msgid "Gamma without Lut"
-msgstr ""
+msgstr "Gama sin Lut"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3785
 msgid "Ghosting"
@@ -3692,11 +3692,11 @@ msgstr "Estado de Imagen"
 
 #: gui/mrvImageInformation.cpp:2060
 msgid "Image X Position in Canvas"
-msgstr ""
+msgstr "Posición en X de la imagen en el tablero"
 
 #: gui/mrvImageInformation.cpp:2064
 msgid "Image Y Position in Canvas"
-msgstr ""
+msgstr "Posición en Y de la imagen en el tablero"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4161
 msgid "Image coordinate of pixel under mouse."
@@ -3905,11 +3905,11 @@ msgstr "Entero"
 msgid "Internal error in wizard selection: "
 msgstr "Error interno en selección del wizard: "
 
-#: video/mrvGLLut3d.cpp:752
+#: video/mrvGLLut3d.cpp:753
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
-#: video/mrvGLLut3d.cpp:796
+#: video/mrvGLLut3d.cpp:797
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -3933,7 +3933,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:767
+#: video/mrvGLLut3d.cpp:768
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -4557,15 +4557,15 @@ msgstr "Próxima Imagen"
 msgid "No"
 msgstr "No"
 
-#: video/mrvGLLut3d.cpp:1075 video/mrvGLLut3d.cpp:1120
+#: video/mrvGLLut3d.cpp:1076 video/mrvGLLut3d.cpp:1121
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:1073 video/mrvGLLut3d.cpp:1118
+#: video/mrvGLLut3d.cpp:1074 video/mrvGLLut3d.cpp:1119
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:1077 video/mrvGLLut3d.cpp:1122
+#: video/mrvGLLut3d.cpp:1078 video/mrvGLLut3d.cpp:1123
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -4619,11 +4619,11 @@ msgstr "Sin memoria para grafica de filtro"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:1124
+#: video/mrvGLLut3d.cpp:1125
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:1079
+#: video/mrvGLLut3d.cpp:1080
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -4782,13 +4782,13 @@ msgstr "OCIO/Vista"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:1017
+#: video/mrvGLLut3d.cpp:1018
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:993
+#: video/mrvGLLut3d.cpp:994
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -4945,7 +4945,7 @@ msgstr "Tipo de pixel original es "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2506
 msgid "Original without Gamma or Lut"
-msgstr ""
+msgstr "Original sin Gama ni Lut"
 
 #: core/wandImage.cpp:520
 msgid "Originating Program"
@@ -5102,7 +5102,7 @@ msgstr "Elegir"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2759
 msgid "Pick a config.ocio file from disk.\n"
-msgstr ""
+msgstr "Seleccione un archivo config.ocio del disco\n"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
 msgid "Ping Pong"
@@ -5363,7 +5363,7 @@ msgstr "Display RGBA"
 msgid "RLE"
 msgstr "RLE"
 
-#: video/mrvGLLut3d.cpp:493
+#: video/mrvGLLut3d.cpp:494
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr "ROLE_SCENE_LINEAR no está definido."
 
@@ -5371,13 +5371,13 @@ msgstr "ROLE_SCENE_LINEAR no está definido."
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:968
+#: video/mrvGLLut3d.cpp:969
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:937
+#: video/mrvGLLut3d.cpp:938
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -5615,11 +5615,11 @@ msgstr "Shift Derecho"
 
 #: gui/mrvHotkey.cpp:334
 msgid "Rotate Image +90 Degrees"
-msgstr ""
+msgstr "Rote la Imagen +90 grados"
 
 #: gui/mrvHotkey.cpp:335
 msgid "Rotate Image -90 Degrees"
-msgstr ""
+msgstr "Rote la Imagen -90 grados"
 
 #: core/exrImage.cpp:1362 core/exrImage.cpp:1366
 msgid "Rounding Mode"
@@ -6604,6 +6604,9 @@ msgid ""
 "This is the path to your config.ocio file.  It can be set with the "
 "environment variable OCIO, which takes precedence over any saved setting."
 msgstr ""
+"Este es el camino a tu archivo config.ocio.  Puede ser seteado con la "
+"variable de entorno OCIO, que tiene precedencia sobre cualquier seteo "
+"grabado."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:169
 msgid ""
@@ -6705,7 +6708,7 @@ msgstr "Permutar Ventana Acerca de"
 
 #: gui/mrvHotkey.cpp:322
 msgid "Toggle Action Window"
-msgstr ""
+msgstr "Permutar Ventana de Acción"
 
 #: gui/mrvHotkey.cpp:291
 msgid "Toggle Background"
@@ -7005,11 +7008,11 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLLut3d.cpp:529
+#: video/mrvGLLut3d.cpp:530
 msgid "Unknown error returned from OCIO processor"
 msgstr "Error desconocido retornado del procesador de OCIo"
 
-#: video/mrvGLLut3d.cpp:625
+#: video/mrvGLLut3d.cpp:626
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
@@ -7093,11 +7096,11 @@ msgstr "Usar el Selector de Archivos Nativo en Windows"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2746
 msgid "Use OCIO"
-msgstr ""
+msgstr "Use OCIO"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2748
 msgid "Use OCIO or revert to CTL/ICC."
-msgstr ""
+msgstr "Usar OCIO o revertir a CTL/ICC."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-97-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3404
 msgid "Use multiple threads when loading a frame."
