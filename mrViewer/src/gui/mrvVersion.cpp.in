@@ -52,6 +52,12 @@ extern "C" {
 #include <GL/glew.h>
 #include <MagickWand/MagickWand.h>
 
+#include <OpenColorIO/OpenColorIO.h>
+
+namespace OCIO = OCIO_NAMESPACE;
+
+#include <OpenImageIO/oiioversion.h>
+
 #include <libraw/libraw.h>
 
 #include <fltk/visual.h>
@@ -156,6 +162,10 @@ void ffmpeg_formats( fltk::Browser& browser )
 			"ILM OpenEXR" );
     formats.push_back(f);
 
+    f = new FormatInfo( true, false, false, "TX", "OpenImageIO",
+			"Arnold's TX" );
+    formats.push_back(f);
+    
     f = new FormatInfo( true, false, false, "IFF", "internal",
 			"Autodesk Maya IFF" );
     formats.push_back(f);
@@ -523,6 +533,15 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "http://www.openexr.org/" << endl
       << "(C) 2005-2017 Industrial Light & Magic" << endl
       << endl
+      << "OpenColorIO v" << OCIO::GetVersion() <<  " or later" << endl
+      << "http://www.opencolorio.org/" << endl
+      << "(C) 2005-2017 Sony Pictures Imageworks" << endl
+      << endl
+      << "OpenImageIO v" << OIIO_VERSION_STRING <<  " or later" << endl
+      << "http://www.openimageio.org/" << endl
+      << "(C) 2003-2017 Larry Gritz, et al. " << endl
+      << "All rights reserved." << endl
+      << endl
       << "AMPAS ACES v1.0 or later" << endl
       << "https://github.com/ampas/aces-dev" << endl
       << "(C) 2017 AMPAS" << endl
@@ -540,7 +559,8 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "IccProfLib (ICC v4.2)" << endl
       << "(C) 2003-2017 - The International Color Consortium" << endl
       << endl
-      << "LibRaw " << libraw_version()
+      << "LibRaw " << libraw_version() << endl
+      << "(C) 2008-2017 LibRaw LLC (info@libraw.org)"
       << endl
       << endl;
 
