@@ -203,7 +203,7 @@ lookup3D
     */
 }
 
-  unsigned GLLut3d::NUM_STOPS = 10;
+  unsigned GLLut3d::NUM_STOPS = 8;
   GLLut3d::LutsMap GLLut3d::_luts;
 
 
@@ -342,19 +342,20 @@ lookup3D
 void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 {
     using namespace Imath;
-    //float scale = ( (float) _lutN - 1.0f ) / (float) _lutN;
-    //float offset = 1.0f / ( 2.0f * _lutN );
-    // out.x = lutT + lutM * logf( Imath::clamp( rgb.x * scale + offset,
-    //                                           lutMin, lutMax ) );
-    // out.y = lutT + lutM * logf( Imath::clamp( rgb.y * scale + offset, 
-    //                                           lutMin, lutMax ) );
-    // out.z = lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset, 
-    //                                           lutMin, lutMax ) );
-
+#if 1
+    float scale = ( (float) _lutN - 1.0f ) / (float) _lutN;
+    float offset = 1.0f / ( 2.0f * _lutN );
+    out.x = lutT + lutM * logf( Imath::clamp( rgb.x * scale + offset,
+                                              lutMin, lutMax ) );
+    out.y = lutT + lutM * logf( Imath::clamp( rgb.y * scale + offset, 
+                                              lutMin, lutMax ) );
+    out.z = lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset, 
+                                              lutMin, lutMax ) );
+#else
     out.x = lutT + lutM * logf( Imath::clamp( rgb.x, lutMin, lutMax ) );
     out.y = lutT + lutM * logf( Imath::clamp( rgb.y, lutMin, lutMax ) );
     out.z = lutT + lutM * logf( Imath::clamp( rgb.z, lutMin, lutMax ) );
-
+#endif
 
     out = lookup3D( (V4f*)(&lut[0]), _lutN, out );
 
