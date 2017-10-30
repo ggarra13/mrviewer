@@ -418,8 +418,8 @@ int aviImage::init_filters(const char *filters_descr)
 {
     char args[512];
     int ret = 0;
-    AVFilter *buffersrc  = avfilter_get_by_name("buffer");
-    AVFilter *buffersink = avfilter_get_by_name("buffersink");
+    const AVFilter *buffersrc  = avfilter_get_by_name("buffer");
+    const AVFilter *buffersink = avfilter_get_by_name("buffersink");
     AVFilterInOut *outputs = avfilter_inout_alloc();
     AVFilterInOut *inputs  = avfilter_inout_alloc();
     AVRational time_base = get_video_stream()->time_base;
@@ -739,8 +739,6 @@ void aviImage::open_video_codec()
   // _video_ctx->idct_algo = idct;
 
 
-  if(video_codec->capabilities & CODEC_CAP_DR1)
-     _video_ctx->flags |= CODEC_FLAG_EMU_EDGE;
 
   double aspect_ratio;
   if ( _video_ctx->sample_aspect_ratio.num == 0 )
@@ -2432,7 +2430,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             if (!got_audio )
             {
                 if (audio_context() == _context && _audio_ctx &&
-                    _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
+                    _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
                     av_init_packet(&pkt);
                     pkt.size = 0;
                     pkt.data = NULL;

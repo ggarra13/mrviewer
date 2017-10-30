@@ -535,6 +535,9 @@ fltk::StyleSet*     newscheme = NULL;
     flu.get("quick_folder_travel", tmp, 1 );
     uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
+    flu.get("thumbnails", tmp, 1 );
+    uiPrefs->uiPrefsFileReqThumbnails->value( (bool) tmp );
+    Flu_File_Chooser::thumbnailsFileReq = (bool) tmp;
 
     //
     // playback
@@ -1106,6 +1109,9 @@ static const char* kCLocale = "C";
     //
     // Handle file requester
     //
+    Flu_File_Chooser::thumbnailsFileReq = (bool)
+    uiPrefs->uiPrefsFileReqThumbnails->value();
+    
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
     uiPrefs->uiPrefsFileReqFolder->value();
 
@@ -1434,11 +1440,13 @@ static const char* kCLocale = "C";
     colors.set( "selection_text_color", selectiontextcolor );
 
     fltk::Preferences flu( ui, "file_requester" );
-    flu.set("quick_folder_travel", 
-	    uiPrefs->uiPrefsFileReqFolder->value());
+    flu.set("quick_folder_travel", uiPrefs->uiPrefsFileReqFolder->value());
+    flu.set("thumbnails", uiPrefs->uiPrefsFileReqThumbnails->value());
     
     Flu_File_Chooser::singleButtonTravelDrawer = 
     uiPrefs->uiPrefsFileReqFolder->value();
+    Flu_File_Chooser::thumbnailsFileReq = 
+    uiPrefs->uiPrefsFileReqThumbnails->value();
 
     //
     // playback prefs
