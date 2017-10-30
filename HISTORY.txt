@@ -1,3 +1,10 @@
+v3.8.8   - Bug fixed area selection on images with small Data Windows.
+	   This was a refression from v3.8.6 when the coords were
+	   changed.
+	 - Added +90/-90 degree rotations of the image.  Currently,
+	   no image or video sets this flag.  Use + and - to rotate
+	   +90 or -90 degrees respectively.
+
 v3.8.7   - Improved detection of .hdri images to support those saved
 	   from Photoshop (#?RGBE instead of #?RADIANCE).
 	 - Removed error when creating thumbnails of RAW formats.
@@ -9,6 +16,8 @@ v3.8.7   - Improved detection of .hdri images to support those saved
 	 - Added all metadata in .tx images.
 	 - Updated About messages to include OpenColorIO, OpenImageIO
 	   and Libraw copyrights and versions.
+	 - Added a Pixel Toolbar tab in Preferences to control how
+	   the pixel toolbar behaves on startup.
 
 v3.8.6   - Bug fixed GLSL shaders to support scale and offset.
 	 - Removed a syntax error in GLSL rgba shader.
