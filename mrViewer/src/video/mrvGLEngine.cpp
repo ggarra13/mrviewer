@@ -1260,7 +1260,7 @@ void GLEngine::alloc_quads( size_t num )
 }
 
 
-void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
+void GLEngine::draw_selection_marquee( mrv::Rectd r )
 {   
     Image_ptr img = _view->selected_image();
     if ( img == NULL ) return;
@@ -1286,31 +1286,36 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
 
     glTranslated( x + r.x(), y + r.y(), 0 );
 
+
+    double rw = r.w() * img->scale_x();
+    double rh = r.h() * img->scale_y();
     glBegin( GL_TRIANGLES );
 
-    const double kSize = r.w() / 64.0;
+    // Draw edges
+    const double kSize = 32.0;
     {
         glVertex2d(  0.0,  0.0 );
         glVertex2d( kSize,  0.0 );
         glVertex2d(  0.0, kSize );
     
-        glVertex2d(  r.w(),        0.0 );
-        glVertex2d(  r.w()-kSize,  0.0 );
-        glVertex2d(  r.w(),       kSize );
+        glVertex2d(  rw,        0.0 );
+        glVertex2d(  rw-kSize,  0.0 );
+        glVertex2d(  rw,       kSize );
         
-        glVertex2d(  r.w(),       r.h() );
-        glVertex2d(  r.w()-kSize, r.h() );
-        glVertex2d(  r.w(),       r.h()-kSize );
+        glVertex2d(  rw,       rh );
+        glVertex2d(  rw-kSize, rh );
+        glVertex2d(  rw,       rh-kSize );
         
-        glVertex2d(  0.0,  r.h() );
-        glVertex2d( kSize, r.h() );
-        glVertex2d(  0.0,  r.h()-kSize );
+        glVertex2d(  0.0,  rh );
+        glVertex2d( kSize, rh );
+        glVertex2d(  0.0,  rh-kSize );
     }
     
     glEnd();
 
-    double rw = r.w() / 2.0;
-    double rh = r.h() / 2.0;
+    // Draw cross at the middle
+    rw /= 2.0;
+    rh /= 2.0;
     glBegin( GL_LINES );
     {
         glVertex2d( rw, rh );
@@ -1327,6 +1332,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     }
     glEnd();
 
+    // Draw text next to cross
     char buf[128];
     int xi = round(img->x());
     int yi = round(img->y());
@@ -1539,6 +1545,10 @@ void GLEngine::draw_images( ImageList& images )
             {
                 // NOT display_window(frame)
                 const mrv::Recti& dp = fg->display_window();
+                img->scale_x( (double) dp.w() / dpw.w() );
+                img->scale_y( (double) dp.h() / dpw.h() );
+                // texWidth = dp.w() * fg->scale_x();
+                // texHeight = dp.h() * fg->scale_y();
                 texWidth = dp.w();
                 texHeight = dp.h();
             }
@@ -1596,14 +1606,25 @@ void GLEngine::draw_images( ImageList& images )
                           float(daw.y()), 0 );
             CHECK_GL;
 
+            double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
 
+            if ( r <= 0.0001 )
+            {
+                unsigned t = texWidth;
+                texWidth = texHeight;
+                texHeight = t;
+            }
             if ( _view->main()->uiPixelRatio->value() )
+            {
                 glScaled( double(texWidth),
                           double(texHeight) / _view->pixel_ratio(),
                           1.0 );
+            }
             else
+            {
                 glScaled( double(texWidth), double(texHeight), 1.0 );
-
+            }
+            
             CHECK_GL;
             glTranslated( 0.5, 0.5, 0.0 );
             glRotated( img->rot_z(), 0, 0, 1 );
@@ -1896,7 +1917,7 @@ void GLEngine::draw_images( ImageList& images )
            _view->selected_image() == img )
       {
           mrv::Rectd r( img->x() + dpw.x(), dpw.y() + img->y(),
-                        dpw.w(), dpw.h() );
+                        dpw.w() * img->scale_x(), dpw.h() * img->scale_y() );
           draw_selection_marquee( r );
       }
 
