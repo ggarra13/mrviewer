@@ -147,6 +147,7 @@ std::string Flu_File_Chooser::deleteFileErrTxt = _("An error ocurred while tryin
 std::string Flu_File_Chooser::fileExistsErrTxt = _("File '%s' already exists!");
 std::string Flu_File_Chooser::renameErrTxt = _("Unable to rename '%s' to '%s'");
 bool Flu_File_Chooser::singleButtonTravelDrawer = true;
+bool Flu_File_Chooser::thumbnailsFileReq = true;
 
 const char *col_labels[] = {
 Flu_File_Chooser::detailTxt[0].c_str(),
@@ -1775,7 +1776,7 @@ void Flu_File_Chooser::previewCB()
     fltk::Group *g = getEntryGroup();
     int c = g->children();
 
-    if ( previewBtn->value() )
+    if ( previewBtn->value() && thumbnailsFileReq )
     {
         // Make sure all other previews have finished
         clear_threads();
@@ -2598,7 +2599,8 @@ void Flu_File_Chooser::Entry::updateSize()
     int H = 20;
     if ( icon ) {
         if ( chooser->previewBtn->value() &&
-             ( icon == &reel || icon == &picture ) )
+             ( icon == &reel || icon == &picture ) &&
+             thumbnailsFileReq )
         {
             H = 68;
         }
