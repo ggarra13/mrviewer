@@ -88,7 +88,7 @@ namespace mrv {
                                    const mrv::ImageView::FlipDirection flip =
                                    mrv::ImageView::kFlipNone );
 
-      void draw_selection_marquee( const mrv::Rectd& r );
+      void draw_selection_marquee( mrv::Rectd r );
       
     /// Draw a rectangle
       void draw_data_window( const mrv::Rectd& r );
