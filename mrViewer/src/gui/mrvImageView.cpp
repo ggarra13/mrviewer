@@ -143,8 +143,6 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 
 // Audio
 
-// #define ALLOW_ROTATE // Turn on rotate hotkeys and menus
-
 using namespace std;
 
 namespace fs = boost::filesystem;
@@ -321,8 +319,9 @@ void rotate_plus_90_cb( fltk::Widget* o, mrv::ImageView* v )
     if (!fg) return;
 
     mrv::CMedia* img = fg->image();
-    img->rotate( 90.0 );
-    img->has_changed();
+    img->rotate( -90.0 ); // this is reversed on purpose
+    img->image_damage( mrv::CMedia::kDamageContents );
+    v->fit_image();
     v->redraw();
 }
 
@@ -332,8 +331,9 @@ void rotate_minus_90_cb( fltk::Widget* o, mrv::ImageView* v )
     if (!fg) return;
 
     mrv::CMedia* img = fg->image();
-    img->rotate( -90.0 );
-    img->has_changed();
+    img->rotate( 90.0 );  // this is reversed on purpose
+    img->image_damage( mrv::CMedia::kDamageContents );
+    v->fit_image();
     v->redraw();
 }
 void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
@@ -1373,9 +1373,10 @@ void ImageView::copy_pixel() const
 
   if ( outside || !pic ) return;
 
-  int ypr = pic->height() - yp - 1;
+  int xpr = int((double)xp / img->width());
+  int ypr = pic->height() - int((double)yp / img->height()) - 1;
   
-  CMedia::Pixel rgba = pic->pixel( xp, ypr );
+  CMedia::Pixel rgba = pic->pixel( xpr, ypr );
   pixel_processed( img, rgba );
 
   mrv::Recti daw[2];
@@ -1509,7 +1510,7 @@ void ImageView::image_coordinates( const CMedia* const img,
 
     x -= img->x();
     y -= img->y();
-
+    
     //y = H - y;
     if ( _showPixelRatio ) y *= pixel_ratio();
 }
@@ -1669,6 +1670,15 @@ void ImageView::fit_image()
   if ( W == 0 ) W = pic->width();
   double H = dpw.h();
   if ( H == 0 ) H = pic->height();
+
+  // Handle image 90 degrees rotation
+  double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+  if ( r <= 0.0001 )
+  {
+      int tmp = H;
+      H = W;
+      W = tmp;
+  }
 
   // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
   //     W *= 2;
@@ -3058,7 +3068,6 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
-#ifdef ALLOW_ROTATE
             menu.add( _("Image/Rotate +90"),
                       kRotatePlus90.hotkey(),
                       (fltk::Callback*)rotate_plus_90_cb, this );
@@ -3066,8 +3075,7 @@ int ImageView::leftMouseDown(int x, int y)
                       kRotateMinus90.hotkey(),
                       (fltk::Callback*)rotate_minus_90_cb, this,
                       fltk::MENU_DIVIDER );
-#endif
-            
+
             if ( !Preferences::use_ocio )
             {
                 menu.add( _("Image/Attach CTL Input Device Transform"),
@@ -3499,7 +3507,8 @@ void ImageView::separate_layers( const CMedia* const img,
         if (!pic) return;
     }
 
-    if ( xp < dpw.x() || yp < dpw.y() || xp > dpw.w() || yp > dpw.h() ) {
+    if ( xp < dpw.x() || yp < dpw.y() ||
+         xp > dpw.w()*img->scale_x() || yp > dpw.h()*img->scale_y() ) {
         outside = true;
     }
 }
@@ -3818,14 +3827,15 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   h = dpm.h();
 
   if (!pic) return;
-  
 
-  if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
-       yp >= (int)pic->height() )
+
+  if ( xp < 0 || xp >= (int)((double)pic->width()*img->scale_x()) ||
+       yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
   {
       outside = true;
   }
   else if ( input == CMedia::kSeparateLayersInput &&
+            output != CMedia::kNoStereo &&
             ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) ) {
       outside = true;
   }
@@ -3887,10 +3897,10 @@ void ImageView::mouseMove(int x, int y)
       daw[0] = img->data_window();
       daw[1] = img->data_window2();
       
-      // std::cerr << "1 yp " << yp << " h " << h << " height "
-      //           << pic->height() << std::endl;
-      int ypr = pic->height() - yp - 1;
-      rgba = pic->pixel( xp, ypr );
+      int xpr = int((double)xp / img->scale_x());
+      int ypr = pic->height() - int((double)yp / img->scale_y()) - 1;
+
+      rgba = pic->pixel( xpr, ypr );
 
       pixel_processed( img, rgba );
 
@@ -3942,15 +3952,17 @@ void ImageView::mouseMove(int x, int y)
               // std::cerr << "2 yp " << yp << " h " << h << " height "
               //          << pic->height() << std::endl;
               outside = false;
-              if ( xp < 0 || xp >= (int)pic->width() || yp < 0 ||
-                   yp >= (int)pic->height() )
+              if ( xp < 0 || xp >= (int)pic->width()*img->scale_x() ||
+                   yp < 0 || yp >= (int)pic->height()*img->scale_y() )
                   outside = true;
 
               if (!outside)
               {
                   float r = rgba.r;
-                  int ypr = pic->height() - yp - 1;
-                  rgba = pic->pixel( xp, ypr );
+                  int xpr = int((double)xp / img->scale_x());
+                  int ypr = pic->height() -
+                            int((double)yp / img->scale_y()) - 1;
+                  rgba = pic->pixel( xpr, ypr );
                   pixel_processed( img, rgba );
                   
                   if ( normalize() )
@@ -4019,7 +4031,9 @@ void ImageView::mouseMove(int x, int y)
           }
 
           bool outside2 = false;
-          if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
+          if ( xp < 0 || yp < 0 ||
+               xp >= (int)w*img->scale_x() ||
+               yp >= (int)h*img->scale_y() )
           {
               outside2 = true;
           }
@@ -4310,7 +4324,8 @@ void ImageView::mouseDrag(int x,int y)
            }
            else if ( stereo_out & CMedia::kStereoSideBySide )
            {
-               if ( xf >= W - daw[0].x() )
+               // if ( xf >= W - daw[0].x() )
+               if ( xf >= W )
                {
                    right = true;
 
@@ -4340,7 +4355,8 @@ void ImageView::mouseDrag(int x,int y)
            }
            else if ( stereo_out & CMedia::kStereoTopBottom )
            {
-               if ( yf >= H - daw[0].y() )
+               // if ( yf >= H - daw[0].y() )
+               if ( yf >= H )
                {
                    bottom = true;
 
@@ -4375,7 +4391,6 @@ void ImageView::mouseDrag(int x,int y)
 
 	   xn = floor(xn+0.5f);
 	   yn = floor(yn+0.5f);
-           
 
 
 
@@ -4385,7 +4400,6 @@ void ImageView::mouseDrag(int x,int y)
                yf -= daw[0].y();
                xn -= daw[0].x();
                yn -= daw[0].y();
-           
 
                if ( xn < xf )
                {
@@ -4445,6 +4459,7 @@ void ImageView::mouseDrag(int x,int y)
                double xt = xf + daw[0].x() + dpw[0].w() * right;
                double yt = yf + daw[0].y() + dpw[0].h() * bottom;
 
+           
                _selection = mrv::Rectd( xt, yt, dx, dy );
                
                char buf[128];
@@ -4916,7 +4931,6 @@ int ImageView::keyDown(unsigned int rawkey)
         update_frame_cb( NULL, this );
         return 1;
     }
-#ifdef ALLOW_ROTATE
     else if ( kRotatePlus90.match( rawkey ) )
     {
         rotate_plus_90_cb( NULL, this );
@@ -4927,7 +4941,6 @@ int ImageView::keyDown(unsigned int rawkey)
         rotate_minus_90_cb( NULL, this );
         return 1;
     }
-#endif
     else if ( kFirstFrame.match( rawkey ) ) 
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
