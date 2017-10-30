@@ -351,9 +351,9 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       o << ( decode ? "D\t" : " \t" )
 	<< ( encode ? "E\t" : " \t" )
 	<< "\t"
-	<< ( cap & CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
-	<< ( cap & CODEC_CAP_DR1 ? "D\t":" \t" )
-	<< ( cap & CODEC_CAP_TRUNCATED ? "T\t":" \t" )
+	<< ( cap & AV_CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
+	<< ( cap & AV_CODEC_CAP_DR1 ? "D\t":" \t" )
+	<< ( cap & AV_CODEC_CAP_TRUNCATED ? "T\t":" \t" )
 	<< p2->name;
 
       browser.add( o.str().c_str() );
@@ -406,14 +406,15 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
   {
     static const char *motion_str[] = {
       "zero",
-      "full",
-      "log",
-      "phods",
+      "esa",
+      "tss",
+      "tdls",
+      "ntss",
+      "fss",
+      "ds",
+      "hexds",
       "epzs",
-      "x1",
-      "hex",
       "umh",
-      "iter",
       NULL,
     };
 
@@ -422,25 +423,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
     const char** pp = motion_str;
     while (*pp) {
-      o << *pp << "\t";
-      size_t idx = (pp - motion_str + 1);
-      switch(idx)
-	{
-	case ME_ZERO:
-	  o << "(fastest)"; break;
-	case ME_FULL:
-	  o << "(slowest)"; break;
-	case ME_EPZS:
-	  o << "(default)"; break;
-	case ME_HEX:
-	case ME_UMH:
-	  o << "[x264 codec]"; break;
-	case ME_ITER:
-	  o << "[snow codec]"; break;
-	default:
-	  break;
-	}
-      o << endl;
+      o << *pp << endl;
       pp++;
     }
 
