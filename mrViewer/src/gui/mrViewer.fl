@@ -668,16 +668,16 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {1097 649 700 450} hide resizable
+        xywh {1097 630 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
           xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
-            label {User Interface}
+            label {User Interface} open
             xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1047,17 +1047,21 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label {File Requester}
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX
+            label {File Requester} open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
               label {Single Click to Travel Drawers}
               xywh {60 35 25 25} box UP_BOX
             }
+            {fltk::CheckButton} uiPrefsFileReqThumbnails {
+              label {Thumbnails Active} selected
+              xywh {61 59 25 25} box UP_BOX
+            }
             {fltk::CheckButton} uiPrefsNativeFileChooser {
               label {Use Native File Chooser on Windows}
               tooltip {On Windows, if selected, the native file chooser will be used.  If unselected, mrViewer's standard file chooser will be used.}
-              xywh {61 64 25 25} box UP_BOX
+              xywh {61 117 25 25} box UP_BOX
             }
           }
           {fltk::Group} {} {
@@ -1225,95 +1229,99 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label {Pixel Toolbar} open
-            xywh {14 23 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            label {Pixel Toolbar}
+            xywh {14 23 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Choice} uiPrefsPixelRGBA {
-              label {RGBA Display}
-              xywh {138 50 190 25}
+            {fltk::Group} {} {open
+              xywh {178 50 190 228} horizontal
             } {
-              {fltk::Item} {} {
-                label {Float Values}
-                }
-              {fltk::Item} {} {
-                label {Hex Values}
-                }
-              {fltk::Item} {} {
-                label {8-bit Values}
-                }
-            }
-            {fltk::Choice} uiPrefsPixelValues {
-              label {Pixel Values}
-              xywh {138 118 190 25}
-            } {
-              {fltk::Item} {} {
-                label {Full Lut and Gamma}
-                }
-              {fltk::Item} {} {
-                label {Gamma without Lut}
-                }
-              {fltk::Item} {} {
-                label {Original without Gamma or Lut}
-                }
-            }
-            {fltk::Choice} uiPrefsPixelHSV {
-              label {Secondary Display} open
-              xywh {138 193 190 25}
-            } {
-              {fltk::Item} {} {
-                label HSV
-                }
-              {fltk::Item} {} {
-                label HSL
-                }
-              {fltk::Item} {} {
-                label {CIE XYZ}
-                }
-              {fltk::Item} {} {
-                label {CIE xyY}
-                }
-              {fltk::Item} {} {
-                label {Lab CIELAB (L*a*b*)}
-                align 172
+              {fltk::Choice} uiPrefsPixelRGBA {
+                label {RGBA Display}
+                xywh {0 0 190 25}
+              } {
+                {fltk::Item} {} {
+                  label {Float Values}
+                  }
+                {fltk::Item} {} {
+                  label {Hex Values}
+                  }
+                {fltk::Item} {} {
+                  label {8-bit Values}
+                  }
               }
-              {fltk::Item} {} {
-                label {Luv CIELUV (L*u*v*)} selected
-                align 172
+              {fltk::Choice} uiPrefsPixelValues {
+                label {Pixel Values}
+                xywh {0 68 190 25}
+              } {
+                {fltk::Item} {} {
+                  label {Full Lut and Gamma}
+                  }
+                {fltk::Item} {} {
+                  label {Gamma without Lut}
+                  }
+                {fltk::Item} {} {
+                  label {Original without Gamma or Lut}
+                  }
               }
-              {fltk::Item} {} {
-                label {YUV (Analog PAL)}
-                align 172
-              }
-              {fltk::Item} {} {
-                label {YDbDr (Analog SECAM/PAL-N)}
-                align 172
-              }
-              {fltk::Item} {} {
-                label {YIQ (Analog NTSC)}
-                align 172
-              }
-              {fltk::Item} {} {
-                label {ITU-601 (Digital PAL/NTSC YCbCr)}
-                align 172
-              }
-              {fltk::Item} {} {
-                label {ITU-709 (Digital HDTV YCbCr)}
-                align 172
-              }
-            }
-            {fltk::Choice} uiPrefsPixelLumma {
-              label {Pixel Values}
-              xywh {138 253 190 25}
-            } {
-              {fltk::Item} {} {
-                label {Y (Luminance)}
+              {fltk::Choice} uiPrefsPixelHSV {
+                label {Secondary Display}
+                xywh {0 143 190 25}
+              } {
+                {fltk::Item} {} {
+                  label HSV
+                  }
+                {fltk::Item} {} {
+                  label HSL
+                  }
+                {fltk::Item} {} {
+                  label {CIE XYZ}
+                  }
+                {fltk::Item} {} {
+                  label {CIE xyY}
+                  }
+                {fltk::Item} {} {
+                  label {Lab CIELAB (L*a*b*)}
+                  align 172
                 }
-              {fltk::Item} {} {
-                label {Y' (Lumma)}
+                {fltk::Item} {} {
+                  label {Luv CIELUV (L*u*v*)}
+                  align 172
                 }
-              {fltk::Item} {} {
-                label {L (Lightness)}
+                {fltk::Item} {} {
+                  label {YUV (Analog PAL)}
+                  align 172
                 }
+                {fltk::Item} {} {
+                  label {YDbDr (Analog SECAM/PAL-N)}
+                  align 172
+                }
+                {fltk::Item} {} {
+                  label {YIQ (Analog NTSC)}
+                  align 172
+                }
+                {fltk::Item} {} {
+                  label {ITU-601 (Digital PAL/NTSC YCbCr)}
+                  align 172
+                }
+                {fltk::Item} {} {
+                  label {ITU-709 (Digital HDTV YCbCr)}
+                  align 172
+                }
+              }
+              {fltk::Choice} uiPrefsPixelLumma {
+                label Luminance open
+                xywh {0 203 190 25}
+              } {
+                {fltk::Item} {} {
+                  label {Y (Luminance)}
+                  }
+                {fltk::Item} {} {
+                  label {Y' (Lumma)}
+                  }
+                {fltk::Item} {} {
+                  label {L (Lightness)}
+                  }
+              }
             }
           }
           {fltk::Group} {} {
@@ -1703,7 +1711,7 @@ uiOCIO_float_ics->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)} open
+            label {Default Output Device Transform (ODT)}
             xywh {13 22 423 354} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -2463,7 +2471,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
