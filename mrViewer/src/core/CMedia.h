@@ -570,6 +570,8 @@ class CMedia
         return _h;
     }
 
+
+
     /// Return the image pixel ratio
     inline double pixel_ratio() const    { return _pixel_ratio; }
 
@@ -1064,6 +1066,13 @@ class CMedia
     inline void rotate( float t ) { _rot_z += t; }
     inline double rot_z() const { return _rot_z; }
     
+    inline void scale_x( double t ) { _scale_x = t; }
+    inline double scale_x() const { return _scale_x; }
+    
+    inline void scale_y( double t ) { _scale_y = t; }
+    inline double scale_y() const { return _scale_y; }
+    
+    
     // Process a timecode object unto _tc_frame
     void process_timecode( const Imf::TimeCode& tc );
     
@@ -1452,11 +1461,12 @@ class CMedia
     Damage           _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
-    boost::uint64_t _numWindows;   //!< number of data/display windows
-    double      _x, _y;            //!< x,y coordinates in canvas
-    double      _rot_z;            //!< z quad rotation in canvas
-    mrv::Recti* _dataWindow;       //!< data window of sequence
-    mrv::Recti* _displayWindow;    //!< display window of sequence
+    boost::uint64_t _numWindows;    //!< number of data/display windows
+    double      _x, _y;             //!< x,y coordinates in canvas
+    double      _scale_x, _scale_y; //!< x,y scale in canvas
+    double      _rot_z;             //!< z quad rotation in canvas
+    mrv::Recti* _dataWindow;        //!< data window of sequence
+    mrv::Recti* _displayWindow;     //!< display window of sequence
     mrv::Recti* _dataWindow2;       //!< data window of stereo sequence
     mrv::Recti* _displayWindow2;    //!< display window of stereo sequence
 
