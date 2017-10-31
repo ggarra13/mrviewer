@@ -1543,8 +1543,8 @@ void ImageView::center_image()
         dpw.merge( dpw2 );
     }
 
-    dpw.x( dpw.x() + img->x() );
-    dpw.y( dpw.y() + img->y() );
+    dpw.x( dpw.x() );  // here
+    dpw.y( dpw.y() );
   
     mrv::media bg = background();
     if ( bg )
@@ -1654,7 +1654,7 @@ void ImageView::fit_image()
   }
 
   mrv::media bg = background();
-  dpw.x( dpw.x() + img->x() );
+  dpw.x( dpw.x() + img->x() );  //
   dpw.y( dpw.y() + img->y() );
   if ( bg )
   {
@@ -3508,7 +3508,7 @@ void ImageView::separate_layers( const CMedia* const img,
     }
 
     if ( xp < dpw.x() || yp < dpw.y() ||
-         xp > dpw.w()*img->scale_x() || yp > dpw.h()*img->scale_y() ) {
+         xp >= dpw.w()*img->scale_x() || yp >= dpw.h()*img->scale_y() ) {
         outside = true;
     }
 }
@@ -3900,6 +3900,8 @@ void ImageView::mouseMove(int x, int y)
       int xpr = int((double)xp / img->scale_x());
       int ypr = pic->height() - int((double)yp / img->scale_y()) - 1;
 
+      // std::cerr << "ypr " << ypr << " yp " << yp << " " << img->scale_y()
+      //           << std::endl;
       rgba = pic->pixel( xpr, ypr );
 
       pixel_processed( img, rgba );
@@ -3984,7 +3986,7 @@ void ImageView::mouseMove(int x, int y)
   
   CMedia* bgr = _engine->background();
 
-  if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
+  if ( _showBG && (!display_window()) && bgr && ( outside || rgba.a < 1.0f ) )
   {
       double xf, yf;
       const mrv::image_type_ptr picb = bgr->hires();
@@ -3999,41 +4001,25 @@ void ImageView::mouseMove(int x, int y)
           if ( w == 0 ) w = picb->width()-1;
           if ( h == 0 ) h = picb->height()-1;
 
-          if ( dpw == dpwb && dpwb.h() != 0 )
+          xf = double(x);
+          yf = double(y);
+          data_window_coordinates( bgr, xf, yf );
+          xp = (int)floor( xf );
+          yp = (int)floor( yf );
+          
+          double px = 1.0, py = 1.0;
+          if ( uiMain->uiPrefs->uiPrefsResizeBackground->value() )
           {
-              xf = double(x);
-              yf = double(y);
-              data_window_coordinates( bgr, xf, yf );
-              xp = (int)floor( xf );
-              yp = (int)floor( yf );
+              px = bgr->scale_x();
+              py = bgr->scale_y();
           }
-          else
-          {
-              double px = 1.0, py = 1.0;
-              if ( uiMain->uiPrefs->uiPrefsResizeBackground->value() )
-              {
-                  if ( dpw.w() > 0 )
-                  {
-                      px = (double) picb->width() / (double) dpw.w();
-                      py = (double) picb->height() / (double) dpw.h();
-                  }
-                  else
-                  {
-                      px = (double) picb->width() / (double) pic->width();
-                      py = (double) picb->height() / (double) pic->height();
-                  }
-              }
-              
-              xp = (int)floor( xp * px );
-              
-              yp = pic->height() - yp - 1;
-              yp = (int)floor( yp * py );
-          }
+          
+          xp = (int)floor( xp / px );
+          yp = (int)floor( yp / py );
+          yp = picb->height() - yp - 1;
 
           bool outside2 = false;
-          if ( xp < 0 || yp < 0 ||
-               xp >= (int)w*img->scale_x() ||
-               yp >= (int)h*img->scale_y() )
+          if ( xp < 0 || yp < 0 || xp >= w || yp >= h )
           {
               outside2 = true;
           }
