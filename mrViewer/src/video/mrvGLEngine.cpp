@@ -1540,13 +1540,18 @@ void GLEngine::draw_images( ImageList& images )
                 daw.y( img->y() + daw.y() );
                 dpw.x( daw.x() );
                 dpw.y( daw.y() );
+                img->scale_x( 1.0 );
+                img->scale_y( 1.0 );
             }
             else
             {
                 // NOT display_window(frame)
                 const mrv::Recti& dp = fg->display_window();
-                img->scale_x( (double) dp.w() / dpw.w() );
-                img->scale_y( (double) dp.h() / dpw.h() );
+                if ( dpw.w() > 0 )
+                {
+                    img->scale_x( (double) dp.w() / dpw.w() );
+                    img->scale_y( (double) dp.h() / dpw.h() );
+                }
                 // texWidth = dp.w() * fg->scale_x();
                 // texHeight = dp.h() * fg->scale_y();
                 texWidth = dp.w();
