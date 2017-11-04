@@ -1613,7 +1613,7 @@ void GLEngine::draw_images( ImageList& images )
 
             double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
 
-            if ( r <= 0.0001 )
+            if ( std::abs( r ) <= 0.0001 )
             {
                 unsigned t = texWidth;
                 texWidth = texHeight;
