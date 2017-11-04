@@ -1673,7 +1673,7 @@ void ImageView::fit_image()
 
   // Handle image 90 degrees rotation
   double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
-  if ( r <= 0.0001 )
+  if ( std::abs(r) <= 0.0001 )
   {
       int tmp = H;
       H = W;
@@ -5431,6 +5431,11 @@ int ImageView::handle(int event)
                 _event = event;
                 return 1;
             }
+        // case fltk::FULLSCREEN:
+        //     {
+        //         toggle_fullscreen();
+        //         return 1;
+        //     }
         case fltk::TIMEOUT:
             {
                 unsigned e = _event;
