@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-10-31 14:39-0300\n"
+"POT-Creation-Date: 2017-11-04 07:28-0300\n"
 "PO-Revision-Date: 2017-10-28 09:55-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -199,7 +199,7 @@ msgstr " falló. "
 
 #
 #
-#: gui/mrvImageView.cpp:5942
+#: gui/mrvImageView.cpp:5947
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
@@ -386,8 +386,8 @@ msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3963
-#: gui/mrvImageView.cpp:6544 gui/mrvImageView.cpp:6545
-#: gui/mrvImageView.cpp:6552
+#: gui/mrvImageView.cpp:6549 gui/mrvImageView.cpp:6550
+#: gui/mrvImageView.cpp:6557
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -1030,14 +1030,14 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1711 core/CMedia.cpp:1794 core/exrImage.cpp:2916
-#: core/wandImage.cpp:1037 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:6035
-#: gui/mrvImageView.cpp:6451 gui/mrvImageView.cpp:6469
+#: core/wandImage.cpp:1037 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:6040
+#: gui/mrvImageView.cpp:6456 gui/mrvImageView.cpp:6474
 msgid "Alpha"
 msgstr "Alfa"
 
 #: core/CMedia.cpp:1713 core/CMedia.cpp:1794 core/exrImage.cpp:2914
-#: core/wandImage.cpp:1035 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:6016
-#: gui/mrvImageView.cpp:6452
+#: core/wandImage.cpp:1035 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:6021
+#: gui/mrvImageView.cpp:6457
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -1353,8 +1353,8 @@ msgstr "Modo de Mezcla"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2929
 #: core/CMedia.cpp:1727 core/CMedia.cpp:1793 core/exrImage.cpp:2916
-#: core/wandImage.cpp:1037 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:6030
-#: gui/mrvImageView.cpp:6451
+#: core/wandImage.cpp:1037 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:6035
+#: gui/mrvImageView.cpp:6456
 msgid "Blue"
 msgstr "Azul"
 
@@ -1366,7 +1366,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:7620
+#: gui/mrvImageView.cpp:7625
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -1675,8 +1675,8 @@ msgstr "Codecs"
 #: core/exrImage.cpp:2918 core/exrImage.cpp:2926 core/exrImage.cpp:2938
 #: core/exrImage.cpp:2943 core/exrImage.cpp:2945 core/exrImage.cpp:2983
 #: core/exrImage.cpp:3015 core/wandImage.cpp:996 core/wandImage.cpp:1058
-#: gui/mrvImageView.cpp:173 gui/mrvImageView.cpp:5813 gui/mrvImageView.cpp:6455
-#: gui/mrvImageView.cpp:6552
+#: gui/mrvImageView.cpp:173 gui/mrvImageView.cpp:5818 gui/mrvImageView.cpp:6460
+#: gui/mrvImageView.cpp:6557
 msgid "Color"
 msgstr "Color"
 
@@ -3282,7 +3282,7 @@ msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2217
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4087
-#: gui/mrvImageView.cpp:7618
+#: gui/mrvImageView.cpp:7623
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -3488,8 +3488,8 @@ msgstr "Obtuve: "
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2911
 #: core/CMedia.cpp:1726 core/CMedia.cpp:1792 core/exrImage.cpp:2915
-#: core/wandImage.cpp:1036 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:6025
-#: gui/mrvImageView.cpp:6450
+#: core/wandImage.cpp:1036 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:6030
+#: gui/mrvImageView.cpp:6455
 msgid "Green"
 msgstr "Verde"
 
@@ -3917,7 +3917,7 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid host: "
 msgstr "Servidor inválido: "
 
-#: gui/mrvImageView.cpp:5942
+#: gui/mrvImageView.cpp:5947
 msgid "Invalid index "
 msgstr "Índice inválido "
 
@@ -4040,7 +4040,7 @@ msgstr "LUT"
 msgid "Lab CIELAB (L*a*b*)"
 msgstr "Lab CIELAB (L*a*b*)"
 
-#: gui/mrvImageView.cpp:5844
+#: gui/mrvImageView.cpp:5849
 msgid "Label not found for index "
 msgstr "Etiqueta no encontrada para índice "
 
@@ -4279,8 +4279,8 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1932
 #: core/CMedia.cpp:1739 core/CMedia.cpp:1794 core/exrImage.cpp:2914
-#: core/wandImage.cpp:1035 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:6039
-#: gui/mrvImageView.cpp:6453 gui/mrvImageInformation.cpp:2144
+#: core/wandImage.cpp:1035 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:6044
+#: gui/mrvImageView.cpp:6458 gui/mrvImageInformation.cpp:2144
 msgid "Lumma"
 msgstr "Luma"
 
@@ -4980,7 +4980,7 @@ msgstr "Derogar playback de cuadros por segundo cuando se carga una secuencia."
 msgid "Override sequence default fps."
 msgstr "Derogar los cuadros por segundo de la secuencia."
 
-#: gui/mrvImageView.cpp:6613
+#: gui/mrvImageView.cpp:6618
 msgid "Override timeline fps to "
 msgstr "Derogar cps de la barra de tiempo a "
 
@@ -5435,8 +5435,8 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1929
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2893
 #: core/CMedia.cpp:1725 core/CMedia.cpp:1792 core/exrImage.cpp:2915
-#: core/wandImage.cpp:1036 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:6020
-#: gui/mrvImageView.cpp:6450
+#: core/wandImage.cpp:1036 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:6025
+#: gui/mrvImageView.cpp:6455
 msgid "Red"
 msgstr "Rojo"
 
@@ -6834,7 +6834,7 @@ msgstr "Permutar Ventana de Vectorscopio"
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:7619
+#: gui/mrvImageView.cpp:7624
 msgid "Top"
 msgstr "Superior"
 
@@ -7846,7 +7846,7 @@ msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: gui/mrvImageView.cpp:6454
+#: gui/mrvImageView.cpp:6459
 msgid "Z"
 msgstr "Z"
 
@@ -8044,12 +8044,12 @@ msgstr ""
 msgid "mrViewer"
 msgstr "mrViewer"
 
-#: gui/mrvImageView.cpp:6603 gui/mrvImageView.cpp:6851
+#: gui/mrvImageView.cpp:6608 gui/mrvImageView.cpp:6856
 #, c-format
 msgid "mrViewer    FG: %s"
 msgstr "mrViewer    FRENTE: %s"
 
-#: gui/mrvImageView.cpp:6597 gui/mrvImageView.cpp:6824
+#: gui/mrvImageView.cpp:6602 gui/mrvImageView.cpp:6829
 #, c-format
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"
