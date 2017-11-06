@@ -4,6 +4,8 @@ v3.8.8   - Bug fixed area selection on images with small Data Windows.
 	 - Added +90/-90 degree rotations of the image.  Currently,
 	   no image or video sets this flag.  Use + and - to rotate
 	   +90 or -90 degrees respectively.
+	   Currently, you cannot use rotate and flip image
+	   simultaneously.
 	 - Added https://youtu.be/BLX9Pwcny2c OCIO video tutorial.
 
 v3.8.7   - Improved detection of .hdri images to support those saved
