@@ -1598,90 +1598,42 @@ void ImageView::center_image()
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
 
-    yoffset = ( - dpw.y() - dpw.h() / 2.0 ) / pr;
+    
+    unsigned H = dpw.h();
+    unsigned W = dpw.w();
+    
+
+#ifdef ALLOW_ROTATIONS
+    // Handle image 90 degrees rotation
+    double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+    if ( std::abs(r) <= 0.0001 )
+    {
+        unsigned tmp = H;
+        H = W;
+        W = tmp;
+        int x = dpw.x();
+        dpw.x( dpw.y() );
+        dpw.y( x );
+    }
+#endif
+    
+    yoffset = ( - dpw.y() - H / 2.0 ) / pr;
     
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
-        int w = dpw.w();
-        xoffset = -w/2.0 + 0.5;
+        xoffset = -W/2.0 + 0.5;
     }
     else if ( stereo_out & CMedia::kStereoTopBottom )
     {
-        int h = dpw.h();
-        yoffset = (( -h/2.0 ) / pr + 0.5 );
+        yoffset = (( -H/2.0 ) / pr + 0.5 );
     }
     else
     {
-        xoffset = -dpw.x() - dpw.w() / 2.0;
+        xoffset = -dpw.x() - W / 2.0;
     }
 
+    zrotation_to_offsets( img->rot_z(), W, H );
 
-#ifdef ALLOW_ROTATIONS
-  // Handle image 90 degrees rotation
-    unsigned H = dpw.h();
-    unsigned W = dpw.w();
-
-    std::cerr << "pre rot " << xoffset << ", " << yoffset << std::endl;
-    std::cerr << "pre W,H " << W << ", " << H << std::endl;
-    
-    double r = img->rot_z() * (M_PI / 180);  // in radians, please
-    double sn = sin(r);
-    double cs = cos(r);
-    if ( is_equal( sn, -1.0, 0.001 ) )
-    {
-        std::cerr << "flat1" << std::endl;
-        std::cerr << "flip " << _flip << std::endl;
-        // This cascading if/then is correct
-        if ( _flip & kFlipVertical )
-        {
-            std::cerr << "flipV " << _flip << std::endl;
-            xoffset -= H + W;
-        }
-        if ( _flip & kFlipHorizontal )
-        {
-            xoffset += W;
-            yoffset += H / 2;
-        }
-        else {
-            xoffset += W;
-        }
-    }
-    else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
-    {
-        std::cerr << "flip reverse1 " << _flip << std::endl;
-        // This cascading if/then is correct
-        if ( _flip & kFlipVertical )
-            xoffset -= W * 2;
-        if ( _flip & kFlipHorizontal )
-        {
-            yoffset -= H;
-            xoffset += W;
-        }
-        else
-        {
-            xoffset += W;
-            yoffset += H;
-        }
-    }
-    else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
-    {
-        std::cerr << "flip reverse2 " << _flip << std::endl;
-        // This cascading if/then is correct
-        if ( _flip & kFlipVertical )
-        {
-            xoffset -= W;
-        }
-        if ( _flip & kFlipHorizontal )
-            yoffset -= W;
-        else
-        {
-            std::cerr << "yoffset " << yoffset << " + " << H << std::endl;
-            yoffset += H;
-        }
-    }
-#endif
-  
-    std::cerr << "post rot " << xoffset << ", " << yoffset << std::endl;
     
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
@@ -1820,8 +1772,24 @@ void ImageView::fit_image()
   if ( (_flip & kFlipHorizontal) && stereo_out & CMedia::kStereoTopBottom  )
       yoffset = 0.0;
 
-#ifdef ALLOW_ROTATIONS
-  r = img->rot_z() * (M_PI / 180);  // in radians, please
+  zrotation_to_offsets( img->rot_z(), W, H );
+
+  char buf[128];
+  sprintf( buf, "Offset %g %g", xoffset, yoffset );
+  send_network( buf );
+  zoom( float(z) );
+
+  mouseMove( fltk::event_x(), fltk::event_y() );
+
+  redraw();
+}
+
+
+void
+ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
+                                 const unsigned H )
+{
+  double r = degrees * (M_PI / 180);  // in radians, please
   double sn = sin(r);
   double cs = cos(r);
   if ( is_equal( sn, -1.0, 0.001 ) )
@@ -1868,19 +1836,7 @@ void ImageView::fit_image()
       else 
           yoffset += H;
   }
-#endif
-
-  char buf[128];
-  sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send_network( buf );
-  zoom( float(z) );
-
-  mouseMove( fltk::event_x(), fltk::event_y() );
-
-  redraw();
 }
-
-
 
 void ImageView::stereo_input( CMedia::StereoInput x )
 {
