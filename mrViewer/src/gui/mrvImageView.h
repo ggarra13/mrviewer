@@ -538,6 +538,10 @@ class server;
 
   protected:
 
+      void zrotation_to_offsets( const double degrees,
+                                 const unsigned W,
+                                 const unsigned H );
+      
       void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
     void stop_playback();
