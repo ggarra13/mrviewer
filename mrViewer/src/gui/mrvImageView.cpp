@@ -32,6 +32,7 @@
 
 #include <inttypes.h>  // for PRId64
 
+#define ALLOW_ROTATIONS
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
@@ -1439,6 +1440,7 @@ void ImageView::data_window_coordinates( const CMedia* const img,
                                          double& x, double& y,
                                          const bool flipon ) const
 {
+   
     image_coordinates( img, x, y );
 
     const mrv::Recti& dpw = img->display_window();
@@ -1449,6 +1451,7 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     x -= W/2.0;
     y -= H/2.0;
 
+  
     if ( flipon )
     {
         if ( _flip & kFlipVertical )
@@ -1461,6 +1464,24 @@ void ImageView::data_window_coordinates( const CMedia* const img,
         }
     }
 
+
+#ifdef ALLOW_ROTATIONS
+    double radians = ( img->rot_z() ) * (M_PI / 180);
+    
+    double cs = cos( radians );
+    double sn = sin( radians );
+
+    // std::cerr << "orig " << x << " " << y << std::endl;
+    // std::cerr << "sin " << sn << " cos " << cs << std::endl;
+
+  
+    double tmp = (double)x * cs - (double)y * sn;
+    y = (double)x * sn + (double)y * cs;
+    x = tmp;
+  
+  // std::cerr << "new  " << x << " " << y << std::endl;
+#endif
+  
 
     //
     // If image is smaller than display window, we are dealing
@@ -1494,6 +1515,9 @@ void ImageView::image_coordinates( const CMedia* const img,
 
     if ( _showPixelRatio ) H /= pixel_ratio();
 
+    
+    
+
     double tw = (W / 2.0);
     double th = (H / 2.0);
 
@@ -1511,6 +1535,21 @@ void ImageView::image_coordinates( const CMedia* const img,
     x -= img->x();
     y -= img->y();
     
+    
+    // double tn = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+
+    // if ( std::abs( tn ) < 0.0001 )
+    // {
+    //     std::cerr << "ORIG " <<  x << ", " << y << std::endl;
+    //     double px = x;
+    //     x = y;
+    //     y = px;
+        
+    //     px = W;
+    //     W = H;
+    //     H = px;
+    //     std::cerr << "NEW  " <<  x << ", " << y << std::endl;
+    // }
     //y = H - y;
     if ( _showPixelRatio ) y *= pixel_ratio();
 }
@@ -1577,7 +1616,73 @@ void ImageView::center_image()
     }
 
 
+#ifdef ALLOW_ROTATIONS
+  // Handle image 90 degrees rotation
+    unsigned H = dpw.h();
+    unsigned W = dpw.w();
 
+    std::cerr << "pre rot " << xoffset << ", " << yoffset << std::endl;
+    std::cerr << "pre W,H " << W << ", " << H << std::endl;
+    
+    double r = img->rot_z() * (M_PI / 180);  // in radians, please
+    double sn = sin(r);
+    double cs = cos(r);
+    if ( is_equal( sn, -1.0, 0.001 ) )
+    {
+        std::cerr << "flat1" << std::endl;
+        std::cerr << "flip " << _flip << std::endl;
+        // This cascading if/then is correct
+        if ( _flip & kFlipVertical )
+        {
+            std::cerr << "flipV " << _flip << std::endl;
+            xoffset -= H + W;
+        }
+        if ( _flip & kFlipHorizontal )
+        {
+            xoffset += W;
+            yoffset += H / 2;
+        }
+        else {
+            xoffset += W;
+        }
+    }
+    else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
+    {
+        std::cerr << "flip reverse1 " << _flip << std::endl;
+        // This cascading if/then is correct
+        if ( _flip & kFlipVertical )
+            xoffset -= W * 2;
+        if ( _flip & kFlipHorizontal )
+        {
+            yoffset -= H;
+            xoffset += W;
+        }
+        else
+        {
+            xoffset += W;
+            yoffset += H;
+        }
+    }
+    else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
+    {
+        std::cerr << "flip reverse2 " << _flip << std::endl;
+        // This cascading if/then is correct
+        if ( _flip & kFlipVertical )
+        {
+            xoffset -= W;
+        }
+        if ( _flip & kFlipHorizontal )
+            yoffset -= W;
+        else
+        {
+            std::cerr << "yoffset " << yoffset << " + " << H << std::endl;
+            yoffset += H;
+        }
+    }
+#endif
+  
+    std::cerr << "post rot " << xoffset << ", " << yoffset << std::endl;
+    
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
@@ -1666,19 +1771,21 @@ void ImageView::fit_image()
           dpw.merge( dpw2 );
   }
   
-  double W = dpw.w();
+  unsigned W = dpw.w();
   if ( W == 0 ) W = pic->width();
-  double H = dpw.h();
+  unsigned H = dpw.h();
   if ( H == 0 ) H = pic->height();
 
+#ifdef ALLOW_ROTATIONS
   // Handle image 90 degrees rotation
   double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
   if ( std::abs(r) <= 0.0001 )
   {
-      int tmp = H;
+      unsigned tmp = H;
       H = W;
       W = tmp;
   }
+#endif
 
   // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
   //     W *= 2;
@@ -1703,13 +1810,65 @@ void ImageView::fit_image()
   if ( h < z ) { z = h; }
 
   xoffset = -dpw.x() - W / 2.0;
+
+  
   if ( (_flip & kFlipVertical) && stereo_out & CMedia::kStereoSideBySide  )
       xoffset = 0.0;
 
   yoffset = ( - dpw.y() - H / 2.0) / pr;
-  if ( (_flip & kFlipHorizontal) &&
-       stereo_out & CMedia::kStereoTopBottom  )
+  
+  if ( (_flip & kFlipHorizontal) && stereo_out & CMedia::kStereoTopBottom  )
       yoffset = 0.0;
+
+#ifdef ALLOW_ROTATIONS
+  r = img->rot_z() * (M_PI / 180);  // in radians, please
+  double sn = sin(r);
+  double cs = cos(r);
+  if ( is_equal( sn, -1.0, 0.001 ) )
+  {
+      // This cascading if/then is correct
+      if ( _flip & kFlipVertical )
+      {
+          xoffset -= W + H;
+      }
+      if ( _flip & kFlipHorizontal )
+      {
+          xoffset += W;
+          yoffset += H - W;
+      }
+      else {
+          xoffset += W;
+      }
+  }
+  else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
+  {
+      // This cascading if/then is correct
+      if ( _flip & kFlipVertical )
+          xoffset -= W * 2;
+      if ( _flip & kFlipHorizontal )
+      {
+          yoffset -= H;
+          xoffset += W;
+      }
+      else
+      {
+          xoffset += W;
+          yoffset += H;
+      }
+  }
+  else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
+  {
+      // This cascading if/then is correct
+      if ( _flip & kFlipVertical )
+      {
+          xoffset -= H - W;
+      }
+      if ( _flip & kFlipHorizontal )
+          yoffset -= W;
+      else 
+          yoffset += H;
+  }
+#endif
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -3068,13 +3227,15 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
+#ifdef ALLOW_ROTATIONS
             menu.add( _("Image/Rotate +90"),
                       kRotatePlus90.hotkey(),
-                      (fltk::Callback*)rotate_plus_90_cb, this );
+                      (fltk::Callback*)rotate_minus_90_cb, this );
             menu.add( _("Image/Rotate -90"),
                       kRotateMinus90.hotkey(),
-                      (fltk::Callback*)rotate_minus_90_cb, this,
+                      (fltk::Callback*)rotate_plus_90_cb, this,
                       fltk::MENU_DIVIDER );
+#endif
 
             if ( !Preferences::use_ocio )
             {
@@ -3828,7 +3989,6 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   if (!pic) return;
 
-
   if ( xp < 0 || xp >= (int)((double)pic->width()*img->scale_x()) ||
        yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
   {
@@ -3881,7 +4041,7 @@ void ImageView::mouseMove(int x, int y)
   int xp, yp, w, h;
   picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
   if ( !pic ) return;
-  
+
   char buf[40];
   sprintf( buf, "%5d, %5d", xp, yp );
   uiMain->uiCoord->text(buf);
@@ -4752,6 +4912,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipX.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
+        fit_image();
         mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
@@ -4759,6 +4920,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipY.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
+        fit_image();
         mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
@@ -4917,16 +5079,18 @@ int ImageView::keyDown(unsigned int rawkey)
         update_frame_cb( NULL, this );
         return 1;
     }
+#ifdef ALLOW_ROTATIONS
     else if ( kRotatePlus90.match( rawkey ) )
-    {
-        rotate_plus_90_cb( NULL, this );
-        return 1;
-    }
-    else if ( kRotateMinus90.match( rawkey ) )
     {
         rotate_minus_90_cb( NULL, this );
         return 1;
     }
+    else if ( kRotateMinus90.match( rawkey ) )
+    {
+        rotate_plus_90_cb( NULL, this );
+        return 1;
+    }
+#endif
     else if ( kFirstFrame.match( rawkey ) ) 
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
