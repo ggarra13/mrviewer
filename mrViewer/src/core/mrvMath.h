@@ -34,14 +34,10 @@
 
 namespace mrv {
 
-  inline bool is_equal( const double a, const double b,
-			const double epsilon = 1e-5 )
+  inline bool is_equal( const double x1, const double x2,
+			const double e = 1e-5 )
   {
-    // this is faster but inaccurate
-    //    return ( (a - epsilon) < b) && (b < ( a + epsilon) );
-
-    // this is slower but more accurate
-    return std::abs( a - b ) <= epsilon * std::abs(a);
+    return ((x1 > x2)? x1 - x2: x2 - x1) <= e;
   }
 
 }
