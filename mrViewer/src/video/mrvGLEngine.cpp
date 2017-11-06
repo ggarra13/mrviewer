@@ -1577,9 +1577,22 @@ void GLEngine::draw_images( ImageList& images )
             double x = 0.0, y = 0.0;
             if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
             if ( flip & ImageView::kFlipHorizontal ) y = (double)-dp.h();
+
+// #if 1
+//             double radians = img->rot_z() * M_PI / 180;
+            
+//             double cs = cos( radians );
+//             double sn = sin( radians );
+
+//             // std::cerr << "orig " << x << " " << y << std::endl;
+//             // std::cerr << "sin " << sn << " cos " << cs << std::endl;
+//             double tmp = (double)x * cs - (double)y * sn;
+//             y = (double)x * sn + (double)y * cs;
+//             x = tmp;
+// #endif
+            
             glTranslated( x, y, 0.0f );
         }
-
 
         if ( dpw != daw )
         {
@@ -1631,8 +1644,8 @@ void GLEngine::draw_images( ImageList& images )
             }
             
             CHECK_GL;
+            glRotated( img->rot_z(), 0, 0, -1 );
             glTranslated( 0.5, 0.5, 0.0 );
-            glRotated( img->rot_z(), 0, 0, 1 );
             CHECK_GL;
         }
 
@@ -1841,8 +1854,8 @@ void GLEngine::draw_images( ImageList& images )
                 CHECK_GL;
 
 
+                glRotated( img->rot_z(), 0, 0, -1 );
                 glTranslated( 0.5, 0.5, 0 );
-                glRotated( img->rot_z(), 0, 0, 1 );
                 CHECK_GL;
 
             }
