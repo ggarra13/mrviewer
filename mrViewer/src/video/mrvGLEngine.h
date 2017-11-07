@@ -86,17 +86,19 @@ namespace mrv {
     /// Draw a rectangle
       virtual void draw_rectangle( const mrv::Rectd& r,
                                    const mrv::ImageView::FlipDirection flip =
-                                   mrv::ImageView::kFlipNone );
+                                   mrv::ImageView::kFlipNone,
+                                   const double degrees = 0.0 );
 
       void draw_selection_marquee( mrv::Rectd r );
       
     /// Draw a rectangle
-      void draw_data_window( const mrv::Rectd& r );
+      void draw_data_window( const mrv::Rectd& r, const double degrees = 0.0 );
 
     virtual void wipe_area();
 
       virtual void draw_square_stencil( const int x, const int y, 
-					const int x2, const int y2 );
+					const int x2, const int y2,
+                                        const double degrees );
     virtual void draw_mask(const float pct);
     
     virtual void draw_safe_area( const double percentX, 
