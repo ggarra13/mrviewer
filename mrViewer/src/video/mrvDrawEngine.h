@@ -144,7 +144,8 @@ namespace mrv {
     /// Draw a rectangle
       virtual void draw_rectangle( const mrv::Rectd& r,
                                    const mrv::ImageView::FlipDirection f =
-                                   mrv::ImageView::kFlipNone ) = 0;
+                                   mrv::ImageView::kFlipNone,
+                                   const double degrees = 0 ) = 0;
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,
@@ -180,7 +181,8 @@ namespace mrv {
 
       /// Draw display area rectangle
       virtual void draw_square_stencil(const int x, const int y, 
-                                       const int x2, const int y2 ) = 0;
+                                       const int x2, const int y2,
+                                       const double degrees = 0 ) = 0;
 
       // Draw film mask
       virtual void draw_mask(const float pct) = 0;
