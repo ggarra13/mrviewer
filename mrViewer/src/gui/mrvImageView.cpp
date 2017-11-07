@@ -32,8 +32,6 @@
 
 #include <inttypes.h>  // for PRId64
 
-#define ALLOW_ROTATIONS
-
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
 #  define isnan(x) _isnan(x)
@@ -1465,23 +1463,13 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     }
 
 
-#ifdef ALLOW_ROTATIONS
     double radians = ( img->rot_z() ) * (M_PI / 180);
-    
     double cs = cos( radians );
     double sn = sin( radians );
 
-    // std::cerr << "orig " << x << " " << y << std::endl;
-    // std::cerr << "sin " << sn << " cos " << cs << std::endl;
-
-  
     double tmp = (double)x * cs - (double)y * sn;
     y = (double)x * sn + (double)y * cs;
     x = tmp;
-  
-  // std::cerr << "new  " << x << " " << y << std::endl;
-#endif
-  
 
     //
     // If image is smaller than display window, we are dealing
@@ -1531,7 +1519,6 @@ void ImageView::image_coordinates( const CMedia* const img,
     x += tw; y += th;
     x -= xoffset; y -= yoffset;
 
-
     x -= img->x();
     y -= img->y();
     
@@ -1564,6 +1551,7 @@ void ImageView::center_image()
 
     Image_ptr img = fg->image();
     mrv::Recti dpw = img->display_window();
+    mrv::Recti daw = img->data_window();
     if ( dpw.w() == 0 || !display_window() )
     {
         dpw = img->data_window();
@@ -1582,8 +1570,8 @@ void ImageView::center_image()
         dpw.merge( dpw2 );
     }
 
-    dpw.x( dpw.x() );  // here
-    dpw.y( dpw.y() );
+    // dpw.x( dpw.x() + daw.x() );  // here
+    // dpw.y( dpw.y() + daw.y() );
   
     mrv::media bg = background();
     if ( bg )
@@ -1599,11 +1587,10 @@ void ImageView::center_image()
     if ( _showPixelRatio ) pr = pixel_ratio();
 
     
-    unsigned H = dpw.h();
-    unsigned W = dpw.w();
+    unsigned H = daw.h();
+    unsigned W = daw.w();
     
 
-#ifdef ALLOW_ROTATIONS
     // Handle image 90 degrees rotation
     double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
     if ( std::abs(r) <= 0.0001 )
@@ -1615,7 +1602,6 @@ void ImageView::center_image()
         dpw.x( dpw.y() );
         dpw.y( x );
     }
-#endif
     
     yoffset = ( - dpw.y() - H / 2.0 ) / pr;
     
@@ -1659,6 +1645,7 @@ void ImageView::fit_image()
 
   CMedia::StereoOutput stereo_out = img->stereo_output();
   mrv::Recti dpw;
+  mrv::Recti daw = img->data_window();
   if ( display_window() )
   {
       dpw = img->display_window();
@@ -1711,8 +1698,8 @@ void ImageView::fit_image()
   }
 
   mrv::media bg = background();
-  dpw.x( dpw.x() + img->x() );  //
-  dpw.y( dpw.y() + img->y() );
+  dpw.x( daw.x() + img->x() );  //
+  dpw.y( daw.y() + img->y() );
   if ( bg )
   {
       CMedia* img2 = bg->image();
@@ -1723,12 +1710,11 @@ void ImageView::fit_image()
           dpw.merge( dpw2 );
   }
   
-  unsigned W = dpw.w();
+  unsigned W = daw.w();
   if ( W == 0 ) W = pic->width();
-  unsigned H = dpw.h();
+  unsigned H = daw.h();
   if ( H == 0 ) H = pic->height();
 
-#ifdef ALLOW_ROTATIONS
   // Handle image 90 degrees rotation
   double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
   if ( std::abs(r) <= 0.0001 )
@@ -1736,8 +1722,10 @@ void ImageView::fit_image()
       unsigned tmp = H;
       H = W;
       W = tmp;
+      int x = dpw.x();
+      dpw.x( dpw.y() );
+      dpw.y( x );
   }
-#endif
 
   // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
   //     W *= 2;
@@ -1771,6 +1759,7 @@ void ImageView::fit_image()
   
   if ( (_flip & kFlipHorizontal) && stereo_out & CMedia::kStereoTopBottom  )
       yoffset = 0.0;
+
 
   zrotation_to_offsets( img->rot_z(), W, H );
 
@@ -3183,7 +3172,6 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
-#ifdef ALLOW_ROTATIONS
             menu.add( _("Image/Rotate +90"),
                       kRotatePlus90.hotkey(),
                       (fltk::Callback*)rotate_minus_90_cb, this );
@@ -3191,7 +3179,6 @@ int ImageView::leftMouseDown(int x, int y)
                       kRotateMinus90.hotkey(),
                       (fltk::Callback*)rotate_plus_90_cb, this,
                       fltk::MENU_DIVIDER );
-#endif
 
             if ( !Preferences::use_ocio )
             {
@@ -3822,11 +3809,12 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   yp = (int)floor(yf);
 
   mrv::Recti dpm = dpw[idx];
-  w = dpm.w();
-  h = dpm.h();
   
   if ( ! display_window() )
       dpm.merge( daw[idx] );
+  
+  w = dpm.w();
+  h = dpm.h();
   
   if ( w == 0 ) {
       w = pic->width();
@@ -5035,7 +5023,6 @@ int ImageView::keyDown(unsigned int rawkey)
         update_frame_cb( NULL, this );
         return 1;
     }
-#ifdef ALLOW_ROTATIONS
     else if ( kRotatePlus90.match( rawkey ) )
     {
         rotate_minus_90_cb( NULL, this );
@@ -5046,7 +5033,6 @@ int ImageView::keyDown(unsigned int rawkey)
         rotate_plus_90_cb( NULL, this );
         return 1;
     }
-#endif
     else if ( kFirstFrame.match( rawkey ) ) 
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
