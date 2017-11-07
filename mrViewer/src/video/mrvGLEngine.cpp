@@ -853,6 +853,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
 {
     if (! sCharset ) return;
 
+    glMatrixMode (GL_MODELVIEW);
     glLoadIdentity();
     glRasterPos2i( x, y );
 
@@ -898,7 +899,8 @@ void GLEngine::draw_cursor( const double x, const double y )
 }
 
 void GLEngine::draw_square_stencil( const int x, const int y, 
-                                    const int x2, const int y2)
+                                    const int x2, const int y2,
+                                    const double degrees )
 {
     glClear( GL_STENCIL_BUFFER_BIT );
     CHECK_GL;
@@ -916,7 +918,9 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-
+    glLoadIdentity();
+    
+    
     double pr = 1.0;
     if ( _view->main()->uiPixelRatio->value() )
     {
@@ -929,7 +933,10 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     double W = (x2-x);
     double H = (y2-y);
 
+    
+    glRotated( degrees, 0, 0, -1 );
     glTranslated( x, y, 0 );
+
 
 
     //
@@ -1078,7 +1085,8 @@ void GLEngine::draw_mask( const float pct )
  * @param r rectangle to draw
  */
 void GLEngine::draw_rectangle( const mrv::Rectd& r,
-                               const mrv::ImageView::FlipDirection flip )
+                               const mrv::ImageView::FlipDirection flip,
+                               const double degrees )
 {
 
     mrv::media fg = _view->foreground();
@@ -1103,9 +1111,11 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     glTranslated( x + r.x(), y + r.y(), 0 );
 
+    glRotated( degrees, 0, 0, -1 );
+    
     double rw = r.w();
     double rh = r.h();
-
+  
     glLineWidth( 1.0 );
 
     // glEnable(GL_COLOR_LOGIC_OP);
@@ -1145,6 +1155,7 @@ void GLEngine::draw_safe_area_inner( const double tw, const double th,
     {
       glMatrixMode(GL_MODELVIEW);
       glPushMatrix();
+      glLoadIdentity();
       glTranslated(tw+5, th, 0);
       glScalef( 0.1f, 0.1f, 1.0f );
       for (const char* p = name; *p; ++p)
@@ -1340,6 +1351,7 @@ void GLEngine::draw_selection_marquee( mrv::Rectd r )
     
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+    glLoadIdentity();
     glTranslated(rw+kSize, rh+kSize, 0);
     glScalef( 0.2f, 0.2f, 1.0f );
     for (const char* p = buf; *p; ++p)
@@ -1352,13 +1364,13 @@ void GLEngine::draw_selection_marquee( mrv::Rectd r )
     glPopMatrix();
 }
 
-void GLEngine::draw_data_window( const mrv::Rectd& r )
+void GLEngine::draw_data_window( const mrv::Rectd& r, const double degrees )
 {
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
-    draw_rectangle( r, _view->flip() );
+    draw_rectangle( r, _view->flip(), degrees );
     glDisable( GL_LINE_STIPPLE );
     if ( _view->display_window() && !_view->vr() )
         glEnable( GL_STENCIL_TEST );
@@ -1598,13 +1610,14 @@ void GLEngine::draw_images( ImageList& images )
         {
             if ( _view->display_window() && ! _view->vr() )
             {
-                draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+                draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b(),
+                                     fg->rot_z() );
             }
 
             if ( _view->data_window()  )
             {
-                mrv::Rectd r( daw.x(), daw.y(), daw.w(), daw.h() );
-                draw_data_window( r );
+                mrv::Rectd r( daw.l(), daw.t(), daw.r(), daw.b() );
+                draw_data_window( r, fg->rot_z() );
             }
         }
         
@@ -1620,18 +1633,19 @@ void GLEngine::draw_images( ImageList& images )
         {
             
             glTranslatef( img->x(), img->y(), 0 );
-            glTranslatef( float(daw.x() - img->eye_separation()),
-                          float(daw.y()), 0 );
+            glTranslated( double(daw.x() - img->eye_separation()),
+                          double(daw.y()), 0 );
             CHECK_GL;
 
-            double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+            // double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
 
-            if ( std::abs( r ) <= 0.0001 )
-            {
-                unsigned t = texWidth;
-                texWidth = texHeight;
-                texHeight = t;
-            }
+            // if ( std::abs( r ) <= 0.0001 )
+            // {
+            //     unsigned t = texWidth;
+            //     texWidth = texHeight;
+            //     texHeight = t;
+            // }
+            glRotated( img->rot_z(), 0, 0, -1 );
             if ( _view->main()->uiPixelRatio->value() )
             {
                 glScaled( double(texWidth),
@@ -1644,7 +1658,6 @@ void GLEngine::draw_images( ImageList& images )
             }
             
             CHECK_GL;
-            glRotated( img->rot_z(), 0, 0, -1 );
             glTranslated( 0.5, 0.5, 0.0 );
             CHECK_GL;
         }
@@ -1805,7 +1818,8 @@ void GLEngine::draw_images( ImageList& images )
                            !( _view->vr() ) ) )
                     {
                         draw_square_stencil( dpw2.l(), dpw2.t(),
-                                             dpw2.r(), dpw2.b() );
+                                             dpw2.r(), dpw2.b(),
+                                             img->rot_z() );
                     }
 
                     if ( _view->data_window() )
@@ -1818,7 +1832,7 @@ void GLEngine::draw_images( ImageList& images )
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() + y,
                                       daw2.w(), daw2.h() );
-                        draw_data_window( r );
+                        draw_data_window( r, img->rot_z() );
                     }
                 }
 
