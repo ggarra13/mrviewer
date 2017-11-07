@@ -3150,6 +3150,7 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
+#ifdef ALLOW_ROTATIONS
             menu.add( _("Image/Rotate +90"),
                       kRotatePlus90.hotkey(),
                       (fltk::Callback*)rotate_minus_90_cb, this );
@@ -3157,6 +3158,7 @@ int ImageView::leftMouseDown(int x, int y)
                       kRotateMinus90.hotkey(),
                       (fltk::Callback*)rotate_plus_90_cb, this,
                       fltk::MENU_DIVIDER );
+#endif
 
             if ( !Preferences::use_ocio )
             {
@@ -4771,6 +4773,18 @@ int ImageView::keyDown(unsigned int rawkey)
 
         return 1;
     }
+#ifdef ALLOW_ROTATIONS
+    else if ( kRotateMinus90.match(rawkey) )
+    {
+        rotate_plus_90_cb( NULL, this );
+        return 1;
+    }
+    else if ( kRotatePlus90.match(rawkey) )
+    {
+        rotate_minus_90_cb( NULL, this );
+        return 1;
+    }
+#endif
     else if ( kCenterImage.match(rawkey) )
     {
         if ( vr() )
