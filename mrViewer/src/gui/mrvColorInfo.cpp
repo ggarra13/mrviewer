@@ -280,6 +280,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
       if ( output == CMedia::kStereoRight )
       {
+          W = dpw2.w();
+          H = dpw2.h();
           xmin -= daw2.x();
           ymin -= daw2.y();
           right = true;
@@ -287,24 +289,28 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       else if ( selection.x() >= W && 
                 ( output & CMedia::kStereoSideBySide ) )
       {
+          W = dpw2.w();
+          H = dpw2.h();
           if ( output & CMedia::kStereoRight )
           {
               xmin -= daw.x();
               ymin -= daw.y();
               if ( input & CMedia::kTopBottomStereoInput )
                   ymin -= ht;
-              xmin -= wt;
           }
           else
           {
               xmin -= daw2.x();
               ymin -= daw2.y();
           }
+          xmin -= wt;
           right = true;
       }
       else if ( selection.y() >= H &&
                 (output & CMedia::kStereoTopBottom) )
       {
+          W = dpw2.w();
+          H = dpw2.h();
           if ( output & CMedia::kStereoRight )
           {
               xmin -= daw.x();
@@ -339,8 +345,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       {
           ymin += ht;
       }
-      else if (  selection.x() < W &&
-                 input == CMedia::kLeftRightStereoInput &&
+      else if ( input == CMedia::kLeftRightStereoInput &&
                 ( ( output & CMedia::kStereoRight ) || bottom ) )
       {
           xmin += wt;
@@ -348,17 +353,9 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       
       if ( selection.w() > 0 ) W = (int)selection.w();
       if ( selection.h() > 0 ) H = (int)selection.h();
-      
+
       xmax = xmin + W - 1;
       ymax = ymin + H - 1;
-      
-
-      ht = daw.h();
-      // Reverse coordinates.
-      int tmp = ht - ymin - 1;
-      ymin = ht - ymax - 1;
-      ymax = tmp;
-
 
 
       if ( xmin < 0 ) xmin = 0;
@@ -414,7 +411,6 @@ void ColorInfo::update( const CMedia* img,
       selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
                           right, bottom );
 
-
       CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
       if ( right )
       {
@@ -456,6 +452,17 @@ void ColorInfo::update( const CMedia* img,
       if ( xmax >= (int) pic->width() ) xmax = (int) pic->width()-1;
       if ( ymax >= (int) pic->height() ) ymax = (int) pic->height()-1;
 
+      if ( xmax < xmin ) {
+	 int tmp = xmax;
+	 xmax = xmin;
+	 xmin = tmp;
+      }
+
+      if ( ymax < ymin ) { 
+	 int tmp = ymax;
+	 ymax = ymin;
+	 ymin = tmp;
+      }
 
       unsigned spanX = xmax-xmin+1;
       unsigned spanY = ymax-ymin+1;
