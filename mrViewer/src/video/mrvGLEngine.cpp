@@ -19,7 +19,7 @@
  * @file   mrvGLEngine.cpp
  * @author gga
  * @date   Fri Jul 13 23:47:14 2007
- * 
+ *
  * @brief  OpenGL engine
  *
  */
@@ -91,10 +91,10 @@
 #include "video/mrvGLLut3d.h"
 
 #undef TRACE
-#define TRACE(x) 
+#define TRACE(x)
 
 
-namespace 
+namespace
 {
   const char* kModule = N_("opengl");
 }
@@ -162,7 +162,7 @@ void GLEngine::handle_gl_errors(const char* where, const unsigned line,
   std::string GLEngine::options()
   {
     using std::endl;
-    std::ostringstream o;	
+    std::ostringstream o;
 
     char* vendorString = (char*)glGetString(GL_VENDOR);
     if ( !vendorString ) vendorString = (char*)_("Unknown");
@@ -180,9 +180,9 @@ void GLEngine::handle_gl_errors(const char* where, const unsigned line,
       << _("PBO Textures:\t") << (_pboTextures   ? _("Yes") : _("No")) << endl
       << _("Float Textures:\t") << (_floatTextures ? _("Yes") : _("No")) << endl
       << _("Half Textures:\t") << (_halfTextures  ? _("Yes") : _("No")) << endl
-      << _("Non-POT Textures:\t") 
+      << _("Non-POT Textures:\t")
       << (_pow2Textures  ? _("No")  : _("Yes")) << endl
-      << _("Max. Texture Size:\t") 
+      << _("Max. Texture Size:\t")
       << _maxTexWidth << N_(" x ") << _maxTexHeight << endl
       << _("Texture Units:\t") << _maxTexUnits << endl
       << _("YUV  Support:\t") << (supports_yuv() ? _("Yes") : _("No")) << endl
@@ -231,7 +231,7 @@ void GLEngine::init_charset()
     // Load XFont to user's specs
     char font_name[256];
     sprintf( font_name, N_("-*-fixed-*-r-normal--%d-0-0-0-*-*-iso8859-1"),
-	     fontsize );
+             fontsize );
     XFontStruct* hfont = XLoadQueryFont( gdc, font_name );
     if (!hfont) {
        LOG_ERROR( _("Could not open any font of size ") << fontsize);
@@ -252,7 +252,7 @@ void GLEngine::init_charset()
 
 
 
-/** 
+/**
  * Initialize opengl textures
  *
  */
@@ -303,8 +303,8 @@ void GLEngine::init_GLEW()
 //   if (GLEW_OK != err)
 //     {
 //       /* Problem: wglewInit failed, something is seriously wrong. */
-//       std::cerr << "WGLEW Initialize Error: " 
-// 		<< glewGetErrorString(err) << std::endl;
+//       std::cerr << "WGLEW Initialize Error: "
+//              << glewGetErrorString(err) << std::endl;
 //       exit(1);
 //     }
 // #else
@@ -312,18 +312,18 @@ void GLEngine::init_GLEW()
 //   if (GLEW_OK != err)
 //     {
 //       /* Problem: glxewInit failed, something is seriously wrong. */
-//       std::cerr << "GLXEW Initialize Error: " 
-// 		<< glewGetErrorString(err) << std::endl;
+//       std::cerr << "GLXEW Initialize Error: "
+//              << glewGetErrorString(err) << std::endl;
 //       exit(1);
 //     }
 // #endif
 }
 
 
-/** 
+/**
  * Initialize OpenGL context, textures, and get opengl features for
  * this gfx card.
- * 
+ *
  */
 void GLEngine::initialize()
 {
@@ -347,7 +347,7 @@ void GLEngine::initialize()
 //   if ( WGLEW_WGL_swap_control )
 //     {
 //       std::cerr << "swap control vsync? "
-// 		<< wglGetSwapIntervalEXT() << std::endl;
+//              << wglGetSwapIntervalEXT() << std::endl;
 //     }
 // #else
 //   if ( GLX_SGI_video_sync )
@@ -375,18 +375,18 @@ void GLEngine::initialize()
 #ifndef TEST_NO_SHADERS
 
 #ifdef USE_ARBFP1_SHADERS
-      if ( GLEW_ARB_fragment_program ) 
-	_hardwareShaders = kARBFP1;
+      if ( GLEW_ARB_fragment_program )
+        _hardwareShaders = kARBFP1;
 #endif
 
 #ifdef USE_OPENGL2_SHADERS
-      if ( GLEW_VERSION_2_0 ) 
-	_hardwareShaders = kGLSL;
+      if ( GLEW_VERSION_2_0 )
+        _hardwareShaders = kGLSL;
 #endif
 
 #ifdef USE_NV_SHADERS
       if ( GLEW_NV_fragment_program )
-	_hardwareShaders = kNV30;
+        _hardwareShaders = kNV30;
 #endif
 
 #endif
@@ -400,93 +400,93 @@ void GLEngine::initialize()
       std::string directory;
 
       if ( _has_yuv )
-	{
-	  _has_yuva = false;
-	  if ( _maxTexUnits > 4 )  // @todo: bug fix
-	    {
+        {
+          _has_yuva = false;
+          if ( _maxTexUnits > 4 )  // @todo: bug fix
+            {
                 _has_yuva = true;
-	    }
-	}
+            }
+        }
 
 
       const char* env = getenv( N_("MRV_SHADER_PATH") );
       if ( !env )
-	{
-	  env = getenv( N_("MRV_ROOT") );
-	  if ( env )
-	    {
-	      directory = env;
-	      directory += N_("/shaders");
-	    }
-	}
+        {
+          env = getenv( N_("MRV_ROOT") );
+          if ( env )
+            {
+              directory = env;
+              directory += N_("/shaders");
+            }
+        }
       else
-	{
-	  directory = env;
-	}
+        {
+          directory = env;
+        }
 
       if ( !directory.empty() )
-	{
-	  char shaderFile[256];
+        {
+          char shaderFile[256];
 
-	  try 
-	    {
-	      const char* ext = NULL;
-	      switch( _hardwareShaders )
-		{
-		case kNV30:
-		  ext = N_("fp30"); break;
-		case kGLSL:
-		  ext = N_("glsl"); break;
-		case kARBFP1:
-		  ext = N_("arbfp1"); break;
-		default:
-		  break;
-		}
+          try
+            {
+              const char* ext = NULL;
+              switch( _hardwareShaders )
+                {
+                case kNV30:
+                  ext = N_("fp30"); break;
+                case kGLSL:
+                  ext = N_("glsl"); break;
+                case kARBFP1:
+                  ext = N_("arbfp1"); break;
+                default:
+                  break;
+                }
 
-	      const char* dir = directory.c_str();
+              const char* dir = directory.c_str();
 
-	      sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
-	      _rgba = new GLShader( shaderFile );
+              sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
+              _rgba = new GLShader( shaderFile );
 
 
-	      if ( _has_yuv )
-		{
-		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
-		  _YCbCr = new GLShader( shaderFile );
+              if ( _has_yuv )
+                {
+                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
+                  _YCbCr = new GLShader( shaderFile );
 
-		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
-		  _YByRy = new GLShader( shaderFile );
-		}
+                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
+                  _YByRy = new GLShader( shaderFile );
+                }
 
-	      if ( _has_yuva )
-		{
-		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
-		  _YCbCrA = new GLShader( shaderFile );
+              if ( _has_yuva )
+                {
+                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
+                  _YCbCrA = new GLShader( shaderFile );
 
-		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
-		  _YByRyA = new GLShader( shaderFile );
-		}
+                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
+                  _YByRyA = new GLShader( shaderFile );
+                }
 
-	    }
-	  catch ( const std::exception& e )
-	    {
-	      LOG_ERROR( shaderFile << ": " <<e.what() );
-	      directory.clear();
-	      _has_yuv  = false;
-	      _has_yuva = false;
-	    }
-	}
+            }
+          catch ( const std::exception& e )
+            {
+              LOG_ERROR( shaderFile << ": " <<e.what() );
+              directory.clear();
+              _has_yuv  = false;
+              _has_yuva = false;
+            }
+        }
       else
-	{
-	  LOG_WARNING( _("Environment variable MRV_SHADER_PATH not found, "
-			  "using built-in shader.") );
-	}
+        {
+          LOG_WARNING( _("Environment variable MRV_SHADER_PATH not found, "
+                          "using built-in shader.") );
+        }
 
       if ( directory.empty() )
-	{
-	  directory = N_(".");
-	  loadBuiltinFragShader();
-	}
+        {
+          directory = N_(".");
+          loadBuiltinFragShader();
+        }
 
     }
   else
@@ -499,13 +499,13 @@ void GLEngine::initialize()
   if ( _has_yuv )
     {
       if ( _has_yuva )
-	{
-	  LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
-	}
+        {
+          LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
+        }
       else
-	{
-	  LOG_INFO( _("mrViewer supports YUV images through shaders.") );
-	}
+        {
+          LOG_INFO( _("mrViewer supports YUV images through shaders.") );
+        }
     }
   else
     {
@@ -530,9 +530,9 @@ void GLEngine::initialize()
 }
 
 
-/** 
+/**
  * Resets the view matrix and sets the projection to match the window's viewport
- * 
+ *
  */
 void GLEngine::reset_view_matrix()
 {
@@ -544,7 +544,7 @@ void GLEngine::reset_view_matrix()
         vr = _view->vr();
         clear_quads();
     }
-    
+
     ImageView* view = const_cast< ImageView* >( _view );
     if ( view->vr() == ImageView::kNoVR )
     {
@@ -563,7 +563,7 @@ void GLEngine::reset_view_matrix()
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
         CHECK_GL;
     }
-  
+
     // Makes gl a tad faster
     glDisable(GL_DEPTH_TEST);
     CHECK_GL;
@@ -604,9 +604,9 @@ void GLEngine::refresh_luts()
     }
 }
 
-/** 
+/**
  * Clears the opengl canvas to a certain color
- * 
+ *
  * @param r red component
  * @param g green component
  * @param b blue component
@@ -647,10 +647,10 @@ void GLEngine::color( float r, float g, float b, float a = 1.0 )
 
 bool GLEngine::init_fbo( ImageList& images )
 {
-   
+
    if ( ! _fboRenderBuffer ) return false;
 
-   
+
    glGenTextures(1, &textureId);
    CHECK_GL;
    glBindTexture(GL_TEXTURE_2D, textureId);
@@ -674,14 +674,14 @@ bool GLEngine::init_fbo( ImageList& images )
    unsigned w = pic->width();
    unsigned h = pic->height();
 
-   glTexImage2D(GL_TEXTURE_2D, 
-		0, // level
-		internalFormat, // internal format
-		w, h, 
-		0, // border
-		dataFormat,  // texture data format
-		pixelType, // texture pixel type 
-		NULL);    // texture pixel data
+   glTexImage2D(GL_TEXTURE_2D,
+                0, // level
+                internalFormat, // internal format
+                w, h,
+                0, // border
+                dataFormat,  // texture data format
+                pixelType, // texture pixel type
+                NULL);    // texture pixel data
    CHECK_GL;
 
    glGenFramebuffers(1, &id);
@@ -699,23 +699,23 @@ bool GLEngine::init_fbo( ImageList& images )
    if ( w > GL_MAX_RENDERBUFFER_SIZE ) return false;
    if ( h > GL_MAX_RENDERBUFFER_SIZE ) return false;
 
-   glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL, 
-			  w, h );
+   glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+                          w, h );
    CHECK_GL;
    glBindRenderbuffer( GL_RENDERBUFFER, 0 );
    CHECK_GL;
- 
+
    // attach a texture to FBO color attachement point
-   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
-    			  GL_TEXTURE_2D, textureId, 0);
+   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+                          GL_TEXTURE_2D, textureId, 0);
    CHECK_GL;
 
-   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
-			     GL_RENDERBUFFER, rid);
+   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
+                             GL_RENDERBUFFER, rid);
    CHECK_GL;
 
-   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, 
-			     GL_RENDERBUFFER, rid);
+   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
+                             GL_RENDERBUFFER, rid);
    CHECK_GL;
 
    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
@@ -723,23 +723,23 @@ bool GLEngine::init_fbo( ImageList& images )
    {
       switch( status )
       {
-	 case GL_FRAMEBUFFER_UNSUPPORTED:
-	    LOG_ERROR( _("Unsupported internal format") );
-	    return false;
-	 case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-	    LOG_ERROR( _("Framebuffer incomplete: Attachment is NOT complete.") );
-	    return false;
-	    
-	 case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-	    LOG_ERROR( _("Framebuffer incomplete: No image is attached to FBO.") );
-	    return false;
-	 case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-	    LOG_ERROR( _("Framebuffer incomplete: Draw buffer." ) );
-	    return false;
+         case GL_FRAMEBUFFER_UNSUPPORTED:
+            LOG_ERROR( _("Unsupported internal format") );
+            return false;
+         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+            LOG_ERROR( _("Framebuffer incomplete: Attachment is NOT complete.") );
+            return false;
 
-	 case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-	    LOG_ERROR( _("Framebuffer incomplete: Read buffer.") );
-	    return false;
+         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+            LOG_ERROR( _("Framebuffer incomplete: No image is attached to FBO.") );
+            return false;
+         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+            LOG_ERROR( _("Framebuffer incomplete: Draw buffer." ) );
+            return false;
+
+         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+            LOG_ERROR( _("Framebuffer incomplete: Read buffer.") );
+            return false;
       }
    }
    return true;
@@ -773,7 +773,7 @@ void GLEngine::end_fbo( ImageList& images )
 }
 
 void GLEngine::draw_title( const float size,
-			   const int y, const char* text )
+                           const int y, const char* text )
 {
   if ( !text ) return;
 
@@ -792,7 +792,7 @@ void GLEngine::draw_title( const float size,
   CHECK_GL;
   glEnable(GL_LINE_SMOOTH);
   CHECK_GL;
-  
+
   glLineWidth(4.0);
   CHECK_GL;
 
@@ -800,7 +800,7 @@ void GLEngine::draw_title( const float size,
   for (const char* p = text; *p; ++p)
       sum += glutStrokeWidth( font, *p );
   CHECK_GL;
-  
+
   float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
 
   float rgb[4];
@@ -840,9 +840,9 @@ void GLEngine::draw_title( const float size,
   CHECK_GL;
 }
 
-/** 
+/**
  * Draw a line of text at a raster position
- * 
+ *
  * @param x raster x pos
  * @param y raster y pos
  * @param s line of text to write
@@ -864,10 +864,10 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
 }
 
 void GLEngine::draw_cursor( const double x, const double y )
-{ 
+{
    glMatrixMode (GL_MODELVIEW);
    glLoadIdentity();
-   
+
    double pr = 1.0;
    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
 
@@ -880,10 +880,10 @@ void GLEngine::draw_cursor( const double x, const double y )
    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-   glTranslated(_view->offset_x() * zoomX + sw, 
-		_view->offset_y() * zoomY + sh, 0);
+   glTranslated(_view->offset_x() * zoomX + sw,
+                _view->offset_y() * zoomY + sh, 0);
    glTranslated(tw * zoomX, th * zoomY, 0);
-   
+
    glScaled(zoomX, zoomY * pr, 1.0);
 
    glColor4f( 1, 0, 0, 1 );
@@ -895,7 +895,7 @@ void GLEngine::draw_cursor( const double x, const double y )
    glEnd();
 }
 
-void GLEngine::draw_square_stencil( const int x, const int y, 
+void GLEngine::draw_square_stencil( const int x, const int y,
                                     const int x2, const int y2)
 {
     glClear( GL_STENCIL_BUFFER_BIT );
@@ -965,7 +965,7 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     //
     glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
 
-    
+
     //
     // Scale to zoom factor
     //
@@ -1003,10 +1003,10 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
 
 }
 
-/** 
+/**
  * Draws the mask
- * 
- * @param pct percent of mask to draw 
+ *
+ * @param pct percent of mask to draw
  */
 void GLEngine::draw_mask( const float pct )
 {
@@ -1031,13 +1031,13 @@ void GLEngine::draw_mask( const float pct )
 
   glColor3f( 0.0f, 0.0f, 0.0f );
   glDisable( GL_STENCIL_TEST );
-  
+
   set_matrix( ImageView::kFlipNone, true );
 
   glTranslated( dpw.x(), -dpw.y(), 0.0 );
   glScaled( dpw.w(), dpw.h(), 1.0 );
   glTranslated( 0.5, -0.5, 0.0 );
-  
+
 
   double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
   double target_aspect = 1.0 / pct;
@@ -1070,9 +1070,9 @@ void GLEngine::draw_mask( const float pct )
 
 }
 
-/** 
+/**
  * Draw an overlay rectangle (like selection)
- * 
+ *
  * @param r rectangle to draw
  */
 void GLEngine::draw_rectangle( const mrv::Rectd& r,
@@ -1153,14 +1153,14 @@ void GLEngine::draw_safe_area_inner( const double tw, const double th,
 
 }
 
-/** 
+/**
  * Draw an unfilled rectangle (for safe area display)
- * 
- * @param percentX  percentage in X of area 
+ *
+ * @param percentX  percentage in X of area
  * @param percentY  percentage in Y of area
  */
 void GLEngine::draw_safe_area( const double percentX, const double percentY,
-			       const char* name )
+                               const char* name )
 {
 
     mrv::media fg = _view->foreground();
@@ -1259,16 +1259,16 @@ void GLEngine::alloc_quads( size_t num )
 
 
 void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
-{   
+{
     Image_ptr img = _view->selected_image();
     if ( img == NULL ) return;
-    
+
     ImageView::FlipDirection flip = _view->flip();
-    
+
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glColor4f( 0.75f, 0.75f, 0.75f, 1.0f );
     draw_rectangle( r, flip );
-    
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glPushAttrib( GL_STENCIL_TEST );
@@ -1291,20 +1291,20 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
         glVertex2d(  0.0,  0.0 );
         glVertex2d( kSize,  0.0 );
         glVertex2d(  0.0, -kSize );
-    
+
         glVertex2d(  r.w(),        0.0 );
         glVertex2d(  r.w()-kSize,  0.0 );
         glVertex2d(  r.w(),       -kSize );
-        
+
         glVertex2d(  r.w(),       -r.h() );
         glVertex2d(  r.w()-kSize, -r.h() );
         glVertex2d(  r.w(),       -r.h()+kSize );
-        
+
         glVertex2d(  0.0,  -r.h() );
         glVertex2d( kSize, -r.h() );
         glVertex2d(  0.0,  -r.h()+kSize );
     }
-    
+
     glEnd();
 
     double rw = r.w() / 2.0;
@@ -1313,13 +1313,13 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     {
         glVertex2d( rw, rh );
         glVertex2d( rw, rh + kSize );
-        
+
         glVertex2d( rw, rh );
         glVertex2d( rw + kSize, rh );
-        
+
         glVertex2d( rw, rh );
         glVertex2d( rw, rh - kSize );
-        
+
         glVertex2d( rw, rh );
         glVertex2d( rw - kSize, rh );
     }
@@ -1329,7 +1329,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     int xi = round(img->x());
     int yi = round(img->y());
     sprintf( buf, "%d, %d", xi, yi );
-    
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslated(rw+kSize, rh-kSize, 0);
@@ -1338,7 +1338,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
-      
+
     glPopAttrib();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
@@ -1386,31 +1386,31 @@ void GLEngine::draw_images( ImageList& images )
 
       // Check if there was a change effecting lut.
       if ( ( RT_lut_algorithm != RT_lut_old_algorithm ) ||
-	   ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
-	   ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
-	   ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform ) ||
-	   ( LUT_quality != lut_quality ) ||
+           ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
+           ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
+           ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform ) ||
+           ( LUT_quality != lut_quality ) ||
            ( kNumStops != num_stops) )
-	{
-	  RT_lut_old_algorithm = RT_lut_algorithm;
-	  ODT_lut_old_algorithm = ODT_lut_algorithm;
-	  if ( ODT_ICC_profile )
-	    ODT_ICC_old_profile = ODT_ICC_profile;
-	  else
-	    ODT_ICC_old_profile.clear();
+        {
+          RT_lut_old_algorithm = RT_lut_algorithm;
+          ODT_lut_old_algorithm = ODT_lut_algorithm;
+          if ( ODT_ICC_profile )
+            ODT_ICC_old_profile = ODT_ICC_profile;
+          else
+            ODT_ICC_old_profile.clear();
 
           ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
 
-	  refresh_luts();
+          refresh_luts();
 
-	  if ( LUT_quality != lut_quality ||
+          if ( LUT_quality != lut_quality ||
                kNumStops != num_stops )
-	    {
+            {
                 LUT_quality = lut_quality;
                 kNumStops = num_stops;
                 mrv::GLLut3d::clear();
-	    }
-	}
+            }
+        }
 
     }
 
@@ -1427,7 +1427,7 @@ void GLEngine::draw_images( ImageList& images )
     size_t num_quads = 0;
     ImageList::iterator i = images.begin();
     ImageList::iterator e = images.end();
-    
+
     for ( ; i != e; ++i )
     {
         const Image_ptr& img = *i;
@@ -1436,7 +1436,7 @@ void GLEngine::draw_images( ImageList& images )
         if ( img->has_picture()  ) ++num_quads;
         if ( stereo )    ++num_quads;
     }
-    
+
     TRACE( "" );
 
     CHECK_GL;
@@ -1471,7 +1471,7 @@ void GLEngine::draw_images( ImageList& images )
 
 
     TRACE( "" );
-  
+
     double x = _view->spin_x();
     double y = _view->spin_y();
     if ( x >= 1000.0 )  // dummy value used to reset view
@@ -1524,7 +1524,7 @@ void GLEngine::draw_images( ImageList& images )
         {
             mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
             if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
-            {   // DO NOT SCALE BG IMAGE 
+            {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
                 texHeight = dpw.h();
                 const mrv::Recti& dp = fg->display_window();
@@ -1577,7 +1577,7 @@ void GLEngine::draw_images( ImageList& images )
                 draw_data_window( r );
             }
         }
-        
+
         glDisable( GL_BLEND );
         CHECK_GL;
 
@@ -1588,6 +1588,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( !_view->vr() )
         {
+            glRotated( img->rot_z(), 0, 0, 1 );
             glTranslatef( img->x(), img->y(), 0 );
             glTranslatef( float(daw.x() - img->eye_separation()),
                           float(-daw.y()), 0 );
@@ -1635,7 +1636,7 @@ void GLEngine::draw_images( ImageList& images )
 
         int mask = 0;
 
-        if ( stereo != CMedia::kNoStereo && 
+        if ( stereo != CMedia::kNoStereo &&
              img->left() && img->right() )
         {
             if ( stereo & CMedia::kStereoRight )
@@ -1795,14 +1796,14 @@ void GLEngine::draw_images( ImageList& images )
                 texWidth = daw2.w();
                 texHeight = daw2.h();
 
+                glRotated( img->rot_z(), 0, 0, 1 );
 
                 glTranslatef( img->x(), img->y(), 0 );
                 glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
                 CHECK_GL;
 
-
                 if ( _view->main()->uiPixelRatio->value() )
-                    glScaled( double(texWidth), 
+                    glScaled( double(texWidth),
                               double(texHeight) / _view->pixel_ratio(),
                               1.0 );
                 else
@@ -1819,8 +1820,8 @@ void GLEngine::draw_images( ImageList& images )
         {
             stereo = CMedia::kNoStereo;
             pic = img->hires();
- 
-            if ( shader_type() == kNone && img->stopped() && 
+
+            if ( shader_type() == kNone && img->stopped() &&
                  pic->pixel_type() != image_type::kByte )
             {
                 pic = display( pic, img );
@@ -1852,7 +1853,7 @@ void GLEngine::draw_images( ImageList& images )
           else if ( stereo == CMedia::kStereoCheckerboard )
               mask = 3; // checkerboard
           quad->mask( mask );
-	  quad->mask_value( 0 );
+          quad->mask_value( 0 );
           glEnable( GL_BLEND );
       }
 
@@ -1882,10 +1883,10 @@ void GLEngine::draw_images( ImageList& images )
           quad->bind( pic );
           img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
-      
+
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
-      
+
       if ( _view->action_mode() == ImageView::kMovePicture &&
            _view->selected_image() == img )
       {
@@ -1896,7 +1897,7 @@ void GLEngine::draw_images( ImageList& images )
 
 
       if ( img->has_subtitle() )
-	{
+        {
             image_type_ptr sub = img->subtitle();
             if ( sub )
             {
@@ -1908,13 +1909,13 @@ void GLEngine::draw_images( ImageList& images )
                 quad->mask_value( -10 );
                 quad->bind( sub );
                 quad->gamma( 1.0 );
-		// Handle rotation of cube/sphere
-		quad->rot_x( _rotX );
-		quad->rot_y( _rotY );
+                // Handle rotation of cube/sphere
+                quad->rot_x( _rotX );
+                quad->rot_y( _rotY );
                 quad->draw( texWidth, texHeight );
            }
            img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
-	}
+        }
 
       glMatrixMode(GL_MODELVIEW);
       glPopMatrix();
@@ -1935,30 +1936,30 @@ void GLEngine::draw_shape( GLShape* const shape )
     {
         if ( shape->frame == _view->frame() - 1 )
         {
-	    float a = shape->a;
-	    shape->a *= 0.25f;
-	    shape->draw(zoomX);
-	    shape->a = a;
+            float a = shape->a;
+            shape->a *= 0.25f;
+            shape->draw(zoomX);
+            shape->a = a;
             return;
-	 }
+         }
       }
 
       if ( _view->ghost_next() )
       {
-	 if ( shape->frame == _view->frame() + 1 )
-	 {
-	    float a = shape->a;
-	    shape->a *= 0.25f;
-	    shape->draw(zoomX);
-	    shape->a = a;
+         if ( shape->frame == _view->frame() + 1 )
+         {
+            float a = shape->a;
+            shape->a *= 0.25f;
+            shape->draw(zoomX);
+            shape->a = a;
             return;
-	 }
+         }
       }
 
       if ( shape->frame == MRV_NOPTS_VALUE ||
-	   shape->frame == _view->frame() )
+           shape->frame == _view->frame() )
       {
-	 shape->draw(zoomX);
+         shape->draw(zoomX);
       }
 }
 
@@ -1980,13 +1981,13 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-   glTranslated(_view->offset_x() * zoomX + sw, 
-		_view->offset_y() * zoomY + sh, 0);
+   glTranslated(_view->offset_x() * zoomX + sw,
+                _view->offset_y() * zoomY + sh, 0);
    glTranslated(tw * zoomX, th * zoomY, 0);
-   
+
    glScaled(zoomX, zoomY * pr, 1.0f);
 
-   
+
    glClear(GL_STENCIL_BUFFER_BIT);
 
    glEnable( GL_STENCIL_TEST );
@@ -2034,7 +2035,7 @@ void GLEngine::wipe_area()
   {
      LOG_ERROR( _("Unknown wipe direction") );
   }
-  
+
   glEnable( GL_SCISSOR_TEST );
 
   int  x = 0;
@@ -2044,7 +2045,7 @@ void GLEngine::wipe_area()
 
 
 namespace {
-const char* ARBFP1Shader = 
+const char* ARBFP1Shader =
 "!!ARBfp1.0\n"
 "# cgc version 3.1.0013, build date Apr 24 2012\n"
 "# command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile arbfp1\n"
@@ -2340,7 +2341,7 @@ const char* ARBFP1Shader =
 "END\n"
 "# 205 instructions, 8 R-regs\n";
 
-const char* NVShader = 
+const char* NVShader =
 "!!FP1.0\n"
 "# cgc version 3.1.0013, build date Apr 24 2012\n"
 "# command line args: -I/media/gga/Datos/code/applications/mrViewer/shaders -profile fp30\n"
@@ -2641,7 +2642,7 @@ GLEngine::loadBuiltinFragShader()
             LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
             _rgba->load( N_("builtin"), NVShader );
         }
-        else 
+        else
         {
             LOG_INFO( _("Loading built-in arbfp1 rgba shader") );
             _hardwareShaders = kARBFP1;
@@ -2683,7 +2684,7 @@ void GLEngine::release()
         glDeleteLists( sCharset, 255 );
         CHECK_GL;
     }
-    
+
     TRACE("");
     if (_rgba)  delete _rgba;
     TRACE("");
@@ -2708,7 +2709,7 @@ _rotY( 0.0 )
 {
   initialize();
 }
- 
+
 GLEngine::~GLEngine()
 {
   release();
