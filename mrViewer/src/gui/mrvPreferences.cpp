@@ -1090,6 +1090,28 @@ static const char* kCLocale = "C";
         
             OCIO_Display = config->getDefaultDisplay();
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
+
+            const char* display = Preferences::OCIO_Display.c_str();
+            std::vector< std::string > views;
+            int numViews = config->getNumViews(display);
+            for(int i = 0; i < numViews; i++)
+            {
+                std::string view = config->getView(display, i);
+                views.push_back( view );
+            }
+
+            for ( int c = main->gammaDefaults->children()-1; c >= 5; --c )
+            {
+                main->gammaDefaults->remove( c );
+            }
+                
+            std::sort( views.begin(), views.end() );
+            for ( size_t i = 0; i < views.size(); ++i )
+            {
+                fltk::Widget* o = main->gammaDefaults->add( views[i].c_str() );
+                if ( views[i] == OCIO_View ) o->selected();
+            }
+            
         }
         catch( const OCIO::Exception& e )
         {
