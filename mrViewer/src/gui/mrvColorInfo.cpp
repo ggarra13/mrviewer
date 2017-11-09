@@ -458,6 +458,14 @@ void ColorInfo::update( const CMedia* img,
 	 xmin = tmp;
       }
 
+      int H = img->data_window().h();
+      if ( H == 0 )
+      {
+          H = img->display_window().h();
+          if ( H == 0 ) H = (int) pic->height();
+      }
+      
+      
       if ( ymax < ymin ) { 
 	 int tmp = ymax;
 	 ymax = ymin;
@@ -469,9 +477,9 @@ void ColorInfo::update( const CMedia* img,
       unsigned numPixels = spanX * spanY;
 
       text << std::endl
-	   << _("Area") << ": (" << xmin << ", " << ymin 
+	   << _("Area") << ": (" << xmin << ", " << ( H - ymax - 1 ) 
 	   << ") - (" << xmax 
-	   << ", " << ymax << ")" << std::endl
+	   << ", " << ( H - ymin - 1 ) << ")" << std::endl
 	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
 	   << numPixels << " "
 	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
