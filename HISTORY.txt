@@ -1,6 +1,6 @@
-v3.8.8   - Bug fixed area selection on images with small Data Windows.
-	   This was a regression from v3.8.6 when the coords were
-	   changed.
+v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
+	   was causing problems with area selection and with exr's
+	   with data window != display window.
 	 - Added https://youtu.be/BLX9Pwcny2c OCIO video tutorial.
 
 v3.8.7   - Improved detection of .hdri images to support those saved
