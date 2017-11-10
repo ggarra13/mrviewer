@@ -541,8 +541,8 @@ class server;
       // Auxiliary function to set the offsets after a rotation of x degrees.
       // This function is used in fit_image and center_image.
       void zrotation_to_offsets( const double degrees,
-                                 const unsigned W,
-                                 const unsigned H );
+                                 const int W,
+                                 const int H );
       
       void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
