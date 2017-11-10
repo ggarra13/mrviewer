@@ -1,3 +1,9 @@
+v3.8.9   - Bug fixed off by 1 in mouse coordinates.
+	 - Added support for OCIO's Views to be accessed directly from
+	   the gamma pulldown.  As a convenience, when an OCIO view is
+	   selected the LUT button is turned on and the gamma is set to
+	   1.0.
+
 v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
 	   was causing problems with area selection and with exr's
 	   with data window != display window.
