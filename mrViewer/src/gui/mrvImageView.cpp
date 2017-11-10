@@ -3995,7 +3995,7 @@ void ImageView::mouseMove(int x, int y)
       daw = img->display_window();
   }
 
-  int yr = daw.h() - yp;
+  int yr = daw.h() - yp - 1;
 
   char buf[40];
   sprintf( buf, "%5d, %5d", xp, yr );
