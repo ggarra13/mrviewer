@@ -32,7 +32,7 @@
 
 #include <inttypes.h>  // for PRId64
 
-#define ALLOW_ROTATIONS
+#define NO_DAW 1
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
@@ -1460,11 +1460,13 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     }
 
 
+#ifndef NO_DAW
     {
         const mrv::Recti& daw = img->data_window();
         x -= daw.x();
         y -= daw.y();
     }
+#endif
 
 
     double radians = ( img->rot_z() ) * (M_PI / 180);
@@ -1569,6 +1571,18 @@ void ImageView::center_image()
 
     int W = dpw.w();
     int H = dpw.h();
+
+    // Handle image 90 degrees rotation
+    double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+    if ( std::abs(r) <= 0.0001 )
+    {
+        unsigned tmp = H;
+        H = W;
+        W = tmp;
+        int x = dpw.x();
+        dpw.x( dpw.y() );
+        dpw.y( x );
+    }
 
     yoffset = ( dpw.y() + H / 2.0 ) / pr;
 
@@ -1736,10 +1750,9 @@ void ImageView::fit_image()
 
 
 void
-ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
-                                 const unsigned H )
+ImageView::zrotation_to_offsets( const double degrees, const int W,
+                                 const int H )
 {
-#ifdef ALLOW_ROTATIONS
 
     double r = degrees * (M_PI / 180);  // in radians, please
     double sn = sin(r);
@@ -1747,7 +1760,6 @@ ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
     if ( is_equal( sn, -1.0, 0.001 ) )
     {
         // This cascading if/then is correct
-        std::cerr << __LINE__ << std::endl;
         if ( _flip & kFlipVertical )
         {
             xoffset -= W + H;
@@ -1755,7 +1767,7 @@ ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
         if ( _flip & kFlipHorizontal )
         {
             xoffset += W;
-            yoffset += H - W;
+            yoffset += W - H;
         }
         else {
             xoffset += W;
@@ -1763,14 +1775,13 @@ ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
     }
     else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
     {
-        std::cerr << __LINE__ << std::endl;
         // This cascading if/then is correct
         if ( _flip & kFlipVertical )
             xoffset -= W * 2;
         if ( _flip & kFlipHorizontal )
         {
-            yoffset -= H;
             xoffset += W;
+            yoffset += H;
         }
         else
         {
@@ -1780,14 +1791,16 @@ ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
     }
     else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
     {
-        std::cerr << __LINE__ << std::endl;
         // This cascading if/then is correct
         if ( _flip & kFlipVertical )
         {
             xoffset -= H - W;
         }
         if ( _flip & kFlipHorizontal )
-            yoffset -= W;
+        {
+            xoffset -= H / 2 - W;
+            yoffset += W;
+        }
         else
         {
             xoffset += W - H / 2;
@@ -1795,7 +1808,6 @@ ImageView::zrotation_to_offsets( const double degrees, const unsigned W,
         }
     }
 
-#endif
 }
 
 void ImageView::stereo_input( CMedia::StereoInput x )
@@ -2592,9 +2604,11 @@ void ImageView::draw()
      yf = H - yf;
      yf -= H;
 
+#ifndef NO_DAW
      const mrv::Recti& daw = img->data_window();
      xf += daw.x();
      yf -= daw.y();
+#endif
 
      _engine->draw_cursor( xf, yf );
   }
@@ -2946,9 +2960,11 @@ int ImageView::leftMouseDown(int x, int y)
          yf = H - yf;
          yf -= H;
 
+#ifndef NO_DAW
          const mrv::Recti& daw = img->data_window();
          xf += daw.x();
          yf -= daw.y();
+#endif
 
          std::string str;
          GLPathShape* s;
@@ -3162,15 +3178,13 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
-#ifdef ALLOW_ROTATIONS
             menu.add( _("Image/Rotate +90"),
                       kRotatePlus90.hotkey(),
-                      (fltk::Callback*)rotate_minus_90_cb, this );
+                      (fltk::Callback*)rotate_plus_90_cb, this );
             menu.add( _("Image/Rotate -90"),
                       kRotateMinus90.hotkey(),
-                      (fltk::Callback*)rotate_plus_90_cb, this,
+                      (fltk::Callback*)rotate_minus_90_cb, this,
                       fltk::MENU_DIVIDER );
-#endif
 
             if ( !Preferences::use_ocio )
             {
@@ -3806,8 +3820,10 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   xp = (int)floor(xf);
   yp = (int)floor(yf);
 
+#ifndef NO_DAW
   xp += daw[idx].x();
   yp += daw[idx].y();
+#endif
 
   xp -= img->x();
   yp += img->y();
@@ -4786,18 +4802,16 @@ int ImageView::keyDown(unsigned int rawkey)
 
         return 1;
     }
-#ifdef ALLOW_ROTATIONS
-    else if ( kRotateMinus90.match(rawkey) )
+    else if ( kRotatePlus90.match(rawkey) )
     {
         rotate_plus_90_cb( NULL, this );
         return 1;
     }
-    else if ( kRotatePlus90.match(rawkey) )
+    else if ( kRotateMinus90.match(rawkey) )
     {
         rotate_minus_90_cb( NULL, this );
         return 1;
     }
-#endif
     else if ( kCenterImage.match(rawkey) )
     {
         if ( vr() )
@@ -4879,6 +4893,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipX.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
+        fit_image();
         mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
@@ -4886,6 +4901,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipY.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
+        fit_image();
         mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
