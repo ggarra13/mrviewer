@@ -1060,6 +1060,14 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
+    if (  ( !var || strlen(var) == 0 ) && use_ocio )
+    {
+        mrvLOG_INFO( "ocio",
+                     _("Setting OCIO environment variable to nuke-default" )
+                     << std::endl );
+        std::string tmp = root + "/ocio/nuke-default/config.ocio";
+        var = strdup( tmp.c_str() );
+    }
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
@@ -1109,7 +1117,14 @@ static const char* kCLocale = "C";
             for ( size_t i = 0; i < views.size(); ++i )
             {
                 fltk::Widget* o = main->gammaDefaults->add( views[i].c_str() );
-                if ( views[i] == OCIO_View ) o->selected();
+                if ( !OCIO_View.empty() && views[i] == OCIO_View )
+                {
+                    main->gammaDefaults->label( strdup( views[i].c_str() ) );
+                    main->gammaDefaults->redraw();
+                    o->selected();
+                    main->uiView->use_lut(true);
+                    main->uiLUT->value(true);
+                }
             }
             
         }
