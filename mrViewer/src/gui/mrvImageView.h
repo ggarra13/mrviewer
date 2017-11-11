@@ -479,6 +479,11 @@ class server;
       float wipe_amount() const { return _wipe; }
 
 
+
+      // Auxiliary function to change x and y of a vector due to a
+      // rotation in degrees
+      static void rot2vec( double& x, double& y, const double r );
+
       void text_mode();
       void scrub_mode();
       void selection_mode();
@@ -537,12 +542,11 @@ class server;
       tcp_server_ptr _server;
 
   protected:
-
+      
       // Auxiliary function to set the offsets after a rotation of x degrees.
       // This function is used in fit_image and center_image.
-      void zrotation_to_offsets( const double degrees,
-                                 const int W,
-                                 const int H );
+      void zrotation_to_offsets( double& X, double& Y, const double degrees,
+                                 const int W, const int H );
       
       void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
