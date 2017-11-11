@@ -11,6 +11,7 @@ v3.8.9   - Bug fixed off by 1 in mouse coordinates.
 	   They can be used together with flipping of images.
 	   However, rotations cannot yet be used with images that
 	   have data_window != display window.
+	   Also, area selection does not work properly on rotated images.
 
 v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
 	   was causing problems with area selection and with exr's
