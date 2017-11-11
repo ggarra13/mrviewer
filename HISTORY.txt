@@ -1,4 +1,6 @@
-v3.8.9   - Bug fixed off by 1 in mouse coordinates.
+v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
+	   areas, etc.
+	 - Bug fixed off by 1 in mouse coordinates.
 	 - Added support for OCIO's Views to be accessed directly from
 	   the gamma pulldown.  As a convenience, when an OCIO view is
 	   selected the LUT button is turned on and the gamma is set to
@@ -12,6 +14,8 @@ v3.8.9   - Bug fixed off by 1 in mouse coordinates.
 	   However, rotations cannot yet be used with images that
 	   have data_window != display window.
 	   Also, area selection does not work properly on rotated images.
+
+v3.8.9   *** RECALLED DUE TO BUGS IN SELECTION AREAS AND OTHERS ***
 
 v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
 	   was causing problems with area selection and with exr's
