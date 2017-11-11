@@ -3,6 +3,13 @@ v3.8.9   - Bug fixed off by 1 in mouse coordinates.
 	   the gamma pulldown.  As a convenience, when an OCIO view is
 	   selected the LUT button is turned on and the gamma is set to
 	   1.0.
+	 - Made OCIO's default config be nuke-default's, which now ships
+	   with mrViewer.
+	 - Added 90 degree rotations to the images.  There's no image
+	   format that sets them.  It is just a user hotkey and menu.
+	   They can be used together with flipping of images.
+	   However, rotations cannot yet be used with images that
+	   have data_window != display window.
 
 v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
 	   was causing problems with area selection and with exr's
@@ -12,7 +19,7 @@ v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
 v3.8.7   - Improved detection of .hdri images to support those saved
 	   from Photoshop (#?RGBE instead of #?RADIANCE).
 	 - Removed error when creating thumbnails of RAW formats.
-	 - Added support for mipmaps in .tx files.  Now Media Info
+	 - Added support for mipmapsx in .tx files.  Now Media Info
 	   Window has a slider to change mipmap levels.
 	 - Removed crash in Clone Image when cloning a previously cloned
 	   image.
