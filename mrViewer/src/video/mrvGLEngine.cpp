@@ -73,6 +73,7 @@
 #include <CtlExc.h>
 #include <halfLimits.h>
 
+#include "core/mrvMath.h"
 #include "core/mrvThread.h"
 #include "core/mrvRectangle.h"
 
@@ -594,6 +595,12 @@ void GLEngine::evaluate( const CMedia* img,
 
 
 }
+
+void GLEngine::rotate( const double z )
+{
+    glRotated( z, 0, 0, 1 );
+}
+
 void GLEngine::refresh_luts()
 {
   QuadList::iterator q = _quads.begin();
@@ -1076,7 +1083,8 @@ void GLEngine::draw_mask( const float pct )
  * @param r rectangle to draw
  */
 void GLEngine::draw_rectangle( const mrv::Rectd& r,
-                               const mrv::ImageView::FlipDirection flip )
+                               const mrv::ImageView::FlipDirection flip,
+                               const double zdeg )
 {
 
     mrv::media fg = _view->foreground();
@@ -1096,9 +1104,31 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     set_matrix( flip, true );
 
     double x = 0.0, y = 0.0;
-    if ( flip & ImageView::kFlipVertical )    x = (double)-dpw.w();
-    if ( flip & ImageView::kFlipHorizontal )  y = (double) dpw.h();
-
+    double rad = zdeg * M_PI / 180.0;
+    double sn = sin( rad );
+    double cs = cos( rad );
+    if ( is_equal( sn, -1.0 ) )
+    {
+        if ( flip & ImageView::kFlipVertical )    y = (double)-dpw.w();
+        if ( flip & ImageView::kFlipHorizontal )  x = (double)-dpw.h();
+    }
+    else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
+    {
+        if ( flip & ImageView::kFlipVertical )    x = (double)dpw.w();
+        if ( flip & ImageView::kFlipHorizontal )  y = (double)-dpw.h();
+    }
+    else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
+    {
+        if ( flip & ImageView::kFlipVertical )    y = (double)dpw.w();
+        if ( flip & ImageView::kFlipHorizontal )  x = (double)dpw.h();
+    }
+    else
+    {
+        if ( flip & ImageView::kFlipVertical )    x = (double)-dpw.w();
+        if ( flip & ImageView::kFlipHorizontal )  y = (double) dpw.h();
+    }
+    
+    glRotated( zdeg, 0, 0, 1 );
     glTranslated( x + r.x(), y - r.y(), 0 );
 
     double rw = r.w();
@@ -1178,6 +1208,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     double tw = dpw.w() / 2.0;
     double th = dpw.h() / 2.0;
 
+    glRotated( img->rot_z(), 0, 0, 1 );
     glTranslated( img->x(), img->y(), 0 );
     glTranslated( dpw.x() + tw, -dpw.y() - th, 0 );
 
