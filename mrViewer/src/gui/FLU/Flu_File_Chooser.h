@@ -119,6 +119,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   static std::string renameErrTxt;
 
   static bool singleButtonTravelDrawer;
+  static bool thumbnailsFileReq;
 
   typedef boost::recursive_mutex Mutex;
   Mutex  mutex;
