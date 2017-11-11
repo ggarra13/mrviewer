@@ -149,7 +149,7 @@ namespace mrv {
       virtual void draw_rectangle( const mrv::Rectd& r,
                                    const mrv::ImageView::FlipDirection f =
                                    mrv::ImageView::kFlipNone,
-                                   double zdeg = 0.0 ) = 0;
+                                   const double zdeg = 0.0 ) = 0;
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,
