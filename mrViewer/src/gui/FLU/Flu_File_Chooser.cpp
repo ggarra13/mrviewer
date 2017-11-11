@@ -147,6 +147,7 @@ std::string Flu_File_Chooser::deleteFileErrTxt = _("An error ocurred while tryin
 std::string Flu_File_Chooser::fileExistsErrTxt = _("File '%s' already exists!");
 std::string Flu_File_Chooser::renameErrTxt = _("Unable to rename '%s' to '%s'");
 bool Flu_File_Chooser::singleButtonTravelDrawer = true;
+bool Flu_File_Chooser::thumbnailsFileReq = true;
 
 const char *col_labels[] = {
 Flu_File_Chooser::detailTxt[0].c_str(),
@@ -333,9 +334,13 @@ static int flu_filename_match(const char *s, const char *p,
       if (tolower(*s) != tolower(*(p-1))) return 0;
 #else
       if ( downcase )
+      {
 	 if (tolower(*s) != tolower(*(p-1))) return 0;
+      }
       else
+      {
 	 if( *s != *(p-1) ) return 0;
+      }
 #endif
       s++;
       break;
@@ -613,6 +618,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
   add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
   add_type( N_("cin"),   _( "Cineon Picture"), &picture );
+  add_type( N_("cr2"),   _( "Canon Raw Picture"), &picture );
   add_type( N_("ct"),    _( "mental ray Contour Picture"), &picture );
   add_type( N_("dng"),   _( "Kodak Digital Negative"), &picture );
   add_type( N_("dpx"),   _( "DPX Picture"), &picture );
@@ -1770,7 +1776,7 @@ void Flu_File_Chooser::previewCB()
     fltk::Group *g = getEntryGroup();
     int c = g->children();
 
-    if ( previewBtn->value() )
+    if ( previewBtn->value() && thumbnailsFileReq )
     {
         // Make sure all other previews have finished
         clear_threads();
@@ -2593,7 +2599,8 @@ void Flu_File_Chooser::Entry::updateSize()
     int H = 20;
     if ( icon ) {
         if ( chooser->previewBtn->value() &&
-             ( icon == &reel || icon == &picture ) )
+             ( icon == &reel || icon == &picture ) &&
+             thumbnailsFileReq )
         {
             H = 68;
         }
@@ -4440,13 +4447,14 @@ void Flu_File_Chooser::cd( const char *path )
 		  bool cull = true;
 		  for( unsigned int i = 0; i < currentPatterns.size(); i++ )
 		    {
-		      if( flu_filename_match( name,
-					      currentPatterns[i].c_str(),
-					      true ) != 0 )
+                        char* pat = strdup( currentPatterns[i].c_str() );
+                        if( flu_filename_match( name, pat, true ) != 0 )
 			{
-			  cull = false;
-			  break;
+                            free(pat);
+                            cull = false;
+                            break;
 			}
+                        free(pat);
 		    }
 		  if( cull )
 		    {
@@ -4484,8 +4492,8 @@ void Flu_File_Chooser::cd( const char *path )
                          mrv::is_valid_subtitle( tmp.c_str() ) ||
                          tmp == N_(".icc")  ||
 			 tmp == N_(".icm")  ||
-                         tmp == N_(".ctl")  || 
-                         tmp == N_(".xml")  || 
+                         tmp == N_(".ctl")  ||
+                         tmp == N_(".xml")  ||
                          tmp == N_(".ocio") )
 		       is_sequence = false;
 		 }
