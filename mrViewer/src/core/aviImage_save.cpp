@@ -395,7 +395,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     return st;
 }
@@ -452,7 +452,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         }
     }
 
-    if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
+    if (c->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
         c->frame_size = 10000;
     }
@@ -602,7 +602,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    }
 
 
-   if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
+   if (c->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE)
    {
        c->frame_size = src_nb_samples;
    }
@@ -1385,13 +1385,13 @@ bool flush_video_and_audio( const CMedia* img )
         int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
-        if ( !( c->codec->capabilities & CODEC_CAP_DELAY ) )
+        if ( !( c->codec->capabilities & AV_CODEC_CAP_DELAY ) )
             continue;
             
         if (c->codec_type == AVMEDIA_TYPE_AUDIO && c->frame_size <= 1)
             continue;
-        if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codec->id == AV_CODEC_ID_RAWVIDEO)
-            continue;
+        // if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codec->id == AV_CODEC_ID_RAWVIDEO)
+        //     continue;
 
         for (;;) {
             int (*encode)(AVCodecContext*, AVPacket*, const AVFrame*, int*) = NULL;
