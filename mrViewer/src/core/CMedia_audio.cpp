@@ -272,7 +272,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
 
         if (eof) {
             if (!got_audio && _audio_ctx &&
-                _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
+                _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
                 av_init_packet(&pkt);
                 pkt.dts = pkt.pts = apts;
                 pkt.data = NULL;
