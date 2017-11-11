@@ -132,7 +132,11 @@ namespace mrv {
 
     /// Reset the view matrix
     virtual void reset_view_matrix() = 0;
-    
+
+      // rotate model an angle in Z in degrees
+      virtual void rotate( const double z ) = 0;
+
+      
     /// Change the color of an operation
     virtual void color( uchar r, uchar g, uchar b, uchar a = 255  ) = 0;
     virtual void color( float r, float g, float b, float a = 1.0f ) = 0;
@@ -144,7 +148,8 @@ namespace mrv {
     /// Draw a rectangle
       virtual void draw_rectangle( const mrv::Rectd& r,
                                    const mrv::ImageView::FlipDirection f =
-                                   mrv::ImageView::kFlipNone ) = 0;
+                                   mrv::ImageView::kFlipNone,
+                                   double zdeg = 0.0 ) = 0;
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,
