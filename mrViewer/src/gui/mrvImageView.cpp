@@ -1050,7 +1050,6 @@ void ImageView::text_mode()
    bool ok = mrv::make_window();
    if ( ok )
    {
-       std::cerr << "text mode" << std::endl;
       _mode = kText;
       uiMain->uiPaint->uiText->value(true);
       uiMain->uiPaint->uiScrub->value(false);
@@ -2843,7 +2842,6 @@ int ImageView::leftMouseDown(int x, int y)
          {
             if ( mrv::font_text != "" )
             {
-                std::cerr << "create gltextshape" << std::endl;
                GLTextShape* t = new GLTextShape;
 
                t->font( mrv::font_current );
