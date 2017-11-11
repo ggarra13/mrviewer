@@ -1120,17 +1120,7 @@ static const char* kCLocale = "C";
             std::sort( views.begin(), views.end() );
             for ( size_t i = 0; i < views.size(); ++i )
             {
-                fltk::Widget* o = main->gammaDefaults->add( views[i].c_str() );
-                if ( !OCIO_View.empty() && views[i] == OCIO_View )
-                {
-                    // We found the selected one, set up things
-                    main->gammaDefaults->label( strdup( views[i].c_str() ) );
-                    main->gammaDefaults->redraw();
-                    o->selected();
-                    main->uiView->use_lut(true);
-                    main->uiLUT->value(true);
-                    main->uiView->gamma( 1.0f );
-                }
+                main->gammaDefaults->add( views[i].c_str() );
             }
             
         }
@@ -1315,8 +1305,7 @@ static const char* kCLocale = "C";
     Imf::setGlobalThreadCount( num );
 
     float tmpF = (float)main->uiPrefs->uiPrefsOpenEXRGamma->value();
-    if (!use_ocio || !is_equal( main->uiView->gamma(), 1.0f ) )
-        exrImage::_default_gamma = tmpF;
+    exrImage::_default_gamma = tmpF;
 
     num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
     exrImage::_default_compression = (Imf::Compression) num;
