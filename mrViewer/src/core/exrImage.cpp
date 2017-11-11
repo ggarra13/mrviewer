@@ -88,7 +88,7 @@ namespace
 
 namespace mrv {
 
-float exrImage::_default_gamma = 1.0f;
+float exrImage::_default_gamma = 2.2f;
 Imf::Compression exrImage::_default_compression = Imf::PIZ_COMPRESSION;
 float exrImage::_default_dwa_compression = 45.0f;
 
