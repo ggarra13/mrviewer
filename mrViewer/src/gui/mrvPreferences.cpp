@@ -64,6 +64,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/mrvHome.h"
 #include "core/mrvI8N.h"
 #include "core/mrvOS.h"
+#include "core/mrvMath.h"
 #include "core/CMedia.h"
 
 // GUI  classes
@@ -682,7 +683,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsOpenEXRThreadCount->value( tmp );
 
     openexr.get( "gamma", tmpF, 2.2f );
-    exrImage::_default_gamma = tmpF;
+    if ( !use_ocio ) exrImage::_default_gamma = tmpF;
     uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
 
     openexr.get( "compression", tmp, 4 );   // PIZ default
@@ -1102,28 +1103,33 @@ static const char* kCLocale = "C";
             const char* display = Preferences::OCIO_Display.c_str();
             std::vector< std::string > views;
             int numViews = config->getNumViews(display);
+            // Collect all views
             for(int i = 0; i < numViews; i++)
             {
                 std::string view = config->getView(display, i);
                 views.push_back( view );
             }
 
+            // First, remove all additional defaults if any from pulldown menu
             for ( int c = main->gammaDefaults->children()-1; c >= 5; --c )
             {
                 main->gammaDefaults->remove( c );
             }
-                
+
+            // Then sort and add all new views to pulldown menu
             std::sort( views.begin(), views.end() );
             for ( size_t i = 0; i < views.size(); ++i )
             {
                 fltk::Widget* o = main->gammaDefaults->add( views[i].c_str() );
                 if ( !OCIO_View.empty() && views[i] == OCIO_View )
                 {
+                    // We found the selected one, set up things
                     main->gammaDefaults->label( strdup( views[i].c_str() ) );
                     main->gammaDefaults->redraw();
                     o->selected();
                     main->uiView->use_lut(true);
                     main->uiLUT->value(true);
+                    main->uiView->gamma( 1.0f );
                 }
             }
             
@@ -1309,7 +1315,8 @@ static const char* kCLocale = "C";
     Imf::setGlobalThreadCount( num );
 
     float tmpF = (float)main->uiPrefs->uiPrefsOpenEXRGamma->value();
-    exrImage::_default_gamma = tmpF;
+    if (!use_ocio || !is_equal( main->uiView->gamma(), 1.0f ) )
+        exrImage::_default_gamma = tmpF;
 
     num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
     exrImage::_default_compression = (Imf::Compression) num;
