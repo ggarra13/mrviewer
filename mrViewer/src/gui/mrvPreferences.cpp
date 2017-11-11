@@ -64,6 +64,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/mrvHome.h"
 #include "core/mrvI8N.h"
 #include "core/mrvOS.h"
+#include "core/mrvMath.h"
 #include "core/CMedia.h"
 
 // GUI  classes
@@ -535,6 +536,9 @@ fltk::StyleSet*     newscheme = NULL;
     flu.get("quick_folder_travel", tmp, 1 );
     uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
+    flu.get("thumbnails", tmp, 1 );
+    uiPrefs->uiPrefsFileReqThumbnails->value( (bool) tmp );
+    Flu_File_Chooser::thumbnailsFileReq = (bool) tmp;
 
     //
     // playback
@@ -556,7 +560,20 @@ fltk::StyleSet*     newscheme = NULL;
     playback.get( "scrubbing_sensitivity", tmpF, 5.0f );
     uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
 
+    fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
+    pixel_toolbar.get( "RGBA_pixel", tmp, 0 );
+    uiPrefs->uiPrefsPixelRGBA->value( tmp );
 
+    pixel_toolbar.get( "pixel_values", tmp, 0 );
+    uiPrefs->uiPrefsPixelValues->value( tmp );
+    
+    pixel_toolbar.get( "HSV_pixel", tmp, 0 );
+    uiPrefs->uiPrefsPixelHSV->value( tmp );
+    
+    pixel_toolbar.get( "Lumma_pixel", tmp, 0 );
+    uiPrefs->uiPrefsPixelLumma->value( tmp );
+
+    
     fltk::Preferences action( base, "action" );
     action.get( "scrubbing", tmp, 1 );
     uiPrefs->uiScrub->value( (bool) tmp );
@@ -666,7 +683,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsOpenEXRThreadCount->value( tmp );
 
     openexr.get( "gamma", tmpF, 2.2f );
-    exrImage::_default_gamma = tmpF;
+    if ( !use_ocio ) exrImage::_default_gamma = tmpF;
     uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
 
     openexr.get( "compression", tmp, 4 );   // PIZ default
@@ -1044,6 +1061,14 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
+    if (  ( !var || strlen(var) == 0 ) && use_ocio )
+    {
+        mrvLOG_INFO( "ocio",
+                     _("Setting OCIO environment variable to nuke-default" )
+                     << std::endl );
+        std::string tmp = root + "/ocio/nuke-default/config.ocio";
+        var = strdup( tmp.c_str() );
+    }
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
@@ -1074,6 +1099,40 @@ static const char* kCLocale = "C";
         
             OCIO_Display = config->getDefaultDisplay();
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
+
+            const char* display = Preferences::OCIO_Display.c_str();
+            std::vector< std::string > views;
+            int numViews = config->getNumViews(display);
+            // Collect all views
+            for(int i = 0; i < numViews; i++)
+            {
+                std::string view = config->getView(display, i);
+                views.push_back( view );
+            }
+
+            // First, remove all additional defaults if any from pulldown menu
+            for ( int c = main->gammaDefaults->children()-1; c >= 5; --c )
+            {
+                main->gammaDefaults->remove( c );
+            }
+
+            // Then sort and add all new views to pulldown menu
+            std::sort( views.begin(), views.end() );
+            for ( size_t i = 0; i < views.size(); ++i )
+            {
+                fltk::Widget* o = main->gammaDefaults->add( views[i].c_str() );
+                if ( !OCIO_View.empty() && views[i] == OCIO_View )
+                {
+                    // We found the selected one, set up things
+                    main->gammaDefaults->label( strdup( views[i].c_str() ) );
+                    main->gammaDefaults->redraw();
+                    o->selected();
+                    main->uiView->use_lut(true);
+                    main->uiLUT->value(true);
+                    main->uiView->gamma( 1.0f );
+                }
+            }
+            
         }
         catch( const OCIO::Exception& e )
         {
@@ -1093,6 +1152,9 @@ static const char* kCLocale = "C";
     //
     // Handle file requester
     //
+    Flu_File_Chooser::thumbnailsFileReq = (bool)
+    uiPrefs->uiPrefsFileReqThumbnails->value();
+    
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
     uiPrefs->uiPrefsFileReqFolder->value();
 
@@ -1128,6 +1190,22 @@ static const char* kCLocale = "C";
 
 
 
+    //
+    // Handle pixel values
+    //
+    main->uiAColorType->value( uiPrefs->uiPrefsPixelRGBA->value() );
+    main->uiAColorType->redraw();
+    main->uiAColorType->do_callback();
+    main->uiPixelValue->value( uiPrefs->uiPrefsPixelValues->value() );
+    main->uiPixelValue->redraw();
+    main->uiPixelValue->do_callback();
+    main->uiBColorType->value( uiPrefs->uiPrefsPixelHSV->value() );
+    main->uiBColorType->redraw();
+    main->uiBColorType->do_callback();
+    main->uiLType->value( uiPrefs->uiPrefsPixelLumma->value() );
+    main->uiLType->redraw();
+    main->uiLType->do_callback();
+    
     //
     // Handle crop area (masking)
     //
@@ -1237,7 +1315,8 @@ static const char* kCLocale = "C";
     Imf::setGlobalThreadCount( num );
 
     float tmpF = (float)main->uiPrefs->uiPrefsOpenEXRGamma->value();
-    exrImage::_default_gamma = tmpF;
+    if (!use_ocio || !is_equal( main->uiView->gamma(), 1.0f ) )
+        exrImage::_default_gamma = tmpF;
 
     num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
     exrImage::_default_compression = (Imf::Compression) num;
@@ -1405,11 +1484,13 @@ static const char* kCLocale = "C";
     colors.set( "selection_text_color", selectiontextcolor );
 
     fltk::Preferences flu( ui, "file_requester" );
-    flu.set("quick_folder_travel", 
-	    uiPrefs->uiPrefsFileReqFolder->value());
+    flu.set("quick_folder_travel", uiPrefs->uiPrefsFileReqFolder->value());
+    flu.set("thumbnails", uiPrefs->uiPrefsFileReqThumbnails->value());
     
     Flu_File_Chooser::singleButtonTravelDrawer = 
     uiPrefs->uiPrefsFileReqFolder->value();
+    Flu_File_Chooser::thumbnailsFileReq = 
+    uiPrefs->uiPrefsFileReqThumbnails->value();
 
     //
     // playback prefs
@@ -1422,6 +1503,13 @@ static const char* kCLocale = "C";
     playback.set( "scrubbing_sensitivity",
                   uiPrefs->uiPrefsScrubbingSensitivity->value() );
 
+    fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
+    pixel_toolbar.set( "RGBA_pixel", uiPrefs->uiPrefsPixelRGBA->value() );
+    pixel_toolbar.set( "pixel_values", uiPrefs->uiPrefsPixelValues->value() );
+    pixel_toolbar.set( "HSV_pixel", uiPrefs->uiPrefsPixelHSV->value() );
+    pixel_toolbar.set( "Lumma_pixel", uiPrefs->uiPrefsPixelLumma->value() );
+
+    
     fltk::Preferences action( base, "action" );
 
     action.set( "scrubbing", (int)uiPrefs->uiScrub->value() );
