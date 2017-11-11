@@ -68,6 +68,8 @@ namespace mrv {
       virtual void rot_x(double t);
       virtual void rot_y(double t);
 
+      virtual void rotate( const double z );
+
       virtual void evaluate( const CMedia* img,
                              const Imath::V3f& rgb, Imath::V3f& out ); 
 
@@ -86,7 +88,8 @@ namespace mrv {
     /// Draw a rectangle
       virtual void draw_rectangle( const mrv::Rectd& r,
                                    const mrv::ImageView::FlipDirection flip =
-                                   mrv::ImageView::kFlipNone );
+                                   mrv::ImageView::kFlipNone,
+                                   const double zdeg = 0.0 );
 
       void draw_selection_marquee( const mrv::Rectd& r );
       
