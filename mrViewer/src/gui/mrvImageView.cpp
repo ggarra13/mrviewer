@@ -32,6 +32,7 @@
 
 #include <inttypes.h>  // for PRId64
 
+#define ALLOW_ROTATIONS
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
@@ -314,6 +315,29 @@ void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
     v->clear_caches();
 }
 
+void rotate_plus_90_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media fg = v->foreground();
+    if (!fg) return;
+
+    mrv::CMedia* img = fg->image();
+    img->rotate( -90.0 ); // this is reversed on purpose
+    img->image_damage( mrv::CMedia::kDamageContents );
+    v->fit_image();
+    v->redraw();
+}
+
+void rotate_minus_90_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media fg = v->foreground();
+    if (!fg) return;
+
+    mrv::CMedia* img = fg->image();
+    img->rotate( 90.0 );  // this is reversed on purpose
+    img->image_damage( mrv::CMedia::kDamageContents );
+    v->fit_image();
+    v->redraw();
+}
 void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
 {
     mrv::media fg = v->foreground();
@@ -1351,7 +1375,10 @@ void ImageView::copy_pixel() const
 
   if ( outside || !pic ) return;
 
-  CMedia::Pixel rgba = pic->pixel( xp, yp );
+  int xpr = int((double)xp / img->width());
+  int ypr = pic->height() - int((double)yp / img->height()) - 1;
+  
+  CMedia::Pixel rgba = pic->pixel( xpr, ypr );
   pixel_processed( img, rgba );
 
   mrv::Recti daw[2];
@@ -1375,7 +1402,7 @@ void ImageView::copy_pixel() const
       {
           if ( stereo_out & CMedia::kStereoRight )
           {
-                pic = img->left();
+              pic = img->left();
               xp += daw[1].x();
               yp += daw[1].y();
               xp -= daw[0].x();
@@ -1394,7 +1421,8 @@ void ImageView::copy_pixel() const
       if ( pic && xp < (int)pic->width() && yp < (int)pic->height() )
       {
           float r = rgba.r;
-          rgba = pic->pixel( xp, yp );
+          ypr = pic->height() - yp - 1;
+          rgba = pic->pixel( xp, ypr );
           pixel_processed( img, rgba );
           rgba.r = r;
       }
@@ -1408,6 +1436,18 @@ void ImageView::copy_pixel() const
   fltk::copy( buf, unsigned( strlen(buf) ), false );
 }
 
+
+void ImageView::rot2vec( double& x, double& y, const double r )
+{
+    double radians = r * (M_PI / 180);
+    
+    double cs = cos( radians );
+    double sn = sin( radians );
+
+    double tmp = (double)x * cs - (double)y * sn;
+    y = (double)x * sn + (double)y * cs;
+    x = tmp;
+}
 
 void ImageView::data_window_coordinates( const CMedia* const img,
                                          double& x, double& y,
@@ -1442,6 +1482,8 @@ void ImageView::data_window_coordinates( const CMedia* const img,
         y -= daw.y();
     }
     
+    rot2vec( x, y, img->rot_z() );
+
     //
     // If image is smaller than display window, we are dealing
     // with a RY or BY image.  We divide the window coordinates by 2.
@@ -1474,6 +1516,9 @@ void ImageView::image_coordinates( const CMedia* const img,
 
     if ( _showPixelRatio ) H /= pixel_ratio();
 
+    
+    
+
     double tw = (W / 2.0);
     double th = (H / 2.0);
 
@@ -1488,6 +1533,25 @@ void ImageView::image_coordinates( const CMedia* const img,
     x -= xoffset; y -= yoffset;
 
 
+    x -= img->x();
+    y -= img->y();
+    
+    
+    // double tn = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+
+    // if ( std::abs( tn ) < 0.0001 )
+    // {
+    //     std::cerr << "ORIG " <<  x << ", " << y << std::endl;
+    //     double px = x;
+    //     x = y;
+    //     y = px;
+        
+    //     px = W;
+    //     W = H;
+    //     H = px;
+    //     std::cerr << "NEW  " <<  x << ", " << y << std::endl;
+    // }
+    //y = H - y;
     y = H - y;
     if ( _showPixelRatio ) y *= pixel_ratio();
 }
@@ -1513,8 +1577,15 @@ void ImageView::center_image()
         }
     }
 
-    dpw.x( dpw.x() + img->x() );
-    dpw.y( dpw.y() - img->y() );
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    if ( stereo_out & CMedia::kStereoAnaglyph )
+    {
+        mrv::Recti dpw2 = img->display_window2();
+        dpw.merge( dpw2 );
+    }
+
+    dpw.x( dpw.x() );  // here
+    dpw.y( dpw.y() );
   
     mrv::media bg = background();
     if ( bg )
@@ -1522,34 +1593,50 @@ void ImageView::center_image()
         CMedia* img2 = bg->image();
         mrv::Recti dpw2 = img2->display_window();
         dpw2.x( dpw2.x() + img2->x() );
-        dpw2.y( dpw2.y() - img2->y() );
+        dpw2.y( dpw2.y() + img2->y() );
         dpw.merge( dpw2 );
     }
     
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
 
-    yoffset = ( dpw.y() + dpw.h() / 2.0 ) / pr;
+    
+    unsigned H = dpw.h();
+    unsigned W = dpw.w();
+    
 
-    CMedia::StereoOutput stereo_out = img->stereo_output();
+#ifdef ALLOW_ROTATIONS
+    // Handle image 90 degrees rotation
+    double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+    if ( std::abs(r) <= 0.0001 )
+    {
+        unsigned tmp = H;
+        H = W;
+        W = tmp;
+        int x = dpw.x();
+        dpw.x( dpw.y() );
+        dpw.y( x );
+    }
+#endif
+    
+    yoffset = ( - dpw.y() - H / 2.0 ) / pr;
     
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
-        int w = dpw.w();
-        xoffset = -w/2.0 + 0.5;
+        xoffset = -W/2.0 + 0.5;
     }
     else if ( stereo_out & CMedia::kStereoTopBottom )
     {
-        int h = dpw.h();
-        yoffset = (( -h/2.0 ) / pr + 0.5 );
+        yoffset = (( -H/2.0 ) / pr + 0.5 );
     }
     else
     {
-        xoffset = -dpw.x() - dpw.w() / 2.0;
+        xoffset = -dpw.x() - W / 2.0;
     }
 
+    zrotation_to_offsets( xoffset, yoffset, img->rot_z(), W, H );
 
-
+    
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
@@ -1577,7 +1664,12 @@ void ImageView::fit_image()
   if ( display_window() )
   {
       dpw = img->display_window();
-      if ( stereo_out == CMedia::kStereoRight )
+      if ( stereo_out & CMedia::kStereoAnaglyph )
+      {
+          mrv::Recti dpw2 = img->display_window2();
+          dpw.merge( dpw2 );
+      }
+      else if ( stereo_out == CMedia::kStereoRight )
       {
           dpw = img->display_window2();
       }
@@ -1595,7 +1687,12 @@ void ImageView::fit_image()
   else
   {
       dpw = img->data_window();
-      if ( stereo_out == CMedia::kStereoRight )
+      if ( stereo_out & CMedia::kStereoAnaglyph )
+      {
+          mrv::Recti dpw2 = img->data_window2();
+          dpw.merge( dpw2 );
+      }
+      else if ( stereo_out == CMedia::kStereoRight )
       {
           dpw = img->data_window2();
       }
@@ -1628,10 +1725,21 @@ void ImageView::fit_image()
           dpw.merge( dpw2 );
   }
   
-  double W = dpw.w();
+  unsigned W = dpw.w();
   if ( W == 0 ) W = pic->width();
-  double H = dpw.h();
+  unsigned H = dpw.h();
   if ( H == 0 ) H = pic->height();
+
+#ifdef ALLOW_ROTATIONS
+  // Handle image 90 degrees rotation
+  double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+  if ( std::abs(r) <= 0.0001 )
+  {
+      unsigned tmp = H;
+      H = W;
+      W = tmp;
+  }
+#endif
 
   // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
   //     W *= 2;
@@ -1656,6 +1764,8 @@ void ImageView::fit_image()
   if ( h < z ) { z = h; }
 
   xoffset = -dpw.x() - W / 2.0;
+
+  
   if ( (_flip & kFlipVertical) && stereo_out & CMedia::kStereoSideBySide  )
       xoffset = 0.0;
 
@@ -1663,6 +1773,8 @@ void ImageView::fit_image()
   if ( (_flip & kFlipHorizontal) &&
        stereo_out & CMedia::kStereoTopBottom  )
       yoffset = 0.0;
+
+  zrotation_to_offsets( xoffset, yoffset, img->rot_z(), W, H );
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -1675,6 +1787,61 @@ void ImageView::fit_image()
 }
 
 
+void
+ImageView::zrotation_to_offsets( double& X, double& Y,
+                                 const double degrees, const int W,
+                                 const int H )
+{
+  double r = degrees * (M_PI / 180);  // in radians, please
+  double sn = sin(r);
+  double cs = cos(r);
+  if ( is_equal( sn, -1.0, 0.001 ) )
+  {
+      // This cascading if/then is correct
+      if ( _flip & kFlipVertical )
+      {
+          X -= W + H;
+      }
+      if ( _flip & kFlipHorizontal )
+      {
+          X += W;
+          Y -= H - W;
+      }
+      else {
+          X += W;
+      }
+  }
+  else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
+  {
+      // This cascading if/then is correct
+      if ( _flip & kFlipVertical )
+      {
+          X -= W * 2;
+      }
+      if ( _flip & kFlipHorizontal )
+      {
+          Y += H;
+          X += W;
+      }
+      else
+      {
+          X += W;
+          Y -= H;
+      }
+  }
+  else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
+  {
+      // This cascading if/then is correct
+      if ( _flip & kFlipVertical )
+      {
+          X -= H - W;
+      }
+      if ( _flip & kFlipHorizontal )
+          Y += W;
+      else 
+          Y -= H;
+  }
+}
 
 void ImageView::stereo_input( CMedia::StereoInput x )
 {
@@ -2261,7 +2428,6 @@ void ImageView::draw()
         _engine->reset_view_matrix();
 
         valid(1);
-
     }
 
 
@@ -2344,9 +2510,11 @@ void ImageView::draw()
       _engine->draw_mask( _masking );
     }
 
+  CMedia* img = NULL;
   if ( fg )
   {
-      const char* label = fg->image()->label();
+      img = fg->image();
+      const char* label = img->label();
       if ( label )
       {
           uchar r, g, b;
@@ -2366,7 +2534,7 @@ void ImageView::draw()
         uchar r, g, b;
         fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
         _engine->color( r, g, b, 255 );
-        _engine->draw_rectangle( _selection, flip() );
+        _engine->draw_rectangle( _selection, flip(), img->rot_z() );
     }
 
 
@@ -2446,9 +2614,6 @@ void ImageView::draw()
     }
 
   if ( !fg ) return;
-
-
-  CMedia* img = fg->image();
 
   _engine->draw_annotation( img->shapes() );
 
@@ -3039,6 +3204,16 @@ int ImageView::leftMouseDown(int x, int y)
                       (fltk::Callback*)update_frame_cb, this,
                       fltk::MENU_DIVIDER );
 
+#ifdef ALLOW_ROTATIONS
+            menu.add( _("Image/Rotate +90"),
+                      kRotatePlus90.hotkey(),
+                      (fltk::Callback*)rotate_minus_90_cb, this );
+            menu.add( _("Image/Rotate -90"),
+                      kRotateMinus90.hotkey(),
+                      (fltk::Callback*)rotate_plus_90_cb, this,
+                      fltk::MENU_DIVIDER );
+#endif
+
             if ( !Preferences::use_ocio )
             {
                 menu.add( _("Image/Attach CTL Input Device Transform"),
@@ -3479,7 +3654,8 @@ void ImageView::separate_layers( const CMedia* const img,
         if (!pic) return;
     }
 
-    if ( xp < dpw.x() || yp < dpw.y() || xp > dpw.w() || yp > dpw.h() ) {
+    if ( xp < dpw.x() || yp < dpw.y() ||
+         xp >= dpw.w()*img->scale_x() || yp >= dpw.h()*img->scale_y() ) {
         outside = true;
     }
 }
@@ -3489,6 +3665,7 @@ void ImageView::top_bottom( const CMedia* const img,
                             short& idx, bool& outside, int w, int h ) const
 {
     CMedia::StereoOutput output = img->stereo_output();
+    idx = 0;
     if ( output == CMedia::kStereoLeft )
     {
         idx = 1;
@@ -3643,7 +3820,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
                                      int& w, int& h ) const
 {
     assert( img != NULL );
-    assert( outside == false );
+    outside = false;
   double xf = (double) x;
   double yf = (double) y;
 
@@ -3803,12 +3980,13 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   if (!pic) return;
   
 
-  if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
-       yp >= (int)pic->height() )
+  if ( xp < 0 || xp >= (int)((double)pic->width()*img->scale_x()) ||
+       yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
   {
       outside = true;
   }
   else if ( input == CMedia::kSeparateLayersInput &&
+            output != CMedia::kNoStereo &&
             ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) ) {
       outside = true;
   }
@@ -3854,9 +4032,11 @@ void ImageView::mouseMove(int x, int y)
   int xp, yp, w, h;
   picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
   if ( !pic ) return;
-  
+
+  int xpr = int((double)xp / img->scale_x());
+  int ypr = pic->height() - int((double)yp / img->scale_y()) - 1;
   char buf[40];
-  sprintf( buf, "%5d, %5d", xp, yp );
+  sprintf( buf, "%5d, %5d", xpr, ypr );
   uiMain->uiCoord->text(buf);
   
   CMedia::Pixel rgba;
@@ -3866,8 +4046,14 @@ void ImageView::mouseMove(int x, int y)
   }
   else
   {
+      mrv::Recti daw[2];
+      daw[0] = img->data_window();
+      daw[1] = img->data_window2();
+      
 
-      rgba = pic->pixel( xp, yp );
+      // std::cerr << "ypr " << ypr << " yp " << yp << " " << img->scale_y()
+      //           << std::endl;
+      rgba = pic->pixel( xpr, ypr );
 
       pixel_processed( img, rgba );
 
@@ -3876,22 +4062,26 @@ void ImageView::mouseMove(int x, int y)
           normalize( rgba );
       }
 
-      mrv::Recti daw[2];
-      daw[0] = img->data_window();
-      daw[1] = img->data_window2();
 
       CMedia::StereoOutput stereo_out = img->stereo_output();
       CMedia::StereoInput  stereo_in  = img->stereo_input();
 
       if ( stereo_out & CMedia::kStereoAnaglyph )
       {
+          
           if ( stereo_in == CMedia::kTopBottomStereoInput )
           {
-              yp += h;
+              if ( stereo_out & CMedia::kStereoRight )
+                  yp += h;
+              else
+                  yp -= h;
           }
           else if ( stereo_in == CMedia::kLeftRightStereoInput )
           {
-              xp += w;
+              if ( stereo_out & CMedia::kStereoRight )
+                  xp -= w;
+              else
+                  xp += w;
           }
           else
           {
@@ -3915,14 +4105,17 @@ void ImageView::mouseMove(int x, int y)
           if ( pic )
           {
               outside = false;
-              if ( xp < 0 || xp >= (int)pic->width() || yp < 0 ||
-                   yp >= (int)pic->height() )
+              if ( xp < 0 || xp >= (int)pic->width()*img->scale_x() ||
+                   yp < 0 || yp >= (int)pic->height()*img->scale_y() )
                   outside = true;
 
               if (!outside)
               {
                   float r = rgba.r;
-                  rgba = pic->pixel( xp, yp );
+                  int xpr = int((double)xp / img->scale_x());
+                  int ypr = pic->height() -
+                            int((double)yp / img->scale_y()) - 1;
+                  rgba = pic->pixel( xpr, ypr );
                   pixel_processed( img, rgba );
                   
                   if ( normalize() )
@@ -3944,7 +4137,7 @@ void ImageView::mouseMove(int x, int y)
   
   CMedia* bgr = _engine->background();
 
-  if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
+  if ( _showBG && (!display_window()) && bgr && ( outside || rgba.a < 1.0f ) )
   {
       double xf, yf;
       const mrv::image_type_ptr picb = bgr->hires();
@@ -3989,6 +4182,8 @@ void ImageView::mouseMove(int x, int y)
               xp = (int)floor( xp * px );
               yp = (int)floor( yp * py );
           }
+          
+          yp = picb->height() - yp - 1;
 
           bool outside2 = false;
           if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
@@ -4282,7 +4477,8 @@ void ImageView::mouseDrag(int x,int y)
            }
            else if ( stereo_out & CMedia::kStereoSideBySide )
            {
-               if ( xf >= W - daw[0].x() )
+               // if ( xf >= W - daw[0].x() )
+               if ( xf >= W )
                {
                    right = true;
                    xf -= W;
@@ -4308,7 +4504,8 @@ void ImageView::mouseDrag(int x,int y)
            }
            else if ( stereo_out & CMedia::kStereoTopBottom )
            {
-               if ( yf >= H - daw[0].y() )
+               // if ( yf >= H - daw[0].y() )
+               if ( yf >= H )
                {
                    bottom = true;
                    yf -= H;
@@ -4405,7 +4602,6 @@ void ImageView::mouseDrag(int x,int y)
                double xt = xf + daw[0].x() + dpw[0].w() * right;
                double yt = yf + daw[0].y() + dpw[0].h() * bottom;
 
-               
                _selection = mrv::Rectd( xt, yt, dx, dy );
                
                char buf[128];
@@ -4725,6 +4921,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipX.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
+        fit_image();
         mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
@@ -4732,6 +4929,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipY.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
+        fit_image();
         mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
@@ -4890,6 +5088,18 @@ int ImageView::keyDown(unsigned int rawkey)
         update_frame_cb( NULL, this );
         return 1;
     }
+#ifdef ALLOW_ROTATIONS
+    else if ( kRotatePlus90.match( rawkey ) )
+    {
+        rotate_minus_90_cb( NULL, this );
+        return 1;
+    }
+    else if ( kRotateMinus90.match( rawkey ) )
+    {
+        rotate_plus_90_cb( NULL, this );
+        return 1;
+    }
+#endif
     else if ( kFirstFrame.match( rawkey ) ) 
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
@@ -6900,8 +7110,8 @@ void ImageView::resize_main_window()
   if ( w < 640 )  w = 640;
   if ( h < 530 )  h = 530;
 
-  //  std::cerr << "posY " << posY << " " << h << std::endl;
-  //  std::cerr << "minY " << miny << " " << maxh << std::endl;
+  // std::cerr << "pos " << posX << " " << posY << std::endl;
+  // std::cerr << "w " << w << " x " << h << std::endl;
   
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
@@ -7038,8 +7248,6 @@ void ImageView::toggle_lut()
 {
   _useLUT = !_useLUT;
 
-  main()->uiLUT->value( _useLUT );
-
   char buf[128];
   sprintf( buf, "UseLUT %d", (int)_useLUT );
   send_network( buf );
@@ -7051,7 +7259,6 @@ void ImageView::toggle_lut()
          _engine->refresh_luts();
      }
   }
-
 
   redraw();  // force a draw to refresh luts
 
