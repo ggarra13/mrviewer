@@ -3551,18 +3551,19 @@ void ImageView::pixel_processed( const CMedia* img,
     }
 
     //
-    // To represent pixel properly, we need to do lut/gain/gamma
+    // To represent pixel properly, we need to do gain/gamma
     //
     rgba.r *= _gain;
     rgba.g *= _gain;
     rgba.b *= _gain;
 
+    BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
 
-    switch( uiMain->uiPrefs->uiPrefsBlendMode->value() )
+    switch( mode )
     {
     case kBlendTraditional:
     case kBlendTraditionalNonGamma:
-        if ( rgba.a >= 0.001 )
+        if ( rgba.a >= 0.00001 )
         {
             rgba.r /= rgba.a;
             rgba.g /= rgba.a;
@@ -3574,25 +3575,29 @@ void ImageView::pixel_processed( const CMedia* img,
         break;
     }
 
-
-    float one_gamma = 1.0f / img->gamma();
-    // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
-    // but faster.
-    if ( rgba.r > 0.0f && isfinite(rgba.r) )
-        rgba.r = expf( logf(rgba.r) * one_gamma );
-    if ( rgba.g > 0.0f && isfinite(rgba.g) )
-        rgba.g = expf( logf(rgba.g) * one_gamma );
-    if ( rgba.b > 0.0f && isfinite(rgba.b) )
-        rgba.b = expf( logf(rgba.b) * one_gamma );
-
-    switch( uiMain->uiPrefs->uiPrefsBlendMode->value() )
+    if ( mode < kBlendTraditionalNonGamma )
+    {
+        float one_gamma = 1.0f / img->gamma();
+        // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
+        // but faster.
+        if ( rgba.r >= 0.00001f && isfinite(rgba.r) )
+            rgba.r = expf( logf(rgba.r) * one_gamma );
+        if ( rgba.g >= 0.00001f && isfinite(rgba.g) )
+            rgba.g = expf( logf(rgba.g) * one_gamma );
+        if ( rgba.b >= 0.00001f && isfinite(rgba.b) )
+            rgba.b = expf( logf(rgba.b) * one_gamma );
+    }
+    
+    switch( mode )
     {
     case kBlendTraditional:
-        rgba.r *= rgba.a;
-        rgba.g *= rgba.a;
-        rgba.b *= rgba.a;
-        break;
     case kBlendTraditionalNonGamma:
+        if ( rgba.a >= 0.00001 )
+        {
+            rgba.r *= rgba.a;
+            rgba.g *= rgba.a;
+            rgba.b *= rgba.a;
+        }
         break;
     }
 
@@ -4075,11 +4080,10 @@ void ImageView::mouseMove(int x, int y)
       daw[1] = img->data_window2();
 
 
-      // std::cerr << "ypr " << ypr << " yp " << yp << " " << img->scale_y()
-      //           << std::endl;
       xp = int( (double)xp * xpct );
       yp = int( (double)yp * ypct );
       rgba = pic->pixel( xp, yp );
+
 
 
       pixel_processed( img, rgba );
