@@ -344,66 +344,13 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     using namespace Imath;
     float scale = ( (float) _lutN - 1.0f ) / (float) _lutN;
     float offset = 1.0f / ( 2.0f * _lutN );
-#if 1
+
     out.x = lutT + lutM * logf( Imath::clamp( rgb.x * scale + offset,
                                               lutMin, lutMax ) );
     out.y = lutT + lutM * logf( Imath::clamp( rgb.y * scale + offset, 
                                               lutMin, lutMax ) );
     out.z = lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset, 
                                               lutMin, lutMax ) );
-#elif 0
-    out.x = lutT + lutM * logf( Imath::clamp( rgb.x, lutMin, lutMax ) );
-    out.y = lutT + lutM * logf( Imath::clamp( rgb.y, lutMin, lutMax ) );
-    out.z = lutT + lutM * logf( Imath::clamp( rgb.z, lutMin, lutMax ) );
-#else
-    Imath::V3f i;
-    i.x = lutF * (lutT + lutM * logf( Imath::clamp( rgb.x * scale + offset,
-                                                    lutMin, lutMax ) ) );
-    i.y = lutF * ( lutT + lutM * logf( Imath::clamp( rgb.y * scale + offset, 
-                                                     lutMin, lutMax ) ) );
-    i.z = lutF * (lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset, 
-                                                    lutMin, lutMax ) ) );
-    Imath::V3f fi;
-    fi.x = floor(i.x);
-    fi.y = floor(i.y);
-    fi.z = floor(i.z);
-    Imath::V3f fj;
-    fj.x = fi.x + 1;
-    fj.y = fi.y + 1;
-    fj.z = fi.z + 1;
-    Imath::V3f s;
-    s.x = i.x - fi.x;
-    s.y = i.y - fi.y;
-    s.z = i.z - fi.z;
-
-    fi.x /= lutF;
-    fi.y /= lutF;
-    fi.z /= lutF;
-    
-    fj.x /= lutF;
-    fj.y /= lutF;
-    fj.z /= lutF;
-
-    Imath::V3f c0, c1, c2, c3, c4, c5, c6, c7;
-    c0 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fi.x, fi.y, fi.z ) );
-    c1 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fj.x, fi.y, fi.z ) );
-    c2 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fi.x, fj.y, fi.z ) );
-    c3 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fj.x, fj.y, fi.z ) );
-    c4 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fi.x, fi.y, fi.z ) );
-    c5 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fj.x, fi.y, fj.z ) );
-    c6 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fi.x, fj.y, fj.z ) );
-    c7 = lookup3D( (V4f*)(&lut[0]), _lutN, Imath::V3f( fj.x, fj.y, fj.z ) );
-
-    out = ((c0 * (1-s.x) + c1 * s.x) * (1-s.y) +
-           (c2 * (1-s.x) + c3 * s.x) *  s.y) * (1-s.z) +
-          ((c4 * (1-s.x) + c5 * s.x) * (1-s.y) +
-           (c6 * (1-s.x) + c7 * s.x) *  s.y) * s.z;
-    out.x = expf( out.x );
-    out.y = expf( out.y );
-    out.z = expf( out.z );
-    return;
-
-#endif
 
     out = lookup3D( (V4f*)(&lut[0]), _lutN, out );
 
