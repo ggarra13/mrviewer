@@ -540,6 +540,7 @@ void ColorInfo::update( const CMedia* img,
                    engine->evaluate( img, 
                                      (*(Imath::V3f*)&op), 
                                      (*(Imath::V3f*)&rp) );
+                   rp.a = op.a;
                }
                else
                {
