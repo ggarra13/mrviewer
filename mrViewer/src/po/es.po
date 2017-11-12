@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-11-12 19:05-0300\n"
+"POT-Creation-Date: 2017-11-12 19:37-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -680,7 +680,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1227
+#: video/mrvGLLut3d.cpp:1174
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -832,7 +832,7 @@ msgid "@||"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4516
-#: gui/mrvColorInfo.cpp:703
+#: gui/mrvColorInfo.cpp:704
 msgid "A"
 msgstr ""
 
@@ -1095,7 +1095,7 @@ msgstr "Un error ocurrió al intentar borrar '%s'."
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:874
+#: video/mrvGLLut3d.cpp:821
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1248,7 +1248,7 @@ msgstr "Bitrate Promedio"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:180
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:206
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:230
-#: gui/mrvColorInfo.cpp:701
+#: gui/mrvColorInfo.cpp:702
 msgid "B"
 msgstr "A"
 
@@ -1366,7 +1366,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:7814
+#: gui/mrvImageView.cpp:7811
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -1803,7 +1803,7 @@ msgstr "Texto de Copyright"
 msgid "Core"
 msgstr "Central"
 
-#: video/mrvGLLut3d.cpp:789
+#: video/mrvGLLut3d.cpp:736
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -2096,7 +2096,7 @@ msgstr "No pude obtener contexto de conversion de imagen."
 msgid "Could not get profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: video/mrvGLLut3d.cpp:864
+#: video/mrvGLLut3d.cpp:811
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -2116,7 +2116,7 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:780
+#: video/mrvGLLut3d.cpp:727
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -2734,7 +2734,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:851
+#: video/mrvGLLut3d.cpp:798
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -2742,7 +2742,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:857
+#: video/mrvGLLut3d.cpp:804
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -3282,7 +3282,7 @@ msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2253
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4124
-#: gui/mrvImageView.cpp:7812
+#: gui/mrvImageView.cpp:7809
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -3394,7 +3394,7 @@ msgstr "Función"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:173
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:199
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:224
-#: gui/mrvColorInfo.cpp:699
+#: gui/mrvColorInfo.cpp:700
 msgid "G"
 msgstr "V"
 
@@ -3906,11 +3906,11 @@ msgstr "Entero"
 msgid "Internal error in wizard selection: "
 msgstr "Error interno en selección del wizard: "
 
-#: video/mrvGLLut3d.cpp:801
+#: video/mrvGLLut3d.cpp:748
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
-#: video/mrvGLLut3d.cpp:845
+#: video/mrvGLLut3d.cpp:792
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -3934,7 +3934,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:816
+#: video/mrvGLLut3d.cpp:763
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -4365,11 +4365,11 @@ msgstr "Pelicula Matroska"
 msgid "Max. Texture Size:\t"
 msgstr "Max. Tamaño Textura:\t"
 
-#: gui/mrvColorInfo.cpp:705 gui/mrvColorInfo.cpp:816
+#: gui/mrvColorInfo.cpp:706 gui/mrvColorInfo.cpp:817
 msgid "Maximum"
 msgstr "Máximo"
 
-#: gui/mrvColorInfo.cpp:727 gui/mrvColorInfo.cpp:838
+#: gui/mrvColorInfo.cpp:728 gui/mrvColorInfo.cpp:839
 msgid "Mean"
 msgstr "Promedio"
 
@@ -4412,7 +4412,7 @@ msgstr "Meta"
 msgid "Metadata"
 msgstr "Metadatos"
 
-#: gui/mrvColorInfo.cpp:710 gui/mrvColorInfo.cpp:821
+#: gui/mrvColorInfo.cpp:711 gui/mrvColorInfo.cpp:822
 msgid "Minimum"
 msgstr "Mínimo"
 
@@ -4562,15 +4562,15 @@ msgstr "Próxima Imagen"
 msgid "No"
 msgstr "No"
 
-#: video/mrvGLLut3d.cpp:1124 video/mrvGLLut3d.cpp:1169
+#: video/mrvGLLut3d.cpp:1071 video/mrvGLLut3d.cpp:1116
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:1122 video/mrvGLLut3d.cpp:1167
+#: video/mrvGLLut3d.cpp:1069 video/mrvGLLut3d.cpp:1114
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:1126 video/mrvGLLut3d.cpp:1171
+#: video/mrvGLLut3d.cpp:1073 video/mrvGLLut3d.cpp:1118
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -4624,11 +4624,11 @@ msgstr "Sin memoria para grafica de filtro"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:1173
+#: video/mrvGLLut3d.cpp:1120
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:1128
+#: video/mrvGLLut3d.cpp:1075
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -4787,13 +4787,13 @@ msgstr "OCIO/Vista"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:1066
+#: video/mrvGLLut3d.cpp:1013
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:1042
+#: video/mrvGLLut3d.cpp:989
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -5317,7 +5317,7 @@ msgstr "Película Quicktime"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:166
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:192
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-98-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:218
-#: gui/mrvColorInfo.cpp:697
+#: gui/mrvColorInfo.cpp:698
 msgid "R"
 msgstr "R"
 
@@ -5367,7 +5367,7 @@ msgstr "Display RGBA"
 msgid "RLE"
 msgstr "RLE"
 
-#: video/mrvGLLut3d.cpp:542
+#: video/mrvGLLut3d.cpp:489
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr "ROLE_SCENE_LINEAR no está definido."
 
@@ -5375,13 +5375,13 @@ msgstr "ROLE_SCENE_LINEAR no está definido."
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:1017
+#: video/mrvGLLut3d.cpp:964
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:986
+#: video/mrvGLLut3d.cpp:933
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -5395,7 +5395,7 @@ msgstr "Ventana de Mensajes en Error"
 msgid "Random Y"
 msgstr "Al Azar en Y"
 
-#: gui/mrvColorInfo.cpp:722 gui/mrvColorInfo.cpp:833
+#: gui/mrvColorInfo.cpp:723 gui/mrvColorInfo.cpp:834
 msgid "Range"
 msgstr "Rango"
 
@@ -6838,7 +6838,7 @@ msgstr "Permutar Ventana de Vectorscopio"
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:7813
+#: gui/mrvImageView.cpp:7810
 msgid "Top"
 msgstr "Superior"
 
@@ -7019,11 +7019,11 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLLut3d.cpp:578
+#: video/mrvGLLut3d.cpp:525
 msgid "Unknown error returned from OCIO processor"
 msgstr "Error desconocido retornado del procesador de OCIo"
 
-#: video/mrvGLLut3d.cpp:674
+#: video/mrvGLLut3d.cpp:621
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
