@@ -3536,6 +3536,23 @@ void ImageView::pixel_processed( const CMedia* img,
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
+    BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
+
+    switch( mode )
+    {
+    case kBlendTraditional:
+    case kBlendTraditionalNonGamma:
+        if ( rgba.a >= 0.00001 )
+        {
+            rgba.r /= rgba.a;
+            rgba.g /= rgba.a;
+            rgba.b /= rgba.a;
+        }
+        break;
+    case kBlendPremult:
+    case kBlendPremultNonGamma:
+        break;
+    }
 
     //
     // To represent pixel properly, we need to do the lut
@@ -3557,23 +3574,6 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.g *= _gain;
     rgba.b *= _gain;
 
-    BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
-
-    switch( mode )
-    {
-    case kBlendTraditional:
-    case kBlendTraditionalNonGamma:
-        if ( rgba.a >= 0.00001 )
-        {
-            rgba.r /= rgba.a;
-            rgba.g /= rgba.a;
-            rgba.b /= rgba.a;
-        }
-        break;
-    case kBlendPremult:
-    case kBlendPremultNonGamma:
-        break;
-    }
 
     if ( mode < kBlendTraditionalNonGamma )
     {
