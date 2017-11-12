@@ -1,3 +1,6 @@
+v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
+	   would incorrectly do a premult of the alpha.
+
 v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
 	   areas, etc.
 	 - Bug fixed off by 1 in mouse coordinates.
@@ -11,9 +14,9 @@ v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
 	 - Added 90 degree rotations to the images.  There's no image
 	   format that sets them.  It is just a user hotkey and menu.
 	   They can be used together with flipping of images.
+	   Also, area selection DOES work properly on rotated images.
 	   However, rotations cannot yet be used with images that
 	   have data_window != display window.
-	   Also, area selection does not work properly on rotated images.
 
 v3.8.9   *** RECALLED DUE TO BUGS IN SELECTION AREAS AND OTHERS ***
 
