@@ -1,5 +1,9 @@
 v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
 	   would incorrectly do a premult of the alpha.
+	 - Cosmetic change.  Gamma button will no longer display long
+	   transform names and will truncate them to the widget size.
+	 - Gamma button will always display the current OCIO view
+	   transform.
 
 v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
 	   areas, etc.
