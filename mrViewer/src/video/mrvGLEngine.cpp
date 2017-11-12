@@ -577,6 +577,7 @@ void GLEngine::evaluate( const CMedia* img,
 {
   QuadList::iterator q = _quads.begin();
   QuadList::iterator e = _quads.end();
+  out = rgb;
   for ( ; q != e; ++q )
   {
       if ( (*q)->image() == img )
