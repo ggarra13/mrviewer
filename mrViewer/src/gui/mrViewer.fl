@@ -3268,8 +3268,6 @@ else
      v->uiGammaInput->value( 1.0f );
      v->uiView->gamma( 1.0f );
      mrv::Preferences::OCIO_View = lbl;
-     mrv::media fg = v->uiView->foreground();
-     if ( !fg ) return;
      std::string view = _(lbl);
 
      std::string s;
@@ -3281,9 +3279,11 @@ else
          fltk::measure( s.c_str(), w, h );
      }
      o->label( strdup( s.c_str() ) );
-     fg->image()->image_damage( CMedia::kDamageAll );
      v->uiView->use_lut(true);
      v->uiLUT->value(true);
+     mrv::media fg = v->uiView->foreground();
+     if ( !fg ) return;
+     fg->image()->image_damage( CMedia::kDamageAll );
      v->uiView->redraw();
   }
 }} selected
