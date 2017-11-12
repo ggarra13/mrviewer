@@ -7120,6 +7120,7 @@ void ImageView::resize_main_window()
   int maxy = miny + maxh;
 
   bool fit = false;
+  std::cerr << w << "x" << h << " > " << maxx << "x" << maxy << std::endl;
 
   if ( w > maxw ) { fit = true; w = maxw; }
   if ( h > maxh ) { fit = true; h = maxh; }
@@ -7134,14 +7135,10 @@ void ImageView::resize_main_window()
 
   if ( w < 640 )  w = 640;
   if ( h < 530 )  h = 530;
-
-  // std::cerr << "pos " << posX << " " << posY << std::endl;
-  // std::cerr << "w " << w << " x " << h << std::endl;
-
+  
+  fltk_main()->resize( posX, posY, w, h );
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
-  fltk_main()->hide();  // needed to show decorations under some window managers
-  fltk_main()->resize( posX, posY, w, h );
   fltk_main()->show();
 #endif
 
