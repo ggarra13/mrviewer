@@ -19,10 +19,10 @@
  * @file   mrvCommandLine.cpp
  * @author gga
  * @date   Mon Aug  6 12:28:19 2007
- * 
+ *
  * @brief  command-line parser for mrViewer
- * 
- * 
+ *
+ *
  */
 
 #include <iostream>
@@ -86,9 +86,9 @@ typedef std::vector<int> IntArray;
 
       std::list<Arg*> args = c.getArgList();
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
-	{
-	  fprintf(stderr, "%s ", (*it)->shortID().c_str() );
-	}
+        {
+          fprintf(stderr, "%s ", (*it)->shortID().c_str() );
+        }
 
       //
       // Output options in shorter format than TCLAP's default
@@ -100,24 +100,24 @@ typedef std::vector<int> IntArray;
       //
       size_t len = 0;
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
-	{
-	   if ( (*it)->longID().size() > len ) len = (*it)->longID().size();
-	}
+        {
+           if ( (*it)->longID().size() > len ) len = (*it)->longID().size();
+        }
 
       //
       // Output the options
       //
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
-	{
-	  const std::string& ID = (*it)->longID();
-	  fprintf( stderr, "  %s", ID.c_str() );
+        {
+          const std::string& ID = (*it)->longID();
+          fprintf( stderr, "  %s", ID.c_str() );
 
-	  for ( size_t i = ID.size(); i < len; ++i )
-	    {
-	      fprintf( stderr, " " );
-	    }
-	  fprintf( stderr, "   %s\n", (*it)->getDescription().c_str() );
-	}
+          for ( size_t i = ID.size(); i < len; ++i )
+            {
+              fprintf( stderr, " " );
+            }
+          fprintf( stderr, "   %s\n", (*it)->getDescription().c_str() );
+        }
 
       fprintf( stderr, "\n" );
       fprintf( stderr, _("Names cannot contain spaces in their paths.\n\n") );
@@ -206,84 +206,84 @@ void parse_directory( const std::string& fileroot,
 
 
       {
-	std::string root;
-	std::string first;
-	std::string number;
+        std::string root;
+        std::string first;
+        std::string number;
         std::string view;
-	std::string ext;
-	int zeros = -1;
+        std::string ext;
+        int zeros = -1;
 
-	std::string seqname;
-	Sequences seqs;
+        std::string seqname;
+        Sequences seqs;
 
-	{
-	  Sequences::const_iterator i = tmpseqs.begin();
-	  Sequences::const_iterator e = tmpseqs.end();
-	  for ( ; i != e; ++i )
-	    {
+        {
+          Sequences::const_iterator i = tmpseqs.begin();
+          Sequences::const_iterator e = tmpseqs.end();
+          for ( ; i != e; ++i )
+            {
 
-	      const char* s = (*i).number.c_str();
-	      int z = 0;
-	      for ( ; *s == '0'; ++s )
-		++z;
+              const char* s = (*i).number.c_str();
+              int z = 0;
+              for ( ; *s == '0'; ++s )
+                ++z;
 
-	      if ( (*i).root != root || (*i).view != view ||
+              if ( (*i).root != root || (*i).view != view ||
                    (*i).ext != ext || ( zeros != z && z != zeros-1 ) )
               {
-		  // New sequence
-		  if ( root != "" )
-		    {
-		      Sequence seq;
-		      seq.root = seqname;
+                  // New sequence
+                  if ( root != "" )
+                    {
+                      Sequence seq;
+                      seq.root = seqname;
                       seq.view = (*i).view;
-		      seq.number = seq.ext = first;
-		      if ( first != number )
-			{
-			  seq.ext = number;
-			}
-		      seqs.push_back( seq );
-		    }
+                      seq.number = seq.ext = first;
+                      if ( first != number )
+                        {
+                          seq.ext = number;
+                        }
+                      seqs.push_back( seq );
+                    }
 
 
-		  root   = (*i).root;
-		  zeros  = z;
-		  number = first = (*i).number;
+                  root   = (*i).root;
+                  zeros  = z;
+                  number = first = (*i).number;
                   view   = (*i).view;
-		  ext    = (*i).ext;
+                  ext    = (*i).ext;
 
 
-		  seqname  = root;
-		  if ( z == 0 )
-		    seqname += "%d";
-		  else
-		    {
-		      seqname += "%0";
-		      char buf[19]; buf[18] = 0;
+                  seqname  = root;
+                  if ( z == 0 )
+                    seqname += "%d";
+                  else
+                    {
+                      seqname += "%0";
+                      char buf[19]; buf[18] = 0;
 #ifdef WIN32
-		      seqname += itoa( int((*i).number.size()), buf, 10 );
+                      seqname += itoa( int((*i).number.size()), buf, 10 );
 #else
-		      sprintf( buf, "%ld", (*i).number.size() );
-		      seqname += buf;
+                      sprintf( buf, "%ld", (*i).number.size() );
+                      seqname += buf;
 #endif
-		      seqname += "d";
-		    }
+                      seqname += "d";
+                    }
                   seqname += view;
-		  seqname += ext;
-		}
-	      else
-		{
-		  zeros  = z;
-		  number = (*i).number;
-		}
-	    }
-	}
+                  seqname += ext;
+                }
+              else
+                {
+                  zeros  = z;
+                  number = (*i).number;
+                }
+            }
+        }
 
-	if ( root != "" )
-	  {
-	    Sequence seq;
-	    seq.root = seqname;
+        if ( root != "" )
+          {
+            Sequence seq;
+            seq.root = seqname;
             seqs.push_back( seq );
-	  }
+          }
 
         {
            Sequences::const_iterator i = seqs.begin();
@@ -295,7 +295,7 @@ void parse_directory( const std::string& fileroot,
                int64_t frameEnd   = kMinFrame;
                std::string file = (*i).root;
                get_sequence_limits( frameStart, frameEnd, file );
-               opts.files.push_back( mrv::LoadInfo( file, frameStart, 
+               opts.files.push_back( mrv::LoadInfo( file, frameStart,
                                                     frameEnd ) );
            }
 
@@ -308,7 +308,7 @@ void parse_directory( const std::string& fileroot,
 // Command-line parser
 //
 void parse_command_line( const int argc, char** argv,
-			 mrv::ViewerUI* ui, 
+                         mrv::ViewerUI* ui,
                          mrv::Options& opts )
 {
   // Some default values
@@ -321,10 +321,10 @@ void parse_command_line( const int argc, char** argv,
   try {
     using namespace TCLAP;
 
-    CmdLine cmd( 
-		_("A professional image and movie viewer\n"
-		  "Examples:\n")
-		 , ' ', mrv::version() );
+    CmdLine cmd(
+                _("A professional image and movie viewer\n"
+                  "Examples:\n")
+                 , ' ', mrv::version() );
 
     //
     // set the output
@@ -336,58 +336,58 @@ void parse_command_line( const int argc, char** argv,
     // The command-line arguments (parsed in order)
     //
     SwitchArg aedl("e", "edl",
-		   _("Turn on EDL when loading multiple images") );
+                   _("Turn on EDL when loading multiple images") );
 
 
-    ValueArg< float > 
-      afps("f", "fps", 
+    ValueArg< float >
+      afps("f", "fps",
            _("Override sequence default fps."), false, opts.fps, "float");
 
-    ValueArg< float > 
-      agamma("g", "gamma", 
-	     _("Override viewer's default gamma."), false, opts.gamma, "float");
+    ValueArg< float >
+      agamma("g", "gamma",
+             _("Override viewer's default gamma."), false, opts.gamma, "float");
 
-    ValueArg< float > 
-      again( "", "gain", 
-	     _("Override viewer's default gain."), false, opts.gain, "float");
+    ValueArg< float >
+      again( "", "gain",
+             _("Override viewer's default gain."), false, opts.gain, "float");
 
-    ValueArg< std::string > 
-    ahostname( "t", N_("host"), 
-	       _("Override viewer's default client hostname."), false, 
-	       opts.host, "string");
+    ValueArg< std::string >
+    ahostname( "t", N_("host"),
+               _("Override viewer's default client hostname."), false,
+               opts.host, "string");
 
-    ValueArg< unsigned short > 
-    aport( N_("p"), N_("port"), 
-	     _("Set viewer's default server/client port."), false, 
-	     opts.port, "string");
+    ValueArg< unsigned short >
+    aport( N_("p"), N_("port"),
+             _("Set viewer's default server/client port."), false,
+             opts.port, "string");
 
-    
-    UnlabeledMultiArg< std::string > 
+
+    UnlabeledMultiArg< std::string >
     afiles(_("files"),
-	   _("Images, sequences or movies to display."), false, "images");
+           _("Images, sequences or movies to display."), false, "images");
 
-    MultiArg< std::string > 
-    aaudio( N_("a"), N_("audio"), 
+    MultiArg< std::string >
+    aaudio( N_("a"), N_("audio"),
             _("Set each movie/sequence default audio."), false, "audio files");
 
-    MultiArg< int > 
-    aoffset( N_("o"), N_("audio_offset"), 
+    MultiArg< int >
+    aoffset( N_("o"), N_("audio_offset"),
              _("Set added audio offset."), false, "offset");
 
-    ValueArg< std::string > 
-    abg( N_("b"), N_("bg"), 
+    ValueArg< std::string >
+    abg( N_("b"), N_("bg"),
          _("Provide a sequence or movie for background."), false, "", "image");
 
 #ifdef USE_STEREO
-    MultiArg< std::string > 
-    astereo( N_("s"), N_("stereo"), 
+    MultiArg< std::string >
+    astereo( N_("s"), N_("stereo"),
             _("Provide two sequences or movies for stereo."), false, "images");
 #endif
 
-    MultiArg< std::string > 
-    asub( "u", N_("sub"), 
-	  _("Set subtitle for movie(s)."), false, "subtitles");
-    
+    MultiArg< std::string >
+    asub( "u", N_("sub"),
+          _("Set subtitle for movie(s)."), false, "subtitles");
+
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(ahostname);
@@ -441,7 +441,7 @@ void parse_command_line( const int argc, char** argv,
     size_t num = stereo.size();
     for ( size_t i = 0; i < num; ++i )
     {
-       files.push_back( stereo[i] ); 
+       files.push_back( stereo[i] );
     }
 
 #endif
@@ -449,14 +449,14 @@ void parse_command_line( const int argc, char** argv,
     const stringArray& subs = asub.getValue();
     if ( subs.size() > files.size() )
       LOG_ERROR( "Too many subtitles for image file(s)." );
-    
+
     const stringArray& audios = aaudio.getValue();
     const IntArray& aoffsets = aoffset.getValue();
 
     if ( audios.size() < aoffsets.size() )
         LOG_ERROR( "Too many audio offsets for fewer audios" );
 
-    
+
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
@@ -467,33 +467,33 @@ void parse_command_line( const int argc, char** argv,
     IntArray::const_iterator oe = aoffsets.end();
     for ( ; i != e; ++i )
       {
-	const std::string& arg = *i;
+        const std::string& arg = *i;
 
-	// Check if string is a range.  if so, change last sequence
-	if ( !opts.files.empty() && (opts.files.back().reel == false) &&
-	     mrv::matches_chars( arg.c_str(), "0123456789-") )
-	  {
-	    stringArray tokens;
-	    mrv::split_string( tokens, arg, "-" );
+        // Check if string is a range.  if so, change last sequence
+        if ( !opts.files.empty() && (opts.files.back().reel == false) &&
+             mrv::matches_chars( arg.c_str(), "0123456789-") )
+          {
+            stringArray tokens;
+            mrv::split_string( tokens, arg, "-" );
 
 
-	    // frame range
-	    opts.files.back().start = atoi( tokens[0].c_str() );
-	    if ( tokens.size() > 1 )
+            // frame range
+            opts.files.back().start = atoi( tokens[0].c_str() );
+            if ( tokens.size() > 1 )
                opts.files.back().end = atoi( tokens[1].c_str() );
-	    continue;
-	  }
+            continue;
+          }
 
 
-	size_t len = arg.size();
-	if ( len > 5 && arg.substr(len - 5, 5) == ".reel" )
-	  {
-	    opts.files.push_back( mrv::LoadInfo(arg) );
-	  }
-	else
-	{
-	    boost::int64_t start = mrv::kMaxFrame, end = mrv::kMinFrame;
-	    std::string fileroot;
+        size_t len = arg.size();
+        if ( len > 5 && arg.substr(len - 5, 5) == ".reel" )
+          {
+            opts.files.push_back( mrv::LoadInfo(arg) );
+          }
+        else
+        {
+            boost::int64_t start = mrv::kMaxFrame, end = mrv::kMinFrame;
+            std::string fileroot;
 
 
             if ( mrv::is_directory( arg.c_str() ) )
@@ -517,50 +517,50 @@ void parse_command_line( const int argc, char** argv,
                         // start and end in case of ILM format
                         if (! mrv::get_sequence_limits( start, end, fileroot ) )
                         {
-                            fileroot = arg; 
+                            fileroot = arg;
                         }
                     }
                 }
 
-		std::string sub;
-		if ( si != se )
-		  {
-		    sub = *si;
-		    ++si;
-		  }
+                std::string sub;
+                if ( si != se )
+                  {
+                    sub = *si;
+                    ++si;
+                  }
 
-		std::string audio;
-		if ( ai != ae )
-		  {
-		    audio = *ai;
-		  }
-		
-		int offset = 0;
-		if ( oi != oe ) {
-		  offset = *oi;
-		  ++oi;
-		}
+                std::string audio;
+                if ( ai != ae )
+                  {
+                    audio = *ai;
+                  }
 
-		 
+                int offset = 0;
+                if ( oi != oe ) {
+                  offset = *oi;
+                  ++oi;
+                }
+
+
                if ( (size_t)(e - i) <= files.size() - normalFiles )
                {
                   // Add audio file to last stereo fileroot
-		 opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
-						       end, start, end,
-						       audio, "", offset,
-						       sub ) );
+                 opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
+                                                       end, start, end,
+                                                       audio, "", offset,
+                                                       sub ) );
                }
                else
                {
-		 // Add audio file to last fileroot
-		 opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-						      end, AV_NOPTS_VALUE,
-						      AV_NOPTS_VALUE,
-						      audio, "", offset,
-						      sub ) );
+                 // Add audio file to last fileroot
+                 opts.files.push_back( mrv::LoadInfo( fileroot, start,
+                                                      end, AV_NOPTS_VALUE,
+                                                      AV_NOPTS_VALUE,
+                                                      audio, "", offset,
+                                                      sub ) );
                }
             }
-	  }
+          }
       }
 
 
@@ -571,13 +571,14 @@ void parse_command_line( const int argc, char** argv,
       exit(1);
     }
 
+
   // Load default preferences
   mrv::Preferences::run(ui);
   //
   // UI command-line overrides
   //
-  
-  
+
+
 
   ui->uiView->gamma( opts.gamma );
   ui->uiGammaInput->value( opts.gamma );
@@ -591,4 +592,3 @@ void parse_command_line( const int argc, char** argv,
 
 
 } // namespace mrv
-

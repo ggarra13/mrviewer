@@ -1,11 +1,20 @@
 v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
-	   would incorrectly do a premult of the alpha.
+	   would incorrectly do a premult of the alpha.  Regression of
+	   v3.9.0.
 	 - Cosmetic change.  Gamma button will no longer display long
 	   transform view names and will truncate them to the widget size.
 	 - Gamma button will always display the current OCIO view
 	   transform.
 	 - Bug fixed alpha display in Area Color Information.  Previously
 	   it would always display it as black.
+	 - Fixed CentOS 7 compatibility by including libstdc++ and
+	   libgcc_s DSOs to the distribution.
+	 - Added an Optional Image Color Space pulldown to the top
+	   toolbar.  It is activated when using ocio and the option
+	   to the toolbar has been selected in the main LUT preference.
+	 - Bug fixed sequences of numbers.ext only, like 00001.exr, 00002.exr,
+	   etc.  Both the command line as well as the file requester now
+	   support them.
 
 v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
 	   areas, etc.
