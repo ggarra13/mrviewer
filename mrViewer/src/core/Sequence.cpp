@@ -19,10 +19,10 @@
  * @file   Sequence.cpp
  * @author gga
  * @date   Sat Jul 21 04:03:15 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <sys/types.h>
@@ -79,14 +79,14 @@ namespace mrv
   bool is_valid_frame( const std::string& framespec )
   {
       if ( framespec.size() > 9 ) return false;
-      
+
       const char* c = framespec.c_str();
       if ( *c == '.' ) ++c;
 
       for ( ; *c != 0; ++c )
       {
           if ( *c == '+' || *c == '-' || (*c >= '0' && *c <= '9') ) continue;
-          
+
           return false;
       }
 
@@ -141,9 +141,9 @@ namespace mrv
               ++idx;
               if ( *c == '-' ) { range_found = true; continue; }
           }
-	if ( *c != '+' && *c >= '0' && *c <= '9' ) continue;
+        if ( *c != '+' && *c >= '0' && *c <= '9' ) continue;
 
-	return false;
+        return false;
       }
 
     framespec = framespec.substr(0, idx);
@@ -156,12 +156,12 @@ namespace mrv
 bool is_valid_movie( const char* ext )
 {
   if ( ext == NULL ) return false;
-  
+
   std::string tmp = ext;
   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-		  (int(*)(int)) tolower);
+                  (int(*)(int)) tolower);
   if ( tmp[0] != '.' ) tmp = '.' + tmp;
-  
+
   if ( tmp == ".3gp"  || tmp == ".asf"   ||
        tmp == ".avc"  || tmp == ".avchd" ||
        tmp == ".avi"  || tmp == ".divx"  ||
@@ -279,7 +279,7 @@ std::string get_short_view( bool left )
         else
             return "R";
     }
-    
+
     if (left)
         return view.substr( 0, idx );
     else
@@ -337,27 +337,27 @@ bool is_valid_view( std::string view )
     return replace_view( view );
 }
 
-  /** 
+  /**
    * Given a filename of a possible sequence, split it into
    * root name, frame string, view, and extension
-   * 
+   *
    * @param root        root name of file sequence
    * @param frame       frame part of file (must be @ or # or %d or a number)
    * @param view        view of image (%v or %V from left or right or L and R )
    * @param ext         extension of file sequence
    * @param file        original filename, potentially part of a sequence.
    * @param change_view change view to %v or %V if left/right or L/R is found.
-   * 
+   *
    * @return true if a sequence, false if not.
    */
   bool split_sequence(
-		      std::string& root,
-		      std::string& frame,
+                      std::string& root,
+                      std::string& frame,
                       std::string& view,
-		      std::string& ext,
-		      const std::string& file,
+                      std::string& ext,
+                      const std::string& file,
                       const bool change_view
-		      )
+                      )
   {
      std::string f = file;
 
@@ -367,7 +367,7 @@ bool is_valid_view( std::string view )
     const char* i = e + f.size() - 1;
     for ( ; i >= e; --i )
       {
-	if ( *i == '/' || *i == '\\' ) break;
+        if ( *i == '/' || *i == '\\' ) break;
       }
 
     size_t len = i - e + 1;
@@ -416,7 +416,7 @@ bool is_valid_view( std::string view )
         {
            if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
                return true;
-           
+
             if ( ! mrv::is_valid_frame( frame ) &&
                  ! mrv::is_valid_frame_spec( frame ) &&
                  mrv::is_valid_view( frame ) )
@@ -446,20 +446,20 @@ bool is_valid_view( std::string view )
     i = e + f.size() - 1;
     for ( ; i >= e; --i )
     {
- 	if ( *i == '/' || *i == '\\' ) break;
-	if ( *i == '.' || ( count > 0 && (*i == '_') ) )
+        if ( *i == '/' || *i == '\\' ) break;
+        if ( *i == '.' || ( count > 0 && (*i == '_') ) )
         {
-	    idx[count] = (int)( i - e );
-	    ++count;
-	    if ( count == 2 ) break;
-	    continue;
+            idx[count] = (int)( i - e );
+            ++count;
+            if ( count == 2 ) break;
+            continue;
         }
 
-	if ( count == 1 && (*i != '@' && *i != '#' && *i != 'd' && 
-			    *i != 'l' && *i != '%' && *i != '-' &&
-			    *i != 'I' && (*i < '0' || *i > '9')) )
-	  break;
-        if ( count == 1 && *i == '-' ) 
+        if ( count == 1 && (*i != '@' && *i != '#' && *i != 'd' &&
+                            *i != 'l' && *i != '%' && *i != '-' &&
+                            *i != 'I' && (*i < '0' || *i > '9')) )
+          break;
+        if ( count == 1 && *i == '-' )
         {
             minus_idx = (int)(i - e);
             minus++;
@@ -476,9 +476,9 @@ bool is_valid_view( std::string view )
 
     if ( count == 2 && minus < 2 )
       {
-	root  = f.substr( 0, idx[1]+1 );
-	frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
-	ext   = f.substr( idx[0], file.size()-idx[0] );
+        root  = f.substr( 0, idx[1]+1 );
+        frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
+        ext   = f.substr( idx[0], file.size()-idx[0] );
 
         bool ok = is_valid_frame( frame );
         if ( ok && !is_valid_movie( ext.c_str() ) )
@@ -486,52 +486,52 @@ bool is_valid_view( std::string view )
             return true;
         }
 
-        
+
         ok = is_valid_frame( ext );
-	if ( ok )
-	{
-	   frame = ext;
-	   ext.clear();
-	}
+        if ( ok )
+        {
+           frame = ext;
+           ext.clear();
+        }
 
         if ( is_valid_movie( ext.c_str() ) )
         {
            if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
                return true;
-           
+
            root = "";
            return false;
         }
 
-	ok = is_valid_frame_spec( frame );
-	return ok;
+        ok = is_valid_frame_spec( frame );
+        return ok;
       }
     else
       {
-	root = f.substr( 0, idx[0]+1 );
-	ext  = f.substr( idx[0]+1, file.size() );
+        root = f.substr( 0, idx[0]+1 );
+        ext  = f.substr( idx[0]+1, file.size() );
 
         if ( is_valid_movie( ext.c_str() ) )
         {
             frame = "";
             return false;
         }
-        
-	bool ok = is_valid_frame_spec( ext );
-	if (ok)
-	{
-	   frame = ext;
-	   ext.clear();
-	   return true;
-	}
 
-	ok = is_valid_frame( ext );
-	if (ok)
-	{
-	   frame = ext;
-	   ext.clear();
-	   return false;
-	}
+        bool ok = is_valid_frame_spec( ext );
+        if (ok)
+        {
+           frame = ext;
+           ext.clear();
+           return true;
+        }
+
+        ok = is_valid_frame( ext );
+        if (ok)
+        {
+           frame = ext;
+           ext.clear();
+           return false;
+        }
 
         //
         // Handle image0001.exr
@@ -551,19 +551,12 @@ bool is_valid_view( std::string view )
                 if ( is_valid_frame_spec( fspec ) )
                 {
                     root  = root.substr( 0, pos );
-                    if ( root.empty() ||
-                         ( pos = root.rfind('/') ) != std::string::npos )
-                    {
-                        // Check if filename is empty, like image: 324.exr
-                        std::string file = root.substr( pos+1, root.size() );
-                        if ( file == "" ) return false;
-                    }
                     frame = fspec;
                     ext   = tmp;
                     return true;
                 }
             }
-        
+
             int count = 0;
             int i = (int)len - 2; // account for period
             const char* c = root.c_str();
@@ -587,7 +580,7 @@ bool is_valid_view( std::string view )
                      ( pos2 != std::string::npos && pos2 > pos ) ) pos = pos2;
                 if ( pos == std::string::npos ||
                      ( pos3 != std::string::npos && pos3 > pos ) ) pos = pos3;
-                
+
                 if ( root.empty() || pos != std::string::npos )
                 {
                     // Check if filename is empty, like image: 324.exr
@@ -595,7 +588,16 @@ bool is_valid_view( std::string view )
                     if ( !root.empty() )
                         file = root.substr( pos+1, root.size() );
                     if ( file.empty() ) {
-                        root = frame = ext = "";
+                        if ( is_valid_frame( frame ) ||
+                             is_valid_frame_spec( frame ) )
+                        {
+                            ext = tmp;
+                            return true;
+                        }
+                        else
+                        {
+                            root = frame = ext = "";
+                        }
                         return false;
                     }
                 }
@@ -604,19 +606,19 @@ bool is_valid_view( std::string view )
             }
         }
 
-	frame = "";
-	return false;
+        frame = "";
+        return false;
       }
   }
 
 
-  bool get_sequence_limits( boost::int64_t& frameStart, 
-			    boost::int64_t& frameEnd,
-			    std::string& fileroot )
+  bool get_sequence_limits( boost::int64_t& frameStart,
+                            boost::int64_t& frameEnd,
+                            std::string& fileroot )
   {
-      frameStart = mrv::kMaxFrame; 
-      frameEnd = mrv::kMinFrame;
-  
+      frameStart = AV_NOPTS_VALUE;
+      frameEnd = AV_NOPTS_VALUE;
+
     // My encoding type
     // Create and install global locale
     std::locale::global(boost::locale::generator().generate(""));
@@ -633,8 +635,8 @@ bool is_valid_view( std::string view )
 
     if ( ( !fs::exists( dir ) ) || ( !fs::is_directory( dir ) ) )
     {
-       LOG_ERROR( _("Directory '") << dir << 
-		  _("' does not exist or no directory") );
+       LOG_ERROR( _("Directory '") << dir <<
+                  _("' does not exist or no directory") );
        return false;
     }
 
@@ -647,40 +649,40 @@ bool is_valid_view( std::string view )
 
          const std::string& range = tokens[ tokens.size()-idx ];
 
-	if ( mrv::matches_chars(range.c_str(), "0123456789-") )
-	  {
-	    stringArray frames;
-	    split( frames, range, '-' );
-	    if ( frames.size() > 1 && !frames[0].empty())
-	      {
-		unsigned digits = (unsigned) frames[0].size();
+        if ( mrv::matches_chars(range.c_str(), "0123456789-") )
+          {
+            stringArray frames;
+            split( frames, range, '-' );
+            if ( frames.size() > 1 && !frames[0].empty())
+              {
+                unsigned digits = (unsigned) frames[0].size();
 
-		frameStart = atoi( frames[0].c_str() );
-		frameEnd   = atoi( frames[1].c_str() );
+                frameStart = atoi( frames[0].c_str() );
+                frameEnd   = atoi( frames[1].c_str() );
 
-		stringArray::iterator i = tokens.begin();
-		stringArray::iterator e = tokens.end();
-		fileroot = tokens[0]; ++i;
-		for ( ; i != e; ++i )
-		  {
-		    fileroot += ".";
-		    if ( *i == range )
-		      {
-			 char buf[64];
+                stringArray::iterator i = tokens.begin();
+                stringArray::iterator e = tokens.end();
+                fileroot = tokens[0]; ++i;
+                for ( ; i != e; ++i )
+                  {
+                    fileroot += ".";
+                    if ( *i == range )
+                      {
+                         char buf[64];
                          const char* pr = PRId64;
                          if ( digits < 10 ) pr = "d";
-			 sprintf( buf, "%%0%d%s", digits, pr );
-			 fileroot += buf;
-		      }
-		    else
-		      {
-			 fileroot += *i;
-		      }
-		  }
+                         sprintf( buf, "%%0%d%s", digits, pr );
+                         fileroot += buf;
+                      }
+                    else
+                      {
+                         fileroot += *i;
+                      }
+                  }
 
-		return true;
-	      }
-	  }
+                return true;
+              }
+          }
       }
 
 
@@ -690,38 +692,39 @@ bool is_valid_view( std::string view )
       return false; // NOT a recognized sequence
     }
 
+
     std::string croot, cview, cframe, cext;
-    frameStart = mrv::kMaxFrame;
     unsigned pad = 1;
 
 
     fs::directory_iterator e; // default constructor yields path iter. end
     for ( fs::directory_iterator i( dir ) ; i != e; ++i )
       {
-	if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
+        if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
 
         std::string tmp = (*i).path().leaf().generic_string();
 
-        
+
         // Do not continue on false return of split_sequence
         if ( ! split_sequence( croot, cframe, cview, cext, tmp ) )
         {
             continue;
         }
 
-	if ( cext != ext || croot != root || cview != view )
+        if ( cext != ext || croot != root || cview != view )
         {
             continue;  // not this sequence
         }
 
-	if ( cframe[0] == '0' && cframe.size() > 1 )
+        if ( cframe[0] == '0' && cframe.size() > 1 )
             pad = (unsigned) cframe.size();
 
-        
-	boost::int64_t f = atoi( cframe.c_str() );
-        
-	if ( f < frameStart || frameStart == AV_NOPTS_VALUE ) frameStart = f;
-	if ( f > frameEnd || frameEnd == AV_NOPTS_VALUE  )   frameEnd   = f;
+
+        boost::int64_t f = atoi( cframe.c_str() );
+
+
+        if ( f < frameStart || frameStart == AV_NOPTS_VALUE ) frameStart = f;
+        if ( f > frameEnd || frameEnd == AV_NOPTS_VALUE  )   frameEnd   = f;
       }
 
     const char* prdigits = PRId64;
@@ -729,23 +732,22 @@ bool is_valid_view( std::string view )
 
     sprintf( buf, "%%0%d%s", pad, prdigits );
 
-    
-    
+
+
     if ( ! split_sequence( root, frame, view, ext, fileroot ) )
         return false;
-
 
     fileroot = root;
     fileroot += view;
     fileroot += buf;
     fileroot += ext;
-    
+
     return true;
   }
 
 
 bool parse_reel( mrv::LoadList& sequences, bool& edl,
-		 const char* reelfile)
+                 const char* reelfile)
   {
      edl = false;
 
@@ -760,7 +762,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
       {
           char* c;
           while ( (c = fgets( buf, 15999, f )) )
-	  {
+          {
               if ( c[0] == '#' ) continue;  // comment line
               while ( *c != 0 && ( *c == ' ' || *c == '\t' ) ) ++c;
               if ( strlen(c) <= 1 ) continue; // empty line
@@ -810,14 +812,14 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   std::getline( is, points );
                   is.str( points );
                   is.clear();
-                  is >> shape->r >> shape->g >> shape->b >> shape->a 
+                  is >> shape->r >> shape->g >> shape->b >> shape->a
                      >> shape->pen_size
                      >> shape->frame;
                   while ( is >> xy.x >> xy.y )
                   {
                       shape->pts.push_back( xy );
                   }
-                  sequences.back().shapes.push_back( 
+                  sequences.back().shapes.push_back(
                   mrv::shape_type_ptr(shape) );
                   continue;
               }
@@ -835,7 +837,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   {
                       shape->pts.push_back( xy );
                   }
-                  sequences.back().shapes.push_back( 
+                  sequences.back().shapes.push_back(
                   mrv::shape_type_ptr(shape) );
                   continue;
               }
@@ -863,7 +865,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
                   GLTextShape* shape;
                   shape = new GLTextShape;
-                
+
                   shape->text( text );
 
                   fltk::Font** fonts;
@@ -874,17 +876,17 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                       if ( font == fonts[i]->name() ) break;
                   }
                   if ( i >= num ) i = 0;
-                  
+
 
                   shape->font( fonts[i] );
-                  is >> font_size >> shape->r >> shape->g >> shape->b 
+                  is >> font_size >> shape->r >> shape->g >> shape->b
                      >> shape->a
                      >> shape->frame;
                   is >> xy.x >> xy.y;
                   shape->size( font_size );
                   shape->pts.clear();
                   shape->pts.push_back( xy );
-                  sequences.back().shapes.push_back( 
+                  sequences.back().shapes.push_back(
                   mrv::shape_type_ptr(shape) );
                   continue;
               }
@@ -901,7 +903,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                       if ( *s == ' ' || *s == '\t' )
                       {
                           range = s + 1;
-                          for ( ; (*s == ' ' || *s == '\t') && s != c; --s ) 
+                          for ( ; (*s == ' ' || *s == '\t') && s != c; --s )
                               *s = 0;
                           break;
                       }
@@ -942,7 +944,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   sequences.push_back( LoadInfo( root, first, last, start, end ) );
               }
 
-	  }
+          }
       }
 
     fclose(f);
@@ -955,8 +957,10 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
   bool is_valid_sequence( const char* filename )
   {
+      if ( strlen(filename) == 0 ) return true;
      std::string root, frame, view, ext;
-     return split_sequence( root, frame, view, ext, filename );
+     bool ok = split_sequence( root, frame, view, ext, filename );
+     return ok;
   }
 
   bool is_directory( const char* dir )
@@ -978,9 +982,9 @@ bool fileroot( std::string& fileroot, const std::string& file,
                const bool change_view )
   {
      std::string root, frame, view, ext;
-     
+
      bool ok = split_sequence( root, frame, view, ext, file, change_view );
-     if ( !ok || root == "" || frame == "" || is_valid_movie( ext.c_str() ) ) 
+     if ( !ok || frame == "" || is_valid_movie( ext.c_str() ) )
      {
         fileroot = file;
         return false;
@@ -1011,4 +1015,3 @@ bool fileroot( std::string& fileroot, const std::string& file,
   }
 
 } // namespace mrv
-
