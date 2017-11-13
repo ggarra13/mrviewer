@@ -1130,9 +1130,10 @@ void exrImage::read_header_attr( const Imf::Header& h,
       {
           const Imf::StringAttribute* attr =
               h.findTypedAttribute<Imf::StringAttribute>( N_("inputColorSpace") );
-          if ( attr )
+          if ( attr && !is_thumbnail() )
           {
               ocio_input_color_space( attr->value() );
+              image_damage( image_damage() | kDamageLut );
           }
       }
 

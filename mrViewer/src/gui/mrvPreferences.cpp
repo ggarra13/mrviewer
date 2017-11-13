@@ -474,6 +474,10 @@ fltk::StyleSet*     newscheme = NULL;
     }
     uiPrefs->uiPrefsUseOcio->value( tmp );
     use_ocio = (bool)tmp;
+
+    ocio.get( "ics_in_toolbar", tmp, 0 );
+    uiPrefs->uiPrefsOcioICSToolbar->value( tmp );
+
     ocio.get( "config", tmpS, "", 2048 );
     uiPrefs->uiPrefsOCIOConfig->text( tmpS );
 
@@ -1132,7 +1136,7 @@ static const char* kCLocale = "C";
                         s = views[i].substr( 0, len );
                         fltk::measure( s.c_str(), w, h );
                     }
-                   
+
                     main->gammaDefaults->label( strdup( s.c_str() ) );
                 }
             }
@@ -1153,6 +1157,61 @@ static const char* kCLocale = "C";
                         "Defaulting to CTL. ") );
         use_ocio = false;
     }
+
+    if ( use_ocio && uiPrefs->uiPrefsOcioICSToolbar->value() )
+    {
+        main->uiFstopGroup->hide();
+        main->uiNormalize->hide();
+        try
+        {
+            OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+            std::vector< std::string > spaces;
+            for(int i = 0; i < config->getNumColorSpaces(); ++i)
+            {
+                std::string csname = config->getColorSpaceNameByIndex(i);
+                spaces.push_back( csname );
+            }
+
+            if ( std::find( spaces.begin(), spaces.end(),
+                            OCIO::ROLE_SCENE_LINEAR ) == spaces.end() )
+            {
+                spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
+            }
+
+            CMedia* img = NULL;
+            mrv::media fg = main->uiView->foreground();
+            if ( fg )
+            {
+                img = fg->image();
+            }
+
+            fltk::PopupMenu* w = main->uiICS;
+            std::sort( spaces.begin(), spaces.end() );
+            for ( size_t i = 0; i < spaces.size(); ++i )
+            {
+                const char* space = spaces[i].c_str();
+                OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
+                w->add( strdup( space ) );
+                w->tooltip( strdup( cs->getDescription() ) );
+                if ( img && img->ocio_input_color_space() == space )
+                {
+                    w->label( strdup(space) );
+                }
+            }
+        }
+        catch( const std::exception& e )
+        {
+            LOG_ERROR( e.what() );
+        }
+        main->uiICS->show();
+    }
+    else
+    {
+        main->uiICS->hide();
+        main->uiFstopGroup->show();
+        main->uiNormalize->show();
+    }
+
     //
     // Handle file requester
     //
@@ -1435,6 +1494,9 @@ static const char* kCLocale = "C";
         fltk::Preferences ocio( view, "ocio" );
         int tmp = uiPrefs->uiPrefsUseOcio->value();
         ocio.set( "use_ocio", tmp );
+
+        tmp = uiPrefs->uiPrefsOcioICSToolbar->value();
+        ocio.set( "ics_in_toolbar", tmp );
 
         ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
 
