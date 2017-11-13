@@ -19,10 +19,10 @@
  * @file   guessImage.cpp
  * @author gga
  * @date   Sat Aug 25 00:55:56 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
@@ -89,12 +89,12 @@ namespace mrv {
       { shmapImage::test, NULL,            shmapImage::get },
       { mrayImage::test,  NULL,            mrayImage::get },
       { pxrzImage::test,  NULL,            pxrzImage::get },
-      { NULL, NULL, NULL }, 
+      { NULL, NULL, NULL },
     };
 
 
-  CMedia* test_image( const char* name, 
-		      boost::uint8_t* datas, int size,
+  CMedia* test_image( const char* name,
+                      boost::uint8_t* datas, int size,
                       const bool is_seq )
   {
     ImageTypes* type = image_filetypes;
@@ -103,20 +103,20 @@ namespace mrv {
           // if ( is_seq && type->test == aviImage::test )
           //     continue;
           if ( type->test )
-	  {
-              if ( type->test( datas, size ) ) 
+          {
+              if ( type->test( datas, size ) )
                   return type->get( name, datas );
               else
                   if ( type->test_filename && type->test_filename( name ) )
                       return type->get( name, datas );
-	  }
+          }
           else
-	  {
+          {
               if ( type->test_filename( name ) )
               {
                   return type->get( name, datas );
               }
-	  }
+          }
       }
     return NULL;
   }
@@ -152,7 +152,7 @@ void verify_stereo_resolution( const CMedia* const left,
     const mrv::Recti& dpw2 = right->display_window();
     if ( dpw1 != dpw2 )
     {
-        LOG_WARNING( "\"" << left->name() << "\"" 
+        LOG_WARNING( "\"" << left->name() << "\""
                      << _( " has different display window than " )
                      << "\"" << right->name() << "\"" );
         LOG_WARNING( dpw1
@@ -227,19 +227,19 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     if (!datas) {
         size = 1024;
         FILE* fp = fltk::fltk_fopen(name, "rb");
-        if (!fp) 
-	{
+        if (!fp)
+        {
             if ( is_seq )
-	    {
+            {
                 LOG_ERROR( _("Image sequence \"") << root
                            << _("\" not found. Name tested ") << name );
-	    }
+            }
             else
-	    {
+            {
                 LOG_ERROR( _("Image \"") << name << _("\" not found.") );
-	    }
+            }
             return NULL;
-	}
+        }
         test_data = read_data = new boost::uint8_t[size + 1];
         read_data[size] = 0; // null-terminate so strstr() works
         size = fread(read_data, 1, size, fp);
@@ -247,21 +247,21 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     }
 
 
-    CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
-				(unsigned int)size, is_seq );
-    if ( image ) 
+    CMedia* image = test_image( name, (boost::uint8_t*)test_data,
+                                (unsigned int)size, is_seq );
+    if ( image )
     {
         image->is_thumbnail( is_thumbnail );
         image->is_left_eye( left );
 
-	if ( is_seq )
-	{
+        if ( is_seq )
+        {
             image->sequence( root.c_str(), frame, lastFrame, false );
-	}
-	else
-	{
+        }
+        else
+        {
             image->filename( name );
-	}
+        }
     }
 
     delete [] read_data;
@@ -270,11 +270,11 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 }
 
   CMedia* CMedia::guess_image( const char* file,
-			       const boost::uint8_t* datas,
-			       const int len,
+                               const boost::uint8_t* datas,
+                               const int len,
                                const bool is_thumbnail,
-			       const int64_t start,
-			       const int64_t end,
+                               const int64_t start,
+                               const int64_t end,
                                const bool avoid_seq )
   {
     int64_t lastFrame = end;
@@ -284,7 +284,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     std::string root = file;
 
 
-     
     bool is_stereo = false;
     bool is_seq = false;
 
@@ -294,7 +293,6 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         is_stereo = true;
     }
 
-    
     if ( start != AV_NOPTS_VALUE ||
          end   != AV_NOPTS_VALUE )
     {
@@ -308,7 +306,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     if ( (root.size() > 4 &&
           ( root.substr( root.size() - 4, root.size()) == ".xml" ||
             root.substr( root.size() - 4, root.size()) == ".XML" ) ) ||
-         ( root.size() > 1 && 
+         ( root.size() > 1 &&
            ( root.substr( root.size() - 1, root.size()) == "~" )) )
         return NULL;
 
