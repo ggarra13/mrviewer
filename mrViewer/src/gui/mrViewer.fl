@@ -158,7 +158,7 @@ v->make_exec_return(true);}
     }
   }
   code {if (!w->exec())
-	return orig;
+        return orig;
 return ctl;} {}
 } 
 
@@ -563,8 +563,7 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class HistogramUI {open
-  } {
+  class HistogramUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(mrv::ViewerUI* main)} {open private
     } {
@@ -670,7 +669,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {1097 630 700 450} resizable
+        xywh {1097 629 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
       } {
@@ -679,7 +678,7 @@ o->label( o->child( o->value() )->label() );}
           xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -693,7 +692,7 @@ o->label( o->child( o->value() )->label() );}
               }
               {fltk::CheckButton} uiPrefsSingleInstance {
                 label {Single Instance}
-                tooltip {When selected, only a single mrViewer instance is allowed.  
+                tooltip {When selected, only a single mrViewer instance is allowed.
 If you try to open several mrViewers with different images, all these images will be sent to the already open mrViewer.}
                 xywh {24 40 20 25} align 8 box UP_BOX value 1
               }
@@ -1049,7 +1048,7 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label {File Requester} open
+            label {File Requester}
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
@@ -1417,7 +1416,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
+            label {3D Luts} open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1465,7 +1464,7 @@ if ( x == Preferences::kLutOnlyCTL )
 if ( x == Preferences::kLutOnlyICC )
     uiRT_CTL->deactivate();
 v->refresh();}
-                tooltip {mrViewer supports either ICC profiles or a CTL script for the render transform (RT) of your images.  This setting prioritizes choosing one over the other. 
+                tooltip {mrViewer supports either ICC profiles or a CTL script for the render transform (RT) of your images.  This setting prioritizes choosing one over the other.
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
@@ -1495,7 +1494,7 @@ If unsure what this means, keep your display and images setting always using the
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {v->refresh();}
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
-Note that large 3D Luts can use quite a lot of memory.  
+Note that large 3D Luts can use quite a lot of memory.
 
 Size     Memory    Max. Error
 32        1/2 Mb     12.5%
@@ -1598,12 +1597,12 @@ uiPrefs->run(v);}
             }
           }
           {fltk::Group} {} {
-            label OCIO
-            xywh {13 22 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
+            label OCIO open
+            xywh {13 22 423 355} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
               label {Input Color Space} open
-              xywh {30 56 375 154} box ROUNDED_BOX
+              xywh {30 90 375 154} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
                 xywh {78 19 270 45}
@@ -1693,6 +1692,11 @@ uiOCIO_float_ics->do_callback();}
                   xywh {205 5 65 25}
                 }
               }
+            }
+            {fltk::CheckButton} uiPrefsOcioICSToolbar {
+              label {OCIO Input Color Space in Toolbar} selected
+              tooltip {Use OCIO Input Color Space in Toolbar instead of a FStop and Normalize buttons.}
+              xywh {115 44 25 25}
             }
           }
           {fltk::Group} {} {
@@ -1796,7 +1800,7 @@ uiODT_CTL_transform->do_callback();}
                   } {
                     {fltk::ValueInput} uiODT_CTL_chromaticities_blue_x {
                       user_data this user_data_type {mrv::PreferencesUI*}
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value(); 
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();
 v->refresh();}
                       tooltip {The Blue CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.15
@@ -3005,8 +3009,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3046,13 +3049,13 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {354 454 640 530} when CHANGED resizable
+        xywh {651 80 640 535} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
-          xywh {0 0 640 530}
+          xywh {0 0 640 535}
         } {
           {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
@@ -3161,33 +3164,61 @@ v->uiLog->uiMain->show();}
               } {}
             }
             {fltk::Group} {} {open
-              xywh {130 5 264 20} color 0x53535300
+              xywh {130 4 275 21} color 0x53535300
             } {
-              {fltk::Group} {} {
-                xywh {0 0 264 20}
+              {fltk::Group} {} {open
+                xywh {0 0 275 21}
               } {
-                {fltk::InvisibleBox} {} {
-                  label Gain
-                  xywh {0 0 28 17} align 32
-                }
-                {fltk::ValueInput} uiGainInput {
+                {fltk::PopupMenu} uiICS {
+                  label {Input Color Space}
                   user_data this user_data_type {mrv::ViewerUI*}
-                  callback {v->uiView->gain( (float) o->value() );
+                  callback {mrv::media fg = v->uiView->foreground();
+if (!fg) return;
+
+CMedia* img = fg->image();
+
+int i = o->value();
+if ( i < 0 || i >= o->children() ) return;
+
+std::string c = o->child( i )->label();
+std::string s = c;
+size_t len = c.size();
+int w = 0, h = 0;
+for ( ; len >= c.size() || w >= o->w(); --len )
+{
+  s = c.substr( 0, len );
+  fltk::measure( s.c_str(), w, h );
+}
+o->label( strdup( s.c_str() ) );
+img->ocio_input_color_space( c );} open
+                  xywh {135 0 140 20}
+                } {}
+                {fltk::Group} {} {
+                  xywh {0 1 135 18} box FLAT_BOX
+                } {
+                  {fltk::InvisibleBox} {} {
+                    label Gain
+                    xywh {0 0 28 17} align 32
+                  }
+                  {fltk::ValueInput} uiGainInput {
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-                  tooltip {Gain image value.  A simple multiplier of the image pixel values.}
-                  xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.01 maximum 1024 step 0.001 value 1
-                  extra_code {o->textsize( 12 );}
-                  class {mrv::ValueInput}
-                }
-                {fltk::Slider} uiGain {
-                  user_data this user_data_type {mrv::ViewerUI*}
-                  callback {v->uiView->gain( (float) o->value() );
+                    tooltip {Gain image value.  A simple multiplier of the image pixel values.}
+                    xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.01 maximum 1024 step 0.001 value 1
+                    extra_code {o->textsize( 12 );}
+                    class {mrv::ValueInput}
+                  }
+                  {fltk::Slider} uiGain {
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
-                  tooltip {Allows you to adjust the gain or exposure of the image.}
-                  xywh {65 0 70 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.015625 maximum 64 value 1 slider_size 10
+                    tooltip {Allows you to adjust the gain or exposure of the image.}
+                    xywh {65 0 70 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.015625 maximum 64 value 1 slider_size 10
+                  }
                 }
-                {fltk::Group} {} {open
-                  xywh {135 0 95 19}
+                {fltk::Group} uiFstopGroup {
+                  xywh {135 1 95 19} hide
                 } {
                   {fltk::Button} {} {
                     label {@<}
@@ -3232,7 +3263,7 @@ Click to toggle between current and normal exposure.}
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {v->uiView->toggle_normalize();}
                   tooltip {Normalize pixel values to remain in [0,1] range.}
-                  xywh {233 0 30 19} type TOGGLE
+                  xywh {233 1 30 19} type TOGGLE hide
                 }
               }
             }
@@ -3250,13 +3281,13 @@ Click to toggle between current and normal exposure.}
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {float g = (float) atof( o->child( o->value() )->label() );
 if ( !is_equal( g, 0.0 ) )
-{	     
+{
    v->uiGamma->value(g);
    v->uiGammaInput->value( g );
    v->uiView->gamma(g);
    v->uiView->use_lut(false);
-   v->uiLUT->value(false);	
-   o->label( _("Gamma") );	
+   v->uiLUT->value(false);
+   o->label( _("Gamma") );
 }
 else
 {
@@ -3286,7 +3317,7 @@ else
      fg->image()->image_damage( CMedia::kDamageAll );
      v->uiView->redraw();
   }
-}} selected
+}}
                     tooltip {Some default gamma settings.}
                     xywh {0 0 50 19} box UP_BOX
                     class {mrv::PopupMenu}
@@ -3310,7 +3341,7 @@ else
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-			       v->uiGamma->value( (float) o->value() );}
+                               v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
@@ -3376,7 +3407,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {open
+          {fltk::Group} uiPixelBar {
             xywh {0 458 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
@@ -3463,7 +3494,7 @@ o->disable_glyph();}
                   label FIT
                   }
               }
-              {fltk::Group} {} {open
+              {fltk::Group} {} {
                 xywh {29 0 605 25}
               } {
                 {fltk::Output} uiCoord {
@@ -4111,6 +4142,6 @@ if ( !ctl.empty() )
     }
   }
   code {if (!w->exec())
-	return orig;
+        return orig;
 return ctl;} {}
 } 
