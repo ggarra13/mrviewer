@@ -3537,12 +3537,11 @@ void ImageView::pixel_processed( const CMedia* img,
     if ( p == kRGBA_Original ) return;
 
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
-
     switch( mode )
     {
     case kBlendTraditional:
     case kBlendTraditionalNonGamma:
-        if ( rgba.a >= 0.00001 )
+        if ( img->has_alpha() )
         {
             rgba.r /= rgba.a;
             rgba.g /= rgba.a;
@@ -3587,17 +3586,20 @@ void ImageView::pixel_processed( const CMedia* img,
         if ( rgba.b >= 0.00001f && isfinite(rgba.b) )
             rgba.b = expf( logf(rgba.b) * one_gamma );
     }
-    
+
     switch( mode )
     {
     case kBlendTraditional:
     case kBlendTraditionalNonGamma:
-        if ( rgba.a >= 0.00001 )
+        if ( img->has_alpha() )
         {
             rgba.r *= rgba.a;
             rgba.g *= rgba.a;
             rgba.b *= rgba.a;
         }
+        break;
+    case kBlendPremult:
+    case kBlendPremultNonGamma:
         break;
     }
 
@@ -7120,7 +7122,6 @@ void ImageView::resize_main_window()
   int maxy = miny + maxh;
 
   bool fit = false;
-  std::cerr << w << "x" << h << " > " << maxx << "x" << maxy << std::endl;
 
   if ( w > maxw ) { fit = true; w = maxw; }
   if ( h > maxh ) { fit = true; h = maxh; }
@@ -7135,7 +7136,7 @@ void ImageView::resize_main_window()
 
   if ( w < 640 )  w = 640;
   if ( h < 530 )  h = 530;
-  
+
   fltk_main()->resize( posX, posY, w, h );
   fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
@@ -7522,6 +7523,27 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       fltk::Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
       if ( uiHistogram->visible() ) uiHistogram->redraw();
     }
+
+  mrv::ViewerUI* uiView = uiMain;
+  
+  CMedia* img = NULL;
+  if ( fg ) img = fg->image();
+  if ( uiMain->uiPrefs->uiPrefsOcioICSToolbar->visible() &&
+       ( img && img->image_damage() & CMedia::kDamageLut ))
+  {
+      int n = uiView->uiICS->children();
+      for ( int i = 0; i < n; ++i )
+      {
+          fltk::Widget* w = uiView->uiICS->child(i);
+          if ( img->ocio_input_color_space() == w->label() )
+          {
+              uiView->uiICS->value(i);
+              break;
+          }
+      }
+      uiView->uiICS->do_callback();
+      uiView->uiICS->redraw();
+  }
 }
 
 void ImageView::update_color_info() const
