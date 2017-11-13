@@ -19,10 +19,10 @@
  * @file   mrvImageBrowser.cpp
  * @author gga
  * @date   Sat Oct 14 11:53:10 2006
- * 
+ *
  * @brief  This class manages an image browser catalogue of all loaded images.
- * 
- * 
+ *
+ *
  */
 
 #include <iostream>
@@ -77,7 +77,7 @@ namespace fs = boost::filesystem;
 
 
 
-namespace 
+namespace
 {
   const char* kModule = "reel";
 
@@ -91,13 +91,13 @@ extern void toggle_background_cb( fltk::Widget* o, mrv::ImageView* v );
 
 extern void open_cb( fltk::Widget* w, mrv::ImageBrowser* b );
 extern void open_single_cb( fltk::Widget* w, mrv::ImageBrowser* b );
-extern void open_clip_xml_metadata_cb( fltk::Widget* o, 
+extern void open_clip_xml_metadata_cb( fltk::Widget* o,
                                        mrv::ImageView* view );
 extern void save_cb( fltk::Widget* o, mrv::ImageView* view );
 extern void save_reel_cb( fltk::Widget* o, mrv::ImageView* view );
 extern void save_snap_cb( fltk::Widget* o, mrv::ImageView* view );
 extern void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view );
-extern void save_clip_xml_metadata_cb( fltk::Widget* o, 
+extern void save_clip_xml_metadata_cb( fltk::Widget* o,
                                        mrv::ImageView* view );
 
 
@@ -154,8 +154,8 @@ namespace {
     using mrv::smpteImage;
 
     fltk::Window* uiMain = b->main()->uiMain;
-    const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2, 
-						 uiMain->y()+uiMain->h()/2);
+    const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2,
+                                                 uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kGammaChart, m.w(), m.h() );
     img->gamma(g);
     img->fetch(1);
@@ -186,10 +186,10 @@ namespace {
     using mrv::smpteImage;
 
     fltk::Window* uiMain = b->main()->uiMain;
-    const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2, 
-						 uiMain->y()+uiMain->h()/2);
-    smpteImage* img = new smpteImage( smpteImage::kLinearGradient, 
-				      m.w(), m.h() );
+    const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2,
+                                                 uiMain->y()+uiMain->h()/2);
+    smpteImage* img = new smpteImage( smpteImage::kLinearGradient,
+                                      m.w(), m.h() );
     img->fetch(1);
     img->default_icc_profile();
     img->default_rendering_transform();
@@ -201,10 +201,10 @@ namespace {
     using mrv::smpteImage;
 
     fltk::Window* uiMain = b->main()->uiMain;
-    const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2, 
-						 uiMain->y()+uiMain->h()/2);
-    smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient, 
-				      m.w(), m.h() );
+    const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2,
+                                                 uiMain->y()+uiMain->h()/2);
+    smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient,
+                                      m.w(), m.h() );
     img->fetch(1);
     img->default_icc_profile();
     img->default_rendering_transform();
@@ -237,9 +237,9 @@ namespace {
     b->add( img );
   }
 
-  /** 
+  /**
    * Callback used to attach a color profile to the current image
-   * 
+   *
    * @param o     ImageBrowser*
    * @param data  unused
    */
@@ -253,7 +253,7 @@ namespace {
   {
      mrv::media fg = b->current_image();
      if ( ! fg ) return;
-     
+
      attach_ctl_script( fg->image() );
   }
 }
@@ -273,32 +273,32 @@ namespace mrv {
     char info[2048];
     if ( dynamic_cast< clonedImage* >( img ) != NULL )
       {
-	sprintf( info, 
-		 _("Cloned Image\n"
-		   "Name: %s\n"
-		   "Date: %s\n"
-		   "Resolution: %dx%d"),
-		 img->name().c_str(),
-		 img->creation_date().c_str(),
-		 img->width(),
-		 img->height()
-		 );
+        sprintf( info,
+                 _("Cloned Image\n"
+                   "Name: %s\n"
+                   "Date: %s\n"
+                   "Resolution: %dx%d"),
+                 img->name().c_str(),
+                 img->creation_date().c_str(),
+                 img->width(),
+                 img->height()
+                 );
       }
     else
       {
-	sprintf( info, 
-		 _("Directory: %s\n"
-		   "Name: %s\n"
-		   "Resolution: %dx%d\n"
-		   "Frames: %" PRId64 "-%" PRId64 " FPS %g"),
-		 img->directory().c_str(),
-		 img->name().c_str(),
-		 img->width(),
-		 img->height(),
-		 img->start_frame(),
-		 img->end_frame(),
+        sprintf( info,
+                 _("Directory: %s\n"
+                   "Name: %s\n"
+                   "Resolution: %dx%d\n"
+                   "Frames: %" PRId64 "-%" PRId64 " FPS %g"),
+                 img->directory().c_str(),
+                 img->name().c_str(),
+                 img->width(),
+                 img->height(),
+                 img->start_frame(),
+                 img->end_frame(),
                  img->fps()
-		 );
+                 );
       }
     copy_label( info );
   }
@@ -307,9 +307,9 @@ Element::~Element()
 {
 }
 
-  /** 
+  /**
    * Constructor
-   * 
+   *
    * @param x window's x position
    * @param y window's y position
    * @param w window's width
@@ -348,7 +348,7 @@ void ImageBrowser::wait_on_threads()
     return uiMain->uiTimeline;
   }
 
-  /** 
+  /**
    * @return current reel selected or NULL
    */
   mrv::Reel ImageBrowser::current_reel() const
@@ -357,12 +357,12 @@ void ImageBrowser::wait_on_threads()
     return _reels.empty()? mrv::Reel() : _reels[ _reel ];
   }
 
-  /** 
+  /**
    * Change to a certain reel
-   * 
+   *
    * @param idx reel index
-   * 
-   * @return new reel or NULL if invalid index 
+   *
+   * @return new reel or NULL if invalid index
    */
   mrv::Reel ImageBrowser::reel( const char* name )
   {
@@ -371,27 +371,27 @@ void ImageBrowser::wait_on_threads()
     unsigned int idx = 0;
     for ( ; i != e; ++i, ++idx )
       {
-	if ( (*i)->name == name ) {
-	   if ( _reel >= 0 )
-	   {
-	      if ( view()->playback() != CMedia::kStopped )
-		 view()->stop();
-	   }
-	   _reel = idx;
-	   change_reel();
-	   return *i;
-	}
+        if ( (*i)->name == name ) {
+           if ( _reel >= 0 )
+           {
+              if ( view()->playback() != CMedia::kStopped )
+                 view()->stop();
+           }
+           _reel = idx;
+           change_reel();
+           return *i;
+        }
       }
     return mrv::Reel();
   }
 
 
-  /** 
+  /**
    * Change to a certain reel
-   * 
+   *
    * @param idx reel index
-   * 
-   * @return new reel or NULL if invalid index 
+   *
+   * @return new reel or NULL if invalid index
    */
   mrv::Reel ImageBrowser::reel( unsigned idx )
   {
@@ -418,7 +418,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    return _reels[ idx ];
 }
 
-  /** 
+  /**
    * @return current image selected or NULL
    */
   mrv::media ImageBrowser::current_image()
@@ -427,7 +427,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
       return view()->foreground();
   }
 
-  /** 
+  /**
    * @return current image selected or NULL
    */
   const mrv::media ImageBrowser::current_image() const
@@ -436,11 +436,11 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
       return view()->foreground();
   }
 
-  /** 
+  /**
    * Create a new reel, giving it a unique name
-   * 
+   *
    * @param name Name of new reel
-   * 
+   *
    * @return new reel created
    */
   mrv::Reel ImageBrowser::new_reel( const char* orig )
@@ -451,15 +451,15 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     int idx = 2;
     for ( ; i != e; ++i )
       {
-	if ( (*i)->name == name )
-	  {
-	    name = orig; name += " #";
-	    char buf[32];
-	    sprintf( buf, "%d", idx );
-	    name += buf;
-	    i = _reels.begin();
-	    ++idx;
-	  }
+        if ( (*i)->name == name )
+          {
+            name = orig; name += " #";
+            char buf[32];
+            sprintf( buf, "%d", idx );
+            name += buf;
+            i = _reels.begin();
+            ++idx;
+          }
       }
 
     mrv::Reel reel( new mrv::Reel_t( name.c_str() ) );
@@ -528,9 +528,9 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 #undef fclose
 #undef fopen
 
-  /** 
+  /**
    * Save current reel to a disk file
-   * 
+   *
    */
   void ImageBrowser::save_reel()
   {
@@ -543,7 +543,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     std::string reelname( file );
     if ( reelname.substr(reelname.size()-5, 5) != ".reel" )
       {
-	reelname += ".reel";
+        reelname += ".reel";
       }
 
     setlocale( LC_NUMERIC, "C" );
@@ -556,28 +556,28 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     }
 
     fprintf( f, _("#\n"
-		  "# mrViewer Reel \"%s\"\n"
-		  "# \n"
-		  "# Created with mrViewer\n"
-		  "#\n\nVersion 2.0\n"),
-	     reel->name.c_str() );
+                  "# mrViewer Reel \"%s\"\n"
+                  "# \n"
+                  "# Created with mrViewer\n"
+                  "#\n\nVersion 2.0\n"),
+             reel->name.c_str() );
 
     mrv::MediaList::iterator i = reel->images.begin();
     mrv::MediaList::iterator e = reel->images.end();
     for ( ; i != e; ++i )
       {
-	const CMedia* img = (*i)->image();
-        
-	fprintf( f, "\"%s\" %" PRId64 " %" PRId64 
-                 " %" PRId64 " %" PRId64 "\n", img->fileroot(), 
-		 img->first_frame(), img->last_frame(),
+        const CMedia* img = (*i)->image();
+
+        fprintf( f, "\"%s\" %" PRId64 " %" PRId64
+                 " %" PRId64 " %" PRId64 "\n", img->fileroot(),
+                 img->first_frame(), img->last_frame(),
                  img->start_frame(), img->end_frame() );
-	if ( img->is_sequence() )
-	  {
-	    if ( img->has_audio() )
+        if ( img->is_sequence() )
+          {
+            if ( img->has_audio() )
                 fprintf( f, "audio: %s\n", img->audio_file().c_str() );
-	  }
-        
+          }
+
         const CMedia* const right = img->right_eye();
 
         if ( img->is_stereo() && right )
@@ -600,10 +600,10 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
                 fprintf( f, "%s\n", cmd.c_str() );
             }
         }
-    
+
       }
 
-    
+
     if ( reel->edl )
        fprintf( f, "EDL\n" );
 
@@ -611,7 +611,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     fclose(f);
 
-    
+
     setlocale( LC_NUMERIC, "" );
 
   }
@@ -629,9 +629,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
    return uiMain->uiEDLWindow->uiEDLGroup;
 }
 
-  /** 
+  /**
    * Remove/Erase current reel
-   * 
+   *
    */
   void ImageBrowser::remove_reel()
   {
@@ -671,7 +671,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     }
 
     if ( _reels.empty() ) new_reel();
-    if ( _reel >= (unsigned int)_reels.size() ) 
+    if ( _reel >= (unsigned int)_reels.size() )
       _reel = (unsigned int)_reels.size() - 1;
 
     _reel_choice->value( _reel );
@@ -679,11 +679,11 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     change_reel();
   }
 
-  /** 
-   * Create a new image browser's fltk::Item (widget line in browser) 
-   * 
+  /**
+   * Create a new image browser's fltk::Item (widget line in browser)
+   *
    * @param m media to create new fltk::Item for
-   * 
+   *
    * @return fltk::Item*
    */
   Element* ImageBrowser::new_item( mrv::media m )
@@ -696,9 +696,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   }
 
 
-  /** 
+  /**
    * Insert a new image into image browser list
-   * 
+   *
    * @param idx where to insert new image
    * @param img image to insert
    */
@@ -804,7 +804,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( reel->images.size() == 1 )
       {
-	value(0); change_image();
+        value(0); change_image();
       }
 
     if ( visible() ) relayout();
@@ -824,9 +824,9 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     const CMedia* img = m->image();
 
     if ( dynamic_cast< const stubImage* >( img ) ||
-	 dynamic_cast< const smpteImage* >( img ) ||
-	 dynamic_cast< const ColorBarsImage* >( img ) ||
-	 dynamic_cast< const slateImage* >( img ) )
+         dynamic_cast< const smpteImage* >( img ) ||
+         dynamic_cast< const ColorBarsImage* >( img ) ||
+         dynamic_cast< const slateImage* >( img ) )
       return m; // no need to add to database
 
 
@@ -842,7 +842,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     const std::string& dir = img->directory();
     for ( unsigned i = 0; i < kNumTempDirs; ++i )
       {
-	if ( dir == kTempDirs[i] ) return m;
+        if ( dir == kTempDirs[i] ) return m;
       }
 
 
@@ -852,9 +852,9 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     return m;
   }
 
-  /** 
+  /**
    * Add a new image at the end of image browser list
-   * 
+   *
    * @param img  image to insert
    */
   mrv::media ImageBrowser::add( CMedia* img )
@@ -866,8 +866,8 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
   }
 
 
-  mrv::media ImageBrowser::add( const char* filename, 
-				const int64_t start, const int64_t end )
+  mrv::media ImageBrowser::add( const char* filename,
+                                const int64_t start, const int64_t end )
   {
     std::string file( filename );
 
@@ -875,17 +875,17 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     // Handle cygwin properly
     if ( strncmp( filename, "/cygdrive/", 10 ) == 0 )
       {
-	file  = filename[10];
-	file += ":/";
-	file += filename + 12;
+        file  = filename[10];
+        file += ":/";
+        file += filename + 12;
       }
 #endif
-    
+
     size_t len = file.size();
     if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
       {
-	load_reel( file.c_str() );
-	return current_image();
+        load_reel( file.c_str() );
+        return current_image();
       }
     else
       {
@@ -893,16 +893,16 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
   }
 
-  /** 
+  /**
    * Remove an image from image browser list
-   * 
+   *
    * @param idx index of image to remove
    */
   void ImageBrowser::remove( int idx )
   {
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
-  
+
     view()->stop();
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
@@ -910,7 +910,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
     delete w;
-    
+
     reel->images[idx]->image()->clear_cache();
 
     mrv::MediaList::iterator i = reel->images.begin();
@@ -940,9 +940,9 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
   }
 
 
-  /** 
+  /**
    * Remove an image from image browser list
-   * 
+   *
    * @param img image to remove
    */
   void ImageBrowser::remove( mrv::media m )
@@ -955,22 +955,22 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::MediaList::iterator i = std::find( reel->images.begin(), end, m );
     if ( i == end )
       {
-	LOG_ERROR( _("Image") << " " << m->image()->filename() 
-		   << _(" not found in reel") );
-	return;
+        LOG_ERROR( _("Image") << " " << m->image()->filename()
+                   << _(" not found in reel") );
+        return;
       }
-  
+
     CMedia::Playback p = view()->playback();
     view()->stop();
 
     if ( view()->background() == m )
       {
-	 view()->bg_reel( -1 );
-	 view()->background( mrv::media() );
+         view()->bg_reel( -1 );
+         view()->background( mrv::media() );
       }
 
     int idx = (int) (i - reel->images.begin());
-    
+
     fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
     delete w;
@@ -1003,9 +1003,9 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
 
 
-  /** 
+  /**
    * Replace current image with a new file.
-   * 
+   *
    * @param r    reel index
    * @param idx  image index in reel
    * @param root root file name ( mray.%l04d.exr )
@@ -1078,9 +1078,9 @@ void ImageBrowser::clear_bg()
 }
 
 
-  /** 
+  /**
    * Change image in image view display to reflect browser's change
-   * 
+   *
    */
   void ImageBrowser::change_reel()
   {
@@ -1117,7 +1117,7 @@ void ImageBrowser::clear_bg()
               Element* nw = new_item( *i );
 
               fltk::Browser::add( nw );
-	 }
+         }
 
          DBG( "Make images contiguous in timeline" );
          // adjust_timeline();
@@ -1176,30 +1176,30 @@ void ImageBrowser::clear_bg()
       }
     else
     {
-	mrv::Reel reel = current_reel();
-	if ( !reel ) return;
+        mrv::Reel reel = current_reel();
+        if ( !reel ) return;
 
-	assert( (unsigned)sel < reel->images.size() );
+        assert( (unsigned)sel < reel->images.size() );
 
-	mrv::media om = v->foreground();
+        mrv::media om = v->foreground();
 
-	int audio_idx = -1;
-	int sub_idx = -1;
+        int audio_idx = -1;
+        int sub_idx = -1;
 
         mrv::Timeline* t = timeline();
 
 
-	mrv::media m;
-	if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
+        mrv::media m;
+        if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
 
         send_reel( reel );
 
-	if ( m != om && m && v )
-	{
-	   DBG( "FG REEL " << _reel );
+        if ( m != om && m && v )
+        {
+           DBG( "FG REEL " << _reel );
 
-	   v->fg_reel( _reel );
-	   v->foreground( m );
+           v->fg_reel( _reel );
+           v->foreground( m );
 
            mrv::EDLGroup* e = edl_group();
            if ( e )
@@ -1211,7 +1211,7 @@ void ImageBrowser::clear_bg()
            adjust_timeline();
 
            send_image( m );
-	}
+        }
         else
         {
            send_image( om );
@@ -1232,40 +1232,40 @@ int ImageBrowser::value() const
 }
 
   void ImageBrowser::change_image(unsigned i)
-  { 
+  {
      // if ( i >= children() ) return;
-     value(i); 
-     change_image(); 
+     value(i);
+     change_image();
   }
 
-  /** 
+  /**
    * Change to last image in image browser
-   * 
+   *
    */
   void ImageBrowser::last_image()
-  { 
+  {
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
     if ( reel->images.empty() ) return;
-    value( (int) reel->images.size()-1 ); 
-    change_image(); 
+    value( (int) reel->images.size()-1 );
+    change_image();
   }
 
-  /** 
+  /**
    * Load a stereo (right) image.
-   * 
+   *
    * @param name name of image
    * @param start first frame to load
    * @param end   last frame to load
-   * 
+   *
    * @return new image
    */
 void ImageBrowser::load_stereo( mrv::media& fg,
                                 const char* name,
-                                const int64_t first, 
+                                const int64_t first,
                                 const int64_t last,
-                                const int64_t start, 
+                                const int64_t start,
                                 const int64_t end )
 {
     CMedia* img;
@@ -1281,12 +1281,12 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     if ( first != AV_NOPTS_VALUE )
       {
-	img->first_frame( first );
+        img->first_frame( first );
       }
 
     if ( last != AV_NOPTS_VALUE )
       {
-	img->last_frame( last );
+        img->last_frame( last );
       }
 
     if ( img->has_video() || img->has_audio() )
@@ -1297,7 +1297,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     {
         img->find_image( img->first_frame() );
     }
-    
+
     img->default_icc_profile();
     img->default_rendering_transform();
 
@@ -1309,7 +1309,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         CMedia* m = fg->image();
 
         verify_stereo_resolution( img, m );
-        
+
         m->right_eye( img );  // Set image as right image of fg
         m->is_stereo( true );
         m->is_left_eye( true );
@@ -1334,20 +1334,20 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     }
   }
 
-  /** 
+  /**
    * Load an image
-   * 
+   *
    * @param name name of image
    * @param start first frame to load
    * @param end   last frame to load
-   * 
+   *
    * @return new image
    */
   mrv::media ImageBrowser::load_image( const char* name,
-				       const int64_t first, 
-				       const int64_t last,
-				       const int64_t start, 
-				       const int64_t end,
+                                       const int64_t first,
+                                       const int64_t last,
+                                       const int64_t start,
+                                       const int64_t end,
                                        const bool avoid_seq )
   {
     mrv::Reel reel = current_reel();
@@ -1355,9 +1355,10 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     if ( first != AV_NOPTS_VALUE ) frame( first );
 
+
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
-        img = CMedia::guess_image( name, NULL, 0, false, 
+        img = CMedia::guess_image( name, NULL, 0, false,
                                    start, end, avoid_seq );
     else
         img = CMedia::guess_image( name, NULL, 0, false,
@@ -1384,7 +1385,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     {
         img->find_image( img->first_frame() );
     }
-    
+
     img->default_icc_profile();
     img->default_rendering_transform();
 
@@ -1397,14 +1398,14 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     send_image( m );
 
     mrv::EDLGroup* e = edl_group();
-    
+
     size_t i = 0;
     for ( i = 0; i < number_of_reels(); ++i )
     {
         if ( e && reel == this->reel( (unsigned int)i ) )
         {
            mrv::media_track* track = e->media_track((int)i);
-	  if ( track && m )
+          if ( track && m )
           {
              track->add( m );
              track->redraw();
@@ -1424,7 +1425,7 @@ void load_sequence( ImageBrowser::LThreadData* data )
         ;;
 }
 
-  /** 
+  /**
    * Open new image, sequence or movie file(s) from a load list.
    * If stereo is on, every two files are treated as stereo pairs.
    * If bg image is not "", load image as background
@@ -1432,7 +1433,7 @@ void load_sequence( ImageBrowser::LThreadData* data )
 void ImageBrowser::load( const mrv::LoadList& files,
                          const bool stereo,
                          std::string bgimage,
-			 const bool progressBar )
+                         const bool progressBar )
 {
     if ( bgimage != "" )
     {
@@ -1447,7 +1448,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
         view()->bg_reel( _reel );
         view()->background( bg );
     }
-    
+
     //
     // Create a progress window
     //
@@ -1465,19 +1466,19 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
     if ( files.size() > 1 && progressBar )
       {
-    	w = new fltk::Window( main->x(), main->y() + main->h()/2, 
-    			      main->w(), 80 );
-    	w->child_of(main);
-    	w->clear_border();
-    	w->begin();
-    	progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
-    	progress->range( 0, double(files.size()) );
-    	progress->align( fltk::ALIGN_TOP );
-    	progress->showtext(true);
-    	w->end();
+        w = new fltk::Window( main->x(), main->y() + main->h()/2,
+                              main->w(), 80 );
+        w->child_of(main);
+        w->clear_border();
+        w->begin();
+        progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
+        progress->range( 0, double(files.size()) );
+        progress->align( fltk::ALIGN_TOP );
+        progress->showtext(true);
+        w->end();
 
-    	w->show();
-    	fltk::check();
+        w->show();
+        fltk::check();
       }
 
     mrv::LoadList::const_iterator s = files.begin();
@@ -1492,89 +1493,89 @@ void ImageBrowser::load( const mrv::LoadList& files,
          const mrv::LoadInfo& load = *i;
 
 
-	if ( w )
-	  {
-	    snprintf( buf, 1024, _("Loading \"%s\""), load.filename.c_str() );
-	    progress->label(buf);
-	    w->redraw();
-	    fltk::check();
-	  }
+        if ( w )
+          {
+            snprintf( buf, 1024, _("Loading \"%s\""), load.filename.c_str() );
+            progress->label(buf);
+            w->redraw();
+            fltk::check();
+          }
 
-	if ( load.reel )
-	  {
-	    load_reel( load.filename.c_str() );
-	  }
-	else
-	  {
+        if ( load.reel )
+          {
+            load_reel( load.filename.c_str() );
+          }
+        else
+          {
 
-	     if ( load.filename == "SMPTE NTSC Color Bars" )
-	     {
-		ntsc_color_bars_cb(NULL, this);
-	     }
-	     else if ( load.filename == "PAL Color Bars" )
-	     {
-		pal_color_bars_cb(NULL, this);
-	     }
-	     else if ( load.filename == "NTSC HDTV Color Bars" )
-	     {
-		ntsc_hdtv_color_bars_cb(NULL, this);
-	     }
-	     else if ( load.filename == "PAL HDTV Color Bars" )
-	     {
-		pal_hdtv_color_bars_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Checkered" )
-	     {
-		checkered_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Linear Gradient" )
-	     {
-		linear_gradient_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Luminance Gradient" )
-	     {
-		luminance_gradient_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Gamma 1.4 Chart" )
-	     {
-		gamma_chart_14_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Gamma 1.8 Chart" )
-	     {
-		gamma_chart_18_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Gamma 2.2 Chart" )
-	     {
-		gamma_chart_22_cb(NULL, this);
-	     }
-	     else if ( load.filename == "Gamma 2.4 Chart" )
-	     {
-		gamma_chart_24_cb(NULL, this);
-	     }
-	     // @todo: slate image cannot be created since it needs info
-	     //        from other image.
-	     else
-	     {
+             if ( load.filename == "SMPTE NTSC Color Bars" )
+             {
+                ntsc_color_bars_cb(NULL, this);
+             }
+             else if ( load.filename == "PAL Color Bars" )
+             {
+                pal_color_bars_cb(NULL, this);
+             }
+             else if ( load.filename == "NTSC HDTV Color Bars" )
+             {
+                ntsc_hdtv_color_bars_cb(NULL, this);
+             }
+             else if ( load.filename == "PAL HDTV Color Bars" )
+             {
+                pal_hdtv_color_bars_cb(NULL, this);
+             }
+             else if ( load.filename == "Checkered" )
+             {
+                checkered_cb(NULL, this);
+             }
+             else if ( load.filename == "Linear Gradient" )
+             {
+                linear_gradient_cb(NULL, this);
+             }
+             else if ( load.filename == "Luminance Gradient" )
+             {
+                luminance_gradient_cb(NULL, this);
+             }
+             else if ( load.filename == "Gamma 1.4 Chart" )
+             {
+                gamma_chart_14_cb(NULL, this);
+             }
+             else if ( load.filename == "Gamma 1.8 Chart" )
+             {
+                gamma_chart_18_cb(NULL, this);
+             }
+             else if ( load.filename == "Gamma 2.2 Chart" )
+             {
+                gamma_chart_22_cb(NULL, this);
+             }
+             else if ( load.filename == "Gamma 2.4 Chart" )
+             {
+                gamma_chart_24_cb(NULL, this);
+             }
+             // @todo: slate image cannot be created since it needs info
+             //        from other image.
+             else
+             {
                  if ( stereo && ( idx % 2 == 0 ) )
                  {
                      load_stereo( fg,
-                                  load.filename.c_str(), 
+                                  load.filename.c_str(),
                                   load.first, load.last,
                                   load.start,
                                   load.end );
                  }
                  else
                  {
-                     fg = load_image( load.filename.c_str(), 
+                     fg = load_image( load.filename.c_str(),
                                       load.first, load.last, load.start,
                                       load.end, (i != s) );
-                     
-                     if (!fg) 
+
+                     if (!fg)
                      {
                          if ( load.filename.find( "ACESclip" ) ==
                               std::string::npos )
-                             LOG_ERROR( _("Could not load '") 
-                                        << load.filename.c_str() 
+                             LOG_ERROR( _("Could not load '")
+                                        << load.filename.c_str()
                                         << N_("'") );
                      }
                      else
@@ -1582,14 +1583,14 @@ void ImageBrowser::load( const mrv::LoadList& files,
                          if ( load.right_filename.size() )
                          {
                              load_stereo( fg,
-                                          load.right_filename.c_str(), 
+                                          load.right_filename.c_str(),
                                           load.first, load.last,
                                           load.start,
                                           load.end );
                          }
                      }
                  }
-	     }
+             }
              if ( fg )
              {
                  CMedia* img = fg->image();
@@ -1601,20 +1602,20 @@ void ImageBrowser::load( const mrv::LoadList& files,
                      view()->refresh_audio_tracks();
                  }
 
-		 if ( load.subtitle != "" )
-		   {
-		     aviImage* avi = dynamic_cast< aviImage* >( fg->image() );
-		     if ( !avi )
-		       {
-			 LOG_ERROR( img->name() <<
-				    ": Subtitles are valid on movie files only."
-				    );
-		       }
-		     else
-		       {
-			 avi->subtitle_file( load.subtitle.c_str() );
-		       }
-		   }
+                 if ( load.subtitle != "" )
+                   {
+                     aviImage* avi = dynamic_cast< aviImage* >( fg->image() );
+                     if ( !avi )
+                       {
+                         LOG_ERROR( img->name() <<
+                                    ": Subtitles are valid on movie files only."
+                                    );
+                       }
+                     else
+                       {
+                         avi->subtitle_file( load.subtitle.c_str() );
+                       }
+                   }
 
                  GLShapeList& shapes = img->shapes();
                  shapes = load.shapes;
@@ -1623,9 +1624,9 @@ void ImageBrowser::load( const mrv::LoadList& files,
                  load_aces_xml( img, xml.c_str() );
 
              }
-	  }
+          }
 
-	if ( w )
+        if ( w )
         {
            progress->step(1);
            fltk::check();
@@ -1634,8 +1635,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
     if ( w )
       {
-	w->hide();
-	w->destroy();
+        w->hide();
+        w->destroy();
         delete w;
         fltk::check();
       }
@@ -1645,33 +1646,33 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
     mrv::Reel reel = current_reel();
     if ( !reel || reel->images.empty() ) return;
-    
+
 
     mrv::media m = current_image();
     if (!m) return;
 
     CMedia* img = m->image();
-    
+
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
       {
-	this->change_image( (unsigned int)reel->images.size()-1 );
-	frame( img->first_frame() );
+        this->change_image( (unsigned int)reel->images.size()-1 );
+        frame( img->first_frame() );
       }
     else
       {
-	// display first image for good EDL playback
-	this->change_image( 0 );
+        // display first image for good EDL playback
+        this->change_image( 0 );
 
-	if ( reel->edl )
-	  {
-	    int64_t offset = timeline()->offset( img );
-	    frame( offset + img->first_frame() );
-	  }
-	else
-	  {
-	    frame( 1 );
-	  }
+        if ( reel->edl )
+          {
+            int64_t offset = timeline()->offset( img );
+            frame( offset + img->first_frame() );
+          }
+        else
+          {
+            frame( 1 );
+          }
       }
 
     view()->fit_image();
@@ -1686,16 +1687,16 @@ void ImageBrowser::load( const mrv::LoadList& files,
     // if ( _load_threads.empty() )
     // {
     //     LThreadData* data = new LThreadData( view() );
-    //     _load_threads.push_back( new boost::thread( 
+    //     _load_threads.push_back( new boost::thread(
     //                              boost::bind( mrv::load_sequence,
     //                                           data ) ) );
     // }
 }
 
 
-  /** 
+  /**
    * Load an image reel
-   * 
+   *
    * @param name name of reel to load
    */
   void ImageBrowser::load_reel( const char* name )
@@ -1711,7 +1712,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
      fs::path path( name );
      std::string reelname = path.leaf().string();
      reelname = reelname.substr(0, reelname.size()-5);
-     
+
      new_reel( reelname.c_str() );
 
      load( sequences, false, "", true );
@@ -1723,11 +1724,11 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
      if ( edl )
      {
-	set_edl();
+        set_edl();
      }
      else
      {
-	clear_edl();
+        clear_edl();
      }
 
   }
@@ -1736,7 +1737,7 @@ void ImageBrowser::load( const stringArray& files,
                          const bool seqs,
                          const bool stereo,
                          const std::string bgfile,
-			 const bool progress )
+                         const bool progress )
   {
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
@@ -1745,22 +1746,22 @@ void ImageBrowser::load( const stringArray& files,
 
     for ( ; i != e; ++i )
       {
-	std::string file = *i;
+        std::string file = *i;
 
-	if ( file.substr(0, 7) == "file://" )
-	  file = file.substr( 7, file.size() );
+        if ( file.substr(0, 7) == "file://" )
+          file = file.substr( 7, file.size() );
 
-	if ( file == "" ) continue;
+        if ( file == "" ) continue;
 
-	size_t len = file.size();
-	if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
-	  {
-	    loadlist.push_back( mrv::LoadInfo( file ) );
-	  }
-	else
-	  {
-	    int64_t start = AV_NOPTS_VALUE;
-	    int64_t end   = AV_NOPTS_VALUE;
+        size_t len = file.size();
+        if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
+          {
+            loadlist.push_back( mrv::LoadInfo( file ) );
+          }
+        else
+          {
+            int64_t start = AV_NOPTS_VALUE;
+            int64_t end   = AV_NOPTS_VALUE;
 
             std::string fileroot = file;
             bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
@@ -1768,19 +1769,19 @@ void ImageBrowser::load( const stringArray& files,
             {
                 mrv::fileroot( fileroot, file );
             }
-	    mrv::get_sequence_limits( start, end, fileroot );
-	    loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
-	  }
+            mrv::get_sequence_limits( start, end, fileroot );
+            loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
+          }
 
-	retname = file;
+        retname = file;
       }
 
     load( loadlist, stereo, bgfile, progress );
   }
 
-  /** 
+  /**
    * Open new image, sequence or movie file(s).
-   * 
+   *
    */
   void ImageBrowser::open()
   {
@@ -1796,7 +1797,7 @@ void ImageBrowser::load( const stringArray& files,
 
      stringArray::const_iterator i = files.begin();
      stringArray::const_iterator e = files.end();
-     
+
      if (files.size() > 1 )
      {
          LOG_ERROR( _("You can load only a single stereo image to combine with current one.") );
@@ -1830,7 +1831,7 @@ void ImageBrowser::load( const stringArray& files,
      if (!fg) return;
 
      load_stereo( fg,
-                  loadlist[0].filename.c_str(), 
+                  loadlist[0].filename.c_str(),
                   loadlist[0].first, loadlist[0].last,
                   loadlist[0].start, loadlist[0].end );
   }
@@ -1853,10 +1854,10 @@ void ImageBrowser::load( const stringArray& files,
       load( opts.files );
   }
 
-  /** 
+  /**
    * Save current image buffer being displayed,
    * giving it a new dummy filename.
-   * 
+   *
    */
   void ImageBrowser::save()
   {
@@ -1867,15 +1868,15 @@ void ImageBrowser::load( const stringArray& files,
     if ( sel < 0 ) return;
 
     mrv::media orig = reel->images[sel];
-    mrv::save_image_file( orig->image(), NULL, 
-                          CMedia::aces_metadata(), 
-                          CMedia::all_layers(), main() ); 
+    mrv::save_image_file( orig->image(), NULL,
+                          CMedia::aces_metadata(),
+                          CMedia::all_layers(), main() );
   }
 
-  /** 
+  /**
    * Save current sequence being displayed,
    * giving it a new dummy filename.
-   * 
+   *
    */
   void ImageBrowser::save_sequence()
   {
@@ -1885,13 +1886,13 @@ void ImageBrowser::load( const stringArray& files,
     int sel = value();
     if ( sel < 0 ) return;
 
-    mrv::save_sequence_file( uiMain );  
+    mrv::save_sequence_file( uiMain );
   }
 
-  /** 
+  /**
    * Clone current image buffer being displayed,
    * giving it a new dummy filename.
-   * 
+   *
    */
   void ImageBrowser::clone_current()
   {
@@ -1912,17 +1913,17 @@ void ImageBrowser::load( const stringArray& files,
     this->insert( sel + 1, clone );
 
     char buf[256];
-    sprintf(buf, "CloneImage \"%s\"", img->fileroot() ); 
+    sprintf(buf, "CloneImage \"%s\"", img->fileroot() );
     view()->send_network( buf );
 
     adjust_timeline();
   }
 
 
-  /** 
+  /**
    * Clone current image buffer (with all its channels) being displayed,
    * giving it a new dummy filename.
-   * 
+   *
    */
   void ImageBrowser::clone_all_current()
   {
@@ -1943,16 +1944,16 @@ void ImageBrowser::load( const stringArray& files,
     this->insert( sel + 1, clone );
 
     char buf[256];
-    sprintf(buf, "CloneImageAll \"%s\"", img->fileroot() ); 
+    sprintf(buf, "CloneImageAll \"%s\"", img->fileroot() );
     view()->send_network( buf );
 
     adjust_timeline();
   }
 
 
-  /** 
+  /**
    * Remove and delete current image buffer being displayed.
-   * 
+   *
    */
   void ImageBrowser::remove_current()
   {
@@ -1975,11 +1976,11 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( sel < (int)reel->images.size() )
       {
-	value( sel );
+        value( sel );
       }
     else
       {
-	value( (int)reel->images.size()-1 );
+        value( (int)reel->images.size()-1 );
       }
 
     change_image();
@@ -1990,9 +1991,9 @@ void ImageBrowser::load( const stringArray& files,
 
 
 
-  /** 
+  /**
    * Change background image to current image
-   * 
+   *
    */
   void ImageBrowser::change_background()
   {
@@ -2010,7 +2011,7 @@ void ImageBrowser::load( const stringArray& files,
     else
     {
        DBG( "BG REEL ************* " << _reel << "  SEL " << sel
-	    << " " << reel->images[sel]->image()->name() );
+            << " " << reel->images[sel]->image()->name() );
        view()->bg_reel( _reel );
        mrv::media bg = reel->images[sel];
        view()->background( bg );
@@ -2019,9 +2020,9 @@ void ImageBrowser::load( const stringArray& files,
   }
 
 
-  /** 
+  /**
    * Refresh an image's postage stamp widget
-   * 
+   *
    * @param img image to refresh
    */
   void ImageBrowser::refresh( mrv::media m )
@@ -2033,9 +2034,9 @@ void ImageBrowser::load( const stringArray& files,
   }
 
 
-  /** 
+  /**
    * Go to next image in browser's list
-   * 
+   *
    */
   void ImageBrowser::next_image()
   {
@@ -2067,10 +2068,10 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( reel->edl )
       {
-	mrv::media m = reel->images[sel];
-	int64_t pos = m->position();
+        mrv::media m = reel->images[sel];
+        int64_t pos = m->position();
         DBG( "seek to " << pos );
-	seek( pos );
+        seek( pos );
       }
     else
     {
@@ -2081,9 +2082,9 @@ void ImageBrowser::load( const stringArray& files,
   }
 
 
-  /** 
+  /**
    * Go to previous image in browser's list
-   * 
+   *
    */
   void ImageBrowser::previous_image()
   {
@@ -2111,21 +2112,21 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( timeline()->edl() )
       {
-	mrv::media m = reel->images[sel];
-	int64_t pos = m->position() + m->duration() - 1;
-	seek( pos );
+        mrv::media m = reel->images[sel];
+        int64_t pos = m->position() + m->duration() - 1;
+        seek( pos );
       }
 
     if ( play ) view()->play(play);
   }
 
 
-  /** 
+  /**
    * Handle a mouse push
-   * 
+   *
    * @param x window's x coordinate
    * @param y window's y coordinate
-   * 
+   *
    * @return 1 if handled, 0 if not
    */
   int ImageBrowser::mousePush( int x, int y )
@@ -2145,65 +2146,65 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( button == 1 )
       {
-	int clicks = fltk::event_clicks();
-	if ( sel < 0 )
-	  {
-	    value( old_sel );
-	  }
-	else
-	  {
-	    if ( sel == old_sel && clicks > 0 )
-	      {
-		fltk::event_clicks(0);
-		uiMain->uiImageInfo->uiMain->show();
-		view()->update_image_info();
+        int clicks = fltk::event_clicks();
+        if ( sel < 0 )
+          {
+            value( old_sel );
+          }
+        else
+          {
+            if ( sel == old_sel && clicks > 0 )
+              {
+                fltk::event_clicks(0);
+                uiMain->uiImageInfo->uiMain->show();
+                view()->update_image_info();
                 //view()->send_network( "MediaInfoWindow 1" );
                 if ( play != CMedia::kStopped )
                     view()->play( play );
-		return ok;
-	      }
+                return ok;
+              }
 
             DBG( "sel " << sel << "  old_sel " << old_sel );
 
-	    if ( sel == old_sel ) return ok;
+            if ( sel == old_sel ) return ok;
 
-	    lastX = x; lastY = y;
-	    change_image();
+            lastX = x; lastY = y;
+            change_image();
 
-	    mrv::media m = current_image();
-	    if ( timeline()->edl() && m )
-	      {
-		int64_t s = m->position();
+            mrv::media m = current_image();
+            if ( timeline()->edl() && m )
+              {
+                int64_t s = m->position();
                  DBG("seek to " << s );
-		seek( s );
-	      }
-	  }
+                seek( s );
+              }
+          }
         if ( play != CMedia::kStopped )
             view()->play( play );
-	return 1;
+        return 1;
       }
     else if ( button == 3 )
       {
 
-	fltk::Menu menu(0,0,0,0);
+        fltk::Menu menu(0,0,0,0);
 
-	mrv::Reel reel = current_reel();
-	if (!reel) {
-	  new_reel("reel");
-	  reel = current_reel();
-	  if ( !reel ) return 0;
-	}
+        mrv::Reel reel = current_reel();
+        if (!reel) {
+          new_reel("reel");
+          reel = current_reel();
+          if ( !reel ) return 0;
+        }
 
-	CMedia* img = NULL;
-	bool valid = false;
+        CMedia* img = NULL;
+        bool valid = false;
 
         menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                   (fltk::Callback*)open_cb, this);
         menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                   (fltk::Callback*)open_single_cb, this);
 
-	if ( sel >= 0 )
-	  {
+        if ( sel >= 0 )
+          {
               change_image();
 
               mrv::media m = reel->images[sel];
@@ -2212,18 +2213,18 @@ void ImageBrowser::load( const stringArray& files,
               menu.add( _("File/Open/Clip XML Metadata"),
                       kOpenClipXMLMetadata.hotkey(),
                         (fltk::Callback*)open_clip_xml_metadata_cb, view() );
-              menu.add( _("File/Save/Movie or Sequence As"), 
+              menu.add( _("File/Save/Movie or Sequence As"),
                       kSaveSequence.hotkey(),
-                        (fltk::Callback*)save_sequence_cb, view() ); 
+                        (fltk::Callback*)save_sequence_cb, view() );
               menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
-                        (fltk::Callback*)save_reel_cb, view() ); 
+                        (fltk::Callback*)save_reel_cb, view() );
               menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
-                        (fltk::Callback*)save_cb, view() ); 
+                        (fltk::Callback*)save_cb, view() );
               menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
-                        (fltk::Callback*)save_snap_cb, view() ); 
+                        (fltk::Callback*)save_snap_cb, view() );
               menu.add( _("File/Save/Clip XML Metadata As"),
                         kSaveClipXMLMetadata.hotkey(),
-                        (fltk::Callback*)save_clip_xml_metadata_cb, view() ); 
+                        (fltk::Callback*)save_clip_xml_metadata_cb, view() );
 
               valid = ( dynamic_cast< slateImage* >( img ) == NULL &&
                         dynamic_cast< smpteImage* >( img ) == NULL &&
@@ -2232,80 +2233,80 @@ void ImageBrowser::load( const stringArray& files,
 
               const stubImage* stub = dynamic_cast< const stubImage* >( img );
               if ( stub )
-	      {
-                  menu.add( _("Image/Clone"), 0, 
+              {
+                  menu.add( _("Image/Clone"), 0,
                             (fltk::Callback*)clone_image_cb, this);
-                  menu.add( _("Image/Clone All Channels"), 0, 
-                            (fltk::Callback*)clone_all_cb, 
+                  menu.add( _("Image/Clone All Channels"), 0,
+                            (fltk::Callback*)clone_all_cb,
                             this, fltk::MENU_DIVIDER);
-	      }
+              }
               else
-	      {
+              {
                   if ( valid )
-		  {
-                      menu.add( _("Image/Clone"), 0, 
-                                (fltk::Callback*)clone_image_cb, this, 
+                  {
+                      menu.add( _("Image/Clone"), 0,
+                                (fltk::Callback*)clone_image_cb, this,
                                 fltk::MENU_DIVIDER);
-		  }
-	      }
+                  }
+              }
 
               if ( valid )
-	      {
-                  menu.add( _("Image/Attach ICC Color Profile"), 0, 
-                            (fltk::Callback*)attach_color_profile_cb, this, 
+              {
+                  menu.add( _("Image/Attach ICC Color Profile"), 0,
+                            (fltk::Callback*)attach_color_profile_cb, this,
                             fltk::MENU_DIVIDER);
-                  menu.add( _("Image/Attach CTL Script"), 0, 
-                            (fltk::Callback*)attach_ctl_script_cb, this, 
+                  menu.add( _("Image/Attach CTL Script"), 0,
+                            (fltk::Callback*)attach_ctl_script_cb, this,
                             fltk::MENU_DIVIDER);
-	      }
+              }
 
-              menu.add( _("Image/Set as Background"), 0, 
-                        (fltk::Callback*)set_as_background_cb, 
+              menu.add( _("Image/Set as Background"), 0,
+                        (fltk::Callback*)set_as_background_cb,
                         (void*) view() );
 
               if ( valid )
-	      {
+              {
                   valid = ( dynamic_cast< stubImage*  >( img ) == NULL );
-	      }
-	  }
+              }
+          }
 
-	menu.add( _("Create/Color Bars/SMPTE NTSC"), 0, 
-		  (fltk::Callback*)ntsc_color_bars_cb, this);
-	menu.add( _("Create/Color Bars/SMPTE NTSC HDTV"), 0, 
-		  (fltk::Callback*)ntsc_hdtv_color_bars_cb, this);
-	menu.add( _("Create/Color Bars/PAL"), 0, 
-		  (fltk::Callback*)pal_color_bars_cb, this);
-	menu.add( _("Create/Color Bars/PAL HDTV"), 0, 
-		  (fltk::Callback*)pal_hdtv_color_bars_cb, this);
-	menu.add( _("Create/Gamma Chart/1.4"), 0, 
-		  (fltk::Callback*)gamma_chart_14_cb, this);
-	menu.add( _("Create/Gamma Chart/1.8"), 0, 
-		  (fltk::Callback*)gamma_chart_18_cb, this);
-	menu.add( _("Create/Gamma Chart/2.2"), 0, 
-		  (fltk::Callback*)gamma_chart_22_cb, this);
-	menu.add( _("Create/Gamma Chart/2.4"), 0, 
-		  (fltk::Callback*)gamma_chart_24_cb, this);
-	menu.add( _("Create/Gradient/Linear"), 0, 
-		  (fltk::Callback*)linear_gradient_cb, this);
-	menu.add( _("Create/Gradient/Luminance"), 0, 
-		  (fltk::Callback*)luminance_gradient_cb, this);
-	menu.add( _("Create/Checkered"), 0, 
-		  (fltk::Callback*)checkered_cb, this);
+        menu.add( _("Create/Color Bars/SMPTE NTSC"), 0,
+                  (fltk::Callback*)ntsc_color_bars_cb, this);
+        menu.add( _("Create/Color Bars/SMPTE NTSC HDTV"), 0,
+                  (fltk::Callback*)ntsc_hdtv_color_bars_cb, this);
+        menu.add( _("Create/Color Bars/PAL"), 0,
+                  (fltk::Callback*)pal_color_bars_cb, this);
+        menu.add( _("Create/Color Bars/PAL HDTV"), 0,
+                  (fltk::Callback*)pal_hdtv_color_bars_cb, this);
+        menu.add( _("Create/Gamma Chart/1.4"), 0,
+                  (fltk::Callback*)gamma_chart_14_cb, this);
+        menu.add( _("Create/Gamma Chart/1.8"), 0,
+                  (fltk::Callback*)gamma_chart_18_cb, this);
+        menu.add( _("Create/Gamma Chart/2.2"), 0,
+                  (fltk::Callback*)gamma_chart_22_cb, this);
+        menu.add( _("Create/Gamma Chart/2.4"), 0,
+                  (fltk::Callback*)gamma_chart_24_cb, this);
+        menu.add( _("Create/Gradient/Linear"), 0,
+                  (fltk::Callback*)linear_gradient_cb, this);
+        menu.add( _("Create/Gradient/Luminance"), 0,
+                  (fltk::Callback*)luminance_gradient_cb, this);
+        menu.add( _("Create/Checkered"), 0,
+                  (fltk::Callback*)checkered_cb, this);
 
-	if (valid)
+        if (valid)
             menu.add( _("Create/Slate"), 0, (fltk::Callback*)slate_cb, this);
 
-	menu.popup( fltk::Rectangle( x, y, 80, 1) );
-	return 1;
+        menu.popup( fltk::Rectangle( x, y, 80, 1) );
+        return 1;
       }
 
     return ok;
   }
 
 
-/** 
+/**
  * Handle a Drag and Drop operation on this widget (or image view)
- * 
+ *
  */
 void ImageBrowser::handle_dnd()
 {
@@ -2313,9 +2314,9 @@ void ImageBrowser::handle_dnd()
 
     stringArray files;
 #if defined(_WIN32) || defined(_WIN64)
-    mrv::split_string( files, filenames, "\n" ); 
+    mrv::split_string( files, filenames, "\n" );
 #else
-    mrv::split_string( files, filenames, "\r\n" ); 
+    mrv::split_string( files, filenames, "\r\n" );
 #endif
 
     std::sort( files.begin(), files.end() );
@@ -2353,7 +2354,7 @@ void ImageBrowser::handle_dnd()
        {
           std::string root, frame, view, ext;
           bool ok = mrv::split_sequence( root, frame, view, ext, file );
-          
+
           bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
 
           if ( load_seq && ok &&
@@ -2404,12 +2405,12 @@ void ImageBrowser::handle_dnd()
     last_image();
   }
 
-  /** 
+  /**
    * Drag an element up and down image list
-   * 
+   *
    * @param x new x position
    * @param y new y position
-   * 
+   *
    * @return 1 if drag was success, 0 if not
    */
   int ImageBrowser::mouseDrag( int x, int y )
@@ -2429,19 +2430,19 @@ void ImageBrowser::handle_dnd()
   {
 
     int oldsel = value();
-    if (oldsel < 0 || !dragging ) 
+    if (oldsel < 0 || !dragging )
       {
-	redraw();
-	return 0;
+        redraw();
+        return 0;
       }
 
     dragging = NULL;
 
     mrv::Reel reel = current_reel();
-    if (!reel) 
+    if (!reel)
       {
-	redraw();
-	return 0;
+        redraw();
+        return 0;
       }
 
     mrv::media m = reel->images[oldsel];
@@ -2460,8 +2461,8 @@ void ImageBrowser::handle_dnd()
     int sel = value();
     if ( sel < 0 || sel == oldsel )
       {
-	redraw();
-	return 0;
+        redraw();
+        return 0;
       }
 
 
@@ -2491,7 +2492,7 @@ void ImageBrowser::handle_dnd()
     //
     // Redraw EDL window
     //
-    
+
     mrv::EDLGroup* eg = edl_group();
     if ( eg )
     {
@@ -2500,8 +2501,8 @@ void ImageBrowser::handle_dnd()
 
     if ( t && t->edl() )
       {
-	int64_t x = t->offset( img );
-	f += x;
+        int64_t x = t->offset( img );
+        f += x;
         DBG( "set frame to " << f );
         frame( f );
       }
@@ -2509,11 +2510,11 @@ void ImageBrowser::handle_dnd()
     return 1;
   }
 
-  /** 
+  /**
    * Event handler for the image browser window
-   * 
+   *
    * @param event fltk::event enumeration
-   * 
+   *
    * @return 1 if handled, 0 if not
    */
   int ImageBrowser::handle( int event )
@@ -2554,10 +2555,10 @@ void ImageBrowser::handle_dnd()
   }
 
 
-  /** 
+  /**
    * Switch to a new frame on one image if in EDL mode or
    * in all images of reel if not.
-   * 
+   *
    * @param tframe new frame in timeline
    */
   void ImageBrowser::seek( const int64_t tframe )
@@ -2578,39 +2579,39 @@ void ImageBrowser::handle_dnd()
     mrv::Reel bgreel = reel_at( view()->bg_reel() );
     if ( reel && reel != bgreel && reel->edl )
     {
-	// Check if we need to change to a new sequence based on frame
-	 mrv::media m = reel->media_at( tframe );
-	 if (! m ) return;
+        // Check if we need to change to a new sequence based on frame
+         mrv::media m = reel->media_at( tframe );
+         if (! m ) return;
 
-	CMedia* img = m->image();
+        CMedia* img = m->image();
         if ( ! img ) return;
 
 
-	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
+        DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 
-	if ( f < t->minimum() )
+        if ( f < t->minimum() )
         {
             f = int64_t(t->maximum() - t->minimum()) - f + 1;
         }
-	else if ( f > t->maximum() )
+        else if ( f > t->maximum() )
         {
-	    f = int64_t(t->minimum() - t->maximum()) + f - 1;
+            f = int64_t(t->minimum() - t->maximum()) + f - 1;
         }
 
 
-	DBG( "seek f: " << f );
+        DBG( "seek f: " << f );
 
         mrv::media fg = view()->foreground();
 
-	if ( m != fg && fg )
-	  {
-	     if ( playback != CMedia::kStopped )
+        if ( m != fg && fg )
+          {
+             if ( playback != CMedia::kStopped )
                  view()->stop();
 
-	     size_t i = reel->index( f );
+             size_t i = reel->index( f );
              img = reel->image_at( f );
-	     f = reel->global_to_local( f );
+             f = reel->global_to_local( f );
              if ( !img ) return;
 
 
@@ -2618,41 +2619,41 @@ void ImageBrowser::handle_dnd()
                  img->stop();
              }
 
-	     img->seek( f );
+             img->seek( f );
 
              if ( (int) i < children() )
                  change_image((int)i);
 
-	  }
-	else
-	  {
-	     f = reel->global_to_local( f );
+          }
+        else
+          {
+             f = reel->global_to_local( f );
 
-	     DBG( "seek f local2: " << f );
+             DBG( "seek f local2: " << f );
 
              if ( ! img->saving() && !img->stopped() ) {
                  img->stop();
              }
 
              img->seek( f );
-	  }
+          }
 
-	mrv::Reel reel = reel_at( view()->bg_reel() );
-	if ( reel )
-	{
-	   mrv::media bg = view()->background();
-	   if ( bg )
-	   {
-	      img = bg->image();
+        mrv::Reel reel = reel_at( view()->bg_reel() );
+        if ( reel )
+        {
+           mrv::media bg = view()->background();
+           if ( bg )
+           {
+              img = bg->image();
 
              if ( ! img->saving() && !img->stopped() ) {
                  img->stop();
              }
 
-	      bg = reel->media_at( tframe );
+              bg = reel->media_at( tframe );
 
-	      if ( bg )
-	      {
+              if ( bg )
+              {
                   f = reel->global_to_local( tframe );
 
                   img = bg->image();
@@ -2662,32 +2663,32 @@ void ImageBrowser::handle_dnd()
                   }
 
                   img->seek( f );
-	      }
-	   }
-	}
+              }
+           }
+        }
 
       }
     else
       {
-	mrv::Reel reel = current_reel();
-	if (!reel) return;
+        mrv::Reel reel = current_reel();
+        if (!reel) return;
 
-	mrv::media fg = view()->foreground();
-	if (!fg) return;
+        mrv::media fg = view()->foreground();
+        if (!fg) return;
 
-	CMedia* img = fg->image();
+        CMedia* img = fg->image();
         if ( ! img->saving() && !img->stopped() ) {
             img->stop();
         }
 
         img->seek( f );
 
-	mrv::media bg = view()->background();
-	if ( bg )
-	{
+        mrv::media bg = view()->background();
+        if ( bg )
+        {
            f = tframe;
 
-	   img = bg->image();
+           img = bg->image();
            if ( bgreel )
                f = bgreel->global_to_local( tframe );
 
@@ -2697,7 +2698,7 @@ void ImageBrowser::handle_dnd()
 
 
            img->seek( f );
-	}
+        }
       }
 
     if ( playback != CMedia::kStopped )
@@ -2708,7 +2709,7 @@ void ImageBrowser::handle_dnd()
 
 
     if ( view()->playback() != CMedia::kStopped )  return;
-    
+
 
 
 
@@ -2718,7 +2719,7 @@ void ImageBrowser::handle_dnd()
   }
 
 
-  /** 
+  /**
    * Switch to a new frame, changing timeline value and uiFrame.
    * This function does not check frame is in range in timeline.
    *
@@ -2816,7 +2817,7 @@ void ImageBrowser::handle_dnd()
      if ( reel->edl ) clear_edl();
      else set_edl();
   }
- 
+
 
   void ImageBrowser::attach_icc_profile()
   {
@@ -2842,7 +2843,7 @@ void ImageBrowser::handle_dnd()
   {
 
      int64_t first, last, f;
-     
+
      mrv::Reel reel = current_reel();
      if ( !reel || reel->images.empty() ) return;
 
@@ -2852,7 +2853,7 @@ void ImageBrowser::handle_dnd()
      if ( i != e )
      {
         (*i)->position( 1 );
-        
+
         for ( j = i, ++i; i != e; j = i, ++i )
         {
            int64_t frame = (*j)->position() + (*j)->duration();
@@ -2861,18 +2862,18 @@ void ImageBrowser::handle_dnd()
         }
      }
 
-     if ( ! reel->edl ) 
+     if ( ! reel->edl )
      {
-	mrv::media m = current_image();
-	if ( ! m ) return;
-	CMedia* img = m->image();
+        mrv::media m = current_image();
+        if ( ! m ) return;
+        CMedia* img = m->image();
 
-	first = img->first_frame();
-	f = img->frame();
-	last  = img->last_frame();
+        first = img->first_frame();
+        f = img->frame();
+        last  = img->last_frame();
 
-	if (f > last ) f = last;
-	if (f < first ) f = first;
+        if (f > last ) f = last;
+        if (f < first ) f = first;
 
       }
     else
@@ -2888,14 +2889,14 @@ void ImageBrowser::handle_dnd()
         mrv::media m = current_image();
         if (! m ) return;
 
-	CMedia* img = m->image();
+        CMedia* img = m->image();
 
-	f = m->position() + img->frame() - img->first_frame();
+        f = m->position() + img->frame() - img->first_frame();
 
-	m = reel->images.back();
-	if (! m ) return;
+        m = reel->images.back();
+        if (! m ) return;
 
-	last = m->position() + m->duration() - 1;
+        last = m->position() + m->duration() - 1;
     }
 
      // for ( int i = 0; i < reel->images.size(); ++i )
@@ -2929,10 +2930,10 @@ void ImageBrowser::handle_dnd()
 
     if ( dragging )
       {
-	fltk::push_matrix();
-	fltk::translate( 0, lastY );
-	dragging->draw();
-	fltk::pop_matrix();
+        fltk::push_matrix();
+        fltk::translate( 0, lastY );
+        dragging->draw();
+        fltk::pop_matrix();
       }
   }
 
