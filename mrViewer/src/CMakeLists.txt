@@ -11,7 +11,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 
 CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp.in
   "${CMAKE_CURRENT_SOURCE_DIR}/gui/mrvVersion.cpp" @ONLY )
-    
+
 #
 # These are the libraries we will depend on
 #
@@ -48,7 +48,7 @@ IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
     ADD_DEFINITIONS( -DDEBUG -D_DEBUG )
 ENDIF()
 
-    
+
   SET(OS_LIBRARIES
     Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
     )
@@ -78,22 +78,22 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/lib/x86_64-linux-gnu/
       /usr/lib
       )
-    # 
-    # ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 ) 
-    # ADD_DEFINITIONS( -DLINUX -msse -fdiagnostics-color=always  ) 
-    #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread ) 
-    # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11) 
-    # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x) 
-    ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11 ) 
+    #
+    # ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 )
+    # ADD_DEFINITIONS( -DLINUX -msse -fdiagnostics-color=always  )
+    #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread )
+    # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11)
+    # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x)
+    ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11 )
     SET(OS_LIBRARIES
-      asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m 
+      asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
       ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
       SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
-    
+
   ENDIF(APPLE)
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
@@ -108,7 +108,7 @@ INCLUDE_DIRECTORIES(
   ./gui
   ./video
   ../../libACESclip/include
-  ${FFMPEG_INCLUDE_DIR} 
+  ${FFMPEG_INCLUDE_DIR}
   ${LIBINTL_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
@@ -135,12 +135,12 @@ FLTK_WRAP_UI( mrViewer
   gui/WandOptionsUI.fl
   gui/EXROptionsUI.fl
   gui/mrvAudioOffset.fl
-  gui/mrvColorAreaUI.fl  
+  gui/mrvColorAreaUI.fl
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvSOPNode.fl
-  gui/mrViewer.fl 
-  gui/keyboard_ui.fl 
+  gui/mrViewer.fl
+  gui/keyboard_ui.fl
   )
 
 
@@ -148,7 +148,7 @@ FLTK_WRAP_UI( mrViewer
 # For windows, this is a non-MFC application
 SET( CMAKE_MFC_FLAG 0 )
 
-SET( SOURCES 
+SET( SOURCES
 
   ${mrViewer_FLTK_UI_SRCS}
 
@@ -168,7 +168,7 @@ SET( SOURCES
   core/mapImage.cpp
   core/mrayImage.cpp
   core/mrvColorBarsImage.cpp
-  core/oiioImage.cpp 
+  core/oiioImage.cpp
   core/pxrzImage.cpp
   core/rawImage.cpp
   core/shmapImage.cpp
@@ -201,10 +201,10 @@ SET( SOURCES
 
   gui/FLU/Flu_Combo_Box.cpp      # needed?
   gui/FLU/Flu_Combo_Tree.cpp     # needed?
-  gui/FLU/flu_file_chooser_pixmaps.cpp  
-  gui/FLU/Flu_Wrap_Group.cpp 
-  gui/FLU/Flu_File_Chooser.cpp  
-  gui/FLU/flu_pixmaps.cpp               
+  gui/FLU/flu_file_chooser_pixmaps.cpp
+  gui/FLU/Flu_Wrap_Group.cpp
+  gui/FLU/Flu_File_Chooser.cpp
+  gui/FLU/flu_pixmaps.cpp
   gui/FLU/GridGroup.cpp
 
   gui/mrvActionWindow.cpp
@@ -254,6 +254,9 @@ SET( SOURCES
   standalone/main.cpp
   )
 
+IF( OIIO_FOUND )
+  SET( SOURCES core/oiioImage.cpp ${SOURCES} )
+ENDIF()
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
@@ -270,7 +273,7 @@ ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
 		    DEPENDS mrViewer
 		    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 		  )
-    
+
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES gui/resource.rc ${SOURCES} )
 ENDIF( WIN32 OR WIN64 OR CYGWIN OR MINGW )
@@ -279,25 +282,25 @@ IF(NOT WIN32)
 
 
 
-  FIND_LIBRARY( Boost_locale_LIBRARY 
+  FIND_LIBRARY( Boost_locale_LIBRARY
     NAMES boost_locale boost_locale_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
-  FIND_LIBRARY( Boost_system_LIBRARY 
+  FIND_LIBRARY( Boost_system_LIBRARY
     NAMES boost_system boost_system_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
     )
-    
 
-  FIND_LIBRARY( Boost_filesystem_LIBRARY 
+
+  FIND_LIBRARY( Boost_filesystem_LIBRARY
     NAMES boost_filesystem boost_filesystem_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
-  FIND_LIBRARY( Boost_thread_LIBRARY 
+  FIND_LIBRARY( Boost_thread_LIBRARY
     NAMES boost_thread boost_thread_vc100_mt_1_47
-    PATHS ${Boost_LIBRARY_DIRS} 
+    PATHS ${Boost_LIBRARY_DIRS}
     )
 
   SET( BOOST_LIBRARIES
@@ -314,9 +317,9 @@ ELSE(NOT WIN32)
   #
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32)
- 
 
-SET( LIBRARIES 
+
+SET( LIBRARIES
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
@@ -384,10 +387,10 @@ FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
   ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.py
   ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/cube2ctl.py
   DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-	
+
 IF(UNIX)
 	SET(EXE_DIR /usr/local/bin )
-	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh 
+	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
 	  DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF(UNIX)
 
@@ -402,7 +405,7 @@ FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt 
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt
 	  ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE.txt
 	  DESTINATION ${CMAKE_BINARY_DIR}/.. )
 
@@ -452,15 +455,15 @@ FOREACH( lang ${LANGUAGES} )
  SET( _absFile "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" )
 
   ADD_CUSTOM_COMMAND( OUTPUT "${_moFile}"
-    COMMAND msgmerge --quiet --update --backup=none 
-    "${_absFile}" "${_absPotFile}"  
+    COMMAND msgmerge --quiet --update --backup=none
+    "${_absFile}" "${_absPotFile}"
     COMMAND msgfmt -v "${_absFile}" -o "${_moFile}"
     DEPENDS ${_absFile} ${_absPotFile}
     )
 
 ENDFOREACH( lang )
 
-ADD_CUSTOM_TARGET( 
+ADD_CUSTOM_TARGET(
   "translations" ALL
   DEPENDS ${output_files} ${PROJECT_NAME}
   )
@@ -474,23 +477,23 @@ IF(WIN32)
   # There is a bug in NSI that does not handle full unix paths properly. Make
   # sure there is at least one SET of four (4) backlasshes.
   SET(CPACK_NSIS_MODIFY_PATH ON)
-  
+
   SET(CPACK_GENERATOR ZIP NSIS )
 
   #  SET(CMAKE_INSTALL_DEBUG_LIBRARIES true)
-  
-  
+
+
   SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
   SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
-    
+
   if (CMAKE_BUILD_ARCH EQUAL 32)
-    
+
     SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES" )
-    
+
   elseif (CMAKE_BUILD_ARCH EQUAL 64)
-    
+
     SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64" )
-    
+
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
   SET( CPACK_NSIS_DISPLAY_NAME "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
@@ -503,7 +506,7 @@ IF(WIN32)
 
   INCLUDE( CMakeRegistry.cmake )
 
-  
+
 
 ELSEIF (UNIX)
 
@@ -518,69 +521,69 @@ ELSEIF (UNIX)
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
       "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" 
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop"
       DESTINATION ${MRV_DESKTOP_DIR})
-    
 
-    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer.png 
-            DESTINATION ${MRV_PIXMAPS_DIR})
+
+    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer.png
+	    DESTINATION ${MRV_PIXMAPS_DIR})
 
 
     SET(CPACK_GENERATOR DEB TGZ RPM )
 
     # SET the installation directory.
-    
+
     SET(CPACK_SET_DESTDIR ON) # Needed
     SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
 
     # SET Debian options.
-    
+
     # Configure install/uninstall scripts
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
-        @ONLY)
+	${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
+	${PROJECT_BINARY_DIR}/etc/Linux/postinst
+	@ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
-        @ONLY)  
+	${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
+	${PROJECT_BINARY_DIR}/etc/Linux/postrm
+	@ONLY)
 
     SET(CPACK_DEBIAN_PACKAGE_NAME mrviewer)
     SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Gonzalo Garramuño <ggarra13@gmail.com>")
 
     SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
-        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
-        ${PROJECT_BINARY_DIR}/etc/Linux/postrm)
+	${PROJECT_BINARY_DIR}/etc/Linux/postinst
+	${PROJECT_BINARY_DIR}/etc/Linux/postrm)
 
       # SET RPM options.
-    
+
     # Configure install/uninstall scripts
 
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/install.sh
-        @ONLY)
+	${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
+	${PROJECT_BINARY_DIR}/etc/Linux/install.sh
+	@ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
-        @ONLY)
+	${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
+	${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
+	@ONLY)
 
-    
+
     SET(CPACK_RPM_PACKAGE_NAME mrViewer)
     SET(CPACK_RPM_PACKAGE_RELOCATABLE ON)
     SET(CPACK_RPM_PACKAGE_RELEASE 2 )
     # SET(CPACK_RPM_PACKAGE_DEBUG 1 )
 
     SET(
-        CPACK_RPM_POST_INSTALL_SCRIPT_FILE
-        ${PROJECT_BINARY_DIR}/etc/Linux/install.sh)
+	CPACK_RPM_POST_INSTALL_SCRIPT_FILE
+	${PROJECT_BINARY_DIR}/etc/Linux/install.sh)
     SET(
-        CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
-        ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
-      
+	CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
+	${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
+
       set(CPACK_RPM_SPEC_MORE_DEFINE "%define ignore \#")
       set(CPACK_RPM_USER_FILELIST "%ignore /" "%ignore /usr" "%ignore /usr/bin" "%ignore /usr/local" "%ignore /usr/share" "%ignore /usr/share/applications" "%ignore /usr/share/doc" "%ignore /usr/share/icons" "%ignore /usr/share/icons/hicolor" "%ignore /usr/share/icons/hicolor/32x32" "%ignore /usr/share/icons/hicolor/32x32/apps")
-      
+
 ENDIF(WIN32)
 
   SET(CPACK_PACKAGE_NAME ${PROJECT_NAME})
@@ -603,10 +606,10 @@ SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../LICENSE.txt)
 #
 # Print out some status to verify configuration
 #
-MESSAGE( STATUS 
+MESSAGE( STATUS
   "-------------------------------------------------------------" )
 MESSAGE( STATUS "Summary for mrViewer:" )
-MESSAGE( STATUS 
+MESSAGE( STATUS
   "-------------------------------------------------------------" )
 
 MESSAGE( STATUS "FLTK2:         ${FLTK2_FOUND} ${FLTK2_VERSION}" )
@@ -724,9 +727,9 @@ include(CPack)
 # 		   DEPENDS ${PROJECT_NAME}
 # 		   )
 
-		   
+
 ADD_CUSTOM_TARGET( bundle
-		   COMMAND "${CMAKE_CPACK_COMMAND}" 
+		   COMMAND "${CMAKE_CPACK_COMMAND}"
   		   	   "-C" "$<CONFIGURATION>"
 			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
 			   COMMENT "Running CPack. Please wait..."
@@ -740,4 +743,3 @@ IF (WIN32)
 		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
    		      )
 ENDIF( WIN32 )
-
