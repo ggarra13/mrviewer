@@ -9,10 +9,8 @@ libGLX\.so
 libX.*
 .*nvidia.*
 libpthread.*
-libstdc\+\+.*
 libresolv.*
 libm\.so
-libgcc_s.*
 libc\.so.*
 librt.*
 libdl.*
