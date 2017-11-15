@@ -39,7 +39,8 @@ class FL_API PopupMenu : public fltk::PopupMenu {
 public:
     PopupMenu(int,int,int,int,const char* =0);
 
-  void disable_glyph() { _enable_glyph = false; }
+    // Undo the overrides of stuff from Group:
+    void disable_glyph() { _enable_glyph = false; }
 
 protected:
   void draw();
