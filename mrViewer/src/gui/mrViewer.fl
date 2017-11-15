@@ -1601,7 +1601,7 @@ uiPrefs->run(v);}
             xywh {13 22 423 355} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
-              label {Input Color Space} open
+              label {Input Color Space}
               xywh {30 90 375 154} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
@@ -1696,7 +1696,7 @@ uiOCIO_float_ics->do_callback();}
             {fltk::CheckButton} uiPrefsOcioICSToolbar {
               label {OCIO Input Color Space in Toolbar} selected
               tooltip {Use OCIO Input Color Space in Toolbar instead of a FStop and Normalize buttons.}
-              xywh {115 44 25 25}
+              xywh {24 44 25 25}
             }
           }
           {fltk::Group} {} {
@@ -3181,17 +3181,10 @@ int i = o->value();
 if ( i < 0 || i >= o->children() ) return;
 
 std::string c = o->child( i )->label();
-std::string s = c;
-size_t len = c.size();
-int w = 0, h = 0;
-for ( ; len >= c.size() || w >= o->w(); --len )
-{
-  s = c.substr( 0, len );
-  fltk::measure( s.c_str(), w, h );
-}
-o->label( strdup( s.c_str() ) );
+o->label( strdup( c.c_str() ) );
 img->ocio_input_color_space( c );} open
                   xywh {135 0 140 20}
+                  class {mrv::PopupMenu}
                 } {}
                 {fltk::Group} {} {
                   xywh {0 1 135 18} box FLAT_BOX
@@ -3287,7 +3280,7 @@ if ( !is_equal( g, 0.0 ) )
    v->uiView->gamma(g);
    v->uiView->use_lut(false);
    v->uiLUT->value(false);
-   o->label( _("Gamma") );
+   o->label( strdup( _("Gamma") ) );
 }
 else
 {
@@ -3301,15 +3294,7 @@ else
      mrv::Preferences::OCIO_View = lbl;
      std::string view = _(lbl);
 
-     std::string s;
-     size_t len = view.size();
-     int w = 0, h = 0;
-     for ( ; len >= view.size() || w >= o->w(); --len )
-     {
-         s = view.substr( 0, len );
-         fltk::measure( s.c_str(), w, h );
-     }
-     o->label( strdup( s.c_str() ) );
+     o->label( strdup( view.c_str() ) );
      v->uiView->use_lut(true);
      v->uiLUT->value(true);
      mrv::media fg = v->uiView->foreground();
