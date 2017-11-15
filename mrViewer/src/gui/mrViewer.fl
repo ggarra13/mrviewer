@@ -1598,7 +1598,7 @@ uiPrefs->run(v);}
           }
           {fltk::Group} {} {
             label OCIO open
-            xywh {13 22 423 355} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
               label {Input Color Space}
@@ -1694,7 +1694,7 @@ uiOCIO_float_ics->do_callback();}
               }
             }
             {fltk::CheckButton} uiPrefsOcioICSToolbar {
-              label {OCIO Input Color Space in Toolbar} selected
+              label {OCIO Input Color Space in Toolbar}
               tooltip {Use OCIO Input Color Space in Toolbar instead of a FStop and Normalize buttons.}
               xywh {24 44 25 25}
             }
@@ -3009,7 +3009,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3049,7 +3050,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {651 80 640 535} when CHANGED resizable
+        xywh {651 136 640 535} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -3151,15 +3152,15 @@ v->uiLog->uiMain->show();}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {30 5 90 20} color 0x53535300
             } {
               {fltk::PopupMenu} uiColorChannel {
                 label {(no image)}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( o->get_item() );} open
+                callback {v->uiView->channel( o->get_item() );} open selected
                 tooltip {Allows you to select different image channels or layers.}
-                xywh {0 0 90 19} type normal
+                xywh {0 0 90 19} type normal align 80
                 class {mrv::PopupMenu}
               } {}
             }
@@ -3186,12 +3187,12 @@ img->ocio_input_color_space( c );} open
                   xywh {135 0 140 20}
                   class {mrv::PopupMenu}
                 } {}
-                {fltk::Group} {} {
+                {fltk::Group} {} {open
                   xywh {0 1 135 18} box FLAT_BOX
                 } {
                   {fltk::InvisibleBox} {} {
                     label Gain
-                    xywh {0 0 28 17} align 32
+                    xywh {0 0 28 17} align 96
                   }
                   {fltk::ValueInput} uiGainInput {
                     user_data this user_data_type {mrv::ViewerUI*}
