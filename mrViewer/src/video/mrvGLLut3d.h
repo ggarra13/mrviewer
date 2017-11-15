@@ -146,8 +146,8 @@ namespace mrv {
     void icc_cmm_error( const char* prefix,
 			const icStatusCMM& status );
 
-    // Returns size of lut with 4 channels
-    unsigned lut_size() const { return 4 * _lutN * _lutN * _lutN; }
+    // Returns size of lut with 3 or 4 channels
+    unsigned lut_size() const { return _channels * _lutN * _lutN * _lutN; }
 
     void init_pixel_values( Imf::Array< float >& pixelValues );
 
@@ -192,6 +192,7 @@ namespace mrv {
       
     protected:
       GLuint texId;                          //!< The lut opengl texture index
+      unsigned  short  _channels;
       unsigned         _lutN;                //!< Size of lut (one axis)
       Imf::Array<float> lut;                  //!< The lut data
       bool _inited;
