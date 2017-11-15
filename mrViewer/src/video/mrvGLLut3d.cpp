@@ -151,6 +151,45 @@ using namespace Imath;
 
 V3f
 lookup3D
+    (const V3f table[],
+     const int size,
+     const V3f &p)
+{
+    int Max = size - 1;
+    float r = (clamp (p.x, 0.0f, 1.0f) ) * (float) Max;
+
+    int i, i1;
+    float u, u1;
+    indicesAndWeights (r, Max, i, i1, u, u1);
+
+    float s = (clamp (p.y, 0.0f, 1.0f) ) * (float) Max;
+
+    int j, j1;
+    float v, v1;
+    indicesAndWeights (s, Max, j, j1, v, v1);
+
+    float t = (clamp (p.z, 0.0f, 1.0f) ) * (float) Max;
+
+    int k, k1;
+    float w, w1;
+    indicesAndWeights (t, Max, k, k1, w, w1);
+
+    const V3f &a = table[(k  * size + j ) * size + i ];
+    const V3f &b = table[(k1 * size + j ) * size + i ];
+    const V3f &c = table[(k  * size + j1) * size + i ];
+    const V3f &d = table[(k1 * size + j1) * size + i ];
+    const V3f &e = table[(k  * size + j ) * size + i1];
+    const V3f &f = table[(k1 * size + j ) * size + i1];
+    const V3f &g = table[(k  * size + j1) * size + i1];
+    const V3f &h = table[(k1 * size + j1) * size + i1];
+        
+    V3f out3( w1 * (v1 * (u1 * a + u * b) + v * (u1 * c + u * d)) +
+              w  * (v1 * (u1 * e + u * f) + v * (u1 * g + u * h)) );
+    return out3;
+}
+
+V3f
+lookup3D
     (const V4f table[],
      const int size,
      const V3f &p)
@@ -174,6 +213,7 @@ lookup3D
     float w, w1;
     indicesAndWeights (t, Max, k, k1, w, w1);
 
+    
     const V4f &a = table[(k  * size + j ) * size + i ];
     const V4f &b = table[(k1 * size + j ) * size + i ];
     const V4f &c = table[(k  * size + j1) * size + i ];
@@ -185,22 +225,7 @@ lookup3D
 
     V4f out4( w1 * (v1 * (u1 * a + u * b) + v * (u1 * c + u * d)) +
               w  * (v1 * (u1 * e + u * f) + v * (u1 * g + u * h)) );
-
     return V3f( out4.x, out4.y, out4.z );
-
-    /*
-    V3f out(
-    u1 * (v1 * (w1 * a.x + w * b.x) + v * (w1 * c.x + w * d.x)) +
-    u  * (v1 * (w1 * e.x + w * f.x) + v * (w1 * g.x + w * h.x)),
-
-    u1 * (v1 * (w1 * a.y + w * b.y) + v * (w1 * c.y + w * d.y)) +
-    u  * (v1 * (w1 * e.y + w * f.y) + v * (w1 * g.y + w * h.y)),
-
-    u1 * (v1 * (w1 * a.z + w * b.z) + v * (w1 * c.z + w * d.z)) +
-    u  * (v1 * (w1 * e.z + w * f.z) + v * (w1 * g.z + w * h.z))
-    );
-    return out;
-    */
 }
 
   unsigned GLLut3d::NUM_STOPS = 8;
@@ -214,6 +239,7 @@ lookup3D
     lutT( 0 ),
     lutF( 1 ),
     texId( 0 ),
+    _channels( 4 ),
     _lutN( N ),
     _inited( false )
   {
@@ -227,6 +253,7 @@ lookup3D
     lutT( b.lutT ),
     lutF( b.lutF ),
     texId( b.texId ),
+    _channels( b._channels ),
     _lutN( b._lutN ),
     _inited( b._inited )
   {
@@ -328,14 +355,28 @@ lookup3D
       glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, gl_clamp );
       glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, gl_clamp );
 
-      glTexImage3D( GL_TEXTURE_3D,
-                    0,			// level
-                    GL_RGBA32F,           // internal format
-                    _lutN, _lutN, _lutN,	// width, height, depth
-                    0,			// border
-                    GL_RGBA,		// format
-                    GL_FLOAT,	// type
-                    (char *) &lut[0] );
+      if ( _channels == 3 )
+      {
+          glTexImage3D( GL_TEXTURE_3D,
+                        0,			// level
+                        GL_RGB32F_ARB,           // internal format
+                        _lutN, _lutN, _lutN,	// width, height, depth
+                        0,			// border
+                        GL_RGB,		// format
+                        GL_FLOAT,	// type
+                        (char *) &lut[0] );
+      }
+      else
+      {
+          glTexImage3D( GL_TEXTURE_3D,
+                        0,			// level
+                        GL_RGBA32F_ARB,           // internal format
+                        _lutN, _lutN, _lutN,	// width, height, depth
+                        0,			// border
+                        GL_RGBA,		// format
+                        GL_FLOAT,	// type
+                        (char *) &lut[0] );
+      }
   }
 
 
@@ -352,7 +393,10 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     out.z = lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset, 
                                               lutMin, lutMax ) );
 
-    out = lookup3D( (V4f*)(&lut[0]), _lutN, out );
+    if (_channels == 3 )
+        out = lookup3D( (V3f*)(&lut[0]), _lutN, out );
+    else
+        out = lookup3D( (V4f*)(&lut[0]), _lutN, out );
 
     out.x = expf( out.x );
     out.y = expf( out.y );
@@ -404,7 +448,7 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
     float logLutMin = logf (lutMin);
     float logLutMax = logf (lutMax);
 
-    lutM = 1.0 / (logLutMax - logLutMin);
+    lutM = 1.0f / (logLutMax - logLutMin);
     lutT = -lutM * logLutMin;
 
     for (size_t ib = 0; ib < _lutN; ++ib)
@@ -422,11 +466,13 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
                   float r = float(ir) / float(_lutN - 1.0);
                   float R = expf ((r - lutT) / lutM);
 
-                  size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * 4;
+                  size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * _channels;
                   pixelValues[i + 0] = R;
                   pixelValues[i + 1] = G;
                   pixelValues[i + 2] = B;
-                  pixelValues[i + 3] = 1.0f;
+                  if ( _channels == 4 ) {
+                      pixelValues[i + 3] = 1.0f;
+                  }
 	      }
 	  }
     }
@@ -461,6 +507,8 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     //
       if ( !_inited )
       {
+          _channels = 3;
+          
           //
           // Init lut table to 0
           //
@@ -498,9 +546,9 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
           
           OCIO::PackedImageDesc img(&lut[0],
-                                    /* width */ lut_size()/4,
+                                    /* width */ lut_size()/_channels,
                                     /*height*/ 1,
-                                    /*channels*/ 4);
+                                    /*channels*/ _channels);
           processor->apply( img );
           
 
@@ -555,7 +603,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     // value is used to perform a texture lookup and the shader computes
     // e raised to the power of the result of the texture lookup.
     //
-
+      _channels = 4;
     Imf::Array<float> pixelValues( lut_size() );
 
     //
@@ -687,6 +735,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     // e raised to the power of the result of the texture lookup.
     //
 
+      _channels = 4;
     Imf::Array<float> pixelValues ( lut_size() );
     if ( !_inited )
       {
@@ -813,7 +862,8 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     }
 
     float* p = new float[channels];
-    for (size_t i = 0; i < lut_size()/4; ++i) 
+    size_t len = lut_size()/_channels;
+    for (size_t i = 0; i < len; ++i) 
       {
 	 size_t j = i*4;
 	 status = cmm->Apply( p, &(pixelValues[j]) );
