@@ -15,6 +15,8 @@ v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
 	 - Bug fixed sequences of numbers.ext only, like 00001.exr, 00002.exr,
 	   etc.  Both the command line as well as the file requester now
 	   support them.
+	 - Added an "inputColorSpace" attribute to EXRs to save out/load in
+	   the input color space.
 
 v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
 	   areas, etc.
