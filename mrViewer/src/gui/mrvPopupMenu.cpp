@@ -103,7 +103,9 @@ void PopupMenu::draw() {
       //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
       setcolor(saved_color);
   }
-
+  
+  flags |= ALIGN_CLIP;
+  
   draw_label(r1, flags);
 
 
