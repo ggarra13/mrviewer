@@ -1177,7 +1177,9 @@ GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs,
     else
     {
         std::string ics = img->ocio_input_color_space();
-        if ( ics.empty() ) ics = OCIO::ROLE_SCENE_LINEAR;
+        if ( ics.empty() ) {
+            ics = OCIO::ROLE_SCENE_LINEAR;
+        }
         path = ics;
         path += " -> " + Preferences::OCIO_Display;
         path += " -> " + Preferences::OCIO_View;
@@ -1195,7 +1197,14 @@ GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs,
         }
     }
 
-
+    if ( Preferences::use_ocio )
+    {
+        if ( img->ocio_input_color_space().empty() )
+        {
+            LOG_INFO( "Image input color space is undefined.  "
+                      "Choosing scene_linear." );
+        }
+    }
 
     unsigned size = 64;
     unsigned lut_type = uiPrefs->uiLUT_quality->value();
