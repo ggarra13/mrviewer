@@ -1162,6 +1162,7 @@ static const char* kCLocale = "C";
     {
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
+        main->uiICS->relayout();
         try
         {
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
@@ -1186,6 +1187,7 @@ static const char* kCLocale = "C";
             }
 
             fltk::PopupMenu* w = main->uiICS;
+            w->clear();
             std::sort( spaces.begin(), spaces.end() );
             for ( size_t i = 0; i < spaces.size(); ++i )
             {
@@ -1196,8 +1198,11 @@ static const char* kCLocale = "C";
                 if ( img && img->ocio_input_color_space() == space )
                 {
                     w->label( strdup(space) );
+                    w->value( i );
                 }
             }
+            w->do_callback();
+            w->redraw();
         }
         catch( const std::exception& e )
         {
