@@ -5,7 +5,7 @@
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    (at your option) any later versioxn.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1592,8 +1592,8 @@ void ImageView::center_image()
     {
         CMedia* img2 = bg->image();
         mrv::Recti dpw2 = img2->display_window();
-        dpw2.x( dpw2.x() + img2->x() );
-        dpw2.y( dpw2.y() + img2->y() );
+        dpw2.x( int(dpw2.x() + img2->x()) );
+        dpw2.y( int(dpw2.y() + img2->y()) );
         dpw.merge( dpw2 );
     }
 
@@ -1711,14 +1711,14 @@ void ImageView::fit_image()
   }
 
   mrv::media bg = background();
-  dpw.x( dpw.x() + img->x() );
-  dpw.y( dpw.y() - img->y() );
+  dpw.x( int(dpw.x() + img->x()) );
+  dpw.y( int(dpw.y() - img->y()) );
   if ( bg )
   {
       CMedia* img2 = bg->image();
       mrv::Recti dpw2 = img2->display_window();
-      dpw2.x( dpw2.x() + img2->x() );
-      dpw2.y( dpw2.y() - img2->y() );
+      dpw2.x( int(dpw2.x() + img2->x()) );
+      dpw2.y( int(dpw2.y() - img2->y()) );
       if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
           dpw.merge( dpw2 );
   }
@@ -3881,8 +3881,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   xp += daw[idx].x();
   yp += daw[idx].y();
 
-  xp -= img->x();
-  yp += img->y();
+  xp -= (int)img->x();
+  yp += (int)img->y();
 
   mrv::Recti dpm = dpw[idx];
   w = dpm.w();
@@ -7525,7 +7525,7 @@ void ImageView::update_color_info( const mrv::media& fg ) const
     }
 
   mrv::ViewerUI* uiView = uiMain;
-  
+
   CMedia* img = NULL;
   if ( fg ) img = fg->image();
   if ( uiMain->uiPrefs->uiPrefsOcioICSToolbar->visible() &&
