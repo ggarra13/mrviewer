@@ -1609,6 +1609,7 @@ void ImageView::center_image()
     double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
     if ( std::abs(r) <= 0.0001 )
     {
+        std::cerr << __LINE__ << std::endl;
         unsigned tmp = H;
         H = W;
         W = tmp;
@@ -1617,7 +1618,7 @@ void ImageView::center_image()
         dpw.y( x );
     }
 
-    yoffset = ( - dpw.y() - H / 2.0 ) / pr;
+    yoffset = ( dpw.y() + H / 2.0) / pr;
 
     if ( stereo_out & CMedia::kStereoSideBySide )
     {
