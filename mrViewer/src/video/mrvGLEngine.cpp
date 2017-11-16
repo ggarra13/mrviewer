@@ -1561,7 +1561,7 @@ void GLEngine::draw_images( ImageList& images )
                 texHeight = dpw.h();
                 const mrv::Recti& dp = fg->display_window();
                 daw.x( img->x() + daw.x() );
-                daw.y(-img->y() + daw.y() );
+                daw.y( daw.y() - img->y() );
                 dpw.x( daw.x() );
                 dpw.y( daw.y() );
             }
@@ -1600,12 +1600,21 @@ void GLEngine::draw_images( ImageList& images )
         {
             if ( _view->display_window() && ! _view->vr() )
             {
-                draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+                int x = img->x();
+                int y = img->y();
+                draw_square_stencil( dpw.l() + x, dpw.t() - y,
+                                     dpw.r() + x, dpw.b() - y );
             }
 
             if ( _view->data_window()  )
             {
-                mrv::Rectd r( daw.x(), daw.y(), daw.w(), daw.h() );
+                double x = img->x(), y = -img->y();
+                if ( stereo & CMedia::kStereoSideBySide )
+                    x += dpw.w();
+                else if ( stereo & CMedia::kStereoTopBottom )
+                    y += dpw.h();
+                mrv::Rectd r( daw.x() + x, daw.y() + y,
+                              daw.w(), daw.h() );
                 draw_data_window( r );
             }
         }
@@ -1793,19 +1802,22 @@ void GLEngine::draw_images( ImageList& images )
                            !( stereo & CMedia::kStereoInterlaced ) &&
                            !( _view->vr() ) ) )
                     {
-                        draw_square_stencil( dpw2.l(), dpw2.t(),
-                                             dpw2.r(), dpw2.b() );
+                        int x = img->x();
+                        int y = img->y();
+                        draw_square_stencil( dpw.l() + x,
+                                             dpw.t() - y, dpw.r() + x,
+                                             dpw.b() - y );
                     }
 
                     if ( _view->data_window() )
                     {
-                        double x = 0, y = 0;
+                        double x = img->x(), y = img->y();
                         if ( stereo & CMedia::kStereoSideBySide )
-                            x = dpw.w();
+                            x += dpw.w();
                         else if ( stereo & CMedia::kStereoTopBottom )
-                            y = dpw.h();
+                            y += dpw.h();
 
-                        mrv::Rectd r( daw2.x() + x, daw2.y() + y,
+                        mrv::Rectd r( daw2.x() + x, daw2.y() - y,
                                       daw2.w(), daw2.h() );
                         draw_data_window( r );
                     }
