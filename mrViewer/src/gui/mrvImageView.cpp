@@ -1533,8 +1533,6 @@ void ImageView::image_coordinates( const CMedia* const img,
     x -= xoffset; y -= yoffset;
 
 
-    x -= img->x();
-    y -= img->y();
 
 
     // double tn = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
@@ -1550,9 +1548,10 @@ void ImageView::image_coordinates( const CMedia* const img,
     //     W = H;
     //     H = px;
     //     std::cerr << "NEW  " <<  x << ", " << y << std::endl;
-    // }
-    //y = H - y;
+    // };
     y = H - y;
+    
+
     if ( _showPixelRatio ) y *= pixel_ratio();
 }
 
@@ -1609,8 +1608,7 @@ void ImageView::center_image()
     double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
     if ( std::abs(r) <= 0.0001 )
     {
-        std::cerr << __LINE__ << std::endl;
-        unsigned tmp = H;
+        int tmp = H;
         H = W;
         W = tmp;
         int x = dpw.x();
@@ -3881,9 +3879,10 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   xp += daw[idx].x();
   yp += daw[idx].y();
-
+  
   xp -= (int)img->x();
   yp += (int)img->y();
+
 
   mrv::Recti dpm = dpw[idx];
   w = dpm.w();
@@ -4072,7 +4071,7 @@ void ImageView::mouseMove(int x, int y)
   uiMain->uiCoord->text(buf);
 
   CMedia::Pixel rgba;
-  if ( outside )
+  if ( outside || ypr < 0 )
   {
       rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
   }
