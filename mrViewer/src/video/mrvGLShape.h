@@ -120,14 +120,14 @@ class GLTextShape : public GLPathShape
 
      void position( int x, int y ) { pts[0].x = x; pts[0].y = y; }
 
-     void text( std::string t ) { _text = t; }
-     std::string text() const   { return _text; }
+    inline void text( std::string t ) { _text = t; }
+    inline std::string text() const   { return _text; }
 
-     void font( fltk::Font* f ) { _font = f; }
-     fltk::Font* font() const   { return _font; }
+    inline void font( fltk::Font* f ) { _font = f; }
+    inline fltk::Font* font() const   { return _font; }
 
-     void size( unsigned f ) { _fontsize = f; }
-     unsigned size() const   { return _fontsize; }
+    inline void size( unsigned f ) { _fontsize = f; }
+    inline unsigned size() const   { return _fontsize; }
 
      virtual void draw( double z );
      virtual std::string send() const;
