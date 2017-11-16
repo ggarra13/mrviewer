@@ -2,6 +2,8 @@ v3.9.2   - Fixed 'h' (Center Image) when the image was straight.  Regression
 	   from 3.9.1.
 	 - Fixed Text tool in Linux.  Previously the text would not appear
 	   at all or it would show as black squares.
+	 - Made OCIO Lut be a 3 channel lut, while CTL remains a 4 channel
+	   lut.  This saves some memory and calculation time when using OCIO.
 
 v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
 	   would incorrectly do a premult of the alpha.  Regression of
