@@ -225,12 +225,12 @@ void GLTextShape::draw( double z )
    // So compositing works properly
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+   glActiveTexture( GL_TEXTURE0 );
+   
    glColor4f( r, g, b, a );
 
-   if ( font() )
-       fltk::glsetfont(font(), size()*float(z) );
+   fltk::glsetfont(font(), size()*float(z) );
 
-   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
    std::string txt = text();
    std::size_t pos = txt.find('\n');
@@ -252,7 +252,7 @@ void GLTextShape::draw( double z )
    }
    if ( txt.size() )
    {
-       glRasterPos2d( pts[0].x, GLfloat(y) );
+       glRasterPos2d( pts[0].x, GLdouble(y) );
        fltk::gldrawtext(txt.c_str());
    }
 }
