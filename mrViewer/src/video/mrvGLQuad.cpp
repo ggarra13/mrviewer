@@ -1235,7 +1235,7 @@ void GLQuad::lut( const CMedia* img )
         fltk::check();  // to display wait cursor
     }
 
-    _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
+    _lut   = mrv::GLLut3d::factory( _view->main(), img );
     _image = img;
 
     _view->window()->cursor( fltk::CURSOR_DEFAULT );
