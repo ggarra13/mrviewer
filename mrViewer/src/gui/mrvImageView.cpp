@@ -1583,8 +1583,8 @@ void ImageView::center_image()
         dpw.merge( dpw2 );
     }
 
-    dpw.x( dpw.x() );  // here
-    dpw.y( dpw.y() );
+    dpw.x( dpw.x() + img->x() );  // here
+    dpw.y( dpw.y() - img->y() );
 
     mrv::media bg = background();
     if ( bg )
@@ -1631,7 +1631,7 @@ void ImageView::center_image()
         xoffset = -dpw.x() - W / 2.0;
     }
 
-    zrotation_to_offsets( xoffset, yoffset, img->rot_z(), W, H );
+    zrotation_to_offsets( xoffset, yoffset, img->rot_z(), _flip, W, H );
 
 
     char buf[128];
@@ -1718,13 +1718,17 @@ void ImageView::fit_image()
       mrv::Recti dpw2 = img2->display_window();
       dpw2.x( int(dpw2.x() + img2->x()) );
       dpw2.y( int(dpw2.y() - img2->y()) );
-      if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
-          dpw.merge( dpw2 );
+      if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 1 )
+      {
+          dpw2.w( int(dpw2.w() * img2->scale_x() ) );
+          dpw2.h( int(dpw2.h() * img2->scale_y() ) );
+      }
+      dpw.merge( dpw2 );
   }
 
-  unsigned W = dpw.w();
+  int W = dpw.w();
   if ( W == 0 ) W = pic->width();
-  unsigned H = dpw.h();
+  int H = dpw.h();
   if ( H == 0 ) H = pic->height();
 
   // Handle image 90 degrees rotation
@@ -1769,7 +1773,7 @@ void ImageView::fit_image()
        stereo_out & CMedia::kStereoTopBottom  )
       yoffset = 0.0;
 
-  zrotation_to_offsets( xoffset, yoffset, img->rot_z(), W, H );
+  zrotation_to_offsets( xoffset, yoffset, img->rot_z(), _flip, W, H );
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -1784,7 +1788,9 @@ void ImageView::fit_image()
 
 void
 ImageView::zrotation_to_offsets( double& X, double& Y,
-                                 const double degrees, const int W,
+                                 const double degrees,
+                                 const FlipDirection flip,
+                                 const int W,
                                  const int H )
 {
   double r = degrees * (M_PI / 180);  // in radians, please
@@ -1793,11 +1799,11 @@ ImageView::zrotation_to_offsets( double& X, double& Y,
   if ( is_equal( sn, -1.0, 0.001 ) )
   {
       // This cascading if/then is correct
-      if ( _flip & kFlipVertical )
+      if ( flip & kFlipVertical )
       {
           X -= W + H;
       }
-      if ( _flip & kFlipHorizontal )
+      if ( flip & kFlipHorizontal )
       {
           X += W;
           Y -= H - W;
@@ -1809,11 +1815,11 @@ ImageView::zrotation_to_offsets( double& X, double& Y,
   else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
   {
       // This cascading if/then is correct
-      if ( _flip & kFlipVertical )
+      if ( flip & kFlipVertical )
       {
           X -= W * 2;
       }
-      if ( _flip & kFlipHorizontal )
+      if ( flip & kFlipHorizontal )
       {
           Y += H;
           X += W;
@@ -1827,11 +1833,11 @@ ImageView::zrotation_to_offsets( double& X, double& Y,
   else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
   {
       // This cascading if/then is correct
-      if ( _flip & kFlipVertical )
+      if ( flip & kFlipVertical )
       {
           X -= H - W;
       }
-      if ( _flip & kFlipHorizontal )
+      if ( flip & kFlipHorizontal )
           Y += W;
       else
           Y -= H;
@@ -2627,8 +2633,7 @@ void ImageView::draw()
      unsigned int H = dpw.h();
      if ( H == 0 ) H = img->height();
 
-     yf = H - yf;
-     yf -= H;
+     yf = -yf;
 
      const mrv::Recti& daw = img->data_window();
      xf += daw.x();
@@ -2646,7 +2651,7 @@ void ImageView::draw()
   std::ostringstream hud;
   hud.str().reserve( 512 );
 
-  uchar r, g,  b;
+  uchar r, g, b;
   fltk::split_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
   _engine->color( r, g, b );
 
@@ -2950,6 +2955,9 @@ int ImageView::leftMouseDown(int x, int y)
               picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
 
               if ( outside || !pic ) {
+                  // draw image without borders (in case this was selected
+                  // before).
+                  img->image_damage( CMedia::kDamageContents );
                   continue;
               }
 
@@ -2978,11 +2986,7 @@ int ImageView::leftMouseDown(int x, int y)
 
          const mrv::Recti& dpw = img->display_window();
 
-         unsigned int H = dpw.h();
-         if ( H == 0 ) H = img->height();
-
-         yf = H - yf;
-         yf -= H;
+         yf = -yf;
 
          const mrv::Recti& daw = img->data_window();
          xf += daw.x();
