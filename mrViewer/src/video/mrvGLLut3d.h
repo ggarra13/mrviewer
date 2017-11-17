@@ -52,7 +52,7 @@ class CIccProfile;
 
 namespace mrv {
 
-
+  class ViewerUI;
   class CMedia;
   class PreferencesUI;
 
@@ -77,8 +77,8 @@ namespace mrv {
       Type              type;
       icRenderingIntent intent;
 
-      Transform( const std::string& n, const Type t,
-		 const icRenderingIntent i = icPerceptual ) : 
+        Transform( const std::string& n, const Type t,
+                   const icRenderingIntent i = icPerceptual ) : 
 	name(n), type(t), intent(i) 
       {
       }
@@ -110,7 +110,7 @@ namespace mrv {
     typedef std::map< std::string, GLLut3d_ptr > LutsMap;
 
   public:
-      GLLut3d( const unsigned N );
+      GLLut3d( const mrv::ViewerUI* v, const unsigned N );
       GLLut3d( const GLLut3d& b );
       virtual ~GLLut3d();
 
@@ -160,7 +160,7 @@ namespace mrv {
 			  const CMedia* img,
 			  const XformFlags flags
 			  );
-    static GLLut3d* factory( const PreferencesUI* prefs, const CMedia* img );
+    static GLLut3d* factory( const ViewerUI* ui, const CMedia* img );
     static void     clear();
       static void   transform_names( Transforms& t,
                                      const CMedia* img );
@@ -191,6 +191,7 @@ namespace mrv {
       OCIO::GpuShaderDesc shaderDesc;
       
     protected:
+      const mrv::ViewerUI* view;
       GLuint texId;                          //!< The lut opengl texture index
       unsigned  short  _channels;
       unsigned         _lutN;                //!< Size of lut (one axis)
