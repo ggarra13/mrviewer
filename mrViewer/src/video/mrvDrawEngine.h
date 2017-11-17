@@ -164,7 +164,8 @@ namespace mrv {
     }
 
     /// Convert fg image to engine's drawable image
-       virtual void translate( double x, double y ) = 0;
+      virtual void translate( const double x, const double y,
+                              const double z = 0.0 ) = 0;
 
       // Return the normalized min and max of image
       inline float norm_min() { return _normMin; }
