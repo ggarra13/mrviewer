@@ -106,7 +106,8 @@ namespace mrv {
 				 const double percentY,
 				 const char* name = 0 );
 
-    virtual void translate( double x, double y );
+      virtual void translate( const double x, const double y,
+                              const double z = 0.0 );
 
     virtual void angle( const float x ) { vr_angle = x; }
     virtual float angle() const { return vr_angle; }
