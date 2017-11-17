@@ -232,32 +232,34 @@ lookup3D
   GLLut3d::LutsMap GLLut3d::_luts;
 
 
-  GLLut3d::GLLut3d( const unsigned N ) :
-    lutMin( 0 ),
-    lutMax( 0 ),
-    lutM( 0 ),
-    lutT( 0 ),
-    lutF( 1 ),
-    texId( 0 ),
-    _channels( 4 ),
-    _lutN( N ),
-    _inited( false )
-  {
-      glGenTextures( 1, &texId );
-  }
+GLLut3d::GLLut3d( const mrv::ViewerUI* v, const unsigned N ) :
+view( v ),
+lutMin( 0 ),
+lutMax( 0 ),
+lutM( 0 ),
+lutT( 0 ),
+lutF( 1 ),
+texId( 0 ),
+_channels( 4 ),
+_lutN( N ),
+_inited( false )
+{
+    glGenTextures( 1, &texId );
+}
 
-  GLLut3d::GLLut3d( const GLLut3d& b ) :
-    lutMin( b.lutMin ),
-    lutMax( b.lutMax ),
-    lutM( b.lutM ),
-    lutT( b.lutT ),
-    lutF( b.lutF ),
-    texId( b.texId ),
-    _channels( b._channels ),
-    _lutN( b._lutN ),
-    _inited( b._inited )
-  {
-  }
+GLLut3d::GLLut3d( const GLLut3d& b ) :
+view( b.view ),
+lutMin( b.lutMin ),
+lutMax( b.lutMax ),
+lutM( b.lutM ),
+lutT( b.lutT ),
+lutF( b.lutF ),
+texId( b.texId ),
+_channels( b._channels ),
+_lutN( b._lutN ),
+_inited( b._inited )
+{
+}
 
 
 
@@ -1076,9 +1078,10 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
+GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view, 
                            const CMedia* img )
 {
+    const mrv::PreferencesUI* uiPrefs = view->uiPrefs;
     std::string path; 
     GLLut3d::Transforms transforms;
 
@@ -1203,6 +1206,17 @@ GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs,
         {
             LOG_INFO( "Image input color space is undefined.  "
                       "Choosing scene_linear." );
+            fltk::PopupMenu* uiICS = view->uiICS;
+            for ( int i = 0; i < uiICS->children(); ++i )
+            {
+                std::string name = uiICS->child(i)->label();
+                if ( name == "scene_linear"  )
+                {
+                    uiICS->label( "scene_linear" );
+                    uiICS->redraw();
+                    uiICS->value(i); break;
+                }
+            }
         }
     }
 
@@ -1226,14 +1240,14 @@ GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs,
           case kNoBake:
               break;
       }
-
+ 
     //
     // Log information about lut path
     //
     LOG_INFO( _("3D Lut for ") << img->name() << N_(":") );
     LOG_INFO( path );
 
-    GLLut3d_ptr lut( new GLLut3d(size) );
+    GLLut3d_ptr lut( new GLLut3d(view, size) );
 
     //lut->calculate_range( img->hires() );
     
