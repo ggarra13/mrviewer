@@ -389,7 +389,7 @@ class server;
       void main( mrv::ViewerUI* b ) { uiMain = b; }
 
       /// Returns the main window class associated to this view
-      mrv::ViewerUI* main() { return uiMain; }
+      mrv::ViewerUI* main()  { return uiMain; }
 
       /// Returns the main window class associated to this view
       const mrv::ViewerUI* main() const { return uiMain; }
