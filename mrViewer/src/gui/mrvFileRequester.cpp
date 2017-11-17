@@ -258,6 +258,17 @@ void attach_ocio_view( CMedia* img, ImageView* view )
                                          mrv::OCIOBrowser::kView );
     if ( ret.empty() ) return;
     mrv::Preferences::OCIO_View = ret;
+    fltk::PopupMenu* m = view->main()->gammaDefaults;
+    for ( int i = 0; i < m->children(); ++i )
+    {
+        if ( ret == m->child(i)->label() )
+        {
+            m->value(i);
+            break;
+        }
+    }
+    m->label( strdup( _(ret.c_str()) ) );
+    m->redraw();
     img->image_damage( CMedia::kDamageAll );
     view->redraw();
 }
