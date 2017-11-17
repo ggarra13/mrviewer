@@ -534,7 +534,15 @@ class server;
       bool in_presentation() const;
 
       Mode action_mode() const { return _mode; }
-      
+
+    public:
+      // Auxiliary function to set the offsets after a rotation of x degrees.
+      // This function is used in fit_image and center_image.
+      static
+      void zrotation_to_offsets( double& X, double& Y, const double degrees,
+                                 const FlipDirection flip,
+                                 const int W, const int H );
+    
      public:
       bool           _broadcast;
       CMedia::Mutex  _clients_mtx;
@@ -543,11 +551,7 @@ class server;
 
   protected:
       
-      // Auxiliary function to set the offsets after a rotation of x degrees.
-      // This function is used in fit_image and center_image.
-      void zrotation_to_offsets( double& X, double& Y, const double degrees,
-                                 const int W, const int H );
-      
+       
       void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
     void stop_playback();
