@@ -4,6 +4,12 @@ v3.9.2   - Fixed 'h' (Center Image) when the image was straight.  Regression
 	   at all or it would show as black squares.
 	 - Made OCIO Lut be a 3 channel lut, while CTL remains a 4 channel
 	   lut.  This saves some memory and calculation time when using OCIO.
+	 - Made OCIO Pick button in the Media Info window also update the
+	   OCIO Input Color Space pull down.
+	 - Made mousewheel in pulldown menus a no-op to avoid hanging.
+	   This required a change in fltk's Menu_popup.cxx to set MODAL to
+	   false.
+	 - Fixed Masking and Safe Areas on rotation of image.
 
 v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
 	   would incorrectly do a premult of the alpha.  Regression of
