@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook player
     Copyright (C) 2007-2014  Gonzalo Garramuño
