@@ -9,7 +9,12 @@ v3.9.2   - Fixed 'h' (Center Image) when the image was straight.  Regression
 	 - Made mousewheel in pulldown menus a no-op to avoid hanging.
 	   This required a change in fltk's Menu_popup.cxx to set MODAL to
 	   false.
+	 - Fixed move picture tool to move also the data window.
 	 - Fixed Masking and Safe Areas on rotation of image.
+	 - Fixed OCIO default scene_linear which would not appear in
+	   the ICS popup menu as selected when it was the default space.
+	 - Added hotkey (SHIFT+i) to toggle Input Color Space popup and
+	   fstop controls when Use OCIO is in effect.
 
 v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
 	   would incorrectly do a premult of the alpha.  Regression of
