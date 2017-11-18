@@ -771,7 +771,6 @@ void aviImage::open_video_codec()
        avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
     _video_index = -1;
 
-
 }
 
 void aviImage::close_video_codec()
@@ -2285,6 +2284,8 @@ void aviImage::populate()
 
     }
     
+    default_ocio_input_color_space();
+
 }
 
 void aviImage::probe_size( unsigned p ) 
