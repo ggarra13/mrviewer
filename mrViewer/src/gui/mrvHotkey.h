@@ -213,9 +213,11 @@ extern Hotkey kToggleConnections;
 extern Hotkey kToggleHotkeys;
 extern Hotkey kToggleLogs;
 extern Hotkey kToggleAbout;
+
 extern Hotkey kRotatePlus90;
 extern Hotkey kRotateMinus90;
 
+extern Hotkey kToggleICS;
 
 struct HotkeyEntry
 {

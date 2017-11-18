@@ -663,18 +663,17 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {1097 629 700 450} resizable
+        xywh {1097 629 700 450} hide resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings open
+          label Settings
           xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
@@ -2770,19 +2769,21 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     decl {mrv::ViewerUI* main_;} {}
-    Function {make_window( ViewerUI* m )} {} {
+    Function {make_window( ViewerUI* m )} {open
+    } {
       {fltk::Window} uiMain {
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {451 557 150 520} horizontal hide resizable
+        xywh {451 557 150 520} horizontal resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::Group} {} {open
           xywh {0 11 145 495}
@@ -2799,7 +2800,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->move_pic_mode();}
             tooltip {Move Picture Tool}
-            xywh {74 14 43 35}
+            xywh {77 14 43 35}
             image not_inlined {../../icons/move_pic.xpm}
             extra_code {o->image( move_pic );}
           }
@@ -2807,7 +2808,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->selection_mode();}
             tooltip {Area Select Tool}
-            xywh {29 53 43 35}
+            xywh {30 53 43 35}
             image not_inlined {../../icons/select.xpm}
             extra_code {o->image( select_pic );}
           }
@@ -2815,7 +2816,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->draw_mode();}
             tooltip {Freehand Drawing Tool}
-            xywh {77 53 40 35}
+            xywh {77 53 43 35}
             image not_inlined {../../icons/draw.xpm}
             extra_code {o->image( draw );}
           }
@@ -2823,7 +2824,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->erase_mode();}
             tooltip {Eraser Tool}
-            xywh {77 94 40 35}
+            xywh {77 94 43 35}
             image not_inlined {../../icons/erase.xpm}
             extra_code {o->image( erase );}
           }
@@ -2832,7 +2833,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->text_mode();}
             tooltip {Text Tool}
-            xywh {28 93 45 35} align 32 labelfont 8 labelsize 24
+            xywh {30 93 43 35} align 32 labelfont 8 labelsize 24
           }
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
@@ -3050,7 +3051,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {651 136 640 535} when CHANGED resizable
+        xywh {651 220 640 535} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -3158,17 +3159,17 @@ v->uiLog->uiMain->show();}
               {fltk::PopupMenu} uiColorChannel {
                 label {(no image)}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( o->get_item() );} open selected
+                callback {v->uiView->channel( o->get_item() );} open
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal align 80
                 class {mrv::PopupMenu}
               } {}
             }
             {fltk::Group} {} {open
-              xywh {130 4 275 21} color 0x53535300
+              xywh {120 4 285 21} color 0x53535300
             } {
               {fltk::Group} {} {open
-                xywh {0 0 275 21}
+                xywh {0 0 285 21}
               } {
                 {fltk::PopupMenu} uiICS {
                   label {Input Color Space}
@@ -3184,22 +3185,22 @@ if ( i < 0 || i >= o->children() ) return;
 std::string c = o->child( i )->label();
 o->label( strdup( c.c_str() ) );
 img->ocio_input_color_space( c );} open
-                  xywh {135 0 140 20}
+                  xywh {145 0 140 20}
                   class {mrv::PopupMenu}
                 } {}
                 {fltk::Group} {} {open
-                  xywh {0 1 135 18} box FLAT_BOX
+                  xywh {0 1 145 18} box FLAT_BOX
                 } {
                   {fltk::InvisibleBox} {} {
-                    label Gain
-                    xywh {0 0 28 17} align 96
+                    label Gain selected
+                    xywh {0 0 38 17} align 104
                   }
                   {fltk::ValueInput} uiGainInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
                     tooltip {Gain image value.  A simple multiplier of the image pixel values.}
-                    xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.01 maximum 1024 step 0.001 value 1
+                    xywh {40 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.01 maximum 1024 step 0.001 value 1
                     extra_code {o->textsize( 12 );}
                     class {mrv::ValueInput}
                   }
@@ -3208,11 +3209,11 @@ v->uiGain->value( (float) o->value() );}
                     callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
                     tooltip {Allows you to adjust the gain or exposure of the image.}
-                    xywh {65 0 70 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.015625 maximum 64 value 1 slider_size 10
+                    xywh {75 0 70 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.015625 maximum 64 value 1 slider_size 10
                   }
                 }
                 {fltk::Group} uiFstopGroup {
-                  xywh {135 1 95 19} hide
+                  xywh {145 1 95 19} hide
                 } {
                   {fltk::Button} {} {
                     label {@<}
@@ -3257,7 +3258,7 @@ Click to toggle between current and normal exposure.}
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {v->uiView->toggle_normalize();}
                   tooltip {Normalize pixel values to remain in [0,1] range.}
-                  xywh {233 1 30 19} type TOGGLE hide
+                  xywh {243 1 30 19} type TOGGLE hide
                 }
               }
             }
@@ -3383,7 +3384,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::Group} uiViewGroup {
+          {fltk::Group} uiViewGroup {open
             xywh {0 28 640 430} resizable
             class {fltk::Group}
           } {
