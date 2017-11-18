@@ -1204,19 +1204,23 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
     {
         if ( img->ocio_input_color_space().empty() )
         {
-            LOG_INFO( "Image input color space is undefined.  "
-                      "Choosing scene_linear." );
+            std::string msg = "Image input color space is undefined.";
             fltk::PopupMenu* uiICS = view->uiICS;
+            const char* const lbl = "scene_linear";
             for ( int i = 0; i < uiICS->children(); ++i )
             {
                 std::string name = uiICS->child(i)->label();
-                if ( name == "scene_linear"  )
+                if ( name == lbl )
                 {
-                    uiICS->label( "scene_linear" );
+                    msg += "  Choosing " + name + ".";
+                    uiICS->label( lbl );
+                    uiICS->value(i);
+                    uiICS->relayout(); // needed
                     uiICS->redraw();
-                    uiICS->value(i); break;
+                    break;
                 }
             }
+            LOG_INFO( msg );
         }
     }
 
