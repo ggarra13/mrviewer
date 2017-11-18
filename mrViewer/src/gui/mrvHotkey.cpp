@@ -164,6 +164,8 @@ Hotkey kToggleAbout( false, false, false, false, 0 );
 Hotkey kRotatePlus90( false, false, false, false, '+' );
 Hotkey kRotateMinus90( false, false, false, false, '-' );
 
+Hotkey kToggleICS( false, false, false, true, 'i' );
+
 bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
@@ -333,6 +335,7 @@ HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
 HotkeyEntry( _("Toggle About Window"), kToggleAbout),
 HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
 HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
+HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 
