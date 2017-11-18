@@ -330,7 +330,7 @@ void rotate_plus_90_cb( fltk::Widget* o, mrv::ImageView* v )
 void toggle_ics_cb( fltk::Widget* o, mrv::ViewerUI* main )
 {
     if ( mrv::Preferences::use_ocio == false ) return;
-    
+
     if ( main->uiICS->visible() )
     {
         main->uiICS->hide();
@@ -944,10 +944,8 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 
 void update_ICS( mrv::ViewerUI* uiMain )
 {
-    std::cerr << "update_ICS" << std::endl;
   mrv::media fg = uiMain->uiView->foreground();
   if ( ! fg ) {
-      std::cerr << "no fg" << std::endl;
       return;
   }
   CMedia* img = fg->image();
@@ -958,7 +956,6 @@ void update_ICS( mrv::ViewerUI* uiMain )
       fltk::Widget* w = o->child(i);
       if ( img->ocio_input_color_space() == w->label() )
       {
-          std::cerr << "update_ICS is now " << w->label() << std::endl;
           o->label( strdup( w->label() ) );
           o->value(i);
           break;
@@ -973,10 +970,10 @@ void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
   if ( ! fg ) return;
 
   attach_ocio_input_color_space( fg->image(), view );
-  
+
   update_ICS( view->main() );
 
-  
+
 }
 static void attach_ocio_display_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -1598,7 +1595,7 @@ void ImageView::image_coordinates( const CMedia* const img,
     //     std::cerr << "NEW  " <<  x << ", " << y << std::endl;
     // };
     y = H - y;
-    
+
 
     if ( _showPixelRatio ) y *= pixel_ratio();
 }
@@ -3931,7 +3928,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   xp += daw[idx].x();
   yp += daw[idx].y();
-  
+
   xp -= (int)img->x();
   yp += (int)img->y();
 

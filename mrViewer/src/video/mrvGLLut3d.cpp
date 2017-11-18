@@ -1213,7 +1213,27 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 if ( name == lbl )
                 {
                     msg += "  Choosing " + name + ".";
-                    uiICS->label( lbl );
+                    uiICS->label( strdup( lbl ) );
+                    uiICS->value(i);
+                    uiICS->relayout(); // needed
+                    uiICS->redraw();
+                    break;
+                }
+            }
+            LOG_INFO( msg );
+        }
+        else
+        {
+            std::string msg = "Image input color space has a default for this image depth.";
+            fltk::PopupMenu* uiICS = view->uiICS;
+            const std::string& lbl = img->ocio_input_color_space();
+            for ( int i = 0; i < uiICS->children(); ++i )
+            {
+                std::string name = uiICS->child(i)->label();
+                if ( lbl == name )
+                {
+                    msg += "  Choosing " + name + ".";
+                    uiICS->label( strdup( lbl.c_str() ) );
                     uiICS->value(i);
                     uiICS->relayout(); // needed
                     uiICS->redraw();
