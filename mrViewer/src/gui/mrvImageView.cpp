@@ -326,6 +326,26 @@ void rotate_plus_90_cb( fltk::Widget* o, mrv::ImageView* v )
     v->redraw();
 }
 
+
+void toggle_ics_cb( fltk::Widget* o, mrv::ViewerUI* main )
+{
+    if ( mrv::Preferences::use_ocio == false ) return;
+    
+    if ( main->uiICS->visible() )
+    {
+        main->uiICS->hide();
+        main->uiFstopGroup->show();
+        main->uiNormalize->show();
+    }
+    else
+    {
+        main->uiFstopGroup->hide();
+        main->uiNormalize->hide();
+        main->uiICS->relayout();
+        main->uiICS->show();
+    }
+}
+
 void rotate_minus_90_cb( fltk::Widget* o, mrv::ImageView* v )
 {
     mrv::media fg = v->foreground();
@@ -922,6 +942,30 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_lmt_script( img, img->number_of_lmts() );
 }
 
+void update_ICS( mrv::ViewerUI* uiMain )
+{
+    std::cerr << "update_ICS" << std::endl;
+  mrv::media fg = uiMain->uiView->foreground();
+  if ( ! fg ) {
+      std::cerr << "no fg" << std::endl;
+      return;
+  }
+  CMedia* img = fg->image();
+  fltk::PopupMenu* o = uiMain->uiICS;
+  int n = o->children();
+  for ( int i = 0; i < n; ++i )
+  {
+      fltk::Widget* w = o->child(i);
+      if ( img->ocio_input_color_space() == w->label() )
+      {
+          std::cerr << "update_ICS is now " << w->label() << std::endl;
+          o->label( strdup( w->label() ) );
+          o->value(i);
+          break;
+      }
+  }
+  o->redraw();
+}
 
 void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -929,6 +973,10 @@ void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
   if ( ! fg ) return;
 
   attach_ocio_input_color_space( fg->image(), view );
+  
+  update_ICS( view->main() );
+
+  
 }
 static void attach_ocio_display_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -5131,6 +5179,11 @@ int ImageView::keyDown(unsigned int rawkey)
         rotate_minus_90_cb( NULL, this );
         return 1;
     }
+    else if ( kToggleICS.match( rawkey ) )
+    {
+        toggle_ics_cb( NULL, main() );
+        return 1;
+    }
     else if ( kFirstFrame.match( rawkey ) )
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
@@ -7528,26 +7581,6 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       if ( uiHistogram->visible() ) uiHistogram->redraw();
     }
 
-  mrv::ViewerUI* uiView = uiMain;
-
-  CMedia* img = NULL;
-  if ( fg ) img = fg->image();
-  if ( uiMain->uiPrefs->uiPrefsOcioICSToolbar->visible() &&
-       ( img && img->image_damage() & CMedia::kDamageLut ))
-  {
-      int n = uiView->uiICS->children();
-      for ( int i = 0; i < n; ++i )
-      {
-          fltk::Widget* w = uiView->uiICS->child(i);
-          if ( img->ocio_input_color_space() == w->label() )
-          {
-              uiView->uiICS->value(i);
-              break;
-          }
-      }
-      uiView->uiICS->do_callback();
-      uiView->uiICS->redraw();
-  }
 }
 
 void ImageView::update_color_info() const
