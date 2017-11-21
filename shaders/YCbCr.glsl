@@ -134,7 +134,7 @@ void main()
       c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
     }
 
-  if ( unpremult )
+  if ( unpremult && c.a > 0.00001 )
   {
     c.rgb /= c.a;
   }
