@@ -1212,7 +1212,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 std::string name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
-                    msg += "  Choosing " + name + ".";
+                    msg += _("  Choosing ") + name + ".";
                     uiICS->label( strdup( lbl ) );
                     uiICS->value(i);
                     uiICS->relayout(); // needed
