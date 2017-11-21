@@ -9,6 +9,8 @@ v3.9.3   - Removed incorrect message about OCIO default for an image.
 	   Sony's conventions.
 	 - Bug fixed RY/BY/Y channel selection in luminance/chrominance
 	   images.  Regression from an old version of mrViewer.
+	 - Bug fixed color values showing as NANs when alpha was 0 due to
+	   unpremult.
 
 v3.9.2   - Fixed 'h' (Center Image) when the image was straight.  Regression
 	   from 3.9.1.
