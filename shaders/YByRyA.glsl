@@ -12,6 +12,7 @@
 uniform sampler2D YImage;
 uniform sampler2D UImage;
 uniform sampler2D VImage;
+uniform sampler2D AImage;
 uniform sampler3D lut;
 
 // Interlaced/Checkerboard controls
@@ -42,6 +43,8 @@ uniform float lutMin;
 uniform float lutMax;
 uniform float lutM;
 uniform float lutT;
+uniform float scale;
+uniform float offset;
 
 
 void main()
@@ -49,16 +52,17 @@ void main()
   //
   // Sample luminance and chroma, convert to RGB. 
   //
-  vec3 pre;
+  vec4 pre;
   pre.r = texture2D(YImage, gl_TexCoord[0].st).r;  // Y
   pre.g = texture2D(UImage, gl_TexCoord[0].st).r;  // U
   pre.b = texture2D(VImage, gl_TexCoord[0].st).r;  // V
+  pre.a = texture2D(AImage, gl_TexCoord[0].st).r;  // V
 
   vec4 c;
   c.r = (pre.g + 1.0) * pre.r;
   c.b = (pre.b + 1.0) * pre.r;
   c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
-  c.a = 1.0;
+  c.a = pre.a;
 
   //
   // Apply normalization
@@ -79,7 +83,7 @@ void main()
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( texture3D(lut, c.rgb).rgb ); 
+      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
     }
 
   //
@@ -119,30 +123,28 @@ void main()
     }
 
 
-  vec2 tc = gl_TexCoord[0].st;
-  c.rgb = clamp( c.rgb, 0.0, 1.0 );
   int x = 1000;
-  
-  if ( mask == 1 )  // even odd rows
+  if ( mask == 1.0 )  // even odd rows
   {
-      float f = tc.y * height;
-      x = int( mod( f, 2 ) );
+      x = mod( gl_TexCoord[0].t * height, 2.0 );
   }
-  else if ( mask == 2 ) // even odd columns
+  else if ( mask == 2.0 )  // even-odd columns
   {
-      float f2 = tc.x * width;
-      x = int( mod( f2, 2 ) );
+      x = mod( gl_TexCoord[0].s * width, 2.0 );
   }
-  else if ( mask == 3 ) // checkerboard
+  else if ( mask == 3.0 ) // checkerboard
   {
-      float f = tc.y * height;
-      float f2 = tc.x * width;
-      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
+      x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2.0 );
+      if ( x < 1.0 ) x = 1.0;
+      else x = 0.0;
   }
 
   if ( x == mask_value )
   {
-      c.r = c.g = c.b = c.a = 0.0;
+      c.r = 0.0f;
+      c.g = 0.0f;
+      c.b = 0.0f;
+      c.a = 0.0f;
   }
 
 
