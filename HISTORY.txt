@@ -1,3 +1,10 @@
+v3.9.3   - Removed incorrect message about OCIO default for an image.
+	 - Added message of OCIO default and OCIO taken from name of image.
+	 - Made all shaders calculate gain before lut.  This allows exposure
+	   to work correctly.
+	 - Made input color space be taken from image filename following
+	   Sony's conventions.
+
 v3.9.2   - Fixed 'h' (Center Image) when the image was straight.  Regression
 	   from 3.9.1.
 	 - Fixed Text tool in Linux.  Previously the text would not appear
