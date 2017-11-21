@@ -121,6 +121,11 @@ void main()
     }
 
   //
+  // Apply gain 
+  //
+  c.rgb *= gain;
+
+  //
   // Apply 3D color lookup table (in log space).
   //
   if (enableLut)
@@ -134,11 +139,6 @@ void main()
     c.rgb /= c.a;
   }
   
-  //
-  // Apply gain 
-  //
-  c.rgb *= gain;
-
   //
   // Apply video gamma correction.
   // 
