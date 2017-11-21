@@ -4097,7 +4097,7 @@ Function {make_ocio_browser(std::string ctl, mrv::OCIOBrowser::Type type )} {ope
 if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
 *v = o->child(elem)->label();}
         xywh {5 0 375 365}
-        extra_code {o->set_type(type);
+        extra_code {o->set_type(type); o->set_value(ctl);
 o->value(-1);
 if ( !ctl.empty() )
 {
