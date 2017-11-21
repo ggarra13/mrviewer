@@ -1213,6 +1213,8 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 if ( name == lbl )
                 {
                     msg += _("  Choosing ") + name + ".";
+                    CMedia* c = const_cast< CMedia* >( img );
+                    c->ocio_input_color_space( name );
                     uiICS->label( strdup( lbl ) );
                     uiICS->value(i);
                     uiICS->relayout(); // needed
