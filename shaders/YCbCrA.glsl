@@ -1,5 +1,5 @@
 /**
- * @file   rgba.glsl
+ * @file   YCbCr.glsl
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  * 
@@ -46,6 +46,8 @@ uniform float lutMin;
 uniform float lutMax;
 uniform float lutM;
 uniform float lutT;
+uniform float scale;
+uniform float offset;
 
 
 void main()
@@ -114,6 +116,11 @@ void main()
     {
       c.rgb = (c.rgb - normMin) / normSpan;
     }
+    
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
 
   //
   // Apply 3D color lookup table (in log space).
@@ -121,7 +128,7 @@ void main()
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( texture3D(lut, c.rgb).rgb ); 
+      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
     }
 
   if ( unpremult )
@@ -129,10 +136,6 @@ void main()
     c.rgb /= c.a;
   }
   
-  //
-  // Apply gain 
-  //
-  c.rgb *= gain;
 
   //
   // Apply video gamma correction.

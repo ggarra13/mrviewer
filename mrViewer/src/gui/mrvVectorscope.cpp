@@ -230,6 +230,10 @@ namespace mrv
                 uiMain->uiView->normalize( op );
             }
 
+            op.r *= gain;
+            op.g *= gain;
+            op.b *= gain;
+            
             if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
             {
                 engine->evaluate( img, 
