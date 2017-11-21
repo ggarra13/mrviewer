@@ -361,7 +361,7 @@ _inited( b._inited )
       {
           glTexImage3D( GL_TEXTURE_3D,
                         0,			// level
-                        GL_RGB32F_ARB,           // internal format
+                        GL_RGB16F_ARB,           // internal format
                         _lutN, _lutN, _lutN,	// width, height, depth
                         0,			// border
                         GL_RGB,		// format
@@ -372,7 +372,7 @@ _inited( b._inited )
       {
           glTexImage3D( GL_TEXTURE_3D,
                         0,			// level
-                        GL_RGBA32F_ARB,           // internal format
+                        GL_RGBA16F_ARB,           // internal format
                         _lutN, _lutN, _lutN,	// width, height, depth
                         0,			// border
                         GL_RGBA,		// format
@@ -1204,7 +1204,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
     {
         if ( img->ocio_input_color_space().empty() )
         {
-            std::string msg = "Image input color space is undefined.";
+            std::string msg = _( "Image input color space is undefined." );
             fltk::PopupMenu* uiICS = view->uiICS;
             const char* const lbl = "scene_linear";
             for ( int i = 0; i < uiICS->children(); ++i )
@@ -1221,6 +1221,23 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 }
             }
             LOG_INFO( msg );
+        }
+        else
+        {
+            fltk::PopupMenu* uiICS = view->uiICS;
+            const std::string& lbl = img->ocio_input_color_space();
+            for ( int i = 0; i < uiICS->children(); ++i )
+            {
+                std::string name = uiICS->child(i)->label();
+                if ( name == lbl )
+                {
+                    uiICS->label( strdup( lbl.c_str() ) );
+                    uiICS->value(i);
+                    uiICS->relayout(); // needed
+                    uiICS->redraw();
+                    break;
+                }
+            }
         }
     }
 
