@@ -2,6 +2,9 @@ v3.9.3   - Removed incorrect message about OCIO default for an image.
 	 - Added message of OCIO default and OCIO taken from name of image.
 	 - Made all shaders calculate gain before lut.  This allows exposure
 	   to work correctly.
+	 - Made all color calculations (color picker, color area, vectorscope
+	   and histogram) take gain before lut to allow for exposure to work
+	   properly.
 	 - Made input color space be taken from image filename following
 	   Sony's conventions.
 
