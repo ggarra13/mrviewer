@@ -942,7 +942,7 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_lmt_script( img, img->number_of_lmts() );
 }
 
-void update_ICS( mrv::ViewerUI* uiMain )
+void update_ICS( const mrv::ViewerUI* uiMain )
 {
   mrv::media fg = uiMain->uiView->foreground();
   if ( ! fg ) {
@@ -3602,6 +3602,13 @@ void ImageView::pixel_processed( const CMedia* img,
     }
 
     //
+    // To represent pixel properly, we need to do gain
+    //
+    rgba.r *= _gain;
+    rgba.g *= _gain;
+    rgba.b *= _gain;
+    
+    //
     // To represent pixel properly, we need to do the lut
     //
     if ( use_lut() && p == kRGBA_Full )
@@ -3614,14 +3621,10 @@ void ImageView::pixel_processed( const CMedia* img,
         rgba.b = out[2];
     }
 
-    //
-    // To represent pixel properly, we need to do gain/gamma
-    //
-    rgba.r *= _gain;
-    rgba.g *= _gain;
-    rgba.b *= _gain;
 
-
+    //
+    // And we do gamma last
+    //
     if ( mode < kBlendTraditionalNonGamma )
     {
         float one_gamma = 1.0f / img->gamma();
@@ -3635,6 +3638,9 @@ void ImageView::pixel_processed( const CMedia* img,
             rgba.b = expf( logf(rgba.b) * one_gamma );
     }
 
+    //
+    // Finally, do a mult for those blending modes that need it
+    //
     switch( mode )
     {
     case kBlendTraditional:
@@ -7577,6 +7583,15 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       fltk::Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
       if ( uiHistogram->visible() ) uiHistogram->redraw();
     }
+
+  if ( uiMain->uiICS->visible() )
+  {
+      if (!fg) return;
+      CMedia* img = fg->image();
+      if ( !img->image_damage() & CMedia::kDamageLut )
+          return;
+      update_ICS( main() );
+  }
 
 }
 
