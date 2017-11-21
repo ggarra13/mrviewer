@@ -3601,7 +3601,7 @@ void CMedia::default_ocio_input_color_space()
 
     if (! ocio_input_color_space().empty() )
     {
-        IMG_INFO( _("Got default colorspace '") << ocio_input_color_space()
+        IMG_INFO( _("Got colorspace '") << ocio_input_color_space()
                   << _("' from bitdepth default") );
         return;
     }
