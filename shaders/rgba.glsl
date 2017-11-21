@@ -54,6 +54,11 @@ void main()
     {
       c.rgb = (c.rgb - normMin) / normSpan;
     }
+    
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
 
   //
   // Apply 3D color lookup table (in log space).
@@ -69,10 +74,6 @@ void main()
       c.rgb /= c.a;
   }
 
-  //
-  // Apply gain 
-  //
-  c.rgb *= gain;
 
   //
   // Apply video gamma correction.
