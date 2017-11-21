@@ -345,6 +345,7 @@ namespace mrv {
     assert( rx+rw <= tw );
     assert( ry+rh <= th );
 
+    
     if ( _view->field() == ImageView::kFrameDisplay )
       {
 // #define TEST_NO_PBO_TEXTURES
