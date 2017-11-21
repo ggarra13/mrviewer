@@ -3589,7 +3589,7 @@ void ImageView::pixel_processed( const CMedia* img,
     {
     case kBlendTraditional:
     case kBlendTraditionalNonGamma:
-        if ( img->has_alpha() )
+        if ( img->has_alpha() && rgba.a > 0.00001f )
         {
             rgba.r /= rgba.a;
             rgba.g /= rgba.a;
