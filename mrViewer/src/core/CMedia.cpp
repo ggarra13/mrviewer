@@ -3563,6 +3563,16 @@ void CMedia::default_ocio_input_color_space()
 
     if ( ! Preferences::use_ocio ) return;
 
+    std::string n = filename();
+    OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+    std::string cs = config->parseColorSpaceFromString(n.c_str());
+    if ( !cs.empty() )
+    {
+        IMG_INFO( "Got colorspace '" << cs << "' from filename");
+        ocio_input_color_space( cs );
+        return;
+    }
+    
     switch( depth() )
     {
         case image_type::kByte:
@@ -3587,9 +3597,12 @@ void CMedia::default_ocio_input_color_space()
             break;
     }
 
-    if (! ocio_input_color_space().empty() ) return;
-
-    std::string n = name();
+    if (! ocio_input_color_space().empty() )
+    {
+        IMG_INFO( _("Got default colorspace '") << ocio_input_color_space()
+                  << ("' from bitdepth default") );
+        return;
+    }
     if ( n.rfind( ".dpx" ) != std::string::npos ||
          n.rfind( ".cin")  != std::string::npos )
     {
@@ -3600,7 +3613,11 @@ void CMedia::default_ocio_input_color_space()
         if ( ! defaultcs )
             defaultcs = config->getColorSpace("lg10");
         if ( defaultcs )
+        {
+            IMG_INFO( "Got colorspace '" << defaultcs->getName()
+                      << "' for dpx/cin extension");
             ocio_input_color_space( defaultcs->getName() );
+        }
     }
 }
 
