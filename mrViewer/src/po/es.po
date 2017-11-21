@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2017-11-21 13:48-0300\n"
+"POT-Creation-Date: 2017-11-21 18:31-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3495,13 +3495,9 @@ msgstr "Ir al final de la secuencia."
 msgid "Go to the parent directory"
 msgstr "Ir a la carpeta anterior"
 
-#: core/CMedia.cpp:3572
+#: core/CMedia.cpp:3572 core/CMedia.cpp:3604
 msgid "Got colorspace '"
 msgstr "Obtuve el espacio de color '"
-
-#: core/CMedia.cpp:3604
-msgid "Got default colorspace '"
-msgstr "Obtuve el espacio de color por defecto '"
 
 #: core/stubImage.cpp:377
 msgid "Got: "
@@ -8310,6 +8306,9 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-101-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4300
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "Got default colorspace '"
+#~ msgstr "Obtuve el espacio de color '"
 
 #~ msgid "ICS"
 #~ msgstr "ICS"
