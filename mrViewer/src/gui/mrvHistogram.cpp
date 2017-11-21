@@ -208,6 +208,10 @@ namespace mrv
               {
                   uiMain->uiView->normalize( op );
               }
+
+              op.r *= gain;
+              op.g *= gain;
+              op.b *= gain;
                
               if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
               {
@@ -223,11 +227,11 @@ namespace mrv
               if ( v != ImageView::kRGBA_Original ) 
               {
                    if ( rp.r > 0.0f && isfinite(rp.r) )
-                       rp.r = powf(rp.r * gain, one_gamma);
+                       rp.r = powf(rp.r, one_gamma);
                    if ( rp.g > 0.0f && isfinite(rp.g) )
-                       rp.g = powf(rp.g * gain, one_gamma);
+                       rp.g = powf(rp.g, one_gamma);
                    if ( rp.b > 0.0f && isfinite(rp.b) )
-                       rp.b = powf(rp.b * gain, one_gamma);
+                       rp.b = powf(rp.b, one_gamma);
               }
               rgb[0] = (uchar)Imath::clamp(rp.r * 255.0f, 0.f, 255.f);
               rgb[1] = (uchar)Imath::clamp(rp.g * 255.0f, 0.f, 255.f);
