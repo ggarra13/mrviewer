@@ -6272,6 +6272,7 @@ void ImageView::channel( unsigned short c )
   std::transform( ext.begin(), ext.end(), ext.begin(),
                   (int(*)(int))toupper );
 
+  
   _channelType = kRGB;
   if ( channelName == _("Alpha Overlay") )
     {
