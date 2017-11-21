@@ -150,7 +150,7 @@ Out main(
 	}
     }
 
-  if ( unpremult )
+  if ( unpremult && c.a > 0.00001 )
   {
     c.rgb /= c.a;
   }
