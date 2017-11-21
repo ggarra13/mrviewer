@@ -86,6 +86,11 @@ void main()
       c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); 
     }
 
+  if ( unpremult && c.a > 0.00001 )
+  {
+      c.rgb /= c.a;
+  }
+  
   //
   // Apply video gamma correction.
   // 
@@ -147,6 +152,10 @@ void main()
       c.a = 0.0f;
   }
 
+  if ( premult )
+  {
+      c.rgb *= c.a;
+  }
 
   gl_FragColor = c;
 } 
