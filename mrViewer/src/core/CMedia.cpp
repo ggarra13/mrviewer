@@ -1860,7 +1860,8 @@ void CMedia::channel( const char* c )
                 }
             }
 
-            if ( ( ch.find(ch2) == std::string::npos &&
+            if ( ( ch == "Y" || ch == "RY" || ch == "BY" ) ||
+                 ( ch.find(ch2) == std::string::npos &&
                    ch2.find(ch) == std::string::npos ) ||
                  ( ext == "Z" && chl.size() > 1 ) ||
                  ( ext2 == "Z" && chl2.size() > 1 ) ||
