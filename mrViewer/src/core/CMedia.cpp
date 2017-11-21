@@ -3568,7 +3568,7 @@ void CMedia::default_ocio_input_color_space()
     std::string cs = config->parseColorSpaceFromString(n.c_str());
     if ( !cs.empty() )
     {
-        IMG_INFO( "Got colorspace '" << cs << "' from filename");
+        IMG_INFO( _("Got colorspace '") << cs << _("' from filename") );
         ocio_input_color_space( cs );
         return;
     }
@@ -3593,14 +3593,15 @@ void CMedia::default_ocio_input_color_space()
                 ocio_input_color_space( ocio_float_ics.c_str() );
             break;
         default:
-            IMG_ERROR("default_ocio_input_color_space - unknown bit depth");
+            IMG_ERROR( _("default_ocio_input_color_space - "
+                         "unknown bit depth") );
             break;
     }
 
     if (! ocio_input_color_space().empty() )
     {
         IMG_INFO( _("Got default colorspace '") << ocio_input_color_space()
-                  << ("' from bitdepth default") );
+                  << _("' from bitdepth default") );
         return;
     }
     if ( n.rfind( ".dpx" ) != std::string::npos ||
