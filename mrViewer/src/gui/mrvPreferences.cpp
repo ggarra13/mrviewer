@@ -1158,7 +1158,7 @@ static const char* kCLocale = "C";
         use_ocio = false;
     }
 
-    if ( use_ocio && uiPrefs->uiPrefsOcioICSToolbar->value() )
+    if ( use_ocio )
     {
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
