@@ -958,6 +958,7 @@ void update_ICS( const mrv::ViewerUI* uiMain )
       {
           o->label( strdup( w->label() ) );
           o->value(i);
+          if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
           break;
       }
   }
@@ -2950,10 +2951,17 @@ int ImageView::leftMouseDown(int x, int y)
       }
 
       flags |= kMouseLeft;
-
+      if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+           fltk::event_key_state( fltk::RightShiftKey ) )
+      {
+          flags |= kLeftShift;
+          selection_mode();
+      }
+      
       if ( _mode == kSelection )
       {
          _selection = mrv::Rectd( 0, 0, 0, 0 );
+         return 1;
       }
       else if ( _mode == kMovePicture )
       {
@@ -3014,7 +3022,6 @@ int ImageView::leftMouseDown(int x, int y)
       }
       else if ( _mode == kDraw || _mode == kErase || _mode == kText )
       {
-
 
          _selection = mrv::Rectd( 0, 0, 0, 0 );
 
@@ -3431,6 +3438,12 @@ void ImageView::leftMouseUp( int x, int y )
   else
     flags &= ~kMouseRight;
 
+  if ( _mode == kSelection )
+  {
+      scrub_mode();
+      return;
+  }
+  
   window()->cursor( fltk::CURSOR_CROSS );
 
   mrv::media fg = foreground();
@@ -4543,6 +4556,7 @@ void ImageView::mouseDrag(int x,int y)
            double yn = double(y);
            data_window_coordinates( img, xn, yn, true );
 
+           
            short idx = 0;
 
            unsigned W = dpw[0].w();
@@ -5863,8 +5877,8 @@ int ImageView::handle(int event)
             break;
             //     case fltk::SHORTCUT:
         case fltk::KEY:
-            lastX = fltk::event_x();
-            lastY = fltk::event_y();
+            // lastX = fltk::event_x();
+            // lastY = fltk::event_y();
             return keyDown(fltk::event_key());
         case fltk::KEYUP:
             return keyUp(fltk::event_key());
@@ -7589,7 +7603,7 @@ void ImageView::update_color_info( const mrv::media& fg ) const
   {
       if (!fg) return;
       CMedia* img = fg->image();
-      if ( !img->image_damage() & CMedia::kDamageLut )
+      if ( ! (img->image_damage() & CMedia::kDamageLut) )
           return;
       update_ICS( main() );
   }
