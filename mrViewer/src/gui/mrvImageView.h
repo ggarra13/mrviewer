@@ -73,7 +73,8 @@ class server;
       kMouseMiddle = 1 << 3,
       kMouseRight  = 1 << 4,
       kLeftAlt     = 1 << 5,
-      kMouseMove   = 1 << 6,
+      kLeftShift   = 1 << 6,
+      kMouseMove   = 1 << 7,
     };
 
     enum Mode {

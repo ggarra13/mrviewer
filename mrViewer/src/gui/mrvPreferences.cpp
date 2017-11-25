@@ -1194,7 +1194,7 @@ static const char* kCLocale = "C";
                 const char* space = spaces[i].c_str();
                 OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
                 w->add( strdup( space ) );
-                w->tooltip( strdup( cs->getDescription() ) );
+                w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
                     w->label( strdup(space) );
