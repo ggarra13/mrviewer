@@ -3627,8 +3627,6 @@ void CMedia::ocio_input_color_space( const std::string& n )
 {
     if ( _input_color_space == n || is_thumbnail() ) return;
 
-    mrvLOG_INFO( "ocio", name() << _(" : Setting OCIO ICS to ")
-                 << n << std::endl );
     _input_color_space = n;
     image_damage( image_damage() | kDamageData | kDamageContents | kDamageLut );
 }
