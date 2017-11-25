@@ -1157,8 +1157,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     glLineWidth( 1.0 );
 
-    glEnable(GL_COLOR_LOGIC_OP);
-    glLogicOp(GL_XOR);
+    // glEnable(GL_COLOR_LOGIC_OP);
+    // glLogicOp(GL_XOR);
 
     glBegin(GL_LINE_LOOP);
 
@@ -1169,7 +1169,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     glEnd();
 
-    glDisable(GL_COLOR_LOGIC_OP);
+    // glDisable(GL_COLOR_LOGIC_OP);
 
     glPopAttrib();
     glMatrixMode( GL_MODELVIEW );
@@ -1617,7 +1617,7 @@ void GLEngine::draw_images( ImageList& images )
         ImageView::FlipDirection flip = _view->flip();
 
         set_matrix( flip, false );
-
+        
         if ( flip && !_view->vr() )
         {
             const mrv::Recti& dp = fg->display_window();
@@ -1628,20 +1628,18 @@ void GLEngine::draw_images( ImageList& images )
         }
 
 
-        if ( dpw != daw )
+        if ( dpw != daw && ! _view->vr() )
         {
-            if ( _view->display_window() && ! _view->vr() )
+            if ( _view->display_window() )
             {
-                std::cerr << "display window" << std::endl;
                 int x = img->x();
                 int y = img->y();
                 draw_square_stencil( dpw.x() - x, dpw.y() + y,
                                      dpw.w() + x, dpw.h() - y );
             }
-
+           
             if ( _view->data_window()  )
             {
-                std::cerr << "data window" << std::endl;
                 double x = img->x(), y = -img->y();
                 if ( stereo & CMedia::kStereoSideBySide )
                     x += dpw.w();
