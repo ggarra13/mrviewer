@@ -2274,13 +2274,13 @@ void aviImage::populate()
     if ( has_audio() )
     {
         AVStream* stream = get_audio_stream();
-        if ( stream->metadata ) dump_metadata( stream->metadata, _("Audio ") );
+        if ( stream->metadata ) dump_metadata( stream->metadata, N_("Audio ") );
     }
   
     if ( has_video() )
     {
         AVStream* stream = get_video_stream();
-        if ( stream->metadata ) dump_metadata( stream->metadata, _("Video ") );
+        if ( stream->metadata ) dump_metadata( stream->metadata, N_("Video ") );
 
     }
     
