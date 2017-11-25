@@ -175,7 +175,7 @@ static void cb_uiType(fltk::Choice* o, void*) {
         uiValue->text( N_("15") );
     else if ( type == _("Float") || type == _("Double") )
         uiValue->text( _("2.2") );
-    else if ( type == _("Timecode") )
+    else if ( type == N_("Timecode") )
         uiValue->text( _("00:00:00:00") );
     else if ( type == _("Rational") )
         uiValue->text( _("24000/1001") );
@@ -221,7 +221,7 @@ static fltk::Window* make_attribute_add_window() {
         new fltk::Item( _("M44 Float") );
         new fltk::Item( _("M33 Double") );
         new fltk::Item( _("M44 Double") );
-        new fltk::Item( _("Timecode") );
+        new fltk::Item( N_("Timecode") );
         new fltk::Item( _("Box2 Integer") );
         new fltk::Item( _("Box2 Float") );
         new fltk::Item( _("Vector2 Integer") );
@@ -303,9 +303,9 @@ static void add_attribute( CMedia::Attributes& attrs,
         mrvALERT( buf );
         return;
     }
-    else if ( type == _("Timecode") )
+    else if ( type == N_("Timecode") )
     {
-        if ( attrs.find( _("Video timecode") ) != attrs.end() )
+        if ( attrs.find( N_("Video timecode") ) != attrs.end() )
         {
             mrvALERT( _("Video timecode attribute already exists") );
             return;
