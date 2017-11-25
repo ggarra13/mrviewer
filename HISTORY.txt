@@ -1,3 +1,8 @@
+v3.9.4   - Bug fixed Video timecode not being read in Spanish locale.
+	 - Made SHIFT+LMB + drag draw a selection area (temporarily
+	   switching from Scrub mode).
+	 - Made tooltips in input color space report useful information.
+
 v3.9.3   - Removed incorrect message about OCIO default for an image.
 	 - Added message of OCIO default and OCIO taken from name of image.
 	 - Made all shaders calculate gain before lut.  This allows exposure
