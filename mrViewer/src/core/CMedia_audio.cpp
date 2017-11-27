@@ -922,31 +922,6 @@ void CMedia::audio_file( const char* file )
 
 
 
-static
-int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
-           bool eof)
-{
-    int ret;
-
-    *got_frame = 0;
-
-    if (!eof) {
-        ret = avcodec_send_packet(avctx, pkt);
-        // In particular, we don't expect AVERROR(EAGAIN), because we read all
-        // decoded frames with avcodec_receive_frame() until done.
-        if (ret < 0)
-            return ret == AVERROR_EOF ? 0 : ret;
-    }
-
-    ret = avcodec_receive_frame(avctx, frame);
-    if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF)
-        return ret;
-    if (ret >= 0)
-        *got_frame = 1;
-
-    return 0;
-}
-
 //
 // Limit the audio store to approx. max frames images on each side.
 // We have to check both where frame is as well as where _adts is.
@@ -1056,13 +1031,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         
         av_assert0( _aframe->nb_samples > 0 );
         av_assert0( ctx->channels > 0 );
-#if 0
-        int data_size = av_get_bytes_per_sample(ctx->sample_fmt);
-#else
         int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
                                                    _aframe->nb_samples,
                                                    ctx->sample_fmt, 0);
-#endif
         if (*audio_size < data_size) {
             IMG_ERROR( _("Output buffer size is too small for "
                          "the current frame (")
@@ -1349,9 +1320,9 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
       assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
 
       // If no samples are returned, then break now
-      if ( ret < 0 )
+      if ( audio_size <= 0 )
 	{
-            av_assert0( ret < 0 );
+            // av_assert0( ret < 0 );
 	   pkt_temp.size = 0;
 
            // Not sure what this was for:
