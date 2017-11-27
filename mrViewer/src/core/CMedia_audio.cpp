@@ -1028,9 +1028,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         else if ( ret < 0 )
             return ret;
 
-        
-        av_assert0( _aframe->nb_samples > 0 );
-        av_assert0( ctx->channels > 0 );
+        av_assert2( _aframe->nb_samples > 0 );
+        av_assert2( ctx->channels > 0 );
         int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
                                                    _aframe->nb_samples,
                                                    ctx->sample_fmt, 0);
@@ -1127,11 +1126,11 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 }
             }
 
-            av_assert0( ret >= 0 );
-            av_assert0( samples != NULL );
-            av_assert0( _aframe->nb_samples > 0 );
-            av_assert0( _aframe->extended_data != NULL );
-            av_assert0( _aframe->extended_data[0] != NULL );
+            av_assert2( ret >= 0 );
+            av_assert2( samples != NULL );
+            av_assert2( _aframe->nb_samples > 0 );
+            av_assert2( _aframe->extended_data != NULL );
+            av_assert2( _aframe->extended_data[0] != NULL );
                
             int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
                                    _aframe->nb_samples, 
