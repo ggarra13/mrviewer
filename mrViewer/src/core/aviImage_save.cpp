@@ -184,7 +184,7 @@ uint8_t **dst_samples_data = NULL;
 int       dst_samples_linesize;
 boost::uint64_t samples_count = 0;
 
-struct SwrContext *swr_ctx = NULL;
+struct SwrContext* swr_ctx = NULL;
 struct SwsContext* sws_ctx = NULL;
 
 
