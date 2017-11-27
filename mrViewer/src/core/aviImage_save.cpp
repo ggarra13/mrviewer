@@ -187,6 +187,8 @@ boost::uint64_t samples_count = 0;
 struct SwrContext* swr_ctx = NULL;
 struct SwsContext* sws_ctx = NULL;
 
+static int encode(AVCodecContext *enc_ctx, AVStream* st,
+                  AVFrame *frame, AVPacket *pkt);
 
 /* Add an output stream. */
 static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
@@ -734,35 +736,10 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                         c->time_base );
 
-       ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
-       if (ret < 0)
-       {
-           LOG_ERROR( _("Could not encode audio frame: ") << 
-                      get_error_text(ret) );
-           return false;
-       }
-
-
-       if (!got_packet) {
-           // Empty packet - do not save
-           continue;
-       }
-
-
-       samples_count += frame_size;
-
-
-       ret = write_frame(oc, &c->time_base, st, &pkt);
-       if (ret < 0) {
-           LOG_ERROR( "Error while writing audio frame: " << 
-                      get_error_text(ret) );
-           return false;
-       }
-
+       encode( c, st, audio_frame, &pkt );
    }
 
 
-   av_packet_unref( &pkt );
 
    return true;
 
@@ -887,8 +864,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     
     /* open the codec */
     if (avcodec_open2(c, codec, &info) < 0) {
-       LOG_ERROR( _("Could not open video codec") );
-       return false;
+        LOG_ERROR( _("Could not open video codec") );
+        return false;
     }
 
     int ret = avcodec_parameters_from_context(st->codecpar, c);
@@ -940,8 +917,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     /* Allocate the encoded raw frame. */
     picture = alloc_picture(c->pix_fmt, c->width, c->height);
     if (!picture) {
-       LOG_ERROR( _("Could not allocate picture") );
-       return false;
+        LOG_ERROR( _("Could not allocate picture") );
+        return false;
     }
 
     picture->pts = 0;
@@ -960,124 +937,81 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 {
 
 
-   CMedia* m = (CMedia*) img;
+    CMedia* m = (CMedia*) img;
 
-   image_type_ptr hires = img->hires();
+    image_type_ptr hires = img->hires();
 
-   if ( !hires )
-   {
-       LOG_ERROR( "Missing picture" );
-       return;
-   }
+    if ( !hires )
+    {
+        LOG_ERROR( "Missing picture" );
+        return;
+    }
 
 
-   unsigned w = c->width;
-   unsigned h = c->height;
+    unsigned w = c->width;
+    unsigned h = c->height;
 
-   if ( hires->width() < w )  w = hires->width();
-   if ( hires->height() < h ) h = hires->height();
+    if ( hires->width() < w )  w = hires->width();
+    if ( hires->height() < h ) h = hires->height();
 
-   float one_gamma = 1.0f / img->gamma();
+    float one_gamma = 1.0f / img->gamma();
 
-   // Convert half and float pictures to 16-bits
-   if ( hires->pixel_type() != mrv::image_type::kByte &&
-        hires->pixel_type() != mrv::image_type::kShort )
-   {
-       mrv::image_type_ptr ptr( new image_type( hires->frame(),
-                                                w, h,
-                                                hires->channels(),
-                                                hires->format(),
-                                                mrv::image_type::kShort ) );
+    // Convert half and float pictures to 16-bits
+    if ( hires->pixel_type() != mrv::image_type::kByte &&
+         hires->pixel_type() != mrv::image_type::kShort )
+    {
+        mrv::image_type_ptr ptr( new image_type( hires->frame(),
+                                                 w, h,
+                                                 hires->channels(),
+                                                 hires->format(),
+                                                 mrv::image_type::kShort ) );
 
-       for ( unsigned y = 0; y < h; ++y )
-       {
-           for ( unsigned x = 0; x < w; ++x )
-           {
-               ImagePixel p = hires->pixel( x, y );
+        for ( unsigned y = 0; y < h; ++y )
+        {
+            for ( unsigned x = 0; x < w; ++x )
+            {
+                ImagePixel p = hires->pixel( x, y );
 
-               // This code is equivalent to p.r = powf( p.r, gamma )
-               // but faster
-               if ( p.r > 0.0f && isfinite(p.r) )
-                   p.r = expf( logf(p.r) * one_gamma );
-               if ( p.g > 0.0f && isfinite(p.g) )
-                   p.g = expf( logf(p.g) * one_gamma );
-               if ( p.b > 0.0f && isfinite(p.b) )
-                   p.b = expf( logf(p.b) * one_gamma );
+                // This code is equivalent to p.r = powf( p.r, gamma )
+                // but faster
+                if ( p.r > 0.0f && isfinite(p.r) )
+                    p.r = expf( logf(p.r) * one_gamma );
+                if ( p.g > 0.0f && isfinite(p.g) )
+                    p.g = expf( logf(p.g) * one_gamma );
+                if ( p.b > 0.0f && isfinite(p.b) )
+                    p.b = expf( logf(p.b) * one_gamma );
 
-               if      (p.r < 0.0f) p.r = 0.0f;
-               else if (p.r > 1.0f) p.r = 1.0f;
-               if      (p.g < 0.0f) p.g = 0.0f;
-               else if (p.g > 1.0f) p.g = 1.0f;
-               if      (p.b < 0.0f) p.b = 0.0f;
-               else if (p.b > 1.0f) p.b = 1.0f;
+                if      (p.r < 0.0f) p.r = 0.0f;
+                else if (p.r > 1.0f) p.r = 1.0f;
+                if      (p.g < 0.0f) p.g = 0.0f;
+                else if (p.g > 1.0f) p.g = 1.0f;
+                if      (p.b < 0.0f) p.b = 0.0f;
+                else if (p.b > 1.0f) p.b = 1.0f;
 
-               ptr->pixel(x, y, p );
-           }
-       }
-       hires = ptr;
-   }
+                ptr->pixel(x, y, p );
+            }
+        }
+        hires = ptr;
+    }
 
-   AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
-                                            hires->pixel_type() );
-   sws_ctx = sws_getCachedContext( sws_ctx, w, h,
-                                   fmt, c->width, c->height, c->pix_fmt, 0, 
-                                   NULL, NULL, NULL );
-   if ( !sws_ctx )
-   {
-       LOG_ERROR( _("Failed to initialize swscale conversion context") );
-       return;
-   }
+    AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
+                                             hires->pixel_type() );
+    sws_ctx = sws_getCachedContext( sws_ctx, w, h,
+                                    fmt, c->width, c->height, c->pix_fmt, 0, 
+                                    NULL, NULL, NULL );
+    if ( !sws_ctx )
+    {
+        LOG_ERROR( _("Failed to initialize swscale conversion context") );
+        return;
+    }
 
-   uint8_t* buf = (uint8_t*)hires->data().get();
-   uint8_t* data[4] = {NULL, NULL, NULL, NULL};
-   int linesize[4] = { 0, 0, 0, 0 };
-   av_image_fill_arrays( data, linesize, buf, fmt, w, h, 1 );
-   sws_scale( sws_ctx, data, linesize, 0, h, picture->data, picture->linesize );
+    uint8_t* buf = (uint8_t*)hires->data().get();
+    uint8_t* data[4] = {NULL, NULL, NULL, NULL};
+    int linesize[4] = { 0, 0, 0, 0 };
+    av_image_fill_arrays( data, linesize, buf, fmt, w, h, 1 );
+    sws_scale( sws_ctx, data, linesize, 0, h, picture->data, picture->linesize );
 
 }
-
-static bool write_video_frame(AVFormatContext* oc, AVStream* st,
-			      const CMedia* img )
-{
-   int ret;
-   AVCodecContext* c = st->codec;
-
-   fill_yuv_image( c, picture, img );
-
-   AVPacket pkt = { 0 };
-   av_init_packet(&pkt);
-
-   int got_packet = 0;
-
-   /* encode the image */
-   picture->pts = frame_count;
-   ret = avcodec_encode_video2(c, &pkt, picture, &got_packet);
-   if (ret < 0) {
-       LOG_ERROR( _("Error while encoding video frame: ") << 
-                  get_error_text(ret) );
-       return false;
-   }
-
-   /* If size is zero, it means the image was buffered. */
-   if ( got_packet )
-   {
-       ret = write_frame( oc, &c->time_base, st, &pkt );
-
-       av_packet_unref( &pkt );
-
-       if (ret < 0) {
-           LOG_ERROR( _("Error while writing video frame: ") << 
-                      get_error_text(ret) );
-           return false;
-       }
-
-   }
-
-   frame_count++;
-
-   return true;
-}
-
 
 static AVFormatContext *oc = NULL;
 static AVOutputFormat* fmt = NULL;
@@ -1086,6 +1020,55 @@ static AVStream* audio_st = NULL, *video_st = NULL;
 AVCodec* audio_cdc, *video_codec;
 
 
+
+
+static int encode(AVCodecContext *enc_ctx, AVStream* st,
+                  AVFrame *frame, AVPacket *pkt)
+{
+    int ret;
+
+    /* send the frame to the encoder */
+    ret = avcodec_send_frame(enc_ctx, frame);
+    if (ret < 0) {
+        LOG_ERROR( _( "Error sending a frame for encoding" ) );
+        return ret;
+    }
+
+    while (ret >= 0) {
+        ret = avcodec_receive_packet(enc_ctx, pkt);
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+            return 0;
+        else if (ret < 0) {
+            LOG_ERROR( _("Error during encoding") );
+            return ret;
+        }
+
+        ret = write_frame( oc, &enc_ctx->time_base, st, pkt );
+        av_packet_unref(pkt);
+        frame_count++;
+    }
+}
+
+static bool write_video_frame(AVFormatContext* oc, AVStream* st,
+			      const CMedia* img )
+{
+    int ret;
+    AVCodecContext* c = st->codec;
+
+    fill_yuv_image( c, picture, img );
+
+    AVPacket pkt = { 0 };
+    av_init_packet(&pkt);
+
+    /* encode the image */
+    //picture->pts = frame_count;
+    picture->pts = AV_NOPTS_VALUE;
+
+    encode( c, st, picture, &pkt );
+    
+
+   return true;
+}
 
 
 static inline
@@ -1362,16 +1345,9 @@ bool flush_video_and_audio( const CMedia* img )
             audio_frame->nb_samples = cache_size;
             audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                              c->time_base );
-            
-            ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
-            if (ret < 0)
-            {
-                LOG_ERROR( _("Could not encode audio frame: ") << 
-                           get_error_text(ret) );
-            }
-        }
 
-        av_packet_unref( &pkt );
+            encode( c, audio_st, audio_frame, &pkt );
+        }
 
     }
 
@@ -1382,7 +1358,6 @@ bool flush_video_and_audio( const CMedia* img )
         AVStream* s = st[i];
         if ( !s ) continue;
             
-        int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
         if ( !( c->codec->capabilities & AV_CODEC_CAP_DELAY ) )
@@ -1390,61 +1365,11 @@ bool flush_video_and_audio( const CMedia* img )
             
         if (c->codec_type == AVMEDIA_TYPE_AUDIO && c->frame_size <= 1)
             continue;
-        // if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codec->id == AV_CODEC_ID_RAWVIDEO)
-        //     continue;
 
-        for (;;) {
-            int (*encode)(AVCodecContext*, AVPacket*, const AVFrame*, int*) = NULL;
-            const char *desc;
-                
-            switch (s->codec->codec_type) {
-                case AVMEDIA_TYPE_AUDIO:
-                    encode = avcodec_encode_audio2;
-                    desc   = "audio";
-                    break;
-                case AVMEDIA_TYPE_VIDEO:
-                    encode = avcodec_encode_video2;
-                    desc   = "video";
-                    break;
-                default:
-                    stop_encoding = 1;
-            }
-                
-            if (encode) {
-                AVPacket pkt = {0};
-                int got_packet = 0;
-                av_init_packet(&pkt);
-                    
-                ret = encode(c, &pkt, NULL, &got_packet);
-                    
-                if (ret < 0) {
-                    LOG_ERROR( _("Failed ") << desc << _(" encoding") );
-                    return false;
-                }
-
-                if (!got_packet ) {
-                    stop_encoding = 1;
-                    LOG_INFO( _("Stopped encoding cached ") << desc 
-                              << _(" frames") );
-                    break;
-                }
-
-                ret = write_frame(oc, &c->time_base, s, &pkt);
-
-                av_packet_unref( &pkt );
-
-                if ( ret < 0 )
-                {
-                    LOG_ERROR( _("Error writing ") << desc << _(" frame") );
-                    stop_encoding = 1;
-                    break;
-                }
-
-            }
-
-            if (stop_encoding)
-                break;
-        }
+        AVPacket pkt = {0};
+        av_init_packet(&pkt);
+        
+        encode(c, s, NULL, &pkt );
     }
 
     return true;
