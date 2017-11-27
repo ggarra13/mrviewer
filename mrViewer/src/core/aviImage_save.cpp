@@ -66,6 +66,25 @@ namespace mrv {
 static AVFrame *picture = NULL;
 static int64_t frame_count = 0;
 
+int encode(AVCodecContext *avctx, AVPacket *pkt, AVFrame *frame, int *got_packet)
+{
+    int ret;
+
+    *got_packet = 0;
+
+    ret = avcodec_send_frame(avctx, frame);
+    if (ret < 0)
+        return ret;
+
+    ret = avcodec_receive_packet(avctx, pkt);
+    if (!ret)
+        *got_packet = 1;
+    if (ret == AVERROR(EAGAIN))
+        return 0;
+
+    return ret;
+}
+
 /* just pick the highest supported samplerate */
 static int select_sample_rate(AVCodec *codec, unsigned sample_rate)
 {
@@ -734,7 +753,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                         c->time_base );
 
-       ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
+       ret = encode(c, &pkt, audio_frame, &got_packet);
        if (ret < 0)
        {
            LOG_ERROR( _("Could not encode audio frame: ") << 
@@ -1051,7 +1070,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
    /* encode the image */
    picture->pts = frame_count;
-   ret = avcodec_encode_video2(c, &pkt, picture, &got_packet);
+   ret = encode(c, &pkt, picture, &got_packet);
    if (ret < 0) {
        LOG_ERROR( _("Error while encoding video frame: ") << 
                   get_error_text(ret) );
@@ -1363,7 +1382,7 @@ bool flush_video_and_audio( const CMedia* img )
             audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                              c->time_base );
             
-            ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
+            ret = encode(c, &pkt, audio_frame, &got_packet);
             if (ret < 0)
             {
                 LOG_ERROR( _("Could not encode audio frame: ") << 
@@ -1394,16 +1413,13 @@ bool flush_video_and_audio( const CMedia* img )
         //     continue;
 
         for (;;) {
-            int (*encode)(AVCodecContext*, AVPacket*, const AVFrame*, int*) = NULL;
-            const char *desc;
-                
+
+            const char* desc;
             switch (s->codec->codec_type) {
                 case AVMEDIA_TYPE_AUDIO:
-                    encode = avcodec_encode_audio2;
                     desc   = "audio";
                     break;
                 case AVMEDIA_TYPE_VIDEO:
-                    encode = avcodec_encode_video2;
                     desc   = "video";
                     break;
                 default:
