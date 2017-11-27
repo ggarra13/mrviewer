@@ -1307,39 +1307,30 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
       _audio_max += audio_size;
   }
 
-  //while ( pkt_temp.size > 0 || pkt_temp.data == NULL )
   {
       // Decode the audio into the buffer
-      // assert( _audio_buf_used % 16 == 0 );
+      // av_assert0( _audio_buf_used % 16 == 0 );
 
       int ret = decode_audio3( _audio_ctx, 
                                ( int16_t * )( (char*)_audio_buf + 
                                               _audio_buf_used ), 
                                &audio_size, &pkt_temp );
+      if ( ret < 0 )
+      {
+          return kDecodeMissingSamples;
+      }
       assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
 
       // If no samples are returned, then break now
       if ( audio_size <= 0 )
 	{
-            // av_assert0( ret < 0 );
 	   pkt_temp.size = 0;
-
-           // Not sure what this was for:
-           //
-           // if ( this->frame() > frame )
-           //     return kDecodeOK;
            return kDecodeMissingSamples;
 	}
 
       assert( audio_size > 0 );
       assert( audio_size + _audio_buf_used <= _audio_max );
 
-      // Decrement the length by the number of bytes parsed
-      // assert( pkt_temp.size >= ret );
-      // pkt_temp.data += ret;
-      // pkt_temp.size -= ret;
-
-      // if ( audio_size <= 0 ) break;
 
       _audio_buf_used += audio_size;
     }
