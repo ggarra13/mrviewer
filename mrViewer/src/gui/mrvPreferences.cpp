@@ -598,7 +598,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsCacheActive->value( (bool) tmp );
     CMedia::cache_active( (bool) tmp );
 
-    caches.get( "preload", tmp, 0 );
+    caches.get( "preload", tmp, 1 );
     uiPrefs->uiPrefsPreloadCache->value( (bool) tmp );
     CMedia::preload_cache( (bool) tmp );
 
