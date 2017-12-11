@@ -42,6 +42,7 @@ typedef std::vector< std::string > stringArray;
        std::string bgfile;
        mrv::LoadList stereo;
        bool edl;
+      bool play;
        float gamma;
        float gain;
        std::string host;
@@ -49,7 +50,8 @@ typedef std::vector< std::string > stringArray;
        unsigned short port;
        float fps;
 
-  Options() : edl(false), gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 )
+      Options() : edl(false), play(false),
+                  gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 )
     {}
   };
 
@@ -63,7 +65,7 @@ typedef std::vector< std::string > stringArray;
   //
   // Command-line parser
   //
-  void parse_command_line( const int argc, char** argv,
+  bool parse_command_line( const int argc, char** argv,
 			   mrv::ViewerUI* ui, 
                            mrv::Options& opts);
 }
