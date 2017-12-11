@@ -150,9 +150,9 @@ namespace fs = boost::filesystem;
 
 // FLTK2 currently has a problem on Linux with timout's fltk::event_x/y not
 // taking into account other child widgets.  This works around it.
-#ifndef _WIN32
+//#ifndef _WIN32
 #  define FLTK_TIMEOUT_EVENT_BUG
-#endif
+//#endif
 
 
 
@@ -2077,7 +2077,8 @@ bool ImageView::should_update( mrv::media fg )
   if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
     int y = fltk::event_y();
-    if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
+    if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
+                                            (!uiMain->uiMain->border());
     mouseMove( fltk::event_x(), y );
 #else
     mouseMove( fltk::event_x(), fltk::event_y() );
@@ -4119,8 +4120,8 @@ void ImageView::mouseMove(int x, int y)
 {
     if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-  mrv::media fg = foreground();
-  if ( !fg ) return;
+    mrv::media fg = foreground();
+    if ( !fg ) return;
 
   CMedia* img = fg->image();
 
@@ -7210,10 +7211,10 @@ void ImageView::resize_main_window()
   if ( posY < miny )     posY = miny;
 
   if ( w < 640 )  w = 640;
-  if ( h < 530 )  h = 530;
+  if ( h < 535 )  h = 535;
 
-  fltk_main()->resize( posX, posY, w, h );
   fltk_main()->fullscreen_off( posX, posY, w, h );
+  fltk_main()->resize( posX, posY, w, h );
 #ifdef LINUX
   fltk_main()->show();
 #endif
