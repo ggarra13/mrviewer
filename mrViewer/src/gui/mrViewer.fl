@@ -98,6 +98,12 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
+declblock {\#ifdef _WIN32} {selected after {\#endif}
+} {
+  decl {\#define unsetenv} {public
+  }
+} 
+
 Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
 } {
   code {std::string orig = ctl;} {}
@@ -158,7 +164,7 @@ v->make_exec_return(true);}
     }
   }
   code {if (!w->exec())
-        return orig;
+	return orig;
 return ctl;} {}
 } 
 
@@ -663,7 +669,8 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
@@ -673,7 +680,7 @@ o->label( o->child( o->value() )->label() );}
         class {mrv::ActionWindow}
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings
+          label Settings open
           xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
@@ -1586,6 +1593,8 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
 std::string r = open_ocio_config( uiPrefs->uiPrefsOCIOConfig->text() );
 if ( r.empty() ) return;
 
+putenv( "OCIO=" );
+unsetenv( "OCIO" );
 uiPrefs->uiPrefsOCIOConfig->text( r.c_str() );
 uiPrefs->run(v);}
                   tooltip {Pick a config.ocio file from disk.
@@ -2303,7 +2312,7 @@ for (int i = 0; i < numfonts; i++)
 {
        o->add(fonts[i]->name());
        if ( strcmp( fonts[i]->name(), "Arial" ) == 0 )
-           o->value(i);
+	   o->value(i);
 }}
             } {}
             {fltk::Choice} uiPrefsSubtitleEncodingChoices {
@@ -2470,12 +2479,12 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );} open
+            callback {o->update( v );}
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface} open
+              label {User Interface}
               vertical value 1
             } {
               {fltk::ItemGroup} {} {
@@ -2548,7 +2557,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {223 419 423 31}
         } {
           {fltk::Button} {} {
@@ -2779,11 +2788,11 @@ o->child_of( main->uiMain );} modal
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {451 557 150 520} horizontal resizable
+        xywh {451 557 150 520} horizontal hide resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::Group} {} {open
           xywh {0 11 145 495}
@@ -3010,8 +3019,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3051,13 +3059,13 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {651 220 640 535} when CHANGED resizable
+        xywh {651 221 640 534} when CHANGED hide resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
-          xywh {0 0 640 535}
+          xywh {0 0 640 534}
         } {
           {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
@@ -3192,7 +3200,7 @@ img->ocio_input_color_space( c );} open
                   xywh {0 1 145 18} box FLAT_BOX
                 } {
                   {fltk::InvisibleBox} {} {
-                    label Gain selected
+                    label Gain
                     xywh {0 0 38 17} align 104
                   }
                   {fltk::ValueInput} uiGainInput {
@@ -3328,7 +3336,7 @@ else
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-                               v->uiGamma->value( (float) o->value() );}
+			       v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
@@ -3385,7 +3393,7 @@ Value is:  pow( 2, 1/x );}
             }
           }
           {fltk::Group} uiViewGroup {open
-            xywh {0 28 640 430} resizable
+            xywh {0 28 640 429} resizable
             class {fltk::Group}
           } {
             {fltk::Group} uiView {
@@ -3395,7 +3403,7 @@ Value is:  pow( 2, 1/x );}
             } {}
           }
           {fltk::Group} uiPixelBar {
-            xywh {0 458 640 28} box FLAT_BOX color 56
+            xywh {0 457 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
               xywh {2 0 634 25}
@@ -3688,7 +3696,7 @@ where Yn is the white reference (usually 1).
             }
           }
           {fltk::PackedGroup} uiBottomBar {
-            xywh {0 486 640 49} box ENGRAVED_BOX
+            xywh {0 485 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
               xywh {0 0 640 49}
@@ -3965,8 +3973,8 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-        Image_ptr img = fg->image();
-        f = img->first_frame();
+	Image_ptr img = fg->image();
+	f = img->first_frame();
      }
    }
    else
@@ -4003,8 +4011,8 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-        Image_ptr img = fg->image();
-        f = img->last_frame();
+	Image_ptr img = fg->image();
+	f = img->last_frame();
      }
    }
    else
@@ -4129,6 +4137,6 @@ if ( !ctl.empty() )
     }
   }
   code {if (!w->exec())
-        return orig;
+	return orig;
 return ctl;} {}
 } 

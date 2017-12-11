@@ -1,3 +1,23 @@
+v3.9.6   - Solidified Window's maximize button to also work when the
+	   taskbar is not at the bottom of the screen or is of diferent
+	   size as default.
+	 - Added a command-line option to start the video/image playing.
+	   The shortcut is -n and the full option is --unpause.
+	 - Detected JPEG file format with ffmpeg instead of with
+	   ImageMagick, as the reader is faster and can read more bitdepths.
+
+v3.9.5   - Made cache preloading's default to on.  This will take effect
+	   only if you open a fresh mrViewer with no preferences saved.
+	 - Made message when selecting an ocio input color space based on
+	   bit depth a tad more clear.  It is now reported what bit depth
+	   it selected as default.
+	 - Made Preference Window's Revert/Cancel/Save buttons more clearly
+	   visible.
+	 - Bug fixed maximize button on Windows which would place the window
+	   below the taskbar.
+	 - Bug fixed picking an OCIO config from the 3D LUT preference
+	   when another has been selected previously.
+
 v3.9.4   - Bug fixed Video timecode not being read in Spanish locale.
 	 - Made SHIFT+LMB + drag draw a selection area (temporarily
 	   switching from Scrub mode).
