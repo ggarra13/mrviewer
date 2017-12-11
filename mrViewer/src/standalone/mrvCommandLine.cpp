@@ -71,30 +71,32 @@ typedef std::vector<int> IntArray;
 
 #if defined(_WIN32) || defined(_WIN64)
       AllocConsole();
-      freopen("CONIN$", "r", stdin );
-      freopen("CONOUT$", "w", stdout);
-      freopen("CONOUT$", "w", stderr);
+      freopen("conin$", "r", stdin);
+      freopen("conout$", "w", stdout);
+      freopen("conout$", "w", stderr);
 #endif
-
-      std::string cmd = c.getProgramName();
-      fprintf( stderr, N_("\n%s %s\n\n"), cmd.c_str(), c.getVersion().c_str() );
+      std::string& cmd = c.getProgramName();
+      std::cerr << cmd << " v" << c.getVersion()
+                << std::endl << std::endl
+                << "Usage:" << std::endl << std::endl
+                << cmd;
 
       //
       // Output usage line
       //
-      fprintf( stderr, _("Usage:\n\n  %s "), cmd.c_str() );
 
       std::list<Arg*> args = c.getArgList();
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
         {
-          fprintf(stderr, "%s ", (*it)->shortID().c_str() );
+            std::cerr << " " << (*it)->shortID();
         }
 
       //
       // Output options in shorter format than TCLAP's default
       //
-      fprintf( stderr, _("\n\nOptions:\n\n"));
-
+      std::cerr << std::endl << std::endl
+                << _("Options:") << std::endl << std::endl;
+ 
       //
       // Find longest argument for formatting
       //
@@ -110,21 +112,22 @@ typedef std::vector<int> IntArray;
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
         {
           const std::string& ID = (*it)->longID();
-          fprintf( stderr, "  %s", ID.c_str() );
+          std::cerr << "  " << ID;
 
           for ( size_t i = ID.size(); i < len; ++i )
             {
-              fprintf( stderr, " " );
+                std::cerr << " ";
             }
-          fprintf( stderr, "   %s\n", (*it)->getDescription().c_str() );
+          std::cerr << "   " << (*it)->getDescription().c_str() << std::endl;
         }
 
-      fprintf( stderr, "\n" );
-      fprintf( stderr, _("Names cannot contain spaces in their paths.\n\n") );
-      fprintf( stderr, _("Examples:\n\n") );
-      fprintf( stderr, "  > %s background.dpx texture.png\n", cmd.c_str() );
-      fprintf( stderr, "  > %s beauty.001-020.iff background.%%04d.exr 1-20\n", cmd.c_str() );
-      fprintf( stderr, "  > %s beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi\n", cmd.c_str() );
+      std::cerr << std::endl
+                << _("Names cannot contain spaces in their paths.")
+                << std::endl << std::endl
+                << _("Examples:") << std::endl << std::endl;
+      std::cerr << "  > " << cmd << " background.dpx texture.png" << std::endl
+                << "  > " << cmd << " beauty.001-020.iff background.%%04d.exr 1-20" << std::endl 
+                << "  > " << cmd << " beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi" << std::endl;
 
 #if defined(_WIN32)||defined(_WIN64)
        Sleep(INFINITE);
@@ -307,7 +310,7 @@ void parse_directory( const std::string& fileroot,
 //
 // Command-line parser
 //
-void parse_command_line( const int argc, char** argv,
+bool parse_command_line( const int argc, char** argv,
                          mrv::ViewerUI* ui,
                          mrv::Options& opts )
 {
@@ -388,6 +391,10 @@ void parse_command_line( const int argc, char** argv,
     asub( "u", N_("sub"),
           _("Set subtitle for movie(s)."), false, "subtitles");
 
+    SwitchArg aplay("n", "no_pause",
+                    _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
+
+    cmd.add(aplay);
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(ahostname);
@@ -412,6 +419,7 @@ void parse_command_line( const int argc, char** argv,
     //
     // Extract the options
     //
+    opts.play  = aplay.getValue();
     opts.gamma = agamma.getValue();
     opts.gain  = again.getValue();
     opts.host = ahostname.getValue();
@@ -568,7 +576,7 @@ void parse_command_line( const int argc, char** argv,
   catch ( TCLAP::ArgException& e )
     {
       std::cerr << e.error() << " " << e.argId() << std::endl;
-      exit(1);
+      return false;
     }
 
 
@@ -588,6 +596,7 @@ void parse_command_line( const int argc, char** argv,
   ui->uiGain->value( opts.gain );
   ui->uiView->gain( opts.gain );
 
+  return true;
 }
 
 
