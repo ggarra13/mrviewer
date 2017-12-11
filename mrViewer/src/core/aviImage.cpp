@@ -257,7 +257,6 @@ bool aviImage::test_filename( const char* buf )
 */
 bool aviImage::test(const boost::uint8_t *data, unsigned len)
 {
-
   if ( len < 12 ) return false;
 
   
@@ -362,6 +361,12 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   else if ( strncmp( (char*)data, "DHAV", 4 ) == 0 )
   {
       return true;
+  }
+  else if ( magic == 0xFFD8FFE0 )
+  {
+      // JPEG
+      if ( strncmp( (char*)data + 6, "JFIF", 4 ) == 0 )
+          return true;
   }
   else
     {
