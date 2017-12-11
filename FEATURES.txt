@@ -1,13 +1,15 @@
 
 
-- Support for video sequences in avi, mov, wmv, mp4 or vob.
+- Support for video sequences in avi, mov, wmv, mp4, vob, ts, etc.
 - Support for image sequences as animation.
 - Support for gamma and gain interactively done in shaders.
+- Support for color LUTs done in shaders.
 - Support for channel selection in shaders.
 - Support for multiple channels in EXRs, TIFFs and PSDs.
 - Support for mipmaps in EXRs.
 - Previews in file requester.
 - Flipping view in X and Y.
+- Rotating view 90 degrees.
 - Wiping two video or image sequences.
 - EDL to play video one after the other.
 - Vectorscope.
@@ -22,16 +24,7 @@
 - Non-Destructive Compositing.
 - Cropping of View Window to simulate film crops.
 - CTL support
+- OpenColorIO support
 - ACES 1.0 conformance
 - Passive Stereo support (anaglyph, side by side, interlaced, checkerboard)
 - Windows32, Windows64 and Linux64 versions.
-
-
-
-
-
-
-
-
-
-
