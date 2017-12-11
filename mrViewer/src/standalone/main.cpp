@@ -25,9 +25,9 @@
  * 
  */
 
-#ifdef DEBUG
- #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
-#endif
+//#ifdef DEBUG
+//  #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+//#endif
 
 #include <string.h>
 #include <locale.h>
@@ -234,8 +234,12 @@ int main( int argc, char** argv )
           ui = new mrv::ViewerUI();
 
           mrv::Options opts;
+          bool ok = true;
           if ( argc > 0 )
-              mrv::parse_command_line( argc, argv, ui, opts );
+              ok = mrv::parse_command_line( argc, argv, ui, opts );
+
+          if (!ok) throw std::runtime_error("Could not parse commandline");
+          
           argc = 0;
 
 
@@ -360,7 +364,14 @@ int main( int argc, char** argv )
               fltk::add_timeout( 1.0, load_new_files, ui );
 
           ui->uiMain->show();   // so run() does something
+
+          // Start playback if command line forced us to do so
+          if ( opts.play )
+          {
+              ui->uiView->play_forwards();
+          }
           ok = fltk::run();
+
       }
       catch( const std::exception& e )
       {
