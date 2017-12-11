@@ -3573,25 +3573,38 @@ void CMedia::default_ocio_input_color_space()
         ocio_input_color_space( cs );
         return;
     }
-    
+
+    const char* bit_depth = _("unknown");
     switch( depth() )
     {
         case image_type::kByte:
             if ( !ocio_8bits_ics.empty() )
+            {
+                bit_depth = _("8 bits");
                 ocio_input_color_space( ocio_8bits_ics.c_str() );
+            }
             break;
         case image_type::kShort:
             if ( !ocio_16bits_ics.empty() )
+            {
+                bit_depth = _("16 bits");
                 ocio_input_color_space( ocio_16bits_ics.c_str() );
+            }
             break;
         case image_type::kInt:
             if ( !ocio_32bits_ics.empty() )
+            {
+                bit_depth = _("32 bits");
                 ocio_input_color_space( ocio_32bits_ics.c_str() );
+            }
             break;
         case image_type::kHalf:
         case image_type::kFloat:
             if ( !ocio_float_ics.empty() )
+            {
+                bit_depth = _("half/float");
                 ocio_input_color_space( ocio_float_ics.c_str() );
+            }
             break;
         default:
             IMG_ERROR( _("default_ocio_input_color_space - "
@@ -3602,7 +3615,7 @@ void CMedia::default_ocio_input_color_space()
     if (! ocio_input_color_space().empty() )
     {
         IMG_INFO( _("Got colorspace '") << ocio_input_color_space()
-                  << _("' from bitdepth default") );
+                  << _("' from bitdepth ") << bit_depth << _(" as default") );
         return;
     }
     if ( n.rfind( ".dpx" ) != std::string::npos ||
