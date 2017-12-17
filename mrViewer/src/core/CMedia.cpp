@@ -2519,7 +2519,6 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   if ( idx < 0 ) idx = 0;
   else if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
 
-
   if ( !seq || seq[idx] ) return;
 
   mrv::image_type_ptr np;
