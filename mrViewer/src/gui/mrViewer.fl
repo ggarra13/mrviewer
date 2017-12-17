@@ -98,7 +98,7 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
-declblock {\#ifdef _WIN32} {selected after {\#endif}
+declblock {\#ifdef _WIN32} {after {\#endif}
 } {
   decl {\#define unsetenv} {public
   }
@@ -669,15 +669,14 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences open
-        xywh {1097 629 700 450} hide resizable
+        label Preferences
+        xywh {1097 629 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2787,12 +2786,12 @@ o->child_of( main->uiMain );} modal
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
-o->hide();}
-        xywh {451 557 150 520} horizontal hide resizable
+o->hide();} selected
+        xywh {451 557 150 520} horizontal
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::Group} {} {open
           xywh {0 11 145 495}
