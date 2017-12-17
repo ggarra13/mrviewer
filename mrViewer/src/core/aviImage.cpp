@@ -407,13 +407,13 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
 }
 
-// Returns the current subtitle stream
+// Returns the current subtitle stream or NULL if none available
 AVStream* aviImage::get_subtitle_stream() const
 {
   return _subtitle_index >= 0 ? _context->streams[ subtitle_stream_index() ] : NULL;
 }
 
-// Returns the current video stream
+// Returns the current video stream or NULL if none available
 AVStream* aviImage::get_video_stream() const
 {
   return _video_index >= 0 ? _context->streams[ video_stream_index() ] : NULL;
