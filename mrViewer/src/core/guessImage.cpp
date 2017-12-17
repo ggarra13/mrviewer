@@ -38,6 +38,7 @@
 #include "pxrzImage.h"
 #include "wandImage.h"
 #include "aviImage.h"
+#include "mrvColorBarsImage.h"
 #include "iffImage.h"
 #include "mrayImage.h"
 #include "ddsImage.h"
@@ -45,6 +46,7 @@
 #include "oiioImage.h"
 #include "picImage.h"
 #include "rawImage.h"
+#include "smpteImage.h"
 
 #include "Sequence.h"
 #include "mrvIO.h"
@@ -221,6 +223,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         }
     }
 
+
+    
     boost::uint8_t* read_data = 0;
     size_t size = len;
     const boost::uint8_t* test_data = datas;
@@ -236,9 +240,78 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
             }
             else
             {
-                LOG_ERROR( _("Image \"") << name << _("\" not found.") );
+                CMedia* img = NULL;
+                if ( strcmp( name, _("SMPTE NTSC Color Bars") ) == 0 )
+                {
+                    img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
+                }
+                else if ( strcmp( name, _("PAL Color Bars") ) == 0 )
+                {
+                    img = new ColorBarsImage( ColorBarsImage::kPAL );
+                }
+                else if ( strcmp( name, _("NTSC HDTV Color Bars") ) == 0 )
+                {
+                    img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC_HDTV );
+                }
+                else if ( strcmp( name, _("PAL HDTV Color Bars") ) == 0 )
+                {
+                    img = new ColorBarsImage( ColorBarsImage::kPAL_HDTV );
+                }
+                else if ( strcmp( name, _("Checkered") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kCheckered,
+                                          1280, 960 );
+                }
+                else if ( strcmp( name, _("Linear Gradient") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kLinearGradient,
+                                          1280, 960 );
+                }
+                else if ( strcmp( name, _("Luminance Gradient") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kLuminanceGradient,
+                                          1280, 960 );
+                }
+                else if ( strcmp( name, _("Gamma 1.4 Chart") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kGammaChart,
+                                          1280, 960 );
+                    img->gamma( 1.4 );
+                }
+                else if ( strcmp( name, _("Gamma 1.8 Chart") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kGammaChart,
+                                          1280, 960 );
+                    img->gamma( 1.8 );
+                }
+                else if ( strcmp( name, _("Gamma 2.2 Chart") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kGammaChart,
+                                          1280, 960 );
+                    img->gamma( 2.2 );
+                }
+                else if ( strcmp( name, _("Gamma 2.4 Chart") ) == 0 )
+                {
+                    img = new smpteImage( smpteImage::kGammaChart,
+                                          1280, 960 );
+                    img->gamma( 2.4 );
+                }
+                // @todo: slate image cannot be created since it needs info
+                //        from other image.
+                if ( img )
+                {
+                    img->fetch(1);
+                    img->default_icc_profile();
+                    img->default_rendering_transform();
+                    img->filename( name );
+                    return img;
+                }
+                else
+                {
+                    LOG_ERROR( _("Image \"") << name << _("\" not found.") );
+                }
+                return NULL;
             }
-            return NULL;
         }
         test_data = read_data = new boost::uint8_t[size + 1];
         read_data[size] = 0; // null-terminate so strstr() works

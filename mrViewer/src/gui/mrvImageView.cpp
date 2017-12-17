@@ -1610,24 +1610,60 @@ void ImageView::center_image()
     if ( !fg ) return;
 
     Image_ptr img = fg->image();
-    mrv::Recti dpw = img->display_window();
-    if ( dpw.w() == 0 || !display_window() )
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    mrv::Recti dpw;
+    if ( display_window() )
     {
-        dpw = img->data_window();
+        dpw = img->display_window();
 
-        if ( dpw.w() == 0 )
+        if ( stereo_out & CMedia::kStereoAnaglyph )
         {
-            dpw.w( img->width() );
-            dpw.h( img->height() );
+            mrv::Recti dpw2 = img->display_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->display_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
         }
     }
-
-    CMedia::StereoOutput stereo_out = img->stereo_output();
-    if ( stereo_out & CMedia::kStereoAnaglyph )
+    else
     {
-        mrv::Recti dpw2 = img->display_window2();
-        dpw.merge( dpw2 );
+      dpw = img->data_window();
+      if ( stereo_out & CMedia::kStereoAnaglyph )
+      {
+          mrv::Recti dpw2 = img->data_window2();
+          dpw.merge( dpw2 );
+      }
+      else if ( stereo_out == CMedia::kStereoRight )
+      {
+          dpw = img->data_window2();
+      }
+      else if ( stereo_out & CMedia::kStereoSideBySide )
+      {
+          const mrv::Recti& dp = img->display_window();
+          mrv::Recti daw = img->data_window2();
+          daw.x( dp.w() + daw.x() );
+          dpw.merge( daw );
+      }
+      else if ( stereo_out & CMedia::kStereoTopBottom )
+      {
+          const mrv::Recti& dp = img->display_window();
+          mrv::Recti daw = img->data_window2();
+          daw.y( dp.h() + daw.y() );
+          dpw.merge( daw );
+      }
     }
+
 
     dpw.x( dpw.x() + img->x() );  // here
     dpw.y( dpw.y() - img->y() );
@@ -1638,8 +1674,11 @@ void ImageView::center_image()
         CMedia* img2 = bg->image();
         mrv::Recti dpw2 = img2->display_window();
         dpw2.x( int(dpw2.x() + img2->x()) );
-        dpw2.y( int(dpw2.y() + img2->y()) );
-        dpw.merge( dpw2 );
+        dpw2.y( int(dpw2.y() - img2->y()) );
+        if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
+        {
+            dpw.merge( dpw2 );
+        }
     }
 
     double pr = 1.0;
@@ -1764,12 +1803,10 @@ void ImageView::fit_image()
       mrv::Recti dpw2 = img2->display_window();
       dpw2.x( int(dpw2.x() + img2->x()) );
       dpw2.y( int(dpw2.y() - img2->y()) );
-      if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 1 )
+      if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
       {
-          dpw2.w( int(dpw2.w() * img2->scale_x() ) );
-          dpw2.h( int(dpw2.h() * img2->scale_y() ) );
+          dpw.merge( dpw2 );
       }
-      dpw.merge( dpw2 );
   }
 
   int W = dpw.w();
@@ -3008,6 +3045,8 @@ int ImageView::leftMouseDown(int x, int y)
               int xp, yp, w, h;
               picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
 
+              // std::cerr << "x,y " << x << ", " << y << " outside " << outside
+              //           << std::endl;
               if ( outside || !pic ) {
                   // draw image without borders (in case this was selected
                   // before).
@@ -3101,10 +3140,6 @@ int ImageView::leftMouseDown(int x, int y)
          send_network( str );
 
          add_shape( mrv::shape_type_ptr(s) );
-      }
-      else
-      {
-          _mode = kScrub;
       }
 
       if ( _wipe_dir != kNoWipe )
@@ -4274,6 +4309,8 @@ void ImageView::mouseMove(int x, int y)
                       px = (double) picb->width() / (double) pic->width();
                       py = (double) picb->height() / (double) pic->height();
                   }
+                  bgr->scale_x( px );
+                  bgr->scale_y( py );
               }
 
               xp += daw.x();
