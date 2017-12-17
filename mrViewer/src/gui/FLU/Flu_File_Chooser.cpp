@@ -1050,7 +1050,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
                   }
                 if( !duplicate )
                   {
-                    favoritesList->add( buf );
+                      favoritesList->add( buf );
                   }
               }
           }
@@ -3109,6 +3109,7 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
 
   entryPopup.popup();
   const fltk::Widget* selection = entryPopup.get_item();
+  std::cerr << "selection get item " << selection << std::endl;
   if( selection )
     {
       size_t handler = (size_t) selection->user_data();
@@ -3372,7 +3373,7 @@ void Flu_File_Chooser::addToFavoritesCB()
   for( int i = 0; i < favoritesList->children(); ++i )
     {
       if ( favoritesList->child(i)->label() == NULL ) continue;
-      if( streq( currentDir.c_str(), favoritesList->child(i)->label() ) )
+      if( streq( currentDir.c_str(), favoritesList->child(i)->label() ) == 0 )
         {
           duplicate = true;
           break;
@@ -3777,20 +3778,28 @@ void Flu_File_Chooser::buildLocationCombo()
   n->image( icon );
 
   // Add favorites list
+  typedef std::vector< std::string > VecString;
+  VecString dirs;
   int j;
   for ( int i = 0; i < favoritesList->children(); ++i )
     {
       const char* dir = favoritesList->child(i)->label();
       for ( j = 0; j < location->children(); ++j )
         {
-          if ( strcmp( location->child(j)->label(), dir ) == 0 )
-            break;
-        }
-      if ( j >= location->children() )
-        {
-          favoritesGrp->add( dir );
+          if ( strcmp( location->child(j)->label(), dir )  )
+          {
+              dirs.push_back( dir );
+              break;
+          }
         }
     }
+  VecString::iterator v = dirs.begin();
+  VecString::iterator e = dirs.end();
+  std::sort( v, e, std::greater<std::string>() );
+  for ( ; v != e; ++v )
+  {
+      location->add( (*v).c_str() );
+  }
 
   location->relayout();
   location->redraw();
@@ -4062,9 +4071,19 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( _(favoritesTxt.c_str()) );
       updateLocationQJ();
 
+      typedef std::vector< std::string > VecString;
+      VecString dirs;
+
       for( int i = 0; i < favoritesList->children(); ++i )
         {
-          entry = new Entry( favoritesList->child(i)->label(), ENTRY_FAVORITE,
+            dirs.push_back( favoritesList->child(i)->label() );
+        }
+
+      std::sort( dirs.begin(), dirs.end(), std::greater<std::string>() );
+
+      for ( int i = 0; i < (int) dirs.size(); ++i )
+      {
+          entry = new Entry( dirs[i].c_str(), ENTRY_FAVORITE,
                              false/*fileDetailsBtn->value()*/, this );
           entry->updateIcon();
           entry->updateSize();
