@@ -1492,7 +1492,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
       {
          const mrv::LoadInfo& load = *i;
 
-
         if ( w )
           {
             snprintf( buf, 1024, _("Loading \"%s\""), load.filename.c_str() );
@@ -1507,6 +1506,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
           }
         else
           {
+              std::cerr << "load.filename " << load.filename << std::endl;
 
              if ( load.filename == "SMPTE NTSC Color Bars" )
              {
@@ -1751,7 +1751,7 @@ void ImageBrowser::load( const stringArray& files,
         if ( file.substr(0, 7) == "file://" )
           file = file.substr( 7, file.size() );
 
-        if ( file == "" ) continue;
+        if ( file.empty() ) continue;
 
         size_t len = file.size();
         if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
@@ -1811,7 +1811,7 @@ void ImageBrowser::load( const stringArray& files,
      if ( file.substr(0, 7) == "file://" )
          file = file.substr( 7, file.size() );
 
-     if ( file == "" ) return;
+     if ( file.empty() ) return;
 
      size_t len = file.size();
      if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
