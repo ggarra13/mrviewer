@@ -391,7 +391,7 @@ bool parse_command_line( const int argc, char** argv,
     asub( "u", N_("sub"),
           _("Set subtitle for movie(s)."), false, "subtitles");
 
-    SwitchArg aplay("n", "no_pause",
+    SwitchArg aplay("P", "playback",
                     _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
 
     cmd.add(aplay);
