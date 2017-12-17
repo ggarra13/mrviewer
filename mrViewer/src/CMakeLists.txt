@@ -403,6 +403,8 @@ FILE(GLOB ffmpegfiles ${EXE_DIR}/ff* )
 FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+FILE(GLOB ociofiles ${EXE_DIR}/ocio* )
+FILE(COPY ${ociofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt
@@ -434,7 +436,6 @@ INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 IF( NOT WIN32 )
     INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 ENDIF( NOT WIN32 )
-INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 
 SET( LANGUAGES "es" )
 
@@ -468,6 +469,8 @@ ADD_CUSTOM_TARGET(
   DEPENDS ${output_files} ${PROJECT_NAME}
   )
 
+# Install for language files
+INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 
 
 IF(WIN32)
