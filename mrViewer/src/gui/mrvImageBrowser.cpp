@@ -1506,8 +1506,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
           }
         else
           {
-              std::cerr << "load.filename " << load.filename << std::endl;
-
              if ( load.filename == "SMPTE NTSC Color Bars" )
              {
                 ntsc_color_bars_cb(NULL, this);

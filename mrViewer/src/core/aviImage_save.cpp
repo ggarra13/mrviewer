@@ -245,6 +245,10 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     }
     st->id = oc->nb_streams-1;
     c = st->codec;
+    
+    /* Some formats want stream headers to be separate. */
+    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     switch ((*codec)->type) {
        case AVMEDIA_TYPE_AUDIO:
@@ -413,9 +417,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         break;
     }
 
-    /* Some formats want stream headers to be separate. */
-    if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
     return st;
 }
