@@ -1647,6 +1647,10 @@ void GLEngine::draw_images( ImageList& images )
             translate( x, y, 0.0f );
         }
 
+        dpw.w( dpw.w() * img->scale_x() );
+        dpw.h( dpw.h() * img->scale_y() );
+        daw.w( daw.w() * img->scale_x() );
+        daw.h( daw.h() * img->scale_y() );
 
         if ( dpw != daw && ! _view->vr() )
         {
@@ -1681,10 +1685,11 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( !_view->vr() )
         {
+            glScaled( img->scale_x(), img->scale_y(), 1 );
             glRotated( img->rot_z(), 0, 0, 1 );
             translate( img->x(), img->y(), 0 );
             translate( float(daw.x() - img->eye_separation()),
-                          float(-daw.y()), 0 );
+                       float(-daw.y()), 0 );
             CHECK_GL;
 
             if ( _view->main()->uiPixelRatio->value() )
@@ -1987,7 +1992,7 @@ void GLEngine::draw_images( ImageList& images )
            _view->selected_image() == img )
       {
           mrv::Rectd r( img->x() + dpw.x(), dpw.y() - img->y(),
-                        dpw.w() * img->scale_x(), dpw.h() * img->scale_y() );
+                        dpw.w(), dpw.h() );
           draw_selection_marquee( r );
       }
 
