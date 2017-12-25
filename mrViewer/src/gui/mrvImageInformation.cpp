@@ -1530,6 +1530,22 @@ static void change_y_cb( fltk::FloatInput* w, ImageInformation* info )
     update_float_slider( w );
 }
 
+static void change_x_scale_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    img->scale_x( w->fvalue() );
+    info->main()->uiView->redraw();
+    update_float_slider( w );
+}
+
+static void change_y_scale_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    img->scale_y( w->fvalue() );
+    info->main()->uiView->redraw();
+    update_float_slider( w );
+}
+
 static void change_pixel_ratio_cb( fltk::FloatInput* w,
                                    ImageInformation* info )
 {
@@ -2064,6 +2080,14 @@ void ImageInformation::fill_data()
     add_float( _("Y Position"), _("Image Y Position in Canvas"),
              img->y(), true, true,
              (fltk::Callback*)change_y_cb, 0.0f, 720.0f );
+
+    add_float( _("X Scale"), _("Image X Position in Canvas"),
+             img->scale_x(), true, true,
+             (fltk::Callback*)change_x_scale_cb, 0.0f, 10.0f );
+    
+    add_float( _("Y Scale"), _("Image Y Position in Canvas"),
+             img->scale_y(), true, true,
+             (fltk::Callback*)change_y_scale_cb, 0.0f, 10.0f );
 
     const mrv::Recti& window = img->data_window();
     if ( dpw != window && dpw.w() != 0 )
