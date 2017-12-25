@@ -159,9 +159,11 @@ struct NotInRangeFunctor
 
   bool operator()( const image_type_ptr& b ) const
   {
+      if ( !b ) return false;
      return ( b->frame() + b->repeat() < _start || 
               b->frame() - b->repeat() > _end );
   }
+    
 };
 
 } // namespace mrv
