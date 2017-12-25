@@ -370,7 +370,8 @@ main_ = main;}
       code {return main_;} {}
     }
   }
-  class AboutUI {} {
+  class AboutUI {selected
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -674,10 +675,10 @@ o->label( o->child( o->value() )->label() );}
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences selected
-        xywh {1097 629 700 450}
+        label Preferences open
+        xywh {1097 629 700 450} hide resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1366,7 +1367,7 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
@@ -1439,7 +1440,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open
+            label {3D Luts}
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1622,7 +1623,7 @@ uiPrefs->run(v);}
             }
           }
           {fltk::Group} {} {
-            label OCIO open
+            label OCIO
             xywh {13 22 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
@@ -2105,7 +2106,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading
+            label Loading open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -2131,7 +2132,7 @@ uiICC_float_profile->do_callback();}
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
                 label {Auto load images as they change on disk}
-                tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.}
+                tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically. For this option to work correctly, your file server and your local machine's clock should be in sync.}
                 xywh {20 25 25 25} box UP_BOX value 1
               }
             }
@@ -2804,7 +2805,7 @@ o->child_of( main->uiMain );} modal
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();} open
-        xywh {451 557 150 520} horizontal
+        xywh {451 557 150 520} horizontal resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
@@ -2970,9 +2971,9 @@ v->uiView->redraw();}
     } {
       {fltk::Window} uiMain {
         label Connections
-        xywh {630 385 450 400} resizable
+        xywh {630 413 450 400} hide resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
