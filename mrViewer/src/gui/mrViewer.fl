@@ -669,11 +669,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences
+        label Preferences open
         xywh {1097 629 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
@@ -1365,8 +1366,8 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Caches open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1403,12 +1404,12 @@ This setting thus allows caching more pictures in memory for float and half pict
                 }
             }
             {fltk::Group} {} {
-              label {Cache Size}
+              label {Cache Size} open
               xywh {39 189 336 45} box ROUNDED_BOX
             } {
               {fltk::ValueSlider} uiPrefsCacheSize {
                 tooltip {Size in frames of the video and audio cache.}
-                xywh {14 11 246 27} align 1 minimum 30 maximum 200 step 1 value 60
+                xywh {13 11 261 27} align 1 minimum 30 maximum 200 step 1 value 60
                 extra_code {o->activate(false);}
               }
               {fltk::LightButton} uiPrefsCacheFPS {
@@ -1416,7 +1417,24 @@ This setting thus allows caching more pictures in memory for float and half pict
                 user_data uiPrefsCacheSize user_data_type {fltk::ValueSlider*}
                 callback {v->activate( !v->active() );}
                 tooltip {When selected, cache is set to twice the frames per second of the movie.}
-                xywh {260 8 60 30}
+                xywh {271 8 60 30}
+              }
+            }
+            {fltk::Group} {} {
+              label {Image Cache Size} open
+              xywh {40 271 336 48} box ROUNDED_BOX
+            } {
+              {fltk::ValueSlider} uiPrefsImageCacheSize {selected
+                tooltip {Size in frames of the image sequence cache. Negative numbers mean infinite.}
+                xywh {12 11 260 27} align 1 minimum 30 maximum 200 step 1 value -1
+                extra_code {o->activate(false);}
+              }
+              {fltk::LightButton} uiPrefsImageCacheFPS {
+                label FPS
+                user_data uiPrefsImageCacheSize user_data_type {fltk::ValueSlider*}
+                callback {v->activate( !v->active() );}
+                tooltip {When selected, cache is set to twice the frames per second of the image sequence.}
+                xywh {270 8 60 30}
               }
             }
           }
@@ -2484,7 +2502,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -2777,8 +2795,7 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {open
-  } {
+  class PaintUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window( ViewerUI* m )} {open
     } {
@@ -2786,14 +2803,14 @@ o->child_of( main->uiMain );} modal
         label Action
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
-o->hide();} selected
-        xywh {451 557 150 520} horizontal
+o->hide();} open
+        xywh {451 557 150 520} horizontal hide resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {0 11 145 495}
         } {
           {fltk::Button} uiScrub {
