@@ -902,9 +902,11 @@ class CMedia
     int64_t handle_loops( const int64_t frame ) const;
     
 
-    static void video_cache_size( unsigned x ) { _video_cache_size = x; }
+    static void image_cache_size( int x ) { _image_cache_size = x; }
+    
+    static void video_cache_size( int x ) { _video_cache_size = x; }
 
-    static void audio_cache_size( unsigned x ) { _audio_cache_size = x; }
+    static void audio_cache_size( int x ) { _audio_cache_size = x; }
 
     void audio_file( const char* file );
     std::string audio_file() const { return _audio_file; }
@@ -1324,12 +1326,18 @@ class CMedia
 			       const AVCodecParameters* codecpar, 
 			       const int stream_index );
 
+    virtual void limit_video_store( const int64_t frame );
     void limit_audio_store( const int64_t frame );
     void clear_stores();
     // Return the maximum number of audio frames cached for jog/shuttle
-    unsigned int max_audio_frames();
+    // or 0 for no cache or numeric_limits<int>max() for full cache
+    int max_audio_frames();
     // Return the maximum number of video frames cached for jog/shuttle
-    unsigned int max_video_frames();
+    // or 0 for no cache or numeric_limits<int>max() for full cache
+    int max_video_frames();
+    // Return the maximum number of video frames cached for jog/shuttle
+    // or 0 for no cache or numeric_limits<int>max() for full cache
+    int max_image_frames();
 
     /** 
      * Store an audio frame in cache
@@ -1383,8 +1391,9 @@ class CMedia
     static unsigned  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
 
-    static unsigned _video_cache_size;
-    static unsigned _audio_cache_size;
+    static int _image_cache_size;
+    static int _video_cache_size;
+    static int _audio_cache_size;
 
 
     unsigned int  _w, _h;     //!< width and height of image

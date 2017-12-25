@@ -1439,12 +1439,15 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 
 
 // Return the number of frames cached for jog/shuttle
-unsigned int CMedia::max_audio_frames()
+// or 0 for no cache or numeric_limits<int>max() for full cache
+int CMedia::max_audio_frames()
 {
     if ( _audio_cache_size > 0 )
         return _audio_cache_size;
+    else if ( _audio_cache_size == 0 )
+        return int( fps()*2 );
     else
-        return unsigned( fps()*2 );
+        return std::numeric_limits<int>::max();
 }
 
 
