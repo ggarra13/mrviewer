@@ -616,19 +616,33 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsCacheFPS->value( (bool) tmp );
     if ( !tmp )
     {
-        caches.get( "size", tmp, 60 );
-        uiPrefs->uiPrefsCacheSize->activate(false);
+        caches.get( "video_size", tmp, 60 );
+        uiPrefs->uiPrefsCacheSize->activate(true);
         uiPrefs->uiPrefsCacheSize->value( tmp );
         CMedia::video_cache_size( tmp );
         CMedia::audio_cache_size( tmp );
     }
     else
     {
-        uiPrefs->uiPrefsCacheSize->activate(true);
+        uiPrefs->uiPrefsCacheSize->activate(false);
         CMedia::video_cache_size( 0 );
         CMedia::audio_cache_size( 0 );
     }
 
+    caches.get( "image_fps", tmp, 0 );
+    uiPrefs->uiPrefsImageCacheFPS->value( (bool) tmp );
+    if ( !tmp )
+    {
+        caches.get( "image_size", tmp, -1 );
+        uiPrefs->uiPrefsImageCacheSize->activate(true);
+        uiPrefs->uiPrefsImageCacheSize->value( tmp );
+        CMedia::image_cache_size( tmp );
+    }
+    else
+    {
+        uiPrefs->uiPrefsImageCacheSize->activate(false);
+        CMedia::image_cache_size( 0 );
+    }
     //
     // audio
     //
@@ -1238,8 +1252,8 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
         uiPrefs->uiPrefsCacheSize->activate(true);
-        CMedia::audio_cache_size(unsigned(uiPrefs->uiPrefsCacheSize->value()));
-        CMedia::video_cache_size(unsigned(uiPrefs->uiPrefsCacheSize->value()));
+        CMedia::audio_cache_size(uiPrefs->uiPrefsCacheSize->value());
+        CMedia::video_cache_size(uiPrefs->uiPrefsCacheSize->value());
     }
     else
     {
@@ -1248,6 +1262,16 @@ static const char* kCLocale = "C";
         CMedia::video_cache_size( 0 );
     }
 
+    if ( uiPrefs->uiPrefsImageCacheFPS->value() == 0 )
+    {
+        uiPrefs->uiPrefsImageCacheSize->activate(true);
+        CMedia::image_cache_size(uiPrefs->uiPrefsImageCacheSize->value());
+    }
+    else
+    {
+        uiPrefs->uiPrefsImageCacheSize->activate(false);
+        CMedia::image_cache_size( 0 );
+    }
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
@@ -1597,6 +1621,8 @@ static const char* kCLocale = "C";
     caches.set( "fps", (int) uiPrefs->uiPrefsCacheFPS->value() );
     caches.set( "size", (int) uiPrefs->uiPrefsCacheSize->value() );
 
+    caches.set( "image_fps", uiPrefs->uiPrefsImageCacheFPS->value() );
+    caches.set( "image_size", uiPrefs->uiPrefsImageCacheSize->value() );
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
