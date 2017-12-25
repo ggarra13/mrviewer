@@ -1,3 +1,10 @@
+v3.9.7   - Made Action Tool - Move Picture work as intended.  It allows
+	   selecting images where the alpha is not 0 and drag them around
+	   on the infinite canvas.
+	 - Added a cache specific to image sequences.  Now it is possible
+	   to set the image cache be smaller than the timeline to save
+	   memory.  A value of -1 keeps the old behavior.
+
 v3.9.6   - Solidified Window's maximize button to also work when the
            taskbar is not at the bottom of the screen or is of diferent
            size as default.
