@@ -1212,6 +1212,7 @@ _old_fg( NULL ),
 _fg_reel( -1 ),
 _bg_reel( -1 ),
 _mode( kNoAction ),
+_selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _lastFrame( 0 )
@@ -3047,7 +3048,15 @@ int ImageView::leftMouseDown(int x, int y)
 
               // std::cerr << "x,y " << x << ", " << y << " outside " << outside
               //           << std::endl;
-              if ( outside || !pic ) {
+              CMedia::Pixel p;
+              if ( xp >= 0 && xp < pic->width()*img->scale_x() &&
+                   yp >= 0 && yp < pic->height()*img->scale_y() )
+              {
+                  xp = xp / (double) img->scale_x();
+                  yp = yp / (double) img->scale_y();
+                  p = pic->pixel( xp, yp );
+              }
+              if ( outside || !pic || p.a < 0.0001f ) {
                   // draw image without borders (in case this was selected
                   // before).
                   img->image_damage( CMedia::kDamageContents );
@@ -4309,8 +4318,6 @@ void ImageView::mouseMove(int x, int y)
                       px = (double) picb->width() / (double) pic->width();
                       py = (double) picb->height() / (double) pic->height();
                   }
-                  bgr->scale_x( px );
-                  bgr->scale_y( py );
               }
 
               xp += daw.x();
@@ -7668,7 +7675,11 @@ void ImageView::update_image_info() const
   mrv::media fg = foreground();
   if ( ! fg ) return;
 
-  CMedia* img = fg->image();
+  CMedia* img = NULL;
+  if ( selected_image() )
+      img = selected_image();
+  else
+      img = fg->image();
   uiMain->uiImageInfo->uiInfoText->set_image( img );
   img->image_damage( img->image_damage() & ~CMedia::kDamageData );
 }
