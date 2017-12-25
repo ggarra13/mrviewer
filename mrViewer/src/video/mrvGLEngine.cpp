@@ -1216,9 +1216,24 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     mrv::media fg = _view->foreground();
     if (!fg) return;
+    
+    mrv::media bg = _view->background();
+    Image_ptr bimg = NULL;
+    if (bg)
+    {
+        bimg = bg->image();
+    }
 
     Image_ptr img = fg->image();
 
+    mrv::Recti dpw2;
+    if ( bimg) {
+        dpw2 = bimg->display_window();
+        dpw2.x( dpw2.x() + bimg->x() );
+        dpw2.y( dpw2.y() - bimg->y() );
+        dpw2.w( dpw2.w() * bimg->scale_x() );
+        dpw2.h( dpw2.h() * bimg->scale_y() );
+    }
     mrv::Recti dpw = img->display_window();
 
     ImageView::FlipDirection flip = _view->flip();
@@ -1227,16 +1242,19 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     set_matrix( flip, true );
 
+    double x = dpw.x();
+    double y = dpw.y();
     int tw = dpw.w() / 2.0;
     int th = dpw.h() / 2.0;
 
-    double zdeg = img->rot_z();
+    dpw.merge( dpw2 );
 
-    double x,y;
+    double zdeg = img->rot_z();
+    
     zrot2offsets( x, y, img, flip, zdeg );
     
     glRotated( zdeg, 0, 0, 1 );
-    translate( img->x() + x + dpw.x() + tw, img->y() + y - dpw.y() - th, 0 );
+    translate(  x + tw, - y - th, 0 );
 
     
     tw *= percentX;
@@ -1324,7 +1342,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     ImageView::FlipDirection flip = _view->flip();
 
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-    glColor4f( 0.75f, 0.75f, 0.75f, 1.0f );
+    glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     double zdeg = 0.0;
     if ( img ) zdeg = img->rot_z();
     draw_rectangle( r, _view->flip(), 0.0 );
@@ -1603,6 +1621,8 @@ void GLEngine::draw_images( ImageList& images )
                 const mrv::Recti& dp = fg->display_window();
                 texWidth = dp.w();
                 texHeight = dp.h();
+                img->scale_x( (double) texWidth / (double) dpw.w() );
+                img->scale_y( (double) texHeight / (double) dpw.h() );
             }
         }
         else
@@ -1967,7 +1987,7 @@ void GLEngine::draw_images( ImageList& images )
            _view->selected_image() == img )
       {
           mrv::Rectd r( img->x() + dpw.x(), dpw.y() - img->y(),
-                        dpw.w(), dpw.h() );
+                        dpw.w() * img->scale_x(), dpw.h() * img->scale_y() );
           draw_selection_marquee( r );
       }
 
