@@ -134,8 +134,9 @@ std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
 
-unsigned CMedia::_audio_cache_size = 0;
-unsigned CMedia::_video_cache_size = 0;
+int CMedia::_audio_cache_size = 0;
+int CMedia::_video_cache_size = 0;
+int CMedia::_image_cache_size = 0;
 
 std::string CMedia::_default_subtitle_font = "Arial";
 std::string CMedia::_default_subtitle_encoding = "iso-8859-1";
@@ -419,7 +420,7 @@ _displayWindow( NULL ),
 _dataWindow2( NULL ),
 _displayWindow2( NULL ),
 _is_left_eye( true ),
-_right_eye( NULL ),
+_right_eye( NULL ), 
 _eye_separation( 0.0f ),
 _profile( NULL ),
 _rendering_transform( NULL ),
@@ -3144,14 +3145,27 @@ int64_t CMedia::pts2frame( const AVStream* stream,
 
 
 // Return the number of frames cached for jog/shuttle
-unsigned int CMedia::max_video_frames()
+int CMedia::max_video_frames()
 {
     if ( _video_cache_size > 0 )
-       return _video_cache_size;
-   else
-       return unsigned( fps()*2 );
+        return _video_cache_size;
+    else if ( _video_cache_size == 0 )
+        return int( fps()*2 );
+    else
+        return std::numeric_limits<int>::max();
 }
 
+
+// Return the number of frames cached for jog/shuttle
+int CMedia::max_image_frames()
+{
+    if ( _image_cache_size > 0 )
+        return _image_cache_size;
+    else if ( _image_cache_size == 0 )
+        return int( fps()*2 );
+    else
+        return std::numeric_limits<int>::max();
+}
 
 void CMedia::loop_at_start( const int64_t frame )
 {
@@ -3194,7 +3208,52 @@ void CMedia::loop_at_end( const int64_t frame )
 
 
 
+void CMedia::limit_video_store( const int64_t f )
+{
+    SCOPED_LOCK( _mutex );
 
+  int64_t first, last;
+
+  switch( playback() )
+  {
+      case kBackwards:
+          first = f - max_image_frames();
+          last  = f;
+          if ( _dts < first ) first = _dts;
+          break;
+      case kForwards:
+          first = f - max_image_frames();
+          last  = f + max_image_frames();
+          if ( _dts > last )   last  = _dts;
+          if ( _dts < first )  first = _dts;
+          break;
+      default:
+          first = f - max_image_frames();
+          last  = f + max_image_frames();
+          if ( _dts > last )   last = _dts;
+          if ( _dts < first ) first = _dts;
+          break;
+  }
+
+  if ( !_sequence ) return;
+
+  if ( first < 0 ) first = 0;
+  size_t end = _numWindows-1;
+  if ( last > end ) last = end;
+
+  for ( size_t i = 0; i < first; ++i  )
+  {
+      _sequence[i].reset();
+      _right[i].reset();
+  }
+  for ( size_t i = last; i < end ; ++i  )
+  {
+      _sequence[i].reset();
+      _right[i].reset();
+  }
+
+
+}
 
 void CMedia::preroll( const int64_t f )
 {
@@ -3466,6 +3525,7 @@ bool CMedia::find_image( const int64_t frame )
 
         refresh();
         image_damage( image_damage() | kDamageData | kDamage3DData );
+        limit_video_store(frame);
         return true;
     }
 
@@ -3517,6 +3577,7 @@ bool CMedia::find_image( const int64_t frame )
      }
   }
 
+  limit_video_store( frame );
   refresh();
   image_damage( image_damage() | kDamageData | kDamage3DData );
   return true;
