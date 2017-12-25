@@ -3109,7 +3109,6 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
 
   entryPopup.popup();
   const fltk::Widget* selection = entryPopup.get_item();
-  std::cerr << "selection get item " << selection << std::endl;
   if( selection )
     {
       size_t handler = (size_t) selection->user_data();
