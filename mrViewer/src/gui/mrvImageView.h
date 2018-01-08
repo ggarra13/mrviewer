@@ -85,6 +85,7 @@ class server;
     kErase     = 1 << 3,
     kText      = 1 << 4,
     kMovePicture = 1 << 5,
+    kScalePicture = 1 << 6,
     };
 
 
@@ -465,6 +466,7 @@ class server;
 
       void timeout();
 
+
       CMedia* selected_image() const { return _selected_image; }
       void select_image(CMedia* img) { _selected_image = img; redraw(); }
       
@@ -491,6 +493,7 @@ class server;
       void draw_mode();
       void erase_mode();
       void move_pic_mode();
+      void scale_pic_mode();
 
       bool has_redo() const;
       bool has_undo() const;
@@ -534,7 +537,7 @@ class server;
       // Return if in presentation mode or not
       bool in_presentation() const;
 
-      Mode action_mode() const { return _mode; }
+      inline Mode action_mode() const { return _mode; }
 
     public:
       // Auxiliary function to set the offsets after a rotation of x degrees.
@@ -723,6 +726,8 @@ class server;
     ///////////////////
     Mode _mode;
 
+      bool     _scale; // boolean to indicate whether move tool is scaling or
+                       // moving
       CMedia*  _selected_image;
     mrv::Rectd _selection;
 
