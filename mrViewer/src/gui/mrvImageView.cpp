@@ -1054,6 +1054,18 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+void ImageView::scale_pic_mode()
+{
+    _mode = kScalePicture;
+    uiMain->uiPaint->uiMovePic->value(true);
+    uiMain->uiPaint->uiSelection->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiText->value(false);
+    uiMain->uiPaint->uiScrub->value(false);
+    redraw();
+}
+
 void ImageView::move_pic_mode()
 {
     _mode = kMovePicture;
@@ -2960,6 +2972,42 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
     uiMain->uiPaint->uiRedoDraw->deactivate();
 }
 
+double sign (const Imath::V2d& p1,
+             const Imath::V2d& p2,
+             const Imath::V2d& p3)
+{
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+}
+
+bool PointInTriangle (const Imath::V2d& s,
+                      const Imath::V2d& a,
+                      const Imath::V2d& b,
+                      const Imath::V2d& c)
+{
+    int as_x = s.x-a.x;
+    int as_y = s.y-a.y;
+
+    bool s_ab = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
+
+    if((c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) return false;
+
+    if((c.x-b.x)*(s.y-b.y)-(c.y-b.y)*(s.x-b.x) > 0 != s_ab) return false;
+
+    return true;
+}
+// bool PointInTriangle (const Imath::V2d& pt,
+//                       const Imath::V2d& v1,
+//                       const Imath::V2d& v2,
+//                       const Imath::V2d& v3)
+// {
+//     bool b1, b2, b3;
+
+//     b1 = sign(pt, v1, v2) < 0.0f;
+//     b2 = sign(pt, v2, v3) < 0.0f;
+//     b3 = sign(pt, v3, v1) < 0.0f;
+
+//     return ((b1 == b2) && (b2 == b3));
+// }
 
 /**
  * Handle a mouse press
@@ -3002,7 +3050,7 @@ int ImageView::leftMouseDown(int x, int y)
          _selection = mrv::Rectd( 0, 0, 0, 0 );
          return 1;
       }
-      else if ( _mode == kMovePicture )
+      else if ( _mode == kMovePicture || _mode == kScalePicture )
       {
           ImageList images;
           images.reserve(2);
@@ -3049,20 +3097,37 @@ int ImageView::leftMouseDown(int x, int y)
               // std::cerr << "x,y " << x << ", " << y << " outside " << outside
               //           << std::endl;
               CMedia::Pixel p;
-              if ( xp >= 0 && xp < pic->width()*img->scale_x() &&
-                   yp >= 0 && yp < pic->height()*img->scale_y() )
+              if ( xp >= 0 && xp < pic->width() &&
+                   yp >= 0 && yp < pic->height() )
               {
                   xp = xp / (double) img->scale_x();
                   yp = yp / (double) img->scale_y();
+                  Imath::V2d pt( xp, yp );
+                  int W = pic->width();
+                  int H = pic->height();
+                  const double kSize = 30;
+                  Imath::V2d v1( (double)(W-kSize),
+                                 (double)(H) );
+                  Imath::V2d v2( (double)(W),
+                                 (double)(H) );
+                  Imath::V2d v3( (double)(W),
+                                 (double)(H-kSize) );
+                  if ( PointInTriangle( pt, v1, v2, v3 ) )
+                  {
+                      scale_pic_mode();
+                      _selected_image = img;
+                      return 1;
+                  }
                   p = pic->pixel( xp, yp );
               }
-              if ( outside || !pic || p.a < 0.0001f ) {
+              if ( outside || !pic || (img->has_alpha() && p.a < 0.0001f) ) {
                   // draw image without borders (in case this was selected
                   // before).
                   img->image_damage( CMedia::kDamageContents );
                   continue;
               }
 
+              move_pic_mode();
               _selected_image = img;
               break;
           }
@@ -3537,7 +3602,7 @@ void ImageView::leftMouseUp( int x, int y )
          send_network( s->send() );
      }
   }
-  else if ( _mode == kScrub || _mode == kMovePicture )
+  else if ( _mode == kScrub || _mode == kMovePicture || _mode == kScalePicture )
   {
       _mode = kNoAction;
   }
@@ -4553,26 +4618,45 @@ void ImageView::mouseDrag(int x,int y)
               lastX = fltk::event_x();
           }
       }
-      else if ( _mode == kMovePicture )
+      else if ( _mode == kMovePicture || _mode == kScalePicture )
       {
           CMedia* img = selected_image();
           if ( ! img ) return;
 
-          double px = img->x();
-          double py = img->y();
+          if ( _mode == kScalePicture )
+          {
+              double px = img->scale_x();
+              double py = img->scale_y();
+              
+              px += double(dx) / w() / _zoom;
+              py += double(dy) / h() / _zoom;
 
-          px += double(dx) / _zoom;
-          py -= double(dy) / _zoom;
+              img->scale_x( px );
+              img->scale_y( py );
+              
+              update_image_info();
 
-          img->x( px );
-          img->y( py );
+              char buf[128];
+              sprintf( buf, "ScalePicture %g %g", px, py );
+              send_network( buf );
+          }
+          else
+          {
+              double px = img->x();
+              double py = img->y();
+              
+              px += double(dx) / _zoom;
+              py -= double(dy) / _zoom;
 
-          update_image_info();
+              img->x( px );
+              img->y( py );
 
-          char buf[128];
-          sprintf( buf, "MovePicture %g %g", px, py );
-          send_network( buf );
+              update_image_info();
 
+              char buf[128];
+              sprintf( buf, "MovePicture %g %g", px, py );
+              send_network( buf );
+          }
           lastX = x;
           lastY = y;
 
