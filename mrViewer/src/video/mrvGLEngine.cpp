@@ -1364,23 +1364,23 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
 
     glBegin( GL_TRIANGLES );
 
-    const double kSize = r.w() / 64.0;
+    const double kSize = 20; //r.w() / 64.0;
     {
-        glVertex2d(  0.0,  0.0 );
-        glVertex2d( kSize,  0.0 );
-        glVertex2d(  0.0, -kSize );
+        // glVertex2d(  0.0,  0.0 );
+        // glVertex2d( kSize,  0.0 );
+        // glVertex2d(  0.0, -kSize );
 
-        glVertex2d(  r.w(),        0.0 );
-        glVertex2d(  r.w()-kSize,  0.0 );
-        glVertex2d(  r.w(),       -kSize );
+        // glVertex2d(  r.w(),        0.0 );
+        // glVertex2d(  r.w()-kSize,  0.0 );
+        // glVertex2d(  r.w(),       -kSize );
 
         glVertex2d(  r.w(),       -r.h() );
         glVertex2d(  r.w()-kSize, -r.h() );
         glVertex2d(  r.w(),       -r.h()+kSize );
 
-        glVertex2d(  0.0,  -r.h() );
-        glVertex2d( kSize, -r.h() );
-        glVertex2d(  0.0,  -r.h()+kSize );
+        // glVertex2d(  0.0,  -r.h() );
+        // glVertex2d( kSize, -r.h() );
+        // glVertex2d(  0.0,  -r.h()+kSize );
     }
 
     glEnd();
@@ -1404,10 +1404,20 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     glEnd();
 
     char buf[128];
-    int xi = round(img->x());
-    int yi = round(img->y());
-    sprintf( buf, "%d, %d", xi, yi );
 
+    if ( _view->action_mode() == ImageView::kScalePicture )
+    {
+        double x = img->scale_x();
+        double y = img->scale_y();
+        sprintf( buf, "Scale: %g, %g", x, y );
+    }
+    else
+    {
+        int xi = round(img->x());
+        int yi = round(img->y());
+        sprintf( buf, "Pos: %d, %d", xi, yi );
+    }
+    
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     translate(rw+kSize, rh-kSize, 0);
@@ -1621,8 +1631,6 @@ void GLEngine::draw_images( ImageList& images )
                 const mrv::Recti& dp = fg->display_window();
                 texWidth = dp.w();
                 texHeight = dp.h();
-                img->scale_x( (double) texWidth / (double) dpw.w() );
-                img->scale_y( (double) texHeight / (double) dpw.h() );
             }
         }
         else
@@ -1634,6 +1642,9 @@ void GLEngine::draw_images( ImageList& images )
         if ( texWidth == 0 ) texWidth = fg->width();
         if ( texHeight == 0 ) texHeight = fg->height();
 
+        texWidth *= img->scale_x();
+        texHeight *= img->scale_y();
+        
         ImageView::FlipDirection flip = _view->flip();
 
         set_matrix( flip, false );
@@ -1683,8 +1694,8 @@ void GLEngine::draw_images( ImageList& images )
         {
             glRotated( img->rot_z(), 0, 0, 1 );
             translate( img->x(), img->y(), 0 );
-            translate( float(daw.x() - img->eye_separation()),
-                          float(-daw.y()), 0 );
+            translate( double(daw.x() - img->eye_separation()),
+                       double(-daw.y()), 0 );
             CHECK_GL;
 
             if ( _view->main()->uiPixelRatio->value() )
@@ -1982,8 +1993,9 @@ void GLEngine::draw_images( ImageList& images )
 
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
-
-      if ( _view->action_mode() == ImageView::kMovePicture &&
+ 
+      if ( ( _view->action_mode() == ImageView::kMovePicture ||
+             _view->action_mode() == ImageView::kScalePicture ) &&
            _view->selected_image() == img )
       {
           mrv::Rectd r( img->x() + dpw.x(), dpw.y() - img->y(),
