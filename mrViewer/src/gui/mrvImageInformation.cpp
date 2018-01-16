@@ -1514,6 +1514,22 @@ static void change_last_frame_cb( fltk::IntInput* w,
     }
 }
 
+static void change_scale_x_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    img->scale_x( w->fvalue() );
+    info->main()->uiView->redraw();
+    update_float_slider( w );
+}
+
+static void change_scale_y_cb( fltk::FloatInput* w, ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    img->scale_y( w->fvalue() );
+    info->main()->uiView->redraw();
+    update_float_slider( w );
+}
+
 static void change_x_cb( fltk::FloatInput* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
@@ -2064,7 +2080,17 @@ void ImageInformation::fill_data()
     add_float( _("Y Position"), _("Image Y Position in Canvas"),
              img->y(), true, true,
              (fltk::Callback*)change_y_cb, 0.0f, 720.0f );
+    
+    add_float( _("X Scale"), _("Image X Scale in Canvas"),
+             img->scale_x(), true, true,
+             (fltk::Callback*)change_scale_x_cb, 0.00001f, 1.0f );
+    
+    add_float( _("Y Scale"), _("Image Y Scale in Canvas"),
+             img->scale_y(), true, true,
+             (fltk::Callback*)change_scale_y_cb, 0.00001f, 1.0f );
 
+    ++group;
+    
     const mrv::Recti& window = img->data_window();
     if ( dpw != window && dpw.w() != 0 )
     {
@@ -2630,13 +2656,13 @@ void ImageInformation::fill_data()
 
   void ImageInformation::ctl_callback( fltk::Widget* t, ImageInformation* v )
   {
-    attach_ctl_script( v->get_image() );
+      attach_ctl_script( v->get_image(), v->main() );
   }
 
   void ImageInformation::ctl_idt_callback( fltk::Widget* t,
-                                         ImageInformation* v )
+                                           ImageInformation* v )
   {
-    attach_ctl_idt_script( v->get_image() );
+      attach_ctl_idt_script( v->get_image(), v->main() );
   }
 
   void ImageInformation::ctl_lmt_callback( fltk::Widget* t,
@@ -2645,7 +2671,7 @@ void ImageInformation::fill_data()
       ImageInformation* v = (ImageInformation*) c->widget;
       size_t idx = c->idx;
 
-      attach_ctl_lmt_script( v->get_image(), idx );
+      attach_ctl_lmt_script( v->get_image(), idx, v->main() );
   }
 
   void ImageInformation::compression_cb( fltk::PopupMenu* t, ImageInformation* v )
