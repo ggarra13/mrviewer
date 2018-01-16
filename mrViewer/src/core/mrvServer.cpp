@@ -59,6 +59,7 @@
 
 #include "mrvClient.h"
 #include "mrvServer.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvEvents.h"
 #include "gui/mrvEDLGroup.h"
 #include "mrvEDLWindowUI.h"
@@ -107,20 +108,20 @@ void Parser::write( const std::string& s, const std::string& id )
     }
 
     mrv::ImageView* v = view();
-    
+
     Mutex& m = v->_clients_mtx;
     SCOPED_LOCK( m );
 
    ParserList::const_iterator i = v->_clients.begin();
    ParserList::const_iterator e = v->_clients.end();
-   
+
    for ( ; i != e; ++i )
    {
        try
        {
            if ( !(*i)->socket_.is_open() ) continue;
            std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
-      
+
            if ( p == id )
            {
                continue;
@@ -159,13 +160,13 @@ bool Parser::parse( const std::string& s )
    if ( !connected || !ui || !view() ) return false;
 
    std::istringstream is( s );
-   
+
    // Set locale globally to user locale
-   const char* env = getenv("LC_ALL");
-   if ( !env )
-       std::locale::global( std::locale("") );
-   else
-       std::locale::global( std::locale(env) );
+   // const char* env = getenv("LC_ALL");
+   // if ( !env )
+   //     std::locale::global( std::locale("") );
+   // else
+   //     std::locale::global( std::locale(env) );
    is.imbue(std::locale());
 
 
@@ -178,7 +179,7 @@ bool Parser::parse( const std::string& s )
 
    Mutex& cmtx = v->_clients_mtx;
    SCOPED_LOCK( cmtx );
-   
+
    ParserList c = v->_clients;
    v->_clients.clear();
 
@@ -196,10 +197,10 @@ bool Parser::parse( const std::string& s )
       is.str( points );
       is.clear();
       is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size
-	 >> shape->frame;
+         >> shape->frame;
       while ( is >> xy.x >> xy.y )
       {
-	 shape->pts.push_back( xy );
+         shape->pts.push_back( xy );
       }
       v->add_shape( mrv::shape_type_ptr(shape) );
       v->redraw();
@@ -217,7 +218,7 @@ bool Parser::parse( const std::string& s )
       is >> shape->pen_size >> shape->frame;
       while ( is >> xy.x >> xy.y )
       {
-	 shape->pts.push_back( xy );
+         shape->pts.push_back( xy );
       }
       v->add_shape( mrv::shape_type_ptr(shape) );
       v->redraw();
@@ -245,7 +246,7 @@ bool Parser::parse( const std::string& s )
          >> frame;
 
       bool same = true;
-      if ( font != old_font || text != old_text || font_size != old_size || 
+      if ( font != old_font || text != old_text || font_size != old_size ||
            color.r != oldcolor.r || color.g != oldcolor.g ||
            color.b != oldcolor.b || color.a != oldcolor.a ||
            frame != old_frame )
@@ -323,9 +324,9 @@ bool Parser::parse( const std::string& s )
       int b;
       is >> b;
       if ( b )
-	 browser()->set_edl();
+         browser()->set_edl();
       else
-	 browser()->clear_edl();
+         browser()->clear_edl();
       ok = true;
    }
    else if ( cmd == N_("Looping") )
@@ -400,6 +401,17 @@ bool Parser::parse( const std::string& s )
       img->y( y );
       ok = true;
    }
+   else if ( cmd == N_("ScalePicture") )
+   {
+      double x, y;
+      is >> x >> y;
+      mrv::media fg = v->foreground();
+      if ( !fg ) return false;
+      CMedia* img = fg->image();
+      img->scale_x( x );
+      img->scale_y( y );
+      ok = true;
+   }
    else if ( cmd == N_("UpdateLayers") )
    {
        v->update_layers();
@@ -412,7 +424,7 @@ bool Parser::parse( const std::string& s )
       is >> ch >> name;
 
       if ( v->foreground() )
-	 v->channel( ch );
+         v->channel( ch );
       v->redraw();
       ok = true;
    }
@@ -457,6 +469,134 @@ bool Parser::parse( const std::string& s )
       v->wipe_amount( 0.0f );
       v->redraw();
       ok = true;
+   }
+   else if ( cmd == N_("IDT") )
+   {
+       std::string s;
+
+       std::string imgname;
+       is.clear();
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       mrv::media fg = v->foreground();
+       CMedia* img = fg->image();
+       img->idt_transform( s.c_str() );
+       ok = true;
+   }
+   else if ( cmd == N_("LMT") )
+   {
+       std::string s;
+       is.clear();
+       size_t idx;
+       is >> idx;
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       mrv::media fg = v->foreground();
+       CMedia* img = fg->image();
+       if ( idx == 0 ) img->clear_look_mod_transform();
+       if ( idx <= img->number_of_lmts() )
+       {
+           img->append_look_mod_transform( s.c_str() );
+       }
+       else
+       {
+           img->insert_look_mod_transform( idx, s.c_str() );
+       }
+       ok = true;
+   }
+   else if ( cmd == N_("RT") )
+   {
+       std::string s;
+       is.clear();
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       mrv::media fg = v->foreground();
+       CMedia* img = fg->image();
+       img->rendering_transform( s.c_str() );
+       ok = true;
+   }
+   else if ( cmd == N_("ODT") )
+   {
+       std::string s;
+       is.clear();
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       mrv::Preferences::ODT_CTL_transform = s;
+       v->redraw();
+       ok = true;
+   }
+   else if ( cmd == N_("OCIO") )
+   {
+       bool t;
+       is >> t;
+
+       mrv::Preferences::use_ocio = t;
+       ok = true;
+   }
+   else if ( cmd == N_("OCIOConfig") )
+   {
+       std::string s;
+       is.clear();
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       char buf[1024];
+       sprintf( buf, "OCIO=%s", s.c_str() );
+       putenv( buf );
+       ok = true;
+   }
+   else if ( cmd == N_("OCIOView") )
+   {
+       std::string d, s;
+       is.clear();
+       std::getline( is, d, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, d, '"' );
+       is.clear();
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       ViewerUI* m = v->main();
+       m->uiGammaInput->value( 1.0f );
+       v->gamma(1.0f);
+       if ( ! d.empty() ) mrv::Preferences::OCIO_Display = d;
+       if ( ! s.empty() ) mrv::Preferences::OCIO_View = s;
+       m->gammaDefaults->label( strdup( s.c_str() ) );
+       v->use_lut(true);
+       m->uiLUT->value(true);
+       mrv::media fg = v->foreground();
+       if (!fg) ok = false;
+       else
+       {
+           CMedia* img = fg->image();
+           img->image_damage( img->image_damage() & CMedia::kDamageLut );
+           v->redraw();
+           ok = true;
+       }
+   }
+   else if ( cmd == N_("ICS") )
+   {
+       std::string s;
+       is.clear();
+       std::getline( is, s, '"' ); // skip first quote
+       is.clear();
+       std::getline( is, s, '"' );
+
+       mrv::media fg = v->foreground();
+       CMedia* img = fg->image();
+       img->ocio_input_color_space( s );
+       v->update_ICS();
+       ok = true;
    }
    else if ( cmd == N_("Gain") )
    {
@@ -558,7 +698,7 @@ bool Parser::parse( const std::string& s )
 
       r = browser()->reel( name.c_str() );
       if (!r) {
-	 r = browser()->new_reel( name.c_str() );
+         r = browser()->new_reel( name.c_str() );
       }
       ok = true;
    }
@@ -588,7 +728,8 @@ bool Parser::parse( const std::string& s )
        is >> t;
        if ( ui->uiStereo )
            ui->uiStereo->uiVR360Cube->value( t );
-       v->vr( ImageView::kVRCubeMap );
+       if (t) v->vr( ImageView::kVRCubeMap );
+       else v->vr( ImageView::kNoVR );
        v->redraw();
        ok = true;
    }
@@ -598,7 +739,8 @@ bool Parser::parse( const std::string& s )
        is >> t;
        if ( ui->uiStereo )
            ui->uiStereo->uiVR360Sphere->value( t );
-       v->vr( ImageView::kVRSphericalMap );
+       if (t) v->vr( ImageView::kVRSphericalMap );
+       else v->vr( ImageView::kNoVR );
        v->redraw();
        ok = true;
    }
@@ -689,11 +831,11 @@ bool Parser::parse( const std::string& s )
 
       mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
-	 r = now;
+         r = now;
       else
-	 r = browser()->reel( name.c_str() );
+         r = browser()->reel( name.c_str() );
       if (!r) {
-	 r = browser()->new_reel( name.c_str() );
+         r = browser()->new_reel( name.c_str() );
       }
       ok = true;
    }
@@ -709,11 +851,11 @@ bool Parser::parse( const std::string& s )
       int j = 0;
       for ( ; j != e; ++j )
       {
-	 if ( j == idx )
-	 {
-	    m = r->images[j];
-	    break;
-	 }
+         if ( j == idx )
+         {
+            m = r->images[j];
+            break;
+         }
       }
 
       browser()->remove( unsigned(idx) );
@@ -732,8 +874,8 @@ bool Parser::parse( const std::string& s )
 
       if ( r )
       {
-	 size_t j;
-	 size_t e = r->images.size();
+         size_t j;
+         size_t e = r->images.size();
 
          for ( j = 0; j != e; ++j )
          {
@@ -769,51 +911,51 @@ bool Parser::parse( const std::string& s )
 
       if ( r )
       {
-	 int j;
-	 size_t e = r->images.size();
+         int j;
+         size_t e = r->images.size();
 
-	 if ( ! m )
-	 {
- 	    for ( j = 0; j != e; ++j )
-	    {
-	       mrv::media fg = r->images[j];
-	       if ( fg->image()->fileroot() == imgname )
-	       {
-		  m = fg;
-		  break;
-	       }
-	    }
-	 }
+         if ( ! m )
+         {
+            for ( j = 0; j != e; ++j )
+            {
+               mrv::media fg = r->images[j];
+               if ( fg->image()->fileroot() == imgname )
+               {
+                  m = fg;
+                  break;
+               }
+            }
+         }
 
-	 if ( m )
-	 {
-	    
-	    for ( j = 0; j != e; ++j )
-	    {
-	       if ( j == idx && m->image()->fileroot() == imgname )
-	       {
-		  browser()->insert( idx, m );
-		  browser()->change_image( idx );
-		  browser()->redraw();
-		  edl_group()->refresh();
-		  edl_group()->redraw();
-		  ok = true;
-		  break;
-	       }
-	    }
-	   
-	    if ( j == e && m->image()->fileroot() == imgname )
-	    {
-	       browser()->add( m );
-	       browser()->change_image( unsigned(e) );
-	       browser()->redraw();
-	       edl_group()->refresh();
-	       edl_group()->redraw();
-	       ok = true;
-	    }
+         if ( m )
+         {
 
-	    m.reset();
-	 }
+            for ( j = 0; j != e; ++j )
+            {
+               if ( j == idx && m->image()->fileroot() == imgname )
+               {
+                  browser()->insert( idx, m );
+                  browser()->change_image( idx );
+                  browser()->redraw();
+                  edl_group()->refresh();
+                  edl_group()->redraw();
+                  ok = true;
+                  break;
+               }
+            }
+
+            if ( j == e && m->image()->fileroot() == imgname )
+            {
+               browser()->add( m );
+               browser()->change_image( unsigned(e) );
+               browser()->redraw();
+               edl_group()->refresh();
+               edl_group()->redraw();
+               ok = true;
+            }
+
+            m.reset();
+         }
       }
 
    }
@@ -831,29 +973,34 @@ bool Parser::parse( const std::string& s )
       is >> end;
 
       bool found = false;
-      if ( r )
+      if ( !r )
       {
-	 mrv::MediaList::iterator j = r->images.begin();
-	 mrv::MediaList::iterator e = r->images.end();
-	 for ( ; j != e; ++j )
-	 {
-	    mrv::media fg = *j;
-	    if ( fg && fg->image()->fileroot() == imgname )
-	    {
-	       found = true;
-	       m = fg;
-	    }
-	 }
-      
-	 if (!found)
-	 {
-	    LoadList files;
-	    files.push_back( LoadInfo( imgname, start, end ) );
-	   
-	    browser()->load( files, false );
-            browser()->redraw();
-	 }
+          r = browser()->current_reel();
       }
+
+      mrv::MediaList::iterator j = r->images.begin();
+      mrv::MediaList::iterator e = r->images.end();
+      for ( ; j != e; ++j )
+      {
+          mrv::media fg = *j;
+          if ( fg && fg->image()->fileroot() == imgname )
+          {
+              found = true;
+              m = fg;
+          }
+      }
+
+      if (!found)
+      {
+          LoadList files;
+          files.push_back( LoadInfo( imgname, start, end ) );
+
+          std::cerr << files[0].filename << std::endl;
+
+          browser()->load( files, false );
+          browser()->redraw();
+      }
+
 
       v->redraw();
 
@@ -871,42 +1018,42 @@ bool Parser::parse( const std::string& s )
       boost::int64_t first, last;
       is >> first;
       is >> last;
- 
+
       if ( r )
       {
-	 mrv::MediaList::iterator j = r->images.begin();
-	 mrv::MediaList::iterator e = r->images.end();
-	 int idx = 0;
-	 bool found = false;
-	 for ( ; j != e; ++j, ++idx )
-	 {
-	    if ( !(*j) ) continue;
+         mrv::MediaList::iterator j = r->images.begin();
+         mrv::MediaList::iterator e = r->images.end();
+         int idx = 0;
+         bool found = false;
+         for ( ; j != e; ++j, ++idx )
+         {
+            if ( !(*j) ) continue;
 
-	    CMedia* img = (*j)->image();
-	    if ( img && img->fileroot() == imgname )
-	    {
-	       img->first_frame( first );
-	       img->last_frame( last );
-	       browser()->change_image( idx );
-	       edl_group()->refresh();
-	       edl_group()->redraw();
-	       browser()->redraw();
-	       m = *j;
-	       found = true;
-	       break;
-	    }
-	 }
+            CMedia* img = (*j)->image();
+            if ( img && img->fileroot() == imgname )
+            {
+               img->first_frame( first );
+               img->last_frame( last );
+               browser()->change_image( idx );
+               edl_group()->refresh();
+               edl_group()->redraw();
+               browser()->redraw();
+               m = *j;
+               found = true;
+               break;
+            }
+         }
 
-	 if (! found )
-	 {
-	    LoadList files;
-	    files.push_back( LoadInfo( imgname, first, last ) );
+         if (! found )
+         {
+            LoadList files;
+            files.push_back( LoadInfo( imgname, first, last ) );
 
-	    browser()->load( files, false );
-	    edl_group()->refresh();
-	    edl_group()->redraw();
-	    browser()->redraw();
-	 }
+            browser()->load( files, false );
+            edl_group()->refresh();
+            edl_group()->redraw();
+            browser()->redraw();
+         }
       }
 
       v->redraw();
@@ -999,7 +1146,7 @@ bool Parser::parse( const std::string& s )
             boost::int64_t end   = (*j)->image()->last_frame();
 
             sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
-        	     start, end );
+                     start, end );
             cmd += buf;
 
             deliver( cmd );
@@ -1015,7 +1162,7 @@ bool Parser::parse( const std::string& s )
           return true;
       }
 
-      
+
       r = browser()->current_reel();
       if (r)
       {
@@ -1123,24 +1270,31 @@ bool Parser::parse( const std::string& s )
               deliver( buf );
           }
           deliver( buf );
-          
+
           sprintf(buf, N_("VRangle %g"), v->vr_angle() );
           deliver( buf );
-          
+
           sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
           deliver( buf );
-      
+
           sprintf( buf, N_("Looping %d"), (int)img->looping() );
           deliver( buf );
-      
+
           CMedia::StereoOutput out = img->stereo_output();
           sprintf( buf, "StereoOutput %d", out );
           deliver( buf );
-          
+
           CMedia::StereoInput in = img->stereo_input();
           sprintf( buf, "StereoInput %d", in );
           deliver( buf );
-          
+
+          std::string s = img->ocio_input_color_space();
+          if ( ! s.empty() )
+          {
+              sprintf( buf, N_("ICS \"%s\""), s.c_str() );
+              deliver( buf );
+          }
+
           boost::int64_t frame = img->frame() - img->first_frame() + 1;
           sprintf( buf, N_("seek %") PRId64, frame );
           deliver( buf );
@@ -1153,14 +1307,26 @@ bool Parser::parse( const std::string& s )
 
       sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
       deliver( buf );
-      
+
       sprintf(buf, N_("Rotation %g %g"), v->rot_x(), v->rot_y() );
       deliver( buf );
-      
+
       sprintf(buf, N_("Spin %g %g"), v->spin_x(), v->spin_y() );
       deliver( buf );
 
+      sprintf(buf, N_("OCIO %d"), (int)mrv::Preferences::use_ocio );
+      deliver( buf );
       
+      const char* const config = v->main()->uiPrefs->uiPrefsOCIOConfig->text();
+      sprintf(buf, N_("OCIOConfig \"%s\""), config );
+      deliver( buf );
+      
+      const std::string& display = mrv::Preferences::OCIO_Display;
+      const std::string& view = mrv::Preferences::OCIO_View;
+      sprintf(buf, N_("OCIOView \"%s\" \"%s\""),
+              display.c_str(), view.c_str() );
+      deliver( buf );
+
       sprintf(buf, N_("UseLUT %d"), (int)v->use_lut() );
       deliver( buf );
 
@@ -1169,14 +1335,14 @@ bool Parser::parse( const std::string& s )
 
       sprintf(buf, N_("Volume %g"), v->volume() );
       deliver( buf );
- 
+
       sprintf(buf, N_("Gain %g"), v->gain() );
       deliver( buf );
 
       sprintf(buf, N_("Gamma %g"), v->gamma() );
       deliver( buf );
 
-      sprintf(buf, N_("ShowPixelRatio %d"), 
+      sprintf(buf, N_("ShowPixelRatio %d"),
               (int)v->show_pixel_ratio() );
       deliver( buf );
 
@@ -1195,19 +1361,19 @@ bool Parser::parse( const std::string& s )
       sprintf(buf, N_("Channel %d %s"), v->channel(),
               v->get_layer_label(v->channel()) );
       deliver( buf );
-      
-      
+
+
       const mrv::Rectd& s = v->selection();
       if ( s.w() != 0 )
       {
-          sprintf( buf, N_("Selection %g %g %g %g"), s.x(), s.y(), 
+          sprintf( buf, N_("Selection %g %g %g %g"), s.x(), s.y(),
                    s.w(), s.h() );
           deliver( buf );
       }
 
       browser()->redraw();
       v->redraw();
-      
+
       ok = true;
    }
    else if ( cmd == N_("stop") )
@@ -1240,7 +1406,7 @@ bool Parser::parse( const std::string& s )
    {
        int x;
        is >> x;
-       if ( x ) 
+       if ( x )
        {
            v->send( mrv::kMEDIA_INFO_WINDOW_SHOW );
        }
@@ -1255,7 +1421,7 @@ bool Parser::parse( const std::string& s )
    {
        int x;
        is >> x;
-       if ( x ) 
+       if ( x )
        {
            v->send( mrv::kCOLOR_AREA_WINDOW_SHOW );
        }
@@ -1326,7 +1492,7 @@ bool Parser::parse( const std::string& s )
    {
        int x;
        is >> x;
-       if ( x ) 
+       if ( x )
        {
            v->send( mrv::kHISTOGRAM_WINDOW_SHOW );
        }
@@ -1340,7 +1506,7 @@ bool Parser::parse( const std::string& s )
    {
        int x;
        is >> x;
-       if ( x ) 
+       if ( x )
        {
            v->send( mrv::kVECTORSCOPE_WINDOW_SHOW );
        }
@@ -1352,7 +1518,6 @@ bool Parser::parse( const std::string& s )
    }
 
    if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
-
    v->_clients = c;
 
    return ok;
@@ -1368,13 +1533,13 @@ const char* const kModule = "server";
 }
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
-			 mrv::ViewerUI* const v) :
+                         mrv::ViewerUI* const v) :
 non_empty_output_queue_(io_service),
 Parser(io_service, v)
 {
 
-   // The non_empty_output_queue_ deadline_timer is set to pos_infin 
-   // whenever the output queue is empty. This ensures that the output 
+   // The non_empty_output_queue_ deadline_timer is set to pos_infin
+   // whenever the output queue is empty. This ensures that the output
    // actor stays asleep until a message is put into the queue.
    non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
 }
@@ -1399,26 +1564,26 @@ void tcp_session::start()
    {
        Mutex& m = v->_clients_mtx;
        SCOPED_LOCK( m );
-   
+
        v->_clients.push_back( this );
    }
-   
+
    start_read();
-   
+
    //	std::cerr << "start1: " << socket_.native_handle() << std::endl;
    // input_deadline_.async_wait(
    //                            boost::bind(&tcp_session::check_deadline,
    //                                        shared_from_this(),
    //                                        &input_deadline_));
-   
+
    await_output();
-   
+
    // std::cerr << "start2: " << socket_.native_handle() << std::endl;
    // output_deadline_.async_wait(
    //                             boost::bind(&tcp_session::check_deadline,
    //                                         shared_from_this(),
    //                                         &output_deadline_));
-   
+
 }
 
 bool tcp_session::stopped()
@@ -1434,7 +1599,7 @@ void tcp_session::deliver( const std::string& msg )
 
    // Signal that the output queue contains messages. Modifying the expiry
    // will wake the output actor, if it is waiting on the timer.
-   non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));  
+   non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));
 }
 
 
@@ -1451,7 +1616,7 @@ void tcp_session::stop()
 
        Mutex& m = v->_clients_mtx;
        SCOPED_LOCK( m );
-       
+
        ParserList::iterator i = v->_clients.begin();
        ParserList::iterator e = v->_clients.end();
 
@@ -1471,15 +1636,15 @@ void tcp_session::stop()
 void tcp_session::start_read()
 {
    // Set a deadline for the read operation.
-   
+
    // input_deadline_.expires_from_now(boost::posix_time::seconds(30));
    // input_deadline_.expires_at(boost::posix_time::pos_infin);
-   
+
    // Start an asynchronous operation to read a newline-delimited message.
    boost::asio::async_read_until(socket(), input_buffer_, '\n',
-				 boost::bind(&tcp_session::handle_read, 
-					     shared_from_this(), 
-					     boost::asio::placeholders::error));
+                                 boost::bind(&tcp_session::handle_read,
+                                             shared_from_this(),
+                                             boost::asio::placeholders::error));
 }
 
 void tcp_session::handle_read(const boost::system::error_code& ec)
@@ -1491,9 +1656,9 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
    {
       // Extract the newline-delimited message from the buffer.
       std::istream is(&input_buffer_);
-      is.exceptions( std::ifstream::failbit | std::ifstream::badbit | 
+      is.exceptions( std::ifstream::failbit | std::ifstream::badbit |
                      std::ifstream::eofbit );
-      
+
       std::string id = boost::lexical_cast<std::string>(socket().remote_endpoint() );
 
       try {
@@ -1526,9 +1691,9 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
       {
           LOG_ERROR( "Failure in getline " << e.what() );
       }
-   
 
-      
+
+
       start_read();
    }
    else
@@ -1575,9 +1740,9 @@ void tcp_session::start_write()
 
    // Start an asynchronous operation to send a message.
    boost::asio::async_write(socket(),
-			    boost::asio::buffer(output_queue_.front()),
-			    boost::bind(&tcp_session::handle_write, 
-					shared_from_this(), 
+                            boost::asio::buffer(output_queue_.front()),
+                            boost::bind(&tcp_session::handle_write,
+                                        shared_from_this(),
                                         boost::asio::placeholders::error));
 }
 
@@ -1602,7 +1767,7 @@ void tcp_session::check_deadline(deadline_timer* deadline)
 {
    if (stopped())
       return;
-   
+
    // Check whether the deadline has passed. We compare the deadline against
    // the current time since a new asynchronous operation may have moved the
    // deadline before this actor had a chance to run.
@@ -1616,8 +1781,8 @@ void tcp_session::check_deadline(deadline_timer* deadline)
    {
       // Put the actor back to sleep.
       deadline->async_wait(
-         		   boost::bind(&tcp_session::check_deadline,
-         			       shared_from_this(), deadline));
+                           boost::bind(&tcp_session::check_deadline,
+                                       shared_from_this(), deadline));
    }
 }
 
@@ -1689,13 +1854,13 @@ void tcp_session::check_deadline(deadline_timer* deadline)
 
 
 server::server(boost::asio::io_service& io_service,
-	       const tcp::endpoint& endpoint,
-	       mrv::ViewerUI* v)
+               const tcp::endpoint& endpoint,
+               mrv::ViewerUI* v)
 : io_service_(io_service),
   acceptor_(io_service),
   ui_( v )
 {
-   
+
    acceptor_.open(endpoint.protocol());
    acceptor_.set_option(tcp::acceptor::reuse_address(true));
    acceptor_.bind(endpoint);
@@ -1713,27 +1878,27 @@ void server::start_accept()
 {
     // tcp_session_ptr new_session(new tcp_session(io_service_, ui_));
    tcp_session_ptr new_session(
-        		       boost::make_shared<tcp_session>(
-        						       boost::ref(
-        								  io_service_
-        								  ),
-        						       boost::ref(ui_)
-        						       )
-        		       );
-   
+                               boost::make_shared<tcp_session>(
+                                                               boost::ref(
+                                                                          io_service_
+                                                                          ),
+                                                               boost::ref(ui_)
+                                                               )
+                               );
+
    acceptor_.async_accept(new_session->socket(),
-			  boost::bind(&server::handle_accept, this, 
-				      new_session, _1));
+                          boost::bind(&server::handle_accept, this,
+                                      new_session, _1));
 }
 
 void server::handle_accept(tcp_session_ptr session,
-			   const boost::system::error_code& ec)
+                           const boost::system::error_code& ec)
 {
    if (!ec)
    {
       session->start();
    }
-   
+
    start_accept();
 }
 
@@ -1746,8 +1911,8 @@ void server::create(mrv::ViewerUI* ui)
    data->port = port;
    data->ui = ui;
 
-   boost::thread t( boost::bind( mrv::server_thread, 
-				 data ) );
+   boost::thread t( boost::bind( mrv::server_thread,
+                                 data ) );
 }
 
 void server::remove( mrv::ViewerUI* ui )
@@ -1755,12 +1920,12 @@ void server::remove( mrv::ViewerUI* ui )
     if ( !ui || !ui->uiView ) return;
 
     using namespace mrv;
-    
+
     ImageView* v = ui->uiView;
 
     Mutex& m = v->_clients_mtx;
     SCOPED_LOCK( m );
-    
+
    ParserList::iterator i = v->_clients.begin();
    ParserList::iterator e = v->_clients.end();
 
@@ -1774,7 +1939,7 @@ void server::remove( mrv::ViewerUI* ui )
        ui->uiConnection->uiCreate->label( _("Create") );
        ui->uiConnection->uiClientGroup->activate();
    }
-   
+
    v->_clients.clear();
    v->_server.reset();
 }
@@ -1793,8 +1958,8 @@ void server_thread( const ServerData* s )
 
 
       s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
-							     listen_endpoint,
-							     s->ui);
+                                                             listen_endpoint,
+                                                             s->ui);
 
       s->ui->uiConnection->uiCreate->label( _("Disconnect") );
       s->ui->uiConnection->uiClientGroup->deactivate();
@@ -1814,5 +1979,3 @@ void server_thread( const ServerData* s )
 }
 
 } // namespace mrv
-
-
