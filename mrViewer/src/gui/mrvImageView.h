@@ -19,10 +19,10 @@
  * @file   mrvImageView.h
  * @author gga
  * @date   Sat Jul  7 13:49:25 2007
- * 
+ *
  * @brief  An image view class that draws an image of viewer
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvImageView_h
@@ -167,10 +167,10 @@ class server;
       kAbout = 14,
       kLastWindow
       };
-      
+
   public:
     ImageView(int X, int Y, int W, int H, const char *l=0);
-  
+
     virtual ~ImageView();
 
     /// Handle an event in the window
@@ -297,6 +297,9 @@ class server;
       /// Update the layer list
       void update_layers();
 
+      /// Update the Display of Input Color Space of foreground image
+      void update_ICS() const;
+
       /// Turn on or off safe areas
       void safe_areas( const bool t );
 
@@ -314,7 +317,7 @@ class server;
 
       /// Return status of safe areas
       inline bool data_window() const { return _dataWindow; }
-  
+
       /// Normalize value
       bool normalize() const;
 
@@ -325,7 +328,7 @@ class server;
 
       /// Normalize a pixel value
       void normalize( CMedia::Pixel& rgba, unsigned short idx = 0 ) const;
-      
+
       /// Toggle 3D LUT on and off
       void toggle_lut();
 
@@ -353,7 +356,7 @@ class server;
 
       /// Get Playback looping mode from timeline widget
       CMedia::Looping looping() const;
-      
+
       /// Set Playback looping mode
       void  looping( CMedia::Looping x );
 
@@ -386,7 +389,7 @@ class server;
 
       float vr_angle() const;
       void vr_angle( const float t );
-      
+
       /// Attaches main window class to this viewer
       void main( mrv::ViewerUI* b ) { uiMain = b; }
 
@@ -403,7 +406,7 @@ class server;
       const fltk::Window* fltk_main() const;
 
       void toggle_window( const WindowList idx, const bool force = false );
-      
+
       /// Auxiliary function to return reel list's browser for this view
       ImageBrowser* browser();
 
@@ -433,22 +436,22 @@ class server;
       void stereo_output( CMedia::StereoOutput x );
       CMedia::StereoInput stereo_input() const;
       CMedia::StereoOutput stereo_output() const;
-      
+
       inline void offset_x( double x ) { xoffset = x; }
       inline void offset_y( double y ) { yoffset = y; }
-      
+
       inline double offset_x() const { return xoffset; }
       inline double offset_y() const { return yoffset; }
-      
+
       void rot_x( double x );
       void rot_y( double x );
 
       double rot_x() const;
       double rot_y() const;
-      
+
       inline void spin_x( double x ) { spinx = x; }
       inline void spin_y( double x ) { spiny = x; }
-      
+
       inline double spin_x() const { return spinx; }
       inline double spin_y() const { return spiny; }
       double pixel_ratio() const;
@@ -469,13 +472,13 @@ class server;
 
       CMedia* selected_image() const { return _selected_image; }
       void select_image(CMedia* img) { _selected_image = img; redraw(); }
-      
+
       void selection( const mrv::Rectd& r );
       const mrv::Rectd& selection() { return _selection; }
 
       /// Refresh audio tracks
       void refresh_audio_tracks() const;
-      
+
       void wipe_direction( const WipeDirection& w ) { _wipe_dir = w; }
       WipeDirection wipe_direction() const { return _wipe_dir; }
       void wipe_amount(float w) { _wipe = w; }
@@ -501,7 +504,7 @@ class server;
        void undo_draw();
        void redo_draw();
 
-       void send_network( std::string msg );
+       void send_network( std::string msg ) const;
 
       GLShapeList& shapes();
 
@@ -546,7 +549,7 @@ class server;
       void zrotation_to_offsets( double& X, double& Y, const double degrees,
                                  const FlipDirection flip,
                                  const int W, const int H );
-    
+
      public:
       bool           _broadcast;
       CMedia::Mutex  _clients_mtx;
@@ -554,8 +557,8 @@ class server;
       tcp_server_ptr _server;
 
   protected:
-      
-       
+
+
       void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
     void stop_playback();
@@ -575,8 +578,8 @@ class server;
       int update_shortcuts( const mrv::media& fg, const char* channelName );
 
        void draw_text( unsigned char r, unsigned char g, unsigned char b,
-		       double x, double y, const char* text );
-		       
+                       double x, double y, const char* text );
+
 
     /// Create thumbnails for images
     void thumbnails();
@@ -606,20 +609,20 @@ class server;
       void image_coordinates( const CMedia* const img,
                               double& x, double& y ) const;
 
-    /// Given two window coordinates, return pixel coordinates 
+    /// Given two window coordinates, return pixel coordinates
     /// in the data window (which may be offset)
     void data_window_coordinates( const CMedia* const img,
                                          double& x, double& y,
                                          const bool flipon = true ) const;
 
-      
-    /// Given two window coordinates, return pixel coordinates 
+
+    /// Given two window coordinates, return pixel coordinates
     /// in the returned picture (or outside set to true)
     void picture_coordinates( const CMedia* const img, const int x,
                                      const int y, bool& outside,
                                      mrv::image_type_ptr& pic,
                                      int& xp, int& yp, int& w, int& h ) const;
-      
+
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
 
@@ -644,7 +647,7 @@ class server;
                        short& idx, bool& outside, int w, int h ) const;
 
       void log() const;
-      
+
   protected:
     mrv::ViewerUI* uiMain;
     mrv::DrawEngine*    _engine;
@@ -656,11 +659,11 @@ class server;
     float        _masking;     //<- film masking ratio (top/bottom bars)
     WipeDirection _wipe_dir;   //<- wipe direction
     float         _wipe;       //<- wipe between A and B image [0..1]
-  
+
     float        _gamma;      //<- display gamma
     float        _gain;       //<- display gain (exposure)
-    float	 _zoom;       //<- display zoom
-    double	 xoffset, yoffset; //<- display offsets
+    float        _zoom;       //<- display zoom
+    double       xoffset, yoffset; //<- display offsets
       double     spinx, spiny;   //<- VR's rotation offsets
 
 
@@ -670,7 +673,7 @@ class server;
     int           posX, posY;  //<- non-fullscreen window position
        double          X, Y;   //<- draw cursor coordinates
     int		lastX, lastY;  //<- last mouse coordinates
-    int		       flags;  //<- flags containing current user action
+    int                flags;  //<- flags containing current user action
 
     bool       _ghost_previous;
     bool       _ghost_next;
@@ -695,7 +698,7 @@ class server;
       bool        _idle_callback;
 
       VRType        _vr;  // Cube/Spherical VR 360
-      
+
       ////////////////////////////////////////////////
       // Events needed to be handled in main thread
       ////////////////////////////////////////////////
@@ -745,8 +748,8 @@ class server;
     int          _redraws_fps;  //!< # of redraws done for fps calculation
     int64_t      _lastFrame;    //!< last frame for fps calculation
 
-      CMedia::Mutex _shortcut_mutex; 
-      CMedia::Mutex _draw_mutex; 
+      CMedia::Mutex _shortcut_mutex;
+      CMedia::Mutex _draw_mutex;
 
     mrv::Timer   _dtimer;
   };
