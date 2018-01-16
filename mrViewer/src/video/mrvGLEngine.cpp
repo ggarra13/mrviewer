@@ -1342,9 +1342,18 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     ImageView::FlipDirection flip = _view->flip();
 
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
-    glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
+    if ( _view->action_mode() == ImageView::kMovePicture )
+    {
+        glColor4f( 1.0f, 1.0f, 0.0f, 1.0f );
+    }
+    else
+    {
+        glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
+    }
+    
     double zdeg = 0.0;
     if ( img ) zdeg = img->rot_z();
+
     draw_rectangle( r, _view->flip(), 0.0 );
 
     glMatrixMode(GL_MODELVIEW);
@@ -1362,6 +1371,14 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
 
     translate( x + r.x(), y - r.y(), 0 );
 
+    if ( _view->action_mode() == ImageView::kScalePicture )
+    {
+        glColor4f( 1.0f, 1.0f, 0.0f, 1.0f );
+    }
+    else
+    {
+        glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
+    }
     glBegin( GL_TRIANGLES );
 
     const double kSize = 20; //r.w() / 64.0;
@@ -1385,6 +1402,8 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
 
     glEnd();
 
+    // Draw Crosshair
+    glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     double rw = r.w() / 2.0;
     double rh = -r.h() / 2.0;
     glBegin( GL_LINES );
