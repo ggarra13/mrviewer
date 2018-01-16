@@ -1107,6 +1107,7 @@ static const char* kCLocale = "C";
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
         std::locale::global( std::locale("C") );
+        setlocale( LC_NUMERIC, "C" );
 
         try
         {
@@ -1163,6 +1164,7 @@ static const char* kCLocale = "C";
         }
 
         std::locale::global( std::locale("") );
+        setlocale(LC_NUMERIC, "" );
     }
     else
     {
