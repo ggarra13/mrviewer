@@ -19,10 +19,10 @@
  * @file   mrvGLLut3d.cpp
  * @author gga
  * @date   Sat Feb  9 14:13:57 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <fstream>
@@ -46,7 +46,7 @@ namespace OCIO = OCIO_NAMESPACE;
 
 #include "IccProfile.h"
 #include "IccCmm.h"
- 
+
 
 #include "ctlToLut.h"
 #include "mrvIO.h"
@@ -59,7 +59,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "mrvGLLut3d.h"
 #include "mrvGLEngine.h"
 
-namespace 
+namespace
 {
   const char* kModule = N_("cmm");
 }
@@ -76,7 +76,7 @@ void prepare_ACES( const CMedia* img, const std::string& name,
     using namespace Imath;
 
     if ( name.size() < 4 ) return;
-    
+
     const ACES::ASC_CDL& c = img->asc_cdl();
 
     // Transform LMT.SOPNode/LMT.SatNode into SOPNode/SatNode
@@ -112,34 +112,34 @@ indicesAndWeights (float r, int iMax, int &i, int &i1, float &u, float &u1)
 {
     if (r >= 0)
     {
-	if (r < iMax)
-	{
-	    //
-	    // r is finite and in the interval [0, iMax]
-	    //
+        if (r < iMax)
+        {
+            //
+            // r is finite and in the interval [0, iMax]
+            //
 
-	    i = int (r);
-	    i1 = i + 1;
-	    u  = r - (float) i;
-	}
-	else
-	{
-	    //
-	    // r is greater than or equal to iMax
-	    //
+            i = int (r);
+            i1 = i + 1;
+            u  = r - (float) i;
+        }
+        else
+        {
+            //
+            // r is greater than or equal to iMax
+            //
 
-	    i = i1 = iMax;
-	    u = 1;
-	}
+            i = i1 = iMax;
+            u = 1;
+        }
     }
     else
     {
-	//
-	// r is either NaN or less than 0
-	//
+        //
+        // r is either NaN or less than 0
+        //
 
-	i = i1 = 0;
-	u = 1;
+        i = i1 = 0;
+        u = 1;
     }
 
     u1 = 1 - u;
@@ -182,7 +182,7 @@ lookup3D
     const V3f &f = table[(k1 * size + j ) * size + i1];
     const V3f &g = table[(k  * size + j1) * size + i1];
     const V3f &h = table[(k1 * size + j1) * size + i1];
-        
+
     V3f out3( w1 * (v1 * (u1 * a + u * b) + v * (u1 * c + u * d)) +
               w  * (v1 * (u1 * e + u * f) + v * (u1 * g + u * h)) );
     return out3;
@@ -213,7 +213,7 @@ lookup3D
     float w, w1;
     indicesAndWeights (t, Max, k, k1, w, w1);
 
-    
+
     const V4f &a = table[(k  * size + j ) * size + i ];
     const V4f &b = table[(k1 * size + j ) * size + i ];
     const V4f &c = table[(k  * size + j1) * size + i ];
@@ -321,19 +321,19 @@ _inited( b._inited )
       {
           if (lut[i] >= HALF_MIN && lut[i] <= HALF_MAX)
           {
-	    //
-	    // lut[i] is finite and positive.
-	    //
+            //
+            // lut[i] is finite and positive.
+            //
             lut[i] = (float) logf(lut[i]);
           }
           else
-	  {
-	    //
-	    // lut[i] is zero, negative or not finite;
-	    // log (lut[i]) is undefined.
-	    //
+          {
+            //
+            // lut[i] is zero, negative or not finite;
+            // log (lut[i]) is undefined.
+            //
              lut[i] = (float) logf( HALF_MIN );
-	  }
+          }
       }
 
       //
@@ -341,7 +341,7 @@ _inited( b._inited )
       //
       glPixelStorei( GL_UNPACK_ROW_LENGTH, 0 );
       glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-      
+
       glActiveTexture( GL_TEXTURE3 );
 
       glBindTexture( GL_TEXTURE_3D, texId );
@@ -390,9 +390,9 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 
     out.x = lutT + lutM * logf( Imath::clamp( rgb.x * scale + offset,
                                               lutMin, lutMax ) );
-    out.y = lutT + lutM * logf( Imath::clamp( rgb.y * scale + offset, 
+    out.y = lutT + lutM * logf( Imath::clamp( rgb.y * scale + offset,
                                               lutMin, lutMax ) );
-    out.z = lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset, 
+    out.z = lutT + lutM * logf( Imath::clamp( rgb.z * scale + offset,
                                               lutMin, lutMax ) );
 
     if (_channels == 3 )
@@ -413,7 +413,7 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
 
     // unsigned w = pic->width();
     // unsigned h = pic->height();
-    
+
     // for ( unsigned y = 0; y < h; ++y )
     //     for ( unsigned x = 0; x < w; ++x )
     //     {
@@ -421,7 +421,7 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
     //         if ( p.r < lutMin && p.r > 0 ) lutMin = p.r;
     //         if ( p.g < lutMin && p.g > 0 ) lutMin = p.g;
     //         if ( p.b < lutMin && p.b > 0 ) lutMin = p.b;
-            
+
     //         if ( p.r > lutMax ) lutMax = p.r;
     //         if ( p.g > lutMax ) lutMax = p.g;
     //         if ( p.b > lutMax ) lutMax = p.b;
@@ -458,13 +458,13 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
         float b = float(ib) / float(_lutN - 1.0);
         float B = expf((b - lutT) / lutM);
 
-	for (size_t ig = 0; ig < _lutN; ++ig)
-	  {
+        for (size_t ig = 0; ig < _lutN; ++ig)
+          {
               float g = float(ig) / float(_lutN - 1.0);
               float G = expf ((g - lutT) / lutM);
 
-	    for (size_t ir = 0; ir < _lutN; ++ir)
-	      {
+            for (size_t ir = 0; ir < _lutN; ++ir)
+              {
                   float r = float(ir) / float(_lutN - 1.0);
                   float R = expf ((r - lutT) / lutM);
 
@@ -475,8 +475,8 @@ void GLLut3d::calculate_range( const mrv::image_type_ptr& pic )
                   if ( _channels == 4 ) {
                       pixelValues[i + 3] = 1.0f;
                   }
-	      }
-	  }
+              }
+          }
     }
   }
 
@@ -510,7 +510,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
       if ( !_inited )
       {
           _channels = 3;
-          
+
           //
           // Init lut table to 0
           //
@@ -521,16 +521,16 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           //
           init_pixel_values( lut );
       }
- 
+
       try
       {
           OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
           const std::string& display = mrv::Preferences::OCIO_Display;
           const std::string& view = mrv::Preferences::OCIO_View;
-              
+
           OCIO::DisplayTransformRcPtr transform =
           OCIO::DisplayTransform::Create();
-          
+
           std::string ics = img->ocio_input_color_space();
           if  ( ics.empty() )
           {
@@ -539,25 +539,26 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
                   throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
               ics = defaultcs->getName();
           }
+
           transform->setInputColorSpaceName( ics.c_str() );
           transform->setDisplay( display.c_str() );
           transform->setView( view.c_str() );
-          
+
           OCIO::ConstProcessorRcPtr processor =
           config->getProcessor( transform );
 
-          
+
           OCIO::PackedImageDesc img(&lut[0],
                                     /* width */ lut_size()/_channels,
                                     /*height*/ 1,
                                     /*channels*/ _channels);
           processor->apply( img );
-          
+
 
           // std::ostringstream os;
           // os << processor->getGpuShaderText(shaderDesc) << std::endl;
           // std::cerr << os.str() << std::endl;
-          
+
           _inited = true;
       }
       catch( const OCIO::Exception& e)
@@ -580,12 +581,12 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
 
-  bool GLLut3d::calculate_ctl( 
-			      const Transforms::const_iterator& start,
-			      const Transforms::const_iterator& end,
-			      const CMedia* img,
-			      const XformFlags flags
-			       )
+  bool GLLut3d::calculate_ctl(
+                              const Transforms::const_iterator& start,
+                              const Transforms::const_iterator& end,
+                              const CMedia* img,
+                              const XformFlags flags
+                               )
   {
     //
     // We build a 3D color lookup table by running a set of color
@@ -659,7 +660,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           {
               ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
                         channelNames );
-	      _inited = true;
+              _inited = true;
           }
           catch( const std::exception& e )
           {
@@ -680,33 +681,33 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
   void GLLut3d::icc_cmm_error( const char* prefix,
-			       const icStatusCMM& status )
+                               const icStatusCMM& status )
   {
     std::string err;
     switch( status )
       {
       case icCmmStatAllocErr:
-	err = "Allocation error"; break;
+        err = "Allocation error"; break;
       case icCmmStatCantOpenProfile:
-	err = "Can't open profile"; break;
+        err = "Can't open profile"; break;
       case icCmmStatBadXform:
-	err = "Bad transform"; break;
+        err = "Bad transform"; break;
       case icCmmStatInvalidLut:
-	err = "Invalid Lut"; break;
+        err = "Invalid Lut"; break;
       case icCmmStatProfileMissingTag:
-	err = "Profile Missing Tag"; break;
+        err = "Profile Missing Tag"; break;
       case icCmmStatColorNotFound:
-	err = "Color not found"; break;
+        err = "Color not found"; break;
       case icCmmStatIncorrectApply:
-	err = "Incorrect Apply"; break;
+        err = "Incorrect Apply"; break;
       case icCmmStatBadColorEncoding:
-	err = "Bad color encoding"; break;
+        err = "Bad color encoding"; break;
       case icCmmStatBadLutType:
-	err = "Bad color encoding"; break;
+        err = "Bad color encoding"; break;
       case icCmmStatBadSpaceLink:
-	err = "Bad color space link"; break;
+        err = "Bad color space link"; break;
       default:
-	err = "Unknown error";
+        err = "Unknown error";
       }
 
     LOG_ERROR( prefix << err );
@@ -715,8 +716,8 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
   bool GLLut3d::calculate_icc( const Transforms::const_iterator& start,
-			       const Transforms::const_iterator& end,
-			       const XformFlags flags )
+                               const Transforms::const_iterator& end,
+                               const XformFlags flags )
   {
     //
     // We build a 3D color lookup table by running a set of color
@@ -741,28 +742,28 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     Imf::Array<float> pixelValues ( lut_size() );
     if ( !_inited )
       {
-	clear_lut();
-	init_pixel_values( pixelValues );
+        clear_lut();
+        init_pixel_values( pixelValues );
       }
     else
       {
-	float* dst = pixelValues;
-	for (unsigned i = 0; i < lut_size(); ++i )
-	  {
-	    dst[i] = lut[i];
-	  }
+        float* dst = pixelValues;
+        for (unsigned i = 0; i < lut_size(); ++i )
+          {
+            dst[i] = lut[i];
+          }
       }
 
     //
     // Generate output pixel values by applying CMM ICC transforms
-    // to the pixel values. 
+    // to the pixel values.
     //
 
     // We leak some memory here but it is needed so profiles don't
     // get deleted by CIccCmm.
-    CIccCmm* cmm = new CIccCmm( icSigUnknownData, 
+    CIccCmm* cmm = new CIccCmm( icSigUnknownData,
                                 icSigUnknownData,
-//         		 (flags & kXformLast) ? icSigRgbData : icSigXYZData, 
+//                       (flags & kXformLast) ? icSigRgbData : icSigXYZData,
                                 (flags & kXformFirst) );
 
 
@@ -770,49 +771,49 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     {
       Transforms::const_iterator i = start;
       for ( ; i != end; ++i )
-	{
-	  const char* name = (*i).name.c_str();
-	  CIccProfile* pIcc = colorProfile::get( name );
-	  if ( !pIcc )
-	    {
-	      LOG_ERROR( _("Could not locate ICC profile \"") 
-			 << name << N_("\"") );
-	      return false;
-	    }
+        {
+          const char* name = (*i).name.c_str();
+          CIccProfile* pIcc = colorProfile::get( name );
+          if ( !pIcc )
+            {
+              LOG_ERROR( _("Could not locate ICC profile \"")
+                         << name << N_("\"") );
+              return false;
+            }
 
-	  status = cmm->AddXform( pIcc, (*i).intent );
-	  if ( status != icCmmStatOk )
-	    {
-	      char err[1024];
-	      sprintf( err, _("Could not add profile \"%s\" to CMM: "),
-		       name );
-	      icc_cmm_error( err, status );
-	      return false;
-	    }
-	}
+          status = cmm->AddXform( pIcc, (*i).intent );
+          if ( status != icCmmStatOk )
+            {
+              char err[1024];
+              sprintf( err, _("Could not add profile \"%s\" to CMM: "),
+                       name );
+              icc_cmm_error( err, status );
+              return false;
+            }
+        }
     }
 
 
     status = cmm->Begin();
-    if ( status != icCmmStatOk ) 
+    if ( status != icCmmStatOk )
       {
-	icc_cmm_error( _("Invalid Profile for CMM: "), status );
-	return false;
+        icc_cmm_error( _("Invalid Profile for CMM: "), status );
+        return false;
       }
 
     unsigned src_space = cmm->GetSourceSpace();
-    
+
     if ( !((src_space==icSigRgbData)  ||
-	   (src_space==icSigGrayData) ||
-	   (src_space==icSigLabData)  ||
-	   (src_space==icSigXYZData)  ||
-	   (src_space==icSigCmykData) ||
-	   (src_space==icSigMCH4Data) ||
-	   (src_space==icSigMCH5Data) ||
-	   (src_space==icSigMCH6Data)) ) 
+           (src_space==icSigGrayData) ||
+           (src_space==icSigLabData)  ||
+           (src_space==icSigXYZData)  ||
+           (src_space==icSigCmykData) ||
+           (src_space==icSigMCH4Data) ||
+           (src_space==icSigMCH5Data) ||
+           (src_space==icSigMCH6Data)) )
     {
-	LOG_ERROR( _("Invalid source profile/image pixel format") );
-	return false;
+        LOG_ERROR( _("Invalid source profile/image pixel format") );
+        return false;
     }
 
     bool convert = false;
@@ -820,40 +821,40 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     unsigned channels  = 3;
     switch( dst_space )
       {
-	 case icSigXYZData:
-	    if ( (flags & kXformLast) ) convert = true;  
-	    // fall through - No break here
-	 // case icSigGrayData:
-	 case icSigRgbData:
-	 case icSigLabData:
-	 case icSigCmyData:
-	    channels = 3; break;
-	 case icSig4colorData:
-	 case icSigCmykData:
-	    channels = 4; break;
-	 case icSig5colorData:
-	    channels = 5; break;
-	 case icSig6colorData:
-	    channels = 6; break;
-	 case icSig7colorData:
-	    channels = 7; break;
-	 case icSig8colorData:
-	    channels = 8; break;
-	 default:
-	    LOG_ERROR( _("Invalid destination profile/image format") );
-	    return false;
+         case icSigXYZData:
+            if ( (flags & kXformLast) ) convert = true;
+            // fall through - No break here
+         // case icSigGrayData:
+         case icSigRgbData:
+         case icSigLabData:
+         case icSigCmyData:
+            channels = 3; break;
+         case icSig4colorData:
+         case icSigCmykData:
+            channels = 4; break;
+         case icSig5colorData:
+            channels = 5; break;
+         case icSig6colorData:
+            channels = 6; break;
+         case icSig7colorData:
+            channels = 7; break;
+         case icSig8colorData:
+            channels = 8; break;
+         default:
+            LOG_ERROR( _("Invalid destination profile/image format") );
+            return false;
       }
 
     if ( channels > 3 )
     {
        LOG_WARNING( _("Destination color space has more than 3 channels - "
-		      "only first 3 will be shown.") );
+                      "only first 3 will be shown.") );
     }
-       
+
     if ( dst_space != icSigRgbData && dst_space != icSigXYZData )
     {
        LOG_WARNING( _("Destination color space is not RGB or XYZ.  "
-		      "Colors may look weird displayed as RGB.") );
+                      "Colors may look weird displayed as RGB.") );
     }
 
     status = cmm->Begin();
@@ -865,25 +866,25 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
     float* p = new float[channels];
     size_t len = lut_size()/_channels;
-    for (size_t i = 0; i < len; ++i) 
+    for (size_t i = 0; i < len; ++i)
       {
-	 size_t j = i*4;
-	 status = cmm->Apply( p, &(pixelValues[j]) );
-	 if ( status != icCmmStatOk) {
-	    icc_cmm_error( _("Apply: ") , status );
-	    return false;
-	}
-	 
-	if ( convert )
-	  {
-	    icXyzFromPcs( p );
-	    icXYZtoLab( p );
-	    icLabToPcs( p );
-	  }
+         size_t j = i*4;
+         status = cmm->Apply( p, &(pixelValues[j]) );
+         if ( status != icCmmStatOk) {
+            icc_cmm_error( _("Apply: ") , status );
+            return false;
+        }
 
-	lut[j]   = p[0];
-	lut[j+1] = p[1];
-	lut[j+2] = p[2];
+        if ( convert )
+          {
+            icXyzFromPcs( p );
+            icXYZtoLab( p );
+            icLabToPcs( p );
+          }
+
+        lut[j]   = p[0];
+        lut[j+1] = p[1];
+        lut[j+2] = p[2];
       }
 
     _inited = true;
@@ -894,42 +895,42 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
 
-  bool GLLut3d::calculate( 
-			  GLLut3d::GLLut3d_ptr lut,
-			  const Transforms::const_iterator& start,
-			  const Transforms::const_iterator& end,
-			  const CMedia* img,
-			  const GLLut3d::XformFlags flags
-			   )
+  bool GLLut3d::calculate(
+                          GLLut3d::GLLut3d_ptr lut,
+                          const Transforms::const_iterator& start,
+                          const Transforms::const_iterator& end,
+                          const CMedia* img,
+                          const GLLut3d::XformFlags flags
+                           )
   {
     switch( (*start).type )
       {
-	 case Transform::kCTL:
-	    return lut->calculate_ctl( start, end, img, flags );
-	 case Transform::kICC:
-	    return lut->calculate_icc( start, end, flags );
-	 default:
-	    return false;
+         case Transform::kCTL:
+            return lut->calculate_ctl( start, end, img, flags );
+         case Transform::kICC:
+            return lut->calculate_icc( start, end, flags );
+         default:
+            return false;
       }
   }
 
 
 
   bool     GLLut3d::RT_ctl_transforms( std::string& key,
-				       Transforms& transforms,
-				       const CMedia* img,
-				       const bool warn )
+                                       Transforms& transforms,
+                                       const CMedia* img,
+                                       const bool warn )
   {
     bool ok = false;
     if ( img->idt_transform() )
       {
-	std::string name = img->idt_transform();
-	Transform t( name, Transform::kCTL );
-	if ( !key.empty() ) key += " -> ";
-	key += name;
-	key += " (C)";
-	transforms.push_back( t );
-	ok = true;
+        std::string name = img->idt_transform();
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+        ok = true;
       }
 
     if ( img->number_of_lmts() )
@@ -969,26 +970,26 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
     if ( img->rendering_transform() )
       {
-	std::string name = img->rendering_transform();
-	Transform t( name, Transform::kCTL );
-	if ( !key.empty() ) key += " -> ";
-	key += name;
-	key += " (C)";
-	transforms.push_back( t );
+        std::string name = img->rendering_transform();
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
 
-	static const CMedia* lastImg = NULL;
+        static const CMedia* lastImg = NULL;
 
-	if ( lastImg != img )
-	{  
-	   if ( warn )
-	   {
-	      LOG_WARNING( _("RT Lut is set to prefer ICC profile but only "
-			     "CTL script found in \"") 
-			 << img->name() << N_("\"") );
-	   }
-	   lastImg = img;
-	}
-	ok = true;
+        if ( lastImg != img )
+        {
+           if ( warn )
+           {
+              LOG_WARNING( _("RT Lut is set to prefer ICC profile but only "
+                             "CTL script found in \"")
+                         << img->name() << N_("\"") );
+           }
+           lastImg = img;
+        }
+        ok = true;
       }
 
     return ok;
@@ -997,75 +998,75 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
 
   bool    GLLut3d::RT_icc_transforms( std::string& key,
-				      Transforms& transforms,
-				      const CMedia* img,
-				      const bool warn )
+                                      Transforms& transforms,
+                                      const CMedia* img,
+                                      const bool warn )
   {
     const char* profile = img->icc_profile();
     CIccProfile* pIcc = colorProfile::get( profile );
     if ( pIcc )
       {
-	Transform t( profile, Transform::kICC, 
-		     (icRenderingIntent) img->rendering_intent() );
-	if ( !key.empty() ) key += " -> ";
-	key += profile;
-	key += " (I)";
-	transforms.push_back( t );
-	if ( warn )
-	  {
-	    LOG_WARNING( _("RT Lut is set to prefer CTL but only "
-			   "ICC profile found in \"") << img->name() << N_("\"") );
-	  }
-	return true;
+        Transform t( profile, Transform::kICC,
+                     (icRenderingIntent) img->rendering_intent() );
+        if ( !key.empty() ) key += " -> ";
+        key += profile;
+        key += " (I)";
+        transforms.push_back( t );
+        if ( warn )
+          {
+            LOG_WARNING( _("RT Lut is set to prefer CTL but only "
+                           "ICC profile found in \"") << img->name() << N_("\"") );
+          }
+        return true;
       }
     return false;
   }
 
 
-  
+
   bool    GLLut3d::ODT_ctl_transforms( std::string& key,
-					Transforms& transforms,
-					const CMedia* img,
-					const bool warn )
+                                        Transforms& transforms,
+                                        const CMedia* img,
+                                        const bool warn )
   {
     if ( !mrv::Preferences::ODT_CTL_transform.empty() )
       {
-	const std::string& name = mrv::Preferences::ODT_CTL_transform;
-	Transform t( name, Transform::kCTL );
-	if ( !key.empty() ) key += " -> ";
-	key += name;
-	key += " (C)";
-	transforms.push_back( t );
-	if ( warn )
-	  {
-	    LOG_WARNING( _("ODT Lut is set to prefer ICC profile but only "
-			   "CTL script found in ODT.") );
-	  }
-	return true;
+        const std::string& name = mrv::Preferences::ODT_CTL_transform;
+        Transform t( name, Transform::kCTL );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (C)";
+        transforms.push_back( t );
+        if ( warn )
+          {
+            LOG_WARNING( _("ODT Lut is set to prefer ICC profile but only "
+                           "CTL script found in ODT.") );
+          }
+        return true;
       }
     return false;
   }
 
-    
+
   bool     GLLut3d::ODT_icc_transforms( std::string& key,
-					Transforms& transforms,
-					const CMedia* img,
-					const bool warn )
+                                        Transforms& transforms,
+                                        const CMedia* img,
+                                        const bool warn )
   {
     if ( !mrv::Preferences::ODT_ICC_profile.empty() )
       {
-	const std::string& name = mrv::Preferences::ODT_ICC_profile;
-	Transform t( name, Transform::kICC );
-	if ( !key.empty() ) key += " -> ";
-	key += name;
-	key += " (I)";
-	transforms.push_back( t );
-	if ( warn )
-	  {
-	    LOG_WARNING( _("ODT Lut is set to prefer CTL script but only "
-			   "ICC profile found in ODT.") );
-	  }
-	return true;
+        const std::string& name = mrv::Preferences::ODT_ICC_profile;
+        Transform t( name, Transform::kICC );
+        if ( !key.empty() ) key += " -> ";
+        key += name;
+        key += " (I)";
+        transforms.push_back( t );
+        if ( warn )
+          {
+            LOG_WARNING( _("ODT Lut is set to prefer CTL script but only "
+                           "ICC profile found in ODT.") );
+          }
+        return true;
       }
     return false;
   }
@@ -1078,16 +1079,16 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view, 
+GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                            const CMedia* img )
 {
     const mrv::PreferencesUI* uiPrefs = view->uiPrefs;
-    std::string path; 
+    std::string path;
     GLLut3d::Transforms transforms;
 
     if ( !Preferences::use_ocio )
     {
-      
+
         unsigned int algorithm = uiPrefs->RT_algorithm->value();
 
         bool find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
@@ -1109,7 +1110,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 RT_ctl_transforms( path, transforms, img, true );
         }
 
-        if ( transforms.empty() ) 
+        if ( transforms.empty() )
         {
             static const CMedia* lastImg = NULL;
 
@@ -1124,8 +1125,8 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                     err = _("No CTL script");
                 else if ( find_icc )
                     err = _("No ICC profile");
-	    
-                LOG_ERROR( _("No valid RT transform for \"") 
+
+                LOG_ERROR( _("No valid RT transform for \"")
                            << img->name() << N_("\": ") << err << N_(".") );
             }
 
@@ -1263,7 +1264,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
           case kNoBake:
               break;
       }
- 
+
     //
     // Log information about lut path
     //
@@ -1273,13 +1274,15 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
     GLLut3d_ptr lut( new GLLut3d(view, size) );
 
     //lut->calculate_range( img->hires() );
-    
+
     if ( Preferences::use_ocio )
     {
-        
+
+        setlocale(LC_NUMERIC, "C" );
         std::locale::global( std::locale("C") );
         lut->calculate_ocio( img );
         std::locale::global( std::locale("") );
+        setlocale(LC_NUMERIC, "" );
     }
     else
     {
@@ -1296,7 +1299,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
         {
             if ( (*i).type != (*start).type )
             {
-                if ( ! lut->calculate( lut, start, i, img, 
+                if ( ! lut->calculate( lut, start, i, img,
                                        (XformFlags)flags ) )
                 {
                     LOG_ERROR( "Lut calculate failed" );
@@ -1317,7 +1320,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
             }
         }
     }
-    
+
     lut->create_gl_texture();
 
     if ( _luts.find( path ) != _luts.end() ) _luts.erase( path );
