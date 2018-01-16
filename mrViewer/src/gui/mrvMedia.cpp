@@ -19,10 +19,10 @@
  * @file   mrvMedia.cpp
  * @author gga
  * @date   Thu Nov 15 02:27:03 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <math.h>
@@ -43,7 +43,7 @@
 #undef IMG_ERROR
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
-namespace 
+namespace
 {
   const char* kModule = "gui";
 }
@@ -76,37 +76,37 @@ namespace mrv {
     }
 
     void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-				 uchar r, uchar g, uchar b )
+                                 uchar r, uchar g, uchar b )
     {
       switch( pixeltype )
-	{
-	case fltk::ARGB32:
-	  {
-	    *ptr++ = b; *ptr++ = g; *ptr++ = r;
-	    *ptr++ = 0xff;
-	    break;
-	  }
-	case fltk::RGB:
-	  {
-	    *ptr++ = r; *ptr++ = g; *ptr++ = b;
-	    break;
-	  }
-	case fltk::RGB32:
-	  {
-	    *ptr++ = 0xff; *ptr++ = r; *ptr++ = g; *ptr++ = b;
-	    break;
-	  }
-	case fltk::RGBx:
-	case fltk::RGBA:
-	  {
-	    *ptr++ = r; *ptr++ = g; *ptr++ = b; *ptr++ = 0xff;
-	    break;
-	  }
-	default:
-	  {
-	    IMG_ERROR("unknown pixel type for thumbnail");
-	  }
-	}
+        {
+        case fltk::ARGB32:
+          {
+            *ptr++ = b; *ptr++ = g; *ptr++ = r;
+            *ptr++ = 0xff;
+            break;
+          }
+        case fltk::RGB:
+          {
+            *ptr++ = r; *ptr++ = g; *ptr++ = b;
+            break;
+          }
+        case fltk::RGB32:
+          {
+            *ptr++ = 0xff; *ptr++ = r; *ptr++ = g; *ptr++ = b;
+            break;
+          }
+        case fltk::RGBx:
+        case fltk::RGBA:
+          {
+            *ptr++ = r; *ptr++ = g; *ptr++ = b; *ptr++ = 0xff;
+            break;
+          }
+        default:
+          {
+            IMG_ERROR("unknown pixel type for thumbnail");
+          }
+        }
     }
 
 
@@ -130,12 +130,12 @@ namespace mrv {
       // Make sure frame memory is not deleted
       Mutex& mutex = _image->video_mutex();
       SCOPED_LOCK( mutex );
-      
+
       // Audio only clip?  Return
       mrv::image_type_ptr pic = _image->hires();
 
       if ( !pic ) return;
-      
+
       unsigned dw = pic->width();
       unsigned dh = pic->height();
       if ( dw == 0 || dh == 0 ) return;
@@ -148,7 +148,7 @@ namespace mrv {
 
       // Resize image to thumbnail size
       pic.reset( pic->quick_resize( w, h ) );
-      
+
       w = pic->width();
       h = pic->height();
 
@@ -168,14 +168,13 @@ namespace mrv {
 
       _thumbnail->setpixeltype( fltk::RGB );
       _thumbnail->setsize( w, h );
-      _thumbnail->destroy();
 
       uchar* ptr = (uchar*) _thumbnail->buffer();
       if (!ptr )
-	{
+        {
             IMG_ERROR( _("Could not allocate thumbnail buffer") );
             return;
-	}
+        }
 
       fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
 
@@ -183,12 +182,12 @@ namespace mrv {
       // Copy to thumbnail and gamma it
       float gamma = 1.0f / _image->gamma();
       for (unsigned int y = 0; y < h; ++y )
-	{
-	  for (unsigned int x = 0; x < w; ++x )
-	    {
-	      CMedia::Pixel fp = pic->pixel( x, y );
-	      if ( gamma != 1.0f )
-	      {
+        {
+          for (unsigned int x = 0; x < w; ++x )
+            {
+              CMedia::Pixel fp = pic->pixel( x, y );
+              if ( gamma != 1.0f )
+              {
                   using namespace std;
                   if ( isfinite( fp.r ) )
                       fp.r = Imath::Math<float>::pow( fp.r, gamma );
@@ -196,19 +195,19 @@ namespace mrv {
                       fp.g = Imath::Math<float>::pow( fp.g, gamma );
                   if ( isfinite( fp.b ) )
                       fp.b = Imath::Math<float>::pow( fp.b, gamma );
-	      }
+              }
 
-	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
-	      uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
-	      uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-	      thumbnail_pixel( ptr, pixeltype, r, g, b );
-	    }
-	}
+              uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
+              uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
+              uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
+              thumbnail_pixel( ptr, pixeltype, r, g, b );
+            }
+        }
 
       _thumbnail->buffer_changed();
 
-      _image->image_damage( _image->image_damage() & 
-			    ~CMedia::kDamageThumbnail );
+      _image->image_damage( _image->image_damage() &
+                            ~CMedia::kDamageThumbnail );
     }
 
 
