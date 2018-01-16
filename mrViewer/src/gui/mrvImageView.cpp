@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -880,7 +881,7 @@ static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
 
-  attach_ctl_script( fg->image() );
+  attach_ctl_script( fg->image(), "", view->main() );
 }
 
 static void modify_sop_sat( mrv::ImageView* view )
@@ -939,12 +940,12 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 
   CMedia* img = fg->image();
 
-  attach_ctl_lmt_script( img, img->number_of_lmts() );
+  attach_ctl_lmt_script( img, img->number_of_lmts(), view->main() );
 }
 
-void update_ICS( const mrv::ViewerUI* uiMain )
+void ImageView::update_ICS() const
 {
-  mrv::media fg = uiMain->uiView->foreground();
+  mrv::media fg = foreground();
   if ( ! fg ) {
       return;
   }
@@ -972,7 +973,7 @@ void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
 
   attach_ocio_input_color_space( fg->image(), view );
 
-  update_ICS( view->main() );
+  view->update_ICS();
 
 
 }
@@ -996,7 +997,7 @@ static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
 
-  attach_ctl_idt_script( fg->image() );
+  attach_ctl_idt_script( fg->image(), view->main() );
 }
 
 static void monitor_icc_profile_cb( fltk::Widget* o, ViewerUI* uiMain )
@@ -1155,11 +1156,11 @@ bool ImageView::in_presentation() const
     return presentation;
 }
 
-void ImageView::send_network( std::string m )
+void ImageView::send_network( std::string m ) const
 {
 
-    ParserList::iterator i = _clients.begin();
-    ParserList::iterator e = _clients.end();
+    ParserList::const_iterator i = _clients.begin();
+    ParserList::const_iterator e = _clients.end();
 
     if ( i != e )
     {
@@ -1239,7 +1240,6 @@ _lastFrame( 0 )
         fltk::STENCIL_BUFFER | stereo );
 
   create_timeout( 0.2f );
-
 }
 
 
@@ -2972,42 +2972,57 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
     uiMain->uiPaint->uiRedoDraw->deactivate();
 }
 
-double sign (const Imath::V2d& p1,
-             const Imath::V2d& p2,
-             const Imath::V2d& p3)
+int sign (const Imath::V2i& p1,
+             const Imath::V2i& p2,
+             const Imath::V2i& p3)
 {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 }
 
-bool PointInTriangle (const Imath::V2d& s,
-                      const Imath::V2d& a,
-                      const Imath::V2d& b,
-                      const Imath::V2d& c)
-{
-    int as_x = s.x-a.x;
-    int as_y = s.y-a.y;
-
-    bool s_ab = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
-
-    if((c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) return false;
-
-    if((c.x-b.x)*(s.y-b.y)-(c.y-b.y)*(s.x-b.x) > 0 != s_ab) return false;
-
-    return true;
-}
-// bool PointInTriangle (const Imath::V2d& pt,
-//                       const Imath::V2d& v1,
-//                       const Imath::V2d& v2,
-//                       const Imath::V2d& v3)
+// bool PointInTriangle (const Imath::V2d& p,
+//                       const Imath::V2d& p0,
+//                       const Imath::V2d& p1,
+//                       const Imath::V2d& p2)
 // {
-//     bool b1, b2, b3;
-
-//     b1 = sign(pt, v1, v2) < 0.0f;
-//     b2 = sign(pt, v2, v3) < 0.0f;
-//     b3 = sign(pt, v3, v1) < 0.0f;
-
-//     return ((b1 == b2) && (b2 == b3));
+//     double dX = p.x-p2.x;
+//     double dY = p.y-p2.y;
+//     double dX21 = p2.x-p1.x;
+//     double dY12 = p1.y-p2.y;
+//     double D = dY12*(p0.x-p2.x) + dX21*(p0.y-p2.y);
+//     double s = dY12*dX + dX21*dY;
+//     double t = (p2.y-p0.y)*dX + (p0.x-p2.x)*dY;
+//     if (D<0) return s<=0 && t<=0 && s+t>=D;
+//     return s>=0 && t>=0 && s+t<=D;
 // }
+// bool PointInTriangle (const Imath::V2d& s,
+//                       const Imath::V2d& a,
+//                       const Imath::V2d& b,
+//                       const Imath::V2d& c)
+// {
+//     int as_x = s.x-a.x;
+//     int as_y = s.y-a.y;
+
+//     bool s_ab = (b.x-a.x)*as_y-(b.y-a.y)*as_x > 0;
+
+//     if((c.x-a.x)*as_y-(c.y-a.y)*as_x > 0 == s_ab) return false;
+
+//     if((c.x-b.x)*(s.y-b.y)-(c.y-b.y)*(s.x-b.x) > 0 != s_ab) return false;
+
+//     return true;
+// }
+bool PointInTriangle (const Imath::V2i& pt,
+                      const Imath::V2i& v1,
+                      const Imath::V2i& v2,
+                      const Imath::V2i& v3)
+{
+    bool b1, b2, b3;
+
+    b1 = sign(pt, v1, v2) < 0.0f;
+    b2 = sign(pt, v2, v3) < 0.0f;
+    b3 = sign(pt, v3, v1) < 0.0f;
+
+    return ((b1 == b2) && (b2 == b3));
+}
 
 /**
  * Handle a mouse press
@@ -3044,7 +3059,7 @@ int ImageView::leftMouseDown(int x, int y)
           flags |= kLeftShift;
           selection_mode();
       }
-      
+
       if ( _mode == kSelection )
       {
          _selection = mrv::Rectd( 0, 0, 0, 0 );
@@ -3097,22 +3112,19 @@ int ImageView::leftMouseDown(int x, int y)
               // std::cerr << "x,y " << x << ", " << y << " outside " << outside
               //           << std::endl;
               CMedia::Pixel p;
-              if ( xp >= 0 && xp < pic->width() &&
-                   yp >= 0 && yp < pic->height() )
+              if ( xp >= 0 && ( xp < pic->width()*img->scale_x() ) &&
+                   yp >= 0 && ( yp < pic->height()*img->scale_y() ) )
               {
-                  xp = xp / (double) img->scale_x();
-                  yp = yp / (double) img->scale_y();
-                  Imath::V2d pt( xp, yp );
-                  int W = pic->width();
-                  int H = pic->height();
-                  const double kSize = 30;
-                  Imath::V2d v1( (double)(W-kSize),
-                                 (double)(H) );
-                  Imath::V2d v2( (double)(W),
-                                 (double)(H) );
-                  Imath::V2d v3( (double)(W),
-                                 (double)(H-kSize) );
-                  if ( PointInTriangle( pt, v1, v2, v3 ) )
+                  Imath::V2i pt( xp, yp );
+                  int W = pic->width() * img->scale_x();
+                  int H = pic->height() * img->scale_y();
+                  const int kSize = 30;
+                  Imath::V2i v1( W, H );
+                  Imath::V2i v2( W-kSize, H );
+                  Imath::V2i v3( W, H-kSize );
+                  if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                       fltk::event_key_state( fltk::RightCtrlKey ) ||
+                       PointInTriangle( pt, v1, v2, v3 ) )
                   {
                       scale_pic_mode();
                       _selected_image = img;
@@ -3553,7 +3565,7 @@ void ImageView::leftMouseUp( int x, int y )
       scrub_mode();
       return;
   }
-  
+
   window()->cursor( fltk::CURSOR_CROSS );
 
   mrv::media fg = foreground();
@@ -3730,7 +3742,7 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.r *= _gain;
     rgba.g *= _gain;
     rgba.b *= _gain;
-    
+
     //
     // To represent pixel properly, we need to do the lut
     //
@@ -4627,13 +4639,13 @@ void ImageView::mouseDrag(int x,int y)
           {
               double px = img->scale_x();
               double py = img->scale_y();
-              
+
               px += double(dx) / w() / _zoom;
               py += double(dy) / h() / _zoom;
 
               img->scale_x( px );
               img->scale_y( py );
-              
+
               update_image_info();
 
               char buf[128];
@@ -4644,7 +4656,7 @@ void ImageView::mouseDrag(int x,int y)
           {
               double px = img->x();
               double py = img->y();
-              
+
               px += double(dx) / _zoom;
               py -= double(dy) / _zoom;
 
@@ -4685,7 +4697,7 @@ void ImageView::mouseDrag(int x,int y)
            double yn = double(y);
            data_window_coordinates( img, xn, yn, true );
 
-           
+
            short idx = 0;
 
            unsigned W = dpw[0].w();
@@ -6415,7 +6427,7 @@ void ImageView::channel( unsigned short c )
   std::transform( ext.begin(), ext.end(), ext.begin(),
                   (int(*)(int))toupper );
 
-  
+
   _channelType = kRGB;
   if ( channelName == _("Alpha Overlay") )
     {
@@ -7096,6 +7108,7 @@ void ImageView::foreground( mrv::media fg )
                 }
             }
 
+
             img->image_damage( img->image_damage() | CMedia::kDamageContents |
                                CMedia::kDamageLut | CMedia::kDamage3DData );
 
@@ -7545,7 +7558,6 @@ void ImageView::seek( const int64_t f )
     if ( b ) b->seek( f );
 
     thumbnails();
-
     update_color_info();
     mouseMove( lastX, lastY );
 
@@ -7734,7 +7746,13 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       CMedia* img = fg->image();
       if ( ! (img->image_damage() & CMedia::kDamageLut) )
           return;
-      update_ICS( main() );
+
+      char buf[1024];
+
+      sprintf( buf, "ICS \"%s\"", img->ocio_input_color_space().c_str() );
+      send_network( buf );
+
+      update_ICS();
   }
 
 }
