@@ -476,9 +476,12 @@ const char* open_ctl_dir( const char* startfile,
   void attach_ctl_script( CMedia* image, const char* startfile, 
                           const mrv::ViewerUI* main )
   {
-    if ( !image ) return;
+    if ( !image || !main ) return;
 
     std::string script = make_ctl_browser( startfile, "RRT,RT" );
+
+    main->uiView->send_network( "RT \"" + script + "\"" );
+    
     image->rendering_transform( script.c_str() );
   }
 
@@ -486,11 +489,15 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
                             const size_t idx, 
                             const mrv::ViewerUI* main )
   {
-    if ( !image ) return;
+    if ( !image || !main ) return;
 
     // @todo: pass index to look mod
     std::string script = make_ctl_browser( startfile, "LMT,ACEScsc" );
 
+    char buf[1024];
+    sprintf( buf, "LMT %d \"%s\"", idx, script.c_str() );
+    main->uiView->send_network( buf );
+    
     if ( idx >= image->number_of_lmts() && script != "" )
         image->append_look_mod_transform( script.c_str() );
     else
@@ -501,44 +508,54 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
 
 
   void attach_ctl_script( CMedia* image, 
-                           const mrv::ViewerUI* main )
+                          const mrv::ViewerUI* main )
   { 
-    if (!image) return;
-
+      if (!image || !main ) {
+          std::cerr << "image " << image << " main " << main << std::endl;
+          std::cerr << "returning" << std::endl;
+          return;
+      }
+      
     const char* transform = image->rendering_transform();
     if ( !transform ) 
       transform = mrv::CMedia::rendering_transform_float.c_str();
 
-    attach_ctl_script( image, transform );
+    attach_ctl_script( image, transform, main );
   }
 
   void attach_ctl_idt_script( CMedia* image, const char* startfile, 
                               const mrv::ViewerUI* main )
   {
-    if ( !image ) return;
+    if ( !image || !main ) return;
 
     std::string script = make_ctl_browser( startfile, "ACEScsc,IDT" );
+
+    char buf[1024];
+    sprintf( buf, "IDT \"%s\"", script.c_str() );
+    main->uiView->send_network( buf );
+    
     image->idt_transform( script.c_str() );
   }
 
   void attach_ctl_idt_script( CMedia* image, 
                               const mrv::ViewerUI* main )
   {
-    if ( !image ) return;
+    if ( !image || !main ) return;
 
     const char* transform = image->idt_transform();
     if ( !transform )  transform = "";
-    attach_ctl_idt_script( image, transform );
+    attach_ctl_idt_script( image, transform, main );
   }
 
 void attach_ctl_lmt_script( CMedia* image, const size_t idx, 
                             const mrv::ViewerUI* main )
 {
-    if ( !image ) return;
+    if ( !image || !main ) return;
 
     const char* transform = image->look_mod_transform(idx);
     if ( !transform )  transform = "";
-    attach_ctl_lmt_script( image, transform, idx );
+    
+    attach_ctl_lmt_script( image, transform, idx, main );
 }
 
 
@@ -655,6 +672,7 @@ void monitor_ctl_script( const mrv::ViewerUI* main,
     if ( script.empty() ) return;
 
     mrv::Preferences::ODT_CTL_transform = script;
+    main->uiView->send_network( "ODT \"" + script + "\"" );
 
     main->uiView->redraw();
 
