@@ -1155,6 +1155,7 @@ static const char* kCLocale = "C";
                     main->gammaDefaults->label( strdup( s.c_str() ) );
                 }
             }
+            main->gammaDefaults->redraw();
 
         }
         catch( const OCIO::Exception& e )
