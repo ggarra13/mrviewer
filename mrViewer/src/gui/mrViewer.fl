@@ -3319,7 +3319,7 @@ else
      v->uiView->gamma( 1.0f );
      std::string display = mrv::Preferences::OCIO_Display;
      mrv::Preferences::OCIO_View = lbl;
-     std::string view = _(lbl);
+     std::string view = N_(lbl);
 
      o->label( strdup( view.c_str() ) );
      char buf[1024];
