@@ -93,7 +93,7 @@ static const char* kModule = "filereq";
 #include <linux/version.h>
 
 //#if LINUX_VERSION_CODE <= KERNEL_VERSION(4,4,0)
-//#  define ICONS_SINGLE_THREAD
+#  define ICONS_SINGLE_THREAD
 //#endif
 
 #endif // __linux__
