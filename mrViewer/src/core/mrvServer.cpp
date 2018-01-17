@@ -572,6 +572,7 @@ bool Parser::parse( const std::string& s )
        if ( ! d.empty() ) mrv::Preferences::OCIO_Display = d;
        if ( ! s.empty() ) mrv::Preferences::OCIO_View = s;
        m->gammaDefaults->label( strdup( s.c_str() ) );
+       m->gammaDefaults->redraw();
        v->use_lut(true);
        m->uiLUT->value(true);
        mrv::media fg = v->foreground();
