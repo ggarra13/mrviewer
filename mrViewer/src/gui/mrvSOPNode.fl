@@ -177,7 +177,7 @@ CMedia* img = m->image();
 ACES::ASC_CDL& a = img->asc_cdl();
 a.saturation( o->value() );
 img->image_damage( img->image_damage() | CMedia::kDamageLut );
-v->redraw();} selected
+v->redraw();}
           xywh {355 215 135 25} align 4 when RELEASE value 1
         }
       }
@@ -196,7 +196,8 @@ make_window(view);} {}
     }
     Function {refresh()} {open
     } {
-      code {CMedia* img = m->image();
+      code {if (!m) return;
+CMedia* img = m->image();
 const ACES::ASC_CDL& cdl = img->asc_cdl();
 SaturationUI->value( cdl.saturation() );
 SlopeRUI->value( cdl.slope(0) );
@@ -207,7 +208,8 @@ OffsetGUI->value( cdl.offset(1) );
 OffsetBUI->value( cdl.offset(2) );
 PowerRUI->value( cdl.power(0) );
 PowerGUI->value( cdl.power(1) );
-PowerBUI->value( cdl.power(2) );} {}
+PowerBUI->value( cdl.power(2) );} {selected
+      }
     }
     Function {media( const mrv::media& fg )} {open
     } {
