@@ -185,7 +185,16 @@ bool Parser::parse( const std::string& s )
 
 
 #ifdef DEBUG_COMMANDS
-   LOG_INFO( "received: " << cmd );
+   mrv::media fg = v->foreground();
+
+   if ( fg )
+   {
+       CMedia* img = fg->image();
+       LOG_INFO( "received: " << cmd << " " << img->name() << " ics "
+                 << img->ocio_input_color_space() );
+   }
+   else
+       LOG_INFO( "received: " << cmd << " (empty)" );
 #endif
 
    if ( cmd == N_("GLPathShape") )
@@ -481,9 +490,12 @@ bool Parser::parse( const std::string& s )
        std::getline( is, s, '"' );
 
        mrv::media fg = v->foreground();
-       CMedia* img = fg->image();
-       img->idt_transform( s.c_str() );
-       ok = true;
+       if ( fg )
+       {
+           CMedia* img = fg->image();
+           img->idt_transform( s.c_str() );
+           ok = true;
+       }
    }
    else if ( cmd == N_("LMT") )
    {
@@ -497,16 +509,19 @@ bool Parser::parse( const std::string& s )
 
        mrv::media fg = v->foreground();
        CMedia* img = fg->image();
-       if ( idx == 0 ) img->clear_look_mod_transform();
-       if ( idx <= img->number_of_lmts() )
+       if ( img )
        {
-           img->append_look_mod_transform( s.c_str() );
+           if ( idx == 0 ) img->clear_look_mod_transform();
+           if ( idx <= img->number_of_lmts() )
+           {
+               img->append_look_mod_transform( s.c_str() );
+           }
+           else
+           {
+               img->insert_look_mod_transform( idx, s.c_str() );
+           }
+           ok = true;
        }
-       else
-       {
-           img->insert_look_mod_transform( idx, s.c_str() );
-       }
-       ok = true;
    }
    else if ( cmd == N_("RT") )
    {
@@ -517,9 +532,12 @@ bool Parser::parse( const std::string& s )
        std::getline( is, s, '"' );
 
        mrv::media fg = v->foreground();
-       CMedia* img = fg->image();
-       img->rendering_transform( s.c_str() );
-       ok = true;
+       if (fg)
+       {
+           CMedia* img = fg->image();
+           img->rendering_transform( s.c_str() );
+           ok = true;
+       }
    }
    else if ( cmd == N_("ODT") )
    {
@@ -541,7 +559,11 @@ bool Parser::parse( const std::string& s )
        mrv::Preferences::use_ocio = t;
        v->main()->uiPrefs->uiPrefsUseOcio->value( t );
 
-       v->send( kLUT_CHANGE );
+       const char* env = getenv( "OCIO" );
+       if ( env )
+       {
+           v->send( kLUT_CHANGE );
+       }
        ok = true;
    }
    else if ( cmd == N_("OCIOConfig") )
@@ -556,6 +578,7 @@ bool Parser::parse( const std::string& s )
        sprintf( buf, "OCIO=%s", s.c_str() );
        putenv( buf );
 
+       v->send( kLUT_CHANGE );
        ok = true;
    }
    else if ( cmd == N_("OCIOView") )
@@ -574,9 +597,12 @@ bool Parser::parse( const std::string& s )
        m->uiGammaInput->value( 1.0f );
        v->gamma(1.0f);
        if ( ! d.empty() ) mrv::Preferences::OCIO_Display = d;
-       if ( ! s.empty() ) mrv::Preferences::OCIO_View = s;
-       m->gammaDefaults->label( strdup( s.c_str() ) );
-       m->gammaDefaults->redraw();
+       if ( ! s.empty() )
+       {
+           mrv::Preferences::OCIO_View = s;
+           m->gammaDefaults->label( strdup( s.c_str() ) );
+           m->gammaDefaults->redraw();
+       }
        v->use_lut(true);
        m->uiLUT->value(true);
        mrv::media fg = v->foreground();
@@ -598,10 +624,13 @@ bool Parser::parse( const std::string& s )
        std::getline( is, s, '"' );
 
        mrv::media fg = v->foreground();
-       CMedia* img = fg->image();
-       img->ocio_input_color_space( s );
-       v->update_ICS();
-       ok = true;
+       if (fg)
+       {
+           CMedia* img = fg->image();
+           img->ocio_input_color_space( s );
+           v->update_ICS();
+           ok = true;
+       }
    }
    else if ( cmd == N_("Gain") )
    {
@@ -834,6 +863,7 @@ bool Parser::parse( const std::string& s )
       std::getline( is, name, '"' );
       is.clear();
 
+      
       mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
          r = now;
@@ -972,7 +1002,7 @@ bool Parser::parse( const std::string& s )
       is.clear();
       std::getline( is, imgname, '"' );
       is.clear();
-
+      
       boost::int64_t start, end;
       is >> start;
       is >> end;
@@ -999,8 +1029,6 @@ bool Parser::parse( const std::string& s )
       {
           LoadList files;
           files.push_back( LoadInfo( imgname, start, end ) );
-
-          std::cerr << files[0].filename << std::endl;
 
           browser()->load( files, false );
           browser()->redraw();
@@ -1140,15 +1168,18 @@ bool Parser::parse( const std::string& s )
          mrv::MediaList::iterator e = r->images.end();
          for ( ; j != e; ++j )
          {
-            cmd = N_("Image \"");
-            cmd += (*j)->image()->directory();
-            cmd += "/";
-            cmd += (*j)->image()->name();
-            cmd += "\" ";
+             CMedia* img = (*j)->image();
+             if (!img) continue;
+             
+             cmd = N_("Image \"");
+             cmd += img->directory();
+             cmd += "/";
+             cmd += img->name();
+             cmd += "\" ";
 
-            char buf[128];
-            boost::int64_t start = (*j)->image()->first_frame();
-            boost::int64_t end   = (*j)->image()->last_frame();
+            char buf[1024];
+            boost::int64_t start = img->first_frame();
+            boost::int64_t end   = img->last_frame();
 
             sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
                      start, end );
@@ -1156,9 +1187,81 @@ bool Parser::parse( const std::string& s )
 
             deliver( cmd );
 
-            boost::int64_t frame = (*j)->image()->frame();
+            boost::int64_t frame = img->frame();
             sprintf( buf, N_("seek %") PRId64, frame );
             deliver( buf );
+            
+            //
+            // Handle color management (OCIO/CTL)
+            //
+            const std::string& s = img->ocio_input_color_space();
+            if ( ! s.empty() )
+            {
+                sprintf( buf, N_("ICS \"%s\""), s.c_str() );
+                deliver( buf );
+            }
+
+            const char* idt = img->idt_transform();
+            if ( idt )
+            {
+                sprintf( buf, N_("IDT \"%s\""), idt );
+                deliver( buf );
+            }
+
+            num = img->number_of_lmts();
+            for ( size_t i = 0; i < num; ++i )
+            {
+                sprintf( buf, N_("LMT %d \"%s\""), i,
+                         img->look_mod_transform(i) );
+                deliver( buf );
+            }
+
+            const char* rt = img->rendering_transform();
+            if ( rt )
+            {
+                sprintf( buf, N_("RT \"%s\""), rt );
+                deliver( buf );
+            }
+
+
+            //
+            // Handle shape drawings
+            //
+            const mrv::GLShapeList& shapes = img->shapes();
+            if ( shapes.empty() ) continue;
+
+
+            cmd = N_("CurrentImage \"");
+            cmd += img->fileroot();
+
+            sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+                     img->last_frame() );
+            cmd += buf;
+            deliver( cmd );
+
+            mrv::GLShapeList::const_iterator k = shapes.begin();
+            mrv::GLShapeList::const_iterator e = shapes.end();
+            for ( ; k != e; ++k )
+            {
+                std::string s = (*k)->send();
+                deliver( s );
+            }
+
+         }
+         
+         j = r->images.begin();
+         CMedia* img = (*j)->image();
+
+         if ( img )
+         {
+             char buf[1024];
+             cmd = N_("CurrentImage \"");
+             cmd += img->fileroot();
+
+             sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+                      img->last_frame() );
+             cmd += buf;
+             deliver( cmd );
          }
       }
 
@@ -1228,27 +1331,6 @@ bool Parser::parse( const std::string& s )
 
                   CMedia* img = fg->image();
 
-                  const mrv::GLShapeList& shapes = img->shapes();
-                  if ( shapes.empty() ) continue;
-
-
-                  cmd = N_("CurrentImage \"");
-                  cmd += img->fileroot();
-
-                  char buf[128];
-                  sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
-                           img->last_frame() );
-                  cmd += buf;
-                  deliver( cmd );
-
-                  mrv::GLShapeList::const_iterator k = shapes.begin();
-                  mrv::GLShapeList::const_iterator e = shapes.end();
-                  for ( ; k != e; ++k )
-                  {
-                      std::string s = (*k)->send();
-                      deliver( s );
-                  }
-
               }
           }
 
@@ -1293,13 +1375,7 @@ bool Parser::parse( const std::string& s )
           sprintf( buf, "StereoInput %d", in );
           deliver( buf );
 
-          std::string s = img->ocio_input_color_space();
-          if ( ! s.empty() )
-          {
-              sprintf( buf, N_("ICS \"%s\""), s.c_str() );
-              deliver( buf );
-          }
-
+          
           boost::int64_t frame = img->frame() - img->first_frame() + 1;
           sprintf( buf, N_("seek %") PRId64, frame );
           deliver( buf );
