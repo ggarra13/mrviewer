@@ -539,6 +539,9 @@ bool Parser::parse( const std::string& s )
        is >> t;
 
        mrv::Preferences::use_ocio = t;
+       v->main()->uiPrefs->uiPrefsUseOcio->value( t );
+
+       v->send( kLUT_CHANGE );
        ok = true;
    }
    else if ( cmd == N_("OCIOConfig") )
@@ -552,6 +555,7 @@ bool Parser::parse( const std::string& s )
        char buf[1024];
        sprintf( buf, "OCIO=%s", s.c_str() );
        putenv( buf );
+
        ok = true;
    }
    else if ( cmd == N_("OCIOView") )
