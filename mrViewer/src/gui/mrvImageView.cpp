@@ -960,9 +960,11 @@ void ImageView::update_ICS() const
           o->label( strdup( w->label() ) );
           o->value(i);
           if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
-          break;
+          o->redraw();
+          return;
       }
   }
+  o->label( strdup( "scene_linear" ) );
   o->redraw();
 }
 
