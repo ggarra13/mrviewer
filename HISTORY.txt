@@ -1,9 +1,4 @@
-v3.9.8   - Bug fixed memory corruption when creating icons.  Now icons can
-	   be safely be created multithreaded and the file requester takes
-	   care of that.
-	 - Also, due to the above bug, server-client connections were not
-	   working properly.  Now they are.
-	 - Bug fixed OCIO ICS/Display/View changes on a network connection.
+v3.9.8	 - Added OCIO ICS/Display/View changes on a network connection.
 	 - Added CTL IDT/RT/ODT in network connections.
 
 v3.9.7   - Made Action Tool - Move Picture work as intended.  It allows
