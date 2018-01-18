@@ -5842,6 +5842,7 @@ int ImageView::handle(int event)
         case mrv::kSTEREO_OPTIONS_WINDOW_HIDE:
         case mrv::kPAINT_TOOLS_WINDOW_SHOW:
         case mrv::kPAINT_TOOLS_WINDOW_HIDE:
+        case mrv::kLUT_CHANGE:
             {
                 _event = event;
                 return 1;
@@ -5903,6 +5904,9 @@ int ImageView::handle(int event)
                         ok = true; break;
                     case mrv::kPAINT_TOOLS_WINDOW_HIDE:
                         toggle_paint_tools(false);
+                        ok = true; break;
+                    case mrv::kLUT_CHANGE:
+                        mrv::Preferences::run( main() );
                         ok = true; break;
                     default:
                         LOG_ERROR( "Unknown mrv event" );
