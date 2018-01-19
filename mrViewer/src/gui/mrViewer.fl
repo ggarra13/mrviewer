@@ -3208,7 +3208,10 @@ if ( i < 0 || i >= o->children() ) return;
 
 std::string c = o->child( i )->label();
 o->label( strdup( c.c_str() ) );
-img->ocio_input_color_space( c );} open
+img->ocio_input_color_space( c );
+v->uiView->use_lut(true);
+v->uiLUT->value(true);
+} open
                   xywh {145 0 140 20}
                   class {mrv::PopupMenu}
                 } {}
@@ -3317,14 +3320,8 @@ else
      v->uiGamma->value( 1.0f );
      v->uiGammaInput->value( 1.0f );
      v->uiView->gamma( 1.0f );
-     std::string display = mrv::Preferences::OCIO_Display;
-     mrv::Preferences::OCIO_View = lbl;
-     std::string view = N_(lbl);
 
-     o->label( strdup( view.c_str() ) );
-     char buf[1024];
-     sprintf( buf, "OCIOView \\"%s\\" \\"%s\\"", display.c_str(), view.c_str() );
-     v->uiView->send_network( buf );
+     o->label( strdup( lbl ) );
      v->uiView->use_lut(true);
      v->uiLUT->value(true);
      mrv::media fg = v->uiView->foreground();
