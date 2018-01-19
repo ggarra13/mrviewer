@@ -7494,7 +7494,13 @@ void ImageView::toggle_lut()
 {
   _useLUT = !_useLUT;
 
-  char buf[128];
+  std::string display = mrv::Preferences::OCIO_Display;
+  std::string view = mrv::Preferences::OCIO_View;
+
+  char buf[1024];
+  sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
+  send_network( buf );
+  
   sprintf( buf, "UseLUT %d", (int)_useLUT );
   send_network( buf );
 
@@ -7509,6 +7515,7 @@ void ImageView::toggle_lut()
   redraw();  // force a draw to refresh luts
 
   uiMain->uiLUT->value( _useLUT );
+  uiMain->gammaDefaults->label( strdup( view.c_str() ) );
 
   smart_refresh();
   update_color_info();
