@@ -1203,8 +1203,6 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
 
     if ( Preferences::use_ocio )
     {
-        std::cerr << img->name() << " " << img->ocio_input_color_space()
-                  << std::endl;
         if ( img->ocio_input_color_space().empty() )
         {
             std::string msg = _( "Image input color space is undefined." );
