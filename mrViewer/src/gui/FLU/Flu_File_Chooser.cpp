@@ -3372,7 +3372,7 @@ void Flu_File_Chooser::addToFavoritesCB()
   for( int i = 0; i < favoritesList->children(); ++i )
     {
       if ( favoritesList->child(i)->label() == NULL ) continue;
-      if( streq( currentDir.c_str(), favoritesList->child(i)->label() ) == 0 )
+      if( streq( currentDir.c_str(), favoritesList->child(i)->label() ) )
         {
           duplicate = true;
           break;
