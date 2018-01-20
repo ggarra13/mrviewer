@@ -193,8 +193,9 @@ namespace
                                   const char* defaultValue,
                                   const bool inPrefs )
   {
-    const char* env = getenv( variable );
-    if ( !env )
+      
+      const char* env = getenv( variable );
+      if ( !env || strlen(env) == 0 )
       {
         env = defaultValue;
         if ( !inPrefs )
