@@ -497,6 +497,37 @@ bool Parser::parse( const std::string& s )
            ok = true;
        }
    }
+   else if ( cmd == N_("LMT.SOPNode") )
+   {
+       float s0, s1, s2, o0, o1, o2, p0, p1, p2;
+       is >> s0 >> s1 >> s2 >> o0 >> o1 >> o2 >> p0 >> p1 >> p2;
+       
+       mrv::media fg = v->foreground();
+       if ( fg )
+       {
+           CMedia* img = fg->image();
+           ACES::ASC_CDL& a = img->asc_cdl();
+           a.slope( 0, s0 ); a.slope( 1, s1 ); a.slope( 2, s2 );
+           a.offset( 0, o0 ); a.offset( 1, o1 ); a.offset( 2, o2 );
+           a.power( 0, p0 ); a.power( 1, p1 ); a.power( 2, p2 );
+           img->image_damage( img->image_damage() | CMedia::kDamageAll );
+           ok = true;
+       }
+   }
+   else if ( cmd == N_("LMT.SatNode") )
+   {
+       float f;
+       is >> f;
+       
+       mrv::media fg = v->foreground();
+       if ( fg )
+       {
+           CMedia* img = fg->image();
+           img->asc_cdl().saturation( f );
+           img->image_damage( img->image_damage() | CMedia::kDamageAll );
+           ok = true;
+       }
+   }
    else if ( cmd == N_("LMT") )
    {
        std::string s;
