@@ -118,11 +118,16 @@ void attach_icc_profile( CMedia* image, const char* startfile,
    * @param image      already loaded image
    * @param startfile  start filename (directory)
    */
+void attach_rt_script( CMedia* image, const std::string& startfile, 
+                       const mrv::ViewerUI* main );
   void attach_ctl_script( CMedia* image, const char* ctlfile,
                           const mrv::ViewerUI* main = NULL  );
   void attach_ctl_script( CMedia* image,
                           const mrv::ViewerUI* main = NULL  );
 
+void attach_look_mod_transform( CMedia* image, const std::string& script,
+                                const size_t idx,
+                                const mrv::ViewerUI* main );
   /**
    * Attach a CTL (Color Transform Language) LMT script to an image for display.
    * 
