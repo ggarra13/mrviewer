@@ -894,15 +894,17 @@ static void modify_sop_sat( mrv::ImageView* view )
     size_t num_graderefs = img->number_of_grade_refs();
     if ( num_graderefs == 0 )
     {
-        img->append_look_mod_transform( "ACEScsc.ACES_to_ACEScg" );
-        img->append_look_mod_transform( "LMT.SOPNode" );
-        img->append_look_mod_transform( "LMT.SatNode" );
-        img->append_look_mod_transform( "ACEScsc.ACEScg_to_ACES" );
+        attach_look_mod_transform( img, "ACEScsc.ACES_to_ACEScg", 0,
+                                   view->main() );
+        attach_look_mod_transform( img, "LMT.SOPNode", 1, view->main() );
+        attach_look_mod_transform( img, "LMT.SatNode", 2, view->main() );
+        attach_look_mod_transform( img, "ACEScsc.ACEScg_to_ACES", 3,
+                                   view->main() );
     }
 
     if ( ! img->rendering_transform() )
     {
-        img->rendering_transform( "RRT" );
+        attach_rt_script( img, "RRT", view->main() );
     }
     if ( mrv::Preferences::ODT_CTL_transform == "" )
     {
@@ -7753,18 +7755,18 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       if ( uiHistogram->visible() ) uiHistogram->redraw();
     }
 
+  if (!fg) return;
+  CMedia* img = fg->image();
+  if ( ! (img->image_damage() & CMedia::kDamageLut) )
+      return;
+
+  char buf[1024];
+
+  sprintf( buf, "ICS \"%s\"", img->ocio_input_color_space().c_str() );
+  send_network( buf );
+
   if ( uiMain->uiICS->visible() )
   {
-      if (!fg) return;
-      CMedia* img = fg->image();
-      if ( ! (img->image_damage() & CMedia::kDamageLut) )
-          return;
-
-      char buf[1024];
-
-      sprintf( buf, "ICS \"%s\"", img->ocio_input_color_space().c_str() );
-      send_network( buf );
-
       update_ICS();
   }
 
