@@ -473,17 +473,38 @@ const char* open_ctl_dir( const char* startfile,
   }
 
 
-  void attach_ctl_script( CMedia* image, const char* startfile, 
+void attach_rt_script( CMedia* image, const std::string& script, 
+                       const mrv::ViewerUI* main )
+{
+    if ( ! script.empty() )
+        main->uiView->send_network( "RT \"" + script + "\"" );
+    
+    image->rendering_transform( script.c_str() );
+}
+
+void attach_ctl_script( CMedia* image, const char* startfile, 
                           const mrv::ViewerUI* main )
   {
     if ( !image || !main ) return;
 
     std::string script = make_ctl_browser( startfile, "RRT,RT" );
 
-    main->uiView->send_network( "RT \"" + script + "\"" );
     
-    image->rendering_transform( script.c_str() );
   }
+
+void attach_look_mod_transform( CMedia* image, const std::string& script,
+                                const size_t idx,
+                                const mrv::ViewerUI* main )
+{
+    char buf[1024];
+    sprintf( buf, "LMT %d \"%s\"", idx, script.c_str() );
+    main->uiView->send_network( buf );
+    
+    if ( idx >= image->number_of_lmts() && script != "" )
+        image->append_look_mod_transform( script.c_str() );
+    else
+        image->look_mod_transform( idx, script.c_str() );
+}
 
 void attach_ctl_lmt_script( CMedia* image, const char* startfile,
                             const size_t idx, 
@@ -494,14 +515,8 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
     // @todo: pass index to look mod
     std::string script = make_ctl_browser( startfile, "LMT,ACEScsc" );
 
-    char buf[1024];
-    sprintf( buf, "LMT %d \"%s\"", idx, script.c_str() );
-    main->uiView->send_network( buf );
+    attach_look_mod_transform( image, script, idx, main );
     
-    if ( idx >= image->number_of_lmts() && script != "" )
-        image->append_look_mod_transform( script.c_str() );
-    else
-        image->look_mod_transform( idx, script.c_str() );
   }
 
 
@@ -511,8 +526,6 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
                           const mrv::ViewerUI* main )
   { 
       if (!image || !main ) {
-          std::cerr << "image " << image << " main " << main << std::endl;
-          std::cerr << "returning" << std::endl;
           return;
       }
       
