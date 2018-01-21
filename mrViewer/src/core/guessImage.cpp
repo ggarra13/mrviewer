@@ -197,7 +197,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const bool is_thumbnail = false )
 {
     std::string tmp;
-    char name[1024];
+    char buf[1024];
+    char *name = buf;
     if ( is_stereo )
     {
         tmp = parse_view( root, left );
@@ -215,14 +216,18 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     {
         if ( is_seq )
         {
-            sprintf( name, root.c_str(), frame );
+            sprintf( name, root.c_str(), frame );  // eliminate file:
         }
         else
         {
-            strncpy( name, root.c_str(), 1024 );
+            strncpy( name, root.c_str(), 1024 );  // eliminate file:
         }
     }
 
+    if ( strncmp( name, "file:", 5 ) == 0 )
+    {
+        name += 5;
+    }
 
     
     boost::uint8_t* read_data = 0;
@@ -236,7 +241,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
             if ( is_seq )
             {
                 LOG_ERROR( _("Image sequence \"") << root
-                           << _("\" not found. Name tested ") << name );
+                           << _("\" not found. ") );
             }
             else
             {
@@ -300,10 +305,10 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 //        from other image.
                 if ( img )
                 {
+                    img->filename( name );
                     img->fetch(1);
                     img->default_icc_profile();
                     img->default_rendering_transform();
-                    img->filename( name );
                     return img;
                 }
                 else
