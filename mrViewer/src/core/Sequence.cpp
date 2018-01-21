@@ -379,6 +379,8 @@ bool is_valid_view( std::string view )
     if ( periods.size() == 4 )
     {
        root = file.substr( 0, len ) + periods[0] + ".";
+       if ( root.find( "file:" ) == 0 )
+           root = root.substr(5, root.size());
        view = periods[1];
        frame = periods[2];
        ext = '.' + periods[3];
@@ -410,6 +412,8 @@ bool is_valid_view( std::string view )
     else if ( periods.size() == 3 )
     {
         root = file.substr( 0, len ) + periods[0] + ".";
+       if ( root.find( "file:" ) == 0 )
+           root = root.substr( 5, root.size() );
         frame = periods[1];
         ext = '.' + periods[2];
         if ( mrv::is_valid_movie( ext.c_str() ) )
@@ -477,6 +481,8 @@ bool is_valid_view( std::string view )
     if ( count == 2 && minus < 2 )
       {
         root  = f.substr( 0, idx[1]+1 );
+       if ( root.find( "file:" ) == 0 )
+           root = root.substr( 5, root.size() );
         frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
         ext   = f.substr( idx[0], file.size()-idx[0] );
 
@@ -509,6 +515,8 @@ bool is_valid_view( std::string view )
     else
       {
         root = f.substr( 0, idx[0]+1 );
+       if ( root.find( "file:" ) == 0 )
+           root = root.substr( 5, root.size() );
         ext  = f.substr( idx[0]+1, file.size() );
 
         if ( is_valid_movie( ext.c_str() ) )
@@ -541,6 +549,8 @@ bool is_valid_view( std::string view )
         size_t len = root.size();
         if ( len >= 2 && !valid )
         {
+            if ( root.find( "file:" ) == 0 )
+                root = root.substr( 5, root.size() );
             size_t pos;
             std::string fspec;
             if ( ( pos = root.rfind('%') ) != std::string::npos ||
