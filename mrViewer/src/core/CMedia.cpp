@@ -1324,6 +1324,9 @@ void CMedia::sequence( const char* fileroot,
   assert( fileroot != NULL );
   assert( start <= end );
 
+  if ( strncmp( fileroot, "file:", 5 ) == 0 )
+      fileroot += 5;
+
   if ( _fileroot && strcmp( fileroot, _fileroot ) == 0 &&
        start == _frame_start && end == _frame_end )
     return;
@@ -1389,6 +1392,9 @@ void CMedia::sequence( const char* fileroot,
 void CMedia::filename( const char* n )
 {
   assert( n != NULL );
+
+  if ( strncmp( n, "file:", 5 ) == 0 )
+      n += 5;
 
   if ( _fileroot && strcmp( n, _fileroot ) == 0 )
     return;
