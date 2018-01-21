@@ -475,7 +475,12 @@ bool parse_command_line( const int argc, char** argv,
     IntArray::const_iterator oe = aoffsets.end();
     for ( ; i != e; ++i )
       {
-        const std::string& arg = *i;
+        std::string arg = *i;
+
+        if ( arg.find( "file:" ) == 0 )
+        {
+            arg = arg.substr( 5, arg.size() );
+        }
 
         // Check if string is a range.  if so, change last sequence
         if ( !opts.files.empty() && (opts.files.back().reel == false) &&
