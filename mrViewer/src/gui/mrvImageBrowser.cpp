@@ -1350,12 +1350,14 @@ void ImageBrowser::load_stereo( mrv::media& fg,
                                        const int64_t end,
                                        const bool avoid_seq )
   {
+    
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
     if ( first != AV_NOPTS_VALUE ) frame( first );
 
 
+    
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
         img = CMedia::guess_image( name, NULL, 0, false,
@@ -1435,6 +1437,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
                          std::string bgimage,
                          const bool progressBar )
 {
+
     if ( bgimage != "" )
     {
         int64_t start = AV_NOPTS_VALUE;
@@ -1746,9 +1749,10 @@ void ImageBrowser::load( const stringArray& files,
       {
         std::string file = *i;
 
-        if ( file.substr(0, 7) == "file://" )
-          file = file.substr( 7, file.size() );
+        if ( file.substr(0, 5) == "file:" )
+          file = file.substr( 5, file.size() );
 
+        
         if ( file.empty() ) continue;
 
         size_t len = file.size();
@@ -1806,8 +1810,8 @@ void ImageBrowser::load( const stringArray& files,
 
      std::string file = files[0];
 
-     if ( file.substr(0, 7) == "file://" )
-         file = file.substr( 7, file.size() );
+     if ( file.substr(0, 5) == "file:" )
+         file = file.substr( 5, file.size() );
 
      if ( file.empty() ) return;
 
@@ -2338,10 +2342,11 @@ void ImageBrowser::handle_dnd()
        std::string file = *i;
 #endif
 
-       if ( file.substr(0, 7) == "file://" && file.size() > 7 )
-          file = file.substr( 7, file.size() );
+       if ( file.substr(0, 5) == "file:" )
+          file = file.substr( 5, file.size() );
 
        if ( file.empty() ) continue;
+
 
        if ( mrv::is_directory( file.c_str() ) )
        {
