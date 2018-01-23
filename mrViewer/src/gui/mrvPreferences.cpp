@@ -193,7 +193,7 @@ namespace
                                   const char* defaultValue,
                                   const bool inPrefs )
   {
-      
+
       const char* env = getenv( variable );
       if ( !env || strlen(env) == 0 )
       {
@@ -702,8 +702,15 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsOpenEXRThreadCount->value( tmp );
 
     openexr.get( "gamma", tmpF, 2.2f );
-    if ( !use_ocio ) exrImage::_default_gamma = tmpF;
-    uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
+    if ( !use_ocio ) {
+        exrImage::_default_gamma = tmpF;
+        uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
+    }
+    else
+    {
+        exrImage::_default_gamma = 1.0f;
+        uiPrefs->uiPrefsOpenEXRGamma->value( 1.0f );
+    }
 
     openexr.get( "compression", tmp, 4 );   // PIZ default
     exrImage::_default_compression = (Imf::Compression) tmp;
@@ -1120,42 +1127,56 @@ static const char* kCLocale = "C";
             OCIO_Display = config->getDefaultDisplay();
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
-            const char* display = Preferences::OCIO_Display.c_str();
-            std::vector< std::string > views;
-            int numViews = config->getNumViews(display);
-            // Collect all views
-            for(int i = 0; i < numViews; i++)
-            {
-                std::string view = config->getView(display, i);
-                views.push_back( view );
-            }
-
             // First, remove all additional defaults if any from pulldown menu
             for ( int c = main->gammaDefaults->children()-1; c >= 5; --c )
             {
                 main->gammaDefaults->remove( c );
             }
 
-            // Then sort and add all new views to pulldown menu
-            std::sort( views.begin(), views.end() );
-            for ( size_t i = 0; i < views.size(); ++i )
+            int numDisplays = config->getNumDisplays();
+            for ( int j = 0; j < numDisplays; ++j )
             {
-                main->gammaDefaults->add( views[i].c_str() );
-                if ( views[i] == OCIO_View && !OCIO_View.empty() )
-                {
-                    std::string s;
-                    size_t len = views[i].size();
-                    int w = 0, h = 0;
-                    for (  ; len >= views[i].size() ||
-                           w >= main->gammaDefaults->w(); --len )
-                    {
-                        s = views[i].substr( 0, len );
-                        fltk::measure( s.c_str(), w, h );
-                    }
+                std::string display = config->getDisplay(j);
+                fltk::Group* g = (fltk::Group*)main->gammaDefaults->add_group(
+                    display.c_str() );
 
-                    main->gammaDefaults->label( strdup( s.c_str() ) );
+                std::vector< std::string > views;
+                int numViews = config->getNumViews(display.c_str());
+                // Collect all views
+                for(int i = 0; i < numViews; i++)
+                {
+                    std::string view = config->getView(display.c_str(), i);
+                    views.push_back( view );
+                }
+
+
+                // Then sort and add all new views to pulldown menu
+                std::sort( views.begin(), views.end() );
+                for ( size_t i = 0; i < views.size(); ++i )
+                {
+                    main->gammaDefaults->add_leaf( views[i].c_str(), g );
+                    if ( views[i] == OCIO_View && !OCIO_View.empty() )
+                    {
+                        std::string s;
+                        size_t len = views[i].size();
+                        int w = 0, h = 0;
+                        for (  ; len >= views[i].size() ||
+                                   w >= main->gammaDefaults->w(); --len )
+                        {
+                            s = views[i].substr( 0, len );
+                            fltk::measure( s.c_str(), w, h );
+                        }
+
+                        main->gammaDefaults->label( strdup( s.c_str() ) );
+                        main->uiGamma->value( 1.0f );
+                        main->uiGammaInput->value( 1.0f );
+                        main->uiView->gamma( 1.0f );
+                    }
                 }
             }
+
+
+
             main->gammaDefaults->redraw();
 
         }
