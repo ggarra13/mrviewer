@@ -3314,14 +3314,18 @@ if ( !is_equal( g, 0.0 ) )
 else
 {
   int idx = o->value();
-  const char* lbl = o->child( idx )->label();
-  if ( lbl )
+  fltk::Widget* w = gammaDefaults->get_item();
+  const char* lbl = w->label();
+  fltk::Widget* p = w->parent();
+  if ( p ) mrv::Preferences::OCIO_Display = p->label();
+  if ( lbl && strcmp(lbl, p->label()) != 0 )
   {
      v->uiGamma->value( 1.0f );
      v->uiGammaInput->value( 1.0f );
      v->uiView->gamma( 1.0f );
 
-     o->label( strdup( lbl ) );
+     mrv::Preferences::OCIO_View = lbl;
+
      v->uiView->use_lut(true);
      v->uiLUT->value(true);
      mrv::media fg = v->uiView->foreground();
