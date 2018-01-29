@@ -1855,7 +1855,9 @@ void GLEngine::draw_images( ImageList& images )
                 CHECK_GL;
 
                 if ( stereo & CMedia::kStereoSideBySide )
+                {
                     translate( dpw.w(), 0, 0 );
+                }
                 else if ( stereo & CMedia::kStereoTopBottom )
                     translate( 0, -dpw.h(), 0 );
 
@@ -1918,10 +1920,16 @@ void GLEngine::draw_images( ImageList& images )
                     if ( right ) g = right->gamma();
                 }
 
-
-                texWidth = daw2.w();
-                texHeight = daw2.h();
-
+                if ( daw2.w() > 0 )
+                {
+                    texWidth = daw2.w();
+                    texHeight = daw2.h();
+                }
+                else
+                {
+                    texWidth = pic->width();
+                    texHeight = pic->height();
+                }
                 glRotated( img->rot_z(), 0, 0, 1 );
 
                 translate( img->x(), img->y(), 0 );
