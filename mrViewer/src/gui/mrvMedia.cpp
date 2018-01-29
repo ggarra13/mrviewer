@@ -57,7 +57,6 @@ namespace mrv {
 
     media::media( CMedia* const img ) :
     _start( img->first_frame() ),
-    _pos( 1 ),
     _image( img ),
     _thumbnail( NULL ),
     _thumbnail_frozen( false )
@@ -75,6 +74,14 @@ namespace mrv {
         }
     }
 
+  void media::position( int64_t x ) {
+      _image->position(x);
+  }
+  
+  int64_t media::position() const {
+      return _image->position();
+  }
+  
     void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
                                  uchar r, uchar g, uchar b )
     {
