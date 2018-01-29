@@ -354,6 +354,13 @@ class CMedia
     kStereoCache = 2,
     };
 
+    enum StreamType
+    {
+    kVideoStream,
+    kAudioStream,
+    kSubtitleStream
+    };
+
 
   public:
     /// Fetch (load) the image for a frame
@@ -443,6 +450,9 @@ class CMedia
     inline void  image_damage( int x ) 
     { _image_damage = (Damage) x; };
 
+    void remove_to_end( const StreamType t );
+
+    
     /// Return the name of the image (sans directory)
     std::string name() const;
 
@@ -953,7 +963,7 @@ class CMedia
     inline void eye_separation(float b) { _eye_separation = b; refresh(); }
 
     inline Barrier* stereo_barrier()     {
-        if (_right_eye && _stereo_output != kNoStereo)
+        if (_right_eye && _is_stereo)
             return _right_eye->_stereo_barrier;
         return _stereo_barrier;
     }
@@ -1024,6 +1034,12 @@ class CMedia
     // Return the subtitlee stream being decoded or NULL if none
     virtual AVStream* get_subtitle_stream() const { return NULL; } ;
 
+    // Return offset in timeline
+    inline void position( int64_t x ) { _pos = x; }
+    
+    // Set offset in timeline
+    inline int64_t position() const { return _pos; }
+    
     // Return the video pts as a double
     inline double video_pts() const { return _video_pts; }
 
@@ -1354,6 +1370,7 @@ class CMedia
 
     virtual bool seek_to_position( const int64_t frame );
 
+    
 
     virtual void flush_video() {};
     void flush_audio();
@@ -1422,6 +1439,7 @@ class CMedia
     bool    _audio_start;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
     int64_t _seek_frame;      //!< seek frame requested
+    int64_t _pos;             //!< position offset in timeline
 
     char*  _channel;          //!< current channel/layer being shown
 
