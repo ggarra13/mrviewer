@@ -29,9 +29,9 @@ IF( UNIX )
   INCLUDE( Platform/UnixPaths )
 ENDIF( UNIX )
 
-SET( VersionMajor 3 )
-SET( VersionMinor 9 )
-SET( VersionPatch 9 )
+SET( VersionMajor 4 )
+SET( VersionMinor 0 )
+SET( VersionPatch 0 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
