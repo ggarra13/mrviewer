@@ -53,8 +53,8 @@ namespace mrv {
         ~media();
 
 
-        inline void position( int64_t x ) { _pos = x; }
-        inline int64_t position() const { return _pos; }
+        void position( int64_t x );
+        int64_t position() const;
 
         inline int64_t duration() const { return _image->duration(); }
 

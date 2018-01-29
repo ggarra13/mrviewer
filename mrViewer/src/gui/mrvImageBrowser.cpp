@@ -2850,20 +2850,24 @@ void ImageBrowser::handle_dnd()
      mrv::Reel reel = current_reel();
      if ( !reel || reel->images.empty() ) return;
 
-     mrv::MediaList::iterator i = reel->images.begin();
-     MediaList::iterator j;
-     mrv::MediaList::iterator e = reel->images.end();
-     if ( i != e )
+     if ( reel->edl )
      {
-        (*i)->position( 1 );
+         mrv::MediaList::iterator i = reel->images.begin();
+         MediaList::iterator j;
+         mrv::MediaList::iterator e = reel->images.end();
+         if ( i != e )
+         {
+             (*i)->position( 1 );
 
-        for ( j = i, ++i; i != e; j = i, ++i )
-        {
-           int64_t frame = (*j)->position() + (*j)->duration();
-           DBG( (*i)->image()->name() << " moved to frame " << frame );
-           (*i)->position( frame );
-        }
+             for ( j = i, ++i; i != e; j = i, ++i )
+             {
+                 int64_t frame = (*j)->position() + (*j)->duration();
+                 DBG( (*i)->image()->name() << " moved to frame " << frame );
+                 (*i)->position( frame );
+             }
+         }
      }
+     
 
      if ( ! reel->edl )
      {
