@@ -378,6 +378,7 @@ _stereo_barrier( NULL ),
 _audio_start( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
+_pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
@@ -485,6 +486,7 @@ _stereo_barrier( NULL ),
 _audio_start( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
+_pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
@@ -596,6 +598,7 @@ _stereo_barrier( NULL ),
 _audio_start( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
+_pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
@@ -723,6 +726,59 @@ void CMedia::clear_cache()
 
   image_damage( image_damage() | kDamageCache );
 
+}
+
+void CMedia::remove_to_end( const StreamType t )
+{
+    switch( t )
+    {
+        case kVideoStream:
+            {
+                mrv::PacketQueue::Mutex& apm = _video_packets.mutex();
+                SCOPED_LOCK( apm );
+          
+                mrv::PacketQueue::const_iterator i = _video_packets.begin();
+                mrv::PacketQueue::const_iterator e = _video_packets.end();
+
+                for ( ; i != e; ++i )
+                {
+                
+                    if ( _video_packets.is_loop_end( *i ) ||
+                         _video_packets.is_loop_start( *i ) )
+                    {
+                        _video_packets.pop_front();
+                        break;
+                    }
+                    _video_packets.pop_front();
+                }
+            
+                break;
+            }
+        case kAudioStream:
+            {
+                mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
+                SCOPED_LOCK( apm );
+          
+                mrv::PacketQueue::const_iterator i = _audio_packets.begin();
+                mrv::PacketQueue::const_iterator e = _audio_packets.end();
+
+                for ( ; i != e; ++i )
+                {
+                
+                    if ( _audio_packets.is_loop_end( *i ) ||
+                         _audio_packets.is_loop_start( *i ) )
+                    {
+                        _audio_packets.pop_front();
+                        break;
+                    }
+                    _audio_packets.pop_front();
+                }
+            
+                break;
+            }
+        case kSubtitleStream:
+            break;
+    }
 }
 
 void CMedia::update_frame( const int64_t& f )
@@ -2295,11 +2351,24 @@ void CMedia::play(const CMedia::Playback dir,
           frame( _frame );
         }
 
-      if ( _is_stereo && _is_left_eye == false &&
-           _stereo_output != kNoStereo )
+      // std::cerr << name()
+      //           << " is_stereo? " << _is_stereo << " left_eye? "
+      //           << _is_left_eye
+      //           << " output " << _stereo_output << std::endl;
+      // if ( _is_stereo && _is_left_eye == false &&
+      //      _stereo_output != kNoStereo )
+      if ( _is_stereo )
       {
-          delete _stereo_barrier;
-          _stereo_barrier = new Barrier( 2 );
+          delete _stereo_barrier; _stereo_barrier = NULL;
+          if ( _right_eye )
+          {
+              delete _right_eye->_stereo_barrier;
+              _right_eye->_stereo_barrier = new Barrier( 2 );
+          }
+          else
+          {
+              _stereo_barrier = new Barrier( 2 );
+          }
       }
 
       unsigned num = 1 + valid_a + valid_v + valid_s;
