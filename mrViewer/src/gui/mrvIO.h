@@ -19,10 +19,10 @@
  * @file   mrvIO.h
  * @author gga
  * @date   Wed Oct 25 03:18:47 2006
- * 
+ *
  * @brief  Routines to handle I/O for mrViewer
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvIO_h
@@ -47,7 +47,7 @@ namespace mrv {
 
   namespace io {
 
-    typedef 
+    typedef
     std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >
     string_stream;
 
@@ -89,8 +89,8 @@ namespace mrv {
     struct  errorstream : public std::ostream
     {
       errorstream() : std::ostream( new errorbuffer )
-      { 
-	flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
+      {
+        flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
       };
       ~errorstream() { delete rdbuf(); };
     };
@@ -98,8 +98,8 @@ namespace mrv {
     struct  warnstream : public std::ostream
     {
       warnstream() : std::ostream( new warnbuffer )
-      { 
-	flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
+      {
+        flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
       };
       ~warnstream() { delete rdbuf(); };
     };
@@ -107,8 +107,8 @@ namespace mrv {
     struct  infostream : public std::ostream
     {
       infostream() : std::ostream( new infobuffer )
-      { 
-	flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
+      {
+        flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
       };
       ~infostream() { delete rdbuf(); };
     };
@@ -116,8 +116,8 @@ namespace mrv {
     struct  connstream : public std::ostream
     {
       connstream() : std::ostream( new connbuffer )
-      { 
-	flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
+      {
+        flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
       };
       ~connstream() { delete rdbuf(); };
     };
@@ -137,19 +137,19 @@ namespace mrv {
     std::ostringstream mErr; \
     mErr << x << std::endl; \
     mrv::alert( mErr.str().c_str() ); \
-  } while (0); 
+  } while (0);
 
 
 #define mrvLOG_ERROR(m, x)   do {			\
     mrv::io::error << _("ERROR: ") << N_("[") << m << N_("] ") << x; \
   } while(0)
-#define mrvLOG_WARNING(m, x) do {		 \
+#define mrvLOG_WARNING(m, x) do {                \
     mrv::io::warn << _("WARN : ") << N_("[") << m << N_("] ") << x; \
   } while(0)
-#define mrvLOG_INFO(m, x)    do {		 \
+#define mrvLOG_INFO(m, x)    do {                \
     mrv::io::info << _("       ") << N_("[") << m << N_("] ") << x; \
   } while(0)
-#define mrvCONN_INFO(m, x)    do {		 \
+#define mrvCONN_INFO(m, x)    do {               \
     mrv::io::conn << _("{conn} ") << N_("[") << m << N_("] ") << x; \
   } while(0)
 
@@ -162,8 +162,8 @@ namespace mrv {
 #define LOG_CONN(x)    mrvCONN_INFO( kModule, x << std::endl )
 #define IMG_ERROR(x)   do { if( !is_thumbnail() ) LOG_ERROR( name() << _(" frame ") << this->frame() << " - " << x ); } while(0)
 #define IMG_WARNING(x) do { if( !is_thumbnail() ) LOG_WARNING( name() << _(" frame ") << this->frame() << " - " << x ); } while(0)
-#define IMG_INFO_F(x) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << x )  
-#define IMG_INFO(x) LOG_INFO( name() << " - " << x ) 
+#define IMG_INFO_F(x) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << x )
+#define IMG_INFO(x) LOG_INFO( name() << " - " << x )
 
 #ifdef DEBUG
 #define DBG(x) do { \
@@ -180,4 +180,4 @@ namespace mrv {
 } while(0)
 
 
-#endif 
+#endif
