@@ -375,6 +375,7 @@ _colorspace_index( -1 ),
 _avdiff( 0.0 ),
 _loop_barrier( NULL ),
 _stereo_barrier( NULL ),
+_fg_bg_barrier( NULL ),
 _audio_start( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
@@ -483,6 +484,7 @@ _mtime( 0 ),
 _disk_space( 0 ),
 _loop_barrier( NULL ),
 _stereo_barrier( NULL ),
+_fg_bg_barrier( NULL ),
 _audio_start( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
@@ -595,6 +597,7 @@ _mtime( other->_mtime ),
 _disk_space( 0 ),
 _loop_barrier( NULL ),
 _stereo_barrier( NULL ),
+_fg_bg_barrier( NULL ),
 _audio_start( true ),
 _seek_req( false ),
 _seek_frame( 1 ),
@@ -736,13 +739,13 @@ void CMedia::remove_to_end( const StreamType t )
             {
                 mrv::PacketQueue::Mutex& apm = _video_packets.mutex();
                 SCOPED_LOCK( apm );
-          
+
                 mrv::PacketQueue::const_iterator i = _video_packets.begin();
                 mrv::PacketQueue::const_iterator e = _video_packets.end();
 
                 for ( ; i != e; ++i )
                 {
-                
+
                     if ( _video_packets.is_loop_end( *i ) ||
                          _video_packets.is_loop_start( *i ) )
                     {
@@ -751,20 +754,20 @@ void CMedia::remove_to_end( const StreamType t )
                     }
                     _video_packets.pop_front();
                 }
-            
+
                 break;
             }
         case kAudioStream:
             {
                 mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
                 SCOPED_LOCK( apm );
-          
+
                 mrv::PacketQueue::const_iterator i = _audio_packets.begin();
                 mrv::PacketQueue::const_iterator e = _audio_packets.end();
 
                 for ( ; i != e; ++i )
                 {
-                
+
                     if ( _audio_packets.is_loop_end( *i ) ||
                          _audio_packets.is_loop_start( *i ) )
                     {
@@ -773,7 +776,7 @@ void CMedia::remove_to_end( const StreamType t )
                     }
                     _audio_packets.pop_front();
                 }
-            
+
                 break;
             }
         case kSubtitleStream:
@@ -2436,9 +2439,12 @@ void CMedia::stop()
   //
   // Notify loop barrier, to exit any wait on a loop
   //
-  DBG( name() << " Notify all loop barrier" );
+  DBG( name() << " Notify all loop barriers" );
   if ( _loop_barrier )  _loop_barrier->notify_all();
-  if ( _stereo_barrier )  _stereo_barrier->notify_all();
+  DBG( name() << " Notify stereo barrier" );
+  if ( _stereo_barrier ) _stereo_barrier->notify_all();
+  DBG( name() << " Notify fg/bg barrier" );
+  if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
   // Notify packets, to make sure that audio thread exits any wait lock
   // This needs to be done even if no audio is playing, as user might
@@ -2458,6 +2464,7 @@ void CMedia::stop()
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
   delete _stereo_barrier; _stereo_barrier = NULL;
+  delete _fg_bg_barrier; _fg_bg_barrier = NULL;
 
   close_audio();
 
