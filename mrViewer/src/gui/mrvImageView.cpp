@@ -7502,7 +7502,7 @@ void ImageView::toggle_lut()
   char buf[1024];
   sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
   send_network( buf );
-  
+
   sprintf( buf, "UseLUT %d", (int)_useLUT );
   send_network( buf );
 
@@ -7882,7 +7882,10 @@ void ImageView::play( const CMedia::Playback dir )
    if ( bg && bg != fg )
    {
       DBG( "******* PLAY BG " << bg->image()->name() );
-      bg->image()->play( dir, uiMain, false);
+      CMedia* img = bg->image();
+      img->play( dir, uiMain, false);
+      CMedia::Barrier* barrier = img->fg_bg_barrier();
+      fg->image()->fg_bg_barrier( barrier );
    }
 
 }
