@@ -20,12 +20,12 @@
 
 /**
  * @file   CMedia.h
- * @author 
+ * @author
  * @date   Sat Sep 16 01:42:12 2006
- * 
+ *
  * @brief  Base class for mrViewer image readers
- * 
- * 
+ *
+ *
  */
 
 #ifndef CMedia_h
@@ -157,9 +157,9 @@ class CMedia
         StreamInfo() : context( NULL ),
                        stream_index(-1),
                        play( true ),
-                       has_codec(false), 
-                       start(0), 
-                       duration(0) 
+                       has_codec(false),
+                       start(0),
+                       duration(0)
         {
         }
 
@@ -194,17 +194,17 @@ class CMedia
         double       fps;
         std::string  pixel_format;
 
-        VideoStream() : StreamInfo(), 
+        VideoStream() : StreamInfo(),
                         has_b_frames( false ),
                         fps(0)
         {
         }
-    
+
         VideoStream( const VideoStream& b ) :
-	StreamInfo( b ),
-	has_b_frames( b.has_b_frames ),
-	fps( b.fps ),
-	pixel_format( b.pixel_format )
+        StreamInfo( b ),
+        has_b_frames( b.has_b_frames ),
+        fps( b.fps ),
+        pixel_format( b.pixel_format )
         {
         }
 
@@ -225,11 +225,11 @@ class CMedia
         }
 
         AudioStream( const AudioStream& b ) :
-	StreamInfo( b ),
-	channels( b.channels ),
-	frequency( b.frequency ),
-	bitrate( b.bitrate ),
-	format( b.format )
+        StreamInfo( b ),
+        channels( b.channels ),
+        frequency( b.frequency ),
+        bitrate( b.bitrate ),
+        format( b.format )
         {
         }
     };
@@ -247,8 +247,8 @@ class CMedia
         }
 
         SubtitleStream( const SubtitleStream& b ) :
-	StreamInfo( b ),
-	bitrate( b.bitrate )
+        StreamInfo( b ),
+        bitrate( b.bitrate )
         {
         }
     };
@@ -269,7 +269,7 @@ class CMedia
     kPingPong,
     kUnknownLoop
     };
-    
+
     enum InterlaceType
     {
     kNoInterlace,
@@ -306,7 +306,7 @@ class CMedia
     kDamage3DData    = 1 << 7,
     kDamageCache     = 1 << 8,
     kDamageTimecode  = 1 << 9,
-    kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut | 
+    kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut |
                         kDamageThumbnail | kDamageData | kDamageSubtitle |
                         kDamage3DData | kDamageCache | kDamageTimecode)
     };
@@ -329,14 +329,14 @@ class CMedia
     kTopBottomStereoInput = 2,
     kLeftRightStereoInput = 4,
     };
-    
+
     enum StereoOutput {
     kNoStereo = 0,
     kStereoLeft      = 1,
     kStereoRight     = 2,
     kStereoOpenGL    = 4,
     // these top/bottom bottom/top are reversed on purpose
-    kStereoBottomTop = 8, 
+    kStereoBottomTop = 8,
     kStereoTopBottom = kStereoBottomTop + kStereoRight,
     kStereoSideBySide = 16,
     kStereoCrossed    = kStereoSideBySide + kStereoRight,
@@ -369,7 +369,7 @@ class CMedia
 
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
-    
+
     /// Constructor used to split a video or sequence in two
     //  (cut_frame - last_frame)
     CMedia( const CMedia* other, int64_t cut_frame );
@@ -377,7 +377,7 @@ class CMedia
 
     virtual ~CMedia();
 
-      
+
     /// Save the image under a new filename, with options opts
     bool save( const char* filename, const ImageOpts* const opts ) const;
 
@@ -402,7 +402,7 @@ class CMedia
     // Add Lumma layer
     void lumma_layers();
 
-    // Add alpha layers (Alpha and, optionally, Overlay) 
+    // Add alpha layers (Alpha and, optionally, Overlay)
     void alpha_layers();
 
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
@@ -415,10 +415,10 @@ class CMedia
     const mrv::Recti display_window2(int64_t f = AV_NOPTS_VALUE) const;
 
     void data_window( const int xmin, const int ymin,
-		      const int xmax, const int ymax,
+                      const int xmax, const int ymax,
                       const int64_t& frame );
     void display_window( const int xmin, const int ymin,
-			 const int xmax, const int ymax,
+                         const int xmax, const int ymax,
                          const int64_t& frame );
     void data_window2( const int xmin, const int ymin,
                        const int xmax, const int ymax,
@@ -429,12 +429,12 @@ class CMedia
 
     ////////////////// Return the list of available layers in the image
     inline const stringArray& layers() const { return _layers; }
-    
+
     ////////////////// Return the list of available layers in the image
     inline stringArray& layers() { return _layers; }
 
     ////////////////// Return the current damage area in the image
-    inline const mrv::Recti& damage_rectangle() const 
+    inline const mrv::Recti& damage_rectangle() const
     { return _damageRectangle; }
 
     ////////////////// Mark an image rectangle for refreshing
@@ -447,12 +447,12 @@ class CMedia
     inline Damage image_damage() const { return _image_damage; };
 
     ////////////////// Set the image damage (for update)
-    inline void  image_damage( int x ) 
+    inline void  image_damage( int x )
     { _image_damage = (Damage) x; };
 
     void remove_to_end( const StreamType t );
 
-    
+
     /// Return the name of the image (sans directory)
     std::string name() const;
 
@@ -465,14 +465,14 @@ class CMedia
     ////////////////// Return the image filename for current frame
     const char* const filename() const;
 
-    ////////////////// Set the image filename (can be a C/C++ 
+    ////////////////// Set the image filename (can be a C/C++
     ////////////////// sprintf expression like image.%d.exr) to handle
     ////////////////// sequences.
     void filename( const char* n );
 
-    virtual void sequence( const char* fileroot, 
-			   const int64_t start, 
-			   const int64_t end,
+    virtual void sequence( const char* fileroot,
+                           const int64_t start,
+                           const int64_t end,
                            const bool use_threads );
 
     ////////////////// Check if image has changed on disk or network
@@ -531,13 +531,13 @@ class CMedia
 
     ///////////////// Decoding time stamp
     inline int64_t   dts()                      { return _dts; }
-    //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
+    //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
 
     ///////////////// Audio frame
     inline void audio_frame( const int64_t f ) { _audio_frame = f; }
     inline int64_t   audio_frame() const { return _audio_frame; }
 
-    ////////////////// Seek to a specific frame in current image. 
+    ////////////////// Seek to a specific frame in current image.
     ////////////////// Frame is local to the video/sequence, not timeline.
     void seek( const int64_t frame );
 
@@ -547,20 +547,20 @@ class CMedia
 
     ////////////////// Add a loop to packet lists
     ////////////////// Frame is local to the video/sequence, not timeline.
-    virtual void loop_at_start( const int64_t frame ); 
-    virtual void loop_at_end( const int64_t frame ); 
+    virtual void loop_at_start( const int64_t frame );
+    virtual void loop_at_end( const int64_t frame );
 
     static const char* const decode_error( DecodeStatus err );
 
     ////////////////// Static functions
     static CMedia* guess_image( const char* name,
-				const boost::uint8_t* datas = NULL,
-				const int size = 0,
+                                const boost::uint8_t* datas = NULL,
+                                const int size = 0,
                                 const bool is_thumbnail = false,
-				const int64_t 
-				first = AV_NOPTS_VALUE,
-				const int64_t 
-				end = AV_NOPTS_VALUE,
+                                const int64_t
+                                first = AV_NOPTS_VALUE,
+                                const int64_t
+                                end = AV_NOPTS_VALUE,
                                 const bool avoid_seq = false );
 
     ////////////////////////
@@ -595,7 +595,7 @@ class CMedia
     virtual const char* const compression() const { return _("None"); };
 
     /// Returns the video's 4-letter codec identifier
-    virtual const char* const fourcc() const { return ""; } 
+    virtual const char* const fourcc() const { return ""; }
 
     /// Returns the valid compressions for this format
     virtual stringArray valid_compressions() const {
@@ -636,13 +636,13 @@ class CMedia
     /// Returns rendering transform name ( CTL script )
     const char* rendering_transform() const;
 
-    /// Assigns a new rendering transform ( CTL script ) 
+    /// Assigns a new rendering transform ( CTL script )
     void rendering_transform( const char* cfile );
 
-    /// Add default OCIO Input Color Space for this image bit depth. 
+    /// Add default OCIO Input Color Space for this image bit depth.
     void default_ocio_input_color_space();
-    
-    /// Add default rendering transform (CTL script) for this image bit depth. 
+
+    /// Add default rendering transform (CTL script) for this image bit depth.
     void default_rendering_transform();
 
     /// Add default icc profile for this image bit depth.
@@ -651,14 +651,14 @@ class CMedia
     std::string ocio_input_color_space() const {
         return _input_color_space;
     }
-    
+
     void ocio_input_color_space( const std::string& n );
-    
-    
+
+
     /// Returns input device transform name ( CTL script )
     const char* idt_transform() const;
 
-    /// Assigns a new input device transform ( CTL script ) 
+    /// Assigns a new input device transform ( CTL script )
     void idt_transform( const char* cfile );
 
     /// Returns the number of Look Mod Transforms ( CTL scripts )
@@ -670,7 +670,7 @@ class CMedia
     /// Clears all the look mod transforms.
     void clear_look_mod_transform();
 
-    /// Appends a new look mod transform ( CTL script ) 
+    /// Appends a new look mod transform ( CTL script )
     /// cfile cannot be NULL.
     void append_look_mod_transform( const char* cfile );
 
@@ -678,7 +678,7 @@ class CMedia
     /// and moves all other indexes down.
     /// If cfile is NULL, the look mod at the index is removed.
     void insert_look_mod_transform( const size_t idx, const char* cfile );
-    
+
     /// Assigns a new look mod transform to a certain index ( CTL script )
     /// If cfile is NULL, the look mod at the index is removed.
     void look_mod_transform( const size_t idx, const char* cfile );
@@ -690,7 +690,7 @@ class CMedia
 
     size_t number_of_grade_refs() const;
 
-    
+
     inline const ACES::ASC_CDL& asc_cdl() const { return _sops; }
     inline ACES::ASC_CDL& asc_cdl() { return _sops; }
 
@@ -824,7 +824,7 @@ class CMedia
 
     inline bool has_subtitle() const
     {
-        return ( _subtitle_index >= 0 && 
+        return ( _subtitle_index >= 0 &&
                  _subtitle_info[ _subtitle_index ].has_codec &&
                  _subtitle_info[ _subtitle_index ].play );
     }
@@ -835,15 +835,15 @@ class CMedia
         return _subtitle_info[ i ];
     }
 
-    inline size_t number_of_subtitle_streams() const 
-    { 
-        return _subtitle_info.size(); 
+    inline size_t number_of_subtitle_streams() const
+    {
+        return _subtitle_info.size();
     }
 
     inline bool has_audio_data() const
     {
         return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec
-                 && _audio_info[ _audio_index ].has_data( _frame, 
+                 && _audio_info[ _audio_index ].has_data( _frame,
                                                           _audio_offset,
                                                           _fps ) );
     }
@@ -867,8 +867,8 @@ class CMedia
 
     AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
-    inline const std::string& audio_codec()  const 
-    { 
+    inline const std::string& audio_codec()  const
+    {
         return _audio_info[ _audio_index ].codec_name;
     }
 
@@ -882,9 +882,9 @@ class CMedia
         return _audio_info[ _audio_index ].frequency;
     }
 
-    inline size_t number_of_audio_streams() const 
-    { 
-        return _audio_info.size(); 
+    inline size_t number_of_audio_streams() const
+    {
+        return _audio_info.size();
     }
 
     virtual void subtitle_stream( int idx ) {};
@@ -901,19 +901,19 @@ class CMedia
         return _audio_index;
     }
 
-    /** 
+    /**
      * Given a frame number, returns another frame number taking into
      * account the loops in the sequence.
-     * 
+     *
      * @param frame  frame to handle in loops
-     * 
+     *
      * @return frame number in _frame_start - _frame_end range
      */
     int64_t handle_loops( const int64_t frame ) const;
-    
+
 
     static void image_cache_size( int x ) { _image_cache_size = x; }
-    
+
     static void video_cache_size( int x ) { _video_cache_size = x; }
 
     static void audio_cache_size( int x ) { _audio_cache_size = x; }
@@ -953,7 +953,7 @@ class CMedia
     virtual void do_seek();
 
     DecodeStatus decode_audio( int64_t& frame );
-    DecodeStatus handle_video_seek( int64_t& frame, 
+    DecodeStatus handle_video_seek( int64_t& frame,
                                     const bool is_seek = true );
     virtual DecodeStatus decode_video( int64_t& frame );
     virtual DecodeStatus decode_subtitle( const int64_t frame );
@@ -967,37 +967,39 @@ class CMedia
             return _right_eye->_stereo_barrier;
         return _stereo_barrier;
     }
-    inline Barrier* loop_barrier()       { return _loop_barrier; }
-    inline Mutex& video_mutex()          { return _mutex; };
-    inline Mutex& audio_mutex()          { return _audio_mutex; };
-    inline Mutex& subtitle_mutex()       { return _subtitle_mutex; };
+    inline void fg_bg_barrier( Barrier* b ) { _fg_bg_barrier = b; }
+    inline Barrier* fg_bg_barrier()         { return _fg_bg_barrier; }
+    inline Barrier* loop_barrier()          { return _loop_barrier; }
+    inline Mutex& video_mutex()             { return _mutex; };
+    inline Mutex& audio_mutex()             { return _audio_mutex; };
+    inline Mutex& subtitle_mutex()          { return _subtitle_mutex; };
 
     virtual void clear_packets();
 
-    
-    /** 
+
+    /**
      * Given a frame number, returns whether audio for that frame is already
      * cached in store
-     * 
-     * @param frame  frame to check 
-     * 
+     *
+     * @param frame  frame to check
+     *
      * @return true or false
      */
     bool in_audio_store( const int64_t frame );
 
 
-    void debug_audio_packets(const int64_t frame, 
-			     const char* routine = "",
-			     const bool detail = true);
-    virtual void debug_video_packets(const int64_t frame, 
-				     const char* routine = "",
-				     const bool detail = false);
-    virtual void debug_video_stores(const int64_t frame, 
-				    const char* routine = "",
-				    const bool detail = false) {};
-    virtual void debug_subtitle_stores(const int64_t frame, 
-				       const char* routine = "",
-				       const bool detail = false) {};
+    void debug_audio_packets(const int64_t frame,
+                             const char* routine = "",
+                             const bool detail = true);
+    virtual void debug_video_packets(const int64_t frame,
+                                     const char* routine = "",
+                                     const bool detail = false);
+    virtual void debug_video_stores(const int64_t frame,
+                                    const char* routine = "",
+                                    const bool detail = false) {};
+    virtual void debug_subtitle_stores(const int64_t frame,
+                                       const char* routine = "",
+                                       const bool detail = false) {};
 
     virtual void probe_size( unsigned p ) {}
 
@@ -1011,7 +1013,7 @@ class CMedia
 
     // Return the image as the right eye for stereo decoding or NULL if none
     inline CMedia* right_eye() const { return _right_eye; }
-    
+
     // Return if this image is the left eye on stereo decoding
     inline bool is_left_eye() const { return _is_left_eye; }
 
@@ -1020,7 +1022,7 @@ class CMedia
 
     inline Looping looping() const { return _looping; }
     inline void looping( Looping x ) { _looping = x; }
-    
+
     // Return the sequence filename for frame 'frame'
     std::string sequence_filename( const int64_t frame ) const;
 
@@ -1028,7 +1030,7 @@ class CMedia
     double video_clock() const { return _video_clock; }
     // Return the audio clock as a double
     double audio_clock() const { return _audio_clock; }
-    
+
     // Return the video stream being decoded or NULL if none
     virtual AVStream* get_video_stream() const { return NULL; } ;
     // Return the subtitlee stream being decoded or NULL if none
@@ -1036,10 +1038,10 @@ class CMedia
 
     // Return offset in timeline
     inline void position( int64_t x ) { _pos = x; }
-    
+
     // Set offset in timeline
     inline int64_t position() const { return _pos; }
-    
+
     // Return the video pts as a double
     inline double video_pts() const { return _video_pts; }
 
@@ -1067,9 +1069,9 @@ class CMedia
     inline bool is_thumbnail() const { return _is_thumbnail; }
 
     inline void    timecode( const int64_t& f ) { _tc_frame = 0; }
-    
+
     inline int64_t timecode() const { return _tc_frame; }
-    
+
     inline void x( double t ) {
         _x = t; if (_right_eye) _right_eye->x(t);
         refresh();
@@ -1083,20 +1085,20 @@ class CMedia
 
     inline void rotate( float t ) { _rot_z += t; }
     inline double rot_z() const { return _rot_z; }
-    
+
     inline void scale_x( double t ) { _scale_x = t; }
     inline double scale_x() const { return _scale_x; }
-    
+
     inline void scale_y( double t ) { _scale_y = t; }
     inline double scale_y() const { return _scale_y; }
-    
-    
+
+
     // Process a timecode object unto _tc_frame
     void process_timecode( const Imf::TimeCode& tc );
-    
+
     // Conver a string like HH:MM:SS:FF or HH;MM;SS;FF into Imf::TimeCode
     static Imf::TimeCode str2timecode( const std::string text );
-    
+
     void fetch_audio( const int64_t frame );
 
     // Wait for load threads to exit (unused)
@@ -1109,26 +1111,26 @@ class CMedia
     int64_t audio_offset() const { return _audio_offset; }
 
     void debug_audio_stores(const int64_t frame,
-			    const char* routine = "",
-			    const bool detail = true);
+                            const char* routine = "",
+                            const bool detail = true);
 
     bool has_deep_data() const { return _has_deep_data; }
-    
+
     static int from_stereo_input( StereoInput x );
     static StereoInput to_stereo_input( int x );
-    
+
     static int from_stereo_output( StereoOutput x );
     static StereoOutput to_stereo_output( int x );
-    
+
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
 
     static void default_subtitle_encoding( const char* f )
     { if (f) _default_subtitle_encoding = f; }
-    
+
     static void default_subtitle_font( const char* f )
     { if (f) _default_subtitle_font = f; }
-    
+
     static bool aces_metadata()         { return _aces_metadata; }
     static void aces_metadata( bool x ) { _aces_metadata = x; }
 
@@ -1147,15 +1149,15 @@ class CMedia
     static void cache_scale( int x ) { _cache_scale = x; }
     static int  cache_scale() { return _cache_scale; }
 
-       
+
     static int colorspace_override; //!< Override YUV Hint always with this
-    
+
     static double default_fps;     //!< Default FPS when not selected
     static std::string ocio_8bits_ics;
     static std::string ocio_16bits_ics;
     static std::string ocio_32bits_ics;
     static std::string ocio_float_ics;
-    
+
     static std::string rendering_transform_8bits;
     static std::string rendering_transform_16bits;
     static std::string rendering_transform_32bits;
@@ -1167,108 +1169,108 @@ class CMedia
     static std::string icc_profile_float;
 
     static std::string attr2str( const Imf::Attribute* attr );
-    
+
 
   public:
     AV_SYNC_TYPE av_sync_type;
     Clock audclk;
     Clock vidclk;
     Clock extclk;
-    
+
     bool _has_deep_data;
 
   protected:
 
-    
-    /** 
+
+    /**
      * Given a frame number, returns another frame number taking into
      * account the loops in the sequence.
-     * 
+     *
      * @param f      frame in local units of image
      * @param frame  frame to handle in loops
-     * 
+     *
      * @return offset to bring local frame as returned by handle_loops
      *                to timeline frame
      */
     int64_t loops_offset( int64_t f,
                           const int64_t frame ) const;
-    
-    /** 
+
+    /**
      * Given a frame number, returns whether subtitle for that frame is already
      * in packet queue.
-     * 
-     * @param frame  frame to check 
-     * 
+     *
+     * @param frame  frame to check
+     *
      * @return true or false
      */
     bool in_subtitle_packets( const int64_t frame );
 
-    /** 
+    /**
      * Given a frame number, returns whether video for that frame is already
      * in packet queue.
-     * 
-     * @param frame  frame to check 
-     * 
+     *
+     * @param frame  frame to check
+     *
      * @return true or false
      */
     bool in_video_packets( const int64_t frame );
 
 
-    /** 
+    /**
      * Handles skipping a bunch of packets due to a seek or play in reverse.
-     * 
+     *
      * @param frame       current frame being played (changed is is_seek is true)
      * @param is_seek     set to true to handle a seek, false for preroll for
      *                    playback in reverse
-     * 
+     *
      * @return true if packets could be skipped, false if not.
      */
-    DecodeStatus handle_audio_packet_seek( int64_t& frame, 
-					   const bool is_seek );
+    DecodeStatus handle_audio_packet_seek( int64_t& frame,
+                                           const bool is_seek );
 
 
-    
-    /** 
+
+    /**
      * Given a picture, scale it and convert it to 8 bits if user
      * preferences set it so.
-     * 
+     *
      * @param seq  sequence cache ( _sequence or _right ).
-     * @param pic  picture to update 
-     * 
+     * @param pic  picture to update
+     *
      */
     void update_cache_pic( mrv::image_type_ptr*& seq,
                            const mrv::image_type_ptr pic );
 
-    /** 
+    /**
      * Given a frame number, returns whether audio for that frame is already
      * in packet queue.
-     * 
-     * @param frame  frame to check 
-     * 
+     *
+     * @param frame  frame to check
+     *
      * @return true or false
      */
     bool in_audio_packets( const int64_t frame );
 
-    /** 
+    /**
      * Given an audio packet, decode it into internal buffer
-     * 
+     *
      * @param ptsframe   frame of packet
      * @param frame      frame to use if packet has no frame
      * @param pkt        audio packet
-     * 
+     *
      * @return decode status for packet
      */
-    DecodeStatus decode_audio_packet( int64_t& ptsframe, 
-                                      const int64_t frame, 
-				      const AVPacket& pkt );
+    DecodeStatus decode_audio_packet( int64_t& ptsframe,
+                                      const int64_t frame,
+                                      const AVPacket& pkt );
 
-    /** 
+    /**
      * Given an audio packet, try to decode the audio into one or more
      * audio frames
-     * 
+     *
      * @param frame       frame to decode packet for
-     * @param pkt         Audio packet 
-     * 
+     * @param pkt         Audio packet
+     *
      * @return true if we get audio for current frame
      */
     DecodeStatus decode_audio( const int64_t frame, const AVPacket& pkt );
@@ -1281,7 +1283,7 @@ class CMedia
     CMedia();
 
     static CMedia* get(CMedia* (*create)(),
-		       const char* name, const boost::uint8_t* datas = 0) {
+                       const char* name, const boost::uint8_t* datas = 0) {
         CMedia* img = (CMedia*)create();
         return (CMedia*) img;
     }
@@ -1301,10 +1303,10 @@ class CMedia
 
     /// Allocate hires image pixels
     void allocate_pixels( const int64_t& frame,
-			  const unsigned short channels = 4,
-			  const image_type::Format format = image_type::kRGBA,
-			  const image_type::PixelType pixel_type = image_type::kFloat,
-                          unsigned w = 0, unsigned h = 0); 
+                          const unsigned short channels = 4,
+                          const image_type::Format format = image_type::kRGBA,
+                          const image_type::PixelType pixel_type = image_type::kFloat,
+                          unsigned w = 0, unsigned h = 0);
 
 
     unsigned int audio_bytes_per_frame();
@@ -1317,8 +1319,8 @@ class CMedia
     int64_t get_frame( const AVStream* s, const AVPacket& pkt );
 
     // Convert an FFMPEG pts into a frame number
-    int64_t pts2frame( const AVStream* stream, 
-			      const int64_t pts ) const;
+    int64_t pts2frame( const AVStream* stream,
+                              const int64_t pts ) const;
 
     void open_audio_codec();
     void close_audio_codec();
@@ -1330,17 +1332,17 @@ class CMedia
 
     void populate_audio();
 
-    void populate_stream_info( StreamInfo& s, 
-			       std::ostringstream& msg,
-			       const AVFormatContext* context,
-			       const AVCodecContext* ctx, 
-			       const int stream_index );
-    
-    void populate_stream_info( StreamInfo& s, 
-			       std::ostringstream& msg,
-			       const AVFormatContext* context,
-			       const AVCodecParameters* codecpar, 
-			       const int stream_index );
+    void populate_stream_info( StreamInfo& s,
+                               std::ostringstream& msg,
+                               const AVFormatContext* context,
+                               const AVCodecContext* ctx,
+                               const int stream_index );
+
+    void populate_stream_info( StreamInfo& s,
+                               std::ostringstream& msg,
+                               const AVFormatContext* context,
+                               const AVCodecParameters* codecpar,
+                               const int stream_index );
 
     virtual void limit_video_store( const int64_t frame );
     void limit_audio_store( const int64_t frame );
@@ -1355,22 +1357,22 @@ class CMedia
     // or 0 for no cache or numeric_limits<int>max() for full cache
     int max_image_frames();
 
-    /** 
+    /**
      * Store an audio frame in cache
-     * 
-     * @param audio_frame  audio frame to store 
+     *
+     * @param audio_frame  audio frame to store
      * @param buf          audio data
      * @param samples      number of audio samples
-     * 
+     *
      * @return number of bytes stored
      */
-    unsigned int store_audio( const int64_t audio_frame, 
-			      const boost::uint8_t* buf, const unsigned int size );
+    unsigned int store_audio( const int64_t audio_frame,
+                              const boost::uint8_t* buf, const unsigned int size );
 
 
     virtual bool seek_to_position( const int64_t frame );
 
-    
+
 
     virtual void flush_video() {};
     void flush_audio();
@@ -1382,7 +1384,7 @@ class CMedia
                       int* frame_size_ptr, AVPacket* avpkt);
 
 
-    
+
 
   protected:
 
@@ -1434,8 +1436,9 @@ class CMedia
 
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
-    Barrier*  _stereo_barrier;   //!< Barrier used to sync stereo threads
- 
+    Barrier*  _stereo_barrier; //!< Barrier used to sync stereo threads
+    Barrier*  _fg_bg_barrier;   //!< Barrier used to sync fg/bg threads
+
     bool    _audio_start;     //!< to avoid opening audio file descriptor
     bool    _seek_req;        //!< set internally for seeking
     int64_t _seek_frame;      //!< seek frame requested
@@ -1501,7 +1504,7 @@ class CMedia
     mrv::image_type_ptr _hires;
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;  // subtitle image (when decoding VOBs)
-    
+
     bool      _is_left_eye;         // is this image the left eye?
     CMedia*   _right_eye;           // Pointer to right class in stereo
 
@@ -1525,15 +1528,15 @@ class CMedia
 
     // OCIO
     std::string _input_color_space;
-    
+
     unsigned int _frame_offset;      //!< hack to get ffmpeg to behave correctly
 
     Playback       _playback;        //!< playback direction or stopped
-    
+
     thread_pool_t  _threads;         //!< any threads associated with process
 
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
-    mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
+    mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each
                                     //!  right float frame
     ACES::ASC_CDL _sops;            //!< Slope,Offset,Pivot,Saturation
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
@@ -1565,7 +1568,7 @@ class CMedia
     char*                _subtitle_encoding;
     char*                _subtitle_font;
 
-    
+
     int               _audio_index;   //!< current audio active stream
     audio_info_list_t _audio_info;   //!< list of audio stream infos
     unsigned         _samples_per_sec;   //!< last samples per sec
@@ -1591,7 +1594,7 @@ class CMedia
     static bool _cache_active;
     static bool _preload_cache;
     static int  _cache_scale;
- 
+
 };
 
 
@@ -1610,4 +1613,3 @@ typedef std::vector< Image_ptr >       ImageList;
 
 
 #endif // CMedia_h
-
