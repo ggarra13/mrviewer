@@ -25,6 +25,8 @@
 #ifndef mrvBarrier_h
 #define mrvBarrier_h
 
+#include "boost/thread/xtime.hpp"
+
 #include "mrvThread.h"
 
 namespace mrv
@@ -33,7 +35,7 @@ namespace mrv
 class barrier
 {
   public:
-    typedef boost::mutex                   Mutex;
+    typedef boost::mutex               Mutex;
     typedef boost::condition_variable  Condition;
 
   public:
@@ -77,6 +79,7 @@ class barrier
             return true;
         }
 
+        
         while (gen == m_generation)
             CONDITION_WAIT( m_cond, m_mutex )
         return false;
