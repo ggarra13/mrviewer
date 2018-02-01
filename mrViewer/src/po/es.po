@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-01-31 12:54-0300\n"
+"POT-Creation-Date: 2018-02-01 17:30-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -84,11 +84,11 @@ msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:617
+#: core/mrvPlayback.cpp:619
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:622
+#: core/mrvPlayback.cpp:624
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -334,7 +334,7 @@ msgstr "%d Hz."
 msgid "%d kb/s"
 msgstr "%d kb/s"
 
-#: core/Sequence.cpp:649
+#: core/Sequence.cpp:651
 msgid "' does not exist or no directory"
 msgstr "' no existe o no es una carpeta"
 
@@ -1315,14 +1315,14 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:923
+#: core/mrvPlayback.cpp:927
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "La duración de la imagen de fondo es muy corta.  Repetir en ciclos puede no "
 "funcionar correctamente."
 
-#: core/mrvPlayback.cpp:929
+#: core/mrvPlayback.cpp:933
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1331,7 +1331,7 @@ msgstr ""
 "El CPS de reproducción de la imagen de fondo ( %lg ) no es igual al de la de "
 "frente ( %lg ).  Repetir en ciclos no funcionará correctamente."
 
-#: core/mrvPlayback.cpp:908
+#: core/mrvPlayback.cpp:912
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
@@ -2791,7 +2791,7 @@ msgstr "Vídeo Digital"
 msgid "Directory"
 msgstr "Carpeta"
 
-#: core/Sequence.cpp:648
+#: core/Sequence.cpp:650
 msgid "Directory '"
 msgstr "Carpeta '"
 
