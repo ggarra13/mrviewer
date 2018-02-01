@@ -310,6 +310,8 @@ std::string get_long_view( bool left )
 
 bool replace_view( std::string& view )
 {
+    if ( view.empty() ) return false;
+    
     if ( view.substr( view.size()-1, view.size() ) == "." )
         view = view.substr( 0, view.size()-1 );
 
