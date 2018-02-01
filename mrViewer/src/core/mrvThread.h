@@ -28,29 +28,42 @@
 #ifndef mrvThread_h
 #define mrvThread_h
 
-// #define DEBUG_MUTEX
 
 #ifdef DEBUG_MUTEX
 
 
 #define SCOPED_LOCK(x)                                                    \
- std::cerr << "Lock   " << #x << " " << &x << __FILE__ << " " << __LINE__ \
+       std::cerr << "Lock   " << #x << " " << &x << " "                   \
+                 << __FILE__ << " " << __LINE__                           \
              << std::endl;                                                \
        Mutex::scoped_lock lk_##x(x);
 
 #define CONDITION_WAIT( cond, x ) if (1) {                                \
-    std::cerr << "Wait   " << #x << " " << &x << __FILE__ << " " << __LINE__ \
+       std::cerr << "Wait   " << #x << " " << &x << " "                   \
+              << __FILE__ << " " << __LINE__                              \
                  << std::endl;                                            \
        cond.wait(lk_##x);                                                 \
-       std::cerr << "Got    " << #x << " " << &x << __FILE__ << " " << __LINE__ \
+       std::cerr << "Got    " << #x << " " << &x << " "                   \
+                 << __FILE__ << " " << __LINE__                           \
                  << std::endl; } 
 
+
+#define CONDITION_TIMED_WAIT( cond, x, b ) if (1) {                          \
+    std::cerr << "Wait time " << b.sec << " " << #x << " " << &x << " "  \
+              << __FILE__ << " " << __LINE__                                 \
+                 << std::endl;                                               \ 
+    cond.timed_wait( lk_##x, b );                                            \
+    std::cerr << "Got time " << #x << " " << &x << " "                         \
+              << __FILE__ << " " << __LINE__  << std::endl; }
 
 #else
 
 
 #define SCOPED_LOCK(mutex) Mutex::scoped_lock lk_##mutex(mutex)
 #define CONDITION_WAIT( cond, mutex )   cond.wait( lk_##mutex );
+
+#define CONDITION_TIMED_WAIT( cond, mutex, b ) \
+    cond.timed_wait( lk_##mutex, b );
 
 #endif
 
