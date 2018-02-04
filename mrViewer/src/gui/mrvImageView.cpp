@@ -1254,7 +1254,7 @@ void ImageView::stop_playback()
   if ( fg ) fg->image()->stop();
 
   mrv::media bg = background();
-  if ( bg ) bg->image()->stop();
+  if ( bg ) bg->image()->stop(true);
 
 }
 
