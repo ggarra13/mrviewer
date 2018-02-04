@@ -79,6 +79,10 @@ class barrier
             return true;
         }
 
+
+        // boost::xtime t;
+        // t.sec = 1;
+        // t.nsec = 0;
         
         while (gen == m_generation)
             CONDITION_WAIT( m_cond, m_mutex )
