@@ -787,7 +787,7 @@ class CMedia
 
 
     /// VCR stop sequence
-    virtual void stop();
+    virtual void stop(const bool bg = false);
 
     inline Playback playback() const         { return _playback; }
     inline void playback( const Playback p ) { _playback = p; }
