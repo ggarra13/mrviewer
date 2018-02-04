@@ -95,8 +95,8 @@ namespace {
 }
 
 
-// #undef DBG
-// #define DBG(x) std::cerr << x << std::endl;
+//#undef DBG
+//#define DBG(x) std::cerr << x << std::endl;
 
 // #define DEBUG_SEEK
 // #define DEBUG_VIDEO_PACKETS
@@ -2374,6 +2374,11 @@ void CMedia::play(const CMedia::Playback dir,
           }
       }
 
+      if ( !fg )
+      {
+          _fg_bg_barrier = new Barrier( 2 );
+      }
+      
       unsigned num = 1 + valid_a + valid_v + valid_s;
       delete _loop_barrier;
       _loop_barrier = new Barrier( num );
@@ -2426,7 +2431,7 @@ void CMedia::play(const CMedia::Playback dir,
 
 
 /// VCR stop sequence
-void CMedia::stop()
+void CMedia::stop(const bool bg)
 {
 
 
@@ -2443,8 +2448,7 @@ void CMedia::stop()
   if ( _loop_barrier )  _loop_barrier->notify_all();
   DBG( name() << " Notify stereo barrier" );
   if ( _stereo_barrier ) _stereo_barrier->notify_all();
-  DBG( name() << " Notify fg/bg barrier" );
-  if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+  if ( bg && _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
   // Notify packets, to make sure that audio thread exits any wait lock
   // This needs to be done even if no audio is playing, as user might
@@ -2464,7 +2468,8 @@ void CMedia::stop()
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
   delete _stereo_barrier; _stereo_barrier = NULL;
-  delete _fg_bg_barrier; _fg_bg_barrier = NULL;
+  if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
+  _fg_bg_barrier = NULL;
 
   close_audio();
 
