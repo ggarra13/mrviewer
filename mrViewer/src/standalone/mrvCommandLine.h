@@ -43,6 +43,7 @@ typedef std::vector< std::string > stringArray;
        mrv::LoadList stereo;
        bool edl;
       bool play;
+      bool run;
        float gamma;
        float gain;
        std::string host;
