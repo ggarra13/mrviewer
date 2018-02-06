@@ -394,6 +394,10 @@ bool parse_command_line( const int argc, char** argv,
     SwitchArg aplay("P", "playback",
                     _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
 
+    SwitchArg arun( "r", "run",
+                    _("Run mrViewer regardless of single instance setting") );
+
+    cmd.add(arun);
     cmd.add(aplay);
     cmd.add(agamma);
     cmd.add(again);
@@ -427,6 +431,7 @@ bool parse_command_line( const int argc, char** argv,
     opts.edl  = aedl.getValue();
     opts.fps  = afps.getValue();
     opts.bgfile = abg.getValue();
+    opts.run    = arun.getValue();
 
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
