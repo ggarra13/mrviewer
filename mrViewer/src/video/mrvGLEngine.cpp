@@ -161,6 +161,9 @@ void GLEngine::handle_gl_errors(const char* where, const unsigned line,
       {
           if ( print )
           {
+              mrvALERT( where << " (" << line << ")"
+                        << _(": Error ") << error << " "
+                        << gluErrorString(error) );
               LOG_ERROR( where << " (" << line << ")"
                          << _(": Error ") << error << " "
                          << gluErrorString(error) );
@@ -860,7 +863,7 @@ void GLEngine::draw_title( const float size,
 
   glColor4f( 0.f, 0.f, 0.f, 1.0f );
   glLoadIdentity();
-  translate( x, GLfloat( y ), 0 );
+  glTranslatef( x, GLfloat( y ), 0 );
   glScalef( size, size, 1.0 );
   for (const char* p = text; *p; ++p)
     glutStrokeCharacter( font, *p );
@@ -870,7 +873,7 @@ void GLEngine::draw_title( const float size,
   CHECK_GL;
   glLoadIdentity();
   CHECK_GL;
-  translate( x-2, float(y+2), 0 );
+  glTranslatef( x-2, float(y+2), 0 );
   CHECK_GL;
   glScalef( size, size, 1.0 );
   CHECK_GL;
@@ -931,9 +934,9 @@ void GLEngine::draw_cursor( const double x, const double y )
    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-   translate(_view->offset_x() * zoomX + sw,
+   glTranslated(_view->offset_x() * zoomX + sw,
                 _view->offset_y() * zoomY + sh, 0);
-   translate(tw * zoomX, th * zoomY, 0);
+   glTranslated(tw * zoomX, th * zoomY, 0);
 
    glScaled(zoomX, zoomY * pr, 1.0);
 
@@ -1003,7 +1006,7 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     //
     // Translate to center of screen
     //
-    translate( double(_view->w())/2, double(_view->h())/2, 0 );
+    glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
 
 
     //
@@ -1015,7 +1018,7 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     //
     // Offset to user translation
     //
-    translate( _view->offset_x(), _view->offset_y(), 0.0 );
+    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
     //
     // Handle flip
@@ -1060,11 +1063,13 @@ void GLEngine::draw_mask( const float pct )
   mrv::Recti dpw2 = img->display_window2();
   mrv::Recti dpw = img->display_window();
 
-  if ( img->stereo_output() & CMedia::kStereoSideBySide )
+  if ( ( img->stereo_output() & CMedia::kStereoSideBySide ) ==
+       CMedia::kStereoSideBySide )
   {
       dpw.w( dpw.w() + dpw2.w() );
   }
-  else if ( img->stereo_output() & CMedia::kStereoTopBottom )
+  else if ( ( img->stereo_output() & CMedia::kStereoTopBottom ) ==
+            CMedia::kStereoTopBottom )
   {
       dpw.h( dpw.h() + dpw2.h() );
   }
@@ -1262,12 +1267,14 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     draw_safe_area_inner( tw, th, name );
 
-    if ( img->stereo_output() & CMedia::kStereoSideBySide )
+    if ( ( img->stereo_output() & CMedia::kStereoSideBySide ) ==
+         CMedia::kStereoSideBySide )
     {
         translate( dpw.w(), 0, 0 );
         draw_safe_area_inner( tw, th, name );
     }
-    else if ( img->stereo_output() & CMedia::kStereoTopBottom )
+    else if ( ( img->stereo_output() & CMedia::kStereoTopBottom ) ==
+              CMedia::kStereoTopBottom )
     {
         translate( 0, -dpw.h(), 0 );
         draw_safe_area_inner( tw, th, name );
@@ -1469,7 +1476,7 @@ void GLEngine::draw_data_window( const mrv::Rectd& r )
 
 void GLEngine::translate( const double x, const double y, const double z )
 {
-   glTranslated( x, y, 0 );
+   glTranslated( x, y, z );
 }
 
 
@@ -1609,6 +1616,7 @@ void GLEngine::draw_images( ImageList& images )
     glDisable( GL_BLEND );
     CHECK_GL;
 
+
     for ( i = images.begin(); i != e; ++i, ++q )
     {
         const Image_ptr& img = *i;
@@ -1691,9 +1699,11 @@ void GLEngine::draw_images( ImageList& images )
             if ( _view->data_window()  )
             {
                 double x = img->x(), y = -img->y();
-                if ( stereo & CMedia::kStereoSideBySide )
+                if ( ( stereo & CMedia::kStereoSideBySide ) ==
+                     CMedia::kStereoSideBySide )
                     x += dpw.w();
-                else if ( stereo & CMedia::kStereoTopBottom )
+                else if ( ( stereo & CMedia::kStereoTopBottom ) ==
+                          CMedia::kStereoTopBottom)
                     y += dpw.h();
                 mrv::Rectd r( daw.x() + x, daw.y() + y,
                               daw.w(), daw.h() );
@@ -1712,9 +1722,9 @@ void GLEngine::draw_images( ImageList& images )
         if ( !_view->vr() )
         {
             glRotated( img->rot_z(), 0, 0, 1 );
-            translate( img->x(), img->y(), 0 );
-            translate( double(daw.x() - img->eye_separation()),
-                       double(-daw.y()), 0 );
+            glTranslated( img->x(), img->y(), 0 );
+            glTranslated( double(daw.x() - img->eye_separation()),
+                          double(-daw.y()), 0 );
             CHECK_GL;
 
             if ( _view->main()->uiPixelRatio->value() )
@@ -1725,7 +1735,7 @@ void GLEngine::draw_images( ImageList& images )
                 glScaled( double(texWidth), double(texHeight), 1.0 );
 
             CHECK_GL;
-            translate( 0.5, -0.5, 0.0 );
+            glTranslated( 0.5, -0.5, 0.0 );
             CHECK_GL;
         }
 
@@ -1807,9 +1817,13 @@ void GLEngine::draw_images( ImageList& images )
             if ( img->image_damage() & CMedia::kDamageContents )
             {
                 if ( stereo & CMedia::kStereoRight )
+                {
                     quad->right( true );
+                }
                 else
+                {
                     quad->right( false );
+                }
                 quad->bind( pic );
             }
             quad->gamma( g );
@@ -1854,13 +1868,19 @@ void GLEngine::draw_images( ImageList& images )
                 glPopMatrix();
                 CHECK_GL;
 
-                if ( stereo & CMedia::kStereoSideBySide )
+                if ( ( stereo &
+                       CMedia::kStereoSideBySide ) ==
+                     CMedia::kStereoSideBySide )
                 {
-                    translate( dpw.w(), 0, 0 );
+                    glTranslated( dpw.w(), 0, 0 );
                 }
-                else if ( stereo & CMedia::kStereoTopBottom )
-                    translate( 0, -dpw.h(), 0 );
-
+                else if ( ( stereo &
+                            CMedia::kStereoTopBottom ) ==
+                          CMedia::kStereoTopBottom )
+                {
+                    glTranslated( 0, -dpw.h(), 0 );
+                }
+                
                 CHECK_GL;
                 mrv::Recti dpw2 = img->display_window2(frame);
                 mrv::Recti daw2 = img->data_window2(frame);
@@ -1896,9 +1916,11 @@ void GLEngine::draw_images( ImageList& images )
                     if ( _view->data_window() )
                     {
                         double x = img->x(), y = img->y();
-                        if ( stereo & CMedia::kStereoSideBySide )
+                        if ( (stereo & CMedia::kStereoSideBySide) ==
+                             CMedia::kStereoSideBySide  )
                             x += dpw.w();
-                        else if ( stereo & CMedia::kStereoTopBottom )
+                        else if ( (stereo & CMedia::kStereoTopBottom) ==
+                                  CMedia::kStereoTopBottom )
                             y += dpw.h();
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() - y,
@@ -1932,8 +1954,8 @@ void GLEngine::draw_images( ImageList& images )
                 }
                 glRotated( img->rot_z(), 0, 0, 1 );
 
-                translate( img->x(), img->y(), 0 );
-                translate( float(daw2.x()), float(-daw2.y()), 0 );
+                glTranslated( img->x(), img->y(), 0 );
+                glTranslated( double(daw2.x()), double(-daw2.y()), 0 );
                 CHECK_GL;
 
                 if ( _view->main()->uiPixelRatio->value() )
@@ -1945,7 +1967,7 @@ void GLEngine::draw_images( ImageList& images )
                 CHECK_GL;
 
    
-                translate( 0.5, -0.5, 0 );
+                glTranslated( 0.5, -0.5, 0 );
                 CHECK_GL;
 
             }
@@ -2054,8 +2076,6 @@ void GLEngine::draw_images( ImageList& images )
 
       glMatrixMode(GL_MODELVIEW);
       glPopMatrix();
-
-
     }
 
   glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
@@ -2116,8 +2136,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-   translate( (tw + _view->offset_x()) * zoomX + sw,
-              (th + _view->offset_y()) * zoomY + sh, 0);
+   glTranslated( (tw + _view->offset_x()) * zoomX + sw,
+                 (th + _view->offset_y()) * zoomY + sh, 0);
 
    glScaled(zoomX, zoomY * pr, 1.0f);
 
