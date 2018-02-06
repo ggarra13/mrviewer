@@ -247,7 +247,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     first = av_rescale_q( first, rp, rt );
     last  = av_rescale_q( last, rp, rt );
 
-    
+
     // std::cerr << "check loop reel " << reel->name << std::endl;
     if ( reel->edl )
     {
@@ -274,9 +274,10 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
             int64_t s = img->first_frame();
             int64_t e = img->last_frame();
-            
-            s = av_rescale_q( s, rp, rt );
-            e = av_rescale_q( e, rp, rt );
+
+            // s = av_rescale_q( s, rp, rt );
+            // e = av_rescale_q( e, rp, rt );
+
 
             if ( last > e )
                 last = e;
@@ -294,7 +295,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         return CMedia::kDecodeLoopStart;
     }
 
-    
+
     return CMedia::kDecodeOK;
 }
 
@@ -605,6 +606,7 @@ void audio_thread( PlaybackData* data )
 
 
         // DBG( "wait audio " << frame );
+
         img->wait_audio();
 
 
@@ -612,14 +614,12 @@ void audio_thread( PlaybackData* data )
         // DBG( "decode audio " << frame );
 
 
+        // if ( !fg )
+        //     img->debug_audio_packets( frame, "play", true );
 
         CMedia::DecodeStatus status = img->decode_audio( f );
-        //DBG( img->name() << " decoded audio " << f << " status " << status );
 
 
-        // if ( !img->right_eye() )
-        //     img->debug_audio_packets( frame, "play", true );
-        
         if ( status != CMedia::kDecodeError )
         {
             assert( img != NULL );
@@ -628,8 +628,6 @@ void audio_thread( PlaybackData* data )
             int64_t first, last;
             status = check_loop( frame, img, reel, timeline, first, last );
         }
-
-
 
         switch( status )
         {
@@ -661,8 +659,8 @@ void audio_thread( PlaybackData* data )
             case  CMedia::kDecodeLoopStart:
                 {
 
-                    // LOG_INFO( img->name() << " BARRIER IN AUDIO WAIT "
-                    //           << frame );
+                    LOG_INFO( img->name() << " BARRIER IN AUDIO WAIT "
+                              << frame );
 
                     img->remove_to_end( CMedia::kAudioStream );
 
@@ -670,8 +668,8 @@ void audio_thread( PlaybackData* data )
                     // Wait until all threads loop and decode is restarted
                     bool ok = barrier->wait();
 
-                    // LOG_INFO( img->name() << " BARRIER PASSED IN AUDIO "
-                    //           << frame );
+                    LOG_INFO( img->name() << " BARRIER PASSED IN AUDIO "
+                              << frame );
 
                     if ( img->stopped() ) continue;
 
@@ -726,7 +724,8 @@ void audio_thread( PlaybackData* data )
 
 
 
-    
+
+
 #ifdef DEBUG_THREADS
     DBG( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
     assert( img->stopped() );
@@ -786,7 +785,7 @@ void subtitle_thread( PlaybackData* data )
             status = check_loop( frame, img, reel, timeline, first, last );
         }
 
-        
+
         switch( status )
         {
             case CMedia::kDecodeError:
@@ -801,7 +800,7 @@ void subtitle_thread( PlaybackData* data )
             case CMedia::kDecodeLoopStart:
 
                 img->remove_to_end( CMedia::kSubtitleStream );
-                
+
                 CMedia::Barrier* barrier = img->loop_barrier();
                 // Wait until all threads loop and decode is restarted
                 barrier->wait();
@@ -924,8 +923,8 @@ void video_thread( PlaybackData* data )
     if (!fg)
     {
         mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
-        int64_t d = reel->duration();
-        if ( fgreel->duration() > d && d > 1 &&
+        int64_t d = reel->duration() * view->fps();
+        if ( fgreel->duration() * view->fps() > d && d > 1 &&
              view->looping() != CMedia::kNoLoop )
         {
             LOG_WARNING( _( "Background reel duration is too short.  "
@@ -940,20 +939,12 @@ void video_thread( PlaybackData* data )
                 CMedia* img  = fg->image();
                 CMedia* bimg = bg->image();
                 int64_t d = bimg->duration();
-                if ( img->duration() > d && d > 1 &&
+                d *= bimg->play_fps();
+                if ( img->duration() * img->play_fps() > d && d > 1 &&
                      view->looping() != CMedia::kNoLoop )
                 {
                     LOG_WARNING( _( "Background image duration is too short.  "
                                     "Looping may not work correctly." ) );
-                }
-                if ( fabs( img->play_fps() - bimg->play_fps() ) > 0.001 )
-                {
-                    char buf[256];
-                    sprintf( buf, _( "Background image play fps ( %lg ) does "
-                                     "not match foreground's ( %lg ).  Looping "
-                                     "will not work correctly." ),
-                             bimg->play_fps(), img->play_fps() );
-                    LOG_WARNING( buf );
                 }
             }
         }
@@ -1015,30 +1006,37 @@ void video_thread( PlaybackData* data )
         case CMedia::kDecodeLoopStart:
         {
             img->remove_to_end( CMedia::kVideoStream );
-            
-            DBG( img->name() << " VIDEO LOOP END " );
-            
+
+
+            LOG_INFO( img->name() << " VIDEO LOOP END " );
+
 
             CMedia::Barrier* barrier = img->loop_barrier();
-            DBG( img->name() << " LOOP BARRIER " << barrier );
+            DBG( img->name() << " VIDEO LOOP BARRIER " << barrier );
             // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: "
             //           << barrier->generation()
             //           << " count: " << barrier->count()
             //           << " threshold: " << barrier->threshold()
             //           << " used: " << barrier->used() );
-            
+
             // Wait until all threads loop and decode is restarted
             bool ok = barrier->wait();
-            
+
+            std::cerr << img->name() << " video loop barrier waited" << std::endl;
+
             barrier = img->fg_bg_barrier();
             if ( barrier )
             {
+                std::cerr << img->name() << " fg/bg barrier wait" << std::endl;
                 barrier->wait();
-            }
+                std::cerr << img->name() << " fg/bg barrier waited"
+                          << std::endl;
+           }
 
             barrier = img->stereo_barrier();
             if ( barrier )
             {
+                std::cerr << img->name() << " stereo barrier wait" << std::endl;
                 barrier->wait();
             }
 
@@ -1100,7 +1098,17 @@ void video_thread( PlaybackData* data )
       frame += step;
    }
 
+    CMedia::Barrier* barrier = img->loop_barrier();
+    if ( barrier )
+    {
+        barrier->notify_all();
+    }
 
+    barrier = img->fg_bg_barrier();
+    if ( barrier )
+    {
+        barrier->notify_all();
+    }
 
 #ifdef DEBUG_THREADS
     DBG( "EXIT " << (fg ? "FG" : "BG") << " VIDEO THREAD "
@@ -1176,7 +1184,7 @@ void decode_thread( PlaybackData* data )
       {
 
           CMedia::Barrier* barrier = img->loop_barrier();
-          
+
           // LOG_INFO( img->name() << " BARRIER DECODE WAIT      gen: "
           //           << barrier->generation()
           //           << " count: " << barrier->count()
@@ -1205,7 +1213,7 @@ void decode_thread( PlaybackData* data )
                                       uiMain, reel, timeline, status );
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;
-         
+
          DBG( img->name() << " handle_loop " << end << " frame " << frame
               << " step " << step );
       }
