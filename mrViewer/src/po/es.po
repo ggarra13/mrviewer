@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-02-06 15:06-0300\n"
+"POT-Creation-Date: 2018-02-06 15:03-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -80,15 +80,15 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1011
+#: core/mrvPlayback.cpp:1002
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:638
+#: core/mrvPlayback.cpp:636
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:643
+#: core/mrvPlayback.cpp:641
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -247,7 +247,7 @@ msgstr " no encontrado, eligiendo "
 msgid " not yet supported"
 msgstr " no soportado aún"
 
-#: core/mrvPlayback.cpp:1012
+#: core/mrvPlayback.cpp:1003
 msgid " returned "
 msgstr " retornó "
 
@@ -424,7 +424,7 @@ msgstr ", velocidad de sampleo "
 msgid ", type "
 msgstr ", tipo "
 
-#: standalone/mrvCommandLine.cpp:440
+#: standalone/mrvCommandLine.cpp:445
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "La opción --stereo debe ser especificada en un múltiplo de dos veces."
 
@@ -801,7 +801,7 @@ msgstr ": No pude encontrar información de pistas."
 msgid ": Could not open filename."
 msgstr ": No pude abrir el archivo."
 
-#: video/mrvGLEngine.cpp:165
+#: video/mrvGLEngine.cpp:165 video/mrvGLEngine.cpp:168
 msgid ": Error "
 msgstr ": Error "
 
@@ -1322,16 +1322,7 @@ msgstr ""
 "La duración de la imagen de fondo es muy corta.  Repetir en ciclos puede no "
 "funcionar correctamente."
 
-#: core/mrvPlayback.cpp:952
-#, c-format
-msgid ""
-"Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
-"Looping will not work correctly."
-msgstr ""
-"El CPS de reproducción de la imagen de fondo ( %lg ) no es igual al de la de "
-"frente ( %lg ).  Repetir en ciclos no funcionará correctamente."
-
-#: core/mrvPlayback.cpp:931
+#: core/mrvPlayback.cpp:930
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
@@ -1376,7 +1367,7 @@ msgstr "Azul"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: standalone/main.cpp:404
+#: standalone/main.cpp:407
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -2154,7 +2145,7 @@ msgstr "No pude localizar el perfil ICC \""
 msgid "Could not open ICC profile embedded in \""
 msgstr "No pude localizar el perfil ICC dentro de \""
 
-#: video/mrvGLEngine.cpp:281
+#: video/mrvGLEngine.cpp:284
 msgid "Could not open any font of size "
 msgstr "No pude abrir ningun font de tamaño "
 
@@ -2988,7 +2979,7 @@ msgstr "Encodificado"
 msgid "End"
 msgstr "Fin"
 
-#: video/mrvGLEngine.cpp:525
+#: video/mrvGLEngine.cpp:528
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "Variable de entorno MRV_SHADER_PATH no encontrada, usando shader interno."
@@ -3205,7 +3196,7 @@ msgstr "Nombre"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:400
+#: standalone/main.cpp:403
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -3259,7 +3250,7 @@ msgstr "Voltear en Y"
 msgid "Float"
 msgstr "Coma Flotante"
 
-#: video/mrvGLEngine.cpp:225
+#: video/mrvGLEngine.cpp:228
 msgid "Float Textures:\t"
 msgstr "Texturas de Coma Flotante:\t"
 
@@ -3352,19 +3343,19 @@ msgstr "Cuadro de finalización del clip en el archivo"
 msgid "Frame start of clip in file"
 msgstr "Cuadro de comienzo del clip en el archivo"
 
-#: video/mrvGLEngine.cpp:781
+#: video/mrvGLEngine.cpp:784
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr "Framebuffer incomplete: Atadura NO esta completa."
 
-#: video/mrvGLEngine.cpp:788
+#: video/mrvGLEngine.cpp:791
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr "Framebuffer incompleto: buffer de Dibujo."
 
-#: video/mrvGLEngine.cpp:785
+#: video/mrvGLEngine.cpp:788
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr "Framebuffer incompleto: No hay imagen atada al FBO."
 
-#: video/mrvGLEngine.cpp:792
+#: video/mrvGLEngine.cpp:795
 msgid "Framebuffer incomplete: Read buffer."
 msgstr "Framebuffer incompleto: Buffer de lectura."
 
@@ -3423,7 +3414,7 @@ msgstr "V"
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
-#: video/mrvGLEngine.cpp:341
+#: video/mrvGLEngine.cpp:344
 msgid "GLEW Initialize Error: "
 msgstr "Error de Inicializar GLEW: "
 
@@ -3576,15 +3567,15 @@ msgstr "HW"
 msgid "Half"
 msgstr "Half"
 
-#: video/mrvGLEngine.cpp:226
+#: video/mrvGLEngine.cpp:229
 msgid "Half Textures:\t"
 msgstr "Texturas Half:\t"
 
-#: video/mrvGLEngine.cpp:223
+#: video/mrvGLEngine.cpp:226
 msgid "Hardware Shaders:\t"
 msgstr "Shaders de Hardware:\t"
 
-#: video/mrvGLEngine.cpp:538
+#: video/mrvGLEngine.cpp:541
 msgid "Hardware shaders not available."
 msgstr "Hardware Shaders no disponibles."
 
@@ -4284,11 +4275,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:2776
+#: video/mrvGLEngine.cpp:2796
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:2781
+#: video/mrvGLEngine.cpp:2801
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -4428,7 +4419,7 @@ msgstr "Marque un area en la imagen con el boton izquierdo del mouse"
 msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
-#: video/mrvGLEngine.cpp:229
+#: video/mrvGLEngine.cpp:232
 msgid "Max. Texture Size:\t"
 msgstr "Max. Tamaño Textura:\t"
 
@@ -4621,10 +4612,10 @@ msgstr "Próxima Imagen"
 
 #: gui/mrvFileRequester.cpp:937 gui/mrvImageBrowser.cpp:645
 #: gui/mrvImageBrowser.cpp:1970 gui/mrvImageInformation.cpp:3573
-#: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
-#: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
-#: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
-#: video/mrvGLEngine.cpp:234
+#: video/mrvGLEngine.cpp:227 video/mrvGLEngine.cpp:228
+#: video/mrvGLEngine.cpp:229 video/mrvGLEngine.cpp:231
+#: video/mrvGLEngine.cpp:235 video/mrvGLEngine.cpp:236
+#: video/mrvGLEngine.cpp:237
 msgid "No"
 msgstr "No"
 
@@ -4703,7 +4694,7 @@ msgstr "No existe una transformación RT válida para \""
 msgid "Non-Drop Frame Timecode"
 msgstr "Codigo de Tiempo Sin Derrochar Cuadros"
 
-#: video/mrvGLEngine.cpp:227
+#: video/mrvGLEngine.cpp:230
 msgid "Non-POT Textures:\t"
 msgstr "Texturas Non-POT:\t"
 
@@ -5099,7 +5090,7 @@ msgstr "Barras de Color PAL HDTV"
 msgid "PAL Video"
 msgstr "Vídeo PAL"
 
-#: video/mrvGLEngine.cpp:224
+#: video/mrvGLEngine.cpp:227
 msgid "PBO Textures:\t"
 msgstr "Texturas PBO:\t"
 
@@ -5634,7 +5625,7 @@ msgstr "Transformación de Render"
 msgid "Render Transforms"
 msgstr "Transformación de Render"
 
-#: video/mrvGLEngine.cpp:221
+#: video/mrvGLEngine.cpp:224
 msgid "Renderer:\t"
 msgstr "Renderer:\t"
 
@@ -5721,12 +5712,16 @@ msgstr "Rote la Imagen -90 grados"
 msgid "Rounding Mode"
 msgstr "Modo de Redondeo"
 
+#: standalone/mrvCommandLine.cpp:398
+msgid "Run mrViewer regardless of single instance setting"
+msgstr ""
+
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4597
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4615
 msgid "S"
 msgstr "S"
 
-#: video/mrvGLEngine.cpp:234
+#: video/mrvGLEngine.cpp:237
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
@@ -6387,7 +6382,7 @@ msgstr "Sobreimpreso de Texto"
 msgid "Text Tool"
 msgstr "Herramienta de Texto"
 
-#: video/mrvGLEngine.cpp:231
+#: video/mrvGLEngine.cpp:234
 msgid "Texture Units:\t"
 msgstr "Unidades de Textura:\t"
 
@@ -7056,13 +7051,13 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr "Deshacer La Última Figura Dibujada"
 
-#: standalone/main.cpp:388
+#: standalone/main.cpp:391
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
 #: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2246
-#: gui/mrvImageInformation.cpp:2056 video/mrvGLEngine.cpp:212
-#: video/mrvGLEngine.cpp:215 video/mrvGLEngine.cpp:218
+#: gui/mrvImageInformation.cpp:2056 video/mrvGLEngine.cpp:215
+#: video/mrvGLEngine.cpp:218 video/mrvGLEngine.cpp:221
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -7118,7 +7113,7 @@ msgstr "Tipo de dato desconocido para convertir de texto"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: standalone/main.cpp:408
+#: standalone/main.cpp:411
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -7166,7 +7161,7 @@ msgstr "Modo de Redondeo desconocido"
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr "Tipo de dato desconocido para mrvOCIOBrowser"
 
-#: video/mrvGLEngine.cpp:2170
+#: video/mrvGLEngine.cpp:2190
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -7176,7 +7171,7 @@ msgstr "Dirección de wipe desconocida"
 msgid "Unspecified"
 msgstr "Sin Especificar"
 
-#: video/mrvGLEngine.cpp:778
+#: video/mrvGLEngine.cpp:781
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
@@ -7223,7 +7218,7 @@ msgstr "Use multiples hilos (threads) cuando se carge un cuadro"
 msgid "User Interface"
 msgstr "Interfaz de Usuario"
 
-#: video/mrvGLEngine.cpp:442
+#: video/mrvGLEngine.cpp:445
 msgid "Using hardware shader profile: "
 msgstr "Usando perfil de shader de hardware: "
 
@@ -7303,11 +7298,11 @@ msgstr "Vector3 Entero"
 msgid "Vectorscope"
 msgstr "Vectorscopio"
 
-#: video/mrvGLEngine.cpp:220
+#: video/mrvGLEngine.cpp:223
 msgid "Vendor:\t"
 msgstr "Vendedor:\t"
 
-#: video/mrvGLEngine.cpp:222
+#: video/mrvGLEngine.cpp:225
 msgid "Version:\t"
 msgstr "Versión:\t"
 
@@ -7891,7 +7886,7 @@ msgstr "YDbDr (SECAM/PAL-N Analógico)"
 msgid "YIQ (Analog NTSC)"
 msgstr "YIQ (NTSC Analógico)"
 
-#: video/mrvGLEngine.cpp:232
+#: video/mrvGLEngine.cpp:235
 msgid "YUV  Support:\t"
 msgstr "Soporte YUV:\t"
 
@@ -7937,16 +7932,16 @@ msgstr ""
 msgid "YUV444"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:233
+#: video/mrvGLEngine.cpp:236
 msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
 #: gui/mrvFileRequester.cpp:937 gui/mrvImageBrowser.cpp:645
 #: gui/mrvImageBrowser.cpp:1970 gui/mrvImageInformation.cpp:3573
-#: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:225
-#: video/mrvGLEngine.cpp:226 video/mrvGLEngine.cpp:228
-#: video/mrvGLEngine.cpp:232 video/mrvGLEngine.cpp:233
-#: video/mrvGLEngine.cpp:234
+#: video/mrvGLEngine.cpp:227 video/mrvGLEngine.cpp:228
+#: video/mrvGLEngine.cpp:229 video/mrvGLEngine.cpp:231
+#: video/mrvGLEngine.cpp:235 video/mrvGLEngine.cpp:236
+#: video/mrvGLEngine.cpp:237
 msgid "Yes"
 msgstr "Sí"
 
@@ -8179,7 +8174,7 @@ msgstr "mrViewer    FRENTE: %s"
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"
 
-#: video/mrvGLEngine.cpp:556
+#: video/mrvGLEngine.cpp:559
 msgid "mrViewer does not support YUV images."
 msgstr "mrViewer no soporta imágenes de YUV."
 
@@ -8199,11 +8194,11 @@ msgstr ""
 "mrViewer soporta scripts de CTL y Perfiles ICC cocinados en 3D luts.  Estos "
 "settings controlan la calidad del 3D Lut."
 
-#: video/mrvGLEngine.cpp:551
+#: video/mrvGLEngine.cpp:554
 msgid "mrViewer supports YUV images through shaders."
 msgstr "mrViewer soporta imágenes YUV con shaders."
 
-#: video/mrvGLEngine.cpp:547
+#: video/mrvGLEngine.cpp:550
 msgid "mrViewer supports YUVA images through shaders."
 msgstr "mrViewer soporta imágenes YUVA con shaders."
 
@@ -8384,6 +8379,13 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-116-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4333
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid ""
+#~ "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
+#~ "Looping will not work correctly."
+#~ msgstr ""
+#~ "El CPS de reproducción de la imagen de fondo ( %lg ) no es igual al de la "
+#~ "de frente ( %lg ).  Repetir en ciclos no funcionará correctamente."
 
 #
 #~ msgid "\" not found. Name tested "
