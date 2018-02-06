@@ -245,7 +245,10 @@ int main( int argc, char** argv )
 
           lockfile = mrv::lockfile();
 
-          bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
+          bool single_instance = false;
+
+          if ( !opts.run )
+              single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
           if ( opts.port != 0 ) {
               ui->uiPrefs->uiPrefsSingleInstance->value(0);
               single_instance = false;

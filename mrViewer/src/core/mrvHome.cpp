@@ -81,8 +81,8 @@ std::string prefspath()
 std::string lockfile()
 {
   std::string lockfile = mrv::homepath();
-   lockfile += "/.filmaura/mrViewer.lock.prefs";
-   return lockfile;
+  lockfile += "/.filmaura/mrViewer.lock.prefs";
+  return lockfile;
 }
 
 std::string tmppath()
