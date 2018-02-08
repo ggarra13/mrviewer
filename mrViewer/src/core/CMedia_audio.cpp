@@ -1651,11 +1651,11 @@ void CMedia::wait_audio()
 
   for (;;)
     {
-        if ( stopped() || ! _audio_packets.empty() ) break;
+        //        if ( stopped() || ! _audio_packets.empty() ) break;
 
-      // bool got_audio = in_audio_store( _frame + _audio_offset );
-      // if ( ( ! _audio_packets.empty() ) || got_audio )
-      //     return;
+        bool got_audio = in_audio_store( _frame + _audio_offset );
+        if ( stopped() || ( ! _audio_packets.empty() ) || got_audio )
+            return;
 
       CONDITION_WAIT( _audio_packets.cond(), apm );
     }
