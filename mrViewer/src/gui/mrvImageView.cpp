@@ -7884,8 +7884,14 @@ void ImageView::play( const CMedia::Playback dir )
       DBG( "******* PLAY BG " << bg->image()->name() );
       CMedia* img = bg->image();
       img->play( dir, uiMain, false);
+      typedef boost::recursive_mutex Mutex;
       CMedia::Barrier* barrier = img->fg_bg_barrier();
-      fg->image()->fg_bg_barrier( barrier );
+      img = fg->image();
+      Mutex& vm = img->video_mutex();
+      SCOPED_LOCK( vm );
+      barrier->threshold( barrier->threshold() + img->has_audio() +
+                          img->has_picture() );
+      img->fg_bg_barrier( barrier );
    }
 
 }
