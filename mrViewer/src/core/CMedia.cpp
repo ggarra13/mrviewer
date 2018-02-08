@@ -2374,9 +2374,13 @@ void CMedia::play(const CMedia::Playback dir,
           }
       }
 
-      if ( !fg )
+      if ( !fg && !_fg_bg_barrier )
       {
-          _fg_bg_barrier = new Barrier( 2 );
+          _fg_bg_barrier = new Barrier( valid_v + valid_a );
+      }
+      else if ( _fg_bg_barrier )
+      {
+          _fg_bg_barrier->threshold( valid_v + valid_a );
       }
       
       unsigned num = 1 + valid_a + valid_v + valid_s;
@@ -2468,8 +2472,8 @@ void CMedia::stop(const bool bg)
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
   delete _stereo_barrier; _stereo_barrier = NULL;
-  if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
-  _fg_bg_barrier = NULL;
+  //if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
+  // _fg_bg_barrier = NULL;
 
   close_audio();
 
