@@ -51,6 +51,14 @@ class barrier
         notify_all();
     }
 
+    inline void threshold( unsigned x ) {
+        if (x == 0)
+            boost::throw_exception(std::invalid_argument("count cannot be zero."));
+        unsigned used = m_threshold - m_count;
+        m_threshold = x;
+        if ( used > m_threshold ) m_count = 0;
+        else m_count = m_threshold - used;
+    }
     inline unsigned threshold()  const { return m_threshold; }
     inline unsigned generation() const { return m_generation; }
     inline unsigned count()      const { return m_count; }
@@ -79,11 +87,6 @@ class barrier
             return true;
         }
 
-
-        // boost::xtime t;
-        // t.sec = 1;
-        // t.nsec = 0;
-        
         while (gen == m_generation)
             CONDITION_WAIT( m_cond, m_mutex )
         return false;
