@@ -947,6 +947,8 @@ static const char* kCLocale = "C";
   {
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
+    DBG("main->uiMain->show");
+    
     main->uiMain->show();
 
     // fltk::Widget* w = new fltk::Widget( 0, 48, 639, 40, "Eye1" );
@@ -954,12 +956,14 @@ static const char* kCLocale = "C";
     // w = new fltk::Widget( 0, 88, 639, 40, "Eye2" );
     // main->uiBottomBar->add( w );
 
+    DBG("fltk::check");
     fltk::check();
 
     //
     // Windows
     //
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsEDLEdit->value() )
     {
         main->uiEDLWindow->uiMain->show();
@@ -968,6 +972,7 @@ static const char* kCLocale = "C";
       main->uiEDLWindow->uiMain->hide();
 
     mrv::PaintUI* uiPaint = main->uiPaint;
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsPaintTools->value() )
     {
         uiPaint->uiMain->show();
@@ -976,6 +981,7 @@ static const char* kCLocale = "C";
         uiPaint->uiMain->hide();
 
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsStereoOptions->value() )
     {
         main->uiStereo->uiMain->show();
@@ -983,6 +989,7 @@ static const char* kCLocale = "C";
     else
       main->uiStereo->uiMain->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsReelList->value() )
     {
         main->uiReelWindow->uiMain->show();
@@ -990,6 +997,7 @@ static const char* kCLocale = "C";
     else
       main->uiReelWindow->uiMain->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsImageInfo->value() )
     {
         main->uiImageInfo->uiMain->show();
@@ -997,6 +1005,7 @@ static const char* kCLocale = "C";
     else
       main->uiImageInfo->uiMain->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsColorArea->value() )
     {
         main->uiColorArea->uiMain->show();
@@ -1004,6 +1013,7 @@ static const char* kCLocale = "C";
     else
       main->uiColorArea->uiMain->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsHistogram->value() )
     {
         main->uiHistogram->uiMain->show();
@@ -1011,6 +1021,7 @@ static const char* kCLocale = "C";
     else
       main->uiHistogram->uiMain->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsVectorscope->value() )
     {
         main->uiVectorscope->uiMain->show();
@@ -1021,16 +1032,19 @@ static const char* kCLocale = "C";
     //
     // Toolbars
     //
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsTopbar->value() )
       main->uiTopBar->show();
     else
       main->uiTopBar->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsPixelToolbar->value() )
       main->uiPixelBar->show();
     else
       main->uiPixelBar->hide();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsTimeline->value() )
       main->uiBottomBar->show();
     else
@@ -1042,13 +1056,16 @@ static const char* kCLocale = "C";
     //
     mrv::ImageView* view = main->uiView;
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiLoopMode->value( uiPrefs->uiPrefsLoopMode->value() );
     main->uiLoopMode->do_callback();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiGain->value( uiPrefs->uiPrefsViewGain->value() );
     main->uiGamma->value( uiPrefs->uiPrefsViewGamma->value() );
 
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
        view->toggle_pixel_ratio();
@@ -1057,6 +1074,7 @@ static const char* kCLocale = "C";
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiScrub->value() )
         view->scrub_mode();
     else if ( uiPrefs->uiMovePicture->value() )
@@ -1070,6 +1088,7 @@ static const char* kCLocale = "C";
     else if ( uiPrefs->uiErase->value() )
         view->erase_mode();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( !view->use_lut() )
     {
         bool use = uiPrefs->uiPrefsViewLut->value();
@@ -1078,12 +1097,14 @@ static const char* kCLocale = "C";
     }
 
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsSafeAreas->value() )
       view->safe_areas(true);
 
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
@@ -1093,20 +1114,25 @@ static const char* kCLocale = "C";
                      _("Setting OCIO environment variable to nuke-default" )
                      << std::endl );
         std::string tmp = root + "/ocio/nuke-default/config.ocio";
+        DBG( __FUNCTION__ << " " << __LINE__ );
         var = strdup( tmp.c_str() );
+        DBG( __FUNCTION__ << " " << __LINE__ );
     }
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
         if ( old_ocio != var )
         {
+            DBG( __FUNCTION__ << " " << __LINE__ );
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
             mrvLOG_INFO( "ocio", var << std::endl );
             old_ocio = var;
         }
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
         char buf[2048];
         sprintf( buf, "OCIO=%s", var );
         putenv( buf );
@@ -1114,11 +1140,14 @@ static const char* kCLocale = "C";
 
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
+        DBG( __FUNCTION__ << " " << __LINE__ );
 
         try
         {
+            DBG( __FUNCTION__ << " " << __LINE__ );
             OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromEnv();
             OCIO::SetCurrentConfig( config );
             config = OCIO::GetCurrentConfig();
@@ -1134,6 +1163,7 @@ static const char* kCLocale = "C";
             }
 
             int numDisplays = config->getNumDisplays();
+            DBG( "numDisplays " << numDisplays );
             for ( int j = 0; j < numDisplays; ++j )
             {
                 std::string display = config->getDisplay(j);
@@ -1142,6 +1172,7 @@ static const char* kCLocale = "C";
 
                 std::vector< std::string > views;
                 int numViews = config->getNumViews(display.c_str());
+                DBG( "numViews " << numViews << " for " << display );
                 // Collect all views
                 for(int i = 0; i < numViews; i++)
                 {
@@ -1186,8 +1217,10 @@ static const char* kCLocale = "C";
             use_ocio = false;
         }
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
         std::locale::global( std::locale("") );
         setlocale(LC_NUMERIC, "" );
+        DBG( __FUNCTION__ << " " << __LINE__ );
     }
     else
     {
@@ -1199,11 +1232,13 @@ static const char* kCLocale = "C";
 
     if ( use_ocio )
     {
+        DBG( __FUNCTION__ << " " << __LINE__ );
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
         main->uiICS->relayout();
         try
         {
+            DBG( __FUNCTION__ << " " << __LINE__ );
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
             std::vector< std::string > spaces;
             for(int i = 0; i < config->getNumColorSpaces(); ++i)
@@ -1225,6 +1260,7 @@ static const char* kCLocale = "C";
                 img = fg->image();
             }
 
+            DBG( "ICS Colorspaces BEGIN" );
             fltk::PopupMenu* w = main->uiICS;
             w->clear();
             std::sort( spaces.begin(), spaces.end() );
@@ -1240,6 +1276,7 @@ static const char* kCLocale = "C";
                     w->value( i );
                 }
             }
+            DBG( "ICS Colorspaces END" );
             w->do_callback();
             w->redraw();
         }
@@ -1251,6 +1288,7 @@ static const char* kCLocale = "C";
     }
     else
     {
+        DBG( __FUNCTION__ << " " << __LINE__ );
         main->uiICS->hide();
         main->uiFstopGroup->show();
         main->uiNormalize->show();
@@ -1268,12 +1306,14 @@ static const char* kCLocale = "C";
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
     // Handle caches
+    DBG( __FUNCTION__ << " " << __LINE__ );
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
     CMedia::preload_cache( (bool)uiPrefs->uiPrefsPreloadCache->value() );
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
         uiPrefs->uiPrefsCacheSize->activate(true);
@@ -1297,6 +1337,7 @@ static const char* kCLocale = "C";
         uiPrefs->uiPrefsImageCacheSize->activate(false);
         CMedia::image_cache_size( 0 );
     }
+    DBG( __FUNCTION__ << " " << __LINE__ );
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
@@ -1310,22 +1351,29 @@ static const char* kCLocale = "C";
     //
     // Handle pixel values
     //
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiAColorType->value( uiPrefs->uiPrefsPixelRGBA->value() );
     main->uiAColorType->redraw();
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiAColorType->do_callback();
     main->uiPixelValue->value( uiPrefs->uiPrefsPixelValues->value() );
     main->uiPixelValue->redraw();
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiPixelValue->do_callback();
     main->uiBColorType->value( uiPrefs->uiPrefsPixelHSV->value() );
     main->uiBColorType->redraw();
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiBColorType->do_callback();
     main->uiLType->value( uiPrefs->uiPrefsPixelLumma->value() );
     main->uiLType->redraw();
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiLType->do_callback();
+    DBG( __FUNCTION__ << " " << __LINE__ );
 
     //
     // Handle crop area (masking)
     //
+    DBG( __FUNCTION__ << " " << __LINE__ );
     int crop = uiPrefs->uiPrefsCropArea->value();
     if ( crop > 0 )
       {
@@ -1335,6 +1383,7 @@ static const char* kCLocale = "C";
         view->masking( mask );
       }
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     //
     // Handle HUD
     //
@@ -1366,15 +1415,20 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsHudAttributes->value() )
       hud |= mrv::ImageView::kHudAttributes;
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     view->hud( (mrv::ImageView::HudDisplay) hud );
 
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
+    DBG( __FUNCTION__ << " " << __LINE__ );
     change_timeline_display(main);
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsOverrideAudio->value() )
     {
         double x = uiPrefs->uiPrefsAudioVolume->value();
@@ -1383,6 +1437,7 @@ static const char* kCLocale = "C";
         view->volume( float(x) );
     }
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     //
     // Handle fullscreen and presentation mode
     //
@@ -1392,6 +1447,7 @@ static const char* kCLocale = "C";
        int y = int(uiPrefs->uiWindowYPosition->value());
        main->uiMain->position( x, y );
     }
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiWindowFixedSize->value() )
     {
        int x = int(uiPrefs->uiWindowXSize->value());
@@ -1404,11 +1460,13 @@ static const char* kCLocale = "C";
     //
     CMedia::default_fps = uiPrefs->uiPrefsFPS->value();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
 
 #if defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize( main->uiMain->w(), main->uiMain->h()-20 );
 #endif
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     fltk::RadioButton* r;
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(1);
 
@@ -1418,6 +1476,7 @@ static const char* kCLocale = "C";
         view->toggle_fullscreen();
       }
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(2);
 
     if ( r->value() == 1 )
@@ -1426,26 +1485,34 @@ static const char* kCLocale = "C";
         view->toggle_presentation();
       }
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     GLLut3d::NUM_STOPS = (unsigned) uiPrefs->uiPrefsNumStops->value();
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     int num = (int)main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
     Imf::setGlobalThreadCount( num );
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     float tmpF = (float)main->uiPrefs->uiPrefsOpenEXRGamma->value();
     exrImage::_default_gamma = tmpF;
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
     exrImage::_default_compression = (Imf::Compression) num;
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     tmpF = (float) main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
     exrImage::_default_dwa_compression = tmpF;
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     bool b = (bool)main->uiPrefs->uiPrefsAllLayers->value();
     CMedia::all_layers( b );
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     idx = main->uiPrefs->uiPrefsSubtitleFont->value();
     num = main->uiPrefs->uiPrefsSubtitleFont->children();
     if ( (int)idx < num )
@@ -1460,6 +1527,7 @@ static const char* kCLocale = "C";
                         main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
     LogDisplay::shown = false;
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
   }

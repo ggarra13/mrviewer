@@ -32,6 +32,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <fstream>
 
 #include <fltk/ask.h>
 #include <boost/thread/recursive_mutex.hpp>
@@ -53,9 +54,15 @@ namespace mrv {
 
     struct logbuffer : public string_stream
     {
-      logbuffer() : string_stream() { str().reserve(1024); };
-      virtual ~logbuffer() {};
+        bool _debug;
+        std::fstream out;
+        
+        logbuffer() : string_stream(), _debug(false) { str().reserve(1024); };
+        virtual ~logbuffer() { if (out.is_open()) out.close(); };
 
+        void debug( bool t ) { _debug = t; open_stream(); }
+        void open_stream();
+        
       //! from basic_streambuf, stl function used to sync stream
       virtual int sync();
 
@@ -165,10 +172,9 @@ namespace mrv {
 #define IMG_INFO_F(x) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << x )
 #define IMG_INFO(x) LOG_INFO( name() << " - " << x )
 
-#ifdef DEBUG
+#if 0
 #define DBG(x) do { \
-    std::cerr << _("mrViewer DBG : ") << x << " at "                    \
-              << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
+    LOG_DEBUG( x ); \
 } while(0)
 #else
 #define DBG(x)
