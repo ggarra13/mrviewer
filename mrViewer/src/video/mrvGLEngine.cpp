@@ -220,6 +220,7 @@ void zrot2offsets( double& x, double& y,
     char* versionString = (char*)glGetString(GL_VERSION);
     if ( !versionString ) versionString = (char*)_("Unknown");
 
+    DBG( __FUNCTION__ << " " << __LINE__ );
     o << _("Vendor:\t") << vendorString << endl
       << _("Renderer:\t") << rendererString << endl
       << _("Version:\t")  << versionString << endl
@@ -235,6 +236,7 @@ void zrot2offsets( double& x, double& y,
       << _("YUV  Support:\t") << (supports_yuv() ? _("Yes") : _("No")) << endl
       << _("YUVA Support:\t") << (supports_yuva() ? _("Yes") : _("No")) << endl
       << _("SDI Output:\t") << (_sdiOutput ? _("Yes") : _("No")) << endl;
+    DBG( __FUNCTION__ << " " << __LINE__ );
     return o.str();
   }
 
@@ -246,6 +248,7 @@ void GLEngine::init_charset()
   int fontsize = 16;
 
 #ifdef WIN32
+    DBG( __FUNCTION__ << " " << __LINE__ );
     HDC   hDC = fltk::getDC();
     HGLRC hRC = wglGetCurrentContext();
     if (hRC == NULL ) hRC = wglCreateContext( hDC );
@@ -271,6 +274,7 @@ void GLEngine::init_charset()
     wglUseFontBitmaps(hDC, 0, numChars-1, sCharset);
 
     SelectObject(hDC, oldFid);
+    DBG( __FUNCTION__ << " " << __LINE__ );
 #else
     // Find Window's default font
     Display* gdc = fltk::xdisplay;
@@ -337,14 +341,18 @@ void GLEngine::init_textures()
  */
 void GLEngine::init_GLEW()
 {
-  GLenum err = glewInit();
-  if (GLEW_OK != err)
+    DBG( __FUNCTION__ << " " << __LINE__ );
+    GLenum err = glewInit();
+    DBG( __FUNCTION__ << " " << __LINE__ );
+    if (GLEW_OK != err)
     {
+        DBG( "glewInit failed" );
         /* Problem: glewInit failed, something is seriously wrong. */
         LOG_ERROR( _("GLEW Initialize Error: ") << glewGetErrorString(err) );
-        exit(1);
+        return;
     }
 
+    
 // #if defined(WIN32) || defined(WIN64)
 //   err = wglewInit();
 //   if (GLEW_OK != err)
@@ -374,21 +382,24 @@ void GLEngine::init_GLEW()
  */
 void GLEngine::initialize()
 {
+  static bool glut_init = false;
+
+  DBG( __FUNCTION__ << " " << __LINE__ );
+  if ( !glut_init )
+  {
+      DBG( "call glutInit" );
+      int argc = 1;
+      static char* args[] = { (char*)"GlEngine", NULL };
+      glutInit( &argc, args );
+      glut_init = true;
+  }
+  
   init_GLEW();
 
   init_charset();
 
   init_textures();
 
-  static bool glut_init = false;
-
-  if ( !glut_init )
-  {
-      int argc = 1;
-      static char* args[] = { (char*)"GlEngine", NULL };
-      glutInit( &argc, args );
-      glut_init = true;
-  }
 
 // #if defined(WIN32) || defined(WIN64)
 //   if ( WGLEW_WGL_swap_control )
@@ -422,16 +433,19 @@ void GLEngine::initialize()
 #ifndef TEST_NO_SHADERS
 
 #ifdef USE_ARBFP1_SHADERS
+    DBG( __FUNCTION__ << " " << __LINE__ );
       if ( GLEW_ARB_fragment_program )
         _hardwareShaders = kARBFP1;
 #endif
 
 #ifdef USE_OPENGL2_SHADERS
+    DBG( __FUNCTION__ << " " << __LINE__ );
       if ( GLEW_VERSION_2_0 )
         _hardwareShaders = kGLSL;
 #endif
 
 #ifdef USE_NV_SHADERS
+    DBG( __FUNCTION__ << " " << __LINE__ );
       if ( GLEW_NV_fragment_program )
         _hardwareShaders = kNV30;
 #endif
@@ -459,11 +473,14 @@ void GLEngine::initialize()
       const char* env = getenv( N_("MRV_SHADER_PATH") );
       if ( !env )
         {
-          env = getenv( N_("MRV_ROOT") );
+            env = getenv( N_("MRV_ROOT") );
+            DBG( __FUNCTION__ << " " << __LINE__
+                 << " MRV_ROOT=" << (env ? env : "NULL") );
           if ( env )
             {
-              directory = env;
-              directory += N_("/shaders");
+                DBG( __FUNCTION__ << " " << __LINE__ );
+                directory = env;
+                directory += N_("/shaders");
             }
         }
       else
@@ -493,6 +510,11 @@ void GLEngine::initialize()
               const char* dir = directory.c_str();
 
               sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
+
+              DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+                   << shaderFile );
+
+  
               _rgba = new GLShader( shaderFile );
 
 
@@ -500,18 +522,27 @@ void GLEngine::initialize()
                 {
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
                   _YCbCr = new GLShader( shaderFile );
+                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+                       << shaderFile );
 
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
                   _YByRy = new GLShader( shaderFile );
+                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+                       << shaderFile );
                 }
 
               if ( _has_yuva )
                 {
+                  DBG( __FUNCTION__ << " " << __LINE__  );
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
                   _YCbCrA = new GLShader( shaderFile );
+                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+                       << shaderFile );
 
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
                   _YByRyA = new GLShader( shaderFile );
+                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+                       << shaderFile );
                 }
 
             }
@@ -2780,7 +2811,7 @@ void GLEngine::handle_cg_errors()
 {
 //   std::cerr << cgGetErrorString (cgGetError()) << std::endl;
 //   std::cerr << cgGetLastListing (cgContext) << std::endl;
-  exit(1);
+//   exit(1);
 }
 
 
@@ -2795,10 +2826,12 @@ GLEngine::loadBuiltinFragShader()
         {
             LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
             _rgba->load( N_("builtin"), NVShader );
+            DBG( "NVShader builtin" );
         }
         else
         {
             LOG_INFO( _("Loading built-in arbfp1 rgba shader") );
+            DBG( "kARBFP1 builtin shader" );
             _hardwareShaders = kARBFP1;
             _rgba->load( N_("builtin"), ARBFP1Shader );
         }

@@ -34,7 +34,7 @@
 #include "gui/mrvImageView.h"
 #include "mrvDrawEngine.h"
 
-#if 1
+#if 0
 #  define CHECK_GL GLEngine::handle_gl_errors( __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL
