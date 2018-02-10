@@ -72,7 +72,6 @@ namespace mrv {
 
   MainWindow::~MainWindow()
   {
-      DBG( "*****************************************************" );
       uiMain->uiView->stop();
       delete uiMain->uiView;
       uiMain->uiView = NULL;
