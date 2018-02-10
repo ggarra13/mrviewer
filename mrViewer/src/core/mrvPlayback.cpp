@@ -232,8 +232,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
                                  int64_t& first,
                                  int64_t& last )
 {
-    last = int64_t(timeline->maximum()) + img->first_frame() - 1;
-    first = int64_t(timeline->minimum()) + img->first_frame() - 1;
+    
+    last = int64_t(timeline->maximum());
+    first = int64_t(timeline->minimum());
 
     AVRational rp;
     rp.num = img->play_fps() * 1000;
@@ -243,8 +244,13 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     rt.num = timeline->fps() * 1000;
     rt.den = 1000;
 
+
     first = av_rescale_q( first, rp, rt );
     last  = av_rescale_q( last, rp, rt );
+
+    int64_t offset = img->first_frame() - img->start_frame();
+    last = last + offset;
+    first = first + offset;
 
 
     // std::cerr << "check loop reel " << reel->name << std::endl;
@@ -275,9 +281,10 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             const int64_t s = img->first_frame();
             const int64_t e = img->last_frame();
 
-            if ( last > e )
+            if ( e < last )
                 last = e;
-            else if ( s > first )
+
+            if ( s > first )
                 first = s;
         }
     }
@@ -595,7 +602,7 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        // LOG_INFO( "wait audio " << frame );
+        //DBG( "wait audio " << frame );
         img->wait_audio();
 
 
@@ -605,7 +612,7 @@ void audio_thread( PlaybackData* data )
         // DBG( "decode audio " << frame );
 
         // if (!fg)
-        //     img->debug_audio_packets( frame, "play", true );
+            // img->debug_audio_packets( frame, "play", true );
 
 
         CMedia::DecodeStatus status = img->decode_audio( f );
@@ -620,9 +627,8 @@ void audio_thread( PlaybackData* data )
             int64_t first, last;
             status = check_loop( frame, img, reel, timeline, first, last );
         }
-        
-        if ( img->stopped() ) break;
 
+        
         
         switch( status )
         {
@@ -658,8 +664,6 @@ void audio_thread( PlaybackData* data )
                     DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
                     
-                    //if ( img->stopped() ) continue;
-
                     CMedia::Barrier* barrier = img->loop_barrier();
                     // Wait until all threads loop and decode is restarted
                     barrier->wait();
