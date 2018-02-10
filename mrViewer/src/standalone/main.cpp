@@ -25,9 +25,9 @@
  * 
  */
 
-//#ifdef DEBUG
+#ifdef _WIN32
 //  #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
-//#endif
+#endif
 
 #include <string.h>
 #include <locale.h>
@@ -168,6 +168,12 @@ int main( int argc, char** argv )
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
+    // mrv::io::logbuffer& log = (mrv::io::logbuffer&)*mrv::io::info.rdbuf();
+    // log.debug(true);
+    // mrv::io::logbuffer& wrn = (mrv::io::logbuffer&)*mrv::io::warn.rdbuf();
+    // wrn.debug(true);
+    // mrv::io::logbuffer& err = (mrv::io::logbuffer&)*mrv::io::error.rdbuf();
+    // err.debug(true);
 
   const char* tmp = setlocale(LC_ALL, "");
   // Create and install global locale
