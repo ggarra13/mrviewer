@@ -1053,7 +1053,7 @@ mrv::image_type_ptr CMedia::left() const
     int64_t f = handle_loops( _frame );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
 
@@ -1081,7 +1081,7 @@ mrv::image_type_ptr CMedia::right() const
          stereo_input() == kLeftRightStereoInput )
         return _stereo[0] ? _stereo[0] : _hires;
 
-    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     if ( _is_sequence && _right && _right[idx] )
@@ -1115,7 +1115,7 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
     f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     if ( stereo_input() & kTopBottomStereoInput ) {
@@ -1155,7 +1155,7 @@ const mrv::Recti CMedia::display_window2( int64_t f ) const
     f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     if ( stereo_input() & kTopBottomStereoInput ) {
@@ -1188,7 +1188,7 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
     f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     if ( stereo_input() & kTopBottomStereoInput ) {
@@ -1223,7 +1223,7 @@ const mrv::Recti CMedia::data_window2( int64_t f ) const
     f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     if ( stereo_input() & kTopBottomStereoInput ) {
@@ -1252,7 +1252,7 @@ void CMedia::display_window( const int xmin, const int ymin,
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
 
-  if ( _numWindows && idx >= (int64_t)_numWindows || idx < 0 ) return;
+  if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
 
   assert( idx < _numWindows );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -1273,7 +1273,7 @@ void CMedia::display_window2( const int xmin, const int ymin,
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
 
-  if ( _numWindows && idx >= (int64_t)_numWindows || idx < 0 ) return;
+  if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
 
   assert( idx < _numWindows );
   _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -1294,7 +1294,7 @@ void CMedia::data_window( const int xmin, const int ymin,
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
 
-  if ( _numWindows && idx >= (int64_t)_numWindows || idx < 0 ) return;
+  if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
 
   assert( idx < _numWindows );
 
@@ -1318,7 +1318,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
 
-  if ( idx >= (int64_t)_numWindows || idx < 0 ) return;
+  if ( idx >= _numWindows || idx < 0 ) return;
 
   assert( idx < _numWindows );
   _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -1572,7 +1572,7 @@ bool CMedia::has_changed()
 
       int64_t idx = f - _frame_start;
       if ( idx < 0 ) idx = 0;
-      if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+      if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
 
       if ( !_sequence[idx] ||
            _sequence[idx]->mtime() != sbuf.st_mtime ||
@@ -2472,8 +2472,8 @@ void CMedia::stop(const bool bg)
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
   delete _stereo_barrier; _stereo_barrier = NULL;
-  //if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
-  // _fg_bg_barrier = NULL;
+  if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
+  _fg_bg_barrier = NULL;
 
   close_audio();
 
@@ -2609,7 +2609,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   int64_t idx = f - _frame_start;
 
   if ( idx < 0 ) idx = 0;
-  else if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+  else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
 
   if ( !seq || seq[idx] ) return;
 
@@ -2673,6 +2673,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
       }
       else
       {
+          //DBG( "cache seq " << idx << " pic " << pic );
           seq[idx] = pic;
       }
   }
@@ -2731,7 +2732,7 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
     if ( frame > _frame_end ) return kNoCache;
     else if ( frame < _frame_start ) return kNoCache;
 
-    boost::uint64_t i = frame - _frame_start;
+    boost::int64_t i = frame - _frame_start;
 
     CMedia::Cache cache = kNoCache;
 
@@ -3329,15 +3330,15 @@ void CMedia::limit_video_store( const int64_t f )
   if ( !_sequence ) return;
 
   if ( first < 0 ) first = 0;
-  size_t end = _numWindows-1;
+  int64_t end = _numWindows-1;
   if ( last > end ) last = end;
 
-  for ( size_t i = 0; i < first; ++i  )
+  for ( int64_t i = 0; i < first; ++i  )
   {
       _sequence[i].reset();
       _right[i].reset();
   }
-  for ( size_t i = last; i < end ; ++i  )
+  for ( int64_t i = last; i < end ; ++i  )
   {
       _sequence[i].reset();
       _right[i].reset();
@@ -3599,7 +3600,7 @@ bool CMedia::find_image( const int64_t frame )
   {
       SCOPED_LOCK( _mutex );
       if ( idx < 0 ) idx = 0;
-      else if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+      else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
   }
 
 
