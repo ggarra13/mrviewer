@@ -28,6 +28,7 @@
 #include <cstdlib> // for free/malloc
 #include <cstring> // for strcpy
 
+#include "core/mrvHome.h"
 #include "gui/mrvLogDisplay.h"
 #include "mrViewer.h" // for uiLog
 #include "mrvIO.h"
@@ -75,6 +76,8 @@ namespace mrv {
       char* c = strdup( str().c_str() );
       if (!c) return 1;
 
+      if ( _debug && out.is_open() ) out << c;
+      
       print( c );
 
       free(c);
@@ -83,6 +86,21 @@ namespace mrv {
       seekoff( 0, std::ios::beg );
       return 0;
     }
+
+  void logbuffer::open_stream()
+  {
+      if ( !out.is_open() )
+      {
+          std::string file = mrv::homepath();
+          file += "/.filmaura/errorlog.txt";
+          out.open( file.c_str(), ios_base::out );
+      }
+      if ( out.is_open() )
+      {
+          out << "DEBUG LOG" << std::endl
+              << "=========" << std::endl << std::endl;
+      }
+  }
     
     void errorbuffer::print( const char* c )
     {

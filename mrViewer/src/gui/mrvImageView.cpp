@@ -152,7 +152,7 @@ namespace fs = boost::filesystem;
 // FLTK2 currently has a problem on Linux with timout's fltk::event_x/y not
 // taking into account other child widgets.  This works around it.
 //#ifndef _WIN32
-#  define FLTK_TIMEOUT_EVENT_BUG
+#  define FLTK_TIMEOUT_EVENT_BUG 1
 //#endif
 
 
@@ -2131,8 +2131,12 @@ bool ImageView::should_update( mrv::media fg )
   if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
     int y = fltk::event_y();
+#ifdef LINUX
+    if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
+#else
     if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
                                             (!uiMain->uiMain->border());
+#endif
     mouseMove( fltk::event_x(), y );
 #else
     mouseMove( fltk::event_x(), fltk::event_y() );
@@ -2246,6 +2250,7 @@ bool ImageView::preload()
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
+        DBG( "Found image " << i  );
         img->find_image( i );  // this loads the frame if not present
         img->hires( pic );
         timeline()->redraw();
@@ -2255,7 +2260,7 @@ bool ImageView::preload()
         if ( CMedia::eight_bit_caches() && gamma() > 1.0 )
             gamma( 1.0 );
 
-        _preframe = fg->position() + img->duration();
+        _preframe = img->position() + img->duration();
 
         img = r->image_at( _preframe );
         if (!img) {

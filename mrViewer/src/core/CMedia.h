@@ -1491,7 +1491,7 @@ class CMedia
     Damage           _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
-    boost::uint64_t _numWindows;    //!< number of data/display windows
+    boost::int64_t _numWindows;    //!< number of data/display windows
     double      _x, _y;             //!< x,y coordinates in canvas
     double      _scale_x, _scale_y; //!< x,y scale in canvas
     double      _rot_z;             //!< z quad rotation in canvas
