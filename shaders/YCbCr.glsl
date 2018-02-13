@@ -55,12 +55,13 @@ void main()
   //
   // Sample luminance and chroma, convert to RGB. 
   //
+  vec3 yuv;
   vec4 c;	
   vec3 pre;
-  vec2 uv = gl_TexCoord[0];
-  pre.r = texture2D(YImage, uv.st).r;  // Y
-  pre.g = texture2D(UImage, uv.st).r;  // U
-  pre.b = texture2D(VImage, uv.st).r;  // V
+  vec2 tc = gl_TexCoord[0].st;
+  pre.r = texture2D(YImage, tc.st).r;  // Y
+  pre.g = texture2D(UImage, tc.st).r;  // U
+  pre.b = texture2D(VImage, tc.st).r;  // V
 
   if ( coeffs )
   {
@@ -73,7 +74,6 @@ void main()
   }
   else
   {
-      vec3 yuv;
 
       yuv.r = 1.1643 * ( pre.r - 0.0625 );
       yuv.g = pre.g - 0.5;
@@ -84,7 +84,6 @@ void main()
       c.b = yuv.r + 2.017 * yuv.g;
   }
 
-  vec2 tc = gl_TexCoord[0].st;
   c.rgb = clamp( c.rgb, 0.0, 1.0 );
   c.a = 1.0;
   
