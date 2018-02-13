@@ -391,12 +391,16 @@ bool parse_command_line( const int argc, char** argv,
     asub( "u", N_("sub"),
           _("Set subtitle for movie(s)."), false, "subtitles");
 
+    SwitchArg adebug("d", "debug",
+                    _("Set log to debug mode, flushing each time and saving an errorlog in .filmaura directory") );
+    
     SwitchArg aplay("P", "playback",
                     _("Play video or sequence automatically without pausing at the beginning (Autoplayback)") );
 
     SwitchArg arun( "r", "run",
                     _("Run mrViewer regardless of single instance setting") );
 
+    cmd.add(adebug);
     cmd.add(arun);
     cmd.add(aplay);
     cmd.add(agamma);
@@ -432,6 +436,7 @@ bool parse_command_line( const int argc, char** argv,
     opts.fps  = afps.getValue();
     opts.bgfile = abg.getValue();
     opts.run    = arun.getValue();
+    opts.debug  = adebug.getValue();
 
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
@@ -589,6 +594,12 @@ bool parse_command_line( const int argc, char** argv,
       return false;
     }
 
+  if ( opts.debug )
+  {
+      mrv::io::logbuffer* log =
+      static_cast<mrv::io::logbuffer*>( mrv::io::info.rdbuf() );
+      log->debug(true);
+  }
 
   // Load default preferences
   mrv::Preferences::run(ui);
