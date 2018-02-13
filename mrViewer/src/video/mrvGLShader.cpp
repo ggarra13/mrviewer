@@ -31,10 +31,15 @@
 #include <fltk/run.h>
 
 #include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
+
 #include "mrvGLShader.h"
 #include "mrvGLEngine.h"
 
 
+namespace {
+const char* kModule = "shader";
+}
 
 namespace mrv {
 
@@ -63,6 +68,7 @@ namespace mrv {
     char *e = ++s;
     while(*e != '\0' && *e != '\n') e++;
     *e = '\0';
+    DBG( "ERROR: " << s );
     return s;
   }
 
@@ -114,6 +120,8 @@ namespace mrv {
 	    name[c3-c2-2] = 0;
 
 	    GLint location = atoi( c4 + 1);
+            DBG( "UNIFORM " << (char*)name << " type "
+                 << (char*)type << " " << location );
 	    _uniforms[ name ] = location;
 	  }
 	}
@@ -164,23 +172,28 @@ namespace mrv {
   {
     GLint len = (GLint) strlen( code );
 
+
     if( GLEW_ARB_fragment_program && !strncmp(code,"!!ARBfp1.0",10)) 
       {
 	// ARB fragment program
 	_frag_target = GL_FRAGMENT_PROGRAM_ARB;
 	glGenProgramsARB( 1, &_frag_shader );
+        DBG( __FUNCTION__ << " " << __LINE__ );
 	glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, _frag_shader );
+        DBG( __FUNCTION__ << " " << __LINE__ );
 	glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB, 
 			    GL_PROGRAM_FORMAT_ASCII_ARB,
 			   (GLsizei)len, code );
+        DBG( __FUNCTION__ << " " << __LINE__ );
 	GLint pos = -1;
 	glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB,&pos);
-	if(pos != -1) {
+	if(pos != -1 ) {
 	  THROW (Iex::BaseExc, "GLShader::load(): fragment program error in " 
 		 << filename << " file\n" << get_error(code, pos));
 	}
-
+        DBG( "ARB frag compiled" );
 	store_uniforms( code );
+        DBG( __FUNCTION__ << " " << __LINE__ );
       }
     else if( GLEW_NV_fragment_program && !strncmp(code,"!!FP1.0",7)) 
       {
@@ -192,7 +205,7 @@ namespace mrv {
 			 (GLsizei)len,(GLubyte*)code );
 	GLint pos = -1;
 	glGetIntegerv(GL_PROGRAM_ERROR_POSITION_NV,&pos);
-	if(pos != -1) {
+	if(pos != -1 ) {
 	  THROW (Iex::BaseExc, "GLShader::load(): fragment program error in " 
 		 << filename << " file\n" << get_error(code, pos));
 	}
@@ -296,6 +309,7 @@ namespace mrv {
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
 	GLint location = uniform_location( uniform );
+        DBG( "ARB frag setUniform " << uniform );
 	CHECK_GL;
 	glProgramLocalParameter4fARB( _frag_target, location, x, 0, 0, 0);
 	CHECK_GL;
