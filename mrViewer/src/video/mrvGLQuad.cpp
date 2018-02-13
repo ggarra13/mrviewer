@@ -699,6 +699,7 @@ namespace mrv {
     if ( pic->format() >= image_type::kITU_601_YCbCr420 )
         return bind_texture_yuv( pic, poww, powh );
 
+    
     unsigned dw = pic->width();
     unsigned dh = pic->height();
 
@@ -791,6 +792,7 @@ namespace mrv {
 	_glformat       = glformat;
 	_format         = pic->format();
 	_internalFormat = internalFormat;
+        DBG( "GLEngine::shader_type() " << GLEngine::shader_type() );
 	if ( GLEngine::shader_type() ) _shader = GLEngine::rgbaShader();
 	else                           _shader = NULL;
 
