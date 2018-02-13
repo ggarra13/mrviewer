@@ -50,9 +50,10 @@ typedef std::vector< std::string > stringArray;
        stringArray audios;
        unsigned short port;
        float fps;
+      bool debug;
 
-      Options() : edl(false), play(false),
-                  gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 )
+      Options() : edl(false), play(false), run( false ),
+                  gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 ), debug( false )
     {}
   };
 
