@@ -1268,6 +1268,8 @@ static const char* kCLocale = "C";
             {
                 const char* space = spaces[i].c_str();
                 OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
+                DBG( "ICS Colorspace: " << cs->getName() << " "
+                     << cs->getDescription() );
                 w->add( strdup( space ) );
                 w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
@@ -1530,6 +1532,7 @@ static const char* kCLocale = "C";
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
+    DBG( __FUNCTION__ << " " << __LINE__ );
   }
 
 

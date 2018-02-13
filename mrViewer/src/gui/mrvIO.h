@@ -54,15 +54,15 @@ namespace mrv {
 
     struct logbuffer : public string_stream
     {
-        bool _debug;
-        std::fstream out;
-        
-        logbuffer() : string_stream(), _debug(false) { str().reserve(1024); };
+        static bool _debug;
+        static std::fstream out;
+
+        logbuffer() : string_stream() { str().reserve(1024); };
         virtual ~logbuffer() { if (out.is_open()) out.close(); };
 
         void debug( bool t ) { _debug = t; open_stream(); }
         void open_stream();
-        
+
       //! from basic_streambuf, stl function used to sync stream
       virtual int sync();
 
