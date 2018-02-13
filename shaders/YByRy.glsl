@@ -52,9 +52,10 @@ void main()
   // Sample luminance and chroma, convert to RGB. 
   //
   vec3 pre;
-  pre.r = texture2D(YImage, gl_TexCoord[0].st).r;  // Y
-  pre.g = texture2D(UImage, gl_TexCoord[0].st).r;  // U
-  pre.b = texture2D(VImage, gl_TexCoord[0].st).r;  // V
+  vec2 tc = gl_TexCoord[0].st;
+  pre.r = texture2D(YImage, tc).r;  // Y
+  pre.g = texture2D(UImage, tc).r;  // U
+  pre.b = texture2D(VImage, tc).r;  // V
 
   vec4 c;
   c.r = (pre.g + 1.0) * pre.r;
