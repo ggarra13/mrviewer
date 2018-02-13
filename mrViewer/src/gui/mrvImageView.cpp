@@ -1376,6 +1376,7 @@ bool ImageView::next_channel()
 void ImageView::init_draw_engine()
 {
   _engine = new mrv::GLEngine( this );
+  DBG( __FUNCTION__ << " " << __LINE__ );
   if ( !_engine )
     {
       mrvALERT( _("Could not initialize draw engine") );
@@ -2523,57 +2524,65 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
-  if ( !valid() )
+    DBG( "draw valid? " << (int)valid() );
+    if ( !valid() )
     {
-       if ( ! _engine )
+        if ( ! _engine )
         {
+            DBG( __FUNCTION__ << " " << __LINE__ );
             init_draw_engine();
         }
 
+        DBG( "GLengine " << _engine );
         if ( !_engine ) return;
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
         valid(1);
     }
 
 
-  mrv::PreferencesUI* uiPrefs = uiMain->uiPrefs;
 
-  //
-  // Clear canvas
-  //
-  {
-    float r, g, b, a = 0.0f;
-    if ( !presentation && !FullScreen )
+    mrv::PreferencesUI* uiPrefs = uiMain->uiPrefs;
+
+    //
+    // Clear canvas
+    //
     {
-      uchar ur, ug, ub;
-      fltk::split_color( uiPrefs->uiPrefsViewBG->color(), ur, ug, ub );
-      r = ur / 255.0f;
-      g = ur / 255.0f;
-      b = ur / 255.0f;
+        float r, g, b, a = 0.0f;
+        if ( !presentation && !FullScreen )
+        {
+            uchar ur, ug, ub;
+            fltk::split_color( uiPrefs->uiPrefsViewBG->color(), ur, ug, ub );
+            r = ur / 255.0f;
+            g = ur / 255.0f;
+            b = ur / 255.0f;
+        }
+        else
+        {
+            r = g = b = a = 0.0f;
+        }
+
+        DBG( __FUNCTION__ << " " << __LINE__ );
+
+        _engine->clear_canvas( r, g, b, a );
+
+
+        DBG( __FUNCTION__ << " " << __LINE__ );
+        switch( uiPrefs->uiPrefsBlendMode->value() )
+        {
+            case kBlendTraditional:
+            case kBlendTraditionalNonGamma:
+                _engine->set_blend_function( GL_SRC_ALPHA,
+                                             GL_ONE_MINUS_SRC_ALPHA );
+                break;
+            case kBlendPremultNonGamma:
+            case kBlendPremult:
+                _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+                break;
+        }
     }
-  else
-    {
-      r = g = b = a = 0.0f;
-    }
-
-
-    _engine->clear_canvas( r, g, b, a );
-
-
-    switch( uiPrefs->uiPrefsBlendMode->value() )
-    {
-        case kBlendTraditional:
-        case kBlendTraditionalNonGamma:
-            _engine->set_blend_function( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-            break;
-        case kBlendPremultNonGamma:
-        case kBlendPremult:
-            _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-            break;
-    }
-  }
 
 
     const mrv::media& fg = foreground();
@@ -2595,24 +2604,26 @@ void ImageView::draw()
 
     if ( fg )
     {
-  TRACE("");
+        TRACE("");
        CMedia* img = fg->image();
        if ( img->has_picture() )
        {
           images.push_back( img );
        }
-  TRACE("");
+       TRACE("");
     }
 
 
-  if ( images.empty() ) return;
-  TRACE("");
+    DBG( __FUNCTION__ << " " << __LINE__ );
+    if ( images.empty() ) return;
+    TRACE("");
 
-  _engine->draw_images( images );
-  TRACE("");
+    DBG( __FUNCTION__ << " " << __LINE__ );
+    _engine->draw_images( images );
+    TRACE("");
 
 
-  if ( _masking != 0.0f )
+    if ( _masking != 0.0f )
     {
       _engine->draw_mask( _masking );
     }
