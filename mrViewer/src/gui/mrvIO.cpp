@@ -61,6 +61,8 @@ namespace mrv {
   namespace io
   {
     boost::recursive_mutex logbuffer::_mutex;
+    std::fstream logbuffer::out;
+    bool logbuffer::_debug = false;
 
     int logbuffer::sync()
     {
@@ -76,7 +78,7 @@ namespace mrv {
       char* c = strdup( str().c_str() );
       if (!c) return 1;
 
-      if ( _debug && out.is_open() ) out << c;
+      if ( _debug && out.is_open() ) out << c << std::flush;
       
       print( c );
 
