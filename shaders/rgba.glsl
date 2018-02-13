@@ -46,6 +46,7 @@ void main()
   //
   vec2 tc = gl_TexCoord[0].st;
   vec4 c = texture2D(fgImage, tc );
+  int x = 1000;
 
   //
   // Apply normalization
@@ -111,7 +112,6 @@ void main()
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
 
-  int x = 1000;
   if ( mask == 1.0 )  // even odd rows
   {
       float f = tc.y * height;
