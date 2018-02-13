@@ -26,7 +26,7 @@
  */
 
 #ifdef _WIN32
-//  #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+ #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 #endif
 
 #include <string.h>
@@ -168,13 +168,6 @@ int main( int argc, char** argv )
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
-    // mrv::io::logbuffer& log = (mrv::io::logbuffer&)*mrv::io::info.rdbuf();
-    // log.debug(true);
-    // mrv::io::logbuffer& wrn = (mrv::io::logbuffer&)*mrv::io::warn.rdbuf();
-    // wrn.debug(true);
-    // mrv::io::logbuffer& err = (mrv::io::logbuffer&)*mrv::io::error.rdbuf();
-    // err.debug(true);
-
   const char* tmp = setlocale(LC_ALL, "");
   // Create and install global locale
   try {
@@ -217,12 +210,15 @@ int main( int argc, char** argv )
   std::string path = fs::canonical( dir ).string();
 
   path += "/share/locale";
-  
+
+  DBG( "bindtextdomain" );
   const char* bind = bindtextdomain(buf, path.c_str() );
+  DBG( "textdomain" );
   const char* domain = textdomain(buf);
   
 
 // Try to set MRV_ROOT if not set already
+  DBG( "set MRV_ROOT" );
   mrv::set_root_path( argc, argv );
 
 
@@ -236,16 +232,19 @@ int main( int argc, char** argv )
   
       try {
 
-
+          DBG("instantiate mrv::ViewerUI" );
           ui = new mrv::ViewerUI();
+          DBG("mrv::ViewerUI is now " << ui );
 
           mrv::Options opts;
           bool ok = true;
           if ( argc > 0 )
               ok = mrv::parse_command_line( argc, argv, ui, opts );
 
+          
           if (!ok) throw std::runtime_error("Could not parse commandline");
           
+
           argc = 0;
 
 
@@ -372,14 +371,18 @@ int main( int argc, char** argv )
           if ( single_instance )
               fltk::add_timeout( 1.0, load_new_files, ui );
 
+          DBG( "show uiMain" );
           ui->uiMain->show();   // so run() does something
+          DBG( "shown uiMain" );
 
           // Start playback if command line forced us to do so
           if ( opts.play )
           {
               ui->uiView->play_forwards();
           }
+          DBG( "fltk::run" );
           ok = fltk::run();
+          DBG( "fltk::run returned" );
 
       }
       catch( const std::exception& e )
