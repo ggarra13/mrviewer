@@ -1,9 +1,16 @@
+v4.0.1   - Bug fixed GLSL 2.0 YCrCb shader to not throw a syntax error.
+	 - Bug fixed jpeg loader (ffmpeg), to load files starting at other
+	   frames than 1.
+
 v4.0.0   - Improved loop sync in fg/bg image playback.
 	 - Improved loop sync in 3D stereo playback.
 	 - Made loop work in time instead of frames.  That allows looping
 	   properly two different videos with different fps.
 	 - Made a change in GLEW initialization which should improve OpenGL
 	   compatibility.
+	 - Improved DSO compatibility in Linux distribution.  Previously,
+	   it could lead to broken depencies if IlmCtl was compiled with
+	   different settings.
 
 v3.9.9   - Bug fixed View change in gamma panel which got broken in v3.9.8.
 
