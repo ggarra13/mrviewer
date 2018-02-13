@@ -2315,7 +2315,8 @@ bool aviImage::initialize()
       std::transform( ext.begin(), ext.end(), ext.begin(),
                       (int(*)(int)) tolower);
    
-      if ( ext.rfind( ".png" ) != std::string::npos )
+      if ( ext.rfind( ".png" ) != std::string::npos ||
+           ext.rfind( ".jpg" ) != std::string::npos ) 
       {
           char buf[64];
           sprintf( buf, "%" PRId64, _frameStart );
