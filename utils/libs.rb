@@ -25,12 +25,12 @@ def parse( files )
 
   for line in files
     lib, loc = line.split(" => ")
-    
+
     next if not loc or not lib
-    
+
     loc.sub!(/\s*\(.*\)$/, '')
     lib.sub!(/^\s*/, '')
-    
+
     if loc.empty?
       puts "#{lib} empty loc"
       next
@@ -47,7 +47,15 @@ def parse( files )
     end
 
     puts "#{loc} -> #{lib}"
-    FileUtils.cp(loc, "Release/lib/#{lib}" )
+    orig = lib
+    if File.symlink?( loc )
+      lib = File.readlink( loc )
+      puts "#{lib} ->->-> #{orig}"
+      FileUtils.cp(loc, "Release/lib/#{lib}" )
+      FileUtils.ln_s( "#{lib}", "Release/lib/#{orig}" )
+    else
+      FileUtils.cp(loc, "Release/lib/#{lib}" )
+    end
   end
 end
 
@@ -57,7 +65,7 @@ build = "BUILD/Linux-#{release}-64/"
 
 Dir.chdir( build )
 
-home=ENV['HOME']+"/bin/mrViewer" 
+home=ENV['HOME']+"/bin/mrViewer"
 FileUtils.rm_f( home )
 FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
 FileUtils.rm_f( home + '-dbg' )
@@ -94,4 +102,3 @@ FileUtils.cp( "../../HISTORY.txt", "Release/" )
 FileUtils.cp( "../../LICENSE.txt", "Release/" )
 
 `find . -name '*fuse*' -exec rm {} \\;`
-
