@@ -35,7 +35,7 @@
 #include "mrvDrawEngine.h"
 
 #if 0
-#  define CHECK_GL GLEngine::handle_gl_errors( __FUNCTION__, __LINE__, true )
+#define CHECK_GL DBG("checkgl"); GLEngine::handle_gl_errors( __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL
 #endif

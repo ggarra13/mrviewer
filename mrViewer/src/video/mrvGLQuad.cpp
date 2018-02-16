@@ -66,7 +66,7 @@
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 
-namespace 
+namespace
 {
   const char* kModule = "glquad";
 }
@@ -79,27 +79,27 @@ namespace mrv {
     switch( format )
       {
       case GL_LUMINANCE8:
-	return "GL_LUMINANCE8";
+        return "GL_LUMINANCE8";
       case GL_LUMINANCE16F_ARB:
-	return "GL_LUMINANCE16F_ARB";
+        return "GL_LUMINANCE16F_ARB";
       case GL_LUMINANCE32F_ARB:
-	return "GL_LUMINANCE32F_ARB";
+        return "GL_LUMINANCE32F_ARB";
       case GL_RGB:
       case GL_RGB8:
-	return "GL_RGB8";
+        return "GL_RGB8";
       case GL_RGB16F_ARB:
-	return "GL_RGB16F_ARB";
+        return "GL_RGB16F_ARB";
       case GL_RGB32F_ARB:
-	return "GL_RGB32F_ARB";
+        return "GL_RGB32F_ARB";
       case GL_RGBA:
       case GL_RGBA8:
-	return "GL_RGBA8";
+        return "GL_RGBA8";
       case GL_RGBA16F_ARB:
-	return "GL_RGBA16F_ARB";
+        return "GL_RGBA16F_ARB";
       case GL_RGBA32F_ARB:
-	return "GL_RGBA32F_ARB";
+        return "GL_RGBA32F_ARB";
       default:
-	return "(unknown GL internal format)";
+        return "(unknown GL internal format)";
       }
   }
 
@@ -109,17 +109,17 @@ namespace mrv {
     switch( format )
       {
       case GL_LUMINANCE:
-	return "GL_LUMINANCE";
+        return "GL_LUMINANCE";
       case GL_BGR:
-	return "GL_BGR";
+        return "GL_BGR";
       case GL_BGRA:
-	return "GL_BGRA";
+        return "GL_BGRA";
       case GL_RGB:
-	return "GL_RGB";
+        return "GL_RGB";
       case GL_RGBA:
-	return "GL_RGBA";
+        return "GL_RGBA";
       default:
-	return "(unknown GL format)";
+        return "(unknown GL format)";
       }
   }
 
@@ -128,25 +128,25 @@ namespace mrv {
     switch( pixel_type )
       {
       case GL_UNSIGNED_BYTE:
-	return "GL_UNSIGNED_BYTE";
+        return "GL_UNSIGNED_BYTE";
       case GL_UNSIGNED_SHORT:
-	return "GL_UNSIGNED_SHORT";
+        return "GL_UNSIGNED_SHORT";
       case GL_UNSIGNED_INT:
-	return "GL_UNSIGNED_INT";
+        return "GL_UNSIGNED_INT";
       case GL_BYTE:
-	return "GL_BYTE";
+        return "GL_BYTE";
       case GL_SHORT:
-	return "GL_SHORT";
+        return "GL_SHORT";
       case GL_INT:
-	return "GL_INT";
+        return "GL_INT";
       case GL_HALF_FLOAT_ARB:
-	return "GL_HALF_FLOAT_ARB";
+        return "GL_HALF_FLOAT_ARB";
       case GL_FLOAT:
-	return "GL_FLOAT";
+        return "GL_FLOAT";
       case GL_DOUBLE:
-	return "GL_DOUBLE";
+        return "GL_DOUBLE";
       default:
-	return "(unknown GL pixel type)";
+        return "(unknown GL pixel type)";
       }
   }
 
@@ -157,15 +157,15 @@ namespace mrv {
     switch( type )
       {
       case image_type::kByte:
-	return GL_UNSIGNED_BYTE;
+        return GL_UNSIGNED_BYTE;
       case image_type::kShort:
-	return GL_UNSIGNED_SHORT;
+        return GL_UNSIGNED_SHORT;
       case image_type::kInt:
-	return GL_UNSIGNED_INT;
+        return GL_UNSIGNED_INT;
       case image_type::kHalf:
-	return GL_HALF_FLOAT_ARB;
+        return GL_HALF_FLOAT_ARB;
       case image_type::kFloat:
-	return GL_FLOAT;
+        return GL_FLOAT;
       default:
           if ( !bad_format )
           {
@@ -191,7 +191,7 @@ namespace mrv {
       _lut = NULL; // lut is not deleted here
       _image = NULL;
       _lut_attempt = 0;
-  } 
+  }
 
   GLenum GLQuad::gl_format( const image_type::Format format )
   {
@@ -241,18 +241,18 @@ namespace mrv {
 
     if ( GLEW_EXT_texture_edge_clamp )
       {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	CHECK_GL;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        CHECK_GL;
       }
     else
       {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	CHECK_GL;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        CHECK_GL;
       }
 
-    
+
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     CHECK_GL;
   }
@@ -279,11 +279,11 @@ namespace mrv {
     _channels( 0 ),
     _normMin( 0.f ),
     _normMax( 1.f )
-  { 
+  {
     _yw[0] = 0.2126f;
     _yw[1] = 0.7152f;
     _yw[2] = 0.0722f;
- 
+
     if ( GLEngine::supports_yuv() )  _num_textures = 4;
 
     if ( GLEngine::pboTextures() ) {
@@ -297,20 +297,20 @@ namespace mrv {
 
     for ( unsigned i = 0; i < _num_textures; ++i )
       {
-	if ( GLEngine::maxTexUnits() > 3 )
-	{
-	  glActiveTexture(GL_TEXTURE0 + i);
-	  CHECK_GL;
-	}
+        if ( GLEngine::maxTexUnits() > 3 )
+        {
+          glActiveTexture(GL_TEXTURE0 + i);
+          CHECK_GL;
+        }
 
-	glEnable( GL_TEXTURE_2D );
-	CHECK_GL;
-	
+        glEnable( GL_TEXTURE_2D );
+        CHECK_GL;
 
-	glBindTexture(GL_TEXTURE_2D, _texId[i] );
-	CHECK_GL;
 
-	init_texture();
+        glBindTexture(GL_TEXTURE_2D, _texId[i] );
+        CHECK_GL;
+
+        init_texture();
       }
   }
 
@@ -329,13 +329,13 @@ namespace mrv {
   }
 
   void GLQuad::update_texsub( unsigned int idx,
-			      unsigned int rx, unsigned int ry, 
-			      unsigned int rw, unsigned int rh,
-			      unsigned int tw, unsigned int th, 
-			      GLenum format, GLenum pixel_type, 
-			      unsigned short  channels, 
-			      unsigned short  pixel_size, 
-			      boost::uint8_t* pixels )
+                              unsigned int rx, unsigned int ry,
+                              unsigned int rw, unsigned int rh,
+                              unsigned int tw, unsigned int th,
+                              GLenum format, GLenum pixel_type,
+                              unsigned short  channels,
+                              unsigned short  pixel_size,
+                              boost::uint8_t* pixels )
   {
     assert( pixels != NULL );
     assert( rx <  tw );
@@ -345,139 +345,139 @@ namespace mrv {
     assert( rx+rw <= tw );
     assert( ry+rh <= th );
 
-    
+
     if ( _view->field() == ImageView::kFrameDisplay )
       {
 // #define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
-#ifdef NVIDIA_PBO_BUG 
-	if ( GLEngine::pboTextures() && 
-	     (format == GL_LUMINANCE || channels == 4) )
+#ifdef NVIDIA_PBO_BUG
+        if ( GLEngine::pboTextures() &&
+             (format == GL_LUMINANCE || channels == 4) )
 #else
-	if ( GLEngine::pboTextures() )
+        if ( GLEngine::pboTextures() )
 #endif
-	    {
+            {
 
               glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
               glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-              
-	      // bind pixel buffer
-	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
+
+              // bind pixel buffer
+              glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
               CHECK_GL;
 
-	      //
-	      // This avoids a potential stall.
-	      //
+              //
+              // This avoids a potential stall.
+              //
               // glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
-	      //   	   rw*rh*pixel_size, NULL, GL_STREAM_DRAW);
-	      glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
-	        	   tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
+              //           rw*rh*pixel_size, NULL, GL_STREAM_DRAW);
+              glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
+                           tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
               CHECK_GL;
 
-	      // Acquire a pointer to the first data item in this buffer object
-	      // by mapping it to the so-called unpack buffer target. The unpack
-	      // buffer refers to a location in memory that gets "unpacked" 
-	      // from CPU (main) memory into GPU memory, hence the somewhat 
-	      // confusing language.
-	      // Important: This is a pointer to a chunk of memory in what I 
-	      // like to call "driver-controlled memory". Depending on the 
-	      // driver, this might be PCIe/AGP memory, or ideally onboard 
-	      // memory. 
-	      // GL_WRITE_ONLY tells the GL that while we have control of the 
-	      // memory, we will access it write-only. This allows for internal 
-	      // optimisations and increases our chances to get good performance.
-	      // If we mapped this buffer read/write, it would almost always be 
-	      // located in system memory, from which reading is much faster.
-	      //
-	      char* ioMem = (char*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, 
-						GL_WRITE_ONLY );
+              // Acquire a pointer to the first data item in this buffer object
+              // by mapping it to the so-called unpack buffer target. The unpack
+              // buffer refers to a location in memory that gets "unpacked"
+              // from CPU (main) memory into GPU memory, hence the somewhat
+              // confusing language.
+              // Important: This is a pointer to a chunk of memory in what I
+              // like to call "driver-controlled memory". Depending on the
+              // driver, this might be PCIe/AGP memory, or ideally onboard
+              // memory.
+              // GL_WRITE_ONLY tells the GL that while we have control of the
+              // memory, we will access it write-only. This allows for internal
+              // optimisations and increases our chances to get good performance.
+              // If we mapped this buffer read/write, it would almost always be
+              // located in system memory, from which reading is much faster.
+              //
+              char* ioMem = (char*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB,
+                                                GL_WRITE_ONLY );
               CHECK_GL;
-	      if ( !ioMem ) 
-		{
-		  LOG_ERROR("Could not map pixel buffer #" << idx );
-		  return; // we are in trouble
-		}
+              if ( !ioMem )
+                {
+                  LOG_ERROR("Could not map pixel buffer #" << idx );
+                  return; // we are in trouble
+                }
 
-	      //
-	      // "memcpy" the double precision array into the driver memory,
-	      // doing the explicit conversion to single precision.
-	      //
-	      unsigned offset = ( ry * tw + rx ) * pixel_size * channels;
-	      unsigned size   = tw * rh * pixel_size * channels;
+              //
+              // "memcpy" the double precision array into the driver memory,
+              // doing the explicit conversion to single precision.
+              //
+              unsigned offset = ( ry * tw + rx ) * pixel_size * channels;
+              unsigned size   = tw * rh * pixel_size * channels;
 
-	      memcpy( ioMem + offset, pixels, size );
+              memcpy( ioMem + offset, pixels, size );
 
-	      //
-	      // release memory, i.e. give control back to the driver
-	      //
-	      if ( ! glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB) )
-		{
-		  LOG_ERROR("Could not unmap pixel buffer #" << idx );
-		  return;
-		}
+              //
+              // release memory, i.e. give control back to the driver
+              //
+              if ( ! glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB) )
+                {
+                  LOG_ERROR("Could not unmap pixel buffer #" << idx );
+                  return;
+                }
 
 
-	      //
-	      // Since the buffer object is still bound, this call populates our
-	      // texture by sourcing the buffer object. In effect, this means 
-	      // that ideally no actual memcpy takes place (if the driver 
-	      // decided to map the buffer in onboard memory previously), or at
-	      // most one memcpy inside driver-controlled memory which is much 
-	      // faster since the previous copy of our data into driver-
-	      // controlled memory already resulted in laying out the data for 
-	      // optimal performance.
-	      // In other words: This call is at most a real DMA transfer, 
-	      // without any (expensive) interference by the CPU.
-	      //
-	      glTexSubImage2D(GL_TEXTURE_2D, 0, rx, ry, rw, rh, format, 
-			      pixel_type, BUFFER_OFFSET(0) );
+              //
+              // Since the buffer object is still bound, this call populates our
+              // texture by sourcing the buffer object. In effect, this means
+              // that ideally no actual memcpy takes place (if the driver
+              // decided to map the buffer in onboard memory previously), or at
+              // most one memcpy inside driver-controlled memory which is much
+              // faster since the previous copy of our data into driver-
+              // controlled memory already resulted in laying out the data for
+              // optimal performance.
+              // In other words: This call is at most a real DMA transfer,
+              // without any (expensive) interference by the CPU.
+              //
+              glTexSubImage2D(GL_TEXTURE_2D, 0, rx, ry, rw, rh, format,
+                              pixel_type, BUFFER_OFFSET(0) );
               CHECK_GL;
-	      //
-	      // Unbind buffer object by binding it to zero.
-	      // This call is crucial, as doing the following computations
+              //
+              // Unbind buffer object by binding it to zero.
+              // This call is crucial, as doing the following computations
               // while the buffer object is still bound will result in all
               // sorts of weird side effects, eventually even delivering wrong
               // results.
-	      // Refer to the specification to learn more about which 
-	      // GL calls act differently while a buffer is bound.
-	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+              // Refer to the specification to learn more about which
+              // GL calls act differently while a buffer is bound.
+              glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
               CHECK_GL;
-	    }
-	  else
+            }
+          else
 #endif // TEST_NO_PBO_TEXTURES
-	    {
+            {
               glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
 
-	      //
-	      // Handle copying FRAME AREA to 2D texture
-	      //
-	      glTexSubImage2D( GL_TEXTURE_2D, 
-			       0,             // level 
-			       rx, ry,        // offset
-			       rw, rh,
-			       format,        // format
-			       pixel_type, 
-			       pixels );
+              //
+              // Handle copying FRAME AREA to 2D texture
+              //
+              glTexSubImage2D( GL_TEXTURE_2D,
+                               0,             // level
+                               rx, ry,        // offset
+                               rw, rh,
+                               format,        // format
+                               pixel_type,
+                               pixels );
               CHECK_GL;
-	    }
-	CHECK_GL;
+            }
+        CHECK_GL;
       }
     else
       {
-	//
-	// Handle copying FIELDS AREA to 2D texture
-	//
-	int off = 1;
-	if ( _view->field() == ImageView::kBottomField ) off = -1;
-	  
-	ry += 1 * ( off == -1 );
-	unsigned step = tw * pixel_size * channels;
+        //
+        // Handle copying FIELDS AREA to 2D texture
+        //
+        int off = 1;
+        if ( _view->field() == ImageView::kBottomField ) off = -1;
 
-	if ( off == -1 ) pixels += step;
-	step *= 2;
+        ry += 1 * ( off == -1 );
+        unsigned step = tw * pixel_size * channels;
 
-	unsigned int yo = ry + rh;
+        if ( off == -1 ) pixels += step;
+        step *= 2;
+
+        unsigned int yo = ry + rh;
         for ( ; ry < yo; ry += 2, pixels += step )
         {
             glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry, rw, 1, format,
@@ -492,8 +492,8 @@ namespace mrv {
   }
 
   void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
-				 const unsigned int poww, 
-				 const unsigned int powh )
+                                 const unsigned int poww,
+                                 const unsigned int powh )
   {
     unsigned dw = pic->width();
     unsigned dh = pic->height();
@@ -506,82 +506,82 @@ namespace mrv {
     if ( !_pixels ) return;
 
     unsigned offset = 0;
-    
+
     //
     // Choose best internal format based on gfx card capabilities
     //
     GLenum internalFormat = GL_LUMINANCE8;
     if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
       {
-	if ( GLEngine::halfTextures() )     
-	   internalFormat = GL_LUMINANCE16F_ARB;
-	else if ( GLEngine::floatTextures() ) 
-	   internalFormat = GL_LUMINANCE32F_ARB;
+        if ( GLEngine::halfTextures() )
+           internalFormat = GL_LUMINANCE16F_ARB;
+        else if ( GLEngine::floatTextures() )
+           internalFormat = GL_LUMINANCE32F_ARB;
       }
 
 
     for ( unsigned i = 0; i < channels; ++i )
       {
-	// Load & bind the texture
+        // Load & bind the texture
 
-	// As GL_TEXTURE3 is the 3D Lut, any alpha gets bound on GL_TEXTURE4
-	int idx = (i == 3 ? 4 : i);
+        // As GL_TEXTURE3 is the 3D Lut, any alpha gets bound on GL_TEXTURE4
+        int idx = (i == 3 ? 4 : i);
 
-	glActiveTexture(GL_TEXTURE0 + idx);
-	CHECK_GL;
+        glActiveTexture(GL_TEXTURE0 + idx);
+        CHECK_GL;
 
-	glEnable( GL_TEXTURE_2D );
-	CHECK_GL;
+        glEnable( GL_TEXTURE_2D );
+        CHECK_GL;
 
-	glBindTexture(GL_TEXTURE_2D, _texId[i] );
-	CHECK_GL;
+        glBindTexture(GL_TEXTURE_2D, _texId[i] );
+        CHECK_GL;
 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	CHECK_GL;
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        CHECK_GL;
 
 
-	unsigned int tw = dw;
-	unsigned int th = dh;
+        unsigned int tw = dw;
+        unsigned int th = dh;
 
-	unsigned int ow = dw;
-	unsigned int oh = dh;
+        unsigned int ow = dw;
+        unsigned int oh = dh;
 
-	if ( GLEngine::pow2Textures() )
-	  {
-	    tw = poww;
-	    th = powh;
-	  }
+        if ( GLEngine::pow2Textures() )
+          {
+            tw = poww;
+            th = powh;
+          }
 
-	if ( i % 3 != 0 && i != 4 )
+        if ( i % 3 != 0 && i != 4 )
         {
            switch( pic->format() )
            {
-	      case image_type::kITU_601_YCbCr410:
-	      case image_type::kITU_601_YCbCr410A:
-	      case image_type::kITU_709_YCbCr410:
-	      case image_type::kITU_709_YCbCr410A:
-	      case image_type::kYByRy410:
-	      case image_type::kYByRy410A:
+              case image_type::kITU_601_YCbCr410:
+              case image_type::kITU_601_YCbCr410A:
+              case image_type::kITU_709_YCbCr410:
+              case image_type::kITU_709_YCbCr410A:
+              case image_type::kYByRy410:
+              case image_type::kYByRy410A:
                  ow = tw;
                  oh = th;
                  break;
-	      case image_type::kITU_601_YCbCr420:
-	      case image_type::kITU_601_YCbCr420A:
-	      case image_type::kITU_709_YCbCr420:
-	      case image_type::kITU_709_YCbCr420A:
-	      case image_type::kYByRy420:
-	      case image_type::kYByRy420A:
+              case image_type::kITU_601_YCbCr420:
+              case image_type::kITU_601_YCbCr420A:
+              case image_type::kITU_709_YCbCr420:
+              case image_type::kITU_709_YCbCr420A:
+              case image_type::kYByRy420:
+              case image_type::kYByRy420A:
                  tw = (tw+1) / 2;
                  th = (th+1) / 2;
                  ow = (dw+1) / 2;
                  oh = (dh+1) / 2;
                  break;
-	      case image_type::kITU_601_YCbCr422A:
-	      case image_type::kITU_601_YCbCr422:
-	      case image_type::kITU_709_YCbCr422A:
-	      case image_type::kITU_709_YCbCr422:
-	      case image_type::kYByRy422:
-	      case image_type::kYByRy422A:
+              case image_type::kITU_601_YCbCr422A:
+              case image_type::kITU_601_YCbCr422:
+              case image_type::kITU_709_YCbCr422A:
+              case image_type::kITU_709_YCbCr422:
+              case image_type::kYByRy422:
+              case image_type::kYByRy422A:
                  tw = (tw+1) / 2;
                  ow = (dw+1) / 2;
                  break;
@@ -594,44 +594,44 @@ namespace mrv {
               case image_type::kITU_709_YCbCr444:
               case image_type::kITU_709_YCbCr444A:
                  break;
-	      default:
-                 LOG_ERROR("Wrong pixel format " << pic->format() 
+              default:
+                 LOG_ERROR("Wrong pixel format " << pic->format()
                            << " for yuv");
                  break;
            }
         }
 
 
-	if ( _width      != dw || 
-	     _height     != dh ||
-	     _pixel_type != pixel_type || 
-	     _channels   != channels ||
-	     _glformat       != GL_LUMINANCE ||
-	     _internalFormat != internalFormat )
-	  {
-	    if ( i == channels-1 )
-	      {
-		_width = dw; 
-		_height = dh; 
-		_pixel_type = pixel_type; 
-		_channels = channels;
-		_format = pic->format();
-		_shader = ( pic->format() >= image_type::kYByRy420 ? 
-			   GLEngine::YByRyShader() : GLEngine::YCbCrShader() );
-		_glformat = GL_LUMINANCE;
-		_internalFormat = internalFormat;
-	      }
+        if ( _width      != dw ||
+             _height     != dh ||
+             _pixel_type != pixel_type ||
+             _channels   != channels ||
+             _glformat       != GL_LUMINANCE ||
+             _internalFormat != internalFormat )
+          {
+            if ( i == channels-1 )
+              {
+                _width = dw;
+                _height = dh;
+                _pixel_type = pixel_type;
+                _channels = channels;
+                _format = pic->format();
+                _shader = ( pic->format() >= image_type::kYByRy420 ?
+                           GLEngine::YByRyShader() : GLEngine::YCbCrShader() );
+                _glformat = GL_LUMINANCE;
+                _internalFormat = internalFormat;
+              }
 
 #ifndef TEST_NO_PBO_TEXTURES
-	    if ( GLEngine::pboTextures() )
-	      {
-		// Define texture level zero (without an image); notice the
-		// explicit bind to the zero pixel unpack buffer object so that
-		// pass NULL for the image data leaves the texture image
-		// unspecified.
-		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+            if ( GLEngine::pboTextures() )
+              {
+                // Define texture level zero (without an image); notice the
+                // explicit bind to the zero pixel unpack buffer object so that
+                // pass NULL for the image data leaves the texture image
+                // unspecified.
+                glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
                 CHECK_GL;
-	      }
+              }
 #endif
 
             unsigned htw = tw;
@@ -649,17 +649,17 @@ namespace mrv {
                 htw /= 2;
             }
 
-	    glTexImage2D( GL_TEXTURE_2D,
-			  0,              // level
-			  internalFormat,  // internalFormat
-			  htw, hth, 
-			  0,             // border
-			  GL_LUMINANCE,  // texture data format
-			  pixel_type,         // texture pixel type
-			  NULL );        // texture pixel data
+            glTexImage2D( GL_TEXTURE_2D,
+                          0,              // level
+                          internalFormat,  // internalFormat
+                          htw, hth,
+                          0,             // border
+                          GL_LUMINANCE,  // texture data format
+                          pixel_type,         // texture pixel type
+                          NULL );        // texture pixel data
 
-	    CHECK_GL;
-	  }
+            CHECK_GL;
+          }
 
           unsigned off = 0;
           if ( _right )
@@ -688,18 +688,18 @@ namespace mrv {
               ow /= 2;
           }
 
-          update_texsub( i, 0, 0, ow, oh, tw, th, GL_LUMINANCE, pixel_type, 
+          update_texsub( i, 0, 0, ow, oh, tw, th, GL_LUMINANCE, pixel_type,
                          1, pixel_size, p );
       }
   }
 
   void GLQuad::bind_texture_quad( const image_type_ptr& pic,
-				  const unsigned poww, const unsigned int powh )
+                                  const unsigned poww, const unsigned int powh )
   {
     if ( pic->format() >= image_type::kITU_601_YCbCr420 )
         return bind_texture_yuv( pic, poww, powh );
 
-    
+
     unsigned dw = pic->width();
     unsigned dh = pic->height();
 
@@ -714,32 +714,32 @@ namespace mrv {
 
     if ( pic->has_alpha() )
       {
-	internalFormat = GL_RGBA8;
+        internalFormat = GL_RGBA8;
 
-	//
-	// Choose best internal format based on gfx card capabilities
-	//
-	if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
-	  {
-	    if ( GLEngine::halfTextures() )  
-	      internalFormat = GL_RGBA16F_ARB;
-	    else if ( GLEngine::floatTextures() ) 
-	      internalFormat = GL_RGBA32F_ARB;
-	  }
-      
+        //
+        // Choose best internal format based on gfx card capabilities
+        //
+        if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
+          {
+            if ( GLEngine::halfTextures() )
+              internalFormat = GL_RGBA16F_ARB;
+            else if ( GLEngine::floatTextures() )
+              internalFormat = GL_RGBA32F_ARB;
+          }
+
       }
     else
       {
-	//
-	// Choose best internal format based on gfx card capabilities
-	//
-	if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
-	  {
-	    if ( GLEngine::halfTextures() )  
-	      internalFormat = GL_RGB16F_ARB;
-	    else if ( GLEngine::floatTextures() ) 
-	      internalFormat = GL_RGB32F_ARB;
-	  }
+        //
+        // Choose best internal format based on gfx card capabilities
+        //
+        if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
+          {
+            if ( GLEngine::halfTextures() )
+              internalFormat = GL_RGB16F_ARB;
+            else if ( GLEngine::floatTextures() )
+              internalFormat = GL_RGB32F_ARB;
+          }
       }
 
 
@@ -762,10 +762,10 @@ namespace mrv {
     unsigned th = dh;
     if ( GLEngine::pow2Textures() )
       {
-	tw = poww;
-	th = powh;
+        tw = poww;
+        th = powh;
       }
-    
+
     if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
     {
         dh /= 2;
@@ -778,34 +778,35 @@ namespace mrv {
 
     // If texture size is different than old frame/image,
     // allocate new quad texture
-    if ( _width          != dw || 
-	 _height         != dh || 
-	 _channels       != channels || 
-	 _pixel_type     != pixel_type || 
-	 _glformat       != glformat   ||
-	 _internalFormat != internalFormat )
+    if ( _width          != dw ||
+         _height         != dh ||
+         _channels       != channels ||
+         _pixel_type     != pixel_type ||
+         _glformat       != glformat   ||
+         _internalFormat != internalFormat )
       {
-	_width          = dw; 
-	_height         = dh; 
-	_channels       = channels; 
-	_pixel_type     = pixel_type;
-	_glformat       = glformat;
-	_format         = pic->format();
-	_internalFormat = internalFormat;
-        DBG( "GLEngine::shader_type() " << GLEngine::shader_type() );
-	if ( GLEngine::shader_type() ) _shader = GLEngine::rgbaShader();
-	else                           _shader = NULL;
+        _width          = dw;
+        _height         = dh;
+        _channels       = channels;
+        _pixel_type     = pixel_type;
+        _glformat       = glformat;
+        _format         = pic->format();
+        _internalFormat = internalFormat;
+        DBG( "GLEngine::shader_type() " << GLEngine::shader_type() << " "
+             << GLEngine::shader_type_name() );
+        if ( GLEngine::shader_type() ) _shader = GLEngine::rgbaShader();
+        else                           _shader = NULL;
 
 #ifndef TEST_NO_PBO_TEXTURES
-	if ( GLEngine::pboTextures() )
-	  {
-	    // Define texture level zero (without an image); notice the
-	    // explicit bind to the zero pixel unpack buffer object so that
-	    // pass NULL for the image data leaves the texture image
-	    // unspecified.
-	    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+        if ( GLEngine::pboTextures() )
+          {
+            // Define texture level zero (without an image); notice the
+            // explicit bind to the zero pixel unpack buffer object so that
+            // pass NULL for the image data leaves the texture image
+            // unspecified.
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
             CHECK_GL;
-	  }
+          }
 #endif
 
         unsigned htw = tw;
@@ -823,16 +824,16 @@ namespace mrv {
         {
             htw /= 2;
         }
-	glTexImage2D( GL_TEXTURE_2D, 
-		      0,               // level
-		      _internalFormat,  // internalFormat
-		      htw, hth, 
-		      0,               // border
-		      _glformat, 
-		      _pixel_type, 
-		      NULL );
+        glTexImage2D( GL_TEXTURE_2D,
+                      0,               // level
+                      _internalFormat,  // internalFormat
+                      htw, hth,
+                      0,               // border
+                      _glformat,
+                      _pixel_type,
+                      NULL );
 
-	CHECK_GL;
+        CHECK_GL;
 
       }
 
@@ -855,8 +856,8 @@ namespace mrv {
     }
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;
 
-    update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type, 
-		   short(_channels), short(pixel_size), p );
+    update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type,
+                   short(_channels), short(pixel_size), p );
   }
 
   /// Prepare a texture for opengl
@@ -871,18 +872,18 @@ namespace mrv {
     _pixels = pic->data();
     if ( !_pixels ) return;
 
-    if ( _width  != dw || 
-	 _height != dh || 
-	 _pixel_type != pixel_type || 
-	 _channels != channels ||
-	 _glformat != glformat )
+    if ( _width  != dw ||
+         _height != dh ||
+         _pixel_type != pixel_type ||
+         _channels != channels ||
+         _glformat != glformat )
       {
           static bool warn = false;
 
           if ( !warn )
           {
               warn = true;
-              LOG_WARNING( "Image bigger than " 
+              LOG_WARNING( "Image bigger than "
                            << GLEngine::maxTexWidth() << " x "
                            << GLEngine::maxTexHeight() << ".  "
                            "Will use scanline drawing which is buggy." );
@@ -891,7 +892,7 @@ namespace mrv {
 
     _width = dw;
     _height = dh;
-    _channels = channels; 
+    _channels = channels;
     _pixel_type = pixel_type;
     _glformat = glformat;
     _format   = pic->format();
@@ -934,12 +935,12 @@ namespace mrv {
 #ifndef TEST_NO_QUAD
     if ( poww <= GLEngine::maxTexWidth() && powh <= GLEngine::maxTexHeight() )
       {
-	bind_texture_quad( pic, poww, powh );
+        bind_texture_quad( pic, poww, powh );
       }
     else
 #endif
       {
-	bind_texture_pixels( pic );
+        bind_texture_pixels( pic );
       }
   }
 
@@ -956,26 +957,26 @@ namespace mrv {
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
           short i = short(_channels - 1);
-	for ( ; i >= 0 ; --i )
-	  {
-              short idx = (i == 3 ? (short) 4 : i ); 
+        for ( ; i >= 0 ; --i )
+          {
+              short idx = (i == 3 ? (short) 4 : i );
               glActiveTexture(GL_TEXTURE0 + idx);
               CHECK_GL;
               glEnable(GL_TEXTURE_2D);
               glBindTexture(GL_TEXTURE_2D, _texId[i] );
               CHECK_GL;
               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-	  }
+          }
       }
     else
       {
-	if ( GLEW_ARB_multitexture )
-	  glActiveTexture(GL_TEXTURE0);
+        if ( GLEW_ARB_multitexture )
+          glActiveTexture(GL_TEXTURE0);
 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, _texId[0] );
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, _texId[0] );
         CHECK_GL;
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
       }
 
 
@@ -990,25 +991,25 @@ namespace mrv {
 
     if ( _shader )
       {
-	_shader->enable();
-	_shader->bind();
+        _shader->enable();
+        _shader->bind();
 
-	if ( _shader != GLEngine::rgbaShader() )
-	  {
-	    _shader->setTextureUnit( "YImage", 0 );
-	    _shader->setTextureUnit( "UImage", 1 );
-	    _shader->setTextureUnit( "VImage", 2 );
+        if ( _shader != GLEngine::rgbaShader() )
+          {
+            _shader->setTextureUnit( "YImage", 0 );
+            _shader->setTextureUnit( "UImage", 1 );
+            _shader->setTextureUnit( "VImage", 2 );
             if ( _shader == GLEngine::YByRyAShader() ||
                  _shader == GLEngine::YCbCrAShader() )
                 _shader->setTextureUnit( "AImage", 4 );
-	  }
-	else
-	  {
-	    _shader->setTextureUnit( "fgImage", 0 );
-	  }
+          }
+        else
+          {
+            _shader->setTextureUnit( "fgImage", 0 );
+          }
 
-	_shader->setTextureUnit( "lut", 3 );
-	CHECK_GL;
+        _shader->setTextureUnit( "lut", 3 );
+        CHECK_GL;
 
         _shader->setUniform( "mask", _mask );
         CHECK_GL;
@@ -1019,40 +1020,40 @@ namespace mrv {
         _shader->setUniform( "height", _height );
         CHECK_GL;
 
-	_shader->setUniform( "gain",  _view->gain() );
-	CHECK_GL;
-	_shader->setUniform( "gamma", 1.0f/_gamma );
-	CHECK_GL;
+        _shader->setUniform( "gain",  _view->gain() );
+        CHECK_GL;
+        _shader->setUniform( "gamma", 1.0f/_gamma );
+        CHECK_GL;
 
-	_shader->setUniform( "channel", _view->channel_type() );
-	CHECK_GL;
+        _shader->setUniform( "channel", _view->channel_type() );
+        CHECK_GL;
 
-	if ( use_lut && _lut )
-	  {
-	    _shader->setUniform( "enableLut", 1 );
-	    CHECK_GL;
-	    _shader->setUniform( "lutMin", _lut->lutMin );
-	    CHECK_GL;
-	    _shader->setUniform( "lutMax", _lut->lutMax );
-	    CHECK_GL;
-	    _shader->setUniform( "lutM", _lut->lutM );
-	    CHECK_GL;
-	    _shader->setUniform( "lutT", _lut->lutT );
-	    CHECK_GL;
-	    _shader->setUniform( "lutF", false );
+        if ( use_lut && _lut )
+          {
+            _shader->setUniform( "enableLut", 1 );
+            CHECK_GL;
+            _shader->setUniform( "lutMin", _lut->lutMin );
+            CHECK_GL;
+            _shader->setUniform( "lutMax", _lut->lutMax );
+            CHECK_GL;
+            _shader->setUniform( "lutM", _lut->lutM );
+            CHECK_GL;
+            _shader->setUniform( "lutT", _lut->lutT );
+            CHECK_GL;
+            _shader->setUniform( "lutF", false );
 
             unsigned len = lut()->edge_len();
             float scale = ( (float) len - 1.0f ) / (float) len;
             float offset = 1.0f / ( 2.0f * len );
-            
-	    _shader->setUniform( "scale", scale );
-	    _shader->setUniform( "offset", offset );
-	  }
-	else
-	  {
-	    _shader->setUniform( "enableLut", 0 );
-	CHECK_GL;
-	  }
+
+            _shader->setUniform( "scale", scale );
+            _shader->setUniform( "offset", offset );
+          }
+        else
+          {
+            _shader->setUniform( "enableLut", 0 );
+        CHECK_GL;
+          }
 
         const mrv::ViewerUI* v = _view->main();
         if (!v) return;
@@ -1060,102 +1061,102 @@ namespace mrv {
         int premult = 0, unpremult = 0;
 
         switch ( v->uiPrefs->uiPrefsBlendMode->value() )
-	  {
-	  case ImageView::kBlendPremultNonGamma:
-	    unpremult = premult = 1;
-	    break;
-	  case ImageView::kBlendTraditionalNonGamma:
-	    unpremult = premult = 1;
-	    break;
-	  default:
-	    unpremult = premult = 0;
-	    break;
-	  }
+          {
+          case ImageView::kBlendPremultNonGamma:
+            unpremult = premult = 1;
+            break;
+          case ImageView::kBlendTraditionalNonGamma:
+            unpremult = premult = 1;
+            break;
+          default:
+            unpremult = premult = 0;
+            break;
+          }
 
         _shader->setUniform( "premult", premult );
-	CHECK_GL;
+        CHECK_GL;
         if ( _shader == GLEngine::rgbaShader() )
             _shader->setUniform( "unpremult", unpremult );
-	CHECK_GL;
+        CHECK_GL;
 
-	if ( _view->normalize() )
-	  {
-	    _shader->setUniform( "enableNormalization", 1 );
-	CHECK_GL;
-	    _shader->setUniform( "normMin",  _normMin);
-	CHECK_GL;
-	    _shader->setUniform( "normSpan", _normMax - _normMin );
-	CHECK_GL;
-	  }
-	else
-	  {
-	    _shader->setUniform( "enableNormalization", 0 );
-	CHECK_GL;
-	  }
+        if ( _view->normalize() )
+          {
+            _shader->setUniform( "enableNormalization", 1 );
+        CHECK_GL;
+            _shader->setUniform( "normMin",  _normMin);
+        CHECK_GL;
+            _shader->setUniform( "normSpan", _normMax - _normMin );
+        CHECK_GL;
+          }
+        else
+          {
+            _shader->setUniform( "enableNormalization", 0 );
+        CHECK_GL;
+          }
 
-	if ( _shader == GLEngine::YByRyShader() ||
-	     _shader == GLEngine::YByRyAShader() )
-	  {
-	    _shader->setUniform( "yw", _yw[0], _yw[1], _yw[2] );
-	CHECK_GL;
-	  }
-	else if ( _shader == GLEngine::YCbCrShader() ||
-		  _shader == GLEngine::YCbCrAShader() )
-	  {
+        if ( _shader == GLEngine::YByRyShader() ||
+             _shader == GLEngine::YByRyAShader() )
+          {
+            _shader->setUniform( "yw", _yw[0], _yw[1], _yw[2] );
+        CHECK_GL;
+          }
+        else if ( _shader == GLEngine::YCbCrShader() ||
+                  _shader == GLEngine::YCbCrAShader() )
+          {
               std::string colorspace = _("Unspecified");
               if ( _image && _image->colorspace() )
                   colorspace = _image->colorspace();
-              
+
               if ( colorspace == "BT709" )
               {
                   _shader->setUniform( "coeffs", 1 );
-	CHECK_GL;
+        CHECK_GL;
                   // HDTV  YCbCr coefficients
                   _shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kr", 1.0f, 0.0f, 1.28033f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kg", 1.0f, -0.21482f, -0.38059f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kb", 1.0f, 2.12798f, 0.0f );
-	CHECK_GL;
+        CHECK_GL;
               }
-              else if ( colorspace == "BT470BG" || 
+              else if ( colorspace == "BT470BG" ||
                         colorspace == "SMPTE170M" )
               {
                   _shader->setUniform( "coeffs", 1 );
-	CHECK_GL;
+        CHECK_GL;
                   // STV  YCbCr coefficients
                   _shader->setUniform( "Koff", -16.0f/255.0f, -0.5f, -0.5f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kr", 1.0f, 0.0f, 1.59602715f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kg", 1.0f, -0.39465f, -0.58060f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
-	CHECK_GL;
+        CHECK_GL;
               }
               else if ( colorspace == "YCOCG" )
               {
                   _shader->setUniform( "coeffs", 1 );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Koff", 0.f, 0.f, 0.f );
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kr", 1.0f, -1.0f, 1.0f );  // Y
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kg", 1.0f,  1.0f, 0.0f );  // Cg
-	CHECK_GL;
+        CHECK_GL;
                   _shader->setUniform( "Kb", 1.0f, -1.0f, -1.0f ); // Co
-	CHECK_GL;
+        CHECK_GL;
               }
               else
               {
                   _shader->setUniform( "coeffs", 0 );
-	CHECK_GL;
+        CHECK_GL;
               }
-	  }
+          }
 
-	CHECK_GL;
+        CHECK_GL;
       }
 
 
@@ -1179,29 +1180,29 @@ namespace mrv {
 
     if ( _shader )
       {
-	_shader->disable();
+        _shader->disable();
       }
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
           short i = short( _channels - 1 );
-	for ( ; i >= 0 ; --i )
-	  {
-              short idx = (i == 3 ? (short) 4 : i ); 
-	    glActiveTexture(GL_TEXTURE0 + idx);
-	    glDisable( GL_TEXTURE_2D );
-	  }
+        for ( ; i >= 0 ; --i )
+          {
+              short idx = (i == 3 ? (short) 4 : i );
+            glActiveTexture(GL_TEXTURE0 + idx);
+            glDisable( GL_TEXTURE_2D );
+          }
       }
     else
       {
-	if ( GLEngine::maxTexUnits() > 3 )
-	  glActiveTexture( GL_TEXTURE0 );
-	glDisable( GL_TEXTURE_2D );
+        if ( GLEngine::maxTexUnits() > 3 )
+          glActiveTexture( GL_TEXTURE0 );
+        glDisable( GL_TEXTURE_2D );
       }
 
     if ( use_lut && _lut )
       {
-	_lut->disable();
+        _lut->disable();
       }
 
     CHECK_GL;
@@ -1229,15 +1230,6 @@ void GLQuad::lut( const CMedia* img )
 
     _view->window()->cursor( fltk::CURSOR_WAIT );
 
-    {
-        typedef CMedia::Mutex Mutex;
-        CMedia* image = const_cast<CMedia*>( img );
-        CMedia::Mutex& m = image->video_mutex();
-        SCOPED_LOCK( m );
-
-        fltk::check();  // to display wait cursor
-    }
-
     _lut   = mrv::GLLut3d::factory( _view->main(), img );
     _image = img;
 
@@ -1247,7 +1239,7 @@ void GLQuad::lut( const CMedia* img )
 
 
   int GLQuad::calculate_gl_step( const GLenum format,
-				 const GLenum pixel_type ) const
+                                 const GLenum pixel_type ) const
   {
     int step;
     switch( format )
@@ -1292,18 +1284,18 @@ void GLQuad::lut( const CMedia* img )
   void GLQuad::draw_pixels( const unsigned dw, const unsigned dh ) const
   {
     unsigned dh1 = dh;
-    if ( _view->main()->uiPixelRatio->value() ) 
+    if ( _view->main()->uiPixelRatio->value() )
       dh1 = (unsigned)(dh1 / _view->pixel_ratio());
-    
+
     if ( _view->field() == ImageView::kFrameDisplay || (dh % 2 != 0) )
       draw_frame( dw, dh1 );
     else
       draw_field( dw, dh1 );
   }
 
-  /** 
+  /**
    * Draw an 8-bit image onto the viewport using opengl's glDrawPixels.
-   * 
+   *
    * @param dw     image's width
    * @param dh     image's height
    */
@@ -1356,8 +1348,8 @@ void GLQuad::lut( const CMedia* img )
 
           unsigned int r = (H-y) * dw;
           const boost::uint8_t* ptr = base + r * step;
-          glDrawPixels (dw,		        // width
-                        1,		        // height
+          glDrawPixels (dw,                     // width
+                        1,                      // height
                         _glformat,	// format
                         _pixel_type,	// type
                         ptr );
@@ -1371,29 +1363,29 @@ void GLQuad::lut( const CMedia* img )
     yp = dy - _view->zoom() + 0.499f;
     for (unsigned int y = 0; y <= H; ++y)
       {
-	yp += _view->zoom();
-	//if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+        yp += _view->zoom();
+        //if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
 
-	// To avoid opengl raster clipping issues, instead of:
-	//glRasterPos2f(dx, yp);
-	// we do:
-	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
-	//
+        // To avoid opengl raster clipping issues, instead of:
+        //glRasterPos2f(dx, yp);
+        // we do:
+        glRasterPos2i(0, 0);
+        glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
+        //
 
-	unsigned int r = (H-y) * dw;
-	const boost::uint8_t* ptr = base + r * step;
-	glDrawPixels (dw,		        // width
-		      1,		        // height
-		      _glformat,	// format
-		      _pixel_type,	// type
-		      ptr );
+        unsigned int r = (H-y) * dw;
+        const boost::uint8_t* ptr = base + r * step;
+        glDrawPixels (dw,                       // width
+                      1,                        // height
+                      _glformat,	// format
+                      _pixel_type,	// type
+                      ptr );
       }
   }
 
-  /** 
+  /**
    * Draw an 8-bit image onto the viewport using opengl.
-   * 
+   *
    * @param format      GL_RGB, GL_BGR, GL_RGBA, GL_BGRA
    * @param pixel_type  GL_UNSIGNED_BYTE or GL_FLOAT
    * @param dw     image's width
@@ -1431,28 +1423,28 @@ void GLQuad::lut( const CMedia* img )
 
     for (unsigned int y = 0; y <= H; ++y)
       {
-	yp += _view->zoom();
-	if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+        yp += _view->zoom();
+        if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
 
-	// To avoid opengl raster clipping issues, instead of:
-	//    glRasterPos2f(dx, yp);
-	// we do:
-	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
-	//
-	unsigned int r = H - (y / 2)*2;
-	if ( field == ImageView::kTopField )
-	  {
-	    if ( r > 1 ) r -= 1;
-	  }
+        // To avoid opengl raster clipping issues, instead of:
+        //    glRasterPos2f(dx, yp);
+        // we do:
+        glRasterPos2i(0, 0);
+        glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
+        //
+        unsigned int r = H - (y / 2)*2;
+        if ( field == ImageView::kTopField )
+          {
+            if ( r > 1 ) r -= 1;
+          }
 
-	r *= dw;
-	const boost::uint8_t* ptr = base + r * step;
-	glDrawPixels (dw,		// width
-		      1,		// height
-		      _glformat,	// format
-		      _pixel_type,	// type
-		      ptr );
+        r *= dw;
+        const boost::uint8_t* ptr = base + r * step;
+        glDrawPixels (dw,		// width
+                      1,		// height
+                      _glformat,	// format
+                      _pixel_type,	// type
+                      ptr );
       }
 
     CHECK_GL;
@@ -1463,29 +1455,29 @@ void GLQuad::lut( const CMedia* img )
     yp = double(dy) - _view->zoom();
     for (unsigned int y = 0; y <= H; ++y)
       {
-	yp += _view->zoom();
-	if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+        yp += _view->zoom();
+        if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
 
-	// To avoid opengl raster clipping issues, instead of:
-	//    glRasterPos2f(dx, yp-0.499f);
-	// we do:
-	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, float(dx), float(yp-0.499), NULL );
-	//
+        // To avoid opengl raster clipping issues, instead of:
+        //    glRasterPos2f(dx, yp-0.499f);
+        // we do:
+        glRasterPos2i(0, 0);
+        glBitmap( 0, 0, 0, 0, float(dx), float(yp-0.499), NULL );
+        //
 
-	unsigned int r = H - (y / 2)*2;
-	if ( field == ImageView::kTopField )
-	  {
-	    if ( r > 1 ) r -= 1;
-	  }
-	r *= dw;
+        unsigned int r = H - (y / 2)*2;
+        if ( field == ImageView::kTopField )
+          {
+            if ( r > 1 ) r -= 1;
+          }
+        r *= dw;
 
-	const boost::uint8_t* ptr = base + r * step;
-	glDrawPixels (dw,		        // width
-		      1,		        // height
-		      _glformat,	// format
-		      _pixel_type,	// type
-		      ptr );
+        const boost::uint8_t* ptr = base + r * step;
+        glDrawPixels (dw,                       // width
+                      1,                        // height
+                      _glformat,	// format
+                      _pixel_type,	// type
+                      ptr );
       }
     CHECK_GL;
   }
