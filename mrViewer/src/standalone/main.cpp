@@ -26,7 +26,7 @@
  */
 
 #ifdef _WIN32
- #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+// #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 #endif
 
 #include <string.h>
@@ -71,6 +71,20 @@ namespace fs = boost::filesystem;
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
+#endif
+
+#ifdef _WIN32
+
+#include <windows.h>
+
+void release_console()
+{
+    fclose(stdin);
+    fclose(stdout);
+    fclose(stderr);
+    Sleep(100000);
+}
+
 #endif
 
 
@@ -426,6 +440,13 @@ int main( int argc, char** argv )
   MagickWandTerminus();
   // Imf::staticUninitialize();
 
+#ifdef _WIN32
+  mrv::io::logbuffer* log =
+  static_cast<mrv::io::logbuffer*>( mrv::io::info.rdbuf() );
+  if ( log->_debug )
+      release_console();
+#endif
+  
   return ok;
 }
 
@@ -433,7 +454,6 @@ int main( int argc, char** argv )
 #if defined(WIN32) || defined(WIN64)
 
 #include <windows.h>
-
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		     LPSTR lpCmdLine, int nCmdShow )

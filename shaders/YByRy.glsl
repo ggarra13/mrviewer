@@ -129,27 +129,28 @@ void main()
 
 
   int x = 1000;
-  if ( mask == 1.0 )  // even odd rows
+  
+  if ( mask == 1 )  // even odd rows
   {
-      x = mod( gl_TexCoord[0].t * height, 2.0 );
+      float f = tc.y * height;
+      x = int( mod( f, 2 ) );
   }
-  else if ( mask == 2.0 )  // even-odd columns
+  else if ( mask == 2 ) // even odd columns
   {
-      x = mod( gl_TexCoord[0].s * width, 2.0 );
+      float f2 = tc.x * width;
+      x = int( mod( f2, 2 ) );
   }
-  else if ( mask == 3.0 ) // checkerboard
+  else if ( mask == 3 ) // checkerboard
   {
-      x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2.0 );
-      if ( x < 1.0 ) x = 1.0;
-      else x = 0.0;
+      float f = tc.y * height;
+      float f2 = tc.x * width;
+      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
   }
+
 
   if ( x == mask_value )
   {
-      c.r = 0.0f;
-      c.g = 0.0f;
-      c.b = 0.0f;
-      c.a = 0.0f;
+      c.r = c.g = c.b = c.a = 0.0f;
   }
 
   if ( premult )
