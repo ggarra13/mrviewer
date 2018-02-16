@@ -1,4 +1,6 @@
 v4.0.1   - Bug fixed GLSL 2.0 YCrCb shader to not throw a syntax error.
+	   This makes mrViewer work with other graphic cards other than
+	   NVidia (ATI, Intel, etc).
 	 - Bug fixed jpeg loader (ffmpeg), to load files starting at other
 	   frames than 1.
 

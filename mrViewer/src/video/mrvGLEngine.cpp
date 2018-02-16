@@ -357,7 +357,7 @@ void GLEngine::init_GLEW()
         return;
     }
 
-    
+
 // #if defined(WIN32) || defined(WIN64)
 //   err = wglewInit();
 //   if (GLEW_OK != err)
@@ -398,7 +398,7 @@ void GLEngine::initialize()
       glutInit( &argc, args );
       glut_init = true;
   }
-  
+
   init_GLEW();
 
   init_charset();
@@ -494,37 +494,46 @@ void GLEngine::initialize()
         }
 
       if ( ! directory.empty() )
-        {
+      {
           char shaderFile[256];
 
-          try
-            {
-              const char* ext = NULL;
-              switch( _hardwareShaders )
-                {
-                case kNV30:
-                  ext = N_("fp30"); break;
-                case kGLSL:
-                  ext = N_("glsl"); break;
-                case kARBFP1:
-                  ext = N_("arbfp1"); break;
-                default:
-                  break;
-                }
+          const char* ext = NULL;
+          switch( _hardwareShaders )
+          {
+          case kNV30:
+              ext = N_("fp30"); break;
+          case kGLSL:
+              ext = N_("glsl"); break;
+          case kARBFP1:
+              ext = N_("arbfp1"); break;
+          default:
+              break;
+          }
 
-              const char* dir = directory.c_str();
+          const char* dir = directory.c_str();
+
+          try
+          {
 
               sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
 
               DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
                    << shaderFile );
 
-  
+
               _rgba = new GLShader( shaderFile );
 
+          }
+          catch ( const std::exception& e )
+          {
+              LOG_ERROR( shaderFile << ": " << e.what() );
+              directory.clear();
+          }
 
+          try
+          {
               if ( _has_yuv )
-                {
+              {
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
                   _YCbCr = new GLShader( shaderFile );
                   DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
@@ -534,8 +543,19 @@ void GLEngine::initialize()
                   _YByRy = new GLShader( shaderFile );
                   DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
                        << shaderFile );
-                }
+              }
+          }
+          catch ( const std::exception& e )
+          {
+              LOG_ERROR( shaderFile << ": " << e.what() );
+              delete _YByRy; _YByRy = NULL;
+              delete _YCbCr; _YCbCr = NULL;
+              _has_yuv  = false;
+              _has_yuva = false;
+          }
 
+          try
+          {
               if ( _has_yuva )
                 {
                   DBG( __FUNCTION__ << " " << __LINE__  );
@@ -550,16 +570,12 @@ void GLEngine::initialize()
                        << shaderFile );
                 }
 
-            }
+          }
           catch ( const std::exception& e )
             {
               LOG_ERROR( shaderFile << ": " << e.what() );
-              directory.clear();
-              delete _YByRy; _YByRy = NULL;
-              delete _YCbCr; _YCbCr = NULL;
               delete _YByRyA; _YByRyA = NULL;
               delete _YCbCrA; _YCbCrA = NULL;
-              _has_yuv  = false;
               _has_yuva = false;
             }
         }
@@ -1123,7 +1139,7 @@ void GLEngine::draw_mask( const float pct )
   glDisable( GL_STENCIL_TEST );
 
   ImageView::FlipDirection flip = _view->flip();
-  
+
   set_matrix( flip, true );
 
   double zdeg = img->rot_z();
@@ -1131,7 +1147,7 @@ void GLEngine::draw_mask( const float pct )
   double x=0.0, y = 0.0;
   //zrot2offsets( x, y, img, flip, zdeg );
 
-  
+
   glRotated( zdeg, 0, 0, 1 );
   translate( img->x() + x + dpw.x(), img->y() + y - dpw.y(), 0 );
 
@@ -1268,7 +1284,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     mrv::media fg = _view->foreground();
     if (!fg) return;
-    
+
     mrv::media bg = _view->background();
     Image_ptr bimg = NULL;
     if (bg)
@@ -1303,13 +1319,13 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     dpw.merge( dpw2 );
 
     double zdeg = img->rot_z();
-    
+
     zrot2offsets( x, y, img, flip, zdeg );
-    
+
     glRotated( zdeg, 0, 0, 1 );
     translate(  x + tw, - y - th, 0 );
 
-    
+
     tw *= percentX;
     th *= percentY;
 
@@ -1406,7 +1422,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     {
         glColor4f( 1.0f, 0.3f, 0.0f, 1.0f );
     }
-    
+
     double zdeg = 0.0;
     if ( img ) zdeg = img->rot_z();
 
@@ -1492,7 +1508,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
         int yi = round(img->y());
         sprintf( buf, "Pos: %d, %d", xi, yi );
     }
-    
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     translate(rw+kSize, rh-kSize, 0);
@@ -1722,11 +1738,11 @@ void GLEngine::draw_images( ImageList& images )
 
         texWidth *= img->scale_x();
         texHeight *= img->scale_y();
-        
+
         ImageView::FlipDirection flip = _view->flip();
 
         set_matrix( flip, false );
-        
+
         if ( flip && !_view->vr() )
         {
             const mrv::Recti& dp = fg->display_window();
@@ -1746,7 +1762,7 @@ void GLEngine::draw_images( ImageList& images )
                 draw_square_stencil( dpw.x() - x, dpw.y() + y,
                                      dpw.w() + x, dpw.h() - y );
             }
-           
+
             if ( _view->data_window()  )
             {
                 double x = img->x(), y = -img->y();
@@ -1931,7 +1947,7 @@ void GLEngine::draw_images( ImageList& images )
                 {
                     glTranslated( 0, -dpw.h(), 0 );
                 }
-                
+
                 CHECK_GL;
                 mrv::Recti dpw2 = img->display_window2(frame);
                 mrv::Recti daw2 = img->data_window2(frame);
@@ -2017,7 +2033,7 @@ void GLEngine::draw_images( ImageList& images )
                     glScaled( double(texWidth), double(texHeight), 1.0 );
                 CHECK_GL;
 
-   
+
                 glTranslated( 0.5, -0.5, 0 );
                 CHECK_GL;
 
@@ -2093,7 +2109,7 @@ void GLEngine::draw_images( ImageList& images )
 
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
- 
+
       if ( ( _view->action_mode() == ImageView::kMovePicture ||
              _view->action_mode() == ImageView::kScalePicture ) &&
            _view->selected_image() == img )
@@ -2262,7 +2278,7 @@ const char* ARBFP1Shader =
 "#version 3.1.0.13\n"
 "#profile arbfp1\n"
 "#program main\n"
-"#semantic main.fgImage : TEXUNIT0\n"
+"#semantic main.fgImage : TEXUNIT0"
 "#semantic main.lut : TEXUNIT3\n"
 "#semantic main.mask\n"
 "#semantic main.mask_value\n"
@@ -2868,6 +2884,10 @@ GLEngine::loadBuiltinFragShader()
     {
       LOG_ERROR( e.what() );
     }
+    catch( ... )
+    {
+        LOG_ERROR( "Unknown error in loadBuiltinFragShader" );
+    }
 
 }
 
@@ -2913,7 +2933,7 @@ void GLEngine::release()
     DBG( __FUNCTION__ << " " << __LINE__ );
     TRACE("");
     if (_YCbCr) delete _YCbCr;
-    
+
     if (_YByRyA) delete _YByRyA;
     DBG( __FUNCTION__ << " " << __LINE__ );
     TRACE("");
