@@ -45,6 +45,20 @@
 
 #ifdef _WIN32
 #include <windows.h>
+
+
+void alloc_console()
+{
+    AllocConsole();
+    freopen("conin$", "r", stdin);
+    freopen("conout$", "w", stdout);
+    freopen("conout$", "w", stderr);
+}
+
+#else
+
+void alloc_console() {}
+
 #endif
 
 namespace fs = boost::filesystem;
@@ -596,6 +610,7 @@ bool parse_command_line( const int argc, char** argv,
 
   if ( opts.debug )
   {
+      alloc_console();
       mrv::io::logbuffer* log =
       static_cast<mrv::io::logbuffer*>( mrv::io::info.rdbuf() );
       log->debug(true);
