@@ -1,0 +1,393 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>FLTK X-Specific Interface</title></head><body>
+
+<h1>System-Specific Interfaces</h1>
+
+<h2><a name=xunix>X11/Unix</a></h2>
+
+<h4><tt>#include &lt;fltk/x.h&gt;</tt></h4>
+
+On X you can include this file to access FLTK's X-specific functions. 
+Be warned that some of the structures and calls in it are subject to 
+change in future version of FLTK.  Try to avoid doing this so your code 
+is portable. 
+
+<h4><a name=add_handler>void fltk::add_handler(int (*f)(int))</a></h4>
+
+Installs a function to parse unrecognized events.  If FLTK cannot
+figure out what to do with an event, it calls each of these functions
+(most recent first) until one of them returns non-zero.  If none of
+them returns non-zero then the event is ignored.  The argument is the
+event number (like <tt>fltk::PUSH</tt>).  For keystrokes it will be
+<tt>fltk::SHORTCUT</tt>.
+
+<p>Besides events that all widgets ignored, FLTK calls this for X
+events that it does not recognize, or that contain a window id that
+FLTK does not know about. In this case the argument is zero.  You can
+look at the X event with the <a href=#xevent><tt>fltk::xevent</tt></a>
+variable.
+
+<h4><a name=xevent>extern XEvent* fltk::xvent</a></h4>
+
+The most recent X event. 
+
+<h4><a name=event_time>extern ulong fltk::event_time</a></h4>
+
+This is the time stamp from the most recent X event that reported it 
+(not all do).  Many X calls (like cut and paste) need this value that reported it 
+(not all do).  Many X calls (like cut and paste) need this value. 
+
+<h4><a name=handle>int fltk::handle(const XEvent &amp;)</a></h4>
+
+This allows you to "feed" X events to fltk, in cases where you cannot
+give fltk control over any file descriptors. Fltk will figure out what
+the event is and call widgets normally and also the
+<tt>fltk::add_handler()</tt> functions. The return value is true if a
+widget accepted the event or one of the <tt>add_handler()</tt>
+function returned true.
+
+<p>Besides feeding events your code should call <a href=Fl.html#flush>
+<tt>fltk::flush()</tt></a> periodically so that FLTK redraws its
+windows.
+
+<p>This function will call any widget callbacks from the widget code.
+It will not return until they complete, for instance if it pops up a
+modal window with <a href=utility.html#ask><tt>fltk::ask()</tt></a>,
+it will not return until the user clicks yes or no.
+
+<h4><a name=display>int fltk::display(const char*)</a></h4>
+
+Set which X display to use.  This actually does <tt>
+putenv(&quot;DISPLAY=...&quot;)</tt> so that child programs will
+display on the same screen if called with <tt>exec()</tt>.  This must
+be done before <tt>fltk::open_display</tt> is called.  This call is
+provided under WIN32 but it has no effect.
+
+<h4><a name=open_display>void fltk::open_display()</a></h4>
+
+Opens the display.  Does nothing if it is already open.  You should
+call this if you wish to do X calls and there is a chance that your
+code will be called before the first <tt>show()</tt> of a window.
+This is called automatically <tt>by fltk::Window::show()</tt>.
+
+<p>This may call <tt>fltk::abort()</tt> if there is an error opening the 
+display.
+
+<h4>void fltk::open_display(Display*)</h4>
+
+You can make fltk "open" a display that has already been opened,
+perhaps by another GUI library.  Calling this will set
+<tt>fltk::display</tt> to the passed display and also read information
+fltk needs from it. <i>Don't call this if the display is already open!</i>
+
+<h4><a name=display>extern Display* fltk::display</a></h4>
+
+The open X display.  This is needed as an argument to most Xlib calls. 
+Don't attempt to change it!  This is <tt>NULL</tt> before
+<tt>fltk::open_display</tt> is called.
+
+<h4><a name=message_window>extern Window fltk::message_window</a></h4>
+
+This dummy 1x1 window is created by <tt>fltk::open_display()</tt> and is
+never destroyed.  You can use it to communicate with the window
+manager or other programs.
+
+<h4><a name=screen>extern int fltk::screen</a></h4>
+
+Which screen number to use.  This is set by <tt>fltk::open_display()</tt>
+to the default screen.  You can change it by setting this to a 
+different value immediately afterwards.
+
+<h4><a name=visual>extern XVisualInfo* fltk::visual</a>
+<br><a name=colormap>extern Colormap fltk::colormap</a></h4>
+
+The visual and colormap that FLTK will use for all windows.  These are 
+set by <tt>fltk::open_display()</tt> to the default visual and colormap. 
+You can change them before calling <tt>show()</tt> on the first 
+window.  Typical code for changing the default visual is: 
+
+<PRE>fltk::args(argc, argv); // do this first so $DISPLAY is set
+fltk::open_display();
+fltk::visual = find_a_good_visual(fltk::display, fltk::screen);
+if (!fltk::visual) fltk::abort(&quot;No good visual&quot;);
+fltk::colormap = make_a_colormap(fltk::display, fltk::visual-&gt;visual, fltk::visual-&gt;depth);
+// it is now ok to show() windows:
+window-&gt;show(argc, argv);</PRE>
+
+You may also want to call <a
+href=Fl.html#visual>fltk::visual()</a>, which is a portable
+interface to get a full color and/or double buffered visual.
+
+<h4><a name=xid>Window fltk::xid(const fltk::Window*)</a></h4>
+
+Returns the XID for a window, or zero if not <tt>shown()</tt>. 
+
+<h4><a name=find>fltk::Window* fltk::find(ulong xid)</a></h4>
+
+Returns the <tt>fltk::Window</tt> that corresponds to the given XID, or
+<tt>NULL</tt> if not found.  This uses a cache so it is slightly
+faster than iterating through the windows yourself.
+
+<h4><a name=window>extern Window fltk::window;</a>
+<br><a name=gc>extern GC fltk::gc;</a></h4>
+
+These variables are set before <tt>fltk::Widget::draw()</tt>
+is called, or by <a href=Fl_Window.html#make_current><tt>
+fltk::Window::make_current()</tt></a>.  They are needed by most Xlib
+drawing calls, a typical call is like this:
+
+<pre>XDrawSomething(fltk::display, fltk::window, fltk::gc, ...);</pre>
+
+<p>Notice that <tt>fltk::window</tt> is the X window id number.  Other
+information such as the position or size of the X window can be found
+by looking at <a href=Fl_Window.html#make_current><tt>
+fltk::Window::current()</tt></a>, which returns a pointer to the <tt>
+fltk::Window</tt> being drawn.
+
+<h4><a name=clip_region>Region fltk::clip_region();</a></h4>
+
+Return the current clip region, or <tt>NULL</tt> if we are currently
+clipping to the entire window. Notice that this will be destroyed by
+the next change to the clipping, copy it if you want to keep it.
+
+<h4>void fltk::clip_region(Region);</h4>
+
+Replace the current clip region with this one, or make there be no
+clipping if <tt>NULL</tt> is passed. The old clip region is destroyed.
+
+<h4><a name=xpixel>unsigned long fltk::xpixel(fltk::Color i)</a></h4>
+
+Returns the X pixel number used to draw the given FLTK color index or
+RGB color. This is the X pixel that <a
+href=drawing.html#color><tt>fltk::color(i)</tt> </a> would use.
+
+<h4><a name=xfont>extern XFontStruct* fltk::xfont</a></h4>
+
+Points at the font selected by the most recent <a
+href=drawing.html#font><tt>fltk::font()</tt></a>.  This is not
+necessarily the current font of <tt>fltk::gc</tt>, which is not set
+until <a href=drawing.html#draw><tt>fltk::draw()</tt></a> is called.
+
+<h4><a name=close_display>void fltk::close_display()</a></h4>
+
+This closes the X connection.  You do <I>not</I> need to call this to 
+exit, and in fact it is faster to not do so!  It may be useful to call 
+this if you want your program to continue without the X connection. You 
+cannot open the display again, and probably cannot call any FLTK 
+functions. 
+
+<h4><a name=xclass>static void fltk::Window::xclass(const char*)
+<br>static const char* fltk::Window::xclass() const</a></h4>
+
+This string is used to set the <tt>XA_WM_CLASS</tt> property of all
+the windows fltk creates.  The default value is "fltk".  Many window
+managers can use this string to select an icon.  <a
+href="utility.html#args"><tt>fltk::args(...)</tt></a> will set this to
+the name of the program.
+
+<p>This call is provided on WIN32 for compatability, but the value is
+ignored.
+
+<h4><a name=icon>void fltk::Window::icon(char*)</a></h4>
+
+Sets the icon for the window to the passed pointer.  You will need to 
+cast the icon <tt>Pixmap</tt> to a <tt>char*</tt> when calling this 
+method. To set the icon using a bitmap compiled with your application 
+use:
+
+<PRE>#include &quot;icon.xbm&quot;
+
+Pixmap p = XCreateBitmapFromData(fltk::display, DefaultRootWindow(fltk::display),
+                                 icon_bits, icon_width, icon_height);
+
+window-&gt;icon((char*)p);</PRE>
+
+<p>This only works if called <i>before</i> it is shown using the
+<tt>fltk::Window::show()</tt> method.
+
+<h3><a name=dnd>Drag & Drop information</a></h3>
+
+The <tt>fltk::dnd_*</tt> variables allow your fltk program to use the
+Xdnd protocol to manipulate files and interact with file managers. You
+can ignore these if you just want to drag & drop blocks of text.  I
+have little information on how to use these, I just tried to clean up
+the Xlib interface and present the variables nicely.
+
+<h4><a name=dnd_source_window>Window fltk::dnd_source_window</a></h4>
+
+The id of the window being dragged from.
+
+<h4><a name=dnd_source_action>Atom fltk::dnd_source_action</a></h4>
+
+The action the source program wants to perform. Due to oddities in the
+Xdnd design this variable is <i>not</i> set on the <a
+href="events.html#DND_ENTER"><tt>fltk::DND_ENTER</tt></a> event,
+instead it is set on each <a
+href=events.html#DND_DRAG><tt>fltk::DND_DRAG</tt></a> event, and it
+may change each time.
+
+<p>To print the string value of the <tt>Atom</tt> use this code:
+
+<pre>char* x = XGetAtomName(fltk::display, fltk::dnd_source_action);
+puts(x);
+XFree(x);</pre>
+
+<p>You can set this before calling <a
+href="Fl.html#dnd"><tt>fltk::dnd()</tt></a> to communicate a different
+action. See <a
+href=#dnd_source_types><tt>fltk::dnd_source_types</tt></a>, which you
+must also set.
+
+<h4><a name=dnd_action>Atom fltk::dnd_action</a></h4>
+
+The program can set this before returning non-zero for an <a
+href="events.html#DND_DRAG"><tt>fltk::DND_DRAG</tt></a> event to
+indicate what it will do to the object. Fltk presets this to
+<tt>XdndActionCopy</tt> so that is returned if you don't set it.
+
+<h4><a name=dnd_source_types>Atom *fltk::dnd_source_types</a></h4>
+
+Zero-terminated list of atoms describing the formats of the source
+data. This is set on the <a
+href="events.html#DND_ENTER"><tt>fltk::DND_ENTER</tt></a> event.  The
+following code will print them all as text, a typical value is
+<tt>"text/plain;charset=UTF-8"</tt> (gag).
+
+<pre>for (int i = 0; fltk::dnd_source_types[i]; i++) {
+  char* x = XGetAtomName(fltk::display, fltk::dnd_source_types[i]);
+  puts(x);
+  XFree(x);
+}</pre>
+
+<p>You can set this and <a
+href=#dnd_source_action><tt>fltk::dnd_source_action</tt></a> before calling <a
+href="Fl.html#dnd"><tt>fltk::dnd()</tt></a> to change information about
+the source. You must set both of these, if you don't fltk will default
+to <tt>"text/plain"</tt> as the type and <tt>XdndActionCopy</tt> as
+the action. To set this change it to point at your own array. Only the
+first 3 types are sent. Also, fltk has no support for reporting back
+what type the target requested, so all your types must use the same
+block of data.
+
+<h4><a name=dnd_type>Atom fltk::dnd_type</a></h4>
+
+The program can set this when returning non-zero for an <a
+href="events.html#DND_RELEASE"><tt>fltk::DND_RELEASE</tt></a> event to
+indicate the translation wanted. Fltk presets this to
+<tt>"text/plain"</tt> so that is returned if you don't set it
+(supposedly it should be limited to one of the
+values in <tt>fltk::dnd_source_types</tt>, but <tt>"text/plain"</tt>
+appears to always work).
+
+<h3><a name=windows>Using a Subclass of fltk::Window for Special X Stuff</a></h3>
+
+FLTK can manage an X window on a different screen, visual and/or 
+colormap, you just can't use FLTK's drawing routines to draw into it. 
+But you can write your own <tt>draw()</tt> method that uses Xlib 
+(and/or OpenGL) calls only. 
+
+<p>To do this, you need to make a subclass of <a href=Fl_Window.html#Window>
+<tt>fltk::Window</tt></a> and override some of these virtual functions: </P>
+
+<h4>virtual void fltk::Window::create()</h4>
+
+Creates the X window, and perhaps other data such as colormaps needed
+by this window.  To create the X window you must call
+<tt>fltk::X::create()</tt>.  Do not map the window, fltk does that for you.
+
+<p>An example:
+
+<PRE>void MyWindow::create() {
+  fltk::open_display();	// necessary if this is first window
+  // we only calcualte the necessary visual & colormap once:
+  static XVisualInfo* visual;
+  static Colormap colormap;
+  static int background;
+  if (!visual) {
+    visual = figure_out_visual();
+    colormap = XCreateColormap(fltk::display, RootWindow(fltk::display,fltk::screen),
+			        vis-&gt;visual, AllocNone);
+    XColor xcol; xcol.red = 1; xcol.green = 2; xcol.blue = 3;
+    XAllocColor(fltk::display, colormap, &xcol);
+    background = xcol.pixel;
+  }
+  fltk::X::create(this, visual, colormap, background);
+}</PRE>
+
+<h4>void fltk::X::create(fltk::Window*, XVisualInfo*, Colormap, int background=-1)</h4>
+
+This function calls XCreateWindow and sets things up so that
+<tt>fltk::xid(window)</tt> returns the created window id.  This also does
+a lot of other ugly X stuff, including setting the label, resize
+limitations, etc.  The background is a pixel to use for X's automatic
+fill color, use -1 to indicate that no background filling should be
+done.
+
+<h4>virtual void fltk::Window::flush()</h4>
+
+This virtual function is called by <tt>fltk::flush()</tt> to update the
+window. For FLTK's own windows it does this by setting the global
+variables <tt>fltk::window</tt> and <tt>fltk::gc</tt> and then calling the
+<tt>draw()</tt> method.  For your own windows you might just want to
+put all the drawing code in here.
+
+<p>X <tt>Expose</tt> events (and calls to <tt>expose()</tt> of the
+window or any widget inside it) turn on the
+<tt>fltk::DAMAGE_EXPOSE</tt> bit in <tt>damage()</tt>, and the regions of
+all of them are are accumulated into an X region
+that you can get from <tt>fltk::X::i(this)-&gt;region</tt>. This is set
+to <tt>NULL</tt> if the entire window is damaged. The undocumented function
+<tt>fltk::clip_region(XRegion)</tt> will initialize the FLTK clip stack
+with a region or <tt>NULL</tt> for no clipping.  You must set region
+to <tt>NULL</tt> afterwards as <tt>fltk::clip_region()</tt> now owns it
+and will delete it when done.
+
+<p>Any other bits set in <tt>damage()</tt> indicate calls to
+<tt>redraw()</tt> were done. Notice that the damaged items may be
+outside the <tt>fltk::X::i(this)-&gt;region</tt>.
+
+<p>If <tt>damage() == fltk::DAMAGE_EXPOSE</tt> then only X expose
+events have happened.  This may be useful if you have an undamaged
+image (such as a backing buffer) around.
+
+<p>Here is a sample where an undamaged image is kept somewhere: </P>
+
+<pre>void MyWindow::flush() {
+  if (damage() == fltk::DAMAGE_EXPOSE) {
+    fltk::clip_region(fltk::X::i(this)-&gt;region);
+    fltk::X::i(this)-&gt;region = 0;
+    copy_image(backing_store_pixmap, fltk::xid(this));
+  } else {
+    fltk::window = backing_store_pixmap;
+    fltk::gc = backing_store_gc;
+    this->draw();
+    copy_image(backing_store_pixmap, fltk::xid(this));
+  }
+}</pre>
+
+<h4>virtual void fltk::Window::destroy()</h4>
+
+Destroy the window server copy of the window.  Usually you will 
+destroy contexts, pixmaps, or other resources used by the window, and 
+then call <tt>fltk::Window::hide()</tt> to get rid of the main window 
+identified by <tt>xid()</tt>.
+
+<pre>void MyWindow::destroy() {
+  if (backing_store_pixmap) {
+    XFreePixmap(fltk::display, backing_store_pixmap);
+    backing_store_pixmap = 0;
+  }
+  fltk::Window::destroy(); // you must call this
+}</pre>
+
+<h4>virtual void fltk::Window::~Window()</h4>
+
+Because of the way C++ works, if you override <tt>destroy()</tt> you
+<I>must</I> override the destructor as well (otherwise only the base
+class <tt>destroy()</tt> is called):
+
+<pre>MyWindow::~MyWindow() {
+  destroy();
+}</pre>
+
+</body></html>
