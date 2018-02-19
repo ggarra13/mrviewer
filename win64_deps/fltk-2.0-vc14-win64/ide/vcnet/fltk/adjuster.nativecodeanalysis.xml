@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>d:\code\applications\mrviewer\win64_deps\fltk-2.0-vc14-win64\src\</FILEPATH>
+      <FILENAME>adjuster.cxx</FILENAME>
+      <LINE>64</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6385</DEFECTCODE>
+    <DESCRIPTION>Reading invalid data from 'arrows':  the readable size is '24' bytes, but '32' bytes may be read.</DESCRIPTION>
+    <FUNCTION>AdjusterGlyph::_draw</FUNCTION>
+    <DECORATED>?_draw@AdjusterGlyph@@UEBAXAEBVRectangle@fltk@@@Z</DECORATED>
+    <FUNCLINE>62</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>4</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>d:\code\applications\mrviewer\win64_deps\fltk-2.0-vc14-win64\src\</FILEPATH>
+        <FILENAME>adjuster.cxx</FILENAME>
+        <LINE>63</LINE>
+        <COLUMN>34</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>d:\code\applications\mrviewer\win64_deps\fltk-2.0-vc14-win64\src\</FILEPATH>
+        <FILENAME>adjuster.cxx</FILENAME>
+        <LINE>64</LINE>
+        <COLUMN>12</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>Invalid read from 'arrows[3]', (readable range is 0 to 2)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

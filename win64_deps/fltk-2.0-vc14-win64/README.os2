@@ -1,0 +1,13 @@
+BUILDING FLTK UNDER OS/2
+
+    The current OS/2 build requires XFree86 for OS/2 to work.  A native
+    Presentation Manager version has not been implemented yet
+    (volunteers are welcome!).
+
+    To build the XFree86 version of FLTK for OS/2, copy the appropriate
+    makeinclude and config files to the main directory and do a make:
+
+        copy makefiles\Makefile.os2x Makefile
+	make
+
+
