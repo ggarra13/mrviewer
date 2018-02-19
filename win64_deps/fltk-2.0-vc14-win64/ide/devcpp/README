@@ -1,0 +1,18 @@
+Project files for Bloodshed Dev-C++
+
+FLTK USERS
+----------
+Since Dev-C++ does not support workspaces,
+be sure to compile projects in following order:
+ 1. FLTK.dev
+ 2. FLTK_Images.dev
+ 3. - n. rest of projects
+
+DEVELOPERS
+----------
+IMHO we shouldn't commit .layout and *_private* files
+to FLTK SVN/CVS repository. This should be discussed on
+fltk.devel ...
+
+-----------------------------------------------
+$Id: README 3852 2004-09-25 01:54:46Z leka $
