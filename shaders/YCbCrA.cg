@@ -1,10 +1,10 @@
 /**
- * @file   yuva.cg
+ * @file   YCbCrA.cg
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  * 
- * @brief    simple YCA texture (OpenEXR) with 3D lut shader
- * @compile  cgc -profile fp30 YByRy.cg -o YByRy.fp30
+ * @brief    simple YCbCrA texture (OpenEXR) with 3D lut shader
+ * @compile  cgc -profile fp30 YCbCrA.cg -o YCbCrA.fp30
  * 
  */
 
@@ -20,7 +20,13 @@ Out main(
 	 uniform sampler2D RYImage: TEXUNIT2, 
 	 uniform sampler2D AImage: TEXUNIT4, 
 	 uniform sampler3D lut   : TEXUNIT3,
-	 uniform half3  yw   = half3( 0.2126, 0.7152, 0.0722 ),  // HDTV
+         // YCbCr variables
+         uniform bool   coeffs,  // Use fed coefficients instead of builtin ones
+         uniform half3  Koff,
+         uniform half3  Kr,
+         uniform half3  Kg,
+         uniform half3  Kb,
+         
 	 uniform int    mask = 0,
 	 uniform int    mask_value = 0,
          uniform int    height = 256,
@@ -54,13 +60,28 @@ Out main(
 		     );
 
   half4 c;
-  c.r = (pre.g + 1) * pre.r;
-  c.b = (pre.b + 1) * pre.r;
-  c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
-  c.rgb = clamp( c.rgb, 0.0, 1.0 );
+  if ( coeffs )
+  {
+      pre += half4( Koff.r, Koff.g, Koff.b, 0.0 );
+
+      c.r = dot(Kr, pre.xyz);
+      c.g = dot(Kg, pre.xyz);
+      c.b = dot(Kb, pre.xyz);
+  }
+  else
+  {
+      half3 yuv;
+      yuv.r = 1.1643 * ( pre.r - 0.0625 );
+      yuv.g = pre.g - 0.5;
+      yuv.b = pre.b - 0.5;
+
+      c.r = yuv.r + 1.5958 * yuv.b;
+      c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;
+      c.b = yuv.r + 2.017 * yuv.g;
+  }
+
   c.a = pre.a;
-
-
+  
   //
   // Apply normalization
   //
