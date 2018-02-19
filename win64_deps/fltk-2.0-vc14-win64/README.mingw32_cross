@@ -1,0 +1,66 @@
+--- CROSSCOMPILATION GOAL ---
+
+This page describes crosscompilation (building win32 programs on linux)
+
+Follow this instructions on linux (or Unix?) and you will have a library,
+which can be used on linux/unix to build win32 applications that use FLTK.
+
+Then you can use Wine for testing, and develop windows programs while being 
+windows-free \o/ (well, for real applications, do use beta testers with real
+windows).
+
+
+--- TOOLS ---
+
+You will need
+- FLTK sources
+- mingw cross compiler: you must have programs like i586-mingw32msvc-c++
+	in Ubuntu for example, they are in *mingw* package.
+	The prefix i586-mingw... was i486 i386 etc previously
+	if you have other name then adjust instructions below to match it
+- g++ and make
+- autoconfig
+
+--- DO IT ---
+Execute this long command:
+
+make clean ; autoconf ; ./configure --build="i586-mingw32msvc" --host="i586-mingw32msvc"  --target="i586-mingw32msvc" --prefix="/home/DEVEL/packs/fltk2/cross_win32" ; make -j 4 ; make install   
+
+You will see information like:
+checking for gcc... i586-mingw32msvc-gcc
+checking for C compiler default output file name... a.exe
+
+After all (around 1-5 minutes on ~2GHz) there will be errors reported about undefined references,
+but ignore them.
+
+Library should be builded now.
+
+--- CHECK ---
+Was all successfull? Check.
+
+Use: 
+file lib/*.a
+
+if it displays:
+	lib/libfltk2.a:        current ar archive
+	lib/libfltk2_gl.a:     current ar archive
+	lib/libfltk2_png.a:    current ar archive
+	(...)
+then the lib is builded
+
+Check file src/*.o to see if it was builded as windows version (crossbuilded)
+	src/fillrect.o:           80386 COFF executable not stripped - version 30821
+	src/Fl_Menu_Item.o:       80386 COFF executable not stripped - version 30821
+	(...)
+
+--- INSTALL IT ---
+Create the directory mentioned in --prefix above (or start over with another prefix)
+
+make install
+
+After this you will be able to crossbuild programs by calling i586-..-g++ 
+with proper flags (returned by fltk-config)
+
+TODO (finish this document!) --Rafal
+
+
