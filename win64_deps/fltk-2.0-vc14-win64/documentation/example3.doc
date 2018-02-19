@@ -1,0 +1,130 @@
+// This file is for Doxygen input. It is not compiled.
+
+#include <fltk/Window.h>
+#include <fltk/Widget.h>
+#include <fltk/run.h>
+
+using namespace fltk;
+
+/*! \page example3 Example 3: Using Classes
+
+As soon as you move away from very simple programs, you will need to
+organize your data and widgets, so that it is easier to create correct
+programs and it is easier to reuse structures you created before. This
+can be done using C++ classes.
+
+This program produces an interface identical to the last one described
+in \ref example2 "Example 2", but there are no static variables, the
+arguments to the callbacks are more consistent, and it is trivial to
+produce multiple examples of the windows:
+
+\include classes.cxx
+
+This program displays two windows that look like this:
+
+\image html callbacks.gif
+
+Let's look at the pieces of this program:
+
+\dontinclude classes.cxx
+\skip static
+\until }
+
+This is a simple callback just like in the previous example. You can
+use simpler code like this when pointers to the class are not needed.
+
+\skip class
+\until exit_button
+
+Now we are describing our new class. It will be a window containing
+several widgets. These widgets are defined as instance variables
+inside it. The positions and labels and callbacks of these widgets
+will be defined below in the constructor. You can also define the
+widgets as pointers and have your constructor call "new" to define
+them, this can be more convenient in some cases and is necessary if
+you want to repeat or vary the set of widgets.
+
+\skip inline
+\until }
+\until }
+
+Here is an example of a callback. It is written as two parts, the
+"method" copy_callback_i() which does all the work, and the static
+"function" copy_callback() which provides glue code that gets around
+C++'s limitations as to what you can put into function pointers. We
+recommend that you do any real work in the method, while you do any
+casting needed in the static function.
+
+Because the method is inline and private, most C++ compilers will
+actually compile this into a single function that is as efficient as
+though you typed everything into the static function.
+
+Most C++ compilers will allow the inline function and the static
+method to have the same name, because they have different arguments,
+so they both could be called copy_callback. However not all C++
+compilers work with this, so we recommend the _i suffix to indicate
+the internal inline method.
+
+\skip inline
+\until slider_callback
+\until }
+\until }
+
+Here are more callbacks for other buttons and widgets. The
+slider_callback example shows how to pass an argument to the method,
+in this case it is a pointer to the slider. Though not necessary in
+this program, this is useful if there are multiple sliders that want
+to share the same callback code.
+
+\skip SampleWindow
+\until USEDEFAULT
+
+The constructor for our window only takes a text label for it. It
+first calls the base Window class. USEDEFAULT is used for the x and y
+positions to indicate that the window system should choose a position
+for the window. The last argument to Window() of <tt>true</tt>
+indicates that an automatic begin() should be done, so all subsequent
+widgets are created with this window as a parent.
+
+\until exit_button
+
+Now we have constructed all the child widgets as instance variables
+inside our class. The constructors automatically add these child
+widgets as children of our window due to the <tt>true</tt> argument
+passed to the window constructor.
+
+\until slider.callback
+
+Inside the constructor we set the callback functions for our
+widgets. We actually pass a pointer to the static function and
+<tt>this</tt> as the user_data value. The static function will cast
+the void* user_data back to a pointer to this class and call the
+inline method.
+
+\until exit_button
+
+Also inside the constructor we do other settings to the child widgets
+that cannot be done in the constructor calls to them.
+
+\until }
+
+You must call end() on the window to set the current group new widgets
+are being added to back to whatever it was before.
+
+\skipline ~SampleWindow
+
+It is recommended you always write a destructor even if it does
+nothing. This is to remind you to add code here if needed later
+on. All fltk classes that have any virtual functions declare a virtual
+destructor.
+
+\skip main
+\until }
+
+Our main function is quite simple. It creates two instances of our
+window class and shows them (some people like to put the show in the
+constructor, so just creating the class makes the window appear). It
+then runs the fltk main loop. This will exit if the user closes both
+windows, or if they click either exit button.
+
+*/
