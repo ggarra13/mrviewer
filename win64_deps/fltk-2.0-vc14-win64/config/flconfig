@@ -1,0 +1,35 @@
+# FLTK2 configuration file
+
+[default]
+  # include mouse wheel configuration
+
+  include wheel.conf
+
+  # Which scheme should we use?  (Loads the themes too)
+  # These are filenames, and are thus case-sensitive under Linux/Unix
+  # FLTK comes with:
+  #   Alternative, Alt2, Classic, Essai, KDE, Motif, OldMotif, Windows
+
+  scheme = Alt2
+  #scheme = Alternative
+  #scheme = Windows
+  #scheme = KDE
+  #scheme = Motif
+  #scheme = OldMotif
+  #scheme = Classic
+  #scheme = Essai
+
+  # You can put a list of theme plugins here, but it's best to just use
+  # the schemes to load the themes.  Themes are loaded when the first
+  # window is shown.
+  # These are filenames, and are thus case-sensitive under Linux/Unix
+  #themes = KDE_colors
+
+  # You can put a list of other plugins here.  These plugins are loaded
+  # before main() is started!
+  # These are filenames, and are thus case-sensitive under Linux/Unix
+  plugins = xft
+
+  [default/xft plugin]
+    #minimum antialias size = 14
+    minimum antialias size = 0
