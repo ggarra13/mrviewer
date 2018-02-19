@@ -1,0 +1,41 @@
+README
+------
+
+The FLTK manual is a combination of hand-written html pages, and
+output by the Doxygen program to produce accurate item documentation
+for functions and classes.
+
+To build the doxygen output, you need at least version 1.3.4 of
+Doxygen, available from
+
+    http://www.doxygen.org/
+
+To make the documentation, cd to this directory and type:
+
+   doxygen
+
+The doxygen output will be in the ./html/ subdirectory. However the
+main page is the index.html in this directory, and all the other
+hand-written pages are in this directory.
+
+.......
+
+The documentation in this directory is in HTML format.  To read it just
+point your browser at the "index.html" file. A slightly more browseable
+version is accessable at the FLTK web site, along with PostScript(tm)
+and PDF versions of the manual.
+
+You can generate your own (printable) copy of the manual by typing
+"make" in this directory.  You will need to have the HTMLDOC software
+installed on your system.  HTMLDOC can be downloaded from:
+
+    http://www.easysw.com/htmldoc
+
+The default media size is 8.27x11.0" (210x279mm), which is the lesser
+of A4 and US Letter sizes.  You can change this in the makefile by
+uncommenting the corresponding media size or defining your own.
+
+If you find any typos, things that are unclear, or would like to
+contribute an example, section, or chapter to the FLTK manual, please
+contact Michael Sweet (mike@easysw.com).
+
