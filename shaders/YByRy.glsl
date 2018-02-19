@@ -132,17 +132,17 @@ void main()
   
   if ( mask == 1 )  // even odd rows
   {
-      float f = tc.y * height;
+      float f = float( tc.y * height );
       x = int( mod( f, 2 ) );
   }
   else if ( mask == 2 ) // even odd columns
   {
-      float f2 = tc.x * width;
+      float f2 = float( tc.x * width );
       x = int( mod( f2, 2 ) );
   }
   else if ( mask == 3 ) // checkerboard
   {
-      float f = tc.y * height;
+      float f = float( tc.y * height );
       float f2 = tc.x * width;
       x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
   }
