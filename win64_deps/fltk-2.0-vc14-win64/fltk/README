@@ -1,0 +1,8 @@
+This directory is for the public include files used by fltk. The
+directory is named "fltk" so that fltk's source and test programs can
+be compiled with these headers by using -I.. as a switch to the
+compiler.
+
+FLTK developers: please notice that this is for *PUBLIC* header
+files. If you have a private structure that is shared between fltk
+source files, put it in the same directory as the source files!
