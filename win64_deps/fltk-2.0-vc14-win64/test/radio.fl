@@ -1,0 +1,122 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 10 
+gridy 5 
+snap 3
+namespace fltk {open
+} {
+Function {} {open selected
+} {
+  {fltk::Window} {} {
+    label {Radio buttons and Tooltips} open
+    tooltip {This is a window}
+    xywh {372 93 380 274} resizable visible
+  } {
+    {fltk::Button} {} {
+      label Button
+      tooltip {This is a button}
+      xywh {20 10 160 25}
+    }
+    {fltk::ReturnButton} {} {
+      label ReturnButton
+      tooltip {This is a return button}
+      xywh {20 40 160 25} shortcut 0xff0d
+    }
+    {fltk::LightButton} {} {
+      label LightButton
+      tooltip {This is a light button!  This particular light button has a very long tooltip.  This tooltip should demonstrate that very long tooltips are wrapped across multiple lines.}
+      xywh {20 70 160 25}
+    }
+    {fltk::CheckButton} {} {
+      label CheckButton
+      tooltip {This is a check button}
+      xywh {20 100 160 25}
+    }
+    {fltk::RadioButton} {} {
+      label RoundButton
+      tooltip {This is a round button}
+      xywh {20 125 160 25}
+    }
+    {fltk::Group} {} {open
+      tooltip {This is a group}
+      xywh {190 10 70 200}
+    } {
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 0 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 25 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 50 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 75 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 100 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 125 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 150 70 25} type RADIO
+      }
+      {fltk::CheckButton} {} {
+        label radio
+        tooltip {This is a check button}
+        xywh {0 175 70 25} type RADIO
+      }
+    }
+    {fltk::Group} {} {open
+      tooltip {This is a group}
+      xywh {270 10 90 115} box THIN_UP_BOX
+    } {
+      {fltk::Button} {} {
+        label radio
+        tooltip {This the first button of the group}
+        xywh {15 10 20 20} type RADIO align 8
+      }
+      {fltk::Button} {} {
+        label radio
+        tooltip {This the second button of the group}
+        xywh {15 35 20 20} type RADIO align 8
+      }
+      {fltk::Button} {} {
+        label radio
+        tooltip {This the third button of the group}
+        xywh {15 60 20 20} type RADIO align 8
+      }
+      {fltk::Button} {} {
+        label radio
+        tooltip {This the fourth button of the group}
+        xywh {15 85 20 20} type RADIO align 8
+      }
+    }
+    {fltk::LightButton} ttlb {
+      label {Show Tooltips}
+      callback {Tooltip::enable(ttlb->value() ? true : false);}
+      tooltip {This button enables or disables tooltips}
+      xywh {120 230 130 30} value 1
+      extra_code {\#include <fltk/Tooltip.h>}
+    }
+  }
+} 
+} 

@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="windows-mingw32" />
+		<Option pch_mode="0" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="fltk-static-debug">
+				<Option output="..\..\lib\libfltk2-debug.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output=".objs-debug" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add directory="..\..\..\fltk-2.0" />
+					<Add directory="..\..\fltk\compat" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+				</Linker>
+			</Target>
+			<Target title="fltk-static-release">
+				<Option output="..\..\lib\libfltk2.a" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output=".objs-release" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add directory="..\..\..\fltk-2.0" />
+					<Add directory="..\..\fltk\compat" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="hello-debug">
+				<Option output="..\..\bin\hello-debug.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output=".objs-debug" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-DDEBUG=1" />
+					<Add directory="..\..\..\fltk-2.0" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add option="-lfltk2-debug" />
+					<Add option="-mwindows" />
+					<Add option="-lmsimg32" />
+					<Add option="-lole32" />
+					<Add option="-luuid" />
+					<Add option="-lcomctl32" />
+					<Add option="-lwsock32" />
+					<Add directory="..\..\lib" />
+				</Linker>
+			</Target>
+			<Target title="hello-release">
+				<Option output="..\..\bin\hello.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output=".objs-release" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="1" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O3" />
+					<Add option="-DDEBUG=1" />
+					<Add directory="..\..\..\fltk-2.0" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lfltk2" />
+					<Add option="-mwindows" />
+					<Add option="-lmsimg32" />
+					<Add option="-lole32" />
+					<Add option="-luuid" />
+					<Add option="-lcomctl32" />
+					<Add option="-lwsock32" />
+					<Add directory="..\..\lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="fltk-static-debug;fltk-static-release;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-DNOIME=1" />
+			<Add directory="..\..\..\fltk" />
+		</Compiler>
+		<Unit filename="..\..\fltk\Adjuster.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\AlignGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\BarGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Box.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Browser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Button.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\CheckButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Choice.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Clock.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Color.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ColorChooser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ComboBox.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Cursor.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\CycleButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Dial.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Divider.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\DoubleBufferWindow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FL_API.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FL_VERSION.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FileBrowser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FileChooser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FileIcon.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FileInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FillDial.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FillSlider.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Flags.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\FloatInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Font.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\GlWindow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Group.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\HelpDialog.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\HelpView.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\HighlightButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Image.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Input.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\InputBrowser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\IntInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\InvisibleBox.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Item.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ItemGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\LabelType.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\LightButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\LineDial.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Menu.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MenuBar.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MenuBuild.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MenuWindow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Monitor.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MultiBrowser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MultiImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MultiLineInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\MultiLineOutput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\NumericInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Output.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\PackedGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\PixelType.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\PopupMenu.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Preferences.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ProgressBar.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\RadioButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\RadioItem.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\RadioLightButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Rectangle.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\RepeatButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ReturnButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ScrollGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Scrollbar.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\SecretInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ShapedWindow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\SharedImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Slider.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\StringList.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Style.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\StyleSet.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Symbol.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\TabGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\TextBuffer.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\TextDisplay.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\TextEditor.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Threads.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ThumbWheel.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\TiledGroup.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\TiledImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ToggleButton.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Tooltip.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Valuator.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ValueInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ValueOutput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ValueSlider.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Widget.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\Window.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\WordwrapInput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\WordwrapOutput.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\ask.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\damage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\dirent.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\draw.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\error.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\events.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\file_chooser.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\filename.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\forms.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\gl.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\gl2opengl.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\glut.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\layout.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\load_plugin.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\mac.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\math.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\pnmImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\rgbImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\run.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\show_colormap.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\string.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\types.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\utf.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\visual.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\win32.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\x.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\xbmImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\fltk\xpmImage.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ARRAY.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Adjuster.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\AlignGroup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\BarGroup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Browser.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Browser_load.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Button.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\CheckButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Choice.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Clock.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Color.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ComboBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Cursor.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\CycleButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Dial.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\DiamondBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\EngravedLabel.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\FileBrowser.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\FileChooser.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\FileChooser2.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\FileIcon.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\FileInput.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Fl_Menu_Item.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\FloatInput.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Font.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\GSave.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Group.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\HelpView.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\HighlightButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Image.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Input.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\InputBrowser.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\InvisibleWidget.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Item.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\LightButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Menu.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\MenuBar.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\MenuWindow.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Menu_add.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Menu_global.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Menu_popup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\MultiImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\NumericInput.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Output.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\OvalBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\PackedGroup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\PlasticBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\PopupMenu.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Preferences.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ProgressBar.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\RadioButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\RepeatButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ReturnButton.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\RoundBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\RoundedBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ScrollGroup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Scrollbar.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ShadowBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ShapedWindow.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\SharedImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ShortcutAssignment.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Slider.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\StringList.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Style.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\StyleSet.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Symbol.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\TabGroup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\TextBuffer.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\TextDisplay.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\TextEditor.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ThumbWheel.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\TiledGroup.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\TiledImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Tooltip.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\UpBox.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Valuator.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ValueInput.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ValueOutput.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\ValueSlider.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Widget.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Widget_draw.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Window.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Window_fullscreen.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Window_hotspot.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\Window_iconize.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\add_idle.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\addarc.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\addcurve.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\args.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\bmpImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\clip.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\color_chooser.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\colormap.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\colormap.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\compose.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\default_glyph.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\dnd.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\draw_xpm.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\drawimage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\drawtext.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\dump_compose.c">
+			<Option compilerVar="CC" />
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\error.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\event_key_state.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\fastarrow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\file_chooser.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\filename_absolute.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\filename_ext.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\filename_isdir.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\filename_list.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\filename_match.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\filename_name.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\fillarc.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\fillrect.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\fltk_theme.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\gifImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\key_name.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\list_fonts.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\load_plugin.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\lock.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\mediumarrow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\message.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\numericsort.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\overlay_rect.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\own_colormap.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\path.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\readimage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\rgbImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\run.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\scandir.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\scrollrect.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\setcolor.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\setdisplay.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\setvisual.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\show_colormap.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\slowarrow.h">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\string.c">
+			<Option compilerVar="CC" />
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\utf.c">
+			<Option compilerVar="CC" />
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\vsnprintf.c">
+			<Option compilerVar="CC" />
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\xbmImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\src\xpmImage.cxx">
+			<Option target="fltk-static-debug" />
+			<Option target="fltk-static-release" />
+		</Unit>
+		<Unit filename="..\..\test\hello.cxx">
+			<Option target="hello-debug" />
+			<Option target="hello-release" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

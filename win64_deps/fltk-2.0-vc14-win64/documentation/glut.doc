@@ -1,0 +1,135 @@
+// This file is for Doxygen input. It is not compiled.
+
+using namespace fltk;
+
+/*! \file glut.h
+
+This file provides GLUT compatibility in FLTK 2.0.
+
+GLUT is/was a popular toolkit for making single-window OpenGL
+applications.  GLUT is Copyright&copy; Mark J. Kilgard, 1994, 1995,
+1996. FLTK's emulation is not based on any GLUT code and is not
+subject to any license other than FLTK's.
+
+Most glut emulation is done by the GlutWindow class, and inline
+functions in this header file that turn GLUT calls into instances and
+methods on those instances.  You should take a look at it (and maybe
+at <tt>test/glpuzzle.cxx</tt> in the FLTK source) if you are having
+trouble porting your GLUT program.
+
+This has been tested with most of the demo programs that come with 
+the GLUT 3.3 distribution.
+
+\section gusing Using the GLUT Compatibility Header File
+
+You should be able to compile existing GLUT source code by including
+<tt>&lt;fltk/glut.h&gt;</tt> instead of <tt>&lt;GL/glut.h&gt;</tt>.
+This can be done by editing the source, by changing the <tt>-I</tt>
+switches to the compiler, or by providing a symbolic link from
+<tt>GL/glut.h</tt> to <tt>fltk/glut.h</tt>.
+
+<i>All files calling GLUT procedures must be compiled with C++</i>.
+You may have to alter them slightly to get them to compile without
+warnings, and you may have to rename them to get make to use the C++
+compiler.
+
+You must link with the FLTK library.  If you call any GLUT drawing
+functions that FLTK does not emulate
+(<tt>glutExtensionsSupported()</tt>, <tt>glutWire*()</tt>,
+<tt>glutSolid*()</tt>, and <tt>glutStroke*()</tt>), you will also have
+to link with the GLUT library (<I>after</I> the FLTK library!)
+
+\section gbugs Known Problems
+
+The following functions and/or arguments to functions are missing, and 
+you will have to replace them or comment them out for your code to 
+compile: 
+
+<UL>
+<li><tt>glutLayerGet(GLUT_LAYER_IN_USE)</tt></li>
+<li><tt>glutLayerGet(GLUT_HAS_OVERLAY)</tt></li>
+<li><tt>glutSetColor(), glutGetColor(), glutCopyColormap()</tt></li>
+<li><tt>glutInitDisplayMode(GLUT_STEREO)</tt></li>
+<li><tt>glutInitDisplayMode(GLUT_LUMINANCE)</tt></li>
+<li><tt>glutPushWindow()</tt></li>
+<li><tt>glutWarpPointer()</tt></li>
+<li>Spaceball, buttonbox, dials, tablet functions, <tt>glutDeviceGet()</tt></li>
+<li><tt>glutWindowStatusFunc()</tt></li>
+<li><tt>glutGet(GLUT_WINDOW_NUM_CHILDREN)</tt></li>
+<li><tt>glutGet(GLUT_SCREEN_WIDTH_MM)</tt></li>
+<li><tt>glutGet(GLUT_SCREEN_HEIGHT_MM)</tt></li>
+<li><tt>glutGet(GLUT_ELAPSED_TIME)</tt></li>
+<li><tt>glutVideoResize()</tt> missing.</li>
+</UL>
+
+Most of the symbols/enumerations have different values than GLUT uses.
+This will break code that relies on the actual values. The only
+symbols guaranteed to have the same values are true/false pairs like
+<tt>GLUT_DOWN</tt> and <tt>GLUT_UP</tt>, mouse buttons
+<tt>GLUT_LEFT_BUTTON, GLUT_MIDDLE_BUTTON, GLUT_RIGHT_BUTTON</tt>, and
+<tt>GLUT_KEY_F1</tt> thru <tt>F12</tt>.
+
+The strings passed as menu labels are not copied.
+
+<tt>glutPostRedisplay()</tt> does not work if called from inside a 
+display function.  You must use <tt>glutIdleFunc()</tt> if you want 
+your display to update continuously.
+
+<tt>glutSwapBuffers()</tt> does not work from inside a display 
+function.  This is on purpose, because FLTK swaps the buffers for you.
+
+<tt>glutUseLayer()</tt> does not work well, and should only be used 
+to initialize transformations inside a resize callback.  You should 
+redraw overlays by using <tt>glutOverlayDisplayFunc()</tt>.
+
+Overlays are cleared before the overlay display function is called. <tt>
+glutLayerGet(GLUT_OVERLAY_DAMAGED)</tt> always returns true for 
+compatibility with some GLUT overlay programs.  You must rewrite your 
+code so that <tt>gl_color()</tt> is used to choose colors in an 
+overlay, or you will get random overlay colors.
+
+<tt>glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR)</tt> just results in a 
+small crosshair.
+
+The fonts used by <tt>glutBitmapCharacter() and
+glutBitmapWidth()</tt> may be different.
+
+<tt>glutInit(argc,argv)</tt> will consume different switches than
+GLUT does.  It accepts the switches recognized by <A
+href="utilty.html#args"><tt>fltk::args()</tt></A>, and will accept any
+abbreviation of these switches (such as &quot;-di&quot; for
+&quot;-display&quot;).
+
+\section gmixing Mixing GLUT and FLTK Code
+
+You can make your GLUT window a child of a Window with the 
+following scheme.  The biggest trick is that GLUT insists on <tt>show()</tt>
+'ing the window at the point it is created, which means the <tt>
+fltk::Window</tt> parent window must already be shown.
+
+<UL>
+
+<li>Don't call <tt>glutInit()</tt>.</li>
+
+<li>Create your Window, and any FLTK widgets.  Leave a blank area in
+the window for your GLUT window.</li>
+
+<li>Window::show() the new Window.  Perhaps call
+Window::show(argc,argv).</li>
+
+<li>Call Window::begin() so that the GLUT window will  be 
+automatically added to it.</li>
+
+<li>Use <tt>glutInitWindowSize()</tt> and <tt>glutInitWindowPosition()</tt>
+to set the location in the  parent window to put the GLUT window.</li>
+
+<li>Put your GLUT code next.  It probably does not need many changes.
+Call Window::end() immediately after the
+<tt>glutCreateWindow()</tt>!</li>
+
+<li>You can call either <tt>glutMainLoop()</tt>, or the FLTK run(), or 
+loop calling the FLTK wait() to run  the program.</li>
+
+</UL>
+
+*/

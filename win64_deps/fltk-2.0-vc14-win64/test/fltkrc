@@ -1,0 +1,41 @@
+#
+# config file for the minimalistic fltk conf reader plugin
+#
+
+[window]
+box		= image_flat_box(images/bg.jpeg)# This is an example 
+						# of boxtype defined in plugin
+
+
+[global]
+box		= image_box(images/bg.jpeg images/bg2.jpeg images/bg2.jpeg)	# This is an example 
+glyph_box	= image_box(images/bg.jpeg images/bg2.jpeg images/bg2.jpeg)	# This is an example 
+						# of boxtype defined in plugin
+#box		= rshadow_box			# Normal box
+#color		= #d0d0e0			# Color in hex
+#selection_color	= #d0d0e0			# Color in hex
+label_color	= .2, 0, 0			# Color in r, g, b
+
+
+[check_button]
+box		= no_box
+
+
+[menu_item]
+box			= image_flat_box(images/bg.jpeg images/bg2.jpeg images/bg2.jpeg)
+#highlight_label_color	= 0.7 , 0.2 , 0.2
+highlight_label_color	= 1,0,0
+highlight_label_color	= 1,0,0
+
+[menu_title]
+box			= image_flat_box(images/bg.jpeg images/bg2.jpeg images/bg2.jpeg)
+highlight_label_color	= 0.7 , 0.2 , 0.2
+
+
+[tabs]
+box		= image_box(images/bg2.jpeg)
+
+
+#[box]
+#box		= image_box(images/bg2.jpeg)
+box			= image_flat_box(images/bg.jpeg images/bg2.jpeg images/bg2.jpeg)
