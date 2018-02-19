@@ -1,0 +1,48 @@
+This directory contains GLUT emulation code for fltk.
+
+The demo program "glpuzzle" is almost completely unchanged from the
+original glut source code.  Search for "fltk" to find the changes.
+
+The demo program "fractals" shows how a glut program can be imbedded
+into a fltk window so that you can add buttons and other controls.
+Most of the code is unchanged.  There are reports this program can
+crash some OpenGL drivers!
+
+Glut emulation is no longer actively supported in fltk.  However
+these files do work and can be used as a starting point for porting
+Glut programs.
+
+To compile:
+
+   Make fltk first.  You do not need to install it.
+
+   Type "make" in this directory.
+
+   Try the "glpuzzle" and "fractals" program to test it.
+
+   Type "make install"
+
+To compile Glut source code:
+
+   Modify it so that <glut.h> is replaced with <fltk/glut.h>
+
+   Compile and link with -lfltk2_glut -lfltk2
+
+   You may also need -lglut to get functions like the teapot.  Put
+   this *after* -lfltk2.
+
+   You may have to modify the code to get it to compile with C++.
+
+Copyright notice:
+
+   GLUT is Copyright (c) Mark J. Kilgard, 1994, 1995, 1996.
+   "This program is freely distributable without licensing fees  and is
+   provided without guarantee or warrantee expressed or  implied. This
+   program is -not- in the public domain."
+
+   Although I have copied the GLUT API, none of my code is based on
+   any Glut implementation details.  Therefore the fltk glut emulation
+   is covered by the LGPL and may be used in commercial software.
+
+
+
