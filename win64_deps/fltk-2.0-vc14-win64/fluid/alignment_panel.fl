@@ -1,0 +1,239 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "PrefsData.h"} {} 
+
+decl {\#include "FluidType.h"} {} 
+
+decl {\#include <fltk/Preferences.h>} {public
+} 
+
+decl {\#include <fltk/TextBuffer.h>} {public
+} 
+
+decl {\#include <fltk/TextDisplay.h>} {public
+} 
+
+decl {extern void load_history();} {public
+} 
+
+decl {fltk::TextBuffer *shell_run_buffer;} {public
+} 
+
+Function {make_preferences_window()} {open
+} {
+  {fltk::Window} preferences_window {
+    label {fluid Preferences} open
+    xywh {487 250 370 253} resizable non_modal visible
+  } {
+    {fltk::TabGroup} pref_tabs {
+      callback {initialize_tab_colors();} open
+      xywh {5 4 360 210}
+    } {
+      {fltk::Group} {} {
+        label General open
+        xywh {0 21 360 188} color 0x54c2d400
+      } {
+        {fltk::CheckButton} openlast_button {
+          label {Open Previous File on Startup}
+          callback {prefs.open_previous_file(openlast_button->value());}
+          xywh {10 5 190 25}
+          extra_code {openlast_button->value(prefs.open_previous_file() ? true : false);}
+        }
+        {fltk::CheckButton} prevpos_button {
+          label {Remember Window Positions}
+          callback {prefs.prev_window_pos(prevpos_button->value());}
+          xywh {10 25 190 25}
+          extra_code {prevpos_button->value(prefs.prev_window_pos() ? true : false);}
+        }
+        {fltk::CheckButton} completion_button {
+          label {Show Completion Dialog Info}
+          callback {prefs.show_completion_dialogs(completion_button->value());}
+          xywh {10 45 186 25}
+          extra_code {completion_button->value(prefs.show_completion_dialogs() ? true : false);}
+        }
+        {fltk::ValueInput} recent_spinner {
+          label {\# Recent Files}
+          callback {prefs.recent_files((int) recent_spinner->value()); load_history();}
+          xywh {13 93 37 25} align 8 when CHANGED
+          extra_code {recent_spinner->maximum(10); recent_spinner->value(prefs.recent_files());}
+        }
+        {fltk::CheckButton} tabcolor_button {
+          label {Colorful tabs}
+          callback {prefs.tabcolor(o->value());
+initialize_tab_colors();}
+          xywh {10 125 100 25}
+          extra_code {o->value(prefs.tabcolor() ? true : false);}
+        }
+        {fltk::CheckButton} splash_button {
+          label {Show splash screen on startup}
+          callback {prefs.show_splash(o->value());} selected
+          xywh {10 65 190 25}
+          extra_code {o->value(prefs.show_splash() ? true : false);}
+        }
+      }
+      {fltk::Group} {} {
+        label {Code generation}
+        xywh {0 20 360 190} align 5 hide color 0x13d47a00
+      } {
+        {fltk::Widget} {} {
+          label {Use "name.ext" to set name or just ".ext" to set only extension.}
+          xywh {16 0 323 25} align 180 box NO_BOX labelsize 11
+        }
+        {fltk::Input} header_file_input {
+          label {Header File:}
+          user_data 1 user_data_type {void*}
+          callback header_input_cb
+          xywh {96 30 185 22} when CHANGED
+        }
+        {fltk::Input} code_file_input {
+          label {Code File:}
+          user_data 1 user_data_type {void*}
+          callback code_input_cb
+          xywh {96 57 185 22} when CHANGED
+        }
+        {fltk::CheckButton} include_H_from_C_button {
+          label {\#include "header" in code}
+          callback include_H_from_C_button_cb
+          xywh {16 84 170 22} value 1
+        }
+      }
+      {fltk::Group} {} {
+        label Alignment open
+        xywh {0 21 360 189} align 5 hide color 0xd49a5600
+      } {
+        {fltk::Input} horizontal_input {
+          label {Horizontal:}
+          user_data 1 user_data_type long
+          callback alignment_cb
+          xywh {75 6 100 22} labelsize 14 textsize 14
+          extra_code {o->when(fltk::WHEN_RELEASE|fltk::WHEN_ENTER_KEY);}
+        }
+        {fltk::Input} vertical_input {
+          label {Vertical:}
+          user_data 2 user_data_type long
+          callback alignment_cb
+          xywh {238 6 100 22} labelsize 14 textsize 14
+          extra_code {o->when(fltk::WHEN_RELEASE|fltk::WHEN_ENTER_KEY);}
+        }
+        {fltk::Input} snap_input {
+          label {Snap:}
+          user_data 3 user_data_type long
+          callback alignment_cb
+          xywh {75 40 100 22} labelsize 14 textsize 14
+          extra_code {o->when(fltk::WHEN_RELEASE|fltk::WHEN_ENTER_KEY);}
+        }
+        {fltk::Group} {} {
+          label {Widget
+ Size:} open
+          xywh {73 75 207 85} align 4
+        } {
+          {fltk::RadioButton} {def_widget_size[0]} {
+            label Tiny
+            user_data 8 user_data_type long
+            callback default_widget_size_cb
+            xywh {0 0 83 25} align 44 labelsize 8
+          }
+          {fltk::RadioButton} {def_widget_size[1]} {
+            label Small
+            user_data 11 user_data_type long
+            callback default_widget_size_cb
+            xywh {100 0 70 25} labelsize 11
+          }
+          {fltk::RadioButton} {def_widget_size[2]} {
+            label Normal
+            user_data 14 user_data_type long
+            callback default_widget_size_cb
+            xywh {0 25 83 25} align 44
+          }
+          {fltk::RadioButton} {def_widget_size[3]} {
+            label medium
+            user_data 18 user_data_type long
+            callback default_widget_size_cb
+            xywh {100 25 90 25} labelsize 18
+          }
+          {fltk::RadioButton} {def_widget_size[4]} {
+            label large
+            user_data 24 user_data_type long
+            callback default_widget_size_cb
+            xywh {0 50 83 26} align 44 labelsize 24
+          }
+          {fltk::RadioButton} {def_widget_size[5]} {
+            label huge
+            user_data 32 user_data_type long
+            callback default_widget_size_cb
+            xywh {100 50 95 25} labelsize 32
+          }
+        }
+      }
+    }
+    {fltk::Button} {} {
+      label Close
+      callback {preferences_window->hide();}
+      xywh {139 222 106 25}
+    }
+  }
+} 
+
+Function {make_shell_window()} {open
+} {
+  {fltk::Window} shell_window {
+    label {Shell Command} open
+    xywh {492 86 365 125} type Double resizable visible
+  } {
+    {fltk::Input} shell_command_input {
+      label {Command:}
+      callback {prefs.shell_command(shell_command_input->value());}
+      xywh {10 27 347 25} align 5 labelfont 1
+      extra_code {shell_command_input->value(prefs.shell_command());}
+    }
+    {fltk::CheckButton} shell_writecode_button {
+      label {Write Code}
+      callback {prefs.shell_writecode(shell_writecode_button->value());}
+      xywh {127 61 93 19}
+      extra_code {shell_writecode_button->value(prefs.shell_writecode() ? true : false);}
+    }
+    {fltk::CheckButton} shell_writemsgs_button {
+      label {Write Messages}
+      callback {prefs.shell_writemsgs(shell_writemsgs_button->value());}
+      xywh {231 61 126 19} hide
+      extra_code {shell_writemsgs_button->value(prefs.shell_writemsgs() ? true : false);}
+    }
+    {fltk::CheckButton} shell_savefl_button {
+      label {Save Fluid File}
+      callback {prefs.shell_savefl(shell_savefl_button->value());}
+      xywh {10 61 108 19}
+      extra_code {shell_savefl_button->value(prefs.shell_savefl() ? true : false);}
+    }
+    {fltk::ReturnButton} {} {
+      label {Run Command}
+      callback do_shell_command
+      xywh {132 90 143 25} shortcut 0xff0d
+    }
+    {fltk::Button} {} {
+      label Cancel
+      callback {shell_window->hide();}
+      xywh {285 90 72 25}
+    }
+  }
+  {fltk::Window} shell_run_window {
+    label {Shell Command Output} open
+    xywh {459 284 555 430} type Double hide resizable
+  } {
+    {fltk::TextDisplay} shell_run_display {
+      xywh {10 10 535 375} textfont 4
+      extra_code {shell_run_buffer = new fltk::TextBuffer();
+shell_run_display->buffer(shell_run_buffer);}
+    }
+    {fltk::ReturnButton} shell_run_button {
+      label Close
+      callback {shell_run_window->hide();}
+      xywh {468 395 77 25} shortcut 0xff0d
+    }
+  }
+} 

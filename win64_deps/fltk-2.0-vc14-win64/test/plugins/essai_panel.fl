@@ -1,0 +1,21 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0000 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+Function {make_window()} {open
+} {
+  Fl_Window Essai {open selected
+    xywh {279 430 258 74}
+    class Fl_Group visible
+  } {
+    Fl_Slider {} {
+      label {Major tick precision}
+      callback major_tick_precision_cb
+      xywh {20 20 225 20} type {Horz Knob} maximum 6 step 1
+    }
+  }
+} 

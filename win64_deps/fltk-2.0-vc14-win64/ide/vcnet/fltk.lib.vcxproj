@@ -1,0 +1,657 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Cairo|Win32">
+      <Configuration>Debug Cairo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Cairo|x64">
+      <Configuration>Debug Cairo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release MinSize|Win32">
+      <Configuration>Release MinSize</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release MinSize|x64">
+      <Configuration>Release MinSize</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>fltk</ProjectName>
+    <ProjectGuid>{1C3B1218-E0E2-495D-BFA4-50298C7D265C}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\fltkd\</OutDir>
+    <IntDir>.\fltkd\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">
+    <OutDir>.\fltk___Win32_Debug_Cairo\</OutDir>
+    <IntDir>.\fltk___Win32_Debug_Cairo\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'">
+    <OutDir>.\fltk___Win32_Release_MinSize\</OutDir>
+    <IntDir>.\fltk___Win32_Release_MinSize\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\fltk\</OutDir>
+    <IntDir>.\fltk\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>.\fltkd/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkd/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkd/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkd/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltkd/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>.\fltkd/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkd/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkd/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkd/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltkd/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_CAIRO=1;_DEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>.\fltk___Win32_Debug_Cairo/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltk___Win32_Debug_Cairo/</AssemblerListingLocation>
+      <ObjectFileName>.\fltk___Win32_Debug_Cairo/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltk___Win32_Debug_Cairo/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltk___Win32_Debug_Cairo/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_CAIRO=1;_DEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>.\fltk___Win32_Debug_Cairo/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltk___Win32_Debug_Cairo/</AssemblerListingLocation>
+      <ObjectFileName>.\fltk___Win32_Debug_Cairo/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltk___Win32_Debug_Cairo/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2d.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltk___Win32_Debug_Cairo/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../..;../../fltk/compat;../visualc;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_MSC_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>.\fltk___Win32_Release_MinSize/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltk___Win32_Release_MinSize/</AssemblerListingLocation>
+      <ObjectFileName>.\fltk___Win32_Release_MinSize/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltk___Win32_Release_MinSize/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltk___Win32_Release_MinSize/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../..;../../fltk/compat;../visualc;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_MSC_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderOutputFile>.\fltk___Win32_Release_MinSize/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltk___Win32_Release_MinSize/</AssemblerListingLocation>
+      <ObjectFileName>.\fltk___Win32_Release_MinSize/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltk___Win32_Release_MinSize/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltk___Win32_Release_MinSize/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\fltk/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltk/</AssemblerListingLocation>
+      <ObjectFileName>.\fltk/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltk/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltk/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\fltk/fltk.lib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltk/</AssemblerListingLocation>
+      <ObjectFileName>.\fltk/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltk/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>..\..\lib\fltk2.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\fltk/fltk.lib.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\fltk\adjuster.h" />
+    <ClInclude Include="..\..\fltk\aligngroup.h" />
+    <ClInclude Include="..\..\fltk\ask.h" />
+    <ClInclude Include="..\..\fltk\bargroup.h" />
+    <ClInclude Include="..\..\fltk\box.h" />
+    <ClInclude Include="..\..\fltk\browser.h" />
+    <ClInclude Include="..\..\fltk\button.h" />
+    <ClInclude Include="..\..\fltk\checkbutton.h" />
+    <ClInclude Include="..\..\fltk\choice.h" />
+    <ClInclude Include="..\..\fltk\clock.h" />
+    <ClInclude Include="..\..\fltk\color.h" />
+    <ClInclude Include="..\..\fltk\colorchooser.h" />
+    <ClInclude Include="..\..\fltk\ComboBox.h" />
+    <ClInclude Include="..\..\fltk\cursor.h" />
+    <ClInclude Include="..\..\fltk\cyclebutton.h" />
+    <ClInclude Include="..\..\fltk\damage.h" />
+    <ClInclude Include="..\..\fltk\dial.h" />
+    <ClInclude Include="..\..\fltk\dirent.h" />
+    <ClInclude Include="..\..\fltk\divider.h" />
+    <ClInclude Include="..\..\fltk\DoubleBufferWindow.h" />
+    <ClInclude Include="..\..\fltk\draw.h" />
+    <ClInclude Include="..\..\fltk\error.h" />
+    <ClInclude Include="..\..\fltk\events.h" />
+    <ClInclude Include="..\..\fltk\filebrowser.h" />
+    <ClInclude Include="..\..\fltk\filechooser.h" />
+    <ClInclude Include="..\..\fltk\fileicon.h" />
+    <ClInclude Include="..\..\fltk\fileinput.h" />
+    <ClInclude Include="..\..\fltk\filename.h" />
+    <ClInclude Include="..\..\fltk\file_chooser.h" />
+    <ClInclude Include="..\..\fltk\FillDial.h" />
+    <ClInclude Include="..\..\fltk\FillSlider.h" />
+    <ClInclude Include="..\..\fltk\flags.h" />
+    <ClInclude Include="..\..\fltk\floatinput.h" />
+    <ClInclude Include="..\..\fltk\fl_api.h" />
+    <ClInclude Include="..\..\fltk\FL_VERSION.h" />
+    <ClInclude Include="..\..\fltk\font.h" />
+    <ClInclude Include="..\..\fltk\forms.h" />
+    <ClInclude Include="..\..\fltk\gl.h" />
+    <ClInclude Include="..\..\fltk\gl2opengl.h" />
+    <ClInclude Include="..\..\fltk\glut.h" />
+    <ClInclude Include="..\..\fltk\glut0.h" />
+    <ClInclude Include="..\..\fltk\GlWindow.h" />
+    <ClInclude Include="..\..\fltk\group.h" />
+    <ClInclude Include="..\..\fltk\HelpDialog.h" />
+    <ClInclude Include="..\..\fltk\HelpView.h" />
+    <ClInclude Include="..\..\fltk\highlightbutton.h" />
+    <ClInclude Include="..\..\fltk\image.h" />
+    <ClInclude Include="..\..\fltk\input.h" />
+    <ClInclude Include="..\..\fltk\inputbrowser.h" />
+    <ClInclude Include="..\..\fltk\IntInput.h" />
+    <ClInclude Include="..\..\fltk\invisiblebox.h" />
+    <ClInclude Include="..\..\fltk\item.h" />
+    <ClInclude Include="..\..\fltk\itemgroup.h" />
+    <ClInclude Include="..\..\fltk\labeltype.h" />
+    <ClInclude Include="..\..\fltk\layout.h" />
+    <ClInclude Include="..\..\fltk\lightbutton.h" />
+    <ClInclude Include="..\..\fltk\LineDial.h" />
+    <ClInclude Include="..\..\fltk\load_plugin.h" />
+    <ClInclude Include="..\..\fltk\mac.h" />
+    <ClInclude Include="..\..\fltk\math.h" />
+    <ClInclude Include="..\..\fltk\menu.h" />
+    <ClInclude Include="..\..\fltk\menubar.h" />
+    <ClInclude Include="..\..\fltk\MenuBuild.h" />
+    <ClInclude Include="..\..\fltk\menuwindow.h" />
+    <ClInclude Include="..\..\fltk\Monitor.h" />
+    <ClInclude Include="..\..\fltk\MultiBrowser.h" />
+    <ClInclude Include="..\..\fltk\multiimage.h" />
+    <ClInclude Include="..\..\fltk\MultiLineInput.h" />
+    <ClInclude Include="..\..\fltk\MultiLineOutput.h" />
+    <ClInclude Include="..\..\fltk\numericinput.h" />
+    <ClInclude Include="..\..\fltk\output.h" />
+    <ClInclude Include="..\..\fltk\packedgroup.h" />
+    <ClInclude Include="..\..\fltk\PixelType.h" />
+    <ClInclude Include="..\..\fltk\popupmenu.h" />
+    <ClInclude Include="..\..\fltk\Preferences.h" />
+    <ClInclude Include="..\..\fltk\progressbar.h" />
+    <ClInclude Include="..\..\fltk\radiobutton.h" />
+    <ClInclude Include="..\..\fltk\RadioItem.h" />
+    <ClInclude Include="..\..\fltk\RadioLightButton.h" />
+    <ClInclude Include="..\..\fltk\rectangle.h" />
+    <ClInclude Include="..\..\fltk\repeatbutton.h" />
+    <ClInclude Include="..\..\fltk\returnbutton.h" />
+    <ClInclude Include="..\..\fltk\rgbimage.h" />
+    <ClInclude Include="..\..\fltk\run.h" />
+    <ClInclude Include="..\..\fltk\scrollbar.h" />
+    <ClInclude Include="..\..\fltk\scrollgroup.h" />
+    <ClInclude Include="..\..\fltk\secretinput.h" />
+    <ClInclude Include="..\..\fltk\shapedwindow.h" />
+    <ClInclude Include="..\..\fltk\sharedimage.h" />
+    <ClInclude Include="..\..\fltk\show_colormap.h" />
+    <ClInclude Include="..\..\fltk\slider.h" />
+    <ClInclude Include="..\..\fltk\StatusBarGroup.h" />
+    <ClInclude Include="..\..\fltk\string.h" />
+    <ClInclude Include="..\..\fltk\stringlist.h" />
+    <ClInclude Include="..\..\fltk\style.h" />
+    <ClInclude Include="..\..\fltk\styleset.h" />
+    <ClInclude Include="..\..\fltk\symbol.h" />
+    <ClInclude Include="..\..\fltk\tabgroup.h" />
+    <ClInclude Include="..\..\fltk\textbuffer.h" />
+    <ClInclude Include="..\..\fltk\textdisplay.h" />
+    <ClInclude Include="..\..\fltk\texteditor.h" />
+    <ClInclude Include="..\..\fltk\Threads.h" />
+    <ClInclude Include="..\..\fltk\thumbwheel.h" />
+    <ClInclude Include="..\..\fltk\tiledgroup.h" />
+    <ClInclude Include="..\..\fltk\tiledimage.h" />
+    <ClInclude Include="..\..\fltk\ToggleButton.h" />
+    <ClInclude Include="..\..\fltk\tooltip.h" />
+    <ClInclude Include="..\..\fltk\utf.h" />
+    <ClInclude Include="..\..\fltk\valuator.h" />
+    <ClInclude Include="..\..\fltk\valueinput.h" />
+    <ClInclude Include="..\..\fltk\valueoutput.h" />
+    <ClInclude Include="..\..\fltk\valueslider.h" />
+    <ClInclude Include="..\..\fltk\visual.h" />
+    <ClInclude Include="..\..\fltk\widget.h" />
+    <ClInclude Include="..\..\fltk\win32.h" />
+    <ClInclude Include="..\..\fltk\window.h" />
+    <ClInclude Include="..\..\fltk\WizardGroup.h" />
+    <ClInclude Include="..\..\fltk\WordwrapInput.h" />
+    <ClInclude Include="..\..\fltk\WordwrapOutput.h" />
+    <ClInclude Include="..\..\fltk\x.h" />
+    <ClInclude Include="..\..\fltk\xbmimage.h" />
+    <ClInclude Include="..\..\fltk\xpmimage.h" />
+    <ClInclude Include="config.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\addarc.cxx" />
+    <ClCompile Include="..\..\src\addcurve.cxx" />
+    <ClCompile Include="..\..\src\add_idle.cxx" />
+    <ClCompile Include="..\..\src\Adjuster.cxx" />
+    <ClCompile Include="..\..\src\AlignGroup.cxx" />
+    <ClCompile Include="..\..\src\args.cxx" />
+    <ClCompile Include="..\..\src\BarGroup.cxx" />
+    <ClCompile Include="..\..\src\bmpImage.cxx" />
+    <ClCompile Include="..\..\src\Browser.cxx" />
+    <ClCompile Include="..\..\src\Button.cxx" />
+    <ClCompile Include="..\..\src\CheckButton.cxx" />
+    <ClCompile Include="..\..\src\Choice.cxx" />
+    <ClCompile Include="..\..\src\clip.cxx" />
+    <ClCompile Include="..\..\src\Clock.cxx" />
+    <ClCompile Include="..\..\src\Color.cxx" />
+    <ClCompile Include="..\..\src\color_chooser.cxx" />
+    <ClCompile Include="..\..\src\ComboBox.cxx" />
+    <ClCompile Include="..\..\src\compose.cxx" />
+    <ClCompile Include="..\..\src\Cursor.cxx" />
+    <ClCompile Include="..\..\src\CycleButton.cxx" />
+    <ClCompile Include="..\..\src\default_glyph.cxx" />
+    <ClCompile Include="..\..\src\Dial.cxx" />
+    <ClCompile Include="..\..\src\DiamondBox.cxx" />
+    <ClCompile Include="..\..\src\dnd.cxx" />
+    <ClCompile Include="..\..\src\drawtext.cxx" />
+    <ClCompile Include="..\..\src\EngravedLabel.cxx" />
+    <ClCompile Include="..\..\src\error.cxx" />
+    <ClCompile Include="..\..\src\event_key_state.cxx" />
+    <ClCompile Include="..\..\src\FileBrowser.cxx" />
+    <ClCompile Include="..\..\src\FileChooser.cxx" />
+    <ClCompile Include="..\..\src\FileChooser2.cxx" />
+    <ClCompile Include="..\..\src\FileIcon.cxx" />
+    <ClCompile Include="..\..\src\FileInput.cxx" />
+    <ClCompile Include="..\..\src\filename_absolute.cxx" />
+    <ClCompile Include="..\..\src\filename_ext.cxx" />
+    <ClCompile Include="..\..\src\filename_isdir.cxx" />
+    <ClCompile Include="..\..\src\filename_list.cxx" />
+    <ClCompile Include="..\..\src\filename_match.cxx" />
+    <ClCompile Include="..\..\src\filename_name.cxx" />
+    <ClCompile Include="..\..\src\file_chooser.cxx" />
+    <ClCompile Include="..\..\src\fillrect.cxx" />
+    <ClCompile Include="..\..\src\FloatInput.cxx" />
+    <ClCompile Include="..\..\src\fltk_theme.cxx" />
+    <ClCompile Include="..\..\src\Fl_Menu_Item.cxx" />
+    <ClCompile Include="..\..\src\Font.cxx" />
+    <ClCompile Include="..\..\src\gifImage.cxx" />
+    <ClCompile Include="..\..\src\Group.cxx" />
+    <ClCompile Include="..\..\src\GSave.cxx" />
+    <ClCompile Include="..\..\src\HelpView.cxx" />
+    <ClCompile Include="..\..\src\HighlightButton.cxx" />
+    <ClCompile Include="..\..\src\Image.cxx" />
+    <ClCompile Include="..\..\src\Input.cxx" />
+    <ClCompile Include="..\..\src\InputBrowser.cxx" />
+    <ClCompile Include="..\..\src\InvisibleWidget.cxx" />
+    <ClCompile Include="..\..\src\Item.cxx" />
+    <ClCompile Include="..\..\src\key_name.cxx" />
+    <ClCompile Include="..\..\src\LightButton.cxx" />
+    <ClCompile Include="..\..\src\list_fonts.cxx" />
+    <ClCompile Include="..\..\src\load_plugin.cxx" />
+    <ClCompile Include="..\..\src\lock.cxx" />
+    <ClCompile Include="..\..\src\Menu.cxx" />
+    <ClCompile Include="..\..\src\MenuBar.cxx" />
+    <ClCompile Include="..\..\src\MenuWindow.cxx" />
+    <ClCompile Include="..\..\src\Menu_add.cxx" />
+    <ClCompile Include="..\..\src\Menu_global.cxx" />
+    <ClCompile Include="..\..\src\Menu_popup.cxx" />
+    <ClCompile Include="..\..\src\message.cxx" />
+    <ClCompile Include="..\..\src\MultiImage.cxx" />
+    <ClCompile Include="..\..\src\NumericInput.cxx" />
+    <ClCompile Include="..\..\src\numericsort.cxx" />
+    <ClCompile Include="..\..\src\Output.cxx" />
+    <ClCompile Include="..\..\src\OvalBox.cxx" />
+    <ClCompile Include="..\..\src\overlay_rect.cxx" />
+    <ClCompile Include="..\..\src\own_colormap.cxx" />
+    <ClCompile Include="..\..\src\PackedGroup.cxx" />
+    <ClCompile Include="..\..\src\path.cxx" />
+    <ClCompile Include="..\..\src\PlasticBox.cxx" />
+    <ClCompile Include="..\..\src\PopupMenu.cxx" />
+    <ClCompile Include="..\..\src\Preferences.cxx" />
+    <ClCompile Include="..\..\src\ProgressBar.cxx" />
+    <ClCompile Include="..\..\src\RadioButton.cxx" />
+    <ClCompile Include="..\..\src\readimage.cxx" />
+    <ClCompile Include="..\..\src\RepeatButton.cxx" />
+    <ClCompile Include="..\..\src\ReturnButton.cxx" />
+    <ClCompile Include="..\..\src\RoundBox.cxx" />
+    <ClCompile Include="..\..\src\RoundedBox.cxx" />
+    <ClCompile Include="..\..\src\run.cxx" />
+    <ClCompile Include="..\..\src\scandir.c" />
+    <ClCompile Include="..\..\src\Scrollbar.cxx" />
+    <ClCompile Include="..\..\src\ScrollGroup.cxx" />
+    <ClCompile Include="..\..\src\scrollrect.cxx" />
+    <ClCompile Include="..\..\src\setcolor.cxx" />
+    <ClCompile Include="..\..\src\setdisplay.cxx" />
+    <ClCompile Include="..\..\src\setvisual.cxx" />
+    <ClCompile Include="..\..\src\ShadowBox.cxx" />
+    <ClCompile Include="..\..\src\ShapedWindow.cxx" />
+    <ClCompile Include="..\..\src\SharedImage.cxx" />
+    <ClCompile Include="..\..\src\ShortcutAssignment.cxx" />
+    <ClCompile Include="..\..\src\show_colormap.cxx" />
+    <ClCompile Include="..\..\src\Slider.cxx" />
+    <ClCompile Include="..\..\src\StatusBarGroup.cxx" />
+    <ClCompile Include="..\..\src\string.c" />
+    <ClCompile Include="..\..\src\StringList.cxx" />
+    <ClCompile Include="..\..\src\Style.cxx" />
+    <ClCompile Include="..\..\src\StyleSet.cxx" />
+    <ClCompile Include="..\..\src\Symbol.cxx" />
+    <ClCompile Include="..\..\src\TabGroup.cxx" />
+    <ClCompile Include="..\..\src\TabGroup2.cxx" />
+    <ClCompile Include="..\..\src\TextBuffer.cxx" />
+    <ClCompile Include="..\..\src\TextDisplay.cxx" />
+    <ClCompile Include="..\..\src\TextEditor.cxx" />
+    <ClCompile Include="..\..\src\ThumbWheel.cxx" />
+    <ClCompile Include="..\..\src\TiledGroup.cxx" />
+    <ClCompile Include="..\..\src\TiledImage.cxx" />
+    <ClCompile Include="..\..\src\Tooltip.cxx" />
+    <ClCompile Include="..\..\src\UpBox.cxx" />
+    <ClCompile Include="..\..\src\utf.c" />
+    <ClCompile Include="..\..\src\Valuator.cxx" />
+    <ClCompile Include="..\..\src\ValueInput.cxx" />
+    <ClCompile Include="..\..\src\ValueOutput.cxx" />
+    <ClCompile Include="..\..\src\ValueSlider.cxx" />
+    <ClCompile Include="..\..\src\vsnprintf.c" />
+    <ClCompile Include="..\..\src\Widget.cxx" />
+    <ClCompile Include="..\..\src\WidgetAssociation.cxx" />
+    <ClCompile Include="..\..\src\Widget_draw.cxx" />
+    <ClCompile Include="..\..\src\win32\WinMain.cxx" />
+    <ClCompile Include="..\..\src\Window.cxx" />
+    <ClCompile Include="..\..\src\Window_fullscreen.cxx" />
+    <ClCompile Include="..\..\src\Window_hotspot.cxx" />
+    <ClCompile Include="..\..\src\Window_iconize.cxx" />
+    <ClCompile Include="..\..\src\WizardGroup.cxx" />
+    <ClCompile Include="..\..\src\xbmImage.cxx" />
+    <ClCompile Include="..\..\src\xpmImage.cxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\documentation\Doxyfile">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="..\..\documentation\README">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="..\..\README">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+    <CustomBuild Include="..\..\README.windows">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\README_fltk1_to_fltk2.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Cairo|x64'">true</ExcludedFromBuild>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

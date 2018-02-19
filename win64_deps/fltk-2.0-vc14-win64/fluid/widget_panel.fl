@@ -1,0 +1,907 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <fltk/Window.h>} {public
+} 
+
+decl {\#include <fltk/xpmImage.h>} {} 
+
+decl {\#include "FluidType.h"} {} 
+
+decl {\#include "fluid_img.h"} {} 
+
+decl {\#include "undo.h"} {} 
+
+Function {make_widgetbin()} {} {
+  {fltk::Window} widgetbin_panel {
+    label {Widget Bin} open
+    xywh {499 58 520 85} resizable non_modal visible
+  } {
+    {fltk::Group} {} {open
+      xywh {3 3 79 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"Function"}
+        callback type_make_cb
+        tooltip Function
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[7]);}
+      }
+      {fltk::Button} {} {
+        user_data {"class"}
+        callback type_make_cb
+        tooltip Class
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[12]);}
+      }
+      {fltk::Button} {} {
+        user_data {"comment"}
+        callback type_make_cb
+        tooltip Comment
+        xywh {52 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[46]);}
+      }
+      {fltk::Button} {} {
+        user_data {"code"}
+        callback type_make_cb
+        tooltip Code
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[8]);}
+      }
+      {fltk::Button} {} {
+        user_data {"codeblock"}
+        callback type_make_cb
+        tooltip {Code Block}
+        xywh {27 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[9]);}
+      }
+      {fltk::Button} {} {
+        user_data {"namespace"}
+        callback type_make_cb
+        tooltip Namespace
+        xywh {52 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[49]);}
+      }
+      {fltk::Button} {} {
+        user_data {"decl"}
+        callback type_make_cb
+        tooltip Declaration
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[10]);}
+      }
+      {fltk::Button} {} {
+        user_data {"declblock"}
+        callback type_make_cb
+        tooltip {Declaration Block}
+        xywh {27 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[11]);}
+      }
+      {fltk::Button} {} {
+        user_data {"WidgetClass"}
+        callback type_make_cb
+        tooltip Namespace
+        xywh {52 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[48]);}
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {83 3 79 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::Window"}
+        callback type_make_cb
+        tooltip Window
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[1]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Group"}
+        callback type_make_cb
+        tooltip Group
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[6]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::PackedGroup"}
+        callback type_make_cb
+        tooltip Pack
+        xywh {52 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[22]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::TabGroup"}
+        callback type_make_cb
+        tooltip Tabs
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[13]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ScrollGroup"}
+        callback type_make_cb
+        tooltip Scroll
+        xywh {27 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[19]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::TiledGroup"}
+        callback type_make_cb
+        tooltip Tile
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[20]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::WizardGroup"}
+        callback type_make_cb
+        tooltip Wizard
+        xywh {27 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[21]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::StatusBarGroup"}
+        callback type_make_cb
+        tooltip StatusBarGroup
+        xywh {52 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[5]);}
+      }
+    }
+    {fltk::Group} {} {
+      xywh {163 3 54 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::Button"}
+        callback type_make_cb
+        tooltip Button
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[2]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ReturnButton"}
+        callback type_make_cb
+        tooltip {Return Button}
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[23]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::LightButton"}
+        callback type_make_cb
+        tooltip {Light Button}
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[24]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::RepeatButton"}
+        callback type_make_cb
+        tooltip {Repeat Button}
+        xywh {27 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[25]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::CheckButton"}
+        callback type_make_cb
+        tooltip {Check Button}
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[3]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::RadioButton"}
+        callback type_make_cb
+        tooltip {Round Button}
+        xywh {27 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[4]);}
+      }
+    }
+    {fltk::Group} {} {
+      xywh {218 3 104 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::Slider"}
+        callback type_make_cb
+        tooltip Slider
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[37]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Scrollbar"}
+        callback type_make_cb
+        tooltip {Scroll Bar}
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[38]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ValueSlider"}
+        callback type_make_cb
+        tooltip {Value Slider}
+        xywh {52 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[39]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ValueOutput"}
+        callback type_make_cb
+        tooltip {Value Output}
+        xywh {77 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[45]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Adjuster"}
+        callback type_make_cb
+        tooltip Adjuster
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[40]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ValueInput"}
+        callback type_make_cb
+        tooltip Counter
+        xywh {27 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[41]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Dial"}
+        callback type_make_cb
+        tooltip Dial
+        xywh {52 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[42]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ThumbWheel"}
+        callback type_make_cb
+        tooltip ThumbWheel
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[43]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ValueInput"}
+        callback type_make_cb
+        tooltip Spinner
+        xywh {27 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[47]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ValueInput"}
+        callback type_make_cb
+        tooltip {Value Input}
+        xywh {52 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[44]);}
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {323 3 54 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::Input"}
+        callback type_make_cb
+        tooltip Input
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[14]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Output"}
+        callback type_make_cb
+        tooltip Output
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[27]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::TextEditor"}
+        callback type_make_cb
+        tooltip {Text Edit}
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[29]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::TextDisplay"}
+        callback type_make_cb
+        tooltip {Text Display}
+        xywh {27 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[28]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::FileInput"}
+        callback type_make_cb
+        tooltip {File Input}
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[30]);}
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {378 3 54 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::MenuBar"}
+        callback type_make_cb
+        tooltip {Menu Bar}
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[17]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::InputBrowser"}
+        callback type_make_cb
+        tooltip {Input Browser}
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[15]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::PopupMenu"}
+        callback type_make_cb
+        tooltip {Menu Button}
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[26]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Item"}
+        callback type_make_cb
+        tooltip {Menu Item}
+        xywh {27 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[16]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Choice"}
+        callback type_make_cb
+        tooltip Choice
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[15]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ItemGroup"}
+        callback type_make_cb
+        tooltip {Sub Menu}
+        xywh {27 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[18]);}
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {433 3 29 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::Browser"}
+        callback type_make_cb
+        tooltip Browser
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[31]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::CheckBrowser"}
+        callback type_make_cb
+        tooltip {Check Browser}
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[32]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::FileBrowser"}
+        callback type_make_cb
+        tooltip {File Browser}
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[33]);}
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {463 3 54 79} box THIN_DOWN_BOX
+    } {
+      {fltk::Button} {} {
+        user_data {"fltk::InvisibleBox"}
+        callback type_make_cb
+        tooltip Box
+        xywh {2 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[5]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::Clock"}
+        callback type_make_cb
+        tooltip Clock
+        xywh {27 2 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[34]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::HelpView"}
+        callback type_make_cb
+        tooltip {Help View}
+        xywh {2 27 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[35]);}
+      }
+      {fltk::Button} {} {
+        user_data {"fltk::ProgressBar"}
+        callback type_make_cb
+        tooltip Progress
+        xywh {2 52 25 25} box THIN_UP_BOX
+        extra_code {o->image(fluid_pixmap[36]);}
+      }
+    }
+  }
+} 
+
+Function {type_make_cb(fltk::Widget*w,void*d)} {return_type void
+} {
+  code {FluidType *t = FluidType::make((char*)d);
+  if (t) {
+    Undo::checkpoint();
+    select_only(t);
+    modflag = 1;
+    t->open();
+  }} {}
+} 
+
+Function {make_widget_panel()} {open
+} {
+  {fltk::Window} {} {open
+    xywh {72 313 380 380} hide resizable hotspot
+  } {
+    {fltk::TabGroup} panel_tabs {
+      callback propagate_tabs open
+      xywh {0 0 380 340} resizable
+    } {
+      {fltk::Group} {} {
+        label GUI
+        callback propagate_group open
+        xywh {0 20 380 320} hide color 0x14aef700
+      } {
+        {fltk::Group} gInput {
+          callback propagate_group open
+          xywh {80 9 290 44}
+        } {
+          {fltk::Input} i_class_name {
+            label Class
+            user_data 4
+            callback user_class_cb
+            tooltip {This allows you to name a user-defined class that this widget is an instance of, rather than an fltk built-in class. You will need to add a \#include declaration so that the definition of your class is included in the fluid output.}
+            private xywh {0 0 170 22} when CHANGED
+          }
+          {fltk::Choice} m_subtype {
+            callback subtype_cb
+            tooltip {Selects a value for type() for this widget}
+            private xywh {170 0 120 22}
+          } {}
+          {fltk::Input} i_label {
+            label Label
+            callback label_cb
+            tooltip {Text displayed on or next to the widget}
+            private xywh {0 22 290 22} when CHANGED
+            extra_code {o->take_focus();}
+          }
+        }
+        {fltk::Group} gAlignment {
+          label Alignment
+          callback propagate_group open
+          xywh {80 54 293 22} align 4
+        } {
+          {fltk::CheckButton} include_image_button {
+            label inline
+            callback image_inlined_cb
+            tooltip {The image data is inserted as inline data into the output C++ code, rather than generating code to read the image file.}
+            xywh {272 0 20 22} align 148
+          }
+          {fltk::Widget} {} {
+            label Alignment
+            xywh {1 0 70 22} align 56 hide box NO_BOX
+          }
+          {fltk::Button} {} {
+            label {@4->}
+            user_data {fltk::ALIGN_LEFT}
+            callback align_cb
+            tooltip {Places label on the left of the widget}
+            xywh {0 2 20 20} type TOGGLE labelsize 11 textsize 11
+          }
+          {fltk::Button} {} {
+            label {@6->}
+            user_data {fltk::ALIGN_RIGHT}
+            callback align_cb
+            tooltip {Places label on the right of the widget}
+            xywh {20 2 20 20} type TOGGLE labelsize 11 textsize 11
+          }
+          {fltk::Button} {} {
+            label {@8->}
+            user_data {fltk::ALIGN_TOP}
+            callback align_cb
+            tooltip {Places label on the top of the widget}
+            xywh {40 2 20 20} type TOGGLE labelsize 11 textsize 11
+          }
+          {fltk::Button} {} {
+            label {@2->}
+            user_data {fltk::ALIGN_BOTTOM}
+            callback align_cb
+            tooltip {Places label on the bottom of the widget}
+            xywh {60 2 20 20} type TOGGLE labelsize 11 textsize 11
+          }
+          {fltk::Button} {} {
+            label inside
+            user_data {fltk::ALIGN_INSIDE}
+            callback align_cb
+            tooltip {Places label inside the widget}
+            xywh {91 2 40 20} type TOGGLE
+          }
+          {fltk::Button} {} {
+            label clip
+            user_data {fltk::ALIGN_CLIP}
+            callback align_cb
+            tooltip {Turn on clipping to the widget's area when drawing label.  This is slower so it should be left off if label will fit}
+            xywh {131 2 40 20} type TOGGLE
+          }
+          {fltk::Button} {} {
+            label wrap
+            user_data {fltk::ALIGN_WRAP}
+            callback align_cb
+            tooltip {Word-wrap the label}
+            xywh {171 2 40 20} type TOGGLE
+          }
+        }
+        {fltk::Widget} image_label {
+          label Image
+          xywh {5 79 78 22} align 56 box NO_BOX
+        }
+        {fltk::Button} image_button {
+          user_data 1 user_data_type {void*}
+          callback image_cb
+          tooltip {Select an image to label the widget}
+          xywh {80 79 290 22} align 116 color 7
+        }
+        {fltk::Group} gDimensions {
+          label Dimensions
+          callback propagate_group open
+          xywh {80 112 290 23} align 4
+        } {
+          {fltk::ValueInput} widget_x {
+            label x
+            callback x_cb
+            tooltip {The x coordinate of the widget.}
+            xywh {0 0 55 22} align 21 when ENTER_KEY labelsize 11 maximum 2000 step 1 value 10
+          }
+          {fltk::ValueInput} widget_y {
+            label y
+            callback y_cb
+            tooltip {The y coordinate of the widget.}
+            xywh {55 0 55 22} align 21 when ENTER_KEY labelsize 11 maximum 2000 step 1 value 10
+          }
+          {fltk::ValueInput} widget_w {
+            label w
+            callback width_cb
+            tooltip {The width of the widget.}
+            xywh {110 0 55 22} align 21 when ENTER_KEY labelsize 11 maximum 2000 step 1 value 10
+          }
+          {fltk::ValueInput} widget_h {
+            label h
+            callback height_cb
+            tooltip {The height of the widget.}
+            xywh {165 0 55 22} align 21 when ENTER_KEY labelsize 11 maximum 2000 step 1 value 10
+          }
+          {fltk::CheckButton} set_xy {
+            label xy
+            callback set_xy_cb
+            tooltip {Window will use this x,y rather than being positioned by the operating system.}
+            xywh {225 0 25 22} align 5 labelsize 11
+          }
+          {fltk::ValueInput} {} {
+            label {slider size}
+            callback slider_size_cb
+            tooltip {The size of the scroller}
+            xywh {245 0 45 22} align 17 when ENTER_KEY labelsize 11
+          }
+        }
+        {fltk::Group} gValues {
+          label Values
+          callback propagate_group open
+          xywh {80 147 290 23} align 4
+        } {
+          {fltk::ValueInput} {} {
+            label Value
+            callback value_cb
+            tooltip {The initial value of this widget}
+            xywh {0 0 55 22} align 5 when ENTER_KEY
+          }
+          {fltk::ValueInput} {} {
+            label min
+            callback min_cb
+            tooltip {The minimum value for this valuator}
+            xywh {55 0 55 22} align 21 when ENTER_KEY labelsize 11
+          }
+          {fltk::ValueInput} {} {
+            label max
+            callback max_cb
+            tooltip {The maximum value for this valuator}
+            xywh {110 0 55 23} align 21 when ENTER_KEY labelsize 11
+          }
+          {fltk::ValueInput} {} {
+            label step
+            callback step_cb
+            tooltip {step:
+Round all movements to multiples of this.
+}
+            xywh {165 0 55 22} align 21 when ENTER_KEY labelsize 11
+          }
+          {fltk::ValueInput} {} {
+            label line
+            callback line_cb
+            tooltip {linesize:
+Increment/decrement for arrow keys.}
+            xywh {245 0 45 22} align 21 when ENTER_KEY labelsize 11 minimum 1 step 1
+          }
+        }
+        {fltk::Group} gAttributes {
+          label Attributes
+          callback propagate_group open
+          xywh {80 171 280 44} align 4
+        } {
+          {fltk::CheckButton} {} {
+            label Visible
+            callback visible_cb
+            tooltip {If unchecked the widget is initially invisible.}
+            xywh {0 0 65 22}
+          }
+          {fltk::CheckButton} {} {
+            label Active
+            callback active_cb
+            tooltip {If unchecked the widget is initially inactive (disabled, grayed out).}
+            xywh {65 0 65 22}
+          }
+          {fltk::CheckButton} {} {
+            label Resizable
+            callback resizable_cb
+            tooltip {If on, this widget and all its parents are resizable.  When the parent resizes it moves/resizes all its children so that this widget's edges remain the same distance from all four sides of the parent.  If this is off this widget will not resize, unless it overlaps a resizable sibling.}
+            xywh {130 0 80 22}
+          }
+          {fltk::CheckButton} {} {
+            label Hotspot
+            callback hotspot_cb
+            tooltip {Positions the window so this widget is under the mouse.  This is done when show() is called.}
+            xywh {210 0 70 22}
+          }
+          {fltk::CheckButton} {} {
+            label Border
+            callback border_cb
+            tooltip {Enable the window manager border}
+            xywh {0 20 65 22}
+          }
+          {fltk::CheckButton} {} {
+            label Modal
+            callback modal_cb
+            tooltip {This window will stay on top of others in the application and will block events from going to other windows until it is hidden or closed.}
+            xywh {65 20 65 22}
+          }
+          {fltk::CheckButton} {} {
+            label Child
+            callback non_modal_cb
+            tooltip {This window will stay on top of others in the application.}
+            xywh {130 20 65 22}
+          }
+        }
+        {fltk::InvisibleBox} {} {
+          label Shortcut
+          xywh {25 215 55 25} align 40
+        }
+        {fltk::Button} {} {
+          callback shortcut_in_cb
+          tooltip {To set a shortcut:
+   Click here, then type the key combination you want.
+To delete the shortcut:
+   Click here, then type backspace.
+To get out of shortcut-setting mode:
+   Click the mouse on this again, or on some other field.}
+          xywh {80 216 290 22} align 36 color 7
+          extra_code {\#include "Shortcut_Button.h"}
+          class Shortcut_Button
+        }
+        {fltk::Input} {} {
+          label Tooltip
+          callback tooltip_cb
+          tooltip {The pop up tooltip which should be used for the widget.}
+          xywh {80 240 290 70} type Wordwrap resizable box BORDER_BOX color 0xffffe100
+        }
+      }
+      {fltk::Group} {} {
+        label Style
+        callback propagate_group open
+        private xywh {0 20 380 320} hide color 0xd4b38d00
+      } {
+        {fltk::Group} BoxColor {
+          callback propagate_group
+          private xywh {85 9 270 66}
+        } {
+          {fltk::Choice} {} {
+            label Box
+            callback box_cb
+            tooltip {Type of box to draw around the contents of the widget.}
+            xywh {0 0 270 22}
+          } {}
+          {fltk::LightButton} {} {
+            label Color
+            callback color_cb
+            tooltip {Color of the contents area.}
+            xywh {0 22 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+          {fltk::LightButton} {} {
+            label {Text Color}
+            callback text_color_cb
+            tooltip {Color of text drawn in the widget.}
+            xywh {135 22 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+          {fltk::LightButton} {} {
+            label {Selection Color}
+            callback selection_color_cb
+            tooltip {Color to draw behind selected text}
+            xywh {0 44 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+          {fltk::LightButton} {} {
+            label {Selected Text Color}
+            callback selected_text_color_cb
+            tooltip {Color to draw selected text}
+            xywh {135 44 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+        }
+        {fltk::Group} ButtonBox {
+          callback propagate_group
+          private xywh {85 88 270 66}
+        } {
+          {fltk::Choice} {} {
+            label {Button box}
+            callback button_box_cb open
+            tooltip {Type of box to draw around buttons}
+            xywh {0 0 270 22}
+          } {}
+          {fltk::LightButton} {} {
+            label {Button Color}
+            callback button_color_cb
+            tooltip {Color to draw buttons inside the widget.}
+            xywh {0 22 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+          {fltk::LightButton} {} {
+            label {Label Color}
+            callback label_color_cb
+            tooltip {Color to draw the labels on buttons, and color to draw the label.}
+            xywh {135 22 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+          {fltk::LightButton} {} {
+            label {Highlight Color}
+            callback highlight_color_cb
+            tooltip {Color to use to draw buttons when they are highlighted.  Use color zero (the black top-left chip in the color chooser) to disable highlighting.}
+            xywh {0 44 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+          {fltk::LightButton} {} {
+            label {Highlight Label Color}
+            callback highlight_label_color_cb
+            tooltip {Color to draw the button labels when the buttons are highlighted.  Use color zero (the black top-left chip in the color chooser) to leave the label colors unchanged.}
+            xywh {135 44 135 22} labelsize 11 textsize 11
+            extra_code {o->type(0);}
+          }
+        }
+        {fltk::Group} Labels {
+          callback propagate_group
+          private xywh {85 165 270 80}
+        } {
+          {fltk::Choice} {} {
+            label {Label Style}
+            callback label_style_cb open
+            tooltip {How to draw the label.}
+            xywh {0 0 270 22}
+          } {}
+          {fltk::Choice} {} {
+            label {Label Font}
+            callback label_font_cb open
+            tooltip {Font to use for the label}
+            xywh {0 22 215 22}
+          } {}
+          {fltk::ValueInput} {} {
+            callback label_size_cb
+            tooltip {Size of the font to use for the label}
+            xywh {215 22 55 22} when ENTER_KEY maximum 100 step 0.1 value 14
+          }
+          {fltk::Choice} {} {
+            label {Text Font}
+            callback text_font_cb open
+            tooltip {Font to use for text displayed inside the widget}
+            xywh {0 55 215 22}
+          } {}
+          {fltk::ValueInput} {} {
+            callback text_size_cb
+            tooltip {Size of the font to use for text displayed inside the widget}
+            xywh {215 55 55 22} when ENTER_KEY maximum 100 step 0.1 value 14
+          }
+          {fltk::Widget} {} {
+            label resizable
+            xywh {0 77 270 3} align 2 hide deactivate
+          }
+        }
+        {fltk::Button} {} {
+          label {Reset to default}
+          callback default_cb
+          tooltip {Reset all the above items to the default values for this widget class.}
+          xywh {85 258 124 22}
+        }
+        {fltk::InvisibleBox} {} {
+          xywh {85 280 270 25} resizable
+        }
+      }
+      {fltk::Group} {} {
+        label {C++}
+        callback propagate_group open
+        xywh {0 20 380 320} resizable color 0x93d49c00
+      } {
+        {fltk::Input} {} {
+          label Name
+          callback name_cb
+          tooltip {The variable or member name in which to store a pointer to this widget.}
+          xywh {80 9 230 22} when CHANGED
+        }
+        {fltk::CheckButton} {} {
+          label public
+          callback name_public_cb
+          tooltip {Make the variable public}
+          xywh {315 9 50 22}
+        }
+        {fltk::Input} extra_code_input {
+          label {Extra Code}
+          user_data 0
+          callback extra_code_input_cb
+          tooltip {Extra code to be exectuted after the widget is created. The variable "o" points at the widget.}
+          xywh {80 37 285 99} type Multiline textfont 4 textsize 11
+        }
+        {fltk::Input} {} {
+          label Callback
+          callback callback_cb selected
+          tooltip {The name of the callback function, or code body of the callback function}
+          xywh {80 143 285 99} type Multiline textfont 4 textsize 11
+        }
+        {fltk::Widget} {} {
+          label resizable
+          xywh {80 154 165 65} hide deactivate resizable
+        }
+        {fltk::Input} {} {
+          label {User Data}
+          callback user_data_cb
+          tooltip {Value passed as the second argument to the callback.  This must be of the type given below.}
+          xywh {80 242 145 22}
+        }
+        {fltk::Choice} {} {
+          label When
+          callback when_cb
+          tooltip {What actions cause the callback to be called.}
+          xywh {265 242 100 22} when CHANGED
+        } {}
+        {fltk::Input} {} {
+          label Type
+          callback user_data_type_cb
+          tooltip {Type of User Data. This must be "long" or a pointer.}
+          xywh {80 264 145 22}
+        }
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {0 350 380 24}
+    } {
+      {fltk::CheckButton} overlaybutton {
+        label {&Overlays}
+        callback overlay_cb
+        tooltip {Turns the overlays (red outlines) off so you can see the edges better.}
+        xywh {20 0 120 24} resizable
+        extra_code {extern bool overlays_invisible;
+o->value(!overlays_invisible);}
+      }
+      {fltk::ReturnButton} {} {
+        label OK
+        callback ok_cb
+        tooltip {Closes this attribute window}
+        xywh {235 1 65 23}
+      }
+      {fltk::Button} {} {
+        label Cancel
+        callback cancel_cb
+        tooltip {Sorry, cancel does not really work yet.}
+        xywh {310 1 65 23}
+      }
+      {fltk::LightButton} wLiveMode {
+        label {LiveMode!}
+        callback live_mode_cb
+        xywh {95 2 90 22}
+      }
+    }
+  }
+} 
