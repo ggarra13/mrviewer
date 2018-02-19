@@ -1,0 +1,76 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 2 
+gridy 2 
+snap 2
+class CubeViewUI {open
+} {
+  Function {CubeViewUI()} {open
+  } {
+    {fltk::Window} mainWindow {
+      label CubeView open
+      private xywh {803 113 415 406} resizable visible
+    } {
+      {fltk::Group} {} {open
+        xywh {3 3 409 400} resizable
+      } {
+        {fltk::ValueSlider} zoom {
+          label Zoom
+          callback {cube->setsize(o->value());
+cube->redraw();}
+          xywh {101 0 227 19} align 4 labelfont 1 labelcolor 136 minimum 1 maximum 50 step 0.1 value 10
+        }
+        {fltk::Group} VChange {open
+          xywh {0 97 37 192}
+        } {
+          {fltk::ThumbWheel} vrot {
+            label {V Rot}
+            callback {cube->v_angle(o->value());
+cube->redraw();}
+            xywh {0 0 17 186} align 129 labeltype NO_LABEL minimum -180 maximum 180 step 1
+            extra_code {\#include <stdio.h>}
+          }
+          {fltk::Slider} ypan {
+            callback {cube->pany(o->value());
+cube->redraw();}
+            xywh {20 0 17 186} align 0 labeltype NO_LABEL labelcolor 136 minimum -25 maximum 25 step 0.1
+          }
+        }
+        {fltk::Group} HChange {open
+          xywh {115 359 190 40}
+        } {
+          {fltk::Slider} xpan {
+            callback {cube->panx(o->value());
+cube->redraw();} selected
+            xywh {2 2 186 17} align 0 labeltype NO_LABEL labelcolor 136 minimum 25 maximum -25 step 0.1
+          }
+          {fltk::ThumbWheel} hrot {
+            label {H Rotation}
+            callback {cube->h_angle(o->value());
+cube->redraw();}
+            xywh {2 21 186 17} align 4 labeltype NO_LABEL minimum -180 maximum 180 step 1
+          }
+        }
+        {fltk::Group} MainView {open
+          xywh {41 24 333 333}
+        } {
+          {fltk::InvisibleBox} cframe {
+            xywh {0 0 333 333} box DOWN_BOX color 56 selection_color 69
+          }
+          {fltk::InvisibleBox} cube {
+            xywh {2 2 329 329}
+            extra_code {\#include "CubeView.h"}
+            class CubeView
+          }
+        }
+      }
+    }
+  }
+  Function {show()} {open
+  } {
+    code {mainWindow->show();} {}
+  }
+} 

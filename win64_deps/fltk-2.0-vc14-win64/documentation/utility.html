@@ -1,0 +1,360 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>The FLTK "Environement"</title></head><body>
+
+<h1>The FLTK "Environement"</h1>
+
+Fltk provides enough "environment" functions that the demo programs
+can be made to work. Unlike other toolkits, fltk tries to sepearte the
+user environment from the actual widgets: these functions are for
+convienence only, they are not really part of the core of fltk.  If
+you don't like the way they look, copy the code and modify to to what
+you want. Most likely any real environment built atop fltk, such as
+FLEK, will replace all these functions.
+
+<h2><a name=args>Argument parser</a></h2>
+
+<h4><a name="args">int fltk::args(int argc, char **argv, int &amp;i, int (*callback)(int, char**,int &amp;)=0)</a></h4>
+
+FLTK provides an <I>entirely optional</I> command-line switch parser. 
+You don't have to call it if you don't like them! Everything it can do 
+can be done with other calls to FLTK. 
+
+<p>To use the switch parser, call <a
+href="#args"><tt>fltk::args(...)</tt></a> near the start of your program.
+This does <I>not</I> open the display, instead switches that need the
+display open are stashed into static variables.  Then you <I>must</I>
+display your first window by calling <a href="Fl_Window.html#show">
+window-&gt;show(argc,argv)</a>, which will do anything stored in the
+static variables.</p>
+
+<p><tt>callback</tt> lets you define your own switches.  It is called 
+with the same <tt>argc</tt> and <tt>argv</tt>, and with <tt>i</tt> the 
+index of each word. The callback should return zero if the switch is 
+unrecognized, and not change <tt>i</tt>.  It should return non-zero if 
+the switch is recognized, and add at least 1 to <tt>i</tt> (it can add 
+more to consume words after the switch).  This function is called 
+<i>before</i> any other tests, so <i>you can override any FLTK
+switch</i> (this is why fltk can use very short switches instead of
+the long ones all other toolkits force you to use).</p>
+<p>On return <tt>i</tt> is set to the index of the first non-switch. 
+This is either:</p>
+
+<ul>
+<li>The first word that does not start with '-'.</li>
+<li>The word '-' (used by many programs to name stdin as a file)</li>
+<li>The first unrecognized switch (return value is 0).</li>
+<li><tt>argc</tt></li>
+</ul>
+
+<p>The return value is <tt>i</tt> unless an unrecognized switch is found, 
+in which case it is zero.  If your program takes no arguments other 
+than switches you should produce an error if the return value is less 
+than <tt>argc</tt>. 
+
+<p>All switches may be abbreviated one letter and case is ignored:
+
+<p><ul>
+
+<li><tt>-display host:n.n</tt> The X display to use (ignored  under 
+WIN32).</li>
+
+<li><tt>-geometry WxH</tt> Window is resized to this width & height</li>
+<li><tt>-geometry +X+Y</tt> Initial window position</li>
+<li><tt>-geometry WxH+X+Y</tt> Window is resized and positioned.</li>
+
+<li><tt>-name string</tt> <a
+href="x.html#xclass">fltk::Window::xclass(string)</a> will be
+done to the window, possibly changing its icon.</li>
+
+<li><tt>-title string</tt> <a
+href="Fl_Window.html#label">fltk::Window::label(string)</a> will be done
+to the window, changing both its title and the icontitle.</li>
+
+<li><tt>-iconic</tt> <a
+href="Fl_Window.html#iconize">fltk::Window::iconize()</a> will be done to
+the window.</li>
+
+<li><tt>-bg color</tt> XParseColor is used to lookup the passed color
+and then <a href="Fl_Color.html#background">fltk::background()</a> is
+done.  Under WIN32 only color names of the form &quot;#xxxxxx&quot;
+are understood.</li>
+
+<li><tt>-theme name</tt> NYI. Names a plugin that fltk will load
+automatically and set the <a href="theme.html#theme">fltk::theme()</a>
+pointer to any function in the plugin called "fltk_theme". ".theme" is
+added to the name to get the filename of the plugin, and if it
+does not start with a slash it is tried relative to "~/.fltk".
+
+<li><tt>-scheme name</tt> NYI. This string is stored and theme plugins
+can refer to it and use it to alter their behavior. Typically it is
+used to name a file the theme reads.
+
+</ul>
+
+<h4>void fltk::args(int argc, char **argv)</h4>
+
+The second form of <tt>fltk::args()</tt> is useful if your program does
+not have command line switches of its own.  It parses all the
+switches, and if any are not recognized it calls <a
+href="Fl.html#fatal"><tt>fltk::fatal(fltk::help)</tt></a>.
+
+<h4><a name="arg">int fltk::arg(int argc, char **argv, int &amp;i)</a></h4>
+
+Consume a single switch from <tt>argv</tt>, starting at word i. 
+Returns the number of words eaten (1 or 2, or 0 if it is not 
+recognized) and adds the same value to <tt>i</tt>.  You can use this 
+function if you prefer to control the incrementing through the 
+arguments yourself. 
+
+<h4><a name="help">const char* const fltk::help;</a></h4>
+
+This is the usage string that is displayed if <a
+href="#args"><tt>fltk::args()</tt></a> detects an invalid argument on
+the command-line. It's value is:
+
+<pre>
+" -d[isplay] host:n.n\n"
+" -g[eometry] WxH+X+Y\n"
+" -n[ame] windowname\n"
+" -i[conic]\n"
+" -bg color";
+</pre>
+
+<h2><a name=ucolor>Color Choosers</a></h2>
+
+<H4><A name=color_chooser>int fltk::color_chooser(const char*, double 
+&amp;r, double &amp;g, double &amp;b)
+<BR> int fltk::color_chooser(const char *, uchar &amp;r, uchar &amp;g, uchar &amp;b)</A>
+</H4>
+
+<P ALIGN=CENTER><IMG src=./fl_color_chooser.jpg></p>
+
+<p><tt>fltk::color_chooser()</tt> pops up a window to let the user pick
+an arbitrary RGB color.  They can pick the hue and saturation in the
+&quot;hue box&quot; on the left (hold down CTRL to just change the
+saturation), and the brighness using the vertical slider.  Or they can
+type the 8-bit numbers into the RGB <A
+href=Fl_Value_Input.html><tt>fltk::ValueInput</tt></A> fields, or drag
+the mouse across them to adjust them.  The pull-down menu lets the
+user set the input fields to show RGB, HSV, or 8-bit RGB (0 to
+255).</p>
+
+<p>This returns non-zero if the user picks ok, and updates the RGB 
+values.  If the user picks cancel or closes the window this returns 
+zero and leaves RGB unchanged.</p>
+
+<p>The double version takes and returns RGB values in the range 0.0 to
+1.0.  The uchar version takes RGB values in the range 0 to 255.
+
+<p>If you use the color chooser on an 8-bit screen, it will allocate 
+all the available colors, leaving you no space to exactly represent the 
+color the user picks!  You can however use <A href=drawing.html#rectf><tt>
+fltk::rectf()</tt></A> to fill a region with a simulated color using 
+dithering.</p>
+
+<H4><A name=show_colormap>int fltk::show_colormap(int oldcol)</A></H4>
+
+<tt>fltk::show_colormap()</tt> pops up a panel of the 256 colors you can 
+access with "indexed" <A href=Fl_Color.html><tt>fltk::Color</tt></A>
+values and lets the user pick one of them.  It returns the new color
+index, or the old one if the user types ESC or clicks outside the window. 
+
+<P ALIGN=CENTER><IMG src=./fl_show_colormap.gif></p>
+
+<h2><a name=upopup>Popup messages and questions</a></h2>
+
+<H4><A name=message>void fltk::message(const char *, ...)</A></H4>
+
+Displays a printf-style message in a pop-up box with an &quot;OK&quot; button, 
+waits for the user to hit the button.  The message will wrap to fit the 
+window, or may be many lines by putting <tt>\n</tt> characters into it. 
+The enter key is a shortcut for the OK button. 
+
+<P ALIGN=CENTER><IMG src=./fl_message.gif></p>
+
+<H4><A name=alert>void fltk::alert(const char *, ...)</A></H4>
+
+Same as <tt>fltk::message()</tt> except for the &quot;!&quot; symbol. 
+
+<P ALIGN=CENTER><IMG src=./fl_alert.gif></p>
+
+<H4><A name=ask>int fltk::ask(const char *, ...)</A></H4>
+
+Displays a printf-style message in a pop-up box with an
+&quot;Yes&quot; and &quot;No&quot; button and waits for the user to
+hit a button.  The return value is 1 if the user hits Yes, 0 if they
+pick No.  The enter key is a shortcut for Yes and ESC is a shortcut
+for No.
+
+<P ALIGN=CENTER><IMG src=./fl_ask.gif></p>
+
+<H4><A name=choice>int fltk::choice(const char *q, const char *b0, 
+const char *b1, const char *b2, ...)</A></H4>
+
+Shows the message with three buttons below it marked with the strings
+<tt> b0</tt>, <tt>b1</tt>, and <tt>b2</tt>.  Returns 0, 1, or 2
+depending on which button is hit. If one of the strings begins with
+the special character '*' then the associated button will be the default
+which is selected when the enter key is pressed.  ESC is a shortcut for
+button 0.  Notice the buttons are positioned &quot;backwards&quot; You
+can hide buttons by passing <tt>NULL</tt> as their labels.
+
+<P ALIGN=CENTER><IMG src=./fl_choice.gif></p>
+
+<H4><A name=input>const char *fltk::input(const char *label, const char 
+*deflt = 0, ...)</A></H4>
+
+Pops up a window displaying a string, lets the user edit it, and 
+return the new value.  The cancel button returns <tt>NULL</tt>. <I>The 
+returned pointer is only valid until the next time <tt>fltk::input()</tt>
+is called</I>.  Due to back-compatability, the arguments to any printf 
+commands in the label are after the default value. 
+
+<P ALIGN=CENTER><IMG src=./fl_input.gif></p>
+
+<H4><A name=password>const char *fltk::password(const char *label, 
+const char *deflt = 0, ...)</A></H4>
+
+Same as <tt>fltk::input()</tt> except an <A href=Fl_Secret_Input.html>
+<tt>fltk::SecretInput</tt></A> field is used.
+
+<P ALIGN=CENTER><IMG src=./fl_password.gif></p>
+
+<H4><A name=message_font>void fltk::message_font(fltk::Font, int size)</A></H4>
+
+Change the font and font size used for the messages in all the popups. 
+
+<H4><A name=message_icon>void fltk::message_icon(fltk::Widget *)</A></H4>
+
+Sets the widget that will be displayed as the icon for all the popups.  Any
+widget with any label can be created and used as the icon, including widgets
+with callbacks! Calling this function with <tt>NULL</tt> will reset the
+icons to the FLTK default.
+
+<h2><a name=ufilechooser>File Chooser</a></h2>
+ 
+<h4><a name=file_chooser>char *fltk::file_chooser(const char * message, 
+const char *pattern, const char *fname)</a></h4>
+
+FLTK provides a &quot;tab completion&quot; file chooser that makes it easy to 
+choose files from large directories.  This file chooser has several 
+unique features, the major one being that the Tab key completes 
+filenames like it does in Emacs or tcsh, and the list always shows all 
+possible completions. 
+
+<P ALIGN=CENTER><IMG src=./filechooser.gif></p>
+
+<tt>fltk::file_chooser()</tt> pops up the file chooser, waits for the user 
+to pick a file or Cancel, and then returns a pointer to that filename 
+or <tt>NULL</tt> if Cancel is chosen. 
+
+<p><tt>message</tt> is a string used to title the window.</p>
+
+<p><tt>pattern</tt> is used to limit the files listed in a directory to 
+those matching the pattern.  This matching is done by <A href=#filename_match>
+<tt>filename_match()</tt></A>.  Use <tt>NULL</tt> to show all files.</p>
+
+<p><tt>fname</tt> is a default filename to fill in the chooser with. 
+ If this is <tt>NULL</tt> then the last filename that was choosen is 
+used (unless that had a different pattern, in which case just the last 
+directory with no name is used).  The first time the file chooser is 
+called this defaults to a blank string.</p>
+
+<p>The returned value points at a static buffer that is only good until 
+the next time <tt>fltk::file_chooser()</tt> is called.</p>
+
+<H4><A name=file_chooser_callback>void fltk::file_chooser_callback(void 
+(*cb)(const char *))</A></H4>
+
+Set a function that is called every time the user clicks a file in the 
+currently popped-up file chooser.  This could be used to preview the 
+contents of the file.  It has to be reasonably fast, and cannot create 
+FLTK windows. 
+
+<H4><A name=filename_list>int filename_list(const char *d, dirent 
+***list)</A></H4>
+
+This is a portable and const-correct wrapper for the
+<tt>fltk::scandir</tt> function. <tt>d</tt> is the name of a directory
+(it does not matter if it has a trailing slash or not).  For each file
+in that directory a &quot;dirent&quot; structure is created.  The only
+portable thing about a dirent is that dirent.d_name is the
+nul-terminated file name.  An array of pointers to these dirents is
+created and a pointer to the array is returned in <tt>*list</tt>.  The
+number of entries is given as a return value.  If there is an error
+reading the directory a number less than zero is returned, and
+<tt>errno</tt> has the reason (<tt>errno</tt> does not work under
+WIN32).  The files are sorted in &quot;alphanumeric&quot; order, where
+an attempt is made to put unpadded numbers in consecutive order.
+
+<p>You can free the returned list of files with the following code:</p>
+
+<PRE>for (int i = return_value; i &gt; 0;) free((void*)(list[--i]));
+free((void*)list);</PRE>
+
+<H4><A name=filename_isdir>int filename_isdir(const char *f)</A></H4>
+
+Returns non-zero if the file exists and is a directory. 
+
+<H4><A name=filename_name>const char *filename_name(const char *f)</A></H4>
+
+Returns a pointer to the character after the last slash, or to the 
+start of the filename if there is none. 
+
+<H4><A name=filename_ext>const char *filename_ext(const char *f)</A></H4>
+
+Returns a pointer to the last period in <tt>filename_name(f)</tt>, or 
+a pointer to the trailing nul if none. 
+
+<H4><A name=filename_setext>char *filename_setext(char *f, const char 
+*ext)</A></H4>
+
+Does <tt>strcpy(filename_ext(f), ext ? ext : &quot;&quot;)</tt>.  Returns a 
+pointer to <tt>f</tt>. 
+
+<H4><A name=filename_expand>int filename_expand(char *out, const char
+*in)</A></H4>
+
+Splits <tt>in</tt> at each slash character.  Replaces any occurrance 
+of <tt>$X</tt> with <tt>getenv(&quot;X&quot;)</tt> (leaving it as <tt>$X</tt> if 
+the environment variable does not exist).  Replaces any occurances of <tt>
+~X</tt> with user <tt>X</tt>'s home directory (leaving it as <tt>~X</tt>
+if the user does not exist).  Any resulting double slashes cause 
+everything before the second slash to be deleted.  Copies the result to <tt>
+out</tt> (<tt>in</tt> and <tt>out</tt> may be the same buffer). 
+Returns non-zero if any changes were made. <I>In true retro 
+programming style, it is up to you to provide a buffer big enough for 
+the result.  1024 characters should be enough.</I>
+
+<H4><A name=filename_absolute>int filename_absolute(char *out, const 
+char *in)</A></H4>
+
+If <tt>in</tt> does not start with a slash, this prepends the current 
+working directory to <tt>in</tt> and then deletes any occurances of <tt>
+.</tt> and x/.. from the result, which it copies to <tt>out</tt> (<tt>in</tt>
+and <tt>out</tt> may be the same buffer).  Returns non-zero if any 
+changes were made. <I>In true retro programming style, it is up to you 
+to provide a buffer big enough for the result.  1024 characters should 
+be enough.</I>
+
+<H4><A name=filename_match>int filename_match(const char *f, const char 
+*pattern)</A></H4>
+
+Returns true if <tt>f</tt> matches <tt>pattern</tt>.  The following 
+syntax is used by <tt>pattern</tt>: 
+
+<UL>
+<LI><tt>*</tt> matches any sequence of 0 or more characters.</LI>
+<LI><tt>?</tt> matches any single character.</LI>
+<LI><tt>[set]</tt> matches any character in the set.  Set  can contain 
+any single characters, or a-z to represent a range.  To  match ] or - 
+they must be the first characters.  To match ^ or ! they  must not be 
+the first characters.</LI>
+<LI><tt>[^set] or <B>[!set]</B></tt> matches any character  not in the 
+set.</LI>
+<LI><tt>{X|Y|Z} or <B>{X,Y,Z}</B></tt> matches any one of  the 
+subexpressions literally.</LI>
+<LI><tt>\x</tt> quotes the character x so it has no special  meaning.</LI>
+<LI><tt>x</tt> all other characters must be matched exactly.</LI>
+</UL>
+
