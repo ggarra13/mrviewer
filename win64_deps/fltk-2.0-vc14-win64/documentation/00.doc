@@ -1,0 +1,78 @@
+// This file produces the front page of the documentation through
+// Doxygen. I mostly use this page to make a table of contents and
+// to describe what is on those pages.
+
+/*! \mainpage
+
+<center>
+\image html fltk_shadow.png
+<br><a href="http://www.fltk.org" TARGET="_top">www.fltk.org</a>
+<br>Revision 18 by Bill Spitzak, Michael Sweet, Craig P. Earls, 
+Matthias Melcher, Nicolas Kaiser, Ben Stott<br>
+<i><small>
+All contents &copy;1998-2011 by Bill Spitzak and others.<br>
+Permission is granted to reproduce this manual<br>
+or any portion, for any purpose, provided this<br>
+copyright and permission notice are preserved.
+</small></i>
+</center>
+
+\section toc Table of Contents
+
+- <b><a href="files.html">File List</a></b> All FLTK header files that
+  define something other than a Class. Different areas of functionality
+  are categorized into different header files.
+
+- <b><a href="classes.html">Class List</a></b> All C++ classes and
+  structs defined by FLTK header files. In most cases you must include
+  the header file &lt;fltk/ClassName.h&gt;, in a few rare cases the
+  class is defined in one of the <a href="files.html">above</a> header
+  files.
+
+- <b><a href="hierarchy.html">Class Hierarchy</a></b> Same list of
+  classes and structs, but arranged by inheritance.
+
+- <b><a href="functions.html">Class Members</a></b> A list of all
+  class members (methods, variables, enumerations, etc.) by name,
+  with the class they are defined in. Useful when you see a method
+  being called but are not sure what the class is.
+
+- <b><a href="globals.html">File Members</a></b> A list of all
+  functions, enumerations, variables, etc., that are not members
+  of classes, with the header file they are defined in.
+
+- <b><a href="pages.html">Related Pages</a></b> Tutorial by example of
+  how to write programs using FLTK, how to run Fluid, emulation of
+  older FLTK and of other toolkits, and various other subjects.
+
+\section fltk namespace fltk
+
+All classes and functions for running the user interface are in the
+\link fltk fltk:: namespace \endlink . Some utility functions such as in \link string.h
+<fltk/string.h> \endlink are \e not in this namespace.
+
+Put <code>using namespace fltk;</code> after the include files, and you
+will not need to put the "fltk::" in front of everything.
+
+Fltk1.1 emulation is mostly achieved by aliasing the old class name
+"Fl" to this namespace so that the static methods in Fltk1.1 will
+work, and by typedefs from the new fltk::Widget class names to the
+older Fl_Widget class names.
+
+\section copyrights Copyrights and Trademarks
+
+FLTK is &copy;1998-2011 by Bill Spitzak and others.
+
+UNIX is a registered trademark of the X Open Group, Inc.  Microsoft
+and Windows are registered trademarks of Microsoft Corporation. OpenGL
+is a registered trademark of Silicon Graphics, Inc. Other names and
+terms in this manual are trademarks of their respective organizations.
+
+\image html doxygen.png
+
+Produced from source file comments using <a
+href="http://www.doxygen.org" TARGET="_top">Doxygen (www.doxygen.org)</a>
+
+*/
+
+// end of 00.doc
