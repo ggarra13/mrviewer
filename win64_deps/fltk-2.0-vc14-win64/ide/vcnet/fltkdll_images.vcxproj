@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release MinSize|Win32">
+      <Configuration>Release MinSize</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release MinSize|x64">
+      <Configuration>Release MinSize</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{42E898D9-E86F-47D5-AAD0-2810F474B5A1}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\..\..\lib\</OutDir>
+    <IntDir>.\fltkdlld\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'">
+    <OutDir>.\..\..\lib\</OutDir>
+    <IntDir>.\fltkdll_images___Win32_Release_MinSize\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\..\..\lib\</OutDir>
+    <IntDir>.\fltkdll\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\..\..\lib/fltkdll_images.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../images/zlib;../visualc;.;../..;../../fltk/compat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;FL_SHARED;FL_IMAGES_LIBRARY;WIN32;_WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\fltkdlld/fltkdll_images.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkdlld/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkdlld/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkdlld/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>fltk2dlld.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\..\lib\fltk2dll_imagesd.dll</OutputFile>
+      <Version>2.0</Version>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libcd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>fltkdll_imagesd.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\..\..\lib/fltk2dll_imagesd.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\lib/fltkdll_images.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\..\..\lib/fltkdll_images.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../images/zlib;../visualc;.;../..;../../fltk/compat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;FL_SHARED;FL_IMAGES_LIBRARY;WIN32;_WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\fltkdlld/fltkdll_images.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkdlld/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkdlld/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkdlld/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>fltk2dlld.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\..\lib\fltk2dll_imagesd.dll</OutputFile>
+      <Version>2.0</Version>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libcd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>fltkdll_imagesd.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\..\..\lib/fltk2dll_imagesd.lib</ImportLibrary>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\lib/fltkdll_images.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\..\..\lib/fltkdll_images.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;../../images/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;FL_SHARED;FL_IMAGES_LIBRARY;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_MSC_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\fltkdll_images___Win32_Release_MinSize/fltkdll_images.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkdll_images___Win32_Release_MinSize/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkdll_images___Win32_Release_MinSize/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkdll_images___Win32_Release_MinSize/</ProgramDataBaseFileName>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>fltk2dll.lib;fltk2_z.lib;fltk2_png.lib;fltk2_jpeg.lib;opengl32.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\..\lib\fltk2dll_images.dll</OutputFile>
+      <Version>1.0</Version>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libc;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>fltkdll_images.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\..\..\lib/fltk2dll_images.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\lib/fltkdll_images.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release MinSize|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\..\..\lib/fltkdll_images.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;../../images/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;FL_SHARED;FL_IMAGES_LIBRARY;WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_MSC_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\fltkdll_images___Win32_Release_MinSize/fltkdll_images.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkdll_images___Win32_Release_MinSize/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkdll_images___Win32_Release_MinSize/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkdll_images___Win32_Release_MinSize/</ProgramDataBaseFileName>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>fltk2dll.lib;fltk2_z.lib;fltk2_png.lib;fltk2_jpeg.lib;opengl32.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\..\lib\fltk2dll_images.dll</OutputFile>
+      <Version>1.0</Version>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libc;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>fltkdll_images.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\..\..\lib/fltk2dll_images.lib</ImportLibrary>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\lib/fltkdll_images.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\..\..\lib/fltkdll_images.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;../../images/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FL_SHARED;FL_IMAGES_LIBRARY;WIN32;_WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\fltkdll/fltkdll_images.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkdll/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkdll/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkdll/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>fltk2dll.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\..\lib\fltk2dll_images.dll</OutputFile>
+      <Version>1.0</Version>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libc;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>fltkdll_images.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\..\..\lib/fltk2dll_images.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\lib/fltkdll_images.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\..\..\lib/fltkdll_images.tlb</TypeLibraryName>
+      <HeaderFileName>
+      </HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>.;../..;../../fltk/compat;../visualc;../../images/zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FL_SHARED;FL_IMAGES_LIBRARY;WIN32;_WIN32;_WINDOWS;WIN32_LEAN_AND_MEAN;VC_EXTRA_LEAN;WIN32_EXTRA_LEAN;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\fltkdll/fltkdll_images.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\fltkdll/</AssemblerListingLocation>
+      <ObjectFileName>.\fltkdll/</ObjectFileName>
+      <ProgramDataBaseFileName>.\fltkdll/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>fltk2dll.lib;ws2_32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\..\lib\fltk2dll_images.dll</OutputFile>
+      <Version>1.0</Version>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>../../lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libc;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>fltkdll_images.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>.\..\..\lib/fltk2dll_images.lib</ImportLibrary>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\lib/fltkdll_images.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\images\libjpeg\jconfig.h" />
+    <ClInclude Include="..\..\images\libjpeg\jdct.h" />
+    <ClInclude Include="..\..\images\libjpeg\jerror.h" />
+    <ClInclude Include="..\..\images\libjpeg\jinclude.h" />
+    <ClInclude Include="..\..\images\libjpeg\jmemsys.h" />
+    <ClInclude Include="..\..\images\libjpeg\jmorecfg.h" />
+    <ClInclude Include="..\..\images\libjpeg\jpegint.h" />
+    <ClInclude Include="..\..\images\libjpeg\jpeglib.h" />
+    <ClInclude Include="..\..\images\libjpeg\jversion.h" />
+    <ClInclude Include="..\..\images\libpng\png.h" />
+    <ClInclude Include="..\..\images\libpng\pngasmrd.h" />
+    <ClInclude Include="..\..\images\libpng\pngconf.h" />
+    <ClInclude Include="..\..\images\zlib\crc32.h" />
+    <ClInclude Include="..\..\images\zlib\deflate.h" />
+    <ClInclude Include="..\..\images\zlib\gzguts.h" />
+    <ClInclude Include="..\..\images\zlib\inffast.h" />
+    <ClInclude Include="..\..\images\zlib\inffixed.h" />
+    <ClInclude Include="..\..\images\zlib\inflate.h" />
+    <ClInclude Include="..\..\images\zlib\inftrees.h" />
+    <ClInclude Include="..\..\images\zlib\trees.h" />
+    <ClInclude Include="..\..\images\zlib\zconf.h" />
+    <ClInclude Include="..\..\images\zlib\zlib.h" />
+    <ClInclude Include="..\..\images\zlib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\images\FileIcon2.cxx" />
+    <ClCompile Include="..\..\images\Fl_Guess_Image.cxx" />
+    <ClCompile Include="..\..\images\fl_jpeg.cxx" />
+    <ClCompile Include="..\..\images\fl_png.cxx" />
+    <ClCompile Include="..\..\images\HelpDialog.cxx" />
+    <ClCompile Include="..\..\images\images_core.cxx" />
+    <ClCompile Include="..\..\images\libjpeg\jaricom.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcapimin.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcapistd.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcarith.c" />
+    <ClCompile Include="..\..\images\libjpeg\jccoefct.c" />
+    <ClCompile Include="..\..\images\libjpeg\jccolor.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcdctmgr.c" />
+    <ClCompile Include="..\..\images\libjpeg\jchuff.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcinit.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcmainct.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcmarker.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcmaster.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcomapi.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcparam.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcprepct.c" />
+    <ClCompile Include="..\..\images\libjpeg\jcsample.c" />
+    <ClCompile Include="..\..\images\libjpeg\jctrans.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdapimin.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdapistd.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdarith.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdatadst.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdatasrc.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdcoefct.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdcolor.c" />
+    <ClCompile Include="..\..\images\libjpeg\jddctmgr.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdhuff.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdinput.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdmainct.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdmarker.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdmaster.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdmerge.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdpostct.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdsample.c" />
+    <ClCompile Include="..\..\images\libjpeg\jdtrans.c" />
+    <ClCompile Include="..\..\images\libjpeg\jerror.c" />
+    <ClCompile Include="..\..\images\libjpeg\jfdctflt.c" />
+    <ClCompile Include="..\..\images\libjpeg\jfdctfst.c" />
+    <ClCompile Include="..\..\images\libjpeg\jfdctint.c" />
+    <ClCompile Include="..\..\images\libjpeg\jidctflt.c" />
+    <ClCompile Include="..\..\images\libjpeg\jidctfst.c" />
+    <ClCompile Include="..\..\images\libjpeg\jidctint.c" />
+    <ClCompile Include="..\..\images\libjpeg\jmemmgr.c" />
+    <ClCompile Include="..\..\images\libjpeg\jmemnobs.c" />
+    <ClCompile Include="..\..\images\libjpeg\jquant1.c" />
+    <ClCompile Include="..\..\images\libjpeg\jquant2.c" />
+    <ClCompile Include="..\..\images\libjpeg\jutils.c" />
+    <ClCompile Include="..\..\images\libpng\png.c" />
+    <ClCompile Include="..\..\images\libpng\pngerror.c" />
+    <ClCompile Include="..\..\images\libpng\pngget.c" />
+    <ClCompile Include="..\..\images\libpng\pngmem.c" />
+    <ClCompile Include="..\..\images\libpng\pngpread.c" />
+    <ClCompile Include="..\..\images\libpng\pngread.c" />
+    <ClCompile Include="..\..\images\libpng\pngrio.c" />
+    <ClCompile Include="..\..\images\libpng\pngrtran.c" />
+    <ClCompile Include="..\..\images\libpng\pngrutil.c" />
+    <ClCompile Include="..\..\images\libpng\pngset.c" />
+    <ClCompile Include="..\..\images\libpng\pngtrans.c" />
+    <ClCompile Include="..\..\images\libpng\pngwio.c" />
+    <ClCompile Include="..\..\images\libpng\pngwrite.c" />
+    <ClCompile Include="..\..\images\libpng\pngwtran.c" />
+    <ClCompile Include="..\..\images\libpng\pngwutil.c" />
+    <ClCompile Include="..\..\images\pnmImage.cxx" />
+    <ClCompile Include="..\..\images\xpmFileImage.cxx" />
+    <ClCompile Include="..\..\images\zlib\adler32.c" />
+    <ClCompile Include="..\..\images\zlib\compress.c" />
+    <ClCompile Include="..\..\images\zlib\crc32.c" />
+    <ClCompile Include="..\..\images\zlib\deflate.c" />
+    <ClCompile Include="..\..\images\zlib\gzclose.c" />
+    <ClCompile Include="..\..\images\zlib\gzlib.c" />
+    <ClCompile Include="..\..\images\zlib\gzread.c" />
+    <ClCompile Include="..\..\images\zlib\gzwrite.c" />
+    <ClCompile Include="..\..\images\zlib\infback.c" />
+    <ClCompile Include="..\..\images\zlib\inffast.c" />
+    <ClCompile Include="..\..\images\zlib\inflate.c" />
+    <ClCompile Include="..\..\images\zlib\inftrees.c" />
+    <ClCompile Include="..\..\images\zlib\trees.c" />
+    <ClCompile Include="..\..\images\zlib\uncompr.c" />
+    <ClCompile Include="..\..\images\zlib\zutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="fltkdll.vcxproj">
+      <Project>{2b18b740-7a7f-47b8-a587-1f64abaceb95}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
