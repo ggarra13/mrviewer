@@ -1,0 +1,141 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0002 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+Function {} {open
+} {
+  {fltk::Window} {} {open
+    xywh {562 242 560 470} resizable visible
+  } {
+    {fltk::MenuBar} {} {open
+      tooltip {A right-justified help item can be made by making a second menubar and putting it to the right of the resizable().}
+      xywh {515 0 45 25}
+    } {
+      {fltk::ItemGroup} {} {
+        label Help open
+        } {
+        {fltk::Item} {} {
+          label {About...}
+          }
+        {fltk::Item} {} {
+          label {Chapter 1}
+          }
+      }
+    }
+    {fltk::MenuBar} {} {open
+      xywh {0 0 515 25}
+    } {
+      {fltk::Item} {} {
+        label This
+        }
+      {fltk::Item} {} {
+        label is
+        }
+      {fltk::Item} {} {
+        label a
+        }
+      {fltk::Item} {} {
+        label Menu
+        }
+      {fltk::Item} {} {
+        label Bar
+        }
+    }
+    {fltk::InvisibleBox} {} {
+      label {
+This program demonstrates how you set the resizable() of a window to get things to resize the way you want.}
+      xywh {95 25 465 419} align 209 box FLAT_BOX color 19 labelcolor 7
+    }
+    {fltk::Button} {} {
+      label These
+      xywh {0 25 95 25} color 47
+    }
+    {fltk::Button} {} {
+      label {are some}
+      xywh {0 50 95 25} color 47
+    }
+    {fltk::Button} {} {
+      label buttons
+      xywh {0 75 95 25} color 47
+    }
+    {fltk::Button} {} {
+      label {we don't want}
+      xywh {0 100 95 25} color 47
+    }
+    {fltk::Button} {} {
+      label {to resize.}
+      xywh {0 125 95 25} color 47
+    }
+    {fltk::Button} {} {
+      label {Things that}
+      xywh {0 150 95 25} color 0x8e6f8c00
+    }
+    {fltk::Button} {} {
+      label {overlap the box}
+      xywh {0 175 95 25} color 0x8e6f8c00
+    }
+    {fltk::Button} {} {
+      label {will scale.}
+      xywh {0 200 95 25} color 0x8e6f8c00
+    }
+    {fltk::Group} {} {
+      label {A group} open
+      tooltip {This group has resizable(0) (this is the default).  But you can set a group's resizable to nest different resize behavior.}
+      xywh {0 225 95 190} align 18 box ENGRAVED_BOX labeltype ENGRAVED_LABEL labelcolor 49
+    } {
+      {fltk::Button} {} {
+        label {You can put}
+        xywh {5 5 85 25} color 47
+      }
+      {fltk::Button} {} {
+        label {them inside}
+        xywh {5 30 85 25} color 47
+      }
+      {fltk::Button} {} {
+        label {a group to}
+        xywh {5 55 85 25} color 47
+      }
+      {fltk::Button} {} {
+        label {stop scaling.}
+        xywh {5 80 85 25} color 47
+      }
+    }
+    {fltk::Button} {} {
+      label nonscaling
+      xywh {0 419 95 25} color 47
+    }
+    {fltk::InvisibleBox} {} {
+      label {This status message will resize horizontally only.}
+      xywh {0 444 460 25} align 20 box BORDER_BOX color 55
+    }
+    {fltk::Button} {} {
+      label {@<<}
+      xywh {460 445 25 25}
+    }
+    {fltk::Button} {} {
+      label {@<}
+      xywh {485 445 25 25}
+    }
+    {fltk::Button} {} {
+      label {@>}
+      xywh {510 445 25 25}
+    }
+    {fltk::Button} {} {
+      label {@>>}
+      xywh {535 445 25 25}
+    }
+    {fltk::InvisibleBox} {} {
+      label {This is the resizable() of the window.
+It is normally invisible.} selected
+      tooltip {To make it invisible, use an Fl_Box with the default box(FL_NO_BOX) and no label.
+
+Fltk sets the window's minimum size such that this widget's minimum size is 100, unless it starts out smaller than that.  You can override this default by calling size_range() on the window.}
+      xywh {95 150 365 270} align 192 resizable box BORDER_BOX color 37 labelcolor 1
+    }
+  }
+  code {// w->size_range(w->w()-w->resizable()->w(), w->h()-w->resizable()->h());} {}
+} 
