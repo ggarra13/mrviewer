@@ -3,7 +3,7 @@
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  *
- * @brief    simple YByRy texture with 3D lut shader
+ * @brief    simple YByRyA texture with 3D lut shader
  *
  */
 
@@ -33,6 +33,13 @@ uniform bool  enableNormalization;
 uniform float normMin;
 uniform float normSpan;
 
+// YCbCr variables
+uniform bool   coeffs;  // Use fed coefficients instead of builtin ones
+uniform vec3  Koff;
+uniform vec3  Kr;
+uniform vec3  Kg;
+uniform vec3  Kb;
+
 // Y B-Y R-Y variables
 uniform vec3  yw;
 
@@ -52,17 +59,30 @@ void main()
   //
   // Sample luminance and chroma, convert to RGB.
   //
+  vec2 tc = gl_TexCoord[0].st;
   vec4 pre;
-  pre.r = texture2D(YImage, gl_TexCoord[0].st).r;  // Y
-  pre.g = texture2D(UImage, gl_TexCoord[0].st).r;  // U
-  pre.b = texture2D(VImage, gl_TexCoord[0].st).r;  // V
-  pre.a = texture2D(AImage, gl_TexCoord[0].st).r;  // V
+  pre.r = texture2D(YImage, tc).r;  // Y
+  pre.g = texture2D(UImage, tc).r;  // U
+  pre.b = texture2D(VImage, tc).r;  // V
+  pre.a = texture2D(AImage, tc).r;  // A
 
   vec4 c;
-  c.r = (pre.g + 1.0) * pre.r;
-  c.b = (pre.b + 1.0) * pre.r;
-  c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
-  c.a = pre.a;
+
+  if ( coeffs )
+  {
+      pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
+
+      c.r = dot(Kr, pre.xyz);
+      c.g = dot(Kg, pre.xyz);
+      c.b = dot(Kb, pre.xyz);
+  }
+  else
+  {
+      c.r = (pre.g + 1.0) * pre.r;
+      c.b = (pre.b + 1.0) * pre.r;
+      c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
+      c.a = pre.a;
+  }
 
   //
   // Apply normalization
