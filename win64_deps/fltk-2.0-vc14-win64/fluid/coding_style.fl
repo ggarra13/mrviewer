@@ -1,0 +1,245 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {extern int gbrace_style;} {public
+} 
+
+decl {extern int gno_space_parens;} {public
+} 
+
+decl {extern int gbrace_functions;} {public
+} 
+
+decl {extern int gindent_tabs;} {public
+} 
+
+decl {extern int gtab_size;} {public
+} 
+
+decl {extern int galways_return_parens;} {public
+} 
+
+decl {extern int gindent_code;} {public
+} 
+
+decl {extern void save_coding_style();} {public
+} 
+
+decl {extern void write_code_block(char *pBlock);} {public
+} 
+
+decl {extern void load_coding_style();} {public
+} 
+
+decl {extern const char *get_opening_brace(int is_function);} {public
+} 
+
+decl {extern const char *get_indent_string(int level);} {public
+} 
+
+decl {\#include <fltk/Widget.h>} {public
+} 
+
+decl {extern void show_coding_style_cb(fltk::Widget *, void *);} {public
+} 
+
+decl {extern void write_includes_from_code(char*);} {public
+} 
+
+decl {int brace_style;} {} 
+
+decl {int no_space_parens;} {} 
+
+decl {int brace_functions;} {} 
+
+decl {int indent_tabs;} {} 
+
+decl {int tab_size;} {} 
+
+decl {int always_return_parens;} {} 
+
+decl {int indent_code;} {} 
+
+Function {use_coding_style()} {private return_type void attributes static
+} {
+  code {gbrace_style = brace_style;
+gno_space_parens = no_space_parens;
+gbrace_functions = brace_functions;
+gindent_tabs = indent_tabs;
+gtab_size = tab_size;
+galways_return_parens = always_return_parens;} {}
+} 
+
+Function {make_codingstyle_window()} {open
+} {
+  {fltk::Window} {} {open
+    xywh {408 452 310 255} resizable visible
+  } {
+    {fltk::TabGroup} {} {open
+      xywh {0 0 303 220} box EMBOSSED_BOX
+    } {
+      {fltk::Group} {} {
+        label {Brace Style} open selected
+        xywh {0 25 303 195} selection_color 0x7f00
+      } {
+        {fltk::Group} {} {
+          xywh {14 10 282 134} align 5 box ENGRAVED_BOX
+        } {
+          {fltk::Widget} {} {
+            label {if ( x ) \{}
+            private xywh {20 6 47 20} align 52 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {++y;}
+            private xywh {20 25 45 20} align 56 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {\}}
+            private xywh {20 41 36 20} align 52 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {if ( x )}
+            private xywh {114 6 47 20} align 52 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {\{}
+            private xywh {114 25 36 20} align 52 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {++y;}
+            private xywh {115 42 46 20} align 56 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {\}}
+            private xywh {114 59 36 20} align 52 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {if ( x )}
+            private xywh {201 6 47 20} align 52 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {\{}
+            private xywh {201 25 36 20} align 56 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {++y;}
+            private xywh {227 42 34 22} align 56 box NO_BOX
+          }
+          {fltk::Widget} {} {
+            label {\}}
+            private xywh {201 59 36 20} align 56 box NO_BOX
+          }
+          {fltk::RadioButton} pStyle1 {
+            label {Style 1}
+            callback {if(o->value())
+   brace_style = 1;}
+            private xywh {16 84 66 25} value 1
+          }
+          {fltk::RadioButton} pStyle2 {
+            label {Style 2}
+            callback {if(o->value())
+   brace_style = 2;}
+            private xywh {109 84 66 25}
+          }
+          {fltk::RadioButton} pStyle3 {
+            label {Style 3}
+            callback {if(o->value())
+   brace_style = 3;}
+            private xywh {200 84 66 25}
+          }
+        }
+        {fltk::CheckButton} pNoSpaceParens {
+          label {No space before parentheses}
+          callback {no_space_parens = o->value();;}
+          private xywh {15 147 195 22}
+        }
+        {fltk::CheckButton} pBraceFuncs {
+          label {Apply to function braces}
+          callback {brace_functions = o->value();}
+          private xywh {15 170 174 22} value 1
+        }
+      }
+      {fltk::Group} {} {
+        label Other
+        xywh {0 25 303 183} hide
+      } {
+        {fltk::Group} {} {
+          label Indentation
+          xywh {11 22 218 90} align 5 box ENGRAVED_BOX
+        } {
+          {fltk::ValueInput} pTabSize {
+            label {Tab size for indents}
+            callback {tab_size = (int)o->value();}
+            private xywh {129 33 31 22} maximum 12 value 2
+          }
+          {fltk::CheckButton} pIndentTabs {
+            label {Indent with tabs}
+            callback {indent_tabs = o->value();
+if(o->value())
+    pTabSize->hide();
+else
+   pTabSize->show();}
+            private xywh {13 7 114 22}
+          }
+          {fltk::CheckButton} pIndentCode {
+            label {Indent code blocks}
+            callback {indent_code = o->value();}
+            private xywh {14 58 151 22}
+          }
+        }
+        {fltk::CheckButton} pReturnParens {
+          label {Always use parentheses on return}
+          callback {always_return_parens = o->value();}
+          private xywh {10 120 220 22}
+        }
+      }
+    }
+    {fltk::Button} {} {
+      label Cancel
+      callback {o->window()->hide();}
+      xywh {106 223 59 25}
+    }
+    {fltk::Button} {} {
+      label Save
+      callback {use_coding_style();
+save_coding_style();
+o->window()->hide();}
+      xywh {171 223 59 25}
+    }
+    {fltk::Button} {} {
+      label Use
+      callback {use_coding_style();
+o->window()->hide();}
+      xywh {236 223 59 25}
+    }
+  }
+} 
+
+Function {load_codingstyle_window()} {return_type void
+} {
+  code {brace_style = gbrace_style;
+no_space_parens = gno_space_parens;
+brace_functions = gbrace_functions;  
+indent_tabs = gindent_tabs;
+tab_size = gtab_size;
+always_return_parens = galways_return_parens;
+indent_code = gindent_code;
+pStyle1->value(gbrace_style == 1);
+pStyle2->value(gbrace_style == 2);
+pStyle3->value(gbrace_style == 3);
+pNoSpaceParens->value(gno_space_parens);
+pBraceFuncs->value(gbrace_functions);
+pIndentTabs->value(gindent_tabs);
+pTabSize->value(gtab_size);
+pReturnParens->value(galways_return_parens);
+if(gindent_tabs)
+   pTabSize->hide();
+else
+   pTabSize->show();
+pIndentCode->value(gindent_code);} {}
+} 

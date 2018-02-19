@@ -1,0 +1,421 @@
+//
+// "$Id: events.doc 8500 2011-03-03 09:20:46Z bgbnbigben $"
+//
+// Copyright 1998-2003 by Bill Spitzak and others.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Library General Public
+// License as published by the Free Software Foundation; either
+// version 2 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Library General Public License for more details.
+//
+// You should have received a copy of the GNU Library General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+// USA.
+//
+// Please report all bugs and problems to the following page:
+//
+//    http://www.fltk.org/str.php
+//
+
+/* THIS FILE IS NOT COMPILED.
+   It is providing input for Doxygen to document the inline event
+   methods and the event types.
+*/
+
+using namespace fltk;
+
+/*! \file fltk/events.h
+
+  FLTK Events are identified by the integer argument passed to the
+  fltk::Widget::handle() virtual method. Often a widget will modify
+  this number before passing it to it's children.
+
+  Fltk only thinks about one event at a time. Therefore all of the
+  other data about the event is stored in static memory, rather than a
+  typical "event structure". It is accessed with fast inline functions
+  of the form fltk::event_*.
+
+  FLTK has very simple rules for sending events to widgets. The major
+  unusual aspect of FLTK is that widgets indicate if they "handled" an
+  event by returning non-zero from their fltk::Widget::handle()
+  method. If they return zero, FLTK can then try the event
+  elsewhere. This eliminates the need for "interests" (event masks or
+  tables), and this is the main reason FLTK is much smaller than other
+  toolkits.
+
+  Most events are sent to the outermost fltk::Window containing the
+  event, and those widgets are responsible for finding and sending the
+  events to child widgets. Some events are sent directly to
+  fltk::Widgets, this is controlled by the following methods, which
+  the container widgets are required to call:
+  - void fltk::belowmouse(fltk::Widget*)
+  - void fltk::pushed(fltk::Widget*)
+  - void fltk::focus(fltk::Widget*)
+  - fltk::modal(fltk::Widget*, bool grab=false)
+
+  If all the widgets that FLTK tries to send an event to return zero,
+  then you can add global functions that FLTK will call with these
+  events. This is done with fltk::add_event_handler()
+
+  You can generate fake events by calling handle(int) on the correct
+  widgets (usually a window). Currently you can change the values
+  returned by the fltk::event_*() functions by storing the desired
+  value into the static variables fltk::e_*, but this may change in
+  future versions.
+
+  \{
+*/
+
+/*! \var fltk::NO_EVENT
+
+  Has the value zero. All fltk widgets return false if this is passed to
+  their handle() method.
+
+  Fltk will produce this for unrecognized X events, if it can figure
+  out what window to send them to. You can then subclass Window and
+  add a handler for these events. Unfortunately this is not done on
+  Windows due to the \e enormous number of garbage messages a program
+  gets, you should instead use Windows pre-filtering functions to look
+  for unknown messages.
+*/
+
+/*! \var fltk::PUSH
+
+  A mouse button has gone down with the mouse pointing at this
+  widget. You can find out what button by calling
+  fltk::event_button(). You find out the mouse position by calling
+  fltk::event_x() and fltk::event_y(). These positions are relative to
+  the corner of the widget whose handle() method is being called.
+
+  A widget indicates that it "wants" the mouse click by returning
+  non-zero from its handle() method. It will then become the
+  fltk::pushed() widget (this is done by the enclosing group widget)
+  and will get fltk::DRAG and the matching fltk::RELEASE events.
+*/
+
+/*! \var fltk::DRAG
+  The mouse has moved with a button held down. The current button
+  state is in fltk::event_state(). The mouse position, relative to
+  this widget, is in fltk::event_x() and fltk::event_y().
+
+  To receive fltk::DRAG events you must return non-zero when passed a
+  fltk::PUSH event.
+*/
+
+/*! \var fltk::RELEASE
+
+  A mouse button has been released. You can find out what button by
+  calling fltk::event_button().
+
+  To receive fltk::RELEASE events you must return non-zero when passed
+  a fltk::PUSH event.
+*/
+
+/*! \var fltk::ENTER
+  The mouse has been moved to point at this widget. This can be used
+  for highlighting feedback. If a widget wants to highlight or
+  otherwise track the mouse, it indicates this by returning non-zero
+  from its handle() method. It then becomes the fltk::belowmouse()
+  widget and will receive fltk::MOVE and fltk::LEAVE events.
+*/
+
+/*! \var fltk::MOVE
+  The mouse has moved without any mouse buttons held down. This event
+  is sent to the fltk::belowmouse() widget.
+*/
+
+/*! \var fltk::LEAVE
+  The mouse has moved out of the widget. To get this event you must
+  return 1 in response to a fltk::ENTER event.
+*/
+
+/*! \var fltk::MOUSEWHEEL
+  The wheel was moved on the mouse. fltk::event_dy() contains how many
+  clicks the wheel moved, positive for up and negative for down. There
+  is also a fltk::event_dx() for any kind of horizontal scrolling
+  device but nothing produces that yet.
+*/
+
+/*! \var fltk::FOCUS
+
+  This indicates an \e attempt to give a widget the keyboard focus.
+
+  If a widget wants the focus, it should change itself to display the
+  fact that it has the focus, and return non-zero from its handle()
+  method. It then becomes the fltk::focus() widget and gets fltk::KEY,
+  fltk::KEYUP and fltk::UNFOCUS events.
+
+  The focus will change either because the window manager changed
+  which window gets the focus, or because the user tried to navigate
+  using tab, arrows, or other keys. You can check fltk::event_key() to
+  figure out why it moved, for navigation it will be the key pressed
+  and for switching windows it will be zero.
+*/
+
+/*! \var fltk::UNFOCUS
+  Sent to the previous fltk::focus() widget when another widget gets the focus.
+*/
+
+/*! \var fltk::FOCUS_CHANGE
+  Sent to all parents of the new fltk::focus() widget when the focus
+  changes. This can be used to record which child has focus so it
+  can be restored later, or to scroll a view to show the focus.
+*/
+
+/*! \var fltk::KEY
+  A key press event. Fltk sends these directly to the fltk::focus()
+  widget. If it returns zero then fltk will change the event into
+  fltk::SHORTCUT and try the widgets under the mouse.
+
+  The key pressed can be found in fltk::event_key(). The text that the
+  key should insert can be found with fltk::event_text() and its
+  length is in fltk::event_length().
+
+  If you are actually doing text editing, you should use
+  fltk::compose() to process the individual keystrokes into I18N
+  characters.
+*/
+
+/*! \var fltk::KEYUP
+  Sent to the fltk::focus() widget. The key that was released can be
+  found in fltk::event_key() (fltk::event_text() is not set).
+*/
+
+/*! \var fltk::SHORTCUT
+  If the fltk::focus() widget is zero or it returns zero for an
+  fltk::KEY event then FLTK tries sending this event to every widget
+  it can, until one of them returns non-zero. fltk::SHORTCUT is first
+  sent to the belowmouse() widget, then its parents and siblings, and
+  eventually to every widget in the window, trying to find an object
+  that returns non-zero. FLTK tries really hard to not to ignore any
+  keystrokes!
+
+  You can also make "global" shortcuts by using fltk::add_handler(). A
+  global shortcut will work no matter what windows are displayed or
+  which one has the focus.
+*/
+
+/*! \var fltk::DEACTIVATE
+  The method Widget::deactivate() has been called on this widget or one of its
+  parents. The function Widget::active_r() will now return false.
+*/
+
+/*! \var fltk::ACTIVATE
+  The method Widget::activate() has been called on this widget or one of its
+  parents. The function Widget::active_r() will now return true.
+*/
+
+/*! \var fltk::HIDE
+  This widget is no longer visible, due to Widget::hide() being called on it
+  or one of its parents, or due to a parent window being
+  minimized. The function Widget::visible_r() will now return false.
+
+  If you implement a widget class it is important to call your base
+  class with this same event. Fltk relies on this to communicate the
+  visibility of widgets that are windows to the system.
+*/
+
+/*! \var fltk::SHOW
+  This widget is visible, due to Widget::show() being called on it or one of
+  its parents, or due to a parent window being restored from minimized
+  state. The function Widget::visible_r() will now return true.
+
+  If you implement a widget class it is important to call your base
+  class with this same event. Fltk relies on this to communicate the
+  visibility of widgets that are windows to the system.
+*/
+
+/*! \var fltk::PASTE
+  You should get this event some time after you call fltk::paste() or
+  you return true for fltk::DND_RELEASE. The contents of
+  fltk::event_text() is the text to insert and the number of
+  characters is in fltk::event_length().
+*/
+
+/*! \var fltk::TIMEOUT
+  This event is generated if you called Widget::add_timeout().
+*/
+
+/*! \var fltk::DND_ENTER
+  The user is dragging something over your widget. Return 1 if you are
+  interested in getting fltk::DND_DRAG and fltk::DND_RELEASE events.
+
+  It is impossible to examine the text of the drag until you release
+  it. There are system-specific variables that can be examined to
+  determine the type of drag being done, but unless you are making a
+  file-management application that wants to delete or rename the
+  source files, you should not need this information.
+*/
+
+/*! \var fltk::DND_DRAG
+  The user moved the mouse some more while dragging something. You
+  might use this to move around a cursor indicating where the
+  insertion will go.
+*/
+
+/*! \var fltk::DND_LEAVE
+  The user moved out of the widget without releasing the dragged object.
+*/
+
+/*! \var fltk::DND_RELEASE
+  The user let go of the mouse and dropped something on your
+  widget. Return 1 if you are interested in getting this data. In this
+  case you will get an fltk::PASTE event with the text of object. This
+  is usually a URL string, such as a filename with "file:" on the
+  start. All fltk widgets just insert the data as text into text
+  editors.
+*/
+
+/*! \var fltk::TOOLTIP
+  NYI. Sent when the mouse hovers over the widget long enough for it
+  to pop up a tooltip. The base class handle() actually pops up the
+  tooltip.
+*/
+
+/*! \fn int fltk::event()
+   Returns the most recent event handled, such as fltk::PUSH or
+   fltk::KEY. This is useful so callbacks can find out why they were
+   called.
+*/
+
+/*! \fn int  fltk::event_x()
+  Returns the distance the mouse is to the right of the left edge
+  of the widget. Widget::send() modifies this as needed before
+  calling the Widget::handle() method.
+*/
+
+/*! \fn int  fltk::event_y()
+  Returns the distance the mouse is below the top edge
+  of the widget. Widget::send() modifies this as needed before
+  calling the Widget::handle() method.
+*/
+
+/*! \fn int  fltk::event_dx()
+  For fltk::MOUSEWHEEL events this is how many clicks the user moved
+  in the x and y directions (currently dx is always zero).
+*/
+
+/*! \fn int  fltk::event_dy()
+  Reserved for future use if horizontal mouse wheels (or some kind of
+  joystick on the mouse) becomes popular.
+*/
+
+/*! \fn int  fltk::event_x_root()
+  Return the absolute horizontal position of the mouse. Usually this
+  is relative to the left edge of the screen, but multiple Monitor
+  setup may change that.
+
+  To find the absolute position of the current widget, subtract
+  event_x_root()-event_x().
+*/
+
+/*! \fn int  fltk::event_y_root()
+  Return the absolute vertical position of the mouse. Zero is at the
+  top.
+*/
+
+/*! \fn int  fltk::event_clicks()
+  Returns the number of extra times the mouse was clicked.  For a
+  normal fltk::PUSH this is zero, if the user "double-clicks" this is
+  1, and it is N-1 for each subsequent click.
+*/
+
+/*! \fn void fltk::event_clicks(int i)
+  Setting this value can be used to make callbacks think things were
+  (or were not) double-clicked, and thus act differently.
+*/
+
+/*! \fn bool fltk::event_is_click()
+  This is true for a short time after the mouse key is pressed.
+  You test this on the RELEASE events to decide if the user
+  "clicked" or "held" the mouse. It is very useful to do different
+  actions depending on this.
+
+  This turns off after a timeout (implemented on X only, currently),
+  when the mouse is moved more than 5 pixels, and when the user
+  presses other mouse or keyboard buttons while the mouse is down.
+
+  On X this is used to decide if a click is a double-click, it is
+  if this is still on during the next mouse press. On Windows and
+  OS/X the system's indication is used for double-click.
+*/
+
+/*! \fn void fltk::event_is_click(bool)
+  You can set this to zero with fltk::event_is_click(0), this can be
+  used to prevent the next mouse click from being considered a double
+  click. Only false works, attempts to set this true are ignored.
+*/
+
+/*! \fn unsigned fltk::event_key_repeated()
+  True if the most recent KEY event was caused by a repeating
+  held-down key on the keyboard. The value increments for each repeat.
+
+  Note: older versions of fltk reused event_clicks() for this. This
+  made it impossible to design a GUI where the user holds down
+  keyboard keys while clicking the mouse, as well as being pretty
+  hard to understand. So we had to change it for fltk 2.
+*/
+
+/*! \fn unsigned fltk::event_state()
+
+  This is a bitfield of what shift states were on and what mouse
+  buttons were held down during the most recent event. The flags
+  to pass are described under fltk::SHIFT.
+
+  Because Emacs screws up if any key returns the predefined META flag,
+  lots of X servers have really botched up the key assignments trying
+  to make Emacs work.  Fltk tries to work around this but you may find
+  that Alt or Meta don't work, since I have seen at least 3 mutually
+  incompatible arrangements. Non-XFree86 machines may also have
+  selected different values so that NUMLOCK, META, and SCROLLLOCK are
+  mixed up. In addition X reports the state \e before the last key
+  was pressed so the state looks backwards for any shift keys, currently
+  fltk only fixes this bug for the mouse buttons.
+*/
+
+/*! \fn bool fltk::event_state(unsigned mask)
+  Same as event_state()&mask, returns true if any of the passed bits were
+  turned on during the last event. So doing event_state(SHIFT) will
+  return true if the shift keys are held down. This is provided to
+  make the calling code easier to read.  The flags to pass are
+  described under fltk::SHIFT.
+*/
+
+/*! \fn unsigned fltk::event_key()
+  Returns which key on the keyboard was last pushed. Most non-keyboard
+  events set this to values that do not correspond to any keys, so you
+  can test this in callbacks without having to test first if the event
+  really was a keystroke. The values returned are described under
+  fltk::SpaceKey.
+*/
+
+/*! \fn unsigned fltk::event_button()
+  Returns which mouse button was pressed or released by a PUSH or
+  RELEASE event. Returns garbage for other events, so be careful (this
+  actually is the same as event_key(), the buttons have been assigned
+  the key values 1,2,3, etc.
+*/
+
+/*! \fn const char* fltk::event_text()
+  Returns the ASCII text (in the future this may be UTF-8) produced by
+  the last fltk::KEY or fltk::PASTE or possibly other event. A
+  zero-length string is returned for any keyboard function keys that
+  do not produce text. This pointer points at a static buffer and is
+  only valid until the next event is processed.
+
+  Under X this is the result of calling XLookupString().
+*/
+
+/*! \fn unsigned fltk::event_length()
+  Returns the length of the text in fltk::event_text(). There will
+  always be a nul at this position in the text. However there may be a
+  nul before that if the keystroke translates to a nul character or
+  you paste a nul character.
+*/
+
