@@ -1,0 +1,200 @@
+// This file is for Doxygen input. It is not compiled.
+
+#include <fltk/Window.h>
+#include <fltk/Widget.h>
+#include <fltk/run.h>
+
+using namespace fltk;
+
+/*! \page example1 Example 1: Basic FLTK Program
+
+Here is a very short fltk program:
+
+\include hello.cxx
+
+The resulting program will display the window below. You can quit the
+program by closing the window or pressing the ESCape key.
+
+\image html hello.C.gif
+
+\section headers Header Files
+
+The proper way to include FLTK header files is: 
+
+\code
+#include <fltk/Xyz.h>
+\endcode
+
+Each class in fltk has it's own header file. This sample program uses
+Window and Widget. Often one header file includes another (for
+instance Widget.h is not needed here as Window.h included it), so you
+don't always need all of them, but it is usually good practice to do
+so.
+
+In addition several non-class functions and symbols are provided, they
+are grouped into header files with lower-case names. You should only
+include the ones you need. In this case "run.h" is included, it has
+functions needed by the main part of a program to get fltk to run.
+
+<tt>using namespace fltk</tt> makes it unnecessary to type "fltk::" in
+front of all the symbols. Depending on how much you are using fltk in
+your program, you may want to do this.
+
+\section widgets Creating the Widgets
+
+After including the required header files, the program then creates a
+window:
+
+\code
+fltk::Window *window = new fltk::Window(300,180);
+\endcode
+
+It then calls "begin" on it, which indicates that all widgets
+constructed after this should be "children" of this window:
+
+\code
+window->begin();
+\endcode
+
+It then creates a box with the "Hello, World!" string in it, this new
+widget is made a "child" of the window we just created:
+
+\code
+fltk::Widget *box = new fltk::Widget(20,40,260,100,"Hello, World!");
+\endcode
+
+For most widgets the arguments to the constructor are: 
+
+\code
+fltk::Widget(x, y, width, height, label)
+\endcode
+
+\a x and \a y are the location of the upper-left corner of the widget,
+measured in pixels. For windows this is measured from the upper-left
+corner of the screen, for widgets it is measured from the upper-left
+corner of the window.
+
+\a width and \a height are the size of the widget. 
+
+\a label is a pointer to a character string to label the widget with
+or NULL. If not given it defaults to NULL. The string is not copied,
+FLTK assumes it resides in static storage. This is true of almost all
+interfaces in FLTK that take string constants, and greatly speeds up
+FLTK. (You can use Widget::copy_label() if you want fltk to manage the
+memory the label is in).
+
+\section getset Get/Set Methods
+
+Next we set several "attributes" of the box: 
+
+\code
+box->box(fltk::UP_BOX);
+box->label_font(fltk::HELVETICA_BOLD_ITALIC);
+box->label_size(36);
+box->label_type(fltk::SHADOW_LABEL);
+\endcode
+
+<tt>box->box(fltk::UP_BOX)</tt> sets the type of box the box widget
+draws, changing it from the default of fltk::DOWN_BOX. In our "Hello,
+World!"  example we use fltk::UP_BOX, which means that a raised button
+border will be drawn around the widget. There is a large selection of
+boxes, or you can define your own by subclass fltk::Symbol.
+
+You can examine the boxtype in by doing <tt>box->box()</tt>. Fltk uses
+method name overloading to make short names for get/set methods. A
+"set" method is always of the form "void name(type)", and a "get"
+method is always of the form "type name() const".
+
+Almost all of these set/get pairs are very fast and short inline
+functions and thus very efficient. However, the "set" methods do not
+call redraw(), you have to call it yourself. This greatly reduces code
+size and execution time. The only common exception is value(), this
+does redraw() if necessary. 
+
+\section beginend Begin/End of Groups and Windows
+
+Then we indicate we are done adding widgets to the window: 
+
+\code
+window->end();
+\endcode
+
+The method Group::end() restores the "current group" to the parent of
+itself, in this case it is set to null because the window has no
+parent. You may also find it useful to call Group::current(0) to
+turn this off completely.
+
+\section show Showing the Window
+
+Then we cause the window to appear on the screen: 
+
+\code
+window->show(argc, argv);
+\endcode
+
+For the first Window you can provide the command-line arguments, this
+runs a rather simple default args() argument parser that lets the user
+customize the appearance, size, and position of your windows (you are
+not required to use this argument parser, and just calling show() with
+no arguments does not do this).
+
+On some systems the window does not actually appear until fltk::run()
+is called, which flushes the cached instructions to the window
+server.
+
+\section run The Main Event Loop
+
+\code
+return fltk::run();
+\endcode
+
+This will repeatedly wait for and then process events from the
+user. fltk::run() does not return until all of the windows under FLTK
+control are closed (either by the user or your program).
+
+When the user attempts to close the window, the callback for the
+window is called. If you don't change it, the callback will remove the
+window from the screen.
+
+You can replace this callback with your own code, so you can prevent
+the window from closing, or pop up a confirmation, or create another
+window, or you can call exit(0) if you want to exit when the user
+closes the "main" window even if other windows are still open.
+
+You don't have to give fltk control over the main event loop. Instead
+you can repeated call fltk::wait(), which will pause until "something
+happens" and then return. A program can call fltk::wait() repeatedly
+or mix it with other calculations. You can do this if there are no
+windows displayed (useful if you used fltk::add_fd()). The fltk::run()
+method is equivalent to:
+
+\code
+while (fltk::Window::first()) fltk::wait();
+return 0;
+\endcode
+
+\section compile Compiling your Program
+
+You will probably need to tell the compiler where to find the
+directory "fltk" with all the header files. This is usually done using
+the -I option added to the compiler line:
+
+\code
+c++ -I/usr/local/include ...
+\endcode
+
+(In Visual C++ this can be done by selecting "Settings" from the
+"Project" menu and then changing the "Preprocessor" settings under the
+"C/C++" tab)
+
+Similarly, when linking your application you will need to tell the
+compiler to use the FLTK library and where to find it. In X you need
+to include several libraries that fltk calls:
+
+\code
+c++ ... -L/usr/local/lib -lfltk2 -lXext -lXinerama -lXft -lX11 -lXi -lm
+\endcode
+
+(In Visual C++ you need to add the FLTK library to the "Link" settings).
+
+*/

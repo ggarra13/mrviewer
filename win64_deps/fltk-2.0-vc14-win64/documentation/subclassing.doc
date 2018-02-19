@@ -1,0 +1,274 @@
+// This file is for Doxygen input. It is not compiled.
+
+using namespace fltk;
+
+/*! \page subclassing Making Your Own Widgets
+
+<h2>Making a Subclass of fltk::Widget</h2>
+
+New widgets are created by <I>subclassing</I> an existing FLTK
+widget.
+
+Most commonly the Widget class is subclassed to make new types of
+controls.
+
+You can also subclass other existing widgets to make a similar control
+with a different look or user-interface. For example, the CheckButton
+and similar widgets are all subclasses of fltk::Button since they all
+interact with the user via a mouse button click.  The only difference
+is the code that draws the face of the button. The class
+fltk::Valuator provides useful methods for storing a floating-point
+"value" and is subclassed for a number of control widgets such as Slider.
+
+fltk::Widget has only four virtual methods, and overriding some or all
+of these may be necessary.
+
+<h3>The Constructor</h3>
+
+The constructor should have the following arguments:
+
+\code
+MyClass(int x, int y, int w, int h, const char *label = 0);
+\endcode
+
+This will allow the class to be used in <A href=fluid.html>FLUID</A>
+without problems.
+
+The constructor implementation must call the constructor for the base
+class and pass the same arguments:
+
+\code
+MyClass::MyClass(int x, int y, int w, int h, const char *label)
+  : fltk::Widget(x, y, w, h, label) {
+  // do initialization stuff...
+}
+\endcode
+
+fltk::Widget's constructor sets <TT>x()</TT>, <TT>y()</TT>,
+<TT>w()</TT>, <TT>h()</TT>, and <TT>label()</TT> to the passed values
+and initializes the other instance variables to:
+
+\code
+style(default_style);
+callback(default_callback,0);
+image(0);
+tooltip(0);
+shortcut(0);
+flags(0); // active, visible, ALIGN_CENTER
+type(0);
+set_damage(fltk::DAMAGE_ALL);
+layout_damage(fltk::LAYOUT_DAMAGE);
+when(fltk::WHEN_RELEASE);
+\endcode
+
+<h3>Handling Events</h3>
+
+The virtual method int fltk::Widget::handle(int event) is called 
+to handle each event passed to the widget. It can:
+- Change the state of the widget.
+- Call Widget::redraw() if the widget needs to be redisplayed.
+- Call Widget::redraw(n) if the widget needs a partial-update
+(assuming you provide support for this in your Widget::draw()
+method).
+- Call fltk::Widget::do_callback() if a callback should be generated.
+- Call fltk::Widget::handle() on child widgets.
+
+Events are identified by the integer argument.  Other information
+about the most recent event is stored in static locations and acquired
+by calling the <A href=Fl.html#event><TT>fltk::event_*()</TT></A>
+functions. This information remains valid until another event is
+handled.
+
+Here is a sample Widget::handle() method for a widget that acts as 
+a pushbutton and also accepts the keystroke 'x' to cause the callback:
+
+\code
+int MyClass::handle(int event) {
+  switch(event) {
+    case fltk::PUSH:
+      highlight = 1;
+      redraw();
+      return 1;
+    case fltk::DRAG: {
+        int t = fltk::event_inside(this);
+        if (t != highlight) {
+          highlight = t;
+	  redraw();
+	}
+      }
+      return 1;
+    case fltk::RELEASE:
+      if (highlight) {
+	highlight = 0;
+	redraw();
+        do_callback();
+	// never do anything after a callback, as the callback
+	// may delete the widget!
+      }
+      return 1;
+    case fltk::SHORTCUT:
+      if (fltk::event_key() == 'x') {
+        do_callback();
+	return 1;
+      }
+      return 0;
+    default:
+      return 0;
+  }
+}
+\endcode
+
+You must return non-zero if your Widget::handle() method uses the 
+event. If you return zero it indicates to the parent widget that it can 
+try sending the event to another widget. 
+
+<h3>Drawing the Widget</h3>
+
+The Widget::draw() virtual method is called when FLTK wants you to 
+redraw your widget.  It will be called if and only if Widget::damage()
+is non-zero, and Widget::damage() will be cleared to zero after it 
+returns.
+
+Widget::damage() contains the bitwise-OR of all the
+Widget::redraw(n) calls to this widget since it was last drawn.  This
+can be used for minimal update, by only redrawing the parts whose bits
+are set.  If the flag <tt>fltk::DAMAGE_EXPOSE</tt> is on in
+damage() then the widget is expected to draw every pixel
+inside it's bounding box. If you wish to simulate a non-square widget,
+you should call Widget::draw_background() to draw this area.
+
+Expose events (and the method Widget::expose(x,y,w,h)) will cause
+Widget::draw() to be called with FLTK's \link draw.h clipping
+\endlink turned on.  You can greatly speed up redrawing in some cases
+by testing fltk::not_clipped() or fltk::intersect_with_clip() and
+skipping invisible parts.
+
+FLTK provides a \link draw.h large number of basic drawing functions
+\endlink. And fltk::Widget provides several convenient drawing methods
+using the Widget's settings, such as Widget::draw_box().
+
+<h3>Resizing the Widget</h3>
+
+The Widget::layout() method is called after the widget is resized or
+moved or if Widget::relayout() has been called.
+
+Widget::layout_damage() will have the reason that layout() is being
+called. This can be <tt>fltk::LAYOUT_X, fltk::LAYOUT_Y,
+fltk::LAYOUT_W, fltk::LAYOUT_H</tt> or <tt>fltk::LAYOUT_DAMAGE</tt> if
+relayout() was called, or any combination of these. layout damage is
+turned off after layout() returns.
+
+For composite widgets the bit <tt>fltk::LAYOUT_CHILD</tt> will be
+turned on to indicate that a child widget needs to have
+layout() called. The parent's layout() must then search the children
+and call layout on any that have any layout damage.
+
+Widget::layout() should call Widget::redraw() if it determines that
+the display needs to be redrawn.
+
+<h2>Making a Composite Widget</h2>
+
+A "composite" widget contains a set of child widgets and makes it look
+like a single large widget. fltk::Group is the main composite widget
+widget class in FLTK, and all of the other composite widgets
+(PackedGroup, ScrollGroup, TabGroup, TiledGroup, WizardGroup) and also
+Window are subclasses of it.
+
+For most uses the set of child widgets is fixed by the composite
+widget. Instances of the child widgets may be included in the parent:
+
+\code
+class MyClass : public fltk::Group {
+  fltk::Button the_button;
+  fltk::Slider the_slider;
+  ...
+};
+\endcode
+
+The constructor has to initialize these instances.  Their constructor
+will do an automatic Group::add() to this, since the
+fltk::Group() constructor does Group::begin(). <i>Don't
+forget to call Group::end():</i>
+
+\code
+MyClass::MyClass(int x, int y, int w, int h, const char* l) :
+  fltk::Group(x, y, w, h, l, true/* auto-begin() */),
+  the_button(x + 5, y + 5, 100, 20),
+  the_slider(x, y + 50, w, 20)
+{
+  ...(you could add dynamically created child widgets here)...
+  end(); // don't forget to do this!
+}
+\endcode
+
+The child widgets need callbacks.  These will be called with a pointer
+to the children, but the widget itself may be found in the
+Widget::parent() pointer of the child.  Usually these callbacks can
+be static private methods, with a matching private method:
+
+\code
+void MyClass::slider_cb(fltk::Widget* v, void *) { // static method
+  ((MyClass*)(v->parent())->slider_cb();
+}
+void MyClass::slider_cb() { // normal method
+  use(the_slider->value());
+}
+\endcode
+
+If you make the Widget::handle() method, you can quickly pass all the
+events to the children using the fltk::Group::handle() method.  You
+don't need to override handle() if your composite widget does nothing
+other than pass events to the children:
+
+\code
+int MyClass::handle(int event) {
+  if (fltk::Group::handle(event)) return 1;
+  ... handle events that children don't want ...
+}
+\endcode
+
+If you override Widget::draw() you need to draw all the children.  If
+Widget::redraw() or Widget::damage() is called on a child, damage()
+will contain fltk::DAMAGE_CHILD indicating that a child needs to be
+drawn.  It is fastest if you avoid drawing anything else in this case:
+
+\code
+int MyClass::draw() {
+  fltk::Widget *const*a = array();
+  if (damage() == fltk::DAMAGE_CHILD) { // only redraw some children
+    for (int i = children(); i --; a ++) update_child(**a);
+  } else { // total redraw
+    ... draw background graphics ...
+    // now draw all the children atop the background:
+    for (int i = children_; i --; a ++) {
+      draw_child(**a);
+      draw_outside_label(**a); // you may not want to do this
+    }
+  }
+}
+\endcode
+
+fltk::Group provides some protected methods to make drawing 
+easier: 
+- Group::draw_child
+- Group::draw_outside_label
+- Group::update_child
+
+<h2>Making a subclass of fltk::Window</h2>
+
+You may want your widget to be a subclass of fltk::Window.  This 
+can be useful if your widget wants to occupy an entire window, and can 
+also be used to take advantage of system-provided clipping, or to work 
+with a library that expects a system window ID to indicate where to 
+draw. 
+
+Subclassing fltk::Window is almost exactly like subclassing
+fltk::Widget, and in fact you can easily switch a subclass back and
+forth.
+
+To reuse a window (perhaps created by another toolkit, or with more
+complex creation arguments than FLTK can do) use the system-specific
+CreatedWindow::create() method.
+
+*/
+

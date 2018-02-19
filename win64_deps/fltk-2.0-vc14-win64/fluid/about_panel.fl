@@ -1,0 +1,27 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+Function {make_about_panel(const char *copyright)} {open
+} {
+  {fltk::Window} about_panel {
+    label {about fluid} open
+    xywh {391 101 550 400} type Double resizable color 97 selection_color 47 non_modal noborder visible
+  } {
+    {fltk::Group} display_group {selected
+      xywh {0 0 550 400}
+      image {/home/fabien/devl/fltk/trunk/pixmaps/fluid/fluid_about.gif}
+      extra_code {o->resizable(o);}
+    } {
+      {fltk::ReturnButton} about_ok {
+        label OK
+        callback {about_panel->hide()}
+        xywh {483 364 50 16} buttoncolor 0x4c519000 labelcolor 0xffffff00 highlight_color 0x6a4fe800 shortcut 0xff0d
+      }
+    }
+  }
+} 
