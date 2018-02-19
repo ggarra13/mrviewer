@@ -1,0 +1,130 @@
+#!/bin/sh
+#
+# "$Id: devcxx 8500 2011-03-03 09:20:46Z bgbnbigben $"
+#
+# Top-level makefile for the Fast Light Tool Kit (FLTK).
+#
+# Copyright 1998-2003 by Bill Spitzak and others.
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# USA.
+#
+# Please report all bugs and problems to the following page:
+#
+#    http://www.fltk.org/str.php
+#
+
+fltkMajor=2
+fltkMinor=0
+fltkRelease=0
+fltkVersion=$fltkMajor.$fltkMinor.$fltkRelease
+fltkBuild=`date +%j`
+fileName=FLTK-$fltkVersion-$fltkBuild
+bzFile=$fileName.tar.bz2�
+devPakFile=$fileName.DevPak
+tmpDir=$HOME/fltk-devcxx-pak
+RM=/bin/rm
+fltkSourceDir=../..
+fltkConfigureLine='./configure --prefix=/usr --enable-shared --enable-gl --enable-threads'
+myDir=$PWD
+fltkMake='make -j8'
+
+###
+# Create temporary directory where all DevPak files should be copied
+#
+$RM -Rf $tmpDir
+mkdir $tmpDir
+
+###
+# Ok, let's create FLTK2.DevPackage file
+#
+cat > $tmpDir/FLTK2.DevPackage <<End-of-file
+[Setup]
+Version=$fltkVersion.$fltkBuild
+AppName=FLTK2
+AppVersion=$fltkVersion
+AppVerName=FLTK $fltkVersion
+MenuName=FLTK2
+Description=FLTK (pronounced "fulltick") is a cross-platform C++ GUI toolkit for UNIX®/Linux® (X11), Microsoft® Windows®, MacOS® X and AmigaOS®. FLTK provides modern GUI functionality without the bloat and supports 3D graphics via OpenGL® and its built-in GLUT emulation. It is currently maintained by a small group of developers across the world with a central repository on SourceForge.
+Url=http://www.fltk.org
+Dependencies=libpthread
+Readme=
+License=
+Picture=
+Reboot=0
+
+[Files]
+include=<app>\include\\
+lib=<app>\lib\\
+Templates=<app>\Templates\\
+bin=<app>\bin\\
+
+[Icons]
+FLUID=<app>\bin\fluid2.exe,<app>\bin\fluid.ico
+
+End-of-file
+
+###
+# Make all necessary directories.
+#
+mkdir $tmpDir/bin $tmpDir/include $tmpDir/include/fltk $tmpDir/include/fltk/compat $tmpDir/include/fltk/compat/FL $tmpDir/lib $tmpDir/lib/dll $tmpDir/Templates
+# copy templates into $tmpDir/templates
+cp -f templates/* $tmpDir/Templates/
+
+###
+# Build FLTK
+#
+# go to the root of FLTK source
+cd $fltkSourceDir
+# configure FLTK
+aclocal && autoconf && $fltkConfigureLine > $myDir/log.txt 2>&1
+# build it
+$fltkMake >> $myDir/log.txt 2>&1
+
+###
+# Now let's copy all stuff
+#
+cd $myDir
+# header files
+echo "copying header files..."
+cp -f ../../fltk/* $tmpDir/include/fltk/
+cp -f ../../fltk/compat/FL/* $tmpDir/include/fltk/compat/FL/
+echo "copying library files..."
+cp -f ../../lib/*.a $tmpDir/lib/
+# import libraries
+cp -f ../../images/*.dll.a $tmpDir/lib/dll/
+cp -f ../../OpenGL/*.dll.a $tmpDir/lib/dll/
+cp -f ../../src/*.dll.a $tmpDir/lib/dll/
+# binary files
+echo "copying binary files (exe/dll)..."
+cp -f ../../fluid/*.exe $tmpDir/bin/
+cp -f ../../lib/*.dll $tmpDir/bin/
+cp -f ./fluid.ico $tmpDir/bin/
+
+###
+# Finaly, make DevPak file
+#
+echo "making DevPak file..."
+cd $tmpDir
+tar cvfj $myDir/$bzFile * >> $myDir/log.txt 2>&1
+mv $myDir/$bzFile $myDir/$devPakFile
+echo "cleaning up..."
+cd $myDir
+$RM -Rf $tmpRoot
+$RM -f $myDir/log.txt
+
+###
+# $Id: devcxx 8500 2011-03-03 09:20:46Z bgbnbigben $
+#

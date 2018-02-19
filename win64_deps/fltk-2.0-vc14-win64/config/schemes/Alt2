@@ -1,0 +1,68 @@
+##
+## This is a FLTK scheme configuration file.
+##
+## See end of file for font and color definitions
+##
+
+description = Another sample scheme               # description of scheme
+author = Carl Thompson (cet@carlthompson.net)     # author of scheme
+version = 1                                       # version number of scheme
+FLTK version = 2.0.0                              # minimum FLTK version needed
+
+[general]
+  themes =  Alternative KDE_colors                # theme plugins to load for this scheme
+  #themes =  Alternative syscolors
+
+[widgets]
+
+  [widgets/default]
+    highlight color = light1
+    label font = arial
+    label size = 12
+    text font = georgia
+    text size = 14
+
+  [widgets/menu]                                  # menu attributes
+    text box = alternative menu                   # boxtype of menu items
+
+  [widgets/menu bar]
+    text box = alternative menu title             # boxtype of menu titles
+
+  [widgets/browser]                               # browser attributes
+    box = up                                      # boxtype of browser
+
+  [widgets/chart]                                 # chart attributes
+    box = border                                  # boxtype for chart
+
+  [widgets/check button]                          # check button attributes
+   text color = red
+
+  [widgets/light button]                          # check button attributes
+   text color = red
+
+  [widgets/return button]                         # return button attributes
+    box = alternative up                          # boxtype of button
+
+  [widgets/slider]                                # slider attributes
+    text box = down
+
+  [widgets/scrollbar]                             # scroll bar attributes
+    text box = down
+
+  [widgets/input]                                 # input and output widget attributes
+    box = down                                    # boxtype of the input / output area
+
+  [widgets/output]                                # input and output widget attributes
+    box = down                                    # boxtype of the input / output area
+
+  [widgets/counter]                               # counter attributes
+    box = up                                      # boxtype of the counter's text area
+
+  [widgets/tooltip]
+    box = thin up                                 # box around tooltips
+
+  [widgets/item]                                  # menu items
+    text color = red                              # color of check marks
+
+[aliases]
+  light1 = 51

@@ -1,0 +1,20 @@
+This directory contains source code for fltk theme plugins, data files
+used by those themes, and source fo the "conf" library donated by Carl
+Thompson which can read/write Windows "INI" style files (this is used
+by the KDE theme).
+
+"make" compiles these but they cannot be seen by fltk until placed in
+the correct directory. "make install" puts them in
+/usr/local/lib/fltk, you can also see them by linking this directory
+to ~/.fltk.
+
+To make a theme be the default, use a symbolic link (or copy it on NT)
+to "default.theme". For instance to use the KDE emulation do "ln -s
+KDE.theme default.theme"
+
+The "scheme.theme" theme reads ".scheme" files. The example
+"Alternative.scheme" lists all the possible fields and with comments
+describing what they are.
+
+We really need some "themes" written that parse GTK, Enlightenment,
+X resources, and other sources of theme information.
