@@ -70,11 +70,9 @@ void main()
   	c.r = dot(Kr, pre);
   	c.g = dot(Kg, pre);
   	c.b = dot(Kb, pre);
-  	c.a = 1.0;
   }
   else
   {
-
       yuv.r = 1.1643 * ( pre.r - 0.0625 );
       yuv.g = pre.g - 0.5;
       yuv.b = pre.b - 0.5;
