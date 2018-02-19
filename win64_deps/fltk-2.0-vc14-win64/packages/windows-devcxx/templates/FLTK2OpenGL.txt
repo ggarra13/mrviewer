@@ -1,0 +1,50 @@
+/**
+ * This is just small FLTK 2.0, OpenGL application
+ * Now you can imediately compile&run it in Dev-C++
+ * 
+ * The code below is based on simple OpenGL example 
+ * written by Michael L Gleicher, 10/16/99
+ * 
+ * I've converted it to FLTK 2.0 and made this template
+ * so it can be used out-of-box by people who learn FLTK+OpenGL.
+ *
+ * Enjoy FLTK!
+ * Dejan Lekic, dejan@fltk.net, http://dejan.lekic.org
+ */
+
+#include <fltk/GlWindow.h>
+#include <windows.h>
+#include <GL/gl.h>
+#include <fltk/run.h>
+
+using namespace fltk;
+
+// New MyGlWindow type... pretty simple
+class MyGlWindow : public GlWindow {
+public:
+  MyGlWindow(int x, int y, int w, int h) :
+    GlWindow(x,y,w,h,"FLTK OpenGL Window")
+    {
+    }
+private:
+  void draw() {              // the draw method must be private
+    glClearColor(0,0,0,0);   // clear the window to black
+    glClear(GL_COLOR_BUFFER_BIT); // clear the window
+   
+    glColor3f(1,1,0);             // draw in yellow
+    glRectf(-.5,-.5,.5,.5);       // draw a filled rectangle
+  };
+};
+
+// the main routine makes the window, and then runs an even loop
+// until the window is closed
+int main(int argc, char **argv) {
+  int result = 0;
+  
+  MyGlWindow* gl = new MyGlWindow(100,100,500,500);
+  gl->show();  // this actually opens the window   
+  result = run();
+  delete gl;
+  return result;
+}
+

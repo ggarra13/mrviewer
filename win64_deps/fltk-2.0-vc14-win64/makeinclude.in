@@ -1,0 +1,152 @@
+#
+# "$Id: makeinclude.in 8500 2011-03-03 09:20:46Z bgbnbigben $"
+#
+# Make include file for the Fast Light Tool Kit (FLTK).
+# @configure_input@
+#
+# Copyright 1998-2003 by Bill Spitzak and others.
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# USA.
+#
+# Please report all bugs and problems to the following page:
+#
+#    http://www.fltk.org/str.php
+#
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+bindir		= @bindir@
+datadir		= @datadir@
+docdir		= @datadir@/doc/fltk
+includedir	= @includedir@
+libdir		= @libdir@
+mandir		= @mandir@
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+
+# programs we use...
+CHMOD		= chmod
+CP		= cp
+HTMLDOC		= @HTMLDOC@
+LN		= ln -s
+MKDIR		= mkdir -p
+NROFF		= @NROFF@
+RM		= rm -f
+RMDIR		= rm -rf
+SHELL		= /bin/sh
+STRIP		= strip
+
+# compiler names:
+CC		= @CC@
+CXX		= @CXX@
+MAKEDEPEND	= @MAKEDEPEND@
+
+# flags for C++ compiler:
+OPTIM		= @OPTIM@
+CFLAGS		= $(OPTIM) @CFLAGS@
+CXXFLAGS	= $(OPTIM) @CXXFLAGS@
+
+# programs and definitions to make static libraries:
+LIBCOMMAND	= @LIBCOMMAND@
+LIBPREFIX	= @LIBPREFIX@
+LIBSUFFIX	= @LIBSUFFIX@
+LIBTARGET	= @LIBTARGET@
+RANLIB		= @RANLIB@
+
+# programs and definitions to make shared libraries:
+DSOCOMMAND	= @DSOCOMMAND@
+DSOLINK		= @DSOLINK@
+DSOPREFIX	= @DSOPREFIX@
+DSOSUFFIX	= @DSOSUFFIX@
+DSOSYMLINK	= @DSOSYMLINK@
+DSOTARGET	= @DSOTARGET@
+
+# local image targets
+LOCALIMAGES	= @LOCAL_IMAGETARGETS@
+ZLIBINC		= @ZLIBINC@
+
+# libraries to link with:
+LDLIBS = @LDFLAGS@ @LIBS@
+GLDLIBS = @LDFLAGS@ @GLLIB@ @LIBS@
+LINKFLTK = -L../lib @LINKFLTK@
+LINKFLTKGL = -L../lib @LINKFLTKGL@ @LINKFLTK@
+LINKFLTKFORMS = -L../lib -lfltk2_forms @LINKFLTK@
+LOCAL_IMAGELIBS = @LOCAL_IMAGELIBS@
+LINKFLTKIMG = -L../lib -lfltk2_images @LINKFLTK@ $(LOCAL_IMAGELIBS) $(IMAGELIBS)
+LINKSHARED = @DSOLINK@ @LINKSHARED@ $(IMAGELIBS)
+IMAGELIBS = @IMAGELIBS@
+
+# program to build themes with
+THEMECOMMAND	= @THEMECOMMAND@
+
+# The extension to use for executables...
+EXEEXT		= @EXEEXT@
+
+# Which targets should be built?
+BUILDTARGETS	= @BUILDTARGETS@
+INSTALLTARGETS	= @INSTALLTARGETS@
+
+# Do we build the OpenGL demos?
+GLDEMOS		= @GLDEMOS@
+
+# Do we build the threads demo?
+THREADS		= @THREADS@
+
+# Name of FLUID executable we install
+#FLUID		= @FLUID@$(EXEEXT)
+FLUID		= fluid2$(EXEEXT)
+
+# Possible steps after linking...
+POSTBUILD	= @POSTBUILD@
+
+# Man page extensions...
+CAT1EXT		= @CAT1EXT@
+CAT3EXT		= @CAT3EXT@
+
+# Be quiet when building...
+.SILENT:
+
+# Build commands and filename extensions...
+.SUFFIXES:	.0 .1 .3 .c .cxx .h .fl .man .o .z $(EXEEXT)
+
+.o$(EXEEXT):
+	echo Linking $@...
+	$(CXX) -I.. -I../fltk/compat $(CXXFLAGS) $< $(LINKFLTK) $(LDLIBS) -o $@
+	$(POSTBUILD) $@ ../fltk/mac.r
+
+.c.o:
+	echo Compiling $<...
+	$(CC) -I.. -I../fltk/compat $(CFLAGS) -c $<
+
+.cxx.o:
+	echo Compiling $<...
+	$(CXX) -I.. -I../fltk/compat $(CXXFLAGS) -c $<
+
+.man.0 .man.1 .man.3:
+	echo Formatting $<...
+	rm -f $@
+	$(NROFF) -man $< >$@
+
+.man.z:
+	echo Formatting $<...
+	rm -f $@ t.z
+	$(NROFF) -man $< >t
+	pack -f t
+	mv t.z $@
+
+#
+# End of "$Id: makeinclude.in 8500 2011-03-03 09:20:46Z bgbnbigben $".
+#
