@@ -1,0 +1,113 @@
+/** \page symbols Symbols, Box types, and @-commands
+
+  FLTK defines a whole lot of static instances of subclasses of
+  Symbol. Most of these are designed to be invoked by their name
+  by imbedding @-commands into drawtext() calls. There is also
+  a set of box types with pointers declared to them so you can
+  set the boxes of Style and Widget objects.
+
+<h2>Layout commands</h2>
+
+Note that all @-commands must be terminated by either a ";" semicolon,
+by the start of another @-command, or by whitespace (which is not
+consumed).
+
+  "&x" underscores the 'x'. This is a standard from Microsoft.
+
+  "&&" prints a single "&".
+
+  "@@" prints a single "@" sign. This is not a symbol, the next
+  character is printed or interpreted even if it is a semicolon or
+  space.
+
+  "@;" truncates the string at this point. This can be used to hide
+  program internal data in the label() by putting this before it.
+
+  "@n" in a label resets the font, color, and positioning offset to
+  the settings they were when the label started.
+
+  "@b" in a label changes the font to bold.
+
+  "@i" in a label changes the font to italic.
+
+  "@f" or "@t" in a label changes the font to fixed-pitch.
+
+  "@Ccolor" will change the color of the text. Color can be any
+  string accepted by parsecolor().
+
+  "@sN" will set the font to N/12 times the current size;
+
+  "@sNp" will set the font to N pixels.
+
+  "@s+N" will multiply the font size by (12+N)/12
+
+  "@s-N" will multiply the font size by 12/(12+N)
+
+  "@s+Np" will add N pixels to the font size
+
+  "@s-Np" will reduce the font size, but the amount is subject
+  to change.
+
+  "@s0" will restore the initial font size.
+
+  "@S..." is the same as "@s..." for back-compatibility.
+
+  "@." prints nothing and also stops any interpretation of @ or &
+  characters later in the string. This will allow you to concatenate
+  some @-commands to the start of an arbitrary string.
+
+  "@x+N" draws a blank exactly n*(fontsize/12) wide.
+
+  "@x-N" moves backwards by n*(fontsize/12) (ie it kerns).
+
+  Add a 'p' suffix to the number to move exactly n pixels, instead of
+  a scaled amount. Other suffixes may be added in the future.
+
+  "@y+number" will move the y origin \e up by n*(fontsize/12).
+  "@y-number" will move the y origin \e down n*(fontsize/12).
+  This can be used to produce super/subscripts.
+  Add a 'p' suffix to the number to move exactly n pixels, instead of
+  a scaled amount. Other suffixes may be added in the future.
+  To restore the y origin to the baseline, use the "@n" command.
+
+  "@Bcolor" draws a solid box of the given color behind the text.
+  "color" can be any string understood by parsecolor(). Not
+  sure if this is compatible with fltk1.1.
+
+  "@l" makes the rest of the label be left-justified.
+  Note that this is incompatible with fltk1, which used this to set the
+  size to 24 points.
+
+  "@c" makes the rest of the label be centered.
+
+  "@r" makes the rest of the label be right-justified.
+
+<h2>Symbols</h2>
+
+\image html symbols.gif
+
+By default these all draw in a square that is the current font size on
+each side. You can put extra text between the @-sign and the name to
+get some additional effects:
+- "+digit" will enlarge the square by 1/12 of a point
+  size, "-digit" will shrink it. For instance "@+2square;" will
+  make a larger than default square.
+- Any digits after that are taken as an angle to rotate. A single
+  digit is a "keypad rotation" where the x axis points
+  at the given number on a keypad, for instance '9' it 45 degrees up,
+  and '4' is upside-down. '5' and '6' cause no rotation. For instance
+  "@4>" will make a triangle pointing left. "@+14>" is a bigger triangle
+  pointing left.
+- Multiple digits are a rotation in degrees. To do a rotation less than
+  10 degrees use a leading zero. For instance "@25->" is an arrow pointing
+  25 degrees up. "@-125->" is a slightly smaller arrow pointing 25
+  degrees up.
+
+<h2>Box types</h2>
+
+\image html boxtypes.gif
+
+These are all referenced by pointers defined in Style.h.
+
+*/
+
