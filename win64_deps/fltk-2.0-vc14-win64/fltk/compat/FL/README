@@ -1,0 +1,35 @@
+These header files are for back-compatability with fltk1.x.  Do not
+use these header files in new programs. Use the ones in the fltk
+directory.
+
+Most fltk1.x programs should compile with no changes by using these
+header files and linking with the fltk2.0 library.
+
+Known changes that must be done to fltk1.1 code to make them compile:
+
+Widgets inside groups will need their x,y coordinates fixed as they
+are now relative to the group, not the window.
+
+FL_BOLD, FL_ITALIC - these symbols used to be added to fonts to get
+bold and italic. This no longer works. You should replace them with
+the single symbol for the font (like FL_HELVETICA_BOLD in place of
+FL_HELVETICA+FL_BOLD) or use font->plus(attributes).
+
+Drawing functions are only roughly emulated. You may need to add casts
+to float to get your compiler to locate the correct functions. And if
+you offset by the x,y of the widget you need to remove these offsets.
+
+Some new members of widgets may hide global data. For instance "width"
+and "height" are now members. You can fix this by putting "::" in
+front of the global data names.
+
+If you use the Fl_Browser you are probably going to have trouble. All
+the indexes are offset by 1 from fltk1.1, ie the first item has an
+index of zero, not 1. Adding items with forward slashes in them will
+produce a hierarchy, which is pretty confusing when you don't plan on
+it.
+
+Menu and browser callbacks: the widget passed is the item, not the
+menu or browser. If you use o->parent() to find what window it is in
+you will have to change this, in most cases you can use o->window().
+
