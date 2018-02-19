@@ -3,7 +3,7 @@
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  * 
- * @brief    simple YCbCr texture with 3D lut shader
+ * @brief    simple YCbCrA texture with 3D lut shader
  * 
  */
 
@@ -67,11 +67,11 @@ void main()
 
   if ( coeffs )
   {
-	pre += Koff;
+	pre += vec4( Koff.r, Koff.g, Koff.b, 0.0 );
 
-  	c.r = dot(Kr, pre);
-  	c.g = dot(Kg, pre);
-  	c.b = dot(Kb, pre);
+  	c.r = dot(Kr, pre.xyz);
+  	c.g = dot(Kg, pre.xyz);
+  	c.b = dot(Kb, pre.xyz);
   }
   else
   {
