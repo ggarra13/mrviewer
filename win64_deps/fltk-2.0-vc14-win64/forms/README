@@ -1,0 +1,31 @@
+This directory contains Forms/XForms emulation code for fltk.
+This includes emulation of most of the functions in the forms.h header
+file, and special Fl_Widgets that replicate the forms ones.
+
+The demo program "colbrowser" is an XForms program with minimal
+changes needed to make it work.  The demo program "forms" is an even
+older Forms program with minimal changes.
+
+Forms emulation is no longer actively supported in fltk.  However
+these files do work and can be used as a starting point for porting
+Forms code.
+
+Some portions of Forms/XForms emulation are still in the main source
+code, such as the HIDDEN button types.  We are trying to gradually
+remove these.
+
+To compile:
+
+   Make fltk first.  You do not need to install it.
+
+   Type "make" in this directory.
+
+   Try the "forms" program to test it.
+
+   Type "make install"
+
+To compile Forms/XForms source code:
+
+   Modify it so that <forms.h> is replaced with <fltk/forms.h>
+
+   Compile and link with -lfltk2_forms -lfltk2
