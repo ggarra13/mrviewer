@@ -1,0 +1,34 @@
+README.lib
+----------
+
+This directory is used as a destination for the libraries fltk
+compiles. "make install" will copy them to /usr/local/lib by default.
+
+Fltk will compile a number of libraries, the multiple libraries are
+designed to avoid having programs depend on libraries they are not
+acutally using. For instance if the OpenGL functions were put into the
+main fltk library you would be forced to link OpenGL even if your
+program is not using it. This is a design problem with present-day
+implementations of shared libraries on both Unix and Windows.
+
+The libraries are:
+
+    fltk2        - the core of fltk2, most programs only need this
+    fltk2_images - functions that use png, jpeg, other image libraries
+    fltk2_gl     - Fl_Gl_Window and functions that use OpenGL
+    fltk2_glut   - glut emulation functions
+    fltk2_forms  - forms emulation functions
+
+Under UNIX you can compile either shared or static libraries. Static
+libraries are the default and have names like libfltk2.a. Shared
+libraries have (on most Unix systems) names like libfltk2.so.2.  To
+enable shared libraries run "./configure --enable-shared".
+
+Under Microsoft Visual C++ a successful build of all projects and
+configurations will contain debug (fltk2d.lib and fltk2dlld.lib) and
+release (fltk2.lib fltk2dll.lib) libraries for you to link to.  Both are
+built using the multi-threaded settings.  The DLL files (fltk2dll.dll
+and fltk2dlld.dll) required for a complete DLL-based binary distribution
+are located in the "visualc" directory. WAS: is this correct? What
+about when you use GCC or BC++?
+

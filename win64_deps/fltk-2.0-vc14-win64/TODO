@@ -1,0 +1,26 @@
+FLTK 2.0 TODO
+-------------
+
+	- Fix configure script and makefiles.
+	- fltk::FloatInput/IntInput doesn't return 1 from handle
+	  for non-number characters; this means that those
+	  characters go to other widgets instead.
+	  WAS: this is done on purpose. You can subclass and return
+	  1 if you want.
+	- fltk::ValueInput buttons don't draw inactive.
+	- Inactive widgets get engraved label type???
+	- Selection in fltk::Input/InputBrowser is not drawn
+	  inactive.
+	  WAS: inactive widgets should not have focus so this
+	  should not be a problem. However may be a problem for
+	  Browser which shows selection even when it does not have focus.
+	- fltk::Tabs needs to be updated to use the 1.1.x
+	  drawing code.
+	  WAS: I personally prefer the diagonal tabs.
+	- FLUID widget panel has random widgets in red?
+	  WAS: that is supposed to indicate which are set to
+	  non-default values, but it may be broken.
+	- Need to fix labels/etc. of widget panel.
+	- Don't move checkers so slow.
+	- strlcat/strlcpy/etc.
+
