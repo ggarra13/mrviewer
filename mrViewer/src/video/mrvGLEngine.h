@@ -134,7 +134,6 @@ namespace mrv {
     static bool halfTextures()  { return _halfTextures;  }
     static bool floatTextures() { return _floatTextures; }
     static bool sdiOutput()     { return _sdiOutput;     }
-    static bool fboRenderBuffer()  { return _fboRenderBuffer; }
     static GLint maxTexUnits()  { return _maxTexUnits;   }
 
     static GLShader* rgbaShader()    { return _rgba; }
@@ -231,7 +230,6 @@ namespace mrv {
     static bool _pow2Textures;    //!< only power of 2 textures supported
     static bool _pboTextures;     //!< Pixel Buffer Objects?
     static bool _sdiOutput;       //!< SDI output
-    static bool _fboRenderBuffer; //!< Framebuffer object
 
     static GLuint     sCharset;   //!< display list for characters
 
