@@ -67,6 +67,7 @@ namespace mrv {
     static bool set_theme();
 
   public:
+      static ViewerUI* uiMain;
       static bool use_ocio;
       static bool native_file_chooser;
     static int bgcolor;
