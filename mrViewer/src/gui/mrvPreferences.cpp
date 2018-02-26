@@ -277,6 +277,7 @@ fltk::StyleSet*     newscheme = NULL;
   HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
   bool                Preferences::use_ocio = false;
+  ViewerUI*           Preferences::uiMain = NULL;
   bool                Preferences::native_file_chooser;
   std::string         Preferences::OCIO_Display;
   std::string         Preferences::OCIO_View;
@@ -945,6 +946,7 @@ static const char* kCLocale = "C";
 
   void Preferences::run( mrv::ViewerUI* main )
   {
+      uiMain = main;
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     DBG("main->uiMain->show");
