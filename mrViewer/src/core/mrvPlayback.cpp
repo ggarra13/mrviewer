@@ -1054,6 +1054,12 @@ void video_thread( PlaybackData* data )
           {
               video_clock = img->video_clock();
               master_clock = img->audio_clock();
+              // std::cerr  << " VC: " << video_clock 
+              //            << " MC: " << master_clock
+              //            << " AC: " << get_clock(&img->audclk)
+              //            << " EC: " << get_clock(&img->extclk)
+              //            << std::endl;
+              // img->debug_video_stores( frame, "play", true );
           }
           else
           {
