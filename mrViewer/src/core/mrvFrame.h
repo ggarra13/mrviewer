@@ -17,12 +17,12 @@
 */
 /**
  * @file   mrvFrame.h
- * @author 
+ * @author
  * @date   Sun Oct 15 15:41:43 2006
- * 
+ *
  * @brief  Some simple classes to represent an audio and video frame.
- * 
- * 
+ *
+ *
  */
 
 
@@ -59,7 +59,10 @@ namespace mrv
       kBGRA,
       kRGB,
       kRGBA,
-      
+
+      kYUV,
+      kYUVA,
+
       kITU_601_YCbCr410,
       kITU_601_YCbCr410A, // @todo: not done
       kITU_601_YCbCr420,
@@ -130,14 +133,14 @@ namespace mrv
       _type( kByte )
     {
     }
-    
+
     VideoFrame( const boost::int64_t& frame,
-		const unsigned int w, const unsigned int h, 
-		const unsigned short c = 4,
-		const Format format  = kRGBA,
-		const PixelType type = kByte,
-		const boost::int64_t repeat = 0,
-		const boost::int64_t pts = 0 ) :
+                const unsigned int w, const unsigned int h,
+                const unsigned short c = 4,
+                const Format format  = kRGBA,
+                const PixelType type = kByte,
+                const boost::int64_t repeat = 0,
+                const boost::int64_t pts = 0 ) :
       _frame( frame ),
       _pts( pts ),
       _repeat( repeat ),
@@ -155,7 +158,7 @@ namespace mrv
     ~VideoFrame()
     {
     }
-    
+
     void allocate();
 
     self& operator=( const self& b );
@@ -176,8 +179,8 @@ namespace mrv
     inline void      format( Format f ) { _format = f; }
     inline Format    format()     const { return _format; }
 
-    inline const char* const pixel_format() const { return fmts[_format]; } 
-    inline const char* const pixel_depth() const { return ptype[_type]; } 
+    inline const char* const pixel_format() const { return fmts[_format]; }
+    inline const char* const pixel_depth() const { return ptype[_type]; }
 
     inline void      pixel_type( PixelType t ) { _type = t; }
     inline PixelType pixel_type() const        { return _type; }
@@ -201,8 +204,8 @@ namespace mrv
     inline const PixelData& data() const { return _data; }
 
     ImagePixel pixel( const unsigned int x, const unsigned int y ) const;
-    void pixel( const unsigned int x, const unsigned int y, 
-		const ImagePixel& p );
+    void pixel( const unsigned int x, const unsigned int y,
+                const ImagePixel& p );
 
     inline bool operator==( const self& b ) const
     {
@@ -255,24 +258,24 @@ namespace mrv
     VideoFrame( const VideoFrame& b ) { }
 
     ImagePixel pixel_u8( const unsigned int x, const unsigned int y ) const;
-    void pixel_u8( const unsigned int x, const unsigned int y, 
-		   const ImagePixel& p );
+    void pixel_u8( const unsigned int x, const unsigned int y,
+                   const ImagePixel& p );
 
     ImagePixel pixel_u16( const unsigned int x, const unsigned int y ) const;
-    void pixel_u16( const unsigned int x, const unsigned int y, 
-		    const ImagePixel& p );
+    void pixel_u16( const unsigned int x, const unsigned int y,
+                    const ImagePixel& p );
 
     ImagePixel pixel_u32( const unsigned int x, const unsigned int y ) const;
-    void pixel_u32( const unsigned int x, const unsigned int y, 
-		    const ImagePixel& p );
+    void pixel_u32( const unsigned int x, const unsigned int y,
+                    const ImagePixel& p );
 
     ImagePixel pixel_h16( const unsigned int x, const unsigned int y ) const;
-    void pixel_h16( const unsigned int x, const unsigned int y, 
-		    const ImagePixel& p );
+    void pixel_h16( const unsigned int x, const unsigned int y,
+                    const ImagePixel& p );
 
     ImagePixel pixel_f32( const unsigned int x, const unsigned int y ) const;
-    void pixel_f32( const unsigned int x, const unsigned int y, 
-		    const ImagePixel& p );
+    void pixel_f32( const unsigned int x, const unsigned int y,
+                    const ImagePixel& p );
   };
 
 
@@ -289,9 +292,9 @@ namespace mrv
 
 
   public:
-    AudioFrame( const boost::int64_t frame, 
-		const int freq, const short channels, 
-		const boost::uint8_t* data, const unsigned int size ) :
+    AudioFrame( const boost::int64_t frame,
+                const int freq, const short channels,
+                const boost::uint8_t* data, const unsigned int size ) :
       _frame( frame ),
       _channels( channels ),
       _freq( freq ),
@@ -312,8 +315,8 @@ namespace mrv
     inline unsigned int frequency() const { return _freq; }
     inline short         channels() const { return _channels; }
     inline unsigned int      size() const { return _size; }
-      inline const boost::uint8_t*  data() const { 
-          return (boost::uint8_t*) _data; 
+      inline const boost::uint8_t*  data() const {
+          return (boost::uint8_t*) _data;
       }
 
     inline bool operator==( const self& b ) const

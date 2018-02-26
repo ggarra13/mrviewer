@@ -1274,7 +1274,7 @@ ImageView::~ImageView()
 
    // make sure to stop any playback
    stop_playback();
-
+   
    foreground( mrv::media() );
    background( mrv::media() );
 
@@ -2536,6 +2536,7 @@ void ImageView::draw()
         DBG( "GLengine " << _engine );
         if ( !_engine ) return;
 
+        
         DBG( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
@@ -2602,6 +2603,7 @@ void ImageView::draw()
         TRACE("");
     }
 
+        
     if ( fg )
     {
         TRACE("");
