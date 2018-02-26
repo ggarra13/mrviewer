@@ -198,27 +198,37 @@ namespace mrv {
       static bool bad_format = false;
       switch( format )
       {
-          case image_type::kRGB:
-              return GL_RGB;
-          case image_type::kRGBA:
-              return GL_RGBA;
-          case image_type::kBGRA:
-              return GL_BGRA;
-          case image_type::kBGR:
-              return GL_BGR;
-          case image_type::kLumma:
-              return GL_LUMINANCE;
-          case image_type::kITU_709_YCbCr410:
-          case image_type::kITU_601_YCbCr410:
-              return GL_LUMINANCE;
-          default:
-              if ( !bad_format )
-              {
-                  bad_format = true;
-                  LOG_ERROR( _("Invalid mrv::Frame format: ") << format );
-              }
-              return GL_LUMINANCE;
-              break;
+      case image_type::kRGB:
+          return GL_RGB;
+      case image_type::kRGBA:
+          return GL_RGBA;
+      case image_type::kBGRA:
+          return GL_BGRA;
+      case image_type::kBGR:
+          return GL_BGR;
+      case image_type::kLumma:
+      case image_type::kYUV:
+      case image_type::kITU_709_YCbCr444A:
+      case image_type::kITU_601_YCbCr444A:
+      case image_type::kITU_709_YCbCr420A:
+      case image_type::kITU_601_YCbCr420A:
+      case image_type::kITU_709_YCbCr410A:
+      case image_type::kITU_601_YCbCr410A:
+      case image_type::kITU_709_YCbCr444:
+      case image_type::kITU_601_YCbCr444:
+      case image_type::kITU_709_YCbCr420:
+      case image_type::kITU_601_YCbCr420:
+      case image_type::kITU_709_YCbCr410:
+      case image_type::kITU_601_YCbCr410:
+          return GL_LUMINANCE;
+      default:
+          if ( !bad_format )
+          {
+              bad_format = true;
+              LOG_ERROR( _("Invalid mrv::Frame format: ") << format );
+          }
+          return GL_LUMINANCE;
+          break;
       }
   }
 
@@ -565,6 +575,8 @@ namespace mrv {
                  ow = tw;
                  oh = th;
                  break;
+              case image_type::kYUV:
+              case image_type::kYUVA:
               case image_type::kITU_601_YCbCr420:
               case image_type::kITU_601_YCbCr420A:
               case image_type::kITU_709_YCbCr420:
@@ -696,7 +708,7 @@ namespace mrv {
   void GLQuad::bind_texture_quad( const image_type_ptr& pic,
                                   const unsigned poww, const unsigned int powh )
   {
-    if ( pic->format() >= image_type::kITU_601_YCbCr420 )
+      if ( pic->format() >= image_type::kYUV )
         return bind_texture_yuv( pic, poww, powh );
 
 
