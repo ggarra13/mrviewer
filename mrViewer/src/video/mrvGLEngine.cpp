@@ -51,6 +51,8 @@
 #  include <fltk/win32.h>   // for fltk::getDC()
 #endif
 
+extern "C" {
+
 #include <GL/glew.h>
 
 #if defined(WIN32) || defined(WIN64)
@@ -62,6 +64,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
+}
 
 
 
@@ -141,7 +144,6 @@ namespace mrv {
   bool   GLEngine::_pow2Textures    = true;
   bool   GLEngine::_pboTextures     = false;
   bool   GLEngine::_sdiOutput       = false;
-  bool   GLEngine::_fboRenderBuffer = false;
 
   GLuint GLEngine::sCharset = 0;   // display list for characters
   unsigned int GLEngine::_maxTexWidth;
@@ -809,8 +811,15 @@ bool GLEngine::init_fbo( ImageList& images )
    if ( w > GL_MAX_RENDERBUFFER_SIZE ) return false;
    if ( h > GL_MAX_RENDERBUFFER_SIZE ) return false;
 
-   glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL,
-                          w, h );
+   // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
+   //                       GL_FRAMEBUFFER_DEFAULT_WIDTH, w);
+   // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
+   //                       GL_FRAMEBUFFER_DEFAULT_HEIGHT, h);
+   // glFramebufferParameteri( GL_DRAW_FRAMEBUFFER,
+   //                       GL_FRAMEBUFFER_DEFAULT_SAMPLES, 4 );
+
+   // glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+   //                        w, h );
    CHECK_GL;
    glBindRenderbuffer( GL_RENDERBUFFER, 0 );
    CHECK_GL;
@@ -820,12 +829,11 @@ bool GLEngine::init_fbo( ImageList& images )
                           GL_TEXTURE_2D, textureId, 0);
    CHECK_GL;
 
-   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-                             GL_RENDERBUFFER, rid);
-   CHECK_GL;
+   // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
+   //                           GL_RENDERBUFFER, rid);
+   // CHECK_GL;
 
-   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
-                             GL_RENDERBUFFER, rid);
+   glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, id, 0);
    CHECK_GL;
 
    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
@@ -1549,6 +1557,7 @@ void GLEngine::translate( const double x, const double y, const double z )
 void GLEngine::draw_images( ImageList& images )
 {
     TRACE( "" );
+
     CHECK_GL;
 
     DBG( __FUNCTION__ << " " << __LINE__ );
