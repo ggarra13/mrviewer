@@ -468,7 +468,7 @@ namespace mrv {
   DrawEngine::ShaderType DrawEngine::_hardwareShaders = DrawEngine::kAuto;
   bool DrawEngine::_has_yuv  = false;
   bool DrawEngine::_has_yuva = false;
-
+  bool DrawEngine::_fboRenderBuffer = false;
 
   static const char* kShaderType[] = 
     {
