@@ -3220,7 +3220,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
 
 
-
         uint8_t* base = (uint8_t*) new uint8_t[total_size];
         bufs.push_back( base );
 
