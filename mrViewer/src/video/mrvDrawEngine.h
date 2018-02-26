@@ -112,6 +112,8 @@ namespace mrv {
     virtual const char* name() = 0;
     virtual std::string options() = 0;
 
+      
+      
       virtual double rot_x() const = 0;
       virtual double rot_y() const = 0;
       
@@ -216,6 +218,8 @@ namespace mrv {
 	  pMax = _normMax;
        }
 
+      static bool fboRenderBuffer()  { return _fboRenderBuffer; }
+      
   protected:
 
 
@@ -238,6 +242,7 @@ namespace mrv {
     BucketList buckets;
 
     static bool _has_yuv, _has_yuva;
+    static bool _fboRenderBuffer; //!< Framebuffer object
     static ShaderType _hardwareShaders; //!< hardware shaders supported
   };
 
