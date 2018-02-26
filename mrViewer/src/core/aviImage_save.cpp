@@ -42,7 +42,11 @@ extern "C" {
 #include <libswresample/swresample.h>
 }
 
+#include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
+
 #include "core/aviImage.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 #include "core/mrvSwizzleAudio.h"
 #include "core/mrvFrameFunctors.h"
@@ -130,7 +134,7 @@ static AVSampleFormat select_sample_format( AVCodec* c, AVSampleFormat input )
 }
 
 /* select layout with the highest channel count */
-static uint64_t select_channel_layout(const AVCodec *codec, 
+static uint64_t select_channel_layout(const AVCodec *codec,
                                       unsigned num_channels)
 {
     const uint64_t *p;
@@ -160,15 +164,15 @@ static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt)
     char buf2[AV_TS_MAX_STRING_SIZE];
 
     printf("pts:%s pts_time:%s ",
-           av_ts_make_string(buf, pkt->pts), 
+           av_ts_make_string(buf, pkt->pts),
            av_ts_make_time_string(buf2, pkt->pts, time_base) );
 
     printf( "dts:%s dts_time:%s ",
-            av_ts_make_string(buf, pkt->dts), 
+            av_ts_make_string(buf, pkt->dts),
             av_ts_make_time_string(buf2, pkt->dts, time_base) );
 
     printf( "duration:%s duration_time:%s stream_index:%d\n",
-            av_ts_make_string(buf, pkt->duration), 
+            av_ts_make_string(buf, pkt->duration),
             av_ts_make_time_string(buf2, pkt->duration, time_base),
             pkt->stream_index);
 }
@@ -245,7 +249,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     }
     st->id = oc->nb_streams-1;
     c = st->codec;
-    
+
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -264,7 +268,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->time_base.num = st->time_base.num = 1;
           c->time_base.den = st->time_base.den = c->sample_rate;
 
-          if((c->block_align == 1 || c->block_align == 1152 || 
+          if((c->block_align == 1 || c->block_align == 1152 ||
               c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
               c->block_align = 0;
           if(c->codec_id == AV_CODEC_ID_AC3)
@@ -297,7 +301,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                // c->i_quant_factor = ptr->i_quant_factor;
                // c->qcompress = ptr->qcompress;
                // c->max_qdiff = ptr->max_qdiff;
-               
+
                // Use a profile if possible
                c->profile = opts->video_profile;
                c->colorspace = (AVColorSpace) opts->yuv_hint;
@@ -316,48 +320,48 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    }
                }
                else if ( c->codec_id == AV_CODEC_ID_H264 )
-		 {
+                 {
                    switch( opts->video_profile )
-		     {
-		     case 0:
-		       c->profile = FF_PROFILE_H264_BASELINE; break;
-		     case 1:
-		       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
-		     case 2:
-		       c->profile = FF_PROFILE_H264_MAIN; break;
-		     case 3:
-		       c->profile = FF_PROFILE_H264_EXTENDED; break;
-		     case 5:
-		       c->profile = FF_PROFILE_H264_HIGH_10;
-		       if ( opts->video_color == "YUV420" )
-			 c->pix_fmt = AV_PIX_FMT_YUV420P10;
-		       else if ( opts->video_color == "YUV422" )
-			 {
-			   c->profile = FF_PROFILE_H264_HIGH_422;
-			   c->pix_fmt = AV_PIX_FMT_YUV422P;
-			 }
-		       else if ( opts->video_color == "YUV444" )
-			 {
-			   c->profile = FF_PROFILE_H264_HIGH_444;
-			   c->pix_fmt = AV_PIX_FMT_YUV444P;
-			 }
-		       break;
-		     case 4:
-		     default:
-		       c->profile = FF_PROFILE_H264_HIGH;
-		       if ( opts->video_color == "YUV422" )
-			 {
-			   c->profile = FF_PROFILE_H264_HIGH_422;
-			   c->pix_fmt = AV_PIX_FMT_YUV422P;
-			 }
-		       else if ( opts->video_color == "YUV444" )
-			 {
-			   c->profile = FF_PROFILE_H264_HIGH_444;
-			   c->pix_fmt = AV_PIX_FMT_YUV444P;
-			 }
-		       break;
-		     }
-		 }
+                     {
+                     case 0:
+                       c->profile = FF_PROFILE_H264_BASELINE; break;
+                     case 1:
+                       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
+                     case 2:
+                       c->profile = FF_PROFILE_H264_MAIN; break;
+                     case 3:
+                       c->profile = FF_PROFILE_H264_EXTENDED; break;
+                     case 5:
+                       c->profile = FF_PROFILE_H264_HIGH_10;
+                       if ( opts->video_color == "YUV420" )
+                         c->pix_fmt = AV_PIX_FMT_YUV420P10;
+                       else if ( opts->video_color == "YUV422" )
+                         {
+                           c->profile = FF_PROFILE_H264_HIGH_422;
+                           c->pix_fmt = AV_PIX_FMT_YUV422P;
+                         }
+                       else if ( opts->video_color == "YUV444" )
+                         {
+                           c->profile = FF_PROFILE_H264_HIGH_444;
+                           c->pix_fmt = AV_PIX_FMT_YUV444P;
+                         }
+                       break;
+                     case 4:
+                     default:
+                       c->profile = FF_PROFILE_H264_HIGH;
+                       if ( opts->video_color == "YUV422" )
+                         {
+                           c->profile = FF_PROFILE_H264_HIGH_422;
+                           c->pix_fmt = AV_PIX_FMT_YUV422P;
+                         }
+                       else if ( opts->video_color == "YUV444" )
+                         {
+                           c->profile = FF_PROFILE_H264_HIGH_444;
+                           c->pix_fmt = AV_PIX_FMT_YUV444P;
+                         }
+                       break;
+                     }
+                 }
                else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
                {
                    switch( opts->video_profile )
@@ -388,8 +392,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                        c->pix_fmt = AV_PIX_FMT_YUV422P10;
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P10;
-		   
-		   // Profiles are taken from opts->video_profile
+
+                   // Profiles are taken from opts->video_profile
                }
                else
                {
@@ -401,7 +405,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P;
                    else
-                       LOG_ERROR( "Unknown c->pix_fmt (" 
+                       LOG_ERROR( "Unknown c->pix_fmt ("
                                   << opts->video_color << ") for movie file" );
                }
                if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
@@ -423,7 +427,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
 
 static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
-			      AVStream* st, const CMedia* img,
+                              AVStream* st, const CMedia* img,
                               const AviSaveUI* opts)
 
 {
@@ -498,7 +502,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
 
     ret = av_samples_alloc_array_and_samples(&src_samples_data,
-                                             &src_samples_linesize, 
+                                             &src_samples_linesize,
                                              c->channels,
                                              src_nb_samples, aformat, 1);
     if (ret < 0) {
@@ -524,20 +528,20 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        }
 
        uint64_t in_layout = av_get_default_channel_layout(c->channels);
-       av_opt_set_int       (swr_ctx, N_("in_channel_layout"), 
+       av_opt_set_int       (swr_ctx, N_("in_channel_layout"),
                              in_layout, 0);
-       av_opt_set_int       (swr_ctx, N_("in_channel_count"), 
+       av_opt_set_int       (swr_ctx, N_("in_channel_count"),
                              c->channels, 0);
        av_opt_set_int       (swr_ctx, N_("in_sample_rate"),
                              img->audio_frequency(), 0);
        av_opt_set_sample_fmt(swr_ctx, N_("in_sample_fmt"),      aformat, 0);
-       av_opt_set_int       (swr_ctx, N_("out_channel_layout"), 
+       av_opt_set_int       (swr_ctx, N_("out_channel_layout"),
                              c->channel_layout, 0);
        av_opt_set_int       (swr_ctx, N_("out_channel_count"), c->channels, 0);
        av_opt_set_int       (swr_ctx, N_("out_sample_rate"), c->sample_rate,
                              0);
        av_opt_set_sample_fmt(swr_ctx, N_("out_sample_fmt"), c->sample_fmt, 0);
-	
+
        char buf[256], buf2[256];
        av_get_channel_layout_string( buf, 256, c->channels, in_layout );
        av_get_channel_layout_string( buf2, 256, c->channels, c->channel_layout);
@@ -545,12 +549,12 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        LOG_INFO( _( "Audio conversion of " )
                  << buf
                  << _(" channels ") << c->channels << _(", freq ")
-                 << img->audio_frequency() << N_(" ") 
-                 << av_get_sample_fmt_name( aformat ) 
+                 << img->audio_frequency() << N_(" ")
+                 << av_get_sample_fmt_name( aformat )
                  << _(" to ") << std::endl
                  << N_("              ")
                  << buf2
-                 << _(" channels ") << c->channels 
+                 << _(" channels ") << c->channels
                  << _(", freq ") << c->sample_rate << N_(" ")
                  << av_get_sample_fmt_name( c->sample_fmt ) << N_(".") );
 
@@ -561,7 +565,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
         assert( src_nb_samples > 0 );
 
-        int ret = av_samples_alloc_array_and_samples(&dst_samples_data, 
+        int ret = av_samples_alloc_array_and_samples(&dst_samples_data,
                                                      &dst_samples_linesize,
                                                      c->channels,
                                                      max_dst_nb_samples,
@@ -577,7 +581,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         if ((swr_init(swr_ctx)) < 0) {
            LOG_ERROR( _("Failed to initialize the resampling context") );
            av_frame_free(&audio_frame);
-	   return false;
+           return false;
         }
 
     }
@@ -588,13 +592,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
 
     assert( max_dst_nb_samples > 0 );
- 
+
     return true;
 }
 
 
-static bool write_audio_frame(AVFormatContext *oc, AVStream *st, 
-			      CMedia* img)
+static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
+                              CMedia* img)
 {
    AVPacket pkt = {0};
    int got_packet, ret, dst_nb_samples;
@@ -644,8 +648,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        unsigned dst_rate = c->sample_rate;
 
 
-       dst_nb_samples = static_cast<unsigned>( 
-       av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
+       dst_nb_samples = static_cast<unsigned>(
+       av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) +
                       src_nb_samples, dst_rate, src_rate,
                       AV_ROUND_UP) );
 
@@ -655,7 +659,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
            av_free(dst_samples_data[0]);
 
            ret = av_samples_alloc(dst_samples_data, &dst_samples_linesize,
-                                  c->channels, dst_nb_samples, 
+                                  c->channels, dst_nb_samples,
                                   c->sample_fmt, 1);
            if (ret < 0)
            {
@@ -672,10 +676,10 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
       ret = swr_convert(swr_ctx,
                         dst_samples_data, dst_nb_samples,
-                        (const uint8_t **)src_samples_data, 
+                        (const uint8_t **)src_samples_data,
                         src_nb_samples);
       if (ret < 0) {
-         LOG_ERROR( _("Error while converting audio: ") 
+         LOG_ERROR( _("Error while converting audio: ")
                     << get_error_text(ret) );
          return false;
       }
@@ -741,7 +745,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    while ( av_audio_fifo_size( fifo ) >= (int)frame_size )
    {
 
-       ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
+       ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data,
                                 frame_size);
        if ( ret < 0 )
        {
@@ -752,13 +756,13 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
 
-       audio_frame->pts = av_rescale_q( samples_count, ratio, 
+       audio_frame->pts = av_rescale_q( samples_count, ratio,
                                         c->time_base );
 
        ret = encode(c, &pkt, audio_frame, &got_packet);
        if (ret < 0)
        {
-           LOG_ERROR( _("Could not encode audio frame: ") << 
+           LOG_ERROR( _("Could not encode audio frame: ") <<
                       get_error_text(ret) );
            return false;
        }
@@ -775,7 +779,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
        ret = write_frame(oc, &c->time_base, st, &pkt);
        if (ret < 0) {
-           LOG_ERROR( "Error while writing audio frame: " << 
+           LOG_ERROR( "Error while writing audio frame: " <<
                       get_error_text(ret) );
            return false;
        }
@@ -795,7 +799,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 static void close_audio_static(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(st->codec);
-   
+
     av_audio_fifo_free( fifo ); fifo = NULL;
     swr_free( &swr_ctx );
 
@@ -843,7 +847,7 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
 {
     switch( f )
     {
-        case mrv::image_type::kITU_601_YCbCr410A: 
+        case mrv::image_type::kITU_601_YCbCr410A:
         case mrv::image_type::kITU_709_YCbCr410A:
         case mrv::image_type::kITU_601_YCbCr410:
         case mrv::image_type::kITU_709_YCbCr410:
@@ -897,15 +901,15 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
 static AVFrame *frame;
 
 static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
-		       const CMedia* img, const AviSaveUI* opts )
+                       const CMedia* img, const AviSaveUI* opts )
 {
     AVCodecContext* c = st->codec;
-    
+
     AVDictionary* info = NULL;
 
     if ( opts->metadata )
         av_dict_set( &info, "movflags", "+use_metadata_tags", 0 );
-    
+
     /* open the codec */
     if (avcodec_open2(c, codec, &info) < 0) {
        LOG_ERROR( _("Could not open video codec") );
@@ -930,7 +934,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         //
         for ( ; i != e; ++i )
         {
-            if (( i->first.find( _("Video ") ) == 0 ) || 
+            if (( i->first.find( _("Video ") ) == 0 ) ||
                 ( i->first.find( _("Audio ") ) == 0 ) ) {
                 continue;
             }
@@ -1000,48 +1004,111 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 
    float one_gamma = 1.0f / img->gamma();
 
-   // Convert half and float pictures to 16-bits
-   if ( hires->pixel_type() != mrv::image_type::kByte &&
-        hires->pixel_type() != mrv::image_type::kShort )
+   const std::string& display = mrv::Preferences::OCIO_Display;
+   const std::string& view = mrv::Preferences::OCIO_View;
+
+   mrv::image_type_ptr ptr;
+   VideoFrame::Format format = image_type::kRGB;
+   if ( hires->channels() == 4 ) format = image_type::kRGBA;
+
+   if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
+        Preferences::uiMain->uiView->use_lut() )
    {
-       mrv::image_type_ptr ptr( new image_type( hires->frame(),
-                                                w, h,
-                                                hires->channels(),
-                                                hires->format(),
-                                                mrv::image_type::kShort ) );
 
-       for ( unsigned y = 0; y < h; ++y )
+       ptr = mrv::image_type_ptr( new image_type( hires->frame(),
+                                                 w, h,
+                                                 hires->channels(),
+                                                 format,
+                                                 mrv::image_type::kFloat ) );
+
+       if ( hires->pixel_type() == mrv::image_type::kFloat )
        {
-           for ( unsigned x = 0; x < w; ++x )
+           size_t total_size = w*h*sizeof(float)*hires->channels();
+           memcpy( ptr->data().get(), hires->data().get(), total_size );
+       }
+       else
+       {
+           for ( unsigned y = 0; y < h; ++y )
            {
-               ImagePixel p = hires->pixel( x, y );
-
-               // This code is equivalent to p.r = powf( p.r, gamma )
-               // but faster
-               if ( p.r > 0.0f && isfinite(p.r) )
-                   p.r = expf( logf(p.r) * one_gamma );
-               if ( p.g > 0.0f && isfinite(p.g) )
-                   p.g = expf( logf(p.g) * one_gamma );
-               if ( p.b > 0.0f && isfinite(p.b) )
-                   p.b = expf( logf(p.b) * one_gamma );
-
-               if      (p.r < 0.0f) p.r = 0.0f;
-               else if (p.r > 1.0f) p.r = 1.0f;
-               if      (p.g < 0.0f) p.g = 0.0f;
-               else if (p.g > 1.0f) p.g = 1.0f;
-               if      (p.b < 0.0f) p.b = 0.0f;
-               else if (p.b > 1.0f) p.b = 1.0f;
-
-               ptr->pixel(x, y, p );
+               for ( unsigned x = 0; x < w; ++x )
+               {
+                   const ImagePixel& p = hires->pixel( x, y );
+                   ptr->pixel(x, y, p );
+               }
            }
        }
-       hires = ptr;
+
+       OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+
+       OCIO::DisplayTransformRcPtr transform =
+       OCIO::DisplayTransform::Create();
+
+       std::string ics = img->ocio_input_color_space();
+       if  ( ics.empty() )
+       {
+           OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
+           if(!defaultcs)
+               throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
+           ics = defaultcs->getName();
+       }
+
+       transform->setInputColorSpaceName( ics.c_str() );
+       transform->setDisplay( display.c_str() );
+       transform->setView( view.c_str() );
+
+       OCIO::ConstProcessorRcPtr processor =
+       config->getProcessor( transform );
+
+       float* p = (float*)ptr->data().get();
+
+       OCIO::PackedImageDesc img(p,
+                                 w, h, hires->channels() );
+       processor->apply( img );
+
+   }
+   else
+   {
+       ptr = hires;
+   }
+
+   mrv::image_type_ptr sho( new image_type( hires->frame(),
+                                            w, h,
+                                            hires->channels(),
+                                            format,
+                                            mrv::image_type::kShort ) );
+
+   for ( unsigned y = 0; y < h; ++y )
+   {
+       for ( unsigned x = 0; x < w; ++x )
+       {
+           ImagePixel p = ptr->pixel( x, y );
+
+           // This code is equivalent to p.r = powf( p.r, gamma )
+           // but faster
+           // if ( p.r > 0.0f && isfinite(p.r) )
+           //     p.r = expf( logf(p.r) * one_gamma );
+           // if ( p.g > 0.0f && isfinite(p.g) )
+           //     p.g = expf( logf(p.g) * one_gamma );
+           // if ( p.b > 0.0f && isfinite(p.b) )
+           //     p.b = expf( logf(p.b) * one_gamma );
+
+           // if      (p.r < 0.0f) p.r = 0.0f;
+           // else if (p.r > 1.0f) p.r = 1.0f;
+           // if      (p.g < 0.0f) p.g = 0.0f;
+           // else if (p.g > 1.0f) p.g = 1.0f;
+           // if      (p.b < 0.0f) p.b = 0.0f;
+           // else if (p.b > 1.0f) p.b = 1.0f;
+
+           sho->pixel(x, y, p );
+       }
+
+       hires = sho;
    }
 
    AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
                                             hires->pixel_type() );
    sws_ctx = sws_getCachedContext( sws_ctx, w, h,
-                                   fmt, c->width, c->height, c->pix_fmt, 0, 
+                                   fmt, c->width, c->height, c->pix_fmt, 0,
                                    NULL, NULL, NULL );
    if ( !sws_ctx )
    {
@@ -1058,7 +1125,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 }
 
 static bool write_video_frame(AVFormatContext* oc, AVStream* st,
-			      const CMedia* img )
+                              const CMedia* img )
 {
    int ret;
    AVCodecContext* c = st->codec;
@@ -1074,7 +1141,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
    picture->pts = frame_count;
    ret = encode(c, &pkt, picture, &got_packet);
    if (ret < 0) {
-       LOG_ERROR( _("Error while encoding video frame: ") << 
+       LOG_ERROR( _("Error while encoding video frame: ") <<
                   get_error_text(ret) );
        return false;
    }
@@ -1087,7 +1154,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
        av_packet_unref( &pkt );
 
        if (ret < 0) {
-           LOG_ERROR( _("Error while writing video frame: ") << 
+           LOG_ERROR( _("Error while writing video frame: ") <<
                       get_error_text(ret) );
            return false;
        }
@@ -1131,7 +1198,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
         unsigned size = audio_bytes_per_frame();
         uint8_t* data = new uint8_t[ size ];
         memset( data, 0, size );
-        return audio_type_ptr( new audio_type( x, audio_frequency(), 
+        return audio_type_ptr( new audio_type( x, audio_frequency(),
                                                audio_channels(), data, size) );
     }
 
@@ -1154,7 +1221,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 #endif
 
     LOG_ERROR( _("Missing audio frame ") << x );
-    return audio_type_ptr( new audio_type( AV_NOPTS_VALUE, audio_frequency(), 
+    return audio_type_ptr( new audio_type( AV_NOPTS_VALUE, audio_frequency(),
                                            audio_channels(), NULL, 0) );
 }
 
@@ -1198,8 +1265,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
       err = avformat_alloc_output_context2(&oc, NULL, "mpeg", filename);
       if ( err < 0 )
       {
-	 LOG_ERROR( _("Could not open mpeg movie") );
-	 return false;
+         LOG_ERROR( _("Could not open mpeg movie") );
+         return false;
       }
    }
 
@@ -1222,13 +1289,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    if ( opts->audio_codec == _("None") )
        fmt->audio_codec = AV_CODEC_ID_NONE;
    else if ( opts->audio_codec == "mp3" )
-       fmt->audio_codec = AV_CODEC_ID_MP3; 
+       fmt->audio_codec = AV_CODEC_ID_MP3;
    else if ( opts->audio_codec == "ac3" )
        fmt->audio_codec = AV_CODEC_ID_AC3;
    else if ( opts->audio_codec == "aac" )
-       fmt->audio_codec = AV_CODEC_ID_AAC; 
+       fmt->audio_codec = AV_CODEC_ID_AAC;
    else if ( opts->audio_codec == "vorbis" )
-       fmt->audio_codec = AV_CODEC_ID_VORBIS; 
+       fmt->audio_codec = AV_CODEC_ID_VORBIS;
    else if ( opts->audio_codec == "pcm" )
        fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
 
@@ -1257,21 +1324,21 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    if (video_st)
      {
        if ( ! open_video(oc, video_codec, video_st, img, opts ) )
-	 return false;
+         return false;
      }
-   
+
    if (audio_st)
        if ( ! open_audio_static(oc, audio_cdc, audio_st, img, opts) )
       {
-	 audio_st = NULL;
-	 if ( !video_st ) return false;
+         audio_st = NULL;
+         if ( !video_st ) return false;
       }
-   
+
 
    if (!(fmt->flags & AVFMT_NOFILE)) {
       if (avio_open(&oc->pb, filename, AVIO_FLAG_WRITE) < 0) {
-	 LOG_ERROR( _("Could not open '") << filename << "'" );
-	 return false;
+         LOG_ERROR( _("Could not open '") << filename << "'" );
+         return false;
       }
    }
 
@@ -1283,7 +1350,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    err = avformat_write_header(oc, &info);
    if ( err < 0 )
    {
-      LOG_ERROR( _("Error occurred when opening output file: ") << 
+      LOG_ERROR( _("Error occurred when opening output file: ") <<
                  get_error_text(err) );
       return false;
    }
@@ -1303,21 +1370,21 @@ bool write_va_frame( CMedia* img )
     /* Compute current audio and video time. */
    audio_time = ( audio_st ? ( double(audio_frame->pts) *
                                av_q2d( audio_st->time_base ) )
-		  : INFINITY );
+                  : INFINITY );
    // This is wrong as it does not get updated properly with h264
    //video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
-   //     	  : INFINITY );
-   
-   video_time = ( video_st ? ( double(picture->pts) * 
-                               av_q2d( video_st->codec->time_base ) )
-   		  : INFINITY );
+   //             : INFINITY );
 
-   // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
-   //           << " " << video_st->time_base.num 
-   //           << "/" << video_st->time_base.den 
-   //           << " c: " << video_st->codec->time_base.num 
+   video_time = ( video_st ? ( double(picture->pts) *
+                               av_q2d( video_st->codec->time_base ) )
+                  : INFINITY );
+
+   // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts
+   //           << " " << video_st->time_base.num
+   //           << "/" << video_st->time_base.den
+   //           << " c: " << video_st->codec->time_base.num
    //           << "/" << video_st->codec->time_base.den << std::endl;
-    
+
 
     /* write interleaved audio and video frames */
 
@@ -1338,7 +1405,7 @@ bool write_va_frame( CMedia* img )
                          av_q2d( audio_st->time_base);
        }
     }
-    
+
    return true;
 }
 
@@ -1371,23 +1438,23 @@ bool flush_video_and_audio( const CMedia* img )
         // Send last packet to encode
         if ( cache_size > 0 )
         {
-            ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
+            ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data,
                                      cache_size);
             if (ret < 0)
             {
-                LOG_ERROR( _("Could not read audio fifo: ") << 
+                LOG_ERROR( _("Could not read audio fifo: ") <<
                            get_error_text(ret) );
             }
-            
+
             c->frame_size = cache_size;
             audio_frame->nb_samples = cache_size;
-            audio_frame->pts = av_rescale_q( samples_count, ratio, 
+            audio_frame->pts = av_rescale_q( samples_count, ratio,
                                              c->time_base );
-            
+
             ret = encode(c, &pkt, audio_frame, &got_packet);
             if (ret < 0)
             {
-                LOG_ERROR( _("Could not encode audio frame: ") << 
+                LOG_ERROR( _("Could not encode audio frame: ") <<
                            get_error_text(ret) );
             }
         }
@@ -1402,13 +1469,13 @@ bool flush_video_and_audio( const CMedia* img )
     for ( int i = 0; i < 2; ++i ) {
         AVStream* s = st[i];
         if ( !s ) continue;
-            
+
         int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
         if ( !( c->codec->capabilities & AV_CODEC_CAP_DELAY ) )
             continue;
-            
+
         if (c->codec_type == AVMEDIA_TYPE_AUDIO && c->frame_size <= 1)
             continue;
         // if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codec->id == AV_CODEC_ID_RAWVIDEO)
@@ -1427,14 +1494,14 @@ bool flush_video_and_audio( const CMedia* img )
                 default:
                     stop_encoding = 1;
             }
-                
+
             if (encode) {
                 AVPacket pkt = {0};
                 int got_packet = 0;
                 av_init_packet(&pkt);
-                    
+
                 ret = encode(c, &pkt, NULL, &got_packet);
-                    
+
                 if (ret < 0 && ret != AVERROR_EOF) {
                     LOG_ERROR( _("Failed ") << desc << _(" encoding") );
                     return false;
@@ -1442,7 +1509,7 @@ bool flush_video_and_audio( const CMedia* img )
 
                 if (!got_packet ) {
                     stop_encoding = 1;
-                    LOG_INFO( _("Stopped encoding cached ") << desc 
+                    LOG_INFO( _("Stopped encoding cached ") << desc
                               << _(" frames") );
                     break;
                 }
@@ -1489,7 +1556,7 @@ bool aviImage::close_movie( const CMedia* img )
     * av_write_trailer() may try to use memory that was freed on
     * av_codec_close(). */
    av_write_trailer(oc);
-    
+
     /* Close each codec. */
     if (video_st)
         close_video(oc, video_st);

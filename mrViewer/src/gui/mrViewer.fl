@@ -3313,26 +3313,27 @@ if ( !is_equal( g, 0.0 ) )
 }
 else
 {
-  int idx = o->value();
-  fltk::Widget* w = gammaDefaults->get_item();
-  const char* lbl = w->label();
-  fltk::Widget* p = w->parent();
-  if ( p ) mrv::Preferences::OCIO_Display = p->label();
-  if ( lbl && strcmp(lbl, p->label()) != 0 )
-  {
-     v->uiGamma->value( 1.0f );
-     v->uiGammaInput->value( 1.0f );
-     v->uiView->gamma( 1.0f );
+    int idx = o->value();
+    fltk::Widget* w = gammaDefaults->get_item();
+    const char* lbl = w->label();
+    fltk::Widget* p = w->parent();
+    if ( p ) mrv::Preferences::OCIO_Display = p->label();
+    else p = w;
+    if ( lbl && strcmp(lbl, p->label()) != 0 )
+    {
+	v->uiGamma->value( 1.0f );
+	v->uiGammaInput->value( 1.0f );
+	v->uiView->gamma( 1.0f );
 
-     mrv::Preferences::OCIO_View = lbl;
-
-     v->uiView->use_lut(true);
-     v->uiLUT->value(true);
-     mrv::media fg = v->uiView->foreground();
-     if ( !fg ) return;
-     fg->image()->image_damage( CMedia::kDamageAll );
-     v->uiView->redraw();
-  }
+	mrv::Preferences::OCIO_View = lbl;
+	
+	v->uiView->use_lut(true);
+	v->uiLUT->value(true);
+	mrv::media fg = v->uiView->foreground();
+	if ( !fg ) return;
+	fg->image()->image_damage( CMedia::kDamageAll );
+	v->uiView->redraw();
+    }
 }}
                     tooltip {Some default gamma settings.}
                     xywh {0 0 50 19} box UP_BOX
