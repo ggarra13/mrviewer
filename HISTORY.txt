@@ -1,3 +1,8 @@
+v4.0.3   - Bug fixed jpeg loader (ffmpeg) to support .jpeg extension
+	   besides jpg.
+	 - When lut is active, saving to a movie file will now bake the
+	   OCIO transforms.
+
 v4.0.2   - Bug fixed GLSL 2.0 YCrCbA shader to not throw a syntax error.
 	   This makes mrViewer's YUVA work with other graphic cards other
 	   than NVidia (ATI, Intel, etc).  Note that the YUVA mrViewer
