@@ -34,8 +34,9 @@
 
 namespace mrv {
 
-  inline bool is_equal( const double x1, const double x2,
-			const double e = 1e-5 )
+  template< typename T >
+  inline bool is_equal( const T x1, const T x2,
+			const T e = 1e-5 )
   {
     return ((x1 > x2)? x1 - x2: x2 - x1) <= e;
   }
