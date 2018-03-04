@@ -1696,25 +1696,25 @@ void aviImage::video_stream( int x )
       case AV_PIX_FMT_RGBA:
           _pix_fmt = VideoFrame::kRGBA; break;
       case AV_PIX_FMT_YUV444P:
-          if ( ctx->color_space == AVCOL_SPC_BT709 )
+          if ( _colorspace_index == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr444; 
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr444; 
           break;
       case AV_PIX_FMT_YUV422P:
-          if ( ctx->color_space == AVCOL_SPC_BT709 )
+          if ( _colorspace_index == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr422;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr422;
           break;
       case AV_PIX_FMT_YUV420P:
-          if ( ctx->color_space == AVCOL_SPC_BT709 )
+          if ( _colorspace_index == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr420;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr420;
           break;
       case AV_PIX_FMT_YUVA420P:
-          if ( ctx->color_space == AVCOL_SPC_BT709 )
+          if ( _colorspace_index == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr420A;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr420A;
