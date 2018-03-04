@@ -1,7 +1,10 @@
 v4.0.3   - Bug fixed jpeg loader (ffmpeg) to support .jpeg extension
 	   besides jpg.
 	 - When lut is active, saving to a movie file will now bake the
-	   OCIO transforms.
+	   OCIO transforms.  As the best movie depth is 16bits, the baking
+	   is not perfect, thou, so you might find color incongruencies.
+	 - Made gamma LUT requester behave a tad better.  When you select
+	   a non-view item like default or DCPI3, nothing will change.
 
 v4.0.2   - Bug fixed GLSL 2.0 YCrCbA shader to not throw a syntax error.
 	   This makes mrViewer's YUVA work with other graphic cards other
