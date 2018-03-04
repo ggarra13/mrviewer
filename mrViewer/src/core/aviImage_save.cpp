@@ -48,6 +48,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/aviImage.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
+#include "core/mrvMath.h"
 #include "core/mrvSwizzleAudio.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvColorSpaces.h"
@@ -1007,7 +1008,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
    const std::string& display = mrv::Preferences::OCIO_Display;
    const std::string& view = mrv::Preferences::OCIO_View;
 
-   mrv::image_type_ptr ptr;
+   mrv::image_type_ptr ptr;  // lut based image
+   mrv::image_type_ptr sho;  // 16-bits image
    VideoFrame::Format format = image_type::kRGB;
    if ( hires->channels() == 4 ) format = image_type::kRGBA;
 
@@ -1071,39 +1073,53 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        ptr = hires;
    }
 
-   mrv::image_type_ptr sho( new image_type( hires->frame(),
-                                            w, h,
-                                            hires->channels(),
-                                            format,
-                                            mrv::image_type::kShort ) );
-
-   for ( unsigned y = 0; y < h; ++y )
+   sho = mrv::image_type_ptr( new image_type( hires->frame(),
+                                              w, h,
+                                              hires->channels(),
+                                              format,
+                                              mrv::image_type::kShort ) );
+   if ( mrv::is_equal( one_gamma, 1.0f ) )
    {
-       for ( unsigned x = 0; x < w; ++x )
+       for ( unsigned y = 0; y < h; ++y )
        {
-           ImagePixel p = ptr->pixel( x, y );
-
-           // This code is equivalent to p.r = powf( p.r, gamma )
-           // but faster
-           // if ( p.r > 0.0f && isfinite(p.r) )
-           //     p.r = expf( logf(p.r) * one_gamma );
-           // if ( p.g > 0.0f && isfinite(p.g) )
-           //     p.g = expf( logf(p.g) * one_gamma );
-           // if ( p.b > 0.0f && isfinite(p.b) )
-           //     p.b = expf( logf(p.b) * one_gamma );
-
-           // if      (p.r < 0.0f) p.r = 0.0f;
-           // else if (p.r > 1.0f) p.r = 1.0f;
-           // if      (p.g < 0.0f) p.g = 0.0f;
-           // else if (p.g > 1.0f) p.g = 1.0f;
-           // if      (p.b < 0.0f) p.b = 0.0f;
-           // else if (p.b > 1.0f) p.b = 1.0f;
-
-           sho->pixel(x, y, p );
+           for ( unsigned x = 0; x < w; ++x )
+           {
+               const ImagePixel& p = ptr->pixel( x, y );
+               sho->pixel(x, y, p );
+           }
        }
-
-       hires = sho;
    }
+   else
+   {
+       // Gamma correct image
+       for ( unsigned y = 0; y < h; ++y )
+       {
+           for ( unsigned x = 0; x < w; ++x )
+           {
+               ImagePixel p = ptr->pixel( x, y );
+
+               // This code is equivalent to p.r = powf( p.r, gamma )
+               // but faster
+               if ( p.r > 0.0f && isfinite(p.r) )
+                   p.r = expf( logf(p.r) * one_gamma );
+               if ( p.g > 0.0f && isfinite(p.g) )
+                   p.g = expf( logf(p.g) * one_gamma );
+               if ( p.b > 0.0f && isfinite(p.b) )
+                   p.b = expf( logf(p.b) * one_gamma );
+
+               if      (p.r < 0.0f) p.r = 0.0f;
+               else if (p.r > 1.0f) p.r = 1.0f;
+               if      (p.g < 0.0f) p.g = 0.0f;
+               else if (p.g > 1.0f) p.g = 1.0f;
+               if      (p.b < 0.0f) p.b = 0.0f;
+               else if (p.b > 1.0f) p.b = 1.0f;
+
+               sho->pixel(x, y, p );
+           }
+       }
+   }
+   hires = sho;
+
 
    AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
                                             hires->pixel_type() );
