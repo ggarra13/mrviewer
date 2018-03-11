@@ -826,7 +826,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        ext = ext.substr( pos, ext.size() );
      }
 
-   bool movie = is_valid_movie( ext.c_str() );
+   bool ffmpeg_handle = (ext == ".png" || ext == ".tif" || ext == ".tiff" );
+   bool movie = is_valid_movie( ext.c_str() ) || ffmpeg_handle;
 
    std::string root, fileseq = file;
    bool ok = mrv::fileroot( root, fileseq, false );
@@ -941,7 +942,28 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                    }
                }
 
-               AviSaveUI* opts = new AviSaveUI( uiMain );
+               AviSaveUI* opts;
+               if ( ffmpeg_handle )
+               {
+                   opts = new AviSaveUI( NULL );
+                   opts->video_bitrate = 100;
+                   opts->video_codec = ext.substr(1, ext.size() );
+                   if ( opts->video_codec == "tif" )
+                       opts->video_codec = "tiff";
+                   opts->fps = img->fps();
+                   
+                   ipts = ImageOpts::build( uiMain, ext, false );
+                   if ( !ipts->active() ) {
+                       delete ipts;
+                       delete opts;
+                       delete w;
+                       w = NULL;
+                       return;
+                   }
+                   opts->metadata = ipts->ACES_metadata();
+               }
+               else
+                   opts = new AviSaveUI( uiMain );
                if ( ( opts->video_bitrate == 0 &&
                       opts->audio_bitrate == 0 ) ||
                     ( opts->audio_codec == _("None") &&
@@ -970,7 +992,14 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
                if ( aviImage::open_movie( buf, img, opts ) )
                {
-                   LOG_INFO( "Open movie '" << buf << "' to save." );
+                   if ( ffmpeg_handle )
+                   {
+                       LOG_INFO( _("Save frames '") << buf << "'" );
+                   }
+                   else
+                   {
+                       LOG_INFO( _("Open movie '") << buf << _("' to save.") );
+                   }
                    open_movie = true;
                    ++movie_count;
                }
