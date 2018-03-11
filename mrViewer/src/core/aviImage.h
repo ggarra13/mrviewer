@@ -115,7 +115,7 @@ class aviImage : public CMedia
     }
 
     static bool open_movie( const char* filename, const CMedia* img,
-                            const AviSaveUI* opts );
+                            AviSaveUI* opts );
     static bool save_movie_frame( CMedia* img );
     static bool close_movie( const CMedia* img );
 
