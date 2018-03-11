@@ -1197,6 +1197,9 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
       if ( i != _luts.end() && i->second->inited() )
         {
             // this lut was already created, return it.
+            LOG_INFO( _("3D Lut for ") << img->name()
+                      << _(" already created: " ) );
+            LOG_INFO( path );
             return i->second.get();
         }
     }
