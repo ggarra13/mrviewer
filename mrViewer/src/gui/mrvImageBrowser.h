@@ -214,6 +214,7 @@ class ImageBrowser : public fltk::Browser
      mrv::ReelList  _reels;
      fltk::Choice*  _reel_choice;
 
+     CMedia::Mutex   _mtx;
      mrv::Element* dragging;
      int lastX, lastY;
 

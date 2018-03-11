@@ -1,3 +1,15 @@
+v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
+	   will bake the lut in the picture.  Depending on the picture
+	   format and depth supported you will find a match to the lut
+	   picture or some differences.
+	 - Made lut more verbose, printing out the lut when it is not
+	   created, too.
+	 - Bug fixed alpha channel presence in imagemagick wand loader.
+	   Previously, it would tag all images with alpha channel and
+	   lead to reporting of colors to 0 premult when no alpha was
+	   there.
+	 - Made saving of TIFF and PNG several times faster.
+
 v4.0.3   - Bug fixed jpeg loader (ffmpeg) to support .jpeg extension
 	   besides jpg.
 	 - When lut is active, saving to a movie file will now bake the
