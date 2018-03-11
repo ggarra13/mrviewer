@@ -3741,6 +3741,7 @@ void ImageView::pixel_processed( const CMedia* img,
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
+    
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
     switch( mode )
     {
