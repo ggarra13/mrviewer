@@ -42,9 +42,7 @@ extern "C" {
 #include <libswresample/swresample.h>
 }
 
-#include <OpenColorIO/OpenColorIO.h>
-namespace OCIO = OCIO_NAMESPACE;
-
+#include "core/mrvColorOps.h"
 #include "core/aviImage.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
@@ -384,8 +382,12 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                const char* name = avcodec_profile_name( codec_id, c->profile );
                if (name) LOG_INFO( _("Profile name ") << name );
 
-
-               if ( c->codec_id == AV_CODEC_ID_PRORES )
+               if ( c->codec_id == AV_CODEC_ID_PNG ||
+                    c->codec_id == AV_CODEC_ID_TIFF )
+               {
+                   c->pix_fmt = AV_PIX_FMT_BGR32;
+               }
+               else if ( c->codec_id == AV_CODEC_ID_PRORES )
                {
                    // ProRes supports YUV422 10bit
                    // (and YUV444P10 YUVA444P10) pixel formats.
@@ -981,10 +983,10 @@ static void close_video(AVFormatContext *oc, AVStream *st)
     av_frame_free(&picture);
 }
 
+
 /* prepare a yuv image */
 static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 {
-
 
    CMedia* m = (CMedia*) img;
 
@@ -1040,33 +1042,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
            }
        }
 
-       OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
-
-       OCIO::DisplayTransformRcPtr transform =
-       OCIO::DisplayTransform::Create();
-
-       std::string ics = img->ocio_input_color_space();
-       if  ( ics.empty() )
-       {
-           OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
-           if(!defaultcs)
-               throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
-           ics = defaultcs->getName();
-       }
-
-       transform->setInputColorSpaceName( ics.c_str() );
-       transform->setDisplay( display.c_str() );
-       transform->setView( view.c_str() );
-
-       OCIO::ConstProcessorRcPtr processor =
-       config->getProcessor( transform );
-
-       float* p = (float*)ptr->data().get();
-
-       OCIO::PackedImageDesc img(p,
-                                 w, h, hires->channels() );
-       processor->apply( img );
-
+       bake_ocio( ptr, img );
+       
    }
    else
    {
@@ -1244,7 +1221,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
 
 bool aviImage::open_movie( const char* filename, const CMedia* img,
-                           const AviSaveUI* opts )
+                           AviSaveUI* opts )
 {
    assert( filename != NULL );
    assert( img != NULL );
@@ -1292,7 +1269,11 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    fmt = oc->oformat;
    assert( fmt != NULL );
 
-   if ( opts->video_codec == "hevc" )
+   if ( opts->video_codec == "png" )
+       fmt->video_codec = AV_CODEC_ID_PNG;
+   else if ( opts->video_codec == "tiff" )
+       fmt->video_codec = AV_CODEC_ID_TIFF;
+   else if ( opts->video_codec == "hevc" )
        fmt->video_codec = AV_CODEC_ID_HEVC;
    else if ( opts->video_codec == "h264" )
        fmt->video_codec = AV_CODEC_ID_H264;
@@ -1300,7 +1281,6 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_MPEG4;
    else if ( opts->video_codec == "prores_ks" )
        fmt->video_codec = AV_CODEC_ID_PRORES;
-
 
    if ( opts->audio_codec == _("None") )
        fmt->audio_codec = AV_CODEC_ID_NONE;
@@ -1586,7 +1566,7 @@ bool aviImage::close_movie( const CMedia* img )
     /* free the stream */
     avformat_free_context(oc);
 
-    LOG_INFO( "Closed movie file" );
+    LOG_INFO( _("Closed movie file") );
 
     return true;
 }
