@@ -61,11 +61,14 @@ namespace mrv {
     virtual bool initialize();
     virtual bool release();
 
+      virtual bool has_alpha() const { return _has_alpha; }
+      
     bool fetch( const boost::int64_t frame );
 
   protected:
-    char* _format;
-    CompressionType _compression;
+      bool _has_alpha;
+      char* _format;
+      CompressionType _compression;
   };
 
 } // namespace mrv
