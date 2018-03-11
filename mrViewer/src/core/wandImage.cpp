@@ -49,6 +49,7 @@ using namespace std;
 
 
 #include "core/mrvImageOpts.h"
+#include "core/mrvColorOps.h"
 #include "core/Sequence.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
@@ -59,6 +60,8 @@ using namespace std;
 #include "core/mrvThread.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvTimecode.h"
+#include "gui/mrvPreferences.h"
+#include "mrViewer.h"
 #include "gui/mrvIO.h"
 
 
@@ -93,6 +96,7 @@ namespace mrv {
 
   wandImage::wandImage() :
     CMedia(),
+    _has_alpha( false ),
     _format( NULL )
   {
   }
@@ -202,11 +206,11 @@ namespace mrv {
              break;
      }
 
-     bool has_alpha = false;
+     _has_alpha = false;
      status = MagickGetImageAlphaChannel( wand );
      if ( status == MagickTrue )
      {
-         has_alpha = true;
+         _has_alpha = true;
          alpha_layers();
      }
 
@@ -349,7 +353,7 @@ namespace mrv {
      image_size( unsigned(dw), unsigned(dh) );
 
      const char* channels;
-     if ( has_alpha )
+     if ( _has_alpha )
      {
 	channels = "RGBA";
 	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type, 
@@ -1092,10 +1096,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 if ( has_alpha ) channels = N_("RGBA");
                 break;
         }
+        
 
-        // std::cerr << "imagemagick channels " << channels 
-        //           << " pic->channels " << pic->channels() << " alpha? "
-        //           << has_alpha << std::endl;
         StorageType storage = CharPixel;
         switch( pic->pixel_type() )
         {
@@ -1109,7 +1111,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 storage = FloatPixel;
                 break;
             case image_type::kHalf:
-                storage = ShortPixel;
+                storage = FloatPixel;
                 must_convert = true;
                 break;
             case image_type::kByte:
@@ -1118,7 +1120,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 break;
         }
 
-        if ( o->pixel_type() != storage )
+        if ( o->pixel_type() != storage && pic->frame() == first_frame() )
         {
             LOG_INFO( _("Original pixel type is ") 
                       << pic->pixel_depth()
@@ -1131,18 +1133,26 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         // if ( gamma() != 1.0 )
         //    must_convert = true;
 
+
+        const std::string& display = mrv::Preferences::OCIO_Display;
+        const std::string& view = mrv::Preferences::OCIO_View;
+   
+        boost::uint8_t* pixels = NULL;
+        unsigned pixel_size;
+        
+        if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
+             Preferences::uiMain->uiView->use_lut() )
+        {
+            must_convert = true;
+        }
+        
         if ( opts->opengl() )
             must_convert = false;
-
-       
-
 
         /**
          * Load image onto wand
          * 
          */
-        boost::uint8_t* pixels = NULL;
-        unsigned pixel_size;
         switch( o->pixel_type() )
         {
             case ShortPixel:
@@ -1166,7 +1176,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         if ( must_convert )
         {
             // Memory is kept until we save the image
-            unsigned data_size = width()*height()*pic->channels()*pixel_size;
+            size_t data_size = width()*height()*pic->channels()*sizeof(float);
             pixels = new boost::uint8_t[ data_size ];
             bufs.push_back( pixels );
         }
@@ -1181,7 +1191,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         unsigned dh = pic->height();
 
         MagickWand* w = NewMagickWand();
-
 
         ColorspaceType colorspace = sRGBColorspace;
         MagickSetImageColorspace( w, colorspace );
@@ -1214,6 +1223,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( must_convert )
         {
+            // LOG_INFO( "Converting..." );
             float one_gamma = 1.0f / _gamma;
             for ( unsigned y = 0; y < dh; ++y )
             {
@@ -1221,13 +1231,17 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 {
                     ImagePixel p = pic->pixel( x, y );
 
+                    // This code is equivalent to p.r = powf( p.r, gamma )
+                    // but faster
                     if ( p.r > 0.f && isfinite(p.r) )
-                        p.r = pow( p.r, one_gamma );
+                        p.r = expf( logf(p.r) * one_gamma );
                     if ( p.g > 0.f && isfinite(p.g) )
-                        p.g = pow( p.g, one_gamma );
+                        p.g = expf( logf(p.g) * one_gamma );
                     if ( p.b > 0.f && isfinite(p.b) )
-                        p.b = pow( p.b, one_gamma );
+                        p.b = expf( logf(p.b) * one_gamma );
+                    if ( !has_alpha ) p.a = 1.0f;
 
+                    
                     status = MagickImportImagePixels(w, x, y,
                                                      1, 1, channels,
                                                      FloatPixel, &p[0] );
@@ -1239,8 +1253,37 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
                 }
             }
+            
+            const std::string& display = mrv::Preferences::OCIO_Display;
+            const std::string& view = mrv::Preferences::OCIO_View;
+   
+            if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
+                 Preferences::uiMain->uiView->use_lut() )
+            {
+                try
+                {
+                    mrv::image_type_ptr ptr;
+                    ptr = mrv::image_type_ptr( new image_type( pic->frame(),
+                                                               dw, dh, 4,
+                                                               mrv::image_type::kRGBA,
+                                                               mrv::image_type::kFloat
+                                               ) );
 
-
+                    ImagePixel* p = (ImagePixel*)ptr->data().get();
+                    MagickExportImagePixels( w, 0, 0, dw, dh, channels,
+                                             FloatPixel, &p[0] );
+                    
+                    bake_ocio( ptr, this );
+                    
+                    MagickImportImagePixels( w, 0, 0, dw, dh, channels,
+                                             FloatPixel, &p[0] );
+                }
+                catch( const std::exception& e )
+                {
+                    LOG_ERROR( "[ocio] " << e.what() );
+                    return false;
+                }
+            }
         }
 
 
@@ -1289,7 +1332,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( label == "" && has_composite )
         {
-
             w = NewMagickWand();
 
             MagickSetImageColorspace( w, colorspace );
@@ -1310,6 +1352,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 ThrowWandException( wand );
             }
 
+            mrv::image_type_ptr ptr;
+            ptr = mrv::image_type_ptr( new image_type( pic->frame(),
+                                                       dw, dh, 4,
+                                                       mrv::image_type::kRGBA,
+                                                       mrv::image_type::kFloat
+                                       ) );
 
             float one_gamma = 1.0f / _gamma;
             for ( unsigned y = 0; y < dh; ++y )
@@ -1319,25 +1367,43 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                     ImagePixel p = pic->pixel( x, y );
 
                     if ( p.r > 0.f && isfinite(p.r) )
-                        p.r = pow( p.r, one_gamma );
+                        p.r = expf( logf(p.r) * one_gamma );
                     if ( p.g > 0.f && isfinite(p.g) )
-                        p.g = pow( p.g, one_gamma );
+                        p.g = expf( logf(p.g) * one_gamma );
                     if ( p.b > 0.f && isfinite(p.b) )
-                        p.b = pow( p.b, one_gamma );
+                        p.b = expf( logf(p.b) * one_gamma );
+                    if ( !has_alpha ) p.a = 1.0f;
 
-                    status = MagickImportImagePixels(w, daw.x()+x, daw.y()+y,
-                                                     1, 1, "RGB",
-                                                     FloatPixel, &p[0] );
-                    if (status == MagickFalse)
-                    {
-                        DestroyMagickWand( w );
-                        destroyPixels(bufs);
-                        ThrowWandException( wand );
-                    }
+                    ptr->pixel( x, y, p );
                 }
             }
 
-
+            ImagePixel* p = (ImagePixel*)ptr->data().get();
+            
+            if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
+                 Preferences::uiMain->uiView->use_lut() )
+            {
+                
+                try
+                {
+                    bake_ocio( ptr, this );
+                }
+                catch( const std::exception& e )
+                {
+                    LOG_ERROR( "[ocio] " << e.what() );
+                    return false;
+                }
+            }
+            
+            status = MagickImportImagePixels( w, daw.x(), daw.y(), dw, dh,
+                                              "RGBA", FloatPixel, &p[0] );
+            if (status == MagickFalse)
+            {
+                DestroyMagickWand( w );
+                destroyPixels(bufs);
+                ThrowWandException( wand );
+            }
+            
             status = MagickSetImageGamma( w, 1.0 );
             if (status == MagickFalse)
             {

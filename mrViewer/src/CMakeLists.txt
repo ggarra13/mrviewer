@@ -168,6 +168,7 @@ SET( SOURCES
   core/mapImage.cpp
   core/mrayImage.cpp
   core/mrvColorBarsImage.cpp
+  core/mrvColorOps.cpp
   core/oiioImage.cpp
   core/pxrzImage.cpp
   core/rawImage.cpp
