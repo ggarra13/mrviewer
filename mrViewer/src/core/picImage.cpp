@@ -26,25 +26,36 @@
  * 
  */
 
+#include <cstdio>
+#define __STDC_LIMIT_MACROS
+#include <inttypes.h>
+#include <cmath>
+#ifdef _WIN32
+#   include <float.h>
+#   define isfinite(x) _finite(x)
+#   undef max
+#else
+#  include <netinet/in.h>
+#endif
+
 #include <iostream>
 #include <limits>
 
 
-#if defined(WIN32) || defined(WIN64)
-#include <windows.h>  // for htonl, etc.
-#undef max
-#else
-#include <netinet/in.h>
-#endif
 
 #include <fltk/run.h>  // for fltk_fopen
 
 #include <ImfStringAttribute.h>
 
+#include "core/mrvColorOps.h"
+#include "gui/mrvPreferences.h"
+#include "gui/mrvIO.h"
+#include "mrViewer.h"
+
+
 #include "picImage.h"
 #include "byteSwap.h"
 
-#include "gui/mrvIO.h"
 
 
 
@@ -728,8 +739,10 @@ bool picImage::save( const char* path, const CMedia* img,
 	fwrite(str, 1, 80, file);
 	
         mrv::image_type_ptr pic = img->hires();
+        
         unsigned dw = pic->width();
         unsigned dh = pic->height();
+        
         
 	// Write picture file header
 	writeInt(file, 0x50494354);
@@ -760,26 +773,34 @@ bool picImage::save( const char* path, const CMedia* img,
 	
         bool must_convert = false;
         
+        
         bool  has_alpha = pic->has_alpha();
         image_type::Format format = pic->format();
         
         if ( format != image_type::kRGBA ||
              pic->pixel_type() != image_type::kByte ||
              img->gamma() != 1.0f )
+            must_convert = true; 
+        
+        if ( Preferences::use_ocio && Preferences::uiMain->uiView->use_lut() )
             must_convert = true;
 
-        boost::uint8_t* pixels = NULL;
+        
+        mrv::image_type_ptr sho = pic;
         if ( must_convert )
         {
             // Memory is kept until we save the image
-            unsigned data_size = dw*dh*4;
-            pixels = new boost::uint8_t[ data_size ];
-
+            
+            sho = mrv::image_type_ptr( new image_type(
+                                       img->frame(),
+                                       dw, dh,
+                                       4,
+                                       mrv::image_type::kRGBA,
+                                       mrv::image_type::kFloat ) );
             float one_gamma = 1.0f / img->gamma();
             
             for ( unsigned y = 0; y < dh; ++y )
             {
-                unsigned step = 4*dw*y;
                 for ( unsigned x = 0; x < dw; ++x )
                 {
                     ImagePixel p = pic->pixel( x, y );
@@ -791,49 +812,59 @@ bool picImage::save( const char* path, const CMedia* img,
                     if ( p.b > 0.f && isfinite(p.b) )
                         p.b = pow( p.b, one_gamma );
 
-                    p.r *= 255.0f;
-                    p.g *= 255.0f;
-                    p.b *= 255.0f;
-                    p.a *= 255.0f;
-
-                    if ( p.r > 255.f ) p.r = 255.f;
-                    else if ( p.r < 0.f ) p.r = 0.f;
-                    if ( p.g > 255.f ) p.g = 255.f;
-                    else if ( p.g < 0.f ) p.g = 0.f;
-                    if ( p.b > 255.f ) p.b = 255.f;
-                    else if ( p.b < 0.f ) p.b = 0.f;
-                    if ( p.a > 255.f ) p.a = 255.f;
-                    else if ( p.a < 0.f ) p.a = 0.f;
-
-                    unsigned x4 = x*4;
-                    pixels[x4 + step] = (uint8_t)p.r;
-                    pixels[x4 + step + 1] = (uint8_t)p.g;
-                    pixels[x4 + step + 2] = (uint8_t)p.b;
-                    pixels[x4 + step + 3] = (uint8_t)p.a;
+                    sho->pixel( x, y, p );
                 }
             }
+            
+            
+            const std::string& display = mrv::Preferences::OCIO_Display;
+            const std::string& view = mrv::Preferences::OCIO_View;
+   
+            if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
+                 Preferences::uiMain->uiView->use_lut() )
+            {
+
+                try {
+                    bake_ocio( sho, img );
+                }
+                catch( const std::exception& e )
+                {
+                    LOG_ERROR( e.what() );
+                    return false;
+                }
+                
+            }
         }
-        else
+
+        pic = mrv::image_type_ptr( new image_type( img->frame(),
+                                                   dw, dh,
+                                                   4,
+                                                   mrv::image_type::kRGBA,
+                                                   mrv::image_type::kByte ) );
+                
+        
+        for ( unsigned y = 0; y < dh; ++y )
         {
-            pixels = (boost::uint8_t*)pic->data().get();
+            for ( unsigned x = 0; x < dw; ++x )
+            {
+                ImagePixel p = sho->pixel( x, y );
+                pic->pixel( x, y, p );
+            }
         }
         
-	
-	for(line = 0; line < dh; ++line) {
-		uint32_t		*linePtr;
-		linePtr = (uint32_t*) pixels;
-		linePtr += line * dw;
-		
-		if(!ff_pic_writeScanline(file, linePtr, dw)) {
-                    LOG_ERROR( _("Couldn't write out to '") << path
-                               << _("'. Reason: " ) << strerror(errno) );
-		}
-	}
-
-        if ( must_convert )
-        {
-            delete [] pixels;
+        uint8_t* pixels = (boost::uint8_t*)pic->data().get();
+        
+        for(line = 0; line < dh; ++line) {
+            uint32_t		*linePtr;
+            linePtr = (uint32_t*) pixels;
+            linePtr += line * dw;
+            
+            if(!ff_pic_writeScanline(file, linePtr, dw)) {
+                LOG_ERROR( _("Couldn't write out to '") << path
+                           << _("'. Reason: " ) << strerror(errno) );
+            }
         }
+
         
 	fclose(file);
 	return true;
