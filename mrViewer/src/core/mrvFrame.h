@@ -202,11 +202,6 @@ namespace mrv
     // inline void data(const PixelData& d) { _data = d; }
 
     inline const PixelData& data() const { return _data; }
-      inline const uint8_t* data_b() const { return (uint8_t*)_data.get(); }
-      inline const uint16_t* data_s() const { return (uint16_t*)_data.get(); }
-      inline const int* data_i() const { return (int*)_data.get(); }
-      inline const half* data_h() const { return (half*)_data.get(); }
-      inline const float* data_f() const { return (float*)_data.get(); }
 
     ImagePixel pixel( const unsigned int x, const unsigned int y ) const;
     void pixel( const unsigned int x, const unsigned int y,
