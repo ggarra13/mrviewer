@@ -1241,7 +1241,13 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                         p.b = expf( logf(p.b) * one_gamma );
                     if ( !has_alpha ) p.a = 1.0f;
 
-                    
+                    if      (p.r < 0.0f) p.r = 0.0f;
+                    else if (p.r > 1.0f) p.r = 1.0f;
+                    if      (p.g < 0.0f) p.g = 0.0f;
+                    else if (p.g > 1.0f) p.g = 1.0f;
+                    if      (p.b < 0.0f) p.b = 0.0f;
+                    else if (p.b > 1.0f) p.b = 1.0f;
+
                     status = MagickImportImagePixels(w, x, y,
                                                      1, 1, channels,
                                                      FloatPixel, &p[0] );
