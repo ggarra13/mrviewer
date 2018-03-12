@@ -1137,8 +1137,8 @@ void GLEngine::draw_mask( const float pct )
   {
       dpw.w( dpw.w() + dpw2.w() );
   }
-  else if ( ( img->stereo_output() & CMedia::kStereoTopBottom ) ==
-            CMedia::kStereoTopBottom )
+  else if ( ( img->stereo_output() & CMedia::kStereoBottomTop ) ==
+            CMedia::kStereoBottomTop )
   {
       dpw.h( dpw.h() + dpw2.h() );
   }
@@ -1345,8 +1345,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
         translate( dpw.w(), 0, 0 );
         draw_safe_area_inner( tw, th, name );
     }
-    else if ( ( img->stereo_output() & CMedia::kStereoTopBottom ) ==
-              CMedia::kStereoTopBottom )
+    else if ( ( img->stereo_output() & CMedia::kStereoBottomTop ) ==
+              CMedia::kStereoBottomTop )
     {
         translate( 0, -dpw.h(), 0 );
         draw_safe_area_inner( tw, th, name );
@@ -1553,6 +1553,45 @@ void GLEngine::translate( const double x, const double y, const double z )
    glTranslated( x, y, z );
 }
 
+void prepare_subtitle( GLQuad* quad, mrv::image_type_ptr sub,
+                       double _rotX, double _rotY,
+                       unsigned texWidth, unsigned texHeight )
+{
+    glEnable( GL_BLEND );
+    glDisable( GL_SCISSOR_TEST );
+    quad->mask( 0 );
+    quad->mask_value( -10 );
+    quad->bind( sub );
+    quad->gamma( 1.0 );
+    // Handle rotation of cube/sphere
+    quad->rot_x( _rotX );
+    quad->rot_y( _rotY );
+    quad->draw( texWidth, texHeight );
+}
+
+void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
+                    unsigned texHeight, const mrv::ImageView* view )
+{
+    glRotated( img->rot_z(), 0, 0, 1 );
+    glTranslated( img->x(), img->y(), 0 );
+    glTranslated( double(daw.x() - img->eye_separation()),
+                  double(-daw.y()), 0 );
+    CHECK_GL;
+
+    if ( view->main()->uiPixelRatio->value() )
+    {
+        glScaled( double(texWidth), double(texHeight) / view->pixel_ratio(),
+                  1.0 );
+    }
+    else
+    {
+        glScaled( double(texWidth), double(texHeight), 1.0 );
+    }
+
+    CHECK_GL;
+    glTranslated( 0.5, -0.5, 0.0 );
+    CHECK_GL;
+}
 
 void GLEngine::draw_images( ImageList& images )
 {
@@ -1635,8 +1674,7 @@ void GLEngine::draw_images( ImageList& images )
 
     CHECK_GL;
 
-    size_t num = _quads.size();
-    if ( num_quads > num )
+    if ( num_quads > _quads.size() )
     {
         ImageView::VRType t = _view->vr();
         if ( t == ImageView::kVRSphericalMap )
@@ -1701,7 +1739,6 @@ void GLEngine::draw_images( ImageList& images )
 
 
         CMedia::StereoOutput stereo = img->stereo_output();
-
         const boost::int64_t& frame = pic->frame();
 
         mrv::Recti dpw = img->display_window(frame);
@@ -1758,12 +1795,13 @@ void GLEngine::draw_images( ImageList& images )
             double x = 0.0, y = 0.0;
             if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
             if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
-            translate( x, y, 0.0f );
+            glTranslatef( x, y, 0.0f );
         }
 
 
         if ( dpw != daw && ! _view->vr() )
         {
+            
             if ( _view->display_window() )
             {
                 int x = img->x();
@@ -1774,14 +1812,8 @@ void GLEngine::draw_images( ImageList& images )
 
             if ( _view->data_window()  )
             {
-                double x = img->x(), y = -img->y();
-                if ( ( stereo & CMedia::kStereoSideBySide ) ==
-                     CMedia::kStereoSideBySide )
-                    x += dpw.w();
-                else if ( ( stereo & CMedia::kStereoTopBottom ) ==
-                          CMedia::kStereoTopBottom)
-                    y += dpw.h();
-                mrv::Rectd r( daw.x() + x, daw.y() + y,
+                double x = img->x(), y = img->y();
+                mrv::Rectd r( daw.x() + x, daw.y() - y,
                               daw.w(), daw.h() );
                 draw_data_window( r );
             }
@@ -1790,6 +1822,8 @@ void GLEngine::draw_images( ImageList& images )
         glDisable( GL_BLEND );
         CHECK_GL;
 
+        set_matrix( flip, true );
+        
         glMatrixMode(GL_MODELVIEW);
         CHECK_GL;
         glPushMatrix();
@@ -1797,22 +1831,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( !_view->vr() )
         {
-            glRotated( img->rot_z(), 0, 0, 1 );
-            glTranslated( img->x(), img->y(), 0 );
-            glTranslated( double(daw.x() - img->eye_separation()),
-                          double(-daw.y()), 0 );
-            CHECK_GL;
-
-            if ( _view->main()->uiPixelRatio->value() )
-                glScaled( double(texWidth),
-                          double(texHeight) / _view->pixel_ratio(),
-                          1.0 );
-            else
-                glScaled( double(texWidth), double(texHeight), 1.0 );
-
-            CHECK_GL;
-            glTranslated( 0.5, -0.5, 0.0 );
-            CHECK_GL;
+            prepare_image( img, daw, texWidth, texHeight, _view );
         }
 
         GLQuad* quad = *q;
@@ -1910,18 +1929,8 @@ void GLEngine::draw_images( ImageList& images )
                 image_type_ptr sub = img->subtitle();
                 if ( sub )
                 {
-                    glEnable( GL_BLEND );
-                    glDisable( GL_SCISSOR_TEST );
-                    ++q;
-                    quad = *q;
-                    quad->mask( 0 );
-                    quad->mask_value( -10 );
-                    quad->bind( sub );
-                    quad->gamma( 1.0 );
-                    // Handle rotation of cube/sphere
-                    quad->rot_x( _rotX );
-                    quad->rot_y( _rotY );
-                    quad->draw( texWidth, texHeight );
+                    prepare_subtitle( *q++, sub, _rotX, _rotY,
+                                      texWidth, texHeight );
                 }
                 img->image_damage( img->image_damage() &
                                    ~CMedia::kDamageSubtitle );
@@ -1944,15 +1953,13 @@ void GLEngine::draw_images( ImageList& images )
                 glPopMatrix();
                 CHECK_GL;
 
-                if ( ( stereo &
-                       CMedia::kStereoSideBySide ) ==
+                if ( ( stereo & CMedia::kStereoSideBySide ) ==
                      CMedia::kStereoSideBySide )
                 {
                     glTranslated( dpw.w(), 0, 0 );
                 }
-                else if ( ( stereo &
-                            CMedia::kStereoTopBottom ) ==
-                          CMedia::kStereoTopBottom )
+                else if ( ( stereo & CMedia::kStereoBottomTop ) ==
+                          CMedia::kStereoBottomTop )
                 {
                     glTranslated( 0, -dpw.h(), 0 );
                 }
@@ -1993,11 +2000,11 @@ void GLEngine::draw_images( ImageList& images )
                     {
                         double x = img->x(), y = img->y();
                         if ( (stereo & CMedia::kStereoSideBySide) ==
-                             CMedia::kStereoSideBySide  )
-                            x += dpw.w();
-                        else if ( (stereo & CMedia::kStereoTopBottom) ==
-                                  CMedia::kStereoTopBottom )
-                            y += dpw.h();
+                             CMedia::kStereoSideBySide )
+                            x += dpw2.w();
+                        else if ( (stereo & CMedia::kStereoBottomTop) ==
+                                  CMedia::kStereoBottomTop )
+                            y -= dpw2.h();
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() - y,
                                       daw2.w(), daw2.h() );
@@ -2028,24 +2035,8 @@ void GLEngine::draw_images( ImageList& images )
                     texWidth = pic->width();
                     texHeight = pic->height();
                 }
-                glRotated( img->rot_z(), 0, 0, 1 );
-
-                glTranslated( img->x(), img->y(), 0 );
-                glTranslated( double(daw2.x()), double(-daw2.y()), 0 );
-                CHECK_GL;
-
-                if ( _view->main()->uiPixelRatio->value() )
-                    glScaled( double(texWidth),
-                              double(texHeight) / _view->pixel_ratio(),
-                              1.0 );
-                else
-                    glScaled( double(texWidth), double(texHeight), 1.0 );
-                CHECK_GL;
-
-
-                glTranslated( 0.5, -0.5, 0 );
-                CHECK_GL;
-
+                
+                prepare_image( img, daw2, texWidth, texHeight, _view );
             }
         }
         else if ( img->hires() || img->has_subtitle() )
@@ -2134,18 +2125,8 @@ void GLEngine::draw_images( ImageList& images )
             image_type_ptr sub = img->subtitle();
             if ( sub )
             {
-                glEnable( GL_BLEND );
-                glDisable( GL_SCISSOR_TEST );
-                ++q;
-                quad = *q;
-                quad->mask( 0 );
-                quad->mask_value( -10 );
-                quad->bind( sub );
-                quad->gamma( 1.0 );
-                // Handle rotation of cube/sphere
-                quad->rot_x( _rotX );
-                quad->rot_y( _rotY );
-                quad->draw( texWidth, texHeight );
+                prepare_subtitle( *q++, sub, _rotX, _rotY,
+                                  texWidth, texHeight );
            }
            img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
         }

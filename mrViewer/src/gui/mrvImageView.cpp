@@ -1388,6 +1388,7 @@ void ImageView::init_draw_engine()
 #endif
 
   CMedia::supports_yuv( _engine->supports_yuv() );
+  CMedia::supports_yuva( _engine->supports_yuva() );
 }
 
 
