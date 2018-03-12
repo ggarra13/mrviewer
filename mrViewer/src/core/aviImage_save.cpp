@@ -394,8 +394,13 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    if ( opts->video_color == "YUV422" )
                        c->pix_fmt = AV_PIX_FMT_YUV422P10;
                    else if ( opts->video_color == "YUV444" )
+                   {
                        c->pix_fmt = AV_PIX_FMT_YUV444P10;
-
+                       if ( img->has_alpha() )
+                       {
+                           c->pix_fmt = AV_PIX_FMT_YUVA444P10LE;
+                       }
+                   }
                    // Profiles are taken from opts->video_profile
                }
                else
@@ -827,7 +832,6 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     if (!picture)
         return NULL;
 
-
     picture->format = pix_fmt;
     picture->width = width;
     picture->height = height;
@@ -1054,15 +1058,21 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                                               w, h,
                                               hires->channels(),
                                               format,
-                                              mrv::image_type::kShort ) );
+                                              mrv::image_type::kByte ) );
    if ( mrv::is_equal( one_gamma, 1.0f ) )
    {
        for ( unsigned y = 0; y < h; ++y )
        {
            for ( unsigned x = 0; x < w; ++x )
            {
-               const ImagePixel& p = ptr->pixel( x, y );
-               sho->pixel(x, y, p );
+               ImagePixel p = ptr->pixel( x, y );
+               if      (p.r < 0.0f) p.r = 0.0f;
+               else if (p.r > 1.0f) p.r = 1.0f;
+               if      (p.g < 0.0f) p.g = 0.0f;
+               else if (p.g > 1.0f) p.g = 1.0f;
+               if      (p.b < 0.0f) p.b = 0.0f;
+               else if (p.b > 1.0f) p.b = 1.0f;
+               sho->pixel( x, y, p );
            }
        }
    }
