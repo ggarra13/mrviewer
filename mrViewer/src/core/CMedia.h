@@ -1124,6 +1124,9 @@ class CMedia
 
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
+    
+    static bool supports_yuva()         { return _supports_yuva; }
+    static void supports_yuva( bool x ) { _supports_yuva = x; }
 
     static void default_subtitle_encoding( const char* f )
     { if (f) _default_subtitle_encoding = f; }
@@ -1409,6 +1412,7 @@ class CMedia
   protected:
     static unsigned  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
+    static bool _supports_yuva;         //!< display supports yuv
 
     static int _image_cache_size;
     static int _video_cache_size;
