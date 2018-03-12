@@ -1620,36 +1620,79 @@ void aviImage::video_stream( int x )
   if ( x < 0 ) return;
 
 
-  static AVPixelFormat fmt[] = { AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32, AV_PIX_FMT_NONE };
+  static AVPixelFormat fmt[] = { AV_PIX_FMT_BGR32, AV_PIX_FMT_BGR24, AV_PIX_FMT_NONE };
   AVPixelFormat* fmts = fmt;
 
+  if ( supports_yuva() )
+  {
+    static AVPixelFormat fmts2[] = {
+    AV_PIX_FMT_RGB24, AV_PIX_FMT_RGB32,
+    AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32,
+    AV_PIX_FMT_YUVA444P,
+    AV_PIX_FMT_YUVA422P,
+    AV_PIX_FMT_YUVA420P,
+    AV_PIX_FMT_YUV444P,
+    AV_PIX_FMT_YUV422P,
+    AV_PIX_FMT_YUV420P,
+    AV_PIX_FMT_NONE
+    };
+    fmts = fmts2;
+  }
+  else if ( supports_yuv() )
+  {
+    static AVPixelFormat fmts2[] = {
+    AV_PIX_FMT_RGB24, AV_PIX_FMT_RGB32,
+    AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32,
+    AV_PIX_FMT_YUV444P,
+    AV_PIX_FMT_YUV422P,
+    AV_PIX_FMT_YUV420P,
+    AV_PIX_FMT_NONE
+    };
+    fmts = fmts2;
 
-  if ( supports_yuv() )
-    {
-       static AVPixelFormat fmts2[] = { AV_PIX_FMT_RGB24, AV_PIX_FMT_RGB32,
-				      AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32,
-				      AV_PIX_FMT_YUV444P,
-				      AV_PIX_FMT_YUV422P,
-				      AV_PIX_FMT_YUV420P,
-				      AV_PIX_FMT_NONE };
-       fmts = fmts2;
-
-//       mask |= ( (1 << AV_PIX_FMT_YUVA420P) | (1 << AV_PIX_FMT_YUV444P) | 
-// 		(1 << AV_PIX_FMT_YUV422P) | (1 << AV_PIX_FMT_YUV420P) );
-    }
+  }
 
   AVStream* stream = get_video_stream();
   AVCodecParameters* ctx = stream->codecpar;
 
   int has_alpha = ( ( ctx->format == AV_PIX_FMT_RGBA    ) |
 		    ( ctx->format == AV_PIX_FMT_ABGR    ) |
+		    ( ctx->format == AV_PIX_FMT_GBRAP   ) |
+		    ( ctx->format == AV_PIX_FMT_GBRAP16BE ) |
+		    ( ctx->format == AV_PIX_FMT_GBRAP16LE ) |
+		    ( ctx->format == AV_PIX_FMT_RGBA64BE ) |
+		    ( ctx->format == AV_PIX_FMT_BGRA64BE ) |
+		    ( ctx->format == AV_PIX_FMT_RGBA64LE ) |
+		    ( ctx->format == AV_PIX_FMT_BGRA64LE ) |
 		    ( ctx->format == AV_PIX_FMT_ARGB    ) |
 		    ( ctx->format == AV_PIX_FMT_RGB32   ) |
 		    ( ctx->format == AV_PIX_FMT_RGB32_1 ) |
 		    ( ctx->format == AV_PIX_FMT_PAL8    ) | 
 		    ( ctx->format == AV_PIX_FMT_BGR32   ) | 
-		    ( ctx->format == AV_PIX_FMT_BGR32_1 ) );
+		    ( ctx->format == AV_PIX_FMT_BGR32_1 ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P9BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P9BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P9BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P9LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P9LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P9LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P10LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P10LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P10LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P10BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P10BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P10BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P16LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P16LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P16LE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA420P16BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA422P16BE ) |
+                    ( ctx->format == AV_PIX_FMT_YUVA444P16BE )  );
 
+  
   _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, 
 						       (AVPixelFormat)
                                                        ctx->format,
@@ -1664,7 +1707,8 @@ void aviImage::video_stream( int x )
 
   if ( _av_dst_pix_fmt == AV_PIX_FMT_RGBA ||
        _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
-       _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P) alpha_layers();
+       _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
+       _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
 
   // if (ctx->lowres) {
   //     ctx->flags |= CODEC_FLAG_EMU_EDGE;
