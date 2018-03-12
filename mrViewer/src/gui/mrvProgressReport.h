@@ -33,6 +33,7 @@ class ProgressReport
                     boost::int64_t end );
     ~ProgressReport();
 
+    fltk::Window* window() const { return w; }
 
     bool tick();
 
