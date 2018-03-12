@@ -848,6 +848,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    fltk::Window* main = (fltk::Window*)uiMain->uiMain;
    mrv::ProgressReport* w = new mrv::ProgressReport( main, first, last );
+
    
    int64_t dts = first;
    int64_t frame = first;
@@ -942,6 +943,17 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                    }
                }
 
+               char label[1024];
+               if ( movie )
+               {
+                   sprintf( label, "Saving movie(s) '%s'", buf );
+               }
+               else
+               {
+                   sprintf( label, "Saving images '%s'", buf );
+               }
+               w->window()->copy_label( label );
+   
                AviSaveUI* opts;
                if ( ffmpeg_handle )
                {
