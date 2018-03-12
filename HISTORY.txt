@@ -9,6 +9,15 @@ v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
 	   lead to reporting of colors to 0 premult when no alpha was
 	   there.
 	 - Made saving of TIFF and PNG several times faster.
+	 - Added support for alpha channel in YUVA movies, even if a
+	   shader is not available.  This allows viewing the alpha
+	   channel of ProRes 4444 movies.
+	 - Added saving of alpha channel when codec is prores_ks and
+	   YUV format is YUV444.
+	 - Bug fixed stereo display of inferior/superior which was
+	   placing both images one on top of each other.
+	 - Bug fixed stereo looping of image sequences.  Previously the
+	   loop would not happen.  Looping of two movie tracks was okay.
 
 v4.0.3   - Bug fixed jpeg loader (ffmpeg) to support .jpeg extension
 	   besides jpg.
