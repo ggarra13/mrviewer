@@ -315,7 +315,6 @@ CMedia::DecodeStatus check_decode_loop( const int64_t frame,
     int64_t first, last;
     CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline,
                                               first, last );
-    
     if ( status == CMedia::kDecodeLoopEnd )
     {
         img->loop_at_end( last+1 );
