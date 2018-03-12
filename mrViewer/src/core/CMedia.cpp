@@ -114,6 +114,7 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
+bool        CMedia::_supports_yuva = false;
 
 double      CMedia::default_fps = 24.f;
 
@@ -2360,18 +2361,10 @@ void CMedia::play(const CMedia::Playback dir,
       //           << " output " << _stereo_output << std::endl;
       // if ( _is_stereo && _is_left_eye == false &&
       //      _stereo_output != kNoStereo )
-      if ( _is_stereo )
+      if ( _is_stereo && _right_eye )
       {
-          delete _stereo_barrier; _stereo_barrier = NULL;
-          if ( _right_eye )
-          {
-              delete _right_eye->_stereo_barrier;
-              _right_eye->_stereo_barrier = new Barrier( 2 );
-          }
-          else
-          {
-              _stereo_barrier = new Barrier( 2 );
-          }
+          delete _right_eye->_stereo_barrier;
+          _right_eye->_stereo_barrier = new Barrier( 2 );
       }
 
       if ( !fg && !_fg_bg_barrier )
