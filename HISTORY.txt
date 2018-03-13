@@ -1,7 +1,5 @@
 v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
-	   will bake the lut in the picture.  Depending on the picture
-	   format and depth supported you will find a match to the lut
-	   picture or some differences.
+	   will bake the lut in the picture. 
 	 - Made lut more verbose, printing out the lut when it is not
 	   created, too.
 	 - Bug fixed alpha channel presence in imagemagick wand loader.
@@ -17,7 +15,8 @@ v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
 	 - Bug fixed stereo display of inferior/superior which was
 	   placing both images one on top of each other.
 	 - Bug fixed stereo looping of image sequences.  Previously the
-	   loop would not happen.  Looping of two movie tracks was okay.
+	   loop would not happen.  Looping of two movie tracks or movies
+	   was okay.
 
 v4.0.3   - Bug fixed jpeg loader (ffmpeg) to support .jpeg extension
 	   besides jpg.
