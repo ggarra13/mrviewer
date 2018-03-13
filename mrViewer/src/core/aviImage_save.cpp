@@ -399,6 +399,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                        if ( img->has_alpha() )
                        {
                            c->pix_fmt = AV_PIX_FMT_YUVA444P10LE;
+                           c->profile = 4;
                        }
                    }
                    // Profiles are taken from opts->video_profile
@@ -1047,7 +1048,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        }
 
        bake_ocio( ptr, img );
-       
+
    }
    else
    {
