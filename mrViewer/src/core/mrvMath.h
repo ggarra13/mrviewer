@@ -29,10 +29,15 @@
 #ifndef mrvMath_h
 #define mrvMath_h
 
+#define NOMINMAX
+
 #include <cmath>
 
 
+
 namespace mrv {
+
+typedef float Float;
 
   template< typename T >
   inline bool is_equal( const T x1, const T x2,
@@ -40,6 +45,17 @@ namespace mrv {
   {
     return ((x1 > x2)? x1 - x2: x2 - x1) <= e;
   }
+
+// Usage is Pow<int>(float).  Example: Pow<3>(2.0f) = 8.0f
+template <int n>
+static Float Pow(Float v) {
+    static_assert(n > 0, "Power can’t be negative");
+    Float n2 = Pow<n / 2>(v);
+    return n2 * n2 * Pow<n & 1>(v);
+}
+template <> Float Pow<1>(Float v) { return v; }
+template <> Float Pow<0>(Float v) { return 1; }
+
 
 }
 
