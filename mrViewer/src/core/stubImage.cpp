@@ -373,7 +373,7 @@ namespace mrv {
 
 		    if ( sum != total )
 		      {
-			LOG_ERROR( _("Wrond data size received.") );
+			LOG_ERROR( _("Wrong data size received.") );
 			LOG_ERROR( _("Got: ") << sum 
 				   << _(" expected: ") << total );
 			stop = true;
@@ -624,7 +624,7 @@ namespace mrv {
 
 	mrv::image_type_ptr buffer = _pixelBuffers[i->first];
 	mrv::image_type_ptr oBuffer = oStub->frame_buffer( i->first );
-	*buffer = *oBuffer;
+	copy_image( buffer, oBuffer );
       }
 
 
