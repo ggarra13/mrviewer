@@ -2288,6 +2288,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
       {
         IMG_ERROR( e.what() );
         _curpart = -1;
+        image_size( _w, _h );
         return false;
       }
 
