@@ -24,7 +24,7 @@
 namespace mrv {
 
 class CMedia;
-
+ 
 void bake_ocio( const mrv::image_type_ptr& ptr, const CMedia* img );
 
 }
