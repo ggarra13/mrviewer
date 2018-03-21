@@ -1,3 +1,13 @@
+v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
+	 - Reversed the order of lut baking/gamma change in MIFF, TIFF,
+	   PIC and PSD.
+	 - Removed a debugging message printing "f " and the frame when
+	   playback started.
+	 - Improved performance of ocio baking by avoiding gamma changes
+	   too, unless they are needed.
+	 - Added T (toggle lut) shortcut to list of shortcuts.
+	 - Added Ctrl+p (toggle pixel ratio) to list of shortcuts.
+
 v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
 	   will bake the lut in the picture. 
 	 - Made lut more verbose, printing out the lut when it is not
@@ -6,7 +16,7 @@ v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
 	   Previously, it would tag all images with alpha channel and
 	   lead to reporting of colors to 0 premult when no alpha was
 	   there.
-	 - Made saving of TIFF and PNG several times faster.
+	 - Made saving of TIFF and PNG sequences several times faster.
 	 - Added support for alpha channel in YUVA movies, even if a
 	   shader is not available.  This allows viewing the alpha
 	   channel of ProRes 4444 movies.
