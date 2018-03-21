@@ -34,8 +34,7 @@ void bake_ocio( const mrv::image_type_ptr& ptr, const CMedia* img )
    
     OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
     
-    OCIO::DisplayTransformRcPtr transform =
-    OCIO::DisplayTransform::Create();
+    OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
 
     std::string ics = img->ocio_input_color_space();
     if  ( ics.empty() )
@@ -50,8 +49,7 @@ void bake_ocio( const mrv::image_type_ptr& ptr, const CMedia* img )
     transform->setDisplay( display.c_str() );
     transform->setView( view.c_str() );
 
-    OCIO::ConstProcessorRcPtr processor =
-    config->getProcessor( transform );
+    OCIO::ConstProcessorRcPtr processor = config->getProcessor( transform );
 
     float* p = (float*)ptr->data().get();
 
@@ -60,5 +58,6 @@ void bake_ocio( const mrv::image_type_ptr& ptr, const CMedia* img )
     processor->apply( baker );
 
 }
+
 
 } // namespace mrv
