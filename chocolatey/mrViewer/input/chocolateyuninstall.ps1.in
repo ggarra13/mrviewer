@@ -44,7 +44,13 @@ if ($key.Count -eq 1) {
 
 
 Uninstall-ChocolateyZipPackage -PackageName $packageName -ZipFileName "$fileLocation"
-$DesktopPath = [Environment]::GetFolderPath("Desktop")
+
+$DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
+if ($DesktopPath -Match "" )
+{
+   $DesktopPath = [Environment]::GetFolderPath("Desktop")
+}
+
 Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk"
 
 $osBitness = Get-ProcessorBits
