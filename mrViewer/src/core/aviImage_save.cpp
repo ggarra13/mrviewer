@@ -1029,26 +1029,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                                                  hires->channels(),
                                                  format,
                                                  mrv::image_type::kFloat ) );
-
-       if ( hires->pixel_type() == mrv::image_type::kFloat )
-       {
-           size_t total_size = w*h*sizeof(float)*hires->channels();
-           memcpy( ptr->data().get(), hires->data().get(), total_size );
-       }
-       else
-       {
-           for ( unsigned y = 0; y < h; ++y )
-           {
-               for ( unsigned x = 0; x < w; ++x )
-               {
-                   const ImagePixel& p = hires->pixel( x, y );
-                   ptr->pixel(x, y, p );
-               }
-           }
-       }
-
+       copy_image( ptr, hires );
        bake_ocio( ptr, img );
-
    }
    else
    {
@@ -1067,12 +1049,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
            for ( unsigned x = 0; x < w; ++x )
            {
                ImagePixel p = ptr->pixel( x, y );
-               if      (p.r < 0.0f) p.r = 0.0f;
-               else if (p.r > 1.0f) p.r = 1.0f;
-               if      (p.g < 0.0f) p.g = 0.0f;
-               else if (p.g > 1.0f) p.g = 1.0f;
-               if      (p.b < 0.0f) p.b = 0.0f;
-               else if (p.b > 1.0f) p.b = 1.0f;
+               p.clamp();
                sho->pixel( x, y, p );
            }
        }
@@ -1095,12 +1072,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                if ( p.b > 0.0f && isfinite(p.b) )
                    p.b = expf( logf(p.b) * one_gamma );
 
-               if      (p.r < 0.0f) p.r = 0.0f;
-               else if (p.r > 1.0f) p.r = 1.0f;
-               if      (p.g < 0.0f) p.g = 0.0f;
-               else if (p.g > 1.0f) p.g = 1.0f;
-               if      (p.b < 0.0f) p.b = 0.0f;
-               else if (p.b > 1.0f) p.b = 1.0f;
+               p.clamp();
 
                sho->pixel(x, y, p );
            }
