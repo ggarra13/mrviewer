@@ -929,6 +929,7 @@ void video_thread( PlaybackData* data )
         time2frame( img, timeline, frame );
     }
    
+    
 #ifdef DEBUG_THREADS
     DBG( "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame << " timeline frame "
          << timeline->value() );
@@ -1120,6 +1121,7 @@ void video_thread( PlaybackData* data )
 
       img->real_fps( timer.actualFrameRate() );
 
+      
       img->find_image( frame );
 
       if ( reel->edl && fg && img->is_left_eye() )

@@ -5458,6 +5458,16 @@ int ImageView::keyDown(unsigned int rawkey)
         toggle_window( kPreferences );
         return 1;
     }
+    else if ( kTogglePixelRatio.match( rawkey ) )
+    {
+	toggle_pixel_ratio();
+	return 1;
+    }
+    else if ( kToggleLut.match( rawkey ) )
+    {
+	toggle_lut();
+	return 1;
+    }
     else if ( kToggle3dView.match( rawkey ) )
     {
         toggle_window( k3dView );
