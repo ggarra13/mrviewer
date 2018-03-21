@@ -164,6 +164,8 @@ Hotkey kToggleAbout( false, false, false, false, 0 );
 Hotkey kRotatePlus90( false, false, false, false, '+' );
 Hotkey kRotateMinus90( false, false, false, false, '-' );
 
+Hotkey kTogglePixelRatio( true, false, false, false, 'p' );
+Hotkey kToggleLut( false, false, false, false, 't' );
 Hotkey kToggleICS( false, false, false, true, 'i' );
 
 bool Hotkey::match( unsigned rawkey )
@@ -247,6 +249,10 @@ bool Hotkey::match( unsigned rawkey )
 
 
 HotkeyEntry hotkeys[] = {
+HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
+HotkeyEntry( _("3dView Z Depth Down"), kZDepthDown),
+HotkeyEntry( _("3dView Density Up"), kDensityUp),
+HotkeyEntry( _("3dView Density Down"), kDensityDown),
 HotkeyEntry( _("Open Directory"), kOpenDirectory),
 HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
 HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
@@ -308,13 +314,8 @@ HotkeyEntry( _("Attach Audio File"), kAttachAudio),
 HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
 HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
 HotkeyEntry( _("Clone Image"), kCloneImage),
-HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
-HotkeyEntry( _("3dView Z Depth Down"), kZDepthDown),
-HotkeyEntry( _("3dView Density Up"), kDensityUp),
-HotkeyEntry( _("3dView Density Down"), kDensityDown),
 HotkeyEntry( _("Set In Point"), kSetInPoint),
 HotkeyEntry( _("Set Out Point"), kSetOutPoint),
-HotkeyEntry( _("Toggle Hud"), kHudToggle),
 HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
 HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
 HotkeyEntry( _("OCIO View"), kOCIOView ),
@@ -323,19 +324,22 @@ HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
 HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
 HotkeyEntry( _("Toggle Action Window"), kToggleAction),
 HotkeyEntry( _("Toggle 3D Stereo Options Window"), kToggleStereoOptions),
-HotkeyEntry( _("Toggle EDL Edit Window"), kToggleEDLEdit),
-HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
 HotkeyEntry( _("Toggle 3D View Window"), kToggle3dView),
+HotkeyEntry( _("Toggle About Window"), kToggleAbout),
+HotkeyEntry( _("Toggle EDL Edit Window"), kToggleEDLEdit),
 HotkeyEntry( _("Toggle Histogram Window"), kToggleHistogram),
-HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
-HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
+HotkeyEntry( _("Toggle Hud"), kHudToggle),
 HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
 HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
+HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
+HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
 HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
-HotkeyEntry( _("Toggle About Window"), kToggleAbout),
+HotkeyEntry( _("Toggle LUT"), kToggleLut),
+HotkeyEntry( _("Toggle Pixel Ratio"), kTogglePixelRatio),
+HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
+HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
 HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
 HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
-HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 
