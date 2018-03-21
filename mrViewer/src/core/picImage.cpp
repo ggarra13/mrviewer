@@ -48,6 +48,7 @@
 #include <ImfStringAttribute.h>
 
 #include "core/mrvColorOps.h"
+#include "core/mrvMath.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 #include "mrViewer.h"
@@ -791,31 +792,7 @@ bool picImage::save( const char* path, const CMedia* img,
         {
             // Memory is kept until we save the image
             
-            sho = mrv::image_type_ptr( new image_type(
-                                       img->frame(),
-                                       dw, dh,
-                                       4,
-                                       mrv::image_type::kRGBA,
-                                       mrv::image_type::kFloat ) );
-            float one_gamma = 1.0f / img->gamma();
-            
-            for ( unsigned y = 0; y < dh; ++y )
-            {
-                for ( unsigned x = 0; x < dw; ++x )
-                {
-                    ImagePixel p = pic->pixel( x, y );
-                    
-                    if ( p.r > 0.f && isfinite(p.r) )
-                        p.r = pow( p.r, one_gamma );
-                    if ( p.g > 0.f && isfinite(p.g) )
-                        p.g = pow( p.g, one_gamma );
-                    if ( p.b > 0.f && isfinite(p.b) )
-                        p.b = pow( p.b, one_gamma );
-
-                    sho->pixel( x, y, p );
-                }
-            }
-            
+	    mrv::image_type_ptr ptr = pic;
             
             const std::string& display = mrv::Preferences::OCIO_Display;
             const std::string& view = mrv::Preferences::OCIO_View;
@@ -825,20 +802,51 @@ bool picImage::save( const char* path, const CMedia* img,
             {
 
                 try {
-                    bake_ocio( sho, img );
+		    ptr = image_type_ptr( new image_type(
+							 img->frame(),
+							 dw, dh, 4,
+							 image_type::kRGBA,
+							 image_type::kFloat ) );
+		    copy_image( ptr, pic );
+                    bake_ocio( ptr, img );
                 }
                 catch( const std::exception& e )
                 {
-                    LOG_ERROR( e.what() );
+                    LOG_ERROR( "[ocio] " << e.what() );
                     return false;
                 }
                 
             }
+
+	    if ( ! mrv::is_equal( img->gamma(), 1.0f ) )
+	    {
+		float one_gamma = 1.0f / img->gamma();
+            
+		for ( unsigned y = 0; y < dh; ++y )
+		{
+		    for ( unsigned x = 0; x < dw; ++x )
+		    {
+			ImagePixel p = ptr->pixel( x, y );
+			
+			if ( p.r > 0.f && isfinite(p.r) )
+			    p.r = expf( logf(p.r) * one_gamma );
+			if ( p.g > 0.f && isfinite(p.g) )
+			    p.g = expf( logf(p.g) * one_gamma );
+			if ( p.b > 0.f && isfinite(p.b) )
+			    p.b = expf( logf(p.b) * one_gamma );
+
+			sho->pixel( x, y, p );
+		    }
+		}
+	    }
+	    else
+	    {
+		sho = ptr;
+	    }
         }
 
         pic = mrv::image_type_ptr( new image_type( img->frame(),
-                                                   dw, dh,
-                                                   4,
+                                                   dw, dh, 4,
                                                    mrv::image_type::kRGBA,
                                                    mrv::image_type::kByte ) );
                 
@@ -848,6 +856,7 @@ bool picImage::save( const char* path, const CMedia* img,
             for ( unsigned x = 0; x < dw; ++x )
             {
                 ImagePixel p = sho->pixel( x, y );
+		p.clamp();
                 pic->pixel( x, y, p );
             }
         }
