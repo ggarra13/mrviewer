@@ -3297,6 +3297,10 @@ void CMedia::limit_video_store( const int64_t f )
 {
     SCOPED_LOCK( _mutex );
 
+    if ( f == AV_NOPTS_VALUE ) {
+        return;
+    }
+    
   int64_t first, last;
 
   switch( playback() )
@@ -3326,10 +3330,11 @@ void CMedia::limit_video_store( const int64_t f )
   int64_t end = _numWindows-1;
   if ( last > end ) last = end;
 
+  
   for ( int64_t i = 0; i < first; ++i  )
   {
       _sequence[i].reset();
-      _right[i].reset();
+       _right[i].reset();
   }
   for ( int64_t i = last; i < end ; ++i  )
   {
