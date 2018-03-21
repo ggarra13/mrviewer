@@ -93,11 +93,11 @@ namespace mrv
 
     //! Pixel Type
     enum PixelType {
-      kByte,
-      kShort,
-      kInt,
-      kHalf,
-      kFloat
+    kByte,
+    kShort,
+    kInt,
+    kHalf,
+    kFloat
     };
 
     typedef VideoFrame       self;
@@ -169,7 +169,8 @@ namespace mrv
     inline void height( const unsigned h ) { _height = h;  }
     inline unsigned int height() const     { return _height; }
 
-    inline boost::int64_t repeat() const              { return _repeat; }
+    inline void repeat( const int64_t& r )      { _repeat = r; }
+    inline boost::int64_t repeat() const          { return _repeat; }
 
     inline void channels( const short unsigned c ) { _channels = c;  }
     inline short unsigned channels() const     { return _channels; }
@@ -196,6 +197,7 @@ namespace mrv
     inline time_t  mtime() const         { return _mtime; }
 
     inline boost::int64_t pts() const { return _pts; }
+    inline void pts(const int64_t& p) { _pts = p; }
 
     size_t data_size();
 
@@ -369,6 +371,8 @@ namespace mrv
 
   typedef boost::shared_ptr< VideoFrame > image_type_ptr;
   typedef boost::shared_ptr< AudioFrame > audio_type_ptr;
+
+  void copy_image( image_type_ptr& dst, const image_type_ptr& src );
 
 } // namespace mrv
 
