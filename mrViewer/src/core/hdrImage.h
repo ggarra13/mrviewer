@@ -49,7 +49,7 @@ namespace mrv {
 
     virtual const char* const format() const { return "Radiance HDR"; }
 
-
+      bool save( const boost::int64_t frame );
     bool fetch( const boost::int64_t frame );
   protected:
 
