@@ -214,6 +214,8 @@ extern Hotkey kToggleHotkeys;
 extern Hotkey kToggleLogs;
 extern Hotkey kToggleAbout;
 
+extern Hotkey kTogglePixelRatio;
+extern Hotkey kToggleLut;
 
 extern Hotkey kRotatePlus90;
 extern Hotkey kRotateMinus90;
