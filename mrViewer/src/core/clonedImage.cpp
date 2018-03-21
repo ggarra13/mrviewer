@@ -87,7 +87,7 @@ namespace mrv {
       CMedia::Mutex& m = img->video_mutex();
       SCOPED_LOCK(m);
       _hires.reset( new mrv::image_type() );
-      *_hires = *(img->hires());
+      copy_image( _hires, img->hires() );
     }
 
 
