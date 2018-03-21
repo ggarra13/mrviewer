@@ -43,5 +43,10 @@ Install-ChocolateyZipPackage @packageArgs
 $target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
 Install-ChocolateyPath "${target}" 'User'
 
-$DesktopPath = [Environment]::GetFolderPath("Desktop")
+$DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
+if ( $DesktopPath -Match "" )
+{
+	$DesktopPath = [Environment]::GetFolderPath("Desktop")
+}
+
 Install-ChocolateyShortcut -shortcutFilePath "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk" -targetPath "${target}/${packageName}.exe"
