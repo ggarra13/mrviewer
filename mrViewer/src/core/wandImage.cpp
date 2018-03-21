@@ -47,7 +47,7 @@ using namespace std;
 #include <ImfVecAttribute.h>
 #include <ImfMatrixAttribute.h>
 
-
+#include "core/mrvMath.h"
 #include "core/mrvImageOpts.h"
 #include "core/mrvColorOps.h"
 #include "core/Sequence.h"
@@ -1195,7 +1195,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         ColorspaceType colorspace = sRGBColorspace;
         MagickSetImageColorspace( w, colorspace );
 
-
         status = MagickConstituteImage( w, dw, dh, channels, 
                                         o->pixel_type(), pixels );
         if (status == MagickFalse)
@@ -1223,43 +1222,16 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( must_convert )
         {
-            // LOG_INFO( "Converting..." );
-            float one_gamma = 1.0f / _gamma;
-            for ( unsigned y = 0; y < dh; ++y )
-            {
-                for ( unsigned x = 0; x < dw; ++x )
-                {
-                    ImagePixel p = pic->pixel( x, y );
 
-                    // This code is equivalent to p.r = powf( p.r, gamma )
-                    // but faster
-                    if ( p.r > 0.f && isfinite(p.r) )
-                        p.r = expf( logf(p.r) * one_gamma );
-                    if ( p.g > 0.f && isfinite(p.g) )
-                        p.g = expf( logf(p.g) * one_gamma );
-                    if ( p.b > 0.f && isfinite(p.b) )
-                        p.b = expf( logf(p.b) * one_gamma );
-                    if ( !has_alpha ) p.a = 1.0f;
-
-                    if      (p.r < 0.0f) p.r = 0.0f;
-                    else if (p.r > 1.0f) p.r = 1.0f;
-                    if      (p.g < 0.0f) p.g = 0.0f;
-                    else if (p.g > 1.0f) p.g = 1.0f;
-                    if      (p.b < 0.0f) p.b = 0.0f;
-                    else if (p.b > 1.0f) p.b = 1.0f;
-
-                    status = MagickImportImagePixels(w, x, y,
-                                                     1, 1, channels,
-                                                     FloatPixel, &p[0] );
-                    if (status == MagickFalse)
-                    {
-                        destroyPixels(bufs);
-                        ThrowWandException( wand );
-                    }
-
-                }
-            }
             
+	    image_type_ptr ptr = image_type_ptr( new image_type(
+								pic->frame(),
+								dw, dh, 4,
+								image_type::kRGBA,
+								image_type::kFloat
+								) );
+	    copy_image( ptr, pic );
+	    
             const std::string& display = mrv::Preferences::OCIO_Display;
             const std::string& view = mrv::Preferences::OCIO_View;
    
@@ -1267,22 +1239,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                  Preferences::uiMain->uiView->use_lut() )
             {
                 try
-                {
-                    mrv::image_type_ptr ptr;
-                    ptr = mrv::image_type_ptr( new image_type( pic->frame(),
-                                                               dw, dh, 4,
-                                                               mrv::image_type::kRGBA,
-                                                               mrv::image_type::kFloat
-                                               ) );
-
-                    ImagePixel* p = (ImagePixel*)ptr->data().get();
-                    MagickExportImagePixels( w, 0, 0, dw, dh, channels,
-                                             FloatPixel, &p[0] );
-                    
+                {   
                     bake_ocio( ptr, this );
-                    
-                    MagickImportImagePixels( w, 0, 0, dw, dh, channels,
-                                             FloatPixel, &p[0] );
                 }
                 catch( const std::exception& e )
                 {
@@ -1290,6 +1248,42 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                     return false;
                 }
             }
+
+
+            // LOG_INFO( "Converting..." );
+	    if ( ! mrv::is_equal( _gamma, 1.0f ) )
+	    {
+		float one_gamma = 1.0f / _gamma;
+		for ( unsigned y = 0; y < dh; ++y )
+		{
+		    for ( unsigned x = 0; x < dw; ++x )
+		    {
+			ImagePixel p = ptr->pixel( x, y );
+			
+			// This code is equivalent to p.r = powf( p.r, gamma )
+			// but faster
+			if ( p.r > 0.f && isfinite(p.r) )
+			    p.r = expf( logf(p.r) * one_gamma );
+			if ( p.g > 0.f && isfinite(p.g) )
+			    p.g = expf( logf(p.g) * one_gamma );
+			if ( p.b > 0.f && isfinite(p.b) )
+			    p.b = expf( logf(p.b) * one_gamma );
+			if ( !has_alpha ) p.a = 1.0f;
+			
+			p.clamp();
+			ptr->pixel( x, y, p );
+		    }
+		}
+	    }
+	    
+	    ImagePixel* p = (ImagePixel*) ptr->data().get();
+	    status = MagickImportImagePixels(w, 0, 0, dw, dh, "RGBA",
+					     FloatPixel, &p[0] );
+	    if (status == MagickFalse)
+	    {
+		destroyPixels(bufs);
+		ThrowWandException( wand );
+	    }
         }
 
 
