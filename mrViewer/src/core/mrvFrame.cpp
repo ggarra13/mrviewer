@@ -33,6 +33,10 @@
 
 #include "core/mrvFrame.h"
 
+extern "C" {
+#include <libavutil/avassert.h>
+}
+
 namespace
 {
 
@@ -544,6 +548,41 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
    allocate();
    memcpy( _data.get(), b.data().get(), data_size() );
    return *this;
+}
+
+
+void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
+{
+    unsigned dw = src->width();
+    unsigned dh = src->height();
+    dst->repeat( src->repeat() );
+    dst->frame( src->frame() );
+    dst->pts( src->pts() );
+    dst->ctime( time(NULL) );
+    dst->mtime( time(NULL) );
+    av_assert0( dst->channels() > 0 );
+    av_assert0( dst->width() > 0 );
+    av_assert0( dst->height() > 0 );
+    if ( src->pixel_type() == dst->pixel_type() &&
+	 src->channels() == dst->channels() &&
+	 dw == dst->width() &&
+	 dh == dst->height() )
+    {
+	memcpy( dst->data().get(), src->data().get(), src->data_size() );
+    }
+    else
+    {
+	assert( dh <= dst->height() );
+	assert( dw <= dst->width() );
+	for ( unsigned y = 0; y < dh; ++y )
+	{
+	    for ( unsigned x = 0; x < dw; ++x )
+	    {
+		const ImagePixel& p = src->pixel( x, y );
+		dst->pixel( x, y, p );
+	    }
+	}
+    }
 }
 
 } // namespace mrv
