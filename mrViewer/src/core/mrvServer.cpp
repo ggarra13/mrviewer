@@ -777,11 +777,31 @@ bool Parser::parse( const std::string& s )
        ui->uiEndFrame->redraw();
        ok = true;
    }
+   else if ( cmd == N_("TimelineMaxDisplay") )
+   {
+       double x;
+       is >> x;
+       ui->uiTimeline->display_maximum( x );
+       ui->uiTimeline->redraw();
+       ui->uiEndFrame->value( boost::int64_t(x) );
+       ui->uiEndFrame->redraw();
+       ok = true;
+   }
    else if ( cmd == N_("TimelineMin") )
    {
        double x;
        is >> x;
        ui->uiTimeline->minimum( x );
+       ui->uiTimeline->redraw();
+       ui->uiStartFrame->value( boost::int64_t(x) );
+       ui->uiStartFrame->redraw();
+       ok = true;
+   }
+   else if ( cmd == N_("TimelineMinDisplay") )
+   {
+       double x;
+       is >> x;
+       ui->uiTimeline->display_minimum( x );
        ui->uiTimeline->redraw();
        ui->uiStartFrame->value( boost::int64_t(x) );
        ui->uiStartFrame->redraw();
