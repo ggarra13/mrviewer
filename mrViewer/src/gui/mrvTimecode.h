@@ -53,26 +53,26 @@ class Timecode : public fltk::FloatInput
     Timecode( int x, int y, int w, int h, const char* l = 0 );
     Timecode( int w, int h, const char* l = 0 );
 
-    Display display()          { return _display; }
+    inline Display display()          { return _display; }
     void display( Display b );
 
-    double fps() const       { return _fps; }
-    void fps(double x)       { _fps = x; update(); }
-    void fps(unsigned int x) { _fps = double(x); update(); }
+    inline double fps() const       { return _fps; }
+    inline void fps(double x)       { _fps = x; update(); }
+    inline void fps(unsigned int x) { _fps = double(x); update(); }
 
-    int64_t maximum() const  { return _maximum; }
-    int64_t minimum() const  { return _minimum; }
-    int64_t step()    const  { return _step; }
+    inline int64_t maximum() const  { return _maximum; }
+    inline int64_t minimum() const  { return _minimum; }
+    inline int64_t step()    const  { return _step; }
 
-    void maximum( const int64_t x) { _maximum = x; }
-    void minimum( const int64_t x) { _minimum = x; }
-    void step( const int64_t x)    { _step = x; }
+    inline void maximum( const int64_t x) { _maximum = x; }
+    inline void minimum( const int64_t x) { _minimum = x; }
+    inline void step( const int64_t x)    { _step = x; }
 
-    int64_t frame() const { return _frame; }
-    void frame( const int64_t& f ) { value(f); }
+    inline int64_t frame() const { return _frame; }
+    inline void frame( const int64_t& f ) { value(f); }
 
-    void timecode( const int64_t& f ) { _tc_frame = f; update();  }
-    int64_t timecode() const          { return _tc_frame; }
+    inline void timecode( const int64_t& f ) { _tc_frame = f; update();  }
+    inline int64_t timecode() const          { return _tc_frame; }
 
     int64_t value() const;
     void value( const int64_t f );
