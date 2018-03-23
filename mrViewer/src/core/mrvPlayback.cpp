@@ -246,9 +246,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
                                  int64_t& first,
                                  int64_t& last )
 {
-    
-    last = int64_t(timeline->maximum());
-    first = int64_t(timeline->minimum());
+    last = int64_t(timeline->display_maximum());
+    first = int64_t(timeline->display_minimum());
 
     time2frame( img, timeline, first );
     time2frame( img, timeline, last );
@@ -370,7 +369,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                     f -= img->first_frame();
                     f += reel->location(img);
 
-                    if ( f <= timeline->maximum() )
+                    if ( f <= timeline->display_maximum() )
                     {
                         next = reel->image_at( f );
                     }
@@ -384,7 +383,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                     {
                         if ( loop == CMedia::kLoop )
                         {
-                            f = boost::int64_t(timeline->minimum());
+                            f = boost::int64_t(timeline->display_minimum());
                             next = reel->image_at( f );
                             f = reel->global_to_local( f );
                         }
@@ -456,7 +455,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                     f -= img->first_frame();
                     f += reel->location(img);
 
-                    if ( f >= timeline->minimum() )
+                    if ( f >= timeline->display_minimum() )
                     {
                         next = reel->image_at( f );
                     }
@@ -468,7 +467,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                     {
                         if ( loop == CMedia::kLoop )
                         {
-                            f = boost::int64_t( timeline->maximum() );
+                            f = boost::int64_t( timeline->display_maximum() );
                             next = reel->image_at( f );
                             f = reel->global_to_local( f );
                         }
