@@ -5515,19 +5515,11 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kSetInPoint.match( rawkey ) )
     {
-        int64_t x = uiMain->uiFrame->value();
-        uiMain->uiStartButton->value( 1 );
-        uiMain->uiStartFrame->value( x );
-        uiMain->uiTimeline->minimum( (double)x );
-        uiMain->uiTimeline->redraw();
+	uiMain->uiStartButton->do_callback();
     }
     else if ( kSetOutPoint.match( rawkey ) )
     {
-        int64_t x = uiMain->uiFrame->value();
-        uiMain->uiEndButton->value( 1 );
-        uiMain->uiEndFrame->value( x );
-        uiMain->uiTimeline->maximum( (double)x );
-        uiMain->uiTimeline->redraw();
+	uiMain->uiEndButton->do_callback();
     }
     else if ( rawkey == fltk::LeftAltKey )
     {
