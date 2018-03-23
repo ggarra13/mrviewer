@@ -7,6 +7,9 @@ v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
 	   too, unless they are needed.
 	 - Added T (toggle lut) shortcut to list of shortcuts.
 	 - Added Ctrl+p (toggle pixel ratio) to list of shortcuts.
+	 - Made the S and E buttons (and the corresponding I and O
+	   shortcuts) set the start/end frame of the timeline but not by
+	   shrinking the timeline, but by highlighting the area instead.
 
 v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
 	   will bake the lut in the picture. 
