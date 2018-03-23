@@ -48,6 +48,8 @@ namespace
 // Maximum number of frames to show cacheline.  Setting it too high can
 // impact GUI playback when the image/movies are that long.
 unsigned kMAX_FRAMES = 5000;
+double kMinFrame = std::numeric_limits<double>::min();
+double kMaxFrame = std::numeric_limits<double>::max();
 }
 
 
@@ -62,8 +64,8 @@ _draw_cache( true ),
 _edl( false ),
 _tc( 0 ),
 _fps( 24 ),
-_display_min(1),
-_display_max(50),
+_display_min( kMaxFrame ),
+_display_max( kMinFrame ),
 uiMain( NULL )
 {
 }
@@ -84,9 +86,34 @@ Timeline::~Timeline()
      return uiMain->uiReelWindow->uiBrowser;
   }
 
+void Timeline::display_minimum( const double& x )
+{
+    if ( x >= minimum() ) _display_min = x;
+    
+    if ( uiMain && uiMain->uiView )
+    {
+        char buf[1024];
+        sprintf( buf, N_("TimelineMinDisplay %g"), x );
+        uiMain->uiView->send_network( buf );
+    }
+}
+
+void Timeline::display_maximum( const double& x )
+{
+    if ( x <= maximum() ) _display_max = x;
+    
+    if ( uiMain && uiMain->uiView )
+    {
+        char buf[1024];
+        sprintf( buf, N_("TimelineMaxDisplay %g"), x );
+        uiMain->uiView->send_network( buf );
+    }
+}
+
   void Timeline::minimum( double x )
   {
     fltk::Slider::minimum( x );
+    _display_min = x;
 
     if ( uiMain && uiMain->uiView )
     {
@@ -99,6 +126,7 @@ Timeline::~Timeline()
   void Timeline::maximum( double x )
   {
     fltk::Slider::maximum( x );
+    _display_max = x;
 
     if ( uiMain && uiMain->uiView )
     {
@@ -163,9 +191,21 @@ Timeline::~Timeline()
     push_clip( r );
 
     if (w <= 0) return;
-    double A = minimum();
-    double B = maximum();
-    if (A > B) {A = B; B = minimum();}
+
+    double A,B;
+    if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
+	 ( display_minimum() != minimum() || display_maximum() != maximum() ) )
+    {
+	A = display_minimum();
+	B = display_maximum();
+	if (A > B) {A = B; B = display_minimum();}
+    }
+    else
+    {
+	A = minimum();
+	B = maximum();
+	if (A > B) {A = B; B = minimum();}
+    }
     //if (!finite(A) || !finite(B)) return;
 
     if (min_spacing < 1) min_spacing = 10; // fix for fill sliders
@@ -389,6 +429,18 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
 }
 
+
+void Timeline::draw_selection( const fltk::Rectangle& r )
+{
+    int rx = r.x() + (slider_size()-1)/2;
+    int  dx = slider_position( _display_min, r.w() );
+    int end = slider_position( _display_max, r.w() );
+	
+    setcolor( fltk::CYAN );
+    Rectangle r2( rx+dx, r.y(), end-dx, r.h()-8 );
+    fillrect( r2 );
+}
+
   /** 
    * Main widget drawing routine
    * 
@@ -413,11 +465,18 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     // Get number of frames
     double mn = minimum();
     double mx = maximum();
+
+    if ( !uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+    {
+	mn = display_minimum();
+	mx = display_maximum();
+    }
+    
     double v  = value();
 
     if ( !browser() ) return;
 
-
+    
     // Draw each rectangle for each segment
     if ( _edl )
       {
@@ -466,6 +525,13 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 	    fillrect( lr );
 	  }
 
+	if ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
+	     ( _display_min != minimum() || _display_max != maximum() ) )
+	{
+	    std::cerr << "display" << std::endl;
+	    draw_selection(r);
+	}
+    
 	frame = 1;
 	unsigned idx = 0;
 	for ( i = reel->images.begin(); i != e; frame += size, ++i )
@@ -512,8 +578,16 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                                 int64_t(mn), int64_t(mx), first, r );
             }
         }
+
+	if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
+	     ( _display_min != minimum() || _display_max != maximum() ) )
+	{
+	    draw_selection(r);
+	}
+    
     }
 
+    
     draw( r, f2, r.y()==0 );
 
     // draw the focus indicator inside the box:
