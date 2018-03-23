@@ -78,6 +78,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvHotkey.h"
+#include "gui/mrvImageBrowser.h"
 #include "video/mrvGLLut3d.h"
 #include "mrvEDLWindowUI.h"
 
@@ -565,6 +566,9 @@ fltk::StyleSet*     newscheme = NULL;
 
     playback.get( "scrubbing_sensitivity", tmpF, 5.0f );
     uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
+    
+    playback.get( "selection_display_mode", tmp, 0 );
+    uiPrefs->uiPrefsTimelineSelectionDisplay->value(tmp);
 
     fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
     pixel_toolbar.get( "RGBA_pixel", tmp, 0 );
@@ -1428,6 +1432,45 @@ static const char* kCLocale = "C";
     DBG( __FUNCTION__ << " " << __LINE__ );
     change_timeline_display(main);
 
+    double mn, mx,
+    dmn = main->uiTimeline->display_minimum(),
+    dmx = main->uiTimeline->display_maximum();
+    
+    if ( !main->uiTimeline->edl() )
+    {
+	mrv::media fg = main->uiView->foreground();
+	if ( fg )
+	{
+	    Image_ptr img = fg->image();
+	    mn = img->first_frame();
+	    mx = img->last_frame();
+	}
+    }
+    else
+    {
+	// edl
+	mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
+	if ( !reel || reel->images.size() == 0 ) return;
+	
+	mrv::media fg = reel->images[0];
+	if ( fg ) {
+	    mn = fg->position();
+	    mx = fg->position() + fg->duration() - 1;
+	}
+    }
+    if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+    {
+	main->uiTimeline->minimum( dmn );
+	main->uiTimeline->maximum( dmx );
+    }
+    else
+    {
+	main->uiTimeline->minimum( mn );
+	main->uiTimeline->display_minimum( dmn );
+	main->uiTimeline->maximum( mx );
+	main->uiTimeline->display_maximum( dmx );
+    }
+
     DBG( __FUNCTION__ << " " << __LINE__ );
     unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
@@ -1694,6 +1737,8 @@ static const char* kCLocale = "C";
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
     playback.set( "scrubbing_sensitivity",
                   uiPrefs->uiPrefsScrubbingSensitivity->value() );
+    playback.set( "selection_display_mode",
+		  uiPrefs->uiPrefsTimelineSelectionDisplay->value() );
 
     fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
     pixel_toolbar.set( "RGBA_pixel", uiPrefs->uiPrefsPixelRGBA->value() );
