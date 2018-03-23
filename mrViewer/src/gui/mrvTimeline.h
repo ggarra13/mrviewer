@@ -65,19 +65,25 @@ class Timeline : public fltk::Slider
     Timeline( int w, int h, char* l = 0 );
     ~Timeline();
 
-    Timecode::Display display() const { return _display; }
-    void display(Timecode::Display x) { _display = x; redraw(); }
+    inline Timecode::Display display() const { return _display; }
+    inline void display(Timecode::Display x) { _display = x; redraw(); }
 
-    bool edl() const { return _edl; }
+    inline bool edl() const { return _edl; }
     void edl( bool x );
 
-    double fps() const { return _fps; }
-    void fps( double x ) { _fps = x; }
+    inline double fps() const { return _fps; }
+    inline void fps( double x ) { _fps = x; }
 
-    double maximum() const { return fltk::Slider::maximum(); }
+    inline double maximum() const { return fltk::Slider::maximum(); }
     void maximum( double x );
-    double minimum() const { return fltk::Slider::minimum(); }
+    inline double minimum() const { return fltk::Slider::minimum(); }
     void minimum( double x );
+
+    inline double display_minimum() const { return _display_min; }
+    void display_minimum( const double& x );
+    
+    inline double display_maximum() const { return _display_max; }
+    void display_maximum( const double& x );
 
     void timecode( const int64_t& tc ) { _tc = tc; redraw(); }
 
@@ -103,6 +109,7 @@ class Timeline : public fltk::Slider
     bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
     void draw_ticks(const fltk::Rectangle& r, int min_spacing);
 
+    void draw_selection( const fltk::Rectangle& r);
     void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                          int64_t mn, int64_t mx, int64_t frame, 
                          const fltk::Rectangle& r );
