@@ -1453,9 +1453,10 @@ static const char* kCLocale = "C";
 	if ( !reel || reel->images.size() == 0 ) return;
 	
 	mrv::media fg = reel->images[0];
+	mrv::media last = reel->images[ reel->images.size()-1 ];
 	if ( fg ) {
 	    mn = fg->position();
-	    mx = fg->position() + fg->duration() - 1;
+	    mx = last->position() + last->duration() - 1;
 	}
     }
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
