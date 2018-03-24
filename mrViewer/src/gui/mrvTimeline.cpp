@@ -525,10 +525,9 @@ void Timeline::draw_selection( const fltk::Rectangle& r )
 	    fillrect( lr );
 	  }
 
-	if ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
+	if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
 	     ( _display_min != minimum() || _display_max != maximum() ) )
 	{
-	    std::cerr << "display" << std::endl;
 	    draw_selection(r);
 	}
     
