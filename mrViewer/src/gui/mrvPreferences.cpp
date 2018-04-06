@@ -415,7 +415,7 @@ fltk::StyleSet*     newscheme = NULL;
     view.get("compensate_pixel_ratio", tmp, 0 );
     uiPrefs->uiPrefsViewPixelRatio->value( (bool) tmp );
 
-    view.get("lut", tmp, 0 );
+    view.get("lut", tmp, 1 );
     uiPrefs->uiPrefsViewLut->value( (bool) tmp );
 
     view.get("safe_areas", tmp, 0 );
@@ -487,13 +487,13 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences ics( ocio, "ICS" );
     {
-#define OCIO_ICS(x, d)						\
-          ok = ics.get( #x, tmpS, d, 2048 );				\
-          CMedia::ocio_##x##_ics = environmentSetting( "MRV_OCIO_" #x "_ICS" , \
-                                                       tmpS, ok ); \
-          uiPrefs->uiOCIO_##x##_ics->text( tmpS );
+#define OCIO_ICS(x, d)							\
+        ok = ics.get( #x, tmpS, d, 2048 );                              \
+        CMedia::ocio_##x##_ics = environmentSetting( "MRV_OCIO_" #x "_ICS" , \
+                                                     tmpS, ok );	\
+        uiPrefs->uiOCIO_##x##_ics->text( tmpS );
 
-          OCIO_ICS( 8bits,  "" );
+          OCIO_ICS( 8bits,  "sRGB" );
           OCIO_ICS( 16bits, "" );
           OCIO_ICS( 32bits, "" );
           OCIO_ICS( float,  "" );
@@ -566,7 +566,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     playback.get( "scrubbing_sensitivity", tmpF, 5.0f );
     uiPrefs->uiPrefsScrubbingSensitivity->value(tmpF);
-    
+
     playback.get( "selection_display_mode", tmp, 0 );
     uiPrefs->uiPrefsTimelineSelectionDisplay->value(tmp);
 
@@ -954,7 +954,7 @@ static const char* kCLocale = "C";
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     DBG("main->uiMain->show");
-    
+
     main->uiMain->show();
 
     // fltk::Widget* w = new fltk::Widget( 0, 48, 639, 40, "Eye1" );
@@ -1139,24 +1139,34 @@ static const char* kCLocale = "C";
         }
 
         DBG( __FUNCTION__ << " " << __LINE__ );
+
         char buf[2048];
         sprintf( buf, "OCIO=%s", var );
-        putenv( buf );
-
+        putenv( strdup(buf) );
 
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+#ifdef __linux__
+        char tmpS[256];
+        sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
+        const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
+        mrvLOG_INFO( "ocio", _("Setting OCIO's view environment variable to:")
+                     << std::endl );
+        sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
+        mrvLOG_INFO( "ocio", buf << std::endl );
+        putenv( strdup(buf) );
+#endif
+
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
-        DBG( __FUNCTION__ << " " << __LINE__ );
 
         try
         {
-            DBG( __FUNCTION__ << " " << __LINE__ );
             OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromEnv();
+
             OCIO::SetCurrentConfig( config );
             config = OCIO::GetCurrentConfig();
+
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
             OCIO_Display = config->getDefaultDisplay();
@@ -1194,17 +1204,7 @@ static const char* kCLocale = "C";
                     main->gammaDefaults->add_leaf( views[i].c_str(), g );
                     if ( views[i] == OCIO_View && !OCIO_View.empty() )
                     {
-                        std::string s;
-                        size_t len = views[i].size();
-                        int w = 0, h = 0;
-                        for (  ; len >= views[i].size() ||
-                                   w >= main->gammaDefaults->w(); --len )
-                        {
-                            s = views[i].substr( 0, len );
-                            fltk::measure( s.c_str(), w, h );
-                        }
-
-                        main->gammaDefaults->label( strdup( s.c_str() ) );
+                        main->gammaDefaults->label( strdup( views[i].c_str() ));
                         main->uiGamma->value( 1.0f );
                         main->uiGammaInput->value( 1.0f );
                         main->uiView->gamma( 1.0f );
@@ -1435,41 +1435,41 @@ static const char* kCLocale = "C";
     double mn, mx,
     dmn = main->uiTimeline->display_minimum(),
     dmx = main->uiTimeline->display_maximum();
-    
+
     if ( !main->uiTimeline->edl() )
     {
-	mrv::media fg = main->uiView->foreground();
-	if ( fg )
-	{
-	    Image_ptr img = fg->image();
-	    mn = img->first_frame();
-	    mx = img->last_frame();
-	}
+        mrv::media fg = main->uiView->foreground();
+        if ( fg )
+        {
+            Image_ptr img = fg->image();
+            mn = img->first_frame();
+            mx = img->last_frame();
+        }
     }
     else
     {
-	// edl
-	mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
-	if ( !reel || reel->images.size() == 0 ) return;
-	
-	mrv::media fg = reel->images[0];
-	mrv::media last = reel->images[ reel->images.size()-1 ];
-	if ( fg ) {
-	    mn = fg->position();
-	    mx = last->position() + last->duration() - 1;
-	}
+        // edl
+        mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
+        if ( !reel || reel->images.size() == 0 ) return;
+
+        mrv::media fg = reel->images[0];
+        mrv::media last = reel->images[ reel->images.size()-1 ];
+        if ( fg ) {
+            mn = fg->position();
+            mx = last->position() + last->duration() - 1;
+        }
     }
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	main->uiTimeline->minimum( dmn );
-	main->uiTimeline->maximum( dmx );
+        main->uiTimeline->minimum( dmn );
+        main->uiTimeline->maximum( dmx );
     }
     else
     {
-	main->uiTimeline->minimum( mn );
-	main->uiTimeline->display_minimum( dmn );
-	main->uiTimeline->maximum( mx );
-	main->uiTimeline->display_maximum( dmx );
+        main->uiTimeline->minimum( mn );
+        main->uiTimeline->display_minimum( dmn );
+        main->uiTimeline->maximum( mx );
+        main->uiTimeline->display_maximum( dmx );
     }
 
     DBG( __FUNCTION__ << " " << __LINE__ );
@@ -1739,7 +1739,7 @@ static const char* kCLocale = "C";
     playback.set( "scrubbing_sensitivity",
                   uiPrefs->uiPrefsScrubbingSensitivity->value() );
     playback.set( "selection_display_mode",
-		  uiPrefs->uiPrefsTimelineSelectionDisplay->value() );
+                  uiPrefs->uiPrefsTimelineSelectionDisplay->value() );
 
     fltk::Preferences pixel_toolbar( base, "pixel_toolbar" );
     pixel_toolbar.set( "RGBA_pixel", uiPrefs->uiPrefsPixelRGBA->value() );
