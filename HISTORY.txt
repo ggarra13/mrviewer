@@ -1,3 +1,22 @@
+v4.0.6   - Bug fixed looping in movies with an In/Out points.  Now the
+	   looping is more frame accurate.
+	 - Further improved playback of two video tracks as stereo 3d.
+	 - Improved timecode/frame, timeline widgets allowing all the
+	   shortcuts of the main image view.
+	 - Made LUT be on as a default option and the 8 bits OCIO default be
+	   sRGB.  
+	   This change is only present if starting mrViewer without
+	   preferences set.
+	   It makes 8 bit formats (png, jpeg, etc) behave like
+	   expected under the nuke-default ocio config, while linear formats
+	   like HDR, OpenEXR, etc. behave also well.
+	   This change is to make mrViewer behave with LUTs just as when it
+	   was using gamma 2.2 only.
+	 - Made Active Views' environment variable OCIO_ACTIVE_VIEWS return
+	   sRGB, rec709, Film, Log, Raw or None in that order on linux as
+	   the active_view setting in the yaml config.ocio file was not
+	   respected on that platform.  This is a bug fix work-around.
+
 v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
 	 - Reversed the order of lut baking/gamma change in MIFF, TIFF,
 	   PIC and PSD.
@@ -14,7 +33,7 @@ v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
 	   	Preferences->Playback->Timeline->Selection.
 
 v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
-	   will bake the lut in the picture. 
+	   will bake the lut in the picture.
 	 - Made lut more verbose, printing out the lut when it is not
 	   created, too.
 	 - Bug fixed alpha channel presence in imagemagick wand loader.
