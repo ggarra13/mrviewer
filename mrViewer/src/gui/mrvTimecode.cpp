@@ -47,6 +47,7 @@ extern "C" {
 
 #include "mrvMath.h"  // for std::abs in some platforms
 #include "gui/mrvTimecode.h"
+#include "mrViewer.h"
 #include "gui/mrvIO.h"
 
 namespace 
@@ -74,6 +75,7 @@ Timecode::Timecode( int x, int y, int w, int h, const char* l ) :
 
 Timecode::Timecode( int w, int h, const char* l ) :
   fltk::FloatInput( 0, 0, w, h, l ),
+  uiMain( NULL ),
   _display( mrv::Timecode::kFrames ),
   _fps( 24.f ),
   _frame( 1 ),
@@ -115,6 +117,13 @@ void Timecode::value( const int hours, const int mins, const int secs,
       }
     return true;
   }
+
+int Timecode::handle( int e )
+{
+    int r = fltk::FloatInput::handle( e );
+    if ( r != 0 ) return r;
+    return uiMain->uiView->handle( e );
+}
 
 int64_t Timecode::value() const
 {
