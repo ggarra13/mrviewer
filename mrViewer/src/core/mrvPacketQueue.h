@@ -70,6 +70,8 @@ namespace mrv {
       typedef std::deque< AVPacket >    Packets_t;
       typedef Packets_t::iterator       iterator;
       typedef Packets_t::const_iterator const_iterator;
+      typedef Packets_t::reverse_iterator reverse_iterator;
+      typedef Packets_t::const_reverse_iterator const_reverse_iterator;
       typedef boost::recursive_mutex    Mutex;
       typedef boost::condition_variable_any Condition;
       
@@ -90,6 +92,11 @@ namespace mrv {
           return _mutex;
       }
 
+      inline Packets_t& queue()
+      {
+	  return _packets;
+      }
+
       inline uint64_t bytes() const
       {
           return _bytes;
@@ -103,6 +110,16 @@ namespace mrv {
       inline const_iterator begin() const
       {
           return _packets.begin();
+      }
+
+      inline reverse_iterator rbegin()
+      {
+          return _packets.rbegin();
+      }
+
+      inline const_reverse_iterator rbegin() const
+      {
+          return _packets.rbegin();
       }
 
       inline void clear()
@@ -127,6 +144,18 @@ namespace mrv {
       {
           return _packets.end();
       }
+      
+      inline reverse_iterator rend()
+      {
+          Mutex::scoped_lock lk( _mutex );
+          return _packets.rend();
+      }
+
+      inline const_reverse_iterator rend() const
+      {
+          return _packets.rend();
+      }
+
 
       inline void push_back( const AVPacket& pkt )
       {
