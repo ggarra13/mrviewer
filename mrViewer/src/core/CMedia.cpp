@@ -405,6 +405,7 @@ _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
+_loop_start( 1 ),
 _audio_pts( 0 ),
 _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
 _video_pts( 0 ),
@@ -514,6 +515,7 @@ _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
+_loop_start( 1 ),
 _interlaced( kNoInterlace ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
@@ -730,59 +732,6 @@ void CMedia::clear_cache()
 
   image_damage( image_damage() | kDamageCache );
 
-}
-
-void CMedia::remove_to_end( const StreamType t )
-{
-    switch( t )
-    {
-        case kVideoStream:
-            {
-                mrv::PacketQueue::Mutex& apm = _video_packets.mutex();
-                SCOPED_LOCK( apm );
-
-                mrv::PacketQueue::const_iterator i = _video_packets.begin();
-                mrv::PacketQueue::const_iterator e = _video_packets.end();
-
-                for ( ; i != e; ++i )
-                {
-
-                    if ( _video_packets.is_loop_end( *i ) ||
-                         _video_packets.is_loop_start( *i ) )
-                    {
-                        _video_packets.pop_front();
-                        break;
-                    }
-                    _video_packets.pop_front();
-                }
-
-                break;
-            }
-        case kAudioStream:
-            {
-                mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
-                SCOPED_LOCK( apm );
-
-                mrv::PacketQueue::const_iterator i = _audio_packets.begin();
-                mrv::PacketQueue::const_iterator e = _audio_packets.end();
-
-                for ( ; i != e; ++i )
-                {
-
-                    if ( _audio_packets.is_loop_end( *i ) ||
-                         _audio_packets.is_loop_start( *i ) )
-                    {
-                        _audio_packets.pop_front();
-                        break;
-                    }
-                    _audio_packets.pop_front();
-                }
-
-                break;
-            }
-        case kSubtitleStream:
-            break;
-    }
 }
 
 void CMedia::update_frame( const int64_t& f )
@@ -2364,7 +2313,11 @@ void CMedia::play(const CMedia::Playback dir,
       if ( _is_stereo && _right_eye )
       {
           delete _right_eye->_stereo_barrier;
-          _right_eye->_stereo_barrier = new Barrier( 2 );
+	  if ( number_of_video_streams() % 2 == 0 )
+	      _right_eye->_stereo_barrier = new Barrier( 2 );
+	  else
+	      _right_eye->_stereo_barrier = new Barrier( 1 );
+	      
       }
 
       if ( !fg && !_fg_bg_barrier )
@@ -3256,6 +3209,8 @@ void CMedia::loop_at_start( const int64_t frame )
 {
    if ( has_picture() )
    {
+       // With loop at start we cannot discard previous frames as they are
+       // part of one or multiple prerolls
       _video_packets.loop_at_start( frame );
    }
 
@@ -3277,11 +3232,46 @@ void CMedia::loop_at_end( const int64_t frame )
 
    if ( has_picture() )
    {
+       // With loop at end, we can discard all video packets that go
+       // beyond the last frame
+       mrv::PacketQueue::Mutex& m = _video_packets.mutex();
+       SCOPED_LOCK( m );
+       
+       mrv::PacketQueue::const_reverse_iterator i = _video_packets.rbegin();
+       mrv::PacketQueue::const_reverse_iterator e = _video_packets.rend();
+       AVStream* stream = get_video_stream();
+       for ( ; i != e; ++i )
+       {
+	   if ( pts2frame( stream, (*i).dts ) >= frame )
+	   {
+	       mrv::PacketQueue::const_iterator it = ++i.base();
+	       _video_packets.queue().erase( it );
+	   }
+       }
+
+       
       _video_packets.loop_at_end( frame );
    }
 
   if ( number_of_audio_streams() > 0 )
     {
+       // With loop at end, we can discard all audio packets that go
+       // beyond the last frame
+       mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
+       SCOPED_LOCK( m );
+       
+       mrv::PacketQueue::const_reverse_iterator i = _audio_packets.rbegin();
+       mrv::PacketQueue::const_reverse_iterator e = _audio_packets.rend();
+       AVStream* stream = get_audio_stream();
+       for ( ; i != e; ++i )
+       {
+       	   if ( pts2frame( stream, (*i).dts ) >= frame )
+       	   {
+       	       mrv::PacketQueue::const_iterator it = ++i.base();
+       	       _audio_packets.queue().erase( it );
+       	   }
+       }
+
        _audio_packets.loop_at_end( frame );
     }
 
@@ -3307,7 +3297,7 @@ void CMedia::limit_video_store( const int64_t f )
   {
       case kBackwards:
           first = f - max_image_frames();
-          last  = f;
+          last  = f + max_image_frames();
           if ( _dts < first ) first = _dts;
           break;
       case kForwards:

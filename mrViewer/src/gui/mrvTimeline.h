@@ -87,6 +87,7 @@ class Timeline : public fltk::Slider
 
     void timecode( const int64_t& tc ) { _tc = tc; redraw(); }
 
+    virtual int handle( int e );
     virtual void draw();
 
     uint64_t offset( const CMedia* img )   const;
