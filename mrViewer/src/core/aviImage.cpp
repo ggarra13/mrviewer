@@ -3165,12 +3165,12 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 	   // store here.
 	   bool ok = in_video_store( frame );
 
-	   if ( ok && frame >= first_frame() )
+	   if ( ok && frame >= loop_start() )
 	   {
 	      return kDecodeOK;
 	   }
 
-	   if ( frame < first_frame() )
+	   if ( frame < loop_start() )
 	   {
                assert( !_video_packets.empty() );
 	      _video_packets.pop_front();
@@ -3183,9 +3183,17 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 	}
       else if ( _video_packets.is_loop_end() )
 	{
-            assert( !_video_packets.empty() );
-	  _video_packets.pop_front();
-	  return kDecodeLoopEnd;
+	   bool ok = in_video_store( frame );
+
+	   if ( ok && frame < loop_end() )
+	   {
+	      return kDecodeOK;
+	   }
+
+	   
+	   assert( !_video_packets.empty() );
+	   _video_packets.pop_front();
+	   return kDecodeLoopEnd;
 	}
       else
 	{
