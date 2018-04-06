@@ -3813,7 +3813,7 @@ else if ( f > v->uiTimeline->maximum() )
 v->uiView->seek( f );}
                       tooltip {Current frame.}
                       xywh {20 0 70 20} color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
-                      extra_code {o->value(1);}
+                      extra_code {o->value(1); o->main( this );}
                       class {mrv::Timecode}
                     }
                   }
@@ -3978,7 +3978,7 @@ v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                       tooltip {Allows you to set starting frame for timeline.}
                       xywh {20 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
-                      extra_code {o->value(1);}
+                      extra_code {o->value(1); o->main( this );}
                       class {mrv::Timecode}
                     }
                     {fltk::Input} uiEndFrame {
@@ -3990,7 +3990,7 @@ v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                       tooltip {Allows you to set the ending frame for timeline.}
                       xywh {110 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
-                      extra_code {o->value(50);}
+                      extra_code {o->value(50); o->main( this );}
                       class {mrv::Timecode}
                     }
                     {fltk::Button} uiStartButton {
