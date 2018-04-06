@@ -441,6 +441,13 @@ void Timeline::draw_selection( const fltk::Rectangle& r )
     fillrect( r2 );
 }
 
+int Timeline::handle( int e )
+{
+    int r = fltk::Slider::handle( e );
+    if ( r != 0 ) return r;
+    return uiMain->uiView->handle( e );
+}
+
   /** 
    * Main widget drawing routine
    * 
@@ -549,7 +556,8 @@ void Timeline::draw_selection( const fltk::Rectangle& r )
 
             if ( _draw_cache )
             {
-                draw_cacheline( img, pos, size, int64_t(mn), int64_t(mx),
+                draw_cacheline( img, pos, size, int64_t(minimum()),
+				int64_t(maximum()),
                                 frame, r );
             }
 
@@ -574,7 +582,8 @@ void Timeline::draw_selection( const fltk::Rectangle& r )
                 boost::int64_t first = img->first_frame();
                 draw_cacheline( img, 1, 
                                 img->duration() + img->start_number(), 
-                                int64_t(mn), int64_t(mx), first, r );
+                                int64_t(minimum()), int64_t(maximum()),
+				first, r );
             }
         }
 

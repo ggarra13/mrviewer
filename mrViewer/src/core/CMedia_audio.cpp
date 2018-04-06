@@ -2004,8 +2004,8 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
   int64_t first = first_frame();
   int64_t last  = last_frame();
 
-  if ( frame < first && looping() != kPingPong )
-      return kDecodeNoStream;
+  // if ( frame < loop_start() && looping() != kPingPong )
+  //     return kDecodeLoopStart;
 
   mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
   SCOPED_LOCK( apm );
