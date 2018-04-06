@@ -37,6 +37,8 @@
 namespace mrv
 {
 
+class ViewerUI;
+
 class Timecode : public fltk::FloatInput
 {
   public:
@@ -83,7 +85,12 @@ class Timecode : public fltk::FloatInput
 		       const int64_t& frame, const int64_t& tc,
                        const double fps, const bool withFrames = false );
 
+    virtual int handle( int e );
     virtual bool replace(int, int, const char*, int);
+
+    void main( ViewerUI* m ) { uiMain = m; }
+    ViewerUI* main() const { return uiMain; }
+
 
   protected:
     void update();
@@ -91,6 +98,7 @@ class Timecode : public fltk::FloatInput
     static bool valid_drop_frame( int hours, int mins, int secs, int frames,
                                   double fps );
 
+    ViewerUI*     uiMain;
     Display      _display;
     double       _fps;
     int64_t      _frame, _tc_frame, _minimum, _maximum, _step;
