@@ -359,10 +359,6 @@ endif(WIN32)
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer PRIVATE ${LIBRARIES} ACESclip )
 
-SET_TARGET_PROPERTIES( mrViewer
-  PROPERTIES
-  LINK_FLAGS "${LINK_FLAGS}"
-  )
 
 
 ######################################################
@@ -372,15 +368,11 @@ SET_TARGET_PROPERTIES( mrViewer
 ######################################################
 
 IF(WIN32)
-	SET(EXE_DIR D:/code/lib/Windows_32/bin/ )
+	SET(EXE_DIR D:/code/lib/vc14_Windows_32/bin/ )
 ENDIF(WIN32)
 
 IF(WIN64) # defined in FindBuilDir
-	  IF ( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
-	     SET(EXE_DIR D:/code/lib/Windows_64_debug/bin/ )
-	  ELSE( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
-	     SET(EXE_DIR D:/code/lib/Windows_64/bin/ )
-	  ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
+	SET(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
 ENDIF(WIN64)
 
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
@@ -400,12 +392,18 @@ IF(WIN32 OR WIN64)
       	      DESTINATION ${CMAKE_BINARY_DIR}/../bin )
 ENDIF( WIN32 OR WIN64 )
 
-FILE(GLOB ffmpegfiles ${EXE_DIR}/ff* )
+FILE(GLOB ffmpegfiles ${EXE_DIR}/ff* ${EXE_DIR}/av* ${EXE_DIR}/sw* ${EXE_DIR}/pos*)
 FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ociofiles ${EXE_DIR}/ocio* )
 FILE(COPY ${ociofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+FILE(GLOB oiiodlls ${EXE_DIR}/OpenImageIO* )
+FILE(COPY ${oiiodlls} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+FILE(GLOB ociodlls ${EXE_DIR}/OpenColorIO* )
+FILE(COPY ${ociodlls} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+FILE(GLOB oiiofiles ${EXE_DIR}/oiio* )
+FILE(COPY ${oiiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt
