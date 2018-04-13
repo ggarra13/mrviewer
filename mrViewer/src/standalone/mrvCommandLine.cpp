@@ -399,6 +399,12 @@ bool parse_command_line( const int argc, char** argv,
     MultiArg< std::string >
     astereo( N_("s"), N_("stereo"),
             _("Provide two sequences or movies for stereo."), false, "images");
+
+    ValueArg< std::string >
+    astereo_output( N_(""), N_("stereo-output"),
+    		    _("Select stereo output"), false, _("Left/right"),
+		    "string" );
+    
 #endif
 
     MultiArg< std::string >
@@ -427,6 +433,7 @@ bool parse_command_line( const int argc, char** argv,
     cmd.add(aoffset);
 #ifdef USE_STEREO
     cmd.add(astereo);
+    cmd.add(astereo_output);
 #endif
     cmd.add(asub);
     cmd.add(abg);
@@ -451,6 +458,7 @@ bool parse_command_line( const int argc, char** argv,
     opts.bgfile = abg.getValue();
     opts.run    = arun.getValue();
     opts.debug  = adebug.getValue();
+    opts.stereo_output = astereo_output.getValue();
 
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
@@ -621,7 +629,6 @@ bool parse_command_line( const int argc, char** argv,
   //
   // UI command-line overrides
   //
-
 
 
   ui->uiView->gamma( opts.gamma );
