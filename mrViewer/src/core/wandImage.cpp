@@ -962,9 +962,9 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         return picImage::save( file, this, opts );
     }
     
-    // if ( f.substr( f.size()-4, f.size() ) == ".png" )
+    // if ( f.substr( f.size()-4, f.size() ) == ".iff" )
     // {
-    //     return aviImage::save( file, this, opts );
+    //     return iffImage::save( file, this, opts );
     // }
 
     if ( dynamic_cast< const WandOpts* >( opts ) == NULL )
