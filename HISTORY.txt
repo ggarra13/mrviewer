@@ -1,3 +1,16 @@
+v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
+	   to support dng, cr2, etc. formats.
+	 - Added oiiotool to Linux distribution.
+	 - Added support for ffmpeg in oiiotool.  This allows using
+	   oiiotool for ffmpeg input formats to extract single frames and
+	   process them.
+	 - Added --stereo-output flag to command line.  This controls the
+	   stereo output setting when loading a stereo set of images.
+	   Options are: Left view, Right view, Top/bottom, Bottom/top,
+	   	   	Left/right, Right/left, Even/odd rows,
+			Even/odd columns, Checkerboard pattern,
+			Red/cyan glasses, Cyan/red glasses.
+
 v4.0.6   - Bug fixed looping in movies with an In/Out points.  Now the
 	   looping is more frame accurate.
 	 - Further improved playback of two video tracks as stereo 3d.

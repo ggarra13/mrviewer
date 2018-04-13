@@ -38,18 +38,21 @@ typedef std::vector< std::string > stringArray;
 
   struct Options
   {
-       mrv::LoadList files;
-       std::string bgfile;
-       mrv::LoadList stereo;
-       bool edl;
+      mrv::LoadList files;
+      std::string bgfile;
+      mrv::LoadList stereo;
+      bool edl;
       bool play;
       bool run;
-       float gamma;
-       float gain;
-       std::string host;
-       stringArray audios;
-       unsigned short port;
-       float fps;
+      float gamma;
+      float gain;
+
+      std::string stereo_output;
+      
+      std::string host;
+      stringArray audios;
+      unsigned short port;
+      float fps;
       bool debug;
 
       Options() : edl(false), play(false), run( false ),
