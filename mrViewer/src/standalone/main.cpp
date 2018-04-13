@@ -346,8 +346,56 @@ int main( int argc, char** argv )
           load_files( opts.files, ui, false, opts.bgfile );
 
           if ( opts.stereo.size() > 1 )
+	  {
               load_files( opts.stereo, ui, true );
-
+	      
+	  }
+	  
+	  if ( opts.stereo_output != "" )
+	  {
+	      int idx = 0;
+	      if ( opts.stereo_output == _("Left view") )
+		  idx = 1;
+	      else if ( opts.stereo_output == _("Right view") )
+		  idx = 2;
+	      else if ( opts.stereo_output == _("Stereo OpenGL") )
+		  idx = 3;
+	      else if ( opts.stereo_output == _("Top/bottom") )
+		  idx = 4;
+	      else if ( opts.stereo_output == _("Bottom/top") )
+		  idx = 5;
+	      else if ( opts.stereo_output == _("Left/right") )
+		  idx = 6;
+	      else if ( opts.stereo_output == _("Right/left") )
+		  idx = 7;
+	      else if ( opts.stereo_output == _("Even/odd rows") )
+		  idx = 8;
+	      else if ( opts.stereo_output == _("Even/odd columns") )
+		  idx = 9;
+	      else if ( opts.stereo_output == _("Checkerboard pattern") )
+		  idx = 10;
+	      else if ( opts.stereo_output == _("Red/cyan glasses") )
+		  idx = 11;
+	      else if ( opts.stereo_output == _("Cyan/red glasses") )
+		  idx = 12;
+	      else
+	      {
+		  LOG_ERROR( "Stereo Output is invalid.  Valid values are: " );
+		  LOG_ERROR( _("Left view") << ", " << _("Right view") << ", " );
+		  LOG_ERROR( _("Top/bottom") << ", " << _("Bottom/top") << ", " );
+		  LOG_ERROR( _("Left/right") << ", " << _("Right/left") << ", " );
+		  LOG_ERROR( _("Even/odd rows") << ", "
+			     << _("Even/odd columns") << ", " );
+		  LOG_ERROR( _( "Checkerboard pattern") << ", "
+			     << _("Red/cyan glasses") << ", " );
+		  LOG_ERROR( _("Cyan/red glasses") );
+		  return false;
+	      }
+	      ui->uiStereo->uiStereoOutput->value( idx ); 
+	      ui->uiStereo->uiStereoOutput->do_callback();
+	      ui->uiView->fit_image();
+	  }
+	      
           if ( opts.edl )
           {
               ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
