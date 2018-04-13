@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-04-06 14:55-0300\n"
+"POT-Creation-Date: 2018-04-13 09:19-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -432,7 +432,7 @@ msgstr ", velocidad de sampleo "
 msgid ", type "
 msgstr ", tipo "
 
-#: standalone/mrvCommandLine.cpp:464
+#: standalone/mrvCommandLine.cpp:472
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "La opción --stereo debe ser especificada en un múltiplo de dos veces."
 
@@ -1375,7 +1375,7 @@ msgstr "Azul"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: standalone/main.cpp:430
+#: standalone/main.cpp:478
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -1388,6 +1388,7 @@ msgid "Bottom Field"
 msgstr "Campo Inferior"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:106
+#: standalone/main.cpp:365 standalone/main.cpp:385
 msgid "Bottom/top"
 msgstr "Inferior/Superior"
 
@@ -1569,6 +1570,7 @@ msgid "Char"
 msgstr "Caracter"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:111
+#: standalone/main.cpp:375 standalone/main.cpp:389
 msgid "Checkerboard pattern"
 msgstr "Cuadriculado"
 
@@ -2568,6 +2570,7 @@ msgstr "Cortar Clip en el lugar actual"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:113
+#: standalone/main.cpp:379 standalone/main.cpp:391
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
@@ -3046,10 +3049,12 @@ msgid "Escape"
 msgstr "Escape"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:110
+#: standalone/main.cpp:373 standalone/main.cpp:388
 msgid "Even/odd columns"
 msgstr "Impar/par columnas"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:109
+#: standalone/main.cpp:371 standalone/main.cpp:387
 msgid "Even/odd rows"
 msgstr "Impar/par renglones"
 
@@ -3213,7 +3218,7 @@ msgstr "Nombre"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:426
+#: standalone/main.cpp:474
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -4157,11 +4162,14 @@ msgid "Left View"
 msgstr "Vista Izquierda"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:97
+#: standalone/main.cpp:357 standalone/main.cpp:384
 msgid "Left view"
 msgstr "Vista Izquierda"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:77
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:107
+#: standalone/mrvCommandLine.cpp:405 standalone/main.cpp:367
+#: standalone/main.cpp:386
 msgid "Left/right"
 msgstr "Izquierda/derecha"
 
@@ -5281,7 +5289,7 @@ msgstr "Reproducir secuencia para atrás."
 msgid "Play sequence forward."
 msgstr "Reproducir secuencia hacia delante."
 
-#: standalone/mrvCommandLine.cpp:412
+#: standalone/mrvCommandLine.cpp:418
 msgid ""
 "Play video or sequence automatically without pausing at the beginning "
 "(Autoplayback)"
@@ -5558,6 +5566,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valor Rojo del pixel de imagen bajo el mouse."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:112
+#: standalone/main.cpp:377 standalone/main.cpp:390
 msgid "Red/cyan glasses"
 msgstr "Lentes Rojo/cian"
 
@@ -5706,10 +5715,12 @@ msgid "Right View"
 msgstr "Vista Derecha"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:98
+#: standalone/main.cpp:359 standalone/main.cpp:384
 msgid "Right view"
 msgstr "Vista Derecha"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:108
+#: standalone/main.cpp:369 standalone/main.cpp:386
 msgid "Right/left"
 msgstr "Derecha/izquierda"
 
@@ -5741,7 +5752,7 @@ msgstr "Rote la Imagen -90 grados"
 msgid "Rounding Mode"
 msgstr "Modo de Redondeo"
 
-#: standalone/mrvCommandLine.cpp:415
+#: standalone/mrvCommandLine.cpp:421
 msgid "Run mrViewer regardless of single instance setting"
 msgstr ""
 
@@ -5948,6 +5959,10 @@ msgstr ""
 "izquierda/derecha (y viceversa), entrelazado de renglones o columnas, "
 "cuadriculado, anteojos rojo/cian (y viceversa)."
 
+#: standalone/mrvCommandLine.cpp:405
+msgid "Select stereo output"
+msgstr "Seleccione Salida Estéreo"
+
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2367
 msgid "Selected Text"
 msgstr "Texto Seleccionado"
@@ -6038,7 +6053,7 @@ msgstr "Setear el audio por defecto de cada película/secuencia"
 msgid "Set image CTL script"
 msgstr "Setear la escritura CTL de la imagen"
 
-#: standalone/mrvCommandLine.cpp:409
+#: standalone/mrvCommandLine.cpp:415
 msgid ""
 "Set log to debug mode, flushing each time and saving an errorlog in ."
 "filmaura directory"
@@ -6052,7 +6067,7 @@ msgstr "Setear la imagen como fondo (necesita LDE)"
 msgid "Set selected reel images as background."
 msgstr "Setear la imagenes del carrete como fondo"
 
-#: standalone/mrvCommandLine.cpp:406
+#: standalone/mrvCommandLine.cpp:412
 msgid "Set subtitle for movie(s)."
 msgstr "Establece el subtítulo para la(s) pelicula(s)."
 
@@ -6231,6 +6246,7 @@ msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:99
+#: standalone/main.cpp:361
 msgid "Stereo OpenGL"
 msgstr "Estéreo OpenGL"
 
@@ -7005,6 +7021,7 @@ msgstr "Campo Superior"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:76
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:105
+#: standalone/main.cpp:363 standalone/main.cpp:385
 msgid "Top/bottom"
 msgstr "Superior/inferior"
 
@@ -7110,7 +7127,7 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr "Deshacer La Última Figura Dibujada"
 
-#: standalone/main.cpp:414
+#: standalone/main.cpp:462
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
@@ -7172,7 +7189,7 @@ msgstr "Tipo de dato desconocido para convertir de texto"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: standalone/main.cpp:434
+#: standalone/main.cpp:482
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -8438,6 +8455,9 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4353
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "left-right"
+#~ msgstr "Izquierda-derecha"
 
 #, fuzzy
 #~ msgid "Setting OCIO_ACTIVE_VIEWS environment variable to:"
