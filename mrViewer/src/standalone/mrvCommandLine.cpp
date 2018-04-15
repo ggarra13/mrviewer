@@ -402,7 +402,7 @@ bool parse_command_line( const int argc, char** argv,
 
     ValueArg< std::string >
     astereo_output( N_(""), N_("stereo-output"),
-    		    _("Select stereo output"), false, _("Left/right"),
+    		    _("Select stereo output"), false, "",
 		    "string" );
     
 #endif
