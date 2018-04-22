@@ -1,5 +1,3 @@
-
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -292,7 +290,6 @@ bool exrImage::channels_order(
 
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper);
-
 
        if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
                                ext == N_("Y") || ext == N_("U") ||
@@ -2701,12 +2698,17 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
             hdr.channels().insert( N_("ZBack"),
                                    Channel( save_type, 1, 1 ) );
     }
+    else
+    {
+	hdr.channels().insert( x,
+			       Channel( save_type, 1, 1 ) );
+    }
 
     Imf::Compression comp = opts->compression();
     if ( comp >= NUM_COMPRESSION_METHODS )
     {
-        LOG_WARNING( "Compression method not available. "
-                     "Using PIZ." );
+        LOG_WARNING( _("Compression method not available. "
+		       "Using PIZ.") );
         comp = Imf::PIZ_COMPRESSION;
     }
     hdr.compression() = comp;

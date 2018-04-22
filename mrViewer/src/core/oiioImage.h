@@ -34,6 +34,8 @@
 
 namespace mrv {
 
+class WandOpts;
+
   class oiioImage : public CMedia
   {
     oiioImage();
@@ -67,6 +69,8 @@ namespace mrv {
 
     bool fetch( const boost::int64_t frame );
 
+      static bool save( const char* path, const CMedia* img,
+			const WandOpts* opts );
   protected:
       char* _format;
       std::string _compression;
