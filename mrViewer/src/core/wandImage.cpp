@@ -56,6 +56,7 @@ using namespace std;
 #include "core/wandImage.h"
 #include "core/picImage.h"
 #include "core/exrImage.h"
+#include "core/oiioImage.h"
 #include "core/aviImage.h"
 #include "core/mrvThread.h"
 #include "core/mrvI8N.h"
@@ -962,10 +963,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         return picImage::save( file, this, opts );
     }
     
-    // if ( f.substr( f.size()-4, f.size() ) == ".iff" )
-    // {
-    //     return iffImage::save( file, this, opts );
-    // }
 
     if ( dynamic_cast< const WandOpts* >( opts ) == NULL )
     {
@@ -974,6 +971,11 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     }
 
     WandOpts* o = (WandOpts*) opts;
+    
+    if ( f.substr( f.size()-4, f.size() ) == ".iff" )
+    {
+	return oiioImage::save( file, this, o );
+    }
 
     MagickBooleanType status;
     std::string filename = file;

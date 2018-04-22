@@ -44,18 +44,25 @@ extern "C" {
 
 #include "core/mrvColorOps.h"
 #include "core/aviImage.h"
-#include "gui/mrvPreferences.h"
-#include "gui/mrvIO.h"
 #include "core/mrvMath.h"
 #include "core/mrvSwizzleAudio.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvColorSpaces.h"
+
+#include "gui/mrvPreferences.h"
+#include "gui/mrvIO.h"
+
 #include "aviSave.h"
 
 
 namespace {
 const char* kModule = "save";
 }
+
+#define MAKE_TAG(a,b,c,d) (unsigned int) ( (unsigned int)(a)	\
+					   + (unsigned int)(b << 8)	\
+					   + (unsigned int)(c << 16)	\
+					   + (unsigned int)(d <<24 ))
 
 #define LOG(x) std::cerr << x << std::endl;
 
@@ -235,7 +242,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     /* find the encoder */
     if (!(*codec)) {
         LOG_ERROR( _("Could not find encoder for '") << name << "'" );
-       return NULL;
+	return NULL;
     }
 
 
@@ -307,6 +314,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
                if ( c->codec_id == AV_CODEC_ID_HEVC )
                {
+		   c->codec_tag = MAKE_TAG('H', 'V', 'C', '1');
+		   
                    switch( opts->video_profile )
                    {
                        case 0:
@@ -1015,8 +1024,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
    const std::string& display = mrv::Preferences::OCIO_Display;
    const std::string& view = mrv::Preferences::OCIO_View;
 
-   mrv::image_type_ptr ptr;  // lut based image
-   mrv::image_type_ptr sho;  // 16-bits image
+   mrv::image_type_ptr ptr = hires;  // lut based image
+   mrv::image_type_ptr sho = hires;  // 16-bits image
    VideoFrame::Format format = image_type::kRGB;
    if ( hires->channels() == 4 ) format = image_type::kRGBA;
 
@@ -1032,11 +1041,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        copy_image( ptr, hires );
        bake_ocio( ptr, img );
    }
-   else
-   {
-       ptr = hires;
-   }
-
+   
    sho = mrv::image_type_ptr( new image_type( hires->frame(),
                                               w, h,
                                               hires->channels(),
