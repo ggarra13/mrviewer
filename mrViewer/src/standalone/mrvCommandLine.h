@@ -47,6 +47,7 @@ typedef std::vector< std::string > stringArray;
       float gamma;
       float gain;
 
+      std::string stereo_input;
       std::string stereo_output;
       
       std::string host;
