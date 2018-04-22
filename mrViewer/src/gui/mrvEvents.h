@@ -9,7 +9,7 @@ namespace mrv
 {
 
 enum Events {
-kFULLSCREEN = fltk::TOOLTIP + 100,
+kFULLSCREEN = fltk::TOOLTIP + 101,
 kPRESENTATION,
 kMEDIA_INFO_WINDOW_SHOW,
 kMEDIA_INFO_WINDOW_HIDE,
