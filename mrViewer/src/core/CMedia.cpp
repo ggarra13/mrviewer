@@ -1796,7 +1796,6 @@ void CMedia::channel( const char* c )
 {
     if ( _right_eye )  _right_eye->channel( c );
 
-
     std::string ch;
     std::string ext;
 
@@ -1804,6 +1803,7 @@ void CMedia::channel( const char* c )
     {
 
         ch = c;
+
 
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") ||
              ch == _("Blue")  || ch == "" ||
@@ -1899,8 +1899,6 @@ void CMedia::channel( const char* c )
       _channel = strdup( ch.c_str() );
   }
 
-  // std::cerr << "to fetch " << to_fetch << " channel "
-  //           << ( _channel ? _channel : "NULL" ) << std::endl;
 
   if (to_fetch)
   {
