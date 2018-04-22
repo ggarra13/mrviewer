@@ -1,3 +1,14 @@
+v4.0.8   - Made HEVC saver report a HVC1 fourcc so that Apple products will
+	   recognize them and show a thumbnail.
+	 - Made Z Depth be reported as "Z" only, as that makes it work on
+	   different languages when saving EXRs.
+	 - Bug fixed Z channel selection being chosen as Color.
+	 - Made OIIO iff saver save only up to 16-bits, as float is not
+	   supported.  Note that OIIO's IFF saver does not support Z channel.
+	 - Added --stereo-input flag to command-line.  It works just like
+	   --stereo-output flag but for the stereo input.
+	 - Bug fixed X and Y flips which got broken in a previous build.
+
 v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
 	   to support dng, cr2, etc. formats.
 	 - Added oiiotool to Linux distribution.
@@ -10,6 +21,15 @@ v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
 	   	   	Left/right, Right/left, Even/odd rows,
 			Even/odd columns, Checkerboard pattern,
 			Red/cyan glasses, Cyan/red glasses.
+	 - Reverted the change to timecode/timeline accepting view shortcuts
+	   as it was causing conflict with the presentation mode.
+	 - Improved loading of IFF images to not consume so much memory.
+	   They will no longer load as float images, but as 8 bits or 16
+	   bits images.  Also bug fixed the RLE decoding.
+	 - Added support for reading Z depth channel in maya IFF files.
+	 - Improved channel toggling to not conflict with image loaders.
+	   This is mainly an internal change.
+	 - Bug fixed saving of unknown channel name in OpenEXR saver.
 
 v4.0.6   - Bug fixed looping in movies with an In/Out points.  Now the
 	   looping is more frame accurate.
