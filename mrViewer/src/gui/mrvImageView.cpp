@@ -1206,8 +1206,8 @@ posY( 22 ),
 flags( 0 ),
 _ghost_previous( true ),
 _ghost_next( true ),
-_channel( 0 ),
-_old_channel( 0 ),
+_channel( -1 ),
+_old_channel( -1 ),
 _channelType( kRGB ),
 _field( kFrameDisplay ),
 _displayWindow( true ),
@@ -3742,13 +3742,14 @@ void ImageView::pixel_processed( const CMedia* img,
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
+    bool blend = img->hires()->format() != image_type::kLumma;
     
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
     switch( mode )
     {
     case kBlendTraditional:
     case kBlendTraditionalNonGamma:
-        if ( img->has_alpha() && rgba.a > 0.00001f )
+        if ( img->has_alpha() && rgba.a > 0.00001f && blend)
         {
             rgba.r /= rgba.a;
             rgba.g /= rgba.a;
@@ -3804,7 +3805,7 @@ void ImageView::pixel_processed( const CMedia* img,
     {
     case kBlendTraditional:
     case kBlendTraditionalNonGamma:
-        if ( img->has_alpha() )
+        if ( img->has_alpha() && blend )
         {
             rgba.r *= rgba.a;
             rgba.g *= rgba.a;
@@ -5677,8 +5678,8 @@ void ImageView::toggle_presentation()
       uiPrefs->hide();
       uiAbout->hide();
       uiMain->uiTopBar->hide();
-      uiMain->uiBottomBar->hide();
       uiMain->uiPixelBar->hide();
+      uiMain->uiBottomBar->hide();
 
 
       presentation = true;
@@ -6342,11 +6343,12 @@ void ImageView::channel( fltk::Widget* o )
 void ImageView::channel( unsigned short c )
 {
   boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
-
+  
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
   if ( num == 0 ) return; // Audio only - no channels
 
+  
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
   {
@@ -6389,7 +6391,7 @@ void ImageView::channel( unsigned short c )
           return;
       }
   }
-
+  
   // If user selected the same channel again, toggle it with
   // other channel (diffuse.r goes to diffuse, for example)
   const mrv::media& fg = foreground();
@@ -6412,7 +6414,6 @@ void ImageView::channel( unsigned short c )
 
   char* lbl = get_layer_label( c );
   if ( !lbl ) return;
-
 
 
   _channel = c;
@@ -6895,8 +6896,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( root == _("Red") || root == _("Green") ||
                  root == _("Blue") || root == _("Alpha") ||
                  root == _("Alpha Overlay") ||
-                 root == _("Lumma") ||
-                 root == _("Z") )
+                 root == _("Lumma") )
                 root = _("Color");
         }
     }
@@ -6998,7 +6998,7 @@ void ImageView::update_layers()
 
     int v = update_shortcuts( fg, lbl );
 
-    if ( v >= 0 )
+    if ( v >= 0 && v != _channel )
     {
         channel( (unsigned short) v );
     }
