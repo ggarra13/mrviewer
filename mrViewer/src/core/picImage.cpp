@@ -778,7 +778,7 @@ bool picImage::save( const char* path, const CMedia* img,
         bool  has_alpha = pic->has_alpha();
         image_type::Format format = pic->format();
         
-        if ( format != image_type::kRGBA ||
+	if ( ( format != image_type::kRGBA ) ||
              pic->pixel_type() != image_type::kByte ||
              img->gamma() != 1.0f )
             must_convert = true; 
@@ -786,80 +786,8 @@ bool picImage::save( const char* path, const CMedia* img,
         if ( Preferences::use_ocio && Preferences::uiMain->uiView->use_lut() )
             must_convert = true;
 
-        
-        mrv::image_type_ptr sho = pic;
-        if ( must_convert )
-        {
-            // Memory is kept until we save the image
-            
-	    mrv::image_type_ptr ptr = pic;
-            
-            const std::string& display = mrv::Preferences::OCIO_Display;
-            const std::string& view = mrv::Preferences::OCIO_View;
-   
-            if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-                 Preferences::uiMain->uiView->use_lut() )
-            {
-
-                try {
-		    ptr = image_type_ptr( new image_type(
-							 img->frame(),
-							 dw, dh, 4,
-							 image_type::kRGBA,
-							 image_type::kFloat ) );
-		    copy_image( ptr, pic );
-                    bake_ocio( ptr, img );
-                }
-                catch( const std::exception& e )
-                {
-                    LOG_ERROR( "[ocio] " << e.what() );
-                    return false;
-                }
-                
-            }
-
-	    if ( ! mrv::is_equal( img->gamma(), 1.0f ) )
-	    {
-		float one_gamma = 1.0f / img->gamma();
-            
-		for ( unsigned y = 0; y < dh; ++y )
-		{
-		    for ( unsigned x = 0; x < dw; ++x )
-		    {
-			ImagePixel p = ptr->pixel( x, y );
-			
-			if ( p.r > 0.f && isfinite(p.r) )
-			    p.r = expf( logf(p.r) * one_gamma );
-			if ( p.g > 0.f && isfinite(p.g) )
-			    p.g = expf( logf(p.g) * one_gamma );
-			if ( p.b > 0.f && isfinite(p.b) )
-			    p.b = expf( logf(p.b) * one_gamma );
-
-			sho->pixel( x, y, p );
-		    }
-		}
-	    }
-	    else
-	    {
-		sho = ptr;
-	    }
-        }
-
-        pic = mrv::image_type_ptr( new image_type( img->frame(),
-                                                   dw, dh, 4,
-                                                   mrv::image_type::kRGBA,
-                                                   mrv::image_type::kByte ) );
-                
-        
-        for ( unsigned y = 0; y < dh; ++y )
-        {
-            for ( unsigned x = 0; x < dw; ++x )
-            {
-                ImagePixel p = sho->pixel( x, y );
-		p.clamp();
-                pic->pixel( x, y, p );
-            }
-        }
+	if ( must_convert )
+	    prepare_image( pic, img, image_type::kRGBA, image_type::kByte );
         
         uint8_t* pixels = (boost::uint8_t*)pic->data().get();
         
