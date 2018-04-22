@@ -39,7 +39,6 @@ extern "C" {
 
 namespace
 {
-
   unsigned int
   scaleInt(float f, unsigned int i)
   {
@@ -572,8 +571,8 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
     }
     else
     {
-	assert( dh <= dst->height() );
-	assert( dw <= dst->width() );
+	av_assert0( dw <= dst->width() );
+	av_assert0( dh <= dst->height() );
 	for ( unsigned y = 0; y < dh; ++y )
 	{
 	    for ( unsigned x = 0; x < dw; ++x )
