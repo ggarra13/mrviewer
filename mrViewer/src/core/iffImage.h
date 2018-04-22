@@ -64,13 +64,6 @@ namespace mrv {
     virtual bool fetch( const boost::int64_t frame );
 
   protected:
-    void decompress_rle_tile( boost::uint8_t* data, const boost::uint8_t* comp,
-			      const unsigned compsize, const unsigned width );
-
-    void store_tile( boost::uint8_t* data, const unsigned x, const unsigned y,
-		     const unsigned width, const unsigned height, 
-		     const short depth, const short bytes, bool z );
-
     void end_read_chunk( FILE* f, iffChunk& chunk );
     void read_pixel_chunk( FILE* f, const int depth, const int bytes,
 			   const iffChunk& chunk );
