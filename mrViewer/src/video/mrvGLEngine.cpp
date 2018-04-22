@@ -181,6 +181,7 @@ void zrot2offsets( double& x, double& y,
                    const mrv::ImageView::FlipDirection flip,
                    const double zdeg )
 {
+    return;
     x = 0.0; y = 0.0;
     double rad = zdeg * M_PI / 180.0;
     double sn = sin( rad );
@@ -1795,7 +1796,7 @@ void GLEngine::draw_images( ImageList& images )
             double x = 0.0, y = 0.0;
             if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
             if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
-            glTranslatef( x, y, 0.0f );
+            glTranslated( x, y, 0.0f );
         }
 
 
@@ -1824,6 +1825,15 @@ void GLEngine::draw_images( ImageList& images )
 
         set_matrix( flip, true );
         
+        if ( flip && !_view->vr() )
+        {
+            const mrv::Recti& dp = fg->display_window();
+            double x = 0.0, y = 0.0;
+            if ( flip & ImageView::kFlipVertical )   x = (double)-dp.w();
+            if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
+            glTranslated( x, y, 0.0f );
+        }
+	
         glMatrixMode(GL_MODELVIEW);
         CHECK_GL;
         glPushMatrix();
