@@ -35,11 +35,16 @@
 #include <netinet/in.h>
 #endif
 
+extern "C" {
+#include <libavutil/avassert.h>
+}
+
 #include <fltk/run.h>
 
 #include "iffImage.h"
 #include "byteSwap.h"
 #include "mrvIO.h"
+#include "core/mrvI8N.h"
 #include "mrvThread.h"
 
 namespace 
@@ -233,6 +238,8 @@ namespace mrv {
   {
     size_t r = fread( src, compsize, 1, file ); 
 
+    abort();
+    
     unsigned int dw = width();
     unsigned int dh = height() - 1;
 
@@ -284,190 +291,244 @@ namespace mrv {
 
 
 
-  void iffImage::decompress_rle_tile( boost::uint8_t* data,
-				      const boost::uint8_t* comp, 
-				      const unsigned compsize, 
-				      const unsigned width )
+  static void decompress_rle(uint8_t* data, uint32_t delta, uint32_t numBytes,
+			     uint8_t* compressedData,
+			     uint32_t compressedDataSize,
+			     uint32_t* compressedIndex )
   {
-    unsigned i, x = 0;
-    const boost::uint8_t* last = comp + compsize;
-    while ( x < width && comp < last )
-      {
-	unsigned char type = *comp++;
-	unsigned char count = (type & 0x7f) + 1;
+  #ifdef __IFF_DEBUG_
+      LOG_INFO( "Decompressing data " <<  numBytes );
+  #endif
 
-	if ( type & 0x80 )
-	  {
-	    unsigned char c = *comp++;
-	    // we check x < width as sometimes count overruns by 1
-	    for ( i = 0; x < width && i < count; ++i )
-	      {
-		data[x++] = c;
-	      }
-	  }
-	else
-	  {
-	    // we check x < width as sometimes count overruns by 1
-	    for ( i = 0; x < width && i < count; ++i )
-	      {
-		data[x++] = *comp++;
-	      }
-	  }
+    uint32_t FROM = *compressedIndex;
+    uint32_t TO = 0;
+
+    while (TO < numBytes) {
+
+      if (FROM >= compressedDataSize) {
+	  LOG_ERROR( _("Not enough compressed data") );
+	  while (TO < numBytes)
+	      data[delta * TO++] = 0;
+	  break;
       }
+
+      uint8_t nextChar = compressedData[FROM++];
+      unsigned count = (nextChar & 0x7f) + 1;
+
+      if ( ( TO + count ) > numBytes ) {
+	  LOG_ERROR( _("Count bad, ") << TO << "+" << count << " > " << numBytes);
+	  count = numBytes - TO;
+	  //       printf("Start at %d of %d: ", *compressedIndex, compressedDataSize);
+	  //       for (uint32_t i = *compressedIndex; i <= FROM;) {
+	  //     uint8_t n = compressedData[i++];
+	  //     printf("%02x ", n);
+	  //     if (n & 0x80) i++;
+	  //     else {i += (n&0x7f) + 1;}
+	  //       }
+	  //       printf("\n");
+      }
+
+      if ( nextChar & 0x80 ) {
+
+        // We have a duplication run
+
+        nextChar = compressedData[FROM++];
+        for (uint32_t i = 0; i < count; ++i )
+          data[delta * TO++] = nextChar;
+
+      }
+      else {
+
+        // We have a verbatim run
+        for (uint32_t i = 0; i < count; ++i )
+          data[delta * TO++] = compressedData[FROM++];
+      }
+    }
+
+    *compressedIndex = FROM;
   }
 
 
-  void iffImage::store_tile( boost::uint8_t* data, 
-			     const unsigned x1, const unsigned y1,
-			     const unsigned w, const unsigned h,
-			     const short depth, const short bytes, bool z )
+  static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* offsets)
   {
-    unsigned int dw = width();
-    unsigned int dh = height() - 1;
-
-
-    Pixel* pixels = (Pixel*)_hires->data().get();
-    boost::uint8_t* src = data;
-    if ( z )
-      {
-	for ( unsigned y = 0; y < h; ++y )
-	  {
-	    unsigned offset = (dh - (y + y1)) * dw + x1;
-	    Pixel* p = pixels + offset;
-	    unsigned int s = y * w * bytes;
-
-	    for ( unsigned x = 0; x < w; s += bytes, ++x, ++p )
-	      {
-		boost::uint8_t t[4];
-		boost::uint8_t* d = src;
-		for ( short b = 0; b < bytes; ++b )
-		  {
-		    t[b] = *d;
-		    d += w * h;
-		  }
-
-		if ( t[0] == 0 )
-		  {
-		    p->b = 0.5f;
-		    p->r = p->g = p->a = std::numeric_limits<float>::quiet_NaN();
-		  }
-		else
-		  {
-		    unsigned int v = ( (t[0] << 24) +
-				       (t[1] << 16) +
-				       (t[2] << 8) +
-				       (t[3] << 0) );
-		    p->r = p->g = p->b = float(v);
-		    p->a = 0.0f;
-		  }
-	      }
-	  }
-      }
-    else
-      {
-	for ( short c = 0; c < depth; ++c )
-	  {
-	    for ( unsigned y = 0; y < h; ++y )
-	      {
-		unsigned offset = (dh - (y + y1)) * dw + x1;
-		Pixel* p = pixels + offset;
-	      
-		for ( unsigned x = 0; x < w; ++x, ++src, ++p )
-		  {
-		    boost::uint8_t t[4];
-		    boost::uint8_t* d = src;
-		    for ( short b = 0; b < bytes; ++b )
-		      {
-			t[bytes-b-1] = *d;
-			d += w * h * depth;
-		      }
-
-		    float v = 0.f;
-		    switch( bytes )
-		      {
-		      case 1:
-			v = (*src) / 255.0f;
-			break;
-		      case 2:
-			{
-			  unsigned short val = ( (t[1] << 8) +
-						 (t[0] << 0) );
-			  v = (float)val / 65535.0f;
-			  break;
-			}
-		      case 4:
-			{
-			  v = *((float*)t);
-			  break;
-			}
-		      }
-
-		    float* rgba = (float*) p;
-		    rgba[3-c] = v;
-		  }
-	      }
-	  }
-      }
-
+    uint8_t* result = (uint8_t*)malloc( size * depth );
+    if (datasize >= size * depth) {
+      fread(result, 1, size * depth, file);
+    }
+    else {
+      // compressed tile
+      uint8_t* data = (uint8_t*)malloc(datasize);
+      datasize = int(fread(data, 1, datasize, file));
+      uint32_t index = 0;
+      for (int i = 0; i < depth; i++)
+        decompress_rle(result + offsets[i], depth, size,
+                       data, datasize, &index);
+      free(data);
+    }
+    return result;
   }
 
+ 
 
-  void iffImage::read_pixel_chunk( FILE* f, 
-				   const int depth, const int bytes, 
-				   const iffChunk& chunk )
+void iffImage::read_pixel_chunk( FILE* file, 
+				 const int depth, const int bytes, 
+				 const iffChunk& chunk )
   {		  
     iffPixelBlock block;
-    size_t r = fread( &block, sizeof(iffPixelBlock), 1, f );
+    size_t r = fread( &block, sizeof(iffPixelBlock), 1, file );
     block.swap();
-    unsigned dw = (block.x2 - block.x1)+1;
-    unsigned dh = (block.y2 - block.y1)+1;
+    int x1 = block.x1;
+    int y1 = block.y1;
+    unsigned tile_width = (block.x2 - block.x1)+1;
+    unsigned tile_height = (block.y2 - block.y1)+1;
     unsigned compsize = chunk.size - sizeof(iffPixelBlock);
 
-    if ( dw < width() && dh < height() && 
-	 block.x2 > block.x1 && block.y2 > block.y1 )
-    { 
-      unsigned size = dw * dh * depth * bytes + 8; // +8 padding needed
-
-      boost::uint8_t* data = new boost::uint8_t[ size ];
-      memset( data, 0, size );
-
-      bool compressed = true;
-      if ( size == chunk.size )
-	compressed = false;
-
-      if ( compressed )
+    if ( _channel && strcmp( _channel, N_("Z") ) == 0 )
+    {
+	if ( chunk.tag == kZBUF_TAG )
 	{
-	  _compression = kRLECompression;
-	  boost::uint8_t* comp = new boost::uint8_t[ compsize ];
-	  size_t r = fread( comp, compsize, 1, f );
-	  decompress_rle_tile( data, comp, compsize, size );
-	  delete [] comp;
-	  store_tile( data, block.x1, block.y1, dw, dh, depth, bytes,
-		      (chunk.tag == kZBUF_TAG) );
+            static int offsets[] = {
+              0, 1, 2, 3
+            };
+            float* tileData = (float*)read_tile(file,
+						tile_width * tile_height, 4,
+                                                compsize, offsets);
+
+            if ( tileData ) {
+
+		uint32_t* t = (uint32_t*)tileData;
+		for ( int i = 0; i < tile_width*tile_height; ++i )
+		{
+		    t[i] = ntohl( t[i] );
+		}
+		
+		unsigned w = width();
+		unsigned h = height() - 1;
+		float* buffer = (float*)_hires->data().get();
+		
+		unsigned base = y1 * w + x1;
+		for (int i = 0; i < tile_height; i++) {
+		    unsigned iw = i * w;
+		    unsigned it = i * tile_width;
+		    for (int j = 0; j < tile_width; j++) {
+			buffer[base + iw + j] = -tileData[it + j];
+		    } /* End DEPTH dump */
+		}
+		free( tileData );
+            }
 	}
-      else
-	{
-	  read_uncompressed_tile( f, data, compsize,
-				  block.x1, block.y1, 
-				  dw, dh, depth, bytes,
-				  (chunk.tag == kZBUF_TAG) );
+    }
+    else if ( bytes == 3 )
+    {
+	static int offsets[4][16] = {
+	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+	{ 0, 4, 1, 5, 2, 6, 3, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+	{ 0, 4, 8, 1, 5, 9, 2, 6, 10, 3, 7, 11, 12, 13, 14, 15 },
+	{ 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15 }
+	};
+	float* tileData = (float*)read_tile(file,
+					    tile_width * tile_height,
+					    4 * depth,
+					    compsize,
+					    offsets[depth - 1]);
+	if ( tileData ) {
+	    uint32_t* t = (uint32_t*)tileData;
+	    for ( int i = 0; i < tile_width*tile_height*depth; ++i )
+	    {
+		t[i] = ntohl( t[i] );
+	    }
+	    unsigned w = width();
+	    unsigned h = height() - 1;
+	    float* from = tileData;
+	    float* pixels = (float*)_hires->data().get();
+	    for (unsigned i = 0; i < tile_height; i++) {
+		unsigned offset = (w * (h - (y1+i))) + x1;
+		float* to = pixels + depth * offset;
+		for (unsigned j = 0; j < tile_width; j++) {
+                    for (unsigned k = 0; k < depth; k++)
+			to[k] = from[depth - k - 1];
+                    to += depth;
+                    from += depth;
+		}
+	    }
+	    free( tileData );
 	}
 
-      delete [] data;
+    }
+    else if ( bytes == 1 )
+    {
+	static int offsets[4][8] = {
+	{ 0, 1, 2, 3, 4, 5, 6, 7 },
+	{ 0, 2, 1, 3, 4, 5, 6, 7 },
+	{ 0, 2, 4, 1, 3, 5, 6, 7 },
+	{ 0, 2, 4, 6, 1, 3, 5, 7 }
+	};
+	uint16_t* tileData = (uint16_t*)read_tile(file,
+						  tile_width * tile_height,
+						  2 * depth,
+						  compsize,
+						  offsets[depth - 1]);
+	
+	if ( tileData ) {
+	    uint16_t* t = tileData;
+	    for ( int i = 0; i < tile_width*tile_height*depth; ++i )
+	    {
+		t[i] = ntohs( t[i] );
+	    }
+	    unsigned w = width();
+	    unsigned h = height() - 1;
+	    uint16_t* pixels = (uint16_t*)_hires->data().get();
+	    uint16_t* from = tileData;
+	    for (unsigned i = 0; i < tile_height; i++) {
+		unsigned offset = (w * (h - (y1+i))) + x1;
+		uint16_t* to = pixels + depth * offset;
+		for (unsigned j = 0; j < tile_width; j++) {
+                    for (unsigned k = 0; k < depth; k++)
+			to[k] = from[depth - k - 1];
+                    to += depth;
+                    from += depth;
+		}
+	    }
+	    free( tileData );
+	}
+    }
+    else if ( bytes == 0 )
+    {
+	static int offsets[] = {
+	0, 1, 2, 3
+	};
+	uint8_t* tileData = read_tile(file, tile_width * tile_height, depth,
+				      compsize, offsets);
+	if ( tileData ) {
+	    uint8_t* pixels = (uint8_t*)_hires->data().get();
+	    uint8_t* from = tileData;
+	    unsigned w = width();
+	    unsigned h = height() - 1;
+	    for (unsigned i = 0; i < tile_height; i++) {
+		unsigned offset = (w * (h - (y1+i))) + x1;
+		uint8_t* to = pixels + depth * offset;
+		for (unsigned j = 0; j < tile_width; j++) {
+		    for (unsigned k = 0; k < depth; k++)
+			to[k] = from[depth - k - 1];
+		    to += depth;
+		    from += depth;
+		}
+	    }
+	    free( tileData );
+	}
     }
     else
-      {
-	LOG_ERROR( _("Problem with tile") << " [" 
+    {
+	IMG_ERROR( _("Problem with tile") << " [" 
 		   << block.x1 << "," << block.y1 << "]-[" 
 		   << block.x2 << "," << block.y2 << "]");
-	fseek( f, compsize, SEEK_CUR );
-      }
+	fseek( file, compsize, SEEK_CUR );
+    }
   }
 
   bool iffImage::fetch(const boost::int64_t frame) 
   {
     _gamma = 1.0f;
-    _num_channels = 0;
     _compression = kNoCompression;
 
     SCOPED_LOCK( _mutex );
@@ -490,29 +551,71 @@ namespace mrv {
 	    header.swap();
 
 	    // _depth = 8 * (header.bytes+1);
-	    _layers.clear();
 
 	    image_size( header.width, header.height );
-	    allocate_pixels( frame );
 
+	    image_type::Format format = image_type::kLumma;
+		
+	    _layers.clear();
 	    if ( header.flags & kHasRGB )
-	      {
+	    {
+		format = image_type::kRGB;
 		rgb_layers();
 		lumma_layers();
-	      }
+	    }
 	    if ( header.flags & kHasAlpha )
-	      {
+	    {
+		format = image_type::kRGBA;
 		alpha_layers();
-	      }
+	    }
 	    if ( header.flags & kHas12Bit )
-	      {
-// 		_depth = 12;
-	      }
+	    {
+		// 		_depth = 12;
+	    }
 	    if ( header.flags & kHasZ )
-	      {
-		_layers.push_back( _("Z Depth") );
+	    {
+		_layers.push_back( N_("Z") );
 		++_num_channels;
-	      }
+	    }
+	    
+	    image_type::PixelType pixel_type = image_type::kByte;
+
+	    if ( _channel && strcmp( _channel, N_("Z") ) == 0 )
+	    {
+		format = image_type::kLumma;
+		header.bytes = 3;
+	    }
+
+	    switch( header.bytes )
+	    {
+		case 0:
+		    pixel_type = image_type::kByte;
+		    break;
+		case 1:
+		    pixel_type = image_type::kShort;
+		    break;
+		case 3:
+		    pixel_type = image_type::kFloat;
+		    break;
+		default:
+		    LOG_ERROR( _("Unknown pixel type") );
+	    }
+
+	    int channels = 1;
+	    switch( format )
+	    {
+		case image_type::kRGBA:
+		    channels = 4; break;
+		case image_type::kRGB:
+		    channels = 3; break;
+		case image_type::kLumma:
+		    channels = 1; break;
+		default:
+		    LOG_ERROR( _("Unknown channel type" ) );
+	    }
+	    allocate_pixels( frame, channels, format, pixel_type,
+			     header.width, header.height );
+	    
 	  }
 	else if ( chunk.tag == kAUTH_TAG )
 	  {
@@ -543,10 +646,10 @@ namespace mrv {
 		if ( chunk.tag == kRGBA_TAG && _channel == NULL )
 		  {
 		    ++tile;
-		    read_pixel_chunk( f, header.depth, header.bytes+1, chunk );
+		    read_pixel_chunk( f, header.depth, header.bytes, chunk );
 		  }
 		else if ( chunk.tag == kZBUF_TAG && _channel && 
-			  strcmp( _channel, _("Z Depth") ) == 0 )
+			  strcmp( _channel, N_("Z") ) == 0 )
 		  {
 		    ++tile;
 		    read_pixel_chunk( f, 4, 1, chunk );
