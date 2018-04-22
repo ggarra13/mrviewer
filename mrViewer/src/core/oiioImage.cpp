@@ -49,13 +49,17 @@ using namespace std;
 OIIO_NAMESPACE_USING;
 
 
+#include "core/mrvColorOps.h"
+#include "core/mrvMath.h"
 #include "core/mrvImageOpts.h"
 #include "core/Sequence.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/oiioImage.h"
 #include "core/mrvI8N.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
+#include "mrViewer.h"
 
 
 namespace
@@ -202,15 +206,24 @@ namespace mrv {
           }
       }
 
-      if ( channels >= 3 )
+      if ( _num_channels == 0 )
       {
-          rgb_layers();
-          lumma_layers();
-      }
+	  if ( channels >= 3 )
+	  {
+	      rgb_layers();
+	      lumma_layers();
+	  }
 
-      if ( channels >= 4 )
-      {
-          alpha_layers();
+	  if ( channels >= 4 )
+	  {
+	      alpha_layers();
+	  }
+	  
+	  if ( channels >= 5 )
+	  {
+	      _layers.push_back( _("Z") );
+	      ++_num_channels;
+	  }
       }
       
       image_size( dw, dh );
@@ -231,7 +244,7 @@ namespace mrv {
       }
       else if ( format == TypeDesc::UINT16 || format == TypeDesc::INT16 )
       {
-          pixel_type = image_type::kInt;
+          pixel_type = image_type::kShort;
       }
       else if ( format == TypeDesc::UINT || format == TypeDesc::INT )
       {
@@ -274,6 +287,141 @@ namespace mrv {
   }
 
 
+bool oiioImage::save( const char* path, const CMedia* img,
+		      const WandOpts* opts )
+{
+    ImageOutput* out = ImageOutput::create( path );
+    mrv::Recti dpw = img->display_window();
+    mrv::Recti daw = img->data_window();
+    unsigned dw = daw.w();
+    unsigned dh = daw.h();
 
+    TypeDesc::BASETYPE type;
+    mrv::image_type_ptr pic = img->hires();
+    image_type::Format format = pic->format();
+
+    bool must_convert = false;
+        
+    if ( Preferences::use_ocio && Preferences::uiMain->uiView->use_lut() )
+	must_convert = true;
+
+    image_type::PixelType pt = pic->pixel_type();
+    unsigned short pixel_size = pic->pixel_size();
+    
+    StorageType st = opts->pixel_type();
+
+    // Constrain some pixel types to the maximum supported by the format
+    std::string f = path;
+    image_type::PixelType maxPixelType = image_type::kByte;
+    if ( f.substr( f.size()-4, f.size() ) == ".iff" )
+    {
+	maxPixelType = image_type::kShort;
+    }
+
+    if ( pt < maxPixelType ) maxPixelType = pt;
+    
+    switch( st )
+    {
+	case CharPixel:
+	    pt = image_type::kByte;
+	    break;
+	case ShortPixel:
+	    pt = image_type::kShort;
+	    break;
+	case LongPixel:
+	    pt = image_type::kInt;
+	    break;
+	case DoublePixel:
+	case FloatPixel:
+	    pt = image_type::kFloat;
+	    break;
+    }
+
+    if ( pt > maxPixelType ) pt = maxPixelType;
+
+    
+    switch( pt )
+    {
+	case image_type::kByte:
+	    type = TypeDesc::UINT8;
+	    break;
+	case image_type::kShort:
+	    type = TypeDesc::USHORT;
+	    break;
+	case image_type::kInt:
+	    type = TypeDesc::UINT;
+	    break;
+	case image_type::kHalf:
+	    type = TypeDesc::HALF;
+	    break;
+	case image_type::kFloat:
+	    type = TypeDesc::FLOAT;
+	    break;
+	default:
+	    LOG_ERROR( img->name() << _(": Unknown pixel type") );
+	    return false;
+    }
+
+    unsigned short channels = pic->channels();
+    
+    format = image_type::kLumma;
+    if ( channels >= 2 ) format = image_type::kRGB;
+    if ( channels >= 4 ) format = image_type::kRGBA;
+
+    if ( ( format != image_type::kLumma && format != image_type::kRGBA &&
+	   format != image_type::kRGB ) || pic->pixel_type() > maxPixelType ||
+	 img->gamma() != 1.0f )
+	must_convert = true;
+    
+    
+    ImageSpec spec( dw, dh, channels, type );
+    spec.full_x = 0;
+    spec.full_y = 0;
+    spec.full_width = dpw.w();
+    spec.full_height = dpw.h();
+    spec.x = daw.x();
+    spec.y = daw.y();
+    out->open( path, spec );
+
+    mrv::image_type_ptr sho = pic;
+
+    try
+    {
+	if ( !must_convert )
+	{
+	    mrv::aligned16_uint8_t* p = pic->data().get();
+	    unsigned short pixel_size = pic->pixel_size();
+	    unsigned short mult = channels * pixel_size;
+	    for ( int y = spec.y; y < spec.y + daw.h(); ++y )
+	    {
+		void* line = &p[(y-spec.y) * dw * mult ];
+		out->write_scanline( y, 0, type, line );
+	    }
+	}
+	else
+	{
+	    prepare_image( pic, img, format, pt );
+	    
+	    unsigned short pixel_size = pic->pixel_size();
+	    mrv::aligned16_uint8_t* p = pic->data().get();
+	    int yh = spec.y + dh;
+	    unsigned short mult = channels * pixel_size;
+	    for ( int y = spec.y; y < yh; ++y )
+	    {
+		mrv::aligned16_uint8_t* line = p;
+		line += (y-spec.y) * dw * mult;
+		out->write_scanline( y, 0, type, line );
+	    }
+	}
+    }
+    catch( const std::exception& e )
+    {
+	LOG_ERROR( e.what() );
+    }
+    
+    out->close();
+    
+    return true;
+}
 
 } // namespace mrv
