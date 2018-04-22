@@ -120,9 +120,9 @@ void Timecode::value( const int hours, const int mins, const int secs,
 
 int Timecode::handle( int e )
 {
-    int r = fltk::FloatInput::handle( e );
-    if ( r != 0 ) return r;
-    return uiMain->uiView->handle( e );
+    return fltk::FloatInput::handle( e );
+    // if ( r != 0 ) return r;
+    // return uiMain->uiView->handle( e );
 }
 
 int64_t Timecode::value() const

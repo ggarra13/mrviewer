@@ -372,6 +372,11 @@ namespace mrv
   typedef boost::shared_ptr< VideoFrame > image_type_ptr;
   typedef boost::shared_ptr< AudioFrame > audio_type_ptr;
 
+// Copy an image picture (video frame) to another, taking into account
+// the pixel type.  The pictures have to have the same format and the same
+// width/height and only (optionally) the same pixel type.
+// If the same pixel type, memcpy is used.  If not
+// a loop is used and a float pixel is used as intermediary.
   void copy_image( image_type_ptr& dst, const image_type_ptr& src );
 
 } // namespace mrv
