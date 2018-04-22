@@ -351,6 +351,26 @@ int main( int argc, char** argv )
 	      
 	  }
 	  
+	  if ( opts.stereo_input != "" )
+	  {
+	      int idx = 0;
+	      if ( opts.stereo_input == _("Separate layers") )
+		  idx = 0;
+	      else if ( opts.stereo_input == _("Top/bottom") )
+		  idx = 1;
+	      else if ( opts.stereo_input == _("Left/right") )
+		  idx = 2;
+	      else
+	      {
+		  LOG_ERROR( "Stereo Input is invalid.  Valid values are: " );
+		  LOG_ERROR( _("Separate layers") << ", " << _("Top/bottom")
+			     << ", " << _("Left/right") );
+		  return false;
+	      }
+	      ui->uiStereo->uiStereoInput->value( idx ); 
+	      ui->uiStereo->uiStereoInput->do_callback();
+	  }
+	  
 	  if ( opts.stereo_output != "" )
 	  {
 	      int idx = 0;
