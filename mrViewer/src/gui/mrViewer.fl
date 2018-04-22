@@ -669,13 +669,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {398 409 700 450} resizable
+        xywh {398 465 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
       } {
@@ -685,7 +684,7 @@ o->label( o->child( o->value() )->label() );}
         } {
           {fltk::Group} {} {
             label {User Interface} open
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label {Window Behavior}
@@ -1121,7 +1120,7 @@ uiWindowYSize->value( v->uiMain->h() );}
           }
           {fltk::Group} Playback {
             label Playback open
-            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1234,7 +1233,7 @@ uiPrefsFPS->value( g );}
                   }
               }
               {fltk::Choice} uiPrefsTimelineSelectionDisplay {
-                label Selection open selected
+                label Selection open
                 tooltip {How to display timeline selection by default.}
                 xywh {100 54 190 25} box THIN_DOWN_BOX
                 extra_code {o->value(0);}
@@ -2515,7 +2514,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -3089,15 +3088,15 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {770 332 640 534} when CHANGED hide resizable
+        xywh {770 388 640 534} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 534}
         } {
-          {fltk::Group} uiTopBar {open
+          {fltk::Group} uiTopBar {
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
@@ -3431,7 +3430,7 @@ Value is:  pow( 2, 1/x );}
             }
           }
           {fltk::Group} uiViewGroup {open
-            xywh {0 28 640 429} resizable
+            xywh {0 28 640 430} resizable
             class {fltk::Group}
           } {
             {fltk::Group} uiView {
@@ -3441,7 +3440,7 @@ Value is:  pow( 2, 1/x );}
             } {}
           }
           {fltk::Group} uiPixelBar {
-            xywh {0 457 640 28} box FLAT_BOX color 56
+            xywh {0 452 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
               xywh {2 0 634 25}
@@ -3527,7 +3526,7 @@ o->disable_glyph();}
                   label FIT
                   }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {29 0 605 25}
               } {
                 {fltk::Output} uiCoord {
@@ -3733,8 +3732,8 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::PackedGroup} uiBottomBar {open
-            xywh {0 485 640 49} box ENGRAVED_BOX
+          {fltk::Group} uiBottomBar {open selected
+            xywh {0 481 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
               xywh {0 0 640 49}
