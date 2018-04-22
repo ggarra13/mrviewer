@@ -401,6 +401,11 @@ bool parse_command_line( const int argc, char** argv,
             _("Provide two sequences or movies for stereo."), false, "images");
 
     ValueArg< std::string >
+    astereo_input( N_(""), N_("stereo-input"),
+		   _("Select stereo input"), false, "",
+		   "string" );
+    
+    ValueArg< std::string >
     astereo_output( N_(""), N_("stereo-output"),
     		    _("Select stereo output"), false, "",
 		    "string" );
@@ -433,6 +438,7 @@ bool parse_command_line( const int argc, char** argv,
     cmd.add(aoffset);
 #ifdef USE_STEREO
     cmd.add(astereo);
+    cmd.add(astereo_input);
     cmd.add(astereo_output);
 #endif
     cmd.add(asub);
@@ -459,6 +465,7 @@ bool parse_command_line( const int argc, char** argv,
     opts.run    = arun.getValue();
     opts.debug  = adebug.getValue();
     opts.stereo_output = astereo_output.getValue();
+    opts.stereo_input = astereo_input.getValue();
 
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
