@@ -149,8 +149,8 @@ namespace mrv {
 
       unsigned int h = _thumbnail_height;
 
-      float yScale = (float)(h+1) / (float)dh;
-      unsigned int w = (float)(dw+1) * (float)yScale;
+      float yScale = (float)(h+0.5) / (float)dh;
+      unsigned int w = (float)(dw+0.5) * (float)yScale;
       if ( w > 150 ) w = 150;
 
       // Resize image to thumbnail size
