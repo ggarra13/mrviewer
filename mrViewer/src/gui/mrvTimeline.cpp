@@ -443,9 +443,9 @@ void Timeline::draw_selection( const fltk::Rectangle& r )
 
 int Timeline::handle( int e )
 {
-    int r = fltk::Slider::handle( e );
-    if ( r != 0 ) return r;
-    return uiMain->uiView->handle( e );
+    return fltk::Slider::handle( e );
+    // if ( r != 0 ) return r;
+    // return uiMain->uiView->handle( e );
 }
 
   /** 
