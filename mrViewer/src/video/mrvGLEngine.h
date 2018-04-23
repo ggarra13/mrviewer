@@ -149,8 +149,7 @@ namespace mrv {
 
   protected:
       void set_matrix( const ImageView::FlipDirection flip = 
-                       ImageView::kFlipNone,
-                       const bool pixel_ratio = false );
+                       ImageView::kFlipNone );
 
       void draw_shape( GLShape* const shape );
 
