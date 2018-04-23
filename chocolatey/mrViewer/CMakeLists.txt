@@ -1,4 +1,6 @@
 
+cmake_minimum_required( VERSION 3.1 FATAL_ERROR )
+
 
 set(mrViewerPackageName32 mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-32)
 set(mrViewerPackageName64 mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-64)

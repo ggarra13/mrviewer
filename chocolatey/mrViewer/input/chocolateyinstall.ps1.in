@@ -41,12 +41,13 @@ $packageArgs = @{
 Install-ChocolateyZipPackage @packageArgs
 
 $target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
-Install-ChocolateyPath "${target}" 'User'
+Install-ChocolateyPath -PathToInstall "${target}" -PathType 'Machine'
 
 $DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
-if ( $DesktopPath -Match "" )
-{
-	$DesktopPath = [Environment]::GetFolderPath("Desktop")
-}
 
-Install-ChocolateyShortcut -shortcutFilePath "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk" -targetPath "${target}/${packageName}.exe"
+Install-ChocolateyShortcut -ShortcutFilePath "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk" -TargetPath "${target}/${packageName}.exe"
+
+$StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
+$StartPath = Join-Path "$StartMenu" "Programs"
+
+Install-ChocolateyShortcut -shortcutFilePath "${StartPath}/${packageName}-${osBitness} v${softVersion}.lnk" -targetPath "${target}/${packageName}.exe"
