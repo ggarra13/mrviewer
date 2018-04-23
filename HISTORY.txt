@@ -8,6 +8,7 @@ v4.0.8   - Made HEVC saver report a HVC1 fourcc so that Apple products will
 	 - Added --stereo-input flag to command-line.  It works just like
 	   --stereo-output flag but for the stereo input.
 	 - Bug fixed X and Y flips which got broken in a previous build.
+	 - Bug fixed pixel aspect ratio being applied twice.
 
 v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
 	   to support dng, cr2, etc. formats.

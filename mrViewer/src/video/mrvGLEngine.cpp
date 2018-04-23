@@ -1037,10 +1037,9 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    double pr = 1.0;
     if ( _view->main()->uiPixelRatio->value() )
     {
-        pr /= _view->pixel_ratio();
+        double pr = 1.0 / _view->pixel_ratio();
         glScaled( 1.0, pr, 1.0 );
     }
 
@@ -1064,8 +1063,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 }
 
 inline
-void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
-                           const bool pixel_ratio )
+void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip )
 {
     if ( _view->vr() ) return;
 
@@ -1104,13 +1102,11 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     //
     // Handle pixel ratio
     //
-    if ( pixel_ratio )
-    {
-        double pr = 1.0;
-        if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-        glScaled( 1.0, pr, 1.0 );
+    if ( _view->main()->uiPixelRatio->value() ) {
+	double pr = 1.0 / _view->pixel_ratio();
+	glScaled( 1.0, pr, 1.0 );
     }
-
+    
     CHECK_GL;
 
 }
@@ -1149,7 +1145,7 @@ void GLEngine::draw_mask( const float pct )
 
   ImageView::FlipDirection flip = _view->flip();
 
-  set_matrix( flip, true );
+  set_matrix( flip );
 
   double zdeg = img->rot_z();
 
@@ -1220,7 +1216,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( flip, true );
+    set_matrix( flip );
 
     double x = 0.0, y = 0.0;
     zrot2offsets( x, y, img, flip, zdeg );
@@ -1318,7 +1314,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( flip, true );
+    set_matrix( flip );
 
     double x = dpw.x();
     double y = dpw.y();
@@ -1442,7 +1438,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( flip, true );
+    set_matrix( flip );
 
 
     mrv::Recti dpw = img->display_window();
@@ -1579,15 +1575,7 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
                   double(-daw.y()), 0 );
     CHECK_GL;
 
-    if ( view->main()->uiPixelRatio->value() )
-    {
-        glScaled( double(texWidth), double(texHeight) / view->pixel_ratio(),
-                  1.0 );
-    }
-    else
-    {
-        glScaled( double(texWidth), double(texHeight), 1.0 );
-    }
+    glScaled( double(texWidth), double(texHeight), 1.0 );
 
     CHECK_GL;
     glTranslated( 0.5, -0.5, 0.0 );
@@ -1788,7 +1776,7 @@ void GLEngine::draw_images( ImageList& images )
 
         ImageView::FlipDirection flip = _view->flip();
 
-        set_matrix( flip, false );
+        set_matrix( flip );
 
         if ( flip && !_view->vr() )
         {
@@ -1823,7 +1811,7 @@ void GLEngine::draw_images( ImageList& images )
         glDisable( GL_BLEND );
         CHECK_GL;
 
-        set_matrix( flip, true );
+        set_matrix( flip );
         
         if ( flip && !_view->vr() )
         {
