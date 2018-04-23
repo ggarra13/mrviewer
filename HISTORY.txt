@@ -1,3 +1,7 @@
+v4.0.9   - A bug fix release to playback of movies with sound in loop, which
+	   was crashing v4.0.6 and later.
+	 - Bug fixed pixel ratio not being correct and being applied twice.
+
 v4.0.8   - Made HEVC saver report a HVC1 fourcc so that Apple products will
 	   recognize them and show a thumbnail.
 	 - Made Z Depth be reported as "Z" only, as that makes it work on

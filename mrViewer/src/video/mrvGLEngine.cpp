@@ -1579,16 +1579,8 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
                   double(-daw.y()), 0 );
     CHECK_GL;
 
-    if ( view->main()->uiPixelRatio->value() )
-    {
-        glScaled( double(texWidth), double(texHeight) / view->pixel_ratio(),
-                  1.0 );
-    }
-    else
-    {
-        glScaled( double(texWidth), double(texHeight), 1.0 );
-    }
-
+    glScaled( double(texWidth), double(texHeight), 1.0 );
+    
     CHECK_GL;
     glTranslated( 0.5, -0.5, 0.0 );
     CHECK_GL;
