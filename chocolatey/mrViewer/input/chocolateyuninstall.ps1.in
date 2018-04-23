@@ -20,6 +20,16 @@ if ($installerType -ne 'MSI') {
   $validExitCodes = @(0)
 }
 
+
+If ( $osBitness -Match "32" )
+{
+	$programFiles = $env:ProgramFiles
+}
+Else
+{
+	$programFiles = $env:ProgramW6432
+}
+
 $uninstalled = $false
 [array]$key = Get-UninstallRegistryKey -SoftwareName $softwareName
 
@@ -43,32 +53,28 @@ if ($key.Count -eq 1) {
 }
 
 
-Uninstall-ChocolateyZipPackage -PackageName $packageName -ZipFileName "$fileLocation"
+try {
+    Uninstall-ChocolateyZipPackage -PackageName $packageName -ZipFileName "$fileLocation"
+    }
+catch
+{
+Write-Warning "Could not uninstall zip package"
+}
 
 $DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
-if ($DesktopPath -Match "" )
-{
-   $DesktopPath = [Environment]::GetFolderPath("Desktop")
-}
+
+$StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
+$StartPath = Join-Path "${StartMenu}" "Programs"
 
 Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk"
+Remove-Item -Path "${StartPath}/${packageName}-${osBitness} v${softVersion}.lnk"
 
-$osBitness = Get-ProcessorBits
-
-If ( $osBitness -Match "32" )
-{
-	$programFiles = $env:ProgramFiles
-}
-Else
-{
-	$programFiles = $env:ProgramW6432
-}
 
 $target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
 
 
 $PathToRemove = $target
-foreach ($path in [Environment]::GetEnvironmentVariable("PATH","User").split(';'))
+foreach ($path in [Environment]::GetEnvironmentVariable("PATH","Machine").split(';'))
 {
   If ($Path)
   {
@@ -80,8 +86,8 @@ foreach ($path in [Environment]::GetEnvironmentVariable("PATH","User").split(';'
 }
 $AssembledNewPath = ($newpath -join(';')).trimend(';')
 
-[Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"User")
+[Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"Machine")
 
 $target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}"
 
-Remove-Item -Path "$target" -Force
+Remove-Item -Recurse -Force -Path "$target"
