@@ -19,10 +19,10 @@
  * @file   mrvTimeline.cpp
  * @author gga
  * @date   Fri Oct 13 13:36:04 2006
- * 
+ *
  * @brief  An fltk::Widget to draw a timeline.
- * 
- * 
+ *
+ *
  */
 
 #include <cassert>
@@ -89,7 +89,7 @@ Timeline::~Timeline()
 void Timeline::display_minimum( const double& x )
 {
     if ( x >= minimum() ) _display_min = x;
-    
+
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
@@ -101,7 +101,7 @@ void Timeline::display_minimum( const double& x )
 void Timeline::display_maximum( const double& x )
 {
     if ( x <= maximum() ) _display_max = x;
-    
+
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
@@ -142,35 +142,35 @@ void Timeline::display_maximum( const double& x )
 
     if ( _edl && uiMain && browser() )
       {
-	mrv::Timecode* uiFrame = uiMain->uiFrame;
+        mrv::Timecode* uiFrame = uiMain->uiFrame;
 
-	// Calculate frame range for timeline
-	minimum( 1 );
-	if ( uiMain->uiStartFrame ) 
-	  uiMain->uiStartFrame->frame( 1 );
-	if ( uiMain->uiFrame && uiMain->uiFrame->frame() < 1 ) 
-	  uiFrame->frame(1);
+        // Calculate frame range for timeline
+        minimum( 1 );
+        if ( uiMain->uiStartFrame )
+          uiMain->uiStartFrame->frame( 1 );
+        if ( uiMain->uiFrame && uiMain->uiFrame->frame() < 1 )
+          uiFrame->frame(1);
 
-	uint64_t total = 0;
+        uint64_t total = 0;
 
-	const mrv::Reel& reel = browser()->current_reel();
-	if ( !reel ) return;
+        const mrv::Reel& reel = browser()->current_reel();
+        if ( !reel ) return;
 
-	mrv::MediaList::const_iterator i = reel->images.begin();
-	mrv::MediaList::const_iterator e = reel->images.end();
+        mrv::MediaList::const_iterator i = reel->images.begin();
+        mrv::MediaList::const_iterator e = reel->images.end();
 
-	for ( ; i != e; ++i )
-	  {
-	    CMedia* img = (*i)->image();
-	    if ( (*i)->position() == MRV_NOPTS_VALUE )
-	       (*i)->position( total );
-	    total += img->duration();
-	  }
+        for ( ; i != e; ++i )
+          {
+            CMedia* img = (*i)->image();
+            if ( (*i)->position() == MRV_NOPTS_VALUE )
+               (*i)->position( total );
+            total += img->duration();
+          }
 
-	maximum( double(total) );
-	if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->frame( total );
-	if ( uiFrame && uiFrame->frame() > int64_t(total) ) 
-	   uiFrame->frame(total);
+        maximum( double(total) );
+        if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->frame( total );
+        if ( uiFrame && uiFrame->frame() > int64_t(total) )
+           uiFrame->frame(total);
       }
 
     redraw();
@@ -194,17 +194,17 @@ void Timeline::display_maximum( const double& x )
 
     double A,B;
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
-	 ( display_minimum() != minimum() || display_maximum() != maximum() ) )
+         ( display_minimum() != minimum() || display_maximum() != maximum() ) )
     {
-	A = display_minimum();
-	B = display_maximum();
-	if (A > B) {A = B; B = display_minimum();}
+        A = display_minimum();
+        B = display_maximum();
+        if (A > B) {A = B; B = display_minimum();}
     }
     else
     {
-	A = minimum();
-	B = maximum();
-	if (A > B) {A = B; B = minimum();}
+        A = minimum();
+        B = maximum();
+        if (A > B) {A = B; B = minimum();}
     }
     //if (!finite(A) || !finite(B)) return;
 
@@ -215,8 +215,8 @@ void Timeline::display_maximum( const double& x )
     double div = 1;
     int smallmod = 5; // how many tick marks apart "larger" ones are
     int nummod = 15; // how many tick marks apart numbers are
-    
-    if ( _display != Timecode::kFrames ) 
+
+    if ( _display != Timecode::kFrames )
       {
           nummod = int(_fps);
       }
@@ -243,9 +243,9 @@ void Timeline::display_maximum( const double& x )
       if (v > fabs(A) && v > fabs(B)) break;
       int sm = n%smallmod ? 3 : 0;
       if (v >= A && v <= B) {
-	int t = slider_position(v, w);
+        int t = slider_position(v, w);
         drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
-	if (n-1 != 0 && (n-1)%nummod == 0) {
+        if (n-1 != 0 && (n-1)%nummod == 0) {
             mrv::Timecode::format( buffer, _display, boost::int64_t(v),
                                    _tc, _fps );
             char* p = buffer;
@@ -253,15 +253,15 @@ void Timeline::display_maximum( const double& x )
             setcolor(textcolor);
             int wt = 0, ht = 0;
             measure( p, wt, ht );
-            drawtext(p, float(x1+dx*t-wt/2), 
+            drawtext(p, float(x1+dx*t-wt/2),
                      float(y1+dy*t+getsize()-getdescent()));
             setcolor(linecolor);
-	}
+        }
       }
       if (v && -v >= A && -v <= B) {
-	int t = slider_position(-v, w);
+        int t = slider_position(-v, w);
         drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
-	if (n%nummod == 0) {
+        if (n%nummod == 0) {
             mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _tc,
                                    _fps );
             char* p = buffer;
@@ -272,7 +272,7 @@ void Timeline::display_maximum( const double& x )
             drawtext(p, float(x1+dx*t),
                      float(y1+dy*t+getsize()-getdescent()));
             setcolor(linecolor);
-	}
+        }
       }
     }
 
@@ -300,15 +300,15 @@ void Timeline::display_maximum( const double& x )
       r.move_b(-tick_size());
       switch (type()&TICK_BOTH) {
       case TICK_BOTH:
-	r.y(r.y()+tick_size()/2);
-	break;
+        r.y(r.y()+tick_size()/2);
+        break;
       case TICK_ABOVE:
-	r.y(r.y()+tick_size());
-	tr.set_b(r.center_y());
-	break;
+        r.y(r.y()+tick_size());
+        tr.set_b(r.center_y());
+        break;
       case TICK_BELOW:
-	tr.set_y(r.center_y()+(slot?3:0));
-	break;
+        tr.set_y(r.center_y()+(slot?3:0));
+        break;
       }
       setcolor(inactive(contrast(textcolor(),color()),flags));
       draw_ticks(tr, (slider_size()+1)/2);
@@ -369,7 +369,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     CMedia::Cache c = CMedia::kLeftCache;
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
-    
+
     if ( ( img->stereo_output() != CMedia::kNoStereo &&
            img->stereo_output() != CMedia::kStereoLeft ) ||
          img->stereo_input() > CMedia::kSeparateLayersInput )
@@ -377,7 +377,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         c = CMedia::kStereoCache;
         setcolor( fltk::GREEN );
     }
-    
+
 
 
     int dx;
@@ -385,7 +385,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 #define NO_FRAME_VALUE std::numeric_limits<int>::min()
 
 
-    
+
     int64_t t2;
     while ( j <= max )
     {
@@ -435,7 +435,7 @@ void Timeline::draw_selection( const fltk::Rectangle& r )
     int rx = r.x() + (slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
-	
+
     setcolor( fltk::CYAN );
     Rectangle r2( rx+dx, r.y(), end-dx, r.h()-8 );
     fillrect( r2 );
@@ -448,9 +448,9 @@ int Timeline::handle( int e )
     // return uiMain->uiView->handle( e );
 }
 
-  /** 
+  /**
    * Main widget drawing routine
-   * 
+   *
    */
   void Timeline::draw()
   {
@@ -475,99 +475,99 @@ int Timeline::handle( int e )
 
     if ( !uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
-	mn = display_minimum();
-	mx = display_maximum();
+        mn = display_minimum();
+        mx = display_maximum();
     }
-    
+
     double v  = value();
 
     if ( !browser() ) return;
 
-    
+
     // Draw each rectangle for each segment
     if ( _edl )
       {
 
-	const mrv::Reel& reel = browser()->current_reel();
-	if ( !reel ) return;
+        const mrv::Reel& reel = browser()->current_reel();
+        if ( !reel ) return;
 
-	mrv::MediaList::const_iterator i = reel->images.begin();
-	mrv::MediaList::const_iterator e = reel->images.end();
+        mrv::MediaList::const_iterator i = reel->images.begin();
+        mrv::MediaList::const_iterator e = reel->images.end();
 
-	_fps = 24.0;
+        _fps = 24.0;
 
-	int ww = r.w();
+        int ww = r.w();
 
-	// If minimum less than 0, start boxes later
-	uint64_t size = 0;
-	uint64_t frame = 1;
-	int rx = r.x() + (slider_size()-1)/2;
+        // If minimum less than 0, start boxes later
+        uint64_t size = 0;
+        uint64_t frame = 1;
+        int rx = r.x() + (slider_size()-1)/2;
 
-	for ( ; i != e; frame += size, ++i )
-	  {
-	     int64_t pos = (*i)->position();
-	     CMedia* img = (*i)->image();
-	     size = img->duration();
+        for ( ; i != e; frame += size, ++i )
+          {
+             int64_t pos = (*i)->position();
+             CMedia* img = (*i)->image();
+             size = img->duration();
 
-	    // skip this block if outside visible timeline span
-	     if ( frame + size < mn || frame > mx ) continue;
+            // skip this block if outside visible timeline span
+             if ( frame + size < mn || frame > mx ) continue;
 
              int  dx = slider_position( double(frame),      ww );
              int end = slider_position( double(frame+size), ww );
-	    
-	    Rectangle lr;
-	    lr.set( rx+dx, r.y(), end-dx, r.h() );
 
-	    // Draw a block
-	    if ( v >= frame && v < frame + size )
-	      {
-		_fps = img->fps();
-		setcolor( highlight_textcolor() );
-	      }
-	    else
-	      {
-		setcolor( labelcolor() );
-	      }
+            Rectangle lr;
+            lr.set( rx+dx, r.y(), end-dx, r.h() );
 
-	    fillrect( lr );
-	  }
+            // Draw a block
+            if ( v >= frame && v < frame + size )
+              {
+                _fps = img->fps();
+                setcolor( highlight_textcolor() );
+              }
+            else
+              {
+                setcolor( labelcolor() );
+              }
 
-	if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-	     ( _display_min != minimum() || _display_max != maximum() ) )
-	{
-	    draw_selection(r);
-	}
-    
-	frame = 1;
-	unsigned idx = 0;
-	for ( i = reel->images.begin(); i != e; frame += size, ++i )
-	  {
-	    CMedia* img = (*i)->image();
+            fillrect( lr );
+          }
+
+        if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
+             ( _display_min != minimum() || _display_max != maximum() ) )
+        {
+            draw_selection(r);
+        }
+
+        frame = 1;
+        unsigned idx = 0;
+        for ( i = reel->images.begin(); i != e; frame += size, ++i )
+          {
+            CMedia* img = (*i)->image();
 
             CMedia::Mutex& m = img->video_mutex();
             SCOPED_LOCK( m );
 
-	    size = img->duration();
+            size = img->duration();
             int64_t pos = (*i)->position() - img->first_frame();
 
 
-	    // skip this block if outside visible timeline span
-	    if ( frame + size < mn || frame > mx ) continue;
+            // skip this block if outside visible timeline span
+            if ( frame + size < mn || frame > mx ) continue;
 
             if ( _draw_cache )
             {
                 draw_cacheline( img, pos, size, int64_t(minimum()),
-				int64_t(maximum()),
+                                int64_t(maximum()),
                                 frame, r );
             }
 
-	    int dx = rx + slider_position( double(frame), ww );
+            int dx = rx + slider_position( double(frame), ww );
 
-	    setcolor( BLUE );
-	    line_style( SOLID, 3 );
-	    drawline( dx, r.y(), dx, r.b()-1 ); // -1 to compensate line style
-	    line_style( SOLID );
-	  }
+            setcolor( BLUE );
+            line_style( SOLID, 3 );
+            drawline( dx, r.y(), dx, r.b()-1 ); // -1 to compensate line style
+            line_style( SOLID );
+          }
       }
     else
     {
@@ -580,22 +580,22 @@ int Timeline::handle( int e )
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
                 boost::int64_t first = img->first_frame();
-                draw_cacheline( img, 1, 
-                                img->duration() + img->start_number(), 
+                draw_cacheline( img, 1,
+                                img->duration() + img->start_number(),
                                 int64_t(minimum()), int64_t(maximum()),
-				first, r );
+                                first, r );
             }
         }
 
-	if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-	     ( _display_min != minimum() || _display_max != maximum() ) )
-	{
-	    draw_selection(r);
-	}
-    
+        if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
+             ( _display_min != minimum() || _display_max != maximum() ) )
+        {
+            draw_selection(r);
+        }
+
     }
 
-    
+
     draw( r, f2, r.y()==0 );
 
     // draw the focus indicator inside the box:
@@ -603,11 +603,11 @@ int Timeline::handle( int e )
     box->draw_symbol_overlay(r);
   }
 
-  /** 
+  /**
    * Given an image, return its offset from frame 1 when in edl mode
-   * 
+   *
    * @param img image to search in edl list
-   * 
+   *
    * @return offset in timeline
    */
   uint64_t Timeline::offset( const CMedia* img ) const
@@ -620,11 +620,11 @@ int Timeline::handle( int e )
     return reel->offset( img );
   }
 
-  /** 
+  /**
    * Given a frame, return its image index in browser when in edl mode
-   * 
+   *
    * @param f frame to search in edl list
-   * 
+   *
    * @return index of image in image browser list
    */
   size_t Timeline::index( const int64_t f ) const
@@ -637,7 +637,7 @@ int Timeline::handle( int e )
 
     double mn = minimum();
     double mx = maximum();
-    if ( mn > mx ) 
+    if ( mn > mx )
     {
        double t = mx;
        mx = mn; mn = t;
@@ -650,20 +650,20 @@ int Timeline::handle( int e )
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
       {
-	CMedia* img = (*i)->image();
-	uint64_t size = img->duration();
-	t += size;
-	if ( t > f ) break;
+        CMedia* img = (*i)->image();
+        uint64_t size = img->duration();
+        t += size;
+        if ( t > f ) break;
       }
     if ( r >= reel->images.size() ) r = reel->images.size() - 1;
     return r;
   }
 
-  /** 
+  /**
    * Given a frame, return the image in browser for that frame when in edl mode
-   * 
+   *
    * @param f frame to search in edl list
-   * 
+   *
    * @return image at that point in the timeline or NULL
    */
   mrv::media Timeline::media_at( const int64_t f ) const
@@ -680,11 +680,11 @@ int Timeline::handle( int e )
     if ( !m ) return NULL;
     return m->image();
   }
-  /** 
+  /**
    * Given an image, return its offset from frame 1 when in edl mode
-   * 
+   *
    * @param img image to search in edl list
-   * 
+   *
    * @return offset in timeline
    */
 int64_t Timeline::global_to_local( const int64_t frame ) const
@@ -704,7 +704,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
     buf[0] = label[0];
 
     uiMain->uiTimecodeSwitch->copy_label( buf );
-    
+
     mrv::Timecode::Display d = (mrv::Timecode::Display) i;
     uiMain->uiFrame->display( d );
     uiMain->uiStartFrame->display( d );
