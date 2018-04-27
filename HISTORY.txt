@@ -1,3 +1,27 @@
+v4.1.0   - Bug fixes to the choco installer and uninstaller.  The installer
+	   now modifies the machine PATH instead of the user PATH variable.
+	   It also creates the shortcut in the All Users/Desktop.
+	   And it creates a shortcut in the Common Start Menu.
+	 - Added a Image->Switch FG/BG Images to toggle the foreground and
+	   background images, for easy comparing of two sequences and keep
+	   the same frame around.
+	 - Added a shortcut 'j' to switch (jump) between FG and BG images.
+	   This is to be used to keep the same frame in both the FG and BG.
+	   Otherwise, only the FG image drives the same frame.
+	 - Bug fixed a seek issue when setting BG image.  The playback
+	   and stepping among frames would not work anymore.
+	 - Bug fixed a crash in EDL Edit window when dropping a clip onto
+	   a new track.
+	 - Removed the message of already created OCIO transform as it was
+	   too verbose.
+	 - Bug fixed a playback hanging when in EDL mode, after stopping
+	   a short sequence or movie file and continuing it later on.  The
+	   playback would not continue to the next image in the sequence.
+
+v4.0.9   - A bug fix release to playback of movies with sound in loop, which
+	   was crashing v4.0.6 and later.
+	 - Bug fixed pixel ratio not being correct and being applied twice.
+
 v4.0.8   - Made HEVC saver report a HVC1 fourcc so that Apple products will
 	   recognize them and show a thumbnail.
 	 - Made Z Depth be reported as "Z" only, as that makes it work on
@@ -38,7 +62,7 @@ v4.0.6   - Bug fixed looping in movies with an In/Out points.  Now the
 	 - Improved timecode/frame, timeline widgets allowing all the
 	   shortcuts of the main image view.
 	 - Made LUT be on as a default option and the 8 bits OCIO default be
-	   sRGB.  
+	   sRGB.
 	   This change is only present if starting mrViewer without
 	   preferences set.
 	   It makes 8 bit formats (png, jpeg, etc) behave like
