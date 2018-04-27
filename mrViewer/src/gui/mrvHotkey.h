@@ -72,7 +72,7 @@ struct Hotkey
      key2( h.key2 )
      {
      };
-     
+
     bool match( unsigned rawkey );
 
 
@@ -168,6 +168,7 @@ extern Hotkey kExposureLess;
 extern Hotkey kGammaMore;
 extern Hotkey kGammaLess;
 
+extern Hotkey kSwitchFGBG;
 extern Hotkey kSetAsBG;
 extern Hotkey kToggleLUT;
 
