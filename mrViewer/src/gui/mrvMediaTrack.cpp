@@ -77,7 +77,7 @@ void media_track::add( mrv::media m, boost::int64_t frame )
    if ( _reel_idx < 0 ) return;
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel || !m ) return;
-
+   
    size_t e = reel->images.size();
    if ( frame == MRV_NOPTS_VALUE )
    {
@@ -161,31 +161,10 @@ int media_track::index_for( const std::string s )
 
 int media_track::index_at( const boost::int64_t frame )
 {
-   const mrv::Reel& reel = browser()->reel_at( _reel_idx );
-   if ( !reel ) return -1;
+    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
+    if ( !reel ) return -1;
 
-   return reel->index( frame );
-   
-   // unsigned e = (unsigned) reel->images.size();
-   // if ( e > 0 )
-   // {
-   //    if ( frame < reel->images[0]->position() )
-   //       return 0;
-   // }
-
-   // for (unsigned i = 0; i < e; ++i )
-   // {
-   //    mrv::media m = reel->images[i];
-   //    if ( !m ) continue;
-
-   //    boost::int64_t start = m->position();
-   //    boost::int64_t end   = start + m->duration();
-   //    if ( frame >= start && frame < end )
-   //    {
-   //       return i;
-   //    }
-   // }
-   // return e;
+    return reel->index( frame );
 }
 
 mrv::media media_track::media_at( const boost::int64_t frame )
@@ -204,7 +183,8 @@ mrv::media media_track::media_at( const boost::int64_t frame )
 }
 
 
-// Remove a media from the track
+// Insert a media in the track at a specific frame which will turn into an image
+// index
 void media_track::insert( const boost::int64_t frame, mrv::media m )
 {  
    int idx = index_at( frame );
