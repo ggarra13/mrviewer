@@ -1051,7 +1051,7 @@ class CMedia
     // Return the video pts as a double
     inline double video_pts() const { return _video_pts; }
 
-    // Return FFMPEG's start number of sequences (PNG loader)
+    // Return FFMPEG's start number of sequences (PNG/JPG loader)
     inline int64_t start_number() const { return _start_number; }
 
     // Return the audio pts as a double
