@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -397,6 +396,74 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
 
   view->bg_reel( view->fg_reel() );
   view->background( fg );
+}
+
+static void update_title_bar( mrv::ImageView* view )
+{
+  // Print out image names in reverse
+  if ( view == NULL ) return;
+
+  mrv::media fg = view->foreground();
+  mrv::media bg = view->background();
+  if ( !bg && !fg ) return;
+
+  char bufs[256];
+
+  if ( fg == bg && fg )
+  {
+      snprintf( bufs, 256, _("mrViewer    FG: %s"),
+		fg->image()->name().c_str() );
+  }
+  else if ( fg && bg )
+  {
+      snprintf( bufs, 256, _("mrViewer    FG: %s   BG: %s (%s)"),
+		fg->image()->name().c_str(),
+		bg->image()->name().c_str(),
+		view->show_background() ? _("Active") : _("Inactive") );
+  }
+  else
+  {
+      snprintf( bufs, 256, _("mrViewer") );
+  }
+  view->main()->uiMain->copy_label( bufs );
+}
+
+void switch_fg_bg_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  const mrv::media& fg = view->foreground();
+  if ( !fg ) {
+      LOG_ERROR( _("No foreground image to switch to") );
+      return;
+  }
+  size_t fg_reel = view->fg_reel();
+
+  const mrv::media& bg = view->background();
+  if ( !bg ) {
+      LOG_ERROR( _("No background image to switch to") );
+      return;
+  }
+  size_t bg_reel = view->bg_reel();
+
+  if ( fg == bg )
+  {
+      LOG_INFO( _("Cannot switch images.  Foreground and background image are the same.") );
+      return;
+  }
+
+  view->foreground( bg );
+  view->fg_reel( bg_reel );
+  
+  view->background( fg );
+  view->bg_reel( fg_reel );
+
+
+  // view->main()->uiStartFrame->value( bg->image()->first_frame() );
+  // view->main()->uiEndFrame->value( bg->image()->last_frame() );
+  // view->main()->uiTimeline->minimum( bg->image()->first_frame() );
+  // view->main()->uiTimeline->maximum( bg->image()->last_frame() );
+
+  update_title_bar( view );
+  view->fit_image();
 }
 
 void toggle_background_cb( fltk::Widget* o, mrv::ImageView* view )
@@ -1274,7 +1341,7 @@ ImageView::~ImageView()
 
    // make sure to stop any playback
    stop_playback();
-   
+
    foreground( mrv::media() );
    background( mrv::media() );
 
@@ -2359,7 +2426,7 @@ void ImageView::timeout()
    {
        TRACE("");
       CMedia* img = fg->image();
-      delay = 0.5 / img->play_fps();
+      delay = 0.25 / img->play_fps();
 
       // If not a video image check if image has changed on disk
 
@@ -2537,7 +2604,7 @@ void ImageView::draw()
         DBG( "GLengine " << _engine );
         if ( !_engine ) return;
 
-        
+
         DBG( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
@@ -2604,7 +2671,7 @@ void ImageView::draw()
         TRACE("");
     }
 
-        
+
     if ( fg )
     {
         TRACE("");
@@ -3443,6 +3510,9 @@ int ImageView::leftMouseDown(int x, int y)
             menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
                       (fltk::Callback*)set_as_background_cb,
                       (void*)this);
+            menu.add( _("Image/Switch FG and BG"),
+                      kSwitchFGBG.hotkey(),
+                      (fltk::Callback*)switch_fg_bg_cb, (void*)this);
             menu.add( _("Image/Toggle Background"),
                       kToggleBG.hotkey(),
                       (fltk::Callback*)toggle_background_cb, (void*)this);
@@ -3743,7 +3813,7 @@ void ImageView::pixel_processed( const CMedia* img,
     if ( p == kRGBA_Original ) return;
 
     bool blend = img->hires()->format() != image_type::kLumma;
-    
+
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
     switch( mode )
     {
@@ -5325,15 +5395,23 @@ int ImageView::keyDown(unsigned int rawkey)
         stop();
         return 1;
     }
+    else if ( kSwitchFGBG.match( rawkey ) )
+    {
+        switch_fg_bg_cb( this, this );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
     else if ( kPreviousImage.match( rawkey ) )
     {
         previous_image_cb(this, browser());
+	update_title_bar( this );
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kNextImage.match( rawkey ) )
     {
         next_image_cb(this, browser());
+	update_title_bar( this );
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
@@ -5461,13 +5539,13 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kTogglePixelRatio.match( rawkey ) )
     {
-	toggle_pixel_ratio();
-	return 1;
+        toggle_pixel_ratio();
+        return 1;
     }
     else if ( kToggleLut.match( rawkey ) )
     {
-	toggle_lut();
-	return 1;
+        toggle_lut();
+        return 1;
     }
     else if ( kToggle3dView.match( rawkey ) )
     {
@@ -5516,11 +5594,11 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kSetInPoint.match( rawkey ) )
     {
-	uiMain->uiStartButton->do_callback();
+        uiMain->uiStartButton->do_callback();
     }
     else if ( kSetOutPoint.match( rawkey ) )
     {
-	uiMain->uiEndButton->do_callback();
+        uiMain->uiEndButton->do_callback();
     }
     else if ( rawkey == fltk::LeftAltKey )
     {
@@ -6343,12 +6421,12 @@ void ImageView::channel( fltk::Widget* o )
 void ImageView::channel( unsigned short c )
 {
   boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
-  
+
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
   if ( num == 0 ) return; // Audio only - no channels
 
-  
+
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
   {
@@ -6391,7 +6469,7 @@ void ImageView::channel( unsigned short c )
           return;
       }
   }
-  
+
   // If user selected the same channel again, toggle it with
   // other channel (diffuse.r goes to diffuse, for example)
   const mrv::media& fg = foreground();
@@ -7034,22 +7112,6 @@ void ImageView::foreground( mrv::media fg )
     {
         img = fg->image();
 
-        char bufs[256];  bufs[0] = 0;
-
-        mrv::media bg = background();
-        if ( bg && fg != bg )
-        {
-            sprintf( bufs, _("mrViewer    FG: %s   BG: %s"),
-                     img->name().c_str(),
-                     bg->image()->name().c_str() );
-        }
-        else
-        {
-            sprintf( bufs, _("mrViewer    FG: %s"),
-                     img->name().c_str() );
-        }
-        uiMain->uiMain->copy_label( bufs );
-
         double fps = img->fps();
         if ( img->is_sequence() &&
              uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
@@ -7167,6 +7229,8 @@ void ImageView::foreground( mrv::media fg )
 
     update_layers();
 
+
+    update_title_bar( this );
     update_image_info();
     update_color_info( fg );
 
@@ -7261,17 +7325,12 @@ void ImageView::background( mrv::media bg )
   CMedia* img = NULL;
 
   _bg = bg;
+
+  update_title_bar( this );
+  
   if ( bg )
     {
       img = bg->image();
-
-      if ( fg && bg != fg )
-      {
-          sprintf( buf, _("mrViewer    FG: %s   BG: %s"),
-                   fg->image()->name().c_str(),
-                   img->name().c_str() );
-          uiMain->uiMain->copy_label( buf );
-      }
 
       sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
                img->fileroot(), img->first_frame(), img->last_frame() );
@@ -7292,11 +7351,6 @@ void ImageView::background( mrv::media bg )
     }
   else
   {
-      if ( fg )
-      {
-          sprintf( buf, _("mrViewer    FG: %s"), fg->image()->name().c_str() );
-          uiMain->uiMain->copy_label( buf );
-      }
       sprintf( buf, "CurrentBGImage \"\"" );
       send_network( buf );
   }
@@ -7402,6 +7456,7 @@ void ImageView::resize_main_window()
 void ImageView::toggle_background()
 {
    show_background( !show_background() );
+   update_title_bar( this );
    redraw();
 }
 
@@ -7584,6 +7639,7 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
+
     _preframe = f;
 
     if ( std::abs( f - frame() ) < fps() / 2.0 )
@@ -7970,10 +8026,8 @@ void ImageView::stop()
 
     seek( int64_t(timeline()->value()) );
 
+    mouseMove( fltk::event_x(), fltk::event_y() );
     redraw();
-
-    thumbnails();
-
 }
 
 

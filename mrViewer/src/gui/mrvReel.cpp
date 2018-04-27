@@ -50,6 +50,8 @@ size_t Reel_t::index( const CMedia* const img ) const
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
+    if ( i == e ) return std::numeric_limits<size_t>::max();
+    
     size_t r = 0;
 
     if ( img->is_stereo() && ! img->is_left_eye() )
@@ -87,8 +89,11 @@ size_t Reel_t::index( const boost::int64_t f ) const
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
 
+    if ( i == e ) return std::numeric_limits<size_t>::max();
+
     mrv::media fg = images.front();
     int64_t mn = fg->position();
+
 
     fg = images.back();
     int64_t mx = fg->position() + fg->duration() - 1;
@@ -103,10 +108,12 @@ size_t Reel_t::index( const boost::int64_t f ) const
           CMedia* img = m->image();
           int64_t start = m->position();
           int64_t end = start + img->duration();
-          if ( f >= start && f < end ) break;
+          if ( f >= start && f < end ) 
+	      break;
       }
     
     if ( r >= images.size() ) r = std::numeric_limits<size_t>::max();
+
     return r;
 
   }
@@ -114,7 +121,7 @@ size_t Reel_t::index( const boost::int64_t f ) const
 
 mrv::media Reel_t::media_at( const boost::int64_t f ) const
 {
-    if ( images.size() == 0 ) return mrv::media();
+    if ( images.empty() ) return mrv::media();
 
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
