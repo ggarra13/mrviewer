@@ -2522,6 +2522,9 @@ void CMedia::seek( const int64_t f )
   std::cerr << "------- SEEK " << f << std::endl;
 #endif
 
+  SCOPED_LOCK( _mutex );
+  SCOPED_LOCK( _audio_mutex );
+  SCOPED_LOCK( _subtitle_mutex );
 
   _seek_frame = f;
   _seek_req   = true;
@@ -3224,9 +3227,10 @@ void CMedia::loop_at_start( const int64_t frame )
 }
 
 
-void CMedia::loop_at_end( const int64_t frame )
+void CMedia::loop_at_end( const int64_t f )
 {
 
+    int64_t frame = f - _start_number;
 
    if ( has_picture() )
    {
@@ -3240,15 +3244,18 @@ void CMedia::loop_at_end( const int64_t frame )
        AVStream* stream = get_video_stream();
        for ( ; i != e; ++i )
        {
-	   if ( pts2frame( stream, (*i).dts ) >= frame )
-	   {
-	       mrv::PacketQueue::const_iterator it = ++i.base();
-	       _video_packets.queue().erase( it );
-	   }
+	   if ( _video_packets.is_loop_start( *i ) ||
+		_video_packets.is_loop_end( *i ) ||
+		_video_packets.is_seek_end( *i ) ) continue;
+       	   if ( pts2frame( stream, (*i).dts ) >= frame )
+       	   {
+       	       mrv::PacketQueue::const_iterator it = ++i.base();
+       	       _video_packets.queue().erase( it );
+       	   }
        }
 
-       
-      _video_packets.loop_at_end( frame );
+       // Add the looping signal packet
+       _video_packets.loop_at_end( frame );
    }
 
   if ( number_of_audio_streams() > 0 )
@@ -3270,6 +3277,7 @@ void CMedia::loop_at_end( const int64_t frame )
        	   }
        }
 
+       // Add the looping signal packet
        _audio_packets.loop_at_end( frame );
     }
 
@@ -3315,9 +3323,10 @@ void CMedia::limit_video_store( const int64_t f )
   if ( !_sequence ) return;
 
   if ( first < 0 ) first = 0;
-  int64_t end = _numWindows-1;
-  if ( last > end ) last = end;
 
+  int64_t end = _numWindows-1;
+  if ( end < 0 ) end = 0;
+  if ( last > end ) last = end;
   
   for ( int64_t i = 0; i < first; ++i  )
   {
@@ -3603,7 +3612,7 @@ bool CMedia::find_image( const int64_t frame )
 
         refresh();
         image_damage( image_damage() | kDamageData | kDamage3DData );
-        limit_video_store(frame);
+        limit_video_store( f );
         return true;
     }
 
@@ -3655,7 +3664,7 @@ bool CMedia::find_image( const int64_t frame )
      }
   }
 
-  limit_video_store( frame );
+  limit_video_store( f );
   refresh();
   image_damage( image_damage() | kDamageData | kDamage3DData );
   return true;
