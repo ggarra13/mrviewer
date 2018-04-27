@@ -724,15 +724,15 @@ SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
 
 # A dummy target so that we can test post_build commands faster
-#ADD_CUSTOM_TARGET( bundle
-# 		   COMMAND echo here we would run cpack
-# 		   DEPENDS ${PROJECT_NAME}
+#ADD_CUSTOM_TARGET( bundle ALL
+#                   COMMAND echo here we would run cpack
+# 		    DEPENDS ${PROJECT_NAME}
 # 		   )
 
 
 ADD_CUSTOM_TARGET( bundle
 		   COMMAND "${CMAKE_CPACK_COMMAND}"
- 		   	   "-C" "$<CONFIGURATION>"
+		   	   "-C" "$<CONFIGURATION>"
 			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
 			   COMMENT "Running CPack. Please wait..."
 			   USES_TERMINAL
