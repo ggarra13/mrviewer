@@ -30,8 +30,8 @@ IF( UNIX )
 ENDIF( UNIX )
 
 SET( VersionMajor 4 )
-SET( VersionMinor 0 )
-SET( VersionPatch 8 )
+SET( VersionMinor 1 )
+SET( VersionPatch 0 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
