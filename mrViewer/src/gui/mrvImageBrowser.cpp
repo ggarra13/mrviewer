@@ -709,6 +709,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
+
     reel->images.insert( reel->images.begin() + idx, m );
 
     Element* nw = new_item( m );
@@ -2689,16 +2690,12 @@ void ImageBrowser::handle_dnd()
         mrv::media bg = view()->background();
         if ( bg )
         {
-           f = tframe;
 
            img = bg->image();
-           if ( bgreel )
-               f = bgreel->global_to_local( tframe );
 
            if ( ! img->saving() && !img->stopped() ) {
                img->stop();
            }
-
 
            img->seek( f );
         }
@@ -2713,12 +2710,8 @@ void ImageBrowser::handle_dnd()
 
     if ( view()->playback() != CMedia::kStopped )  return;
 
-
-
-
     view()->redraw();
     redraw();
-
   }
 
 
@@ -2730,6 +2723,7 @@ void ImageBrowser::handle_dnd()
    */
   void ImageBrowser::frame( const int64_t f )
   {
+      
       uiMain->uiFrame->value( f );
       uiMain->uiFrame->redraw();
 
