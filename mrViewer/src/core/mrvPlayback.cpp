@@ -229,10 +229,13 @@ void time2frame( CMedia* img, const mrv::Timeline* timeline,
 {
     
     AVRational rp;
-    rp.num = img->play_fps() * 1000;
+    //    rp.num = img->play_fps() * 1000;
+    //std::cerr << "img->play_fps " << img->play_fps() << std::endl;
+    rp.num = img->fps() * 1000;
     rp.den = 1000;
 
     AVRational rt;
+    //std::cerr << "timeline->fps " << timeline->fps() << std::endl;
     rt.num = timeline->fps() * 1000;
     rt.den = 1000;
     
@@ -506,7 +509,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                                 next->do_seek();
                                 next->play( CMedia::kBackwards, uiMain, fg );
                             }
-
+			    
                             img->playback( CMedia::kStopped );
                             img->flush_all();
                             if ( img->has_video() ) img->clear_cache();
@@ -608,7 +611,7 @@ void audio_thread( PlaybackData* data )
     if (!reel) return;
 
 #ifdef DEBUG_THREADS
-    LOG_INFO("ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame);
+    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame << std::endl;
 #endif
     mrv::Timer timer;
 
@@ -766,7 +769,8 @@ void audio_thread( PlaybackData* data )
     img->playback( CMedia::kStopped );
     
 #ifdef DEBUG_THREADS
-    LOG_INFO( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
+    std::cerr << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame()
+	      << std::endl;
     assert( img->stopped() );
 #endif
 
@@ -950,8 +954,8 @@ void video_thread( PlaybackData* data )
    
     
 #ifdef DEBUG_THREADS
-    LOG_INFO( "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame << " timeline frame "
-         << timeline->value() );
+    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame << " timeline frame "
+	      << timeline->value() << std::endl;
 #endif
 
 
@@ -1164,9 +1168,10 @@ void video_thread( PlaybackData* data )
     img->playback( CMedia::kStopped );
     
 #ifdef DEBUG_THREADS
-    LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
+    std::cerr << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
               << img->name() << " stopped? " << img->stopped()
-              << " at " << frame << "  img->frame: " << img->frame() );
+              << " at " << frame << "  img->frame: " << img->frame()
+	      << std::endl;
    assert( img->stopped() );
 #endif
 
@@ -1211,8 +1216,8 @@ void decode_thread( PlaybackData* data )
    time2frame( img, timeline, frame );
 
 #ifdef DEBUG_THREADS
-   LOG_INFO( "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame 
-	<< " step " << step );
+   std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame 
+	     << " step " << step << std::endl;
 #endif
 
 
@@ -1228,6 +1233,8 @@ void decode_thread( PlaybackData* data )
 
 
       step = (int) img->playback();
+      if ( step == 0 ) break;
+      
       frame += step;
 
       CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
@@ -1290,7 +1297,7 @@ void decode_thread( PlaybackData* data )
    img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
-   LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << img->frame() << "  dts: " << img->dts() );
+   std::cerr << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << img->frame() << "  dts: " << img->dts() << std::endl;
    assert( img->stopped() );
 #endif
 
