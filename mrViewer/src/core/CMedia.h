@@ -796,7 +796,7 @@ class CMedia
     virtual void stop(const bool bg = false);
 
     inline Playback playback() const         { return _playback; }
-    inline void playback( const Playback p ) { _playback = p; }
+    /* inline */ void playback( const Playback p ); // { _playback = p; }
 
     inline bool stopped() const { return ( _playback == kStopped ); }
 
