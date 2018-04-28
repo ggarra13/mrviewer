@@ -1769,6 +1769,11 @@ void CMedia::default_layers()
     alpha_layers();
 }
 
+void CMedia::playback( const Playback p )
+{
+    _playback = p;
+}
+
 void CMedia::stereo_output( StereoOutput x )
 {
     if ( _stereo_output != x )
