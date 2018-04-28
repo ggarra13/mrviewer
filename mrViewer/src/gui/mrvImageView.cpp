@@ -409,22 +409,19 @@ static void update_title_bar( mrv::ImageView* view )
 
   char bufs[256];
 
-  if ( fg == bg && fg )
-  {
-      snprintf( bufs, 256, _("mrViewer    FG: %s"),
-		fg->image()->name().c_str() );
-  }
-  else if ( fg && bg )
+  if ( fg && bg && fg != bg )
   {
       snprintf( bufs, 256, _("mrViewer    FG: %s   BG: %s (%s)"),
 		fg->image()->name().c_str(),
 		bg->image()->name().c_str(),
 		view->show_background() ? _("Active") : _("Inactive") );
   }
-  else
+  else if ( fg )
   {
-      snprintf( bufs, 256, _("mrViewer") );
+      snprintf( bufs, 256, _("mrViewer    FG: %s"),
+		fg->image()->name().c_str() );
   }
+
   view->main()->uiMain->copy_label( bufs );
 }
 
@@ -437,7 +434,7 @@ void switch_fg_bg_cb( fltk::Widget* o, mrv::ImageView* view )
   }
   size_t fg_reel = view->fg_reel();
 
-  const mrv::media& bg = view->background();
+  mrv::media bg = view->background();
   if ( !bg ) {
       LOG_ERROR( _("No background image to switch to") );
       return;
@@ -456,11 +453,21 @@ void switch_fg_bg_cb( fltk::Widget* o, mrv::ImageView* view )
   view->background( fg );
   view->bg_reel( fg_reel );
 
+  mrv::ViewerUI* m = view->main();
+  mrv::Timeline* t = m->uiTimeline;
+  mrv::CMedia* img = bg->image();
+  // int64_t f = m->uiFrame->value();
 
-  // view->main()->uiStartFrame->value( bg->image()->first_frame() );
-  // view->main()->uiEndFrame->value( bg->image()->last_frame() );
-  // view->main()->uiTimeline->minimum( bg->image()->first_frame() );
-  // view->main()->uiTimeline->maximum( bg->image()->last_frame() );
+  // std::cerr << "f " << f << std::endl;
+  
+  // if ( f > img->last_frame() ) f = img->last_frame();
+  // else if ( f < img->first_frame() ) f = img->first_frame();
+  m->uiStartFrame->value( img->first_frame() );
+  m->uiEndFrame->value( img->last_frame() );
+  t->minimum( img->first_frame() );
+  t->maximum( img->last_frame() );
+  // m->uiFrame->value( f );
+  // t->value( f );
 
   update_title_bar( view );
   view->fit_image();
