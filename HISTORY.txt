@@ -17,7 +17,10 @@ v4.1.0   - Bug fixes to the choco installer and uninstaller.  The installer
 	 - Bug fixed a playback hanging when in EDL mode, after stopping
 	   a short sequence or movie file and continuing it later on.  The
 	   playback would not continue to the next image in the sequence.
-
+	 - Bug fixed changing FPS in EDL mode.  The playback would get
+	   corrupted.  This change reverts looping working in time instead
+	   of frames, as it was that change that was causing problems.
+ 
 v4.0.9   - A bug fix release to playback of movies with sound in loop, which
 	   was crashing v4.0.6 and later.
 	 - Bug fixed pixel ratio not being correct and being applied twice.
