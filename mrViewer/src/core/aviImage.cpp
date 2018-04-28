@@ -876,7 +876,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 	offset = int64_t( double(start * AV_TIME_BASE) / fps() );
 	if ( offset < 0 ) offset = 0;
     }
-    
+
 
 
     int flag = AVSEEK_FLAG_BACKWARD;
@@ -885,7 +885,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     {
         IMG_ERROR( _("Could not seek to frame ") << start
                    << N_(": ") << get_error_text(ret) );
-        return false;
+        return true;
     }
 
     if ( _acontext )

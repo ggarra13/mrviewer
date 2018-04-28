@@ -468,7 +468,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     char buf[256];
     sprintf( buf, "Reel \"%s\"", reel->name.c_str() );
-    view()->send_network( buf );
+    if ( view() ) view()->send_network( buf );
 
     _reel = (unsigned int) _reels.size() - 1;
     _reel_choice->add( name.c_str() );
@@ -480,6 +480,8 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
         eg->add_media_track( _reel );
     }
 
+    if ( !main()->uiEDLWindow ) return reel;
+    
    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
    fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
 
@@ -720,7 +722,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     send_reel( reel );
 
     sprintf( buf, "InsertImage %d \"%s\"", idx, m->image()->fileroot() );
-    view()->send_network( buf );
+    if ( view() ) view()->send_network( buf );
 
     redraw();
   }
@@ -732,7 +734,7 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
 {
     char buf[128];
     sprintf( buf, "CurrentReel \"%s\"", reel->name.c_str() );
-    view()->send_network( buf );
+    if ( view() ) view()->send_network( buf );
 }
 
 void ImageBrowser::send_image( const mrv::media& m )
@@ -740,6 +742,7 @@ void ImageBrowser::send_image( const mrv::media& m )
     if (!m) return;
 
     mrv::ImageView* v = view();
+    if (!v) return;
 
     std::string buf = N_("CurrentImage \"");
     CMedia* img = m->image();
