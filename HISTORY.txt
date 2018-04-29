@@ -1,3 +1,6 @@
+v4.1.1   - Bug fixed switching FG/BG images where the start/end frames were
+	   different.  Previously, this would lead to a hanging behavior.
+
 v4.1.0   - Bug fixes to the choco installer and uninstaller.  The installer
 	   now modifies the machine PATH instead of the user PATH variable.
 	   It also creates the shortcut in the All Users/Desktop.
