@@ -3407,7 +3407,6 @@ void aviImage::do_seek()
     if ( _right_eye )  _right_eye->do_seek();
 
     _seek_frame = handle_loops( _seek_frame );
-    _seek_frame += _start_number;
 
     _dts = _adts = _seek_frame;
 
