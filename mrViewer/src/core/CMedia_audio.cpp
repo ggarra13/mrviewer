@@ -1016,7 +1016,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     ret = avcodec_send_packet( ctx, avpkt );
     if ( ret < 0 )
     {
-        IMG_ERROR( _("Could not send packet") );
+        IMG_ERROR( _("Could not send packet. Error ") << get_error_text(ret) );
         return ret;
     }
 
@@ -1317,6 +1317,8 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
                                &audio_size, &pkt_temp );
       if ( ret < 0 )
       {
+	  IMG_ERROR( _("Decode_audio failed with error: ")
+		     << get_error_text(ret));
           return kDecodeMissingSamples;
       }
       assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
@@ -1903,7 +1905,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
   assert( _audio_buf_used == 0 );
 
-  if ( !_audio_packets.empty() )
+  if ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
   {
       const AVPacket& pkt = _audio_packets.front();
       _audio_last_frame = get_frame( get_audio_stream(), pkt );
@@ -1950,6 +1952,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
       assert( !_audio_packets.empty() );
       const AVPacket& pkt = _audio_packets.front();
       frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
+      std::cerr << "audio frame " << frame << std::endl;
     }
 
   if ( _audio_packets.is_seek_end() )
