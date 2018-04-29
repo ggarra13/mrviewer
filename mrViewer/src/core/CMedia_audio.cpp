@@ -1952,7 +1952,6 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
       assert( !_audio_packets.empty() );
       const AVPacket& pkt = _audio_packets.front();
       frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
-      std::cerr << "audio frame " << frame << std::endl;
     }
 
   if ( _audio_packets.is_seek_end() )
