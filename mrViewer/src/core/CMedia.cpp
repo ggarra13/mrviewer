@@ -3249,12 +3249,14 @@ void CMedia::loop_at_end( const int64_t f )
        AVStream* stream = get_video_stream();
        for ( ; i != e; ++i )
        {
-	   if ( _video_packets.is_loop_start( *i ) ||
+	   if ( _video_packets.is_preroll( *i ) ||
+		_video_packets.is_seek( *i ) ||
+		_video_packets.is_loop_start( *i ) ||
 		_video_packets.is_loop_end( *i ) ||
 		_video_packets.is_seek_end( *i ) ) continue;
        	   if ( pts2frame( stream, (*i).dts ) >= frame )
        	   {
-       	       mrv::PacketQueue::const_iterator it = ++i.base();
+       	       mrv::PacketQueue::const_iterator it = (i+1).base();
        	       _video_packets.queue().erase( it );
        	   }
        }
@@ -3275,9 +3277,14 @@ void CMedia::loop_at_end( const int64_t f )
        AVStream* stream = get_audio_stream();
        for ( ; i != e; ++i )
        {
+	   if ( _audio_packets.is_preroll( *i ) ||
+		_audio_packets.is_seek( *i ) ||
+		_audio_packets.is_loop_start( *i ) ||
+		_audio_packets.is_loop_end( *i ) ||
+		_audio_packets.is_seek_end( *i ) ) continue;
        	   if ( pts2frame( stream, (*i).dts ) >= frame )
        	   {
-       	       mrv::PacketQueue::const_iterator it = ++i.base();
+       	       mrv::PacketQueue::const_iterator it = (i+1).base();
        	       _audio_packets.queue().erase( it );
        	   }
        }
@@ -3558,6 +3565,7 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
       if ( len > 0 )
       {
           f = (f-_frameStart) % len + _frameStart;
+	  f -= _start_number;
       }
   }
   else if ( looping() == kPingPong )
@@ -3572,6 +3580,7 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
           {
               f = len - f + _frame_start;
           }
+	  f -= _start_number;
       }
   }
   else
