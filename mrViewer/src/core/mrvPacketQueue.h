@@ -227,18 +227,20 @@ namespace mrv {
 
           if ( pkt.data != _flush.data &&
                pkt.data != _seek.data  &&
+               pkt.data != _seek_end.data  &&
                pkt.data != _loop_start.data &&
                pkt.data != _preroll.data &&
                pkt.data != _loop_end.data )
           {
 #ifdef DEBUG_PACKET_QUEUE
-              std::cerr << "POP FRONT " << pkt.stream_index
+              std::cerr << "POP FRONT " << std::dec << pkt.stream_index
+			<< " #: " << _packets.size()
                         << " PTS: " << pkt.pts
                         << " DTS: " << pkt.dts
                         << " SIZE: " << pkt.size
                         << " DATA: " << (void*)pkt.data
-                        << " AT: " << &(_packets.front()) 
-                        << " TOTAL " << _bytes
+                        << " AT: " << std::hex << &(_packets.front()) 
+                        << " TOTAL " << std::dec << _bytes
                         << std::endl;
 #endif
               // if ( pkt.size > _bytes )
