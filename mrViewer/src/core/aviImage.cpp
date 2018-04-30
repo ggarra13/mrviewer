@@ -725,7 +725,7 @@ void aviImage::open_video_codec()
   int r = avcodec_parameters_to_context(_video_ctx, codecpar);
   if ( r < 0 )
   {
-      throw _("avcodec_context_from_parameters failed for video");
+      IMG_ERROR( _("avcodec_context_from_parameters failed for video") );
   }
 
 
@@ -790,7 +790,7 @@ void aviImage::close_video_codec()
 // Flush video buffers
 void aviImage::flush_video()
 {
-    SCOPED_LOCK( _mutex );
+    // SCOPED_LOCK( _mutex );
     if ( _video_ctx && _video_index >= 0 )
     {
         avcodec_flush_buffers( _video_ctx );
@@ -1058,15 +1058,15 @@ void aviImage::store_image( const int64_t frame,
   }
 
   AVFrame output = { 0 };
-  boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
+  mrv::aligned16_uint8_t* ptr = (mrv::aligned16_uint8_t*)image->data().get();
 
   unsigned int w = width();
   unsigned int h = height();
 
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
   // avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
-  av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
-                        w, h, 1);
+  av_image_fill_arrays( output.data, output.linesize, (uint8_t*) ptr,
+			_av_dst_pix_fmt, w, h, 1);
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
   int sws_flags = 0;
@@ -1897,7 +1897,7 @@ void aviImage::populate()
                 }
             case AVMEDIA_TYPE_VIDEO:
                 {
-
+		    SCOPED_LOCK( _mutex );
                     video_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
                     s.has_b_frames = ( ctx->has_b_frames != 0 );
@@ -1937,7 +1937,7 @@ void aviImage::populate()
                 }
             case AVMEDIA_TYPE_AUDIO:
                 {
-
+		    SCOPED_LOCK( _audio_mutex );
                     audio_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
 
@@ -1956,6 +1956,7 @@ void aviImage::populate()
                 }
             case AVMEDIA_TYPE_SUBTITLE:
                 {
+		    SCOPED_LOCK( _subtitle_mutex );
                     subtitle_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
                     s.bitrate    = calculate_bitrate( ctx );
@@ -3111,6 +3112,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     Mutex& vpm = _video_packets.mutex();
     SCOPED_LOCK( vpm );
 
+    
     {
         if ( _video_packets.empty() )
         {
@@ -3127,7 +3129,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
       if ( _video_packets.is_flush() )
         {
             assert( !_video_packets.empty() );
-            SCOPED_LOCK( _mutex );
+            // SCOPED_LOCK( _mutex );
             flush_video();
             assert( !_video_packets.empty() );
             _video_packets.pop_front();
@@ -3142,7 +3144,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         {
            bool ok = in_video_store( frame );
            if ( ok )
-           {
+           { 
                SCOPED_LOCK( _mutex );
                AVPacket& pkt = _video_packets.front();
                int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
@@ -3228,7 +3230,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                continue;
             }
 
-
           got_video = decode_image( pktframe, pkt );
           assert( !_video_packets.empty() );
           _video_packets.pop_front();
@@ -3236,7 +3237,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         }
 
     }
-
 
 
 #ifdef DEBUG_VIDEO_STORES
