@@ -3232,10 +3232,10 @@ void CMedia::loop_at_start( const int64_t frame )
 }
 
 
-void CMedia::loop_at_end( const int64_t f )
+void CMedia::loop_at_end( const int64_t frame )
 {
 
-    int64_t frame = f - _start_number;
+    int64_t f = frame - _start_number;
 
    if ( has_picture() )
    {
@@ -3247,16 +3247,19 @@ void CMedia::loop_at_end( const int64_t f )
        mrv::PacketQueue::const_reverse_iterator i = _video_packets.rbegin();
        mrv::PacketQueue::const_reverse_iterator e = _video_packets.rend();
        AVStream* stream = get_video_stream();
+       if (!stream) return;
+       
        for ( ; i != e; ++i )
        {
-	   if ( _video_packets.is_preroll( *i ) ||
-		_video_packets.is_seek( *i ) ||
-		_video_packets.is_loop_start( *i ) ||
-		_video_packets.is_loop_end( *i ) ||
-		_video_packets.is_seek_end( *i ) ) continue;
-       	   if ( pts2frame( stream, (*i).dts ) >= frame )
+	   mrv::PacketQueue::const_iterator it = (i+1).base();
+	   if ( _video_packets.is_preroll( *it ) ||
+		_video_packets.is_seek( *it ) ||
+		_video_packets.is_flush( *it ) ||
+		_video_packets.is_loop_start( *it ) ||
+		_video_packets.is_loop_end( *it ) ||
+		_video_packets.is_seek_end( *it ) ) continue;
+       	   if ( pts2frame( stream, (*it).dts ) >= frame )
        	   {
-       	       mrv::PacketQueue::const_iterator it = (i+1).base();
        	       _video_packets.queue().erase( it );
        	   }
        }
@@ -3275,16 +3278,19 @@ void CMedia::loop_at_end( const int64_t f )
        mrv::PacketQueue::const_reverse_iterator i = _audio_packets.rbegin();
        mrv::PacketQueue::const_reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
+       if (!stream) return;
+       
        for ( ; i != e; ++i )
        {
-	   if ( _audio_packets.is_preroll( *i ) ||
-		_audio_packets.is_seek( *i ) ||
-		_audio_packets.is_loop_start( *i ) ||
-		_audio_packets.is_loop_end( *i ) ||
-		_audio_packets.is_seek_end( *i ) ) continue;
-       	   if ( pts2frame( stream, (*i).dts ) >= frame )
+	   mrv::PacketQueue::const_iterator it = (i+1).base();
+	   if ( _audio_packets.is_preroll( *it ) ||
+		_audio_packets.is_seek( *it ) ||
+		_audio_packets.is_flush( *it ) ||
+		_audio_packets.is_loop_start( *it ) ||
+		_audio_packets.is_loop_end( *it ) ||
+		_audio_packets.is_seek_end( *it ) ) continue;
+       	   if ( pts2frame( stream, (*it).dts ) >= frame )
        	   {
-       	       mrv::PacketQueue::const_iterator it = (i+1).base();
        	       _audio_packets.queue().erase( it );
        	   }
        }
@@ -3565,7 +3571,6 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
       if ( len > 0 )
       {
           f = (f-_frameStart) % len + _frameStart;
-	  f -= _start_number;
       }
   }
   else if ( looping() == kPingPong )
@@ -3580,7 +3585,6 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
           {
               f = len - f + _frame_start;
           }
-	  f -= _start_number;
       }
   }
   else
