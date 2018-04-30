@@ -1513,10 +1513,15 @@ CMedia::store_audio( const int64_t audio_frame,
 {
 
   assert( buf != NULL );
+  if ( buf == NULL || size == 0 )
+  {
+      IMG_ERROR( _("store_audio: Invalid data") );
+      return 0;
+  }
 
   // Ge2t the audio codec context
   AVStream* stream = get_audio_stream();
-  if ( !stream ) return 0;
+  if ( !stream || !_audio_ctx ) return 0;
 
 
   SCOPED_LOCK( _audio_mutex );

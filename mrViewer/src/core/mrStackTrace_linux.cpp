@@ -192,6 +192,8 @@ void ExceptionHandler::install_signal_handler() {
 
 void ExceptionHandler::restore_signal_handler() {
 
+    return;
+    
   /* Install our signal handler */
   struct sigaction sa;
 
