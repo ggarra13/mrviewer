@@ -421,6 +421,10 @@ static void update_title_bar( mrv::ImageView* view )
       snprintf( bufs, 256, _("mrViewer    FG: %s"),
 		fg->image()->name().c_str() );
   }
+  else
+  {
+      snprintf( bufs, 32, _("mrViewer") );
+  }
 
   view->main()->uiMain->copy_label( bufs );
 }
@@ -4350,7 +4354,7 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic;
   bool outside = false;
-  int xp, yp, w, h;
+  int xp = x, yp = y, w, h;
   picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
   if ( !pic ) return;
 
