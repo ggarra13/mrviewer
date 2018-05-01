@@ -31,6 +31,7 @@
 namespace mrv {
 
 const char* PacketQueue::kModule = "pktqueue";
+bool      PacketQueue::inited = false;
 AVPacket  PacketQueue::_flush;
 AVPacket  PacketQueue::_seek;
 AVPacket  PacketQueue::_seek_end;
