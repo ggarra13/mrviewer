@@ -227,7 +227,11 @@ inline unsigned int barrier_thread_count( const CMedia* img )
 void time2frame( CMedia* img, const mrv::Timeline* timeline,
                  int64_t& t )
 {
-    
+    return;
+
+    // The code below cannot be verified to be correct.  It adds
+    // mutex locks to playback.
+#if 0
     AVRational rp;
     //    rp.num = img->play_fps() * 1000;
     //std::cerr << "img->play_fps " << img->play_fps() << std::endl;
@@ -240,6 +244,8 @@ void time2frame( CMedia* img, const mrv::Timeline* timeline,
     rt.den = 1000;
     
     t = av_rescale_q( t, rp, rt );
+#endif
+    
 }
 
 CMedia::DecodeStatus check_loop( const int64_t frame,
@@ -1259,7 +1265,7 @@ void decode_thread( PlaybackData* data )
                << " threshold: " << barrier->threshold() 
                << " used: " << barrier->used() );
 
-          // img->clear_packets();
+          img->clear_packets();
 
          // Do the looping, taking into account ui state
          //  and return new frame and step.
