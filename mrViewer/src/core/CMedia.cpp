@@ -1772,10 +1772,6 @@ void CMedia::default_layers()
     alpha_layers();
 }
 
-void CMedia::playback( const Playback p )
-{
-    _playback = p;
-}
 
 void CMedia::stereo_output( StereoOutput x )
 {
@@ -2389,8 +2385,7 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop(const bool bg)
 {
-
-
+ 
     if ( _playback == kStopped && _threads.empty() ) return;
 
     if ( _right_eye ) _right_eye->stop();
