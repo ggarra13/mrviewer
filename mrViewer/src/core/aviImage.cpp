@@ -91,13 +91,13 @@ namespace
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
-//#define DEBUG_SEEK_VIDEO_PACKETS
+// #define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
-//#define DEBUG_VIDEO_PACKETS
+// #define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
-//#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -1313,6 +1313,7 @@ void aviImage::clear_packets()
 #endif
 
 
+  
   _video_packets.clear();
   _audio_packets.clear();
   _subtitle_packets.clear();
