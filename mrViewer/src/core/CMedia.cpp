@@ -456,7 +456,10 @@ _audio_engine( NULL )
 
     _aframe = av_frame_alloc();
     audio_initialize();
-    mrv::PacketQueue::initialize();
+    if ( mrv::PacketQueue::inited == false )
+    {
+	mrv::PacketQueue::initialize();
+    }
     // std::cerr << "CMedia " << this << std::endl;
 }
 
@@ -3244,23 +3247,17 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::Mutex& m = _video_packets.mutex();
        SCOPED_LOCK( m );
        
-       mrv::PacketQueue::const_reverse_iterator i = _video_packets.rbegin();
-       mrv::PacketQueue::const_reverse_iterator e = _video_packets.rend();
+       mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
+       mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
        AVStream* stream = get_video_stream();
        if (!stream) return;
        
        for ( ; i != e; ++i )
        {
-	   mrv::PacketQueue::const_iterator it = (i+1).base();
-	   if ( _video_packets.is_preroll( *it ) ||
-		_video_packets.is_seek( *it ) ||
-		_video_packets.is_flush( *it ) ||
-		_video_packets.is_loop_start( *it ) ||
-		_video_packets.is_loop_end( *it ) ||
-		_video_packets.is_seek_end( *it ) ) continue;
-       	   if ( pts2frame( stream, (*it).dts ) >= frame )
+	   mrv::PacketQueue::iterator it = (i+1).base();
+       	   if ( get_frame( stream, (*it) ) >= frame )
        	   {
-       	       _video_packets.queue().erase( it );
+	       _video_packets.erase( it );
        	   }
        }
 
@@ -3275,23 +3272,17 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
        SCOPED_LOCK( m );
        
-       mrv::PacketQueue::const_reverse_iterator i = _audio_packets.rbegin();
-       mrv::PacketQueue::const_reverse_iterator e = _audio_packets.rend();
+       mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
+       mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
        if (!stream) return;
        
        for ( ; i != e; ++i )
        {
-	   mrv::PacketQueue::const_iterator it = (i+1).base();
-	   if ( _audio_packets.is_preroll( *it ) ||
-		_audio_packets.is_seek( *it ) ||
-		_audio_packets.is_flush( *it ) ||
-		_audio_packets.is_loop_start( *it ) ||
-		_audio_packets.is_loop_end( *it ) ||
-		_audio_packets.is_seek_end( *it ) ) continue;
-       	   if ( pts2frame( stream, (*it).dts ) >= frame )
+	   mrv::PacketQueue::iterator it = (i+1).base();
+       	   if ( get_frame( stream, (*it) ) >= frame )
        	   {
-       	       _audio_packets.queue().erase( it );
+	       _audio_packets.erase( it );
        	   }
        }
 
