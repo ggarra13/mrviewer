@@ -45,7 +45,7 @@ extern "C" {
 
 
 /**
- * assert() equivalent, that is always enabled.
+ * assert0() equivalent, that is always enabled.
  */
 #define assert0(cond) do {                                            \
     if (!(cond)) {                                                       \
@@ -76,7 +76,8 @@ namespace mrv {
       typedef boost::condition_variable_any Condition;
       
       static const char* kModule;
- 
+
+      static bool inited;
 
       inline PacketQueue() : _bytes(0)
       {
@@ -130,13 +131,13 @@ namespace mrv {
               pop_front();
           }
 
-          assert( _bytes == 0 );
+	  // std::cerr << this << " bytes: " << _bytes << std::endl;
+          assert0( _bytes == 0 );
           _bytes = 0;
       }
 
       inline iterator end()
       {
-          Mutex::scoped_lock lk( _mutex );
           return _packets.end();
       }
 
@@ -147,7 +148,6 @@ namespace mrv {
       
       inline reverse_iterator rend()
       {
-          Mutex::scoped_lock lk( _mutex );
           return _packets.rend();
       }
 
@@ -161,12 +161,36 @@ namespace mrv {
       {
           Mutex::scoped_lock lk( _mutex );
 
-          assert( pkt.size >= 0 );
+          assert0( pkt.size >= 0 );
 
           _packets.push_back( pkt );
 
-          _bytes += pkt.size;
+          if ( pkt.data != _flush.data &&
+               pkt.data != _seek.data  &&
+               pkt.data != _seek_end.data  &&
+               pkt.data != _loop_start.data &&
+               pkt.data != _preroll.data &&
+               pkt.data != _loop_end.data &&
+	       pkt.data != NULL )
+          {
+	      // std::cerr << this << " #" << _packets.size()
+	      // 		<< " push back " << &pkt << " at "
+	      // 		<< &(_packets.back())
+	      //                << " start size: " << pkt.size
+	      // 		<< " bytes " << _bytes
+	      // 		<< std::endl;
+	      assert0( pkt.size > 0 );
+	      
+	      _bytes += pkt.size;
+	      assert0( _bytes > 0 );
 
+	      // std::cerr << this << " #" << _packets.size()
+	      // 		<< " push back end " << std::dec
+	      // 		<< pkt.dts << " size: " << pkt.size
+	      // 		<< " bytes " << _bytes
+	      // 		<< std::endl;
+	  }
+	  
 #ifdef DEBUG_PACKET_QUEUE
           std::cerr << "PUSH BACK " << pkt.stream_index 
                     << " PTS: " << pkt.pts
@@ -194,34 +218,71 @@ namespace mrv {
 
       inline const AVPacket& front() const
       {
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.front();
       }
 
       inline AVPacket& front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.front();
       }
 
       inline const AVPacket& back() const
       {
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.back();
       }
 
       inline AVPacket& back()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.back();
       }
 
+      inline void erase( iterator it )
+      {
+          Mutex::scoped_lock lk( _mutex );
+          assert0( ! _packets.empty() );
+
+	  AVPacket& pkt = *it;
+	  
+          if ( pkt.data != _flush.data &&
+               pkt.data != _seek.data  &&
+               pkt.data != _seek_end.data  &&
+               pkt.data != _loop_start.data &&
+               pkt.data != _preroll.data &&
+               pkt.data != _loop_end.data &&
+	       pkt.data != NULL )
+          {
+	      // std::cerr << this << " #" << _packets.size()
+	      // 		<< " erase " << &pkt << std::endl;
+	      
+              assert0( pkt.size >= 0 );
+              assert0( _bytes >= pkt.size );
+	      
+	      // std::cerr << std::hex << this << " #"
+	      // 		<< std::dec << _packets.size()
+	      // 		<< " erase " << std::dec << pkt.dts
+	      // 		<< " bytes " << std::dec << _bytes
+	      // 		<< " - " << std::dec << pkt.size << " = ";
+	      
+              _bytes -= pkt.size;
+	      
+	      // std::cerr << std::dec << _bytes << std::endl;
+
+              av_packet_unref( &pkt );
+	  }
+
+	  _packets.erase( it );
+      }
+      
       inline void pop_front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
 
           AVPacket& pkt = _packets.front();
 
@@ -230,7 +291,8 @@ namespace mrv {
                pkt.data != _seek_end.data  &&
                pkt.data != _loop_start.data &&
                pkt.data != _preroll.data &&
-               pkt.data != _loop_end.data )
+               pkt.data != _loop_end.data &&
+	       pkt.data != NULL )
           {
 #ifdef DEBUG_PACKET_QUEUE
               std::cerr << "POP FRONT " << std::dec << pkt.stream_index
@@ -246,9 +308,22 @@ namespace mrv {
               // if ( pkt.size > _bytes )
               //     _bytes = 0;
               // else
-              assert( pkt.size >= 0 );
-              assert( _bytes >= pkt.size );
+              assert0( pkt.size >= 0 );
+              assert0( _bytes >= pkt.size );
+
+	      // std::cerr << this  << " #"
+	      // 		<< std::dec << _packets.size()
+	      // 		<< " pop front " << &pkt << std::endl;
+	      
+	      // std::cerr << std::hex << this << " #"
+	      // 		<< std::dec << _packets.size()
+	      // 		<< " pop front " << std::dec << pkt.dts
+	      // 		<< " bytes " << std::dec << _bytes
+	      // 		<< " - " << std::dec << pkt.size << " = ";
+	      
               _bytes -= pkt.size;
+	      
+	      // std::cerr << std::dec << _bytes << std::endl;
 
               av_packet_unref( &pkt );
           }
@@ -428,6 +503,8 @@ namespace mrv {
           av_init_packet( &_loop_end );
           _loop_end.data = (uint8_t*)"LOOP END";
           _loop_end.size = 0;
+
+	  inited = true;
       }
 
       static void release()
