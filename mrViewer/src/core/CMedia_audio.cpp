@@ -137,7 +137,10 @@ void CMedia::clear_packets()
    SCOPED_LOCK( _mutex );
    SCOPED_LOCK( _audio_mutex );
    SCOPED_LOCK( _subtitle_mutex );
-  _video_packets.clear();
+   std::cerr << "video pkts " << &_video_packets << std::endl;
+   std::cerr << "audio pkts " << &_audio_packets << std::endl;
+   std::cerr << "subtitle pkts " << &_subtitle_packets << std::endl;
+   _video_packets.clear();
   _subtitle_packets.clear();
   _audio_packets.clear();
   _audio_buf_used = 0;
@@ -322,7 +325,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                 }
             }
          
-            av_packet_unref( &pkt );
+            //av_packet_unref( &pkt );
          
             break;
         }
@@ -1010,8 +1013,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     int got_frame = 0;
     int ret = -1;
     bool eof = false;
+    int decoded = avpkt->size;
 
-    // ret = avcodec_decode_audio4(ctx, _aframe, &got_frame, avpkt);
 
     ret = avcodec_send_packet( ctx, avpkt );
     if ( ret < 0 )
@@ -1028,6 +1031,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         else if ( ret < 0 )
             return ret;
 
+        int decoded = FFMIN(ret, avpkt->size);
+	
         av_assert2( _aframe->nb_samples > 0 );
         av_assert2( ctx->channels > 0 );
         int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
@@ -1230,7 +1235,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     }
 
     avpkt->size = 0;
-    return ret;
+    return decoded;
 }
 
 
@@ -2257,7 +2262,7 @@ bool CMedia::in_audio_packets( const int64_t frame )
   AVStream* stream = get_audio_stream();
   for ( ; iter != last; ++iter )
   {
-      if ( pts2frame( stream, (*iter).dts ) == frame )
+      if ( get_frame( stream, (*iter) ) == frame )
           return true;
   }
   return false;
