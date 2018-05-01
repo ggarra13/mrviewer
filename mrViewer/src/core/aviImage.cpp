@@ -91,7 +91,7 @@ namespace
 //#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
-// #define DEBUG_SEEK_VIDEO_PACKETS
+//#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
@@ -872,7 +872,6 @@ bool aviImage::seek_to_position( const int64_t frame )
 	    if ( playback() == kBackwards ) --start;
 	}
 
-	//start = handle_loops( start );
 	
 	if ( !skip ) --start;
 	
@@ -1311,7 +1310,6 @@ void aviImage::clear_packets()
    cerr << "+++++++++++++ CLEAR VIDEO/AUDIO/SUBTITLE PACKETS " << _frame
         << " expected: " << _expected << endl;
 #endif
-
 
   
   _video_packets.clear();
@@ -2543,7 +2541,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
         if ( has_video() && pkt.stream_index == video_stream_index() )
         {
-            int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )                                      - _frame_offset + _start_number; // needed
+            int64_t pktframe = get_frame( get_video_stream(), pkt )                                             - _frame_offset + _start_number; // needed
 
             if ( playback() == kBackwards )
             {
