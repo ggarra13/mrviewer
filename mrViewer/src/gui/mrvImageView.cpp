@@ -7975,6 +7975,7 @@ void ImageView::play( const CMedia::Playback dir )
       img->play( dir, uiMain, false);
       typedef boost::recursive_mutex Mutex;
       CMedia::Barrier* barrier = img->fg_bg_barrier();
+      if ( !barrier ) return;
       img = fg->image();
       Mutex& vm = img->video_mutex();
       SCOPED_LOCK( vm );
