@@ -456,10 +456,7 @@ _audio_engine( NULL )
 
     _aframe = av_frame_alloc();
     audio_initialize();
-    if ( mrv::PacketQueue::inited == false )
-    {
-	mrv::PacketQueue::initialize();
-    }
+    mrv::PacketQueue::initialize();
     // std::cerr << "CMedia " << this << std::endl;
 }
 
@@ -1772,7 +1769,6 @@ void CMedia::default_layers()
     alpha_layers();
 }
 
-
 void CMedia::stereo_output( StereoOutput x )
 {
     if ( _stereo_output != x )
@@ -2385,7 +2381,8 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop(const bool bg)
 {
- 
+
+
     if ( _playback == kStopped && _threads.empty() ) return;
 
     if ( _right_eye ) _right_eye->stop();
@@ -2525,9 +2522,6 @@ void CMedia::seek( const int64_t f )
   std::cerr << "------- SEEK " << f << std::endl;
 #endif
 
-  SCOPED_LOCK( _mutex );
-  SCOPED_LOCK( _audio_mutex );
-  SCOPED_LOCK( _subtitle_mutex );
 
   _seek_frame = f;
   _seek_req   = true;
@@ -3233,7 +3227,6 @@ void CMedia::loop_at_start( const int64_t frame )
 void CMedia::loop_at_end( const int64_t frame )
 {
 
-    int64_t f = frame - _start_number;
 
    if ( has_picture() )
    {
@@ -3245,43 +3238,39 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
        AVStream* stream = get_video_stream();
-       if (!stream) return;
-       
        for ( ; i != e; ++i )
        {
-	   mrv::PacketQueue::iterator it = (i+1).base();
-       	   if ( get_frame( stream, (*it) ) >= frame )
-       	   {
+	   if ( pts2frame( stream, (*i).dts ) >= frame )
+	   {
+	       mrv::PacketQueue::iterator it = (i+1).base();
 	       _video_packets.erase( it );
-       	   }
+	   }
        }
 
-       // Add the looping signal packet
-       _video_packets.loop_at_end( frame );
+       
+      _video_packets.loop_at_end( frame );
    }
 
   if ( number_of_audio_streams() > 0 )
     {
-       // With loop at end, we can discard all audio packets that go
-       // beyond the last frame
+       // // With loop at end, we can discard all audio packets that go
+       // // beyond the last frame
        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
        SCOPED_LOCK( m );
        
        mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
-       if (!stream) return;
-       
        for ( ; i != e; ++i )
        {
-	   mrv::PacketQueue::iterator it = (i+1).base();
-       	   if ( get_frame( stream, (*it) ) >= frame )
+           int64_t pktframe = pts2frame( stream, (*i).dts );
+       	   if ( pktframe >= frame )
        	   {
-	       _audio_packets.erase( it );
+       	       mrv::PacketQueue::iterator it = (i+1).base();
+       	       _audio_packets.erase( it );
        	   }
        }
 
-       // Add the looping signal packet
        _audio_packets.loop_at_end( frame );
     }
 
@@ -3327,10 +3316,9 @@ void CMedia::limit_video_store( const int64_t f )
   if ( !_sequence ) return;
 
   if ( first < 0 ) first = 0;
-
   int64_t end = _numWindows-1;
-  if ( end < 0 ) end = 0;
   if ( last > end ) last = end;
+
   
   for ( int64_t i = 0; i < first; ++i  )
   {
@@ -3616,7 +3604,7 @@ bool CMedia::find_image( const int64_t frame )
 
         refresh();
         image_damage( image_damage() | kDamageData | kDamage3DData );
-        limit_video_store( f );
+        limit_video_store(frame);
         return true;
     }
 
@@ -3668,7 +3656,7 @@ bool CMedia::find_image( const int64_t frame )
      }
   }
 
-  limit_video_store( f );
+  limit_video_store( frame );
   refresh();
   image_damage( image_damage() | kDamageData | kDamage3DData );
   return true;
