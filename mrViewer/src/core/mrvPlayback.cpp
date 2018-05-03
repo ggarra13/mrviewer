@@ -299,12 +299,12 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             if ( e < last )
                 last = e;
 	    else
-		img->loop_end( last+1 );
+		img->loop_end( last );
 
             if ( s > first )
                 first = s;
 	    else
-		img->loop_start( first-1 );
+		img->loop_start( first );
         }
     }
 
