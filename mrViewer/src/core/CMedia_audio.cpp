@@ -136,10 +136,7 @@ void CMedia::clear_packets()
     
    SCOPED_LOCK( _mutex );
    SCOPED_LOCK( _audio_mutex );
-   SCOPED_LOCK( _subtitle_mutex );
-   std::cerr << "video pkts " << &_video_packets << std::endl;
-   std::cerr << "audio pkts " << &_audio_packets << std::endl;
-   std::cerr << "subtitle pkts " << &_subtitle_packets << std::endl;
+   SCOPED_LOCK( _subtitle_mutex );;
    _video_packets.clear();
   _subtitle_packets.clear();
   _audio_packets.clear();
@@ -325,7 +322,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                 }
             }
          
-            //av_packet_unref( &pkt );
+            // av_packet_unref( &pkt );
          
             break;
         }
@@ -1235,7 +1232,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     }
 
     avpkt->size = 0;
-    return decoded;
+    return ret;
 }
 
 
@@ -1928,7 +1925,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
   while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
       const AVPacket& pkt = _audio_packets.front();
-      int64_t f = pts2frame( get_audio_stream(), pkt.dts );
+      int64_t f = get_frame( get_audio_stream(), pkt );
 
 
       DecodeStatus status;
@@ -2087,7 +2084,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
                SCOPED_LOCK( _audio_mutex );
                assert( !_audio_packets.empty() );
                AVPacket& pkt = _audio_packets.front();
-               int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )
+               int64_t pktframe = get_frame( get_audio_stream(), pkt )
                                   - _frame_offset;
 	      if ( pktframe >= frame )
 	      {
@@ -2234,7 +2231,7 @@ bool CMedia::in_subtitle_packets( const int64_t frame )
   AVStream* stream = get_subtitle_stream();
   for ( ; iter != last; ++iter )
   {
-      if ( pts2frame( stream, (*iter).dts ) == frame )
+      if ( get_frame( stream, (*iter) ) == frame )
           return true;
   }
   return false;
@@ -2248,7 +2245,7 @@ bool CMedia::in_video_packets( const int64_t frame )
   AVStream* stream = get_video_stream();
   for ( ; iter != last; ++iter )
   {
-      if ( pts2frame( stream, (*iter).dts ) == frame )
+      if ( get_frame( stream, (*iter) ) == frame )
           return true;
   }
   return false;
