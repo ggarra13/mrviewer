@@ -697,12 +697,6 @@ void audio_thread( PlaybackData* data )
 		    {
 			// Wait until all threads loop and decode is restarted
 			bool ok = barrier->wait();
-			if ( !ok )
-			{
-			    LOG_ERROR( img->name() << _(" barrier failed in "
-							"audio") );
-			}
-
 			DBG( img->name() << " BARRIER PASSED IN AUDIO "
 			     << frame );
 		    }
@@ -718,11 +712,6 @@ void audio_thread( PlaybackData* data )
                         //           << " threshold: " << barrier->threshold() 
                         //           << " used: " << barrier->used() );
                         bool ok = barrier->wait();
-			if ( !ok )
-			{
-			    LOG_ERROR( img->name() << _(" fg-bg barrier failed"
-							" in audio" ) );
-			}
                         // LOG_INFO( img->name() << " BARRIER " << barrier
                         //           << " AUDIO FG/BG PASS gen: " 
                         //           << barrier->generation() 
