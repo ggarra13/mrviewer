@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-05-03 17:37-0300\n"
+"POT-Creation-Date: 2018-05-04 09:58-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -80,7 +80,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:995
+#: core/mrvPlayback.cpp:1012
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
@@ -165,6 +165,10 @@ msgstr " en el puerto "
 msgid " attribute"
 msgstr " atributo"
 
+#: core/mrvPlayback.cpp:702
+msgid " barrier failed in audio"
+msgstr ""
+
 #: core/aviImage_save.cpp:569 core/aviImage_save.cpp:575
 msgid " channels "
 msgstr " canales "
@@ -188,6 +192,10 @@ msgstr " falló con "
 #: core/mrvACES.cpp:60
 msgid " failed. "
 msgstr " falló. "
+
+#: core/mrvPlayback.cpp:723
+msgid " fg-bg barrier failed in audio"
+msgstr ""
 
 #
 #
@@ -247,7 +255,7 @@ msgstr " no encontrado, eligiendo "
 msgid " not yet supported"
 msgstr " no soportado aún"
 
-#: core/mrvPlayback.cpp:996
+#: core/mrvPlayback.cpp:1013
 msgid " returned "
 msgstr " retornó "
 
@@ -1328,14 +1336,14 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:935
+#: core/mrvPlayback.cpp:952
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "La duración de la imagen de fondo es muy corta.  Repetir en ciclos puede no "
 "funcionar correctamente."
 
-#: core/mrvPlayback.cpp:920
+#: core/mrvPlayback.cpp:937
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
