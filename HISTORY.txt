@@ -1,5 +1,5 @@
 v4.1.1   - Bug fixed switching FG/BG images where the start/end frames were
-	   different.  Previously, this would lead to a hanging behavior.
+	   different.  Previously, this would lead to a hang.
 	 - Improved playback of short FG in loop with a long clip in BG.
 	   Previously, this would lead to a crash or to a mutex lock.
 	 - Removed the final code in time2frames() which was wrong and
