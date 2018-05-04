@@ -693,10 +693,19 @@ void audio_thread( PlaybackData* data )
 
                     
                     CMedia::Barrier* barrier = img->loop_barrier();
-                    // Wait until all threads loop and decode is restarted
-                    barrier->wait();
+		    if ( barrier )
+		    {
+			// Wait until all threads loop and decode is restarted
+			bool ok = barrier->wait();
+			if ( !ok )
+			{
+			    LOG_ERROR( img->name() << _(" barrier failed in "
+							"audio") );
+			}
 
-                    DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
+			DBG( img->name() << " BARRIER PASSED IN AUDIO "
+			     << frame );
+		    }
 
 
                     barrier = img->fg_bg_barrier();
@@ -708,7 +717,12 @@ void audio_thread( PlaybackData* data )
                         //           << " count: " << barrier->count() 
                         //           << " threshold: " << barrier->threshold() 
                         //           << " used: " << barrier->used() );
-                        barrier->wait();
+                        bool ok = barrier->wait();
+			if ( !ok )
+			{
+			    LOG_ERROR( img->name() << _(" fg-bg barrier failed"
+							" in audio" ) );
+			}
                         // LOG_INFO( img->name() << " BARRIER " << barrier
                         //           << " AUDIO FG/BG PASS gen: " 
                         //           << barrier->generation() 
@@ -767,7 +781,7 @@ void audio_thread( PlaybackData* data )
 
 
     CMedia::Barrier* barrier = img->loop_barrier();
-    barrier->notify_all();
+    if ( barrier ) barrier->notify_all();
     barrier = img->fg_bg_barrier();
     if ( barrier ) barrier->notify_all();
 
@@ -851,9 +865,12 @@ void subtitle_thread( PlaybackData* data )
                 //if ( img->stopped() ) continue;
               
                 CMedia::Barrier* barrier = img->loop_barrier();
-                // Wait until all threads loop and decode is restarted
-                barrier->wait();
-
+		if ( barrier )
+		{
+		    // Wait until all threads loop and decode is restarted
+		    barrier->wait();
+		}
+		
                 //if ( img->stopped() ) continue;
 
                 EndStatus end = handle_loop( frame, step, img, fg, true,
@@ -1011,14 +1028,17 @@ void video_thread( PlaybackData* data )
                     // }
                
                     CMedia::Barrier* barrier = img->loop_barrier();
-                    DBG( img->name() << " BARRIER VIDEO WAIT      gen: " 
-			 << barrier->generation() 
-			 << " count: " << barrier->count() 
-			 << " threshold: " << barrier->threshold() 
-			 << " used: " << barrier->used() );
-                    // Wait until all threads loop and decode is restarted
-                    bool ok = barrier->wait();
 
+		    if ( barrier )
+		    {
+			DBG( img->name() << " BARRIER VIDEO WAIT      gen: " 
+			     << barrier->generation() 
+			     << " count: " << barrier->count() 
+			     << " threshold: " << barrier->threshold() 
+			     << " used: " << barrier->used() );
+			// Wait until all threads loop and decode is restarted
+			bool ok = barrier->wait();
+		    }
                     
                     barrier = img->fg_bg_barrier();
                     if ( barrier )
@@ -1028,7 +1048,7 @@ void video_thread( PlaybackData* data )
                         //      << " count: " << barrier->count() 
                         //      << " threshold: " << barrier->threshold() 
                         //      << " used: " << barrier->used() );
-                        barrier->wait();
+                        bool ok = barrier->wait();
                         // LOG_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG PASS gen: " 
                         //      << barrier->generation() 
                         //      << " count: " << barrier->count() 
@@ -1040,7 +1060,7 @@ void video_thread( PlaybackData* data )
                     //LOG_INFO( img->name() << "@" << barrier << " wait" );
                     if ( barrier )
                     {
-                        barrier->wait();
+                        bool ok = barrier->wait();
                     }
 		    // LOG_INFO( img->name() << "@" << barrier << " waited" );
                     
@@ -1165,7 +1185,7 @@ void video_thread( PlaybackData* data )
    }
 
     CMedia::Barrier* barrier = img->loop_barrier();
-    barrier->notify_all();
+    if ( barrier ) barrier->notify_all();
     barrier = img->fg_bg_barrier();
     if ( barrier ) barrier->notify_all();
     barrier = img->stereo_barrier();
@@ -1252,19 +1272,23 @@ void decode_thread( PlaybackData* data )
          if ( img->stopped() ) continue;
 
           CMedia::Barrier* barrier = img->loop_barrier();
-          DBG( img->name() << " BARRIER DECODE WAIT      gen: " 
-               << barrier->generation() 
-               << " count: " << barrier->count() 
-               << " threshold: " << barrier->threshold() 
-               << " used: " << barrier->used() );
-          // Wait until all threads loop and decode is restarted
-          barrier->wait();
-	  DBG( img->name() << " BARRIER DECODE LOCK PASS gen: " 
-               << barrier->generation() 
-               << " count: " << barrier->count() 
-               << " threshold: " << barrier->threshold() 
-               << " used: " << barrier->used() );
 
+	  if ( barrier )
+	  {
+	      DBG( img->name() << " BARRIER DECODE WAIT      gen: " 
+		   << barrier->generation() 
+		   << " count: " << barrier->count() 
+		   << " threshold: " << barrier->threshold() 
+		   << " used: " << barrier->used() );
+	      // Wait until all threads loop and decode is restarted
+	      bool ok = barrier->wait();
+	      DBG( img->name() << " BARRIER DECODE LOCK PASS gen: " 
+		   << barrier->generation() 
+		   << " count: " << barrier->count() 
+		   << " threshold: " << barrier->threshold() 
+		   << " used: " << barrier->used() );
+	  }
+	  
           img->clear_packets();
 
          // Do the looping, taking into account ui state
@@ -1275,7 +1299,7 @@ void decode_thread( PlaybackData* data )
 				       uiMain, reel, timeline, status );
 
          if ( img->stopped() ) continue;
-	 img->seek( frame );
+	 // img->seek( frame );
       }
 
       
