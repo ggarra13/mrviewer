@@ -79,7 +79,7 @@ static const char* kModule = "file";
   static const std::string kMoviePattern = "3gp,asf,avc,avchd,avi,divx,dv,flv,m2ts,m2t,mkv,m4v,mp4,mpg,mpeg,mov,mxf,ogm,ogv,qt,ts,vob,vp9,webm,wmv,y4m,";
 
   static const std::string kImagePattern =
-    "bay,bmp,bit,cin,cr2,crw,ct,dng,dpx,exr,gif,hdr,hdri,iff,jpg,jpeg,map,nt,miff,mt,pic,png,ppm,pnm,pgm,pbm,psd,ras,rgb,rla,rpf,shmap,sgi,st,sun,sxr,tga,tif,tiff,tx,zt";
+    "3fr,arw,bay,bmp,bmq,bit,cap,cin,cine,cr2,crw,cs1,ct,dc2,dcr,dng,dpx,dsc,drf,erf,exr,fff,gif,hdr,hdri,k25,kc2,kdc,ia,iff,iiq,jpg,jpeg,map,mef,nt,mdc,miff,mos,mrw,mt,nef,nrw,orf,pef,pic,png,ppm,pnm,pgm,pbm,psd,ptx,pxn,qtk,raf,ras,raw,rdc,rgb,rla,rpf,rw2,rwl,rwz,shmap,sgi,sr2,srf,srw,st,sti,sun,sxr,tga,tif,tiff,tx,x3f,zt";
 
   static const std::string kProfilePattern = "icc,icm";
 
@@ -727,6 +727,8 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
 {
    if (!image) return;
 
+   std::string title = "Save Image";
+
    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                kReelPattern + "})\t";
    std::string kIMAGE_PATTERN = _("All Recognized (*.{") + 
@@ -739,29 +741,49 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
                                 "})\t" +
                                 _("Audios (*.(") + kAudioPattern + 
                                 "})\t" + kREEL_PATTERN;
+   std::string pattern = kIMAGE_PATTERN;
 
-   const char* file = flu_save_chooser( _("Save Image"), 
-                                        kIMAGE_PATTERN.c_str(), startdir,
-                                        false );
-   if ( main && (!main->uiMain || !main->uiMain->visible())) {
-       return;
-   }
-   if ( !file ) return;
+   if (!startdir) startdir = "";
 
-   std::string tmp = file;
-   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-		   (int(*)(int)) tolower);
-   std::string ext = tmp.c_str() + tmp.size() - 4;
+   const char* file = NULL;
+#ifdef _WIN32
+    bool native = mrv::Preferences::native_file_chooser;
+    fltk::use_system_file_chooser( native );
+    if ( native )
+    {
+        file = fltk::file_chooser( title.c_str(),
+                                   pattern.c_str(),
+                                   startdir, true );
+        if ( main && (!main->uiMain || !main->uiMain->visible())) {
+            return;
+        }
+        if ( !file ) return;
+    }
+    else
+#else
+	file = flu_save_chooser( _("Save Image"), 
+				 kIMAGE_PATTERN.c_str(), startdir,
+				 false );
+#endif
+    if ( main && (!main->uiMain || !main->uiMain->visible())) {
+	return;
+    }
+    if ( !file ) return;
 
-   ImageOpts* opts = ImageOpts::build( main, ext, image->has_deep_data() );
-   if ( opts->active() )
-   {
-       // Set icon back to WAIT
-       main->uiView->toggle_wait();
-       main->uiView->handle( fltk::ENTER );
-       fltk::check();
-
-       image->save( file, opts );
+    std::string tmp = file;
+    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+		    (int(*)(int)) tolower);
+    std::string ext = tmp.c_str() + tmp.size() - 4;
+    
+    ImageOpts* opts = ImageOpts::build( main, ext, image->has_deep_data() );
+    if ( opts->active() )
+    {
+	// Set icon back to WAIT
+	main->uiView->toggle_wait();
+	main->uiView->handle( fltk::ENTER );
+	fltk::check();
+	
+	image->save( file, opts );
 
        // Change icon back to ARROW/CROSSHAIR
        main->uiView->toggle_wait();
@@ -793,13 +815,13 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    std::string title = _("Save Sequence");
    stringArray filelist;
    const char* file = NULL;
+   if ( !startdir ) startdir = "";
 
 #ifdef _WIN32
     bool native = mrv::Preferences::native_file_chooser;
     fltk::use_system_file_chooser( native );
     if ( native )
     {
-        if ( !startdir ) startdir = "";
         file = fltk::file_chooser( title.c_str(),
                                    kIMAGE_PATTERN.c_str(),
                                    startdir, true );
@@ -808,8 +830,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
         }
         if ( !file ) return;
 
-        split( filelist, file, '\n' );
-        file = filelist[0].c_str();
     }
     else
 #endif
@@ -1168,13 +1188,13 @@ const char* save_reel( const char* startdir,
 
     stringArray filelist;
     std::string title = _("Save Reel");
+    if ( !startdir ) startdir = "";
 
 #ifdef _WIN32
     bool native = mrv::Preferences::native_file_chooser;
     fltk::use_system_file_chooser( native );
     if ( native )
     {
-        if ( !startdir ) startdir = "";
         const char* file = fltk::file_chooser( title.c_str(),
                                                kREEL_PATTERN.c_str(),
                                                startdir );
