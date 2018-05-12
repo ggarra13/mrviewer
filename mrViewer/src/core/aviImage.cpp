@@ -1495,22 +1495,25 @@ bool aviImage::find_image( const int64_t frame )
   {
       int64_t f = frame - _start_number;
 
+      video_cache_t::iterator end;
+      video_cache_t::iterator i;
+      
+      {
+	  SCOPED_LOCK( _mutex );
 
-    SCOPED_LOCK( _mutex );
+	  end = _images.end();
 
-    video_cache_t::iterator end = _images.end();
-    video_cache_t::iterator i;
-
-    if ( playback() == kBackwards )
-    {
-       i = std::upper_bound( _images.begin(), end,
-                             f, LessThanFunctor() );
-    }
-    else
-    {
-       i = std::lower_bound( _images.begin(), end,
-                             f, LessThanFunctor() );
-    }
+	  if ( playback() == kBackwards )
+	  {
+	      i = std::upper_bound( _images.begin(), end,
+				    f, LessThanFunctor() );
+	  }
+	  else
+	  {
+	      i = std::lower_bound( _images.begin(), end,
+				    f, LessThanFunctor() );
+	  }
+      }
 
     if ( i != end && *i )
       {

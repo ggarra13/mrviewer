@@ -30,7 +30,6 @@
 
 #include <CMedia.h>
 
-#include <OpenImageIO/imageio.h>
 
 namespace mrv {
 
