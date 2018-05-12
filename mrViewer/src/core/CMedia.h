@@ -1548,6 +1548,8 @@ class CMedia
 
     thread_pool_t  _threads;         //!< any threads associated with process
 
+    bool*                _valid_seq; //!< For sequences, if valid frame was
+                                     //!  found
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each
                                     //!  right float frame
