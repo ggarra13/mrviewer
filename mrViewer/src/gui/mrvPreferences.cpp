@@ -856,7 +856,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
 
 
-    loading.get( "native_file_chooser", tmp, 0 );
+    loading.get( "native_file_chooser", tmp, 1 );
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
     fltk::Preferences video( base, "video" );
