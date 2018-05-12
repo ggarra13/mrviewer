@@ -775,6 +775,7 @@ Imf::TimeCode CMedia::str2timecode( const std::string text )
 {
     bool drop_frame = false;
     stringArray tc;
+    stringArray tcp;
 
     // Parse 00:00:00:00
     split( tc, text, ':' );
@@ -784,19 +785,22 @@ Imf::TimeCode CMedia::str2timecode( const std::string text )
     // We also accept 00.00.00.00 as well as 00:00:00.00
     if ( tc.size() != 4 ) {
         // Parse 00;00;00;00
-        split( tc, text, ';' );
-        if ( tc.size() != 4 )
+        split( tcp, text, ';' );
+        if ( tcp.size() != 4 )
         {
             // Parse 00.00.00.00 as well as 00:00:00.00
             split( tc, text, '.' );
-            if ( tc.size() == 2 )
+            if ( tcp.size() == 2 || tc.size() == 2 )
             {
                 std::string frames = tc[1].substr( 0, 2 );
                 // Parse 00:00:00.00
                 split( tc, text, ':' );
                 if ( tc.size() != 3 )
+                {
+                    LOG_ERROR( _("Invalid timecode ") << text );
                     return Imf::TimeCode();
-
+                }
+                
                 // tc[2] contains the .00 frames too, so we remove them
                 tc[2] = tc[2].substr( 0, 2 );
  
@@ -804,7 +808,10 @@ Imf::TimeCode CMedia::str2timecode( const std::string text )
             }
         }
         if ( tc.size() != 4 )
+        {
+            LOG_ERROR( _("Invalid timecode ") << text );
             return Imf::TimeCode();
+        }
         drop_frame = true;
     }
 
@@ -814,6 +821,7 @@ Imf::TimeCode CMedia::str2timecode( const std::string text )
     int frames = atoi( tc[3].c_str() );
 
     // to avoid raising an exception
+    if ( hours   < 0 || hours   > 23 ) hours = 0;
     if ( minutes < 0 || minutes > 59 ) minutes = 0;
     if ( seconds < 0 || seconds > 59 ) seconds = 0;
     if ( frames  < 0 || frames  > 59 ) frames = 0;
