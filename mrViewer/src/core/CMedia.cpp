@@ -431,6 +431,7 @@ _rendering_transform( NULL ),
 _idt_transform( NULL ),
 _frame_offset( 0 ),
 _playback( kStopped ),
+_valid_seq( NULL ),
 _sequence( NULL ),
 _right( NULL ),
 _context(NULL),
@@ -536,6 +537,7 @@ _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
 _playback( kStopped ),
+_valid_seq( NULL ),
 _sequence( NULL ),
 _right( NULL ),
 _context(NULL),
@@ -650,6 +652,7 @@ _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
 _playback( kStopped ),
+_valid_seq( NULL ),
 _sequence( NULL ),
 _right( NULL ),
 _context(NULL),
@@ -722,7 +725,10 @@ void CMedia::clear_cache()
   for ( boost::uint64_t i = 0; i < num; ++i )
     {
         if ( _sequence[i] )
+	{
+	    _valid_seq[i] = false;
             _sequence[i].reset();
+	}
         if ( _right && _right[i] )
             _right[i].reset();
     }
@@ -743,7 +749,10 @@ void CMedia::update_frame( const int64_t& f )
   SCOPED_LOCK( _mutex);
 
   boost::uint64_t i = f - _frame_start;
-  if ( _sequence[i] )        _sequence[i].reset();
+  if ( _sequence[i] ) {
+      _valid_seq[i] = false;
+      _sequence[i].reset();
+  }
   if ( _right && _right[i] )    _right[i].reset();
 
   _hires.reset();
@@ -1359,7 +1368,8 @@ void CMedia::sequence( const char* fileroot,
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
 
-
+  delete [] _valid_seq;
+  _valid_seq = NULL;
   delete [] _sequence;
   _sequence = NULL;
   delete [] _right;
@@ -1369,6 +1379,7 @@ void CMedia::sequence( const char* fileroot,
 
   if ( dynamic_cast< aviImage* >( this ) == NULL )
   {
+      _valid_seq = new bool[unsigned(num)];
       _sequence = new mrv::image_type_ptr[ unsigned(num) ];
       _right    = new mrv::image_type_ptr[ unsigned(num) ];
   }
@@ -2555,7 +2566,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   if ( idx < 0 ) idx = 0;
   else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
 
-  if ( !seq || seq[idx] ) return;
+  if ( !seq || seq[idx] || !_valid_seq ) return;
 
   mrv::image_type_ptr np;
 
@@ -2623,8 +2634,8 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   }
 
   _w = w; _h = h;
-
   timestamp(idx, seq);
+  _valid_seq[idx] = true;
 }
 
 /**
@@ -2680,7 +2691,7 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 
     CMedia::Cache cache = kNoCache;
 
-    if ( _sequence[i] ) cache = kLeftCache;
+    if ( _sequence[i] && _valid_seq[i] ) cache = kLeftCache;
 
     if ( _stereo_output != kNoStereo )
     {
@@ -3322,11 +3333,13 @@ void CMedia::limit_video_store( const int64_t f )
   
   for ( int64_t i = 0; i < first; ++i  )
   {
+      _valid_seq[i] = false;
       _sequence[i].reset();
        _right[i].reset();
   }
   for ( int64_t i = last; i < end ; ++i  )
   {
+      _valid_seq[i] = false;
       _sequence[i].reset();
       _right[i].reset();
   }
@@ -3650,8 +3663,18 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-           LOG_WARNING( file << _(" is missing.") );
-           return false;
+	    _hires = mrv::image_type_ptr( new image_type( frame,
+							  width(),
+							  height(),
+							  1,
+							  image_type::kLumma,
+							  image_type::kByte ) );
+	    memset( _hires->data().get(), 0x0, _hires->data_size() );
+	    cache( _hires );
+	    _valid_seq[idx] = false; // mark this frame as invalid
+	    refresh();
+	    LOG_WARNING( file << _(" is missing.") );
+	    return false;
         }
      }
   }
