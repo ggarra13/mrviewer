@@ -1774,8 +1774,8 @@ void ImageBrowser::load( const stringArray& files,
             if ( load_seq && seqs )
             {
                 mrv::fileroot( fileroot, file );
+		mrv::get_sequence_limits( start, end, fileroot );
             }
-            mrv::get_sequence_limits( start, end, fileroot );
             loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
           }
 
@@ -1846,7 +1846,7 @@ void ImageBrowser::load( const stringArray& files,
   {
       stringArray files = mrv::open_image_file(NULL,false, uiMain);
      if (files.empty()) return;
-
+     
      load( files, false );
   }
 
