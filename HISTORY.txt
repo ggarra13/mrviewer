@@ -1,9 +1,16 @@
+v4.1.2   - Updated FFMPEG to a later (almost latest) version.
+
 v4.1.1   - Bug fixed switching FG/BG images where the start/end frames were
 	   different.  Previously, this would lead to a hang.
 	 - Improved playback of short FG in loop with a long clip in BG.
 	   Previously, this would lead to a crash or to a mutex lock.
 	 - Removed the final code in time2frames() which was wrong and
 	   causing havok.
+	 - Updated oiio and oiiotool to the latest prerelease version.
+	   Note that on windows 32 bits, the code does not use SIMD
+	   optimizations.
+	 - Added Libs that OIIO is compiled with to the About window of
+	   mrViewer.
 
 v4.1.0   - Bug fixes to the choco installer and uninstaller.  The installer
 	   now modifies the machine PATH instead of the user PATH variable.
@@ -27,7 +34,7 @@ v4.1.0   - Bug fixes to the choco installer and uninstaller.  The installer
 	 - Bug fixed changing FPS in EDL mode.  The playback would get
 	   corrupted.  This change reverts looping working in time instead
 	   of frames, as it was that change that was causing problems.
- 
+
 v4.0.9   - A bug fix release to playback of movies with sound in loop, which
 	   was crashing v4.0.6 and later.
 	 - Bug fixed pixel ratio not being correct and being applied twice.
