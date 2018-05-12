@@ -67,8 +67,10 @@ using namespace std;
 #include <ImfTileDescriptionAttribute.h>
 #include <ImfVecAttribute.h>
 
-
+#include "core/oiioImage.h"
 #include "core/mrvString.h"
+#include "core/aviImage.h"
+#include "core/exrImage.h"
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
@@ -79,9 +81,6 @@ using namespace std;
 #include "gui/mrvTimecode.h"
 #include "mrViewer.h"
 #include "CMedia.h"
-#include "core/oiioImage.h"
-#include "core/aviImage.h"
-#include "core/exrImage.h"
 #include "mrvIO.h"
 
 #include "mrvI8N.h"
