@@ -25,6 +25,9 @@
  *
  */
 
+#include <OpenImageIO/imageio.h>
+OIIO_NAMESPACE_USING;
+
 #include <iostream>
 using namespace std;
 
@@ -45,8 +48,6 @@ using namespace std;
 #include <ImfStringAttribute.h>
 #include <ImfMatrixAttribute.h>
 
-#include <OpenImageIO/imageio.h>
-OIIO_NAMESPACE_USING;
 
 
 #include "core/mrvColorOps.h"
@@ -176,6 +177,19 @@ namespace mrv {
           if ( p.name() == "compression" ) continue;
           if (p.type() == TypeString)
           {
+              // Process timecode
+              if ( p.name().rfind( N_("TimeCode") ) != std::string::npos )
+              {
+                  Imf::TimeCode t = CMedia::str2timecode( *(const char **)
+                                                          p.data() );
+                  process_timecode(t); // turn timecode into a frame offset
+
+                  // Store attribute in image
+                  Imf::TimeCodeAttribute attr( t );
+                  _attrs.insert( std::make_pair( p.name().c_str(),
+                                                 attr.copy() ) );
+                  continue;
+              }
               Imf::StringAttribute attr( *(const char **)p.data() );
               _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
           }
