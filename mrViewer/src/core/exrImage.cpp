@@ -881,12 +881,25 @@ bool exrImage::find_layers( const Imf::Header& h )
             Imf::ChannelList::ConstIterator s;
             Imf::ChannelList::ConstIterator e;
             channels.channelsInLayer( name, s, e );
+	    stringArray lg;
+	    lg.reserve(5);
             for ( x = s; x != e; ++x )
             {
                 const std::string& layerName = x.name();
-                _layers.push_back( layerName );
-                ++_num_channels;
+                lg.push_back( layerName );
             }
+	    stringArray::iterator ks = lg.begin();
+	    stringArray::iterator ke = lg.end();
+	    std::string lcase = *ks;
+	    if ( lcase.rfind( ".b" ) != std::string::npos ||
+		 lcase.rfind( ".B" ) != std::string::npos )
+		std::sort( ks, ke, std::greater<std::string>() );
+
+	    for ( ; ks != ke; ++ks )
+	    {
+		_layers.push_back( *ks );
+		++_num_channels;
+	    }
          }
       }
    }
