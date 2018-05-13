@@ -1407,13 +1407,45 @@ bool ImageView::previous_channel()
     if ( num == 0 ) return false; // Audio only - no channels
 
     int c = channel();
-    if ( c > 0 )
+
+    bool is_group = false;
+    unsigned short previous = 0;
+    unsigned short idx = 0;
+    fltk::Group* g = NULL;
+    for ( unsigned short i = 0; i < num; ++i, ++idx )
+        {
+            fltk::Widget* w = uiColorChannel->child(i);
+            if ( w->is_group() )
+            {
+                g = (fltk::Group*) w;
+		
+                unsigned numc = g->children();
+		if ( c == idx ) {
+		    is_group = true;
+		}
+		if ( !is_group ) previous = idx;
+		
+                idx += numc;
+            }
+        }
+
+    if ( (is_group && previous >= 0) || (!is_group && c > 0) )
     {
-        channel( c - 1 );
-        return true;
+	if ( is_group )
+	{
+	    channel( previous );
+	}
+	else
+	{
+	    channel( c - 1 );
+	}
+    }
+    else
+    {
+	channel( idx-1 );
     }
 
-    return false;
+    return true;
 }
 
 bool ImageView::next_channel()
@@ -1423,27 +1455,44 @@ bool ImageView::next_channel()
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return false; // Audio only - no channels
 
+    int c = channel();
+
+    bool is_group = false;
+    unsigned short next = 0;
     unsigned short idx = 0;
     fltk::Group* g = NULL;
-    for ( unsigned short c = 0; c < num; ++c, ++idx )
+    for ( unsigned short i = 0; i < num; ++i, ++idx )
         {
-            fltk::Widget* w = uiColorChannel->child(c);
+            fltk::Widget* w = uiColorChannel->child(i);
             if ( w->is_group() )
             {
                 g = (fltk::Group*) w;
                 unsigned numc = g->children();
+		if ( c == idx ) {
+		    is_group = true;
+		    next = idx + numc + 1;
+		}
                 idx += numc;
             }
         }
 
-    int c = channel();
-    if ( c < idx-1 )
+    if ( (is_group && next < idx-1) || (!is_group && c < idx-1) )
     {
-        channel( c + 1 );
-        return true;
+	if ( is_group )
+	{
+	    channel( next );
+	}
+	else
+	{
+	    channel( c + 1 );
+	}
+    }
+    else
+    {
+	channel( (unsigned short)0 );
     }
 
-    return false;
+    return true;
 }
 
 /**
@@ -6974,7 +7023,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // Root name if channel name minus the last .extension.
         // Like sub.AO.R, root is sub.AO
 
-        pos = root.find('.');
+        pos = root.rfind('.');
 
         if ( pos != std::string::npos )
         {
