@@ -540,10 +540,11 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     if ( !reel ) return;
 
     const char* file = mrv::save_reel();
-    if ( !file ) return;
+    if ( !file || strlen(file) == 0 ) return;
 
     std::string reelname( file );
-    if ( reelname.substr(reelname.size()-5, 5) != ".reel" )
+    if ( reelname.size() < 5 ||
+	 reelname.substr(reelname.size()-5, 5) != ".reel" )
       {
         reelname += ".reel";
       }
