@@ -1409,7 +1409,7 @@ bool ImageView::previous_channel()
     int c = channel();
 
     bool is_group = false;
-    unsigned short previous = 0;
+    short previous = 0;
     unsigned short idx = 0;
     fltk::Group* g = NULL;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -2344,6 +2344,7 @@ bool ImageView::preload()
         return true;
     }
 
+    _preframe = frame();
     int64_t f = r->global_to_local( _preframe );
     int64_t first = img->first_frame();
     int64_t last  = img->last_frame();
@@ -7082,7 +7083,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        if ( v == -1 && ( x == root || (channelName && name == channelName) ) )
+        if ( v == -1 && ( x == root || (channelName && name == channelName) ||
+			  root == "Z" ) )
         {
             v = idx;
         }
@@ -7090,6 +7092,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
 
+		
         if ( v >= 0 || shortcut == 'n' || shortcut == 'z' )
         {
 
