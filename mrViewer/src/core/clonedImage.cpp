@@ -40,7 +40,11 @@ namespace mrv {
   clonedImage::clonedImage( const CMedia* other ) :
     CMedia()
   {
-
+      _frame_start = other->start_frame();
+      _frame_end   = other->end_frame();
+      _frameStart = other->first_frame();
+      _frameEnd   = other->last_frame();
+      
       char* file = strdup( other->filename() );
       char* orig = file;
       for ( char* s = orig; *s != 0; ++s )
@@ -86,7 +90,12 @@ namespace mrv {
       CMedia* img = const_cast< CMedia* >( other );
       CMedia::Mutex& m = img->video_mutex();
       SCOPED_LOCK(m);
-      _hires.reset( new mrv::image_type() );
+      _hires.reset( new mrv::image_type( other->frame(),
+					 other->width(),
+					 other->height(),
+					 other->hires()->channels(),
+					 other->hires()->format(),
+					 other->hires()->pixel_type() ) );
       copy_image( _hires, img->hires() );
     }
 
