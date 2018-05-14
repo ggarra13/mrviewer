@@ -144,6 +144,7 @@ extern Hotkey kStop;
 extern Hotkey kPreviousImage;
 extern Hotkey kNextImage;
 
+extern Hotkey kSwitchChannels;
 extern Hotkey kPreviousChannel;
 extern Hotkey kNextChannel;
 
