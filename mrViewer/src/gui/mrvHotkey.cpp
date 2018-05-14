@@ -106,7 +106,7 @@ Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
 Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
 Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 
-
+Hotkey kSwitchChannels( false, false, false, false, 'z' );
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );
@@ -294,6 +294,7 @@ HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
 HotkeyEntry( _("Stop"), kStop),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
 HotkeyEntry( _("Next Image"), kNextImage ),
+HotkeyEntry( _("Switch Channels"), kSwitchChannels ),
 HotkeyEntry( _("Previous Channel"), kPreviousChannel ),
 HotkeyEntry( _("Next Channel"), kNextChannel ),
 HotkeyEntry( _("First Frame"), kFirstFrame ),
