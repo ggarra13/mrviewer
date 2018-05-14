@@ -151,7 +151,7 @@ stringArray file_save_multi_requester(
     if ( native )
     {
         file = fltk::file_chooser( title, pattern, startfile, compact_images );
-        if ( !file ) return;
+        if ( !file ) return filelist;
         split( filelist, file, '\n' );
     }
     else
