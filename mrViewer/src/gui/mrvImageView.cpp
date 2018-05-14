@@ -388,6 +388,10 @@ void previous_channel_cb( fltk::Widget* o, mrv::ImageView* v )
   v->previous_channel();
 }
 
+void switch_channels_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+  v->switch_channels();
+}
 
 void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -1398,6 +1402,33 @@ ImageView::timeline() {
 }
 
 
+void ImageView::switch_channels()
+{
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    unsigned short num = uiColorChannel->children();
+    if ( num == 0 ) return; // Audio only - no channels
+
+    static int old_channel;
+    
+    unsigned short idx = 0;
+    fltk::Group* g = NULL;
+    for ( unsigned short i = 0; i < num; ++i, ++idx )
+        {
+            fltk::Widget* w = uiColorChannel->child(i);
+            if ( w->is_group() )
+            {
+                g = (fltk::Group*) w;
+                unsigned numc = g->children();
+                idx += numc;
+            }
+        }
+
+    if ( old_channel >= idx ) return; // too few channels
+
+    unsigned int c = old_channel;
+    old_channel = channel();
+    channel( c );
+}
 
 
 bool ImageView::previous_channel()
@@ -1473,7 +1504,18 @@ bool ImageView::next_channel()
 		    next = idx + numc + 1;
 		}
                 idx += numc;
+		continue;
             }
+	    if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
+	    {
+		is_group = true;
+		next = idx + 3;
+	    }
+	    if ( is_group && ( strcmp( w->label(), _("Alpha") ) == 0 ||
+			       strcmp( w->label(), _("Alpha Overlay") ) == 0 ) )
+	    {
+		next = idx + 1;
+	    }
         }
 
     if ( (is_group && next < idx-1) || (!is_group && c < idx-1) )
@@ -5163,6 +5205,12 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kToggleLUT.match( rawkey ) )
     {
         toggle_lut();
+        return 1;
+    }
+    else if ( kSwitchChannels.match( rawkey ) )
+    {
+        switch_channels_cb(this, this);
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPreviousChannel.match( rawkey ) )
