@@ -1,4 +1,19 @@
 v4.1.2   - Updated FFMPEG to a later (almost latest) version.
+	 - Improvements to channel/layer usage per request from Dominik Pott:
+	   	* Next/Previous channel hotkeys are less granular.  They now
+		  jump RGB(AZ) channel groups.
+		* Switching to the Z channel no longer breaks the hotkeys of
+		  RGBA.
+		* Precaching now starts from the current frame, not from
+		  the start.
+		* Changing channels past the last or first channel loops
+		  to the beginning and to the end channels respectively.
+		* There's a new hotkey (z) to toggle two channels for easy
+		  comparison.
+	 - On Windows, the file requester is the native one by default now.
+	   This effects both loading and saving.  Note that if you have
+	   preferences saved, you will need to remove it for this to take
+	   effect or save a new preferences with the native switch on.
 
 v4.1.1   - Bug fixed switching FG/BG images where the start/end frames were
 	   different.  Previously, this would lead to a hang.

@@ -351,6 +351,7 @@ class server;
       void update_color_info() const;
 
       // Channel navigation (for hotkeys)
+      void switch_channels();
       bool next_channel();
       bool previous_channel();
 
