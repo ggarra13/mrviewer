@@ -105,17 +105,18 @@ namespace mrv
     typedef boost::shared_array< mrv::aligned16_uint8_t > PixelData;
 
   private:
-    boost::int64_t              _frame;  //!< position in video stream
-    boost::int64_t              _pts;  //!< video pts in ffmpeg
-    boost::int64_t              _repeat;  //!< number of frames to repeat
-    unsigned int                _width;
-    unsigned int                _height;
-    short unsigned int          _channels; //!< number of channels of image
-    time_t                      _ctime;  //!< creation time of frame
-    time_t                      _mtime;  //!< modification time of frame
-    Format                      _format; //!< rgb/yuv format
-    PixelType                   _type;   //!< pixel type
-    PixelData                   _data;   //!< video data
+      boost::int64_t              _frame;  //!< position in video stream
+      boost::int64_t              _pts;  //!< video pts in ffmpeg
+      boost::int64_t              _repeat;  //!< number of frames to repeat
+      unsigned int                _width;
+      unsigned int                _height;
+      short unsigned int          _channels; //!< number of channels of image
+      time_t                      _ctime;  //!< creation time of frame
+      time_t                      _mtime;  //!< modification time of frame
+      Format                      _format; //!< rgb/yuv format
+      PixelType                   _type;   //!< pixel type
+      bool                       _valid;   //! invalid frame
+      PixelData                   _data;   //!< video data
 
   public:
 
@@ -130,7 +131,8 @@ namespace mrv
       _ctime( 0 ),
       _mtime( 0 ),
       _format( kRGBA ),
-      _type( kByte )
+      _type( kByte ),
+      _valid( true )
     {
     }
 
@@ -140,7 +142,8 @@ namespace mrv
                 const Format format  = kRGBA,
                 const PixelType type = kByte,
                 const boost::int64_t repeat = 0,
-                const boost::int64_t pts = 0 ) :
+                const boost::int64_t pts = 0,
+		const bool valid = true ) :
       _frame( frame ),
       _pts( pts ),
       _repeat( repeat ),
@@ -150,7 +153,8 @@ namespace mrv
       _ctime( 0 ),
       _mtime( 0 ),
       _format( format ),
-      _type( type )
+      _type( type ),
+      _valid( valid )
     {
       allocate();
     }
@@ -203,6 +207,9 @@ namespace mrv
 
     // inline void data(const PixelData& d) { _data = d; }
 
+      inline void valid( bool b ) { _valid = b; }
+      inline bool valid() const { return _valid; }
+      
     inline const PixelData& data() const { return _data; }
 
     ImagePixel pixel( const unsigned int x, const unsigned int y ) const;
