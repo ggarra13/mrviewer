@@ -247,11 +247,13 @@ bool presentation = false;
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
                  ext == _("GREEN") ) return 'g';
        else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
-                 ((ext == N_("Z") && ext2 == "Y")) )
+                 ( (ext == N_("Z") && ext2 == N_("Y") ) ) )
            return 'b';
        else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
-       else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
-       else return 0;
+       else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
+       else {
+	   return 0;
+       }
     }
     else
     {
@@ -260,9 +262,8 @@ bool presentation = false;
         std::string ext = channel;
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
-        if ( ext == N_("LEFT") || ext == N_("RIGHT") )
-            return 'c';
-        if ( ext.find("RGB") != std::string::npos )
+        if ( ext.rfind( N_("LEFT") ) != std::string::npos ||
+	     ext.rfind( N_("RIGHT") ) != std::string::npos )
             return 'c';
     }
 
@@ -1440,22 +1441,27 @@ bool ImageView::previous_channel()
     int c = channel();
 
     bool is_group = false;
-    short previous = 0;
+    short previous = -1;
     unsigned short idx = 0;
     fltk::Group* g = NULL;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
         {
             fltk::Widget* w = uiColorChannel->child(i);
+	    if ( c == idx && c >= 7 && ( strcmp( w->label(), "Z" ) == 0 ) )
+	    {
+		previous = c - 7;
+		is_group = true;
+	    }
             if ( w->is_group() )
             {
                 g = (fltk::Group*) w;
 		
                 unsigned numc = g->children();
-		if ( c == idx ) {
+		if ( c == idx && previous >= 0) {
 		    is_group = true;
 		}
-		if ( !is_group ) previous = idx;
 		
+		if ( !is_group ) previous = idx;
                 idx += numc;
             }
         }
@@ -1473,7 +1479,10 @@ bool ImageView::previous_channel()
     }
     else
     {
-	channel( idx-1 );
+	if ( previous > 0 && previous < idx )
+	    channel( previous );
+	else
+	    channel( idx - 1 );
     }
 
     return true;
@@ -1508,13 +1517,11 @@ bool ImageView::next_channel()
             }
 	    if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
 	    {
-		is_group = true;
-		next = idx + 3;
-	    }
-	    if ( is_group && ( strcmp( w->label(), _("Alpha") ) == 0 ||
-			       strcmp( w->label(), _("Alpha Overlay") ) == 0 ) )
-	    {
-		next = idx + 1;
+		if ( num > 7 )
+		{
+		    is_group = true;
+		    next = idx + 7;
+		}
 	    }
         }
 
@@ -2386,20 +2393,23 @@ bool ImageView::preload()
         return true;
     }
 
-    _preframe = frame();
     int64_t f = r->global_to_local( _preframe );
-    int64_t first = img->first_frame();
-    int64_t last  = img->last_frame();
+    int64_t tfirst = timeline()->display_minimum();
+    int64_t first  = img->first_frame();
+    int64_t tlast  = timeline()->display_maximum();
+    int64_t last   = img->last_frame();
+    if ( tfirst > first ) first = tfirst;
+    if ( tlast < last )    last = tlast;
     int64_t i = f;
     bool found = false;
 
     // Find a frame to cache from timeline point on
     for ( ; i <= last; ++i )
     {
-        if ( !img->is_cache_filled(i) )
+        if ( !img->is_cache_filled( i ) )
         {
-            found = true;
-            break;
+	    found = true;
+	    break;
         }
     }
 
@@ -2409,9 +2419,9 @@ bool ImageView::preload()
         int64_t j = first;
         for ( ; j < f; ++j )
         {
-            if ( !img->is_cache_filled(j) )
+            if ( !img->is_cache_filled( j ) )
             {
-                i = j; found = true;
+		i = j; found = true;
                 break;
             }
         }
@@ -2423,7 +2433,12 @@ bool ImageView::preload()
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
         DBG( "Found image " << i  );
-        img->find_image( i );  // this loads the frame if not present
+        if ( ! img->find_image( i ) ) // this loads the frame if not present
+	{
+	    // Frame not found or error. Update _preframe.
+	    _preframe = i + 1;  
+	    if ( _preframe > last ) _preframe = 1;
+	}
         img->hires( pic );
         timeline()->redraw();
     }
@@ -6345,7 +6360,8 @@ void ImageView::clear_reel_cache( size_t idx )
         }
     }
 
-    reset_caches();
+    _reel = idx;
+    _preframe = frame();
 }
 
 void ImageView::flush_image( mrv::media fg )
@@ -6720,7 +6736,7 @@ void ImageView::channel( unsigned short c )
   // in the timeline.
   timeline()->redraw();
   _reel = 0;
-  _preframe = 1;
+  _preframe = frame();
 
   smart_refresh();
 }
@@ -7058,7 +7074,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     int v   = -1;
     int idx = 0;
-    std::set< short > shortcuts;
+    std::set< unsigned short > shortcuts;
 
     std::string root;
 
@@ -7140,8 +7156,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
 
-		
-        if ( v >= 0 || shortcut == 'n' || shortcut == 'z' )
+	// N, Z and Color are special in that they don't change, except
+	// when in Stereo, but then they are not called that.
+        if ( v >= 0 || name == _("Color") || name == "N" || name == "Z" )
         {
 
             // If we have a shortcut and it isn't in the list of shortcuts
