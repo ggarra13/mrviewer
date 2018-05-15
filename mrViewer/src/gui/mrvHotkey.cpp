@@ -106,7 +106,7 @@ Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
 Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
 Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 
-Hotkey kSwitchChannels( false, false, false, false, 'z' );
+Hotkey kSwitchChannels( false, false, false, false, 'e' );
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );
