@@ -86,6 +86,7 @@ namespace
 
 namespace mrv {
 
+
 float exrImage::_default_gamma = 2.2f;
 Imf::Compression exrImage::_default_compression = Imf::PIZ_COMPRESSION;
 float exrImage::_default_dwa_compression = 45.0f;
@@ -464,12 +465,13 @@ bool exrImage::channels_order(
 
       // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
       //           << " off:" << offsets[k] << " xs,ys "
+      // 		<< std::endl;
       //           << xs[k] << "," << ys[k]
       //           << " sampling " << xsampling[k]
       //           << " " << ysampling[k]
       //           << " buf " << (void*) buf
       //           << std::endl;
-
+ 
 
       fb.insert( channelList[k],
                  Slice( imfPixelType, buf, xs[k], ys[k],
@@ -892,9 +894,13 @@ bool exrImage::find_layers( const Imf::Header& h )
 	    stringArray::iterator ke = lg.end();
 	    std::string lcase = *ks;
 	    if ( lcase.rfind( ".b" ) != std::string::npos ||
-		 lcase.rfind( ".B" ) != std::string::npos )
+		 lcase.rfind( ".B" ) != std::string::npos ||
+		 lcase.rfind( ".Z" ) != std::string::npos ||
+		 lcase.rfind( ".z" ) != std::string::npos )
+	    {
 		std::sort( ks, ke, std::greater<std::string>() );
-
+	    }
+	    
 	    for ( ; ks != ke; ++ks )
 	    {
 		_layers.push_back( *ks );
@@ -1906,6 +1912,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
                 if ( !name.empty() || !ext.empty() )
                 {
+		    std::string first;
+		    if ( !_layers.empty() ) first = *(_layers.end() - 1);
                     for ( s = channels.begin(); s != e; ++s )
                     {
                         std::string layerName = buf;
@@ -1914,6 +1922,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         _layers.push_back( layerName );
                         ++_num_layers;
                     }
+		    stringArray::iterator it = std::find( _layers.begin(),
+							  _layers.end(),
+							  first );
+		    std::sort( it+1, _layers.end(),
+			       std::greater<std::string>() );
+		    
                 }
 
             }

@@ -1,15 +1,23 @@
 v4.1.2   - Updated FFMPEG to a later (almost latest) version.
 	 - Improvements to channel/layer usage per request from Dominik Pott:
 	   	* Next/Previous channel hotkeys are less granular.  They now
-		  jump RGB(AZ) channel groups.
+		  jump RGBA channel groups.
 		* Switching to the Z channel no longer breaks the hotkeys of
 		  RGBA.
+		* Channel names are now sorted according to function (ex.
+		  XYZ, RGB, etc ).
 		* Precaching now starts from the current frame, not from
 		  the start.
 		* Changing channels past the last or first channel loops
 		  to the beginning and to the end channels respectively.
-		* There's a new hotkey (z) to toggle two channels for easy
+		* There's a new hotkey (e) to toggle two channels for easy
 		  comparison.
+		* The cache now respects the IN/OUT points in the timeline
+		  and won't cache further than that, except it has already
+		  been cached.
+		* The hotkeys have been changed so that 'c' always brings
+		  you to the color image, while r,g,b change based on what
+		  group of channels you have selected ( N, P, etc ).
 	 - On Windows, the file requester is the native one by default now.
 	   This effects both loading and saving.  Note that if you have
 	   preferences saved, you will need to remove it for this to take
