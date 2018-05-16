@@ -6151,8 +6151,7 @@ int ImageView::handle(int event)
                      CMedia::preload_cache() &&
                      ( _reel < b->number_of_reels() ) )
                 {
-                    add_idle( (fltk::TimeoutHandler)static_preload, this );
-                    _idle_callback = true;
+		    preload_cache_start();
                 }
                 else
                 {
@@ -6379,6 +6378,19 @@ void ImageView::flush_image( mrv::media fg )
     }
 }
 
+void ImageView::preload_cache_start()
+{
+    if ( !foreground() ) return;
+    
+    if (!_idle_callback)
+    {
+	_reel = 0;
+	fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+	_idle_callback = true;
+	CMedia::preload_cache( true );
+    }
+}
+
 /**
  * Toggle Preload sequence in background
  *
@@ -6395,11 +6407,7 @@ void ImageView::preload_caches()
     }
     else
     {
-        if (!_idle_callback)
-        {
-            fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
-            _idle_callback = true;
-        }
+	preload_cache_start();
     }
 }
 
