@@ -3974,7 +3974,8 @@ o->value(24);}
                       callback {int64_t f = o->value();
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();}
+v->uiTimeline->redraw();
+}
                       tooltip {Allows you to set starting frame for timeline.}
                       xywh {20 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(1); o->main( this );}
@@ -4030,6 +4031,7 @@ if ( v->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
   v->uiTimeline->minimum( f );
 else
   v->uiTimeline->display_minimum( f );
+v->uiView->preload_cache_start();
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                       xywh {1 4 20 20} vertical
@@ -4072,6 +4074,7 @@ if ( v->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
   v->uiTimeline->maximum( f );
 else
   v->uiTimeline->display_maximum( f );
+v->uiView->preload_cache_start();
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                       xywh {91 4 20 20} vertical
