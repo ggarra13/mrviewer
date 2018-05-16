@@ -1902,8 +1902,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 if ( !name.empty() )
                 {
                     sprintf( buf, "#%d %s", i, name.c_str() );
-		    std::cerr << this->name()
-			      << " loading layer " << buf << std::endl;
                     _layers.push_back( buf );
                     ++_num_layers;
                 }
@@ -1921,9 +1919,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         std::string layerName = buf;
                         if ( !layerName.empty() ) layerName += '.';
                         layerName += s.name();
-			std::cerr << this->name()
-				  << "\tadding " << layerName << " "
-				  << s.name() << std::endl;
                         _layers.push_back( layerName );
                         ++_num_layers;
                     }
@@ -2732,9 +2727,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     }
     else
     {
-	std::cerr << "hdr.channels().insert " << x << std::endl;
-	hdr.channels().insert( x,
-			       Channel( save_type, 1, 1 ) );
+	//hdr.channels().insert( x, Channel( save_type, 1, 1 ) );
     }
 
     Imf::Compression comp = opts->compression();
@@ -2949,14 +2942,11 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 if ( !suffix.empty() )
                 {
-		    std::cerr << "1 hdr.channels().insert " << root << " + "
-			      << suffix << std::endl;
                     hdr.channels().insert( root + '.' + suffix,
                                            Channel( save_type,1,1 ) );
                 }
                 else
                 {
-		    std::cerr << "2 hdr.channels().insert " << root << std::endl;
                     hdr.channels().insert( root,
                                            Channel( save_type,1,1 ) );
                 }
