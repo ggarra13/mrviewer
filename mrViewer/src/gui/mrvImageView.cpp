@@ -205,12 +205,11 @@ bool presentation = false;
    */
   short get_shortcut( const char* channel )
   {
-    static std::string oldChannel;
-    for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
+    for ( unsigned int i = 0;
+          i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
           {
-              oldChannel = channel;
               return shortcuts[i].key;
           }
       }
@@ -224,46 +223,36 @@ bool presentation = false;
 
     if ( pos != std::string::npos && pos != channelName.size() )
     {
-        size_t pos2  = oldChannel.rfind( '.' );
 
-        std::string ext2;
-        if ( pos2 != std::string::npos && pos2 != oldChannel.size() )
-        {
-            ext2 = oldChannel.substr( pos2+1, oldChannel.size() );
-            std::transform( ext2.begin(), ext2.end(), ext2.begin(),
-                            (int(*)(int)) toupper );
-        }
-
-       std::string ext = channelName.substr( pos+1, channelName.size() );
-       std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper );
-
-       oldChannel = channelName;
+        std::string root = channelName.substr( 0, pos );
+        std::string ext = channelName.substr( pos+1, channelName.size() );
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) toupper );
 
        if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
           return 'c';
+       else if ( root == N_("N") ) return 'n';
+       else if ( root == N_("Z") ) return 'z';
        else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
                  ext == _("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
                  ext == _("GREEN") ) return 'g';
        else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
-                 ( (ext == N_("Z") && ext2 == N_("Y") ) ) )
+                 ( (ext == N_("Z") ) ) )
            return 'b';
        else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
        else {
-	   return 0;
+           return 0;
        }
     }
     else
     {
-        oldChannel = channelName;
-
         std::string ext = channel;
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
         if ( ext.rfind( N_("LEFT") ) != std::string::npos ||
-	     ext.rfind( N_("RIGHT") ) != std::string::npos )
+             ext.rfind( N_("RIGHT") ) != std::string::npos )
             return 'c';
     }
 
@@ -417,14 +406,14 @@ static void update_title_bar( mrv::ImageView* view )
   if ( fg && bg && fg != bg )
   {
       snprintf( bufs, 256, _("mrViewer    FG: %s   BG: %s (%s)"),
-		fg->image()->name().c_str(),
-		bg->image()->name().c_str(),
-		view->show_background() ? _("Active") : _("Inactive") );
+                fg->image()->name().c_str(),
+                bg->image()->name().c_str(),
+                view->show_background() ? _("Active") : _("Inactive") );
   }
   else if ( fg )
   {
       snprintf( bufs, 256, _("mrViewer    FG: %s"),
-		fg->image()->name().c_str() );
+                fg->image()->name().c_str() );
   }
   else
   {
@@ -458,7 +447,7 @@ void switch_fg_bg_cb( fltk::Widget* o, mrv::ImageView* view )
 
   view->foreground( bg );
   view->fg_reel( bg_reel );
-  
+
   view->background( fg );
   view->bg_reel( fg_reel );
 
@@ -468,7 +457,7 @@ void switch_fg_bg_cb( fltk::Widget* o, mrv::ImageView* view )
   // int64_t f = m->uiFrame->value();
 
   // std::cerr << "f " << f << std::endl;
-  
+
   // if ( f > img->last_frame() ) f = img->last_frame();
   // else if ( f < img->first_frame() ) f = img->first_frame();
   m->uiStartFrame->value( img->first_frame() );
@@ -1410,7 +1399,7 @@ void ImageView::switch_channels()
     if ( num == 0 ) return; // Audio only - no channels
 
     static int old_channel;
-    
+
     unsigned short idx = 0;
     fltk::Group* g = NULL;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -1447,42 +1436,42 @@ bool ImageView::previous_channel()
     for ( unsigned short i = 0; i < num; ++i, ++idx )
         {
             fltk::Widget* w = uiColorChannel->child(i);
-	    if ( c == idx && c >= 7 && ( strcmp( w->label(), "Z" ) == 0 ) )
-	    {
-		previous = c - 7;
-		is_group = true;
-	    }
+            if ( c == idx && c >= 7 && ( strcmp( w->label(), "Z" ) == 0 ) )
+            {
+                previous = c - 7;
+                is_group = true;
+            }
             if ( w->is_group() )
             {
                 g = (fltk::Group*) w;
-		
+
                 unsigned numc = g->children();
-		if ( c == idx && previous >= 0) {
-		    is_group = true;
-		}
-		
-		if ( !is_group ) previous = idx;
+                if ( c == idx && previous >= 0) {
+                    is_group = true;
+                }
+
+                if ( !is_group ) previous = idx;
                 idx += numc;
             }
         }
 
     if ( (is_group && previous >= 0) || (!is_group && c > 0) )
     {
-	if ( is_group )
-	{
-	    channel( previous );
-	}
-	else
-	{
-	    channel( c - 1 );
-	}
+        if ( is_group )
+        {
+            channel( previous );
+        }
+        else
+        {
+            channel( c - 1 );
+        }
     }
     else
     {
-	if ( previous > 0 && previous < idx )
-	    channel( previous );
-	else
-	    channel( idx - 1 );
+        if ( previous > 0 && previous < idx )
+            channel( previous );
+        else
+            channel( idx - 1 );
     }
 
     return true;
@@ -1508,37 +1497,37 @@ bool ImageView::next_channel()
             {
                 g = (fltk::Group*) w;
                 unsigned numc = g->children();
-		if ( c == idx ) {
-		    is_group = true;
-		    next = idx + numc + 1;
-		}
+                if ( c == idx ) {
+                    is_group = true;
+                    next = idx + numc + 1;
+                }
                 idx += numc;
-		continue;
+                continue;
             }
-	    if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
-	    {
-		if ( num > 7 )
-		{
-		    is_group = true;
-		    next = idx + 7;
-		}
-	    }
+            if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
+            {
+                if ( num > 7 )
+                {
+                    is_group = true;
+                    next = idx + 7;
+                }
+            }
         }
 
     if ( (is_group && next < idx-1) || (!is_group && c < idx-1) )
     {
-	if ( is_group )
-	{
-	    channel( next );
-	}
-	else
-	{
-	    channel( c + 1 );
-	}
+        if ( is_group )
+        {
+            channel( next );
+        }
+        else
+        {
+            channel( c + 1 );
+        }
     }
     else
     {
-	channel( (unsigned short)0 );
+        channel( (unsigned short)0 );
     }
 
     return true;
@@ -2408,8 +2397,8 @@ bool ImageView::preload()
     {
         if ( !img->is_cache_filled( i ) )
         {
-	    found = true;
-	    break;
+            found = true;
+            break;
         }
     }
 
@@ -2421,7 +2410,7 @@ bool ImageView::preload()
         {
             if ( !img->is_cache_filled( j ) )
             {
-		i = j; found = true;
+                i = j; found = true;
                 break;
             }
         }
@@ -2434,11 +2423,11 @@ bool ImageView::preload()
         if (!pic) return false;
         DBG( "Found image " << i  );
         if ( ! img->find_image( i ) ) // this loads the frame if not present
-	{
-	    // Frame not found or error. Update _preframe.
-	    _preframe = i + 1;  
-	    if ( _preframe > last ) _preframe = 1;
-	}
+        {
+            // Frame not found or error. Update _preframe.
+            _preframe = i + 1;
+            if ( _preframe > last ) _preframe = 1;
+        }
         img->hires( pic );
         timeline()->redraw();
     }
@@ -5528,14 +5517,14 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kPreviousImage.match( rawkey ) )
     {
         previous_image_cb(this, browser());
-	update_title_bar( this );
+        update_title_bar( this );
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kNextImage.match( rawkey ) )
     {
         next_image_cb(this, browser());
-	update_title_bar( this );
+        update_title_bar( this );
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
@@ -6151,7 +6140,7 @@ int ImageView::handle(int event)
                      CMedia::preload_cache() &&
                      ( _reel < b->number_of_reels() ) )
                 {
-		    preload_cache_start();
+                    preload_cache_start();
                 }
                 else
                 {
@@ -6381,13 +6370,13 @@ void ImageView::flush_image( mrv::media fg )
 void ImageView::preload_cache_start()
 {
     if ( !foreground() ) return;
-    
+
     if (!_idle_callback)
     {
-	_reel = 0;
-	fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
-	_idle_callback = true;
-	CMedia::preload_cache( true );
+        _reel = 0;
+        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+        _idle_callback = true;
+        CMedia::preload_cache( true );
     }
 }
 
@@ -6407,7 +6396,7 @@ void ImageView::preload_caches()
     }
     else
     {
-	preload_cache_start();
+        preload_cache_start();
     }
 }
 
@@ -6745,6 +6734,7 @@ void ImageView::channel( unsigned short c )
   timeline()->redraw();
   _reel = 0;
   _preframe = frame();
+  preload_cache_start();
 
   smart_refresh();
 }
@@ -7120,7 +7110,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     for ( ; i != e; ++i, ++idx )
     {
 
-        const std::string& name = *i;
+        std::string name = *i;
 
         if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
@@ -7156,17 +7146,29 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
         if ( v == -1 && ( x == root || (channelName && name == channelName) ||
-			  root == "Z" ) )
+                          root == "Z" ) )
         {
             v = idx;
+        }
+
+        std::string root2 = name.substr( 0, pos );
+        if ( root2[0] == '#' )
+        {
+            // If we deal with a multipart, eliminate the number
+            size_t pos2 = root2.find( ' ' );
+            if ( pos2 != std::string::npos && pos2 < root.size()-1 )
+                root2 = root2.substr( pos2+1, root.size() );
+            std::transform( root2.begin(), root2.end(), root2.begin(),
+                            (int(*)(int)) toupper );
+            name = root2;
         }
 
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
 
-	// N, Z and Color are special in that they don't change, except
-	// when in Stereo, but then they are not called that.
-        if ( v >= 0 || name == _("Color") || name == "N" || name == "Z" )
+        // N, Z and Color are special in that they don't change, except
+        // when in Stereo, but then they are not called that.
+        if ( v >= 0 || name == _("Color") || root2 == "N" || root2 == "Z" )
         {
 
             // If we have a shortcut and it isn't in the list of shortcuts
@@ -7463,7 +7465,7 @@ void ImageView::background( mrv::media bg )
   _bg = bg;
 
   update_title_bar( this );
-  
+
   if ( bg )
     {
       img = bg->image();

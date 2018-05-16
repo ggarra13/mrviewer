@@ -95,10 +95,18 @@ namespace mrv {
   {
       if ( file == NULL ) return false;
 
+      std::string f = file;
+
+      std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
+
+      // We want to use ImageMagick to handle PSDs as it handles layers
+      if ( f.rfind( ".psd" ) != std::string::npos )
+	  return false;
+      
       ImageInput* in = ImageInput::open( file );
-      if(!in)
+      if (!in)
       {
-          return false;
+	  return false;
       }
       in->close ();
       ImageInput::destroy (in);
@@ -118,10 +126,6 @@ namespace mrv {
 
   bool oiioImage::fetch( const boost::int64_t frame )
   {
-
-      _layers.clear();
-      _num_channels = 0;
-
 
       const char* const file = filename();
       ImageInput* in = ImageInput::open( file );

@@ -23,7 +23,10 @@ v4.1.2   - Updated FFMPEG to a later (almost latest) version.
 	   preferences saved, you will need to remove it for this to take
 	   effect or save a new preferences with the native switch on.
 	 - Bug fixed EXR saver to not repeat main layer name twice and
-	   breaking the multipart saving.
+	   breaking the multipart saving.  Regression from 4.0.7.
+	 - Bug fixed conflict of PSD loader in OIIO.  We want to avoid it,
+	   as it does not handle layers, like the one in ImageMagick.
+	   Regression from 4.0.9.
 
 v4.1.1   - Bug fixed switching FG/BG images where the start/end frames were
 	   different.  Previously, this would lead to a hang.
