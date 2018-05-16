@@ -219,7 +219,7 @@ bool presentation = false;
     //
     // Find last .
     //
-    size_t pos  = channelName.rfind( '.' );
+    size_t pos  = channelName.find( '.' );
 
     if ( pos != std::string::npos && pos != channelName.size() )
     {
@@ -229,10 +229,12 @@ bool presentation = false;
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
 
+
        if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
           return 'c';
        else if ( root == N_("N") ) return 'n';
-       else if ( root == N_("Z") ) return 'z';
+       else if ( root.rfind( N_("RGB") ) != std::string::npos &&
+                 ext == "Z" ) return 'z';
        else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
                  ext == _("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
