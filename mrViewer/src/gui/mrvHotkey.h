@@ -50,8 +50,8 @@ struct Hotkey
      }
 
      Hotkey( const bool c, const bool m,
-	     const bool a, const bool s,
-	     const unsigned k, std::string t = "", const unsigned k2=0 ) :
+             const bool a, const bool s,
+             const unsigned k, std::string t = "", const unsigned k2=0 ) :
      ctrl( c ),
      meta( m ),
      alt( a ),
@@ -78,13 +78,13 @@ struct Hotkey
 
      unsigned hotkey()
      {
-	unsigned r = 0;
-	if ( ctrl ) r += fltk::CTRL;
-	if ( shift ) r += fltk::SHIFT;
-	if ( meta ) r += fltk::META;
-	if ( alt ) r += fltk::ALT;
-	r += key;
-	return r;
+        unsigned r = 0;
+        if ( ctrl ) r += fltk::CTRL;
+        if ( shift ) r += fltk::SHIFT;
+        if ( meta ) r += fltk::META;
+        if ( alt ) r += fltk::ALT;
+        r += key;
+        return r;
      }
 
    public:
@@ -227,7 +227,7 @@ extern Hotkey kToggleICS;
 struct HotkeyEntry
 {
      HotkeyEntry( const std::string n,
-		  Hotkey& h ) :
+                  Hotkey& h ) :
      name(n),
      hotkey(h)
      {

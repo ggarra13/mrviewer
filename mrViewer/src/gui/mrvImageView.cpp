@@ -205,42 +205,71 @@ bool presentation = false;
    */
   short get_shortcut( const char* channel )
   {
-    for ( unsigned int i = 0;
-          i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
+    static std::string oldChannel;
+    for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
           {
+	      std::cerr << "matched simple " << channel << std::endl;
+              oldChannel = channel;
               return shortcuts[i].key;
           }
       }
 
     std::string channelName = channel;
+    std::string root = channel;
 
     //
     // Find last .
     //
-    size_t pos  = channelName.find( '.' );
+    size_t pos  = channelName.rfind( '.' );
+
+    size_t pos1 = channelName.find( '.' );
+    if ( pos1 != std::string::npos && pos1 < channelName.size() )
+    {
+        root = channelName.substr( 0, pos1 );
+        size_t pos2 = 0;
+        if ( root[0] == '#' )
+        {
+            pos2 = root.find( ' ' );
+            if ( pos2 == std::string::npos )
+                pos2 = root.find( '.' );
+            if ( pos2 == std::string::npos )
+                pos2 = 0;
+
+            root = root.substr( pos2, root.size() );
+        }
+
+        std::transform( root.begin(), root.end(), root.begin(),
+                        (int(*)(int)) toupper );
+    }
 
     if ( pos != std::string::npos && pos != channelName.size() )
     {
+        size_t pos2  = oldChannel.rfind( '.' );
 
-        std::string root = channelName.substr( 0, pos );
-        std::string ext = channelName.substr( pos+1, channelName.size() );
-        std::transform( ext.begin(), ext.end(), ext.begin(),
-                        (int(*)(int)) toupper );
+        std::string ext2;
+        if ( pos2 != std::string::npos && pos2 != oldChannel.size() )
+        {
+            ext2 = oldChannel.substr( pos2+1, oldChannel.size() );
+            std::transform( ext2.begin(), ext2.end(), ext2.begin(),
+                            (int(*)(int)) toupper );
+        }
 
+       std::string ext = channelName.substr( pos+1, channelName.size() );
+       std::transform( ext.begin(), ext.end(), ext.begin(),
+                       (int(*)(int)) toupper );
+
+       oldChannel = channelName;
 
        if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
           return 'c';
-       else if ( root == N_("N") ) return 'n';
-       else if ( root.rfind( N_("RGB") ) != std::string::npos &&
-                 ext == "Z" ) return 'z';
        else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
                  ext == _("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
                  ext == _("GREEN") ) return 'g';
        else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
-                 ( (ext == N_("Z") ) ) )
+                 (ext == N_("Z") ) )
            return 'b';
        else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
@@ -250,6 +279,8 @@ bool presentation = false;
     }
     else
     {
+        oldChannel = channelName;
+
         std::string ext = channel;
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
@@ -6457,9 +6488,9 @@ char* ImageView::get_layer_label( unsigned short c )
         if ( idx == c )
         {
             lbl = strdup( w->label() );
-            if ( w->is_group() ||
-                 strcmp( lbl, _("Color") ) == 0 )
-                _old_channel = idx;
+            // if ( w->is_group() ||
+            //      strcmp( lbl, _("Color") ) == 0 )
+            //     _old_channel = idx;
             break;
         }
 
@@ -6599,15 +6630,16 @@ void ImageView::channel( unsigned short c )
   const mrv::media& fg = foreground();
   if ( c == _channel && fg && _old_fg == fg->image() ) {
       c = _old_channel;
-      _old_channel = _channel;
   }
-  else
-  {
-      if ( fg && _old_fg != fg->image() )
-      {
-          _old_channel = c;
-      }
-  }
+  // else
+  // {
+  //     if ( fg && _old_fg != fg->image() )
+  //     {
+  //         _old_channel = c;
+  //     }
+  // }
+
+  _old_channel = _channel;
 
   if ( fg )
       _old_fg = fg->image();
@@ -6721,10 +6753,13 @@ void ImageView::channel( unsigned short c )
   mrv::media bg = background();
 
   {
+      std::cerr << "set channel " << ( lbl ? lbl : "NULL" )
+		<< " new " << channelName << " old " << oldChannel << std::endl;
       if ( fg ) fg->image()->channel( lbl );
       if ( bg ) bg->image()->channel( lbl );
   }
 
+  
   update_image_info();
   update_shortcuts( fg, channelName.c_str() );
 
@@ -7112,7 +7147,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     for ( ; i != e; ++i, ++idx )
     {
 
-        std::string name = *i;
+        const std::string& name = *i;
 
         if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
@@ -7158,11 +7193,10 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         {
             // If we deal with a multipart, eliminate the number
             size_t pos2 = root2.find( ' ' );
-            if ( pos2 != std::string::npos && pos2 < root.size()-1 )
-                root2 = root2.substr( pos2+1, root.size() );
+            if ( pos2 != std::string::npos && pos2 < root2.size()-1 )
+                root2 = root2.substr( pos2+1, root2.size() );
             std::transform( root2.begin(), root2.end(), root2.begin(),
                             (int(*)(int)) toupper );
-            name = root2;
         }
 
         // Get a shortcut to this layer
@@ -7170,14 +7204,18 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
-        if ( v >= 0 || name == _("Color") || root2 == "N" || root2 == "Z" )
+        if ( v >= 0 || root == _("Color") )
         {
+
 
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
+                std::cerr << "get shortcut " << name
+                          << " shortcut " << (char) shortcut
+                          << std::endl;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
