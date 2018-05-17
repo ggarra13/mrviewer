@@ -707,7 +707,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
    const char* file = file_save_single_requester( title.c_str(),
 						  pattern.c_str(),
 						  startdir, false );
-   
+   if ( !file || strlen(file) == 0 ) return;
 
     std::string tmp = file;
     std::transform( tmp.begin(), tmp.end(), tmp.begin(),
@@ -758,7 +758,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    file = file_save_single_requester( title.c_str(), kIMAGE_PATTERN.c_str(),
 				      startdir, true );
-   if ( !file ) return;
+   if ( !file || strlen(file) == 0 ) return;
    
    std::string ext = file;
    size_t pos = ext.rfind( '.' );
