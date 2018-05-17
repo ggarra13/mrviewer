@@ -210,7 +210,7 @@ bool presentation = false;
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
           {
-	      std::cerr << "matched simple " << channel << std::endl;
+	      // std::cerr << "matched simple " << channel << std::endl;
               oldChannel = channel;
               return shortcuts[i].key;
           }
@@ -6753,8 +6753,8 @@ void ImageView::channel( unsigned short c )
   mrv::media bg = background();
 
   {
-      std::cerr << "set channel " << ( lbl ? lbl : "NULL" )
-		<< " new " << channelName << " old " << oldChannel << std::endl;
+      // std::cerr << "set channel " << ( lbl ? lbl : "NULL" )
+      // 	   << " new " << channelName << " old " << oldChannel << std::endl;
       if ( fg ) fg->image()->channel( lbl );
       if ( bg ) bg->image()->channel( lbl );
   }
@@ -7204,7 +7204,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
-        if ( v >= 0 || root == _("Color") )
+        if ( v >= 0 || name == _("Color") || name == _("Z") || name == _("N") )
         {
 
 
@@ -7213,9 +7213,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
-                std::cerr << "get shortcut " << name
-                          << " shortcut " << (char) shortcut
-                          << std::endl;
+                // std::cerr << "get shortcut " << name
+                //           << " shortcut " << (char) shortcut
+                //           << std::endl;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }

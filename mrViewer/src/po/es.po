@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-05-16 23:31-0300\n"
+"POT-Creation-Date: 2018-05-16 23:52-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -4641,6 +4641,11 @@ msgstr "Mi PC"
 msgid "My Documents"
 msgstr "Mis Documentos"
 
+#: gui/mrvImageView.cpp:7207
+#, fuzzy
+msgid "N"
+msgstr "No"
+
 #: core/guessImage.cpp:257
 msgid "NTSC HDTV Color Bars"
 msgstr "Barras de Color NTSC HDTV"
@@ -8104,7 +8109,7 @@ msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: core/oiioImage.cpp:242
+#: core/oiioImage.cpp:242 gui/mrvImageView.cpp:7207
 msgid "Z"
 msgstr "Z"
 
