@@ -237,12 +237,14 @@ bool presentation = false;
             if ( pos2 == std::string::npos )
                 pos2 = 0;
 
-            root = root.substr( pos2, root.size() );
+	    if ( pos2 < root.size()-1 )
+		root = root.substr( pos2+1, root.size() );
         }
 
         std::transform( root.begin(), root.end(), root.begin(),
                         (int(*)(int)) toupper );
     }
+
 
     if ( pos != std::string::npos && pos != channelName.size() )
     {
@@ -259,7 +261,7 @@ bool presentation = false;
        std::string ext = channelName.substr( pos+1, channelName.size() );
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper );
-
+    
        oldChannel = channelName;
 
        if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
@@ -7123,7 +7125,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // Root name if channel name minus the last .extension.
         // Like sub.AO.R, root is sub.AO
 
-        pos = root.rfind('.');
+        pos = root.find('.');
 
         if ( pos != std::string::npos )
         {
@@ -7185,19 +7187,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         if ( v == -1 && ( x == root || (channelName && name == channelName) ||
                           root == "Z" ) )
         {
-            v = idx;
+           v = idx;
         }
-
-        std::string root2 = name.substr( 0, pos );
-        if ( root2[0] == '#' )
-        {
-            // If we deal with a multipart, eliminate the number
-            size_t pos2 = root2.find( ' ' );
-            if ( pos2 != std::string::npos && pos2 < root2.size()-1 )
-                root2 = root2.substr( pos2+1, root2.size() );
-            std::transform( root2.begin(), root2.end(), root2.begin(),
-                            (int(*)(int)) toupper );
-        }
+ 
 
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
