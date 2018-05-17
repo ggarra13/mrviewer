@@ -1,7 +1,8 @@
 v4.1.2   - Updated FFMPEG to a later (almost latest) version.
 	 - Improvements to channel/layer usage per request from Dominik Pott:
 	   	* Next/Previous channel hotkeys are less granular.  They now
-		  jump RGBA channel groups.
+		  jump RGBA channel groups.  Only if you are in a subchannel
+		  will the move be granular.
 		* Switching to the Z channel no longer breaks the hotkeys of
 		  RGBA.
 		* Channel names are now sorted according to function (ex.
@@ -14,10 +15,13 @@ v4.1.2   - Updated FFMPEG to a later (almost latest) version.
 		  comparison.
 		* The cache now respects the IN/OUT points in the timeline
 		  and won't cache further than that, except it has already
-		  been cached.
+		  been cached or the current frame is set farther.
 		* The hotkeys have been changed so that 'c' always brings
 		  you to the color image, while r,g,b change based on what
-		  group of channels you have selected ( N, P, etc ).
+		  group of channels and layer you have selected ( N, P,
+		  etc. and right or left for stereo ).
+		* Z always brings you the Depth channel (if available).
+		* N always brings you the Normals channel (if available).
 	 - On Windows, the file requester is the native one by default now.
 	   This effects both loading and saving.  Note that if you have
 	   preferences saved, you will need to remove it for this to take

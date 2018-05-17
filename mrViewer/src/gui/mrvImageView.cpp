@@ -223,28 +223,28 @@ bool presentation = false;
     // Find last .
     //
     size_t pos  = channelName.rfind( '.' );
-
-    size_t pos1 = channelName.find( '.' );
-    if ( pos1 != std::string::npos && pos1 < channelName.size() )
+    
+    size_t pos1 = root.find( '.' );
+    if ( pos1 != std::string::npos && pos1 < root.size() )
     {
-        root = channelName.substr( 0, pos1 );
-        size_t pos2 = 0;
-        if ( root[0] == '#' )
-        {
-            pos2 = root.find( ' ' );
-            if ( pos2 == std::string::npos )
-                pos2 = root.find( '.' );
-            if ( pos2 == std::string::npos )
-                pos2 = 0;
-
-	    if ( pos2 < root.size()-1 )
-		root = root.substr( pos2+1, root.size() );
-        }
-
-        std::transform( root.begin(), root.end(), root.begin(),
-                        (int(*)(int)) toupper );
+        root = root.substr( 0, pos1 );
     }
 
+    size_t pos2 = 0;
+    if ( root[0] == '#' )
+    {
+        pos2 = root.find( ' ' );
+        if ( pos2 == std::string::npos )
+            pos2 = root.find( '.' );
+        if ( pos2 == std::string::npos )
+            pos2 = 0;
+
+        if ( pos2 < root.size()-1 )
+            root = root.substr( pos2+1, root.size() );
+    }
+
+    std::transform( root.begin(), root.end(), root.begin(),
+                    (int(*)(int)) toupper );
 
     if ( pos != std::string::npos && pos != channelName.size() )
     {
@@ -270,8 +270,10 @@ bool presentation = false;
                  ext == _("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
                  ext == _("GREEN") ) return 'g';
+       // We want to set B for Z channel but only when it is XYZ, not
+       // when it is RGBAZ
        else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
-                 (ext == N_("Z") ) )
+                 (ext == N_("Z") && root.find("RGB") == std::string::npos ) )
            return 'b';
        else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
@@ -289,6 +291,8 @@ bool presentation = false;
         if ( ext.rfind( N_("LEFT") ) != std::string::npos ||
              ext.rfind( N_("RIGHT") ) != std::string::npos )
             return 'c';
+       else if ( root == N_("N") || root == _("NORMALS") )
+           return 'n';
     }
 
     return 0;
@@ -7093,6 +7097,19 @@ double ImageView::pixel_ratio() const
   return fg->image()->pixel_ratio();
 }
 
+std::string remove_hash_number( std::string root )
+{
+    if ( root[0] != '#' ) return root;
+
+    size_t pos = root.find( ' ' );
+    if ( pos != std::string::npos )
+    {
+        root = root.substr( pos + 1, root.size() );
+    }
+    
+    return root;
+}
+
 int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
@@ -7130,6 +7147,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         if ( pos != std::string::npos )
         {
             root = root.substr( 0, pos );
+            root = remove_hash_number( root );
         }
         else
         {
@@ -7184,7 +7202,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        if ( v == -1 && ( x == root || (channelName && name == channelName) ||
+        std::string ch = remove_hash_number( x );
+        if ( v == -1 && ( ch == root || (channelName && name == channelName) ||
                           root == "Z" ) )
         {
            v = idx;
@@ -7193,13 +7212,11 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
-
+        
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
-        if ( v >= 0 || name == _("Color") || name == _("Z") || name == _("N") )
+        if ( v >= 0 || name == _("Color") || ch == N_("Z") || ch == N_("N") )
         {
-
-
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
