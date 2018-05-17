@@ -210,7 +210,7 @@ bool presentation = false;
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
           {
-	      // std::cerr << "matched simple " << channel << std::endl;
+              // std::cerr << "matched simple " << channel << std::endl;
               oldChannel = channel;
               return shortcuts[i].key;
           }
@@ -223,7 +223,7 @@ bool presentation = false;
     // Find last .
     //
     size_t pos  = channelName.rfind( '.' );
-    
+
     size_t pos1 = root.find( '.' );
     if ( pos1 != std::string::npos && pos1 < root.size() )
     {
@@ -261,7 +261,7 @@ bool presentation = false;
        std::string ext = channelName.substr( pos+1, channelName.size() );
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper );
-    
+
        oldChannel = channelName;
 
        if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
@@ -1475,11 +1475,49 @@ bool ImageView::previous_channel()
     for ( unsigned short i = 0; i < num; ++i, ++idx )
         {
             fltk::Widget* w = uiColorChannel->child(i);
-            if ( c == idx && c >= 7 && ( strcmp( w->label(), "Z" ) == 0 ) )
+            fltk::Widget* last = uiColorChannel->child( num-1 );
+            if ( c == idx && c >= 7 && ( strcmp( w->label(), N_("Z") ) == 0 ) )
             {
                 previous = c - 7;
                 is_group = true;
             }
+
+/*
+            if ( c == 0 )
+            {
+                unsigned short colidx = i;
+                unsigned short idx2 = idx;
+                for ( unsigned short j = i; j < num; ++j, ++idx2 )
+                {
+                    w = uiColorChannel->child(j);
+                    if ( strcmp( w->label(), _("Color") ) == 0 )
+                    {
+                        colidx = idx2;
+                    }
+                    if ( w->is_group() )
+                    {
+                        g = (fltk::Group*) w;
+                        idx2 += g->children();
+
+                        if ( !is_group ) previous = idx2;
+                    }
+                }
+
+                // If last label is Z, jump to it.
+                if ( strcmp( last->label(), N_("Z") ) == 0  )
+                {
+                    previous = idx2-1;
+                }
+                // If it is Alpha Overlay or Blue, jump to Color
+                else
+                {
+                    previous = colidx;
+                }
+                is_group = true;
+                break;
+            }
+*/
+
             if ( w->is_group() )
             {
                 g = (fltk::Group*) w;
@@ -1553,7 +1591,7 @@ bool ImageView::next_channel()
             }
         }
 
-    if ( (is_group && next < idx-1) || (!is_group && c < idx-1) )
+    if ( (is_group && next < idx) || (!is_group && c < idx-1) )
     {
         if ( is_group )
         {
@@ -6760,12 +6798,12 @@ void ImageView::channel( unsigned short c )
 
   {
       // std::cerr << "set channel " << ( lbl ? lbl : "NULL" )
-      // 	   << " new " << channelName << " old " << oldChannel << std::endl;
+      //           << " new " << channelName << " old " << oldChannel << std::endl;
       if ( fg ) fg->image()->channel( lbl );
       if ( bg ) bg->image()->channel( lbl );
   }
 
-  
+
   update_image_info();
   update_shortcuts( fg, channelName.c_str() );
 
@@ -7106,7 +7144,7 @@ std::string remove_hash_number( std::string root )
     {
         root = root.substr( pos + 1, root.size() );
     }
-    
+
     return root;
 }
 
@@ -7208,11 +7246,11 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         {
            v = idx;
         }
- 
+
 
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
-        
+
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
         if ( v >= 0 || name == _("Color") || ch == N_("Z") || ch == N_("N") )
