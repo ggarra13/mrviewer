@@ -1547,7 +1547,8 @@ bool ImageView::previous_channel()
 		
                 idx += numc;
             }
-	    else if ( previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
+	    else if ( c == idx &&
+		      previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
 	    {
 		is_group = true;
 	    }
