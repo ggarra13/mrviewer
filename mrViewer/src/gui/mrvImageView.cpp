@@ -1477,10 +1477,51 @@ bool ImageView::previous_channel()
         {
             fltk::Widget* w = uiColorChannel->child(i);
 
+	    // This handles jump from first channel to last (Z or Color or
+	    // any channel done in loop later)
+	    if ( c == 0 && c == idx )
+	    {
+		// Count (total) number of channels
+		for ( unsigned j = 0; j < num; ++j, ++idx )
+		{
+		    w = uiColorChannel->child(j);
+		    if ( w->is_group() )
+		    {
+			g = (fltk::Group*) w;
+			idx += g->children();
+		    }
+		}
+		// Select last channel (group)
+		fltk::Widget* last = uiColorChannel->child(num-1);
+		// Jump to Z based on label
+		if ( strcmp( last->label(), N_("Z") ) == 0 )
+		{
+		    previous = idx-1;
+		    is_group = true;
+		    break;
+		}
+		// Jump to color based on label
+		else if ( strcmp( last->label(), _("Alpha Overlay") ) == 0 )
+		{
+		    previous = idx-6;
+		    is_group = true;
+		    break;
+		}
+		else if ( strcmp( last->label(), _("Lumma") ) == 0 )
+		{
+		    previous = idx-4;
+		    is_group = true;
+		    break;
+		}
+		else
+		{
+		    idx = 0;
+		}
+	    }
+	    
+	    // This handles jump from Z to Color
             if ( c == idx && c >= 4 &&
-                 ( ( strcmp( w->label(), N_("Z") ) == 0 ) ||
-                   ( strcmp( w->label(), N_("Alpha Overlay") ) == 0 ) ||
-                   ( strcmp( w->label(), N_("Lumma") ) == 0 ) ) )
+                 ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
             {
                 // Handle Z, Alpha Overlay and Lumma and RGBA
                 if ( c >= 7 )  // Z
@@ -6505,9 +6546,9 @@ char* ImageView::get_layer_label( unsigned short c )
         if ( idx == c )
         {
             lbl = strdup( w->label() );
-            if ( w->is_group() ||
-                 strcmp( lbl, _("Color") ) == 0 )
-                _old_channel = idx;
+            // if ( w->is_group() ||
+            //      strcmp( lbl, _("Color") ) == 0 )
+            //     _old_channel = idx;
             break;
         }
 
@@ -6647,16 +6688,9 @@ void ImageView::channel( unsigned short c )
   const mrv::media& fg = foreground();
   if ( c == _channel && fg && _old_fg == fg->image() ) {
       c = _old_channel;
-      _old_channel = _channel;
   }
-  else
-  {
-      if ( fg && _old_fg != fg->image() )
-      {
-          _old_channel = c;
-      }
-  }
-
+  _old_channel = _channel;
+	  
   if ( fg )
       _old_fg = fg->image();
   else
@@ -6667,6 +6701,7 @@ void ImageView::channel( unsigned short c )
 
 
   _channel = c;
+  
 
   char buf[128];
   sprintf( buf, "Channel %d %s", c, lbl );
@@ -6738,7 +6773,7 @@ void ImageView::channel( unsigned short c )
       _channelType = kLumma;
     }
 
-
+  /*
   if ( pos != pos2 && channelName.size() > oldChannel.size() )
   {
      pos2 = channelName.find( oldChannel );
@@ -6765,7 +6800,8 @@ void ImageView::channel( unsigned short c )
         }
      }
   }
-
+  */
+  
   mrv::media bg = background();
 
   {
@@ -7209,12 +7245,13 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         ch = remove_hash_number( ch );
         if ( v >= 0 || name == _("Color") || ch == "N" || ch == "Z" )
         {
-            // If we have a shortcut and it isn't in the list of shortcuts
+           // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
-                if ( v < 0 ) v = idx;
+		//		std::cerr << "add shortcut " << (char) shortcut << " v: " 
+		//	  << v << " name " << name << " ch " << ch << std::endl;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
