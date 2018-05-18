@@ -1473,51 +1473,51 @@ bool ImageView::previous_channel()
 
     bool is_group = false;
     short previous = -1;
+    unsigned short total = 0;
+    fltk::Widget* w;
+    fltk::Group* g;
+    
+    // Count (total) number of channels
+    for ( unsigned j = 0; j < num; ++j, ++total )
+    {
+	w = uiColorChannel->child(j);
+	if ( w->is_group() )
+	{
+	    g = (fltk::Group*) w;
+	    total += g->children();
+	}
+    }
+		
     unsigned short idx = 0;
-    fltk::Group* g = NULL;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
         {
-            fltk::Widget* w = uiColorChannel->child(i);
+            w = uiColorChannel->child(i);
 
 	    // This handles jump from first channel to last (Z or Color or
 	    // any channel done in loop later)
 	    if ( c == 0 && c == idx )
 	    {
-		// Count (total) number of channels
-		for ( unsigned j = 0; j < num; ++j, ++idx )
-		{
-		    w = uiColorChannel->child(j);
-		    if ( w->is_group() )
-		    {
-			g = (fltk::Group*) w;
-			idx += g->children();
-		    }
-		}
 		// Select last channel (group)
 		fltk::Widget* last = uiColorChannel->child(num-1);
 		// Jump to Z based on label
 		if ( strcmp( last->label(), N_("Z") ) == 0 )
 		{
-		    previous = idx-1;
+		    previous = total-1;
 		    is_group = true;
 		    break;
 		}
 		// Jump to color based on label
 		else if ( strcmp( last->label(), _("Alpha Overlay") ) == 0 )
 		{
-		    previous = idx-6;
+		    previous = total-6;
 		    is_group = true;
 		    break;
 		}
 		else if ( strcmp( last->label(), _("Lumma") ) == 0 )
 		{
-		    previous = idx-4;
+		    previous = total-4;
 		    is_group = true;
 		    break;
-		}
-		else
-		{
-		    idx = 0;
 		}
 	    }
 	    
@@ -1544,8 +1544,13 @@ bool ImageView::previous_channel()
                 }
 
                 if ( !is_group ) previous = idx;
+		
                 idx += numc;
             }
+	    else if ( previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
+	    {
+		is_group = true;
+	    }
         }
 
     if ( (is_group && previous >= 0) || (!is_group && c > 0) )
