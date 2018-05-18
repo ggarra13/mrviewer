@@ -242,6 +242,8 @@ bool presentation = false;
     std::string channelName = channel;
     std::string root = remove_hash_number( channelName );
     root = extract_root( root );
+    std::transform( root.begin(), root.end(), root.begin(),
+                    (int(*)(int))toupper );
 
     //
     // Find last .
@@ -273,8 +275,8 @@ bool presentation = false;
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
                  ext == _("GREEN") ) return 'g';
        else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
-                 ( (ext == N_("Z") &&
-                    root.find("RGB") == std::string::npos ) ) )
+                 ( ext == N_("Z") &&
+                   ( root.find("RGB") == std::string::npos ) ) )
            return 'b';
        else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
