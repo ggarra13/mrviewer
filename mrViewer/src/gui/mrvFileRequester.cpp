@@ -125,6 +125,7 @@ const char* file_save_single_requester(
     fltk::use_system_file_chooser( native );
     if ( native )
     {
+        fltk::check();
         file = fltk::file_chooser( title, pattern, startfile, compact_images );
         if ( !file ) return "";
     }
@@ -134,33 +135,6 @@ const char* file_save_single_requester(
 #endif
     if ( !file ) return "";
     return file;
-}
-
-stringArray file_save_multi_requester(
-				      const char* title,
-				      const char* pattern,
-				      const char* startfile,
-				      const bool compact_images = true
-				      )
-{
-    stringArray filelist;
-    const char* file = NULL;
-#ifdef _WIN32
-    bool native = mrv::Preferences::native_file_chooser;
-    fltk::use_system_file_chooser( native );
-    if ( native )
-    {
-        file = fltk::file_chooser( title, pattern, startfile, compact_images );
-        if ( !file ) return filelist;
-        split( filelist, file, '\n' );
-    }
-    else
-#endif
-    {
-        file = flu_save_chooser( title, pattern, startfile);
-        if (!file) return filelist;
-    }
-    return filelist;
 }
 
 stringArray file_multi_requester(
@@ -178,6 +152,7 @@ stringArray file_multi_requester(
     fltk::use_system_file_chooser( native );
     if ( native )
     {
+        fltk::check();
         const char* file = fltk::file_chooser( title,
                                                pattern,
                                                startfile );
@@ -205,6 +180,7 @@ const char* file_single_requester(
     fltk::use_system_file_chooser( native );
     if ( native )
     {
+        fltk::check();
         if ( !startfile ) startfile = "";
         file = fltk::file_chooser( title, pattern, startfile );
         // if ( file )
@@ -623,14 +599,11 @@ void save_clip_xml_metadata( const CMedia* img,
 
     std::string title = _( "Save XML Clip Metadata" );
 
-    const char* file = NULL;
-    stringArray filelist = file_save_multi_requester( title.c_str(),
-						      kXML_PATTERN.c_str(),
-						      xml.c_str() );
-    if ( filelist.empty() ) return;
+    const char* file = file_save_single_requester( title.c_str(),
+                                                   kXML_PATTERN.c_str(),
+                                                   xml.c_str() );
+    if ( !file || strlen(file) == 0 ) return;
     
-    file = filelist[0].c_str();
-
     save_aces_xml( img, file );
 }
 
