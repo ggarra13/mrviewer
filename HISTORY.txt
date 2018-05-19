@@ -2,6 +2,9 @@ v4.1.3   - Native file requester do not leave their menus open and
 	   obstructing the view.
 	 - Previous channel hotkey now works correctly on Color channel when
 	   this channel is in the middle of the channel list.
+	 - Previous channel hotkey now works correctly on Color channel when
+	   the following channel would be alpha overlay (no more than RGBA
+	   is loaded).
 
 v4.1.2   - Updated FFMPEG to a later (almost latest) version.
 	 - Improvements to channel/layer usage per request from Dominik Pott:
