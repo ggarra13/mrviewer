@@ -1835,7 +1835,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
         if ( _layers.empty() )
         {
-            for ( int i = 0; i < _numparts; ++i )
+            for ( unsigned i = 0; i < _numparts; ++i )
             {
                 const Header& header = inmaster.header(i);
                 if ( ! header.hasType() )
@@ -1876,12 +1876,13 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 std::string name;
                 if ( header.hasName() ) name = header.name();
 
+		
                 // If layer name is empty it is the one with "Color".  We set it
                 // as default.
-                if ( name.empty() )
+                if ( name.empty() && _curpart == -1 )
                 {
                     _curpart = _clear_part = i;
-                }
+               }
 
                 //
                 // For simplicity sake, we don't accept periods in header name
@@ -1892,7 +1893,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 {
                     std::string n = name.substr( 0, pos );
                     n += '_';
-                    if ( pos != name.size() )
+                    if ( pos != name.size()-1 )
                         n += name.substr( pos+1, name.size() );
                     name = n;
                 }
@@ -1901,7 +1902,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 buf[0] = 0;
                 if ( !name.empty() )
                 {
-                    sprintf( buf, "#%d %s", i, name.c_str() );
+		    sprintf( buf, "#%d %s", i, name.c_str() );
                     _layers.push_back( buf );
                     ++_num_layers;
                 }
@@ -1929,108 +1930,54 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 			       std::greater<std::string>() );
 		    
                 }
+		
+		if ( st[1] == -1 &&
+		     ( ext.find( right ) != std::string::npos ||
+		       ext.find( R ) != std::string::npos ) )
+		{
+		    if ( !prefix.empty() )
+		    {
+			if ( prefix != "Z" &&
+			     name.find( prefix ) == std::string::npos )
+			    continue;
+		    }
+		    if ( !suffix.empty() )
+		    {
+			if ( suffix != ".Z" &&
+			     name.rfind( suffix ) == std::string::npos )
+			    continue;
+		    }
+		    st[1] = i;
+		    _has_right_eye = strdup( name.c_str() );
+		    _is_stereo = true;
+		    continue;
+		}
+		if ( st[0] == -1 &&
+		     ( ext.find( left ) != std::string::npos ||
+		       ext.find( L ) != std::string::npos ) )
+		{
+		    if ( !prefix.empty() )
+		    {
+			if ( prefix != "Z" &&
+			     name.find( prefix ) == std::string::npos )
+			    continue;
+		    }
+		    if ( !suffix.empty() )
+		    {
+			if ( suffix != ".Z" &&
+			     name.rfind( suffix ) == std::string::npos )
+			    continue;
+		    }
+		    _has_left_eye = strdup( name.c_str() );
+		    st[0] = i;
+		    _is_stereo = true;
+		    continue;
+		}
 
             }
         }
 
 
-        for ( int i = 0; i < _numparts; ++i )
-        {
-            const Header& header = inmaster.header(i);
-            if ( ! header.hasType() )
-                _type = SCANLINEIMAGE;
-            else
-                _type = header.type();
-
-            if ( _type != SCANLINEIMAGE &&
-                 _type != TILEDIMAGE &&
-                 _type != DEEPSCANLINE &&
-                 _type != DEEPTILE ) continue;
-
-            if ( _type == DEEPSCANLINE || _type == DEEPTILE )
-            {
-                _has_deep_data = true;
-                image_damage( image_damage() | kDamage3DData );
-            }
-
-            const Imf::ChannelList& channels = header.channels();
-
-            std::string name;
-            if ( header.hasName() ) name = header.name();
-
-            //
-            // For simplicity sake, we don't accept periods in header name
-            //
-#ifdef CHANGE_PERIODS_TO_UNDERSCORES
-            size_t pos;
-            while ( (pos = name.find( '.' )) != std::string::npos )
-            {
-                std::string n = name.substr( 0, pos );
-                n += '_';
-                if ( pos != name.size() )
-                    n += name.substr( pos+1, name.size() );
-                name = n;
-            }
-#endif
-
-
-            std::string ext = name;
-            if ( header.hasView() ) ext = header.view();
-
-// #if 0
-//             std::transform( ext.begin(), ext.end(), ext.begin(),
-//                             (int(*)(int)) tolower);
-// #endif
-            // std::cerr << "layer #" << i << " of " << _numparts << std::endl;
-            // std::cerr << "ext " << ext << std::endl;
-            // std::cerr << "name " << name << std::endl;
-            // std::cerr << "prefix " << prefix << std::endl
-            //        << "suffix " << suffix << std::endl;
-
-            if ( st[1] == -1 &&
-                 ( ext.find( right ) != std::string::npos ||
-                   ext.find( R ) != std::string::npos ) )
-            {
-                if ( !prefix.empty() )
-                {
-                    if ( prefix != "Z" &&
-                         name.find( prefix ) == std::string::npos )
-                        continue;
-                }
-                if ( !suffix.empty() )
-                {
-                    if ( suffix != ".Z" &&
-                         name.rfind( suffix ) == std::string::npos )
-                        continue;
-                }
-                st[1] = i;
-                _has_right_eye = strdup( name.c_str() );
-                _is_stereo = true;
-                continue;
-            }
-            if ( st[0] == -1 &&
-                 ( ext.find( left ) != std::string::npos ||
-                   ext.find( L ) != std::string::npos ) )
-            {
-                if ( !prefix.empty() )
-                {
-                    if ( prefix != "Z" &&
-                         name.find( prefix ) == std::string::npos )
-                        continue;
-                }
-                if ( !suffix.empty() )
-                {
-                    if ( suffix != ".Z" &&
-                         name.rfind( suffix ) == std::string::npos )
-                        continue;
-                }
-                _has_left_eye = strdup( name.c_str() );
-                st[0] = i;
-                _is_stereo = true;
-                continue;
-            }
-
-        }
     }
     else if ( _numparts == 1 )
     {
