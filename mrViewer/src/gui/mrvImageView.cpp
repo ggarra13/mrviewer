@@ -6587,6 +6587,7 @@ char* ImageView::get_layer_label( unsigned short c )
         if ( lbl ) break;
     }
 
+    
     if ( !lbl )
     {
         LOG_ERROR( _("Label not found for index ") << c );
@@ -6664,10 +6665,10 @@ void ImageView::channel( unsigned short c )
 
   if ( c >= idx )
   {
+      c = 0;
       const char* lbl = uiColorChannel->label();
-      if ( lbl )
-      {
-          c = 0;
+      if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
+      {	  
           num = uiColorChannel->children();
           for ( unsigned short i = 0; i < num; ++i, ++c )
           {
@@ -6679,7 +6680,7 @@ void ImageView::channel( unsigned short c )
                   unsigned n = g->children();
                   for ( unsigned j = 0; j < n; ++j, ++c )
                   {
-                      w = g->child(i);
+                      w = g->child(j);
                       if ( strcmp( w->label(), lbl ) == 0 ) break;
                   }
               }
@@ -6707,9 +6708,9 @@ void ImageView::channel( unsigned short c )
   else
       _old_fg = NULL;
 
+
   char* lbl = get_layer_label( c );
   if ( !lbl ) return;
-
 
   _channel = c;
   
@@ -6730,16 +6731,19 @@ void ImageView::channel( unsigned short c )
   size_t pos = ext.rfind('.');
   size_t pos2 = oext.rfind('.');
 
+  // Get ext from channel
   if ( pos != std::string::npos && pos != ext.size() )
   {
      ext = ext.substr( pos+1, ext.size() );
   }
 
+  // Get old ext from channel
   if ( pos2 != std::string::npos && pos2 != oext.size() )
   {
      oext = oext.substr( pos2+1, oext.size() );
   }
 
+  // Get suffix from label
   std::string x = lbl;
   size_t loc = x.find( '.' );
   if ( x[0] == '#' && loc != std::string::npos && loc != x.size() )
@@ -6784,34 +6788,6 @@ void ImageView::channel( unsigned short c )
       _channelType = kLumma;
     }
 
-  /*
-  if ( pos != pos2 && channelName.size() > oldChannel.size() )
-  {
-     pos2 = channelName.find( oldChannel );
-     if ( pos2 == std::string::npos ) {
-        ext = "";
-     }
-  }
-  else
-  {
-     if ( pos != pos2 )
-     {
-        pos2 = oldChannel.find( channelName );
-        if ( pos2 == std::string::npos ) {
-           oext = "";
-        }
-     }
-     else
-     {
-        std::string temp1 = channelName.substr( 0, pos );
-        std::string temp2 = oldChannel.substr( 0, pos2 );
-        if ( temp1 != temp2 || ( oext != "R" && oext != "G" &&
-                                 oext != "B" && oext != "A") ) {
-            ext = "";
-        }
-     }
-  }
-  */
   
   mrv::media bg = background();
 
@@ -6821,6 +6797,7 @@ void ImageView::channel( unsigned short c )
   }
 
   update_image_info();
+  channelName = remove_hash_number( channelName );
   update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
@@ -7208,7 +7185,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     {
 
         const std::string& name = *i;
-
+	
         if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
             if ( group )
