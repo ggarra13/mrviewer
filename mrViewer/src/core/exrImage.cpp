@@ -898,7 +898,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 		 lcase.rfind( ".Z" ) != std::string::npos ||
 		 lcase.rfind( ".z" ) != std::string::npos )
 	    {
-		// std::sort( ks, ke, std::greater<std::string>() );
+		std::sort( ks, ke, std::greater<std::string>() );
 	    }
 	    
 	    for ( ; ks != ke; ++ks )
