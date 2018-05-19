@@ -555,27 +555,36 @@ void iffImage::read_pixel_chunk( FILE* file,
 	    image_size( header.width, header.height );
 
 	    image_type::Format format = image_type::kLumma;
-		
-	    _layers.clear();
+
 	    if ( header.flags & kHasRGB )
 	    {
 		format = image_type::kRGB;
-		rgb_layers();
-		lumma_layers();
 	    }
 	    if ( header.flags & kHasAlpha )
 	    {
 		format = image_type::kRGBA;
-		alpha_layers();
 	    }
-	    if ( header.flags & kHas12Bit )
+	    
+	    if ( _layers.empty() )
 	    {
-		// 		_depth = 12;
-	    }
-	    if ( header.flags & kHasZ )
-	    {
-		_layers.push_back( N_("Z") );
-		++_num_channels;
+		if ( header.flags & kHasRGB )
+		{
+		    rgb_layers();
+		    lumma_layers();
+		}
+		if ( header.flags & kHasAlpha )
+		{
+		    alpha_layers();
+		}
+		if ( header.flags & kHas12Bit )
+		{
+		    // 		_depth = 12;
+		}
+		if ( header.flags & kHasZ )
+		{
+		    _layers.push_back( N_("Z") );
+		    ++_num_channels;
+		}
 	    }
 	    
 	    image_type::PixelType pixel_type = image_type::kByte;
