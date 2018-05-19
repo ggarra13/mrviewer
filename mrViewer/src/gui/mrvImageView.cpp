@@ -1500,20 +1500,23 @@ bool ImageView::previous_channel()
 		// Select last channel (group)
 		fltk::Widget* last = uiColorChannel->child(num-1);
 		// Jump to Z based on label
-		if ( strcmp( last->label(), N_("Z") ) == 0 )
+		if ( total > 8 &&
+		     strcmp( last->label(), N_("Z") ) == 0 )
 		{
 		    previous = total-1;
 		    is_group = true;
 		    break;
 		}
 		// Jump to color based on label
-		else if ( strcmp( last->label(), _("Alpha Overlay") ) == 0 )
+		else if ( total > 7 &&
+			  strcmp( last->label(), _("Alpha Overlay") ) == 0 )
 		{
-		    previous = total-6;
+		    previous = total-7;
 		    is_group = true;
 		    break;
 		}
-		else if ( strcmp( last->label(), _("Lumma") ) == 0 )
+		else if ( total > 5 &&
+			  strcmp( last->label(), _("Lumma") ) == 0 )
 		{
 		    previous = total-4;
 		    is_group = true;
