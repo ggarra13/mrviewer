@@ -7179,6 +7179,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     {
         root = channelName;
 
+
         // Root name if channel name minus the last .extension.
         // Like sub.AO.R, root is sub.AO
 
@@ -7241,8 +7242,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        if ( v == -1 && ( x == root || (channelName && name == channelName) ||
-                          root == "Z" ) )
+        if ( v == -1 && ( x == root ||
+			  (channelName && name == channelName) ) )
         {
             v = idx;
         }
@@ -7301,7 +7302,8 @@ void ImageView::update_layers()
 
     int v = update_shortcuts( fg, lbl );
 
-    if ( v >= 0 && v != _channel )
+    CMedia* img = fg->image();
+    if ( v >= 0 && img != _old_fg )
     {
         channel( (unsigned short) v );
     }
@@ -7309,7 +7311,6 @@ void ImageView::update_layers()
 
     uiColorChannel->redraw();
 
-    CMedia* img = fg->image();
 
     img->image_damage( img->image_damage() & ~CMedia::kDamageLayers );
 
