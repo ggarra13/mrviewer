@@ -3358,6 +3358,13 @@ int ImageView::leftMouseDown(int x, int y)
           flags |= kLeftShift;
           selection_mode();
       }
+      else if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+		fltk::event_key_state( fltk::RightCtrlKey ) )
+      {
+	  flags |= kMouseLeft;
+          flags |= kLeftCtrl;
+	  flags |= kGain;
+      }
 
       if ( _mode == kSelection )
       {
@@ -4886,6 +4893,12 @@ void ImageView::mouseDrag(int x,int y)
             lastX = x;
             lastY = y;
         }
+      else if ( flags & kGain )
+      {
+	  gain( _gain + float(dx) / 2000.0f );
+	  lastX = x;
+	  lastY = y;
+      }
       else if ( flags & kMouseMove )
         {
            window()->cursor( fltk::CURSOR_MOVE );
