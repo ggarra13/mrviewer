@@ -669,12 +669,13 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {398 465 700 450} resizable
+        xywh {398 493 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
       } {
@@ -683,11 +684,11 @@ o->label( o->child( o->value() )->label() );}
           xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Window Behavior}
+              label {Window Behavior} open
               xywh {9 44 410 100} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAlwaysOnTop {
@@ -788,7 +789,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window}
+            label {View Window} open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -867,7 +868,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::CheckButton} uiPrefsSafeAreas {
                 label {Safe Areas}
-                user_data this user_data_type {mrv::PreferencesUI*}
+                user_data this user_data_type {mrv::PreferencesUI*} selected
                 tooltip {When mrViewer starts, the safe area display will be active by default.}
                 xywh {198 107 20 20} align 8 box UP_BOX
               }
@@ -1119,7 +1120,7 @@ uiWindowYSize->value( v->uiMain->h() );}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
+            label Playback
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1451,8 +1452,8 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {3D Luts} open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
@@ -1605,7 +1606,7 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.
                 label {Use OCIO}
                 callback {mrv::Preferences::use_ocio = o->value();}
                 tooltip {Use OCIO or revert to CTL/ICC.}
-                xywh {5 5 25 25}
+                xywh {5 5 25 25} box UP_BOX
               }
               {fltk::Group} {} {open
                 xywh {5 44 375 31}
@@ -2508,7 +2509,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
@@ -3088,7 +3089,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {770 388 640 534} when CHANGED resizable
+        xywh {770 416 640 534} when CHANGED resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -3732,7 +3733,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {open selected
+          {fltk::Group} uiBottomBar {open
             xywh {0 481 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -3974,8 +3975,7 @@ o->value(24);}
                       callback {int64_t f = o->value();
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();
-}
+v->uiTimeline->redraw();}
                       tooltip {Allows you to set starting frame for timeline.}
                       xywh {20 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(1); o->main( this );}
