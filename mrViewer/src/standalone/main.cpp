@@ -457,7 +457,7 @@ int main( int argc, char** argv )
           ui->uiMain->show();   // so run() does something
           DBG( "shown uiMain" );
 
-          // Start playback if command line forced us to do so
+           // Start playback if command line forced us to do so
           if ( opts.play )
           {
               ui->uiView->play_forwards();
