@@ -301,6 +301,7 @@ fltk::StyleSet*     newscheme = NULL;
   int   Preferences::selectiontextcolor;
 
 
+
   Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
   {
     bool ok;
@@ -1114,27 +1115,23 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
+    
     if (  ( !var || strlen(var) == 0 ) && use_ocio )
     {
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default" )
                      << std::endl );
         std::string tmp = root + "/ocio/nuke-default/config.ocio";
-        DBG( __FUNCTION__ << " " << __LINE__ );
         var = strdup( tmp.c_str() );
-        DBG( __FUNCTION__ << " " << __LINE__ );
     }
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
         if ( old_ocio != var )
         {
-            DBG( __FUNCTION__ << " " << __LINE__ );
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
-            mrvLOG_INFO( "ocio", var << std::endl );
             old_ocio = var;
         }
 
@@ -1669,7 +1666,7 @@ static const char* kCLocale = "C";
         tmp = uiPrefs->uiPrefsOcioICSToolbar->value();
         ocio.set( "ics_in_toolbar", tmp );
 
-        ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
+	ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
 
         fltk::Preferences ics( ocio, "ICS" );
         {
