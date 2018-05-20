@@ -1937,13 +1937,13 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 		{
 		    if ( !prefix.empty() )
 		    {
-			if ( prefix != "Z" &&
+			if ( prefix != N_("Z") &&
 			     name.find( prefix ) == std::string::npos )
 			    continue;
 		    }
 		    if ( !suffix.empty() )
 		    {
-			if ( suffix != ".Z" &&
+			if ( suffix != N_(".Z") &&
 			     name.rfind( suffix ) == std::string::npos )
 			    continue;
 		    }
@@ -1958,13 +1958,13 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 		{
 		    if ( !prefix.empty() )
 		    {
-			if ( prefix != "Z" &&
+			if ( prefix != N_("Z") &&
 			     name.find( prefix ) == std::string::npos )
 			    continue;
 		    }
 		    if ( !suffix.empty() )
 		    {
-			if ( suffix != ".Z" &&
+			if ( suffix != N_(".Z") &&
 			     name.rfind( suffix ) == std::string::npos )
 			    continue;
 		    }
