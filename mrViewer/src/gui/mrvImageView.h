@@ -69,12 +69,14 @@ class server;
     enum Actions {
       kMouseDown   = 1 << 0,
       kZoom        = 1 << 1,
-      kMouseLeft   = 1 << 2,
-      kMouseMiddle = 1 << 3,
-      kMouseRight  = 1 << 4,
-      kLeftAlt     = 1 << 5,
-      kLeftShift   = 1 << 6,
-      kMouseMove   = 1 << 7,
+      kGain        = 1 << 2,
+      kMouseLeft   = 1 << 3,
+      kMouseMiddle = 1 << 4,
+      kMouseRight  = 1 << 5,
+      kLeftAlt     = 1 << 6,
+      kLeftShift   = 1 << 7,
+      kLeftCtrl    = 1 << 8,
+      kMouseMove   = 1 << 9,
     };
 
     enum Mode {
