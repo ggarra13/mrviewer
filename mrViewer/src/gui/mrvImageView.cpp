@@ -1518,7 +1518,7 @@ bool ImageView::previous_channel()
 		else if ( total > 5 &&
 			  strcmp( last->label(), _("Lumma") ) == 0 )
 		{
-		    previous = total-4;
+		    previous = total-5;
 		    is_group = true;
 		    break;
 		}
@@ -6797,7 +6797,8 @@ void ImageView::channel( unsigned short c )
   }
 
   update_image_info();
-  channelName = remove_hash_number( channelName );
+
+  // We must send the full channel name
   update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
@@ -6806,7 +6807,7 @@ void ImageView::channel( unsigned short c )
   // When changing channels, the cache may get thrown away.  Reflect that
   // in the timeline.
   timeline()->redraw();
-  _reel = 0;
+  if ( _reel >= browser()->number_of_reels() ) _reel = 0;
   _preframe = frame();
 
   smart_refresh();
@@ -7239,8 +7240,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
-		//		std::cerr << "add shortcut " << (char) shortcut << " v: " 
-		//	  << v << " name " << name << " ch " << ch << std::endl;
+		// std::cerr << "add shortcut " << (char) shortcut << " v: " 
+		// 	  << v << " name " << name << " ch " << ch << std::endl;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
