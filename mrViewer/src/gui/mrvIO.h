@@ -147,41 +147,41 @@ namespace mrv {
   } while (0);
 
 
-#define mrvLOG_ERROR(m, x)   do {			\
-    mrv::io::error << _("ERROR: ") << N_("[") << m << N_("] ") << x; \
+#define mrvLOG_ERROR(mod, msg)   do {			\
+    mrv::io::error << _("ERROR: ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
-#define mrvLOG_WARNING(m, x) do {                \
-    mrv::io::warn << _("WARN : ") << N_("[") << m << N_("] ") << x; \
+#define mrvLOG_WARNING(mod, msg) do {				    \
+    mrv::io::warn << _("WARN : ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
-#define mrvLOG_INFO(m, x)    do {                \
-    mrv::io::info << _("       ") << N_("[") << m << N_("] ") << x; \
+#define mrvLOG_INFO(mod, msg)    do {                \
+    mrv::io::info << _("       ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
-#define mrvCONN_INFO(m, x)    do {               \
-    mrv::io::conn << _("{conn} ") << N_("[") << m << N_("] ") << x; \
+#define mrvCONN_INFO(mod, msg)    do {               \
+    mrv::io::conn << _("{conn} ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
 
-#define LOG_ERROR(x)   mrvLOG_ERROR( kModule, x << std::endl )
-#define LOG_WARNING(x) mrvLOG_WARNING( kModule, x << std::endl )
-#define LOG_INFO(x)    mrvLOG_INFO( kModule, x << std::endl )
-#define LOG_DEBUG(x)   mrvLOG_INFO( kModule, \
+#define LOG_ERROR(msg)   mrvLOG_ERROR( kModule, msg << std::endl )
+#define LOG_WARNING(msg) mrvLOG_WARNING( kModule, msg << std::endl )
+#define LOG_INFO(msg)    mrvLOG_INFO( kModule, msg << std::endl )
+#define LOG_DEBUG(msg)   mrvLOG_INFO( kModule, \
                                     __FUNCTION__ << "(" << __LINE__ << ") " \
-                                    << x << std::endl )
-#define LOG_CONN(x)    mrvCONN_INFO( kModule, x << std::endl )
-#define IMG_ERROR(x)   do { if( !is_thumbnail() ) LOG_ERROR( name() << _(" frame ") << this->frame() << " - " << x ); } while(0)
-#define IMG_WARNING(x) do { if( !is_thumbnail() ) LOG_WARNING( name() << _(" frame ") << this->frame() << " - " << x ); } while(0)
-#define IMG_INFO_F(x) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << x )
-#define IMG_INFO(x) LOG_INFO( name() << " - " << x )
+                                    << msg << std::endl )
+#define LOG_CONN(msg)    mrvCONN_INFO( kModule, msg << std::endl )
+#define IMG_ERROR(msg)   do { if( !is_thumbnail() ) LOG_ERROR( this->name() << _(" frame ") << this->frame() << " - " << msg ); } while(0)
+#define IMG_WARNING(msg) do { if( !is_thumbnail() ) LOG_WARNING( this->name() << _(" frame ") << this->frame() << " - " << msg ); } while(0)
+#define IMG_INFO_F(msg) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << msg )
+#define IMG_INFO(msg) LOG_INFO( name() << " - " << msg )
 
 #if 0
-#define DBG(x) do { \
-    LOG_DEBUG( x ); \
+#define DBG(msg) do { \
+    LOG_DEBUG( msg ); \
 } while(0)
 #else
-#define DBG(x)
+#define DBG(msg)
 #endif
 
-#define TRACE(x) do { \
-    std::cerr << _("mrViewer TRACE : ") << x << std::flush << " at "          \
+#define TRACE(msg) do { \
+    std::cerr << _("mrViewer TRACE : ") << msg << std::flush << " at "          \
               << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
 } while(0)
 
