@@ -1,5 +1,15 @@
-v4.1.3   - Native file requester does not leave their menus open and
-	   obstructing the view.
+v4.1.4   - Removed debugging statements from exrImage.cpp.
+	 - Made EXR reader read channels in good order in multipart files.
+	 - Made EXR reader save multipart channel files starting at
+	   layer #0.
+	 - EXR reader now appends the root name to the channel name when it
+	   is not already present.  This helps in multiview EXRs to
+	   distinguish right and left pair of images.
+	 - EXR reader/saver now keeps Color/RGBAZ in their original locations
+	   when reading/saving a multichannel or multipart OpenEXR.
+
+v4.1.3   - Native file requester on Windows does not leave their menus open
+	   and obstructing the view.
 	 - Previous channel hotkey now works correctly on Color channel when
 	   this channel is in the middle of the channel list.
 	 - Previous channel hotkey now works correctly on Color channel when
@@ -11,8 +21,8 @@ v4.1.3   - Native file requester does not leave their menus open and
 	 - Bug fixed IFF image reader to work as all other image readers,
 	   reading the header chunk on each fetch.  Improved the fetching to
 	   only fetch once instead of twice as before.
-	 - Made all shortcuts be a toggle (Z, N, C) between their counter
-	   parts and the previously selected channel.
+	 - Made all shortcuts be a toggle (Z, N, C, R, G, B, A, L and V)
+	   between their counter parts and the previously selected channel.
 	 - Made image switching keep the layer selected when possible.  Note
 	   that this feature does not always work particularly when toggling
 	   the shortcuts (specially when dealing with multipart openexrs),
