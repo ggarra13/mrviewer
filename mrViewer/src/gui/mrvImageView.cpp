@@ -1320,8 +1320,8 @@ posY( 22 ),
 flags( 0 ),
 _ghost_previous( true ),
 _ghost_next( true ),
-_channel( -1 ),
-_old_channel( -1 ),
+_channel( 0 ),
+_old_channel( 0 ),
 _channelType( kRGB ),
 _field( kFrameDisplay ),
 _displayWindow( true ),
@@ -1476,55 +1476,55 @@ bool ImageView::previous_channel()
     unsigned short total = 0;
     fltk::Widget* w;
     fltk::Group* g;
-    
+
     // Count (total) number of channels
     for ( unsigned j = 0; j < num; ++j, ++total )
     {
-	w = uiColorChannel->child(j);
-	if ( w->is_group() )
-	{
-	    g = (fltk::Group*) w;
-	    total += g->children();
-	}
+        w = uiColorChannel->child(j);
+        if ( w->is_group() )
+        {
+            g = (fltk::Group*) w;
+            total += g->children();
+        }
     }
-		
+
     unsigned short idx = 0;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
         {
             w = uiColorChannel->child(i);
 
-	    // This handles jump from first channel to last (Z or Color or
-	    // any channel done in loop later)
-	    if ( c == 0 && c == idx )
-	    {
-		// Select last channel (group)
-		fltk::Widget* last = uiColorChannel->child(num-1);
-		// Jump to Z based on label
-		if ( total > 8 &&
-		     strcmp( last->label(), N_("Z") ) == 0 )
-		{
-		    previous = total-1;
-		    is_group = true;
-		    break;
-		}
-		// Jump to color based on label
-		else if ( total > 7 &&
-			  strcmp( last->label(), _("Alpha Overlay") ) == 0 )
-		{
-		    previous = total-7;
-		    is_group = true;
-		    break;
-		}
-		else if ( total > 5 &&
-			  strcmp( last->label(), _("Lumma") ) == 0 )
-		{
-		    previous = total-5;
-		    is_group = true;
-		    break;
-		}
-	    }
-	    
-	    // This handles jump from Z to Color
+            // This handles jump from first channel to last (Z or Color or
+            // any channel done in loop later)
+            if ( c == 0 && c == idx )
+            {
+                // Select last channel (group)
+                fltk::Widget* last = uiColorChannel->child(num-1);
+                // Jump to Z based on label
+                if ( total > 8 &&
+                     strcmp( last->label(), N_("Z") ) == 0 )
+                {
+                    previous = total-1;
+                    is_group = true;
+                    break;
+                }
+                // Jump to color based on label
+                else if ( total > 7 &&
+                          strcmp( last->label(), _("Alpha Overlay") ) == 0 )
+                {
+                    previous = total-7;
+                    is_group = true;
+                    break;
+                }
+                else if ( total > 5 &&
+                          strcmp( last->label(), _("Lumma") ) == 0 )
+                {
+                    previous = total-5;
+                    is_group = true;
+                    break;
+                }
+            }
+
+            // This handles jump from Z to Color
             if ( c == idx && c >= 4 &&
                  ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
             {
@@ -1547,14 +1547,14 @@ bool ImageView::previous_channel()
                 }
 
                 if ( !is_group ) previous = idx;
-		
+
                 idx += numc;
             }
-	    else if ( c == idx &&
-		      previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
-	    {
-		is_group = true;
-	    }
+            else if ( c == idx &&
+                      previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
+            {
+                is_group = true;
+            }
         }
 
     if ( (is_group && previous >= 0) || (!is_group && c > 0) )
@@ -3359,11 +3359,11 @@ int ImageView::leftMouseDown(int x, int y)
           selection_mode();
       }
       else if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-		fltk::event_key_state( fltk::RightCtrlKey ) )
+                fltk::event_key_state( fltk::RightCtrlKey ) )
       {
-	  flags |= kMouseLeft;
+          flags |= kMouseLeft;
           flags |= kLeftCtrl;
-	  flags |= kGain;
+          flags |= kGain;
       }
 
       if ( _mode == kSelection )
@@ -4895,9 +4895,9 @@ void ImageView::mouseDrag(int x,int y)
         }
       else if ( flags & kGain )
       {
-	  gain( _gain + float(dx) / 2000.0f );
-	  lastX = x;
-	  lastY = y;
+          gain( _gain + float(dx) / 2000.0f );
+          lastX = x;
+          lastY = y;
       }
       else if ( flags & kMouseMove )
         {
@@ -6600,7 +6600,7 @@ char* ImageView::get_layer_label( unsigned short c )
         if ( lbl ) break;
     }
 
-    
+
     if ( !lbl )
     {
         LOG_ERROR( _("Label not found for index ") << c );
@@ -6681,7 +6681,7 @@ void ImageView::channel( unsigned short c )
       c = 0;
       const char* lbl = uiColorChannel->label();
       if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
-      {	  
+      {
           num = uiColorChannel->children();
           for ( unsigned short i = 0; i < num; ++i, ++c )
           {
@@ -6715,7 +6715,7 @@ void ImageView::channel( unsigned short c )
       c = _old_channel;
   }
   _old_channel = _channel;
-	  
+
   if ( fg )
       _old_fg = fg->image();
   else
@@ -6726,7 +6726,7 @@ void ImageView::channel( unsigned short c )
   if ( !lbl ) return;
 
   _channel = c;
-  
+
 
   char buf[128];
   sprintf( buf, "Channel %d %s", c, lbl );
@@ -6801,7 +6801,7 @@ void ImageView::channel( unsigned short c )
       _channelType = kLumma;
     }
 
-  
+
   mrv::media bg = background();
 
   {
@@ -7199,7 +7199,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     {
 
         const std::string& name = *i;
-	
+
         if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
             if ( group )
@@ -7234,7 +7234,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
         if ( v == -1 && ( x == root ||
-			  (channelName && name == channelName) ) )
+                          (channelName && name == channelName) ) )
         {
             v = idx;
         }
@@ -7253,8 +7253,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
-		// std::cerr << "add shortcut " << (char) shortcut << " v: " 
-		// 	  << v << " name " << name << " ch " << ch << std::endl;
+                // std::cerr << "add shortcut " << (char) shortcut << " v: "
+                //        << v << " name " << name << " ch " << ch << std::endl;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
