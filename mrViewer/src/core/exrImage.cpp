@@ -1907,54 +1907,49 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     bool has_rgb = false;
                     _has_yca = false;
                     _use_yca = false;
-                    Imf::ChannelList::ConstIterator s = channels.begin();
-                    Imf::ChannelList::ConstIterator e = channels.end();
-                    for ( ; s != e; ++s )
+
+                    if ( !has_rgb &&
+                         (( channels.findChannel( N_("R") ) ) ||
+                          ( channels.findChannel( N_("G") ) ) ||
+                          ( channels.findChannel( N_("B") ) )) )
                     {
-                        std::string n = s.name();
-                        std::transform( n.begin(), n.end(), n.begin(),
-                                        (int(*)(int)) toupper );
-                        if ( !has_rgb &&
-                             ( n == N_("R") || n == N_("G") || n == N_("B") ) )
+                        has_rgb = true;
+                        rgb_layers();
+                        lumma_layers();
+                    }
+                    else if ( !has_rgb )
+                    {
+                        if ( channels.findChannel( N_("Y") ) )
                         {
-                            has_rgb = true;
+                            _layers.push_back( N_("Y") ); ++_num_channels;
+                        }
+                        if ( channels.findChannel( N_("RY") ) )
+                        {
+                            _layers.push_back( N_("RY") ); ++_num_channels;
+                        }
+                        if ( channels.findChannel( N_("BY") ) )
+                        {
+                            _layers.push_back( N_("BY") ); ++_num_channels;
+                        }
+
+                        if ( _num_channels != 0 )
+                        {
+                            _has_yca = true;
+                            _use_yca = true;
                             rgb_layers();
+                            _num_channels = (unsigned short) ( _num_channels - 3 );
                             lumma_layers();
                         }
-                        else if ( !has_rgb )
-                        {
-                            if ( channels.findChannel( N_("Y") ) )
-                            {
-                                _layers.push_back( N_("Y") ); ++_num_channels;
-                            }
-                            if ( channels.findChannel( N_("RY") ) )
-                            {
-                                _layers.push_back( N_("RY") ); ++_num_channels;
-                            }
-                            if ( channels.findChannel( N_("BY") ) )
-                            {
-                                _layers.push_back( N_("BY") ); ++_num_channels;
-                            }
-
-                            if ( _num_channels != 0 )
-                            {
-                                _has_yca = true;
-                                _use_yca = true;
-                                rgb_layers();
-                                _num_channels = (unsigned short) ( _num_channels - 3 );
-                                lumma_layers();
-                            }
-                        }
-                        else if ( n == N_("A") )
-                        {
-                            alpha_layers();
-                            _has_alpha = true;
-                        }
-                        else if ( n == N_("Z") )
-                        {
-                            _layers.push_back( N_("Z") );
-                            ++_num_channels;
-                        }
+                    }
+                    if ( has_rgb && channels.findChannel( N_("A") ) )
+                    {
+                        alpha_layers();
+                        _has_alpha = true;
+                    }
+                    if ( has_rgb && channels.findChannel( N_("Z") ) )
+                    {
+                        _layers.push_back( N_("Z") );
+                        ++_num_channels;
                     }
                     continue;
                 }
@@ -2244,23 +2239,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            return false;
        }
 
-       {
-           Imf::ChannelList::ConstIterator i = header.channels().begin();
-           Imf::ChannelList::ConstIterator e = header.channels().end();
-           for ( ; i != e; ++i )
-           {
-               std::cerr << i.name() << " channel" << std::endl;
-           }
-       }
-
-       {
-           Imf::FrameBuffer::ConstIterator i = fb.begin();
-           Imf::FrameBuffer::ConstIterator e = fb.end();
-           for ( ; i != e; ++i )
-           {
-               std::cerr << i.name() << " fb" << std::endl;
-           }
-       }
 
        _pixel_ratio = header.pixelAspectRatio();
        _lineOrder   = header.lineOrder();
