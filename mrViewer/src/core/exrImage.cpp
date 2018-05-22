@@ -1834,188 +1834,180 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
 	_layers.clear();
 	_num_channels = 0;
-        if ( 1 )
-        {
-	    for ( unsigned i = 0; i < _numparts; ++i )
-            {
-                const Header& header = inmaster.header(i);
-                if ( ! header.hasType() )
-                    _type = SCANLINEIMAGE;
-                else
-                    _type = header.type();
+	for ( unsigned i = 0; i < _numparts; ++i )
+	{
+	    const Header& header = inmaster.header(i);
+	    if ( ! header.hasType() )
+		_type = SCANLINEIMAGE;
+	    else
+		_type = header.type();
 
-                if ( _type != SCANLINEIMAGE &&
-                     _type != TILEDIMAGE &&
-                     _type != DEEPSCANLINE &&
-		     _type != DEEPTILE ) {
-		    continue;
-		}
+	    if ( _type != SCANLINEIMAGE &&
+		 _type != TILEDIMAGE &&
+		 _type != DEEPSCANLINE &&
+		 _type != DEEPTILE ) {
+		continue;
+	    }
 
-                if ( _type == DEEPSCANLINE || _type == DEEPTILE )
-                {
-                    _has_deep_data = true;
-                    image_damage( image_damage() | kDamage3DData );
-                }
+	    if ( _type == DEEPSCANLINE || _type == DEEPTILE )
+	    {
+		_has_deep_data = true;
+		image_damage( image_damage() | kDamage3DData );
+	    }
 
-                read_forced_header_attr( header, frame );
+	    read_forced_header_attr( header, frame );
 
-                if ( ! _read_attr )
-                    read_header_attr( header, frame );
+	    if ( ! _read_attr )
+		read_header_attr( header, frame );
 
 
-                _pixel_ratio = header.pixelAspectRatio();
-                _lineOrder   = header.lineOrder();
-                _compression = header.compression();
+	    _pixel_ratio = header.pixelAspectRatio();
+	    _lineOrder   = header.lineOrder();
+	    _compression = header.compression();
 
-                const Imf::ChannelList& channels = header.channels();
+	    const Imf::ChannelList& channels = header.channels();
 
 
-                char buf[256];
-                std::string name;
-                if ( header.hasName() ) name = header.name();
+	    char buf[256];
+	    std::string name;
+	    if ( header.hasName() ) name = header.name();
 
 
 
-                // If layer name is empty it is the one with "Color".  We set it
-                // as default.
-		if ( name.empty() && _curpart == -1 )
-                {
-                    _curpart = _clear_part = i;
-                }
+	    // If layer name is empty it is the one with "Color".  We set it
+	    // as default.
+	    if ( name.empty() && _curpart == -1 )
+	    {
+		_curpart = _clear_part = i;
+	    }
 
-                //
-                // For simplicity sake, we don't accept periods in header name
-                //
+	    //
+	    // For simplicity sake, we don't accept periods in header name
+	    //
 #ifdef CHANGE_PERIODS_TO_UNDERSCORES
-                size_t pos;
-                while ( (pos = name.find( '.' )) != std::string::npos )
-                {
-                    std::string n = name.substr( 0, pos );
-                    n += '_';
-		    if ( pos != name.size()-1 )
-                        n += name.substr( pos+1, name.size() );
-                    name = n;
-                }
+	    size_t pos;
+	    while ( (pos = name.find( '.' )) != std::string::npos )
+	    {
+		std::string n = name.substr( 0, pos );
+		n += '_';
+		if ( pos != name.size()-1 )
+		    n += name.substr( pos+1, name.size() );
+		name = n;
+	    }
 #endif
 
-                buf[0] = 0;
-                if ( !name.empty() )
-                {
-                    sprintf( buf, "#%d %s", i, name.c_str() );
-                    _layers.push_back( buf );
-                    ++_num_layers;
-                }
-
-
-                std::string ext = name;
-                if ( header.hasView() ) ext = header.view();
-
-                if ( !name.empty() || !ext.empty() )
-                {
-		    std::string first;
-		    if ( !_layers.empty() ) first = *(_layers.end() - 1);
-
-		    Imf::ChannelList::ConstIterator s = channels.begin();
-		    Imf::ChannelList::ConstIterator e = channels.end();
-		    for ( ; s != e; ++s )
-                    {
-                        std::string layerName = buf;
-                        if ( !layerName.empty() ) layerName += '.';
-			std::string channelName = s.name();
-			if ( channelName.find( name ) == std::string::npos )
-			{
-			    layerName += name;
-			    layerName += '.';
-			}
-                        layerName += s.name();
-                        _layers.push_back( layerName );
-                        ++_num_layers;
-                    }
-		    stringArray::iterator it = std::find( _layers.begin(),
-							  _layers.end(),
-							  first );
-		    const std::string& layerName = *(it+1);
-		    // Handle sorting RGB
-		    if ( layerName.find( ".B" ) != std::string::npos &&
-			 (_layers.end() - it == 4 ) )
-			std::sort( it+1, _layers.end(),
-				   std::greater<std::string>() );
-		    // Handle sorting XYZ
-		    else if ( layerName.find(".Z") != std::string::npos &&
-			      (_layers.end() - it == 4 ) )
-		    {
-			std::sort( it+1, _layers.end(),
-				   std::less<std::string>() );
-		    }
-		    // Handle sorting RGBA
-		    else if ( layerName.find(".A") != std::string::npos &&
-			      (_layers.end() - it == 5 ) )
-		    {
-			std::sort( it+1, _layers.end(),
-				   std::greater<std::string>() );
-		    }
-		    // Handle sorting RGBAZ
-		    else if ( ( layerName.find(".A") != std::string::npos ||
-				layerName.find(".Z") != std::string::npos ) &&
-			      (_layers.end() - it > 5 ) )
-		    {
-			std::sort( it+1, _layers.end()-1,
-				   std::greater<std::string>() );
-		    }
-                }
-
-		
-		if ( st[0] == -1 &&
-		     ( ext.find( right ) != std::string::npos ||
-		       ext.find( R ) != std::string::npos ) )
-		{
-		    if ( !prefix.empty() )
-		    {		   
-			if ( prefix != "Z" &&
-			     name.find( prefix ) == std::string::npos )
-			    continue;
-		    }
-		    if ( !suffix.empty() )
-		    {
-			if ( suffix != ".Z" &&
-			     name.rfind( suffix ) == std::string::npos )
-			    continue;
-		    }
-		    st[0] = i;
-		    _has_right_eye = strdup( name.c_str() );
-		    _is_stereo = true;
-		    continue;
-		}
-		if ( st[1] == -1 &&
-		     ( ext.find( left ) != std::string::npos ||
-		       ext.find( L ) != std::string::npos ) )
-		{
-		    if ( !prefix.empty() )
-		    {
-			if ( prefix != "Z" &&
-			     name.find( prefix ) == std::string::npos )
-			    continue;
-		    }
-		    if ( !suffix.empty() )
-		    {
-			if ( suffix != ".Z" &&
-			     name.rfind( suffix ) == std::string::npos )
-			    continue;
-		    }
-		    _has_left_eye = strdup( name.c_str() );
-		    st[1] = i;
-		    _is_stereo = true;
-		    continue;
-		}
-		
-		// If last part, exit with true success
-		if ( i >= _numparts-1 )
-		    break;
+	    buf[0] = 0;
+	    if ( !name.empty() )
+	    {
+		sprintf( buf, "#%d %s", i, name.c_str() );
+		_layers.push_back( buf );
+		++_num_layers;
 	    }
+
+
+	    std::string ext = name;
+	    if ( header.hasView() ) ext = header.view();
+
+	    if ( !name.empty() || !ext.empty() )
+	    {
+		std::string first;
+		if ( !_layers.empty() ) first = *(_layers.end() - 1);
+
+		Imf::ChannelList::ConstIterator s = channels.begin();
+		Imf::ChannelList::ConstIterator e = channels.end();
+		for ( ; s != e; ++s )
+		{
+		    std::string layerName = buf;
+		    if ( !layerName.empty() ) layerName += '.';
+		    std::string channelName = s.name();
+		    if ( channelName.find( name ) == std::string::npos )
+		    {
+			layerName += name;
+			layerName += '.';
+		    }
+		    layerName += s.name();
+		    _layers.push_back( layerName );
+		    ++_num_layers;
+		}
+		stringArray::iterator it = std::find( _layers.begin(),
+						      _layers.end(),
+						      first );
+		const std::string& layerName = *(it+1);
+		// Handle sorting RGB
+		if ( layerName.find( ".B" ) != std::string::npos &&
+		     (_layers.end() - it == 4 ) )
+		    std::sort( it+1, _layers.end(),
+			       std::greater<std::string>() );
+		// Handle sorting XYZ
+		else if ( layerName.find(".Z") != std::string::npos &&
+			  (_layers.end() - it == 4 ) )
+		{
+		    std::sort( it+1, _layers.end(),
+			       std::less<std::string>() );
+		}
+		// Handle sorting RGBA
+		else if ( layerName.find(".A") != std::string::npos &&
+			  (_layers.end() - it == 5 ) )
+		{
+		    std::sort( it+1, _layers.end(),
+			       std::greater<std::string>() );
+		}
+		// Handle sorting RGBAZ
+		else if ( ( layerName.find(".A") != std::string::npos ||
+			    layerName.find(".Z") != std::string::npos ) &&
+			  (_layers.end() - it > 5 ) )
+		{
+		    std::sort( it+1, _layers.end()-1,
+			       std::greater<std::string>() );
+		}
+	    }
+
+		
+	    if ( st[0] == -1 &&
+		 ( ext.find( right ) != std::string::npos ||
+		   ext.find( R ) != std::string::npos ) )
+	    {
+		if ( !prefix.empty() )
+		{		   
+		    if ( prefix != "Z" &&
+			 name.find( prefix ) == std::string::npos )
+			continue;
+		}
+		if ( !suffix.empty() )
+		{
+		    if ( suffix != ".Z" &&
+			 name.rfind( suffix ) == std::string::npos )
+			continue;
+		}
+		st[0] = i;
+		_has_right_eye = strdup( name.c_str() );
+		_is_stereo = true;
+		continue;
+	    }
+	    if ( st[1] == -1 &&
+		 ( ext.find( left ) != std::string::npos ||
+		   ext.find( L ) != std::string::npos ) )
+	    {
+		if ( !prefix.empty() )
+		{
+		    if ( prefix != "Z" &&
+			 name.find( prefix ) == std::string::npos )
+			continue;
+		}
+		if ( !suffix.empty() )
+		{
+		    if ( suffix != ".Z" &&
+			 name.rfind( suffix ) == std::string::npos )
+			continue;
+		}
+		_has_left_eye = strdup( name.c_str() );
+		st[1] = i;
+		_is_stereo = true;
+		continue;
+	    }
+		
 	}
-
-
-      
+  
     }
     else if ( _numparts == 1 )
     {
