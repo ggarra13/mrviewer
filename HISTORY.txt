@@ -10,6 +10,9 @@ v4.1.4   - Removed debugging statements from exrImage.cpp.
 	   means Color, Red, Green, Blue, Alpha and Z remain at the top of
 	   the list.
 	 - EXR reader now reads stereo files properly once again.
+	 - Made the Pixel Value pulldown more correctly reflect the options.
+	   They are Full (gain, gamma and lut), Lut( gain and lut) and
+	   Original (raw pixels).
 
 v4.1.3   - Native file requester on Windows does not leave their menus open
 	   and obstructing the view.
