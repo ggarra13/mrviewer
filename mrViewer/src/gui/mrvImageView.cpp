@@ -4057,7 +4057,7 @@ void ImageView::pixel_processed( const CMedia* img,
     //
     // To represent pixel properly, we need to do the lut
     //
-    if ( use_lut() && p == kRGBA_Full )
+    if ( use_lut() && ( p == kRGBA_Lut || p == kRGBA_Full ) )
     {
         Imath::V3f in( rgba.r, rgba.g, rgba.b );
         Imath::V3f out;
@@ -4071,7 +4071,7 @@ void ImageView::pixel_processed( const CMedia* img,
     //
     // And we do gamma last
     //
-    if ( mode < kBlendTraditionalNonGamma )
+    if ( mode < kBlendTraditionalNonGamma && p == kRGBA_Full )
     {
         float one_gamma = 1.0f / img->gamma();
         // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
