@@ -1832,8 +1832,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             prefix = c.substr( 0, idx-1 );
         }
 
-	_num_channels = 0;
-	_layers.clear();
         if ( _layers.empty() )
         {
 	    for ( unsigned i = 0; i < _numparts; ++i )
@@ -2010,7 +2008,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 		
 		// If last part, exit with true success
 		if ( i >= _numparts-1 )
-		    return true;
+		    break;
 	    }
 	}
 
