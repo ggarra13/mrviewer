@@ -188,7 +188,6 @@ exrImage::exrImage() :
   _curpart( -1 ),
   _clear_part( 0 ),
   _numparts( -1 ),
-  _num_layers( 0 ),
   _read_attr( false ),
   _lineOrder( (Imf::LineOrder) 0 ),
   _compression( (Imf::Compression) 0 ),
@@ -289,7 +288,7 @@ bool exrImage::channels_order(
        }
 
        std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper);
+                       (int(*)(int)) toupper );
 
        if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
                                ext == N_("Y") || ext == N_("U") ||
@@ -882,27 +881,27 @@ bool exrImage::find_layers( const Imf::Header& h )
             Imf::ChannelList::ConstIterator s;
             Imf::ChannelList::ConstIterator e;
             channels.channelsInLayer( name, s, e );
-	    stringArray lg;
-	    lg.reserve(5);
+            stringArray lg;
+            lg.reserve(5);
             for ( x = s; x != e; ++x )
             {
                 const std::string& layerName = x.name();
-		lg.push_back( layerName );
-	    }
-	    stringArray::iterator ks = lg.begin();
-	    stringArray::iterator ke = lg.end();
-	    std::string lcase = *(ks + (lg.size() > 1));
-	    if ( lcase.rfind( ".g" ) != std::string::npos ||
-		 lcase.rfind( ".G" ) != std::string::npos ||
-		 lcase.rfind( ".B" ) != std::string::npos ||
-		 lcase.rfind( ".b" ) != std::string::npos )
-	    {
-		std::sort( ks, ke, std::greater<std::string>() );
-	    }
+                lg.push_back( layerName );
+            }
+            stringArray::iterator ks = lg.begin();
+            stringArray::iterator ke = lg.end();
+            std::string lcase = *(ks + (lg.size() > 1));
+            if ( lcase.rfind( ".g" ) != std::string::npos ||
+                 lcase.rfind( ".G" ) != std::string::npos ||
+                 lcase.rfind( ".B" ) != std::string::npos ||
+                 lcase.rfind( ".b" ) != std::string::npos )
+            {
+                std::sort( ks, ke, std::greater<std::string>() );
+            }
 
-	    for ( ; ks != ke; ++ks )
-	    {
-		_layers.push_back( *ks );
+            for ( ; ks != ke; ++ks )
+            {
+                _layers.push_back( *ks );
                 ++_num_channels;
             }
          }
@@ -1777,8 +1776,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         std::string L = get_short_view( true );
         std::string R = get_short_view( false );
         std::string prefix, suffix;
-	
-        st[0] = st[1] = -1;
+
 
         std::string c;
 
@@ -1832,182 +1830,240 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             prefix = c.substr( 0, idx-1 );
         }
 
-	_layers.clear();
-	_num_channels = 0;
-	for ( unsigned i = 0; i < _numparts; ++i )
-	{
-	    const Header& header = inmaster.header(i);
-	    if ( ! header.hasType() )
-		_type = SCANLINEIMAGE;
-	    else
-		_type = header.type();
+        if ( _layers.empty() )
+        {
+            st[0] = st[1] = -1;
 
-	    if ( _type != SCANLINEIMAGE &&
-		 _type != TILEDIMAGE &&
-		 _type != DEEPSCANLINE &&
-		 _type != DEEPTILE ) {
-		continue;
-	    }
+            for ( unsigned i = 0; i < _numparts; ++i )
+            {
+                const Header& header = inmaster.header(i);
+                if ( ! header.hasType() )
+                    _type = SCANLINEIMAGE;
+                else
+                    _type = header.type();
 
-	    if ( _type == DEEPSCANLINE || _type == DEEPTILE )
-	    {
-		_has_deep_data = true;
-		image_damage( image_damage() | kDamage3DData );
-	    }
+                if ( _type != SCANLINEIMAGE &&
+                     _type != TILEDIMAGE &&
+                     _type != DEEPSCANLINE &&
+                     _type != DEEPTILE ) {
+                    continue;
+                }
 
-	    read_forced_header_attr( header, frame );
+                if ( _type == DEEPSCANLINE || _type == DEEPTILE )
+                {
+                    _has_deep_data = true;
+                    image_damage( image_damage() | kDamage3DData );
+                }
 
-	    if ( ! _read_attr )
-		read_header_attr( header, frame );
+                read_forced_header_attr( header, frame );
 
-
-	    _pixel_ratio = header.pixelAspectRatio();
-	    _lineOrder   = header.lineOrder();
-	    _compression = header.compression();
-
-	    const Imf::ChannelList& channels = header.channels();
+                if ( ! _read_attr )
+                    read_header_attr( header, frame );
 
 
-	    char buf[256];
-	    std::string name;
-	    if ( header.hasName() ) name = header.name();
+                _pixel_ratio = header.pixelAspectRatio();
+                _lineOrder   = header.lineOrder();
+                _compression = header.compression();
+
+                const Imf::ChannelList& channels = header.channels();
+
+
+                char buf[256];
+                std::string name;
+                if ( header.hasName() ) name = header.name();
 
 
 
-	    // If layer name is empty it is the one with "Color".  We set it
-	    // as default.
-	    if ( name.empty() && _curpart == -1 )
-	    {
-		_curpart = _clear_part = i;
-	    }
+                // If layer name is empty it is the one with "Color".  We set it
+                // as default.
+                if ( name.empty() && _curpart == -1 )
+                {
+                    _curpart = _clear_part = i;
+                }
 
-	    //
-	    // For simplicity sake, we don't accept periods in header name
-	    //
+                //
+                // For simplicity sake, we don't accept periods in header name
+                //
 #ifdef CHANGE_PERIODS_TO_UNDERSCORES
-	    size_t pos;
-	    while ( (pos = name.find( '.' )) != std::string::npos )
-	    {
-		std::string n = name.substr( 0, pos );
-		n += '_';
-		if ( pos != name.size()-1 )
-		    n += name.substr( pos+1, name.size() );
-		name = n;
-	    }
+                size_t pos;
+                while ( (pos = name.find( '.' )) != std::string::npos )
+                {
+                    std::string n = name.substr( 0, pos );
+                    n += '_';
+                    if ( pos != name.size()-1 )
+                        n += name.substr( pos+1, name.size() );
+                    name = n;
+                }
 #endif
 
-	    buf[0] = 0;
-	    if ( !name.empty() )
-	    {
-		sprintf( buf, "#%d %s", i, name.c_str() );
-		_layers.push_back( buf );
-		++_num_layers;
-	    }
+                buf[0] = 0;
+                if ( !name.empty() )
+                {
+                    sprintf( buf, "#%d %s", i, name.c_str() );
+                    _layers.push_back( buf );
+                }
+                else
+                {
+                    bool has_rgb = false;
+                    _has_yca = false;
+                    _use_yca = false;
+                    Imf::ChannelList::ConstIterator s = channels.begin();
+                    Imf::ChannelList::ConstIterator e = channels.end();
+                    for ( ; s != e; ++s )
+                    {
+                        std::string n = s.name();
+                        std::transform( n.begin(), n.end(), n.begin(),
+                                        (int(*)(int)) toupper );
+                        if ( !has_rgb &&
+                             ( n == N_("R") || n == N_("G") || n == N_("B") ) )
+                        {
+                            has_rgb = true;
+                            rgb_layers();
+                            lumma_layers();
+                        }
+                        else if ( !has_rgb )
+                        {
+                            if ( channels.findChannel( N_("Y") ) )
+                            {
+                                _layers.push_back( N_("Y") ); ++_num_channels;
+                            }
+                            if ( channels.findChannel( N_("RY") ) )
+                            {
+                                _layers.push_back( N_("RY") ); ++_num_channels;
+                            }
+                            if ( channels.findChannel( N_("BY") ) )
+                            {
+                                _layers.push_back( N_("BY") ); ++_num_channels;
+                            }
+
+                            if ( _num_channels != 0 )
+                            {
+                                _has_yca = true;
+                                _use_yca = true;
+                                rgb_layers();
+                                _num_channels = (unsigned short) ( _num_channels - 3 );
+                                lumma_layers();
+                            }
+                        }
+                        else if ( n == N_("A") )
+                        {
+                            alpha_layers();
+                            _has_alpha = true;
+                        }
+                        else if ( n == N_("Z") )
+                        {
+                            _layers.push_back( N_("Z") );
+                            ++_num_channels;
+                        }
+                    }
+                    continue;
+                }
 
 
-	    std::string ext = name;
-	    if ( header.hasView() ) ext = header.view();
+                std::string ext = name;
+                if ( header.hasView() ) ext = header.view();
 
-	    if ( !name.empty() || !ext.empty() )
-	    {
-		std::string first;
-		if ( !_layers.empty() ) first = *(_layers.end() - 1);
+                if ( !name.empty() || !ext.empty() )
+                {
+                    std::string first;
+                    if ( !_layers.empty() ) first = *(_layers.end() - 1);
 
-		Imf::ChannelList::ConstIterator s = channels.begin();
-		Imf::ChannelList::ConstIterator e = channels.end();
-		for ( ; s != e; ++s )
-		{
-		    std::string layerName = buf;
-		    if ( !layerName.empty() ) layerName += '.';
-		    std::string channelName = s.name();
-		    if ( channelName.find( name ) == std::string::npos )
-		    {
-			layerName += name;
-			layerName += '.';
-		    }
-		    layerName += s.name();
-		    _layers.push_back( layerName );
-		    ++_num_layers;
-		}
-		stringArray::iterator it = std::find( _layers.begin(),
-						      _layers.end(),
-						      first );
-		const std::string& layerName = *(it+1);
-		// Handle sorting RGB
-		if ( layerName.find( ".B" ) != std::string::npos &&
-		     (_layers.end() - it == 4 ) )
-		    std::sort( it+1, _layers.end(),
-			       std::greater<std::string>() );
-		// Handle sorting XYZ
-		else if ( layerName.find(".Z") != std::string::npos &&
-			  (_layers.end() - it == 4 ) )
-		{
-		    std::sort( it+1, _layers.end(),
-			       std::less<std::string>() );
-		}
-		// Handle sorting RGBA
-		else if ( layerName.find(".A") != std::string::npos &&
-			  (_layers.end() - it == 5 ) )
-		{
-		    std::sort( it+1, _layers.end(),
-			       std::greater<std::string>() );
-		}
-		// Handle sorting RGBAZ
-		else if ( ( layerName.find(".A") != std::string::npos ||
-			    layerName.find(".Z") != std::string::npos ) &&
-			  (_layers.end() - it > 5 ) )
-		{
-		    std::sort( it+1, _layers.end()-1,
-			       std::greater<std::string>() );
-		}
-	    }
+                    Imf::ChannelList::ConstIterator s = channels.begin();
+                    Imf::ChannelList::ConstIterator e = channels.end();
+                    for ( ; s != e; ++s )
+                    {
+                        std::string layerName = buf;
+                        if ( !layerName.empty() ) layerName += '.';
+                        std::string channelName = s.name();
+                        if ( channelName.find( name ) == std::string::npos )
+                        {
+                            layerName += name;
+                            layerName += '.';
+                        }
+                        layerName += s.name();
+                        _layers.push_back( layerName );
+                    }
+                    stringArray::iterator it = std::find( _layers.begin(),
+                                                          _layers.end(),
+                                                          first );
+                    if ( it != _layers.end() )
+                    {
+                        const std::string& layerName = *(it+1);
+                        // Handle sorting RGB
+                        if ( layerName.find( ".B" ) != std::string::npos &&
+                             (_layers.end() - it == 4 ) )
+                            std::sort( it+1, _layers.end(),
+                                       std::greater<std::string>() );
+                        // Handle sorting XYZ
+                        else if ( layerName.find(".Z") != std::string::npos &&
+                                  (_layers.end() - it == 4 ) )
+                        {
+                            std::sort( it+1, _layers.end(),
+                                       std::less<std::string>() );
+                        }
+                        // Handle sorting RGBA
+                        else if ( layerName.find(".A") != std::string::npos &&
+                                  (_layers.end() - it == 5 ) )
+                        {
+                            std::sort( it+1, _layers.end(),
+                                       std::greater<std::string>() );
+                        }
+                        // Handle sorting RGBAZ
+                        else if ( ( layerName.find(".A") != std::string::npos ||
+                                    layerName.find(".Z") != std::string::npos )
+                                  && (_layers.end() - it > 5 ) )
+                        {
+                            std::sort( it+1, _layers.end()-1,
+                                       std::greater<std::string>() );
+                        }
+                    }
+                }
 
-		
-	    if ( st[0] == -1 &&
-		 ( ext.find( right ) != std::string::npos ||
-		   ext.find( R ) != std::string::npos ) )
-	    {
-		if ( !prefix.empty() )
-		{		   
-		    if ( prefix != "Z" &&
-			 name.find( prefix ) == std::string::npos )
-			continue;
-		}
-		if ( !suffix.empty() )
-		{
-		    if ( suffix != ".Z" &&
-			 name.rfind( suffix ) == std::string::npos )
-			continue;
-		}
-		st[0] = i;
-		_has_right_eye = strdup( name.c_str() );
-		_is_stereo = true;
-		continue;
-	    }
-	    if ( st[1] == -1 &&
-		 ( ext.find( left ) != std::string::npos ||
-		   ext.find( L ) != std::string::npos ) )
-	    {
-		if ( !prefix.empty() )
-		{
-		    if ( prefix != "Z" &&
-			 name.find( prefix ) == std::string::npos )
-			continue;
-		}
-		if ( !suffix.empty() )
-		{
-		    if ( suffix != ".Z" &&
-			 name.rfind( suffix ) == std::string::npos )
-			continue;
-		}
-		_has_left_eye = strdup( name.c_str() );
-		st[1] = i;
-		_is_stereo = true;
-		continue;
-	    }
-		
-	}
-  
+                if ( st[1] == -1 &&
+                     ( ext.find( right ) != std::string::npos ||
+                       ext.find( R ) != std::string::npos ) )
+                {
+                    if ( !prefix.empty() )
+                    {
+                        if ( prefix != "Z" &&
+                             name.find( prefix ) == std::string::npos )
+                            continue;
+                    }
+                    if ( !suffix.empty() )
+                    {
+                        if ( suffix != ".Z" &&
+                             name.rfind( suffix ) == std::string::npos )
+                            continue;
+                    }
+                    st[1] = i;
+                    _has_right_eye = strdup( name.c_str() );
+                    _is_stereo = true;
+                    continue;
+                }
+                if ( st[0] == -1 &&
+                     ( ext.find( left ) != std::string::npos ||
+                       ext.find( L ) != std::string::npos ) )
+                {
+                    if ( !prefix.empty() )
+                    {
+                        if ( prefix != "Z" &&
+                             name.find( prefix ) == std::string::npos )
+                            continue;
+                    }
+                    if ( !suffix.empty() )
+                    {
+                        if ( suffix != ".Z" &&
+                             name.rfind( suffix ) == std::string::npos )
+                            continue;
+                    }
+                    _has_left_eye = strdup( name.c_str() );
+                    st[0] = i;
+                    _is_stereo = true;
+                    continue;
+                }
+
+            }
+        }
     }
     else if ( _numparts == 1 )
     {
@@ -2085,6 +2141,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            if ( _stereo_output != kNoStereo && st[i] >= 0 &&
                 _right_eye == NULL )
                _curpart = st[i];
+
 
            const Header& header = inmaster.header(_curpart);
 
@@ -2170,78 +2227,95 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
        }
 
 
-      InputPart in (inmaster, _curpart);
-      const Box2i& dataWindow = header.dataWindow();
-      const Box2i& displayWindow = header.displayWindow();
+       InputPart in (inmaster, _curpart);
+       const Box2i& dataWindow = header.dataWindow();
+       const Box2i& displayWindow = header.displayWindow();
 
-      data_window( dataWindow.min.x, dataWindow.min.y,
-                   dataWindow.max.x, dataWindow.max.y, frame );
+       data_window( dataWindow.min.x, dataWindow.min.y,
+                    dataWindow.max.x, dataWindow.max.y, frame );
 
-      display_window( displayWindow.min.x, displayWindow.min.y,
-                      displayWindow.max.x, displayWindow.max.y, frame );
+       display_window( displayWindow.min.x, displayWindow.min.y,
+                       displayWindow.max.x, displayWindow.max.y, frame );
 
-      FrameBuffer fb;
-      bool ok = find_channels( header, fb, frame );
-      if (!ok) {
-         IMG_ERROR( _("Could not locate channels in header") );
-         return false;
-      }
+       FrameBuffer fb;
+       bool ok = find_channels( header, fb, frame );
+       if (!ok) {
+           IMG_ERROR( _("Could not locate channels in header") );
+           return false;
+       }
 
-      _pixel_ratio = header.pixelAspectRatio();
-      _lineOrder   = header.lineOrder();
-      _compression = header.compression();
+       {
+           Imf::ChannelList::ConstIterator i = header.channels().begin();
+           Imf::ChannelList::ConstIterator e = header.channels().end();
+           for ( ; i != e; ++i )
+           {
+               std::cerr << i.name() << " channel" << std::endl;
+           }
+       }
 
-      if ( _curpart != oldpart )
-      {
-         InputPart in (inmaster, _curpart);
-         const Header& header = in.header();
+       {
+           Imf::FrameBuffer::ConstIterator i = fb.begin();
+           Imf::FrameBuffer::ConstIterator e = fb.end();
+           for ( ; i != e; ++i )
+           {
+               std::cerr << i.name() << " fb" << std::endl;
+           }
+       }
+
+       _pixel_ratio = header.pixelAspectRatio();
+       _lineOrder   = header.lineOrder();
+       _compression = header.compression();
+
+       if ( _curpart != oldpart )
+       {
+           InputPart in (inmaster, _curpart);
+           const Header& header = in.header();
 
 
-         const Box2i& dataWindow = header.dataWindow();
-         const Box2i& displayWindow = header.displayWindow();
+           const Box2i& dataWindow = header.dataWindow();
+           const Box2i& displayWindow = header.displayWindow();
 
-         data_window( dataWindow.min.x, dataWindow.min.y,
-                      dataWindow.max.x, dataWindow.max.y, frame );
+           data_window( dataWindow.min.x, dataWindow.min.y,
+                        dataWindow.max.x, dataWindow.max.y, frame );
 
-         display_window( displayWindow.min.x, displayWindow.min.y,
-                         displayWindow.max.x, displayWindow.max.y, frame );
+           display_window( displayWindow.min.x, displayWindow.min.y,
+                           displayWindow.max.x, displayWindow.max.y, frame );
 
-         FrameBuffer fb;
-         bool ok = find_channels( header, fb, frame );
-         if (!ok) {
-            IMG_ERROR( _("Could not locate channels in header") );
-            return false;
-         }
+           FrameBuffer fb;
+           bool ok = find_channels( header, fb, frame );
+           if (!ok) {
+               IMG_ERROR( _("Could not locate channels in header") );
+               return false;
+           }
 
-         _pixel_ratio = header.pixelAspectRatio();
-         _lineOrder   = header.lineOrder();
-         _compression = header.compression();
+           _pixel_ratio = header.pixelAspectRatio();
+           _lineOrder   = header.lineOrder();
+           _compression = header.compression();
 
-         try
-         {
-             in.setFrameBuffer(fb);
-             in.readPixels( dataWindow.min.y, dataWindow.max.y );
-         }
-         catch( const std::exception& e )
-         {
-             IMG_ERROR( e.what() );
-             return false;
-         }
-      }
-      else
-      {
-         try
-         {
-             in.setFrameBuffer(fb);
-             in.readPixels( dataWindow.min.y, dataWindow.max.y );
-         }
-         catch( const std::exception& e )
-         {
-             IMG_ERROR( e.what() );
-             return false;
-         }
-      }
-
+           try
+           {
+               in.setFrameBuffer(fb);
+               in.readPixels( dataWindow.min.y, dataWindow.max.y );
+           }
+           catch( const std::exception& e )
+           {
+               IMG_ERROR( e.what() );
+               return false;
+           }
+       }
+       else
+       {
+           try
+           {
+               in.setFrameBuffer(fb);
+               in.readPixels( dataWindow.min.y, dataWindow.max.y );
+           }
+           catch( const std::exception& e )
+           {
+               IMG_ERROR( e.what() );
+               return false;
+           }
+       }
 
    }
 
@@ -2251,9 +2325,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 /**
  * Fetch the current EXR image
  *
-   *
-   * @return true if success, false if not
-   */
+ *
+ * @return true if success, false if not
+ */
   bool exrImage::fetch( const boost::int64_t frame )
   {
 
@@ -2271,24 +2345,24 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
 
         if ( _numparts > 0 )
-	{
+        {
 
             if ( !  fetch_multipart( inmaster, frame ) )
                 return false;
 
             if ( _use_yca && !supports_yuv() )
-	    {
-		const Imf::Header& h = inmaster.header(0);
-		ycc2rgba( h, frame );
-	    }
-	}
+            {
+                const Imf::Header& h = inmaster.header(0);
+                ycc2rgba( h, frame );
+            }
+        }
      }
      catch( const std::exception& e )
      {
-	 IMG_ERROR( e.what() );
-	 _curpart = -1;
-	 image_size( _w, _h );
-	 return false;
+         IMG_ERROR( e.what() );
+         _curpart = -1;
+         image_size( _w, _h );
+         return false;
      }
 
     return true;
@@ -2702,15 +2776,15 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     }
     else
     {
-	// this breaks saving of multipart OpenEXR
-	//hdr.channels().insert( x, Channel( save_type, 1, 1 ) );
+        // this breaks saving of multipart OpenEXR
+        //hdr.channels().insert( x, Channel( save_type, 1, 1 ) );
     }
 
     Imf::Compression comp = opts->compression();
     if ( comp >= NUM_COMPRESSION_METHODS )
     {
         LOG_WARNING( _("Compression method not available. "
-		       "Using PIZ.") );
+                       "Using PIZ.") );
         comp = Imf::PIZ_COMPRESSION;
     }
     hdr.compression() = comp;
@@ -2732,7 +2806,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
 
 
 bool save_deep_data(const char* file, const CMedia* img,
-		    const EXROpts* opts )
+                    const EXROpts* opts )
 {
     using namespace Imf;
     using namespace std;
@@ -2745,96 +2819,96 @@ bool save_deep_data(const char* file, const CMedia* img,
 
     for (int part = 0; part < numParts; ++part)
     {
-	const Header& hdr = in.header (part);
-	Header& h = const_cast< Header& >( hdr );
-	{
-	    Header::Iterator i = h.begin();
-	    Header::Iterator e = h.end();
-	    stringSet names;
-	    for ( ; i != e; ++i )
-	    {
-		const std::string& name = i.name();
-		if ( ignore.find(name) != ignore.end() )
-		    continue;
-		names.insert( name );
-	    }
-	    stringSet::const_iterator j = names.begin();
-	    stringSet::const_iterator je = names.end();
-	    for ( ; j != je; ++j )
-	    {
-		h.erase( *j );
-	    }
-	}
+        const Header& hdr = in.header (part);
+        Header& h = const_cast< Header& >( hdr );
+        {
+            Header::Iterator i = h.begin();
+            Header::Iterator e = h.end();
+            stringSet names;
+            for ( ; i != e; ++i )
+            {
+                const std::string& name = i.name();
+                if ( ignore.find(name) != ignore.end() )
+                    continue;
+                names.insert( name );
+            }
+            stringSet::const_iterator j = names.begin();
+            stringSet::const_iterator je = names.end();
+            for ( ; j != je; ++j )
+            {
+                h.erase( *j );
+            }
+        }
 
-	save_attributes( img, h, opts );
+        save_attributes( img, h, opts );
 
-	headers.push_back(h);
+        headers.push_back(h);
     }
 
     if ( headers.empty() )
     {
-	LOG_ERROR( "Empty headers for " << img->name() );
-	return false;
+        LOG_ERROR( "Empty headers for " << img->name() );
+        return false;
     }
 
 
     try
     {
 
-	MultiPartOutputFile out (file, &headers[0], numParts);
-	for (int p = 0; p < numParts; ++p)
-	{
-	    const Header &h = in.header (p);
-	    const string &type = h.type();
+        MultiPartOutputFile out (file, &headers[0], numParts);
+        for (int p = 0; p < numParts; ++p)
+        {
+            const Header &h = in.header (p);
+            const string &type = h.type();
 
-	    if (type == SCANLINEIMAGE)
-	    {
-		InputPart  inPart  (in,  p);
-		OutputPart outPart (out, p);
-		outPart.copyPixels (inPart);
-	    }
-	    else if (type == TILEDIMAGE)
-	    {
-		TiledInputPart  inPart  (in,  p);
-		TiledOutputPart outPart (out, p);
-		outPart.copyPixels (inPart);
-	    }
-	    else if (type == DEEPSCANLINE)
-	    {
-		DeepScanLineInputPart  inPart  (in,  p);
-		DeepScanLineOutputPart outPart (out, p);
-		outPart.copyPixels (inPart);
-	    }
-	    else if (type == DEEPTILE)
-	    {
-		DeepTiledInputPart  inPart  (in,  p);
-		DeepTiledOutputPart outPart (out, p);
-		outPart.copyPixels (inPart);
-	    }
-	}
+            if (type == SCANLINEIMAGE)
+            {
+                InputPart  inPart  (in,  p);
+                OutputPart outPart (out, p);
+                outPart.copyPixels (inPart);
+            }
+            else if (type == TILEDIMAGE)
+            {
+                TiledInputPart  inPart  (in,  p);
+                TiledOutputPart outPart (out, p);
+                outPart.copyPixels (inPart);
+            }
+            else if (type == DEEPSCANLINE)
+            {
+                DeepScanLineInputPart  inPart  (in,  p);
+                DeepScanLineOutputPart outPart (out, p);
+                outPart.copyPixels (inPart);
+            }
+            else if (type == DEEPTILE)
+            {
+                DeepTiledInputPart  inPart  (in,  p);
+                DeepTiledOutputPart outPart (out, p);
+                outPart.copyPixels (inPart);
+            }
+        }
     }
     catch ( const std::exception& e )
     {
-	LOG_ERROR( img->name() << ": Could not save file. " << e.what() );
+        LOG_ERROR( img->name() << ": Could not save file. " << e.what() );
     }
 
     return true;
 }
 
 bool exrImage::save( const char* file, const CMedia* img,
-		     const ImageOpts* const ipts )
+                     const ImageOpts* const ipts )
 {
 
     const EXROpts* const opts = dynamic_cast< const EXROpts* >( ipts );
     if (!opts)
     {
-	LOG_ERROR( _("Options for EXR were empty") );
-	return false;
+        LOG_ERROR( _("Options for EXR were empty") );
+        return false;
     }
 
     if ( opts->save_deep_data() && img->has_deep_data() )
     {
-	return save_deep_data( file, img, opts );
+        return save_deep_data( file, img, opts );
     }
 
     std::string old_channel;
@@ -3356,7 +3430,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             const std::string& name = ci.name();
 
             // std::cerr << "SAVE " << idx << ") " << name << " has order " << k
-	    //	      << std::endl;
+            //        << std::endl;
             //           << " offset " << offsets[k]
             //           << " xs " << xs[k] << " ys "
             //           << ys[k] << " sampling "
