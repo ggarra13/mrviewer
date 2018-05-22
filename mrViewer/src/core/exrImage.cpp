@@ -1832,7 +1832,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             prefix = c.substr( 0, idx-1 );
         }
 
-        if ( _layers.empty() )
+	_layers.clear();
+	_num_channels = 0;
+        if ( 1 )
         {
 	    for ( unsigned i = 0; i < _numparts; ++i )
             {
@@ -1963,7 +1965,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 }
 
 		
-		if ( st[1] == -1 &&
+		if ( st[0] == -1 &&
 		     ( ext.find( right ) != std::string::npos ||
 		       ext.find( R ) != std::string::npos ) )
 		{
@@ -1979,12 +1981,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 			     name.rfind( suffix ) == std::string::npos )
 			    continue;
 		    }
-		    st[1] = i;
+		    st[0] = i;
 		    _has_right_eye = strdup( name.c_str() );
 		    _is_stereo = true;
 		    continue;
 		}
-		if ( st[0] == -1 &&
+		if ( st[1] == -1 &&
 		     ( ext.find( left ) != std::string::npos ||
 		       ext.find( L ) != std::string::npos ) )
 		{
@@ -2001,7 +2003,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 			    continue;
 		    }
 		    _has_left_eye = strdup( name.c_str() );
-		    st[0] = i;
+		    st[1] = i;
 		    _is_stereo = true;
 		    continue;
 		}
