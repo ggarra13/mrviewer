@@ -127,7 +127,7 @@ class server;
 
       enum PixelValue {
       kRGBA_Full,
-      kRGBA_Gamma,
+      kRGBA_Lut,
       kRGBA_Original
       };
 
@@ -527,7 +527,7 @@ class server;
 
       /// Start preload image caches
       void preload_cache_start();
-      
+
       /// Preload image caches
       void preload_caches();
 
