@@ -188,7 +188,6 @@ exrImage::exrImage() :
   _curpart( -1 ),
   _clear_part( 0 ),
   _numparts( -1 ),
-  _num_layers( 0 ),
   _read_attr( false ),
   _lineOrder( (Imf::LineOrder) 0 ),
   _compression( (Imf::Compression) 0 ),
@@ -1832,9 +1831,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             prefix = c.substr( 0, idx-1 );
         }
 
-	_layers.clear();
-	_num_channels = 0;
-        if ( 1 )
+        if ( _layers.empty() )
         {
 	    for ( unsigned i = 0; i < _numparts; ++i )
             {
@@ -1903,7 +1900,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 {
                     sprintf( buf, "#%d %s", i, name.c_str() );
                     _layers.push_back( buf );
-                    ++_num_layers;
                 }
 
 
@@ -1929,7 +1925,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 			}
                         layerName += s.name();
                         _layers.push_back( layerName );
-                        ++_num_layers;
                     }
 		    stringArray::iterator it = std::find( _layers.begin(),
 							  _layers.end(),
