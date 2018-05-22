@@ -464,6 +464,7 @@ bool exrImage::channels_order(
 
       // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
       //           << " off:" << offsets[k] << " xs,ys "
+      //                << std::endl;
       //           << xs[k] << "," << ys[k]
       //           << " sampling " << xsampling[k]
       //           << " " << ysampling[k]
@@ -881,10 +882,27 @@ bool exrImage::find_layers( const Imf::Header& h )
             Imf::ChannelList::ConstIterator s;
             Imf::ChannelList::ConstIterator e;
             channels.channelsInLayer( name, s, e );
+	    stringArray lg;
+	    lg.reserve(5);
             for ( x = s; x != e; ++x )
             {
                 const std::string& layerName = x.name();
-                _layers.push_back( layerName );
+		lg.push_back( layerName );
+	    }
+	    stringArray::iterator ks = lg.begin();
+	    stringArray::iterator ke = lg.end();
+	    std::string lcase = *(ks + (lg.size() > 1));
+	    if ( lcase.rfind( ".g" ) != std::string::npos ||
+		 lcase.rfind( ".G" ) != std::string::npos ||
+		 lcase.rfind( ".B" ) != std::string::npos ||
+		 lcase.rfind( ".b" ) != std::string::npos )
+	    {
+		std::sort( ks, ke, std::greater<std::string>() );
+	    }
+
+	    for ( ; ks != ke; ++ks )
+	    {
+		_layers.push_back( *ks );
                 ++_num_channels;
             }
          }
@@ -1759,7 +1777,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         std::string L = get_short_view( true );
         std::string R = get_short_view( false );
         std::string prefix, suffix;
-
+	
         st[0] = st[1] = -1;
 
         std::string c;
@@ -1814,9 +1832,11 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             prefix = c.substr( 0, idx-1 );
         }
 
+	_num_channels = 0;
+	_layers.clear();
         if ( _layers.empty() )
         {
-            for ( int i = 0; i < _numparts; ++i )
+	    for ( unsigned i = 0; i < _numparts; ++i )
             {
                 const Header& header = inmaster.header(i);
                 if ( ! header.hasType() )
@@ -1827,7 +1847,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 if ( _type != SCANLINEIMAGE &&
                      _type != TILEDIMAGE &&
                      _type != DEEPSCANLINE &&
-                     _type != DEEPTILE ) continue;
+		     _type != DEEPTILE ) {
+		    continue;
+		}
 
                 if ( _type == DEEPSCANLINE || _type == DEEPTILE )
                 {
@@ -1847,19 +1869,16 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
                 const Imf::ChannelList& channels = header.channels();
 
-                Imf::ChannelList::ConstIterator s = channels.begin();
-                Imf::ChannelList::ConstIterator e = channels.end();
-                unsigned numChannels = 0;
-                for ( ; s != e; ++s )
-                    ++numChannels;
 
                 char buf[256];
                 std::string name;
                 if ( header.hasName() ) name = header.name();
 
+
+
                 // If layer name is empty it is the one with "Color".  We set it
                 // as default.
-                if ( name.empty() )
+		if ( name.empty() && _curpart == -1 )
                 {
                     _curpart = _clear_part = i;
                 }
@@ -1873,7 +1892,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                 {
                     std::string n = name.substr( 0, pos );
                     n += '_';
-                    if ( pos != name.size() )
+		    if ( pos != name.size()-1 )
                         n += name.substr( pos+1, name.size() );
                     name = n;
                 }
@@ -1893,20 +1912,110 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
                 if ( !name.empty() || !ext.empty() )
                 {
-                    for ( s = channels.begin(); s != e; ++s )
+		    std::string first;
+		    if ( !_layers.empty() ) first = *(_layers.end() - 1);
+
+		    Imf::ChannelList::ConstIterator s = channels.begin();
+		    Imf::ChannelList::ConstIterator e = channels.end();
+		    for ( ; s != e; ++s )
                     {
                         std::string layerName = buf;
                         if ( !layerName.empty() ) layerName += '.';
+			std::string channelName = s.name();
+			if ( channelName.find( name ) == std::string::npos )
+			{
+			    layerName += name;
+			    layerName += '.';
+			}
                         layerName += s.name();
                         _layers.push_back( layerName );
                         ++_num_layers;
                     }
+		    stringArray::iterator it = std::find( _layers.begin(),
+							  _layers.end(),
+							  first );
+		    const std::string& layerName = *(it+1);
+		    // Handle sorting RGB
+		    if ( layerName.find( ".B" ) != std::string::npos &&
+			 (_layers.end() - it == 4 ) )
+			std::sort( it+1, _layers.end(),
+				   std::greater<std::string>() );
+		    // Handle sorting XYZ
+		    else if ( layerName.find(".Z") != std::string::npos &&
+			      (_layers.end() - it == 4 ) )
+		    {
+			std::sort( it+1, _layers.end(),
+				   std::less<std::string>() );
+		    }
+		    // Handle sorting RGBA
+		    else if ( layerName.find(".A") != std::string::npos &&
+			      (_layers.end() - it == 5 ) )
+		    {
+			std::sort( it+1, _layers.end(),
+				   std::greater<std::string>() );
+		    }
+		    // Handle sorting RGBAZ
+		    else if ( ( layerName.find(".A") != std::string::npos ||
+				layerName.find(".Z") != std::string::npos ) &&
+			      (_layers.end() - it > 5 ) )
+		    {
+			std::sort( it+1, _layers.end()-1,
+				   std::greater<std::string>() );
+		    }
                 }
 
-            }
-        }
+		
+		if ( st[1] == -1 &&
+		     ( ext.find( right ) != std::string::npos ||
+		       ext.find( R ) != std::string::npos ) )
+		{
+		    if ( !prefix.empty() )
+		    {		   
+			if ( prefix != "Z" &&
+			     name.find( prefix ) == std::string::npos )
+			    continue;
+		    }
+		    if ( !suffix.empty() )
+		    {
+			if ( suffix != ".Z" &&
+			     name.rfind( suffix ) == std::string::npos )
+			    continue;
+		    }
+		    st[1] = i;
+		    _has_right_eye = strdup( name.c_str() );
+		    _is_stereo = true;
+		    continue;
+		}
+		if ( st[0] == -1 &&
+		     ( ext.find( left ) != std::string::npos ||
+		       ext.find( L ) != std::string::npos ) )
+		{
+		    if ( !prefix.empty() )
+		    {
+			if ( prefix != "Z" &&
+			     name.find( prefix ) == std::string::npos )
+			    continue;
+		    }
+		    if ( !suffix.empty() )
+		    {
+			if ( suffix != ".Z" &&
+			     name.rfind( suffix ) == std::string::npos )
+			    continue;
+		    }
+		    _has_left_eye = strdup( name.c_str() );
+		    st[0] = i;
+		    _is_stereo = true;
+		    continue;
+		}
+		
+		// If last part, exit with true success
+		if ( i >= _numparts-1 )
+		    return true;
+	    }
+	}
 
 
+      
     }
     else if ( _numparts == 1 )
     {
@@ -2170,27 +2279,25 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
 
         if ( _numparts > 0 )
-          {
+	{
 
             if ( !  fetch_multipart( inmaster, frame ) )
                 return false;
 
             if ( _use_yca && !supports_yuv() )
-              {
-                  const Imf::Header& h = inmaster.header(0);
-                  ycc2rgba( h, frame );
-              }
-          }
-
-
-    }
-    catch( const std::exception& e )
-      {
-        IMG_ERROR( e.what() );
-        _curpart = -1;
-        image_size( _w, _h );
-        return false;
-      }
+	    {
+		const Imf::Header& h = inmaster.header(0);
+		ycc2rgba( h, frame );
+	    }
+	}
+     }
+     catch( const std::exception& e )
+     {
+	 IMG_ERROR( e.what() );
+	 _curpart = -1;
+	 image_size( _w, _h );
+	 return false;
+     }
 
     return true;
   }
@@ -2603,8 +2710,8 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     }
     else
     {
-	hdr.channels().insert( x,
-			       Channel( save_type, 1, 1 ) );
+	// this breaks saving of multipart OpenEXR
+	//hdr.channels().insert( x, Channel( save_type, 1, 1 ) );
     }
 
     Imf::Compression comp = opts->compression();
@@ -2632,104 +2739,110 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
 
 
 
+bool save_deep_data(const char* file, const CMedia* img,
+		    const EXROpts* opts )
+{
+    using namespace Imf;
+    using namespace std;
+
+
+    std::string input = img->sequence_filename( img->frame() );
+    MultiPartInputFile in( input.c_str() );
+    int numParts = in.parts();
+    vector <Header> headers;
+
+    for (int part = 0; part < numParts; ++part)
+    {
+	const Header& hdr = in.header (part);
+	Header& h = const_cast< Header& >( hdr );
+	{
+	    Header::Iterator i = h.begin();
+	    Header::Iterator e = h.end();
+	    stringSet names;
+	    for ( ; i != e; ++i )
+	    {
+		const std::string& name = i.name();
+		if ( ignore.find(name) != ignore.end() )
+		    continue;
+		names.insert( name );
+	    }
+	    stringSet::const_iterator j = names.begin();
+	    stringSet::const_iterator je = names.end();
+	    for ( ; j != je; ++j )
+	    {
+		h.erase( *j );
+	    }
+	}
+
+	save_attributes( img, h, opts );
+
+	headers.push_back(h);
+    }
+
+    if ( headers.empty() )
+    {
+	LOG_ERROR( "Empty headers for " << img->name() );
+	return false;
+    }
+
+
+    try
+    {
+
+	MultiPartOutputFile out (file, &headers[0], numParts);
+	for (int p = 0; p < numParts; ++p)
+	{
+	    const Header &h = in.header (p);
+	    const string &type = h.type();
+
+	    if (type == SCANLINEIMAGE)
+	    {
+		InputPart  inPart  (in,  p);
+		OutputPart outPart (out, p);
+		outPart.copyPixels (inPart);
+	    }
+	    else if (type == TILEDIMAGE)
+	    {
+		TiledInputPart  inPart  (in,  p);
+		TiledOutputPart outPart (out, p);
+		outPart.copyPixels (inPart);
+	    }
+	    else if (type == DEEPSCANLINE)
+	    {
+		DeepScanLineInputPart  inPart  (in,  p);
+		DeepScanLineOutputPart outPart (out, p);
+		outPart.copyPixels (inPart);
+	    }
+	    else if (type == DEEPTILE)
+	    {
+		DeepTiledInputPart  inPart  (in,  p);
+		DeepTiledOutputPart outPart (out, p);
+		outPart.copyPixels (inPart);
+	    }
+	}
+    }
+    catch ( const std::exception& e )
+    {
+	LOG_ERROR( img->name() << ": Could not save file. " << e.what() );
+    }
+
+    return true;
+}
+
 bool exrImage::save( const char* file, const CMedia* img,
-                     const ImageOpts* const ipts )
+		     const ImageOpts* const ipts )
 {
 
     const EXROpts* const opts = dynamic_cast< const EXROpts* >( ipts );
     if (!opts)
     {
-        LOG_ERROR( _("Options for EXR were empty") );
-        return false;
+	LOG_ERROR( _("Options for EXR were empty") );
+	return false;
     }
 
     if ( opts->save_deep_data() && img->has_deep_data() )
     {
-        using namespace Imf;
-        using namespace std;
-
-
-        std::string input = img->sequence_filename( img->frame() );
-        MultiPartInputFile in( input.c_str() );
-        int numParts = in.parts();
-        vector <Header> headers;
-
-        for (int part = 0; part < numParts; ++part)
-        {
-            const Header& hdr = in.header (part);
-            Header& h = const_cast< Header& >( hdr );
-            {
-                Header::Iterator i = h.begin();
-                Header::Iterator e = h.end();
-                stringSet names;
-                for ( ; i != e; ++i )
-                {
-                    const std::string& name = i.name();
-                    if ( ignore.find(name) != ignore.end() )
-                        continue;
-                    names.insert( name );
-                }
-                stringSet::const_iterator j = names.begin();
-                stringSet::const_iterator je = names.end();
-                for ( ; j != je; ++j )
-                {
-                    h.erase( *j );
-                }
-            }
-
-            save_attributes( img, h, opts );
-
-            headers.push_back(h);
-        }
-
-        if ( headers.empty() )
-        {
-            LOG_ERROR( "Empty headers for " << img->name() );
-            return false;
-        }
-
-
-        try
-        {
-
-            MultiPartOutputFile out (file, &headers[0], numParts);
-            for (int p = 0; p < numParts; ++p)
-            {
-                const Header &h = in.header (p);
-                const string &type = h.type();
-
-                if (type == SCANLINEIMAGE)
-                {
-                    InputPart  inPart  (in,  p);
-                    OutputPart outPart (out, p);
-                    outPart.copyPixels (inPart);
-                }
-                else if (type == TILEDIMAGE)
-                {
-                    TiledInputPart  inPart  (in,  p);
-                    TiledOutputPart outPart (out, p);
-                    outPart.copyPixels (inPart);
-                }
-                else if (type == DEEPSCANLINE)
-                {
-                    DeepScanLineInputPart  inPart  (in,  p);
-                    DeepScanLineOutputPart outPart (out, p);
-                    outPart.copyPixels (inPart);
-                }
-                else if (type == DEEPTILE)
-                {
-                    DeepTiledInputPart  inPart  (in,  p);
-                    DeepTiledOutputPart outPart (out, p);
-                    outPart.copyPixels (inPart);
-                }
-            }
-        }
-        catch ( const std::exception& e )
-        {
-            LOG_ERROR( img->name() << ": Could not save file. " << e.what() );
-        }
-
-        return true;
+	return save_deep_data( file, img, opts );
     }
 
     std::string old_channel;
@@ -2741,14 +2854,9 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
     HeaderList headers;
-
-    DeepFrameBufferList dfbs;
     FrameBufferList fbs;
-
     Buffers bufs;
-
     PartNames names;
-
     LayerList layers;
 
     Imf::PixelType save_type = opts->pixel_type();
@@ -3256,6 +3364,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             const std::string& name = ci.name();
 
             // std::cerr << "SAVE " << idx << ") " << name << " has order " << k
+	    //	      << std::endl;
             //           << " offset " << offsets[k]
             //           << " xs " << xs[k] << " ys "
             //           << ys[k] << " sampling "
