@@ -1,108 +1,108 @@
 # data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir fltk::Button 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
+version 2.1000
+images_dir fltk::Button
+header_name {.h}
+code_name {.cxx}
+gridx 5
+gridy 5
 snap 3
 decl {\#include "string"} {public
-} 
+}
 
-decl {\#include "core/mrvI8N.h"} {} 
+decl {\#include "core/mrvI8N.h"} {}
 
-decl {\#include "core/mrvAudioEngine.h"} {} 
+decl {\#include "core/mrvAudioEngine.h"} {}
 
-decl {\#include "core/mrvMath.h"} {} 
+decl {\#include "core/mrvMath.h"} {}
 
-decl {\#include "core/exrImage.h"} {} 
+decl {\#include "core/exrImage.h"} {}
 
-decl {\#include "core/aviImage.h"} {} 
+decl {\#include "core/aviImage.h"} {}
 
-decl {\#include "core/stubImage.h"} {} 
+decl {\#include "core/stubImage.h"} {}
 
-decl {\#include "core/mrvColorSpaces.h"} {} 
+decl {\#include "core/mrvColorSpaces.h"} {}
 
-decl {\#include "core/mrvServer.h"} {} 
+decl {\#include "core/mrvServer.h"} {}
 
-decl {\#include "core/mrvClient.h"} {} 
+decl {\#include "core/mrvClient.h"} {}
 
-decl {\#include "gui/mrvMainWindow.h"} {} 
+decl {\#include "gui/mrvMainWindow.h"} {}
 
-decl {\#include "gui/mrvImageView.h"} {} 
+decl {\#include "gui/mrvImageView.h"} {}
 
-decl {\#include "gui/mrvImageBrowser.h"} {} 
+decl {\#include "gui/mrvImageBrowser.h"} {}
 
-decl {\#include "gui/mrvBrowser.h"} {} 
+decl {\#include "gui/mrvBrowser.h"} {}
 
-decl {\#include "gui/mrvPreferencesBrowser.h"} {} 
+decl {\#include "gui/mrvPreferencesBrowser.h"} {}
 
 decl {\#include "gui/mrvCTLBrowser.h"} {public
-} 
+}
 
-decl {\#include "mrvFileRequester.h"} {} 
+decl {\#include "mrvFileRequester.h"} {}
 
 decl {\#include "gui/mrvPopupMenu.h"} {public
-} 
+}
 
-decl {\#include "gui/mrvTimecode.h"} {} 
+decl {\#include "gui/mrvTimecode.h"} {}
 
-decl {\#include "gui/mrvTimeline.h"} {} 
+decl {\#include "gui/mrvTimeline.h"} {}
 
-decl {\#include "gui/mrvColorOps.h"} {} 
+decl {\#include "gui/mrvColorOps.h"} {}
 
-decl {\#include "gui/mrvHistogram.h"} {} 
+decl {\#include "gui/mrvHistogram.h"} {}
 
 decl {\#include "gui/mrvValueInput.h"} {public
-} 
+}
 
 decl {\#include "gui/mrvActionWindow.h"} {public
-} 
+}
 
-decl {\#include "gui/mrvVectorscope.h"} {} 
+decl {\#include "gui/mrvVectorscope.h"} {}
 
-decl {\#include "gui/mrvImageInformation.h"} {} 
+decl {\#include "gui/mrvImageInformation.h"} {}
 
 decl {\#include "gui/mrvOCIOBrowser.h"} {public
-} 
+}
 
-decl {\#include "gui/mrvPreferences.h"} {} 
+decl {\#include "gui/mrvPreferences.h"} {}
 
-decl {\#include "gui/mrvLogDisplay.h"} {} 
+decl {\#include "gui/mrvLogDisplay.h"} {}
 
 decl {\#include "gui/mrvGlWindow3d.h"} {public
-} 
+}
 
-decl {\#include "gui/mrvHotkey.h"} {} 
+decl {\#include "gui/mrvHotkey.h"} {}
 
-decl {\#include "mrvSOPNode.h"} {} 
+decl {\#include "mrvSOPNode.h"} {}
 
-decl {\#include "mrvPlayback.h"} {} 
+decl {\#include "mrvPlayback.h"} {}
 
-decl {\#include "mrvVersion.h"} {} 
+decl {\#include "mrvVersion.h"} {}
 
 decl {\#include "mrvStereoUI.h"} {public
-} 
+}
 
-decl {\#include "mrvIccProfileUI.h"} {} 
+decl {\#include "mrvIccProfileUI.h"} {}
 
-decl {\#include "mrvColorAreaUI.h"} {} 
+decl {\#include "mrvColorAreaUI.h"} {}
 
-decl {\#include "mrvEDLWindowUI.h"} {} 
+decl {\#include "mrvEDLWindowUI.h"} {}
 
-decl {\#include "icons/icons.c"} {} 
+decl {\#include "icons/icons.c"} {}
 
-decl {\#include "fltk/ColorChooser.h"} {} 
+decl {\#include "fltk/ColorChooser.h"} {}
 
-decl {\#include "fltk/ask.h"} {} 
+decl {\#include "fltk/ask.h"} {}
 
-decl {\#include "fltk/run.h"} {} 
+decl {\#include "fltk/run.h"} {}
 
 declblock {\#ifdef _WIN32} {after {\#endif}
 } {
   decl {\#define unsetenv} {public
   }
-} 
+}
 
 Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
 } {
@@ -164,9 +164,9 @@ v->make_exec_return(true);}
     }
   }
   code {if (!w->exec())
-	return orig;
+        return orig;
 return ctl;} {}
-} 
+}
 
 namespace mrv {open
 } {
@@ -1274,13 +1274,13 @@ uiPrefsFPS->value( g );}
                 xywh {0 68 190 25}
               } {
                 {fltk::Item} {} {
-                  label {Full Lut and Gamma}
+                  label {Full Lut and Gamma and Gain}
                   }
                 {fltk::Item} {} {
-                  label {Gamma without Lut}
+                  label {Lut with Gain but without Gamma}
                   }
                 {fltk::Item} {} {
-                  label {Original without Gamma or Lut}
+                  label {Original without Gamma, Gain or Lut}
                   }
               }
               {fltk::Choice} uiPrefsPixelHSV {
@@ -2342,7 +2342,7 @@ for (int i = 0; i < numfonts; i++)
 {
        o->add(fonts[i]->name());
        if ( strcmp( fonts[i]->name(), "Arial" ) == 0 )
-	   o->value(i);
+           o->value(i);
 }}
             } {}
             {fltk::Choice} uiPrefsSubtitleEncodingChoices {
@@ -3337,18 +3337,18 @@ else
        mrv::Preferences::OCIO_Display = p->label();
     if ( lbl && p->label() && strcmp(lbl, p->label()) != 0 )
     {
-	v->uiGamma->value( 1.0f );
-	v->uiGammaInput->value( 1.0f );
-	v->uiView->gamma( 1.0f );
+        v->uiGamma->value( 1.0f );
+        v->uiGammaInput->value( 1.0f );
+        v->uiView->gamma( 1.0f );
 
-	mrv::Preferences::OCIO_View = lbl;
+        mrv::Preferences::OCIO_View = lbl;
 
-	v->uiView->use_lut(true);
-	v->uiLUT->value(true);
-	mrv::media fg = v->uiView->foreground();
-	if ( !fg ) return;
-	fg->image()->image_damage( CMedia::kDamageAll );
-	v->uiView->redraw();
+        v->uiView->use_lut(true);
+        v->uiLUT->value(true);
+        mrv::media fg = v->uiView->foreground();
+        if ( !fg ) return;
+        fg->image()->image_damage( CMedia::kDamageAll );
+        v->uiView->redraw();
     }
 }}
                     tooltip {Some default gamma settings.}
@@ -3374,7 +3374,7 @@ else
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-			       v->uiGamma->value( (float) o->value() );}
+                               v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
@@ -3661,8 +3661,8 @@ t[0] = o->child(i)->label()[0];
 o->label( strdup(t) );
 v->update_color_info();} open
                       tooltip {Type of pixel values to show:
-+ Full:  pixel with gamma, gain and lut.
-+ Gamma: pixel with gamma and gain but no lut.
++ Full: pixel with gamma, gain and lut.
++ Lut: pixel with lut and gain but not gamma.
 + Original: pixel without gamma, gain or lut.}
                       xywh {234 3 13 20} align 48
                       extra_code {o->value(0);
@@ -3673,7 +3673,7 @@ o->disable_glyph();}
                         label Full
                         }
                       {fltk::Item} {} {
-                        label Gamma
+                        label Lut
                         }
                       {fltk::Item} {} {
                         label Original
@@ -4011,8 +4011,8 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-	Image_ptr img = fg->image();
-	f = img->first_frame();
+        Image_ptr img = fg->image();
+        f = img->first_frame();
      }
    }
    else
@@ -4053,8 +4053,8 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-	Image_ptr img = fg->image();
-	f = img->last_frame();
+        Image_ptr img = fg->image();
+        f = img->last_frame();
      }
    }
    else
@@ -4132,7 +4132,7 @@ delete uiSOPNode; uiSOPNode = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
-} 
+}
 
 Function {make_ocio_browser(std::string ctl, mrv::OCIOBrowser::Type type )} {open return_type {std::string}
 } {
@@ -4183,6 +4183,6 @@ if ( !ctl.empty() )
     }
   }
   code {if (!w->exec())
-	return orig;
+        return orig;
 return ctl;} {}
-} 
+}
