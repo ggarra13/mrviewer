@@ -1,12 +1,15 @@
 v4.1.4   - Removed debugging statements from exrImage.cpp.
-	 - Made EXR reader read channels in good order in multipart files.
-	 - Made EXR reader save multipart channel files starting at
-	   layer #0.
+	 - Made EXR reader read channels in good sorted order in multipart
+	   files so RGBA will appear sorted like that, while XYZ will sort
+	   like that.
 	 - EXR reader now appends the root name to the channel name when it
 	   is not already present.  This helps in multiview EXRs to
 	   distinguish right and left pair of images.
 	 - EXR reader/saver now keeps Color/RGBAZ in their original locations
-	   when reading/saving a multichannel or multipart OpenEXR.
+	   when reading/saving a multichannel or multipart OpenEXR.  This
+	   means Color, Red, Green, Blue, Alpha and Z remain at the top of
+	   the list.
+	 - EXR reader now reads stereo files properly once again.
 
 v4.1.3   - Native file requester on Windows does not leave their menus open
 	   and obstructing the view.
