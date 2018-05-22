@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-05-22 19:12-0300\n"
+"POT-Creation-Date: 2018-05-22 20:10-0300\n"
 "PO-Revision-Date: 2017-09-18 11:12-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3440,8 +3440,9 @@ msgid "Full"
 msgstr "Completo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2591
-msgid "Full Lut and Gamma"
-msgstr "Lut completo y Gama"
+#
+msgid "Full Lut and Gamma and Gain"
+msgstr "Lut completo y Gama y Ganancia"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2107
 msgid "Fullscreen"
@@ -3494,7 +3495,6 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2207
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3518
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4154
-#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4402
 #: gui/mrvImageInformation.cpp:2242
 msgid "Gamma"
 msgstr "Gama"
@@ -3526,10 +3526,6 @@ msgstr "Más Gama"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3523
 msgid "Gamma to use when loading an exr and OCIO is off."
 msgstr "Gama a usar cuando se carga un exr y OCIO está apagado."
-
-#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2592
-msgid "Gamma without Lut"
-msgstr "Gama sin Lut"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3897
 msgid "Ghosting"
@@ -4417,9 +4413,19 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 msgid "Lumma"
 msgstr "Luma"
 
+#
+#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4402
+#
+msgid "Lut"
+msgstr "Lut"
+
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2243
 msgid "Lut Active"
 msgstr "Lut Activo"
+
+#: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2592
+msgid "Lut with Gain but without Gamma"
+msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2605
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4357
@@ -5105,8 +5111,9 @@ msgid "Original pixel type is "
 msgstr "Tipo de pixel original es "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2593
-msgid "Original without Gamma or Lut"
-msgstr "Original sin Gama ni Lut"
+#
+msgid "Original without Gamma, Gain or Lut"
+msgstr "Original sin Gama ni Gain ni Lut"
 
 #: core/wandImage.cpp:525
 msgid "Originating Program"
@@ -7136,15 +7143,16 @@ msgstr "Tipo"
 #
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4397
+#
 msgid ""
 "Type of pixel values to show:\n"
-"+ Full:  pixel with gamma, gain and lut.\n"
-"+ Gamma: pixel with gamma and gain but no lut.\n"
+"+ Full: pixel with gamma, gain and lut.\n"
+"+ Lut: pixel with lut and gain but not gamma.\n"
 "+ Original: pixel without gamma, gain or lut."
 msgstr ""
 "Tipo de valores de pixel a mostrar:\n"
 "+ Completo: pixel con gama, ganancia y lut\n"
-"+ Gama: pixel con gama y ganancia pero sin lut\n"
+"+ Lut: pixel con lut y ganancia pero sin gama\n"
 "+ Original: pixel sin gama, ganancia o lut"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2344
@@ -8537,6 +8545,9 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4355
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "Gamma without Lut"
+#~ msgstr "Gama sin Lut"
 
 #, fuzzy
 #~ msgid "no image"
