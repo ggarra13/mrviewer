@@ -1970,9 +1970,11 @@ void ImageView::center_image()
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
 
-
+    mrv::image_type_ptr pic = img->hires();
     int H = dpw.h();
+    if ( H == 0 ) H = pic->height();
     int W = dpw.w();
+    if ( W == 0 ) W = pic->width();
 
 
     // Handle image 90 degrees rotation
@@ -6906,7 +6908,7 @@ void ImageView::zoom( float z )
     }
   else
     {
-      sprintf( tmp, "1/%.2g", 1/z );
+      sprintf( tmp, "1/%.3g", 1/z );
     }
   uiMain->uiZoom->label( tmp );
   uiMain->uiZoom->redraw();
