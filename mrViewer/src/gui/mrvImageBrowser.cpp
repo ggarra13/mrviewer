@@ -481,7 +481,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     }
 
     if ( !main()->uiEDLWindow ) return reel;
-    
+
    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
    fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
 
@@ -544,7 +544,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     std::string reelname( file );
     if ( reelname.size() < 5 ||
-	 reelname.substr(reelname.size()-5, 5) != ".reel" )
+         reelname.substr(reelname.size()-5, 5) != ".reel" )
       {
         reelname += ".reel";
       }
@@ -1355,14 +1355,14 @@ void ImageBrowser::load_stereo( mrv::media& fg,
                                        const int64_t end,
                                        const bool avoid_seq )
   {
-    
+
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
     if ( first != AV_NOPTS_VALUE ) frame( first );
 
 
-    
+
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
         img = CMedia::guess_image( name, NULL, 0, false,
@@ -1757,7 +1757,7 @@ void ImageBrowser::load( const stringArray& files,
         if ( file.substr(0, 5) == "file:" )
           file = file.substr( 5, file.size() );
 
-        
+
         if ( file.empty() ) continue;
 
         size_t len = file.size();
@@ -1775,7 +1775,7 @@ void ImageBrowser::load( const stringArray& files,
             if ( load_seq && seqs )
             {
                 mrv::fileroot( fileroot, file );
-		mrv::get_sequence_limits( start, end, fileroot );
+                mrv::get_sequence_limits( start, end, fileroot );
             }
             loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
           }
@@ -1847,7 +1847,7 @@ void ImageBrowser::load( const stringArray& files,
   {
       stringArray files = mrv::open_image_file(NULL,false, uiMain);
      if (files.empty()) return;
-     
+
      load( files, false );
   }
 
@@ -2067,11 +2067,13 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( sel == 0 ) return;
 
+    CMedia* orig = fg->image();
 
     if ( sel >= reel->images.size() )
        sel = 0;
 
     change_image( sel );
+
 
     if ( reel->edl )
       {
@@ -2082,8 +2084,16 @@ void ImageBrowser::load( const stringArray& files,
       }
     else
     {
-       DBG( "******* NOT REEL" );
+        fg = current_image();
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            DBG( "******* NOT REEL" );
+            img->seek( orig->frame() );
+            img->do_seek();
+        }
     }
+
 
     if ( play ) view()->play(play);
   }
@@ -2115,14 +2125,28 @@ void ImageBrowser::load( const stringArray& files,
     if ( sel < 0 ) sel = size;
 
 
+    CMedia* orig = fg->image();
+
     change_image(sel);
 
-    if ( timeline()->edl() )
+    if ( reel->edl )
       {
         mrv::media m = reel->images[sel];
         int64_t pos = m->position() + m->duration() - 1;
         seek( pos );
       }
+    else
+    {
+        fg = current_image();
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            DBG( "******* NOT REEL" );
+            img->seek( orig->frame() );
+            img->do_seek();
+        }
+    }
+
 
     if ( play ) view()->play(play);
   }
@@ -2727,7 +2751,7 @@ void ImageBrowser::handle_dnd()
    */
   void ImageBrowser::frame( const int64_t f )
   {
-      
+
       uiMain->uiFrame->value( f );
       uiMain->uiFrame->redraw();
 
@@ -2865,7 +2889,7 @@ void ImageBrowser::handle_dnd()
              }
          }
      }
-     
+
 
      if ( ! reel->edl )
      {
