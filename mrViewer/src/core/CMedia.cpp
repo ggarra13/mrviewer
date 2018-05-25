@@ -134,6 +134,7 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
+    bool CMedia::oiio_readers = false;
 
 int CMedia::_audio_cache_size = 0;
 int CMedia::_video_cache_size = 0;
@@ -722,9 +723,9 @@ void CMedia::clear_cache()
   for ( boost::uint64_t i = 0; i < num; ++i )
     {
         if ( _sequence[i] )
-	{
+        {
             _sequence[i].reset();
-	}
+        }
         if ( _right && _right[i] )
             _right[i].reset();
     }
@@ -2314,11 +2315,11 @@ void CMedia::play(const CMedia::Playback dir,
       if ( _is_stereo && _right_eye )
       {
           delete _right_eye->_stereo_barrier;
-	  if ( number_of_video_streams() % 2 == 0 )
-	      _right_eye->_stereo_barrier = new Barrier( 2 );
-	  else
-	      _right_eye->_stereo_barrier = new Barrier( 1 );
-	      
+          if ( number_of_video_streams() % 2 == 0 )
+              _right_eye->_stereo_barrier = new Barrier( 2 );
+          else
+              _right_eye->_stereo_barrier = new Barrier( 1 );
+
       }
 
       if ( !fg && !_fg_bg_barrier )
@@ -2329,7 +2330,7 @@ void CMedia::play(const CMedia::Playback dir,
       {
           _fg_bg_barrier->threshold( valid_v + valid_a );
       }
-      
+
       unsigned num = 1 + valid_a + valid_v + valid_s;
       delete _loop_barrier;
       _loop_barrier = new Barrier( num );
@@ -3238,20 +3239,20 @@ void CMedia::loop_at_end( const int64_t frame )
        // beyond the last frame
        mrv::PacketQueue::Mutex& m = _video_packets.mutex();
        SCOPED_LOCK( m );
-       
+
        mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
        AVStream* stream = get_video_stream();
        for ( ; i != e; ++i )
        {
-	   if ( pts2frame( stream, (*i).dts ) >= frame )
-	   {
-	       mrv::PacketQueue::iterator it = (i+1).base();
-	       _video_packets.erase( it );
-	   }
+           if ( pts2frame( stream, (*i).dts ) >= frame )
+           {
+               mrv::PacketQueue::iterator it = (i+1).base();
+               _video_packets.erase( it );
+           }
        }
 
-       
+
       _video_packets.loop_at_end( frame );
    }
 
@@ -3261,18 +3262,18 @@ void CMedia::loop_at_end( const int64_t frame )
        // // beyond the last frame
        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
        SCOPED_LOCK( m );
-       
+
        mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
        for ( ; i != e; ++i )
        {
            int64_t pktframe = pts2frame( stream, (*i).dts );
-       	   if ( pktframe >= frame )
-       	   {
-       	       mrv::PacketQueue::iterator it = (i+1).base();
-       	       _audio_packets.erase( it );
-       	   }
+           if ( pktframe >= frame )
+           {
+               mrv::PacketQueue::iterator it = (i+1).base();
+               _audio_packets.erase( it );
+           }
        }
 
        _audio_packets.loop_at_end( frame );
@@ -3293,7 +3294,7 @@ void CMedia::limit_video_store( const int64_t f )
     if ( f == AV_NOPTS_VALUE ) {
         return;
     }
-    
+
   int64_t first, last;
 
   switch( playback() )
@@ -3323,7 +3324,7 @@ void CMedia::limit_video_store( const int64_t f )
   int64_t end = _numWindows-1;
   if ( last > end ) last = end;
 
-  
+
   for ( int64_t i = 0; i < first; ++i  )
   {
       _sequence[i].reset();
@@ -3654,18 +3655,18 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-	    _hires = mrv::image_type_ptr( new image_type( frame,
-							  width(),
-							  height(),
-							  1,
-							  image_type::kLumma,
-							  image_type::kByte ) );
-	    memset( _hires->data().get(), 0x0, _hires->data_size() );
-	    cache( _hires );
-	    _hires->valid( false ); // mark this frame as invalid
-	    refresh();
-	    LOG_WARNING( file << _(" is missing.") );
-	    return false;
+            _hires = mrv::image_type_ptr( new image_type( frame,
+                                                          width(),
+                                                          height(),
+                                                          1,
+                                                          image_type::kLumma,
+                                                          image_type::kByte ) );
+            memset( _hires->data().get(), 0x0, _hires->data_size() );
+            cache( _hires );
+            _hires->valid( false ); // mark this frame as invalid
+            refresh();
+            LOG_WARNING( file << _(" is missing.") );
+            return false;
         }
      }
   }
