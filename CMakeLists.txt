@@ -32,8 +32,9 @@ ENDIF( UNIX )
 SET( VersionMajor 4 )
 SET( VersionMinor 1 )
 SET( VersionPatch 4 )
+STRING( TIMESTAMP VersionDate "%Y%m%d%H" )
 
-SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
+SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}.${VersionDate}" )
 
 set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 

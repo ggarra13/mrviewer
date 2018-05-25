@@ -1,108 +1,108 @@
 # data file for the FLTK User Interface Designer (FLUID)
-version 2.1000
-images_dir fltk::Button
-header_name {.h}
-code_name {.cxx}
-gridx 5
-gridy 5
+version 2.1000 
+images_dir fltk::Button 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
 snap 3
 decl {\#include "string"} {public
-}
+} 
 
-decl {\#include "core/mrvI8N.h"} {}
+decl {\#include "core/mrvI8N.h"} {} 
 
-decl {\#include "core/mrvAudioEngine.h"} {}
+decl {\#include "core/mrvAudioEngine.h"} {} 
 
-decl {\#include "core/mrvMath.h"} {}
+decl {\#include "core/mrvMath.h"} {} 
 
-decl {\#include "core/exrImage.h"} {}
+decl {\#include "core/exrImage.h"} {} 
 
-decl {\#include "core/aviImage.h"} {}
+decl {\#include "core/aviImage.h"} {} 
 
-decl {\#include "core/stubImage.h"} {}
+decl {\#include "core/stubImage.h"} {} 
 
-decl {\#include "core/mrvColorSpaces.h"} {}
+decl {\#include "core/mrvColorSpaces.h"} {} 
 
-decl {\#include "core/mrvServer.h"} {}
+decl {\#include "core/mrvServer.h"} {} 
 
-decl {\#include "core/mrvClient.h"} {}
+decl {\#include "core/mrvClient.h"} {} 
 
-decl {\#include "gui/mrvMainWindow.h"} {}
+decl {\#include "gui/mrvMainWindow.h"} {} 
 
-decl {\#include "gui/mrvImageView.h"} {}
+decl {\#include "gui/mrvImageView.h"} {} 
 
-decl {\#include "gui/mrvImageBrowser.h"} {}
+decl {\#include "gui/mrvImageBrowser.h"} {} 
 
-decl {\#include "gui/mrvBrowser.h"} {}
+decl {\#include "gui/mrvBrowser.h"} {} 
 
-decl {\#include "gui/mrvPreferencesBrowser.h"} {}
+decl {\#include "gui/mrvPreferencesBrowser.h"} {} 
 
 decl {\#include "gui/mrvCTLBrowser.h"} {public
-}
+} 
 
-decl {\#include "mrvFileRequester.h"} {}
+decl {\#include "mrvFileRequester.h"} {} 
 
 decl {\#include "gui/mrvPopupMenu.h"} {public
-}
+} 
 
-decl {\#include "gui/mrvTimecode.h"} {}
+decl {\#include "gui/mrvTimecode.h"} {} 
 
-decl {\#include "gui/mrvTimeline.h"} {}
+decl {\#include "gui/mrvTimeline.h"} {} 
 
-decl {\#include "gui/mrvColorOps.h"} {}
+decl {\#include "gui/mrvColorOps.h"} {} 
 
-decl {\#include "gui/mrvHistogram.h"} {}
+decl {\#include "gui/mrvHistogram.h"} {} 
 
 decl {\#include "gui/mrvValueInput.h"} {public
-}
+} 
 
 decl {\#include "gui/mrvActionWindow.h"} {public
-}
+} 
 
-decl {\#include "gui/mrvVectorscope.h"} {}
+decl {\#include "gui/mrvVectorscope.h"} {} 
 
-decl {\#include "gui/mrvImageInformation.h"} {}
+decl {\#include "gui/mrvImageInformation.h"} {} 
 
 decl {\#include "gui/mrvOCIOBrowser.h"} {public
-}
+} 
 
-decl {\#include "gui/mrvPreferences.h"} {}
+decl {\#include "gui/mrvPreferences.h"} {} 
 
-decl {\#include "gui/mrvLogDisplay.h"} {}
+decl {\#include "gui/mrvLogDisplay.h"} {} 
 
 decl {\#include "gui/mrvGlWindow3d.h"} {public
-}
+} 
 
-decl {\#include "gui/mrvHotkey.h"} {}
+decl {\#include "gui/mrvHotkey.h"} {} 
 
-decl {\#include "mrvSOPNode.h"} {}
+decl {\#include "mrvSOPNode.h"} {} 
 
-decl {\#include "mrvPlayback.h"} {}
+decl {\#include "mrvPlayback.h"} {} 
 
-decl {\#include "mrvVersion.h"} {}
+decl {\#include "mrvVersion.h"} {} 
 
 decl {\#include "mrvStereoUI.h"} {public
-}
+} 
 
-decl {\#include "mrvIccProfileUI.h"} {}
+decl {\#include "mrvIccProfileUI.h"} {} 
 
-decl {\#include "mrvColorAreaUI.h"} {}
+decl {\#include "mrvColorAreaUI.h"} {} 
 
-decl {\#include "mrvEDLWindowUI.h"} {}
+decl {\#include "mrvEDLWindowUI.h"} {} 
 
-decl {\#include "icons/icons.c"} {}
+decl {\#include "icons/icons.c"} {} 
 
-decl {\#include "fltk/ColorChooser.h"} {}
+decl {\#include "fltk/ColorChooser.h"} {} 
 
-decl {\#include "fltk/ask.h"} {}
+decl {\#include "fltk/ask.h"} {} 
 
-decl {\#include "fltk/run.h"} {}
+decl {\#include "fltk/run.h"} {} 
 
 declblock {\#ifdef _WIN32} {after {\#endif}
 } {
   decl {\#define unsetenv} {public
   }
-}
+} 
 
 Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
 } {
@@ -166,7 +166,7 @@ v->make_exec_return(true);}
   code {if (!w->exec())
         return orig;
 return ctl;} {}
-}
+} 
 
 namespace mrv {open
 } {
@@ -789,7 +789,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window} open
+            label {View Window}
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -868,7 +868,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::CheckButton} uiPrefsSafeAreas {
                 label {Safe Areas}
-                user_data this user_data_type {mrv::PreferencesUI*} selected
+                user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {When mrViewer starts, the safe area display will be active by default.}
                 xywh {198 107 20 20} align 8 box UP_BOX
               }
@@ -1120,8 +1120,8 @@ uiWindowYSize->value( v->uiMain->h() );}
             }
           }
           {fltk::Group} Playback {
-            label Playback
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Playback open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1452,8 +1452,8 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open
-            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            label {3D Luts}
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
@@ -2118,11 +2118,11 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Loading open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
-              xywh {12 45 400 84} box ROUNDED_BOX
+              xywh {12 92 400 84} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequence {
                 label { Load Sequence on Drag&&Drop}
@@ -2131,7 +2131,7 @@ uiICC_float_profile->do_callback();}
               }
             }
             {fltk::Group} {} {open
-              xywh {12 136 400 84} box ROUNDED_BOX
+              xywh {12 178 400 84} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequenceOnAssoc {
                 label {Load Sequence on File Association & CommandLine}
@@ -2140,12 +2140,21 @@ uiICC_float_profile->do_callback();}
               }
             }
             {fltk::Group} {} {open
-              xywh {12 226 400 79} box ROUNDED_BOX
+              xywh {12 265 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
                 label {Auto load images as they change on disk}
                 tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.}
                 xywh {20 25 25 25} box UP_BOX value 1
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {14 5 400 84} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsOIIOReaders {
+                label {Use OIIO for JPG/PNG loading} selected
+                tooltip {When loading a sequence, mrViewer will usually use the multithreaded JPG and PNG loaders of FFMPEG.  These loaders can usually play in real time except when the resolution is too high.  In that case, you should set this to on to load the images with the OIIO loader which is not as fast but caches images.}
+                xywh {20 29 25 25} box UP_BOX value 1
               }
             }
           }
@@ -2515,7 +2524,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -2545,7 +2554,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               label Caches
               }
             {fltk::ItemGroup} {} {
-              label {3D Luts} open
+              label {3D Luts}
               vertical
             } {
               {fltk::Item} {} {
@@ -3089,10 +3098,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {770 416 640 534} when CHANGED resizable
+        xywh {770 416 640 534} when CHANGED hide resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 534}
@@ -4132,7 +4141,7 @@ delete uiSOPNode; uiSOPNode = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
-}
+} 
 
 Function {make_ocio_browser(std::string ctl, mrv::OCIOBrowser::Type type )} {open return_type {std::string}
 } {
@@ -4185,4 +4194,4 @@ if ( !ctl.empty() )
   code {if (!w->exec())
         return orig;
 return ctl;} {}
-}
+} 
