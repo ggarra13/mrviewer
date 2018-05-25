@@ -1,3 +1,6 @@
+v4.1.5   - Made Cancel of save movie file not pop up a requester for a
+	   proper filename.
+
 v4.1.4   - Removed debugging statements from exrImage.cpp.
 	 - Made EXR reader read channels in good sorted order in multipart
 	   files so RGBA will appear sorted like that, while XYZ will sort
@@ -8,11 +11,18 @@ v4.1.4   - Removed debugging statements from exrImage.cpp.
 	 - EXR reader/saver now keeps Color/RGBAZ in their original locations
 	   when reading/saving a multichannel or multipart OpenEXR.  This
 	   means Color, Red, Green, Blue, Alpha and Z remain at the top of
-	   the list.
+	   the list.  This option will not work with previously saved images
+	   with the Color at the middle of the list.
 	 - EXR reader now reads stereo files properly once again.
 	 - Made the Pixel Value pulldown more correctly reflect the options.
 	   They are Full (gain, gamma and lut), Lut( gain and lut) and
 	   Original (raw pixels).
+	 - Made changing images keep the frame number if possible.
+	 - Made center an image that is not loaded work properly.
+	 - Added FFV1 codec to save movie requester.
+	 - Added a switch in Preferences->Loading to select OIIO as the
+	   default JPG/PNG loader instead of FFMPEG.  This helps with loading
+	   very large JPG/PNG files which cannot be played in real time.
 
 v4.1.3   - Native file requester on Windows does not leave their menus open
 	   and obstructing the view.
@@ -38,7 +48,7 @@ v4.1.3   - Native file requester on Windows does not leave their menus open
 
 v4.1.2   - Updated FFMPEG to a later (almost latest) version.
 	 - Improvements to channel/layer usage per request from Dominik Pott:
-	   	* Next/Previous channel hotkeys are less granular.  They now
+		* Next/Previous channel hotkeys are less granular.  They now
 		  jump RGBA channel groups.
 		* Switching to the Z channel no longer breaks the hotkeys of
 		  RGBA.
@@ -123,7 +133,7 @@ v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
 	 - Added --stereo-output flag to command line.  This controls the
 	   stereo output setting when loading a stereo set of images.
 	   Options are: Left view, Right view, Top/bottom, Bottom/top,
-	   	   	Left/right, Right/left, Even/odd rows,
+			Left/right, Right/left, Even/odd rows,
 			Even/odd columns, Checkerboard pattern,
 			Red/cyan glasses, Cyan/red glasses.
 	 - Reverted the change to timecode/timeline accepting view shortcuts
@@ -168,7 +178,7 @@ v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
 	   shortcuts) set the start/end frame of the timeline but not by
 	   shrinking the timeline, but by highlighting the area instead.
 	   This is a preference option in:
-	   	Preferences->Playback->Timeline->Selection.
+		Preferences->Playback->Timeline->Selection.
 
 v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
 	   will bake the lut in the picture.
@@ -225,7 +235,7 @@ v4.0.0   - Improved loop sync in fg/bg image playback.
 
 v3.9.9   - Bug fixed View change in gamma panel which got broken in v3.9.8.
 
-v3.9.8	 - Added OCIO ICS/Display/View changes on a network connection.
+v3.9.8   - Added OCIO ICS/Display/View changes on a network connection.
 	 - Added CTL IDT/RT/ODT in network connections.
 	 - Bug fixed Add to Favorites in file requester as it was not
 	   adding any favorites.  Regression to sorting alphabetically.
