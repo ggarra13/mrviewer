@@ -29,7 +29,9 @@
 #ifndef mrvMath_h
 #define mrvMath_h
 
-#define NOMINMAX
+#ifndef NOMINMAX
+#  define NOMINMAX
+#endif
 
 #include <cmath>
 
