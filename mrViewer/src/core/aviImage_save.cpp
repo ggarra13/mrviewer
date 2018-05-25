@@ -370,6 +370,19 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                        break;
                      }
                  }
+	       else if ( c->codec_id == AV_CODEC_ID_FFV1 )
+	       {
+		   std::cerr << opts->video_color << std::endl;
+                   if ( opts->video_color == "YUV420" )
+                       c->pix_fmt = AV_PIX_FMT_YUV420P10;
+                   else if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P10;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P10;
+		   else if ( opts->video_color == "GBRP10LE"  )
+		       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
+		   break;
+	       }
                else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
                {
                    switch( opts->video_profile )
@@ -1269,6 +1282,12 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_MPEG4;
    else if ( opts->video_codec == "prores_ks" )
        fmt->video_codec = AV_CODEC_ID_PRORES;
+   else if ( opts->video_codec == "ffv1" )
+       fmt->video_codec = AV_CODEC_ID_FFV1;
+   else
+   {
+       LOG_ERROR( "Unknown codec id for codec '" << opts->video_codec << "'" );
+   }
 
    if ( opts->audio_codec == _("None") )
        fmt->audio_codec = AV_CODEC_ID_NONE;
@@ -1454,6 +1473,7 @@ bool flush_video_and_audio( const CMedia* img )
         AVStream* s = st[i];
         if ( !s ) continue;
 
+        int encoding = 1;
         int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
@@ -1479,7 +1499,7 @@ bool flush_video_and_audio( const CMedia* img )
                     stop_encoding = 1;
             }
 
-            if (encode) {
+            if (encoding) {
                 AVPacket pkt = {0};
                 int got_packet = 0;
                 av_init_packet(&pkt);
