@@ -1328,35 +1328,53 @@ void aviImage::limit_video_store(const int64_t frame)
 {
     SCOPED_LOCK( _mutex );
 
-  int64_t first, last;
+    int64_t max_frames = max_video_frames();
 
-  switch( playback() )
-  {
-      case kBackwards:
-          first = frame - max_video_frames();
-          last  = frame;
-          if ( _dts < first ) first = _dts;
-          break;
-      case kForwards:
-          first = frame - max_video_frames();
-          last  = frame + max_video_frames();
-          if ( _dts > last )   last  = _dts;
-          if ( _dts < first )  first = _dts;
-          break;
-      default:
-          first = frame - max_video_frames();
-          last  = frame + max_video_frames();
-          if ( _dts > last )   last = _dts;
-          if ( _dts < first ) first = _dts;
-          break;
-  }
+    // Check if filename is a valid movie file extension.
+    // If not, assume image sequence (png, jpg, etc) and read
+    // max_frames from max_image_frames() instead of max_video_frames().
+    std::string ext = name();
+    size_t pos = ext.rfind( '.' );
+    if ( pos != std::string::npos )
+    {
+	ext.substr( pos, ext.size() );
+    }
+    if ( !mrv::is_valid_movie( ext.c_str() ) )
+    {
+	max_frames = max_image_frames();
+	// max image frames can be negative which means infinite
+	if ( max_frames < 0 ) max_frames = 999999;
+    }
+    
+    int64_t first, last;
 
-  if ( _images.empty() ) return;
+    switch( playback() )
+    {
+	case kBackwards:
+	    first = frame - max_frames;
+	    last  = frame;
+	    if ( _dts < first ) first = _dts;
+	    break;
+	case kForwards:
+	    first = frame - max_frames;
+	    last  = frame + max_frames;
+	    if ( _dts > last )   last  = _dts;
+	    if ( _dts < first )  first = _dts;
+	    break;
+	default:
+	    first = frame - max_frames;
+	    last  = frame + max_frames;
+	    if ( _dts > last )   last = _dts;
+	    if ( _dts < first ) first = _dts;
+	    break;
+    }
+
+    if ( _images.empty() ) return;
 
 
-  video_cache_t::iterator end = _images.end();
-  _images.erase( std::remove_if( _images.begin(), end,
-                                 NotInRangeFunctor( first, last ) ), end );
+    video_cache_t::iterator end = _images.end();
+    _images.erase( std::remove_if( _images.begin(), end,
+				   NotInRangeFunctor( first, last ) ), end );
 
 }
 
