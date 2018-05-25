@@ -1,5 +1,11 @@
 v4.1.5   - Made Cancel of save movie file not pop up a requester for a
 	   proper filename.
+	 - Fixed GBRP10LE video color option in ffv1 video.  Previously,
+	   it would get reported as pix_fmt -1.
+	 - Changed code to OIIO reader of JPG/PNG files to be handled by
+	   FFMPEG by default and keep the cache longer.  This should bring
+	   the best of both worlds (FFMPEG faster loading with long image
+	   caches).  OIIO then would not get used.
 
 v4.1.4   - Removed debugging statements from exrImage.cpp.
 	 - Made EXR reader read channels in good sorted order in multipart
