@@ -562,6 +562,8 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsFPS->value(tmpF);
     CMedia::default_fps = tmpF;
 
+
+
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
@@ -847,8 +849,13 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences loading( base, "loading" );
+    loading.get( "oiio_readers", tmp, 0 );
+    uiPrefs->uiPrefsOIIOReaders->value(tmp);
+    CMedia::oiio_readers = (bool)tmp;
+
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
+
 
     loading.get( "file_assoc_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequenceOnAssoc->value( (bool) tmp );
@@ -1115,7 +1122,7 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
-    
+
     if (  ( !var || strlen(var) == 0 ) && use_ocio )
     {
         mrvLOG_INFO( "ocio",
@@ -1317,6 +1324,8 @@ static const char* kCLocale = "C";
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
+
+    CMedia::oiio_readers = (bool) uiPrefs->uiPrefsOIIOReaders->value();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
@@ -1666,7 +1675,7 @@ static const char* kCLocale = "C";
         tmp = uiPrefs->uiPrefsOcioICSToolbar->value();
         ocio.set( "ics_in_toolbar", tmp );
 
-	ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
+        ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
 
         fltk::Preferences ics( ocio, "ICS" );
         {
@@ -1766,6 +1775,7 @@ static const char* kCLocale = "C";
     caches.set( "image_size", uiPrefs->uiPrefsImageCacheSize->value() );
 
     fltk::Preferences loading( base, "loading" );
+    loading.set( "oiio_readers", (int) uiPrefs->uiPrefsOIIOReaders->value() );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "file_assoc_load_seq",
                  (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
