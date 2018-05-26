@@ -790,7 +790,6 @@ bool exrImage::find_layers( const Imf::Header& h )
        }
    }
 
-   // if ( _layers.empty() || _layers.size() == _num_layers )
    if ( _num_channels == 0 )
    {
       _gamma = _default_gamma;
@@ -1934,6 +1933,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
                         if ( _num_channels != 0 )
                         {
+			    has_rgb = true;
                             _has_yca = true;
                             _use_yca = true;
                             rgb_layers();
