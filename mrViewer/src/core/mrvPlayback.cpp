@@ -224,29 +224,6 @@ inline unsigned int barrier_thread_count( const CMedia* img )
     return r;
 }
 
-void time2frame( CMedia* img, const mrv::Timeline* timeline,
-                 int64_t& t )
-{
-    return;
-
-    // The code below cannot be verified to be correct.  It adds
-    // mutex locks to playback.
-#if 0
-    AVRational rp;
-    //    rp.num = img->play_fps() * 1000;
-    //std::cerr << "img->play_fps " << img->play_fps() << std::endl;
-    rp.num = img->fps() * 1000;
-    rp.den = 1000;
-
-    AVRational rt;
-    //std::cerr << "timeline->fps " << timeline->fps() << std::endl;
-    rt.num = timeline->fps() * 1000;
-    rt.den = 1000;
-    
-    t = av_rescale_q( t, rp, rt );
-#endif
-    
-}
 
 CMedia::DecodeStatus check_loop( const int64_t frame,
 				 CMedia* img,
@@ -257,9 +234,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 {
     last = int64_t(timeline->display_maximum());
     first = int64_t(timeline->display_minimum());
-
-    time2frame( img, timeline, first );
-    time2frame( img, timeline, last );
 
     int64_t offset = img->first_frame() - img->start_frame();
     last = last + offset;
@@ -606,7 +580,6 @@ void audio_thread( PlaybackData* data )
     mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
     int64_t frame = img->frame() + img->audio_offset();
-    time2frame( img, timeline, frame );
     
     int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
@@ -961,7 +934,6 @@ void video_thread( PlaybackData* data )
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
    
         frame = img->frame();
-        time2frame( img, timeline, frame );
     }
    
     
@@ -1228,7 +1200,6 @@ void decode_thread( PlaybackData* data )
 
 
    int64_t frame = img->dts();
-   time2frame( img, timeline, frame );
 
 #ifdef DEBUG_THREADS
    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame 
