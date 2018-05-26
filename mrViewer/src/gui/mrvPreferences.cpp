@@ -1124,15 +1124,15 @@ static const char* kCLocale = "C";
                                           true);
 
     static std::string old_ocio;
+    std::string tmp = root + "/ocio/nuke-default/config.ocio";
     
-    if (  ( !var || strlen(var) == 0 ) && use_ocio )
+    if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
     {
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default" )
                      << std::endl );
-        std::string tmp = root + "/ocio/nuke-default/config.ocio";
-        var = strdup( tmp.c_str() );
-	old_ocio = var;
+	old_ocio = tmp;
+        var = old_ocio.c_str();
     }
     if ( var && use_ocio && strlen(var) > 0 )
     {
@@ -1153,6 +1153,7 @@ static const char* kCLocale = "C";
 
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
+	
 #ifdef __linux__
         char tmpS[256];
         sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
