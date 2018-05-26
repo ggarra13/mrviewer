@@ -31,8 +31,9 @@ ENDIF( UNIX )
 
 SET( VersionMajor 4 )
 SET( VersionMinor 1 )
-SET( VersionPatch 4 )
-STRING( TIMESTAMP VersionDate "%Y%m%d%H" )
+SET( VersionPatch 5 )
+STRING( TIMESTAMP VersionDate "%Y%m%d" )
+#STRING( TIMESTAMP VersionDate "%Y%m%d%H" )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}.${VersionDate}" )
 
