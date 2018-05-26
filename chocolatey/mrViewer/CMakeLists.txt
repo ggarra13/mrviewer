@@ -11,6 +11,8 @@ FILE( GLOB NUPACKAGES "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/*.n
 IF( NOT "${NUPACKAGES}" STREQUAL "" )
     execute_process( COMMAND ${CMAKE_COMMAND} -E copy ${NUPACKAGES} old/
                      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
+    execute_process( COMMAND ${CMAKE_COMMAND} -E remove ${NUPACKAGES}
+		     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/" )
 ENDIF( NOT "${NUPACKAGES}" STREQUAL "" )
 		     
 execute_process( COMMAND ${CMAKE_COMMAND} -E remove tools/*
