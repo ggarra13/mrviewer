@@ -1342,9 +1342,9 @@ void aviImage::limit_video_store(const int64_t frame)
     if ( !mrv::is_valid_movie( ext.c_str() ) )
     {
 	max_frames = max_image_frames();
-	// max image frames can be negative which means infinite
-	if ( max_frames < 0 ) max_frames = 999999;
     }
+    // max image frames can be negative which means infinite
+    if ( max_frames < 0 ) max_frames = 999999;
     
     int64_t first, last;
 
