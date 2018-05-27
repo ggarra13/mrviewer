@@ -540,6 +540,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
               ics = defaultcs->getName();
           }
 
+
           transform->setInputColorSpaceName( ics.c_str() );
           transform->setDisplay( display.c_str() );
           transform->setView( view.c_str() );
