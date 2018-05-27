@@ -642,12 +642,12 @@ void EDLGroup::cut( boost::int64_t frame )
         return;
 
 
-    CMedia* right = CMedia::guess_image( img->fileroot(), NULL, 0, f,
+    CMedia* right = CMedia::guess_image( img->fileroot(), NULL, 0, false, f,
                                          img->last_frame() );
     if (!right) return;
-
+    
     right->first_frame( f );
-    right->seek( f );
+    right->last_frame( img->last_frame() );
     right->fetch( f );
     right->decode_video( f );
     right->find_image( f );
@@ -656,7 +656,7 @@ void EDLGroup::cut( boost::int64_t frame )
     if (! file.empty() )
       right->audio_file( file.c_str() );
     right->audio_offset( img->audio_offset() );
-    right->last_frame( img->last_frame() );
+    right->seek( f );
 
     mrv::media m( new mrv::gui::media( right ) );
 
@@ -678,6 +678,7 @@ void EDLGroup::cut( boost::int64_t frame )
     refresh();
 
     uiMain->uiTimeline->edl(true);
+    right->ocio_input_color_space( img->ocio_input_color_space() );
 
     redraw();
 }
