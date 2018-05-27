@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-05-26 11:05-0300\n"
+"POT-Creation-Date: 2018-05-27 18:11-0300\n"
 "PO-Revision-Date: 2018-05-23 21:01-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -67,7 +67,7 @@ msgstr ""
 msgid "  ==> Using "
 msgstr "==>  Usando "
 
-#: video/mrvGLLut3d.cpp:1219
+#: video/mrvGLLut3d.cpp:1220
 msgid "  Choosing "
 msgstr "  Eligiendo "
 
@@ -694,7 +694,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1274
+#: video/mrvGLLut3d.cpp:1275
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -1122,7 +1122,7 @@ msgstr "Un error ocurrió al intentar borrar '%s'."
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:874
+#: video/mrvGLLut3d.cpp:875
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1844,7 +1844,7 @@ msgstr "Texto de Copyright"
 msgid "Core"
 msgstr "Central"
 
-#: video/mrvGLLut3d.cpp:788
+#: video/mrvGLLut3d.cpp:789
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -2137,7 +2137,7 @@ msgstr "No pude obtener contexto de conversion de imagen."
 msgid "Could not get profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: video/mrvGLLut3d.cpp:863
+#: video/mrvGLLut3d.cpp:864
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -2157,7 +2157,7 @@ msgstr "No pude cargar '"
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: video/mrvGLLut3d.cpp:779
+#: video/mrvGLLut3d.cpp:780
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -2251,51 +2251,51 @@ msgstr "No pude enviar paquete. Error "
 msgid "Could not set "
 msgstr "No pude setear "
 
-#: gui/mrvPreferences.cpp:1976
+#: gui/mrvPreferences.cpp:1977
 msgid "Could not set Browser style"
 msgstr "No pude setear el estilo del Browser"
 
-#: gui/mrvPreferences.cpp:2112
+#: gui/mrvPreferences.cpp:2113
 msgid "Could not set Button style"
 msgstr "No pude setear el estilo del Button"
 
-#: gui/mrvPreferences.cpp:2134
+#: gui/mrvPreferences.cpp:2135
 msgid "Could not set CheckButton style"
 msgstr "No pude setear el estilo del CheckButton"
 
-#: gui/mrvPreferences.cpp:2064
+#: gui/mrvPreferences.cpp:2065
 msgid "Could not set Choice style"
 msgstr "No pude setear el estilo del Choice"
 
-#: gui/mrvPreferences.cpp:2045
+#: gui/mrvPreferences.cpp:2046
 msgid "Could not set Group style"
 msgstr "No pude setear el estilo del Group"
 
-#: gui/mrvPreferences.cpp:2011
+#: gui/mrvPreferences.cpp:2012
 msgid "Could not set InputBrowser style"
 msgstr "No pude setear el estilo del InputBrowser"
 
-#: gui/mrvPreferences.cpp:2094
+#: gui/mrvPreferences.cpp:2095
 msgid "Could not set InvisibleBox style"
 msgstr "No pude setear el estilo de la InvisibleBox"
 
-#: gui/mrvPreferences.cpp:2028
+#: gui/mrvPreferences.cpp:2029
 msgid "Could not set Item style"
 msgstr "No pude setear el estilo del Item"
 
-#: gui/mrvPreferences.cpp:2081
+#: gui/mrvPreferences.cpp:2082
 msgid "Could not set Message style"
 msgstr "No pude setear el estilo del Message"
 
-#: gui/mrvPreferences.cpp:2151
+#: gui/mrvPreferences.cpp:2152
 msgid "Could not set RadioButton style"
 msgstr "No pude setear el estilo del RadioButton"
 
-#: gui/mrvPreferences.cpp:2168
+#: gui/mrvPreferences.cpp:2169
 msgid "Could not set Tooltip style"
 msgstr "No pude setear el estilo del Tooltip"
 
-#: gui/mrvPreferences.cpp:1994
+#: gui/mrvPreferences.cpp:1995
 msgid "Could not set ValueInput style"
 msgstr "No pude setear el estilo del ValueInput"
 
@@ -2795,7 +2795,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:850
+#: video/mrvGLLut3d.cpp:851
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -2803,7 +2803,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:856
+#: video/mrvGLLut3d.cpp:857
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -3820,7 +3820,7 @@ msgstr ""
 "La imagen tiene una Transformacion de Display de Salida (ODT) diferente de "
 "la que ya está seteada."
 
-#: video/mrvGLLut3d.cpp:1211
+#: video/mrvGLLut3d.cpp:1212
 msgid "Image input color space is undefined."
 msgstr "Espacio de Color de Entrada de la imagen sin definir."
 
@@ -4025,11 +4025,11 @@ msgstr "Entero"
 msgid "Internal error in wizard selection: "
 msgstr "Error interno en selección del wizard: "
 
-#: video/mrvGLLut3d.cpp:800
+#: video/mrvGLLut3d.cpp:801
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
-#: video/mrvGLLut3d.cpp:844
+#: video/mrvGLLut3d.cpp:845
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -4053,7 +4053,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:815
+#: video/mrvGLLut3d.cpp:816
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -4708,15 +4708,15 @@ msgstr "Próxima Imagen"
 msgid "No"
 msgstr "No"
 
-#: video/mrvGLLut3d.cpp:1125 video/mrvGLLut3d.cpp:1170
+#: video/mrvGLLut3d.cpp:1126 video/mrvGLLut3d.cpp:1171
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:1123 video/mrvGLLut3d.cpp:1168
+#: video/mrvGLLut3d.cpp:1124 video/mrvGLLut3d.cpp:1169
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:1127 video/mrvGLLut3d.cpp:1172
+#: video/mrvGLLut3d.cpp:1128 video/mrvGLLut3d.cpp:1173
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -4778,11 +4778,11 @@ msgstr "Sin memoria para grafica de filtro"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:1174
+#: video/mrvGLLut3d.cpp:1175
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:1129
+#: video/mrvGLLut3d.cpp:1130
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -4925,7 +4925,7 @@ msgid "OCIO config (*.{"
 msgstr "Configuracion de OCIO (*.{"
 
 #
-#: gui/mrvPreferences.cpp:1242
+#: gui/mrvPreferences.cpp:1243
 msgid "OCIO environment variable is not set.  Defaulting to CTL. "
 msgstr "La variable de entorno OCIO no existe.  Usando CTL."
 
@@ -4949,13 +4949,13 @@ msgstr "OCIO/Vista"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:1066
+#: video/mrvGLLut3d.cpp:1067
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:1042
+#: video/mrvGLLut3d.cpp:1043
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -5564,13 +5564,13 @@ msgstr "ROLE_SCENE_LINEAR no está definido."
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:1017
+#: video/mrvGLLut3d.cpp:1018
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:986
+#: video/mrvGLLut3d.cpp:987
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -6159,16 +6159,17 @@ msgstr "Setea la ganancia por defecto cuando mrViewer empieza."
 msgid "Sets the default gamma when mrViewer starts."
 msgstr "Setea la gama por defecto cuando mrViewer comienza."
 
-#: gui/mrvPreferences.cpp:1132
-msgid "Setting OCIO environment variable to nuke-default"
-msgstr "Seteando la variable de entorno OCIO a nuke-default"
+#
+#: gui/mrvPreferences.cpp:1133
+msgid "Setting OCIO environment variable to nuke-default."
+msgstr "Seteando la variable de entorno OCIO a nuke-default."
 
-#: gui/mrvPreferences.cpp:1143
+#: gui/mrvPreferences.cpp:1144
 msgid "Setting OCIO environment variable to:"
 msgstr "Seteando la variable de entorno OCIO a:"
 
 #
-#: gui/mrvPreferences.cpp:1161
+#: gui/mrvPreferences.cpp:1162
 msgid "Setting OCIO's view environment variable to:"
 msgstr "Seteando la variable de entorno de vista de OCIO a:"
 
@@ -7286,11 +7287,11 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
-#: video/mrvGLLut3d.cpp:576
+#: video/mrvGLLut3d.cpp:577
 msgid "Unknown error returned from OCIO processor"
 msgstr "Error desconocido retornado del procesador de OCIo"
 
-#: video/mrvGLLut3d.cpp:672
+#: video/mrvGLLut3d.cpp:673
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
