@@ -6,6 +6,9 @@ v4.1.5   - Made Cancel of save movie file not pop up a requester for a
 	   FFMPEG by default and keep the cache longer.  This should bring
 	   the best of both worlds (FFMPEG faster loading with long image
 	   caches).  OIIO then would not get used.
+	 - Fixed EDL cuts reverting to OCIO's scene_linear color space.
+	   Now the color space of the clip is kept on both sides of the
+	   cut.
 
 v4.1.4   - Removed debugging statements from exrImage.cpp.
 	 - Made EXR reader read channels in good sorted order in multipart
