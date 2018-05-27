@@ -1337,7 +1337,7 @@ void aviImage::limit_video_store(const int64_t frame)
     size_t pos = ext.rfind( '.' );
     if ( pos != std::string::npos )
     {
-	ext.substr( pos, ext.size() );
+	ext = ext.substr( pos, ext.size() );
     }
     if ( !mrv::is_valid_movie( ext.c_str() ) )
     {
