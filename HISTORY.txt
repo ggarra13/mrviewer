@@ -1,15 +1,28 @@
 v4.1.5   - Made Cancel of save movie file not pop up a requester for a
-	   proper filename.
+	   proper filename with %d symbol.
 	 - Fixed GBRP10LE video color option in ffv1 video.  Previously,
 	   it would get reported as pix_fmt -1.
 	 - Changed code to OIIO reader of JPG/PNG files to be handled by
-	   FFMPEG by default and keep the cache longer.  This should bring
-	   the best of both worlds (FFMPEG faster loading with long image
-	   caches).  OIIO then would not get used.
+	   FFMPEG by default and keep the cache as long as the image cache.
+	   This should bring the best of both worlds (FFMPEG faster loading
+	   with long image caches).  OIIO nor ImageMagick then will not get
+	   used.
 	 - Fixed EDL cuts reverting to OCIO's scene_linear color space.
 	   Now the color space of the clip is kept on both sides of the
 	   cut.
-
+	 - Removed random crashes when loading dpx files (on Windows).
+	 - Removed crash when loading a reel with an invalid (missing)
+	   filename.
+	 - Removed random crashes when loading multiple sequences/movies
+	   thru drag and drop.
+	   Note that if the drag and drop comes from the native file chooser,
+	   it is necessary to close it so that mrViewer can resume normal
+	   operation.
+	 - Made PgUp/PgDown switching of images keep the frame number when
+	   possible as that's the most sensible thing to do.
+	 - Added LMB+Drag once again to select an area, which had gone
+	   missing.
+	   
 v4.1.4   - Removed debugging statements from exrImage.cpp.
 	 - Made EXR reader read channels in good sorted order in multipart
 	   files so RGBA will appear sorted like that, while XYZ will sort
