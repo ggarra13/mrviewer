@@ -81,7 +81,7 @@ namespace mrv {
       { exrImage::test,   NULL,            exrImage::get },
       { iffImage::test,   NULL,            iffImage::get },
       { mapImage::test,   NULL,            mapImage::get },
-      // { hdrImage::test,   NULL,            hdrImage::get }, // broken
+      { hdrImage::test,   NULL,            hdrImage::get }, // broken
       { picImage::test,   NULL,            picImage::get },
       { aviImage::test,   NULL,            aviImage::get },
       { NULL,             rawImage::test,  rawImage::get },
