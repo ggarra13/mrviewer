@@ -1302,6 +1302,7 @@ fltk::GlWindow( X, Y, W, H, l ),
 _broadcast( false ),
 uiMain( NULL ),
 _engine( NULL ),
+_update( true ),
 _wait( false ),
 _normalize( false ),
 _safeAreas( false ),
@@ -2803,6 +2804,7 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
+    
     DBG( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
@@ -2848,6 +2850,7 @@ void ImageView::draw()
 
         _engine->clear_canvas( r, g, b, a );
 
+        if ( !_update ) return;
 
         DBG( __FUNCTION__ << " " << __LINE__ );
         switch( uiPrefs->uiPrefsBlendMode->value() )
@@ -3338,7 +3341,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-  flags		|= kMouseDown;
+  flags	= kMouseDown;
 
   int button = fltk::event_button();
   if (button == 1)
