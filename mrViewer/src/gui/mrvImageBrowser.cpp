@@ -1443,6 +1443,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
                          const bool progressBar )
 {
 
+    view()->update( false );
+    
     if ( bgimage != "" )
     {
         int64_t start = AV_NOPTS_VALUE;
@@ -1647,7 +1649,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
         fltk::check();
       }
 
-
+    view()->update(true);
+    
     view()->reset_caches(); // Redo preloaded sequence caches
 
     mrv::Reel reel = current_reel();
