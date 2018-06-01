@@ -81,7 +81,7 @@ namespace mrv {
       { exrImage::test,   NULL,            exrImage::get },
       { iffImage::test,   NULL,            iffImage::get },
       { mapImage::test,   NULL,            mapImage::get },
-      { hdrImage::test,   NULL,            hdrImage::get },
+      // { hdrImage::test,   NULL,            hdrImage::get }, // broken
       { picImage::test,   NULL,            picImage::get },
       { aviImage::test,   NULL,            aviImage::get },
       { NULL,             rawImage::test,  rawImage::get },
@@ -197,7 +197,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const bool is_thumbnail = false )
 {
     std::string tmp;
-    char buf[1024];
+    char buf[1024]; buf[0] = 0;
     char *name = buf;
     if ( is_stereo )
     {
@@ -229,7 +229,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         name += 5;
     }
 
-    
+
     boost::uint8_t* read_data = 0;
     size_t size = len;
     const boost::uint8_t* test_data = datas;
@@ -315,8 +315,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 {
                     LOG_ERROR( _("Image \"") << name << _("\" not found.") );
                 }
-                return NULL;
             }
+            return NULL;
         }
         test_data = read_data = new boost::uint8_t[size + 1];
         read_data[size] = 0; // null-terminate so strstr() works
@@ -421,6 +421,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     {
         LOG_ERROR( e.what() );
     }
+
+    DBG("Loaded " << image->name() );
 
     return image;
   }
