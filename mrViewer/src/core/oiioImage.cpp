@@ -95,6 +95,12 @@ namespace mrv {
   {
       if ( file == NULL ) return false;
 
+      std::string f = file;
+      std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
+
+      if ( f.rfind(".psd") != std::string::npos )
+          return false;
+
       ImageInput* in = ImageInput::open( file );
       if(!in)
       {
@@ -167,7 +173,7 @@ namespace mrv {
       unsigned dh = spec.height;
       int channels = spec.nchannels;
       TypeDesc format = spec.format;
-      
+
       {
           _compression = spec.get_string_attribute( "compression",
                                                     "Zip" );
@@ -222,24 +228,24 @@ namespace mrv {
 
       if ( _num_channels == 0 )
       {
-	  if ( channels >= 3 )
-	  {
-	      rgb_layers();
-	      lumma_layers();
-	  }
+          if ( channels >= 3 )
+          {
+              rgb_layers();
+              lumma_layers();
+          }
 
-	  if ( channels >= 4 )
-	  {
-	      alpha_layers();
-	  }
-	  
-	  if ( channels >= 5 )
-	  {
-	      _layers.push_back( _("Z") );
-	      ++_num_channels;
-	  }
+          if ( channels >= 4 )
+          {
+              alpha_layers();
+          }
+
+          if ( channels >= 5 )
+          {
+              _layers.push_back( _("Z") );
+              ++_num_channels;
+          }
       }
-      
+
       image_size( dw, dh );
 
       image_type::PixelType pixel_type;
@@ -302,7 +308,7 @@ namespace mrv {
 
 
 bool oiioImage::save( const char* path, const CMedia* img,
-		      const WandOpts* opts )
+                      const WandOpts* opts )
 {
     ImageOutput* out = ImageOutput::create( path );
     mrv::Recti dpw = img->display_window();
@@ -315,13 +321,13 @@ bool oiioImage::save( const char* path, const CMedia* img,
     image_type::Format format = pic->format();
 
     bool must_convert = false;
-        
+
     if ( Preferences::use_ocio && Preferences::uiMain->uiView->use_lut() )
-	must_convert = true;
+        must_convert = true;
 
     image_type::PixelType pt = pic->pixel_type();
     unsigned short pixel_size = pic->pixel_size();
-    
+
     StorageType st = opts->pixel_type();
 
     // Constrain some pixel types to the maximum supported by the format
@@ -329,65 +335,65 @@ bool oiioImage::save( const char* path, const CMedia* img,
     image_type::PixelType maxPixelType = image_type::kByte;
     if ( f.substr( f.size()-4, f.size() ) == ".iff" )
     {
-	maxPixelType = image_type::kShort;
+        maxPixelType = image_type::kShort;
     }
 
     if ( pt < maxPixelType ) maxPixelType = pt;
-    
+
     switch( st )
     {
-	case CharPixel:
-	    pt = image_type::kByte;
-	    break;
-	case ShortPixel:
-	    pt = image_type::kShort;
-	    break;
-	case LongPixel:
-	    pt = image_type::kInt;
-	    break;
-	case DoublePixel:
-	case FloatPixel:
-	    pt = image_type::kFloat;
-	    break;
+        case CharPixel:
+            pt = image_type::kByte;
+            break;
+        case ShortPixel:
+            pt = image_type::kShort;
+            break;
+        case LongPixel:
+            pt = image_type::kInt;
+            break;
+        case DoublePixel:
+        case FloatPixel:
+            pt = image_type::kFloat;
+            break;
     }
 
     if ( pt > maxPixelType ) pt = maxPixelType;
 
-    
+
     switch( pt )
     {
-	case image_type::kByte:
-	    type = TypeDesc::UINT8;
-	    break;
-	case image_type::kShort:
-	    type = TypeDesc::USHORT;
-	    break;
-	case image_type::kInt:
-	    type = TypeDesc::UINT;
-	    break;
-	case image_type::kHalf:
-	    type = TypeDesc::HALF;
-	    break;
-	case image_type::kFloat:
-	    type = TypeDesc::FLOAT;
-	    break;
-	default:
-	    LOG_ERROR( img->name() << _(": Unknown pixel type") );
-	    return false;
+        case image_type::kByte:
+            type = TypeDesc::UINT8;
+            break;
+        case image_type::kShort:
+            type = TypeDesc::USHORT;
+            break;
+        case image_type::kInt:
+            type = TypeDesc::UINT;
+            break;
+        case image_type::kHalf:
+            type = TypeDesc::HALF;
+            break;
+        case image_type::kFloat:
+            type = TypeDesc::FLOAT;
+            break;
+        default:
+            LOG_ERROR( img->name() << _(": Unknown pixel type") );
+            return false;
     }
 
     unsigned short channels = pic->channels();
-    
+
     format = image_type::kLumma;
     if ( channels >= 2 ) format = image_type::kRGB;
     if ( channels >= 4 ) format = image_type::kRGBA;
 
     if ( ( format != image_type::kLumma && format != image_type::kRGBA &&
-	   format != image_type::kRGB ) || pic->pixel_type() > maxPixelType ||
-	 img->gamma() != 1.0f )
-	must_convert = true;
-    
-    
+           format != image_type::kRGB ) || pic->pixel_type() > maxPixelType ||
+         img->gamma() != 1.0f )
+        must_convert = true;
+
+
     ImageSpec spec( dw, dh, channels, type );
     spec.full_x = 0;
     spec.full_y = 0;
@@ -401,40 +407,40 @@ bool oiioImage::save( const char* path, const CMedia* img,
 
     try
     {
-	if ( !must_convert )
-	{
-	    mrv::aligned16_uint8_t* p = pic->data().get();
-	    unsigned short pixel_size = pic->pixel_size();
-	    unsigned short mult = channels * pixel_size;
-	    for ( int y = spec.y; y < spec.y + daw.h(); ++y )
-	    {
-		void* line = &p[(y-spec.y) * dw * mult ];
-		out->write_scanline( y, 0, type, line );
-	    }
-	}
-	else
-	{
-	    prepare_image( pic, img, format, pt );
-	    
-	    unsigned short pixel_size = pic->pixel_size();
-	    mrv::aligned16_uint8_t* p = pic->data().get();
-	    int yh = spec.y + dh;
-	    unsigned short mult = channels * pixel_size;
-	    for ( int y = spec.y; y < yh; ++y )
-	    {
-		mrv::aligned16_uint8_t* line = p;
-		line += (y-spec.y) * dw * mult;
-		out->write_scanline( y, 0, type, line );
-	    }
-	}
+        if ( !must_convert )
+        {
+            mrv::aligned16_uint8_t* p = pic->data().get();
+            unsigned short pixel_size = pic->pixel_size();
+            unsigned short mult = channels * pixel_size;
+            for ( int y = spec.y; y < spec.y + daw.h(); ++y )
+            {
+                void* line = &p[(y-spec.y) * dw * mult ];
+                out->write_scanline( y, 0, type, line );
+            }
+        }
+        else
+        {
+            prepare_image( pic, img, format, pt );
+
+            unsigned short pixel_size = pic->pixel_size();
+            mrv::aligned16_uint8_t* p = pic->data().get();
+            int yh = spec.y + dh;
+            unsigned short mult = channels * pixel_size;
+            for ( int y = spec.y; y < yh; ++y )
+            {
+                mrv::aligned16_uint8_t* line = p;
+                line += (y-spec.y) * dw * mult;
+                out->write_scanline( y, 0, type, line );
+            }
+        }
     }
     catch( const std::exception& e )
     {
-	LOG_ERROR( e.what() );
+        LOG_ERROR( e.what() );
     }
-    
+
     out->close();
-    
+
     return true;
 }
 
