@@ -345,6 +345,8 @@ class server;
 
       void show_background( const bool b );
 
+      void update( bool t ) { _update = t; }
+      
       /// Update the image window display
       void update_image_info() const;
 
@@ -658,6 +660,7 @@ class server;
     mrv::ViewerUI* uiMain;
     mrv::DrawEngine*    _engine;
 
+      bool         _update;    //<- Freeze opengl updates when not set
       bool         _wait;
     bool         _normalize;   //<- normalize pixel values
     bool         _safeAreas;   //<- safe view/title area is active
