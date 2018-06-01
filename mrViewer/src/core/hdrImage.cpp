@@ -88,7 +88,7 @@ hdrImage::~hdrImage()
 
 
 /*! Test a block of data read from the start of the file to see if it
-  looks like the start of an .exr file. This returns true if the 
+  looks like the start of an .hdr file. This returns true if the 
   data contains HDR's magic comment.
 */
 bool hdrImage::test(const boost::uint8_t *data, unsigned)
@@ -501,7 +501,7 @@ bool hdrImage::fetch( const boost::int64_t frame )
             for ( ; x != xlast; x += xs )
 	    {
                 Pixel& p = pixels[ y * w + x];
-                //colr2color( p, scanline[x] );
+                colr2color( p, scanline[x] );
 	    }
 
 
