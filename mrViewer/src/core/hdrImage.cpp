@@ -93,16 +93,17 @@ hdrImage::~hdrImage()
 */
 bool hdrImage::test(const boost::uint8_t *data, unsigned)
 {
-    if ( strncmp( (char*)data, "#?RADIANCE", 10 ) != 0 &&
-         strncmp( (char*)data, "#?RGBE", 6 ) != 0 ) return false;
+    if ( ( strncmp( (char*)data, "#?RADIANCE", 10 ) == 0 ) ||
+         ( strncmp( (char*)data, "#?RGBE", 6 ) == 0 ) ) return true;
 
-    return true;
+    return false;
 }
 
 
 void hdrImage::read_header( FILE* f ) 
 {
     char line[256];
+
 
     _num_channels = 0;
     _gamma = 1.0f;
