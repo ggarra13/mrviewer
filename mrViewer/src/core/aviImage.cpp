@@ -84,6 +84,8 @@ namespace
 
 
 #define LOG(x) std::cerr << x << std::endl;
+#undef DBG
+#define DBG(x) LOG(x);
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
