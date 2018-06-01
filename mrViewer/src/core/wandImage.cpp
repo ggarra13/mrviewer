@@ -65,6 +65,8 @@ using namespace std;
 #include "mrViewer.h"
 #include "gui/mrvIO.h"
 
+#undef DBG
+#define DBG(x) std::cerr << x << std::endl;
 
 #define ThrowWandException( wand ) \
   { \
@@ -296,6 +298,7 @@ namespace mrv {
 
            ++_num_channels;
 
+
            if ( i == 0 )
            {
                size_t dw = MagickGetImageWidth( wand );
@@ -311,10 +314,12 @@ namespace mrv {
               layer = layername;
            }
 
+
         }
      }
 
      MagickSetIteratorIndex( wand, index );
+
 
      /*
        Copy pixels from magick to class
@@ -331,6 +336,7 @@ namespace mrv {
      data_window( img->page.x, img->page.y,
                   (img->page.x + dw - 1),
                   (img->page.y + dh - 1), frame );
+
 
      _gamma = 1.0f;
 
@@ -351,17 +357,20 @@ namespace mrv {
          }
      }
 
+
      image_size( unsigned(dw), unsigned(dh) );
 
      const char* channels;
      if ( _has_alpha )
      {
+
         channels = "RGBA";
         allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
                          unsigned(dw), unsigned(dh) );
      }
      else
      {
+
         channels = "RGB";
         allocate_pixels( frame, 3, image_type::kRGB, pixel_type,
                          unsigned(dw), unsigned(dh) );
@@ -370,10 +379,12 @@ namespace mrv {
      {
         SCOPED_LOCK( _mutex );
 
+
         Pixel* pixels = (Pixel*)_hires->data().get();
         MagickExportImagePixels( wand, 0, 0, dw, dh, channels,
                                  storage, pixels );
      }
+
 
      _compression = MagickGetImageCompression( wand );
 
@@ -404,6 +415,7 @@ namespace mrv {
          setlocale( LC_NUMERIC, "C" );
          while ( property )
          {
+
              const char* value = GetImageProperty( img, property, exception );
              if ( value )
              {
@@ -582,7 +594,6 @@ namespace mrv {
      MagickGetImageRenderingIntent( wand );
 
      DestroyMagickWand( wand );
-
 
      return true;
   }
