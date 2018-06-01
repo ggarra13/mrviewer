@@ -72,7 +72,7 @@ namespace
 
 const char *kRawExtensions[] = {
 "bay", "bmq", "cr2", "crw", "cs1", "dc2", "dcr", "dng",
-"erf", "fff", "hdr", "k25", "kdc", "mdc", "mos", "mrw",
+"erf", "fff", "k25", "kdc", "mdc", "mos", "mrw",
 "nef", "orf", "pef", "pxn", "raf", "raw", "rdc", "sr2",
 "srf", "x3f", "arw", "3fr", "cine", "ia", "kc2", "mef",
 "nEF", "nrw", "qtk", "rw2", "sti", "rwl", "srw", "drf", "dsc",
