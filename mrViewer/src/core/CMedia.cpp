@@ -2621,7 +2621,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
       }
       else
       {
-          //DBG( "cache seq " << idx << " pic " << pic );
+          DBG( "cache seq " << idx << " pic " << pic );
           seq[idx] = pic;
       }
   }
@@ -3324,6 +3324,7 @@ void CMedia::limit_video_store( const int64_t f )
   int64_t end = _numWindows-1;
   if ( last > end ) last = end;
 
+  if ( last - first <= 1 ) return;
 
   for ( int64_t i = 0; i < first; ++i  )
   {
@@ -3335,7 +3336,6 @@ void CMedia::limit_video_store( const int64_t f )
       _sequence[i].reset();
       _right[i].reset();
   }
-
 
 }
 
@@ -3598,6 +3598,7 @@ bool CMedia::find_image( const int64_t frame )
 
   if ( _sequence && _sequence[idx] )
     {
+        DBG( "update " << idx << " for frame " << frame );
         _hires = _sequence[idx];
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
@@ -3616,6 +3617,7 @@ bool CMedia::find_image( const int64_t frame )
   bool should_load = false;
 
   std::string file = sequence_filename(f);
+  DBG( "sequence filename " << file );
 
   if ( _filename )
     {
