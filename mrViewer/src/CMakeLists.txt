@@ -135,6 +135,7 @@ INCLUDE_DIRECTORIES(
 FLTK_WRAP_UI( mrViewer
   gui/aviSave.fl
   gui/mrvStereoUI.fl
+  gui/OIIOOptionsUI.fl
   gui/WandOptionsUI.fl
   gui/EXROptionsUI.fl
   gui/mrvAudioOffset.fl
