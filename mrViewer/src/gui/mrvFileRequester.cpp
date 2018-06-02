@@ -682,12 +682,14 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
    const char* file = file_save_single_requester( title.c_str(),
                                                   pattern.c_str(),
                                                   startdir, false );
+   if ( file == NULL || strlen(file) == 0 ) return;
 
 
-    std::string tmp = file;
-    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-                    (int(*)(int)) tolower);
-    std::string ext = tmp.c_str() + tmp.size() - 4;
+    std::string ext = file;
+    size_t pos = ext.rfind( '.' );
+    if ( pos != std::string::npos && pos != ext.size() )
+	ext = ext.substr( pos, ext.size() );
+
 
     ImageOpts* opts = ImageOpts::build( main, ext, image->has_deep_data() );
     if ( opts->active() )
@@ -744,7 +746,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        ext = ext.substr( pos, ext.size() );
      }
 
-   bool ffmpeg_handle = (ext == ".png" || ext == ".tif" || ext == ".tiff" );
+   bool ffmpeg_handle = (ext == ".png" || ext == ".jpg" || ext == ".jpeg" ||
+			 ext == ".tif" || ext == ".tiff" );
    bool movie = is_valid_movie( ext.c_str() ) || ffmpeg_handle;
 
    std::string root, fileseq = file;
