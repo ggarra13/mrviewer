@@ -1,0 +1,115 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Button 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <iostream>} {} 
+
+decl {\#include <core/mrvI8N.h>} {public
+} 
+
+decl {\#include <gui/mrvIO.h>} {public
+} 
+
+decl {\#include <core/mrvImageOpts.h>} {public
+} 
+
+decl {\#include <gui/mrvMainWindow.h>} {public
+} 
+
+decl {\#include <string>} {public
+} 
+
+decl {\#include <mrViewer.h>} {public
+} 
+
+namespace mrv {open
+} {
+  class OIIOOptionsUI {open : {public OIIOOpts}
+  } {
+    decl {std::string pixel_type;} {public
+    }
+    Function {make_window(const std::string& ext, bool all_layers)} {open
+    } {
+      {fltk::Window} uiMain {
+        label {OIIO Saving} open
+        xywh {605 234 340 290} resizable modal noborder visible
+      } {
+        {fltk::Group} {} {
+          label {Image Options} open
+          xywh {34 33 272 189} box UP_BOX
+        } {
+          {fltk::Choice} uiPixelType {
+            label {Pixel Format}
+            callback {pixel_type = o->child(o->value())->label();} open
+            xywh {151 137 90 25}
+          } {
+            {fltk::Item} {} {
+              label Float
+              }
+            {fltk::Item} {} {
+              label Half
+              }
+            {fltk::Item} {} {
+              label Integer
+              }
+            {fltk::Item} {} {
+              label Short
+              }
+            {fltk::Item} {} {
+              label Byte
+              }
+          }
+          {fltk::LightButton} uiAllLayers {
+            label {All Layers}
+            xywh {61 82 155 35}
+            extra_code {o->value( all_layers );}
+          }
+          {fltk::LightButton} uiMipMap {
+            label MipMap selected
+            xywh {61 27 155 35}
+            extra_code {bool on = (ext == ".tx");
+	    	       o->value( on );
+		       if (on) o->activate();
+		       else o->deactivate();}
+          }
+        }
+        {fltk::Button} {} {
+          label OK
+          user_data this user_data_type {OIIOOptionsUI*}
+          callback {v->active(true);
+v->uiMain->make_exec_return(true);}
+          xywh {85 253 62 26}
+        }
+        {fltk::Button} {} {
+          label Cancel
+          user_data this user_data_type {OIIOOptionsUI*}
+          callback {v->active( false );
+v->uiMain->make_exec_return(false);}
+          xywh {164 253 68 26}
+        }
+      }
+    }
+    Function {convert()} {open
+    } {
+      code {if ( pixel_type == "" || pixel_type == _("Char") ) _pixel_type = image_type::kByte;
+else if ( pixel_type == _("Float") ) _pixel_type = image_type::kFloat;
+else if ( pixel_type == _("Short") ) _pixel_type = image_type::kShort;
+else if ( pixel_type == _("Half") ) _pixel_type = image_type::kHalf;
+else if ( pixel_type == _("Integer") ) _pixel_type = image_type::kInt;
+_all_layers = uiAllLayers->value();
+_mipmap = uiMipMap->value();} {}
+    }
+    Function {OIIOOptionsUI(const mrv::ViewerUI* main, const std::string& ext, bool all_layers) : OIIOOpts(all_layers)} {open
+    } {
+      code {fltk::Window* w = make_window(ext, all_layers);
+      mrv::MainWindow* m = main->uiMain;
+      int x = m->x() + ( m->w() - w->w() ) / 2;
+      int y = m->y() + ( m->h() - w->h() ) / 2;
+if ( w->exec() ) convert();} {}
+    }
+  }
+} 
