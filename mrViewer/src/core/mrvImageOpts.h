@@ -22,6 +22,7 @@
 
 #include "ImfCompression.h"
 #include "ImfPixelType.h"
+#include "mrvFrame.h"
 #include <MagickWand/MagickWand.h>
 
 namespace mrv {
@@ -94,6 +95,26 @@ class EXROpts : public ImageOpts
     bool save_deep_data() const { return _save_deep_data; }
     void save_deep_data( const bool t ) { _save_deep_data = t; }
 
+};
+
+class OIIOOpts : public ImageOpts
+{
+  protected:
+    image_type::PixelType _pixel_type;
+    bool         _mipmap;
+  public:
+    OIIOOpts( bool all_layers ) :
+    ImageOpts( false, all_layers ),
+    _pixel_type( image_type::kFloat ),
+    _mipmap( false )
+    {
+    }
+
+    inline bool mipmap() const { return _mipmap; }
+    inline void mipmap( bool p ) { _mipmap = p; }
+    
+    image_type::PixelType pixel_type() const { return _pixel_type; }
+    void pixel_type( image_type::PixelType p ) { _pixel_type = p; }
 };
 
 class WandOpts : public ImageOpts
