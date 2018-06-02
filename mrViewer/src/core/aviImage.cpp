@@ -370,6 +370,20 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       if ( strncmp( (char*)data + 6, "JFIF", 4 ) == 0 )
           return true;
   }
+  // We commented this out or we would not read OIIO's tx format which
+  // is a modified tiff file.
+  // else if ( !CMedia::oiio_readers && len > 4)
+  // {
+  //     if ( memcmp( data, "\115\115\000\052",4 ) == 0 )
+  // 	  return true;
+  //     if ( memcmp( data, "\111\111\052\000",4 ) == 0 )
+  // 	  return true;
+  //     if ( len < 8 ) return false;
+  //     if (memcmp(data,"\115\115\000\053\000\010\000\000",8) == 0)
+  // 	  return true;
+  //     if (memcmp(data,"\111\111\053\000\010\000\000\000",8) == 0)
+  // 	  return true;
+  // }
   else
     {
       // Check for Quicktime
