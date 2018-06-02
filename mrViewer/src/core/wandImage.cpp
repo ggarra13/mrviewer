@@ -969,9 +969,17 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     }
 
     std::string f = file;
+    std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
+    
     if ( f.substr( f.size()-4, f.size() ) == ".pic" )
     {
         return picImage::save( file, this, opts );
+    }
+
+    if ( dynamic_cast< const OIIOOpts* >( opts ) != NULL )
+    {
+	OIIOOpts* o = (OIIOOpts*) opts;
+        return oiioImage::save( file, this, o );
     }
 
 
@@ -982,13 +990,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     }
 
     WandOpts* o = (WandOpts*) opts;
-
-    if ( f.substr( f.size()-4, f.size() ) == ".iff" ||
-         f.substr( f.size()-3, f.size() ) == ".tx" )
-    {
-        return oiioImage::save( file, this, o );
-    }
-
+    
     MagickBooleanType status;
     std::string filename = file;
 
