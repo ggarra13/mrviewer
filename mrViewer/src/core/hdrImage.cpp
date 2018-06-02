@@ -210,7 +210,7 @@ void hdrImage::read_header( FILE* f )
         }
 	else if ( strcasecmp( keyword, "SOFTWARE" ) == 0 )
         {
-            static const std:: string key = _("Software");
+            static const std::string key = _("Software");
 	    std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
 	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
@@ -391,63 +391,7 @@ void hdrImage::colr2color( Pixel& col, COLR clr )
 
 bool hdrImage::save( const boost::int64_t frame )
 {
-    fetch( frame );
-    mrv::image_type_ptr pic = hires();
-    if (!pic) return false;
-
-    unsigned dw = pic->width();
-    unsigned dh = pic->height();
-    mrv::image_type_ptr sho = mrv::image_type_ptr( new mrv::image_type(
-                                                   pic->frame(),
-                                                   dw, dh, 4,
-                                                   mrv::image_type::kRGBA,
-                                                   mrv::image_type::kFloat )
-    );
-      
-    for (unsigned y = 0; y < dh; ++y )
-    {
-        for (unsigned x = 0; x < dw; ++x )
-        {
-            const ImagePixel& p = pic->pixel( x, y );
-            sho->pixel( x, y, p );
-        }
-    }
-
-    const std::string& display = mrv::Preferences::OCIO_Display;
-    const std::string& view = mrv::Preferences::OCIO_View;
-    if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-         Preferences::uiMain->uiView->use_lut() )
-    {
-          
-        try {
-            bake_ocio( sho, this );
-        }
-        catch( const std::exception& e )
-        {
-            LOG_ERROR( e.what() );
-            return false;
-        }
-          
-        mrv::image_type_ptr ptr = mrv::image_type_ptr( new mrv::image_type(
-                                                       pic->frame(),
-                                                       dw, dh, 4,
-                                                       mrv::image_type::kRGBA,
-                                                       mrv::image_type::kByte)
-        );
-
-        for ( unsigned y = 0; y < dh; ++y )
-        {
-            for (unsigned x = 0; x < dw; ++x )
-            {
-                const ImagePixel& p = sho->pixel( x, y );
-                ptr->pixel( x, y, p );
-            }
-        }
-
-        sho = ptr;
-    }
-      
-    return true;
+    return false;
 }
 
 /** 
@@ -504,7 +448,6 @@ bool hdrImage::fetch( const boost::int64_t frame )
                 colr2color( p, scanline[x] );
 	    }
 
-
 	}
 
         free( scanline );
@@ -514,7 +457,7 @@ bool hdrImage::fetch( const boost::int64_t frame )
     } 
     catch( const std::exception& e )
     {
-	mrvALERT( e.what() );
+	LOG_ERROR( e.what() );
 	return false;
     }
 
