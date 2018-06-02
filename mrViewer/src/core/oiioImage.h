@@ -29,7 +29,7 @@
 #define oiioImage_h
 
 #include <CMedia.h>
-
+#include <mrvImageOpts.h>
 
 namespace mrv {
 
@@ -69,7 +69,7 @@ class WandOpts;
     bool fetch( const boost::int64_t frame );
 
       static bool save( const char* path, const CMedia* img,
-			const WandOpts* opts );
+			const OIIOOpts* opts );
   protected:
       char* _format;
       std::string _compression;
