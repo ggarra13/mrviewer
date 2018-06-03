@@ -31,9 +31,9 @@ ENDIF( UNIX )
 
 SET( VersionMajor 4 )
 SET( VersionMinor 1 )
-SET( VersionPatch 5 )
-STRING( TIMESTAMP VersionDate "%Y%m%d19" )
-#STRING( TIMESTAMP VersionDate "%Y%m%d%H" )
+SET( VersionPatch 6 )
+#STRING( TIMESTAMP VersionDate "%Y%m%d19" )
+STRING( TIMESTAMP VersionDate "%Y%m%d" )
 
 SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}.${VersionDate}" )
