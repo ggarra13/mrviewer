@@ -1,6 +1,13 @@
 v4.1.6   - Bug fixed hdrImage.cpp which was incorrectly optimized.
 	 - Put back the reporting of LUTs as they are used as it was
 	   unclear before which lut was being used.
+	 - OIIO now has its own requester to save files.  This is mainly
+	   to support MipMap saving to .tx files.
+	 - OIIO now has faster loading of tiff files.
+	 - Bug fixed installer to make it show the icon once again on
+	   Linux.
+	 - Re-added Libraw to oiiotool on Windows. Sent the changes to
+	   github.
 
 v4.1.5   - Made Cancel of save movie file not pop up a requester for a
 	   proper filename with %d symbol.
@@ -26,7 +33,7 @@ v4.1.5   - Made Cancel of save movie file not pop up a requester for a
 	   possible as that's the most sensible thing to do.
 	 - Added LMB+Drag once again to select an area, which had gone
 	   missing.
-	   
+
 v4.1.4   - Removed debugging statements from exrImage.cpp.
 	 - Made EXR reader read channels in good sorted order in multipart
 	   files so RGBA will appear sorted like that, while XYZ will sort
