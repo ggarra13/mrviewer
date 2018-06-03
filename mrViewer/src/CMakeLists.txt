@@ -525,9 +525,9 @@ ELSEIF (UNIX)
 
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${SHORTVERSION}.desktop" )
+      "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${SHORTVERSION}.desktop"
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop"
       DESTINATION ${MRV_DESKTOP_DIR})
 
 
