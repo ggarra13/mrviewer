@@ -38,7 +38,7 @@ namespace mrv {
 			       has_deep_data );
 
     
-    if ( ext == ".tx" || ext == ".iff" )
+    if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
 	return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
     
     return new WandOptionsUI( main,
