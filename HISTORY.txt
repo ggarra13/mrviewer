@@ -1,6 +1,7 @@
 v4.1.7   - Switched to OIIO's HDR image loader and saver as it is more
 	   robust than the original Radiance one I was using.
 	 - Made HDR saver allow saving a crop region of the view.
+	 - Bug fixed EDL editing start and end frames shifting.
 
 v4.1.6   - Bug fixed hdrImage.cpp which was incorrectly optimized.
 	 - Put back the reporting of LUTs as they are used as it was
