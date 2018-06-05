@@ -31,12 +31,14 @@ ENDIF( UNIX )
 
 SET( VersionMajor 4 )
 SET( VersionMinor 1 )
-SET( VersionPatch 6 )
-#STRING( TIMESTAMP VersionDate "%Y%m%d19" )
-STRING( TIMESTAMP VersionDate "%Y%m%d" )
+SET( VersionPatch 7 )
+#STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
+#STRING( TIMESTAMP VersionDate ".%Y%m%d" )
+SET( VersionDate "" )
+
 
 SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
-SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}.${VersionDate}" )
+SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}${VersionDate}" )
 
 set(mrViewerShortName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
