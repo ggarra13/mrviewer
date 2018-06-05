@@ -316,6 +316,14 @@ bool oiioImage::save( const char* path, const CMedia* img,
     mrv::Recti daw = img->data_window();
     unsigned dw = daw.w();
     unsigned dh = daw.h();
+    std::string ext = path;
+    size_t pos = ext.rfind( '.' );
+    if ( pos != std::string::npos )
+    {
+	ext = ext.substr( pos, ext.size() );
+    }
+    std::transform( ext.begin(), ext.end(), ext.begin(),
+		    (int(*)(int)) tolower );
 
     TypeDesc::BASETYPE type;
     mrv::image_type_ptr pic = img->hires();
@@ -389,6 +397,11 @@ bool oiioImage::save( const char* path, const CMedia* img,
     format = image_type::kLumma;
     if ( channels >= 2 ) format = image_type::kRGB;
     if ( channels >= 4 ) format = image_type::kRGBA;
+    if ( channels >= 4 && ext == ".hdr" ) {
+	LOG_ERROR( "Too many channels in image.  Saving RGB only" );
+	channels = 3; format = image_type::kRGB;
+	must_convert = true;
+    }
 
     if ( pic->pixel_type() > maxPixelType || img->gamma() != 1.0f )
     {
@@ -402,6 +415,8 @@ bool oiioImage::save( const char* path, const CMedia* img,
     spec.full_height = dpw.h();
     spec.x = daw.x();
     spec.y = daw.y();
+    spec.width = dw;
+    spec.height = dh;
 
     if ( opts->mipmap() )
     {
@@ -431,21 +446,20 @@ bool oiioImage::save( const char* path, const CMedia* img,
     else
     {
     
-	out->open( path, spec );
-    
-
 	mrv::image_type_ptr sho = pic;
 
 	try
 	{
+	    out->open( path, spec );
+
 	    if ( !must_convert )
 	    {
 		mrv::aligned16_uint8_t* p = pic->data().get();
 		unsigned short pixel_size = pic->pixel_size();
-		unsigned short mult = channels * pixel_size;
+		unsigned short mult = dw * channels * pixel_size;
 		for ( int y = spec.y; y < spec.y + daw.h(); ++y )
 		{
-		    void* line = &p[(y-spec.y) * dw * mult ];
+		    void* line = &p[(y-spec.y) * mult ];
 		    out->write_scanline( y, 0, type, line );
 		}
 	    }
@@ -456,11 +470,11 @@ bool oiioImage::save( const char* path, const CMedia* img,
 		unsigned short pixel_size = pic->pixel_size();
 		mrv::aligned16_uint8_t* p = pic->data().get();
 		int yh = spec.y + dh;
-		unsigned short mult = channels * pixel_size;
+		unsigned mult = dw * channels * pixel_size;
 		for ( int y = spec.y; y < yh; ++y )
 		{
 		    mrv::aligned16_uint8_t* line = p;
-		    line += (y-spec.y) * dw * mult;
+		    line += (y-spec.y) * mult;
 		    out->write_scanline( y, 0, type, line );
 		}
 	    }
