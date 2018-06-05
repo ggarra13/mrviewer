@@ -130,8 +130,11 @@ bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
 	sho = ptr;
     }
 
+    unsigned channels = 4;
+    if ( format == image_type::kRGB ) channels = 3;
+    else if ( format == image_type::kLumma ) channels = 1;
     pic = mrv::image_type_ptr( new image_type( img->frame(),
-					       dw, dh, 4,
+					       dw, dh, channels,
 					       format, pt ) );
                 
         
