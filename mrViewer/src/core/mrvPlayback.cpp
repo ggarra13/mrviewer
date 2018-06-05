@@ -235,9 +235,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     last = int64_t(timeline->display_maximum());
     first = int64_t(timeline->display_minimum());
 
-    int64_t offset = img->first_frame() - img->start_frame();
-    last = last + offset;
-    first = first + offset;
+    // int64_t offset = img->first_frame() - img->start_frame();
+    // last = last + offset;
+    // first = first + offset;
 
 
     // std::cerr << "check loop reel " << reel->name << std::endl;
@@ -1222,7 +1222,6 @@ void decode_thread( PlaybackData* data )
       if ( step == 0 ) break;
       
       frame += step;
-
       CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
                                                        timeline );
 
