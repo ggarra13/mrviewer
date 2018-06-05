@@ -1,3 +1,7 @@
+v4.1.7   - Switched to OIIO's HDR image loader and saver as it is more
+	   robust than the original Radiance one I was using.
+	 - Made HDR saver allow saving a crop region of the view.
+
 v4.1.6   - Bug fixed hdrImage.cpp which was incorrectly optimized.
 	 - Put back the reporting of LUTs as they are used as it was
 	   unclear before which lut was being used.
@@ -16,8 +20,8 @@ v4.1.5   - Made Cancel of save movie file not pop up a requester for a
 	 - Changed code to OIIO reader of JPG/PNG files to be handled by
 	   FFMPEG by default and keep the cache as long as the image cache.
 	   This should bring the best of both worlds (FFMPEG faster loading
-	   with long image caches).  OIIO nor ImageMagick then will not get
-	   used.
+	   with long image caches).  Neither OIIO nor ImageMagick then will
+	   get used.
 	 - Fixed EDL cuts reverting to OCIO's scene_linear color space.
 	   Now the color space of the clip is kept on both sides of the
 	   cut.
