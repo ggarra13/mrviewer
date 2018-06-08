@@ -173,6 +173,7 @@ const char* const aviImage::color_range() const
 
 aviImage::aviImage() :
   CMedia(),
+  _has_image_seq( false ),
   _video_index(-1),
   _stereo_index(-1),
   _av_dst_pix_fmt( AV_PIX_FMT_RGB24 ),
@@ -2405,7 +2406,8 @@ bool aviImage::initialize()
           char buf[64];
           sprintf( buf, "%" PRId64, _frameStart );
           _start_number = _frameStart - 1;
-
+	  _has_image_seq = true;
+	  
           av_dict_set(&opts, "start_number", buf, 0);
       }
 
@@ -2768,7 +2770,13 @@ bool aviImage::fetch(const int64_t frame)
 #endif
 
 
-
+  if ( has_image_sequence() && in_video_store( f ) && !has_audio() )
+  {
+      _dts = _frame = f;
+      _expected = _dts + 1;
+      return true;
+  }
+  
   int64_t dts = queue_packets( f, false, got_video,
                                got_audio, got_subtitle);
 
