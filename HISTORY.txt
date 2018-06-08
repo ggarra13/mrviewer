@@ -1,7 +1,11 @@
 v4.1.7   - Switched to OIIO's HDR image loader and saver as it is more
 	   robust than the original Radiance one I was using.
-	 - Made HDR saver allow saving a crop region of the view.
+	 - Made HDR saver allow saving a crop region of the view (smaller
+	   data window than display window).
 	 - Bug fixed EDL editing start and end frames shifting.
+	 - Made PNG/JPG FFMPEG reader work properly once the images were
+	   cached.  Now it works properly with images that are 4K once
+	   they are cached.
 
 v4.1.6   - Bug fixed hdrImage.cpp which was incorrectly optimized.
 	 - Put back the reporting of LUTs as they are used as it was
