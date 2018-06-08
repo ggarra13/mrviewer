@@ -98,6 +98,8 @@ class aviImage : public CMedia
 
     // virtual bool has_picture() const { return has_video(); }
 
+    inline bool has_image_sequence() const { return _has_image_seq; }
+    
     virtual void video_stream( int x );
 
     virtual AVStream* get_video_stream() const;
@@ -280,6 +282,7 @@ class aviImage : public CMedia
     std::string _format;
     std::string _compression;
 
+    bool               _has_image_seq;
     int                _video_index;    // Index to primary video stream
     int                _stereo_index;   // Index to stereo video stream
     AVPixelFormat      _av_dst_pix_fmt;
