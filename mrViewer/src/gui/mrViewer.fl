@@ -2153,7 +2153,7 @@ uiICC_float_profile->do_callback();}
             } {
               {fltk::CheckButton} uiPrefsOIIOReaders {
                 label {Use OIIO for JPG/PNG loading} selected
-                tooltip {When loading a sequence, mrViewer will usually use the multithreaded JPG and PNG loaders of FFMPEG.  These loaders can usually play in real time except when the resolution is too high.  In that case, you should set this to on to load the images with the OIIO loader which is not as fast but caches images.}
+                tooltip {When loading a sequence, mrViewer will usually use the multithreaded JPG and PNG loaders of FFMPEG.  These loaders can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images.  Alternatively, you can set this setting to on to load the images with the OIIO loader which is not as fast but allows pre-caching of images.}
                 xywh {20 29 25 25} box UP_BOX value 1
               }
             }
