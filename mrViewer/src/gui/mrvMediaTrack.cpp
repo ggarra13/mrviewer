@@ -323,14 +323,15 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
            int64_t newpos = m->position() + diff;
            if ( newpos < (int64_t) ( m->position() + m->duration() ) )
            {
-               CMedia* img = m->image();;
-               img->first_frame( img->first_frame() + diff );;
+               CMedia* img = m->image();
+               img->first_frame( img->first_frame() + diff );
                int64_t f = img->first_frame();
                if ( ! reel->edl )
                {
                    main()->uiStartFrame->value( f );
                }
-               img->seek(f);
+	       img->seek(f);
+	       main()->uiTimeline->value( newpos );
                main()->uiView->foreground( fg );
 
                char buf[1024];
@@ -456,6 +457,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 
 	    img->last_frame( pos );
 	    img->seek( pos );
+	    main()->uiTimeline->value( pos );
 
 	    char buf[1024];
 	    sprintf( buf, N_( "ShiftMediaEnd %d" ) 
