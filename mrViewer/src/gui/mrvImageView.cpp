@@ -7333,13 +7333,12 @@ void ImageView::foreground( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
-
+	std::cerr << "fg set to " << img->name() << std::endl;
         double fps = img->fps();
         if ( img->is_sequence() &&
              uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
         {
             fps = uiMain->uiPrefs->uiPrefsFPS->value();
-            LOG_INFO( _("Override timeline fps to ") << fps );
             img->fps( fps );
             img->play_fps( fps );
         }
