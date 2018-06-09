@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-06-08 15:19-0300\n"
+"POT-Creation-Date: 2018-06-09 09:47-0300\n"
 "PO-Revision-Date: 2018-06-08 15:25-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -1243,7 +1243,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: gui/mrvMediaTrack.cpp:780
+#: gui/mrvMediaTrack.cpp:782
 #, c-format
 msgid "Audio: %<PRId64>"
 msgstr "Audio: %<PRId64> "
@@ -1389,7 +1389,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:8371
+#: gui/mrvImageView.cpp:8370
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -3216,7 +3216,7 @@ msgid "File/Open/Directory"
 msgstr "Archivo/Abrir/Directorio"
 
 #: gui/mrvImageView.cpp:3572 gui/mrvImageBrowser.cpp:2235
-#: gui/mrvMediaTrack.cpp:578
+#: gui/mrvMediaTrack.cpp:580
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivo/Abrir/Pelicula o Secuencia"
 
@@ -3357,7 +3357,7 @@ msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-127-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2289
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-127-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4217
-#: gui/mrvImageView.cpp:8369
+#: gui/mrvImageView.cpp:8368
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -5181,10 +5181,6 @@ msgstr "Derogar playback de cuadros por segundo cuando se carga una secuencia."
 #: standalone/mrvCommandLine.cpp:361
 msgid "Override sequence default fps."
 msgstr "Derogar los cuadros por segundo de la secuencia."
-
-#: gui/mrvImageView.cpp:7342
-msgid "Override timeline fps to "
-msgstr "Derogar cps de la barra de tiempo a "
 
 #: standalone/mrvCommandLine.cpp:373
 msgid "Override viewer's default client hostname."
@@ -7131,7 +7127,7 @@ msgstr "Permutar Ventana de Vectorscopio"
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:8370
+#: gui/mrvImageView.cpp:8369
 msgid "Top"
 msgstr "Superior"
 
@@ -8616,6 +8612,9 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-127-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4369
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "Override timeline fps to "
+#~ msgstr "Derogar cps de la barra de tiempo a "
 
 #~ msgid "Gamma without Lut"
 #~ msgstr "Gama sin Lut"
