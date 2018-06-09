@@ -453,11 +453,11 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    if ( reel->edl )
 	    {
 	       main()->uiEndFrame->value( pos );
+	       main()->uiTimeline->value( pos );
 	    }
 
 	    img->last_frame( pos );
 	    img->seek( pos );
-	    main()->uiTimeline->value( pos );
 
 	    char buf[1024];
 	    sprintf( buf, N_( "ShiftMediaEnd %d" ) 
