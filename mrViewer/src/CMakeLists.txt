@@ -727,25 +727,27 @@ MESSAGE( STATUS "mrViewer version: " ${VERSION} )
 SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
 
+
+IF( TEST_BUNDLE )
 # A dummy target so that we can test post_build commands faster
-# ADD_CUSTOM_TARGET( bundle ALL
-#                    COMMAND echo here we would run cpack
-#  		    DEPENDS ${PROJECT_NAME}
-#  		   )
-
-
-ADD_CUSTOM_TARGET( bundle
-		   COMMAND "${CMAKE_CPACK_COMMAND}"
+  ADD_CUSTOM_TARGET( bundle ALL
+	         	   COMMAND echo here we would run cpack
+  		           DEPENDS translations
+  		  )
+ELSE()
+  ADD_CUSTOM_TARGET( bundle
+               		   COMMAND "${CMAKE_CPACK_COMMAND}"
 		   	   "-C" "$<CONFIGURATION>"
 			   "--config" "${CMAKE_BINARY_DIR}/BundleConfig.cmake"
 			   COMMENT "Running CPack. Please wait..."
 			   USES_TERMINAL
 			   DEPENDS translations )
+ENDIF() 
 
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
    		      POST_BUILD
-   		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
+   		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
 		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
    		      )
 ENDIF( WIN32 )
