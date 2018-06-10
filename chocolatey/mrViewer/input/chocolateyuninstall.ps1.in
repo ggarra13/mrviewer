@@ -4,6 +4,7 @@
 $ErrorActionPreference = 'Stop';
 
 $softVersion = '@VERSION@'
+$shortVersion = '@SHORTVERSION@'
 
 $osBitness = Get-ProcessorBits
 
@@ -43,8 +44,8 @@ $DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
 $StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
 $StartPath = Join-Path "${StartMenu}" "Programs"
 
-Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk"
-Remove-Item -Path "${StartPath}/${packageName}-${osBitness} v${softVersion}.lnk"
+Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
+Remove-Item -Path "${StartPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
 
 $target = Join-Path "$programFiles" "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
 
