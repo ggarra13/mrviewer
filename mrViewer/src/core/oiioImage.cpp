@@ -332,14 +332,13 @@ bool oiioImage::save( const char* path, const CMedia* img,
     bool must_convert = false;
 
     image_type::PixelType pt = pic->pixel_type();
-    unsigned short pixel_size = pic->pixel_size();
 
     image_type::PixelType st = opts->pixel_type();
 
     // Constrain some pixel types to the maximum supported by the format
     std::string f = path;
     image_type::PixelType maxPixelType = image_type::kByte;
-    if ( f.substr( f.size()-4, f.size() ) == ".iff" )
+    if ( ext == ".iff" )
     {
         maxPixelType = image_type::kShort;
     }
@@ -397,17 +396,17 @@ bool oiioImage::save( const char* path, const CMedia* img,
     format = image_type::kLumma;
     if ( channels >= 2 ) format = image_type::kRGB;
     if ( channels >= 4 ) format = image_type::kRGBA;
-    if ( channels >= 4 && ext == ".hdr" ) {
-	LOG_ERROR( "Too many channels in image.  Saving RGB only" );
-	channels = 3; format = image_type::kRGB;
-	must_convert = true;
-    }
 
     if ( pic->pixel_type() > maxPixelType || img->gamma() != 1.0f )
     {
         must_convert = true;
     }
-
+    if ( channels >= 4 && (ext == ".rgbe" || ext == ".hdr" || ext == ".hdri" ))
+    {
+	LOG_ERROR( _("Too many channels in image.  Saving RGB only") );
+	channels = 3; format = image_type::kRGB;
+    }
+    
     ImageSpec spec( dw, dh, channels, type );
     spec.full_x = 0;
     spec.full_y = 0;
@@ -417,6 +416,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
     spec.y = daw.y();
     spec.width = dw;
     spec.height = dh;
+    
 
     if ( opts->mipmap() )
     {
@@ -445,18 +445,28 @@ bool oiioImage::save( const char* path, const CMedia* img,
     }
     else
     {
-    
-	mrv::image_type_ptr sho = pic;
 
 	try
 	{
 	    out->open( path, spec );
 
+	    unsigned short pixel_size = pic->pixel_size();
 	    if ( !must_convert )
 	    {
+		if ( pic->channels() > channels )
+		{
+		    mrv::image_type_ptr ptr =
+		    image_type_ptr( new image_type(
+						   img->frame(),
+						   dw, dh, 3,
+						   image_type::kRGB,
+						   pic->pixel_type() ) );
+		    copy_image( ptr, pic );
+		    pic = ptr;
+		}
+
 		mrv::aligned16_uint8_t* p = pic->data().get();
-		unsigned short pixel_size = pic->pixel_size();
-		unsigned short mult = dw * channels * pixel_size;
+		unsigned mult = dw * pic->channels() * pixel_size;
 		for ( int y = spec.y; y < spec.y + daw.h(); ++y )
 		{
 		    void* line = &p[(y-spec.y) * mult ];
@@ -467,10 +477,9 @@ bool oiioImage::save( const char* path, const CMedia* img,
 	    {
 		prepare_image( pic, img, format, pt );
 
-		unsigned short pixel_size = pic->pixel_size();
 		mrv::aligned16_uint8_t* p = pic->data().get();
 		int yh = spec.y + dh;
-		unsigned mult = dw * channels * pixel_size;
+		unsigned mult = dw * pic->channels() * pixel_size;
 		for ( int y = spec.y; y < yh; ++y )
 		{
 		    mrv::aligned16_uint8_t* line = p;
