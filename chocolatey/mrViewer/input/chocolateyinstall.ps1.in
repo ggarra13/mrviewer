@@ -2,7 +2,7 @@
 $ErrorActionPreference = 'Stop';
 
 $softVersion = '@VERSION@'
-$shortVersion = $softVersion.Substring(0, $softVersion.LastIndexOf('.'))
+$shortVersion = '@SHORTVERSION@'
 
 $osBitness = Get-ProcessorBits
 
