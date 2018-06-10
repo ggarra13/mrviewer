@@ -331,6 +331,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
                    main()->uiStartFrame->value( f );
                }
 	       img->seek(f);
+	       std::cerr << "start newpos " << newpos << std::endl;
 	       main()->uiTimeline->value( newpos );
                main()->uiView->foreground( fg );
 
@@ -452,8 +453,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    CMedia* img = m->image();
 	    if ( reel->edl )
 	    {
-	       main()->uiEndFrame->value( pos );
-	       main()->uiTimeline->value( pos );
+		main()->uiTimeline->value( m->position() + pos );
 	    }
 
 	    img->last_frame( pos );
@@ -464,6 +464,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 		     N_(" \"%s\" %" ) PRId64,
 		     _reel_idx, img->fileroot(), img->last_frame() );
 	    main()->uiView->send_network( buf );
+	    main()->uiView->redraw();
 
 	    main()->uiImageInfo->uiInfoText->refresh();
 	    break;
