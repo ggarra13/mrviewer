@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-06-09 09:47-0300\n"
-"PO-Revision-Date: 2018-06-08 15:25-0300\n"
+"POT-Creation-Date: 2018-06-10 20:41-0300\n"
+"PO-Revision-Date: 2018-06-09 11:27-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
 "Language: es_AR\n"
@@ -814,7 +814,7 @@ msgid ": Error "
 msgstr ": Error "
 
 #
-#: core/oiioImage.cpp:391
+#: core/oiioImage.cpp:390
 msgid ": Unknown pixel type"
 msgstr ": Tipo de pixel desconocido"
 
@@ -1243,7 +1243,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: gui/mrvMediaTrack.cpp:782
+#: gui/mrvMediaTrack.cpp:783
 #, c-format
 msgid "Audio: %<PRId64>"
 msgstr "Audio: %<PRId64> "
@@ -3216,7 +3216,7 @@ msgid "File/Open/Directory"
 msgstr "Archivo/Abrir/Directorio"
 
 #: gui/mrvImageView.cpp:3572 gui/mrvImageBrowser.cpp:2235
-#: gui/mrvMediaTrack.cpp:580
+#: gui/mrvMediaTrack.cpp:581
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivo/Abrir/Pelicula o Secuencia"
 
@@ -3954,7 +3954,7 @@ msgstr "Imagen/Actualiza un Cuadro del Cache"
 
 #: core/oiioImage.cpp:442
 msgid "ImageBufAlgo::make_texture failed."
-msgstr ""
+msgstr "ImageBufAlgo::make_texture falló."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-127-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:32
 msgid "ImageMagick Saving"
@@ -7122,6 +7122,10 @@ msgstr ""
 #: gui/mrvHotkey.cpp:344
 msgid "Toggle Vectorscope Window"
 msgstr "Permutar Ventana de Vectorscopio"
+
+#: core/oiioImage.cpp:406
+msgid "Too many channels in image.  Saving RGB only"
+msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 
 #: core/CMedia_audio.cpp:1295
 msgid "Too much audio used:"
