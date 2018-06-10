@@ -5,6 +5,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
 
 # CMAKE_POLICY( SET CMP0003 NEW )
 
+SET( TEST_BUNDLE 0 )
+
 #
 # Modify CMake's module path so our custom modules take precedence over
 # cmake's default ones.
