@@ -141,6 +141,9 @@ extern Hotkey kPlayFwdTwiceSpeed;
 extern Hotkey kPlayFwdHalfSpeed;
 extern Hotkey kStop;
 
+extern Hotkey kPreviousVersionImage;
+extern Hotkey kNextVersionImage;
+
 extern Hotkey kPreviousImage;
 extern Hotkey kNextImage;
 
