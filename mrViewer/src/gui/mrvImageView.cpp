@@ -400,6 +400,16 @@ void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
     v->redraw();
 }
 
+void next_image_version_cb( fltk::Widget* o, mrv::ImageBrowser* b )
+{
+  b->next_image_version();
+}
+
+void previous_image_version_cb( fltk::Widget* o, mrv::ImageBrowser* b )
+{
+  b->previous_image_version();
+}
+
 void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
   b->next_image();
@@ -3653,6 +3663,13 @@ int ImageView::leftMouseDown(int x, int y)
                if ( hud() & (1 << i) ) item->set();
             }
 
+            menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
+                      (fltk::Callback*)next_image_version_cb, browser());
+            menu.add( _("Image/Previous Version"),
+                      kPreviousVersionImage.hotkey(),
+                      (fltk::Callback*)previous_image_version_cb,
+                      browser(), fltk::MENU_DIVIDER);
+            
             menu.add( _("Image/Next"), kNextImage.hotkey(),
                       (fltk::Callback*)next_image_cb, browser());
             menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
@@ -5631,6 +5648,20 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSwitchFGBG.match( rawkey ) )
     {
         switch_fg_bg_cb( this, this );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kPreviousVersionImage.match( rawkey ) )
+    {
+        previous_image_version_cb(this, browser());
+        update_title_bar( this );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kNextVersionImage.match( rawkey ) )
+    {
+        next_image_version_cb(this, browser());
+        update_title_bar( this );
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
