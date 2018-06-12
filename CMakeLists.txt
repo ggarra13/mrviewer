@@ -33,7 +33,7 @@ ENDIF( UNIX )
 
 SET( VersionMajor 4 )
 SET( VersionMinor 1 )
-SET( VersionPatch 7 )
+SET( VersionPatch 8 )
 #STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
 #STRING( TIMESTAMP VersionDate ".%Y%m%d" )
 SET( VersionDate "" )
