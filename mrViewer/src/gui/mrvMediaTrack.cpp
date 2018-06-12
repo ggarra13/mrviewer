@@ -699,6 +699,7 @@ void media_track::draw()
    mrv::Timeline* t = timeline();
    assert( t != NULL );
 
+   
    int ww = t->w();
    int rx = t->x() + (t->slider_size()-1)/2;
 
@@ -710,9 +711,9 @@ void media_track::draw()
       int64_t pos = fg->position();
       const CMedia* img = fg->image();
       assert( img != NULL );
-
+      
       int dx = t->slider_position( double( pos ), ww );
-      int dw = t->slider_position( double( pos + img->duration() ),
+      int dw = t->slider_position( double( pos + fg->duration() ), //-1 needed
                                    ww );
       dw -= dx;
 
@@ -740,7 +741,7 @@ void media_track::draw()
           boost::int64_t first = boost::int64_t( info.start * fps - 0.5 );
 
           int64_t offset = img->audio_offset();
-          boost::int64_t vlen = img->duration();
+          boost::int64_t vlen = img->duration() - 1;
           boost::int64_t length = boost::int64_t( info.duration * fps + 0.5 );
           if ( length - offset > vlen ) length = vlen + offset;
           boost::int64_t last = first + length;

@@ -647,8 +647,8 @@ bool is_valid_view( std::string view )
 
     if ( ( !fs::exists( dir ) ) || ( !fs::is_directory( dir ) ) )
     {
-       LOG_ERROR( _("Directory '") << dir <<
-                  _("' does not exist or no directory") );
+       LOG_ERROR( _("Directory ") << dir <<
+                  _(" does not exist or no directory") );
        return false;
     }
 
