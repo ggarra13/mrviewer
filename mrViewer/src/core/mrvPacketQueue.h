@@ -30,6 +30,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <deque>
 
 #include <boost/thread/recursive_mutex.hpp>
 #include <boost/thread/condition.hpp>
@@ -41,7 +42,6 @@ extern "C" {
 #define MRV_NOPTS_VALUE (int64_t) AV_NOPTS_VALUE
 }
 
-#include <deque>
 
 
 /**
@@ -138,22 +138,24 @@ namespace mrv {
 
       inline iterator end()
       {
+          Mutex::scoped_lock lk( _mutex );
           return _packets.end();
       }
 
       inline const_iterator end() const
       {
-          return _packets.end();
+	  return _packets.end();
       }
       
       inline reverse_iterator rend()
       {
+          Mutex::scoped_lock lk( _mutex );
           return _packets.rend();
       }
 
       inline const_reverse_iterator rend() const
       {
-          return _packets.rend();
+	  return _packets.rend();
       }
 
 
@@ -218,7 +220,7 @@ namespace mrv {
 
       inline const AVPacket& front() const
       {
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
           return _packets.front();
       }
 
@@ -231,7 +233,7 @@ namespace mrv {
 
       inline const AVPacket& back() const
       {
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
           return _packets.back();
       }
 
