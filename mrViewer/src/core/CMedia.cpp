@@ -3248,7 +3248,6 @@ void CMedia::loop_at_end( const int64_t frame )
            }
        }
 
-
       _video_packets.loop_at_end( frame );
    }
 
@@ -3259,8 +3258,8 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
        SCOPED_LOCK( m );
 
-       mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
-       mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
+       mrv::PacketQueue::const_reverse_iterator i = _audio_packets.rbegin();
+       mrv::PacketQueue::const_reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
        for ( ; i != e; ++i )
        {
@@ -3319,7 +3318,6 @@ void CMedia::limit_video_store( const int64_t f )
   if ( first < 0 ) first = 0;
   int64_t end = _numWindows-1;
   if ( last > end ) last = end;
-
 
   for ( int64_t i = 0; i < first; ++i  )
   {
