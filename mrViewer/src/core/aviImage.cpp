@@ -2593,9 +2593,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
             }
             else
             {
-                // std::cerr << "push back pkt "
-                //           << get_frame( get_video_stream(), pkt )
-                //           << std::endl;
                 _video_packets.push_back( pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
@@ -2776,7 +2773,7 @@ bool aviImage::fetch(const int64_t frame)
       _expected = _dts + 1;
       return true;
   }
-  
+
   int64_t dts = queue_packets( f, false, got_video,
                                got_audio, got_subtitle);
 
