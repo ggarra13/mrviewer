@@ -301,7 +301,6 @@ fltk::StyleSet*     newscheme = NULL;
   int   Preferences::selectiontextcolor;
 
 
-
   Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
   {
     bool ok;
@@ -561,8 +560,6 @@ fltk::StyleSet*     newscheme = NULL;
     playback.get( "fps", tmpF, 24.0 );
     uiPrefs->uiPrefsFPS->value(tmpF);
     CMedia::default_fps = tmpF;
-
-
 
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
@@ -849,13 +846,8 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences loading( base, "loading" );
-    loading.get( "oiio_readers", tmp, 0 );
-    uiPrefs->uiPrefsOIIOReaders->value(tmp);
-    CMedia::oiio_readers = (bool)tmp;
-
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
-
 
     loading.get( "file_assoc_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequenceOnAssoc->value( (bool) tmp );
@@ -864,7 +856,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
 
 
-    loading.get( "native_file_chooser", tmp, 1 );
+    loading.get( "native_file_chooser", tmp, 0 );
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
     fltk::Preferences video( base, "video" );
@@ -1122,28 +1114,28 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
-
-    static std::string old_ocio;
-    std::string tmp = root + "/ocio/nuke-default/config.ocio";
-
-
-    if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
+    if (  ( !var || strlen(var) == 0 ) && use_ocio )
     {
         mrvLOG_INFO( "ocio",
-                     _("Setting OCIO environment variable to nuke-default." )
+                     _("Setting OCIO environment variable to nuke-default" )
                      << std::endl );
-        old_ocio = tmp;
-        var = old_ocio.c_str();
+        std::string tmp = root + "/ocio/nuke-default/config.ocio";
+        DBG( __FUNCTION__ << " " << __LINE__ );
+        var = strdup( tmp.c_str() );
+        DBG( __FUNCTION__ << " " << __LINE__ );
     }
     if ( var && use_ocio && strlen(var) > 0 )
     {
+        static std::string old_ocio;
 
+        DBG( __FUNCTION__ << " " << __LINE__ );
         if ( old_ocio != var )
         {
-            old_ocio = var;
+            DBG( __FUNCTION__ << " " << __LINE__ );
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
             mrvLOG_INFO( "ocio", var << std::endl );
+            old_ocio = var;
         }
 
         DBG( __FUNCTION__ << " " << __LINE__ );
@@ -1153,7 +1145,6 @@ static const char* kCLocale = "C";
         putenv( strdup(buf) );
 
         uiPrefs->uiPrefsOCIOConfig->text( var );
-
 
 #ifdef __linux__
         char tmpS[256];
@@ -1329,8 +1320,6 @@ static const char* kCLocale = "C";
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
-
-    CMedia::oiio_readers = (bool) uiPrefs->uiPrefsOIIOReaders->value();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
@@ -1780,7 +1769,6 @@ static const char* kCLocale = "C";
     caches.set( "image_size", uiPrefs->uiPrefsImageCacheSize->value() );
 
     fltk::Preferences loading( base, "loading" );
-    loading.set( "oiio_readers", (int) uiPrefs->uiPrefsOIIOReaders->value() );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "file_assoc_load_seq",
                  (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
