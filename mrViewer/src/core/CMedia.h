@@ -730,13 +730,13 @@ class CMedia
     inline int64_t   end_frame()  const { return _frame_end; }
 
     inline void loop_start( int64_t x ) { _loop_start = x; }
-
+    
     inline int64_t loop_start() const { return _loop_start; }
-
+    
     inline void loop_end( int64_t x ) { _loop_end = x; }
-
+    
     inline int64_t loop_end() const { return _loop_end; }
-
+    
     inline InterlaceType interlaced() const { return _interlaced; }
 
     /// Returns the number of channels in the image
@@ -1051,7 +1051,7 @@ class CMedia
     // Return the video pts as a double
     inline double video_pts() const { return _video_pts; }
 
-    // Return FFMPEG's start number of sequences (PNG/JPG loader)
+    // Return FFMPEG's start number of sequences (PNG loader)
     inline int64_t start_number() const { return _start_number; }
 
     // Return the audio pts as a double
@@ -1130,7 +1130,7 @@ class CMedia
 
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
-
+    
     static bool supports_yuva()         { return _supports_yuva; }
     static void supports_yuva( bool x ) { _supports_yuva = x; }
 
@@ -1160,7 +1160,7 @@ class CMedia
 
 
     static int colorspace_override; //!< Override YUV Hint always with this
-    static bool  oiio_readers;
+
     static double default_fps;     //!< Default FPS when not selected
     static std::string ocio_8bits_ics;
     static std::string ocio_16bits_ics;
@@ -1548,8 +1548,6 @@ class CMedia
 
     thread_pool_t  _threads;         //!< any threads associated with process
 
-    bool*                _valid_seq; //!< For sequences, if valid frame was
-                                     //!  found
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each
                                     //!  right float frame
