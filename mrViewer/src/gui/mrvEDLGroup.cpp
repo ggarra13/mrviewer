@@ -348,6 +348,16 @@ int EDLGroup::handle( int event )
                 view()->step_frame( -1 );
                 return 1;
             }
+            else if ( kPreviousVersionImage.match(key) )
+            {
+                browser()->previous_image_version();
+                return 1;
+            }
+            else if ( kNextVersionImage.match(key) )
+            {
+                browser()->next_image_version();
+                return 1;
+            }
             else if ( kPreviousImage.match(key) )
             {
                 browser()->previous_image();
