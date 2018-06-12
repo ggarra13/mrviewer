@@ -3170,7 +3170,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
       if ( _video_packets.is_flush() )
         {
             assert( !_video_packets.empty() );
-            // SCOPED_LOCK( _mutex );
+            SCOPED_LOCK( _mutex );
             flush_video();
             assert( !_video_packets.empty() );
             _video_packets.pop_front();
