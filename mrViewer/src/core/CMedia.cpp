@@ -3239,20 +3239,19 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::Mutex& m = _video_packets.mutex();
        SCOPED_LOCK( m );
 
-       mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
-       mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
+       mrv::PacketQueue::const_reverse_iterator i = _video_packets.rbegin();
+       mrv::PacketQueue::const_reverse_iterator e = _video_packets.rend();
        AVStream* stream = get_video_stream();
        for ( ; i != e; ++i )
        {
            if ( pts2frame( stream, (*i).dts ) >= frame )
            {
-               mrv::PacketQueue::iterator it = (i+1).base();
-               _video_packets.erase( it );
+               mrv::PacketQueue::const_iterator it = (i+1).base();
+               _video_packets.queue().erase( it );
            }
        }
 
-
-      _video_packets.loop_at_end( frame );
+       _video_packets.loop_at_end( frame );
    }
 
   if ( number_of_audio_streams() > 0 )
