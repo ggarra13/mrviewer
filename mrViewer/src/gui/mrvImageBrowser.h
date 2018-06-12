@@ -110,6 +110,10 @@ class ImageBrowser : public fltk::Browser
 
      void change_image( unsigned i );
 
+     void image_version( int sum );
+     void previous_image_version();
+     void next_image_version();
+
      void previous_image();
      void next_image();
 
@@ -194,7 +198,8 @@ class ImageBrowser : public fltk::Browser
     mrv::media load_image( const char* name, 
                            const int64_t first, const int64_t last,
                            const int64_t start, const int64_t end,
-                           const bool use_thread = false );
+                           const bool use_thread = false,
+			   const bool no_track = false );
 
 
     void wait_on_threads();
