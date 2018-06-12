@@ -959,10 +959,10 @@ void video_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        DBG( img->name() << " decode image " << frame );
+        //TRACE( img->name() << " decode image " << frame );
         CMedia::DecodeStatus status = img->decode_video( frame );
-        DBG( img->name() << " decoded image " << frame << " status " 
-	     << CMedia::decode_error(status) );
+        // TRACE( img->name() << " decoded image " << frame << " status " 
+	//        << CMedia::decode_error(status) );
 
 	
         switch( status )
