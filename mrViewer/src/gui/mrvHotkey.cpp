@@ -92,6 +92,9 @@ Hotkey kStop( false, false, false, false, fltk::ReturnKey, "", fltk::Keypad5 );
 
 Hotkey kSwitchFGBG( false, false, false, false, 'j' );
 
+Hotkey kPreviousVersionImage( false, false, true, false, fltk::PageUpKey );
+Hotkey kNextVersionImage( false, false, true, false, fltk::PageDownKey );
+
 Hotkey kPreviousImage( false, false, false, false, fltk::PageUpKey );
 Hotkey kNextImage( false, false, false, false, fltk::PageDownKey );
 
@@ -292,6 +295,8 @@ HotkeyEntry( _("Preload Image Cache"), kPreloadCache),
 HotkeyEntry( _("Clear Image Cache"), kClearCache),
 HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
 HotkeyEntry( _("Stop"), kStop),
+HotkeyEntry( _("Previous Image Version"), kPreviousVersionImage ),
+HotkeyEntry( _("Next Image Version"), kNextVersionImage ),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
 HotkeyEntry( _("Next Image"), kNextImage ),
 HotkeyEntry( _("Switch Channels"), kSwitchChannels ),
