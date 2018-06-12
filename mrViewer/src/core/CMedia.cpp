@@ -716,6 +716,7 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 void CMedia::clear_cache()
 {
   if ( !_sequence ) return;
+  
 
   SCOPED_LOCK( _mutex);
 
@@ -829,8 +830,6 @@ CMedia::~CMedia()
   _sequence = NULL;
   delete [] _right;
   _right = NULL;
-
-
 
   delete [] _audio_buf; _audio_buf = NULL;
 
