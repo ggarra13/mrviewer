@@ -134,7 +134,6 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
-    bool CMedia::oiio_readers = false;
 
 int CMedia::_audio_cache_size = 0;
 int CMedia::_video_cache_size = 0;
@@ -716,7 +715,6 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 void CMedia::clear_cache()
 {
   if ( !_sequence ) return;
-  
 
   SCOPED_LOCK( _mutex);
 
@@ -724,9 +722,7 @@ void CMedia::clear_cache()
   for ( boost::uint64_t i = 0; i < num; ++i )
     {
         if ( _sequence[i] )
-        {
             _sequence[i].reset();
-        }
         if ( _right && _right[i] )
             _right[i].reset();
     }
@@ -747,9 +743,7 @@ void CMedia::update_frame( const int64_t& f )
   SCOPED_LOCK( _mutex);
 
   boost::uint64_t i = f - _frame_start;
-  if ( _sequence[i] ) {
-      _sequence[i].reset();
-  }
+  if ( _sequence[i] )        _sequence[i].reset();
   if ( _right && _right[i] )    _right[i].reset();
 
   _hires.reset();
@@ -830,6 +824,8 @@ CMedia::~CMedia()
   _sequence = NULL;
   delete [] _right;
   _right = NULL;
+
+
 
   delete [] _audio_buf; _audio_buf = NULL;
 
@@ -1362,6 +1358,7 @@ void CMedia::sequence( const char* fileroot,
   _dts = _adts = _frame = start;
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
+
 
   delete [] _sequence;
   _sequence = NULL;
@@ -2314,11 +2311,11 @@ void CMedia::play(const CMedia::Playback dir,
       if ( _is_stereo && _right_eye )
       {
           delete _right_eye->_stereo_barrier;
-          if ( number_of_video_streams() % 2 == 0 )
-              _right_eye->_stereo_barrier = new Barrier( 2 );
-          else
-              _right_eye->_stereo_barrier = new Barrier( 1 );
-
+	  if ( number_of_video_streams() % 2 == 0 )
+	      _right_eye->_stereo_barrier = new Barrier( 2 );
+	  else
+	      _right_eye->_stereo_barrier = new Barrier( 1 );
+	      
       }
 
       if ( !fg && !_fg_bg_barrier )
@@ -2329,7 +2326,7 @@ void CMedia::play(const CMedia::Playback dir,
       {
           _fg_bg_barrier->threshold( valid_v + valid_a );
       }
-
+      
       unsigned num = 1 + valid_a + valid_v + valid_s;
       delete _loop_barrier;
       _loop_barrier = new Barrier( num );
@@ -2620,12 +2617,13 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
       }
       else
       {
-          DBG( "cache seq " << idx << " pic " << pic );
+          //DBG( "cache seq " << idx << " pic " << pic );
           seq[idx] = pic;
       }
   }
 
   _w = w; _h = h;
+
   timestamp(idx, seq);
 }
 
@@ -2681,10 +2679,8 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
     boost::int64_t i = frame - _frame_start;
 
     CMedia::Cache cache = kNoCache;
-    mrv::image_type_ptr pic = _sequence[i];
-    if ( !pic || !pic->valid() ) return cache;
 
-    cache = kLeftCache;
+    if ( _sequence[i] ) cache = kLeftCache;
 
     if ( _stereo_output != kNoStereo )
     {
@@ -3238,20 +3234,21 @@ void CMedia::loop_at_end( const int64_t frame )
        // beyond the last frame
        mrv::PacketQueue::Mutex& m = _video_packets.mutex();
        SCOPED_LOCK( m );
-
+       
        mrv::PacketQueue::const_reverse_iterator i = _video_packets.rbegin();
        mrv::PacketQueue::const_reverse_iterator e = _video_packets.rend();
        AVStream* stream = get_video_stream();
        for ( ; i != e; ++i )
        {
-           if ( pts2frame( stream, (*i).dts ) >= frame )
-           {
-               mrv::PacketQueue::const_iterator it = (i+1).base();
-               _video_packets.queue().erase( it );
-           }
+	   if ( pts2frame( stream, (*i).dts ) >= frame )
+	   {
+	       mrv::PacketQueue::const_iterator it = (i+1).base();
+	       _video_packets.queue().erase( it );
+	   }
        }
 
-       _video_packets.loop_at_end( frame );
+       
+      _video_packets.loop_at_end( frame );
    }
 
   if ( number_of_audio_streams() > 0 )
@@ -3260,18 +3257,18 @@ void CMedia::loop_at_end( const int64_t frame )
        // // beyond the last frame
        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
        SCOPED_LOCK( m );
-
-       mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
-       mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
+       
+       mrv::PacketQueue::const_reverse_iterator i = _audio_packets.rbegin();
+       mrv::PacketQueue::const_reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
        for ( ; i != e; ++i )
        {
            int64_t pktframe = pts2frame( stream, (*i).dts );
-           if ( pktframe >= frame )
-           {
-               mrv::PacketQueue::iterator it = (i+1).base();
-               _audio_packets.erase( it );
-           }
+       	   if ( pktframe >= frame )
+       	   {
+       	       mrv::PacketQueue::const_iterator it = (i+1).base();
+       	       _audio_packets.queue().erase( it );
+       	   }
        }
 
        _audio_packets.loop_at_end( frame );
@@ -3292,7 +3289,7 @@ void CMedia::limit_video_store( const int64_t f )
     if ( f == AV_NOPTS_VALUE ) {
         return;
     }
-
+    
   int64_t first, last;
 
   switch( playback() )
@@ -3322,8 +3319,7 @@ void CMedia::limit_video_store( const int64_t f )
   int64_t end = _numWindows-1;
   if ( last > end ) last = end;
 
-  if ( last - first <= 1 ) return;
-
+  
   for ( int64_t i = 0; i < first; ++i  )
   {
       _sequence[i].reset();
@@ -3334,6 +3330,7 @@ void CMedia::limit_video_store( const int64_t f )
       _sequence[i].reset();
       _right[i].reset();
   }
+
 
 }
 
@@ -3596,7 +3593,6 @@ bool CMedia::find_image( const int64_t frame )
 
   if ( _sequence && _sequence[idx] )
     {
-        DBG( "update " << idx << " for frame " << frame );
         _hires = _sequence[idx];
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
@@ -3615,7 +3611,6 @@ bool CMedia::find_image( const int64_t frame )
   bool should_load = false;
 
   std::string file = sequence_filename(f);
-  DBG( "sequence filename " << file );
 
   if ( _filename )
     {
@@ -3655,18 +3650,8 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-            _hires = mrv::image_type_ptr( new image_type( frame,
-                                                          width(),
-                                                          height(),
-                                                          1,
-                                                          image_type::kLumma,
-                                                          image_type::kByte ) );
-            memset( _hires->data().get(), 0x0, _hires->data_size() );
-            cache( _hires );
-            _hires->valid( false ); // mark this frame as invalid
-            refresh();
-            LOG_WARNING( file << _(" is missing.") );
-            return false;
+           LOG_WARNING( file << _(" is missing.") );
+           return false;
         }
      }
   }
