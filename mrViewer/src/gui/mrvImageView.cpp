@@ -3663,21 +3663,38 @@ int ImageView::leftMouseDown(int x, int y)
                if ( hud() & (1 << i) ) item->set();
             }
 
-            menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
-                      (fltk::Callback*)next_image_version_cb, browser());
-            menu.add( _("Image/Previous Version"),
-                      kPreviousVersionImage.hotkey(),
-                      (fltk::Callback*)previous_image_version_cb,
-                      browser(), fltk::MENU_DIVIDER);
-            
+	    bool has_version = false;
+
+	    CMedia* img = fg->image();
+	    std::string file = img->fileroot();
+	    file = fs::path( file ).leaf().string();
+	    std::string dir = img->directory();
+	    file = dir + "/" + file;
+	    size_t pos;
+	    mrv::PreferencesUI* prefs = main()->uiPrefs;
+	    std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
+	    if ( (pos = file.find( prefix, pos) ) != std::string::npos )
+		has_version = true;
+	    
+	    if ( has_version )
+	    {
+		menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
+			  (fltk::Callback*)next_image_version_cb, browser());
+		menu.add( _("Image/Previous Version"),
+			  kPreviousVersionImage.hotkey(),
+			  (fltk::Callback*)previous_image_version_cb,
+			  browser(), fltk::MENU_DIVIDER);
+            }
+	    
             menu.add( _("Image/Next"), kNextImage.hotkey(),
                       (fltk::Callback*)next_image_cb, browser());
             menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
                       (fltk::Callback*)previous_image_cb,
                       browser(), fltk::MENU_DIVIDER);
 
-            const stubImage* img = dynamic_cast< const stubImage* >( image() );
-            if ( img )
+	    
+            const stubImage* simg = dynamic_cast< const stubImage* >( image() );
+            if ( simg )
             {
                menu.add( _("Image/Clone"), kCloneImage.hotkey(),
                         (fltk::Callback*)clone_image_cb, browser());
@@ -7363,8 +7380,8 @@ void ImageView::foreground( mrv::media fg )
     CMedia* img = NULL;
     if ( fg )
     {
-        img = fg->image();
-
+	img = fg->image();
+	
         double fps = img->fps();
         if ( img->is_sequence() &&
              uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
@@ -7382,7 +7399,7 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiStartFrame->timecode( tc );
         uiMain->uiEndFrame->fps( fps );
         uiMain->uiEndFrame->timecode( tc );
-        uiMain->uiFPS->value( img->play_fps() );
+	uiMain->uiFPS->value( img->play_fps() );
 
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
         {
@@ -8311,11 +8328,11 @@ void ImageView::fps( double x )
     mrv::media bg = background();
     if ( bg ) bg->image()->play_fps( x );
 
+    
     timeline()->fps( x );
     uiMain->uiFrame->fps( x );
     uiMain->uiStartFrame->fps( x );
     uiMain->uiEndFrame->fps( x );
-
     uiMain->uiFPS->value( x );
 
     char buf[128];
