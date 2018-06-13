@@ -951,19 +951,19 @@ static const char* kCLocale = "C";
   void Preferences::run( mrv::ViewerUI* main )
   {
       uiMain = main;
-    mrv::PreferencesUI* uiPrefs = main->uiPrefs;
+      mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
-    DBG("main->uiMain->show");
+      DBG("main->uiMain->show");
 
-    main->uiMain->show();
+      main->uiMain->show();
 
-    // fltk::Widget* w = new fltk::Widget( 0, 48, 639, 40, "Eye1" );
-    // main->uiBottomBar->add( w );
-    // w = new fltk::Widget( 0, 88, 639, 40, "Eye2" );
-    // main->uiBottomBar->add( w );
-
-    DBG("fltk::check");
-    fltk::check();
+      // fltk::Widget* w = new fltk::Widget( 0, 48, 639, 40, "Eye1" );
+      // main->uiBottomBar->add( w );
+      // w = new fltk::Widget( 0, 88, 639, 40, "Eye2" );
+      // main->uiBottomBar->add( w );
+      
+      DBG("fltk::check");
+      fltk::check();
 
     //
     // Windows
