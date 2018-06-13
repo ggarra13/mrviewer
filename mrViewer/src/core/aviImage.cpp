@@ -171,6 +171,7 @@ const char* const aviImage::color_range() const
 
 aviImage::aviImage() :
   CMedia(),
+  _has_image_seq( false ),
   _video_index(-1),
   _stereo_index(-1),
   _av_dst_pix_fmt( AV_PIX_FMT_RGB24 ),
@@ -1308,7 +1309,6 @@ void aviImage::clear_packets()
 	<< " expected: " << _expected << endl;
 #endif
 
-
   _video_packets.clear();
   _audio_packets.clear();
   _subtitle_packets.clear();
@@ -1325,24 +1325,32 @@ void aviImage::limit_video_store(const int64_t frame)
 {
     SCOPED_LOCK( _mutex );
 
-  int64_t first, last;
+    size_t max_frames = max_video_frames();
+    if ( _has_image_seq )
+    {
+	max_frames = max_image_frames();
+    }
+
+    if ( max_frames < 0 ) max_frames = 99999999;
+    
+    int64_t first, last;
 
   switch( playback() )
   {
       case kBackwards:
-          first = frame - max_video_frames();
+          first = frame - max_frames;
           last  = frame;
           if ( _dts < first ) first = _dts;
           break;
       case kForwards:
-          first = frame - max_video_frames();
-          last  = frame + max_video_frames();
+          first = frame - max_frames;
+          last  = frame + max_frames;
           if ( _dts > last )   last  = _dts;
           if ( _dts < first )  first = _dts;
           break;
       default:
-          first = frame - max_video_frames();
-          last  = frame + max_video_frames();
+          first = frame - max_frames;
+          last  = frame + max_frames;
           if ( _dts > last )   last = _dts;
           if ( _dts < first ) first = _dts;
           break;
@@ -2366,7 +2374,8 @@ bool aviImage::initialize()
           char buf[64];
           sprintf( buf, "%" PRId64, _frameStart );
           _start_number = _frameStart - 1;
-
+	  _has_image_seq = true;
+	  
           av_dict_set(&opts, "start_number", buf, 0);
       }
 
