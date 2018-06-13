@@ -887,6 +887,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
 
+    
     fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
     delete w;
@@ -997,10 +998,8 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
     newImg->decode_video( frame );
     newImg->find_image( frame );
 
-    std::cerr << "children: " << this->children() << std::endl;
     Element* nw = new_item( newm );
     fltk::Group::replace( int(idx), *nw );
-    std::cerr << "children: " << this->children() << std::endl;
 
 
 
@@ -1304,8 +1303,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
                                        const int64_t last,
                                        const int64_t start,
                                        const int64_t end,
-                                       const bool avoid_seq,
-				       const bool no_track )
+                                       const bool avoid_seq )
   {
 
     mrv::Reel reel = current_reel();
@@ -2018,13 +2016,18 @@ void ImageBrowser::load( const stringArray& files,
       image_version( 1 );
   }
 
+  /**
+   * Go to previous image version in disk if available
+   *
+   */
   void ImageBrowser::previous_image_version()
   {
       image_version( -1 );
   }
 
   /**
-   * Go to next image version in disk if available
+   * Go to next or previous image version in disk if available.
+   * sum must be 1 or -1.
    *
    */
   void ImageBrowser::image_version( int sum )
@@ -2058,12 +2061,17 @@ void ImageBrowser::load( const stringArray& files,
     int64_t start = AV_NOPTS_VALUE;
     int64_t end   = AV_NOPTS_VALUE;
     std::string newfile;
-    while ( start == AV_NOPTS_VALUE && tries < 11 )
+    while ( start == AV_NOPTS_VALUE && tries < 10 )
     {
-	std::string file = img->fileroot();
+ 	std::string file = img->fileroot();
+	file = fs::path( file ).leaf().string();
+	std::string dir = img->directory();
+	file = dir + "/" + file;
+    
 	size_t pos = 0;
 	unsigned padding = 0;
-	std::string prefix = main()->uiPrefs->uiPrefsImageVersionPrefix->value();
+	mrv::PreferencesUI* prefs = main()->uiPrefs;
+	std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
 	while ( ( pos = file.find( prefix.c_str(), pos) ) != std::string::npos )
 	{
 	    pos += 2;
@@ -2087,14 +2095,14 @@ void ImageBrowser::load( const stringArray& files,
 
 	if ( newfile.empty() )
 	{
-	    LOG_ERROR( _("No versioning in this clip.  Please create an image or directory named with ") << prefix );
-	    LOG_ERROR( _("Example:  gizmo_v003.0001.exr") );
+	    LOG_ERROR( _("No versioning in this clip.  "
+			 "Please create an image or directory named with ") << prefix );
+	    LOG_ERROR( _("Example:  gizmo") << prefix << N_("003.0001.exr") );
 	    return;
 	}
 
 	if ( mrv::is_valid_sequence( newfile.c_str() ) )
 	{
-	    std::cerr << newfile << " valid sequence" << std::endl;
 	    mrv::get_sequence_limits( start, end, newfile );
 	}
 	else
@@ -2110,19 +2118,19 @@ void ImageBrowser::load( const stringArray& files,
 	
 	    if ( mrv::is_valid_movie( ext.c_str() ) )
 	    {
-		break;
+		if ( fs::exists( newfile ) )
+		    break;
 	    }
 	}
 	
-	std::cerr << "try " << tries << std::endl;
-
 	++tries;
 	sum += add;
     }
 
-    mrv::media newm = load_image( newfile.c_str(),
-				  start, end, start, end, false );
-    if ( !newm ) return;
+    
+    mrv::media m = load_image( newfile.c_str(),
+			       start, end, start, end, false );
+    if ( !m ) return;
 
     
     mrv::EDLGroup* e = edl_group();
@@ -2141,10 +2149,10 @@ void ImageBrowser::load( const stringArray& files,
 	}
     }
 
-    CMedia* newImg = newm->image();
+    CMedia* newImg = m->image();
     int64_t frame = img->frame();
 
-    newm->position( fg->position() );
+    m->position( fg->position() );
 
 
     // mrv::CMedia::Mutex& vpm = newImg->video_mutex();
@@ -2153,37 +2161,40 @@ void ImageBrowser::load( const stringArray& files,
     newImg->icc_profile( img->icc_profile() );
     newImg->rendering_transform( img->rendering_transform() );
     newImg->ocio_input_color_space( img->ocio_input_color_space() );
-    newImg->fps( img->fps() );
-    newImg->play_fps( img->play_fps() );
     newImg->gamma( img->gamma() );
     newImg->decode_video( frame );
     newImg->find_image( frame );
+    newImg->fps( img->fps() );
+    newImg->play_fps( img->play_fps() );
 
-    Element* nw = new_item( newm );
+    Element* nw = new_item( m );
     fltk::Group::replace( int(i), *nw );
 
     // Remove item from (last) place in reel
     {
-	mrv::MediaList::iterator j = reel->images.begin();
-	mrv::MediaList::iterator e = reel->images.end();
+	mrv::MediaList::const_reverse_iterator j = reel->images.rbegin();
+	mrv::MediaList::const_reverse_iterator e = reel->images.rend();
 	for ( ; j != e; ++j )
 	{
-	    if ( *j == newm )
+	    if ( *j == m )
 	    {
-		reel->images.erase(j);
+		mrv::MediaList::const_iterator t = (j+1).base();
+		reel->images.erase(t);
 		break;
 	    }
 	}
     }
 
     // Now, place it where it belongs
-    reel->images.insert( reel->images.begin() + i, newm );
-    
-    
+    reel->images.insert( reel->images.begin() + i, m );
+
     track->refresh();
     track->redraw();
-    
-    view()->foreground( newm );
+
+    // We need two calls to foreground as it was previously set to m
+    // and would return early.
+    view()->foreground( fg );
+    view()->foreground( m );
 
     img->clear_cache();
 
