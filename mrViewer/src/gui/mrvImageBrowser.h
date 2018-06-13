@@ -180,10 +180,6 @@ class ImageBrowser : public fltk::Browser
      static mrv::Element* new_item(mrv::media img);
 
    protected:
-#if 0
-     void db_envvars( char*& login, std::string& shot_id );
-#endif
-
     void send_reel( const mrv::Reel& r );
     void send_images( const mrv::Reel& r);
     void send_image( const mrv::media& m );
@@ -198,8 +194,7 @@ class ImageBrowser : public fltk::Browser
     mrv::media load_image( const char* name, 
                            const int64_t first, const int64_t last,
                            const int64_t start, const int64_t end,
-                           const bool use_thread = false,
-			   const bool no_track = false );
+                           const bool avoid_seq = false );
 
 
     void wait_on_threads();
