@@ -3890,7 +3890,7 @@ double g;
 mrv::media fg = v->uiView->foreground();
 
 if ( c <= 0 && fg )
-    g = fg->image()->fps();
+    g = fg->image()->play_fps();
 else
     g = atof( o->child( o->value() )->label() );
 
@@ -3943,7 +3943,7 @@ v->uiFPS->value( g );} open
                       }
                       {fltk::Input} uiFPS {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->fps( o->value() );}
+                        callback {std::cerr << "uiFPS callback " << o->value() << std::endl; v->uiView->fps( o->value() );}
                         tooltip {Allows you to adjust frame rate playback.}
                         xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                         extra_code {o->textcolor( fltk::BLACK );
