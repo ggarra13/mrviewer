@@ -267,9 +267,13 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             SCOPED_LOCK( m );
             
 
-            const int64_t s = img->first_frame();
-            const int64_t e = img->last_frame();
+            first = img->first_frame();
+            last = img->last_frame();
 
+	    img->loop_start( first );
+	    img->loop_end( last );
+	    
+	    /*
             if ( e < last )
                 last = e;
 	    else
@@ -279,6 +283,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
                 first = s;
 	    else
 		img->loop_start( first );
+	    */
         }
     }
 
