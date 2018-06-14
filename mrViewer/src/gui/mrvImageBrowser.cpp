@@ -885,21 +885,52 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     CMedia::Playback play = view()->playback();
     view()->stop();
 
-    if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
+    if ( idx < 0 || unsigned(idx) >= reel->images.size() )
+    {
+        LOG_ERROR( "ImageBrowser::remove idx value out of bounds" );
+        return;
+    }
 
-    
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  std::cerr << "**** PRE-REMOVE " << std::endl;
+    //  for ( ; i != e; ++i, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
+    //  }
+    // }
+
+
     fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
     delete w;
 
-    
+
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
 
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  std::cerr << "**** REMOVE " << std::endl;
+    //  for ( ; i != e; ++i, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
+    //  }
+    // }
+
+
     view()->fg_reel( _reel );
 
-    
-    
+
+
     if ( unsigned(idx) < reel->images.size() )
        view()->foreground( *(i + idx) );
     else
@@ -919,7 +950,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     }
 
     if (play) view()->play( play );
-    
+
     redraw();
   }
 
@@ -933,7 +964,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
   {
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
-    
+
 
     mrv::MediaList::iterator begin = reel->images.begin();
     mrv::MediaList::iterator end   = reel->images.end();
@@ -944,7 +975,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
                    << _(" not found in reel") );
         return;
       }
- 
+
     CMedia::Playback p = view()->playback();
     view()->stop();
 
@@ -1362,12 +1393,12 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         if ( e && reel == this->reel( (unsigned int)i ) )
         {
            mrv::media_track* track = e->media_track((int)i);
-	   if ( track && m )
-	   {
-	       track->add( m );
-	       track->redraw();
-	   }
-	}
+           if ( track && m )
+           {
+               track->add( m );
+               track->redraw();
+           }
+        }
     }
 
     return m;
@@ -1394,7 +1425,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
 {
 
     view()->update( false );
-    
+
     if ( bgimage != "" )
     {
         int64_t start = AV_NOPTS_VALUE;
@@ -1600,7 +1631,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
       }
 
     view()->update(true);
-    
+
     view()->reset_caches(); // Redo preloaded sequence caches
 
     mrv::Reel reel = current_reel();
@@ -1940,12 +1971,12 @@ void ImageBrowser::load( const stringArray& files,
         if ( e && reel == this->reel( (unsigned int)i ) )
         {
            mrv::media_track* track = e->media_track((int)i);
-	   if ( track && m )
-	   {
-	       track->remove( m );
-	       break;
-	   }
-	}
+           if ( track && m )
+           {
+               track->remove( m );
+               break;
+           }
+        }
     }
 
     if ( sel < (int)reel->images.size() )
@@ -2042,18 +2073,21 @@ void ImageBrowser::load( const stringArray& files,
     mrv::media fg = current_image();
     if (!fg) return;
 
+    int sel = (int)reel->index( fg->image() );
+    if ( sel < 0 ) sel = 0;
+
     CMedia* img = fg->image();
     size_t num = reel->images.size();
     size_t i;
     for ( i = 0; i < num; ++i )
     {
-	if ( reel->images[i] == fg )
-	    break;
+        if ( reel->images[i] == fg )
+            break;
     }
     if ( i >= num )
     {
-	LOG_ERROR( _("Image not found in reel ") << reel->name );
-	return;
+        LOG_ERROR( _("Image not found in reel ") << reel->name );
+        return;
     }
 
     short add = sum;
@@ -2061,93 +2095,131 @@ void ImageBrowser::load( const stringArray& files,
     int64_t start = AV_NOPTS_VALUE;
     int64_t end   = AV_NOPTS_VALUE;
     std::string newfile;
+    std::string number;
     while ( start == AV_NOPTS_VALUE && tries < 10 )
     {
- 	std::string file = img->fileroot();
-	file = fs::path( file ).leaf().string();
-	std::string dir = img->directory();
-	file = dir + "/" + file;
-    
-	size_t pos = 0;
-	unsigned padding = 0;
-	mrv::PreferencesUI* prefs = main()->uiPrefs;
-	std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
-	while ( ( pos = file.find( prefix.c_str(), pos) ) != std::string::npos )
-	{
-	    pos += 2;
-	    newfile = file.substr( 0, pos );
-	    std::string copy = file.substr( pos, file.size() );
-	    const char* c = copy.c_str();
-	    std::string number;
-	    while ( *c >= '0' && *c <= '9' && *c != 0 )
-	    {
-		number += *c;
-		++c;
-	    }
-	    int64_t num = atoi( number.c_str() );
-	    size_t padding = number.size();
-	    char buf[128];
-	    sprintf( buf, "%0*" PRId64, padding, num + sum );
-	    newfile += buf;
-	    newfile += file.substr( pos + padding, file.size() );
-	    file = newfile;
-	}
+        std::string file = img->fileroot();
+        file = fs::path( file ).leaf().string();
+        std::string dir = img->directory();
+        file = dir + "/" + file;
 
-	if ( newfile.empty() )
-	{
-	    LOG_ERROR( _("No versioning in this clip.  "
-			 "Please create an image or directory named with ") << prefix );
-	    LOG_ERROR( _("Example:  gizmo") << prefix << N_("003.0001.exr") );
-	    return;
-	}
+        size_t pos = 0;
+        unsigned padding = 0;
+        mrv::PreferencesUI* prefs = main()->uiPrefs;
+        std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
+        while ( ( pos = file.find( prefix.c_str(), pos) ) != std::string::npos )
+        {
+            pos += 2;
+            newfile = file.substr( 0, pos );
+            std::string copy = file.substr( pos, file.size() );
+            const char* c = copy.c_str();
+            number.clear();
+            while ( *c >= '0' && *c <= '9' && *c != 0 )
+            {
+                number += *c;
+                ++c;
+            }
+            int64_t num = atoi( number.c_str() );
+            size_t padding = number.size();
+            char buf[128];
+            sprintf( buf, "%0*" PRId64, padding, num + sum );
+            newfile += buf;
+            newfile += file.substr( pos + padding, file.size() );
+            file = newfile;
+        }
 
-	if ( mrv::is_valid_sequence( newfile.c_str() ) )
-	{
-	    mrv::get_sequence_limits( start, end, newfile );
-	}
-	else
-	{
-	    std::string ext = newfile;
-	    size_t p = ext.rfind( '.' );
-	    if ( p != std::string::npos )
-	    {
-		ext = ext.substr( p, ext.size() );
-	    }
-	    std::transform( ext.begin(), ext.end(), ext.begin(),
-			    (int(*)(int)) tolower );
-	
-	    if ( mrv::is_valid_movie( ext.c_str() ) )
-	    {
-		if ( fs::exists( newfile ) )
-		    break;
-	    }
-	}
-	
-	++tries;
-	sum += add;
+        if ( newfile.empty() )
+        {
+            LOG_ERROR( _("No versioning in this clip.  "
+                         "Please create an image or directory named with ") << prefix );
+            LOG_ERROR( _("Example:  gizmo") << prefix << N_("003.0001.exr") );
+            return;
+        }
+
+        if ( mrv::is_valid_sequence( newfile.c_str() ) )
+        {
+            mrv::get_sequence_limits( start, end, newfile, false );
+        }
+        else
+        {
+            std::string ext = newfile;
+            size_t p = ext.rfind( '.' );
+            if ( p != std::string::npos )
+            {
+                ext = ext.substr( p, ext.size() );
+            }
+            std::transform( ext.begin(), ext.end(), ext.begin(),
+                            (int(*)(int)) tolower );
+
+            if ( mrv::is_valid_movie( ext.c_str() ) )
+            {
+                if ( fs::exists( newfile ) )
+                {
+                    start = 1;
+                    break;
+                }
+            }
+        }
+
+        ++tries;
+        sum += add;
     }
 
-    
+    if ( start == AV_NOPTS_VALUE )
+    {
+        int num = atoi( number.c_str() );
+        int num2 = num;
+        if ( add > 0 ) {
+            num++; num2 += 10;
+        }
+        else {
+            num--;
+            num2 -= 10;
+        }
+        LOG_ERROR( _("Versions ") << num << _(" to ") << num2
+                   << _(" not found on disk for ") << img->name()  );
+        return;
+    }
+
     mrv::media m = load_image( newfile.c_str(),
-			       start, end, start, end, false );
+                               start, end, start, end, false );
     if ( !m ) return;
 
-    
+
     mrv::EDLGroup* e = edl_group();
     mrv::media_track* track;
-    
-    for ( i = 0; i < number_of_reels(); ++i )
+
+    unsigned t;
+    for ( t = 0; t < number_of_reels(); ++t )
     {
-        if ( e && reel == this->reel( (unsigned int)i ) )
+        if ( e && reel == this->reel( (unsigned int)t ) )
         {
-	    track = e->media_track((int)i);
-	    if ( track && fg )
-	    {
-		track->remove( fg );
-		break;
-	    }
-	}
+            track = e->media_track((int)t);
+            //if ( track && fg )
+            //{
+            //  track->remove( fg );
+            break;
+            //}
+        }
     }
+
+    // if ( t >= number_of_reels() )
+    // {
+    //  LOG_ERROR( "Could not find fg in tracks" );
+    // }
+
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  std::cerr << "**** TRACK REMOVE " << std::endl;
+    //  for ( ; i != e; ++i, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
+    //  }
+    // }
 
     CMedia* newImg = m->image();
     int64_t frame = img->frame();
@@ -2167,26 +2239,72 @@ void ImageBrowser::load( const stringArray& files,
     newImg->fps( img->fps() );
     newImg->play_fps( img->play_fps() );
 
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  std::cerr << "**** GROUP " << std::endl;
+    //  for ( ; idx < children(); ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << w->label() << std::endl;
+    //  }
+    // }
+
     Element* nw = new_item( m );
     fltk::Group::replace( int(i), *nw );
+    fltk::Group::remove( children() - 1 );
+
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  std::cerr << "**** GROUP REPLACE " << std::endl;
+    //  for ( ; idx < children(); ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << w->label() << std::endl;
+    //  }
+    // }
 
     // Remove item from (last) place in reel
     {
-	mrv::MediaList::const_reverse_iterator j = reel->images.rbegin();
-	mrv::MediaList::const_reverse_iterator e = reel->images.rend();
-	for ( ; j != e; ++j )
-	{
-	    if ( *j == m )
-	    {
-		mrv::MediaList::const_iterator t = (j+1).base();
-		reel->images.erase(t);
-		break;
-	    }
-	}
+        mrv::MediaList::const_reverse_iterator j = reel->images.rbegin();
+        mrv::MediaList::const_reverse_iterator e = reel->images.rend();
+        for ( ; j != e; ++j )
+        {
+            if ( *j == m )
+            {
+                mrv::MediaList::const_iterator t = (j+1).base();
+                reel->images.erase(t);
+                break;
+            }
+        }
+        if ( j == e )
+        {
+            LOG_ERROR( "Did not find image in reel" );
+        }
     }
 
-    // Now, place it where it belongs
+    // // Now, place it where it belongs
+    reel->images.erase( reel->images.begin() + i );
     reel->images.insert( reel->images.begin() + i, m );
+
+
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  std::cerr << "**** REEL INSERT " << std::endl;
+    //  for ( ; i != e; ++i, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
+    //  }
+    // }
 
     track->refresh();
     track->redraw();
@@ -2196,12 +2314,14 @@ void ImageBrowser::load( const stringArray& files,
     view()->foreground( fg );
     view()->foreground( m );
 
+    change_image( sel );
+
     img->clear_cache();
 
     adjust_timeline();
-    
+
     view()->redraw();
-    
+
     if ( play ) view()->play(play);
   }
 
