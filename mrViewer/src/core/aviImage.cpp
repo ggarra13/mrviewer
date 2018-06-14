@@ -335,7 +335,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	return false;
      return true;
   }
-  else if ( magic == 0x89504E47 )
+  else if ( !CMedia::oiio_readers && magic == 0x89504E47 )
   {
       // PNG
       unsigned int tag = ntohl( *((unsigned int*)data+1) );
@@ -362,7 +362,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   {
       return true;
   }
-  else if ( magic == 0xFFD8FFE0 )
+  else if ( !CMedia::oiio_readers && magic == 0xFFD8FFE0 )
   {
       // JPEG
       if ( strncmp( (char*)data + 6, "JFIF", 4 ) == 0 )
@@ -860,19 +860,29 @@ bool aviImage::seek_to_position( const int64_t frame )
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
     int64_t start = frame;
+    int64_t offset = 0;
 
-    if ( _start_number != 0 )
+    //if ( _start_number != start_frame() )
     {
-        start -= _start_number;
-    }
-    else
-    {
-        if ( playback() == kBackwards ) --start;
+	if ( _start_number != 0 )
+	{
+	    start -= _start_number;
+	}
+	else
+	{
+	    if ( playback() == kBackwards ) --start;
+	}
     }
     if ( !skip ) --start;
-    
-    int64_t offset = int64_t( double(start * AV_TIME_BASE)
-                                            / fps() );
+
+    // std::cerr << name() << std::endl << "-------------" << std::endl;
+    // std::cerr << "_start_number " << _start_number << std::endl;
+    // std::cerr << "start " << start << " AV_TIME_BASE " << AV_TIME_BASE
+    // 	      << " fps " << fps() << std::endl;
+    // std::cerr << "mult " << double(start * AV_TIME_BASE / fps() ) << std::endl;
+    // std::cerr << "int64 "
+    // 	      << int64_t( double(start * AV_TIME_BASE / fps() ) ) << std::endl;
+    offset = int64_t( double(start * AV_TIME_BASE  / fps() ) );
 
     if ( offset < 0 ) offset = 0;
 
@@ -882,7 +892,8 @@ bool aviImage::seek_to_position( const int64_t frame )
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << start
-                   << N_(": ") << get_error_text(ret) );
+                   << N_(" offset ") << offset
+		   << N_(": ") << get_error_text(ret) );
         return false;
     }
 
@@ -898,7 +909,8 @@ bool aviImage::seek_to_position( const int64_t frame )
         if (ret < 0)
         {
             IMG_ERROR( _("Could not seek to frame ") << frame 
-                   << N_(": ") << get_error_text(ret) );
+		       << N_("(offset: ") << offset << N_(") : ")
+		       << get_error_text(ret) );
             return false;
         }
     }
@@ -2734,9 +2746,8 @@ bool aviImage::fetch(const int64_t frame)
 #endif
 
 
-
   int64_t dts = queue_packets( f, false, got_video, 
-				      got_audio, got_subtitle);
+			       got_audio, got_subtitle);
 
 
   _dts = dts;
