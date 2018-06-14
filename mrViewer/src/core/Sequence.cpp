@@ -626,7 +626,8 @@ bool is_valid_view( std::string view )
 
   bool get_sequence_limits( boost::int64_t& frameStart,
                             boost::int64_t& frameEnd,
-                            std::string& fileroot )
+                            std::string& fileroot,
+			    const bool error )
   {
       frameStart = AV_NOPTS_VALUE;
       frameEnd = AV_NOPTS_VALUE;
@@ -647,9 +648,12 @@ bool is_valid_view( std::string view )
 
     if ( ( !fs::exists( dir ) ) || ( !fs::is_directory( dir ) ) )
     {
-       LOG_ERROR( _("Directory ") << dir <<
-                  _(" does not exist or no directory") );
-       return false;
+	if ( error )
+	{
+	    LOG_ERROR( _("Directory ") << dir <<
+		       _(" does not exist or no directory") );
+	}
+	return false;
     }
 
     // Check if sequence is in ILM format first  ( image.1-30.exr )
