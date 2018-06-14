@@ -2094,9 +2094,11 @@ void ImageBrowser::load( const stringArray& files,
     unsigned short tries = 0;
     int64_t start = AV_NOPTS_VALUE;
     int64_t end   = AV_NOPTS_VALUE;
+    mrv::PreferencesUI* prefs = main()->uiPrefs;
     std::string newfile;
     std::string number;
-    while ( start == AV_NOPTS_VALUE && tries < 10 )
+    unsigned max_tries = prefs->uiPrefsMaxImagesApart->value();
+    while ( start == AV_NOPTS_VALUE && tries <= max_tries )
     {
         std::string file = img->fileroot();
         file = fs::path( file ).leaf().string();
@@ -2105,7 +2107,6 @@ void ImageBrowser::load( const stringArray& files,
 
         size_t pos = 0;
         unsigned padding = 0;
-        mrv::PreferencesUI* prefs = main()->uiPrefs;
         std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
         while ( ( pos = file.find( prefix.c_str(), pos) ) != std::string::npos )
         {
@@ -2170,11 +2171,11 @@ void ImageBrowser::load( const stringArray& files,
         int num = atoi( number.c_str() );
         int num2 = num;
         if ( add > 0 ) {
-            num++; num2 += 10;
+            num++; num2 += sum;
         }
         else {
             num--;
-            num2 -= 10;
+            num2 -= sum;
         }
         LOG_ERROR( _("Versions ") << num << _(" to ") << num2
                    << _(" not found on disk for ") << img->name()  );
