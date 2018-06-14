@@ -3258,8 +3258,8 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
        SCOPED_LOCK( m );
 
-       mrv::PacketQueue::const_reverse_iterator i = _audio_packets.rbegin();
-       mrv::PacketQueue::const_reverse_iterator e = _audio_packets.rend();
+       mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
+       mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
        for ( ; i != e; ++i )
        {
