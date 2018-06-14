@@ -238,12 +238,14 @@ bool parse_reel( LoadList& sequences, bool& edl,
    * @param firstFrame   first frame of sequence 
    * @param lastFrame    last  frame of sequence
    * @param file         fileroot of sequence ( Example: mray.%04d.exr )
+   * @param error        log errors on the log window
    * 
    * @return true if sequence limits found, false if not.
    */
   bool get_sequence_limits( boost::int64_t& firstFrame, 
 			    boost::int64_t& lastFrame,
-			    std::string& file );
+			    std::string& file,
+			    const bool error = true );
 
   /** 
    * Given a filename extension, return whether the extension is
