@@ -332,9 +332,9 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
                    main()->uiStartFrame->value( f );
                }
 	       img->seek(f);
-	       std::cerr << "start newpos " << newpos << std::endl;
 	       main()->uiTimeline->value( newpos );
                main()->uiView->foreground( fg );
+	       main()->uiView->redraw();
 
                char buf[1024];
                sprintf( buf, N_("ShiftMediaStart %d") 
@@ -371,6 +371,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
       // Shift indexes of position
       o->position( start - (ee - ss ) );
    }
+
 
 }
 
