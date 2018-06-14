@@ -119,23 +119,36 @@ const char* file_save_single_requester(
                                        const bool compact_images = true
                                        )
 {
-   const char* file = NULL;
+    const char* file = NULL;
+    try
+    {
 #ifdef _WIN32
-   bool native = mrv::Preferences::native_file_chooser;
-   fltk::use_system_file_chooser( native );
-   if ( native )
-   {
-       fltk::check();
-       file = fltk::file_chooser( title, pattern, startfile, compact_images );
-       if ( !file ) return "";
-   }
-   else
+        bool native = mrv::Preferences::native_file_chooser;
+        fltk::use_system_file_chooser( native );
+        if ( native )
+        {
+            fltk::check();
+            file = fltk::file_chooser( title, pattern, startfile,
+                                       compact_images );
+            if ( !file ) return "";
+        }
+        else
 #endif
-   {
-       file = flu_save_chooser( title, pattern, startfile, compact_images );
-   }
-   if ( !file ) return "";
-   return file;
+        {
+            file = flu_save_chooser( title, pattern, startfile,
+                                     compact_images );
+        }
+        if ( !file ) return "";
+    }
+    catch ( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
+    }
+    catch ( ... )
+    {
+    }
+
+    return file;
 }
 
 stringArray file_multi_requester(
@@ -147,24 +160,34 @@ stringArray file_multi_requester(
 {
     stringArray filelist;
 
-    if ( !startfile ) startfile = "";
+    try
+    {
+        if ( !startfile ) startfile = "";
 #ifdef _WIN32
-    bool native = mrv::Preferences::native_file_chooser;
-    fltk::use_system_file_chooser( native );
-    if ( native )
-    {
-        fltk::check();
-        const char* file = fltk::file_chooser( title,
-                                               pattern,
-                                               startfile );
-        if ( file )
-            split( filelist, file, '\n' );
-    }
-    else
+        bool native = mrv::Preferences::native_file_chooser;
+        fltk::use_system_file_chooser( native );
+        if ( native )
+        {
+            fltk::check();
+            const char* file = fltk::file_chooser( title,
+                                                   pattern,
+                                                   startfile );
+            if ( file )
+                split( filelist, file, '\n' );
+        }
+        else
 #endif
+        {
+            flu_multi_file_chooser( title, pattern, startfile,
+                                    filelist, compact_images );
+        }
+    }
+    catch ( const std::exception& e )
     {
-        flu_multi_file_chooser( title, pattern, startfile,
-                                filelist, compact_images );
+        LOG_ERROR( e.what() );
+    }
+    catch ( ... )
+    {
     }
     return filelist;
 }
@@ -176,23 +199,33 @@ const char* file_single_requester(
                                   )
 {
     const char* file = NULL;
+    try {
 #ifdef _WIN32
-    bool native = mrv::Preferences::native_file_chooser;
-    fltk::use_system_file_chooser( native );
-    if ( native )
-    {
-        fltk::check();
-        if ( !startfile ) startfile = "";
-        file = fltk::file_chooser( title, pattern, startfile );
-        // if ( file )
-        //     split( filelist, file, '\n' );
-        // file = filelist[0].c_str();
-    }
-    else
+        bool native = mrv::Preferences::native_file_chooser;
+        fltk::use_system_file_chooser( native );
+        if ( native )
+        {
+            fltk::check();
+            if ( !startfile ) startfile = "";
+            file = fltk::file_chooser( title, pattern, startfile );
+            // if ( file )
+            //     split( filelist, file, '\n' );
+            // file = filelist[0].c_str();
+        }
+        else
 #endif
-    {
-        file = flu_file_chooser( title, pattern, startfile );
+        {
+            file = flu_file_chooser( title, pattern, startfile );
+        }
     }
+    catch ( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
+    }
+    catch ( ... )
+    {
+    }
+
 
     return file;
 }
@@ -688,7 +721,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
     std::string ext = file;
     size_t pos = ext.rfind( '.' );
     if ( pos != std::string::npos && pos != ext.size() )
-	ext = ext.substr( pos, ext.size() );
+        ext = ext.substr( pos, ext.size() );
 
 
     ImageOpts* opts = ImageOpts::build( main, ext, image->has_deep_data() );
@@ -747,7 +780,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
      }
 
    bool ffmpeg_handle = (ext == ".png" || ext == ".jpg" || ext == ".jpeg" ||
-			 ext == ".tif" || ext == ".tiff" );
+                         ext == ".tif" || ext == ".tiff" );
    bool movie = is_valid_movie( ext.c_str() ) || ffmpeg_handle;
 
    std::string root, fileseq = file;
