@@ -1,5 +1,4 @@
 v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
-
 	 - Added versioning to the sequences/movies.
 	   This allows to handle clips of the same shot, but different
 	   versions as one object. For example if you place a clip with 
@@ -11,7 +10,6 @@ v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
 	   than 10 numbers apart.
 	   The version number is found by a prefix, by default '_v'.
 	   This can be changed in the Loading section of the preferences.
-	   
 	 - Bug fixed a movie playback problem that was introduced in
 	   v4.1.1.  Looping would not work properly with some movies and
 	   you'd get a decode error on the first frame of the movie file.
