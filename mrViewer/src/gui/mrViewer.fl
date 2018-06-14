@@ -2121,7 +2121,7 @@ uiICC_float_profile->do_callback();}
             label Loading open
             xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {14 5 400 204} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsOIIOReaders {
@@ -2145,13 +2145,21 @@ uiICC_float_profile->do_callback();}
                 xywh {20 154 25 25} box UP_BOX value 1
               }
             }
-            {fltk::Input} uiPrefsImageVersionPrefix {
-              label {Versioning Prefix} selected
-              tooltip {Prefix used to detect version numbers.  The default finds images like:
+            {fltk::Group} {} {open
+              xywh {19 224 395 115} box ROUNDED_BOX
+            } {
+              {fltk::Input} uiPrefsImageVersionPrefix {
+                label {Versioning Prefix}
+                tooltip {Prefix used to detect version numbers.  The default finds images like:
   gizmo_v003.001.exr
 (version 3, frame 1).}
-              xywh {134 234 94 25}
-              extra_code {o->value( "_v" );}
+                xywh {140 30 94 25}
+                extra_code {o->value( "_v" );}
+              }
+              {fltk::ValueInput} uiPrefsMaxImagesApart {
+                label {Max. Images Apart} selected
+                xywh {160 65 50 25} minimum 1 maximum 100 step 1 value 10
+              }
             }
           }
           {fltk::Group} {} {
@@ -2520,7 +2528,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
