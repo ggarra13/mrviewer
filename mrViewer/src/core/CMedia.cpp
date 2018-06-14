@@ -3649,8 +3649,18 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-           LOG_WARNING( file << _(" is missing.") );
-           return false;
+	    _hires = mrv::image_type_ptr( new image_type( frame,
+                                                          width(),
+                                                          height(),
+                                                          1,
+                                                          image_type::kLumma,
+                                                          image_type::kByte ) );
+            memset( _hires->data().get(), 0x0, _hires->data_size() );
+            cache( _hires );
+            _hires->valid( false ); // mark this frame as invalid
+            refresh();
+	    LOG_WARNING( file << _(" is missing.") );
+	    return false;
         }
      }
   }
