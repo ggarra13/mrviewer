@@ -1119,12 +1119,13 @@ static const char* kCLocale = "C";
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           true);
-    if (  ( !var || strlen(var) == 0 ) && use_ocio )
+    std::string tmp = root + "/ocio/nuke-default/config.ocio";
+
+    if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
     {
         mrvLOG_INFO( "ocio",
-                     _("Setting OCIO environment variable to nuke-default" )
+                     _("Setting OCIO environment variable to nuke-default." )
                      << std::endl );
-        std::string tmp = root + "/ocio/nuke-default/config.ocio";
         DBG( __FUNCTION__ << " " << __LINE__ );
         var = strdup( tmp.c_str() );
         DBG( __FUNCTION__ << " " << __LINE__ );
