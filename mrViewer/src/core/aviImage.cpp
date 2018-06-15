@@ -2717,7 +2717,15 @@ bool aviImage::fetch(const int64_t frame)
    
   if ( _has_image_seq && got_audio && in_video_store(f) )
   {
-      return find_image( f );
+      bool ok = find_image( f );
+       if ( !ok )
+           IMG_ERROR( _("find_image: Could not get cache of frame ")
+                     << frame );
+       _frame = f;
+       _dts = f;
+       _expected = _dts + 1;
+  
+      return ok;
   }
 
    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
@@ -2725,7 +2733,7 @@ bool aviImage::fetch(const int64_t frame)
        //TRACE( "frame " << frame << " f: " << f << " EXPECTED " << _expected );
        bool ok = seek_to_position( f );
        if ( !ok )
-           IMG_ERROR("seek_to_position: Could not seek to frame " 
+           IMG_ERROR( ("seek_to_position: Could not seek to frame ")
                      << frame );
        return ok;
    }
