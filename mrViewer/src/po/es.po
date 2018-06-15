@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-06-15 13:30-0300\n"
+"POT-Creation-Date: 2018-06-15 17:16-0300\n"
 "PO-Revision-Date: 2018-06-09 11:27-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -203,7 +203,7 @@ msgstr " falló. "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2178 core/aviImage.cpp:3461
+#: core/CMedia_audio.cpp:2178 core/aviImage.cpp:3469
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -256,7 +256,7 @@ msgstr " no encontrado en el disco para "
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:3613
+#: core/aviImage.cpp:3621
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -264,7 +264,7 @@ msgstr " no soportado aún"
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3475
+#: core/aviImage.cpp:3483
 msgid " status: "
 msgstr " estatus: "
 
@@ -964,10 +964,6 @@ msgstr "Acciones"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4238
 msgid "Activate viewer's 3D Lut."
 msgstr "Activar el 3D LUT del visor."
-
-#: gui/mrvImageView.cpp:463
-msgid "Active"
-msgstr "Activo"
 
 #: gui/mrvHotkey.cpp:393
 msgid "Add"
@@ -2712,11 +2708,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2176 core/aviImage.cpp:3459
+#: core/CMedia_audio.cpp:2176 core/aviImage.cpp:3467
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3473
+#: core/aviImage.cpp:3481
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -3018,11 +3014,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:2944
+#: core/aviImage.cpp:2952
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2961 core/aviImage.cpp:3822
+#: core/aviImage.cpp:2969 core/aviImage.cpp:3830
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -4013,10 +4009,6 @@ msgstr ""
 msgid "Images, sequences or movies to display."
 msgstr "Imágenes, secuencias o peliculas para mostrar."
 
-#: gui/mrvImageView.cpp:463
-msgid "Inactive"
-msgstr "Inactivo"
-
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4152
 msgid "Increase exposure by 0.5."
 msgstr "Incrementar exposición por 0.5."
@@ -4886,6 +4878,10 @@ msgstr ""
 #: gui/mrvImageView.cpp:186
 msgid "Normals"
 msgstr "Normales"
+
+#: gui/mrvImageView.cpp:463
+msgid "Not Shown"
+msgstr ""
 
 #: gui/mrvImageView.cpp:3945
 msgid "Not a GLErasePathShape pointer"
@@ -6290,6 +6286,10 @@ msgstr "Mostrar el fantasma de las figuras del proximo cuadro"
 msgid "Show shapes of previous frame ghosted."
 msgstr "Mostrat el fantasma de las figuras del cuadro previo"
 
+#: gui/mrvImageView.cpp:463
+msgid "Shown"
+msgstr ""
+
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:50
 msgid "Simple"
 msgstr "Simple"
@@ -6471,7 +6471,7 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:3612
+#: core/aviImage.cpp:3620
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -8078,7 +8078,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2868
+#: core/aviImage.cpp:2876
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -8339,6 +8339,11 @@ msgstr ""
 #: standalone/mrvCommandLine.cpp:383
 msgid "files"
 msgstr "archivos"
+
+#
+#: core/aviImage.cpp:2722
+msgid "find_image: Could not get cache of frame "
+msgstr "find_image: No pude encontrar en el cache al cuadro "
 
 #: core/aviImage.cpp:1570 core/aviImage.cpp:1577
 msgid "find_image: frame "
@@ -8680,6 +8685,12 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4374
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "Active"
+#~ msgstr "Activo"
+
+#~ msgid "Inactive"
+#~ msgstr "Inactivo"
 
 #, fuzzy
 #~ msgid "(offset: "
