@@ -232,8 +232,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
                                  int64_t& first,
                                  int64_t& last )
 {
-    last = int64_t(timeline->display_maximum());
-    first = int64_t(timeline->display_minimum());
+    int64_t mx = int64_t(timeline->display_maximum());
+    int64_t mn = int64_t(timeline->display_minimum());
 
     // int64_t offset = img->first_frame() - img->start_frame();
     // last = last + offset;
@@ -247,11 +247,11 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         SCOPED_LOCK( m );
 
 
-        boost::int64_t s = reel->location(img);
-        boost::int64_t e = s + img->duration() - 1;
+        first = reel->location(img);
+        last  = first + img->duration() - 1;
 
-        if ( e < last )  last = e;
-        if ( s > first ) first = s;
+        if ( mx < last && mx > first )  last = mx;
+        if ( mn > first && mn < last ) first = mn;
 
         last = reel->global_to_local( last );
 	img->loop_end( last );
@@ -261,7 +261,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     }
     else
     {
-        if ( img->has_video() || img->has_audio() )
+        if ( img->has_picture() || img->has_audio() )
         {
             CMedia::Mutex& m = img->video_mutex();
             SCOPED_LOCK( m );
@@ -269,21 +269,14 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
             first = img->first_frame();
             last = img->last_frame();
-
+;
+    
+            if ( mx < last && mx > first )  last = mx;
+            if ( mn > first && mn < last ) first = mn;
+            
 	    img->loop_start( first );
 	    img->loop_end( last );
 	    
-	    /*
-            if ( e < last )
-                last = e;
-	    else
-		img->loop_end( last );
-
-            if ( s > first )
-                first = s;
-	    else
-		img->loop_start( first );
-	    */
         }
     }
 
