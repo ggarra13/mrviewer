@@ -460,7 +460,7 @@ static void update_title_bar( mrv::ImageView* view )
       snprintf( bufs, 256, _("mrViewer    FG: %s   BG: %s (%s)"),
                 fg->image()->name().c_str(),
                 bg->image()->name().c_str(),
-                view->show_background() ? _("Active") : _("Inactive") );
+                view->show_background() ? _("Shown") : _("Not Shown") );
   }
   else if ( fg )
   {
