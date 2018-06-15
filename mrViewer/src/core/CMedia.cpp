@@ -2680,8 +2680,10 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
     boost::int64_t i = frame - _frame_start;
 
     CMedia::Cache cache = kNoCache;
+    mrv::image_type_ptr pic = _sequence[i];
+    if ( !pic || !pic->valid() ) return cache;
 
-    if ( _sequence[i] ) cache = kLeftCache;
+    cache = kLeftCache;
 
     if ( _stereo_output != kNoStereo )
     {
@@ -3189,7 +3191,7 @@ int CMedia::max_video_frames()
     else if ( _video_cache_size == 0 )
         return int( fps()*2 );
     else
-        return std::numeric_limits<int>::max();
+        return std::numeric_limits<int>::max() / 3;
 }
 
 
@@ -3201,7 +3203,7 @@ int CMedia::max_image_frames()
     else if ( _image_cache_size == 0 )
         return int( fps()*2 );
     else
-        return std::numeric_limits<int>::max();
+        return std::numeric_limits<int>::max() / 3;
 }
 
 void CMedia::loop_at_start( const int64_t frame )
@@ -3318,6 +3320,8 @@ void CMedia::limit_video_store( const int64_t f )
   if ( first < 0 ) first = 0;
   int64_t end = _numWindows-1;
   if ( last > end ) last = end;
+
+  if ( last - first <= 1 ) return;  // needed
 
   for ( int64_t i = 0; i < first; ++i  )
   {
