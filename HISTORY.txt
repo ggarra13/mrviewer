@@ -13,6 +13,9 @@ v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
 	 - Bug fixed a movie playback problem that was introduced in
 	   v4.1.1.  Looping would not work properly with some movies and
 	   you'd get a decode error on the first frame of the movie file.
+	 - Bug fixed a bunch of issues in the EDL / BG image playback.
+	 - Reverted the use of FFMPEG for PNG/JPG loading as it was
+	   not caching properly.
 
 v4.1.7   - Switched to OIIO's HDR image loader and saver as it is more
 	   robust than the original Radiance one I was using.
