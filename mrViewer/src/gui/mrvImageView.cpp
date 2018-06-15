@@ -3670,7 +3670,7 @@ int ImageView::leftMouseDown(int x, int y)
 	    file = fs::path( file ).leaf().string();
 	    std::string dir = img->directory();
 	    file = dir + "/" + file;
-	    size_t pos;
+	    size_t pos = 0;
 	    mrv::PreferencesUI* prefs = main()->uiPrefs;
 	    std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
 	    if ( (pos = file.find( prefix, pos) ) != std::string::npos )
@@ -5465,24 +5465,28 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSafeAreas.match( rawkey ) )
     {
         safe_areas( safe_areas() ^ true );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
     }
     else if ( kDataWindow.match( rawkey ) )
     {
         data_window( data_window() ^ true );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
     }
     else if ( kDisplayWindow.match( rawkey ) )
     {
         display_window( display_window() ^ true );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
     }
     else if ( kHudToggle.match( rawkey ) )
     {
         hud_toggle_cb( NULL, uiMain );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
     }
@@ -5516,6 +5520,7 @@ int ImageView::keyDown(unsigned int rawkey)
             window()->cursor(fltk::CURSOR_CROSS);
         }
 
+        mouseMove( fltk::event_x(), fltk::event_y() );
         redraw();
         return 1;
     }
@@ -5552,11 +5557,13 @@ int ImageView::keyDown(unsigned int rawkey)
 
 
         step_frame( int64_t(-fps) );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kFrameStepBack.match(rawkey) )
     {
         step_frame( -1 );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kFrameStepFPSFwd.match(rawkey) )
@@ -5571,11 +5578,13 @@ int ImageView::keyDown(unsigned int rawkey)
 
 
         step_frame( int64_t(fps) );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kFrameStepFwd.match( rawkey ) )
     {
         step_frame( 1 );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPlayBackTwiceSpeed.match( rawkey ) )
@@ -5591,6 +5600,7 @@ int ImageView::keyDown(unsigned int rawkey)
             stop();
         else
             play_backwards();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPlayBackHalfSpeed.match( rawkey ) )
@@ -5607,6 +5617,7 @@ int ImageView::keyDown(unsigned int rawkey)
             stop();
         else
             play_backwards();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPlayBack.match( rawkey ) )
@@ -5615,6 +5626,7 @@ int ImageView::keyDown(unsigned int rawkey)
             stop();
         else
             play_backwards();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPlayFwdTwiceSpeed.match( rawkey ) )
@@ -5631,6 +5643,7 @@ int ImageView::keyDown(unsigned int rawkey)
             stop();
         else
             play_forwards();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPlayFwdHalfSpeed.match( rawkey ) )
@@ -5647,6 +5660,7 @@ int ImageView::keyDown(unsigned int rawkey)
             stop();
         else
             play_forwards();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kPlayFwd.match( rawkey ) )
@@ -5655,11 +5669,13 @@ int ImageView::keyDown(unsigned int rawkey)
             stop();
         else
             play_forwards();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kStop.match( rawkey ) )
     {
         stop();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kSwitchFGBG.match( rawkey ) )
@@ -5714,16 +5730,19 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kRotatePlus90.match( rawkey ) )
     {
         rotate_plus_90_cb( NULL, this );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kRotateMinus90.match( rawkey ) )
     {
         rotate_minus_90_cb( NULL, this );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kToggleICS.match( rawkey ) )
     {
         toggle_ics_cb( NULL, main() );
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kFirstFrame.match( rawkey ) )
@@ -5760,6 +5779,7 @@ int ImageView::keyDown(unsigned int rawkey)
                                     fltk::LAYOUT_DAMAGE |
                                     fltk::LAYOUT_CHILD );
         uiMain->uiRegion->redraw();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kTogglePixelBar.match( rawkey ) )
@@ -5780,6 +5800,7 @@ int ImageView::keyDown(unsigned int rawkey)
                                     fltk::LAYOUT_DAMAGE |
                                     fltk::LAYOUT_CHILD );
         uiMain->uiRegion->redraw();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kToggleReel.match( rawkey ) )
@@ -5821,11 +5842,13 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kTogglePixelRatio.match( rawkey ) )
     {
         toggle_pixel_ratio();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kToggleLut.match( rawkey ) )
     {
         toggle_lut();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kToggle3dView.match( rawkey ) )
@@ -5871,6 +5894,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kTogglePresentation.match( rawkey ) )
     {
         toggle_presentation();
+        mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
     }
     else if ( kSetInPoint.match( rawkey ) )
