@@ -847,7 +847,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences loading( base, "loading" );
 
-    loading.get( "oiio_readers", tmp, 0 );
+    loading.get( "oiio_readers", tmp, 1 );
     uiPrefs->uiPrefsOIIOReaders->value( (bool) tmp );
     
     loading.get( "drag_load_seq", tmp, 1 );
