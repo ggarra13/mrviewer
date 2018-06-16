@@ -306,7 +306,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
     }
   else if ( strncmp( (char*)data, "OggS", 4 ) == 0 ) 
     {
-      return true;
+	// Ogg / Vorbis
+	return true;
     }
   else if ( strncmp( (char*)data, "RIFF", 4 ) == 0 ) 
     {
@@ -1078,6 +1079,23 @@ void aviImage::store_image( const int64_t frame,
                         w, h, 1);
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
+  switch (fmt)
+  {
+      case AV_PIX_FMT_YUVJ420P:
+	  fmt = AV_PIX_FMT_YUV420P;
+	  break;
+      case AV_PIX_FMT_YUVJ422P:
+	  fmt = AV_PIX_FMT_YUV422P;
+	  break;
+      case AV_PIX_FMT_YUVJ444P:
+	  fmt = AV_PIX_FMT_YUV444P;
+	  break;
+      case AV_PIX_FMT_YUVJ440P:
+	  fmt = AV_PIX_FMT_YUV440P;
+	  break;
+      default:
+	  break;
+  }
   int sws_flags = 0;
   if ( (int)w < _video_ctx->width || (int)h < _video_ctx->height )
       sws_flags = SWS_BICUBIC;
