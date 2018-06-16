@@ -2385,6 +2385,8 @@ bool aviImage::initialize()
           _has_image_seq = true;
           
           av_dict_set(&opts, "start_number", buf, 0);
+
+	  if ( CMedia::oiio_readers ) return false;
       }
 
       AVInputFormat*     format = NULL;
@@ -2715,18 +2717,18 @@ bool aviImage::fetch(const int64_t frame)
 
    int64_t f = frame;
    
-  if ( _has_image_seq && got_audio && in_video_store(f) )
-  {
-      bool ok = find_image( f );
-       if ( !ok )
-           IMG_ERROR( _("find_image: Could not get cache of frame ")
-                     << frame );
-       _frame = f;
-       _dts = f;
-       _expected = _dts + 1;
+  // if ( _has_image_seq && got_audio && in_video_store(f) )
+  // {
+  //     bool ok = find_image( f );
+  //      if ( !ok )
+  //          IMG_ERROR( _("find_image: Could not get cache of frame ")
+  //                    << frame );
+  //      _frame = f;
+  //      _dts = f;
+  //      _expected = _dts + 1;
   
-      return ok;
-  }
+  //     return ok;
+  // }
 
    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
    {
