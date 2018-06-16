@@ -5,17 +5,20 @@ v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
 	   .../SHOT001_v005/SHOT001_v005.%04d.exr
 	   in the reel/timeline, and there is another sequence with:
 	   .../SHOT001_v008/SHOT001_v008.%04d.exr on disk,
-	   you can step through versions by pressing ALT+PgUp or
-	   ALT+PgDown.  Note that the version numbers cannot be more
-	   than 10 numbers apart.
+	   you can step through versions by pressing ALT+PgUp (previous
+	   version) or ALT+PgDown (next version).  
 	   The version number is found by a prefix, by default '_v'.
 	   This can be changed in the Loading section of the preferences.
+	   Note that the version numbers cannot be more than 10 numbers
+	   apart by default.  This can be changed in the
+	   Preferences->Loading->Max Frames Apart section of the
+	   preferences.
 	 - Bug fixed a movie playback problem that was introduced in
 	   v4.1.1.  Looping would not work properly with some movies and
 	   you'd get a decode error on the first frame of the movie file.
 	 - Bug fixed a bunch of issues in the EDL / BG image playback.
 	 - Reverted the use of FFMPEG for PNG/JPG loading as it was
-	   not caching properly.
+	   not caching properly.  Some frames would get repetitions.
 
 v4.1.7   - Switched to OIIO's HDR image loader and saver as it is more
 	   robust than the original Radiance one I was using.
