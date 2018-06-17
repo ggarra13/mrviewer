@@ -84,7 +84,7 @@ size_t Reel_t::index( const CMedia* const img ) const
    * 
    * @return index of image in reel list or std::
    */
-size_t Reel_t::index( const boost::int64_t f ) const
+size_t Reel_t::index( const int64_t f ) const
 {
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
@@ -119,7 +119,7 @@ size_t Reel_t::index( const boost::int64_t f ) const
   }
 
 
-mrv::media Reel_t::media_at( const boost::int64_t f ) const
+mrv::media Reel_t::media_at( const int64_t f ) const
 {
     if ( images.empty() ) return mrv::media();
 
@@ -150,7 +150,7 @@ mrv::media Reel_t::media_at( const boost::int64_t f ) const
     return images[r];
 }
 
-boost::int64_t Reel_t::global_to_local( const boost::int64_t f ) const
+int64_t Reel_t::global_to_local( const int64_t f ) const
 {
 
     mrv::MediaList::const_iterator i = images.begin();
@@ -158,23 +158,23 @@ boost::int64_t Reel_t::global_to_local( const boost::int64_t f ) const
 
     int64_t r = AV_NOPTS_VALUE;
     for ( ; i != e; ++i )
-      {
-          const mrv::media& m = *i;
-          CMedia* img = m->image();
-          assert( img != NULL );
-          int64_t start = m->position();
-          int64_t end   = start + img->duration();
-          if ( f >= start && f < end )
-          {
-              r = f - start + img->first_frame();
-              break;
-          }
-      }
-
+    {
+	const mrv::media& m = *i;
+	CMedia* img = m->image();
+	assert( img != NULL );
+	int64_t start = m->position();
+	int64_t end   = start + img->duration();
+	if ( f >= start && f < end )
+	{
+	    r = f - start + img->first_frame();
+	    break;
+	}
+    }
+    
     return r;
 }
 
-boost::int64_t Reel_t::offset( const CMedia* const img ) const
+int64_t Reel_t::offset( const CMedia* const img ) const
 {
 
     mrv::MediaList::const_iterator i = images.begin();
