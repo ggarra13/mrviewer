@@ -45,9 +45,9 @@ namespace mrv {
   fltk::TextDisplay::StyleTableEntry kLogStyles[] = {
     // FONT COLOR      FONT FACE   SIZE   ATTR
     // --------------- ----------- ----- ------
-    {  fltk::BLACK,  fltk::COURIER, 14,   0 }, // A - Info
-    {  fltk::DARK_YELLOW, fltk::COURIER, 14,   0 }, // B - Warning
-    {  fltk::RED,    fltk::COURIER, 14,   0 }, // C - Error
+    {  fltk::BLACK,  fltk::HELVETICA, 14,   0 }, // A - Info
+    {  fltk::DARK_YELLOW, fltk::HELVETICA, 14,   0 }, // B - Warning
+    {  fltk::RED,    fltk::HELVETICA, 14,   0 }, // C - Error
   };
 
 LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
