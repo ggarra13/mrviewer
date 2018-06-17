@@ -269,7 +269,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
             first = img->first_frame();
             last = img->last_frame();
-;
+
     
             if ( mx < last && mx > first )  last = mx;
             if ( mn > first && mn < last ) first = mn;
