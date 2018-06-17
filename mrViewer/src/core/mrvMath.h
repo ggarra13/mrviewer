@@ -48,6 +48,17 @@ typedef float Float;
     return ((x1 > x2)? x1 - x2: x2 - x1) <= e;
   }
 
+// Euclidian mod.  What you expect from % but you don't get as it is signed
+inline int64_t modE( int64_t D, int64_t d )
+{
+    int64_t r = D%d;
+    if (r < 0) {
+	if (d > 0) r += d;
+	else       r -= d;
+    }
+    return r;
+}
+
 // Usage is Pow<int>(float).  Example: Pow<3>(2.0f) = 8.0f
 template <int n>
 static Float Pow(Float v) {

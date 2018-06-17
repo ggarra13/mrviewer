@@ -74,6 +74,7 @@ namespace fs = boost::filesystem;
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
+#include "core/mrvMath.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
 #include "core/Sequence.h"
@@ -2468,7 +2469,7 @@ std::string CMedia::directory() const
  * Set a new frame for the image sequence
  *  * @param f new frame
  */
-bool CMedia::frame( const int64_t f )
+bool CMedia::frame( int64_t f )
 {
   assert( _fileroot != NULL );
 
@@ -2486,10 +2487,11 @@ bool CMedia::frame( const int64_t f )
       return false;
     }
 
+  
   if ( f < _frameStart )     _dts = _frameStart;
   else if ( f > _frameEnd )  _dts = _frameEnd;
   else                       _dts = f;
-
+  
   AVPacket pkt;
   av_init_packet( &pkt );
   pkt.dts = pkt.pts = _dts;
@@ -3547,7 +3549,7 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
       int64_t len = duration();
       if ( len > 0 )
       {
-          f = (f-_frameStart) % len + _frameStart;
+          f = modE(f-_frameStart, len) + _frameStart;
       }
   }
   else if ( looping() == kPingPong )
@@ -3557,8 +3559,8 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
       {
           f -= _frameStart;
           int64_t v   = f / len;
-          f = f % len + _frameStart;
-          if ( v % 2 == 1 )
+          f = modE( f, len ) + _frameStart;
+          if ( modE( v, 2 ) == 1 )
           {
               f = len - f + _frame_start;
           }
@@ -3593,7 +3595,7 @@ bool CMedia::find_image( const int64_t frame )
       else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
   }
 
-
+  
   if ( _sequence && _sequence[idx] )
     {
         _hires = _sequence[idx];
@@ -3607,7 +3609,7 @@ bool CMedia::find_image( const int64_t frame )
 
         refresh();
         image_damage( image_damage() | kDamageData | kDamage3DData );
-        limit_video_store(frame);
+        limit_video_store(f);
         return true;
     }
 
@@ -3669,7 +3671,7 @@ bool CMedia::find_image( const int64_t frame )
      }
   }
 
-  limit_video_store( frame );
+  limit_video_store( f );
   refresh();
   image_damage( image_damage() | kDamageData | kDamage3DData );
   return true;
