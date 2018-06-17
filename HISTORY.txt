@@ -1,3 +1,9 @@
+v4.1.9   - Removed a subtle bug in looping images that did not start at 1.
+	   The result would go unnoticed, but internally a wrong frame would
+	   get carried.
+	 - Made a second attempt at FFMPEG jpg/png loaders.  With the
+	   fix above, all seems correct.
+
 v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
 	 - Added versioning to the sequences/movies.
 	   This allows to handle clips of the same shot, but different
