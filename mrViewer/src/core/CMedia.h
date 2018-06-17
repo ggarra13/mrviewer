@@ -524,7 +524,7 @@ class CMedia
     inline void label( const char* x ) { _label = strdup(x); }
 
     ////////////////// Set the frame for the current image (sequence)
-    virtual bool    frame( const int64_t frame );
+    virtual bool    frame( int64_t frame );
     virtual int64_t frame() const { return _frame; }
 
     ///////////////// Decoding time stamp
