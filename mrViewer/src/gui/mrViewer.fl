@@ -104,7 +104,7 @@ declblock {\#ifdef _WIN32} {after {\#endif}
   }
 } 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
   code {std::string orig = ctl;} {}
   {fltk::Window} {} {
@@ -669,8 +669,7 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
@@ -2157,7 +2156,7 @@ uiICC_float_profile->do_callback();}
                 extra_code {o->value( "_v" );}
               }
               {fltk::ValueInput} uiPrefsMaxImagesApart {
-                label {Max. Images Apart} selected
+                label {Max. Images Apart}
                 tooltip {Maximum number of images apart that the versions might be on disk.  If you have v1, and this is set to 5, only up to a gap with v6 would be found.  v7 would not get found as the gap would be too big.}
                 xywh {160 65 50 25} minimum 1 maximum 100 step 1 value 10
               }
@@ -2745,7 +2744,8 @@ for ( ; w ; w = w->next() )
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class LogUI {} {
+  class LogUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
@@ -2756,8 +2756,8 @@ for ( ; w ; w = w->next() )
         {fltk::Group} {} {open
           xywh {5 5 630 240} resizable
         } {
-          {fltk::TextDisplay} uiLogText {
-            xywh {0 0 625 200} resizable
+          {fltk::TextDisplay} uiLogText {selected
+            xywh {0 0 625 200} resizable labelfont 4 textfont 4
             class {mrv::LogDisplay}
           }
           {fltk::Group} {} {open
