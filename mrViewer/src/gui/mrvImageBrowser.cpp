@@ -2175,7 +2175,7 @@ void ImageBrowser::load( const stringArray& files,
         }
         else {
             num--;
-            num2 -= sum;
+            num2 += sum;
         }
         LOG_ERROR( _("Versions ") << num << _(" to ") << num2
                    << _(" not found on disk for ") << img->name()  );
