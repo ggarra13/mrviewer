@@ -42,8 +42,8 @@ namespace mrv
        Reel_t( const char* n ) : name( n ), edl(false) {}
        ~Reel_t() {}
 
-       mrv::media media_at( const boost::int64_t f ) const;
-       inline CMedia* image_at( const boost::int64_t f ) const
+       mrv::media media_at( const int64_t f ) const;
+       inline CMedia* image_at( const int64_t f ) const
        {
 	  mrv::media m = media_at( f );
 	  if (!m) return NULL;
@@ -54,9 +54,13 @@ namespace mrv
 
        size_t index( const CMedia* const img ) const;
        size_t index( const int64_t frame ) const;
-       boost::int64_t global_to_local( const boost::int64_t f ) const;
-       boost::int64_t offset( const CMedia* const img ) const;
-       inline boost::int64_t location( const CMedia* const img ) const
+
+      // Given a frame in the timeline, return the local frame for the image
+      // at that point in the timeline.  If no image, return AV_NOPTS_VALUE.
+      int64_t global_to_local( const int64_t frame ) const;
+      
+       int64_t offset( const CMedia* const img ) const;
+       inline int64_t location( const CMedia* const img ) const
        {
           return offset( img ) + 1;
        }
