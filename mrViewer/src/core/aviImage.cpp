@@ -2729,24 +2729,24 @@ bool aviImage::fetch(const int64_t frame)
        _right_eye->fetch( frame );
     }
 
-   bool got_video = !has_video();
-   bool got_audio = !has_audio();
-   bool got_subtitle = !has_subtitle();
-
-   int64_t f = frame;
+    bool got_video = !has_video();
+    bool got_audio = !has_audio();
+    bool got_subtitle = !has_subtitle();
+    
+    int64_t f = handle_loops( frame );
    
-  // if ( _has_image_seq && got_audio && in_video_store(f) )
-  // {
-  //     bool ok = find_image( f );
-  //      if ( !ok )
-  //          IMG_ERROR( _("find_image: Could not get cache of frame ")
-  //                    << frame );
-  //      _frame = f;
-  //      _dts = f;
-  //      _expected = _dts + 1;
+  if ( _has_image_seq && got_audio && in_video_store(f) )
+  {
+      bool ok = find_image( f );
+      if ( !ok )
+	  IMG_ERROR( _("find_image: Could not get cache of frame ")
+                     << frame );
+      _frame = f;
+      _dts = f;
+      _expected = _dts + 1;
   
-  //     return ok;
-  // }
+      return ok;
+  }
 
    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
    {
