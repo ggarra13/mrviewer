@@ -2497,16 +2497,25 @@ bool ImageView::preload()
         return true;
     }
 
-    int64_t f = r->global_to_local( _preframe );
+    int64_t f;
+    if ( r->edl )
+    {
+	f = r->global_to_local( _preframe );
+    }
+    else
+    {
+	f = img->frame();
+    }
     int64_t tfirst = timeline()->display_minimum();
     int64_t first  = img->first_frame();
     int64_t tlast  = timeline()->display_maximum();
     int64_t last   = img->last_frame();
-    if ( tfirst > first ) first = tfirst;
-    if ( tlast < last )    last = tlast;
+    if ( tfirst > first && tfirst < last ) first = tfirst;
+    if ( tlast < last   && tlast > first )  last = tlast;
     int64_t i = f;
+    
     bool found = false;
-
+    
     // Find a frame to cache from timeline point on
     for ( ; i <= last; ++i )
     {
@@ -2536,7 +2545,6 @@ bool ImageView::preload()
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
-        DBG( "Found image " << i  );
         if ( ! img->find_image( i ) ) // this loads the frame if not present
         {
             // Frame not found or error. Update _preframe.
