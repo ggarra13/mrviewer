@@ -15,6 +15,15 @@
    fun:_ZN7BButton6layoutEv
 }
 {
+   uiMain->uiView
+   Memcheck:Cond
+   fun:__printf_fp (printf_fp.c:970)
+   fun:vfprintf (vfprintf.c:1596)
+   fun:__vsprintf_chk (vsprintf_chk.c:86)
+   fun:__sprintf_chk (sprintf_chk.c:33)
+   fun:mrv::Timeline::minimum(double)
+}
+{
    Zip inflate
    Memcheck:Cond
    fun:inflateReset2

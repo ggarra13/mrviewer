@@ -847,7 +847,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences loading( base, "loading" );
 
-    loading.get( "load_library", tmp, 0 );
+    loading.get( "load_library", tmp, 1 );
     uiPrefs->uiPrefsLoadLibrary->value( tmp );
 
     loading.get( "drag_load_seq", tmp, 1 );
