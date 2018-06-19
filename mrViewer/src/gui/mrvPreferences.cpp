@@ -847,9 +847,9 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences loading( base, "loading" );
 
-    loading.get( "oiio_readers", tmp, 1 );
-    uiPrefs->uiPrefsOIIOReaders->value( (bool) tmp );
-    
+    loading.get( "load_library", tmp, 0 );
+    uiPrefs->uiPrefsLoadLibrary->value( tmp );
+
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
 
@@ -1313,8 +1313,9 @@ static const char* kCLocale = "C";
     }
 
     // Handle file loading
-    CMedia::oiio_readers = uiPrefs->uiPrefsOIIOReaders->value();
-    
+    CMedia::load_library = (CMedia::LoadLib)
+                           uiPrefs->uiPrefsLoadLibrary->value();
+
     //
     // Handle file requester
     //
@@ -1782,7 +1783,7 @@ static const char* kCLocale = "C";
     caches.set( "image_size", uiPrefs->uiPrefsImageCacheSize->value() );
 
     fltk::Preferences loading( base, "loading" );
-    loading.set( "oiio_readers", (int)uiPrefs->uiPrefsOIIOReaders->value() );
+    loading.set( "load_library", uiPrefs->uiPrefsLoadLibrary->value() );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "file_assoc_load_seq",
                  (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
