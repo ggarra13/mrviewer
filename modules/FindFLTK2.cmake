@@ -96,7 +96,7 @@ IF(NOT FLTK2_DIR)
     DOC "The ${FLTK2_DIR_STRING}"
     )
 
-  IF(NOT FLTK2_DIR) 
+  IF(NOT FLTK2_DIR)
     FIND_PATH(FLTK2_DIR fltk/run.h ${FLTK2_INCLUDE_SEARCH_PATH} /usr/local/include)
   ENDIF(NOT FLTK2_DIR)
 
@@ -117,33 +117,34 @@ IF(FLTK2_DIR)
     INCLUDE(${FLTK2_DIR}/FLTK2Config.cmake)
 
     # Fluid
-    IF(FLUID_COMMAND) 
+    IF(FLUID_COMMAND)
       SET(FLTK2_FLUID_EXECUTABLE ${FLUID_COMMAND} CACHE FILEPATH "Fluid executable")
-    ELSE(FLUID_COMMAND) 
-      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2 fluid2d.exe fluid2_wdlld.exe fluid2d PATHS 
-        ${FLTK2_EXECUTABLE_DIRS}
-        ${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
-        ${FLTK2_EXECUTABLE_DIRS}/Debug
-        ${FLTK2_EXECUTABLE_DIRS}/Release
+    ELSE(FLUID_COMMAND)
+      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2 fluid2d.exe fluid2_wdlld.exe fluid2d PATHS
+	${FLTK2_EXECUTABLE_DIRS}
+	${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
+	${FLTK2_EXECUTABLE_DIRS}/Debug
+	${FLTK2_EXECUTABLE_DIRS}/Release
 	${FLTK2_DIR}/bin/x${CMAKE_BUILD_ARCH}
 	${FLTK2_DIR}/fluid/
-        NO_SYSTEM_PATH)
+	NO_SYSTEM_PATH)
     ENDIF(FLUID_COMMAND)
 
     MARK_AS_ADVANCED(FLTK2_FLUID_EXECUTABLE)
     SET( FLTK_FLUID_EXECUTABLE ${FLTK2_FLUID_EXECUTABLE} )
 
-    
+
 
 
     SET(FLTK2_INCLUDE_DIR ${FLTK2_DIR}/include)
 
+    MESSAGE( "PATHS=" ${FLTK2_LIBRARY_SEARCH_PATH} )
 
     	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dll fltk2 fltk2dlld fltk2d
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
       	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gl fltk2_gl fltk2dll_gld fltk2_gld
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_images fltk2_images fltk2dll_imagesd fltk2_imagesd
+	FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_images fltk2_images fltk2dll_imagesd fltk2_imagesd
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
 
     # Add the extra libraries
@@ -173,9 +174,9 @@ IF(FLTK2_DIR)
 
     # if FLTK2 was not built using CMake
     # Find fluid executable.
-    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2d.exe fluid2 
-    			PATHS 
-			${FLTK2_DIR}/fluid 
+    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2d.exe fluid2
+    			PATHS
+			${FLTK2_DIR}/fluid
 			${FLTK2_DIR}/bin/x${CMAKE_BUILD_ARCH}/Release
 			)
 
@@ -186,9 +187,9 @@ IF(FLTK2_DIR)
       SET( FLTK_FLUID_EXECUTABLE ${FLTK2_FLUID_EXECUTABLE} )
       GET_FILENAME_COMPONENT(FLTK2_BIN_DIR "${FLTK2_FLUID_EXECUTABLE}" PATH)
       SET(FLTK2_INCLUDE_SEARCH_PATH ${FLTK2_INCLUDE_SEARCH_PATH}
-        ${FLTK2_BIN_DIR}/../include ${FLTK2_BIN_DIR}/..)
+	${FLTK2_BIN_DIR}/../include ${FLTK2_BIN_DIR}/..)
       SET(FLTK2_LIBRARY_SEARCH_PATH ${FLTK2_LIBRARY_SEARCH_PATH}
-        ${FLTK2_BIN_DIR}/../lib)
+	${FLTK2_BIN_DIR}/../lib)
       SET(FLTK2_WRAP_UI 1)
     ENDIF(FLTK2_FLUID_EXECUTABLE)
 
@@ -204,7 +205,7 @@ IF(FLTK2_DIR)
     FIND_PATH(FLTK2_INCLUDE_DIR fltk/run.h ${FLTK2_INCLUDE_SEARCH_PATH})
       MESSAGE( FLTK2_INCLUDE_DIR ${FLTK2_INCLUDE_DIR}  ${FLTK2_DIR})
 
-    SET(FLTK2_LIBRARY_SEARCH_PATH 
+    SET(FLTK2_LIBRARY_SEARCH_PATH
       ${FLTK2_DIR}/lib/x${CMAKE_BUILD_ARCH}/Release
       ${FLTK2_DIR}/lib/x${CMAKE_BUILD_ARCH}/Debug
       /usr/lib
@@ -217,11 +218,11 @@ IF(FLTK2_DIR)
       MESSAGE( STATUS "SEARCH=${FLTK2_LIBRARY_SEARCH_PATH}" )
 
       IF( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
-    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2d fltk2dlld 
+    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2d fltk2dlld
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
       	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gld fltk2_gld fltk2_gl
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY 
+	FIND_LIBRARY(FLTK2_IMAGES_LIBRARY
 	  NAMES fltk2dll_imagesd fltk2_imagesd fltk2_images
       	  PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
       ELSE( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
@@ -229,13 +230,13 @@ IF(FLTK2_DIR)
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
       	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2_gl
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2_images
+	FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2_images
       	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
       ENDIF( "${CMAKE_BUILD_TYPE}" STREQUAL "Debug" )
 
 
 
-    
+
     FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES ${FLTK2_BASE_LIBRARY}
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
     FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES ${FLTK2_GL_LIBRARY}
@@ -247,18 +248,18 @@ IF(FLTK2_DIR)
     IF(UNIX)
       FIND_PROGRAM(FLTK2_CONFIG_SCRIPT fltk2-config PATHS ${FLTK2_BIN_DIR})
       IF(FLTK2_CONFIG_SCRIPT)
-        EXEC_PROGRAM(${FLTK2_CONFIG_SCRIPT} ARGS --use-images --ldflags
-          OUTPUT_VARIABLE FLTK2_IMAGES_LDFLAGS)
-        SET(FLTK2_LIBS_EXTRACT_REGEX ".*-lfltk2_images (.*) -lfltk2.*")
-        IF("${FLTK2_IMAGES_LDFLAGS}" MATCHES "${FLTK2_LIBS_EXTRACT_REGEX}")
-          STRING(REGEX REPLACE "${FLTK2_LIBS_EXTRACT_REGEX}" "\\1"
-            FLTK2_IMAGES_LIBS "${FLTK2_IMAGES_LDFLAGS}")
-          STRING(REGEX REPLACE " +" ";" FLTK2_IMAGES_LIBS "${FLTK2_IMAGES_LIBS}")
-          # The EXEC_PROGRAM will not be inherited into subdirectories from
-          # the file that originally included this module.  Save the answer.
-          SET(FLTK2_IMAGES_LIBS "${FLTK2_IMAGES_LIBS}" CACHE INTERNAL
-            "Extra libraries for fltk_images library.")
-        ENDIF("${FLTK2_IMAGES_LDFLAGS}" MATCHES "${FLTK2_LIBS_EXTRACT_REGEX}")
+	EXEC_PROGRAM(${FLTK2_CONFIG_SCRIPT} ARGS --use-images --ldflags
+	  OUTPUT_VARIABLE FLTK2_IMAGES_LDFLAGS)
+	SET(FLTK2_LIBS_EXTRACT_REGEX ".*-lfltk2_images (.*) -lfltk2.*")
+	IF("${FLTK2_IMAGES_LDFLAGS}" MATCHES "${FLTK2_LIBS_EXTRACT_REGEX}")
+	  STRING(REGEX REPLACE "${FLTK2_LIBS_EXTRACT_REGEX}" "\\1"
+	    FLTK2_IMAGES_LIBS "${FLTK2_IMAGES_LDFLAGS}")
+	  STRING(REGEX REPLACE " +" ";" FLTK2_IMAGES_LIBS "${FLTK2_IMAGES_LIBS}")
+	  # The EXEC_PROGRAM will not be inherited into subdirectories from
+	  # the file that originally included this module.  Save the answer.
+	  SET(FLTK2_IMAGES_LIBS "${FLTK2_IMAGES_LIBS}" CACHE INTERNAL
+	    "Extra libraries for fltk_images library.")
+	ENDIF("${FLTK2_IMAGES_LDFLAGS}" MATCHES "${FLTK2_LIBS_EXTRACT_REGEX}")
       ENDIF(FLTK2_CONFIG_SCRIPT)
     ENDIF(UNIX)
 
@@ -293,13 +294,12 @@ ELSE(FLTK2_FOUND)
   # make FIND_PACKAGE friendly
   IF(NOT FLTK2_FIND_QUIETLY)
     IF(FLTK2_FIND_REQUIRED)
-      MESSAGE(STATUS "include: " ${FLTK2_INCLUDE_DIR} 
+      MESSAGE(STATUS "include: " ${FLTK2_INCLUDE_DIR}
       		     " libs: " ${FLTK2_LIBRARIES} )
       MESSAGE(FATAL_ERROR
-              "FLTK2 required, please specify its location with FLTK2_DIR.")
+	      "FLTK2 required, please specify its location with FLTK2_DIR.")
     ELSE(FLTK2_FIND_REQUIRED)
       MESSAGE(STATUS "FLTK2 was not found.")
     ENDIF(FLTK2_FIND_REQUIRED)
   ENDIF(NOT FLTK2_FIND_QUIETLY)
 ENDIF(FLTK2_FOUND)
-
