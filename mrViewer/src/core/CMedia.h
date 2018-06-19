@@ -730,13 +730,13 @@ class CMedia
     inline int64_t   end_frame()  const { return _frame_end; }
 
     inline void loop_start( int64_t x ) { _loop_start = x; }
-    
+
     inline int64_t loop_start() const { return _loop_start; }
-    
+
     inline void loop_end( int64_t x ) { _loop_end = x; }
-    
+
     inline int64_t loop_end() const { return _loop_end; }
-    
+
     inline InterlaceType interlaced() const { return _interlaced; }
 
     /// Returns the number of channels in the image
@@ -1130,7 +1130,7 @@ class CMedia
 
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
-    
+
     static bool supports_yuva()         { return _supports_yuva; }
     static void supports_yuva( bool x ) { _supports_yuva = x; }
 
@@ -1187,7 +1187,13 @@ class CMedia
     Clock extclk;
 
     bool _has_deep_data;
-    static bool oiio_readers;
+    enum LoadLib
+    {
+        kFFMPEGLibrary,
+        kOIIOLibrary,
+        kImageMagickLibrary
+    };
+    static LoadLib load_library;
 
   protected:
 
