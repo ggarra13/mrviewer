@@ -317,10 +317,11 @@ namespace mrv {
 
     fclose(f);
 
-    _layers.clear();
-    _num_channels = 0;
-    default_layers();
-
+    if ( _num_channels == 0 )
+    {
+	default_layers();
+    }
+    
     return true;
   }
 
