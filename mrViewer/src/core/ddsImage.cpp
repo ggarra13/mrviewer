@@ -1290,12 +1290,14 @@ namespace mrv {
     image_size( ddsd.dwWidth, ddsd.dwHeight );
     allocate_pixels(frame);
 
-    _layers.clear();
-    _num_channels = 0;
     _gamma = 1.0f;
-    rgb_layers();
-    lumma_layers();
 
+    if ( _num_channels == 0 )
+    {
+	rgb_layers();
+	lumma_layers();
+    }
+    
     /*
       Decode scanlines
     */

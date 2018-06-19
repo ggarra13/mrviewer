@@ -669,14 +669,15 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {398 493 700 450} hide resizable
+        xywh {398 493 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2120,13 +2121,23 @@ uiICC_float_profile->do_callback();}
             label Loading open
             xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {14 5 400 204} box ROUNDED_BOX
             } {
-              {fltk::CheckButton} uiPrefsOIIOReaders {
-                label {Use OIIO for JPG/PNG loading}
-                tooltip {When loading a sequence, mrViewer will usually use the multithreaded JPG and PNG loaders of FFMPEG.  These loaders can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images.  Alternatively, you can set this setting to on to load the images with the OIIO loader which is not as fast but allows pre-caching of images.}
-                xywh {20 29 25 25} box UP_BOX value 1
+              {fltk::Choice} uiPrefsLoadLibrary {
+                label {JPG/PNG/DPX Load Library} open selected
+                tooltip {When loading a sequence, mrViewer will usually use the multithreaded JPG, DPX and PNG loaders of FFMPEG.  These loaders can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow preloading.  Alternatively, you can set this setting to on to load the images with the OIIO or ImageMagick loaders which are not as fast but allow pre-caching of images.}
+                xywh {200 29 165 25} box UP_BOX value 1
+              } {
+                {fltk::Item} {} {
+                  label FFMPEG
+                  }
+                {fltk::Item} {} {
+                  label OIIO
+                  }
+                {fltk::Item} {} {
+                  label ImageMagick
+                  }
               }
               {fltk::CheckButton} uiPrefsLoadSequence {
                 label { Load Sequence on Drag&&Drop}
@@ -2516,19 +2527,19 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );} open
+            callback {o->update( v );}
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -2744,8 +2755,7 @@ for ( ; w ; w = w->next() )
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class LogUI {open
-  } {
+  class LogUI {} {
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
@@ -2756,25 +2766,9 @@ for ( ; w ; w = w->next() )
         {fltk::Group} {} {open
           xywh {5 5 630 240} resizable
         } {
-          {fltk::TextDisplay} uiLogText {selected
+          {fltk::TextDisplay} uiLogText {
             xywh {0 0 625 200} resizable labelfont 4 textfont 4
             class {mrv::LogDisplay}
-          }
-          {fltk::Group} {} {open
-            xywh {450 200 175 40}
-          } {
-            {fltk::Button} {} {
-              label Save
-              user_data uiLogText user_data_type {mrv::LogDisplay*}
-              callback {v->save();}
-              xywh {90 5 75 30}
-            }
-            {fltk::Button} {} {
-              label Clear
-              user_data uiLogText user_data_type {mrv::LogDisplay*}
-              callback {v->clear();}
-              xywh {10 5 75 30}
-            }
           }
         }
       }
@@ -3062,8 +3056,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3096,13 +3089,13 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
+        callback {delete v;}
         xywh {770 416 640 534} when CHANGED hide resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
@@ -3444,7 +3437,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::Group} uiViewGroup {open
+          {fltk::Group} uiViewGroup {
             xywh {0 28 640 430} resizable
             class {fltk::Group}
           } {
