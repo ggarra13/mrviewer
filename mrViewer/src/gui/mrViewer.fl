@@ -2126,7 +2126,7 @@ uiICC_float_profile->do_callback();}
             } {
               {fltk::Choice} uiPrefsLoadLibrary {
                 label {JPG/PNG/DPX Load Library} open selected
-                tooltip {When loading a sequence, mrViewer will usually use the multithreaded JPG, DPX and PNG loaders of FFMPEG.  These loaders can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow preloading.  Alternatively, you can set this setting to on to load the images with the OIIO or ImageMagick loaders which are not as fast but allow pre-caching of images.}
+                tooltip {When loading a sequence, mrViewer will usually use OIIO loaders which give a good compromise between speed and quality.  OIIO loaders allow precaching and gaps in the sequence.  FFMPEG loaders are multithreaded JPG, DPX and PNG and can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow precaching.  The FFMPEG loaders also cannot have gaps in the sequence.  Finally, ImageMagick loaders are not as fast but share the similar features of OIIO.}
                 xywh {200 29 165 25} box UP_BOX value 1
               } {
                 {fltk::Item} {} {
