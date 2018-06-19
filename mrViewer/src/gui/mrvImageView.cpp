@@ -2500,11 +2500,11 @@ bool ImageView::preload()
     int64_t f;
     if ( r->edl )
     {
-	f = r->global_to_local( _preframe );
+        f = r->global_to_local( _preframe );
     }
     else
     {
-	f = img->frame();
+        f = img->frame();
     }
     int64_t tfirst = timeline()->display_minimum();
     int64_t first  = img->first_frame();
@@ -2513,9 +2513,9 @@ bool ImageView::preload()
     if ( tfirst > first && tfirst < last ) first = tfirst;
     if ( tlast < last   && tlast > first )  last = tlast;
     int64_t i = f;
-    
+
     bool found = false;
-    
+
     // Find a frame to cache from timeline point on
     for ( ; i <= last; ++i )
     {
@@ -2822,7 +2822,7 @@ void ImageView::vr( VRType t )
  */
 void ImageView::draw()
 {
-    
+
     DBG( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
@@ -3671,36 +3671,36 @@ int ImageView::leftMouseDown(int x, int y)
                if ( hud() & (1 << i) ) item->set();
             }
 
-	    bool has_version = false;
+            bool has_version = false;
 
-	    CMedia* img = fg->image();
-	    std::string file = img->fileroot();
-	    file = fs::path( file ).leaf().string();
-	    std::string dir = img->directory();
-	    file = dir + "/" + file;
-	    size_t pos = 0;
-	    mrv::PreferencesUI* prefs = main()->uiPrefs;
-	    std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
-	    if ( (pos = file.find( prefix, pos) ) != std::string::npos )
-		has_version = true;
-	    
-	    if ( has_version )
-	    {
-		menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
-			  (fltk::Callback*)next_image_version_cb, browser());
-		menu.add( _("Image/Previous Version"),
-			  kPreviousVersionImage.hotkey(),
-			  (fltk::Callback*)previous_image_version_cb,
-			  browser(), fltk::MENU_DIVIDER);
+            CMedia* img = fg->image();
+            std::string file = img->fileroot();
+            file = fs::path( file ).leaf().string();
+            std::string dir = img->directory();
+            file = dir + "/" + file;
+            size_t pos = 0;
+            mrv::PreferencesUI* prefs = main()->uiPrefs;
+            std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
+            if ( (pos = file.find( prefix, pos) ) != std::string::npos )
+                has_version = true;
+
+            if ( has_version )
+            {
+                menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
+                          (fltk::Callback*)next_image_version_cb, browser());
+                menu.add( _("Image/Previous Version"),
+                          kPreviousVersionImage.hotkey(),
+                          (fltk::Callback*)previous_image_version_cb,
+                          browser(), fltk::MENU_DIVIDER);
             }
-	    
+
             menu.add( _("Image/Next"), kNextImage.hotkey(),
                       (fltk::Callback*)next_image_cb, browser());
             menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
                       (fltk::Callback*)previous_image_cb,
                       browser(), fltk::MENU_DIVIDER);
 
-	    
+
             const stubImage* simg = dynamic_cast< const stubImage* >( image() );
             if ( simg )
             {
@@ -7258,7 +7258,6 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // Root name if channel name minus the last .extension.
         // Like sub.AO.R, root is sub.AO
-
         pos = root.find('.');
 
         if ( pos != std::string::npos )
@@ -7285,15 +7284,20 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         const std::string& name = *i;
 
-        if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
+        std::string tmp = x + '.';
+        if ( o && x != _("Alpha") && tmp != "." && name.find(tmp) == 0 )
         {
             if ( group )
             {
                 // Copy shortcut to group and replace leaf with group
-                unsigned last = uiColorChannel->children()-1;
-                fltk::Widget* w = uiColorChannel->child(last);
-                unsigned s = w->shortcut();
-                uiColorChannel->remove( w );
+                unsigned s = 0;
+                if ( uiColorChannel->children() >= 1 )
+                {
+                    unsigned last = uiColorChannel->children()-1;
+                    fltk::Widget* w = uiColorChannel->child(last);
+                    s = w->shortcut();
+                    uiColorChannel->remove( w );
+                }
                 g = uiColorChannel->add_group( x.c_str(), NULL );
                 g->shortcut( s );
                 group = false;
@@ -7302,7 +7306,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             // Now add current leaf, but without # prefix and period
             std::string y = name;
 
-            if ( x.size() != name.size() && x.size() < name.size() )
+            if ( x.size() < name.size() )
                 y = name.substr( x.size()+1, name.size() );
 
             o = uiColorChannel->add_leaf( y.c_str(), g );
@@ -7412,8 +7416,8 @@ void ImageView::foreground( mrv::media fg )
     CMedia* img = NULL;
     if ( fg )
     {
-	img = fg->image();
-	
+        img = fg->image();
+
         double fps = img->fps();
         if ( img->is_sequence() &&
              uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
@@ -7431,7 +7435,7 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiStartFrame->timecode( tc );
         uiMain->uiEndFrame->fps( fps );
         uiMain->uiEndFrame->timecode( tc );
-	uiMain->uiFPS->value( img->play_fps() );
+        uiMain->uiFPS->value( img->play_fps() );
 
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
         {
@@ -8360,7 +8364,7 @@ void ImageView::fps( double x )
     mrv::media bg = background();
     if ( bg ) bg->image()->play_fps( x );
 
-    
+
     timeline()->fps( x );
     uiMain->uiFrame->fps( x );
     uiMain->uiStartFrame->fps( x );
