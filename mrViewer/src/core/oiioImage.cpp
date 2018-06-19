@@ -101,6 +101,15 @@ namespace mrv {
       std::string f = file;
       std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
 
+
+      if ( f.rfind(".dpx") != std::string::npos )
+      {
+          if ( CMedia::load_library != CMedia::kOIIOLibrary )
+          {
+              return false;
+          }
+      }
+
       if ( f.rfind(".psd") != std::string::npos )
           return false;
 
@@ -126,11 +135,6 @@ namespace mrv {
 
   bool oiioImage::fetch( const boost::int64_t frame )
   {
-
-      _layers.clear();
-      _num_channels = 0;
-
-
       const char* const file = filename();
       std::unique_ptr<ImageInput> in = ImageInput::open( file );
       if (!in)
@@ -230,7 +234,11 @@ namespace mrv {
 
       if ( _num_channels == 0 )
       {
-          if ( channels >= 3 )
+          if ( channels == 1 )
+          {
+              lumma_layers();
+          }
+          else if ( channels >= 2 )
           {
               rgb_layers();
               lumma_layers();
@@ -246,6 +254,7 @@ namespace mrv {
               _layers.push_back( _("Z") );
               ++_num_channels;
           }
+
       }
 
       image_size( dw, dh );
@@ -282,15 +291,16 @@ namespace mrv {
 
       switch( channels )
       {
-          case 1:
-              type = image_type::kLumma; break;
-          case 3:
-              type = image_type::kRGB;   break;
-          case 4:
-              type = image_type::kRGBA;  break;
-          default:
-              IMG_ERROR( _("Unknown number of channels") );
-              return false;
+      case 1:
+          type = image_type::kLumma; break;
+      case 2:
+      case 3:
+          type = image_type::kRGB;   break;
+      case 4:
+          type = image_type::kRGBA;  break;
+      default:
+          IMG_ERROR( _("Unknown number of channels") );
+          return false;
       }
 
       allocate_pixels( frame, channels, type, pixel_type, dw, dh );
@@ -320,10 +330,10 @@ bool oiioImage::save( const char* path, const CMedia* img,
     size_t pos = ext.rfind( '.' );
     if ( pos != std::string::npos )
     {
-	ext = ext.substr( pos, ext.size() );
+        ext = ext.substr( pos, ext.size() );
     }
     std::transform( ext.begin(), ext.end(), ext.begin(),
-		    (int(*)(int)) tolower );
+                    (int(*)(int)) tolower );
 
     TypeDesc::BASETYPE type;
     mrv::image_type_ptr pic = img->hires();
@@ -344,7 +354,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
     }
     else
     {
-	maxPixelType = image_type::kFloat;
+        maxPixelType = image_type::kFloat;
     }
 
     if ( pt < maxPixelType ) maxPixelType = pt;
@@ -403,10 +413,10 @@ bool oiioImage::save( const char* path, const CMedia* img,
     }
     if ( channels >= 4 && (ext == ".rgbe" || ext == ".hdr" || ext == ".hdri" ))
     {
-	LOG_ERROR( _("Too many channels in image.  Saving RGB only") );
-	channels = 3; format = image_type::kRGB;
+        LOG_ERROR( _("Too many channels in image.  Saving RGB only") );
+        channels = 3; format = image_type::kRGB;
     }
-    
+
     ImageSpec spec( dw, dh, channels, type );
     spec.full_x = 0;
     spec.full_y = 0;
@@ -416,88 +426,88 @@ bool oiioImage::save( const char* path, const CMedia* img,
     spec.y = daw.y();
     spec.width = dw;
     spec.height = dh;
-    
+
 
     if ( opts->mipmap() )
     {
-	ImageBuf ir( img->name(), spec, (void*)pic->data().get() );
+        ImageBuf ir( img->name(), spec, (void*)pic->data().get() );
         ImageBufAlgo::MakeTextureMode mode = ImageBufAlgo::MakeTxTexture;
-	ImageSpec config;
-	config.attribute ( N_("maketx:highlightcomp"), 1);
-	config.attribute ( N_("maketx:filtername"), N_("lanczos3") );
-	config.attribute ( N_("maketx:opaquedetect"), 1);
-	if ( must_convert && Preferences::use_ocio &&
-	     Preferences::uiMain->uiView->use_lut() )
-	{
-	    config.attribute ( N_("maketx:incolorspace"),
-			      img->ocio_input_color_space() );
-	    const std::string& display = mrv::Preferences::OCIO_Display;
-	    const std::string& view = mrv::Preferences::OCIO_View;
-	    config.attribute ( N_("maketx:outcolorspace"), view.c_str() );
-	}
-	
-	bool ok = ImageBufAlgo::make_texture( mode, ir, path, config, NULL );
-	if ( !ok )
-	{
-	    LOG_ERROR( _("ImageBufAlgo::make_texture failed.") );
-	    return false;
-	}
+        ImageSpec config;
+        config.attribute ( N_("maketx:highlightcomp"), 1);
+        config.attribute ( N_("maketx:filtername"), N_("lanczos3") );
+        config.attribute ( N_("maketx:opaquedetect"), 1);
+        if ( must_convert && Preferences::use_ocio &&
+             Preferences::uiMain->uiView->use_lut() )
+        {
+            config.attribute ( N_("maketx:incolorspace"),
+                              img->ocio_input_color_space() );
+            const std::string& display = mrv::Preferences::OCIO_Display;
+            const std::string& view = mrv::Preferences::OCIO_View;
+            config.attribute ( N_("maketx:outcolorspace"), view.c_str() );
+        }
+
+        bool ok = ImageBufAlgo::make_texture( mode, ir, path, config, NULL );
+        if ( !ok )
+        {
+            LOG_ERROR( _("ImageBufAlgo::make_texture failed.") );
+            return false;
+        }
     }
     else
     {
 
-	try
-	{
-	    out->open( path, spec );
+        try
+        {
+            out->open( path, spec );
 
-	    unsigned short pixel_size = pic->pixel_size();
-	    if ( !must_convert )
-	    {
-		if ( pic->channels() > channels )
-		{
-		    mrv::image_type_ptr ptr =
-		    image_type_ptr( new image_type(
-						   img->frame(),
-						   dw, dh, 3,
-						   image_type::kRGB,
-						   pic->pixel_type() ) );
-		    copy_image( ptr, pic );
-		    pic = ptr;
-		}
+            unsigned short pixel_size = pic->pixel_size();
+            if ( !must_convert )
+            {
+                if ( pic->channels() > channels )
+                {
+                    mrv::image_type_ptr ptr =
+                    image_type_ptr( new image_type(
+                                                   img->frame(),
+                                                   dw, dh, 3,
+                                                   image_type::kRGB,
+                                                   pic->pixel_type() ) );
+                    copy_image( ptr, pic );
+                    pic = ptr;
+                }
 
-		mrv::aligned16_uint8_t* p = pic->data().get();
-		unsigned mult = dw * pic->channels() * pixel_size;
-		for ( int y = spec.y; y < spec.y + daw.h(); ++y )
-		{
-		    void* line = &p[(y-spec.y) * mult ];
-		    out->write_scanline( y, 0, type, line );
-		}
-	    }
-	    else
-	    {
-		prepare_image( pic, img, format, pt );
+                mrv::aligned16_uint8_t* p = pic->data().get();
+                unsigned mult = dw * pic->channels() * pixel_size;
+                for ( int y = spec.y; y < spec.y + daw.h(); ++y )
+                {
+                    void* line = &p[(y-spec.y) * mult ];
+                    out->write_scanline( y, 0, type, line );
+                }
+            }
+            else
+            {
+                prepare_image( pic, img, format, pt );
 
-		mrv::aligned16_uint8_t* p = pic->data().get();
-		int yh = spec.y + dh;
-		unsigned mult = dw * pic->channels() * pixel_size;
-		for ( int y = spec.y; y < yh; ++y )
-		{
-		    mrv::aligned16_uint8_t* line = p;
-		    line += (y-spec.y) * mult;
-		    out->write_scanline( y, 0, type, line );
-		}
-	    }
-	}
-	catch( const std::exception& e )
-	{
-	    LOG_ERROR( e.what() );
-	    out->close();
-	    return false;
-	}
+                mrv::aligned16_uint8_t* p = pic->data().get();
+                int yh = spec.y + dh;
+                unsigned mult = dw * pic->channels() * pixel_size;
+                for ( int y = spec.y; y < yh; ++y )
+                {
+                    mrv::aligned16_uint8_t* line = p;
+                    line += (y-spec.y) * mult;
+                    out->write_scanline( y, 0, type, line );
+                }
+            }
+        }
+        catch( const std::exception& e )
+        {
+            LOG_ERROR( e.what() );
+            out->close();
+            return false;
+        }
 
-	out->close();
+        out->close();
     }
-    
+
     return true;
 }
 
