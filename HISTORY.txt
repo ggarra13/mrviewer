@@ -1,18 +1,22 @@
 v4.1.9   - Removed a subtle bug in looping images that did not start at 1.
 	   The result would go unnoticed, but internally a wrong frame would
 	   get carried.
-	 - Made a second attempt at FFMPEG jpg/png loaders.  With the
-	   fix above, all seems correct.
+	 - Made a second attempt at FFMPEG jpg/png/dpx loaders.  With the
+	   fix above, all seems correct.  You can now switch from
+	   FFMPEG, to OIIO or to ImageMagick.
+	 - Bug fixed a race condition in OIIO readers which could crash
+	   the viewer.  This would be mostly be seen when loading DPX
+	   files.
 
 v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
 	 - Added versioning to the sequences/movies.
 	   This allows to handle clips of the same shot, but different
-	   versions as one object. For example if you place a clip with 
+	   versions as one object. For example if you place a clip with
 	   .../SHOT001_v005/SHOT001_v005.%04d.exr
 	   in the reel/timeline, and there is another sequence with:
 	   .../SHOT001_v008/SHOT001_v008.%04d.exr on disk,
 	   you can step through versions by pressing ALT+PgUp (previous
-	   version) or ALT+PgDown (next version).  
+	   version) or ALT+PgDown (next version).
 	   The version number is found by a prefix, by default '_v'.
 	   This can be changed in the Loading section of the preferences.
 	   Note that the version numbers cannot be more than 10 numbers

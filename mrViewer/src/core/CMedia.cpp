@@ -116,7 +116,7 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 bool        CMedia::_supports_yuva = false;
-bool        CMedia::oiio_readers = false;
+CMedia::LoadLib CMedia::load_library = CMedia::kFFMPEGLibrary;
 
 double      CMedia::default_fps = 24.f;
 
@@ -254,7 +254,7 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     else if ( m33d )
     {
         const Imath::M33d& m = m33d->value();
-        sprintf( buf, "%g %g %g %g %g %g %g %g %g",
+        sprintf( buf, "%lg %lg %lg %lg %lg %lg %lg %lg %lg",
                  m[0][0], m[0][1], m[0][2],
                  m[1][0], m[1][1], m[1][2],
                  m[2][0], m[2][1], m[2][2] );
@@ -272,7 +272,8 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     else if ( m44d )
     {
         const Imath::M44d& m = m44d->value();
-        sprintf( buf, "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g",
+        sprintf( buf, "%lg %lg %lg %lg %lg %lg %lg %lg "
+                      "%lg %lg %lg %lg %lg %lg %lg %lg",
                  m[0][0], m[0][1], m[0][2], m[0][3],
                  m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
                  m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3]);
@@ -290,7 +291,7 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     else if ( v3d )
     {
         const Imath::V3d& v = v3d->value();
-        sprintf( buf, "%g %g %g", v.x, v.y, v.z );
+        sprintf( buf, "%lg %lg %lg", v.x, v.y, v.z );
         r = buf;
     }
     else if ( v3f )
@@ -316,7 +317,7 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     {
         const Imath::V2d& v = v2d->value();
         char buf[64];
-        sprintf( buf, "%g %g", v.x, v.y );
+        sprintf( buf, "%lg %lg", v.x, v.y );
         r = buf;
     }
     else if ( v2f )
@@ -2487,11 +2488,11 @@ bool CMedia::frame( int64_t f )
       return false;
     }
 
-  
+
   if ( f < _frameStart )     _dts = _frameStart;
   else if ( f > _frameEnd )  _dts = _frameEnd;
   else                       _dts = f;
-  
+
   AVPacket pkt;
   av_init_packet( &pkt );
   pkt.dts = pkt.pts = _dts;
@@ -3595,7 +3596,7 @@ bool CMedia::find_image( const int64_t frame )
       else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
   }
 
-  
+
   if ( _sequence && _sequence[idx] )
     {
         _hires = _sequence[idx];
@@ -3655,7 +3656,7 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-	    _hires = mrv::image_type_ptr( new image_type( frame,
+            _hires = mrv::image_type_ptr( new image_type( frame,
                                                           width(),
                                                           height(),
                                                           1,
@@ -3665,8 +3666,8 @@ bool CMedia::find_image( const int64_t frame )
             cache( _hires );
             _hires->valid( false ); // mark this frame as invalid
             refresh();
-	    LOG_WARNING( file << _(" is missing.") );
-	    return false;
+            LOG_WARNING( file << _(" is missing.") );
+            return false;
         }
      }
   }
