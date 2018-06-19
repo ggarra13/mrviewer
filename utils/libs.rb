@@ -46,7 +46,7 @@ def parse( files )
     rescue
     end
 
-    puts "#{loc} -> #{lib}"
+    puts "loc: #{loc} -> lib: #{lib}"
     orig = lib
     if File.symlink?( loc )
       lib = File.readlink( loc )
@@ -80,12 +80,14 @@ files = []
 
 for exe in exes
   output=`ldd #{exe}`
+  puts "\t#{exe}"
+  puts output
   files += output.split("\n")
+
 end
 
 files.sort!
 files.uniq!
-
 
 parse( files )
 
