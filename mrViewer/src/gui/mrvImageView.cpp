@@ -7266,11 +7266,11 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         }
         else
         {
-            if ( root == _("Red") || root == _("Green") ||
-                 root == _("Blue") || root == _("Alpha") ||
-                 root == _("Alpha Overlay") ||
-                 root == _("Lumma") )
-                root = _("Color");
+            // if ( root == _("Red") || root == _("Green") ||
+            //      root == _("Blue") || root == _("Alpha") ||
+            //      root == _("Alpha Overlay") ||
+            //      root == _("Lumma") )
+            //     root = _("Color");
         }
     }
 
@@ -7322,7 +7322,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        if ( v == -1 && ( x == root ||
+	std::string chx = remove_hash_number( x );
+	std::string chroot = remove_hash_number( root );
+        if ( v == -1 && ( chx == chroot ||
                           (channelName && name == channelName) ) )
         {
             v = idx;
@@ -7333,9 +7335,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
-        std::string ch = name;
-        ch = remove_hash_number( ch );
-        if ( v >= 0 || name == _("Color") || ch == "N" || ch == "Z" )
+        if ( v >= 0 || name == _("Color") || chx == "N" || chx == "Z" )
         {
            // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
