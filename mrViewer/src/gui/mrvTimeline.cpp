@@ -68,6 +68,8 @@ _display_min( kMaxFrame ),
 _display_max( kMinFrame ),
 uiMain( NULL )
 {
+    fltk::Slider::minimum( 1 );
+    fltk::Slider::maximum( 50 );
 }
 
 Timeline::~Timeline()
