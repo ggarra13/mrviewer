@@ -143,10 +143,12 @@ namespace mrv {
     image_size( dw, dh );
     allocate_pixels(frame);
 
-    _layers.clear();
-    _layers.push_back( "Z Depth" );
-
-    _num_channels = 1;
+    if ( _num_channels == 0 )
+    {
+	_layers.push_back( "Z Depth" );
+	_num_channels = 1;
+    }
+    
     _pixel_ratio = 1.0;
     _gamma = 1.0f;
 
