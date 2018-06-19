@@ -2237,6 +2237,7 @@ void ImageBrowser::load( const stringArray& files,
     newImg->gamma( img->gamma() );
     newImg->decode_video( frame );
     newImg->find_image( frame );
+    view()->update_layers();
     newImg->fps( img->fps() );
     newImg->play_fps( img->play_fps() );
 
