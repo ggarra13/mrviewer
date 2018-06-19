@@ -105,9 +105,7 @@ void hdrImage::read_header( FILE* f )
     char line[256];
 
 
-    _num_channels = 0;
     _gamma = 1.0f;
-    _layers.clear();
 
     cieXYZ = flipX = flipY = false;
 
@@ -136,9 +134,12 @@ void hdrImage::read_header( FILE* f )
 
 	if ( strcasecmp( keyword, "FORMAT" ) == 0 )
         {
-	    rgb_layers();
-	    lumma_layers();
-
+	    if ( _num_channels == 0 )
+	    {
+		rgb_layers();
+		lumma_layers();
+	    }
+	    
 	    char* val = strtok_r( NULL, "=", &state );
 
 	    if ( strcasecmp( val, "32-bit_rle_rgbe" ) == 0 )
