@@ -2561,7 +2561,8 @@ void Flu_File_Chooser::listModeCB( fltk::Widget* o )
                   ( currentDir == FAVORITES_UNIQUE_STRING );
   if( listMode )
     {
-      if ( fileListWideBtn->value() )
+      if ( fileListWideBtn->value() &&
+	   !( currentDir == FAVORITES_UNIQUE_STRING ))
         filelist->set_horizontal();
       else
         filelist->set_vertical();
