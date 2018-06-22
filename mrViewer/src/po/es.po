@@ -250,7 +250,7 @@ msgstr " no encontrada en el carrete"
 #
 #: gui/mrvImageBrowser.cpp:2191
 msgid " not found on disk for "
-msgstr " no encontrados en el disco para "
+msgstr " no encontradas en el disco para "
 
 #: core/aviImage.cpp:1598
 msgid " not found, choosing "
@@ -4851,6 +4851,7 @@ msgstr "No existe una transformación RT válida para \""
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 msgstr ""
+"Este clip no tiene versiones.  Por favor cree una imagen o carpeta nombrada con "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2542
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4503
@@ -5486,6 +5487,8 @@ msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
 msgstr ""
+"El prefijo no puede ser un texto vacío.  Por favor tipeé algunas letras para "
+"distinguir la version en el nombre del archivo."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3297
 msgid ""
@@ -5493,6 +5496,9 @@ msgid ""
 "  gizmo_v003.001.exr\n"
 "(version 3, frame 1)."
 msgstr ""
+"Prefijo usado para detectar números de versión.  Por defecto encuentra imágenes como:\n"
+"  gizmo_v003.001.exr\n"
+"(version 3, cuadro 1)."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-128-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2675
 msgid "Preload Cache"
