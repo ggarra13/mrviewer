@@ -2125,7 +2125,7 @@ uiICC_float_profile->do_callback();}
               xywh {14 5 400 204} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsLoadLibrary {
-                label {JPG/PNG/DPX Load Library} open selected
+                label {JPG/PNG/DPX Load Library} open
                 tooltip {When loading a sequence, mrViewer will usually use OIIO loaders which give a good compromise between speed and quality.  OIIO loaders allow precaching and gaps in the sequence.  FFMPEG loaders are multithreaded JPG, DPX and PNG and can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow precaching.  The FFMPEG loaders also cannot have gaps in the sequence.  Finally, ImageMagick loaders are not as fast but share the similar features of OIIO.}
                 xywh {200 29 165 25} box UP_BOX value 1
               } {
@@ -2159,17 +2159,17 @@ uiICC_float_profile->do_callback();}
               xywh {19 224 395 115} box ROUNDED_BOX
             } {
               {fltk::Input} uiPrefsImageVersionPrefix {
-                label {Versioning Prefix}
+                label {Versioning Prefix} selected
                 tooltip {Prefix used to detect version numbers.  The default finds images like:
   gizmo_v003.001.exr
 (version 3, frame 1).}
-                xywh {140 30 94 25}
+                xywh {230 30 94 25}
                 extra_code {o->value( "_v" );}
               }
               {fltk::ValueInput} uiPrefsMaxImagesApart {
                 label {Max. Images Apart}
                 tooltip {Maximum number of images apart that the versions might be on disk.  If you have v1, and this is set to 5, only up to a gap with v6 would be found.  v7 would not get found as the gap would be too big.}
-                xywh {160 65 50 25} minimum 1 maximum 100 step 1 value 10
+                xywh {275 65 50 25} minimum 1 maximum 100 step 1 value 10
               }
             }
           }
