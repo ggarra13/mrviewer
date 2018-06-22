@@ -2077,17 +2077,19 @@ void ImageBrowser::load( const stringArray& files,
     if ( sel < 0 ) sel = 0;
 
     CMedia* img = fg->image();
-    size_t num = reel->images.size();
     size_t i;
-    for ( i = 0; i < num; ++i )
     {
-        if ( reel->images[i] == fg )
+	size_t num = reel->images.size();
+	for ( i = 0; i < num; ++i )
+	{
+	    if ( reel->images[i] == fg )
             break;
-    }
-    if ( i >= num )
-    {
-        LOG_ERROR( _("Image not found in reel ") << reel->name );
-        return;
+	}
+	if ( i >= num )
+	{
+	    LOG_ERROR( _("Image not found in reel ") << reel->name );
+	    return;
+	}
     }
 
     short add = sum;
@@ -2097,6 +2099,13 @@ void ImageBrowser::load( const stringArray& files,
     mrv::PreferencesUI* prefs = main()->uiPrefs;
     std::string newfile;
     std::string number;
+    int64_t     num;
+    std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
+    if ( prefix.empty() )
+    {
+	LOG_ERROR( _("Prefix cannot be an empty string.  Please type some unique characters to distinguish the version in the filename.") );
+	return;
+    }
     unsigned max_tries = prefs->uiPrefsMaxImagesApart->value();
     while ( start == AV_NOPTS_VALUE && tries <= max_tries )
     {
@@ -2107,10 +2116,9 @@ void ImageBrowser::load( const stringArray& files,
 
         size_t pos = 0;
         unsigned padding = 0;
-        std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
-        while ( ( pos = file.find( prefix.c_str(), pos) ) != std::string::npos )
+        while ( ( pos = file.find( prefix, pos) ) != std::string::npos )
         {
-            pos += 2;
+            pos += prefix.size();
             newfile = file.substr( 0, pos );
             std::string copy = file.substr( pos, file.size() );
             const char* c = copy.c_str();
@@ -2120,11 +2128,14 @@ void ImageBrowser::load( const stringArray& files,
                 number += *c;
                 ++c;
             }
-            int64_t num = atoi( number.c_str() );
-            size_t padding = number.size();
-            char buf[128];
-            sprintf( buf, "%0*" PRId64, padding, num + sum );
-            newfile += buf;
+	    size_t padding = number.size();
+	    if ( !number.empty() )
+	    {
+		num = atoi( number.c_str() );
+		char buf[128];
+		sprintf( buf, "%0*" PRId64, padding, num + sum );
+		newfile += buf;
+	    }
             newfile += file.substr( pos + padding, file.size() );
             file = newfile;
         }
@@ -2168,7 +2179,6 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( start == AV_NOPTS_VALUE )
     {
-        int num = atoi( number.c_str() );
         int num2 = num;
         if ( add > 0 ) {
             num++; num2 += sum;

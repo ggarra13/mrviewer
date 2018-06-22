@@ -5,10 +5,17 @@ v4.1.9   - Removed a subtle bug in looping images that did not start at 1.
 	   fix above, all seems correct.  You can now switch from
 	   FFMPEG, to OIIO or to ImageMagick.
 	 - Bug fixed a race condition in OIIO readers which could crash
-	   the viewer.  This would be mostly be seen when loading DPX
-	   files.
+	   the viewer.  This would mostly be seen when loading DPX
+	   files with the layer menu/shortcuts creation.
 	 - Made OIIO readers the default readers as they handle 10 and 16
 	   bit images correctly and image sequence gaps.
+	 - Made versioning support _v with no version number and not
+	   interpret it as 0, but just skip it.
+	 - Bug fixed versioning for prefixes different than 2 characters.
+	 - Bug fixed Favorites listing in FLU file requester.  Now they
+	   are listed in several columns if there are too many.
+	   Previously, they would get listed in a single column and
+	   scrolling would corrupt the view.
 
 v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
 	 - Added versioning to the sequences/movies.
