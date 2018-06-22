@@ -6688,7 +6688,8 @@ char* ImageView::get_layer_label( unsigned short c )
 
     if ( !lbl )
     {
-        LOG_ERROR( _("Label not found for index ") << c );
+        LOG_ERROR( _("Color channel not found at index ") << c );
+	return NULL;
     }
 
     return lbl;
