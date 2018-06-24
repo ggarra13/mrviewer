@@ -98,8 +98,9 @@ namespace mrv {
 	  return _packets;
       }
 
-      inline uint64_t bytes() const
+      inline uint64_t bytes()
       {
+	  Mutex::scoped_lock lk( _mutex );
           return _bytes;
       }
 
@@ -208,13 +209,15 @@ namespace mrv {
 
       }
 
-      inline size_t size() const
+      inline size_t size()
       {
+          Mutex::scoped_lock lk( _mutex );
           return _packets.size();
       }
 
-      inline bool empty() const
+      inline bool empty()
       {
+          Mutex::scoped_lock lk( _mutex );
           return _packets.empty();
       }
 
