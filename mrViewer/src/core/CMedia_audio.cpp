@@ -2000,7 +2000,7 @@ bool CMedia::in_audio_store( const int64_t frame )
   return false;
 }
 
-CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
+CMedia::DecodeStatus CMedia::decode_audio( int64_t f )
 { 
 
     audio_callback_time = av_gettime_relative();
