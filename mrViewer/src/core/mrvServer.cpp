@@ -528,6 +528,14 @@ bool Parser::parse( const std::string& s )
            ok = true;
        }
    }
+   else if ( cmd == N_("ImageVersion") )
+   {
+       size_t r, idx;
+       is >> r >> idx;
+       browser()->reel( r );
+       browser()->remove( idx );
+       ok = true;
+   }
    else if ( cmd == N_("LMT") )
    {
        std::string s;

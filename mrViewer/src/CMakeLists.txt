@@ -88,7 +88,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread )
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11)
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x)
-    ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11 -fdiagnostics-color=always  )
+    ADD_DEFINITIONS( -DLINUX )
+    ADD_COMPILE_OPTIONS( -msse -w --std=c++11 -g -fdiagnostics-color=always  )
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ ${GLEW_LIBRARIES} fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
@@ -411,9 +412,6 @@ FILE(GLOB oiiofiles ${EXE_DIR}/oiio* )
 FILE(COPY ${oiiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt
-          ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE.txt
-          DESTINATION ${CMAKE_BINARY_DIR}/.. )
 
 
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../ctl/
@@ -607,7 +605,7 @@ ENDIF(WIN32)
 
 
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
-SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../LICENSE.txt)
+SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../docs/LICENSE.txt)
 
 
 #
