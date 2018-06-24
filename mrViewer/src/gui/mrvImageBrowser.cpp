@@ -2119,6 +2119,7 @@ void ImageBrowser::load( const stringArray& files,
         while ( ( pos = file.find( prefix, pos) ) != std::string::npos )
         {
             pos += prefix.size();
+	    if ( pos >= file.size() ) continue;
             newfile = file.substr( 0, pos );
             std::string copy = file.substr( pos, file.size() );
             const char* c = copy.c_str();
@@ -2333,6 +2334,10 @@ void ImageBrowser::load( const stringArray& files,
     adjust_timeline();
 
     view()->redraw();
+
+    char buf[128];
+    sprintf( buf, "ImageVersion %d %d", _reel, (sum > 0 ? 1 : -1 ) );
+    view()->send_network( buf );
 
     if ( play ) view()->play(play);
   }
