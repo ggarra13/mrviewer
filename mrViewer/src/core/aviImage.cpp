@@ -1482,6 +1482,13 @@ void aviImage::close_subtitle_codec()
     }
 }
 
+int64_t aviImage::frame() const
+{
+    Mutex& m = const_cast<Mutex&>( _mutex );
+    SCOPED_LOCK( m );
+    return _frame;
+}
+
 bool aviImage::find_subtitle( const int64_t frame )
 {
 
@@ -1523,6 +1530,7 @@ bool aviImage::find_image( const int64_t frame )
 #endif
 
 
+
   _frame = frame;
 
   if ( !has_video() )
@@ -1535,10 +1543,9 @@ bool aviImage::find_image( const int64_t frame )
   }
 
   {
+      SCOPED_LOCK( _mutex );
+
       int64_t f = frame - _start_number;
-
-
-    SCOPED_LOCK( _mutex );
 
     video_cache_t::iterator end = _images.end();
     video_cache_t::iterator i;
@@ -1646,8 +1653,8 @@ void aviImage::video_stream( int x )
 
   if ( x == _video_index ) return;  // same stream, no change
 
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+  // mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+  // SCOPED_LOCK( vpm );
 
   if ( has_video() )
   {
