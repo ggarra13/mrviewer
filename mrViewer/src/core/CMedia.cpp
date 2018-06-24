@@ -620,9 +620,9 @@ _rendering_intent( other->_rendering_intent ),
 _gamma( other->_gamma ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
-_dts( other->_dts ),
-_adts( other->_adts ),
-_audio_frame( other->_audio_frame ),
+_dts( other->_dts.load() ),
+_adts( other->_adts.load() ),
+_audio_frame( other->_audio_frame.load() ),
 _audio_offset( other->_audio_offset ),
 _frame( f ),
 _tc_frame( other->_tc_frame ),
@@ -709,7 +709,6 @@ int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
    }
    return frame;
 }
-
 
 /**
  * Clears cache of frames.  @todo: refactor
@@ -889,6 +888,7 @@ CMedia::~CMedia()
 
 void CMedia::hires( const mrv::image_type_ptr pic)
 {
+    SCOPED_LOCK( _mutex );
     _hires = pic;
     _frame = pic->frame();
     _w = pic->width();
@@ -2255,10 +2255,10 @@ void CMedia::play(const CMedia::Playback dir,
     if ( _frame < first_frame() ) _frame = first_frame();
     if ( _frame > last_frame() )  _frame = last_frame();
 
-    _audio_frame = _frame;
+    _audio_frame = _frame.load();
   // _expected = std::numeric_limits< int64_t >::min();
 
-  _dts = _frame;
+    _dts = _frame.load();
 
   DBG( name() << " Play from frame " << _dts << " expected " << _expected );
 
