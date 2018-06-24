@@ -46,6 +46,7 @@
 #include <string>
 #include <deque>
 #include <limits>
+#include <atomic>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
@@ -444,7 +445,9 @@ class CMedia
     void refresh();
 
     ////////////////// Return if the image is damaged
-    inline Damage image_damage() const { return _image_damage; };
+    inline Damage image_damage() const {
+	return _image_damage;
+    };
 
     ////////////////// Set the image damage (for update)
     inline void  image_damage( int x )
@@ -487,6 +490,7 @@ class CMedia
     // Returns true if cache for the frame is already filled, false if not
     virtual Cache is_cache_filled(int64_t frame);
 
+
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
 
@@ -498,8 +502,13 @@ class CMedia
     inline double avdiff() const { return _avdiff; }
 
     ////////////////// Return the hi-res image
-    inline mrv::image_type_ptr hires() const { return _hires; }
-    inline mrv::image_type_ptr hires()       { return _hires; }
+    inline mrv::image_type_ptr hires() {
+	SCOPED_LOCK( _mutex ); return _hires;
+    }
+    inline mrv::image_type_ptr hires() const {
+	Mutex& m = const_cast< Mutex& >( _mutex );
+	SCOPED_LOCK( m ); return _hires;
+    }
     void hires( const mrv::image_type_ptr pic);
 
     inline void is_stereo( bool x ) { _is_stereo = x; }
@@ -958,7 +967,7 @@ class CMedia
 
     virtual void do_seek();
 
-    DecodeStatus decode_audio( int64_t& frame );
+    DecodeStatus decode_audio( int64_t frame );
     DecodeStatus handle_video_seek( int64_t& frame,
                                     const bool is_seek = true );
     virtual DecodeStatus decode_video( int64_t& frame );
@@ -1432,7 +1441,7 @@ class CMedia
     static int _audio_cache_size;
 
 
-    unsigned int  _w, _h;     //!< width and height of image
+    std::atomic<unsigned int>  _w, _h;     //!< width and height of image
     bool   _internal;      //!< image is internal with no filename
     bool   _is_thumbnail;     //!< image is a thumbnail (no printing of errors)
     bool   _is_sequence;      //!< true if a sequence
@@ -1479,16 +1488,16 @@ class CMedia
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
-    int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
-    int64_t   _adts;        //!< decoding time stamp of audio
+    std::atomic<int64_t>   _dts;  //!< decoding time stamp (current fetch pkt)
+    std::atomic<int64_t>  _adts;   //!< decoding time stamp of audio
                                    //   (current fetch pkt)
-    int64_t   _audio_frame; //!< presentation time stamp (current audio)
+    std::atomic<int64_t> _audio_frame; //!< presentation time stamp (current audio)
     int64_t   _audio_offset;//!< offset of additional audio
 
-    int64_t   _frame;       //!< presentation time stamp (current video)
+    std::atomic<int64_t>   _frame;  //!< presentation time stamp (current video)
     int64_t   _tc_frame;    //!< timecode frame offset
-    int64_t   _expected;    //!< expected next dts fetch
-    int64_t   _expected_audio; //!< expected next frame fetch
+    std::atomic<int64_t>   _expected;    //!< expected next dts fetch
+    std::atomic<int64_t>   _expected_audio; //!< expected next frame fetch
 
     int64_t   _frameStart;  //!< user start frame for sequence or movie
     int64_t   _frameEnd;    //!< user end frame for sequence or movie
@@ -1508,7 +1517,7 @@ class CMedia
 
     InterlaceType _interlaced;     //!< image is interlaced?
 
-    Damage           _image_damage;     //!< flag specifying image damage
+    std::atomic<Damage>  _image_damage;   //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
     boost::int64_t _numWindows;    //!< number of data/display windows
@@ -1551,7 +1560,7 @@ class CMedia
 
     unsigned int _frame_offset;      //!< hack to get ffmpeg to behave correctly
 
-    Playback       _playback;        //!< playback direction or stopped
+    std::atomic<Playback>  _playback;        //!< playback direction or stopped
 
     thread_pool_t  _threads;         //!< any threads associated with process
 

@@ -68,7 +68,7 @@ class aviImage : public CMedia
 
     ////////////////// Set the frame for the current image (sequence)
     virtual bool           frame( const int64_t f );
-    virtual int64_t frame() const { return _frame; }
+    virtual int64_t frame() const;
 
     /// Returns true if image has an alpha channel
     virtual bool  has_alpha() const { return (_num_channels == 4); };
