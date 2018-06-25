@@ -905,11 +905,12 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     // }
 
 
+    // Remove icon from browser
     fltk::Widget* w = child(idx);
     fltk::Browser::remove( idx );
     delete w;
 
-
+    // Remove image from reel
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
 
@@ -945,6 +946,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::EDLGroup* e = edl_group();
     if ( e )
     {
+	// Refresh media tracks
         e->refresh();
         e->redraw();
     }
@@ -990,62 +992,6 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
   }
 
 
-
-  /**
-   * Replace current image with a new file.
-   *
-   * @param r    reel index
-   * @param idx  image index in reel
-   * @param root root file name ( mray.%l04d.exr )
-   */
-mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
-                                  const char* root )
-  {
-      mrv::Reel reel = reel_at(unsigned(r));
-    if ( !reel ) return mrv::media();
-
-    CMedia* newImg = CMedia::guess_image( root );
-
-    // did not recognize new image, keep old
-    mrv::media m = reel->images[idx];
-
-    if ( newImg == NULL ) return m;
-
-
-    CMedia* img = m->image();
-    int64_t frame = img->frame();
-
-    CMedia::Playback playback = img->playback();
-
-    mrv::media newm( new mrv::gui::media(newImg) );
-
-    newm->position( m->position() );
-
-    // mrv::CMedia::Mutex& vpm = newImg->video_mutex();
-    // SCOPED_LOCK( vpm );
-    newImg->frame( frame );
-    newImg->default_icc_profile();
-    newImg->default_rendering_transform();
-    newImg->decode_video( frame );
-    newImg->find_image( frame );
-
-    Element* nw = new_item( newm );
-    fltk::Group::replace( int(idx), *nw );
-
-
-
-    reel->images.insert( reel->images.begin() + idx, newm );
-
-    // adjust_timeline();
-
-    // Make sure no alert message is printed
-    mrv::alert( NULL );
-
-    if ( playback != CMedia::kStopped )
-        newImg->play( playback, uiMain, (r == view()->fg_reel()) );
-
-    return newm;
-  }
 
 void ImageBrowser::set_bg()
 {
@@ -2038,6 +1984,39 @@ void ImageBrowser::load( const stringArray& files,
     if (ow) ow->relayout();
   }
 
+void ImageBrowser::replace( int i, mrv::media m )
+{
+    mrv::Reel reel = current_reel();
+    if (!reel) return;
+
+    if ( i < 0 || i >= reel->images.size() ) return;
+    
+    CMedia::Playback play = view()->playback();
+    if ( play != CMedia::kStopped )
+       view()->stop();
+    
+    mrv::media fg = current_image();
+    if (!fg) return;
+
+    
+    Element* nw = new_item( m );
+    fltk::Widget* w = child( i );
+    fltk::Group::replace( i, *nw );
+    delete w;
+
+    // Sanely remove image from reel
+    mrv::MediaList::const_iterator j = reel->images.begin();
+    reel->images.erase( j + i );
+    
+    // Insert item in right place on list
+    j = reel->images.begin();
+    reel->images.insert( j + i, m );
+
+    char buf[128];
+    sprintf( buf, "ReplaceImage %d \"%s\"", m->image()->fileroot() );
+    view()->send_network( buf );
+}
+
   /**
    * Go to next image version in disk if available
    *
@@ -2076,14 +2055,13 @@ void ImageBrowser::load( const stringArray& files,
     int sel = (int)reel->index( fg->image() );
     if ( sel < 0 ) sel = 0;
 
-    CMedia* img = fg->image();
     size_t i;
     {
 	size_t num = reel->images.size();
 	for ( i = 0; i < num; ++i )
 	{
 	    if ( reel->images[i] == fg )
-            break;
+		break;
 	}
 	if ( i >= num )
 	{
@@ -2106,6 +2084,7 @@ void ImageBrowser::load( const stringArray& files,
 	LOG_ERROR( _("Prefix cannot be an empty string.  Please type some unique characters to distinguish the version in the filename.") );
 	return;
     }
+    CMedia* img = fg->image();
     unsigned max_tries = prefs->uiPrefsMaxImagesApart->value();
     while ( start == AV_NOPTS_VALUE && tries <= max_tries )
     {
@@ -2198,49 +2177,12 @@ void ImageBrowser::load( const stringArray& files,
     if ( !m ) return;
 
 
-    mrv::EDLGroup* e = edl_group();
-    mrv::media_track* track;
-
-    unsigned t;
-    for ( t = 0; t < number_of_reels(); ++t )
-    {
-        if ( e && reel == this->reel( (unsigned int)t ) )
-        {
-            track = e->media_track((int)t);
-            //if ( track && fg )
-            //{
-            //  track->remove( fg );
-            break;
-            //}
-        }
-    }
-
-    // if ( t >= number_of_reels() )
-    // {
-    //  LOG_ERROR( "Could not find fg in tracks" );
-    // }
-
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  std::cerr << "**** TRACK REMOVE " << std::endl;
-    //  for ( ; i != e; ++i, ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
-    //  }
-    // }
-
     CMedia* newImg = m->image();
     int64_t frame = img->frame();
 
     m->position( fg->position() );
 
-
-    // mrv::CMedia::Mutex& vpm = newImg->video_mutex();
-    // SCOPED_LOCK( vpm );
+    // Transfer all attributes to new image
     newImg->frame( frame );
     newImg->icc_profile( img->icc_profile() );
     newImg->rendering_transform( img->rendering_transform() );
@@ -2252,80 +2194,26 @@ void ImageBrowser::load( const stringArray& files,
     newImg->fps( img->fps() );
     newImg->play_fps( img->play_fps() );
 
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
 
-    //  int idx = 0;
-    //  std::cerr << "**** GROUP " << std::endl;
-    //  for ( ; idx < children(); ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << w->label() << std::endl;
-    //  }
-    // }
+    // Sanely remove icon item from browser and replace it with another
+    this->replace( int(i), m );
+    
+    // Remove last loaded element from reel (ie. m)
+    this->remove( children() - 1 ); 
 
-    Element* nw = new_item( m );
-    fltk::Group::replace( int(i), *nw );
-    fltk::Group::remove( children() - 1 );
+    mrv::EDLGroup* e = edl_group();
 
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  std::cerr << "**** GROUP REPLACE " << std::endl;
-    //  for ( ; idx < children(); ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << w->label() << std::endl;
-    //  }
-    // }
-
-    // Remove item from (last) place in reel
+    if (e)
     {
-        mrv::MediaList::const_reverse_iterator j = reel->images.rbegin();
-        mrv::MediaList::const_reverse_iterator e = reel->images.rend();
-        for ( ; j != e; ++j )
-        {
-            if ( *j == m )
-            {
-                mrv::MediaList::const_iterator t = (j+1).base();
-                reel->images.erase(t);
-                break;
-            }
-        }
-        if ( j == e )
-        {
-            LOG_ERROR( "Did not find image in reel" );
-        }
+	e->refresh();
+	e->redraw();
     }
-
-    // // Now, place it where it belongs
-    reel->images.erase( reel->images.begin() + i );
-    reel->images.insert( reel->images.begin() + i, m );
-
-
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  std::cerr << "**** REEL INSERT " << std::endl;
-    //  for ( ; i != e; ++i, ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
-    //  }
-    // }
-
-    track->refresh();
-    track->redraw();
-
+    
     // We need two calls to foreground as it was previously set to m
     // and would return early.
     view()->foreground( fg );
     view()->foreground( m );
+    view()->redraw();
 
     change_image( sel );
 
@@ -2333,7 +2221,6 @@ void ImageBrowser::load( const stringArray& files,
 
     adjust_timeline();
 
-    view()->redraw();
 
     char buf[128];
     sprintf( buf, "ImageVersion %d %d", _reel, (sum > 0 ? 1 : -1 ) );
