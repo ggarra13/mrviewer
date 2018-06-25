@@ -142,7 +142,8 @@ class ImageBrowser : public fltk::Browser
                const bool progressBar = true );
 
 
-    mrv::media replace( const size_t r, const size_t img, const char* root );
+    void replace( int idx, mrv::media m );
+    
      void remove( mrv::media m );
      void remove( int idx );
 
