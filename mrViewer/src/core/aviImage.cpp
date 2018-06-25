@@ -1335,7 +1335,7 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
       av_frame_unref(_av_frame);
       av_frame_unref(_filt_frame);
   }
-
+  
   if ( status == kDecodeDone ) status = kDecodeOK;
   return status;
 }
@@ -3195,7 +3195,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
       if ( _video_packets.is_flush() )
         {
             assert( !_video_packets.empty() );
-            SCOPED_LOCK( _mutex );
             flush_video();
             assert( !_video_packets.empty() );
             _video_packets.pop_front();
