@@ -1,6 +1,8 @@
 v4.2.0   - Bug fixed versioning with prefix of v only and matching movie
 	   files, like test.mov.  The substring would index beyond the file
 	   size, aborting the program.
+	 - Bug fixed printing specifier in memory display ( PRIu64 for
+	   PRId64 ).
 
 v4.1.9   - Removed a subtle bug in looping images that did not start at 1.
 	   The result would go unnoticed, but internally a wrong frame would

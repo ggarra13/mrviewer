@@ -215,7 +215,6 @@ bool media_track::remove( const int idx )
 bool media_track::remove( const mrv::media m )
 {  
    if ( _reel_idx < 0 ) return false;
-   std::cerr << "_reel_idx " << _reel_idx << std::endl;
    browser()->reel( _reel_idx );
    browser()->remove( m );
    browser()->parent()->redraw();
