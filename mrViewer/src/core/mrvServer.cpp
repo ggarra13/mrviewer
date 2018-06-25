@@ -396,6 +396,7 @@ bool Parser::parse( const std::string& s )
       is >> x >> y;
       v->offset_x( x );
       v->offset_y( y );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -434,6 +435,7 @@ bool Parser::parse( const std::string& s )
 
       if ( v->foreground() )
          v->channel( ch );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -442,6 +444,7 @@ bool Parser::parse( const std::string& s )
       int field;
       is >> field;
       v->field( (mrv::ImageView::FieldDisplay) field );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -451,6 +454,7 @@ bool Parser::parse( const std::string& s )
       is >> b;
       v->normalize( ( b != 0 ) );
       ui->uiNormalize->state( (b != 0 ) );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -460,6 +464,7 @@ bool Parser::parse( const std::string& s )
       is >> b;
       v->wipe_direction( ImageView::kWipeVertical );
       v->wipe_amount( b );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -469,6 +474,7 @@ bool Parser::parse( const std::string& s )
       is >> b;
       v->wipe_direction( ImageView::kWipeHorizontal );
       v->wipe_amount( b );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -476,6 +482,7 @@ bool Parser::parse( const std::string& s )
    {
       v->wipe_direction( ImageView::kNoWipe );
       v->wipe_amount( 0.0f );
+      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -527,14 +534,6 @@ bool Parser::parse( const std::string& s )
            img->image_damage( img->image_damage() | CMedia::kDamageAll );
            ok = true;
        }
-   }
-   else if ( cmd == N_("ImageVersion") )
-   {
-       size_t r, idx;
-       is >> r >> idx;
-       browser()->reel( r );
-       browser()->remove( idx );
-       ok = true;
    }
    else if ( cmd == N_("LMT") )
    {
@@ -933,6 +932,25 @@ bool Parser::parse( const std::string& s )
       }
       ok = true;
    }
+   else if ( cmd == N_("ReplaceImage") )
+   {
+      size_t idx;
+      is >> idx;
+      
+      std::string imgname;
+      is.clear();
+      std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
+      std::getline( is, imgname, '"' );
+
+      stringArray files;
+      files.push_back( imgname );
+      browser()->load( files );
+      mrv::media m = view()->foreground();
+      browser()->replace( idx, m );
+      v->refresh();
+      ok = true;
+   }
    else if ( cmd == N_("RemoveImage") )
    {
       size_t idx;
@@ -954,6 +972,7 @@ bool Parser::parse( const std::string& s )
 
       browser()->remove( unsigned(idx) );
       browser()->redraw();
+      v->refresh();
       edl_group()->redraw();
 
       ok = true;
@@ -1033,6 +1052,7 @@ bool Parser::parse( const std::string& s )
                   browser()->redraw();
                   edl_group()->refresh();
                   edl_group()->redraw();
+		  v->refresh();
                   ok = true;
                   break;
                }
@@ -1045,6 +1065,7 @@ bool Parser::parse( const std::string& s )
                browser()->redraw();
                edl_group()->refresh();
                edl_group()->redraw();
+	       v->refresh();
                ok = true;
             }
 
@@ -1094,6 +1115,7 @@ bool Parser::parse( const std::string& s )
       }
 
 
+      v->refresh();
       v->redraw();
 
       ok = true;
@@ -1149,6 +1171,7 @@ bool Parser::parse( const std::string& s )
       }
 
       v->redraw();
+      v->refresh();
 
       ok = true;
    }
@@ -1209,6 +1232,7 @@ bool Parser::parse( const std::string& s )
               }
           }
       }
+      v->refresh();
       v->redraw();
    }
    else if ( cmd == N_("sync_image") )
@@ -1513,6 +1537,7 @@ bool Parser::parse( const std::string& s )
 
       browser()->redraw();
       v->redraw();
+      v->refresh();
 
       ok = true;
    }
