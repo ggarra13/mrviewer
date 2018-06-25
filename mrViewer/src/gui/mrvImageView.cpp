@@ -3230,17 +3230,17 @@ void ImageView::draw()
   if ( _hud & kHudMemoryUse )
   {
       char buf[128];
-      uint64_t totalVirtualMem;
-      uint64_t virtualMemUsed;
-      uint64_t virtualMemUsedByMe;
-      uint64_t totalPhysMem;
-      uint64_t physMemUsed;
-      uint64_t physMemUsedByMe;
+      uint64_t totalVirtualMem = 0;
+      uint64_t virtualMemUsed = 0;
+      uint64_t virtualMemUsedByMe = 0;
+      uint64_t totalPhysMem = 0;
+      uint64_t physMemUsed = 0;
+      uint64_t physMemUsedByMe = 0;
       memory_information( totalVirtualMem, virtualMemUsed, virtualMemUsedByMe,
                           totalPhysMem, physMemUsed, physMemUsedByMe );
 
-      sprintf( buf, _("PMem: %" PRId64 "/%" PRId64
-                      " MB  VMem: %" PRId64 "/%" PRId64 " MB"),
+      sprintf( buf, _("PMem: %" PRIu64 "/%" PRIu64
+                      " MB  VMem: %" PRIu64 "/%" PRIu64 " MB"),
                physMemUsedByMe, totalPhysMem,
                virtualMemUsedByMe, totalVirtualMem );
 
@@ -7201,7 +7201,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
 
   zoom( z );
-
+  
   int w2 = W / 2;
   int h2 = H / 2;
 
