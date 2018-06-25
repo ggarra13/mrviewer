@@ -474,6 +474,8 @@ class server;
 
       void timeout();
 
+      /// Refresh the view images
+      void refresh();
 
       CMedia* selected_image() const { return _selected_image; }
       void select_image(CMedia* img) { _selected_image = img; redraw(); }
@@ -634,8 +636,6 @@ class server;
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
 
-    /// Refresh the view images
-    void refresh();
 
     /// Resize background image to fit foreground image's dimensions
     void resize_background();
