@@ -108,7 +108,7 @@ class ImageBrowser : public fltk::Browser
 
      void last_image();
 
-     void change_image( unsigned i );
+     void change_image( int i );
 
      void image_version( int sum );
      void previous_image_version();

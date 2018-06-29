@@ -456,7 +456,6 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
@@ -611,9 +610,9 @@ _pos( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
-_play_fps( other->_play_fps ),
-_fps( other->_fps ),
-_orig_fps( other->_orig_fps ),
+_play_fps( other->_play_fps.load() ),
+_fps( other->_fps.load() ),
+_orig_fps( other->_orig_fps.load() ),
 _pixel_ratio( other->_pixel_ratio ),
 _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
@@ -696,7 +695,7 @@ _audio_engine( NULL )
 
 int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
-   assert( stream != NULL );
+   assert0( stream != NULL );
    int64_t frame = AV_NOPTS_VALUE;
    if ( pkt.pts != AV_NOPTS_VALUE )
    {
@@ -1517,7 +1516,6 @@ bool CMedia::has_changed()
 
       int64_t f = handle_loops( _frame );
       std::string file = sequence_filename(f);
-
 
       int result = stat( file.c_str(), &sbuf );
       if ( (result == -1) || (f < _frame_start) ||
@@ -2560,9 +2558,10 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
 
   if ( !seq || seq[idx] ) return;
-
+  
   mrv::image_type_ptr np;
 
+  
   unsigned w = pic->width();
   unsigned h = pic->height();
 
@@ -3243,14 +3242,18 @@ void CMedia::loop_at_end( const int64_t frame )
 
        mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
+       SCOPED_LOCK( _mutex );
        AVStream* stream = get_video_stream();
-       for ( ; i != e; ++i )
+       if ( stream )
        {
-           if ( get_frame( stream, *i ) >= frame )
-           {
-               mrv::PacketQueue::iterator it = (i+1).base();
-               _video_packets.erase( it );
-           }
+	   for ( ; i != e; ++i )
+	   {
+	       if ( get_frame( stream, *i ) >= frame )
+	       {
+		   mrv::PacketQueue::iterator it = (i+1).base();
+		   _video_packets.erase( it );
+	       }
+	   }
        }
 
       _video_packets.loop_at_end( frame );
@@ -3266,14 +3269,17 @@ void CMedia::loop_at_end( const int64_t frame )
        mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
        AVStream* stream = get_audio_stream();
-       for ( ; i != e; ++i )
+       if ( stream )
        {
-           int64_t pktframe = get_frame( stream, *i );
-           if ( pktframe >= frame )
-           {
-               mrv::PacketQueue::iterator it = (i+1).base();
-               _audio_packets.erase( it );
-           }
+	   for ( ; i != e; ++i )
+	   {
+	       int64_t pktframe = get_frame( stream, *i );
+	       if ( pktframe >= frame )
+	       {
+		   mrv::PacketQueue::iterator it = (i+1).base();
+		   _audio_packets.erase( it );
+	       }
+	   }
        }
 
        _audio_packets.loop_at_end( frame );
@@ -3580,7 +3586,7 @@ bool CMedia::find_image( const int64_t frame )
 {
   if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
       _right_eye->find_image(frame);
-
+  
   int64_t f = handle_loops( frame );
 
   _video_pts   = f / _orig_fps;
@@ -3651,6 +3657,10 @@ bool CMedia::find_image( const int64_t frame )
              default_rendering_transform();
              default_ocio_input_color_space();
          }
+ 	 else
+	 {
+	     return false;
+	 } 
      }
      else
      {
@@ -3666,8 +3676,9 @@ bool CMedia::find_image( const int64_t frame )
             cache( _hires );
             _hires->valid( false ); // mark this frame as invalid
             refresh();
+	    image_damage( image_damage() | kDamageData | kDamage3DData );
             LOG_WARNING( file << _(" is missing.") );
-            return false;
+	    return false;
         }
      }
   }
