@@ -283,8 +283,8 @@ class aviImage : public CMedia
     std::string _compression;
 
     bool               _has_image_seq;
-    int                _video_index;    // Index to primary video stream
-    int                _stereo_index;   // Index to stereo video stream
+    std::atomic<int>   _video_index;    // Index to primary video stream
+    std::atomic<int>   _stereo_index;   // Index to stereo video stream
     AVPixelFormat      _av_dst_pix_fmt;
     VideoFrame::Format _pix_fmt;
     VideoFrame::PixelType _ptype;
