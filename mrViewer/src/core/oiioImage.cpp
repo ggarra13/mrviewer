@@ -135,13 +135,13 @@ namespace mrv {
 
   bool oiioImage::fetch( const boost::int64_t frame )
   {
-      const char* const file = filename();
-      std::unique_ptr<ImageInput> in = ImageInput::open( file );
+      std::string file = sequence_filename( frame );
+      std::unique_ptr<ImageInput> in = ImageInput::open( file.c_str() );
       if (!in)
       {
         std::string err = geterror();
         IMG_ERROR( (err.length() ? err :
-                    Strutil::format("Could not open \"%s\"", file)) );
+                    Strutil::format("Could not open \"%s\"", file.c_str())) );
         return false;
       }
 
