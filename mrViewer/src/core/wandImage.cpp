@@ -1482,7 +1482,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
 
         char buf[32];
-        sprintf( buf, "%2.4f", _fps );
+        sprintf( buf, "%2.4f", _fps.load() );
 
         if ( filename.rfind( ".dpx" ) != std::string::npos )
         {
