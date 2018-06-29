@@ -761,7 +761,8 @@ void ImageBrowser::send_image( const mrv::media& m )
     sprintf(txt, N_("Gain %g"), v->gain() );
     v->send_network( txt );
 
-    sprintf(txt, N_("Channel %d"), v->channel() );
+    sprintf(txt, N_("Channel %d %s"), v->channel(),
+	    v->get_layer_label( v->channel() ) );
     v->send_network( txt );
 
     sprintf(txt, N_("UseLUT %d"), (int)v->use_lut() );
@@ -887,22 +888,23 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() )
     {
-        LOG_ERROR( "ImageBrowser::remove idx value out of bounds" );
+        LOG_ERROR( _("ImageBrowser::remove idx value (") << idx <<
+		   _(") out of bounds") );
         return;
     }
 
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
+    {
+     mrv::MediaList::const_iterator i = reel->images.begin();
+     mrv::MediaList::const_iterator e = reel->images.end();
 
-    //  int idx = 0;
-    //  std::cerr << "**** PRE-REMOVE " << std::endl;
-    //  for ( ; i != e; ++i, ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
-    //  }
-    // }
+     int idx = 0;
+     std::cerr << "**** PRE-REMOVE " << std::endl;
+     for ( ; i != e; ++i, ++idx )
+     {
+         fltk::Widget* w = child(idx);
+         std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
+     }
+    }
 
 
     // Remove icon from browser
@@ -914,34 +916,44 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
 
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
+    {
+     mrv::MediaList::const_iterator i = reel->images.begin();
+     mrv::MediaList::const_iterator e = reel->images.end();
 
-    //  int idx = 0;
-    //  std::cerr << "**** REMOVE " << std::endl;
-    //  for ( ; i != e; ++i, ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
-    //  }
-    // }
+     int idx = 0;
+     LOG_INFO( "**** REMOVE" );
+     for ( ; i != e; ++i, ++idx )
+     {
+         LOG_INFO( "\t" << (*i)->name() );
+     }
+    }
 
-
-    view()->fg_reel( _reel );
-
-
-
-    if ( unsigned(idx) < reel->images.size() )
-       view()->foreground( *(i + idx) );
-    else
-       view()->foreground( mrv::media() );
-
-    send_reel( reel );
 
     char buf[256];
     sprintf( buf, "RemoveImage %d", idx );
     view()->send_network( buf );
+
+    
+    view()->fg_reel( _reel );
+    send_reel( reel );
+
+
+
+    change_image( idx-1 );
+    // if ( unsigned(idx) < reel->images.size() )
+    // {
+    // 	view()->foreground( *(i + idx) );
+    // }
+    // else if ( unsigned( idx-1) < reel->images.size() )
+    // {
+    // 	view()->foreground( *(i + idx - 1) );
+    // }
+    // else
+    // {
+    // 	view()->foreground( mrv::media() );
+    // }
+
+
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -1093,7 +1105,6 @@ void ImageBrowser::clear_bg()
 
     mrv::ImageView* v = view();
 
-
     if ( sel < 0 )
     {
         if ( v )
@@ -1113,7 +1124,7 @@ void ImageBrowser::clear_bg()
 
         assert( (unsigned)sel < reel->images.size() );
 
-        mrv::media om = v->foreground();
+        mrv::media om = current_image();
 
         int audio_idx = -1;
         int sub_idx = -1;
@@ -1141,7 +1152,6 @@ void ImageBrowser::clear_bg()
 
 
            adjust_timeline();
-
            send_image( m );
         }
         else
@@ -1163,9 +1173,13 @@ int ImageBrowser::value() const
    return fltk::Browser::value();
 }
 
-  void ImageBrowser::change_image(unsigned i)
+  void ImageBrowser::change_image(int i)
   {
-     // if ( i >= children() ) return;
+      if ( i >= children() ) {
+	  LOG_ERROR( _("change_image index ") << i << N_(" >= ")
+		     << children() );
+	  return;
+      }
      value(i);
      change_image();
   }
@@ -1179,9 +1193,7 @@ int ImageBrowser::value() const
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    if ( reel->images.empty() ) return;
-    value( (int) reel->images.size()-1 );
-    change_image();
+    change_image( (int) reel->images.size()-1 );
   }
 
   /**
@@ -1592,7 +1604,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
       {
-        this->change_image( (unsigned int)reel->images.size()-1 );
+        this->change_image( (int)reel->images.size()-1 );
         frame( img->first_frame() );
       }
     else
@@ -1764,7 +1776,7 @@ void ImageBrowser::load( const stringArray& files,
          loadlist.push_back( mrv::LoadInfo( file, start, end ) );
      }
 
-     mrv::media fg = view()->foreground();
+     mrv::media fg = current_image();
      if (!fg) return;
 
      load_stereo( fg,
@@ -1998,7 +2010,20 @@ void ImageBrowser::replace( int i, mrv::media m )
     mrv::media fg = current_image();
     if (!fg) return;
 
+    // {
+    //  mrv::MediaList::const_iterator j = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  LOG_INFO( "**** REPLACE BEFORE REMOVE" );
+    //  for ( ; j != e; ++j, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      LOG_INFO( "\t" << (*j)->name() );
+    //  }
+    // }
     
+    // Sanely remove thumbnail from reel
     Element* nw = new_item( m );
     fltk::Widget* w = child( i );
     fltk::Group::replace( i, *nw );
@@ -2007,13 +2032,41 @@ void ImageBrowser::replace( int i, mrv::media m )
     // Sanely remove image from reel
     mrv::MediaList::const_iterator j = reel->images.begin();
     reel->images.erase( j + i );
+
+    // {
+    //  mrv::MediaList::const_iterator j = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  LOG_INFO( "**** REPLACE AFTER REMOVE" );
+    //  for ( ; j != e; ++j, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      LOG_INFO( "\t" << (*j)->name() );
+    //  }
+    // }
     
     // Insert item in right place on list
     j = reel->images.begin();
     reel->images.insert( j + i, m );
 
+    // {
+    //  mrv::MediaList::const_iterator j = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  LOG_INFO( "**** REPLACE AFTER INSERT" );
+    //  for ( ; j != e; ++j, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      LOG_INFO( "\t" << (*j)->name() );
+    //  }
+    // }
+
+    view()->foreground( m );
+    
     char buf[128];
-    sprintf( buf, "ReplaceImage %d \"%s\"", m->image()->fileroot() );
+    sprintf( buf, "ReplaceImage %d \"%s\"", i, m->image()->fileroot() );
     view()->send_network( buf );
 }
 
@@ -2176,6 +2229,20 @@ void ImageBrowser::replace( int i, mrv::media m )
                                start, end, start, end, false );
     if ( !m ) return;
 
+    m->image()->channel( img->channel() );
+    
+    // {
+    //  mrv::MediaList::const_iterator j = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
+
+    //  int idx = 0;
+    //  LOG_CONN( "**** after load" );
+    //  for ( ; j != e; ++j, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      LOG_CONN( "\t" << (*j)->name() << " " << w->label() );
+    //  }
+    // }
 
     CMedia* newImg = m->image();
     int64_t frame = img->frame();
@@ -2201,6 +2268,10 @@ void ImageBrowser::replace( int i, mrv::media m )
     // Remove last loaded element from reel (ie. m)
     this->remove( children() - 1 ); 
 
+    change_image( int(i) );
+
+    seek( view()->frame() );
+    
     mrv::EDLGroup* e = edl_group();
 
     if (e)
@@ -2211,20 +2282,15 @@ void ImageBrowser::replace( int i, mrv::media m )
     
     // We need two calls to foreground as it was previously set to m
     // and would return early.
-    view()->foreground( fg );
-    view()->foreground( m );
-    view()->redraw();
+    // view()->foreground( fg );
+    // view()->foreground( m );
+    // view()->redraw();
 
-    change_image( sel );
 
     img->clear_cache();
 
     adjust_timeline();
 
-
-    char buf[128];
-    sprintf( buf, "ImageVersion %d %d", _reel, (sum > 0 ? 1 : -1 ) );
-    view()->send_network( buf );
 
     if ( play ) view()->play(play);
   }
