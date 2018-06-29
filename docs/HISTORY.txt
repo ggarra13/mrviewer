@@ -3,6 +3,14 @@ v4.2.0   - Bug fixed versioning with prefix of v only and matching movie
 	   size, aborting the program.
 	 - Bug fixed printing specifier in memory display ( PRIu64 for
 	   PRId64 ).
+	 - Removed a memory leak when changing image version due to
+	   thumbnail image being left behind.
+	 - Bug fixed precache when gaps are found as this got broken along
+	   the way when adding the code to versioning.
+	 - Bug fixed precache when first frame was not 1.
+	 - Bug fixed auto reloading of frames when the format was one of
+	   OIIO.
+	 - Made Versioning work in network connections.
 
 v4.1.9   - Removed a subtle bug in looping images that did not start at 1.
 	   The result would go unnoticed, but internally a wrong frame would
