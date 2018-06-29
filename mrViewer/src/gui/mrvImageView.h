@@ -746,7 +746,7 @@ class server;
     ///////////////////
     // Playback state
     ///////////////////
-      CMedia::Playback   _playback;         //!< status of view
+    std::atomic<CMedia::Playback>   _playback;         //!< status of view
 
     ///////////////////
     // FPS calculation
