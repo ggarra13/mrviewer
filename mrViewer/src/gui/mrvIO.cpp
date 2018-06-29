@@ -66,10 +66,10 @@ namespace mrv {
 
     int logbuffer::sync()
     {
-      if ( ! pbase() ) return 0;
-
       // lock mutex
       boost::recursive_mutex::scoped_lock lk( _mutex );
+      
+      if ( ! pbase() ) return 0;
 
       // make sure to null terminate the string
       sputc('\0');
