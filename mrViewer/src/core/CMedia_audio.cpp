@@ -572,7 +572,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     unsigned bps = av_get_bytes_per_sample( fmt );
 
-    if ( _orig_fps <= 0.0f ) _orig_fps = _fps;
+    if ( _orig_fps <= 0.0f ) _orig_fps = _fps.load();
     ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
     return ret;
 }
