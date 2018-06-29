@@ -434,8 +434,9 @@ bool Parser::parse( const std::string& s )
       is >> ch >> name;
 
       if ( v->foreground() )
-         v->channel( ch );
-      v->refresh();
+	  v->channel( ch );
+      else
+	  LOG_ERROR( _("No image for channel selection") );
       v->redraw();
       ok = true;
    }
@@ -666,8 +667,13 @@ bool Parser::parse( const std::string& s )
        {
            CMedia* img = fg->image();
            img->ocio_input_color_space( s );
+	   img->image_damage( img->image_damage() | CMedia::kDamageLut );
            v->update_ICS();
            ok = true;
+       }
+       else
+       {
+	   LOG_ERROR( "No fg image to change ICS" );
        }
    }
    else if ( cmd == N_("Gain") )
@@ -1160,20 +1166,27 @@ bool Parser::parse( const std::string& s )
 
          if (! found )
          {
-            LoadList files;
-            files.push_back( LoadInfo( imgname, first, last ) );
+	     // LOG_ERROR( imgname << " not found in current reel" );
+	     ok = true;
+            // LoadList files;
+            // files.push_back( LoadInfo( imgname, first, last ) );
 
-            browser()->load( files, false );
-            edl_group()->refresh();
-            edl_group()->redraw();
-            browser()->redraw();
+            // browser()->load( files, false );
+            // edl_group()->refresh();
+            // edl_group()->redraw();
+            // browser()->redraw();
+	    // v->refresh();
+	    // v->redraw();
          }
+	 else
+	 {
+	     v->refresh();
+	     v->redraw();
+	     
+	     ok = true;
+	 }
       }
 
-      v->redraw();
-      v->refresh();
-
-      ok = true;
    }
    else if ( cmd == N_("FGReel") )
    {
@@ -1522,8 +1535,9 @@ bool Parser::parse( const std::string& s )
       sprintf( buf, N_("UpdateLayers") );
       deliver( buf );
 
+      const char* lbl = v->get_layer_label(v->channel());
       sprintf(buf, N_("Channel %d %s"), v->channel(),
-              v->get_layer_label(v->channel()) );
+	      lbl ? lbl : "(null)"  );
       deliver( buf );
 
 
@@ -1760,6 +1774,8 @@ void tcp_session::deliver( const std::string& msg )
 {
     SCOPED_LOCK( mtx );
 
+    LOG_INFO( msg );
+    
    output_queue_.push_back(msg + "\n");
 
    // Signal that the output queue contains messages. Modifying the expiry

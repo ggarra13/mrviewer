@@ -57,6 +57,7 @@ class WandOpts;
         return _compression.c_str();
     }
 
+      
     virtual bool initialize();
     virtual bool release();
 
