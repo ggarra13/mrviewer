@@ -704,7 +704,7 @@ void aviImage::subtitle_file( const char* f )
 
 bool aviImage::has_video() const
 {
-  return ( _video_index >= 0 && _video_info[ _video_index ].has_codec );
+    return ( _video_index >= 0 && _video_info[ _video_index ].has_codec );
 }
 
 
@@ -725,6 +725,7 @@ bool aviImage::valid_video() const
 // Opens the video codec associated to the current stream
 void aviImage::open_video_codec()
 {
+    SCOPED_LOCK( _mutex );
   AVStream *stream = get_video_stream();
   if ( stream == NULL ) return;
 
@@ -736,7 +737,8 @@ void aviImage::open_video_codec()
   int r = avcodec_parameters_to_context(_video_ctx, codecpar);
   if ( r < 0 )
   {
-      throw _("avcodec_context_from_parameters failed for video");
+      LOG_ERROR( _("avcodec_context_from_parameters failed for video") );
+      return;
   }
 
 
@@ -1484,8 +1486,8 @@ void aviImage::close_subtitle_codec()
 
 int64_t aviImage::frame() const
 {
-    Mutex& m = const_cast<Mutex&>( _mutex );
-    SCOPED_LOCK( m );
+    // Mutex& m = const_cast<Mutex&>( _mutex );
+    // SCOPED_LOCK( m );
     return _frame;
 }
 
@@ -2037,9 +2039,12 @@ void aviImage::populate()
     }
 
     // Open these video and audio codecs
-    if ( has_video() )    open_video_codec();
-    if ( has_audio() )    open_audio_codec();
-    if ( has_subtitle() ) open_subtitle_codec();
+    if ( has_video() )
+	open_video_codec();
+    if ( has_audio() )
+	open_audio_codec();
+    if ( has_subtitle() )
+	open_subtitle_codec();
 
 
     // Configure video input properties
@@ -3194,9 +3199,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     {
       if ( _video_packets.is_flush() )
         {
-            assert( !_video_packets.empty() );
             flush_video();
-            assert( !_video_packets.empty() );
             _video_packets.pop_front();
             continue;
         }

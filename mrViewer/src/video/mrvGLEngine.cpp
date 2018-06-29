@@ -2120,13 +2120,15 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->has_subtitle() )
         {
+	    CMedia::Mutex& m = img->subtitle_mutex();
+	    SCOPED_LOCK( m );
             image_type_ptr sub = img->subtitle();
             if ( sub )
             {
                 prepare_subtitle( *q++, sub, _rotX, _rotY,
                                   texWidth, texHeight );
-           }
-           img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
+	    }
+	    img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
         }
 
       glMatrixMode(GL_MODELVIEW);
