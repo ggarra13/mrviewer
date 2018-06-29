@@ -62,7 +62,6 @@ namespace mrv {
     virtual bool release();
 
       virtual bool has_alpha() const { return _has_alpha; }
-      
     bool fetch( const boost::int64_t frame );
 
   protected:
