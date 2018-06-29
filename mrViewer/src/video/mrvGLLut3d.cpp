@@ -1219,6 +1219,11 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 {
                     msg += _("  Choosing ") + name + ".";
                     CMedia* c = const_cast< CMedia* >( img );
+
+		    char buf[1024];
+		    sprintf( buf, "ICS \"%s\"", name.c_str() );
+		    view->uiView->send_network( buf );
+	  
                     c->ocio_input_color_space( name );
                     uiICS->label( strdup( lbl ) );
                     uiICS->value(i);
