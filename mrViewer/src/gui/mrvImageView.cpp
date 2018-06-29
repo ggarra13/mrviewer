@@ -1091,6 +1091,9 @@ void ImageView::update_ICS() const
       }
   }
   o->label( strdup( "scene_linear" ) );
+  char buf[32];
+  sprintf( buf, "ICS \"scene_linear\"" );
+  send_network( buf );
   o->redraw();
 }
 
@@ -1387,6 +1390,8 @@ void ImageView::stop_playback()
 ImageView::~ImageView()
 {
    delete_timeout();
+   if ( CMedia::preload_cache() )
+       preload_caches();
 
    ParserList::iterator i = _clients.begin();
    ParserList::iterator e = _clients.end();
@@ -2504,7 +2509,7 @@ bool ImageView::preload()
     }
     else
     {
-        f = img->frame();
+        f = _preframe;
     }
     int64_t tfirst = timeline()->display_minimum();
     int64_t first  = img->first_frame();
@@ -2512,6 +2517,10 @@ bool ImageView::preload()
     int64_t last   = img->last_frame();
     if ( tfirst > first && tfirst < last ) first = tfirst;
     if ( tlast < last   && tlast > first )  last = tlast;
+
+    if ( f < first ) f = first;
+    else if ( f > last ) f = last;
+    
     int64_t i = f;
 
     bool found = false;
@@ -2543,16 +2552,18 @@ bool ImageView::preload()
     if ( found )
     {
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
+	// Store current frame
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
-        if ( ! img->find_image( i ) ) // this loads the frame if not present
+        if ( !img->find_image( i ) ) // this loads the frame if not present
         {
             // Frame not found or error. Update _preframe.
             _preframe = i + 1;
             if ( _preframe > last ) _preframe = 1;
         }
-        img->hires( pic );
-        timeline()->redraw();
+	// Restore current frame
+	img->hires( pic );
+	timeline()->redraw();
     }
     else
     {
@@ -3970,10 +3981,11 @@ void ImageView::leftMouseUp( int x, int y )
          send_network( s->send() );
      }
   }
-  else if ( _mode == kScrub || _mode == kMovePicture || _mode == kScalePicture )
-  {
-      _mode = kNoAction;
-  }
+  // else if ( _mode == kScrub || _mode == kMovePicture ||
+  //           _mode == kScalePicture )
+  // {
+  //     _mode = kNoAction;
+  // }
 
 }
 
@@ -7463,10 +7475,10 @@ void ImageView::foreground( mrv::media fg )
 
         if ( img )
         {
-            char buf[1024];
-            sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
-                     img->fileroot(), img->first_frame(), img->last_frame() );
-            send_network( buf );
+            // char buf[1024];
+            // sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
+            //          img->fileroot(), img->first_frame(), img->last_frame() );
+            // send_network( buf );
 
             if ( img->looping() == CMedia::kUnknownLoop )
             {
@@ -8144,10 +8156,6 @@ void ImageView::update_color_info( const mrv::media& fg ) const
   if ( ! (img->image_damage() & CMedia::kDamageLut) )
       return;
 
-  char buf[1024];
-
-  sprintf( buf, "ICS \"%s\"", img->ocio_input_color_space().c_str() );
-  send_network( buf );
 
   if ( uiMain->uiICS->visible() )
   {
