@@ -88,12 +88,12 @@ struct Clock {
     {
     }
 
-    double pts;           /* clock base */
-    double pts_drift;     /* clock base minus time at which we updated the clock */
-    double last_updated;
-    double speed;
-    int serial;           /* clock is based on a packet with this serial */
-    int paused;
+    std::atomic<double> pts;           /* clock base */
+    std::atomic<double> pts_drift;     /* clock base minus time at which we updated the clock */
+    std::atomic<double> last_updated;
+    std::atomic<double> speed;
+    std::atomic<int> serial;           /* clock is based on a packet with this serial */
+    std::atomic<int> paused;
     int *queue_serial;    /* pointer to the current packet queue serial, used for obsolete clock detection */
 };
 struct AVFormatContext;
@@ -986,6 +986,7 @@ class CMedia
     inline Barrier* fg_bg_barrier()         { return _fg_bg_barrier; }
     inline Barrier* loop_barrier()          { return _loop_barrier; }
     inline Mutex& video_mutex()             { return _mutex; };
+    inline Mutex& data_mutex()              { return _data_mutex; };
     inline Mutex& audio_mutex()             { return _audio_mutex; };
     inline Mutex& subtitle_mutex()          { return _subtitle_mutex; };
 
@@ -1190,7 +1191,7 @@ class CMedia
 
 
   public:
-    AV_SYNC_TYPE av_sync_type;
+    std::atomic<AV_SYNC_TYPE> av_sync_type;
     Clock audclk;
     Clock vidclk;
     Clock extclk;
@@ -1455,6 +1456,7 @@ class CMedia
     size_t _disk_space;       //!< disk space used by image
 
     Mutex     _mutex;          //!< to mark image routines
+    Mutex     _data_mutex;     //!< to mark data routines
     Mutex     _subtitle_mutex; //!< to mark subtitle routines
     Mutex     _audio_mutex;    //!< to mark audio routines
 
@@ -1510,17 +1512,17 @@ class CMedia
     int64_t   _loop_start;   //!< loop start when playing backwards
     int64_t   _loop_end;     //!< loop end when playing forwards
 
-    double     _audio_pts;
-    double     _audio_clock;
-    double     _video_pts;
-    double     _video_clock;
+    std::atomic<double>     _audio_pts;
+    std::atomic<double>     _audio_clock;
+    std::atomic<double>     _video_pts;
+    std::atomic<double>     _video_clock;
 
     InterlaceType _interlaced;     //!< image is interlaced?
 
     std::atomic<Damage>  _image_damage;   //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
-    boost::int64_t _numWindows;    //!< number of data/display windows
+    std::atomic<int64_t> _numWindows;    //!< number of data/display windows
     double      _x, _y;             //!< x,y coordinates in canvas
     double      _scale_x, _scale_y; //!< x,y scale in canvas
     double      _rot_z;             //!< z quad rotation in canvas
@@ -1604,11 +1606,11 @@ class CMedia
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     int64_t          _audio_last_frame;  //!< last audio frame decoded
-    unsigned short   _audio_channels;
+    std::atomic<unsigned short>   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
     int64_t          audio_callback_time;
 
-    mrv::AudioEngine::AudioFormat _audio_format;
+    std::atomic<mrv::AudioEngine::AudioFormat> _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
 
