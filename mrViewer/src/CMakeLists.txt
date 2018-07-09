@@ -96,6 +96,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
       ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
       SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+      # ADD_DEFINITIONS( -fsanitize=address )
+      # SET(LIBRARIES asan ${LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
@@ -328,6 +330,7 @@ ENDIF(NOT WIN32)
 
 
 SET( LIBRARIES
+  ${LIBRARIES}
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
@@ -346,7 +349,7 @@ SET( LIBRARIES
   )
 
 IF(OIIO_LIBRARIES)
-  SET( LIBRARIES ${OIIO_LIBRARIES} ${LIBRARIES} )
+  SET( LIBRARIES ${LIBRARIES} ${OIIO_LIBRARIES} )
 ENDIF(OIIO_LIBRARIES)
 
 
@@ -726,9 +729,9 @@ MESSAGE( STATUS "mrViewer version: " ${VERSION} )
 SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
 
-
-IF( TEST_BUNDLE )
+IF( TEST_BUNDLE  )
 # A dummy target so that we can test post_build commands faster
+  MESSAGE( STATUS "NO CPACK RUN" )
   ADD_CUSTOM_TARGET( bundle ALL
                            COMMAND echo here we would run cpack
                            DEPENDS translations

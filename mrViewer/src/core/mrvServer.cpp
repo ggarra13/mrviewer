@@ -127,6 +127,7 @@ void Parser::write( const std::string& s, const std::string& id )
                continue;
            }
            // LOG_CONN( s << " sent to " << *i << " " << p );
+           //LOG_INFO( "resending " << s << " to " << p );
            (*i)->deliver( s );
        }
        catch( const std::exception& e )
@@ -190,11 +191,12 @@ bool Parser::parse( const std::string& s )
    if ( fg )
    {
        CMedia* img = fg->image();
-       LOG_INFO( "received: " << cmd << " " << img->name() << " ics "
-                 << img->ocio_input_color_space() );
+       LOG_INFO( "received: " << cmd << " for " << img->name() );
    }
    else
-       LOG_INFO( "received: " << cmd << " (empty)" );
+   {
+       LOG_INFO( "received: " << cmd << " for (empty image)" );
+   }
 #endif
 
    if ( cmd == N_("GLPathShape") )
@@ -396,7 +398,6 @@ bool Parser::parse( const std::string& s )
       is >> x >> y;
       v->offset_x( x );
       v->offset_y( y );
-      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -434,9 +435,9 @@ bool Parser::parse( const std::string& s )
       is >> ch >> name;
 
       if ( v->foreground() )
-	  v->channel( ch );
+          v->channel( ch );
       else
-	  LOG_ERROR( _("No image for channel selection") );
+          LOG_ERROR( _("No image for channel selection") );
       v->redraw();
       ok = true;
    }
@@ -445,7 +446,6 @@ bool Parser::parse( const std::string& s )
       int field;
       is >> field;
       v->field( (mrv::ImageView::FieldDisplay) field );
-      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -455,7 +455,6 @@ bool Parser::parse( const std::string& s )
       is >> b;
       v->normalize( ( b != 0 ) );
       ui->uiNormalize->state( (b != 0 ) );
-      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -465,7 +464,6 @@ bool Parser::parse( const std::string& s )
       is >> b;
       v->wipe_direction( ImageView::kWipeVertical );
       v->wipe_amount( b );
-      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -475,7 +473,6 @@ bool Parser::parse( const std::string& s )
       is >> b;
       v->wipe_direction( ImageView::kWipeHorizontal );
       v->wipe_amount( b );
-      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -483,7 +480,6 @@ bool Parser::parse( const std::string& s )
    {
       v->wipe_direction( ImageView::kNoWipe );
       v->wipe_amount( 0.0f );
-      v->refresh();
       v->redraw();
       ok = true;
    }
@@ -509,7 +505,7 @@ bool Parser::parse( const std::string& s )
    {
        float s0, s1, s2, o0, o1, o2, p0, p1, p2;
        is >> s0 >> s1 >> s2 >> o0 >> o1 >> o2 >> p0 >> p1 >> p2;
-       
+
        mrv::media fg = v->foreground();
        if ( fg )
        {
@@ -526,7 +522,7 @@ bool Parser::parse( const std::string& s )
    {
        float f;
        is >> f;
-       
+
        mrv::media fg = v->foreground();
        if ( fg )
        {
@@ -667,13 +663,13 @@ bool Parser::parse( const std::string& s )
        {
            CMedia* img = fg->image();
            img->ocio_input_color_space( s );
-	   img->image_damage( img->image_damage() | CMedia::kDamageLut );
+           img->image_damage( img->image_damage() | CMedia::kDamageLut );
            v->update_ICS();
            ok = true;
        }
        else
        {
-	   LOG_ERROR( "No fg image to change ICS" );
+           LOG_ERROR( "No fg image to change ICS" );
        }
    }
    else if ( cmd == N_("Gain") )
@@ -927,7 +923,7 @@ bool Parser::parse( const std::string& s )
       std::getline( is, name, '"' );
       is.clear();
 
-      
+
       mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
          r = now;
@@ -942,7 +938,7 @@ bool Parser::parse( const std::string& s )
    {
       size_t idx;
       is >> idx;
-      
+
       std::string imgname;
       is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
@@ -954,7 +950,7 @@ bool Parser::parse( const std::string& s )
       browser()->load( files );
       mrv::media m = view()->foreground();
       browser()->replace( idx, m );
-      v->refresh();
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("RemoveImage") )
@@ -978,7 +974,7 @@ bool Parser::parse( const std::string& s )
 
       browser()->remove( unsigned(idx) );
       browser()->redraw();
-      v->refresh();
+      v->redraw();
       edl_group()->redraw();
 
       ok = true;
@@ -1058,7 +1054,7 @@ bool Parser::parse( const std::string& s )
                   browser()->redraw();
                   edl_group()->refresh();
                   edl_group()->redraw();
-		  v->refresh();
+                  v->redraw();
                   ok = true;
                   break;
                }
@@ -1071,7 +1067,7 @@ bool Parser::parse( const std::string& s )
                browser()->redraw();
                edl_group()->refresh();
                edl_group()->redraw();
-	       v->refresh();
+               v->redraw();
                ok = true;
             }
 
@@ -1088,7 +1084,7 @@ bool Parser::parse( const std::string& s )
       is.clear();
       std::getline( is, imgname, '"' );
       is.clear();
-      
+
       boost::int64_t start, end;
       is >> start;
       is >> end;
@@ -1121,7 +1117,6 @@ bool Parser::parse( const std::string& s )
       }
 
 
-      v->refresh();
       v->redraw();
 
       ok = true;
@@ -1166,25 +1161,23 @@ bool Parser::parse( const std::string& s )
 
          if (! found )
          {
-	     // LOG_ERROR( imgname << " not found in current reel" );
-	     ok = true;
-            // LoadList files;
-            // files.push_back( LoadInfo( imgname, first, last ) );
+             LOG_INFO( imgname << " not found in current reel" );
+             ok = true;
+            LoadList files;
+            files.push_back( LoadInfo( imgname, first, last ) );
 
-            // browser()->load( files, false );
-            // edl_group()->refresh();
-            // edl_group()->redraw();
-            // browser()->redraw();
-	    // v->refresh();
-	    // v->redraw();
+            browser()->load( files, false );
+            edl_group()->refresh();
+            edl_group()->redraw();
+            browser()->redraw();
+            v->redraw();
          }
-	 else
-	 {
-	     v->refresh();
-	     v->redraw();
-	     
-	     ok = true;
-	 }
+         else
+         {
+             v->redraw();
+
+             ok = true;
+         }
       }
 
    }
@@ -1245,7 +1238,6 @@ bool Parser::parse( const std::string& s )
               }
           }
       }
-      v->refresh();
       v->redraw();
    }
    else if ( cmd == N_("sync_image") )
@@ -1266,7 +1258,7 @@ bool Parser::parse( const std::string& s )
          {
              CMedia* img = (*j)->image();
              if (!img) continue;
-             
+
              cmd = N_("Image \"");
              cmd += img->directory();
              cmd += "/";
@@ -1286,7 +1278,7 @@ bool Parser::parse( const std::string& s )
             boost::int64_t frame = img->frame();
             sprintf( buf, N_("seek %") PRId64, frame );
             deliver( buf );
-            
+
             //
             // Handle color management (OCIO/CTL)
             //
@@ -1344,7 +1336,7 @@ bool Parser::parse( const std::string& s )
             }
 
          }
-         
+
          j = r->images.begin();
          CMedia* img = (*j)->image();
 
@@ -1471,7 +1463,7 @@ bool Parser::parse( const std::string& s )
           sprintf( buf, "StereoInput %d", in );
           deliver( buf );
 
-          
+
           boost::int64_t frame = img->frame() - img->first_frame() + 1;
           sprintf( buf, N_("seek %") PRId64, frame );
           deliver( buf );
@@ -1493,11 +1485,11 @@ bool Parser::parse( const std::string& s )
 
       sprintf(buf, N_("OCIO %d"), (int)mrv::Preferences::use_ocio );
       deliver( buf );
-      
+
       const char* const config = v->main()->uiPrefs->uiPrefsOCIOConfig->text();
       sprintf(buf, N_("OCIOConfig \"%s\""), config );
       deliver( buf );
-      
+
       const std::string& display = mrv::Preferences::OCIO_Display;
       const std::string& view = mrv::Preferences::OCIO_View;
       sprintf(buf, N_("OCIOView \"%s\" \"%s\""),
@@ -1537,7 +1529,7 @@ bool Parser::parse( const std::string& s )
 
       const char* lbl = v->get_layer_label(v->channel());
       sprintf(buf, N_("Channel %d %s"), v->channel(),
-	      lbl ? lbl : "(null)"  );
+              lbl ? lbl : "(null)"  );
       deliver( buf );
 
 
@@ -1551,7 +1543,6 @@ bool Parser::parse( const std::string& s )
 
       browser()->redraw();
       v->redraw();
-      v->refresh();
 
       ok = true;
    }
@@ -1698,7 +1689,6 @@ bool Parser::parse( const std::string& s )
 
    if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
    v->_clients = c;
-
    return ok;
 }
 
@@ -1775,7 +1765,7 @@ void tcp_session::deliver( const std::string& msg )
     SCOPED_LOCK( mtx );
 
     LOG_INFO( msg );
-    
+
    output_queue_.push_back(msg + "\n");
 
    // Signal that the output queue contains messages. Modifying the expiry
@@ -1791,10 +1781,11 @@ void tcp_session::stop()
    socket_.close(ignored_ec);
    non_empty_output_queue_.cancel();
 
-   if ( ui && ui->uiView )
+   if ( !ui ) return;
+   
+   mrv::ImageView* v = ui->uiView;
+   if ( ui && v )
    {
-       mrv::ImageView* v = ui->uiView;
-
        Mutex& m = v->_clients_mtx;
        SCOPED_LOCK( m );
 
@@ -2092,8 +2083,12 @@ void server::create(mrv::ViewerUI* ui)
    data->port = port;
    data->ui = ui;
 
+   ui->uiConnection->uiCreate->label( _("Disconnect") );
+   ui->uiConnection->uiClientGroup->deactivate();
+      
    boost::thread t( boost::bind( mrv::server_thread,
                                  data ) );
+   t.detach();
 }
 
 void server::remove( mrv::ViewerUI* ui )
@@ -2142,8 +2137,6 @@ void server_thread( const ServerData* s )
                                                              listen_endpoint,
                                                              s->ui);
 
-      s->ui->uiConnection->uiCreate->label( _("Disconnect") );
-      s->ui->uiConnection->uiClientGroup->deactivate();
 
       LOG_CONN( _("Created server at port ") << s->port );
 
