@@ -171,6 +171,7 @@ const char* const aviImage::color_range() const
 
 aviImage::aviImage() :
   CMedia(),
+  _initialize( false ),
   _has_image_seq( false ),
   _video_index(-1),
   _stereo_index(-1),
@@ -726,68 +727,68 @@ bool aviImage::valid_video() const
 void aviImage::open_video_codec()
 {
     SCOPED_LOCK( _mutex );
-  AVStream *stream = get_video_stream();
-  if ( stream == NULL ) return;
+    AVStream *stream = get_video_stream();
+    if ( stream == NULL ) return;
+    
+    AVCodecParameters* codecpar = stream->codecpar;
 
-  AVCodecParameters* codecpar = stream->codecpar;
-
-  AVCodec* video_codec = avcodec_find_decoder( codecpar->codec_id );
-
-  _video_ctx = avcodec_alloc_context3(video_codec);
-  int r = avcodec_parameters_to_context(_video_ctx, codecpar);
-  if ( r < 0 )
-  {
-      LOG_ERROR( _("avcodec_context_from_parameters failed for video") );
-      return;
-  }
-
-
-  static int workaround_bugs = 1;
-  static enum AVDiscard skip_frame= AVDISCARD_DEFAULT;
-  static enum AVDiscard skip_idct= AVDISCARD_DEFAULT;
-  static enum AVDiscard skip_loop_filter= AVDISCARD_DEFAULT;
-  static int idct = FF_IDCT_AUTO;
-  static int error_concealment = 3;
-
-  _video_ctx->codec_id        = video_codec->id;
-  _video_ctx->workaround_bugs = workaround_bugs;
-  // _video_ctx->skip_frame= skip_frame;
-  // _video_ctx->skip_idct = skip_idct;
-  // _video_ctx->skip_loop_filter= skip_loop_filter;
-  // _video_ctx->idct_algo = idct;
+    AVCodec* video_codec = avcodec_find_decoder( codecpar->codec_id );
+    
+    _video_ctx = avcodec_alloc_context3(video_codec);
+    int r = avcodec_parameters_to_context(_video_ctx, codecpar);
+    if ( r < 0 )
+    {
+	LOG_ERROR( _("avcodec_context_from_parameters failed for video") );
+	return;
+    }
 
 
+    static int workaround_bugs = 1;
+    static enum AVDiscard skip_frame= AVDISCARD_DEFAULT;
+    static enum AVDiscard skip_idct= AVDISCARD_DEFAULT;
+    static enum AVDiscard skip_loop_filter= AVDISCARD_DEFAULT;
+    static int idct = FF_IDCT_AUTO;
+    static int error_concealment = 3;
 
-  double aspect_ratio;
-  if ( _video_ctx->sample_aspect_ratio.num == 0 )
-    aspect_ratio = 0;
-  else
-    aspect_ratio = av_q2d( _video_ctx->sample_aspect_ratio ) *
-    _video_ctx->width / _video_ctx->height;
+    _video_ctx->codec_id        = video_codec->id;
+    _video_ctx->workaround_bugs = workaround_bugs;
+    // _video_ctx->skip_frame= skip_frame;
+    // _video_ctx->skip_idct = skip_idct;
+    // _video_ctx->skip_loop_filter= skip_loop_filter;
+    // _video_ctx->idct_algo = idct;
 
 
 
+    double aspect_ratio;
+    if ( _video_ctx->sample_aspect_ratio.num == 0 )
+	aspect_ratio = 0;
+    else
+	aspect_ratio = av_q2d( _video_ctx->sample_aspect_ratio ) *
+	_video_ctx->width / _video_ctx->height;
 
-  if ( width() > 0 && height() > 0 )
-  {
-     double image_ratio = (double) width() / (double)height();
-     if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
-     if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
-     else _pixel_ratio = aspect_ratio / image_ratio;
-  }
 
-  avcodec_parameters_from_context( stream->codecpar, _video_ctx );
 
-  AVDictionary* info = NULL;
-  av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
+    if ( width() > 0 && height() > 0 )
+    {
+	double image_ratio = (double) width() / (double)height();
+	if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
-  // recounted frames needed for subtitles
-  av_dict_set(&info, "refcounted_frames", "1", 0);
+	if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
+	else _pixel_ratio = aspect_ratio / image_ratio;
+    }
 
-  if ( video_codec == NULL ||
-       avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
-    _video_index = -1;
+    avcodec_parameters_from_context( stream->codecpar, _video_ctx );
+
+    AVDictionary* info = NULL;
+    av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
+
+    // recounted frames needed for subtitles
+    av_dict_set(&info, "refcounted_frames", "1", 0);
+
+    if ( video_codec == NULL ||
+	 avcodec_open2( _video_ctx, video_codec, &info ) < 0 )
+	_video_index = -1;
 
 }
 
@@ -806,7 +807,7 @@ void aviImage::flush_video()
     SCOPED_LOCK( _mutex );
     if ( _video_ctx && _video_index >= 0 )
     {
-        avcodec_flush_buffers( _video_ctx );
+	avcodec_flush_buffers( _video_ctx );
     }
 }
 
@@ -1159,9 +1160,9 @@ void aviImage::store_image( const int64_t frame,
 
 }
 
-static
-int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
-           bool eof)
+
+int aviImage::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
+		     AVPacket *pkt, bool eof)
 {
     int ret;
 
@@ -1193,8 +1194,10 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 {
     AVPacket* pkt = (AVPacket*)&p;
 
+    SCOPED_LOCK( _mutex );
+    
   AVStream* stream = get_video_stream();
-  assert( stream != NULL );
+  assert0( stream != NULL );
 
   int got_pict = 0;
 
@@ -2400,9 +2403,8 @@ void aviImage::probe_size( unsigned p )
 
 bool aviImage::initialize()
 {
-  if ( _context == NULL )
+  if ( !_initialize )
     {
-
         avfilter_register_all();
 
 
@@ -2452,11 +2454,13 @@ bool aviImage::initialize()
           // Allocate an av frame
           _av_frame = av_frame_alloc();
           populate();
+	  _initialize = true;
         }
       else
         {
             LOG_ERROR( filename() << _(" Could not open file") );
             avformat_free_context( _context );
+	    _initialize = false;
             _context = NULL;
             return false;
         }
@@ -2912,8 +2916,6 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
   debug_video_stores(frame, "BEFORE HSEEK");
 #endif
 
-  Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
 
   if ( _video_packets.empty() || _video_packets.is_flush() )
       LOG_ERROR( _("Wrong packets in handle_video_packet_seek" ) );
@@ -3062,8 +3064,6 @@ CMedia::DecodeStatus
 aviImage::audio_video_display( const int64_t& frame )
 {
 
-    SCOPED_LOCK( _mutex );
-
     if (! _video_packets.empty() )
     {
         assert( !_video_packets.empty() );
@@ -3087,6 +3087,8 @@ aviImage::audio_video_display( const int64_t& frame )
 
     result = *it;
 
+
+    SCOPED_LOCK( _mutex );
     _hires->frame( frame );
     uint8_t* ptr = (uint8_t*) _hires->data().get();
     memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
@@ -3178,8 +3180,8 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     debug_video_packets(frame, "decode_video", true);
 #endif
 
-    Mutex& vpm = _video_packets.mutex();
-    SCOPED_LOCK( vpm );
+    // Mutex& vpm = _video_packets.mutex();
+    // SCOPED_LOCK( vpm );
 
     {
         SCOPED_LOCK( _mutex );
@@ -3292,7 +3294,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                // if ( pktframe == frame )
                {
                    got_video = decode_vpacket( pktframe, frame, pkt );
-                   assert( !_video_packets.empty() );
+                   //assert( !_video_packets.empty() );
                    _video_packets.pop_front();
                }
                continue;
@@ -3300,7 +3302,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 
 
           got_video = decode_image( pktframe, pkt );
-          assert( !_video_packets.empty() );
+          //assert( !_video_packets.empty() );
           _video_packets.pop_front();
           continue;
         }
