@@ -68,7 +68,7 @@ namespace mrv {
 
       virtual void print( const char* c ) = 0;
 
-    protected:
+    public:
       static boost::recursive_mutex _mutex;
     };
 

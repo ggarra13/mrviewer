@@ -66,6 +66,8 @@ class server;
   class ImageView : public fltk::GlWindow
   {
   public:
+      typedef boost::recursive_mutex Mutex;
+      
     enum Actions {
       kMouseDown   = 1 << 0,
       kZoom        = 1 << 1,
@@ -256,6 +258,7 @@ class server;
     /// Change channel shown in viewer
       void channel( fltk::Widget* w ); // widget is one of the menus or submenus
       void channel( unsigned short c );
+      void channel( const char* const lbl );
       unsigned short channel() const { return _channel; };
 
       char* get_layer_label(unsigned short c);
@@ -300,7 +303,7 @@ class server;
       void update_layers();
 
       /// Update the Display of Input Color Space of foreground image
-      void update_ICS() const;
+      void update_ICS();
 
       /// Turn on or off safe areas
       void safe_areas( const bool t );
@@ -346,13 +349,13 @@ class server;
       void show_background( const bool b );
 
       void update( bool t ) { _update = t; }
-      
+
       /// Update the image window display
       void update_image_info() const;
 
       /// Update the color information display
-      void update_color_info( const mrv::media& fg ) const;
-      void update_color_info() const;
+      void update_color_info( const mrv::media& fg );
+      void update_color_info();
 
       // Channel navigation (for hotkeys)
       void switch_channels();
@@ -569,7 +572,7 @@ class server;
   protected:
 
 
-      void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
+      void pixel_processed( CMedia* img, CMedia::Pixel& rgba ) const;
 
     void stop_playback();
 

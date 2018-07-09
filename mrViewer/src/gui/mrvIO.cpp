@@ -48,6 +48,7 @@ namespace mrv {
 
     _alert = (char*) malloc( strlen(str) + 1 );
     strcpy( _alert, str );
+    _alert[strlen(str)] = 0;
 
     fltk::alert( _alert );
   }
@@ -60,16 +61,17 @@ namespace mrv {
 
   namespace io
   {
-    boost::recursive_mutex logbuffer::_mutex;
-    std::fstream logbuffer::out;
-    bool logbuffer::_debug = false;
+
+  boost::recursive_mutex logbuffer::_mutex;
+  std::fstream logbuffer::out;
+  bool logbuffer::_debug = false;
 
     int logbuffer::sync()
     {
+      if ( ! pbase() ) return 0;
+      
       // lock mutex
       boost::recursive_mutex::scoped_lock lk( _mutex );
-      
-      if ( ! pbase() ) return 0;
 
       // make sure to null terminate the string
       sputc('\0');

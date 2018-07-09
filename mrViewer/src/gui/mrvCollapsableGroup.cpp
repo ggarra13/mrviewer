@@ -136,7 +136,8 @@ namespace mrv {
     int H = 2;
     if ( _contents->visible() ) H += _contents->h() + 12;
 
-    h( H + child(0)->h() );
+    if ( children() >= 1 )
+	h( H + child(0)->h() );
 
     init_sizes();
   }
