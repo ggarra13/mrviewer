@@ -174,6 +174,9 @@ class aviImage : public CMedia
     // For counting frames
     bool readFrame(int64_t & pts);
 
+    int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
+	       AVPacket *pkt, bool eof);
+    
     int64_t queue_packets( const int64_t frame,
                                   const bool is_seek,
                                   bool& got_video,
@@ -282,6 +285,7 @@ class aviImage : public CMedia
     std::string _format;
     std::string _compression;
 
+    std::atomic<bool>  _initialize;
     bool               _has_image_seq;
     std::atomic<int>   _video_index;    // Index to primary video stream
     std::atomic<int>   _stereo_index;   // Index to stereo video stream
