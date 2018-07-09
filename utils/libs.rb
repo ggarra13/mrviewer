@@ -42,7 +42,7 @@ def parse( files )
     end
 
     begin
-      FileUtils.rm("Release/lib/#{lib}")
+      FileUtils.rm("#{@debug}/lib/#{lib}")
     rescue
     end
 
@@ -51,12 +51,17 @@ def parse( files )
     if File.symlink?( loc )
       lib = File.readlink( loc )
       puts "#{lib} ->->-> #{orig}"
-      FileUtils.cp(loc, "Release/lib/#{lib}" )
-      FileUtils.ln_s( "#{lib}", "Release/lib/#{orig}" )
+      FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
+      FileUtils.ln_s( "#{lib}", "#{@debug}/lib/#{orig}" )
     else
-      FileUtils.cp(loc, "Release/lib/#{lib}" )
+      FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
     end
   end
+end
+
+@debug = ARGV.shift
+if not @debug
+  @debug = "Release"
 end
 
 release = `uname -r`.chop!
@@ -71,10 +76,10 @@ FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/b
 FileUtils.rm_f( home + '-dbg' )
 FileUtils.ln_s( ENV['PWD']+'/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
-libs = Dir.glob( "Release/lib/*" )
+libs = Dir.glob( "#{@debug}/lib/*" )
 FileUtils.rm_f( libs )
 
-exes = Dir.glob( "Release/bin/*" )
+exes = Dir.glob( "#{@debug}/bin/*" )
 
 files = []
 
@@ -91,16 +96,11 @@ files.uniq!
 
 parse( files )
 
-FileUtils.rm_f( "Release/shaders" )
-FileUtils.rm_f( "Release/docs" )
-FileUtils.rm_f( "Release/ctl" )
-FileUtils.rm_f( "Release/HISTORY.txt" )
-FileUtils.rm_f( "Release/LICENSE.txt" )
-FileUtils.rm_f( "Release/Videos.txt" )
-FileUtils.cp_r( "../../shaders", "Release/" )
-FileUtils.cp_r( "../../docs", "Release/" )
-FileUtils.cp_r( "../../ctl", "Release/" )
-FileUtils.cp( "../../HISTORY.txt", "Release/" )
-FileUtils.cp( "../../LICENSE.txt", "Release/" )
+FileUtils.rm_f( "#{@debug}/shaders" )
+FileUtils.rm_f( "#{@debug}/docs" )
+FileUtils.rm_f( "#{@debug}/ctl" )
+FileUtils.cp_r( "../../shaders", "#{@debug}/" )
+FileUtils.cp_r( "../../docs", "#{@debug}/" )
+FileUtils.cp_r( "../../ctl", "#{@debug}/" )
 
 `find . -name '*fuse*' -exec rm {} \\;`

@@ -761,8 +761,10 @@ void ImageBrowser::send_image( const mrv::media& m )
     sprintf(txt, N_("Gain %g"), v->gain() );
     v->send_network( txt );
 
-    sprintf(txt, N_("Channel %d %s"), v->channel(),
-	    v->get_layer_label( v->channel() ) );
+    char* lbl = v->get_layer_label( v->channel() );
+    sprintf(txt, N_("Channel %d %s"), v->channel(), lbl );
+    free( lbl );
+    
     v->send_network( txt );
 
     sprintf(txt, N_("UseLUT %d"), (int)v->use_lut() );
@@ -893,18 +895,18 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
         return;
     }
 
-    {
-     mrv::MediaList::const_iterator i = reel->images.begin();
-     mrv::MediaList::const_iterator e = reel->images.end();
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
 
-     int idx = 0;
-     std::cerr << "**** PRE-REMOVE " << std::endl;
-     for ( ; i != e; ++i, ++idx )
-     {
-         fltk::Widget* w = child(idx);
-         std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
-     }
-    }
+    //  int idx = 0;
+    //  std::cerr << "**** PRE-REMOVE " << std::endl;
+    //  for ( ; i != e; ++i, ++idx )
+    //  {
+    //      fltk::Widget* w = child(idx);
+    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
+    //  }
+    // }
 
 
     // Remove icon from browser
@@ -916,17 +918,17 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
 
-    {
-     mrv::MediaList::const_iterator i = reel->images.begin();
-     mrv::MediaList::const_iterator e = reel->images.end();
+    // {
+    //  mrv::MediaList::const_iterator i = reel->images.begin();
+    //  mrv::MediaList::const_iterator e = reel->images.end();
 
-     int idx = 0;
-     LOG_INFO( "**** REMOVE" );
-     for ( ; i != e; ++i, ++idx )
-     {
-         LOG_INFO( "\t" << (*i)->name() );
-     }
-    }
+    //  int idx = 0;
+    //  LOG_INFO( "**** REMOVE" );
+    //  for ( ; i != e; ++i, ++idx )
+    //  {
+    //      LOG_INFO( "\t" << (*i)->name() );
+    //  }
+    // }
 
 
     char buf[256];
