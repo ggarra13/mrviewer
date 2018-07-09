@@ -56,7 +56,7 @@ make_window();} {}
               user_data this user_data_type {ICCProfileUI*}
               callback {v->fill_text();}
               xywh {0 6 623 155}
-              extra_code {static const int widths[] = { -1, 120, 80,  80 };
+              extra_code {static const int widths[] = { -1, 120, 80,  80, 0 };
 static const char* labels[] = { "ID", "Tag", "Offset", "Size", NULL };
 
 o->column_widths( widths );

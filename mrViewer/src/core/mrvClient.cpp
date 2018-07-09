@@ -449,8 +449,15 @@ void client::create(mrv::ViewerUI* ui)
    data->group = buf;
    data->ui = ui;
 
+   if ( ui->uiConnection )
+   {
+       ui->uiConnection->uiServerGroup->activate();
+       ui->uiConnection->uiConnect->label( _("Connect") );
+   }
+   
    boost::thread t( boost::bind( mrv::client_thread,
                                  data ) );
+   t.detach();
 }
 
 void client::remove( mrv::ViewerUI* ui )
@@ -470,11 +477,6 @@ void client::remove( mrv::ViewerUI* ui )
       (*i)->stop();
    }
 
-   if ( ui->uiConnection )
-   {
-       ui->uiConnection->uiServerGroup->activate();
-       ui->uiConnection->uiConnect->label( _("Connect") );
-   }
 
    v->_clients.clear();
 }

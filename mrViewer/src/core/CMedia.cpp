@@ -471,7 +471,7 @@ _audio_engine( NULL )
  * @param wh    new image height
  */
 CMedia::CMedia( const CMedia* other, int ws, int wh ) :
-av_sync_type( other->av_sync_type ),
+av_sync_type( other->av_sync_type.load() ),
 _has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
@@ -552,9 +552,9 @@ _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
-_audio_channels( other->_audio_channels ),
+_audio_channels( other->_audio_channels.load() ),
 _aframe( NULL ),
-_audio_format( other->_audio_format ),
+_audio_format( other->_audio_format.load() ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
@@ -585,7 +585,7 @@ _audio_engine( NULL )
 }
 
 CMedia::CMedia( const CMedia* other, int64_t f ) :
-av_sync_type( other->av_sync_type ),
+av_sync_type( other->av_sync_type.load() ),
 _has_deep_data( other->_has_deep_data ),
 _w( 0 ),
 _h( 0 ),
@@ -788,13 +788,14 @@ void CMedia::wait_for_threads()
 CMedia::~CMedia()
 {
 
-  SCOPED_LOCK( _mutex );
-  SCOPED_LOCK( _audio_mutex );
-  SCOPED_LOCK( _subtitle_mutex );
-
 
   if ( !stopped() )
     stop();
+
+  SCOPED_LOCK( _mutex );
+  SCOPED_LOCK( _audio_mutex );
+  SCOPED_LOCK( _subtitle_mutex );  // M1193
+  SCOPED_LOCK( _data_mutex );      // M1192
 
   delete _right_eye;
   _right_eye = NULL;
@@ -988,8 +989,8 @@ void CMedia::allocate_pixels( const int64_t& frame,
 
   image_damage( image_damage() & ~kDamageContents );
   try {
-      _hires.reset(  new image_type( frame, w, h,
-                                     channels, format, pixel_type ) );
+      _hires.reset( new image_type( frame, w, h,
+				    channels, format, pixel_type ) );
       if (! _hires->data().get() )
           LOG_ERROR( "Out of memory" );
   }
@@ -1008,6 +1009,8 @@ mrv::image_type_ptr CMedia::left() const
     if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    CMedia::Mutex& mtx = const_cast< CMedia::Mutex& >( _mutex );
+    SCOPED_LOCK( mtx );
 
     CMedia* img = const_cast< CMedia* >( this );
     mrv::image_type_ptr pic = _hires;
@@ -1028,6 +1031,9 @@ mrv::image_type_ptr CMedia::right() const
     if ( _right_eye ) {
         return _right_eye->left();
     }
+
+    CMedia::Mutex& mtx = const_cast< CMedia::Mutex& >( _mutex );
+    SCOPED_LOCK( mtx );
 
     if ( stereo_input() == kTopBottomStereoInput ||
          stereo_input() == kLeftRightStereoInput )
@@ -1143,6 +1149,9 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
     if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    Mutex& mtx = const_cast< Mutex& >( _data_mutex );
+    SCOPED_LOCK( mtx );
+    
     if ( stereo_input() & kTopBottomStereoInput ) {
         mrv::Recti r = _dataWindow[idx];
         r.h( r.h() / 2 );
@@ -1178,6 +1187,9 @@ const mrv::Recti CMedia::data_window2( int64_t f ) const
     if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    Mutex& mtx = const_cast< Mutex& >( _data_mutex );
+    SCOPED_LOCK( mtx );
+    
     if ( stereo_input() & kTopBottomStereoInput ) {
         mrv::Recti r = _dataWindow2[idx];
         r.h( r.h() / 2 );
@@ -1195,9 +1207,14 @@ void CMedia::display_window( const int xmin, const int ymin,
                              const int xmax, const int ymax,
                              const int64_t& frame )
 {
+  SCOPED_LOCK( _data_mutex );
+  
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  
   _numWindows = _frame_end - _frame_start + 1;
+
+    
   if ( !_displayWindow )
       _displayWindow = new mrv::Recti[_numWindows];
 
@@ -1216,6 +1233,8 @@ void CMedia::display_window2( const int xmin, const int ymin,
                               const int xmax, const int ymax,
                               const int64_t& frame )
 {
+    SCOPED_LOCK( _data_mutex );  // M1192
+  
   assert( xmax >= xmin );
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
@@ -1237,8 +1256,11 @@ void CMedia::data_window( const int xmin, const int ymin,
                           const int xmax, const int ymax,
                           const int64_t& frame )
 {
+    SCOPED_LOCK( _data_mutex );  // M1192
+  
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_dataWindow )
       _dataWindow = new mrv::Recti[_numWindows];
@@ -1260,8 +1282,11 @@ void CMedia::data_window2( const int xmin, const int ymin,
                            const int xmax, const int ymax,
                            const int64_t& frame )
 {
+  SCOPED_LOCK( _data_mutex );
+  
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  
   _numWindows = _frame_end - _frame_start + 1;
   assert( _numWindows > 0 );
   if ( !_dataWindow2 )
@@ -1410,7 +1435,7 @@ void CMedia::filename( const char* n )
   if ( _fileroot && strcmp( n, _fileroot ) == 0 )
     return;
 
-  SCOPED_LOCK( _mutex );
+  SCOPED_LOCK( _mutex ); // mutex 1141
 
   std::string name = n;
   if ( name.substr(0, 6) == "Slate " )
@@ -1529,8 +1554,8 @@ bool CMedia::has_changed()
            _sequence[idx]->mtime() != sbuf.st_mtime ||
            _sequence[idx]->ctime() != sbuf.st_ctime )
         {
-           assert( f == _sequence[idx]->frame() );
-           // update frame...
+            //assert( f == _sequence[idx]->frame() );
+            // update frame...
            _sequence[idx].reset();
 
            _is_thumbnail = true;  // to avoid printing errors
@@ -2558,10 +2583,10 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
   else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
 
   if ( !seq || seq[idx] ) return;
-  
+
   mrv::image_type_ptr np;
 
-  
+
   unsigned w = pic->width();
   unsigned h = pic->height();
 
@@ -3242,18 +3267,18 @@ void CMedia::loop_at_end( const int64_t frame )
 
        mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
        mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
-       SCOPED_LOCK( _mutex );
+       // SCOPED_LOCK( _mutex );
        AVStream* stream = get_video_stream();
        if ( stream )
        {
-	   for ( ; i != e; ++i )
-	   {
-	       if ( get_frame( stream, *i ) >= frame )
-	       {
-		   mrv::PacketQueue::iterator it = (i+1).base();
-		   _video_packets.erase( it );
-	       }
-	   }
+           for ( ; i != e; ++i )
+           {
+               if ( get_frame( stream, *i ) >= frame )
+               {
+                   mrv::PacketQueue::iterator it = (i+1).base();
+                   _video_packets.erase( it );
+               }
+           }
        }
 
       _video_packets.loop_at_end( frame );
@@ -3271,15 +3296,14 @@ void CMedia::loop_at_end( const int64_t frame )
        AVStream* stream = get_audio_stream();
        if ( stream )
        {
-	   for ( ; i != e; ++i )
-	   {
-	       int64_t pktframe = get_frame( stream, *i );
-	       if ( pktframe >= frame )
-	       {
-		   mrv::PacketQueue::iterator it = (i+1).base();
-		   _audio_packets.erase( it );
-	       }
-	   }
+           for ( ; i != e; ++i )
+           {
+               if ( get_frame( stream, *i ) >= frame )
+               {
+                   mrv::PacketQueue::iterator it = (i+1).base();
+                   _audio_packets.erase( it );
+               }
+           }
        }
 
        _audio_packets.loop_at_end( frame );
@@ -3586,7 +3610,7 @@ bool CMedia::find_image( const int64_t frame )
 {
   if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
       _right_eye->find_image(frame);
-  
+
   int64_t f = handle_loops( frame );
 
   _video_pts   = f / _orig_fps;
@@ -3605,6 +3629,7 @@ bool CMedia::find_image( const int64_t frame )
 
   if ( _sequence && _sequence[idx] )
     {
+	SCOPED_LOCK( _mutex );
         _hires = _sequence[idx];
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
@@ -3649,7 +3674,7 @@ bool CMedia::find_image( const int64_t frame )
      {
          SCOPED_LOCK( _mutex );
          SCOPED_LOCK( _audio_mutex );
-         SCOPED_LOCK( _subtitle_mutex );
+         SCOPED_LOCK( _subtitle_mutex );  // M1193
          if ( fetch( f ) )
          {
              cache( _hires );
@@ -3657,10 +3682,10 @@ bool CMedia::find_image( const int64_t frame )
              default_rendering_transform();
              default_ocio_input_color_space();
          }
- 	 else
-	 {
-	     return false;
-	 } 
+         else
+         {
+             return false;
+         }
      }
      else
      {
@@ -3676,9 +3701,9 @@ bool CMedia::find_image( const int64_t frame )
             cache( _hires );
             _hires->valid( false ); // mark this frame as invalid
             refresh();
-	    image_damage( image_damage() | kDamageData | kDamage3DData );
+            image_damage( image_damage() | kDamageData | kDamage3DData );
             LOG_WARNING( file << _(" is missing.") );
-	    return false;
+            return false;
         }
      }
   }
