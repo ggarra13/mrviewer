@@ -501,7 +501,7 @@ namespace mrv {
 
   }
 
-  void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
+  void GLQuad::bind_texture_yuv( const image_type_ptr pic,
                                  const unsigned int poww,
                                  const unsigned int powh )
   {
@@ -705,7 +705,7 @@ namespace mrv {
       }
   }
 
-  void GLQuad::bind_texture_quad( const image_type_ptr& pic,
+  void GLQuad::bind_texture_quad( const image_type_ptr pic,
                                   const unsigned poww, const unsigned int powh )
   {
       if ( pic->format() >= image_type::kYUV )
@@ -873,7 +873,7 @@ namespace mrv {
   }
 
   /// Prepare a texture for opengl
-  void GLQuad::bind_texture_pixels( const mrv::image_type_ptr& pic )
+  void GLQuad::bind_texture_pixels( const mrv::image_type_ptr pic )
   {
     unsigned dw = pic->width();
     unsigned dh = pic->height();
@@ -912,7 +912,7 @@ namespace mrv {
   }
 
 
-  void GLQuad::bind( const image_type_ptr& pic )
+  void GLQuad::bind( const image_type_ptr pic )
   {
       CHECK_GL;
     if ( ! pic ) {
