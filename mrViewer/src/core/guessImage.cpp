@@ -342,7 +342,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         }
     }
 
-    delete [] read_data;
+    delete [] test_data;
 
     return image;
 }
