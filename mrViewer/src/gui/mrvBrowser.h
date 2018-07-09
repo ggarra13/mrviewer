@@ -38,19 +38,22 @@ namespace mrv
 class Browser : public fltk::Browser
 {
 public:
-  Browser( int x, int y, int w, int h, const char* l = 0 );
+    Browser( int x, int y, int w, int h, const char* l = 0 );
+    virtual ~Browser() {};
 
-  int handle( int e );
-  void layout();
-  void draw();
+    virtual int handle( int e );
+    virtual void layout();
+    virtual void draw();
 
-  bool column_separator() const    { return _column_separator; }
-  void column_separator(bool t) { _column_separator = t; }
+    bool column_separator() const    { return _column_separator; }
+    void column_separator(bool t) { _column_separator = t; }
 
-  void column_separator_color( fltk::Color c ) { _column_separator_color = c; }
-  fltk::Color column_separator_color() const { 
-    return _column_separator_color; 
-  }
+    void column_separator_color( fltk::Color c ) {
+	_column_separator_color = c;
+    }
+    fltk::Color column_separator_color() const { 
+	return _column_separator_color; 
+    }
 
   //
   // Returns the absolute (selected) item index by adding all children.
