@@ -171,7 +171,8 @@ namespace mrv {
 
       int _levelX, _levelY; //<- r/mipmap levels
       bool _multiview;
-      bool _has_alpha, _has_yca, _use_yca;
+      std::atomic<bool> _has_alpha;
+      bool _has_yca, _use_yca;
 
       char* _has_left_eye;
       char* _has_right_eye;

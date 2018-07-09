@@ -194,6 +194,10 @@ static const char* kModule = "alsa";
 
 float ALSAEngine::volume() const
 {
+#if 1
+    return _volume;
+#else
+    
     //
     // This code is a modified version of similar code in amixer.
     //
@@ -295,7 +299,9 @@ float ALSAEngine::volume() const
           }
       }
     
-    return 1.0; 
+    return _volume;
+#endif
+    
 }
 
   void ALSAEngine::volume( float v )

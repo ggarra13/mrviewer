@@ -1225,7 +1225,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
 		    view->uiView->send_network( buf );
 	  
                     c->ocio_input_color_space( name );
-                    uiICS->label( strdup( lbl ) );
+                    uiICS->copy_label( lbl );
                     uiICS->value(i);
                     uiICS->relayout(); // needed
                     uiICS->redraw();
