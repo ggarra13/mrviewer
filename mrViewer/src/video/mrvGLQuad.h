@@ -61,7 +61,7 @@ class GLQuad
     inline float gamma() const { return _gamma; }
     inline void gamma( const float f ) { _gamma = f; }
     
-    virtual void bind( const image_type_ptr& pic );
+    virtual void bind( const image_type_ptr pic );
     
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
@@ -85,14 +85,14 @@ class GLQuad
     int calculate_gl_step( const GLenum format,
 			   const GLenum pixel_type ) const;
 
-    void bind_texture_quad( const image_type_ptr& pic,
+    void bind_texture_quad( const image_type_ptr pic,
 			    const unsigned poww, const unsigned int powh );
 
-    void bind_texture_yuv( const image_type_ptr& pic,
+    void bind_texture_yuv( const image_type_ptr pic,
 			   const unsigned int poww, 
 			   const unsigned int powh );
 
-    void bind_texture_pixels( const image_type_ptr& pic );
+    void bind_texture_pixels( const image_type_ptr pic );
 
     void draw_pixels( const unsigned dw, const unsigned dh )        const;
     void draw_quad( const unsigned dw, const unsigned dh )          const;
