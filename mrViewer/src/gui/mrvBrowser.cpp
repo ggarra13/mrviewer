@@ -27,6 +27,8 @@
 
 #include <iostream>
 
+#define assert0(x) if ( !(x) ) do { std::cerr << #x << " FAILED"; abort(); } while(0);
+
 #include <fltk/Cursor.h>
 #include <fltk/Box.h>
 
@@ -48,6 +50,7 @@ namespace mrv
   _dragging ( false ),
   _auto_resize( false )
 {
+    init_sizes();
 }
 
 // CHANGE CURSOR
@@ -77,14 +80,15 @@ int Browser::which_col_near_mouse() {
   int mousex = fltk::event_x() + xposition();
   int colx = 0;
   for ( int t=0; widths[t]; t++ ) {
-    colx += widths[t];
-    int diff = mousex - colx;
-    // MOUSE 'NEAR' A COLUMN?
-    //     Return column #
-    //
-    if ( diff >= -4 && diff <= 4 ) {
-      return(t);
-    }
+      std::cerr << "t " << t << " widths[t] " << widths[t] << std::endl;
+      colx += widths[t];
+      int diff = mousex - colx;
+      // MOUSE 'NEAR' A COLUMN?
+      //     Return column #
+      //
+      if ( diff >= -4 && diff <= 4 ) {
+	  return(t);
+      }
   }
   return(-1);
 }
@@ -171,15 +175,21 @@ void Browser::layout()
 
   fltk::Browser::layout();
 
-  int* widths = (int*) column_widths();
+  const int* widths = column_widths();
   if (!widths) return;
 
+  int num = 0;
+  const int*  c;
+  for ( c = widths; *c != 0; ++c, ++num )
+  {
+  }
+      
   // If widget is set to resizable, resize all columns equally,
   // unless one column width is set to -1
   if ( resizable() == this )
     {
       int sum = 0;
-      int*  c;
+      const int*  c;
       for ( c = widths; *c != 0; ++c )
 	{
 	  if ( *c < 0 ) { sum = 0; break; }
@@ -191,7 +201,8 @@ void Browser::layout()
 	  for ( c = widths; *c != 0; ++c )
 	    {
 	      int W = int( w() * ( (float) *c / (float) sum ) );
-	      *c = W;
+	      int* t = (int*) c;
+	      *t = W;
 	    }
 	}
     }
@@ -207,12 +218,15 @@ void Browser::layout()
 
       int columns = g->children();
       int x = 0;
+      assert0( columns <= num || widths[num-1] == 0 );
       for ( int j = 0; j < columns; ++j )
 	{
 	  c = g->child(j);
           if (!c) continue;
 	  int W = widths[j];
-	  if ( W == -1 ) W = w() - x;
+	  if ( W == -1 ) {
+	      W = w() - x;
+	  }
           if ( W == 0 ) break;
 	  c->resize( x, c->y(), W, c->h() );
 	  x += W;
