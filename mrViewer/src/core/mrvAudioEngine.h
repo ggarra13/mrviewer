@@ -33,6 +33,7 @@ extern "C" {
 }
 #include <vector>
 #include <string>
+#include <atomic>
 
 
 namespace mrv {
@@ -151,32 +152,32 @@ class ViewerUI;
     bool enabled() const { return _enabled; }
     void disable()       { _enabled = false; }
 
-    unsigned channels() const { return _channels; }
+      inline  unsigned channels() const { return _channels; }
 
-    AudioFormat format() const { return _audio_format; }
+      inline AudioFormat format() const { return _audio_format; }
+      
+      static AVSampleFormat ffmpeg_format( const AudioFormat f );
 
-    static AVSampleFormat ffmpeg_format( const AudioFormat f );
-
-    // Create an appropriate audio engine for this OS.
-    static AudioEngine* factory();
-
-  protected:
-    // Release the audio engine
-    virtual bool shutdown() = 0;
-
-    // Initialize the audio engine if needed and choose default
-    // device for playback
-    virtual bool initialize() = 0;
+      // Create an appropriate audio engine for this OS.
+      static AudioEngine* factory();
+      
+    protected:
+      // Release the audio engine
+      virtual bool shutdown() = 0;
+      
+      // Initialize the audio engine if needed and choose default
+      // device for playback
+      virtual bool initialize() = 0;
 
 
-  protected:
-    static DeviceList _devices;     //!< list of devices available
-    static unsigned int _device_idx;  //!< index to current device being used
-    static unsigned int _old_device_idx;  //!< index to previous device used
-    bool         _enabled;
-    float        _volume;
-    unsigned int _channels;
-    AudioFormat  _audio_format;
+    protected:
+      static DeviceList _devices;     //!< list of devices available
+      static unsigned int _device_idx;  //!< index to current device being used
+      static unsigned int _old_device_idx;  //!< index to previous device used
+      bool         _enabled;
+      std::atomic<float>        _volume;
+      std::atomic<unsigned int> _channels;
+      std::atomic<AudioFormat>  _audio_format;
   };
 
 }  // namespace mrv
