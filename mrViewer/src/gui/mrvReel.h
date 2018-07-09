@@ -17,13 +17,13 @@
 */
 /**
  * @file   mrvReel.h
- * @author 
+ * @author
  * @date   Wed Oct 18 11:06:54 2006
- * 
+ *
  * @brief  Class used to contain a "reel".  A reel is a sequence of
  *         movie files like an EDL
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvReel_h
@@ -45,9 +45,9 @@ namespace mrv
        mrv::media media_at( const int64_t f ) const;
        inline CMedia* image_at( const int64_t f ) const
        {
-	  mrv::media m = media_at( f );
-	  if (!m) return NULL;
-	  return m->image();
+          mrv::media m = media_at( f );
+          if (!m) return NULL;
+          return m->image();
        }
 
       size_t duration() const;
@@ -58,7 +58,7 @@ namespace mrv
       // Given a frame in the timeline, return the local frame for the image
       // at that point in the timeline.  If no image, return AV_NOPTS_VALUE.
       int64_t global_to_local( const int64_t frame ) const;
-      
+
        int64_t offset( const CMedia* const img ) const;
        inline int64_t location( const CMedia* const img ) const
        {
@@ -68,9 +68,9 @@ namespace mrv
        int64_t minimum() const;
        int64_t maximum() const;
 
-       bool         edl;
-       std::string  name;
-       MediaList    images;
+      std::atomic<bool> edl;
+      std::string       name;
+      MediaList         images;
   };
 
   typedef boost::shared_ptr< Reel_t > Reel;
@@ -80,4 +80,3 @@ namespace mrv
 
 
 #endif // mrvReel_h
-

@@ -19,10 +19,10 @@
  * @file   ImageInformation.h
  * @author gga
  * @date   Fri Jan 26 07:53:52 2007
- * 
+ *
  * @brief  Area showing image information, with a list of requesters
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvImageInformation_h
@@ -60,10 +60,13 @@ namespace mrv
 
 class ImageInformation : public ImageInfoParent
 {
+public:
+    typedef boost::recursive_mutex Mutex;
+
   public:
     ImageInformation( int x, int y, int w, int h, const char* l = NULL );
     ~ImageInformation() { clear_callback_data(); }
-    
+
     CMedia* get_image() { return img; };
     void set_image( CMedia* img );
 
@@ -100,51 +103,51 @@ class ImageInformation : public ImageInfoParent
     mrv::Browser* add_browser( mrv::CollapsableGroup* g );
 
     void add_icc( const char* name, const char* tooltip,
-                  const char* content, 
-                  const bool editable = true, 
+                  const char* content,
+                  const bool editable = true,
                   fltk::Callback* callback = NULL );
 
     void add_ctl( const char* name, const char* tooltip,
-                  const char* content, 
-                  const bool editable = true, 
+                  const char* content,
+                  const bool editable = true,
                   fltk::Callback* callback = NULL );
 
     void add_ctl_lmt( const char* name, const char* tooltip,
-                      const char* content, 
+                      const char* content,
                       const size_t idx,
-                      const bool editable = true, 
+                      const bool editable = true,
                       fltk::Callback* callback = NULL );
 
     void add_ctl_idt( const char* name, const char* tooltip,
-                      const char* content, 
-                      const bool editable = true, 
+                      const char* content,
+                      const bool editable = true,
                       fltk::Callback* callback = NULL );
 
 
     void add_ocio_ics( const char* name, const char* tooltip,
-                       const char* content, 
-                       const bool editable = true, 
+                       const char* content,
+                       const bool editable = true,
                        fltk::Callback* callback = NULL );
-    
+
     void add_text( const char* name, const char* tooltip,
-                   const char* content, 
-                   const bool editable = false, 
-                   const bool active = false, 
+                   const char* content,
+                   const bool editable = false,
+                   const bool active = false,
                    fltk::Callback* callback = NULL );
     void add_text( const char* name, const char* tooltip,
-                   const std::string& content, 
+                   const std::string& content,
                    const bool editable = false,
-                   const bool active = false, 
+                   const bool active = false,
                    fltk::Callback* callback = NULL );
     void add_float( const char* name, const char* tooltip,
-                    const float content, 
-                    const bool editable = false, 
-                    const bool active = false, 
-                    fltk::Callback* callback = NULL, 
+                    const float content,
+                    const bool editable = false,
+                    const bool active = false,
+                    fltk::Callback* callback = NULL,
                     const float minV = 0.0f, const float maxV = 1.0f );
     void add_rect( const char* name, const char* tooltip,
-                   const mrv::Recti& content, 
-                   const bool editable = false, 
+                   const mrv::Recti& content,
+                   const bool editable = false,
                    fltk::Callback* callback = NULL );
 
     void add_time( const char* name, const char* tooltip,
@@ -152,13 +155,13 @@ class ImageInformation : public ImageInfoParent
                    const double fps, const bool editable = false );
 
     void add_enum( const char* name, const char* tooltip,
-                   const size_t content, 
+                   const size_t content,
                    const char* const* options,
                    const size_t num, const bool editable = false,
                    fltk::Callback* callback = NULL );
 
     void add_enum( const char* name, const char* tooltip,
-                   const std::string& content, 
+                   const std::string& content,
                    stringArray& options, const bool editable = false,
                    fltk::Callback* callback = NULL );
 
@@ -166,21 +169,21 @@ class ImageInformation : public ImageInfoParent
                     const int64_t content );
 
     void add_int( const char* name, const char* tooltip,
-                  const int content, 
+                  const int content,
                   const bool editable = false,
                   const bool active = false,
                   fltk::Callback* callback = NULL,
-		  const int minV = 0, const int maxV = 10,
+                  const int minV = 0, const int maxV = 10,
                   const int when = fltk::WHEN_RELEASE );
     void add_int( const char* name, const char* tooltip,
-                  const unsigned int content, 
-                  const bool editable = false, 
+                  const unsigned int content,
+                  const bool editable = false,
                   const bool active = false,
                   fltk::Callback* callback = NULL,
-                  const unsigned int minV = 0, 
+                  const unsigned int minV = 0,
                   const unsigned int maxV = 9999 );
     void add_bool( const char* name, const char* tooltip,
-                   const bool content, 
+                   const bool content,
                    const bool editable = false,
                    fltk::Callback* callback = NULL );
 
@@ -201,6 +204,7 @@ class ImageInformation : public ImageInfoParent
     fltk::PackedGroup* m_main;
     mrv::Browser*      m_curr;
     fltk::Color        m_color;
+    CMedia::Mutex      _mutex;
     unsigned int group;
     unsigned int row;
 

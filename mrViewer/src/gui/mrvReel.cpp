@@ -127,6 +127,8 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     mrv::MediaList::const_iterator e = images.end();
 
     mrv::media fg = images.front();
+    if ( !fg ) return mrv::media();
+    
     int64_t mn = fg->position();
 
     fg = images.back();
@@ -139,6 +141,8 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     for ( ; i != e; ++i, ++r )
       {
           const mrv::media& m = *i;
+	  if ( !m ) continue;
+	  
           CMedia* img = m->image();
           int64_t start = m->position();
           int64_t end = start + img->duration();
@@ -160,6 +164,8 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
     for ( ; i != e; ++i )
     {
 	const mrv::media& m = *i;
+	if ( !m ) continue;
+	
 	CMedia* img = m->image();
 	assert( img != NULL );
 	int64_t start = m->position();
