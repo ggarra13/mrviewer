@@ -93,7 +93,7 @@ GLSphere::~GLSphere()
     gluDeleteQuadric( qObj );
 }
 
-  void GLSphere::bind( const image_type_ptr& pic )
+  void GLSphere::bind( const image_type_ptr pic )
   {
       CHECK_GL;
     unsigned dw = pic->width();
