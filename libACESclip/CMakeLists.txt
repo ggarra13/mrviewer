@@ -18,6 +18,10 @@ include_directories(
 if(WIN32)
   add_definitions( -DACES_DLL -DACES_EXPORTS -D_WIN32_WINNT=0x0501 )
 else(WIN32)
+  if ( CMAKE_BUILD_TYPE EQUAL "Debug" )
+    add_definitions( -DTHREADS_SANITIZER )
+    add_compile_options( -fsanitize=thread )
+  endif()
 #  add_definitions( -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 )
 endif(WIN32)
 
