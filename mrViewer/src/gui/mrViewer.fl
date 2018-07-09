@@ -3665,7 +3665,7 @@ if ( i < 0 ) return;
 char t[2];
 t[1] = 0;
 t[0] = o->child(i)->label()[0];
-o->label( strdup(t) );
+o->copy_label( t );
 v->update_color_info();} open
                       tooltip {Type of pixel values to show:
 + Full: pixel with gamma, gain and lut.
@@ -3945,7 +3945,7 @@ v->uiFPS->value( g );} open
                       }
                       {fltk::Input} uiFPS {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {std::cerr << "uiFPS callback " << o->value() << std::endl; v->uiView->fps( o->value() );}
+                        callback { v->uiView->fps( o->value() );}
                         tooltip {Allows you to adjust frame rate playback.}
                         xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                         extra_code {o->textcolor( fltk::BLACK );
