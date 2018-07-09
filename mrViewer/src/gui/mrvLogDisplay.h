@@ -28,6 +28,9 @@
 #ifndef mrvLogDisplay_h
 #define mrvLogDisplay_h
 
+#include <atomic>
+#include <boost/thread/recursive_mutex.hpp>
+
 #include <fltk/TextDisplay.h>
 
 namespace mrv {
@@ -41,6 +44,9 @@ class LogDisplay : public fltk::TextDisplay
     kOnce,
     kAlways,
     };
+
+    typedef boost::recursive_mutex Mutex;
+    
   public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~LogDisplay();
@@ -55,12 +61,13 @@ class LogDisplay : public fltk::TextDisplay
     inline unsigned lines() const { return _lines; }
     
   protected:
-    unsigned int _lines;
+    std::atomic<unsigned int> _lines;
 
   public:
+    static Mutex mtx;
     static ShowPreferences prefs;
-    static bool shown;
-    static bool show;  // whether to show this in fltk thread
+    static std::atomic<bool> shown;
+    static std::atomic<bool> show;  // whether to show this in fltk thread
 };
 
 }

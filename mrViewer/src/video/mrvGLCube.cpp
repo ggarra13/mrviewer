@@ -86,7 +86,7 @@ GLCube::~GLCube()
 {
 }
 
-  void GLCube::bind( const image_type_ptr& pic )
+  void GLCube::bind( const image_type_ptr pic )
   {
       CHECK_GL;
     unsigned dw = pic->width();

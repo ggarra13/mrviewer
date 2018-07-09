@@ -1917,6 +1917,8 @@ void GLEngine::draw_images( ImageList& images )
                 {
                     quad->right( false );
                 }
+		CMedia::Mutex& mtx = img->video_mutex();
+		SCOPED_LOCK( mtx );
                 quad->bind( pic );
             }
             quad->gamma( g );
@@ -2101,6 +2103,8 @@ void GLEngine::draw_images( ImageList& images )
                   rightView = false;
               quad->right( rightView );
           }
+	  CMedia::Mutex& mtx = img->video_mutex();
+	  SCOPED_LOCK( mtx );
           quad->bind( pic );
           img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
