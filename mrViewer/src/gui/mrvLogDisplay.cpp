@@ -36,6 +36,7 @@
 #include <fltk/events.h>
 #include <fltk/run.h>
 
+#include "core/mrvThread.h"
 #include "core/mrvHome.h"
 #include "gui/mrvLogDisplay.h"
 
@@ -50,9 +51,12 @@ namespace mrv {
     {  fltk::RED,    fltk::HELVETICA, 14,   0 }, // C - Error
   };
 
+LogDisplay::Mutex LogDisplay::mtx;
 LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
-bool LogDisplay::shown = false;
-bool LogDisplay::show  = false;
+std::atomic<bool> LogDisplay::shown( false );
+std::atomic<bool> LogDisplay::show( false );
+
+
 
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
   fltk::TextDisplay( x, y, w, h, l ),
@@ -60,6 +64,7 @@ bool LogDisplay::show  = false;
   {
     color( fltk::GRAY75 );
 
+    SCOPED_LOCK( mtx );
     if ( !stylebuffer_ )
       {
 	stylebuffer_ = new fltk::TextBuffer();
@@ -70,11 +75,13 @@ bool LogDisplay::show  = false;
 
   LogDisplay::~LogDisplay()
   {
-    delete stylebuffer_; stylebuffer_ = NULL;
+      SCOPED_LOCK( mtx );
+      delete stylebuffer_; stylebuffer_ = NULL;
   }
 
   void LogDisplay::clear()
   {
+      SCOPED_LOCK( mtx ); 
       stylebuffer_->text("");
       buffer_->text("");
       _lines = 0;
@@ -94,6 +101,7 @@ bool LogDisplay::show  = false;
 
     try {
       
+      SCOPED_LOCK( mtx );
       
        f = fltk::fltk_fopen( file, "w" );
 
@@ -116,58 +124,60 @@ bool LogDisplay::show  = false;
   
   void LogDisplay::info( const char* x )
   {
-
-    size_t t = strlen(x);
-    char* buf = new char[t+1];
-    buf[t] = 0;
-    while( t-- )
-    {
-        if ( x[t] == '\n' ) ++_lines;
-        buf[t] = 'A';
-    }
-    stylebuffer_->append( buf );
-    buffer_->append( x );
-    delete [] buf;
+      SCOPED_LOCK( mtx );
+      
+      size_t t = strlen(x);
+      char* buf = new char[t+1];
+      buf[t] = 0;
+      while( t-- )
+      {
+	  if ( x[t] == '\n' ) ++_lines;
+	  buf[t] = 'A';
+      }
+      stylebuffer_->append( buf );
+      buffer_->append( x );
+      delete [] buf;
   }
 
   void LogDisplay::warning( const char* x )
   {
-    
-    size_t t = strlen(x);
-    char* buf = new char[t+1];
-    buf[t] = 0;
-    while( t-- )
-    {
-        if ( x[t] == '\n' ) ++_lines;
-        buf[t] = 'B';
-    }
-    stylebuffer_->append( buf );
-    buffer_->append( x );
-    delete [] buf;
+      SCOPED_LOCK( mtx );
+      
+      size_t t = strlen(x);
+      char* buf = new char[t+1];
+      buf[t] = 0;
+      while( t-- )
+      {
+	  if ( x[t] == '\n' ) ++_lines;
+	  buf[t] = 'B';
+      }
+      stylebuffer_->append( buf );
+      buffer_->append( x );
+      delete [] buf;
 
   }
 
   void LogDisplay::error( const char* x )
   {
+      SCOPED_LOCK( mtx ); 
 
-    size_t t = strlen(x);
-    char* buf = new char[t+1];
-    buf[t] = 0;
-    while( t-- )
-    {
-        if ( x[t] == '\n' ) ++_lines;
-        buf[t] = 'C';
-    }
-    stylebuffer_->append( buf );
-    buffer_->append( x );
-    delete [] buf;
+      size_t t = strlen(x);
+      char* buf = new char[t+1];
+      buf[t] = 0;
+      while( t-- )
+      {
+	  if ( x[t] == '\n' ) ++_lines;
+	  buf[t] = 'C';
+      }
+      stylebuffer_->append( buf );
+      buffer_->append( x );
+      delete [] buf;
 
-    
-    if ( prefs == kAlways || (prefs == kOnce && !shown) )
-    {
-        shown = true;
-        show = true;
-    }
+      if ( prefs == kAlways || (prefs == kOnce && !shown) )
+      {
+	  shown = true;
+	  show = true;
+      }
   }
 
 }
