@@ -1214,7 +1214,7 @@ static const char* kCLocale = "C";
                     main->gammaDefaults->add_leaf( views[i].c_str(), g );
                     if ( views[i] == OCIO_View && !OCIO_View.empty() )
                     {
-                        main->gammaDefaults->label( strdup( views[i].c_str() ));
+                        main->gammaDefaults->copy_label( views[i].c_str() );
                         main->uiGamma->value( 1.0f );
                         main->uiGammaInput->value( 1.0f );
                         main->uiView->gamma( 1.0f );
@@ -1286,7 +1286,7 @@ static const char* kCLocale = "C";
                 OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
                 DBG( "ICS Colorspace: " << cs->getName() << " "
                      << cs->getDescription() );
-                w->add( strdup( space ) );
+                w->add( space );
                 w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
