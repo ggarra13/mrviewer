@@ -568,10 +568,15 @@ unsigned int CMedia::audio_bytes_per_frame()
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
 
-    int frequency = _audio_ctx->sample_rate;
-    AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-    unsigned bps = av_get_bytes_per_sample( fmt );
-
+    int frequency;
+    unsigned bps;
+    {
+	SCOPED_LOCK( _audio_mutex );
+	frequency = _audio_ctx->sample_rate;
+	AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+	bps = av_get_bytes_per_sample( fmt );
+    }
+    
     if ( _orig_fps <= 0.0f ) _orig_fps = _fps.load();
     ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
     return ret;
@@ -1020,6 +1025,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     bool eof = false;
     int decoded = avpkt->size;
 
+    SCOPED_LOCK( _audio_mutex );
 
     ret = avcodec_send_packet( ctx, avpkt );
     if ( ret < 0 )
@@ -1686,6 +1692,8 @@ bool CMedia::open_audio( const short channels,
 			 const unsigned nSamplesPerSec )
 {
   close_audio();
+
+  if ( ! _audio_engine ) return false;
 
   DBG("open audio - audio closed" );
 

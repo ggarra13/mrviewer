@@ -210,7 +210,7 @@ namespace mrv
       inline void valid( bool b ) { _valid = b; }
       inline bool valid() const { return _valid; }
       
-    inline const PixelData& data() const { return _data; }
+    inline const PixelData data() const { return _data; }
 
     ImagePixel pixel( const unsigned int x, const unsigned int y ) const;
     void pixel( const unsigned int x, const unsigned int y,

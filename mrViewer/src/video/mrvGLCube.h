@@ -13,7 +13,7 @@ class GLCube : public GLQuad
     GLCube( const ImageView* view );
     ~GLCube();
 
-    virtual void bind( const image_type_ptr& pic );
+    virtual void bind( const image_type_ptr pic );
     
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
