@@ -13,7 +13,7 @@ class GLSphere : public GLQuad
     GLSphere( const ImageView* view );
     ~GLSphere();
 
-    virtual void bind( const image_type_ptr& pic );
+    virtual void bind( const image_type_ptr pic );
     
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
