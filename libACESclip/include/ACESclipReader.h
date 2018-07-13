@@ -38,7 +38,7 @@ either expressed or implied, of the FreeBSD Project.
 #include <stdlib.h>
 #define locale_t _locale_t
 #else
-#include <xlocale.h>
+#include <locale.h>
 #endif
 
 
