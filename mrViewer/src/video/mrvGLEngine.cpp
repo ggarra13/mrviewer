@@ -1926,7 +1926,9 @@ void GLEngine::draw_images( ImageList& images )
 
             if ( img->has_subtitle() )
             {
-                image_type_ptr sub = img->subtitle();
+		CMedia::Mutex& mtx = img->subtitle_mutex();
+		SCOPED_LOCK( mtx );
+		image_type_ptr sub = img->subtitle();
                 if ( sub )
                 {
                     prepare_subtitle( *q++, sub, _rotX, _rotY,
@@ -2124,8 +2126,6 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->has_subtitle() )
         {
-	    CMedia::Mutex& m = img->subtitle_mutex();
-	    SCOPED_LOCK( m );
             image_type_ptr sub = img->subtitle();
             if ( sub )
             {
