@@ -191,11 +191,11 @@ bool Parser::parse( const std::string& s )
    if ( fg )
    {
        CMedia* img = fg->image();
-       LOG_INFO( "received: " << cmd << " for " << img->name() );
+       LOG_INFO( "received: " << s << " for " << img->name() );
    }
    else
    {
-       LOG_INFO( "received: " << cmd << " for (empty image)" );
+       LOG_INFO( "received: " << s << " for (empty image)" );
    }
 #endif
 
@@ -936,7 +936,7 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("ReplaceImage") )
    {
-      size_t idx;
+      int idx;
       is >> idx;
 
       std::string imgname;
@@ -947,32 +947,24 @@ bool Parser::parse( const std::string& s )
 
       stringArray files;
       files.push_back( imgname );
+      browser()->debug_images();
       browser()->load( files );
+      
+      browser()->debug_images();
       mrv::media m = view()->foreground();
       browser()->replace( idx, m );
+      browser()->debug_images();
       v->redraw();
       ok = true;
    }
    else if ( cmd == N_("RemoveImage") )
    {
-      size_t idx;
+      int idx;
       is >> idx;
 
-      r = browser()->current_reel();
-
-      // Store image for insert later
-      size_t e = r->images.size();
-      int j = 0;
-      for ( ; j != e; ++j )
-      {
-         if ( j == idx )
-         {
-            m = r->images[j];
-            break;
-         }
-      }
-
-      browser()->remove( unsigned(idx) );
+      browser()->debug_images();
+      browser()->remove( idx );
+      browser()->debug_images();
       browser()->redraw();
       v->redraw();
       edl_group()->redraw();
@@ -1161,16 +1153,15 @@ bool Parser::parse( const std::string& s )
 
          if (! found )
          {
-             LOG_INFO( imgname << " not found in current reel" );
-             ok = true;
-            LoadList files;
-            files.push_back( LoadInfo( imgname, first, last ) );
-
-            browser()->load( files, false );
-            edl_group()->refresh();
-            edl_group()->redraw();
-            browser()->redraw();
-            v->redraw();
+            //  LOG_INFO( imgname << " not found in current reel" );
+            //  ok = true;
+            // // LoadList files;
+            // // files.push_back( LoadInfo( imgname, first, last ) );
+            // // browser()->load( files, false );
+            // edl_group()->refresh();
+            // edl_group()->redraw();
+            // browser()->redraw();
+            // v->redraw();
          }
          else
          {
