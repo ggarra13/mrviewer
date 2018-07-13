@@ -1216,7 +1216,7 @@ void CMedia::display_window( const int xmin, const int ymin,
 
     
   if ( !_displayWindow )
-      _displayWindow = new mrv::Recti[_numWindows];
+      _displayWindow = new mrv::Recti[_numWindows.load()];
 
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
@@ -1239,7 +1239,7 @@ void CMedia::display_window2( const int xmin, const int ymin,
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_displayWindow2 )
-      _displayWindow2 = new mrv::Recti[_numWindows];
+      _displayWindow2 = new mrv::Recti[_numWindows.load()];
 
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
@@ -1263,7 +1263,7 @@ void CMedia::data_window( const int xmin, const int ymin,
   
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_dataWindow )
-      _dataWindow = new mrv::Recti[_numWindows];
+      _dataWindow = new mrv::Recti[_numWindows.load()];
 
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
@@ -1290,7 +1290,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
   _numWindows = _frame_end - _frame_start + 1;
   assert( _numWindows > 0 );
   if ( !_dataWindow2 )
-      _dataWindow2 = new mrv::Recti[_numWindows];
+      _dataWindow2 = new mrv::Recti[_numWindows.load()];
 
   int64_t f = handle_loops( frame );
   int64_t idx = f - _frame_start;
