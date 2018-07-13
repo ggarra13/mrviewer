@@ -272,6 +272,7 @@ void client::deliver( const std::string& msg )
 {
     SCOPED_LOCK( mtx );
 
+    
    output_queue_.push_back(msg + "\n");
 
    non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));
