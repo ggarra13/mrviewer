@@ -3052,7 +3052,7 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
           ext[i] = (char)tolower( ext[i] );
     }
 
-  enum { ACTION_NEW_FOLDER = -1, ACTION_RENAME = -2, ACTION_DELETE = -3 };
+  enum { ACTION_NEW_FOLDER = 1, ACTION_RENAME = 2, ACTION_DELETE = 3 };
 
   fltk::PopupMenu   entryPopup(0,0,0,0);
   entryPopup.clear();

@@ -123,8 +123,8 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "gui/mrvHotkey.h"
 #include "mrvEDLWindowUI.h"
 #include "mrvSOPNode.h"
+#include "mrvAudioOffset.h"
 #include "gui/mrvFontsWindowUI.h"
-#include "gui/mrvAudioOffset.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvImageView.h"
@@ -335,6 +335,11 @@ void send_wm_state_event(XWindow wnd, int add, Atom prop) {
 
 extern void clone_all_cb( fltk::Widget* o, mrv::ImageBrowser* b );
 extern void clone_image_cb( fltk::Widget* o, mrv::ImageBrowser* b );
+
+void edit_audio_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    edit_audio_window( o, v );
+}
 
 void preload_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
 {
@@ -1069,7 +1074,7 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_lmt_script( img, img->number_of_lmts(), view->main() );
 }
 
-void ImageView::update_ICS()
+void ImageView::update_ICS() const
 {
   mrv::media fg = foreground();
   if ( ! fg ) {
@@ -1083,18 +1088,14 @@ void ImageView::update_ICS()
       fltk::Widget* w = o->child(i);
       if ( img->ocio_input_color_space() == w->label() )
       {
-          o->copy_label( w->label() );
-          char buf[256];
-          sprintf( buf, "ICS \"%s\"", w->label() );
-          send_network( buf );
+          o->label( strdup( w->label() ) );
           o->value(i);
           if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
           o->redraw();
-          redraw();
           return;
       }
   }
-  o->copy_label( "scene_linear" );
+  o->label( strdup( "scene_linear" ) );
   char buf[32];
   sprintf( buf, "ICS \"scene_linear\"" );
   send_network( buf );
@@ -1293,8 +1294,6 @@ bool ImageView::in_presentation() const
 
 void ImageView::send_network( std::string m ) const
 {
-    Mutex& mtx = const_cast< Mutex& >( _clients_mtx );
-    SCOPED_LOCK( mtx );
 
     ParserList::const_iterator i = _clients.begin();
     ParserList::const_iterator e = _clients.end();
@@ -2526,7 +2525,7 @@ bool ImageView::preload()
 
     if ( f < first ) f = first;
     else if ( f > last ) f = last;
-
+    
     int64_t i = f;
 
     bool found = false;
@@ -2558,7 +2557,7 @@ bool ImageView::preload()
     if ( found )
     {
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
-        // Store current frame
+	// Store current frame
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
         if ( !img->find_image( i ) ) // this loads the frame if not present
@@ -2567,9 +2566,9 @@ bool ImageView::preload()
             _preframe = i + 1;
             if ( _preframe > last ) _preframe = 1;
         }
-        // Restore current frame
-        img->hires( pic );
-        timeline()->redraw();
+	// Restore current frame
+	img->hires( pic );
+	timeline()->redraw();
     }
     else
     {
@@ -4087,20 +4086,14 @@ std::string dec_printf( float x )
     }
 }
 
-void ImageView::pixel_processed( CMedia* img,
+void ImageView::pixel_processed( const CMedia* img,
                                  CMedia::Pixel& rgba ) const
 {
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
-    bool blend;
-    {
-	CMedia::Mutex& mtx = img->video_mutex();
-	SCOPED_LOCK( mtx );
-    
-	blend = img->hires()->format() != image_type::kLumma;
-    }
-    
+    bool blend = img->hires()->format() != image_type::kLumma;
+
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
     switch( mode )
     {
@@ -4255,9 +4248,7 @@ void ImageView::separate_layers( const CMedia* const img,
     }
 
     if ( xp < dpw.x() || yp < dpw.y() ||
-         xp >= dpw.w()*img->scale_x() ||
-	 yp >= dpw.h()*img->scale_y() )
-    {
+         xp >= dpw.w()*img->scale_x() || yp >= dpw.h()*img->scale_y() ) {
         outside = true;
     }
 }
@@ -6653,7 +6644,7 @@ void ImageView::flush_caches()
     if (t) t->redraw();
 }
 
-/** 
+/**
  * Clear and refresh sequence
  *
  */
@@ -6714,13 +6705,8 @@ char* ImageView::get_layer_label( unsigned short c )
 
     if ( !lbl )
     {
-        mrv::media fg = foreground();
-        if (fg)
-        {
-            LOG_ERROR( fg->image()->name()
-                       << _(": Color channel not found at index ") << c );
-        }
-        return NULL;
+        LOG_ERROR( _("Color channel not found at index ") << c );
+	return NULL;
     }
 
     return lbl;
@@ -6766,18 +6752,6 @@ void ImageView::channel( fltk::Widget* o )
   }
 
   channel( idx );
-}
-
-void ImageView::channel( const char* const lbl )
-{
-  mrv::media fg = foreground();
-  mrv::media bg = background();
-
-  if ( fg ) fg->image()->channel( lbl );
-  if ( bg ) bg->image()->channel( lbl );
-
-  update_image_info();
-  update_shortcuts( fg, lbl );
 }
 
 /**
@@ -7244,7 +7218,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
 
   zoom( z );
-
+  
   int w2 = W / 2;
   int h2 = H / 2;
 
@@ -7273,7 +7247,6 @@ double ImageView::pixel_ratio() const
 int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
-    boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
 
     CMedia* img = fg->image();
 
@@ -7366,8 +7339,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        std::string chx = remove_hash_number( x );
-        std::string chroot = remove_hash_number( root );
+	std::string chx = remove_hash_number( x );
+	std::string chroot = remove_hash_number( root );
         if ( v == -1 && ( chx == chroot ||
                           (channelName && name == channelName) ) )
         {
@@ -7407,6 +7380,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
  */
 void ImageView::update_layers()
 {
+    boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
+    
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
     mrv::media fg = foreground();
@@ -7452,7 +7427,6 @@ void ImageView::foreground( mrv::media fg )
     mrv::media old = foreground();
     if ( old == fg ) return;
 
-
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
 
@@ -7492,10 +7466,9 @@ void ImageView::foreground( mrv::media fg )
         else
         {
             mrv::AudioEngine* engine = img->audio_engine();
-            if ( engine && uiMain && uiMain->uiVolume )
+            if ( engine )
             {
-		float v = engine->volume();
-                uiMain->uiVolume->value( v );
+                uiMain->uiVolume->value( engine->volume() );
             }
         }
     }
@@ -7945,7 +7918,7 @@ void ImageView::toggle_lut()
   redraw();  // force a draw to refresh luts
 
   uiMain->uiLUT->value( _useLUT );
-  uiMain->gammaDefaults->copy_label( view.c_str() );
+  uiMain->gammaDefaults->label( strdup( view.c_str() ) );
 
   smart_refresh();
   update_color_info();
@@ -8157,7 +8130,7 @@ void ImageView::last_frame_timeline()
  * Update color information
  *
  */
-void ImageView::update_color_info( const mrv::media& fg )
+void ImageView::update_color_info( const mrv::media& fg ) const
 {
   if ( uiMain->uiColorArea )
     {
@@ -8197,7 +8170,7 @@ void ImageView::update_color_info( const mrv::media& fg )
 
 }
 
-void ImageView::update_color_info()
+void ImageView::update_color_info() const
 {
   mrv::media fg = foreground();
   if ( !fg ) return;
@@ -8454,7 +8427,6 @@ void ImageView::volume( float v )
 
 CMedia::Looping ImageView::looping() const
 {
-    if ( !uiMain->uiLoopMode ) return CMedia::kNoLoop;
     return (CMedia::Looping) uiMain->uiLoopMode->value();
 }
 
