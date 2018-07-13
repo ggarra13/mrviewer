@@ -75,7 +75,7 @@ namespace fs = boost::filesystem;
 
 #include "standalone/mrvCommandLine.h"
 
-
+// #define DEBUG_IMAGES
 
 namespace
 {
@@ -356,6 +356,26 @@ void ImageBrowser::wait_on_threads()
     assert( _reels.empty() || _reel < _reels.size() );
     return _reels.empty()? mrv::Reel() : _reels[ _reel ];
   }
+
+void ImageBrowser::debug_images() const
+{
+#ifdef DEBUG_IMAGES
+    mrv::Reel reel = current_reel();
+    if ( !reel ) {
+        LOG_INFO( "NO REEL" );
+        return;
+    }
+
+    mrv::MediaList::const_iterator i = reel->images.begin();
+    mrv::MediaList::const_iterator e = reel->images.end();
+
+    unsigned idx = 0;
+    for ( ; i != e; ++i, ++idx )
+    {
+        LOG_INFO( "#" << idx << " " << (*i)->image()->name() );
+    }
+#endif
+}
 
   /**
    * Change to a certain reel
@@ -764,7 +784,6 @@ void ImageBrowser::send_image( const mrv::media& m )
     char* lbl = v->get_layer_label( v->channel() );
     sprintf(txt, N_("Channel %d %s"), v->channel(), lbl );
     free( lbl );
-    
     v->send_network( txt );
 
     sprintf(txt, N_("UseLUT %d"), (int)v->use_lut() );
@@ -891,22 +910,10 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     if ( idx < 0 || unsigned(idx) >= reel->images.size() )
     {
         LOG_ERROR( _("ImageBrowser::remove idx value (") << idx <<
-		   _(") out of bounds") );
+                   _(") out of bounds") );
         return;
     }
 
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  std::cerr << "**** PRE-REMOVE " << std::endl;
-    //  for ( ; i != e; ++i, ++idx )
-    //  {
-    //      fltk::Widget* w = child(idx);
-    //      std::cerr << "\t" << (*i)->name() << " " << w->label() << std::endl;
-    //  }
-    // }
 
 
     // Remove icon from browser
@@ -918,24 +925,13 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
 
-    // {
-    //  mrv::MediaList::const_iterator i = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  LOG_INFO( "**** REMOVE" );
-    //  for ( ; i != e; ++i, ++idx )
-    //  {
-    //      LOG_INFO( "\t" << (*i)->name() );
-    //  }
-    // }
 
 
     char buf[256];
     sprintf( buf, "RemoveImage %d", idx );
     view()->send_network( buf );
 
-    
+
     view()->fg_reel( _reel );
     send_reel( reel );
 
@@ -944,15 +940,15 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     change_image( idx-1 );
     // if ( unsigned(idx) < reel->images.size() )
     // {
-    // 	view()->foreground( *(i + idx) );
+    //  view()->foreground( *(i + idx) );
     // }
     // else if ( unsigned( idx-1) < reel->images.size() )
     // {
-    // 	view()->foreground( *(i + idx - 1) );
+    //  view()->foreground( *(i + idx - 1) );
     // }
     // else
     // {
-    // 	view()->foreground( mrv::media() );
+    //  view()->foreground( mrv::media() );
     // }
 
 
@@ -960,7 +956,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::EDLGroup* e = edl_group();
     if ( e )
     {
-	// Refresh media tracks
+        // Refresh media tracks
         e->refresh();
         e->redraw();
     }
@@ -1178,9 +1174,9 @@ int ImageBrowser::value() const
   void ImageBrowser::change_image(int i)
   {
       if ( i >= children() ) {
-	  LOG_ERROR( _("change_image index ") << i << N_(" >= ")
-		     << children() );
-	  return;
+          LOG_ERROR( _("change_image index ") << i << N_(" >= ")
+                     << children() );
+          return;
       }
      value(i);
      change_image();
@@ -2004,11 +2000,11 @@ void ImageBrowser::replace( int i, mrv::media m )
     if (!reel) return;
 
     if ( i < 0 || i >= reel->images.size() ) return;
-    
+
     CMedia::Playback play = view()->playback();
     if ( play != CMedia::kStopped )
        view()->stop();
-    
+
     mrv::media fg = current_image();
     if (!fg) return;
 
@@ -2024,7 +2020,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     //      LOG_INFO( "\t" << (*j)->name() );
     //  }
     // }
-    
+
     // Sanely remove thumbnail from reel
     Element* nw = new_item( m );
     fltk::Widget* w = child( i );
@@ -2047,7 +2043,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     //      LOG_INFO( "\t" << (*j)->name() );
     //  }
     // }
-    
+
     // Insert item in right place on list
     j = reel->images.begin();
     reel->images.insert( j + i, m );
@@ -2066,7 +2062,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     // }
 
     view()->foreground( m );
-    
+
     char buf[128];
     sprintf( buf, "ReplaceImage %d \"%s\"", i, m->image()->fileroot() );
     view()->send_network( buf );
@@ -2112,17 +2108,17 @@ void ImageBrowser::replace( int i, mrv::media m )
 
     size_t i;
     {
-	size_t num = reel->images.size();
-	for ( i = 0; i < num; ++i )
-	{
-	    if ( reel->images[i] == fg )
-		break;
-	}
-	if ( i >= num )
-	{
-	    LOG_ERROR( _("Image not found in reel ") << reel->name );
-	    return;
-	}
+        size_t num = reel->images.size();
+        for ( i = 0; i < num; ++i )
+        {
+            if ( reel->images[i] == fg )
+                break;
+        }
+        if ( i >= num )
+        {
+            LOG_ERROR( _("Image not found in reel ") << reel->name );
+            return;
+        }
     }
 
     short add = sum;
@@ -2136,8 +2132,8 @@ void ImageBrowser::replace( int i, mrv::media m )
     std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
     if ( prefix.empty() )
     {
-	LOG_ERROR( _("Prefix cannot be an empty string.  Please type some unique characters to distinguish the version in the filename.") );
-	return;
+        LOG_ERROR( _("Prefix cannot be an empty string.  Please type some unique characters to distinguish the version in the filename.") );
+        return;
     }
     CMedia* img = fg->image();
     unsigned max_tries = prefs->uiPrefsMaxImagesApart->value();
@@ -2153,7 +2149,7 @@ void ImageBrowser::replace( int i, mrv::media m )
         while ( ( pos = file.find( prefix, pos) ) != std::string::npos )
         {
             pos += prefix.size();
-	    if ( pos >= file.size() ) continue;
+            if ( pos >= file.size() ) continue;
             newfile = file.substr( 0, pos );
             std::string copy = file.substr( pos, file.size() );
             const char* c = copy.c_str();
@@ -2163,14 +2159,14 @@ void ImageBrowser::replace( int i, mrv::media m )
                 number += *c;
                 ++c;
             }
-	    size_t padding = number.size();
-	    if ( !number.empty() )
-	    {
-		num = atoi( number.c_str() );
-		char buf[128];
-		sprintf( buf, "%0*" PRId64, padding, num + sum );
-		newfile += buf;
-	    }
+            size_t padding = number.size();
+            if ( !number.empty() )
+            {
+                num = atoi( number.c_str() );
+                char buf[128];
+                sprintf( buf, "%0*" PRId64, padding, num + sum );
+                newfile += buf;
+            }
             newfile += file.substr( pos + padding, file.size() );
             file = newfile;
         }
@@ -2232,7 +2228,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     if ( !m ) return;
 
     m->image()->channel( img->channel() );
-    
+
     // {
     //  mrv::MediaList::const_iterator j = reel->images.begin();
     //  mrv::MediaList::const_iterator e = reel->images.end();
@@ -2266,22 +2262,22 @@ void ImageBrowser::replace( int i, mrv::media m )
 
     // Sanely remove icon item from browser and replace it with another
     this->replace( int(i), m );
-    
+
     // Remove last loaded element from reel (ie. m)
-    this->remove( children() - 1 ); 
+    this->remove( children() - 1 );
 
     change_image( int(i) );
 
     seek( view()->frame() );
-    
+
     mrv::EDLGroup* e = edl_group();
 
     if (e)
     {
-	e->refresh();
-	e->redraw();
+        e->refresh();
+        e->redraw();
     }
-    
+
     // We need two calls to foreground as it was previously set to m
     // and would return early.
     // view()->foreground( fg );
