@@ -403,7 +403,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
           memset( d+len, 0, AVPROBE_PADDING_SIZE );
           memcpy( d, data, len );
 
-          AVProbeData pd = { NULL, d, len, "video/MP2T" };
+          AVProbeData pd = { NULL, d, static_cast<int>(len), "video/MP2T" };
           AVInputFormat* ctx = av_probe_input_format(&pd, 1);
 
           delete [] d;
