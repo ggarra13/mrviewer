@@ -131,7 +131,8 @@ class ImageBrowser : public fltk::Browser
      mrv::media add( const char* filename, 
                      const int64_t start = -999999,
                      const int64_t end = -999999 );
-    
+
+    void debug_images() const;
 
      void load( const LoadList& files, const bool stereo = false,
                 std::string bgfile = "",
