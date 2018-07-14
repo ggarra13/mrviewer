@@ -1126,9 +1126,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
               _fps = (double) r.n / (double) r.d;
           }
 
-        if ( _play_fps <= 0 ) {
-	    _orig_fps = _fps.load(); _play_fps = _fps.load();
-	}
+        if ( _play_fps <= 0 ) _orig_fps = _play_fps = _fps.load();
       }
 
 
