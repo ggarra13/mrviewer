@@ -403,7 +403,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
           memset( d+len, 0, AVPROBE_PADDING_SIZE );
           memcpy( d, data, len );
 
-          AVProbeData pd = { NULL, d, static_cast<int>(len), "video/MP2T" };
+          AVProbeData pd = { NULL, d, len, "video/MP2T" };
           AVInputFormat* ctx = av_probe_input_format(&pd, 1);
 
           delete [] d;
@@ -428,7 +428,9 @@ AVStream* aviImage::get_subtitle_stream() const
 // Returns the current video stream or NULL if none available
 AVStream* aviImage::get_video_stream() const
 {
-  return _video_index >= 0 ? _context->streams[ video_stream_index() ] : NULL;
+    CMedia::Mutex& mtx = const_cast< Mutex& >( _mutex );
+    SCOPED_LOCK( mtx );
+    return _video_index >= 0 ? _context->streams[ video_stream_index() ] : NULL;
 }
 
 int aviImage::init_filters(const char *filters_descr)
@@ -726,7 +728,6 @@ bool aviImage::valid_video() const
 // Opens the video codec associated to the current stream
 void aviImage::open_video_codec()
 {
-    SCOPED_LOCK( _mutex );
     AVStream *stream = get_video_stream();
     if ( stream == NULL ) return;
     
@@ -947,15 +948,6 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     int64_t vpts = 0, apts = 0, spts = 0;
 
-    mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-    SCOPED_LOCK( vpm );
-
-    mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
-    SCOPED_LOCK( apm );
-
-    mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
-    SCOPED_LOCK( spm );
-
     if ( !got_video ) {
         vpts = frame2pts( get_video_stream(), start );
     }
@@ -1055,8 +1047,6 @@ mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
 void aviImage::store_image( const int64_t frame,
                             const int64_t pts )
 {
-
-  SCOPED_LOCK( _mutex );
 
 
   AVStream* stream = get_video_stream();
@@ -1193,8 +1183,6 @@ aviImage::decode_video_packet( int64_t& ptsframe,
                                )
 {
     AVPacket* pkt = (AVPacket*)&p;
-
-    SCOPED_LOCK( _mutex );
     
   AVStream* stream = get_video_stream();
   assert0( stream != NULL );
@@ -1845,7 +1833,7 @@ void aviImage::video_stream( int x )
                       ++i;
                       continue;
                   }
-                  _images.erase( i );
+                  i = _images.erase( i );
               }
               assert( _images.size() == 1 );
           }
@@ -3183,15 +3171,11 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     // Mutex& vpm = _video_packets.mutex();
     // SCOPED_LOCK( vpm );
 
+    if ( _video_packets.empty() )
     {
-        SCOPED_LOCK( _mutex );
-
-        if ( _video_packets.empty() )
-        {
-            bool ok = in_video_store( frame );
-            if ( ok ) return kDecodeOK;
-            return kDecodeError;
-        }
+	bool ok = in_video_store( frame );
+	if ( ok ) return kDecodeOK;
+	return kDecodeError;
     }
 
   DecodeStatus got_video = kDecodeMissingFrame;
