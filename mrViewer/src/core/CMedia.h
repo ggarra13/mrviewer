@@ -46,7 +46,6 @@
 #include <string>
 #include <deque>
 #include <limits>
-#include <atomic>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
@@ -91,9 +90,9 @@ struct Clock {
     std::atomic<double> pts;           /* clock base */
     std::atomic<double> pts_drift;     /* clock base minus time at which we updated the clock */
     std::atomic<double> last_updated;
-    std::atomic<double> speed;
-    std::atomic<int> serial;           /* clock is based on a packet with this serial */
-    std::atomic<int> paused;
+    double speed;
+    int serial;           /* clock is based on a packet with this serial */
+    int paused;
     int *queue_serial;    /* pointer to the current packet queue serial, used for obsolete clock detection */
 };
 struct AVFormatContext;
@@ -445,9 +444,7 @@ class CMedia
     void refresh();
 
     ////////////////// Return if the image is damaged
-    inline Damage image_damage() const {
-	return _image_damage;
-    };
+    inline Damage image_damage() const { return _image_damage; };
 
     ////////////////// Set the image damage (for update)
     inline void  image_damage( int x )
@@ -490,7 +487,6 @@ class CMedia
     // Returns true if cache for the frame is already filled, false if not
     virtual Cache is_cache_filled(int64_t frame);
 
-
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
 
@@ -502,12 +498,14 @@ class CMedia
     inline double avdiff() const { return _avdiff; }
 
     ////////////////// Return the hi-res image
-    inline mrv::image_type_ptr hires() {
-	SCOPED_LOCK( _mutex ); return _hires;
-    }
     inline mrv::image_type_ptr hires() const {
-	Mutex& m = const_cast< Mutex& >( _mutex );
-	SCOPED_LOCK( m ); return _hires;
+	Mutex& mtx = const_cast< Mutex& >( _mutex );
+	SCOPED_LOCK( mtx );
+	return _hires;
+    }
+    inline mrv::image_type_ptr hires()       { 
+	SCOPED_LOCK( _mutex );
+	return _hires;
     }
     void hires( const mrv::image_type_ptr pic);
 
@@ -967,7 +965,7 @@ class CMedia
 
     virtual void do_seek();
 
-    DecodeStatus decode_audio( int64_t frame );
+    DecodeStatus decode_audio( int64_t& frame );
     DecodeStatus handle_video_seek( int64_t& frame,
                                     const bool is_seek = true );
     virtual DecodeStatus decode_video( int64_t& frame );
@@ -986,7 +984,6 @@ class CMedia
     inline Barrier* fg_bg_barrier()         { return _fg_bg_barrier; }
     inline Barrier* loop_barrier()          { return _loop_barrier; }
     inline Mutex& video_mutex()             { return _mutex; };
-    inline Mutex& data_mutex()              { return _data_mutex; };
     inline Mutex& audio_mutex()             { return _audio_mutex; };
     inline Mutex& subtitle_mutex()          { return _subtitle_mutex; };
 
@@ -1191,7 +1188,7 @@ class CMedia
 
 
   public:
-    std::atomic<AV_SYNC_TYPE> av_sync_type;
+    AV_SYNC_TYPE av_sync_type;
     Clock audclk;
     Clock vidclk;
     Clock extclk;
@@ -1456,9 +1453,9 @@ class CMedia
     size_t _disk_space;       //!< disk space used by image
 
     Mutex     _mutex;          //!< to mark image routines
-    Mutex     _data_mutex;     //!< to mark data routines
     Mutex     _subtitle_mutex; //!< to mark subtitle routines
     Mutex     _audio_mutex;    //!< to mark audio routines
+    Mutex     _data_mutex;     //!< to mark data routines (data/displaywindow)
 
     int _colorspace_index;    //!< YUV Hint for conversion
 
@@ -1476,11 +1473,11 @@ class CMedia
 
     char*  _label;            //!< optional label drawn superimposed
 
-    std::atomic<double> _real_fps; //!< actual play rate of movie
-    std::atomic<double> _play_fps; //!< current desired play speed
-    std::atomic<double> _fps;      //< movie's original play speed (set by user)
-    std::atomic<double> _orig_fps; //!< movie's original play speed
-    
+    std::atomic<double>  _real_fps;  //!< actual play rate of movie
+    std::atomic<double>  _play_fps;  //!< current desired play speed
+    std::atomic<double>  _fps;       //!< movie's original play speed (set by user)
+    std::atomic<double> _orig_fps;   //!< movie's original play speed
+
     double          _pixel_ratio;  //!< pixel ratio of image
     unsigned        _num_channels; //!< number of channels
 
@@ -1490,13 +1487,13 @@ class CMedia
     bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
-    std::atomic<int64_t>   _dts;  //!< decoding time stamp (current fetch pkt)
-    std::atomic<int64_t>  _adts;   //!< decoding time stamp of audio
+    std::atomic<int64_t>   _dts;   //!< decoding time stamp (current fetch pkt)
+    std::atomic<int64_t>   _adts;  //!< decoding time stamp of audio
                                    //   (current fetch pkt)
     std::atomic<int64_t> _audio_frame; //!< presentation time stamp (current audio)
     int64_t   _audio_offset;//!< offset of additional audio
 
-    std::atomic<int64_t>   _frame;  //!< presentation time stamp (current video)
+    std::atomic<int64_t>   _frame; //!< presentation time stamp (current video)
     int64_t   _tc_frame;    //!< timecode frame offset
     std::atomic<int64_t>   _expected;    //!< expected next dts fetch
     std::atomic<int64_t>   _expected_audio; //!< expected next frame fetch
@@ -1512,14 +1509,14 @@ class CMedia
     int64_t   _loop_start;   //!< loop start when playing backwards
     int64_t   _loop_end;     //!< loop end when playing forwards
 
-    std::atomic<double>     _audio_pts;
-    std::atomic<double>     _audio_clock;
+    std::atomic<double>      _audio_pts;
+    std::atomic<double>      _audio_clock;
     std::atomic<double>     _video_pts;
     std::atomic<double>     _video_clock;
 
     InterlaceType _interlaced;     //!< image is interlaced?
 
-    std::atomic<Damage>  _image_damage;   //!< flag specifying image damage
+    std::atomic<Damage> _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
     std::atomic<int64_t> _numWindows;    //!< number of data/display windows
@@ -1562,7 +1559,7 @@ class CMedia
 
     unsigned int _frame_offset;      //!< hack to get ffmpeg to behave correctly
 
-    std::atomic<Playback>  _playback;        //!< playback direction or stopped
+    std::atomic<Playback> _playback;        //!< playback direction or stopped
 
     thread_pool_t  _threads;         //!< any threads associated with process
 
@@ -1606,11 +1603,11 @@ class CMedia
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     int64_t          _audio_last_frame;  //!< last audio frame decoded
-    std::atomic<unsigned short>   _audio_channels;
+    unsigned short   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
     int64_t          audio_callback_time;
 
-    std::atomic<mrv::AudioEngine::AudioFormat> _audio_format;
+    mrv::AudioEngine::AudioFormat _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
 
