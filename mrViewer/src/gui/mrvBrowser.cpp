@@ -19,10 +19,10 @@
  * @file   mrvBrowser.cpp
  * @author gga
  * @date   Wed Jan 31 14:28:24 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
@@ -80,14 +80,13 @@ int Browser::which_col_near_mouse() {
   int mousex = fltk::event_x() + xposition();
   int colx = 0;
   for ( int t=0; widths[t]; t++ ) {
-      std::cerr << "t " << t << " widths[t] " << widths[t] << std::endl;
       colx += widths[t];
       int diff = mousex - colx;
       // MOUSE 'NEAR' A COLUMN?
       //     Return column #
       //
       if ( diff >= -4 && diff <= 4 ) {
-	  return(t);
+          return(t);
       }
   }
   return(-1);
@@ -152,7 +151,7 @@ int Browser::handle(int e)
   return(fltk::Browser::handle(e) ? 1 : ret);
 }
 
-void Browser::layout() 
+void Browser::layout()
 {
   int nchildren = children();
 
@@ -162,11 +161,11 @@ void Browser::layout()
       int hh = 24;
       int nchildren = children();
       for ( int i = 0; i < nchildren; ++i )
-	{
-	  fltk::Widget* c = child(i);
-	  c->layout();
-	  hh += c->h();
-	}
+        {
+          fltk::Widget* c = child(i);
+          c->layout();
+          hh += c->h();
+        }
 
       h( hh );
 
@@ -183,7 +182,7 @@ void Browser::layout()
   for ( c = widths; *c != 0; ++c, ++num )
   {
   }
-      
+
   // If widget is set to resizable, resize all columns equally,
   // unless one column width is set to -1
   if ( resizable() == this )
@@ -191,20 +190,20 @@ void Browser::layout()
       int sum = 0;
       const int*  c;
       for ( c = widths; *c != 0; ++c )
-	{
-	  if ( *c < 0 ) { sum = 0; break; }
-	  sum += *c;
-	}
-      
+        {
+          if ( *c < 0 ) { sum = 0; break; }
+          sum += *c;
+        }
+
       if ( sum > 0 )
-	{
-	  for ( c = widths; *c != 0; ++c )
-	    {
-	      int W = int( w() * ( (float) *c / (float) sum ) );
-	      int* t = (int*) c;
-	      *t = W;
-	    }
-	}
+        {
+          for ( c = widths; *c != 0; ++c )
+            {
+              int W = int( w() * ( (float) *c / (float) sum ) );
+              int* t = (int*) c;
+              *t = W;
+            }
+        }
     }
 
 
@@ -220,17 +219,17 @@ void Browser::layout()
       int x = 0;
       assert0( columns <= num || widths[num-1] == 0 );
       for ( int j = 0; j < columns; ++j )
-	{
-	  c = g->child(j);
+        {
+          c = g->child(j);
           if (!c) continue;
-	  int W = widths[j];
-	  if ( W == -1 ) {
-	      W = w() - x;
-	  }
+          int W = widths[j];
+          if ( W == -1 ) {
+              W = w() - x;
+          }
           if ( W == 0 ) break;
-	  c->resize( x, c->y(), W, c->h() );
-	  x += W;
-	}
+          c->resize( x, c->y(), W, c->h() );
+          x += W;
+        }
     }
 
 }
@@ -254,7 +253,7 @@ void Browser::draw() {
     for ( int t=0; widths[t]; t++ ) {
       colx += widths[t];
       if ( colx > X && colx < (X+W) ) {
-	fltk::drawline(colx, Y, colx, Y+H-1);
+        fltk::drawline(colx, Y, colx, Y+H-1);
       }
     }
   }
@@ -266,18 +265,18 @@ void Browser::draw() {
     int num = g->children();
     for (int i = 0; i < num; ++i)
       {
-	fltk::Widget* c = g->child(i);
-	if ( c->is_group() )
-	  idx += absolute_item_index( (fltk::Group*) c );
-	else
-	  ++idx;
+        fltk::Widget* c = g->child(i);
+        if ( c->is_group() )
+          idx += absolute_item_index( (fltk::Group*) c );
+        else
+          ++idx;
       }
     return idx;
   }
 
   int Browser::absolute_item_index( bool& found,
-				    const fltk::Widget* item,
-				    const fltk::Widget* w )
+                                    const fltk::Widget* item,
+                                    const fltk::Widget* w )
   {
 
     if ( w == item  ) {
@@ -290,13 +289,13 @@ void Browser::draw() {
     int idx = 1;
     fltk::Group* g = (fltk::Group*) w;
     int num = g->children();
-    
+
     for ( int i = 0; i < num; ++i )
       {
-	fltk::Widget* c = g->child(i);
+        fltk::Widget* c = g->child(i);
         if (!c) continue;
-	idx += absolute_item_index( found, item, c );
-	if ( found ) break;
+        idx += absolute_item_index( found, item, c );
+        if ( found ) break;
       }
 
     return idx;
@@ -310,13 +309,13 @@ void Browser::draw() {
     int idx = 0;
     for (int i = 0; i < main_idx; ++i)
       {
-	fltk::Widget* c = child(i);
+        fltk::Widget* c = child(i);
         if (!c) continue;
 
-	if ( c->is_group() )
-	  idx += absolute_item_index( (fltk::Group*)c );
-	else
-	  ++idx;
+        if ( c->is_group() )
+          idx += absolute_item_index( (fltk::Group*)c );
+        else
+          ++idx;
       }
 
     fltk::Widget* sel = item();
@@ -327,4 +326,3 @@ void Browser::draw() {
   }
 
 } // namespace mrv
-
