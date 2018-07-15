@@ -43,7 +43,8 @@
 namespace mrv {
   
   // Style table
-  fltk::TextDisplay::StyleTableEntry kLogStyles[] = {
+static
+fltk::TextDisplay::StyleTableEntry kLogStyles[] = {
     // FONT COLOR      FONT FACE   SIZE   ATTR
     // --------------- ----------- ----- ------
     {  fltk::BLACK,  fltk::HELVETICA, 14,   0 }, // A - Info
