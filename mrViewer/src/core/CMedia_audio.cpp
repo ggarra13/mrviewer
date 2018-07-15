@@ -244,8 +244,12 @@ int64_t CMedia::queue_packets( const int64_t frame,
 
     assert( get_audio_stream() != NULL );
     int64_t apts = frame2pts( get_audio_stream(), frame );
-    if ( apts < 0 ) return frame;
+    if ( apts < 0 ) {
+	apts = 0;
+	//return frame;
+    }
 
+    
     AVPacket pkt = {0};
 
     // Clear the packet
@@ -568,6 +572,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
 
+    SCOPED_LOCK( _audio_mutex );
     int frequency = _audio_ctx->sample_rate;
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     unsigned bps = av_get_bytes_per_sample( fmt );
@@ -1424,17 +1429,6 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
 
         ++last;
 
-#ifdef DEBUG
-      if ( got_audio != kDecodeOK )
-      {
-          IMG_WARNING( N_("Did not fill audio frame ") << audio_frame 
-                       << N_(" last ") << last
-                       << N_(" from ") << frame << N_(" used: ") 
-                       << _audio_buf_used
-                       << N_(" need ") 
-                       << bytes_per_frame );
-      }
-#endif
     }
   
 
@@ -1894,23 +1888,15 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
   debug_audio_stores(frame, _right_eye ? "RDOSEEK" : "DOSEEK");
 #endif
 
-  Mutex& m = _audio_packets.mutex();
-  SCOPED_LOCK( m );
-
-
-  assert( !_audio_packets.empty() );
-  assert( _audio_packets.is_seek() || _audio_packets.is_preroll() );
-
+ 
   bool skip = false;
 
   if ( is_seek && _audio_packets.is_seek() )
   {
-      assert( !_audio_packets.empty() );
      _audio_packets.pop_front();  // pop seek begin packet
   }
   else if ( !is_seek && _audio_packets.is_preroll() )
   {
-      assert( !_audio_packets.empty() );
      _audio_packets.pop_front();
   }
   else
@@ -1952,12 +1938,11 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
                            << frame );
       }
 
-      assert( !_audio_packets.empty() );
       _audio_packets.pop_front();
     }
 
   if ( _audio_packets.empty() ) {
-      IMG_ERROR( _("Audio packets empty in end of seek") );
+      IMG_ERROR( _("Audio packets empty at end of seek") );
       return kDecodeError;
   }
 
@@ -1971,7 +1956,6 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
 
   if ( _audio_packets.is_seek_end() )
   {
-      assert( !_audio_packets.empty() );
      _audio_packets.pop_front();  // pop seek/preroll end packet
   }
   
