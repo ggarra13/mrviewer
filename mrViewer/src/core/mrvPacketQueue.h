@@ -106,21 +106,27 @@ namespace mrv {
 
       inline iterator begin()
       {
+          Mutex::scoped_lock lk( _mutex );
           return _packets.begin();
       }
 
       inline const_iterator begin() const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           return _packets.begin();
       }
 
       inline reverse_iterator rbegin()
       {
+          Mutex::scoped_lock lk( _mutex );
           return _packets.rbegin();
       }
 
       inline const_reverse_iterator rbegin() const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           return _packets.rbegin();
       }
 
@@ -145,6 +151,8 @@ namespace mrv {
 
       inline const_iterator end() const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
 	  return _packets.end();
       }
       
@@ -156,6 +164,8 @@ namespace mrv {
 
       inline const_reverse_iterator rend() const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
 	  return _packets.rend();
       }
 
@@ -223,6 +233,8 @@ namespace mrv {
 
       inline const AVPacket& front() const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           assert( ! _packets.empty() );
           return _packets.front();
       }
@@ -236,6 +248,8 @@ namespace mrv {
 
       inline const AVPacket& back() const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           assert( ! _packets.empty() );
           return _packets.back();
       }
@@ -361,6 +375,8 @@ namespace mrv {
 
       bool is_flush(const AVPacket& pkt) const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           if ( pkt.data == _flush.data ) return true;
           return false;
       }
@@ -391,18 +407,24 @@ namespace mrv {
 
       bool is_seek(const AVPacket& pkt) const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           if ( pkt.data == _seek.data ) return true;
           return false;
       }
 
       bool is_preroll(const AVPacket& pkt) const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           if ( pkt.data == _preroll.data ) return true;
           return false;
       }
 
       bool is_seek_end(const AVPacket& pkt) const
       {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
           if ( pkt.data == _seek_end.data ) return true;
           return false;
       }
