@@ -1,6 +1,9 @@
 v4.2.1   - Bug fixed a minor memory trashing in ICC browser.
 	 - Added back subtitles on Linux as ffmpeg was being compiled
 	   without libass due to a change in the ffmpeg Makefiles.
+	 - Improved performance of video decoding for yuv444p10le, which
+	   had gotten worse in v4.2.0.
+	 - Removed all tsan warnings.
 
 v4.2.0   - Bug fixed versioning with prefix of v only and matching movie
            files, like test.mov.  The substring would index beyond the file
