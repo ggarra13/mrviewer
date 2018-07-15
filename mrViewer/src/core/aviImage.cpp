@@ -97,7 +97,7 @@ namespace
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
-#define DEBUG_AUDIO_PACKETS
+//#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -950,6 +950,15 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     int64_t vpts = 0, apts = 0, spts = 0;
 
+    mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
+
+    mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
+    SCOPED_LOCK( apm );
+
+    mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
+    SCOPED_LOCK( spm );
+    
     if ( !got_video ) {
         vpts = frame2pts( get_video_stream(), start );
     }
@@ -969,9 +978,6 @@ bool aviImage::seek_to_position( const int64_t frame )
         spts = frame2pts( get_subtitle_stream(), start );
     }
     
-    if ( vpts < 0 ) vpts = 0;
-    if ( apts < 0 ) apts = 0;
-    if ( spts < 0 ) spts = 0;
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
     debug_video_packets(start, _right_eye ? "RBEFORE SEEK" : "BEFORE SEEK", true);
@@ -3176,8 +3182,8 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     debug_video_packets(frame, "decode_video", true);
 #endif
 
-    // Mutex& vpm = _video_packets.mutex();
-    // SCOPED_LOCK( vpm );
+    Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
 
     if ( _video_packets.empty() )
     {
