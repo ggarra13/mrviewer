@@ -553,9 +553,9 @@ _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
-_audio_channels( other->_audio_channels ),
+_audio_channels( other->_audio_channels.load() ),
 _aframe( NULL ),
-_audio_format( other->_audio_format ),
+_audio_format( other->_audio_format.load() ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
@@ -1009,8 +1009,8 @@ mrv::image_type_ptr CMedia::left() const
     if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
-    Mutex& mtx2 = const_cast< Mutex& >( _data_mutex );
-    SCOPED_LOCK( mtx2 );
+    Mutex& mtx = const_cast< Mutex& >( _mutex );
+    SCOPED_LOCK( mtx );
     CMedia* img = const_cast< CMedia* >( this );
     mrv::image_type_ptr pic = _hires;
 
@@ -1434,7 +1434,6 @@ void CMedia::filename( const char* n )
   if ( _fileroot && strcmp( n, _fileroot ) == 0 )
     return;
 
-  SCOPED_LOCK( _mutex );
 
   std::string name = n;
   if ( name.substr(0, 6) == "Slate " )
