@@ -97,7 +97,7 @@ namespace
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
-//#define DEBUG_AUDIO_PACKETS
+#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -403,7 +403,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
           memset( d+len, 0, AVPROBE_PADDING_SIZE );
           memcpy( d, data, len );
 
-          AVProbeData pd = { NULL, d, len, "video/MP2T" };
+          AVProbeData pd = { NULL, d, static_cast<int>(len), "video/MP2T" };
           AVInputFormat* ctx = av_probe_input_format(&pd, 1);
 
           delete [] d;
@@ -890,6 +890,8 @@ bool aviImage::seek_to_position( const int64_t frame )
     }
     if ( !skip ) --start;
 
+    if ( start < 0 ) start = 0;
+    
     // std::cerr << name() << std::endl << "-------------" << std::endl;
     // std::cerr << "_start_number " << _start_number << std::endl;
     // std::cerr << "start " << start << " AV_TIME_BASE " << AV_TIME_BASE
@@ -966,6 +968,10 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( !got_subtitle ) {
         spts = frame2pts( get_subtitle_stream(), start );
     }
+    
+    if ( vpts < 0 ) vpts = 0;
+    if ( apts < 0 ) apts = 0;
+    if ( spts < 0 ) spts = 0;
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
     debug_video_packets(start, _right_eye ? "RBEFORE SEEK" : "BEFORE SEEK", true);
@@ -990,7 +996,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
 
     int64_t dts = queue_packets( frame, true, got_video,
-                                        got_audio, got_subtitle );
+				 got_audio, got_subtitle );
 
     _dts = _adts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
@@ -1124,6 +1130,8 @@ void aviImage::store_image( const int64_t frame,
     _interlaced = ( _av_frame->top_field_first ?
                     kTopFieldFirst : kBottomFieldFirst );
 
+  SCOPED_LOCK( _mutex );
+  
   if ( _images.empty() || _images.back()->frame() < frame )
   {
      _images.push_back( image );
@@ -2498,6 +2506,9 @@ int64_t aviImage::queue_packets( const int64_t frame,
         spts = frame2pts( get_subtitle_stream(), frame );
     }
 
+    if ( vpts < 0 ) vpts = 0;
+    if ( apts < 0 ) apts = 0;
+    if ( spts < 0 ) spts = 0;
 
     AVPacket pkt = {0};
 
@@ -2511,6 +2522,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
     bool eof = false;
 
+    
     // Loop until an error or we have what we need
     while( !got_video || (!got_audio && audio_context() == _context) )
     {
@@ -2721,7 +2733,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
         _expected_audio = _adts + 1;
     }
 
-    //debug_video_packets( dts, "queue_packets");
 
     if ( dts > last_frame() ) dts = last_frame();
     else if ( dts < first_frame() ) dts = first_frame();
@@ -2911,13 +2922,11 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
 
   if ( is_seek && _video_packets.is_seek() )
   {
-      assert( !_video_packets.empty() );
      _video_packets.pop_front();  // pop seek begin packet
 
   }
   else if ( !is_seek && _video_packets.is_preroll() )
   {
-      assert( !_video_packets.empty() );
       _video_packets.pop_front();  // pop preroll begin packet
   }
   else
@@ -2994,7 +3003,6 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
 
   if ( _video_packets.is_seek_end() )
   {
-      assert( !_video_packets.empty() );
      _video_packets.pop_front();  // pop seek end packet
   }
 
