@@ -90,7 +90,7 @@ struct Clock {
     std::atomic<double> pts;           /* clock base */
     std::atomic<double> pts_drift;     /* clock base minus time at which we updated the clock */
     std::atomic<double> last_updated;
-    double speed;
+    std::atomic<double> speed;
     int serial;           /* clock is based on a packet with this serial */
     int paused;
     int *queue_serial;    /* pointer to the current packet queue serial, used for obsolete clock detection */
@@ -1603,11 +1603,11 @@ class CMedia
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     int64_t          _audio_last_frame;  //!< last audio frame decoded
-    unsigned short   _audio_channels;
+    std::atomic<unsigned short>   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
     int64_t          audio_callback_time;
 
-    mrv::AudioEngine::AudioFormat _audio_format;
+    std::atomic<mrv::AudioEngine::AudioFormat> _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
 
