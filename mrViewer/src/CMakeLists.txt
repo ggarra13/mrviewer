@@ -73,7 +73,10 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
-
+    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+      SET( CG_ROOT /usr/local/sanitized/ )
+    ENDIF()
+    
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
     FIND_LIBRARY( Xpm Xpm
@@ -391,9 +394,14 @@ FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
   DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 
 IF(UNIX)
-	SET(EXE_DIR /usr/local/bin )
-	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
-	  DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+  SET(EXE_DIR /usr/local/bin )
+  IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+    FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer-dbg.sh
+      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+  ELSE()
+    FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
+      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+  ENDIF()
 ENDIF(UNIX)
 
 IF(WIN32 OR WIN64)
