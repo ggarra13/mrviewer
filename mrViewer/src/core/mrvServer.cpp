@@ -1137,7 +1137,9 @@ bool Parser::parse( const std::string& s )
             if ( !(*j) ) continue;
 
             CMedia* img = (*j)->image();
-            if ( img && img->fileroot() == imgname )
+	    std::cerr << idx << ") check '" << img->fileroot()
+		      << "' against '" << imgname << "'" << std::endl;
+            if ( img && imgname == img->fileroot() )
             {
                img->first_frame( first );
                img->last_frame( last );
@@ -1146,6 +1148,7 @@ bool Parser::parse( const std::string& s )
                edl_group()->redraw();
                browser()->redraw();
                m = *j;
+	       std::cerr << "*+++++ FOUND " << imgname << std::endl;
                found = true;
                break;
             }
@@ -1154,12 +1157,12 @@ bool Parser::parse( const std::string& s )
          if (! found )
          {
             //  LOG_INFO( imgname << " not found in current reel" );
-            //  ok = true;
-            // // LoadList files;
-            // // files.push_back( LoadInfo( imgname, first, last ) );
-            // // browser()->load( files, false );
-            // edl_group()->refresh();
-            // edl_group()->redraw();
+             ok = true;
+            // LoadList files;
+            // files.push_back( LoadInfo( imgname, first, last ) );
+            // browser()->load( files, false );
+            // // edl_group()->refresh();
+            // // edl_group()->redraw();
             // browser()->redraw();
             // v->redraw();
          }
