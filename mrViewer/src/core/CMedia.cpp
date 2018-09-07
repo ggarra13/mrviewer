@@ -116,6 +116,7 @@ static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
 bool        CMedia::_supports_yuva = false;
+bool        CMedia::_uses_16bits = false;
 CMedia::LoadLib CMedia::load_library = CMedia::kFFMPEGLibrary;
 
 double      CMedia::default_fps = 24.f;
@@ -444,6 +445,7 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
+_last_audio_cached( false ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
@@ -549,6 +551,7 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( strdup( _default_subtitle_encoding.c_str() ) ),
 _subtitle_font( strdup( _default_subtitle_font.c_str() ) ),
+_last_audio_cached( false ),
 _audio_index(-1),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
@@ -663,6 +666,7 @@ _audio_codec(NULL),
 _subtitle_index(-1),
 _subtitle_encoding( strdup( other->_subtitle_encoding ) ),
 _subtitle_font( strdup( other->_subtitle_font ) ),
+_last_audio_cached( false ),
 _audio_index( other->_audio_index ),
 _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
@@ -970,7 +974,7 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
  * @param ws image width in pixels
  * @param hs image height in pixels
  */
-void CMedia::allocate_pixels( const int64_t& frame,
+bool CMedia::allocate_pixels( const int64_t& frame,
                               const unsigned short channels,
                               const image_type::Format format,
                               const image_type::PixelType pixel_type,
@@ -991,13 +995,25 @@ void CMedia::allocate_pixels( const int64_t& frame,
   try {
       _hires.reset(  new image_type( frame, w, h,
                                      channels, format, pixel_type ) );
-      if (! _hires->data().get() )
-          LOG_ERROR( "Out of memory" );
   }
   catch( const std::bad_alloc& e )
   {
       LOG_ERROR( e.what() );
+      return false;
   }
+  catch( const std::runtime_error& e )
+  {
+      LOG_ERROR( e.what() );
+      return false;
+  }
+  
+  if (! _hires->data().get() )
+  {
+      IMG_ERROR( _("Out of memory") );
+      return false;
+  }
+
+  return true;
 }
 
 
