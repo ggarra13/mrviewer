@@ -303,11 +303,10 @@ namespace mrv {
           return false;
       }
 
-      allocate_pixels( frame, channels, type, pixel_type, dw, dh );
-
+      if ( allocate_pixels( frame, channels, type, pixel_type, dw, dh ) )
       {
           SCOPED_LOCK( _mutex );
-
+          
           Pixel* pixels = (Pixel*)_hires->data().get();
           in->read_image (format, &pixels[0]);
       }

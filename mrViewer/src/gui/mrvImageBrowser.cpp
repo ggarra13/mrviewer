@@ -1624,7 +1624,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
     view()->fit_image();
     adjust_timeline();
 
-    if ( uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
+    if ( ( !CMedia::preload_cache() || !CMedia::cache_active() ) &&
+	 uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
          img->first_frame() != img->last_frame() )
       {
          view()->play_forwards();
