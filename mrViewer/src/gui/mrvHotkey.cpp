@@ -160,6 +160,7 @@ Hotkey kToggleEDLEdit( false, false, false, false, 0 );
 Hotkey kToggle3dView( false, false, false, false, 0 );
 Hotkey kToggleHistogram( false, false, false, false, 0 );
 Hotkey kToggleVectorscope( false, false, false, false, 0 );
+Hotkey kToggleWaveform( false, false, false, false, 0 );
 Hotkey kToggleICCProfiles( false, false, false, false, 0 );
 Hotkey kToggleConnections( false, false, false, false, 0 );
 Hotkey kToggleHotkeys( false, false, false, false, 0 );
@@ -347,6 +348,7 @@ HotkeyEntry( _("Toggle LUT"), kToggleLut),
 HotkeyEntry( _("Toggle Pixel Ratio"), kTogglePixelRatio),
 HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
 HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
+HotkeyEntry( _("Toggle Waveform Window"), kToggleWaveform),
 HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
 HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
 HotkeyEntry( N_("END"), kGammaLess),
