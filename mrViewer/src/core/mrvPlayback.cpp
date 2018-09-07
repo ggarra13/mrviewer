@@ -637,11 +637,9 @@ void audio_thread( PlaybackData* data )
                 frame += step;
                 continue;
             case CMedia::kDecodeMissingFrame:
-                LOG_WARNING( img->name() 
-                             << _(" - decode missing audio frame ") << frame );
                 timer.setDesiredFrameRate( img->play_fps() );
                 timer.waitUntilNextFrameIsDue();
-                frame += step;
+		frame += step;
                 continue;
             case CMedia::kDecodeNoStream:
                 timer.setDesiredFrameRate( img->play_fps() );
@@ -956,12 +954,23 @@ void video_thread( PlaybackData* data )
 
         int step = (int) img->playback();
         if ( step == 0 ) break;
+	
+	CMedia::DecodeStatus status;
+	if ( view->idle_callback() && img->is_sequence() )
+	{
+	    int64_t preframe = view->preload_frame();
+	    if ( view->playback() == CMedia::kForwards &&
+		 std::abs( frame - preframe ) == 1 )
+	    {
+		frame = preframe;
+	    }
+	    
+	}
 
-        //TRACE( img->name() << " decode image " << frame );
-        CMedia::DecodeStatus status = img->decode_video( frame );
-        // TRACE( img->name() << " decoded image " << frame << " status " 
-	//        << CMedia::decode_error(status) );
-
+	//TRACE( img->name() << " decode image " << frame );
+	status = img->decode_video( frame );
+	// LOG_INFO( img->name() << " decoded image " << frame << " status " 
+	// 	  << CMedia::decode_error(status) );
 	
         switch( status )
         {
@@ -1054,6 +1063,8 @@ void video_thread( PlaybackData* data )
       double diff = 0.0;
       double bgdiff = 0.0;
 
+      double absdiff;
+      
       // // Calculate video-audio difference
       if ( img->has_audio() && status == CMedia::kDecodeOK )
       {
@@ -1088,50 +1099,54 @@ void video_thread( PlaybackData* data )
 
           diff = step * ( video_clock - master_clock );
 
-         double absdiff = std::abs(diff);
+	  absdiff = std::abs(diff);
 
-         if ( absdiff > 1000.0 ) diff = 0.0;
-
-#if __cplusplus >= 201103L
-         using std::isnan;
-#endif
-          if (! isnan(diff) ) 
-          {
-
-              img->avdiff( diff );
-
-              // Skip or repeat the frame. Take delay into account
-              //    FFPlay still doesn't "know if this is the best guess."
-              if(absdiff < AV_NOSYNC_THRESHOLD) {
-                  double sdiff = step * diff;
-                  double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, 
-                                                FFMIN(AV_SYNC_THRESHOLD_MAX,
-                                                      delay));
-
-                  if (sdiff <= -sync_threshold)
-                  {
-                      delay = FFMAX(0, delay + sdiff);
-                  }
-                  else if (sdiff >= sync_threshold &&
-                           delay > AV_SYNC_FRAMEDUP_THRESHOLD)
-                  {
-                      delay += sdiff;      // make fps slower
-                  }
-                  else if (sdiff >= sync_threshold) {
-                      delay *= 2;      // make fps repeat frame
-                  }
-              }
-          }
+	  if ( absdiff > 1000.0 ) diff = 0.0;
+      }
+      else
+      {
+	  diff = 0.0;
       }
 
-    
+#if __cplusplus >= 201103L
+      using std::isnan;
+#endif
+      if (! isnan(diff) ) 
+      {
+
+	  img->avdiff( diff );
+
+	  // Skip or repeat the frame. Take delay into account
+	  //    FFPlay still doesn't "know if this is the best guess."
+	  if(absdiff < AV_NOSYNC_THRESHOLD) {
+	      double sdiff = step * diff;
+	      double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, 
+					    FFMIN(AV_SYNC_THRESHOLD_MAX,
+						  delay));
+
+	      if (sdiff <= -sync_threshold)
+	      {
+		  delay = FFMAX(0, delay + sdiff);
+	      }
+	      else if (sdiff >= sync_threshold &&
+		       delay > AV_SYNC_FRAMEDUP_THRESHOLD)
+	      {
+		  delay += sdiff;      // make fps slower
+	      }
+	      else if (sdiff >= sync_threshold) {
+		  delay *= 2;      // make fps repeat frame
+	      }
+	  }
+      }
+      
+
+
       timer.setDesiredSecondsPerFrame( delay );
       //timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
 
       img->real_fps( timer.actualFrameRate() );
 
-      
       img->find_image( frame );
 
       if ( reel->edl && fg && img->is_left_eye() )
