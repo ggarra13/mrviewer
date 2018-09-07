@@ -171,6 +171,12 @@ class aviImage : public CMedia
 
   protected:
 
+    void copy_pixel_types( AVPixelFormat fmt[],
+			   AVPixelFormat fmtold[] );
+    
+    void add_16_bits_pixel_types( AVPixelFormat fmt[],
+				  AVPixelFormat fmtold[] );
+
     // For counting frames
     bool readFrame(int64_t & pts);
 
@@ -287,6 +293,7 @@ class aviImage : public CMedia
 
     std::atomic<bool>  _initialize;
     bool               _has_image_seq;
+    bool               _force_playback;
     std::atomic<int>   _video_index;    // Index to primary video stream
     std::atomic<int>   _stereo_index;   // Index to stereo video stream
     AVPixelFormat      _av_dst_pix_fmt;
@@ -299,9 +306,10 @@ class aviImage : public CMedia
 
     video_info_list_t     _video_info;
 
+    bool                  _last_cached;
     video_cache_t         _images;
     unsigned int          _max_images;
-
+    const int*            _inv_table;
 
     std::string           _subtitle_dir;
     std::string           _subtitle_file;

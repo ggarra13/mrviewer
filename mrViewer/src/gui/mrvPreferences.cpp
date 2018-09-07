@@ -367,6 +367,9 @@ fltk::StyleSet*     newscheme = NULL;
 
     ui.get( "vectorscope", tmp, 0 );
     uiPrefs->uiPrefsVectorscope->value(tmp);
+    
+    ui.get( "waveform", tmp, 0 );
+    uiPrefs->uiPrefsWaveform->value(tmp);
 
     ui.get( "timeline_display", tmp, 0 );
     uiPrefs->uiPrefsTimelineDisplay->value(tmp);
@@ -612,7 +615,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsCacheScale->value( tmp );
     CMedia::cache_scale( tmp );
 
-
+    
     caches.get( "8bit_caches", tmp, 0 );
     uiPrefs->uiPrefs8BitCaches->value( (bool) tmp );
     CMedia::eight_bit_caches( (bool) tmp );
@@ -622,7 +625,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsCacheFPS->value( (bool) tmp );
     if ( !tmp )
     {
-        caches.get( "video_size", tmp, 60 );
+        caches.get( "size", tmp, 60 );
         uiPrefs->uiPrefsCacheSize->activate(true);
         uiPrefs->uiPrefsCacheSize->value( tmp );
         CMedia::video_cache_size( tmp );
@@ -847,9 +850,9 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences loading( base, "loading" );
 
-    loading.get( "load_library", tmp, 1 );
+    loading.get( "load_library", tmp, 0 );
     uiPrefs->uiPrefsLoadLibrary->value( tmp );
-
+    
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
 
@@ -862,6 +865,10 @@ fltk::StyleSet*     newscheme = NULL;
     loading.get( "native_file_chooser", tmp, 1 );
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
+    loading.get( "uses_16bits", tmp, 0 );
+    uiPrefs->uiPrefsUses16Bits->value( (bool) tmp );
+    CMedia::uses_16bits( (bool) tmp );
+    
     loading.get( "image_version_prefix", tmpS, "_v", 10 );
     uiPrefs->uiPrefsImageVersionPrefix->value( tmpS );
 
@@ -1043,6 +1050,13 @@ static const char* kCLocale = "C";
     }
     else
       main->uiVectorscope->uiMain->hide();
+    
+    if ( uiPrefs->uiPrefsWaveform->value() )
+    {
+        main->uiWaveform->uiMain->show();
+    }
+    else
+      main->uiWaveform->uiMain->hide();
 
     //
     // Toolbars
@@ -1641,6 +1655,7 @@ static const char* kCLocale = "C";
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
     ui.set( "vectorscope", (int) uiPrefs->uiPrefsVectorscope->value() );
+    ui.set( "waveform", (int) uiPrefs->uiPrefsWaveform->value() );
 
 
     ui.set( "timeline_display",
@@ -1790,6 +1805,7 @@ static const char* kCLocale = "C";
     loading.set( "autoload_images",
                  (int) uiPrefs->uiPrefsAutoLoadImages->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
+    loading.set( "uses_16bits", (int) uiPrefs->uiPrefsUses16Bits->value() );
     loading.set( "image_version_prefix",
                  uiPrefs->uiPrefsImageVersionPrefix->value() );
     loading.set( "max_images_apart", uiPrefs->uiPrefsMaxImagesApart->value() );
