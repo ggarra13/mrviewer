@@ -1129,14 +1129,14 @@ namespace mrv {
 		  CHECK_GL;
 		  
                   // HDTV  YCbCr coefficients,
-                  _shader->setUniform( "Koff", -0.0625f, -0.5f, -0.5f );
+                  _shader->setUniform( "Koff",  -0.0625f, -0.5f, -0.5f );
 		  CHECK_GL;
-		  _shader->setUniform( "Kr", 1.16438356f, 0.f, 1.79274107f );
+		  _shader->setUniform( "Kr",  1.16438356f, 0.f, 1.79274107f );
 		  CHECK_GL;
-		  _shader->setUniform( "Kg", 1.16438356f, -0.21324861,
-				       -0.53290933 );
+		  _shader->setUniform( "Kg",  1.16438356f, -0.21324861,
+				        -0.53290933 );
 		  CHECK_GL;
-		  _shader->setUniform( "Kb", 1.16438356f, 2.11240179f, 0.0f );
+		  _shader->setUniform( "Kb",  1.16438356f, 2.11240179f, 0.0f );
 		  CHECK_GL;
               }
               else if ( colorspace == "BT470BG" ||
