@@ -1140,6 +1140,9 @@ class CMedia
 
     static bool supports_yuva()         { return _supports_yuva; }
     static void supports_yuva( bool x ) { _supports_yuva = x; }
+    
+    static bool uses_16bits()         { return _uses_16bits; }
+    static void uses_16bits( bool x ) { _uses_16bits = x; }
 
     static void default_subtitle_encoding( const char* f )
     { if (f) _default_subtitle_encoding = f; }
@@ -1325,7 +1328,7 @@ class CMedia
     void timestamp();
 
     /// Allocate hires image pixels
-    void allocate_pixels( const int64_t& frame,
+    bool allocate_pixels( const int64_t& frame,
                           const unsigned short channels = 4,
                           const image_type::Format format = image_type::kRGBA,
                           const image_type::PixelType pixel_type = image_type::kFloat,
@@ -1432,7 +1435,8 @@ class CMedia
   protected:
     static unsigned  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
-    static bool _supports_yuva;         //!< display supports yuv
+    static bool _supports_yuva;         //!< display supports yuva
+    static bool _uses_16bits;         //!< display supports 16 bits movies
 
     static int _image_cache_size;
     static int _video_cache_size;
@@ -1596,7 +1600,7 @@ class CMedia
     char*                _subtitle_encoding;
     char*                _subtitle_font;
 
-
+    bool              _last_audio_cached;
     int               _audio_index;   //!< current audio active stream
     audio_info_list_t _audio_info;   //!< list of audio stream infos
     unsigned         _samples_per_sec;   //!< last samples per sec
