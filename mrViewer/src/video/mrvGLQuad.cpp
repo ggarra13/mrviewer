@@ -1128,18 +1128,6 @@ namespace mrv {
                   _shader->setUniform( "coeffs", 1 );
 		  CHECK_GL;
 
-#if 0
-		  // BAD COEFFS
-                  // HDTV  YCbCr coefficients
-                  _shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
-		  CHECK_GL;
-                  _shader->setUniform( "Kr", 1.0f, 0.0f, 1.28033f );
-		  CHECK_GL;
-                  _shader->setUniform( "Kg", 1.0f, -0.21482f, -0.38059f );
-		  CHECK_GL;
-                  _shader->setUniform( "Kb", 1.0f, 2.12798f, 0.0f );
-		  CHECK_GL;
-#else	
                   // HDTV  YCbCr coefficients,
                   _shader->setUniform( "Koff",  -0.0625f, -0.5f, -0.5f );
 		  CHECK_GL;
@@ -1150,7 +1138,6 @@ namespace mrv {
 		  CHECK_GL;
 		  _shader->setUniform( "Kb",  1.16438356f, 2.11240179f, 0.0f );
 		  CHECK_GL;
-#endif
               }
               else if ( colorspace == "BT470BG" ||
                         colorspace == "SMPTE170M" )
