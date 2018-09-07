@@ -44,51 +44,51 @@
 namespace mrv
 {
 
-  class VideoFrame
-  {
+class VideoFrame
+{
   public:
-       static const char* const fmts[];
-       static const char* const ptype[];
+    static const char* const fmts[];
+    static const char* const ptype[];
 
     //! Channel formats
     enum Format {
-      kLumma,
-      kLummaA,
+    kLumma,
+    kLummaA,
 
-      kBGR,
-      kBGRA,
-      kRGB,
-      kRGBA,
+    kBGR,
+    kBGRA,
+    kRGB,
+    kRGBA,
 
-      kYUV,
-      kYUVA,
+    kYUV,
+    kYUVA,
 
-      kITU_601_YCbCr410,
-      kITU_601_YCbCr410A, // @todo: not done
-      kITU_601_YCbCr420,
-      kITU_601_YCbCr420A, // @todo: not done
-      kITU_601_YCbCr422,
-      kITU_601_YCbCr422A, // @todo: not done
-      kITU_601_YCbCr444,
-      kITU_601_YCbCr444A, // @todo: not done
+    kITU_601_YCbCr410,
+    kITU_601_YCbCr410A, // @todo: not done
+    kITU_601_YCbCr420,
+    kITU_601_YCbCr420A, // @todo: not done
+    kITU_601_YCbCr422,
+    kITU_601_YCbCr422A, // @todo: not done
+    kITU_601_YCbCr444,
+    kITU_601_YCbCr444A, // @todo: not done
 
-      kITU_709_YCbCr410,
-      kITU_709_YCbCr410A, // @todo: not done
-      kITU_709_YCbCr420,
-      kITU_709_YCbCr420A, // @todo: not done
-      kITU_709_YCbCr422,
-      kITU_709_YCbCr422A, // @todo: not done
-      kITU_709_YCbCr444,
-      kITU_709_YCbCr444A, // @todo: not done
+    kITU_709_YCbCr410,
+    kITU_709_YCbCr410A, // @todo: not done
+    kITU_709_YCbCr420,
+    kITU_709_YCbCr420A, // @todo: not done
+    kITU_709_YCbCr422,
+    kITU_709_YCbCr422A, // @todo: not done
+    kITU_709_YCbCr444,
+    kITU_709_YCbCr444A, // @todo: not done
 
-      kYByRy410,
-      kYByRy410A, // @todo: not done
-      kYByRy420,
-      kYByRy420A, // @todo: not done
-      kYByRy422,
-      kYByRy422A, // @todo: not done
-      kYByRy444,
-      kYByRy444A, // @todo: not done
+    kYByRy410,
+    kYByRy410A, // @todo: not done
+    kYByRy420,
+    kYByRy420A, // @todo: not done
+    kYByRy422,
+    kYByRy422A, // @todo: not done
+    kYByRy444,
+    kYByRy444A, // @todo: not done
     };
 
     //! Pixel Type
@@ -105,34 +105,34 @@ namespace mrv
     typedef boost::shared_array< mrv::aligned16_uint8_t > PixelData;
 
   private:
-      boost::int64_t              _frame;  //!< position in video stream
-      boost::int64_t              _pts;  //!< video pts in ffmpeg
-      boost::int64_t              _repeat;  //!< number of frames to repeat
-      unsigned int                _width;
-      unsigned int                _height;
-      short unsigned int          _channels; //!< number of channels of image
-      time_t                      _ctime;  //!< creation time of frame
-      time_t                      _mtime;  //!< modification time of frame
-      Format                      _format; //!< rgb/yuv format
-      PixelType                   _type;   //!< pixel type
-      bool                       _valid;   //! invalid frame
-      PixelData                   _data;   //!< video data
+    boost::int64_t              _frame;  //!< position in video stream
+    boost::int64_t              _pts;  //!< video pts in ffmpeg
+    boost::int64_t              _repeat;  //!< number of frames to repeat
+    unsigned int                _width;
+    unsigned int                _height;
+    short unsigned int          _channels; //!< number of channels of image
+    time_t                      _ctime;  //!< creation time of frame
+    time_t                      _mtime;  //!< modification time of frame
+    Format                      _format; //!< rgb/yuv format
+    PixelType                   _type;   //!< pixel type
+    bool                       _valid;   //! invalid frame
+    PixelData                   _data;   //!< video data
 
   public:
 
 
     VideoFrame() :
-      _frame( 0 ),
-      _pts( 0 ),
-      _repeat( 0 ),
-      _width( 0 ),
-      _height( 0 ),
-      _channels( 0 ),
-      _ctime( 0 ),
-      _mtime( 0 ),
-      _format( kRGBA ),
-      _type( kByte ),
-      _valid( true )
+    _frame( 0 ),
+    _pts( 0 ),
+    _repeat( 0 ),
+    _width( 0 ),
+    _height( 0 ),
+    _channels( 0 ),
+    _ctime( 0 ),
+    _mtime( 0 ),
+    _format( kRGBA ),
+    _type( kByte ),
+    _valid( true )
     {
     }
 
@@ -144,19 +144,19 @@ namespace mrv
                 const boost::int64_t repeat = 0,
                 const boost::int64_t pts = 0,
 		const bool valid = true ) :
-      _frame( frame ),
-      _pts( pts ),
-      _repeat( repeat ),
-      _width( w ),
-      _height( h ),
-      _channels( c ),
-      _ctime( 0 ),
-      _mtime( 0 ),
-      _format( format ),
-      _type( type ),
-      _valid( valid )
+    _frame( frame ),
+    _pts( pts ),
+    _repeat( repeat ),
+    _width( w ),
+    _height( h ),
+    _channels( c ),
+    _ctime( 0 ),
+    _mtime( 0 ),
+    _format( format ),
+    _type( type ),
+    _valid( valid )
     {
-      allocate();
+	allocate();
     }
 
     ~VideoFrame()
@@ -189,7 +189,8 @@ namespace mrv
 
     inline void      pixel_type( PixelType t ) { _type = t; }
     inline PixelType pixel_type() const        { return _type; }
-    unsigned short   pixel_size();
+    unsigned short   line_size() const;
+    unsigned short   pixel_size() const;
 
     inline void frame( const boost::int64_t& f ) { _frame = f; }
     inline boost::int64_t frame() const          { return _frame; }
@@ -207,8 +208,8 @@ namespace mrv
 
     // inline void data(const PixelData& d) { _data = d; }
 
-      inline void valid( bool b ) { _valid = b; }
-      inline bool valid() const { return _valid; }
+    inline void valid( bool b ) { _valid = b; }
+    inline bool valid() const { return _valid; }
       
     inline const PixelData data() const { return _data; }
 
@@ -218,43 +219,43 @@ namespace mrv
 
     inline bool operator==( const self& b ) const
     {
-      return _frame == b.frame();  // should never happen
+	return _frame == b.frame();  // should never happen
     }
 
     inline bool operator<( const self& b ) const
     {
-      return _frame < b.frame();
+	return _frame < b.frame();
     }
 
     inline bool operator>( const self& b ) const
     {
-      return _frame > b.frame();
+	return _frame > b.frame();
     }
 
 
     inline bool operator>( const boost::int64_t b ) const
     {
-      return _frame > b;
+	return _frame > b;
     }
 
     inline bool operator==( const boost::int64_t b ) const
     {
-      return _frame == b;
+	return _frame == b;
     }
 
     inline bool operator<=( const boost::int64_t b ) const
     {
-      return _frame <= b;
+	return _frame <= b;
     }
 
     inline bool operator>=( const boost::int64_t b ) const
     {
-      return _frame >= b;
+	return _frame >= b;
     }
 
     inline bool operator<( const boost::int64_t b ) const
     {
-      return _frame < b;
+	return _frame < b;
     }
 
     VideoFrame* quick_resize( unsigned int w, unsigned int h ) const;
@@ -285,11 +286,11 @@ namespace mrv
     ImagePixel pixel_f32( const unsigned int x, const unsigned int y ) const;
     void pixel_f32( const unsigned int x, const unsigned int y,
                     const ImagePixel& p );
-  };
+};
 
 
-  class AudioFrame
-  {
+class AudioFrame
+{
     boost::int64_t         _frame;  //!< position in audio stream
     short        _channels;  //!< number of channels
     unsigned int     _freq;  //!< audio frequency
@@ -304,19 +305,19 @@ namespace mrv
     AudioFrame( const boost::int64_t frame,
                 const int freq, const short channels,
                 const boost::uint8_t* data, const unsigned int size ) :
-      _frame( frame ),
-      _channels( channels ),
-      _freq( freq ),
-      _size( size ),
-      _data( new mrv::aligned16_uint8_t[size] )
+    _frame( frame ),
+    _channels( channels ),
+    _freq( freq ),
+    _size( size ),
+    _data( new mrv::aligned16_uint8_t[size] )
     {
-      memcpy( _data, data, size );
+	memcpy( _data, data, size );
     }
 
 
     ~AudioFrame()
     {
-      delete [] _data; _data = NULL;
+	delete [] _data; _data = NULL;
     }
 
 
@@ -324,67 +325,67 @@ namespace mrv
     inline unsigned int frequency() const { return _freq; }
     inline short         channels() const { return _channels; }
     inline unsigned int      size() const { return _size; }
-      inline const boost::uint8_t*  data() const {
-          return (boost::uint8_t*) _data;
-      }
+    inline const boost::uint8_t*  data() const {
+	return (boost::uint8_t*) _data;
+    }
 
     inline bool operator==( const self& b ) const
     {
-      return _frame == b.frame();  // should never happen
+	return _frame == b.frame();  // should never happen
     }
 
     inline bool operator<( const self& b ) const
     {
-      return _frame < b.frame();
+	return _frame < b.frame();
     }
 
     inline bool operator>( const self& b ) const
     {
-      return _frame > b.frame();
+	return _frame > b.frame();
     }
 
     inline bool operator>( const boost::int64_t b ) const
     {
-      return _frame > b;
+	return _frame > b;
     }
 
     inline bool operator==( const boost::int64_t b ) const
     {
-      return _frame == b;
+	return _frame == b;
     }
 
     inline bool operator<( const boost::int64_t b ) const
     {
-      return _frame < b;
+	return _frame < b;
     }
 
     inline bool operator<=( const boost::int64_t b ) const
     {
-      return _frame <= b;
+	return _frame <= b;
     }
 
     inline bool operator>=( const boost::int64_t b ) const
     {
-      return _frame >= b;
+	return _frame >= b;
     }
 
   private:
     AudioFrame( const AudioFrame& b ) { }
-  };
+};
 
 
-  typedef VideoFrame image_type;
-  typedef AudioFrame audio_type;
+typedef VideoFrame image_type;
+typedef AudioFrame audio_type;
 
-  typedef boost::shared_ptr< VideoFrame > image_type_ptr;
-  typedef boost::shared_ptr< AudioFrame > audio_type_ptr;
+typedef boost::shared_ptr< VideoFrame > image_type_ptr;
+typedef boost::shared_ptr< AudioFrame > audio_type_ptr;
 
 // Copy an image picture (video frame) to another, taking into account
 // the pixel type.  The pictures have to have the same format and the same
 // width/height and only (optionally) the same pixel type.
 // If the same pixel type, memcpy is used.  If not
 // a loop is used and a float pixel is used as intermediary.
-  void copy_image( image_type_ptr& dst, const image_type_ptr& src );
+void copy_image( image_type_ptr& dst, const image_type_ptr& src );
 
 } // namespace mrv
 

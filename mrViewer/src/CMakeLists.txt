@@ -150,6 +150,7 @@ FLTK_WRAP_UI( mrViewer
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvSOPNode.fl
+  gui/mrvWaveformUI.fl
   gui/mrViewer.fl
   gui/keyboard_ui.fl
   )
@@ -251,6 +252,7 @@ SET( SOURCES
   gui/mrvTimeline.cpp
   gui/mrvVectorscope.cpp
   gui/mrvVersion.cpp
+  gui/mrvWaveform.cpp
 
   video/mrvDrawEngine.cpp
   video/mrvGLEngine.cpp
