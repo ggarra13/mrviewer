@@ -161,12 +161,13 @@ class server;
       k3dView = 6,
       kHistogram = 7,
       kVectorscope = 8,
-      kICCProfiles = 9,
-      kConnections = 10,
-      kPreferences = 11,
-      kHotkeys = 12,
-      kLogs = 13,
-      kAbout = 14,
+      kWaveform = 9,
+      kICCProfiles = 10,
+      kConnections = 11,
+      kPreferences = 12,
+      kHotkeys = 13,
+      kLogs = 14,
+      kAbout = 15,
       kLastWindow
       };
 
@@ -434,6 +435,7 @@ class server;
       void toggle_3d_view(bool show);
       void toggle_histogram(bool show);
       void toggle_vectorscope(bool show);
+      void toggle_waveform(bool show);
 
       void toggle_wait() { _wait ^= 1; }
 
@@ -531,6 +533,15 @@ class server;
 
       /// Start preload image caches
       void preload_cache_start();
+
+      int64_t preload_frame() const { return _preframe; }
+      
+
+      /// Stop preload image caches
+      void preload_cache_stop();
+
+      // Return idle callback state for cache preload
+      bool idle_callback() const { return _idle_callback; }
 
       /// Preload image caches
       void preload_caches();

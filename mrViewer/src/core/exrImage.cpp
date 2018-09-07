@@ -411,8 +411,10 @@ bool exrImage::channels_order(
       }
    }
 
-   allocate_pixels( frame, (unsigned short)numChannels, format,
-                    pixel_type_conversion( imfPixelType ), dw / sx, dh / sy );
+   if ( ! allocate_pixels( frame, (unsigned short)numChannels, format,
+                           pixel_type_conversion( imfPixelType ),
+                           dw / sx, dh / sy ) )
+       return false;
 
    size_t xs[4], ys[4];
 
@@ -1510,7 +1512,9 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
 
     if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
     {
-        allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
+        if (! allocate_pixels( _frame, 4, image_type::kRGBA,
+                               image_type::kHalf ) )
+            return;
     }
 
     // display black right now
