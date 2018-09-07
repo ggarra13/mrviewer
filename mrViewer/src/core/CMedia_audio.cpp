@@ -944,24 +944,30 @@ void CMedia::limit_audio_store(const int64_t frame)
 
     SCOPED_LOCK( _audio_mutex );
 
+    int max_frames = max_video_frames();
+    
+    if ( max_audio_frames() > max_frames )
+	max_frames = max_audio_frames();
+    
+    
   int64_t first, last;
 
   switch( playback() )
     {
         case kBackwards:
-            first = frame - max_audio_frames();
+            first = frame - max_frames;
             last  = frame;
             if ( _adts < first ) first = _adts;
             break;
         case kForwards:
-            first = frame - max_audio_frames();
-            last  = frame + max_audio_frames();
+            first = frame - max_frames;
+            last  = frame + max_frames;
             if ( _adts < first ) first = _adts;
             if ( _adts > last )   last = _adts;
             break;
         default:
-            first = frame - max_audio_frames();
-            last  = frame + max_audio_frames();
+            first = frame - max_frames;
+            last  = frame + max_frames;
             if ( _adts > last )   last = _adts;
             break;
     }
@@ -1301,6 +1307,11 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     }
 #endif
 
+  if ( _audio_packets.is_jump( pkt ) )
+  {
+      return kDecodeOK;
+  }
+  
   AVPacket pkt_temp;
   av_init_packet(&pkt_temp);
   pkt_temp.data = pkt.data;
@@ -2020,6 +2031,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
   }
 
 
+
   while ( got_audio != kDecodeOK && !_audio_packets.empty() )
   {
       assert( !_audio_packets.is_seek_end() );
@@ -2064,8 +2076,8 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
       }
       else if ( _audio_packets.is_seek()  )
 	{
-            clear_stores();  // audio stores MUST be cleared when seeked
-            _audio_buf_used = 0;
+            // clear_stores();  // audio stores MUST be cleared when seeked
+            // _audio_buf_used = 0;
             got_audio = handle_audio_packet_seek( frame, true );
             continue;
 	}
@@ -2090,6 +2102,11 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
 	   got_audio = handle_audio_packet_seek( frame, false );
 	   continue;
 	}
+      else if ( _audio_packets.is_jump() )
+      {
+	  _audio_packets.pop_front();
+	  return kDecodeOK;
+      }
       else
       {
           assert( !_audio_packets.empty() );
@@ -2207,7 +2224,7 @@ void CMedia::debug_audio_stores(const int64_t frame,
 	if ( f == frame )  std::cerr << "P";
 	if ( f == _adts )   std::cerr << "D";
 	if ( f == _frame ) std::cerr << "F";
-	std::cerr << f;
+	std::cerr << " " << f;
      }
      std::cerr << std::endl;
   }
