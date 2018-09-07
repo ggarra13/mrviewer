@@ -1680,6 +1680,20 @@ bool Parser::parse( const std::string& s )
        }
        ok = true;
    }
+   else if ( cmd == N_("WaveformWindow") )
+   {
+       int x;
+       is >> x;
+       if ( x )
+       {
+           v->send( mrv::kWAVEFORM_WINDOW_SHOW );
+       }
+       else
+       {
+           v->send( mrv::kWAVEFORM_WINDOW_HIDE );
+       }
+       ok = true;
+   }
 
    if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
    v->_clients = c;
