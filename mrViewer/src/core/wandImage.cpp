@@ -366,15 +366,17 @@ namespace mrv {
      {
 
         channels = "RGBA";
-        allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
-                         unsigned(dw), unsigned(dh) );
+        if ( ! allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
+                                unsigned(dw), unsigned(dh) ) )
+            return false;
      }
      else
      {
 
         channels = "RGB";
-        allocate_pixels( frame, 3, image_type::kRGB, pixel_type,
-                         unsigned(dw), unsigned(dh) );
+        if (! allocate_pixels( frame, 3, image_type::kRGB, pixel_type,
+                               unsigned(dw), unsigned(dh) ) )
+            return false;
      }
 
      {
