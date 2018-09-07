@@ -181,8 +181,9 @@ namespace mrv {
           if ( pkt.data != _flush.data &&
                pkt.data != _seek.data  &&
                pkt.data != _seek_end.data  &&
-               pkt.data != _loop_start.data &&
+               pkt.data != _jump.data &&
                pkt.data != _preroll.data &&
+               pkt.data != _loop_start.data &&
                pkt.data != _loop_end.data &&
 	       pkt.data != NULL )
           {
@@ -271,8 +272,9 @@ namespace mrv {
           if ( pkt.data != _flush.data &&
                pkt.data != _seek.data  &&
                pkt.data != _seek_end.data  &&
-               pkt.data != _loop_start.data &&
+               pkt.data != _jump.data &&
                pkt.data != _preroll.data &&
+               pkt.data != _loop_start.data &&
                pkt.data != _loop_end.data &&
 	       pkt.data != NULL )
           {
@@ -308,8 +310,9 @@ namespace mrv {
           if ( pkt.data != _flush.data &&
                pkt.data != _seek.data  &&
                pkt.data != _seek_end.data  &&
-               pkt.data != _loop_start.data &&
+               pkt.data != _jump.data &&
                pkt.data != _preroll.data &&
+               pkt.data != _loop_start.data &&
                pkt.data != _loop_end.data &&
 	       pkt.data != NULL )
           {
@@ -389,6 +392,14 @@ namespace mrv {
           return false;
       }
 
+      bool is_jump()
+      {
+          Mutex::scoped_lock lk( _mutex );
+          if ( _packets.empty() ) return false;
+          if ( _packets.front().data == _jump.data ) return true;
+          return false;
+      }
+
       bool is_preroll()
       {
           Mutex::scoped_lock lk( _mutex );
@@ -413,6 +424,14 @@ namespace mrv {
           return false;
       }
 
+      bool is_jump(const AVPacket& pkt) const
+      {
+	  Mutex& m = const_cast< Mutex& >( _mutex );
+          Mutex::scoped_lock lk( m );
+          if ( pkt.data == _jump.data ) return true;
+          return false;
+      }
+      
       bool is_preroll(const AVPacket& pkt) const
       {
 	  Mutex& m = const_cast< Mutex& >( _mutex );
@@ -443,6 +462,7 @@ namespace mrv {
           return false;
       }
 
+
       bool is_loop_end()
       {
           Mutex::scoped_lock lk( _mutex );
@@ -463,8 +483,18 @@ namespace mrv {
           _packets.push_back( _flush );
           AVPacket& pkt = _packets.back();
           pkt.dts = pkt.pts = pts;
+          _cond.notify_one();
       }
 
+      void jump(const int64_t pts)
+      {
+          Mutex::scoped_lock lk( _mutex );
+          _packets.push_back( _jump );
+          AVPacket& pkt = _packets.back();
+          pkt.dts = pkt.pts = pts;
+          _cond.notify_one();
+      }
+      
       void preroll(const int64_t pts)
       {
           Mutex::scoped_lock lk( _mutex );
@@ -472,6 +502,7 @@ namespace mrv {
           _packets.push_back( _preroll );
           AVPacket& pkt = _packets.back();
           pkt.dts = pkt.pts = pts;
+          _cond.notify_one();
       }
 
       void loop_at_start(const int64_t frame)
@@ -486,7 +517,7 @@ namespace mrv {
       void loop_at_end(const int64_t frame)
       {
           Mutex::scoped_lock lk( _mutex );
-          _packets.push_back( _loop_end );
+          push_back( _loop_end );
           AVPacket& pkt = _packets.back();
           pkt.dts = pkt.pts = frame;
           _cond.notify_one();
@@ -499,6 +530,7 @@ namespace mrv {
           _packets.push_back( _seek );
           AVPacket& pkt = _packets.back();
           pkt.dts = pkt.pts = pts;
+          _cond.notify_one();
       }
 
       void seek_end(const int64_t pts)
@@ -509,7 +541,7 @@ namespace mrv {
           pkt.dts = pkt.pts = pts;
           _cond.notify_one();
       }
-
+      
       static void initialize()
       {
           av_init_packet( &_flush );
@@ -518,6 +550,9 @@ namespace mrv {
           av_init_packet( &_seek );
           _seek.data  = (uint8_t*)"SEEK";
           _seek.size  = 0;
+          av_init_packet( &_jump );
+          _jump.data = (uint8_t*)"JUMP";
+          _jump.size = 0;
           av_init_packet( &_preroll );
           _preroll.data = (uint8_t*)"PREROLL";
           _preroll.size = 0;
@@ -548,6 +583,7 @@ namespace mrv {
       static AVPacket _flush;      // special packet used to flush buffers
       static AVPacket _seek;       // special packet used to mark seeks to skip
       // intermediate I/B/P frames
+      static AVPacket _jump;    // special packet used to mark jumps
       static AVPacket _preroll;    // special packet used to mark preroll seeks
       static AVPacket _seek_end;   // special packet used to mark seek/preroll
       // endings

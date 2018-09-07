@@ -213,6 +213,7 @@ extern Hotkey kTogglePreferences;
 extern Hotkey kToggle3dView;
 extern Hotkey kToggleHistogram;
 extern Hotkey kToggleVectorscope;
+extern Hotkey kToggleWaveform;
 extern Hotkey kToggleICCProfiles;
 extern Hotkey kToggleConnections;
 extern Hotkey kToggleHotkeys;
