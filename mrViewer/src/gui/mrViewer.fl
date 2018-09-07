@@ -88,6 +88,9 @@ decl {\#include "mrvIccProfileUI.h"} {}
 
 decl {\#include "mrvColorAreaUI.h"} {} 
 
+decl {\#include "mrvWaveformUI.h"} {public
+} 
+
 decl {\#include "mrvEDLWindowUI.h"} {} 
 
 decl {\#include "icons/icons.c"} {} 
@@ -191,6 +194,8 @@ namespace mrv {open
   decl {class Timeline;} {public
   }
   decl {class Vectorscope;} {public
+  }
+  decl {class Waveform;} {public
   }
   decl {class SopNode;} {public
   }
@@ -669,15 +674,14 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
-    Function {make_window(mrv::ViewerUI* m)} {open private
+  class PreferencesUI {} {
+    Function {make_window(mrv::ViewerUI* m)} {private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {398 493 700 450} resizable
+        xywh {398 493 700 450} hide resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow} visible
+        class {mrv::ActionWindow}
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -728,8 +732,8 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label {UI Elements}
-              xywh {9 196 410 123} box ROUNDED_BOX
+              label {UI Elements} open
+              xywh {9 164 410 155} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
                 label Topbar
@@ -784,7 +788,12 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsPaintTools {
                 label {Action Tools}
                 tooltip {When selected, mrViewer will start with the action tools already showing.}
-                xywh {217 91 25 25} align 8 box UP_BOX
+                xywh {6 120 25 25} align 8 box UP_BOX
+              }
+              {fltk::CheckButton} uiPrefsWaveform {
+                label Waveform
+                tooltip {When selected, mrViewer will start with the waveform already open.}
+                xywh {280 90 25 25} align 8 box UP_BOX
               }
             }
           }
@@ -793,7 +802,7 @@ If you try to open several mrViewers with different images, all these images wil
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Defaults open
+              label Defaults
               xywh {13 32 394 135} box ROUNDED_BOX
             } {
               {fltk::ValueInput} uiPrefsViewGain {
@@ -1379,7 +1388,7 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches
+            label Caches open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
@@ -2118,16 +2127,16 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading open
-            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            label Loading
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
-              xywh {14 5 400 204} box ROUNDED_BOX
+              xywh {14 5 400 209} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsLoadLibrary {
-                label {JPG/PNG/DPX Load Library} open
+                label {JPG/PNG/DPX Load Library}
                 tooltip {When loading a sequence, mrViewer will usually use OIIO loaders which give a good compromise between speed and quality.  OIIO loaders allow precaching and gaps in the sequence.  FFMPEG loaders are multithreaded JPG, DPX and PNG and can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow precaching.  The FFMPEG loaders also cannot have gaps in the sequence.  Finally, ImageMagick loaders are not as fast but share the similar features of OIIO.}
-                xywh {200 29 165 25} box UP_BOX value 1
+                xywh {200 34 165 25} box UP_BOX value 1
               } {
                 {fltk::Item} {} {
                   label FFMPEG
@@ -2140,26 +2149,32 @@ uiICC_float_profile->do_callback();}
                   }
               }
               {fltk::CheckButton} uiPrefsLoadSequence {
-                label { Load Sequence on Drag&&Drop}
+                label {Load Sequence on Drag&&Drop}
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewer load the full sequence.   Otherwise it loads the frame only.}
-                xywh {20 73 25 25} box UP_BOX value 1
+                xywh {20 73 25 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsLoadSequenceOnAssoc {
                 label {Load Sequence on File Association & CommandLine}
                 tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.}
-                xywh {21 114 25 25} box UP_BOX value 1
+                xywh {20 106 25 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsAutoLoadImages {
                 label {Auto load images as they change on disk}
                 tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.}
-                xywh {20 154 25 25} box UP_BOX value 1
+                xywh {20 139 25 25} align 8 box UP_BOX value 1
+              }
+              {fltk::CheckButton} uiPrefsUses16Bits {
+                label {Read 16 bit movies when possible}
+                tooltip {Movie files will be read as 16bit pictures, instead of being loaded and cached as 8 bits.
+This setting thus allows caching less pictures in memory but at an improved quality.}
+                xywh {20 169 25 25} vertical align 8 box UP_BOX
               }
             }
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {19 224 395 115} box ROUNDED_BOX
             } {
               {fltk::Input} uiPrefsImageVersionPrefix {
-                label {Versioning Prefix} selected
+                label {Versioning Prefix}
                 tooltip {Prefix used to detect version numbers.  The default finds images like:
   gizmo_v003.001.exr
 (version 3, frame 1).}
@@ -2533,13 +2548,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window}
@@ -3056,7 +3071,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3085,30 +3101,32 @@ else
     }
     decl {VectorscopeUI* uiVectorscope;} {public
     }
+    decl {WaveformUI* uiWaveform;} {public
+    }
     decl {PaintUI* uiPaint;} {public
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
-        xywh {770 416 640 534} when CHANGED hide resizable
+        callback {delete v;} open
+        xywh {770 416 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
-          xywh {0 0 640 534}
+          xywh {0 0 640 530}
         } {
           {fltk::Group} uiTopBar {
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W
+              label W open
               tooltip {Opens different windows}
               xywh {5 5 20 20}
               extra_code {o->disable_glyph();}
@@ -3159,6 +3177,11 @@ v->uiView->update_color_info();}
                 }
               {fltk::Item} {} {
                 label Vectorscope
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiVectorscope->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label Waveform
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiVectorscope->uiMain->show();}
                 }
@@ -3438,7 +3461,7 @@ Value is:  pow( 2, 1/x );}
             }
           }
           {fltk::Group} uiViewGroup {
-            xywh {0 28 640 430} resizable
+            xywh {0 28 640 426} resizable
             class {fltk::Group}
           } {
             {fltk::Group} uiView {
@@ -3447,8 +3470,8 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {
-            xywh {0 452 640 28} box FLAT_BOX color 56
+          {fltk::Group} uiPixelBar {selected
+            xywh {0 448 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
               xywh {2 0 634 25}
@@ -3740,8 +3763,8 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {open
-            xywh {0 481 640 49} box ENGRAVED_BOX
+          {fltk::Group} uiBottomBar {
+            xywh {0 477 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
               xywh {0 0 640 49}
@@ -3945,7 +3968,7 @@ v->uiFPS->value( g );} open
                       }
                       {fltk::Input} uiFPS {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback { v->uiView->fps( o->value() );}
+                        callback {v->uiView->fps( o->value() );}
                         tooltip {Allows you to adjust frame rate playback.}
                         xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                         extra_code {o->textcolor( fltk::BLACK );
@@ -4100,6 +4123,7 @@ uiColorArea = new ColorAreaUI(this);
 uiStereo = new StereoUI(this);
 uiGL3dView = new GL3dViewUI(this);
 uiVectorscope = new VectorscopeUI(this);
+uiWaveform = new WaveformUI(this);
 uiHistogram = new HistogramUI(this);
 uiPaint = new PaintUI(this);
 if (!uiLog) uiLog   = new LogUI(this);
@@ -4128,6 +4152,7 @@ delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
 delete uiHistogram; uiHistogram = NULL;
 delete uiVectorscope; uiVectorscope = NULL;
+delete uiWaveform; uiWaveform = NULL;
 delete uiGL3dView; uiGL3dView = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
