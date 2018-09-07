@@ -110,7 +110,7 @@ const char* const VideoFrame::fmts[] = {
  *
  * @return size of pixel in memory
  */
-  unsigned short VideoFrame::pixel_size()
+  unsigned short VideoFrame::pixel_size() const
   {
     switch( _type )
       {
@@ -129,6 +129,62 @@ const char* const VideoFrame::fmts[] = {
       }
   }
 
+
+
+unsigned short VideoFrame::line_size() const
+{
+    size_t size = 0;
+
+    unsigned W2, H2, WH2;
+    unsigned W = _width;
+
+    switch( _format )
+    {
+        case kLumma:
+            size = W; break;
+
+        case kYByRy410A:
+        case kITU_709_YCbCr410A:
+        case kITU_601_YCbCr410A:
+            size = W; // alpha
+
+        case kYByRy410:
+        case kITU_709_YCbCr410:
+        case kITU_601_YCbCr410:
+            size += W;   // Y
+            size += W;   // Cb+Cr
+            break;
+
+        case kITU_709_YCbCr420A:
+        case kITU_601_YCbCr420A:
+        case kYByRy420A:
+        case kYUVA:
+            size = W; // alpha
+        case kYUV:
+        case kYByRy420:
+        case kITU_709_YCbCr420:
+        case kITU_601_YCbCr420:
+            size += W;   // Y
+            W2 = (_width  + 1) / 2;
+            size += 2 * W2;  // U and V
+            break;
+
+        case kITU_709_YCbCr422:
+        case kITU_601_YCbCr422:
+            size += W;   // Y
+            W2 = (_width  + 1) / 2;
+            size += 2 * W2;  // U and V
+            break;
+
+        default:
+            size = W * _channels;
+            break;
+    }
+
+    // multiply size by that of pixel type.  We assume all
+    // channels use same pixel type.
+    return size * pixel_size();
+}
 
 size_t VideoFrame::data_size()
 {

@@ -104,36 +104,56 @@ const float kConstant = 65535.0f;
       }
     else if ( _format >= kITU_709_YCbCr420 )
       {
-        // ITU. 702 YCbCr conversion
-        float  Y = yp / 256.0f;
-        float Pb = cb / 256.0f - 0.5f;
-        float Pr = cr / 256.0f - 0.5f;
-
-        p.r = Y                  + Pr * 1.402f;
-        p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
-        p.b = Y + Pb * 1.772f;
+	  float Y, Pb, Pr;
+	  // ITU. 702 YCbCr conversion
+	  if ( pixel_type() == kByte )
+	  {
+	      Y = yp / 256.0f;
+	      Pb = cb / 256.0f - 0.5f;
+	      Pr = cr / 256.0f - 0.5f;
+	  }
+	  else
+	  {
+	      Y = yp / 65536.0f;
+	      Pb = cb / 65536.0f - 0.5f;
+	      Pr = cr / 65536.0f - 0.5f;
+	  }
+	  
+	  p.r = Y                  + Pr * 1.402f;
+	  p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
+	  p.b = Y + Pb * 1.772f;
       }
     else if ( _format >= kITU_601_YCbCr420 )
       {
-        // ITU. 601 YCbCr conversion
-        float  Y = float( short(yp) - 16  );
-        float Cb = float( short(cb) - 128 );
-        float Cr = float( short(cr) - 128 );
+	  float Y, Cb, Cr;
+        // ITU. 702 YCbCr conversion
+	  if ( pixel_type() == kByte )
+	  {
+	      // ITU. 601 YCbCr conversion
+	      Y = float( short(yp) - 16  );
+	      Cb = float( short(cb) - 128 );
+	      Cr = float( short(cr) - 128 );
+	  }
+	  else
+	  {
+	      Y = float( short(yp) - 4096  );
+	      Cb = float( short(cb) - 32768 );
+	      Cr = float( short(cr) - 32768 );
+	  }
 
-        p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
-        p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;
-        p.b = Y * 0.00456621f + Cb * 0.00791071f;
+	  p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
+	  p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;
+	  p.b = Y * 0.00456621f + Cb * 0.00791071f;
 
-        // Sanity check. Needed, as ffmpeg can return invalid values
-        if ( p.r < 0.0f )      p.r = 0.0f;
-        else if ( p.r > 1.0f ) p.r = 1.0f;
+	  // Sanity check. Needed, as ffmpeg can return invalid values
+	  if ( p.r < 0.0f )      p.r = 0.0f;
+	  else if ( p.r > 1.0f ) p.r = 1.0f;
 
-        if ( p.g < 0.0f )      p.g = 0.0f;
-        else if ( p.g > 1.0f ) p.g = 1.0f;
+	  if ( p.g < 0.0f )      p.g = 0.0f;
+	  else if ( p.g > 1.0f ) p.g = 1.0f;
 
-        if ( p.b < 0.0f )      p.b = 0.0f;
-        else if ( p.b > 1.0f ) p.b = 1.0f;
-
+	  if ( p.b < 0.0f )      p.b = 0.0f;
+	  else if ( p.b > 1.0f ) p.b = 1.0f;
       }
 
     return p;
