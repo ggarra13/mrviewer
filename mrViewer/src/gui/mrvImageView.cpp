@@ -143,6 +143,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 
 // Audio
 
+//#define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
 
 using namespace std;
 
@@ -879,6 +880,19 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
       {
           uiMain->uiVectorscope->uiMain->hide();
           uiMain->uiView->send_network( "VectorscopeWindow 0" );
+      }
+    }
+  else if ( idx == kWaveform )
+    {
+      if ( force || !uiMain->uiWaveform->uiMain->visible() )
+      {
+          uiMain->uiWaveform->uiMain->show();
+          uiMain->uiView->send_network( "WaveformWindow 1" );
+      }
+      else
+      {
+          uiMain->uiWaveform->uiMain->hide();
+          uiMain->uiView->send_network( "WaveformWindow 0" );
       }
     }
   else if ( idx == kICCProfiles )
@@ -2439,6 +2453,12 @@ bool ImageView::should_update( mrv::media fg )
   return update;
 }
 
+void static_preload( mrv::ImageView* v )
+{
+    v->preload();
+}
+
+
 void ImageView::log() const
 {
     //
@@ -2469,6 +2489,9 @@ void ImageView::log() const
         }
     }
 }
+
+
+
 bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
@@ -2493,7 +2516,7 @@ bool ImageView::preload()
     CMedia* img = fg->image();
     if (!img) return false;
 
-    // Exit early if we are dealing with a video instead of a sequence
+    // Exit early if we are dealing with a video instead of a sequencex
     if ( !img->is_sequence() || img->has_video() ) {
         _preframe = fg->position() + img->duration(); // go to next image
         img = r->image_at( _preframe );
@@ -2525,7 +2548,7 @@ bool ImageView::preload()
 
     if ( f < first ) f = first;
     else if ( f > last ) f = last;
-    
+
     int64_t i = f;
 
     bool found = false;
@@ -2557,15 +2580,18 @@ bool ImageView::preload()
     if ( found )
     {
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
-	// Store current frame
+        // Store current frame
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
         if ( !img->find_image( i ) ) // this loads the frame if not present
         {
             // Frame not found or error. Update _preframe.
-            _preframe = i + 1;
-            if ( _preframe > last ) _preframe = 1;
+	    _preframe = i + 1;
+	    if ( _preframe > last ) _preframe = first;
         }
+	// Frame found. Update _preframe.
+	_preframe = i + 1;
+	if ( _preframe > last ) _preframe = first;
 	// Restore current frame
 	img->hires( pic );
 	timeline()->redraw();
@@ -2586,7 +2612,11 @@ bool ImageView::preload()
             return false;
     }
 
-
+    redraw();
+    fltk::check();
+#ifdef USE_TIMEOUT
+    fltk::repeat_timeout( 0.2f, (fltk::TimeoutHandler) static_preload, this );
+#endif
     return true;
 
 }
@@ -2730,7 +2760,7 @@ void ImageView::timeout()
       }
   }
 
-  repeat_timeout( float(delay) );
+  repeat_timeout( delay );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -2790,10 +2820,6 @@ void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
    _engine->draw_text( int(x), int(y), text );  // draw text
 }
 
-void static_preload( mrv::ImageView* v )
-{
-    v->preload();
-}
 
 void ImageView::vr( VRType t )
 {
@@ -5891,6 +5917,11 @@ int ImageView::keyDown(unsigned int rawkey)
         toggle_window( kVectorscope );
         return 1;
     }
+    else if ( kToggleWaveform.match( rawkey ) )
+    {
+        toggle_window( kWaveform );
+        return 1;
+    }
     else if ( kToggleICCProfiles.match( rawkey ) )
     {
         toggle_window( kICCProfiles );
@@ -6200,6 +6231,19 @@ void ImageView::toggle_vectorscope( bool show )
     }
 }
 
+
+void ImageView::toggle_waveform( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiWaveform->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiWaveform->uiMain->show();
+    }
+}
+
 void ImageView::toggle_stereo_options( bool show )
 {
     if ( !show )
@@ -6273,6 +6317,8 @@ int ImageView::handle(int event)
         case mrv::kHISTOGRAM_WINDOW_HIDE:
         case mrv::kVECTORSCOPE_WINDOW_SHOW:
         case mrv::kVECTORSCOPE_WINDOW_HIDE:
+        case mrv::kWAVEFORM_WINDOW_SHOW:
+        case mrv::kWAVEFORM_WINDOW_HIDE:
         case mrv::kSTEREO_OPTIONS_WINDOW_SHOW:
         case mrv::kSTEREO_OPTIONS_WINDOW_HIDE:
         case mrv::kPAINT_TOOLS_WINDOW_SHOW:
@@ -6328,6 +6374,12 @@ int ImageView::handle(int event)
                     case mrv::kVECTORSCOPE_WINDOW_HIDE:
                         toggle_vectorscope(false);
                         ok = true; break;
+                    case mrv::kWAVEFORM_WINDOW_SHOW:
+                        toggle_waveform(true);
+                        ok = true; break;
+                    case mrv::kWAVEFORM_WINDOW_HIDE:
+                        toggle_waveform(false);
+                        ok = true; break;
                     case mrv::kSTEREO_OPTIONS_WINDOW_SHOW:
                         toggle_stereo_options(true);
                         ok = true; break;
@@ -6363,7 +6415,8 @@ int ImageView::handle(int event)
                 {
                     if ( _idle_callback && _reel >= b->number_of_reels() )
                     {
-                        fltk::remove_idle( (fltk::TimeoutHandler)static_preload, this );
+                       fltk::remove_idle( (fltk::TimeoutHandler)static_preload,
+					  this );
                         _idle_callback = false;
                     }
                 }
@@ -6584,6 +6637,7 @@ void ImageView::flush_image( mrv::media fg )
     }
 }
 
+
 void ImageView::preload_cache_start()
 {
     if ( !foreground() ) return;
@@ -6591,9 +6645,33 @@ void ImageView::preload_cache_start()
     if (!_idle_callback)
     {
         _reel = 0;
+#ifdef USE_TIMEOUT
+        fltk::add_timeout( 0.2f, (fltk::TimeoutHandler) static_preload, this );
+#else
         fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+#endif
         _idle_callback = true;
         CMedia::preload_cache( true );
+    }
+}
+
+/**
+ * Toggle Preload sequence in background
+ *
+ */
+void ImageView::preload_cache_stop()
+{
+    if ( !foreground() ) return;
+
+    if ( _idle_callback )
+    {
+#ifdef USE_TIMEOUT
+        fltk::remove_timeout( (fltk::TimeoutHandler) static_preload, this );
+#else
+        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+#endif
+	_reel = browser()->number_of_reels();
+        _idle_callback = false;
     }
 }
 
@@ -6605,10 +6683,15 @@ void ImageView::preload_caches()
 {
     if ( !foreground() ) return;
 
+
     CMedia::preload_cache( !CMedia::preload_cache() );
     if ( !CMedia::preload_cache() )
     {
+#ifdef USE_TIMEOUT
+        fltk::remove_timeout( (fltk::TimeoutHandler) static_preload, this );
+#else
         fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+#endif
         _idle_callback = false;
     }
     else
@@ -6706,7 +6789,7 @@ char* ImageView::get_layer_label( unsigned short c )
     if ( !lbl )
     {
         LOG_ERROR( _("Color channel not found at index ") << c );
-	return NULL;
+        return NULL;
     }
 
     return lbl;
@@ -7218,7 +7301,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
 
   zoom( z );
-  
+
   int w2 = W / 2;
   int h2 = H / 2;
 
@@ -7339,8 +7422,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-	std::string chx = remove_hash_number( x );
-	std::string chroot = remove_hash_number( root );
+        std::string chx = remove_hash_number( x );
+        std::string chroot = remove_hash_number( root );
         if ( v == -1 && ( chx == chroot ||
                           (channelName && name == channelName) ) )
         {
@@ -7381,7 +7464,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 void ImageView::update_layers()
 {
     boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
-    
+
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
     mrv::media fg = foreground();
@@ -7966,10 +8049,10 @@ void ImageView::seek( const int64_t f )
 
     _preframe = f;
 
-    if ( std::abs( f - frame() ) < fps() / 2.0 )
-    {
-        stop();
-    }
+    // if ( std::abs( f - frame() ) < fps() / 2.0 )
+    // {
+    //     stop();
+    // }
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->seek( f );
@@ -8151,6 +8234,12 @@ void ImageView::update_color_info( const mrv::media& fg ) const
       if ( uiVectorscope->visible() ) uiVectorscope->redraw();
     }
 
+  if ( uiMain->uiWaveform )
+    {
+      fltk::Window*  uiWaveform = uiMain->uiWaveform->uiMain;
+      if ( uiWaveform->visible() ) uiWaveform->redraw();
+    }
+
   if ( uiMain->uiHistogram )
     {
       fltk::Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
@@ -8222,8 +8311,6 @@ void ImageView::playback( const CMedia::Playback b )
       uiMain->uiPlayBackwards->value(0);
     }
 
-
-
   uiMain->uiPlayForwards->redraw();
   uiMain->uiPlayBackwards->redraw();
 
@@ -8260,12 +8347,18 @@ void ImageView::play( const CMedia::Playback dir )
       return;
    }
 
+    if ( CMedia::preload_cache() && _idle_callback )
+    {
+	preload_cache_stop();
+    }
+    
 
    playback( dir );
 
    delete_timeout();
 
    double fps = uiMain->uiFPS->value();
+  
    create_timeout( 0.5/fps );
 
    mrv::media fg = foreground();
@@ -8347,6 +8440,11 @@ void ImageView::stop()
 
     seek( int64_t(timeline()->value()) );
 
+    if ( CMedia::preload_cache() && ! _idle_callback )
+    {
+	preload_cache_start();
+    }
+    
     mouseMove( fltk::event_x(), fltk::event_y() );
     redraw();
 }
