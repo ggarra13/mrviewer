@@ -35,6 +35,7 @@ bool      PacketQueue::inited = false;
 AVPacket  PacketQueue::_flush;
 AVPacket  PacketQueue::_seek;
 AVPacket  PacketQueue::_seek_end;
+AVPacket  PacketQueue::_jump;
 AVPacket  PacketQueue::_preroll;
 AVPacket  PacketQueue::_loop_start;
 AVPacket  PacketQueue::_loop_end;
