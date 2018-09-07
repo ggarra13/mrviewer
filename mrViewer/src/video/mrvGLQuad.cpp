@@ -1127,6 +1127,7 @@ namespace mrv {
               {
                   _shader->setUniform( "coeffs", 1 );
 		  CHECK_GL;
+		  
                   // HDTV  YCbCr coefficients,
                   _shader->setUniform( "Koff", -0.0625f, -0.5f, -0.5f );
 		  CHECK_GL;
