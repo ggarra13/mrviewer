@@ -203,6 +203,10 @@ namespace mrv {
     static GLShader* _YCbCrA;   //!< YCbCrA Fragment shader ( Y Cb  Cr  A )
     static GLShader* _YByRyA;   //!< YBYRYA Fragment shader ( Y B-Y R-Y A )
 
+      ostringstream hdr;
+      ostringstream code;
+      ostringstream foot;
+      
       int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
       GLuint textureId;       //!< The off-screen texture
