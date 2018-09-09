@@ -206,8 +206,8 @@ void CMedia::open_audio_codec()
   av_codec_set_pkt_timebase(_audio_ctx, get_audio_stream()->time_base);
 
   AVDictionary* opts = NULL;
-  if (!av_dict_get(opts, "threads", NULL, 0))
-      av_dict_set(&opts, "threads", "auto", 0);  // not "auto" nor "4"
+  // if (!av_dict_get(opts, "threads", NULL, 0))
+  //     av_dict_set(&opts, "threads", "2", 0);  // not "auto" nor "4"
   av_dict_set(&opts, "refcounted_frames", "1", 0);
 
   if ( avcodec_open2( _audio_ctx, _audio_codec, &opts ) < 0 )
@@ -1550,9 +1550,8 @@ CMedia::store_audio( const int64_t audio_frame,
 
   // Get the audio info from the codec context
   _audio_channels = (unsigned short)_audio_ctx->channels;
-  unsigned short channels = _audio_channels;
-  
-  int frequency = _audio_ctx->sample_rate;
+  const unsigned short channels = _audio_channels;
+  const int frequency = _audio_ctx->sample_rate;
 
   audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
 						       frequency, 
