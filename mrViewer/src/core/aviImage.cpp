@@ -53,6 +53,7 @@ extern "C" {
 #include <libavutil/opt.h>
 #include <libavutil/avstring.h>
 #include <libswresample/swresample.h>
+#include <libavutil/mastering_display_metadata.h>
 #include <libavfilter/buffersrc.h>
 #include <libavfilter/buffersink.h>
 }
@@ -1272,9 +1273,9 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
   while(  pkt->size > 0 || pkt->data == NULL )
   {
-      //int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
+    int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
 
-      int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, pkt );
+      // int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, pkt );
      if ( err < 0 ) {
          IMG_ERROR( "Decode video error: " << get_error_text(err) );
          return kDecodeError;
@@ -2086,7 +2087,6 @@ void aviImage::populate()
                 }
             case AVMEDIA_TYPE_VIDEO:
                 {
-
                     video_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
                     s.has_b_frames = ( ctx->has_b_frames != 0 );
@@ -2192,6 +2192,32 @@ void aviImage::populate()
     if ( has_video() )
     {
         stream = get_video_stream();
+	int size;
+	AVMasteringDisplayMetadata* m =	(AVMasteringDisplayMetadata*)
+	av_stream_get_side_data( stream,
+				 AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+				 &size );
+	if ( size == sizeof( AVMasteringDisplayMetadata ) )
+	{
+	    if ( m->has_primaries )
+	    {
+		std::cerr << av_q2d( m->display_primaries[0][0] ) << " " 
+			  << av_q2d( m->display_primaries[0][1] ) << std::endl;
+	        std::cerr << av_q2d( m->display_primaries[1][0] ) << " " 
+			  << av_q2d( m->display_primaries[1][1] ) << std::endl;
+	        std::cerr << av_q2d( m->display_primaries[2][0] ) << " " 
+			  << av_q2d( m->display_primaries[2][1] ) << std::endl;
+	        std::cerr << av_q2d( m->white_point[0] ) << " " 
+			  << av_q2d( m->white_point[1] ) << std::endl;
+	    }
+
+	    if  ( m->has_luminance )
+	    {
+		std::cerr << av_q2d( m->max_luminance ) << " " 
+			  << av_q2d( m->min_luminance ) << std::endl;
+	    }
+
+	}
     }
     else if ( has_audio() )
     {
