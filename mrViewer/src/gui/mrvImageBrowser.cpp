@@ -1624,9 +1624,10 @@ void ImageBrowser::load( const mrv::LoadList& files,
     view()->fit_image();
     adjust_timeline();
 
-    if ( ( !CMedia::preload_cache() || !CMedia::cache_active() ) &&
+    if ( ( img->has_video() || !CMedia::preload_cache() ||
+	   !CMedia::cache_active() ) &&
 	 uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
-         img->first_frame() != img->last_frame() )
+         img->first_frame() != img->last_frame()  )
       {
          view()->play_forwards();
       }
