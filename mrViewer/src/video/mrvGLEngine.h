@@ -81,6 +81,8 @@ namespace mrv {
     virtual void color( uchar r, uchar g, uchar b, uchar a  );
     virtual void color( float r, float g, float b, float a );
 
+      void image( const CMedia* img ) { _image = img; }
+      
     // Init FBO Drawing   
        virtual bool init_fbo( ImageList& images );
        virtual void end_fbo( ImageList& images );
@@ -196,6 +198,8 @@ namespace mrv {
     /// Auxiliary function to load built-in rgba shader
     void loadBuiltinFragShader();
 
+      // Auxiliary function to create a OpenGL2 shader for HDRI movies
+      void loadOpenGLShader();
 
     static GLShader* _rgba;     //!< RGBA   Fragment shader
     static GLShader* _YCbCr;    //!< YCbCr  Fragment shader ( Y Cb  Cr )
@@ -203,6 +207,10 @@ namespace mrv {
     static GLShader* _YCbCrA;   //!< YCbCrA Fragment shader ( Y Cb  Cr  A )
     static GLShader* _YByRyA;   //!< YBYRYA Fragment shader ( Y B-Y R-Y A )
 
+      ostringstream hdr;
+      ostringstream code;
+      ostringstream foot;
+      
       int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
       GLuint textureId;       //!< The off-screen texture
@@ -214,7 +222,8 @@ namespace mrv {
       float   vr_angle;
       double  _rotX, _rotY; // Sphere start rotation
       QuadList  _quads;
-      
+
+      const CMedia* _image;
 
     //
     // GFX card limits
