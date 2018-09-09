@@ -20,7 +20,7 @@
  * @author gga
  * @date   Fri Jul 13 23:47:14 2007
  *
- * @brief  OpenGL engine
+ * @brief2  OpenGL engine
  *
  */
 
@@ -30,7 +30,7 @@
 // #define TEST_NO_SHADERS  // test without hardware shaders
 // #define TEST_NO_YUV      // test in rgba mode only
 
-#define USE_NV_SHADERS
+//#define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
 //#define USE_STEREO_GL
@@ -61,6 +61,7 @@ extern "C" {
 #  include <GL/glxew.h>
 #endif
 
+#include <libavutil/mastering_display_metadata.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 
@@ -75,6 +76,7 @@ extern "C" {
 #include <Iex.h>
 #include <CtlExc.h>
 #include <halfLimits.h>
+
 
 #include "core/mrvMath.h"
 #include "core/mrvThread.h"
@@ -93,6 +95,7 @@ extern "C" {
 #include "video/mrvGLSphere.h"
 #include "video/mrvGLCube.h"
 #include "video/mrvGLLut3d.h"
+#include "video/mrvCSPUtils.h"
 
 #undef TRACE
 #define TRACE(x)
@@ -222,6 +225,7 @@ void zrot2offsets( double& x, double& y,
 
     char* versionString = (char*)glGetString(GL_VERSION);
     if ( !versionString ) versionString = (char*)_("Unknown");
+
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     o << _("Vendor:\t") << vendorString << endl
@@ -435,21 +439,24 @@ void GLEngine::initialize()
     }
 #endif
 
+  _hardwareShaders = kGLSL;
   if ( _hardwareShaders == kAuto )
-    {
+  {
       _hardwareShaders = kNone;
 #ifndef TEST_NO_SHADERS
 
 #ifdef USE_ARBFP1_SHADERS
-    DBG( __FUNCTION__ << " " << __LINE__ );
-      if ( GLEW_ARB_fragment_program )
+      DBG( __FUNCTION__ << " " << __LINE__ );
+    if ( GLEW_ARB_fragment_program )
         _hardwareShaders = kARBFP1;
 #endif
 
 #ifdef USE_OPENGL2_SHADERS
     DBG( __FUNCTION__ << " " << __LINE__ );
       if ( GLEW_VERSION_2_0 )
+      {
         _hardwareShaders = kGLSL;
+      }
 #endif
 
 #ifdef USE_NV_SHADERS
@@ -538,7 +545,7 @@ void GLEngine::initialize()
               if ( _has_yuv )
               {
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
-                  _YCbCr = new GLShader( shaderFile );
+                  //_YCbCr = new GLShader( shaderFile );
                   DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
                        << shaderFile );
 
@@ -588,6 +595,7 @@ void GLEngine::initialize()
                           "using built-in shader.") );
         }
 
+      
       if ( directory.empty() )
         {
           directory = N_(".");
@@ -675,6 +683,9 @@ void GLEngine::reset_view_matrix()
     CHECK_GL;
     glDisable(GL_LIGHTING);
     CHECK_GL;
+
+
+    
 }
 
 void GLEngine::evaluate( const CMedia* img,
@@ -716,6 +727,76 @@ void GLEngine::refresh_luts()
       (*q)->clear_lut();
     }
 }
+
+#if 0
+static void pass_convert_yuv(ostringstream& code)
+{
+
+    struct mp_csp_params cparams = MP_CSP_PARAMS_DEFAULTS;
+    cparams.gray = p->is_gray;
+    mp_csp_set_image_params(&cparams, &p->image_params);
+    mp_csp_equalizer_state_get(p->video_eq, &cparams);
+    p->user_gamma = 1.0 / (cparams.gamma * p->opts.gamma);
+
+    pass_describe(p, "color conversion");
+
+    if (p->color_swizzle[0])
+        GLSLF("color = color.%s;\n", p->color_swizzle);
+
+    // Pre-colormatrix input gamma correction
+    if (cparams.color.space == MP_CSP_XYZ)
+        GLSL(color.rgb = pow(color.rgb, vec3(2.6));) // linear light
+
+    // We always explicitly normalize the range in pass_read_video
+    cparams.input_bits = cparams.texture_bits = 0;
+
+    // Conversion to RGB. For RGB itself, this still applies e.g. brightness
+    // and contrast controls, or expansion of e.g. LSB-packed 10 bit data.
+    struct mp_cmat m = {{{0}}};
+    mp_get_csp_matrix(&cparams, &m);
+    gl_sc_uniform_mat3(sc, "colormatrix", true, &m.m[0][0]);
+    gl_sc_uniform_vec3(sc, "colormatrix_c", m.c);
+
+    GLSL(color.rgb = mat3(colormatrix) * color.rgb + colormatrix_c;)
+
+    if (p->image_params.color.space == MP_CSP_BT_2020_C) {
+        // Conversion for C'rcY'cC'bc via the BT.2020 CL system:
+        // C'bc = (B'-Y'c) / 1.9404  | C'bc <= 0
+        //      = (B'-Y'c) / 1.5816  | C'bc >  0
+        //
+        // C'rc = (R'-Y'c) / 1.7184  | C'rc <= 0
+        //      = (R'-Y'c) / 0.9936  | C'rc >  0
+        //
+        // as per the BT.2020 specification, table 4. This is a non-linear
+        // transformation because (constant) luminance receives non-equal
+        // contributions from the three different channels.
+        GLSLF("// constant luminance conversion\n");
+        GLSL(color.br = color.br * mix(vec2(1.5816, 0.9936),
+                                       vec2(1.9404, 1.7184),
+                                       lessThanEqual(color.br, vec2(0)))
+                        + color.gg;)
+        // Expand channels to camera-linear light. This shader currently just
+        // assumes everything uses the BT.2020 12-bit gamma function, since the
+        // difference between 10 and 12-bit is negligible for anything other
+        // than 12-bit content.
+        GLSL(color.rgb = mix(color.rgb * vec3(1.0/4.5),
+                             pow((color.rgb + vec3(0.0993))*vec3(1.0/1.0993),
+                                 vec3(1.0/0.45)),
+                             lessThanEqual(vec3(0.08145), color.rgb));)
+        // Calculate the green channel from the expanded RYcB
+        // The BT.2020 specification says Yc = 0.2627*R + 0.6780*G + 0.0593*B
+        GLSL(color.g = (color.g - 0.2627*color.r - 0.0593*color.b)*1.0/0.6780;)
+        // Recompress to receive the R'G'B' result, same as other systems
+        GLSL(color.rgb = mix(color.rgb * vec3(4.5),
+                             vec3(1.0993) * pow(color.rgb, vec3(0.45)) - vec3(0.0993),
+                             lessThanEqual(vec3(0.0181), color.rgb));)
+    }
+
+    GLSL(color.a = 1.0;)
+}
+
+#endif
+
 
 /**
  * Clears the opengl canvas to a certain color
@@ -1103,10 +1184,10 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip )
     // Handle pixel ratio
     //
     if ( _view->main()->uiPixelRatio->value() ) {
-	double pr = 1.0 / _view->pixel_ratio();
-	glScaled( 1.0, pr, 1.0 );
+        double pr = 1.0 / _view->pixel_ratio();
+        glScaled( 1.0, pr, 1.0 );
     }
-    
+
     CHECK_GL;
 
 }
@@ -1586,6 +1667,12 @@ void GLEngine::draw_images( ImageList& images )
 {
     TRACE( "" );
 
+    if ( _YCbCr == NULL )
+    {
+	loadOpenGLShader();
+	if ( ! _YCbCr ) return;
+    }
+    
     CHECK_GL;
 
     DBG( __FUNCTION__ << " " << __LINE__ );
@@ -1790,7 +1877,7 @@ void GLEngine::draw_images( ImageList& images )
 
         if ( dpw != daw && ! _view->vr() )
         {
-            
+
             if ( _view->display_window() )
             {
                 int x = img->x();
@@ -1812,7 +1899,7 @@ void GLEngine::draw_images( ImageList& images )
         CHECK_GL;
 
         set_matrix( flip );
-        
+
         if ( flip && !_view->vr() )
         {
             const mrv::Recti& dp = fg->display_window();
@@ -1821,7 +1908,7 @@ void GLEngine::draw_images( ImageList& images )
             if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
             glTranslated( x, y, 0.0f );
         }
-	
+
         glMatrixMode(GL_MODELVIEW);
         CHECK_GL;
         glPushMatrix();
@@ -1917,8 +2004,8 @@ void GLEngine::draw_images( ImageList& images )
                 {
                     quad->right( false );
                 }
-		CMedia::Mutex& mtx = img->video_mutex();
-		SCOPED_LOCK( mtx );
+                CMedia::Mutex& mtx = img->video_mutex();
+                SCOPED_LOCK( mtx );
                 quad->bind( pic );
             }
             quad->gamma( g );
@@ -1926,9 +2013,9 @@ void GLEngine::draw_images( ImageList& images )
 
             if ( img->has_subtitle() )
             {
-		CMedia::Mutex& mtx = img->subtitle_mutex();
-		SCOPED_LOCK( mtx );
-		image_type_ptr sub = img->subtitle();
+                CMedia::Mutex& mtx = img->subtitle_mutex();
+                SCOPED_LOCK( mtx );
+                image_type_ptr sub = img->subtitle();
                 if ( sub )
                 {
                     prepare_subtitle( *q++, sub, _rotX, _rotY,
@@ -2037,7 +2124,7 @@ void GLEngine::draw_images( ImageList& images )
                     texWidth = pic->width();
                     texHeight = pic->height();
                 }
-                
+
                 prepare_image( img, daw2, texWidth, texHeight, _view );
             }
         }
@@ -2105,8 +2192,8 @@ void GLEngine::draw_images( ImageList& images )
                   rightView = false;
               quad->right( rightView );
           }
-	  CMedia::Mutex& mtx = img->video_mutex();
-	  SCOPED_LOCK( mtx );
+          CMedia::Mutex& mtx = img->video_mutex();
+          SCOPED_LOCK( mtx );
           quad->bind( pic );
           img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
@@ -2131,8 +2218,8 @@ void GLEngine::draw_images( ImageList& images )
             {
                 prepare_subtitle( *q++, sub, _rotX, _rotY,
                                   texWidth, texHeight );
-	    }
-	    img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
+            }
+            img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
         }
 
       glMatrixMode(GL_MODELVIEW);
@@ -2847,6 +2934,931 @@ void GLEngine::handle_cg_errors()
 //   exit(1);
 }
 
+char buf1[512];
+#define GLSL(x) do { code << #x << std::endl; } while( 0 );
+#define GLSLF(...) do { sprintf(buf1, __VA_ARGS__ ); code << buf1; } while(0);
+#define GLSLH(x)   do { hdr << #x << "\n"; } while(0);
+#define GLSLHF(...) do { sprintf(buf1, __VA_ARGS__ ); hdr << buf1; } while(0);
+
+// A := A * B
+static void mp_mul_matrix3x3(float a[3][3], float b[3][3])
+{
+    float a00 = a[0][0], a01 = a[0][1], a02 = a[0][2],
+          a10 = a[1][0], a11 = a[1][1], a12 = a[1][2],
+          a20 = a[2][0], a21 = a[2][1], a22 = a[2][2];
+
+    for (int i = 0; i < 3; i++) {
+        a[0][i] = a00 * b[0][i] + a01 * b[1][i] + a02 * b[2][i];
+        a[1][i] = a10 * b[0][i] + a11 * b[1][i] + a12 * b[2][i];
+        a[2][i] = a20 * b[0][i] + a21 * b[1][i] + a22 * b[2][i];
+    }
+}
+
+void gl_sc_uniform_vec3( ostringstream& code, const char* name, float v[3] )
+{
+    code << "uniform vec3 " << name << " = vec3( " << v[0] << ", " << v[1]
+         << ", " << v[2] << ");" << std::endl;
+}
+
+void gl_sc_uniform_mat3( ostringstream& code, const char* name,
+                         bool transpose, float* m )
+{
+    if ( transpose )
+    {
+        code << "uniform mat3 " << name << " = mat3( " << m[0] << ", "
+             << m[3] << ", " << m[6] << "," << std::endl
+             << "\t\t" << m[1] << ", " << m[4] << ", " << m[7] << ", "
+             << std::endl << "\t\t" << m[2] << ", " << m[5]
+             << ", " << m[8] << " ); " << std::endl;
+    }
+    else
+    {
+        code << "uniform mat3 " << name << " = mat3( " << m[0] << ", "
+             << m[1] << ", " << m[2] << "," << std::endl
+             << "\t\t" << m[3] << ", " << m[4] << ", " << m[5] << ", "
+             << std::endl << "\t\t" << m[6] << ", " << m[7]
+             << ", " << m[8] << " ); " << std::endl;
+    }
+}
+
+// enum mp_csp {
+//     MP_CSP_AUTO,
+//     MP_CSP_BT_601,
+//     MP_CSP_BT_709,
+//     MP_CSP_SMPTE_240M,
+//     MP_CSP_BT_2020_NC,
+//     MP_CSP_BT_2020_C,
+//     MP_CSP_RGB,
+//     MP_CSP_XYZ,
+//     MP_CSP_YCGCO,
+//     MP_CSP_COUNT
+// };
+
+// enum mp_csp_levels {
+//     MP_CSP_LEVELS_AUTO,
+//     MP_CSP_LEVELS_TV,
+//     MP_CSP_LEVELS_PC,
+//     MP_CSP_LEVELS_COUNT,
+// };
+
+// enum mp_csp_prim {
+//     MP_CSP_PRIM_AUTO,
+//     MP_CSP_PRIM_BT_601_525,
+//     MP_CSP_PRIM_BT_601_625,
+//     MP_CSP_PRIM_BT_709,
+//     MP_CSP_PRIM_BT_2020,
+//     MP_CSP_PRIM_BT_470M,
+//     MP_CSP_PRIM_APPLE,
+//     MP_CSP_PRIM_ADOBE,
+//     MP_CSP_PRIM_PRO_PHOTO,
+//     MP_CSP_PRIM_CIE_1931,
+//     MP_CSP_PRIM_DCI_P3,
+//     MP_CSP_PRIM_V_GAMUT,
+//     MP_CSP_PRIM_S_GAMUT,
+//     MP_CSP_PRIM_COUNT
+// };
+
+// enum mp_csp_trc
+// {
+//     MP_CSP_TRC_AUTO,
+//     MP_CSP_TRC_BT_1886,
+//     MP_CSP_TRC_SRGB,
+//     MP_CSP_TRC_LINEAR,
+//     MP_CSP_TRC_GAMMA18,
+//     MP_CSP_TRC_GAMMA22,
+//     MP_CSP_TRC_GAMMA28,
+//     MP_CSP_TRC_PRO_PHOTO,
+//     MP_CSP_TRC_PQ,
+//     MP_CSP_TRC_HLG,
+//     MP_CSP_TRC_V_LOG,
+//     MP_CSP_TRC_S_LOG1,
+//     MP_CSP_TRC_S_LOG2,
+//     MP_CSP_TRC_COUNT
+// };
+
+// enum mp_csp_light {
+//     MP_CSP_LIGHT_AUTO,
+//     MP_CSP_LIGHT_DISPLAY,
+//     MP_CSP_LIGHT_SCENE_HLG,
+//     MP_CSP_LIGHT_SCENE_709_1886,
+//     MP_CSP_LIGHT_SCENE_1_2,
+//     MP_CSP_LIGHT_COUNT
+// };
+
+// struct mp_colorspace {
+//     enum mp_csp space;
+//     enum mp_csp_levels levels;
+//     enum mp_csp_prim primaries;
+//     enum mp_csp_trc gamma;
+//     enum mp_csp_light light;
+//     float sig_peak; // highest relative value in signal. 0 = unknown/auto
+// };
+
+enum tone_mapping {
+    TONE_MAPPING_CLIP,
+    TONE_MAPPING_MOBIUS,
+    TONE_MAPPING_REINHARD,
+    TONE_MAPPING_HABLE,
+    TONE_MAPPING_GAMMA,
+    TONE_MAPPING_LINEAR,
+};
+
+
+#define MP_REF_WHITE 100.0
+
+
+// Average light level for SDR signals. This is equal to a signal level of 0.5
+// under a typical presentation gamma of about 2.0.
+static const float sdr_avg = 0.25;  // <- was 0.25
+
+// The threshold for which to consider an average luminance difference to be
+// a sign of a scene change.
+static const int scene_threshold = 0.2 * MP_REF_WHITE;
+
+
+// How many frames to average over for HDR peak detection
+#define PEAK_DETECT_FRAMES 100
+
+// Common constants for SMPTE ST.2084 (HDR)
+static const float PQ_M1 = 2610./4096 * 1./4,
+                   PQ_M2 = 2523./4096 * 128,
+                   PQ_C1 = 3424./4096,
+                   PQ_C2 = 2413./4096 * 32,
+                   PQ_C3 = 2392./4096 * 32;
+
+// Common constants for ARIB STD-B67 (HLG)
+static const float HLG_A = 0.17883277,
+                   HLG_B = 0.28466892,
+                   HLG_C = 0.55991073;
+
+// Common constants for Panasonic V-Log
+static const float VLOG_B = 0.00873,
+                   VLOG_C = 0.241514,
+                   VLOG_D = 0.598206;
+
+// Common constants for Sony S-Log
+static const float SLOG_A = 0.432699,
+                   SLOG_B = 0.037584,
+                   SLOG_C = 0.616596 + 0.03,
+                   SLOG_P = 3.538813,
+                   SLOG_Q = 0.030001,
+                   SLOG_K2 = 155.0 / 219.0;
+
+
+static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
+{
+    // For performance, we want to do as few atomic operations on global
+    // memory as possible, so use an atomic in shmem for the work group.
+    GLSLH(shared uint wg_sum;);
+    GLSL(wg_sum = 0;)
+
+    // Have each thread update the work group sum with the local value
+    GLSL(barrier();)
+    GLSLF("atomicAdd(wg_sum, uint(sig * %f));\n", MP_REF_WHITE);
+
+    // Have one thread per work group update the global atomics. We use the
+    // work group average even for the global sum, to make the values slightly
+    // more stable and smooth out tiny super-highlights.
+    GLSL(memoryBarrierShared();)
+    GLSL(barrier();)
+    GLSL(if (gl_LocalInvocationIndex == 0) {)
+    GLSL(    uint wg_avg = wg_sum / (gl_WorkGroupSize.x * gl_WorkGroupSize.y);)
+    GLSL(    atomicMax(frame_max[frame_idx], wg_avg);)
+    GLSL(    atomicAdd(frame_avg[frame_idx], wg_avg);)
+    GLSL(})
+
+    const float refi = 1.0 / MP_REF_WHITE;
+
+    // Update the sig_peak/sig_avg from the old SSBO state
+    GLSL(uint num_wg = gl_NumWorkGroups.x * gl_NumWorkGroups.y;)
+    GLSL(if (frame_num > 0) {)
+    GLSLF("    float peak = %f * float(total_max) / float(frame_num);\n", refi);
+    GLSLF("    float avg = %f * float(total_avg) / float(frame_num);\n", refi);
+    GLSLF("    sig_peak = max(1.0, peak);\n");
+    GLSLF("    sig_avg  = max(%f, avg);\n", sdr_avg);
+    GLSL(});
+
+    // Finally, to update the global state, we increment a counter per dispatch
+    GLSL(memoryBarrierBuffer();)
+    GLSL(barrier();)
+    GLSL(if (gl_LocalInvocationIndex == 0 && atomicAdd(counter, 1) == num_wg - 1) {)
+
+    // Since we sum up all the workgroups, we also still need to divide the
+    // average by the number of work groups
+    GLSL(    counter = 0;)
+    GLSL(    frame_avg[frame_idx] /= num_wg;)
+    GLSL(    uint cur_max = frame_max[frame_idx];)
+    GLSL(    uint cur_avg = frame_avg[frame_idx];)
+
+    // Scene change detection
+    GLSL(    int diff = int(frame_num * cur_avg) - int(total_avg);)
+    GLSLF("  if (abs(diff) > frame_num * %d) {\n", scene_threshold);
+    GLSL(        frame_num = 0;)
+    GLSL(        total_max = total_avg = 0;)
+    GLSLF("      for (uint i = 0; i < %d; i++)\n", PEAK_DETECT_FRAMES+1);
+    GLSL(            frame_max[i] = frame_avg[i] = 0;)
+    GLSL(        frame_max[frame_idx] = cur_max;)
+    GLSL(        frame_avg[frame_idx] = cur_avg;)
+    GLSL(    })
+
+    // Add the current frame, then subtract and reset the next frame
+    GLSLF("  uint next = (frame_idx + 1) %% %d;\n", PEAK_DETECT_FRAMES+1);
+    GLSL(    total_max += cur_max - frame_max[next];)
+    GLSL(    total_avg += cur_avg - frame_avg[next];)
+    GLSL(    frame_max[next] = frame_avg[next] = 0;)
+
+    // Update the index and count
+    GLSL(    frame_idx = next;)
+    GLSLF("  frame_num = min(frame_num + 1, %d);\n", PEAK_DETECT_FRAMES);
+    GLSL(    memoryBarrierBuffer();)
+    GLSL(})
+}
+
+
+// Inverse of the function pass_ootf, for completeness' sake.
+void pass_inverse_ootf(ostringstream& code, enum mp_csp_light light, float peak)
+{
+    if (light == MP_CSP_LIGHT_DISPLAY)
+        return;
+
+    GLSLF("// apply inverse ootf\n");
+    GLSLF("c.rgb *= vec3(%f);\n", peak);
+
+    switch (light)
+    {
+    case MP_CSP_LIGHT_SCENE_HLG:
+        GLSLF("c.rgb *= vec3(1.0/%f);\n", (1000 / MP_REF_WHITE) / pow(12, 1.2));
+        GLSL(c.rgb /= vec3(max(1e-6, pow(dot(src_luma, c.rgb), 0.2/1.2)));)
+        break;
+    case MP_CSP_LIGHT_SCENE_709_1886:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.0/2.4));)
+        GLSL(c.rgb = mix(c.rgb * vec3(1.0/4.5),
+                             pow((c.rgb + vec3(0.0993)) * vec3(1.0/1.0993),
+                                 vec3(1/0.45)),
+                             lessThan(vec3(0.08145), c.rgb));)
+        break;
+    case MP_CSP_LIGHT_SCENE_1_2:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.0/1.2));)
+        break;
+    default:
+        abort();
+    }
+
+    GLSLF("c.rgb *= vec3(1.0/%f);\n", peak);
+}
+
+static void pass_tone_map( ostringstream& code, ostringstream& hdr,
+                           bool detect_peak,
+                           float src_peak, float dst_peak,
+                           enum tone_mapping algo, float param, float desat )
+{
+    GLSLF("// HDR tone mapping\n");
+
+
+    // To prevent discoloration due to out-of-bounds clipping, we need to make
+    // sure to reduce the value range as far as necessary to keep the entire
+    // signal in range, so tone map based on the brightest component.
+    GLSL(float sig = max(max(c.r, c.g), c.b);)
+    GLSLF("float sig_peak = %f;\n", src_peak);
+    GLSLF("float sig_avg = %f;\n", sdr_avg * 2.0f);
+
+    if (detect_peak)
+        hdr_update_peak(code, hdr);
+
+    if (dst_peak > 1.0) {
+        GLSLF("sig *= %f;\n", 1.0 / dst_peak);
+        GLSLF("sig_peak *= %f;\n", 1.0 / dst_peak);
+    }
+
+    GLSL(float sig_orig = sig;)
+    GLSLF("float slope = min(1.0, %f / sig_avg);\n", sdr_avg);
+    GLSL(sig *= slope;)
+    GLSL(sig_peak *= slope;)
+
+    // Desaturate the color using a coefficient dependent on the signal.
+    // Do this after peak detection in order to prevent over-desaturating
+    // overly bright souces
+    if (desat > 0) {
+        float base = 0.18 * dst_peak;
+        GLSL(float luma = dot(dst_luma, c.rgb);)
+        GLSLF("float coeff = max(sig - %f, 1e-6) / max(sig, 1e-6);\n", base);
+        GLSLF("coeff = pow(coeff, %f);\n", 10.0 / desat);
+        GLSL(c.rgb = mix(c.rgb, vec3(luma), coeff);)
+        GLSL(sig = mix(sig, luma * slope, coeff);) // also make sure to update `sig`
+    }
+
+    switch (algo) {
+    case TONE_MAPPING_CLIP:
+        GLSLF("sig = %f * sig;\n", isnan(param) ? 1.0 : param);
+        break;
+
+    case TONE_MAPPING_MOBIUS:
+        GLSLF("if (sig_peak > (1.0 + 1e-6)) {\n");
+        GLSLF("const float j = %f;\n", isnan(param) ? 0.3 : param);
+        // solve for M(j) = j; M(sig_peak) = 1.0; M'(j) = 1.0
+        // where M(x) = scale * (x+a)/(x+b)
+        GLSLF("float a = -j*j * (sig_peak - 1.0) / (j*j - 2.0*j + sig_peak);\n");
+        GLSLF("float b = (j*j - 2.0*j*sig_peak + sig_peak) / "
+              "max(1e-6, sig_peak - 1.0);\n");
+        GLSLF("float scale = (b*b + 2.0*b*j + j*j) / (b-a);\n");
+        GLSL(sig = mix(sig, scale * (sig + a) / (sig + b), sig > j);)
+        GLSLF("}\n");
+        break;
+
+    case TONE_MAPPING_REINHARD: {
+        float contrast = isnan(param) ? 0.5 : param,
+              offset = (1.0 - contrast) / contrast;
+        GLSLF("sig = sig / (sig + %f);\n", offset);
+        GLSLF("float scale = (sig_peak + %f) / sig_peak;\n", offset);
+        GLSL(sig *= scale;)
+        break;
+    }
+
+    case TONE_MAPPING_HABLE: {
+        float A = 0.15, B = 0.50, C = 0.10, D = 0.20, E = 0.02, F = 0.30;
+        GLSLHF("float hable(float x) {\n");
+        GLSLHF("return ((x * (%f*x + %f)+%f)/(x * (%f*x + %f) + %f)) - %f;\n",
+               A, C*B, D*E, A, B, D*F, E/F);
+        GLSLHF("}\n");
+        GLSL(sig = hable(sig) / hable(sig_peak);)
+        break;
+    }
+
+    case TONE_MAPPING_GAMMA: {
+        float gamma = isnan(param) ? 1.8 : param;
+        GLSLF("const float cutoff = 0.05, gamma = %f;\n", 1.0/gamma);
+        GLSL(float scale = pow(cutoff / sig_peak, gamma) / cutoff;)
+        GLSL(sig = sig > cutoff ? pow(sig / sig_peak, gamma) : scale * sig;)
+        break;
+    }
+
+    case TONE_MAPPING_LINEAR: {
+        float coeff = isnan(param) ? 1.0 : param;
+        GLSLF("sig = %f / sig_peak * sig;\n", coeff);
+        break;
+    }
+
+    default:
+        abort();
+    }
+
+    // Apply the computed scale factor to the color, linearly to prevent
+    // discoloration
+    GLSL(sig = min(sig, 1.0);)
+    GLSL(c.rgb *= vec3(sig / sig_orig);)
+}
+
+// Linearize (expand), given a TRC as input. In essence, this is the ITU-R
+// EOTF, calculated on an idealized (reference) monitor with a white point of
+// MP_REF_WHITE and infinite contrast.
+void pass_linearize(ostringstream& code, enum mp_csp_trc trc)
+{
+    if (trc == MP_CSP_TRC_LINEAR)
+        return;
+
+    GLSLF("// linearize\n");
+
+    // Note that this clamp may technically violate the definition of
+    // ITU-R BT.2100, which allows for sub-blacks and super-whites to be
+    // displayed on the display where such would be possible. That said, the
+    // problem is that not all gamma curves are well-defined on the values
+    // outside this range, so we ignore it and just clip anyway for sanity.
+    GLSL(c.rgb = clamp(c.rgb, 0.0, 1.0);)
+
+    switch (trc) {
+    case MP_CSP_TRC_SRGB:
+        GLSL(c.rgb = mix(c.rgb * vec3(1.0/12.92),
+                             pow((c.rgb + vec3(0.055))/vec3(1.055), vec3(2.4)),
+                             lessThan(vec3(0.04045), c.rgb));)
+        break;
+    case MP_CSP_TRC_BT_1886:
+        GLSL(c.rgb = pow(c.rgb, vec3(2.4));)
+        break;
+    case MP_CSP_TRC_GAMMA18:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.8));)
+        break;
+    case MP_CSP_TRC_GAMMA22:
+        GLSL(c.rgb = pow(c.rgb, vec3(2.2));)
+        break;
+    case MP_CSP_TRC_GAMMA28:
+        GLSL(c.rgb = pow(c.rgb, vec3(2.8));)
+        break;
+    case MP_CSP_TRC_PRO_PHOTO:
+        GLSL(c.rgb = mix(c.rgb * vec3(1.0/16.0),
+                             pow(c.rgb, vec3(1.8)),
+                             lessThan(vec3(0.03125), c.rgb));)
+        break;
+    case MP_CSP_TRC_PQ:
+        GLSLF("c.rgb = pow(c.rgb, vec3(1.0/%f));\n", PQ_M2);
+        GLSLF("c.rgb = max(c.rgb - vec3(%f), vec3(0.0)) \n"
+              "             / (vec3(%f) - vec3(%f) * c.rgb);\n",
+              PQ_C1, PQ_C2, PQ_C3);
+        GLSLF("c.rgb = pow(c.rgb, vec3(1.0/%f));\n", PQ_M1);
+        // PQ's output range is 0-10000, but we need it to be relative to to
+        // MP_REF_WHITE instead, so rescale
+        GLSLF("c.rgb *= vec3(%f);\n", 10000 / MP_REF_WHITE);
+        break;
+    case MP_CSP_TRC_HLG:
+        GLSLF("c.rgb = mix(vec3(4.0) * c.rgb * c.rgb,\n"
+              "                exp((c.rgb - vec3(%f)) * vec3(1.0/%f)) + vec3(%f),\n"
+              "                lessThan(vec3(0.5), c.rgb));\n",
+              HLG_C, HLG_A, HLG_B);
+        break;
+    case MP_CSP_TRC_V_LOG:
+        GLSLF("c.rgb = mix((c.rgb - vec3(0.125)) * vec3(1.0/5.6), \n"
+              "    pow(vec3(10.0), (c.rgb - vec3(%f)) * vec3(1.0/%f)) \n"
+              "              - vec3(%f),                                  \n"
+              "    lessThanEqual(vec3(0.181), c.rgb));                \n",
+              VLOG_D, VLOG_C, VLOG_B);
+        break;
+    case MP_CSP_TRC_S_LOG1:
+        GLSLF("c.rgb = pow(vec3(10.0), (c.rgb - vec3(%f)) * vec3(1.0/%f))\n"
+              "            - vec3(%f);\n",
+              SLOG_C, SLOG_A, SLOG_B);
+        break;
+    case MP_CSP_TRC_S_LOG2:
+        GLSLF("c.rgb = mix((c.rgb - vec3(%f)) * vec3(1.0/%f),      \n"
+              "    (pow(vec3(10.0), (c.rgb - vec3(%f)) * vec3(1.0/%f)) \n"
+              "              - vec3(%f)) * vec3(1.0/%f),                   \n"
+              "    lessThanEqual(vec3(%f), c.rgb));                    \n",
+              SLOG_Q, SLOG_P, SLOG_C, SLOG_A, SLOG_B, SLOG_K2, SLOG_Q);
+        break;
+    default:
+        abort();
+    }
+
+    // Rescale to prevent clipping on non-float textures
+    GLSLF("c.rgb *= vec3(1.0/%f);\n", mp_trc_nom_peak(trc));
+}
+
+// Delinearize (compress), given a TRC as output. This corresponds to the
+// inverse EOTF (not the OETF) in ITU-R terminology, again assuming a
+// reference monitor.
+void pass_delinearize( ostringstream& code, enum mp_csp_trc trc)
+{
+    if (trc == MP_CSP_TRC_LINEAR)
+        return;
+
+    GLSLF("// delinearize\n");
+    GLSL(c.rgb = clamp(c.rgb, 0.0, 1.0);)
+    GLSLF("c.rgb *= vec3(%f);\n", mp_trc_nom_peak(trc));
+
+    switch (trc) {
+    case MP_CSP_TRC_SRGB:
+        GLSL(c.rgb = mix(c.rgb * vec3(12.92),
+                             vec3(1.055) * pow(c.rgb, vec3(1.0/2.4))
+                                 - vec3(0.055),
+                             lessThanEqual(vec3(0.0031308), c.rgb));)
+        break;
+    case MP_CSP_TRC_BT_1886:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.0/2.4));)
+        break;
+    case MP_CSP_TRC_GAMMA18:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.0/1.8));)
+        break;
+    case MP_CSP_TRC_GAMMA22:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.0/2.2));)
+        break;
+    case MP_CSP_TRC_GAMMA28:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.0/2.8));)
+        break;
+    case MP_CSP_TRC_PRO_PHOTO:
+        GLSL(c.rgb = mix(c.rgb * vec3(16.0),
+                             pow(c.rgb, vec3(1.0/1.8)),
+                             lessThanEqual(vec3(0.001953), c.rgb));)
+        break;
+    case MP_CSP_TRC_PQ:
+        GLSLF("c.rgb *= vec3(1.0/%f);\n", 10000 / MP_REF_WHITE);
+        GLSLF("c.rgb = pow(c.rgb, vec3(%f));\n", PQ_M1);
+        GLSLF("c.rgb = (vec3(%f) + vec3(%f) * c.rgb) \n"
+              "             / (vec3(1.0) + vec3(%f) * c.rgb);\n",
+              PQ_C1, PQ_C2, PQ_C3);
+        GLSLF("c.rgb = pow(c.rgb, vec3(%f));\n", PQ_M2);
+        break;
+    case MP_CSP_TRC_HLG:
+        GLSLF("c.rgb = mix(vec3(0.5) * sqrt(c.rgb),\n"
+              "                vec3(%f) * log(c.rgb - vec3(%f)) + vec3(%f),\n"
+              "                lessThan(vec3(1.0), c.rgb));\n",
+              HLG_A, HLG_B, HLG_C);
+        break;
+    case MP_CSP_TRC_V_LOG:
+        GLSLF("c.rgb = mix(vec3(5.6) * c.rgb + vec3(0.125),   \n"
+              "                vec3(%f) * log(c.rgb + vec3(%f))   \n"
+              "                    + vec3(%f),                        \n"
+              "                lessThanEqual(vec3(0.01), c.rgb)); \n",
+              VLOG_C / M_LN10, VLOG_B, VLOG_D);
+        break;
+    case MP_CSP_TRC_S_LOG1:
+        GLSLF("c.rgb = vec3(%f) * log(c.rgb + vec3(%f)) + vec3(%f);\n",
+              SLOG_A / M_LN10, SLOG_B, SLOG_C);
+        break;
+    case MP_CSP_TRC_S_LOG2:
+        GLSLF("c.rgb = mix(vec3(%f) * c.rgb + vec3(%f),                \n"
+              "                vec3(%f) * log(vec3(%f) * c.rgb + vec3(%f)) \n"
+              "                    + vec3(%f),                                 \n"
+              "                lessThanEqual(vec3(0.0), c.rgb));           \n",
+              SLOG_P, SLOG_Q, SLOG_A / M_LN10, SLOG_K2, SLOG_B, SLOG_C);
+        break;
+    default:
+        abort();
+    }
+}
+
+// Apply the OOTF mapping from a given light type to display-referred light.
+// The extra peak parameter is used to scale the values before and after
+// the OOTF, and can be inferred using mp_trc_nom_peak
+void pass_ootf( ostringstream& code, enum mp_csp_light light, float peak)
+{
+    if (light == MP_CSP_LIGHT_DISPLAY)
+        return;
+
+    GLSLF("// apply ootf\n");
+    GLSLF("c.rgb *= vec3(%f);\n", peak);
+
+    switch (light)
+    {
+    case MP_CSP_LIGHT_SCENE_HLG:
+        // HLG OOTF from BT.2100, assuming a reference display with a
+        // peak of 1000 cd/m² -> gamma = 1.2
+        GLSLF("c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n",
+              (1000 / MP_REF_WHITE) / pow(12, 1.2));
+        break;
+    case MP_CSP_LIGHT_SCENE_709_1886:
+        // This OOTF is defined by encoding the result as 709 and then decoding
+        // it as 1886; although this is called 709_1886 we actually use the
+        // more precise (by one decimal) values from BT.2020 instead
+        GLSL(c.rgb = mix(c.rgb * vec3(4.5),
+                             vec3(1.0993) * pow(c.rgb, vec3(0.45)) - vec3(0.0993),
+                             lessThan(vec3(0.0181), c.rgb));)
+        GLSL(c.rgb = pow(c.rgb, vec3(2.4));)
+        break;
+    case MP_CSP_LIGHT_SCENE_1_2:
+        GLSL(c.rgb = pow(c.rgb, vec3(1.2));)
+        break;
+    default:
+        abort();
+    }
+
+    GLSLF("c.rgb *= vec3(1.0/%f);\n", peak);
+}
+
+// Map colors from one source space to another. These source spaces must be
+// known (i.e. not MP_CSP_*_AUTO), as this function won't perform any
+// auto-guessing. If is_linear is true, we assume the input has already been
+// linearized (e.g. for linear-scaling). If `detect_peak` is true, we will
+// detect the peak instead of relying on metadata. Note that this requires
+// the caller to have already bound the appropriate SSBO and set up the
+// compute shader metadata
+void pass_color_map(ostringstream& code,
+                    ostringstream& hdr,
+                    struct mp_colorspace src, struct mp_colorspace dst,
+                    enum tone_mapping algo, float tone_mapping_param,
+                    float tone_mapping_desat, bool detect_peak,
+                    bool gamut_warning, bool is_linear)
+{
+    GLSLF("///////////////////\n");
+    GLSLF("// color mapping //\n");
+    GLSLF("///////////////////\n");
+
+
+    // Some operations need access to the video's luma coefficients, so make
+    // them available
+    float rgb2xyz[3][3];
+    mp_get_rgb2xyz_matrix(mp_get_csp_primaries(src.primaries), rgb2xyz);
+    gl_sc_uniform_vec3(hdr, "src_luma", rgb2xyz[1]);
+    mp_get_rgb2xyz_matrix(mp_get_csp_primaries(dst.primaries), rgb2xyz);
+    gl_sc_uniform_vec3(hdr, "dst_luma", rgb2xyz[1]);
+
+    bool need_ootf = src.light != dst.light;
+    if (src.light == MP_CSP_LIGHT_SCENE_HLG && src.sig_peak != dst.sig_peak)
+        need_ootf = true;
+
+    // All operations from here on require linear light as a starting point,
+    // so we linearize even if src.gamma == dst.gamma when one of the other
+    // operations needs it
+    bool need_linear = src.gamma != dst.gamma ||
+                       src.primaries != dst.primaries ||
+                       src.sig_peak > dst.sig_peak ||
+                       need_ootf;
+
+    if (need_linear && !is_linear) {
+        pass_linearize(code, src.gamma);
+        is_linear= true;
+    }
+
+    // Pre-scale the incoming values into an absolute scale
+    GLSLF("c.rgb *= vec3(%f);\n", mp_trc_nom_peak(src.gamma));
+
+    if (need_ootf)
+        pass_ootf(code, src.light, src.sig_peak);
+
+    // Adapt to the right colorspace if necessary
+    if (src.primaries != dst.primaries) {
+        struct mp_csp_primaries csp_src = mp_get_csp_primaries(src.primaries),
+                                csp_dst = mp_get_csp_primaries(dst.primaries);
+        float m[3][3] = {{0}};
+        mp_get_cms_matrix(csp_src, csp_dst, MP_INTENT_RELATIVE_COLORIMETRIC, m);
+        gl_sc_uniform_mat3(hdr, "cms_matrix", true, &m[0][0]);
+        GLSL(c.rgb = cms_matrix * c.rgb;)
+    }
+
+    // Tone map to prevent clipping when the source signal peak exceeds the
+    // encodable range or we've reduced the gamut
+    if (src.sig_peak > dst.sig_peak) {
+        pass_tone_map(code, hdr, detect_peak, src.sig_peak, dst.sig_peak, algo,
+                      tone_mapping_param, tone_mapping_desat);
+    }
+
+    if (need_ootf)
+        pass_inverse_ootf(code, dst.light, dst.sig_peak);
+
+    // Post-scale the outgoing values from absolute scale to normalized.
+    // For SDR, we normalize to the chosen signal peak. For HDR, we normalize
+    // to the encoding range of the transfer function.
+    float dst_range = dst.sig_peak;
+    if (mp_trc_is_hdr(dst.gamma))
+        dst_range = mp_trc_nom_peak(dst.gamma);
+
+    GLSLF("c.rgb *= vec3(%f);\n", 1.0 / dst_range);
+
+    // Warn for remaining out-of-gamut colors is enabled
+    if (gamut_warning) {
+        GLSL(if (any(greaterThan(c.rgb, vec3(1.01)))))
+            GLSL(c.rgb = vec3(1.0) - c.rgb;) // invert
+    }
+
+    // if (is_linear)
+    //     pass_delinearize(code, dst.gamma);
+}
+
+
+void GLEngine::loadOpenGLShader()
+{
+    if ( !_image )
+    {
+	LOG_ERROR( "No image to proceed" );
+	return;
+    }
+    
+    setlocale( LC_NUMERIC, "C" );
+    std::locale::global( std::locale("C") );
+    code.imbue(std::locale());
+    hdr.imbue(std::locale());
+    foot.imbue(std::locale());
+    
+    hdr << " \n"
+    " /** \n"
+    " * @file   YCbCr.glsl \n"
+    " * @author gga \n"
+    " * @date   Thu Jul  5 22:50:08 2007 \n"
+    " * \n"
+    " * @brief    simple YCbCr texture with 3D lut shader \n"
+    " * \n"
+    " */ \n"
+    " \n"
+    "#version 130\n\n"
+    "// Images \n"
+    "uniform sampler2D YImage; \n"
+    "uniform sampler2D UImage; \n"
+    "uniform sampler2D VImage; \n"
+    "uniform sampler3D lut; \n"
+    " \n"
+    "// Standard controls \n"
+    "uniform float gain; \n"
+    "uniform float gamma; \n"
+    "uniform int   channel; \n"
+    "\n"
+    "// Interlaced/Checkerboard controls (don't work) \n"
+    "uniform int mask; \n"
+    "uniform int mask_value; \n"
+    "uniform int height; \n"
+    "uniform int width; \n"
+    " \n"
+    "// Normalization variables \n"
+    "uniform bool  premult; \n"
+    "uniform bool  unpremult; \n"
+    "uniform bool  enableNormalization; \n"
+    "uniform float normMin; \n"
+    "uniform float normSpan; \n"
+    "\n"
+    "// YCbCr variables \n"
+    "uniform bool  coeffs;  // Use fed coefficients instead of builtin ones \n"
+    "uniform vec3  Koff; \n"
+    "uniform vec3  Kr; \n"
+    "uniform vec3  Kg; \n"
+    "uniform vec3  Kb; \n"
+    " \n"
+    "// Lut variables  \n"
+    "uniform bool  enableLut; \n"
+    "uniform bool  lutF; \n"
+    "uniform float lutMin; \n"
+    "uniform float lutMax; \n"
+    "uniform float lutM; \n"
+    "uniform float lutT; \n"
+    "uniform float scale; \n"
+    "uniform float offset; \n"
+    "\n"
+    "\n";
+
+    code <<
+    "void main() \n"
+    "{ \n"
+    "  // \n"
+    "  // Sample luminance and chroma, convert to RGB. \n"
+    "  // \n"
+    "  vec3 yuv; \n"
+    "  vec4 c; \n"
+    "  vec3 pre; \n"
+    "  vec2 tc = gl_TexCoord[0].st; \n"
+    "  pre.r = texture2D(YImage, tc.st).r;  // Y \n"
+    "  pre.g = texture2D(UImage, tc.st).r;  // U \n"
+    "  pre.b = texture2D(VImage, tc.st).r;  // V \n"
+    " \n"
+    "  if ( coeffs ) \n"
+    "  { \n"
+    "        pre += Koff; \n"
+    "	\n"
+    "\tc.r = dot(Kr, pre); \n"
+    "\tc.g = dot(Kg, pre); \n"
+    "\tc.b = dot(Kb, pre); \n" << std::endl;
+
+    foot << " }\n"
+    "       //\n"
+    "       // Apply channel selection\n"
+    "       //\n"
+    "  int x = 1000;\n"
+    "  \n"
+    "  if ( mask == 1 )  // even odd rows\n"
+    "  {\n"
+    "      float f = tc.y * height;\n"
+    "      x = int( mod( f, 2 ) );\n"
+    "  }\n"
+    "  else if ( mask == 2 ) // even odd columns\n"
+    "  {\n"
+    "      float f2 = tc.x * width;\n"
+    "      x = int( mod( f2, 2 ) );\n"
+    "  }\n"
+    "  else if ( mask == 3 ) // checkerboard\n"
+    "  {\n"
+    "      float f = tc.y * height;\n"
+    "      float f2 = tc.x * width;\n"
+    "      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );\n"
+    "  }\n"
+    "\n"
+    "  if ( x == mask_value )\n"
+    "  {\n"
+    "      c.r = c.g = c.b = c.a = 0.0;\n"
+    "  }\n"
+    "\n"
+    "  //\n"
+    "  // Apply normalization\n"
+    "  //\n"
+    "  if (enableNormalization)\n"
+    "    {\n"
+    "      c.rgb = (c.rgb - normMin) / normSpan;\n"
+    "    }\n"
+    "\n"
+    "  //\n"
+    "  // Apply gain \n"
+    "  //\n"
+    "  c.rgb *= gain;\n"
+    "\n"
+    "  //\n"
+    "  // Apply 3D color lookup table (in log space).\n"
+    "  //\n"
+    "  if (enableLut)\n"
+    "    {\n"
+    "      c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );\n"
+    "      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); \n"
+    "    }\n"
+    "\n"
+    "  if ( unpremult && c.a > 0.00001 )\n"
+    "  {\n"
+    "    c.rgb /= c.a;\n"
+    "  }\n"
+    "  \n"
+    "  //\n"
+    "  // Apply video gamma correction.\n"
+    "  // \n"
+    "  c.r = pow( c.r, gamma );\n"
+    "  c.g = pow( c.g, gamma );\n"
+    "  c.b = pow( c.b, gamma );\n"
+    " \n"
+    "  if ( channel == 1 )\n"
+    "    {\n"
+    "      c.rgb = c.rrr;\n"
+    "    }\n"
+    "  else if ( channel == 2 )\n"
+    "    {\n"
+    "      c.rgb = c.ggg;\n"
+    "    }\n"
+    "  else if ( channel == 3 )\n"
+    "    {\n"
+    "      c.rgb = c.bbb;\n"
+    "    }\n"
+    "  else if ( channel == 4 )\n"
+    "    {\n"
+    "      c.rgb = c.aaa;\n"
+    "    }\n"
+    "  else if ( channel == 5 )\n"
+    "    {\n"
+    "      c.r *= 0.5;\n"
+    "      c.r += c.a * 0.5;\n"
+    "    }\n"
+    "  else if ( channel == 6 )\n"
+    "    {\n"
+    "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
+    "    }\n"
+    "\n"
+    "  if ( premult )\n"
+    "  {\n"
+    "      c.rgb *= c.a;\n"
+    "  }\n"
+    "\n"
+    "  gl_FragColor = c;\n"
+    "} ";
+
+    _hardwareShaders = kGLSL;
+
+    AVStream* st = _image->get_video_stream();
+    if (!st)
+    {
+	LOG_ERROR( "No stream to proceed" );
+	return;
+    }
+    AVCodecParameters* c = st->codecpar;
+	    
+    int size;
+    AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
+    av_stream_get_side_data( st,
+			     AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+			     &size );
+    
+    double max_cll = 100000;
+    if (m)
+    {
+	if ( size == sizeof( AVMasteringDisplayMetadata ) )
+	{
+	    if ( m->has_luminance )
+		max_cll = av_q2d( m->max_luminance );
+	}
+    }
+    
+    mp_colorspace src
+    {
+	avcol_spc_to_mp_csp(c->color_space), //MP_CSP_BT_709,  // space
+	avcol_range_to_mp_csp_levels( c->color_range ),  // levels
+	avcol_pri_to_mp_csp_prim(c->color_primaries), // primaries
+	avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
+	MP_CSP_LIGHT_DISPLAY,  // light
+	max_cll / MP_REF_WHITE               // sig_peak
+	};
+
+    mp_colorspace dst
+    {
+	MP_CSP_AUTO,
+	MP_CSP_LEVELS_AUTO,
+	MP_CSP_PRIM_BT_709,
+	MP_CSP_TRC_GAMMA22,
+	MP_CSP_LIGHT_DISPLAY,
+	1.0f
+	};
+
+    tone_mapping algo = TONE_MAPPING_HABLE;
+    float tone_mapping_param = std::numeric_limits<float>::quiet_NaN();
+    float tone_mapping_desat = 0.25f;
+    bool  detect_peak = false;
+    bool gamut_warning = false;
+    bool is_linear = false;
+
+    if ( size > 0 )
+    {
+	pass_color_map(code, hdr, src, dst,
+		       algo, tone_mapping_param,
+		       tone_mapping_desat, detect_peak,
+		       gamut_warning, is_linear);
+    }
+    else
+    {
+	code << "}\n"
+	"else {\n"
+	"yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
+	"yuv.g = pre.g - 0.5;\n"
+	"yuv.b = pre.b - 0.5;\n"
+	"\n"
+	"c.r = yuv.r + 1.5958 * yuv.b;\n"
+	"c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
+	"c.b = yuv.r + 2.017 * yuv.g;\n"
+	"\n";
+    }
+    
+    std::string all = hdr.str() + code.str() + foot.str();
+
+    // std::cerr << all << std::endl;
+
+    _YCbCr = new GLShader();
+    _YCbCr->load( N_("builtin"), all.c_str() );
+}
 
 void
 GLEngine::loadBuiltinFragShader()
@@ -2883,6 +3895,8 @@ GLEngine::loadBuiltinFragShader()
         LOG_ERROR( "Unknown error in loadBuiltinFragShader" );
     }
 
+    setlocale( LC_NUMERIC, "" );
+    std::locale::global( std::locale("") );
 }
 
 
@@ -2948,7 +3962,7 @@ vr_angle( 45.0 ),
 _rotX( 0.0 ),
 _rotY( 0.0 )
 {
-  initialize();
+    initialize();
 }
 
 GLEngine::~GLEngine()

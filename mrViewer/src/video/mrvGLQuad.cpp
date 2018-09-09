@@ -523,7 +523,7 @@ namespace mrv {
     GLenum internalFormat = GL_LUMINANCE8;
     if ( pixel_type == GL_UNSIGNED_SHORT )
     {
-	internalFormat = GL_LUMINANCE16;
+        internalFormat = GL_LUMINANCE16;
     }
     else if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
       {
@@ -1126,18 +1126,18 @@ namespace mrv {
               if ( colorspace == "BT709" )
               {
                   _shader->setUniform( "coeffs", 1 );
-		  CHECK_GL;
+                  CHECK_GL;
 
                   // HDTV  YCbCr coefficients,
                   _shader->setUniform( "Koff",  -0.0625f, -0.5f, -0.5f );
-		  CHECK_GL;
-		  _shader->setUniform( "Kr",  1.16438356f, 0.f, 1.79274107f );
-		  CHECK_GL;
-		  _shader->setUniform( "Kg",  1.16438356f, -0.21324861,
-				        -0.53290933 );
-		  CHECK_GL;
-		  _shader->setUniform( "Kb",  1.16438356f, 2.11240179f, 0.0f );
-		  CHECK_GL;
+                  CHECK_GL;
+                  _shader->setUniform( "Kr",  1.16438356f, 0.f, 1.79274107f );
+                  CHECK_GL;
+                  _shader->setUniform( "Kg",  1.16438356f, -0.21324861,
+                                        -0.53290933 );
+                  CHECK_GL;
+                  _shader->setUniform( "Kb",  1.16438356f, 2.11240179f, 0.0f );
+                  CHECK_GL;
               }
               else if ( colorspace == "BT470BG" ||
                         colorspace == "SMPTE170M" )
@@ -1154,6 +1154,30 @@ namespace mrv {
                   _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
         CHECK_GL;
               }
+              else if ( colorspace == "BT2020_NCL" ||
+                        colorspace == "BT2020_CL" )
+              {
+                  // ULTRA HDTV  YCbCr coefficients (BT2020) - Not HDR
+                _shader->setUniform( "coeffs", 1 );
+
+                _shader->setUniform( "Koff",  0.0f, -0.5f, -0.5f );
+                CHECK_GL;
+
+                // // Full gamut
+                // _shader->setUniform( "Kr", 1.164384f, 0.0f, 1.792741f );
+                // CHECK_GL;
+                // _shader->setUniform( "Kg", 1.164384f, -0.213249f, -0.532909f );
+                // CHECK_GL;
+                // _shader->setUniform( "Kb", 1.164384f, 2.112402f, 0.0f );
+
+                // // Full gamut
+                _shader->setUniform( "Kr", 1.164384f, 0.0f, 1.678674 );
+                CHECK_GL;
+                _shader->setUniform( "Kg", 1.164384f, -0.187326, -0.650424f );
+                CHECK_GL;
+                _shader->setUniform( "Kb", 1.164384f, 2.141772, 0.0f );
+
+            }
               else if ( colorspace == "YCOCG" )
               {
                   _shader->setUniform( "coeffs", 1 );
