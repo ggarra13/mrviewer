@@ -105,9 +105,14 @@ namespace mrv {
 
     virtual ~DrawEngine();
 
+      virtual void initialize() = 0;
+
     static bool supports_yuv()  { return _has_yuv; }
     static bool supports_yuva() { return _has_yuva; }
 
+
+      virtual void image( const CMedia* img ) = 0;
+      
     /// Name of engine
     virtual const char* name() = 0;
     virtual std::string options() = 0;
