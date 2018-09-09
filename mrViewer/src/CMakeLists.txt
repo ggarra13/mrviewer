@@ -262,6 +262,7 @@ SET( SOURCES
   video/mrvGLCube.cpp
   video/mrvGLLut3d.cpp
   video/mrvGLShape.cpp
+  video/mrvCSPUtils.cpp
 
   standalone/mrvRoot.cpp
   standalone/mrvCommandLine.cpp
