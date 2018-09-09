@@ -960,7 +960,7 @@ void video_thread( PlaybackData* data )
 	{
 	    int64_t preframe = view->preload_frame();
 	    if ( view->playback() == CMedia::kForwards &&
-		 std::abs( frame - preframe ) == 1 )
+		 std::abs( frame - preframe ) <= 1 )
 	    {
 		frame = preframe;
 	    }
