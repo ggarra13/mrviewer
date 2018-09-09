@@ -1548,9 +1548,8 @@ CMedia::store_audio( const int64_t audio_frame,
 
   // Get the audio info from the codec context
   _audio_channels = (unsigned short)_audio_ctx->channels;
-  unsigned short channels = _audio_channels;
-  
-  int frequency = _audio_ctx->sample_rate;
+  const unsigned short channels = _audio_channels;
+  const int frequency = _audio_ctx->sample_rate;
 
   audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
 						       frequency, 

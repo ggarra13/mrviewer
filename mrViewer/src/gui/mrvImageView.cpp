@@ -2881,10 +2881,11 @@ void ImageView::draw()
         DBG( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
+	
         valid(1);
     }
 
-
+    
 
     mrv::PreferencesUI* uiPrefs = uiMain->uiPrefs;
 
@@ -2929,6 +2930,10 @@ void ImageView::draw()
 
 
     const mrv::media& fg = foreground();
+    if ( fg )
+    {
+	_engine->image( fg->image() );
+    }
     mrv::media bg = background();
     TRACE("");
 
