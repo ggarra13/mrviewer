@@ -61,6 +61,7 @@ extern "C" {
 #  include <GL/glxew.h>
 #endif
 
+#include <libavutil/mastering_display_metadata.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 
@@ -75,6 +76,7 @@ extern "C" {
 #include <Iex.h>
 #include <CtlExc.h>
 #include <halfLimits.h>
+
 
 #include "core/mrvMath.h"
 #include "core/mrvThread.h"
@@ -93,6 +95,7 @@ extern "C" {
 #include "video/mrvGLSphere.h"
 #include "video/mrvGLCube.h"
 #include "video/mrvGLLut3d.h"
+#include "video/mrvCSPUtils.h"
 
 #undef TRACE
 #define TRACE(x)
@@ -542,7 +545,7 @@ void GLEngine::initialize()
               if ( _has_yuv )
               {
                   sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
-                  _YCbCr = new GLShader( shaderFile );
+                  //_YCbCr = new GLShader( shaderFile );
                   DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
                        << shaderFile );
 
@@ -592,7 +595,8 @@ void GLEngine::initialize()
                           "using built-in shader.") );
         }
 
-      if ( 1 ) // directory.empty() )
+      
+      if ( directory.empty() )
         {
           directory = N_(".");
           loadBuiltinFragShader();
@@ -679,6 +683,9 @@ void GLEngine::reset_view_matrix()
     CHECK_GL;
     glDisable(GL_LIGHTING);
     CHECK_GL;
+
+
+    
 }
 
 void GLEngine::evaluate( const CMedia* img,
@@ -1660,6 +1667,12 @@ void GLEngine::draw_images( ImageList& images )
 {
     TRACE( "" );
 
+    if ( _YCbCr == NULL )
+    {
+	loadOpenGLShader();
+	if ( ! _YCbCr ) return;
+    }
+    
     CHECK_GL;
 
     DBG( __FUNCTION__ << " " << __LINE__ );
@@ -2968,87 +2981,78 @@ void gl_sc_uniform_mat3( ostringstream& code, const char* name,
     }
 }
 
-enum mp_csp {
-    MP_CSP_AUTO,
-    MP_CSP_BT_601,
-    MP_CSP_BT_709,
-    MP_CSP_SMPTE_240M,
-    MP_CSP_BT_2020_NC,
-    MP_CSP_BT_2020_C,
-    MP_CSP_RGB,
-    MP_CSP_XYZ,
-    MP_CSP_YCGCO,
-    MP_CSP_COUNT
-};
+// enum mp_csp {
+//     MP_CSP_AUTO,
+//     MP_CSP_BT_601,
+//     MP_CSP_BT_709,
+//     MP_CSP_SMPTE_240M,
+//     MP_CSP_BT_2020_NC,
+//     MP_CSP_BT_2020_C,
+//     MP_CSP_RGB,
+//     MP_CSP_XYZ,
+//     MP_CSP_YCGCO,
+//     MP_CSP_COUNT
+// };
 
-enum mp_csp_levels {
-    MP_CSP_LEVELS_AUTO,
-    MP_CSP_LEVELS_TV,
-    MP_CSP_LEVELS_PC,
-    MP_CSP_LEVELS_COUNT,
-};
+// enum mp_csp_levels {
+//     MP_CSP_LEVELS_AUTO,
+//     MP_CSP_LEVELS_TV,
+//     MP_CSP_LEVELS_PC,
+//     MP_CSP_LEVELS_COUNT,
+// };
 
-enum mp_csp_prim {
-    MP_CSP_PRIM_AUTO,
-    MP_CSP_PRIM_BT_601_525,
-    MP_CSP_PRIM_BT_601_625,
-    MP_CSP_PRIM_BT_709,
-    MP_CSP_PRIM_BT_2020,
-    MP_CSP_PRIM_BT_470M,
-    MP_CSP_PRIM_APPLE,
-    MP_CSP_PRIM_ADOBE,
-    MP_CSP_PRIM_PRO_PHOTO,
-    MP_CSP_PRIM_CIE_1931,
-    MP_CSP_PRIM_DCI_P3,
-    MP_CSP_PRIM_V_GAMUT,
-    MP_CSP_PRIM_S_GAMUT,
-    MP_CSP_PRIM_COUNT
-};
+// enum mp_csp_prim {
+//     MP_CSP_PRIM_AUTO,
+//     MP_CSP_PRIM_BT_601_525,
+//     MP_CSP_PRIM_BT_601_625,
+//     MP_CSP_PRIM_BT_709,
+//     MP_CSP_PRIM_BT_2020,
+//     MP_CSP_PRIM_BT_470M,
+//     MP_CSP_PRIM_APPLE,
+//     MP_CSP_PRIM_ADOBE,
+//     MP_CSP_PRIM_PRO_PHOTO,
+//     MP_CSP_PRIM_CIE_1931,
+//     MP_CSP_PRIM_DCI_P3,
+//     MP_CSP_PRIM_V_GAMUT,
+//     MP_CSP_PRIM_S_GAMUT,
+//     MP_CSP_PRIM_COUNT
+// };
 
-enum mp_csp_trc
-{
-    MP_CSP_TRC_AUTO,
-    MP_CSP_TRC_BT_1886,
-    MP_CSP_TRC_SRGB,
-    MP_CSP_TRC_LINEAR,
-    MP_CSP_TRC_GAMMA18,
-    MP_CSP_TRC_GAMMA22,
-    MP_CSP_TRC_GAMMA28,
-    MP_CSP_TRC_PRO_PHOTO,
-    MP_CSP_TRC_PQ,
-    MP_CSP_TRC_HLG,
-    MP_CSP_TRC_V_LOG,
-    MP_CSP_TRC_S_LOG1,
-    MP_CSP_TRC_S_LOG2,
-    MP_CSP_TRC_COUNT
-};
+// enum mp_csp_trc
+// {
+//     MP_CSP_TRC_AUTO,
+//     MP_CSP_TRC_BT_1886,
+//     MP_CSP_TRC_SRGB,
+//     MP_CSP_TRC_LINEAR,
+//     MP_CSP_TRC_GAMMA18,
+//     MP_CSP_TRC_GAMMA22,
+//     MP_CSP_TRC_GAMMA28,
+//     MP_CSP_TRC_PRO_PHOTO,
+//     MP_CSP_TRC_PQ,
+//     MP_CSP_TRC_HLG,
+//     MP_CSP_TRC_V_LOG,
+//     MP_CSP_TRC_S_LOG1,
+//     MP_CSP_TRC_S_LOG2,
+//     MP_CSP_TRC_COUNT
+// };
 
-enum mp_csp_light {
-    MP_CSP_LIGHT_AUTO,
-    MP_CSP_LIGHT_DISPLAY,
-    MP_CSP_LIGHT_SCENE_HLG,
-    MP_CSP_LIGHT_SCENE_709_1886,
-    MP_CSP_LIGHT_SCENE_1_2,
-    MP_CSP_LIGHT_COUNT
-};
+// enum mp_csp_light {
+//     MP_CSP_LIGHT_AUTO,
+//     MP_CSP_LIGHT_DISPLAY,
+//     MP_CSP_LIGHT_SCENE_HLG,
+//     MP_CSP_LIGHT_SCENE_709_1886,
+//     MP_CSP_LIGHT_SCENE_1_2,
+//     MP_CSP_LIGHT_COUNT
+// };
 
-// These constants are based on the ICC specification (Table 23) and match
-// up with the API of LittleCMS, which treats them as integers.
-enum mp_render_intent {
-    MP_INTENT_PERCEPTUAL = 0,
-    MP_INTENT_RELATIVE_COLORIMETRIC = 1,
-    MP_INTENT_SATURATION = 2,
-    MP_INTENT_ABSOLUTE_COLORIMETRIC = 3
-};
-
-struct mp_colorspace {
-    enum mp_csp space;
-    enum mp_csp_levels levels;
-    enum mp_csp_prim primaries;
-    enum mp_csp_trc gamma;
-    enum mp_csp_light light;
-    float sig_peak; // highest relative value in signal. 0 = unknown/auto
-};
+// struct mp_colorspace {
+//     enum mp_csp space;
+//     enum mp_csp_levels levels;
+//     enum mp_csp_prim primaries;
+//     enum mp_csp_trc gamma;
+//     enum mp_csp_light light;
+//     float sig_peak; // highest relative value in signal. 0 = unknown/auto
+// };
 
 enum tone_mapping {
     TONE_MAPPING_CLIP,
@@ -3059,13 +3063,6 @@ enum tone_mapping {
     TONE_MAPPING_LINEAR,
 };
 
-struct mp_csp_col_xy {
-    float x, y;
-};
-
-struct mp_csp_primaries {
-    struct mp_csp_col_xy red, green, blue, white;
-};
 
 #define MP_REF_WHITE 100.0
 
@@ -3177,294 +3174,6 @@ static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
     GLSL(})
 }
 
-// Get the nominal peak for a given colorspace, relative to the reference white
-// level. In other words, this returns the brightest encodable value that can
-// be represented by a given transfer curve.
-float mp_trc_nom_peak(enum mp_csp_trc trc)
-{
-    switch (trc) {
-    case MP_CSP_TRC_PQ:           return 10000.0 / MP_REF_WHITE;
-    case MP_CSP_TRC_HLG:          return 12.0;
-    case MP_CSP_TRC_V_LOG:        return 46.0855;
-    case MP_CSP_TRC_S_LOG1:       return 6.52;
-    case MP_CSP_TRC_S_LOG2:       return 9.212;
-    }
-
-    return 1.0;
-}
-
-bool mp_trc_is_hdr(enum mp_csp_trc trc)
-{
-    return mp_trc_nom_peak(trc) > 1.0;
-}
-
-static inline float mp_xy_X(struct mp_csp_col_xy xy) {
-    return xy.x / xy.y;
-}
-
-static inline float mp_xy_Z(struct mp_csp_col_xy xy) {
-    return (1 - xy.x - xy.y) / xy.y;
-}
-
-
-void mp_invert_matrix3x3(float m[3][3])
-{
-    float m00 = m[0][0], m01 = m[0][1], m02 = m[0][2],
-          m10 = m[1][0], m11 = m[1][1], m12 = m[1][2],
-          m20 = m[2][0], m21 = m[2][1], m22 = m[2][2];
-
-    // calculate the adjoint
-    m[0][0] =  (m11 * m22 - m21 * m12);
-    m[0][1] = -(m01 * m22 - m21 * m02);
-    m[0][2] =  (m01 * m12 - m11 * m02);
-    m[1][0] = -(m10 * m22 - m20 * m12);
-    m[1][1] =  (m00 * m22 - m20 * m02);
-    m[1][2] = -(m00 * m12 - m10 * m02);
-    m[2][0] =  (m10 * m21 - m20 * m11);
-    m[2][1] = -(m00 * m21 - m20 * m01);
-    m[2][2] =  (m00 * m11 - m10 * m01);
-
-    // calculate the determinant (as inverse == 1/det * adjoint,
-    // adjoint * m == identity * det, so this calculates the det)
-    float det = m00 * m[0][0] + m10 * m[0][1] + m20 * m[0][2];
-    det = 1.0f / det;
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++)
-            m[i][j] *= det;
-    }
-}
-
-// Compute the RGB/XYZ matrix as described here:
-// http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
-void mp_get_rgb2xyz_matrix(struct mp_csp_primaries space, float m[3][3])
-{
-    float S[3], X[4], Z[4];
-
-    // Convert from CIE xyY to XYZ. Note that Y=1 holds true for all primaries
-    X[0] = space.red.x   / space.red.y;
-    X[1] = space.green.x / space.green.y;
-    X[2] = space.blue.x  / space.blue.y;
-    X[3] = space.white.x / space.white.y;
-
-    Z[0] = (1 - space.red.x   - space.red.y)   / space.red.y;
-    Z[1] = (1 - space.green.x - space.green.y) / space.green.y;
-    Z[2] = (1 - space.blue.x  - space.blue.y)  / space.blue.y;
-    Z[3] = (1 - space.white.x - space.white.y) / space.white.y;
-
-    // S = XYZ^-1 * W
-    for (int i = 0; i < 3; i++) {
-        m[0][i] = X[i];
-        m[1][i] = 1;
-        m[2][i] = Z[i];
-    }
-
-    mp_invert_matrix3x3(m);
-
-    for (int i = 0; i < 3; i++)
-        S[i] = m[i][0] * X[3] + m[i][1] * 1 + m[i][2] * Z[3];
-
-    // M = [Sc * XYZc]
-    for (int i = 0; i < 3; i++) {
-        m[0][i] = S[i] * X[i];
-        m[1][i] = S[i] * 1;
-        m[2][i] = S[i] * Z[i];
-    }
-}
-
-// M := M * XYZd<-XYZs
-static void mp_apply_chromatic_adaptation(struct mp_csp_col_xy src,
-                                          struct mp_csp_col_xy dest, float m[3][3])
-{
-    // If the white points are nearly identical, this is a wasteful identity
-    // operation.
-    if (fabs(src.x - dest.x) < 1e-6 && fabs(src.y - dest.y) < 1e-6)
-        return;
-
-    // XYZd<-XYZs = Ma^-1 * (I*[Cd/Cs]) * Ma
-    // http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html
-    float C[3][2], tmp[3][3] = {{0}};
-
-    // Ma = Bradford matrix, arguably most popular method in use today.
-    // This is derived experimentally and thus hard-coded.
-    float bradford[3][3] = {
-        {  0.8951,  0.2664, -0.1614 },
-        { -0.7502,  1.7135,  0.0367 },
-        {  0.0389, -0.0685,  1.0296 },
-    };
-
-    for (int i = 0; i < 3; i++) {
-        // source cone
-        C[i][0] = bradford[i][0] * mp_xy_X(src)
-                + bradford[i][1] * 1
-                + bradford[i][2] * mp_xy_Z(src);
-
-        // dest cone
-        C[i][1] = bradford[i][0] * mp_xy_X(dest)
-                + bradford[i][1] * 1
-                + bradford[i][2] * mp_xy_Z(dest);
-    }
-
-    // tmp := I * [Cd/Cs] * Ma
-    for (int i = 0; i < 3; i++)
-        tmp[i][i] = C[i][1] / C[i][0];
-
-    mp_mul_matrix3x3(tmp, bradford);
-
-    // M := M * Ma^-1 * tmp
-    mp_invert_matrix3x3(bradford);
-    mp_mul_matrix3x3(m, bradford);
-    mp_mul_matrix3x3(m, tmp);
-}
-
-// return the primaries associated with a certain mp_csp_primaries val
-struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
-{
-    /*
-    Values from: ITU-R Recommendations BT.470-6, BT.601-7, BT.709-5, BT.2020-0
-
-    https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.470-6-199811-S!!PDF-E.pdf
-    https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.601-7-201103-I!!PDF-E.pdf
-    https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-5-200204-I!!PDF-E.pdf
-    https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.2020-0-201208-I!!PDF-E.pdf
-
-    Other colorspaces from https://en.wikipedia.org/wiki/RGB_color_space#Specifications
-    */
-
-    // CIE standard illuminant series
-    static const struct mp_csp_col_xy
-        d50 = {0.34577, 0.35850},
-        d65 = {0.31271, 0.32902},
-        c   = {0.31006, 0.31616},
-        e   = {1.0/3.0, 1.0/3.0};
-
-    switch (spc) {
-    case MP_CSP_PRIM_BT_470M:
-        return (struct mp_csp_primaries) {
-            .red   = {0.670, 0.330},
-            .green = {0.210, 0.710},
-            .blue  = {0.140, 0.080},
-            .white = c
-        };
-    case MP_CSP_PRIM_BT_601_525:
-        return (struct mp_csp_primaries) {
-            .red   = {0.630, 0.340},
-            .green = {0.310, 0.595},
-            .blue  = {0.155, 0.070},
-            .white = d65
-        };
-    case MP_CSP_PRIM_BT_601_625:
-        return (struct mp_csp_primaries) {
-            .red   = {0.640, 0.330},
-            .green = {0.290, 0.600},
-            .blue  = {0.150, 0.060},
-            .white = d65
-        };
-    // This is the default assumption if no colorspace information could
-    // be determined, eg. for files which have no video channel.
-    case MP_CSP_PRIM_AUTO:
-    case MP_CSP_PRIM_BT_709:
-        return (struct mp_csp_primaries) {
-            .red   = {0.640, 0.330},
-            .green = {0.300, 0.600},
-            .blue  = {0.150, 0.060},
-            .white = d65
-        };
-    case MP_CSP_PRIM_BT_2020:
-        return (struct mp_csp_primaries) {
-            .red   = {0.708, 0.292},
-            .green = {0.170, 0.797},
-            .blue  = {0.131, 0.046},
-            .white = d65
-        };
-    case MP_CSP_PRIM_APPLE:
-        return (struct mp_csp_primaries) {
-            .red   = {0.625, 0.340},
-            .green = {0.280, 0.595},
-            .blue  = {0.115, 0.070},
-            .white = d65
-        };
-    case MP_CSP_PRIM_ADOBE:
-        return (struct mp_csp_primaries) {
-            .red   = {0.640, 0.330},
-            .green = {0.210, 0.710},
-            .blue  = {0.150, 0.060},
-            .white = d65
-        };
-    case MP_CSP_PRIM_PRO_PHOTO:
-        return (struct mp_csp_primaries) {
-            .red   = {0.7347, 0.2653},
-            .green = {0.1596, 0.8404},
-            .blue  = {0.0366, 0.0001},
-            .white = d50
-        };
-    case MP_CSP_PRIM_CIE_1931:
-        return (struct mp_csp_primaries) {
-            .red   = {0.7347, 0.2653},
-            .green = {0.2738, 0.7174},
-            .blue  = {0.1666, 0.0089},
-            .white = e
-        };
-    // From SMPTE RP 431-2
-    case MP_CSP_PRIM_DCI_P3:
-        return (struct mp_csp_primaries) {
-            .red   = {0.680, 0.320},
-            .green = {0.265, 0.690},
-            .blue  = {0.150, 0.060},
-            .white = d65
-        };
-    // From Panasonic VARICAM reference manual
-    case MP_CSP_PRIM_V_GAMUT:
-        return (struct mp_csp_primaries) {
-            .red   = {0.730, 0.280},
-            .green = {0.165, 0.840},
-            .blue  = {0.100, -0.03},
-            .white = d65
-        };
-    // From Sony S-Log reference manual
-    case MP_CSP_PRIM_S_GAMUT:
-        return (struct mp_csp_primaries) {
-            .red   = {0.730, 0.280},
-            .green = {0.140, 0.855},
-            .blue  = {0.100, -0.05},
-            .white = d65
-        };
-    default:
-        return (struct mp_csp_primaries) {{0}};
-    }
-}
-
-// get the coefficients of the source -> dest cms matrix
-void mp_get_cms_matrix(struct mp_csp_primaries src, struct mp_csp_primaries dest,
-                       enum mp_render_intent intent, float m[3][3])
-{
-    float tmp[3][3];
-
-    // In saturation mapping, we don't care about accuracy and just want
-    // primaries to map to primaries, making this an identity transformation.
-    if (intent == MP_INTENT_SATURATION) {
-        for (int i = 0; i < 3; i++)
-            m[i][i] = 1;
-        return;
-    }
-
-    // RGBd<-RGBs = RGBd<-XYZd * XYZd<-XYZs * XYZs<-RGBs
-    // Equations from: http://www.brucelindbloom.com/index.html?Math.html
-    // Note: Perceptual is treated like relative colorimetric. There's no
-    // definition for perceptual other than "make it look good".
-
-    // RGBd<-XYZd, inverted from XYZd<-RGBd
-    mp_get_rgb2xyz_matrix(dest, m);
-    mp_invert_matrix3x3(m);
-
-    // Chromatic adaptation, except in absolute colorimetric intent
-    if (intent != MP_INTENT_ABSOLUTE_COLORIMETRIC)
-        mp_apply_chromatic_adaptation(src.white, dest.white, m);
-
-    // XYZs<-RGBs
-    mp_get_rgb2xyz_matrix(src, tmp);
-    mp_mul_matrix3x3(m, tmp);
-}
 
 // Inverse of the function pass_ootf, for completeness' sake.
 void pass_inverse_ootf(ostringstream& code, enum mp_csp_light light, float peak)
@@ -3882,14 +3591,278 @@ void pass_color_map(ostringstream& code,
     //     pass_delinearize(code, dst.gamma);
 }
 
-void
-GLEngine::loadBuiltinFragShader()
+
+void GLEngine::loadOpenGLShader()
 {
+    if ( !_image )
+    {
+	LOG_ERROR( "No image to proceed" );
+	return;
+    }
+    
     setlocale( LC_NUMERIC, "C" );
     std::locale::global( std::locale("C") );
     code.imbue(std::locale());
     hdr.imbue(std::locale());
     foot.imbue(std::locale());
+    
+    hdr << " \n"
+    " /** \n"
+    " * @file   YCbCr.glsl \n"
+    " * @author gga \n"
+    " * @date   Thu Jul  5 22:50:08 2007 \n"
+    " * \n"
+    " * @brief    simple YCbCr texture with 3D lut shader \n"
+    " * \n"
+    " */ \n"
+    " \n"
+    "#version 130\n\n"
+    "// Images \n"
+    "uniform sampler2D YImage; \n"
+    "uniform sampler2D UImage; \n"
+    "uniform sampler2D VImage; \n"
+    "uniform sampler3D lut; \n"
+    " \n"
+    "// Standard controls \n"
+    "uniform float gain; \n"
+    "uniform float gamma; \n"
+    "uniform int   channel; \n"
+    "\n"
+    "// Interlaced/Checkerboard controls (don't work) \n"
+    "uniform int mask; \n"
+    "uniform int mask_value; \n"
+    "uniform int height; \n"
+    "uniform int width; \n"
+    " \n"
+    "// Normalization variables \n"
+    "uniform bool  premult; \n"
+    "uniform bool  unpremult; \n"
+    "uniform bool  enableNormalization; \n"
+    "uniform float normMin; \n"
+    "uniform float normSpan; \n"
+    "\n"
+    "// YCbCr variables \n"
+    "uniform bool  coeffs;  // Use fed coefficients instead of builtin ones \n"
+    "uniform vec3  Koff; \n"
+    "uniform vec3  Kr; \n"
+    "uniform vec3  Kg; \n"
+    "uniform vec3  Kb; \n"
+    " \n"
+    "// Lut variables  \n"
+    "uniform bool  enableLut; \n"
+    "uniform bool  lutF; \n"
+    "uniform float lutMin; \n"
+    "uniform float lutMax; \n"
+    "uniform float lutM; \n"
+    "uniform float lutT; \n"
+    "uniform float scale; \n"
+    "uniform float offset; \n"
+    "\n"
+    "\n";
+
+    code <<
+    "void main() \n"
+    "{ \n"
+    "  // \n"
+    "  // Sample luminance and chroma, convert to RGB. \n"
+    "  // \n"
+    "  vec3 yuv; \n"
+    "  vec4 c; \n"
+    "  vec3 pre; \n"
+    "  vec2 tc = gl_TexCoord[0].st; \n"
+    "  pre.r = texture2D(YImage, tc.st).r;  // Y \n"
+    "  pre.g = texture2D(UImage, tc.st).r;  // U \n"
+    "  pre.b = texture2D(VImage, tc.st).r;  // V \n"
+    " \n"
+    "  if ( coeffs ) \n"
+    "  { \n"
+    "        pre += Koff; \n"
+    "	\n"
+    "\tc.r = dot(Kr, pre); \n"
+    "\tc.g = dot(Kg, pre); \n"
+    "\tc.b = dot(Kb, pre); \n" << std::endl;
+
+    foot << " }\n"
+    "       //\n"
+    "       // Apply channel selection\n"
+    "       //\n"
+    "  int x = 1000;\n"
+    "  \n"
+    "  if ( mask == 1 )  // even odd rows\n"
+    "  {\n"
+    "      float f = tc.y * height;\n"
+    "      x = int( mod( f, 2 ) );\n"
+    "  }\n"
+    "  else if ( mask == 2 ) // even odd columns\n"
+    "  {\n"
+    "      float f2 = tc.x * width;\n"
+    "      x = int( mod( f2, 2 ) );\n"
+    "  }\n"
+    "  else if ( mask == 3 ) // checkerboard\n"
+    "  {\n"
+    "      float f = tc.y * height;\n"
+    "      float f2 = tc.x * width;\n"
+    "      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );\n"
+    "  }\n"
+    "\n"
+    "  if ( x == mask_value )\n"
+    "  {\n"
+    "      c.r = c.g = c.b = c.a = 0.0;\n"
+    "  }\n"
+    "\n"
+    "  //\n"
+    "  // Apply normalization\n"
+    "  //\n"
+    "  if (enableNormalization)\n"
+    "    {\n"
+    "      c.rgb = (c.rgb - normMin) / normSpan;\n"
+    "    }\n"
+    "\n"
+    "  //\n"
+    "  // Apply gain \n"
+    "  //\n"
+    "  c.rgb *= gain;\n"
+    "\n"
+    "  //\n"
+    "  // Apply 3D color lookup table (in log space).\n"
+    "  //\n"
+    "  if (enableLut)\n"
+    "    {\n"
+    "      c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );\n"
+    "      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); \n"
+    "    }\n"
+    "\n"
+    "  if ( unpremult && c.a > 0.00001 )\n"
+    "  {\n"
+    "    c.rgb /= c.a;\n"
+    "  }\n"
+    "  \n"
+    "  //\n"
+    "  // Apply video gamma correction.\n"
+    "  // \n"
+    "  c.r = pow( c.r, gamma );\n"
+    "  c.g = pow( c.g, gamma );\n"
+    "  c.b = pow( c.b, gamma );\n"
+    " \n"
+    "  if ( channel == 1 )\n"
+    "    {\n"
+    "      c.rgb = c.rrr;\n"
+    "    }\n"
+    "  else if ( channel == 2 )\n"
+    "    {\n"
+    "      c.rgb = c.ggg;\n"
+    "    }\n"
+    "  else if ( channel == 3 )\n"
+    "    {\n"
+    "      c.rgb = c.bbb;\n"
+    "    }\n"
+    "  else if ( channel == 4 )\n"
+    "    {\n"
+    "      c.rgb = c.aaa;\n"
+    "    }\n"
+    "  else if ( channel == 5 )\n"
+    "    {\n"
+    "      c.r *= 0.5;\n"
+    "      c.r += c.a * 0.5;\n"
+    "    }\n"
+    "  else if ( channel == 6 )\n"
+    "    {\n"
+    "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
+    "    }\n"
+    "\n"
+    "  if ( premult )\n"
+    "  {\n"
+    "      c.rgb *= c.a;\n"
+    "  }\n"
+    "\n"
+    "  gl_FragColor = c;\n"
+    "} ";
+
+    _hardwareShaders = kGLSL;
+
+    AVStream* st = _image->get_video_stream();
+    if (!st)
+    {
+	LOG_ERROR( "No stream to proceed" );
+	return;
+    }
+    AVCodecParameters* c = st->codecpar;
+	    
+    int size;
+    AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
+    av_stream_get_side_data( st,
+			     AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+			     &size );
+    
+    double max_cll = 100000;
+    if (m)
+    {
+	if ( size == sizeof( AVMasteringDisplayMetadata ) )
+	{
+	    if ( m->has_luminance )
+		max_cll = av_q2d( m->max_luminance );
+	}
+    }
+    
+    mp_colorspace src
+    {
+	avcol_spc_to_mp_csp(c->color_space), //MP_CSP_BT_709,  // space
+	avcol_range_to_mp_csp_levels( c->color_range ),  // levels
+	avcol_pri_to_mp_csp_prim(c->color_primaries), // primaries
+	avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
+	MP_CSP_LIGHT_DISPLAY,  // light
+	max_cll / MP_REF_WHITE               // sig_peak
+	};
+
+    mp_colorspace dst
+    {
+	MP_CSP_AUTO,
+	MP_CSP_LEVELS_AUTO,
+	MP_CSP_PRIM_BT_709,
+	MP_CSP_TRC_GAMMA22,
+	MP_CSP_LIGHT_DISPLAY,
+	1.0f
+	};
+
+    tone_mapping algo = TONE_MAPPING_HABLE;
+    float tone_mapping_param = NAN;
+    float tone_mapping_desat = 0.5f;
+    bool  detect_peak = false;
+    bool gamut_warning = false;
+    bool is_linear = false;
+
+    if ( m )
+    {
+	pass_color_map(code, hdr, src, dst,
+		       algo, tone_mapping_param,
+		       tone_mapping_desat, detect_peak,
+		       gamut_warning, is_linear);
+    }
+    else
+    {
+	code << "}\n"
+	"else {\n"
+	"yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
+	"yuv.g = pre.g - 0.5;\n"
+	"yuv.b = pre.b - 0.5;\n"
+	"\n"
+	"c.r = yuv.r + 1.5958 * yuv.b;\n"
+	"c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
+	"c.b = yuv.r + 2.017 * yuv.g;\n"
+	"\n";
+    }
+    
+    std::string all = hdr.str() + code.str() + foot.str();
+
+    // std::cerr << all << std::endl;
+
+    _YCbCr = new GLShader();
+    _YCbCr->load( N_("builtin"), all.c_str() );
+}
+
+void
+GLEngine::loadBuiltinFragShader()
+{
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     _rgba = new GLShader();
@@ -3900,222 +3873,6 @@ GLEngine::loadBuiltinFragShader()
             LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
             _rgba->load( N_("builtin"), NVShader );
             DBG( "NVShader builtin" );
-        }
-        else if ( _hardwareShaders == kGLSL  )
-        {
-            hdr << " \n"
-            " /** \n"
-            " * @file   YCbCr.glsl \n"
-            " * @author gga \n"
-            " * @date   Thu Jul  5 22:50:08 2007 \n"
-            " * \n"
-            " * @brief    simple YCbCr texture with 3D lut shader \n"
-            " * \n"
-            " */ \n"
-            " \n"
-            "#version 130\n\n"
-            "// Images \n"
-            "uniform sampler2D YImage; \n"
-            "uniform sampler2D UImage; \n"
-            "uniform sampler2D VImage; \n"
-            "uniform sampler3D lut; \n"
-            " \n"
-            "// Standard controls \n"
-            "uniform float gain; \n"
-            "uniform float gamma; \n"
-            "uniform int   channel; \n"
-            "\n"
-            "// Interlaced/Checkerboard controls (don't work) \n"
-            "uniform int mask; \n"
-            "uniform int mask_value; \n"
-            "uniform int height; \n"
-            "uniform int width; \n"
-            " \n"
-            "// Normalization variables \n"
-            "uniform bool  premult; \n"
-            "uniform bool  unpremult; \n"
-            "uniform bool  enableNormalization; \n"
-            "uniform float normMin; \n"
-            "uniform float normSpan; \n"
-            "\n"
-            "// YCbCr variables \n"
-            "uniform bool  coeffs;  // Use fed coefficients instead of builtin ones \n"
-            "uniform vec3  Koff; \n"
-            "uniform vec3  Kr; \n"
-            "uniform vec3  Kg; \n"
-            "uniform vec3  Kb; \n"
-            " \n"
-            "// Lut variables  \n"
-            "uniform bool  enableLut; \n"
-            "uniform bool  lutF; \n"
-            "uniform float lutMin; \n"
-            "uniform float lutMax; \n"
-            "uniform float lutM; \n"
-            "uniform float lutT; \n"
-            "uniform float scale; \n"
-            "uniform float offset; \n"
-            "\n"
-            "\n";
-
-            code <<
-            "void main() \n"
-            "{ \n"
-            "  // \n"
-            "  // Sample luminance and chroma, convert to RGB. \n"
-            "  // \n"
-            "  vec3 yuv; \n"
-            "  vec4 c; \n"
-            "  vec3 pre; \n"
-            "  vec2 tc = gl_TexCoord[0].st; \n"
-            "  pre.r = texture2D(YImage, tc.st).r;  // Y \n"
-            "  pre.g = texture2D(UImage, tc.st).r;  // U \n"
-            "  pre.b = texture2D(VImage, tc.st).r;  // V \n"
-            " \n"
-            "  if ( coeffs ) \n"
-            "  { \n"
-            "        pre += Koff; \n"
-            "	\n"
-            "\tc.r = dot(Kr, pre); \n"
-            "\tc.g = dot(Kg, pre); \n"
-            "\tc.b = dot(Kb, pre); \n" << std::endl;
-
-            foot << " }\n"
-            "       //\n"
-            "       // Apply channel selection\n"
-            "       //\n"
-            "  int x = 1000;\n"
-            "  \n"
-            "  if ( mask == 1 )  // even odd rows\n"
-            "  {\n"
-            "      float f = tc.y * height;\n"
-            "      x = int( mod( f, 2 ) );\n"
-            "  }\n"
-            "  else if ( mask == 2 ) // even odd columns\n"
-            "  {\n"
-            "      float f2 = tc.x * width;\n"
-            "      x = int( mod( f2, 2 ) );\n"
-            "  }\n"
-            "  else if ( mask == 3 ) // checkerboard\n"
-            "  {\n"
-            "      float f = tc.y * height;\n"
-            "      float f2 = tc.x * width;\n"
-            "      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );\n"
-            "  }\n"
-            "\n"
-            "  if ( x == mask_value )\n"
-            "  {\n"
-            "      c.r = c.g = c.b = c.a = 0.0;\n"
-            "  }\n"
-            "\n"
-            "  //\n"
-            "  // Apply normalization\n"
-            "  //\n"
-            "  if (enableNormalization)\n"
-            "    {\n"
-            "      c.rgb = (c.rgb - normMin) / normSpan;\n"
-            "    }\n"
-            "\n"
-            "  //\n"
-            "  // Apply gain \n"
-            "  //\n"
-            "  c.rgb *= gain;\n"
-            "\n"
-            "  //\n"
-            "  // Apply 3D color lookup table (in log space).\n"
-            "  //\n"
-            "  if (enableLut)\n"
-            "    {\n"
-            "      c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );\n"
-            "      c.rgb = exp( texture3D(lut, scale * c.rgb + offset ).rgb ); \n"
-            "    }\n"
-            "\n"
-            "  if ( unpremult && c.a > 0.00001 )\n"
-            "  {\n"
-            "    c.rgb /= c.a;\n"
-            "  }\n"
-            "  \n"
-            "  //\n"
-            "  // Apply video gamma correction.\n"
-            "  // \n"
-            "  c.r = pow( c.r, gamma );\n"
-            "  c.g = pow( c.g, gamma );\n"
-            "  c.b = pow( c.b, gamma );\n"
-            " \n"
-            "  if ( channel == 1 )\n"
-            "    {\n"
-            "      c.rgb = c.rrr;\n"
-            "    }\n"
-            "  else if ( channel == 2 )\n"
-            "    {\n"
-            "      c.rgb = c.ggg;\n"
-            "    }\n"
-            "  else if ( channel == 3 )\n"
-            "    {\n"
-            "      c.rgb = c.bbb;\n"
-            "    }\n"
-            "  else if ( channel == 4 )\n"
-            "    {\n"
-            "      c.rgb = c.aaa;\n"
-            "    }\n"
-            "  else if ( channel == 5 )\n"
-            "    {\n"
-            "      c.r *= 0.5;\n"
-            "      c.r += c.a * 0.5;\n"
-            "    }\n"
-            "  else if ( channel == 6 )\n"
-            "    {\n"
-            "      c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );\n"
-            "    }\n"
-            "\n"
-            "  if ( premult )\n"
-            "  {\n"
-            "      c.rgb *= c.a;\n"
-            "  }\n"
-            "\n"
-            "  gl_FragColor = c;\n"
-            "} ";
-
-            _hardwareShaders = kGLSL;
-
-            mp_colorspace src
-            {
-                MP_CSP_BT_709,  // space
-                MP_CSP_LEVELS_TV,  // levels
-                MP_CSP_PRIM_BT_2020, // primaries
-                MP_CSP_TRC_PQ,   // gamma
-                MP_CSP_LIGHT_DISPLAY,  // light
-                10.0f               // sig_peak
-                };
-
-            mp_colorspace dst
-            {
-                MP_CSP_AUTO,
-                MP_CSP_LEVELS_AUTO,
-                MP_CSP_PRIM_BT_709,
-                MP_CSP_TRC_GAMMA22,
-                MP_CSP_LIGHT_DISPLAY,
-                1.0f
-                };
-
-            tone_mapping algo = TONE_MAPPING_HABLE;
-            float tone_mapping_param = NAN;
-            float tone_mapping_desat = 0.5f;
-            bool  detect_peak = false;
-            bool gamut_warning = false;
-            bool is_linear = false;
-
-            pass_color_map(code, hdr, src, dst,
-                           algo, tone_mapping_param,
-                           tone_mapping_desat, detect_peak,
-                           gamut_warning, is_linear);
-
-            std::string c = hdr.str() + code.str() + foot.str();
-
-            //if ( debug > 2 )
-            //    std::cerr << c << std::endl;
-
-            _YCbCr = new GLShader();
-            _YCbCr->load( N_("builtin"), c.c_str() );
         }
         else
         {
@@ -4205,7 +3962,7 @@ vr_angle( 45.0 ),
 _rotX( 0.0 ),
 _rotY( 0.0 )
 {
-  initialize();
+    initialize();
 }
 
 GLEngine::~GLEngine()
