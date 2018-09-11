@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-09-09 18:49-0300\n"
+"POT-Creation-Date: 2018-09-10 22:36-0300\n"
 "PO-Revision-Date: 2018-06-09 11:27-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -93,7 +93,7 @@ msgstr " - error de decodificacion del cuadro de audio "
 msgid " Color Area Selection"
 msgstr " Seleccion de Área de Color"
 
-#: core/aviImage.cpp:2677
+#: core/aviImage.cpp:2651
 msgid " Could not open file"
 msgstr " No pude abrir el archivo"
 
@@ -195,7 +195,7 @@ msgstr " falló. "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2180 core/aviImage.cpp:3735
+#: core/CMedia_audio.cpp:2180 core/aviImage.cpp:3709
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -248,7 +248,7 @@ msgstr " no encontradas en el disco para "
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:3887
+#: core/aviImage.cpp:3861
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -256,7 +256,7 @@ msgstr " no soportado aún"
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3749
+#: core/aviImage.cpp:3723
 msgid " status: "
 msgstr " estatus: "
 
@@ -2716,11 +2716,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2178 core/aviImage.cpp:3733
+#: core/CMedia_audio.cpp:2178 core/aviImage.cpp:3707
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3747
+#: core/aviImage.cpp:3721
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -3022,11 +3022,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:3220
+#: core/aviImage.cpp:3194
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:3236 core/aviImage.cpp:4096
+#: core/aviImage.cpp:3210 core/aviImage.cpp:4070
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -4413,11 +4413,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:3873
+#: video/mrvGLEngine.cpp:3894
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:3879
+#: video/mrvGLEngine.cpp:3900
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -5619,12 +5619,12 @@ msgstr "Perfil"
 msgid "Profile name "
 msgstr "Nombre de Perfil "
 
-#: core/aviImage.cpp:2435
+#: core/aviImage.cpp:2409
 #, c-format
 msgid "Program %d "
 msgstr "Programa %d "
 
-#: core/aviImage.cpp:2431
+#: core/aviImage.cpp:2405
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programa %d: %s"
@@ -6556,7 +6556,7 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:3886
+#: core/aviImage.cpp:3860
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -7398,7 +7398,7 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2589
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2563
 #: gui/mrvImageInformation.cpp:2055 video/mrvGLEngine.cpp:221
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:227
 msgid "Unknown"
@@ -8182,7 +8182,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:3146
+#: core/aviImage.cpp:3120
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
