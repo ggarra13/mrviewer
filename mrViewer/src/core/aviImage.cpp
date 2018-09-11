@@ -1224,23 +1224,24 @@ void aviImage::store_image( const int64_t frame,
 int aviImage::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
                      AVPacket *pkt, bool eof)
 {
-    int ret;
+    int ret = 0;
 
     *got_frame = 0;
 
     if (!eof) {
-        ret = avcodec_send_packet(avctx, pkt);
-        // In particular, we don't expect AVERROR(EAGAIN), because we read all
-        // decoded frames with avcodec_receive_frame() until done.
-        if (ret < 0)
-            return ret == AVERROR_EOF ? 0 : ret;
+	ret = avcodec_send_packet(avctx, pkt);
+
+	// In particular, we don't expect AVERROR(EAGAIN), because we read all
+	// decoded frames with avcodec_receive_frame() until done.
+	if (ret < 0)
+	    return ret == AVERROR_EOF ? 0 : ret;
     }
 
     ret = avcodec_receive_frame(avctx, frame);
     if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF)
-        return ret;
+	return ret;
     if (ret >= 0)
-        *got_frame = 1;
+	*got_frame = 1;
 
     return 0;
 }
@@ -1273,9 +1274,8 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
   while(  pkt->size > 0 || pkt->data == NULL )
   {
-    int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
-
-      // int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, pkt );
+      int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
+      
      if ( err < 0 ) {
          IMG_ERROR( "Decode video error: " << get_error_text(err) );
          return kDecodeError;
@@ -2192,32 +2192,6 @@ void aviImage::populate()
     if ( has_video() )
     {
         stream = get_video_stream();
-	int size;
-	AVMasteringDisplayMetadata* m =	(AVMasteringDisplayMetadata*)
-	av_stream_get_side_data( stream,
-				 AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
-				 &size );
-	if ( size == sizeof( AVMasteringDisplayMetadata ) )
-	{
-	    if ( m->has_primaries )
-	    {
-		std::cerr << av_q2d( m->display_primaries[0][0] ) << " " 
-			  << av_q2d( m->display_primaries[0][1] ) << std::endl;
-	        std::cerr << av_q2d( m->display_primaries[1][0] ) << " " 
-			  << av_q2d( m->display_primaries[1][1] ) << std::endl;
-	        std::cerr << av_q2d( m->display_primaries[2][0] ) << " " 
-			  << av_q2d( m->display_primaries[2][1] ) << std::endl;
-	        std::cerr << av_q2d( m->white_point[0] ) << " " 
-			  << av_q2d( m->white_point[1] ) << std::endl;
-	    }
-
-	    if  ( m->has_luminance )
-	    {
-		std::cerr << av_q2d( m->max_luminance ) << " " 
-			  << av_q2d( m->min_luminance ) << std::endl;
-	    }
-
-	}
     }
     else if ( has_audio() )
     {
