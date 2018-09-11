@@ -3799,6 +3799,26 @@ void GLEngine::loadOpenGLShader()
     {
 	if ( size == sizeof( AVMasteringDisplayMetadata ) )
 	{
+	    if ( m->has_primaries )
+	    {
+		LOG_INFO( "Primaries:" );
+		LOG_INFO( "red " <<
+			  av_q2d( m->display_primaries[0][0] )
+			  << ", " << 
+			  av_q2d( m->display_primaries[0][1] ) );
+		LOG_INFO( "green "
+			  << av_q2d( m->display_primaries[1][0] )
+			  << ", "
+			  << av_q2d( m->display_primaries[1][1] ) );
+		LOG_INFO( "blue "
+			  << av_q2d( m->display_primaries[2][0] )
+			  << ", "
+			  << av_q2d( m->display_primaries[2][1] ) );
+		LOG_INFO( "white " << av_q2d( m->white_point[0] )
+			  << ", " << av_q2d( m->white_point[1] )
+			  );
+	    }
+	    
 	    if ( m->has_luminance )
 		max_cll = av_q2d( m->max_luminance );
 	}
@@ -3806,9 +3826,9 @@ void GLEngine::loadOpenGLShader()
     
     mp_colorspace src
     {
-	avcol_spc_to_mp_csp(c->color_space), //MP_CSP_BT_709,  // space
+	avcol_spc_to_mp_csp( c->color_space ), // space
 	avcol_range_to_mp_csp_levels( c->color_range ),  // levels
-	avcol_pri_to_mp_csp_prim(c->color_primaries), // primaries
+	avcol_pri_to_mp_csp_prim( c->color_primaries ), // primaries
 	avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
 	MP_CSP_LIGHT_DISPLAY,  // light
 	max_cll / MP_REF_WHITE               // sig_peak
@@ -3831,7 +3851,8 @@ void GLEngine::loadOpenGLShader()
     bool gamut_warning = false;
     bool is_linear = false;
 
-    if ( size > 0 )
+
+    if ( size == sizeof( AVMasteringDisplayMetadata ) )
     {
 	pass_color_map(code, hdr, src, dst,
 		       algo, tone_mapping_param,
