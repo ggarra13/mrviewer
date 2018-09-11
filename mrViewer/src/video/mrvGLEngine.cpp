@@ -3591,6 +3591,19 @@ void pass_color_map(ostringstream& code,
     //     pass_delinearize(code, dst.gamma);
 }
 
+void add_normal_code( ostringstream& code )
+{
+    code << "}\n"
+    "else {\n"
+    "yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
+    "yuv.g = pre.g - 0.5;\n"
+    "yuv.b = pre.b - 0.5;\n"
+    "\n"
+    "c.r = yuv.r + 1.5958 * yuv.b;\n"
+    "c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
+    "c.b = yuv.r + 2.017 * yuv.g;\n"
+    "\n";
+}
 
 void GLEngine::loadOpenGLShader()
 {
@@ -3783,7 +3796,14 @@ void GLEngine::loadOpenGLShader()
     AVStream* st = _image->get_video_stream();
     if (!st)
     {
-	LOG_ERROR( "No stream to proceed" );
+	add_normal_code( code );
+	
+	std::string all = hdr.str() + code.str() + foot.str();
+
+	// std::cerr << all << std::endl;
+
+	_YCbCr = new GLShader();
+	_YCbCr->load( N_("builtin"), all.c_str() );
 	return;
     }
     AVCodecParameters* c = st->codecpar;
@@ -3820,7 +3840,14 @@ void GLEngine::loadOpenGLShader()
 	    }
 	    
 	    if ( m->has_luminance )
+	    {
 		max_cll = av_q2d( m->max_luminance );
+		LOG_INFO( "Luminance: " );
+		LOG_INFO( "min: " << av_q2d( m->min_luminance ) );
+		LOG_INFO( "max: " << av_q2d( m->max_luminance ) );
+		LOG_INFO( "max/MP_REF_WHITE: " << av_q2d( m->max_luminance ) /
+			  MP_REF_WHITE );
+	    }
 	}
     }
     
@@ -3861,16 +3888,7 @@ void GLEngine::loadOpenGLShader()
     }
     else
     {
-	code << "}\n"
-	"else {\n"
-	"yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
-	"yuv.g = pre.g - 0.5;\n"
-	"yuv.b = pre.b - 0.5;\n"
-	"\n"
-	"c.r = yuv.r + 1.5958 * yuv.b;\n"
-	"c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
-	"c.b = yuv.r + 2.017 * yuv.g;\n"
-	"\n";
+	add_normal_code( code );
     }
     
     std::string all = hdr.str() + code.str() + foot.str();
