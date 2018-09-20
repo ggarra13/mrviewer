@@ -1277,6 +1277,11 @@ class CMedia
      */
     bool in_audio_packets( const int64_t frame );
 
+    // Given a frame and a packet, return got frame and a filled frame if
+    // possible
+    int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
+	       AVPacket *pkt, bool& eof);
+    
     /**
      * Given an audio packet, decode it into internal buffer
      *
