@@ -180,8 +180,6 @@ class aviImage : public CMedia
     // For counting frames
     bool readFrame(int64_t & pts);
 
-    int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
-	       AVPacket *pkt, bool eof);
     
     int64_t queue_packets( const int64_t frame,
                                   const bool is_seek,
@@ -257,8 +255,8 @@ class aviImage : public CMedia
      */
     DecodeStatus decode_video_packet( int64_t& pktframe,
 				      const int64_t frame,
-				      const AVPacket& pkt
-    );
+				      const AVPacket* pkt
+				      );
 
     DecodeStatus audio_video_display( const int64_t& frame );
     void limit_video_store( const int64_t frame );
