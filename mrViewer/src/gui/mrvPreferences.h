@@ -87,6 +87,8 @@ namespace mrv {
     static float ODT_CTL_white_luminance;
     static float ODT_CTL_surround_luminance;
 
+      static std::string video_threads;
+      
     static std::string CTL_8bits_save_transform;
     static std::string CTL_16bits_save_transform;
     static std::string CTL_32bits_save_transform;
