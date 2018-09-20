@@ -674,14 +674,15 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
-    Function {make_window(mrv::ViewerUI* m)} {private
+  class PreferencesUI {open
+  } {
+    Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {398 493 700 450} hide resizable
+        xywh {398 493 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1388,7 +1389,7 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
@@ -2189,7 +2190,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
             }
           }
           {fltk::Group} {} {
-            label Video
+            label Video open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
@@ -2201,9 +2202,14 @@ This setting thus allows caching less pictures in memory but at an improved qual
                 }
             }
             {fltk::Group} {} {
-              label Loading
-              xywh {48 114 318 65} box ROUNDED_BOX
+              label Loading open
+              xywh {48 89 318 90} box ROUNDED_BOX
             } {
+              {fltk::ValueInput} uiPrefsVideoThreadCount {
+                label {Video Thread Count} selected
+                tooltip {This setting effects the number of threads used in decoding your video.  A value of 0 means to use as many threads as possible.  Note that currently this setting is in beta, as some movies decode with artifacts when setting is 3 or higher (0 too).}
+                xywh {236 10 55 25} maximum 64 step 1
+              }
               {fltk::Choice} uiPrefsYUVConversion {
                 label {YUV Conversion}
                 user_data uiMain user_data_type {ViewerUI*}
@@ -2227,7 +2233,7 @@ Use File YUV Hint will take the value from the movie being loaded if the data is
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
 Unspecified is your standard computer translation of YUV.
 BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
-                xywh {130 27 167 25} box THIN_DOWN_BOX
+                xywh {130 45 167 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Use File YUV Hint}
@@ -3071,8 +3077,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3107,7 +3112,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
@@ -3470,7 +3475,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {selected
+          {fltk::Group} uiPixelBar {
             xywh {0 448 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
