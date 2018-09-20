@@ -288,6 +288,8 @@ fltk::StyleSet*     newscheme = NULL;
   float               Preferences::ODT_CTL_white_luminance = 120.0f;
   float               Preferences::ODT_CTL_surround_luminance = 12.0f;
 
+  std::string         Preferences::video_threads;
+
   std::string         Preferences::CTL_8bits_save_transform;
   std::string         Preferences::CTL_16bits_save_transform;
   std::string         Preferences::CTL_32bits_save_transform;
@@ -881,6 +883,8 @@ fltk::StyleSet*     newscheme = NULL;
     video.get( "yuv_hint", tmp, 0 );
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
+    video.get( "thread_count", tmp, 2 );
+    uiPrefs->uiPrefsVideoThreadCount->value( tmp );
 
     fltk::Preferences comp( base, "compositing" );
     comp.get( "blend_mode", tmp, 0 );
@@ -1329,6 +1333,10 @@ static const char* kCLocale = "C";
     // Handle file loading
     CMedia::load_library = (CMedia::LoadLib)
                            uiPrefs->uiPrefsLoadLibrary->value();
+
+    char buf[64];
+    sprintf( buf, "%d", (int) uiPrefs->uiPrefsVideoThreadCount->value() );
+    video_threads = buf;
 
     //
     // Handle file requester
@@ -1814,6 +1822,7 @@ static const char* kCLocale = "C";
     fltk::Preferences video( base, "video" );
     video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
     video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
+    video.set( "thread_count", (int) uiPrefs->uiPrefsVideoThreadCount->value());
 
     fltk::Preferences comp( base, "compositing" );
     comp.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
