@@ -3879,7 +3879,7 @@ void GLEngine::loadOpenGLShader()
     bool is_linear = false;
 
 
-    if ( size == sizeof( AVMasteringDisplayMetadata ) )
+    if ( mp_trc_is_hdr( src.gamma ) )
     {
 	pass_color_map(code, hdr, src, dst,
 		       algo, tone_mapping_param,
