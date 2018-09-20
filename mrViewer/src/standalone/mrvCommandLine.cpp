@@ -425,6 +425,9 @@ bool parse_command_line( const int argc, char** argv,
     SwitchArg arun( "r", "run",
                     _("Run mrViewer regardless of single instance setting") );
 
+    ValueArg<int> athreads( "", "threads",
+			    _("Run mrViewer using this number of threads. 0 is as many threads as possible"), false, -1, "value" );
+
     cmd.add(adebug);
     cmd.add(arun);
     cmd.add(aplay);
@@ -441,6 +444,7 @@ bool parse_command_line( const int argc, char** argv,
     cmd.add(astereo_input);
     cmd.add(astereo_output);
 #endif
+    cmd.add(athreads);
     cmd.add(asub);
     cmd.add(abg);
     cmd.add(afiles);
@@ -467,6 +471,7 @@ bool parse_command_line( const int argc, char** argv,
     opts.stereo_output = astereo_output.getValue();
     opts.stereo_input = astereo_input.getValue();
 
+    
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
 
@@ -615,6 +620,11 @@ bool parse_command_line( const int argc, char** argv,
           }
       }
 
+    int threads = athreads.getValue();
+    if ( threads >= 0 )
+    {
+	ui->uiPrefs->uiPrefsVideoThreadCount->value( threads );
+    }
 
   }
   catch ( TCLAP::ArgException& e )
@@ -631,8 +641,11 @@ bool parse_command_line( const int argc, char** argv,
       log->debug(true);
   }
 
+  
   // Load default preferences
   mrv::Preferences::run(ui);
+  
+  
   //
   // UI command-line overrides
   //
