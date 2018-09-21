@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-09-20 19:52-0300\n"
+"POT-Creation-Date: 2018-09-21 20:26-0300\n"
 "PO-Revision-Date: 2018-06-09 11:27-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:652 core/aviImage.cpp:2218
+#: core/CMedia_audio.cpp:652 core/aviImage.cpp:2219
 msgid ""
 "\n"
 "\n"
@@ -93,7 +93,7 @@ msgstr " - error de decodificacion del cuadro de audio "
 msgid " Color Area Selection"
 msgstr " Seleccion de Área de Color"
 
-#: core/aviImage.cpp:2710
+#: core/aviImage.cpp:2711
 msgid " Could not open file"
 msgstr " No pude abrir el archivo"
 
@@ -116,7 +116,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " Move Picture"
 msgstr " Mover la Imagen"
 
-#: core/aviImage.cpp:2235
+#: core/aviImage.cpp:2236
 msgid " No audio or video stream in file"
 msgstr " No hay audio o video en el archivo"
 
@@ -177,11 +177,11 @@ msgstr " codificando"
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1760
+#: core/CMedia_audio.cpp:1758
 msgid " failed"
 msgstr " falló. "
 
-#: core/CMedia_audio.cpp:1386
+#: core/CMedia_audio.cpp:1385
 msgid " failed with "
 msgstr " falló con "
 
@@ -195,7 +195,7 @@ msgstr " falló. "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2176 core/aviImage.cpp:3775
+#: core/CMedia_audio.cpp:2175 core/aviImage.cpp:3776
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -211,7 +211,7 @@ msgstr " cuadro"
 msgid " frames"
 msgstr " cuadros"
 
-#: core/CMedia_audio.cpp:1136
+#: core/CMedia_audio.cpp:1134
 msgid " frequency: "
 msgstr " frecuencia: "
 
@@ -219,7 +219,7 @@ msgstr " frecuencia: "
 msgid " has different display window than "
 msgstr "  tiene diferente ventana de vista que "
 
-#: core/aviImage.cpp:1733
+#: core/aviImage.cpp:1734
 msgid " instead"
 msgstr " en remplazo"
 
@@ -231,7 +231,7 @@ msgstr " está faltante."
 msgid " is set.  Loaded "
 msgstr " está seteado.  Cargué "
 
-#: core/CMedia_audio.cpp:1816 core/aviImage.cpp:1738
+#: core/CMedia_audio.cpp:1814 core/aviImage.cpp:1739
 msgid " not found"
 msgstr " no encontrado"
 
@@ -244,11 +244,11 @@ msgstr " no encontrada en el carrete"
 msgid " not found on disk for "
 msgstr " no encontradas en el disco para "
 
-#: core/aviImage.cpp:1732
+#: core/aviImage.cpp:1733
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:3927
+#: core/aviImage.cpp:3928
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -256,11 +256,11 @@ msgstr " no soportado aún"
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3789
+#: core/aviImage.cpp:3790
 msgid " status: "
 msgstr " estatus: "
 
-#: core/CMedia_audio.cpp:1093
+#: core/CMedia_audio.cpp:1091
 msgid " to"
 msgstr " a "
 
@@ -269,11 +269,11 @@ msgstr " a "
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:1453
+#: core/aviImage.cpp:1454
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1707
+#: core/aviImage.cpp:1708
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -398,7 +398,7 @@ msgstr "Transformación de Render"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1708
+#: core/aviImage.cpp:1709
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -415,11 +415,11 @@ msgstr "** multivalor **"
 msgid "+0.0  f/8.0"
 msgstr "+0,0  f/8,0"
 
-#: core/CMedia_audio.cpp:1088 core/CMedia_audio.cpp:1112
+#: core/CMedia_audio.cpp:1086 core/CMedia_audio.cpp:1110
 msgid ", channels "
 msgstr ", canales "
 
-#: core/CMedia_audio.cpp:1113
+#: core/CMedia_audio.cpp:1111
 msgid ", format "
 msgstr ", formato "
 
@@ -427,7 +427,7 @@ msgstr ", formato "
 msgid ", freq "
 msgstr ", frecuencia "
 
-#: core/CMedia_audio.cpp:1092 core/CMedia_audio.cpp:1115
+#: core/CMedia_audio.cpp:1090 core/CMedia_audio.cpp:1113
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
@@ -1218,15 +1218,15 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
-#: core/CMedia_audio.cpp:1816
+#: core/CMedia_audio.cpp:1814
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
-#: core/CMedia_audio.cpp:1911
+#: core/CMedia_audio.cpp:1909
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1953
+#: core/CMedia_audio.cpp:1952
 msgid "Audio packets empty at end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -1247,7 +1247,7 @@ msgstr "Audio/Editar Cuadro Comienzo de Audio"
 msgid "Audio: %<PRId64>"
 msgstr "Audio: %<PRId64> "
 
-#: core/CMedia_audio.cpp:1559
+#: core/CMedia_audio.cpp:1557
 msgid "Audios #"
 msgstr "Audios #"
 
@@ -1915,7 +1915,7 @@ msgstr "No pude clonar cuadro de subtítulos"
 msgid "Could not copy context to parameters"
 msgstr "No pude copiar el contexto a los parámetros"
 
-#: core/aviImage.cpp:617 core/aviImage.cpp:2130
+#: core/aviImage.cpp:617 core/aviImage.cpp:2131
 msgid "Could not copy parameters to context"
 msgstr "No pude copiar los parámetros al contexto de codec"
 
@@ -1944,7 +1944,7 @@ msgstr "No pude crear dibujo en miniatura para '"
 msgid "Could not create wand"
 msgstr "No pude crear varita"
 
-#: core/aviImage.cpp:1452
+#: core/aviImage.cpp:1453
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video "
 
@@ -2159,7 +2159,7 @@ msgstr "No pude localizar el perfil ICC \""
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
-#: core/CMedia_audio.cpp:1753
+#: core/CMedia_audio.cpp:1751
 msgid "Could not initialize audio engine"
 msgstr "No pude inicializar el motor de audio"
 
@@ -2207,7 +2207,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1745
+#: core/CMedia_audio.cpp:1743
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -2219,7 +2219,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/CMedia_audio.cpp:1831
+#: core/CMedia_audio.cpp:1829
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -2426,7 +2426,7 @@ msgstr "Crear nuevo carrete"
 msgid "Create a new reel or EDL track"
 msgstr "Crear nuevo carrete o pista de LDE"
 
-#: core/CMedia_audio.cpp:1087
+#: core/CMedia_audio.cpp:1085
 msgid "Create audio conversion from "
 msgstr "Crear conversión de audio desde "
 
@@ -2709,15 +2709,15 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2174 core/aviImage.cpp:3773
+#: core/CMedia_audio.cpp:2173 core/aviImage.cpp:3774
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3787
+#: core/aviImage.cpp:3788
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
-#: core/CMedia_audio.cpp:1337
+#: core/CMedia_audio.cpp:1335
 msgid "Decode_audio failed with error: "
 msgstr "Error de decodificación de audio: "
 
@@ -3015,11 +3015,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:3260
+#: core/aviImage.cpp:3261
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:3276 core/aviImage.cpp:4136
+#: core/aviImage.cpp:3277 core/aviImage.cpp:4137
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -3182,11 +3182,11 @@ msgstr "Falló "
 msgid "Failed setting layer to "
 msgstr "Falló setear la capa a "
 
-#: core/CMedia_audio.cpp:1125
+#: core/CMedia_audio.cpp:1123
 msgid "Failed to alloc swresample library"
 msgstr "No pude asignar la biblioteca swresample"
 
-#: core/CMedia_audio.cpp:1133
+#: core/CMedia_audio.cpp:1131
 msgid "Failed to init swresample library with "
 msgstr "Fallé en inicializar biblioteca swresample con "
 
@@ -4111,7 +4111,7 @@ msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 msgid "Invalid timecode "
 msgstr "Código de Tiempo inválido "
 
-#: core/aviImage.cpp:1777
+#: core/aviImage.cpp:1778
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
@@ -4868,7 +4868,7 @@ msgstr "Ninguna imagen fue decodificada"
 msgid "No left image to attach a stereo image pair"
 msgstr "No hay imagen izquierda para atar a un par de imágenes estéreo."
 
-#: core/CMedia_audio.cpp:1558
+#: core/CMedia_audio.cpp:1556
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
@@ -5259,7 +5259,7 @@ msgstr ""
 msgid "Output"
 msgstr "Salida"
 
-#: core/CMedia_audio.cpp:1049
+#: core/CMedia_audio.cpp:1047
 msgid "Output buffer size is too small for the current frame ("
 msgstr "El tamaño del buffer de salida es muy chico para este cuadro ("
 
@@ -5499,7 +5499,7 @@ msgstr ""
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1759
+#: core/CMedia_audio.cpp:1757
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -5612,12 +5612,12 @@ msgstr "Perfil"
 msgid "Profile name "
 msgstr "Nombre de Perfil "
 
-#: core/aviImage.cpp:2468
+#: core/aviImage.cpp:2469
 #, c-format
 msgid "Program %d "
 msgstr "Programa %d "
 
-#: core/aviImage.cpp:2464
+#: core/aviImage.cpp:2465
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programa %d: %s"
@@ -5895,7 +5895,7 @@ msgstr "Renderer:\t"
 msgid "Rendering Intent"
 msgstr "Intención de Render"
 
-#: core/CMedia_audio.cpp:1153
+#: core/CMedia_audio.cpp:1151
 msgid "Resampling failed"
 msgstr "Resampleo falló"
 
@@ -6554,7 +6554,7 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:3926
+#: core/aviImage.cpp:3927
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -7278,7 +7278,7 @@ msgstr "Permutar Ventana de Forma de Onda"
 msgid "Too many channels in image.  Saving RGB only"
 msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 
-#: core/CMedia_audio.cpp:1297
+#: core/CMedia_audio.cpp:1295
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
@@ -7404,7 +7404,7 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2622
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2623
 #: gui/mrvImageInformation.cpp:2055 video/mrvGLEngine.cpp:221
 #: video/mrvGLEngine.cpp:224 video/mrvGLEngine.cpp:227
 msgid "Unknown"
@@ -7462,7 +7462,7 @@ msgstr "Tipo de dato desconocido para clave '"
 msgid "Unknown data type to convert to string"
 msgstr "Tipo de dato desconocido para convertir de texto"
 
-#: core/aviImage.cpp:2019
+#: core/aviImage.cpp:2020
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -7700,7 +7700,7 @@ msgstr "Pista de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
-#: core/aviImage.cpp:1705
+#: core/aviImage.cpp:1706
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -8193,7 +8193,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:3186
+#: core/aviImage.cpp:3187
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -8402,7 +8402,7 @@ msgstr "avcodec_context_from_parameters falló para el video"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context falló para el audio"
 
-#: core/aviImage.cpp:1581
+#: core/aviImage.cpp:1582
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
@@ -8431,11 +8431,11 @@ msgstr "comentarios"
 msgid "data"
 msgstr "datos"
 
-#: core/CMedia_audio.cpp:1386
+#: core/CMedia_audio.cpp:1385
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:1945
+#: core/CMedia_audio.cpp:1944
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
@@ -8459,7 +8459,7 @@ msgstr ""
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1731 core/aviImage.cpp:1738
+#: core/aviImage.cpp:1732 core/aviImage.cpp:1739
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
@@ -8477,7 +8477,7 @@ msgstr "coma flotante (32-bits por canal)"
 msgid "forced"
 msgstr "forzado"
 
-#: core/CMedia_audio.cpp:1090
+#: core/CMedia_audio.cpp:1088
 msgid "format "
 msgstr "formato "
 
@@ -8710,7 +8710,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia_audio.cpp:1531
+#: core/CMedia_audio.cpp:1529
 msgid "store_audio: Invalid data"
 msgstr "almacenar_audio: datos inválidos"
 
