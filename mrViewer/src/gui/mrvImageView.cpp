@@ -5632,7 +5632,6 @@ int ImageView::keyDown(unsigned int rawkey)
         double fps = 24;
         if ( img ) fps = img->play_fps();
 
-
         step_frame( int64_t(fps) );
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
@@ -5641,6 +5640,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         step_frame( 1 );
         mouseMove( fltk::event_x(), fltk::event_y() );
+	redraw();
         return 1;
     }
     else if ( kPlayBackTwiceSpeed.match( rawkey ) )
