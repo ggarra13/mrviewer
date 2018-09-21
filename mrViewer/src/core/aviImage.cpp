@@ -1444,6 +1444,7 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
       if ( ( stopped() || saving() ) && ptsframe != frame &&
            frame != first_frame() )
           return kDecodeMissingFrame;
+      return kDecodeOK;
   }
   else if ( status == kDecodeError )
   {
