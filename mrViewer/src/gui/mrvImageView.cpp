@@ -5620,6 +5620,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         step_frame( -1 );
         mouseMove( fltk::event_x(), fltk::event_y() );
+	redraw();
         return 1;
     }
     else if ( kFrameStepFPSFwd.match(rawkey) )

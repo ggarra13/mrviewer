@@ -883,7 +883,7 @@ fltk::StyleSet*     newscheme = NULL;
     video.get( "yuv_hint", tmp, 0 );
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
-    video.get( "thread_count", tmp, 2 );
+    video.get( "thread_count", tmp, 0 );
     uiPrefs->uiPrefsVideoThreadCount->value( tmp );
 
     fltk::Preferences comp( base, "compositing" );
