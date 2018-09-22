@@ -1022,9 +1022,10 @@ bool aviImage::seek_to_position( const int64_t frame )
     _seek_req = false;
 
 
-#ifdef DEBUG_SEEK
-    LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected );
-#endif
+    //#ifdef DEBUG_SEEK
+    LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected
+	      << " _frame_offset " << _frame_offset );
+    //#endif
 
 #ifdef DEBUG_VIDEO_STORES
     debug_video_stores(frame, "AFTER SEEK");
@@ -3007,10 +3008,10 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
 bool aviImage::fetch(const int64_t frame)
 {
-#ifdef DEBUG_DECODE
+    //#ifdef DEBUG_DECODE
     cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected
          << " DTS: " << _dts << endl;
-#endif
+    //#endif
 
 
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
@@ -3034,17 +3035,18 @@ bool aviImage::fetch(const int64_t frame)
         pts = frame2pts( get_audio_stream(), f );
         if ( !got_audio ) _audio_packets.jump( pts );
         _dts = _adts = f;
-        // _expected = _dts + 1;
-        // _expected_audio = _dts + 1;
-        _expected = -99999;
-        _expected_audio = -99999;
+        _expected = _dts + 1;
+        _expected_audio = _dts + 1;
+        //_expected = -99999;
+        //_expected_audio = -99999;
 
         return true;
     }
 
     if ( (!got_video || !got_audio || !got_subtitle) && f != _expected  )
     {
-       //TRACE( "frame " << frame << " f: " << f << " EXPECTED " << _expected );
+       // TRACE( "SEEK frame " << frame << " f: " << f
+       // 	      << " EXPECTED " << _expected );
         bool ok = seek_to_position( f );
         if ( !ok )
             IMG_ERROR( ("seek_to_position: Could not seek to frame ")
