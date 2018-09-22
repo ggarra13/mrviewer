@@ -72,6 +72,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvThread.h"
 #include "core/mrvCPU.h"
 #include "core/mrvColorSpaces.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 #include "video/mrvGLEngine.h"
@@ -788,7 +789,8 @@ void aviImage::open_video_codec()
 
     AVDictionary* info = NULL;
     if (!av_dict_get(info, "threads", NULL, 0))
-	av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
+	av_dict_set(&info, "threads", Preferences::video_threads.c_str(), 0 );
+    //av_dict_set(&info, "threads", "auto", 0);  // not "auto" nor "4"
     
     // recounted frames needed for subtitles
     av_dict_set(&info, "refcounted_frames", "1", 0);
@@ -912,6 +914,9 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     int flag = AVSEEK_FLAG_BACKWARD;
     int ret = av_seek_frame( _context, -1, offset, flag );
+    //int ret = avformat_seek_file( _context, -1,
+    //				  std::numeric_limits<int64_t>::min(), offset,
+    //				  std::numeric_limits<int64_t>::max(), flag );
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << start
@@ -1258,8 +1263,10 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
     if ( ret == AVERROR_EOF ) eof = true;
     
     if (ret >= 0)
+    {
 	*got_frame = 1;
-
+    }
+    
     return 0;
 }
 
@@ -2597,7 +2604,7 @@ void aviImage::populate()
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
-    if ( _frame_offset > 3 ) _frame_offset = 0;
+    //if ( _frame_offset > 3 ) _frame_offset = 0;
 
     if ( !has_video() )
     {
@@ -3219,34 +3226,14 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
       if ( !is_seek && playback() == kBackwards )
       {
           // std::cerr << "pkt " << pktframe << " frame " << frame << std::endl;
-          if (pktframe >= frame )
-          {
-              status = decode_vpacket( pktframe, frame, pkt );
-          }
-          else
-          {
-              if ( !in_video_store(pktframe) )
-              {
-                  status = decode_image( pktframe, (AVPacket&)pkt );
-              }
-              else
-              {
-                  status = decode_vpacket( pktframe, frame, pkt );
-              }
-          }
 
+	  status = decode_image( pktframe, (AVPacket&)pkt );
+  
           if ( status == kDecodeOK && pktframe <= frame )  got_video = status;
       }
       else
       {
-          if ( !in_video_store(pktframe) )
-          {
-              status = decode_image( pktframe, (AVPacket&)pkt );
-          }
-          else
-          {
-              status = decode_vpacket( pktframe, frame, pkt );
-          }
+	  status = decode_image( pktframe, (AVPacket&)pkt );
 
           if ( status == kDecodeOK && pktframe >= frame )
               got_video = status;
