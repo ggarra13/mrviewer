@@ -1800,7 +1800,7 @@ bool CMedia::find_audio( const int64_t frame )
     if ( frame < first_frame() )
         return true;
 
-#if 0
+#if 1
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
 						  frame, LessThanFunctor() );
@@ -1915,8 +1915,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
   if ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
   {
       const AVPacket& pkt = _audio_packets.front();
-      int64_t pts = pkt.dts + pkt.duration;
-      _audio_last_frame = pts2frame( get_audio_stream(), pts );
+      // int64_t pts = pkt.dts + pkt.duration;
+      _audio_last_frame = pts2frame( get_audio_stream(), pkt.dts );
   }
 
 
