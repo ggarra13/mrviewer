@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-09-22 17:22-0300\n"
+"POT-Creation-Date: 2018-09-22 18:04-0300\n"
 "PO-Revision-Date: 2018-06-09 11:27-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -195,7 +195,7 @@ msgstr " falló. "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2175 core/aviImage.cpp:3765
+#: core/CMedia_audio.cpp:2175 core/aviImage.cpp:3763
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -248,7 +248,7 @@ msgstr " no encontradas en el disco para "
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:3917
+#: core/aviImage.cpp:3915
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -256,7 +256,7 @@ msgstr " no soportado aún"
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3779
+#: core/aviImage.cpp:3777
 msgid " status: "
 msgstr " estatus: "
 
@@ -2709,11 +2709,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2173 core/aviImage.cpp:3763
+#: core/CMedia_audio.cpp:2173 core/aviImage.cpp:3761
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3777
+#: core/aviImage.cpp:3775
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -3015,11 +3015,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:3250
+#: core/aviImage.cpp:3248
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:3266 core/aviImage.cpp:4126
+#: core/aviImage.cpp:3264 core/aviImage.cpp:4124
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -6554,7 +6554,7 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:3916
+#: core/aviImage.cpp:3914
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -8193,7 +8193,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:3196
+#: core/aviImage.cpp:3194
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
