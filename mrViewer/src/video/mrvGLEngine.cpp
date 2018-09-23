@@ -30,7 +30,7 @@
 // #define TEST_NO_SHADERS  // test without hardware shaders
 // #define TEST_NO_YUV      // test in rgba mode only
 
-//#define USE_NV_SHADERS
+#define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
 //#define USE_STEREO_GL
@@ -439,7 +439,31 @@ void GLEngine::initialize()
     }
 #endif
 
-  _hardwareShaders = kGLSL;
+  const char* shader_type = getenv("MRV_SHADER_TYPE");
+  if ( shader_type )
+  {
+      if ( stricmp( shader_type, "GL" ) == 0 ||
+	   stricmp( shader_type, "GLSL" ) == 0 ||
+	   stricmp( shader_type, "OPENGL" ) == 0 )
+	  _hardwareShaders = kGLSL;
+      else if ( stricmp( shader_type, "NV" ) == 0 ||
+		stricmp( shader_type, "NV30" ) == 0 ||
+		stricmp( shader_type, "NVIDIA" ) == 0 ||
+		stricmp( shader_type, "CG" ) == 0 ||
+		stricmp( shader_type, "CGGL" ) == 0 )
+	  _hardwareShaders = kNV30;
+      else if ( stricmp( shader_type, "ARBFP1" ) == 0 ||
+		stricmp( shader_type, "ARBFP" ) == 0 )
+	  _hardwareShaders = kARBFP1;
+      else
+	  _hardwareShaders = kAuto;
+  }
+  else
+  {
+      _hardwareShaders = kAuto;
+  }
+  
+  
   if ( _hardwareShaders == kAuto )
   {
       _hardwareShaders = kNone;
