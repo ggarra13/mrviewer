@@ -1462,7 +1462,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
+            label {3D Luts} open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1642,10 +1642,15 @@ uiPrefs->run(v);}
                   xywh {320 0 55 31}
                 }
               }
+              {fltk::CheckButton} uiPrefsSaveOcio {
+                label {Save Ocio Config File} selected
+                tooltip {Save OCIO config in preferences file or leave it empty so that environment variables can be used.}
+                xywh {90 5 25 25} box UP_BOX
+              }
             }
           }
           {fltk::Group} {} {
-            label OCIO
+            label OCIO open
             xywh {13 22 423 355} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiOCIO_ICS {
@@ -2190,7 +2195,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
             }
           }
           {fltk::Group} {} {
-            label Video open
+            label Video
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
@@ -2206,7 +2211,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
               xywh {48 89 318 90} box ROUNDED_BOX
             } {
               {fltk::ValueInput} uiPrefsVideoThreadCount {
-                label {Video Thread Count} selected
+                label {Video Thread Count}
                 tooltip {This setting effects the number of threads used in decoding your video.  A value of 0 means to use as many threads as possible.  Note that currently this setting is in beta, as some movies decode with artifacts when setting is 3 or higher (0 too).}
                 xywh {236 10 55 25} maximum 64 step 1
               }
