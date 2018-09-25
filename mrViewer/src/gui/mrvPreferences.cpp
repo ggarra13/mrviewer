@@ -302,15 +302,11 @@ fltk::StyleSet*     newscheme = NULL;
   int   Preferences::selectioncolor;
   int   Preferences::selectiontextcolor;
 
-static std::string expandVariables( const std::string &s ) {
+static std::string expandVariables( const std::string &s,
+                                    const char* START_VARIABLE,
+                                    const char END_VARIABLE)
+{
 
-#ifdef _WIN32
-#define START_VARIABLE "%"
-#define END_VARIABLE '%'
-#else
-#define START_VARIABLE "${"
-#define END_VARIABLE '}'
-#endif
 
     size_t p = s.find( START_VARIABLE );
     
@@ -331,7 +327,8 @@ static std::string expandVariables( const std::string &s ) {
     const char *v = getenv( variable.c_str() );
     if( v != NULL ) value = std::string( v );
 
-    return expandVariables( pre + value + post );
+    return expandVariables( pre + value + post, START_VARIABLE,
+                            END_VARIABLE );
 }
 
   Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
@@ -1195,7 +1192,9 @@ static const char* kCLocale = "C";
             old_ocio = var;
         }
 
-        std::string parsed = expandVariables( var );
+
+        std::string parsed = expandVariables( var, "%", '%' );
+        parsed = expandVariables( parsed, "${", '}' );
         mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
                      << std::endl );
         mrvLOG_INFO( "ocio", parsed << std::endl );
