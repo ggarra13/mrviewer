@@ -700,7 +700,7 @@ void aviImage::subtitle_file( const char* f )
         if ( ! _filt_frame )
         {
             LOG_ERROR( _("Could not allocate filter frame.  "
-			 "Not enough memory.") );
+                         "Not enough memory.") );
         }
 
         avformat_free_context( scontext );
@@ -1255,7 +1255,7 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
     if ( _video_packets.is_jump( *pkt ) )
     {
-	return kDecodeDone;
+        return kDecodeDone;
     }
 
   AVStream* stream = get_video_stream();
@@ -1752,13 +1752,13 @@ void aviImage::video_stream( int x )
       // fmt.push_back( AV_PIX_FMT_YUV422P10LE );
       // fmt.push_back( AV_PIX_FMT_YUV444P10LE );
   }
-  
+
   fmt.push_back( AV_PIX_FMT_BGR32 );
   fmt.push_back( AV_PIX_FMT_BGR24 );
   fmt.push_back( AV_PIX_FMT_RGB32 );
   fmt.push_back( AV_PIX_FMT_RGB24 );
   fmt.push_back( AV_PIX_FMT_NONE );
-  
+
   AVPixelFormat* fmts = &fmt[0];
 
   if ( supports_yuva() )
@@ -1766,17 +1766,17 @@ void aviImage::video_stream( int x )
       fmt.clear();
       if ( uses_16bits() )
       {
-	  fmt.push_back( AV_PIX_FMT_RGBA64LE );
-	  fmt.push_back( AV_PIX_FMT_BGRA64LE );
-	  fmt.push_back( AV_PIX_FMT_RGB48 );
-	  fmt.push_back( AV_PIX_FMT_BGR48 );
-	  fmt.push_back( AV_PIX_FMT_GRAY16LE );
-	  fmt.push_back( AV_PIX_FMT_YUV420P16LE );
-	  fmt.push_back( AV_PIX_FMT_YUV422P16LE );
-	  fmt.push_back( AV_PIX_FMT_YUV444P16LE );
-	  // fmt.push_back( AV_PIX_FMT_YUV420P10LE );
-	  // fmt.push_back( AV_PIX_FMT_YUV422P10LE );
-	  // fmt.push_back( AV_PIX_FMT_YUV444P10LE );
+          fmt.push_back( AV_PIX_FMT_RGBA64LE );
+          fmt.push_back( AV_PIX_FMT_BGRA64LE );
+          fmt.push_back( AV_PIX_FMT_RGB48 );
+          fmt.push_back( AV_PIX_FMT_BGR48 );
+          fmt.push_back( AV_PIX_FMT_GRAY16LE );
+          fmt.push_back( AV_PIX_FMT_YUV420P16LE );
+          fmt.push_back( AV_PIX_FMT_YUV422P16LE );
+          fmt.push_back( AV_PIX_FMT_YUV444P16LE );
+          // fmt.push_back( AV_PIX_FMT_YUV420P10LE );
+          // fmt.push_back( AV_PIX_FMT_YUV422P10LE );
+          // fmt.push_back( AV_PIX_FMT_YUV444P10LE );
       }
       fmt.push_back( AV_PIX_FMT_RGB32 );
       fmt.push_back( AV_PIX_FMT_BGR32 );
@@ -1800,15 +1800,15 @@ void aviImage::video_stream( int x )
       fmt.clear();
       if ( uses_16bits() )
       {
-	  fmt.push_back( AV_PIX_FMT_RGB48 );
-	  fmt.push_back( AV_PIX_FMT_BGR48 );
-	  fmt.push_back( AV_PIX_FMT_GRAY16LE );
-	  fmt.push_back( AV_PIX_FMT_YUV420P16LE );
-	  fmt.push_back( AV_PIX_FMT_YUV422P16LE );
-	  fmt.push_back( AV_PIX_FMT_YUV444P16LE );
-	  // fmt.push_back( AV_PIX_FMT_YUV420P10LE );
-	  // fmt.push_back( AV_PIX_FMT_YUV422P10LE );
-	  // fmt.push_back( AV_PIX_FMT_YUV444P10LE );
+          fmt.push_back( AV_PIX_FMT_RGB48 );
+          fmt.push_back( AV_PIX_FMT_BGR48 );
+          fmt.push_back( AV_PIX_FMT_GRAY16LE );
+          fmt.push_back( AV_PIX_FMT_YUV420P16LE );
+          fmt.push_back( AV_PIX_FMT_YUV422P16LE );
+          fmt.push_back( AV_PIX_FMT_YUV444P16LE );
+          // fmt.push_back( AV_PIX_FMT_YUV420P10LE );
+          // fmt.push_back( AV_PIX_FMT_YUV422P10LE );
+          // fmt.push_back( AV_PIX_FMT_YUV444P10LE );
       }
       fmt.push_back( AV_PIX_FMT_RGB32 );
       fmt.push_back( AV_PIX_FMT_BGR32 );
@@ -1920,7 +1920,7 @@ void aviImage::video_stream( int x )
       case AV_PIX_FMT_RGBA:
           _pix_fmt = VideoFrame::kRGBA; break;
       case AV_PIX_FMT_YUV444P16LE:
-	  _ptype = VideoFrame::kShort;
+          _ptype = VideoFrame::kShort;
       case AV_PIX_FMT_YUV444P:
       case AV_PIX_FMT_YUVJ444P:
           if ( _colorspace_index == AVCOL_SPC_BT709 ||
@@ -1930,7 +1930,7 @@ void aviImage::video_stream( int x )
               _pix_fmt = VideoFrame::kITU_601_YCbCr444;
           break;
       case AV_PIX_FMT_YUV422P16LE:
-	  _ptype = VideoFrame::kShort;
+          _ptype = VideoFrame::kShort;
       case AV_PIX_FMT_YUV422P:
       case AV_PIX_FMT_YUVJ422P:
           if ( _colorspace_index == AVCOL_SPC_BT709 ||
@@ -1940,7 +1940,7 @@ void aviImage::video_stream( int x )
               _pix_fmt = VideoFrame::kITU_601_YCbCr422;
           break;
       case AV_PIX_FMT_YUV420P16LE:
-	  _ptype = VideoFrame::kShort;
+          _ptype = VideoFrame::kShort;
       case AV_PIX_FMT_YUV420P:
       case AV_PIX_FMT_YUVJ420P:
           if ( _colorspace_index == AVCOL_SPC_BT709 ||
@@ -2191,32 +2191,32 @@ void aviImage::populate()
     if ( has_video() )
     {
         stream = get_video_stream();
-	int size;
-	AVMasteringDisplayMetadata* m =	(AVMasteringDisplayMetadata*)
-	av_stream_get_side_data( stream,
-				 AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
-				 &size );
-	if ( size == sizeof( AVMasteringDisplayMetadata ) )
-	{
-	    if ( m->has_primaries )
-	    {
-		std::cerr << av_q2d( m->display_primaries[0][0] ) << " " 
-			  << av_q2d( m->display_primaries[0][1] ) << std::endl;
-	        std::cerr << av_q2d( m->display_primaries[1][0] ) << " " 
-			  << av_q2d( m->display_primaries[1][1] ) << std::endl;
-	        std::cerr << av_q2d( m->display_primaries[2][0] ) << " " 
-			  << av_q2d( m->display_primaries[2][1] ) << std::endl;
-	        std::cerr << av_q2d( m->white_point[0] ) << " " 
-			  << av_q2d( m->white_point[1] ) << std::endl;
-	    }
+        int size;
+        AVMasteringDisplayMetadata* m =	(AVMasteringDisplayMetadata*)
+        av_stream_get_side_data( stream,
+                                 AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+                                 &size );
+        if ( size == sizeof( AVMasteringDisplayMetadata ) )
+        {
+            if ( m->has_primaries )
+            {
+                // std::cerr << av_q2d( m->display_primaries[0][0] ) << " "
+                //        << av_q2d( m->display_primaries[0][1] ) << std::endl;
+                // std::cerr << av_q2d( m->display_primaries[1][0] ) << " "
+                //        << av_q2d( m->display_primaries[1][1] ) << std::endl;
+                // std::cerr << av_q2d( m->display_primaries[2][0] ) << " "
+                //        << av_q2d( m->display_primaries[2][1] ) << std::endl;
+                // std::cerr << av_q2d( m->white_point[0] ) << " "
+                //        << av_q2d( m->white_point[1] ) << std::endl;
+            }
 
-	    if  ( m->has_luminance )
-	    {
-		std::cerr << av_q2d( m->max_luminance ) << " " 
-			  << av_q2d( m->min_luminance ) << std::endl;
-	    }
+            if  ( m->has_luminance )
+            {
+                // std::cerr << av_q2d( m->max_luminance ) << " "
+                //        << av_q2d( m->min_luminance ) << std::endl;
+            }
 
-	}
+        }
     }
     else if ( has_audio() )
     {
@@ -2434,7 +2434,7 @@ void aviImage::populate()
         sprintf( buf, _("Program %d "), i+1 );
         dump_metadata( _context->programs[i]->metadata, buf );
 
-	//dump_metadata( pkt->side_data, "" );
+        //dump_metadata( pkt->side_data, "" );
     }
 
 
@@ -2470,8 +2470,8 @@ void aviImage::populate()
                 int err = _context->pb ? _context->pb->error : 0;
                 if ( err != 0 )
                 {
-		    char buf[128];
-		    av_strerror(err, buf, 128);
+                    char buf[128];
+                    av_strerror(err, buf, 128);
                     IMG_ERROR("populate: Could not read frame 1 error: "
                               << buf );
                     break;
@@ -2802,8 +2802,8 @@ int64_t aviImage::queue_packets( const int64_t frame,
             int err = _context->pb ? _context->pb->error : 0;
             if ( err != 0 )
             {
-		char buf[128];
-		av_strerror(err, buf, 128);
+                char buf[128];
+                av_strerror(err, buf, 128);
                 IMG_ERROR("fetch: Could not read frame " << frame << " error: "
                           << buf );
             }
@@ -2970,7 +2970,7 @@ bool aviImage::fetch(const int64_t frame)
          << " DTS: " << _dts << endl;
 #endif
 
-    
+
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
     {
        _right_eye->stop();
@@ -2983,19 +2983,19 @@ bool aviImage::fetch(const int64_t frame)
 
     int64_t f = handle_loops( frame );
 
-    
+
     if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
          in_video_store( f ) )
     {
-    	int64_t pts = frame2pts( get_video_stream(), f );
-    	_video_packets.jump( pts );
-    	pts = frame2pts( get_audio_stream(), f );
-    	if ( !got_audio ) _audio_packets.jump( pts );
-    	_dts = _adts = f;
-	// _expected = _dts + 1;
-	// _expected_audio = _dts + 1;
-	_expected = -99999;
-	_expected_audio = -99999;
+        int64_t pts = frame2pts( get_video_stream(), f );
+        _video_packets.jump( pts );
+        pts = frame2pts( get_audio_stream(), f );
+        if ( !got_audio ) _audio_packets.jump( pts );
+        _dts = _adts = f;
+        // _expected = _dts + 1;
+        // _expected_audio = _dts + 1;
+        _expected = -99999;
+        _expected_audio = -99999;
 
         return true;
     }
