@@ -19,10 +19,10 @@
  * @file   mrvDrawEngine.cpp
  * @author gga
  * @date   Sat Jul 14 07:36:01 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
@@ -75,10 +75,10 @@ namespace {
   const char* kModule = "draw";
 
 
-  /** 
+  /**
    * Dummy function used to have a boost::shared_ptr that does not
    * delete its element.
-   * 
+   *
    * @param ptr ptr to memory allocated by new uchar[x]
    */
   void shared_ptr_no_delete( uchar* ptr )
@@ -180,10 +180,10 @@ namespace {
   {
     static const float d[4][4] =
       {
-	{ 0.f / 16,  8.f / 16,  2.f / 16, 10.f / 16 },
-	{ 12.f / 16,  4.f / 16, 14.f / 16,  6.f / 16 },
-	{ 3.f / 16, 11.f / 16,  1.f / 16,  9.f / 16 },
-	{ 15.f / 16,  7.f / 16, 13.f / 16,  5.f / 16 },
+        { 0.f / 16,  8.f / 16,  2.f / 16, 10.f / 16 },
+        { 12.f / 16,  4.f / 16, 14.f / 16,  6.f / 16 },
+        { 3.f / 16, 11.f / 16,  1.f / 16,  9.f / 16 },
+        { 15.f / 16,  7.f / 16, 13.f / 16,  5.f / 16 },
       };
 
     return (unsigned char) (v + d[y & 3][x & 3]);
@@ -225,7 +225,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
   mrv::image_type_ptr result = d->result;
   if (!result) return;
 
-#if 0   
+#if 0
   CMedia* img = d->image;
   int dw = img->width();
   int oxl = xl;
@@ -246,16 +246,16 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
       CMedia::Pixel* icc = new CMedia::Pixel[ bw * bh ];
       CMedia::Pixel* p   = icc;
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x, ++p )
-	    {
-	      *p = frame->pixel(x,y);
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x, ++p )
+            {
+              *p = frame->pixel(x,y);
+            }
+        }
 
       status = MagickConstituteImage( wand, bw, bh, fmt, FloatPixel, icc );
       if ( status != MagickTrue )
-	LOG_ERROR( "Could not create image" );
+        LOG_ERROR( "Could not create image" );
 
 
       uchar* profile;
@@ -264,19 +264,19 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
       colorProfile::get( profile, length, d->image->color_profile() );
 
       if ( profile )
-	{
-	  status  = MagickSetImageProfile( wand, "ICC", profile, length );
-	  if ( status != MagickTrue )
-	    LOG_ERROR( "Could not profile image" );
+        {
+          status  = MagickSetImageProfile( wand, "ICC", profile, length );
+          if ( status != MagickTrue )
+            LOG_ERROR( "Could not profile image" );
 
-	  colorProfile::get_monitor_profile( profile, length );
-	  if ( profile )
-	    {
-	      status  = MagickProfileImage( wand, "ICC", profile, length );
-	      if ( status != MagickTrue )
-		LOG_ERROR( "Could not profile image" );
-	    }
-	}
+          colorProfile::get_monitor_profile( profile, length );
+          if ( profile )
+            {
+              status  = MagickProfileImage( wand, "ICC", profile, length );
+              if ( status != MagickTrue )
+                LOG_ERROR( "Could not profile image" );
+            }
+        }
 
 
       MagickGetImagePixels(wand, 0, 0, bw, bh, fmt, FloatPixel, icc );
@@ -302,95 +302,95 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
     {
     case kRed:
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p.r = p.g = p.b = RGBAfunc( p.r );
-	      result->pixel( x, y, p );
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p.r = p.g = p.b = RGBAfunc( p.r );
+              result->pixel( x, y, p );
+            }
+        }
       break;
     case kGreen:
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p.r = p.g = p.b = RGBAfunc( p.g );
-	      result->pixel( x, y, p );
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p.r = p.g = p.b = RGBAfunc( p.g );
+              result->pixel( x, y, p );
+            }
+        }
       break;
     case kBlue:
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p.r = p.g = p.b = RGBAfunc( p.b );
-	      result->pixel( x, y, p );
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p.r = p.g = p.b = RGBAfunc( p.b );
+              result->pixel( x, y, p );
+            }
+        }
       break;
     case kAlpha:
       {
-	mrv::media m = d->view->background();
+        mrv::media m = d->view->background();
 
-	for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p = RGBAfunc( p );
-	      if ( d->view->show_background() )
-		{
-		  p.r = p.g = p.b = 1.0f;
-		}
-	      else
-		{
-		  p.r = p.g = p.b = p.a;
-		}
-	      result->pixel( x, y, p );
-	    }
-	}
+        for ( y = yl; y < yh; ++y )
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p = RGBAfunc( p );
+              if ( d->view->show_background() )
+                {
+                  p.r = p.g = p.b = 1.0f;
+                }
+              else
+                {
+                  p.r = p.g = p.b = p.a;
+                }
+              result->pixel( x, y, p );
+            }
+        }
       }
       break;
     case kAlphaOverlay:
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p = RGBAfunc( p );
-	      p.r = p.a * 0.5f + p.r * 0.5f;
-	      result->pixel( x, y, p );
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p = RGBAfunc( p );
+              p.r = p.a * 0.5f + p.r * 0.5f;
+              result->pixel( x, y, p );
+            }
+        }
       break;
     case kLumma:
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p = RGBAfunc( p );
-	      p.r = p.g = p.b = (p.r + p.g + p.b)/3.0f;
-	      result->pixel( x, y, p );
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p = RGBAfunc( p );
+              p.r = p.g = p.b = (p.r + p.g + p.b)/3.0f;
+              result->pixel( x, y, p );
+            }
+        }
       break;
     case kRGB:
     default:
       for ( y = yl; y < yh; ++y )
-	{
-	  for ( x = xl; x < xh; ++x )
-	    {
-	      CMedia::Pixel p = orig->pixel(x,y);
-	      p = RGBAfunc( p );
-	      result->pixel( x, y, p );
-	    }
-	}
+        {
+          for ( x = xl; x < xh; ++x )
+            {
+              CMedia::Pixel p = orig->pixel(x,y);
+              p = RGBAfunc( p );
+              result->pixel( x, y, p );
+            }
+        }
       break;
     }
 
@@ -426,9 +426,9 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 
     for ( unsigned int y = yl ; y < yh; ++y )
       {
-	for ( unsigned int x = xl; x < xh; ++x )
-	  {
-	    const CMedia::Pixel& p = pic->pixel( x, y );
+        for ( unsigned int x = xl; x < xh; ++x )
+          {
+            const CMedia::Pixel& p = pic->pixel( x, y );
 
             if ( half(p.r).isFinite() )
             {
@@ -448,14 +448,14 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
                if ( p.b > d->pMax ) d->pMax = p.b;
             }
 
-	  }
+          }
       }
 
     if ( d->pMin == std::numeric_limits<float>::max() )
         d->pMin = 0.0f;
 
     if (d->pMax <= d->pMin)
-	d->pMax = d->pMin + 1;
+        d->pMax = d->pMin + 1;
 
   }
 
@@ -466,11 +466,12 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 namespace mrv {
 
   DrawEngine::ShaderType DrawEngine::_hardwareShaders = DrawEngine::kAuto;
+  bool DrawEngine::_has_hdr = false;
   bool DrawEngine::_has_yuv  = false;
   bool DrawEngine::_has_yuva = false;
   bool DrawEngine::_fboRenderBuffer = false;
 
-  static const char* kShaderType[] = 
+  static const char* kShaderType[] =
     {
       "None",
       "Auto",
@@ -513,8 +514,8 @@ namespace mrv {
 
 
   void DrawEngine::display( image_type_ptr& result,
-			    const image_type_ptr& src,
-			    CMedia* img )
+                            const image_type_ptr& src,
+                            CMedia* img )
   {
     Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );
@@ -530,77 +531,77 @@ namespace mrv {
 
     if ( _view->normalize() )
       {
-	float vMin[2];
-	float vMax[2];
-	for ( x = 0; x < 2; ++x )
-	  {
-	    vMin[x] = std::numeric_limits<float>::max();
-	    vMax[x] = std::numeric_limits<float>::min();
-	  }
+        float vMin[2];
+        float vMax[2];
+        for ( x = 0; x < 2; ++x )
+          {
+            vMin[x] = std::numeric_limits<float>::max();
+            vMax[x] = std::numeric_limits<float>::min();
+          }
 
-	for ( y = 0; y < dh; ++y )
-	  {
-	    for ( x = 0; x < dw; ++x )
-	      {
-		const CMedia::Pixel& rp = pic->pixel(x,y);
+        for ( y = 0; y < dh; ++y )
+          {
+            for ( x = 0; x < dw; ++x )
+              {
+                const CMedia::Pixel& rp = pic->pixel(x,y);
 
-		if ( isnan( rp.a ) )
-		  continue;
+                if ( isnan( rp.a ) )
+                  continue;
 
-		if ( rp.a < vMin[1] ) vMin[1] = rp.a;
-		if ( rp.a > vMax[1] ) vMax[1] = rp.a;
+                if ( rp.a < vMin[1] ) vMin[1] = rp.a;
+                if ( rp.a > vMax[1] ) vMax[1] = rp.a;
 
-		if ( isfinite( rp.r ) && !isnan(rp.r) )
-		  {
-		    if ( rp.r < vMin[0] ) vMin[0] = rp.r;
-		    if ( rp.r > vMax[0] ) vMax[0] = rp.r;
-		  }
-		if ( isfinite( rp.g ) && !isnan(rp.g) )
-		  {
-		    if ( rp.g < vMin[0] ) vMin[0] = rp.g;
-		    if ( rp.g > vMax[0] ) vMax[0] = rp.g;
-		  }
+                if ( isfinite( rp.r ) && !isnan(rp.r) )
+                  {
+                    if ( rp.r < vMin[0] ) vMin[0] = rp.r;
+                    if ( rp.r > vMax[0] ) vMax[0] = rp.r;
+                  }
+                if ( isfinite( rp.g ) && !isnan(rp.g) )
+                  {
+                    if ( rp.g < vMin[0] ) vMin[0] = rp.g;
+                    if ( rp.g > vMax[0] ) vMax[0] = rp.g;
+                  }
 
-		if ( isfinite( rp.b ) && !isnan(rp.b) )
-		  {
-		    if ( rp.b < vMin[0] ) vMin[0] = rp.b;
-		    if ( rp.b > vMax[0] ) vMax[0] = rp.b;
-		  }
-	      }
-	  }
+                if ( isfinite( rp.b ) && !isnan(rp.b) )
+                  {
+                    if ( rp.b < vMin[0] ) vMin[0] = rp.b;
+                    if ( rp.b > vMax[0] ) vMax[0] = rp.b;
+                  }
+              }
+          }
 
-	for ( x = 0; x < 2; ++x )
-	  {
-	    vMax[x] -= vMin[x];
-	    if ( vMax[x] == 0.0f ) vMax[x] = 1.0f;
-	  }
+        for ( x = 0; x < 2; ++x )
+          {
+            vMax[x] -= vMin[x];
+            if ( vMax[x] == 0.0f ) vMax[x] = 1.0f;
+          }
 
-	mrv::image_type_ptr p( new image_type( frame,
-					       dw,
-					       dh,
-					       channels,
-					       format,
-					       src->pixel_type() ) );
+        mrv::image_type_ptr p( new image_type( frame,
+                                               dw,
+                                               dh,
+                                               channels,
+                                               format,
+                                               src->pixel_type() ) );
 
-	for ( y = 0; y < dh; ++y )
-	  {
-	    for ( x = 0; x < dw; ++x )
-	      {
-		CMedia::Pixel rp = pic->pixel(x, y);
+        for ( y = 0; y < dh; ++y )
+          {
+            for ( x = 0; x < dw; ++x )
+              {
+                CMedia::Pixel rp = pic->pixel(x, y);
 
-		if ( isfinite( rp.r ) )
-		  rp.r = (rp.r - vMin[0]) / vMax[0];
-		if ( isfinite( rp.g ) )
-		  rp.g = (rp.g - vMin[0]) / vMax[0];
-		if ( isfinite( rp.b ) )
-		  rp.b = (rp.b - vMin[0]) / vMax[0];
-		rp.a = (rp.a - vMin[1]) / vMax[1];
+                if ( isfinite( rp.r ) )
+                  rp.r = (rp.r - vMin[0]) / vMax[0];
+                if ( isfinite( rp.g ) )
+                  rp.g = (rp.g - vMin[0]) / vMax[0];
+                if ( isfinite( rp.b ) )
+                  rp.b = (rp.b - vMin[0]) / vMax[0];
+                rp.a = (rp.a - vMin[1]) / vMax[1];
 
-		p->pixel( x, y, rp );
-	      }
-	  }
+                p->pixel( x, y, rp );
+              }
+          }
 
-	pic = p;
+        pic = p;
       }
 
     // Based on window size, spawn several threads or just jump to
@@ -619,60 +620,60 @@ namespace mrv {
 
    if ( num < numPixelsPerThread )
    {
-	DisplayData display_data;
-	display_data.view   = _view;
-	display_data.orig   = pic;
-	display_data.result = result;
-	display_data.image  = img;
-	display_data.rect   = rect;
-	display_data.alpha  = result->has_alpha();
-	display_cb( &display_data );
+        DisplayData display_data;
+        display_data.view   = _view;
+        display_data.orig   = pic;
+        display_data.result = result;
+        display_data.image  = img;
+        display_data.rect   = rect;
+        display_data.alpha  = result->has_alpha();
+        display_cb( &display_data );
       }
     else
       {
-	unsigned int x, y;
+        unsigned int x, y;
 
 
-	unsigned int ny, nx;
-	for ( y = yl; y < yh; y = ny )
-	  {
-	    ny   = y + heightPerThread;
-	    unsigned int byh  = yh < ny? yh : ny;
+        unsigned int ny, nx;
+        for ( y = yl; y < yh; y = ny )
+          {
+            ny   = y + heightPerThread;
+            unsigned int byh  = yh < ny? yh : ny;
 
-	    boost::thread* thread_id;
-	    for ( x = xl; x < xh; x = nx )
-	      {
-		nx  = x + widthPerThread;
-		int bxh = xh < nx? xh : nx;
+            boost::thread* thread_id;
+            for ( x = xl; x < xh; x = nx )
+              {
+                nx  = x + widthPerThread;
+                int bxh = xh < nx? xh : nx;
 
-		DisplayData* display_data = new DisplayData;
-		display_data->view   = _view;
-		display_data->orig   = pic;
-		display_data->result = result;
-		display_data->image  = img;
-		display_data->rect   = mrv::Recti( x, y, bxh-x, byh-y );
-		display_data->alpha  = result->has_alpha();
+                DisplayData* display_data = new DisplayData;
+                display_data->view   = _view;
+                display_data->orig   = pic;
+                display_data->result = result;
+                display_data->image  = img;
+                display_data->rect   = mrv::Recti( x, y, bxh-x, byh-y );
+                display_data->alpha  = result->has_alpha();
 
-		thread_id = new boost::thread( boost::bind( display_cb,
-							    display_data ) );
+                thread_id = new boost::thread( boost::bind( display_cb,
+                                                            display_data ) );
 
-		buckets.insert( std::make_pair( thread_id, display_data ) );
-	      }
-	  }
+                buckets.insert( std::make_pair( thread_id, display_data ) );
+              }
+          }
 
 
-	BucketList::iterator i = buckets.begin();
-	BucketList::iterator e = buckets.end();
+        BucketList::iterator i = buckets.begin();
+        BucketList::iterator e = buckets.end();
 
-	// Make sure all threads finish before proceeding
-	for ( ; i != e; ++i )
-	  {
-	    i->first->join();
+        // Make sure all threads finish before proceeding
+        for ( ; i != e; ++i )
+          {
+            i->first->join();
 
-	    DisplayData*  opaque = (DisplayData*) i->second;
-	    delete opaque;
-	  }
-	buckets.clear();
+            DisplayData*  opaque = (DisplayData*) i->second;
+            delete opaque;
+          }
+        buckets.clear();
       }
 
   }
@@ -685,17 +686,17 @@ namespace mrv {
    * @param alpha  if set, create 8-bit buffer with an alpha channel
    */
   image_type_ptr DrawEngine::display( const image_type_ptr& src,
-				      CMedia* img )
+                                      CMedia* img )
   {
     if ( !src ) return src;
 
 
     mrv::image_type_ptr result( new image_type( src->frame(),
-						src->width(),
-						src->height(),
-						src->channels(),
-						src->format(),
-						image_type::kByte ) );
+                                                src->width(),
+                                                src->height(),
+                                                src->channels(),
+                                                src->format(),
+                                                image_type::kByte ) );
 
     display( result, src, img );
 
@@ -715,9 +716,9 @@ namespace mrv {
     //       if ( alpha ) format = GL_RGBA;
 
     //       gluScaleImage( format,
-    // 		     dw, dh,  GL_UNSIGNED_BYTE, data.get(),
-    // 		     dw, dh1, GL_UNSIGNED_BYTE, scaled
-    // 		     );
+    //               dw, dh,  GL_UNSIGNED_BYTE, data.get(),
+    //               dw, dh1, GL_UNSIGNED_BYTE, scaled
+    //               );
 
     //       data = boost::shared_array< boost::uint8_t >(scaled);
     //     }
@@ -730,7 +731,7 @@ namespace mrv {
 
   /// Find min/max values for an image, using multithreading if possible
   void DrawEngine::minmax( float& pMin, float& pMax,
-			   const CMedia* img )
+                           const CMedia* img )
   {
     unsigned int xh = img->width();
     unsigned int yh = img->height();
@@ -744,7 +745,7 @@ namespace mrv {
 
     pMin = data.pMin;
     pMax = data.pMax;
-    
+
     if ( img->stereo_output() )
     {
         data.pic = img->right();
@@ -754,7 +755,7 @@ namespace mrv {
         if ( data.pMin < pMin ) pMin = data.pMin;
         if ( data.pMax > pMax ) pMax = data.pMax;
     }
-    
+
 
   }
 
@@ -769,9 +770,9 @@ namespace mrv {
     }
     {
         const mrv::media& m = _view->background();
-        if ( m ) 
+        if ( m )
             minmax( _normMin, _normMax, m->image() );
     }
   }
-  
+
 } // namespace mrv
