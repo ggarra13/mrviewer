@@ -302,6 +302,37 @@ fltk::StyleSet*     newscheme = NULL;
   int   Preferences::selectioncolor;
   int   Preferences::selectiontextcolor;
 
+static std::string expandVariables( const std::string &s ) {
+
+#ifdef _WIN32
+#define START_VARIABLE "%"
+#define END_VARIABLE '%'
+#else
+#define START_VARIABLE "${"
+#define END_VARIABLE '}'
+#endif
+
+    size_t p = s.find( START_VARIABLE );
+    
+    if( p == std::string::npos ) return s;
+    
+    std::string pre  = s.substr( 0, p );
+    std::string post = s.substr( p + strlen(START_VARIABLE) );
+
+    size_t e = post.find( END_VARIABLE );
+    
+    if( e == std::string::npos ) return s;
+
+    std::string variable = post.substr( 0, e );
+    std::string value    = "";
+
+    post = post.substr( e + 1 );
+
+    const char *v = getenv( variable.c_str() );
+    if( v != NULL ) value = std::string( v );
+
+    return expandVariables( pre + value + post );
+}
 
   Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
   {
@@ -486,6 +517,9 @@ fltk::StyleSet*     newscheme = NULL;
     ocio.get( "ics_in_toolbar", tmp, 0 );
     uiPrefs->uiPrefsOcioICSToolbar->value( tmp );
 
+    ocio.get( "save_config", tmp, 0 );
+    uiPrefs->uiPrefsSaveOcio->value( tmp );
+    
     ocio.get( "config", tmpS, "", 2048 );
     uiPrefs->uiPrefsOCIOConfig->text( tmpS );
 
@@ -1136,11 +1170,10 @@ static const char* kCLocale = "C";
 
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
-
-    DBG( __FUNCTION__ << " " << __LINE__ );
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
-                                          true);
+                                          false);
+    
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
@@ -1148,28 +1181,27 @@ static const char* kCLocale = "C";
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default." )
                      << std::endl );
-        DBG( __FUNCTION__ << " " << __LINE__ );
         var = strdup( tmp.c_str() );
-        DBG( __FUNCTION__ << " " << __LINE__ );
     }
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
         if ( old_ocio != var )
         {
-            DBG( __FUNCTION__ << " " << __LINE__ );
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
             mrvLOG_INFO( "ocio", var << std::endl );
             old_ocio = var;
         }
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        std::string parsed = expandVariables( var );
+        mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
+                     << std::endl );
+        mrvLOG_INFO( "ocio", parsed << std::endl );
 
         char buf[2048];
-        sprintf( buf, "OCIO=%s", var );
+        sprintf( buf, "OCIO=%s", parsed.c_str() );
         putenv( strdup(buf) );
 
         uiPrefs->uiPrefsOCIOConfig->text( var );
@@ -1251,10 +1283,8 @@ static const char* kCLocale = "C";
             use_ocio = false;
         }
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
         std::locale::global( std::locale("") );
         setlocale(LC_NUMERIC, "" );
-        DBG( __FUNCTION__ << " " << __LINE__ );
     }
     else
     {
@@ -1266,13 +1296,11 @@ static const char* kCLocale = "C";
 
     if ( use_ocio )
     {
-        DBG( __FUNCTION__ << " " << __LINE__ );
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
         main->uiICS->relayout();
         try
         {
-            DBG( __FUNCTION__ << " " << __LINE__ );
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
             std::vector< std::string > spaces;
             for(int i = 0; i < config->getNumColorSpaces(); ++i)
@@ -1294,7 +1322,6 @@ static const char* kCLocale = "C";
                 img = fg->image();
             }
 
-            DBG( "ICS Colorspaces BEGIN" );
             fltk::PopupMenu* w = main->uiICS;
             w->clear();
             std::sort( spaces.begin(), spaces.end() );
@@ -1302,8 +1329,6 @@ static const char* kCLocale = "C";
             {
                 const char* space = spaces[i].c_str();
                 OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
-                DBG( "ICS Colorspace: " << cs->getName() << " "
-                     << cs->getDescription() );
                 w->add( space );
                 w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
@@ -1312,7 +1337,6 @@ static const char* kCLocale = "C";
                     w->value( i );
                 }
             }
-            DBG( "ICS Colorspaces END" );
             w->do_callback();
             w->redraw();
         }
@@ -1706,8 +1730,12 @@ static const char* kCLocale = "C";
         tmp = uiPrefs->uiPrefsOcioICSToolbar->value();
         ocio.set( "ics_in_toolbar", tmp );
 
-        ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
-
+        if ( uiPrefs->uiPrefsSaveOcio->value() )
+        {
+            ocio.set( "save_config", 1 );
+            ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
+        }
+        
         fltk::Preferences ics( ocio, "ICS" );
         {
           ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->text() );
