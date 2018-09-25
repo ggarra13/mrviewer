@@ -19,10 +19,10 @@
  * @file   mrvGLShader.cpp
  * @author gga
  * @date   Fri Jan 18 22:44:59 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
@@ -59,7 +59,7 @@ namespace mrv {
       load( filename );
   }
 
-  const char* GLShader::get_error(const char *data, int pos) 
+  const char* GLShader::get_error(const char *data, int pos)
   {
       static std::string ret = data;
     char *s = (char*) data;
@@ -114,24 +114,24 @@ namespace mrv {
       const char* c2,* c3,* c4;
       c2 = strchr( var + 6, ' ');
       if( c2 ) {
-	c3 = strchr( c2 + 1, ':');
-	if( c3 ) {
-	  c4 = strchr( c3 + 1, ':');
-	  if( c4 )
-	    c4 = strchr( c4 + 1, '[');
-	  if( c4 && c4 < eol) {
-	    char type[10], name[30];
-	    strncpy( type, var + 5, c2-var-5 );
-	    type[c2-var-5] = 0;
-	    strncpy( name, c2 + 1, c3-c2-2 );
-	    name[c3-c2-2] = 0;
+        c3 = strchr( c2 + 1, ':');
+        if( c3 ) {
+          c4 = strchr( c3 + 1, ':');
+          if( c4 )
+            c4 = strchr( c4 + 1, '[');
+          if( c4 && c4 < eol) {
+            char type[10], name[30];
+            strncpy( type, var + 5, c2-var-5 );
+            type[c2-var-5] = 0;
+            strncpy( name, c2 + 1, c3-c2-2 );
+            name[c3-c2-2] = 0;
 
-	    GLint location = atoi( c4 + 1);
+            GLint location = atoi( c4 + 1);
             DBG( "UNIFORM " << (char*)name << " type "
                  << (char*)type << " " << location );
-	    _uniforms[ name ] = location;
-	  }
-	}
+            _uniforms[ name ] = location;
+          }
+        }
       }
       var = strstr(var + 1, "#var ");
     }
@@ -149,22 +149,22 @@ namespace mrv {
      FILE* f = fltk::fltk_fopen( filename, "rb" );
     if (!f)
       {
-	THROW_ERRNO ("Can't load shader file '" << filename <<
-		     "' (%T)");
+        THROW_ERRNO ("Can't load shader file '" << filename <<
+                     "' (%T)");
       }
 
     fseek( f, 0, SEEK_END );
     size_t len = ftell (f);
     fseek( f, 0, SEEK_SET );
-	
+
     char* code = new char[len + 1];
 
     size_t read = fread( code, 1, len, f );
     if (read != len)
       {
-	fclose(f);
-	THROW (Iex::BaseExc, "Expected " << len << " bytes in fragment " <<
-	       "shader file " << filename << ", only got " << read);
+        fclose(f);
+        THROW (Iex::BaseExc, "Expected " << len << " bytes in fragment " <<
+               "shader file " << filename << ", only got " << read);
       }
 
     code[read] = '\0';    // null-terminate
@@ -180,88 +180,85 @@ namespace mrv {
     GLint len = (GLint) strlen( code );
 
 
-    if( GLEW_ARB_fragment_program && !strncmp(code,"!!ARBfp1.0",10)) 
+    if( GLEW_ARB_fragment_program && !strncmp(code,"!!ARBfp1.0",10))
       {
-	// ARB fragment program
-	_frag_target = GL_FRAGMENT_PROGRAM_ARB;
-	glGenProgramsARB( 1, &_frag_shader );
+        // ARB fragment program
+        _frag_target = GL_FRAGMENT_PROGRAM_ARB;
+        glGenProgramsARB( 1, &_frag_shader );
         DBG( __FUNCTION__ << " " << __LINE__ );
-	glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, _frag_shader );
+        glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, _frag_shader );
         DBG( __FUNCTION__ << " " << __LINE__ );
-	glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB, 
-			    GL_PROGRAM_FORMAT_ASCII_ARB,
-			   (GLsizei)len, code );
+        glProgramStringARB( GL_FRAGMENT_PROGRAM_ARB,
+                            GL_PROGRAM_FORMAT_ASCII_ARB,
+                           (GLsizei)len, code );
         DBG( __FUNCTION__ << " " << __LINE__ );
-	GLint pos = -1;
-	glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB,&pos);
-	if(pos != -1 ) {
-	  THROW (Iex::BaseExc, "GLShader::load(): fragment program error in " 
-		 << filename << " file\n" << get_error(code, pos));
-	}
+        GLint pos = -1;
+        glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB,&pos);
+        if(pos != -1 ) {
+          THROW (Iex::BaseExc, "GLShader::load(): fragment program error in "
+                 << filename << " file\n" << get_error(code, pos));
+        }
         DBG( "ARB frag compiled" );
-	store_uniforms( code );
+        store_uniforms( code );
         DBG( __FUNCTION__ << " " << __LINE__ );
       }
-    else if( GLEW_NV_fragment_program && !strncmp(code,"!!FP1.0",7)) 
+    else if( GLEW_NV_fragment_program && !strncmp(code,"!!FP1.0",7))
       {
-	// NV fragment program
-	_frag_target = GL_FRAGMENT_PROGRAM_NV;
-	glGenProgramsNV( 1, &_frag_shader );
-	glBindProgramNV( GL_FRAGMENT_PROGRAM_NV, _frag_shader );
-	glLoadProgramNV( GL_FRAGMENT_PROGRAM_NV, _frag_shader,
-			 (GLsizei)len,(GLubyte*)code );
-	GLint pos = -1;
-	glGetIntegerv(GL_PROGRAM_ERROR_POSITION_NV,&pos);
-	if(pos != -1 ) {
-	  THROW (Iex::BaseExc, "GLShader::load(): fragment program error in " 
-		 << filename << " file\n" << get_error(code, pos));
-	}
+        // NV fragment program
+        _frag_target = GL_FRAGMENT_PROGRAM_NV;
+        glGenProgramsNV( 1, &_frag_shader );
+        glBindProgramNV( GL_FRAGMENT_PROGRAM_NV, _frag_shader );
+        glLoadProgramNV( GL_FRAGMENT_PROGRAM_NV, _frag_shader,
+                         (GLsizei)len,(GLubyte*)code );
+        GLint pos = -1;
+        glGetIntegerv(GL_PROGRAM_ERROR_POSITION_NV,&pos);
+        if(pos != -1 ) {
+          THROW (Iex::BaseExc, "GLShader::load(): fragment program error in "
+                 << filename << " file\n" << get_error(code, pos));
+        }
       }
     else
       {
-	_program = glCreateProgramObjectARB();
+        _program = glCreateProgramObjectARB();
 
-	GLhandleARB shader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
+        GLhandleARB shader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
 
-	glShaderSource( shader, 1, (const GLcharARB**)&code, &len );
-        
-	glCompileShaderARB( shader );
+        glShaderSource( shader, 1, (const GLcharARB**)&code, &len );
 
-	GLint bDidCompile;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &bDidCompile);
+        glCompileShaderARB( shader );
 
-	if ( !bDidCompile )
-	{
-	   delete [] code;
-	   THROW(Iex::BaseExc, _("Shader did not compile. Error: ") <<
-		 get_shader_error( shader ) );
-	}
+        GLint bDidCompile;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &bDidCompile);
 
-	glAttachObjectARB( _program, shader );
+        if ( !bDidCompile )
+        {
+           THROW(Iex::BaseExc, _("Shader did not compile. Error: ") <<
+                 get_shader_error( shader ) );
+        }
 
-	glDeleteObjectARB( shader ); 
-	glLinkProgramARB( _program );
+        glAttachObjectARB( _program, shader );
 
-	GLint bDidLink;
-	glGetProgramiv( _program, GL_LINK_STATUS, &bDidLink);
-	if ( !bDidLink )
-	{
-	   glDeleteObjectARB( _program );
-	   delete [] code;
-	   THROW( Iex::BaseExc, _("Program did not link. Error: ") 
-		  << get_program_error( _program ) );
-	}
+        glDeleteObjectARB( shader );
+        glLinkProgramARB( _program );
 
-	GLint ok;
-	glGetObjectParameterivARB( _program, GL_OBJECT_LINK_STATUS_ARB, &ok );
-	if (!ok) {
-	  delete [] code;
+        GLint bDidLink;
+        glGetProgramiv( _program, GL_LINK_STATUS, &bDidLink);
+        if ( !bDidLink )
+        {
+           glDeleteObjectARB( _program );
+           THROW( Iex::BaseExc, _("Program did not link. Error: ")
+                  << get_program_error( _program ) );
+        }
+
+        GLint ok;
+        glGetObjectParameterivARB( _program, GL_OBJECT_LINK_STATUS_ARB, &ok );
+        if (!ok) {
           glDeleteObjectARB( _program );
 
-	  THROW (Iex::BaseExc, _("GLSL error in file ")
-		 << filename << ": " << get_glsl_error() );
+          THROW (Iex::BaseExc, _("GLSL error in file ")
+                 << filename << ": " << get_glsl_error() );
 
-	}
+        }
 
       }
   }
@@ -274,14 +271,14 @@ namespace mrv {
   }
 
   void GLShader::setUniform( const GLint location,
-			     const float x, const float y )
+                             const float x, const float y )
   {
     glUniform2f( location, x, y );
     CHECK_GL;
   }
 
   void GLShader::setUniform( const GLint location,
-			     const float x, const float y, const float z )
+                             const float x, const float y, const float z )
   {
     glUniform3f( location, x, y, z );
     CHECK_GL;
@@ -289,128 +286,128 @@ namespace mrv {
 
 
   void GLShader::setUniform( const GLint location,
-			     const float x, const float y, 
-			     const float z, const float w  )
+                             const float x, const float y,
+                             const float z, const float w  )
   {
     glUniform4f( location, x, y, z, w );
     CHECK_GL;
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const float x )
+  void GLShader::setUniform( const char* uniform,
+                             const float x )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
+        GLint location = glGetUniformLocationARB( _program, uniform );
         DBG( "GL Program setUniform " << uniform << " " << x );
-	CHECK_GL;
-	setUniform( location, x );
+        CHECK_GL;
+        setUniform( location, x );
         CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     x, 0, 0, 0 );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     x, 0, 0, 0 );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " " << x );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, x, 0, 0, 0);
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location, x, 0, 0, 0);
+        CHECK_GL;
       }
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const float x, const float y )
+  void GLShader::setUniform( const char* uniform,
+                             const float x, const float y )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
+        GLint location = glGetUniformLocationARB( _program, uniform );
         DBG( "GL Program setUniform " << uniform << " " << x << ", " << y );
-	CHECK_GL;
-	setUniform( location, x, y );
+        CHECK_GL;
+        setUniform( location, x, y );
         CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     x, y, 0, 0 );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     x, y, 0, 0 );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " " << x << ", " << y );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, x, y, 0, 0);
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location, x, y, 0, 0);
+        CHECK_GL;
       }
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const float x, const float y, 
-			     const float z )
+  void GLShader::setUniform( const char* uniform,
+                             const float x, const float y,
+                             const float z )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
-	CHECK_GL;
+        GLint location = glGetUniformLocationARB( _program, uniform );
+        CHECK_GL;
         DBG( "GL Program setUniform " << uniform << " "
              << x << ", " << y << ", " << z );
-	setUniform( location, x, y, z );
+        setUniform( location, x, y, z );
         CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     x, y, z, 0 );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     x, y, z, 0 );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " "
              << x << ", " << y << ", " << z );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, x, y, z, 0);
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location, x, y, z, 0);
+        CHECK_GL;
       }
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const float x, const float y, 
-			     const float z, const float w )
+  void GLShader::setUniform( const char* uniform,
+                             const float x, const float y,
+                             const float z, const float w )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
-	CHECK_GL;
+        GLint location = glGetUniformLocationARB( _program, uniform );
+        CHECK_GL;
         DBG( "GL Program setUniform " << uniform << " "
              << x << ", " << y << ", " << z << ", " << w );
-	setUniform( location, x, y, z, w );
+        setUniform( location, x, y, z, w );
         CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     x, y, z, w );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     x, y, z, w );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " "
              << x << ", " << y << ", " << z << ", " << w );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, x, y, z, w);
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location, x, y, z, w);
+        CHECK_GL;
       }
   }
 
@@ -422,146 +419,146 @@ namespace mrv {
   }
 
   void GLShader::setUniform( const GLint location,
-			     const int x, const int y )
+                             const int x, const int y )
   {
       glUniform2i( location, x, y );
   }
 
   void GLShader::setUniform( const GLint location,
-			     const int x, const int y, const int z )
+                             const int x, const int y, const int z )
   {
       glUniform3i( location, x, y, z );
   }
 
 
   void GLShader::setUniform( const GLint location,
-			     const int x, const int y, 
-			     const int z, const int w  )
+                             const int x, const int y,
+                             const int z, const int w  )
   {
       glUniform4i( location, x, y, z, w );
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const int x )
+  void GLShader::setUniform( const char* uniform,
+                             const int x )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocation( _program, uniform );
-	CHECK_GL;
+        GLint location = glGetUniformLocation( _program, uniform );
+        CHECK_GL;
         DBG( "GL Program setUniform " << uniform << " "
              << x );
- 	setUniform( location, x );
-	CHECK_GL;
+        setUniform( location, x );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     float(x), 0.f, 0.f, 0.f );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     float(x), 0.f, 0.f, 0.f );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " " << x );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, 
-				      float(x), 0.f, 0.f, 0.f);
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location,
+                                      float(x), 0.f, 0.f, 0.f);
+        CHECK_GL;
       }
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const int x, const int y )
+  void GLShader::setUniform( const char* uniform,
+                             const int x, const int y )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
-	CHECK_GL;
+        GLint location = glGetUniformLocationARB( _program, uniform );
+        CHECK_GL;
         DBG( "GL Program setUniform " << uniform << " "
              << x << ", " << y );
-	setUniform( location, x, y );
-	CHECK_GL;
+        setUniform( location, x, y );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     float(x), float(y), 0.f, 0.f );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     float(x), float(y), 0.f, 0.f );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " " << x << ", " << y );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, 
-				      float(x), float(y), 0.f, 0.f);
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location,
+                                      float(x), float(y), 0.f, 0.f);
+        CHECK_GL;
       }
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const int x, const int y, 
-			     const int z )
+  void GLShader::setUniform( const char* uniform,
+                             const int x, const int y,
+                             const int z )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
-	CHECK_GL;
+        GLint location = glGetUniformLocationARB( _program, uniform );
+        CHECK_GL;
         DBG( "GL Program setUniform " << uniform << " "
              << x << ", " << y << ", " << z );
-	setUniform( location, x, y, z );
+        setUniform( location, x, y, z );
         CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     float(x), float(y), float(z), 0 );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     float(x), float(y), float(z), 0 );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
-	CHECK_GL;
+        GLint location = uniform_location( uniform );
+        CHECK_GL;
         DBG( "ARB frag setUniform " << uniform << " "
              << x << ", " << y << ", " << z );
-	glProgramLocalParameter4fARB( _frag_target, location, 
-				      float(x), float(y), float(z), 0);
-	CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location,
+                                      float(x), float(y), float(z), 0);
+        CHECK_GL;
       }
   }
 
-  void GLShader::setUniform( const char* uniform, 
-			     const int x, const int y, 
-			     const int z, const int w )
+  void GLShader::setUniform( const char* uniform,
+                             const int x, const int y,
+                             const int z, const int w )
   {
     if ( _program )
       {
-	GLint location = glGetUniformLocationARB( _program, uniform );
-	CHECK_GL;
+        GLint location = glGetUniformLocationARB( _program, uniform );
+        CHECK_GL;
         DBG( "GL Program setUniform " << uniform << " "
              << x << ", " << y << ", " << z << ", " << w );
-	setUniform( location, x, y, z, w );
+        setUniform( location, x, y, z, w );
         CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_NV )
       {
-	glProgramNamedParameter4fNV( _frag_shader, strlen(uniform), 
-				     (GLubyte *) uniform,
-				     float(x), float(y), float(z), float(w) );
-	CHECK_GL;
+        glProgramNamedParameter4fNV( _frag_shader, strlen(uniform),
+                                     (GLubyte *) uniform,
+                                     float(x), float(y), float(z), float(w) );
+        CHECK_GL;
       }
     else if ( _frag_target == GL_FRAGMENT_PROGRAM_ARB )
       {
-	GLint location = uniform_location( uniform );
+        GLint location = uniform_location( uniform );
         DBG( "ARB frag setUniform " << uniform << " "
              << x << ", " << y << ", " << z << ", " << w );
-	CHECK_GL;
-	glProgramLocalParameter4fARB( _frag_target, location, 
-				      float(x), float(y), float(z), float(w) );
-	CHECK_GL;
+        CHECK_GL;
+        glProgramLocalParameter4fARB( _frag_target, location,
+                                      float(x), float(y), float(z), float(w) );
+        CHECK_GL;
       }
   }
 
