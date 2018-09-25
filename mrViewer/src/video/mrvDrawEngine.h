@@ -19,10 +19,10 @@
  * @file   mrvDrawEngine.h
  * @author gga
  * @date   Thu Jul  5 18:51:53 2007
- * 
+ *
  * @brief  Abstract class used by ImageView to draw elements
- * 
- * 
+ *
+ *
  */
 #ifndef mrvDrawEngine_h
 #define mrvDrawEngine_h
@@ -74,8 +74,8 @@ namespace mrv {
     struct MinMaxData
     {
       MinMaxData() :
-	pMin( std::numeric_limits< float >::max() ),
-	pMax( std::numeric_limits< float >::min() )
+        pMin( std::numeric_limits< float >::max() ),
+        pMax( std::numeric_limits< float >::min() )
       {};
 
         mrv::image_type_ptr pic;
@@ -109,23 +109,25 @@ namespace mrv {
 
     static bool supports_yuv()  { return _has_yuv; }
     static bool supports_yuva() { return _has_yuva; }
+    static bool supports_hdr() { return _has_hdr; }
 
+      virtual void refreshShaders() = 0;
 
       virtual void image( const CMedia* img ) = 0;
-      
+
     /// Name of engine
     virtual const char* name() = 0;
     virtual std::string options() = 0;
 
-      
-      
+
+
       virtual double rot_x() const = 0;
       virtual double rot_y() const = 0;
-      
+
       virtual void rot_x(double t) = 0;
       virtual void rot_y(double t) = 0;
-      
-      // Evaluate pixel with LUT 
+
+      // Evaluate pixel with LUT
       virtual void evaluate( const CMedia* img,
                              const Imath::V3f& rgb, Imath::V3f& out ) = 0;
 
@@ -143,12 +145,12 @@ namespace mrv {
       // rotate model an angle in Z in degrees
       virtual void rotate( const double z ) = 0;
 
-      
+
     /// Change the color of an operation
     virtual void color( uchar r, uchar g, uchar b, uchar a = 255  ) = 0;
     virtual void color( float r, float g, float b, float a = 1.0f ) = 0;
 
-    // Init FB0 Drawing   
+    // Init FB0 Drawing
     virtual bool init_fbo( ImageList& images ) = 0;
     virtual void end_fbo( ImageList& images ) = 0;
 
@@ -160,7 +162,7 @@ namespace mrv {
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,
-			    const int y, const char* text ) = 0;
+                            const int y, const char* text ) = 0;
 
     /// Draw some overlayed text
     virtual void draw_text(const int x, const int y, const char* text ) = 0;
@@ -177,7 +179,7 @@ namespace mrv {
       // Return the normalized min and max of image
       inline float norm_min() { return _normMin; }
       inline float norm_max() { return _normMax; }
-      
+
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images ) = 0;
 
@@ -189,10 +191,10 @@ namespace mrv {
 
       /// Draw a safe area rectangle
       virtual void draw_safe_area( const double percentX, const double percentY,
-				 const char* name = 0 ) = 0;
+                                 const char* name = 0 ) = 0;
 
       /// Draw display area rectangle
-      virtual void draw_square_stencil(const int x, const int y, 
+      virtual void draw_square_stencil(const int x, const int y,
                                        const int x2, const int y2 ) = 0;
 
       // Draw film mask
@@ -209,8 +211,8 @@ namespace mrv {
     /// This function may spawn multiple threads to do the conversions
     image_type_ptr display( const image_type_ptr& src, CMedia* img );
 
-    void display( image_type_ptr& result, 
-		  const image_type_ptr& src, CMedia* img );
+    void display( image_type_ptr& result,
+                  const image_type_ptr& src, CMedia* img );
 
      public:
        /// Find min/max values for an image, using multithreading if possible
@@ -219,12 +221,12 @@ namespace mrv {
        // Retrieve min and max float values of image.  To be used after
        // minmax() is called once.
        inline void minmax( float& pMin, float& pMax ) {
-	  pMin = _normMin;
-	  pMax = _normMax;
+          pMin = _normMin;
+          pMax = _normMax;
        }
 
       static bool fboRenderBuffer()  { return _fboRenderBuffer; }
-      
+
   protected:
 
 
@@ -239,16 +241,17 @@ namespace mrv {
     //! Min-max pixel values (for normalization)
     float _normMin, _normMax;
 
-    //! Copy of background image resized to fit foreground 
+    //! Copy of background image resized to fit foreground
     CMedia* _background_resized;
 
     //! Buckets of threads for color correction
     typedef std::map< boost::thread*, void* > BucketList;
     BucketList buckets;
 
-    static bool _has_yuv, _has_yuva;
-    static bool _fboRenderBuffer; //!< Framebuffer object
-    static ShaderType _hardwareShaders; //!< hardware shaders supported
+      static bool _has_hdr;
+      static bool _has_yuv, _has_yuva;
+      static bool _fboRenderBuffer; //!< Framebuffer object
+      static ShaderType _hardwareShaders; //!< hardware shaders supported
   };
 
 } // namespace mrv
