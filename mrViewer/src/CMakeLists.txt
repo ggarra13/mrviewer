@@ -426,7 +426,9 @@ FILE(GLOB oiiofiles ${EXE_DIR}/oiio* )
 FILE(COPY ${oiiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-
+MESSAGE( STATUS "Copying DLLs..." )
+FILE(GLOB dllfiles ${EXE_DIR}/*.dll )
+FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../ctl/
       DESTINATION ${CMAKE_BINARY_DIR}/../ctl )
