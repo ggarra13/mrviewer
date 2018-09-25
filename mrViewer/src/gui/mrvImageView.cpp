@@ -2586,15 +2586,15 @@ bool ImageView::preload()
         if ( !img->find_image( i ) ) // this loads the frame if not present
         {
             // Frame not found or error. Update _preframe.
-	    _preframe = i + 1;
-	    if ( _preframe > last ) _preframe = first;
+            _preframe = i + 1;
+            if ( _preframe > last ) _preframe = first;
         }
-	// Frame found. Update _preframe.
-	_preframe = i + 1;
-	if ( _preframe > last ) _preframe = first;
-	// Restore current frame
-	img->hires( pic );
-	timeline()->redraw();
+        // Frame found. Update _preframe.
+        _preframe = i + 1;
+        if ( _preframe > last ) _preframe = first;
+        // Restore current frame
+        img->hires( pic );
+        timeline()->redraw();
     }
     else
     {
@@ -2881,11 +2881,11 @@ void ImageView::draw()
         DBG( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
-	
+
         valid(1);
     }
 
-    
+
 
     mrv::PreferencesUI* uiPrefs = uiMain->uiPrefs;
 
@@ -2932,7 +2932,7 @@ void ImageView::draw()
     const mrv::media& fg = foreground();
     if ( fg )
     {
-	_engine->image( fg->image() );
+        _engine->image( fg->image() );
     }
     mrv::media bg = background();
     TRACE("");
@@ -6421,7 +6421,7 @@ int ImageView::handle(int event)
                     if ( _idle_callback && _reel >= b->number_of_reels() )
                     {
                        fltk::remove_idle( (fltk::TimeoutHandler)static_preload,
-					  this );
+                                          this );
                         _idle_callback = false;
                     }
                 }
@@ -6675,7 +6675,7 @@ void ImageView::preload_cache_stop()
 #else
         fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
 #endif
-	_reel = browser()->number_of_reels();
+        _reel = browser()->number_of_reels();
         _idle_callback = false;
     }
 }
@@ -7645,6 +7645,7 @@ void ImageView::foreground( mrv::media fg )
     update_title_bar( this );
     update_image_info();
     update_color_info( fg );
+    _engine->refreshShaders();
 
     redraw();
 }
@@ -8354,16 +8355,16 @@ void ImageView::play( const CMedia::Playback dir )
 
     if ( CMedia::preload_cache() && _idle_callback )
     {
-	preload_cache_stop();
+        preload_cache_stop();
     }
-    
+
 
    playback( dir );
 
    delete_timeout();
 
    double fps = uiMain->uiFPS->value();
-  
+
    create_timeout( 0.5/fps );
 
    mrv::media fg = foreground();
@@ -8447,9 +8448,9 @@ void ImageView::stop()
 
     if ( CMedia::preload_cache() && ! _idle_callback )
     {
-	preload_cache_start();
+        preload_cache_start();
     }
-    
+
     mouseMove( fltk::event_x(), fltk::event_y() );
     redraw();
 }
