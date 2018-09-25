@@ -386,6 +386,144 @@ void GLEngine::init_GLEW()
 // #endif
 }
 
+void GLEngine::refreshShaders()
+{
+    delete _YCbCr; _YCbCr = NULL;
+    delete _YByRy; _YByRy = NULL;
+    delete _YCbCrA; _YCbCrA = NULL;
+    delete _YByRyA; _YByRyA = NULL;
+    delete _rgba; _rgba = NULL;
+
+    std::string directory;
+
+    if ( _has_yuv )
+    {
+        _has_yuva = false;
+        if ( _maxTexUnits > 4 )  // @todo: bug fix
+        {
+            _has_yuva = true;
+        }
+    }
+
+
+    const char* env = getenv( N_("MRV_SHADER_PATH") );
+    if ( !env )
+    {
+        env = getenv( N_("MRV_ROOT") );
+        if ( env )
+        {
+            directory = env;
+            directory += N_("/shaders");
+        }
+    }
+    else
+    {
+        directory = env;
+    }
+
+    if ( ! directory.empty() )
+    {
+        char shaderFile[256];
+
+        const char* ext = NULL;
+        switch( _hardwareShaders )
+        {
+        case kNV30:
+            ext = N_("fp30"); break;
+        case kGLSL:
+            ext = N_("glsl"); break;
+        case kARBFP1:
+            ext = N_("arbfp1"); break;
+        default:
+            break;
+        }
+
+        const char* dir = directory.c_str();
+
+        try
+        {
+
+            sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
+
+            DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+                 << shaderFile );
+
+
+            _rgba = new GLShader( shaderFile );
+
+        }
+        catch ( const std::exception& e )
+        {
+            LOG_ERROR( shaderFile << ": " << e.what() );
+            directory.clear();
+        }
+
+        try
+        {
+            if ( _has_yuv )
+            {
+                if ( ! _has_hdr )
+                {
+                    sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"),
+                             ext );
+                    _YCbCr = new GLShader( shaderFile );
+                }
+                else
+                {
+                    _YCbCr = NULL;
+                }
+
+                sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
+                _YByRy = new GLShader( shaderFile );
+            }
+        }
+        catch ( const std::exception& e )
+        {
+            LOG_ERROR( shaderFile << ": " << e.what() );
+            delete _YByRy; _YByRy = NULL;
+            delete _YCbCr; _YCbCr = NULL;
+            _has_yuv  = false;
+            _has_yuva = false;
+        }
+
+        try
+        {
+            if ( _has_yuva )
+            {
+                sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
+                _YCbCrA = new GLShader( shaderFile );
+
+                sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
+                _YByRyA = new GLShader( shaderFile );
+            }
+
+        }
+        catch ( const std::exception& e )
+        {
+            LOG_ERROR( shaderFile << ": " << e.what() );
+            delete _YByRyA; _YByRyA = NULL;
+            delete _YCbCrA; _YCbCrA = NULL;
+            _has_yuva = false;
+        }
+    }
+    else
+    {
+        LOG_WARNING( _("Environment variable MRV_SHADER_PATH not found, "
+                       "using built-in shader.") );
+
+        if ( directory.empty() )
+        {
+            directory = N_(".");
+            loadBuiltinFragShader();
+        }
+        else
+        {
+            LOG_INFO( _("Hardware shaders not available.") );
+            _has_yuv  = false;
+            _has_yuva = false;
+        }
+    }
+}
 
 /**
  * Initialize OpenGL context, textures, and get opengl features for
@@ -440,6 +578,7 @@ void GLEngine::initialize()
 #endif
 
   _hardwareShaders = kGLSL;
+  _has_hdr = true;
   if ( _hardwareShaders == kAuto )
   {
       _hardwareShaders = kNone;
@@ -456,6 +595,7 @@ void GLEngine::initialize()
       if ( GLEW_VERSION_2_0 )
       {
         _hardwareShaders = kGLSL;
+        _has_hdr = true;
       }
 #endif
 
@@ -473,158 +613,24 @@ void GLEngine::initialize()
   {
       LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
 
-      std::string directory;
+      refreshShaders();
 
       if ( _has_yuv )
-        {
-          _has_yuva = false;
-          if ( _maxTexUnits > 4 )  // @todo: bug fix
-            {
-                _has_yuva = true;
-            }
-        }
-
-
-      const char* env = getenv( N_("MRV_SHADER_PATH") );
-      if ( !env )
-        {
-            env = getenv( N_("MRV_ROOT") );
-            DBG( __FUNCTION__ << " " << __LINE__
-                 << " MRV_ROOT=" << (env ? env : "NULL") );
-          if ( env )
-            {
-                DBG( __FUNCTION__ << " " << __LINE__ );
-                directory = env;
-                directory += N_("/shaders");
-            }
-        }
-      else
-        {
-          directory = env;
-        }
-
-      if ( ! directory.empty() )
       {
-          char shaderFile[256];
-
-          const char* ext = NULL;
-          switch( _hardwareShaders )
+          if ( _has_yuva )
           {
-          case kNV30:
-              ext = N_("fp30"); break;
-          case kGLSL:
-              ext = N_("glsl"); break;
-          case kARBFP1:
-              ext = N_("arbfp1"); break;
-          default:
-              break;
+              LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
           }
-
-          const char* dir = directory.c_str();
-
-          try
+          else
           {
-
-              sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
-
-              DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
-                   << shaderFile );
-
-
-              _rgba = new GLShader( shaderFile );
-
+              LOG_INFO( _("mrViewer supports YUV images through shaders.") );
           }
-          catch ( const std::exception& e )
-          {
-              LOG_ERROR( shaderFile << ": " << e.what() );
-              directory.clear();
-          }
-
-          try
-          {
-              if ( _has_yuv )
-              {
-                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
-                  //_YCbCr = new GLShader( shaderFile );
-                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
-                       << shaderFile );
-
-                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
-                  _YByRy = new GLShader( shaderFile );
-                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
-                       << shaderFile );
-              }
-          }
-          catch ( const std::exception& e )
-          {
-              LOG_ERROR( shaderFile << ": " << e.what() );
-              delete _YByRy; _YByRy = NULL;
-              delete _YCbCr; _YCbCr = NULL;
-              _has_yuv  = false;
-              _has_yuva = false;
-          }
-
-          try
-          {
-              if ( _has_yuva )
-                {
-                  DBG( __FUNCTION__ << " " << __LINE__  );
-                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
-                  _YCbCrA = new GLShader( shaderFile );
-                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
-                       << shaderFile );
-
-                  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
-                  _YByRyA = new GLShader( shaderFile );
-                  DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
-                       << shaderFile );
-                }
-
-          }
-          catch ( const std::exception& e )
-            {
-              LOG_ERROR( shaderFile << ": " << e.what() );
-              delete _YByRyA; _YByRyA = NULL;
-              delete _YCbCrA; _YCbCrA = NULL;
-              _has_yuva = false;
-            }
-        }
+      }
       else
-        {
-          LOG_WARNING( _("Environment variable MRV_SHADER_PATH not found, "
-                          "using built-in shader.") );
-        }
-
-      
-      if ( directory.empty() )
-        {
-          directory = N_(".");
-          loadBuiltinFragShader();
-        }
-
-    }
-  else
-    {
-      LOG_INFO( _("Hardware shaders not available.") );
-      _has_yuv  = false;
-      _has_yuva = false;
-    }
-
-  if ( _has_yuv )
-    {
-      if ( _has_yuva )
-        {
-          LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
-        }
-      else
-        {
-          LOG_INFO( _("mrViewer supports YUV images through shaders.") );
-        }
-    }
-  else
-    {
-      LOG_INFO( _("mrViewer does not support YUV images.") );
-    }
+      {
+          LOG_INFO( _("mrViewer does not support YUV images.") );
+      }
+  }
 
   _floatTextures     = ( GLEW_ARB_color_buffer_float != GL_FALSE );
   _halfTextures      = ( GLEW_ARB_half_float_pixel != GL_FALSE );
@@ -638,7 +644,6 @@ void GLEngine::initialize()
       alloc_cubes( 4 );
   else
       alloc_quads( 4 );
-
 
   CHECK_GL;
 }
@@ -685,7 +690,7 @@ void GLEngine::reset_view_matrix()
     CHECK_GL;
 
 
-    
+
 }
 
 void GLEngine::evaluate( const CMedia* img,
@@ -1669,10 +1674,10 @@ void GLEngine::draw_images( ImageList& images )
 
     if ( _YCbCr == NULL )
     {
-	loadOpenGLShader();
-	if ( ! _YCbCr ) return;
+        loadOpenGLShader();
+        if ( ! _YCbCr ) return;
     }
-    
+
     CHECK_GL;
 
     DBG( __FUNCTION__ << " " << __LINE__ );
@@ -3596,16 +3601,18 @@ void GLEngine::loadOpenGLShader()
 {
     if ( !_image )
     {
-	LOG_ERROR( "No image to proceed" );
-	return;
+        LOG_ERROR( "No image to proceed" );
+        return;
     }
-    
+
     setlocale( LC_NUMERIC, "C" );
     std::locale::global( std::locale("C") );
     code.imbue(std::locale());
     hdr.imbue(std::locale());
     foot.imbue(std::locale());
-    
+
+    hdr.clear();
+    hdr.str("");
     hdr << " \n"
     " /** \n"
     " * @file   YCbCr.glsl \n"
@@ -3660,6 +3667,8 @@ void GLEngine::loadOpenGLShader()
     "\n"
     "\n";
 
+    code.clear();
+    code.str("");
     code <<
     "void main() \n"
     "{ \n"
@@ -3682,6 +3691,8 @@ void GLEngine::loadOpenGLShader()
     "\tc.g = dot(Kg, pre); \n"
     "\tc.b = dot(Kb, pre); \n" << std::endl;
 
+    foot.clear();
+    foot.str("");
     foot << " }\n"
     "       //\n"
     "       // Apply channel selection\n"
@@ -3783,46 +3794,46 @@ void GLEngine::loadOpenGLShader()
     AVStream* st = _image->get_video_stream();
     if (!st)
     {
-	LOG_ERROR( "No stream to proceed" );
-	return;
+        LOG_ERROR( "No stream to proceed" );
+        return;
     }
     AVCodecParameters* c = st->codecpar;
-	    
+
     int size;
     AVMasteringDisplayMetadata* m = (AVMasteringDisplayMetadata*)
     av_stream_get_side_data( st,
-			     AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
-			     &size );
-    
+                             AV_PKT_DATA_MASTERING_DISPLAY_METADATA,
+                             &size );
+
     double max_cll = 100000;
     if (m)
     {
-	if ( size == sizeof( AVMasteringDisplayMetadata ) )
-	{
-	    if ( m->has_luminance )
-		max_cll = av_q2d( m->max_luminance );
-	}
+        if ( size == sizeof( AVMasteringDisplayMetadata ) )
+        {
+            if ( m->has_luminance )
+                max_cll = av_q2d( m->max_luminance );
+        }
     }
-    
+
     mp_colorspace src
     {
-	avcol_spc_to_mp_csp(c->color_space), //MP_CSP_BT_709,  // space
-	avcol_range_to_mp_csp_levels( c->color_range ),  // levels
-	avcol_pri_to_mp_csp_prim(c->color_primaries), // primaries
-	avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
-	MP_CSP_LIGHT_DISPLAY,  // light
-	max_cll / MP_REF_WHITE               // sig_peak
-	};
+        avcol_spc_to_mp_csp(c->color_space), //MP_CSP_BT_709,  // space
+        avcol_range_to_mp_csp_levels( c->color_range ),  // levels
+        avcol_pri_to_mp_csp_prim(c->color_primaries), // primaries
+        avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
+        MP_CSP_LIGHT_DISPLAY,  // light
+        max_cll / MP_REF_WHITE               // sig_peak
+        };
 
     mp_colorspace dst
     {
-	MP_CSP_AUTO,
-	MP_CSP_LEVELS_AUTO,
-	MP_CSP_PRIM_BT_709,
-	MP_CSP_TRC_GAMMA22,
-	MP_CSP_LIGHT_DISPLAY,
-	1.0f
-	};
+        MP_CSP_AUTO,
+        MP_CSP_LEVELS_AUTO,
+        MP_CSP_PRIM_BT_709,
+        MP_CSP_TRC_GAMMA22,
+        MP_CSP_LIGHT_DISPLAY,
+        1.0f
+        };
 
     tone_mapping algo = TONE_MAPPING_HABLE;
     float tone_mapping_param = NAN;
@@ -3831,30 +3842,30 @@ void GLEngine::loadOpenGLShader()
     bool gamut_warning = false;
     bool is_linear = false;
 
-    if ( m )
+    if ( mp_trc_is_hdr( src.gamma ) )
     {
-	pass_color_map(code, hdr, src, dst,
-		       algo, tone_mapping_param,
-		       tone_mapping_desat, detect_peak,
-		       gamut_warning, is_linear);
+        std::cerr << "pass color map" << std::endl;
+        pass_color_map(code, hdr, src, dst,
+                       algo, tone_mapping_param,
+                       tone_mapping_desat, detect_peak,
+                       gamut_warning, is_linear);
     }
     else
     {
-	code << "}\n"
-	"else {\n"
-	"yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
-	"yuv.g = pre.g - 0.5;\n"
-	"yuv.b = pre.b - 0.5;\n"
-	"\n"
-	"c.r = yuv.r + 1.5958 * yuv.b;\n"
-	"c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
-	"c.b = yuv.r + 2.017 * yuv.g;\n"
-	"\n";
+        code << "}\n"
+        "else {\n"
+        "yuv.r = 1.1643 * ( pre.r - 0.0625 );\n"
+        "yuv.g = pre.g - 0.5;\n"
+        "yuv.b = pre.b - 0.5;\n"
+        "\n"
+        "c.r = yuv.r + 1.5958 * yuv.b;\n"
+        "c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;\n"
+        "c.b = yuv.r + 2.017 * yuv.g;\n"
+        "\n";
     }
-    
-    std::string all = hdr.str() + code.str() + foot.str();
 
-    // std::cerr << all << std::endl;
+    std::string all; all.reserve( 16480 );
+    all = hdr.str() + code.str() + foot.str();
 
     _YCbCr = new GLShader();
     _YCbCr->load( N_("builtin"), all.c_str() );
