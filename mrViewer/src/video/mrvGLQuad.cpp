@@ -1203,7 +1203,7 @@ namespace mrv {
 
 
 
-    glBegin( GL_POLYGON );
+    glBegin( GL_QUADS );
     {
       glTexCoord2f( 0.0f, _uvMax.v );
       glVertex3d( -0.5, -0.5, 0.0 );
