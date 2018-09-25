@@ -19,10 +19,10 @@
  * @file   mrvGL.h
  * @author ggas
  * @date   Sun Jul  1 11:49:49 2007
- * 
+ *
  * @brief  Auxiliary class for opengl operations
- * 
- * 
+ *
+ *
  */
 
 #include <vector>
@@ -64,14 +64,14 @@ namespace mrv {
 
       virtual double rot_x() const;
       virtual double rot_y() const;
-      
+
       virtual void rot_x(double t);
       virtual void rot_y(double t);
 
       virtual void rotate( const double z );
 
       virtual void evaluate( const CMedia* img,
-                             const Imath::V3f& rgb, Imath::V3f& out ); 
+                             const Imath::V3f& rgb, Imath::V3f& out );
 
     virtual void refresh_luts();
     virtual void clear_canvas( float r, float g, float b, float a );
@@ -82,8 +82,8 @@ namespace mrv {
     virtual void color( float r, float g, float b, float a );
 
       void image( const CMedia* img ) { _image = img; }
-      
-    // Init FBO Drawing   
+
+    // Init FBO Drawing
        virtual bool init_fbo( ImageList& images );
        virtual void end_fbo( ImageList& images );
 
@@ -94,19 +94,19 @@ namespace mrv {
                                    const double zdeg = 0.0 );
 
       void draw_selection_marquee( const mrv::Rectd& r );
-      
+
     /// Draw a rectangle
       void draw_data_window( const mrv::Rectd& r );
 
     virtual void wipe_area();
 
-      virtual void draw_square_stencil( const int x, const int y, 
-					const int x2, const int y2 );
+      virtual void draw_square_stencil( const int x, const int y,
+                                        const int x2, const int y2 );
     virtual void draw_mask(const float pct);
-    
-    virtual void draw_safe_area( const double percentX, 
-				 const double percentY,
-				 const char* name = 0 );
+
+    virtual void draw_safe_area( const double percentX,
+                                 const double percentY,
+                                 const char* name = 0 );
 
       virtual void translate( const double x, const double y,
                               const double z = 0.0 );
@@ -119,7 +119,7 @@ namespace mrv {
 
 
     virtual void draw_title(const float size,
-			    const int y, const char* text );
+                            const int y, const char* text );
     virtual void draw_text(const int x, const int y, const char* text );
 
     virtual void draw_cursor( const double x, const double y );
@@ -150,27 +150,27 @@ namespace mrv {
                                    const bool print = false);
 
   protected:
-      void set_matrix( const ImageView::FlipDirection flip = 
+      void set_matrix( const ImageView::FlipDirection flip =
                        ImageView::kFlipNone );
 
       void draw_shape( GLShape* const shape );
 
       // Clear quads and spheres from draw queue
       void clear_quads();
-      
+
     /// Auxiliary function used to check for Cg errors;
     static void handle_cg_errors();
 
-    void draw_safe_area_inner( const double tw, 
+    void draw_safe_area_inner( const double tw,
                                const double th,
                                const char* name = 0 );
 
     /// Allocate a number of cube maps
     void alloc_cubes( size_t num );
-      
+
     /// Allocate a number of spherical maps
     void alloc_spheres( size_t num );
-      
+
     /// Allocate a number of quads
     void alloc_quads( size_t num );
 
@@ -198,6 +198,10 @@ namespace mrv {
     /// Auxiliary function to load built-in rgba shader
     void loadBuiltinFragShader();
 
+      // Auxiliary function used to refresh all shaders (mainly used for
+      // opengl)
+      void refreshShaders();
+
       // Auxiliary function to create a OpenGL2 shader for HDRI movies
       void loadOpenGLShader();
 
@@ -210,7 +214,7 @@ namespace mrv {
       ostringstream hdr;
       ostringstream code;
       ostringstream foot;
-      
+
       int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
       GLuint textureId;       //!< The off-screen texture
@@ -232,6 +236,7 @@ namespace mrv {
 
     // OpenGL needs to be inited
     static bool _initGL;          //!< if not set, opengl must be inited for view
+      static bool _hdr;
     static GLint _maxTexUnits;   //!< hardware texture units
     static bool _floatTextures;   //!< float textures supported
     static bool _halfTextures;    //!< half textures supported
@@ -245,5 +250,3 @@ namespace mrv {
 
 
 } // namespace mrv
-
-
