@@ -1746,11 +1746,6 @@ uiOCIO_float_ics->do_callback();}
                 }
               }
             }
-            {fltk::CheckButton} uiPrefsOcioICSToolbar {
-              label {OCIO Input Color Space in Toolbar}
-              tooltip {Use OCIO Input Color Space in Toolbar instead of a FStop and Normalize buttons.}
-              xywh {24 44 25 25}
-            }
           }
           {fltk::Group} {} {
             label {CTL Paths}
