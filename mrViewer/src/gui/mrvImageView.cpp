@@ -7646,7 +7646,7 @@ void ImageView::foreground( mrv::media fg )
     update_title_bar( this );
     update_image_info();
     update_color_info( fg );
-    _engine->refreshShaders();
+    _engine->refresh_shaders();
 
     redraw();
 }

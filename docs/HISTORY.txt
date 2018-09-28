@@ -1,3 +1,15 @@
+v4.2.8   - Added %ENVVAR% and ${ENVVAR} support to OCIO environment variable.
+	   The two syntaxes work on both platforms.  This allows the OCIO
+	   variable to be defined, like this example:
+	     $ export OCIO=/mnt/show/${SHOW}/${SHOT}/ocio/config.ocio
+	     $ setx   OCIO 'D:/show/%SHOW%/%SHOT%/ocio/config.ocio'
+	   and then set SHOW and SHOT in the environment that calls mrViewer.
+	 - Made HDR shader show when _has_hdr is set.  This variable is only
+	   set when the shader type is GL.
+	 - Made HDR shader reset itself on new image foreground.
+
+v4.2.7   - Bug fixed missing DLLs on Windows distributions.
+
 v4.2.6   - Bug fixed a bug in looping which got introduced in v4.2.5.
 	 - Bug fixed audio sync in stepping or scrubbing.  Previously, they
 	   would repeat the audio frames.
