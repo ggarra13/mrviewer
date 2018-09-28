@@ -511,8 +511,6 @@ static std::string expandVariables( const std::string &s,
     uiPrefs->uiPrefsUseOcio->value( tmp );
     use_ocio = (bool)tmp;
 
-    ocio.get( "ics_in_toolbar", tmp, 0 );
-    uiPrefs->uiPrefsOcioICSToolbar->value( tmp );
 
     ocio.get( "save_config", tmp, 0 );
     uiPrefs->uiPrefsSaveOcio->value( tmp );
@@ -843,11 +841,20 @@ static std::string expandVariables( const std::string &s,
       //
 
 
+#if 0
+      fltk::Preferences idt( lut, "IDT" );
+      {
+        idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
+        uiPrefs->IDT_transform->value(tmpS);
+      }
+#endif
+      
+
       fltk::Preferences rt( lut, "RT" );
       {
         rt.get( "algorithm", tmp, 0 );
         uiPrefs->RT_algorithm->value(tmp);
-
+	
         fltk::Preferences ctl( rt, "CTL" );
         {
 #define RENDER_TRANSFORM(x, d)						\
@@ -1343,7 +1350,7 @@ static const char* kCLocale = "C";
         {
             LOG_ERROR( e.what() );
         }
-        main->uiICS->show();
+	main->uiICS->show();
     }
     else
     {
@@ -1726,8 +1733,6 @@ static const char* kCLocale = "C";
         int tmp = uiPrefs->uiPrefsUseOcio->value();
         ocio.set( "use_ocio", tmp );
 
-        tmp = uiPrefs->uiPrefsOcioICSToolbar->value();
-        ocio.set( "ics_in_toolbar", tmp );
 
         if ( uiPrefs->uiPrefsSaveOcio->value() )
         {
