@@ -386,7 +386,7 @@ void GLEngine::init_GLEW()
 // #endif
 }
 
-void GLEngine::refreshShaders()
+void GLEngine::refresh_shaders()
 {
     delete _YCbCr; _YCbCr = NULL;
     delete _YByRy; _YByRy = NULL;
@@ -621,7 +621,6 @@ void GLEngine::initialize()
       if ( GLEW_VERSION_2_0 )
       {
         _hardwareShaders = kGLSL;
-        _has_hdr = true;
       }
 #endif
 
@@ -631,6 +630,9 @@ void GLEngine::initialize()
         _hardwareShaders = kNV30;
 #endif
 
+      if ( _hardwareShaders == kGLSL )
+	  _has_hdr = true;
+	
 #endif
 
     }
@@ -639,7 +641,7 @@ void GLEngine::initialize()
   {
       LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
 
-      refreshShaders();
+      refresh_shaders();
 
       if ( _has_yuv )
       {
@@ -3833,7 +3835,12 @@ void GLEngine::loadOpenGLShader()
     AVStream* st = _image->get_video_stream();
     if (!st)
     {
-        LOG_ERROR( "No stream to proceed" );
+	add_normal_code( code );
+
+	std::string all = hdr.str() + code.str() + foot.str();
+
+	_YCbCr = new GLShader();
+	_YCbCr->load( N_("builtin"), all.c_str() );
         return;
     }
     AVCodecParameters* c = st->codecpar;
