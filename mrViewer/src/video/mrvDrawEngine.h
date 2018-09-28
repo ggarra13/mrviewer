@@ -111,7 +111,7 @@ namespace mrv {
     static bool supports_yuva() { return _has_yuva; }
     static bool supports_hdr() { return _has_hdr; }
 
-      virtual void refreshShaders() = 0;
+      virtual void refresh_shaders() = 0;
 
       virtual void image( const CMedia* img ) = 0;
 
