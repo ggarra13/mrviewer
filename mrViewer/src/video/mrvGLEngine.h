@@ -200,7 +200,7 @@ namespace mrv {
 
       // Auxiliary function used to refresh all shaders (mainly used for
       // opengl)
-      void refreshShaders();
+      void refresh_shaders();
 
       // Auxiliary function to create a OpenGL2 shader for HDRI movies
       void loadOpenGLShader();
