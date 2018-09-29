@@ -611,13 +611,11 @@ void GLEngine::initialize()
 #ifndef TEST_NO_SHADERS
 
 #ifdef USE_ARBFP1_SHADERS
-      DBG( __FUNCTION__ << " " << __LINE__ );
     if ( GLEW_ARB_fragment_program )
         _hardwareShaders = kARBFP1;
 #endif
 
 #ifdef USE_OPENGL2_SHADERS
-    DBG( __FUNCTION__ << " " << __LINE__ );
       if ( GLEW_VERSION_2_0 )
       {
         _hardwareShaders = kGLSL;
@@ -625,7 +623,6 @@ void GLEngine::initialize()
 #endif
 
 #ifdef USE_NV_SHADERS
-    DBG( __FUNCTION__ << " " << __LINE__ );
       if ( GLEW_NV_fragment_program )
         _hardwareShaders = kNV30;
 #endif
@@ -633,7 +630,7 @@ void GLEngine::initialize()
       if ( _hardwareShaders == kGLSL )
 	  _has_hdr = true;
 	
-#endif
+#endif // ifndef TEST_NO_SHADERS
 
     }
 
@@ -774,11 +771,11 @@ static void pass_convert_yuv(ostringstream& code)
     pass_describe(p, "color conversion");
 
     if (p->color_swizzle[0])
-        GLSLF("color = color.%s;\n", p->color_swizzle);
+        GLSLF("c = c.%s;\n", p->color_swizzle);
 
     // Pre-colormatrix input gamma correction
     if (cparams.color.space == MP_CSP_XYZ)
-        GLSL(color.rgb = pow(color.rgb, vec3(2.6));) // linear light
+        GLSL(c.rgb = pow(c.rgb, vec3(2.6));) // linear light
 
     // We always explicitly normalize the range in pass_read_video
     cparams.input_bits = cparams.texture_bits = 0;
@@ -790,7 +787,7 @@ static void pass_convert_yuv(ostringstream& code)
     gl_sc_uniform_mat3(sc, "colormatrix", true, &m.m[0][0]);
     gl_sc_uniform_vec3(sc, "colormatrix_c", m.c);
 
-    GLSL(color.rgb = mat3(colormatrix) * color.rgb + colormatrix_c;)
+    GLSL(c.rgb = mat3(colormatrix) * c.rgb + colormatrix_c;)
 
     if (p->image_params.color.space == MP_CSP_BT_2020_C) {
         // Conversion for C'rcY'cC'bc via the BT.2020 CL system:
@@ -804,28 +801,28 @@ static void pass_convert_yuv(ostringstream& code)
         // transformation because (constant) luminance receives non-equal
         // contributions from the three different channels.
         GLSLF("// constant luminance conversion\n");
-        GLSL(color.br = color.br * mix(vec2(1.5816, 0.9936),
+        GLSL(c.br = c.br * mix(vec2(1.5816, 0.9936),
                                        vec2(1.9404, 1.7184),
-                                       lessThanEqual(color.br, vec2(0)))
-                        + color.gg;)
+                                       lessThanEqual(c.br, vec2(0)))
+                        + c.gg;)
         // Expand channels to camera-linear light. This shader currently just
         // assumes everything uses the BT.2020 12-bit gamma function, since the
         // difference between 10 and 12-bit is negligible for anything other
         // than 12-bit content.
-        GLSL(color.rgb = mix(color.rgb * vec3(1.0/4.5),
-                             pow((color.rgb + vec3(0.0993))*vec3(1.0/1.0993),
+        GLSL(c.rgb = mix(c.rgb * vec3(1.0/4.5),
+                             pow((c.rgb + vec3(0.0993))*vec3(1.0/1.0993),
                                  vec3(1.0/0.45)),
-                             lessThanEqual(vec3(0.08145), color.rgb));)
+                             lessThanEqual(vec3(0.08145), c.rgb));)
         // Calculate the green channel from the expanded RYcB
         // The BT.2020 specification says Yc = 0.2627*R + 0.6780*G + 0.0593*B
-        GLSL(color.g = (color.g - 0.2627*color.r - 0.0593*color.b)*1.0/0.6780;)
+        GLSL(c.g = (c.g - 0.2627*c.r - 0.0593*c.b)*1.0/0.6780;)
         // Recompress to receive the R'G'B' result, same as other systems
-        GLSL(color.rgb = mix(color.rgb * vec3(4.5),
-                             vec3(1.0993) * pow(color.rgb, vec3(0.45)) - vec3(0.0993),
-                             lessThanEqual(vec3(0.0181), color.rgb));)
+        GLSL(c.rgb = mix(c.rgb * vec3(4.5),
+                             vec3(1.0993) * pow(c.rgb, vec3(0.45)) - vec3(0.0993),
+                             lessThanEqual(vec3(0.0181), c.rgb));)
     }
 
-    GLSL(color.a = 1.0;)
+    GLSL(c.a = 1.0;)
 }
 
 #endif
@@ -3013,79 +3010,6 @@ void gl_sc_uniform_mat3( ostringstream& code, const char* name,
              << ", " << m[8] << " ); " << std::endl;
     }
 }
-
-// enum mp_csp {
-//     MP_CSP_AUTO,
-//     MP_CSP_BT_601,
-//     MP_CSP_BT_709,
-//     MP_CSP_SMPTE_240M,
-//     MP_CSP_BT_2020_NC,
-//     MP_CSP_BT_2020_C,
-//     MP_CSP_RGB,
-//     MP_CSP_XYZ,
-//     MP_CSP_YCGCO,
-//     MP_CSP_COUNT
-// };
-
-// enum mp_csp_levels {
-//     MP_CSP_LEVELS_AUTO,
-//     MP_CSP_LEVELS_TV,
-//     MP_CSP_LEVELS_PC,
-//     MP_CSP_LEVELS_COUNT,
-// };
-
-// enum mp_csp_prim {
-//     MP_CSP_PRIM_AUTO,
-//     MP_CSP_PRIM_BT_601_525,
-//     MP_CSP_PRIM_BT_601_625,
-//     MP_CSP_PRIM_BT_709,
-//     MP_CSP_PRIM_BT_2020,
-//     MP_CSP_PRIM_BT_470M,
-//     MP_CSP_PRIM_APPLE,
-//     MP_CSP_PRIM_ADOBE,
-//     MP_CSP_PRIM_PRO_PHOTO,
-//     MP_CSP_PRIM_CIE_1931,
-//     MP_CSP_PRIM_DCI_P3,
-//     MP_CSP_PRIM_V_GAMUT,
-//     MP_CSP_PRIM_S_GAMUT,
-//     MP_CSP_PRIM_COUNT
-// };
-
-// enum mp_csp_trc
-// {
-//     MP_CSP_TRC_AUTO,
-//     MP_CSP_TRC_BT_1886,
-//     MP_CSP_TRC_SRGB,
-//     MP_CSP_TRC_LINEAR,
-//     MP_CSP_TRC_GAMMA18,
-//     MP_CSP_TRC_GAMMA22,
-//     MP_CSP_TRC_GAMMA28,
-//     MP_CSP_TRC_PRO_PHOTO,
-//     MP_CSP_TRC_PQ,
-//     MP_CSP_TRC_HLG,
-//     MP_CSP_TRC_V_LOG,
-//     MP_CSP_TRC_S_LOG1,
-//     MP_CSP_TRC_S_LOG2,
-//     MP_CSP_TRC_COUNT
-// };
-
-// enum mp_csp_light {
-//     MP_CSP_LIGHT_AUTO,
-//     MP_CSP_LIGHT_DISPLAY,
-//     MP_CSP_LIGHT_SCENE_HLG,
-//     MP_CSP_LIGHT_SCENE_709_1886,
-//     MP_CSP_LIGHT_SCENE_1_2,
-//     MP_CSP_LIGHT_COUNT
-// };
-
-// struct mp_colorspace {
-//     enum mp_csp space;
-//     enum mp_csp_levels levels;
-//     enum mp_csp_prim primaries;
-//     enum mp_csp_trc gamma;
-//     enum mp_csp_light light;
-//     float sig_peak; // highest relative value in signal. 0 = unknown/auto
-// };
 
 enum tone_mapping {
     TONE_MAPPING_CLIP,
