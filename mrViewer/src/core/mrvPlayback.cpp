@@ -960,9 +960,9 @@ void video_thread( PlaybackData* data )
 	{
 	    int64_t preframe = view->preload_frame();
 	    if ( view->playback() == CMedia::kForwards &&
-		 std::abs( frame - preframe ) <= 1 )
+                 preframe - frame == 1 )
 	    {
-		frame = preframe;
+                frame = preframe;
 	    }
 	    
 	}
@@ -970,7 +970,7 @@ void video_thread( PlaybackData* data )
 	//TRACE( img->name() << " decode image " << frame );
 	status = img->decode_video( frame );
 	// LOG_INFO( img->name() << " decoded image " << frame << " status " 
-	// 	  << CMedia::decode_error(status) );
+	//  	  << CMedia::decode_error(status) );
 	
         switch( status )
         {
