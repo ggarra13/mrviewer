@@ -3487,14 +3487,14 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
     return kDecodeMissingFrame;
 
 
-  DecodeStatus got_video = kDecodeMissingFrame;
-
-  while ( got_video != kDecodeOK && !_video_packets.empty() )
+  
+  while ( !_video_packets.empty() )
     {
       if ( _video_packets.is_flush() )
         {
            flush_video();
           _video_packets.pop_front();
+          continue;
         }
       else if ( _video_packets.is_seek() )
         {
@@ -3511,7 +3511,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
           // We check packet integrity as the length of packets is
           // not accurate.
           const AVPacket& pkt = _video_packets.front();
-          if ( pkt.pts != frame ) return kDecodeOK;
+          if ( frame > pkt.pts ) return kDecodeOK;
 
           _video_packets.pop_front();
           return kDecodeLoopStart;
@@ -3521,7 +3521,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
           // We check packet integrity as the length of packets is
           // not accurate.
           const AVPacket& pkt = _video_packets.front();
-          if ( pkt.pts != frame ) return kDecodeOK;
+          if ( frame < pkt.pts ) return kDecodeOK;
 
           _video_packets.pop_front();
           return kDecodeLoopEnd;
@@ -3536,7 +3536,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
     }
 
 
-  return got_video;
+  return kDecodeMissingFrame;
 }
 
 CMedia::DecodeStatus CMedia::decode_subtitle( const int64_t frame )
