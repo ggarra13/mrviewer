@@ -2609,7 +2609,10 @@ bool ImageView::preload()
             _preframe = 1;
         }
         if ( _reel >= b->number_of_reels() )
+        {
+            _reel = 0;
             return false;
+        }
     }
 
     redraw();
