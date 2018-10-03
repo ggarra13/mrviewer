@@ -628,8 +628,10 @@ void GLEngine::initialize()
 #endif
 
       if ( _hardwareShaders == kGLSL )
-	  _has_hdr = true;
-	
+          _has_hdr = true;
+
+      LOG_INFO( "Selecting shader type automatically: " << shader_type_name() );
+
 #endif // ifndef TEST_NO_SHADERS
 
     }
@@ -2036,6 +2038,10 @@ void GLEngine::draw_images( ImageList& images )
                 }
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
+                if ( pic->format() >= image_type::kYByRy420 )
+                    quad->shader( GLEngine::YByRyShader() );
+                else
+                    quad->shader( GLEngine::YCbCrShader() );
                 quad->bind( pic );
             }
             quad->gamma( g );
@@ -2224,6 +2230,10 @@ void GLEngine::draw_images( ImageList& images )
           }
           CMedia::Mutex& mtx = img->video_mutex();
           SCOPED_LOCK( mtx );
+          if ( pic->format() >= image_type::kYByRy420 )
+              quad->shader( GLEngine::YByRyShader() );
+          else
+              quad->shader( GLEngine::YCbCrShader() );
           quad->bind( pic );
           img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
@@ -3759,12 +3769,12 @@ void GLEngine::loadOpenGLShader()
     AVStream* st = _image->get_video_stream();
     if (!st)
     {
-	add_normal_code( code );
+        add_normal_code( code );
 
-	std::string all = hdr.str() + code.str() + foot.str();
+        std::string all = hdr.str() + code.str() + foot.str();
 
-	_YCbCr = new GLShader();
-	_YCbCr->load( N_("builtin"), all.c_str() );
+        _YCbCr = new GLShader();
+        _YCbCr->load( N_("builtin"), all.c_str() );
         return;
     }
     AVCodecParameters* c = st->codecpar;
