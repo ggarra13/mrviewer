@@ -76,7 +76,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
       SET( CG_ROOT /usr/local/sanitized/ )
     ENDIF()
-    
+
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
     FIND_LIBRARY( Xpm Xpm
@@ -373,6 +373,7 @@ else(WIN32)
 endif(WIN32)
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
+SET_TARGET_PROPERTIES( mrViewer PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
 TARGET_LINK_LIBRARIES( mrViewer PRIVATE ${LIBRARIES} ACESclip )
 
 
@@ -417,18 +418,21 @@ FILE(COPY ${ffmpegfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ociofiles ${EXE_DIR}/ocio* )
-FILE(COPY ${ociofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-FILE(GLOB oiiodlls ${EXE_DIR}/OpenImageIO* )
-FILE(COPY ${oiiodlls} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-FILE(GLOB ociodlls ${EXE_DIR}/OpenColorIO* )
 FILE(COPY ${ociodlls} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB oiiofiles ${EXE_DIR}/oiio* )
 FILE(COPY ${oiiofiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-MESSAGE( STATUS "Copying DLLs..." )
-FILE(GLOB dllfiles ${EXE_DIR}/*.dll )
-FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+IF (WIN32 OR WIN64)
+  FILE(GLOB dllfiles ${EXE_DIR}/*.dll )
+  MESSAGE( STATUS "Copying DLLs..." )
+  FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+ELSE(WIN32 OR WIN64)
+  MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
+  EXECUTE_PROCESS( COMMAND utils/libs.rb
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
+ENDIF(WIN32 OR WIN64)
+
 
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../ctl/
       DESTINATION ${CMAKE_BINARY_DIR}/../ctl )
@@ -762,7 +766,7 @@ ENDIF()
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
 		      POST_BUILD
-		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
+		      COMMAND "${CMAKE_COMMAND}"  -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
 		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 		      )
 ENDIF( WIN32 )
