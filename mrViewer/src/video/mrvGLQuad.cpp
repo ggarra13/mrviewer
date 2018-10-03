@@ -632,8 +632,8 @@ namespace mrv {
                 _pixel_type = pixel_type;
                 _channels = channels;
                 _format = pic->format();
-                _shader = ( pic->format() >= image_type::kYByRy420 ?
-                           GLEngine::YByRyShader() : GLEngine::YCbCrShader() );
+                // _shader = ( pic->format() >= image_type::kYByRy420 ?
+                //            GLEngine::YByRyShader() : GLEngine::YCbCrShader() );
                 _glformat = GL_LUMINANCE;
                 _internalFormat = internalFormat;
               }
