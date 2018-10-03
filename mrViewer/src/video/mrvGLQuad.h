@@ -65,6 +65,9 @@ class GLQuad
     
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
+    inline GLShader* shader() const { return _shader; }
+    inline void shader( GLShader* x ) { _shader = x; }
+
     inline const GLLut3d* lut() const { return _lut; }
     void lut( const CMedia* img );
 
