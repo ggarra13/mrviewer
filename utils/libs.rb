@@ -18,7 +18,6 @@ libdl.*
 libxcb.*
 libasound.*
 libfontconfig.*
-libACESclip.*
 )
 
 @options = { :verbose => true }
@@ -93,6 +92,7 @@ FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/b
 FileUtils.rm_f( home + '-dbg' )
 FileUtils.ln_s( ENV['PWD']+'/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
+Dir.chdir( build  )
 libs = Dir.glob( "#{@debug}/lib/*" )
 FileUtils.rm_f( libs )
 
@@ -111,11 +111,12 @@ files.uniq!
 
 parse( files )
 
+Dir.chdir( '../..'  )
 FileUtils.rm_f( "#{@debug}/shaders" )
 FileUtils.rm_f( "#{@debug}/docs" )
 FileUtils.rm_f( "#{@debug}/ctl" )
-FileUtils.cp_r( "shaders", "#{@debug}/" )
-FileUtils.cp_r( "docs", "#{@debug}/" )
-FileUtils.cp_r( "ctl", "#{@debug}/" )
+FileUtils.cp_r( "shaders/", "#{@debug}/" )
+FileUtils.cp_r( "docs/", "#{@debug}/" )
+FileUtils.cp_r( "ctl/", "#{@debug}/" )
 
 #`find . -name '*fuse*' -exec rm {} \\;`

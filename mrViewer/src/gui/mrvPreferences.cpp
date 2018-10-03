@@ -1199,17 +1199,20 @@ static const char* kCLocale = "C";
             old_ocio = var;
         }
 
+	char buf[2048];
 
         std::string parsed = expandVariables( var, "%", '%' );
         parsed = expandVariables( parsed, "${", '}' );
-        mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
-                     << std::endl );
-        mrvLOG_INFO( "ocio", parsed << std::endl );
+	if ( old_ocio != parsed )
+	{
+	    mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
+			 << std::endl );
+	    mrvLOG_INFO( "ocio", parsed << std::endl );
 
-        char buf[2048];
-        sprintf( buf, "OCIO=%s", parsed.c_str() );
-        putenv( strdup(buf) );
+	}
 
+	sprintf( buf, "OCIO=%s", parsed.c_str() );
+	putenv( strdup(buf) );
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
 #ifdef __linux__
