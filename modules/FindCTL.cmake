@@ -43,21 +43,21 @@ FIND_PATH( CTL_INCLUDE_DIR CtlModule.h
  )
 
 FIND_LIBRARY( IlmCtl
-  NAMES IlmCtl_dll IlmCtl_dll_d IlmCtl IlmCtld libIlmCtl 
+  NAMES IlmCtl-2_3 IlmCtl_dll IlmCtl_dll_d IlmCtl IlmCtld libIlmCtl 
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
   DOC   "CTL IlmCtl library"
 )
 
 FIND_LIBRARY( IlmCtlMath
-  NAMES IlmCtlMath_dll IlmCtlMath_dll_d IlmCtlMath IlmCtlMathd libIlmCtlMath
+  NAMES IlmCtlMath-2_3 IlmCtlMath_dll IlmCtlMath_dll_d IlmCtlMath IlmCtlMathd libIlmCtlMath
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
   DOC   "CTL IlmCtlMath library"
 )
 
 FIND_LIBRARY( IlmCtlSimd
-  NAMES IlmCtlSimd_dll IlmCtlSimd_dll_d IlmCtlSimd IlmCtlSimdd libIlmCtlSimd 
+  NAMES IlmCtlSimd-2_3 IlmCtlSimd_dll IlmCtlSimd_dll_d IlmCtlSimd IlmCtlSimdd libIlmCtlSimd 
   PATHS ${SEARCH_DIRS}
   NO_SYSTEM_PATH
   DOC   "CTL IlmCtlSimd library"
