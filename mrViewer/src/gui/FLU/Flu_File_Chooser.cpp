@@ -1787,6 +1787,8 @@ void Flu_File_Chooser::previewCB()
         {
             Entry* e = (Entry*) g->child(i);
             e->set_colors();
+	    std::cerr << e->filename
+		      << " visible? " << e->visible() << std::endl;
             if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
             {
 
