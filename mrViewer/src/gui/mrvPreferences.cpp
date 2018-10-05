@@ -288,6 +288,8 @@ fltk::StyleSet*     newscheme = NULL;
   float               Preferences::ODT_CTL_white_luminance = 120.0f;
   float               Preferences::ODT_CTL_surround_luminance = 12.0f;
 
+mrv::Preferences::MissingFrameType      Preferences::missing_frame;
+
   std::string         Preferences::video_threads;
 
   std::string         Preferences::CTL_8bits_save_transform;
@@ -893,6 +895,9 @@ static std::string expandVariables( const std::string &s,
     loading.get( "load_library", tmp, 0 );
     uiPrefs->uiPrefsLoadLibrary->value( tmp );
     
+    loading.get( "missing_frames", tmp, 0 );
+    uiPrefs->uiPrefsMissingFrames->value( tmp );
+    
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
 
@@ -1172,6 +1177,12 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsSafeAreas->value() )
       view->safe_areas(true);
 
+    missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
+
+    //////////////////////////////////////////////////////
+    // OCIO
+    /////////////////////////////////////////////////////
+    
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
     const char* var = environmentSetting( "OCIO",
@@ -1842,6 +1853,7 @@ static const char* kCLocale = "C";
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "load_library", uiPrefs->uiPrefsLoadLibrary->value() );
+    loading.set( "missing_frames", uiPrefs->uiPrefsMissingFrames->value());
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "file_assoc_load_seq",
                  (int) uiPrefs->uiPrefsLoadSequenceOnAssoc->value() );
