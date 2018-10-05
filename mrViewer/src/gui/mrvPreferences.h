@@ -46,6 +46,13 @@ namespace mrv {
 	kCacheFloat
       };
 
+    enum MissingFrameType
+      {
+	kBlackFrame,
+	kRepeatFrame,
+	kScratchedRepeatFrame
+      };
+      
     enum LutAlgorithm
       {
 	kLutPreferCTL,
@@ -87,6 +94,7 @@ namespace mrv {
     static float ODT_CTL_white_luminance;
     static float ODT_CTL_surround_luminance;
 
+      static MissingFrameType missing_frame;
       static std::string video_threads;
       
     static std::string CTL_8bits_save_transform;
