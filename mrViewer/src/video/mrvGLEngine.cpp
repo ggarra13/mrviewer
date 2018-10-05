@@ -2046,6 +2046,7 @@ void GLEngine::draw_images( ImageList& images )
             }
             quad->gamma( g );
             quad->draw( texWidth, texHeight );
+	    
 
             if ( img->has_subtitle() )
             {
@@ -2241,6 +2242,31 @@ void GLEngine::draw_images( ImageList& images )
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
+      if ( ! pic->valid() && pic->channels() >= 2 &&
+	   Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
+      {
+	  glDisable( GL_DEPTH );
+	  glDisable( GL_STENCIL_TEST );
+	  glDisable( GL_TEXTURE_2D );
+	  glDisable( GL_TEXTURE_3D );
+	  glEnable(GL_BLEND);
+	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	  glLineWidth( 50.0 );
+	  glColor4f( 1.0f, 0.f, 0.f, 0.5f );
+	  glBegin(GL_LINES);
+	  glVertex2d( -0.5, -0.5 );
+	  glVertex2d( 0.5, 0.5 );
+	  glVertex2d( 0.5, -0.5 );
+	  glVertex2d( -0.5, 0.5 );
+	  glEnd();
+	  glDisable( GL_BLEND );
+	  glEnable( GL_DEPTH );
+	  glEnable( GL_STENCIL_TEST );
+	  glEnable( GL_TEXTURE_2D );
+	  glEnable( GL_TEXTURE_3D );
+      }
+
+      
       if ( ( _view->action_mode() == ImageView::kMovePicture ||
              _view->action_mode() == ImageView::kScalePicture ) &&
            _view->selected_image() == img )
