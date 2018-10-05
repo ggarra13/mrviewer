@@ -1121,8 +1121,6 @@ void video_thread( PlaybackData* data )
           diff = 0.0;
       }
 
-      std::cerr << "diff " << diff << std::endl;
-
 #if __cplusplus >= 201103L
       using std::isnan;
 #endif
