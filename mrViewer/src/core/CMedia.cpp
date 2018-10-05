@@ -74,6 +74,8 @@ namespace fs = boost::filesystem;
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
 
+#include <MagickWand/MagickWand.h>
+
 #include "core/mrvMath.h"
 #include "core/CMedia.h"
 #include "core/aviImage.h"
@@ -3694,17 +3696,43 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-            _hires = mrv::image_type_ptr( new image_type( frame,
-                                                          width(),
-                                                          height(),
-                                                          1,
-                                                          image_type::kLumma,
-                                                          image_type::kByte ) );
-            memset( _hires->data().get(), 0x0, _hires->data_size() );
-            cache( _hires );
+	    if ( Preferences::missing_frame == Preferences::kBlackFrame )
+	    {
+		_hires = mrv::image_type_ptr( new image_type( frame,
+							      width(),
+							      height(),
+							      1,
+							      image_type::kLumma,
+							      image_type::kByte ) );
+		memset( _hires->data().get(), 0x0, _hires->data_size() );
+		cache( _hires );
+		IMG_WARNING( file << _(" is missing.") );
+	    }
+	    else
+	    {
+		// REPEATS LAST FRAME
+
+		int64_t idx = f - _frame_start - 1;
+		if ( idx >= 0 && idx < _frame_end )
+		{
+		    mrv::image_type_ptr old;
+
+		    for ( idx >= 0; !_sequence[idx]; --idx )
+		    {
+		    }
+
+		    old =  _sequence[idx];
+		   _hires = mrv::image_type_ptr( new image_type( *old ) );
+		   _hires->frame( f );
+		   cache( _hires );
+		   IMG_WARNING( file << _(" is missing. Choosing ")
+				<< old->frame() );
+		}
+
+  
+	    }
             _hires->valid( false ); // mark this frame as invalid
             refresh();
-            LOG_WARNING( file << _(" is missing.") );
             return false;
         }
      }
