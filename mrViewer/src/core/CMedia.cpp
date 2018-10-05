@@ -3721,12 +3721,15 @@ bool CMedia::find_image( const int64_t frame )
 		    {
 		    }
 
-		    old =  _sequence[idx];
-		   _hires = mrv::image_type_ptr( new image_type( *old ) );
-		   _hires->frame( f );
-		   cache( _hires );
-		   IMG_WARNING( file << _(" is missing. Choosing ")
-				<< old->frame() );
+		    if ( idx >= 0 )
+		    {
+			old = _sequence[idx];
+			_hires = mrv::image_type_ptr( new image_type( *old ) );
+			_hires->frame( f );
+			cache( _hires );
+			IMG_WARNING( file << _(" is missing. Choosing ")
+				     << old->frame() );
+		    }
 		}
 
   
