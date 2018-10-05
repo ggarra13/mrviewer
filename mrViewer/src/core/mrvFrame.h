@@ -136,6 +136,23 @@ class VideoFrame
     {
     }
 
+    VideoFrame( const VideoFrame& b ) :
+    _frame( b._frame ),
+    _pts( b._pts ),
+    _repeat( b._repeat ),
+    _width( b._width ),
+    _height( b._height ),
+    _channels( b._channels ),
+    _ctime( b._ctime ),
+    _mtime( b._mtime ),
+    _format( b._format ),
+    _type( b._type ),
+    _valid( true )
+    {
+	allocate();
+	memcpy( _data.get(), b.data().get(), data_size() );
+    }
+    
     VideoFrame( const boost::int64_t& frame,
                 const unsigned int w, const unsigned int h,
                 const unsigned short c = 4,
@@ -265,7 +282,6 @@ class VideoFrame
     VideoFrame* scaleY(float t) const;
 
   private:
-    VideoFrame( const VideoFrame& b ) { }
 
     ImagePixel pixel_u8( const unsigned int x, const unsigned int y ) const;
     void pixel_u8( const unsigned int x, const unsigned int y,
