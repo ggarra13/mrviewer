@@ -1099,19 +1099,6 @@ void video_thread( PlaybackData* data )
 
           diff = step * ( video_clock - master_clock );
 
-
-          if ( diff < -3.0 )
-          {
-              static bool print_warning = true;
-              if ( print_warning == true )
-              {
-                  LOG_WARNING( "V-A difference too big.  "
-                               "Too slow of a computer?" );
-                  print_warning = false;
-              }
-              diff = 0.0;
-          }
-
           absdiff = std::abs(diff);
 
           if ( absdiff > 10.0 ) diff = 0.0;
