@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-10-05 13:35-0300\n"
+"POT-Creation-Date: 2018-10-05 20:20-0300\n"
 "PO-Revision-Date: 2018-06-09 11:27-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -144,7 +144,7 @@ msgid " already created: "
 msgstr " ya creada: "
 
 #
-#: core/CMedia.cpp:3839
+#: core/CMedia.cpp:3842
 msgid " as default"
 msgstr " por defecto"
 
@@ -229,7 +229,7 @@ msgid " is missing."
 msgstr " está faltante."
 
 #
-#: core/CMedia.cpp:3728
+#: core/CMedia.cpp:3730
 msgid " is missing. Choosing "
 msgstr " está faltante. Eligiendo "
 
@@ -351,12 +351,12 @@ msgid "' for writing. Reason: "
 msgstr "' para escritura. Razón: "
 
 #
-#: core/CMedia.cpp:3839
+#: core/CMedia.cpp:3842
 msgid "' from bitdepth "
 msgstr "' de profundidad en bits: "
 
 #
-#: core/CMedia.cpp:3793
+#: core/CMedia.cpp:3796
 msgid "' from filename"
 msgstr "' del nombre del archivo"
 
@@ -578,7 +578,7 @@ msgid "15"
 msgstr "15"
 
 #
-#: core/CMedia.cpp:3811
+#: core/CMedia.cpp:3814
 msgid "16 bits"
 msgstr ""
 
@@ -673,7 +673,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:3818
+#: core/CMedia.cpp:3821
 msgid "32 bits"
 msgstr ""
 
@@ -784,7 +784,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "Caches de 8 bits"
 
-#: core/CMedia.cpp:3804
+#: core/CMedia.cpp:3807
 msgid "8 bits"
 msgstr ""
 
@@ -2686,39 +2686,39 @@ msgstr "Fecha"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/CMedia.cpp:165 core/CMedia.cpp:4129
+#: core/CMedia.cpp:165 core/CMedia.cpp:4132
 msgid "Decode Buffer Full"
 msgstr "Buffer de Decodificación Lleno"
 
-#: core/CMedia.cpp:159 core/CMedia.cpp:4111
+#: core/CMedia.cpp:159 core/CMedia.cpp:4114
 msgid "Decode Done"
 msgstr "Decodificación Terminada"
 
-#: core/CMedia.cpp:160 core/CMedia.cpp:4114
+#: core/CMedia.cpp:160 core/CMedia.cpp:4117
 msgid "Decode Error"
 msgstr "Error de Decodificación"
 
-#: core/CMedia.cpp:164 core/CMedia.cpp:4126
+#: core/CMedia.cpp:164 core/CMedia.cpp:4129
 msgid "Decode Loop End"
 msgstr "Loop de Final en Decodificación"
 
-#: core/CMedia.cpp:163 core/CMedia.cpp:4123
+#: core/CMedia.cpp:163 core/CMedia.cpp:4126
 msgid "Decode Loop Start"
 msgstr "Loop de Comienzo en Decodificación"
 
-#: core/CMedia.cpp:157 core/CMedia.cpp:4105
+#: core/CMedia.cpp:157 core/CMedia.cpp:4108
 msgid "Decode Missing Frame"
 msgstr "Decodificación Faltante de Cuadro"
 
-#: core/CMedia.cpp:161 core/CMedia.cpp:4117
+#: core/CMedia.cpp:161 core/CMedia.cpp:4120
 msgid "Decode Missing Samples"
 msgstr "Decodificacion Faltante de Samples"
 
-#: core/CMedia.cpp:162 core/CMedia.cpp:4120
+#: core/CMedia.cpp:162 core/CMedia.cpp:4123
 msgid "Decode No Stream"
 msgstr "Decodificacion sin Pista"
 
-#: core/CMedia.cpp:158 core/CMedia.cpp:4108
+#: core/CMedia.cpp:158 core/CMedia.cpp:4111
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
@@ -3600,7 +3600,7 @@ msgstr "Ir al final de la secuencia."
 msgid "Go to the parent directory"
 msgstr "Ir a la carpeta anterior"
 
-#: core/CMedia.cpp:3793 core/CMedia.cpp:3838
+#: core/CMedia.cpp:3796 core/CMedia.cpp:3841
 msgid "Got colorspace '"
 msgstr "Obtuve el espacio de color '"
 
@@ -8482,7 +8482,7 @@ msgstr "decode_audio_packet falló para cuadro "
 msgid "default"
 msgstr "defecto"
 
-#: core/CMedia.cpp:3831
+#: core/CMedia.cpp:3834
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 
@@ -8529,7 +8529,7 @@ msgstr ""
 msgid "half float (16-bits per channel)"
 msgstr "media coma flotante (16 bits por canal)"
 
-#: core/CMedia.cpp:3826
+#: core/CMedia.cpp:3829
 msgid "half/float"
 msgstr "media/completa coma flotante"
 
@@ -8769,7 +8769,7 @@ msgstr "título de tv"
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:2821 core/CMedia.cpp:2852 core/CMedia.cpp:3798
+#: core/CMedia.cpp:2821 core/CMedia.cpp:2852 core/CMedia.cpp:3801
 #: core/wandImage.cpp:579
 msgid "unknown"
 msgstr "desconocido"
