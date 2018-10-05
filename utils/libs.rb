@@ -86,11 +86,14 @@ release = `uname -r`.chop!
 
 build = "BUILD/Linux-#{release}-64/"
 
+
+puts "DIRECTORY: #{Dir.pwd}" 
+
 home=ENV['HOME']+"/bin/mrViewer"
 FileUtils.rm_f( home )
-FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
+FileUtils.ln_s( Dir.pwd + '/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
 FileUtils.rm_f( home + '-dbg' )
-FileUtils.ln_s( ENV['PWD']+'/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
+FileUtils.ln_s( Dir.pwd + '/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
 Dir.chdir( build  )
 libs = Dir.glob( "#{@debug}/lib/*" )
