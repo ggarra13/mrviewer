@@ -1225,6 +1225,12 @@ namespace mrv {
         _shader->disable();
       }
 
+    if ( _lut )
+    {
+	_lut->disable();
+    }
+
+    
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
           short i = short( _channels - 1 );
