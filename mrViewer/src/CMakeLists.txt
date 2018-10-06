@@ -92,7 +92,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11)
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x)
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
-    ADD_COMPILE_OPTIONS( -msse -O3 -w --std=c++11 -fdiagnostics-color=always  )
+    ADD_COMPILE_OPTIONS( -msse -O3 -w -fdiagnostics-color=always  )
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ ${GLEW_LIBRARIES} fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
@@ -372,8 +372,13 @@ else(WIN32)
 	endif(COMMAND cmake_policy)
 endif(WIN32)
 
+
+# VP18 switches to c++14, so let's do that by default
+set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
+# but switch gnu++14 or other extensions off for portability
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
-SET_TARGET_PROPERTIES( mrViewer PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
 TARGET_LINK_LIBRARIES( mrViewer PRIVATE ${LIBRARIES} ACESclip )
 
 
@@ -428,9 +433,9 @@ IF (WIN32 OR WIN64)
   MESSAGE( STATUS "Copying DLLs..." )
   FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ELSE(WIN32 OR WIN64)
-  MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
-  EXECUTE_PROCESS( COMMAND utils/libs.rb
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
+  #MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
+  #EXECUTE_PROCESS( COMMAND utils/libs.rb
+  #  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
 ENDIF(WIN32 OR WIN64)
 
 

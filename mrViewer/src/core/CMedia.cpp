@@ -3717,7 +3717,7 @@ bool CMedia::find_image( const int64_t frame )
 		{
 		    mrv::image_type_ptr old;
 
-		    for ( idx >= 0; !_sequence[idx]; --idx )
+		    for ( ; !_sequence[idx]; --idx )
 		    {
 		    }
 
