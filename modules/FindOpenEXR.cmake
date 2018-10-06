@@ -14,7 +14,7 @@ SET(OPENEXR_FOUND "NO")
 IF( OPENEXR_LIBRARY_DIR )
   SET( SEARCH_DIRS "${OPENEXR_LIBRARY_DIR}" )
 ELSE( OPENEXR_LIBRARY_DIR )
-  SET( SEARCH_DIRS 
+  SET( SEARCH_DIRS
     $ENV{OPENEXR_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
     $ENV{OPENEXR_ROOT}/lib/Win32/Release
     $ENV{OPENEXR_ROOT}/lib
@@ -40,14 +40,14 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   DOC   "OpenEXR includes"
   )
 
-FIND_LIBRARY( IlmImfUtil 
+FIND_LIBRARY( IlmImfUtil
   NAMES IlmImfUtil-2_3 IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmImf library"
 )
 
-FIND_LIBRARY( IlmImf 
+FIND_LIBRARY( IlmImf
   NAMES IlmImf-2_3 IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
@@ -56,8 +56,8 @@ FIND_LIBRARY( IlmImf
 
 MESSAGE( "OpenEXR Root=$ENV{OPENEXR_ROOT} SEARCH_DIRS=${SEARCH_DIRS} IlmImf=" ${IlmImf} )
 
-FIND_LIBRARY( Imath 
-  NAMES Imath-2_3 Imath-2_2 Imath_dll Imath_dll_d Imath Imathd 
+FIND_LIBRARY( Imath
+  NAMES Imath-2_3 Imath-2_2 Imath_dll Imath_dll_d Imath Imathd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR Imath library"
@@ -78,7 +78,7 @@ FIND_LIBRARY( IexMath
 )
 
 FIND_LIBRARY( Half
-  NAMES Half-2_4_dll Half-2_3_dll Half_dll Half_dll_d Half Halfd
+  NAMES Half-2_4_dll Half-2_3_dll Half-2_3 Half_dll Half_dll_d Half Halfd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR Half library"
@@ -108,7 +108,7 @@ IF(NOT OPENEXR_FOUND)
   IF(NOT OPENEXR_FIND_QUIETLY)
     IF(OPENEXR_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR
-              "OpenEXR required, please specify its location with OPENEXR_ROOT.")
+	      "OpenEXR required, please specify its location with OPENEXR_ROOT.")
     ELSE(OPENEXR_FIND_REQUIRED)
       MESSAGE( STATUS "OpenEXR was not found!!! " ${OPENEXR_INCLUDE_DIR})
       MESSAGE( STATUS ${OPENEXR_LIBRARIES} )
@@ -123,7 +123,7 @@ ENDIF(NOT OPENEXR_FOUND)
 # This is to avoid picking IlmThread for a wrong version of IlmImf.
 #
 FIND_LIBRARY( IlmThread
-  NAMES IlmThread-2_3 IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread 
+  NAMES IlmThread-2_3 IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread
   PATHS ${OPENEXR_LIBRARY_DIR}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmThread library (1.5 or later)"
@@ -136,4 +136,3 @@ ENDIF( NOT IlmThread )
 SET(OPENEXR_LIBRARIES ${OPENEXR_LIBRARIES} ${IlmThread} )
 
 #####
-
