@@ -30,6 +30,7 @@
 // #define TEST_NO_SHADERS  // test without hardware shaders
 // #define TEST_NO_YUV      // test in rgba mode only
 
+#define USE_HDR 0
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
@@ -585,7 +586,7 @@ void GLEngine::initialize()
            stricmp( shader_type, "OPENGL" ) == 0 )
       {
           _hardwareShaders = kGLSL;
-          _has_hdr = true;
+          _has_hdr = USE_HDR;
       }
       else if ( stricmp( shader_type, "NV" ) == 0 ||
                 stricmp( shader_type, "NV30" ) == 0 ||
@@ -628,7 +629,7 @@ void GLEngine::initialize()
 #endif
 
       if ( _hardwareShaders == kGLSL )
-          _has_hdr = true;
+          _has_hdr = USE_HDR;
 
       LOG_INFO( "Selecting shader type automatically: " << shader_type_name() );
 
