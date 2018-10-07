@@ -400,15 +400,15 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                            c->profile = FF_PROFILE_MPEG4_ADVANCED_CORE; break;
                    }
                }
-
-               const char* name = avcodec_profile_name( codec_id, c->profile );
-               if (name) LOG_INFO( _("Profile name ") << name );
-
-               if ( c->codec_id == AV_CODEC_ID_PNG ||
-                    c->codec_id == AV_CODEC_ID_TIFF )
+               else if ( c->codec_id == AV_CODEC_ID_PNG ||
+			 c->codec_id == AV_CODEC_ID_TIFF )
                {
                    c->pix_fmt = AV_PIX_FMT_BGR32;
                }
+	       else if ( c->codec_id == AV_CODEC_ID_MJPEG )
+	       {
+		   c->pix_fmt = AV_PIX_FMT_YUVJ444P;
+	       }
                else if ( c->codec_id == AV_CODEC_ID_PRORES )
                {
                    // ProRes supports YUV422 10bit
@@ -436,8 +436,9 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P;
                    else
-                       LOG_ERROR( "Unknown c->pix_fmt ("
-                                  << opts->video_color << ") for movie file" );
+                       LOG_ERROR( _("Unknown c->pix_fmt (")
+                                  << opts->video_color <<
+				  _(") for movie file") );
                }
                if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
                    /* just for testing, we also add B frames */
@@ -446,6 +447,9 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
                    c->mb_decision = 2;
                }
+	       
+               const char* name = avcodec_profile_name( codec_id, c->profile );
+               if (name) LOG_INFO( _("Profile name ") << name );
                break;
            }
     default:
@@ -1284,9 +1288,17 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_PRORES;
    else if ( opts->video_codec == "ffv1" )
        fmt->video_codec = AV_CODEC_ID_FFV1;
-   else
+   else if ( fmt->video_codec == AV_CODEC_ID_NONE )
    {
        LOG_ERROR( "Unknown codec id for codec '" << opts->video_codec << "'" );
+       return false;
+   }
+   else
+   {
+       AVCodec* c = avcodec_find_encoder( fmt->video_codec );
+       opts->video_codec = c->name;
+       LOG_INFO( "Codec " << c->name << " " << c->long_name << " "
+		 << fmt->video_codec << " selected"  );
    }
 
    if ( opts->audio_codec == _("None") )
