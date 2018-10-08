@@ -311,14 +311,14 @@ static std::string expandVariables( const std::string &s,
 
 
     size_t p = s.find( START_VARIABLE );
-    
+
     if( p == std::string::npos ) return s;
-    
+
     std::string pre  = s.substr( 0, p );
     std::string post = s.substr( p + strlen(START_VARIABLE) );
 
     size_t e = post.find( END_VARIABLE );
-    
+
     if( e == std::string::npos ) return s;
 
     std::string variable = post.substr( 0, e );
@@ -399,7 +399,7 @@ static std::string expandVariables( const std::string &s,
 
     ui.get( "vectorscope", tmp, 0 );
     uiPrefs->uiPrefsVectorscope->value(tmp);
-    
+
     ui.get( "waveform", tmp, 0 );
     uiPrefs->uiPrefsWaveform->value(tmp);
 
@@ -516,7 +516,7 @@ static std::string expandVariables( const std::string &s,
 
     ocio.get( "save_config", tmp, 0 );
     uiPrefs->uiPrefsSaveOcio->value( tmp );
-    
+
     ocio.get( "config", tmpS, "", 2048 );
     uiPrefs->uiPrefsOCIOConfig->text( tmpS );
 
@@ -648,7 +648,7 @@ static std::string expandVariables( const std::string &s,
     uiPrefs->uiPrefsCacheScale->value( tmp );
     CMedia::cache_scale( tmp );
 
-    
+
     caches.get( "8bit_caches", tmp, 0 );
     uiPrefs->uiPrefs8BitCaches->value( (bool) tmp );
     CMedia::eight_bit_caches( (bool) tmp );
@@ -850,13 +850,13 @@ static std::string expandVariables( const std::string &s,
         uiPrefs->IDT_transform->value(tmpS);
       }
 #endif
-      
+
 
       fltk::Preferences rt( lut, "RT" );
       {
         rt.get( "algorithm", tmp, 0 );
         uiPrefs->RT_algorithm->value(tmp);
-	
+
         fltk::Preferences ctl( rt, "CTL" );
         {
 #define RENDER_TRANSFORM(x, d)						\
@@ -894,10 +894,10 @@ static std::string expandVariables( const std::string &s,
 
     loading.get( "load_library", tmp, 0 );
     uiPrefs->uiPrefsLoadLibrary->value( tmp );
-    
+
     loading.get( "missing_frames", tmp, 0 );
     uiPrefs->uiPrefsMissingFrames->value( tmp );
-    
+
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
 
@@ -913,7 +913,7 @@ static std::string expandVariables( const std::string &s,
     loading.get( "uses_16bits", tmp, 0 );
     uiPrefs->uiPrefsUses16Bits->value( (bool) tmp );
     CMedia::uses_16bits( (bool) tmp );
-    
+
     loading.get( "image_version_prefix", tmpS, "_v", 10 );
     uiPrefs->uiPrefsImageVersionPrefix->value( tmpS );
 
@@ -923,7 +923,7 @@ static std::string expandVariables( const std::string &s,
     fltk::Preferences video( base, "video" );
     video.get( "video_codec", tmp, 0 );
     uiPrefs->uiPrefsVideoCodec->value(tmp);
-    video.get( "yuv_hint", tmp, 0 );
+    video.get( "yuv_hint", tmp, 2 );
     uiPrefs->uiPrefsYUVConversion->value(tmp);
     CMedia::colorspace_override = tmp;
     video.get( "thread_count", tmp, 0 );
@@ -1097,7 +1097,7 @@ static const char* kCLocale = "C";
     }
     else
       main->uiVectorscope->uiMain->hide();
-    
+
     if ( uiPrefs->uiPrefsWaveform->value() )
     {
         main->uiWaveform->uiMain->show();
@@ -1182,13 +1182,13 @@ static const char* kCLocale = "C";
     //////////////////////////////////////////////////////
     // OCIO
     /////////////////////////////////////////////////////
-    
+
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
                                           false);
-    
+
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
@@ -1210,20 +1210,20 @@ static const char* kCLocale = "C";
             old_ocio = var;
         }
 
-	char buf[2048];
+        char buf[2048];
 
         std::string parsed = expandVariables( var, "%", '%' );
         parsed = expandVariables( parsed, "${", '}' );
-	if ( old_ocio != parsed )
-	{
-	    mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
-			 << std::endl );
-	    mrvLOG_INFO( "ocio", parsed << std::endl );
+        if ( old_ocio != parsed )
+        {
+            mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
+                         << std::endl );
+            mrvLOG_INFO( "ocio", parsed << std::endl );
 
-	}
+        }
 
-	sprintf( buf, "OCIO=%s", parsed.c_str() );
-	putenv( strdup(buf) );
+        sprintf( buf, "OCIO=%s", parsed.c_str() );
+        putenv( strdup(buf) );
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
 #ifdef __linux__
@@ -1364,7 +1364,7 @@ static const char* kCLocale = "C";
         {
             LOG_ERROR( e.what() );
         }
-	main->uiICS->show();
+        main->uiICS->show();
     }
     else
     {
@@ -1753,7 +1753,7 @@ static const char* kCLocale = "C";
             ocio.set( "save_config", 1 );
             ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
         }
-        
+
         fltk::Preferences ics( ocio, "ICS" );
         {
           ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->text() );
