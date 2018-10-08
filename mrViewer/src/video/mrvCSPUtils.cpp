@@ -206,6 +206,7 @@ void mp_get_chroma_location(enum mp_chroma_location loc, int *x, int *y)
     if (loc == MP_CHROMA_LEFT)
         *x = -1;
 }
+
 // return the primaries associated with a certain mp_csp_primaries val
 struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
 {
@@ -466,7 +467,8 @@ static void mp_apply_chromatic_adaptation(struct mp_csp_col_xy src,
 }
 
 // get the coefficients of the source -> dest cms matrix
-void mp_get_cms_matrix(struct mp_csp_primaries src, struct mp_csp_primaries dest,
+void mp_get_cms_matrix(struct mp_csp_primaries src,
+                       struct mp_csp_primaries dest,
                        enum mp_render_intent intent, float m[3][3])
 {
     float tmp[3][3];
@@ -526,4 +528,3 @@ void mp_invert_matrix3x3(float m[3][3])
             m[i][j] *= det;
     }
 }
-
