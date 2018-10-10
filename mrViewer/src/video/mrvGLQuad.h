@@ -28,6 +28,8 @@
 #ifndef mrvGLQuad_h
 #define mrvGLQuad_h
 
+
+
 namespace mrv {
 
   class GLLut3d;
@@ -59,7 +61,8 @@ class GLQuad
     inline void mask_value( int m ) { _mask_value = m; }
     
     inline float gamma() const { return _gamma; }
-    inline void gamma( const float f ) { _gamma = f; }
+    void gamma( const float f );
+
     
     virtual void bind( const image_type_ptr pic );
     
@@ -159,5 +162,7 @@ class GLQuad
 
 } // namespace mrv
 
+#undef DBG
+#define DBG(x)
 
 #endif // mrvGLQuad_h
