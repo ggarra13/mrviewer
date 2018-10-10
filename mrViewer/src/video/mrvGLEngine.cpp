@@ -1979,7 +1979,6 @@ void GLEngine::draw_images( ImageList& images )
         if ( i+1 == e ) wipe_area();
 
         float g = img->gamma();
-        LOG_DEBUG( "gamma " << g );
 
         int mask = 0;
 
@@ -1991,7 +1990,6 @@ void GLEngine::draw_images( ImageList& images )
                 pic = img->right();
                 CMedia* right = img->right_eye();
                 if ( right ) g = right->gamma();
-                LOG_DEBUG( "gamma right " << g );
             }
             else
             {
@@ -2047,10 +2045,9 @@ void GLEngine::draw_images( ImageList& images )
                     quad->shader( GLEngine::YCbCrShader() );
                 quad->bind( pic );
             }
-            LOG_DEBUG( "gamma " << g );
             quad->gamma( g );
             quad->draw( texWidth, texHeight );
-	    
+
 
             if ( img->has_subtitle() )
             {
@@ -2142,7 +2139,6 @@ void GLEngine::draw_images( ImageList& images )
                     }
                 }
 
-                LOG_DEBUG( "gamma " << g );
                 g = img->gamma();
 
                 if ( stereo & CMedia::kStereoRight )
@@ -2154,7 +2150,6 @@ void GLEngine::draw_images( ImageList& images )
                     pic = img->right();
                     CMedia* right = img->right_eye();
                     if ( right ) g = right->gamma();
-                    LOG_DEBUG( "gamma right " << g );
                 }
 
                 if ( daw2.w() > 0 )
@@ -2245,35 +2240,34 @@ void GLEngine::draw_images( ImageList& images )
           img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
 
-      LOG_DEBUG( "gamma " << g );
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
       if ( ! pic->valid() && pic->channels() >= 2 &&
-	   Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
+           Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
       {
-	  glDisable( GL_DEPTH );
-	  glDisable( GL_STENCIL_TEST );
-	  glDisable( GL_TEXTURE_2D );
-	  glDisable( GL_TEXTURE_3D );
-	  glEnable(GL_BLEND);
-	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	  glLineWidth( 50.0 );
-	  glColor4f( 1.0f, 0.f, 0.f, 0.5f );
-	  glBegin(GL_LINES);
-	  glVertex2d( -0.5, -0.5 );
-	  glVertex2d( 0.5, 0.5 );
-	  glVertex2d( 0.5, -0.5 );
-	  glVertex2d( -0.5, 0.5 );
-	  glEnd();
-	  glDisable( GL_BLEND );
-	  glEnable( GL_DEPTH );
-	  glEnable( GL_STENCIL_TEST );
-	  glEnable( GL_TEXTURE_2D );
-	  glEnable( GL_TEXTURE_3D );
+          glDisable( GL_DEPTH );
+          glDisable( GL_STENCIL_TEST );
+          glDisable( GL_TEXTURE_2D );
+          glDisable( GL_TEXTURE_3D );
+          glEnable(GL_BLEND);
+          glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+          glLineWidth( 50.0 );
+          glColor4f( 1.0f, 0.f, 0.f, 0.5f );
+          glBegin(GL_LINES);
+          glVertex2d( -0.5, -0.5 );
+          glVertex2d( 0.5, 0.5 );
+          glVertex2d( 0.5, -0.5 );
+          glVertex2d( -0.5, 0.5 );
+          glEnd();
+          glDisable( GL_BLEND );
+          glEnable( GL_DEPTH );
+          glEnable( GL_STENCIL_TEST );
+          glEnable( GL_TEXTURE_2D );
+          glEnable( GL_TEXTURE_3D );
       }
 
-      
+
       if ( ( _view->action_mode() == ImageView::kMovePicture ||
              _view->action_mode() == ImageView::kScalePicture ) &&
            _view->selected_image() == img )
