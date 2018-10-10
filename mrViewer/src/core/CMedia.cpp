@@ -1008,7 +1008,7 @@ bool CMedia::allocate_pixels( const int64_t& frame,
       LOG_ERROR( e.what() );
       return false;
   }
-  
+
   if (! _hires->data().get() )
   {
       IMG_ERROR( _("Out of memory") );
@@ -1051,7 +1051,7 @@ mrv::image_type_ptr CMedia::right() const
 
     Mutex& mtx = const_cast< Mutex& >( _mutex );
     SCOPED_LOCK( mtx );
-    
+
     if ( stereo_input() == kTopBottomStereoInput ||
          stereo_input() == kLeftRightStereoInput )
         return _stereo[0] ? _stereo[0] : _hires;
@@ -1173,7 +1173,7 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
 
     Mutex& mtx = const_cast< Mutex& >( _data_mutex );
     SCOPED_LOCK( mtx );
-    
+
     if ( stereo_input() & kTopBottomStereoInput ) {
         mrv::Recti r = _dataWindow[idx];
         r.h( r.h() / 2 );
@@ -1211,7 +1211,7 @@ const mrv::Recti CMedia::data_window2( int64_t f ) const
 
     Mutex& mtx = const_cast< Mutex& >( _data_mutex );
     SCOPED_LOCK( mtx );
-    
+
     if ( stereo_input() & kTopBottomStereoInput ) {
         mrv::Recti r = _dataWindow2[idx];
         r.h( r.h() / 2 );
@@ -1241,7 +1241,7 @@ void CMedia::display_window( const int xmin, const int ymin,
   if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
 
   // assert( idx < _numWindows );
-  
+
   SCOPED_LOCK( _data_mutex );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
@@ -1264,7 +1264,7 @@ void CMedia::display_window2( const int xmin, const int ymin,
   if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
 
   // assert( idx < _numWindows );
-  
+
   SCOPED_LOCK( _data_mutex );
   _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
@@ -1287,7 +1287,7 @@ void CMedia::data_window( const int xmin, const int ymin,
   if ( _numWindows && idx >= _numWindows || idx < 0 ) return;
 
   SCOPED_LOCK( _data_mutex );
-  
+
   // assert( idx < _numWindows );
 
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -1431,8 +1431,8 @@ void CMedia::sequence( const char* fileroot,
 
   if ( has_audio() )
     {
-	int64_t f = _frame.load();
-	decode_audio( f );
+        int64_t f = _frame.load();
+        decode_audio( f );
     }
 }
 
@@ -1740,6 +1740,7 @@ image_type::PixelType CMedia::depth() const
     if ( _hires ) return _hires->pixel_type();
     else return image_type::kByte;
 }
+
 
 void CMedia::gamma( const float x )
 {
@@ -3489,7 +3490,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
     return kDecodeMissingFrame;
 
 
-  
+
   while ( !_video_packets.empty() )
     {
       if ( _video_packets.is_flush() )
@@ -3530,7 +3531,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
       }
       else
       {
-	  assert( !_video_packets.empty() );
+          assert( !_video_packets.empty() );
           _video_packets.pop_front();
           return kDecodeOK;
       }
@@ -3641,7 +3642,7 @@ bool CMedia::find_image( const int64_t frame )
 
         _frame = frame;
 
-	SCOPED_LOCK( _data_mutex );
+        SCOPED_LOCK( _data_mutex );
         free(_filename);
         _filename = NULL;
 
@@ -3660,7 +3661,7 @@ bool CMedia::find_image( const int64_t frame )
       if ( file != _filename )
       {
           SCOPED_LOCK( _mutex );
-	  SCOPED_LOCK( _data_mutex );
+          SCOPED_LOCK( _data_mutex );
           should_load = true;
           free( _filename );
           _filename = strdup( file.c_str() );
@@ -3668,7 +3669,7 @@ bool CMedia::find_image( const int64_t frame )
     }
   else
     {
-	SCOPED_LOCK( _data_mutex );
+        SCOPED_LOCK( _data_mutex );
         SCOPED_LOCK( _mutex );
         _filename = strdup( file.c_str() );
         should_load = true;
@@ -3683,7 +3684,7 @@ bool CMedia::find_image( const int64_t frame )
          SCOPED_LOCK( _mutex );
          SCOPED_LOCK( _audio_mutex );
          SCOPED_LOCK( _subtitle_mutex );
-	 SCOPED_LOCK( _data_mutex );
+         SCOPED_LOCK( _data_mutex );
          if ( fetch( f ) )
          {
              cache( _hires );
@@ -3696,44 +3697,44 @@ bool CMedia::find_image( const int64_t frame )
      {
         if ( ! internal() )
         {
-	    if ( Preferences::missing_frame == Preferences::kBlackFrame )
-	    {
-		_hires = mrv::image_type_ptr( new image_type( frame,
-							      width(),
-							      height(),
-							      1,
-							      image_type::kLumma,
-							      image_type::kByte ) );
-		memset( _hires->data().get(), 0x0, _hires->data_size() );
-		cache( _hires );
-		IMG_WARNING( file << _(" is missing.") );
-	    }
-	    else
-	    {
-		// REPEATS LAST FRAME
+            if ( Preferences::missing_frame == Preferences::kBlackFrame )
+            {
+                _hires = mrv::image_type_ptr( new image_type( frame,
+                                                              width(),
+                                                              height(),
+                                                              1,
+                                                              image_type::kLumma,
+                                                              image_type::kByte ) );
+                memset( _hires->data().get(), 0x0, _hires->data_size() );
+                cache( _hires );
+                IMG_WARNING( file << _(" is missing.") );
+            }
+            else
+            {
+                // REPEATS LAST FRAME
 
-		int64_t idx = f - _frame_start - 1;
-		if ( idx >= 0 && idx < _frame_end )
-		{
-		    mrv::image_type_ptr old;
+                int64_t idx = f - _frame_start - 1;
+                if ( idx >= 0 && idx < _frame_end )
+                {
+                    mrv::image_type_ptr old;
 
-		    for ( ; !_sequence[idx]; --idx )
-		    {
-		    }
+                    for ( ; !_sequence[idx]; --idx )
+                    {
+                    }
 
-		    if ( idx >= 0 )
-		    {
-			old = _sequence[idx];
-			_hires = mrv::image_type_ptr( new image_type( *old ) );
-			_hires->frame( f );
-			cache( _hires );
-			IMG_WARNING( file << _(" is missing. Choosing ")
-				     << old->frame() );
-		    }
-		}
+                    if ( idx >= 0 )
+                    {
+                        old = _sequence[idx];
+                        _hires = mrv::image_type_ptr( new image_type( *old ) );
+                        _hires->frame( f );
+                        cache( _hires );
+                        IMG_WARNING( file << _(" is missing. Choosing ")
+                                     << old->frame() );
+                    }
+                }
 
-  
-	    }
+
+            }
             _hires->valid( false ); // mark this frame as invalid
             refresh();
             return false;
