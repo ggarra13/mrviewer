@@ -193,6 +193,11 @@ namespace mrv {
       _lut_attempt = 0;
   }
 
+void GLQuad::gamma( const float f ) {
+    LOG_DEBUG( "gamma " << f );
+    _gamma = f;
+}
+
   GLenum GLQuad::gl_format( const image_type::Format format )
   {
       static bool bad_format = false;
