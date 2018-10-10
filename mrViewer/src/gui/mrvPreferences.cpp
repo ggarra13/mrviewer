@@ -1240,9 +1240,7 @@ static const char* kCLocale = "C";
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
 
-#undef DBG
-#define DBG(x) LOG_DEBUG( x );
-        
+
         try
         {
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
@@ -1250,7 +1248,7 @@ static const char* kCLocale = "C";
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
             OCIO_Display = config->getDefaultDisplay();
-            
+
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
             // First, remove all additional defaults if any from pulldown menu
@@ -1259,7 +1257,7 @@ static const char* kCLocale = "C";
                 main->gammaDefaults->remove( c );
             }
 
-            
+
             int numDisplays = config->getNumDisplays();
             DBG( "numDisplays " << numDisplays );
             for ( int j = 0; j < numDisplays; ++j )
@@ -1278,7 +1276,7 @@ static const char* kCLocale = "C";
                     views.push_back( view );
                 }
 
-                
+
                 // Then sort and add all new views to pulldown menu
                 std::sort( views.begin(), views.end() );
                 for ( size_t i = 0; i < views.size(); ++i )
@@ -1301,7 +1299,7 @@ static const char* kCLocale = "C";
 
 #undef DBG
 #define DBG(x)
-            
+
             main->gammaDefaults->redraw();
 
         }
