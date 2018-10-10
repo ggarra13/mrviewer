@@ -24,7 +24,7 @@ Out main(
          uniform int    height = 256,
          uniform int    width  = 256,
 	 uniform half   gain  = 1.0,
-	 uniform half   gamma = 0.45,
+	 uniform half   gamma = 1.0,
 	 uniform int    channel = 0,
 	 uniform bool   premult = 0,
 	 uniform bool   unpremult = 0,
