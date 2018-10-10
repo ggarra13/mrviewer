@@ -7064,18 +7064,21 @@ void ImageView::gamma( const float f )
 
   _gamma = f;
 
+  LOG_DEBUG( "view gamma: " << _gamma );
+
   mrv::media fg = foreground();
   if ( fg )
   {
-     fg->image()->gamma( f );
+      DBG(  f );
+      fg->image()->gamma( f );
 
-     char buf[256];
-     sprintf( buf, "Gamma %g", f );
-     send_network( buf );
-
-     uiMain->uiGamma->value( f );
-     uiMain->uiGammaInput->value( f );
-
+      char buf[256];
+      sprintf( buf, "Gamma %g", f );
+      send_network( buf );
+      
+      uiMain->uiGamma->value( f );
+      uiMain->uiGammaInput->value( f );
+      
      flush_caches();
      smart_refresh();
      update_color_info();
