@@ -1979,6 +1979,7 @@ void GLEngine::draw_images( ImageList& images )
         if ( i+1 == e ) wipe_area();
 
         float g = img->gamma();
+        LOG_DEBUG( "gamma " << g );
 
         int mask = 0;
 
@@ -1990,6 +1991,7 @@ void GLEngine::draw_images( ImageList& images )
                 pic = img->right();
                 CMedia* right = img->right_eye();
                 if ( right ) g = right->gamma();
+                LOG_DEBUG( "gamma right " << g );
             }
             else
             {
@@ -2045,6 +2047,7 @@ void GLEngine::draw_images( ImageList& images )
                     quad->shader( GLEngine::YCbCrShader() );
                 quad->bind( pic );
             }
+            LOG_DEBUG( "gamma " << g );
             quad->gamma( g );
             quad->draw( texWidth, texHeight );
 	    
@@ -2139,6 +2142,7 @@ void GLEngine::draw_images( ImageList& images )
                     }
                 }
 
+                LOG_DEBUG( "gamma " << g );
                 g = img->gamma();
 
                 if ( stereo & CMedia::kStereoRight )
@@ -2150,6 +2154,7 @@ void GLEngine::draw_images( ImageList& images )
                     pic = img->right();
                     CMedia* right = img->right_eye();
                     if ( right ) g = right->gamma();
+                    LOG_DEBUG( "gamma right " << g );
                 }
 
                 if ( daw2.w() > 0 )
@@ -2240,6 +2245,7 @@ void GLEngine::draw_images( ImageList& images )
           img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
       }
 
+      LOG_DEBUG( "gamma " << g );
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
@@ -2298,6 +2304,7 @@ void GLEngine::draw_images( ImageList& images )
   glDisable( GL_BLEND );
   FLUSH_GL_ERRORS;
 }
+
 
 void GLEngine::draw_shape( GLShape* const shape )
 {
