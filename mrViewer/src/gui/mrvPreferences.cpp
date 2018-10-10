@@ -892,7 +892,7 @@ static std::string expandVariables( const std::string &s,
 
     fltk::Preferences loading( base, "loading" );
 
-    loading.get( "load_library", tmp, 0 );
+    loading.get( "load_library", tmp, 1 );
     uiPrefs->uiPrefsLoadLibrary->value( tmp );
 
     loading.get( "missing_frames", tmp, 0 );
@@ -1187,7 +1187,7 @@ static const char* kCLocale = "C";
 
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->text(),
-                                          false);
+                                          true );
 
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
@@ -1206,8 +1206,8 @@ static const char* kCLocale = "C";
         {
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
-            mrvLOG_INFO( "ocio", var << std::endl );
             old_ocio = var;
+            mrvLOG_INFO( "ocio", old_ocio << std::endl );
         }
 
         char buf[2048];
@@ -1240,16 +1240,17 @@ static const char* kCLocale = "C";
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
 
+#undef DBG
+#define DBG(x) LOG_DEBUG( x );
+        
         try
         {
-            OCIO::ConstConfigRcPtr config = OCIO::Config::CreateFromEnv();
-
-            OCIO::SetCurrentConfig( config );
-            config = OCIO::GetCurrentConfig();
+            OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
 
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
             OCIO_Display = config->getDefaultDisplay();
+            
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
             // First, remove all additional defaults if any from pulldown menu
@@ -1258,6 +1259,7 @@ static const char* kCLocale = "C";
                 main->gammaDefaults->remove( c );
             }
 
+            
             int numDisplays = config->getNumDisplays();
             DBG( "numDisplays " << numDisplays );
             for ( int j = 0; j < numDisplays; ++j )
@@ -1276,7 +1278,7 @@ static const char* kCLocale = "C";
                     views.push_back( view );
                 }
 
-
+                
                 // Then sort and add all new views to pulldown menu
                 std::sort( views.begin(), views.end() );
                 for ( size_t i = 0; i < views.size(); ++i )
@@ -1286,18 +1288,29 @@ static const char* kCLocale = "C";
                     {
                         main->gammaDefaults->copy_label( views[i].c_str() );
                         main->uiGamma->value( 1.0f );
+                        DBG("uiGamma " << main->uiGamma->value() );
                         main->uiGammaInput->value( 1.0f );
+                        DBG("uiGammaInput " << main->uiGammaInput->value() );
                         main->uiView->gamma( 1.0f );
                     }
                 }
+                DBG( "No more views" );
             }
+            DBG( "No more displays" );
 
 
-
+#undef DBG
+#define DBG(x)
+            
             main->gammaDefaults->redraw();
 
         }
         catch( const OCIO::Exception& e )
+        {
+            LOG_ERROR( e.what() );
+            use_ocio = false;
+        }
+        catch( const std::exception& e )
         {
             LOG_ERROR( e.what() );
             use_ocio = false;
@@ -1316,6 +1329,7 @@ static const char* kCLocale = "C";
 
     if ( use_ocio )
     {
+        DBG( "use_OCIO" );
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
         main->uiICS->relayout();
