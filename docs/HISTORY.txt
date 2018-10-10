@@ -3,7 +3,9 @@ v4.2.9   - Added an option in Preferences->Loading to select how missing
 	   frame, as a repeated frame, or as a repeated frame with a red
 	   cross in the middle.
 	 - Updated libraries to latest OpenEXR (v2.3).
-	 - Added saving JPEG images from the GUI.
+	 - Bug fixed an incompatability issue with the FFMPEG libraries.
+	 - Bug fixed an incompatability issue with the NVIDIA cg shader-
+	   compiler.
 
 v4.2.8   - Added %ENVVAR% and ${ENVVAR} support to OCIO environment variable.
            The two syntaxes work on both platforms.  This allows the OCIO
