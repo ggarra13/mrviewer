@@ -19,10 +19,10 @@
  * @file   mrvGLQuad.h
  * @author gga
  * @date   Fri Feb  8 10:12:06 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #ifndef mrvGLQuad_h
@@ -44,7 +44,7 @@ class GLQuad
         float u;
         float v;
     };
-    
+
   public:
     GLQuad( const ImageView* view );
     ~GLQuad();
@@ -59,13 +59,13 @@ class GLQuad
 
     inline void mask( int m ) { _mask = m; }
     inline void mask_value( int m ) { _mask_value = m; }
-    
-    inline float gamma() const { return _gamma; }
-    void gamma( const float f );
 
-    
+    inline float gamma() const { return _gamma; }
+    inline void gamma( const float f ) { _gamma = f; }
+
+
     virtual void bind( const image_type_ptr pic );
-    
+
     virtual void draw( const unsigned dw, const unsigned dh ) const;
 
     inline GLShader* shader() const { return _shader; }
@@ -89,14 +89,14 @@ class GLQuad
 
     /// Calculate char step from GL format and pixel type
     int calculate_gl_step( const GLenum format,
-			   const GLenum pixel_type ) const;
+                           const GLenum pixel_type ) const;
 
     void bind_texture_quad( const image_type_ptr pic,
-			    const unsigned poww, const unsigned int powh );
+                            const unsigned poww, const unsigned int powh );
 
     void bind_texture_yuv( const image_type_ptr pic,
-			   const unsigned int poww, 
-			   const unsigned int powh );
+                           const unsigned int poww,
+                           const unsigned int powh );
 
     void bind_texture_pixels( const image_type_ptr pic );
 
@@ -116,13 +116,13 @@ class GLQuad
 
   protected:
     void update_texsub( unsigned int idx,
-			unsigned int rx, unsigned int ry, 
-			unsigned int rw, unsigned int rh,
-			unsigned int tw, unsigned int th, 
-			GLenum format, GLenum pixel_type, 
-			unsigned short  channels, 
-			unsigned short  pixel_size, 
-			boost::uint8_t* pixels );
+                        unsigned int rx, unsigned int ry,
+                        unsigned int rw, unsigned int rh,
+                        unsigned int tw, unsigned int th,
+                        GLenum format, GLenum pixel_type,
+                        unsigned short  channels,
+                        unsigned short  pixel_size,
+                        boost::uint8_t* pixels );
 
   protected:
     const ImageView*   _view;
@@ -144,13 +144,13 @@ class GLQuad
     GLenum       _internalFormat;
     GLenum       _pixel_type;
 
-    image_type::Format _format; 
+    image_type::Format _format;
     int _mask;
     int _mask_value;
     int _width;
     int _height;
     unsigned int _channels;
-    uvCoords     _uvMax; 
+    uvCoords     _uvMax;
 
     float        _yw[3];
     float        _normMin;
