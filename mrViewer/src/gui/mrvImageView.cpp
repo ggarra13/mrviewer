@@ -5623,7 +5623,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         step_frame( -1 );
         mouseMove( fltk::event_x(), fltk::event_y() );
-	redraw();
+        redraw();
         return 1;
     }
     else if ( kFrameStepFPSFwd.match(rawkey) )
@@ -5644,7 +5644,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         step_frame( 1 );
         mouseMove( fltk::event_x(), fltk::event_y() );
-	redraw();
+        redraw();
         return 1;
     }
     else if ( kPlayBackTwiceSpeed.match( rawkey ) )
@@ -7064,8 +7064,6 @@ void ImageView::gamma( const float f )
 
   _gamma = f;
 
-  LOG_DEBUG( "view gamma: " << _gamma );
-
   mrv::media fg = foreground();
   if ( fg )
   {
@@ -7075,10 +7073,10 @@ void ImageView::gamma( const float f )
       char buf[256];
       sprintf( buf, "Gamma %g", f );
       send_network( buf );
-      
+
       uiMain->uiGamma->value( f );
       uiMain->uiGammaInput->value( f );
-      
+
      flush_caches();
      smart_refresh();
      update_color_info();
