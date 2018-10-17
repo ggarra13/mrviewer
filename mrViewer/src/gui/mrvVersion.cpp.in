@@ -41,6 +41,7 @@
 
 extern "C" {
 
+#include <png.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavfilter/version.h>
@@ -582,7 +583,8 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "OpenImageIO v" << OIIO_VERSION_STRING <<  " or later" << endl
       << "http://www.openimageio.org/" << endl
       << "(C) 2003-2018 Larry Gritz, et al. " << endl
-      << "All rights reserved." << endl;
+      << "All rights reserved." << endl << endl;
+    
     int columns = 80;
     std::string libs = OIIO::get_string_attribute("library_list");
     if (libs.size()) {

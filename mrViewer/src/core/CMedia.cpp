@@ -743,6 +743,29 @@ void CMedia::clear_cache()
 
 }
 
+/**
+ * Clears cache of frames.  @todo: refactor
+ *
+ */
+void CMedia::clear_missing_frames()
+{
+  if ( !_sequence ) return;
+
+  SCOPED_LOCK( _mutex);
+
+  boost::uint64_t num = _frame_end - _frame_start + 1;
+  for ( boost::uint64_t i = 0; i < num; ++i )
+    {
+        if ( _sequence[i] && !_sequence[i]->valid() )
+            _sequence[i].reset();
+        if ( _right && _right[i] && !_right[i]->valid() )
+            _right[i].reset();
+    }
+
+  image_damage( image_damage() | kDamageCache );
+
+}
+
 void CMedia::update_frame( const int64_t& f )
 {
   if ( !_sequence ) return;
@@ -3295,6 +3318,7 @@ void CMedia::loop_at_end( const int64_t frame )
            }
        }
 
+       
       _video_packets.loop_at_end( frame );
    }
 
@@ -3521,6 +3545,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
       }
       else if ( _video_packets.is_loop_end() )
       {
+          
           // We check packet integrity as the length of packets is
           // not accurate.
           const AVPacket& pkt = _video_packets.front();

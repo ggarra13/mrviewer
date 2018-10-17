@@ -531,6 +531,9 @@ class server;
       /// Clear image sequence caches from reel idx
       void clear_reel_cache( size_t idx );
 
+      // Clear missing frames so they can be replaced with X, black or repeats
+      void clear_missing_frames();
+      
       /// Start preload image caches
       void preload_cache_start();
 

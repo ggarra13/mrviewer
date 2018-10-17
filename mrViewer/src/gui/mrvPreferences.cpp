@@ -1177,8 +1177,13 @@ static const char* kCLocale = "C";
     if ( uiPrefs->uiPrefsSafeAreas->value() )
       view->safe_areas(true);
 
-    missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
-
+    {
+        auto tmp = (MissingFrameType) uiPrefs->uiPrefsMissingFrames->value();
+        if ( tmp != missing_frame )
+            view->clear_missing_frames();
+        missing_frame = tmp; 
+    }
+    
     //////////////////////////////////////////////////////
     // OCIO
     /////////////////////////////////////////////////////

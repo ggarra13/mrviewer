@@ -1,11 +1,15 @@
+v4.3.0   - Made Preferences->Loading->Missing Frames be an option that
+	   can be toggled while the GUI is active without needing to save it
+	   and quit/reload the sequence in mrViewer.
+
 v4.2.9   - Added an option in Preferences->Loading to select how missing
 	   frames are displayed.  Currently, the options are as a black
 	   frame, as a repeated frame, or as a repeated frame with a red
 	   cross in the middle.
 	 - Updated libraries to latest OpenEXR (v2.3).
 	 - Bug fixed an incompatability issue with the FFMPEG libraries.
-	 - Bug fixed an incompatability issue with the NVIDIA cg shader-
-	   compiler.
+	 - Updated to latest jpeg-turbo lib.
+	 - Updated to latest libpng lib.
 
 v4.2.8   - Added %ENVVAR% and ${ENVVAR} support to OCIO environment variable.
            The two syntaxes work on both platforms.  This allows the OCIO

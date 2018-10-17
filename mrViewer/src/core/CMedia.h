@@ -479,6 +479,8 @@ class CMedia
     // Clear the sequence 8-bit cache
     virtual void clear_cache();
 
+    void clear_missing_frames();
+
     // Clear one frame of the sequence 8-bit cache
     void update_frame( const int64_t& frame );
 

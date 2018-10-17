@@ -29,6 +29,7 @@
 //
 // #define TEST_NO_SHADERS  // test without hardware shaders
 // #define TEST_NO_YUV      // test in rgba mode only
+// #define TEST_NO_PBO_TEXTURES // test without PBO textures
 
 #define USE_HDR 0
 #define USE_NV_SHADERS
@@ -1333,7 +1334,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     set_matrix( flip );
 
     double x = 0.0, y = 0.0;
-    zrot2offsets( x, y, img, flip, zdeg );
+    //zrot2offsets( x, y, img, flip, zdeg );
 
     glRotated( zdeg, 0, 0, 1 );
     translate( x + r.x(), y - r.y(), 0 );
@@ -1439,7 +1440,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     double zdeg = img->rot_z();
 
-    zrot2offsets( x, y, img, flip, zdeg );
+    //zrot2offsets( x, y, img, flip, zdeg );
 
     glRotated( zdeg, 0, 0, 1 );
     translate(  x + tw, - y - th, 0 );

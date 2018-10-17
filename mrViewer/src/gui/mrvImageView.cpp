@@ -6586,6 +6586,19 @@ void ImageView::refresh()
     }
 }
 
+void ImageView::clear_missing_frames()
+{
+    mrv::media fg = foreground();
+    if (!fg) return;
+
+    fg->image()->clear_missing_frames();
+    
+    mrv::media bg = foreground();
+    if (!bg) return;
+
+    bg->image()->clear_missing_frames();
+}
+
 void ImageView::clear_reel_cache( size_t idx )
 {
     mrv::ImageBrowser* b = browser();
