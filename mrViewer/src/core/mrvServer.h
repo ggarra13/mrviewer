@@ -58,11 +58,7 @@ class Parser
     
    public:
      Parser( boost::asio::io_service& io_service, ViewerUI* v );
-     ~Parser();
-
-  public:
-    Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
-    virtual ~Parser();
+     virtual ~Parser();
      
     bool parse( const std::string& m );
     void write( const std::string& s, const std::string& id );

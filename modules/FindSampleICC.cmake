@@ -22,8 +22,10 @@ SET( SEARCH_INCLUDE_PATHS
 SET( SEARCH_PATHS 
   "/usr/local/lib${CMAKE_BUILD_ARCH}"
   "/opt/local/lib${CMAKE_BUILD_ARCH}"
+  "/usr/local/lib"
   "/opt/lib${CMAKE_BUILD_ARCH}"
   "/usr/lib${CMAKE_BUILD_ARCH}"
+  "/usr/lib"
   ${CMAKE_SYSTEM_LIBRARY_PATH}
   )
 
@@ -68,7 +70,7 @@ FIND_LIBRARY( SampleICC
   NO_DEFAULT_PATH
 )
 
-
+MESSAGE( STATUS ${SampleICC} )
 SET( SampleICC_LIBRARIES ${SampleICC} )
 
 INCLUDE(FindPackageHandleStandardArgs)

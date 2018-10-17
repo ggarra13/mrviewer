@@ -61,9 +61,6 @@ namespace mrv {
 
         std::string name() const { return _image->name(); }
 
-        fltk::Image* thumbnail()             { return _thumbnail; }
-        const fltk::Image* thumbnail() const { return _thumbnail; }
-
     protected:
         void thumbnail_pixel( uchar*& ptr, /* PixelType pixeltype,*/
                               uchar r, uchar g, uchar b );

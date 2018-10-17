@@ -24,6 +24,7 @@ FIND_PATH( MAGICK_INCLUDE_DIR magick/magick.h
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
+  /usr/local/include/ImageMagick-7/MagickCore
   /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
   /usr/include/ImageMagick
@@ -42,6 +43,7 @@ FIND_PATH( MAGICK++_INCLUDE_DIR wand/magick-wand.h
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}/ImageMagick"
   "$ENV{MAGICK_HOME}"
+  /usr/local/include/ImageMagick-7/MagickWand
   /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
   /usr/include/ImageMagick

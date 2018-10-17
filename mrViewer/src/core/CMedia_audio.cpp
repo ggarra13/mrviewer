@@ -270,7 +270,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 
         if (eof) {
             if (!got_audio && _audio_ctx &&
-                _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
+                _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
                 av_init_packet(&pkt);
                 pkt.dts = pkt.pts = apts;
                 pkt.data = NULL;
@@ -1152,7 +1152,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   if ( pkt_temp.size == 0 ) {
 
 
-      if ( _audio_ctx->codec->capabilities & CODEC_CAP_DELAY )
+      if ( _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY )
       {
           pkt_temp.data = NULL;
           int ret = decode_audio3( _audio_ctx, 
