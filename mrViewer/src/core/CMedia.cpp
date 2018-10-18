@@ -2726,8 +2726,10 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 
     CMedia::Cache cache = kNoCache;
     mrv::image_type_ptr pic = _sequence[i];
-    if ( !pic || !pic->valid() ) return cache;
+    if ( !pic ) return cache;
 
+    if ( !pic->valid() ) return kInvalidFrame;
+   
     cache = kLeftCache;
 
     if ( _stereo_output != kNoStereo )
@@ -2742,7 +2744,17 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 }
 
 
-
+bool CMedia::is_cache_full()
+{
+    if ( dynamic_cast< aviImage* >( this ) != NULL )
+	return true;
+    
+    for ( int64_t i = _frame_start; i <= _frame_end; ++i )
+    {
+	if ( is_cache_filled(i) == kNoCache ) return false;
+    }
+    return true;
+}
 
 
 /**
