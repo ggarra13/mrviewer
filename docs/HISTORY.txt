@@ -1,3 +1,9 @@
+v4.3.0   - Made loading of sequences much more interactive and faster.
+	   Now the GUI does not lock itself as much.
+	 - The option of missing frames now is more interactive.  It only
+	   needs to clear the cache to refresh the image gaps.  There's no
+	   need to quit mrViewer.
+
 v4.2.9   - Added an option in Preferences->Loading to select how missing
 	   frames are displayed.  Currently, the options are as a black
 	   frame, as a repeated frame, or as a repeated frame with a red
