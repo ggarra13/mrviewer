@@ -2516,6 +2516,7 @@ bool ImageView::preload()
     CMedia* img = fg->image();
     if (!img) return false;
 
+    
     // Exit early if we are dealing with a video instead of a sequencex
     if ( !img->is_sequence() || img->has_video() ) {
         _preframe = fg->position() + img->duration(); // go to next image
@@ -2526,7 +2527,10 @@ bool ImageView::preload()
             _preframe = 1;
         }
         if ( _reel >= b->number_of_reels() )
+	{
+	    preload_cache_stop();
             return false;
+	}
         return true;
     }
 
@@ -2556,7 +2560,8 @@ bool ImageView::preload()
     // Find a frame to cache from timeline point on
     for ( ; i <= last; ++i )
     {
-        if ( !img->is_cache_filled( i ) )
+	CMedia::Cache c = img->is_cache_filled( i );
+        if ( c == CMedia::kNoCache )
         {
             found = true;
             break;
@@ -2569,7 +2574,8 @@ bool ImageView::preload()
         int64_t j = first;
         for ( ; j < f; ++j )
         {
-            if ( !img->is_cache_filled( j ) )
+	    CMedia::Cache c = img->is_cache_filled( j );
+	    if ( c == CMedia::kNoCache )
             {
                 i = j; found = true;
                 break;
@@ -2583,17 +2589,14 @@ bool ImageView::preload()
         // Store current frame
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
-        if ( !img->find_image( i ) ) // this loads the frame if not present
-        {
-            // Frame not found or error. Update _preframe.
-            _preframe = i + 1;
-            if ( _preframe > last ) _preframe = first;
-        }
+        img->find_image( i ); // this loads the frame if not present
         // Frame found. Update _preframe.
         _preframe = i + 1;
-        if ( _preframe > last ) _preframe = first;
-        // Restore current frame
-        img->hires( pic );
+        if ( _preframe > last ) {
+	    _preframe = first;
+	    _reel++;
+	}
+	redraw();
         timeline()->redraw();
     }
     else
@@ -2608,18 +2611,21 @@ bool ImageView::preload()
             _reel++;
             _preframe = 1;
         }
-        if ( _reel >= b->number_of_reels() )
-        {
-            _reel = 0;
-            return false;
-        }
+    }
+    
+    if ( _reel >= b->number_of_reels() )
+    {
+	_reel = 0;
+	preload_cache_stop();
+	if ( playback() != CMedia::kStopped )
+	{
+	    play( playback() );
+	}
+	return false;
     }
 
     redraw();
     fltk::check();
-#ifdef USE_TIMEOUT
-    fltk::repeat_timeout( 0.2f, (fltk::TimeoutHandler) static_preload, this );
-#endif
     return true;
 
 }
@@ -6654,11 +6660,7 @@ void ImageView::preload_cache_start()
     if (!_idle_callback)
     {
         _reel = 0;
-#ifdef USE_TIMEOUT
-        fltk::add_timeout( 0.2f, (fltk::TimeoutHandler) static_preload, this );
-#else
         fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
-#endif
         _idle_callback = true;
         CMedia::preload_cache( true );
     }
@@ -6674,11 +6676,7 @@ void ImageView::preload_cache_stop()
 
     if ( _idle_callback )
     {
-#ifdef USE_TIMEOUT
-        fltk::remove_timeout( (fltk::TimeoutHandler) static_preload, this );
-#else
         fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
-#endif
         _reel = browser()->number_of_reels();
         _idle_callback = false;
     }
@@ -8358,7 +8356,14 @@ void ImageView::play( const CMedia::Playback dir )
       return;
    }
 
-    if ( CMedia::preload_cache() && _idle_callback )
+
+   mrv::media fg = foreground();
+   if (!fg) return;
+
+   CMedia* img = fg->image();
+
+    if ( CMedia::preload_cache() && _idle_callback &&
+	 img->is_cache_full() )
     {
         preload_cache_stop();
     }
@@ -8372,11 +8377,9 @@ void ImageView::play( const CMedia::Playback dir )
 
    create_timeout( 0.5/fps );
 
-   mrv::media fg = foreground();
-   if ( fg )
    {
       DBG( "******* PLAY FG " << fg->image()->name() );
-      fg->image()->play( dir, uiMain, true );
+      img->play( dir, uiMain, true );
    }
 
 
