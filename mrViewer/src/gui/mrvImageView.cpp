@@ -2583,6 +2583,11 @@ bool ImageView::preload()
         }
     }
 
+    if ( found && playback() != CMedia::kStopped )
+    {
+	i = f;
+    }
+
     if ( found )
     {
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
@@ -3254,7 +3259,7 @@ void ImageView::draw()
        {
 	   _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() * 0.5 );
 	   _timer.waitUntilNextFrameIsDue();
-	   sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
+	   sprintf( buf, _(" FPS: %.3f" ), _timer.actualFrameRate() );
 	   hud << buf;
        }
        
