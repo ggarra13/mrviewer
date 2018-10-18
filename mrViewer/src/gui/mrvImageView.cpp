@@ -3222,6 +3222,7 @@ void ImageView::draw()
        hud << _("V-A: ") << buf;
     }
 
+  
   //
   // Calculate and draw fps
   //
@@ -3231,9 +3232,9 @@ void ImageView::draw()
        int64_t frame = img->frame();
 
        CMedia::Playback p = playback();
-
-       if ( (p == CMedia::kForwards && _lastFrame < frame) ||
-            (p == CMedia::kBackwards && _lastFrame > frame ) )
+       
+       if ((p == CMedia::kForwards && _lastFrame < frame) ||
+	   (p == CMedia::kBackwards && _lastFrame > frame ) )
         {
           int64_t frame_diff = frame - _lastFrame;
 
@@ -3249,14 +3250,22 @@ void ImageView::draw()
           _lastFrame = frame;
         }
 
-      if ( img->real_fps() > 0.0 )
-      {
-         sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
-         hud << buf;
+       if ( img->real_fps() == 0.0 )
+       {
+	   _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() * 0.5 );
+	   _timer.waitUntilNextFrameIsDue();
+	   sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
+	   hud << buf;
+       }
+       
+       if ( img->real_fps() > 0.0 )
+       {
+	   sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+	   hud << buf;
 
-         sprintf( buf, _("FPS: %.3f" ), img->real_fps() );
-         hud << buf;
-      }
+	   sprintf( buf, _("FPS: %.3f" ), img->real_fps() );
+	   hud << buf;
+       }
 
 
       if ( !hud.str().empty() )
