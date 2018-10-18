@@ -601,7 +601,8 @@ void audio_thread( PlaybackData* data )
     set_clock(&img->extclk, get_clock(&img->extclk), false);
 
 
-    while ( !img->stopped() && view->playback() != CMedia::kStopped )
+    while ( !img->stopped() && view->playback() != CMedia::kStopped &&
+	    ! view->idle_callback() )
     {
 
         int step = (int) img->playback();
@@ -792,7 +793,8 @@ void subtitle_thread( PlaybackData* data )
 #endif
 
 
-    while ( !img->stopped() && view->playback() != CMedia::kStopped )
+    while ( !img->stopped() && view->playback() != CMedia::kStopped &&
+	    ! view->idle_callback() )
     {
         int step = (int) img->playback();
         if ( step == 0 ) break;
@@ -945,8 +947,9 @@ void video_thread( PlaybackData* data )
     timer.setDesiredFrameRate( fps );
 
 
-
-    while ( !img->stopped() && view->playback() != CMedia::kStopped )
+    
+    while ( !img->stopped() && view->playback() != CMedia::kStopped &&
+	    ! view->idle_callback()  )
     {
         img->wait_image();
 
@@ -956,16 +959,15 @@ void video_thread( PlaybackData* data )
         if ( step == 0 ) break;
 
         CMedia::DecodeStatus status;
-        if ( view->idle_callback() && img->is_sequence() )
-        {
-            int64_t preframe = view->preload_frame();
-            if ( view->playback() == CMedia::kForwards &&
-                 preframe - frame == 1 )
-            {
-                frame = preframe;
-            }
-
-        }
+        // if ( view->idle_callback() && img->is_sequence() )
+        // {
+        //     int64_t preframe = view->preload_frame();
+        //     if ( view->playback() == CMedia::kForwards &&
+        //          preframe - frame == 1 )
+        //     {
+        //         frame = preframe;
+        //     }
+        // }
 
         //TRACE( img->name() << " decode image " << frame );
         status = img->decode_video( frame );
