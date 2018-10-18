@@ -31,6 +31,8 @@ FIND_PATH( MAGICK_INCLUDE_DIR NAMES MagickCore/magick.h magick/magick.h
   /usr/include/ImageMagick
   )
 
+
+
 #
 # Extract ImageMagick's version number from .h file
 #
