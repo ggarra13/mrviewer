@@ -350,8 +350,9 @@ class CMedia
     enum Cache
     {
     kNoCache = 0,
-    kLeftCache = 1,
-    kStereoCache = 2,
+    kInvalidFrame = 1,
+    kLeftCache = 2,
+    kStereoCache = 3,
     };
 
     enum StreamType
@@ -486,6 +487,8 @@ class CMedia
 
     // Returns true if cache for the frame is already filled, false if not
     virtual Cache is_cache_filled(int64_t frame);
+
+    bool is_cache_full();
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
