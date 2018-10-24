@@ -488,12 +488,15 @@ class CMedia
     // Returns true if cache for the frame is already filled, false if not
     virtual Cache is_cache_filled(int64_t frame);
 
+    // For sequences, returns true if cache is all filled, false if not
+    // For videos, returns false always
     bool is_cache_full();
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
 
     inline PacketQueue& video_packets() { return _video_packets; }
+    inline PacketQueue& audio_packets() { return _audio_packets; }
 
     inline uint64_t duration() const { return _frameEnd - _frameStart + 1; }
 
@@ -502,13 +505,13 @@ class CMedia
 
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const {
-	Mutex& mtx = const_cast< Mutex& >( _mutex );
-	SCOPED_LOCK( mtx );
-	return _hires;
+        Mutex& mtx = const_cast< Mutex& >( _mutex );
+        SCOPED_LOCK( mtx );
+        return _hires;
     }
-    inline mrv::image_type_ptr hires()       { 
-	SCOPED_LOCK( _mutex );
-	return _hires;
+    inline mrv::image_type_ptr hires()       {
+        SCOPED_LOCK( _mutex );
+        return _hires;
     }
     void hires( const mrv::image_type_ptr pic);
 
@@ -1143,7 +1146,7 @@ class CMedia
 
     static bool supports_yuva()         { return _supports_yuva; }
     static void supports_yuva( bool x ) { _supports_yuva = x; }
-    
+
     static bool uses_16bits()         { return _uses_16bits; }
     static void uses_16bits( bool x ) { _uses_16bits = x; }
 
@@ -1283,8 +1286,8 @@ class CMedia
     // Given a frame and a packet, return got frame and a filled frame if
     // possible
     int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
-	       AVPacket *pkt, bool& eof);
-    
+               AVPacket *pkt, bool& eof);
+
     /**
      * Given an audio packet, decode it into internal buffer
      *
