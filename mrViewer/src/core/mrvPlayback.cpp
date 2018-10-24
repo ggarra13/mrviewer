@@ -1217,10 +1217,10 @@ void decode_thread( PlaybackData* data )
 
    int64_t frame = img->dts();
 
-//#ifdef DEBUG_THREADS
+#ifdef DEBUG_THREADS
    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame
              << " step " << step << std::endl;
-//#endif
+#endif
 
 
 
