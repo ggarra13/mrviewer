@@ -87,7 +87,7 @@ release = `uname -r`.chop!
 build = "BUILD/Linux-#{release}-64/"
 
 
-puts "DIRECTORY: #{Dir.pwd}" 
+puts "DIRECTORY: #{Dir.pwd}"
 
 home=ENV['HOME']+"/bin/mrViewer"
 FileUtils.rm_f( home )
@@ -118,8 +118,8 @@ Dir.chdir( '../..'  )
 FileUtils.rm_f( "#{@debug}/shaders" )
 FileUtils.rm_f( "#{@debug}/docs" )
 FileUtils.rm_f( "#{@debug}/ctl" )
-FileUtils.cp_r( "shaders/", "#{@debug}/" )
-FileUtils.cp_r( "docs/", "#{@debug}/" )
-FileUtils.cp_r( "ctl/", "#{@debug}/" )
+FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
+FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
+FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
 
 #`find . -name '*fuse*' -exec rm {} \\;`
