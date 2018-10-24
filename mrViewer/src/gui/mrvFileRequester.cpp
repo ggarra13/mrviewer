@@ -43,6 +43,7 @@
 #include "core/mrvACES.h"
 #include "core/mrvI8N.h"
 #include "core/mrvColorProfile.h"
+#include "core/mrvPlayback.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvFileRequester.h"
@@ -852,15 +853,40 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        data = new float[ 4 * w * h ];
    }
 
+   bool skip = false;
+   dts = frame;
+
    for ( ; frame <= last; ++frame )
    {
-       uiMain->uiReelWindow->uiBrowser->seek( frame );
+       // uiMain->uiReelWindow->uiBrowser->seek( dts );
 
        mrv::media fg = uiMain->uiView->foreground();
        if (!fg) break;
 
        img = fg->image();
 
+       if ( !skip )
+       {
+           ++dts;
+           img->frame( dts );
+       }
+
+       img->decode_video( frame );
+       img->find_image( frame );
+
+       img->decode_audio( frame );
+       img->find_audio( frame );
+
+       if ( !skip )
+           dts = img->dts();
+
+       size_t vsize = img->video_packets().size();
+       size_t asize = img->audio_packets().size();
+
+       if ( vsize > 25 || asize > 25 )
+           skip = true;
+       else
+           skip = false;
 
        if ( old != fg )
        {
