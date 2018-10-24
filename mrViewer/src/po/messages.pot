@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-10-24 13:41-0300\n"
+"POT-Creation-Date: 2018-10-24 15:02-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/CMedia_audio.cpp:669
+#: core/CMedia_audio.cpp:666
 msgid ""
 "\n"
 "\n"
@@ -31,7 +31,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:655 core/aviImage.cpp:2228
+#: core/CMedia_audio.cpp:652 core/aviImage.cpp:2228
 msgid ""
 "\n"
 "\n"
@@ -161,11 +161,11 @@ msgstr ""
 msgid " expected: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1761
+#: core/CMedia_audio.cpp:1758
 msgid " failed"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1388
+#: core/CMedia_audio.cpp:1385
 msgid " failed with "
 msgstr ""
 
@@ -177,7 +177,7 @@ msgstr ""
 msgid " for channel.  Maximum: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:2178 core/aviImage.cpp:3760
+#: core/CMedia_audio.cpp:2175 core/aviImage.cpp:3760
 msgid " for frame "
 msgstr ""
 
@@ -193,7 +193,7 @@ msgstr ""
 msgid " frames"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1137
+#: core/CMedia_audio.cpp:1134
 msgid " frequency: "
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid " is set.  Loaded "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1817 core/aviImage.cpp:1748
+#: core/CMedia_audio.cpp:1814 core/aviImage.cpp:1748
 msgid " not found"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 msgid " status: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1094
+#: core/CMedia_audio.cpp:1091
 msgid " to"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 msgid "' from filename"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:993
+#: gui/mrvFileRequester.cpp:1004
 msgid "' to save."
 msgstr ""
 
@@ -393,11 +393,11 @@ msgstr ""
 msgid "+0.0  f/8.0"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1089 core/CMedia_audio.cpp:1113
+#: core/CMedia_audio.cpp:1086 core/CMedia_audio.cpp:1110
 msgid ", channels "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1114
+#: core/CMedia_audio.cpp:1111
 msgid ", format "
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr ""
 msgid ", freq "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1093 core/CMedia_audio.cpp:1116
+#: core/CMedia_audio.cpp:1090 core/CMedia_audio.cpp:1113
 msgid ", sample rate "
 msgstr ""
 
@@ -777,11 +777,11 @@ msgstr ""
 msgid "96x96x96"
 msgstr ""
 
-#: core/CMedia_audio.cpp:930
+#: core/CMedia_audio.cpp:927
 msgid ": Could not find stream info."
 msgstr ""
 
-#: core/CMedia_audio.cpp:922
+#: core/CMedia_audio.cpp:919
 msgid ": Could not open filename."
 msgstr ""
 
@@ -1141,7 +1141,7 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: core/CMedia_audio.cpp:750 core/aviImage_save.cpp:516
+#: core/CMedia_audio.cpp:747 core/aviImage_save.cpp:516
 #: core/aviImage_save.cpp:988
 msgid "Audio "
 msgstr ""
@@ -1167,15 +1167,15 @@ msgstr ""
 msgid "Audio conversion of "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1817
+#: core/CMedia_audio.cpp:1814
 msgid "Audio frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1912
+#: core/CMedia_audio.cpp:1909
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1955
+#: core/CMedia_audio.cpp:1952
 msgid "Audio packets empty at end of seek"
 msgstr ""
 
@@ -1196,7 +1196,7 @@ msgstr ""
 msgid "Audio: %<PRId64>"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1560
+#: core/CMedia_audio.cpp:1557
 msgid "Audios #"
 msgstr ""
 
@@ -2013,7 +2013,7 @@ msgstr ""
 msgid "Could not init cmm: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1754
+#: core/CMedia_audio.cpp:1751
 msgid "Could not initialize audio engine"
 msgstr ""
 
@@ -2057,11 +2057,11 @@ msgstr ""
 msgid "Could not open audio codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:218
+#: core/CMedia_audio.cpp:215
 msgid "Could not open audio codec."
 msgstr ""
 
-#: core/CMedia_audio.cpp:1746
+#: core/CMedia_audio.cpp:1743
 msgid "Could not open audio driver"
 msgstr ""
 
@@ -2073,7 +2073,7 @@ msgstr ""
 msgid "Could not open video codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1832
+#: core/CMedia_audio.cpp:1829
 msgid "Could not play audio frame "
 msgstr ""
 
@@ -2277,7 +2277,7 @@ msgstr ""
 msgid "Create a new reel or EDL track"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1088
+#: core/CMedia_audio.cpp:1085
 msgid "Create audio conversion from "
 msgstr ""
 
@@ -2557,7 +2557,7 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2176 core/aviImage.cpp:3758
+#: core/CMedia_audio.cpp:2173 core/aviImage.cpp:3758
 msgid "Decode audio error: "
 msgstr ""
 
@@ -2565,7 +2565,7 @@ msgstr ""
 msgid "Decode video error seek frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1338
+#: core/CMedia_audio.cpp:1335
 msgid "Decode_audio failed with error: "
 msgstr ""
 
@@ -2749,7 +2749,7 @@ msgstr ""
 msgid "Divide"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:917
+#: gui/mrvFileRequester.cpp:928
 #, c-format
 msgid "Do you want to replace '%s'?"
 msgstr ""
@@ -3013,11 +3013,11 @@ msgstr ""
 msgid "Failed setting layer to "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1126
+#: core/CMedia_audio.cpp:1123
 msgid "Failed to alloc swresample library"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1134
+#: core/CMedia_audio.cpp:1131
 msgid "Failed to init swresample library with "
 msgstr ""
 
@@ -3911,7 +3911,7 @@ msgstr ""
 msgid "Invalid source profile/image pixel format"
 msgstr ""
 
-#: core/CMedia_audio.cpp:810 core/CMedia_audio.cpp:822
+#: core/CMedia_audio.cpp:807 core/CMedia_audio.cpp:819
 msgid "Invalid timecode "
 msgstr ""
 
@@ -4568,7 +4568,7 @@ msgstr ""
 msgid "Next Image Version"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:919 gui/mrvImageBrowser.cpp:668
+#: gui/mrvFileRequester.cpp:930 gui/mrvImageBrowser.cpp:668
 #: gui/mrvImageBrowser.cpp:1917 gui/mrvImageInformation.cpp:3574
 #: video/mrvGLEngine.cpp:236 video/mrvGLEngine.cpp:237
 #: video/mrvGLEngine.cpp:238 video/mrvGLEngine.cpp:240
@@ -4610,7 +4610,7 @@ msgstr ""
 msgid "No background image to switch to"
 msgstr ""
 
-#: core/CMedia_audio.cpp:188
+#: core/CMedia_audio.cpp:185
 msgid "No codec context for audio stream."
 msgstr ""
 
@@ -4618,7 +4618,7 @@ msgstr ""
 msgid "No conversion needed.  Gamma: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:196
+#: core/CMedia_audio.cpp:193
 msgid "No decoder found for audio stream. ID: "
 msgstr ""
 
@@ -4638,7 +4638,7 @@ msgstr ""
 msgid "No left image to attach a stereo image pair"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1559
+#: core/CMedia_audio.cpp:1556
 msgid "No memory for audio frame"
 msgstr ""
 
@@ -4677,8 +4677,8 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3590
 #: core/aviImage_save.cpp:1320 core/exrImage.cpp:121 core/iffImage.cpp:59
-#: gui/mrvFileRequester.cpp:961 gui/mrvFileRequester.cpp:962
-#: gui/mrvFileRequester.cpp:971 gui/mrvImageInformation.cpp:2693
+#: gui/mrvFileRequester.cpp:972 gui/mrvFileRequester.cpp:973
+#: gui/mrvFileRequester.cpp:982 gui/mrvImageInformation.cpp:2693
 msgid "None"
 msgstr ""
 
@@ -4902,7 +4902,7 @@ msgstr ""
 msgid "Open encoder "
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:993
+#: gui/mrvFileRequester.cpp:1004
 msgid "Open movie '"
 msgstr ""
 
@@ -4982,7 +4982,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1050
+#: core/CMedia_audio.cpp:1047
 msgid "Output buffer size is too small for the current frame ("
 msgstr ""
 
@@ -5217,7 +5217,7 @@ msgstr ""
 msgid "Playback"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1760
+#: core/CMedia_audio.cpp:1757
 msgid "Playback of audio frame "
 msgstr ""
 
@@ -5513,7 +5513,7 @@ msgstr ""
 
 #: gui/mrvFileRequester.cpp:244 gui/mrvFileRequester.cpp:285
 #: gui/mrvFileRequester.cpp:700 gui/mrvFileRequester.cpp:752
-#: gui/mrvFileRequester.cpp:1146
+#: gui/mrvFileRequester.cpp:1157
 msgid "Reels (*.{"
 msgstr ""
 
@@ -5602,7 +5602,7 @@ msgstr ""
 msgid "Repeat Frame"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1154
+#: core/CMedia_audio.cpp:1151
 msgid "Resampling failed"
 msgstr ""
 
@@ -5770,7 +5770,7 @@ msgstr ""
 msgid "Save Ocio Config File"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:266 gui/mrvFileRequester.cpp:1149
+#: gui/mrvHotkey.cpp:266 gui/mrvFileRequester.cpp:1160
 msgid "Save Reel"
 msgstr ""
 
@@ -5791,7 +5791,7 @@ msgstr ""
 msgid "Save current reel\n"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:989
+#: gui/mrvFileRequester.cpp:1000
 msgid "Save frames '"
 msgstr ""
 
@@ -6778,7 +6778,7 @@ msgstr ""
 msgid "Too many channels in image.  Saving RGB only"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1298
+#: core/CMedia_audio.cpp:1295
 msgid "Too much audio used:"
 msgstr ""
 
@@ -7692,7 +7692,7 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:919 gui/mrvImageBrowser.cpp:668
+#: gui/mrvFileRequester.cpp:930 gui/mrvImageBrowser.cpp:668
 #: gui/mrvImageBrowser.cpp:1917 gui/mrvImageInformation.cpp:3574
 #: video/mrvGLEngine.cpp:236 video/mrvGLEngine.cpp:237
 #: video/mrvGLEngine.cpp:238 video/mrvGLEngine.cpp:240
@@ -7755,7 +7755,7 @@ msgstr ""
 msgid "avcodec_context_from_parameters failed for video"
 msgstr ""
 
-#: core/CMedia_audio.cpp:206
+#: core/CMedia_audio.cpp:203
 msgid "avcodec_copy_context failed for audio"
 msgstr ""
 
@@ -7788,11 +7788,11 @@ msgstr ""
 msgid "data"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1388
+#: core/CMedia_audio.cpp:1385
 msgid "decode_audio_packet "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1947
+#: core/CMedia_audio.cpp:1944
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
@@ -7834,7 +7834,7 @@ msgstr ""
 msgid "forced"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1091
+#: core/CMedia_audio.cpp:1088
 msgid "format "
 msgstr ""
 
@@ -8037,7 +8037,7 @@ msgstr ""
 msgid "src_nb_samples is 0"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1532
+#: core/CMedia_audio.cpp:1529
 msgid "store_audio: Invalid data"
 msgstr ""
 
