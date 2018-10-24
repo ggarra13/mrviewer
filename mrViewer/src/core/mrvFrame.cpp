@@ -598,6 +598,7 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
    _height   = b.height();
    _channels = b.channels();
    _format   = b.format();
+   _ctime    = time(NULL);
    _mtime    = b.mtime();
    _type     = b.pixel_type();
    allocate();
