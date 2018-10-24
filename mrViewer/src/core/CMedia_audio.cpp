@@ -139,9 +139,6 @@ void CMedia::clear_packets()
    SCOPED_LOCK( _subtitle_mutex );;
    _video_packets.clear();
   _subtitle_packets.clear();
-
-  std::cerr << "****************** AUDIO PACKETS CLEAR " << std::endl;
-
   _audio_packets.clear();
   _audio_buf_used = 0;
 }
