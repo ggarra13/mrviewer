@@ -855,6 +855,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    bool skip = false;
    dts = frame;
+   int64_t audio_frame = frame;
 
    for ( ; frame <= last; ++frame )
    {
@@ -871,11 +872,20 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
            img->frame( dts );
        }
 
+       std::cerr << "D: " << dts << " F: " << frame << " A: " << audio_frame
+                 << std::endl;
+
        img->decode_video( frame );
        img->find_image( frame );
 
-       img->decode_audio( frame );
-       img->find_audio( frame );
+       audio_frame = frame - 1;
+       bool found = false;
+       while ( ! found && img->audio_packets().size() > 0 )
+       {
+           ++audio_frame;
+           img->decode_audio( audio_frame );
+           found = img->find_audio( audio_frame );
+       }
 
        if ( !skip )
            dts = img->dts();
@@ -883,7 +893,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        size_t vsize = img->video_packets().size();
        size_t asize = img->audio_packets().size();
 
-       if ( vsize > 25 || asize > 25 )
+#define kMIN_SIZE 120
+       if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
            skip = true;
        else
            skip = false;

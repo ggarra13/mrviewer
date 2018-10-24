@@ -1800,7 +1800,7 @@ bool CMedia::find_audio( const int64_t frame )
     if ( frame < first_frame() )
         return true;
 
-#if 1
+#if 0
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end,
                                                   frame, LessThanFunctor() );
