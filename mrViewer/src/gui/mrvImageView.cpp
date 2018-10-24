@@ -2553,53 +2553,109 @@ bool ImageView::preload()
     if ( f < first ) f = first;
     else if ( f > last ) f = last;
 
-    int64_t i = f;
+    int64_t i = f, j;
 
     bool found = false;
 
     // Find a frame to cache from timeline point on
-    for ( ; i <= last; ++i )
+    if ( playback() == CMedia::kForwards || playback() == CMedia::kStopped )
     {
-	CMedia::Cache c = img->is_cache_filled( i );
-        if ( c == CMedia::kNoCache )
-        {
-            found = true;
-            break;
-        }
-    }
-
-    // None found, check backwards
-    if ( !found )
-    {
-        int64_t j = first;
-        for ( ; j < f; ++j )
-        {
-	    CMedia::Cache c = img->is_cache_filled( j );
+	for ( ; i <= last; ++i )
+	{
+	    CMedia::Cache c = img->is_cache_filled( i );
 	    if ( c == CMedia::kNoCache )
-            {
-                i = j; found = true;
-                break;
-            }
-        }
+	    {
+		found = true;
+		break;
+	    }
+	}
+
+	// None found, check backwards
+	if ( !found )
+	{
+	    j = first;
+	    for ( ; j < f; ++j )
+	    {
+		CMedia::Cache c = img->is_cache_filled( j );
+		if ( c == CMedia::kNoCache )
+		{
+		    i = j; found = true;
+		    break;
+		}
+	    }
+	}
+    }
+    else
+    {
+	    j = last;
+	    for ( ; j > f; --j )
+	    {
+		CMedia::Cache c = img->is_cache_filled( j );
+		if ( c == CMedia::kNoCache )
+		{
+		    i = j; found = true;
+		    break;
+		}
+	    }
+	    
+	    // None found, check forwards
+	    if ( !found )
+	    {
+		i = first;
+		for ( ; i <= f; ++i )
+		{
+		    CMedia::Cache c = img->is_cache_filled( i );
+		    if ( c == CMedia::kNoCache )
+		    {
+			found = true;
+			break;
+		    }
+		}
+
+	    }
     }
 
-    if ( found && playback() != CMedia::kStopped )
-    {
-	i = f;
-    }
 
     if ( found )
     {
+	CMedia::Playback p = playback();
+    	if ( p != CMedia::kStopped )
+    	{
+    	    i = f;
+    	}
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
         // Store current frame
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
         img->find_image( i ); // this loads the frame if not present
         // Frame found. Update _preframe.
-        _preframe = i + 1;
-        if ( _preframe > last ) {
-	    _preframe = first;
-	    _reel++;
+	if ( p == CMedia::kBackwards )
+	{
+	    _preframe = i - 1;
+	    if ( _preframe < first )
+	    {
+		_preframe = last;
+		--_reel;
+		if ( _reel < 0 )
+		{
+		    _reel = 0;
+		    preload_cache_stop();
+		    play( p );
+		}
+	    }
+	}
+	else if ( p == CMedia::kForwards )
+	{
+	    _preframe = i + 1;
+	    if ( _preframe > last )
+	    {
+		_preframe = first;
+		_reel++;
+	    }
+	}
+	else
+	{
+	    img->hires( pic );  // restore old pic position
 	}
 	redraw();
         timeline()->redraw();
