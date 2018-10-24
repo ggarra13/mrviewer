@@ -34,6 +34,7 @@
 
 extern "C" {
 #include <libavutil/time.h>
+#include <libavutil/avassert.h>
 }
 
 #ifdef _WIN32
@@ -602,7 +603,7 @@ void audio_thread( PlaybackData* data )
 
 
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-	    ! view->idle_callback() )
+            ! view->idle_callback() )
     {
 
         int step = (int) img->playback();
@@ -794,7 +795,7 @@ void subtitle_thread( PlaybackData* data )
 
 
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-	    ! view->idle_callback() )
+            ! view->idle_callback() )
     {
         int step = (int) img->playback();
         if ( step == 0 ) break;
@@ -947,9 +948,9 @@ void video_thread( PlaybackData* data )
     timer.setDesiredFrameRate( fps );
 
 
-    
+
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-	    ! view->idle_callback()  )
+            ! view->idle_callback()  )
     {
         img->wait_image();
 
@@ -1184,14 +1185,14 @@ void video_thread( PlaybackData* data )
 
 void decode_thread( PlaybackData* data )
 {
-   assert( data != NULL );
+   av_assert0( data != NULL );
 
    mrv::ViewerUI*     uiMain   = data->uiMain;
-   assert( uiMain != NULL );
+   av_assert0( uiMain != NULL );
 
 
    CMedia* img = data->image;
-   assert( img != NULL );
+   av_assert0( img != NULL );
 
 
 
@@ -1200,7 +1201,7 @@ void decode_thread( PlaybackData* data )
    mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*      timeline = uiMain->uiTimeline;
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
-   assert( timeline != NULL );
+   av_assert0( timeline != NULL );
 
    // delete the data (we don't need it anymore)
    delete data;
@@ -1216,10 +1217,10 @@ void decode_thread( PlaybackData* data )
 
    int64_t frame = img->dts();
 
-#ifdef DEBUG_THREADS
+//#ifdef DEBUG_THREADS
    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame
              << " step " << step << std::endl;
-#endif
+//#endif
 
 
 
