@@ -34,6 +34,7 @@ extern "C" {
 #include <libavutil/opt.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/timestamp.h>
+#include <libavutil/avassert.h>
 #include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
 #include <libavformat/avformat.h>
@@ -60,9 +61,9 @@ const char* kModule = "save";
 }
 
 #define MAKE_TAG(a,b,c,d) (unsigned int) ( (unsigned int)(a)	\
-					   + (unsigned int)(b << 8)	\
-					   + (unsigned int)(c << 16)	\
-					   + (unsigned int)(d <<24 ))
+                                           + (unsigned int)(b << 8)	\
+                                           + (unsigned int)(c << 16)	\
+                                           + (unsigned int)(d <<24 ))
 
 #define LOG(x) std::cerr << x << std::endl;
 
@@ -242,7 +243,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     /* find the encoder */
     if (!(*codec)) {
         LOG_ERROR( _("Could not find encoder for '") << name << "'" );
-	return NULL;
+        return NULL;
     }
 
 
@@ -314,31 +315,42 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
                if ( c->codec_id == AV_CODEC_ID_HEVC )
                {
-		   c->codec_tag = MAKE_TAG('H', 'V', 'C', '1');
-		   
+                   c->codec_tag = MAKE_TAG('H', 'V', 'C', '1');
+
                    switch( opts->video_profile )
                    {
                        case 0:
-                           c->profile = FF_PROFILE_HEVC_MAIN; break;
+                           c->profile = FF_PROFILE_HEVC_MAIN;
+                           c->pix_fmt = AV_PIX_FMT_YUV420P;
+                           break;
                        case 1:
-                           c->profile = FF_PROFILE_HEVC_MAIN_10; break;
+                           c->profile = FF_PROFILE_HEVC_MAIN_10;
+                           c->pix_fmt = AV_PIX_FMT_YUV422P;
+                           break;
                        case 2:
                        default:
-                           c->profile = FF_PROFILE_HEVC_REXT; break;
+                           c->profile = FF_PROFILE_HEVC_REXT;
+                           c->pix_fmt = AV_PIX_FMT_YUV444P;
+                           break;
                    }
+                   break;
                }
                else if ( c->codec_id == AV_CODEC_ID_H264 )
                  {
                    switch( opts->video_profile )
                      {
                      case 0:
-                       c->profile = FF_PROFILE_H264_BASELINE; break;
+                       c->profile = FF_PROFILE_H264_BASELINE;
+                       c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
                      case 1:
-                       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
+                       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE;
+                         c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
                      case 2:
-                       c->profile = FF_PROFILE_H264_MAIN; break;
+                       c->profile = FF_PROFILE_H264_MAIN;
+                       c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
                      case 3:
-                       c->profile = FF_PROFILE_H264_EXTENDED; break;
+                       c->profile = FF_PROFILE_H264_EXTENDED;
+                         c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
                      case 5:
                        c->profile = FF_PROFILE_H264_HIGH_10;
                        if ( opts->video_color == "YUV420" )
@@ -370,19 +382,19 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                        break;
                      }
                  }
-	       else if ( c->codec_id == AV_CODEC_ID_FFV1 )
-	       {
-		   std::cerr << opts->video_color << std::endl;
+               else if ( c->codec_id == AV_CODEC_ID_FFV1 )
+               {
+                   std::cerr << opts->video_color << std::endl;
                    if ( opts->video_color == "YUV420" )
                        c->pix_fmt = AV_PIX_FMT_YUV420P10;
                    else if ( opts->video_color == "YUV422" )
                        c->pix_fmt = AV_PIX_FMT_YUV422P10;
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P10;
-		   else if ( opts->video_color == "GBRP10LE"  )
-		       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
-		   break;
-	       }
+                   else if ( opts->video_color == "GBRP10LE"  )
+                       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
+                   break;
+               }
                else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
                {
                    switch( opts->video_profile )
@@ -401,14 +413,14 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    }
                }
                else if ( c->codec_id == AV_CODEC_ID_PNG ||
-			 c->codec_id == AV_CODEC_ID_TIFF )
+                         c->codec_id == AV_CODEC_ID_TIFF )
                {
                    c->pix_fmt = AV_PIX_FMT_BGR32;
                }
-	       else if ( c->codec_id == AV_CODEC_ID_MJPEG )
-	       {
-		   c->pix_fmt = AV_PIX_FMT_YUVJ444P;
-	       }
+               else if ( c->codec_id == AV_CODEC_ID_MJPEG )
+               {
+                   c->pix_fmt = AV_PIX_FMT_YUVJ444P;
+               }
                else if ( c->codec_id == AV_CODEC_ID_PRORES )
                {
                    // ProRes supports YUV422 10bit
@@ -438,7 +450,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    else
                        LOG_ERROR( _("Unknown c->pix_fmt (")
                                   << opts->video_color <<
-				  _(") for movie file") );
+                                  _(") for movie file") );
                }
                if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
                    /* just for testing, we also add B frames */
@@ -447,7 +459,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
                    c->mb_decision = 2;
                }
-	       
+
                const char* name = avcodec_profile_name( codec_id, c->profile );
                if (name) LOG_INFO( _("Profile name ") << name );
                break;
@@ -643,11 +655,13 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    AVCodecContext* c = st->codec;
 
+   int tries;
+   audio_type_ptr audio = img->get_audio_frame( frame_audio );
 
-   const audio_type_ptr audio = img->get_audio_frame( frame_audio );
-
-   if ( !audio ) return false;
-
+   if ( !audio ) {
+       LOG_ERROR( _("audio frame is missing") );
+       return false;
+   }
 
    ++frame_audio;
 
@@ -658,12 +672,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    src_nb_samples /= av_get_bytes_per_sample( aformat );
 
    if ( src_nb_samples == 0 ) {
+       LOG_ERROR( _( "src_nb_samples is 0") );
        return false;
    }
 
 
    if (c->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE)
    {
+       av_assert0( src_nb_samples > 0 );
        c->frame_size = src_nb_samples;
    }
 
@@ -1058,7 +1074,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        copy_image( ptr, hires );
        bake_ocio( ptr, img );
    }
-   
+
    sho = mrv::image_type_ptr( new image_type( hires->frame(),
                                               w, h,
                                               hires->channels(),
@@ -1202,12 +1218,12 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = end;
-#if 1  // correct
+#if 0  // less correct
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
-            // LOG_INFO( "For frame " << f << " w/off "
-            //           << x << " got audio " << (*i)->frame() );
+            LOG_INFO( "For frame " << f << " w/off "
+                      << x << " got audio " << (*i)->frame() );
             return *i;
         }
     }
@@ -1218,7 +1234,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
     }
 #endif
 
-    LOG_ERROR( _("Missing audio frame ") << x );
+    IMG_ERROR( _("Missing audio frame ") << x );
     return audio_type_ptr( new audio_type( AV_NOPTS_VALUE, audio_frequency(),
                                            audio_channels(), NULL, 0) );
 }
@@ -1298,7 +1314,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        AVCodec* c = avcodec_find_encoder( fmt->video_codec );
        opts->video_codec = c->name;
        LOG_INFO( "Codec " << c->name << " " << c->long_name << " "
-		 << fmt->video_codec << " selected"  );
+                 << fmt->video_codec << " selected"  );
    }
 
    if ( opts->audio_codec == _("None") )
@@ -1394,6 +1410,7 @@ bool write_va_frame( CMedia* img )
                                av_q2d( video_st->codec->time_base ) )
                   : INFINITY );
 
+
    // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts
    //           << " " << video_st->time_base.num
    //           << "/" << video_st->time_base.den
@@ -1444,6 +1461,7 @@ bool flush_video_and_audio( const CMedia* img )
         AVCodecContext* c = audio_st->codec;
 
         unsigned cache_size = av_audio_fifo_size( fifo );
+
         AVRational ratio = { 1, c->sample_rate };
 
         int got_packet;
