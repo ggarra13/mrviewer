@@ -1480,9 +1480,10 @@ void aviImage::clear_packets()
 {
 
 #ifdef DEBUG_AUDIO_PACKETS
-   cerr << "+++++++++++++ CLEAR VIDEO/AUDIO/SUBTITLE PACKETS " << _frame
+   cerr << "+++++++++++++ CLEAR VIDEO/SUBTITLE PACKETS " << _frame
         << " expected: " << _expected << endl;
 #endif
+
 
   _video_packets.clear();
   _audio_packets.clear();
@@ -3048,7 +3049,6 @@ bool aviImage::fetch(const int64_t frame)
                        << frame );
         return ok;
     }
-
 
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;
