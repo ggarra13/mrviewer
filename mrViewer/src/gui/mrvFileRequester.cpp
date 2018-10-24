@@ -872,9 +872,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
            img->frame( dts );
        }
 
-       std::cerr << "D: " << dts << " F: " << frame << " A: " << audio_frame
-                 << std::endl;
-
        img->decode_video( frame );
        img->find_image( frame );
 
