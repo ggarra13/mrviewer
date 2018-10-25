@@ -317,55 +317,53 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                {
                    c->codec_tag = MAKE_TAG('H', 'V', 'C', '1');
 
+                   if ( opts->video_color == "YUV420" )
+                       c->pix_fmt = AV_PIX_FMT_YUV420P;
+                   else if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P;
+                   else if ( opts->video_color == "GBRP10LE"  )
+                       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
+		   
                    switch( opts->video_profile )
                    {
                        case 0:
                            c->profile = FF_PROFILE_HEVC_MAIN;
-                           c->pix_fmt = AV_PIX_FMT_YUV420P;
                            break;
                        case 1:
                            c->profile = FF_PROFILE_HEVC_MAIN_10;
-                           c->pix_fmt = AV_PIX_FMT_YUV422P;
                            break;
                        case 2:
                        default:
                            c->profile = FF_PROFILE_HEVC_REXT;
-                           c->pix_fmt = AV_PIX_FMT_YUV444P;
                            break;
                    }
                    break;
                }
                else if ( c->codec_id == AV_CODEC_ID_H264 )
                  {
+                   if ( opts->video_color == "YUV420" )
+                       c->pix_fmt = AV_PIX_FMT_YUV420P;
+                   else if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P;
+                   else if ( opts->video_color == "GBRP10LE"  )
+                       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
+		   
                    switch( opts->video_profile )
                      {
                      case 0:
-                       c->profile = FF_PROFILE_H264_BASELINE;
-                       c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
+                       c->profile = FF_PROFILE_H264_BASELINE;break;
                      case 1:
-                       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE;
-                         c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
+                       c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE;break;
                      case 2:
-                       c->profile = FF_PROFILE_H264_MAIN;
-                       c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
+                       c->profile = FF_PROFILE_H264_MAIN; break;
                      case 3:
-                       c->profile = FF_PROFILE_H264_EXTENDED;
-                         c->pix_fmt = AV_PIX_FMT_YUV420P10; break;
+                       c->profile = FF_PROFILE_H264_EXTENDED; break;
                      case 5:
-                       c->profile = FF_PROFILE_H264_HIGH_10;
-                       if ( opts->video_color == "YUV420" )
-                         c->pix_fmt = AV_PIX_FMT_YUV420P10;
-                       else if ( opts->video_color == "YUV422" )
-                         {
-                           c->profile = FF_PROFILE_H264_HIGH_422;
-                           c->pix_fmt = AV_PIX_FMT_YUV422P;
-                         }
-                       else if ( opts->video_color == "YUV444" )
-                         {
-                           c->profile = FF_PROFILE_H264_HIGH_444;
-                           c->pix_fmt = AV_PIX_FMT_YUV444P;
-                         }
-                       break;
+                       c->profile = FF_PROFILE_H264_HIGH_10; break;
                      case 4:
                      default:
                        c->profile = FF_PROFILE_H264_HIGH;
