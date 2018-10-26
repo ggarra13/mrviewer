@@ -1484,11 +1484,11 @@ void aviImage::clear_packets()
         << " expected: " << _expected << endl;
 #endif
 
-
+   
   _video_packets.clear();
-  _audio_packets.clear();
   _subtitle_packets.clear();
 
+  _audio_packets.clear();
   _audio_buf_used = 0;
 }
 
@@ -3028,7 +3028,8 @@ bool aviImage::fetch(const int64_t frame)
     int64_t f = handle_loops( frame );
 
 
-    if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
+    if ( playback() != kSaving &&
+	 ( got_audio || in_audio_store( f + _audio_offset ) ) &&
          in_video_store( f ) )
     {
         int64_t pts = frame2pts( get_video_stream(), f );
@@ -3759,6 +3760,7 @@ void aviImage::do_seek()
                           << decode_error( status )
                           << _(" for frame ") << _seek_frame );
 
+	   // audio start is set to true when reading icons
            if ( !_audio_start )
                find_audio( _seek_frame + _audio_offset );
            _audio_start = false;

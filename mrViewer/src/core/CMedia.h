@@ -544,6 +544,8 @@ class CMedia
     inline int64_t   dts()                      { return _dts; }
     //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
 
+    inline int64_t expected() const { return _expected; }
+    
     ///////////////// Audio frame
     inline void audio_frame( const int64_t f ) { _audio_frame = f; }
     inline int64_t   audio_frame() const { return _audio_frame; }
