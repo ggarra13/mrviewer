@@ -32,15 +32,13 @@
 
 #include <cassert>
 
-
-class CMedia;
 struct Clock;
 
 
 namespace mrv {
 
-  class ViewerUI;
-
+class ViewerUI;
+class CMedia;
 
 void set_clock_at(Clock *c, double pts, int serial, double time);
 double get_clock(Clock* c);
