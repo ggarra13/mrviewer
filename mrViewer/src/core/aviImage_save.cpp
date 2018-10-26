@@ -1216,12 +1216,10 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = end;
-#if 0  // less correct
+#if 1  // less correct
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
-            LOG_INFO( "For frame " << f << " w/off "
-                      << x << " got audio " << (*i)->frame() );
             return *i;
         }
     }
