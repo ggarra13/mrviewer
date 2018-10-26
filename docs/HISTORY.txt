@@ -1,3 +1,7 @@
+v4.3.1   - Bug fixed saving of movies with audio.  Now there should be
+	   no more gaps or stutters.
+	 - Added libx265.so to Linux distribution as it was missing.
+
 v4.3.0   - Made loading of sequences much more interactive and faster.
 	   Now the GUI does not lock itself as much.
 	 - The option of missing frames now is more interactive.  It only

@@ -804,7 +804,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    fltk::Window* main = (fltk::Window*)uiMain->uiMain;
    mrv::ProgressReport* w = new mrv::ProgressReport( main, first, last );
 
-
+   mrv::Reel reel = uiMain->uiReelWindow->uiBrowser->current_reel();
    int64_t dts = first;
    int64_t frame = first;
    int64_t failed_frame = frame-1;
@@ -857,45 +857,47 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    dts = frame;
    int64_t audio_frame = frame;
 
+   
    for ( ; frame <= last; ++frame )
    {
-       // uiMain->uiReelWindow->uiBrowser->seek( dts );
-
+       uiMain->uiView->seek( frame );
+    
        mrv::media fg = uiMain->uiView->foreground();
        if (!fg) break;
 
        img = fg->image();
 
-       if ( !skip )
-       {
-           ++dts;
-           img->frame( dts );
-       }
+//        if ( !skip )
+//        {
+//            ++dts;
+//            img->frame( dts );
+//        }
 
-       img->decode_video( frame );
-       img->find_image( frame );
+//        img->decode_video( frame );
+//        img->find_image( frame );
 
-       audio_frame = frame - 1;
-       bool found = false;
-       while ( ! found && img->audio_packets().size() > 0 )
-       {
-           ++audio_frame;
-           img->decode_audio( audio_frame );
-           found = img->find_audio( audio_frame );
-       }
+//        audio_frame = frame - 1;
+//        bool found = false;
+//        while ( ! found && img->audio_packets().size() > 0 )
+//        {
+//            ++audio_frame;
+//            img->decode_audio( audio_frame );
+//            found = img->find_audio( audio_frame );
+//        }
 
-       if ( !skip )
-           dts = img->dts();
+//        if ( !skip )
+//            dts = img->dts();
 
-       size_t vsize = img->video_packets().size();
-       size_t asize = img->audio_packets().size();
+//        size_t vsize = img->video_packets().size();
+//        size_t asize = img->audio_packets().size();
 
-#define kMIN_SIZE 120
-       if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
-           skip = true;
-       else
-           skip = false;
+// #define kMIN_SIZE 120
+//        if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
+//            skip = true;
+//        else
+//            skip = false;
 
+      
        if ( old != fg )
        {
            old = fg;
