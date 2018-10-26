@@ -2317,6 +2317,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   // clear all packets
   clear_packets();
+  CMedia::clear_packets();
 
   // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
@@ -2469,6 +2470,7 @@ void CMedia::stop(const bool bg)
   DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
   clear_packets();
+  CMedia::clear_packets();
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
