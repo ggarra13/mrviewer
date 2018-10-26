@@ -1566,7 +1566,7 @@ CMedia::store_audio( const int64_t audio_frame,
     {
         audio_cache_t::iterator end = _audio.end();
 
-#if 1
+#if 0  // less correct
         audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
                                                        end,
                                                        f,
@@ -1797,10 +1797,10 @@ bool CMedia::find_audio( const int64_t frame )
 
     _audio_frame = frame;
 
-    if ( frame < first_frame() )
+    if ( frame < first_frame() || frame > last_frame() )
         return true;
 
-#if 0
+#if 0 // less correct
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end,
                                                   frame, LessThanFunctor() );
@@ -1811,8 +1811,8 @@ bool CMedia::find_audio( const int64_t frame )
 #endif
     if ( i == end )
       {
-        IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
-        return false;
+	  IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
+	  return false;
       }
 
     result = *i;
@@ -1966,6 +1966,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
      _audio_packets.pop_front();  // pop seek/preroll end packet
   }
 
+  
 #ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, _right_eye ? "RDOSEEK END" : "DOSEEK END");
 #endif
@@ -2072,7 +2073,8 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
       }
       else if ( _audio_packets.is_seek()  )
         {
-            clear_stores();  // audio stores MUST be cleared when seeked
+	    // if ( playback() != kSaving )
+		clear_stores();  // audio stores MUST be cleared when seeked
             //_audio_buf_used = 0;
             got_audio = handle_audio_packet_seek( frame, true );
             continue;
