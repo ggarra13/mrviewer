@@ -7,6 +7,8 @@
  * 
  */
 
+#version 130
+
 // Images
 uniform sampler2D fgImage;
 uniform sampler3D lut;
@@ -112,21 +114,21 @@ void main()
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
 
-  if ( mask == 1.0 )  // even odd rows
+  if ( mask == 1 )  // even odd rows
   {
       float f = tc.y * height;
-      x = int( mod( f, 2 ) );
+      x = int( mod( f, 2.0 ) );
   }
-  else if ( mask == 2.0 )  // even-odd columns
+  else if ( mask == 2 )  // even-odd columns
   {
       float f2 = tc.x * width;
-      x = int( mod( f2, 2 ) );
+      x = int( mod( f2, 2.0 ) );
   }
-  else if ( mask == 3.0 ) // checkerboard
+  else if ( mask == 3 ) // checkerboard
   {
       float f = tc.y * height;
       float f2 = tc.x * width;
-      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
+      x = int( mod( floor( f2 ) + floor( f ), 2.0 ) < 1 );
   }
 
 
