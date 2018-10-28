@@ -782,7 +782,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    bool ffmpeg_handle = (ext == ".png" || ext == ".jpg" || ext == ".jpeg" ||
                          ext == ".tif" || ext == ".tiff" );
-   bool movie = is_valid_movie( ext.c_str() ) || ffmpeg_handle;
+   bool movie = is_valid_movie( ext.c_str() ) ||
+                is_valid_audio( ext.c_str() ) || ffmpeg_handle;
 
    std::string root, fileseq = file;
    bool ok = mrv::fileroot( root, fileseq, false );
@@ -793,8 +794,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    }
 
    mrv::Timeline* timeline = uiMain->uiTimeline;
-   int64_t first = int64_t( timeline->minimum() );
-   int64_t last  = int64_t( timeline->maximum() );
+   int64_t first = int64_t( timeline->display_minimum() );
+   int64_t last  = int64_t( timeline->display_maximum() );
 
    if ( movie )
    {
@@ -857,47 +858,46 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    dts = frame;
    int64_t audio_frame = frame;
 
-   
+   mrv::media fg = uiMain->uiView->foreground();
+   if (!fg) return;
+
+   img = fg->image();
+
    for ( ; frame <= last; ++frame )
    {
-       uiMain->uiView->seek( frame );
-    
-       mrv::media fg = uiMain->uiView->foreground();
-       if (!fg) break;
+       //uiMain->uiView->seek( frame );
 
        img = fg->image();
 
-//        if ( !skip )
-//        {
-//            ++dts;
-//            img->frame( dts );
-//        }
+       if ( !skip )
+       {
+	   ++dts;
+	   img->frame( dts );
+       }
 
-//        img->decode_video( frame );
-//        img->find_image( frame );
+       img->decode_video( frame );
+       img->find_image( frame );
 
-//        audio_frame = frame - 1;
-//        bool found = false;
-//        while ( ! found && img->audio_packets().size() > 0 )
-//        {
-//            ++audio_frame;
-//            img->decode_audio( audio_frame );
-//            found = img->find_audio( audio_frame );
-//        }
+       audio_frame = frame - 1;
+       bool found = false;
+       if ( !found && img->audio_packets().size() > 0 )
+       {
+	   ++audio_frame;
+	   img->decode_audio( audio_frame );
+	   found = img->find_audio( audio_frame );
+       }
 
-//        if ( !skip )
-//            dts = img->dts();
+       if ( !skip )
+       {
+	   dts = img->dts();
+       }
 
-//        size_t vsize = img->video_packets().size();
-//        size_t asize = img->audio_packets().size();
+       if ( img->video_packets().size() > 25 ||
+	    img->audio_packets().size() > 25 )
+	   skip = true;
+       else
+	   skip = false;
 
-// #define kMIN_SIZE 120
-//        if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
-//            skip = true;
-//        else
-//            skip = false;
-
-      
        if ( old != fg )
        {
            old = fg;

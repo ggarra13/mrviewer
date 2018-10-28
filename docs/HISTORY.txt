@@ -1,6 +1,14 @@
-v4.3.1   - Bug fixed saving of movies with audio.  Now there should be
-	   no more gaps or stutters.
+v4.3.1   - Reverted and bug fixed saving of movies with audio.
+	   This had gotten broken when the display of in/out in the
+	   timeline was added.
+	   Note that saving with audio has some problems in some rare
+	   movie files that create very short gaps (stutters) in the audio.
+	   Also, saving movies with audio is slow.  It is recommended
+	   you use the ffmpeg standalone that ships with mrViewer
+	   for any sort of audio manipulation.
 	 - Added libx265.so to Linux distribution as it was missing.
+	 - Made S/E buttons set the in and out points of the movie that
+	   is to be saved.
 
 v4.3.0   - Made loading of sequences much more interactive and faster.
 	   Now the GUI does not lock itself as much.
