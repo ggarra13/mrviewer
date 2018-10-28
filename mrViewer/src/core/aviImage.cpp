@@ -2808,14 +2808,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
             AVStream* stream = get_audio_stream();
             if (!got_audio )
             {
-                if (audio_context() == _context && _audio_ctx &&
-                    _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
-                    av_init_packet(&pkt);
-                    pkt.size = 0;
-                    pkt.data = NULL;
-                    pkt.stream_index = audio_stream_index();
-                    _audio_packets.push_back( pkt );
-                }
 
                 got_audio = true;
 
@@ -3042,14 +3034,16 @@ bool aviImage::fetch(const int64_t frame)
         return true;
     }
 
+    
     if ( (!got_video || !got_audio || !got_subtitle) && f != _expected  )
     {
-        bool ok = seek_to_position( f );
+	bool ok = seek_to_position( f );
         if ( !ok )
             IMG_ERROR( ("seek_to_position: Could not seek to frame ")
                        << frame );
         return ok;
     }
+
 
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;
@@ -3761,7 +3755,7 @@ void aviImage::do_seek()
                           << _(" for frame ") << _seek_frame );
 
 	   // audio start is set to true when reading icons
-           if ( !_audio_start )
+           if ( !_audio_start && status != kDecodeNoStream )
                find_audio( _seek_frame + _audio_offset );
            _audio_start = false;
        }
