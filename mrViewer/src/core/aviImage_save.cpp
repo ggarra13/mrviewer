@@ -1497,6 +1497,7 @@ bool flush_video_and_audio( const CMedia* img )
 
         int encoding = 1;
         int stop_encoding = 0;
+	ret = 0;
         AVCodecContext* c = s->codec;
 
 
@@ -1508,7 +1509,7 @@ bool flush_video_and_audio( const CMedia* img )
         while( ret >= 0 ) {
 
             const char* desc;
-            switch (s->codec->codec_type) {
+            switch (s->codecpar->codec_type) {
                 case AVMEDIA_TYPE_AUDIO:
                     desc   = "audio";
                     break;
@@ -1548,11 +1549,9 @@ bool flush_video_and_audio( const CMedia* img )
                     stop_encoding = 1;
                     break;
                 }
-
+		
             }
 
-            if (stop_encoding)
-                break;
         }
     }
 
