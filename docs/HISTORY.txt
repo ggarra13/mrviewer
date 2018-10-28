@@ -9,6 +9,11 @@ v4.3.1   - Reverted and bug fixed saving of movies with audio.
 	 - Added libx265.so to Linux distribution as it was missing.
 	 - Made S/E buttons set the in and out points of the movie that
 	   is to be saved.
+	 - Made Linux distribution not use rpath anymore in any of its
+	   libraries.  This makes sure LD_LIBRARY_PATH works correctly.
+	   Updated utils/libs.rb accordingly to do it automatically.
+	 - Made GLSL shaders compatible with Mesa library on Linux, as
+	   they were reporting a bunch of errors.
 
 v4.3.0   - Made loading of sequences much more interactive and faster.
 	   Now the GUI does not lock itself as much.
