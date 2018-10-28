@@ -31,6 +31,12 @@ IF( UNIX )
   INCLUDE( Platform/UnixPaths )
 ENDIF( UNIX )
 
+# VP18 switches to c++14, so let's do that by default
+set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
+# but switch gnu++14 or other extensions off for portability
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+
 SET( VersionMajor 4 )
 SET( VersionMinor 3 )
 SET( VersionPatch 1 )
