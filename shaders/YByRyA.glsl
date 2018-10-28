@@ -6,7 +6,7 @@
  * @brief    simple YByRyA texture with 3D lut shader
  *
  */
-
+#version 130
 
 // Images
 uniform sampler2D YImage;
@@ -152,23 +152,23 @@ void main()
   if ( mask == 1 )  // even odd rows
   {
       float f = tc.y * height;
-      x = int( mod( f, 2 ) );
+      x = int( mod( f, 2.0 ) );
   }
   else if ( mask == 2 ) // even odd columns
   {
       float f2 = tc.x * width;
-      x = int( mod( f2, 2 ) );
+      x = int( mod( f2, 2.0 ) );
   }
   else if ( mask == 3 ) // checkerboard
   {
       float f = tc.y * height;
       float f2 = tc.x * width;
-      x = int( mod( floor( f2 ) + floor( f ), 2 ) < 1 );
+      x = int( mod( floor( f2 ) + floor( f ), 2.0 ) < 1 );
   }
 
   if ( x == mask_value )
   {
-      c.r = c.g = c.b = c.a = 0.0f;
+      c.r = c.g = c.b = c.a = 0.0;
   }
 
   if ( premult )
