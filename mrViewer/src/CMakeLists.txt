@@ -564,6 +564,7 @@ ELSEIF (UNIX)
     # SET the installation directory.
 
     SET(CPACK_SET_DESTDIR ON) # Needed
+    set(CPACK_PACKAGING_INSTALL_PREFIX "")
     SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
 
     # SET Debian options.
