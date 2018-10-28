@@ -70,9 +70,13 @@ def parse( files )
       lib = File.readlink( loc )
       puts "#{lib} ->->-> #{orig}" if @options[:verbose]
       FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
+      `chrpath -d "#{@debug}/lib/#{lib}"`
+      print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
       FileUtils.ln_s( "#{lib}", "#{@debug}/lib/#{orig}" )
     else
       FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
+      `chrpath -d "#{@debug}/lib/#{lib}"`
+      print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
     end
   end
 end
