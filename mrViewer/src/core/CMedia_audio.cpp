@@ -1281,10 +1281,11 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if (  _audio_buf_used != 0 && (!_audio.empty()) )
     {
-        int64_t tmp = std::abs(ptsframe - _audio_last_frame);
+	int64_t last_pts_frame = _audio.back()->frame();
+        int64_t tmp = std::abs(ptsframe - last_pts_frame);
         if ( tmp >= 0 && tmp <= 10 )
         {
-            ptsframe = _audio_last_frame + 1;
+            ptsframe = last_pts_frame + 1;
         }
     }
 
@@ -1397,7 +1398,7 @@ CMedia::decode_audio( const int64_t frame, const AVPacket& pkt )
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
 
-    if ( last == first_frame() || playback() == kStopped )
+    if ( last == first_frame() || playback() == kStopped  )
     {
         if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
         {
