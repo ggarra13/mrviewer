@@ -550,6 +550,12 @@ class CMedia
     inline void audio_frame( const int64_t f ) { _audio_frame = f; }
     inline int64_t   audio_frame() const { return _audio_frame; }
 
+    inline aligned16_uint8_t* audio_buffer() const { return _audio_buf; }
+    
+    inline unsigned audio_buffer_used() const { return _audio_buf_used; }
+    inline void audio_buffer_used( unsigned x ) { _audio_buf_used = 0; }
+
+    
     ////////////////// Seek to a specific frame in current image.
     ////////////////// Frame is local to the video/sequence, not timeline.
     void seek( const int64_t frame );
