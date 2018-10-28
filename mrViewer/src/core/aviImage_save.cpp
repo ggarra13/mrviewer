@@ -313,19 +313,19 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                c->profile = opts->video_profile;
                c->colorspace = (AVColorSpace) opts->yuv_hint;
 
+	       if ( opts->video_color == "YUV420" )
+		   c->pix_fmt = AV_PIX_FMT_YUV420P;
+	       else if ( opts->video_color == "YUV422" )
+		   c->pix_fmt = AV_PIX_FMT_YUV422P;
+	       else if ( opts->video_color == "YUV444" )
+		   c->pix_fmt = AV_PIX_FMT_YUV444P;
+	       else if ( opts->video_color == "GBRP10LE"  )
+		   c->pix_fmt = AV_PIX_FMT_GBRP10LE;
+		   
                if ( c->codec_id == AV_CODEC_ID_HEVC )
                {
                    c->codec_tag = MAKE_TAG('H', 'V', 'C', '1');
 
-                   if ( opts->video_color == "YUV420" )
-                       c->pix_fmt = AV_PIX_FMT_YUV420P;
-                   else if ( opts->video_color == "YUV422" )
-                       c->pix_fmt = AV_PIX_FMT_YUV422P;
-                   else if ( opts->video_color == "YUV444" )
-                       c->pix_fmt = AV_PIX_FMT_YUV444P;
-                   else if ( opts->video_color == "GBRP10LE"  )
-                       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
-		   
                    switch( opts->video_profile )
                    {
                        case 0:
@@ -343,15 +343,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                }
                else if ( c->codec_id == AV_CODEC_ID_H264 )
                  {
-                   if ( opts->video_color == "YUV420" )
-                       c->pix_fmt = AV_PIX_FMT_YUV420P;
-                   else if ( opts->video_color == "YUV422" )
-                       c->pix_fmt = AV_PIX_FMT_YUV422P;
-                   else if ( opts->video_color == "YUV444" )
-                       c->pix_fmt = AV_PIX_FMT_YUV444P;
-                   else if ( opts->video_color == "GBRP10LE"  )
-                       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
-		   
+
                    switch( opts->video_profile )
                      {
                      case 0:
@@ -367,30 +359,11 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                      case 4:
                      default:
                        c->profile = FF_PROFILE_H264_HIGH;
-                       if ( opts->video_color == "YUV422" )
-                         {
-                           c->profile = FF_PROFILE_H264_HIGH_422;
-                           c->pix_fmt = AV_PIX_FMT_YUV422P;
-                         }
-                       else if ( opts->video_color == "YUV444" )
-                         {
-                           c->profile = FF_PROFILE_H264_HIGH_444;
-                           c->pix_fmt = AV_PIX_FMT_YUV444P;
-                         }
                        break;
                      }
                  }
                else if ( c->codec_id == AV_CODEC_ID_FFV1 )
                {
-                   std::cerr << opts->video_color << std::endl;
-                   if ( opts->video_color == "YUV420" )
-                       c->pix_fmt = AV_PIX_FMT_YUV420P10;
-                   else if ( opts->video_color == "YUV422" )
-                       c->pix_fmt = AV_PIX_FMT_YUV422P10;
-                   else if ( opts->video_color == "YUV444" )
-                       c->pix_fmt = AV_PIX_FMT_YUV444P10;
-                   else if ( opts->video_color == "GBRP10LE"  )
-                       c->pix_fmt = AV_PIX_FMT_GBRP10LE;
                    break;
                }
                else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
@@ -471,9 +444,9 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 }
 
 
-static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
-                              AVStream* st, const CMedia* img,
-                              const AviSaveUI* opts)
+static bool open_sound(AVFormatContext *oc, AVCodec* codec,
+                       AVStream* st, const CMedia* img,
+                       const AviSaveUI* opts)
 
 {
     AVCodecContext* c = st->codec;
@@ -608,7 +581,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
         max_dst_nb_samples = src_nb_samples;
 
-        assert( src_nb_samples > 0 );
+        av_assert0( src_nb_samples > 0 );
 
         int ret = av_samples_alloc_array_and_samples(&dst_samples_data,
                                                      &dst_samples_linesize,
@@ -633,10 +606,11 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     else
     {
        dst_samples_data = src_samples_data;
+       av_assert0( src_nb_samples > 0 );
        max_dst_nb_samples = src_nb_samples;
     }
 
-    assert( max_dst_nb_samples > 0 );
+    av_assert0( max_dst_nb_samples > 0 );
 
     return true;
 }
@@ -663,8 +637,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    ++frame_audio;
 
-   if ( audio->frame() == AV_NOPTS_VALUE ) return false;
-
+   if ( audio->frame() == AV_NOPTS_VALUE ) {
+       LOG_ERROR( "audio frame has NOPTS value" );
+       return false;
+   }
+   
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
    src_nb_samples /= av_get_bytes_per_sample( aformat );
@@ -677,17 +654,25 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    if (c->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE)
    {
+       LOG_INFO( _("Codec has variable frame size.  Setting it to ")
+		 << src_nb_samples );
        av_assert0( src_nb_samples > 0 );
        c->frame_size = src_nb_samples;
    }
 
-   unsigned frame_size = c->frame_size;
 
    if ( !fifo )
    {
        fifo = av_audio_fifo_alloc(c->sample_fmt, c->channels, 1);
+       if ( !fifo )
+       {
+	   LOG_ERROR( _("Could not allocate fifo buffer") );
+	   return false;
+       }
    }
 
+   unsigned frame_size = c->frame_size;
+   
    const uint8_t* data = audio->data();
    src_samples_data[0] = (uint8_t*)data;
 
@@ -696,11 +681,10 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        unsigned src_rate = img->audio_frequency();
        unsigned dst_rate = c->sample_rate;
 
-
        dst_nb_samples = static_cast<unsigned>(
-       av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) +
-                      src_nb_samples, dst_rate, src_rate,
-                      AV_ROUND_UP) );
+					      av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) +
+							     src_nb_samples, dst_rate, src_rate,
+							     AV_ROUND_UP) );
 
 
        if (dst_nb_samples > max_dst_nb_samples) {
@@ -758,9 +742,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       {
           if ( ret < 0 )
           {
-              LOG_ERROR( _("Could not write to fifo buffer. Error:")
+              LOG_ERROR( _("Could not write to fifo buffer. Error: ")
                          << get_error_text(ret) );
           }
+	  LOG_WARNING( _( "Did not write all dst samples to fifo. Error: ")
+		       << get_error_text( ret ) );
           return false;
       }
 
@@ -775,10 +761,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
               LOG_ERROR( _("Could not write to fifo buffer. Error:")
                          << get_error_text(ret) );
           }
+	  LOG_WARNING( _( "Did not write all src samples to fifo. Error: ")
+		       << get_error_text( ret ) );
           return false;
       }
    }
-
 
    audio_frame->pts = AV_NOPTS_VALUE;
    audio_frame->nb_samples     = frame_size;
@@ -791,6 +778,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    DBG( "frame_size= " << frame_size << "  audio->size()= " << audio->size() );
 
+   
    while ( av_audio_fifo_size( fifo ) >= (int)frame_size )
    {
 
@@ -804,9 +792,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        }
 
 
-
-       audio_frame->pts = av_rescale_q( samples_count, ratio,
-                                        c->time_base );
+       audio_frame->pts = samples_count;
 
        ret = encode(c, &pkt, audio_frame, &got_packet);
        if (ret < 0)
@@ -1216,7 +1202,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = end;
-#if 1  // less correct
+#if 0  // less correct
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
@@ -1237,13 +1223,14 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
 
 
-bool aviImage::open_movie( const char* filename, const CMedia* img,
+bool aviImage::open_movie( const char* filename, CMedia* img,
                            AviSaveUI* opts )
 {
    assert( filename != NULL );
    assert( img != NULL );
 
-   frame_audio = img->first_frame();
+   frame_audio = img->frame() + img->audio_offset();
+   
    samples_count = 0;
    frame_count = 0;
 
@@ -1286,6 +1273,11 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    fmt = oc->oformat;
    assert( fmt != NULL );
 
+   if ( opts->video_codec == _("None") )
+   {
+       fmt->video_codec = AV_CODEC_ID_NONE;
+   }
+
    if ( opts->video_codec == "png" )
        fmt->video_codec = AV_CODEC_ID_PNG;
    else if ( opts->video_codec == "tiff" )
@@ -1302,8 +1294,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_FFV1;
    else if ( fmt->video_codec == AV_CODEC_ID_NONE )
    {
-       LOG_ERROR( "Unknown codec id for codec '" << opts->video_codec << "'" );
-       return false;
+       // empty on purpose
    }
    else
    {
@@ -1355,7 +1346,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
      }
 
    if (audio_st)
-       if ( ! open_audio_static(oc, audio_cdc, audio_st, img, opts) )
+       if ( ! open_sound(oc, audio_cdc, audio_st, img, opts) )
       {
          audio_st = NULL;
          if ( !video_st ) return false;
@@ -1467,25 +1458,30 @@ bool flush_video_and_audio( const CMedia* img )
         // Send last packet to encode
         if ( cache_size > 0 )
         {
-            ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data,
-                                     cache_size);
-            if (ret < 0)
-            {
-                LOG_ERROR( _("Could not read audio fifo: ") <<
-                           get_error_text(ret) );
-            }
+	    while( got_packet && ret >= 0 )
+	    {
+		ret = av_audio_fifo_read(fifo,
+					 (void**)audio_frame->extended_data,
+					 cache_size);
+		if (ret < 0)
+		{
+		    LOG_ERROR( _("Could not read audio fifo: ") <<
+			       get_error_text(ret) );
+		}
 
-            c->frame_size = cache_size;
-            audio_frame->nb_samples = cache_size;
-            audio_frame->pts = av_rescale_q( samples_count, ratio,
-                                             c->time_base );
+		c->frame_size = cache_size;
+		audio_frame->nb_samples = cache_size;
+		audio_frame->pts = samples_count;
 
-            ret = encode(c, &pkt, audio_frame, &got_packet);
-            if (ret < 0)
-            {
-                LOG_ERROR( _("Could not encode audio frame: ") <<
-                           get_error_text(ret) );
-            }
+		ret = encode(c, &pkt, audio_frame, &got_packet);
+		if (ret < 0)
+		{
+		    LOG_ERROR( _("Could not encode audio frame: ") <<
+			       get_error_text(ret) );
+		}
+
+		samples_count += cache_size;
+	    }
         }
 
         av_packet_unref( &pkt );
@@ -1503,12 +1499,10 @@ bool flush_video_and_audio( const CMedia* img )
         int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
-        if ( !( c->codec->capabilities & AV_CODEC_CAP_DELAY ) )
-            continue;
 
         if (c->codec_type == AVMEDIA_TYPE_AUDIO && c->frame_size <= 1)
             continue;
-        // if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codec->id == AV_CODEC_ID_RAWVIDEO)
+        // if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codecpar->id == AV_CODEC_ID_RAWVIDEO)
         //     continue;
 
         while( ret >= 0 ) {
@@ -1595,7 +1589,7 @@ bool aviImage::close_movie( const CMedia* img )
 
     if (!(fmt->flags & AVFMT_NOFILE))
        /* Close the output file. */
-       avio_close(oc->pb);
+	avio_closep(&(oc->pb));
 
     /* free the stream */
     avformat_free_context(oc);
