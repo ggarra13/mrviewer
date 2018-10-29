@@ -858,46 +858,17 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    dts = frame;
    int64_t audio_frame = frame;
 
-   mrv::media fg = uiMain->uiView->foreground();
-   if (!fg) return;
 
-   img = fg->image();
 
    for ( ; frame <= last; ++frame )
    {
-       //uiMain->uiView->seek( frame );
+       uiMain->uiView->seek( frame );
+
+       mrv::media fg = uiMain->uiView->foreground();
+       if (!fg) return;
 
        img = fg->image();
-
-       if ( !skip )
-       {
-	   ++dts;
-	   img->frame( dts );
-       }
-
-       img->decode_video( frame );
-       img->find_image( frame );
-
-       audio_frame = frame - 1;
-       bool found = false;
-       if ( !found && img->audio_packets().size() > 0 )
-       {
-	   ++audio_frame;
-	   img->decode_audio( audio_frame );
-	   found = img->find_audio( audio_frame );
-       }
-
-       if ( !skip )
-       {
-	   dts = img->dts();
-       }
-
-       if ( img->video_packets().size() > 25 ||
-	    img->audio_packets().size() > 25 )
-	   skip = true;
-       else
-	   skip = false;
-
+       
        if ( old != fg )
        {
            old = fg;
