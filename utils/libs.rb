@@ -126,4 +126,4 @@ FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
 FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
 FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
 
-#`find . -name '*fuse*' -exec rm {} \\;`
+`find . -name '*fuse*' -exec rm {} \\;`
