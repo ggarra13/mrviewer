@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-10-28 18:57-0300\n"
+"POT-Creation-Date: 2018-10-29 06:20-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,7 @@ msgstr ""
 msgid " does not exist or no directory"
 msgstr ""
 
-#: core/aviImage_save.cpp:1531
+#: core/aviImage_save.cpp:1537
 msgid " encoding"
 msgstr ""
 
@@ -185,11 +185,11 @@ msgstr ""
 msgid " for stream #"
 msgstr ""
 
-#: core/aviImage_save.cpp:1548
+#: core/aviImage_save.cpp:1554
 msgid " frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:1538
+#: core/aviImage_save.cpp:1544
 msgid " frames"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 msgid "' from filename"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:1003
+#: gui/mrvFileRequester.cpp:974
 msgid "' to save."
 msgstr ""
 
@@ -1142,7 +1142,7 @@ msgid "Audio"
 msgstr ""
 
 #: core/CMedia_audio.cpp:747 core/aviImage_save.cpp:487
-#: core/aviImage_save.cpp:972
+#: core/aviImage_save.cpp:973
 msgid "Audio "
 msgstr ""
 
@@ -1606,7 +1606,7 @@ msgid ""
 "Resolution: %dx%d"
 msgstr ""
 
-#: core/aviImage_save.cpp:1596
+#: core/aviImage_save.cpp:1604
 msgid "Closed movie file"
 msgstr ""
 
@@ -1813,11 +1813,11 @@ msgstr ""
 msgid "Could not allocate output frame samples. Error: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1002
+#: core/aviImage_save.cpp:1003
 msgid "Could not allocate picture"
 msgstr ""
 
-#: core/aviImage_save.cpp:872
+#: core/aviImage_save.cpp:873
 msgid "Could not allocate raw picture buffer"
 msgstr ""
 
@@ -1837,7 +1837,7 @@ msgstr ""
 msgid "Could not clone subtitle frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:472 core/aviImage_save.cpp:956
+#: core/aviImage_save.cpp:472 core/aviImage_save.cpp:957
 msgid "Could not copy context to parameters"
 msgstr ""
 
@@ -1872,7 +1872,7 @@ msgstr ""
 msgid "Could not decode video frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1260
+#: core/aviImage_save.cpp:1261
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 
@@ -1880,7 +1880,7 @@ msgstr ""
 msgid "Could not draw image"
 msgstr ""
 
-#: core/aviImage_save.cpp:800 core/aviImage_save.cpp:1479
+#: core/aviImage_save.cpp:801 core/aviImage_save.cpp:1481
 msgid "Could not encode audio frame: "
 msgstr ""
 
@@ -2044,7 +2044,7 @@ msgstr ""
 msgid "Could not locate channels in header"
 msgstr ""
 
-#: core/aviImage_save.cpp:1358
+#: core/aviImage_save.cpp:1359
 msgid "Could not open '"
 msgstr ""
 
@@ -2072,11 +2072,11 @@ msgstr ""
 msgid "Could not open audio driver"
 msgstr ""
 
-#: core/aviImage_save.cpp:1265
+#: core/aviImage_save.cpp:1266
 msgid "Could not open mpeg movie"
 msgstr ""
 
-#: core/aviImage_save.cpp:949
+#: core/aviImage_save.cpp:950
 msgid "Could not open video codec"
 msgstr ""
 
@@ -2084,7 +2084,7 @@ msgstr ""
 msgid "Could not play audio frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1468
+#: core/aviImage_save.cpp:1469
 msgid "Could not read audio fifo: "
 msgstr ""
 
@@ -2768,7 +2768,7 @@ msgstr ""
 msgid "Divide"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:927
+#: gui/mrvFileRequester.cpp:898
 #, c-format
 msgid "Do you want to replace '%s'?"
 msgstr ""
@@ -2895,7 +2895,7 @@ msgstr ""
 msgid "Error configuring filter graph"
 msgstr ""
 
-#: core/aviImage_save.cpp:1371
+#: core/aviImage_save.cpp:1372
 msgid "Error occurred when opening output file: "
 msgstr ""
 
@@ -2911,7 +2911,7 @@ msgstr ""
 msgid "Error while converting audio: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1142
+#: core/aviImage_save.cpp:1143
 msgid "Error while encoding video frame: "
 msgstr ""
 
@@ -2919,11 +2919,11 @@ msgstr ""
 msgid "Error while feeding the filtergraph"
 msgstr ""
 
-#: core/aviImage_save.cpp:1155
+#: core/aviImage_save.cpp:1156
 msgid "Error while writing video frame: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1548
+#: core/aviImage_save.cpp:1554
 msgid "Error writing "
 msgstr ""
 
@@ -3024,7 +3024,7 @@ msgstr ""
 msgid "FPS: %.3f"
 msgstr ""
 
-#: core/aviImage_save.cpp:1531
+#: core/aviImage_save.cpp:1537
 msgid "Failed "
 msgstr ""
 
@@ -3040,7 +3040,7 @@ msgstr ""
 msgid "Failed to init swresample library with "
 msgstr ""
 
-#: core/aviImage_save.cpp:1113
+#: core/aviImage_save.cpp:1114
 msgid "Failed to initialize swscale conversion context"
 msgstr ""
 
@@ -3183,7 +3183,7 @@ msgstr ""
 msgid "Floppy Disk"
 msgstr ""
 
-#: core/aviImage_save.cpp:1565
+#: core/aviImage_save.cpp:1573
 msgid "Flushing of buffers failed"
 msgstr ""
 
@@ -4453,7 +4453,7 @@ msgstr ""
 msgid "Missing Frames"
 msgstr ""
 
-#: core/aviImage_save.cpp:1219
+#: core/aviImage_save.cpp:1220
 msgid "Missing audio frame "
 msgstr ""
 
@@ -4587,7 +4587,7 @@ msgstr ""
 msgid "Next Image Version"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:929 gui/mrvImageBrowser.cpp:668
+#: gui/mrvFileRequester.cpp:900 gui/mrvImageBrowser.cpp:668
 #: gui/mrvImageBrowser.cpp:1917 gui/mrvImageInformation.cpp:3574
 #: video/mrvGLEngine.cpp:236 video/mrvGLEngine.cpp:237
 #: video/mrvGLEngine.cpp:238 video/mrvGLEngine.cpp:240
@@ -4621,7 +4621,7 @@ msgstr ""
 msgid "No attribute named '%s'"
 msgstr ""
 
-#: core/aviImage_save.cpp:1335
+#: core/aviImage_save.cpp:1336
 msgid "No audio nor video stream created"
 msgstr ""
 
@@ -4694,9 +4694,9 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-36-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:231
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-36-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-36-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3590
-#: core/aviImage_save.cpp:1276 core/aviImage_save.cpp:1307
-#: core/exrImage.cpp:121 core/iffImage.cpp:59 gui/mrvFileRequester.cpp:971
-#: gui/mrvFileRequester.cpp:972 gui/mrvFileRequester.cpp:981
+#: core/aviImage_save.cpp:1277 core/aviImage_save.cpp:1308
+#: core/exrImage.cpp:121 core/iffImage.cpp:59 gui/mrvFileRequester.cpp:942
+#: gui/mrvFileRequester.cpp:943 gui/mrvFileRequester.cpp:952
 #: gui/mrvImageInformation.cpp:2693
 msgid "None"
 msgstr ""
@@ -4921,7 +4921,7 @@ msgstr ""
 msgid "Open encoder "
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:1003
+#: gui/mrvFileRequester.cpp:974
 msgid "Open movie '"
 msgstr ""
 
@@ -5532,7 +5532,7 @@ msgstr ""
 
 #: gui/mrvFileRequester.cpp:244 gui/mrvFileRequester.cpp:285
 #: gui/mrvFileRequester.cpp:700 gui/mrvFileRequester.cpp:752
-#: gui/mrvFileRequester.cpp:1156
+#: gui/mrvFileRequester.cpp:1127
 msgid "Reels (*.{"
 msgstr ""
 
@@ -5789,7 +5789,7 @@ msgstr ""
 msgid "Save Ocio Config File"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:266 gui/mrvFileRequester.cpp:1159
+#: gui/mrvHotkey.cpp:266 gui/mrvFileRequester.cpp:1130
 msgid "Save Reel"
 msgstr ""
 
@@ -5810,7 +5810,7 @@ msgstr ""
 msgid "Save current reel\n"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:999
+#: gui/mrvFileRequester.cpp:970
 msgid "Save frames '"
 msgstr ""
 
@@ -6229,7 +6229,7 @@ msgid ""
 "(default)."
 msgstr ""
 
-#: core/aviImage_save.cpp:1537
+#: core/aviImage_save.cpp:1543
 msgid "Stopped encoding cached "
 msgstr ""
 
@@ -7167,7 +7167,7 @@ msgstr ""
 msgid "Video"
 msgstr ""
 
-#: core/aviImage_save.cpp:971 core/aviImage_save.cpp:987
+#: core/aviImage_save.cpp:972 core/aviImage_save.cpp:988
 msgid "Video "
 msgstr ""
 
@@ -7711,7 +7711,7 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:929 gui/mrvImageBrowser.cpp:668
+#: gui/mrvFileRequester.cpp:900 gui/mrvImageBrowser.cpp:668
 #: gui/mrvImageBrowser.cpp:1917 gui/mrvImageInformation.cpp:3574
 #: video/mrvGLEngine.cpp:236 video/mrvGLEngine.cpp:237
 #: video/mrvGLEngine.cpp:238 video/mrvGLEngine.cpp:240
@@ -7720,7 +7720,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: core/aviImage_save.cpp:1242
+#: core/aviImage_save.cpp:1243
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr ""
 
