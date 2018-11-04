@@ -219,7 +219,7 @@ SET( SOURCES
   gui/FLU/Flu_File_Chooser.cpp
   gui/FLU/flu_pixmaps.cpp
   gui/FLU/GridGroup.cpp
-
+  
   gui/mrvActionWindow.cpp
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
@@ -247,6 +247,7 @@ SET( SOURCES
   gui/mrvPreferencesBrowser.cpp
   gui/mrvProgressReport.cpp
   gui/mrvReel.cpp
+  gui/mrvSave.cpp
   gui/mrvStereoWindow.cpp
   gui/mrvTimecode.cpp
   gui/mrvTimeline.cpp
