@@ -446,9 +446,9 @@ bool CMedia::seek_to_position( const int64_t frame )
 
     _expected_audio = frame+1;
 
-
     _adts = dts;
     _expected = dts+1;
+    
     _seek_req = false;
 
 
@@ -1018,6 +1018,7 @@ uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels)
 
 
 
+
 int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                           int* audio_size,
                           AVPacket *avpkt)
@@ -1279,9 +1280,9 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
   // Make sure audio frames are continous during playback to
   // accomodate weird sample rates not evenly divisable by frame rate
-  if (  _audio_buf_used != 0 && (!_audio.empty()) )
+  if (  _audio_buf_used != 0 && (!_audio.empty()) && playback() != kStopped )
     {
-	int64_t last_pts_frame = _audio.back()->frame();
+  	int64_t last_pts_frame = _audio.back()->frame();
         int64_t tmp = std::abs(ptsframe - last_pts_frame);
         if ( tmp >= 0 && tmp <= 10 )
         {
@@ -1630,6 +1631,7 @@ void CMedia::fetch_audio( const int64_t frame )
        << " got audio " << got_audio );
   int64_t dts = frame;
 
+  // We don't change dts here
   queue_packets( frame, false, got_video, got_audio,
                  got_subtitle );
 
@@ -1813,6 +1815,8 @@ bool CMedia::find_audio( const int64_t frame )
     if ( i == end )
       {
 	  IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
+	  debug_audio_packets( frame, "NOT found", false );
+	  debug_audio_stores( frame, "NOT found", false );
 	  return false;
       }
 
@@ -1916,8 +1920,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
   if ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
   {
       const AVPacket& pkt = _audio_packets.front();
-      // int64_t pts = pkt.dts + pkt.duration;
-      _audio_last_frame = pts2frame( get_audio_stream(), pkt.dts );
+      int64_t pts = pkt.dts + pkt.duration;
+      _audio_last_frame = pts2frame( get_audio_stream(), pts );
   }
 
 
@@ -1927,7 +1931,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
   while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
       const AVPacket& pkt = _audio_packets.front();
-      int64_t f = pts2frame( get_audio_stream(), pkt.dts );
+      int64_t pts = pkt.dts + pkt.duration;
+      int64_t f = pts2frame( get_audio_stream(), pts );
 
 
       DecodeStatus status;
@@ -1959,7 +1964,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     {
       assert( !_audio_packets.empty() );
       const AVPacket& pkt = _audio_packets.front();
-      frame = pts2frame( get_audio_stream(), pkt.dts ) + _audio_offset;
+      int64_t pts = pkt.dts + pkt.duration;
+      frame = pts2frame( get_audio_stream(), pts ) + _audio_offset;
     }
 
   if ( _audio_packets.is_seek_end() )
@@ -1993,7 +1999,7 @@ bool CMedia::in_audio_store( const int64_t frame )
   return false;
 }
 
-CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
+CMedia::DecodeStatus CMedia::decode_audio( const int64_t f )
 {
 
     audio_callback_time = av_gettime_relative();
@@ -2073,22 +2079,20 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
           return kDecodeLoopEnd;
       }
       else if ( _audio_packets.is_seek()  )
-        {
-	    // if ( playback() != kSaving )
-		clear_stores();  // audio stores MUST be cleared when seeked
-            //_audio_buf_used = 0;
-            got_audio = handle_audio_packet_seek( frame, true );
-            continue;
-        }
+      {
+	  clear_stores();  // audio stores MUST be cleared when seeked
+	  got_audio = handle_audio_packet_seek( frame, true );
+	  continue;
+      }
       else if ( _audio_packets.is_preroll() )
-        {
-           bool ok = in_audio_store( frame );
-           if ( ok ) {
-               SCOPED_LOCK( _audio_mutex );
-               assert( !_audio_packets.empty() );
-               AVPacket& pkt = _audio_packets.front();
-               int64_t pktframe = get_frame( get_audio_stream(), pkt )
-                                  - _frame_offset;
+      {
+	  bool ok = in_audio_store( frame );
+	  if ( ok ) {
+	      SCOPED_LOCK( _audio_mutex );
+	      assert( !_audio_packets.empty() );
+	      AVPacket& pkt = _audio_packets.front();
+	      int64_t pktframe = ( get_frame( get_audio_stream(), pkt ) -
+				   _frame_offset );
               if ( pktframe >= frame )
               {
                  _audio_buf_used = 0;
