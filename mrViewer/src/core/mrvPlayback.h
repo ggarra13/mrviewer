@@ -88,7 +88,6 @@ void sync_clock_to_slave(Clock *c, Clock *slave);
   void subtitle_thread( PlaybackData* data );
   void decode_thread( PlaybackData* data );
 
-
 } // namespace mrv
 
 
