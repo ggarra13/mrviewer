@@ -677,18 +677,6 @@ void monitor_ctl_script( const mrv::ViewerUI* main,
   }
 
 
-bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
-               const char* file,
-               const mrv::ViewerUI* main = NULL )
-{
-    if ( ipts && ipts->ACES_metadata() )
-    {
-        const std::string& xml = aces_xml_filename( file );
-        save_aces_xml( img, xml.c_str() );
-    }
-    return true;
-}
-
 
 void save_image_file( CMedia* image, const char* startdir, bool aces,
                       bool all_layers,
