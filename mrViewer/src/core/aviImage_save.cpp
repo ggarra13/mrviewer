@@ -800,6 +800,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        {
            LOG_ERROR( _("Could not encode audio frame: ") <<
                       get_error_text(ret) );
+	   av_packet_unref( &pkt );
            return false;
        }
 
@@ -817,10 +818,52 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        if (ret < 0) {
            LOG_ERROR( "Error while writing audio frame: " <<
                       get_error_text(ret) );
+	   av_packet_unref( &pkt );
            return false;
        }
 
    }
+
+   // if ( av_audio_fifo_size(fifo) % frame_size != 0 )
+   // {
+   //     ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data,
+   //                              frame_size);
+   //     if ( ret < 0 )
+   //     {
+   // 	   LOG_ERROR( _("Could not read samples from fifo buffer.  Error: ")
+   //                    << get_error_text(ret) );
+   // 	   av_packet_unref( &pkt );
+   // 	   return false;
+   //     }
+
+   //     memset( audio_frame->extended_data[0], 0,
+   // 	       frame_size - av_audio_fifo_size(fifo) * c->channels *
+   // 	       av_get_bytes_per_sample(aformat) );
+       
+
+   //     audio_frame->pts = av_rescale_q( samples_count, ratio,
+   //                                      c->time_base );
+
+   //     ret = encode(c, &pkt, audio_frame, &got_packet);
+   //     if (ret < 0 || !got_packet )
+   //     {
+   //         LOG_ERROR( _("Could not encode audio frame: ") <<
+   //                    get_error_text(ret) );
+   // 	   av_packet_unref( &pkt );
+   //         return false;
+   //     }
+
+   //     samples_count += frame_size;
+
+   //     ret = write_frame(oc, &c->time_base, st, &pkt);
+   //     if (ret < 0) {
+   //         LOG_ERROR( "Error while writing audio frame: " <<
+   //                    get_error_text(ret) );
+   // 	   av_packet_unref( &pkt );
+   //         return false;
+   //     }
+
+   // }
 
 
    av_packet_unref( &pkt );
