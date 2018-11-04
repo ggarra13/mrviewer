@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/* This file contains code borrowed from mpv's color corrections. */
 /**
  * @file   mrvGLEngine.cpp
  * @author gga
@@ -2482,7 +2483,7 @@ const char* ARBFP1Shader =
 "#default height = 256\n"
 "#default width = 256\n"
 "#default gain = 1\n"
-"#default gamma = 0.44995117\n"
+"#default gamma = 1.0\n"
 "#default channel = 0\n"
 "#default premult = 0\n"
 "#default unpremult = 0\n"
@@ -2774,7 +2775,7 @@ const char* NVShader =
 "#default height = 256\n"
 "#default width = 256\n"
 "#default gain = 1\n"
-"#default gamma = 0.44995117\n"
+"#default gamma = 1.0\n"
 "#default channel = 0\n"
 "#default premult = 0\n"
 "#default unpremult = 0\n"
@@ -2798,7 +2799,7 @@ const char* NVShader =
 "DECLARE scale = {1};\n"
 "DECLARE offset = {0};\n"
 "DECLARE unpremult = {0};\n"
-"DECLARE gamma = {0.44995117};\n"
+"DECLARE gamma = {1.0};\n"
 "DECLARE channel = {0};\n"
 "DECLARE mask = {0};\n"
 "DECLARE height = {256};\n"
