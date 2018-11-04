@@ -2551,6 +2551,8 @@ bool CMedia::frame( int64_t f )
       fetch_audio( _adts );
   }
 
+  std::cerr << __FUNCTION__ << " " << __LINE__ << " _expected "
+	    << _expected << std::endl;
   _expected = _dts + 1;
   _expected_audio = _expected + _audio_offset;
 
