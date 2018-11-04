@@ -178,7 +178,7 @@ class aviImage : public CMedia
                                   AVPixelFormat fmtold[] );
 
     // For counting frames
-    bool readFrame(int64_t & pts);
+    bool read_frame(int64_t & pts);
 
 
     int64_t queue_packets( const int64_t frame,
