@@ -1232,6 +1232,7 @@ void decode_thread( PlaybackData* data )
          img->do_seek();
          frame = img->dts();
       }
+      
 
 
       step = (int) img->playback();
