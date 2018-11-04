@@ -954,6 +954,7 @@ bool aviImage::seek_to_position( const int64_t frame )
         _dts = _adts = dts;
         // Set the expected to an impossible frame
         _expected = _expected_audio = _frame_start-1;
+
         _seek_req = false;
         return true;
     }
@@ -1017,6 +1018,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     _dts = _adts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
+
 
     _expected = _expected_audio = dts + 1;
     _seek_req = false;
@@ -2064,7 +2066,7 @@ void aviImage::video_stream( int x )
   }
 }
 
-bool aviImage::readFrame(int64_t & pts)
+bool aviImage::read_frame(int64_t & pts)
 {
     AVPacket packet;
 
@@ -2380,7 +2382,7 @@ void aviImage::populate()
                 if ( fileroot() == filename() )
                 {
                     duration = 0; // GIF89
-                    while ( readFrame(pts) )
+                    while ( read_frame(pts) )
                         ++duration;
 
                     flush_video();
@@ -2547,7 +2549,7 @@ void aviImage::populate()
                 {
                     int64_t pktframe = get_frame( get_audio_stream(),
                                                          pkt ) - _frame_offset;
-                    _adts = pktframe;
+                    _adts = _dts.load();
 
                     if ( playback() == kBackwards )
                     {
@@ -2877,7 +2879,9 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 //           << get_frame( get_video_stream(), pkt )
                 //           << std::endl;
                 _video_packets.push_back( pkt );
-                if ( pktframe > dts ) dts = pktframe;
+                if ( pktframe > dts ) {
+		    dts = pktframe;
+		}
             }
 
             if ( !got_video && pktframe >= frame )
@@ -2922,14 +2926,14 @@ int64_t aviImage::queue_packets( const int64_t frame,
                  pkt.stream_index == audio_stream_index() )
             {
                 int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )                                      - _frame_offset; // needed
-                _adts = pktframe;
+                _adts = _dts.load();
 
                 if ( playback() == kBackwards )
                 {
                     // Only add packet if it comes before seek frame
                     //if ( pktframe <= frame )
                         _audio_packets.push_back( pkt );
-                    if ( !has_video() && pktframe < dts ) dts = pktframe;
+                    if ( !has_video() && pktframe < _adts ) _adts = pktframe;
                 }
                 else
                 {
@@ -2937,7 +2941,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                     // result in ffmpeg going backwards too far.
                     // This pktframe >= frame-10 is to avoid that.
                     _audio_packets.push_back( pkt );
-                    if ( !has_video() && pktframe > dts ) dts = pktframe;
+                    if ( !has_video() && pktframe > _adts ) _adts = pktframe;
                 }
 
                 if ( !got_audio )
@@ -3021,21 +3025,21 @@ bool aviImage::fetch(const int64_t frame)
 
 
     if ( playback() != kSaving &&
-	 ( got_audio || in_audio_store( f + _audio_offset ) ) &&
+	 ( !got_audio || in_audio_store( f + _audio_offset ) ) &&
          in_video_store( f ) )
     {
         int64_t pts = frame2pts( get_video_stream(), f );
         _video_packets.jump( pts );
         pts = frame2pts( get_audio_stream(), f );
-        if ( !got_audio ) _audio_packets.jump( pts );
+        if ( got_audio ) _audio_packets.jump( pts );
         _dts = _adts = f;
         _expected = _dts + 1;
-        _expected_audio = _dts + 1;
+        _expected_audio = _adts + 1;
         return true;
     }
 
     
-    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected  )
+    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
     {
 	bool ok = seek_to_position( f );
         if ( !ok )
@@ -3716,6 +3720,7 @@ void aviImage::debug_subtitle_packets(const int64_t frame,
 }
 
 
+
 void aviImage::do_seek()
 {
     // No need to set seek frame for right eye here
@@ -3728,11 +3733,15 @@ void aviImage::do_seek()
     bool got_video = !has_video();
     bool got_audio = !has_audio();
 
+    int64_t frame = _seek_frame;
 
     if ( !got_audio || !got_video )
     {
-        if ( _seek_frame != _expected )
-            clear_packets();
+        if ( !saving() && frame != _expected )
+	{
+           clear_packets();
+	}
+
         fetch( _seek_frame );
     }
 
@@ -3743,22 +3752,35 @@ void aviImage::do_seek()
   if ( stopped() || saving() )
     {
 
-       DecodeStatus status;
-       if ( has_audio() )
-       {
-           int64_t f = _seek_frame;
-           f += _audio_offset;
-           status = decode_audio( f );
-           if ( status > kDecodeOK )
-               IMG_ERROR( _("Decode audio error: ")
-                          << decode_error( status )
-                          << _(" for frame ") << _seek_frame );
+	DecodeStatus status;
+	if ( has_audio() )
+	{
+	    if ( saving() )
+	    {
+		static int64_t last_frame = 1;
+		if ( std::abs( _seek_frame - last_frame ) > 1 )
+		{
+		    std::cerr << "frame gap " << std::abs( _seek_frame - last_frame ) << " at " << _seek_frame << std::endl;
+		}
+		last_frame = _seek_frame;
+	    }
+	
+	    int64_t f = _seek_frame;
+	    f += _audio_offset;
+	    status = decode_audio( f );
+	    if ( status > kDecodeOK )
+		IMG_ERROR( _("Decode audio error: ")
+			   << decode_error( status )
+			   << _(" for frame ") << _seek_frame );
+	    
+	    // audio start is set to true when reading icons
+	    if ( !_audio_start && status != kDecodeNoStream )
+	    {
+		find_audio( f );
+	    }
+	    _audio_start = false;
 
-	   // audio start is set to true when reading icons
-           if ( !_audio_start && status != kDecodeNoStream )
-               find_audio( _seek_frame + _audio_offset );
-           _audio_start = false;
-       }
+	}
 
        if ( has_video() || has_audio() )
        {
@@ -3772,8 +3794,8 @@ void aviImage::do_seek()
 
        if ( has_subtitle() && !saving() )
        {
-          decode_subtitle( _seek_frame );
-          find_subtitle( _seek_frame );
+          decode_subtitle( _frame );
+          find_subtitle( frame );
        }
 
 #ifdef DEBUG_VIDEO_STORES

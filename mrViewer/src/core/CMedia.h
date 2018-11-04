@@ -569,9 +569,12 @@ class CMedia
     virtual void loop_at_start( const int64_t frame );
     virtual void loop_at_end( const int64_t frame );
 
+    // Return a decode error as text
     static const char* const decode_error( DecodeStatus err );
 
     ////////////////// Static functions
+    // Main entry function for guessing an image/movie type.
+    // Defined in guessImage.cpp
     static CMedia* guess_image( const char* name,
                                 const boost::uint8_t* datas = NULL,
                                 const int size = 0,
@@ -643,19 +646,19 @@ class CMedia
     size_t memory() const;
 
 
-
+    // Returns the creation date as a string
     virtual const std::string creation_date() const;
 
-    /// Returns image ICC color profile
+    /// Returns image ICC color profile if present or NULL
     const char* icc_profile() const;
 
-    /// Assigns a new color profile to the image
+    /// Assigns a new color profile to the image or NULL to clear it
     void icc_profile( const char* cfile );
 
     /// Returns rendering transform name ( CTL script )
     const char* rendering_transform() const;
 
-    /// Assigns a new rendering transform ( CTL script )
+    /// Assigns a new rendering transform ( CTL script ) or NULL to remove it
     void rendering_transform( const char* cfile );
 
     /// Add default OCIO Input Color Space for this image bit depth.
@@ -671,19 +674,20 @@ class CMedia
         return _input_color_space;
     }
 
+    // Assign an OCIO input color space or "" for clearing it.
     void ocio_input_color_space( const std::string& n );
 
 
-    /// Returns input device transform name ( CTL script )
+    /// Returns input device transform name ( CTL script ) or NULL
     const char* idt_transform() const;
 
-    /// Assigns a new input device transform ( CTL script )
+    /// Assigns a new input device transform ( CTL script ) oR NULL to clear it
     void idt_transform( const char* cfile );
 
     /// Returns the number of Look Mod Transforms ( CTL scripts )
     inline size_t number_of_lmts() const { return _look_mod_transform.size(); }
 
-    /// Returns look mod transform name ( CTL script )
+    /// Returns look mod transform name ( CTL script ) or NULL if not present
     const char* look_mod_transform( const size_t idx ) const;
 
     /// Clears all the look mod transforms.
@@ -721,21 +725,26 @@ class CMedia
     /// True if image represents a video sequence
     virtual bool has_video() const { return false; }
 
+    // Returns the video information for a certain (i) video stream
     virtual const video_info_t& video_info( unsigned int i ) const
     {
         throw "No video stream";
     }
 
+    // Sets the video stream to a new index (x)
     virtual void video_stream( int x ) {}
+
+    // Returns the video stream index or -1 if no video stream (images)
     virtual int video_stream() { return -1; }
 
+    // Returns the number of video streams (0 or more)
     virtual size_t number_of_video_streams() const { return 0; }
 
 
-    /// Sets the first frame in the sequence
+    /// Sets the first frame in the range of playback
     void  first_frame(int64_t x);
 
-    /// Sets the first frame in the sequence
+    /// Sets the last frame in the range of playback 
     void  last_frame(int64_t x);
 
     /// Returns the first frame in the range of playback
@@ -750,14 +759,19 @@ class CMedia
     /// Returns the last frame in the video or sequence
     inline int64_t   end_frame()  const { return _frame_end; }
 
+    // Sets the frame to start the loop at the beginning
     inline void loop_start( int64_t x ) { _loop_start = x; }
 
+    // Returns the frame to start the loop at the beginning
     inline int64_t loop_start() const { return _loop_start; }
 
+    // Sets the frame to start the loop at the end
     inline void loop_end( int64_t x ) { _loop_end = x; }
 
+    // Returns the frame to start the loop at the end
     inline int64_t loop_end() const { return _loop_end; }
 
+    // Returns the video interlace type if any
     inline InterlaceType interlaced() const { return _interlaced; }
 
     /// Returns the number of channels in the image
@@ -766,6 +780,7 @@ class CMedia
     /// Returns the pixel format of the image
     image_type::Format pixel_format() const;
 
+    // Returns the pixel format of the image as a string
     const char* const pixel_format_name() const;
 
     /// Returns the pixel type of the image
@@ -842,7 +857,7 @@ class CMedia
     }
 
     /// Return current play rate of movie
-    inline double play_fps() const { return _play_fps; }
+    inline double play_fps() const { return _play_fps; } 
 
 
     /// Change audio volume
@@ -979,7 +994,7 @@ class CMedia
 
     virtual void do_seek();
 
-    DecodeStatus decode_audio( int64_t& frame );
+    DecodeStatus decode_audio( const int64_t frame );
     DecodeStatus handle_video_seek( int64_t& frame,
                                     const bool is_seek = true );
     virtual DecodeStatus decode_video( int64_t& frame );
