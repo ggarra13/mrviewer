@@ -41,20 +41,15 @@ void decode_some( CMedia* img, int64_t& frame )
     bool found = false;
     int64_t audio_frame = frame - 1;
     CMedia::DecodeStatus status = CMedia::kDecodeOK;
-    while ( ! found && status == CMedia::kDecodeOK &&
-	    img->audio_packets().size() > 0 )
+    if ( !found && img->audio_packets().size() > 0 )
     {
 	++audio_frame;
-	std::cerr << "decode audio " << audio_frame
-		  << " for frame " << frame << std::endl;
 	status = img->decode_audio( audio_frame );
 	found = img->find_audio( audio_frame ); 
     }
     
     status = img->decode_video( frame );
     img->find_image( frame );
-
-    ++frame;
 }
 
 
@@ -160,32 +155,31 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
 
 	img = fg->image();
 #else
-      for ( ; frame <= last; )
-      {
-	  mrv::media fg = uiMain->uiView->foreground();
-	  if (!fg) return;
+	for ( ; frame <= last; ++frame )
+	{
+	    mrv::media fg = uiMain->uiView->foreground();
+	    if (!fg) return;
 
-	  img = fg->image();
-	  
-	  if ( !skip )
-	  {
-	      ++dts;
-	      while ( ! img->frame( dts ) )
-	      {
-		  decode_some( img, frame );
-	      }
-	  }
+	    img = fg->image();
+	    
+	    if ( !skip )x
+	    {
+		++dts;
+		img->frame( dts );
+	    }
+	    
+	    decode_some( img, frame );
 
-	  decode_some( img, frame );
+	    img->debug_audio_stores( frame, "decode", true );
+	    
+	    size_t vsize = img->video_packets().size();
+	    size_t asize = img->audio_packets().size();
 	  
-	  size_t vsize = img->video_packets().size();
-	  size_t asize = img->audio_packets().size();
-	  
-#define kMIN_SIZE 120
-	  if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
-	      skip = true;
-	  else
-	      skip = false;
+#define kMIN_SIZE 25
+	    if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
+		skip = true;
+	    else
+		skip = false;
 
 	  if ( !skip )
 	  {
