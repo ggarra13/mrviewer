@@ -223,7 +223,7 @@ SET( SOURCES
   gui/mrvActionWindow.cpp
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
-  gui/mrvColorOpss.cpp
+  gui/mrvColorOps.cpp
   gui/mrvBrowser.cpp
   gui/mrvCTLBrowser.cpp
   gui/mrvCollapsableGroup.cpp
