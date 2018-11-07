@@ -145,7 +145,7 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
 
 
 
-#if 0
+#if 1
     for ( ; frame <= last; ++frame )
     {
 	uiMain->uiView->seek( frame );
@@ -162,7 +162,7 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
 
 	    img = fg->image();
 	    
-	    if ( !skip )x
+	    if ( !skip )
 	    {
 		++dts;
 		img->frame( dts );
