@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-11-04 13:24-0300\n"
+"POT-Creation-Date: 2018-11-07 13:35-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -330,7 +330,7 @@ msgstr ""
 msgid "' from filename"
 msgstr ""
 
-#: gui/mrvSave.cpp:298
+#: gui/mrvSave.cpp:292
 msgid "' to save."
 msgstr ""
 
@@ -981,8 +981,8 @@ msgstr ""
 msgid "All Layers"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:290 gui/mrvFileRequester.cpp:703
-#: gui/mrvFileRequester.cpp:755
+#: gui/mrvFileRequester.cpp:290 gui/mrvFileRequester.cpp:691
+#: gui/mrvFileRequester.cpp:743
 msgid "All Recognized (*.{"
 msgstr ""
 
@@ -1200,8 +1200,8 @@ msgstr ""
 msgid "Audios #"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:298 gui/mrvFileRequester.cpp:711
-#: gui/mrvFileRequester.cpp:763
+#: gui/mrvFileRequester.cpp:298 gui/mrvFileRequester.cpp:699
+#: gui/mrvFileRequester.cpp:751
 msgid "Audios (*.("
 msgstr ""
 
@@ -2096,7 +2096,7 @@ msgstr ""
 msgid "Could not save '"
 msgstr ""
 
-#: gui/mrvSave.cpp:81
+#: gui/mrvSave.cpp:76
 #, c-format
 msgid ""
 "Could not save sequence or movie, only single frame specified.  Use %%d "
@@ -2768,7 +2768,7 @@ msgstr ""
 msgid "Divide"
 msgstr ""
 
-#: gui/mrvSave.cpp:222
+#: gui/mrvSave.cpp:216
 #, c-format
 msgid "Do you want to replace '%s'?"
 msgstr ""
@@ -3825,7 +3825,7 @@ msgid "Images"
 msgstr ""
 
 #: gui/mrvFileRequester.cpp:288 gui/mrvFileRequester.cpp:294
-#: gui/mrvFileRequester.cpp:707 gui/mrvFileRequester.cpp:759
+#: gui/mrvFileRequester.cpp:695 gui/mrvFileRequester.cpp:747
 msgid "Images (*.{"
 msgstr ""
 
@@ -4521,8 +4521,8 @@ msgid ""
 "quality."
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:296 gui/mrvFileRequester.cpp:709
-#: gui/mrvFileRequester.cpp:761
+#: gui/mrvFileRequester.cpp:296 gui/mrvFileRequester.cpp:697
+#: gui/mrvFileRequester.cpp:749
 msgid "Movies (*.{"
 msgstr ""
 
@@ -4588,7 +4588,7 @@ msgid "Next Image Version"
 msgstr ""
 
 #: gui/mrvImageBrowser.cpp:668 gui/mrvImageBrowser.cpp:1917
-#: gui/mrvImageInformation.cpp:3574 gui/mrvSave.cpp:224
+#: gui/mrvImageInformation.cpp:3574 gui/mrvSave.cpp:218
 #: video/mrvGLEngine.cpp:237 video/mrvGLEngine.cpp:238
 #: video/mrvGLEngine.cpp:239 video/mrvGLEngine.cpp:241
 #: video/mrvGLEngine.cpp:245 video/mrvGLEngine.cpp:246
@@ -4696,7 +4696,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-36-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3590
 #: core/aviImage_save.cpp:1320 core/aviImage_save.cpp:1351
 #: core/exrImage.cpp:121 core/iffImage.cpp:59 gui/mrvImageInformation.cpp:2693
-#: gui/mrvSave.cpp:266 gui/mrvSave.cpp:267 gui/mrvSave.cpp:276
+#: gui/mrvSave.cpp:260 gui/mrvSave.cpp:261 gui/mrvSave.cpp:270
 msgid "None"
 msgstr ""
 
@@ -4920,7 +4920,7 @@ msgstr ""
 msgid "Open encoder "
 msgstr ""
 
-#: gui/mrvSave.cpp:298
+#: gui/mrvSave.cpp:292
 msgid "Open movie '"
 msgstr ""
 
@@ -5530,8 +5530,8 @@ msgid "Reels"
 msgstr ""
 
 #: gui/mrvFileRequester.cpp:245 gui/mrvFileRequester.cpp:286
-#: gui/mrvFileRequester.cpp:701 gui/mrvFileRequester.cpp:753
-#: gui/mrvFileRequester.cpp:809
+#: gui/mrvFileRequester.cpp:689 gui/mrvFileRequester.cpp:741
+#: gui/mrvFileRequester.cpp:797
 msgid "Reels (*.{"
 msgstr ""
 
@@ -5788,11 +5788,11 @@ msgstr ""
 msgid "Save Ocio Config File"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:266 gui/mrvFileRequester.cpp:812
+#: gui/mrvHotkey.cpp:266 gui/mrvFileRequester.cpp:800
 msgid "Save Reel"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:269 gui/mrvFileRequester.cpp:766
+#: gui/mrvHotkey.cpp:269 gui/mrvFileRequester.cpp:754
 msgid "Save Sequence"
 msgstr ""
 
@@ -5809,7 +5809,7 @@ msgstr ""
 msgid "Save current reel\n"
 msgstr ""
 
-#: gui/mrvSave.cpp:294
+#: gui/mrvSave.cpp:288
 msgid "Save frames '"
 msgstr ""
 
@@ -7711,7 +7711,7 @@ msgid "YUVA Support:\t"
 msgstr ""
 
 #: gui/mrvImageBrowser.cpp:668 gui/mrvImageBrowser.cpp:1917
-#: gui/mrvImageInformation.cpp:3574 gui/mrvSave.cpp:224
+#: gui/mrvImageInformation.cpp:3574 gui/mrvSave.cpp:218
 #: video/mrvGLEngine.cpp:237 video/mrvGLEngine.cpp:238
 #: video/mrvGLEngine.cpp:239 video/mrvGLEngine.cpp:241
 #: video/mrvGLEngine.cpp:245 video/mrvGLEngine.cpp:246
