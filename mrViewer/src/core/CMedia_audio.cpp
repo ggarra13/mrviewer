@@ -1815,8 +1815,6 @@ bool CMedia::find_audio( const int64_t frame )
     if ( i == end )
       {
 	  IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
-	  debug_audio_packets( frame, "NOT found", false );
-	  debug_audio_stores( frame, "NOT found", false );
 	  return false;
       }
 
