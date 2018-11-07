@@ -2621,7 +2621,10 @@ bool ImageView::preload()
 	CMedia::Playback p = playback();
     	if ( p != CMedia::kStopped )
     	{
-    	    i = f;
+	    i = f;  // we load preframe frame
+	    mrv::Timer t;
+	    t.setDesiredSecondsPerFrame( 1.0f / img->fps() * 0.5 );
+	    t.waitUntilNextFrameIsDue();
     	}
         boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
         // Store current frame
@@ -6491,10 +6494,26 @@ int ImageView::handle(int event)
 
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active() &&
-                     CMedia::preload_cache() &&
-                     ( _reel < b->number_of_reels() ) )
-                {
-                    preload_cache_start();
+                     CMedia::preload_cache() )
+		{
+		    for ( unsigned i = 0; i < b->number_of_reels(); ++i )
+		    {
+			mrv::Reel r = b->reel_at( i );
+			if (!r) continue;
+			
+			mrv::media fg = r->media_at( frame() );
+			if (!fg) continue;
+			
+			CMedia* img = fg->image();
+			if ( img && !img->is_cache_full() )
+			{
+			    _reel = i;
+			    break;
+			}
+		    }
+		    
+		    if ( _reel < b->number_of_reels() )
+			preload_cache_start();
                 }
                 else
                 {
