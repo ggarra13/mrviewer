@@ -2525,9 +2525,10 @@ bool CMedia::frame( int64_t f )
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
 #define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
 #define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-  if ( _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
-       _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
-       _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
+  if (
+      _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
+      _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
+      _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
     {
       return false;
     }
@@ -2551,8 +2552,6 @@ bool CMedia::frame( int64_t f )
       fetch_audio( _adts );
   }
 
-  std::cerr << __FUNCTION__ << " " << __LINE__ << " _expected "
-	    << _expected << std::endl;
   _expected = _dts + 1;
   _expected_audio = _expected + _audio_offset;
 
@@ -3360,19 +3359,14 @@ void CMedia::limit_video_store( const int64_t f )
       case kBackwards:
           first = f - max_image_frames();
           last  = f + max_image_frames();
-          if ( _dts < first ) first = _dts;
           break;
       case kForwards:
           first = f - max_image_frames();
           last  = f + max_image_frames();
-          if ( _dts > last )   last  = _dts;
-          if ( _dts < first )  first = _dts;
           break;
       default:
           first = f - max_image_frames();
           last  = f + max_image_frames();
-          if ( _dts > last )   last = _dts;
-          if ( _dts < first ) first = _dts;
           break;
   }
 
@@ -3384,6 +3378,8 @@ void CMedia::limit_video_store( const int64_t f )
 
   if ( last - first <= 1 ) return;  // needed
 
+
+  
   for ( int64_t i = 0; i < first; ++i  )
   {
       _sequence[i].reset();
