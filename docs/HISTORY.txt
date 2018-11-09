@@ -1,3 +1,11 @@
+v4.3.2   - Improved cache loading of 4K and 8K images.  Now the timeline
+	   will recycle those according to a setting in Gb.
+	 - Improved cache playback sliding itself to continue playback
+	   when playback is stopped.
+	 - Added a Preferences->Playback->Play All Frames switch to play
+	   all frames of a sequence without skipping any.  This is
+	   similar to cache active when the image is high res.
+
 v4.3.1   - Reverted saving of movies with audio.
 	   This had gotten broken when the display of in/out in the
 	   timeline was added.
