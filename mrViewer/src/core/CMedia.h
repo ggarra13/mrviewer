@@ -58,7 +58,6 @@
 #include <ImfTimeCode.h>
 #include <ACESclipReader.h>
 
-#include "core/mrvAlignedData.h"
 #include "core/mrvFrame.h"
 #include "core/mrvString.h"
 #include "core/mrvPacketQueue.h"
@@ -1609,6 +1608,7 @@ class CMedia
     ACES::ASC_CDL _sops;            //!< Slope,Offset,Pivot,Saturation
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
+    
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.
