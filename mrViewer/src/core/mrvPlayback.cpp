@@ -87,7 +87,7 @@ namespace
 #undef LOG
 #define LOG(x) //std::cerr << x << std::endl;
 
-// #define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
