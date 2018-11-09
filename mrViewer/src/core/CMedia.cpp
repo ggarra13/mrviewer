@@ -2787,15 +2787,14 @@ size_t CMedia::memory() const
           mrv::image_type_ptr s = _sequence[i];
           if ( !s ) continue;
 
-          r += s->width() * s->height() * s->channels() * s->pixel_size();
+          r += s->data_size();
         }
     }
   else
     {
       if ( hires() )
         {
-          r += ( _hires->width() * _hires->height() * _hires->channels() *
-                 _hires->pixel_size() );
+	    r += _hires->data_size();
         }
     }
 
@@ -3258,12 +3257,17 @@ int CMedia::max_video_frames()
 // Return the number of frames cached for jog/shuttle
 int CMedia::max_image_frames()
 {
+#if 0
     if ( _image_cache_size > 0 )
         return _image_cache_size;
     else if ( _image_cache_size == 0 )
         return int( fps()*2 );
     else
         return std::numeric_limits<int>::max() / 3;
+#else
+    if ( !_hires ) return std::numeric_limits<int>::max() / 3;
+    return Preferences::max_memory / _hires->data_size();
+#endif
 }
 
 void CMedia::loop_at_start( const int64_t frame )
@@ -3356,7 +3360,7 @@ void CMedia::limit_video_store( const int64_t f )
 
   if ( !_sequence ) return;
 
-
+#undef timercmp
 # define timercmp(a, b, CMP)                                                  \
   (((a).tv_sec == (b).tv_sec) ?					\
    ((a).tv_usec CMP (b).tv_usec) :                                          \
@@ -3380,11 +3384,12 @@ void CMedia::limit_video_store( const int64_t f )
 
   
   unsigned count = 0;
+  uint64_t max_frames = max_image_frames();
   TimedSeqMap::iterator it = tmp.begin();
   for ( ; it != tmp.end(); ++it )
   {
       ++count;
-      if ( count > max_image_frames() )
+      if ( count > max_frames )
       {
 	  uint64_t idx = it->second;
 	  
