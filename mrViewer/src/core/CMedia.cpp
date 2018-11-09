@@ -3344,53 +3344,57 @@ void CMedia::loop_at_end( const int64_t frame )
 
 
 
+
 void CMedia::limit_video_store( const int64_t f )
 {
     SCOPED_LOCK( _mutex );
+
 
     if ( f == AV_NOPTS_VALUE ) {
         return;
     }
 
-  int64_t first, last;
-
-  switch( playback() )
-  {
-      case kBackwards:
-          first = f - max_image_frames();
-          last  = f + max_image_frames();
-          break;
-      case kForwards:
-          first = f - max_image_frames();
-          last  = f + max_image_frames();
-          break;
-      default:
-          first = f - max_image_frames();
-          last  = f + max_image_frames();
-          break;
-  }
-
   if ( !_sequence ) return;
 
-  if ( first < 0 ) first = 0;
-  int64_t end = _numWindows-1;
-  if ( last > end ) last = end;
 
-  if ( last - first <= 1 ) return;  // needed
-
+# define timercmp(a, b, CMP)                                                  \
+  (((a).tv_sec == (b).tv_sec) ?					\
+   ((a).tv_usec CMP (b).tv_usec) :                                          \
+   ((a).tv_sec CMP (b).tv_sec))
+  
+  struct customMore {
+      inline bool operator()( const timeval& a,
+  			      const timeval& b ) const
+      {
+  	  return timercmp( a, b, > );
+      }
+  };
+  
+  typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
+  TimedSeqMap tmp;
+  for ( uint64_t i = 0; i < _numWindows; ++i )
+  {
+      if ( !_sequence[i] ) continue;
+      tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
+  }
 
   
-  for ( int64_t i = 0; i < first; ++i  )
+  unsigned count = 0;
+  TimedSeqMap::iterator it = tmp.begin();
+  for ( ; it != tmp.end(); ++it )
   {
-      _sequence[i].reset();
-       _right[i].reset();
+      ++count;
+      if ( count > max_image_frames() )
+      {
+	  uint64_t idx = it->second;
+	  
+	  _sequence[ idx ].reset();
+	  if ( _right[idx] ) _right[ idx ].reset();
+	  
+	  it = tmp.erase(it);
+      }
   }
-  for ( int64_t i = last; i < end ; ++i  )
-  {
-      _sequence[i].reset();
-      _right[i].reset();
-  }
-
+  
 
 }
 
