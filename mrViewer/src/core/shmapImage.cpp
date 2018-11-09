@@ -30,6 +30,7 @@
 
 
 #if defined(WIN32) || defined(WIN64)
+#include <winsock2.h>
 #include <windows.h>  // for htonl, etc.
 #undef max
 #else
