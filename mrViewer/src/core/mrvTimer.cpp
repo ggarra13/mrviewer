@@ -59,11 +59,9 @@
 #include <mrvTimer.h>
 #include <time.h>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
 
-namespace {
-
-  static int
+  int
   gettimeofday (struct timeval *tv, void *tz)
   {
     union
@@ -78,8 +76,6 @@ namespace {
     
     return 0;
   } 
-
-}
 
 #endif
 

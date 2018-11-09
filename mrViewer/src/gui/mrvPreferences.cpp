@@ -304,6 +304,8 @@ mrv::Preferences::MissingFrameType      Preferences::missing_frame;
   int   Preferences::selectioncolor;
   int   Preferences::selectiontextcolor;
 
+size_t Preferences::max_memory = 1000000000;
+
 static std::string expandVariables( const std::string &s,
                                     const char* START_VARIABLE,
                                     const char END_VARIABLE)
@@ -674,20 +676,9 @@ static std::string expandVariables( const std::string &s,
         CMedia::audio_cache_size( 0 );
     }
 
-    caches.get( "image_fps", tmp, 0 );
-    uiPrefs->uiPrefsImageCacheFPS->value( (bool) tmp );
-    if ( !tmp )
-    {
-        caches.get( "image_size", tmp, -1 );
-        uiPrefs->uiPrefsImageCacheSize->activate(true);
-        uiPrefs->uiPrefsImageCacheSize->value( tmp );
-        CMedia::image_cache_size( tmp );
-    }
-    else
-    {
-        uiPrefs->uiPrefsImageCacheSize->activate(false);
-        CMedia::image_cache_size( 0 );
-    }
+    caches.get( "cache_memory", tmpF, 1.0 );
+    uiPrefs->uiPrefsCacheMemory->value( tmp );
+    
     //
     // audio
     //
@@ -1430,16 +1421,9 @@ static const char* kCLocale = "C";
         CMedia::video_cache_size( 0 );
     }
 
-    if ( uiPrefs->uiPrefsImageCacheFPS->value() == 0 )
-    {
-        uiPrefs->uiPrefsImageCacheSize->activate(true);
-        CMedia::image_cache_size(uiPrefs->uiPrefsImageCacheSize->value());
-    }
-    else
-    {
-        uiPrefs->uiPrefsImageCacheSize->activate(false);
-        CMedia::image_cache_size( 0 );
-    }
+    Preferences::max_memory = ( uiPrefs->uiPrefsCacheMemory->value() *
+				1000000000 );
+    
     DBG( __FUNCTION__ << " " << __LINE__ );
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
@@ -1865,8 +1849,7 @@ static const char* kCLocale = "C";
     caches.set( "fps", (int) uiPrefs->uiPrefsCacheFPS->value() );
     caches.set( "size", (int) uiPrefs->uiPrefsCacheSize->value() );
 
-    caches.set( "image_fps", uiPrefs->uiPrefsImageCacheFPS->value() );
-    caches.set( "image_size", uiPrefs->uiPrefsImageCacheSize->value() );
+    caches.set( "cache_memory", uiPrefs->uiPrefsCacheMemory->value() );
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "load_library", uiPrefs->uiPrefsLoadLibrary->value() );
