@@ -31,6 +31,11 @@
 
 #include <cstring>
 #include <ctime>                  // for time_t
+#ifdef LINUX
+#include <sys/time.h>             // for timeval, gettimeofday
+#else
+#include <winsock2.h>
+#endif
 #include <stdexcept>              // for std::runtime_error
 
 #include <boost/cstdint.hpp>      // for int64_t and uint8_t
@@ -43,6 +48,31 @@
 
 namespace mrv
 {
+
+#ifdef WIN32
+
+int gettimeofday(struct timeval * tp, struct timezone * tzp)
+{
+    // Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
+    // This magic number is the number of 100 nanosecond intervals since January 1, 1601 (UTC)
+    // until 00:00:00 January 1, 1970 
+    static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
+
+    SYSTEMTIME  system_time;
+    FILETIME    file_time;
+    uint64_t    time;
+
+    GetSystemTime( &system_time );
+    SystemTimeToFileTime( &system_time, &file_time );
+    time =  ((uint64_t)file_time.dwLowDateTime )      ;
+    time += ((uint64_t)file_time.dwHighDateTime) << 32;
+
+    tp->tv_sec  = (long) ((time - EPOCH) / 10000000L);
+    tp->tv_usec = (long) (system_time.wMilliseconds * 1000);
+    return 0;
+}
+
+#endif
 
 class VideoFrame
 {
@@ -113,6 +143,7 @@ class VideoFrame
     short unsigned int          _channels; //!< number of channels of image
     time_t                      _ctime;  //!< creation time of frame
     time_t                      _mtime;  //!< modification time of frame
+    timeval                     _ptime;  //!< pos. time to erase in timeline
     Format                      _format; //!< rgb/yuv format
     PixelType                   _type;   //!< pixel type
     bool                       _valid;   //! invalid frame
@@ -134,6 +165,7 @@ class VideoFrame
     _type( kByte ),
     _valid( true )
     {
+	gettimeofday( &_ptime, NULL );
     }
 
     VideoFrame( const VideoFrame& b ) :
@@ -149,6 +181,7 @@ class VideoFrame
     _type( b._type ),
     _valid( true )
     {
+	gettimeofday( &_ptime, NULL );
 	allocate();
 	memcpy( _data.get(), b.data().get(), data_size() );
     }
@@ -173,6 +206,7 @@ class VideoFrame
     _type( type ),
     _valid( valid )
     {
+	gettimeofday( &_ptime, NULL );
 	allocate();
     }
 
@@ -184,6 +218,8 @@ class VideoFrame
 
     self& operator=( const self& b );
 
+    inline timeval ptime() const { return _ptime; }
+    
     inline void width( const unsigned w ) { _width = w;  }
     inline unsigned int width()  const    { return _width;  }
 
@@ -198,6 +234,7 @@ class VideoFrame
 
     bool has_alpha() const;
 
+    
     inline void      format( Format f ) { _format = f; }
     inline Format    format()     const { return _format; }
 
