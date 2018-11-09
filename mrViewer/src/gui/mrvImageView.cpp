@@ -2637,9 +2637,11 @@ bool ImageView::preload()
 	img->hires( pic );  // restore old pic position
     }
 
-    t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
-    t.waitUntilNextFrameIsDue();
-    
+    if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
+    {
+        t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
+        t.waitUntilNextFrameIsDue();
+    }
     
     redraw();
     timeline()->redraw();
