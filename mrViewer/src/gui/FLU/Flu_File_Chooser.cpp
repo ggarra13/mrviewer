@@ -35,6 +35,7 @@ using namespace std;
 #define FLU_USE_REGISTRY
 
 #ifdef WIN32
+#include <winsock2.h>
 #include <windows.h>
 #include <shlobj.h>
 #include <shellapi.h>
