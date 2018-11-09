@@ -680,9 +680,9 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {809 322 700 450} hide resizable
+        xywh {809 322 700 450} resizable
         extra_code {o->main(m);}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1130,7 +1130,7 @@ uiWindowYSize->value( v->uiMain->h() );}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
+            label Playback
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1394,7 +1394,7 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches
+            label Caches open
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
@@ -1452,17 +1452,13 @@ This setting thus allows caching more pictures in memory for float and half pict
               label {Image Cache Size} open
               xywh {40 271 336 48} box ROUNDED_BOX
             } {
-              {fltk::ValueSlider} uiPrefsImageCacheSize {
-                tooltip {Size in frames of the image sequence cache. Negative numbers mean infinite.}
-                xywh {12 11 260 27} align 1 minimum -1 maximum 200 step 1 value -1
-                extra_code {o->activate(false);}
+              {fltk::ValueInput} uiPrefsCacheMemory {
+                label Memory selected
+                xywh {134 13 75 25} minimum 0.5 maximum 100 step 0.5 value 1
               }
-              {fltk::LightButton} uiPrefsImageCacheFPS {
-                label FPS
-                user_data uiPrefsImageCacheSize user_data_type {fltk::ValueSlider*}
-                callback {v->activate( !v->active() );}
-                tooltip {When selected, cache is set to twice the frames per second of the image sequence.}
-                xywh {270 8 60 30}
+              {fltk::Widget} {} {
+                label Gb
+                xywh {209 13 45 25}
               }
             }
           }
@@ -3142,10 +3138,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {405 281 640 595} when CHANGED resizable
+        xywh {405 281 640 595} when CHANGED hide resizable
         extra_code {o->size_range(640, 530);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 595}
@@ -3492,7 +3488,7 @@ Value is:  pow( 2, 1/x );}
             xywh {0 28 640 480} resizable
             class {fltk::Group}
           } {
-            {fltk::Group} uiView {selected
+            {fltk::Group} uiView {
               xywh {0 0 640 480}
               extra_code {o->main(this);}
               class {mrv::ImageView}
