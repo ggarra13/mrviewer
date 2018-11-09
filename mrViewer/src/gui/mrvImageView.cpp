@@ -143,7 +143,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 
 // Audio
 
-//#define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
+// #define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
 
 using namespace std;
 
@@ -154,7 +154,6 @@ namespace fs = boost::filesystem;
 //#ifndef _WIN32
 #  define FLTK_TIMEOUT_EVENT_BUG 1
 //#endif
-
 
 
 
@@ -1381,7 +1380,7 @@ _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _lastFrame( 0 )
 {
-  _timer.setDesiredSecondsPerFrame(0.0f);
+  _timer.setDesiredSecondsPerFrame(0.05f);
 
 
   int stereo = 0;
@@ -2491,6 +2490,21 @@ void ImageView::log() const
 }
 
 
+int timeval_substract(struct timeval *result, struct timeval *x,
+		      struct timeval *y)
+{
+  result->tv_sec = x->tv_sec - y->tv_sec;
+
+  if ((result->tv_usec = x->tv_usec - y->tv_usec) < 0)
+  {
+    result->tv_usec += 1000000;
+    result->tv_sec--; // borrow
+  }
+
+  return result->tv_sec < 0;
+}
+
+Timer t;
 
 bool ImageView::preload()
 {
@@ -2552,89 +2566,23 @@ bool ImageView::preload()
 
     if ( f < first ) f = first;
     else if ( f > last ) f = last;
+ 
+    CMedia::Playback p = playback();
 
-    int64_t i = f, j;
-
-    bool found = false;
-
-    // Find a frame to cache from timeline point on
-    if ( playback() == CMedia::kForwards || playback() == CMedia::kStopped )
+    bool found;
+    mrv::image_type_ptr pic;
     {
-	for ( ; i <= last; ++i )
-	{
-	    CMedia::Cache c = img->is_cache_filled( i );
-	    if ( c == CMedia::kNoCache )
-	    {
-		found = true;
-		break;
-	    }
-	}
-
-	// None found, check backwards
-	if ( !found )
-	{
-	    j = first;
-	    for ( ; j < f; ++j )
-	    {
-		CMedia::Cache c = img->is_cache_filled( j );
-		if ( c == CMedia::kNoCache )
-		{
-		    i = j; found = true;
-		    break;
-		}
-	    }
-	}
+	boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
+	// Store current frame
+	pic = img->hires();
+	if (!pic) return false;
+	found = img->find_image( f ); // this loads the frame if not present
     }
-    else
-    {
-	    j = last;
-	    for ( ; j > f; --j )
-	    {
-		CMedia::Cache c = img->is_cache_filled( j );
-		if ( c == CMedia::kNoCache )
-		{
-		    i = j; found = true;
-		    break;
-		}
-	    }
-	    
-	    // None found, check forwards
-	    if ( !found )
-	    {
-		i = first;
-		for ( ; i <= f; ++i )
-		{
-		    CMedia::Cache c = img->is_cache_filled( i );
-		    if ( c == CMedia::kNoCache )
-		    {
-			found = true;
-			break;
-		    }
-		}
-
-	    }
-    }
-
-
-    if ( found )
-    {
-	CMedia::Playback p = playback();
-    	if ( p != CMedia::kStopped )
-    	{
-	    i = f;  // we load preframe frame
-	    mrv::Timer t;
-	    t.setDesiredSecondsPerFrame( 1.0f / img->fps() * 0.5 );
-	    t.waitUntilNextFrameIsDue();
-    	}
-        boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
-        // Store current frame
-        mrv::image_type_ptr pic = img->hires();
-        if (!pic) return false;
-        img->find_image( i ); // this loads the frame if not present
-        // Frame found. Update _preframe.
+    // Frame found. Update _preframe.
+    if ( found ) {
 	if ( p == CMedia::kBackwards )
 	{
-	    _preframe = i - 1;
+	    _preframe = f - 1;
 	    if ( _preframe < first )
 	    {
 		_preframe = last;
@@ -2643,53 +2591,59 @@ bool ImageView::preload()
 		{
 		    _reel = 0;
 		    preload_cache_stop();
-		    play( p );
+		    return false;
 		}
 	    }
 	}
 	else if ( p == CMedia::kForwards )
 	{
-	    _preframe = i + 1;
+	    _preframe = f + 1;
 	    if ( _preframe > last )
 	    {
 		_preframe = first;
 		_reel++;
+    
+		if ( _reel >= b->number_of_reels() )
+		{
+		    preload_cache_stop();
+		    return false;
+		}
 	    }
 	}
 	else
 	{
-	    img->hires( pic );  // restore old pic position
+	    size_t max_images = img->max_image_frames() - 2;
+	    if ( std::abs( pic->frame() - _preframe ) < max_images )
+	    {
+		_preframe = f + 1;
+		if ( _preframe > last )
+		{
+		    _preframe = first;
+		    _reel++;
+    
+		    if ( _reel >= b->number_of_reels() )
+		    {
+			preload_cache_stop();
+			img->hires( pic );
+			return false;
+		    }
+		}
+	    }
+	    img->hires( pic );
 	}
-	redraw();
-        timeline()->redraw();
     }
     else
     {
-        if ( CMedia::eight_bit_caches() && gamma() > 1.0 )
-            gamma( 1.0 );
-
-        _preframe = img->position() + img->duration();
-
-        img = r->image_at( _preframe );
-        if (!img) {
-            _reel++;
-            _preframe = 1;
-        }
+	img->hires( pic );  // restore old pic position
     }
+
+    t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
+    t.waitUntilNextFrameIsDue();
     
-    if ( _reel >= b->number_of_reels() )
-    {
-	_reel = 0;
-	preload_cache_stop();
-	if ( playback() != CMedia::kStopped )
-	{
-	    play( playback() );
-	}
-	return false;
-    }
-
+    
     redraw();
-    fltk::check();
+    timeline()->redraw();
+
     return true;
 
 }
@@ -3314,11 +3268,12 @@ void ImageView::draw()
           _lastFrame = frame;
         }
 
-       if ( img->real_fps() == 0.0 )
+       
+       if ( img->real_fps() < 0.0001 )
        {
-	   _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() * 0.5 );
+	   _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() );
 	   _timer.waitUntilNextFrameIsDue();
-	   sprintf( buf, _(" FPS: %.3f" ), _timer.actualFrameRate() );
+	   sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
 	   hud << buf;
        }
        
@@ -6494,7 +6449,8 @@ int ImageView::handle(int event)
 
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active() &&
-                     CMedia::preload_cache() )
+                     ( CMedia::preload_cache() ||
+		       uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
 		{
 		    for ( unsigned i = 0; i < b->number_of_reels(); ++i )
 		    {
@@ -6748,8 +6704,8 @@ void ImageView::preload_cache_start()
 
     if (!_idle_callback)
     {
-        _reel = 0;
         fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+        _reel = 0;
         _idle_callback = true;
         CMedia::preload_cache( true );
     }
@@ -6766,7 +6722,7 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
-        _reel = browser()->number_of_reels();
+	_reel = browser()->number_of_reels();
         _idle_callback = false;
     }
 }
@@ -6783,12 +6739,7 @@ void ImageView::preload_caches()
     CMedia::preload_cache( !CMedia::preload_cache() );
     if ( !CMedia::preload_cache() )
     {
-#ifdef USE_TIMEOUT
-        fltk::remove_timeout( (fltk::TimeoutHandler) static_preload, this );
-#else
-        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
-#endif
-        _idle_callback = false;
+	preload_cache_stop();
     }
     else
     {
@@ -8455,6 +8406,10 @@ void ImageView::play( const CMedia::Playback dir )
 	 img->is_cache_full() )
     {
         preload_cache_stop();
+    }
+    else
+    {
+	_preframe = frame();
     }
 
 

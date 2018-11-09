@@ -1107,6 +1107,18 @@ class CMedia
     // Add a GL drawn shape to image
     void add_shape( shape_type_ptr s );
 
+    // Return the maximum number of audio frames cached for jog/shuttle
+    // or 0 for no cache or numeric_limits<int>max() for full cache
+    int max_audio_frames();
+    // Return the maximum number of video frames cached for jog/shuttle
+    // or 0 for no cache or numeric_limits<int>max() for full cache
+    int max_video_frames();
+    // Return the maximum number of video frames cached for jog/shuttle
+    // or 0 for no cache or numeric_limits<int>max() for full cache
+    int max_image_frames();
+    
+    virtual void limit_video_store( const int64_t frame );
+    
     inline void is_thumbnail(bool t) { _is_thumbnail = t; }
     inline bool is_thumbnail() const { return _is_thumbnail; }
 
@@ -1404,18 +1416,8 @@ class CMedia
                                const AVCodecParameters* codecpar,
                                const int stream_index );
 
-    virtual void limit_video_store( const int64_t frame );
     void limit_audio_store( const int64_t frame );
     void clear_stores();
-    // Return the maximum number of audio frames cached for jog/shuttle
-    // or 0 for no cache or numeric_limits<int>max() for full cache
-    int max_audio_frames();
-    // Return the maximum number of video frames cached for jog/shuttle
-    // or 0 for no cache or numeric_limits<int>max() for full cache
-    int max_video_frames();
-    // Return the maximum number of video frames cached for jog/shuttle
-    // or 0 for no cache or numeric_limits<int>max() for full cache
-    int max_image_frames();
 
     /**
      * Store an audio frame in cache
