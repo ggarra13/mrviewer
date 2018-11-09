@@ -1503,41 +1503,52 @@ void aviImage::limit_video_store(const int64_t frame)
 {
     SCOPED_LOCK( _mutex );
 
+    if ( _images.empty() ) return;
+
     int max_frames = max_video_frames();
     if ( _has_image_seq )
     {
         max_frames = max_image_frames();
     }
 
-    int64_t first, last;
+#undef timercmp
+# define timercmp(a, b, CMP)                                                  \
+  (((a).tv_sec == (b).tv_sec) ?					\
+   ((a).tv_usec CMP (b).tv_usec) :                                          \
+   ((a).tv_sec CMP (b).tv_sec))
+  
+  struct customMore {
+      inline bool operator()( const timeval& a,
+  			      const timeval& b ) const
+      {
+  	  return timercmp( a, b, > );
+      }
+  };
+  
+  typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
+  TimedSeqMap tmp;
+  {
+      unsigned count = 0;
+      video_cache_t::iterator it = _images.begin();
+      video_cache_t::iterator end = _images.end();
+      for ( ; it != end; ++it, ++count )
+      {
+	  tmp.insert( std::make_pair( (*it)->ptime(), count ) );
+      }
+  }
 
-    switch( playback() )
-    {
-        case kBackwards:
-            first = frame - max_frames;
-            last  = frame;
-            if ( _dts < first ) first = _dts;
-            break;
-        case kForwards:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _dts > last )   last  = _dts;
-            if ( _dts < first )  first = _dts;
-            break;
-        default:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _dts > last )   last = _dts;
-            if ( _dts < first ) first = _dts;
-            break;
-    }
-
-    if ( _images.empty() ) return;
-
-    video_cache_t::iterator end = _images.end();
-    _images.erase( std::remove_if( _images.begin(), end,
-                                   NotInRangeFunctor( first, last ) ), end );
-
+  
+  unsigned count = 0;
+  TimedSeqMap::iterator it = tmp.begin();
+  for ( ; it != tmp.end(); ++it )
+  {
+      ++count;
+      if ( count > max_frames )
+      {
+	  uint64_t idx = it->second;
+	  _images.erase( _images.begin() + idx );
+      }
+  }
 
 }
 
@@ -1547,32 +1558,54 @@ void aviImage::limit_video_store(const int64_t frame)
 //
 void aviImage::limit_subtitle_store(const int64_t frame)
 {
+    SCOPED_LOCK( _mutex );
 
-  int64_t first, last;
+    if ( _subtitles.empty() ) return;
 
-  switch( playback() )
+    int max_frames = max_video_frames();
+    if ( _has_image_seq )
     {
-    case kBackwards:
-       first = frame - (int64_t)fps() * 2;
-       last  = frame;
-       if ( _dts < first ) first = _dts;
-      break;
-    case kForwards:
-      first = frame;
-      last  = frame + (int64_t)fps() * 2;
-      if ( _dts > last )   last = _dts;
-      break;
-    default:
-       first = frame - (int64_t)fps() * 2;
-       last  = frame + (int64_t)fps() * 2;
-      break;
+        max_frames = max_image_frames();
     }
 
-  subtitle_cache_t::iterator end = _subtitles.end();
-  _subtitles.erase( std::remove_if( _subtitles.begin(), end,
-                                    NotInRangeFunctor( first, last ) ), end );
+#undef timercmp
+# define timercmp(a, b, CMP)                                                  \
+  (((a).tv_sec == (b).tv_sec) ?					\
+   ((a).tv_usec CMP (b).tv_usec) :                                          \
+   ((a).tv_sec CMP (b).tv_sec))
+  
+  struct customMore {
+      inline bool operator()( const timeval& a,
+  			      const timeval& b ) const
+      {
+  	  return timercmp( a, b, > );
+      }
+  };
+  
+  typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
+  TimedSeqMap tmp;
+  {
+      unsigned count = 0;
+      video_cache_t::iterator it = _subtitles.begin();
+      video_cache_t::iterator end = _subtitles.end();
+      for ( ; it != end; ++it, ++count )
+      {
+	  tmp.insert( std::make_pair( (*it)->ptime(), count ) );
+      }
+  }
 
-
+  
+  unsigned count = 0;
+  TimedSeqMap::iterator it = tmp.begin();
+  for ( ; it != tmp.end(); ++it )
+  {
+      ++count;
+      if ( count > max_frames )
+      {
+	  uint64_t idx = it->second;
+	  _subtitles.erase( _subtitles.begin() + idx );
+      }
+  }
 
 }
 
