@@ -589,6 +589,9 @@ static std::string expandVariables( const std::string &s,
     fltk::Preferences playback( base, "playback" );
     playback.get( "auto_playback", tmp, 0 );
     uiPrefs->uiPrefsAutoPlayback->value(tmp);
+    
+    playback.get( "play_all_frames", tmp, 1 );
+    uiPrefs->uiPrefsPlayAllFrames->value(tmp);
 
     playback.get( "override_fps", tmp, 0 );
     uiPrefs->uiPrefsOverrideFPS->value(tmp);
@@ -1828,6 +1831,8 @@ static const char* kCLocale = "C";
     //
     fltk::Preferences playback( base, "playback" );
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
+    playback.set( "play_all_frames",
+		  (int) uiPrefs->uiPrefsPlayAllFrames->value() );
     playback.set( "override_fps", uiPrefs->uiPrefsOverrideFPS->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
