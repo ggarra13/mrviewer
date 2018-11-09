@@ -37,17 +37,21 @@ extern "C" {
 #include <libavutil/avassert.h>
 }
 
+
+
 namespace
 {
-  unsigned int
-  scaleInt(float f, unsigned int i)
-  {
-    return unsigned(f * i + 0.5);
-  }
 
-  // @todo: do not hard-code luminance weights
-  float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
+unsigned int
+scaleInt(float f, unsigned int i)
+{
+    return unsigned(f * i + 0.5);
 }
+
+// @todo: do not hard-code luminance weights
+float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
+
+}  // namespace 
 
 #include "core/mrvI8N.h"
 #include "core/mrvAlignedData.h"
