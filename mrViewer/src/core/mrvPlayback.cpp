@@ -956,22 +956,13 @@ void video_thread( PlaybackData* data )
 
         // img->debug_video_stores( frame, "BACK" );
 
+	
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        CMedia::DecodeStatus status;
-        // if ( view->idle_callback() && img->is_sequence() )
-        // {
-        //     int64_t preframe = view->preload_frame();
-        //     if ( view->playback() == CMedia::kForwards &&
-        //          preframe - frame == 1 )
-        //     {
-        //         frame = preframe;
-        //     }
-        // }
 
         //TRACE( img->name() << " decode image " << frame );
-        status = img->decode_video( frame );
+        CMedia::DecodeStatus status = img->decode_video( frame );
         // LOG_INFO( img->name() << " decoded image " << frame << " status "
         //        << CMedia::decode_error(status) );
 
