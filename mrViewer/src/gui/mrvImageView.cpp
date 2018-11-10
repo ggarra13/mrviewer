@@ -2582,9 +2582,9 @@ bool ImageView::preload()
     }
     // Frame found. Update _preframe.
     if ( found ) {
+	_preframe += p;
 	if ( p == CMedia::kBackwards )
 	{
-	    _preframe -= 1;
 	    if ( _preframe < first )
 	    {
 		_preframe = last;
@@ -2599,7 +2599,6 @@ bool ImageView::preload()
 	}
 	else if ( p == CMedia::kForwards )
 	{
-	    _preframe += 1;
 	    if ( _preframe > last )
 	    {
 		_preframe = first;
@@ -2646,20 +2645,13 @@ bool ImageView::preload()
 	mrv::media m = r->media_at( f + p );
 	if ( m != fg )
 	{
-	    img->stop();
-	    preload_cache_stop();
+	    img->stop();  // stop old image
 	    img = m->image();
-	    foreground( m );
+	    seek( f + p ); // seek to new frame
+
 	    if ( img->has_video() )
 	    {
-		if ( p == CMedia::kForwards )
-		{
-		    img->seek( img->first_frame() );
-		}
-		else
-		{
-		    img->seek( img->last_frame() );
-		}
+		// start video playback
 		img->play( p, uiMain, true );
 	    }
 	}
@@ -6709,7 +6701,7 @@ void ImageView::clear_reel_cache( size_t idx )
     }
 
     _reel = idx;
-    _preframe = frame();
+    //_preframe = frame();
 }
 
 void ImageView::flush_image( mrv::media fg )
@@ -7084,7 +7076,7 @@ void ImageView::channel( unsigned short c )
   // in the timeline.
   timeline()->redraw();
   if ( _reel >= browser()->number_of_reels() ) _reel = 0;
-  _preframe = frame();
+  //_preframe = frame();
 
   smart_refresh();
 }
@@ -7612,9 +7604,9 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiFrame->timecode( tc );
         uiMain->uiFrame->fps( fps );
         uiMain->uiStartFrame->fps( fps );
-        uiMain->uiStartFrame->timecode( tc );
+	uiMain->uiStartFrame->timecode( tc );
+	uiMain->uiEndFrame->timecode( tc );
         uiMain->uiEndFrame->fps( fps );
-        uiMain->uiEndFrame->timecode( tc );
         uiMain->uiFPS->value( img->play_fps() );
 
         if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
@@ -8512,6 +8504,7 @@ void ImageView::stop()
     if ( playback() == CMedia::kStopped ) return;
 
     _playback = CMedia::kStopped;
+
     _last_fps = 0.0;
     _real_fps = 0.0;
 
