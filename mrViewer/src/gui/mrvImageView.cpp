@@ -2519,7 +2519,7 @@ bool ImageView::preload()
     if ( r->edl )
     {
         fg = r->media_at( _preframe );
-    }
+     }
     else
     {
         fg = foreground();
@@ -2548,21 +2548,23 @@ bool ImageView::preload()
         return true;
     }
 
-    int64_t f;
+    int64_t f, first, last;
     if ( r->edl )
     {
         f = r->global_to_local( _preframe );
-    }
+	first = timeline()->display_minimum();
+	last  = timeline()->display_maximum();
+   }
     else
     {
         f = _preframe;
+	int64_t tfirst = timeline()->display_minimum();
+	first  = img->first_frame();
+	int64_t tlast  = timeline()->display_maximum();
+	last   = img->last_frame();
+	if ( tfirst > first && tfirst < last ) first = tfirst;
+	if ( tlast < last   && tlast > first )  last = tlast;
     }
-    int64_t tfirst = timeline()->display_minimum();
-    int64_t first  = img->first_frame();
-    int64_t tlast  = timeline()->display_maximum();
-    int64_t last   = img->last_frame();
-    if ( tfirst > first && tfirst < last ) first = tfirst;
-    if ( tlast < last   && tlast > first )  last = tlast;
 
     if ( f < first ) f = first;
     else if ( f > last ) f = last;
@@ -2582,7 +2584,7 @@ bool ImageView::preload()
     if ( found ) {
 	if ( p == CMedia::kBackwards )
 	{
-	    _preframe = f - 1;
+	    _preframe -= 1;
 	    if ( _preframe < first )
 	    {
 		_preframe = last;
@@ -2597,7 +2599,7 @@ bool ImageView::preload()
 	}
 	else if ( p == CMedia::kForwards )
 	{
-	    _preframe = f + 1;
+	    _preframe += 1;
 	    if ( _preframe > last )
 	    {
 		_preframe = first;
@@ -2613,9 +2615,9 @@ bool ImageView::preload()
 	else
 	{
 	    size_t max_images = img->max_image_frames() - 2;
-	    if ( std::abs( pic->frame() - _preframe ) < max_images )
+	    if ( std::abs( pic->frame() - f ) < max_images )
 	    {
-		_preframe = f + 1;
+		_preframe += 1;
 		if ( _preframe > last )
 		{
 		    _preframe = first;
@@ -2635,6 +2637,32 @@ bool ImageView::preload()
     else
     {
 	img->hires( pic );  // restore old pic position
+    }
+
+    if ( r->edl && p != CMedia::kStopped )
+    {
+	f += r->location(img) - img->first_frame();
+	frame( f );
+	mrv::media m = r->media_at( f + p );
+	if ( m != fg )
+	{
+	    img->stop();
+	    preload_cache_stop();
+	    img = m->image();
+	    foreground( m );
+	    if ( img->has_video() )
+	    {
+		if ( p == CMedia::kForwards )
+		{
+		    img->seek( img->first_frame() );
+		}
+		else
+		{
+		    img->seek( img->last_frame() );
+		}
+		img->play( p, uiMain, true );
+	    }
+	}
     }
 
     if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
