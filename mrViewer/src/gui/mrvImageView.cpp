@@ -2649,7 +2649,7 @@ bool ImageView::preload()
 	    img = m->image();
 	    seek( f + p ); // seek to new frame
 
-	    if ( img->has_video() )
+	    // if ( img->has_video() )
 	    {
 		// start video playback
 		img->play( p, uiMain, true );
@@ -8537,7 +8537,7 @@ double ImageView::fps() const
   mrv::media fg = foreground();
   if ( fg ) return fg->image()->play_fps();
 
-  mrv::media bg = foreground();
+  mrv::media bg = background();
   if ( bg ) return bg->image()->play_fps();
 
   return 24;
