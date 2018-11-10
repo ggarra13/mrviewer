@@ -1130,17 +1130,17 @@ uiWindowYSize->value( v->uiMain->h() );}
             }
           }
           {fltk::Group} Playback {
-            label Playback
-            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Playback open
+            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
-              xywh {47 25 315 200} align 5 box ROUNDED_BOX
+              xywh {44 25 315 200} align 5 box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoPlayback {
-                label {Auto Playback}
+                label {Auto Playback} selected
                 tooltip {Start Playback when opening files.}
-                xywh {137 20 20 25} align 4 box UP_BOX
+                xywh {115 20 20 25} align 4 box UP_BOX
               }
               {fltk::Group} {} {open
                 xywh {20 55 270 100} box ROUNDED_BOX
@@ -1394,7 +1394,7 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
@@ -1453,7 +1453,7 @@ This setting thus allows caching more pictures in memory for float and half pict
               xywh {40 271 336 48} box ROUNDED_BOX
             } {
               {fltk::ValueInput} uiPrefsCacheMemory {
-                label Memory selected
+                label Memory
                 xywh {134 13 75 25} minimum 0.5 maximum 100 step 0.5 value 1
               }
               {fltk::Widget} {} {
