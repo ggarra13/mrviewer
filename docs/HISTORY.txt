@@ -1,5 +1,8 @@
 v4.3.3   - Bug fixed EDL playback as it had gotten broken with the new
 	   timeline algorithm.
+	 - Note that playback of BG images works only when the FG caches
+	   are full or, alternatively, when not using cache nor play all
+	   frames.
 
 v4.3.2   - Improved cache loading of 4K and 8K images.  Now the timeline
 	   will recycle those according to a setting in Gb.  The setting,
