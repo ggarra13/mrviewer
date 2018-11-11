@@ -1409,7 +1409,7 @@ ImageView::~ImageView()
 {
    delete_timeout();
    if ( CMedia::preload_cache() )
-       preload_caches();
+       preload_cache_stop();
 
    ParserList::iterator i = _clients.begin();
    ParserList::iterator e = _clients.end();
@@ -2491,7 +2491,7 @@ void ImageView::log() const
 
 
 int timeval_substract(struct timeval *result, struct timeval *x,
-		      struct timeval *y)
+                      struct timeval *y)
 {
   result->tv_sec = x->tv_sec - y->tv_sec;
 
@@ -2525,12 +2525,12 @@ bool ImageView::preload()
         fg = foreground();
     }
 
-    if ( !fg ) return false;
+    if ( !fg )  return false;
 
     CMedia* img = fg->image();
     if (!img) return false;
 
-    
+
     // Exit early if we are dealing with a video instead of a sequencex
     if ( !img->is_sequence() || img->has_video() ) {
         _preframe = fg->position() + img->duration(); // go to next image
@@ -2541,10 +2541,10 @@ bool ImageView::preload()
             _preframe = 1;
         }
         if ( _reel >= b->number_of_reels() )
-	{
-	    preload_cache_stop();
+        {
+            preload_cache_stop();
             return false;
-	}
+        }
         return true;
     }
 
@@ -2552,109 +2552,95 @@ bool ImageView::preload()
     if ( r->edl )
     {
         f = r->global_to_local( _preframe );
-	first = timeline()->display_minimum();
-	last  = timeline()->display_maximum();
+        first = timeline()->display_minimum();
+        last  = timeline()->display_maximum();
    }
     else
     {
         f = _preframe;
-	int64_t tfirst = timeline()->display_minimum();
-	first  = img->first_frame();
-	int64_t tlast  = timeline()->display_maximum();
-	last   = img->last_frame();
-	if ( tfirst > first && tfirst < last ) first = tfirst;
-	if ( tlast < last   && tlast > first )  last = tlast;
+        int64_t tfirst = timeline()->display_minimum();
+        first  = img->first_frame();
+        int64_t tlast  = timeline()->display_maximum();
+        last   = img->last_frame();
+        if ( tfirst > first && tfirst < last ) first = tfirst;
+        if ( tlast < last   && tlast > first )  last = tlast;
     }
 
     if ( f < first ) f = first;
     else if ( f > last ) f = last;
- 
+
+
+
     CMedia::Playback p = playback();
 
     bool found;
     mrv::image_type_ptr pic;
     {
-	boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
-	// Store current frame
-	pic = img->hires();
-	if (!pic) return false;
-	found = img->find_image( f ); // this loads the frame if not present
+        boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
+        // Store current frame
+        pic = img->hires();
+        if (!pic) return false;
+        img->clear_video_packets();
+        found = img->find_image( f ); // this loads the frame if not present
     }
     // Frame found. Update _preframe.
     if ( found ) {
-	_preframe += p;
-	if ( p == CMedia::kBackwards )
-	{
-	    if ( _preframe < first )
-	    {
-		_preframe = last;
-		--_reel;
-		if ( _reel < 0 )
-		{
-		    _reel = 0;
-		    preload_cache_stop();
-		    return false;
-		}
-	    }
-	}
-	else if ( p == CMedia::kForwards )
-	{
-	    if ( _preframe > last )
-	    {
-		_preframe = first;
-		_reel++;
-    
-		if ( _reel >= b->number_of_reels() )
-		{
-		    preload_cache_stop();
-		    return false;
-		}
-	    }
-	}
-	else
-	{
-	    size_t max_images = img->max_image_frames() - 2;
-	    if ( std::abs( pic->frame() - f ) < max_images )
-	    {
-		_preframe += 1;
-		if ( _preframe > last )
-		{
-		    _preframe = first;
-		    _reel++;
-    
-		    if ( _reel >= b->number_of_reels() )
-		    {
-			preload_cache_stop();
-			img->hires( pic );
-			return false;
-		    }
-		}
-	    }
-	    img->hires( pic );
-	}
+        _preframe += p;
+        if ( p == CMedia::kBackwards )
+        {
+            if ( _preframe < first )
+            {
+                _preframe = last;
+                return false;
+            }
+        }
+        else if ( p == CMedia::kForwards )
+        {
+            if ( _preframe > last )
+            {
+                _preframe = first;
+                return false;
+            }
+        }
+        else
+        {
+            size_t max_images = img->max_image_frames() - 2;
+            if ( std::abs( pic->frame() - f ) < max_images )
+            {
+                _preframe += 1;
+                if ( _preframe > last )
+                {
+                    _preframe = first;
+                    preload_cache_stop();
+                    img->hires( pic );
+                    return false;
+                }
+            }
+            img->hires( pic );
+        }
     }
     else
     {
-	img->hires( pic );  // restore old pic position
+        img->hires( pic );  // restore old pic position
     }
 
     if ( r->edl && p != CMedia::kStopped )
     {
-	f += r->location(img) - img->first_frame();
-	frame( f );
-	mrv::media m = r->media_at( f + p );
-	if ( m != fg )
-	{
-	    img->stop();  // stop old image
-	    img = m->image();
-	    seek( f + p ); // seek to new frame
+        f += r->location(img) - img->first_frame();
+        frame( f );
+        mrv::media m = r->media_at( f + p );
+        if ( m != fg )
+        {
+            img->stop();  // stop old image
+            img = m->image();
+            seek( f + p ); // seek to new frame
 
-	    // if ( img->has_video() )
-	    {
-		// start video playback
-		img->play( p, uiMain, true );
-	    }
-	}
+            // if ( img->has_video() )
+            {
+                // start video playback
+                img->play( p, uiMain, true );
+            }
+        }
     }
 
     if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
@@ -2662,7 +2648,7 @@ bool ImageView::preload()
         t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
         t.waitUntilNextFrameIsDue();
     }
-    
+
     redraw();
     timeline()->redraw();
 
@@ -3262,7 +3248,7 @@ void ImageView::draw()
        hud << _("V-A: ") << buf;
     }
 
-  
+
   //
   // Calculate and draw fps
   //
@@ -3272,9 +3258,9 @@ void ImageView::draw()
        int64_t frame = img->frame();
 
        CMedia::Playback p = playback();
-       
+
        if ((p == CMedia::kForwards && _lastFrame < frame) ||
-	   (p == CMedia::kBackwards && _lastFrame > frame ) )
+           (p == CMedia::kBackwards && _lastFrame > frame ) )
         {
           int64_t frame_diff = frame - _lastFrame;
 
@@ -3290,22 +3276,14 @@ void ImageView::draw()
           _lastFrame = frame;
         }
 
-       
-       if ( img->real_fps() < 0.0001 )
-       {
-	   _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() );
-	   _timer.waitUntilNextFrameIsDue();
-	   sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
-	   hud << buf;
-       }
-       
-       if ( img->real_fps() > 0.0 )
-       {
-	   sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
-	   hud << buf;
 
-	   sprintf( buf, _("FPS: %.3f" ), img->real_fps() );
-	   hud << buf;
+       {
+           sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+           hud << buf;
+           _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() );
+           _timer.waitUntilNextFrameIsDue();
+           sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
+           hud << buf;
        }
 
 
@@ -6472,26 +6450,26 @@ int ImageView::handle(int event)
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active() &&
                      ( CMedia::preload_cache() ||
-		       uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
-		{
-		    for ( unsigned i = 0; i < b->number_of_reels(); ++i )
-		    {
-			mrv::Reel r = b->reel_at( i );
-			if (!r) continue;
-			
-			mrv::media fg = r->media_at( frame() );
-			if (!fg) continue;
-			
-			CMedia* img = fg->image();
-			if ( img && !img->is_cache_full() )
-			{
-			    _reel = i;
-			    break;
-			}
-		    }
-		    
-		    if ( _reel < b->number_of_reels() )
-			preload_cache_start();
+                       uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+                {
+                    for ( unsigned i = 0; i < b->number_of_reels(); ++i )
+                    {
+                        mrv::Reel r = b->reel_at( i );
+                        if (!r) continue;
+
+                        mrv::media fg = r->media_at( frame() );
+                        if (!fg) continue;
+
+                        CMedia* img = fg->image();
+                        if ( img && !img->is_cache_full() )
+                        {
+                            _reel = i;
+                            break;
+                        }
+                    }
+
+                    if ( _reel < b->number_of_reels() )
+                        preload_cache_start();
                 }
                 else
                 {
@@ -6701,7 +6679,7 @@ void ImageView::clear_reel_cache( size_t idx )
     }
 
     _reel = idx;
-    //_preframe = frame();
+    _preframe = frame();
 }
 
 void ImageView::flush_image( mrv::media fg )
@@ -6744,7 +6722,7 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
-	_reel = browser()->number_of_reels();
+        _reel = browser()->number_of_reels();
         _idle_callback = false;
     }
 }
@@ -6761,7 +6739,7 @@ void ImageView::preload_caches()
     CMedia::preload_cache( !CMedia::preload_cache() );
     if ( !CMedia::preload_cache() )
     {
-	preload_cache_stop();
+        preload_cache_stop();
     }
     else
     {
@@ -7076,7 +7054,7 @@ void ImageView::channel( unsigned short c )
   // in the timeline.
   timeline()->redraw();
   if ( _reel >= browser()->number_of_reels() ) _reel = 0;
-  //_preframe = frame();
+  _preframe = frame();
 
   smart_refresh();
 }
@@ -7604,8 +7582,8 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiFrame->timecode( tc );
         uiMain->uiFrame->fps( fps );
         uiMain->uiStartFrame->fps( fps );
-	uiMain->uiStartFrame->timecode( tc );
-	uiMain->uiEndFrame->timecode( tc );
+        uiMain->uiStartFrame->timecode( tc );
+        uiMain->uiEndFrame->timecode( tc );
         uiMain->uiEndFrame->fps( fps );
         uiMain->uiFPS->value( img->play_fps() );
 
@@ -8425,13 +8403,13 @@ void ImageView::play( const CMedia::Playback dir )
    CMedia* img = fg->image();
 
     if ( CMedia::preload_cache() && _idle_callback &&
-	 img->is_cache_full() )
+         img->is_cache_full() )
     {
         preload_cache_stop();
     }
     else
     {
-	_preframe = frame();
+        _preframe = frame();
     }
 
 
@@ -8456,11 +8434,13 @@ void ImageView::play( const CMedia::Playback dir )
       CMedia* img = bg->image();
       img->play( dir, uiMain, false);
       typedef boost::recursive_mutex Mutex;
+      Mutex& fgm = img->video_mutex();
+      SCOPED_LOCK( fgm );
       CMedia::Barrier* barrier = img->fg_bg_barrier();
       if ( !barrier ) return;
       img = fg->image();
-      Mutex& vm = img->video_mutex();
-      SCOPED_LOCK( vm );
+      Mutex& bgm = img->video_mutex();
+      SCOPED_LOCK( bgm );
       barrier->threshold( barrier->threshold() + img->has_audio() +
                           img->has_picture() );
       img->fg_bg_barrier( barrier );
