@@ -544,17 +544,17 @@ class CMedia
     //inline void      dts( const int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; }
 
     inline int64_t expected() const { return _expected; }
-    
+
     ///////////////// Audio frame
     inline void audio_frame( const int64_t f ) { _audio_frame = f; }
     inline int64_t   audio_frame() const { return _audio_frame; }
 
     inline aligned16_uint8_t* audio_buffer() const { return _audio_buf; }
-    
+
     inline unsigned audio_buffer_used() const { return _audio_buf_used; }
     inline void audio_buffer_used( unsigned x ) { _audio_buf_used = 0; }
 
-    
+
     ////////////////// Seek to a specific frame in current image.
     ////////////////// Frame is local to the video/sequence, not timeline.
     void seek( const int64_t frame );
@@ -743,7 +743,7 @@ class CMedia
     /// Sets the first frame in the range of playback
     void  first_frame(int64_t x);
 
-    /// Sets the last frame in the range of playback 
+    /// Sets the last frame in the range of playback
     void  last_frame(int64_t x);
 
     /// Returns the first frame in the range of playback
@@ -856,7 +856,7 @@ class CMedia
     }
 
     /// Return current play rate of movie
-    inline double play_fps() const { return _play_fps; } 
+    inline double play_fps() const { return _play_fps; }
 
 
     /// Change audio volume
@@ -1015,7 +1015,9 @@ class CMedia
     inline Mutex& audio_mutex()             { return _audio_mutex; };
     inline Mutex& subtitle_mutex()          { return _subtitle_mutex; };
 
-    virtual void clear_packets();
+    void clear_audio_packets();
+    void clear_video_packets();
+    void clear_packets();
 
 
     /**
@@ -1115,9 +1117,9 @@ class CMedia
     // Return the maximum number of video frames cached for jog/shuttle
     // or 0 for no cache or numeric_limits<int>max() for full cache
     int max_image_frames();
-    
+
     virtual void limit_video_store( const int64_t frame );
-    
+
     inline void is_thumbnail(bool t) { _is_thumbnail = t; }
     inline bool is_thumbnail() const { return _is_thumbnail; }
 
@@ -1608,7 +1610,7 @@ class CMedia
     ACES::ASC_CDL _sops;            //!< Slope,Offset,Pivot,Saturation
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
-    
+
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.
