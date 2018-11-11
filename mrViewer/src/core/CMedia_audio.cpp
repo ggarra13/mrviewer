@@ -126,21 +126,29 @@ namespace mrv {
 
 
 
+void CMedia::clear_video_packets()
+{
+   SCOPED_LOCK( _mutex );
+   SCOPED_LOCK( _subtitle_mutex );
+   _video_packets.clear();
+  _subtitle_packets.clear();
+}
+
+void CMedia::clear_audio_packets()
+{
+   SCOPED_LOCK( _audio_mutex );
+  _audio_packets.clear();
+  _audio_buf_used = 0;
+}
 
 /**
- * Clear (audio) packets
+ * Clear all packets
  *
  */
 void CMedia::clear_packets()
 {
-
-   SCOPED_LOCK( _mutex );
-   SCOPED_LOCK( _audio_mutex );
-   SCOPED_LOCK( _subtitle_mutex );;
-   _video_packets.clear();
-  _subtitle_packets.clear();
-  _audio_packets.clear();
-  _audio_buf_used = 0;
+    clear_video_packets();
+    clear_audio_packets();
 }
 
 
@@ -448,7 +456,7 @@ bool CMedia::seek_to_position( const int64_t frame )
 
     _adts = dts;
     _expected = dts+1;
-    
+
     _seek_req = false;
 
 
@@ -1282,7 +1290,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if (  _audio_buf_used != 0 && (!_audio.empty()) && playback() != kStopped )
     {
-  	int64_t last_pts_frame = _audio.back()->frame();
+        int64_t last_pts_frame = _audio.back()->frame();
         int64_t tmp = std::abs(ptsframe - last_pts_frame);
         if ( tmp >= 0 && tmp <= 10 )
         {
@@ -1814,8 +1822,8 @@ bool CMedia::find_audio( const int64_t frame )
 #endif
     if ( i == end )
       {
-	  IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
-	  return false;
+          IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
+          return false;
       }
 
     result = *i;
@@ -1971,7 +1979,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
      _audio_packets.pop_front();  // pop seek/preroll end packet
   }
 
-  
+
 #ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, _right_eye ? "RDOSEEK END" : "DOSEEK END");
 #endif
@@ -2078,19 +2086,19 @@ CMedia::DecodeStatus CMedia::decode_audio( const int64_t f )
       }
       else if ( _audio_packets.is_seek()  )
       {
-	  clear_stores();  // audio stores MUST be cleared when seeked
-	  got_audio = handle_audio_packet_seek( frame, true );
-	  continue;
+          clear_stores();  // audio stores MUST be cleared when seeked
+          got_audio = handle_audio_packet_seek( frame, true );
+          continue;
       }
       else if ( _audio_packets.is_preroll() )
       {
-	  bool ok = in_audio_store( frame );
-	  if ( ok ) {
-	      SCOPED_LOCK( _audio_mutex );
-	      assert( !_audio_packets.empty() );
-	      AVPacket& pkt = _audio_packets.front();
-	      int64_t pktframe = ( get_frame( get_audio_stream(), pkt ) -
-				   _frame_offset );
+          bool ok = in_audio_store( frame );
+          if ( ok ) {
+              SCOPED_LOCK( _audio_mutex );
+              assert( !_audio_packets.empty() );
+              AVPacket& pkt = _audio_packets.front();
+              int64_t pktframe = ( get_frame( get_audio_stream(), pkt ) -
+                                   _frame_offset );
               if ( pktframe >= frame )
               {
                  _audio_buf_used = 0;
