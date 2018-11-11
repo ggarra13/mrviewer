@@ -129,7 +129,6 @@ class aviImage : public CMedia
     virtual DecodeStatus decode_video( int64_t& frame );
     virtual DecodeStatus decode_subtitle( const int64_t frame );
 
-    virtual void clear_packets();
 
     virtual void subtitle_stream( int idx );
     void subtitle_file( const char* f );
