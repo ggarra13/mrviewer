@@ -384,7 +384,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                         }
                     }
 
-                    if ( next != img && next != NULL)
+                    if ( next != img && next != NULL )
                     {
                         //if ( video )
                         {
@@ -399,6 +399,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                             }
 
                             img->playback( CMedia::kStopped );
+                            img->flush_all();
                             if ( img->has_video() ) img->clear_cache();
                         }
 
@@ -749,8 +750,7 @@ void audio_thread( PlaybackData* data )
     img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
-    std::cerr << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame()
-              << std::endl;
+    LOG_INFO( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
     assert( img->stopped() );
 #endif
 
@@ -937,7 +937,8 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame << " timeline frame "
+    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " view playback "
+              << view->playback() << " frame " << frame << " timeline frame "
               << timeline->value() << std::endl;
 #endif
 
@@ -956,7 +957,7 @@ void video_thread( PlaybackData* data )
 
         // img->debug_video_stores( frame, "BACK" );
 
-	
+
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
@@ -1120,7 +1121,7 @@ void video_thread( PlaybackData* data )
 
               if (sdiff <= -sync_threshold)
               {
-                  delay = FFMAX(0, delay + sdiff);
+                  delay = FFMAX(0.00001, delay + sdiff);
               }
               else if (sdiff >= sync_threshold &&
                        delay > AV_SYNC_FRAMEDUP_THRESHOLD)
@@ -1134,12 +1135,8 @@ void video_thread( PlaybackData* data )
       }
 
 
-
       timer.setDesiredSecondsPerFrame( delay );
-      //timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
-
-      img->real_fps( timer.actualFrameRate() );
 
       img->find_image( frame );
 
@@ -1162,10 +1159,9 @@ void video_thread( PlaybackData* data )
     img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
-    std::cerr << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
+    LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
               << img->name() << " stopped? " << img->stopped()
-              << " at " << frame << "  img->frame: " << img->frame()
-              << std::endl;
+              << " at " << frame << "  img->frame: " << img->frame() );
    assert( img->stopped() );
 #endif
 
@@ -1223,7 +1219,7 @@ void decode_thread( PlaybackData* data )
          img->do_seek();
          frame = img->dts();
       }
-      
+
 
 
       step = (int) img->playback();
@@ -1294,7 +1290,7 @@ void decode_thread( PlaybackData* data )
    img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
-   std::cerr << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << img->frame() << "  dts: " << img->dts() << std::endl;
+   LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << img->frame() << "  dts: " << img->dts() );
    assert( img->stopped() );
 #endif
 
