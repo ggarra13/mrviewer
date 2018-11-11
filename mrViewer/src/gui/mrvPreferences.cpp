@@ -677,7 +677,7 @@ static std::string expandVariables( const std::string &s,
     }
 
     caches.get( "cache_memory", tmpF, 1.0 );
-    uiPrefs->uiPrefsCacheMemory->value( tmp );
+    uiPrefs->uiPrefsCacheMemory->value( tmpF );
     
     //
     // audio
@@ -1849,7 +1849,7 @@ static const char* kCLocale = "C";
     caches.set( "fps", (int) uiPrefs->uiPrefsCacheFPS->value() );
     caches.set( "size", (int) uiPrefs->uiPrefsCacheSize->value() );
 
-    caches.set( "cache_memory", uiPrefs->uiPrefsCacheMemory->value() );
+    caches.set( "cache_memory", (float)uiPrefs->uiPrefsCacheMemory->value() );
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "load_library", uiPrefs->uiPrefsLoadLibrary->value() );
