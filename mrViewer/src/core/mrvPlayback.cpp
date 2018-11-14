@@ -398,6 +398,8 @@ EndStatus handle_loop( boost::int64_t& frame,
                                 next->play( CMedia::kForwards, uiMain, fg );
                             }
 
+			    std::cerr << "++++++ STOP "
+			    << __FUNCTION__ << " " << __LINE__ << std::endl;
                             img->playback( CMedia::kStopped );
                             img->flush_all();
                             if ( img->has_video() ) img->clear_cache();
@@ -439,6 +441,8 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 else
                 {
+		    std::cerr << "++++++ STOP "
+			      << __FUNCTION__ << " " << __LINE__ << std::endl;
                     if (fg) view->playback( CMedia::kStopped );
                     img->playback( CMedia::kStopped );
                 }
@@ -490,6 +494,8 @@ EndStatus handle_loop( boost::int64_t& frame,
                                 next->play( CMedia::kBackwards, uiMain, fg );
                             }
 
+			    std::cerr << "++++++ STOP "
+			      << __FUNCTION__ << " " << __LINE__ << std::endl;
                             img->playback( CMedia::kStopped );
                             img->flush_all();
                             if ( img->has_video() ) img->clear_cache();
@@ -531,7 +537,9 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 else
                 {
-                    img->playback( CMedia::kStopped );
+		    std::cerr << "++++++ STOP "
+			      << __FUNCTION__ << " " << __LINE__ << std::endl;
+                   img->playback( CMedia::kStopped );
                     if (fg) view->playback( CMedia::kStopped );
                 }
                 break;
@@ -544,6 +552,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 
     if ( status == kEndStop || status == kEndNextImage )
     {
+	std::cerr << "++++++ STOP "
+		  << __FUNCTION__ << " " << __LINE__ << std::endl;
         img->playback( CMedia::kStopped );
         if ( img->has_video() ) img->clear_cache();
     }
@@ -604,7 +614,7 @@ void audio_thread( PlaybackData* data )
 
 
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-            ! view->idle_callback() )
+            (!fg || ! view->idle_callback() ) )
     {
 
         int step = (int) img->playback();
@@ -795,7 +805,7 @@ void subtitle_thread( PlaybackData* data )
 
 
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-            ! view->idle_callback() )
+            (!fg || ! view->idle_callback() ) )
     {
         int step = (int) img->playback();
         if ( step == 0 ) break;
@@ -949,14 +959,12 @@ void video_thread( PlaybackData* data )
     timer.setDesiredFrameRate( fps );
 
 
-
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-            ! view->idle_callback()  )
+            (!fg || ! view->idle_callback() )  )
     {
         img->wait_image();
 
         // img->debug_video_stores( frame, "BACK" );
-
 
         int step = (int) img->playback();
         if ( step == 0 ) break;
@@ -1161,7 +1169,7 @@ void video_thread( PlaybackData* data )
 #ifdef DEBUG_THREADS
     LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
               << img->name() << " stopped? " << img->stopped()
-              << " at " << frame << "  img->frame: " << img->frame() );
+              << " view playback " << view->playback() << " at " << frame << "  img->frame: " << img->frame() );
    assert( img->stopped() );
 #endif
 
@@ -1205,7 +1213,8 @@ void decode_thread( PlaybackData* data )
    int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-   std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame
+   std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
+	     << " at frame " << frame
              << " step " << step << std::endl;
 #endif
 
@@ -1290,7 +1299,7 @@ void decode_thread( PlaybackData* data )
    img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
-   LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << img->frame() << "  dts: " << img->dts() );
+   LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " view playback " << view->playback() << " frame " << img->frame() << "  dts: " << img->dts() );
    assert( img->stopped() );
 #endif
 
