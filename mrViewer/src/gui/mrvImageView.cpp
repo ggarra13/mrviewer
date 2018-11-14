@@ -2605,13 +2605,17 @@ bool ImageView::preload()
         else
         {
             size_t max_images = img->max_image_frames() - 2;
-            if ( std::abs( pic->frame() - f ) < max_images )
+	    int64_t pos_diff = f - pic->frame();
+	    int64_t last_diff = last - pic->frame();
+	    int64_t first_diff = f - first;
+	    if ( pos_diff >= 0 && pos_diff < max_images  ||
+		 pos_diff < 0 && first_diff + last_diff < max_images )
             {
                 _preframe += 1;
                 if ( _preframe > last )
                 {
                     _preframe = first;
-                    preload_cache_stop();
+                    // preload_cache_stop();
                     img->hires( pic );
                     return false;
                 }
@@ -2637,13 +2641,13 @@ bool ImageView::preload()
 
             // if ( img->has_video() )
             {
-                // start video playback
+                // start video/image playback
                 img->play( p, uiMain, true );
             }
         }
     }
 
-    if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
+    //    if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
     {
         t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
         t.waitUntilNextFrameIsDue();
@@ -6448,7 +6452,7 @@ int ImageView::handle(int event)
                 _clients = c;
 
                 mrv::ImageBrowser* b = browser();
-                if ( b && !_idle_callback && CMedia::cache_active() &&
+                if ( b && !_idle_callback && CMedia::cache_active()  &&
                      ( CMedia::preload_cache() ||
                        uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
                 {
@@ -7105,7 +7109,7 @@ void ImageView::gamma( const float f )
   mrv::media fg = foreground();
   if ( fg )
   {
-      DBG(  f );
+      DBG(  "gamma " << f );
       fg->image()->gamma( f );
 
       char buf[256];
@@ -8421,13 +8425,17 @@ void ImageView::play( const CMedia::Playback dir )
 
    create_timeout( 0.5/fps );
 
+   mrv::media bg = background();
    {
-      DBG( "******* PLAY FG " << fg->image()->name() );
-      img->play( dir, uiMain, true );
+      DBG( "******* PLAY FG " << img->name() );
+      if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
+      	   !CMedia::cache_active() ||
+      	   !( CMedia::preload_cache() ||
+      	      uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+	   img->play( dir, uiMain, true );
    }
 
 
-   mrv::media bg = background();
    if ( bg && bg != fg )
    {
       DBG( "******* PLAY BG " << bg->image()->name() );
