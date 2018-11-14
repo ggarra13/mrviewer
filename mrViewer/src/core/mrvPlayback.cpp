@@ -398,8 +398,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                                 next->play( CMedia::kForwards, uiMain, fg );
                             }
 
-			    std::cerr << "++++++ STOP "
-			    << __FUNCTION__ << " " << __LINE__ << std::endl;
                             img->playback( CMedia::kStopped );
                             img->flush_all();
                             if ( img->has_video() ) img->clear_cache();
@@ -441,8 +439,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 else
                 {
-		    std::cerr << "++++++ STOP "
-			      << __FUNCTION__ << " " << __LINE__ << std::endl;
                     if (fg) view->playback( CMedia::kStopped );
                     img->playback( CMedia::kStopped );
                 }
@@ -494,8 +490,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                                 next->play( CMedia::kBackwards, uiMain, fg );
                             }
 
-			    std::cerr << "++++++ STOP "
-			      << __FUNCTION__ << " " << __LINE__ << std::endl;
                             img->playback( CMedia::kStopped );
                             img->flush_all();
                             if ( img->has_video() ) img->clear_cache();
@@ -537,8 +531,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 else
                 {
-		    std::cerr << "++++++ STOP "
-			      << __FUNCTION__ << " " << __LINE__ << std::endl;
                    img->playback( CMedia::kStopped );
                     if (fg) view->playback( CMedia::kStopped );
                 }
@@ -552,8 +544,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
     if ( status == kEndStop || status == kEndNextImage )
     {
-	std::cerr << "++++++ STOP "
-		  << __FUNCTION__ << " " << __LINE__ << std::endl;
         img->playback( CMedia::kStopped );
         if ( img->has_video() ) img->clear_cache();
     }
