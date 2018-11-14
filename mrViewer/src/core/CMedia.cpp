@@ -2732,7 +2732,7 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
     if ( !pic ) return cache;
 
     if ( !pic->valid() ) return kInvalidFrame;
-   
+
     cache = kLeftCache;
 
     if ( _stereo_output != kNoStereo )
@@ -2750,15 +2750,14 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 bool CMedia::is_cache_full()
 {
     if ( dynamic_cast< aviImage* >( this ) != NULL )
-	return true;
-    
+        return true;
+
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
     {
-	if ( is_cache_filled(i) == kNoCache ) return false;
+        if ( is_cache_filled(i) == kNoCache ) return false;
     }
     return true;
 }
-
 
 /**
  * Flushes all caches
@@ -2794,7 +2793,7 @@ size_t CMedia::memory() const
     {
       if ( hires() )
         {
-	    r += _hires->data_size();
+            r += _hires->data_size();
         }
     }
 
@@ -3267,6 +3266,7 @@ int CMedia::max_image_frames()
 #else
     if ( !_hires ) return std::numeric_limits<int>::max() / 3;
     return Preferences::max_memory / _hires->data_size();
+    
 #endif
 }
 
@@ -3365,15 +3365,15 @@ void CMedia::limit_video_store( const int64_t f )
   (((a).tv_sec == (b).tv_sec) ?					\
    ((a).tv_usec CMP (b).tv_usec) :                                          \
    ((a).tv_sec CMP (b).tv_sec))
-  
+
   struct customMore {
       inline bool operator()( const timeval& a,
-  			      const timeval& b ) const
+                              const timeval& b ) const
       {
-  	  return timercmp( a, b, > );
+          return timercmp( a, b, > );
       }
   };
-  
+
   typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
   TimedSeqMap tmp;
   for ( uint64_t i = 0; i < _numWindows; ++i )
@@ -3382,24 +3382,29 @@ void CMedia::limit_video_store( const int64_t f )
       tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
   }
 
-  
+
   unsigned count = 0;
   uint64_t max_frames = max_image_frames();
   TimedSeqMap::iterator it = tmp.begin();
-  for ( ; it != tmp.end(); ++it )
+  for ( ; it != tmp.end(); )
   {
       ++count;
       if ( count > max_frames )
       {
-	  uint64_t idx = it->second;
-	  
-	  _sequence[ idx ].reset();
-	  if ( _right[idx] ) _right[ idx ].reset();
-	  
-	  it = tmp.erase(it);
+          uint64_t idx = it->second;
+          // std::cerr << "count " << count << " max frames " << max_frames
+          //           << " delete " << idx << std::endl;
+          _sequence[ idx ].reset();
+          if ( _right[idx] ) _right[ idx ].reset();
+
+          it = tmp.erase(it);
+      }
+      else
+      {
+          ++it;
       }
   }
-  
+
 
 }
 
