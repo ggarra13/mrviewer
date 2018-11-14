@@ -1847,6 +1847,7 @@ void GLEngine::draw_images( ImageList& images )
         mrv::image_type_ptr pic = img->hires();
         if (!pic)  continue;
 
+	DBG( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
