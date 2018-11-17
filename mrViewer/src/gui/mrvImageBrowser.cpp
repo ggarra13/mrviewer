@@ -1,7 +1,7 @@
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
-
+x
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -1137,7 +1137,7 @@ void ImageBrowser::clear_bg()
 
         if ( m != om && m && v )
         {
-           DBG( "FG REEL " << _reel );
+            DBG( "FG REEL " << _reel << " m: " << m->image()->name() );
 
            v->fg_reel( _reel );
            v->foreground( m );
@@ -1154,7 +1154,8 @@ void ImageBrowser::clear_bg()
         }
         else
         {
-           send_image( om );
+            DBG( "FG REEL " << _reel << " om: " << om->image()->name() );
+            send_image( om );
         }
 
       }
@@ -1625,8 +1626,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
     adjust_timeline();
 
     if ( ( img->has_picture() || !CMedia::preload_cache() ||
-	   !CMedia::cache_active() ) &&
-	 uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
+           !CMedia::cache_active() ) &&
+         uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
          img->first_frame() != img->last_frame()  )
       {
          view()->play_forwards();
@@ -2860,10 +2861,15 @@ void ImageBrowser::handle_dnd()
      frame( tframe );
 
     CMedia::Playback playback = view()->playback();
+
+    if ( playback != CMedia::kStopped )
+	view()->stop();
+    
     mrv::Timeline* t = timeline();
 
     mrv::Reel reel = reel_at( view()->fg_reel() );
     mrv::Reel bgreel = reel_at( view()->bg_reel() );
+    // We do not check bgreel validity here
     if ( reel && reel != bgreel && reel->edl )
     {
         // Check if we need to change to a new sequence based on frame
@@ -2877,13 +2883,13 @@ void ImageBrowser::handle_dnd()
         DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 
-        if ( f < t->minimum() )
+        if ( f < t->display_minimum() )
         {
-            f = int64_t(t->maximum() - t->minimum()) - f + 1;
+            f = int64_t(t->display_maximum() - t->display_minimum()) - f + 1;
         }
-        else if ( f > t->maximum() )
+        else if ( f > t->display_maximum() )
         {
-            f = int64_t(t->minimum() - t->maximum()) + f - 1;
+            f = int64_t(t->display_minimum() - t->display_maximum()) + f - 1;
         }
 
 
@@ -2893,18 +2899,13 @@ void ImageBrowser::handle_dnd()
 
         if ( m != fg && fg )
           {
-             if ( playback != CMedia::kStopped )
-                 view()->stop();
 
              size_t i = reel->index( f );
              img = reel->image_at( f );
              f = reel->global_to_local( f );
              if ( !img ) return;
-
-
-             if ( ! img->saving() && !img->stopped() ) {
-                 img->stop();
-             }
+	     
+             DBG( "seek f local1: " << f );
 
              img->seek( f );
 
@@ -2915,13 +2916,7 @@ void ImageBrowser::handle_dnd()
         else
           {
              f = reel->global_to_local( f );
-
              DBG( "seek f local2: " << f );
-
-             if ( ! img->saving() && !img->stopped() ) {
-                 img->stop();
-             }
-
              img->seek( f );
           }
 
@@ -2931,24 +2926,14 @@ void ImageBrowser::handle_dnd()
            mrv::media bg = view()->background();
            if ( bg )
            {
-              img = bg->image();
-
-             if ( ! img->saving() && !img->stopped() ) {
-                 img->stop();
-             }
-
               bg = reel->media_at( tframe );
+              img = bg->image();
 
               if ( bg )
               {
                   f = reel->global_to_local( tframe );
 
                   img = bg->image();
-
-                  if ( ! img->saving() && !img->stopped() ) {
-                      img->stop();
-                  }
-
                   img->seek( f );
               }
            }
@@ -2964,22 +2949,12 @@ void ImageBrowser::handle_dnd()
         if (!fg) return;
 
         CMedia* img = fg->image();
-        if ( ! img->saving() && !img->stopped() ) {
-            img->stop();
-        }
-
         img->seek( f );
 
         mrv::media bg = view()->background();
         if ( bg )
         {
-
            img = bg->image();
-
-           if ( ! img->saving() && !img->stopped() ) {
-               img->stop();
-           }
-
            img->seek( f );
         }
       }
@@ -2987,11 +2962,10 @@ void ImageBrowser::handle_dnd()
     if ( playback != CMedia::kStopped )
     {
         view()->play( playback );
-       // img->play( (CMedia::Playback)playback, uiMain, true);
     }
 
 
-    if ( view()->playback() != CMedia::kStopped )  return;
+    while ( view()->playback() != playback ) {};
 
     view()->redraw();
     redraw();
@@ -3122,7 +3096,7 @@ void ImageBrowser::handle_dnd()
   void ImageBrowser::adjust_timeline()
   {
 
-     int64_t first, last, f;
+      int64_t first, last, f = view()->frame();
 
      mrv::Reel reel = current_reel();
      if ( !reel || reel->images.empty() ) return;

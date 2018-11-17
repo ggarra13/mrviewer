@@ -98,8 +98,8 @@ namespace {
 }
 
 
-//#undef DBG
-//#define DBG(x) std::cerr << x << std::endl;
+#undef DBG
+#define DBG(x)
 
 // #define DEBUG_SEEK
 // #define DEBUG_VIDEO_PACKETS
@@ -2436,6 +2436,10 @@ void CMedia::stop(const bool bg)
   _playback = kStopped;
 
   //
+  //
+  //
+  
+  //
   // Notify loop barrier, to exit any wait on a loop
   //
   DBG( name() << " Notify all loop barriers" );
@@ -2567,23 +2571,33 @@ bool CMedia::frame( int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
+// #define DEBUG_SEEK
 #ifdef DEBUG_SEEK
-  std::cerr << "------- SEEK " << f << std::endl;
+    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
+              << stopped() << std::endl;
 #endif
 
 
   _seek_frame = f;
   _seek_req   = true;
 
+
   if ( _right_eye )
   {
+#ifdef DEBUG_SEEK
+    std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
+              << stopped() << std::endl;
+#endif
       _right_eye->_seek_frame = f;
       _right_eye->_seek_req = true;
   }
 
   if ( stopped() || saving() )
     {
-      do_seek();
+#ifdef DEBUG_SEEK
+       std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
+#endif
+        do_seek();
     }
 
 #ifdef DEBUG_SEEK
@@ -3386,17 +3400,22 @@ void CMedia::limit_video_store( const int64_t f )
   unsigned count = 0;
   uint64_t max_frames = max_image_frames();
   TimedSeqMap::iterator it = tmp.begin();
-  for ( ; it != tmp.end(); ++it )
+  for ( ; it != tmp.end();  )
   {
       ++count;
       if ( count > max_frames )
       {
-	  uint64_t idx = it->second;
-	  
-	  _sequence[ idx ].reset();
-	  if ( _right[idx] ) _right[ idx ].reset();
-	  
-	  it = tmp.erase(it);
+          uint64_t idx = it->second;
+          // std::cerr << "count " << count << " max frames " << max_frames
+          //           << " delete " << idx << std::endl;
+          _sequence[ idx ].reset();
+          if ( _right[idx] ) _right[ idx ].reset();
+
+          it = tmp.erase( it );
+      }
+      else
+      {
+          ++it;
       }
   }
   
@@ -3410,7 +3429,7 @@ void CMedia::preroll( const int64_t f )
 }
 
 
-void CMedia::wait_image()
+int64_t CMedia::wait_image()
 {
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -3421,12 +3440,13 @@ void CMedia::wait_image()
 
       if ( ! _video_packets.empty() )
         {
-            return;
+            break;
         }
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  return;
+  if ( _video_packets.empty() ) return 0; 
+  return pts2frame( get_video_stream(), _video_packets.front().dts );
 }
 
 
