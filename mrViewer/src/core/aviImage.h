@@ -86,7 +86,7 @@ class aviImage : public CMedia
 
     virtual int64_t wait_subtitle();
 
-    virtual void wait_image();
+    virtual int64_t wait_image();
 
     virtual bool find_image( const int64_t frame );
 
@@ -258,6 +258,7 @@ class aviImage : public CMedia
                                       );
 
     DecodeStatus audio_video_display( const int64_t& frame );
+    void timed_limit_store( const int64_t frame );
     void limit_video_store( const int64_t frame );
     void limit_subtitle_store( const int64_t frame );
 
