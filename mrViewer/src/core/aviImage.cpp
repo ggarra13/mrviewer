@@ -820,7 +820,6 @@ void aviImage::flush_video()
     }
 }
 
-
 void aviImage::clear_cache()
 {
     {
@@ -1280,6 +1279,9 @@ aviImage::decode_video_packet( int64_t& ptsframe,
                                const AVPacket* p
                                )
 {
+    Mutex& m = _video_packets.mutex();
+    SCOPED_LOCK( m );
+
     AVPacket* pkt = (AVPacket*)p;
 
     if ( pkt && _video_packets.is_jump( *pkt ) )
@@ -1307,6 +1309,8 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
   while( !pkt || pkt->size > 0 || pkt->data == NULL )
   {
+      Mutex& m = _video_packets.mutex();
+      SCOPED_LOCK( m );
       int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
 
 
@@ -1479,6 +1483,72 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
 }
 
 
+void aviImage::timed_limit_store(const int64_t frame)
+{
+    
+    int max_frames = max_video_frames();
+    if ( _has_image_seq )
+    {
+        max_frames = max_image_frames();
+    }
+
+#undef timercmp
+# define timercmp(a, b, CMP)					\
+    (((a).tv_sec == (b).tv_sec) ?				\
+     ((a).tv_usec CMP (b).tv_usec) :				\
+     ((a).tv_sec CMP (b).tv_sec))
+
+  struct customMore {
+      inline bool operator()( const timeval& a,
+                              const timeval& b ) const
+      {
+          return timercmp( a, b, > );
+      }
+  };
+
+  typedef std::multimap< timeval, video_cache_t::iterator,
+                         customMore > TimedSeqMap;
+  TimedSeqMap tmp;
+  {
+      video_cache_t::iterator  it = _images.begin();
+      video_cache_t::iterator end = _images.end();
+      for ( ; it != end; ++it )
+      {
+          tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+      }
+  }
+
+
+  unsigned count = 0;
+  video_cache_t images;
+  TimedSeqMap::iterator it = tmp.begin();
+  typedef std::vector< video_cache_t::iterator > IteratorList;
+  IteratorList iters;
+  for ( ; it != tmp.end(); ++it )
+  {
+      ++count;
+      if ( count > max_frames )
+      {
+          // Store this iterator to remove it later
+          iters.push_back( it->second );
+      }
+  }
+
+  IteratorList::iterator i = iters.begin();
+  IteratorList::iterator e = iters.end();
+
+  // We erase from greater to lower to avoid dangling iterators
+  std::sort( i, e, std::greater<video_cache_t::iterator>() );
+
+  i = iters.begin();
+  e = iters.end();
+  for ( ; i != e; ++i )
+  {
+      _images.erase( *i );
+  }
+
+}
+
 //
 // Limit the video store to approx. max frames images on each side.
 // We have to check both where frame is as well as where _dts is.
@@ -1495,45 +1565,19 @@ void aviImage::limit_video_store(const int64_t frame)
         max_frames = max_image_frames();
     }
 
-#undef timercmp
-# define timercmp(a, b, CMP)                                                  \
-  (((a).tv_sec == (b).tv_sec) ?					\
-   ((a).tv_usec CMP (b).tv_usec) :                                          \
-   ((a).tv_sec CMP (b).tv_sec))
 
-  struct customMore {
-      inline bool operator()( const timeval& a,
-                              const timeval& b ) const
-      {
-          return timercmp( a, b, > );
-      }
-  };
+    if ( playback() == kForwards || playback() == kStopped )
+        return timed_limit_store( frame );
 
-  typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
-  TimedSeqMap tmp;
-  {
-      unsigned count = 0;
-      video_cache_t::iterator it = _images.begin();
-      video_cache_t::iterator end = _images.end();
-      for ( ; it != end; ++it, ++count )
-      {
-          tmp.insert( std::make_pair( (*it)->ptime(), count ) );
-      }
-  }
+    int64_t first, last;
 
+    first = frame - max_frames;
+    last  = frame;
+    if ( _dts < first ) first = _dts;
 
-  unsigned count = 0;
-  TimedSeqMap::iterator it = tmp.begin();
-  for ( ; it != tmp.end(); ++it )
-  {
-      ++count;
-      if ( count > max_frames )
-      {
-          uint64_t idx = it->second;
-          _images.erase( _images.begin() + idx );
-      }
-  }
-
+    video_cache_t::iterator end = _images.end();
+    _images.erase( std::remove_if( _images.begin(), end,
+                                   NotInRangeFunctor( first, last ) ), end );
 }
 
 //
@@ -1684,8 +1728,6 @@ bool aviImage::find_image( const int64_t frame )
 #ifdef DEBUG_VIDEO_STORES
   debug_video_stores(frame, "find_image", true);
 #endif
-
-
 
   _frame = frame;
 
@@ -3290,7 +3332,7 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
 
 
 
-void aviImage::wait_image()
+int64_t aviImage::wait_image()
 {
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -3302,7 +3344,9 @@ void aviImage::wait_image()
 
         CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  return;
+  if ( _video_packets.empty() ) return 0; 
+  return pts2frame( get_video_stream(), _video_packets.front().dts ) -
+  _frame_offset;
 }
 
 bool aviImage::in_video_store( const int64_t frame )
@@ -3775,10 +3819,6 @@ void aviImage::do_seek()
             if ( saving() )
             {
                 static int64_t last_frame = 1;
-                if ( std::abs( _seek_frame - last_frame ) > 1 )
-                {
-                    std::cerr << "frame gap " << std::abs( _seek_frame - last_frame ) << " at " << _seek_frame << std::endl;
-                }
                 last_frame = _seek_frame;
             }
 
