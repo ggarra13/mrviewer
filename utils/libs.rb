@@ -51,7 +51,7 @@ def parse( files )
     end
 
     if lib =~ EXCLUDE_REGEX
-      puts "Exclude #{lib}" if @options[:verbose]
+      $stderr.puts "Exclude #{lib}" if @options[:verbose]
       next
     end
 
@@ -61,9 +61,9 @@ def parse( files )
     rescue
     end
     if @options[:verbose]
-      puts "loc: #{loc} -> lib: #{lib}"
+      $stderr.puts "loc: #{loc} -> lib: #{lib}"
     else
-      print "."
+      $stderr.print "."
     end
     orig = lib
     if File.symlink?( loc )
@@ -76,7 +76,7 @@ def parse( files )
     else
       FileUtils.cp(loc, "#{@debug}/lib/#{lib}" )
       `chrpath -d "#{@debug}/lib/#{lib}"`
-      print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
+      $stderr.print `readelf -d #{@debug}/lib/#{lib} | grep PATH`
     end
   end
 end
@@ -91,7 +91,7 @@ release = `uname -r`.chop!
 build = "BUILD/Linux-#{release}-64/"
 
 
-puts "DIRECTORY: #{Dir.pwd}"
+$stderr.puts "DIRECTORY: #{Dir.pwd}"
 
 home=ENV['HOME']+"/bin/mrViewer"
 FileUtils.rm_f( home )
@@ -119,11 +119,15 @@ files.uniq!
 parse( files )
 
 Dir.chdir( '../..'  )
+$stderr.puts "Copy shaders"
 FileUtils.rm_f( "#{@debug}/shaders" )
-FileUtils.rm_f( "#{@debug}/docs" )
-FileUtils.rm_f( "#{@debug}/ctl" )
 FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
+$stderr.puts "Copy docs"
+FileUtils.rm_f( "#{@debug}/docs" )
 FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
+$stderr.puts "Copy ctl scripts"
+FileUtils.rm_f( "#{@debug}/ctl" )
 FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
 
-`find . -name '*fuse*' -exec rm {} \\;`
+$stderr.puts "remove .fuse files"
+`find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
