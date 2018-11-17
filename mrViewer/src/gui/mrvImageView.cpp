@@ -132,6 +132,8 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #undef TRACE
 #define TRACE(x)
 
+#undef LOG
+#define LOG(x) std::cerr << x << std::endl;
 
 // Widgets
 #include "mrViewer.h"
@@ -141,6 +143,8 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 // Video
 #include "video/mrvGLEngine.h"  // should be dynamically chosen from prefs
 
+#undef DBG
+#define DBG(x)
 // Audio
 
 // #define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
@@ -1101,14 +1105,14 @@ void ImageView::update_ICS() const
       fltk::Widget* w = o->child(i);
       if ( img->ocio_input_color_space() == w->label() )
       {
-          o->label( strdup( w->label() ) );
+          o->copy_label( w->label() );
           o->value(i);
           if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
           o->redraw();
           return;
       }
   }
-  o->label( strdup( "scene_linear" ) );
+  o->copy_label( "scene_linear"  );
   char buf[32];
   sprintf( buf, "ICS \"scene_linear\"" );
   send_network( buf );
@@ -2530,21 +2534,34 @@ bool ImageView::preload()
     CMedia* img = fg->image();
     if (!img) return false;
 
+    CMedia::Playback p = playback();
 
-    // Exit early if we are dealing with a video instead of a sequencex
+    
+    // Exit early if we are dealing with a video instead of a sequence
     if ( !img->is_sequence() || img->has_video() ) {
-        _preframe = fg->position() + img->duration(); // go to next image
-        img = r->image_at( _preframe );
+        if  ( p != CMedia::kStopped )
+        {
+            preload_cache_stop();
+            return false;
+        }
+	img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel
             _reel++;
             _preframe = 1;
         }
+	else
+	{
+	    _preframe = fg->position() + img->duration(); // go to next image
+	}
         if ( _reel >= b->number_of_reels() )
         {
+            _reel = 0;
+            _preframe = timeline()->display_minimum();
             preload_cache_stop();
             return false;
         }
+
         return true;
     }
 
@@ -2554,7 +2571,7 @@ bool ImageView::preload()
         f = r->global_to_local( _preframe );
         first = timeline()->display_minimum();
         last  = timeline()->display_maximum();
-   }
+    }
     else
     {
         f = _preframe;
@@ -2571,7 +2588,6 @@ bool ImageView::preload()
 
 
 
-    CMedia::Playback p = playback();
 
     bool found;
     mrv::image_type_ptr pic;
@@ -2605,7 +2621,12 @@ bool ImageView::preload()
         else
         {
             size_t max_images = img->max_image_frames() - 2;
-            if ( std::abs( pic->frame() - f ) < max_images )
+            int64_t pos_diff = f - pic->frame();
+            int64_t last_diff = last - pic->frame();
+            int64_t first_diff = f - first;
+            if ( CMedia::preload_cache() &&
+                 ( pos_diff >= 0 && pos_diff < max_images  ||
+                   pos_diff < 0 && first_diff + last_diff < max_images ) )
             {
                 _preframe += 1;
                 if ( _preframe > last )
@@ -2693,7 +2714,7 @@ void ImageView::timeout()
       if ( fg && fg != foreground() )
       {
        TRACE("");
-         DBG( "CHANGE TO FG " << fg->image()->name() << " due to frame "
+       LOG_INFO( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
               << tframe );
          foreground( fg );
 
@@ -6452,6 +6473,7 @@ int ImageView::handle(int event)
                      ( CMedia::preload_cache() ||
                        uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
                 {
+                    _reel = b->number_of_reels();
                     for ( unsigned i = 0; i < b->number_of_reels(); ++i )
                     {
                         mrv::Reel r = b->reel_at( i );
@@ -6461,7 +6483,7 @@ int ImageView::handle(int event)
                         if (!fg) continue;
 
                         CMedia* img = fg->image();
-                        if ( img && !img->is_cache_full() )
+                        if ( img && !img->is_cache_full() && !img->has_video() )
                         {
                             _reel = i;
                             break;
@@ -8050,7 +8072,7 @@ void ImageView::toggle_lut()
   redraw();  // force a draw to refresh luts
 
   uiMain->uiLUT->value( _useLUT );
-  uiMain->gammaDefaults->label( strdup( view.c_str() ) );
+  uiMain->gammaDefaults->copy_label( view.c_str() );
 
   smart_refresh();
   update_color_info();
@@ -8422,8 +8444,14 @@ void ImageView::play( const CMedia::Playback dir )
    create_timeout( 0.5/fps );
 
    {
-      DBG( "******* PLAY FG " << fg->image()->name() );
-      img->play( dir, uiMain, true );
+      // if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
+      //      !CMedia::cache_active() ||
+      //      !( CMedia::preload_cache() ||
+      //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+      {
+          DBG( "******* PLAY FG " << img->name() );
+          img->play( dir, uiMain, true );
+      }
    }
 
 
