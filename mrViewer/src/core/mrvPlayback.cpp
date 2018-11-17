@@ -953,9 +953,8 @@ void video_thread( PlaybackData* data )
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
             ! view->idle_callback()  )
     {
-        img->wait_image();
-
-        // img->debug_video_stores( frame, "BACK" );
+	frame = img->wait_image();
+	
 
 
         int step = (int) img->playback();
@@ -1218,7 +1217,7 @@ void decode_thread( PlaybackData* data )
       {
          img->do_seek();
          frame = img->dts();
-      }
+     }
 
 
 
@@ -1287,6 +1286,7 @@ void decode_thread( PlaybackData* data )
 
    }
 
+   
    img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
