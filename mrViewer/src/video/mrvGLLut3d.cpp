@@ -1243,7 +1243,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 std::string name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
-                    uiICS->label( strdup( lbl.c_str() ) );
+                    uiICS->copy_label( lbl.c_str() );
                     uiICS->value(i);
                     uiICS->relayout(); // needed
                     uiICS->redraw();
