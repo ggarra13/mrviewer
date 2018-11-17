@@ -97,10 +97,10 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ ${GLEW_LIBRARIES} fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-      ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-      SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
-      # ADD_DEFINITIONS( -fsanitize=address )
-      # SET(LIBRARIES asan ${LIBRARIES} )
+      #ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
+      #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+      ADD_DEFINITIONS( -fsanitize=address )
+      SET(LIBRARIES asan ${LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
@@ -434,9 +434,9 @@ IF (WIN32 OR WIN64)
   MESSAGE( STATUS "Copying DLLs..." )
   FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ELSE(WIN32 OR WIN64)
-  #MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
-  #EXECUTE_PROCESS( COMMAND utils/libs.rb
-  #  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
+#  MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
+#  EXECUTE_PROCESS( COMMAND utils/libs.rb
+#                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
 ENDIF(WIN32 OR WIN64)
 
 
