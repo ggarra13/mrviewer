@@ -128,16 +128,25 @@ namespace mrv {
 
 void CMedia::clear_video_packets()
 {
-   SCOPED_LOCK( _mutex );
-   SCOPED_LOCK( _subtitle_mutex );
-   _video_packets.clear();
-  _subtitle_packets.clear();
+    {
+        Mutex& m = _video_packets.mutex();
+        SCOPED_LOCK( m );
+        _video_packets.clear();
+    }
+    {
+        Mutex& m = _subtitle_packets.mutex();
+        SCOPED_LOCK( m );
+        _subtitle_packets.clear();
+    }
 }
 
 void CMedia::clear_audio_packets()
 {
-   SCOPED_LOCK( _audio_mutex );
-  _audio_packets.clear();
+    Mutex& m = _audio_packets.mutex();
+    {
+        SCOPED_LOCK( m );
+        _audio_packets.clear();
+    }
   _audio_buf_used = 0;
 }
 
@@ -1044,6 +1053,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     bool eof = false;
 
     int got_audio = 0;
+    Mutex& m = _audio_packets.mutex();
+    SCOPED_LOCK( m );
     ret = decode( ctx, _aframe, &got_audio, avpkt, eof );
     if ( !got_audio ) return ret;
 
