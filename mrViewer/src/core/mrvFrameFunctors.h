@@ -140,6 +140,37 @@ struct LessPTSThanFunctor
   }
 };
 
+struct TooOldFunctor
+{
+    timeval _max_time;
+
+#undef timercmp
+# define timercmp(a, b, CMP)					\
+    (((a).tv_sec == (b).tv_sec) ?				\
+     ((a).tv_usec CMP (b).tv_usec) :				\
+     ((a).tv_sec CMP (b).tv_sec))
+
+    struct customMore
+    {
+	inline bool operator()( const timeval& a,
+				const timeval& b ) const
+	{
+	    return timercmp( a, b, > );
+	}
+    };
+
+    
+    TooOldFunctor( timeval max_time ) :
+    _max_time( max_time )
+    {
+    }
+    
+    bool operator()( const image_type_ptr& b ) const
+    {
+	if ( !b ) return false;
+	return customMore()( b->ptime(), _max_time );
+    }
+};
 
 struct NotInRangeFunctor
 {

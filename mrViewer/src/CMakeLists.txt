@@ -99,8 +99,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
       ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
       SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
-      # ADD_DEFINITIONS( -fsanitize=address )
-      # SET(LIBRARIES asan ${LIBRARIES} )
+      INCLUDE_DIRECTORIES( /usr/local/sanitize )
+      #ADD_DEFINITIONS( -fsanitize=address )
+      #SET(LIBRARIES asan ${LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
@@ -434,9 +435,9 @@ IF (WIN32 OR WIN64)
   # MESSAGE( STATUS "Copying DLLs..." )
   # FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ELSE(WIN32 OR WIN64)
-  #MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
-  #EXECUTE_PROCESS( COMMAND utils/libs.rb
-  #  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
+#  MESSAGE( "Running utils/libs.rb in ${CMAKE_CURRENT_SOURCE_DIR}/../../" )
+#  EXECUTE_PROCESS( COMMAND utils/libs.rb
+#                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ )
 ENDIF(WIN32 OR WIN64)
 
 

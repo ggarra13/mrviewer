@@ -767,7 +767,7 @@ class server;
     double       _last_fps;     //!< last fps
     int          _redraws_fps;  //!< # of redraws done for fps calculation
     int64_t      _lastFrame;    //!< last frame for fps calculation
-
+      bool       _do_seek;
       CMedia::Mutex _shortcut_mutex;
       CMedia::Mutex _draw_mutex;
 
