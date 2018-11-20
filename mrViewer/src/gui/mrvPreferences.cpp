@@ -1359,7 +1359,7 @@ static const char* kCLocale = "C";
                 w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
-                    w->label( strdup(space) );
+                    w->copy_label( space );
                     w->value( i );
                 }
             }
