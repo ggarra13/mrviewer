@@ -953,7 +953,7 @@ void video_thread( PlaybackData* data )
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
             ! view->idle_callback()  )
     {
-	frame = img->wait_image();
+	img->wait_image();
 	
 
 
