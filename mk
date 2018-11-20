@@ -162,9 +162,14 @@ cache=0
 if [[ $OS == Windows* ]]; then
     cmake_generator=Ninja
     #cmake_generator="NMake Makefiles"
+    win32cl=`which cl`
+    if [[ $win32cl != *amd64* ]]; then
+	CMAKE_BUILD_ARCH=32
+    fi
 else
     cmake_generator=Ninja
 fi
+
 
 opts=''
 RUN_MAKE=1
