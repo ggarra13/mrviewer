@@ -2843,6 +2843,7 @@ void ImageBrowser::handle_dnd()
   }
 
 
+
   /**
    * Switch to a new frame on one image if in EDL mode or
    * in all images of reel if not.
@@ -2860,11 +2861,13 @@ void ImageBrowser::handle_dnd()
 
      frame( tframe );
 
+
     CMedia::Playback playback = view()->playback();
 
+
     if ( playback != CMedia::kStopped )
-	view()->stop();
-    
+        view()->stop();
+
     mrv::Timeline* t = timeline();
 
     mrv::Reel reel = reel_at( view()->fg_reel() );
@@ -2873,7 +2876,7 @@ void ImageBrowser::handle_dnd()
     if ( reel && reel != bgreel && reel->edl )
     {
         // Check if we need to change to a new sequence based on frame
-         mrv::media m = reel->media_at( tframe );
+        mrv::media m = reel->media_at( tframe );
          if (! m ) return;
 
         CMedia* img = m->image();
@@ -2899,12 +2902,11 @@ void ImageBrowser::handle_dnd()
 
         if ( m != fg && fg )
           {
-
              size_t i = reel->index( f );
              img = reel->image_at( f );
              f = reel->global_to_local( f );
              if ( !img ) return;
-	     
+
              DBG( "seek f local1: " << f );
 
              img->seek( f );
@@ -2950,6 +2952,8 @@ void ImageBrowser::handle_dnd()
 
         CMedia* img = fg->image();
         img->seek( f );
+        DBG( "img->seek( " << f << " )" );
+        DBG( "img->stopped? " << img->stopped() );
 
         mrv::media bg = view()->background();
         if ( bg )
@@ -2965,7 +2969,6 @@ void ImageBrowser::handle_dnd()
     }
 
 
-    while ( view()->playback() != playback ) {};
 
     view()->redraw();
     redraw();
