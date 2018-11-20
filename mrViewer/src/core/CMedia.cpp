@@ -50,9 +50,13 @@ extern "C" {
 #include <algorithm>  // for std::min, std::abs
 #include <limits>
 
+#include <thread>
+#include <mutex>
+
 #include <fltk/run.h>
 
 #undef  __STDC_CONSTANT_MACROS
+
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
@@ -114,6 +118,8 @@ namespace {
 namespace mrv {
 
 static AVRational timeBaseQ = { 1, AV_TIME_BASE };
+
+bool       CMedia::_initialize = false;
 
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
@@ -460,10 +466,14 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-
     _aframe = av_frame_alloc();
+
     audio_initialize();
-    mrv::PacketQueue::initialize();
+    if ( ! _initialize )
+    {
+        mrv::PacketQueue::initialize();
+        _initialize = true;
+    }
     // std::cerr << "CMedia " << this << std::endl;
 }
 
@@ -688,7 +698,11 @@ _audio_engine( NULL )
   // TRACE( "copy constructor" );
 
   audio_initialize();
-  mrv::PacketQueue::initialize();
+  if ( ! _initialize )
+  {
+      mrv::PacketQueue::initialize();
+      _initialize = true;
+  }
 
   if ( other->audio_file().empty() )
     audio_file( NULL );
@@ -2317,7 +2331,6 @@ void CMedia::play(const CMedia::Playback dir,
 
   // clear all packets
   clear_packets();
-  CMedia::clear_packets();
 
   // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
@@ -2438,7 +2451,7 @@ void CMedia::stop(const bool bg)
   //
   //
   //
-  
+
   //
   // Notify loop barrier, to exit any wait on a loop
   //
@@ -2474,7 +2487,6 @@ void CMedia::stop(const bool bg)
   DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
   clear_packets();
-  CMedia::clear_packets();
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
@@ -2597,7 +2609,7 @@ void CMedia::seek( const int64_t f )
 #ifdef DEBUG_SEEK
        std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
 #endif
-        do_seek();
+       do_seek();
     }
 
 #ifdef DEBUG_SEEK
@@ -2746,7 +2758,7 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
     if ( !pic ) return cache;
 
     if ( !pic->valid() ) return kInvalidFrame;
-   
+
     cache = kLeftCache;
 
     if ( _stereo_output != kNoStereo )
@@ -2764,11 +2776,11 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
 bool CMedia::is_cache_full()
 {
     if ( dynamic_cast< aviImage* >( this ) != NULL )
-	return true;
-    
+        return true;
+
     for ( int64_t i = _frame_start; i <= _frame_end; ++i )
     {
-	if ( is_cache_filled(i) == kNoCache ) return false;
+        if ( is_cache_filled(i) == kNoCache ) return false;
     }
     return true;
 }
@@ -2808,7 +2820,7 @@ size_t CMedia::memory() const
     {
       if ( hires() )
         {
-	    r += _hires->data_size();
+            r += _hires->data_size();
         }
     }
 
@@ -3379,15 +3391,15 @@ void CMedia::limit_video_store( const int64_t f )
   (((a).tv_sec == (b).tv_sec) ?					\
    ((a).tv_usec CMP (b).tv_usec) :                                          \
    ((a).tv_sec CMP (b).tv_sec))
-  
+
   struct customMore {
       inline bool operator()( const timeval& a,
-  			      const timeval& b ) const
+                              const timeval& b ) const
       {
-  	  return timercmp( a, b, > );
+          return timercmp( a, b, > );
       }
   };
-  
+
   typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
   TimedSeqMap tmp;
   for ( uint64_t i = 0; i < _numWindows; ++i )
@@ -3396,7 +3408,7 @@ void CMedia::limit_video_store( const int64_t f )
       tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
   }
 
-  
+
   unsigned count = 0;
   uint64_t max_frames = max_image_frames();
   TimedSeqMap::iterator it = tmp.begin();
@@ -3418,7 +3430,7 @@ void CMedia::limit_video_store( const int64_t f )
           ++it;
       }
   }
-  
+
 
 }
 
@@ -3445,7 +3457,7 @@ int64_t CMedia::wait_image()
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  if ( _video_packets.empty() ) return 0; 
+  if ( _video_packets.empty() ) return 0;
   return pts2frame( get_video_stream(), _video_packets.front().dts );
 }
 
@@ -3668,18 +3680,20 @@ bool CMedia::find_image( const int64_t frame )
 
   int64_t idx = f - _frame_start;
   {
-      SCOPED_LOCK( _mutex );
+      //SCOPED_LOCK( _mutex );
       if ( idx < 0 ) idx = 0;
       else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
   }
 
-  SCOPED_LOCK( _mutex );
-
   if ( _sequence && _sequence[idx] )
     {
-        _hires = _sequence[idx];
-        if ( _right && _right[idx])
-            _stereo[1] = _right[idx];
+        {
+            SCOPED_LOCK( _mutex );
+
+            _hires = _sequence[idx];
+            if ( _right && _right[idx])
+                _stereo[1] = _right[idx];
+        }
 
         _frame = frame;
 
