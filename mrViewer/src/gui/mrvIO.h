@@ -150,7 +150,7 @@ namespace mrv {
 #define mrvLOG_ERROR(mod, msg)   do {			\
     mrv::io::error << _("ERROR: ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
-#define mrvLOG_WARNING(mod, msg) do {				    \
+#define mrvLOG_WARNING(mod, msg) do {                               \
     mrv::io::warn << _("WARN : ") << N_("[") << mod << N_("] ") << msg; \
   } while(0)
 #define mrvLOG_INFO(mod, msg)    do {                \
