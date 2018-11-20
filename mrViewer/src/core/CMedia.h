@@ -1493,10 +1493,10 @@ class CMedia
     time_t _ctime, _mtime;    //!< creation and modification time of image
     size_t _disk_space;       //!< disk space used by image
 
-    Mutex     _mutex;          //!< to mark image routines
-    Mutex     _subtitle_mutex; //!< to mark subtitle routines
-    Mutex     _audio_mutex;    //!< to mark audio routines
-    Mutex     _data_mutex;     //!< to mark data routines (data/displaywindow)
+    mutable Mutex  _mutex;          //!< to mark image routines
+    mutable Mutex  _subtitle_mutex; //!< to mark subtitle routines
+    mutable Mutex  _audio_mutex;    //!< to mark audio routines
+    mutable Mutex  _data_mutex;  //!< to mark data routines (data/displaywindow)
 
     int _colorspace_index;    //!< YUV Hint for conversion
 
@@ -1664,7 +1664,7 @@ class CMedia
     static bool _cache_active;
     static bool _preload_cache;
     static int  _cache_scale;
-
+    static bool _initialize;
 };
 
 
