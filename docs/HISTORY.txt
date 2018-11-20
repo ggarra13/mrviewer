@@ -1,3 +1,15 @@
+v4.3.4   - Bug fixed cache sliding when it was stopped near the end of
+	   a sequence that did not have all frames cached.  This was
+	   a Windows problem.
+	 - Bug fixed cache looping.  Now the preload cache wraps
+	   around the end and starts at the beginning again when
+	   it is stopped near the end.
+	 - Made start up time be much faster, as it now does not load
+	   any frames until the GUI is up and idle.
+	 - Made background image show on first run if it is different
+	   than fg image.  Note that this makes the gui a tad slower
+	   on start up.
+
 v4.3.3   - Bug fixed EDL playback as it had gotten broken with the new
 	   timeline algorithm.
 	 - Note that playback of BG images works only when the FG caches
