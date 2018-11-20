@@ -133,12 +133,11 @@ namespace mrv {
       inline void clear()
       {
           Mutex::scoped_lock lk( _mutex );
-          while ( !_packets.empty() )
+	  while ( !_packets.empty() )
           {
               pop_front();
           }
 
-	  // std::cerr << this << " bytes: " << _bytes << std::endl;
           assert0( _bytes == 0 );
           _bytes = 0;
       }
@@ -314,7 +313,7 @@ namespace mrv {
                pkt.data != _preroll.data &&
                pkt.data != _loop_start.data &&
                pkt.data != _loop_end.data &&
-	       pkt.data != NULL )
+	       pkt.data != NULL && pkt.size != 0 )
           {
 #ifdef DEBUG_PACKET_QUEUE
               std::cerr << "POP FRONT " << std::dec << pkt.stream_index
@@ -330,7 +329,7 @@ namespace mrv {
               // if ( pkt.size > _bytes )
               //     _bytes = 0;
               // else
-              assert0( pkt.size >= 0 );
+              assert0( pkt.size > 0 || pkt.data != NULL );
               assert0( _bytes >= pkt.size );
 
 	      // std::cerr << this  << " #"
@@ -545,25 +544,25 @@ namespace mrv {
       static void initialize()
       {
           av_init_packet( &_flush );
-          _flush.data = (uint8_t*)"FLUSH";
+          _flush.data = (uint8_t*)strdup("FLUSH");
           _flush.size = 0;
           av_init_packet( &_seek );
-          _seek.data  = (uint8_t*)"SEEK";
+          _seek.data  = (uint8_t*)strdup("SEEK");
           _seek.size  = 0;
           av_init_packet( &_jump );
-          _jump.data = (uint8_t*)"JUMP";
+          _jump.data = (uint8_t*)strdup("JUMP");
           _jump.size = 0;
           av_init_packet( &_preroll );
-          _preroll.data = (uint8_t*)"PREROLL";
+          _preroll.data = (uint8_t*)strdup("PREROLL");
           _preroll.size = 0;
           av_init_packet( &_seek_end );
-          _seek_end.data = (uint8_t*)"SEEK END";
+          _seek_end.data = (uint8_t*)strdup("SEEK END");
           _seek_end.size = 0;
           av_init_packet( &_loop_start );
-          _loop_start.data = (uint8_t*)"LOOP START";
+          _loop_start.data = (uint8_t*)strdup("LOOP START");
           _loop_start.size = 0;
           av_init_packet( &_loop_end );
-          _loop_end.data = (uint8_t*)"LOOP END";
+          _loop_end.data = (uint8_t*)strdup("LOOP END");
           _loop_end.size = 0;
 
 	  inited = true;
@@ -571,14 +570,21 @@ namespace mrv {
 
       static void release()
       {
+	  free( _loop_end.data );
+	  free( _loop_start.data );
+	  free( _seek_end.data );
+	  free( _preroll.data );
+	  free( _jump.data );
+	  free( _seek.data );
+	  free( _flush.data );
       }
 
 
     protected:
-      uint64_t     _bytes;
+      uint64_t      _bytes;
       Packets_t    _packets;
-      Mutex        _mutex;
-      Condition    _cond;
+      mutable Mutex  _mutex;
+      Condition       _cond;
 
       static AVPacket _flush;      // special packet used to flush buffers
       static AVPacket _seek;       // special packet used to mark seeks to skip
