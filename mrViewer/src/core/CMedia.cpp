@@ -50,9 +50,13 @@ extern "C" {
 #include <algorithm>  // for std::min, std::abs
 #include <limits>
 
+#include <thread>
+#include <mutex>
+
 #include <fltk/run.h>
 
 #undef  __STDC_CONSTANT_MACROS
+
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
@@ -98,8 +102,8 @@ namespace {
 }
 
 
-//#undef DBG
-//#define DBG(x) std::cerr << x << std::endl;
+#undef DBG
+#define DBG(x)
 
 // #define DEBUG_SEEK
 // #define DEBUG_VIDEO_PACKETS
@@ -114,6 +118,8 @@ namespace {
 namespace mrv {
 
 static AVRational timeBaseQ = { 1, AV_TIME_BASE };
+
+bool       CMedia::_initialize = false;
 
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
@@ -460,10 +466,14 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-
     _aframe = av_frame_alloc();
+
     audio_initialize();
-    mrv::PacketQueue::initialize();
+    if ( ! _initialize )
+    {
+        mrv::PacketQueue::initialize();
+        _initialize = true;
+    }
     // std::cerr << "CMedia " << this << std::endl;
 }
 
@@ -688,7 +698,11 @@ _audio_engine( NULL )
   // TRACE( "copy constructor" );
 
   audio_initialize();
-  mrv::PacketQueue::initialize();
+  if ( ! _initialize )
+  {
+      mrv::PacketQueue::initialize();
+      _initialize = true;
+  }
 
   if ( other->audio_file().empty() )
     audio_file( NULL );
@@ -2317,7 +2331,6 @@ void CMedia::play(const CMedia::Playback dir,
 
   // clear all packets
   clear_packets();
-  CMedia::clear_packets();
 
   // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
@@ -2436,6 +2449,10 @@ void CMedia::stop(const bool bg)
   _playback = kStopped;
 
   //
+  //
+  //
+
+  //
   // Notify loop barrier, to exit any wait on a loop
   //
   DBG( name() << " Notify all loop barriers" );
@@ -2470,7 +2487,6 @@ void CMedia::stop(const bool bg)
   DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
   clear_packets();
-  CMedia::clear_packets();
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
@@ -2567,23 +2583,33 @@ bool CMedia::frame( int64_t f )
  */
 void CMedia::seek( const int64_t f )
 {
+// #define DEBUG_SEEK
 #ifdef DEBUG_SEEK
-  std::cerr << "------- SEEK " << f << std::endl;
+    std::cerr << "------- SEEK " << f << " " << name() << " stopped? "
+              << stopped() << std::endl;
 #endif
 
 
   _seek_frame = f;
   _seek_req   = true;
 
+
   if ( _right_eye )
   {
+#ifdef DEBUG_SEEK
+    std::cerr << "------- SEEK RIGHT EYE " << f << " " << name() << " stopped? "
+              << stopped() << std::endl;
+#endif
       _right_eye->_seek_frame = f;
       _right_eye->_seek_req = true;
   }
 
   if ( stopped() || saving() )
     {
-      do_seek();
+#ifdef DEBUG_SEEK
+       std::cerr << "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK" << std::endl;
+#endif
+       do_seek();
     }
 
 #ifdef DEBUG_SEEK
@@ -3266,7 +3292,7 @@ int CMedia::max_image_frames()
 #else
     if ( !_hires ) return std::numeric_limits<int>::max() / 3;
     return Preferences::max_memory / _hires->data_size();
-    
+
 #endif
 }
 
@@ -3415,7 +3441,7 @@ void CMedia::preroll( const int64_t f )
 }
 
 
-void CMedia::wait_image()
+int64_t CMedia::wait_image()
 {
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -3426,12 +3452,13 @@ void CMedia::wait_image()
 
       if ( ! _video_packets.empty() )
         {
-            return;
+            break;
         }
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  return;
+  if ( _video_packets.empty() ) return 0;
+  return pts2frame( get_video_stream(), _video_packets.front().dts );
 }
 
 
@@ -3653,18 +3680,20 @@ bool CMedia::find_image( const int64_t frame )
 
   int64_t idx = f - _frame_start;
   {
-      SCOPED_LOCK( _mutex );
+      //SCOPED_LOCK( _mutex );
       if ( idx < 0 ) idx = 0;
       else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
   }
 
-  SCOPED_LOCK( _mutex );
-
   if ( _sequence && _sequence[idx] )
     {
-        _hires = _sequence[idx];
-        if ( _right && _right[idx])
-            _stereo[1] = _right[idx];
+        {
+            SCOPED_LOCK( _mutex );
+
+            _hires = _sequence[idx];
+            if ( _right && _right[idx])
+                _stereo[1] = _right[idx];
+        }
 
         _frame = frame;
 
