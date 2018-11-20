@@ -2536,7 +2536,7 @@ bool ImageView::preload()
 
     CMedia::Playback p = playback();
 
-    
+
     // Exit early if we are dealing with a video instead of a sequence
     if ( !img->is_sequence() || img->has_video() ) {
         if  ( p != CMedia::kStopped )
@@ -2544,16 +2544,16 @@ bool ImageView::preload()
             preload_cache_stop();
             return false;
         }
-	img = r->image_at( _preframe );
+        img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel
             _reel++;
             _preframe = 1;
         }
-	else
-	{
-	    _preframe = fg->position() + img->duration(); // go to next image
-	}
+        else
+        {
+            _preframe = fg->position() + img->duration(); // go to next image
+        }
         if ( _reel >= b->number_of_reels() )
         {
             _reel = 0;
@@ -2714,7 +2714,7 @@ void ImageView::timeout()
       if ( fg && fg != foreground() )
       {
        TRACE("");
-       LOG_INFO( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
+       DBG( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
               << tframe );
          foreground( fg );
 
@@ -8117,16 +8117,16 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
-
     _preframe = f;
 
     // if ( std::abs( f - frame() ) < fps() / 2.0 )
     // {
-    //     stop();
+    // stop();
     // }
 
     mrv::ImageBrowser* b = browser();
     if ( b ) b->seek( f );
+
 
     thumbnails();
     update_color_info();
@@ -8422,6 +8422,8 @@ void ImageView::play( const CMedia::Playback dir )
    mrv::media fg = foreground();
    if (!fg) return;
 
+   mrv::media bg = background();
+
    CMedia* img = fg->image();
 
     if ( CMedia::preload_cache() && _idle_callback &&
@@ -8444,10 +8446,10 @@ void ImageView::play( const CMedia::Playback dir )
    create_timeout( 0.5/fps );
 
    {
-      // if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
-      //      !CMedia::cache_active() ||
-      //      !( CMedia::preload_cache() ||
-      //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+      if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
+           !CMedia::cache_active() ||
+           !( CMedia::preload_cache() ||
+              uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
       {
           DBG( "******* PLAY FG " << img->name() );
           img->play( dir, uiMain, true );
@@ -8455,7 +8457,6 @@ void ImageView::play( const CMedia::Playback dir )
    }
 
 
-   mrv::media bg = background();
    if ( bg && bg != fg )
    {
       DBG( "******* PLAY BG " << bg->image()->name() );
