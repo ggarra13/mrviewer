@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-11-20 09:06-0300\n"
+"POT-Creation-Date: 2018-11-20 09:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgid ""
 "No audio or video stream in file"
 msgstr ""
 
-#: core/CMedia.cpp:3090 core/CMedia.cpp:3174
+#: core/CMedia.cpp:3089 core/CMedia.cpp:3173
 msgid ""
 "\n"
 "\n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: core/mrvPlayback.cpp:974
+#: core/mrvPlayback.cpp:972
 msgid " - Decode of image frame "
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid " for frame "
 msgstr ""
 
-#: core/CMedia.cpp:3091 core/CMedia.cpp:3175
+#: core/CMedia.cpp:3090 core/CMedia.cpp:3174
 msgid " for stream #"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid " not yet supported"
 msgstr ""
 
-#: core/mrvPlayback.cpp:975
+#: core/mrvPlayback.cpp:973
 msgid " returned "
 msgstr ""
 
@@ -408,7 +408,7 @@ msgstr ""
 msgid ", sample rate "
 msgstr ""
 
-#: core/CMedia.cpp:3091 core/CMedia.cpp:3175
+#: core/CMedia.cpp:3090 core/CMedia.cpp:3174
 msgid ", type "
 msgstr ""
 
@@ -4216,11 +4216,11 @@ msgstr ""
 msgid "Loading \"%s\""
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3911
+#: video/mrvGLEngine.cpp:3912
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3917
+#: video/mrvGLEngine.cpp:3918
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
@@ -7029,7 +7029,7 @@ msgstr ""
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2410
+#: video/mrvGLEngine.cpp:2411
 msgid "Unknown wipe direction"
 msgstr ""
 
@@ -7762,7 +7762,7 @@ msgstr ""
 msgid "ac3"
 msgstr ""
 
-#: core/CMedia.cpp:2853 core/CMedia.cpp:2884
+#: core/CMedia.cpp:2852 core/CMedia.cpp:2883
 msgid "audio"
 msgstr ""
 
@@ -7795,15 +7795,15 @@ msgstr ""
 msgid "change_image index "
 msgstr ""
 
-#: core/CMedia.cpp:3147 core/CMedia.cpp:3231
+#: core/CMedia.cpp:3146 core/CMedia.cpp:3230
 msgid "clean effects"
 msgstr ""
 
-#: core/CMedia.cpp:3135 core/CMedia.cpp:3219
+#: core/CMedia.cpp:3134 core/CMedia.cpp:3218
 msgid "comment"
 msgstr ""
 
-#: core/CMedia.cpp:2856 core/CMedia.cpp:2887
+#: core/CMedia.cpp:2855 core/CMedia.cpp:2886
 msgid "data"
 msgstr ""
 
@@ -7815,7 +7815,7 @@ msgstr ""
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
-#: core/CMedia.cpp:3129 core/CMedia.cpp:3213
+#: core/CMedia.cpp:3128 core/CMedia.cpp:3212
 msgid "default"
 msgstr ""
 
@@ -7823,7 +7823,7 @@ msgstr ""
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr ""
 
-#: core/CMedia.cpp:3131 core/CMedia.cpp:3215
+#: core/CMedia.cpp:3130 core/CMedia.cpp:3214
 msgid "dub"
 msgstr ""
 
@@ -7849,7 +7849,7 @@ msgstr ""
 msgid "float (32-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:3141 core/CMedia.cpp:3225
+#: core/CMedia.cpp:3140 core/CMedia.cpp:3224
 msgid "forced"
 msgstr ""
 
@@ -7878,7 +7878,7 @@ msgstr ""
 msgid "hdtv"
 msgstr ""
 
-#: core/CMedia.cpp:3143 core/CMedia.cpp:3227
+#: core/CMedia.cpp:3142 core/CMedia.cpp:3226
 msgid "hearing impaired"
 msgstr ""
 
@@ -7891,7 +7891,7 @@ msgstr ""
 msgid "is a Softimage file, but not a PIC file."
 msgstr ""
 
-#: core/CMedia.cpp:3139 core/CMedia.cpp:3223
+#: core/CMedia.cpp:3138 core/CMedia.cpp:3222
 msgid "karaoke"
 msgstr ""
 
@@ -7908,7 +7908,7 @@ msgstr ""
 msgid "listen to socket failed\n"
 msgstr ""
 
-#: core/CMedia.cpp:3137 core/CMedia.cpp:3221
+#: core/CMedia.cpp:3136 core/CMedia.cpp:3220
 msgid "lyrics"
 msgstr ""
 
@@ -8027,7 +8027,7 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr ""
 
-#: core/CMedia.cpp:3133 core/CMedia.cpp:3217
+#: core/CMedia.cpp:3132 core/CMedia.cpp:3216
 msgid "original"
 msgstr ""
 
@@ -8060,7 +8060,7 @@ msgstr ""
 msgid "store_audio: Invalid data"
 msgstr ""
 
-#: core/CMedia.cpp:2859 core/CMedia.cpp:2890
+#: core/CMedia.cpp:2858 core/CMedia.cpp:2889
 msgid "subtitle"
 msgstr ""
 
@@ -8072,11 +8072,11 @@ msgstr ""
 msgid "tv title"
 msgstr ""
 
-#: core/CMedia.cpp:3108 core/CMedia.cpp:3192
+#: core/CMedia.cpp:3107 core/CMedia.cpp:3191
 msgid "und"
 msgstr ""
 
-#: core/CMedia.cpp:2862 core/CMedia.cpp:2893 core/CMedia.cpp:3857
+#: core/CMedia.cpp:2861 core/CMedia.cpp:2892 core/CMedia.cpp:3857
 #: core/wandImage.cpp:579
 msgid "unknown"
 msgstr ""
@@ -8093,11 +8093,11 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:2850 core/CMedia.cpp:2881
+#: core/CMedia.cpp:2849 core/CMedia.cpp:2880
 msgid "video"
 msgstr ""
 
-#: core/CMedia.cpp:3145 core/CMedia.cpp:3229
+#: core/CMedia.cpp:3144 core/CMedia.cpp:3228
 msgid "visual impaired"
 msgstr ""
 
