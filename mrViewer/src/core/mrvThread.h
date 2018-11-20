@@ -19,24 +19,27 @@
  * @file   mrvThread.h
  * @author gga
  * @date   Sun Aug  5 07:07:23 2007
- * 
+ *
  * @brief  Some auxiliary macros for dealing and debugging locks in threads
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvThread_h
 #define mrvThread_h
 
+//#define DEBUG_MUTEX
 
 #ifdef DEBUG_MUTEX
 
+#include <sys/types.h>
+#include <sys/syscall.h>
 
-#define SCOPED_LOCK(x)                                                    \
-       std::cerr << "Lock   " << #x << " " << &x << " "                   \
-                 << __FILE__ << " " << __LINE__                           \
-             << std::endl;                                                \
-       Mutex::scoped_lock lk_##x(x);
+#define SCOPED_LOCK(x)  if (1) {                                            \
+    pid_t tid = syscall(SYS_gettid);                                        \
+    std::cerr << std::dec << tid << ") Lock   " << #x << " " << &x << " "   \
+              << __FILE__ << " " << std::dec << __LINE__  << std::endl; }   \
+    Mutex::scoped_lock lk_##x(x);
 
 #define CONDITION_WAIT( cond, x ) if (1) {                                \
        std::cerr << "Wait   " << #x << " " << &x << " "                   \
@@ -45,13 +48,13 @@
        cond.wait(lk_##x);                                                 \
        std::cerr << "Got    " << #x << " " << &x << " "                   \
                  << __FILE__ << " " << __LINE__                           \
-                 << std::endl; } 
+                 << std::endl; }
 
 
 #define CONDITION_TIMED_WAIT( cond, x, b ) if (1) {                          \
     std::cerr << "Wait time " << b.sec << " " << #x << " " << &x << " "  \
               << __FILE__ << " " << __LINE__                                 \
-                 << std::endl;                                               \ 
+                 << std::endl;                                               \
     cond.timed_wait( lk_##x, b );                                            \
     std::cerr << "Got time " << #x << " " << &x << " "                         \
               << __FILE__ << " " << __LINE__  << std::endl; }
