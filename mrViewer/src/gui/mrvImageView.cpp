@@ -8445,7 +8445,6 @@ void ImageView::play( const CMedia::Playback dir )
 
    create_timeout( 0.5/fps );
 
-   mrv::media bg = background();
    {
       if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
            !CMedia::cache_active() ||
