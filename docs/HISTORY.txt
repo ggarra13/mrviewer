@@ -1,3 +1,6 @@
+v4.3.5   - Bug fixed CTL RRT transform not doing anything and not
+	   getting selected.
+
 v4.3.4   - Bug fixed cache sliding when it was stopped near the end of
 	   a sequence that did not have all frames cached.  This was
 	   a Windows problem.
@@ -7,13 +10,8 @@ v4.3.4   - Bug fixed cache sliding when it was stopped near the end of
 	 - Made start up time be much faster, as it now does not load
 	   any frames until the GUI is up and idle.
 	 - Made background image show on first run if it is different
-<<<<<<< HEAD
-	   than fg image.  Note that this makes the gui a tad slower
-	   on start up.
-=======
 	   than foreground image.  Note that this makes the gui a tad
 	   slower on start up.
->>>>>>> v4.3.4
 
 v4.3.3   - Bug fixed EDL playback as it had gotten broken with the new
 	   timeline algorithm.
