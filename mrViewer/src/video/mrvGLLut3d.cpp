@@ -969,9 +969,10 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
           }
       }
 
-    if ( img->rendering_transform() )
+    const char* rrt = img->rendering_transform();
+    if ( rrt )
       {
-        std::string name = img->rendering_transform();
+        std::string name = rrt;
         Transform t( name, Transform::kCTL );
         if ( !key.empty() ) key += " -> ";
         key += name;
@@ -1198,8 +1199,8 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
       if ( i != _luts.end() && i->second->inited() )
         {
             // this lut was already created, return it.
-	    LOG_INFO( _("3D Lut for ") << img->name()
-		      << _(" already created: " ) );
+            LOG_INFO( _("3D Lut for ") << img->name()
+                      << _(" already created: " ) );
             LOG_INFO( path );
             return i->second.get();
         }
@@ -1220,10 +1221,10 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                     msg += _("  Choosing ") + name + ".";
                     CMedia* c = const_cast< CMedia* >( img );
 
-		    char buf[1024];
-		    sprintf( buf, "ICS \"%s\"", name.c_str() );
-		    view->uiView->send_network( buf );
-	  
+                    char buf[1024];
+                    sprintf( buf, "ICS \"%s\"", name.c_str() );
+                    view->uiView->send_network( buf );
+
                     c->ocio_input_color_space( name );
                     uiICS->copy_label( lbl );
                     uiICS->value(i);
