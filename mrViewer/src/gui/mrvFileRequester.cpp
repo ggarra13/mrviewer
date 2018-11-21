@@ -499,12 +499,22 @@ void attach_rt_script( CMedia* image, const std::string& script,
 }
 
 void attach_ctl_script( CMedia* image, const char* startfile,
-                          const mrv::ViewerUI* main )
+                        const mrv::ViewerUI* main )
   {
     if ( !image || !main ) return;
 
     std::string script = make_ctl_browser( startfile, "RRT,RT" );
 
+    char buf[1024];
+    sprintf( buf, "RT \"%s\"", script.c_str() );
+    main->uiView->send_network( buf );
+
+    if ( script.empty() )
+    {
+        image->rendering_transform( NULL );
+    }
+
+    image->rendering_transform( script.c_str() );
 
   }
 
@@ -761,7 +771,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    if ( !file || strlen(file) == 0 ) return;
 
    save_movie_or_sequence( file, uiMain, opengl );
-   
+
 }
 
 
