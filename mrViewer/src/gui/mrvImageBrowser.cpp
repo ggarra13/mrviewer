@@ -1062,7 +1062,7 @@ void ImageBrowser::clear_bg()
          }
 
          DBG( "Make images contiguous in timeline" );
-         // adjust_timeline();
+         adjust_timeline();
 
          change_image(0);
          // seek( view()->frame() );
