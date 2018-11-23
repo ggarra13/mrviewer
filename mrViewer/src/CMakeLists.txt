@@ -97,11 +97,11 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ ${GLEW_LIBRARIES} fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-      ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-      SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+      #ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
+      #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
       INCLUDE_DIRECTORIES( /usr/local/sanitize )
-      #ADD_DEFINITIONS( -fsanitize=address )
-      #SET(LIBRARIES asan ${LIBRARIES} )
+      ADD_DEFINITIONS( -fsanitize=address )
+      SET(LIBRARIES asan ${LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
