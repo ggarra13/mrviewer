@@ -1027,7 +1027,11 @@ static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
 
-  attach_ctl_script( fg->image(), "", view->main() );
+  CMedia* img = fg->image();
+  const char* script = "";
+  if ( img->rendering_transform() ) script = img->rendering_transform();
+
+  attach_ctl_script( fg->image(), script, view->main() );
 }
 
 static void modify_sop_sat( mrv::ImageView* view )
