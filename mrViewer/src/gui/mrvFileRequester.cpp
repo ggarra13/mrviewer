@@ -495,28 +495,19 @@ void attach_rt_script( CMedia* image, const std::string& script,
     if ( ! script.empty() )
         main->uiView->send_network( "RT \"" + script + "\"" );
 
-    image->rendering_transform( script.c_str() );
+    if ( script.empty() ) image->rendering_transform( NULL );
+    else  image->rendering_transform( script.c_str() );
 }
 
 void attach_ctl_script( CMedia* image, const char* startfile,
                         const mrv::ViewerUI* main )
-  {
+{
     if ( !image || !main ) return;
 
     std::string script = make_ctl_browser( startfile, "RRT,RT" );
 
-    char buf[1024];
-    sprintf( buf, "RT \"%s\"", script.c_str() );
-    main->uiView->send_network( buf );
-
-    if ( script.empty() )
-    {
-        image->rendering_transform( NULL );
-    }
-
-    image->rendering_transform( script.c_str() );
-
-  }
+    attach_rt_script( image, script, main );
+}
 
 void attach_look_mod_transform( CMedia* image, const std::string& script,
                                 const size_t idx,
