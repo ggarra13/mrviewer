@@ -1465,8 +1465,8 @@ class CMedia
     static std::string codec_tag2fourcc( unsigned int );
     static std::string codec_name( const AVCodecParameters* enc );
     static std::string codec_name( const AVCodecContext* enc );
-    static unsigned int calculate_bitrate( const AVCodecParameters* enc );
-    static unsigned int calculate_bitrate( const AVCodecContext* enc );
+    static unsigned int calculate_bitrate( const AVStream* stream,
+					   const AVCodecParameters* enc );
     static double calculate_fps( const AVStream* stream );
 
   protected:
