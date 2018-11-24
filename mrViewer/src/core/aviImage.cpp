@@ -629,7 +629,7 @@ void aviImage::subtitle_file( const char* f )
                     subtitle_info_t s;
                     std::ostringstream msg;
                     populate_stream_info( s, msg, scontext, par, i );
-                    s.bitrate    = calculate_bitrate( ctx );
+                    s.bitrate    = calculate_bitrate( stream, par );
                     s.play = false;
                     _subtitle_info.push_back( s );
                     break;
@@ -2270,7 +2270,7 @@ void aviImage::populate()
 
                     s.channels   = ctx->channels;
                     s.frequency  = ctx->sample_rate;
-                    s.bitrate    = calculate_bitrate( ctx );
+                    s.bitrate    = calculate_bitrate( stream, par );
 
 
                     const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
@@ -2285,7 +2285,7 @@ void aviImage::populate()
                 {
                     subtitle_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
-                    s.bitrate    = calculate_bitrate( ctx );
+                    s.bitrate    = calculate_bitrate( stream, par );
                     _subtitle_info.push_back( s );
                     if ( _subtitle_index < 0 )
                         _subtitle_index = _subtitle_info.size()-1;
