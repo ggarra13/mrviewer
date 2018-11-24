@@ -2512,7 +2512,7 @@ void ImageInformation::fill_data()
             sprintf( buf, _("%d Hz."), s.frequency );
             add_text( _("Frequency"), _("Frequency of audio"), buf );
             sprintf( buf, _("%d kb/s"), s.bitrate/1000 );
-            add_text( _("Avg. Bitrate"), _("Avg. Bitrate"), buf );
+            add_text( _("Max. Bitrate"), _("Max. Bitrate"), buf );
 
             ++group;
             add_text( _("Language"), _("Language if known"), s.language );
