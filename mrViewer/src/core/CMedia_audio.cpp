@@ -485,8 +485,14 @@ void CMedia::close_audio_codec()
  *
  * @return bitrate
  */
-unsigned int CMedia::calculate_bitrate( const AVCodecParameters* enc )
+unsigned int CMedia::calculate_bitrate( const AVStream*  stream,
+					const AVCodecParameters* enc )
 {
+
+  AVCPBProperties* props = (AVCPBProperties*)
+  av_stream_get_side_data( stream, AV_PKT_DATA_CPB_PROPERTIES, NULL );
+  if ( props && props->max_bitrate > 0 ) return props->max_bitrate;
+  
   unsigned int bitrate;
   /* for PCM codecs, compute bitrate directly */
   switch(enc->codec_id) {
@@ -522,49 +528,6 @@ unsigned int CMedia::calculate_bitrate( const AVCodecParameters* enc )
   return bitrate;
 }
 
-/**
- * Given an audio codec context, calculate the approximate bitrate.
- *
- * @param enc   codec context
- *
- * @return bitrate
- */
-unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
-{
-  unsigned int bitrate;
-  /* for PCM codecs, compute bitrate directly */
-  switch(enc->codec_id) {
-  case AV_CODEC_ID_PCM_S32LE:
-  case AV_CODEC_ID_PCM_S32BE:
-  case AV_CODEC_ID_PCM_U32LE:
-  case AV_CODEC_ID_PCM_U32BE:
-    bitrate = enc->sample_rate * enc->channels * 32;
-    break;
-  case AV_CODEC_ID_PCM_S24LE:
-  case AV_CODEC_ID_PCM_S24BE:
-  case AV_CODEC_ID_PCM_U24LE:
-  case AV_CODEC_ID_PCM_U24BE:
-  case AV_CODEC_ID_PCM_S24DAUD:
-    bitrate = enc->sample_rate * enc->channels * 24;
-    break;
-  case AV_CODEC_ID_PCM_S16LE:
-  case AV_CODEC_ID_PCM_S16BE:
-  case AV_CODEC_ID_PCM_U16LE:
-  case AV_CODEC_ID_PCM_U16BE:
-    bitrate = enc->sample_rate * enc->channels * 16;
-    break;
-  case AV_CODEC_ID_PCM_S8:
-  case AV_CODEC_ID_PCM_U8:
-  case AV_CODEC_ID_PCM_ALAW:
-  case AV_CODEC_ID_PCM_MULAW:
-    bitrate = enc->sample_rate * enc->channels * 8;
-    break;
-  default:
-    bitrate = (unsigned int) enc->bit_rate;
-    break;
-  }
-  return bitrate;
-}
 
 
 unsigned int CMedia::audio_bytes_per_frame()
@@ -627,7 +590,7 @@ void CMedia::populate_audio()
                  populate_stream_info( s, msg, c, ctx, i );
                  s.channels   = ctx->channels;
                  s.frequency  = ctx->sample_rate;
-                 s.bitrate    = calculate_bitrate( ctx );
+                 s.bitrate    = calculate_bitrate( stream, ctx );
 
                  if ( stream->metadata )
                  {
