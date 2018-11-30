@@ -178,7 +178,7 @@ void client::stop()
        if ( ui->uiConnection )
        {
            ui->uiConnection->uiServerGroup->activate();
-           ui->uiConnection->uiConnect->label( _("Connect") );
+           ui->uiConnection->uiConnect->copy_label( _("Connect") );
        }
    }
 }
@@ -255,7 +255,7 @@ void client::handle_connect(const boost::system::error_code& ec,
       }
 
       ui->uiConnection->uiServerGroup->deactivate();
-      ui->uiConnection->uiConnect->label( _("Disconnect") );
+      ui->uiConnection->uiConnect->copy_label( _("Disconnect") );
 
       await_output();
 
@@ -400,6 +400,7 @@ void client::handle_write(const boost::system::error_code& ec)
 
    if (!ec)
    {
+       LOG_CONN( "Send " << output_queue_.front() );
        output_queue_.pop_front();
        await_output();
    }
@@ -453,7 +454,7 @@ void client::create(mrv::ViewerUI* ui)
    if ( ui->uiConnection )
    {
        ui->uiConnection->uiServerGroup->activate();
-       ui->uiConnection->uiConnect->label( _("Connect") );
+       ui->uiConnection->uiConnect->copy_label( _("Connect") );
    }
    
    boost::thread t( boost::bind( mrv::client_thread,
