@@ -1520,7 +1520,6 @@ void aviImage::timed_limit_store(const int64_t frame)
 
 
   unsigned count = 0;
-  video_cache_t images;
   TimedSeqMap::iterator it = tmp.begin();
   typedef std::vector< video_cache_t::iterator > IteratorList;
   IteratorList iters;
