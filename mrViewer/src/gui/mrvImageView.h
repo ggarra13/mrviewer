@@ -66,6 +66,21 @@ class server;
   class ImageView : public fltk::GlWindow
   {
   public:
+      enum CommandType
+      {
+      kNoCommand = 0,
+      kLoadImage = 1,
+      kChangeImage,
+      kStopVideo,
+      kSeek,
+      kPlayForwards,
+      kPlayBackwards,
+      kRemoveImage,
+      kInsertImage,
+      kICS,
+      kLastCommand
+      };
+      
     enum Actions {
       kMouseDown   = 1 << 0,
       kZoom        = 1 << 1,
@@ -572,6 +587,12 @@ class server;
                                  const int W, const int H );
 
      public:
+      struct Command {
+	  CommandType  type;
+	  void*        data;
+      };
+
+      std::deque<Command>   commands;
       bool           _broadcast;
       CMedia::Mutex  _clients_mtx;
       ParserList     _clients;
@@ -723,6 +744,7 @@ class server;
       // Events needed to be handled in main thread
       ////////////////////////////////////////////////
       std::atomic<unsigned> _event;
+      
 
     ///////////////////
     // Popup menu
