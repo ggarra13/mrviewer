@@ -1117,9 +1117,6 @@ void ImageView::update_ICS() const
       }
   }
   o->copy_label( "scene_linear"  );
-  char buf[32];
-  sprintf( buf, "ICS \"scene_linear\"" );
-  send_network( buf );
   o->redraw();
 }
 
@@ -1397,7 +1394,7 @@ _lastFrame( 0 )
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
         fltk::STENCIL_BUFFER | stereo );
 
-  create_timeout( 0.2f );
+  create_timeout( 0.02f );
 }
 
 
@@ -2689,6 +2686,87 @@ double ImageView::rot_y() const { return _engine->rot_y(); }
 
 void ImageView::timeout()
 {
+    mrv::Timeline* timeline = this->timeline();
+    if  (!timeline) return;
+
+    // Redraw browser to update thumbnail
+    mrv::ImageBrowser* b = browser();
+    if (!b) return;
+   
+    while ( ! commands.empty()  )
+    {
+	Command c = commands.front();
+	switch( c.type )
+	{
+	    case kLoadImage:
+		{
+		    LoadInfo file = * (LoadInfo*) c.data;
+		    LoadList files;
+		    files.push_back( file );
+		    b->load( files, false, "", false );
+		    break;
+		}
+	    case kChangeImage:
+		{
+		    int* idx = (int*) c.data;
+		    b->change_image(*idx);
+		    break;
+		}
+	    case kStopVideo:
+		{
+		    stop();
+		    break;
+		}
+	    case kSeek:
+		{
+		    int64_t f = * ((int64_t*) c.data);
+		    seek( f );
+		    break;
+		}
+	    case kPlayForwards:
+		{
+		    std::cerr << "PLAY FWD" << std::endl;
+		    play_forwards();
+		    std::cerr << "PLAYED FWD" << std::endl;
+		    break;
+		}
+	    case kRemoveImage:
+		{
+		    int* idx = (int*) c.data;
+		    b->remove(*idx);
+		    break;
+		}
+	    case kInsertImage:
+		{
+		    struct InsertData
+		    {
+			int idx;
+			std::string file;
+		    };
+		    InsertData* idx = (InsertData*) c.data;
+		    mrv::media m ;
+		    // b->insert(*idx, m);
+		    break;
+		}
+	    case kICS:
+		{
+		    std::string* s = (std::string*) c.data;
+		    mrv::media fg = foreground();
+		    if (fg)
+		    {
+			CMedia* img = fg->image();
+			img->ocio_input_color_space( *s );
+			update_ICS();
+		    }
+		    break;
+		}
+	}  // switch
+      
+	delete c.data;
+	commands.pop_front();
+	redraw();
+    }
+  
     TRACE( "" );
   //
   // If in EDL mode, we check timeline to see if frame points to
@@ -2696,12 +2774,6 @@ void ImageView::timeout()
   //
     log();
 
-   mrv::Timeline* timeline = this->timeline();
-   if  (!timeline) return;
-
-   // Redraw browser to update thumbnail
-   mrv::ImageBrowser* b = browser();
-   if (!b) return;
 
    mrv::Reel reel = b->reel_at( _fg_reel );
    mrv::Reel bgreel = b->reel_at( _bg_reel );
@@ -2819,6 +2891,7 @@ void ImageView::timeout()
           redraw();
       }
   }
+
 
   repeat_timeout( delay );
 }
@@ -6861,7 +6934,7 @@ char* ImageView::get_layer_label( unsigned short c )
 
     if ( !lbl )
     {
-        LOG_ERROR( _("Color channel not found at index ") << c );
+        LOG_WARNING( _("Color channel not found at index ") << c );
         return NULL;
     }
 
@@ -7588,7 +7661,6 @@ void ImageView::foreground( mrv::media fg )
     CMedia::StereoOutput stereo_out = stereo_output();
 
 
-
     CMedia* img = NULL;
     if ( fg )
     {
@@ -7714,7 +7786,7 @@ void ImageView::foreground( mrv::media fg )
     update_title_bar( this );
     update_image_info();
     update_color_info( fg );
-    _engine->refresh_shaders();
+    if (_engine && valid() ) _engine->refresh_shaders();
 
     redraw();
 }
@@ -8059,9 +8131,12 @@ void ImageView::toggle_lut()
   std::string view = mrv::Preferences::OCIO_View;
 
   char buf[1024];
-  sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
-  send_network( buf );
-
+  if ( _useLUT )
+  {
+      sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
+      send_network( buf );
+  }
+  
   sprintf( buf, "UseLUT %d", (int)_useLUT );
   send_network( buf );
 
@@ -8410,11 +8485,11 @@ void ImageView::play( const CMedia::Playback dir )
 {
    if ( dir == CMedia::kForwards )
    {
-      send_network("playfwd");
+       send_network("playfwd");
    }
    else if ( dir == CMedia::kBackwards )
    {
-      send_network("playback");
+       send_network("playback");
    }
    else
    {
