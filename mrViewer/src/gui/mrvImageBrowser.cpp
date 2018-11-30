@@ -798,7 +798,7 @@ void ImageBrowser::send_image( const mrv::media& m )
     sprintf(txt, N_("Mask %g"), v->masking() );
     v->send_network( txt );
 
-    sprintf( txt, N_("FPS %g"), v->fps() );
+    sprintf( txt, N_("FPS %5.3g"), v->fps() );
     v->send_network( txt );
 
     sprintf( txt, N_("Looping %d"), (int)v->looping() );
@@ -835,7 +835,6 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
 
     if ( visible() ) relayout();
-
 
     send_reel( reel );
     send_image( m );
@@ -1065,7 +1064,7 @@ void ImageBrowser::clear_bg()
          adjust_timeline();
 
          change_image(0);
-         // seek( view()->frame() );
+         seek( view()->frame() );
       }
 
     if ( reel->edl )
@@ -1150,12 +1149,12 @@ void ImageBrowser::clear_bg()
 
 
            adjust_timeline();
-           send_image( m );
+           //send_image( m );
         }
         else
         {
             DBG( "FG REEL " << _reel << " om: " << om->image()->name() );
-            send_image( om );
+            //send_image( om );
         }
 
       }
@@ -1164,12 +1163,21 @@ void ImageBrowser::clear_bg()
 
 void ImageBrowser::value( int idx )
 {
-   fltk::Browser::value( idx );
+    if ( idx == value() ) return;
+    send_image( idx );
+    fltk::Browser::value( idx );
 }
 
 int ImageBrowser::value() const
 {
    return fltk::Browser::value();
+}
+
+void ImageBrowser::send_image( int i )
+{
+    char buf[128];
+    sprintf( buf, "ChangeImage %d", i );
+    view()->send_network( buf );
 }
 
   void ImageBrowser::change_image(int i)
@@ -1179,8 +1187,8 @@ int ImageBrowser::value() const
                      << children() );
           return;
       }
-     value(i);
-     change_image();
+      value(i);
+      change_image();
   }
 
   /**
@@ -1299,8 +1307,6 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     if ( first != AV_NOPTS_VALUE ) frame( first );
 
-
-
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
         img = CMedia::guess_image( name, NULL, 0, false,
@@ -1333,14 +1339,14 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     img->default_icc_profile();
     img->default_rendering_transform();
-
+    
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
 
     mrv::media m = this->add( img );
     send_reel( reel );
-    send_image( m );
+    //send_image( m );
 
     mrv::EDLGroup* e = edl_group();
 
@@ -1515,7 +1521,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
                      fg = load_image( load.filename.c_str(),
                                       load.first, load.last, load.start,
                                       load.end, (i != s) );
-
                      if (!fg)
                      {
                          if ( load.filename.find( "ACESclip" ) ==
@@ -2457,6 +2462,7 @@ void ImageBrowser::replace( int i, mrv::media m )
 
             lastX = x; lastY = y;
             change_image();
+	    send_image( value() );
 
             mrv::media m = current_image();
             if ( timeline()->edl() && m )
