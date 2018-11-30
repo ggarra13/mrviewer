@@ -73,8 +73,6 @@ class Parser
     bool connected;
     tcp::socket socket_;
     Mutex mtx;
-    mrv::Reel r;
-    mrv::media m;
     mrv::ViewerUI* ui;
 };
 
