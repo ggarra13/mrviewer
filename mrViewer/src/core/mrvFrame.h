@@ -207,7 +207,7 @@ class VideoFrame
 
     self& operator=( const self& b );
 
-    inline timeval ptime() const { return _ptime; }
+    inline const timeval& ptime() const { return _ptime; }
     
     inline void width( const unsigned w ) { _width = w;  }
     inline unsigned int width()  const    { return _width;  }
@@ -333,6 +333,7 @@ class VideoFrame
 
 class AudioFrame
 {
+    timeval                _ptime; //!< audio creation time
     boost::int64_t         _frame;  //!< position in audio stream
     short        _channels;  //!< number of channels
     unsigned int     _freq;  //!< audio frequency
@@ -353,6 +354,7 @@ class AudioFrame
     _size( size ),
     _data( new mrv::aligned16_uint8_t[size] )
     {
+	gettimeofday( &_ptime, NULL );
 	memcpy( _data, data, size );
     }
 
@@ -363,6 +365,7 @@ class AudioFrame
     }
 
 
+    inline const timeval&   ptime() const { return _ptime; }
     inline boost::int64_t   frame() const { return _frame; }
     inline unsigned int frequency() const { return _freq; }
     inline short         channels() const { return _channels; }
