@@ -993,7 +993,7 @@ class CMedia
 
     virtual void do_seek();
 
-    DecodeStatus decode_audio( const int64_t frame );
+    DecodeStatus decode_audio( int64_t& frame );
     DecodeStatus handle_video_seek( int64_t& frame,
                                     const bool is_seek = true );
     virtual DecodeStatus decode_video( int64_t& frame );
