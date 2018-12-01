@@ -302,7 +302,9 @@ namespace mrv {
       inline void pop_front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert0( ! _packets.empty() );
+	  // this is neededd to handle packets in network connections where
+	  // they may not match
+          if ( _packets.empty() ) return; 
 
           AVPacket& pkt = _packets.front();
 
