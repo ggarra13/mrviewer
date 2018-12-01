@@ -3441,7 +3441,7 @@ void CMedia::preroll( const int64_t f )
 }
 
 
-int64_t CMedia::wait_image()
+void CMedia::wait_image()
 {
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -3457,8 +3457,6 @@ int64_t CMedia::wait_image()
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  if ( _video_packets.empty() ) return 0;
-  return pts2frame( get_video_stream(), _video_packets.front().dts );
 }
 
 
