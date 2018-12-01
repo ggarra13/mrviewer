@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-12-01 12:40-0300\n"
+"POT-Creation-Date: 2018-12-01 12:49-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/CMedia_audio.cpp:634
+#: core/CMedia_audio.cpp:628
 msgid ""
 "\n"
 "\n"
@@ -31,7 +31,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:620 core/aviImage.cpp:2227
+#: core/CMedia_audio.cpp:614 core/aviImage.cpp:2227
 msgid ""
 "\n"
 "\n"
@@ -156,11 +156,11 @@ msgstr ""
 msgid " expected: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1729
+#: core/CMedia_audio.cpp:1720
 msgid " failed"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1356
+#: core/CMedia_audio.cpp:1347
 msgid " failed with "
 msgstr ""
 
@@ -172,7 +172,7 @@ msgstr ""
 msgid " for channel.  Maximum: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:2146 core/aviImage.cpp:3763
+#: core/CMedia_audio.cpp:2137 core/aviImage.cpp:3763
 msgid " for frame "
 msgstr ""
 
@@ -188,7 +188,7 @@ msgstr ""
 msgid " frames"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1105
+#: core/CMedia_audio.cpp:1096
 msgid " frequency: "
 msgstr ""
 
@@ -212,7 +212,7 @@ msgstr ""
 msgid " is set.  Loaded "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1785 core/aviImage.cpp:1747
+#: core/CMedia_audio.cpp:1776 core/aviImage.cpp:1747
 msgid " not found"
 msgstr ""
 
@@ -240,7 +240,7 @@ msgstr ""
 msgid " status: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1062
+#: core/CMedia_audio.cpp:1053
 msgid " to"
 msgstr ""
 
@@ -388,11 +388,11 @@ msgstr ""
 msgid "+0.0  f/8.0"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1057 core/CMedia_audio.cpp:1081
+#: core/CMedia_audio.cpp:1048 core/CMedia_audio.cpp:1072
 msgid ", channels "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1082
+#: core/CMedia_audio.cpp:1073
 msgid ", format "
 msgstr ""
 
@@ -400,7 +400,7 @@ msgstr ""
 msgid ", freq "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1061 core/CMedia_audio.cpp:1084
+#: core/CMedia_audio.cpp:1052 core/CMedia_audio.cpp:1075
 msgid ", sample rate "
 msgstr ""
 
@@ -772,11 +772,11 @@ msgstr ""
 msgid "96x96x96"
 msgstr ""
 
-#: core/CMedia_audio.cpp:895
+#: core/CMedia_audio.cpp:889
 msgid ": Could not find stream info."
 msgstr ""
 
-#: core/CMedia_audio.cpp:887
+#: core/CMedia_audio.cpp:881
 msgid ": Could not open filename."
 msgstr ""
 
@@ -1136,7 +1136,7 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: core/CMedia_audio.cpp:715 core/aviImage_save.cpp:487
+#: core/CMedia_audio.cpp:709 core/aviImage_save.cpp:487
 #: core/aviImage_save.cpp:1016
 msgid "Audio "
 msgstr ""
@@ -1162,15 +1162,15 @@ msgstr ""
 msgid "Audio conversion of "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1785
+#: core/CMedia_audio.cpp:1776
 msgid "Audio frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1880
+#: core/CMedia_audio.cpp:1871
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1923
+#: core/CMedia_audio.cpp:1914
 msgid "Audio packets empty at end of seek"
 msgstr ""
 
@@ -1191,7 +1191,7 @@ msgstr ""
 msgid "Audio: %<PRId64>"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1528
+#: core/CMedia_audio.cpp:1519
 msgid "Audios #"
 msgstr ""
 
@@ -2015,7 +2015,7 @@ msgstr ""
 msgid "Could not init cmm: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1722
+#: core/CMedia_audio.cpp:1713
 msgid "Could not initialize audio engine"
 msgstr ""
 
@@ -2063,7 +2063,7 @@ msgstr ""
 msgid "Could not open audio codec."
 msgstr ""
 
-#: core/CMedia_audio.cpp:1714
+#: core/CMedia_audio.cpp:1705
 msgid "Could not open audio driver"
 msgstr ""
 
@@ -2075,7 +2075,7 @@ msgstr ""
 msgid "Could not open video codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1800
+#: core/CMedia_audio.cpp:1791
 msgid "Could not play audio frame "
 msgstr ""
 
@@ -2283,7 +2283,7 @@ msgstr ""
 msgid "Create a new reel or EDL track"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1056
+#: core/CMedia_audio.cpp:1047
 msgid "Create audio conversion from "
 msgstr ""
 
@@ -2563,7 +2563,7 @@ msgstr ""
 msgid "Decode OK"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2144 core/aviImage.cpp:3761
+#: core/CMedia_audio.cpp:2135 core/aviImage.cpp:3761
 msgid "Decode audio error: "
 msgstr ""
 
@@ -2571,7 +2571,7 @@ msgstr ""
 msgid "Decode video error seek frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1306
+#: core/CMedia_audio.cpp:1297
 msgid "Decode_audio failed with error: "
 msgstr ""
 
@@ -3026,11 +3026,11 @@ msgstr ""
 msgid "Failed setting layer to "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1094
+#: core/CMedia_audio.cpp:1085
 msgid "Failed to alloc swresample library"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1102
+#: core/CMedia_audio.cpp:1093
 msgid "Failed to init swresample library with "
 msgstr ""
 
@@ -3928,7 +3928,7 @@ msgstr ""
 msgid "Invalid source profile/image pixel format"
 msgstr ""
 
-#: core/CMedia_audio.cpp:775 core/CMedia_audio.cpp:787
+#: core/CMedia_audio.cpp:769 core/CMedia_audio.cpp:781
 msgid "Invalid timecode "
 msgstr ""
 
@@ -4660,7 +4660,7 @@ msgstr ""
 msgid "No left image to attach a stereo image pair"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1527
+#: core/CMedia_audio.cpp:1518
 msgid "No memory for audio frame"
 msgstr ""
 
@@ -5003,7 +5003,7 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1018
+#: core/CMedia_audio.cpp:1009
 msgid "Output buffer size is too small for the current frame ("
 msgstr ""
 
@@ -5246,7 +5246,7 @@ msgstr ""
 msgid "Playback"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1728
+#: core/CMedia_audio.cpp:1719
 msgid "Playback of audio frame "
 msgstr ""
 
@@ -5631,7 +5631,7 @@ msgstr ""
 msgid "Repeat Frame"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1122
+#: core/CMedia_audio.cpp:1113
 msgid "Resampling failed"
 msgstr ""
 
@@ -6802,7 +6802,7 @@ msgstr ""
 msgid "Too many channels in image.  Saving RGB only"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1266
+#: core/CMedia_audio.cpp:1257
 msgid "Too much audio used:"
 msgstr ""
 
@@ -7806,11 +7806,11 @@ msgstr ""
 msgid "data"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1356
+#: core/CMedia_audio.cpp:1347
 msgid "decode_audio_packet "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1915
+#: core/CMedia_audio.cpp:1906
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
@@ -7852,7 +7852,7 @@ msgstr ""
 msgid "forced"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1059
+#: core/CMedia_audio.cpp:1050
 msgid "format "
 msgstr ""
 
@@ -8055,7 +8055,7 @@ msgstr ""
 msgid "src_nb_samples is 0"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1500
+#: core/CMedia_audio.cpp:1491
 msgid "store_audio: Invalid data"
 msgstr ""
 
