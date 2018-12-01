@@ -898,6 +898,72 @@ void CMedia::audio_file( const char* file )
 }
 
 
+void CMedia::timed_limit_audio_store(const int64_t frame)
+{
+    int max_frames = max_video_frames();
+
+    if ( max_audio_frames() > max_frames )
+        max_frames = max_audio_frames();
+    
+#undef timercmp
+# define timercmp(a, b, CMP)					\
+    (((a).tv_sec == (b).tv_sec) ?				\
+     ((a).tv_usec CMP (b).tv_usec) :				\
+     ((a).tv_sec CMP (b).tv_sec))
+
+  struct customMore {
+      inline bool operator()( const timeval& a,
+                              const timeval& b ) const
+      {
+          return timercmp( a, b, > );
+      }
+  };
+
+  typedef std::multimap< timeval, audio_cache_t::iterator,
+                         customMore > TimedSeqMap;
+  TimedSeqMap tmp;
+  {
+      audio_cache_t::iterator  it = _audio.begin();
+      audio_cache_t::iterator end = _audio.end();
+      for ( ; it != end; ++it )
+      {
+          tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+      }
+  }
+
+
+
+  unsigned count = 0;
+  TimedSeqMap::iterator it = tmp.begin();
+  typedef std::vector< audio_cache_t::iterator > IteratorList;
+  IteratorList iters;
+  for ( ; it != tmp.end(); ++it )
+  {
+      ++count;
+      if ( count > max_frames )
+      {
+	  std::cerr << "count " << count << " "
+		    << it->first.tv_sec << "." << it->first.tv_usec
+		    << " " << (*(it->second))->frame() << std::endl;
+          // Store this iterator to remove it later
+          iters.push_back( it->second );
+      }
+  }
+
+  IteratorList::iterator i = iters.begin();
+  IteratorList::iterator e = iters.end();
+
+  // We erase from greater to lower to avoid dangling iterators
+  std::sort( i, e, std::greater<audio_cache_t::iterator>() );
+
+  i = iters.begin();
+  e = iters.end();
+  for ( ; i != e; ++i )
+  {
+      _audio.erase( *i );
+  }
+
+}
 
 //
 // Limit the audio store to approx. max frames images on each side.
@@ -911,32 +977,43 @@ void CMedia::limit_audio_store(const int64_t frame)
     int max_frames = max_video_frames();
     
     if ( max_audio_frames() > max_frames )
+<<<<<<< HEAD
 	max_frames = max_audio_frames();
     
     
   int64_t first, last;
+=======
+        max_frames = max_audio_frames();
 
-  switch( playback() )
+    //if ( playback() == kForwards || playback() == kStopped )
+    //    return timed_limit_audio_store( frame );
+
+    int64_t first, last;
+>>>>>>> v4.3.5
+
+    switch( playback() )
     {
-        case kBackwards:
-            first = frame - max_frames;
-            last  = frame;
-            if ( _adts < first ) first = _adts;
-            break;
-        case kForwards:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _adts < first ) first = _adts;
-            if ( _adts > last )   last = _adts;
-            break;
-        default:
-            first = frame - max_frames;
-            last  = frame + max_frames;
-            if ( _adts > last )   last = _adts;
-            break;
+	case kForwards:
+	    first = frame;
+	    last  = frame + max_frames;
+	    break;
+	case kBackwards:
+	    first = frame - max_frames;
+	    last  = frame;
+	    break;
+	default:
+	    first = frame - max_frames;
+	    last  = frame + max_frames;
+	    break;
     }
+<<<<<<< HEAD
   
 
+=======
+
+    if ( _adts < first ) first = _adts;
+    if ( _adts > last )   last = _adts;
+>>>>>>> v4.3.5
 #if 0
   if ( first > last ) 
   {
@@ -1229,12 +1306,12 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     // Get the audio codec context
     if ( !_audio_ctx ) return kDecodeNoStream;
 
-  assert( !_audio_packets.is_seek_end( pkt ) );
-  assert( !_audio_packets.is_seek( pkt ) );
-  assert( !_audio_packets.is_flush( pkt ) );
-  assert( !_audio_packets.is_preroll( pkt ) );
-  assert( !_audio_packets.is_loop_end( pkt ) );
-  assert( !_audio_packets.is_loop_start( pkt ) );
+  av_assert0( !_audio_packets.is_seek_end( pkt ) );
+  av_assert0( !_audio_packets.is_seek( pkt ) );
+  av_assert0( !_audio_packets.is_flush( pkt ) );
+  av_assert0( !_audio_packets.is_preroll( pkt ) );
+  av_assert0( !_audio_packets.is_loop_end( pkt ) );
+  av_assert0( !_audio_packets.is_loop_start( pkt ) );
 
   ptsframe = pts2frame( stream, pkt.dts );
   if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
@@ -1269,11 +1346,11 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
   pkt_temp.size = pkt.size;
 
 
-  assert( _audio_buf != NULL );
-  assert( pkt.size + _audio_buf_used < _audio_max );
+  av_assert0( _audio_buf != NULL );
+  av_assert0( pkt.size + _audio_buf_used < _audio_max );
 
   int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
-  assert( pkt_temp.size <= audio_size );
+  av_assert0( pkt_temp.size <= audio_size );
 
   if ( _audio_buf_used + audio_size > _audio_max )
   {
@@ -1286,7 +1363,11 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
   {
       // Decode the audio into the buffer
+<<<<<<< HEAD
       //av_assert0( _audio_buf_used % 16 == 0 );
+=======
+      assert( _audio_buf_used % 16 == 0 );
+>>>>>>> v4.3.5
 
       int ret = decode_audio3( _audio_ctx, 
                                ( int16_t * )( (char*)_audio_buf + 
