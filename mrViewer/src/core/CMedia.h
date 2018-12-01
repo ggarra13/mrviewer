@@ -1417,6 +1417,7 @@ class CMedia
                                const AVCodecParameters* codecpar,
                                const int stream_index );
 
+    void timed_limit_audio_store( const int64_t frame );
     void limit_audio_store( const int64_t frame );
     void clear_stores();
 
