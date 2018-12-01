@@ -319,6 +319,9 @@ void attach_ocio_input_color_space( CMedia* img, ImageView* view )
     if ( ret.empty() ) return;
 
     img->ocio_input_color_space( ret );
+    char buf[256];
+    sprintf( buf, "ICS \"%s\"", ret.c_str() );
+    view->send_network( buf );
     view->redraw();
 }
 
