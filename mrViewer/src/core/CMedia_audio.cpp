@@ -985,15 +985,29 @@ void CMedia::limit_audio_store(const int64_t frame)
     if ( max_audio_frames() > max_frames )
         max_frames = max_audio_frames();
 
-    if ( playback() == kForwards || playback() == kStopped )
-        return timed_limit_audio_store( frame );
+    //if ( playback() == kForwards || playback() == kStopped )
+    //    return timed_limit_audio_store( frame );
 
-    std::cerr << "limit_audio_store normal" << std::endl;
-    
-    int64_t first = frame - max_frames;
-    int64_t last  =  frame;
+    int64_t first, last;
+
+    switch( playback() )
+    {
+	case kForwards:
+	    first = frame;
+	    last  = frame + max_frames;
+	    break;
+	case kBackwards:
+	    first = frame - max_frames;
+	    last  = frame;
+	    break;
+	default:
+	    first = frame - max_frames;
+	    last  = frame + max_frames;
+	    break;
+    }
+
     if ( _adts < first ) first = _adts;
-
+    if ( _adts > last )   last = _adts;
 #if 0
   if ( first > last )
   {
@@ -1347,7 +1361,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
   {
       // Decode the audio into the buffer
-      av_assert0( _audio_buf_used % 16 == 0 );
+      assert( _audio_buf_used % 16 == 0 );
 
       int ret = decode_audio3( _audio_ctx,
                                ( int16_t * )( (char*)_audio_buf +
@@ -1589,7 +1603,7 @@ CMedia::store_audio( const int64_t audio_frame,
     {
         audio_cache_t::iterator end = _audio.end();
 
-#if 0  // less correct
+#if 1  // needed
         audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
                                                        end,
                                                        f,
@@ -1824,7 +1838,7 @@ bool CMedia::find_audio( const int64_t frame )
     if ( frame < first_frame() || frame > last_frame() )
         return true;
 
-#if 0 // less correct
+#if 1 // needed
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end,
                                                   frame, LessThanFunctor() );
