@@ -367,6 +367,7 @@ void GLEngine::init_GLEW()
     }
 
 
+
 // #if defined(WIN32) || defined(WIN64)
 //   err = wglewInit();
 //   if (GLEW_OK != err)
@@ -400,6 +401,7 @@ void GLEngine::refresh_shaders()
 
     if ( _has_yuv )
     {
+
         _has_yuva = false;
         if ( _maxTexUnits > 4 )  // @todo: bug fix
         {
@@ -452,7 +454,7 @@ void GLEngine::refresh_shaders()
 
 
             _rgba = new GLShader( shaderFile );
-
+ 
         }
         catch ( const std::exception& e )
         {
@@ -474,6 +476,7 @@ void GLEngine::refresh_shaders()
                 {
                     _YCbCr = NULL;
                 }
+
 
                 sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
                 _YByRy = new GLShader( shaderFile );
@@ -536,7 +539,6 @@ void GLEngine::initialize()
 {
   static bool glut_init = false;
 
-  DBG( __FUNCTION__ << " " << __LINE__ );
   if ( !glut_init )
   {
       DBG( "call glutInit" );
