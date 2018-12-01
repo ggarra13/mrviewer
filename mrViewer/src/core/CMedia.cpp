@@ -3919,7 +3919,7 @@ void CMedia::ocio_input_color_space( const std::string& n )
     if ( _input_color_space == n || is_thumbnail() ) return;
 
     _input_color_space = n;
-    image_damage( image_damage() | kDamageData | kDamageContents | kDamageLut );
+    image_damage( image_damage() | kDamageData | kDamageLut );
 }
 
 void CMedia::default_rendering_transform()
