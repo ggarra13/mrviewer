@@ -1,6 +1,8 @@
 v4.3.5   - Bug fixed CTL RRT transform not getting selected when it
 	   was selected thru the menus.  The 8bits, 16bits, float, etc.
 	   would work fine.
+	 - Bug fixed audio scrubbing which would in latest versions not
+	   work completely right.
 
 v4.3.4   - Bug fixed cache sliding when it was stopped near the end of
 	   a sequence that did not have all frames cached.  This was
