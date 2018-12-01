@@ -52,7 +52,6 @@ namespace fs = boost::filesystem;
 #include "core/clonedImage.h"
 #include "core/mrvColorBarsImage.h"
 #include "core/slateImage.h"
-#include "core/mrvLicensing.h"
 #include "core/Sequence.h"
 #include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
