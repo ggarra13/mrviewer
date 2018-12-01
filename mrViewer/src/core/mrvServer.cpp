@@ -1246,41 +1246,43 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
+      std::cerr << browser() << std::endl;
       size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
-         r = browser()->reel( unsigned(i) );
-         cmd = N_("Reel \"");
-         cmd += r->name;
-         cmd += "\"";
-         deliver( cmd );
+	  r = browser()->reel_at( unsigned(i) );
+	  cmd = N_("Reel \"");
+	  cmd += r->name;
+	  cmd += "\"";
+	  deliver( cmd );
+ 
+	  mrv::MediaList::iterator j = r->images.begin();
+	  mrv::MediaList::iterator e = r->images.end();
+	  for ( ; j != e; ++j )
+	  {
+	      if ( !(*j) ) continue;
+	      
+	      CMedia* img = (*j)->image();
+	      
+	      cmd = N_("Image \"");
+	      cmd += img->directory();
+	      cmd += "/";
+	      cmd += img->name();
+	      cmd += "\" ";
+	      
+	      char buf[1024];
+	      boost::int64_t start = img->first_frame();
+	      boost::int64_t end   = img->last_frame();
 
-         mrv::MediaList::iterator j = r->images.begin();
-         mrv::MediaList::iterator e = r->images.end();
-         for ( ; j != e; ++j )
-         {
-             CMedia* img = (*j)->image();
-             if (!img) continue;
+	      sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
+		       start, end );
+	      cmd += buf;
 
-             cmd = N_("Image \"");
-             cmd += img->directory();
-             cmd += "/";
-             cmd += img->name();
-             cmd += "\" ";
+	      deliver( cmd );
 
-            char buf[1024];
-            boost::int64_t start = img->first_frame();
-            boost::int64_t end   = img->last_frame();
-
-            sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
-                     start, end );
-            cmd += buf;
-
-            deliver( cmd );
-
-            boost::int64_t frame = img->frame();
-            sprintf( buf, N_("seek %") PRId64, frame );
-            deliver( buf );
+	      boost::int64_t frame = view()->frame();
+	      sprintf( buf, N_("seek %") PRId64, frame );
+	      deliver( buf );
 
             //
             // Handle color management (OCIO/CTL)
@@ -1539,20 +1541,20 @@ bool Parser::parse( const std::string& s )
       boost::int64_t f;
       is >> f;
       
-      // ImageView::Command c;
-      // c.type = ImageView::kStopVideo;
-      // c.data = NULL;
-      // v->commands.push_back( c );
-      v->stop();
+      ImageView::Command c;
+      c.type = ImageView::kStopVideo;
+      c.data = NULL;
+      v->commands.push_back( c );
+      
       ok = true;
    }
    else if ( cmd == N_("playfwd") )
    {
-       // ImageView::Command c;
-       // c.type = ImageView::kPlayForwards;
-       // c.data = NULL;
-       // v->commands.push_back( c );
-       v->play_forwards();
+       ImageView::Command c;
+       c.type = ImageView::kPlayForwards;
+       c.data = NULL;
+       v->commands.push_back( c );
+       // v->play_forwards();
        ok = true;
    }
    else if ( cmd == N_("playback") )
@@ -1565,12 +1567,12 @@ bool Parser::parse( const std::string& s )
       boost::int64_t f;
       is >> f;
 
-      // ImageView::Command c;
-      // c.type = ImageView::kSeek;
-      // c.data = new int64_t( f );
-      // v->commands.push_back( c );
+      ImageView::Command c;
+      c.type = ImageView::kSeek;
+      c.data = new int64_t( f );
+      v->commands.push_back( c );
       
-      v->seek( f );
+      //v->seek( f );
       
       ok = true;
    }
