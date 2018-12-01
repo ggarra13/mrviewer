@@ -136,11 +136,11 @@ class ImageBrowser : public fltk::Browser
 
      void load( const LoadList& files, const bool stereo = false,
                 std::string bgfile = "",
-                const bool progressBar = true );
+                const bool progressBar = false );
     void load( const stringArray& files, const bool seqs = true,
                const bool stereo = false,
                const std::string bgfile = "",
-               const bool progressBar = true );
+               const bool progressBar = false );
 
 
     void replace( int idx, mrv::media m );
@@ -177,6 +177,8 @@ class ImageBrowser : public fltk::Browser
 
      void main( mrv::ViewerUI* m ) { uiMain = m; }
      mrv::ViewerUI* main() { return uiMain; }
+    
+    void send_image( int idx );
 
    public:
      static mrv::Element* new_item(mrv::media img);

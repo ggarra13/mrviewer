@@ -169,9 +169,9 @@ namespace mrv {
 
     code[read] = '\0';    // null-terminate
     fclose(f);
-
+ 
     load( filename, code );
-
+ 
     delete [] code;
   }
 
