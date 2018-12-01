@@ -1117,9 +1117,6 @@ void ImageView::update_ICS() const
       }
   }
   o->copy_label( "scene_linear"  );
-  char buf[32];
-  sprintf( buf, "ICS \"scene_linear\"" );
-  send_network( buf );
   o->redraw();
 }
 
@@ -1315,6 +1312,7 @@ bool ImageView::in_presentation() const
 
 void ImageView::send_network( std::string m ) const
 {
+    if ( !_network_send) return;
 
     ParserList::const_iterator i = _clients.begin();
     ParserList::const_iterator e = _clients.end();
@@ -1386,6 +1384,7 @@ _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
+_network_send( true ),
 _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.05f);
@@ -1397,7 +1396,7 @@ _lastFrame( 0 )
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
         fltk::STENCIL_BUFFER | stereo );
 
-  create_timeout( 0.2f );
+  create_timeout( 0.02f );
 }
 
 
@@ -2689,6 +2688,95 @@ double ImageView::rot_y() const { return _engine->rot_y(); }
 
 void ImageView::timeout()
 {
+    mrv::Timeline* timeline = this->timeline();
+    if  (!timeline) return;
+
+    // Redraw browser to update thumbnail
+    mrv::ImageBrowser* b = browser();
+    if (!b) return;
+   
+    while ( ! commands.empty()  )
+    {
+	_network_send = false;
+	Command c = commands.front();
+	switch( c.type )
+	{
+	    case kLoadImage:
+		{
+		    LoadInfo file = * (LoadInfo*) c.data;
+		    LoadList files;
+		    files.push_back( file );
+		    b->load( files, false, "", false );
+		    break;
+		}
+	    case kChangeImage:
+		{
+		    int* idx = (int*) c.data;
+		    b->change_image(*idx);
+		    break;
+		}
+	    case kStopVideo:
+		{
+		    std::cerr << "call stop" << std::endl;
+		    stop();
+		    break;
+		}
+	    case kSeek:
+		{
+		    std::cerr << "call seek" << std::endl;
+		    int64_t f = * ((int64_t*) c.data);
+		    seek( f );
+		    break;
+		}
+	    case kPlayForwards:
+		{
+		    std::cerr << "call play fwd" << std::endl;
+		    play_forwards();
+		    break;
+		}
+	    case kPlayBackwards:
+		{
+		    play_backwards();
+		    break;
+		}
+	    case kRemoveImage:
+		{
+		    int* idx = (int*) c.data;
+		    b->remove(*idx);
+		    break;
+		}
+	    case kInsertImage:
+		{
+		    struct InsertData
+		    {
+			int idx;
+			std::string file;
+		    };
+		    InsertData* idx = (InsertData*) c.data;
+		    mrv::media m ;
+		    // b->insert(*idx, m);
+		    break;
+		}
+	    case kICS:
+		{
+		    std::string* s = (std::string*) c.data;
+		    mrv::media fg = foreground();
+		    if (fg)
+		    {
+			CMedia* img = fg->image();
+			img->ocio_input_color_space( *s );
+			update_ICS();
+		    }
+		    break;
+		}
+	}  // switch
+
+	_network_send = true;
+	delete c.data;
+	commands.pop_front();
+	redraw();
+    }
+  
     TRACE( "" );
   //
   // If in EDL mode, we check timeline to see if frame points to
@@ -2696,12 +2784,6 @@ void ImageView::timeout()
   //
     log();
 
-   mrv::Timeline* timeline = this->timeline();
-   if  (!timeline) return;
-
-   // Redraw browser to update thumbnail
-   mrv::ImageBrowser* b = browser();
-   if (!b) return;
 
    mrv::Reel reel = b->reel_at( _fg_reel );
    mrv::Reel bgreel = b->reel_at( _bg_reel );
@@ -2819,6 +2901,7 @@ void ImageView::timeout()
           redraw();
       }
   }
+
 
   repeat_timeout( delay );
 }
@@ -6861,7 +6944,7 @@ char* ImageView::get_layer_label( unsigned short c )
 
     if ( !lbl )
     {
-        LOG_ERROR( _("Color channel not found at index ") << c );
+        LOG_WARNING( _("Color channel not found at index ") << c );
         return NULL;
     }
 
@@ -7588,7 +7671,6 @@ void ImageView::foreground( mrv::media fg )
     CMedia::StereoOutput stereo_out = stereo_output();
 
 
-
     CMedia* img = NULL;
     if ( fg )
     {
@@ -7714,7 +7796,7 @@ void ImageView::foreground( mrv::media fg )
     update_title_bar( this );
     update_image_info();
     update_color_info( fg );
-    _engine->refresh_shaders();
+    if (_engine && valid() ) _engine->refresh_shaders();
 
     redraw();
 }
@@ -8059,9 +8141,12 @@ void ImageView::toggle_lut()
   std::string view = mrv::Preferences::OCIO_View;
 
   char buf[1024];
-  sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
-  send_network( buf );
-
+  if ( _useLUT )
+  {
+      sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
+      send_network( buf );
+  }
+  
   sprintf( buf, "UseLUT %d", (int)_useLUT );
   send_network( buf );
 
@@ -8121,6 +8206,7 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
+    
     _preframe = f;
 
     // if ( std::abs( f - frame() ) < fps() / 2.0 )
@@ -8408,19 +8494,19 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
-   if ( dir == CMedia::kForwards )
-   {
-      send_network("playfwd");
-   }
-   else if ( dir == CMedia::kBackwards )
-   {
-      send_network("playback");
-   }
-   else
-   {
-      LOG_ERROR( "Not a valid playback mode" );
-      return;
-   }
+    if ( dir == CMedia::kForwards )
+    {
+	send_network("playfwd");
+    }
+    else if ( dir == CMedia::kBackwards )
+    {
+	send_network("playback");
+    }
+    else
+    {
+	LOG_ERROR( "Not a valid playback mode" );
+	return;
+    }
 
 
    mrv::media fg = foreground();
@@ -8532,6 +8618,7 @@ void ImageView::stop()
         uiMain->uiPlayBackwards->value(0);
 
 
+    frame( frame() - 1 );
     seek( int64_t(timeline()->value()) );
 
     if ( CMedia::preload_cache() && ! _idle_callback )
