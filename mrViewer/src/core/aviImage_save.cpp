@@ -1267,7 +1267,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
 
 
-bool aviImage::open_movie( const char* filename, CMedia* img,
+bool aviImage::open_movie( const char* filename, const CMedia* img,
                            AviSaveUI* opts )
 {
    assert( filename != NULL );
