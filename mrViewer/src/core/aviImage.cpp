@@ -1484,9 +1484,38 @@ void aviImage::clear_packets()
         << " expected: " << _expected << endl;
 #endif
 
+<<<<<<< HEAD
   _video_packets.clear();
   _audio_packets.clear();
   _subtitle_packets.clear();
+=======
+  unsigned count = 0;
+  TimedSeqMap::iterator it = tmp.begin();
+  typedef std::vector< video_cache_t::iterator > IteratorList;
+  IteratorList iters;
+  for ( ; it != tmp.end(); ++it )
+  {
+      ++count;
+      if ( count > max_frames )
+      {
+          // Store this iterator to remove it later
+          iters.push_back( it->second );
+      }
+  }
+
+  IteratorList::iterator i = iters.begin();
+  IteratorList::iterator e = iters.end();
+
+  // We erase from greater to lower to avoid dangling iterators
+  std::sort( i, e, std::greater<video_cache_t::iterator>() );
+
+  i = iters.begin();
+  e = iters.end();
+  for ( ; i != e; ++i )
+  {
+      _images.erase( *i );
+  }
+>>>>>>> v4.3.5
 
   _audio_buf_used = 0;
 }
