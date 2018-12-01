@@ -806,7 +806,7 @@ static std::string expandVariables( const std::string &s,
 
         fltk::Preferences ctl( odt, "CTL" );
         {
-          ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim.a1.0.0", 2048 );
+          ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
           ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
                                                   tmpS, ok );
 
