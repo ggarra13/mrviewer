@@ -781,6 +781,8 @@ class server;
     ///////////////////
     std::atomic<CMedia::Playback>   _playback;         //!< status of view
 
+      bool _network_send;  //<- whether to send commands across the network
+      
     ///////////////////
     // FPS calculation
     ///////////////////
