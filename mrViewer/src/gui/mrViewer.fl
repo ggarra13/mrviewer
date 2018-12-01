@@ -3275,8 +3275,11 @@ int i = o->value();
 if ( i < 0 || i >= o->children() ) return;
 
 std::string c = o->child( i )->label();
-o->label( strdup( c.c_str() ) );
+o->copy_label( c.c_str() );
 img->ocio_input_color_space( c );
+char buf[256];
+sprintf( buf, "ICS \\"%s\\"", c.c_str() );
+v->uiView->send_network( buf );
 v->uiView->use_lut(true);
 v->uiLUT->value(true);} open
                   xywh {145 0 140 20}
