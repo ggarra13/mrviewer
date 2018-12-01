@@ -128,19 +128,19 @@ namespace mrv {
 
 void CMedia::clear_video_packets()
 {
-    _video_packets.clear();
-    _subtitle_packets.clear();
+   _video_packets.clear();
+   _subtitle_packets.clear();
 }
 
 void CMedia::clear_audio_packets()
 {
-    _audio_packets.clear();
-    _audio_buf_used = 0;
+  _audio_packets.clear();
+  _audio_buf_used = 0;
 }
 
-/**
- * Clear all packets
- *
+/** 
+ * Clear (audio) packets
+ * 
  */
 void CMedia::clear_packets()
 {
@@ -485,14 +485,9 @@ void CMedia::close_audio_codec()
  * 
  * @return bitrate
  */
-unsigned int CMedia::calculate_bitrate( const AVStream*  stream,
+unsigned int CMedia::calculate_bitrate( const AVStream* stream,
 					const AVCodecParameters* enc )
 {
-
-  AVCPBProperties* props = (AVCPBProperties*)
-  av_stream_get_side_data( stream, AV_PKT_DATA_CPB_PROPERTIES, NULL );
-  if ( props && props->max_bitrate > 0 ) return props->max_bitrate;
-  
   unsigned int bitrate;
   /* for PCM codecs, compute bitrate directly */
   switch(enc->codec_id) {
@@ -529,11 +524,10 @@ unsigned int CMedia::calculate_bitrate( const AVStream*  stream,
 }
 
 
-
 unsigned int CMedia::audio_bytes_per_frame()
 {
     unsigned int ret = 0;
-    if ( !has_audio() || !_audio_engine ) return ret;
+    if ( !has_audio() ) return ret;
 
     int channels = _audio_ctx->channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
@@ -579,49 +573,49 @@ void CMedia::populate_audio()
       assert( ctx != NULL );
 
       // Determine the type and obtain the first index of each type
-      switch( ctx->codec_type )
-        {
-           case AVMEDIA_TYPE_SUBTITLE:
-           case AVMEDIA_TYPE_VIDEO:
-              break;
-           case AVMEDIA_TYPE_AUDIO:
-              {
-                 audio_info_t s;
-                 populate_stream_info( s, msg, c, ctx, i );
-                 s.channels   = ctx->channels;
-                 s.frequency  = ctx->sample_rate;
-                 s.bitrate    = calculate_bitrate( stream, ctx );
+      switch( ctx->codec_type ) 
+	{
+	   case AVMEDIA_TYPE_SUBTITLE:
+	   case AVMEDIA_TYPE_VIDEO:
+	      break;
+	   case AVMEDIA_TYPE_AUDIO:
+	      {
+		 audio_info_t s;
+		 populate_stream_info( s, msg, c, ctx, i );
+		 s.channels   = ctx->channels;
+		 s.frequency  = ctx->sample_rate;
+		 s.bitrate    = calculate_bitrate( stream, ctx );
+	    
+		 if ( stream->metadata )
+		 {
+		    AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
+							  "language", NULL, 0);
+		    if ( lang && lang->value )
+		       s.language = lang->value;
+		 }
+		 else
+		 {
+		    s.language = "und";
+		 }
 
-                 if ( stream->metadata )
-                 {
-                    AVDictionaryEntry* lang = av_dict_get(stream->metadata,
-                                                          "language", NULL, 0);
-                    if ( lang && lang->value )
-                       s.language = lang->value;
-                 }
-                 else
-                 {
-                    s.language = "und";
-                 }
-
-                 const char* fmt = av_get_sample_fmt_name( (AVSampleFormat)
+		 const char* fmt = av_get_sample_fmt_name( (AVSampleFormat)
                                                            ctx->format );
-                 if ( fmt ) s.format = fmt;
+		 if ( fmt ) s.format = fmt; 
+		 
+		 _audio_info.push_back( s );
 
-                 _audio_info.push_back( s );
-
-                 if ( _audio_index < 0 && s.has_codec )
+		 if ( _audio_index < 0 && s.has_codec )
                      _audio_index = ((int) _audio_info.size()) - 1;
-                 break;
-              }
-           default:
-              {
-                 const char* stream = stream_type( ctx );
-                 msg << _("\n\nNot a known stream type for stream #")
-                     << i << (", type ") << stream;
-                 break;
-              }
-        }
+		 break;
+	      }
+	   default:
+	      {
+		 const char* stream = stream_type( ctx );
+		 msg << _("\n\nNot a known stream type for stream #") 
+		     << i << (", type ") << stream;
+		 break;
+	      }
+	}
     }
 
   if ( msg.str().size() > 0 )
@@ -678,7 +672,7 @@ void CMedia::populate_audio()
       }
       else
       {
-          start = ( ( double )_audio_info[ _audio_index ].start /
+          start = ( ( double )_audio_info[ _audio_index ].start / 
                     ( double ) AV_TIME_BASE );
       }
 
@@ -687,10 +681,10 @@ void CMedia::populate_audio()
       int64_t duration;
       if ( c->duration != MRV_NOPTS_VALUE )
       {
-          duration = int64_t( (_fps * ( double )(c->duration) /
+          duration = int64_t( (_fps * ( double )(c->duration) / 
                                ( double )AV_TIME_BASE ) );
       }
-      else
+      else 
       {
           double length = 0;
 
@@ -717,13 +711,13 @@ void CMedia::populate_audio()
 }
 
 void CMedia::process_timecode( const Imf::TimeCode& tc )
-{
+{     
     int hours = tc.hours();
     int minutes = tc.minutes();
     int seconds = tc.seconds();
     int frames = tc.frame();
 
-
+    
     if ( tc.dropFrame() )
     {
         // ((30 * 60 - 2) * 10 + 2) * 6 drop-frame frames in 1 hour
@@ -775,10 +769,10 @@ Imf::TimeCode CMedia::str2timecode( const std::string text )
                     LOG_ERROR( _("Invalid timecode ") << text );
                     return Imf::TimeCode();
                 }
-
+                
                 // tc[2] contains the .00 frames too, so we remove them
                 tc[2] = tc[2].substr( 0, 2 );
-
+ 
                 tc.push_back( frames );  // add frames to list
             }
         }
@@ -810,7 +804,7 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
    if(!m) return;
 
    AVDictionaryEntry* tag = NULL;
-
+   
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       std::string name = prefix;
       name += tag->key;
@@ -831,10 +825,10 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
 }
 
 
-/**
+/** 
  * Attach an audio file to this image.
- *
- * @param file  audio file to attach.
+ * 
+ * @param file  audio file to attach. 
  */
 void CMedia::audio_file( const char* file )
 {
@@ -860,7 +854,7 @@ void CMedia::audio_file( const char* file )
       {
          if ( _audio_info[i].context == _acontext )
          {
-            _audio_info.erase( _audio_info.begin() + i,
+            _audio_info.erase( _audio_info.begin() + i, 
                                _audio_info.begin() + i + 1);
             break;
          }
@@ -870,7 +864,7 @@ void CMedia::audio_file( const char* file )
       _acontext = NULL;
    }
 
-
+   
    if ( file == NULL || strlen(file) == 0 )
    {
       file = filename();
@@ -881,7 +875,7 @@ void CMedia::audio_file( const char* file )
   AVInputFormat*   format = NULL;
 
   int error = avformat_open_input( &_acontext, file,
-                                   format, NULL );
+				   format, NULL );
   if ( error < 0 || _acontext == NULL )
   {
      LOG_ERROR( file << _(": Could not open filename.") );
@@ -915,11 +909,11 @@ void CMedia::limit_audio_store(const int64_t frame)
     SCOPED_LOCK( _audio_mutex );
 
     int max_frames = max_video_frames();
-
+    
     if ( max_audio_frames() > max_frames )
-        max_frames = max_audio_frames();
-
-
+	max_frames = max_audio_frames();
+    
+    
   int64_t first, last;
 
   switch( playback() )
@@ -941,10 +935,10 @@ void CMedia::limit_audio_store(const int64_t frame)
             if ( _adts > last )   last = _adts;
             break;
     }
-
+  
 
 #if 0
-  if ( first > last )
+  if ( first > last ) 
   {
      int64_t tmp = last;
      last = first;
@@ -955,14 +949,14 @@ void CMedia::limit_audio_store(const int64_t frame)
 
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
-                                NotInRangeFunctor( first, last ) ), end );
+				NotInRangeFunctor( first, last ) ), end );
 
 }
 
 
-/**
+/** 
  * Clear (audio) stores
- *
+ * 
  */
 void CMedia::clear_stores()
 {
@@ -986,7 +980,6 @@ uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels)
 
 
 
-
 int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 			  int* audio_size,
 			  AVPacket *avpkt)
@@ -1004,11 +997,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     bool eof = false;
 
     int got_audio = 0;
-    Mutex& m = _audio_packets.mutex();
-    SCOPED_LOCK( m );
     ret = decode( ctx, _aframe, &got_audio, avpkt, eof );
     if ( !got_audio ) return ret;
-
+	
     av_assert2( _aframe->nb_samples > 0 );
     av_assert2( ctx->channels > 0 );
     int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
@@ -1250,7 +1241,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
   // Make sure audio frames are continous during playback to 
   // accomodate weird sample rates not evenly divisable by frame rate
-  if (  _audio_buf_used != 0 && (!_audio.empty()) )
+  if (  _audio_buf_used != 0 && (!_audio.empty())  )
     {
         int64_t tmp = std::abs(ptsframe - _audio_last_frame);
         if ( tmp >= 0 && tmp <= 10 )
@@ -1295,7 +1286,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
   {
       // Decode the audio into the buffer
-      // av_assert0( _audio_buf_used % 16 == 0 );
+      //av_assert0( _audio_buf_used % 16 == 0 );
 
       int ret = decode_audio3( _audio_ctx, 
                                ( int16_t * )( (char*)_audio_buf + 
@@ -1537,7 +1528,7 @@ CMedia::store_audio( const int64_t audio_frame,
     {
         audio_cache_t::iterator end = _audio.end();
 
-#if 1
+#if 1  // needed
         audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
                                                        end,
                                                        f,
@@ -1771,7 +1762,7 @@ bool CMedia::find_audio( const int64_t frame )
     if ( frame < first_frame() )
         return true;
 
-#if 1
+#if 1 // needed
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
 						  frame, LessThanFunctor() );
