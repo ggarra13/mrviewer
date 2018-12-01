@@ -1312,6 +1312,7 @@ bool ImageView::in_presentation() const
 
 void ImageView::send_network( std::string m ) const
 {
+    if ( !_network_send) return;
 
     ParserList::const_iterator i = _clients.begin();
     ParserList::const_iterator e = _clients.end();
@@ -1383,6 +1384,7 @@ _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
+_network_send( true ),
 _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.05f);
@@ -2695,6 +2697,7 @@ void ImageView::timeout()
    
     while ( ! commands.empty()  )
     {
+	_network_send = false;
 	Command c = commands.front();
 	switch( c.type )
 	{
@@ -2714,20 +2717,26 @@ void ImageView::timeout()
 		}
 	    case kStopVideo:
 		{
+		    std::cerr << "call stop" << std::endl;
 		    stop();
 		    break;
 		}
 	    case kSeek:
 		{
+		    std::cerr << "call seek" << std::endl;
 		    int64_t f = * ((int64_t*) c.data);
 		    seek( f );
 		    break;
 		}
 	    case kPlayForwards:
 		{
-		    std::cerr << "PLAY FWD" << std::endl;
+		    std::cerr << "call play fwd" << std::endl;
 		    play_forwards();
-		    std::cerr << "PLAYED FWD" << std::endl;
+		    break;
+		}
+	    case kPlayBackwards:
+		{
+		    play_backwards();
 		    break;
 		}
 	    case kRemoveImage:
@@ -2761,7 +2770,8 @@ void ImageView::timeout()
 		    break;
 		}
 	}  // switch
-      
+
+	_network_send = true;
 	delete c.data;
 	commands.pop_front();
 	redraw();
@@ -8196,6 +8206,7 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
+    
     _preframe = f;
 
     // if ( std::abs( f - frame() ) < fps() / 2.0 )
@@ -8483,19 +8494,19 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
-   if ( dir == CMedia::kForwards )
-   {
-       send_network("playfwd");
-   }
-   else if ( dir == CMedia::kBackwards )
-   {
-       send_network("playback");
-   }
-   else
-   {
-      LOG_ERROR( "Not a valid playback mode" );
-      return;
-   }
+    if ( dir == CMedia::kForwards )
+    {
+	send_network("playfwd");
+    }
+    else if ( dir == CMedia::kBackwards )
+    {
+	send_network("playback");
+    }
+    else
+    {
+	LOG_ERROR( "Not a valid playback mode" );
+	return;
+    }
 
 
    mrv::media fg = foreground();
@@ -8607,6 +8618,7 @@ void ImageView::stop()
         uiMain->uiPlayBackwards->value(0);
 
 
+    frame( frame() - 1 );
     seek( int64_t(timeline()->value()) );
 
     if ( CMedia::preload_cache() && ! _idle_callback )
