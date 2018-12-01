@@ -971,7 +971,7 @@ class CMedia
 
     virtual int64_t wait_subtitle() { return _frameStart; }
     virtual bool find_subtitle( const int64_t frame );
-    virtual int64_t wait_image();
+    virtual void wait_image();
     virtual bool find_image( const int64_t frame );
 
 
