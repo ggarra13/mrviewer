@@ -28,7 +28,7 @@
 
 //#define BOOST_ASIO_ENABLE_HANDLER_TRACKING
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
-//#define DEBUG_COMMANDS
+#define DEBUG_COMMANDS
 
 #include <algorithm>
 #include <cstdlib>
@@ -126,7 +126,7 @@ void Parser::write( const std::string& s, const std::string& id )
            {
                continue;
            }
-           // LOG_CONN( s << " sent to " << *i << " " << p );
+           //LOG_CONN( s << " sent to " << *i << " " << p );
            //LOG_INFO( "resending " << s << " to " << p );
            (*i)->deliver( s );
        }
@@ -171,6 +171,9 @@ bool Parser::parse( const std::string& s )
    is.imbue(std::locale());
 
 
+   mrv::Reel r;
+   mrv::media m;
+    
    std::string cmd;
    is >> cmd;
 
@@ -658,19 +661,14 @@ bool Parser::parse( const std::string& s )
        is.clear();
        std::getline( is, s, '"' );
 
-       mrv::media fg = v->foreground();
-       if (fg)
-       {
-           CMedia* img = fg->image();
-           img->ocio_input_color_space( s );
-           img->image_damage( img->image_damage() | CMedia::kDamageLut );
-           v->update_ICS();
-           ok = true;
-       }
-       else
-       {
-           LOG_ERROR( "No fg image to change ICS" );
-       }
+       ImageView::Command c;
+       c.type = ImageView::kICS;
+       c.data = new std::string( s );
+
+       v->commands.push_back( c );
+       
+
+       ok = true;
    }
    else if ( cmd == N_("Gain") )
    {
@@ -772,7 +770,8 @@ bool Parser::parse( const std::string& s )
 
       r = browser()->reel( name.c_str() );
       if (!r) {
-         r = browser()->new_reel( name.c_str() );
+	  LOG_INFO( _("Create reel \"") << name << "\"" );
+	  r = browser()->new_reel( name.c_str() );
       }
       ok = true;
    }
@@ -962,12 +961,9 @@ bool Parser::parse( const std::string& s )
       int idx;
       is >> idx;
 
-      browser()->debug_images();
-      browser()->remove( idx );
-      browser()->debug_images();
-      browser()->redraw();
-      v->redraw();
-      edl_group()->redraw();
+      ImageView::Command c;
+      c.type = ImageView::kRemoveImage;
+      c.data = new int(idx);
 
       ok = true;
    }
@@ -1082,17 +1078,19 @@ bool Parser::parse( const std::string& s )
       is >> end;
 
       bool found = false;
-      if ( !r )
-      {
-          r = browser()->current_reel();
-      }
-
+      r = browser()->current_reel();
+ 
       mrv::MediaList::iterator j = r->images.begin();
       mrv::MediaList::iterator e = r->images.end();
       for ( ; j != e; ++j )
       {
           mrv::media fg = *j;
-          if ( fg && fg->image()->fileroot() == imgname )
+	  if (!fg) continue;
+	  
+	  CMedia* img = fg->image();
+          if ( img->fileroot() == imgname &&
+	       img->first_frame() == start &&
+	       img->last_frame() == end )
           {
               found = true;
               m = fg;
@@ -1101,17 +1099,31 @@ bool Parser::parse( const std::string& s )
 
       if (!found)
       {
-          LoadList files;
-          files.push_back( LoadInfo( imgname, start, end ) );
+	  ImageView::Command c;
+	  c.type = ImageView::kLoadImage;
 
-          browser()->load( files, false );
-          browser()->redraw();
+	  LoadInfo* tmp = new LoadInfo( imgname, start, end );
+	  c.data = tmp;
+
+	  v->commands.push_back( c );
       }
 
 
-      v->redraw();
-
       ok = true;
+   }
+   else if ( cmd == N_("ChangeImage") )
+   {
+       int idx;
+       is >> idx;
+
+       ImageView::Command c;
+       c.type = ImageView::kChangeImage;
+	  
+       c.data = new int(idx);
+	  
+       v->commands.push_back( c );
+
+       ok = true;
    }
    else if ( cmd == N_("CurrentImage") )
    {
@@ -1126,52 +1138,49 @@ bool Parser::parse( const std::string& s )
       is >> first;
       is >> last;
 
+      bool found = false;
+      int idx = 0;
+
+      r = browser()->current_reel();
       if ( r )
       {
          mrv::MediaList::iterator j = r->images.begin();
          mrv::MediaList::iterator e = r->images.end();
-         int idx = 0;
-         bool found = false;
          for ( ; j != e; ++j, ++idx )
          {
             if ( !(*j) ) continue;
 
             CMedia* img = (*j)->image();
-	    std::cerr << idx << ") check '" << img->fileroot()
-		      << "' against '" << imgname << "'" << std::endl;
             if ( img && imgname == img->fileroot() )
             {
-               img->first_frame( first );
-               img->last_frame( last );
-               browser()->change_image( idx );
-               edl_group()->refresh();
-               edl_group()->redraw();
-               browser()->redraw();
-               m = *j;
-	       std::cerr << "*+++++ FOUND " << imgname << std::endl;
                found = true;
                break;
             }
          }
 
-         if (! found )
-         {
-            //  LOG_INFO( imgname << " not found in current reel" );
-             ok = true;
-            // LoadList files;
-            // files.push_back( LoadInfo( imgname, first, last ) );
-            // browser()->load( files, false );
-            // // edl_group()->refresh();
-            // // edl_group()->redraw();
-            // browser()->redraw();
-            // v->redraw();
-         }
-         else
-         {
-             v->redraw();
+      }
+      
+      if ( found )
+      {
+	  ImageView::Command c;
+	  c.type = ImageView::kChangeImage;
+	  
+	  c.data = new int(idx);
 
-             ok = true;
-         }
+	  v->commands.push_back( c );
+
+	  ok = true;
+      }
+      else
+      {
+	  ImageView::Command c;
+	  c.type = ImageView::kLoadImage;
+	  
+	  c.data = new LoadInfo( imgname, first, last );
+
+	  v->commands.push_back( c );
+
+	  ok = true;
       }
 
    }
@@ -1180,7 +1189,7 @@ bool Parser::parse( const std::string& s )
        int idx;
        is >> idx;
 
-       v->fg_reel( idx );
+       if ( idx >= 0 ) v->fg_reel( idx );
        ok = true;
    }
    else if ( cmd == N_("BGReel") )
@@ -1188,7 +1197,7 @@ bool Parser::parse( const std::string& s )
        int idx;
        is >> idx;
 
-       v->bg_reel( idx );
+       if ( idx >= 0 ) v->bg_reel( idx );
        ok = true;
    }
    else if ( cmd == N_("CurrentBGImage") )
@@ -1237,41 +1246,43 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
+      std::cerr << browser() << std::endl;
       size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
-         r = browser()->reel( unsigned(i) );
-         cmd = N_("Reel \"");
-         cmd += r->name;
-         cmd += "\"";
-         deliver( cmd );
+	  r = browser()->reel_at( unsigned(i) );
+	  cmd = N_("Reel \"");
+	  cmd += r->name;
+	  cmd += "\"";
+	  deliver( cmd );
+ 
+	  mrv::MediaList::iterator j = r->images.begin();
+	  mrv::MediaList::iterator e = r->images.end();
+	  for ( ; j != e; ++j )
+	  {
+	      if ( !(*j) ) continue;
+	      
+	      CMedia* img = (*j)->image();
+	      
+	      cmd = N_("Image \"");
+	      cmd += img->directory();
+	      cmd += "/";
+	      cmd += img->name();
+	      cmd += "\" ";
+	      
+	      char buf[1024];
+	      boost::int64_t start = img->first_frame();
+	      boost::int64_t end   = img->last_frame();
 
-         mrv::MediaList::iterator j = r->images.begin();
-         mrv::MediaList::iterator e = r->images.end();
-         for ( ; j != e; ++j )
-         {
-             CMedia* img = (*j)->image();
-             if (!img) continue;
+	      sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
+		       start, end );
+	      cmd += buf;
 
-             cmd = N_("Image \"");
-             cmd += img->directory();
-             cmd += "/";
-             cmd += img->name();
-             cmd += "\" ";
+	      deliver( cmd );
 
-            char buf[1024];
-            boost::int64_t start = img->first_frame();
-            boost::int64_t end   = img->last_frame();
-
-            sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
-                     start, end );
-            cmd += buf;
-
-            deliver( cmd );
-
-            boost::int64_t frame = img->frame();
-            sprintf( buf, N_("seek %") PRId64, frame );
-            deliver( buf );
+	      boost::int64_t frame = view()->frame();
+	      sprintf( buf, N_("seek %") PRId64, frame );
+	      deliver( buf );
 
             //
             // Handle color management (OCIO/CTL)
@@ -1329,21 +1340,6 @@ bool Parser::parse( const std::string& s )
                 deliver( s );
             }
 
-         }
-
-         j = r->images.begin();
-         CMedia* img = (*j)->image();
-
-         if ( img )
-         {
-             char buf[1024];
-             cmd = N_("CurrentImage \"");
-             cmd += img->fileroot();
-
-             sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
-                      img->last_frame() );
-             cmd += buf;
-             deliver( cmd );
          }
       }
 
@@ -1544,13 +1540,22 @@ bool Parser::parse( const std::string& s )
    {
       boost::int64_t f;
       is >> f;
-      v->stop();
+      
+      ImageView::Command c;
+      c.type = ImageView::kStopVideo;
+      c.data = NULL;
+      v->commands.push_back( c );
+      
       ok = true;
    }
    else if ( cmd == N_("playfwd") )
    {
-      v->play_forwards();
-      ok = true;
+       ImageView::Command c;
+       c.type = ImageView::kPlayForwards;
+       c.data = NULL;
+       v->commands.push_back( c );
+       // v->play_forwards();
+       ok = true;
    }
    else if ( cmd == N_("playback") )
    {
@@ -1562,8 +1567,13 @@ bool Parser::parse( const std::string& s )
       boost::int64_t f;
       is >> f;
 
-      v->seek( f );
-
+      ImageView::Command c;
+      c.type = ImageView::kSeek;
+      c.data = new int64_t( f );
+      v->commands.push_back( c );
+      
+      //v->seek( f );
+      
       ok = true;
    }
    else if ( cmd == N_("MediaInfoWindow") )
