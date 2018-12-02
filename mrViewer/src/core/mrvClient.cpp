@@ -400,7 +400,7 @@ void client::handle_write(const boost::system::error_code& ec)
 
    if (!ec)
    {
-       std::cerr << "Send " << output_queue_.front();
+       // std::cerr << "Send " << output_queue_.front();
        output_queue_.pop_front();
        await_output();
    }
