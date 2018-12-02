@@ -2642,6 +2642,8 @@ bool ImageView::preload()
             }
             img->hires( pic );
         }
+	if ( playback() == CMedia::kStopped )
+	    img->hires( pic );
     }
     else
     {
@@ -2707,6 +2709,7 @@ void ImageView::timeout()
 		    LoadList files;
 		    files.push_back( file );
 		    b->load( files, false, "", false );
+		    b->change_image(0);
 		    break;
 		}
 	    case kChangeImage:
@@ -2717,20 +2720,17 @@ void ImageView::timeout()
 		}
 	    case kStopVideo:
 		{
-		    std::cerr << "call stop" << std::endl;
 		    stop();
 		    break;
 		}
 	    case kSeek:
 		{
-		    std::cerr << "call seek" << std::endl;
 		    int64_t f = * ((int64_t*) c.data);
 		    seek( f );
 		    break;
 		}
 	    case kPlayForwards:
 		{
-		    std::cerr << "call play fwd" << std::endl;
 		    play_forwards();
 		    break;
 		}
@@ -7720,6 +7720,10 @@ void ImageView::foreground( mrv::media fg )
 
         if ( img )
         {
+	    if ( ! img->is_cache_full() && !_idle_callback &&
+		 CMedia::cache_active() && CMedia::preload_cache() )
+		preload_cache_start();
+	  
             // char buf[1024];
             // sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
             //          img->fileroot(), img->first_frame(), img->last_frame() );
