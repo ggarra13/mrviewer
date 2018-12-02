@@ -977,19 +977,10 @@ void CMedia::limit_audio_store(const int64_t frame)
     int max_frames = max_video_frames();
     
     if ( max_audio_frames() > max_frames )
-<<<<<<< HEAD
 	max_frames = max_audio_frames();
     
     
   int64_t first, last;
-=======
-        max_frames = max_audio_frames();
-
-    //if ( playback() == kForwards || playback() == kStopped )
-    //    return timed_limit_audio_store( frame );
-
-    int64_t first, last;
->>>>>>> v4.3.5
 
     switch( playback() )
     {
@@ -1006,14 +997,11 @@ void CMedia::limit_audio_store(const int64_t frame)
 	    last  = frame + max_frames;
 	    break;
     }
-<<<<<<< HEAD
   
 
-=======
 
     if ( _adts < first ) first = _adts;
     if ( _adts > last )   last = _adts;
->>>>>>> v4.3.5
 #if 0
   if ( first > last ) 
   {
@@ -1363,11 +1351,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
 
   {
       // Decode the audio into the buffer
-<<<<<<< HEAD
-      //av_assert0( _audio_buf_used % 16 == 0 );
-=======
       assert( _audio_buf_used % 16 == 0 );
->>>>>>> v4.3.5
 
       int ret = decode_audio3( _audio_ctx, 
                                ( int16_t * )( (char*)_audio_buf + 
