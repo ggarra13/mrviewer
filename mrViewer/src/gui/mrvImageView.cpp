@@ -2745,16 +2745,12 @@ void ImageView::timeout()
 		    b->remove(*idx);
 		    break;
 		}
-	    case kInsertImage:
+	    case kExchangeImage:
 		{
-		    struct InsertData
-		    {
-			int idx;
-			std::string file;
-		    };
-		    InsertData* idx = (InsertData*) c.data;
-		    mrv::media m ;
-		    // b->insert(*idx, m);
+		    std::vector<int>* list = (std::vector<int>*) c.data;
+		    int oldsel = (*list)[0];
+		    int sel = (*list)[1];
+		    b->exchange(oldsel, sel);
 		    break;
 		}
 	    case kICS:
