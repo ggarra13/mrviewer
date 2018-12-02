@@ -1162,7 +1162,6 @@ void ImageBrowser::clear_bg()
 
 void ImageBrowser::value( int idx )
 {
-    if ( idx == value() ) return;
     send_image( idx );
     fltk::Browser::value( idx );
 }
@@ -1634,7 +1633,10 @@ void ImageBrowser::load( const mrv::LoadList& files,
          uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
          img->first_frame() != img->last_frame()  )
       {
-         view()->play_forwards();
+	  bool b = view()->network_send();
+	  view()->network_send(true);
+	  view()->play_forwards();
+	  view()->network_send(b);
       }
 
     // if ( _load_threads.empty() )
@@ -2718,6 +2720,69 @@ void ImageBrowser::handle_dnd()
     return 1;
   }
 
+void ImageBrowser::exchange( int oldsel, int sel )
+{
+    if ( sel < 0 || oldsel < 0 || sel == oldsel )
+      {
+        redraw();
+        return;
+      }
+    
+    Element* e = (Element*) child(oldsel);
+    if ( sel > oldsel ) sel += 1;
+    fltk::Browser::insert( *e, sel );
+
+    redraw();
+
+    mrv::Reel reel = current_reel();
+    if (!reel)
+      {
+        redraw();
+	return;
+      }
+    
+    mrv::media m = reel->images[oldsel];
+    CMedia* img = m->image();
+
+    mrv::Timeline* t = timeline();
+
+    int64_t f = (int64_t) uiMain->uiFrame->value();
+    int64_t g = t->offset( img );
+    f -= g;
+    
+    char buf[1024];
+    sprintf( buf, "ExchangeImage %d %d", oldsel, sel );
+    view()->send_network( buf );
+
+    reel->images.erase( reel->images.begin() + oldsel );
+    if ( oldsel < sel ) sel -= 1;
+
+
+    reel->images.insert( reel->images.begin() + sel, m );
+
+    //
+    // Adjust timeline position
+    //
+    adjust_timeline();
+
+    //
+    // Redraw EDL window
+    //
+
+    mrv::EDLGroup* eg = edl_group();
+    if ( eg )
+    {
+        eg->redraw();
+    }
+
+    if ( t && t->edl() )
+      {
+        int64_t x = t->offset( img );
+        f += x;
+        DBG( "set frame to " << f );
+        frame( f );
+      }
+}
 
   int ImageBrowser::mouseRelease( int x, int y )
   {
@@ -2752,53 +2817,9 @@ void ImageBrowser::handle_dnd()
     fltk::Browser::handle( fltk::PUSH );
 
     int sel = value();
-    if ( sel < 0 || sel == oldsel )
-      {
-        redraw();
-        return 0;
-      }
 
+    exchange( oldsel, sel );
 
-    Element* e = (Element*) child(oldsel);
-    if ( sel > oldsel ) sel += 1;
-    fltk::Browser::insert( *e, sel );
-
-    redraw();
-
-    char buf[1024];
-    sprintf( buf, "RemoveImage %d", oldsel );
-    view()->send_network( buf );
-
-    reel->images.erase( reel->images.begin() + oldsel );
-    if ( oldsel < sel ) sel -= 1;
-
-    sprintf( buf, "InsertImage %d \"%s\"", sel, m->image()->fileroot() );
-    view()->send_network( buf );
-
-    reel->images.insert( reel->images.begin() + sel, m );
-
-    //
-    // Adjust timeline position
-    //
-    adjust_timeline();
-
-    //
-    // Redraw EDL window
-    //
-
-    mrv::EDLGroup* eg = edl_group();
-    if ( eg )
-    {
-        eg->redraw();
-    }
-
-    if ( t && t->edl() )
-      {
-        int64_t x = t->offset( img );
-        f += x;
-        DBG( "set frame to " << f );
-        frame( f );
-      }
 
     return 1;
   }
