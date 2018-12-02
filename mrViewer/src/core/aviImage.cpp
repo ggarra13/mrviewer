@@ -1484,11 +1484,46 @@ void aviImage::clear_packets()
         << " expected: " << _expected << endl;
 #endif
 
-<<<<<<< HEAD
   _video_packets.clear();
   _audio_packets.clear();
   _subtitle_packets.clear();
-=======
+}
+
+void aviImage::timed_limit_store( const int64_t& frame )
+{
+    int max_frames = max_video_frames();
+    if ( _has_image_seq )
+    {
+        max_frames = max_image_frames();
+    }
+
+#undef timercmp
+# define timercmp(a, b, CMP)					\
+    (((a).tv_sec == (b).tv_sec) ?				\
+     ((a).tv_usec CMP (b).tv_usec) :				\
+     ((a).tv_sec CMP (b).tv_sec))
+
+  struct customMore {
+      inline bool operator()( const timeval& a,
+                              const timeval& b ) const
+      {
+          return timercmp( a, b, > );
+      }
+  };
+
+  typedef std::multimap< timeval, video_cache_t::iterator,
+                         customMore > TimedSeqMap;
+  TimedSeqMap tmp;
+  {
+      video_cache_t::iterator  it = _images.begin();
+      video_cache_t::iterator end = _images.end();
+      for ( ; it != end; ++it )
+      {
+          tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+      }
+  }
+
+
   unsigned count = 0;
   TimedSeqMap::iterator it = tmp.begin();
   typedef std::vector< video_cache_t::iterator > IteratorList;
@@ -1515,9 +1550,7 @@ void aviImage::clear_packets()
   {
       _images.erase( *i );
   }
->>>>>>> v4.3.5
 
-  _audio_buf_used = 0;
 }
 
 
