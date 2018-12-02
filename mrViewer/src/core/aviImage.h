@@ -259,6 +259,7 @@ class aviImage : public CMedia
 				      );
 
     DecodeStatus audio_video_display( const int64_t& frame );
+    void timed_limit_store( const int64_t& frame );
     void limit_video_store( const int64_t frame );
     void limit_subtitle_store( const int64_t frame );
 
