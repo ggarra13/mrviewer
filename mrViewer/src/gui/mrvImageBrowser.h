@@ -180,6 +180,8 @@ class ImageBrowser : public fltk::Browser
     
     void send_image( int idx );
 
+    void exchange( int oldsel, int sel );
+    
    public:
      static mrv::Element* new_item(mrv::media img);
 
