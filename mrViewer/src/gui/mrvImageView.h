@@ -76,7 +76,7 @@ class server;
       kPlayForwards,
       kPlayBackwards,
       kRemoveImage,
-      kInsertImage,
+      kExchangeImage,
       kICS,
       kLastCommand
       };
@@ -528,6 +528,9 @@ class server;
        void undo_draw();
        void redo_draw();
 
+      bool network_send() const { return _network_send; }
+      void network_send( const bool b ) { _network_send = b; }
+      
        void send_network( std::string msg ) const;
 
       GLShapeList& shapes();
