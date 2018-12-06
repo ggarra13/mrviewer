@@ -1079,9 +1079,16 @@ void aviImage::store_image( const int64_t frame,
   mrv::image_type_ptr image;
   try {
       image = allocate_image( frame, pts );
-  } catch ( const std::exception& e )
+  }
+  catch ( const std::bad_alloc& e )
   {
-      LOG_ERROR( "Problem allocating image " << e.what() );
+      LOG_ERROR( _("Not enough memory for image") );
+      return;
+  }
+  catch ( const std::exception& e )
+  {
+      LOG_ERROR( _("Problem allocating image ") << e.what() );
+      return;
   }
 
 
