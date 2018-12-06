@@ -4,6 +4,8 @@ v4.3.5   - Bug fixed CTL RRT transform not getting selected when it
 	 - Bug fixed audio scrubbing which would, in latest versions,
 	   not work completely right.
 	 - Preload cache now works correctly when auto playback is off.
+	 - Bug fixed Windows' NVIDIA driver bug showing images with
+	   upped gamma.
 
 v4.3.4   - Bug fixed cache sliding when it was stopped near the end of
 	   a sequence that did not have all frames cached.  This was
