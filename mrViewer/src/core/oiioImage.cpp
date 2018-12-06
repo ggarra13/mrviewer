@@ -306,9 +306,24 @@ namespace mrv {
       if ( allocate_pixels( frame, channels, type, pixel_type, dw, dh ) )
       {
           SCOPED_LOCK( _mutex );
-          
-          Pixel* pixels = (Pixel*)_hires->data().get();
-          in->read_image (format, &pixels[0]);
+
+          try
+          {
+              Pixel* pixels = (Pixel*)_hires->data().get();
+              in->read_image (format, &pixels[0]);
+          }
+          catch ( const std::runtime_error& e )
+          {
+              LOG_ERROR( e.what() );
+              in->close();
+              return false;
+          }
+      }
+      else
+      {
+          LOG_ERROR( _("Not enough memory for image" ) );
+          in->close();
+          return false;
       }
 
       in->close();
