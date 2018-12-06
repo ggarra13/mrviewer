@@ -77,8 +77,8 @@ GlChoice* GlChoice::find(int mode) {
       // otherwise prefer a format that supports composition (STR #3119)// added
         else if ((chosen_pfd.dwFlags & PFD_SUPPORT_COMPOSITION) &&      // added
                  !(pfd.dwFlags & PFD_SUPPORT_COMPOSITION)) continue;    // added
-        // otherwise more bit planes is better:
-        else if (chosen_pfd.cColorBits > pfd.cColorBits) continue;
+        // otherwise more bit planes is better, but not if 8 bits is maximum
+        else if (pfd.cColorBits > 32 || chosen_pfd.cColorBits > pfd.cColorBits) continue;
         else if (chosen_pfd.cDepthBits > pfd.cDepthBits) continue;
     }
     pixelFormat = i;
