@@ -255,7 +255,7 @@ size_t VideoFrame::data_size()
   void VideoFrame::allocate()
   {
       mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
-      assert( ((unsigned long)ptr) % 16 == 0 );
+      av_assert0( ((unsigned long)ptr) % 16 == 0 );
       _data.reset( ptr );
   }
 
