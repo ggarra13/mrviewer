@@ -3291,8 +3291,7 @@ int CMedia::max_image_frames()
         return std::numeric_limits<int>::max() / 3;
 #else
     if ( !_hires ) return std::numeric_limits<int>::max() / 3;
-    return Preferences::max_memory / _hires->data_size();
-
+    return (Preferences::max_memory / _hires->data_size());
 #endif
 }
 
@@ -3411,6 +3410,8 @@ void CMedia::limit_video_store( const int64_t f )
 
   unsigned count = 0;
   uint64_t max_frames = max_image_frames();
+
+  
   TimedSeqMap::iterator it = tmp.begin();
   for ( ; it != tmp.end(); )
   {
