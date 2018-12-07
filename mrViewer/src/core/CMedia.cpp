@@ -1003,9 +1003,9 @@ bool CMedia::allocate_pixels( const int64_t& frame,
       w = width(); h = height();
   }
   assert( w != 0 && h != 0 );
-  LOG_INFO( "allocate pixels " << w << " " << h << " frame: " << frame
-            << " channels: " << channels << " format: "
-            << format << " pixel type: " << pixel_type );
+  // LOG_INFO( "allocate pixels " << w << " " << h << " frame: " << frame
+  //           << " channels: " << channels << " format: "
+  //           << format << " pixel type: " << pixel_type );
 
   image_damage( image_damage() & ~kDamageContents );
   try {
