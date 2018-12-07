@@ -1003,9 +1003,9 @@ bool CMedia::allocate_pixels( const int64_t& frame,
       w = width(); h = height();
   }
   assert( w != 0 && h != 0 );
-  // DBG( "allocate pixels " << w << " " << h << " frame: " << frame
-  //      << " channels: " << channels << " format: "
-  //      << format << " pixel type: " << pixel_type );
+  LOG_INFO( "allocate pixels " << w << " " << h << " frame: " << frame
+            << " channels: " << channels << " format: "
+            << format << " pixel type: " << pixel_type );
 
   image_damage( image_damage() & ~kDamageContents );
   try {
@@ -3379,10 +3379,6 @@ void CMedia::limit_video_store( const int64_t f )
     SCOPED_LOCK( _mutex );
 
 
-    if ( f == AV_NOPTS_VALUE ) {
-        return;
-    }
-
   if ( !_sequence ) return;
 
 #undef timercmp
@@ -3399,16 +3395,18 @@ void CMedia::limit_video_store( const int64_t f )
       }
   };
 
+  boost::uint64_t num = _frame_end - _frame_start + 1;
+  
   typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
   TimedSeqMap tmp;
-  for ( uint64_t i = 0; i < _numWindows; ++i )
+  for ( uint64_t i = 0; i < num; ++i )
   {
       if ( !_sequence[i] ) continue;
       tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
   }
 
 
-  unsigned count = 0;
+  uint64_t count = 0;
   uint64_t max_frames = max_image_frames();
 
   
