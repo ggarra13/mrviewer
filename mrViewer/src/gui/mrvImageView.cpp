@@ -2578,16 +2578,16 @@ bool ImageView::preload()
     else
     {
         f = _preframe;
-        int64_t tfirst = timeline()->display_minimum();
         first  = img->first_frame();
-        int64_t tlast  = timeline()->display_maximum();
         last   = img->last_frame();
-        if ( tfirst > first && tfirst < last ) first = tfirst;
-        if ( tlast < last   && tlast > first )  last = tlast;
+        // int64_t tfirst = timeline()->display_minimum();
+        // int64_t tlast  = timeline()->display_maximum();
+        // if ( tfirst > first && tfirst < last ) first = tfirst;
+        // if ( tlast < last   && tlast > first )  last = tlast;
+        
+        if ( f < first ) f = first;
+        else if ( f > last ) f = last;
     }
-
-    if ( f < first ) f = first;
-    else if ( f > last ) f = last;
 
 
 
@@ -6803,16 +6803,48 @@ void ImageView::flush_image( mrv::media fg )
 }
 
 
+void ImageView::reset_caches()
+{
+    _reel = 0;
+    mrv::Reel r = browser()->reel_at( _reel );
+    if ( r && r->edl )
+    {
+        _preframe = 1;
+    }
+    else
+    {
+        mrv::media fg = foreground();
+        if (!fg) return;
+        CMedia* img = fg->image();
+        _preframe = img->first_frame();
+    }
+}
+
+
 void ImageView::preload_cache_start()
 {
     if ( !foreground() ) return;
 
     if (!_idle_callback)
     {
-        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
         _reel = 0;
-        _idle_callback = true;
+        mrv::Reel r = browser()->reel_at( _reel );
+        if ( r && r->edl )
+        {
+            _preframe = 1;
+        }
+        else
+        {
+            mrv::media fg = foreground();
+            if ( fg )
+            {
+                CMedia* img = fg->image();
+                _preframe = img->first_frame();
+            }
+        }
         CMedia::preload_cache( true );
+        _idle_callback = true;
+        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
