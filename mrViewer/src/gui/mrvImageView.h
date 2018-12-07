@@ -544,7 +544,7 @@ class server;
        bool ghost_next()     const { return _ghost_next; }
 
       // Make pre-loading start from scratch
-      inline void reset_caches() { _reel = 0; _preframe = 1; }
+      void reset_caches();
 
       /// Clear image sequence caches from reel idx
       void clear_reel_cache( size_t idx );
