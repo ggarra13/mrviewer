@@ -194,11 +194,11 @@ bool Parser::parse( const std::string& s )
    if ( fg )
    {
        CMedia* img = fg->image();
-       // LOG_INFO( "received: " << s << " for " << img->name() );
+       LOG_INFO( "received: " << s << " for " << img->name() );
    }
    else
    {
-       // LOG_INFO( "received: " << s << " for (empty image)" );
+       LOG_INFO( "received: " << s << " for (empty image)" );
    }
 #endif
 
