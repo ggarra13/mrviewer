@@ -401,22 +401,24 @@ IF(WIN64) # defined in FindBuilDir
 	SET(EXE_DIR D:/code/lib/vc14_Windows_64/bin/ )
 ENDIF(WIN64)
 
+IF(UNIX)
+  SET(EXE_DIR /usr/local/bin )
+  IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer-dbg.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
+    FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer-dbg.sh
+      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+  ELSE()
+    EXECUTE_PROCESS( COMMAND "dos2unix" "mrViewer.sh" "cube2ctl.py" "cube2ctl.rb" "3dl2ctl.py" "3dl2ctl.rb" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../bin" )
+    FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
+      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+  ENDIF()
+ENDIF(UNIX)
+
 FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.rb
   ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/cube2ctl.rb
   ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/3dl2ctl.py
   ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/cube2ctl.py
   DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-
-IF(UNIX)
-  SET(EXE_DIR /usr/local/bin )
-  IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-    FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer-dbg.sh
-      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-  ELSE()
-    FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh
-      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-  ENDIF()
-ENDIF(UNIX)
 
 IF(WIN32 OR WIN64)
 	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/fonts
