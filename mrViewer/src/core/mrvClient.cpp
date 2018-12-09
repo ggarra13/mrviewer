@@ -27,6 +27,7 @@
 
 //#define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING 1
+#define DEBUG_COMMANDS
 
 #include <boost/lexical_cast.hpp>
 #include <boost/asio/deadline_timer.hpp>
@@ -400,7 +401,14 @@ void client::handle_write(const boost::system::error_code& ec)
 
    if (!ec)
    {
-       // std::cerr << "Send " << output_queue_.front();
+#ifdef DEBUG_COMMANDS
+       mrv::media fg = ui->uiView->foreground();
+       if ( fg )
+       {
+	   CMedia* img = fg->image();
+	   std::cerr << "Send " << output_queue_.front() << img->name();
+       }
+#endif
        output_queue_.pop_front();
        await_output();
    }
