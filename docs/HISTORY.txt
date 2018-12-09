@@ -1,6 +1,9 @@
 v4.3.6   - Bug fixed limiting of images for formats without a
 	   display window ( png, jpg, etc).  Now memory setting works
 	   for them too, not just for exrs.
+	 - Bug fixed memory limit in win32 to handle cases of out of
+	   memory elegantly.  An out of memory will limit the Gb of
+	   frames automatically.
 
 v4.3.5   - Bug fixed CTL RRT transform not getting selected when it
 	   was selected thru the menus.  The 8bits, 16bits, float, etc.
