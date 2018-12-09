@@ -3744,6 +3744,23 @@ bool CMedia::find_image( const int64_t frame )
              default_rendering_transform();
              default_ocio_input_color_space();
          }
+         else
+         {
+             if ( idx > 0 )
+             {
+                 // If we run out of memory, make sure we sweep the
+                 // frames we have in memory.
+                 unsigned data_size = _sequence[idx-1]->data_size();
+                 int64_t maxmem = (idx-1) * data_size;
+                 Preferences::max_memory = maxmem;
+                 limit_video_store( frame );
+                 fetch( f );
+                 cache( _hires );
+                 default_icc_profile();
+                 default_rendering_transform();
+                 default_ocio_input_color_space();
+             }
+         }
      }
      else
      {
