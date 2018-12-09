@@ -406,7 +406,8 @@ void client::handle_write(const boost::system::error_code& ec)
        if ( fg )
        {
 	   CMedia* img = fg->image();
-	   std::cerr << "Send " << output_queue_.front() << img->name();
+	   std::cerr << "Send " << output_queue_.front() << "for "
+		     << img->name() << std::endl;
        }
 #endif
        output_queue_.pop_front();
