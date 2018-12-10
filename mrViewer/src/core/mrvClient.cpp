@@ -27,7 +27,7 @@
 
 //#define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING 1
-#define DEBUG_COMMANDS
+//#define DEBUG_COMMANDS
 
 #include <boost/lexical_cast.hpp>
 #include <boost/asio/deadline_timer.hpp>
