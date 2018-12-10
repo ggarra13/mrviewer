@@ -1131,7 +1131,6 @@ void ImageBrowser::clear_bg()
         mrv::media m;
         if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
 
-        send_reel( reel );
 
         if ( m != om && m && v )
         {
@@ -1185,6 +1184,9 @@ void ImageBrowser::send_image( int i )
                      << children() );
           return;
       }
+
+      mrv::Reel reel = current_reel();
+      send_reel( reel );
       value(i);
       change_image();
   }
