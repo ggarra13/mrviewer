@@ -2709,13 +2709,14 @@ void ImageView::timeout()
 		    LoadList files;
 		    files.push_back( file );
 		    b->load( files, false, "", false );
-		    b->change_image(0);
 		    break;
 		}
 	    case kChangeImage:
 		{
 		    int* idx = (int*) c.data;
 		    b->change_image(*idx);
+		    std::cerr << "+++++++ CHANGE IMAGE CALLBACK to " << *idx
+			      << std::endl;
 		    break;
 		}
 	    case kStopVideo:
@@ -2731,6 +2732,7 @@ void ImageView::timeout()
 		}
 	    case kPlayForwards:
 		{
+		    std::cerr << "+++++++ PLAYFWD CALLBACK " << std::endl;
 		    play_forwards();
 		    break;
 		}
@@ -8526,6 +8528,9 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir )
 {
+
+    browser()->change_image( browser()->value() );
+    
     if ( dir == CMedia::kForwards )
     {
 	send_network("playfwd");
