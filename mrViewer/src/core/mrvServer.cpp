@@ -28,7 +28,7 @@
 
 //#define BOOST_ASIO_ENABLE_HANDLER_TRACKING
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
-#define DEBUG_COMMANDS
+//#define DEBUG_COMMANDS
 
 #include <algorithm>
 #include <cstdlib>
@@ -1116,6 +1116,8 @@ bool Parser::parse( const std::string& s )
        int idx;
        is >> idx;
 
+       std::cerr << "******* CHANGE IMAGE RECEIVED " << idx << std::endl;
+       
        ImageView::Command c;
        c.type = ImageView::kChangeImage;
 	  
@@ -1399,59 +1401,26 @@ bool Parser::parse( const std::string& s )
               sprintf( buf, N_("seek %") PRId64, frame );
               deliver( buf );
           }
-      }
 
-      mrv::media fg = v->foreground();
-      if ( fg )
-      {
-          //
-          // handle all shapes in images in reels
-          //
-          size_t num = browser()->number_of_reels();
-          for ( size_t r = 0; r < num; ++r )
-          {
-              mrv::Reel reel = browser()->reel_at( unsigned(r) );
-              if ( reel->images.empty() ) continue;
+	  mrv::media fg = view()->foreground();
+	  CMedia* img = fg->image();
+	  char buf[128];
+	  sprintf( buf, N_("ChangeImage %d"), browser()->value() );
+	  deliver( buf );
 
-              cmd = N_("CurrentReel \"");
-              cmd += reel->name;
-              cmd += "\"";
-              deliver( cmd );
-
-              size_t n = reel->images.size();
-              for ( size_t i = 0; i < n; ++i )
-              {
-                  const mrv::media& fg = reel->images[i];
-                  if (!fg) continue;
-
-                  CMedia* img = fg->image();
-
-              }
-          }
-
-          CMedia* img = fg->image();
-          cmd = N_("CurrentImage \"");
-          cmd += img->fileroot();
-
-          char buf[128];
-          sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
-                   img->last_frame() );
-          cmd += buf;
-          deliver( cmd );
-
-          ImageView::VRType t = v->vr();
-          if ( t == ImageView::kVRSphericalMap )
-              sprintf(buf, N_("VRSpherical 1"));
-          else if ( t == ImageView::kVRCubeMap )
-              sprintf(buf, N_("VRCubic 1"));
-          else
-          {
-              sprintf(buf, N_("VRSpherical 0"));
-              deliver( buf );
-              sprintf(buf, N_("VRCubic 0"));
-              deliver( buf );
-          }
-          deliver( buf );
+	  ImageView::VRType t = v->vr();
+	  if ( t == ImageView::kVRSphericalMap )
+	      sprintf(buf, N_("VRSpherical 1"));
+	  else if ( t == ImageView::kVRCubeMap )
+	      sprintf(buf, N_("VRCubic 1"));
+	  else
+	  {
+	      sprintf(buf, N_("VRSpherical 0"));
+	      deliver( buf );
+	      sprintf(buf, N_("VRCubic 0"));
+	      deliver( buf );
+	  }
+	  deliver( buf );
 
           sprintf(buf, N_("VRangle %g"), v->vr_angle() );
           deliver( buf );
