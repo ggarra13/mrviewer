@@ -35,6 +35,8 @@
 struct Clock;
 
 
+void sleep_ms(int milliseconds); // cross-platform sleep function
+
 namespace mrv {
 
 class ViewerUI;
