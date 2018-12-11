@@ -2688,6 +2688,107 @@ void ImageView::rot_y( double x ) { _engine->rot_y(x); valid(0); }
 double ImageView::rot_x() const { return _engine->rot_x(); }
 double ImageView::rot_y() const { return _engine->rot_y(); }
 
+void ImageView::handle_commands()
+{
+    mrv::ImageBrowser* b = browser();
+    if (!b) return;
+    
+    _network_send = false;
+    Command c = commands.front();
+    switch( c.type )
+    {
+	case kLoadImage:
+	    {
+		LoadInfo file = * (LoadInfo*) c.data;
+		LoadList files;
+		files.push_back( file );
+		b->load( files, false, "", false );
+		break;
+	    }
+	case kChangeImage:
+	    {
+		int* idx = (int*) c.data;
+		b->change_image(*idx);
+		break;
+	    }
+	case kStopVideo:
+	    {
+		stop();
+		break;
+	    }
+	case kSeek:
+	    {
+		int64_t f = * ((int64_t*) c.data);
+		seek( f );
+		break;
+	    }
+	case kPlayForwards:
+	    {
+		play_forwards();
+		break;
+	    }
+	case kPlayBackwards:
+	    {
+		play_backwards();
+		break;
+	    }
+	case kRemoveImage:
+	    {
+		int* idx = (int*) c.data;
+		std::cerr << "CALL REMOVE IMAGE " << *idx << std::endl;
+		b->remove(*idx);
+		break;
+	    }
+	case kExchangeImage:
+	    {
+		std::vector<int>* list = (std::vector<int>*) c.data;
+		int oldsel = (*list)[0];
+		int sel = (*list)[1];
+		b->exchange(oldsel, sel);
+		break;
+	    }
+	case kICS:
+	    {
+		std::string* s = (std::string*) c.data;
+		mrv::media fg = foreground();
+		if (fg)
+		{
+		    CMedia* img = fg->image();
+		    img->ocio_input_color_space( *s );
+		    update_ICS();
+		}
+		break;
+	    }
+	case kRT:
+	    {
+		std::string* s = (std::string*) c.data;
+		mrv::media fg = foreground();
+		if (fg)
+		{
+		    CMedia* img = fg->image();
+		    img->rendering_transform( s->c_str() );
+		    img->image_damage( img->image_damage() |
+				       CMedia::kDamageLut );
+		}
+		break;
+	    }
+	case kChangeChannel:
+	    {
+		unsigned idx = * (unsigned*) c.data;
+		if ( foreground() )
+		    channel( idx );
+		else
+		    LOG_ERROR( "No image for channel selection" );
+		break;
+	    }
+    }  // switch
+
+    _network_send = true;
+    delete c.data;
+    commands.pop_front();
+    redraw();
+}
+
 void ImageView::timeout()
 {
     mrv::Timeline* timeline = this->timeline();
@@ -2699,80 +2800,7 @@ void ImageView::timeout()
    
     while ( ! commands.empty()  )
     {
-	_network_send = false;
-	Command c = commands.front();
-	switch( c.type )
-	{
-	    case kLoadImage:
-		{
-		    LoadInfo file = * (LoadInfo*) c.data;
-		    LoadList files;
-		    files.push_back( file );
-		    b->load( files, false, "", false );
-		    break;
-		}
-	    case kChangeImage:
-		{
-		    int* idx = (int*) c.data;
-		    b->change_image(*idx);
-		    std::cerr << "+++++++ CHANGE IMAGE CALLBACK to " << *idx
-			      << std::endl;
-		    break;
-		}
-	    case kStopVideo:
-		{
-		    stop();
-		    break;
-		}
-	    case kSeek:
-		{
-		    int64_t f = * ((int64_t*) c.data);
-		    seek( f );
-		    break;
-		}
-	    case kPlayForwards:
-		{
-		    std::cerr << "+++++++ PLAYFWD CALLBACK " << std::endl;
-		    play_forwards();
-		    break;
-		}
-	    case kPlayBackwards:
-		{
-		    play_backwards();
-		    break;
-		}
-	    case kRemoveImage:
-		{
-		    int* idx = (int*) c.data;
-		    b->remove(*idx);
-		    break;
-		}
-	    case kExchangeImage:
-		{
-		    std::vector<int>* list = (std::vector<int>*) c.data;
-		    int oldsel = (*list)[0];
-		    int sel = (*list)[1];
-		    b->exchange(oldsel, sel);
-		    break;
-		}
-	    case kICS:
-		{
-		    std::string* s = (std::string*) c.data;
-		    mrv::media fg = foreground();
-		    if (fg)
-		    {
-			CMedia* img = fg->image();
-			img->ocio_input_color_space( *s );
-			update_ICS();
-		    }
-		    break;
-		}
-	}  // switch
-
-	_network_send = true;
-	delete c.data;
-	commands.pop_front();
-	redraw();
+	handle_commands();
     }
   
     TRACE( "" );

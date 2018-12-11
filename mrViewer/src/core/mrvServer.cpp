@@ -57,6 +57,7 @@
 #include <boost/asio.hpp>
 #include <fltk/Font.h>
 
+#include "core/mrvPlayback.h"
 #include "mrvClient.h"
 #include "mrvServer.h"
 #include "gui/mrvPreferences.h"
@@ -437,11 +438,12 @@ bool Parser::parse( const std::string& s )
       std::string name;
       is >> ch >> name;
 
-      if ( v->foreground() )
-          v->channel( ch );
-      else
-          LOG_ERROR( _("No image for channel selection") );
-      v->redraw();
+      ImageView::Command c;
+      c.type = ImageView::kChangeChannel;
+      c.data = new unsigned(ch);
+
+      v->commands.push_back( c );
+      
       ok = true;
    }
    else if ( cmd == N_("FieldDisplay") )
@@ -569,13 +571,14 @@ bool Parser::parse( const std::string& s )
        is.clear();
        std::getline( is, s, '"' );
 
-       mrv::media fg = v->foreground();
-       if (fg)
-       {
-           CMedia* img = fg->image();
-           img->rendering_transform( s.c_str() );
-           ok = true;
-       }
+       ImageView::Command c;
+       c.type = ImageView::kRT;
+       c.data = new string( s );
+
+       v->commands.push_back( c );
+       
+       ok = true;
+       
    }
    else if ( cmd == N_("ODT") )
    {
@@ -638,11 +641,12 @@ bool Parser::parse( const std::string& s )
        if ( ! s.empty() )
        {
            mrv::Preferences::OCIO_View = s;
-           m->gammaDefaults->label( strdup( s.c_str() ) );
+           m->gammaDefaults->copy_label( s.c_str() );
            m->gammaDefaults->redraw();
        }
        v->use_lut(true);
        m->uiLUT->value(true);
+#if 0
        mrv::media fg = v->foreground();
        if (!fg) ok = false;
        else
@@ -652,6 +656,9 @@ bool Parser::parse( const std::string& s )
            v->redraw();
            ok = true;
        }
+#else
+       ok = true;
+#endif
    }
    else if ( cmd == N_("ICS") )
    {
@@ -965,6 +972,8 @@ bool Parser::parse( const std::string& s )
       c.type = ImageView::kRemoveImage;
       c.data = new int(idx);
 
+      v->commands.push_back( c );
+
       ok = true;
    }
    else if ( cmd == N_("CloneImage") )
@@ -1115,8 +1124,6 @@ bool Parser::parse( const std::string& s )
    {
        int idx;
        is >> idx;
-
-       std::cerr << "******* CHANGE IMAGE RECEIVED " << idx << std::endl;
        
        ImageView::Command c;
        c.type = ImageView::kChangeImage;
@@ -1265,7 +1272,6 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
-      std::cerr << browser() << std::endl;
       size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
@@ -1320,8 +1326,8 @@ bool Parser::parse( const std::string& s )
                 deliver( buf );
             }
 
-            num = img->number_of_lmts();
-            for ( size_t i = 0; i < num; ++i )
+            size_t num_luts = img->number_of_lmts();
+            for ( size_t i = 0; i < num_luts; ++i )
             {
                 sprintf( buf, N_("LMT %d \"%s\""), i,
                          img->look_mod_transform(i) );
@@ -1382,6 +1388,10 @@ bool Parser::parse( const std::string& s )
          deliver( cmd );
       }
 
+      char buf[256];
+      sprintf( buf, N_("ChangeImage %d"), browser()->value() );
+      deliver( buf );
+      
       {
           mrv::media bg = v->background();
           if ( bg )
@@ -1391,7 +1401,6 @@ bool Parser::parse( const std::string& s )
               CMedia* img = bg->image();
               cmd += img->fileroot();
 
-              char buf[128];
               sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
                        img->last_frame() );
               cmd += buf;
@@ -1403,10 +1412,9 @@ bool Parser::parse( const std::string& s )
           }
 
 	  mrv::media fg = view()->foreground();
+	  if (!fg) return false;
+	  
 	  CMedia* img = fg->image();
-	  char buf[128];
-	  sprintf( buf, N_("ChangeImage %d"), browser()->value() );
-	  deliver( buf );
 
 	  ImageView::VRType t = v->vr();
 	  if ( t == ImageView::kVRSphericalMap )
@@ -1445,8 +1453,9 @@ bool Parser::parse( const std::string& s )
           deliver( buf );
 
       }
+      
+      
 
-      char buf[256];
       sprintf(buf, N_("Zoom %g"), v->zoom() );
       deliver( buf );
 
@@ -1500,6 +1509,8 @@ bool Parser::parse( const std::string& s )
       sprintf( buf, N_("FPS %g"), v->fps() );
       deliver( buf );
 
+      
+      
       sprintf( buf, N_("UpdateLayers") );
       deliver( buf );
 
@@ -1517,6 +1528,23 @@ bool Parser::parse( const std::string& s )
           deliver( buf );
       }
 
+      mrv::media fg = v->foreground();
+      if (!fg) return false;
+      
+      CMedia* img = fg->image();
+	  
+      if ( ( img->has_picture() || !CMedia::preload_cache() ||
+	     !CMedia::cache_active() ) &&
+	   ui->uiPrefs->uiPrefsAutoPlayback->value() &&
+	   img->first_frame() != img->last_frame() )
+      {
+	  deliver( "playfwd" );
+	  ImageView::Command c;
+	  c.type = ImageView::kPlayForwards;
+	  c.data = NULL;
+	  v->commands.push_back( c );
+      }
+      
       browser()->redraw();
       v->redraw();
 
@@ -1768,7 +1796,9 @@ void tcp_session::deliver( const std::string& msg )
 {
     SCOPED_LOCK( mtx );
 
+#ifdef DEBUG_COMMANDS
     LOG_INFO( msg );
+#endif
 
    output_queue_.push_back(msg + "\n");
 
