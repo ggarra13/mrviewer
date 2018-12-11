@@ -5,7 +5,8 @@ v4.3.6   - Bug fixed limiting of images for formats without a
 	   memory elegantly.  An out of memory will limit the Gb of
 	   frames automatically.
 	 - Bug fixed network connections to be thread safe.  Now they
-	   work as they should.
+	   work as they should.  There are some missing commands that
+	   it won't handle yet, but most functionality is there.
 
 v4.3.5   - Bug fixed CTL RRT transform not getting selected when it
 	   was selected thru the menus.  The 8bits, 16bits, float, etc.
