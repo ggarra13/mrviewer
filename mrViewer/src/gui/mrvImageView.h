@@ -78,6 +78,8 @@ class server;
       kRemoveImage,
       kExchangeImage,
       kICS,
+      kRT,
+      kChangeChannel,
       kLastCommand
       };
       
@@ -489,6 +491,9 @@ class server;
       HudDisplay hud() const         { return _hud; }
       void hud( const HudDisplay x ) { _hud = x; }
 
+      // Handle network commands encoded in stream
+      void handle_commands();
+      
       void timeout();
 
       /// Refresh the view images
