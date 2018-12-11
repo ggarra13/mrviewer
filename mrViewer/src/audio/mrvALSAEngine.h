@@ -84,9 +84,9 @@ protected:
   snd_pcm_t*   _pcm_handle;
 
 protected:
-  static unsigned int _instances;
-  static snd_mixer_t* _mixer;
-  snd_pcm_format_t    _pcm_format;
+    static unsigned int _instances;
+    static snd_mixer_t* _mixer;
+    snd_pcm_format_t    _pcm_format;
     snd_pcm_hw_params_t* hwparams;
     snd_pcm_sw_params_t* swparams;
 };
