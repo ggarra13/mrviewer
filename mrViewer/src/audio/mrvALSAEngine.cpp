@@ -653,7 +653,7 @@ float ALSAEngine::volume() const
           /* We're ready to rock and roll. :-) */
           return true;
       }
-    catch( const AudioEngine::exception& e )
+    catch( const std::exception& e )
     {
         std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
 	close();
