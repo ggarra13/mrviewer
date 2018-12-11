@@ -1633,7 +1633,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
     if ( ( img->has_picture() || !CMedia::preload_cache() ||
            !CMedia::cache_active() ) &&
          uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
-         img->first_frame() != img->last_frame()  )
+         img->first_frame() != img->last_frame() &&
+	 view()->network_send() )
       {
 	  bool b = view()->network_send();
 	  view()->network_send(true);
@@ -2465,7 +2466,6 @@ void ImageBrowser::replace( int i, mrv::media m )
 
             lastX = x; lastY = y;
             change_image();
-	    send_image( value() );
 
             mrv::media m = current_image();
             if ( timeline()->edl() && m )
