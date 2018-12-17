@@ -757,7 +757,7 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
     if ( view() ) view()->send_network( buf );
 }
 
-void ImageBrowser::send_image( const mrv::media& m )
+void ImageBrowser::send_current_image( const mrv::media& m )
 {
     if (!m) return;
 
@@ -813,7 +813,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     for ( ; i != e; ++i )
     {
-        send_image( *i );
+        send_current_image( *i );
     }
 }
 
@@ -835,8 +835,8 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( visible() ) relayout();
 
-    send_reel( reel );
-    send_image( m );
+    //send_reel( reel );
+    //send_current_image( m );
 
 
     mrv::EDLGroup* e = edl_group();
@@ -1147,12 +1147,12 @@ void ImageBrowser::clear_bg()
 
 
            adjust_timeline();
-           //send_image( m );
+           //send_current_image( m );
         }
         else
         {
             DBG( "FG REEL " << _reel << " om: " << om->image()->name() );
-            //send_image( om );
+            //send_current_image( om );
         }
 
       }
@@ -1162,6 +1162,7 @@ void ImageBrowser::clear_bg()
 void ImageBrowser::value( int idx )
 {
     send_image( idx );
+    seek( view()->frame() );
     fltk::Browser::value( idx );
 }
 
@@ -1175,6 +1176,7 @@ void ImageBrowser::send_image( int i )
     char buf[128];
     sprintf( buf, "ChangeImage %d", i );
     view()->send_network( buf );
+
 }
 
   void ImageBrowser::change_image(int i)
@@ -1346,7 +1348,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     mrv::media m = this->add( img );
     send_reel( reel );
-    //send_image( m );
+    send_current_image( m );
 
     mrv::EDLGroup* e = edl_group();
 
