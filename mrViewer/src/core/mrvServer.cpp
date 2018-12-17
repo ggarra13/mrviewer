@@ -603,7 +603,10 @@ bool Parser::parse( const std::string& s )
        const char* env = getenv( "OCIO" );
        if ( env )
        {
-           v->send( kLUT_CHANGE );
+	   ImageView::Command c;
+	   c.type = ImageView::kLUT_CHANGE;
+	   c.data = NULL;
+	   v->commands.push_back( c );
        }
        ok = true;
    }
@@ -619,7 +622,11 @@ bool Parser::parse( const std::string& s )
        sprintf( buf, "OCIO=%s", s.c_str() );
        putenv( buf );
 
-       v->send( kLUT_CHANGE );
+       ImageView::Command c;
+       c.type = ImageView::kLUT_CHANGE;
+       c.data = NULL;
+       v->commands.push_back( c );
+
        ok = true;
    }
    else if ( cmd == N_("OCIOView") )
@@ -766,22 +773,6 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
-   else if ( cmd == N_("Reel") )
-   {
-      std::string name;
-      is.clear();
-      std::getline( is, name, '"' ); // skip first quote
-      is.clear();
-      std::getline( is, name, '"' );
-      is.clear();
-
-      r = browser()->reel( name.c_str() );
-      if (!r) {
-	  LOG_INFO( _("Create reel \"") << name << "\"" );
-	  r = browser()->new_reel( name.c_str() );
-      }
-      ok = true;
-   }
    else if ( cmd == N_("TimelineMax") )
    {
        double x;
@@ -856,14 +847,20 @@ bool Parser::parse( const std::string& s )
    {
        int on;
        is >> on;
-       v->send( mrv::kFULLSCREEN );
+       ImageView::Command c;
+       c.type = ImageView::kFULLSCREEN;
+       c.data = NULL;
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("PresentationMode" ) )
    {
        int on;
        is >> on;
-       v->send( mrv::kPRESENTATION );
+       ImageView::Command c;
+       c.type = ImageView::kPRESENTATION;
+       c.data = NULL;
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("ShiftAudio") )
@@ -928,16 +925,12 @@ bool Parser::parse( const std::string& s )
       is.clear();
       std::getline( is, name, '"' );
       is.clear();
-
-
-      mrv::Reel now = browser()->current_reel();
-      if ( now && now->name == name )
-         r = now;
-      else
-         r = browser()->reel( name.c_str() );
-      if (!r) {
-         r = browser()->new_reel( name.c_str() );
-      }
+      
+      ImageView::Command c;
+      c.type = ImageView::kCreateReel;
+      c.data = new std::string( name );
+      v->commands.push_back( c );
+   
       ok = true;
    }
    else if ( cmd == N_("ReplaceImage") )
@@ -1088,22 +1081,25 @@ bool Parser::parse( const std::string& s )
 
       bool found = false;
       r = browser()->current_reel();
- 
-      mrv::MediaList::iterator j = r->images.begin();
-      mrv::MediaList::iterator e = r->images.end();
-      for ( ; j != e; ++j )
+
+      if ( r )
       {
-          mrv::media fg = *j;
-	  if (!fg) continue;
-	  
-	  CMedia* img = fg->image();
-          if ( img->fileroot() == imgname &&
-	       img->first_frame() == start &&
-	       img->last_frame() == end )
-          {
-              found = true;
-              m = fg;
-          }
+	  mrv::MediaList::iterator j = r->images.begin();
+	  mrv::MediaList::iterator e = r->images.end();
+	  for ( ; j != e; ++j )
+	  {
+	      mrv::media fg = *j;
+	      if (!fg) continue;
+	      
+	      CMedia* img = fg->image();
+	      if ( img->fileroot() == imgname &&
+		   img->first_frame() == start &&
+		   img->last_frame() == end )
+	      {
+		  found = true;
+		  m = fg;
+	      }
+	  }
       }
 
       if (!found)
@@ -1276,7 +1272,9 @@ bool Parser::parse( const std::string& s )
       for (size_t i = 0; i < num; ++i )
       {
 	  r = browser()->reel_at( unsigned(i) );
-	  cmd = N_("Reel \"");
+	  if (!r) continue;
+	  
+	  cmd = N_("CurrentReel \"");
 	  cmd += r->name;
 	  cmd += "\"";
 	  deliver( cmd );
@@ -1381,11 +1379,12 @@ bool Parser::parse( const std::string& s )
          cmd += r->name;
          cmd += "\"";
          deliver( cmd );
-      }
-      if ( r->edl )
-      {
-         cmd = N_("EDL 1");
-         deliver( cmd );
+	 
+	 if ( r->edl )
+	 {
+	     cmd = N_("EDL 1");
+	     deliver( cmd );
+	 }
       }
 
       char buf[256];
@@ -1586,66 +1585,74 @@ bool Parser::parse( const std::string& s )
       c.data = new int64_t( f );
       v->commands.push_back( c );
       
-      //v->seek( f );
-      
       ok = true;
    }
    else if ( cmd == N_("MediaInfoWindow") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kMEDIA_INFO_WINDOW_SHOW );
+	   c.type = ImageView::kMEDIA_INFO_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kMEDIA_INFO_WINDOW_HIDE );
+	   c.type = ImageView::kMEDIA_INFO_WINDOW_HIDE;
        }
-
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("ColorInfoWindow") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kCOLOR_AREA_WINDOW_SHOW );
+	   c.type = ImageView::kCOLOR_AREA_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kCOLOR_AREA_WINDOW_HIDE );
+	   c.type = ImageView::kCOLOR_AREA_WINDOW_HIDE;
        }
-
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("GL3dView") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::k3D_VIEW_WINDOW_SHOW );
+	   c.type = ImageView::k3D_VIEW_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::k3D_VIEW_WINDOW_HIDE );
+	   c.type = ImageView::k3D_VIEW_WINDOW_HIDE;
        }
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("StereoOptions") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kSTEREO_OPTIONS_WINDOW_SHOW );
+	   c.type = ImageView::kSTEREO_OPTIONS_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kSTEREO_OPTIONS_WINDOW_HIDE );
+	   c.type = ImageView::kSTEREO_OPTIONS_WINDOW_HIDE;
        }
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("StereoOutput") )
@@ -1666,56 +1673,68 @@ bool Parser::parse( const std::string& s )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kPAINT_TOOLS_WINDOW_SHOW );
+	   c.type = ImageView::kPAINT_TOOLS_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kPAINT_TOOLS_WINDOW_HIDE );
+	   c.type = ImageView::kPAINT_TOOLS_WINDOW_HIDE;
        }
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("HistogramWindow") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kHISTOGRAM_WINDOW_SHOW );
+	   c.type = ImageView::kHISTOGRAM_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kHISTOGRAM_WINDOW_HIDE );
+	   c.type = ImageView::kHISTOGRAM_WINDOW_HIDE;
        }
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("VectorscopeWindow") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kVECTORSCOPE_WINDOW_SHOW );
+	   c.type = ImageView::kVECTORSCOPE_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kVECTORSCOPE_WINDOW_HIDE );
+	   c.type = ImageView::kVECTORSCOPE_WINDOW_HIDE;
        }
+       v->commands.push_back( c );
        ok = true;
    }
    else if ( cmd == N_("WaveformWindow") )
    {
        int x;
        is >> x;
+       ImageView::Command c;
+       c.data = NULL;
        if ( x )
        {
-           v->send( mrv::kWAVEFORM_WINDOW_SHOW );
+	   c.type = ImageView::kWAVEFORM_WINDOW_SHOW;
        }
        else
        {
-           v->send( mrv::kWAVEFORM_WINDOW_HIDE );
+	   c.type = ImageView::kWAVEFORM_WINDOW_HIDE;
        }
+       v->commands.push_back( c );
        ok = true;
    }
 
