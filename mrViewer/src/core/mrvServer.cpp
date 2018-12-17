@@ -61,7 +61,6 @@
 #include "mrvClient.h"
 #include "mrvServer.h"
 #include "gui/mrvPreferences.h"
-#include "gui/mrvEvents.h"
 #include "gui/mrvEDLGroup.h"
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvLogDisplay.h"
