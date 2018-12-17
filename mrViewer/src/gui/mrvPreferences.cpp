@@ -1061,44 +1061,30 @@ static const char* kCLocale = "C";
       main->uiReelWindow->uiMain->hide();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
+    mrv::ImageView* v = uiMain->uiView;
     if ( uiPrefs->uiPrefsImageInfo->value() )
-    {
-        main->uiImageInfo->uiMain->show();
-    }
-    else
-      main->uiImageInfo->uiMain->hide();
-
+	v->toggle_window( ImageView::kMediaInfo,
+			  uiPrefs->uiPrefsImageInfo->value() );
+    
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsColorArea->value() )
-    {
-        main->uiColorArea->uiMain->show();
-    }
-    else
-      main->uiColorArea->uiMain->hide();
+	v->toggle_window( ImageView::kColorInfo,
+			  uiPrefs->uiPrefsColorArea->value() );
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsHistogram->value() )
-    {
-        main->uiHistogram->uiMain->show();
-    }
-    else
-      main->uiHistogram->uiMain->hide();
+	v->toggle_window( ImageView::kHistogram,
+			  uiPrefs->uiPrefsHistogram->value() );
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsVectorscope->value() )
-    {
-        main->uiVectorscope->uiMain->show();
-    }
-    else
-      main->uiVectorscope->uiMain->hide();
+	v->toggle_window( ImageView::kVectorscope,
+			  uiPrefs->uiPrefsVectorscope->value() );
 
     if ( uiPrefs->uiPrefsWaveform->value() )
-    {
-        main->uiWaveform->uiMain->show();
-    }
-    else
-      main->uiWaveform->uiMain->hide();
-
+	v->toggle_window( ImageView::kWaveform,
+			  uiPrefs->uiPrefsWaveform->value() );
+    
     //
     // Toolbars
     //
