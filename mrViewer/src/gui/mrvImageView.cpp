@@ -2697,6 +2697,16 @@ void ImageView::handle_commands()
     Command c = commands.front();
     switch( c.type )
     {
+	case kCreateReel:
+	    {
+		std::string s = *(std::string*)c.data;
+		mrv::Reel r = b->reel( s.c_str() );
+		if ( !r )
+		{
+		    b->new_reel( s.c_str() );
+		}
+		break;
+	    }
 	case kLoadImage:
 	    {
 		LoadInfo file = * (LoadInfo*) c.data;
@@ -2776,9 +2786,84 @@ void ImageView::handle_commands()
 	    {
 		unsigned idx = * (unsigned*) c.data;
 		if ( foreground() )
+		{
 		    channel( idx );
+		}
 		else
 		    LOG_ERROR( "No image for channel selection" );
+		break;
+	    }
+	case kFULLSCREEN:
+	    toggle_fullscreen();
+	    break;
+	case kPRESENTATION:
+	    toggle_presentation();
+	    break;
+	case kMEDIA_INFO_WINDOW_SHOW:
+	    toggle_media_info(true);
+	    break;
+	case kMEDIA_INFO_WINDOW_HIDE:
+	    toggle_media_info(false);
+	    break;
+	case kCOLOR_AREA_WINDOW_SHOW:
+	    toggle_color_area(true);
+	    break;
+	case kCOLOR_AREA_WINDOW_HIDE:
+	    toggle_color_area(false);
+	    break;
+	case k3D_VIEW_WINDOW_SHOW:
+	    toggle_3d_view(true);
+	    break;
+	case k3D_VIEW_WINDOW_HIDE:
+	    toggle_3d_view(false);
+	    break;
+	case kHISTOGRAM_WINDOW_SHOW:
+	    toggle_histogram(true);
+	    break;
+	case kHISTOGRAM_WINDOW_HIDE:
+	    toggle_histogram(false);
+	    break;
+	case kVECTORSCOPE_WINDOW_SHOW:
+	    toggle_vectorscope(true);
+	    break;
+	case kVECTORSCOPE_WINDOW_HIDE:
+	    toggle_vectorscope(false);
+	    break;
+	case kWAVEFORM_WINDOW_SHOW:
+	    toggle_waveform(true);
+	    break;
+	case kWAVEFORM_WINDOW_HIDE:
+	    toggle_waveform(false);
+	    break;
+	case kSTEREO_OPTIONS_WINDOW_SHOW:
+	    toggle_stereo_options(true);
+	    break;
+	case kSTEREO_OPTIONS_WINDOW_HIDE:
+	    toggle_stereo_options(false);
+	    break;
+	case kPAINT_TOOLS_WINDOW_SHOW:
+	    toggle_paint_tools(true);
+	    break;
+	case kPAINT_TOOLS_WINDOW_HIDE:
+	    toggle_paint_tools(false);
+	    break;
+	case kLUT_CHANGE:
+	    {
+		mrv::media fg = foreground();
+		if ( fg )
+		{
+		    CMedia* img = fg->image();
+		    img->image_damage( img->image_damage() |
+				       CMedia::kDamageLut );
+		}
+		use_lut( true );
+		// mrv::Preferences::run( main() );
+		break;
+	    }
+	default:
+	    {
+		LOG_ERROR( "Unknown mrv event " << commands.size() << " "
+			   << c.type << " data " << c.data );
 		break;
 	    }
     }  // switch
@@ -6482,104 +6567,9 @@ int ImageView::handle(int event)
     TRACE("");
     switch( event )
     {
-        case mrv::kFULLSCREEN:
-        case mrv::kPRESENTATION:
-        case mrv::kMEDIA_INFO_WINDOW_SHOW:
-        case mrv::kMEDIA_INFO_WINDOW_HIDE:
-        case mrv::kCOLOR_AREA_WINDOW_SHOW:
-        case mrv::kCOLOR_AREA_WINDOW_HIDE:
-        case mrv::k3D_VIEW_WINDOW_SHOW:
-        case mrv::k3D_VIEW_WINDOW_HIDE:
-        case mrv::kHISTOGRAM_WINDOW_SHOW:
-        case mrv::kHISTOGRAM_WINDOW_HIDE:
-        case mrv::kVECTORSCOPE_WINDOW_SHOW:
-        case mrv::kVECTORSCOPE_WINDOW_HIDE:
-        case mrv::kWAVEFORM_WINDOW_SHOW:
-        case mrv::kWAVEFORM_WINDOW_HIDE:
-        case mrv::kSTEREO_OPTIONS_WINDOW_SHOW:
-        case mrv::kSTEREO_OPTIONS_WINDOW_HIDE:
-        case mrv::kPAINT_TOOLS_WINDOW_SHOW:
-        case mrv::kPAINT_TOOLS_WINDOW_HIDE:
-        case mrv::kLUT_CHANGE:
-            {
-                _event = event;
-                return 1;
-            }
         case fltk::TIMEOUT:
             {
-                unsigned e = _event;
-                ParserList c = _clients;
-                _clients.clear();
-                bool ok = false;
-                switch( e )
-                {
-                    case 0:
-                        break;
-                    case mrv::kFULLSCREEN:
-                        toggle_fullscreen();
-                        ok = true; break;
-                    case mrv::kPRESENTATION:
-                        toggle_presentation();
-                        ok = true; break;
-                    case mrv::kMEDIA_INFO_WINDOW_SHOW:
-                        toggle_media_info(true);
-                        ok = true; break;
-                    case mrv::kMEDIA_INFO_WINDOW_HIDE:
-                        toggle_media_info(false);
-                        ok = true; break;
-                    case mrv::kCOLOR_AREA_WINDOW_SHOW:
-                        toggle_color_area(true);
-                        ok = true; break;
-                    case mrv::kCOLOR_AREA_WINDOW_HIDE:
-                        toggle_color_area(false);
-                        ok = true; break;
-                    case mrv::k3D_VIEW_WINDOW_SHOW:
-                        toggle_3d_view(true);
-                        ok = true; break;
-                    case mrv::k3D_VIEW_WINDOW_HIDE:
-                        toggle_3d_view(false);
-                        ok = true; break;
-                    case mrv::kHISTOGRAM_WINDOW_SHOW:
-                        toggle_histogram(true);
-                        ok = true; break;
-                    case mrv::kHISTOGRAM_WINDOW_HIDE:
-                        toggle_histogram(false);
-                        ok = true; break;
-                    case mrv::kVECTORSCOPE_WINDOW_SHOW:
-                        toggle_vectorscope(true);
-                        ok = true; break;
-                    case mrv::kVECTORSCOPE_WINDOW_HIDE:
-                        toggle_vectorscope(false);
-                        ok = true; break;
-                    case mrv::kWAVEFORM_WINDOW_SHOW:
-                        toggle_waveform(true);
-                        ok = true; break;
-                    case mrv::kWAVEFORM_WINDOW_HIDE:
-                        toggle_waveform(false);
-                        ok = true; break;
-                    case mrv::kSTEREO_OPTIONS_WINDOW_SHOW:
-                        toggle_stereo_options(true);
-                        ok = true; break;
-                    case mrv::kSTEREO_OPTIONS_WINDOW_HIDE:
-                        toggle_stereo_options(false);
-                        ok = true; break;
-                    case mrv::kPAINT_TOOLS_WINDOW_SHOW:
-                        toggle_paint_tools(true);
-                        ok = true; break;
-                    case mrv::kPAINT_TOOLS_WINDOW_HIDE:
-                        toggle_paint_tools(false);
-                        ok = true; break;
-                    case mrv::kLUT_CHANGE:
-                        mrv::Preferences::run( main() );
-                        ok = true; break;
-                    default:
-                        LOG_ERROR( "Unknown mrv event" );
-                }
-
-                if ( ok ) { _event = 0; }
-
                 TRACE("");
-                _clients = c;
 
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active()  &&
@@ -7111,7 +7101,7 @@ void ImageView::channel( unsigned short c )
   // If user selected the same channel again, toggle it with
   // other channel (diffuse.r goes to diffuse, for example)
   const mrv::media& fg = foreground();
-  if ( c == _channel && fg && _old_fg == fg->image() ) {
+  if ( c == _channel && fg && _old_fg == fg->image() && network_send() ) {
       c = _old_channel;
   }
   _old_channel = _channel;
