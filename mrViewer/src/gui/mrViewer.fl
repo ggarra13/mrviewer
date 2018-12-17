@@ -342,19 +342,20 @@ v->new_reel(name);}
 delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ImageInfoUI {} {
+  class ImageInfoUI {open
+  } {
     decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Media Information}
         user_data this user_data_type {ImageInfoUI*}
-        callback {//v->main()->uiView->send_network( "MediaInfoWindow 0" );
-o->hide();}
-        xywh {374 107 505 530} hide resizable
+        callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
+o->hide();} selected
+        xywh {374 107 505 530} resizable
         extra_code {// Make the window transient
 o->child_of( main->uiMain );
-main_ = main;}
+main_ = main;} visible
       } {
         {fltk::Group} uiInfoText {
           user_data uiInfoText user_data_type {mrv::ImageInformation*} open
@@ -364,10 +365,12 @@ main_ = main;}
         } {}
       }
     }
-    Function {ImageInfoUI(ViewerUI* m)} {} {
+    Function {ImageInfoUI(ViewerUI* m)} {open
+    } {
       code {make_window( m );} {}
     }
-    Function {~ImageInfoUI()} {} {
+    Function {~ImageInfoUI()} {open
+    } {
       code {delete uiMain; uiMain = NULL;} {}
     }
     Function {main()} {open return_type {ViewerUI*}
@@ -674,12 +677,11 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences open
+        label Preferences
         xywh {809 322 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
@@ -1131,14 +1133,14 @@ uiWindowYSize->value( v->uiMain->h() );}
           }
           {fltk::Group} Playback {
             label Playback open
-            xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
               xywh {44 25 315 200} align 5 box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoPlayback {
-                label {Auto Playback} selected
+                label {Auto Playback}
                 tooltip {Start Playback when opening files.}
                 xywh {115 20 20 25} align 4 box UP_BOX
               }
