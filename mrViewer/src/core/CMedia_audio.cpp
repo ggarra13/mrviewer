@@ -1886,7 +1886,6 @@ void CMedia::flush_audio()
 void CMedia::close_audio()
 {
   SCOPED_LOCK( _audio_mutex);
-
   
   if ( _audio_engine ) _audio_engine->close();
   _samples_per_sec = 0;
