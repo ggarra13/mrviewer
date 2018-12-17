@@ -1802,10 +1802,13 @@ bool aviImage::find_image( const int64_t frame )
 
             uint64_t diff = abs(f - _hires->frame() );
 
+	    static short counter = 0;
+	    
             if ( !filter_graph &&
                  _hires->frame() != f &&
-                 diff > 1 && diff < 10 )
+                 diff > 1 && diff < 10 && counter < 10 )
             {
+		++counter;
                 IMG_WARNING( _("find_image: frame ") << frame
                              << _(" not found, choosing ") << _hires->frame()
                              << _(" instead") );
