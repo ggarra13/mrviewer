@@ -110,7 +110,6 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "core/ctlToLut.h"
 
 // GUI classes
-#include "gui/mrvEvents.h"
 #include "gui/mrvColorInfo.h"
 #include "gui/mrvFileRequester.h"
 #include "gui/mrvImageBrowser.h"
