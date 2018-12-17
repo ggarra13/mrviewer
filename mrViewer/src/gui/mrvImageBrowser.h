@@ -188,7 +188,7 @@ class ImageBrowser : public fltk::Browser
    protected:
     void send_reel( const mrv::Reel& r );
     void send_images( const mrv::Reel& r);
-    void send_image( const mrv::media& m );
+    void send_current_image( const mrv::media& m );
 
     void change_reel();
     void change_image();
