@@ -69,7 +69,8 @@ class server;
       enum CommandType
       {
       kNoCommand = 0,
-      kLoadImage = 1,
+      kCreateReel = 1,
+      kLoadImage,
       kChangeImage,
       kStopVideo,
       kSeek,
@@ -80,6 +81,25 @@ class server;
       kICS,
       kRT,
       kChangeChannel,
+      kFULLSCREEN,
+      kPRESENTATION,
+      kMEDIA_INFO_WINDOW_SHOW,
+      kMEDIA_INFO_WINDOW_HIDE,
+      kCOLOR_AREA_WINDOW_SHOW,
+      kCOLOR_AREA_WINDOW_HIDE,
+      k3D_VIEW_WINDOW_SHOW,
+      k3D_VIEW_WINDOW_HIDE,
+      kHISTOGRAM_WINDOW_SHOW,
+      kHISTOGRAM_WINDOW_HIDE,
+      kVECTORSCOPE_WINDOW_SHOW,
+      kVECTORSCOPE_WINDOW_HIDE,
+      kWAVEFORM_WINDOW_SHOW,
+      kWAVEFORM_WINDOW_HIDE,
+      kSTEREO_OPTIONS_WINDOW_SHOW,
+      kSTEREO_OPTIONS_WINDOW_HIDE,
+      kPAINT_TOOLS_WINDOW_SHOW,
+      kPAINT_TOOLS_WINDOW_HIDE,
+      kLUT_CHANGE,
       kLastCommand
       };
       

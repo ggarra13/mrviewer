@@ -3746,13 +3746,14 @@ bool CMedia::find_image( const int64_t frame )
          }
          else
          {
-             if ( idx > 0 )
+             if ( idx > 1 )
              {
                  // If we run out of memory, make sure we sweep the
                  // frames we have in memory.
-                 unsigned data_size = _sequence[idx-1]->data_size();
-                 int64_t maxmem = (idx-1) * data_size;
+                 size_t data_size = _sequence[idx-1]->data_size();
+                 int64_t maxmem = (idx-2) * data_size;
                  Preferences::max_memory = maxmem;
+                 LOG_INFO( "[mem] Max memory is now " << maxmem );
                  limit_video_store( frame );
                  fetch( f );
                  cache( _hires );
