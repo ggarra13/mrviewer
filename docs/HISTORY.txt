@@ -1,3 +1,8 @@
+v4.3.7   - Made showing and hiding of windows be a command.  This makes
+	   them thread safe.
+	 - Bug fixed networking to work with multiple clients.
+	   Previously, only one server and one client were accepted.
+
 v4.3.6   - Bug fixed limiting of images for formats without a
 	   display window ( png, jpg, etc).  Now memory setting works
 	   for them too, not just for exrs.
