@@ -464,9 +464,9 @@ static void update_title_bar( mrv::ImageView* view )
 
   if ( fg && bg && fg != bg )
   {
-      snprintf( bufs, 256, _("mrViewer    FG: %s   BG: %s (%s)"),
-                fg->image()->name().c_str(),
-                bg->image()->name().c_str(),
+      snprintf( bufs, 256, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
+                fg->image()->name().c_str(), view->fg_reel(),
+                bg->image()->name().c_str(), view->bg_reel(),
                 view->show_background() ? _("Shown") : _("Not Shown") );
   }
   else if ( fg )
