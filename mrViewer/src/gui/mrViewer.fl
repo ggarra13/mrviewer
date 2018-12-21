@@ -351,7 +351,7 @@ delete uiMain; uiMain = NULL;} {}
         label {Media Information}
         user_data this user_data_type {ImageInfoUI*}
         callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
-o->hide();} selected
+o->hide();}
         xywh {374 107 505 530} resizable
         extra_code {// Make the window transient
 o->child_of( main->uiMain );
@@ -677,11 +677,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences
+        label Preferences open
         xywh {809 322 700 450} resizable
         extra_code {o->main(m);}
         class {mrv::ActionWindow} visible
@@ -691,7 +692,7 @@ o->label( o->child( o->value() )->label() );}
           xywh {218 24 450 389}
         } {
           {fltk::Group} {} {
-            label {User Interface}
+            label {User Interface} open
             xywh {13 22 423 350} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1132,7 +1133,7 @@ uiWindowYSize->value( v->uiMain->h() );}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
+            label Playback
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -2208,6 +2209,29 @@ This setting thus allows caching less pictures in memory but at an improved qual
             }
           }
           {fltk::Group} {} {
+            label Saving open
+            xywh {14 23 424 350} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Reels open
+              xywh {8 22 406 188} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsRelativePaths {
+                label {Use Relative Paths in Reel Content} selected
+                tooltip {With this option, the content of the reel (the reel images/movies) are saved with relative paths to the start of mrViewer.}
+                xywh {25 81 25 25} box UP_BOX
+              }
+              {fltk::CheckButton} uiPrefsImagePathReelPath {
+                label {Use Image Path to Set Default Reel Saving Path}
+                tooltip {With this option on, saving of a reel will default to the path of the first image loaded.}
+                xywh {25 36 25 25} box UP_BOX value 1
+              }
+            }
+            {fltk::Group} {} {
+              xywh {13 218 400 115} box ROUNDED_BOX
+            } {}
+          }
+          {fltk::Group} {} {
             label Video
             xywh {13 22 423 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
@@ -2566,13 +2590,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
@@ -2628,6 +2652,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               label Loading
               }
             {fltk::Item} {} {
+              label Saving
+              }
+            {fltk::Item} {} {
               label Video
               }
             {fltk::Item} {} {
@@ -2650,7 +2677,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {223 419 423 31}
         } {
           {fltk::Button} {} {
@@ -3095,8 +3122,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3133,7 +3159,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
