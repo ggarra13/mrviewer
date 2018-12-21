@@ -1864,7 +1864,7 @@ void GLEngine::draw_images( ImageList& images )
             daw = img->data_window2(frame);
         }
 
-      // Handle background image size
+	// Handle background image size
         if ( fg != img && stereo == CMedia::kNoStereo )
         {
             mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
@@ -1911,7 +1911,6 @@ void GLEngine::draw_images( ImageList& images )
             glTranslated( x, y, 0.0f );
         }
 
-
         if ( dpw != daw && ! _view->vr() )
         {
 
@@ -1945,7 +1944,7 @@ void GLEngine::draw_images( ImageList& images )
             if ( flip & ImageView::kFlipHorizontal ) y = (double)dp.h();
             glTranslated( x, y, 0.0f );
         }
-
+	
         glMatrixMode(GL_MODELVIEW);
         CHECK_GL;
         glPushMatrix();
