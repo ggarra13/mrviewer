@@ -111,7 +111,7 @@ namespace mrv {
 
   public:
       GLLut3d( const mrv::ViewerUI* v, const unsigned N );
-      GLLut3d( const GLLut3d& b );
+      // GLLut3d( const GLLut3d& b );
       virtual ~GLLut3d();
 
     void enable();
@@ -204,6 +204,9 @@ namespace mrv {
       std::string g_inputColorSpace;
 
       static LutsMap _luts;                   //!< The list of luts
+
+    private:
+      GLLut3d( const GLLut3d& b ) {};
   };
 
 } // namespace mrv
