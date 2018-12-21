@@ -558,7 +558,18 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    const char* file = mrv::save_reel();
+    std::string dir;
+
+    if ( uiMain->uiPrefs->uiPrefsImagePathReelPath->value() )
+    {
+	mrv::media fg = current_image();
+	if ( fg )
+	{
+	    dir = fg->image()->directory();
+	}
+    }
+    
+    const char* file = mrv::save_reel( dir.c_str() );
     if ( !file || strlen(file) == 0 ) return;
 
     std::string reelname( file );
@@ -590,8 +601,18 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
       {
         const CMedia* img = (*i)->image();
 
+	std::string path = img->fileroot();
+	
+	if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+	{
+	    fs::path parentPath = fs::current_path();
+	    fs::path childPath = img->fileroot();
+	    fs::path relativePath = fs::relative( childPath, parentPath );
+	    path = relativePath.string();
+	}
+	
         fprintf( f, "\"%s\" %" PRId64 " %" PRId64
-                 " %" PRId64 " %" PRId64 "\n", img->fileroot(),
+                 " %" PRId64 " %" PRId64 "\n", path.c_str(),
                  img->first_frame(), img->last_frame(),
                  img->start_frame(), img->end_frame() );
         if ( img->is_sequence() )
