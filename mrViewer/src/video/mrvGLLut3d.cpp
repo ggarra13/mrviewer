@@ -247,20 +247,6 @@ _inited( false )
     glGenTextures( 1, &texId );
 }
 
-GLLut3d::GLLut3d( const GLLut3d& b ) :
-view( b.view ),
-lutMin( b.lutMin ),
-lutMax( b.lutMax ),
-lutM( b.lutM ),
-lutT( b.lutT ),
-lutF( b.lutF ),
-texId( b.texId ),
-_channels( b._channels ),
-_lutN( b._lutN ),
-_inited( b._inited )
-{
-}
-
 
 
   GLLut3d::~GLLut3d()
@@ -274,7 +260,7 @@ _inited( b._inited )
   void GLLut3d::enable()
   {
     if ( GLEngine::maxTexUnits() > 3 )
-      glActiveTexture(GL_TEXTURE3);
+      glActiveTexture(GL_TEXTURE0 + 3);
 
     glBindTexture( GL_TEXTURE_3D, texId );
     glEnable( GL_TEXTURE_3D );
@@ -285,7 +271,7 @@ _inited( b._inited )
   void GLLut3d::disable()
   {
     if ( GLEngine::maxTexUnits() > 3 )
-      glActiveTexture(GL_TEXTURE3);
+      glActiveTexture(GL_TEXTURE0 + 3);
     glDisable( GL_TEXTURE_3D );
   }
 
