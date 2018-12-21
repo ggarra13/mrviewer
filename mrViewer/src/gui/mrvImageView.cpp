@@ -459,7 +459,6 @@ static void update_title_bar( mrv::ImageView* view )
 
   mrv::media fg = view->foreground();
   mrv::media bg = view->background();
-  if ( !bg && !fg ) return;
 
   char bufs[256];
 
@@ -8131,6 +8130,7 @@ void ImageView::damage_contents()
     {
       CMedia* img = fg->image();
       img->image_damage( img->image_damage() | CMedia::kDamageContents );
+      redraw();
     }
 
   mrv::media bg = background();
@@ -8138,6 +8138,7 @@ void ImageView::damage_contents()
     {
       CMedia* img = bg->image();
       img->image_damage( img->image_damage() | CMedia::kDamageContents );
+      redraw();
     }
 }
 
@@ -8176,7 +8177,6 @@ void ImageView::show_pixel_ratio( const bool b )
 
 
    damage_contents();
-   redraw();
 }
 
 
@@ -8812,7 +8812,6 @@ void ImageView::field( FieldDisplay p )
   send_network( buf );
 
   damage_contents();
-  redraw();
 }
 
 
