@@ -1070,7 +1070,7 @@ namespace mrv {
         else
           {
             _shader->setUniform( "enableLut", 0 );
-        CHECK_GL;
+	    CHECK_GL;
           }
 
         const mrv::ViewerUI* v = _view->main();
@@ -1226,20 +1226,16 @@ namespace mrv {
         _shader->disable();
       }
 
-    if ( _lut )
-    {
-        _lut->disable();
-    }
 
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
           short i = short( _channels - 1 );
-        for ( ; i >= 0 ; --i )
+	  for ( ; i >= 0 ; --i )
           {
               short idx = (i == 3 ? (short) 4 : i );
-            glActiveTexture(GL_TEXTURE0 + idx);
-            glDisable( GL_TEXTURE_2D );
+	      glActiveTexture(GL_TEXTURE0 + idx);
+	      glDisable( GL_TEXTURE_2D );
           }
       }
     else
