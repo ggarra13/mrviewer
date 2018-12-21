@@ -914,6 +914,13 @@ static std::string expandVariables( const std::string &s,
     loading.get( "max_images_apart", tmp, 10 );
     uiPrefs->uiPrefsMaxImagesApart->value( tmp );
 
+    fltk::Preferences saving( base, "saving" );
+    saving.get( "use_relative_paths", tmp, 0 );
+    uiPrefs->uiPrefsRelativePaths->value( tmp );
+    
+    saving.get( "use_image_path", tmp, 1 );
+    uiPrefs->uiPrefsImagePathReelPath->value( tmp );
+    
     fltk::Preferences video( base, "video" );
     video.get( "video_codec", tmp, 0 );
     uiPrefs->uiPrefsVideoCodec->value(tmp);
@@ -1851,6 +1858,12 @@ static const char* kCLocale = "C";
                  uiPrefs->uiPrefsImageVersionPrefix->value() );
     loading.set( "max_images_apart", uiPrefs->uiPrefsMaxImagesApart->value() );
 
+    fltk::Preferences saving( base, "saving" );
+    saving.set( "use_relative_paths", (int)
+		uiPrefs->uiPrefsRelativePaths->value() );
+    
+    saving.set( "use_image_path", (int)
+		uiPrefs->uiPrefsImagePathReelPath->value() );
 
     fltk::Preferences video( base, "video" );
     video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
