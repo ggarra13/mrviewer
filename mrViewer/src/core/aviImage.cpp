@@ -1813,6 +1813,10 @@ bool aviImage::find_image( const int64_t frame )
                              << _(" not found, choosing ") << _hires->frame()
                              << _(" instead") );
             }
+	    else
+	    {
+		if ( diff == 0 ) counter = 0;
+	    }
           }
         else
           {
