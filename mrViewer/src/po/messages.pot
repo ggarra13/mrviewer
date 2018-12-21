@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2018-12-21 10:59-0300\n"
+"POT-Creation-Date: 2018-12-21 14:48-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "  ==> Using "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1221
+#: video/mrvGLLut3d.cpp:1207
 msgid "  Choosing "
 msgstr ""
 
@@ -119,7 +119,7 @@ msgstr ""
 msgid " UF: %<PRId64> "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1203
+#: video/mrvGLLut3d.cpp:1189
 msgid " already created: "
 msgstr ""
 
@@ -669,7 +669,7 @@ msgstr ""
 msgid "35mm Panavision"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1202 video/mrvGLLut3d.cpp:1281
+#: video/mrvGLLut3d.cpp:1188 video/mrvGLLut3d.cpp:1267
 msgid "3D Lut for "
 msgstr ""
 
@@ -1076,7 +1076,7 @@ msgstr ""
 msgid "Aperture"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:875
+#: video/mrvGLLut3d.cpp:861
 msgid "Apply: "
 msgstr ""
 
@@ -1779,7 +1779,7 @@ msgstr ""
 msgid "Core"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:789
+#: video/mrvGLLut3d.cpp:775
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr ""
@@ -2011,7 +2011,7 @@ msgstr ""
 msgid "Could not get profile \""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:864
+#: video/mrvGLLut3d.cpp:850
 msgid "Could not init cmm: "
 msgstr ""
 
@@ -2031,7 +2031,7 @@ msgstr ""
 msgid "Could not load shadow map image"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:780
+#: video/mrvGLLut3d.cpp:766
 msgid "Could not locate ICC profile \""
 msgstr ""
 
@@ -2655,13 +2655,13 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:851
+#: video/mrvGLLut3d.cpp:837
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:857
+#: video/mrvGLLut3d.cpp:843
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -3682,7 +3682,7 @@ msgid ""
 "Image has a different Output Device Transform (ODT) than the one set already."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1213
+#: video/mrvGLLut3d.cpp:1199
 msgid "Image input color space is undefined."
 msgstr ""
 
@@ -3896,11 +3896,11 @@ msgstr ""
 msgid "Internal error in wizard selection: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:801
+#: video/mrvGLLut3d.cpp:787
 msgid "Invalid Profile for CMM: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:845
+#: video/mrvGLLut3d.cpp:831
 msgid "Invalid destination profile/image format"
 msgstr ""
 
@@ -3924,7 +3924,7 @@ msgstr ""
 msgid "Invalid pixel buffer coordinates "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:816
+#: video/mrvGLLut3d.cpp:802
 msgid "Invalid source profile/image pixel format"
 msgstr ""
 
@@ -4599,15 +4599,15 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1127 video/mrvGLLut3d.cpp:1172
+#: video/mrvGLLut3d.cpp:1113 video/mrvGLLut3d.cpp:1158
 msgid "No CTL script"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1125 video/mrvGLLut3d.cpp:1170
+#: video/mrvGLLut3d.cpp:1111 video/mrvGLLut3d.cpp:1156
 msgid "No CTL script or ICC profile"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1129 video/mrvGLLut3d.cpp:1174
+#: video/mrvGLLut3d.cpp:1115 video/mrvGLLut3d.cpp:1160
 msgid "No ICC profile"
 msgstr ""
 
@@ -4668,11 +4668,11 @@ msgstr ""
 msgid "No such framebuffer - cannot set pixel"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1176
+#: video/mrvGLLut3d.cpp:1162
 msgid "No valid ODT transform: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1131
+#: video/mrvGLLut3d.cpp:1117
 msgid "No valid RT transform for \""
 msgstr ""
 
@@ -4834,11 +4834,11 @@ msgstr ""
 msgid "ODT"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1068
+#: video/mrvGLLut3d.cpp:1054
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1044
+#: video/mrvGLLut3d.cpp:1030
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 
@@ -5450,7 +5450,7 @@ msgstr ""
 msgid "RLE"
 msgstr ""
 
-#: core/mrvColorOps.cpp:52 video/mrvGLLut3d.cpp:539
+#: core/mrvColorOps.cpp:52 video/mrvGLLut3d.cpp:525
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr ""
 
@@ -5458,11 +5458,11 @@ msgstr ""
 msgid "RT"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1019
+#: video/mrvGLLut3d.cpp:1005
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:988
+#: video/mrvGLLut3d.cpp:974
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 
@@ -6991,11 +6991,11 @@ msgstr ""
 msgid "Unknown error"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:577
+#: video/mrvGLLut3d.cpp:563
 msgid "Unknown error returned from OCIO processor"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:673
+#: video/mrvGLLut3d.cpp:659
 msgid "Unknown error returned from ctlToLut"
 msgstr ""
 
@@ -7989,7 +7989,7 @@ msgstr ""
 
 #: gui/mrvImageView.cpp:467
 #, c-format
-msgid "mrViewer    FG: %s   BG: %s (%s)"
+msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 msgstr ""
 
 #: video/mrvGLEngine.cpp:662
