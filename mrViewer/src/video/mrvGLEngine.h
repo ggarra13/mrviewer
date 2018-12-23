@@ -236,7 +236,7 @@ namespace mrv {
 
     // OpenGL needs to be inited
     static bool _initGL;          //!< if not set, opengl must be inited for view
-      static bool _hdr;
+      static bool _hdr;          //!< we support HDR10 movies
     static GLint _maxTexUnits;   //!< hardware texture units
     static bool _floatTextures;   //!< float textures supported
     static bool _halfTextures;    //!< half textures supported
