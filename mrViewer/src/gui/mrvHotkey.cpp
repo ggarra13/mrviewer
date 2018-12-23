@@ -118,7 +118,6 @@ Hotkey kGammaMore( false, false, false, false, 0, ")" );
 Hotkey kGammaLess( false, false, false, false, 0, "(" );
 
 Hotkey kSetAsBG( false, false, false, false, 0 );
-Hotkey kToggleLUT( false, false, false, false, 0 );
 
 Hotkey kAddIPTCMetadata( false, false, false, false, 0 );
 Hotkey kRemoveIPTCMetadata( false, false, false, false, 0 );
@@ -317,7 +316,6 @@ HotkeyEntry( _("Gamma More"), kGammaMore),
 HotkeyEntry( _("Gamma Less"), kGammaLess),
 HotkeyEntry( _("Switch FG/BG Images"), kSwitchFGBG ),
 HotkeyEntry( _("Set As BG Image"), kSetAsBG),
-HotkeyEntry( _("Toggle LUT"), kToggleLUT),
 HotkeyEntry( _("Add IPTC Metadata"), kAddIPTCMetadata),
 HotkeyEntry( _("Remove IPTC Metadata"), kRemoveIPTCMetadata),
 HotkeyEntry( _("Attach Audio File"), kAttachAudio),
