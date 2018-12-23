@@ -562,13 +562,13 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     if ( uiMain->uiPrefs->uiPrefsImagePathReelPath->value() )
     {
-	mrv::media fg = current_image();
-	if ( fg )
-	{
-	    dir = fg->image()->directory();
-	}
+        mrv::media fg = current_image();
+        if ( fg )
+        {
+            dir = fg->image()->directory();
+        }
     }
-    
+
     const char* file = mrv::save_reel( dir.c_str() );
     if ( !file || strlen(file) == 0 ) return;
 
@@ -601,16 +601,17 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
       {
         const CMedia* img = (*i)->image();
 
-	std::string path = img->fileroot();
-	
-	if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
-	{
-	    fs::path parentPath = fs::current_path();
-	    fs::path childPath = img->fileroot();
-	    fs::path relativePath = fs::relative( childPath, parentPath );
-	    path = relativePath.string();
-	}
-	
+        std::string path = img->fileroot();
+
+        if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+        {
+            fs::path parentPath = reelname; //fs::current_path();
+            parentPath = parentPath.parent_path();
+            fs::path childPath = img->fileroot();
+            fs::path relativePath = fs::relative( childPath, parentPath );
+            path = relativePath.generic_string();
+        }
+
         fprintf( f, "\"%s\" %" PRId64 " %" PRId64
                  " %" PRId64 " %" PRId64 "\n", path.c_str(),
                  img->first_frame(), img->last_frame(),
@@ -1022,19 +1023,21 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
 
 
-void ImageBrowser::set_bg()
+void ImageBrowser::set_bg( mrv::media bg )
 {
     mrv::Reel reel = reel_at( _reel );
     if ( !reel ) return;
 
+    view()->bg_reel( _reel );
+    view()->background( bg );
 
     uiMain->uiReelWindow->uiBGButton->value(1);
 }
 
 void ImageBrowser::clear_bg()
 {
-    // view()->bg_reel( -1 );
-    // view()->background( mrv::media() );
+    view()->bg_reel( -1 );
+    view()->background( mrv::media() );
     uiMain->uiReelWindow->uiBGButton->value(0);
 }
 
@@ -1100,7 +1103,7 @@ void ImageBrowser::clear_bg()
 
     if ( view()->bg_reel() == _reel )
     {
-        set_bg();
+        set_bg( view()->foreground() );
     }
     else
     {
@@ -1362,7 +1365,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     img->default_icc_profile();
     img->default_rendering_transform();
-    
+
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
@@ -1657,12 +1660,12 @@ void ImageBrowser::load( const mrv::LoadList& files,
            !CMedia::cache_active() ) &&
          uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
          img->first_frame() != img->last_frame() &&
-	 view()->network_send() )
+         view()->network_send() )
       {
-	  bool b = view()->network_send();
-	  view()->network_send(true);
-	  view()->play_forwards();
-	  view()->network_send(b);
+          bool b = view()->network_send();
+          view()->network_send(true);
+          view()->play_forwards();
+          view()->network_send(b);
       }
 
     // if ( _load_threads.empty() )
@@ -2010,8 +2013,7 @@ void ImageBrowser::load( const stringArray& files,
             << " " << reel->images[sel]->image()->name() );
        view()->bg_reel( _reel );
        mrv::media bg = reel->images[sel];
-       view()->background( bg );
-       set_bg();
+       set_bg( bg );
     }
   }
 
@@ -2752,7 +2754,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
         redraw();
         return;
       }
-    
+
     Element* e = (Element*) child(oldsel);
     if ( sel > oldsel ) sel += 1;
     fltk::Browser::insert( *e, sel );
@@ -2763,9 +2765,9 @@ void ImageBrowser::exchange( int oldsel, int sel )
     if (!reel)
       {
         redraw();
-	return;
+        return;
       }
-    
+
     mrv::media m = reel->images[oldsel];
     CMedia* img = m->image();
 
@@ -2774,7 +2776,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
     int64_t f = (int64_t) uiMain->uiFrame->value();
     int64_t g = t->offset( img );
     f -= g;
-    
+
     char buf[1024];
     sprintf( buf, "ExchangeImage %d %d", oldsel, sel );
     view()->send_network( buf );
