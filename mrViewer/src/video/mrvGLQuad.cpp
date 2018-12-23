@@ -401,8 +401,9 @@ namespace mrv {
               // If we mapped this buffer read/write, it would almost always be
               // located in system memory, from which reading is much faster.
               //
-              char* ioMem = (char*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB,
-                                                GL_WRITE_ONLY );
+              GLubyte* ioMem = (GLubyte*)glMapBuffer(
+						     GL_PIXEL_UNPACK_BUFFER_ARB,
+						     GL_WRITE_ONLY );
               CHECK_GL;
               if ( !ioMem )
                 {
@@ -418,7 +419,7 @@ namespace mrv {
               unsigned size   = tw * rh * pixel_size * channels;
 
               memcpy( ioMem + offset, pixels, size );
-
+	      
               //
               // release memory, i.e. give control back to the driver
               //
@@ -810,7 +811,7 @@ namespace mrv {
         _format         = pic->format();
         _internalFormat = internalFormat;
         DBG( "GLEngine::shader_type() " << GLEngine::shader_type() << " "
-             << GLEngine::shader_type_name() );
+	     << GLEngine::shader_type_name() );
         if ( GLEngine::shader_type() ) _shader = GLEngine::rgbaShader();
         else                           _shader = NULL;
 
@@ -1000,10 +1001,6 @@ namespace mrv {
     CHECK_GL;
 
     bool use_lut = _view->use_lut() && _lut && GLEW_EXT_texture3D;
-    if ( use_lut && _lut )
-      {
-          _lut->enable();
-      }
 
 
     if ( _shader )
@@ -1011,6 +1008,11 @@ namespace mrv {
         _shader->enable();
         _shader->bind();
 
+	if ( use_lut && _lut )
+	{
+	    _lut->enable();
+	}
+    
         if ( _shader != GLEngine::rgbaShader() )
           {
             _shader->setTextureUnit( "YImage", 0 );
@@ -1047,7 +1049,7 @@ namespace mrv {
 
         if ( use_lut && _lut )
           {
-            _shader->setUniform( "enableLut", 1 );
+            _shader->setUniform( "enableLut", true );
             CHECK_GL;
             _shader->setUniform( "lutMin", _lut->lutMin );
             CHECK_GL;
@@ -1069,7 +1071,7 @@ namespace mrv {
           }
         else
           {
-            _shader->setUniform( "enableLut", 0 );
+            _shader->setUniform( "enableLut", false );
 	    CHECK_GL;
           }
 
@@ -1277,7 +1279,7 @@ void GLQuad::lut( const CMedia* img )
 
     _lut   = mrv::GLLut3d::factory( _view->main(), img );
     _image = img;
-
+    
     _view->window()->cursor( fltk::CURSOR_DEFAULT );
 }
 
