@@ -985,6 +985,7 @@ void GLEngine::end_fbo( ImageList& images )
 {
    if ( ! _fboRenderBuffer ) return;
 
+   
    glBindTexture(GL_TEXTURE_2D, textureId);
    CHECK_GL;
 
@@ -1720,9 +1721,12 @@ void GLEngine::draw_images( ImageList& images )
   static std::string ODT_CTL_old_transform;
   static unsigned kNumStops = 10;
 
+  mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+
+  bool use_ocio = uiPrefs->uiPrefsUseOcio->value();
+  
   if ( _view->use_lut() )
     {
-      mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
       int RT_lut_algorithm = uiPrefs->RT_algorithm->value();
       int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
       const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->text();
@@ -1730,26 +1734,31 @@ void GLEngine::draw_images( ImageList& images )
       unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
 
       // Check if there was a change effecting lut.
-      if ( ( RT_lut_algorithm != RT_lut_old_algorithm ) ||
-           ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
-           ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
-           ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform ) ||
-           ( LUT_quality != lut_quality ) ||
+      if ( ! use_ocio && 
+	   (( RT_lut_algorithm != RT_lut_old_algorithm ) ||
+	    ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
+	    ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
+	    ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
+	   ( LUT_quality != lut_quality ) ||
            ( kNumStops != num_stops) )
         {
-          RT_lut_old_algorithm = RT_lut_algorithm;
-          ODT_lut_old_algorithm = ODT_lut_algorithm;
-          if ( ODT_ICC_profile )
-            ODT_ICC_old_profile = ODT_ICC_profile;
-          else
-            ODT_ICC_old_profile.clear();
+	    if ( !use_ocio )
+	    {
+		RT_lut_old_algorithm = RT_lut_algorithm;
+		ODT_lut_old_algorithm = ODT_lut_algorithm;
+		if ( ODT_ICC_profile )
+		    ODT_ICC_old_profile = ODT_ICC_profile;
+		else
+		    ODT_ICC_old_profile.clear();
 
-          ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
+		ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
+		
+	    }
 
-          refresh_luts();
+	    refresh_luts();
 
-          if ( LUT_quality != lut_quality ||
-               kNumStops != num_stops )
+	    if ( LUT_quality != lut_quality ||
+		 kNumStops != num_stops )
             {
                 LUT_quality = lut_quality;
                 kNumStops = num_stops;
@@ -2027,7 +2036,6 @@ void GLEngine::draw_images( ImageList& images )
                 quad->mask( mask );
                 quad->mask_value( 1 );
             }
-
             glDisable( GL_BLEND );
             CHECK_GL;
             if ( img->image_damage() & CMedia::kDamageContents )
@@ -2211,8 +2219,9 @@ void GLEngine::draw_images( ImageList& images )
       }
 
       if ( fg == img && bg != fg &&
-           _view->show_background() ) glEnable( GL_BLEND );
-
+           _view->show_background() )
+	  glEnable( GL_BLEND );
+      
       if ( img->image_damage() & CMedia::kDamageContents )
       {
           if ( stereo )
@@ -2307,28 +2316,36 @@ void GLEngine::draw_shape( GLShape* const shape )
 {
    double zoomX = _view->zoom();
     DBG( __FUNCTION__ << " " << __LINE__ );
-    if ( _view->ghost_previous() )
+    if ( shape->previous )
     {
-        if ( shape->frame == _view->frame() - 1 )
-        {
-            float a = shape->a;
-            shape->a *= 0.25f;
-            shape->draw(zoomX);
-            shape->a = a;
-            return;
-         }
+	short num = shape->previous;
+	for ( short i = num; i > 0; --i )
+	{
+	    if ( shape->frame - i == _view->frame() )
+	    {
+		float a = shape->a;
+		shape->a *= 1.0f - (float)i/num;
+		shape->draw(zoomX);
+		shape->a = a;
+		return;
+	    }
+	}
       }
 
-      if ( _view->ghost_next() )
+      if ( shape->next )
       {
-         if ( shape->frame == _view->frame() + 1 )
-         {
-            float a = shape->a;
-            shape->a *= 0.25f;
-            shape->draw(zoomX);
-            shape->a = a;
-            return;
-         }
+	short num = shape->next;
+	for ( short i = 1; i <= num; ++i )
+	{
+	    if ( shape->frame + i == _view->frame() )
+	    {
+		float a = shape->a;
+		shape->a *= 1.0f - (float)i/num;
+		shape->draw(zoomX);
+		shape->a = a;
+		return;
+	    }
+	}
       }
 
       if ( shape->frame == MRV_NOPTS_VALUE ||
@@ -3958,34 +3975,40 @@ void GLEngine::clear_quads()
 void GLEngine::release()
 {
     TRACE("");
-    DBG( __FUNCTION__ << " " << __LINE__ );
     clear_quads();
 
     TRACE("");
-    DBG( __FUNCTION__ << " " << __LINE__ );
     GLLut3d::clear();
 
     TRACE("");
-    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( sCharset ) {
         glDeleteLists( sCharset, 255 );
         CHECK_GL;
     }
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
     TRACE("");
+
     if (_rgba)  delete _rgba;
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    _rgba = NULL;
+    
     TRACE("");
+
     if (_YByRy) delete _YByRy;
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    _YByRy = NULL;
+    
     TRACE("");
+    
     if (_YCbCr) delete _YCbCr;
+    _YCbCr = NULL;
 
     if (_YByRyA) delete _YByRyA;
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    _YByRyA = NULL;
+    
     TRACE("");
+    
     if (_YCbCrA) delete _YCbCrA;
+    _YCbCrA = NULL;
+    
 }
 
 
