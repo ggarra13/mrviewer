@@ -169,9 +169,9 @@ namespace mrv {
 
     code[read] = '\0';    // null-terminate
     fclose(f);
- 
+
     load( filename, code );
- 
+
     delete [] code;
   }
 
@@ -597,6 +597,7 @@ namespace mrv {
   {
       if ( _program ) glDeleteObjectARB( _program );
       _program = 0;
+      _frag_shader = 0;
   }
 
 }
