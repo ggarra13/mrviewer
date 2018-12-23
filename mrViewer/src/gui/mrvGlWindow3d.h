@@ -87,7 +87,7 @@ public:
                     int dx, int dy, // data window
                     float zmin, float zmax,
                     float farPlane  // zfar plane in Deep 3D window
-    );
+                  );
 
     void Perspective (double focal, double aspect,
                       double zNear, double zFar);

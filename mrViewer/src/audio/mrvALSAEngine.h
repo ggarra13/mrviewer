@@ -20,10 +20,10 @@
  * @file   mrvALSAEngine.h
  * @author gga
  * @date   Tue Jul 10 03:05:41 2007
- * 
+ *
  * @brief  Simple alsa sound engine class
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvALSAEngine_h
@@ -41,47 +41,49 @@ namespace mrv {
 class ALSAEngine : public mrv::AudioEngine
 {
 public:
-  ALSAEngine();
-  virtual ~ALSAEngine();
+    ALSAEngine();
+    virtual ~ALSAEngine();
 
-  // Name of audio engine
-  virtual const char* name() { return "ALSA"; }
+    // Name of audio engine
+    virtual const char* name() {
+        return "ALSA";
+    }
 
-  // Open an audio stream for playback
-  virtual bool open( 
-		    const unsigned int channels,
-		    const unsigned int frequency,
-		    const AudioFormat  format,
-		    const unsigned int bits
-		     );
+    // Open an audio stream for playback
+    virtual bool open(
+        const unsigned int channels,
+        const unsigned int frequency,
+        const AudioFormat  format,
+        const unsigned int bits
+    );
 
-  // Play some samples (this function does not return until
-  // playback has finished)
-  virtual bool play( const char* data, const size_t size );
+    // Play some samples (this function does not return until
+    // playback has finished)
+    virtual bool play( const char* data, const size_t size );
 
-  // Retrieve current master volume
-  virtual float volume() const;
-    
-  // Change volume of playback
-  virtual void volume( float f );
-  
-  // Flush all audio sent for playback
-  virtual void flush();
+    // Retrieve current master volume
+    virtual float volume() const;
 
-  // Close an audio stream
-  virtual bool close();
+    // Change volume of playback
+    virtual void volume( float f );
 
-protected:
-  // Shutdown the audio engine
-  virtual bool shutdown();
+    // Flush all audio sent for playback
+    virtual void flush();
 
-  // Initialize the audio engine if needed and choose default
-  // device for playback
-  virtual bool initialize();
+    // Close an audio stream
+    virtual bool close();
 
 protected:
-  unsigned int _sample_size;
-  snd_pcm_t*   _pcm_handle;
+    // Shutdown the audio engine
+    virtual bool shutdown();
+
+    // Initialize the audio engine if needed and choose default
+    // device for playback
+    virtual bool initialize();
+
+protected:
+    unsigned int _sample_size;
+    snd_pcm_t*   _pcm_handle;
 
 protected:
     static unsigned int _instances;

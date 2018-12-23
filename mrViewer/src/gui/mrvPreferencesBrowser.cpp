@@ -19,10 +19,10 @@
  * @file   mrvPreferencesBrowser.cpp
  * @author gga
  * @date   Tue Jan 29 11:51:40 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <iostream>
@@ -53,9 +53,9 @@ fltk::xpmImage book_closed(book_xpm);
 fltk::xpmImage book_open(question_book_xpm);
 fltk::xpmImage folder_filled(filled_folder_xpm);
 fltk::xpmImage folder_closed(folder_closed_xpm);
-fltk::MultiImage folder( folder_closed, 
+fltk::MultiImage folder( folder_closed,
                          fltk::OPENED, folder_filled );
-fltk::MultiImage book( book_closed, 
+fltk::MultiImage book( book_closed,
                        fltk::SELECTED, book_open );
 
 const char* kModule = "pbrowser";
@@ -63,31 +63,31 @@ const char* kModule = "pbrowser";
 
 namespace mrv {
 
-  PreferencesBrowser::PreferencesBrowser( const int x, const int y, 
-					  const int w, const int h, 
-					  const char* lbl ) :
+PreferencesBrowser::PreferencesBrowser( const int x, const int y,
+                                        const int w, const int h,
+                                        const char* lbl ) :
     mrv::Browser( x, y, w, h, lbl )
-  {
+{
     leaf_symbol( &book );
     group_symbol( &folder );
-  }
+}
 
-  PreferencesBrowser::~PreferencesBrowser()
-  {
-  }
+PreferencesBrowser::~PreferencesBrowser()
+{
+}
 
 int PreferencesBrowser::handle( int e )
 {
     return fltk::Browser::handle( e );
 }
 
-  //
-  // Routine to update the main CTL group (paths and ctl scripts)
-  //
-  void PreferencesBrowser::update_ctl_tab( mrv::PreferencesUI* prefs )
-  {
+//
+// Routine to update the main CTL group (paths and ctl scripts)
+//
+void PreferencesBrowser::update_ctl_tab( mrv::PreferencesUI* prefs )
+{
 
-     if ( !prefs ) return;
+    if ( !prefs ) return;
 
     fltk::Browser* ctlpaths = prefs->uiPrefsCTLModulePath;
     fltk::Browser* scripts  = prefs->uiPrefsCTLScripts;
@@ -109,40 +109,40 @@ int PreferencesBrowser::handle( int e )
     //
     // Iterate thru each path looking for .ctl files
     //
-    for (Tokenizer_t::const_iterator it = tokens.begin(); 
-	 it != tokens.end(); ++it)
-      {
-	std::string path = *it;
-	    
-	ctlpaths->add( path.c_str() );
+    for (Tokenizer_t::const_iterator it = tokens.begin();
+            it != tokens.end(); ++it)
+    {
+        std::string path = *it;
 
-	if ( ! fs::exists( path ) ) continue;
+        ctlpaths->add( path.c_str() );
 
-	fs::directory_iterator end_itr;
-	for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
-	  {
-	    fs::path p = *itr;
+        if ( ! fs::exists( path ) ) continue;
 
-	    if ( fs::is_directory( p ) ) continue;
+        fs::directory_iterator end_itr;
+        for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
+        {
+            fs::path p = *itr;
+
+            if ( fs::is_directory( p ) ) continue;
 
 
-	    std::string base = fs::basename( *itr );
-	    std::string ext  = fs::extension( *itr );
+            std::string base = fs::basename( *itr );
+            std::string ext  = fs::extension( *itr );
 
-	    // Make extension lowercase and compare it against "ctl"
-	    std::transform( ext.begin(), ext.end(), ext.begin(), ::tolower );
-	    if ( ext != ".ctl" ) continue;
+            // Make extension lowercase and compare it against "ctl"
+            std::transform( ext.begin(), ext.end(), ext.begin(), ::tolower );
+            if ( ext != ".ctl" ) continue;
 
-	    // valid CTL, add it to the browser
-	    scripts->add( base.c_str() );
-	  }
-      }
+            // valid CTL, add it to the browser
+            scripts->add( base.c_str() );
+        }
+    }
 
-  }
+}
 
-  void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
-  {
-     if ( prefs == NULL ) return;
+void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
+{
+    if ( prefs == NULL ) return;
 
     fltk::WizardGroup* uiWizard = prefs->uiWizard;
     if (uiWizard == NULL ) return;
@@ -162,12 +162,12 @@ int PreferencesBrowser::handle( int e )
     std::string name = child->label();
 
     if ( name == _("CTL Paths") )
-      {
-	update_ctl_tab( prefs );
-      }
+    {
+        update_ctl_tab( prefs );
+    }
 
     // Display proper wizard's child (group)
     uiWizard->value( child );
-  }
+}
 
 }

@@ -68,15 +68,15 @@ using namespace std;
 
 namespace
 {
-  const char* kModule = "raw";
+const char* kModule = "raw";
 
 const char *kRawExtensions[] = {
-"bay", "bmq", "cr2", "crw", "cs1", "dc2", "dcr", "dng",
-"erf", "fff", "k25", "kdc", "mdc", "mos", "mrw",
-"nef", "orf", "pef", "pxn", "raf", "raw", "rdc", "sr2",
-"srf", "x3f", "arw", "3fr", "cine", "ia", "kc2", "mef",
-"nEF", "nrw", "qtk", "rw2", "sti", "rwl", "srw", "drf", "dsc",
-"ptx", "cap", "iiq", "rwz", NULL
+    "bay", "bmq", "cr2", "crw", "cs1", "dc2", "dcr", "dng",
+    "erf", "fff", "k25", "kdc", "mdc", "mos", "mrw",
+    "nef", "orf", "pef", "pxn", "raf", "raw", "rdc", "sr2",
+    "srf", "x3f", "arw", "3fr", "cine", "ia", "kc2", "mef",
+    "nEF", "nrw", "qtk", "rw2", "sti", "rwl", "srw", "drf", "dsc",
+    "ptx", "cap", "iiq", "rwz", NULL
 };
 
 }
@@ -85,259 +85,260 @@ const char *kRawExtensions[] = {
 namespace mrv {
 
 
-  rawImage::rawImage() :
+rawImage::rawImage() :
     CMedia(),
     _format( NULL ),
     iprc( NULL )
-  {
-  }
+{
+}
 
-  rawImage::~rawImage()
-  {
-      free( _format );
-      if ( iprc ) libraw_close( iprc );
-      iprc = NULL;
-  }
+rawImage::~rawImage()
+{
+    free( _format );
+    if ( iprc ) libraw_close( iprc );
+    iprc = NULL;
+}
 
 
-  /*! LibRaw does not allow testing a block of data,
-    but allows testing a file.
-  */
+/*! LibRaw does not allow testing a block of data,
+  but allows testing a file.
+*/
 
 int verbose=1,use_camera_wb=1,use_auto_wb=1,tiff_mode=0;
-  bool rawImage::test(const char* file)
-  {
-      if ( file == NULL ) return false;
-      std::string f = file;
-      std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
+bool rawImage::test(const char* file)
+{
+    if ( file == NULL ) return false;
+    std::string f = file;
+    std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
 
-      bool found = false;
-      const char** i = kRawExtensions;
-      for (  ; *i; ++i )
-      {
-          const char* ext = *i;
-          if ( f.rfind( ext ) == f.size() - strlen( ext ) )
-          {
-              found = true; break;
-          }
-      }
+    bool found = false;
+    const char** i = kRawExtensions;
+    for (  ; *i; ++i )
+    {
+        const char* ext = *i;
+        if ( f.rfind( ext ) == f.size() - strlen( ext ) )
+        {
+            found = true;
+            break;
+        }
+    }
 
-      if ( !found ) return false;
+    if ( !found ) return false;
 
-      libraw_data_t *in = libraw_init(0);
-      if(!in)
-      {
-          LOG_ERROR( _("Cannot create libraw handle") );
-          return false;
-      }
+    libraw_data_t *in = libraw_init(0);
+    if(!in)
+    {
+        LOG_ERROR( _("Cannot create libraw handle") );
+        return false;
+    }
 
-      in->params.half_size = 4; /* dcraw -h */
-      in->params.use_camera_wb = 0;
-      in->params.use_auto_wb = 0;
+    in->params.half_size = 4; /* dcraw -h */
+    in->params.use_camera_wb = 0;
+    in->params.use_auto_wb = 0;
 
-      int ret = libraw_open_file(in, file);
+    int ret = libraw_open_file(in, file);
 
-      if(ret)
-      {
-          LOG_ERROR( file << ": " << libraw_strerror(ret));
-          if(LIBRAW_FATAL_ERROR(ret))
-          {
-              libraw_close(in);
-          }
-          return false;
-      }
+    if(ret)
+    {
+        LOG_ERROR( file << ": " << libraw_strerror(ret));
+        if(LIBRAW_FATAL_ERROR(ret))
+        {
+            libraw_close(in);
+        }
+        return false;
+    }
 
-      libraw_close(in);
-      return true;
-  }
-
-  bool rawImage::initialize()
-  {
+    libraw_close(in);
     return true;
-  }
+}
 
-  bool rawImage::release()
-  {
+bool rawImage::initialize()
+{
     return true;
-  }
+}
 
-  bool rawImage::fetch( const boost::int64_t frame )
-  {
-      if ( !iprc )
-      {
-          iprc = libraw_init(0);
-          if(!iprc)
-          {
-              LOG_ERROR( _("Cannot create libraw handle") );
-              return false;
-          }
-      }
+bool rawImage::release()
+{
+    return true;
+}
 
-      iprc->params.half_size = 0; /* no dcraw -h */
-      iprc->params.use_camera_wb = use_camera_wb;
-      iprc->params.use_auto_wb = use_auto_wb;
+bool rawImage::fetch( const boost::int64_t frame )
+{
+    if ( !iprc )
+    {
+        iprc = libraw_init(0);
+        if(!iprc)
+        {
+            LOG_ERROR( _("Cannot create libraw handle") );
+            return false;
+        }
+    }
 
-      _layers.clear();
-      _num_channels = 0;
+    iprc->params.half_size = 0; /* no dcraw -h */
+    iprc->params.use_camera_wb = use_camera_wb;
+    iprc->params.use_auto_wb = use_auto_wb;
 
-      const char* const file = filename();
-      int ret = libraw_open_file(iprc, file);
-      HANDLE_ERRORS( ret, true );
+    _layers.clear();
+    _num_channels = 0;
 
-      char buf[256];
-      sprintf( buf, "%s/%s",iprc->idata.make, iprc->idata.model );
-      _format = strdup( buf );
+    const char* const file = filename();
+    int ret = libraw_open_file(iprc, file);
+    HANDLE_ERRORS( ret, true );
 
-      unsigned dw = 0, dh = 0;
+    char buf[256];
+    sprintf( buf, "%s/%s",iprc->idata.make, iprc->idata.model );
+    _format = strdup( buf );
+
+    unsigned dw = 0, dh = 0;
 
 #if 1
-      if ( is_thumbnail() )
-      {
-          //@todo: extract thumb image if present
-          ret = libraw_unpack_thumb(iprc);
-          HANDLE_ERRORS( ret, false );
+    if ( is_thumbnail() )
+    {
+        //@todo: extract thumb image if present
+        ret = libraw_unpack_thumb(iprc);
+        HANDLE_ERRORS( ret, false );
 
-          LibRaw_thumbnail_formats tformat = iprc->thumbnail.tformat;
-          dw = iprc->thumbnail.twidth;
-          dh = iprc->thumbnail.theight;
+        LibRaw_thumbnail_formats tformat = iprc->thumbnail.tformat;
+        dw = iprc->thumbnail.twidth;
+        dh = iprc->thumbnail.theight;
 
-          if ( tformat == LIBRAW_THUMBNAIL_BITMAP )
-          {
-              rgb_layers();
-              lumma_layers();
-              alpha_layers();
-              image_size( dw, dh );
-              const image_type::PixelType pixel_type = image_type::kByte;
-              allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
-                               dw, dh );
+        if ( tformat == LIBRAW_THUMBNAIL_BITMAP )
+        {
+            rgb_layers();
+            lumma_layers();
+            alpha_layers();
+            image_size( dw, dh );
+            const image_type::PixelType pixel_type = image_type::kByte;
+            allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
+                             dw, dh );
 
-              {
-                  SCOPED_LOCK( _mutex );
+            {
+                SCOPED_LOCK( _mutex );
 
-                  Pixel* pixels = (Pixel*)_hires->data().get();
-                  memcpy( pixels, iprc->thumbnail.thumb, dw*dh*4 );
-              }
-          }
-          else if ( tformat == LIBRAW_THUMBNAIL_JPEG )
-          {
-              // @todo: decompress in memory the jpeg thumbnail
-              is_thumbnail( false );
-              iprc->params.half_size = 1; /* dcraw -h */
-          }
-          else
-          {
-              is_thumbnail( false );
-              iprc->params.half_size = 1; /* dcraw -h */
-          }
-      }
+                Pixel* pixels = (Pixel*)_hires->data().get();
+                memcpy( pixels, iprc->thumbnail.thumb, dw*dh*4 );
+            }
+        }
+        else if ( tformat == LIBRAW_THUMBNAIL_JPEG )
+        {
+            // @todo: decompress in memory the jpeg thumbnail
+            is_thumbnail( false );
+            iprc->params.half_size = 1; /* dcraw -h */
+        }
+        else
+        {
+            is_thumbnail( false );
+            iprc->params.half_size = 1; /* dcraw -h */
+        }
+    }
 #endif
 
-      {
-          ret = libraw_unpack(iprc);
-          HANDLE_ERRORS( ret, true );
+    {
+        ret = libraw_unpack(iprc);
+        HANDLE_ERRORS( ret, true );
 
-          ret = libraw_dcraw_process(iprc);
-          HANDLE_ERRORS( ret, true );
+        ret = libraw_dcraw_process(iprc);
+        HANDLE_ERRORS( ret, true );
 
-          if ( !iprc->image )
-          {
-              IMG_ERROR( _("No image was decoded") );
-              return false;
-          }
+        if ( !iprc->image )
+        {
+            IMG_ERROR( _("No image was decoded") );
+            return false;
+        }
 
-          const libraw_imgother_t& o = iprc->other;
+        const libraw_imgother_t& o = iprc->other;
 
-          {
-              Imf::FloatAttribute attr( o.iso_speed );
-              _attrs.insert( std::make_pair( "Exif:ISOSpeedRatings",
-                                             attr.copy() ) );
-          }
-          {
-              Imf::FloatAttribute attr( o.shutter );
-              _attrs.insert( std::make_pair( "ExposureTime",
-                                             attr.copy() ) );
-          }
-          {
-              Imf::FloatAttribute attr( -log2f(o.shutter) );
-              _attrs.insert( std::make_pair( "Exif:ShutterSpeedValue",
-                                             attr.copy() ) );
-          }
-          {
-              //   Imf::FloatAttribute attr( o.aperture );
-              Imf::RationalAttribute attr( Imf::Rational( o.aperture*100,
-                                                          100 ) );
-              _attrs.insert( std::make_pair( "F Number", attr.copy() ) );
-          }
-          {
-              Imf::FloatAttribute attr( 2.0f * log2f(o.aperture) );
-              _attrs.insert( std::make_pair( "Exif:ApertureValue",
-                                             attr.copy() ) );
-          }
-          {
-              Imf::FloatAttribute attr( o.focal_len );
-              _attrs.insert( std::make_pair( "Exif:FocalLength",
-                                             attr.copy() ) );
-          }
-          {
-              struct tm * m_tm = localtime(&o.timestamp);
-              char datetime[20];
-              strftime (datetime, 20, "%Y-%m-%d %H:%M:%S", m_tm);
-              Imf::StringAttribute attr( datetime );
-              _attrs.insert( std::make_pair( "DateTime", attr.copy() ) );
-          }
-          if ( o.desc[0] )
-          {
-              Imf::StringAttribute attr( o.desc );
-              _attrs.insert( std::make_pair( "ImageDescription",
-                                             attr.copy() ) );
-          }
+        {
+            Imf::FloatAttribute attr( o.iso_speed );
+            _attrs.insert( std::make_pair( "Exif:ISOSpeedRatings",
+                                           attr.copy() ) );
+        }
+        {
+            Imf::FloatAttribute attr( o.shutter );
+            _attrs.insert( std::make_pair( "ExposureTime",
+                                           attr.copy() ) );
+        }
+        {
+            Imf::FloatAttribute attr( -log2f(o.shutter) );
+            _attrs.insert( std::make_pair( "Exif:ShutterSpeedValue",
+                                           attr.copy() ) );
+        }
+        {
+            //   Imf::FloatAttribute attr( o.aperture );
+            Imf::RationalAttribute attr( Imf::Rational( o.aperture*100,
+                                         100 ) );
+            _attrs.insert( std::make_pair( "F Number", attr.copy() ) );
+        }
+        {
+            Imf::FloatAttribute attr( 2.0f * log2f(o.aperture) );
+            _attrs.insert( std::make_pair( "Exif:ApertureValue",
+                                           attr.copy() ) );
+        }
+        {
+            Imf::FloatAttribute attr( o.focal_len );
+            _attrs.insert( std::make_pair( "Exif:FocalLength",
+                                           attr.copy() ) );
+        }
+        {
+            struct tm * m_tm = localtime(&o.timestamp);
+            char datetime[20];
+            strftime (datetime, 20, "%Y-%m-%d %H:%M:%S", m_tm);
+            Imf::StringAttribute attr( datetime );
+            _attrs.insert( std::make_pair( "DateTime", attr.copy() ) );
+        }
+        if ( o.desc[0] )
+        {
+            Imf::StringAttribute attr( o.desc );
+            _attrs.insert( std::make_pair( "ImageDescription",
+                                           attr.copy() ) );
+        }
 
-          if ( o.artist[0] )
-          {
-              Imf::StringAttribute attr( o.artist );
-              _attrs.insert( std::make_pair( "Artist", attr.copy() ) );
-          }
-          {
-              const libraw_colordata_t &color (iprc->color);
-              Imf::FloatAttribute attr( color.flash_used );
-              _attrs.insert( std::make_pair( "Exif:Flash",
-                                             attr.copy() ) );
+        if ( o.artist[0] )
+        {
+            Imf::StringAttribute attr( o.artist );
+            _attrs.insert( std::make_pair( "Artist", attr.copy() ) );
+        }
+        {
+            const libraw_colordata_t &color (iprc->color);
+            Imf::FloatAttribute attr( color.flash_used );
+            _attrs.insert( std::make_pair( "Exif:Flash",
+                                           attr.copy() ) );
 
-              if ( color.model2[0] )
-              {
-                  Imf::StringAttribute attr( color.model2 );
-                  _attrs.insert( std::make_pair( "Software", attr.copy() ) );
-              }
-          }
+            if ( color.model2[0] )
+            {
+                Imf::StringAttribute attr( color.model2 );
+                _attrs.insert( std::make_pair( "Software", attr.copy() ) );
+            }
+        }
 
-          dw = libraw_get_iwidth( iprc );
-          dh = libraw_get_iheight( iprc );
-
-
-          rgb_layers();
-          lumma_layers();
-          alpha_layers();
-          pixel_ratio( iprc->sizes.pixel_aspect );
-          image_size( dw, dh );
+        dw = libraw_get_iwidth( iprc );
+        dh = libraw_get_iheight( iprc );
 
 
-          const image_type::PixelType pixel_type = image_type::kShort;
+        rgb_layers();
+        lumma_layers();
+        alpha_layers();
+        pixel_ratio( iprc->sizes.pixel_aspect );
+        image_size( dw, dh );
 
-          image_type::Format type = image_type::kRGBA;
-          allocate_pixels( frame, _num_channels, type, pixel_type, dw, dh );
 
-          {
-              SCOPED_LOCK( _mutex );
+        const image_type::PixelType pixel_type = image_type::kShort;
 
-              Pixel* pixels = (Pixel*)_hires->data().get();
-              memcpy( pixels, iprc->image, dw*dh*4*sizeof(short) );
-          }
-      }
+        image_type::Format type = image_type::kRGBA;
+        allocate_pixels( frame, _num_channels, type, pixel_type, dw, dh );
 
-      libraw_recycle(iprc);
+        {
+            SCOPED_LOCK( _mutex );
 
-      return true;
-  }
+            Pixel* pixels = (Pixel*)_hires->data().get();
+            memcpy( pixels, iprc->image, dw*dh*4*sizeof(short) );
+        }
+    }
+
+    libraw_recycle(iprc);
+
+    return true;
+}
 
 
 

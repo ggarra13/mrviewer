@@ -28,22 +28,24 @@ namespace mrv {
 
 class ProgressReport
 {
-  public:
+public:
     ProgressReport( fltk::Window* main, boost::int64_t start,
                     boost::int64_t end );
     ~ProgressReport();
 
-    fltk::Window* window() const { return w; }
+    fltk::Window* window() const {
+        return w;
+    }
 
     bool tick();
 
     void show();
 
-  protected:
+protected:
     //! Convert a double in seconds to hour, minutes and seconds
     void to_hour_min_sec( const double t, int& hour, int& min, int& sec );
 
-  protected:
+protected:
     fltk::Window* w;
     fltk::ProgressBar* progress;
     fltk::Output* elapsed;

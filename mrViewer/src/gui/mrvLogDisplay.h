@@ -19,10 +19,10 @@
  * @file   mrvLogDisplay.h
  * @author gga
  * @date   Tue Oct  9 20:42:05 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #ifndef mrvLogDisplay_h
@@ -37,17 +37,17 @@ namespace mrv {
 
 class LogDisplay : public fltk::TextDisplay
 {
-  public:
+public:
     enum ShowPreferences
     {
-    kNever,
-    kOnce,
-    kAlways,
+        kNever,
+        kOnce,
+        kAlways,
     };
 
     typedef boost::recursive_mutex Mutex;
-    
-  public:
+
+public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~LogDisplay();
 
@@ -58,12 +58,14 @@ class LogDisplay : public fltk::TextDisplay
     void warning( const char* x );
     void error( const char* x );
 
-    inline unsigned lines() const { return _lines; }
-    
-  protected:
+    inline unsigned lines() const {
+        return _lines;
+    }
+
+protected:
     std::atomic<unsigned int> _lines;
 
-  public:
+public:
     static Mutex mtx;
     static ShowPreferences prefs;
     static std::atomic<bool> shown;

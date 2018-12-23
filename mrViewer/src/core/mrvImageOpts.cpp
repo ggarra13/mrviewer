@@ -26,23 +26,23 @@
 namespace mrv {
 
 
-  ImageOpts* ImageOpts::build( const mrv::ViewerUI* main, std::string ext,
-			       const bool has_deep_data )
+ImageOpts* ImageOpts::build( const mrv::ViewerUI* main, std::string ext,
+                             const bool has_deep_data )
 {
     std::transform( ext.begin(), ext.end(), ext.begin(), (int(*)(int)) tolower);
-    
-    if ( ext == ".exr" || ext == ".sxr" || ext == ".mxr" )
-      return new EXROptionsUI( main,
-			       CMedia::aces_metadata(), 
-			       CMedia::all_layers(),
-			       has_deep_data );
 
-    
+    if ( ext == ".exr" || ext == ".sxr" || ext == ".mxr" )
+        return new EXROptionsUI( main,
+                                 CMedia::aces_metadata(),
+                                 CMedia::all_layers(),
+                                 has_deep_data );
+
+
     if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
-	return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
-    
+        return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
+
     return new WandOptionsUI( main,
-			      CMedia::aces_metadata(),
+                              CMedia::aces_metadata(),
                               CMedia::all_layers() );
 }
 

@@ -19,10 +19,10 @@
  * @file   aviImage.h
  * @author gga
  * @date   Tue Jul 17 10:00:02 2007
- * 
+ *
  * @brief  A class to read movie and avi files
- * 
- * 
+ *
+ *
  */
 
 #ifndef aviImage_h
@@ -43,17 +43,19 @@ class ViewerUI;
 
 extern const char* const kColorSpaces[];
 
-class aviImage : public CMedia 
+class aviImage : public CMedia
 {
     aviImage();
 
-    static CMedia* create() { return new aviImage(); }
+    static CMedia* create() {
+        return new aviImage();
+    }
 
-  public:
+public:
     typedef std::vector< mrv::image_type_ptr > video_cache_t;
     typedef std::vector< mrv::image_type_ptr > subtitle_cache_t;
 
-  public:
+public:
     static bool test_filename( const char* filename );
     static bool test(const boost::uint8_t *data, unsigned len);
     static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
@@ -63,15 +65,21 @@ class aviImage : public CMedia
     virtual ~aviImage();
 
 
-    virtual const char* const format()      const { return _format.c_str(); }
-    virtual const char* const compression() const { return _compression.c_str(); }
+    virtual const char* const format()      const {
+        return _format.c_str();
+    }
+    virtual const char* const compression() const {
+        return _compression.c_str();
+    }
 
     ////////////////// Set the frame for the current image (sequence)
     virtual bool           frame( const int64_t f );
     virtual int64_t frame() const;
 
     /// Returns true if image has an alpha channel
-    virtual bool  has_alpha() const { return (_num_channels == 4); };
+    virtual bool  has_alpha() const {
+        return (_num_channels == 4);
+    };
 
     ////////////////// Pre-roll sequence for playback
     virtual void preroll( const int64_t frame );
@@ -90,16 +98,18 @@ class aviImage : public CMedia
 
     virtual bool find_image( const int64_t frame );
 
-    virtual boost::uint64_t video_pts() { 
-        return frame2pts( get_video_stream(), _frame ); 
+    virtual boost::uint64_t video_pts() {
+        return frame2pts( get_video_stream(), _frame );
     }
 
     virtual bool has_video() const;
 
     // virtual bool has_picture() const { return has_video(); }
 
-    inline bool has_image_sequence() const { return _has_image_seq; }
-    
+    inline bool has_image_sequence() const {
+        return _has_image_seq;
+    }
+
     virtual void video_stream( int x );
 
     virtual AVStream* get_video_stream() const;
@@ -112,8 +122,8 @@ class aviImage : public CMedia
         return _video_info[i];
     }
 
-    virtual size_t number_of_video_streams() const { 
-        return _video_info.size(); 
+    virtual size_t number_of_video_streams() const {
+        return _video_info.size();
     }
 
     static bool open_movie( const char* filename, const CMedia* img,
@@ -133,13 +143,17 @@ class aviImage : public CMedia
 
     virtual void subtitle_stream( int idx );
     void subtitle_file( const char* f );
-    std::string subtitle_file() const { return _subtitle_file; }
-    
+    std::string subtitle_file() const {
+        return _subtitle_file;
+    }
+
     int init_filters(const char *filters_descr);
 
     virtual const char* const colorspace() const;
     virtual const size_t colorspace_index() const;
-    virtual void colorspace_index( int x ) { _colorspace_index = x; }
+    virtual void colorspace_index( int x ) {
+        _colorspace_index = x;
+    }
 
     const char* const color_range() const;
 
@@ -151,68 +165,68 @@ class aviImage : public CMedia
         _subtitle_encoding = strdup( f );
         subtitle_file( _subtitle_file.c_str() );
     }
-    
+
     inline void subtitle_font( const char* f ) {
         free( _subtitle_font );
         _subtitle_font = strdup(f);
         subtitle_file( _subtitle_file.c_str() );
     }
-    
-    void debug_video_stores(const int64_t frame, 
-			    const char* routine = "",
-			    const bool detail = false);
 
-    void debug_subtitle_packets(const int64_t frame, 
-				const char* routine = "",
-				const bool detail = false);
-    void debug_subtitle_stores(const int64_t frame, 
-			       const char* routine = "",
-			       const bool detail = false);
+    void debug_video_stores(const int64_t frame,
+                            const char* routine = "",
+                            const bool detail = false);
 
-  protected:
+    void debug_subtitle_packets(const int64_t frame,
+                                const char* routine = "",
+                                const bool detail = false);
+    void debug_subtitle_stores(const int64_t frame,
+                               const char* routine = "",
+                               const bool detail = false);
+
+protected:
 
     void copy_pixel_types( AVPixelFormat fmt[],
-			   AVPixelFormat fmtold[] );
-    
+                           AVPixelFormat fmtold[] );
+
     void add_16_bits_pixel_types( AVPixelFormat fmt[],
-				  AVPixelFormat fmtold[] );
+                                  AVPixelFormat fmtold[] );
 
     // For counting frames
     bool readFrame(int64_t & pts);
 
-    
+
     int64_t queue_packets( const int64_t frame,
-                                  const bool is_seek,
-                                  bool& got_video,
-                                  bool& got_audio,
-                                  bool& got_subtitle );
+                           const bool is_seek,
+                           bool& got_video,
+                           bool& got_audio,
+                           bool& got_subtitle );
 
     void open_video_codec();
     void close_video_codec();
-       
-    DecodeStatus handle_video_packet_seek( int64_t& frame, 
-					   const bool is_seek );
+
+    DecodeStatus handle_video_packet_seek( int64_t& frame,
+                                           const bool is_seek );
 
     // Check if a frame is already in video store.
     bool in_video_store( const int64_t frame );
 
-    /** 
+    /**
      * Decode and store an image from a packet if possible
-     * 
+     *
      * @param frame frame to use (if packet has no dts)
      * @param pkt   packet to decode
-     * 
+     *
      * @return true if decoded and stored, false if not
      */
-    DecodeStatus decode_image( const int64_t frame, 
-			       AVPacket& pkt );
+    DecodeStatus decode_image( const int64_t frame,
+                               AVPacket& pkt );
 
     void open_subtitle_codec();
     void close_subtitle_codec();
     void subtitle_rect_to_image( const AVSubtitleRect& rect );
 
-    DecodeStatus decode_subtitle( const int64_t frame, 
-				  const AVPacket& pkt );
+    DecodeStatus decode_subtitle( const int64_t frame,
+                                  const AVPacket& pkt );
 
     virtual bool initialize();
 
@@ -220,43 +234,43 @@ class aviImage : public CMedia
 
     void populate();
 
-    /** 
+    /**
      * Store an image frame in cache
-     * 
+     *
      * @param frame        video frame to store
      * @param pts          video pts to store
-     * 
+     *
      */
     void store_image( int64_t frame,
                       const int64_t pts );
 
-    /** 
+    /**
      * Decode a video packet, returning success or not.
      * Checks cache to see if frame already exists after decoding.
-     * 
+     *
      * @param pktframe frame of packet (calculated)
      * @param frame    frame to use if packet lacks dts
      * @param pkt      packet
-     * 
+     *
      * @return DecodeOK if decoded, other if not
      */
     DecodeStatus decode_vpacket( int64_t& pktframe,
                                  const int64_t& frame,
                                  const AVPacket& pkt );
 
-    /** 
+    /**
      * Decode a video packet, returning its frame
-     * 
+     *
      * @param pktframe frame of packet (calculated)
      * @param frame    frame to use if packet lacks dts
      * @param pkt      packet
-     * 
+     *
      * @return DecodeOK if decoded, other if not
      */
     DecodeStatus decode_video_packet( int64_t& pktframe,
-				      const int64_t frame,
-				      const AVPacket* pkt
-				      );
+                                      const int64_t frame,
+                                      const AVPacket* pkt
+                                    );
 
     DecodeStatus audio_video_display( const int64_t& frame );
     void timed_limit_store( const int64_t& frame );
@@ -275,17 +289,17 @@ class aviImage : public CMedia
     int  subtitle_stream_index() const;
     void store_subtitle( const int64_t& frame,
                          const int64_t& repeat );
-    DecodeStatus handle_subtitle_packet_seek( int64_t& frame, 
-					      const bool is_seek );
+    DecodeStatus handle_subtitle_packet_seek( int64_t& frame,
+            const bool is_seek );
     DecodeStatus decode_subtitle_packet( int64_t& pktframe,
-					 int64_t& repeat,
-					 const int64_t frame,
-					 const AVPacket& pkt
-    );
+                                         int64_t& repeat,
+                                         const int64_t frame,
+                                         const AVPacket& pkt
+                                       );
     virtual bool    find_subtitle( const int64_t frame );
 
 
-  protected:
+protected:
 
     std::string _format;
     std::string _compression;

@@ -19,10 +19,10 @@
  * @file   mrvCollapsableGroup.cpp
  * @author gga
  * @date   Tue Aug  7 04:52:02 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <cstring>
@@ -42,35 +42,35 @@ using namespace std;
 
 namespace mrv {
 
-  void CollapsableGroup::toggle_tab( fltk::Button* w, void* data )
-  {
+void CollapsableGroup::toggle_tab( fltk::Button* w, void* data )
+{
     mrv::CollapsableGroup* g = (mrv::CollapsableGroup*) data;
     fltk::PackedGroup* contents = g->contents();
     char* label = strdup( w->label() );
     using namespace std;
     if ( contents->visible() )
-      {
-	label[10] = '0';
-	contents->hide();
-      }
+    {
+        label[10] = '0';
+        contents->hide();
+    }
     else
-      {
-	label[10] = '2';
-	contents->show();
-      }
+    {
+        label[10] = '2';
+        contents->show();
+    }
     w->copy_label( label );
     w->relayout();
     w->window()->redraw();
 //     g->parent()->redraw();
 
     free( label );
-  }
+}
 
-  CollapsableGroup::CollapsableGroup( const int x, const int y, 
-				      const int w, const int h, 
-				      const char* l ) :
+CollapsableGroup::CollapsableGroup( const int x, const int y,
+                                    const int w, const int h,
+                                    const char* l ) :
     fltk::Group( x, y, w, h )
-  {
+{
     box( fltk::ROUNDED_BOX );
 
     begin();
@@ -95,39 +95,39 @@ namespace mrv {
 //     resizable( _contents );  // this breaks stuff
 
     resizable( this );
-  
+
     end();
 
     _button->callback( (fltk::Callback*)toggle_tab, this );
-  }
+}
 
-  CollapsableGroup::~CollapsableGroup()
-  {
-      _contents->clear();
-      delete _contents;
-      delete _button;
-  }
+CollapsableGroup::~CollapsableGroup()
+{
+    _contents->clear();
+    delete _contents;
+    delete _button;
+}
 
-  void CollapsableGroup::spacing( int x )
-  {
+void CollapsableGroup::spacing( int x )
+{
     _contents->spacing( x );
     _contents->h( x + child(0)->h() );
-  }
+}
 
-  void CollapsableGroup::clear()
-  {
+void CollapsableGroup::clear()
+{
     _contents->clear();
     relayout();
-  }
+}
 
-  void CollapsableGroup::remove_all()
-  {
+void CollapsableGroup::remove_all()
+{
     _contents->remove_all();
     relayout();
-  }
+}
 
-  void CollapsableGroup::layout()
-  {
+void CollapsableGroup::layout()
+{
     Group::layout();
 
     fltk::Rectangle r( w(), h() );
@@ -137,16 +137,16 @@ namespace mrv {
     if ( _contents->visible() ) H += _contents->h() + 12;
 
     if ( children() >= 1 )
-	h( H + child(0)->h() );
+        h( H + child(0)->h() );
 
     init_sizes();
-  }
+}
 
-  void CollapsableGroup::add( fltk::Widget* w )
-  {
+void CollapsableGroup::add( fltk::Widget* w )
+{
     _contents->add( w );
     _contents->relayout();
-  }
+}
 
 
 } // namespace mrv

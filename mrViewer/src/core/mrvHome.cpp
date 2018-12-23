@@ -36,98 +36,98 @@ namespace mrv
 
 std::string sgetenv( const char* const n )
 {
-   if ( getenv( n ) )
-      return getenv( n );
-   else
-      return std::string();
+    if ( getenv( n ) )
+        return getenv( n );
+    else
+        return std::string();
 }
 
 std::string homepath()
 {
-   std::string path;
+    std::string path;
 
-   char* e = NULL;
-   if ( e = getenv("HOME") )
-   {
-       path = e;
-       if ( fs::is_directory( path ) )
-           return path;
-   }
-   else if ( e = getenv("USERPROFILE") )
-   {
-       path = e;
-       if ( fs::is_directory( path ) )
-           return path;
-   }
-   else if ( e = getenv("HOMEDRIVE") )
-   {
-       path = e;
-       path += sgetenv("HOMEPATH");
-       if ( fs::is_directory( path ) )
-           return path;
-   }
-   path = "/usr/tmp";
-   return path;
+    char* e = NULL;
+    if ( e = getenv("HOME") )
+    {
+        path = e;
+        if ( fs::is_directory( path ) )
+            return path;
+    }
+    else if ( e = getenv("USERPROFILE") )
+    {
+        path = e;
+        if ( fs::is_directory( path ) )
+            return path;
+    }
+    else if ( e = getenv("HOMEDRIVE") )
+    {
+        path = e;
+        path += sgetenv("HOMEPATH");
+        if ( fs::is_directory( path ) )
+            return path;
+    }
+    path = "/usr/tmp";
+    return path;
 }
 
 
 std::string prefspath()
 {
-  std::string lockfile = mrv::homepath();
-   lockfile += "/.filmaura/";
-   return lockfile;
+    std::string lockfile = mrv::homepath();
+    lockfile += "/.filmaura/";
+    return lockfile;
 }
 
 std::string lockfile()
 {
-  std::string lockfile = mrv::homepath();
-  lockfile += "/.filmaura/mrViewer.lock.prefs";
-  return lockfile;
+    std::string lockfile = mrv::homepath();
+    lockfile += "/.filmaura/mrViewer.lock.prefs";
+    return lockfile;
 }
 
 std::string tmppath()
 {
-    
-   std::string path;
 
-   char* e = NULL;
-   if ( e = getenv("TEMP") )
-   {
-       path = e;
-       if ( fs::is_directory( path ) )
-           return path;
-   }
-   else if ( e = getenv("TMP") )
-   {
-       path = e;
-       if ( fs::is_directory( path ) )
-           return path;
-   }
-   else if ( e = getenv("TEMPDIR") )
-   {
-       path = e;
-       if ( fs::is_directory( path ) )
-           return path;
-   }
-   else if ( e = getenv("TMPDIR") )
-   {
-       path = e;
-       if ( fs::is_directory( path ) )
-           return path;
-   }
+    std::string path;
+
+    char* e = NULL;
+    if ( e = getenv("TEMP") )
+    {
+        path = e;
+        if ( fs::is_directory( path ) )
+            return path;
+    }
+    else if ( e = getenv("TMP") )
+    {
+        path = e;
+        if ( fs::is_directory( path ) )
+            return path;
+    }
+    else if ( e = getenv("TEMPDIR") )
+    {
+        path = e;
+        if ( fs::is_directory( path ) )
+            return path;
+    }
+    else if ( e = getenv("TMPDIR") )
+    {
+        path = e;
+        if ( fs::is_directory( path ) )
+            return path;
+    }
 
 #ifdef LINUX
-   path = "/usr/tmp";
-   if ( fs::is_directory( path ) )
-       return path;
-   path = "/tmp";
-   if ( fs::is_directory( path ) )
-       return path;
-   return homepath();
+    path = "/usr/tmp";
+    if ( fs::is_directory( path ) )
+        return path;
+    path = "/tmp";
+    if ( fs::is_directory( path ) )
+        return path;
+    return homepath();
 #else
-   path = "C:";
+    path = "C:";
 #endif
-   return path;
+    return path;
 }
 
 }

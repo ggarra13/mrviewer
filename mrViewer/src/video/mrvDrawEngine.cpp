@@ -72,23 +72,23 @@ typedef mrv::CMedia::Mutex   Mutex;
 
 namespace {
 
-  const char* kModule = "draw";
+const char* kModule = "draw";
 
 
-  /**
-   * Dummy function used to have a boost::shared_ptr that does not
-   * delete its element.
-   *
-   * @param ptr ptr to memory allocated by new uchar[x]
-   */
-  void shared_ptr_no_delete( uchar* ptr )
-  {
-  }
+/**
+ * Dummy function used to have a boost::shared_ptr that does not
+ * delete its element.
+ *
+ * @param ptr ptr to memory allocated by new uchar[x]
+ */
+void shared_ptr_no_delete( uchar* ptr )
+{
+}
 
 #pragma pack(push,16) /* Must ensure class & union 16-B aligned */
 
-  struct RgbaGainGamma
-  {
+struct RgbaGainGamma
+{
     F32vec4 m, g, ff;
 
     RgbaGainGamma (float gain, float gamma, float scale = 1.0f);
@@ -97,24 +97,24 @@ namespace {
     F32vec4 operator()(const F32vec4& h );
 
     static F32vec4 oo;
-  };
+};
 
 #pragma pack(pop)
 
 
-  F32vec4 RgbaGainGamma::oo = F32vec4( 0.0f, 0.0f, 0.0f, 0.0f );
+F32vec4 RgbaGainGamma::oo = F32vec4( 0.0f, 0.0f, 0.0f, 0.0f );
 
 
-  RgbaGainGamma::RgbaGainGamma (float gain, float gamma, float scale ):
+RgbaGainGamma::RgbaGainGamma (float gain, float gamma, float scale ):
     m( F32vec4( 1.0f, gain, gain, gain ) ),
     g( F32vec4( 1.0f / gamma, 1.0f / gamma, 1.0f / gamma, 1.0f / gamma ) ),
     ff( F32vec4( scale, scale, scale, scale ) )
-  {}
+{}
 
 
-  float
-  RgbaGainGamma::operator ()(float x)
-  {
+float
+RgbaGainGamma::operator ()(float x)
+{
     //
     // Exposure
     //
@@ -130,12 +130,12 @@ namespace {
     // Scale and clamp
     //
     return clamp (x, 0.f, 1.0f);
-  }
+}
 
 
-  F32vec4
-  RgbaGainGamma::operator()( const F32vec4& h )
-  {
+F32vec4
+RgbaGainGamma::operator()( const F32vec4& h )
+{
     F32vec4 x = h;
     float* f = (float*)&x;
 
@@ -164,30 +164,30 @@ namespace {
     x = select_gt( x, ff, ff, x );
 
     return x;
-  }
+}
 
 
 
-  //
-  //  Dithering: Reducing the raw 16-bit pixel data to 8 bits for the
-  //  OpenGL frame buffer can sometimes lead to contouring in smooth
-  //  color ramps.  Dithering with a simple Bayer pattern eliminates
-  //  visible contouring.
-  //
+//
+//  Dithering: Reducing the raw 16-bit pixel data to 8 bits for the
+//  OpenGL frame buffer can sometimes lead to contouring in smooth
+//  color ramps.  Dithering with a simple Bayer pattern eliminates
+//  visible contouring.
+//
 
-  unsigned char
-  dither (float v, int x, int y)
-  {
+unsigned char
+dither (float v, int x, int y)
+{
     static const float d[4][4] =
-      {
+    {
         { 0.f / 16,  8.f / 16,  2.f / 16, 10.f / 16 },
         { 12.f / 16,  4.f / 16, 14.f / 16,  6.f / 16 },
         { 3.f / 16, 11.f / 16,  1.f / 16,  9.f / 16 },
         { 15.f / 16,  7.f / 16, 13.f / 16,  5.f / 16 },
-      };
+    };
 
     return (unsigned char) (v + d[y & 3][x & 3]);
-  }
+}
 
 
 
@@ -205,207 +205,207 @@ unsigned numPixelsPerThread = widthPerThread * heightPerThread;
  */
 void display_cb( mrv::DrawEngine::DisplayData* d )
 {
-  using namespace mrv;
+    using namespace mrv;
 
-  int step = 3;
-  if ( d->alpha ) step = 4;
+    int step = 3;
+    if ( d->alpha ) step = 4;
 
 
-  const mrv::Recti& rect = d->rect;
-  int x, y;
-  int xl = rect.x();
-  int yl = rect.y();
+    const mrv::Recti& rect = d->rect;
+    int x, y;
+    int xl = rect.x();
+    int yl = rect.y();
 
-  int xh = rect.r();
-  int yh = rect.b();
+    int xh = rect.r();
+    int yh = rect.b();
 
-  mrv::image_type_ptr orig = d->orig;
-  if (!orig) return;
+    mrv::image_type_ptr orig = d->orig;
+    if (!orig) return;
 
-  mrv::image_type_ptr result = d->result;
-  if (!result) return;
+    mrv::image_type_ptr result = d->result;
+    if (!result) return;
 
 #if 0
-  CMedia* img = d->image;
-  int dw = img->width();
-  int oxl = xl;
-  int oyl =  0;
-  int odw = dw;
+    CMedia* img = d->image;
+    int dw = img->width();
+    int oxl = xl;
+    int oyl =  0;
+    int odw = dw;
 
-  // Convert image using monitor profile
-  if ( d->view->use_lut() )
+    // Convert image using monitor profile
+    if ( d->view->use_lut() )
     {
-      MagickBooleanType status;
-      MagickWandGenesis();
-      MagickWand* wand = NewMagickWand();
+        MagickBooleanType status;
+        MagickWandGenesis();
+        MagickWand* wand = NewMagickWand();
 
-      char* fmt = "RGBA";
+        char* fmt = "RGBA";
 
-      int bw = xh - xl;
-      int bh = yh - yl;
-      CMedia::Pixel* icc = new CMedia::Pixel[ bw * bh ];
-      CMedia::Pixel* p   = icc;
-      for ( y = yl; y < yh; ++y )
+        int bw = xh - xl;
+        int bh = yh - yl;
+        CMedia::Pixel* icc = new CMedia::Pixel[ bw * bh ];
+        CMedia::Pixel* p   = icc;
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x, ++p )
+            for ( x = xl; x < xh; ++x, ++p )
             {
-              *p = frame->pixel(x,y);
+                *p = frame->pixel(x,y);
             }
         }
 
-      status = MagickConstituteImage( wand, bw, bh, fmt, FloatPixel, icc );
-      if ( status != MagickTrue )
-        LOG_ERROR( "Could not create image" );
+        status = MagickConstituteImage( wand, bw, bh, fmt, FloatPixel, icc );
+        if ( status != MagickTrue )
+            LOG_ERROR( "Could not create image" );
 
 
-      uchar* profile;
-      size_t  length;
+        uchar* profile;
+        size_t  length;
 
-      colorProfile::get( profile, length, d->image->color_profile() );
+        colorProfile::get( profile, length, d->image->color_profile() );
 
-      if ( profile )
+        if ( profile )
         {
-          status  = MagickSetImageProfile( wand, "ICC", profile, length );
-          if ( status != MagickTrue )
-            LOG_ERROR( "Could not profile image" );
-
-          colorProfile::get_monitor_profile( profile, length );
-          if ( profile )
-            {
-              status  = MagickProfileImage( wand, "ICC", profile, length );
-              if ( status != MagickTrue )
+            status  = MagickSetImageProfile( wand, "ICC", profile, length );
+            if ( status != MagickTrue )
                 LOG_ERROR( "Could not profile image" );
+
+            colorProfile::get_monitor_profile( profile, length );
+            if ( profile )
+            {
+                status  = MagickProfileImage( wand, "ICC", profile, length );
+                if ( status != MagickTrue )
+                    LOG_ERROR( "Could not profile image" );
             }
         }
 
 
-      MagickGetImagePixels(wand, 0, 0, bw, bh, fmt, FloatPixel, icc );
+        MagickGetImagePixels(wand, 0, 0, bw, bh, fmt, FloatPixel, icc );
 
-      DestroyMagickWand( wand );
-      MagickWandTerminus();
+        DestroyMagickWand( wand );
+        MagickWandTerminus();
 
-      fp = icc;
-      oxl = 0;
-      oyl = yl;
-      odw = bw;
+        fp = icc;
+        oxl = 0;
+        oyl = yl;
+        odw = bw;
     }
 #endif
 
 
-  // Change float image to uchar based on gain and gamma.
-  RgbaGainGamma RGBAfunc( d->view->gain(), d->view->gamma() );
-  RgbaGainGamma    Afunc( 1.0f, d->view->gamma() );
+    // Change float image to uchar based on gain and gamma.
+    RgbaGainGamma RGBAfunc( d->view->gain(), d->view->gamma() );
+    RgbaGainGamma    Afunc( 1.0f, d->view->gamma() );
 
 
 
-  switch( d->view->channel_type() )
+    switch( d->view->channel_type() )
     {
     case kRed:
-      for ( y = yl; y < yh; ++y )
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p.r = p.g = p.b = RGBAfunc( p.r );
-              result->pixel( x, y, p );
+                CMedia::Pixel p = orig->pixel(x,y);
+                p.r = p.g = p.b = RGBAfunc( p.r );
+                result->pixel( x, y, p );
             }
         }
-      break;
+        break;
     case kGreen:
-      for ( y = yl; y < yh; ++y )
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p.r = p.g = p.b = RGBAfunc( p.g );
-              result->pixel( x, y, p );
+                CMedia::Pixel p = orig->pixel(x,y);
+                p.r = p.g = p.b = RGBAfunc( p.g );
+                result->pixel( x, y, p );
             }
         }
-      break;
+        break;
     case kBlue:
-      for ( y = yl; y < yh; ++y )
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p.r = p.g = p.b = RGBAfunc( p.b );
-              result->pixel( x, y, p );
+                CMedia::Pixel p = orig->pixel(x,y);
+                p.r = p.g = p.b = RGBAfunc( p.b );
+                result->pixel( x, y, p );
             }
         }
-      break;
+        break;
     case kAlpha:
-      {
+    {
         mrv::media m = d->view->background();
 
         for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p = RGBAfunc( p );
-              if ( d->view->show_background() )
+                CMedia::Pixel p = orig->pixel(x,y);
+                p = RGBAfunc( p );
+                if ( d->view->show_background() )
                 {
-                  p.r = p.g = p.b = 1.0f;
+                    p.r = p.g = p.b = 1.0f;
                 }
-              else
+                else
                 {
-                  p.r = p.g = p.b = p.a;
+                    p.r = p.g = p.b = p.a;
                 }
-              result->pixel( x, y, p );
+                result->pixel( x, y, p );
             }
         }
-      }
-      break;
+    }
+    break;
     case kAlphaOverlay:
-      for ( y = yl; y < yh; ++y )
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p = RGBAfunc( p );
-              p.r = p.a * 0.5f + p.r * 0.5f;
-              result->pixel( x, y, p );
+                CMedia::Pixel p = orig->pixel(x,y);
+                p = RGBAfunc( p );
+                p.r = p.a * 0.5f + p.r * 0.5f;
+                result->pixel( x, y, p );
             }
         }
-      break;
+        break;
     case kLumma:
-      for ( y = yl; y < yh; ++y )
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p = RGBAfunc( p );
-              p.r = p.g = p.b = (p.r + p.g + p.b)/3.0f;
-              result->pixel( x, y, p );
+                CMedia::Pixel p = orig->pixel(x,y);
+                p = RGBAfunc( p );
+                p.r = p.g = p.b = (p.r + p.g + p.b)/3.0f;
+                result->pixel( x, y, p );
             }
         }
-      break;
+        break;
     case kRGB:
     default:
-      for ( y = yl; y < yh; ++y )
+        for ( y = yl; y < yh; ++y )
         {
-          for ( x = xl; x < xh; ++x )
+            for ( x = xl; x < xh; ++x )
             {
-              CMedia::Pixel p = orig->pixel(x,y);
-              p = RGBAfunc( p );
-              result->pixel( x, y, p );
+                CMedia::Pixel p = orig->pixel(x,y);
+                p = RGBAfunc( p );
+                result->pixel( x, y, p );
             }
         }
-      break;
+        break;
     }
 
-  // delete temporary icc image/tile
+    // delete temporary icc image/tile
 #if 0
-  if ( d->view->use_lut() )
+    if ( d->view->use_lut() )
     {
-      delete [] fp;
+        delete [] fp;
     }
 #endif
 
 }
 
-  void minmax_cb( mrv::DrawEngine::MinMaxData* d )
-  {
+void minmax_cb( mrv::DrawEngine::MinMaxData* d )
+{
     using mrv::CMedia;
 
     unsigned int xl = d->rect.x();
@@ -425,31 +425,31 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
     d->pMax = std::numeric_limits< float >::min();
 
     for ( unsigned int y = yl ; y < yh; ++y )
-      {
+    {
         for ( unsigned int x = xl; x < xh; ++x )
-          {
+        {
             const CMedia::Pixel& p = pic->pixel( x, y );
 
             if ( half(p.r).isFinite() )
             {
-               if ( p.r > d->pMax ) d->pMax = p.r;
-               if ( p.r < d->pMin ) d->pMin = p.r;
+                if ( p.r > d->pMax ) d->pMax = p.r;
+                if ( p.r < d->pMin ) d->pMin = p.r;
             }
 
             if ( half(p.g).isFinite()  )
             {
-               if ( p.g < d->pMin ) d->pMin = p.g;
-               if ( p.g > d->pMax ) d->pMax = p.g;
+                if ( p.g < d->pMin ) d->pMin = p.g;
+                if ( p.g > d->pMax ) d->pMax = p.g;
             }
 
             if ( half(p.b).isFinite()  )
             {
-               if ( p.b < d->pMin ) d->pMin = p.b;
-               if ( p.b > d->pMax ) d->pMax = p.b;
+                if ( p.b < d->pMin ) d->pMin = p.b;
+                if ( p.b > d->pMax ) d->pMax = p.b;
             }
 
-          }
-      }
+        }
+    }
 
     if ( d->pMin == std::numeric_limits<float>::max() )
         d->pMin = 0.0f;
@@ -457,7 +457,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
     if (d->pMax <= d->pMin)
         d->pMax = d->pMin + 1;
 
-  }
+}
 
 
 } // namespace
@@ -465,58 +465,58 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 
 namespace mrv {
 
-  DrawEngine::ShaderType DrawEngine::_hardwareShaders = DrawEngine::kAuto;
-  bool DrawEngine::_has_hdr = false;
-  bool DrawEngine::_has_yuv  = false;
-  bool DrawEngine::_has_yuva = false;
-  bool DrawEngine::_fboRenderBuffer = false;
+DrawEngine::ShaderType DrawEngine::_hardwareShaders = DrawEngine::kAuto;
+bool DrawEngine::_has_hdr = false;
+bool DrawEngine::_has_yuv  = false;
+bool DrawEngine::_has_yuva = false;
+bool DrawEngine::_fboRenderBuffer = false;
 
-  static const char* kShaderType[] =
-    {
-      "None",
-      "Auto",
-      "OpenGL 2.0 GLSL",
-      "NVidia NV30",
-      "ARB Fragment Program 1",
-    };
+static const char* kShaderType[] =
+{
+    "None",
+    "Auto",
+    "OpenGL 2.0 GLSL",
+    "NVidia NV30",
+    "ARB Fragment Program 1",
+};
 
-  const char* DrawEngine::shader_type_name()
-  {
+const char* DrawEngine::shader_type_name()
+{
     return kShaderType[ _hardwareShaders ];
-  }
+}
 
-  DrawEngine::DrawEngine(const mrv::ImageView* v) :
+DrawEngine::DrawEngine(const mrv::ImageView* v) :
     _view(v),
     _normMin( 0 ),
     _normMax( 1.0f ),
     _background_resized( 0 )
-  {
-  }
+{
+}
 
 
-  DrawEngine::~DrawEngine()
-  {
+DrawEngine::~DrawEngine()
+{
     delete _background_resized;
-  }
+}
 
 
 
-  CMedia* const DrawEngine::background()
-  {
+CMedia* const DrawEngine::background()
+{
     if ( _background_resized ) return _background_resized;
     else {
-      mrv::media bg = _view->background();
-      if ( !bg ) return NULL;
+        mrv::media bg = _view->background();
+        if ( !bg ) return NULL;
 
-      return bg->image();
+        return bg->image();
     }
-  }
+}
 
 
-  void DrawEngine::display( image_type_ptr& result,
-                            const image_type_ptr& src,
-                            CMedia* img )
-  {
+void DrawEngine::display( image_type_ptr& result,
+                          const image_type_ptr& src,
+                          CMedia* img )
+{
     Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );
 
@@ -530,51 +530,51 @@ namespace mrv {
     unsigned int x, y;
 
     if ( _view->normalize() )
-      {
+    {
         float vMin[2];
         float vMax[2];
         for ( x = 0; x < 2; ++x )
-          {
+        {
             vMin[x] = std::numeric_limits<float>::max();
             vMax[x] = std::numeric_limits<float>::min();
-          }
+        }
 
         for ( y = 0; y < dh; ++y )
-          {
+        {
             for ( x = 0; x < dw; ++x )
-              {
+            {
                 const CMedia::Pixel& rp = pic->pixel(x,y);
 
                 if ( isnan( rp.a ) )
-                  continue;
+                    continue;
 
                 if ( rp.a < vMin[1] ) vMin[1] = rp.a;
                 if ( rp.a > vMax[1] ) vMax[1] = rp.a;
 
                 if ( isfinite( rp.r ) && !isnan(rp.r) )
-                  {
+                {
                     if ( rp.r < vMin[0] ) vMin[0] = rp.r;
                     if ( rp.r > vMax[0] ) vMax[0] = rp.r;
-                  }
+                }
                 if ( isfinite( rp.g ) && !isnan(rp.g) )
-                  {
+                {
                     if ( rp.g < vMin[0] ) vMin[0] = rp.g;
                     if ( rp.g > vMax[0] ) vMax[0] = rp.g;
-                  }
+                }
 
                 if ( isfinite( rp.b ) && !isnan(rp.b) )
-                  {
+                {
                     if ( rp.b < vMin[0] ) vMin[0] = rp.b;
                     if ( rp.b > vMax[0] ) vMax[0] = rp.b;
-                  }
-              }
-          }
+                }
+            }
+        }
 
         for ( x = 0; x < 2; ++x )
-          {
+        {
             vMax[x] -= vMin[x];
             if ( vMax[x] == 0.0f ) vMax[x] = 1.0f;
-          }
+        }
 
         mrv::image_type_ptr p( new image_type( frame,
                                                dw,
@@ -584,25 +584,25 @@ namespace mrv {
                                                src->pixel_type() ) );
 
         for ( y = 0; y < dh; ++y )
-          {
+        {
             for ( x = 0; x < dw; ++x )
-              {
+            {
                 CMedia::Pixel rp = pic->pixel(x, y);
 
                 if ( isfinite( rp.r ) )
-                  rp.r = (rp.r - vMin[0]) / vMax[0];
+                    rp.r = (rp.r - vMin[0]) / vMax[0];
                 if ( isfinite( rp.g ) )
-                  rp.g = (rp.g - vMin[0]) / vMax[0];
+                    rp.g = (rp.g - vMin[0]) / vMax[0];
                 if ( isfinite( rp.b ) )
-                  rp.b = (rp.b - vMin[0]) / vMax[0];
+                    rp.b = (rp.b - vMin[0]) / vMax[0];
                 rp.a = (rp.a - vMin[1]) / vMax[1];
 
                 p->pixel( x, y, rp );
-              }
-          }
+            }
+        }
 
         pic = p;
-      }
+    }
 
     // Based on window size, spawn several threads or just jump to
     // process tile.
@@ -618,8 +618,8 @@ namespace mrv {
 
     unsigned int num = xw * yw;
 
-   if ( num < numPixelsPerThread )
-   {
+    if ( num < numPixelsPerThread )
+    {
         DisplayData display_data;
         display_data.view   = _view;
         display_data.orig   = pic;
@@ -628,21 +628,21 @@ namespace mrv {
         display_data.rect   = rect;
         display_data.alpha  = result->has_alpha();
         display_cb( &display_data );
-      }
+    }
     else
-      {
+    {
         unsigned int x, y;
 
 
         unsigned int ny, nx;
         for ( y = yl; y < yh; y = ny )
-          {
+        {
             ny   = y + heightPerThread;
             unsigned int byh  = yh < ny? yh : ny;
 
             boost::thread* thread_id;
             for ( x = xl; x < xh; x = nx )
-              {
+            {
                 nx  = x + widthPerThread;
                 int bxh = xh < nx? xh : nx;
 
@@ -655,11 +655,11 @@ namespace mrv {
                 display_data->alpha  = result->has_alpha();
 
                 thread_id = new boost::thread( boost::bind( display_cb,
-                                                            display_data ) );
+                                               display_data ) );
 
                 buckets.insert( std::make_pair( thread_id, display_data ) );
-              }
-          }
+            }
+        }
 
 
         BucketList::iterator i = buckets.begin();
@@ -667,36 +667,36 @@ namespace mrv {
 
         // Make sure all threads finish before proceeding
         for ( ; i != e; ++i )
-          {
+        {
             i->first->join();
 
             DisplayData*  opaque = (DisplayData*) i->second;
             delete opaque;
-          }
+        }
         buckets.clear();
-      }
+    }
 
-  }
+}
 
-  /**
-   * Prepare an image for display on an 8-bit device.
-   *
-   * @param data   pre-allocated buffer to store 8-bit data
-   * @param img    image to display
-   * @param alpha  if set, create 8-bit buffer with an alpha channel
-   */
-  image_type_ptr DrawEngine::display( const image_type_ptr& src,
-                                      CMedia* img )
-  {
+/**
+ * Prepare an image for display on an 8-bit device.
+ *
+ * @param data   pre-allocated buffer to store 8-bit data
+ * @param img    image to display
+ * @param alpha  if set, create 8-bit buffer with an alpha channel
+ */
+image_type_ptr DrawEngine::display( const image_type_ptr& src,
+                                    CMedia* img )
+{
     if ( !src ) return src;
 
 
     mrv::image_type_ptr result( new image_type( src->frame(),
-                                                src->width(),
-                                                src->height(),
-                                                src->channels(),
-                                                src->format(),
-                                                image_type::kByte ) );
+                                src->width(),
+                                src->height(),
+                                src->channels(),
+                                src->format(),
+                                image_type::kByte ) );
 
     display( result, src, img );
 
@@ -726,13 +726,13 @@ namespace mrv {
     _view->main()->uiPixelBar->redraw();
 
     return result;
-  }
+}
 
 
-  /// Find min/max values for an image, using multithreading if possible
-  void DrawEngine::minmax( float& pMin, float& pMax,
-                           const CMedia* img )
-  {
+/// Find min/max values for an image, using multithreading if possible
+void DrawEngine::minmax( float& pMin, float& pMax,
+                         const CMedia* img )
+{
     unsigned int xh = img->width();
     unsigned int yh = img->height();
 
@@ -757,10 +757,10 @@ namespace mrv {
     }
 
 
-  }
+}
 
 
-  void DrawEngine::minmax() {
+void DrawEngine::minmax() {
     _normMin = std::numeric_limits< float >::max();
     _normMax = std::numeric_limits< float >::min();
     {
@@ -773,6 +773,6 @@ namespace mrv {
         if ( m )
             minmax( _normMin, _normMax, m->image() );
     }
-  }
+}
 
 } // namespace mrv

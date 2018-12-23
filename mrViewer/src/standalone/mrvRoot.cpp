@@ -19,10 +19,10 @@
  * @file   mrvRoot.cpp
  * @author gga
  * @date   Fri Jan 11 02:07:36 2008
- * 
+ *
  * @brief  Sets MRV_ROOT variable if not defined from path of
  *         executable.
- * 
+ *
  */
 
 #include <cstdio>
@@ -42,7 +42,7 @@
 #  include <sys/param.h>
 
 /* _NSGetExecutablePath : must add -framework CoreFoundation to link line */
-#  include <mach-o/dyld.h> 
+#  include <mach-o/dyld.h>
 
 
 # ifndef PATH_MAX
@@ -66,13 +66,13 @@ namespace fs = boost::filesystem;
 
 namespace {
 
-  const char* kModule = "root";
+const char* kModule = "root";
 
-  /*
-   * Mechanism to handle determining *where* the exe actually lives
-   */
-  int get_app_path(char *pname, size_t pathsize)
-  {
+/*
+ * Mechanism to handle determining *where* the exe actually lives
+ */
+int get_app_path(char *pname, size_t pathsize)
+{
     long result;
 
 #ifdef LINUX
@@ -81,64 +81,64 @@ namespace {
     pathsize--; /* Preserve a space to add the trailing NULL */
     result = readlink("/proc/self/exe", pname, pathsize);
     if (result > 0)
-      {
-	pname[result] = 0; /* add the #@!%ing NULL */
+    {
+        pname[result] = 0; /* add the #@!%ing NULL */
 
-	if ((access(pname, 0) == 0))
-	  return 0; /* file exists, return OK */
-	/*else name doesn't seem to exist, return FAIL (falls
-	  through) */
-      }
+        if ((access(pname, 0) == 0))
+            return 0; /* file exists, return OK */
+        /*else name doesn't seem to exist, return FAIL (falls
+          through) */
+    }
 #elif defined(WIN32) || defined(WIN64)
     result = GetModuleFileName(NULL, pname, DWORD(pathsize));
     if (result > 0)
-      {
-	/* fix up the dir slashes... */
-	size_t len = strlen(pname);
-	size_t idx;
-	for (idx = 0; idx < len; idx++)
-	  {
-	    if (pname[idx] == '\\') pname[idx] = '/';
-	  }
-	if ((access(pname, 0) == 0))
-	  return 0; /* file exists, return OK */
-	/*else name doesn't seem to exist, return FAIL (falls
-	  through) */
-      }
+    {
+        /* fix up the dir slashes... */
+        size_t len = strlen(pname);
+        size_t idx;
+        for (idx = 0; idx < len; idx++)
+        {
+            if (pname[idx] == '\\') pname[idx] = '/';
+        }
+        if ((access(pname, 0) == 0))
+            return 0; /* file exists, return OK */
+        /*else name doesn't seem to exist, return FAIL (falls
+          through) */
+    }
 #elif defined(SOLARIS)
     char *p = getexecname();
     if (p)
-      {
-	/* According to the Sun manpages, getexecname will
-	   "normally" return an */
+    {
+        /* According to the Sun manpages, getexecname will
+           "normally" return an */
         /* absolute path - BUT might not... AND that IF it is not,
-	   pre-pending */
-	/* getcwd() will "usually" be the correct thing... Urgh!
-	 */
+        pre-pending */
+        /* getcwd() will "usually" be the correct thing... Urgh!
+         */
 
-	/* check pathname is absolute (begins with a / ???) */
-	if (p[0] == '/') /* assume this means we have an
+        /* check pathname is absolute (begins with a / ???) */
+        if (p[0] == '/') /* assume this means we have an
 				absolute path */
-	  {
-	    strncpy(pname, p, pathsize);
-	    if ((access(pname, 0) == 0))
-	      return 0; /* file exists, return OK */
-	  }
-	else /* if not, prepend getcwd() then check if file
+        {
+            strncpy(pname, p, pathsize);
+            if ((access(pname, 0) == 0))
+                return 0; /* file exists, return OK */
+        }
+        else /* if not, prepend getcwd() then check if file
 		exists */
-	  {
-	    getcwd(pname, pathsize);
-	    result = strlen(pname);
-	    strncat(pname, "/", (pathsize - result));
-	    result ++;
-	    strncat(pname, p, (pathsize - result));
+        {
+            getcwd(pname, pathsize);
+            result = strlen(pname);
+            strncat(pname, "/", (pathsize - result));
+            result ++;
+            strncat(pname, p, (pathsize - result));
 
-	    if ((access(pname, 0) == 0))
-	      return 0; /* file exists, return OK */
-                        /*else name doesn't seem to exist, return FAIL
-			  (falls through) */
-	  }
-      }
+            if ((access(pname, 0) == 0))
+                return 0; /* file exists, return OK */
+            /*else name doesn't seem to exist, return FAIL
+            (falls through) */
+        }
+    }
 #elif defined(__APPLE__) /* assume this is OSX */
     /*
       from http://www.hmug.org/man/3/NSModule.html
@@ -163,14 +163,14 @@ namespace {
     pathsize = MAXPATHLEN * 2;
     result = _NSGetExecutablePath(given_path, &pathsize);
     if (result == 0)
-      { /* OK, we got something - now try and resolve the real path...
-	 */
-	if (realpath(given_path, pname) != NULL)
-	  {
-	    if ((access(pname, 0) == 0))
-	      status = 0; /* file exists, return OK */
-	  }
-      }
+    {   /* OK, we got something - now try and resolve the real path...
+        */
+        if (realpath(given_path, pname) != NULL)
+        {
+            if ((access(pname, 0) == 0))
+                status = 0; /* file exists, return OK */
+        }
+    }
     free (given_path);
     return status;
 #else  /* APPLE */
@@ -178,39 +178,40 @@ namespace {
 #endif /* APPLE */
 
     return -1; /* Path Lookup Failed */
-  } /* where_do_I_live */
+} /* where_do_I_live */
 }
 
 
 namespace mrv {
 
 
-  void set_root_path( const int argc, char** argv )
-  {
-      std::string r;
-      char* root = getenv("MRV_ROOT");
+void set_root_path( const int argc, char** argv )
+{
+    std::string r;
+    char* root = getenv("MRV_ROOT");
 
-      if ( !root )
-      {
-	char binpath[ PATH_MAX ];  binpath[0] = 0;
+    if ( !root )
+    {
+        char binpath[ PATH_MAX ];
+        binpath[0] = 0;
 
-	int ok = get_app_path( binpath, PATH_MAX );
-	if ( ok != 0 )
-	  {
-	    if ( argc >= 1 )
-	      strcpy( binpath, argv[0] );
-	  }
+        int ok = get_app_path( binpath, PATH_MAX );
+        if ( ok != 0 )
+        {
+            if ( argc >= 1 )
+                strcpy( binpath, argv[0] );
+        }
 
-	fs::path rootdir( binpath );
-	rootdir = rootdir.remove_leaf();
-	rootdir = rootdir.branch_path();
+        fs::path rootdir( binpath );
+        rootdir = rootdir.remove_leaf();
+        rootdir = rootdir.branch_path();
 
-	std::string mrvroot = "MRV_ROOT=";
-	mrvroot += rootdir.generic_string();
+        std::string mrvroot = "MRV_ROOT=";
+        mrvroot += rootdir.generic_string();
 
-	putenv( strdup( (char*)mrvroot.c_str() ) );
-      }
+        putenv( strdup( (char*)mrvroot.c_str() ) );
+    }
 
-  }
+}
 
 }

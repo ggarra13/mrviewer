@@ -45,33 +45,35 @@
 namespace mrv {
 
 
-  class GLShader;
-  class GLQuad;
-  class GLShape;
+class GLShader;
+class GLQuad;
+class GLShape;
 
 
-  class GLEngine : public mrv::DrawEngine {
-  protected:
+class GLEngine : public mrv::DrawEngine {
+protected:
     typedef std::vector< GLQuad*  > QuadList;
 
-  public:
+public:
     GLEngine( const mrv::ImageView* );
     ~GLEngine();
 
     /// Name of engine
-    virtual const char* name() { return "OpenGL"; }
+    virtual const char* name() {
+        return "OpenGL";
+    }
     virtual std::string options();
 
-      virtual double rot_x() const;
-      virtual double rot_y() const;
+    virtual double rot_x() const;
+    virtual double rot_y() const;
 
-      virtual void rot_x(double t);
-      virtual void rot_y(double t);
+    virtual void rot_x(double t);
+    virtual void rot_y(double t);
 
-      virtual void rotate( const double z );
+    virtual void rotate( const double z );
 
-      virtual void evaluate( const CMedia* img,
-                             const Imath::V3f& rgb, Imath::V3f& out );
+    virtual void evaluate( const CMedia* img,
+                           const Imath::V3f& rgb, Imath::V3f& out );
 
     virtual void refresh_luts();
     virtual void clear_canvas( float r, float g, float b, float a );
@@ -81,38 +83,44 @@ namespace mrv {
     virtual void color( uchar r, uchar g, uchar b, uchar a  );
     virtual void color( float r, float g, float b, float a );
 
-      void image( const CMedia* img ) { _image = img; }
+    void image( const CMedia* img ) {
+        _image = img;
+    }
 
     // Init FBO Drawing
-       virtual bool init_fbo( ImageList& images );
-       virtual void end_fbo( ImageList& images );
+    virtual bool init_fbo( ImageList& images );
+    virtual void end_fbo( ImageList& images );
 
     /// Draw a rectangle
-      virtual void draw_rectangle( const mrv::Rectd& r,
-                                   const mrv::ImageView::FlipDirection flip =
-                                   mrv::ImageView::kFlipNone,
-                                   const double zdeg = 0.0 );
+    virtual void draw_rectangle( const mrv::Rectd& r,
+                                 const mrv::ImageView::FlipDirection flip =
+                                     mrv::ImageView::kFlipNone,
+                                 const double zdeg = 0.0 );
 
-      void draw_selection_marquee( const mrv::Rectd& r );
+    void draw_selection_marquee( const mrv::Rectd& r );
 
     /// Draw a rectangle
-      void draw_data_window( const mrv::Rectd& r );
+    void draw_data_window( const mrv::Rectd& r );
 
     virtual void wipe_area();
 
-      virtual void draw_square_stencil( const int x, const int y,
-                                        const int x2, const int y2 );
+    virtual void draw_square_stencil( const int x, const int y,
+                                      const int x2, const int y2 );
     virtual void draw_mask(const float pct);
 
     virtual void draw_safe_area( const double percentX,
                                  const double percentY,
                                  const char* name = 0 );
 
-      virtual void translate( const double x, const double y,
-                              const double z = 0.0 );
+    virtual void translate( const double x, const double y,
+                            const double z = 0.0 );
 
-    virtual void angle( const float x ) { vr_angle = x; }
-    virtual float angle() const { return vr_angle; }
+    virtual void angle( const float x ) {
+        vr_angle = x;
+    }
+    virtual float angle() const {
+        return vr_angle;
+    }
 
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images );
@@ -124,39 +132,65 @@ namespace mrv {
 
     virtual void draw_cursor( const double x, const double y );
 
-       virtual void draw_annotation( const GLShapeList& shapes );
+    virtual void draw_annotation( const GLShapeList& shapes );
 
     virtual void resize_background();
 
-  public:
-    static unsigned int maxTexWidth()  { return _maxTexWidth;  }
-    static unsigned int maxTexHeight() { return _maxTexHeight; }
-    static bool pboTextures()   { return _pboTextures;   }
-    static bool pow2Textures()  { return _pow2Textures;  }
-    static bool halfTextures()  { return _halfTextures;  }
-    static bool floatTextures() { return _floatTextures; }
-    static bool sdiOutput()     { return _sdiOutput;     }
-    static GLint maxTexUnits()  { return _maxTexUnits;   }
+public:
+    static unsigned int maxTexWidth()  {
+        return _maxTexWidth;
+    }
+    static unsigned int maxTexHeight() {
+        return _maxTexHeight;
+    }
+    static bool pboTextures()   {
+        return _pboTextures;
+    }
+    static bool pow2Textures()  {
+        return _pow2Textures;
+    }
+    static bool halfTextures()  {
+        return _halfTextures;
+    }
+    static bool floatTextures() {
+        return _floatTextures;
+    }
+    static bool sdiOutput()     {
+        return _sdiOutput;
+    }
+    static GLint maxTexUnits()  {
+        return _maxTexUnits;
+    }
 
-    static GLShader* rgbaShader()    { return _rgba; }
-    static GLShader* YCbCrShader()   { return _YCbCr; }
-    static GLShader* YByRyShader()   { return _YByRy; }
-    static GLShader* YCbCrAShader()  { return _YCbCrA; }
-    static GLShader* YByRyAShader()  { return _YByRyA; }
+    static GLShader* rgbaShader()    {
+        return _rgba;
+    }
+    static GLShader* YCbCrShader()   {
+        return _YCbCr;
+    }
+    static GLShader* YByRyShader()   {
+        return _YByRy;
+    }
+    static GLShader* YCbCrAShader()  {
+        return _YCbCrA;
+    }
+    static GLShader* YByRyAShader()  {
+        return _YByRyA;
+    }
 
 
     /// Auxiliary function used to check for openGL errors
-      static void handle_gl_errors(const char* function, const unsigned line,
-                                   const bool print = false);
+    static void handle_gl_errors(const char* function, const unsigned line,
+                                 const bool print = false);
 
-  protected:
-      void set_matrix( const ImageView::FlipDirection flip =
-                       ImageView::kFlipNone );
+protected:
+    void set_matrix( const ImageView::FlipDirection flip =
+                         ImageView::kFlipNone );
 
-      void draw_shape( GLShape* const shape );
+    void draw_shape( GLShape* const shape );
 
-      // Clear quads and spheres from draw queue
-      void clear_quads();
+    // Clear quads and spheres from draw queue
+    void clear_quads();
 
     /// Auxiliary function used to check for Cg errors;
     static void handle_cg_errors();
@@ -198,12 +232,12 @@ namespace mrv {
     /// Auxiliary function to load built-in rgba shader
     void loadBuiltinFragShader();
 
-      // Auxiliary function used to refresh all shaders (mainly used for
-      // opengl)
-      void refresh_shaders();
+    // Auxiliary function used to refresh all shaders (mainly used for
+    // opengl)
+    void refresh_shaders();
 
-      // Auxiliary function to create a OpenGL2 shader for HDRI movies
-      void loadOpenGLShader();
+    // Auxiliary function to create a OpenGL2 shader for HDRI movies
+    void loadOpenGLShader();
 
     static GLShader* _rgba;     //!< RGBA   Fragment shader
     static GLShader* _YCbCr;    //!< YCbCr  Fragment shader ( Y Cb  Cr )
@@ -211,23 +245,23 @@ namespace mrv {
     static GLShader* _YCbCrA;   //!< YCbCrA Fragment shader ( Y Cb  Cr  A )
     static GLShader* _YByRyA;   //!< YBYRYA Fragment shader ( Y B-Y R-Y A )
 
-      ostringstream hdr;
-      ostringstream code;
-      ostringstream foot;
+    ostringstream hdr;
+    ostringstream code;
+    ostringstream foot;
 
-      int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
+    int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
-      GLuint textureId;       //!< The off-screen texture
-      GLuint lutId;              //!< The lut texture index
-      float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
+    GLuint textureId;       //!< The off-screen texture
+    GLuint lutId;              //!< The lut texture index
+    float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
 
-      GLuint id, rid;
-      ImageView::VRType    vr;
-      float   vr_angle;
-      double  _rotX, _rotY; // Sphere start rotation
-      QuadList  _quads;
+    GLuint id, rid;
+    ImageView::VRType    vr;
+    float   vr_angle;
+    double  _rotX, _rotY; // Sphere start rotation
+    QuadList  _quads;
 
-      const CMedia* _image;
+    const CMedia* _image;
 
     //
     // GFX card limits
@@ -236,7 +270,7 @@ namespace mrv {
 
     // OpenGL needs to be inited
     static bool _initGL;          //!< if not set, opengl must be inited for view
-      static bool _hdr;          //!< we support HDR10 movies
+    static bool _hdr;          //!< we support HDR10 movies
     static GLint _maxTexUnits;   //!< hardware texture units
     static bool _floatTextures;   //!< float textures supported
     static bool _halfTextures;    //!< half textures supported
@@ -246,7 +280,7 @@ namespace mrv {
 
     static GLuint     sCharset;   //!< display list for characters
 
-  };
+};
 
 
 } // namespace mrv

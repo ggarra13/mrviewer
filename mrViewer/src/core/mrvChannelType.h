@@ -22,17 +22,17 @@
 //! Channel to display in ImageView
 namespace mrv
 {
-  enum ChannelType
-    {
-      kRGB,
-      kRed,
-      kGreen,
-      kBlue,
-      kAlpha,
-      kAlphaOverlay,
-      kLumma,
-      kLastChannel
-    };
+enum ChannelType
+{
+    kRGB,
+    kRed,
+    kGreen,
+    kBlue,
+    kAlpha,
+    kAlphaOverlay,
+    kLumma,
+    kLastChannel
+};
 }
 
 #endif

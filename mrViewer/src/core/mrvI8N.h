@@ -19,10 +19,10 @@
  * @file   mrvI8N.h
  * @author gga
  * @date   Thu Jul 26 08:36:58 2007
- * 
+ *
  * @brief  Some macros used for gettext() internationalization
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvI8N_h

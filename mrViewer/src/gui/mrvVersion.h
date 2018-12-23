@@ -19,10 +19,10 @@
  * @file   mrvVersion.h
  * @author gga
  * @date   Wed Oct 25 01:45:43 2006
- * 
+ *
  * @brief  Versioning information for mrViewer
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvVersion_h
@@ -37,7 +37,7 @@ class Browser;
 
 namespace mrv
 {
-  class ViewerUI;
+class ViewerUI;
 
 void ffmpeg_formats( fltk::Browser& b );
 void ffmpeg_video_codecs( fltk::Browser& b );
@@ -47,10 +47,10 @@ std::string ffmpeg_protocols();
 std::string ffmpeg_motion_estimation_methods();
 
 
-  const char* version();
-  const char* build_date();
+const char* version();
+const char* build_date();
 
-  std::string about_message();
+std::string about_message();
 
 
 void  memory_information( uint64_t& totalVirtualMem,
@@ -60,8 +60,8 @@ void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& physMemUsed,
                           uint64_t& physMemUsedByMe);
 
-  std::string cpu_information();
-  std::string gpu_information( mrv::ViewerUI* uiMain );
+std::string cpu_information();
+std::string gpu_information( mrv::ViewerUI* uiMain );
 
 } // namespace mrv
 

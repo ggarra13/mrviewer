@@ -34,33 +34,37 @@
 
 namespace mrv
 {
-  class ViewerUI;
+class ViewerUI;
 
-  class Waveform : public fltk::Widget
-  {
-  public:
+class Waveform : public fltk::Widget
+{
+public:
     Waveform( int x, int y, int w, int h, const char* l = 0 );
 
     virtual void draw();
 
-      void intensity( float x ) { _intensity = x; }
-      
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
+    void intensity( float x ) {
+        _intensity = x;
+    }
 
-  protected:
-      void create_image( const mrv::image_type_ptr pic );
+    void main( mrv::ViewerUI* m ) {
+        uiMain = m;
+    }
+
+protected:
+    void create_image( const mrv::image_type_ptr pic );
     void draw_grid( const fltk::Rectangle& r );
     void draw_pixels( const fltk::Rectangle& r );
-      void draw_pixel( const fltk::Rectangle& r,
-		       const float x,
-		       const CMedia::Pixel& hsv );
+    void draw_pixel( const fltk::Rectangle& r,
+                     const float x,
+                     const CMedia::Pixel& hsv );
 
-      float _intensity;
-      mrv::image_type_ptr in;  // input picture (used when format is not 8 bits)
-      mrv::image_type_ptr out; // waveform image data
-      fltk::Image* fli; // waveform b&w image
-      mrv::ViewerUI* uiMain;
-  };
+    float _intensity;
+    mrv::image_type_ptr in;  // input picture (used when format is not 8 bits)
+    mrv::image_type_ptr out; // waveform image data
+    fltk::Image* fli; // waveform b&w image
+    mrv::ViewerUI* uiMain;
+};
 
 }  // namespace mrv
 

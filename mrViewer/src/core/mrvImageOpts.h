@@ -27,21 +27,21 @@
 
 namespace mrv {
 
-  class ViewerUI;
+class ViewerUI;
 
 class ImageOpts
 {
-  protected:
+protected:
     bool _active;
     bool _opengl;
     bool _ACESmetadata;
     bool _all_layers;
-  public:
+public:
     ImageOpts(bool aces, bool all_layers) :
-    _active( true ),
-    _opengl( false ),
-    _ACESmetadata( aces ),
-    _all_layers( all_layers )
+        _active( true ),
+        _opengl( false ),
+        _ACESmetadata( aces ),
+        _all_layers( all_layers )
     {
     }
 
@@ -49,87 +49,131 @@ class ImageOpts
     {
     }
 
-    bool active() const { return _active; }
-    void active( bool f ) { _active = f; }
+    bool active() const {
+        return _active;
+    }
+    void active( bool f ) {
+        _active = f;
+    }
 
-    bool opengl() const { return _opengl; }
-    void opengl( bool f ) { _opengl = f; }
+    bool opengl() const {
+        return _opengl;
+    }
+    void opengl( bool f ) {
+        _opengl = f;
+    }
 
-    bool all_layers() const { return _all_layers; }
-    void all_layers( bool f ) { _all_layers = f; }
+    bool all_layers() const {
+        return _all_layers;
+    }
+    void all_layers( bool f ) {
+        _all_layers = f;
+    }
 
-    bool ACES_metadata() const { return _ACESmetadata; }
-    void ACES_metadata( bool p ) { _ACESmetadata = p; }
+    bool ACES_metadata() const {
+        return _ACESmetadata;
+    }
+    void ACES_metadata( bool p ) {
+        _ACESmetadata = p;
+    }
 
-  static ImageOpts* build( const mrv::ViewerUI* main, std::string ext,
-			   const bool has_deep_data );
+    static ImageOpts* build( const mrv::ViewerUI* main, std::string ext,
+                             const bool has_deep_data );
 };
 
 
 class EXROpts : public ImageOpts
 {
-  protected:
+protected:
     Imf::Compression _compression;
     Imf::PixelType   _pixel_type;
     float            _dwa_compression_level;
     bool             _save_deep_data;
-  public:
-    EXROpts( bool aces, bool all_layers ) : 
-    ImageOpts( aces, all_layers ),
-    _compression( Imf::ZIPS_COMPRESSION ),
-    _pixel_type( Imf::HALF ),
-    _dwa_compression_level( 45.0f ),
-    _save_deep_data( false )
+public:
+    EXROpts( bool aces, bool all_layers ) :
+        ImageOpts( aces, all_layers ),
+        _compression( Imf::ZIPS_COMPRESSION ),
+        _pixel_type( Imf::HALF ),
+        _dwa_compression_level( 45.0f ),
+        _save_deep_data( false )
     {
     }
 
-    Imf::Compression compression() const { return _compression; }
-    void compression( Imf::Compression c ) { _compression = c; }
+    Imf::Compression compression() const {
+        return _compression;
+    }
+    void compression( Imf::Compression c ) {
+        _compression = c;
+    }
 
-    Imf::PixelType pixel_type() const { return _pixel_type; }
-    void pixel_type( Imf::PixelType p ) { _pixel_type = p; }
+    Imf::PixelType pixel_type() const {
+        return _pixel_type;
+    }
+    void pixel_type( Imf::PixelType p ) {
+        _pixel_type = p;
+    }
 
-    float compression_level() const { return _dwa_compression_level; }
-    void compression_level( float p ) { _dwa_compression_level = p; }
+    float compression_level() const {
+        return _dwa_compression_level;
+    }
+    void compression_level( float p ) {
+        _dwa_compression_level = p;
+    }
 
-    bool save_deep_data() const { return _save_deep_data; }
-    void save_deep_data( const bool t ) { _save_deep_data = t; }
+    bool save_deep_data() const {
+        return _save_deep_data;
+    }
+    void save_deep_data( const bool t ) {
+        _save_deep_data = t;
+    }
 
 };
 
 class OIIOOpts : public ImageOpts
 {
-  protected:
+protected:
     image_type::PixelType _pixel_type;
     bool         _mipmap;
-  public:
+public:
     OIIOOpts( bool all_layers ) :
-    ImageOpts( false, all_layers ),
-    _pixel_type( image_type::kFloat ),
-    _mipmap( false )
+        ImageOpts( false, all_layers ),
+        _pixel_type( image_type::kFloat ),
+        _mipmap( false )
     {
     }
 
-    inline bool mipmap() const { return _mipmap; }
-    inline void mipmap( bool p ) { _mipmap = p; }
-    
-    image_type::PixelType pixel_type() const { return _pixel_type; }
-    void pixel_type( image_type::PixelType p ) { _pixel_type = p; }
+    inline bool mipmap() const {
+        return _mipmap;
+    }
+    inline void mipmap( bool p ) {
+        _mipmap = p;
+    }
+
+    image_type::PixelType pixel_type() const {
+        return _pixel_type;
+    }
+    void pixel_type( image_type::PixelType p ) {
+        _pixel_type = p;
+    }
 };
 
 class WandOpts : public ImageOpts
 {
-  protected:
+protected:
     StorageType  _pixel_type;
-  public:
+public:
     WandOpts(bool aces, bool all_layers) :
-    ImageOpts(aces, all_layers),
-    _pixel_type( CharPixel )
+        ImageOpts(aces, all_layers),
+        _pixel_type( CharPixel )
     {
     }
 
-    StorageType pixel_type() const { return _pixel_type; }
-    void pixel_type( StorageType& t ) { _pixel_type = t; }
+    StorageType pixel_type() const {
+        return _pixel_type;
+    }
+    void pixel_type( StorageType& t ) {
+        _pixel_type = t;
+    }
 };
 
 }  // namespace mrv

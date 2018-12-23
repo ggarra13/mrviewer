@@ -54,7 +54,7 @@
 
 
 namespace {
-  const char* kModule = "guess";
+const char* kModule = "guess";
 }
 
 
@@ -62,66 +62,65 @@ namespace mrv {
 
 
 
-  using namespace std;
+using namespace std;
 
-  /*! Description of an Image file format */
-  struct ImageTypes {
+/*! Description of an Image file format */
+struct ImageTypes {
     // Function to test the filetype
     bool (*test)(const boost::uint8_t* datas, unsigned size);
     // MagickWand-type Function to test the filetype, not the bytes
     bool (*test_filename)(const char* filename);
     // Function to get/create an image of this type
     CMedia* (*get)(const char* name, const boost::uint8_t* datas);
-  };
+};
 
 
-  ImageTypes image_filetypes[] =
-    {
-      { stubImage::test,  NULL,            stubImage::get },
-      { exrImage::test,   NULL,            exrImage::get },
-      { iffImage::test,   NULL,            iffImage::get },
-      { mapImage::test,   NULL,            mapImage::get },
-      //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
-      { picImage::test,   NULL,            picImage::get },
-      { aviImage::test,   NULL,            aviImage::get },
-      { NULL,             rawImage::test,  rawImage::get },
-      { NULL,             oiioImage::test, oiioImage::get },
-      { NULL,             wandImage::test, wandImage::get },
-      { ddsImage::test,   NULL,            ddsImage::get },
-      { shmapImage::test, NULL,            shmapImage::get },
-      { mrayImage::test,  NULL,            mrayImage::get },
-      { pxrzImage::test,  NULL,            pxrzImage::get },
-      { NULL, NULL, NULL },
-    };
+ImageTypes image_filetypes[] =
+{
+    { stubImage::test,  NULL,            stubImage::get },
+    { exrImage::test,   NULL,            exrImage::get },
+    { iffImage::test,   NULL,            iffImage::get },
+    { mapImage::test,   NULL,            mapImage::get },
+    //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
+    { picImage::test,   NULL,            picImage::get },
+    { aviImage::test,   NULL,            aviImage::get },
+    { NULL,             rawImage::test,  rawImage::get },
+    { NULL,             oiioImage::test, oiioImage::get },
+    { NULL,             wandImage::test, wandImage::get },
+    { ddsImage::test,   NULL,            ddsImage::get },
+    { shmapImage::test, NULL,            shmapImage::get },
+    { mrayImage::test,  NULL,            mrayImage::get },
+    { pxrzImage::test,  NULL,            pxrzImage::get },
+    { NULL, NULL, NULL },
+};
 
 
-  CMedia* test_image( const char* name,
-                      boost::uint8_t* datas, int size,
-                      const bool is_seq )
-  {
+CMedia* test_image( const char* name,
+                    boost::uint8_t* datas, int size,
+                    const bool is_seq )
+{
     ImageTypes* type = image_filetypes;
     for ( ; type->get; ++type )
-      {
-          // if ( is_seq && type->test == aviImage::test )
-          //     continue;
-          if ( type->test )
-          {
-              if ( type->test( datas, size ) )
-                  return type->get( name, datas );
-              else
-                  if ( type->test_filename && type->test_filename( name ) )
-                      return type->get( name, datas );
-          }
-          else
-          {
-              if ( type->test_filename( name ) )
-              {
-                  return type->get( name, datas );
-              }
-          }
-      }
+    {
+        // if ( is_seq && type->test == aviImage::test )
+        //     continue;
+        if ( type->test )
+        {
+            if ( type->test( datas, size ) )
+                return type->get( name, datas );
+            else if ( type->test_filename && type->test_filename( name ) )
+                return type->get( name, datas );
+        }
+        else
+        {
+            if ( type->test_filename( name ) )
+            {
+                return type->get( name, datas );
+            }
+        }
+    }
     return NULL;
-  }
+}
 
 std::string parse_view( const std::string& root, bool left )
 {
@@ -182,7 +181,7 @@ void verify_stereo_resolution( const CMedia* const left,
     else
     {
         if ( right->last_frame() - right->first_frame() + 1 !=
-             left->last_frame() - left->first_frame() + 1 )
+                left->last_frame() - left->first_frame() + 1 )
         {
             LOG_WARNING( _("Images in stereo have different frame lengths.  "
                            "They will not loop properly." ) );
@@ -197,7 +196,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const bool is_thumbnail = false )
 {
     std::string tmp;
-    char buf[1024]; buf[0] = 0;
+    char buf[1024];
+    buf[0] = 0;
     char *name = buf;
     if ( is_stereo )
     {
@@ -347,14 +347,14 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     return image;
 }
 
-  CMedia* CMedia::guess_image( const char* file,
-                               const boost::uint8_t* datas,
-                               const int len,
-                               const bool is_thumbnail,
-                               const int64_t start,
-                               const int64_t end,
-                               const bool avoid_seq )
-  {
+CMedia* CMedia::guess_image( const char* file,
+                             const boost::uint8_t* datas,
+                             const int len,
+                             const bool is_thumbnail,
+                             const int64_t start,
+                             const int64_t end,
+                             const bool avoid_seq )
+{
     int64_t lastFrame = end;
     int64_t frame = start;
 
@@ -366,13 +366,13 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     bool is_seq = false;
 
     if ( root.find( "%V" ) != std::string::npos ||
-         root.find( "%v" ) != std::string::npos )
+            root.find( "%v" ) != std::string::npos )
     {
         is_stereo = true;
     }
 
     if ( start != AV_NOPTS_VALUE ||
-         end   != AV_NOPTS_VALUE )
+            end   != AV_NOPTS_VALUE )
     {
         if ( mrv::fileroot( tmp, root ) )
         {
@@ -382,10 +382,10 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     }
 
     if ( (root.size() > 4 &&
-          ( root.substr( root.size() - 4, root.size()) == ".xml" ||
-            root.substr( root.size() - 4, root.size()) == ".XML" ) ) ||
-         ( root.size() > 1 &&
-           ( root.substr( root.size() - 1, root.size()) == "~" )) )
+            ( root.substr( root.size() - 4, root.size()) == ".xml" ||
+              root.substr( root.size() - 4, root.size()) == ".XML" ) ) ||
+            ( root.size() > 1 &&
+              ( root.substr( root.size() - 1, root.size()) == "~" )) )
         return NULL;
 
     CMedia* right = NULL;
@@ -425,7 +425,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     DBG("Loaded " << image->name() );
 
     return image;
-  }
+}
 
 
 

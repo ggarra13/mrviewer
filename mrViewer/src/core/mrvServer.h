@@ -50,14 +50,14 @@ class EDLGroup;
 
 
 class Parser
-{ 
-  public:
+{
+public:
     typedef boost::recursive_mutex Mutex;
 
-  public:
+public:
     Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
     virtual ~Parser();
-     
+
     bool parse( const std::string& m );
     void write( const std::string& s, const std::string& id );
 
@@ -69,7 +69,7 @@ class Parser
     virtual void stop() {};
 
 
-  public:
+public:
     bool connected;
     tcp::socket socket_;
     Mutex mtx;
@@ -78,34 +78,34 @@ class Parser
 
 
 class tcp_session : public Parser,
-                    public boost::enable_shared_from_this< tcp_session >
+    public boost::enable_shared_from_this< tcp_session >
 {
-   public:
-     tcp_session(boost::asio::io_service& io_service,
-		 mrv::ViewerUI* const v);
-     virtual ~tcp_session();
+public:
+    tcp_session(boost::asio::io_service& io_service,
+                mrv::ViewerUI* const v);
+    virtual ~tcp_session();
 
-     tcp::socket& socket();
-     void start();
+    tcp::socket& socket();
+    void start();
 
-     bool stopped();
-     
-     void start_read();
-     void handle_read(const boost::system::error_code& ec);
-     void await_output();
+    bool stopped();
 
-     virtual void deliver( const std::string& m );
+    void start_read();
+    void handle_read(const boost::system::error_code& ec);
+    void await_output();
 
-     virtual void stop();
+    virtual void deliver( const std::string& m );
 
-     void start_write();
-     void handle_write(const boost::system::error_code& ec);
-     void check_deadline(deadline_timer* deadline);
+    virtual void stop();
 
-   protected:
-     boost::asio::streambuf input_buffer_;
-     deadline_timer non_empty_output_queue_;
-     std::deque< std::string > output_queue_;
+    void start_write();
+    void handle_write(const boost::system::error_code& ec);
+    void check_deadline(deadline_timer* deadline);
+
+protected:
+    boost::asio::streambuf input_buffer_;
+    deadline_timer non_empty_output_queue_;
+    std::deque< std::string > output_queue_;
 };
 
 typedef boost::shared_ptr<tcp_session> tcp_session_ptr;
@@ -113,19 +113,19 @@ typedef boost::shared_ptr<tcp_session> tcp_session_ptr;
 class server
 {
 public:
-     server(boost::asio::io_service& io_service,
-	    const tcp::endpoint& listen_endpoint,
-	    mrv::ViewerUI* v);
+    server(boost::asio::io_service& io_service,
+           const tcp::endpoint& listen_endpoint,
+           mrv::ViewerUI* v);
 
-     ~server();
+    ~server();
 
-     void start_accept();
+    void start_accept();
 
-     void handle_accept(tcp_session_ptr session,
-			const boost::system::error_code& ec);
+    void handle_accept(tcp_session_ptr session,
+                       const boost::system::error_code& ec);
 
-     static void create(mrv::ViewerUI* ui);
-     static void remove(mrv::ViewerUI* ui);
+    static void create(mrv::ViewerUI* ui);
+    static void remove(mrv::ViewerUI* ui);
 
 private:
     boost::asio::io_service& io_service_;
@@ -138,10 +138,10 @@ typedef boost::shared_ptr<server> tcp_server_ptr;
 
 struct ServerData
 {
-     std::string host;
-     std::string group;
-     unsigned short port;
-     mrv::ViewerUI* ui;
+    std::string host;
+    std::string group;
+    unsigned short port;
+    mrv::ViewerUI* ui;
 };
 
 void server_thread( const ServerData* s );

@@ -19,10 +19,10 @@
  * @file   mrvOS.h
  * @author gga
  * @date   Sun Jan 13 09:15:12 2008
- * 
+ *
  * @brief  Auxiliary file hiding platform differences (mainly, non POSIX)
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvOS_h

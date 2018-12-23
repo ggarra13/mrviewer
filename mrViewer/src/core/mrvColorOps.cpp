@@ -39,9 +39,9 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 {
     const std::string& display = mrv::Preferences::OCIO_Display;
     const std::string& view = mrv::Preferences::OCIO_View;
-   
+
     OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
-    
+
     OCIO::DisplayTransformRcPtr transform = OCIO::DisplayTransform::Create();
 
     std::string ics = img->ocio_input_color_space();
@@ -65,87 +65,87 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
     ptrdiff_t ystride = pic->pixel_size() * pic->channels() * pic->width();
     OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
                                 pic->channels(), chanstride, xstride,
-				ystride );
+                                ystride );
     processor->apply( baker );
 
 }
 
 bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
-		    const image_type::Format format,
-		    const image_type::PixelType pt )
+                    const image_type::Format format,
+                    const image_type::PixelType pt )
 {
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     mrv::image_type_ptr sho = pic;
-    
+
     // Memory is kept until we save the image
     mrv::image_type_ptr ptr = pic;
-            
+
     const std::string& display = mrv::Preferences::OCIO_Display;
     const std::string& view = mrv::Preferences::OCIO_View;
-   
+
     if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-	 Preferences::uiMain->uiView->use_lut() )
+            Preferences::uiMain->uiView->use_lut() )
     {
-	try {
-	    ptr = image_type_ptr( new image_type(
-						 img->frame(),
-						 dw, dh, 4,
-						 image_type::kRGBA,
-						 image_type::kFloat ) );
-	    copy_image( ptr, pic );
-	    bake_ocio( ptr, img );
-	}
-	catch( const std::exception& e )
-	{
-	    LOG_ERROR( e.what() );
-	    return false;
-	}
-                
+        try {
+            ptr = image_type_ptr( new image_type(
+                                      img->frame(),
+                                      dw, dh, 4,
+                                      image_type::kRGBA,
+                                      image_type::kFloat ) );
+            copy_image( ptr, pic );
+            bake_ocio( ptr, img );
+        }
+        catch( const std::exception& e )
+        {
+            LOG_ERROR( e.what() );
+            return false;
+        }
+
     }
 
     if ( ! mrv::is_equal( img->gamma(), 1.0f ) )
     {
-	float one_gamma = 1.0f / img->gamma();
-            
-	for ( unsigned y = 0; y < dh; ++y )
-	{
-	    for ( unsigned x = 0; x < dw; ++x )
-	    {
-		ImagePixel p = ptr->pixel( x, y );
-			
-		if ( p.r > 0.f && isfinite(p.r) )
-		    p.r = expf( logf(p.r) * one_gamma );
-		if ( p.g > 0.f && isfinite(p.g) )
-		    p.g = expf( logf(p.g) * one_gamma );
-		if ( p.b > 0.f && isfinite(p.b) )
-		    p.b = expf( logf(p.b) * one_gamma );
+        float one_gamma = 1.0f / img->gamma();
 
-		sho->pixel( x, y, p );
-	    }
-	}
+        for ( unsigned y = 0; y < dh; ++y )
+        {
+            for ( unsigned x = 0; x < dw; ++x )
+            {
+                ImagePixel p = ptr->pixel( x, y );
+
+                if ( p.r > 0.f && isfinite(p.r) )
+                    p.r = expf( logf(p.r) * one_gamma );
+                if ( p.g > 0.f && isfinite(p.g) )
+                    p.g = expf( logf(p.g) * one_gamma );
+                if ( p.b > 0.f && isfinite(p.b) )
+                    p.b = expf( logf(p.b) * one_gamma );
+
+                sho->pixel( x, y, p );
+            }
+        }
     }
     else
     {
-	sho = ptr;
+        sho = ptr;
     }
 
     unsigned channels = 4;
     if ( format == image_type::kRGB ) channels = 3;
     else if ( format == image_type::kLumma ) channels = 1;
     pic = mrv::image_type_ptr( new image_type( img->frame(),
-					       dw, dh, channels,
-					       format, pt ) );
-                
-        
+                               dw, dh, channels,
+                               format, pt ) );
+
+
     for ( unsigned y = 0; y < dh; ++y )
     {
-	for ( unsigned x = 0; x < dw; ++x )
-	{
-	    ImagePixel p = sho->pixel( x, y );
-	    p.clamp();
-	    pic->pixel( x, y, p );
-	}
+        for ( unsigned x = 0; x < dw; ++x )
+        {
+            ImagePixel p = sho->pixel( x, y );
+            p.clamp();
+            pic->pixel( x, y, p );
+        }
     }
 
     return true;

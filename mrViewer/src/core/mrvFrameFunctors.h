@@ -19,10 +19,10 @@
  * @file   mrvFrameFunctors.h
  * @author gga
  * @date   Wed Jul 18 08:29:19 2007
- * 
+ *
  * @brief  Functors used to compare with video/audio stores
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvFrameFunctors_h
@@ -39,105 +39,105 @@ namespace mrv {
 
 struct ClosestToFunctor
 {
-  const int64_t frame;
+    const int64_t frame;
 
-  ClosestToFunctor( const int64_t f ) : frame(f) {}
+    ClosestToFunctor( const int64_t f ) : frame(f) {}
 
-  bool operator()( const audio_type_ptr& a, const audio_type_ptr& b ) const
-  {
-    if ( !a || !b ) return false;
-    return ( frame > a->frame() && frame < b->frame() );
-  }
+    bool operator()( const audio_type_ptr& a, const audio_type_ptr& b ) const
+    {
+        if ( !a || !b ) return false;
+        return ( frame > a->frame() && frame < b->frame() );
+    }
 
-  bool operator()( const image_type_ptr& a, const image_type_ptr& b ) const
-  {
-    if ( !a || !b ) return false;
-    return ( frame > a->frame() && frame < b->frame() );
-  }
+    bool operator()( const image_type_ptr& a, const image_type_ptr& b ) const
+    {
+        if ( !a || !b ) return false;
+        return ( frame > a->frame() && frame < b->frame() );
+    }
 
 };
 
 struct EqualFunctor
 {
-  const int64_t _frame;
-  EqualFunctor( const int64_t frame ) : _frame( frame ) {}
+    const int64_t _frame;
+    EqualFunctor( const int64_t frame ) : _frame( frame ) {}
 
-  bool operator()( const audio_type_ptr& a ) const
-  {
-    if ( !a ) return false;
-    return a->frame() == _frame;
-  }
+    bool operator()( const audio_type_ptr& a ) const
+    {
+        if ( !a ) return false;
+        return a->frame() == _frame;
+    }
 
-  bool operator()( const image_type_ptr& a ) const
-  {
-    if ( !a ) return false;
-    return a->frame() == _frame;
-  }
+    bool operator()( const image_type_ptr& a ) const
+    {
+        if ( !a ) return false;
+        return a->frame() == _frame;
+    }
 };
 
 struct MoreThanFunctor
 {
-  bool operator()( const int64_t a, const audio_type_ptr& b ) const
-  {
-    if ( !b ) return false;
-    return a > b->frame();
-  }
-  bool operator()( const audio_type_ptr& a, const int64_t b ) const
-  {
-    if ( !a ) return false;
-    return a->frame() > b;
-  }
+    bool operator()( const int64_t a, const audio_type_ptr& b ) const
+    {
+        if ( !b ) return false;
+        return a > b->frame();
+    }
+    bool operator()( const audio_type_ptr& a, const int64_t b ) const
+    {
+        if ( !a ) return false;
+        return a->frame() > b;
+    }
 
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
-  {
-    if ( !b ) return false;
-    return a > b->frame();
-  }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
-  {
-    if ( !a ) return false;
-    return a->frame() > b;
-  }
+    bool operator()( const int64_t a, const image_type_ptr& b ) const
+    {
+        if ( !b ) return false;
+        return a > b->frame();
+    }
+    bool operator()( const image_type_ptr& a, const int64_t b ) const
+    {
+        if ( !a ) return false;
+        return a->frame() > b;
+    }
 };
 
 struct LessThanFunctor
 {
-  bool operator()( const int64_t a, const audio_type_ptr& b ) const
-  {
-    if ( !b ) return false;
-    return a < b->frame();
-  }
-  bool operator()( const audio_type_ptr& a, const int64_t b ) const
-  {
-    if ( !a ) return false;
-    return a->frame() < b;
-  }
+    bool operator()( const int64_t a, const audio_type_ptr& b ) const
+    {
+        if ( !b ) return false;
+        return a < b->frame();
+    }
+    bool operator()( const audio_type_ptr& a, const int64_t b ) const
+    {
+        if ( !a ) return false;
+        return a->frame() < b;
+    }
 
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
-  {
-    if ( !b ) return false;
-    return a < b->frame();
-  }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
-  {
-    if ( !a ) return false;
-    return a->frame() < b;
-  }
+    bool operator()( const int64_t a, const image_type_ptr& b ) const
+    {
+        if ( !b ) return false;
+        return a < b->frame();
+    }
+    bool operator()( const image_type_ptr& a, const int64_t b ) const
+    {
+        if ( !a ) return false;
+        return a->frame() < b;
+    }
 };
 
 
 struct LessPTSThanFunctor
 {
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
-  {
-    if ( !b ) return false;
-    return a < b->pts();
-  }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
-  {
-    if ( !a ) return false;
-    return a->pts() < b;
-  }
+    bool operator()( const int64_t a, const image_type_ptr& b ) const
+    {
+        if ( !b ) return false;
+        return a < b->pts();
+    }
+    bool operator()( const image_type_ptr& a, const int64_t b ) const
+    {
+        if ( !a ) return false;
+        return a->pts() < b;
+    }
 };
 
 struct TooOldFunctor
@@ -152,49 +152,49 @@ struct TooOldFunctor
 
     struct customMore
     {
-	inline bool operator()( const timeval& a,
-				const timeval& b ) const
-	{
-	    return timercmp( a, b, > );
-	}
+        inline bool operator()( const timeval& a,
+                                const timeval& b ) const
+        {
+            return timercmp( a, b, > );
+        }
     };
 
-    
+
     TooOldFunctor( timeval max_time ) :
-    _max_time( max_time )
+        _max_time( max_time )
     {
     }
-    
+
     bool operator()( const image_type_ptr& b ) const
     {
-	if ( !b ) return false;
-	return customMore()( b->ptime(), _max_time );
+        if ( !b ) return false;
+        return customMore()( b->ptime(), _max_time );
     }
 };
 
 struct NotInRangeFunctor
 {
-  const int64_t _start;
-  const int64_t _end;
+    const int64_t _start;
+    const int64_t _end;
 
-  NotInRangeFunctor( const int64_t start, const int64_t end ) :
-    _start( start ), _end( end )
-  {
-    assert( end >= start );
-  }
+    NotInRangeFunctor( const int64_t start, const int64_t end ) :
+        _start( start ), _end( end )
+    {
+        assert( end >= start );
+    }
 
-  bool operator()( const audio_type_ptr& b ) const
-  {
-     return ( b->frame() < _start || b->frame() > _end );
-  }
+    bool operator()( const audio_type_ptr& b ) const
+    {
+        return ( b->frame() < _start || b->frame() > _end );
+    }
 
-  bool operator()( const image_type_ptr& b ) const
-  {
-      if ( !b ) return false;
-     return ( b->frame() + b->repeat() < _start || 
-              b->frame() - b->repeat() > _end );
-  }
-    
+    bool operator()( const image_type_ptr& b ) const
+    {
+        if ( !b ) return false;
+        return ( b->frame() + b->repeat() < _start ||
+                 b->frame() - b->repeat() > _end );
+    }
+
 };
 
 } // namespace mrv

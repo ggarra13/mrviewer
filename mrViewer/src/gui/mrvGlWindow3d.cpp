@@ -19,9 +19,9 @@
 //
 // Copyright (c) 2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -33,8 +33,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -88,14 +88,14 @@ using std::cerr;
 namespace mrv {
 
 
-GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l ) 
-: fltk::GlWindow (x,y,w,h,l)
+GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l )
+    : fltk::GlWindow (x,y,w,h,l)
 {
     init();
 }
 
 GlWindow3d::GlWindow3d (int w,int h, const char *l ) :
-fltk::GlWindow( w, h, l )
+    fltk::GlWindow( w, h, l )
 {
     init();
 }
@@ -382,49 +382,49 @@ GlWindow3d::handle (int event)
     {
         switch (event)
         {
-            case fltk::PUSH:
-                _mouseStartX = fltk::event_x();
-                _mouseStartY = fltk::event_y();
+        case fltk::PUSH:
+            _mouseStartX = fltk::event_x();
+            _mouseStartY = fltk::event_y();
 
-                if (fabs(_elevation) > 90.0)
-                {
-                    _inverted = 1;
-                }
-                else
-                {
-                    _inverted = 0;
-                }
-                return 1;
-                break;
-            case fltk::DRAG:
-            case fltk::RELEASE:
+            if (fabs(_elevation) > 90.0)
             {
-                int x = fltk::event_x();
-                int y = fltk::event_y();
-
-                if (_inverted)
-                {
-                    _azimuth -= (double)(x - _mouseStartX) * 0.2;
-                }
-                else
-                {
-                    _azimuth += (double)(x - _mouseStartX) * 0.2;
-                }
-                _elevation += (double)(y - _mouseStartY) * 0.2;
-
-                while (_elevation < -180.0)
-                    _elevation += 360.0;
-                while (_elevation > 180.0)
-                    _elevation -= 360.0;
-
-                _mouseStartX = x;
-                _mouseStartY = y;
-                redraw();
-                return 1;
-                break;
+                _inverted = 1;
             }
-            default:
-                break;
+            else
+            {
+                _inverted = 0;
+            }
+            return 1;
+            break;
+        case fltk::DRAG:
+        case fltk::RELEASE:
+        {
+            int x = fltk::event_x();
+            int y = fltk::event_y();
+
+            if (_inverted)
+            {
+                _azimuth -= (double)(x - _mouseStartX) * 0.2;
+            }
+            else
+            {
+                _azimuth += (double)(x - _mouseStartX) * 0.2;
+            }
+            _elevation += (double)(y - _mouseStartY) * 0.2;
+
+            while (_elevation < -180.0)
+                _elevation += 360.0;
+            while (_elevation > 180.0)
+                _elevation -= 360.0;
+
+            _mouseStartX = x;
+            _mouseStartY = y;
+            redraw();
+            return 1;
+            break;
+        }
+        default:
+            break;
         }
     }
 
@@ -432,21 +432,21 @@ GlWindow3d::handle (int event)
     {
         switch (event)
         {
-            case fltk::PUSH:
-                fltk::cursor (fltk::CURSOR_MOVE);
-                return 1;
-                break;
-            case fltk::RELEASE:
-                fltk::cursor (fltk::CURSOR_DEFAULT);
-                return 1;
-                break;
-            case fltk::DRAG:
-                int x = fltk::event_x();
-                int y = fltk::event_y();
-                _translateX += (x - _mouseX) * 0.01;
-                _translateY += (y - _mouseY) * 0.01;
-                redraw();
-                break;
+        case fltk::PUSH:
+            fltk::cursor (fltk::CURSOR_MOVE);
+            return 1;
+            break;
+        case fltk::RELEASE:
+            fltk::cursor (fltk::CURSOR_DEFAULT);
+            return 1;
+            break;
+        case fltk::DRAG:
+            int x = fltk::event_x();
+            int y = fltk::event_y();
+            _translateX += (x - _mouseX) * 0.01;
+            _translateY += (y - _mouseY) * 0.01;
+            redraw();
+            break;
         }
     }
 
@@ -480,7 +480,7 @@ GlWindow3d::handle (int event)
     if (event == fltk::KEY)
     {
         unsigned rawkey = fltk::event_key();
-        
+
         if ( kZDepthUp.match( rawkey ) ) //scale up
         {
             _scaleZ *= 1.2;

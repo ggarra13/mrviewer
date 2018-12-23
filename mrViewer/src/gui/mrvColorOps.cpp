@@ -19,10 +19,10 @@
  * @file   mrvColorOps.cpp
  * @author gga
  * @date   Fri Jan 18 09:54:42 2008
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 
@@ -30,8 +30,8 @@
 
 namespace mrv {
 
-  fltk::Color darker( fltk::Color c, uchar v )
-  {
+fltk::Color darker( fltk::Color c, uchar v )
+{
     uchar r,g,b;
     fltk::split_color( c, r, g, b );
     if (r > v ) r -= v;
@@ -41,10 +41,10 @@ namespace mrv {
     if (b > v ) b -= v;
     else b = 0;
     return fltk::color( r, g, b );
-  }
+}
 
-  fltk::Color lighter( fltk::Color c, uchar v )
-  {
+fltk::Color lighter( fltk::Color c, uchar v )
+{
     uchar r,g,b;
     fltk::split_color( c, r, g, b );
 
@@ -56,6 +56,6 @@ namespace mrv {
     else b = 0xff;
 
     return fltk::color( r, g, b );
-  }
+}
 
 }

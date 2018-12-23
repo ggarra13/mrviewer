@@ -19,10 +19,10 @@
  * @file   mrvMath.h
  * @author gga
  * @date   Wed Aug 22 02:40:11 2007
- * 
+ *
  * @brief  Auxialiary math routines
- * 
- * 
+ *
+ *
  */
 
 
@@ -41,20 +41,20 @@ namespace mrv {
 
 typedef float Float;
 
-  template< typename T >
-  inline bool is_equal( const T x1, const T x2,
-			const T e = 1e-5 )
-  {
+template< typename T >
+inline bool is_equal( const T x1, const T x2,
+                      const T e = 1e-5 )
+{
     return ((x1 > x2)? x1 - x2: x2 - x1) <= e;
-  }
+}
 
 // Euclidian mod.  What you expect from % but you don't get as it is signed
 inline int64_t modE( int64_t D, int64_t d )
 {
     int64_t r = D%d;
     if (r < 0) {
-	if (d > 0) r += d;
-	else       r -= d;
+        if (d > 0) r += d;
+        else       r -= d;
     }
     return r;
 }
@@ -66,8 +66,12 @@ static Float Pow(Float v) {
     Float n2 = Pow<n / 2>(v);
     return n2 * n2 * Pow<n & 1>(v);
 }
-template <> Float Pow<1>(Float v) { return v; }
-template <> Float Pow<0>(Float v) { return 1; }
+template <> Float Pow<1>(Float v) {
+    return v;
+}
+template <> Float Pow<0>(Float v) {
+    return 1;
+}
 
 
 }

@@ -40,12 +40,14 @@ public:
     PopupMenu(int,int,int,int,const char* =0);
 
     // Undo the overrides of stuff from Group:
-    void disable_glyph() { _enable_glyph = false; }
+    void disable_glyph() {
+        _enable_glyph = false;
+    }
 
 protected:
-  void draw();
+    void draw();
 
-  bool _enable_glyph;
+    bool _enable_glyph;
 };
 
 }

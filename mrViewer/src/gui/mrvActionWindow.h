@@ -12,18 +12,20 @@ class ImageView;
 
 class ActionWindow : public fltk::Window
 {
-  public:
+public:
     ActionWindow( int w, int h, const char* const  lbl = 0 ) :
-    fltk::Window( w, h, lbl )
+        fltk::Window( w, h, lbl )
     {
     }
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
+    void main( mrv::ViewerUI* m ) {
+        uiMain = m;
+    }
     ImageView* view() const;
-    
+
     virtual int handle( int event );
 
-  protected:
+protected:
     mrv::ViewerUI* uiMain;
 };
 

@@ -35,41 +35,41 @@ namespace mrv  {
 class ViewerUI;
 
 class ICCProfileUI  {
-  CIccProfile* _profile;
+    CIccProfile* _profile;
 public:
-  ICCProfileUI();
-  ~ICCProfileUI();
-  fltk::Window* make_window();
-  fltk::Window *uiMain;
-        fltk::Browser *uiTags;
+    ICCProfileUI();
+    ~ICCProfileUI();
+    fltk::Window* make_window();
+    fltk::Window *uiMain;
+    fltk::Browser *uiTags;
 private:
-        inline void cb_uiTags_i(fltk::Browser*, ICCProfileUI*);
-        static void cb_uiTags(fltk::Browser*, ICCProfileUI*);
+    inline void cb_uiTags_i(fltk::Browser*, ICCProfileUI*);
+    static void cb_uiTags(fltk::Browser*, ICCProfileUI*);
 public:
-        fltk::WizardGroup *uiWizard;
-          fltk::TextDisplay *uiText;
-            fltk::Widget *uiDrawing;
-  void replace( const std::string& name );
+    fltk::WizardGroup *uiWizard;
+    fltk::TextDisplay *uiText;
+    fltk::Widget *uiDrawing;
+    void replace( const std::string& name );
 private:
-  void fill( const std::string& name );
+    void fill( const std::string& name );
 public:
-  void fill_text();
+    void fill_text();
 };
 
 class ICCProfileListUI  {
-  ICCProfileUI* _info;
+    ICCProfileUI* _info;
 public:
-  fltk::Window* make_window();
-  fltk::Window *uiMain;
-        fltk::Browser *uiProfiles;
+    fltk::Window* make_window();
+    fltk::Window *uiMain;
+    fltk::Browser *uiProfiles;
 private:
-        inline void cb_Info_i(fltk::Button*, ICCProfileListUI*);
-        static void cb_Info(fltk::Button*, ICCProfileListUI*);
+    inline void cb_Info_i(fltk::Button*, ICCProfileListUI*);
+    static void cb_Info(fltk::Button*, ICCProfileListUI*);
 public:
-  ICCProfileListUI( mrv::ViewerUI* main );
-  ~ICCProfileListUI();
-  void fill();
-  void show_info();
+    ICCProfileListUI( mrv::ViewerUI* main );
+    ~ICCProfileListUI();
+    void fill();
+    void show_info();
 };
 }
 #endif

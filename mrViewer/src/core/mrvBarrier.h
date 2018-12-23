@@ -19,7 +19,7 @@
 // David Moore, William E. Kempf
 // Copyright (C) 2007-8 Anthony Williams
 //
-// Distributed under the Boost Software License, Version 1.0. (See accompanying 
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef mrvBarrier_h
@@ -34,13 +34,13 @@ namespace mrv
 
 class barrier
 {
-  public:
+public:
     typedef boost::mutex               Mutex;
     typedef boost::condition_variable  Condition;
 
-  public:
+public:
     barrier(unsigned int count)
-    : m_threshold(count), m_count(count), m_generation(0)
+        : m_threshold(count), m_count(count), m_generation(0)
     {
         if (count == 0)
             boost::throw_exception(std::invalid_argument("count cannot be zero."));
@@ -59,12 +59,22 @@ class barrier
         if ( used > m_threshold ) m_count = 0;
         else m_count = m_threshold - used;
     }
-    inline unsigned threshold()  const { return m_threshold; }
-    inline unsigned generation() const { return m_generation; }
-    inline unsigned count()      const { return m_count; }
-    inline unsigned used()       const { return m_threshold - m_count; }
+    inline unsigned threshold()  const {
+        return m_threshold;
+    }
+    inline unsigned generation() const {
+        return m_generation;
+    }
+    inline unsigned count()      const {
+        return m_count;
+    }
+    inline unsigned used()       const {
+        return m_threshold - m_count;
+    }
 
-    inline bool is_active() const { return (m_count < m_threshold); }
+    inline bool is_active() const {
+        return (m_count < m_threshold);
+    }
 
     inline void notify_all()
     {
@@ -89,10 +99,10 @@ class barrier
 
         while (gen == m_generation)
             CONDITION_WAIT( m_cond, m_mutex )
-        return false;
+            return false;
     }
 
-  protected:
+protected:
     Mutex        m_mutex;
     Condition    m_cond;
     unsigned int m_threshold;

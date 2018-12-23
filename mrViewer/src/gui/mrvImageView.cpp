@@ -162,33 +162,33 @@ namespace fs = boost::filesystem;
 
 namespace
 {
-  const char* kModule = "gui";
+const char* kModule = "gui";
 }
 
 
 struct ChannelShortcuts
 {
-  const char* channel;
-  const char  key;
+    const char* channel;
+    const char  key;
 };
 
 
 ChannelShortcuts shortcuts[] = {
-  { _("Color"), 'c'         },
-  { N_("left"),  'c'         },
-  { N_("right"), 'c'         },
-  { _("RGBA"),  'c'         },
-  { _("RGB"),   'c'         },
-  { _("Red"),   'r'         },
-  { _("Green"), 'g'         },
-  { _("Blue"),  'b'         },
-  { _("Alpha"), 'a'         },
-  { _("Alpha Overlay"), 'v' },
-  { _("Lumma"), 'l' },
-  { N_("N"), 'n' },
-  { _("Normals"), 'n' },
-  { N_("Z"), 'z' },
-  { _("Z Depth"), 'z' },
+    { _("Color"), 'c'         },
+    { N_("left"),  'c'         },
+    { N_("right"), 'c'         },
+    { _("RGBA"),  'c'         },
+    { _("RGB"),   'c'         },
+    { _("Red"),   'r'         },
+    { _("Green"), 'g'         },
+    { _("Blue"),  'b'         },
+    { _("Alpha"), 'a'         },
+    { _("Alpha Overlay"), 'v' },
+    { _("Lumma"), 'l' },
+    { N_("N"), 'n' },
+    { _("Normals"), 'n' },
+    { N_("Z"), 'z' },
+    { _("Z Depth"), 'z' },
 };
 
 
@@ -199,48 +199,48 @@ namespace
 bool FullScreen = false;
 bool presentation = false;
 
-    inline std::string remove_hash_number( std::string r )
+inline std::string remove_hash_number( std::string r )
+{
+    if ( r.empty() || r[0] != '#' ) return r;
+
+    size_t pos = r.find( ' ' );
+    if ( pos != std::string::npos )
     {
-        if ( r.empty() || r[0] != '#' ) return r;
-
-        size_t pos = r.find( ' ' );
-        if ( pos != std::string::npos )
-        {
-            r = r.substr( pos+1, r.size() );
-        }
-        return r;
+        r = r.substr( pos+1, r.size() );
     }
+    return r;
+}
 
-    inline std::string extract_root( std::string r )
+inline std::string extract_root( std::string r )
+{
+    if ( r.empty() ) return r;
+
+    size_t pos = r.find( '.' );
+    if ( pos != std::string::npos )
     {
-        if ( r.empty() ) return r;
-
-        size_t pos = r.find( '.' );
-        if ( pos != std::string::npos )
-        {
-            r = r.substr( 0, pos );
-        }
-        return r;
+        r = r.substr( 0, pos );
     }
+    return r;
+}
 
-  /**
-   * Get a shortcut for a channel by looking at the channel mappings
-   *
-   * @param channel name of the channel (Color, Z Depth, etc)
-   *
-   * @return a short value representing the fltk shortcut.
-   */
-  short get_shortcut( const char* channel )
-  {
+/**
+ * Get a shortcut for a channel by looking at the channel mappings
+ *
+ * @param channel name of the channel (Color, Z Depth, etc)
+ *
+ * @return a short value representing the fltk shortcut.
+ */
+short get_shortcut( const char* channel )
+{
     static std::string oldChannel;
     for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
-      {
-          if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
-          {
-              oldChannel = channel;
-              return shortcuts[i].key;
-          }
-      }
+    {
+        if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
+        {
+            oldChannel = channel;
+            return shortcuts[i].key;
+        }
+    }
 
     std::string channelName = channel;
     std::string root = remove_hash_number( channelName );
@@ -265,27 +265,27 @@ bool presentation = false;
                             (int(*)(int)) toupper );
         }
 
-       std::string ext = channelName.substr( pos+1, channelName.size() );
-       std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper );
+        std::string ext = channelName.substr( pos+1, channelName.size() );
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) toupper );
 
-       oldChannel = channelName;
+        oldChannel = channelName;
 
-       if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
-          return 'c';
-       else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
-                 ext == _("RED") ) return 'r';
-       else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
-                 ext == _("GREEN") ) return 'g';
-       else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
-                 ( ext == N_("Z") &&
-                   ( root.find("RGB") == std::string::npos ) ) )
-           return 'b';
-       else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
-       else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
-       else {
-           return 0;
-       }
+        if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
+            return 'c';
+        else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
+                  ext == _("RED") ) return 'r';
+        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") ||
+                  ext == _("GREEN") ) return 'g';
+        else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
+                  ( ext == N_("Z") &&
+                    ( root.find("RGB") == std::string::npos ) ) )
+            return 'b';
+        else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
+        else if ( ext == N_("Z") || ext == _("Z DEPTH") ) return 'z';
+        else {
+            return 0;
+        }
     }
     else
     {
@@ -295,33 +295,33 @@ bool presentation = false;
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
         if ( ext.rfind( N_("LEFT") ) != std::string::npos ||
-             ext.rfind( N_("RIGHT") ) != std::string::npos )
+                ext.rfind( N_("RIGHT") ) != std::string::npos )
             return 'c';
         else if ( root == N_("N") ) return 'n';
         else if ( root == N_("Z") ) return 'z';
     }
 
     return 0;
-  }
+}
 
 #ifdef LINUX
 void send_wm_event(XWindow wnd, Atom message,
                    unsigned long d0, unsigned long d1=0,
                    unsigned long d2=0, unsigned long d3=0,
                    unsigned long d4=0) {
-  XEvent e;
-  e.xany.type = ClientMessage;
-  e.xany.window = wnd;
-  e.xclient.message_type = message;
-  e.xclient.format = 32;
-  e.xclient.data.l[0] = d0;
-  e.xclient.data.l[1] = d1;
-  e.xclient.data.l[2] = d2;
-  e.xclient.data.l[3] = d3;
-  e.xclient.data.l[4] = d4;
-  XSendEvent(fltk::xdisplay, RootWindow(fltk::xdisplay, fltk::xscreen),
-             0, SubstructureNotifyMask | SubstructureRedirectMask,
-             &e);
+    XEvent e;
+    e.xany.type = ClientMessage;
+    e.xany.window = wnd;
+    e.xclient.message_type = message;
+    e.xclient.format = 32;
+    e.xclient.data.l[0] = d0;
+    e.xclient.data.l[1] = d1;
+    e.xclient.data.l[2] = d2;
+    e.xclient.data.l[3] = d3;
+    e.xclient.data.l[4] = d4;
+    XSendEvent(fltk::xdisplay, RootWindow(fltk::xdisplay, fltk::xscreen),
+               0, SubstructureNotifyMask | SubstructureRedirectMask,
+               &e);
 }
 
 #define _NET_WM_STATE_REMOVE        0  /* remove/unset property */
@@ -410,156 +410,156 @@ void update_frame_cb( fltk::Widget* o, mrv::ImageView* v )
 
 void next_image_version_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
-  b->next_image_version();
+    b->next_image_version();
 }
 
 void previous_image_version_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
-  b->previous_image_version();
+    b->previous_image_version();
 }
 
 void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
-  b->next_image();
+    b->next_image();
 }
 
 void previous_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
-  b->previous_image();
+    b->previous_image();
 }
 
 void next_channel_cb( fltk::Widget* o, mrv::ImageView* v )
 {
-  v->next_channel();
+    v->next_channel();
 }
 
 void previous_channel_cb( fltk::Widget* o, mrv::ImageView* v )
 {
-  v->previous_channel();
+    v->previous_channel();
 }
 
 void switch_channels_cb( fltk::Widget* o, mrv::ImageView* v )
 {
-  v->switch_channels();
+    v->switch_channels();
 }
 
 void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  view->bg_reel( view->fg_reel() );
-  view->background( fg );
+    view->bg_reel( view->fg_reel() );
+    view->background( fg );
 }
 
 static void update_title_bar( mrv::ImageView* view )
 {
-  // Print out image names in reverse
-  if ( view == NULL ) return;
+    // Print out image names in reverse
+    if ( view == NULL ) return;
 
-  mrv::media fg = view->foreground();
-  mrv::media bg = view->background();
+    mrv::media fg = view->foreground();
+    mrv::media bg = view->background();
 
-  char bufs[256];
+    char bufs[256];
 
-  if ( fg && bg && fg != bg )
-  {
-      snprintf( bufs, 256, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
-                fg->image()->name().c_str(), view->fg_reel(),
-                bg->image()->name().c_str(), view->bg_reel(),
-                view->show_background() ? _("Shown") : _("Not Shown") );
-  }
-  else if ( fg )
-  {
-      snprintf( bufs, 256, _("mrViewer    FG: %s"),
-                fg->image()->name().c_str() );
-  }
-  else
-  {
-      snprintf( bufs, 32, _("mrViewer") );
-  }
+    if ( fg && bg && fg != bg )
+    {
+        snprintf( bufs, 256, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
+                  fg->image()->name().c_str(), view->fg_reel(),
+                  bg->image()->name().c_str(), view->bg_reel(),
+                  view->show_background() ? _("Shown") : _("Not Shown") );
+    }
+    else if ( fg )
+    {
+        snprintf( bufs, 256, _("mrViewer    FG: %s"),
+                  fg->image()->name().c_str() );
+    }
+    else
+    {
+        snprintf( bufs, 32, _("mrViewer") );
+    }
 
-  view->main()->uiMain->copy_label( bufs );
+    view->main()->uiMain->copy_label( bufs );
 }
 
 void switch_fg_bg_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  const mrv::media& fg = view->foreground();
-  if ( !fg ) {
-      LOG_ERROR( _("No foreground image to switch to") );
-      return;
-  }
-  size_t fg_reel = view->fg_reel();
+    const mrv::media& fg = view->foreground();
+    if ( !fg ) {
+        LOG_ERROR( _("No foreground image to switch to") );
+        return;
+    }
+    size_t fg_reel = view->fg_reel();
 
-  mrv::media bg = view->background();
-  if ( !bg ) {
-      LOG_ERROR( _("No background image to switch to") );
-      return;
-  }
-  size_t bg_reel = view->bg_reel();
+    mrv::media bg = view->background();
+    if ( !bg ) {
+        LOG_ERROR( _("No background image to switch to") );
+        return;
+    }
+    size_t bg_reel = view->bg_reel();
 
-  if ( fg == bg )
-  {
-      LOG_INFO( _("Cannot switch images.  Foreground and background image are the same.") );
-      return;
-  }
+    if ( fg == bg )
+    {
+        LOG_INFO( _("Cannot switch images.  Foreground and background image are the same.") );
+        return;
+    }
 
-  view->foreground( bg );
-  view->fg_reel( bg_reel );
+    view->foreground( bg );
+    view->fg_reel( bg_reel );
 
-  view->background( fg );
-  view->bg_reel( fg_reel );
+    view->background( fg );
+    view->bg_reel( fg_reel );
 
-  mrv::ViewerUI* m = view->main();
-  mrv::Timeline* t = m->uiTimeline;
-  mrv::CMedia* img = bg->image();
-  // int64_t f = m->uiFrame->value();
+    mrv::ViewerUI* m = view->main();
+    mrv::Timeline* t = m->uiTimeline;
+    mrv::CMedia* img = bg->image();
+    // int64_t f = m->uiFrame->value();
 
-  // std::cerr << "f " << f << std::endl;
+    // std::cerr << "f " << f << std::endl;
 
-  // if ( f > img->last_frame() ) f = img->last_frame();
-  // else if ( f < img->first_frame() ) f = img->first_frame();
-  m->uiStartFrame->value( img->first_frame() );
-  m->uiEndFrame->value( img->last_frame() );
-  t->minimum( img->first_frame() );
-  t->maximum( img->last_frame() );
-  // m->uiFrame->value( f );
-  // t->value( f );
+    // if ( f > img->last_frame() ) f = img->last_frame();
+    // else if ( f < img->first_frame() ) f = img->first_frame();
+    m->uiStartFrame->value( img->first_frame() );
+    m->uiEndFrame->value( img->last_frame() );
+    t->minimum( img->first_frame() );
+    t->maximum( img->last_frame() );
+    // m->uiFrame->value( f );
+    // t->value( f );
 
-  update_title_bar( view );
-  view->fit_image();
+    update_title_bar( view );
+    view->fit_image();
 }
 
 void toggle_background_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
-  view->toggle_background();
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+    view->toggle_background();
 }
 
 void open_dir_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
-  uiReelWindow->open_directory();
+    uiReelWindow->open_directory();
 }
 
 void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
-  uiReelWindow->open();
+    uiReelWindow->open();
 }
 
 void open_single_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
-  uiReelWindow->open_single();
+    uiReelWindow->open_single();
 }
 
 void open_clip_xml_metadata_cb( fltk::Widget* o,
                                 mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  mrv::CMedia* img = fg->image();
-  read_clip_xml_metadata( img );
+    mrv::CMedia* img = fg->image();
+    read_clip_xml_metadata( img );
 }
 
 void open_stereo_cb( fltk::Widget* o,
@@ -571,167 +571,167 @@ void open_stereo_cb( fltk::Widget* o,
 void save_clip_xml_metadata_cb( fltk::Widget* o,
                                 mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  mrv::CMedia* img = fg->image();
-  save_clip_xml_metadata( img );
+    mrv::CMedia* img = fg->image();
+    save_clip_xml_metadata( img );
 }
 
 void save_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  view->browser()->save();
+    view->browser()->save();
 }
 
 void save_reel_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  view->browser()->save_reel();
+    view->browser()->save_reel();
 }
 
 void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  view->stop();
+    view->stop();
 
 
-  mrv::CMedia* img = fg->image();
-  if ( !img ) return;
+    mrv::CMedia* img = fg->image();
+    if ( !img ) return;
 
-  mrv::save_sequence_file( view->main(), NULL, true );
+    mrv::save_sequence_file( view->main(), NULL, true );
 
-  // Return all to normal
-  view->redraw();
+    // Return all to normal
+    view->redraw();
 
 }
 
 void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  view->stop();
-  view->browser()->save_sequence();
+    view->stop();
+    view->browser()->save_sequence();
 }
 
 
 
 void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
-  mrv::ImageView* view = uiMain->uiView;
+    mrv::ImageView* view = uiMain->uiView;
 
-  float mask = 1.0f;
-  const char* fmt = o->label();
+    float mask = 1.0f;
+    const char* fmt = o->label();
 
-  mask = (float) atof( fmt );
+    mask = (float) atof( fmt );
 
-  char buf[128];
-  sprintf( buf, "Mask %g", mask );
-  view->send_network( buf );
+    char buf[128];
+    sprintf( buf, "Mask %g", mask );
+    view->send_network( buf );
 
-  view->masking( mask );
+    view->masking( mask );
 
 
-  view->redraw();
+    view->redraw();
 }
 
 
 void change_video_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-   fltk::Group* g = o->parent();
-   if ( !g ) return;
-   fltk::Menu* p = dynamic_cast< fltk::Menu* >( g );
-   if ( !p ) return;
+    fltk::Group* g = o->parent();
+    if ( !g ) return;
+    fltk::Menu* p = dynamic_cast< fltk::Menu* >( g );
+    if ( !p ) return;
 
-   if ( !view) return;
+    if ( !view) return;
 
-   mrv::media fg = view->foreground();
-   if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-   int i = p->value();  // Video Track #
-   fg->image()->video_stream(i);
+    int i = p->value();  // Video Track #
+    fg->image()->video_stream(i);
 }
 
 
 void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-   fltk::Group* g = o->parent();
-   if ( !g ) return;
-   fltk::Menu* p = dynamic_cast< fltk::Menu* >( g );
-   if ( !p ) return;
+    fltk::Group* g = o->parent();
+    if ( !g ) return;
+    fltk::Menu* p = dynamic_cast< fltk::Menu* >( g );
+    if ( !p ) return;
 
-   if ( !view) return;
+    if ( !view) return;
 
-   mrv::media fg = view->foreground();
-   if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-   int i = (int)p->value() - 2;  // Load Subtitle,  No subtitle
-   fg->image()->subtitle_stream(i);
+    int i = (int)p->value() - 2;  // Load Subtitle,  No subtitle
+    fg->image()->subtitle_stream(i);
 
 }
 
 void hud_toggle_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
-  mrv::ImageView* view = uiMain->uiView;
+    mrv::ImageView* view = uiMain->uiView;
 
-  static mrv::ImageView::HudDisplay hud_save = mrv::ImageView::kHudNone;
-  mrv::ImageView::HudDisplay hud;
+    static mrv::ImageView::HudDisplay hud_save = mrv::ImageView::kHudNone;
+    mrv::ImageView::HudDisplay hud;
 
-  if ( hud_save == mrv::ImageView::kHudNone )
-  {
-      hud_save = view->hud();
-      hud = mrv::ImageView::kHudNone;
-  }
-  else
-  {
-      hud = hud_save;
-      hud_save = mrv::ImageView::kHudNone;
-  }
+    if ( hud_save == mrv::ImageView::kHudNone )
+    {
+        hud_save = view->hud();
+        hud = mrv::ImageView::kHudNone;
+    }
+    else
+    {
+        hud = hud_save;
+        hud_save = mrv::ImageView::kHudNone;
+    }
 
-  view->hud( hud );
-  view->redraw();
+    view->hud( hud );
+    view->redraw();
 }
 
 void hud_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
-  mrv::ImageView* view = uiMain->uiView;
+    mrv::ImageView* view = uiMain->uiView;
 
-  int i;
-  int num = uiMain->uiPrefs->uiPrefsHud->children();
-  for ( i = 0; i < num; ++i )
+    int i;
+    int num = uiMain->uiPrefs->uiPrefsHud->children();
+    for ( i = 0; i < num; ++i )
     {
-      const char* fmt = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
-      if ( strcmp( fmt, o->label() ) == 0 ) break;
+        const char* fmt = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
+        if ( strcmp( fmt, o->label() ) == 0 ) break;
     }
 
-  unsigned int hud = view->hud();
-  hud ^= ( 1 << i );
-  view->hud( (mrv::ImageView::HudDisplay) hud );
-  view->redraw();
+    unsigned int hud = view->hud();
+    hud ^= ( 1 << i );
+    view->hud( (mrv::ImageView::HudDisplay) hud );
+    view->redraw();
 }
 
 
 void safe_areas_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  view->safe_areas( !view->safe_areas() );
-  view->redraw();
+    view->safe_areas( !view->safe_areas() );
+    view->redraw();
 }
 
 
 void display_window_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  view->display_window( !view->display_window() );
-  view->redraw();
+    view->display_window( !view->display_window() );
+    view->redraw();
 }
 
 void data_window_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  view->data_window( !view->data_window() );
-  view->redraw();
+    view->data_window( !view->data_window() );
+    view->redraw();
 }
 
 static const float kMinZoom = 0.01f;  // Zoom 1/64
@@ -743,38 +743,39 @@ namespace mrv {
 
 void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 {
-   int idx = -1;
-   fltk::Group* g = o->parent();
-   for ( int i = 0; i < g->children(); ++i )
-   {
-      if ( o == g->child(i) ) {
-         idx = i; break;
-      }
-   }
+    int idx = -1;
+    fltk::Group* g = o->parent();
+    for ( int i = 0; i < g->children(); ++i )
+    {
+        if ( o == g->child(i) ) {
+            idx = i;
+            break;
+        }
+    }
 
-   if ( idx == -1 )
-   {
-       const char* name = o->label();
-       LOG_ERROR( _("Unknown Window \"") << name << "\"" );
-       return;
-   }
+    if ( idx == -1 )
+    {
+        const char* name = o->label();
+        LOG_ERROR( _("Unknown Window \"") << name << "\"" );
+        return;
+    }
 
-   uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
+    uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
 
 void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
 {
-  if ( idx == kReelWindow )
+    if ( idx == kReelWindow )
     {
-       // Reel window
+        // Reel window
         if ( force || !uiMain->uiReelWindow->uiMain->visible() )
             uiMain->uiReelWindow->uiMain->show();
         else
             uiMain->uiReelWindow->uiMain->hide();
     }
-  else if ( idx == kMediaInfo )
-  {
-       // Media Info
+    else if ( idx == kMediaInfo )
+    {
+        // Media Info
         if ( force || !uiMain->uiImageInfo->uiMain->visible() )
         {
             uiMain->uiImageInfo->uiMain->show();
@@ -786,8 +787,8 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             uiMain->uiImageInfo->uiMain->hide();
             send_network( "MediaInfoWindow 0" );
         }
-  }
-  else if ( idx == kColorInfo )
+    }
+    else if ( idx == kColorInfo )
     {
         if ( force || !uiMain->uiColorArea->uiMain->visible() )
         {
@@ -802,8 +803,8 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             send_network( "ColorInfoWindow 0" );
         }
     }
-  else if ( idx == k3DStereoOptions )
-  {
+    else if ( idx == k3DStereoOptions )
+    {
         if ( force || !uiMain->uiStereo->uiMain->visible() )
         {
             uiMain->uiStereo->uiMain->child_of( uiMain->uiMain );
@@ -815,171 +816,171 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
             uiMain->uiStereo->uiMain->hide();
             send_network( "StereoOptions 0" );
         }
-  }
-  else if ( idx == kEDLEdit )
-  {
-      if ( force || !uiMain->uiEDLWindow->uiMain->visible() )
-      {
-          uiMain->uiReelWindow->uiBrowser->set_edl();
-          uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
-          uiMain->uiEDLWindow->uiMain->show();
-      }
-      else
-      {
-          uiMain->uiEDLWindow->uiMain->hide();
-      }
-  }
-  else if ( idx == k3dView )
-  {
-      if ( force || !uiMain->uiGL3dView->uiMain->visible() )
-      {
-          uiMain->uiGL3dView->uiMain->show();
-          send_network( "GL3dView 1" );
-      }
-      else
-      {
-          uiMain->uiGL3dView->uiMain->hide();
-          send_network( "GL3dView 0" );
-      }
-  }
-  else if ( idx == kActionTools )
-    {
-      if ( force || !uiMain->uiPaint->uiMain->visible() )
-      {
-          // Paint Tools
-          uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
-          uiMain->uiPaint->uiMain->show();
-          send_network( "PaintTools 1" );
-      }
-      else
-      {
-          uiMain->uiPaint->uiMain->hide();
-          send_network( "PaintTools 0" );
-      }
     }
-  else if ( idx == kHistogram )
+    else if ( idx == kEDLEdit )
     {
-      if ( force || !uiMain->uiHistogram->uiMain->visible() )
-      {
-          uiMain->uiHistogram->uiMain->show();
-          uiMain->uiView->send_network( "HistogramWindow 1" );
-      }
-      else
-      {
-          uiMain->uiHistogram->uiMain->hide();
-          uiMain->uiView->send_network( "HistogramWindow 0" );
-      }
+        if ( force || !uiMain->uiEDLWindow->uiMain->visible() )
+        {
+            uiMain->uiReelWindow->uiBrowser->set_edl();
+            uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiEDLWindow->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiEDLWindow->uiMain->hide();
+        }
     }
-  else if ( idx == kVectorscope )
+    else if ( idx == k3dView )
     {
-      if ( force || !uiMain->uiVectorscope->uiMain->visible() )
-      {
-          uiMain->uiVectorscope->uiMain->show();
-          uiMain->uiView->send_network( "VectorscopeWindow 1" );
-      }
-      else
-      {
-          uiMain->uiVectorscope->uiMain->hide();
-          uiMain->uiView->send_network( "VectorscopeWindow 0" );
-      }
+        if ( force || !uiMain->uiGL3dView->uiMain->visible() )
+        {
+            uiMain->uiGL3dView->uiMain->show();
+            send_network( "GL3dView 1" );
+        }
+        else
+        {
+            uiMain->uiGL3dView->uiMain->hide();
+            send_network( "GL3dView 0" );
+        }
     }
-  else if ( idx == kWaveform )
+    else if ( idx == kActionTools )
     {
-      if ( force || !uiMain->uiWaveform->uiMain->visible() )
-      {
-          uiMain->uiWaveform->uiMain->show();
-          uiMain->uiView->send_network( "WaveformWindow 1" );
-      }
-      else
-      {
-          uiMain->uiWaveform->uiMain->hide();
-          uiMain->uiView->send_network( "WaveformWindow 0" );
-      }
+        if ( force || !uiMain->uiPaint->uiMain->visible() )
+        {
+            // Paint Tools
+            uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiPaint->uiMain->show();
+            send_network( "PaintTools 1" );
+        }
+        else
+        {
+            uiMain->uiPaint->uiMain->hide();
+            send_network( "PaintTools 0" );
+        }
     }
-  else if ( idx == kICCProfiles )
+    else if ( idx == kHistogram )
     {
-      if ( force || !uiMain->uiICCProfiles->uiMain->visible() )
-      {
-          uiMain->uiICCProfiles->uiMain->show();
-          uiMain->uiICCProfiles->fill();
-      }
-      else
-      {
-          uiMain->uiICCProfiles->uiMain->hide();
-      }
+        if ( force || !uiMain->uiHistogram->uiMain->visible() )
+        {
+            uiMain->uiHistogram->uiMain->show();
+            uiMain->uiView->send_network( "HistogramWindow 1" );
+        }
+        else
+        {
+            uiMain->uiHistogram->uiMain->hide();
+            uiMain->uiView->send_network( "HistogramWindow 0" );
+        }
     }
-  else if ( idx == kConnections )
+    else if ( idx == kVectorscope )
     {
-      if ( force || !uiMain->uiConnection->uiMain->visible() )
-      {
-          uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
-          uiMain->uiConnection->uiMain->show();
-      }
-      else
-      {
-          uiMain->uiConnection->uiMain->hide();
-      }
+        if ( force || !uiMain->uiVectorscope->uiMain->visible() )
+        {
+            uiMain->uiVectorscope->uiMain->show();
+            uiMain->uiView->send_network( "VectorscopeWindow 1" );
+        }
+        else
+        {
+            uiMain->uiVectorscope->uiMain->hide();
+            uiMain->uiView->send_network( "VectorscopeWindow 0" );
+        }
     }
-  else if ( idx == kPreferences )
+    else if ( idx == kWaveform )
     {
-      if ( force || !uiMain->uiPrefs->uiMain->visible() )
-      {
-          uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
-          uiMain->uiPrefs->uiMain->show();
-      }
-      else
-      {
-          uiMain->uiPrefs->uiMain->hide();
-      }
+        if ( force || !uiMain->uiWaveform->uiMain->visible() )
+        {
+            uiMain->uiWaveform->uiMain->show();
+            uiMain->uiView->send_network( "WaveformWindow 1" );
+        }
+        else
+        {
+            uiMain->uiWaveform->uiMain->hide();
+            uiMain->uiView->send_network( "WaveformWindow 0" );
+        }
     }
-  else if ( idx == kHotkeys )
+    else if ( idx == kICCProfiles )
     {
-      if ( force || !uiMain->uiHotkey->uiMain->visible() )
-      {
-          uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
-          uiMain->uiHotkey->uiMain->show();
-      }
-      else
-      {
-          uiMain->uiHotkey->uiMain->hide();
-      }
+        if ( force || !uiMain->uiICCProfiles->uiMain->visible() )
+        {
+            uiMain->uiICCProfiles->uiMain->show();
+            uiMain->uiICCProfiles->fill();
+        }
+        else
+        {
+            uiMain->uiICCProfiles->uiMain->hide();
+        }
     }
-  else if ( idx == kLogs )
+    else if ( idx == kConnections )
     {
-      if ( force || !uiMain->uiLog->uiMain->visible() )
-      {
-          uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
-          uiMain->uiLog->uiMain->show();
-      }
-      else
-      {
-          uiMain->uiLog->uiMain->hide();
-      }
+        if ( force || !uiMain->uiConnection->uiMain->visible() )
+        {
+            uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiConnection->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiConnection->uiMain->hide();
+        }
     }
-  else if ( idx == kAbout )
+    else if ( idx == kPreferences )
     {
-      if ( force || !uiMain->uiAbout->uiMain->visible() )
-      {
-          uiMain->uiAbout->uiMain->show();
-      }
-      else
-      {
-          uiMain->uiAbout->uiMain->hide();
-      }
+        if ( force || !uiMain->uiPrefs->uiMain->visible() )
+        {
+            uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiPrefs->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiPrefs->uiMain->hide();
+        }
     }
-  else
-  {
-      LOG_ERROR( _("Unknown Window ") << idx );
-  }
+    else if ( idx == kHotkeys )
+    {
+        if ( force || !uiMain->uiHotkey->uiMain->visible() )
+        {
+            uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiHotkey->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiHotkey->uiMain->hide();
+        }
+    }
+    else if ( idx == kLogs )
+    {
+        if ( force || !uiMain->uiLog->uiMain->visible() )
+        {
+            uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
+            uiMain->uiLog->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiLog->uiMain->hide();
+        }
+    }
+    else if ( idx == kAbout )
+    {
+        if ( force || !uiMain->uiAbout->uiMain->visible() )
+        {
+            uiMain->uiAbout->uiMain->show();
+        }
+        else
+        {
+            uiMain->uiAbout->uiMain->hide();
+        }
+    }
+    else
+    {
+        LOG_ERROR( _("Unknown Window ") << idx );
+    }
 }
 
 
 static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  attach_icc_profile( fg->image() );
+    attach_icc_profile( fg->image() );
 }
 
 
@@ -1022,14 +1023,14 @@ static void flip_y_cb( fltk::Widget* o, mrv::ImageView* view )
 
 static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  CMedia* img = fg->image();
-  const char* script = "";
-  if ( img->rendering_transform() ) script = img->rendering_transform();
+    CMedia* img = fg->image();
+    const char* script = "";
+    if ( img->rendering_transform() ) script = img->rendering_transform();
 
-  attach_ctl_script( fg->image(), script, view->main() );
+    attach_ctl_script( fg->image(), script, view->main() );
 }
 
 static void modify_sop_sat( mrv::ImageView* view )
@@ -1057,7 +1058,7 @@ static void modify_sop_sat( mrv::ImageView* view )
     if ( mrv::Preferences::ODT_CTL_transform == "" )
     {
         mrv::Preferences::ODT_CTL_transform =
-        "ODT.Academy.RGBmonitor_D60sim_100nits_dim";
+            "ODT.Academy.RGBmonitor_D60sim_100nits_dim";
     }
 
     mrv::ViewerUI* main = view->main();
@@ -1067,9 +1068,9 @@ static void modify_sop_sat( mrv::ImageView* view )
         main->uiSOPNode->uiMain->show();
     }
     else
-      {
+    {
         main->uiSOPNode = new mrv::SopNode( view );
-      }
+    }
     img->image_damage( img->image_damage() | CMedia::kDamageAll );
     view->use_lut( true );
     view->redraw();
@@ -1077,132 +1078,132 @@ static void modify_sop_sat( mrv::ImageView* view )
 
 void modify_sop_sat_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  modify_sop_sat( view );
+    modify_sop_sat( view );
 }
 
 static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
-  attach_ctl_lmt_script( img, img->number_of_lmts(), view->main() );
+    attach_ctl_lmt_script( img, img->number_of_lmts(), view->main() );
 }
 
 void ImageView::update_ICS() const
 {
-  mrv::media fg = foreground();
-  if ( ! fg ) {
-      return;
-  }
-  CMedia* img = fg->image();
-  fltk::PopupMenu* o = uiMain->uiICS;
-  int n = o->children();
-  for ( int i = 0; i < n; ++i )
-  {
-      fltk::Widget* w = o->child(i);
-      if ( img->ocio_input_color_space() == w->label() )
-      {
-          o->copy_label( w->label() );
-          o->value(i);
-          if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
-          o->redraw();
-          return;
-      }
-  }
-  o->copy_label( "scene_linear"  );
-  o->redraw();
+    mrv::media fg = foreground();
+    if ( ! fg ) {
+        return;
+    }
+    CMedia* img = fg->image();
+    fltk::PopupMenu* o = uiMain->uiICS;
+    int n = o->children();
+    for ( int i = 0; i < n; ++i )
+    {
+        fltk::Widget* w = o->child(i);
+        if ( img->ocio_input_color_space() == w->label() )
+        {
+            o->copy_label( w->label() );
+            o->value(i);
+            if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
+            o->redraw();
+            return;
+        }
+    }
+    o->copy_label( "scene_linear"  );
+    o->redraw();
 }
 
 void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  attach_ocio_input_color_space( fg->image(), view );
+    attach_ocio_input_color_space( fg->image(), view );
 
-  view->update_ICS();
+    view->update_ICS();
 
 
 }
 static void attach_ocio_display_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  attach_ocio_display( fg->image(), view );
+    attach_ocio_display( fg->image(), view );
 }
 static void attach_ocio_view_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  attach_ocio_view( fg->image(), view );
+    attach_ocio_view( fg->image(), view );
 }
 
 static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  attach_ctl_idt_script( fg->image(), view->main() );
+    attach_ctl_idt_script( fg->image(), view->main() );
 }
 
 static void monitor_icc_profile_cb( fltk::Widget* o, ViewerUI* uiMain )
 {
-  monitor_icc_profile(uiMain);
+    monitor_icc_profile(uiMain);
 }
 
 
 static void monitor_ctl_script_cb( fltk::Widget* o, ViewerUI* uiMain )
 {
-  monitor_ctl_script(uiMain);
+    monitor_ctl_script(uiMain);
 }
 
 static void copy_pixel_rgba_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( ! fg ) return;
+    mrv::media fg = view->foreground();
+    if ( ! fg ) return;
 
-  view->copy_pixel();
+    view->copy_pixel();
 }
 
 
 static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  const char* file = open_audio_file();
-  if ( file == NULL ) return;
+    const char* file = open_audio_file();
+    if ( file == NULL ) return;
 
-  CMedia* img = fg->image();
-  if ( img == NULL ) return;
+    CMedia* img = fg->image();
+    if ( img == NULL ) return;
 
-  DBG( "Attach audio file " << file << " first frame: " << img->first_frame() );
-  img->audio_file( file );
-  DBG( "Attached audio file " << file << " first frame: " << img->first_frame() );
-  view->refresh_audio_tracks();
+    DBG( "Attach audio file " << file << " first frame: " << img->first_frame() );
+    img->audio_file( file );
+    DBG( "Attached audio file " << file << " first frame: " << img->first_frame() );
+    view->refresh_audio_tracks();
 
 }
 
 
 static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  mrv::media fg = view->foreground();
-  if ( !fg ) return;
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
 
-  view->stop();
+    view->stop();
 
-  CMedia* img = fg->image();
-  if ( img == NULL ) return;
+    CMedia* img = fg->image();
+    if ( img == NULL ) return;
 
-  img->audio_file( NULL );
-  view->refresh_audio_tracks();
+    img->audio_file( NULL );
+    view->refresh_audio_tracks();
 
 }
 
@@ -1282,25 +1283,25 @@ void ImageView::erase_mode()
 
 void ImageView::text_mode()
 {
-   bool ok = mrv::make_window();
-   if ( ok )
-   {
-      _mode = kText;
-      uiMain->uiPaint->uiText->value(true);
-      uiMain->uiPaint->uiScrub->value(false);
-   }
-   else
-   {
-      _mode = kScrub;
-      uiMain->uiPaint->uiText->value(false);
-      uiMain->uiPaint->uiScrub->value(true);
-   }
+    bool ok = mrv::make_window();
+    if ( ok )
+    {
+        _mode = kText;
+        uiMain->uiPaint->uiText->value(true);
+        uiMain->uiPaint->uiScrub->value(false);
+    }
+    else
+    {
+        _mode = kScrub;
+        uiMain->uiPaint->uiText->value(false);
+        uiMain->uiPaint->uiScrub->value(true);
+    }
 
-   uiMain->uiPaint->uiMovePic->value(false);
-   uiMain->uiPaint->uiErase->value(false);
-   uiMain->uiPaint->uiDraw->value(false);
-   uiMain->uiPaint->uiSelection->value(false);
-   redraw();
+    uiMain->uiPaint->uiMovePic->value(false);
+    uiMain->uiPaint->uiErase->value(false);
+    uiMain->uiPaint->uiDraw->value(false);
+    uiMain->uiPaint->uiSelection->value(false);
+    redraw();
 }
 
 bool ImageView::in_presentation() const
@@ -1333,142 +1334,143 @@ void ImageView::delete_timeout()
 }
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
-fltk::GlWindow( X, Y, W, H, l ),
-_broadcast( false ),
-uiMain( NULL ),
-_engine( NULL ),
-_update( true ),
-_wait( false ),
-_normalize( false ),
-_safeAreas( false ),
-_masking( 0.0f ),
-_wipe_dir( kNoWipe ),
-_wipe( 1.0 ),
-_gamma( 1.0f ),
-_gain( 1.0f ),
-_zoom( 1 ),
-xoffset( 0 ),
-yoffset( 0 ),
-spinx( 0.0 ),
-spiny( 0.0 ),
-posX( 4 ),
-posY( 22 ),
-flags( 0 ),
-_ghost_previous( 5 ),
-_ghost_next( 5 ),
-_channel( 0 ),
-_old_channel( 0 ),
-_channelType( kRGB ),
-_field( kFrameDisplay ),
-_displayWindow( true ),
-_dataWindow( true ),
-_showBG( true ),
-_showPixelRatio( false ),
-_useLUT( false ),
-_volume( 1.0f ),
-_flip( kFlipNone ),
-_preframe( 1 ),
-_old_fg_frame( 0 ),
-_old_bg_frame( 0 ),
-_reel( 0 ),
-_idle_callback( false ),
-_vr( kNoVR ),
-_timeout( NULL ),
-_old_fg( NULL ),
-_fg_reel( -1 ),
-_bg_reel( -1 ),
-_mode( kNoAction ),
-_selected_image( NULL ),
-_selection( mrv::Rectd(0,0) ),
-_playback( CMedia::kStopped ),
-_network_send( true ),
-_lastFrame( 0 )
+    fltk::GlWindow( X, Y, W, H, l ),
+    _broadcast( false ),
+    uiMain( NULL ),
+    _engine( NULL ),
+    _update( true ),
+    _wait( false ),
+    _normalize( false ),
+    _safeAreas( false ),
+    _masking( 0.0f ),
+    _wipe_dir( kNoWipe ),
+    _wipe( 1.0 ),
+    _gamma( 1.0f ),
+    _gain( 1.0f ),
+    _zoom( 1 ),
+    xoffset( 0 ),
+    yoffset( 0 ),
+    spinx( 0.0 ),
+    spiny( 0.0 ),
+    posX( 4 ),
+    posY( 22 ),
+    flags( 0 ),
+    _ghost_previous( 5 ),
+    _ghost_next( 5 ),
+    _channel( 0 ),
+    _old_channel( 0 ),
+    _channelType( kRGB ),
+    _field( kFrameDisplay ),
+    _displayWindow( true ),
+    _dataWindow( true ),
+    _showBG( true ),
+    _showPixelRatio( false ),
+    _useLUT( false ),
+    _volume( 1.0f ),
+    _flip( kFlipNone ),
+    _preframe( 1 ),
+    _old_fg_frame( 0 ),
+    _old_bg_frame( 0 ),
+    _reel( 0 ),
+    _idle_callback( false ),
+    _vr( kNoVR ),
+    _timeout( NULL ),
+    _old_fg( NULL ),
+    _fg_reel( -1 ),
+    _bg_reel( -1 ),
+    _mode( kNoAction ),
+    _selected_image( NULL ),
+    _selection( mrv::Rectd(0,0) ),
+    _playback( CMedia::kStopped ),
+    _network_send( true ),
+    _lastFrame( 0 )
 {
-  _timer.setDesiredSecondsPerFrame(0.05f);
+    _timer.setDesiredSecondsPerFrame(0.05f);
 
 
-  int stereo = 0;
-  if ( can_do( fltk::STEREO ) ) stereo = 0; // should be fltk::STEREO
+    int stereo = 0;
+    if ( can_do( fltk::STEREO ) ) stereo = 0; // should be fltk::STEREO
 
-  mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
-        fltk::STENCIL_BUFFER | stereo );
+    mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
+          fltk::STENCIL_BUFFER | stereo );
 
-  create_timeout( 0.02f );
+    create_timeout( 0.02f );
 }
 
 
 void ImageView::stop_playback()
 {
 
-  mrv::media fg = foreground();
-  if ( fg ) fg->image()->stop();
+    mrv::media fg = foreground();
+    if ( fg ) fg->image()->stop();
 
-  mrv::media bg = background();
-  if ( bg ) bg->image()->stop(true);
+    mrv::media bg = background();
+    if ( bg ) bg->image()->stop(true);
 
 }
 
 
 ImageView::~ImageView()
 {
-   delete_timeout();
-   if ( CMedia::preload_cache() )
-       preload_cache_stop();
+    delete_timeout();
+    if ( CMedia::preload_cache() )
+        preload_cache_stop();
 
-   ParserList::iterator i = _clients.begin();
-   ParserList::iterator e = _clients.end();
-   for ( ; i != e; ++i )
-   {
-       (*i)->connected = false;
-   }
+    ParserList::iterator i = _clients.begin();
+    ParserList::iterator e = _clients.end();
+    for ( ; i != e; ++i )
+    {
+        (*i)->connected = false;
+    }
 
-   _clients.clear();
+    _clients.clear();
 
-   // make sure to stop any playback
-   stop_playback();
+    // make sure to stop any playback
+    stop_playback();
 
-   foreground( mrv::media() );
-   background( mrv::media() );
+    foreground( mrv::media() );
+    background( mrv::media() );
 
-   delete _engine; _engine = NULL;
+    delete _engine;
+    _engine = NULL;
 
-   delete uiMain->uiSOPNode;
-   uiMain->uiSOPNode = NULL;
+    delete uiMain->uiSOPNode;
+    uiMain->uiSOPNode = NULL;
 
-   uiMain = NULL;
+    uiMain = NULL;
 }
 
 fltk::Window* ImageView::fltk_main()
 {
-   assert( uiMain );
-   assert( uiMain->uiMain );
-   if ( !uiMain ) return NULL;
-   return uiMain->uiMain;
+    assert( uiMain );
+    assert( uiMain->uiMain );
+    if ( !uiMain ) return NULL;
+    return uiMain->uiMain;
 }
 
 const fltk::Window* ImageView::fltk_main() const
 {
-   if ( !uiMain ) return NULL;
-   assert( uiMain->uiMain );
-   return uiMain->uiMain;
+    if ( !uiMain ) return NULL;
+    assert( uiMain->uiMain );
+    return uiMain->uiMain;
 }
 
 
 ImageBrowser*
 ImageView::browser() {
-   if ( !uiMain ) return NULL;
-   if ( !uiMain->uiReelWindow ) return NULL;
-   assert( uiMain->uiReelWindow );
-   assert( uiMain->uiReelWindow->uiBrowser );
-   return uiMain->uiReelWindow->uiBrowser;
+    if ( !uiMain ) return NULL;
+    if ( !uiMain->uiReelWindow ) return NULL;
+    assert( uiMain->uiReelWindow );
+    assert( uiMain->uiReelWindow->uiBrowser );
+    return uiMain->uiReelWindow->uiBrowser;
 }
 
 
 Timeline*
 ImageView::timeline() {
-   if ( !uiMain ) return NULL;
-   assert( uiMain->uiTimeline );
-   return uiMain->uiTimeline;
+    if ( !uiMain ) return NULL;
+    assert( uiMain->uiTimeline );
+    return uiMain->uiTimeline;
 }
 
 
@@ -1483,15 +1485,15 @@ void ImageView::switch_channels()
     unsigned short idx = 0;
     fltk::Group* g = NULL;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
+    {
+        fltk::Widget* w = uiColorChannel->child(i);
+        if ( w->is_group() )
         {
-            fltk::Widget* w = uiColorChannel->child(i);
-            if ( w->is_group() )
-            {
-                g = (fltk::Group*) w;
-                unsigned numc = g->children();
-                idx += numc;
-            }
+            g = (fltk::Group*) w;
+            unsigned numc = g->children();
+            idx += numc;
         }
+    }
 
     if ( old_channel >= idx ) return; // too few channels
 
@@ -1528,72 +1530,72 @@ bool ImageView::previous_channel()
 
     unsigned short idx = 0;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
+    {
+        w = uiColorChannel->child(i);
+
+        // This handles jump from first channel to last (Z or Color or
+        // any channel done in loop later)
+        if ( c == 0 && c == idx )
         {
-            w = uiColorChannel->child(i);
-
-            // This handles jump from first channel to last (Z or Color or
-            // any channel done in loop later)
-            if ( c == 0 && c == idx )
+            // Select last channel (group)
+            fltk::Widget* last = uiColorChannel->child(num-1);
+            // Jump to Z based on label
+            if ( total > 8 &&
+                    strcmp( last->label(), N_("Z") ) == 0 )
             {
-                // Select last channel (group)
-                fltk::Widget* last = uiColorChannel->child(num-1);
-                // Jump to Z based on label
-                if ( total > 8 &&
-                     strcmp( last->label(), N_("Z") ) == 0 )
-                {
-                    previous = total-1;
-                    is_group = true;
-                    break;
-                }
-                // Jump to color based on label
-                else if ( total > 7 &&
-                          strcmp( last->label(), _("Alpha Overlay") ) == 0 )
-                {
-                    previous = total-7;
-                    is_group = true;
-                    break;
-                }
-                else if ( total > 5 &&
-                          strcmp( last->label(), _("Lumma") ) == 0 )
-                {
-                    previous = total-5;
-                    is_group = true;
-                    break;
-                }
-            }
-
-            // This handles jump from Z to Color
-            if ( c == idx && c >= 4 &&
-                 ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
-            {
-                // Handle Z, Alpha Overlay and Lumma and RGBA
-                if ( c >= 7 )  // Z
-                    previous = c - 7;
-                else if ( c >= 6 )  // alpha overlay
-                    previous = c - 6;
-                else if ( c >= 4 )  // lumma
-                    previous = c - 4;
+                previous = total-1;
                 is_group = true;
+                break;
             }
-            if ( w->is_group() )
+            // Jump to color based on label
+            else if ( total > 7 &&
+                      strcmp( last->label(), _("Alpha Overlay") ) == 0 )
             {
-                g = (fltk::Group*) w;
-
-                unsigned numc = g->children();
-                if ( c == idx && previous >= 0) {
-                    is_group = true;
-                }
-
-                if ( !is_group ) previous = idx;
-
-                idx += numc;
-            }
-            else if ( c == idx &&
-                      previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
-            {
+                previous = total-7;
                 is_group = true;
+                break;
+            }
+            else if ( total > 5 &&
+                      strcmp( last->label(), _("Lumma") ) == 0 )
+            {
+                previous = total-5;
+                is_group = true;
+                break;
             }
         }
+
+        // This handles jump from Z to Color
+        if ( c == idx && c >= 4 &&
+                ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
+        {
+            // Handle Z, Alpha Overlay and Lumma and RGBA
+            if ( c >= 7 )  // Z
+                previous = c - 7;
+            else if ( c >= 6 )  // alpha overlay
+                previous = c - 6;
+            else if ( c >= 4 )  // lumma
+                previous = c - 4;
+            is_group = true;
+        }
+        if ( w->is_group() )
+        {
+            g = (fltk::Group*) w;
+
+            unsigned numc = g->children();
+            if ( c == idx && previous >= 0) {
+                is_group = true;
+            }
+
+            if ( !is_group ) previous = idx;
+
+            idx += numc;
+        }
+        else if ( c == idx &&
+                  previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
+        {
+            is_group = true;
+        }
+    }
 
     if ( (is_group && previous >= 0) || (!is_group && c > 0) )
     {
@@ -1631,28 +1633,28 @@ bool ImageView::next_channel()
     unsigned short idx = 0;
     fltk::Group* g = NULL;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
+    {
+        fltk::Widget* w = uiColorChannel->child(i);
+        if ( w->is_group() )
         {
-            fltk::Widget* w = uiColorChannel->child(i);
-            if ( w->is_group() )
-            {
-                g = (fltk::Group*) w;
-                unsigned numc = g->children();
-                if ( c == idx ) {
-                    is_group = true;
-                    next = idx + numc + 1;
-                }
-                idx += numc;
-                continue;
+            g = (fltk::Group*) w;
+            unsigned numc = g->children();
+            if ( c == idx ) {
+                is_group = true;
+                next = idx + numc + 1;
             }
-            if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
+            idx += numc;
+            continue;
+        }
+        if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
+        {
+            if ( num > 7 )
             {
-                if ( num > 7 )
-                {
-                    is_group = true;
-                    next = idx + 7;
-                }
+                is_group = true;
+                next = idx + 7;
             }
         }
+    }
 
     if ( (is_group && next < idx) || (!is_group && c < idx-1) )
     {
@@ -1680,20 +1682,20 @@ bool ImageView::next_channel()
  */
 void ImageView::init_draw_engine()
 {
-  _engine = new mrv::GLEngine( this );
-  DBG( __FUNCTION__ << " " << __LINE__ );
-  if ( !_engine )
+    _engine = new mrv::GLEngine( this );
+    DBG( __FUNCTION__ << " " << __LINE__ );
+    if ( !_engine )
     {
-      mrvALERT( _("Could not initialize draw engine") );
-      return;
+        mrvALERT( _("Could not initialize draw engine") );
+        return;
     }
 #ifdef LINUX
-  fl_NET_WM_STATE       = XInternAtom(fltk::xdisplay, "_NET_WM_STATE",       0);
-  fl_NET_WM_STATE_FULLSCREEN = XInternAtom(fltk::xdisplay, "_NET_WM_STATE_FULLSCREEN", 0);
+    fl_NET_WM_STATE       = XInternAtom(fltk::xdisplay, "_NET_WM_STATE",       0);
+    fl_NET_WM_STATE_FULLSCREEN = XInternAtom(fltk::xdisplay, "_NET_WM_STATE_FULLSCREEN", 0);
 #endif
 
-  CMedia::supports_yuv( _engine->supports_yuv() );
-  CMedia::supports_yuva( _engine->supports_yuva() );
+    CMedia::supports_yuv( _engine->supports_yuv() );
+    CMedia::supports_yuva( _engine->supports_yuva() );
 }
 
 
@@ -1710,7 +1712,7 @@ void ImageView::fg_reel(int idx)
 void ImageView::bg_reel(int idx)
 {
     _bg_reel = idx;
-    
+
     char buf[128];
     sprintf( buf, "BGReel %d", idx );
     send_network( buf );
@@ -1727,83 +1729,83 @@ void ImageView::bg_reel(int idx)
  */
 void ImageView::copy_pixel() const
 {
-  mrv::media fg = foreground();
-  if ( !fg ) return;
+    mrv::media fg = foreground();
+    if ( !fg ) return;
 
-  CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
-  int x = lastX;
-  int y = lastY;
+    int x = lastX;
+    int y = lastY;
 
-  if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
-    return;
+    if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
+        return;
 
-  mrv::image_type_ptr pic;
-  bool outside = false;
-  int xp, yp, w, h;
-  picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+    mrv::image_type_ptr pic;
+    bool outside = false;
+    int xp, yp, w, h;
+    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
 
-  if ( outside || !pic ) return;
+    if ( outside || !pic ) return;
 
-  int xpr = int((double)xp / img->width());
-  int ypr = pic->height() - int((double)yp / img->height()) - 1;
+    int xpr = int((double)xp / img->width());
+    int ypr = pic->height() - int((double)yp / img->height()) - 1;
 
-  CMedia::Pixel rgba = pic->pixel( xpr, ypr );
-  pixel_processed( img, rgba );
+    CMedia::Pixel rgba = pic->pixel( xpr, ypr );
+    pixel_processed( img, rgba );
 
-  mrv::Recti daw[2];
-  daw[0] = img->data_window();
-  daw[1] = img->data_window2();
+    mrv::Recti daw[2];
+    daw[0] = img->data_window();
+    daw[1] = img->data_window2();
 
-  CMedia::StereoOutput stereo_out = img->stereo_output();
-  CMedia::StereoInput  stereo_in  = img->stereo_input();
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    CMedia::StereoInput  stereo_in  = img->stereo_input();
 
-  if ( stereo_out & CMedia::kStereoAnaglyph )
-  {
-      if ( stereo_in == CMedia::kTopBottomStereoInput )
-      {
-          yp += h;
-      }
-      else if ( stereo_in == CMedia::kLeftRightStereoInput )
-      {
-          xp += w;
-      }
-      else
-      {
-          if ( stereo_out & CMedia::kStereoRight )
-          {
-              pic = img->left();
-              xp += daw[1].x();
-              yp += daw[1].y();
-              xp -= daw[0].x();
-              yp -= daw[0].y();
-          }
-          else
-          {
-              pic = img->right();
-              xp += daw[0].x();
-              yp += daw[0].y();
-              xp -= daw[1].x();
-              yp -= daw[1].y();
-          }
-      }
+    if ( stereo_out & CMedia::kStereoAnaglyph )
+    {
+        if ( stereo_in == CMedia::kTopBottomStereoInput )
+        {
+            yp += h;
+        }
+        else if ( stereo_in == CMedia::kLeftRightStereoInput )
+        {
+            xp += w;
+        }
+        else
+        {
+            if ( stereo_out & CMedia::kStereoRight )
+            {
+                pic = img->left();
+                xp += daw[1].x();
+                yp += daw[1].y();
+                xp -= daw[0].x();
+                yp -= daw[0].y();
+            }
+            else
+            {
+                pic = img->right();
+                xp += daw[0].x();
+                yp += daw[0].y();
+                xp -= daw[1].x();
+                yp -= daw[1].y();
+            }
+        }
 
-      if ( pic && xp < (int)pic->width() && yp < (int)pic->height() )
-      {
-          float r = rgba.r;
-          ypr = pic->height() - yp - 1;
-          rgba = pic->pixel( xp, ypr );
-          pixel_processed( img, rgba );
-          rgba.r = r;
-      }
-  }
+        if ( pic && xp < (int)pic->width() && yp < (int)pic->height() )
+        {
+            float r = rgba.r;
+            ypr = pic->height() - yp - 1;
+            rgba = pic->pixel( xp, ypr );
+            pixel_processed( img, rgba );
+            rgba.r = r;
+        }
+    }
 
-  char buf[256];
-  sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
+    char buf[256];
+    sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
 
-  // Copy text to both the clipboard and to X's XA_PRIMARY
-  fltk::copy( buf, unsigned( strlen(buf) ), true );
-  fltk::copy( buf, unsigned( strlen(buf) ), false );
+    // Copy text to both the clipboard and to X's XA_PRIMARY
+    fltk::copy( buf, unsigned( strlen(buf) ), true );
+    fltk::copy( buf, unsigned( strlen(buf) ), false );
 }
 
 
@@ -1820,8 +1822,8 @@ void ImageView::rot2vec( double& x, double& y, const double r )
 }
 
 void ImageView::data_window_coordinates( const CMedia* const img,
-                                         double& x, double& y,
-                                         const bool flipon ) const
+        double& x, double& y,
+        const bool flipon ) const
 {
     image_coordinates( img, x, y );
 
@@ -1897,10 +1899,14 @@ void ImageView::image_coordinates( const CMedia* const img,
 
     y = (this->h() - y - 1);
 
-    x -= tw; y -= th;
-    x /= _zoom; y /= _zoom;
-    x += tw; y += th;
-    x -= xoffset; y -= yoffset;
+    x -= tw;
+    y -= th;
+    x /= _zoom;
+    y /= _zoom;
+    x += tw;
+    y += th;
+    x -= xoffset;
+    y -= yoffset;
 
 
 
@@ -1962,30 +1968,30 @@ void ImageView::center_image()
     }
     else
     {
-      dpw = img->data_window();
-      if ( stereo_out & CMedia::kStereoAnaglyph )
-      {
-          mrv::Recti dpw2 = img->data_window2();
-          dpw.merge( dpw2 );
-      }
-      else if ( stereo_out == CMedia::kStereoRight )
-      {
-          dpw = img->data_window2();
-      }
-      else if ( stereo_out & CMedia::kStereoSideBySide )
-      {
-          const mrv::Recti& dp = img->display_window();
-          mrv::Recti daw = img->data_window2();
-          daw.x( dp.w() + daw.x() );
-          dpw.merge( daw );
-      }
-      else if ( stereo_out & CMedia::kStereoTopBottom )
-      {
-          const mrv::Recti& dp = img->display_window();
-          mrv::Recti daw = img->data_window2();
-          daw.y( dp.h() + daw.y() );
-          dpw.merge( daw );
-      }
+        dpw = img->data_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->data_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->data_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.x( dp.w() + daw.x() );
+            dpw.merge( daw );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.y( dp.h() + daw.y() );
+            dpw.merge( daw );
+        }
     }
 
 
@@ -2058,140 +2064,142 @@ void ImageView::center_image()
  */
 void ImageView::fit_image()
 {
-  const mrv::media fg = foreground();
-  if ( !fg ) return;
+    const mrv::media fg = foreground();
+    if ( !fg ) return;
 
 
-  const CMedia* img = fg->image();
+    const CMedia* img = fg->image();
 
-  mrv::image_type_ptr pic = img->left();
-  if ( !pic ) return;
+    mrv::image_type_ptr pic = img->left();
+    if ( !pic ) return;
 
-  CMedia::StereoOutput stereo_out = img->stereo_output();
-  mrv::Recti dpw;
-  if ( display_window() )
-  {
-      dpw = img->display_window();
-      if ( stereo_out & CMedia::kStereoAnaglyph )
-      {
-          mrv::Recti dpw2 = img->display_window2();
-          dpw.merge( dpw2 );
-      }
-      else if ( stereo_out == CMedia::kStereoRight )
-      {
-          dpw = img->display_window2();
-      }
-      else if ( stereo_out & CMedia::kStereoSideBySide )
-      {
-          const mrv::Recti& dpw2 = img->display_window2();
-          dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
-      }
-      else if ( stereo_out & CMedia::kStereoTopBottom )
-      {
-          const mrv::Recti& dpw2 = img->display_window2();
-          dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
-      }
-  }
-  else
-  {
-      dpw = img->data_window();
-      if ( stereo_out & CMedia::kStereoAnaglyph )
-      {
-          mrv::Recti dpw2 = img->data_window2();
-          dpw.merge( dpw2 );
-      }
-      else if ( stereo_out == CMedia::kStereoRight )
-      {
-          dpw = img->data_window2();
-      }
-      else if ( stereo_out & CMedia::kStereoSideBySide )
-      {
-          const mrv::Recti& dp = img->display_window();
-          mrv::Recti daw = img->data_window2();
-          daw.x( dp.w() + daw.x() );
-          dpw.merge( daw );
-      }
-      else if ( stereo_out & CMedia::kStereoTopBottom )
-      {
-          const mrv::Recti& dp = img->display_window();
-          mrv::Recti daw = img->data_window2();
-          daw.y( dp.h() + daw.y() );
-          dpw.merge( daw );
-      }
-  }
+    CMedia::StereoOutput stereo_out = img->stereo_output();
+    mrv::Recti dpw;
+    if ( display_window() )
+    {
+        dpw = img->display_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->display_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->display_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dpw2 = img->display_window2();
+            dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
+        }
+    }
+    else
+    {
+        dpw = img->data_window();
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+            mrv::Recti dpw2 = img->data_window2();
+            dpw.merge( dpw2 );
+        }
+        else if ( stereo_out == CMedia::kStereoRight )
+        {
+            dpw = img->data_window2();
+        }
+        else if ( stereo_out & CMedia::kStereoSideBySide )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.x( dp.w() + daw.x() );
+            dpw.merge( daw );
+        }
+        else if ( stereo_out & CMedia::kStereoTopBottom )
+        {
+            const mrv::Recti& dp = img->display_window();
+            mrv::Recti daw = img->data_window2();
+            daw.y( dp.h() + daw.y() );
+            dpw.merge( daw );
+        }
+    }
 
-  mrv::media bg = background();
-  dpw.x( int(dpw.x() + img->x()) );
-  dpw.y( int(dpw.y() - img->y()) );
-  if ( bg )
-  {
-      CMedia* img2 = bg->image();
-      mrv::Recti dpw2 = img2->display_window();
-      dpw2.x( int(dpw2.x() + img2->x()) );
-      dpw2.y( int(dpw2.y() - img2->y()) );
-      if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
-      {
-          dpw.merge( dpw2 );
-      }
-  }
+    mrv::media bg = background();
+    dpw.x( int(dpw.x() + img->x()) );
+    dpw.y( int(dpw.y() - img->y()) );
+    if ( bg )
+    {
+        CMedia* img2 = bg->image();
+        mrv::Recti dpw2 = img2->display_window();
+        dpw2.x( int(dpw2.x() + img2->x()) );
+        dpw2.y( int(dpw2.y() - img2->y()) );
+        if ( main()->uiPrefs->uiPrefsResizeBackground->value() == 0 )
+        {
+            dpw.merge( dpw2 );
+        }
+    }
 
-  int W = dpw.w();
-  if ( W == 0 ) W = pic->width();
-  int H = dpw.h();
-  if ( H == 0 ) H = pic->height();
+    int W = dpw.w();
+    if ( W == 0 ) W = pic->width();
+    int H = dpw.h();
+    if ( H == 0 ) H = pic->height();
 
-  // Handle image 90 degrees rotation
-  double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
-  if ( std::abs(r) <= 0.0001 )
-  {
-      unsigned tmp = H;
-      H = W;
-      W = tmp;
-  }
+    // Handle image 90 degrees rotation
+    double r = tan( ( 90 + img->rot_z() ) * (M_PI / 180) );
+    if ( std::abs(r) <= 0.0001 )
+    {
+        unsigned tmp = H;
+        H = W;
+        W = tmp;
+    }
 
-  // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
-  //     W *= 2;
+    // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
+    //     W *= 2;
 
-  double w = (double) fltk_main()->w();
-  double z = w / (double)W;
+    double w = (double) fltk_main()->w();
+    double z = w / (double)W;
 
-  double h = (double) fltk_main()->h();
-  if ( uiMain->uiTopBar->visible() )
-    h -= uiMain->uiTopBar->h();
-  if ( uiMain->uiPixelBar->visible() )
-    h -= uiMain->uiPixelBar->h();
-  if ( uiMain->uiBottomBar->visible() )
-    h -= uiMain->uiBottomBar->h();
+    double h = (double) fltk_main()->h();
+    if ( uiMain->uiTopBar->visible() )
+        h -= uiMain->uiTopBar->h();
+    if ( uiMain->uiPixelBar->visible() )
+        h -= uiMain->uiPixelBar->h();
+    if ( uiMain->uiBottomBar->visible() )
+        h -= uiMain->uiBottomBar->h();
 
-  h /= H;
+    h /= H;
 
-  double pr = 1.0;
-  if ( _showPixelRatio ) pr = pixel_ratio();
-  h *= pr;
+    double pr = 1.0;
+    if ( _showPixelRatio ) pr = pixel_ratio();
+    h *= pr;
 
-  if ( h < z ) { z = h; }
+    if ( h < z ) {
+        z = h;
+    }
 
-  xoffset = -dpw.x() - W / 2.0;
+    xoffset = -dpw.x() - W / 2.0;
 
 
-  if ( (_flip & kFlipVertical) && stereo_out & CMedia::kStereoSideBySide  )
-      xoffset = 0.0;
+    if ( (_flip & kFlipVertical) && stereo_out & CMedia::kStereoSideBySide  )
+        xoffset = 0.0;
 
-  yoffset = ( dpw.y() + H / 2.0) / pr;
-  if ( (_flip & kFlipHorizontal) &&
-       stereo_out & CMedia::kStereoTopBottom  )
-      yoffset = 0.0;
+    yoffset = ( dpw.y() + H / 2.0) / pr;
+    if ( (_flip & kFlipHorizontal) &&
+            stereo_out & CMedia::kStereoTopBottom  )
+        yoffset = 0.0;
 
-  zrotation_to_offsets( xoffset, yoffset, img->rot_z(), _flip, W, H );
+    zrotation_to_offsets( xoffset, yoffset, img->rot_z(), _flip, W, H );
 
-  char buf[128];
-  sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send_network( buf );
-  zoom( float(z) );
+    char buf[128];
+    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+    send_network( buf );
+    zoom( float(z) );
 
-  mouseMove( fltk::event_x(), fltk::event_y() );
+    mouseMove( fltk::event_x(), fltk::event_y() );
 
-  redraw();
+    redraw();
 }
 
 
@@ -2202,55 +2210,55 @@ ImageView::zrotation_to_offsets( double& X, double& Y,
                                  const int W,
                                  const int H )
 {
-  double r = degrees * (M_PI / 180);  // in radians, please
-  double sn = sin(r);
-  double cs = cos(r);
-  if ( is_equal( sn, -1.0, 0.001 ) )
-  {
-      // This cascading if/then is correct
-      if ( flip & kFlipVertical )
-      {
-          X -= W + H;
-      }
-      if ( flip & kFlipHorizontal )
-      {
-          X += W;
-          Y -= H - W;
-      }
-      else {
-          X += W;
-      }
-  }
-  else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
-  {
-      // This cascading if/then is correct
-      if ( flip & kFlipVertical )
-      {
-          X -= W * 2;
-      }
-      if ( flip & kFlipHorizontal )
-      {
-          Y += H;
-          X += W;
-      }
-      else
-      {
-          X += W;
-          Y -= H;
-      }
-  }
-  else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
-  {
-      // This cascading if/then is correct
-      if ( flip & kFlipVertical )
-      {
-          X -= H - W;
-      }
-      if ( flip & kFlipHorizontal )
-          Y += W;
-      else
-          Y -= H;
-  }
+    double r = degrees * (M_PI / 180);  // in radians, please
+    double sn = sin(r);
+    double cs = cos(r);
+    if ( is_equal( sn, -1.0, 0.001 ) )
+    {
+        // This cascading if/then is correct
+        if ( flip & kFlipVertical )
+        {
+            X -= W + H;
+        }
+        if ( flip & kFlipHorizontal )
+        {
+            X += W;
+            Y -= H - W;
+        }
+        else {
+            X += W;
+        }
+    }
+    else if ( (is_equal( sn, 0.0, 0.001 ) && is_equal( cs, -1.0, 0.001 )) )
+    {
+        // This cascading if/then is correct
+        if ( flip & kFlipVertical )
+        {
+            X -= W * 2;
+        }
+        if ( flip & kFlipHorizontal )
+        {
+            Y += H;
+            X += W;
+        }
+        else
+        {
+            X += W;
+            Y -= H;
+        }
+    }
+    else if ( (is_equal( sn, 1.0, 0.001 ) && is_equal( cs, 0.0, 0.001 )) )
+    {
+        // This cascading if/then is correct
+        if ( flip & kFlipVertical )
+        {
+            X -= H - W;
+        }
+        if ( flip & kFlipHorizontal )
+            Y += W;
+        else
+            Y -= H;
+    }
 }
 
 void ImageView::stereo_input( CMedia::StereoInput x )
@@ -2317,143 +2325,143 @@ CMedia::StereoOutput ImageView::stereo_output() const
  */
 bool ImageView::should_update( mrv::media fg )
 {
-  bool update = false;
+    bool update = false;
 
 
-  CMedia* img = NULL;
-  if ( fg )
-  {
-      img = fg->image();
+    CMedia* img = NULL;
+    if ( fg )
+    {
+        img = fg->image();
 
-      if ( img->image_damage() & CMedia::kDamageLayers )
-      {
-          update_layers();
-      }
+        if ( img->image_damage() & CMedia::kDamageLayers )
+        {
+            update_layers();
+        }
 
-      if ( img->image_damage() & CMedia::kDamageContents )
-      {
-          redraw();
-          update = true;
-      }
+        if ( img->image_damage() & CMedia::kDamageContents )
+        {
+            redraw();
+            update = true;
+        }
 
-      if ( img->image_damage() & CMedia::kDamageThumbnail )
-      {
-          // Redraw browser to update thumbnail
-          mrv::ImageBrowser* b = browser();
-          if (b) b->redraw();
-          img->image_damage( img->image_damage() & ~CMedia::kDamageThumbnail );
-      }
+        if ( img->image_damage() & CMedia::kDamageThumbnail )
+        {
+            // Redraw browser to update thumbnail
+            mrv::ImageBrowser* b = browser();
+            if (b) b->redraw();
+            img->image_damage( img->image_damage() & ~CMedia::kDamageThumbnail );
+        }
 
-      if ( img->image_damage() & CMedia::kDamageData )
-      {
-          update_image_info();
-          uiMain->uiICCProfiles->fill();
-      }
+        if ( img->image_damage() & CMedia::kDamageData )
+        {
+            update_image_info();
+            uiMain->uiICCProfiles->fill();
+        }
 
-      if ( img->image_damage() & CMedia::kDamageTimecode )
-      {
-          int64_t start = uiMain->uiStartFrame->frame();  // needed not sure why
-          int64_t end   = uiMain->uiEndFrame->frame();  // needed not sure why
-          int64_t   tc  = img->timecode();
-          uiMain->uiFrame->timecode( tc );
-          uiMain->uiStartFrame->timecode( tc );
-          uiMain->uiStartFrame->frame( start );  // needed not sure why
-          uiMain->uiEndFrame->timecode( tc );
-          uiMain->uiEndFrame->frame( end );  // needed not sure why
-          uiMain->uiTimeline->timecode( tc );
-          img->image_damage( img->image_damage() & ~CMedia::kDamageTimecode );
-      }
+        if ( img->image_damage() & CMedia::kDamageTimecode )
+        {
+            int64_t start = uiMain->uiStartFrame->frame();  // needed not sure why
+            int64_t end   = uiMain->uiEndFrame->frame();  // needed not sure why
+            int64_t   tc  = img->timecode();
+            uiMain->uiFrame->timecode( tc );
+            uiMain->uiStartFrame->timecode( tc );
+            uiMain->uiStartFrame->frame( start );  // needed not sure why
+            uiMain->uiEndFrame->timecode( tc );
+            uiMain->uiEndFrame->frame( end );  // needed not sure why
+            uiMain->uiTimeline->timecode( tc );
+            img->image_damage( img->image_damage() & ~CMedia::kDamageTimecode );
+        }
 
-      if ( img->image_damage() & CMedia::kDamageCache )
-      {
-          uiMain->uiTimeline->redraw();
-          img->image_damage( img->image_damage() & ~CMedia::kDamageCache );
-      }
+        if ( img->image_damage() & CMedia::kDamageCache )
+        {
+            uiMain->uiTimeline->redraw();
+            img->image_damage( img->image_damage() & ~CMedia::kDamageCache );
+        }
 
-      if ( uiMain->uiGL3dView->uiMain->visible() &&
-           uiMain->uiGL3dView->uiMain->shown() &&
-           (img->image_damage() & CMedia::kDamage3DData) )
-      {
-          int zsize = 0;
-          static Imf::Array< float* > zbuff;
-          static Imf::Array< unsigned > sampleCount;
+        if ( uiMain->uiGL3dView->uiMain->visible() &&
+                uiMain->uiGL3dView->uiMain->shown() &&
+                (img->image_damage() & CMedia::kDamage3DData) )
+        {
+            int zsize = 0;
+            static Imf::Array< float* > zbuff;
+            static Imf::Array< unsigned > sampleCount;
 
-          size_t num = zbuff.size();
-          for ( size_t i = 0; i < num; ++i )
-          {
-              delete [] zbuff[i];
-          }
+            size_t num = zbuff.size();
+            for ( size_t i = 0; i < num; ++i )
+            {
+                delete [] zbuff[i];
+            }
 
 
-          zbuff.resizeErase( 0 );
-          sampleCount.resizeErase( 0 );
+            zbuff.resizeErase( 0 );
+            sampleCount.resizeErase( 0 );
 
-          mrv::exrImage* exr = dynamic_cast< mrv::exrImage* >( img );
-          if ( exr )
-          {
-              try
-              {
-                  float zmin, zmax;
-                  float farPlane = 1000000.0f;
-                  const mrv::Recti& daw = exr->data_window();
-                  exr->loadDeepData( zsize, zbuff, sampleCount );
-                  exr->findZBound( zmin, zmax, farPlane, zsize,
-                                   zbuff, sampleCount );
-                  uiMain->uiGL3dView->uiMain->load_data( zsize,
-                                                         zbuff,
-                                                         sampleCount,
-                                                         daw.w(), daw.h(),
-                                                         zmin, zmax,
-                                                         farPlane );
-                  uiMain->uiGL3dView->uiMain->redraw();
-              }
-              catch( const std::exception& e )
-              {
-                  LOG_ERROR( e.what() );
-              }
-          }
-          img->image_damage( img->image_damage() & ~CMedia::kDamage3DData );
-      }
+            mrv::exrImage* exr = dynamic_cast< mrv::exrImage* >( img );
+            if ( exr )
+            {
+                try
+                {
+                    float zmin, zmax;
+                    float farPlane = 1000000.0f;
+                    const mrv::Recti& daw = exr->data_window();
+                    exr->loadDeepData( zsize, zbuff, sampleCount );
+                    exr->findZBound( zmin, zmax, farPlane, zsize,
+                                     zbuff, sampleCount );
+                    uiMain->uiGL3dView->uiMain->load_data( zsize,
+                                                           zbuff,
+                                                           sampleCount,
+                                                           daw.w(), daw.h(),
+                                                           zmin, zmax,
+                                                           farPlane );
+                    uiMain->uiGL3dView->uiMain->redraw();
+                }
+                catch( const std::exception& e )
+                {
+                    LOG_ERROR( e.what() );
+                }
+            }
+            img->image_damage( img->image_damage() & ~CMedia::kDamage3DData );
+        }
     }
 
-  mrv::media bg = background();
-  if ( bg )
-  {
-      CMedia* bimg = bg->image();
+    mrv::media bg = background();
+    if ( bg )
+    {
+        CMedia* bimg = bg->image();
 
-      if ( bimg->image_damage() & CMedia::kDamageContents )
-      {
-          // resize_background();
-          redraw();
-          update = true;
-      }
+        if ( bimg->image_damage() & CMedia::kDamageContents )
+        {
+            // resize_background();
+            redraw();
+            update = true;
+        }
 
-      if ( bimg->image_damage() & CMedia::kDamageThumbnail )
-      {
-          // Redraw browser to update thumbnail
-          mrv::ImageBrowser* b = browser();
-          if (b) b->redraw();
-          bimg->image_damage( bimg->image_damage() & ~CMedia::kDamageThumbnail );
-      }
-  }
+        if ( bimg->image_damage() & CMedia::kDamageThumbnail )
+        {
+            // Redraw browser to update thumbnail
+            mrv::ImageBrowser* b = browser();
+            if (b) b->redraw();
+            bimg->image_damage( bimg->image_damage() & ~CMedia::kDamageThumbnail );
+        }
+    }
 
-  if ( update && _playback != CMedia::kStopped ) {
+    if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
-    int y = fltk::event_y();
+        int y = fltk::event_y();
 #ifdef LINUX
-    if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
+        if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
 #else
-    if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
-                                            (!uiMain->uiMain->border());
+        if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
+                                                    (!uiMain->uiMain->border());
 #endif
-    mouseMove( fltk::event_x(), y );
+        mouseMove( fltk::event_x(), y );
 #else
-    mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( fltk::event_x(), fltk::event_y() );
 #endif
-  }
+    }
 
 
-  return update;
+    return update;
 }
 
 void static_preload( mrv::ImageView* v )
@@ -2497,15 +2505,15 @@ void ImageView::log() const
 int timeval_substract(struct timeval *result, struct timeval *x,
                       struct timeval *y)
 {
-  result->tv_sec = x->tv_sec - y->tv_sec;
+    result->tv_sec = x->tv_sec - y->tv_sec;
 
-  if ((result->tv_usec = x->tv_usec - y->tv_usec) < 0)
-  {
-    result->tv_usec += 1000000;
-    result->tv_sec--; // borrow
-  }
+    if ((result->tv_usec = x->tv_usec - y->tv_usec) < 0)
+    {
+        result->tv_usec += 1000000;
+        result->tv_sec--; // borrow
+    }
 
-  return result->tv_sec < 0;
+    return result->tv_sec < 0;
 }
 
 Timer t;
@@ -2523,7 +2531,7 @@ bool ImageView::preload()
     if ( r->edl )
     {
         fg = r->media_at( _preframe );
-     }
+    }
     else
     {
         fg = foreground();
@@ -2581,7 +2589,7 @@ bool ImageView::preload()
         // int64_t tlast  = timeline()->display_maximum();
         // if ( tfirst > first && tfirst < last ) first = tfirst;
         // if ( tlast < last   && tlast > first )  last = tlast;
-        
+
         if ( f < first ) f = first;
         else if ( f > last ) f = last;
     }
@@ -2625,8 +2633,8 @@ bool ImageView::preload()
             int64_t last_diff = last - pic->frame();
             int64_t first_diff = f - first;
             if ( CMedia::preload_cache() &&
-                 ( pos_diff >= 0 && pos_diff < max_images  ||
-                   pos_diff < 0 && first_diff + last_diff < max_images ) )
+                    ( pos_diff >= 0 && pos_diff < max_images  ||
+                      pos_diff < 0 && first_diff + last_diff < max_images ) )
             {
                 _preframe += 1;
                 if ( _preframe > last )
@@ -2639,8 +2647,8 @@ bool ImageView::preload()
             }
             img->hires( pic );
         }
-	if ( playback() == CMedia::kStopped )
-	    img->hires( pic );
+        if ( playback() == CMedia::kStopped )
+            img->hires( pic );
     }
     else
     {
@@ -2679,190 +2687,200 @@ bool ImageView::preload()
 
 }
 
-void ImageView::rot_x( double x ) { _engine->rot_x(x); valid(0); }
-void ImageView::rot_y( double x ) { _engine->rot_y(x); valid(0); }
+void ImageView::rot_x( double x ) {
+    _engine->rot_x(x);
+    valid(0);
+}
+void ImageView::rot_y( double x ) {
+    _engine->rot_y(x);
+    valid(0);
+}
 
-double ImageView::rot_x() const { return _engine->rot_x(); }
-double ImageView::rot_y() const { return _engine->rot_y(); }
+double ImageView::rot_x() const {
+    return _engine->rot_x();
+}
+double ImageView::rot_y() const {
+    return _engine->rot_y();
+}
 
 void ImageView::handle_commands()
 {
     mrv::ImageBrowser* b = browser();
     if (!b) return;
-    
+
     _network_send = false;
     Command c = commands.front();
     switch( c.type )
     {
-	case kCreateReel:
-	    {
-		std::string s = *(std::string*)c.data;
-		mrv::Reel r = b->reel( s.c_str() );
-		if ( !r )
-		{
-		    b->new_reel( s.c_str() );
-		}
-		break;
-	    }
-	case kLoadImage:
-	    {
-		LoadInfo file = * (LoadInfo*) c.data;
-		LoadList files;
-		files.push_back( file );
-		b->load( files, false, "", false );
-		break;
-	    }
-	case kChangeImage:
-	    {
-		int* idx = (int*) c.data;
-		b->change_image(*idx);
-		break;
-	    }
-	case kStopVideo:
-	    {
-		stop();
-		break;
-	    }
-	case kSeek:
-	    {
-		int64_t f = * ((int64_t*) c.data);
-		seek( f );
-		break;
-	    }
-	case kPlayForwards:
-	    {
-		play_forwards();
-		break;
-	    }
-	case kPlayBackwards:
-	    {
-		play_backwards();
-		break;
-	    }
-	case kRemoveImage:
-	    {
-		int* idx = (int*) c.data;
-		std::cerr << "CALL REMOVE IMAGE " << *idx << std::endl;
-		b->remove(*idx);
-		break;
-	    }
-	case kExchangeImage:
-	    {
-		std::vector<int>* list = (std::vector<int>*) c.data;
-		int oldsel = (*list)[0];
-		int sel = (*list)[1];
-		b->exchange(oldsel, sel);
-		break;
-	    }
-	case kICS:
-	    {
-		std::string* s = (std::string*) c.data;
-		mrv::media fg = foreground();
-		if (fg)
-		{
-		    CMedia* img = fg->image();
-		    img->ocio_input_color_space( *s );
-		    update_ICS();
-		}
-		break;
-	    }
-	case kRT:
-	    {
-		std::string* s = (std::string*) c.data;
-		mrv::media fg = foreground();
-		if (fg)
-		{
-		    CMedia* img = fg->image();
-		    img->rendering_transform( s->c_str() );
-		    img->image_damage( img->image_damage() |
-				       CMedia::kDamageLut );
-		}
-		break;
-	    }
-	case kChangeChannel:
-	    {
-		unsigned idx = * (unsigned*) c.data;
-		if ( foreground() )
-		{
-		    channel( idx );
-		}
-		else
-		    LOG_ERROR( "No image for channel selection" );
-		break;
-	    }
-	case kFULLSCREEN:
-	    toggle_fullscreen();
-	    break;
-	case kPRESENTATION:
-	    toggle_presentation();
-	    break;
-	case kMEDIA_INFO_WINDOW_SHOW:
-	    toggle_media_info(true);
-	    break;
-	case kMEDIA_INFO_WINDOW_HIDE:
-	    toggle_media_info(false);
-	    break;
-	case kCOLOR_AREA_WINDOW_SHOW:
-	    toggle_color_area(true);
-	    break;
-	case kCOLOR_AREA_WINDOW_HIDE:
-	    toggle_color_area(false);
-	    break;
-	case k3D_VIEW_WINDOW_SHOW:
-	    toggle_3d_view(true);
-	    break;
-	case k3D_VIEW_WINDOW_HIDE:
-	    toggle_3d_view(false);
-	    break;
-	case kHISTOGRAM_WINDOW_SHOW:
-	    toggle_histogram(true);
-	    break;
-	case kHISTOGRAM_WINDOW_HIDE:
-	    toggle_histogram(false);
-	    break;
-	case kVECTORSCOPE_WINDOW_SHOW:
-	    toggle_vectorscope(true);
-	    break;
-	case kVECTORSCOPE_WINDOW_HIDE:
-	    toggle_vectorscope(false);
-	    break;
-	case kWAVEFORM_WINDOW_SHOW:
-	    toggle_waveform(true);
-	    break;
-	case kWAVEFORM_WINDOW_HIDE:
-	    toggle_waveform(false);
-	    break;
-	case kSTEREO_OPTIONS_WINDOW_SHOW:
-	    toggle_stereo_options(true);
-	    break;
-	case kSTEREO_OPTIONS_WINDOW_HIDE:
-	    toggle_stereo_options(false);
-	    break;
-	case kPAINT_TOOLS_WINDOW_SHOW:
-	    toggle_paint_tools(true);
-	    break;
-	case kPAINT_TOOLS_WINDOW_HIDE:
-	    toggle_paint_tools(false);
-	    break;
-	case kLUT_CHANGE:
-	    {
-		mrv::media fg = foreground();
-		if ( fg )
-		{
-		    CMedia* img = fg->image();
-		    img->image_damage( img->image_damage() |
-				       CMedia::kDamageLut );
-		}
-		use_lut( true );
-		// mrv::Preferences::run( main() );
-		break;
-	    }
-	default:
-	    {
-		LOG_ERROR( "Unknown mrv event " << commands.size() << " "
-			   << c.type << " data " << c.data );
-		break;
-	    }
+    case kCreateReel:
+    {
+        std::string s = *(std::string*)c.data;
+        mrv::Reel r = b->reel( s.c_str() );
+        if ( !r )
+        {
+            b->new_reel( s.c_str() );
+        }
+        break;
+    }
+    case kLoadImage:
+    {
+        LoadInfo file = * (LoadInfo*) c.data;
+        LoadList files;
+        files.push_back( file );
+        b->load( files, false, "", false );
+        break;
+    }
+    case kChangeImage:
+    {
+        int* idx = (int*) c.data;
+        b->change_image(*idx);
+        break;
+    }
+    case kStopVideo:
+    {
+        stop();
+        break;
+    }
+    case kSeek:
+    {
+        int64_t f = * ((int64_t*) c.data);
+        seek( f );
+        break;
+    }
+    case kPlayForwards:
+    {
+        play_forwards();
+        break;
+    }
+    case kPlayBackwards:
+    {
+        play_backwards();
+        break;
+    }
+    case kRemoveImage:
+    {
+        int* idx = (int*) c.data;
+        std::cerr << "CALL REMOVE IMAGE " << *idx << std::endl;
+        b->remove(*idx);
+        break;
+    }
+    case kExchangeImage:
+    {
+        std::vector<int>* list = (std::vector<int>*) c.data;
+        int oldsel = (*list)[0];
+        int sel = (*list)[1];
+        b->exchange(oldsel, sel);
+        break;
+    }
+    case kICS:
+    {
+        std::string* s = (std::string*) c.data;
+        mrv::media fg = foreground();
+        if (fg)
+        {
+            CMedia* img = fg->image();
+            img->ocio_input_color_space( *s );
+            update_ICS();
+        }
+        break;
+    }
+    case kRT:
+    {
+        std::string* s = (std::string*) c.data;
+        mrv::media fg = foreground();
+        if (fg)
+        {
+            CMedia* img = fg->image();
+            img->rendering_transform( s->c_str() );
+            img->image_damage( img->image_damage() |
+                               CMedia::kDamageLut );
+        }
+        break;
+    }
+    case kChangeChannel:
+    {
+        unsigned idx = * (unsigned*) c.data;
+        if ( foreground() )
+        {
+            channel( idx );
+        }
+        else
+            LOG_ERROR( "No image for channel selection" );
+        break;
+    }
+    case kFULLSCREEN:
+        toggle_fullscreen();
+        break;
+    case kPRESENTATION:
+        toggle_presentation();
+        break;
+    case kMEDIA_INFO_WINDOW_SHOW:
+        toggle_media_info(true);
+        break;
+    case kMEDIA_INFO_WINDOW_HIDE:
+        toggle_media_info(false);
+        break;
+    case kCOLOR_AREA_WINDOW_SHOW:
+        toggle_color_area(true);
+        break;
+    case kCOLOR_AREA_WINDOW_HIDE:
+        toggle_color_area(false);
+        break;
+    case k3D_VIEW_WINDOW_SHOW:
+        toggle_3d_view(true);
+        break;
+    case k3D_VIEW_WINDOW_HIDE:
+        toggle_3d_view(false);
+        break;
+    case kHISTOGRAM_WINDOW_SHOW:
+        toggle_histogram(true);
+        break;
+    case kHISTOGRAM_WINDOW_HIDE:
+        toggle_histogram(false);
+        break;
+    case kVECTORSCOPE_WINDOW_SHOW:
+        toggle_vectorscope(true);
+        break;
+    case kVECTORSCOPE_WINDOW_HIDE:
+        toggle_vectorscope(false);
+        break;
+    case kWAVEFORM_WINDOW_SHOW:
+        toggle_waveform(true);
+        break;
+    case kWAVEFORM_WINDOW_HIDE:
+        toggle_waveform(false);
+        break;
+    case kSTEREO_OPTIONS_WINDOW_SHOW:
+        toggle_stereo_options(true);
+        break;
+    case kSTEREO_OPTIONS_WINDOW_HIDE:
+        toggle_stereo_options(false);
+        break;
+    case kPAINT_TOOLS_WINDOW_SHOW:
+        toggle_paint_tools(true);
+        break;
+    case kPAINT_TOOLS_WINDOW_HIDE:
+        toggle_paint_tools(false);
+        break;
+    case kLUT_CHANGE:
+    {
+        mrv::media fg = foreground();
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            img->image_damage( img->image_damage() |
+                               CMedia::kDamageLut );
+        }
+        use_lut( true );
+        // mrv::Preferences::run( main() );
+        break;
+    }
+    default:
+    {
+        LOG_ERROR( "Unknown mrv event " << commands.size() << " "
+                   << c.type << " data " << c.data );
+        break;
+    }
     }  // switch
 
     _network_send = true;
@@ -2879,139 +2897,151 @@ void ImageView::timeout()
     // Redraw browser to update thumbnail
     mrv::ImageBrowser* b = browser();
     if (!b) return;
-   
+
     while ( ! commands.empty()  )
     {
-	handle_commands();
+        handle_commands();
     }
-  
+
     TRACE( "" );
-  //
-  // If in EDL mode, we check timeline to see if frame points to
-  // new image.
-  //
+    //
+    // If in EDL mode, we check timeline to see if frame points to
+    // new image.
+    //
     log();
 
 
-   mrv::Reel reel = b->reel_at( _fg_reel );
-   mrv::Reel bgreel = b->reel_at( _bg_reel );
+    mrv::Reel reel = b->reel_at( _fg_reel );
+    mrv::Reel bgreel = b->reel_at( _bg_reel );
 
-   mrv::media fg = foreground();
+    mrv::media fg = foreground();
 
-   int64_t tframe = int64_t( timeline->value() );
+    int64_t tframe = int64_t( timeline->value() );
 
-   if ( reel && reel->edl )
-   {
-       TRACE("");
-      fg = reel->media_at( tframe );
+    if ( reel && reel->edl )
+    {
+        TRACE("");
+        fg = reel->media_at( tframe );
 
-      if ( fg && fg != foreground() )
-      {
-       TRACE("");
-       DBG( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
-              << tframe );
-         foreground( fg );
+        if ( fg && fg != foreground() )
+        {
+            TRACE("");
+            DBG( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
+                 << tframe );
+            foreground( fg );
 
-         fit_image();
-      }
+            fit_image();
+        }
 
-   }
+    }
 
-   mrv::media bg = background();
+    mrv::media bg = background();
 
-   if ( bgreel && bgreel->edl )
-   {
-      bg = bgreel->media_at( tframe );
+    if ( bgreel && bgreel->edl )
+    {
+        bg = bgreel->media_at( tframe );
 
-      if ( bg && bg != background() )
-      {
-          // CMedia* img = bg->image();
-          // if ( img->playback() == playback() )
-              background( bg );
-      }
-   }
+        if ( bg && bg != background() )
+        {
+            // CMedia* img = bg->image();
+            // if ( img->playback() == playback() )
+            background( bg );
+        }
+    }
 
-   bg = background();
+    bg = background();
 
-   if ( bg && bg != fg )
-   {
-       TRACE("");
-       CMedia* img = bg->image();
-      // If not a video image check if image has changed on disk
-      if ( ! img->has_video() &&
-           uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
-      {
-          img->has_changed();
-      }
+    if ( bg && bg != fg )
+    {
+        TRACE("");
+        CMedia* img = bg->image();
+        // If not a video image check if image has changed on disk
+        if ( ! img->has_video() &&
+                uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
+        {
+            img->has_changed();
+        }
 
-   }
+    }
 
 
-   double delay = 0.005;
-   if ( fg )
-   {
-       TRACE("");
-      CMedia* img = fg->image();
-      delay = 0.25 / img->play_fps();
+    double delay = 0.005;
+    if ( fg )
+    {
+        TRACE("");
+        CMedia* img = fg->image();
+        delay = 0.25 / img->play_fps();
 
-      // If not a video image check if image has changed on disk
+        // If not a video image check if image has changed on disk
 
-      if ( ! img->has_video() &&
-           uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
-      {
-       TRACE("");
-       img->has_changed();
-      }
+        if ( ! img->has_video() &&
+                uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
+        {
+            TRACE("");
+            img->has_changed();
+        }
 
-   }
+    }
 
-  if ( timeline && timeline->visible() )
-  {
+    if ( timeline && timeline->visible() )
+    {
 
-       TRACE("");
-      if ( reel && !reel->edl && fg )
-      {
-       TRACE("");
-          CMedia* img = fg->image();
-          int64_t frame = img->frame();
+        TRACE("");
+        if ( reel && !reel->edl && fg )
+        {
+            TRACE("");
+            CMedia* img = fg->image();
+            int64_t frame = img->frame();
 
-          if ( this->frame() != frame )
-          {
-       TRACE("");
-              this->frame( frame );
-          }
-      }
-  }
+            if ( this->frame() != frame )
+            {
+                TRACE("");
+                this->frame( frame );
+            }
+        }
+    }
 
-  if ( fg && should_update( fg ) )
-  {
-       TRACE("");
-      update_color_info( fg );
-       TRACE("");
-      uiMain->uiEDLWindow->uiEDLGroup->redraw();
-  }
+    if ( fg && should_update( fg ) )
+    {
+        TRACE("");
+        update_color_info( fg );
+        TRACE("");
+        uiMain->uiEDLWindow->uiEDLGroup->redraw();
+    }
 
-  if ( vr() )
-  {
+    if ( vr() )
+    {
 #define sumX 0.005
 #define sumY 0.005
-      bool changed = false;
-      if (spinx >= sumX ) { spinx -= sumX; changed = true; }
-      else if ( spinx <= -sumX ) { spinx += sumX; changed = true; }
-      else spinx = 0.0;
+        bool changed = false;
+        if (spinx >= sumX ) {
+            spinx -= sumX;
+            changed = true;
+        }
+        else if ( spinx <= -sumX ) {
+            spinx += sumX;
+            changed = true;
+        }
+        else spinx = 0.0;
 
-      if (spiny >= sumY ) { spiny -= sumY; changed = true; }
-      else if ( spiny <= -sumY ) { spiny += sumY; changed = true; }
-      else spiny = 0.0;
+        if (spiny >= sumY ) {
+            spiny -= sumY;
+            changed = true;
+        }
+        else if ( spiny <= -sumY ) {
+            spiny += sumY;
+            changed = true;
+        }
+        else spiny = 0.0;
 
-      if ( changed ) {
-          if ( delay > 0.03 ) delay = 0.03;
-          redraw();
-      }
-  }
+        if ( changed ) {
+            if ( delay > 0.03 ) delay = 0.03;
+            redraw();
+        }
+    }
 
 
-  repeat_timeout( delay );
+    repeat_timeout( delay );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -3065,10 +3095,10 @@ void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
 {
     char text[256];
     utf8toa( t, (unsigned) strlen(t), text, 255 );
-   _engine->color( (uchar)0, (uchar)0, (uchar)0 );
-   _engine->draw_text( int(x+1), int(y-1), text ); // draw shadow
-   _engine->color( r, g, b );
-   _engine->draw_text( int(x), int(y), text );  // draw text
+    _engine->color( (uchar)0, (uchar)0, (uchar)0 );
+    _engine->draw_text( int(x+1), int(y-1), text ); // draw shadow
+    _engine->color( r, g, b );
+    _engine->draw_text( int(x), int(y), text );  // draw text
 }
 
 
@@ -3167,15 +3197,15 @@ void ImageView::draw()
         DBG( __FUNCTION__ << " " << __LINE__ );
         switch( uiPrefs->uiPrefsBlendMode->value() )
         {
-            case kBlendTraditional:
-            case kBlendTraditionalNonGamma:
-                _engine->set_blend_function( GL_SRC_ALPHA,
-                                             GL_ONE_MINUS_SRC_ALPHA );
-                break;
-            case kBlendPremultNonGamma:
-            case kBlendPremult:
-                _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-                break;
+        case kBlendTraditional:
+        case kBlendTraditionalNonGamma:
+            _engine->set_blend_function( GL_SRC_ALPHA,
+                                         GL_ONE_MINUS_SRC_ALPHA );
+            break;
+        case kBlendPremultNonGamma:
+        case kBlendPremult:
+            _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+            break;
         }
     }
 
@@ -3205,12 +3235,12 @@ void ImageView::draw()
     if ( fg )
     {
         TRACE("");
-       CMedia* img = fg->image();
-       if ( img->has_picture() )
-       {
-          images.push_back( img );
-       }
-       TRACE("");
+        CMedia* img = fg->image();
+        if ( img->has_picture() )
+        {
+            images.push_back( img );
+        }
+        TRACE("");
     }
 
 
@@ -3218,7 +3248,7 @@ void ImageView::draw()
     if ( images.empty() ) return;
     TRACE("");
 
-    
+
     DBG( __FUNCTION__ << " " << __LINE__ );
     _engine->draw_images( images );
     TRACE("");
@@ -3226,29 +3256,29 @@ void ImageView::draw()
 
     if ( _masking != 0.0f )
     {
-      _engine->draw_mask( _masking );
+        _engine->draw_mask( _masking );
     }
 
-  CMedia* img = NULL;
-  if ( fg )
-  {
-      img = fg->image();
-      const char* label = img->label();
-      if ( label )
-      {
-          uchar r, g, b;
-          fltk::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
+    CMedia* img = NULL;
+    if ( fg )
+    {
+        img = fg->image();
+        const char* label = img->label();
+        if ( label )
+        {
+            uchar r, g, b;
+            fltk::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
 
 
-          int dx, dy;
-          dx = int( (double) w() / (double)2 - (unsigned)strlen(label)*3 );
-          dy = 24;
+            int dx, dy;
+            dx = int( (double) w() / (double)2 - (unsigned)strlen(label)*3 );
+            dy = 24;
 
-          draw_text( r, g, b, dx, dy, label );
-      }
-  }
+            draw_text( r, g, b, dx, dy, label );
+        }
+    }
 
-  if ( _selection.w() > 0 || _selection.h() > 0 )
+    if ( _selection.w() > 0 || _selection.h() > 0 )
     {
         uchar r, g, b;
         fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
@@ -3258,298 +3288,300 @@ void ImageView::draw()
 
 
 
-  if ( fg && _safeAreas )
+    if ( fg && _safeAreas )
     {
-      const CMedia* img = fg->image();
-      const mrv::Recti& dpw = img->display_window();
-      unsigned W = dpw.w();
-      unsigned H = dpw.h();
-      if ( W == 0 )
-      {
-          mrv::image_type_ptr pic = img->left();
-          if (!pic)
-          {
-              W = img->width();
-              H = img->height();
-          }
-          else
-          {
-              W = pic->width();
-              H = pic->height();
-          }
-      }
-
-      double aspect = (double) W / (double) H;
-
-      // Safe areas may change when pixel ratio is active
-      double pr = 1.0;
-      if ( uiMain->uiPixelRatio->value() )
+        const CMedia* img = fg->image();
+        const mrv::Recti& dpw = img->display_window();
+        unsigned W = dpw.w();
+        unsigned H = dpw.h();
+        if ( W == 0 )
         {
-           pr = img->pixel_ratio();
-           aspect *= pr;
+            mrv::image_type_ptr pic = img->left();
+            if (!pic)
+            {
+                W = img->width();
+                H = img->height();
+            }
+            else
+            {
+                W = pic->width();
+                H = pic->height();
+            }
         }
 
-      if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
+        double aspect = (double) W / (double) H;
+
+        // Safe areas may change when pixel ratio is active
+        double pr = 1.0;
+        if ( uiMain->uiPixelRatio->value() )
         {
-          // Assume NTSC/PAL
+            pr = img->pixel_ratio();
+            aspect *= pr;
+        }
+
+        if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
+        {
+            // Assume NTSC/PAL
             float f = float(H) * 1.33f;
             f = f / float(W);
             _engine->color( 1.0f, 0.0f, 0.0f );
             _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
             _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
 
-          if ( aspect >= 1.77 )
+            if ( aspect >= 1.77 )
             {
-              // Draw hdtv too
-              _engine->color( 1.0f, 0.0f, 1.0f );
-              _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
+                // Draw hdtv too
+                _engine->color( 1.0f, 0.0f, 1.0f );
+                _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
             }
         }
-      else
+        else
         {
-          if ( pr == 1.0f )
+            if ( pr == 1.0f )
             {
-              // Assume film, draw 2.35, 1.85 and 1.66 areas
-              _engine->color( 0.0f, 1.0f, 0.0f );
-              _engine->draw_safe_area( 1.0f, aspect/2.35f, "2.35" );
-              _engine->draw_safe_area( 1.0f, aspect/1.85f, "1.85" );
-              _engine->draw_safe_area( 1.0f, aspect/1.66f, "1.66" );
+                // Assume film, draw 2.35, 1.85 and 1.66 areas
+                _engine->color( 0.0f, 1.0f, 0.0f );
+                _engine->draw_safe_area( 1.0f, aspect/2.35f, "2.35" );
+                _engine->draw_safe_area( 1.0f, aspect/1.85f, "1.85" );
+                _engine->draw_safe_area( 1.0f, aspect/1.66f, "1.66" );
 
-              // Draw hdtv too
-              _engine->color( 1.0f, 0.0f, 1.0f );
-              _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
+                // Draw hdtv too
+                _engine->color( 1.0f, 0.0f, 1.0f );
+                _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
             }
-          else
+            else
             {
-              // Film fit for TV, Draw 4-3 safe areas
+                // Film fit for TV, Draw 4-3 safe areas
                 float f = float(H) * 1.33f;
                 f = f / float(W);
-              _engine->color( 1.0f, 0.0f, 0.0f );
-              _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
-              _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
+                _engine->color( 1.0f, 0.0f, 0.0f );
+                _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
+                _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
             }
         }
 
     }
 
-  if ( !fg ) return;
+    if ( !fg ) return;
 
-  _engine->draw_annotation( img->shapes() );
-
-
-  if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
-  {
+    _engine->draw_annotation( img->shapes() );
 
 
-     double xf = X;
-     double yf = Y;
-
-     data_window_coordinates( img, xf, yf );
-
-     const mrv::Recti& dpw = img->display_window();
-
-     unsigned int H = dpw.h();
-     if ( H == 0 ) H = img->height();
-
-     yf = -yf;
-
-     const mrv::Recti& daw = img->data_window();
-     xf += daw.x();
-     yf -= daw.y();
-
-     _engine->draw_cursor( xf, yf );
-  }
-
-  TRACE("");
-
-  if ( _hud == kHudNone )
-    return;
-
-
-  std::ostringstream hud;
-  hud.str().reserve( 512 );
-
-  uchar r, g, b;
-  fltk::split_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
-  _engine->color( r, g, b );
-
-
-  //
-  // Draw HUD
-  //
-
-  if ( vr() )
-  {
-      glMatrixMode(GL_PROJECTION);
-      glPushMatrix();
-      glLoadIdentity();
-      ortho();
-
-      glMatrixMode(GL_MODELVIEW);
-      glPushMatrix();
-      glLoadIdentity();
-  }
-
-  int y = h()-25;
-  int yi = 25;
-  static char buf[1024];
-
-  if ( _hud & kHudDirectory )
+    if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
     {
-       hud << img->directory();
-       draw_text( r, g, b, 5, y, hud.str().c_str() );
-       y -= yi; hud.str("");
+
+
+        double xf = X;
+        double yf = Y;
+
+        data_window_coordinates( img, xf, yf );
+
+        const mrv::Recti& dpw = img->display_window();
+
+        unsigned int H = dpw.h();
+        if ( H == 0 ) H = img->height();
+
+        yf = -yf;
+
+        const mrv::Recti& daw = img->data_window();
+        xf += daw.x();
+        yf -= daw.y();
+
+        _engine->draw_cursor( xf, yf );
     }
 
-  if ( _hud & kHudFilename )
+    TRACE("");
+
+    if ( _hud == kHudNone )
+        return;
+
+
+    std::ostringstream hud;
+    hud.str().reserve( 512 );
+
+    uchar r, g, b;
+    fltk::split_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
+    _engine->color( r, g, b );
+
+
+    //
+    // Draw HUD
+    //
+
+    if ( vr() )
     {
-       sprintf( buf, img->name().c_str(), img->frame() );
-       hud << buf;
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        ortho();
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
     }
 
-  if ( img->first_frame() != img->last_frame() && _hud & kHudFrameRange )
+    int y = h()-25;
+    int yi = 25;
+    static char buf[1024];
+
+    if ( _hud & kHudDirectory )
     {
-      if ( !hud.str().empty() ) hud << " ";
-      hud << img->first_frame() << " - " << img->last_frame();
+        hud << img->directory();
+        draw_text( r, g, b, 5, y, hud.str().c_str() );
+        y -= yi;
+        hud.str("");
     }
 
-  if ( !hud.str().empty() )
+    if ( _hud & kHudFilename )
     {
-       draw_text( r, g, b, 5, y, hud.str().c_str() );
-       y -= yi; hud.str("");
+        sprintf( buf, img->name().c_str(), img->frame() );
+        hud << buf;
     }
 
-
-  if ( _hud & kHudResolution )
-  {
-      mrv::Recti d = img->data_window();
-      if ( d.w() == 0 )
-      {
-          // Work around for data window not set yet (use previous frame)
-          d = img->data_window( img->frame()-1 );
-      }
-      sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
-      draw_text( r, g, b, 5, y, buf );
-      y -= yi;
-      {
-          const mrv::Recti& d = img->display_window();
-          sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
-          draw_text( r, g, b, 5, y, buf );
-          y -= yi;
-      }
+    if ( img->first_frame() != img->last_frame() && _hud & kHudFrameRange )
+    {
+        if ( !hud.str().empty() ) hud << " ";
+        hud << img->first_frame() << " - " << img->last_frame();
     }
 
-  if ( _hud & kHudFrame )
+    if ( !hud.str().empty() )
     {
-      sprintf( buf, "% 4" PRId64, img->frame() );
-      hud << _("F: ") << buf;
-    }
-
-  if ( _hud & kHudTimecode )
-  {
-      mrv::Timecode::Display d = uiMain->uiFrame->display();
-      if ( d != mrv::Timecode::kTimecodeDropFrame )
-          d = mrv::Timecode::kTimecodeNonDrop;
-
-      mrv::Timecode::format( buf, d, img->frame(), img->timecode(),
-                             img->play_fps(), true );
-      if ( !hud.str().empty() ) hud << " ";
-      hud << _("T: ") << buf;
-  }
-
-  if ( (_hud & kHudAVDifference) && img->has_audio() )
-    {
-       double avdiff = img->avdiff();
-       if ( !hud.str().empty() ) hud << " ";
-       sprintf( buf, "% 4f", avdiff );
-       hud << _("V-A: ") << buf;
+        draw_text( r, g, b, 5, y, hud.str().c_str() );
+        y -= yi;
+        hud.str("");
     }
 
 
-  //
-  // Calculate and draw fps
-  //
-  if ( _hud & kHudFPS )
+    if ( _hud & kHudResolution )
     {
-       static int64_t unshown_frames = 0;
-       int64_t frame = img->frame();
-
-       CMedia::Playback p = playback();
-
-       if ((p == CMedia::kForwards && _lastFrame < frame) ||
-           (p == CMedia::kBackwards && _lastFrame > frame ) )
+        mrv::Recti d = img->data_window();
+        if ( d.w() == 0 )
         {
-          int64_t frame_diff = frame - _lastFrame;
+            // Work around for data window not set yet (use previous frame)
+            d = img->data_window( img->frame()-1 );
+        }
+        sprintf( buf, _("DAW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+        draw_text( r, g, b, 5, y, buf );
+        y -= yi;
+        {
+            const mrv::Recti& d = img->display_window();
+            sprintf( buf, _("DYW: %d,%d %dx%d"), d.x(), d.y(), d.w(), d.h() );
+            draw_text( r, g, b, 5, y, buf );
+            y -= yi;
+        }
+    }
 
-          if ( p == CMedia::kForwards ) --frame_diff;
-          else ++frame_diff;
+    if ( _hud & kHudFrame )
+    {
+        sprintf( buf, "% 4" PRId64, img->frame() );
+        hud << _("F: ") << buf;
+    }
 
-          int64_t absdiff = std::abs(frame_diff);
-          if ( absdiff > 0 && absdiff < 10 )
-          {
-             unshown_frames += absdiff;
-          }
+    if ( _hud & kHudTimecode )
+    {
+        mrv::Timecode::Display d = uiMain->uiFrame->display();
+        if ( d != mrv::Timecode::kTimecodeDropFrame )
+            d = mrv::Timecode::kTimecodeNonDrop;
 
-          _lastFrame = frame;
+        mrv::Timecode::format( buf, d, img->frame(), img->timecode(),
+                               img->play_fps(), true );
+        if ( !hud.str().empty() ) hud << " ";
+        hud << _("T: ") << buf;
+    }
+
+    if ( (_hud & kHudAVDifference) && img->has_audio() )
+    {
+        double avdiff = img->avdiff();
+        if ( !hud.str().empty() ) hud << " ";
+        sprintf( buf, "% 4f", avdiff );
+        hud << _("V-A: ") << buf;
+    }
+
+
+    //
+    // Calculate and draw fps
+    //
+    if ( _hud & kHudFPS )
+    {
+        static int64_t unshown_frames = 0;
+        int64_t frame = img->frame();
+
+        CMedia::Playback p = playback();
+
+        if ((p == CMedia::kForwards && _lastFrame < frame) ||
+                (p == CMedia::kBackwards && _lastFrame > frame ) )
+        {
+            int64_t frame_diff = frame - _lastFrame;
+
+            if ( p == CMedia::kForwards ) --frame_diff;
+            else ++frame_diff;
+
+            int64_t absdiff = std::abs(frame_diff);
+            if ( absdiff > 0 && absdiff < 10 )
+            {
+                unshown_frames += absdiff;
+            }
+
+            _lastFrame = frame;
         }
 
 
-       {
-           sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
-           hud << buf;
-           _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() );
-           _timer.waitUntilNextFrameIsDue();
-           sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
-           hud << buf;
-       }
+        {
+            sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+            hud << buf;
+            _timer.setDesiredSecondsPerFrame( 1.0 / img->play_fps() );
+            _timer.waitUntilNextFrameIsDue();
+            sprintf( buf, _("FPS: %.3f" ), _timer.actualFrameRate() );
+            hud << buf;
+        }
 
 
-      if ( !hud.str().empty() )
-      {
-          draw_text( r, g, b, 5, y, hud.str().c_str() );
-          hud.str("");
-          y -= yi;
-      }
+        if ( !hud.str().empty() )
+        {
+            draw_text( r, g, b, 5, y, hud.str().c_str() );
+            hud.str("");
+            y -= yi;
+        }
 
     }
 
-  if ( _hud & kHudWipe )
+    if ( _hud & kHudWipe )
     {
-       if ( _wipe_dir == kWipeVertical )
-          hud << "Wipe V";
-       if ( _wipe_dir == kWipeHorizontal )
-          hud << "Wipe H";
+        if ( _wipe_dir == kWipeVertical )
+            hud << "Wipe V";
+        if ( _wipe_dir == kWipeHorizontal )
+            hud << "Wipe H";
     }
 
-  if ( !hud.str().empty() )
+    if ( !hud.str().empty() )
     {
-       draw_text( r, g, b, 5, y, hud.str().c_str() );
-       hud.str("");
-       y -= yi;
+        draw_text( r, g, b, 5, y, hud.str().c_str() );
+        hud.str("");
+        y -= yi;
     }
 
-  if ( _hud & kHudMemoryUse )
-  {
-      char buf[128];
-      uint64_t totalVirtualMem = 0;
-      uint64_t virtualMemUsed = 0;
-      uint64_t virtualMemUsedByMe = 0;
-      uint64_t totalPhysMem = 0;
-      uint64_t physMemUsed = 0;
-      uint64_t physMemUsedByMe = 0;
-      memory_information( totalVirtualMem, virtualMemUsed, virtualMemUsedByMe,
-                          totalPhysMem, physMemUsed, physMemUsedByMe );
+    if ( _hud & kHudMemoryUse )
+    {
+        char buf[128];
+        uint64_t totalVirtualMem = 0;
+        uint64_t virtualMemUsed = 0;
+        uint64_t virtualMemUsedByMe = 0;
+        uint64_t totalPhysMem = 0;
+        uint64_t physMemUsed = 0;
+        uint64_t physMemUsedByMe = 0;
+        memory_information( totalVirtualMem, virtualMemUsed, virtualMemUsedByMe,
+                            totalPhysMem, physMemUsed, physMemUsedByMe );
 
-      sprintf( buf, _("PMem: %" PRIu64 "/%" PRIu64
-                      " MB  VMem: %" PRIu64 "/%" PRIu64 " MB"),
-               physMemUsedByMe, totalPhysMem,
-               virtualMemUsedByMe, totalVirtualMem );
+        sprintf( buf, _("PMem: %" PRIu64 "/%" PRIu64
+                        " MB  VMem: %" PRIu64 "/%" PRIu64 " MB"),
+                 physMemUsedByMe, totalPhysMem,
+                 virtualMemUsedByMe, totalVirtualMem );
 
-      draw_text( r, g, b, 5, y, buf );
-      y -= yi;
-  }
+        draw_text( r, g, b, 5, y, buf );
+        y -= yi;
+    }
 
-  if ( _hud & kHudAttributes )
+    if ( _hud & kHudAttributes )
     {
         const CMedia::Attributes& attributes = img->attributes();
         CMedia::Attributes::const_iterator i = attributes.begin();
@@ -3563,16 +3595,16 @@ void ImageView::draw()
         }
     }
 
-  TRACE("");
+    TRACE("");
 
-  if ( vr() )
-  {
-      glMatrixMode(GL_PROJECTION);
-      glPopMatrix();
+    if ( vr() )
+    {
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
 
-      glMatrixMode(GL_MODELVIEW);
-      glPopMatrix();
-  }
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+    }
 }
 
 
@@ -3596,8 +3628,8 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
 }
 
 int sign (const Imath::V2i& p1,
-             const Imath::V2i& p2,
-             const Imath::V2i& p3)
+          const Imath::V2i& p2,
+          const Imath::V2i& p3)
 {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 }
@@ -3655,546 +3687,546 @@ bool PointInTriangle (const Imath::V2i& pt,
  */
 int ImageView::leftMouseDown(int x, int y)
 {
-   lastX = x;
-   lastY = y;
+    lastX = x;
+    lastY = y;
 
 
 
-  flags	= kMouseDown;
+    flags	= kMouseDown;
 
-  int button = fltk::event_button();
-  if (button == 1)
+    int button = fltk::event_button();
+    if (button == 1)
     {
-      if (fltk::event_key_state(fltk::LeftAltKey) ||
-          vr() )
-      {
-         // Handle ALT+LMB moves
-         flags  = kMouseDown;
-         flags |= kMouseMove;
-         flags |= kMouseMiddle;
-         return 1;
-      }
+        if (fltk::event_key_state(fltk::LeftAltKey) ||
+                vr() )
+        {
+            // Handle ALT+LMB moves
+            flags  = kMouseDown;
+            flags |= kMouseMove;
+            flags |= kMouseMiddle;
+            return 1;
+        }
 
-      flags |= kMouseLeft;
-      if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-           fltk::event_key_state( fltk::RightShiftKey ) )
-      {
-          flags |= kLeftShift;
-          selection_mode();
-      }
-      else if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                fltk::event_key_state( fltk::RightCtrlKey ) )
-      {
-          flags |= kMouseLeft;
-          flags |= kLeftCtrl;
-          flags |= kGain;
-      }
+        flags |= kMouseLeft;
+        if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+                fltk::event_key_state( fltk::RightShiftKey ) )
+        {
+            flags |= kLeftShift;
+            selection_mode();
+        }
+        else if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                  fltk::event_key_state( fltk::RightCtrlKey ) )
+        {
+            flags |= kMouseLeft;
+            flags |= kLeftCtrl;
+            flags |= kGain;
+        }
 
-      if ( _mode == kSelection )
-      {
-         _selection = mrv::Rectd( 0, 0, 0, 0 );
-         return 1;
-      }
-      else if ( _mode == kMovePicture || _mode == kScalePicture )
-      {
-          ImageList images;
-          images.reserve(2);
+        if ( _mode == kSelection )
+        {
+            _selection = mrv::Rectd( 0, 0, 0, 0 );
+            return 1;
+        }
+        else if ( _mode == kMovePicture || _mode == kScalePicture )
+        {
+            ImageList images;
+            images.reserve(2);
 
-          mrv::media fg = foreground();
-          mrv::media bg = background();
+            mrv::media fg = foreground();
+            mrv::media bg = background();
 
-          if ( fg )
-          {
-              TRACE("");
-              CMedia* img = fg->image();
-              if ( img->has_picture() )
-              {
-                  images.push_back( img );
-              }
-              TRACE("");
-          }
-
-          if ( _showBG && bg && bg != fg )
-          {
-              TRACE("");
-              CMedia* img = bg->image();
-              TRACE("");
-              if ( img->has_picture() )
-                  images.push_back( img );
-              TRACE("");
-          }
-
-          ImageList::const_iterator i = images.begin();
-          ImageList::const_iterator e = images.end();
-
-
-          _selected_image = NULL;
-
-          for ( ; i != e; ++i )
-          {
-              CMedia* img = *i;
-
-              mrv::image_type_ptr pic;
-              bool outside = false;
-              int xp, yp, w, h;
-              picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
-
-              // std::cerr << "x,y " << x << ", " << y << " outside " << outside
-              //           << std::endl;
-              CMedia::Pixel p;
-              if ( xp >= 0 && ( xp < pic->width()*img->scale_x() ) &&
-                   yp >= 0 && ( yp < pic->height()*img->scale_y() ) )
-              {
-                  Imath::V2i pt( xp, yp );
-                  int W = pic->width() * img->scale_x();
-                  int H = pic->height() * img->scale_y();
-                  const int kSize = 30;
-                  Imath::V2i v1( W, H );
-                  Imath::V2i v2( W-kSize, H );
-                  Imath::V2i v3( W, H-kSize );
-                  if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                       fltk::event_key_state( fltk::RightCtrlKey ) ||
-                       PointInTriangle( pt, v1, v2, v3 ) )
-                  {
-                      scale_pic_mode();
-                      _selected_image = img;
-                      return 1;
-                  }
-                  p = pic->pixel( xp, yp );
-              }
-              if ( outside || !pic || (img->has_alpha() && p.a < 0.0001f) ) {
-                  // draw image without borders (in case this was selected
-                  // before).
-                  img->image_damage( CMedia::kDamageContents );
-                  continue;
-              }
-
-              move_pic_mode();
-              _selected_image = img;
-              break;
-          }
-
-          return 1;
-      }
-      else if ( _mode == kDraw || _mode == kErase || _mode == kText )
-      {
-
-         _selection = mrv::Rectd( 0, 0, 0, 0 );
-
-         mrv::media fg = foreground();
-         if ( !fg ) return 0;
-
-         CMedia* img = fg->image();
-         if (!img) return 0;
-
-         double xf = x;
-         double yf = y;
-
-         data_window_coordinates( img, xf, yf );
-
-         const mrv::Recti& dpw = img->display_window();
-
-         yf = -yf;
-
-         const mrv::Recti& daw = img->data_window();
-         xf += daw.x();
-         yf -= daw.y();
-
-         std::string str;
-         GLPathShape* s;
-         if ( _mode == kDraw )
-         {
-            s = new GLPathShape;
-         }
-         else if ( _mode == kErase )
-         {
-            s = new GLErasePathShape;
-         }
-         else if ( _mode == kText )
-         {
-            if ( mrv::font_text != "" )
+            if ( fg )
             {
-               GLTextShape* t = new GLTextShape;
-
-               t->font( mrv::font_current );
-               t->size( mrv::font_size );
-               t->text( mrv::font_text );
-
-               mrv::font_text = "";
-               s = t;
-            }
-            else
-            {
-               return 1;
+                TRACE("");
+                CMedia* img = fg->image();
+                if ( img->has_picture() )
+                {
+                    images.push_back( img );
+                }
+                TRACE("");
             }
 
-         }
-
-
-
-         uchar r, g, b;
-         fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
-
-         s->r = r / 255.0f;
-         s->g = g / 255.0f;
-         s->b = b / 255.0f;
-         s->a = 1.0f;
-         s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
-	 s->next = ghost_next();
-	 s->previous = ghost_previous();
-         if ( uiMain->uiPaint->uiAllFrames->value() )
-         {
-            s->frame = MRV_NOPTS_VALUE;
-         }
-         else
-         {
-            s->frame = frame();
-         }
-
-         mrv::Point p( xf, yf );
-         s->pts.push_back( p );
-
-
-         send_network( str );
-
-         add_shape( mrv::shape_type_ptr(s) );
-      }
-
-      if ( _wipe_dir != kNoWipe )
-      {
-         _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
-         window()->cursor(fltk::CURSOR_CROSS);
-         fltk::check();
-      }
-
-
-
-      redraw();
-      return 1;
-    }
-
-  else if ( button == 2 )
-    {
-
-
-       // handle MMB moves
-       flags |= kMouseMove;
-       flags |= kMouseMiddle;
-       return 1;
-    }
-  else
-    {
-      if ( (flags & kLeftAlt) == 0 )
-      {
-
-
-
-         fltk::Menu menu(0,0,0,0);
-         menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
-                   (fltk::Callback*)open_cb, browser() );
-         menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
-                   (fltk::Callback*)open_single_cb, browser() );
-         mrv::media fg = foreground();
-         if ( !fg )
-         {
-             menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
-                       (fltk::Callback*)open_dir_cb, browser() );
-         }
-         if ( fg )
-         {
-             menu.add( _("File/Open/Stereo Sequence or Movie"),
-                       kOpenStereoImage.hotkey(),
-                       (fltk::Callback*)open_stereo_cb, browser() );
-             menu.add( _("File/Open/Clip XML Metadata"),
-                       kOpenClipXMLMetadata.hotkey(),
-                       (fltk::Callback*)open_clip_xml_metadata_cb, this );
-             menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
-                       (fltk::Callback*)open_dir_cb, browser() );
-            menu.add( _("File/Save/Movie or Sequence As"),
-                      kSaveSequence.hotkey(),
-                      (fltk::Callback*)save_sequence_cb, this );
-            menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
-                      (fltk::Callback*)save_reel_cb, this );
-            menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
-                      (fltk::Callback*)save_cb, this );
-            menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
-                      (fltk::Callback*)save_snap_cb, this );
-            menu.add( _("File/Save/Clip XML Metadata As"),
-                      kSaveClipXMLMetadata.hotkey(),
-                      (fltk::Callback*)save_clip_xml_metadata_cb, this );
-         }
-
-         char buf[256];
-         const char* tmp;
-         fltk::Widget* item;
-         int num = uiMain->uiWindows->children();
-         int i;
-         for ( i = 0; i < num; ++i )
-         {
-            tmp = uiMain->uiWindows->child(i)->label();
-            sprintf( buf, _("Windows/%s"), tmp );
-            menu.add( buf, 0, (fltk::Callback*)window_cb, uiMain );
-         }
-
-         if ( fg && fg->image()->has_picture() )
-         {
-
-            menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(),
-                      (fltk::Callback*)safe_areas_cb, this );
-
-            menu.add( _("View/Display Window"), kDisplayWindow.hotkey(),
-                      (fltk::Callback*)display_window_cb, this );
-
-            menu.add( _("View/Data Window"), kDataWindow.hotkey(),
-                      (fltk::Callback*)data_window_cb, this );
-
-            num = uiMain->uiPrefs->uiPrefsCropArea->children();
-            for ( i = 0; i < num; ++i )
+            if ( _showBG && bg && bg != fg )
             {
-               tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
-               sprintf( buf, _("View/Mask/%s"), tmp );
-               item = menu.add( buf, 0, (fltk::Callback*)masking_cb, uiMain );
-               item->type( fltk::Item::TOGGLE );
-               float mask = -1.0f;
-               mask = (float) atof( tmp );
-               if ( mask == _masking ) item->set();
+                TRACE("");
+                CMedia* img = bg->image();
+                TRACE("");
+                if ( img->has_picture() )
+                    images.push_back( img );
+                TRACE("");
             }
 
-            sprintf( buf, _("View/Hud/Toggle Selected") );
-            item = menu.add( buf, kHudToggle.hotkey(),
-                             (fltk::Callback*)hud_toggle_cb, uiMain );
+            ImageList::const_iterator i = images.begin();
+            ImageList::const_iterator e = images.end();
 
-            num = uiMain->uiPrefs->uiPrefsHud->children();
-            for ( i = 0; i < num; ++i )
+
+            _selected_image = NULL;
+
+            for ( ; i != e; ++i )
             {
-               tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
-               sprintf( buf, _("View/Hud/%s"), tmp );
-               item = menu.add( buf, 0, (fltk::Callback*)hud_cb, uiMain );
-               item->type( fltk::Item::TOGGLE );
-               if ( hud() & (1 << i) ) item->set();
+                CMedia* img = *i;
+
+                mrv::image_type_ptr pic;
+                bool outside = false;
+                int xp, yp, w, h;
+                picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+
+                // std::cerr << "x,y " << x << ", " << y << " outside " << outside
+                //           << std::endl;
+                CMedia::Pixel p;
+                if ( xp >= 0 && ( xp < pic->width()*img->scale_x() ) &&
+                        yp >= 0 && ( yp < pic->height()*img->scale_y() ) )
+                {
+                    Imath::V2i pt( xp, yp );
+                    int W = pic->width() * img->scale_x();
+                    int H = pic->height() * img->scale_y();
+                    const int kSize = 30;
+                    Imath::V2i v1( W, H );
+                    Imath::V2i v2( W-kSize, H );
+                    Imath::V2i v3( W, H-kSize );
+                    if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                            fltk::event_key_state( fltk::RightCtrlKey ) ||
+                            PointInTriangle( pt, v1, v2, v3 ) )
+                    {
+                        scale_pic_mode();
+                        _selected_image = img;
+                        return 1;
+                    }
+                    p = pic->pixel( xp, yp );
+                }
+                if ( outside || !pic || (img->has_alpha() && p.a < 0.0001f) ) {
+                    // draw image without borders (in case this was selected
+                    // before).
+                    img->image_damage( CMedia::kDamageContents );
+                    continue;
+                }
+
+                move_pic_mode();
+                _selected_image = img;
+                break;
             }
 
-            bool has_version = false;
+            return 1;
+        }
+        else if ( _mode == kDraw || _mode == kErase || _mode == kText )
+        {
+
+            _selection = mrv::Rectd( 0, 0, 0, 0 );
+
+            mrv::media fg = foreground();
+            if ( !fg ) return 0;
 
             CMedia* img = fg->image();
-            std::string file = img->fileroot();
-            file = fs::path( file ).leaf().string();
-            std::string dir = img->directory();
-            file = dir + "/" + file;
-            size_t pos = 0;
-            mrv::PreferencesUI* prefs = main()->uiPrefs;
-            std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
-            if ( (pos = file.find( prefix, pos) ) != std::string::npos )
-                has_version = true;
+            if (!img) return 0;
 
-            if ( has_version )
+            double xf = x;
+            double yf = y;
+
+            data_window_coordinates( img, xf, yf );
+
+            const mrv::Recti& dpw = img->display_window();
+
+            yf = -yf;
+
+            const mrv::Recti& daw = img->data_window();
+            xf += daw.x();
+            yf -= daw.y();
+
+            std::string str;
+            GLPathShape* s;
+            if ( _mode == kDraw )
             {
-                menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
-                          (fltk::Callback*)next_image_version_cb, browser());
-                menu.add( _("Image/Previous Version"),
-                          kPreviousVersionImage.hotkey(),
-                          (fltk::Callback*)previous_image_version_cb,
-                          browser(), fltk::MENU_DIVIDER);
+                s = new GLPathShape;
+            }
+            else if ( _mode == kErase )
+            {
+                s = new GLErasePathShape;
+            }
+            else if ( _mode == kText )
+            {
+                if ( mrv::font_text != "" )
+                {
+                    GLTextShape* t = new GLTextShape;
+
+                    t->font( mrv::font_current );
+                    t->size( mrv::font_size );
+                    t->text( mrv::font_text );
+
+                    mrv::font_text = "";
+                    s = t;
+                }
+                else
+                {
+                    return 1;
+                }
+
             }
 
-            menu.add( _("Image/Next"), kNextImage.hotkey(),
-                      (fltk::Callback*)next_image_cb, browser());
-            menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
-                      (fltk::Callback*)previous_image_cb,
-                      browser(), fltk::MENU_DIVIDER);
 
 
-            const stubImage* simg = dynamic_cast< const stubImage* >( image() );
-            if ( simg )
+            uchar r, g, b;
+            fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
+
+            s->r = r / 255.0f;
+            s->g = g / 255.0f;
+            s->b = b / 255.0f;
+            s->a = 1.0f;
+            s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
+            s->next = ghost_next();
+            s->previous = ghost_previous();
+            if ( uiMain->uiPaint->uiAllFrames->value() )
             {
-               menu.add( _("Image/Clone"), kCloneImage.hotkey(),
-                        (fltk::Callback*)clone_image_cb, browser());
-               menu.add( _("Image/Clone All Channels"), 0,
-                        (fltk::Callback*)clone_all_cb,
-                        browser(), fltk::MENU_DIVIDER);
+                s->frame = MRV_NOPTS_VALUE;
             }
             else
             {
-               menu.add( _("Image/Clone"), kCloneImage.hotkey(),
-                        (fltk::Callback*)clone_image_cb, browser(),
-                        fltk::MENU_DIVIDER );
+                s->frame = frame();
             }
 
-            item = menu.add( _("Image/Preload Caches"), kPreloadCache.hotkey(),
-                             (fltk::Callback*)preload_image_cache_cb, this );
-            item->type( fltk::Item::TOGGLE );
-            if ( CMedia::preload_cache() ) item->set();
+            mrv::Point p( xf, yf );
+            s->pts.push_back( p );
 
-            menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
-                      (fltk::Callback*)clear_image_cache_cb, this );
 
-            menu.add( _("Image/Update Single Frame in Cache"),
-                      kClearSingleFrameCache.hotkey(),
-                      (fltk::Callback*)update_frame_cb, this,
-                      fltk::MENU_DIVIDER );
+            send_network( str );
 
-            menu.add( _("Image/Rotate +90"),
-                      kRotatePlus90.hotkey(),
-                      (fltk::Callback*)rotate_plus_90_cb, this );
-            menu.add( _("Image/Rotate -90"),
-                      kRotateMinus90.hotkey(),
-                      (fltk::Callback*)rotate_minus_90_cb, this,
-                      fltk::MENU_DIVIDER );
+            add_shape( mrv::shape_type_ptr(s) );
+        }
+
+        if ( _wipe_dir != kNoWipe )
+        {
+            _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
+            window()->cursor(fltk::CURSOR_CROSS);
+            fltk::check();
+        }
+
+
+
+        redraw();
+        return 1;
+    }
+
+    else if ( button == 2 )
+    {
+
+
+        // handle MMB moves
+        flags |= kMouseMove;
+        flags |= kMouseMiddle;
+        return 1;
+    }
+    else
+    {
+        if ( (flags & kLeftAlt) == 0 )
+        {
+
+
+
+            fltk::Menu menu(0,0,0,0);
+            menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
+                      (fltk::Callback*)open_cb, browser() );
+            menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
+                      (fltk::Callback*)open_single_cb, browser() );
+            mrv::media fg = foreground();
+            if ( !fg )
+            {
+                menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                          (fltk::Callback*)open_dir_cb, browser() );
+            }
+            if ( fg )
+            {
+                menu.add( _("File/Open/Stereo Sequence or Movie"),
+                          kOpenStereoImage.hotkey(),
+                          (fltk::Callback*)open_stereo_cb, browser() );
+                menu.add( _("File/Open/Clip XML Metadata"),
+                          kOpenClipXMLMetadata.hotkey(),
+                          (fltk::Callback*)open_clip_xml_metadata_cb, this );
+                menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                          (fltk::Callback*)open_dir_cb, browser() );
+                menu.add( _("File/Save/Movie or Sequence As"),
+                          kSaveSequence.hotkey(),
+                          (fltk::Callback*)save_sequence_cb, this );
+                menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
+                          (fltk::Callback*)save_reel_cb, this );
+                menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
+                          (fltk::Callback*)save_cb, this );
+                menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
+                          (fltk::Callback*)save_snap_cb, this );
+                menu.add( _("File/Save/Clip XML Metadata As"),
+                          kSaveClipXMLMetadata.hotkey(),
+                          (fltk::Callback*)save_clip_xml_metadata_cb, this );
+            }
+
+            char buf[256];
+            const char* tmp;
+            fltk::Widget* item;
+            int num = uiMain->uiWindows->children();
+            int i;
+            for ( i = 0; i < num; ++i )
+            {
+                tmp = uiMain->uiWindows->child(i)->label();
+                sprintf( buf, _("Windows/%s"), tmp );
+                menu.add( buf, 0, (fltk::Callback*)window_cb, uiMain );
+            }
+
+            if ( fg && fg->image()->has_picture() )
+            {
+
+                menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(),
+                          (fltk::Callback*)safe_areas_cb, this );
+
+                menu.add( _("View/Display Window"), kDisplayWindow.hotkey(),
+                          (fltk::Callback*)display_window_cb, this );
+
+                menu.add( _("View/Data Window"), kDataWindow.hotkey(),
+                          (fltk::Callback*)data_window_cb, this );
+
+                num = uiMain->uiPrefs->uiPrefsCropArea->children();
+                for ( i = 0; i < num; ++i )
+                {
+                    tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
+                    sprintf( buf, _("View/Mask/%s"), tmp );
+                    item = menu.add( buf, 0, (fltk::Callback*)masking_cb, uiMain );
+                    item->type( fltk::Item::TOGGLE );
+                    float mask = -1.0f;
+                    mask = (float) atof( tmp );
+                    if ( mask == _masking ) item->set();
+                }
+
+                sprintf( buf, _("View/Hud/Toggle Selected") );
+                item = menu.add( buf, kHudToggle.hotkey(),
+                                 (fltk::Callback*)hud_toggle_cb, uiMain );
+
+                num = uiMain->uiPrefs->uiPrefsHud->children();
+                for ( i = 0; i < num; ++i )
+                {
+                    tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
+                    sprintf( buf, _("View/Hud/%s"), tmp );
+                    item = menu.add( buf, 0, (fltk::Callback*)hud_cb, uiMain );
+                    item->type( fltk::Item::TOGGLE );
+                    if ( hud() & (1 << i) ) item->set();
+                }
+
+                bool has_version = false;
+
+                CMedia* img = fg->image();
+                std::string file = img->fileroot();
+                file = fs::path( file ).leaf().string();
+                std::string dir = img->directory();
+                file = dir + "/" + file;
+                size_t pos = 0;
+                mrv::PreferencesUI* prefs = main()->uiPrefs;
+                std::string prefix = prefs->uiPrefsImageVersionPrefix->value();
+                if ( (pos = file.find( prefix, pos) ) != std::string::npos )
+                    has_version = true;
+
+                if ( has_version )
+                {
+                    menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
+                              (fltk::Callback*)next_image_version_cb, browser());
+                    menu.add( _("Image/Previous Version"),
+                              kPreviousVersionImage.hotkey(),
+                              (fltk::Callback*)previous_image_version_cb,
+                              browser(), fltk::MENU_DIVIDER);
+                }
+
+                menu.add( _("Image/Next"), kNextImage.hotkey(),
+                          (fltk::Callback*)next_image_cb, browser());
+                menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
+                          (fltk::Callback*)previous_image_cb,
+                          browser(), fltk::MENU_DIVIDER);
+
+
+                const stubImage* simg = dynamic_cast< const stubImage* >( image() );
+                if ( simg )
+                {
+                    menu.add( _("Image/Clone"), kCloneImage.hotkey(),
+                              (fltk::Callback*)clone_image_cb, browser());
+                    menu.add( _("Image/Clone All Channels"), 0,
+                              (fltk::Callback*)clone_all_cb,
+                              browser(), fltk::MENU_DIVIDER);
+                }
+                else
+                {
+                    menu.add( _("Image/Clone"), kCloneImage.hotkey(),
+                              (fltk::Callback*)clone_image_cb, browser(),
+                              fltk::MENU_DIVIDER );
+                }
+
+                item = menu.add( _("Image/Preload Caches"), kPreloadCache.hotkey(),
+                                 (fltk::Callback*)preload_image_cache_cb, this );
+                item->type( fltk::Item::TOGGLE );
+                if ( CMedia::preload_cache() ) item->set();
+
+                menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
+                          (fltk::Callback*)clear_image_cache_cb, this );
+
+                menu.add( _("Image/Update Single Frame in Cache"),
+                          kClearSingleFrameCache.hotkey(),
+                          (fltk::Callback*)update_frame_cb, this,
+                          fltk::MENU_DIVIDER );
+
+                menu.add( _("Image/Rotate +90"),
+                          kRotatePlus90.hotkey(),
+                          (fltk::Callback*)rotate_plus_90_cb, this );
+                menu.add( _("Image/Rotate -90"),
+                          kRotateMinus90.hotkey(),
+                          (fltk::Callback*)rotate_minus_90_cb, this,
+                          fltk::MENU_DIVIDER );
+
+                if ( !Preferences::use_ocio )
+                {
+                    menu.add( _("Image/Attach CTL Input Device Transform"),
+                              kIDTScript.hotkey(),
+                              (fltk::Callback*)attach_ctl_idt_script_cb,
+                              this);
+                    menu.add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
+                              kSOPSatNodes.hotkey(),
+                              (fltk::Callback*)modify_sop_sat_cb,
+                              this);
+                    menu.add( _("Image/Add CTL Look Mod Transform"),
+                              kLookModScript.hotkey(),
+                              (fltk::Callback*)attach_ctl_lmt_script_cb,
+                              this);
+                    menu.add( _("Image/Attach CTL Rendering Transform"),
+                              kCTLScript.hotkey(),
+                              (fltk::Callback*)attach_ctl_script_cb,
+                              this, fltk::MENU_DIVIDER);
+                    menu.add( _("Image/Attach ICC Color Profile"),
+                              kIccProfile.hotkey(),
+                              (fltk::Callback*)attach_color_profile_cb,
+                              this, fltk::MENU_DIVIDER);
+                }
+
+                menu.add( _("Image/Mirror/Horizontal"),
+                          kFlipX.hotkey(),
+                          (fltk::Callback*)flip_x_cb,
+                          this);
+                menu.add( _("Image/Mirror/Vertical"),
+                          kFlipY.hotkey(),
+                          (fltk::Callback*)flip_y_cb,
+                          this);
+                menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
+                          (fltk::Callback*)set_as_background_cb,
+                          (void*)this);
+                menu.add( _("Image/Switch FG and BG"),
+                          kSwitchFGBG.hotkey(),
+                          (fltk::Callback*)switch_fg_bg_cb, (void*)this);
+                menu.add( _("Image/Toggle Background"),
+                          kToggleBG.hotkey(),
+                          (fltk::Callback*)toggle_background_cb, (void*)this);
+
+                Image_ptr image = fg->image();
+
+                if ( Preferences::use_ocio )
+                {
+                    menu.add( _("OCIO/Input Color Space"),
+                              kOCIOInputColorSpace.hotkey(),
+                              (fltk::Callback*)attach_ocio_ics_cb, (void*)this);
+                    menu.add( _("OCIO/Display"),
+                              kOCIODisplay.hotkey(),
+                              (fltk::Callback*)attach_ocio_display_cb, (void*)this);
+                    menu.add( _("OCIO/View"),
+                              kOCIOView.hotkey(),
+                              (fltk::Callback*)attach_ocio_view_cb, (void*)this);
+                }
+
+
+                size_t num = image->number_of_video_streams();
+                if ( num > 1 )
+                {
+                    for ( unsigned i = 0; i < num; ++i )
+                    {
+                        char buf[256];
+                        sprintf( buf, _("Video/Track #%d - %s"), i,
+                                 image->video_info(i).language.c_str() );
+
+                        item = menu.add( buf, 0,
+                                         (fltk::Callback*)change_video_cb, this );
+                        item->type( fltk::Item::TOGGLE );
+                        if ( image->video_stream() == i )
+                            item->set();
+                    }
+                }
+
+                num = image->number_of_subtitle_streams();
+
+                if ( dynamic_cast< aviImage* >( image ) != NULL )
+                {
+                    item = menu.add( _("Subtitle/Load"), 0,
+                                     (fltk::Callback*)load_subtitle_cb, uiMain );
+                }
+
+                if ( num > 0 )
+                {
+                    item = menu.add( _("Subtitle/No Subtitle"), 0,
+                                     (fltk::Callback*)change_subtitle_cb, this );
+                    item->type( fltk::Item::TOGGLE );
+                    if ( image->subtitle_stream() == -1 )
+                        item->set();
+                    for ( unsigned i = 0; i < num; ++i )
+                    {
+                        char buf[256];
+                        sprintf( buf, _("Subtitle/Track #%d - %s"), i,
+                                 image->subtitle_info(i).language.c_str() );
+
+                        item = menu.add( buf, 0,
+                                         (fltk::Callback*)change_subtitle_cb, this );
+                        item->type( fltk::Item::TOGGLE );
+                        if ( image->subtitle_stream() == i )
+                            item->set();
+                    }
+                }
+
+                if ( 1 )
+                {
+
+                    menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
+                              (fltk::Callback*)attach_audio_cb, this );
+                    menu.add( _("Audio/Edit Audio Frame Offset"),
+                              kEditAudio.hotkey(),
+                              (fltk::Callback*)edit_audio_cb, this );
+                    menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
+                              (fltk::Callback*)detach_audio_cb, this );
+                }
+
+                menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
+                          kCopyRGBAValues.hotkey(),
+                          (fltk::Callback*)copy_pixel_rgba_cb, (void*)this);
+            }
+
 
             if ( !Preferences::use_ocio )
             {
-                menu.add( _("Image/Attach CTL Input Device Transform"),
-                          kIDTScript.hotkey(),
-                          (fltk::Callback*)attach_ctl_idt_script_cb,
-                          this);
-                menu.add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
-                          kSOPSatNodes.hotkey(),
-                          (fltk::Callback*)modify_sop_sat_cb,
-                          this);
-                menu.add( _("Image/Add CTL Look Mod Transform"),
-                          kLookModScript.hotkey(),
-                          (fltk::Callback*)attach_ctl_lmt_script_cb,
-                          this);
-                menu.add( _("Image/Attach CTL Rendering Transform"),
-                          kCTLScript.hotkey(),
-                          (fltk::Callback*)attach_ctl_script_cb,
-                          this, fltk::MENU_DIVIDER);
-                menu.add( _("Image/Attach ICC Color Profile"),
-                          kIccProfile.hotkey(),
-                          (fltk::Callback*)attach_color_profile_cb,
-                          this, fltk::MENU_DIVIDER);
+
+                menu.add( _("Monitor/Attach CTL Display Transform"),
+                          kMonitorCTLScript.hotkey(),
+                          (fltk::Callback*)monitor_ctl_script_cb,
+                          uiMain);
+                menu.add( _("Monitor/Attach ICC Color Profile"),
+                          kMonitorIccProfile.hotkey(),
+                          (fltk::Callback*)monitor_icc_profile_cb,
+                          uiMain, fltk::MENU_DIVIDER);
             }
 
-            menu.add( _("Image/Mirror/Horizontal"),
-                      kFlipX.hotkey(),
-                      (fltk::Callback*)flip_x_cb,
-                      this);
-            menu.add( _("Image/Mirror/Vertical"),
-                      kFlipY.hotkey(),
-                      (fltk::Callback*)flip_y_cb,
-                      this);
-            menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
-                      (fltk::Callback*)set_as_background_cb,
-                      (void*)this);
-            menu.add( _("Image/Switch FG and BG"),
-                      kSwitchFGBG.hotkey(),
-                      (fltk::Callback*)switch_fg_bg_cb, (void*)this);
-            menu.add( _("Image/Toggle Background"),
-                      kToggleBG.hotkey(),
-                      (fltk::Callback*)toggle_background_cb, (void*)this);
-
-            Image_ptr image = fg->image();
-
-            if ( Preferences::use_ocio )
-            {
-                menu.add( _("OCIO/Input Color Space"),
-                          kOCIOInputColorSpace.hotkey(),
-                          (fltk::Callback*)attach_ocio_ics_cb, (void*)this);
-                menu.add( _("OCIO/Display"),
-                          kOCIODisplay.hotkey(),
-                          (fltk::Callback*)attach_ocio_display_cb, (void*)this);
-                menu.add( _("OCIO/View"),
-                          kOCIOView.hotkey(),
-                          (fltk::Callback*)attach_ocio_view_cb, (void*)this);
-            }
-
-
-            size_t num = image->number_of_video_streams();
-            if ( num > 1 )
-            {
-               for ( unsigned i = 0; i < num; ++i )
-               {
-                  char buf[256];
-                  sprintf( buf, _("Video/Track #%d - %s"), i,
-                           image->video_info(i).language.c_str() );
-
-                  item = menu.add( buf, 0,
-                                   (fltk::Callback*)change_video_cb, this );
-                  item->type( fltk::Item::TOGGLE );
-                  if ( image->video_stream() == i )
-                     item->set();
-               }
-            }
-
-            num = image->number_of_subtitle_streams();
-
-            if ( dynamic_cast< aviImage* >( image ) != NULL )
-            {
-               item = menu.add( _("Subtitle/Load"), 0,
-                                (fltk::Callback*)load_subtitle_cb, uiMain );
-            }
-
-            if ( num > 0 )
-            {
-               item = menu.add( _("Subtitle/No Subtitle"), 0,
-                                (fltk::Callback*)change_subtitle_cb, this );
-               item->type( fltk::Item::TOGGLE );
-               if ( image->subtitle_stream() == -1 )
-                  item->set();
-               for ( unsigned i = 0; i < num; ++i )
-               {
-                  char buf[256];
-                  sprintf( buf, _("Subtitle/Track #%d - %s"), i,
-                           image->subtitle_info(i).language.c_str() );
-
-                  item = menu.add( buf, 0,
-                                   (fltk::Callback*)change_subtitle_cb, this );
-                  item->type( fltk::Item::TOGGLE );
-                  if ( image->subtitle_stream() == i )
-                     item->set();
-               }
-            }
-
-            if ( 1 )
-            {
-
-               menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
-                         (fltk::Callback*)attach_audio_cb, this );
-               menu.add( _("Audio/Edit Audio Frame Offset"),
-                         kEditAudio.hotkey(),
-                         (fltk::Callback*)edit_audio_cb, this );
-               menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
-                         (fltk::Callback*)detach_audio_cb, this );
-            }
-
-            menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
-                      kCopyRGBAValues.hotkey(),
-                      (fltk::Callback*)copy_pixel_rgba_cb, (void*)this);
-         }
-
-
-         if ( !Preferences::use_ocio )
-         {
-
-             menu.add( _("Monitor/Attach CTL Display Transform"),
-                       kMonitorCTLScript.hotkey(),
-                       (fltk::Callback*)monitor_ctl_script_cb,
-                       uiMain);
-             menu.add( _("Monitor/Attach ICC Color Profile"),
-                       kMonitorIccProfile.hotkey(),
-                       (fltk::Callback*)monitor_icc_profile_cb,
-                       uiMain, fltk::MENU_DIVIDER);
-         }
-
-          menu.popup( fltk::Rectangle( fltk::event_x(),
-                                       fltk::event_y(), 80, 1) );
+            menu.popup( fltk::Rectangle( fltk::event_x(),
+                                         fltk::event_y(), 80, 1) );
         }
-      else
+        else
         {
-          flags |= kMouseRight;
-          flags |= kZoom;
+            flags |= kMouseRight;
+            flags |= kZoom;
         }
-      return 1;
-   }
+        return 1;
+    }
 
-  if ( (flags & kLeftAlt) && (flags & kMouseLeft) && (flags & kMouseMiddle) )
+    if ( (flags & kLeftAlt) && (flags & kMouseLeft) && (flags & kMouseMiddle) )
     {
-      flags |= kZoom;
-      return 1;
+        flags |= kZoom;
+        return 1;
     }
 
 
-  return 0;
+    return 0;
 }
 
 
@@ -4207,77 +4239,77 @@ int ImageView::leftMouseDown(int x, int y)
 void ImageView::leftMouseUp( int x, int y )
 {
 
-  flags &= ~kMouseDown;
-  flags &= ~kMouseMove;
-  flags &= ~kZoom;
+    flags &= ~kMouseDown;
+    flags &= ~kMouseMove;
+    flags &= ~kZoom;
 
-  int button = fltk::event_button();
-  if (button == 1)
-    flags &= ~kMouseLeft;
-  else if ( button == 2 )
-    flags &= ~kMouseMiddle;
-  else
-    flags &= ~kMouseRight;
+    int button = fltk::event_button();
+    if (button == 1)
+        flags &= ~kMouseLeft;
+    else if ( button == 2 )
+        flags &= ~kMouseMiddle;
+    else
+        flags &= ~kMouseRight;
 
-  if ( _mode == kSelection )
-  {
-      scrub_mode();
-      return;
-  }
+    if ( _mode == kSelection )
+    {
+        scrub_mode();
+        return;
+    }
 
-  window()->cursor( fltk::CURSOR_CROSS );
+    window()->cursor( fltk::CURSOR_CROSS );
 
-  mrv::media fg = foreground();
+    mrv::media fg = foreground();
 
-  if ( !fg || fg->image()->shapes().empty() ) return;
+    if ( !fg || fg->image()->shapes().empty() ) return;
 
-  //
-  // Send the shapes over the network
-  //
-  if ( _mode == kDraw )
-  {
-      mrv::shape_type_ptr o = fg->image()->shapes().back();
-      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
-      if ( s == NULL )
-      {
-          LOG_ERROR( _("Not a GLPathShape pointer") );
-      }
-      else
-      {
-          send_network( s->send() );
-      }
-  }
-  else if ( _mode == kErase )
-  {
-      mrv::shape_type_ptr o = fg->image()->shapes().back();
-      GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
-      if ( s == NULL )
-      {
-          LOG_ERROR( _("Not a GLErasePathShape pointer") );
-      }
-      else
-      {
-          send_network( s->send() );
-      }
-  }
-  else if ( _mode == kText )
-  {
-      mrv::shape_type_ptr o = fg->image()->shapes().back();
-     GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-     if ( s == NULL )
-     {
-        LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
-     }
-     else
-     {
-         send_network( s->send() );
-     }
-  }
-  // else if ( _mode == kScrub || _mode == kMovePicture ||
-  //           _mode == kScalePicture )
-  // {
-  //     _mode = kNoAction;
-  // }
+    //
+    // Send the shapes over the network
+    //
+    if ( _mode == kDraw )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLPathShape pointer") );
+        }
+        else
+        {
+            send_network( s->send() );
+        }
+    }
+    else if ( _mode == kErase )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLErasePathShape pointer") );
+        }
+        else
+        {
+            send_network( s->send() );
+        }
+    }
+    else if ( _mode == kText )
+    {
+        mrv::shape_type_ptr o = fg->image()->shapes().back();
+        GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+        if ( s == NULL )
+        {
+            LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
+        }
+        else
+        {
+            send_network( s->send() );
+        }
+    }
+    // else if ( _mode == kScrub || _mode == kMovePicture ||
+    //           _mode == kScalePicture )
+    // {
+    //     _mode = kNoAction;
+    // }
 
 }
 
@@ -4306,21 +4338,21 @@ bool ImageView::has_undo() const
  */
 std::string float_printf( float x )
 {
-  if ( isnan(x) )
+    if ( isnan(x) )
     {
         static std::string empty( _("   NAN  ") );
         return empty;
     }
-  else if ( !isfinite(x) )
-  {
-      static std::string inf( _("  INF.  ") );
-      return inf;
-  }
-  else
+    else if ( !isfinite(x) )
     {
-      char buf[ 64 ];
-      sprintf( buf, " %7.4f", x );
-      return buf + strlen(buf) - 8;
+        static std::string inf( _("  INF.  ") );
+        return inf;
+    }
+    else
+    {
+        char buf[ 64 ];
+        sprintf( buf, " %7.4f", x );
+        return buf + strlen(buf) - 8;
     }
 }
 
@@ -4333,18 +4365,18 @@ std::string float_printf( float x )
  */
 std::string hex_printf( float x )
 {
-  if ( isnan(x) )
+    if ( isnan(x) )
     {
-      static std::string empty( "        " );
-      return empty;
+        static std::string empty( "        " );
+        return empty;
     }
-  else
+    else
     {
-      char buf[ 64 ];
-      unsigned h = 0;
-      if ( x > 0.0f ) h = unsigned(x*255.0f);
-      sprintf( buf, " %7x", h );
-      return buf + strlen(buf) - 8;
+        char buf[ 64 ];
+        unsigned h = 0;
+        if ( x > 0.0f ) h = unsigned(x*255.0f);
+        sprintf( buf, " %7x", h );
+        return buf + strlen(buf) - 8;
     }
 }
 
@@ -4358,18 +4390,18 @@ std::string hex_printf( float x )
  */
 std::string dec_printf( float x )
 {
-  if ( isnan(x) )
+    if ( isnan(x) )
     {
-      static std::string empty( "        " );
-      return empty;
+        static std::string empty( "        " );
+        return empty;
     }
-  else
+    else
     {
-      char buf[ 64 ];
-      unsigned h = 0;
-      if ( x > 0.0f ) h = unsigned(x*255.0f);
-      sprintf( buf, " %7d", h );
-      return buf + strlen(buf) - 8;
+        char buf[ 64 ];
+        unsigned h = 0;
+        if ( x > 0.0f ) h = unsigned(x*255.0f);
+        sprintf( buf, " %7d", h );
+        return buf + strlen(buf) - 8;
     }
 }
 
@@ -4535,7 +4567,7 @@ void ImageView::separate_layers( const CMedia* const img,
     }
 
     if ( xp < dpw.x() || yp < dpw.y() ||
-         xp >= dpw.w()*img->scale_x() || yp >= dpw.h()*img->scale_y() ) {
+            xp >= dpw.w()*img->scale_x() || yp >= dpw.h()*img->scale_y() ) {
         outside = true;
     }
 }
@@ -4701,180 +4733,181 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 {
     assert( img != NULL );
     outside = false;
-  double xf = (double) x;
-  double yf = (double) y;
+    double xf = (double) x;
+    double yf = (double) y;
 
-  data_window_coordinates( img, xf, yf );
+    data_window_coordinates( img, xf, yf );
 
-  CMedia::StereoOutput output = img->stereo_output();
-  CMedia::StereoInput  input  = img->stereo_input();
+    CMedia::StereoOutput output = img->stereo_output();
+    CMedia::StereoInput  input  = img->stereo_input();
 
-  short idx = 0;
-  pic = img->left();
-  if ( output & CMedia::kStereoRight )
-  {
-      pic = img->right();
-      idx = 0;
-  }
+    short idx = 0;
+    pic = img->left();
+    if ( output & CMedia::kStereoRight )
+    {
+        pic = img->right();
+        idx = 0;
+    }
 
-  if ( !pic ) return;
+    if ( !pic ) return;
 
-  mrv::Recti daw[2], dpw[2];
+    mrv::Recti daw[2], dpw[2];
 
-  daw[0] = img->data_window();
-  daw[1] = img->data_window2();
-  dpw[0] = img->display_window();
-  dpw[1] = img->display_window2();
+    daw[0] = img->data_window();
+    daw[1] = img->data_window2();
+    dpw[0] = img->display_window();
+    dpw[1] = img->display_window2();
 
-  xp = (int)floor(xf);
-  yp = (int)floor(yf);
+    xp = (int)floor(xf);
+    yp = (int)floor(yf);
 
-  xp += daw[idx].x();
-  yp += daw[idx].y();
+    xp += daw[idx].x();
+    yp += daw[idx].y();
 
-  xp -= (int)img->x();
-  yp += (int)img->y();
-
-
-  mrv::Recti dpm = dpw[idx];
-  w = dpm.w();
-  h = dpm.h();
-
-  if ( ! display_window() )
-      dpm.merge( daw[idx] );
-
-  if ( w == 0 ) {
-      w = pic->width();
-      dpm.x( 0 );
-      dpm.w( w );
-  }
-  if ( h == 0 ) {
-      h = pic->height();
-      dpm.y( 0 );
-      dpm.h( h );
-  }
-
-  if ( _wait )
-  {
-      window()->cursor( fltk::CURSOR_WAIT );
-  }
-  else
-  {
-      window()->cursor(fltk::CURSOR_CROSS);
-  }
+    xp -= (int)img->x();
+    yp += (int)img->y();
 
 
-  if ( input == CMedia::kNoStereoInput ||
-       input == CMedia::kSeparateLayersInput )
-  {
-      separate_layers( img, pic, xp, yp, idx, outside, w, h, dpm );
-  }
-  else if ( input == CMedia::kTopBottomStereoInput )
-  {
-      top_bottom( img, pic, xp, yp, idx, outside, w, h );
-  }
-  else if ( input == CMedia::kLeftRightStereoInput )
-  {
-      left_right( img, pic, xp, yp, idx, outside, w, h );
-  }
+    mrv::Recti dpm = dpw[idx];
+    w = dpm.w();
+    h = dpm.h();
 
-  xp -= daw[idx].x();
-  yp -= daw[idx].y();
+    if ( ! display_window() )
+        dpm.merge( daw[idx] );
 
+    if ( w == 0 ) {
+        w = pic->width();
+        dpm.x( 0 );
+        dpm.w( w );
+    }
+    if ( h == 0 ) {
+        h = pic->height();
+        dpm.y( 0 );
+        dpm.h( h );
+    }
 
-  if ( output == CMedia::kStereoInterlaced )
-  {
-      if ( yp % 2 == 1 )
-      {
-          if ( input == CMedia::kTopBottomStereoInput )
-          {
-              yp += h;
-          }
-          else if ( input == CMedia::kLeftRightStereoInput )
-          {
-              xp += w;
-          }
-          else
-          {
-              pic = img->right();
-              xp += daw[0].x();
-              yp += daw[0].y();
-              xp -= daw[1].x();
-              yp -= daw[1].y();
-          }
-      }
-      if ( !pic ) return;
-  }
-  else if ( output == CMedia::kStereoInterlacedColumns )
-  {
-      if ( xp % 2 == 1 )
-      {
-          if ( input == CMedia::kTopBottomStereoInput )
-          {
-              yp += h;
-          }
-          else if ( input == CMedia::kLeftRightStereoInput )
-          {
-              xp += w;
-          }
-          else
-          {
-              pic = img->right();
-              xp += daw[0].x();
-              yp += daw[0].y();
-              xp -= daw[1].x();
-              yp -= daw[1].y();
-          }
-      }
-      if ( !pic ) return;
-  }
-  else if ( output == CMedia::kStereoCheckerboard )
-  {
-      if ( (xp + yp) % 2 == 0 )
-      {
-          if ( input == CMedia::kTopBottomStereoInput )
-          {
-              yp += h;
-          }
-          else if ( input == CMedia::kLeftRightStereoInput )
-          {
-              xp += w;
-          }
-          else
-          {
-              pic = img->right();
-              xp += daw[0].x();
-              yp += daw[0].y();
-              xp -= daw[1].x();
-              yp -= daw[1].y();
-          }
-      }
-      if ( !pic ) return;
-  }
-
-  dpm = dpw[idx];
-  if ( ! display_window() )
-      dpm.merge( daw[idx] );
-  w = dpm.w();
-  h = dpm.h();
-
-  if (!pic) return;
+    if ( _wait )
+    {
+        window()->cursor( fltk::CURSOR_WAIT );
+    }
+    else
+    {
+        window()->cursor(fltk::CURSOR_CROSS);
+    }
 
 
-  if ( xp < 0 || xp >= (int)((double)pic->width()*img->scale_x()) ||
-       yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
-  {
-      outside = true;
-  }
-  else if ( input == CMedia::kSeparateLayersInput &&
-            output != CMedia::kNoStereo &&
-            ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) ) {
-      outside = true;
-  }
-  else if ( vr() )
-  {
-      xp = yp = 0; outside = true;
-  }
+    if ( input == CMedia::kNoStereoInput ||
+            input == CMedia::kSeparateLayersInput )
+    {
+        separate_layers( img, pic, xp, yp, idx, outside, w, h, dpm );
+    }
+    else if ( input == CMedia::kTopBottomStereoInput )
+    {
+        top_bottom( img, pic, xp, yp, idx, outside, w, h );
+    }
+    else if ( input == CMedia::kLeftRightStereoInput )
+    {
+        left_right( img, pic, xp, yp, idx, outside, w, h );
+    }
+
+    xp -= daw[idx].x();
+    yp -= daw[idx].y();
+
+
+    if ( output == CMedia::kStereoInterlaced )
+    {
+        if ( yp % 2 == 1 )
+        {
+            if ( input == CMedia::kTopBottomStereoInput )
+            {
+                yp += h;
+            }
+            else if ( input == CMedia::kLeftRightStereoInput )
+            {
+                xp += w;
+            }
+            else
+            {
+                pic = img->right();
+                xp += daw[0].x();
+                yp += daw[0].y();
+                xp -= daw[1].x();
+                yp -= daw[1].y();
+            }
+        }
+        if ( !pic ) return;
+    }
+    else if ( output == CMedia::kStereoInterlacedColumns )
+    {
+        if ( xp % 2 == 1 )
+        {
+            if ( input == CMedia::kTopBottomStereoInput )
+            {
+                yp += h;
+            }
+            else if ( input == CMedia::kLeftRightStereoInput )
+            {
+                xp += w;
+            }
+            else
+            {
+                pic = img->right();
+                xp += daw[0].x();
+                yp += daw[0].y();
+                xp -= daw[1].x();
+                yp -= daw[1].y();
+            }
+        }
+        if ( !pic ) return;
+    }
+    else if ( output == CMedia::kStereoCheckerboard )
+    {
+        if ( (xp + yp) % 2 == 0 )
+        {
+            if ( input == CMedia::kTopBottomStereoInput )
+            {
+                yp += h;
+            }
+            else if ( input == CMedia::kLeftRightStereoInput )
+            {
+                xp += w;
+            }
+            else
+            {
+                pic = img->right();
+                xp += daw[0].x();
+                yp += daw[0].y();
+                xp -= daw[1].x();
+                yp -= daw[1].y();
+            }
+        }
+        if ( !pic ) return;
+    }
+
+    dpm = dpw[idx];
+    if ( ! display_window() )
+        dpm.merge( daw[idx] );
+    w = dpm.w();
+    h = dpm.h();
+
+    if (!pic) return;
+
+
+    if ( xp < 0 || xp >= (int)((double)pic->width()*img->scale_x()) ||
+            yp < 0 || yp >= (int)((double)pic->height()*img->scale_y()) )
+    {
+        outside = true;
+    }
+    else if ( input == CMedia::kSeparateLayersInput &&
+              output != CMedia::kNoStereo &&
+              ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) ) {
+        outside = true;
+    }
+    else if ( vr() )
+    {
+        xp = yp = 0;
+        outside = true;
+    }
 
 }
 
@@ -4906,294 +4939,306 @@ void ImageView::mouseMove(int x, int y)
     mrv::media fg = foreground();
     if ( !fg ) return;
 
-  CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
-  mrv::image_type_ptr pic;
-  bool outside = false;
-  int xp = x, yp = y, w, h;
-  picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
-  if ( !pic ) return;
+    mrv::image_type_ptr pic;
+    bool outside = false;
+    int xp = x, yp = y, w, h;
+    picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
+    if ( !pic ) return;
 
-  double xpct = 1.0 / img->scale_x();
-  double ypct = 1.0 / img->scale_y();
+    double xpct = 1.0 / img->scale_x();
+    double ypct = 1.0 / img->scale_y();
 
-  int ypr = pic->height() - yp - 1;
-  char buf[40];
-  sprintf( buf, "%5d, %5d", xp, ypr );
-  uiMain->uiCoord->text(buf);
+    int ypr = pic->height() - yp - 1;
+    char buf[40];
+    sprintf( buf, "%5d, %5d", xp, ypr );
+    uiMain->uiCoord->text(buf);
 
-  CMedia::Pixel rgba;
-  if ( outside || ypr < 0 )
-  {
-      rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
-  }
-  else
-  {
-      mrv::Recti daw[2];
-      daw[0] = img->data_window();
-      daw[1] = img->data_window2();
-
-
-      xp = int( (double)xp * xpct );
-      yp = int( (double)yp * ypct );
-      rgba = pic->pixel( xp, yp );
-
-
-
-      pixel_processed( img, rgba );
-
-      if ( normalize() )
-      {
-          normalize( rgba );
-      }
-
-
-      CMedia::StereoOutput stereo_out = img->stereo_output();
-      CMedia::StereoInput  stereo_in  = img->stereo_input();
-
-      if ( stereo_out & CMedia::kStereoAnaglyph )
-      {
-
-          if ( stereo_in == CMedia::kTopBottomStereoInput )
-          {
-              if ( stereo_out & CMedia::kStereoRight )
-                  yp += h;
-              else
-                  yp -= h;
-          }
-          else if ( stereo_in == CMedia::kLeftRightStereoInput )
-          {
-              if ( stereo_out & CMedia::kStereoRight )
-                  xp -= w;
-              else
-                  xp += w;
-          }
-          else
-          {
-              if ( stereo_out & CMedia::kStereoRight )
-              {
-                  pic = img->left();
-                  xp += daw[1].x();
-                  yp += daw[1].y();
-                  xp -= daw[0].x();
-                  yp -= daw[0].y();
-              }
-              else
-              {
-                  pic = img->right();
-                  xp += daw[0].x();
-                  yp += daw[0].y();
-                  xp -= daw[1].x();
-                  yp -= daw[1].y();
-              }
-          }
-          if ( pic )
-          {
-              outside = false;
-              if ( xp < 0 || xp >= (int)pic->width() ||
-                   yp < 0 || yp >= (int)pic->height() )
-                  outside = true;
-
-              if (!outside)
-              {
-                  float r = rgba.r;
-                  rgba = pic->pixel( xp, yp );
-                  pixel_processed( img, rgba );
-
-                  if ( normalize() )
-                  {
-                      normalize( rgba );
-                  }
-
-                  rgba.r = r;
-              }
-              else
-              {
-                  rgba.g = rgba.b = 0.0f;
-              }
-          }
-      }
-      // double yp = yf;
-      // if ( _showPixelRatio ) yp /= img->pixel_ratio();
-  }
-
-  CMedia* bgr = _engine->background();
-
-  if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
-  {
-      double xf, yf;
-      const mrv::image_type_ptr picb = bgr->hires();
-      const mrv::Recti& dpw = img->display_window();
-      const mrv::Recti& daw = img->data_window();
-      const mrv::Recti& dpwb = bgr->display_window(picb->frame());
-      const mrv::Recti& dawb = bgr->data_window(picb->frame());
-      if ( picb )
-      {
-          int w = dawb.w();
-          int h = dawb.h();
-          if ( w == 0 ) w = picb->width()-1;
-          if ( h == 0 ) h = picb->height()-1;
-
-          if ( dpw == dpwb && dpwb.h() != 0 )
-          {
-              xf = double(x);
-              yf = double(y);
-              data_window_coordinates( bgr, xf, yf );
-              xp = (int)floor( xf );
-              yp = (int)floor( yf );
-          }
-          else
-          {
-              double px = 1.0, py = 1.0;
-              if ( uiMain->uiPrefs->uiPrefsResizeBackground->value() )
-              {
-                  if ( dpw.w() > 0 )
-                  {
-                      px = (double) picb->width() / (double) dpw.w();
-                      py = (double) picb->height() / (double) dpw.h();
-                  }
-                  else
-                  {
-                      px = (double) picb->width() / (double) pic->width();
-                      py = (double) picb->height() / (double) pic->height();
-                  }
-              }
-
-              xp += daw.x();
-              yp += daw.y();
-              xp = (int)floor( xp * px );
-              yp = (int)floor( yp * py );
-          }
-
-
-          bool outside2 = false;
-          if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
-          {
-              outside2 = true;
-          }
-          else
-          {
-
-              CMedia::Pixel bg = picb->pixel( xp, yp );
-
-              pixel_processed( bgr, bg );
-
-              if ( outside )
-              {
-                  rgba = bg;
-              }
-              else
-              {
-                  float t = 1.0f - rgba.a;
-                  rgba.r += bg.r * t;
-                  rgba.g += bg.g * t;
-                  rgba.b += bg.b * t;
-              }
-          }
-      }
-  }
-
-  if ( vr() )
-  {
-      rgba.r = rgba.g = rgba.b = rgba.a =
-               std::numeric_limits<float>::quiet_NaN();
-  }
-
-  switch( uiMain->uiAColorType->value() )
-  {
-      case kRGBA_Float:
-          uiMain->uiPixelR->text( float_printf( rgba.r ).c_str() );
-          uiMain->uiPixelG->text( float_printf( rgba.g ).c_str() );
-          uiMain->uiPixelB->text( float_printf( rgba.b ).c_str() );
-          uiMain->uiPixelA->text( float_printf( rgba.a ).c_str() );
-          break;
-      case kRGBA_Hex:
-          uiMain->uiPixelR->text( hex_printf( rgba.r ).c_str() );
-          uiMain->uiPixelG->text( hex_printf( rgba.g ).c_str() );
-          uiMain->uiPixelB->text( hex_printf( rgba.b ).c_str() );
-          uiMain->uiPixelA->text( hex_printf( rgba.a ).c_str() );
-          break;
-      case kRGBA_Decimal:
-          uiMain->uiPixelR->text( dec_printf( rgba.r ).c_str() );
-          uiMain->uiPixelG->text( dec_printf( rgba.g ).c_str() );
-          uiMain->uiPixelB->text( dec_printf( rgba.b ).c_str() );
-          uiMain->uiPixelA->text( dec_printf( rgba.a ).c_str() );
-          break;
-  }
-
-  //
-  // Show this pixel as 8-bit fltk color box
-  //
-
-  if ( rgba.r > 1.0f ) rgba.r = 1.0f;
-  else if ( rgba.r < 0.0f ) rgba.r = 0.0f;
-  if ( rgba.g > 1.0f ) rgba.g = 1.0f;
-  else if ( rgba.g < 0.0f ) rgba.g = 0.0f;
-  if ( rgba.b > 1.0f ) rgba.b = 1.0f;
-  else if ( rgba.b < 0.0f ) rgba.b = 0.0f;
-
-  uchar col[3];
-  col[0] = uchar(rgba.r * 255.f);
-  col[1] = uchar(rgba.g * 255.f);
-  col[2] = uchar(rgba.b * 255.f);
-
-  fltk::Color c( fltk::color( col[0], col[1], col[2] ) );
-
-  // bug in fltk color lookup? (0 != fltk::BLACK)
-  if ( c == 0 )
+    CMedia::Pixel rgba;
+    if ( outside || ypr < 0 )
     {
-      uiMain->uiPixelView->color( fltk::BLACK );
+        rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
     }
-  else
+    else
     {
-      uiMain->uiPixelView->color( c );
+        mrv::Recti daw[2];
+        daw[0] = img->data_window();
+        daw[1] = img->data_window2();
+
+
+        xp = int( (double)xp * xpct );
+        yp = int( (double)yp * ypct );
+        rgba = pic->pixel( xp, yp );
+
+
+
+        pixel_processed( img, rgba );
+
+        if ( normalize() )
+        {
+            normalize( rgba );
+        }
+
+
+        CMedia::StereoOutput stereo_out = img->stereo_output();
+        CMedia::StereoInput  stereo_in  = img->stereo_input();
+
+        if ( stereo_out & CMedia::kStereoAnaglyph )
+        {
+
+            if ( stereo_in == CMedia::kTopBottomStereoInput )
+            {
+                if ( stereo_out & CMedia::kStereoRight )
+                    yp += h;
+                else
+                    yp -= h;
+            }
+            else if ( stereo_in == CMedia::kLeftRightStereoInput )
+            {
+                if ( stereo_out & CMedia::kStereoRight )
+                    xp -= w;
+                else
+                    xp += w;
+            }
+            else
+            {
+                if ( stereo_out & CMedia::kStereoRight )
+                {
+                    pic = img->left();
+                    xp += daw[1].x();
+                    yp += daw[1].y();
+                    xp -= daw[0].x();
+                    yp -= daw[0].y();
+                }
+                else
+                {
+                    pic = img->right();
+                    xp += daw[0].x();
+                    yp += daw[0].y();
+                    xp -= daw[1].x();
+                    yp -= daw[1].y();
+                }
+            }
+            if ( pic )
+            {
+                outside = false;
+                if ( xp < 0 || xp >= (int)pic->width() ||
+                        yp < 0 || yp >= (int)pic->height() )
+                    outside = true;
+
+                if (!outside)
+                {
+                    float r = rgba.r;
+                    rgba = pic->pixel( xp, yp );
+                    pixel_processed( img, rgba );
+
+                    if ( normalize() )
+                    {
+                        normalize( rgba );
+                    }
+
+                    rgba.r = r;
+                }
+                else
+                {
+                    rgba.g = rgba.b = 0.0f;
+                }
+            }
+        }
+        // double yp = yf;
+        // if ( _showPixelRatio ) yp /= img->pixel_ratio();
     }
 
-  uiMain->uiPixelView->redraw();
+    CMedia* bgr = _engine->background();
+
+    if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
+    {
+        double xf, yf;
+        const mrv::image_type_ptr picb = bgr->hires();
+        const mrv::Recti& dpw = img->display_window();
+        const mrv::Recti& daw = img->data_window();
+        const mrv::Recti& dpwb = bgr->display_window(picb->frame());
+        const mrv::Recti& dawb = bgr->data_window(picb->frame());
+        if ( picb )
+        {
+            int w = dawb.w();
+            int h = dawb.h();
+            if ( w == 0 ) w = picb->width()-1;
+            if ( h == 0 ) h = picb->height()-1;
+
+            if ( dpw == dpwb && dpwb.h() != 0 )
+            {
+                xf = double(x);
+                yf = double(y);
+                data_window_coordinates( bgr, xf, yf );
+                xp = (int)floor( xf );
+                yp = (int)floor( yf );
+            }
+            else
+            {
+                double px = 1.0, py = 1.0;
+                if ( uiMain->uiPrefs->uiPrefsResizeBackground->value() )
+                {
+                    if ( dpw.w() > 0 )
+                    {
+                        px = (double) picb->width() / (double) dpw.w();
+                        py = (double) picb->height() / (double) dpw.h();
+                    }
+                    else
+                    {
+                        px = (double) picb->width() / (double) pic->width();
+                        py = (double) picb->height() / (double) pic->height();
+                    }
+                }
+
+                xp += daw.x();
+                yp += daw.y();
+                xp = (int)floor( xp * px );
+                yp = (int)floor( yp * py );
+            }
+
+
+            bool outside2 = false;
+            if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
+            {
+                outside2 = true;
+            }
+            else
+            {
+
+                CMedia::Pixel bg = picb->pixel( xp, yp );
+
+                pixel_processed( bgr, bg );
+
+                if ( outside )
+                {
+                    rgba = bg;
+                }
+                else
+                {
+                    float t = 1.0f - rgba.a;
+                    rgba.r += bg.r * t;
+                    rgba.g += bg.g * t;
+                    rgba.b += bg.b * t;
+                }
+            }
+        }
+    }
+
+    if ( vr() )
+    {
+        rgba.r = rgba.g = rgba.b = rgba.a =
+                                       std::numeric_limits<float>::quiet_NaN();
+    }
+
+    switch( uiMain->uiAColorType->value() )
+    {
+    case kRGBA_Float:
+        uiMain->uiPixelR->text( float_printf( rgba.r ).c_str() );
+        uiMain->uiPixelG->text( float_printf( rgba.g ).c_str() );
+        uiMain->uiPixelB->text( float_printf( rgba.b ).c_str() );
+        uiMain->uiPixelA->text( float_printf( rgba.a ).c_str() );
+        break;
+    case kRGBA_Hex:
+        uiMain->uiPixelR->text( hex_printf( rgba.r ).c_str() );
+        uiMain->uiPixelG->text( hex_printf( rgba.g ).c_str() );
+        uiMain->uiPixelB->text( hex_printf( rgba.b ).c_str() );
+        uiMain->uiPixelA->text( hex_printf( rgba.a ).c_str() );
+        break;
+    case kRGBA_Decimal:
+        uiMain->uiPixelR->text( dec_printf( rgba.r ).c_str() );
+        uiMain->uiPixelG->text( dec_printf( rgba.g ).c_str() );
+        uiMain->uiPixelB->text( dec_printf( rgba.b ).c_str() );
+        uiMain->uiPixelA->text( dec_printf( rgba.a ).c_str() );
+        break;
+    }
+
+    //
+    // Show this pixel as 8-bit fltk color box
+    //
+
+    if ( rgba.r > 1.0f ) rgba.r = 1.0f;
+    else if ( rgba.r < 0.0f ) rgba.r = 0.0f;
+    if ( rgba.g > 1.0f ) rgba.g = 1.0f;
+    else if ( rgba.g < 0.0f ) rgba.g = 0.0f;
+    if ( rgba.b > 1.0f ) rgba.b = 1.0f;
+    else if ( rgba.b < 0.0f ) rgba.b = 0.0f;
+
+    uchar col[3];
+    col[0] = uchar(rgba.r * 255.f);
+    col[1] = uchar(rgba.g * 255.f);
+    col[2] = uchar(rgba.b * 255.f);
+
+    fltk::Color c( fltk::color( col[0], col[1], col[2] ) );
+
+    // bug in fltk color lookup? (0 != fltk::BLACK)
+    if ( c == 0 )
+    {
+        uiMain->uiPixelView->color( fltk::BLACK );
+    }
+    else
+    {
+        uiMain->uiPixelView->color( c );
+    }
+
+    uiMain->uiPixelView->redraw();
 
 
 
-  CMedia::Pixel hsv;
-  int cspace = uiMain->uiBColorType->value() + 1;
+    CMedia::Pixel hsv;
+    int cspace = uiMain->uiBColorType->value() + 1;
 
-  switch( cspace )
+    switch( cspace )
     {
     case color::kRGB:
-      hsv = rgba; break;
+        hsv = rgba;
+        break;
     case color::kHSV:
-      hsv = color::rgb::to_hsv( rgba ); break;
+        hsv = color::rgb::to_hsv( rgba );
+        break;
     case color::kHSL:
-      hsv = color::rgb::to_hsl( rgba ); break;
+        hsv = color::rgb::to_hsl( rgba );
+        break;
     case color::kCIE_XYZ:
-      hsv = color::rgb::to_xyz( rgba ); break;
+        hsv = color::rgb::to_xyz( rgba );
+        break;
     case color::kCIE_xyY:
-      hsv = color::rgb::to_xyY( rgba ); break;
+        hsv = color::rgb::to_xyY( rgba );
+        break;
     case color::kCIE_Lab:
-      hsv = color::rgb::to_lab( rgba ); break;
+        hsv = color::rgb::to_lab( rgba );
+        break;
     case color::kCIE_Luv:
-      hsv = color::rgb::to_luv( rgba ); break;
+        hsv = color::rgb::to_luv( rgba );
+        break;
     case color::kYUV:
-      hsv = color::rgb::to_yuv( rgba );   break;
+        hsv = color::rgb::to_yuv( rgba );
+        break;
     case color::kYDbDr:
-      hsv = color::rgb::to_YDbDr( rgba ); break;
+        hsv = color::rgb::to_YDbDr( rgba );
+        break;
     case color::kYIQ:
-      hsv = color::rgb::to_yiq( rgba );   break;
+        hsv = color::rgb::to_yiq( rgba );
+        break;
     case color::kITU_601:
-      hsv = color::rgb::to_ITU601( rgba );   break;
+        hsv = color::rgb::to_ITU601( rgba );
+        break;
     case color::kITU_709:
-      hsv = color::rgb::to_ITU709( rgba );   break;
+        hsv = color::rgb::to_ITU709( rgba );
+        break;
     default:
-      LOG_ERROR("Unknown color type");
+        LOG_ERROR("Unknown color type");
     }
 
-  uiMain->uiPixelH->text( float_printf( hsv.r ).c_str() );
-  uiMain->uiPixelS->text( float_printf( hsv.g ).c_str() );
-  uiMain->uiPixelV->text( float_printf( hsv.b ).c_str() );
+    uiMain->uiPixelH->text( float_printf( hsv.r ).c_str() );
+    uiMain->uiPixelS->text( float_printf( hsv.g ).c_str() );
+    uiMain->uiPixelV->text( float_printf( hsv.b ).c_str() );
 
-  mrv::BrightnessType brightness_type = (mrv::BrightnessType)
-    uiMain->uiLType->value();
-  hsv.a = calculate_brightness( rgba, brightness_type );
-  uiMain->uiPixelL->text( float_printf( hsv.a ).c_str() );
+    mrv::BrightnessType brightness_type = (mrv::BrightnessType)
+                                          uiMain->uiLType->value();
+    hsv.a = calculate_brightness( rgba, brightness_type );
+    uiMain->uiPixelL->text( float_printf( hsv.a ).c_str() );
 }
 
 float ImageView::vr_angle() const
@@ -5223,12 +5268,12 @@ void ImageView::vr_angle( const float t )
  */
 void ImageView::mouseDrag(int x,int y)
 {
-  if (flags & kMouseDown)
+    if (flags & kMouseDown)
     {
-      int dx = x - lastX;
-      int dy = y - lastY;
+        int dx = x - lastX;
+        int dy = y - lastY;
 
-      if ( flags & kZoom )
+        if ( flags & kZoom )
         {
             if ( vr() )
             {
@@ -5244,339 +5289,339 @@ void ImageView::mouseDrag(int x,int y)
             lastX = x;
             lastY = y;
         }
-      else if ( flags & kGain )
-      {
-          gain( _gain + float(dx) / 2000.0f );
-          lastX = x;
-          lastY = y;
-      }
-      else if ( flags & kMouseMove )
+        else if ( flags & kGain )
         {
-           window()->cursor( fltk::CURSOR_MOVE );
-           if ( vr() )
-           {
+            gain( _gain + float(dx) / 2000.0f );
+            lastX = x;
+            lastY = y;
+        }
+        else if ( flags & kMouseMove )
+        {
+            window()->cursor( fltk::CURSOR_MOVE );
+            if ( vr() )
+            {
 #define SPINY_MIN 0.005
 #define SPINX_MIN 0.005
 #define SPINY_MAX 1.0
 #define SPINX_MAX 0.5
-               spiny += double(dx) / 360.0;
-               if ( spiny > SPINY_MAX ) spiny = SPINY_MAX;
-               else if ( spiny < -SPINY_MAX ) spiny = -SPINY_MAX;
-               else if ( std::abs(spiny) <= SPINY_MIN ) spiny = 0.0;
-               spinx += double(dy) / 90.0;
-               if ( spinx > SPINX_MAX ) spinx = SPINX_MAX;
-               else if ( spinx < -SPINX_MAX ) spinx = -SPINX_MAX;
-               else if ( std::abs(spinx) <= SPINX_MIN ) spinx = 0.0;
+                spiny += double(dx) / 360.0;
+                if ( spiny > SPINY_MAX ) spiny = SPINY_MAX;
+                else if ( spiny < -SPINY_MAX ) spiny = -SPINY_MAX;
+                else if ( std::abs(spiny) <= SPINY_MIN ) spiny = 0.0;
+                spinx += double(dy) / 90.0;
+                if ( spinx > SPINX_MAX ) spinx = SPINX_MAX;
+                else if ( spinx < -SPINX_MAX ) spinx = -SPINX_MAX;
+                else if ( std::abs(spinx) <= SPINX_MIN ) spinx = 0.0;
 
-               char buf[128];
-               sprintf( buf, "Spin %g %g", spinx, spiny );
-               send_network( buf );
-           }
-           else
-           {
-               xoffset += double(dx) / _zoom;
-               yoffset -= double(dy) / _zoom;
+                char buf[128];
+                sprintf( buf, "Spin %g %g", spinx, spiny );
+                send_network( buf );
+            }
+            else
+            {
+                xoffset += double(dx) / _zoom;
+                yoffset -= double(dy) / _zoom;
 
-               char buf[128];
-               sprintf( buf, "Offset %g %g", xoffset, yoffset );
-               send_network( buf );
-           }
+                char buf[128];
+                sprintf( buf, "Offset %g %g", xoffset, yoffset );
+                send_network( buf );
+            }
 
-           lastX = x;
-           lastY = y;
+            lastX = x;
+            lastY = y;
 
 
         }
-      else if ( _mode == kScrub )
-      {
-          double s;
-          s = uiMain->uiPrefs->uiPrefsScrubbingSensitivity->value();
-          double dx = (fltk::event_x() - lastX) / s;
-          if ( std::abs(dx) >= 1.0f )
-          {
-              scrub( dx );
-              lastX = fltk::event_x();
-          }
-      }
-      else if ( _mode == kMovePicture || _mode == kScalePicture )
-      {
-          CMedia* img = selected_image();
-          if ( ! img ) return;
+        else if ( _mode == kScrub )
+        {
+            double s;
+            s = uiMain->uiPrefs->uiPrefsScrubbingSensitivity->value();
+            double dx = (fltk::event_x() - lastX) / s;
+            if ( std::abs(dx) >= 1.0f )
+            {
+                scrub( dx );
+                lastX = fltk::event_x();
+            }
+        }
+        else if ( _mode == kMovePicture || _mode == kScalePicture )
+        {
+            CMedia* img = selected_image();
+            if ( ! img ) return;
 
-          if ( _mode == kScalePicture )
-          {
-              double px = img->scale_x();
-              double py = img->scale_y();
+            if ( _mode == kScalePicture )
+            {
+                double px = img->scale_x();
+                double py = img->scale_y();
 
-              px += double(dx) / w() / _zoom;
-              py += double(dy) / h() / _zoom;
+                px += double(dx) / w() / _zoom;
+                py += double(dy) / h() / _zoom;
 
-              img->scale_x( px );
-              img->scale_y( py );
+                img->scale_x( px );
+                img->scale_y( py );
 
-              update_image_info();
+                update_image_info();
 
-              char buf[128];
-              sprintf( buf, "ScalePicture %g %g", px, py );
-              send_network( buf );
-          }
-          else
-          {
-              double px = img->x();
-              double py = img->y();
+                char buf[128];
+                sprintf( buf, "ScalePicture %g %g", px, py );
+                send_network( buf );
+            }
+            else
+            {
+                double px = img->x();
+                double py = img->y();
 
-              px += double(dx) / _zoom;
-              py -= double(dy) / _zoom;
+                px += double(dx) / _zoom;
+                py -= double(dy) / _zoom;
 
-              img->x( px );
-              img->y( py );
+                img->x( px );
+                img->y( py );
 
-              update_image_info();
+                update_image_info();
 
-              char buf[128];
-              sprintf( buf, "MovePicture %g %g", px, py );
-              send_network( buf );
-          }
-          lastX = x;
-          lastY = y;
+                char buf[128];
+                sprintf( buf, "MovePicture %g %g", px, py );
+                send_network( buf );
+            }
+            lastX = x;
+            lastY = y;
 
-      }
-      else
+        }
+        else
         {
 
 
-           mrv::media fg = foreground();
-           if ( ! fg ) return;
+            mrv::media fg = foreground();
+            if ( ! fg ) return;
 
-           CMedia* img = fg->image();
+            CMedia* img = fg->image();
 
-           double xf = double(lastX);
-           double yf = double(lastY);
-           data_window_coordinates( img, xf, yf, true );
+            double xf = double(lastX);
+            double yf = double(lastY);
+            data_window_coordinates( img, xf, yf, true );
 
-           mrv::Recti daw[2], dpw[2];
+            mrv::Recti daw[2], dpw[2];
 
-           daw[0] = img->data_window();
-           daw[1] = img->data_window2();
-           dpw[0] = img->display_window();
-           dpw[1] = img->display_window2();
+            daw[0] = img->data_window();
+            daw[1] = img->data_window2();
+            dpw[0] = img->display_window();
+            dpw[1] = img->display_window2();
 
-           double xn = double(x);
-           double yn = double(y);
-           data_window_coordinates( img, xn, yn, true );
-
-
-           short idx = 0;
-
-           unsigned W = dpw[0].w();
-           unsigned H = dpw[0].h();
-
-           bool right = false;
-           bool bottom = false;
-           int diffX = 0;
-           int diffY = 0;
-           CMedia::StereoOutput stereo_out = img->stereo_output();
-           if ( stereo_out == CMedia::kStereoRight )
-           {
-               idx = 1;
-               diffX = daw[1].x() - daw[0].x();
-               diffY = daw[1].y() - daw[0].y();
-           }
-           else if ( stereo_out & CMedia::kStereoSideBySide )
-           {
-               // if ( xf >= W - daw[0].x() )
-               if ( xf >= W )
-               {
-                   right = true;
-                   xf -= W;
-                   xn -= W;
-
-                   if ( stereo_out & CMedia::kStereoRight )
-                   {
-                       idx = 0;
-                   }
-                   else
-                   {
-                       diffX = daw[1].x() - daw[0].x();
-                       diffY = daw[1].y() - daw[0].y();
-                       idx = 1;
-                   }
-               }
-               else if ( stereo_out & CMedia::kStereoRight )
-               {
-                   idx = 1;
-                   diffX = daw[1].x() - daw[0].x();
-                   diffY = daw[1].y() - daw[0].y();
-               }
-           }
-           else if ( stereo_out & CMedia::kStereoTopBottom )
-           {
-               // if ( yf >= H - daw[0].y() )
-               if ( yf >= H )
-               {
-                   bottom = true;
-                   yf -= H;
-                   yn -= H;
-
-                   if ( stereo_out & CMedia::kStereoRight )
-                   {
-                       idx = 0;
-                   }
-                   else
-                   {
-                       diffX = daw[1].x() - daw[0].x();
-                       diffY = daw[1].y() - daw[0].y();
-                       idx = 1;
-                   }
-               }
-               else if ( stereo_out & CMedia::kStereoRight )
-               {
-                   idx = 1;
-                   diffX = daw[1].x() - daw[0].x();
-                   diffY = daw[1].y() - daw[0].y();
-               }
-           }
-
-           W = dpw[idx].w();
-           H = dpw[idx].h();
-
-           xf = floor(xf);
-           yf = floor(yf);
-
-           xn = floor(xn+0.5f);
-           yn = floor(yn+0.5f);
+            double xn = double(x);
+            double yn = double(y);
+            data_window_coordinates( img, xn, yn, true );
 
 
+            short idx = 0;
 
-           if ( _mode == kSelection )
-           {
+            unsigned W = dpw[0].w();
+            unsigned H = dpw[0].h();
 
-               if ( xn < xf )
-               {
-                   double tmp = xf;
-                   xf = xn;
-                   xn = tmp;
-               }
-               if ( yn < yf )
-               {
-                   double tmp = yf;
-                   yf = yn;
-                   yn = tmp;
-               }
+            bool right = false;
+            bool bottom = false;
+            int diffX = 0;
+            int diffY = 0;
+            CMedia::StereoOutput stereo_out = img->stereo_output();
+            if ( stereo_out == CMedia::kStereoRight )
+            {
+                idx = 1;
+                diffX = daw[1].x() - daw[0].x();
+                diffY = daw[1].y() - daw[0].y();
+            }
+            else if ( stereo_out & CMedia::kStereoSideBySide )
+            {
+                // if ( xf >= W - daw[0].x() )
+                if ( xf >= W )
+                {
+                    right = true;
+                    xf -= W;
+                    xn -= W;
+
+                    if ( stereo_out & CMedia::kStereoRight )
+                    {
+                        idx = 0;
+                    }
+                    else
+                    {
+                        diffX = daw[1].x() - daw[0].x();
+                        diffY = daw[1].y() - daw[0].y();
+                        idx = 1;
+                    }
+                }
+                else if ( stereo_out & CMedia::kStereoRight )
+                {
+                    idx = 1;
+                    diffX = daw[1].x() - daw[0].x();
+                    diffY = daw[1].y() - daw[0].y();
+                }
+            }
+            else if ( stereo_out & CMedia::kStereoTopBottom )
+            {
+                // if ( yf >= H - daw[0].y() )
+                if ( yf >= H )
+                {
+                    bottom = true;
+                    yf -= H;
+                    yn -= H;
+
+                    if ( stereo_out & CMedia::kStereoRight )
+                    {
+                        idx = 0;
+                    }
+                    else
+                    {
+                        diffX = daw[1].x() - daw[0].x();
+                        diffY = daw[1].y() - daw[0].y();
+                        idx = 1;
+                    }
+                }
+                else if ( stereo_out & CMedia::kStereoRight )
+                {
+                    idx = 1;
+                    diffX = daw[1].x() - daw[0].x();
+                    diffY = daw[1].y() - daw[0].y();
+                }
+            }
+
+            W = dpw[idx].w();
+            H = dpw[idx].h();
+
+            xf = floor(xf);
+            yf = floor(yf);
+
+            xn = floor(xn+0.5f);
+            yn = floor(yn+0.5f);
 
 
-               double X, XM, Y, YM;
-               if ( display_window() )
-               {
-                   // X = dpw[idx].l()-daw[idx].x();
-                   // XM = dpw[idx].r()-daw[idx].x();
-                   // Y = dpw[idx].t()-daw[idx].y();
-                   // YM = dpw[idx].b()-daw[idx].y();
-                   X = dpw[idx].l()-daw[0].x();
-                   XM = dpw[idx].r()-daw[0].x();
-                   Y = dpw[idx].t()-daw[0].y();
-                   YM = dpw[idx].b()-daw[0].y();
-               }
-               else
-               {
-                   X = diffX;
-                   XM = daw[idx].w() + diffX;
 
-                   Y = diffY;
-                   YM = daw[idx].h() + diffY;
-               }
+            if ( _mode == kSelection )
+            {
+
+                if ( xn < xf )
+                {
+                    double tmp = xf;
+                    xf = xn;
+                    xn = tmp;
+                }
+                if ( yn < yf )
+                {
+                    double tmp = yf;
+                    yf = yn;
+                    yn = tmp;
+                }
 
 
-               if ( xf < X ) xf = X;
-               else if ( xf > XM )  xf = XM;
-               if ( yf < Y ) yf = Y;
-               else if ( yf > YM ) yf = YM;
+                double X, XM, Y, YM;
+                if ( display_window() )
+                {
+                    // X = dpw[idx].l()-daw[idx].x();
+                    // XM = dpw[idx].r()-daw[idx].x();
+                    // Y = dpw[idx].t()-daw[idx].y();
+                    // YM = dpw[idx].b()-daw[idx].y();
+                    X = dpw[idx].l()-daw[0].x();
+                    XM = dpw[idx].r()-daw[0].x();
+                    Y = dpw[idx].t()-daw[0].y();
+                    YM = dpw[idx].b()-daw[0].y();
+                }
+                else
+                {
+                    X = diffX;
+                    XM = daw[idx].w() + diffX;
 
-               if ( xn < X ) xn = X;
-               else if ( xn > XM ) xn = XM;
-               if ( yn < Y ) yn = Y;
-               else if ( yn > YM ) yn = YM;
-
-
-               double dx = (double) std::abs( xn - xf );
-               double dy = (double) std::abs( yn - yf );
-               if ( dx == 0.0 || dy == 0.0 )
-               {
-                   dx = 0.0;
-                   dy = 0.0;
-               }
-
-               double xt = xf + daw[0].x() + dpw[0].w() * right;
-               double yt = yf + daw[0].y() + dpw[0].h() * bottom;
-
-               _selection = mrv::Rectd( xt, yt, dx, dy );
-
-               char buf[128];
-               sprintf( buf, "Selection %g %g %g %g", _selection.x(),
-                        _selection.y(), _selection.w(), _selection.h() );
+                    Y = diffY;
+                    YM = daw[idx].h() + diffY;
+                }
 
 
-               send_network( buf );
+                if ( xf < X ) xf = X;
+                else if ( xf > XM )  xf = XM;
+                if ( yf < Y ) yf = Y;
+                else if ( yf > YM ) yf = YM;
 
-           }
+                if ( xn < X ) xn = X;
+                else if ( xn > XM ) xn = XM;
+                if ( yn < Y ) yn = Y;
+                else if ( yn > YM ) yn = YM;
 
 
-           if ( _mode == kDraw || _mode == kErase )
-           {
-               GLShapeList& shapes = fg->image()->shapes();
-               if ( shapes.empty() ) return;
+                double dx = (double) std::abs( xn - xf );
+                double dy = (double) std::abs( yn - yf );
+                if ( dx == 0.0 || dy == 0.0 )
+                {
+                    dx = 0.0;
+                    dy = 0.0;
+                }
 
-               mrv::shape_type_ptr o = shapes.back();
-               GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
-               if ( s == NULL )
-               {
-                   LOG_ERROR( _("Not a GLPathShape pointer") );
-               }
-               else
-               {
+                double xt = xf + daw[0].x() + dpw[0].w() * right;
+                double yt = yf + daw[0].y() + dpw[0].h() * bottom;
 
-                   yn = H - yn;
-                   yn -= H;
+                _selection = mrv::Rectd( xt, yt, dx, dy );
 
-                   xn += daw[idx].x();
-                   yn -= daw[idx].y();
+                char buf[128];
+                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+                         _selection.y(), _selection.w(), _selection.h() );
 
-                   mrv::Point p( xn, yn );
-                   s->pts.push_back( p );
-               }
-           }
-           else if ( _mode == kText )
-           {
-               GLShapeList& shapes = fg->image()->shapes();
-               if ( shapes.empty() ) return;
 
-               mrv::shape_type_ptr o = shapes.back();
-               GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-               if ( s == NULL )
-               {
-                   LOG_ERROR( _("Not a GLTextShape pointer in position") );
-               }
-               else
-               {
-                   yn = H - yn;
-                   yn -= H;
+                send_network( buf );
 
-                   xn += daw[idx].x();
-                   yn -= daw[idx].y();
+            }
 
-                   s->position( int(xn), int(yn) );
-               }
-           }
 
-           assert( _selection.w() >= 0.0 );
-           assert( _selection.h() >= 0.0 );
+            if ( _mode == kDraw || _mode == kErase )
+            {
+                GLShapeList& shapes = fg->image()->shapes();
+                if ( shapes.empty() ) return;
 
-           update_color_info( fg );
+                mrv::shape_type_ptr o = shapes.back();
+                GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+                if ( s == NULL )
+                {
+                    LOG_ERROR( _("Not a GLPathShape pointer") );
+                }
+                else
+                {
 
-           mouseMove( x, y );
+                    yn = H - yn;
+                    yn -= H;
+
+                    xn += daw[idx].x();
+                    yn -= daw[idx].y();
+
+                    mrv::Point p( xn, yn );
+                    s->pts.push_back( p );
+                }
+            }
+            else if ( _mode == kText )
+            {
+                GLShapeList& shapes = fg->image()->shapes();
+                if ( shapes.empty() ) return;
+
+                mrv::shape_type_ptr o = shapes.back();
+                GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+                if ( s == NULL )
+                {
+                    LOG_ERROR( _("Not a GLTextShape pointer in position") );
+                }
+                else
+                {
+                    yn = H - yn;
+                    yn -= H;
+
+                    xn += daw[idx].x();
+                    yn -= daw[idx].y();
+
+                    s->position( int(xn), int(yn) );
+                }
+            }
+
+            assert( _selection.w() >= 0.0 );
+            assert( _selection.h() >= 0.0 );
+
+            update_color_info( fg );
+
+            mouseMove( x, y );
         }
 
-      redraw();
+        redraw();
     }
 
 }
@@ -5724,7 +5769,7 @@ int ImageView::keyDown(unsigned int rawkey)
         {
             float z = (float) (rawkey - kZoomMin.key);
             if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                 fltk::event_key_state( fltk::RightCtrlKey ) )
+                    fltk::event_key_state( fltk::RightCtrlKey ) )
                 z = 1.0f / z;
             zoom_under_mouse( z, fltk::event_x(), fltk::event_y() );
         }
@@ -6056,7 +6101,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFirstFrame.match( rawkey ) )
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
-             fltk::event_key_state( fltk::RightCtrlKey ) )
+                fltk::event_key_state( fltk::RightCtrlKey ) )
             first_frame_timeline();
         else
             first_frame();
@@ -6066,7 +6111,7 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kLastFrame.match( rawkey ) )
     {
         if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
-             fltk::event_key_state( fltk::RightCtrlKey ) )
+                fltk::event_key_state( fltk::RightCtrlKey ) )
             last_frame_timeline();
         else
             last_frame();
@@ -6271,24 +6316,24 @@ int ImageView::keyDown(unsigned int rawkey)
  */
 int ImageView::keyUp(unsigned int key)
 {
-  if ( key == fltk::LeftAltKey )
+    if ( key == fltk::LeftAltKey )
     {
-      flags &= ~kLeftAlt;
-      flags &= ~kZoom;
-      return 1;
+        flags &= ~kLeftAlt;
+        flags &= ~kZoom;
+        return 1;
     }
-  return 0;
+    return 0;
 }
 
 void ImageView::show_background( const bool b )
 {
-   _showBG = b;
+    _showBG = b;
 
-   char buf[128];
-   sprintf( buf, "ShowBG %d", (int) b );
-   send_network( buf );
+    char buf[128];
+    sprintf( buf, "ShowBG %d", (int) b );
+    send_network( buf );
 
-   damage_contents();
+    damage_contents();
 }
 
 /**
@@ -6297,8 +6342,8 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
-  // full screen...
-  if ( !FullScreen && !presentation )
+    // full screen...
+    if ( !FullScreen && !presentation )
     {
         FullScreen = true;
         presentation = false;
@@ -6306,131 +6351,131 @@ void ImageView::toggle_fullscreen()
         posY = fltk_main()->y();
         fltk_main()->fullscreen();
     }
-  else
+    else
     {
         FullScreen = false;
         presentation = false;
         resize_main_window();
     }
-  fltk_main()->relayout();
+    fltk_main()->relayout();
 
-  fit_image();
+    fit_image();
 
-  // These two take focus are needed
-  fltk_main()->take_focus();
+    // These two take focus are needed
+    fltk_main()->take_focus();
 
-  take_focus();
+    take_focus();
 
 
-  fltk::check();
+    fltk::check();
 
-  char buf[128];
-  sprintf( buf, "FullScreen %d", FullScreen );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "FullScreen %d", FullScreen );
+    send_network( buf );
 }
 
 void ImageView::toggle_presentation()
 {
-  fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
-  fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
-  fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
-  fltk::Window* uiReel  = uiMain->uiReelWindow->uiMain;
-  fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
-  fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
-  fltk::Window* uiStereo = uiMain->uiStereo->uiMain;
-  fltk::Window* uiPaint = uiMain->uiPaint->uiMain;
-  fltk::Window* uiSOP = uiMain->uiSOPNode ? uiMain->uiSOPNode->uiMain : NULL;
+    fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
+    fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
+    fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
+    fltk::Window* uiReel  = uiMain->uiReelWindow->uiMain;
+    fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
+    fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
+    fltk::Window* uiStereo = uiMain->uiStereo->uiMain;
+    fltk::Window* uiPaint = uiMain->uiPaint->uiMain;
+    fltk::Window* uiSOP = uiMain->uiSOPNode ? uiMain->uiSOPNode->uiMain : NULL;
 
 
-  static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-  has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-  has_stereo, has_paint, has_sop;
+    static bool has_image_info, has_color_area, has_reel, has_edl_edit,
+           has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
+           has_stereo, has_paint, has_sop;
 
-  if ( !presentation )
+    if ( !presentation )
     {
-      posX = fltk_main()->x();
-      posY = fltk_main()->y();
+        posX = fltk_main()->x();
+        posY = fltk_main()->y();
 
-      has_image_info = uiImageInfo ? uiImageInfo->visible() : false;
-      has_color_area = uiColorArea ? uiColorArea->visible() : false;
-      has_reel       = uiReel ? uiReel->visible() : false;
-      has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
-      has_prefs      = uiPrefs ? uiPrefs->visible() : false;
-      has_about      = uiAbout ? uiAbout->visible() : false;
-      has_top_bar    = uiMain->uiTopBar->visible();
-      has_bottom_bar = uiMain->uiBottomBar->visible();
-      has_pixel_bar  = uiMain->uiPixelBar->visible();
-      has_paint      = uiPaint ? uiPaint->visible() : false;
-      has_stereo     = uiStereo ? uiStereo->visible() : false;
-      has_sop        = uiSOP ? uiSOP->visible() : false;
+        has_image_info = uiImageInfo ? uiImageInfo->visible() : false;
+        has_color_area = uiColorArea ? uiColorArea->visible() : false;
+        has_reel       = uiReel ? uiReel->visible() : false;
+        has_edl_edit   = uiEDLWindow ? uiEDLWindow->visible() : false;
+        has_prefs      = uiPrefs ? uiPrefs->visible() : false;
+        has_about      = uiAbout ? uiAbout->visible() : false;
+        has_top_bar    = uiMain->uiTopBar->visible();
+        has_bottom_bar = uiMain->uiBottomBar->visible();
+        has_pixel_bar  = uiMain->uiPixelBar->visible();
+        has_paint      = uiPaint ? uiPaint->visible() : false;
+        has_stereo     = uiStereo ? uiStereo->visible() : false;
+        has_sop        = uiSOP ? uiSOP->visible() : false;
 
-      if (uiSOP) uiSOP->hide();
-      uiPaint->hide();
-      uiStereo->hide();
-      uiImageInfo->hide();
-      uiColorArea->hide();
-      uiReel->hide();
-      uiEDLWindow->hide();
-      uiPrefs->hide();
-      uiAbout->hide();
-      uiMain->uiTopBar->hide();
-      uiMain->uiPixelBar->hide();
-      uiMain->uiBottomBar->hide();
+        if (uiSOP) uiSOP->hide();
+        uiPaint->hide();
+        uiStereo->hide();
+        uiImageInfo->hide();
+        uiColorArea->hide();
+        uiReel->hide();
+        uiEDLWindow->hide();
+        uiPrefs->hide();
+        uiAbout->hide();
+        uiMain->uiTopBar->hide();
+        uiMain->uiPixelBar->hide();
+        uiMain->uiBottomBar->hide();
 
 
-      presentation = true;
+        presentation = true;
 
 #ifdef WIN32
-      fltk_main()->fullscreen();
-      fltk_main()->resize(0, 0,
-                          GetSystemMetrics(SM_CXSCREEN),
-                          GetSystemMetrics(SM_CYSCREEN));
+        fltk_main()->fullscreen();
+        fltk_main()->resize(0, 0,
+                            GetSystemMetrics(SM_CXSCREEN),
+                            GetSystemMetrics(SM_CYSCREEN));
 #else
-      send_wm_state_event(fltk::xid( fltk_main() ), 1,
-                          fl_NET_WM_STATE_FULLSCREEN);
+        send_wm_state_event(fltk::xid( fltk_main() ), 1,
+                            fl_NET_WM_STATE_FULLSCREEN);
 #endif
     }
-  else
+    else
     {
-      if ( has_image_info ) uiImageInfo->show();
-      if ( has_color_area ) uiColorArea->show();
-      if ( has_reel  )      uiReel->show();
-      if ( has_edl_edit )   uiEDLWindow->show();
-      if ( has_prefs )      uiPrefs->show();
-      if ( has_about )      uiAbout->show();
-      if ( has_paint )      uiPaint->show();
-      if ( has_stereo )     uiStereo->show();
-      if ( has_sop )        uiSOP->show();
+        if ( has_image_info ) uiImageInfo->show();
+        if ( has_color_area ) uiColorArea->show();
+        if ( has_reel  )      uiReel->show();
+        if ( has_edl_edit )   uiEDLWindow->show();
+        if ( has_prefs )      uiPrefs->show();
+        if ( has_about )      uiAbout->show();
+        if ( has_paint )      uiPaint->show();
+        if ( has_stereo )     uiStereo->show();
+        if ( has_sop )        uiSOP->show();
 
-      if ( has_top_bar )    uiMain->uiTopBar->show();
-      if ( has_bottom_bar)  uiMain->uiBottomBar->show();
-      if ( has_pixel_bar )  uiMain->uiPixelBar->show();
+        if ( has_top_bar )    uiMain->uiTopBar->show();
+        if ( has_bottom_bar)  uiMain->uiBottomBar->show();
+        if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
 #ifndef _WIN32
-      send_wm_state_event(fltk::xid( fltk_main() ), 0,
-                          fl_NET_WM_STATE_FULLSCREEN);
+        send_wm_state_event(fltk::xid( fltk_main() ), 0,
+                            fl_NET_WM_STATE_FULLSCREEN);
 #endif
-      presentation = false;
-      FullScreen = false;
-      resize_main_window();
+        presentation = false;
+        FullScreen = false;
+        resize_main_window();
     }
 
-  fltk_main()->relayout();
+    fltk_main()->relayout();
 
-  fit_image();
+    fit_image();
 
-  // These two take focus are needed
-  fltk_main()->take_focus();
+    // These two take focus are needed
+    fltk_main()->take_focus();
 
-  take_focus();
-
-
-  fltk::check();
+    take_focus();
 
 
-  char buf[128];
-  sprintf( buf, "PresentationMode %d", presentation );
-  send_network( buf );
+    fltk::check();
+
+
+    char buf[128];
+    sprintf( buf, "PresentationMode %d", presentation );
+    send_network( buf );
 
 }
 
@@ -6441,14 +6486,14 @@ void ImageView::toggle_presentation()
  */
 void ImageView::scrub( double dx )
 {
-  stop();
+    stop();
 
-  uiMain->uiPlayForwards->value(0);
-  uiMain->uiPlayBackwards->value(0);
+    uiMain->uiPlayForwards->value(0);
+    uiMain->uiPlayBackwards->value(0);
 
-  step_frame( int64_t(dx) );
+    step_frame( int64_t(dx) );
 
-  update_color_info();
+    update_color_info();
 }
 
 void ImageView::toggle_color_area( bool show )
@@ -6562,172 +6607,172 @@ int ImageView::handle(int event)
     TRACE("");
     switch( event )
     {
-        case fltk::TIMEOUT:
+    case fltk::TIMEOUT:
+    {
+        TRACE("");
+
+        mrv::ImageBrowser* b = browser();
+        if ( b && !_idle_callback && CMedia::cache_active()  &&
+                ( CMedia::preload_cache() ||
+                  uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+        {
+            _reel = b->number_of_reels();
+            for ( unsigned i = 0; i < b->number_of_reels(); ++i )
             {
-                TRACE("");
+                mrv::Reel r = b->reel_at( i );
+                if (!r) continue;
 
-                mrv::ImageBrowser* b = browser();
-                if ( b && !_idle_callback && CMedia::cache_active()  &&
-                     ( CMedia::preload_cache() ||
-                       uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+                mrv::media fg = r->media_at( frame() );
+                if (!fg) continue;
+
+                CMedia* img = fg->image();
+                if ( img && !img->is_cache_full() && !img->has_video() )
                 {
-                    _reel = b->number_of_reels();
-                    for ( unsigned i = 0; i < b->number_of_reels(); ++i )
-                    {
-                        mrv::Reel r = b->reel_at( i );
-                        if (!r) continue;
-
-                        mrv::media fg = r->media_at( frame() );
-                        if (!fg) continue;
-
-                        CMedia* img = fg->image();
-                        if ( img && !img->is_cache_full() && !img->has_video() )
-                        {
-                            _reel = i;
-                            break;
-                        }
-                    }
-
-                    if ( _reel < b->number_of_reels() )
-                        preload_cache_start();
+                    _reel = i;
+                    break;
                 }
-                else
-                {
-                    if ( _idle_callback && _reel >= b->number_of_reels() )
-                    {
-                       fltk::remove_idle( (fltk::TimeoutHandler)static_preload,
-                                          this );
-                        _idle_callback = false;
-                    }
-                }
-                timeout();
-                TRACE("");
-                return 1;
             }
-        case fltk::FOCUS:
+
+            if ( _reel < b->number_of_reels() )
+                preload_cache_start();
+        }
+        else
+        {
+            if ( _idle_callback && _reel >= b->number_of_reels() )
             {
-            if ( _wait )
+                fltk::remove_idle( (fltk::TimeoutHandler)static_preload,
+                                   this );
+                _idle_callback = false;
+            }
+        }
+        timeout();
+        TRACE("");
+        return 1;
+    }
+    case fltk::FOCUS:
+    {
+        if ( _wait )
+        {
+            window()->cursor( fltk::CURSOR_WAIT );
+        }
+        else
+        {
+            window()->cursor(fltk::CURSOR_CROSS);
+        }
+        TRACE("");
+        fltk::GlWindow::handle( event );
+        TRACE("");
+        return 1;
+    }
+    case fltk::ENTER:
+        TRACE("");
+        focus(this);
+        window()->cursor(fltk::CURSOR_CROSS);
+        TRACE("");
+        fltk::GlWindow::handle( event );
+        TRACE("");
+        return 1;
+    case fltk::UNFOCUS:
+    case fltk::LEAVE:
+        TRACE("");
+        window()->cursor(fltk::CURSOR_DEFAULT);
+        TRACE("");
+        fltk::GlWindow::handle( event );
+        TRACE("");
+        return 1;
+    case fltk::PUSH:
+        return leftMouseDown(fltk::event_x(), fltk::event_y());
+        break;
+    case fltk::RELEASE:
+        leftMouseUp(fltk::event_x(), fltk::event_y());
+        return 1;
+        break;
+    case fltk::MOVE:
+        TRACE("");
+        X = fltk::event_x();
+        Y = fltk::event_y();
+
+        if ( _wipe_dir != kNoWipe )
+        {
+            char buf[128];
+            switch( _wipe_dir )
             {
-                window()->cursor( fltk::CURSOR_WAIT );
+            case kWipeVertical:
+                _wipe = (float) fltk::event_x() / (float)w();
+                sprintf( buf, "WipeVertical %g", _wipe );
+                send_network( buf );
+                window()->cursor(fltk::CURSOR_WE);
+                break;
+            case kWipeHorizontal:
+                _wipe = (float) (h() - fltk::event_y()) / (float)h();
+                sprintf( buf, "WipeHorizontal %g", _wipe );
+                send_network( buf );
+                window()->cursor(fltk::CURSOR_NS);
+                break;
+            default:
+                break;
+            }
+            redraw();
+            return 1;
+        }
+
+        mouseMove(fltk::event_x(), fltk::event_y());
+
+        if ( _mode == kDraw || _mode == kErase )
+            redraw();
+
+        TRACE("");
+        fltk::GlWindow::handle( event );
+        TRACE("");
+        return 1;
+        break;
+    case fltk::DRAG:
+        X = fltk::event_x();
+        Y = fltk::event_y();
+        mouseDrag( int(X), int(Y) );
+        return 1;
+        break;
+        //     case fltk::SHORTCUT:
+    case fltk::KEY:
+        // lastX = fltk::event_x();
+        // lastY = fltk::event_y();
+        return keyDown(fltk::event_key());
+    case fltk::KEYUP:
+        return keyUp(fltk::event_key());
+    case fltk::MOUSEWHEEL:
+    {
+        if ( vr() )
+        {
+            float t = vr_angle();
+            t += fltk::event_dy();
+            vr_angle( t );
+        }
+        else
+        {
+            if ( fltk::event_dy() < 0.f )
+            {
+                zoom_under_mouse( _zoom * 2.0f,
+                                  fltk::event_x(), fltk::event_y() );
             }
             else
             {
-                window()->cursor(fltk::CURSOR_CROSS);
+                zoom_under_mouse( _zoom * 0.5f,
+                                  fltk::event_x(), fltk::event_y() );
             }
-                TRACE("");
-            fltk::GlWindow::handle( event );
-                TRACE("");
-            return 1;
-            }
-        case fltk::ENTER:
-                TRACE("");
-            focus(this);
-            window()->cursor(fltk::CURSOR_CROSS);
-                TRACE("");
-            fltk::GlWindow::handle( event );
-                TRACE("");
-            return 1;
-        case fltk::UNFOCUS:
-        case fltk::LEAVE:
-                TRACE("");
-            window()->cursor(fltk::CURSOR_DEFAULT);
-                TRACE("");
-            fltk::GlWindow::handle( event );
-                TRACE("");
-            return 1;
-        case fltk::PUSH:
-            return leftMouseDown(fltk::event_x(), fltk::event_y());
-            break;
-        case fltk::RELEASE:
-            leftMouseUp(fltk::event_x(), fltk::event_y());
-            return 1;
-            break;
-        case fltk::MOVE:
-                TRACE("");
-            X = fltk::event_x();
-            Y = fltk::event_y();
-
-            if ( _wipe_dir != kNoWipe )
-            {
-                char buf[128];
-                switch( _wipe_dir )
-                {
-                    case kWipeVertical:
-                        _wipe = (float) fltk::event_x() / (float)w();
-                        sprintf( buf, "WipeVertical %g", _wipe );
-                        send_network( buf );
-                        window()->cursor(fltk::CURSOR_WE);
-                        break;
-                    case kWipeHorizontal:
-                        _wipe = (float) (h() - fltk::event_y()) / (float)h();
-                        sprintf( buf, "WipeHorizontal %g", _wipe );
-                        send_network( buf );
-                        window()->cursor(fltk::CURSOR_NS);
-                        break;
-                    default:
-                        break;
-                }
-                redraw();
-                return 1;
-            }
-
-            mouseMove(fltk::event_x(), fltk::event_y());
-
-            if ( _mode == kDraw || _mode == kErase )
-                redraw();
-
-                TRACE("");
-            fltk::GlWindow::handle( event );
-                TRACE("");
-            return 1;
-            break;
-        case fltk::DRAG:
-            X = fltk::event_x();
-            Y = fltk::event_y();
-            mouseDrag( int(X), int(Y) );
-            return 1;
-            break;
-            //     case fltk::SHORTCUT:
-        case fltk::KEY:
-            // lastX = fltk::event_x();
-            // lastY = fltk::event_y();
-            return keyDown(fltk::event_key());
-        case fltk::KEYUP:
-            return keyUp(fltk::event_key());
-        case fltk::MOUSEWHEEL:
-            {
-                if ( vr() )
-                {
-                    float t = vr_angle();
-                    t += fltk::event_dy();
-                    vr_angle( t );
-                }
-                else
-                {
-                    if ( fltk::event_dy() < 0.f )
-                    {
-                        zoom_under_mouse( _zoom * 2.0f,
-                                          fltk::event_x(), fltk::event_y() );
-                    }
-                    else
-                    {
-                        zoom_under_mouse( _zoom * 0.5f,
-                                          fltk::event_x(), fltk::event_y() );
-                    }
-                }
-                return 1;
-                break;
-            }
-        case fltk::DND_ENTER:
-        case fltk::DND_LEAVE:
-        case fltk::DND_DRAG:
-        case fltk::DND_RELEASE:
-            return 1;
-        case fltk::PASTE:
-            browser()->handle_dnd();
-            return 1;
-        default:
-            return fltk::GlWindow::handle( event );
+        }
+        return 1;
+        break;
+    }
+    case fltk::DND_ENTER:
+    case fltk::DND_LEAVE:
+    case fltk::DND_DRAG:
+    case fltk::DND_RELEASE:
+        return 1;
+    case fltk::PASTE:
+        browser()->handle_dnd();
+        return 1;
+    default:
+        return fltk::GlWindow::handle( event );
     }
 
     return 0;
@@ -6741,19 +6786,19 @@ int ImageView::handle(int event)
  */
 void ImageView::refresh()
 {
-  mrv::media fg = foreground();
+    mrv::media fg = foreground();
 
-  if ( fg )
+    if ( fg )
     {
-      CMedia* img = fg->image();
-      img->refresh();
+        CMedia* img = fg->image();
+        img->refresh();
     }
 
-  mrv::media bg = background();
-  if ( bg )
+    mrv::media bg = background();
+    if ( bg )
     {
-      CMedia* img = bg->image();
-      img->refresh();
+        CMedia* img = bg->image();
+        img->refresh();
     }
 }
 
@@ -6808,8 +6853,8 @@ void ImageView::flush_image( mrv::media fg )
     {
         CMedia* img = fg->image();
         if ( img->is_sequence() &&
-             img->first_frame() != img->last_frame() &&
-             ( _engine->shader_type() == DrawEngine::kNone )  )
+                img->first_frame() != img->last_frame() &&
+                ( _engine->shader_type() == DrawEngine::kNone )  )
         {
             img->clear_cache();
             img->fetch(frame());
@@ -6932,14 +6977,14 @@ void ImageView::flush_caches()
  */
 void ImageView::smart_refresh()
 {
-  if ( !_engine ) return;
+    if ( !_engine ) return;
 
-  if ( _engine->shader_type() == DrawEngine::kNone )
+    if ( _engine->shader_type() == DrawEngine::kNone )
     {
-      refresh();
+        refresh();
     }
 
-  redraw();
+    redraw();
 }
 
 char* ImageView::get_layer_label( unsigned short c )
@@ -6996,44 +7041,44 @@ char* ImageView::get_layer_label( unsigned short c )
 
 void ImageView::channel( fltk::Widget* o )
 {
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-  unsigned short num = uiColorChannel->children();
-  unsigned short idx = 0;
-  bool found = false;
-  for ( unsigned short i = 0; i < num; ++i, ++idx )
-  {
-      fltk::Widget* w = uiColorChannel->child(i);
-      if ( w == o ) {
-          found = true;
-          break;
-      }
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    unsigned short num = uiColorChannel->children();
+    unsigned short idx = 0;
+    bool found = false;
+    for ( unsigned short i = 0; i < num; ++i, ++idx )
+    {
+        fltk::Widget* w = uiColorChannel->child(i);
+        if ( w == o ) {
+            found = true;
+            break;
+        }
 
-      if ( w->is_group() )
-      {
-          fltk::Group* g = (fltk::Group*) w;
-          unsigned short numc = g->children();
-          for ( unsigned short j = 0; j < numc; ++j )
-          {
-              ++idx;
-              w = g->child(j);
-              if ( w == o )
-              {
-                  found = true;
-                  break;
-              }
-          }
-      }
-      if ( found ) break;
-  }
+        if ( w->is_group() )
+        {
+            fltk::Group* g = (fltk::Group*) w;
+            unsigned short numc = g->children();
+            for ( unsigned short j = 0; j < numc; ++j )
+            {
+                ++idx;
+                w = g->child(j);
+                if ( w == o )
+                {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if ( found ) break;
+    }
 
 
-  if ( !found )
-  {
-      LOG_ERROR( "Widget " << o->label() << " not found" );
-      return;
-  }
+    if ( !found )
+    {
+        LOG_ERROR( "Widget " << o->label() << " not found" );
+        return;
+    }
 
-  channel( idx );
+    channel( idx );
 }
 
 /**
@@ -7043,179 +7088,179 @@ void ImageView::channel( fltk::Widget* o )
  */
 void ImageView::channel( unsigned short c )
 {
-  boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
+    boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
 
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-  unsigned short num = uiColorChannel->children();
-  if ( num == 0 ) return; // Audio only - no channels
-
-
-  unsigned short idx = 0;
-  for ( unsigned short i = 0; i < num; ++i, ++idx )
-  {
-      fltk::Widget* w = uiColorChannel->child(i);
-      if ( w->is_group() )
-      {
-          fltk::Group* g = (fltk::Group*) w;
-          idx += g->children();
-      }
-  }
-
-  if ( c >= idx )
-  {
-      c = 0;
-      const char* lbl = uiColorChannel->label();
-      if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
-      {
-          num = uiColorChannel->children();
-          for ( unsigned short i = 0; i < num; ++i, ++c )
-          {
-              fltk::Widget* w = uiColorChannel->child(i);
-              if ( strcmp( w->label(), lbl ) == 0 ) break;
-              if ( w->is_group() )
-              {
-                  fltk::Group* g = (fltk::Group*) w;
-                  unsigned n = g->children();
-                  for ( unsigned j = 0; j < n; ++j, ++c )
-                  {
-                      w = g->child(j);
-                      if ( strcmp( w->label(), lbl ) == 0 ) break;
-                  }
-              }
-          }
-      }
-
-      if ( c >= idx )
-      {
-          LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum: " )
-                     << idx );
-          return;
-      }
-  }
-
-  // If user selected the same channel again, toggle it with
-  // other channel (diffuse.r goes to diffuse, for example)
-  const mrv::media& fg = foreground();
-  if ( c == _channel && fg && _old_fg == fg->image() && network_send() ) {
-      c = _old_channel;
-  }
-  _old_channel = _channel;
-
-  if ( fg )
-      _old_fg = fg->image();
-  else
-      _old_fg = NULL;
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    unsigned short num = uiColorChannel->children();
+    if ( num == 0 ) return; // Audio only - no channels
 
 
-  char* lbl = get_layer_label( c );
-  if ( !lbl ) return;
-
-  _channel = c;
-
-
-  char buf[128];
-  sprintf( buf, "Channel %d %s", c, lbl );
-  send_network( buf );
-
-  std::string channelName( lbl );
-
-  static std::string oldChannel;
-
-  std::string ext = channelName;
-  std::string oext = oldChannel;
-
-
-
-  size_t pos = ext.rfind('.');
-  size_t pos2 = oext.rfind('.');
-
-  // Get ext from channel
-  if ( pos != std::string::npos && pos != ext.size() )
-  {
-     ext = ext.substr( pos+1, ext.size() );
-  }
-
-  // Get old ext from channel
-  if ( pos2 != std::string::npos && pos2 != oext.size() )
-  {
-     oext = oext.substr( pos2+1, oext.size() );
-  }
-
-  // Get suffix from label
-  std::string x = lbl;
-  size_t loc = x.find( '.' );
-  if ( x[0] == '#' && loc != std::string::npos && loc != x.size() )
-  {
-      x = x.substr( loc+1, x.size() );
-  }
-
-  uiColorChannel->value( c );
-  uiColorChannel->copy_label( x.c_str() );
-  uiColorChannel->redraw();
-
-  std::transform( ext.begin(), ext.end(), ext.begin(),
-                  (int(*)(int))toupper );
-
-
-  _channelType = kRGB;
-  if ( channelName == _("Alpha Overlay") )
+    unsigned short idx = 0;
+    for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
-      _channelType = kAlphaOverlay;
-    }
-  else if ( channelName == _("Red") || ext == N_("R") || ext == N_("X") ||
-            ext == N_("U") || ext == N_("S") )
-    {
-      _channelType = kRed;
-    }
-  else if ( channelName == _("Green") || ext == N_("G") || ext == N_("Y") ||
-            ext == N_("V") || ext == N_("T") )
-    {
-      _channelType = kGreen;
-    }
-  else if ( channelName == _("Blue")  || ext == N_("B") || ext == N_("Z") ||
-            ext == N_("W") )
-    {
-      _channelType = kBlue;
-    }
-  else if ( channelName == _("Alpha") || ext == N_("A") )
-    {
-      _channelType = kAlpha;
-    }
-  else if ( channelName == _("Lumma") )
-    {
-      _channelType = kLumma;
+        fltk::Widget* w = uiColorChannel->child(i);
+        if ( w->is_group() )
+        {
+            fltk::Group* g = (fltk::Group*) w;
+            idx += g->children();
+        }
     }
 
+    if ( c >= idx )
+    {
+        c = 0;
+        const char* lbl = uiColorChannel->label();
+        if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
+        {
+            num = uiColorChannel->children();
+            for ( unsigned short i = 0; i < num; ++i, ++c )
+            {
+                fltk::Widget* w = uiColorChannel->child(i);
+                if ( strcmp( w->label(), lbl ) == 0 ) break;
+                if ( w->is_group() )
+                {
+                    fltk::Group* g = (fltk::Group*) w;
+                    unsigned n = g->children();
+                    for ( unsigned j = 0; j < n; ++j, ++c )
+                    {
+                        w = g->child(j);
+                        if ( strcmp( w->label(), lbl ) == 0 ) break;
+                    }
+                }
+            }
+        }
 
-  mrv::media bg = background();
+        if ( c >= idx )
+        {
+            LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum: " )
+                       << idx );
+            return;
+        }
+    }
 
-  {
-      if ( fg ) fg->image()->channel( lbl );
-      if ( bg ) bg->image()->channel( lbl );
-  }
+    // If user selected the same channel again, toggle it with
+    // other channel (diffuse.r goes to diffuse, for example)
+    const mrv::media& fg = foreground();
+    if ( c == _channel && fg && _old_fg == fg->image() && network_send() ) {
+        c = _old_channel;
+    }
+    _old_channel = _channel;
 
-  update_image_info();
+    if ( fg )
+        _old_fg = fg->image();
+    else
+        _old_fg = NULL;
 
-  // We must send the full channel name
-  update_shortcuts( fg, channelName.c_str() );
 
-  oldChannel = channelName;
-  free( lbl );
+    char* lbl = get_layer_label( c );
+    if ( !lbl ) return;
 
-  // When changing channels, the cache may get thrown away.  Reflect that
-  // in the timeline.
-  timeline()->redraw();
-  if ( _reel >= browser()->number_of_reels() ) _reel = 0;
-  _preframe = frame();
+    _channel = c;
 
-  smart_refresh();
+
+    char buf[128];
+    sprintf( buf, "Channel %d %s", c, lbl );
+    send_network( buf );
+
+    std::string channelName( lbl );
+
+    static std::string oldChannel;
+
+    std::string ext = channelName;
+    std::string oext = oldChannel;
+
+
+
+    size_t pos = ext.rfind('.');
+    size_t pos2 = oext.rfind('.');
+
+    // Get ext from channel
+    if ( pos != std::string::npos && pos != ext.size() )
+    {
+        ext = ext.substr( pos+1, ext.size() );
+    }
+
+    // Get old ext from channel
+    if ( pos2 != std::string::npos && pos2 != oext.size() )
+    {
+        oext = oext.substr( pos2+1, oext.size() );
+    }
+
+    // Get suffix from label
+    std::string x = lbl;
+    size_t loc = x.find( '.' );
+    if ( x[0] == '#' && loc != std::string::npos && loc != x.size() )
+    {
+        x = x.substr( loc+1, x.size() );
+    }
+
+    uiColorChannel->value( c );
+    uiColorChannel->copy_label( x.c_str() );
+    uiColorChannel->redraw();
+
+    std::transform( ext.begin(), ext.end(), ext.begin(),
+                    (int(*)(int))toupper );
+
+
+    _channelType = kRGB;
+    if ( channelName == _("Alpha Overlay") )
+    {
+        _channelType = kAlphaOverlay;
+    }
+    else if ( channelName == _("Red") || ext == N_("R") || ext == N_("X") ||
+              ext == N_("U") || ext == N_("S") )
+    {
+        _channelType = kRed;
+    }
+    else if ( channelName == _("Green") || ext == N_("G") || ext == N_("Y") ||
+              ext == N_("V") || ext == N_("T") )
+    {
+        _channelType = kGreen;
+    }
+    else if ( channelName == _("Blue")  || ext == N_("B") || ext == N_("Z") ||
+              ext == N_("W") )
+    {
+        _channelType = kBlue;
+    }
+    else if ( channelName == _("Alpha") || ext == N_("A") )
+    {
+        _channelType = kAlpha;
+    }
+    else if ( channelName == _("Lumma") )
+    {
+        _channelType = kLumma;
+    }
+
+
+    mrv::media bg = background();
+
+    {
+        if ( fg ) fg->image()->channel( lbl );
+        if ( bg ) bg->image()->channel( lbl );
+    }
+
+    update_image_info();
+
+    // We must send the full channel name
+    update_shortcuts( fg, channelName.c_str() );
+
+    oldChannel = channelName;
+    free( lbl );
+
+    // When changing channels, the cache may get thrown away.  Reflect that
+    // in the timeline.
+    timeline()->redraw();
+    if ( _reel >= browser()->number_of_reels() ) _reel = 0;
+    _preframe = frame();
+
+    smart_refresh();
 }
 
 void ImageView::refresh_fstop() const
 {
-  float exposure = calculate_exposure();
-  float fstop = calculate_fstop( exposure );
-  set_fstop_display( exposure, fstop );
+    float exposure = calculate_exposure();
+    float fstop = calculate_fstop( exposure );
+    set_fstop_display( exposure, fstop );
 }
 
 /**
@@ -7225,21 +7270,21 @@ void ImageView::refresh_fstop() const
  */
 void ImageView::gain( const float f )
 {
-  if ( _gain == f ) return;
+    if ( _gain == f ) return;
 
-  _gain = f;
+    _gain = f;
 
-  char buf[256];
-  sprintf( buf, "Gain %g", f );
-  send_network( buf );
+    char buf[256];
+    sprintf( buf, "Gain %g", f );
+    send_network( buf );
 
-  uiMain->uiGain->value( f );
-  uiMain->uiGainInput->value( f );
+    uiMain->uiGain->value( f );
+    uiMain->uiGainInput->value( f );
 
-  refresh_fstop();
-  flush_caches();
-  smart_refresh();
-  update_color_info();
+    refresh_fstop();
+    flush_caches();
+    smart_refresh();
+    update_color_info();
 }
 
 
@@ -7250,27 +7295,27 @@ void ImageView::gain( const float f )
  */
 void ImageView::gamma( const float f )
 {
-  if ( _gamma == f ) return;
+    if ( _gamma == f ) return;
 
-  _gamma = f;
+    _gamma = f;
 
-  mrv::media fg = foreground();
-  if ( fg )
-  {
-      DBG(  "gamma " << f );
-      fg->image()->gamma( f );
+    mrv::media fg = foreground();
+    if ( fg )
+    {
+        DBG(  "gamma " << f );
+        fg->image()->gamma( f );
 
-      char buf[256];
-      sprintf( buf, "Gamma %g", f );
-      send_network( buf );
+        char buf[256];
+        sprintf( buf, "Gamma %g", f );
+        send_network( buf );
 
-      uiMain->uiGamma->value( f );
-      uiMain->uiGammaInput->value( f );
+        uiMain->uiGamma->value( f );
+        uiMain->uiGammaInput->value( f );
 
-     flush_caches();
-     smart_refresh();
-     update_color_info();
-  }
+        flush_caches();
+        smart_refresh();
+        update_color_info();
+    }
 }
 
 
@@ -7282,26 +7327,26 @@ void ImageView::gamma( const float f )
 void ImageView::zoom( float z )
 {
 
-  if ( z > kMaxZoom || z < kMinZoom ) return;
+    if ( z > kMaxZoom || z < kMinZoom ) return;
 
-  static char tmp[128];
-  if ( z >= 1.0f )
+    static char tmp[128];
+    if ( z >= 1.0f )
     {
-      sprintf( tmp, "x%.2g", z );
+        sprintf( tmp, "x%.2g", z );
     }
-  else
+    else
     {
-      sprintf( tmp, "1/%.3g", 1/z );
+        sprintf( tmp, "1/%.3g", 1/z );
     }
-  uiMain->uiZoom->label( tmp );
-  uiMain->uiZoom->redraw();
+    uiMain->uiZoom->label( tmp );
+    uiMain->uiZoom->redraw();
 
-  char buf[128];
-  sprintf( buf, "Zoom %g", z );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "Zoom %g", z );
+    send_network( buf );
 
-  _zoom = z;
-  redraw();
+    _zoom = z;
+    redraw();
 }
 
 
@@ -7314,107 +7359,107 @@ void ImageView::zoom( float z )
  */
 float ImageView::calculate_fstop( float exposure ) const
 {
-  float base = 3.0f; // for exposure 0 = f/8
+    float base = 3.0f; // for exposure 0 = f/8
 
-  float seq1, seq2;
+    float seq1, seq2;
 
-  // Chack if image has an F Stop or Aperture ATTRIBUTES attribute
-  mrv::media fg = foreground();
-  if ( fg )
+    // Chack if image has an F Stop or Aperture ATTRIBUTES attribute
+    mrv::media fg = foreground();
+    if ( fg )
     {
-      CMedia* img = fg->image();
+        CMedia* img = fg->image();
 
-      CMedia::Attributes& attrs = img->attributes();
-      CMedia::Attributes::const_iterator i = attrs.find( N_("F Number") );
-      if ( i == attrs.end() )
-      {
-          i = attrs.find( N_("Aperture Value") );
-      }
+        CMedia::Attributes& attrs = img->attributes();
+        CMedia::Attributes::const_iterator i = attrs.find( N_("F Number") );
+        if ( i == attrs.end() )
+        {
+            i = attrs.find( N_("Aperture Value") );
+        }
 
-      if ( i != attrs.end() )
-      {
-          float exp = 1.0f;
-          {
-              Imf::RationalAttribute* attr =
-              dynamic_cast< Imf::RationalAttribute* >( i->second );
-              if ( attr )
-              {
-                  Imf::Rational& r = attr->value();
+        if ( i != attrs.end() )
+        {
+            float exp = 1.0f;
+            {
+                Imf::RationalAttribute* attr =
+                    dynamic_cast< Imf::RationalAttribute* >( i->second );
+                if ( attr )
+                {
+                    Imf::Rational& r = attr->value();
 
-                  exp = (float) r.n / (float) r.d;
-              }
-          }
-          {
-              Imf::StringAttribute* attr =
-              dynamic_cast< Imf::StringAttribute* >( i->second );
-              if ( attr )
-              {
-                  int n = 8;
-                  unsigned d = 1;
-                  int num = sscanf( attr->value().c_str(), "%d / %d", &n, &d );
-                  if ( num == 2 ) exp = (float) n / (float) d;
-              }
-          }
-          seq1 = seq2 = 0.0f;
-          base = 0.0f;
+                    exp = (float) r.n / (float) r.d;
+                }
+            }
+            {
+                Imf::StringAttribute* attr =
+                    dynamic_cast< Imf::StringAttribute* >( i->second );
+                if ( attr )
+                {
+                    int n = 8;
+                    unsigned d = 1;
+                    int num = sscanf( attr->value().c_str(), "%d / %d", &n, &d );
+                    if ( num == 2 ) exp = (float) n / (float) d;
+                }
+            }
+            seq1 = seq2 = 0.0f;
+            base = 0.0f;
 
-          for ( ; seq1 < exp && seq2 < exp; base += 1.0f )
-          {
-              seq1 = Imath::Math<float>::pow( 2.0f, base+1);
-              seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, base);
-          }
+            for ( ; seq1 < exp && seq2 < exp; base += 1.0f )
+            {
+                seq1 = Imath::Math<float>::pow( 2.0f, base+1);
+                seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, base);
+            }
 
-          float t = seq1 - exp;
-          if ( fabs(t) < fabs(seq2 - exp) )
-          {
-              exposure += t / fabs(seq2 - seq1);
-          }
-          else
-          {
-              --base;
-              seq1 = Imath::Math<float>::pow( 2.0f, base);
+            float t = seq1 - exp;
+            if ( fabs(t) < fabs(seq2 - exp) )
+            {
+                exposure += t / fabs(seq2 - seq1);
+            }
+            else
+            {
+                --base;
+                seq1 = Imath::Math<float>::pow( 2.0f, base);
 
-              t = fabs(seq2 - exp);
-              if ( t >= fabs(seq1 - exp) )
-              {
-                  t = fabs(seq1-exp) / fabs(seq2 - seq1);
-              }
-              else
-              {
-                  t = 1.0f - t / fabs(seq2 - seq1);
-              }
-              exposure -= t;
-          }
-      }
+                t = fabs(seq2 - exp);
+                if ( t >= fabs(seq1 - exp) )
+                {
+                    t = fabs(seq1-exp) / fabs(seq2 - seq1);
+                }
+                else
+                {
+                    t = 1.0f - t / fabs(seq2 - seq1);
+                }
+                exposure -= t;
+            }
+        }
     }
 
 
-  // F-stop progression = 1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32, 44, 64
-  //
-  // can be described as a lerp between two sequences:
-  //
-  //     v:   0    1    2   3   4   5   6
-  //  seq1:   1,   2,   4,  8, 16, 32, 64
-  //  seq2: 1.4, 2.8, 5.6, 11, 22, 44, 88   -- .5 bases
+    // F-stop progression = 1, 1.4, 2, 2.8, 4, 5.6, 8, 11, 16, 22, 32, 44, 64
+    //
+    // can be described as a lerp between two sequences:
+    //
+    //     v:   0    1    2   3   4   5   6
+    //  seq1:   1,   2,   4,  8, 16, 32, 64
+    //  seq2: 1.4, 2.8, 5.6, 11, 22, 44, 88   -- .5 bases
 
-  float e = exposure * 0.5f;
-  float v = (float) base + (float) int( -e );
+    float e = exposure * 0.5f;
+    float v = (float) base + (float) int( -e );
 
-  float f = Imath::Math<float>::fmod( fabs(exposure), 2.0f );
-  if ( exposure >= 0 )
+    float f = Imath::Math<float>::fmod( fabs(exposure), 2.0f );
+    if ( exposure >= 0 )
     {
-      seq1 = 1.0f * Imath::Math<float>::pow( 2.0f, v);    // 8
-      seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, v-1);  // 5.6
+        seq1 = 1.0f * Imath::Math<float>::pow( 2.0f, v);    // 8
+        seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, v-1);  // 5.6
     }
-  else
+    else
     {
-      seq1 = 1.0f * Imath::Math<float>::pow( 2.0f, v);  // 8
-      seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, v);  // 11
+        seq1 = 1.0f * Imath::Math<float>::pow( 2.0f, v);  // 8
+        seq2 = 1.4f * Imath::Math<float>::pow( 2.0f, v);  // 11
     }
 
 
-  float fstop = seq1 * (1-f) + f * seq2;
-  return fstop;
+    float fstop = seq1 * (1-f) + f * seq2;
+    return fstop;
 }
 
 
@@ -7426,9 +7471,9 @@ float ImageView::calculate_fstop( float exposure ) const
  */
 float ImageView::calculate_exposure() const
 {
-  float exposure = ( Imath::Math<float>::log(_gain) /
-                     Imath::Math<float>::log(2.0f) );
-  return exposure;
+    float exposure = ( Imath::Math<float>::log(_gain) /
+                       Imath::Math<float>::log(2.0f) );
+    return exposure;
 }
 
 
@@ -7440,10 +7485,10 @@ float ImageView::calculate_exposure() const
  */
 void ImageView::set_fstop_display( float exposure, float fstop ) const
 {
-  char m[64];
-  sprintf( m, "%1.1f  f/%1.1f", exposure, fstop );
-  uiMain->uiFstop->copy_label( m );
-  uiMain->uiFstop->redraw();
+    char m[64];
+    sprintf( m, "%1.1f  f/%1.1f", exposure, fstop );
+    uiMain->uiFstop->copy_label( m );
+    uiMain->uiFstop->redraw();
 }
 
 
@@ -7454,14 +7499,14 @@ void ImageView::set_fstop_display( float exposure, float fstop ) const
  */
 void ImageView::exposure_change( float d )
 {
-  float exposure = calculate_exposure() + d;
-  gain( Imath::Math<float>::pow( 2.0f, exposure ) );
-  uiMain->uiGain->value( _gain );
-  uiMain->uiGainInput->value( _gain );
+    float exposure = calculate_exposure() + d;
+    gain( Imath::Math<float>::pow( 2.0f, exposure ) );
+    uiMain->uiGain->value( _gain );
+    uiMain->uiGainInput->value( _gain );
 
-  char buf[64];
-  sprintf( buf, "Gain %g", _gain );
-  uiMain->uiView->send_network( buf );
+    char buf[64];
+    sprintf( buf, "Gain %g", _gain );
+    uiMain->uiView->send_network( buf );
 }
 
 
@@ -7476,54 +7521,54 @@ void ImageView::exposure_change( float d )
 void ImageView::zoom_under_mouse( float z, int x, int y )
 {
     if ( !vr() && (z == _zoom || z > kMaxZoom || z < kMinZoom) ) return;
-  double mw = (double) w() / 2;
-  double mh = (double) h() / 2;
-  double offx = mw - x;
-  double offy = mh - y;
-  double xf = (double) x;
-  double yf = (double) y;
+    double mw = (double) w() / 2;
+    double mh = (double) h() / 2;
+    double offx = mw - x;
+    double offy = mh - y;
+    double xf = (double) x;
+    double yf = (double) y;
 
-  mrv::media fg = foreground();
-  if ( ! fg ) {
+    mrv::media fg = foreground();
+    if ( ! fg ) {
+        zoom( z );
+        return;
+    }
+
+    CMedia* img = fg->image();
+
+    const mrv::Recti& dpw = img->display_window();
+
+    int W = dpw.w();
+    int H = dpw.h();
+
+    image_coordinates( img, xf, yf );
+
+
     zoom( z );
-    return;
-  }
 
-  CMedia* img = fg->image();
+    int w2 = W / 2;
+    int h2 = H / 2;
 
-  const mrv::Recti& dpw = img->display_window();
+    xoffset = w2 - xf;
+    yoffset = h2 - ( H - yf );
+    xoffset -= (offx / _zoom);
+    double ratio = 1.0f;
+    if ( _showPixelRatio ) ratio = img->pixel_ratio();
+    yoffset += (offy / _zoom * ratio);
 
-  int W = dpw.w();
-  int H = dpw.h();
+    char buf[128];
+    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+    send_network( buf );
 
-  image_coordinates( img, xf, yf );
-
-
-  zoom( z );
-
-  int w2 = W / 2;
-  int h2 = H / 2;
-
-  xoffset = w2 - xf;
-  yoffset = h2 - ( H - yf );
-  xoffset -= (offx / _zoom);
-  double ratio = 1.0f;
-  if ( _showPixelRatio ) ratio = img->pixel_ratio();
-  yoffset += (offy / _zoom * ratio);
-
-  char buf[128];
-  sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send_network( buf );
-
-  mouseMove( x, y );
+    mouseMove( x, y );
 }
 
 
 double ImageView::pixel_ratio() const
 {
-  mrv::media fg = foreground();
-  if ( !fg ) return 1.0f;
-  return fg->image()->pixel_ratio();
+    mrv::media fg = foreground();
+    if ( !fg ) return 1.0f;
+    return fg->image()->pixel_ratio();
 }
 
 int ImageView::update_shortcuts( const mrv::media& fg,
@@ -7636,10 +7681,10 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // when in Stereo, but then they are not called that.
         if ( v >= 0 || name == _("Color") || chx == "N" || chx == "Z" )
         {
-           // If we have a shortcut and it isn't in the list of shortcuts
+            // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
-                 shortcuts.end())
+                    shortcuts.end())
             {
                 // std::cerr << "add shortcut " << (char) shortcut << " v: "
                 //        << v << " name " << name << " ch " << ch << std::endl;
@@ -7720,7 +7765,7 @@ void ImageView::foreground( mrv::media fg )
 
         double fps = img->fps();
         if ( img->is_sequence() &&
-             uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
+                uiMain->uiPrefs->uiPrefsOverrideFPS->value() )
         {
             fps = uiMain->uiPrefs->uiPrefsFPS->value();
             img->fps( fps );
@@ -7762,10 +7807,10 @@ void ImageView::foreground( mrv::media fg )
 
         if ( img )
         {
-	    if ( ! img->is_cache_full() && !_idle_callback &&
-		 CMedia::cache_active() && CMedia::preload_cache() )
-		preload_cache_start();
-	  
+            if ( ! img->is_cache_full() && !_idle_callback &&
+                    CMedia::cache_active() && CMedia::preload_cache() )
+                preload_cache_start();
+
             // char buf[1024];
             // sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
             //          img->fileroot(), img->first_frame(), img->last_frame() );
@@ -7842,7 +7887,7 @@ void ImageView::foreground( mrv::media fg )
     update_title_bar( this );
     update_image_info();
     update_color_info( fg );
-    
+
     //if (_engine && valid() ) _engine->refresh_shaders();
 
     redraw();
@@ -7855,23 +7900,23 @@ void ImageView::foreground( mrv::media fg )
  */
 void ImageView::refresh_audio_tracks() const
 {
-  mrv::media fg = foreground();
-  if ( ! fg ) return;
+    mrv::media fg = foreground();
+    if ( ! fg ) return;
 
-  CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
-  uiMain->uiAudioTracks->clear();
-  size_t numTracks = img->number_of_audio_streams();
+    uiMain->uiAudioTracks->clear();
+    size_t numTracks = img->number_of_audio_streams();
 
-  for ( size_t i = 0; i < numTracks; ++i )
+    for ( size_t i = 0; i < numTracks; ++i )
     {
-      char buf[80];
-      sprintf( buf, "Track #%02ld", i );
-      uiMain->uiAudioTracks->add( buf );
+        char buf[80];
+        sprintf( buf, "Track #%02ld", i );
+        uiMain->uiAudioTracks->add( buf );
     }
-  uiMain->uiAudioTracks->add( "<no audio>" );
-  uiMain->uiAudioTracks->value( img->audio_stream() );
-  uiMain->uiAudioTracks->redraw();
+    uiMain->uiAudioTracks->add( "<no audio>" );
+    uiMain->uiAudioTracks->value( img->audio_stream() );
+    uiMain->uiAudioTracks->redraw();
 }
 
 /// Change audio stream
@@ -7926,46 +7971,46 @@ void ImageView::audio_stream( unsigned int idx )
  */
 void ImageView::background( mrv::media bg )
 {
-  mrv::media old = background();
-  if ( old == bg ) return;
+    mrv::media old = background();
+    if ( old == bg ) return;
 
 
-  char buf[1024];
+    char buf[1024];
 
-  _bg = bg;
+    _bg = bg;
 
-  update_title_bar( this );
+    update_title_bar( this );
 
-  if ( bg )
+    if ( bg )
     {
-	CMedia* img = bg->image();
+        CMedia* img = bg->image();
 
-	sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
-		 img->fileroot(), img->first_frame(), img->last_frame() );
-	send_network( buf );
+        sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
+                 img->fileroot(), img->first_frame(), img->last_frame() );
+        send_network( buf );
 
 
-	img->refresh();
+        img->refresh();
 
-	if ( img->is_sequence() )
-	    img->play_fps( fps() );
+        if ( img->is_sequence() )
+            img->play_fps( fps() );
 
-	img->image_damage( img->image_damage() | CMedia::kDamageLut );
+        img->image_damage( img->image_damage() | CMedia::kDamageLut );
 
-	
-	if ( dynamic_cast< stubImage* >( img ) )
+
+        if ( dynamic_cast< stubImage* >( img ) )
         {
-	    create_timeout( 0.2 );
+            create_timeout( 0.2 );
         }
     }
-  else
-  {
-      sprintf( buf, "CurrentBGImage \"\"" );
-      send_network( buf );
-  }
+    else
+    {
+        sprintf( buf, "CurrentBGImage \"\"" );
+        send_network( buf );
+    }
 
 //   _BGpixelSize = 0;
-  redraw();
+    redraw();
 }
 
 
@@ -7975,85 +8020,102 @@ void ImageView::background( mrv::media bg )
  */
 void ImageView::resize_main_window()
 {
-  int w, h;
-  mrv::media fg = foreground();
-  if ( !fg )
+    int w, h;
+    mrv::media fg = foreground();
+    if ( !fg )
     {
-      w = 640; h = 480;
+        w = 640;
+        h = 480;
     }
-  else
+    else
     {
-      const CMedia* img = fg->image();
+        const CMedia* img = fg->image();
 
-      w = img->width();
-      h = img->height();
-      h = (int) (h / img->pixel_ratio());
+        w = img->width();
+        h = img->height();
+        h = (int) (h / img->pixel_ratio());
     }
 
-  if ( uiMain->uiTopBar->visible() )
-    h += uiMain->uiTopBar->h();
+    if ( uiMain->uiTopBar->visible() )
+        h += uiMain->uiTopBar->h();
 
-  if ( uiMain->uiPixelBar->visible() )
-    h += uiMain->uiPixelBar->h();
+    if ( uiMain->uiPixelBar->visible() )
+        h += uiMain->uiPixelBar->h();
 
-  if ( uiMain->uiBottomBar->visible() )
-    h += uiMain->uiBottomBar->h();
+    if ( uiMain->uiBottomBar->visible() )
+        h += uiMain->uiBottomBar->h();
 
-  PreferencesUI* uiPrefs = uiMain->uiPrefs;
-  if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
-  {
-      posX = (int) uiPrefs->uiWindowXPosition->value();
-      posY = (int) uiPrefs->uiWindowYPosition->value();
-  }
+    PreferencesUI* uiPrefs = uiMain->uiPrefs;
+    if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
+    {
+        posX = (int) uiPrefs->uiWindowXPosition->value();
+        posY = (int) uiPrefs->uiWindowYPosition->value();
+    }
 
-  if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
-  {
-      w = (int) uiPrefs->uiWindowXSize->value();
-      h = (int) uiPrefs->uiWindowYSize->value();
-  }
+    if ( uiPrefs && uiPrefs->uiWindowFixedSize->value() )
+    {
+        w = (int) uiPrefs->uiWindowXSize->value();
+        h = (int) uiPrefs->uiWindowYSize->value();
+    }
 
 #ifdef _WIN32
-  const unsigned kBorders = 8;
-  const unsigned kMenus = 30;
+    const unsigned kBorders = 8;
+    const unsigned kMenus = 30;
 #else
-  const unsigned kBorders = 0;
-  const unsigned kMenus = 30;
+    const unsigned kBorders = 0;
+    const unsigned kMenus = 30;
 #endif
 
-  fltk::Monitor monitor = fltk::Monitor::find( posX, posY );
-  int minx = monitor.work.x() + kBorders;
-  int miny = monitor.work.y() + kMenus;
-  int maxh = monitor.work.h() - kMenus - 6;
+    fltk::Monitor monitor = fltk::Monitor::find( posX, posY );
+    int minx = monitor.work.x() + kBorders;
+    int miny = monitor.work.y() + kMenus;
+    int maxh = monitor.work.h() - kMenus - 6;
 #ifdef LINUX
-  maxh -= kMenus * 2;
+    maxh -= kMenus * 2;
 #endif
-  int maxw = monitor.work.w() - kBorders * 2;
-  int maxx = minx + maxw;
-  int maxy = miny + maxh;
+    int maxw = monitor.work.w() - kBorders * 2;
+    int maxx = minx + maxw;
+    int maxy = miny + maxh;
 
-  bool fit = false;
+    bool fit = false;
 
-  if ( w > maxw ) { fit = true; w = maxw; }
-  if ( h > maxh ) { fit = true; h = maxh; }
+    if ( w > maxw ) {
+        fit = true;
+        w = maxw;
+    }
+    if ( h > maxh ) {
+        fit = true;
+        h = maxh;
+    }
 
-  if ( posX + w > maxx ) { posX = ( w + posX - maxw ) / 2; }
-  if ( posX + w > maxx ) { posX = minx; w = maxw; }
-  if ( posX < minx )     posX = minx;
+    if ( posX + w > maxx ) {
+        posX = ( w + posX - maxw ) / 2;
+    }
+    if ( posX + w > maxx ) {
+        posX = minx;
+        w = maxw;
+    }
+    if ( posX < minx )     posX = minx;
 
-  if ( posY + h > maxy ) { posY = ( h + posY - maxh ) / 2; }
-  if ( posY + h > maxy ) { posY = miny; h = maxh; }
-  if ( posY < miny )     posY = miny;
+    if ( posY + h > maxy ) {
+        posY = ( h + posY - maxh ) / 2;
+    }
+    if ( posY + h > maxy ) {
+        posY = miny;
+        h = maxh;
+    }
+    if ( posY < miny )     posY = miny;
 
-  if ( w < 640 )  w = 640;
-  if ( h < 535 )  h = 535;
+    if ( w < 640 )  w = 640;
+    if ( h < 535 )  h = 535;
 
-  fltk_main()->fullscreen_off( posX, posY, w, h );
-  fltk_main()->resize( posX, posY, w, h );
+    fltk_main()->fullscreen_off( posX, posY, w, h );
+    fltk_main()->resize( posX, posY, w, h );
 #ifdef LINUX
-  fltk_main()->show();
+    fltk_main()->show();
 #endif
 
-  if ( fit ) fit_image();
+    if ( fit ) fit_image();
 
 }
 
@@ -8071,29 +8133,29 @@ void ImageView::toggle_background()
 
 void ImageView::data_window( const bool b )
 {
-  _dataWindow = b;
+    _dataWindow = b;
 
-  char buf[128];
-  sprintf( buf, "DataWindow %d", (int)b );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "DataWindow %d", (int)b );
+    send_network( buf );
 }
 
 void ImageView::display_window( const bool b )
 {
-  _displayWindow = b;
+    _displayWindow = b;
 
-  char buf[128];
-  sprintf( buf, "DisplayWindow %d", (int)b );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "DisplayWindow %d", (int)b );
+    send_network( buf );
 }
 
 void ImageView::safe_areas( const bool b )
 {
-  _safeAreas = b;
+    _safeAreas = b;
 
-  char buf[128];
-  sprintf( buf, "SafeAreas %d", (int)b );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "SafeAreas %d", (int)b );
+    send_network( buf );
 }
 
 /**
@@ -8102,40 +8164,40 @@ void ImageView::safe_areas( const bool b )
  */
 bool ImageView::normalize() const
 {
-  return (bool) uiMain->uiNormalize->value();
+    return (bool) uiMain->uiNormalize->value();
 }
 
 void ImageView::normalize( const bool normalize)
 {
-   _normalize = normalize;
-   uiMain->uiNormalize->state( normalize );
+    _normalize = normalize;
+    uiMain->uiNormalize->state( normalize );
 
-   char buf[128];
-   sprintf( buf, "Normalize %d", (int) _normalize );
-   send_network( buf );
+    char buf[128];
+    sprintf( buf, "Normalize %d", (int) _normalize );
+    send_network( buf );
 
-   damage_contents();
+    damage_contents();
 }
 
 void ImageView::damage_contents()
 {
-  mrv::media fg = foreground();
+    mrv::media fg = foreground();
 
-  if (fg)
+    if (fg)
     {
-      CMedia* img = fg->image();
-      img->image_damage( img->image_damage() | CMedia::kDamageContents |
-			 CMedia::kDamageLut );
-      redraw();
+        CMedia* img = fg->image();
+        img->image_damage( img->image_damage() | CMedia::kDamageContents |
+                           CMedia::kDamageLut );
+        redraw();
     }
 
-  mrv::media bg = background();
-  if (bg)
+    mrv::media bg = background();
+    if (bg)
     {
-      CMedia* img = bg->image();
-      img->image_damage( img->image_damage() | CMedia::kDamageContents |
-			 CMedia::kDamageLut );
-      redraw();
+        CMedia* img = bg->image();
+        img->image_damage( img->image_damage() | CMedia::kDamageContents |
+                           CMedia::kDamageLut );
+        redraw();
     }
 }
 
@@ -8145,7 +8207,7 @@ void ImageView::damage_contents()
  */
 void ImageView::toggle_normalize()
 {
-   normalize( !_normalize );
+    normalize( !_normalize );
 }
 
 /**
@@ -8154,26 +8216,26 @@ void ImageView::toggle_normalize()
  */
 void ImageView::toggle_pixel_ratio()
 {
-   show_pixel_ratio( ! show_pixel_ratio() );
+    show_pixel_ratio( ! show_pixel_ratio() );
 }
 
 bool ImageView::show_pixel_ratio() const
 {
-   return _showPixelRatio;
+    return _showPixelRatio;
 }
 
 void ImageView::show_pixel_ratio( const bool b )
 {
-   _showPixelRatio = b;
+    _showPixelRatio = b;
 
-   char buf[64];
-   sprintf( buf, "ShowPixelRatio %d", (int) b );
-   send_network( buf );
+    char buf[64];
+    sprintf( buf, "ShowPixelRatio %d", (int) b );
+    send_network( buf );
 
-   uiMain->uiPixelRatio->value( b );
+    uiMain->uiPixelRatio->value( b );
 
 
-   damage_contents();
+    damage_contents();
 }
 
 
@@ -8183,36 +8245,36 @@ void ImageView::show_pixel_ratio( const bool b )
  */
 void ImageView::toggle_lut()
 {
-  _useLUT = !_useLUT;
+    _useLUT = !_useLUT;
 
-  std::string display = mrv::Preferences::OCIO_Display;
-  std::string view = mrv::Preferences::OCIO_View;
+    std::string display = mrv::Preferences::OCIO_Display;
+    std::string view = mrv::Preferences::OCIO_View;
 
-  char buf[1024];
-  if ( _useLUT )
-  {
-      sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
-      send_network( buf );
-  }
-  
-  sprintf( buf, "UseLUT %d", (int)_useLUT );
-  send_network( buf );
+    char buf[1024];
+    if ( _useLUT )
+    {
+        sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
+        send_network( buf );
+    }
 
-  flush_caches();
-  if ( _useLUT ) {
-     if ( _engine )
-     {
-         _engine->refresh_luts();
-     }
-  }
+    sprintf( buf, "UseLUT %d", (int)_useLUT );
+    send_network( buf );
+
+    flush_caches();
+    if ( _useLUT ) {
+        if ( _engine )
+        {
+            _engine->refresh_luts();
+        }
+    }
 
 
-  uiMain->uiLUT->value( _useLUT );
-  uiMain->gammaDefaults->copy_label( view.c_str() );
+    uiMain->uiLUT->value( _useLUT );
+    uiMain->gammaDefaults->copy_label( view.c_str() );
 
-  smart_refresh();
-  
-  update_color_info();
+    smart_refresh();
+
+    update_color_info();
 }
 
 
@@ -8227,7 +8289,7 @@ void ImageView::resize_background()
 /// Returns current frame number in view (uiFrame)
 int64_t ImageView::frame() const
 {
-  return uiMain->uiFrame->frame();
+    return uiMain->uiFrame->frame();
 }
 
 /**
@@ -8254,7 +8316,7 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
-    
+
     _preframe = f;
 
     // if ( std::abs( f - frame() ) < fps() / 2.0 )
@@ -8283,57 +8345,57 @@ void ImageView::seek( const int64_t f )
  */
 void ImageView::step_frame( int64_t n )
 {
-  assert( n != 0 );
-  if ( n == 0 ) return;
+    assert( n != 0 );
+    if ( n == 0 ) return;
 
-  stop_playback();
+    stop_playback();
 
-  int64_t start = (int64_t) timeline()->minimum();
-  int64_t end   = (int64_t) timeline()->maximum();
+    int64_t start = (int64_t) timeline()->minimum();
+    int64_t end   = (int64_t) timeline()->maximum();
 
-  int64_t f = frame();
+    int64_t f = frame();
 
-  CMedia::Looping loop = looping();
+    CMedia::Looping loop = looping();
 
-  if ( n > 0 )
+    if ( n > 0 )
     {
-       if ( f + n > end )
-       {
-           if ( loop == CMedia::kLoop )
-          {
-             f = start + ( f + n - end) - 1;
-          }
-          else
-          {
-             f = end;
-          }
-       }
-       else
-       {
-          f += n;
-       }
-    }
-  else
-    {
-      if ( f + n < start )
+        if ( f + n > end )
         {
             if ( loop == CMedia::kLoop )
-           {
-              f = end - (start - f + n) - 1;
-           }
-           else
-           {
-              f = start;
-           }
+            {
+                f = start + ( f + n - end) - 1;
+            }
+            else
+            {
+                f = end;
+            }
         }
-      else
+        else
         {
-          f += n;
+            f += n;
+        }
+    }
+    else
+    {
+        if ( f + n < start )
+        {
+            if ( loop == CMedia::kLoop )
+            {
+                f = end - (start - f + n) - 1;
+            }
+            else
+            {
+                f = start;
+            }
+        }
+        else
+        {
+            f += n;
         }
     }
 
 
-  seek( f );
+    seek( f );
 }
 
 
@@ -8341,33 +8403,33 @@ void ImageView::step_frame( int64_t n )
 /// already on first frame
 void ImageView::first_frame()
 {
-  mrv::media fg = foreground();
-  if ( ! fg ) return;
+    mrv::media fg = foreground();
+    if ( ! fg ) return;
 
-  CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
-  if (!img) return;
+    if (!img) return;
 
-  int64_t f = img->first_frame();
+    int64_t f = img->first_frame();
 
-  if ( timeline()->edl() )
+    if ( timeline()->edl() )
     {
-       f = fg->position();
+        f = fg->position();
 
-       if ( int64_t( frame() ) == f )
-       {
-          browser()->previous_image();
-          fit_image();
-          return;
-       }
+        if ( int64_t( frame() ) == f )
+        {
+            browser()->previous_image();
+            fit_image();
+            return;
+        }
 
-       uiMain->uiFrame->frame( f );
+        uiMain->uiFrame->frame( f );
     }
 
-  int64_t t = int64_t( timeline()->minimum() );
-  if ( t > f ) f = t;
+    int64_t t = int64_t( timeline()->minimum() );
+    if ( t > f ) f = t;
 
-  seek( f );
+    seek( f );
 }
 
 /// Change frame number to last frame of image or next image in EDL
@@ -8375,46 +8437,46 @@ void ImageView::first_frame()
 void ImageView::last_frame()
 {
 
-  mrv::media fg = foreground();
-  if ( ! fg ) return;
+    mrv::media fg = foreground();
+    if ( ! fg ) return;
 
-  CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
-  int64_t f = img->last_frame();
+    int64_t f = img->last_frame();
 
-  if ( timeline()->edl() )
+    if ( timeline()->edl() )
     {
-      f -= img->first_frame();
-      f += fg->position();
-      if ( int64_t( frame() ) == f )
+        f -= img->first_frame();
+        f += fg->position();
+        if ( int64_t( frame() ) == f )
         {
-          browser()->next_image();
-          fit_image();
-          return;
+            browser()->next_image();
+            fit_image();
+            return;
         }
 
-      uiMain->uiFrame->frame( f );
+        uiMain->uiFrame->frame( f );
 
     }
 
-  int64_t t = int64_t( timeline()->maximum() );
-  if ( t < f ) f = t;
+    int64_t t = int64_t( timeline()->maximum() );
+    if ( t < f ) f = t;
 
-  seek( f );
+    seek( f );
 }
 
 /// Change frame number to start of timeline
 void ImageView::first_frame_timeline()
 {
-  int64_t f = (int64_t) timeline()->minimum();
-  seek( f );
+    int64_t f = (int64_t) timeline()->minimum();
+    seek( f );
 }
 
 /// Change frame number to end of timeline
 void ImageView::last_frame_timeline()
 {
-  int64_t f = (int64_t) timeline()->maximum();
-  seek( f );
+    int64_t f = (int64_t) timeline()->maximum();
+    seek( f );
 }
 
 
@@ -8424,56 +8486,56 @@ void ImageView::last_frame_timeline()
  */
 void ImageView::update_color_info( const mrv::media& fg ) const
 {
-  if ( uiMain->uiColorArea )
+    if ( uiMain->uiColorArea )
     {
-      fltk::Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
-      if ( uiColorWindow->visible() )
-          uiMain->uiColorArea->uiColorText->update();
+        fltk::Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
+        if ( uiColorWindow->visible() )
+            uiMain->uiColorArea->uiColorText->update();
     }
 
-  if ( uiMain->uiSOPNode )
-  {
-      fltk::Window* uiSOPNode = uiMain->uiSOPNode->uiMain;
-      if ( uiSOPNode->visible() ) uiMain->uiSOPNode->media( fg );
-  }
-
-  if ( uiMain->uiVectorscope )
+    if ( uiMain->uiSOPNode )
     {
-      fltk::Window*  uiVectorscope = uiMain->uiVectorscope->uiMain;
-      if ( uiVectorscope->visible() ) uiVectorscope->redraw();
+        fltk::Window* uiSOPNode = uiMain->uiSOPNode->uiMain;
+        if ( uiSOPNode->visible() ) uiMain->uiSOPNode->media( fg );
     }
 
-  if ( uiMain->uiWaveform )
+    if ( uiMain->uiVectorscope )
     {
-      fltk::Window*  uiWaveform = uiMain->uiWaveform->uiMain;
-      if ( uiWaveform->visible() ) uiWaveform->redraw();
+        fltk::Window*  uiVectorscope = uiMain->uiVectorscope->uiMain;
+        if ( uiVectorscope->visible() ) uiVectorscope->redraw();
     }
 
-  if ( uiMain->uiHistogram )
+    if ( uiMain->uiWaveform )
     {
-      fltk::Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
-      if ( uiHistogram->visible() ) uiHistogram->redraw();
+        fltk::Window*  uiWaveform = uiMain->uiWaveform->uiMain;
+        if ( uiWaveform->visible() ) uiWaveform->redraw();
     }
 
-  if (!fg) return;
-  CMedia* img = fg->image();
-  if ( ! (img->image_damage() & CMedia::kDamageLut) )
-      return;
+    if ( uiMain->uiHistogram )
+    {
+        fltk::Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
+        if ( uiHistogram->visible() ) uiHistogram->redraw();
+    }
+
+    if (!fg) return;
+    CMedia* img = fg->image();
+    if ( ! (img->image_damage() & CMedia::kDamageLut) )
+        return;
 
 
-  if ( uiMain->uiICS->visible() )
-  {
-      update_ICS();
-  }
+    if ( uiMain->uiICS->visible() )
+    {
+        update_ICS();
+    }
 
 }
 
 void ImageView::update_color_info() const
 {
-  mrv::media fg = foreground();
-  if ( !fg ) return;
+    mrv::media fg = foreground();
+    if ( !fg ) return;
 
-  update_color_info(fg);
+    update_color_info(fg);
 }
 
 /**
@@ -8483,45 +8545,45 @@ void ImageView::update_color_info() const
 
 void ImageView::update_image_info() const
 {
-  if ( !uiMain->uiImageInfo ) return;
+    if ( !uiMain->uiImageInfo ) return;
 
-  mrv::media fg = foreground();
-  if ( ! fg ) return;
+    mrv::media fg = foreground();
+    if ( ! fg ) return;
 
-  CMedia* img = NULL;
-  if ( selected_image() )
-      img = selected_image();
-  else
-      img = fg->image();
-  uiMain->uiImageInfo->uiInfoText->set_image( img );
-  img->image_damage( img->image_damage() & ~CMedia::kDamageData );
+    CMedia* img = NULL;
+    if ( selected_image() )
+        img = selected_image();
+    else
+        img = fg->image();
+    uiMain->uiImageInfo->uiInfoText->set_image( img );
+    img->image_damage( img->image_damage() & ~CMedia::kDamageData );
 }
 
 void ImageView::playback( const CMedia::Playback b )
 {
-  _playback = b;
+    _playback = b;
 
-  _lastFrame = frame();
-  _last_fps = 0.0;
+    _lastFrame = frame();
+    _last_fps = 0.0;
 
-  if ( b == CMedia::kForwards )
+    if ( b == CMedia::kForwards )
     {
-      uiMain->uiPlayForwards->value(1);
-      uiMain->uiPlayBackwards->value(0);
+        uiMain->uiPlayForwards->value(1);
+        uiMain->uiPlayBackwards->value(0);
     }
-  else if ( b == CMedia::kBackwards )
+    else if ( b == CMedia::kBackwards )
     {
-      uiMain->uiPlayForwards->value(0);
-      uiMain->uiPlayBackwards->value(1);
+        uiMain->uiPlayForwards->value(0);
+        uiMain->uiPlayBackwards->value(1);
     }
-  else
+    else
     {
-      uiMain->uiPlayForwards->value(0);
-      uiMain->uiPlayBackwards->value(0);
+        uiMain->uiPlayForwards->value(0);
+        uiMain->uiPlayBackwards->value(0);
     }
 
-  uiMain->uiPlayForwards->redraw();
-  uiMain->uiPlayBackwards->redraw();
+    uiMain->uiPlayForwards->redraw();
+    uiMain->uiPlayBackwards->redraw();
 
 }
 
@@ -8532,8 +8594,8 @@ void ImageView::playback( const CMedia::Playback b )
  */
 void ImageView::play_forwards()
 {
-   stop();
-   play( CMedia::kForwards );
+    stop();
+    play( CMedia::kForwards );
 }
 
 /**
@@ -8544,31 +8606,31 @@ void ImageView::play( const CMedia::Playback dir )
 {
 
     browser()->change_image( browser()->value() );
-    
+
     if ( dir == CMedia::kForwards )
     {
-	send_network("playfwd");
+        send_network("playfwd");
     }
     else if ( dir == CMedia::kBackwards )
     {
-	send_network("playback");
+        send_network("playback");
     }
     else
     {
-	LOG_ERROR( "Not a valid playback mode" );
-	return;
+        LOG_ERROR( "Not a valid playback mode" );
+        return;
     }
 
 
-   mrv::media fg = foreground();
-   if (!fg) return;
+    mrv::media fg = foreground();
+    if (!fg) return;
 
-   mrv::media bg = background();
+    mrv::media bg = background();
 
-   CMedia* img = fg->image();
+    CMedia* img = fg->image();
 
     if ( CMedia::preload_cache() && _idle_callback &&
-         img->is_cache_full() )
+            img->is_cache_full() )
     {
         preload_cache_stop();
     }
@@ -8578,43 +8640,43 @@ void ImageView::play( const CMedia::Playback dir )
     }
 
 
-   playback( dir );
+    playback( dir );
 
-   delete_timeout();
+    delete_timeout();
 
-   double fps = uiMain->uiFPS->value();
+    double fps = uiMain->uiFPS->value();
 
-   create_timeout( 0.5/fps );
+    create_timeout( 0.5/fps );
 
-   {
-      if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
-           !CMedia::cache_active() ||
-           !( CMedia::preload_cache() ||
-              uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
-      {
-          DBG( "******* PLAY FG " << img->name() );
-          img->play( dir, uiMain, true );
-      }
-   }
+    {
+        if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
+                !CMedia::cache_active() ||
+                !( CMedia::preload_cache() ||
+                   uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+        {
+            DBG( "******* PLAY FG " << img->name() );
+            img->play( dir, uiMain, true );
+        }
+    }
 
 
-   if ( bg && bg != fg )
-   {
-      DBG( "******* PLAY BG " << bg->image()->name() );
-      CMedia* img = bg->image();
-      img->play( dir, uiMain, false);
-      typedef boost::recursive_mutex Mutex;
-      Mutex& fgm = img->video_mutex();
-      SCOPED_LOCK( fgm );
-      CMedia::Barrier* barrier = img->fg_bg_barrier();
-      if ( !barrier ) return;
-      img = fg->image();
-      Mutex& bgm = img->video_mutex();
-      SCOPED_LOCK( bgm );
-      barrier->threshold( barrier->threshold() + img->has_audio() +
-                          img->has_picture() );
-      img->fg_bg_barrier( barrier );
-   }
+    if ( bg && bg != fg )
+    {
+        DBG( "******* PLAY BG " << bg->image()->name() );
+        CMedia* img = bg->image();
+        img->play( dir, uiMain, false);
+        typedef boost::recursive_mutex Mutex;
+        Mutex& fgm = img->video_mutex();
+        SCOPED_LOCK( fgm );
+        CMedia::Barrier* barrier = img->fg_bg_barrier();
+        if ( !barrier ) return;
+        img = fg->image();
+        Mutex& bgm = img->video_mutex();
+        SCOPED_LOCK( bgm );
+        barrier->threshold( barrier->threshold() + img->has_audio() +
+                            img->has_picture() );
+        img->fg_bg_barrier( barrier );
+    }
 
 }
 
@@ -8624,8 +8686,8 @@ void ImageView::play( const CMedia::Playback dir )
  */
 void ImageView::play_backwards()
 {
-   stop();
-   play( CMedia::kBackwards );
+    stop();
+    play( CMedia::kBackwards );
 }
 
 
@@ -8634,15 +8696,15 @@ void ImageView::thumbnails()
     if ( playback() != CMedia::kStopped ) return;
 
 
-  mrv::media fg = foreground();
-  if ( fg ) fg->create_thumbnail();
+    mrv::media fg = foreground();
+    if ( fg ) fg->create_thumbnail();
 
 
-  mrv::media bg = background();
-  if ( bg ) bg->create_thumbnail();
+    mrv::media bg = background();
+    if ( bg ) bg->create_thumbnail();
 
 
-  browser()->redraw();
+    browser()->redraw();
 }
 
 /**
@@ -8685,13 +8747,13 @@ void ImageView::stop()
 
 double ImageView::fps() const
 {
-  mrv::media fg = foreground();
-  if ( fg ) return fg->image()->play_fps();
+    mrv::media fg = foreground();
+    if ( fg ) return fg->image()->play_fps();
 
-  mrv::media bg = background();
-  if ( bg ) return bg->image()->play_fps();
+    mrv::media bg = background();
+    if ( bg ) return bg->image()->play_fps();
 
-  return 24;
+    return 24;
 }
 
 /**
@@ -8729,29 +8791,29 @@ void ImageView::fps( double x )
 void ImageView::volume( float v )
 {
 
-  _volume = v;
+    _volume = v;
 
-  mrv::media fg = foreground();
-  if ( fg )
-  {
-      CMedia* img = fg->image();
-      img->volume( v );
-  }
+    mrv::media fg = foreground();
+    if ( fg )
+    {
+        CMedia* img = fg->image();
+        img->volume( v );
+    }
 
-  mrv::media bg = background();
-  if ( bg )
-  {
-      CMedia* img = bg->image();
-      img->volume( v );
-  }
+    mrv::media bg = background();
+    if ( bg )
+    {
+        CMedia* img = bg->image();
+        img->volume( v );
+    }
 
-  uiMain->uiVolume->value( v );
-  uiMain->uiVolume->redraw();
+    uiMain->uiVolume->value( v );
+    uiMain->uiVolume->redraw();
 
 
-  char buf[128];
-  sprintf( buf, "Volume %g", v );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "Volume %g", v );
+    send_network( buf );
 
 }
 
@@ -8791,24 +8853,24 @@ void  ImageView::looping( CMedia::Looping x )
  */
 void ImageView::field( FieldDisplay p )
 {
-  _field = p;
+    _field = p;
 
-  static const char* kFieldNames[] = {
-    _("Frame"),
-    _("Top"),
-    _("Bottom")
-  };
+    static const char* kFieldNames[] = {
+        _("Frame"),
+        _("Top"),
+        _("Bottom")
+    };
 
-  std::string f = kFieldNames[_field];
-  f = f.substr( 0, 1 );
+    std::string f = kFieldNames[_field];
+    f = f.substr( 0, 1 );
 
-  uiMain->uiField->copy_label( f.c_str() );
+    uiMain->uiField->copy_label( f.c_str() );
 
-  char buf[128];
-  sprintf( buf, "FieldDisplay %d", _field );
-  send_network( buf );
+    char buf[128];
+    sprintf( buf, "FieldDisplay %d", _field );
+    send_network( buf );
 
-  damage_contents();
+    damage_contents();
 }
 
 

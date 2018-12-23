@@ -16,9 +16,9 @@ namespace mrv {
 
 class ValueInput : public fltk::ValueInput
 {
-  public:
+public:
     ValueInput( int x, int y, int w, int h, char* l = 0 ) :
-    fltk::ValueInput( x, y, w, h, l )
+        fltk::ValueInput( x, y, w, h, l )
     {
     }
 

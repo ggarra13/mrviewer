@@ -90,41 +90,41 @@ using namespace std;
 
 namespace
 {
-  const char* kModule = "wand";
+const char* kModule = "wand";
 }
 
 
 namespace mrv {
 
 
-  wandImage::wandImage() :
+wandImage::wandImage() :
     CMedia(),
     _has_alpha( false ),
     _format( NULL )
-  {
-  }
+{
+}
 
-  wandImage::~wandImage()
-  {
-      free( _format );
-  }
+wandImage::~wandImage()
+{
+    free( _format );
+}
 
 
-  /*! ImageMagick does not allow testing a block of data,
-    but allows testing a file or FILE*.
-  */
-  bool wandImage::test(const char* file)
-  {
-      std::string f = file;
-      size_t pos = f.rfind( '.' );
-      if ( pos != std::string::npos && pos != f.size() )
-      {
-          std::string ext = f.substr( pos+1, f.size() );
-          std::transform( ext.begin(), ext.end(), ext.begin(),
-                          (int(*)(int))tolower );
-          if ( ext == "pdf" || ext == "tx" )
-              return false;
-      }
+/*! ImageMagick does not allow testing a block of data,
+  but allows testing a file or FILE*.
+*/
+bool wandImage::test(const char* file)
+{
+    std::string f = file;
+    size_t pos = f.rfind( '.' );
+    if ( pos != std::string::npos && pos != f.size() )
+    {
+        std::string ext = f.substr( pos+1, f.size() );
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int))tolower );
+        if ( ext == "pdf" || ext == "tx" )
+            return false;
+    }
 
     MagickWandGenesis();
     MagickBooleanType status = MagickFalse;
@@ -153,252 +153,252 @@ namespace mrv {
     }
 
     return true;
-  }
+}
 
 
 
 
 
-  bool wandImage::initialize()
-  {
+bool wandImage::initialize()
+{
     return true;
-  }
+}
 
-  bool wandImage::release()
-  {
+bool wandImage::release()
+{
     return true;
-  }
+}
 
-  bool wandImage::fetch( const boost::int64_t frame )
-  {
+bool wandImage::fetch( const boost::int64_t frame )
+{
 
-     MagickBooleanType status;
+    MagickBooleanType status;
 
 
-     /*
-       Read an image.
-     */
-     MagickWand* wand = NewMagickWand();
-     status = MagickReadImage( wand, sequence_filename(frame).c_str() );
-     if (status == MagickFalse)
+    /*
+      Read an image.
+    */
+    MagickWand* wand = NewMagickWand();
+    status = MagickReadImage( wand, sequence_filename(frame).c_str() );
+    if (status == MagickFalse)
         ThrowWandException( wand );
 
-     _format = strdup( MagickGetImageFormat( wand ) );
+    _format = strdup( MagickGetImageFormat( wand ) );
 
-     if ( _num_channels == 0 )
-     {
-	 _layers.clear();
+    if ( _num_channels == 0 )
+    {
+        _layers.clear();
 
-	 ColorspaceType colorspace = MagickGetImageColorspace( wand );
-	 switch( colorspace )
-	 {
-	     case RGBColorspace:
-	     case sRGBColorspace:
-	     case LogColorspace:
-	     case scRGBColorspace:
-	     case YCbCrColorspace:
-	     case YCCColorspace:
-	     case YIQColorspace:
-	     case YPbPrColorspace:
-	     case Rec601YCbCrColorspace:
-	     case Rec709YCbCrColorspace:
-		 rgb_layers();
-		 lumma_layers();
-		 break;
-	     default:
-		 lumma_layers();
-		 break;
-	 }
+        ColorspaceType colorspace = MagickGetImageColorspace( wand );
+        switch( colorspace )
+        {
+        case RGBColorspace:
+        case sRGBColorspace:
+        case LogColorspace:
+        case scRGBColorspace:
+        case YCbCrColorspace:
+        case YCCColorspace:
+        case YIQColorspace:
+        case YPbPrColorspace:
+        case Rec601YCbCrColorspace:
+        case Rec709YCbCrColorspace:
+            rgb_layers();
+            lumma_layers();
+            break;
+        default:
+            lumma_layers();
+            break;
+        }
 
-	 _has_alpha = false;
-	 status = MagickGetImageAlphaChannel( wand );
-	 if ( status == MagickTrue )
-	 {
-	     _has_alpha = true;
-	     alpha_layers();
-	 }
+        _has_alpha = false;
+        status = MagickGetImageAlphaChannel( wand );
+        if ( status == MagickTrue )
+        {
+            _has_alpha = true;
+            alpha_layers();
+        }
 
-	 size_t profileSize;
-	 unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
-	 if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
-	 if ( profileSize > 0 )
-	 {
-	     _profile = strdup( fileroot() );
-	     mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
-	 }
+        size_t profileSize;
+        unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
+        if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
+        if ( profileSize > 0 )
+        {
+            _profile = strdup( fileroot() );
+            mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
+        }
 
-	 size_t index = 0;
-	 unsigned numLayers = (unsigned) MagickGetNumberImages( wand );
-	 if ( numLayers > 1 )
-	 {
-	     const char* channelName = channel();
+        size_t index = 0;
+        unsigned numLayers = (unsigned) MagickGetNumberImages( wand );
+        if ( numLayers > 1 )
+        {
+            const char* channelName = channel();
 
-	     std::string layer;
+            std::string layer;
 
-	     for ( unsigned i = 0; i < numLayers; ++i )
-	     {
+            for ( unsigned i = 0; i < numLayers; ++i )
+            {
 
-		 char layername[256];
+                char layername[256];
 
-		 MagickSetIteratorIndex( wand, i );
-		 const char* label = MagickGetImageProperty( wand, "label" );
-		 if ( label == NULL )
-		 {
-		     sprintf( layername, _( "Layer %d" ), i+1 );
-		 }
-		 else
-		 {
-		     std::string ly = label;
+                MagickSetIteratorIndex( wand, i );
+                const char* label = MagickGetImageProperty( wand, "label" );
+                if ( label == NULL )
+                {
+                    sprintf( layername, _( "Layer %d" ), i+1 );
+                }
+                else
+                {
+                    std::string ly = label;
 
-		     size_t pos;
-		     while ( (pos = ly.find( '.' )) != std::string::npos )
-		     {
-			 std::string n = ly.substr( 0, pos );
-			 n += '_';
-			 if ( pos != ly.size() )
-			     n += ly.substr( pos+1, ly.size() );
-			 ly = n;
-		     }
-		     strcpy( layername, ly.c_str() );
-		 }
+                    size_t pos;
+                    while ( (pos = ly.find( '.' )) != std::string::npos )
+                    {
+                        std::string n = ly.substr( 0, pos );
+                        n += '_';
+                        if ( pos != ly.size() )
+                            n += ly.substr( pos+1, ly.size() );
+                        ly = n;
+                    }
+                    strcpy( layername, ly.c_str() );
+                }
 
-		 ColorspaceType colorspace = MagickGetImageColorspace( wand );
+                ColorspaceType colorspace = MagickGetImageColorspace( wand );
 
-		 std::string ly = layername;
+                std::string ly = layername;
 
-		 _layers.push_back( ly );
-		 switch( colorspace )
-		 {
-		     case sRGBColorspace:
-		     case RGBColorspace:
-			 _layers.push_back( ly + ".R" );
-			 _layers.push_back( ly + ".G" );
-			 _layers.push_back( ly + ".B" );
-			 break;
-		     case CMYKColorspace:
-			 _layers.push_back( ly + ".C" );
-			 _layers.push_back( ly + ".M" );
-			 _layers.push_back( ly + ".Y" );
-			 _layers.push_back( ly + ".K" );
-			 break;
-		     case GRAYColorspace:
-			 if ( ( ly.find("Z") != std::string::npos ) ||
-			      ( ly.find("depth") != std::string::npos ) )
-			     _layers.push_back( ly + ".Z" );
-			 else
-			     _layers.push_back( ly + ".Y" );
-		     default:
-			 break;
-		 }
+                _layers.push_back( ly );
+                switch( colorspace )
+                {
+                case sRGBColorspace:
+                case RGBColorspace:
+                    _layers.push_back( ly + ".R" );
+                    _layers.push_back( ly + ".G" );
+                    _layers.push_back( ly + ".B" );
+                    break;
+                case CMYKColorspace:
+                    _layers.push_back( ly + ".C" );
+                    _layers.push_back( ly + ".M" );
+                    _layers.push_back( ly + ".Y" );
+                    _layers.push_back( ly + ".K" );
+                    break;
+                case GRAYColorspace:
+                    if ( ( ly.find("Z") != std::string::npos ) ||
+                            ( ly.find("depth") != std::string::npos ) )
+                        _layers.push_back( ly + ".Z" );
+                    else
+                        _layers.push_back( ly + ".Y" );
+                default:
+                    break;
+                }
 
-		 status = MagickGetImageAlphaChannel( wand );
-		 if ( status == MagickTrue )
-		 {
-		     _layers.push_back( ly + ".A" );
-		 }
+                status = MagickGetImageAlphaChannel( wand );
+                if ( status == MagickTrue )
+                {
+                    _layers.push_back( ly + ".A" );
+                }
 
-		 ++_num_channels;
-
-
-		 if ( i == 0 )
-		 {
-		     size_t dw = MagickGetImageWidth( wand );
-		     size_t dh = MagickGetImageHeight( wand );
-
-		     display_window( 0, 0, (int)dw-1, (int)dh-1, frame );
-		 }
+                ++_num_channels;
 
 
-		 if ( channelName && strcmp( layername, channelName ) == 0 )
-		 {
-		     index = i;
-		     layer = layername;
-		 }
+                if ( i == 0 )
+                {
+                    size_t dw = MagickGetImageWidth( wand );
+                    size_t dh = MagickGetImageHeight( wand );
+
+                    display_window( 0, 0, (int)dw-1, (int)dh-1, frame );
+                }
 
 
-	     }
-	 }
-
-	 MagickSetIteratorIndex( wand, index );
-     }
-
-     /*
-       Copy pixels from magick to class
-     */
-     size_t dw = MagickGetImageWidth( wand );
-     size_t dh = MagickGetImageHeight( wand );
-
-     size_t depth = MagickGetImageDepth( wand );
-
-     Image* img = GetImageFromMagickWand( wand );
-
-     // Get the layer data window
-
-     data_window( img->page.x, img->page.y,
-                  (img->page.x + dw - 1),
-                  (img->page.y + dh - 1), frame );
+                if ( channelName && strcmp( layername, channelName ) == 0 )
+                {
+                    index = i;
+                    layer = layername;
+                }
 
 
-     _gamma = 1.0f;
+            }
+        }
 
-     image_type::PixelType pixel_type = image_type::kByte;
-     StorageType storage = CharPixel;
+        MagickSetIteratorIndex( wand, index );
+    }
 
-     if ( !_8bit_cache )
-     {
-         if ( depth == 16 && _gamma == 1.0f )
-         {
-             pixel_type = image_type::kShort;
-             storage = ShortPixel;
-         }
-         else if ( depth >= 32 && _gamma == 1.0f )
-         {
-             pixel_type = image_type::kFloat;
-             storage = FloatPixel;
-         }
-     }
+    /*
+      Copy pixels from magick to class
+    */
+    size_t dw = MagickGetImageWidth( wand );
+    size_t dh = MagickGetImageHeight( wand );
+
+    size_t depth = MagickGetImageDepth( wand );
+
+    Image* img = GetImageFromMagickWand( wand );
+
+    // Get the layer data window
+
+    data_window( img->page.x, img->page.y,
+                 (img->page.x + dw - 1),
+                 (img->page.y + dh - 1), frame );
 
 
-     image_size( unsigned(dw), unsigned(dh) );
+    _gamma = 1.0f;
 
-     const char* channels;
-     if ( _has_alpha )
-     {
+    image_type::PixelType pixel_type = image_type::kByte;
+    StorageType storage = CharPixel;
+
+    if ( !_8bit_cache )
+    {
+        if ( depth == 16 && _gamma == 1.0f )
+        {
+            pixel_type = image_type::kShort;
+            storage = ShortPixel;
+        }
+        else if ( depth >= 32 && _gamma == 1.0f )
+        {
+            pixel_type = image_type::kFloat;
+            storage = FloatPixel;
+        }
+    }
+
+
+    image_size( unsigned(dw), unsigned(dh) );
+
+    const char* channels;
+    if ( _has_alpha )
+    {
 
         channels = "RGBA";
         if ( ! allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
                                 unsigned(dw), unsigned(dh) ) )
             return false;
-     }
-     else
-     {
+    }
+    else
+    {
 
         channels = "RGB";
         if (! allocate_pixels( frame, 3, image_type::kRGB, pixel_type,
                                unsigned(dw), unsigned(dh) ) )
             return false;
-     }
+    }
 
-     {
+    {
         SCOPED_LOCK( _mutex );
 
 
         Pixel* pixels = (Pixel*)_hires->data().get();
         MagickExportImagePixels( wand, 0, 0, dw, dh, channels,
                                  storage, pixels );
-     }
+    }
 
 
-     _compression = MagickGetImageCompression( wand );
+    _compression = MagickGetImageCompression( wand );
 
 
-     double rx, ry, rz, gx, gy, gz, bx, by, bz, wx, wy, wz;
-     MagickGetImageRedPrimary( wand, &rx, &ry, &rz );
-     MagickGetImageGreenPrimary( wand, &gx, &gy, &gz );
-     MagickGetImageBluePrimary( wand, &bx, &by, &bz );
-     MagickGetImageWhitePoint( wand, &wx, &wy, &wz );
-     if ( rx > 0.0 && ry > 0.0 )
-     {
+    double rx, ry, rz, gx, gy, gz, bx, by, bz, wx, wy, wz;
+    MagickGetImageRedPrimary( wand, &rx, &ry, &rz );
+    MagickGetImageGreenPrimary( wand, &gx, &gy, &gz );
+    MagickGetImageBluePrimary( wand, &bx, &by, &bz );
+    MagickGetImageWhitePoint( wand, &wx, &wy, &wz );
+    if ( rx > 0.0 && ry > 0.0 )
+    {
         _chromaticities.red.x = float(rx);
         _chromaticities.red.y = float(ry);
         _chromaticities.green.x = float(gx);
@@ -407,218 +407,324 @@ namespace mrv {
         _chromaticities.blue.y = float(by);
         _chromaticities.white.x = float(wx);
         _chromaticities.white.y = float(wy);
-     }
+    }
 
-     if ( _attrs.empty() )
-     {
-         ExceptionInfo* exception = NULL;
-         GetImageProperty( img, "exif:*", exception );
-         ResetImagePropertyIterator( img );
-         const char* property = GetNextImageProperty(img);
-         setlocale( LC_NUMERIC, "C" );
-         while ( property )
-         {
+    if ( _attrs.empty() )
+    {
+        ExceptionInfo* exception = NULL;
+        GetImageProperty( img, "exif:*", exception );
+        ResetImagePropertyIterator( img );
+        const char* property = GetNextImageProperty(img);
+        setlocale( LC_NUMERIC, "C" );
+        while ( property )
+        {
 
-             const char* value = GetImageProperty( img, property, exception );
-             if ( value )
-             {
-                 //
-                 // Format for exif property in imagemagick is like:
-                 //       "Exif:InteroperabilityVersion"
-                 //       "dpx:InteroperabilityVersion"
-                 //
-                 // Make that string into something prettier
-                 //
-                 std::string key = property;
+            const char* value = GetImageProperty( img, property, exception );
+            if ( value )
+            {
+                //
+                // Format for exif property in imagemagick is like:
+                //       "Exif:InteroperabilityVersion"
+                //       "dpx:InteroperabilityVersion"
+                //
+                // Make that string into something prettier
+                //
+                std::string key = property;
 
-                 if ( key.substr(0,4) == "Exif" ||
-                      key.substr(0,4) == "exif" )
-                 {
-                     key.clear();
-                     // Skip until first ':'
-                     const char* p = property;
-                     for ( ; *p != ':' && *p != '\0'; ++p ) ;
+                if ( key.substr(0,4) == "Exif" ||
+                        key.substr(0,4) == "exif" )
+                {
+                    key.clear();
+                    // Skip until first ':'
+                    const char* p = property;
+                    for ( ; *p != ':' && *p != '\0'; ++p ) ;
 
-                     if ( *p != '\0' ) ++p;
+                    if ( *p != '\0' ) ++p;
 
-                     for ( ; *p != '\0'; ++p )
-                     {
-                         // Make 'superDad' into 'super Dad'
-                         if ( !key.empty() &&
-                              (isupper((int) ((unsigned char) *p)) != 0) &&
-                              (islower((int) ((unsigned char) *(p+1))) != 0))
-                             key += ' ';
-                         key += *p;
-                     }
-                 }
+                    for ( ; *p != '\0'; ++p )
+                    {
+                        // Make 'superDad' into 'super Dad'
+                        if ( !key.empty() &&
+                                (isupper((int) ((unsigned char) *p)) != 0) &&
+                                (islower((int) ((unsigned char) *(p+1))) != 0))
+                            key += ' ';
+                        key += *p;
+                    }
+                }
 
 
-                 if ( key == "dpx:film.frame_rate" )
-                 {
-                     double g = atof( value );
-                     if ( g > 0.0f && g < 250.0f )
-                     {
-                         _orig_fps = _fps = _play_fps = g;
-                     }
-                 }
-                 else if ( key == "dpx:television.frame_rate" )
-                 {
-                     double g = atof( value );
-                     if ( g > 0.0f && g < 250.0f )
-                     {
-                         _orig_fps = _fps = _play_fps = g;
-                     }
-                 }
-                 else if ( key == "dpx:television.gamma" )
-                 {
-                     float g = atof( value );
-                     if ( g > 0.0f && g < 128.0f )
-                     {
-                         _gamma = g;
-                     }
-                 }
-                 else if ( key == "dpx:television.time.code" ||
-                           key.rfind( "timecode" ) != std::string::npos )
-                 {
-                     Imf::TimeCode t = CMedia::str2timecode( value );
-                     process_timecode( t );
-                     Imf::TimeCodeAttribute attr( t );
-                     _attrs.insert( std::make_pair( N_("timecode"),
+                if ( key == "dpx:film.frame_rate" )
+                {
+                    double g = atof( value );
+                    if ( g > 0.0f && g < 250.0f )
+                    {
+                        _orig_fps = _fps = _play_fps = g;
+                    }
+                }
+                else if ( key == "dpx:television.frame_rate" )
+                {
+                    double g = atof( value );
+                    if ( g > 0.0f && g < 250.0f )
+                    {
+                        _orig_fps = _fps = _play_fps = g;
+                    }
+                }
+                else if ( key == "dpx:television.gamma" )
+                {
+                    float g = atof( value );
+                    if ( g > 0.0f && g < 128.0f )
+                    {
+                        _gamma = g;
+                    }
+                }
+                else if ( key == "dpx:television.time.code" ||
+                          key.rfind( "timecode" ) != std::string::npos )
+                {
+                    Imf::TimeCode t = CMedia::str2timecode( value );
+                    process_timecode( t );
+                    Imf::TimeCodeAttribute attr( t );
+                    _attrs.insert( std::make_pair( N_("timecode"),
                                                    attr.copy() ) );
-                     property = GetNextImageProperty(img);
-                     continue;
-                 }
+                    property = GetNextImageProperty(img);
+                    continue;
+                }
 
-                 // We always add the EXIF attribute even if it passes
-                 // other tests so that if user saves the file all is kept
-                 Imf::StringAttribute attr( value );
-                 _attrs.insert( std::make_pair( key, attr.copy() ) );
-             }
-             property = GetNextImageProperty(img);
-         }
+                // We always add the EXIF attribute even if it passes
+                // other tests so that if user saves the file all is kept
+                Imf::StringAttribute attr( value );
+                _attrs.insert( std::make_pair( key, attr.copy() ) );
+            }
+            property = GetNextImageProperty(img);
+        }
 
-         setlocale( LC_NUMERIC, "" );
+        setlocale( LC_NUMERIC, "" );
 
-	 size_t profileSize;
-	 unsigned char* tmp = MagickGetImageProfile( wand, "iptc",
-						     &profileSize );
-	 if ( profileSize > 0 )
-	 {
-	     char* attribute;
-	     const char* tag;
-	     long dataset, record, sentinel;
+        size_t profileSize;
+        unsigned char* tmp = MagickGetImageProfile( wand, "iptc",
+                             &profileSize );
+        if ( profileSize > 0 )
+        {
+            char* attribute;
+            const char* tag;
+            long dataset, record, sentinel;
 
-	     size_t i;
-	     size_t length;
+            size_t i;
+            size_t length;
 
-	     /*
-	       Identify IPTC data.
-	     */
-	     for (i=0; i < profileSize; i += length)
-	     {
-		 length=1;
-		 sentinel = tmp[i++];
-		 if (sentinel != 0x1c)
-		     continue;
-		 dataset = tmp[i++];
-		 record  = tmp[i++];
-		 switch (record)
-		 {
-		     case 5: tag = _("Image Name"); break;
-		     case 7: tag = _("Edit Status"); break;
-		     case 10: tag = _("Priority"); break;
-		     case 15: tag = _("Category"); break;
-		     case 20: tag = _("Supplemental Category"); break;
-		     case 22: tag = _("Fixture Identifier"); break;
-		     case 25: tag = _("Keyword"); break;
-		     case 30: tag = _("Release Date"); break;
-		     case 35: tag = _("Release Time"); break;
-		     case 40: tag = _("Special Instructions"); break;
-		     case 45: tag = _("Reference Service"); break;
-		     case 47: tag = _("Reference Date"); break;
-		     case 50: tag = _("Reference Number"); break;
-		     case 55: tag = _("Created Date"); break;
-		     case 60: tag = _("Created Time"); break;
-		     case 65: tag = _("Originating Program"); break;
-		     case 70: tag = _("Program Version"); break;
-		     case 75: tag = _("Object Cycle"); break;
-		     case 80: tag = _("Byline"); break;
-		     case 85: tag = _("Byline Title"); break;
-		     case 90: tag = _("City"); break;
-		     case 95: tag = _("Province State"); break;
-		     case 100: tag = _("Country Code"); break;
-		     case 101: tag = _("Country"); break;
-		     case 103: tag = _("Original Transmission Reference"); break;
-		     case 105: tag = _("Headline"); break;
-		     case 110: tag = _("Credit"); break;
-		     case 115: tag = _("Src"); break;
-		     case 116: tag = _("Copyright String"); break;
-		     case 120: tag = _("Caption"); break;
-		     case 121: tag = _("Local Caption"); break;
-		     case 122: tag = _("Caption Writer"); break;
-		     case 200: tag = _("Custom Field 1"); break;
-		     case 201: tag = _("Custom Field 2"); break;
-		     case 202: tag = _("Custom Field 3"); break;
-		     case 203: tag = _("Custom Field 4"); break;
-		     case 204: tag = _("Custom Field 5"); break;
-		     case 205: tag = _("Custom Field 6"); break;
-		     case 206: tag = _("Custom Field 7"); break;
-		     case 207: tag = _("Custom Field 8"); break;
-		     case 208: tag = _("Custom Field 9"); break;
-		     case 209: tag = _("Custom Field 10"); break;
-		     case 210: tag = _("Custom Field 11"); break;
-		     case 211: tag = _("Custom Field 12"); break;
-		     case 212: tag = _("Custom Field 13"); break;
-		     case 213: tag = _("Custom Field 14"); break;
-		     case 214: tag = _("Custom Field 15"); break;
-		     case 215: tag = _("Custom Field 16"); break;
-		     case 216: tag = _("Custom Field 17"); break;
-		     case 217: tag = _("Custom Field 18"); break;
-		     case 218: tag = _("Custom Field 19"); break;
-		     case 219: tag = _("Custom Field 20"); break;
-		     default: tag = _("unknown"); break;
-		 }
-		 length = (size_t) (tmp[i++] << 8);
-		 length |= tmp[i++];
-		 attribute=(char *) AcquireMagickMemory((length+MaxTextExtent)*
-							sizeof(*attribute));
-		 if (attribute != (char *) NULL)
-		 {
-		     (void) CopyMagickString(attribute,(char *) tmp+i,
-					     length+1);
-		     Imf::StringAttribute attr( attribute );
-		     _attrs.insert( std::make_pair( tag, attr.copy() ) );
-		     attribute=(char *) RelinquishMagickMemory(attribute);
-		 }
-	     }
-	 }
-     }
+            /*
+              Identify IPTC data.
+            */
+            for (i=0; i < profileSize; i += length)
+            {
+                length=1;
+                sentinel = tmp[i++];
+                if (sentinel != 0x1c)
+                    continue;
+                dataset = tmp[i++];
+                record  = tmp[i++];
+                switch (record)
+                {
+                case 5:
+                    tag = _("Image Name");
+                    break;
+                case 7:
+                    tag = _("Edit Status");
+                    break;
+                case 10:
+                    tag = _("Priority");
+                    break;
+                case 15:
+                    tag = _("Category");
+                    break;
+                case 20:
+                    tag = _("Supplemental Category");
+                    break;
+                case 22:
+                    tag = _("Fixture Identifier");
+                    break;
+                case 25:
+                    tag = _("Keyword");
+                    break;
+                case 30:
+                    tag = _("Release Date");
+                    break;
+                case 35:
+                    tag = _("Release Time");
+                    break;
+                case 40:
+                    tag = _("Special Instructions");
+                    break;
+                case 45:
+                    tag = _("Reference Service");
+                    break;
+                case 47:
+                    tag = _("Reference Date");
+                    break;
+                case 50:
+                    tag = _("Reference Number");
+                    break;
+                case 55:
+                    tag = _("Created Date");
+                    break;
+                case 60:
+                    tag = _("Created Time");
+                    break;
+                case 65:
+                    tag = _("Originating Program");
+                    break;
+                case 70:
+                    tag = _("Program Version");
+                    break;
+                case 75:
+                    tag = _("Object Cycle");
+                    break;
+                case 80:
+                    tag = _("Byline");
+                    break;
+                case 85:
+                    tag = _("Byline Title");
+                    break;
+                case 90:
+                    tag = _("City");
+                    break;
+                case 95:
+                    tag = _("Province State");
+                    break;
+                case 100:
+                    tag = _("Country Code");
+                    break;
+                case 101:
+                    tag = _("Country");
+                    break;
+                case 103:
+                    tag = _("Original Transmission Reference");
+                    break;
+                case 105:
+                    tag = _("Headline");
+                    break;
+                case 110:
+                    tag = _("Credit");
+                    break;
+                case 115:
+                    tag = _("Src");
+                    break;
+                case 116:
+                    tag = _("Copyright String");
+                    break;
+                case 120:
+                    tag = _("Caption");
+                    break;
+                case 121:
+                    tag = _("Local Caption");
+                    break;
+                case 122:
+                    tag = _("Caption Writer");
+                    break;
+                case 200:
+                    tag = _("Custom Field 1");
+                    break;
+                case 201:
+                    tag = _("Custom Field 2");
+                    break;
+                case 202:
+                    tag = _("Custom Field 3");
+                    break;
+                case 203:
+                    tag = _("Custom Field 4");
+                    break;
+                case 204:
+                    tag = _("Custom Field 5");
+                    break;
+                case 205:
+                    tag = _("Custom Field 6");
+                    break;
+                case 206:
+                    tag = _("Custom Field 7");
+                    break;
+                case 207:
+                    tag = _("Custom Field 8");
+                    break;
+                case 208:
+                    tag = _("Custom Field 9");
+                    break;
+                case 209:
+                    tag = _("Custom Field 10");
+                    break;
+                case 210:
+                    tag = _("Custom Field 11");
+                    break;
+                case 211:
+                    tag = _("Custom Field 12");
+                    break;
+                case 212:
+                    tag = _("Custom Field 13");
+                    break;
+                case 213:
+                    tag = _("Custom Field 14");
+                    break;
+                case 214:
+                    tag = _("Custom Field 15");
+                    break;
+                case 215:
+                    tag = _("Custom Field 16");
+                    break;
+                case 216:
+                    tag = _("Custom Field 17");
+                    break;
+                case 217:
+                    tag = _("Custom Field 18");
+                    break;
+                case 218:
+                    tag = _("Custom Field 19");
+                    break;
+                case 219:
+                    tag = _("Custom Field 20");
+                    break;
+                default:
+                    tag = _("unknown");
+                    break;
+                }
+                length = (size_t) (tmp[i++] << 8);
+                length |= tmp[i++];
+                attribute=(char *) AcquireMagickMemory((length+MaxTextExtent)*
+                                                       sizeof(*attribute));
+                if (attribute != (char *) NULL)
+                {
+                    (void) CopyMagickString(attribute,(char *) tmp+i,
+                                            length+1);
+                    Imf::StringAttribute attr( attribute );
+                    _attrs.insert( std::make_pair( tag, attr.copy() ) );
+                    attribute=(char *) RelinquishMagickMemory(attribute);
+                }
+            }
+        }
+    }
 
 
-     _rendering_intent = (CMedia::RenderingIntent)
-     MagickGetImageRenderingIntent( wand );
+    _rendering_intent = (CMedia::RenderingIntent)
+                        MagickGetImageRenderingIntent( wand );
 
-     DestroyMagickWand( wand );
+    DestroyMagickWand( wand );
 
-     return true;
-  }
+    return true;
+}
 
 
 const char* const pixel_type( image_type::PixelType t )
 {
     switch( t )
     {
-        case image_type::kByte:
-            return _("Byte");
-        case image_type::kShort:
-            return _("Short");
-        case image_type::kInt:
-            return _("Int");
-        case image_type::kFloat:
-            return _("Float");
-        default:
-        case image_type::kHalf:
-            return _("Half");
+    case image_type::kByte:
+        return _("Byte");
+    case image_type::kShort:
+        return _("Short");
+    case image_type::kInt:
+        return _("Int");
+    case image_type::kFloat:
+        return _("Float");
+    default:
+    case image_type::kHalf:
+        return _("Half");
     }
 }
 
@@ -627,17 +733,17 @@ const char* const pixel_storage( StorageType storage )
 {
     switch( storage )
     {
-        case ShortPixel:
-            return _("Short");
-        case LongPixel:
-            return _("Int");
-        case FloatPixel:
-            return _("Float");
-        case DoublePixel:
-            return _("Double");
-        default:
-        case CharPixel:
-            return _("Byte");
+    case ShortPixel:
+        return _("Short");
+    case LongPixel:
+        return _("Int");
+    case FloatPixel:
+        return _("Float");
+    case DoublePixel:
+        return _("Double");
+    default:
+    case CharPixel:
+        return _("Byte");
     }
 }
 
@@ -669,7 +775,7 @@ static void save_attribute( const CMedia* img,
 
     {
         Imf::StringAttribute* attr =
-        dynamic_cast< Imf::StringAttribute* >( i->second );
+            dynamic_cast< Imf::StringAttribute* >( i->second );
         if ( attr )
         {
             status = MagickSetImageProperty( wand, key.c_str(),
@@ -681,7 +787,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::IntAttribute* attr =
-        dynamic_cast< Imf::IntAttribute* >( i->second );
+            dynamic_cast< Imf::IntAttribute* >( i->second );
         if ( attr )
         {
             sprintf( buf, "%d", attr->value() );
@@ -693,31 +799,31 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::FloatAttribute* attr =
-        dynamic_cast< Imf::FloatAttribute* >( i->second );
+            dynamic_cast< Imf::FloatAttribute* >( i->second );
         if ( attr )
         {
             sprintf( buf, "%g", attr->value() );
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
-           return;
+            return;
         }
     }
     {
         Imf::DoubleAttribute* attr =
-        dynamic_cast< Imf::DoubleAttribute* >( i->second );
+            dynamic_cast< Imf::DoubleAttribute* >( i->second );
         if ( attr )
         {
             sprintf( buf, "%lg", attr->value() );
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
-           return;
+            return;
         }
     }
     {
         Imf::V2iAttribute* attr =
-        dynamic_cast< Imf::V2iAttribute* >( i->second );
+            dynamic_cast< Imf::V2iAttribute* >( i->second );
         if ( attr )
         {
             const Imath::V2i& v = attr->value();
@@ -730,7 +836,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::V2fAttribute* attr =
-        dynamic_cast< Imf::V2fAttribute* >( i->second );
+            dynamic_cast< Imf::V2fAttribute* >( i->second );
         if ( attr )
         {
             const Imath::V2f& v = attr->value();
@@ -738,12 +844,12 @@ static void save_attribute( const CMedia* img,
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
-           return;
+            return;
         }
     }
     {
         Imf::V2dAttribute* attr =
-        dynamic_cast< Imf::V2dAttribute* >( i->second );
+            dynamic_cast< Imf::V2dAttribute* >( i->second );
         if ( attr )
         {
             const Imath::V2d& v = attr->value();
@@ -756,7 +862,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::V3iAttribute* attr =
-        dynamic_cast< Imf::V3iAttribute* >( i->second );
+            dynamic_cast< Imf::V3iAttribute* >( i->second );
         if ( attr )
         {
             const Imath::V3i& v = attr->value();
@@ -764,12 +870,12 @@ static void save_attribute( const CMedia* img,
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
-           return;
+            return;
         }
     }
     {
         Imf::V3fAttribute* attr =
-        dynamic_cast< Imf::V3fAttribute* >( i->second );
+            dynamic_cast< Imf::V3fAttribute* >( i->second );
         if ( attr )
         {
             const Imath::V3f& v = attr->value();
@@ -782,7 +888,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::V3dAttribute* attr =
-        dynamic_cast< Imf::V3dAttribute* >( i->second );
+            dynamic_cast< Imf::V3dAttribute* >( i->second );
         if ( attr )
         {
             const Imath::V3d& v = attr->value();
@@ -795,7 +901,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::Box2iAttribute* attr =
-        dynamic_cast< Imf::Box2iAttribute* >( i->second );
+            dynamic_cast< Imf::Box2iAttribute* >( i->second );
         if ( attr )
         {
             const Imath::Box2i& v = attr->value();
@@ -808,7 +914,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::Box2fAttribute* attr =
-        dynamic_cast< Imf::Box2fAttribute* >( i->second );
+            dynamic_cast< Imf::Box2fAttribute* >( i->second );
         if ( attr )
         {
             const Imath::Box2f& v = attr->value();
@@ -821,7 +927,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::KeyCodeAttribute* attr =
-        dynamic_cast< Imf::KeyCodeAttribute* >( i->second );
+            dynamic_cast< Imf::KeyCodeAttribute* >( i->second );
         if ( attr )
         {
             const Imf::KeyCode& k = attr->value();
@@ -847,7 +953,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::ChromaticitiesAttribute* attr =
-        dynamic_cast< Imf::ChromaticitiesAttribute* >( i->second );
+            dynamic_cast< Imf::ChromaticitiesAttribute* >( i->second );
         if ( attr )
         {
             const Imf::Chromaticities& v = attr->value();
@@ -863,12 +969,12 @@ static void save_attribute( const CMedia* img,
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
-           return;
+            return;
         }
     }
     {
         Imf::M33fAttribute* attr =
-        dynamic_cast< Imf::M33fAttribute* >( i->second );
+            dynamic_cast< Imf::M33fAttribute* >( i->second );
         if ( attr )
         {
             const Imath::M33f& v = attr->value();
@@ -882,12 +988,12 @@ static void save_attribute( const CMedia* img,
             status = MagickSetImageProperty( wand, key.c_str(), buf );
             if ( status != MagickTrue )
                 LOG_ERROR( _("Could not set ") << key << _(" attribute") );
-           return;
+            return;
         }
     }
     {
         Imf::M33dAttribute* attr =
-        dynamic_cast< Imf::M33dAttribute* >( i->second );
+            dynamic_cast< Imf::M33dAttribute* >( i->second );
         if ( attr )
         {
             const Imath::M33d& v = attr->value();
@@ -906,7 +1012,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::M44fAttribute* attr =
-        dynamic_cast< Imf::M44fAttribute* >( i->second );
+            dynamic_cast< Imf::M44fAttribute* >( i->second );
         if ( attr )
         {
             const Imath::M44f& v = attr->value();
@@ -925,7 +1031,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::M44dAttribute* attr =
-        dynamic_cast< Imf::M44dAttribute* >( i->second );
+            dynamic_cast< Imf::M44dAttribute* >( i->second );
         if ( attr )
         {
             const Imath::M44d& v = attr->value();
@@ -946,7 +1052,7 @@ static void save_attribute( const CMedia* img,
     }
     {
         Imf::TimeCodeAttribute* attr =
-        dynamic_cast< Imf::TimeCodeAttribute* >( i->second );
+            dynamic_cast< Imf::TimeCodeAttribute* >( i->second );
         if ( attr )
         {
             Imf::TimeCode t( attr->value() );
@@ -975,7 +1081,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
     std::string f = file;
     std::transform( f.begin(), f.end(), f.begin(), (int(*)(int)) tolower );
-    
+
     if ( f.substr( f.size()-4, f.size() ) == ".pic" )
     {
         return picImage::save( file, this, opts );
@@ -983,7 +1089,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
     if ( dynamic_cast< const OIIOOpts* >( opts ) != NULL )
     {
-	OIIOOpts* o = (OIIOOpts*) opts;
+        OIIOOpts* o = (OIIOOpts*) opts;
         return oiioImage::save( file, this, o );
     }
 
@@ -995,7 +1101,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     }
 
     WandOpts* o = (WandOpts*) opts;
-    
+
     MagickBooleanType status;
     std::string filename = file;
 
@@ -1058,9 +1164,9 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         // std::cerr << "layer " << x << std::endl;
 
         if ( x == _("Lumma") || x == _("Alpha Overlay") ||
-             x == _("Red") || x == _("Green") ||
-             x == _("Blue") || x == _("Alpha") ||
-             x == N_("RY") || x == N_("BY") )
+                x == _("Red") || x == _("Green") ||
+                x == _("Blue") || x == _("Alpha") ||
+                x == N_("RY") || x == N_("BY") )
         {
             continue;
         }
@@ -1099,46 +1205,52 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         const char* channels;
         switch ( format )
         {
-            case image_type::kRGB:
-                channels = N_("RGB"); break;
-            case image_type::kRGBA:
-                channels = N_("RGBA"); break;
-            case image_type::kBGRA:
-                channels = N_("BGRA"); break;
-            case image_type::kBGR:
-                channels = N_("BGR"); break;
-            case image_type::kLumma:
-                channels = N_("I"); break;
-            case image_type::kLummaA:
-                channels = N_("IA"); break;
-            default:
-                must_convert = true;
-                channels = N_("RGB");
-                if ( has_alpha ) channels = N_("RGBA");
-                break;
+        case image_type::kRGB:
+            channels = N_("RGB");
+            break;
+        case image_type::kRGBA:
+            channels = N_("RGBA");
+            break;
+        case image_type::kBGRA:
+            channels = N_("BGRA");
+            break;
+        case image_type::kBGR:
+            channels = N_("BGR");
+            break;
+        case image_type::kLumma:
+            channels = N_("I");
+            break;
+        case image_type::kLummaA:
+            channels = N_("IA");
+            break;
+        default:
+            must_convert = true;
+            channels = N_("RGB");
+            if ( has_alpha ) channels = N_("RGBA");
+            break;
         }
 
 
         StorageType storage = CharPixel;
         switch( pic->pixel_type() )
         {
-            case image_type::kShort:
-                storage = ShortPixel;
-                break;
-            case image_type::kInt:
-                storage = LongPixel;
-                break;
-            case image_type::kFloat:
-                storage = FloatPixel;
-                break;
-            case image_type::kHalf:
-                storage = FloatPixel;
-                must_convert = true;
-                break;
-            case image_type::kByte:
-            default:
-                storage = CharPixel;
-                break;
+        case image_type::kShort:
+            storage = ShortPixel;
+            break;
+        case image_type::kInt:
+            storage = LongPixel;
+            break;
+        case image_type::kFloat:
+            storage = FloatPixel;
+            break;
+        case image_type::kHalf:
+            storage = FloatPixel;
+            must_convert = true;
+            break;
+        case image_type::kByte:
+        default:
+            storage = CharPixel;
+            break;
         }
 
         if ( o->pixel_type() != storage && pic->frame() == first_frame() )
@@ -1162,7 +1274,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         unsigned pixel_size;
 
         if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-             Preferences::uiMain->uiView->use_lut() )
+                Preferences::uiMain->uiView->use_lut() )
         {
             must_convert = true;
         }
@@ -1176,22 +1288,22 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
          */
         switch( o->pixel_type() )
         {
-            case ShortPixel:
-                pixel_size = sizeof(short);
-                break;
-            case LongPixel:
-                pixel_size = sizeof(int);
-                break;
-            case FloatPixel:
-                pixel_size = sizeof(float);
-                break;
-            case DoublePixel:
-                pixel_size = sizeof(double);
-                break;
-            default:
-            case CharPixel:
-                pixel_size = sizeof(char);
-                break;
+        case ShortPixel:
+            pixel_size = sizeof(short);
+            break;
+        case LongPixel:
+            pixel_size = sizeof(int);
+            break;
+        case FloatPixel:
+            pixel_size = sizeof(float);
+            break;
+        case DoublePixel:
+            pixel_size = sizeof(double);
+            break;
+        default:
+        case CharPixel:
+            pixel_size = sizeof(char);
+            break;
         }
 
         if ( must_convert )
@@ -1246,18 +1358,18 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
 
             image_type_ptr ptr = image_type_ptr( new image_type(
-                                                                pic->frame(),
-                                                                dw, dh, 4,
-                                                                image_type::kRGBA,
-                                                                image_type::kFloat
-                                                                ) );
+                    pic->frame(),
+                    dw, dh, 4,
+                    image_type::kRGBA,
+                    image_type::kFloat
+                                                 ) );
             copy_image( ptr, pic );
 
             const std::string& display = mrv::Preferences::OCIO_Display;
             const std::string& view = mrv::Preferences::OCIO_View;
 
             if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-                 Preferences::uiMain->uiView->use_lut() )
+                    Preferences::uiMain->uiView->use_lut() )
             {
                 try
                 {
@@ -1375,10 +1487,10 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
             mrv::image_type_ptr ptr;
             ptr = mrv::image_type_ptr( new image_type( pic->frame(),
-                                                       dw, dh, 4,
-                                                       mrv::image_type::kRGBA,
-                                                       mrv::image_type::kFloat
-                                       ) );
+                                       dw, dh, 4,
+                                       mrv::image_type::kRGBA,
+                                       mrv::image_type::kFloat
+                                                     ) );
 
             float one_gamma = 1.0f / _gamma;
             for ( unsigned y = 0; y < dh; ++y )
@@ -1402,7 +1514,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             ImagePixel* p = (ImagePixel*)ptr->data().get();
 
             if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-                 Preferences::uiMain->uiView->use_lut() )
+                    Preferences::uiMain->uiView->use_lut() )
             {
 
                 try
@@ -1510,14 +1622,14 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     DestroyMagickWand( wand );
 
     if (status == MagickFalse)
-      {
+    {
         ThrowWandException( wand );
-      }
+    }
 
     p->channel( old_channel );
 
     return true;
-  }
+}
 
 
 } // namespace mrv

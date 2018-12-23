@@ -101,8 +101,8 @@ namespace mrv
 
 
 
-  static const char* kVersion = "4.3.7";
-  static const char* kBuild = "- Built " __DATE__ " " __TIME__;
+static const char* kVersion = "4.3.8";
+static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 #if INTPTR_MAX == INT64_MAX
 static const char* kArch = "64";
@@ -113,8 +113,8 @@ static const char* kArch = "32";
 #endif
 
 
-  struct FormatInfo
-  {
+struct FormatInfo
+{
     bool encode;
     bool decode;
     bool blob;
@@ -125,41 +125,41 @@ static const char* kArch = "32";
 
     FormatInfo(bool dec, bool enc, bool blo,
                const char* n, const char* mod, const char* desc ) :
-      encode( enc ),
-      decode( dec ),
-      blob( blo ),
-      name( n ),
-      module( mod ),
-      description( desc )
+        encode( enc ),
+        decode( dec ),
+        blob( blo ),
+        name( n ),
+        module( mod ),
+        description( desc )
     {
     }
 
     bool operator<( const FormatInfo& b ) const
     {
-      return ( strcasecmp( name.c_str(), b.name.c_str() ) < 0 );
+        return ( strcasecmp( name.c_str(), b.name.c_str() ) < 0 );
     }
 
-  };
+};
 
-  struct SortFormatsFunctor
-  {
+struct SortFormatsFunctor
+{
     bool operator()( const FormatInfo* a, const FormatInfo* b ) const
     {
-      return *a < *b;
+        return *a < *b;
     }
-  };
+};
 
 
-  typedef std::vector< FormatInfo* > FormatList;
+typedef std::vector< FormatInfo* > FormatList;
 
 
-  const char* version()
-  {
+const char* version()
+{
     return kVersion;
-  }
+}
 
 void ffmpeg_formats( fltk::Browser& browser )
-  {
+{
     using namespace std;
 
 
@@ -236,36 +236,36 @@ void ffmpeg_formats( fltk::Browser& browser )
     formats.push_back(f);
 
     last_name= "000";
-    for(;;){
-      bool decode = false;
-      bool encode = false;
-      const char* name=NULL;
-      const char* long_name=NULL;
+    for(;;) {
+        bool decode = false;
+        bool encode = false;
+        const char* name=NULL;
+        const char* long_name=NULL;
 
-      for(ofmt = av_oformat_next(NULL); ofmt; ofmt = av_oformat_next(ofmt)) {
-        if((name == NULL || strcmp(ofmt->name, name)<0) &&
-           strcmp(ofmt->name, last_name)>0){
-          name = ofmt->name;
-          long_name = ofmt->long_name;
-          encode = true;
+        for(ofmt = av_oformat_next(NULL); ofmt; ofmt = av_oformat_next(ofmt)) {
+            if((name == NULL || strcmp(ofmt->name, name)<0) &&
+                    strcmp(ofmt->name, last_name)>0) {
+                name = ofmt->name;
+                long_name = ofmt->long_name;
+                encode = true;
+            }
         }
-      }
-      for(ifmt = av_iformat_next(NULL); ifmt; ifmt = av_iformat_next(ifmt)) {
-        if((name == NULL || strcmp(ifmt->name, name)<0) &&
-           strcmp(ifmt->name, last_name)>0){
-          name = ifmt->name;
-          long_name = ifmt->long_name;
-          encode = false;
+        for(ifmt = av_iformat_next(NULL); ifmt; ifmt = av_iformat_next(ifmt)) {
+            if((name == NULL || strcmp(ifmt->name, name)<0) &&
+                    strcmp(ifmt->name, last_name)>0) {
+                name = ifmt->name;
+                long_name = ifmt->long_name;
+                encode = false;
+            }
+            if(name && strcmp(ifmt->name, name)==0)
+                decode = true;
         }
-        if(name && strcmp(ifmt->name, name)==0)
-          decode = true;
-      }
-      if(name==NULL)
-        break;
-      last_name= name;
+        if(name==NULL)
+            break;
+        last_name= name;
 
-      f = new FormatInfo( decode, encode, false, name, "FFMPEG", long_name );
-      formats.push_back( f );
+        f = new FormatInfo( decode, encode, false, name, "FFMPEG", long_name );
+        formats.push_back( f );
     }
 
     // Now, add image formats from imagemagick
@@ -276,16 +276,16 @@ void ffmpeg_formats( fltk::Browser& browser )
     exception=DestroyExceptionInfo(exception);
 
     for ( unsigned i = 0; i < num; ++i )
-      {
+    {
         const MagickInfo* m = magick_info[i];
 
         f = new FormatInfo( m->decoder, m->encoder,
                             false,
                             m->name, "ImageMagick", m->description );
         formats.push_back( f );
-      }
+    }
     magick_info = (const MagickInfo **)
-      RelinquishMagickMemory((void *) magick_info);
+                  RelinquishMagickMemory((void *) magick_info);
 
     // Finally, add OIIO formats
     {
@@ -330,27 +330,27 @@ void ffmpeg_formats( fltk::Browser& browser )
 
     // Now concatenate all the stuff into a string
     {
-      FormatList::const_iterator i = formats.begin();
-      FormatList::const_iterator e = formats.end();
-      for ( ; i != e; ++i )
+        FormatList::const_iterator i = formats.begin();
+        FormatList::const_iterator e = formats.end();
+        for ( ; i != e; ++i )
         {
-          f = *i;
-          std::ostringstream o;
-          o << ( f->decode ? "D\t" : " \t" )
-            << ( f->encode ? "E\t" : " \t" )
-            << ( f->blob   ? "B\t" : " \t" )
-            << f->name << "\t"
-            << f->module << "\t"
-            << f->description;
-          browser.add( o.str().c_str() );
-          delete f;
+            f = *i;
+            std::ostringstream o;
+            o << ( f->decode ? "D\t" : " \t" )
+              << ( f->encode ? "E\t" : " \t" )
+              << ( f->blob   ? "B\t" : " \t" )
+              << f->name << "\t"
+              << f->module << "\t"
+              << f->description;
+            browser.add( o.str().c_str() );
+            delete f;
         }
     }
 
-  }
+}
 
 static void ffmpeg_codecs(fltk::Browser& browser, int type)
-  {
+{
     using namespace std;
 
     AVCodec *p, *p2;
@@ -358,118 +358,118 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
     std::ostringstream o;
     last_name= "000";
-    for(;;){
-      int decode=0;
-      int encode=0;
-      int cap=0;
-      const char *type_str;
+    for(;;) {
+        int decode=0;
+        int encode=0;
+        int cap=0;
+        const char *type_str;
 
-      p2=NULL;
+        p2=NULL;
 
-      for(p = av_codec_next(NULL); p; p = av_codec_next(p) ) {
-        if((p2==NULL || strcmp(p->name, p2->name)<0) &&
-           strcmp(p->name, last_name)>0){
-          p2= p;
-          decode= encode= cap=0;
+        for(p = av_codec_next(NULL); p; p = av_codec_next(p) ) {
+            if((p2==NULL || strcmp(p->name, p2->name)<0) &&
+                    strcmp(p->name, last_name)>0) {
+                p2= p;
+                decode= encode= cap=0;
+            }
+            if(p2 && strcmp(p->name, p2->name)==0) {
+                if(p->decode) decode=1;
+                if(p->encode2) encode=1;
+                cap |= p->capabilities;
+            }
         }
-        if(p2 && strcmp(p->name, p2->name)==0){
-          if(p->decode) decode=1;
-          if(p->encode2) encode=1;
-          cap |= p->capabilities;
+
+        if(p2==NULL)
+            break;
+        last_name= p2->name;
+
+        if ( p2->type != type )
+            continue;
+
+        switch(p2->type) {
+        case AVMEDIA_TYPE_VIDEO:
+            type_str = "V";
+            break;
+        case AVMEDIA_TYPE_AUDIO:
+            type_str = "A";
+            break;
+        case AVMEDIA_TYPE_SUBTITLE:
+            type_str = "S";
+            break;
+        default:
+            type_str = "?";
+            break;
         }
-      }
 
-      if(p2==NULL)
-        break;
-      last_name= p2->name;
+        std::ostringstream o;
+        o << ( decode ? "D\t" : " \t" )
+          << ( encode ? "E\t" : " \t" )
+          << "\t"
+          << ( cap & AV_CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
+          << ( cap & AV_CODEC_CAP_DR1 ? "D\t":" \t" )
+          << ( cap & AV_CODEC_CAP_TRUNCATED ? "T\t":" \t" )
+          << p2->name;
 
-      if ( p2->type != type )
-        continue;
+        browser.add( o.str().c_str() );
 
-      switch(p2->type) {
-      case AVMEDIA_TYPE_VIDEO:
-        type_str = "V";
-        break;
-      case AVMEDIA_TYPE_AUDIO:
-        type_str = "A";
-        break;
-      case AVMEDIA_TYPE_SUBTITLE:
-        type_str = "S";
-        break;
-      default:
-        type_str = "?";
-        break;
-      }
-
-      std::ostringstream o;
-      o << ( decode ? "D\t" : " \t" )
-        << ( encode ? "E\t" : " \t" )
-        << "\t"
-        << ( cap & AV_CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
-        << ( cap & AV_CODEC_CAP_DR1 ? "D\t":" \t" )
-        << ( cap & AV_CODEC_CAP_TRUNCATED ? "T\t":" \t" )
-        << p2->name;
-
-      browser.add( o.str().c_str() );
-
-      /* if(p2->decoder && decode==0)
-         printf(" use %s for decoding", p2->decoder->name);*/
+        /* if(p2->decoder && decode==0)
+           printf(" use %s for decoding", p2->decoder->name);*/
     }
 
-  }
+}
 
 
-  void ffmpeg_audio_codecs(fltk::Browser& browser )
-  {
-     return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
-  }
+void ffmpeg_audio_codecs(fltk::Browser& browser )
+{
+    return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
+}
 
-  void ffmpeg_video_codecs(fltk::Browser& browser )
-  {
-     return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
-  }
+void ffmpeg_video_codecs(fltk::Browser& browser )
+{
+    return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
+}
 
-  void ffmpeg_subtitle_codecs(fltk::Browser& browser )
-  {
-     return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
-  }
+void ffmpeg_subtitle_codecs(fltk::Browser& browser )
+{
+    return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
+}
 
 
-  std::string ffmpeg_protocols()
-  {
+std::string ffmpeg_protocols()
+{
     std::ostringstream o;
 #if LIBAVUTIL_VERSION_MAJOR > 50
     void* opaque = NULL;
     const char* up;
     for( up = avio_enum_protocols( &opaque, 0 ); up;
-         up = avio_enum_protocols( &opaque, 0 ) )
-      {
+            up = avio_enum_protocols( &opaque, 0 ) )
+    {
         o << " " << up << ":";
-      }
+    }
 #else
     URLProtocol* up;
     for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
-     {
+    {
         o << " " << up->name << ":";
-     }
+    }
 #endif
     return o.str();
-  }
+}
 
-  std::string ffmpeg_motion_estimation_methods()
-  {
+std::string ffmpeg_motion_estimation_methods()
+{
     static const char *motion_str[] = {
-      "zero",
-      "esa",
-      "tss",
-      "tdls",
-      "ntss",
-      "fss",
-      "ds",
-      "hexds",
-      "epzs",
-      "umh",
-      NULL,
+        "zero",
+        "esa",
+        "tss",
+        "tdls",
+        "ntss",
+        "fss",
+        "ds",
+        "hexds",
+        "epzs",
+        "umh",
+        NULL,
     };
 
     using namespace std;
@@ -477,37 +477,38 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
     const char** pp = motion_str;
     while (*pp) {
-      o << *pp << endl;
-      pp++;
+        o << *pp << endl;
+        pp++;
     }
 
     return o.str();
-  }
+}
 
 
-  //
-  // Redirects ffmpeg's av_log messages to mrViewer's log window.
-  //
-  void av_log_redirect( void* ptr, int level, const char* fmt, va_list vl )
-  {
+//
+// Redirects ffmpeg's av_log messages to mrViewer's log window.
+//
+void av_log_redirect( void* ptr, int level, const char* fmt, va_list vl )
+{
     static const char* kModule = "ffmpeg";
-    char buf[1024];  buf[1023] = 0;
+    char buf[1024];
+    buf[1023] = 0;
     vsnprintf( buf, 1023, fmt, vl );
 
     if ( level < AV_LOG_WARNING )
-      mrvLOG_ERROR( kModule, buf );
+        mrvLOG_ERROR( kModule, buf );
     else if ( level < AV_LOG_INFO )
-      mrvLOG_WARNING( kModule, buf );
+        mrvLOG_WARNING( kModule, buf );
     else if ( level < AV_LOG_VERBOSE )
-      mrvLOG_INFO( kModule, buf );
+        mrvLOG_INFO( kModule, buf );
     else {
-      // log verbose
+        // log verbose
     }
-  }
+}
 
 
-  std::string about_message()
-  {
+std::string about_message()
+{
     using namespace std;
 
 
@@ -588,7 +589,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     if (libs.size()) {
         std::vector<string_view> libvec;
         Strutil::split (libs, libvec, ";");
-        for (auto& lib : libvec) {
+for (auto& lib : libvec) {
             size_t pos = lib.find(':');
             lib.remove_prefix (pos+1);
         }
@@ -621,12 +622,12 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl;
 
     return o.str();
-  }
+}
 
-  std::string cpu_information()
-  {
+std::string cpu_information()
+{
     return GetCpuCaps(&gCpuCaps);
-  }
+}
 
 #ifdef _WIN32
 void  memory_information( uint64_t& totalVirtualMem,
@@ -660,7 +661,7 @@ void  memory_information( uint64_t& totalVirtualMem,
 
 #ifdef LINUX
 
-static int parseLine(char* line){
+static int parseLine(char* line) {
     int i = strlen(line);
     while (*line < '0' || *line > '9') line++;
     line[i-3] = '\0';
@@ -669,14 +670,14 @@ static int parseLine(char* line){
 }
 
 
-static int getValue(){ //Note: this value is in KB!
+static int getValue() { //Note: this value is in KB!
     FILE* file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];
 
 
-    while (fgets(line, 128, file) != NULL){
-        if (strncmp(line, "VmSize:", 7) == 0){
+    while (fgets(line, 128, file) != NULL) {
+        if (strncmp(line, "VmSize:", 7) == 0) {
             result = parseLine(line);
             break;
         }
@@ -685,14 +686,14 @@ static int getValue(){ //Note: this value is in KB!
     return result;
 }
 
-int getValue2(){ //Note: this value is in KB!
+int getValue2() { //Note: this value is in KB!
     FILE* file = fopen("/proc/self/status", "r");
     int result = -1;
     char line[128];
 
 
-    while (fgets(line, 128, file) != NULL){
-        if (strncmp(line, "VmRSS:", 6) == 0){
+    while (fgets(line, 128, file) != NULL) {
+        if (strncmp(line, "VmRSS:", 6) == 0) {
             result = parseLine(line);
             break;
         }
@@ -745,8 +746,8 @@ void  memory_information( uint64_t& totalVirtualMem,
 }  // memory_information
 #endif // LINUX
 
-  std::string gpu_information( mrv::ViewerUI* uiMain )
-  {
+std::string gpu_information( mrv::ViewerUI* uiMain )
+{
     using std::endl;
     std::ostringstream o;
 
@@ -756,13 +757,13 @@ void  memory_information( uint64_t& totalVirtualMem,
 
     mrv::DrawEngine* engine = uiMain->uiView->engine();
     if ( engine )
-      {
+    {
         o << uiMain->uiView->engine()->options();
-      }
+    }
     else
-      {
+    {
         o << "No GPU." << endl;
-      }
+    }
 
     o << "HW Stereo:\t"
       << ( uiMain->uiView->can_do( fltk::STEREO ) ? "Yes" : "No" )
@@ -772,7 +773,7 @@ void  memory_information( uint64_t& totalVirtualMem,
       << endl;
 
     return o.str();
-  }
+}
 
 
 }

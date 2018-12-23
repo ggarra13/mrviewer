@@ -19,9 +19,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -33,8 +33,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -59,12 +59,12 @@
 //----------------------------------------------------------------------------
 
 #if defined(WIN32) || defined(WIN64)
-    #include <winsock2.h>  // for timeval
-    #include <windows.h>
-    #undef max  // love windows
-    #undef min
+#include <winsock2.h>  // for timeval
+#include <windows.h>
+#undef max  // love windows
+#undef min
 #else
-    #include <sys/time.h>
+#include <sys/time.h>
 #endif
 
 
@@ -73,9 +73,9 @@
 namespace mrv {
 
 
-  class Timer
-  {
-  public:
+class Timer
+{
+public:
 
     //------------
     // Constructor
@@ -104,36 +104,42 @@ namespace mrv {
     //-------------------------------------------------
 
     void	setDesiredFrameRate (double fps) {
-       _pspf = _spf;
-       _spf = 1 / fps; 
+        _pspf = _spf;
+        _spf = 1 / fps;
     }
-    inline double actualFrameRate() { return _actualFrameRate; }
+    inline double actualFrameRate() {
+        return _actualFrameRate;
+    }
 
 
     //-------------------------------------------------
     // Get time since last frame
     //-------------------------------------------------
-    inline double timeSinceLastFrame() { return _timeSinceLastFrame; }
+    inline double timeSinceLastFrame() {
+        return _timeSinceLastFrame;
+    }
 
 
-    inline void setDesiredSecondsPerFrame( double x ) { _spf = x; }
+    inline void setDesiredSecondsPerFrame( double x ) {
+        _spf = x;
+    }
 
     //-------------------
     // Current play state
     //-------------------
-    
+
     CMedia::Playback	playState;
 
 
-  private:
+private:
 
     double	_spf;				// desired frame rate,
-    						// in seconds per frame
+    // in seconds per frame
 
     double      _pspf;                       // last frame rate we waited on
 
     timeval	_lastFrameTime;			// time when we displayed the
-    						// last frame
+    // last frame
 
     double	_timingError;			// cumulative timing error
     double      _timeSinceLastFrame;            // time since last frame
@@ -141,7 +147,7 @@ namespace mrv {
     timeval	_lastFpsFrameTime;		// state to keep track of the
     int		_framesSinceLastFpsFrame;	// actual frame rate, averaged
     double	_actualFrameRate;		// over several frames
-  };
+};
 
 }
 

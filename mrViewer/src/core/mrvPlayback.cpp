@@ -65,7 +65,7 @@ extern "C" {
 
 namespace
 {
-  const char* kModule = "play";
+const char* kModule = "play";
 }
 
 /* no AV sync correction is done if below the minimum AV sync threshold */
@@ -113,11 +113,11 @@ namespace mrv {
 
 
 enum EndStatus {
-kEndIgnore,
-kEndStop,
-kEndNextImage,
-kEndChangeDirection,
-kEndLoop,
+    kEndIgnore,
+    kEndStop,
+    kEndNextImage,
+    kEndChangeDirection,
+    kEndLoop,
 };
 
 
@@ -202,15 +202,15 @@ inline double get_master_clock(CMedia* img)
     double val;
 
     switch (get_master_sync_type(img)) {
-        case CMedia::AV_SYNC_VIDEO_MASTER:
-            val = get_clock(&img->vidclk);
-            break;
-        case CMedia::AV_SYNC_AUDIO_MASTER:
-            val = get_clock(&img->audclk);
-            break;
-        default:
-            val = get_clock(&img->extclk);
-            break;
+    case CMedia::AV_SYNC_VIDEO_MASTER:
+        val = get_clock(&img->vidclk);
+        break;
+    case CMedia::AV_SYNC_AUDIO_MASTER:
+        val = get_clock(&img->audclk);
+        break;
+    default:
+        val = get_clock(&img->extclk);
+        break;
     }
     return val;
 }
@@ -302,7 +302,7 @@ CMedia::DecodeStatus check_decode_loop( const int64_t frame,
 {
     int64_t first, last;
     CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline,
-                                              first, last );
+                                  first, last );
     if ( status == CMedia::kDecodeLoopEnd )
     {
         img->loop_at_end( last+1 );
@@ -351,195 +351,195 @@ EndStatus handle_loop( boost::int64_t& frame,
 
     switch( end )
     {
-        case CMedia::kDecodeLoopEnd:
+    case CMedia::kDecodeLoopEnd:
+    {
+        if ( reel->edl )
+        {
+            boost::int64_t f = frame;
+
+            f -= img->first_frame();
+            f += reel->location(img);
+
+            if ( f <= timeline->display_maximum() )
             {
-                if ( reel->edl )
-                {
-                    boost::int64_t f = frame;
-
-                    f -= img->first_frame();
-                    f += reel->location(img);
-
-                    if ( f <= timeline->display_maximum() )
-                    {
-                        next = reel->image_at( f );
-                    }
+                next = reel->image_at( f );
+            }
 
 
-                    if ( next )
-                    {
-                        f = reel->global_to_local( f );
-                    }
-                    else
-                    {
-                        if ( loop == CMedia::kLoop )
-                        {
-                            f = boost::int64_t(timeline->display_minimum());
-                            next = reel->image_at( f );
-                            f = reel->global_to_local( f );
-                        }
-                        else
-                        {
-                            next = img;
-                        }
-                    }
-
-                    if ( next != img && next != NULL )
-                    {
-                        //if ( video )
-                        {
-                            CMedia::Mutex& m2 = next->video_mutex();
-                            SCOPED_LOCK( m2 );
-
-                            if ( next->stopped() )
-                            {
-                                next->seek( f );
-                                next->do_seek();
-                                next->play( CMedia::kForwards, uiMain, fg );
-                            }
-
-                            img->playback( CMedia::kStopped );
-                            img->flush_all();
-                            if ( img->has_video() ) img->clear_cache();
-                        }
-
-                        status = kEndNextImage;
-                        return status;
-                    }
-                    if ( img->stopped() ) return kEndNextImage;
-                }
-
+            if ( next )
+            {
+                f = reel->global_to_local( f );
+            }
+            else
+            {
                 if ( loop == CMedia::kLoop )
                 {
-                    frame = first;
-                    if ( img->right_eye() ) img->right_eye()->seek( frame );
-                    status = kEndLoop;
-                    if ( init_time )
-                    {
-                        init_clock(&img->vidclk, NULL);
-                        init_clock(&img->audclk, NULL);
-                        init_clock(&img->extclk, NULL);
-                        set_clock(&img->extclk, get_clock(&img->extclk), false);
-                    }
-                }
-                else if ( loop == CMedia::kPingPong )
-                {
-                    frame = last;
-                    step  = -1;
-                    img->playback( CMedia::kBackwards );
-                    if (fg) view->playback( CMedia::kBackwards );
-                    status = kEndChangeDirection;
-                    if ( init_time )
-                    {
-                        init_clock(&img->vidclk, NULL);
-                        init_clock(&img->audclk, NULL);
-                        init_clock(&img->extclk, NULL);
-                        set_clock(&img->extclk, get_clock(&img->extclk), false);
-                    }
-                }
-                else
-                {
-                    if (fg) view->playback( CMedia::kStopped );
-                    img->playback( CMedia::kStopped );
-                }
-                break;
-            }
-        case CMedia::kDecodeLoopStart:
-            {
-                if ( reel->edl )
-                {
-                    boost::int64_t f = frame;
-
-                    f -= img->first_frame();
-                    f += reel->location(img);
-
-                    if ( f >= timeline->display_minimum() )
-                    {
-                        next = reel->image_at( f );
-                    }
-
-
+                    f = boost::int64_t(timeline->display_minimum());
+                    next = reel->image_at( f );
                     f = reel->global_to_local( f );
-
-                    if ( !next )
-                    {
-                        if ( loop == CMedia::kLoop )
-                        {
-                            f = boost::int64_t( timeline->display_maximum() );
-                            next = reel->image_at( f );
-                            f = reel->global_to_local( f );
-                        }
-                        else
-                        {
-                            next = img;
-                        }
-                    }
-
-
-                    if ( next != img && next != NULL )
-                    {
-                        //if ( video )
-                        {
-                            CMedia::Mutex& m2 = next->video_mutex();
-                            SCOPED_LOCK( m2 );
-
-                            if ( next->stopped() )
-                            {
-                                next->seek( f );
-                                next->do_seek();
-                                next->play( CMedia::kBackwards, uiMain, fg );
-                            }
-
-                            img->playback( CMedia::kStopped );
-                            img->flush_all();
-                            if ( img->has_video() ) img->clear_cache();
-                        }
-
-                        status = kEndNextImage;
-                        return status;
-                    }
-                    if ( img->stopped() ) return kEndNextImage;
-                }
-
-                if ( loop == CMedia::kLoop )
-                {
-                    frame = last;
-                    if ( img->right_eye() ) img->right_eye()->seek( frame );
-                    status = kEndLoop;
-                    if ( init_time )
-                    {
-                        init_clock(&img->vidclk, NULL);
-                        init_clock(&img->audclk, NULL);
-                        init_clock(&img->extclk, NULL);
-                        set_clock(&img->extclk, get_clock(&img->extclk), false);
-                    }
-                }
-                else if ( loop == CMedia::kPingPong )
-                {
-                    frame = first;
-                    step = 1;
-                    img->playback( CMedia::kForwards );
-                    if (fg) view->playback( CMedia::kForwards );
-                    status = kEndChangeDirection;
-                    if ( init_time )
-                    {
-                        init_clock(&img->vidclk, NULL);
-                        init_clock(&img->audclk, NULL);
-                        init_clock(&img->extclk, NULL);
-                        set_clock(&img->extclk, get_clock(&img->extclk), false);
-                    }
                 }
                 else
                 {
-                   img->playback( CMedia::kStopped );
-                    if (fg) view->playback( CMedia::kStopped );
+                    next = img;
                 }
-                break;
             }
-        default:
+
+            if ( next != img && next != NULL )
             {
-                // error
+                //if ( video )
+                {
+                    CMedia::Mutex& m2 = next->video_mutex();
+                    SCOPED_LOCK( m2 );
+
+                    if ( next->stopped() )
+                    {
+                        next->seek( f );
+                        next->do_seek();
+                        next->play( CMedia::kForwards, uiMain, fg );
+                    }
+
+                    img->playback( CMedia::kStopped );
+                    img->flush_all();
+                    if ( img->has_video() ) img->clear_cache();
+                }
+
+                status = kEndNextImage;
+                return status;
             }
+            if ( img->stopped() ) return kEndNextImage;
+        }
+
+        if ( loop == CMedia::kLoop )
+        {
+            frame = first;
+            if ( img->right_eye() ) img->right_eye()->seek( frame );
+            status = kEndLoop;
+            if ( init_time )
+            {
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
+            }
+        }
+        else if ( loop == CMedia::kPingPong )
+        {
+            frame = last;
+            step  = -1;
+            img->playback( CMedia::kBackwards );
+            if (fg) view->playback( CMedia::kBackwards );
+            status = kEndChangeDirection;
+            if ( init_time )
+            {
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
+            }
+        }
+        else
+        {
+            if (fg) view->playback( CMedia::kStopped );
+            img->playback( CMedia::kStopped );
+        }
+        break;
+    }
+    case CMedia::kDecodeLoopStart:
+    {
+        if ( reel->edl )
+        {
+            boost::int64_t f = frame;
+
+            f -= img->first_frame();
+            f += reel->location(img);
+
+            if ( f >= timeline->display_minimum() )
+            {
+                next = reel->image_at( f );
+            }
+
+
+            f = reel->global_to_local( f );
+
+            if ( !next )
+            {
+                if ( loop == CMedia::kLoop )
+                {
+                    f = boost::int64_t( timeline->display_maximum() );
+                    next = reel->image_at( f );
+                    f = reel->global_to_local( f );
+                }
+                else
+                {
+                    next = img;
+                }
+            }
+
+
+            if ( next != img && next != NULL )
+            {
+                //if ( video )
+                {
+                    CMedia::Mutex& m2 = next->video_mutex();
+                    SCOPED_LOCK( m2 );
+
+                    if ( next->stopped() )
+                    {
+                        next->seek( f );
+                        next->do_seek();
+                        next->play( CMedia::kBackwards, uiMain, fg );
+                    }
+
+                    img->playback( CMedia::kStopped );
+                    img->flush_all();
+                    if ( img->has_video() ) img->clear_cache();
+                }
+
+                status = kEndNextImage;
+                return status;
+            }
+            if ( img->stopped() ) return kEndNextImage;
+        }
+
+        if ( loop == CMedia::kLoop )
+        {
+            frame = last;
+            if ( img->right_eye() ) img->right_eye()->seek( frame );
+            status = kEndLoop;
+            if ( init_time )
+            {
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
+            }
+        }
+        else if ( loop == CMedia::kPingPong )
+        {
+            frame = first;
+            step = 1;
+            img->playback( CMedia::kForwards );
+            if (fg) view->playback( CMedia::kForwards );
+            status = kEndChangeDirection;
+            if ( init_time )
+            {
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
+            }
+        }
+        else
+        {
+            img->playback( CMedia::kStopped );
+            if (fg) view->playback( CMedia::kStopped );
+        }
+        break;
+    }
+    default:
+    {
+        // error
+    }
     }
 
     if ( status == kEndStop || status == kEndNextImage )
@@ -620,7 +620,7 @@ void audio_thread( PlaybackData* data )
         // DBG( "decode audio " << frame );
 
         // if (!fg)
-            // img->debug_audio_packets( frame, "play", true );
+        // img->debug_audio_packets( frame, "play", true );
 
 
         CMedia::DecodeStatus status = img->decode_audio( f );
@@ -634,80 +634,80 @@ void audio_thread( PlaybackData* data )
 
         switch( status )
         {
-            case CMedia::kDecodeError:
-                LOG_ERROR( img->name()
-                           << _(" - decode Error audio frame ") << frame );
-                frame += step;
-                continue;
-            case CMedia::kDecodeMissingFrame:
-                timer.setDesiredFrameRate( img->play_fps() );
-                timer.waitUntilNextFrameIsDue();
-                frame += step;
-                continue;
-            case CMedia::kDecodeNoStream:
-                timer.setDesiredFrameRate( img->play_fps() );
-                timer.waitUntilNextFrameIsDue();
-                if ( fg && !img->has_picture() && reel->edl &&
-                     img->is_left_eye() )
-                {
-                    int64_t f = frame + reel->location(img) - img->first_frame();
-                    f -= img->audio_offset();
-                    view->frame( f );
-                }
-                frame += step;
-                continue;
-            case  CMedia::kDecodeLoopEnd:
-            case  CMedia::kDecodeLoopStart:
-                {
+        case CMedia::kDecodeError:
+            LOG_ERROR( img->name()
+                       << _(" - decode Error audio frame ") << frame );
+            frame += step;
+            continue;
+        case CMedia::kDecodeMissingFrame:
+            timer.setDesiredFrameRate( img->play_fps() );
+            timer.waitUntilNextFrameIsDue();
+            frame += step;
+            continue;
+        case CMedia::kDecodeNoStream:
+            timer.setDesiredFrameRate( img->play_fps() );
+            timer.waitUntilNextFrameIsDue();
+            if ( fg && !img->has_picture() && reel->edl &&
+                    img->is_left_eye() )
+            {
+                int64_t f = frame + reel->location(img) - img->first_frame();
+                f -= img->audio_offset();
+                view->frame( f );
+            }
+            frame += step;
+            continue;
+        case  CMedia::kDecodeLoopEnd:
+        case  CMedia::kDecodeLoopStart:
+        {
 
 
-                    DBG( img->name() << " BARRIER IN AUDIO " << frame );
+            DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
 
-                    CMedia::Barrier* barrier = img->loop_barrier();
-                    if ( barrier )
-                    {
-                        // Wait until all threads loop and decode is restarted
-                        bool ok = barrier->wait();
-                        DBG( img->name() << " BARRIER PASSED IN AUDIO "
-                             << frame );
-                    }
+            CMedia::Barrier* barrier = img->loop_barrier();
+            if ( barrier )
+            {
+                // Wait until all threads loop and decode is restarted
+                bool ok = barrier->wait();
+                DBG( img->name() << " BARRIER PASSED IN AUDIO "
+                     << frame );
+            }
 
 
-                    barrier = img->fg_bg_barrier();
-                    if ( barrier )
-                    {
-                        // LOG_INFO( img->name() << " BARRIER " << barrier
-                        //           << " AUDIO FG/BG LOCK gen: "
-                        //           << barrier->generation()
-                        //           << " count: " << barrier->count()
-                        //           << " threshold: " << barrier->threshold()
-                        //           << " used: " << barrier->used() );
-                        bool ok = barrier->wait();
-                        // LOG_INFO( img->name() << " BARRIER " << barrier
-                        //           << " AUDIO FG/BG PASS gen: "
-                        //           << barrier->generation()
-                        //           << " count: " << barrier->count()
-                        //           << " threshold: " << barrier->threshold()
-                        //           << " used: " << barrier->used() );
-                    }
+            barrier = img->fg_bg_barrier();
+            if ( barrier )
+            {
+                // LOG_INFO( img->name() << " BARRIER " << barrier
+                //           << " AUDIO FG/BG LOCK gen: "
+                //           << barrier->generation()
+                //           << " count: " << barrier->count()
+                //           << " threshold: " << barrier->threshold()
+                //           << " used: " << barrier->used() );
+                bool ok = barrier->wait();
+                // LOG_INFO( img->name() << " BARRIER " << barrier
+                //           << " AUDIO FG/BG PASS gen: "
+                //           << barrier->generation()
+                //           << " count: " << barrier->count()
+                //           << " threshold: " << barrier->threshold()
+                //           << " used: " << barrier->used() );
+            }
 
 
-                    frame -= img->audio_offset();
+            frame -= img->audio_offset();
 
-                    EndStatus end = handle_loop( frame, step, img, fg, true,
-                                                 uiMain, reel, timeline,
-                                                 status );
+            EndStatus end = handle_loop( frame, step, img, fg, true,
+                                         uiMain, reel, timeline,
+                                         status );
 
-                    frame += img->audio_offset();
+            frame += img->audio_offset();
 
-                    DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
-                    continue;
-                }
-            case CMedia::kDecodeOK:
-                break;
-            default:
-                break;
+            DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
+            continue;
+        }
+        case CMedia::kDecodeOK:
+            break;
+        default:
+            break;
         }
 
 
@@ -758,9 +758,9 @@ void audio_thread( PlaybackData* data )
 
 
 
-  //
-  // Main loop used to decode subtitles
-  //
+//
+// Main loop used to decode subtitles
+//
 void subtitle_thread( PlaybackData* data )
 {
     assert( data != NULL );
@@ -812,31 +812,31 @@ void subtitle_thread( PlaybackData* data )
 
         switch( status )
         {
-            case CMedia::kDecodeError:
-            case CMedia::kDecodeMissingFrame:
-            case CMedia::kDecodeMissingSamples:
-            case CMedia::kDecodeDone:
-            case CMedia::kDecodeNoStream:
-            case CMedia::kDecodeOK:
-                img->find_subtitle( frame );
-                break;
-            case CMedia::kDecodeLoopEnd:
-            case CMedia::kDecodeLoopStart:
+        case CMedia::kDecodeError:
+        case CMedia::kDecodeMissingFrame:
+        case CMedia::kDecodeMissingSamples:
+        case CMedia::kDecodeDone:
+        case CMedia::kDecodeNoStream:
+        case CMedia::kDecodeOK:
+            img->find_subtitle( frame );
+            break;
+        case CMedia::kDecodeLoopEnd:
+        case CMedia::kDecodeLoopStart:
 
-                //if ( img->stopped() ) continue;
+            //if ( img->stopped() ) continue;
 
-                CMedia::Barrier* barrier = img->loop_barrier();
-                if ( barrier )
-                {
-                    // Wait until all threads loop and decode is restarted
-                    barrier->wait();
-                }
+            CMedia::Barrier* barrier = img->loop_barrier();
+            if ( barrier )
+            {
+                // Wait until all threads loop and decode is restarted
+                barrier->wait();
+            }
 
-                //if ( img->stopped() ) continue;
+            //if ( img->stopped() ) continue;
 
-                EndStatus end = handle_loop( frame, step, img, fg, true,
-                                             uiMain, reel, timeline, status );
-                continue;
+            EndStatus end = handle_loop( frame, step, img, fg, true,
+                                         uiMain, reel, timeline, status );
+            continue;
         }
 
         double fps = img->play_fps();
@@ -893,7 +893,7 @@ void video_thread( PlaybackData* data )
         mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
         int64_t d = reel->duration();
         if ( fgreel->duration() > d && d > 1 &&
-             view->looping() != CMedia::kNoLoop )
+                view->looping() != CMedia::kNoLoop )
         {
             LOG_WARNING( _( "Background reel duration is too short.  "
                             "Looping may not work correctly." ) );
@@ -908,7 +908,7 @@ void video_thread( PlaybackData* data )
                 CMedia* bimg = bg->image();
                 int64_t d = bimg->duration();
                 if ( img->duration() > d && d > 1 &&
-                     view->looping() != CMedia::kNoLoop )
+                        view->looping() != CMedia::kNoLoop )
                 {
                     LOG_WARNING( _( "Background image duration is too short.  "
                                     "Looping may not work correctly." ) );
@@ -952,8 +952,8 @@ void video_thread( PlaybackData* data )
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
             (!fg || ! view->idle_callback() )  )
     {
-	img->wait_image();
-	
+        img->wait_image();
+
 
         int step = (int) img->playback();
         if ( step == 0 ) break;
@@ -968,183 +968,183 @@ void video_thread( PlaybackData* data )
         {
             // case CMedia::DecodeDone:
             //    continue;
-            case CMedia::kDecodeError:
-                LOG_ERROR( img->name() << _(" - Decode of image frame ") << frame
-                           << _(" returned ") << CMedia::decode_error( status ) );
-                break;
-            case CMedia::kDecodeLoopEnd:
-            case CMedia::kDecodeLoopStart:
-                {
-                    DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
+        case CMedia::kDecodeError:
+            LOG_ERROR( img->name() << _(" - Decode of image frame ") << frame
+                       << _(" returned ") << CMedia::decode_error( status ) );
+            break;
+        case CMedia::kDecodeLoopEnd:
+        case CMedia::kDecodeLoopStart:
+        {
+            DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
 
-                    // CMedia::Barrier* barrier = img->background_barrier();
-                    // if ( barrier )
-                    // {
-                    //     std::cerr << "wait for img " << img->name() << std::endl;
-                    //     std::cerr << "barrier threshold "
-                    //               << barrier->threshold() << std::endl;
-                    //     barrier->wait();
-                    //     std::cerr << "waited for img " << img->name() << std::endl;
-                    // }
+            // CMedia::Barrier* barrier = img->background_barrier();
+            // if ( barrier )
+            // {
+            //     std::cerr << "wait for img " << img->name() << std::endl;
+            //     std::cerr << "barrier threshold "
+            //               << barrier->threshold() << std::endl;
+            //     barrier->wait();
+            //     std::cerr << "waited for img " << img->name() << std::endl;
+            // }
 
-                    CMedia::Barrier* barrier = img->loop_barrier();
+            CMedia::Barrier* barrier = img->loop_barrier();
 
-                    if ( barrier )
-                    {
-                        DBG( img->name() << " BARRIER VIDEO WAIT      gen: "
-                             << barrier->generation()
-                             << " count: " << barrier->count()
-                             << " threshold: " << barrier->threshold()
-                             << " used: " << barrier->used() );
-                        // Wait until all threads loop and decode is restarted
-                        bool ok = barrier->wait();
-                    }
-
-                    barrier = img->fg_bg_barrier();
-                    if ( barrier )
-                    {
-                        // LOG_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG LOCK gen: "
-                        //      << barrier->generation()
-                        //      << " count: " << barrier->count()
-                        //      << " threshold: " << barrier->threshold()
-                        //      << " used: " << barrier->used() );
-                        bool ok = barrier->wait();
-                        // LOG_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG PASS gen: "
-                        //      << barrier->generation()
-                        //      << " count: " << barrier->count()
-                        //      << " threshold: " << barrier->threshold()
-                        //      << " used: " << barrier->used() );
-                    }
-
-                    barrier = img->stereo_barrier();
-                    //LOG_INFO( img->name() << "@" << barrier << " wait" );
-                    if ( barrier )
-                    {
-                        bool ok = barrier->wait();
-                    }
-                    // LOG_INFO( img->name() << "@" << barrier << " waited" );
-
-                    DBG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
-                    << img->stopped() << " frame: " << frame );
-
-                    //if ( img->stopped() ) continue;
-
-                    DBG( img->name() << " VIDEO LOOP frame: " << frame );
-
-
-                    EndStatus end = handle_loop( frame, step, img, fg, true,
-                                                 uiMain, reel, timeline,
-                                                 status );
-
-               DBG( img->name() << " VIDEO LOOP END frame: " << frame
-                    << " step " << step );
-
-               continue;
+            if ( barrier )
+            {
+                DBG( img->name() << " BARRIER VIDEO WAIT      gen: "
+                     << barrier->generation()
+                     << " count: " << barrier->count()
+                     << " threshold: " << barrier->threshold()
+                     << " used: " << barrier->used() );
+                // Wait until all threads loop and decode is restarted
+                bool ok = barrier->wait();
             }
-          case CMedia::kDecodeMissingFrame:
-              break;
-          case CMedia::kDecodeBufferFull:
-          default:
-              break;
-      }
 
-      fps = img->play_fps();
+            barrier = img->fg_bg_barrier();
+            if ( barrier )
+            {
+                // LOG_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG LOCK gen: "
+                //      << barrier->generation()
+                //      << " count: " << barrier->count()
+                //      << " threshold: " << barrier->threshold()
+                //      << " used: " << barrier->used() );
+                bool ok = barrier->wait();
+                // LOG_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG PASS gen: "
+                //      << barrier->generation()
+                //      << " count: " << barrier->count()
+                //      << " threshold: " << barrier->threshold()
+                //      << " used: " << barrier->used() );
+            }
 
-      double delay = 1.0 / fps;
+            barrier = img->stereo_barrier();
+            //LOG_INFO( img->name() << "@" << barrier << " wait" );
+            if ( barrier )
+            {
+                bool ok = barrier->wait();
+            }
+            // LOG_INFO( img->name() << "@" << barrier << " waited" );
 
-      double diff = 0.0;
-      double bgdiff = 0.0;
+            DBG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
+                 << img->stopped() << " frame: " << frame );
 
-      double absdiff;
+            //if ( img->stopped() ) continue;
 
-      // // Calculate video-audio difference
-      if ( img->has_audio() && status == CMedia::kDecodeOK )
-      {
+            DBG( img->name() << " VIDEO LOOP frame: " << frame );
 
-          double video_clock, master_clock;
 
-          if ( step < 0 )
-          {
-              video_clock = img->video_clock();
-              master_clock = img->audio_clock();
-              // std::cerr  << " VC: " << video_clock
-              //            << " MC: " << master_clock
-              //            << " AC: " << get_clock(&img->audclk)
-              //            << " EC: " << get_clock(&img->extclk)
-              //            << std::endl;
-              // img->debug_video_stores( frame, "play", true );
-          }
-          else
-          {
-              video_clock = get_clock(&img->vidclk);
-              master_clock = get_master_clock(img);
-          }
+            EndStatus end = handle_loop( frame, step, img, fg, true,
+                                         uiMain, reel, timeline,
+                                         status );
+
+            DBG( img->name() << " VIDEO LOOP END frame: " << frame
+                 << " step " << step );
+
+            continue;
+        }
+        case CMedia::kDecodeMissingFrame:
+            break;
+        case CMedia::kDecodeBufferFull:
+        default:
+            break;
+        }
+
+        fps = img->play_fps();
+
+        double delay = 1.0 / fps;
+
+        double diff = 0.0;
+        double bgdiff = 0.0;
+
+        double absdiff;
+
+        // // Calculate video-audio difference
+        if ( img->has_audio() && status == CMedia::kDecodeOK )
+        {
+
+            double video_clock, master_clock;
+
+            if ( step < 0 )
+            {
+                video_clock = img->video_clock();
+                master_clock = img->audio_clock();
+                // std::cerr  << " VC: " << video_clock
+                //            << " MC: " << master_clock
+                //            << " AC: " << get_clock(&img->audclk)
+                //            << " EC: " << get_clock(&img->extclk)
+                //            << std::endl;
+                // img->debug_video_stores( frame, "play", true );
+            }
+            else
+            {
+                video_clock = get_clock(&img->vidclk);
+                master_clock = get_master_clock(img);
+            }
 
 #if 0
-          std::cerr  << " VC: " << video_clock
-                     << " MC: " << master_clock
-                     << " AC: " << get_clock(&img->audclk)
-                     << " EC: " << get_clock(&img->extclk)
-                     << std::endl;
+            std::cerr  << " VC: " << video_clock
+                       << " MC: " << master_clock
+                       << " AC: " << get_clock(&img->audclk)
+                       << " EC: " << get_clock(&img->extclk)
+                       << std::endl;
 #endif
 
 
-          diff = step * ( video_clock - master_clock );
+            diff = step * ( video_clock - master_clock );
 
-          absdiff = std::abs(diff);
+            absdiff = std::abs(diff);
 
-          if ( absdiff > 10.0 ) diff = 0.0;
-      }
-      else
-      {
-          diff = 0.0;
-      }
+            if ( absdiff > 10.0 ) diff = 0.0;
+        }
+        else
+        {
+            diff = 0.0;
+        }
 
 #if __cplusplus >= 201103L
-      using std::isnan;
+        using std::isnan;
 #endif
-      if (! isnan(diff) )
-      {
+        if (! isnan(diff) )
+        {
 
-          img->avdiff( diff );
+            img->avdiff( diff );
 
-          // Skip or repeat the frame. Take delay into account
-          //    FFPlay still doesn't "know if this is the best guess."
-          if(absdiff < AV_NOSYNC_THRESHOLD) {
-              double sdiff = step * diff;
-              double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN,
-                                            FFMIN(AV_SYNC_THRESHOLD_MAX,
-                                                  delay));
+            // Skip or repeat the frame. Take delay into account
+            //    FFPlay still doesn't "know if this is the best guess."
+            if(absdiff < AV_NOSYNC_THRESHOLD) {
+                double sdiff = step * diff;
+                double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN,
+                                              FFMIN(AV_SYNC_THRESHOLD_MAX,
+                                                    delay));
 
-              if (sdiff <= -sync_threshold)
-              {
-                  delay = FFMAX(0.00001, delay + sdiff);
-              }
-              else if (sdiff >= sync_threshold &&
-                       delay > AV_SYNC_FRAMEDUP_THRESHOLD)
-              {
-                  delay += sdiff;      // make fps slower
-              }
-              else if (sdiff >= sync_threshold) {
-                  delay *= 2;      // make fps repeat frame
-              }
-          }
-      }
+                if (sdiff <= -sync_threshold)
+                {
+                    delay = FFMAX(0.00001, delay + sdiff);
+                }
+                else if (sdiff >= sync_threshold &&
+                         delay > AV_SYNC_FRAMEDUP_THRESHOLD)
+                {
+                    delay += sdiff;      // make fps slower
+                }
+                else if (sdiff >= sync_threshold) {
+                    delay *= 2;      // make fps repeat frame
+                }
+            }
+        }
 
 
-      timer.setDesiredSecondsPerFrame( delay );
-      timer.waitUntilNextFrameIsDue();
+        timer.setDesiredSecondsPerFrame( delay );
+        timer.waitUntilNextFrameIsDue();
 
-      img->find_image( frame );
+        img->find_image( frame );
 
-      if ( reel->edl && fg && img->is_left_eye() )
-      {
-          int64_t f = frame + reel->location(img) - img->first_frame();
-          view->frame( f );
-      }
+        if ( reel->edl && fg && img->is_left_eye() )
+        {
+            int64_t f = frame + reel->location(img) - img->first_frame();
+            view->frame( f );
+        }
 
-      frame += step;
-   }
+        frame += step;
+    }
 
     CMedia::Barrier* barrier = img->loop_barrier();
     if ( barrier ) barrier->notify_all();
@@ -1159,7 +1159,7 @@ void video_thread( PlaybackData* data )
     LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
               << img->name() << " stopped? " << img->stopped()
               << " view playback " << view->playback() << " at " << frame << "  img->frame: " << img->frame() );
-   assert( img->stopped() );
+    assert( img->stopped() );
 #endif
 
 }  // video_thread
@@ -1169,128 +1169,128 @@ void video_thread( PlaybackData* data )
 
 void decode_thread( PlaybackData* data )
 {
-   av_assert0( data != NULL );
+    av_assert0( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-   av_assert0( uiMain != NULL );
-
-
-   CMedia* img = data->image;
-   av_assert0( img != NULL );
+    mrv::ViewerUI*     uiMain   = data->uiMain;
+    av_assert0( uiMain != NULL );
 
 
-
-   bool fg = data->fg;
-
-   mrv::ImageView*      view = uiMain->uiView;
-   mrv::Timeline*      timeline = uiMain->uiTimeline;
-   mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
-   av_assert0( timeline != NULL );
-
-   // delete the data (we don't need it anymore)
-   delete data;
-
-   int idx = fg ? view->fg_reel() : view->bg_reel();
-
-   mrv::Reel   reel = browser->reel_at( idx );
-   if (!reel) return;
+    CMedia* img = data->image;
+    av_assert0( img != NULL );
 
 
-   int step = (int) img->playback();
+
+    bool fg = data->fg;
+
+    mrv::ImageView*      view = uiMain->uiView;
+    mrv::Timeline*      timeline = uiMain->uiTimeline;
+    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
+    av_assert0( timeline != NULL );
+
+    // delete the data (we don't need it anymore)
+    delete data;
+
+    int idx = fg ? view->fg_reel() : view->bg_reel();
+
+    mrv::Reel   reel = browser->reel_at( idx );
+    if (!reel) return;
 
 
-   int64_t frame = img->dts();
+    int step = (int) img->playback();
+
+
+    int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-   std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
-	     << " at frame " << frame
-             << " step " << step << std::endl;
+    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
+              << " at frame " << frame
+              << " step " << step << std::endl;
 #endif
 
 
 
-   while ( !img->stopped() && view->playback() != CMedia::kStopped )
-   {
+    while ( !img->stopped() && view->playback() != CMedia::kStopped )
+    {
 
-      if ( img->seek_request() )
-      {
-         img->do_seek();
-         frame = img->dts();
-     }
-
-
-
-      step = (int) img->playback();
-      if ( step == 0 ) break;
-
-      frame += step;
-      CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
-                                                       timeline );
+        if ( img->seek_request() )
+        {
+            img->do_seek();
+            frame = img->dts();
+        }
 
 
-      if ( status != CMedia::kDecodeOK )
-      {
-         if ( img->stopped() ) continue;
 
-          CMedia::Barrier* barrier = img->loop_barrier();
+        step = (int) img->playback();
+        if ( step == 0 ) break;
 
-          if ( barrier )
-          {
-              DBG( img->name() << " BARRIER DECODE WAIT      gen: "
-                   << barrier->generation()
-                   << " count: " << barrier->count()
-                   << " threshold: " << barrier->threshold()
-                   << " used: " << barrier->used() );
-              // Wait until all threads loop and decode is restarted
-              bool ok = barrier->wait();
-              DBG( img->name() << " BARRIER DECODE LOCK PASS gen: "
-                   << barrier->generation()
-                   << " count: " << barrier->count()
-                   << " threshold: " << barrier->threshold()
-                   << " used: " << barrier->used() );
-          }
-
-          img->clear_packets();
-
-         // Do the looping, taking into account ui state
-         //  and return new frame and step.
-         // This handle loop has to come after the barrier as decode thread
-         // goes faster than video or audio threads
-          EndStatus end = handle_loop( frame, step, img, fg, true,
-                                       uiMain, reel, timeline, status );
-
-         if ( img->stopped() ) continue;
-         // img->seek( frame );
-      }
+        frame += step;
+        CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
+                                      timeline );
 
 
-      // If we could not get a frame (buffers full, usually),
-      // wait a little.
-      while ( !img->frame( frame ) )
-      {
-          if ( img->stopped() ||
-               view->playback() == CMedia::kStopped ) break;
-          sleep_ms( 10 );
-      }
+        if ( status != CMedia::kDecodeOK )
+        {
+            if ( img->stopped() ) continue;
+
+            CMedia::Barrier* barrier = img->loop_barrier();
+
+            if ( barrier )
+            {
+                DBG( img->name() << " BARRIER DECODE WAIT      gen: "
+                     << barrier->generation()
+                     << " count: " << barrier->count()
+                     << " threshold: " << barrier->threshold()
+                     << " used: " << barrier->used() );
+                // Wait until all threads loop and decode is restarted
+                bool ok = barrier->wait();
+                DBG( img->name() << " BARRIER DECODE LOCK PASS gen: "
+                     << barrier->generation()
+                     << " count: " << barrier->count()
+                     << " threshold: " << barrier->threshold()
+                     << " used: " << barrier->used() );
+            }
+
+            img->clear_packets();
+
+            // Do the looping, taking into account ui state
+            //  and return new frame and step.
+            // This handle loop has to come after the barrier as decode thread
+            // goes faster than video or audio threads
+            EndStatus end = handle_loop( frame, step, img, fg, true,
+                                         uiMain, reel, timeline, status );
+
+            if ( img->stopped() ) continue;
+            // img->seek( frame );
+        }
 
 
-      // After read, when playing backwards or playing audio files,
-      // decode position may be several frames advanced as we buffer
-      // multiple frames, so get back the dts frame from image.
+        // If we could not get a frame (buffers full, usually),
+        // wait a little.
+        while ( !img->frame( frame ) )
+        {
+            if ( img->stopped() ||
+                    view->playback() == CMedia::kStopped ) break;
+            sleep_ms( 10 );
+        }
 
-      if ( img->has_video() || img->has_audio() )
-      {
-          frame = img->dts();
-      }
 
-   }
+        // After read, when playing backwards or playing audio files,
+        // decode position may be several frames advanced as we buffer
+        // multiple frames, so get back the dts frame from image.
 
-   
-   img->playback( CMedia::kStopped );
+        if ( img->has_video() || img->has_audio() )
+        {
+            frame = img->dts();
+        }
+
+    }
+
+
+    img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
-   LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " view playback " << view->playback() << " frame " << img->frame() << "  dts: " << img->dts() );
-   assert( img->stopped() );
+    LOG_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " view playback " << view->playback() << " frame " << img->frame() << "  dts: " << img->dts() );
+    assert( img->stopped() );
 #endif
 
 }

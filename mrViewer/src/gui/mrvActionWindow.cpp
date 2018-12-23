@@ -8,7 +8,9 @@
 
 namespace mrv {
 
-ImageView* ActionWindow::view() const { return uiMain->uiView; }
+ImageView* ActionWindow::view() const {
+    return uiMain->uiView;
+}
 
 int ActionWindow::handle( int event )
 {

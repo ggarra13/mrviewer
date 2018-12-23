@@ -22,17 +22,21 @@
 
 namespace mrv {
 
-  class Element : public fltk::Item
-  {
-    public:
-      Element( mrv::media& );
-      ~Element();
+class Element : public fltk::Item
+{
+public:
+    Element( mrv::media& );
+    ~Element();
 
-      const mrv::media& element() { return _elem; }
-      mrv::media element() const { return _elem; }
+    const mrv::media& element() {
+        return _elem;
+    }
+    mrv::media element() const {
+        return _elem;
+    }
 
-    public:
-      mrv::media _elem;
-  };
+public:
+    mrv::media _elem;
+};
 
 }

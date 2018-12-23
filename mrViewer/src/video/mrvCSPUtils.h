@@ -220,7 +220,7 @@ void mp_csp_copy_equalizer_values(struct mp_csp_params *params,
 
 struct mpv_global;
 struct mp_csp_equalizer_state *mp_csp_equalizer_create(void *ta_parent,
-                                                    struct mpv_global *global);
+        struct mpv_global *global);
 bool mp_csp_equalizer_state_changed(struct mp_csp_equalizer_state *state);
 void mp_csp_equalizer_state_get(struct mp_csp_equalizer_state *state,
                                 struct mp_csp_params *params);
@@ -290,6 +290,6 @@ void mp_get_csp_matrix(struct mp_csp_params *params, struct mp_cmat *out);
 void mp_invert_matrix3x3(float m[3][3]);
 void mp_invert_cmat(struct mp_cmat *out, struct mp_cmat *in);
 void mp_map_fixp_color(struct mp_cmat *matrix, int ibits, int in[3],
-                                               int obits, int out[3]);
+                       int obits, int out[3]);
 
 #endif /* MPLAYER_CSPUTILS_H */

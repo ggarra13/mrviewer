@@ -19,10 +19,10 @@
  * @file   mrvCTLBrowser.cpp
  * @author gga
  * @date   Mon Jul  2 08:11:24 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <boost/filesystem.hpp>
@@ -42,16 +42,16 @@ namespace fs = boost::filesystem;
 
 typedef boost::tokenizer< boost::char_separator<char> > Tokenizer_t;
 
-namespace 
+namespace
 {
-  const char* kModule = "gui";
+const char* kModule = "gui";
 }
 
 
 namespace mrv {
 
 CTLBrowser::CTLBrowser(int x, int y, int w, int h, const char* l) :
-  fltk::Browser( x, y, w, h, l )
+    fltk::Browser( x, y, w, h, l )
 {
 }
 
@@ -75,100 +75,101 @@ bool EqualByBasename( const std::string& a, const std::string& b )
 
 void CTLBrowser::fill()
 {
-  this->clear();
+    this->clear();
 
-  const char* pathEnv = getenv("CTL_MODULE_PATH");
-  if (!pathEnv) {
-    LOG_ERROR("Environment variable CTL_MODULE_PATH is undefined");
-    return;
-  }
+    const char* pathEnv = getenv("CTL_MODULE_PATH");
+    if (!pathEnv) {
+        LOG_ERROR("Environment variable CTL_MODULE_PATH is undefined");
+        return;
+    }
 
-  std::string str(pathEnv);
+    std::string str(pathEnv);
 
 #if defined(WIN32) || defined(WIN64)
-  boost::char_separator<char> sep(";");
+    boost::char_separator<char> sep(";");
 #else
-  boost::char_separator<char> sep(":");
+    boost::char_separator<char> sep(":");
 #endif
 
-  Tokenizer_t tokens(str, sep);
+    Tokenizer_t tokens(str, sep);
 
-  boost::char_separator<char> sep2(",");
-  Tokenizer_t prefixes( _prefix, sep2 );
- 
-  // size_t plen = _prefix.size();
+    boost::char_separator<char> sep2(",");
+    Tokenizer_t prefixes( _prefix, sep2 );
 
-  //
-  // Iterate thru each path looking for .ctl files
-  //
-  typedef std::vector<std::string> stringArray;
-  stringArray files;
+    // size_t plen = _prefix.size();
 
-  for (Tokenizer_t::const_iterator it = tokens.begin(); 
-       it != tokens.end(); ++it)
+    //
+    // Iterate thru each path looking for .ctl files
+    //
+    typedef std::vector<std::string> stringArray;
+    stringArray files;
+
+    for (Tokenizer_t::const_iterator it = tokens.begin();
+            it != tokens.end(); ++it)
     {
-      std::string path = *it;
-      if ( ! fs::exists( path ) || ! fs::is_directory( path ) ) continue;
+        std::string path = *it;
+        if ( ! fs::exists( path ) || ! fs::is_directory( path ) ) continue;
 
-      
-      fs::directory_iterator end_itr;
-      for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
-	{
-	  fs::path p = *itr;
 
-	  if ( fs::is_directory( p ) ) continue;
+        fs::directory_iterator end_itr;
+        for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
+        {
+            fs::path p = *itr;
 
-          files.push_back( p.string() );
+            if ( fs::is_directory( p ) ) continue;
+
+            files.push_back( p.string() );
         }
     }
 
-  
-  std::sort( files.begin(), files.end(), SortByBasename );
-  stringArray::iterator last = std::unique( files.begin(), files.end(),
-                                            EqualByBasename );
-  files.erase( last, files.end() );
-  
-  stringArray::const_iterator itr = files.begin();
-  stringArray::const_iterator e = files.end();
 
-  for ( ; itr != e; ++itr )
-  {
-      
-      
-      std::string base = fs::basename( *itr );
-      std::string ext  = fs::extension( *itr );
-      
-      // Make extension lowercase and compare it against "ctl"
-      std::transform( ext.begin(), ext.end(), ext.begin(), tolower );
-      if ( ext != ".ctl" ) continue;
-          
-      // Skip those CTL files that don't match the prefix
-      bool found = false;
-      for (Tokenizer_t::const_iterator pt = prefixes.begin(); 
-           pt != prefixes.end(); ++pt)
-          {
-              size_t num = base.size() - (*pt).size() + 1;
-              if ( num > base.size() ) num = base.size();
-              for ( size_t i = 0; i < num; ++i )
-              {
-                  if ( !(*pt).empty() && base.substr(i, (*pt).size()) == *pt )
-                  {
-                      found = true; break;
-                  }
-              }
-              if ( found ) break;
-          }
-      
-      if ( !found ) continue;
-      
-      // valid CTL, add it to the browser
-      this->add( base.c_str() );
-  }
+    std::sort( files.begin(), files.end(), SortByBasename );
+    stringArray::iterator last = std::unique( files.begin(), files.end(),
+                                 EqualByBasename );
+    files.erase( last, files.end() );
+
+    stringArray::const_iterator itr = files.begin();
+    stringArray::const_iterator e = files.end();
+
+    for ( ; itr != e; ++itr )
+    {
+
+
+        std::string base = fs::basename( *itr );
+        std::string ext  = fs::extension( *itr );
+
+        // Make extension lowercase and compare it against "ctl"
+        std::transform( ext.begin(), ext.end(), ext.begin(), tolower );
+        if ( ext != ".ctl" ) continue;
+
+        // Skip those CTL files that don't match the prefix
+        bool found = false;
+        for (Tokenizer_t::const_iterator pt = prefixes.begin();
+                pt != prefixes.end(); ++pt)
+        {
+            size_t num = base.size() - (*pt).size() + 1;
+            if ( num > base.size() ) num = base.size();
+            for ( size_t i = 0; i < num; ++i )
+            {
+                if ( !(*pt).empty() && base.substr(i, (*pt).size()) == *pt )
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if ( found ) break;
+        }
+
+        if ( !found ) continue;
+
+        // valid CTL, add it to the browser
+        this->add( base.c_str() );
+    }
 }
 
 int CTLBrowser::handle( int e )
 {
-  return fltk::Browser::handle( e );
+    return fltk::Browser::handle( e );
 }
 
 

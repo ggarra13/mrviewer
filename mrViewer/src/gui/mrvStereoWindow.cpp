@@ -8,7 +8,9 @@
 
 namespace mrv {
 
-ImageView* StereoWindow::view() const { return uiMain->uiView; }
+ImageView* StereoWindow::view() const {
+    return uiMain->uiView;
+}
 
 int StereoWindow::handle( int event )
 {

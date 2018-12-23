@@ -19,10 +19,10 @@
  * @file   mrvHistogram.cpp
  * @author gga
  * @date   Sat Nov 11 11:36:59 2006
- * 
+ *
  * @brief  Draw an image's histogram
- * 
- * 
+ *
+ *
  */
 
 #include <cmath>
@@ -55,7 +55,7 @@
 namespace mrv
 {
 
-  Histogram::Histogram( int x, int y, int w, int h, const char* l ) :
+Histogram::Histogram( int x, int y, int w, int h, const char* l ) :
     fltk::Widget( x, y, w, h, l ),
     _channel( kRGB ),
     _histtype( kLog ),
@@ -63,16 +63,16 @@ namespace mrv
     maxColor( 0 ),
     lastImg( NULL ),
     lastFrame( std::numeric_limits< int64_t >::min() )
-  {
+{
     color( fltk::BLACK );
     buttoncolor( fltk::BLACK );
 
     add_timeout(0.016f);
-  }
+}
 
 
-  void Histogram::draw_grid(const fltk::Rectangle& r)
-  {
+void Histogram::draw_grid(const fltk::Rectangle& r)
+{
 //     fltk::setcolor( fltk::GRAY75 );
 
 //     int X = r.x() + 2;
@@ -82,20 +82,20 @@ namespace mrv
 //     fltk::drawtext( "R", 1, X, H+H2 );
 //     fltk::drawtext( "G", 1, X, H*2+H2 );
 //     fltk::drawtext( "B", 1, X, H*3+H2 );
-  }
+}
 
-  void Histogram::draw()
-  {
+void Histogram::draw()
+{
     fltk::Rectangle r( w(), h() );
     draw_box(r);
 
     // draw_grid(r);
     draw_pixels(r);
-  }
+}
 
 
-  void Histogram::count_pixel( const uchar* rgb )
-  {
+void Histogram::count_pixel( const uchar* rgb )
+{
     uchar r = rgb[0];
     uchar g = rgb[1];
     uchar b = rgb[2];
@@ -112,17 +112,17 @@ namespace mrv
     unsigned int lum = unsigned(r * 0.30f + g * 0.59f + b * 0.11f);
     lumma[ lum ] += 1;
     if ( lumma[lum] > maxLumma ) maxLumma = lumma[lum];
-  }
+}
 
 
-  void Histogram::count_pixels()
-  {
+void Histogram::count_pixels()
+{
     media m = uiMain->uiView->foreground();
     if (!m) {
         tooltip( _("Mark an area in the image with the left mouse button") );
         return;
     }
-    
+
     CMedia* img = m->image();
     if (!img) {
         return;
@@ -187,9 +187,9 @@ namespace mrv
     unsigned int stepX = (xmax - xmin + 1) / h();
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
-    
+
     mrv::DrawEngine* engine = uiMain->uiView->engine();
-    ImageView::PixelValue v = (ImageView::PixelValue) 
+    ImageView::PixelValue v = (ImageView::PixelValue)
                               uiMain->uiPixelValue->value();
 
     float gain = uiMain->uiView->gain();
@@ -199,64 +199,64 @@ namespace mrv
     CMedia::Pixel rp;
     uchar rgb[3];
     for ( int y = ymin; y <= ymax; y += stepY )
-      {
-	for ( int x = xmin; x <= xmax; x += stepX )
-	  { 
-              CMedia::Pixel op = pic->pixel( x, y );
+    {
+        for ( int x = xmin; x <= xmax; x += stepX )
+        {
+            CMedia::Pixel op = pic->pixel( x, y );
 
-              if ( uiMain->uiView->normalize() )
-              {
-                  uiMain->uiView->normalize( op );
-              }
+            if ( uiMain->uiView->normalize() )
+            {
+                uiMain->uiView->normalize( op );
+            }
 
-              op.r *= gain;
-              op.g *= gain;
-              op.b *= gain;
-               
-              if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
-              {
-                  engine->evaluate( img, 
-                                    (*(Imath::V3f*)&op), 
-                                    (*(Imath::V3f*)&rp) );
-               }
-               else
-               {
-                   rp = op;
-               }
+            op.r *= gain;
+            op.g *= gain;
+            op.b *= gain;
 
-              if ( v != ImageView::kRGBA_Original ) 
-              {
-                   if ( rp.r > 0.0f && isfinite(rp.r) )
-                       rp.r = powf(rp.r, one_gamma);
-                   if ( rp.g > 0.0f && isfinite(rp.g) )
-                       rp.g = powf(rp.g, one_gamma);
-                   if ( rp.b > 0.0f && isfinite(rp.b) )
-                       rp.b = powf(rp.b, one_gamma);
-              }
-              rgb[0] = (uchar)Imath::clamp(rp.r * 255.0f, 0.f, 255.f);
-              rgb[1] = (uchar)Imath::clamp(rp.g * 255.0f, 0.f, 255.f);
-              rgb[2] = (uchar)Imath::clamp(rp.b * 255.0f, 0.f, 255.f);
-              count_pixel( rgb );
-	  }
-      }
-  }
+            if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
+            {
+                engine->evaluate( img,
+                                  (*(Imath::V3f*)&op),
+                                  (*(Imath::V3f*)&rp) );
+            }
+            else
+            {
+                rp = op;
+            }
 
-  float Histogram::histogram_scale( float val, float maxVal )
-  {
+            if ( v != ImageView::kRGBA_Original )
+            {
+                if ( rp.r > 0.0f && isfinite(rp.r) )
+                    rp.r = powf(rp.r, one_gamma);
+                if ( rp.g > 0.0f && isfinite(rp.g) )
+                    rp.g = powf(rp.g, one_gamma);
+                if ( rp.b > 0.0f && isfinite(rp.b) )
+                    rp.b = powf(rp.b, one_gamma);
+            }
+            rgb[0] = (uchar)Imath::clamp(rp.r * 255.0f, 0.f, 255.f);
+            rgb[1] = (uchar)Imath::clamp(rp.g * 255.0f, 0.f, 255.f);
+            rgb[2] = (uchar)Imath::clamp(rp.b * 255.0f, 0.f, 255.f);
+            count_pixel( rgb );
+        }
+    }
+}
+
+float Histogram::histogram_scale( float val, float maxVal )
+{
     switch( _histtype )
-      {
-      case kLinear:
-	return (val/maxVal);
-      case kSqrt:
-	return (sqrtf(1+val)/maxVal);
-      case kLog:
-      default:
-	return (logf(1+val)/maxVal);
-      }
-  }
+    {
+    case kLinear:
+        return (val/maxVal);
+    case kSqrt:
+        return (sqrtf(1+val)/maxVal);
+    case kLog:
+    default:
+        return (logf(1+val)/maxVal);
+    }
+}
 
-  void Histogram::draw_pixels( const fltk::Rectangle& r )
-  {
+void Histogram::draw_pixels( const fltk::Rectangle& r )
+{
     count_pixels();
 
     // Draw the pixel info
@@ -269,62 +269,62 @@ namespace mrv
     float maxC, maxL;
 
     switch( _histtype )
-      {
-      case kLog:
-	  maxL = logf( 1+maxLumma );
-	  maxC = logf( 1+maxColor );
-	  break;
-      case kSqrt:
-	  maxL = sqrtf( 1+maxLumma );
-	  maxC = sqrtf( 1+maxColor );
-	  break;
-      default:
-          maxL = maxLumma;
-          maxC = maxColor;
-	break;
-      }
+    {
+    case kLog:
+        maxL = logf( 1+maxLumma );
+        maxC = logf( 1+maxColor );
+        break;
+    case kSqrt:
+        maxL = sqrtf( 1+maxLumma );
+        maxC = sqrtf( 1+maxColor );
+        break;
+    default:
+        maxL = maxLumma;
+        maxC = maxColor;
+        break;
+    }
 
 
     for ( int i = 0; i <= W; ++i )
-      {
-	int x = i + 4;
+    {
+        int x = i + 4;
         int y1, y2, y3;
-        
-	idx = int( ((float) i / (float) W) * 255 );
-	if ( _channel == kLumma )
-	  {
-	    fltk::setcolor( fltk::GRAY75 );
-	    v = histogram_scale( lumma[idx], maxL );
+
+        idx = int( ((float) i / (float) W) * 255 );
+        if ( _channel == kLumma )
+        {
+            fltk::setcolor( fltk::GRAY75 );
+            v = histogram_scale( lumma[idx], maxL );
             int y = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
-	  }
+            fltk::drawline( x, H, x, H-y );
+        }
 
-	if ( _channel == kRed || _channel == kRGB )
-	  {
-	    fltk::setcolor( fltk::RED );
-	    v = histogram_scale( red[idx], maxC );
+        if ( _channel == kRed || _channel == kRGB )
+        {
+            fltk::setcolor( fltk::RED );
+            v = histogram_scale( red[idx], maxC );
             int y = y1 = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
-	  }
+            fltk::drawline( x, H, x, H-y );
+        }
 
-	if ( _channel == kGreen || _channel == kRGB )
-	  {
-	    fltk::setcolor( fltk::GREEN );
-	    v = histogram_scale( green[idx], maxC );
+        if ( _channel == kGreen || _channel == kRGB )
+        {
+            fltk::setcolor( fltk::GREEN );
+            v = histogram_scale( green[idx], maxC );
             int y = y2 = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
-	  }
+            fltk::drawline( x, H, x, H-y );
+        }
 
-	if ( _channel == kBlue || _channel == kRGB )
-	  {
-	    fltk::setcolor( fltk::BLUE );
-	    v = histogram_scale( blue[idx], maxC );
+        if ( _channel == kBlue || _channel == kRGB )
+        {
+            fltk::setcolor( fltk::BLUE );
+            v = histogram_scale( blue[idx], maxC );
             int y = y3 = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
-	  }
+            fltk::drawline( x, H, x, H-y );
+        }
 
         if ( _channel != kRGB ) continue;
-        
+
         if ( y1 > 0 && y2 > 0 )
         {
             fltk::setcolor( fltk::YELLOW );
@@ -350,7 +350,7 @@ namespace mrv
             else
                 fltk::drawline( x, H, x, H-y3 );
         }
-      }
-  }
+    }
+}
 
 }

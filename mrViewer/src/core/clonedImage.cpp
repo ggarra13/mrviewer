@@ -37,23 +37,24 @@ using namespace std;
 
 namespace mrv {
 
-  clonedImage::clonedImage( const CMedia* other ) :
+clonedImage::clonedImage( const CMedia* other ) :
     CMedia()
-  {
-      _frame_start = other->start_frame();
-      _frame_end   = other->end_frame();
-      _frameStart = other->first_frame();
-      _frameEnd   = other->last_frame();
-      
-      char* file = strdup( other->filename() );
-      char* orig = file;
-      for ( char* s = orig; *s != 0; ++s )
-      {
-          if ( *s == '\t' )
-          {
-              orig = s + 1; break;
-          }
-      }
+{
+    _frame_start = other->start_frame();
+    _frame_end   = other->end_frame();
+    _frameStart = other->first_frame();
+    _frameEnd   = other->last_frame();
+
+    char* file = strdup( other->filename() );
+    char* orig = file;
+    for ( char* s = orig; *s != 0; ++s )
+    {
+        if ( *s == '\t' )
+        {
+            orig = s + 1;
+            break;
+        }
+    }
 
     char now[128];
     _ctime = time(NULL);
@@ -75,34 +76,34 @@ namespace mrv {
     _num_channels = 1;
     const char* channel = other->channel();
     if ( channel )
-      {
+    {
         _layers.push_back( channel );
         ++_num_channels;
         _channel = strdup( channel );
-      }
+    }
     else
-      {
+    {
         default_layers();
         _num_channels = 4;
-      }
+    }
 
     {
-      CMedia* img = const_cast< CMedia* >( other );
-      CMedia::Mutex& m = img->video_mutex();
-      SCOPED_LOCK(m);
-      _hires.reset( new mrv::image_type( other->frame(),
-					 other->width(),
-					 other->height(),
-					 other->hires()->channels(),
-					 other->hires()->format(),
-					 other->hires()->pixel_type() ) );
-      copy_image( _hires, img->hires() );
+        CMedia* img = const_cast< CMedia* >( other );
+        CMedia::Mutex& m = img->video_mutex();
+        SCOPED_LOCK(m);
+        _hires.reset( new mrv::image_type( other->frame(),
+                                           other->width(),
+                                           other->height(),
+                                           other->hires()->channels(),
+                                           other->hires()->format(),
+                                           other->hires()->pixel_type() ) );
+        copy_image( _hires, img->hires() );
     }
 
 
     //   setsize( -1, -1 );
 
-    { // Copy attributes
+    {   // Copy attributes
         const CMedia::Attributes& attrs = other->attributes();
         CMedia::Attributes::const_iterator i = attrs.begin();
         CMedia::Attributes::const_iterator e = attrs.end();
@@ -121,7 +122,7 @@ namespace mrv {
     for ( ; i < num; ++i )
     {
         _look_mod_transform.push_back( strdup(
-                                       other->look_mod_transform( i ) ) );
+                                           other->look_mod_transform( i ) ) );
     }
 
     const char* transform = other->idt_transform();
@@ -138,7 +139,7 @@ namespace mrv {
 
     // thumbnail_create();
     // _thumbnail_frozen = true;
-  }
+}
 
 
 } // namespace mrv

@@ -39,17 +39,17 @@
 namespace mrv
 {
 
-  Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
+Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
     fltk::Widget( x, y, w, h, l )
-  {
+{
     color( fltk::BLACK );
     buttoncolor( fltk::BLACK );
     tooltip( _("Mark an area in the image with the left mouse button") );
-  }
+}
 
 
-  void Vectorscope::draw_grid(const fltk::Rectangle& r)
-  {
+void Vectorscope::draw_grid(const fltk::Rectangle& r)
+{
     int i;
     int W = diameter_/2;
     int H = diameter_/2;
@@ -69,13 +69,13 @@ namespace mrv
     int R2 = diameter_ / 2;
     float angle = 32;
     for ( i = 0; i < 4; ++i, angle += 90 )
-      {
-	fltk::push_matrix();
-	fltk::translate( W2, H2 );
-	fltk::rotate(angle);
-	fltk::drawline( 0, 4, 0, R2 );
-	fltk::pop_matrix();
-      }
+    {
+        fltk::push_matrix();
+        fltk::translate( W2, H2 );
+        fltk::rotate(angle);
+        fltk::drawline( 0, 4, 0, R2 );
+        fltk::pop_matrix();
+    }
 
     fltk::push_matrix();
     fltk::translate( r.w()/2 - W, r.h()/2 - H );
@@ -91,40 +91,40 @@ namespace mrv
     fltk::translate( W2, H2 );
 
     static const char* names[] = {
-      "C",
-      "B",
-      "M",
-      "R",
-      "Y",
-      "G"
+        "C",
+        "B",
+        "M",
+        "R",
+        "Y",
+        "G"
     };
 
     angle = 15;
     for ( i = 0; i < 6; ++i, angle += 60 )
-      {
-	fltk::push_matrix();
-	fltk::rotate(angle);
-	fltk::translate( 0, int(W * 0.75f) );
+    {
+        fltk::push_matrix();
+        fltk::rotate(angle);
+        fltk::translate( 0, int(W * 0.75f) );
 
-	fltk::drawline( -RW, -RH, RW, -RH ); 
-	fltk::drawline( RW, -RH, RW, RH ); 
-	fltk::drawline( -RW,  RH, RW, RH ); 
-	fltk::drawline( -RW,  RH, -RW, -RH );
+        fltk::drawline( -RW, -RH, RW, -RH );
+        fltk::drawline( RW, -RH, RW, RH );
+        fltk::drawline( -RW,  RH, RW, RH );
+        fltk::drawline( -RW,  RH, -RW, -RH );
 
-	fltk::translate( 0, int(W * 0.15f) );
+        fltk::translate( 0, int(W * 0.15f) );
 
-	fltk::drawtext(names[i], 1, 0, 0);
+        fltk::drawtext(names[i], 1, 0, 0);
 
-	fltk::pop_matrix();
+        fltk::pop_matrix();
 
-      }
+    }
     fltk::pop_matrix();
 
 
-  }
+}
 
-  void Vectorscope::draw()
-  {
+void Vectorscope::draw()
+{
     fltk::Rectangle r( w(), h() );
     draw_box(r);
 
@@ -134,18 +134,18 @@ namespace mrv
 
     draw_grid(r);
     draw_pixels(r);
-  }
+}
 
 
 
 
-  void Vectorscope::draw_pixel( const fltk::Rectangle& r,
-				const CMedia::Pixel& rgb,
-				const CMedia::Pixel& hsv )
-  {
-    fltk::setcolor( fltk::color( (unsigned char)(rgb.r * 255), 
-				 (unsigned char)(rgb.g * 255), 
-				 (unsigned char)(rgb.b * 255) ) );
+void Vectorscope::draw_pixel( const fltk::Rectangle& r,
+                              const CMedia::Pixel& rgb,
+                              const CMedia::Pixel& hsv )
+{
+    fltk::setcolor( fltk::color( (unsigned char)(rgb.r * 255),
+                                 (unsigned char)(rgb.g * 255),
+                                 (unsigned char)(rgb.b * 255) ) );
 
     fltk::push_matrix();
     fltk::translate( r.w()/2, r.h()/2 );
@@ -153,10 +153,10 @@ namespace mrv
     fltk::scale( hsv.g * 0.375f );
     fltk::drawline( 0, diameter_, 1, diameter_+1 );
     fltk::pop_matrix();
-  }
+}
 
-  void Vectorscope::draw_pixels( const fltk::Rectangle& r )
-  {
+void Vectorscope::draw_pixels( const fltk::Rectangle& r )
+{
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
         tooltip( _("Mark an area in the image with the left mouse button") );
@@ -206,12 +206,12 @@ namespace mrv
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
 
-    assert( xmax < pic->width() ); 
-    assert( ymax < pic->height() ); 
+    assert( xmax < pic->width() );
+    assert( ymax < pic->height() );
 
     mrv::DrawEngine* engine = uiMain->uiView->engine();
 
-    ImageView::PixelValue v = (ImageView::PixelValue) 
+    ImageView::PixelValue v = (ImageView::PixelValue)
                               uiMain->uiPixelValue->value();
 
     float gain = uiMain->uiView->gain();
@@ -220,10 +220,10 @@ namespace mrv
 
     CMedia::Pixel rp;
     for ( unsigned y = ymin; y <= (unsigned)ymax; y += stepY )
-      {
-          for ( unsigned x = xmin; x <= (unsigned)xmax; x += stepX )
-	  {
-	    CMedia::Pixel op = pic->pixel( x, y );
+    {
+        for ( unsigned x = xmin; x <= (unsigned)xmax; x += stepX )
+        {
+            CMedia::Pixel op = pic->pixel( x, y );
 
             if ( uiMain->uiView->normalize() )
             {
@@ -233,11 +233,11 @@ namespace mrv
             op.r *= gain;
             op.g *= gain;
             op.b *= gain;
-            
+
             if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
             {
-                engine->evaluate( img, 
-                                  (*(Imath::V3f*)&op), 
+                engine->evaluate( img,
+                                  (*(Imath::V3f*)&op),
                                   (*(Imath::V3f*)&rp) );
             }
             else
@@ -245,7 +245,7 @@ namespace mrv
                 rp = op;
             }
 
-            if ( v != ImageView::kRGBA_Original ) 
+            if ( v != ImageView::kRGBA_Original )
             {
                 if ( rp.r > 0.0f && isfinite(rp.r) )
                     rp.r = powf(rp.r * gain, one_gamma);
@@ -255,11 +255,11 @@ namespace mrv
                     rp.b = powf(rp.b * gain, one_gamma);
             }
 
-	    CMedia::Pixel hsv = color::rgb::to_hsv( rp );
-	    draw_pixel( r, rp, hsv );
-	  }
-      }
+            CMedia::Pixel hsv = color::rgb::to_hsv( rp );
+            draw_pixel( r, rp, hsv );
+        }
+    }
 
-  }
+}
 
 }

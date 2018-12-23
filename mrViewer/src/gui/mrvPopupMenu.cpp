@@ -74,42 +74,44 @@ static mrv::PopupMenu* pushed;
   subclass and replace draw() with your own function.
 */
 void PopupMenu::draw() {
-  if (type()&7) { // draw nothing for the popup types
-    fl_did_clipping = this;
-    return;
-  }
-  // set_item() does not cause a redraw:
-  if (damage() == DAMAGE_VALUE) return;
+    if (type()&7) { // draw nothing for the popup types
+        fl_did_clipping = this;
+        return;
+    }
+    // set_item() does not cause a redraw:
+    if (damage() == DAMAGE_VALUE) return;
 
-  Box* box = this->buttonbox();
-  if (!box->fills_rectangle()) draw_background();
-  Flags flags = this->flags()|OUTPUT;
-  if (mrv::pushed == this) flags |= PUSHED|HIGHLIGHT;
-  drawstyle(style(), flags);
-  Rectangle r(w(),h());
-  box->draw(r);
-  Rectangle r1(r); box->inset(r1);
-  // draw the little mark at the right:
+    Box* box = this->buttonbox();
+    if (!box->fills_rectangle()) draw_background();
+    Flags flags = this->flags()|OUTPUT;
+    if (mrv::pushed == this) flags |= PUSHED|HIGHLIGHT;
+    drawstyle(style(), flags);
+    Rectangle r(w(),h());
+    box->draw(r);
+    Rectangle r1(r);
+    box->inset(r1);
+    // draw the little mark at the right:
 
-  if ( _enable_glyph )
-  {
-      box->inset(r);
-      int w1 = r.h();
-      r.move_r(-r.h());
-      r.x(r.r()); r.w(w1);
-      const Color saved_color = getcolor();
-      setcolor(fltk::GRAY35);
-      draw_glyph(ALIGN_BOTTOM, r);
-      //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
-      setcolor(saved_color);
-  }
-  
-  flags |= ALIGN_CLIP;
-  
-  draw_label(r1, flags);
+    if ( _enable_glyph )
+    {
+        box->inset(r);
+        int w1 = r.h();
+        r.move_r(-r.h());
+        r.x(r.r());
+        r.w(w1);
+        const Color saved_color = getcolor();
+        setcolor(fltk::GRAY35);
+        draw_glyph(ALIGN_BOTTOM, r);
+        //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
+        setcolor(saved_color);
+    }
+
+    flags |= ALIGN_CLIP;
+
+    draw_label(r1, flags);
 
 
-  box->draw_symbol_overlay(r);
+    box->draw_symbol_overlay(r);
 }
 
 
@@ -118,15 +120,15 @@ void PopupMenu::draw() {
 // NamedStyle* PopupMenu::default_style = &mrv::style;
 
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
-: fltk::PopupMenu(X,Y,W,H,l),
-  _enable_glyph( true )
+    : fltk::PopupMenu(X,Y,W,H,l),
+      _enable_glyph( true )
 {
-  // set the parent style to Menu::default_style, not Widget::default_style:
-  default_style->parent_ = this->style();
-  style(default_style);
-  align(ALIGN_CENTER);
-  
-  //set_click_to_focus();
+    // set the parent style to Menu::default_style, not Widget::default_style:
+    default_style->parent_ = this->style();
+    style(default_style);
+    align(ALIGN_CENTER);
+
+    //set_click_to_focus();
 }
 
 } // namespace mrv

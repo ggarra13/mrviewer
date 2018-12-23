@@ -19,10 +19,10 @@
  * @file   mrvPacketQueue.cpp
  * @author gga
  * @date   Sun Jul 15 20:19:05 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 

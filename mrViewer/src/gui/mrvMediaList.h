@@ -19,10 +19,10 @@
  * @file   mrvImageList.h
  * @author gga
  * @date   Wed Oct 18 11:09:58 2006
- * 
+ *
  * @brief  An image list is a sequence of images
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvImageList_h
@@ -37,7 +37,7 @@
 
 namespace mrv
 {
-  typedef std::vector< media > MediaList;
+typedef std::vector< media > MediaList;
 
 } // namespace mrv
 

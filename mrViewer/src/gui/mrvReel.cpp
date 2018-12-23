@@ -28,16 +28,16 @@ namespace mrv {
 
 int64_t Reel_t::minimum() const
 {
-   if ( images.size() == 0 ) return 0;
-   mrv::media m = images.front();
-   return m->position();
+    if ( images.size() == 0 ) return 0;
+    mrv::media m = images.front();
+    return m->position();
 }
 
 int64_t Reel_t::maximum() const
 {
-   if ( images.size() == 0 ) return 0;
-   mrv::media m = images.back();
-   return m->position() + m->duration() - 1;
+    if ( images.size() == 0 ) return 0;
+    mrv::media m = images.back();
+    return m->position() + m->duration() - 1;
 }
 
 size_t Reel_t::duration() const
@@ -51,7 +51,7 @@ size_t Reel_t::index( const CMedia* const img ) const
     mrv::MediaList::const_iterator e = images.end();
 
     if ( i == e ) return std::numeric_limits<size_t>::max();
-    
+
     size_t r = 0;
 
     if ( img->is_stereo() && ! img->is_left_eye() )
@@ -77,13 +77,13 @@ size_t Reel_t::index( const CMedia* const img ) const
     return 0;
 }
 
-  /** 
-   * Given a frame, return its image index in reel when in edl mode
-   * 
-   * @param f frame to search in edl list
-   * 
-   * @return index of image in reel list or std::
-   */
+/**
+ * Given a frame, return its image index in reel when in edl mode
+ *
+ * @param f frame to search in edl list
+ *
+ * @return index of image in reel list or std::
+ */
 size_t Reel_t::index( const int64_t f ) const
 {
     mrv::MediaList::const_iterator i = images.begin();
@@ -97,26 +97,26 @@ size_t Reel_t::index( const int64_t f ) const
 
     fg = images.back();
     int64_t mx = fg->position() + fg->duration() - 1;
-    
+
     if ( f < mn || f > mx ) return std::numeric_limits<size_t>::max();
 
     int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
-      {
-          const mrv::media& m = *i;
-          CMedia* img = m->image();
-          int64_t start = m->position();
-          int64_t end = start + img->duration();
-          if ( f >= start && f < end ) 
-	      break;
-      }
-    
+    {
+        const mrv::media& m = *i;
+        CMedia* img = m->image();
+        int64_t start = m->position();
+        int64_t end = start + img->duration();
+        if ( f >= start && f < end )
+            break;
+    }
+
     if ( r >= images.size() ) r = std::numeric_limits<size_t>::max();
 
     return r;
 
-  }
+}
 
 
 mrv::media Reel_t::media_at( const int64_t f ) const
@@ -128,7 +128,7 @@ mrv::media Reel_t::media_at( const int64_t f ) const
 
     mrv::media fg = images.front();
     if ( !fg ) return mrv::media();
-    
+
     int64_t mn = fg->position();
 
     fg = images.back();
@@ -139,15 +139,15 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     int64_t  t = 1;
     size_t r = 0;
     for ( ; i != e; ++i, ++r )
-      {
-          const mrv::media& m = *i;
-	  if ( !m ) continue;
-	  
-          CMedia* img = m->image();
-          int64_t start = m->position();
-          int64_t end = start + img->duration();
-          if ( f >= start && f < end ) break;
-      }
+    {
+        const mrv::media& m = *i;
+        if ( !m ) continue;
+
+        CMedia* img = m->image();
+        int64_t start = m->position();
+        int64_t end = start + img->duration();
+        if ( f >= start && f < end ) break;
+    }
 
     if ( r >= images.size() ) return mrv::media();
 
@@ -163,20 +163,20 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
     int64_t r = AV_NOPTS_VALUE;
     for ( ; i != e; ++i )
     {
-	const mrv::media& m = *i;
-	if ( !m ) continue;
-	
-	CMedia* img = m->image();
-	assert( img != NULL );
-	int64_t start = m->position();
-	int64_t end   = start + img->duration();
-	if ( f >= start && f < end )
-	{
-	    r = f - start + img->first_frame();
-	    break;
-	}
+        const mrv::media& m = *i;
+        if ( !m ) continue;
+
+        CMedia* img = m->image();
+        assert( img != NULL );
+        int64_t start = m->position();
+        int64_t end   = start + img->duration();
+        if ( f >= start && f < end )
+        {
+            r = f - start + img->first_frame();
+            break;
+        }
     }
-    
+
     return r;
 }
 
@@ -200,16 +200,16 @@ int64_t Reel_t::offset( const CMedia* const img ) const
     }
 
     for ( ; i != e && (*i)->image() != img; ++i )
-      {
-	CMedia* timg = (*i)->image();
-	assert( timg != NULL );
+    {
+        CMedia* timg = (*i)->image();
+        assert( timg != NULL );
 
-	t += timg->duration();
-      }
+        t += timg->duration();
+    }
     if ( i == e ) LOG_ERROR("Invalid image " << img->name() << " for reel "
-                            << name );
+                                << name );
     return t;
-  }
+}
 
 
 }  // namespace mrv

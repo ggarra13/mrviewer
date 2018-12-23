@@ -19,10 +19,10 @@
  * @file   mrvCommandLine.h
  * @author gga
  * @date   Mon Aug  6 12:26:40 2007
- * 
+ *
  * @brief  Command-line parser for mrViewer.
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvCommandLine_h
@@ -32,48 +32,48 @@
 
 namespace mrv {
 
-  class ViewerUI;
+class ViewerUI;
 
 typedef std::vector< std::string > stringArray;
 
-  struct Options
-  {
-      mrv::LoadList files;
-      std::string bgfile;
-      mrv::LoadList stereo;
-      bool edl;
-      bool play;
-      bool run;
-      float gamma;
-      float gain;
+struct Options
+{
+    mrv::LoadList files;
+    std::string bgfile;
+    mrv::LoadList stereo;
+    bool edl;
+    bool play;
+    bool run;
+    float gamma;
+    float gain;
 
-      std::string stereo_input;
-      std::string stereo_output;
-      
-      std::string host;
-      stringArray audios;
-      unsigned short port;
-      float fps;
-      bool debug;
+    std::string stereo_input;
+    std::string stereo_output;
 
-      Options() : edl(false), play(false), run( false ),
-                  gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 ), debug( false )
+    std::string host;
+    stringArray audios;
+    unsigned short port;
+    float fps;
+    bool debug;
+
+    Options() : edl(false), play(false), run( false ),
+        gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 ), debug( false )
     {}
-  };
+};
 
 
-  //
-  // Given a directory parse all sequences and movies from it.
-  //
-   void parse_directory( const std::string& dir,
-                         mrv::Options& opts );
+//
+// Given a directory parse all sequences and movies from it.
+//
+void parse_directory( const std::string& dir,
+                      mrv::Options& opts );
 
-  //
-  // Command-line parser
-  //
-  bool parse_command_line( const int argc, char** argv,
-			   mrv::ViewerUI* ui, 
-                           mrv::Options& opts);
+//
+// Command-line parser
+//
+bool parse_command_line( const int argc, char** argv,
+                         mrv::ViewerUI* ui,
+                         mrv::Options& opts);
 }
 
 

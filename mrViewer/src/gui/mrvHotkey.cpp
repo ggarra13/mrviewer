@@ -181,24 +181,24 @@ bool Hotkey::match( unsigned rawkey )
     }
 
     if ( ctrl )
-        {
-            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                 fltk::event_key_state( fltk::RightCtrlKey ) )
-                ok = true;
-            else
-                return false;
-        }
+    {
+        if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                fltk::event_key_state( fltk::RightCtrlKey ) )
+            ok = true;
         else
-        {
-            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                 fltk::event_key_state( fltk::RightCtrlKey ) )
-                return false;
-        }
+            return false;
+    }
+    else
+    {
+        if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                fltk::event_key_state( fltk::RightCtrlKey ) )
+            return false;
+    }
 
     if ( shift )
     {
         if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-             fltk::event_key_state( fltk::RightShiftKey ) )
+                fltk::event_key_state( fltk::RightShiftKey ) )
             ok = true;
         else
             return false;
@@ -206,13 +206,13 @@ bool Hotkey::match( unsigned rawkey )
     else
     {
         if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-             fltk::event_key_state( fltk::RightShiftKey ) )
+                fltk::event_key_state( fltk::RightShiftKey ) )
             return false;
     }
     if ( alt )
     {
         if ( fltk::event_key_state( fltk::LeftAltKey ) ||
-             fltk::event_key_state( fltk::RightAltKey ) )
+                fltk::event_key_state( fltk::RightAltKey ) )
             ok = true;
         else
             return false;
@@ -220,13 +220,13 @@ bool Hotkey::match( unsigned rawkey )
     else
     {
         if ( fltk::event_key_state( fltk::LeftAltKey ) ||
-             fltk::event_key_state( fltk::RightAltKey ) )
+                fltk::event_key_state( fltk::RightAltKey ) )
             return false;
     }
     if ( meta )
     {
         if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
-             fltk::event_key_state( fltk::RightMetaKey ) )
+                fltk::event_key_state( fltk::RightMetaKey ) )
             ok = true;
         else
             return false;
@@ -234,7 +234,7 @@ bool Hotkey::match( unsigned rawkey )
     else
     {
         if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
-             fltk::event_key_state( fltk::RightMetaKey ) )
+                fltk::event_key_state( fltk::RightMetaKey ) )
             return false;
     }
 
@@ -254,240 +254,240 @@ bool Hotkey::match( unsigned rawkey )
 
 
 HotkeyEntry hotkeys[] = {
-HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
-HotkeyEntry( _("3dView Z Depth Down"), kZDepthDown),
-HotkeyEntry( _("3dView Density Up"), kDensityUp),
-HotkeyEntry( _("3dView Density Down"), kDensityDown),
-HotkeyEntry( _("Open Directory"), kOpenDirectory),
-HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
-HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
-HotkeyEntry( _("Open Clip XML Metadata"), kOpenClipXMLMetadata),
-HotkeyEntry( _("Save Reel"), kSaveReel),
-HotkeyEntry( _("Save Image"), kSaveImage),
-HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
-HotkeyEntry( _("Save Sequence"), kSaveSequence),
-HotkeyEntry( _("Save Clip XML Metadata"), kSaveClipXMLMetadata),
-HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
-HotkeyEntry( _("Image CTL script"), kCTLScript ),
-HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
-HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
+    HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
+    HotkeyEntry( _("3dView Z Depth Down"), kZDepthDown),
+    HotkeyEntry( _("3dView Density Up"), kDensityUp),
+    HotkeyEntry( _("3dView Density Down"), kDensityDown),
+    HotkeyEntry( _("Open Directory"), kOpenDirectory),
+    HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
+    HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
+    HotkeyEntry( _("Open Clip XML Metadata"), kOpenClipXMLMetadata),
+    HotkeyEntry( _("Save Reel"), kSaveReel),
+    HotkeyEntry( _("Save Image"), kSaveImage),
+    HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
+    HotkeyEntry( _("Save Sequence"), kSaveSequence),
+    HotkeyEntry( _("Save Clip XML Metadata"), kSaveClipXMLMetadata),
+    HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
+    HotkeyEntry( _("Image CTL script"), kCTLScript ),
+    HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
+    HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
 //HotkeyEntry( _("Zoom Minimum"), kZoomMin),
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
-HotkeyEntry( _("Center Image"), kCenterImage ),
-HotkeyEntry( _("Fit Screen"), kFitScreen),
-HotkeyEntry( _("Safe Areas"), kSafeAreas),
-HotkeyEntry( _("Display Window"), kDisplayWindow),
-HotkeyEntry( _("Data Window"), kDataWindow),
-HotkeyEntry( _("Wipe"), kWipe),
-HotkeyEntry( _("Flip X"), kFlipX),
-HotkeyEntry( _("Flip Y"), kFlipY),
-HotkeyEntry( _("Frame Step Backwards"), kFrameStepBack),
-HotkeyEntry( _("Frame Step FPS Backwards"), kFrameStepFPSBack),
-HotkeyEntry( _("Frame Step Forwards"), kFrameStepFwd),
-HotkeyEntry( _("Frame Step FPS Forwards"), kFrameStepFPSFwd),
-HotkeyEntry( _("Play Backwards"), kPlayBack),
-HotkeyEntry( _("Play Backwards X2  Speed"), kPlayBackTwiceSpeed),
-HotkeyEntry( _("Play Backwards 1/2 Speed"), kPlayBackHalfSpeed),
-HotkeyEntry( _("Play Forwards"), kPlayFwd),
-HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
-HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
-HotkeyEntry( _("Preload Image Cache"), kPreloadCache),
-HotkeyEntry( _("Clear Image Cache"), kClearCache),
-HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
-HotkeyEntry( _("Stop"), kStop),
-HotkeyEntry( _("Previous Image Version"), kPreviousVersionImage ),
-HotkeyEntry( _("Next Image Version"), kNextVersionImage ),
-HotkeyEntry( _("Previous Image"), kPreviousImage ),
-HotkeyEntry( _("Next Image"), kNextImage ),
-HotkeyEntry( _("Switch Channels"), kSwitchChannels ),
-HotkeyEntry( _("Previous Channel"), kPreviousChannel ),
-HotkeyEntry( _("Next Channel"), kNextChannel ),
-HotkeyEntry( _("First Frame"), kFirstFrame ),
-HotkeyEntry( _("Last Frame"), kLastFrame ),
-HotkeyEntry( _("Toggle Background"), kToggleBG ),
-HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
-HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
-HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
-HotkeyEntry( _("Toggle Full Screen"), kFullScreen),
-HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
-HotkeyEntry( _("Exposure More"), kExposureMore),
-HotkeyEntry( _("Exposure Less"), kExposureLess),
-HotkeyEntry( _("Gamma More"), kGammaMore),
-HotkeyEntry( _("Gamma Less"), kGammaLess),
-HotkeyEntry( _("Switch FG/BG Images"), kSwitchFGBG ),
-HotkeyEntry( _("Set As BG Image"), kSetAsBG),
-HotkeyEntry( _("Add IPTC Metadata"), kAddIPTCMetadata),
-HotkeyEntry( _("Remove IPTC Metadata"), kRemoveIPTCMetadata),
-HotkeyEntry( _("Attach Audio File"), kAttachAudio),
-HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
-HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
-HotkeyEntry( _("Clone Image"), kCloneImage),
-HotkeyEntry( _("Set In Point"), kSetInPoint),
-HotkeyEntry( _("Set Out Point"), kSetOutPoint),
-HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
-HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
-HotkeyEntry( _("OCIO View"), kOCIOView ),
-HotkeyEntry( _("Toggle Reel Window"), kToggleReel),
-HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
-HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
-HotkeyEntry( _("Toggle Action Window"), kToggleAction),
-HotkeyEntry( _("Toggle 3D Stereo Options Window"), kToggleStereoOptions),
-HotkeyEntry( _("Toggle 3D View Window"), kToggle3dView),
-HotkeyEntry( _("Toggle About Window"), kToggleAbout),
-HotkeyEntry( _("Toggle EDL Edit Window"), kToggleEDLEdit),
-HotkeyEntry( _("Toggle Histogram Window"), kToggleHistogram),
-HotkeyEntry( _("Toggle Hud"), kHudToggle),
-HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
-HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
-HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
-HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
-HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
-HotkeyEntry( _("Toggle LUT"), kToggleLut),
-HotkeyEntry( _("Toggle Pixel Ratio"), kTogglePixelRatio),
-HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
-HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
-HotkeyEntry( _("Toggle Waveform Window"), kToggleWaveform),
-HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
-HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
-HotkeyEntry( N_("END"), kGammaLess),
+    HotkeyEntry( _("Center Image"), kCenterImage ),
+    HotkeyEntry( _("Fit Screen"), kFitScreen),
+    HotkeyEntry( _("Safe Areas"), kSafeAreas),
+    HotkeyEntry( _("Display Window"), kDisplayWindow),
+    HotkeyEntry( _("Data Window"), kDataWindow),
+    HotkeyEntry( _("Wipe"), kWipe),
+    HotkeyEntry( _("Flip X"), kFlipX),
+    HotkeyEntry( _("Flip Y"), kFlipY),
+    HotkeyEntry( _("Frame Step Backwards"), kFrameStepBack),
+    HotkeyEntry( _("Frame Step FPS Backwards"), kFrameStepFPSBack),
+    HotkeyEntry( _("Frame Step Forwards"), kFrameStepFwd),
+    HotkeyEntry( _("Frame Step FPS Forwards"), kFrameStepFPSFwd),
+    HotkeyEntry( _("Play Backwards"), kPlayBack),
+    HotkeyEntry( _("Play Backwards X2  Speed"), kPlayBackTwiceSpeed),
+    HotkeyEntry( _("Play Backwards 1/2 Speed"), kPlayBackHalfSpeed),
+    HotkeyEntry( _("Play Forwards"), kPlayFwd),
+    HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
+    HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
+    HotkeyEntry( _("Preload Image Cache"), kPreloadCache),
+    HotkeyEntry( _("Clear Image Cache"), kClearCache),
+    HotkeyEntry( _("Update Frame in Cache"), kClearSingleFrameCache),
+    HotkeyEntry( _("Stop"), kStop),
+    HotkeyEntry( _("Previous Image Version"), kPreviousVersionImage ),
+    HotkeyEntry( _("Next Image Version"), kNextVersionImage ),
+    HotkeyEntry( _("Previous Image"), kPreviousImage ),
+    HotkeyEntry( _("Next Image"), kNextImage ),
+    HotkeyEntry( _("Switch Channels"), kSwitchChannels ),
+    HotkeyEntry( _("Previous Channel"), kPreviousChannel ),
+    HotkeyEntry( _("Next Channel"), kNextChannel ),
+    HotkeyEntry( _("First Frame"), kFirstFrame ),
+    HotkeyEntry( _("Last Frame"), kLastFrame ),
+    HotkeyEntry( _("Toggle Background"), kToggleBG ),
+    HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
+    HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
+    HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
+    HotkeyEntry( _("Toggle Full Screen"), kFullScreen),
+    HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
+    HotkeyEntry( _("Exposure More"), kExposureMore),
+    HotkeyEntry( _("Exposure Less"), kExposureLess),
+    HotkeyEntry( _("Gamma More"), kGammaMore),
+    HotkeyEntry( _("Gamma Less"), kGammaLess),
+    HotkeyEntry( _("Switch FG/BG Images"), kSwitchFGBG ),
+    HotkeyEntry( _("Set As BG Image"), kSetAsBG),
+    HotkeyEntry( _("Add IPTC Metadata"), kAddIPTCMetadata),
+    HotkeyEntry( _("Remove IPTC Metadata"), kRemoveIPTCMetadata),
+    HotkeyEntry( _("Attach Audio File"), kAttachAudio),
+    HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
+    HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
+    HotkeyEntry( _("Clone Image"), kCloneImage),
+    HotkeyEntry( _("Set In Point"), kSetInPoint),
+    HotkeyEntry( _("Set Out Point"), kSetOutPoint),
+    HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
+    HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
+    HotkeyEntry( _("OCIO View"), kOCIOView ),
+    HotkeyEntry( _("Toggle Reel Window"), kToggleReel),
+    HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
+    HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
+    HotkeyEntry( _("Toggle Action Window"), kToggleAction),
+    HotkeyEntry( _("Toggle 3D Stereo Options Window"), kToggleStereoOptions),
+    HotkeyEntry( _("Toggle 3D View Window"), kToggle3dView),
+    HotkeyEntry( _("Toggle About Window"), kToggleAbout),
+    HotkeyEntry( _("Toggle EDL Edit Window"), kToggleEDLEdit),
+    HotkeyEntry( _("Toggle Histogram Window"), kToggleHistogram),
+    HotkeyEntry( _("Toggle Hud"), kHudToggle),
+    HotkeyEntry( _("Toggle Connections Window"), kToggleConnections),
+    HotkeyEntry( _("Toggle Hotkeys Window"), kToggleHotkeys),
+    HotkeyEntry( _("Toggle ICC Profiles Window"), kToggleICCProfiles),
+    HotkeyEntry( _("Toggle Input Color Space"), kToggleICS),
+    HotkeyEntry( _("Toggle Log Window"), kToggleLogs),
+    HotkeyEntry( _("Toggle LUT"), kToggleLut),
+    HotkeyEntry( _("Toggle Pixel Ratio"), kTogglePixelRatio),
+    HotkeyEntry( _("Toggle Preferences Window"), kTogglePreferences),
+    HotkeyEntry( _("Toggle Vectorscope Window"), kToggleVectorscope),
+    HotkeyEntry( _("Toggle Waveform Window"), kToggleWaveform),
+    HotkeyEntry( _("Rotate Image +90 Degrees"), kRotatePlus90),
+    HotkeyEntry( _("Rotate Image -90 Degrees"), kRotateMinus90),
+    HotkeyEntry( N_("END"), kGammaLess),
 };
 
 
 struct TableText table[] = {
-{fltk::EscapeKey, _("Escape")},
-{fltk::BackSpaceKey, _("BackSpace")},
-{fltk::TabKey, _("Tab")},
-{fltk::ReturnKey, _("Return")},
-{fltk::PrintKey, _("Print")},
+    {fltk::EscapeKey, _("Escape")},
+    {fltk::BackSpaceKey, _("BackSpace")},
+    {fltk::TabKey, _("Tab")},
+    {fltk::ReturnKey, _("Return")},
+    {fltk::PrintKey, _("Print")},
 
-{fltk::ScrollLockKey, _("ScrollLock")},
-{fltk::PauseKey, _("Pause")},
-{fltk::InsertKey, _("Insert")},
-{fltk::HomeKey, _("Home")},
-{fltk::PageUpKey, _("PageUp")},
+    {fltk::ScrollLockKey, _("ScrollLock")},
+    {fltk::PauseKey, _("Pause")},
+    {fltk::InsertKey, _("Insert")},
+    {fltk::HomeKey, _("Home")},
+    {fltk::PageUpKey, _("PageUp")},
 
-{fltk::DeleteKey, _("Delete")},
-{fltk::EndKey, _("End")},
-{fltk::PageDownKey, _("PageDown")},
-{fltk::LeftKey, _("Left")},
-{fltk::UpKey, _("Up")},
+    {fltk::DeleteKey, _("Delete")},
+    {fltk::EndKey, _("End")},
+    {fltk::PageDownKey, _("PageDown")},
+    {fltk::LeftKey, _("Left")},
+    {fltk::UpKey, _("Up")},
 
-{fltk::RightKey, _("Right")},
-{fltk::DownKey, _("Down")},
-{fltk::LeftShiftKey, _("LeftShift")},
-{fltk::RightShiftKey, _("RightShift")},
-{fltk::LeftCtrlKey, _("LeftCtrl")},
+    {fltk::RightKey, _("Right")},
+    {fltk::DownKey, _("Down")},
+    {fltk::LeftShiftKey, _("LeftShift")},
+    {fltk::RightShiftKey, _("RightShift")},
+    {fltk::LeftCtrlKey, _("LeftCtrl")},
 
-{fltk::RightCtrlKey, _("RightCtrl")},
-{fltk::CapsLockKey, _("CapsLock")},
-{fltk::LeftAltKey, _("LeftAlt")},
-{fltk::RightAltKey, _("RightAlt")},
-{fltk::LeftMetaKey, _("LeftMeta")},
+    {fltk::RightCtrlKey, _("RightCtrl")},
+    {fltk::CapsLockKey, _("CapsLock")},
+    {fltk::LeftAltKey, _("LeftAlt")},
+    {fltk::RightAltKey, _("RightAlt")},
+    {fltk::LeftMetaKey, _("LeftMeta")},
 
-{fltk::RightMetaKey, _("RightMeta")},
-{fltk::MenuKey, _("Menu")},
-{fltk::NumLockKey, _("NumLock")},
-{fltk::KeypadEnter, _("KeypadEnter")},
-{fltk::MultiplyKey, _("Multiply")},
+    {fltk::RightMetaKey, _("RightMeta")},
+    {fltk::MenuKey, _("Menu")},
+    {fltk::NumLockKey, _("NumLock")},
+    {fltk::KeypadEnter, _("KeypadEnter")},
+    {fltk::MultiplyKey, _("Multiply")},
 
-{fltk::AddKey, _("Add")},
-{fltk::SubtractKey, _("Subtract")},
-{fltk::DecimalKey, _("Decimal")},
-{fltk::DivideKey, _("Divide")},
-{fltk::Keypad0, _("Keypad0")},
+    {fltk::AddKey, _("Add")},
+    {fltk::SubtractKey, _("Subtract")},
+    {fltk::DecimalKey, _("Decimal")},
+    {fltk::DivideKey, _("Divide")},
+    {fltk::Keypad0, _("Keypad0")},
 
-{fltk::Keypad1, _("Keypad1")},
-{fltk::Keypad2, _("Keypad2")},
-{fltk::Keypad3, _("Keypad3")},
-{fltk::Keypad4, _("Keypad4")},
-{fltk::Keypad5, _("Keypad5")},
+    {fltk::Keypad1, _("Keypad1")},
+    {fltk::Keypad2, _("Keypad2")},
+    {fltk::Keypad3, _("Keypad3")},
+    {fltk::Keypad4, _("Keypad4")},
+    {fltk::Keypad5, _("Keypad5")},
 
-{fltk::Keypad6, _("Keypad6")},
-{fltk::Keypad7, _("Keypad7")},
-{fltk::Keypad8, _("Keypad8")},
-{fltk::Keypad9, _("Keypad9")},
-{fltk::SpaceKey,_("Space (' ')")}
+    {fltk::Keypad6, _("Keypad6")},
+    {fltk::Keypad7, _("Keypad7")},
+    {fltk::Keypad8, _("Keypad8")},
+    {fltk::Keypad9, _("Keypad9")},
+    {fltk::SpaceKey,_("Space (' ')")}
 };
 
 
 void fill_ui_hotkeys( fltk::Browser* b )
 {
-   if (!b) return;
+    if (!b) return;
 
-   const char* labels[] = { _("Function"), _("Hotkey"), NULL};
-   b->column_labels( labels );
-   const int widths[] = {240, -1, 0};
-   b->column_widths( widths );
+    const char* labels[] = { _("Function"), _("Hotkey"), NULL};
+    b->column_labels( labels );
+    const int widths[] = {240, -1, 0};
+    b->column_widths( widths );
 
-   b->clear();
+    b->clear();
 
 
-   for ( int i = 0; hotkeys[i].name != "END"; ++i )
-   {
-      HotkeyEntry& h = hotkeys[i];
-      std::string key;
-      if ( h.hotkey.ctrl ) key += "Ctrl+";
-      if ( h.hotkey.alt ) key += "Alt+";
-      if ( h.hotkey.meta ) key += "Meta+";
-      if ( h.hotkey.shift ) key += "Shift+";
+    for ( int i = 0; hotkeys[i].name != "END"; ++i )
+    {
+        HotkeyEntry& h = hotkeys[i];
+        std::string key;
+        if ( h.hotkey.ctrl ) key += "Ctrl+";
+        if ( h.hotkey.alt ) key += "Alt+";
+        if ( h.hotkey.meta ) key += "Meta+";
+        if ( h.hotkey.shift ) key += "Shift+";
 
-      unsigned k = h.hotkey.key;
+        unsigned k = h.hotkey.key;
 
-      bool special = false;
-      for ( int j = 0; j < 45; ++j )
-         if ( k == table[j].n )
-         {
-            key += table[j].text;
-            special = true;
-            break;
-         }
+        bool special = false;
+        for ( int j = 0; j < 45; ++j )
+            if ( k == table[j].n )
+            {
+                key += table[j].text;
+                special = true;
+                break;
+            }
 
-      if ( !special )
-      {
-         if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
-            char buf[64];
-            sprintf(buf, "F%d", k - fltk::F0Key);
-            key += buf;
-         }
-         else
-         {
-            if ( h.hotkey.key != 0 ) key += (char) h.hotkey.key;
-            if ( h.hotkey.key == 0 && h.hotkey.text != "" )
-               key += h.hotkey.text;
-         }
-      }
+        if ( !special )
+        {
+            if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
+                char buf[64];
+                sprintf(buf, "F%d", k - fltk::F0Key);
+                key += buf;
+            }
+            else
+            {
+                if ( h.hotkey.key != 0 ) key += (char) h.hotkey.key;
+                if ( h.hotkey.key == 0 && h.hotkey.text != "" )
+                    key += h.hotkey.text;
+            }
+        }
 
-      std::string row( _(h.name.c_str()) );
-      row += "\t" + key;
+        std::string row( _(h.name.c_str()) );
+        row += "\t" + key;
 
-      b->add( row.c_str() );
-   }
+        b->add( row.c_str() );
+    }
 }
 
 
 
 void select_hotkey( HotkeyUI* b )
 {
-   int idx = b->uiFunction->value();
+    int idx = b->uiFunction->value();
 
-   Hotkey& hk = hotkeys[idx].hotkey;
+    Hotkey& hk = hotkeys[idx].hotkey;
 
-   ChooseHotkey* h = new ChooseHotkey(hk);
-   h->make_window();
-   h->fill();
+    ChooseHotkey* h = new ChooseHotkey(hk);
+    h->make_window();
+    h->fill();
 
-   fltk::Window* window = h->uiMain;
-   window->child_of( b->uiMain );
-   window->show();
+    fltk::Window* window = h->uiMain;
+    window->child_of( b->uiMain );
+    window->show();
 
-   while ( window->visible() )
-      fltk::check();
+    while ( window->visible() )
+        fltk::check();
 
-   hk = h->hk;
+    hk = h->hk;
 
-   delete h;
+    delete h;
 
-   fill_ui_hotkeys( b->uiFunction );
+    fill_ui_hotkeys( b->uiFunction );
 }
 
 

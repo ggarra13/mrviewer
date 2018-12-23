@@ -47,7 +47,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
 {
     // If using OCIO, we do not load the ACES XML file.
     if ( Preferences::use_ocio ) return false;
-    
+
     using namespace ACES;
 
     if(! fs::exists(filename) )
@@ -62,13 +62,13 @@ bool load_aces_xml( CMedia* img, const char* filename )
     }
 
     if ( !c.link_ITL.empty() )
-      {
+    {
         img->idt_transform( c.link_ITL.c_str() );
-      }
+    }
     else if ( c.IDT.status == ACES::kPreview && !c.IDT.name.empty() )
-      {
+    {
         img->idt_transform( c.IDT.name.c_str() );
-      }
+    }
 
     img->clear_look_mod_transform();
 
@@ -79,7 +79,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
             img->append_look_mod_transform( c.convert_to.c_str() );
 
             size_t num = c.grade_refs.size();
-            
+
             img->asc_cdl( c.sops );
 
             for ( size_t i = 0; i < num; ++i )
@@ -102,21 +102,21 @@ bool load_aces_xml( CMedia* img, const char* filename )
 
     size_t num = c.LMT.size();
     for ( size_t i = 0; i < num; ++i )
-      {
+    {
         if ( c.LMT[i].status != ACES::kPreview )
-	  continue;
+            continue;
         img->append_look_mod_transform( c.LMT[i].name.c_str() );
-      }
-    
+    }
+
     if ( c.RRT.status == ACES::kPreview && !c.RRT.name.empty() )
-      {
+    {
         img->rendering_transform( c.RRT.name.c_str() );
-      }
+    }
 
     if ( c.ODT.status == ACES::kPreview && !c.ODT.name.empty() )
     {
         if ( ( ! mrv::Preferences::ODT_CTL_transform.empty() ) &&
-             mrv::Preferences::ODT_CTL_transform != c.ODT.name )
+                mrv::Preferences::ODT_CTL_transform != c.ODT.name )
         {
             LOG_ERROR( _("Image has a different Output Device Transform (ODT) than the one set already.") );
             LOG_ERROR( mrv::Preferences::ODT_CTL_transform
@@ -125,7 +125,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
         }
         mrv::Preferences::ODT_CTL_transform = c.ODT.name;
     }
-    
+
     LOG_INFO( _("Loaded ACES clip metadata file '") << filename << "'" );
     return true;
 }

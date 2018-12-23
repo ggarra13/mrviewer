@@ -19,10 +19,10 @@
  * @file   slateImage.h
  * @author gga
  * @date   Sun Oct 22 22:52:27 2006
- * 
+ *
  * @brief  A simple image slate generator
- * 
- * 
+ *
+ *
  */
 
 
@@ -37,23 +37,29 @@ typedef struct _MagickWand  MagickWand;
 
 namespace mrv {
 
-  class slateImage : public CMedia
-  {
-  public:
+class slateImage : public CMedia
+{
+public:
     slateImage( const CMedia* src );
 
-    static bool test(const char* file) { return false; }
+    static bool test(const char* file) {
+        return false;
+    }
 
-    virtual const char* const format() const { return "Slate"; }
+    virtual const char* const format() const {
+        return "Slate";
+    }
 
-    virtual bool has_changed() { return false; }
+    virtual bool has_changed() {
+        return false;
+    }
     virtual bool fetch( const boost::int64_t frame );
 
     virtual bool initialize();
     virtual bool release();
 
 
-  protected:
+protected:
     void draw_text( double x, double y, const char* text );
     void draw_gradient();
     void draw_bars();
@@ -62,9 +68,9 @@ namespace mrv {
     int64_t _fstart;
     int64_t _fend;
     DrawingWand* dwand;
-    PixelWand*   pwand;  
+    PixelWand*   pwand;
     MagickWand*   wand;
-  };
+};
 
 } // namespace mrv
 

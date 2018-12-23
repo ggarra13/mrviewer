@@ -19,25 +19,25 @@
  * @file   mrvLMTBrowser.cpp
  * @author gga
  * @date   Mon Jul  2 08:11:24 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <mrvIO.h>
 #include <mrvLMTBrowser.h>
 
-namespace 
+namespace
 {
-  const char* kModule = "lmt";
+const char* kModule = "lmt";
 }
 
 
 namespace mrv {
 
 LMTBrowser::LMTBrowser(int x, int y, int w, int h, const char* l) :
-  fltk::Browser( x, y, w, h, l )
+    fltk::Browser( x, y, w, h, l )
 {
 }
 
@@ -48,26 +48,26 @@ LMTBrowser::~LMTBrowser()
 
 void LMTBrowser::fill( const mrv::media& fg )
 {
-  this->clear();
+    this->clear();
 
-  _fg = fg;
-  if ( !_fg ) return;
-  
-  CMedia* img = _fg->image();
-  
-  size_t num = img->number_of_lmts();
-  
-  for ( size_t i = 0; i < num; ++i )
-  {
-      const char* lmt = img->look_mod_transform(i);
-      this->add( lmt );
-  }
-  
+    _fg = fg;
+    if ( !_fg ) return;
+
+    CMedia* img = _fg->image();
+
+    size_t num = img->number_of_lmts();
+
+    for ( size_t i = 0; i < num; ++i )
+    {
+        const char* lmt = img->look_mod_transform(i);
+        this->add( lmt );
+    }
+
 }
 
 int LMTBrowser::handle( int e )
 {
-  return fltk::Browser::handle( e );
+    return fltk::Browser::handle( e );
 }
 
 

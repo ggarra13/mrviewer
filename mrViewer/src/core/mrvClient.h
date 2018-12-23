@@ -38,11 +38,11 @@ namespace mrv {
 class ViewerUI;
 
 class client : public Parser,
-               public boost::enable_shared_from_this< client >
+    public boost::enable_shared_from_this< client >
 {
-  public:
+public:
     client(boost::asio::io_service& io_service,
-           mrv::ViewerUI* v); 
+           mrv::ViewerUI* v);
     virtual ~client() {};
 
     void start(tcp::resolver::iterator endpoint_iter);
@@ -50,7 +50,9 @@ class client : public Parser,
     virtual void stop();
     virtual void deliver( const std::string& msg );
 
-    bool stopped() { return stopped_; }
+    bool stopped() {
+        return stopped_;
+    }
 
     void start_connect(tcp::resolver::iterator endpoint_iter);
     void handle_connect(const boost::system::error_code& ec,
@@ -68,7 +70,7 @@ class client : public Parser,
     static void create( mrv::ViewerUI* main );
     static void remove( mrv::ViewerUI* main );
 
-  private:
+private:
     bool stopped_;
     deadline_timer non_empty_output_queue_;
     std::deque< std::string > output_queue_;

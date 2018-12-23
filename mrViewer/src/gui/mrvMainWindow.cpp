@@ -19,10 +19,10 @@
  * @file   mrvMainWindow.cpp
  * @author gga
  * @date   Wed Jul  4 23:17:46 2007
- * 
+ *
  * @brief  main window for mrViewer
- * 
- * 
+ *
+ *
  */
 
 #include <iostream>
@@ -58,30 +58,30 @@ using namespace std;
 namespace mrv {
 
 #ifndef _WIN32
-  Pixmap p, mask;
+Pixmap p, mask;
 #endif
 
-  MainWindow::MainWindow( int W, int H, const char* title ) :
+MainWindow::MainWindow( int W, int H, const char* title ) :
     fltk::Window( W, H, title )
-  {
+{
 //#ifdef _WIN32
-      // Set icon does not work on Linux yet
-      set_icon();
+    // Set icon does not work on Linux yet
+    set_icon();
 //#endif
-  }
+}
 
-  MainWindow::~MainWindow()
-  {
-      uiMain->uiView->stop();
-      delete uiMain->uiView;
-      uiMain->uiView = NULL;
-  }
+MainWindow::~MainWindow()
+{
+    uiMain->uiView->stop();
+    delete uiMain->uiView;
+    uiMain->uiView = NULL;
+}
 
 
-  void MainWindow::set_icon()
-  {
-    fltk::open_display();  // Needed for icons 
-    
+void MainWindow::set_icon()
+{
+    fltk::open_display();  // Needed for icons
+
 #if defined(_WIN32) || defined(_WIN64)
     HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
     this->icon(data);
@@ -93,20 +93,21 @@ namespace mrv {
     // this->icon( buffer );
 #endif
 
-  }
+}
 
 
-  void MainWindow::always_on_top() 
-  {
+void MainWindow::always_on_top()
+{
 #if defined(_WIN32) || defined(_WIN64)
     // Microsoft (R) Windows(TM)
-    SetWindowPos(fltk::xid(this), HWND_TOPMOST, 
-		 0, 0, w()+8, h()+27, 0);
+    SetWindowPos(fltk::xid(this), HWND_TOPMOST,
+                 0, 0, w()+8, h()+27, 0);
 #else
     // XOrg / XWindows(TM)
     XEvent ev;
-    static const char* const names[2] = { "_NET_WM_STATE", 
-					  "_NET_WM_STATE_ABOVE" };
+    static const char* const names[2] = { "_NET_WM_STATE",
+                                          "_NET_WM_STATE_ABOVE"
+                                        };
     Atom atoms[ 2 ];
     fltk::open_display();
     XInternAtoms(fltk::xdisplay, (char**)names, 2, False, atoms );
@@ -119,45 +120,45 @@ namespace mrv {
     ev.xclient.data.l[ 0 ] = active() ? 1 : 0;
     ev.xclient.data.l[ 1 ] = net_wm_state_above;
     ev.xclient.data.l[ 2 ] = 0;
-    XSendEvent(fltk::xdisplay, 
-	       DefaultRootWindow(fltk::xdisplay),  False, 
-	       SubstructureNotifyMask|SubstructureRedirectMask, &ev);
+    XSendEvent(fltk::xdisplay,
+               DefaultRootWindow(fltk::xdisplay),  False,
+               SubstructureNotifyMask|SubstructureRedirectMask, &ev);
 #endif
-  } // above_all function
+} // above_all function
 
 
-  /** 
-   * Iconize all windows
-   * 
-   */
-  void MainWindow::iconize_all()
-  {
+/**
+ * Iconize all windows
+ *
+ */
+void MainWindow::iconize_all()
+{
     fltk::Window* uiReelWindow = uiMain->uiReelWindow->uiMain;
     if (uiReelWindow) uiReelWindow->iconize();
     return fltk::Window::iconize();
-  }
+}
 
-  /** 
-   * Handle MainWindow's fltk::events
-   * 
-   * @param event fltk::event enumeration
-   * 
-   * @return 1 if handled, 0 if not.
-   */
-  int MainWindow::handle( int event )
-  {
+/**
+ * Handle MainWindow's fltk::events
+ *
+ * @param event fltk::event enumeration
+ *
+ * @return 1 if handled, 0 if not.
+ */
+int MainWindow::handle( int event )
+{
     return fltk::Window::handle( event );
-  }
+}
 
 void MainWindow::layout()
 {
-   fltk::Window::layout();
+    fltk::Window::layout();
 
-   if ( layout_damage() & fltk::LAYOUT_W || layout_damage() & fltk::LAYOUT_H )
-   {
-      if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-         uiMain->uiView->fit_image();
-   }
+    if ( layout_damage() & fltk::LAYOUT_W || layout_damage() & fltk::LAYOUT_H )
+    {
+        if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+            uiMain->uiView->fit_image();
+    }
 }
 
 } // namespace mrv

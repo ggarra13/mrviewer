@@ -19,9 +19,9 @@
  * @file   mrvHistogram.h
  * @author gga
  * @date   Thu Nov 09 14:43:34 2006
- * 
+ *
  * @brief  Displays a waveform for an image.
- * 
+ *
  */
 
 #ifndef mrvHistogram_h
@@ -33,44 +33,58 @@ class CMedia;
 
 namespace mrv
 {
-  class ViewerUI;
+class ViewerUI;
 
-  class Histogram : public fltk::Widget
-  {
-  public:
+class Histogram : public fltk::Widget
+{
+public:
     enum Type
-      {
-	kLinear,
-	kLog,
-	kSqrt,
-      };
+    {
+        kLinear,
+        kLog,
+        kSqrt,
+    };
 
     enum Channel
-      {
-	kRGB,
-	kRed,
-	kGreen,
-	kBlue,
-	kLumma,
-      };
+    {
+        kRGB,
+        kRed,
+        kGreen,
+        kBlue,
+        kLumma,
+    };
 
-  public:
+public:
     Histogram( int x, int y, int w, int h, const char* l = 0 );
 
-    void channel( Channel c ) { _channel = c; redraw(); }
-    Channel channel() const    { return _channel; }
+    void channel( Channel c ) {
+        _channel = c;
+        redraw();
+    }
+    Channel channel() const    {
+        return _channel;
+    }
 
-    void histogram_type( Type c ) { _histtype = c; redraw(); };
-    Type histogram_type() const { return _histtype; };
+    void histogram_type( Type c ) {
+        _histtype = c;
+        redraw();
+    };
+    Type histogram_type() const {
+        return _histtype;
+    };
 
     virtual void draw();
 //     virtual int handle( int event );
 
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; };
-    mrv::ViewerUI* main() { return uiMain; };
+    void main( mrv::ViewerUI* m ) {
+        uiMain = m;
+    };
+    mrv::ViewerUI* main() {
+        return uiMain;
+    };
 
-  protected:
+protected:
     void   draw_grid( const fltk::Rectangle& r );
     void draw_pixels( const fltk::Rectangle& r );
 
@@ -98,7 +112,7 @@ namespace mrv
 
     mrv::ViewerUI* uiMain;
 
-  };
+};
 
 }  // namespace mrv
 

@@ -20,9 +20,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-// 
+//
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -34,8 +34,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission. 
-// 
+// from this software without specific prior written permission.
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -61,12 +61,12 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 
-  int
-  gettimeofday (struct timeval *tv, void *tz)
-  {
+int
+gettimeofday (struct timeval *tv, void *tz)
+{
     // Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
     // This magic number is the number of 100 nanosecond intervals since January 1, 1601 (UTC)
-    // until 00:00:00 January 1, 1970 
+    // until 00:00:00 January 1, 1970
     static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
 
     SYSTEMTIME  system_time;
@@ -81,7 +81,7 @@
     tv->tv_sec  = (long) ((time - EPOCH) / 10000000L);
     tv->tv_usec = (long) (system_time.wMilliseconds * 1000);
     return 0;
-  } 
+}
 
 #endif
 
@@ -89,32 +89,32 @@
 namespace mrv {
 
 Timer::Timer ():
-  playState( CMedia::kForwards ),
-  _spf (1 / 24.0),
-  _timingError (0),
-  _framesSinceLastFpsFrame (0),
-  _actualFrameRate (0)
+    playState( CMedia::kForwards ),
+    _spf (1 / 24.0),
+    _timingError (0),
+    _framesSinceLastFpsFrame (0),
+    _actualFrameRate (0)
 {
-  gettimeofday (&_lastFrameTime, 0);
-  _lastFpsFrameTime = _lastFrameTime;
+    gettimeofday (&_lastFrameTime, 0);
+    _lastFpsFrameTime = _lastFrameTime;
 }
 
 
 void
 Timer::waitUntilNextFrameIsDue ()
 {
-  if (playState == CMedia::kStopped)
+    if (playState == CMedia::kStopped)
     {
-      //
-      // If we are not running, reset all timing state
-      // variables and return without waiting.
-      //
-      
-      gettimeofday (&_lastFrameTime, 0);
-      _timingError = 0;
-      _lastFpsFrameTime = _lastFrameTime;
-      _framesSinceLastFpsFrame = 0;
-      return;
+        //
+        // If we are not running, reset all timing state
+        // variables and return without waiting.
+        //
+
+        gettimeofday (&_lastFrameTime, 0);
+        _timingError = 0;
+        _lastFpsFrameTime = _lastFrameTime;
+        _framesSinceLastFpsFrame = 0;
+        return;
     }
 
     //
@@ -126,26 +126,26 @@ Timer::waitUntilNextFrameIsDue ()
     gettimeofday (&now, 0);
 
     _timeSinceLastFrame =  now.tv_sec  - _lastFrameTime.tv_sec +
-                          (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+                           (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
 
     double timeToSleep = _spf - _timeSinceLastFrame - _timingError;
 
-    #ifdef _WIN32
+#ifdef _WIN32
 
-	if (timeToSleep > 0)
-	    Sleep (int (timeToSleep * 1000.0f));
+    if (timeToSleep > 0)
+        Sleep (int (timeToSleep * 1000.0f));
 
-    #else
+#else
 
-	if (timeToSleep > 0)
-	{
-	    timespec ts;
-	    ts.tv_sec = (time_t) timeToSleep;
-	    ts.tv_nsec = (long) ((timeToSleep - ts.tv_sec) * 1e9f);
-	    nanosleep (&ts, 0);
-	}
+    if (timeToSleep > 0)
+    {
+        timespec ts;
+        ts.tv_sec = (time_t) timeToSleep;
+        ts.tv_nsec = (long) ((timeToSleep - ts.tv_sec) * 1e9f);
+        nanosleep (&ts, 0);
+    }
 
-    #endif
+#endif
 
     //
     // If we slept, it is possible that we woke up a little too early
@@ -158,15 +158,15 @@ Timer::waitUntilNextFrameIsDue ()
     gettimeofday (&now, 0);
 
     float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
-    		              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
- 
+                               (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
+
     _timingError += timeSinceLastSleep - _spf;
 
     if (_timingError < -2 * _spf)
-    	_timingError = -2 * _spf;
+        _timingError = -2 * _spf;
 
     if (_timingError >  2 * _spf)
-    	_timingError =  2 * _spf;
+        _timingError =  2 * _spf;
 
     _lastFrameTime = now;
 
@@ -176,17 +176,17 @@ Timer::waitUntilNextFrameIsDue ()
 
     if (_framesSinceLastFpsFrame >= 24)
     {
-	float t =  now.tv_sec  - _lastFpsFrameTime.tv_sec +
-		  (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
+        float t =  now.tv_sec  - _lastFpsFrameTime.tv_sec +
+                   (now.tv_usec - _lastFpsFrameTime.tv_usec) * 1e-6f;
 
-	if (t > 0)
-	    _actualFrameRate = _framesSinceLastFpsFrame / t;
+        if (t > 0)
+            _actualFrameRate = _framesSinceLastFpsFrame / t;
 
-	_framesSinceLastFpsFrame = 0;
+        _framesSinceLastFpsFrame = 0;
     }
 
     if (_framesSinceLastFpsFrame == 0)
-	_lastFpsFrameTime = now;
+        _lastFpsFrameTime = now;
 
     _framesSinceLastFpsFrame += 1;
 }

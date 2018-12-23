@@ -19,10 +19,10 @@
  * @file   hdrImage.cpp
  * @author gga
  * @date   Fri Jul 20 04:54:04 2007
- * 
+ *
  * @brief  Class used to load Radiance HDR format
- * 
- * 
+ *
+ *
  */
 
 
@@ -74,11 +74,11 @@ namespace mrv {
 
 
 hdrImage::hdrImage() :
-CMedia(),
-cieXYZ(false),
-flipX( false ),
-flipY( false ),
-exposure(1.0f)
+    CMedia(),
+    cieXYZ(false),
+    flipX( false ),
+    flipY( false ),
+    exposure(1.0f)
 {
 }
 
@@ -88,19 +88,19 @@ hdrImage::~hdrImage()
 
 
 /*! Test a block of data read from the start of the file to see if it
-  looks like the start of an .hdr file. This returns true if the 
+  looks like the start of an .hdr file. This returns true if the
   data contains HDR's magic comment.
 */
 bool hdrImage::test(const boost::uint8_t *data, unsigned)
 {
     if ( ( strncmp( (char*)data, "#?RADIANCE", 10 ) == 0 ) ||
-         ( strncmp( (char*)data, "#?RGBE", 6 ) == 0 ) ) return true;
+            ( strncmp( (char*)data, "#?RGBE", 6 ) == 0 ) ) return true;
 
     return false;
 }
 
 
-void hdrImage::read_header( FILE* f ) 
+void hdrImage::read_header( FILE* f )
 {
     char line[256];
 
@@ -111,172 +111,172 @@ void hdrImage::read_header( FILE* f )
 
     unsigned int w = 0;
     unsigned int h = 0;
-    
+
     while ( fgets( line, 256, f ) != NULL )
     {
-	char* s = line;
-	while(isspace(*s)) ++s;   // skip spaces
-	if ( !*s ) continue;
+        char* s = line;
+        while(isspace(*s)) ++s;   // skip spaces
+        if ( !*s ) continue;
 
 
-	if ( s[0] == '#' ) continue; // comment
+        if ( s[0] == '#' ) continue; // comment
 
 
-	// remove \n \r
-	char* e = s + strlen(s) - 1;
-	for ( ; *e == ' ' || *e == '\r' || *e == '\n'; --e )
+        // remove \n \r
+        char* e = s + strlen(s) - 1;
+        for ( ; *e == ' ' || *e == '\r' || *e == '\n'; --e )
             *e = 0;
 
 
-	char* state;
-	char* keyword = strtok_r( s, "=", &state );
-	if (!keyword ) continue;
+        char* state;
+        char* keyword = strtok_r( s, "=", &state );
+        if (!keyword ) continue;
 
-	if ( strcasecmp( keyword, "FORMAT" ) == 0 )
+        if ( strcasecmp( keyword, "FORMAT" ) == 0 )
         {
-	    if ( _num_channels == 0 )
-	    {
-		rgb_layers();
-		lumma_layers();
-	    }
-	    
-	    char* val = strtok_r( NULL, "=", &state );
+            if ( _num_channels == 0 )
+            {
+                rgb_layers();
+                lumma_layers();
+            }
 
-	    if ( strcasecmp( val, "32-bit_rle_rgbe" ) == 0 )
+            char* val = strtok_r( NULL, "=", &state );
+
+            if ( strcasecmp( val, "32-bit_rle_rgbe" ) == 0 )
             {
-		cieXYZ = false;
+                cieXYZ = false;
             }
-	    else if ( strcasecmp( val, "32-bit_rle_xyze" ) == 0 )
+            else if ( strcasecmp( val, "32-bit_rle_xyze" ) == 0 )
             {
-		cieXYZ = true;
+                cieXYZ = true;
             }
-	    else
+            else
             {
-		std::string err = "Unknown Radiance HDR format \"";
-		err += val;
-		err += "\"";
-		EXCEPTION(err);
+                std::string err = "Unknown Radiance HDR format \"";
+                err += val;
+                err += "\"";
+                EXCEPTION(err);
             }
         }
-	else if ( strcasecmp( keyword, "OWNER" ) == 0 )
+        else if ( strcasecmp( keyword, "OWNER" ) == 0 )
         {
             static const std::string key = _("Owner");
-	    std::string val = strtok_r( NULL, "=", &state );
+            std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
+            _attrs.insert( std::make_pair( key, attr.copy() ) );
         }
-	else if ( strcasecmp( keyword, "CAPDATE" ) == 0 )
+        else if ( strcasecmp( keyword, "CAPDATE" ) == 0 )
         {
             static const std::string key = _("Capture Date");
 
-	    struct tm tms;
-	    if (sscanf(s, "%d:%d:%d %d:%d:%d",
-		       &tms.tm_year, &tms.tm_mon, &tms.tm_mday,
-		       &tms.tm_hour, &tms.tm_min, &tms.tm_sec) != 6)
+            struct tm tms;
+            if (sscanf(s, "%d:%d:%d %d:%d:%d",
+                       &tms.tm_year, &tms.tm_mon, &tms.tm_mday,
+                       &tms.tm_hour, &tms.tm_min, &tms.tm_sec) != 6)
                 continue;
 
-	    tms.tm_mon--;
-	    tms.tm_year -= 1900;
-	    tms.tm_isdst = -1;	// ask mktime() to figure out DST
-	    
-	    time_t t = mktime( &tms );
+            tms.tm_mon--;
+            tms.tm_year -= 1900;
+            tms.tm_isdst = -1;	// ask mktime() to figure out DST
 
-	    char now[128];
-	    strftime( now, 127, "%H:%M:%S - %d %b", localtime(&t) );
-	    
-	    std::string val = now;
+            time_t t = mktime( &tms );
+
+            char now[128];
+            strftime( now, 127, "%H:%M:%S - %d %b", localtime(&t) );
+
+            std::string val = now;
 
             Imf::StringAttribute attr( val );
-	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
-	    continue;
+            _attrs.insert( std::make_pair( key, attr.copy() ) );
+            continue;
         }
-	else if ( strcasecmp( keyword, "EXPOSURE" ) == 0 )
+        else if ( strcasecmp( keyword, "EXPOSURE" ) == 0 )
         {
             static const std::string key = _("Exposure");
-	    char* val = strtok_r( NULL, "=", &state );
+            char* val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
+            _attrs.insert( std::make_pair( key, attr.copy() ) );
 
-	    exposure = (float) atof( val );
-	    continue;
+            exposure = (float) atof( val );
+            continue;
         }
-	else if ( strcasecmp( keyword, "COLORCORR" ) == 0 )
+        else if ( strcasecmp( keyword, "COLORCORR" ) == 0 )
         {
-	    const char* val = strtok_r( NULL, "=", &state );
-	    if ( sscanf( val, "%f %f %f ",
-			 &corr[0], &corr[1], &corr[2] ) != 3 )
+            const char* val = strtok_r( NULL, "=", &state );
+            if ( sscanf( val, "%f %f %f ",
+                         &corr[0], &corr[1], &corr[2] ) != 3 )
                 continue;
 
-	    continue;
+            continue;
         }
-	else if ( strcasecmp( keyword, "SOFTWARE" ) == 0 )
+        else if ( strcasecmp( keyword, "SOFTWARE" ) == 0 )
         {
             static const std::string key = _("Software");
-	    std::string val = strtok_r( NULL, "=", &state );
+            std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-	    _attrs.insert( std::make_pair( key, attr.copy() ) ); 
-	    continue;
+            _attrs.insert( std::make_pair( key, attr.copy() ) );
+            continue;
         }
-	else if ( strcasecmp( keyword, "PIXASPECT" ) == 0 )
+        else if ( strcasecmp( keyword, "PIXASPECT" ) == 0 )
         {
-	    const char* val = strtok_r( NULL, "=", &state );
-	    _pixel_ratio = (float) atof( val );
+            const char* val = strtok_r( NULL, "=", &state );
+            _pixel_ratio = (float) atof( val );
 
-	    if ( _pixel_ratio <= 0.0f ) _pixel_ratio = 1.0f;
-	    continue;
+            if ( _pixel_ratio <= 0.0f ) _pixel_ratio = 1.0f;
+            continue;
         }
 
-	else if ( strcasecmp( s, "VIEW" ) == 0 )
+        else if ( strcasecmp( s, "VIEW" ) == 0 )
         {
-	    // @todo:
-	    continue;
+            // @todo:
+            continue;
         }
-	else if ( strcasecmp( s, "PRIMARIES" ) == 0 )
+        else if ( strcasecmp( s, "PRIMARIES" ) == 0 )
         {
-	    const char* val = strtok_r( NULL, "=", &state );
-	    if ( sscanf( val, "%f %f %f %f %f %f %f %f",
-			 &cieXY[0].x, &cieXY[0].y, 
-			 &cieXY[1].x, &cieXY[1].y,
-			 &cieXY[2].x, &cieXY[2].y,
-			 &cieXY[3].x, &cieXY[3].y ) != 8 )
+            const char* val = strtok_r( NULL, "=", &state );
+            if ( sscanf( val, "%f %f %f %f %f %f %f %f",
+                         &cieXY[0].x, &cieXY[0].y,
+                         &cieXY[1].x, &cieXY[1].y,
+                         &cieXY[2].x, &cieXY[2].y,
+                         &cieXY[3].x, &cieXY[3].y ) != 8 )
                 continue;
 
 
-	    continue;
+            continue;
         }
-	else
+        else
         {
-	    // Split on spaces
-	    state = NULL;
-	    char* ptr = strtok_r( s, " ", &state ); // Y keyword
-	    if ( !ptr || strlen(ptr) != 2 ) continue;
+            // Split on spaces
+            state = NULL;
+            char* ptr = strtok_r( s, " ", &state ); // Y keyword
+            if ( !ptr || strlen(ptr) != 2 ) continue;
 
 
-	    if ( ptr[1] == 'Y' )
+            if ( ptr[1] == 'Y' )
             {
-		if ( ptr[0] != '-' ) flipY = true;
+                if ( ptr[0] != '-' ) flipY = true;
 
-		ptr = strtok_r( NULL, " ", &state ); // Y value
-		h = atoi( ptr );
+                ptr = strtok_r( NULL, " ", &state ); // Y value
+                h = atoi( ptr );
 
-		ptr = strtok_r( NULL, " ", &state ); // X keyword
-		if ( !ptr || strlen(ptr) != 2 ) continue;
+                ptr = strtok_r( NULL, " ", &state ); // X keyword
+                if ( !ptr || strlen(ptr) != 2 ) continue;
 
-		if ( ptr[1] == 'X' )
+                if ( ptr[1] == 'X' )
                 {
-		    if ( ptr[0] != '+' ) flipX = true;
+                    if ( ptr[0] != '+' ) flipX = true;
 
-		    ptr = strtok_r( NULL, " ", &state ); // X value
-		    w = atoi( ptr );
+                    ptr = strtok_r( NULL, " ", &state ); // X value
+                    w = atoi( ptr );
                 }
-		break;
+                break;
             }
-	    else
+            else
             {
-		std::string err = "Unknown Radiance HDR keyword \"";
-		err += keyword;
-		err += "\"";
-		EXCEPTION(err);
+                std::string err = "Unknown Radiance HDR keyword \"";
+                err += keyword;
+                err += "\"";
+                EXCEPTION(err);
             }
         }
     }
@@ -292,9 +292,9 @@ hdrImage::oldreadcolrs(COLR* scanline, int len, FILE* fp)
 {
     int  rshift;
     register int  i;
-	
+
     rshift = 0;
-	
+
     while (len > 0) {
         scanline[0][RED] = getc(fp);
         scanline[0][GRN] = getc(fp);
@@ -303,8 +303,8 @@ hdrImage::oldreadcolrs(COLR* scanline, int len, FILE* fp)
         if (feof(fp) || ferror(fp))
             return(-1);
         if (scanline[0][RED] == 1 &&
-            scanline[0][GRN] == 1 &&
-            scanline[0][BLU] == 1) {
+                scanline[0][GRN] == 1 &&
+                scanline[0][BLU] == 1) {
             for (i = scanline[0][EXP] << rshift; i > 0; i--) {
                 copycolr(scanline[0], scanline[-1]);
                 scanline++;
@@ -376,7 +376,7 @@ hdrImage::read_colors(COLR* scanline, int len, FILE* fp)
 void hdrImage::colr2color( Pixel& col, COLR clr )
 {
     double  f;
-    
+
     col.a = 1.0;
 
     if (clr[EXP] == 0)
@@ -395,13 +395,13 @@ bool hdrImage::save( const boost::int64_t frame )
     return false;
 }
 
-/** 
+/**
  * Fetch the current HDR image
- * 
- * 
+ *
+ *
  * @return true if success, false if not
  */
-bool hdrImage::fetch( const boost::int64_t frame ) 
+bool hdrImage::fetch( const boost::int64_t frame )
 {
 
     try {
@@ -422,50 +422,50 @@ bool hdrImage::fetch( const boost::int64_t frame )
         int      ys = 1;
 
         if ( flipY )
-	{
+        {
             y = h;
             ylast = 0;
             ys = -1;
-	}
+        }
 
         Pixel* pixels = (Pixel*)_hires->data().get();
         for ( ; y != ylast; y += ys )
-	{
-	    memset( scanline, 0, w*sizeof(COLR) );
+        {
+            memset( scanline, 0, w*sizeof(COLR) );
             read_colors(scanline, w, f);
 
             unsigned x = 0;
             int xs = 1;
             unsigned xlast = w;
             if ( flipX )
-	    {
+            {
                 x = w;
                 xlast = 0;
                 xs = -1;
-	    }
+            }
 
             for ( ; x != xlast; x += xs )
-	    {
+            {
                 Pixel& p = pixels[ y * w + x];
                 colr2color( p, scanline[x] );
-	    }
+            }
 
-	}
+        }
 
         free( scanline );
 
         fclose(f);
 
-    } 
+    }
     catch( const std::exception& e )
     {
-	LOG_ERROR( e.what() );
-	return false;
+        LOG_ERROR( e.what() );
+        return false;
     }
 
 
     return true;
-  }
+}
 
 
 } // namespace mrv

@@ -38,46 +38,46 @@ namespace mrv {
 
 struct Hotkey
 {
-     Hotkey() :
-     ctrl( false ),
-     meta( false ),
-     alt( false ),
-     shift( false ),
-     key(0),
-     text(""),
-     key2(0)
-     {
-     }
+    Hotkey() :
+        ctrl( false ),
+        meta( false ),
+        alt( false ),
+        shift( false ),
+        key(0),
+        text(""),
+        key2(0)
+    {
+    }
 
-     Hotkey( const bool c, const bool m,
-             const bool a, const bool s,
-             const unsigned k, std::string t = "", const unsigned k2=0 ) :
-     ctrl( c ),
-     meta( m ),
-     alt( a ),
-     shift( s ),
-     key( k ),
-     text( t ),
-     key2( k2 )
-     {
-     };
+    Hotkey( const bool c, const bool m,
+            const bool a, const bool s,
+            const unsigned k, std::string t = "", const unsigned k2=0 ) :
+        ctrl( c ),
+        meta( m ),
+        alt( a ),
+        shift( s ),
+        key( k ),
+        text( t ),
+        key2( k2 )
+    {
+    };
 
-     Hotkey( const Hotkey& h ) :
-     ctrl( h.ctrl ),
-     meta( h.meta ),
-     alt( h.alt ),
-     shift( h.shift ),
-     key( h.key ),
-     text( h.text ),
-     key2( h.key2 )
-     {
-     };
+    Hotkey( const Hotkey& h ) :
+        ctrl( h.ctrl ),
+        meta( h.meta ),
+        alt( h.alt ),
+        shift( h.shift ),
+        key( h.key ),
+        text( h.text ),
+        key2( h.key2 )
+    {
+    };
 
     bool match( unsigned rawkey );
 
 
-     unsigned hotkey()
-     {
+    unsigned hotkey()
+    {
         unsigned r = 0;
         if ( ctrl ) r += fltk::CTRL;
         if ( shift ) r += fltk::SHIFT;
@@ -85,16 +85,16 @@ struct Hotkey
         if ( alt ) r += fltk::ALT;
         r += key;
         return r;
-     }
+    }
 
-   public:
-     bool ctrl;
-     bool meta;
-     bool alt;
-     bool shift;
-     unsigned key;
-     std::string text;
-     unsigned key2;
+public:
+    bool ctrl;
+    bool meta;
+    bool alt;
+    bool shift;
+    unsigned key;
+    std::string text;
+    unsigned key2;
 };
 
 extern Hotkey kOpenDirectory;
@@ -230,21 +230,21 @@ extern Hotkey kToggleICS;
 
 struct HotkeyEntry
 {
-     HotkeyEntry( const std::string n,
-                  Hotkey& h ) :
-     name(n),
-     hotkey(h)
-     {
-     };
+    HotkeyEntry( const std::string n,
+                 Hotkey& h ) :
+        name(n),
+        hotkey(h)
+    {
+    };
 
-     std::string name;
-     Hotkey hotkey;
+    std::string name;
+    Hotkey hotkey;
 };
 
 struct TableText
 {
-     int n;
-     const char* text;
+    int n;
+    const char* text;
 };
 
 extern struct TableText table[];

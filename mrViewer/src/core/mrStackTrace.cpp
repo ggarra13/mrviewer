@@ -19,10 +19,10 @@
  * @file   mrStackTrace.cpp
  * @author gga
  * @date   Wed Jul 11 00:23:17 2007
- * 
+ *
  * @brief  Simple stack trace routine
- * 
- * 
+ *
+ *
  */
 
 

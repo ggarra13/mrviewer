@@ -90,169 +90,169 @@ extern fltk::NamedStyle* group_style;
 
 namespace
 {
-  const char* kModule = "prefs";
+const char* kModule = "prefs";
 
 
 
-  /**
-   * This function allows the user to override a preference setting by
-   * using an environment variable.
-   *
-   * @param variable        environment variable to look for
-   * @param defaultValue    default value to use if variable is not set
-   * @param inPrefs         boolean specifying whether the value came from
-   *                        saved preferences or not.  It is used to print
-   *                        a warning if some setting is as of yet undefined.
-   *
-   * @return a float corresponding to the value set in the environment or to
-   *         to the default value.
-   */
-  int environmentSetting( const char* variable,
-                          const int   defaultValue,
-                          const bool  inPrefs )
-  {
+/**
+ * This function allows the user to override a preference setting by
+ * using an environment variable.
+ *
+ * @param variable        environment variable to look for
+ * @param defaultValue    default value to use if variable is not set
+ * @param inPrefs         boolean specifying whether the value came from
+ *                        saved preferences or not.  It is used to print
+ *                        a warning if some setting is as of yet undefined.
+ *
+ * @return a float corresponding to the value set in the environment or to
+ *         to the default value.
+ */
+int environmentSetting( const char* variable,
+                        const int   defaultValue,
+                        const bool  inPrefs )
+{
     int r = defaultValue;
     const char* env = getenv( variable );
     if ( !env )
-      {
-        if ( !inPrefs )
-          {
-            LOG_WARNING("Environment variable \"" << variable << "\" "
-                        "is not set; using default value "
-                        "(" << defaultValue << ").");
-          }
-      }
-    else
-      {
-        int n = sscanf( env, " %d", &r );
-        if (n != 1)
-          {
-            LOG_ERROR( "Cannot parse environment variable \"" << variable
-                       << "\" as an integer value; using "
-                       << defaultValue << " instead." );
-          }
-      }
-    return r;
-  }
-
-
-  /**
-   * This function allows the user to override a preference setting by
-   * using an environment variable.
-   *
-   * @param variable        environment variable to look for
-   * @param defaultValue    default value to use if variable is not set
-   * @param inPrefs         boolean specifying whether the value came from
-   *                        saved preferences or not.  It is used to print
-   *                        a warning if some setting is as of yet undefined.
-   *
-   * @return a float corresponding to the value set in the environment or to
-   *         to the default value.
-   */
-  float environmentSetting( const char* variable,
-                            const float defaultValue,
-                            const bool inPrefs )
-  {
-    float r = defaultValue;
-    const char* env = getenv( variable );
-    if ( !env )
-      {
-        if ( !inPrefs )
-          {
-            LOG_WARNING("Environment variable \"" << variable << "\" "
-                        "is not set; using default value "
-                        "(" << defaultValue << ").");
-          }
-      }
-    else
-      {
-        int n = sscanf( env, " %f", &r );
-        if (n != 1)
-          {
-            LOG_ERROR( "Cannot parse environment variable \"" << variable
-                       << "\" as a float value; using " << defaultValue
-                       << " instead.");
-          }
-      }
-    return r;
-  }
-
-  /**
-   * This function allows the user to override a preference setting by
-   * using an environment variable.
-   *
-   * @param variable        environment variable to look for
-   * @param defaultValue    default value to use if variable is not set
-   * @param inPrefs         boolean specifying whether the value came from
-   *                        saved preferences or not.  It is used to print
-   *                        a warning if some setting is as of yet undefined.
-   *
-   * @return a string corresponding to the value set in the environment or to
-   *         to the default value.
-   */
-  const char* environmentSetting( const char* variable,
-                                  const char* defaultValue,
-                                  const bool inPrefs )
-  {
-
-      const char* env = getenv( variable );
-      if ( !env || strlen(env) == 0 )
-      {
-        env = defaultValue;
-        if ( !inPrefs )
-          {
-            LOG_WARNING("Environment variable \"" << variable << "\" "
-                        "is not set; using default value "
-                        "(\"" << defaultValue << "\").");
-          }
-      }
-    return env;
-  }
-
-
-  Imf::Chromaticities
-  environmentSetting( const char* variable,
-                      const Imf::Chromaticities& defaultValue,
-                      const bool inPrefs )
-  {
-    Imf::Chromaticities tmp = defaultValue;
-
-    if (const char *val = getenv(variable))
     {
-      int n = sscanf( val,
-                      " red %f %f green %f %f blue %f %f white %f %f",
-                      &tmp.red.x, &tmp.red.y,
-                      &tmp.green.x, &tmp.green.y,
-                      &tmp.blue.x, &tmp.blue.y,
-                      &tmp.white.x, &tmp.white.y);
-
-      if (n != 8)
+        if ( !inPrefs )
         {
-          tmp = defaultValue;
-
-          LOG_ERROR("Cannot parse environment variable \"" <<
-                    variable << "\"; Format: "
-                    "\"red X X green X X blue X X white X X\"" );
-          LOG_ERROR("Using default value "
-                    "(chromaticities according to Rec. ITU-R BT.709).");
+            LOG_WARNING("Environment variable \"" << variable << "\" "
+                        "is not set; using default value "
+                        "(" << defaultValue << ").");
         }
     }
     else
     {
-      if ( !inPrefs )
-        LOG_WARNING("Environment variable \"" << variable << "\" is "
-                    "not set; using default value (chromaticities according "
-                    "to Rec. ITU-R BT.709).");
+        int n = sscanf( env, " %d", &r );
+        if (n != 1)
+        {
+            LOG_ERROR( "Cannot parse environment variable \"" << variable
+                       << "\" as an integer value; using "
+                       << defaultValue << " instead." );
+        }
+    }
+    return r;
+}
+
+
+/**
+ * This function allows the user to override a preference setting by
+ * using an environment variable.
+ *
+ * @param variable        environment variable to look for
+ * @param defaultValue    default value to use if variable is not set
+ * @param inPrefs         boolean specifying whether the value came from
+ *                        saved preferences or not.  It is used to print
+ *                        a warning if some setting is as of yet undefined.
+ *
+ * @return a float corresponding to the value set in the environment or to
+ *         to the default value.
+ */
+float environmentSetting( const char* variable,
+                          const float defaultValue,
+                          const bool inPrefs )
+{
+    float r = defaultValue;
+    const char* env = getenv( variable );
+    if ( !env )
+    {
+        if ( !inPrefs )
+        {
+            LOG_WARNING("Environment variable \"" << variable << "\" "
+                        "is not set; using default value "
+                        "(" << defaultValue << ").");
+        }
+    }
+    else
+    {
+        int n = sscanf( env, " %f", &r );
+        if (n != 1)
+        {
+            LOG_ERROR( "Cannot parse environment variable \"" << variable
+                       << "\" as a float value; using " << defaultValue
+                       << " instead.");
+        }
+    }
+    return r;
+}
+
+/**
+ * This function allows the user to override a preference setting by
+ * using an environment variable.
+ *
+ * @param variable        environment variable to look for
+ * @param defaultValue    default value to use if variable is not set
+ * @param inPrefs         boolean specifying whether the value came from
+ *                        saved preferences or not.  It is used to print
+ *                        a warning if some setting is as of yet undefined.
+ *
+ * @return a string corresponding to the value set in the environment or to
+ *         to the default value.
+ */
+const char* environmentSetting( const char* variable,
+                                const char* defaultValue,
+                                const bool inPrefs )
+{
+
+    const char* env = getenv( variable );
+    if ( !env || strlen(env) == 0 )
+    {
+        env = defaultValue;
+        if ( !inPrefs )
+        {
+            LOG_WARNING("Environment variable \"" << variable << "\" "
+                        "is not set; using default value "
+                        "(\"" << defaultValue << "\").");
+        }
+    }
+    return env;
+}
+
+
+Imf::Chromaticities
+environmentSetting( const char* variable,
+                    const Imf::Chromaticities& defaultValue,
+                    const bool inPrefs )
+{
+    Imf::Chromaticities tmp = defaultValue;
+
+    if (const char *val = getenv(variable))
+    {
+        int n = sscanf( val,
+                        " red %f %f green %f %f blue %f %f white %f %f",
+                        &tmp.red.x, &tmp.red.y,
+                        &tmp.green.x, &tmp.green.y,
+                        &tmp.blue.x, &tmp.blue.y,
+                        &tmp.white.x, &tmp.white.y);
+
+        if (n != 8)
+        {
+            tmp = defaultValue;
+
+            LOG_ERROR("Cannot parse environment variable \"" <<
+                      variable << "\"; Format: "
+                      "\"red X X green X X blue X X white X X\"" );
+            LOG_ERROR("Using default value "
+                      "(chromaticities according to Rec. ITU-R BT.709).");
+        }
+    }
+    else
+    {
+        if ( !inPrefs )
+            LOG_WARNING("Environment variable \"" << variable << "\" is "
+                        "not set; using default value (chromaticities according "
+                        "to Rec. ITU-R BT.709).");
     }
     return tmp;
-  }
+}
 
-  Imf::Chromaticities chromaticities(
-                                     const char* variable,
-                                     const Imf::Chromaticities& defaultValue,
-                                     fltk::Preferences& chroma
-                                     )
-  {
+Imf::Chromaticities chromaticities(
+    const char* variable,
+    const Imf::Chromaticities& defaultValue,
+    fltk::Preferences& chroma
+)
+{
     Imf::Chromaticities tmpC;
     bool ok  = chroma.get( "red_x", tmpC.red.x, defaultValue.red.x );
     ok &= chroma.get( "red_y",   tmpC.red.y,    defaultValue.red.y );
@@ -263,7 +263,7 @@ namespace
     ok &= chroma.get( "white_x", tmpC.white.x,  defaultValue.white.x );
     ok &= chroma.get( "white_y", tmpC.white.y,  defaultValue.white.y );
     return environmentSetting( variable, tmpC, ok );
-  }
+}
 }
 
 
@@ -271,38 +271,38 @@ namespace mrv {
 
 fltk::StyleSet*     scheme = NULL;
 fltk::StyleSet*     newscheme = NULL;
-  AboutUI*          ViewerUI::uiAbout = NULL;
-  LogUI*            ViewerUI::uiLog   = NULL;
-  PreferencesUI*    ViewerUI::uiPrefs = NULL;
-  ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
-  HotkeyUI*         ViewerUI::uiHotkey = NULL;
+AboutUI*          ViewerUI::uiAbout = NULL;
+LogUI*            ViewerUI::uiLog   = NULL;
+PreferencesUI*    ViewerUI::uiPrefs = NULL;
+ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
+HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
-  bool                Preferences::use_ocio = false;
-  ViewerUI*           Preferences::uiMain = NULL;
-  bool                Preferences::native_file_chooser;
-  std::string         Preferences::OCIO_Display;
-  std::string         Preferences::OCIO_View;
-  std::string         Preferences::ODT_CTL_transform;
-  std::string         Preferences::ODT_ICC_profile;
-  Imf::Chromaticities Preferences::ODT_CTL_chromaticities;
-  float               Preferences::ODT_CTL_white_luminance = 120.0f;
-  float               Preferences::ODT_CTL_surround_luminance = 12.0f;
+bool                Preferences::use_ocio = false;
+ViewerUI*           Preferences::uiMain = NULL;
+bool                Preferences::native_file_chooser;
+std::string         Preferences::OCIO_Display;
+std::string         Preferences::OCIO_View;
+std::string         Preferences::ODT_CTL_transform;
+std::string         Preferences::ODT_ICC_profile;
+Imf::Chromaticities Preferences::ODT_CTL_chromaticities;
+float               Preferences::ODT_CTL_white_luminance = 120.0f;
+float               Preferences::ODT_CTL_surround_luminance = 12.0f;
 
 mrv::Preferences::MissingFrameType      Preferences::missing_frame;
 
-  std::string         Preferences::video_threads;
+std::string         Preferences::video_threads;
 
-  std::string         Preferences::CTL_8bits_save_transform;
-  std::string         Preferences::CTL_16bits_save_transform;
-  std::string         Preferences::CTL_32bits_save_transform;
-  std::string         Preferences::CTL_float_save_transform;
-  std::string         Preferences::root;
-  std::string         Preferences::tempDir = "/usr/tmp/";
+std::string         Preferences::CTL_8bits_save_transform;
+std::string         Preferences::CTL_16bits_save_transform;
+std::string         Preferences::CTL_32bits_save_transform;
+std::string         Preferences::CTL_float_save_transform;
+std::string         Preferences::root;
+std::string         Preferences::tempDir = "/usr/tmp/";
 
-  int   Preferences::bgcolor;
-  int   Preferences::textcolor;
-  int   Preferences::selectioncolor;
-  int   Preferences::selectiontextcolor;
+int   Preferences::bgcolor;
+int   Preferences::textcolor;
+int   Preferences::selectioncolor;
+int   Preferences::selectiontextcolor;
 
 size_t Preferences::max_memory = 1000000000;
 
@@ -335,8 +335,8 @@ static std::string expandVariables( const std::string &s,
                             END_VARIABLE );
 }
 
-  Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
-  {
+Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
+{
     bool ok;
     int version;
     int tmp;
@@ -346,13 +346,13 @@ static std::string expandVariables( const std::string &s,
 
     const char* r = getenv( "MRV_ROOT" );
     if ( r )
-      {
+    {
         root = r;
         if ( root.empty() )
-          {
+        {
             EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
-          }
-      }
+        }
+    }
 
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
@@ -413,26 +413,26 @@ static std::string expandVariables( const std::string &s,
     // ui/window preferences
     //
     {
-       fltk::Preferences win( ui, "window" );
+        fltk::Preferences win( ui, "window" );
 
-       win.get( "auto_fit_image", tmp, 1 );
-       uiPrefs->uiPrefsAutoFitImage->value( tmp );
+        win.get( "auto_fit_image", tmp, 1 );
+        uiPrefs->uiPrefsAutoFitImage->value( tmp );
 
-       win.get( "always_on_top", tmp, 0 );
-       uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
+        win.get( "always_on_top", tmp, 0 );
+        uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
 
-       win.get( "open_mode", tmp, 0 );
+        win.get( "open_mode", tmp, 0 );
 
-       {
-          fltk::RadioButton* r;
-          for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
-          {
-             r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child( i );
-             r->value(0);
-          }
-          r = (fltk::RadioButton*)uiPrefs->uiPrefsOpenMode->child( tmp );
-          r->value(1);
-       }
+        {
+            fltk::RadioButton* r;
+            for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
+            {
+                r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child( i );
+                r->value(0);
+            }
+            r = (fltk::RadioButton*)uiPrefs->uiPrefsOpenMode->child( tmp );
+            r->value(1);
+        }
 
     }
 
@@ -484,19 +484,19 @@ static std::string expandVariables( const std::string &s,
     // ui/view/colors
     //
     {
-      fltk::Preferences colors( view, "colors" );
+        fltk::Preferences colors( view, "colors" );
 
-      colors.get("background_color", tmp, 0x20202000 );
-      uiPrefs->uiPrefsViewBG->color( tmp );
+        colors.get("background_color", tmp, 0x20202000 );
+        uiPrefs->uiPrefsViewBG->color( tmp );
 
-      colors.get("text_overlay_color", tmp, 0xFFFF0000 );
-      uiPrefs->uiPrefsViewTextOverlay->color( tmp );
+        colors.get("text_overlay_color", tmp, 0xFFFF0000 );
+        uiPrefs->uiPrefsViewTextOverlay->color( tmp );
 
-      colors.get("selection_color", tmp, 0x0000FF00 );
-      uiPrefs->uiPrefsViewSelection->color( tmp );
+        colors.get("selection_color", tmp, 0x0000FF00 );
+        uiPrefs->uiPrefsViewSelection->color( tmp );
 
-      colors.get("hud_color", tmp, 0xF0F08000 );
-      uiPrefs->uiPrefsViewHud->color( tmp );
+        colors.get("hud_color", tmp, 0xF0F08000 );
+        uiPrefs->uiPrefsViewHud->color( tmp );
     }
 
     fltk::Preferences ocio( view, "ocio" );
@@ -531,10 +531,10 @@ static std::string expandVariables( const std::string &s,
                                                      tmpS, ok );	\
         uiPrefs->uiOCIO_##x##_ics->text( tmpS );
 
-          OCIO_ICS( 8bits,  "sRGB" );
-          OCIO_ICS( 16bits, "" );
-          OCIO_ICS( 32bits, "" );
-          OCIO_ICS( float,  "" );
+        OCIO_ICS( 8bits,  "sRGB" );
+        OCIO_ICS( 16bits, "" );
+        OCIO_ICS( 32bits, "" );
+        OCIO_ICS( float,  "" );
 
     }
 
@@ -591,7 +591,7 @@ static std::string expandVariables( const std::string &s,
     fltk::Preferences playback( base, "playback" );
     playback.get( "auto_playback", tmp, 0 );
     uiPrefs->uiPrefsAutoPlayback->value(tmp);
-    
+
     playback.get( "play_all_frames", tmp, 1 );
     uiPrefs->uiPrefsPlayAllFrames->value(tmp);
 
@@ -678,7 +678,7 @@ static std::string expandVariables( const std::string &s,
 
     caches.get( "cache_memory", tmpF, 1.0 );
     uiPrefs->uiPrefsCacheMemory->value( tmpF );
-    
+
     //
     // audio
     //
@@ -691,28 +691,28 @@ static std::string expandVariables( const std::string &s,
 
     const AudioEngine::DeviceList& devices = AudioEngine::devices();
     if ( devices.empty() )
-      {
+    {
         LOG_ERROR("No audio device.");
-      }
+    }
     else
-      {
+    {
         AudioEngine::DeviceList::const_iterator i = devices.begin();
         AudioEngine::DeviceList::const_iterator e = devices.end();
         unsigned idx = 0;
         for ( ; i != e; ++i, ++idx )
-          {
-              if ( (*i).name == device )
-              {
-                  uiPrefs->uiPrefsAudioDevice->value(idx);
-                  break;
-              }
-          }
+        {
+            if ( (*i).name == device )
+            {
+                uiPrefs->uiPrefsAudioDevice->value(idx);
+                break;
+            }
+        }
 
         if ( idx >= devices.size() )
-          {
+        {
             LOG_ERROR("Could not match audio device \"" << device << "\".");
-          }
-      }
+        }
+    }
 
     audio.get( "override_audio", tmp, 0 );
     uiPrefs->uiPrefsOverrideAudio->value( tmp );
@@ -769,14 +769,14 @@ static std::string expandVariables( const std::string &s,
 #endif
 
     if ( !env )
-      {
+    {
         ctlEnv += root;
         ctlEnv += N_("/ctl");
-      }
+    }
     else
-      {
+    {
         ctlEnv += env;
-      }
+    }
 
     putenv( strdup( ctlEnv.c_str() ) );
 
@@ -787,100 +787,101 @@ static std::string expandVariables( const std::string &s,
     uiPrefs->uiLUT_quality->value(3);
     int num = uiPrefs->uiLUT_quality->children();
     for ( int i = 0; i < num; ++i )
-      {
+    {
         const char* label = uiPrefs->uiLUT_quality->child(i)->label();
         if ( strcmp( label, tmpS ) == 0 )
-          {
-            uiPrefs->uiLUT_quality->value(i); break;
-          }
-      }
+        {
+            uiPrefs->uiLUT_quality->value(i);
+            break;
+        }
+    }
 
     lut.get("number_stops", tmp, 10 );
     uiPrefs->uiPrefsNumStops->value( tmp );
 
     {
-      fltk::Preferences odt( lut, "ODT" );
-      {
-        odt.get( "algorithm", tmp, 0 );
-        uiPrefs->ODT_algorithm->value(tmp);
-
-        fltk::Preferences ctl( odt, "CTL" );
+        fltk::Preferences odt( lut, "ODT" );
         {
-          ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
-          ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
-                                                  tmpS, ok );
+            odt.get( "algorithm", tmp, 0 );
+            uiPrefs->ODT_algorithm->value(tmp);
 
-          fltk::Preferences chroma( ctl, "Chromaticities" );
-          ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
-                                                   tmpC, chroma );
+            fltk::Preferences ctl( odt, "CTL" );
+            {
+                ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim", 2048 );
+                ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM",
+                                                        tmpS, ok );
+
+                fltk::Preferences chroma( ctl, "Chromaticities" );
+                ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
+                                         tmpC, chroma );
 
 
-          ok = ctl.get( "white_luminance", tmpF, 120.0 );
-          ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
-                                                        tmpF, ok );
-          ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
-          ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
-                                                        tmpF, ok );
+                ok = ctl.get( "white_luminance", tmpF, 120.0 );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
+                                          tmpF, ok );
+                ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
+                ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
+                                          tmpF, ok );
+            }
+            fltk::Preferences icc( odt, "ICC" );
+            {
+                ok = icc.get( "profile", tmpS, "", 2048 );
+                ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
+                                                      tmpS, ok );
+                if ( !ODT_ICC_profile.empty() )
+                    mrv::colorProfile::add( ODT_ICC_profile.c_str() );
+            }
         }
-        fltk::Preferences icc( odt, "ICC" );
-        {
-          ok = icc.get( "profile", tmpS, "", 2048 );
-          ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE",
-                                                tmpS, ok );
-          if ( !ODT_ICC_profile.empty() )
-            mrv::colorProfile::add( ODT_ICC_profile.c_str() );
-        }
-      }
 
-      //
-      // CTL
-      //
+        //
+        // CTL
+        //
 
 
 #if 0
-      fltk::Preferences idt( lut, "IDT" );
-      {
-        idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
-        uiPrefs->IDT_transform->value(tmpS);
-      }
+        fltk::Preferences idt( lut, "IDT" );
+        {
+            idt.get( "MRV_CTL_IDT_TRANSFORM", tmpS, "" );
+            uiPrefs->IDT_transform->value(tmpS);
+        }
 #endif
 
 
-      fltk::Preferences rt( lut, "RT" );
-      {
-        rt.get( "algorithm", tmp, 0 );
-        uiPrefs->RT_algorithm->value(tmp);
-
-        fltk::Preferences ctl( rt, "CTL" );
+        fltk::Preferences rt( lut, "RT" );
         {
+            rt.get( "algorithm", tmp, 0 );
+            uiPrefs->RT_algorithm->value(tmp);
+
+            fltk::Preferences ctl( rt, "CTL" );
+            {
 #define RENDER_TRANSFORM(x, d)						\
           ok = ctl.get( #x, tmpS, d, 2048 );				\
           CMedia::rendering_transform_##x = environmentSetting( "MRV_CTL_RT_" #x, tmpS, ok )
 
-          RENDER_TRANSFORM( 8bits,  "" );
-          RENDER_TRANSFORM( 16bits, "" );
-          RENDER_TRANSFORM( 32bits, "" );
-          RENDER_TRANSFORM( float,  "RRT" );
+                RENDER_TRANSFORM( 8bits,  "" );
+                RENDER_TRANSFORM( 16bits, "" );
+                RENDER_TRANSFORM( 32bits, "" );
+                RENDER_TRANSFORM( float,  "RRT" );
 #undef RENDER_TRANSFORM
-        }
+            }
 
-        //
-        // ICC
-        //
+            //
+            // ICC
+            //
 
-        fltk::Preferences icc( rt, "ICC" );
-        {
+            fltk::Preferences icc( rt, "ICC" );
+            {
 #define ICC_PROFILE(x, d)						\
           ok = icc.get( #x, tmpS, d, 2048 );				\
           CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok )
 
-          ICC_PROFILE( 8bits,  "" );
-          ICC_PROFILE( 16bits, "" );
-          ICC_PROFILE( 32bits, "" );
-          ICC_PROFILE( float,  "" );
+                ICC_PROFILE( 8bits,  "" );
+                ICC_PROFILE( 16bits, "" );
+                ICC_PROFILE( 32bits, "" );
+                ICC_PROFILE( float,  "" );
 #undef ICC_PROFILE
+            }
         }
-      }
     }
 
 
@@ -917,10 +918,10 @@ static std::string expandVariables( const std::string &s,
     fltk::Preferences saving( base, "saving" );
     saving.get( "use_relative_paths", tmp, 1 );
     uiPrefs->uiPrefsRelativePaths->value( tmp );
-    
+
     saving.get( "use_image_path", tmp, 1 );
     uiPrefs->uiPrefsImagePathReelPath->value( tmp );
-    
+
     fltk::Preferences video( base, "video" );
     video.get( "video_codec", tmp, 0 );
     uiPrefs->uiPrefsVideoCodec->value(tmp);
@@ -964,38 +965,38 @@ static std::string expandVariables( const std::string &s,
         if ( version >= 1 && hotkeys[i].name == "Scrub" )
             continue;
 
-       keys.get( (hotkeys[i].name + " ctrl").c_str(),
-                 tmp, (int)hotkeys[i].hotkey.ctrl );
-       if ( tmp ) hotkeys[i].hotkey.ctrl = true;
-       else       hotkeys[i].hotkey.ctrl = false;
-       keys.get( (hotkeys[i].name + " alt").c_str(),
-                 tmp, (int)hotkeys[i].hotkey.alt );
-       if ( tmp ) hotkeys[i].hotkey.alt = true;
-       else       hotkeys[i].hotkey.alt = false;
+        keys.get( (hotkeys[i].name + " ctrl").c_str(),
+                  tmp, (int)hotkeys[i].hotkey.ctrl );
+        if ( tmp ) hotkeys[i].hotkey.ctrl = true;
+        else       hotkeys[i].hotkey.ctrl = false;
+        keys.get( (hotkeys[i].name + " alt").c_str(),
+                  tmp, (int)hotkeys[i].hotkey.alt );
+        if ( tmp ) hotkeys[i].hotkey.alt = true;
+        else       hotkeys[i].hotkey.alt = false;
 
-       keys.get( (hotkeys[i].name + " meta").c_str(),
-                 tmp, (int)hotkeys[i].hotkey.meta );
-       if ( tmp ) hotkeys[i].hotkey.meta = true;
-       else       hotkeys[i].hotkey.meta = false;
+        keys.get( (hotkeys[i].name + " meta").c_str(),
+                  tmp, (int)hotkeys[i].hotkey.meta );
+        if ( tmp ) hotkeys[i].hotkey.meta = true;
+        else       hotkeys[i].hotkey.meta = false;
 
 
-       keys.get( (hotkeys[i].name + " shift").c_str(),
-                 tmp, (int)hotkeys[i].hotkey.shift );
-       if ( tmp ) hotkeys[i].hotkey.shift = true;
-       else       hotkeys[i].hotkey.shift = false;
+        keys.get( (hotkeys[i].name + " shift").c_str(),
+                  tmp, (int)hotkeys[i].hotkey.shift );
+        if ( tmp ) hotkeys[i].hotkey.shift = true;
+        else       hotkeys[i].hotkey.shift = false;
 
-       keys.get( (hotkeys[i].name + " key").c_str(),
-                 tmp, (int)hotkeys[i].hotkey.key );
-       hotkeys[i].hotkey.key = unsigned(tmp);
+        keys.get( (hotkeys[i].name + " key").c_str(),
+                  tmp, (int)hotkeys[i].hotkey.key );
+        hotkeys[i].hotkey.key = unsigned(tmp);
 
-       keys.get( (hotkeys[i].name + " key2").c_str(),
-                 tmp, (int)hotkeys[i].hotkey.key2 );
-       hotkeys[i].hotkey.key2 = unsigned(tmp);
+        keys.get( (hotkeys[i].name + " key2").c_str(),
+                  tmp, (int)hotkeys[i].hotkey.key2 );
+        hotkeys[i].hotkey.key2 = unsigned(tmp);
 
-       keys.get( (hotkeys[i].name + " text").c_str(),
-                 tmpS,
-                 hotkeys[i].hotkey.text.c_str(), 16 );
-       hotkeys[i].hotkey.text = tmpS;
+        keys.get( (hotkeys[i].name + " text").c_str(),
+                  tmpS,
+                  hotkeys[i].hotkey.text.c_str(), 16 );
+        hotkeys[i].hotkey.text = tmpS;
 
     }
 
@@ -1004,7 +1005,7 @@ static std::string expandVariables( const std::string &s,
     fltk::reset_theme();
     fltk::theme( &Preferences::set_theme );
     fltk::reload_theme();
-  }
+}
 
 #ifdef _WIN32
 static const char* kCLocale = "English";
@@ -1012,9 +1013,9 @@ static const char* kCLocale = "English";
 static const char* kCLocale = "C";
 #endif
 
-  void Preferences::run( mrv::ViewerUI* main )
-  {
-      uiMain = main;
+void Preferences::run( mrv::ViewerUI* main )
+{
+    uiMain = main;
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     DBG("main->uiMain->show");
@@ -1039,7 +1040,7 @@ static const char* kCLocale = "C";
         main->uiEDLWindow->uiMain->show();
     }
     else
-      main->uiEDLWindow->uiMain->hide();
+        main->uiEDLWindow->uiMain->hide();
 
     mrv::PaintUI* uiPaint = main->uiPaint;
     DBG( __FUNCTION__ << " " << __LINE__ );
@@ -1057,7 +1058,7 @@ static const char* kCLocale = "C";
         main->uiStereo->uiMain->show();
     }
     else
-      main->uiStereo->uiMain->hide();
+        main->uiStereo->uiMain->hide();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsReelList->value() )
@@ -1065,53 +1066,53 @@ static const char* kCLocale = "C";
         main->uiReelWindow->uiMain->show();
     }
     else
-      main->uiReelWindow->uiMain->hide();
+        main->uiReelWindow->uiMain->hide();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     mrv::ImageView* v = uiMain->uiView;
     if ( uiPrefs->uiPrefsImageInfo->value() )
-	v->toggle_window( ImageView::kMediaInfo,
-			  uiPrefs->uiPrefsImageInfo->value() );
-    
+        v->toggle_window( ImageView::kMediaInfo,
+                          uiPrefs->uiPrefsImageInfo->value() );
+
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsColorArea->value() )
-	v->toggle_window( ImageView::kColorInfo,
-			  uiPrefs->uiPrefsColorArea->value() );
+        v->toggle_window( ImageView::kColorInfo,
+                          uiPrefs->uiPrefsColorArea->value() );
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsHistogram->value() )
-	v->toggle_window( ImageView::kHistogram,
-			  uiPrefs->uiPrefsHistogram->value() );
+        v->toggle_window( ImageView::kHistogram,
+                          uiPrefs->uiPrefsHistogram->value() );
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsVectorscope->value() )
-	v->toggle_window( ImageView::kVectorscope,
-			  uiPrefs->uiPrefsVectorscope->value() );
+        v->toggle_window( ImageView::kVectorscope,
+                          uiPrefs->uiPrefsVectorscope->value() );
 
     if ( uiPrefs->uiPrefsWaveform->value() )
-	v->toggle_window( ImageView::kWaveform,
-			  uiPrefs->uiPrefsWaveform->value() );
-    
+        v->toggle_window( ImageView::kWaveform,
+                          uiPrefs->uiPrefsWaveform->value() );
+
     //
     // Toolbars
     //
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsTopbar->value() )
-      main->uiTopBar->show();
+        main->uiTopBar->show();
     else
-      main->uiTopBar->hide();
+        main->uiTopBar->hide();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsPixelToolbar->value() )
-      main->uiPixelBar->show();
+        main->uiPixelBar->show();
     else
-      main->uiPixelBar->hide();
+        main->uiPixelBar->hide();
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsTimeline->value() )
-      main->uiBottomBar->show();
+        main->uiBottomBar->show();
     else
-      main->uiBottomBar->hide();
+        main->uiBottomBar->hide();
 
 
     //
@@ -1131,7 +1132,7 @@ static const char* kCLocale = "C";
     DBG( __FUNCTION__ << " " << __LINE__ );
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
-       view->toggle_pixel_ratio();
+        view->toggle_pixel_ratio();
 
 
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
@@ -1160,9 +1161,9 @@ static const char* kCLocale = "C";
     }
 
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiPrefsSafeAreas->value() )
-      view->safe_areas(true);
+        view->safe_areas(true);
 
     missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
 
@@ -1251,7 +1252,7 @@ static const char* kCLocale = "C";
             {
                 std::string display = config->getDisplay(j);
                 fltk::Group* g = (fltk::Group*)main->gammaDefaults->add_group(
-                    display.c_str() );
+                                     display.c_str() );
 
                 std::vector< std::string > views;
                 int numViews = config->getNumViews(display.c_str());
@@ -1385,10 +1386,10 @@ static const char* kCLocale = "C";
     // Handle file requester
     //
     Flu_File_Chooser::thumbnailsFileReq = (bool)
-    uiPrefs->uiPrefsFileReqThumbnails->value();
+                                          uiPrefs->uiPrefsFileReqThumbnails->value();
 
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
-    uiPrefs->uiPrefsFileReqFolder->value();
+            uiPrefs->uiPrefsFileReqFolder->value();
 
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
@@ -1415,13 +1416,13 @@ static const char* kCLocale = "C";
     }
 
     Preferences::max_memory = ( uiPrefs->uiPrefsCacheMemory->value() *
-				1000000000 );
-    
+                                1000000000 );
+
     DBG( __FUNCTION__ << " " << __LINE__ );
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
-         CMedia::cache_scale() != scale )
+            CMedia::cache_scale() != scale )
     {
         view->clear_caches();
     }
@@ -1456,12 +1457,12 @@ static const char* kCLocale = "C";
     DBG( __FUNCTION__ << " " << __LINE__ );
     int crop = uiPrefs->uiPrefsCropArea->value();
     if ( crop > 0 )
-      {
+    {
         float mask = 1.0f;
         const char* fmt = uiPrefs->uiPrefsCropArea->child(crop)->label();
         sscanf( fmt, "%f", &mask );
         view->masking( mask );
-      }
+    }
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     //
@@ -1469,31 +1470,31 @@ static const char* kCLocale = "C";
     //
     unsigned int hud = mrv::ImageView::kHudNone;
     if ( uiPrefs->uiPrefsHudFilename->value() )
-      hud |= mrv::ImageView::kHudFilename;
+        hud |= mrv::ImageView::kHudFilename;
 
     if ( uiPrefs->uiPrefsHudFPS->value() )
-      hud |= mrv::ImageView::kHudFPS;
+        hud |= mrv::ImageView::kHudFPS;
 
     if ( uiPrefs->uiPrefsHudAVDifference->value() )
-      hud |= mrv::ImageView::kHudAVDifference;
+        hud |= mrv::ImageView::kHudAVDifference;
 
     if ( uiPrefs->uiPrefsHudTimecode->value() )
-      hud |= mrv::ImageView::kHudTimecode;
+        hud |= mrv::ImageView::kHudTimecode;
 
     if ( uiPrefs->uiPrefsHudFrame->value() )
-      hud |= mrv::ImageView::kHudFrame;
+        hud |= mrv::ImageView::kHudFrame;
 
     if ( uiPrefs->uiPrefsHudResolution->value() )
-      hud |= mrv::ImageView::kHudResolution;
+        hud |= mrv::ImageView::kHudResolution;
 
     if ( uiPrefs->uiPrefsHudFrameRange->value() )
-      hud |= mrv::ImageView::kHudFrameRange;
+        hud |= mrv::ImageView::kHudFrameRange;
 
     if ( uiPrefs->uiPrefsHudMemory->value() )
-      hud |= mrv::ImageView::kHudMemoryUse;
+        hud |= mrv::ImageView::kHudMemoryUse;
 
     if ( uiPrefs->uiPrefsHudAttributes->value() )
-      hud |= mrv::ImageView::kHudAttributes;
+        hud |= mrv::ImageView::kHudAttributes;
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     view->hud( (mrv::ImageView::HudDisplay) hud );
@@ -1505,8 +1506,8 @@ static const char* kCLocale = "C";
     change_timeline_display(main);
 
     double mn, mx,
-    dmn = main->uiTimeline->display_minimum(),
-    dmx = main->uiTimeline->display_maximum();
+           dmn = main->uiTimeline->display_minimum(),
+           dmx = main->uiTimeline->display_maximum();
 
     if ( !main->uiTimeline->edl() )
     {
@@ -1563,16 +1564,16 @@ static const char* kCLocale = "C";
     //
     if ( uiPrefs->uiWindowFixedPosition->value() )
     {
-       int x = int(uiPrefs->uiWindowXPosition->value());
-       int y = int(uiPrefs->uiWindowYPosition->value());
-       main->uiMain->position( x, y );
+        int x = int(uiPrefs->uiWindowXPosition->value());
+        int y = int(uiPrefs->uiWindowYPosition->value());
+        main->uiMain->position( x, y );
     }
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( uiPrefs->uiWindowFixedSize->value() )
     {
-       int x = int(uiPrefs->uiWindowXSize->value());
-       int y = int(uiPrefs->uiWindowYSize->value());
-       main->uiMain->resize( x, y );
+        int x = int(uiPrefs->uiWindowXSize->value());
+        int y = int(uiPrefs->uiWindowYSize->value());
+        main->uiMain->resize( x, y );
     }
 
     //
@@ -1591,19 +1592,19 @@ static const char* kCLocale = "C";
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(1);
 
     if ( r->value() == 1 )
-      {
+    {
         // Fullscreen mode
         view->toggle_fullscreen();
-      }
+    }
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(2);
 
     if ( r->value() == 1 )
-      {
+    {
         // Go to presentation mode - window must be shown first, thou.
         view->toggle_presentation();
-      }
+    }
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     GLLut3d::NUM_STOPS = (unsigned) uiPrefs->uiPrefsNumStops->value();
@@ -1649,13 +1650,13 @@ static const char* kCLocale = "C";
 
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
-      main->uiMain->always_on_top();
+        main->uiMain->always_on_top();
     DBG( __FUNCTION__ << " " << __LINE__ );
-  }
+}
 
 
-  void Preferences::save()
-  {
+void Preferences::save()
+{
     int i;
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
 
@@ -1671,17 +1672,18 @@ static const char* kCLocale = "C";
     // window options
     //
     {
-       fltk::Preferences win( ui, "window" );
-       win.set( "auto_fit_image", (int) uiPrefs->uiPrefsAutoFitImage->value() );
-       win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
-       int tmp = 0;
-       for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
-          fltk::RadioButton* r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(i);
-          if ( r->value() ) {
-             tmp = i; break;
-          }
-       }
-       win.set( "open_mode", tmp );
+        fltk::Preferences win( ui, "window" );
+        win.set( "auto_fit_image", (int) uiPrefs->uiPrefsAutoFitImage->value() );
+        win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
+        int tmp = 0;
+        for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
+            fltk::RadioButton* r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(i);
+            if ( r->value() ) {
+                tmp = i;
+                break;
+            }
+        }
+        win.set( "open_mode", tmp );
     }
 
     //
@@ -1723,15 +1725,15 @@ static const char* kCLocale = "C";
     // view/colors prefs
     //
     {
-       fltk::Preferences colors( view, "colors" );
-       int tmp = uiPrefs->uiPrefsViewBG->color();
-       colors.set("background_color", tmp );
-       tmp = uiPrefs->uiPrefsViewTextOverlay->color();
-       colors.set("text_overlay_color", tmp );
-       tmp = uiPrefs->uiPrefsViewSelection->color();
-       colors.set("selection_color", tmp );
-       tmp = uiPrefs->uiPrefsViewHud->color();
-       colors.set("hud_color", tmp );
+        fltk::Preferences colors( view, "colors" );
+        int tmp = uiPrefs->uiPrefsViewBG->color();
+        colors.set("background_color", tmp );
+        tmp = uiPrefs->uiPrefsViewTextOverlay->color();
+        colors.set("text_overlay_color", tmp );
+        tmp = uiPrefs->uiPrefsViewSelection->color();
+        colors.set("selection_color", tmp );
+        tmp = uiPrefs->uiPrefsViewHud->color();
+        colors.set("hud_color", tmp );
     }
 
     {
@@ -1748,10 +1750,10 @@ static const char* kCLocale = "C";
 
         fltk::Preferences ics( ocio, "ICS" );
         {
-          ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->text() );
-          ics.set( "16bits", uiPrefs->uiOCIO_16bits_ics->text() );
-          ics.set( "32bits", uiPrefs->uiOCIO_32bits_ics->text() );
-          ics.set( "float",  uiPrefs->uiOCIO_float_ics->text() );
+            ics.set( "8bits",  uiPrefs->uiOCIO_8bits_ics->text() );
+            ics.set( "16bits", uiPrefs->uiOCIO_16bits_ics->text() );
+            ics.set( "32bits", uiPrefs->uiOCIO_32bits_ics->text() );
+            ics.set( "float",  uiPrefs->uiOCIO_float_ics->text() );
         }
 
     }
@@ -1772,13 +1774,13 @@ static const char* kCLocale = "C";
     hud.set("attributes", uiPrefs->uiPrefsHudAttributes->value() );
 
     {
-       fltk::Preferences win( view, "window" );
-       win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
-       win.set("x_position", uiPrefs->uiWindowXPosition->value() );
-       win.set("y_position", uiPrefs->uiWindowYPosition->value() );
-       win.set("fixed_size", uiPrefs->uiWindowFixedSize->value() );
-       win.set("x_size", uiPrefs->uiWindowXSize->value() );
-       win.set("y_size", uiPrefs->uiWindowYSize->value() );
+        fltk::Preferences win( view, "window" );
+        win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
+        win.set("x_position", uiPrefs->uiWindowXPosition->value() );
+        win.set("y_position", uiPrefs->uiWindowYPosition->value() );
+        win.set("fixed_size", uiPrefs->uiWindowFixedSize->value() );
+        win.set("x_size", uiPrefs->uiWindowXSize->value() );
+        win.set("y_size", uiPrefs->uiWindowYSize->value() );
     }
 
     //
@@ -1799,9 +1801,9 @@ static const char* kCLocale = "C";
     flu.set("thumbnails", uiPrefs->uiPrefsFileReqThumbnails->value());
 
     Flu_File_Chooser::singleButtonTravelDrawer =
-    uiPrefs->uiPrefsFileReqFolder->value();
+        uiPrefs->uiPrefsFileReqFolder->value();
     Flu_File_Chooser::thumbnailsFileReq =
-    uiPrefs->uiPrefsFileReqThumbnails->value();
+        uiPrefs->uiPrefsFileReqThumbnails->value();
 
     //
     // playback prefs
@@ -1809,7 +1811,7 @@ static const char* kCLocale = "C";
     fltk::Preferences playback( base, "playback" );
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
     playback.set( "play_all_frames",
-		  (int) uiPrefs->uiPrefsPlayAllFrames->value() );
+                  (int) uiPrefs->uiPrefsPlayAllFrames->value() );
     playback.set( "override_fps", uiPrefs->uiPrefsOverrideFPS->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
@@ -1860,10 +1862,10 @@ static const char* kCLocale = "C";
 
     fltk::Preferences saving( base, "saving" );
     saving.set( "use_relative_paths", (int)
-		uiPrefs->uiPrefsRelativePaths->value() );
-    
+                uiPrefs->uiPrefsRelativePaths->value() );
+
     saving.set( "use_image_path", (int)
-		uiPrefs->uiPrefsImagePathReelPath->value() );
+                uiPrefs->uiPrefsImagePathReelPath->value() );
 
     fltk::Preferences video( base, "video" );
     video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
@@ -1883,14 +1885,14 @@ static const char* kCLocale = "C";
     const AudioEngine::DeviceList& devices = AudioEngine::devices();
 
     if ( idx >= devices.size() )
-      {
+    {
         LOG_ERROR( "Invalid device selected" );
         audio.set( "device", "default" );
-      }
+    }
     else
-      {
+    {
         audio.set( "device", devices[idx].name.c_str() );
-      }
+    }
 
 
     audio.set( "override_audio", uiPrefs->uiPrefsOverrideAudio->value() );
@@ -1903,69 +1905,69 @@ static const char* kCLocale = "C";
     fltk::Preferences lut( base, "lut" );
     i = uiPrefs->uiLUT_quality->value();
     if ( i >= 0 && i < uiPrefs->uiLUT_quality->children() )
-      {
+    {
         lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
-      }
+    }
 
     lut.set( "number_stops", uiPrefs->uiPrefsNumStops->value() );
 
     {
-      fltk::Preferences odt( lut, "ODT" );
-      {
-        odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
-        fltk::Preferences ctl( odt, "CTL" );
+        fltk::Preferences odt( lut, "ODT" );
         {
-          ctl.set( "transform", uiPrefs->uiODT_CTL_transform->text() );
+            odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
+            fltk::Preferences ctl( odt, "CTL" );
+            {
+                ctl.set( "transform", uiPrefs->uiODT_CTL_transform->text() );
 
-          fltk::Preferences chroma( ctl, "Chromaticities" );
-          chroma.set( "red_x",
-                      uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
-          chroma.set( "red_y",
-                      uiPrefs->uiODT_CTL_chromaticities_red_y->value() );
-          chroma.set( "green_x",
-                      uiPrefs->uiODT_CTL_chromaticities_green_x->value() );
-          chroma.set( "green_y",
-                      uiPrefs->uiODT_CTL_chromaticities_green_y->value() );
-          chroma.set( "blue_x",
-                      uiPrefs->uiODT_CTL_chromaticities_blue_x->value()  );
-          chroma.set( "blue_y",
-                      uiPrefs->uiODT_CTL_chromaticities_blue_y->value()  );
-          chroma.set( "white_x",
-                      uiPrefs->uiODT_CTL_chromaticities_white_x->value() );
-          chroma.set( "white_y",
-                      uiPrefs->uiODT_CTL_chromaticities_white_y->value() );
+                fltk::Preferences chroma( ctl, "Chromaticities" );
+                chroma.set( "red_x",
+                            uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
+                chroma.set( "red_y",
+                            uiPrefs->uiODT_CTL_chromaticities_red_y->value() );
+                chroma.set( "green_x",
+                            uiPrefs->uiODT_CTL_chromaticities_green_x->value() );
+                chroma.set( "green_y",
+                            uiPrefs->uiODT_CTL_chromaticities_green_y->value() );
+                chroma.set( "blue_x",
+                            uiPrefs->uiODT_CTL_chromaticities_blue_x->value()  );
+                chroma.set( "blue_y",
+                            uiPrefs->uiODT_CTL_chromaticities_blue_y->value()  );
+                chroma.set( "white_x",
+                            uiPrefs->uiODT_CTL_chromaticities_white_x->value() );
+                chroma.set( "white_y",
+                            uiPrefs->uiODT_CTL_chromaticities_white_y->value() );
 
-          ctl.set( "white_luminance",
-                   uiPrefs->uiODT_CTL_white_luminance->value() );
-          ctl.set( "surround_luminance",
-                   uiPrefs->uiODT_CTL_surround_luminance->value() );
-        }
-        fltk::Preferences icc( odt, "ICC" );
-        {
-          icc.set( "profile",   uiPrefs->uiODT_ICC_profile->text() );
-        }
-      }
-
-      fltk::Preferences  rt( lut, "RT" );
-      {
-        rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
-
-        fltk::Preferences ctl( rt, "CTL" );
-        {
-          ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->text() );
-          ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->text() );
-          ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->text() );
-          ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->text() );
+                ctl.set( "white_luminance",
+                         uiPrefs->uiODT_CTL_white_luminance->value() );
+                ctl.set( "surround_luminance",
+                         uiPrefs->uiODT_CTL_surround_luminance->value() );
+            }
+            fltk::Preferences icc( odt, "ICC" );
+            {
+                icc.set( "profile",   uiPrefs->uiODT_ICC_profile->text() );
+            }
         }
 
-        fltk::Preferences icc( rt, "ICC" );
+        fltk::Preferences  rt( lut, "RT" );
         {
-          icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->text() );
-          icc.set( "16bits", uiPrefs->uiICC_16bits_profile->text() );
-          icc.set( "32bits", uiPrefs->uiICC_32bits_profile->text() );
-          icc.set( "float",  uiPrefs->uiICC_float_profile->text() );
+            rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
+
+            fltk::Preferences ctl( rt, "CTL" );
+            {
+                ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->text() );
+                ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->text() );
+                ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->text() );
+                ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->text() );
+            }
+
+            fltk::Preferences icc( rt, "ICC" );
+            {
+                icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->text() );
+                icc.set( "16bits", uiPrefs->uiICC_16bits_profile->text() );
+                icc.set( "32bits", uiPrefs->uiICC_32bits_profile->text() );
+                icc.set( "float",  uiPrefs->uiICC_float_profile->text() );
+            }
         }
-      }
 
     }
 
@@ -2006,31 +2008,31 @@ static const char* kCLocale = "C";
     fltk::Preferences keys( base, "hotkeys" );
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
-       keys.set( (hotkeys[i].name + " ctrl").c_str(),
-                 hotkeys[i].hotkey.ctrl );
-       keys.set( (hotkeys[i].name + " alt").c_str(),
-                 hotkeys[i].hotkey.alt );
-       keys.set( (hotkeys[i].name + " meta").c_str(),
-                 hotkeys[i].hotkey.meta );
-       keys.set( (hotkeys[i].name + " shift").c_str(),
-                 hotkeys[i].hotkey.shift );
-       keys.set( (hotkeys[i].name + " key").c_str(),
-                 (int)hotkeys[i].hotkey.key );
-       keys.set( (hotkeys[i].name + " key2").c_str(),
-                 (int)hotkeys[i].hotkey.key2 );
-       keys.set( (hotkeys[i].name + " text").c_str(),
-                 hotkeys[i].hotkey.text.c_str() );
+        keys.set( (hotkeys[i].name + " ctrl").c_str(),
+                  hotkeys[i].hotkey.ctrl );
+        keys.set( (hotkeys[i].name + " alt").c_str(),
+                  hotkeys[i].hotkey.alt );
+        keys.set( (hotkeys[i].name + " meta").c_str(),
+                  hotkeys[i].hotkey.meta );
+        keys.set( (hotkeys[i].name + " shift").c_str(),
+                  hotkeys[i].hotkey.shift );
+        keys.set( (hotkeys[i].name + " key").c_str(),
+                  (int)hotkeys[i].hotkey.key );
+        keys.set( (hotkeys[i].name + " key2").c_str(),
+                  (int)hotkeys[i].hotkey.key2 );
+        keys.set( (hotkeys[i].name + " text").c_str(),
+                  hotkeys[i].hotkey.text.c_str() );
 
     }
 
-  }
+}
 
 
-  bool Preferences::set_theme()
-  {
-      if ( !newscheme ) {
-          newscheme = new fltk::StyleSet();
-      }
+bool Preferences::set_theme()
+{
+    if ( !newscheme ) {
+        newscheme = new fltk::StyleSet();
+    }
 
 
     // this is ugly and fucks up all gray75 colors
@@ -2041,7 +2043,7 @@ static const char* kCLocale = "C";
 
     style = fltk::Style::find( "Browser" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2049,7 +2051,7 @@ static const char* kCLocale = "C";
         style->labelcolor( textcolor );
         style->selection_color( selectioncolor );
         style->selection_textcolor( selectiontextcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set Browser style") );
@@ -2059,15 +2061,15 @@ static const char* kCLocale = "C";
     // this has default_style
     style = fltk::Style::find( "ValueInput" );
     if ( style )
-      {
-          style->color( 0x98a8a800 );
-          // style->color( textcolor );
-          style->textcolor( fltk::BLACK );
-          style->selection_color( selectioncolor );
-          style->selection_textcolor( selectiontextcolor );
-         // style->buttoncolor( selectioncolor );
-          style->labelcolor( textcolor );
-      }
+    {
+        style->color( 0x98a8a800 );
+        // style->color( textcolor );
+        style->textcolor( fltk::BLACK );
+        style->selection_color( selectioncolor );
+        style->selection_textcolor( selectiontextcolor );
+        // style->buttoncolor( selectioncolor );
+        style->labelcolor( textcolor );
+    }
     else
     {
         LOG_ERROR( _("Could not set ValueInput style") );
@@ -2076,7 +2078,7 @@ static const char* kCLocale = "C";
     // this has default_style
     style = fltk::Style::find( "InputBrowser" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->selection_color( selectioncolor );
@@ -2084,7 +2086,7 @@ static const char* kCLocale = "C";
         style->buttoncolor( bgcolor );
         style->labelsize( 12 );
         style->labelcolor( textcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set InputBrowser style") );
@@ -2093,7 +2095,7 @@ static const char* kCLocale = "C";
     // this has default_style
     style = fltk::Style::find( "Item" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->selection_color( selectioncolor );
@@ -2101,7 +2103,7 @@ static const char* kCLocale = "C";
         style->buttoncolor( bgcolor );
         style->labelsize( 12 );
         style->labelcolor( textcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set Item style") );
@@ -2111,14 +2113,14 @@ static const char* kCLocale = "C";
     // style = fltk::Style::find( "Group" );
     style = group_style;
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
         style->textsize( 12 );
         style->labelsize( 12 );
         style->labelcolor( textcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set Group style") );
@@ -2145,7 +2147,7 @@ static const char* kCLocale = "C";
 
     style = fltk::Style::find( "Message" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2154,7 +2156,7 @@ static const char* kCLocale = "C";
         style->labelcolor( textcolor );
         style->selection_color( selectioncolor );
         style->selection_textcolor( selectiontextcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set Message style") );
@@ -2164,10 +2166,10 @@ static const char* kCLocale = "C";
     // style = fltk::Style::find( "InvisibleBox" );
     style = fltk::InvisibleBox::default_style;
     if ( style )
-      {
+    {
         style->labelsize( 12 );
         style->labelcolor( textcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set InvisibleBox style") );
@@ -2176,7 +2178,7 @@ static const char* kCLocale = "C";
     // this has default_styl
     style = fltk::Style::find( "Button" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2185,7 +2187,7 @@ static const char* kCLocale = "C";
         style->labelcolor( textcolor );
         style->selection_color( selectioncolor );
         style->selection_textcolor( selectiontextcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set Button style") );
@@ -2196,7 +2198,7 @@ static const char* kCLocale = "C";
 
     style = fltk::Style::find( "CheckButton" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( fltk::YELLOW );
         style->buttoncolor( bgcolor );
@@ -2207,7 +2209,7 @@ static const char* kCLocale = "C";
         style->labelcolor( textcolor );
         style->selection_color( selectioncolor );
         style->selection_textcolor( fltk::YELLOW   );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set CheckButton style") );
@@ -2215,16 +2217,16 @@ static const char* kCLocale = "C";
 
     style = fltk::Style::find( "RadioButton" );
     if ( style )
-      {
-          style->color( fltk::GRAY20 );
-          style->textcolor( fltk::YELLOW );
-          style->buttoncolor( bgcolor );
-          style->textsize( 12 );
-          style->labelsize( 12 );
-          style->labelcolor( textcolor );
-          style->selection_color( fltk::YELLOW );
-          style->selection_textcolor( fltk::YELLOW );
-      }
+    {
+        style->color( fltk::GRAY20 );
+        style->textcolor( fltk::YELLOW );
+        style->buttoncolor( bgcolor );
+        style->textsize( 12 );
+        style->labelsize( 12 );
+        style->labelcolor( textcolor );
+        style->selection_color( fltk::YELLOW );
+        style->selection_textcolor( fltk::YELLOW );
+    }
     else
     {
         LOG_ERROR( _("Could not set RadioButton style") );
@@ -2234,14 +2236,14 @@ static const char* kCLocale = "C";
     // this has default_style
     style = fltk::Style::find("Tooltip");
     if ( style )
-      {
+    {
         //       style->color( fltk::YELLOW );
         style->textcolor( fltk::BLACK );
         //       style->buttoncolor( bgcolor );
         //       style->textsize( 10 );
         //       style->labelsize( 10 );
         //       style->labelcolor( textcolor );
-      }
+    }
     else
     {
         LOG_ERROR( _("Could not set Tooltip style") );
@@ -2272,7 +2274,7 @@ static const char* kCLocale = "C";
     // this has default_style
     style = fltk::Style::find( "PopupMenu" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2282,12 +2284,12 @@ static const char* kCLocale = "C";
         style->selection_color( selectioncolor );
         style->selection_textcolor( selectiontextcolor );
         style->highlight_color( selectioncolor );
-      }
+    }
 
     // this has default_style (not used)
     style = fltk::Style::find( "Input" );
     if ( style )
-      {
+    {
 //      style->color( mrv::lighter( bgcolor, 0x20 ) );
         style->color( bgcolor );
         style->textcolor( textcolor );
@@ -2296,11 +2298,11 @@ static const char* kCLocale = "C";
         style->selection_textcolor( selectiontextcolor );
         style->textsize( 10 );
         style->labelsize( 10 );
-      }
+    }
 
     style = fltk::Style::find( "Output" );
     if ( style )
-      {
+    {
 //      style->color( mrv::lighter( bgcolor, 0x20 ) );
         style->color( bgcolor );
         style->textcolor( textcolor );
@@ -2309,12 +2311,12 @@ static const char* kCLocale = "C";
         style->selection_textcolor( selectiontextcolor );
         style->textsize( 10 );
         style->labelsize( 10 );
-      }
+    }
 
     // this has default_style
     style = fltk::Style::find( "Window" );
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2322,22 +2324,22 @@ static const char* kCLocale = "C";
         style->selection_textcolor( selectiontextcolor );
         style->labelsize( 10 );
         style->labelcolor( textcolor );
-      }
+    }
 
     // this has default_style
     style = fltk::Style::find( "Scrollbar" );
     if ( style )
-      {
+    {
         style->color( mrv::darker( bgcolor, 0x20 ) );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
         style->labelsize( 10 );
         style->labelcolor( textcolor );
-      }
+    }
 
     style = fltk::Style::find( "ProgressBar" );
     if ( style )
-      {
+    {
         style->selection_color( bgcolor );
         style->selection_textcolor( selectiontextcolor );
         style->color( bgcolor  );
@@ -2346,12 +2348,12 @@ static const char* kCLocale = "C";
         style->buttoncolor( bgcolor );
 
         style->labelsize( 10 );
-      }
+    }
 
     // this has default_style
     style = fltk::Style::find( "Slider" );
     if ( style )
-      {
+    {
         style->color( mrv::lighter( bgcolor ) );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2359,12 +2361,12 @@ static const char* kCLocale = "C";
         style->labelsize( 10 );
         style->labelcolor( textcolor );
         style->highlight_textcolor( 0xFFFF0000 );
-      }
+    }
 
     // this has default_style
     style = fltk::Widget::default_style;
     if ( style )
-      {
+    {
         style->color( bgcolor );
         style->textcolor( textcolor );
         style->buttoncolor( bgcolor );
@@ -2373,11 +2375,11 @@ static const char* kCLocale = "C";
         style->labelcolor( textcolor );
         style->selection_color( selectioncolor );
         style->selection_textcolor( selectiontextcolor );
-      }
+    }
     else
-      {
+    {
         LOG_ERROR( "fltk's widget style not found" );
-      }
+    }
 
     // Set ui window settings
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
@@ -2409,13 +2411,14 @@ static const char* kCLocale = "C";
     //fltk::reload_theme();
 
     return true;
-  }
+}
 
 
-  Preferences::~Preferences()
-  {
-      delete newscheme; newscheme = NULL;
-  }
+Preferences::~Preferences()
+{
+    delete newscheme;
+    newscheme = NULL;
+}
 
 
 

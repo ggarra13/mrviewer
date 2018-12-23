@@ -38,52 +38,52 @@ class ImageView;
 
 class Point
 {
-   public:
-     Point() :
-     x( 0 ), y( 0 )
-     {
-     }
+public:
+    Point() :
+        x( 0 ), y( 0 )
+    {
+    }
 
-     Point( double xx, double yy ) :
-     x( xx ), y( yy )
-     {
-     }
+    Point( double xx, double yy ) :
+        x( xx ), y( yy )
+    {
+    }
 
-     Point( const Point& b ) :
-     x( b.x ), y( b.y )
-     {
-     }
+    Point( const Point& b ) :
+        x( b.x ), y( b.y )
+    {
+    }
 
-     double x, y;
+    double x, y;
 };
 
 inline std::ostream& operator<<( std::ostream& o, const Point& p )
 {
-   return o << p.x << "," << p.y;
+    return o << p.x << "," << p.y;
 }
 
 class GLShape
 {
-   public:
-     GLShape() : r(0.0), g(1.0), b(0.0), a(1.0), pen_size(5),
-		 previous( 5 ), next( 5 ),
-		 frame( MRV_NOPTS_VALUE )
-     {
-     };
+public:
+    GLShape() : r(0.0), g(1.0), b(0.0), a(1.0), pen_size(5),
+        previous( 5 ), next( 5 ),
+        frame( MRV_NOPTS_VALUE )
+    {
+    };
 
-     ~GLShape() {};
+    ~GLShape() {};
 
-     virtual std::string send() const = 0;
-     virtual void draw( double z ) = 0;
+    virtual std::string send() const = 0;
+    virtual void draw( double z ) = 0;
 
-     void color( float ri, float gi, float bi, float ai = 1.0 ) {
-	r = ri;
-	g = gi;
-	b = bi;
-	a = ai;
-     }
+    void color( float ri, float gi, float bi, float ai = 1.0 ) {
+        r = ri;
+        g = gi;
+        b = bi;
+        a = ai;
+    }
 
-  public:
+public:
     float r, g, b, a;
     float pen_size;
     short previous, next;
@@ -92,54 +92,69 @@ class GLShape
 
 class GLPathShape : public GLShape
 {
-   public:
+public:
 
-     GLPathShape() : GLShape()  {};
-     ~GLPathShape() {};
-     virtual void draw( double z );
-     virtual std::string send() const;
+    GLPathShape() : GLShape()  {};
+    ~GLPathShape() {};
+    virtual void draw( double z );
+    virtual std::string send() const;
 
-     typedef std::vector< Point > PointList;
-     PointList pts;
+    typedef std::vector< Point > PointList;
+    PointList pts;
 };
 
 class GLErasePathShape : public GLPathShape
 {
-   public:
+public:
 
-     GLErasePathShape() : GLPathShape()  {};
-     ~GLErasePathShape() {};
-     virtual void draw( double z );
-     virtual std::string send() const;
+    GLErasePathShape() : GLPathShape()  {};
+    ~GLErasePathShape() {};
+    virtual void draw( double z );
+    virtual std::string send() const;
 };
 
 class GLTextShape : public GLPathShape
 {
-   public:
-     GLTextShape() : _font(NULL), _zoom(0), _fontsize(8), _charset(0), 
-                     GLPathShape() {};
-     ~GLTextShape();
+public:
+    GLTextShape() : _font(NULL), _zoom(0), _fontsize(8), _charset(0),
+        GLPathShape() {};
+    ~GLTextShape();
 
-     void position( int x, int y ) { pts[0].x = x; pts[0].y = y; }
+    void position( int x, int y ) {
+        pts[0].x = x;
+        pts[0].y = y;
+    }
 
-    inline void text( std::string t ) { _text = t; }
-    inline std::string text() const   { return _text; }
+    inline void text( std::string t ) {
+        _text = t;
+    }
+    inline std::string text() const   {
+        return _text;
+    }
 
-    inline void font( fltk::Font* f ) { _font = f; }
-    inline fltk::Font* font() const   { return _font; }
+    inline void font( fltk::Font* f ) {
+        _font = f;
+    }
+    inline fltk::Font* font() const   {
+        return _font;
+    }
 
-    inline void size( unsigned f ) { _fontsize = f; }
-    inline unsigned size() const   { return _fontsize; }
+    inline void size( unsigned f ) {
+        _fontsize = f;
+    }
+    inline unsigned size() const   {
+        return _fontsize;
+    }
 
-     virtual void draw( double z );
-     virtual std::string send() const;
+    virtual void draw( double z );
+    virtual std::string send() const;
 
-   protected:
-     fltk::Font* _font;
-     std::string _text, _encoding;
-     float    _zoom;
-     int      _fontsize;
-     unsigned _charset;   //!< display list for characters
+protected:
+    fltk::Font* _font;
+    std::string _text, _encoding;
+    float    _zoom;
+    int      _fontsize;
+    unsigned _charset;   //!< display list for characters
 };
 
 

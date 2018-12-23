@@ -19,11 +19,11 @@
  * @file   mrvLMTBrowser.h
  * @author gga
  * @date   Mon Jul  2 08:08:45 2007
- * 
+ *
  * @brief  Opens a browser with a list of all .ctl scripts available in
  *         your LMT_MODULE_PATH.
- * 
- * 
+ *
+ *
  */
 #ifndef mrvLMTBrowser_h
 #define mrvLMTBrowser_h
@@ -35,21 +35,21 @@
 
 namespace mrv {
 
-  class LMTBrowser : public fltk::Browser
-  {
-  public:
+class LMTBrowser : public fltk::Browser
+{
+public:
     LMTBrowser(int x, int y, int w, int h, const char* l = 0);
     ~LMTBrowser();
 
-      
+
     void fill( const mrv::media& fg );
     virtual int handle( int event );
 
-  protected:
+protected:
 
-  protected:
-      mrv::media _fg;
-  };
+protected:
+    mrv::media _fg;
+};
 
 }
 

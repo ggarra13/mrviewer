@@ -14,7 +14,7 @@
 //  distribution.
 //  *       Neither the name of Gonzalo Garramuno nor the names of
 //  its other contributors may be used to endorse or promote products derived
-//  from this software without specific prior written permission. 
+//  from this software without specific prior written permission.
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -45,7 +45,7 @@ namespace fs = boost::filesystem;
 #include <execinfo.h>
 
 
-/* get REG_EIP from ucontext.h */ 
+/* get REG_EIP from ucontext.h */
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE /* Necessary for REG_EIP. Why, I don't know. */
@@ -64,154 +64,154 @@ namespace mr
 
 ExceptionHandler::ExceptionHandler()
 {
-   install_signal_handler();
+    install_signal_handler();
 }
 
 ExceptionHandler::~ExceptionHandler()
 {
-   restore_signal_handler();
+    restore_signal_handler();
 }
 
 void ExceptionHandler::ShowStack() {
-  void *trace[200];
-  char **messages = (char **)NULL;
-  int i, trace_size = 0;
+    void *trace[200];
+    char **messages = (char **)NULL;
+    int i, trace_size = 0;
 
-  trace_size = backtrace(trace, 200);
-  messages = backtrace_symbols(trace, trace_size);
-  fprintf( stderr, "[bt] Execution path:\n");
-  for (i=0; i<trace_size; ++i)
-  {
-     fprintf( stderr, "[bt] %s\n", messages[i]);
-  }
-  free( messages );
+    trace_size = backtrace(trace, 200);
+    messages = backtrace_symbols(trace, trace_size);
+    fprintf( stderr, "[bt] Execution path:\n");
+    for (i=0; i<trace_size; ++i)
+    {
+        fprintf( stderr, "[bt] %s\n", messages[i]);
+    }
+    free( messages );
 }
 
 void ExceptionHandler::demangle( const char* name )
 {
-   int status;
-   char* demangle = abi::__cxa_demangle(name,  0, 0, &status);
-   if(status == 0) {
-      fprintf( stderr, "%s",demangle);
-      free(demangle);
-   } else if(status == -2)
-      fprintf( stderr, "Error: %s  is not a valid name under the C++ ABI mangling "
-	       "rules\n", name);
-   else if(status == -1)
-      fprintf( stderr, "Error: could not allocate memory.\n");
+    int status;
+    char* demangle = abi::__cxa_demangle(name,  0, 0, &status);
+    if(status == 0) {
+        fprintf( stderr, "%s",demangle);
+        free(demangle);
+    } else if(status == -2)
+        fprintf( stderr, "Error: %s  is not a valid name under the C++ ABI mangling "
+                 "rules\n", name);
+    else if(status == -1)
+        fprintf( stderr, "Error: could not allocate memory.\n");
 }
 
 void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
-				     void *secret)
+                                     void *secret)
 {
 
-   std::string lockfile = mrv::homepath();
-   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
-   if(fs::exists(lockfile))
-   {
-      if ( ! fs::remove( lockfile ) )
-	 std::cerr << "Could not remove lockfile " << lockfile << std::endl;
-   }
+    std::string lockfile = mrv::homepath();
+    lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+    if(fs::exists(lockfile))
+    {
+        if ( ! fs::remove( lockfile ) )
+            std::cerr << "Could not remove lockfile " << lockfile << std::endl;
+    }
 
-   if ( sig == SIGINT ) exit(0);
+    if ( sig == SIGINT ) exit(0);
 
-  void *trace[16];
-  char **messages = (char **)NULL;
-  int i, trace_size = 0;
-  ucontext_t *uc = (ucontext_t *)secret;
+    void *trace[16];
+    char **messages = (char **)NULL;
+    int i, trace_size = 0;
+    ucontext_t *uc = (ucontext_t *)secret;
 
-  /* Do something useful with siginfo_t */
+    /* Do something useful with siginfo_t */
 #ifdef REG_EIP
-  /* 32-bit OS */
-  if (sig == SIGSEGV)
-     fprintf( stderr, "Got signal %d, faulty address is %p, "
-	      "from %p\n", sig, info->si_addr, 
-	      uc->uc_mcontext.gregs[REG_EIP]);
-  else if ( sig == SIGFPE )
-     fprintf( stderr, "Got Floating Point Exception.\n");
-  else
-     fprintf( stderr, "Got signal %d\n", sig);
-	
-  trace_size = backtrace(trace, 16);
-  /* overwrite sigaction with caller's address */
-  trace[1] = (void *) uc->uc_mcontext.gregs[REG_EIP];
+    /* 32-bit OS */
+    if (sig == SIGSEGV)
+        fprintf( stderr, "Got signal %d, faulty address is %p, "
+                 "from %p\n", sig, info->si_addr,
+                 uc->uc_mcontext.gregs[REG_EIP]);
+    else if ( sig == SIGFPE )
+        fprintf( stderr, "Got Floating Point Exception.\n");
+    else
+        fprintf( stderr, "Got signal %d\n", sig);
+
+    trace_size = backtrace(trace, 16);
+    /* overwrite sigaction with caller's address */
+    trace[1] = (void *) uc->uc_mcontext.gregs[REG_EIP];
 
 #else
-  /* 64-bit OS */
-  if (sig == SIGSEGV)
-     fprintf( stderr, "Got signal %d, faulty address is %p, "
-	      "from %p\n", sig, info->si_addr, 
-	      (void*)uc->uc_mcontext.gregs[REG_RIP]);
-  else if ( sig == SIGFPE )
-     fprintf( stderr, "Got Floating Point Exception.\n");
-  else
-     fprintf( stderr, "Got signal %d\n", sig);
-	
-  trace_size = backtrace(trace, 16);
+    /* 64-bit OS */
+    if (sig == SIGSEGV)
+        fprintf( stderr, "Got signal %d, faulty address is %p, "
+                 "from %p\n", sig, info->si_addr,
+                 (void*)uc->uc_mcontext.gregs[REG_RIP]);
+    else if ( sig == SIGFPE )
+        fprintf( stderr, "Got Floating Point Exception.\n");
+    else
+        fprintf( stderr, "Got signal %d\n", sig);
 
-  /* overwrite sigaction with caller's address */
-  trace[1] = (void *) uc->uc_mcontext.gregs[REG_RIP];
+    trace_size = backtrace(trace, 16);
+
+    /* overwrite sigaction with caller's address */
+    trace[1] = (void *) uc->uc_mcontext.gregs[REG_RIP];
 #endif
 
-  messages = backtrace_symbols(trace, trace_size);
+    messages = backtrace_symbols(trace, trace_size);
 
-  /* skip first stack frame (points to here) */
-  fprintf( stderr, "[bt] Execution path:\n");
-  for (i=1; i<trace_size; ++i)
+    /* skip first stack frame (points to here) */
+    fprintf( stderr, "[bt] Execution path:\n");
+    for (i=1; i<trace_size; ++i)
     {
-      fprintf( stderr, "[bt] %s\n", messages[i]);
+        fprintf( stderr, "[bt] %s\n", messages[i]);
     }
-  free( messages );
+    free( messages );
 
-  exit(0);
+    exit(0);
 }
 
 
 void ExceptionHandler::install_signal_handler() {
 
-  /* Install our signal handler */
-  struct sigaction sa;
+    /* Install our signal handler */
+    struct sigaction sa;
 
-  sa.sa_sigaction = bt_sighandler;
-  sigemptyset (&sa.sa_mask);
-  sa.sa_flags = SA_RESTART | SA_SIGINFO;
+    sa.sa_sigaction = bt_sighandler;
+    sigemptyset (&sa.sa_mask);
+    sa.sa_flags = SA_RESTART | SA_SIGINFO;
 
-  sigaction(SIGSEGV, &sa, &oldSIGSEGV);
-  sigaction(SIGUSR1, &sa, &oldSIGUSR1);
-  sigaction(SIGBUS,  &sa, &oldSIGBUS);
-  sigaction(SIGILL,  &sa, &oldSIGILL);
-  sigaction(SIGFPE,  &sa, &oldSIGFPE);
-  sigaction(SIGABRT, &sa, &oldSIGABRT);
-  sigaction(SIGINT, &sa, &oldSIGINT);
-  // sigaction(SIGCHLD, &sa, &oldSIGCHLD);
-  sigaction(SIGTRAP, &sa, &oldSIGTRAP);
-  sigaction(SIGSTOP, &sa, &oldSIGSTOP);
-  /* ... add any other signal here */
+    sigaction(SIGSEGV, &sa, &oldSIGSEGV);
+    sigaction(SIGUSR1, &sa, &oldSIGUSR1);
+    sigaction(SIGBUS,  &sa, &oldSIGBUS);
+    sigaction(SIGILL,  &sa, &oldSIGILL);
+    sigaction(SIGFPE,  &sa, &oldSIGFPE);
+    sigaction(SIGABRT, &sa, &oldSIGABRT);
+    sigaction(SIGINT, &sa, &oldSIGINT);
+    // sigaction(SIGCHLD, &sa, &oldSIGCHLD);
+    sigaction(SIGTRAP, &sa, &oldSIGTRAP);
+    sigaction(SIGSTOP, &sa, &oldSIGSTOP);
+    /* ... add any other signal here */
 }
 
 
 void ExceptionHandler::restore_signal_handler() {
 
     return;
-    
-  /* Install our signal handler */
-  struct sigaction sa;
 
-  sa.sa_sigaction = bt_sighandler;
-  sigemptyset (&sa.sa_mask);
-  sa.sa_flags = SA_RESTART | SA_SIGINFO;
+    /* Install our signal handler */
+    struct sigaction sa;
 
-  sigaction(SIGSEGV, &oldSIGSEGV, NULL);
-  sigaction(SIGUSR1, &oldSIGUSR1, NULL);
-  sigaction(SIGBUS,  &oldSIGBUS,  NULL);
-  sigaction(SIGILL,  &oldSIGILL,  NULL);
-  sigaction(SIGFPE,  &oldSIGFPE,  NULL);
-  sigaction(SIGABRT, &oldSIGABRT, NULL);
-  sigaction(SIGINT,  &oldSIGINT, NULL);
-  // sigaction(SIGCHLD, &oldSIGCHLD, NULL);
-  sigaction(SIGTRAP, &oldSIGTRAP, NULL);
-  sigaction(SIGSTOP, &oldSIGSTOP, NULL);
-  /* ... add any other signal here */
+    sa.sa_sigaction = bt_sighandler;
+    sigemptyset (&sa.sa_mask);
+    sa.sa_flags = SA_RESTART | SA_SIGINFO;
+
+    sigaction(SIGSEGV, &oldSIGSEGV, NULL);
+    sigaction(SIGUSR1, &oldSIGUSR1, NULL);
+    sigaction(SIGBUS,  &oldSIGBUS,  NULL);
+    sigaction(SIGILL,  &oldSIGILL,  NULL);
+    sigaction(SIGFPE,  &oldSIGFPE,  NULL);
+    sigaction(SIGABRT, &oldSIGABRT, NULL);
+    sigaction(SIGINT,  &oldSIGINT, NULL);
+    // sigaction(SIGCHLD, &oldSIGCHLD, NULL);
+    sigaction(SIGTRAP, &oldSIGTRAP, NULL);
+    sigaction(SIGSTOP, &oldSIGSTOP, NULL);
+    /* ... add any other signal here */
 }
 
 }

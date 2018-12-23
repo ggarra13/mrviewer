@@ -39,44 +39,44 @@
 #include "video/mrvGLShape.h"
 
 namespace boost {
-  class thread;
+class thread;
 }
 
 namespace mrv {
-  class uvCoords;
-  class ImageView;
+class uvCoords;
+class ImageView;
 }
 
 namespace mrv {
 
 
-  class DrawEngine
-  {
-  protected:
+class DrawEngine
+{
+protected:
     struct uvCoords {
-      float u;
-      float v;
+        float u;
+        float v;
     };
 
-  public:
+public:
     struct DisplayData
     {
-      DisplayData() {};
+        DisplayData() {};
 
-      const ImageView*    view;
-      const CMedia*   image;
-      mrv::Recti          rect;
-      mrv::image_type_ptr orig;
-      mrv::image_type_ptr result;
-      bool                alpha;
+        const ImageView*    view;
+        const CMedia*   image;
+        mrv::Recti          rect;
+        mrv::image_type_ptr orig;
+        mrv::image_type_ptr result;
+        bool                alpha;
     };
 
     struct MinMaxData
     {
-      MinMaxData() :
-        pMin( std::numeric_limits< float >::max() ),
-        pMax( std::numeric_limits< float >::min() )
-      {};
+        MinMaxData() :
+            pMin( std::numeric_limits< float >::max() ),
+            pMax( std::numeric_limits< float >::min() )
+        {};
 
         mrv::image_type_ptr pic;
         const CMedia*     image;
@@ -85,35 +85,45 @@ namespace mrv {
         float pMax;
     };
 
-  public:
+public:
     enum ShaderType {
-      kNone,
-      kAuto,
-      kGLSL,
-      kNV30,
-      kARBFP1,
+        kNone,
+        kAuto,
+        kGLSL,
+        kNV30,
+        kARBFP1,
     };
 
     static const char* shader_type_name();
 
-    static ShaderType  shader_type()        { return _hardwareShaders; }
-    static void shader_type( ShaderType b ) { _hardwareShaders = b; }
+    static ShaderType  shader_type()        {
+        return _hardwareShaders;
+    }
+    static void shader_type( ShaderType b ) {
+        _hardwareShaders = b;
+    }
 
 
-  public:
+public:
     DrawEngine(const ImageView* v );
 
     virtual ~DrawEngine();
 
-      virtual void initialize() = 0;
+    virtual void initialize() = 0;
 
-    static bool supports_yuv()  { return _has_yuv; }
-    static bool supports_yuva() { return _has_yuva; }
-    static bool supports_hdr() { return _has_hdr; }
+    static bool supports_yuv()  {
+        return _has_yuv;
+    }
+    static bool supports_yuva() {
+        return _has_yuva;
+    }
+    static bool supports_hdr() {
+        return _has_hdr;
+    }
 
-      virtual void refresh_shaders() = 0;
+    virtual void refresh_shaders() = 0;
 
-      virtual void image( const CMedia* img ) = 0;
+    virtual void image( const CMedia* img ) = 0;
 
     /// Name of engine
     virtual const char* name() = 0;
@@ -121,15 +131,15 @@ namespace mrv {
 
 
 
-      virtual double rot_x() const = 0;
-      virtual double rot_y() const = 0;
+    virtual double rot_x() const = 0;
+    virtual double rot_y() const = 0;
 
-      virtual void rot_x(double t) = 0;
-      virtual void rot_y(double t) = 0;
+    virtual void rot_x(double t) = 0;
+    virtual void rot_y(double t) = 0;
 
-      // Evaluate pixel with LUT
-      virtual void evaluate( const CMedia* img,
-                             const Imath::V3f& rgb, Imath::V3f& out ) = 0;
+    // Evaluate pixel with LUT
+    virtual void evaluate( const CMedia* img,
+                           const Imath::V3f& rgb, Imath::V3f& out ) = 0;
 
     /// Refresh the luts
     virtual void refresh_luts() = 0;
@@ -142,8 +152,8 @@ namespace mrv {
     /// Reset the view matrix
     virtual void reset_view_matrix() = 0;
 
-      // rotate model an angle in Z in degrees
-      virtual void rotate( const double z ) = 0;
+    // rotate model an angle in Z in degrees
+    virtual void rotate( const double z ) = 0;
 
 
     /// Change the color of an operation
@@ -155,10 +165,10 @@ namespace mrv {
     virtual void end_fbo( ImageList& images ) = 0;
 
     /// Draw a rectangle
-      virtual void draw_rectangle( const mrv::Rectd& r,
-                                   const mrv::ImageView::FlipDirection f =
-                                   mrv::ImageView::kFlipNone,
-                                   const double zdeg = 0.0 ) = 0;
+    virtual void draw_rectangle( const mrv::Rectd& r,
+                                 const mrv::ImageView::FlipDirection f =
+                                     mrv::ImageView::kFlipNone,
+                                 const double zdeg = 0.0 ) = 0;
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,
@@ -169,40 +179,44 @@ namespace mrv {
 
     void draw_text( const int x, const int y, const std::string& text )
     {
-      draw_text( x, y, text.c_str() );
+        draw_text( x, y, text.c_str() );
     }
 
     /// Convert fg image to engine's drawable image
-      virtual void translate( const double x, const double y,
-                              const double z = 0.0 ) = 0;
+    virtual void translate( const double x, const double y,
+                            const double z = 0.0 ) = 0;
 
-      // Return the normalized min and max of image
-      inline float norm_min() { return _normMin; }
-      inline float norm_max() { return _normMax; }
+    // Return the normalized min and max of image
+    inline float norm_min() {
+        return _normMin;
+    }
+    inline float norm_max() {
+        return _normMax;
+    }
 
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images ) = 0;
 
-      virtual void angle( const float x ) = 0;
-      virtual float angle() const = 0;
+    virtual void angle( const float x ) = 0;
+    virtual float angle() const = 0;
 
     /// Wipe area (scissor test)
     virtual void wipe_area() = 0;
 
-      /// Draw a safe area rectangle
-      virtual void draw_safe_area( const double percentX, const double percentY,
+    /// Draw a safe area rectangle
+    virtual void draw_safe_area( const double percentX, const double percentY,
                                  const char* name = 0 ) = 0;
 
-      /// Draw display area rectangle
-      virtual void draw_square_stencil(const int x, const int y,
-                                       const int x2, const int y2 ) = 0;
+    /// Draw display area rectangle
+    virtual void draw_square_stencil(const int x, const int y,
+                                     const int x2, const int y2 ) = 0;
 
-      // Draw film mask
-      virtual void draw_mask(const float pct) = 0;
+    // Draw film mask
+    virtual void draw_mask(const float pct) = 0;
 
-      virtual void draw_cursor( const double x, const double y ) = 0;
+    virtual void draw_cursor( const double x, const double y ) = 0;
 
-      virtual void draw_annotation( const GLShapeList& shapes ) = 0;
+    virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 
     CMedia* const background();
 
@@ -214,20 +228,22 @@ namespace mrv {
     void display( image_type_ptr& result,
                   const image_type_ptr& src, CMedia* img );
 
-     public:
-       /// Find min/max values for an image, using multithreading if possible
-       void minmax();
+public:
+    /// Find min/max values for an image, using multithreading if possible
+    void minmax();
 
-       // Retrieve min and max float values of image.  To be used after
-       // minmax() is called once.
-       inline void minmax( float& pMin, float& pMax ) {
-          pMin = _normMin;
-          pMax = _normMax;
-       }
+    // Retrieve min and max float values of image.  To be used after
+    // minmax() is called once.
+    inline void minmax( float& pMin, float& pMax ) {
+        pMin = _normMin;
+        pMax = _normMax;
+    }
 
-      static bool fboRenderBuffer()  { return _fboRenderBuffer; }
+    static bool fboRenderBuffer()  {
+        return _fboRenderBuffer;
+    }
 
-  protected:
+protected:
 
 
     /// Find min/max values for an image, using multithreading if possible
@@ -235,7 +251,7 @@ namespace mrv {
 
 
 
-  protected:
+protected:
     const ImageView* _view;
 
     //! Min-max pixel values (for normalization)
@@ -248,11 +264,11 @@ namespace mrv {
     typedef std::map< boost::thread*, void* > BucketList;
     BucketList buckets;
 
-      static bool _has_hdr;
-      static bool _has_yuv, _has_yuva;
-      static bool _fboRenderBuffer; //!< Framebuffer object
-      static ShaderType _hardwareShaders; //!< hardware shaders supported
-  };
+    static bool _has_hdr;
+    static bool _has_yuv, _has_yuva;
+    static bool _fboRenderBuffer; //!< Framebuffer object
+    static ShaderType _hardwareShaders; //!< hardware shaders supported
+};
 
 } // namespace mrv
 

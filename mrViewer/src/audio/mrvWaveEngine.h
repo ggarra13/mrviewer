@@ -19,10 +19,10 @@
  * @file   mrvWaveEngine.h
  * @author gga
  * @date   Wed Jul 25 20:28:00 2007
- * 
+ *
  * @brief  MSwindows wave audio engine
- * 
- * 
+ *
+ *
  */
 #ifndef mrvWaveEngine_h
 #define mrvWaveEngine_h
@@ -44,24 +44,28 @@
 
 namespace mrv {
 
-  class WaveEngine : public mrv::AudioEngine
-  {
-  public:
+class WaveEngine : public mrv::AudioEngine
+{
+public:
     WaveEngine();
     virtual ~WaveEngine();
 
     // Name of audio engine
-    virtual const char* name() { return "Windows Multimedia"; }
+    virtual const char* name() {
+        return "Windows Multimedia";
+    }
 
-      virtual void buffers( int num ) { _num_buffers = num; }
-      
+    virtual void buffers( int num ) {
+        _num_buffers = num;
+    }
+
     // Open an audio stream for playback
-    virtual bool open( 
-		      const unsigned int channels,
-		      const unsigned int frequency,
-		      const AudioFormat  format,
-		      const unsigned int bits
-		       );
+    virtual bool open(
+        const unsigned int channels,
+        const unsigned int frequency,
+        const AudioFormat  format,
+        const unsigned int bits
+    );
 
     // Play some samples (this function does not return until
     // playback has finished)
@@ -69,10 +73,10 @@ namespace mrv {
 
     // Retrieve current master volume
     virtual float volume() const;
-      
+
     // Change volume of playback
     virtual void volume( float f );
-  
+
     // Flush all audio sent for playback
     virtual void flush();
 
@@ -80,7 +84,7 @@ namespace mrv {
     virtual bool close();
 
 
-  protected:
+protected:
     // Shutdown the audio engine
     virtual bool shutdown();
 
@@ -93,19 +97,19 @@ namespace mrv {
     void free_headers();
     void wait_audio();
 
-  protected:
+protected:
     unsigned int _sample_size;
     HWAVEOUT     _audio_device;
     WAVEHDR*     _buffer;
     aligned16_uint8_t* _data;
     unsigned int _idx;
     unsigned int _samples_per_block;
-      unsigned int _num_buffers;
+    unsigned int _num_buffers;
     size_t        bytesPerBlock;
 
-  protected:
+protected:
     static unsigned int     _instances;
-  };
+};
 
 
 } // namespace mrv

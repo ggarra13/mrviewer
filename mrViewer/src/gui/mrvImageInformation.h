@@ -41,9 +41,9 @@
 
 namespace fltk
 {
-  class PackedGroup;
-  class ItemGroup;
-  class PopupMenu;
+class PackedGroup;
+class ItemGroup;
+class PopupMenu;
 }
 
 
@@ -52,10 +52,10 @@ namespace fltk
 
 namespace mrv
 {
-  class ViewerUI;
-  class CMedia;
-  struct CtlLMTData;
-  class ImageView;
+class ViewerUI;
+class CMedia;
+struct CtlLMTData;
+class ImageView;
 
 
 class ImageInformation : public ImageInfoParent
@@ -63,23 +63,31 @@ class ImageInformation : public ImageInfoParent
 public:
     typedef boost::recursive_mutex Mutex;
 
-  public:
+public:
     ImageInformation( int x, int y, int w, int h, const char* l = NULL );
-    ~ImageInformation() { clear_callback_data(); }
+    ~ImageInformation() {
+        clear_callback_data();
+    }
 
-    CMedia* get_image() { return img; };
+    CMedia* get_image() {
+        return img;
+    };
     void set_image( CMedia* img );
 
     void refresh();
     virtual void layout();
     virtual int handle( int event );
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
-    mrv::ViewerUI* main() { return uiMain; }
+    void main( mrv::ViewerUI* m ) {
+        uiMain = m;
+    }
+    mrv::ViewerUI* main() {
+        return uiMain;
+    }
 
     ImageView*  view() const;
 
-  protected:
+protected:
     fltk::Color get_title_color();
     fltk::Color get_widget_color();
 
@@ -208,7 +216,7 @@ public:
     unsigned int group;
     unsigned int row;
 
-  public:
+public:
     mrv::CollapsableGroup*       m_attributes;
 };
 

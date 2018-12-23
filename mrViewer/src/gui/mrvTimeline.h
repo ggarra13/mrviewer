@@ -19,10 +19,10 @@
  * @file   mrvTimeline.h
  * @author gga
  * @date   Fri Oct 13 12:58:46 2006
- * 
+ *
  * @brief  An fltk widget to represent a video timeline, displaying
  *         sequence edits, timecode and frame ticks.
- * 
+ *
  */
 #ifndef mrvTimeline_h
 #define mrvTimeline_h
@@ -39,62 +39,90 @@ class CMedia;
 
 namespace mrv
 {
-  class ViewerUI;
-  class ImageBrowser;
+class ViewerUI;
+class ImageBrowser;
 
-  namespace gui {
-    class media;
-  }
+namespace gui {
+class media;
+}
 
 
 class Timeline : public fltk::Slider
 {
-  public:
+public:
     typedef CMedia::Mutex   Mutex;
 
-  public:
+public:
     enum DisplayMode
     {
-    kSingle,
-    kEDL_Single,
-    kEDL_All
+        kSingle,
+        kEDL_Single,
+        kEDL_All
     };
 
-  public:
+public:
     Timeline( int x, int y, int w, int h, char* l = 0 );
     Timeline( int w, int h, char* l = 0 );
     ~Timeline();
 
-    inline Timecode::Display display() const { return _display; }
-    inline void display(Timecode::Display x) { _display = x; redraw(); }
+    inline Timecode::Display display() const {
+        return _display;
+    }
+    inline void display(Timecode::Display x) {
+        _display = x;
+        redraw();
+    }
 
-    inline bool edl() const { return _edl; }
+    inline bool edl() const {
+        return _edl;
+    }
     void edl( bool x );
 
-    inline double fps() const { return _fps; }
-    inline void fps( double x ) { _fps = x; }
+    inline double fps() const {
+        return _fps;
+    }
+    inline void fps( double x ) {
+        _fps = x;
+    }
 
-    inline double maximum() const { return fltk::Slider::maximum(); }
+    inline double maximum() const {
+        return fltk::Slider::maximum();
+    }
     void maximum( double x );
-    inline double minimum() const { return fltk::Slider::minimum(); }
+    inline double minimum() const {
+        return fltk::Slider::minimum();
+    }
     void minimum( double x );
 
-    inline double display_minimum() const { return _display_min; }
+    inline double display_minimum() const {
+        return _display_min;
+    }
     void display_minimum( const double& x );
-    
-    inline double display_maximum() const { return _display_max; }
+
+    inline double display_maximum() const {
+        return _display_max;
+    }
     void display_maximum( const double& x );
 
-    void timecode( const int64_t& tc ) { _tc = tc; redraw(); }
+    void timecode( const int64_t& tc ) {
+        _tc = tc;
+        redraw();
+    }
 
     virtual int handle( int e );
     virtual void draw();
 
     uint64_t offset( const CMedia* img )   const;
-    uint64_t location( const CMedia* img ) const { return offset(img) + 1; }
+    uint64_t location( const CMedia* img ) const {
+        return offset(img) + 1;
+    }
 
-    void main( ViewerUI* m ) { uiMain = m; }
-    ViewerUI* main() const { return uiMain; }
+    void main( ViewerUI* m ) {
+        uiMain = m;
+    }
+    ViewerUI* main() const {
+        return uiMain;
+    }
 
 
     size_t index( const int64_t frame ) const;
@@ -103,16 +131,20 @@ class Timeline : public fltk::Slider
 
     int64_t global_to_local( const int64_t frame ) const;
 
-    void draw_cache( const bool t ) { _draw_cache = t; }
-    bool draw_cache() const { return _draw_cache; }
+    void draw_cache( const bool t ) {
+        _draw_cache = t;
+    }
+    bool draw_cache() const {
+        return _draw_cache;
+    }
 
-  protected:
+protected:
     bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
     void draw_ticks(const fltk::Rectangle& r, int min_spacing);
 
     void draw_selection( const fltk::Rectangle& r);
     void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
-                         int64_t mn, int64_t mx, int64_t frame, 
+                         int64_t mn, int64_t mx, int64_t frame,
                          const fltk::Rectangle& r );
 
     ImageBrowser* browser() const;
@@ -129,7 +161,7 @@ class Timeline : public fltk::Slider
 };
 
 
-  void change_timeline_display( ViewerUI* uiMain );
+void change_timeline_display( ViewerUI* uiMain );
 }
 
 

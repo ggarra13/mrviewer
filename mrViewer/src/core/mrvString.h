@@ -19,10 +19,10 @@
  * @file   mrvString.h
  * @author gga
  * @date   Wed Oct 18 21:09:07 2006
- * 
+ *
  * @brief  Some std::string utilities
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvString_h
@@ -38,10 +38,10 @@ typedef std::set   < std::string > stringSet;
 
 namespace mrv
 {
-  bool matches_chars( const char* src, const char* charlist );
+bool matches_chars( const char* src, const char* charlist );
 
-  void split_string(stringArray& output,
-		    const std::string& str, const std::string& delim );
+void split_string(stringArray& output,
+                  const std::string& str, const std::string& delim );
 
 inline void split( stringArray& elems, const std::string &s, char delim ) {
     std::stringstream ss(s);

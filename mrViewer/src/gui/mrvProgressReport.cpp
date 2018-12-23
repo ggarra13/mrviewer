@@ -33,12 +33,12 @@ namespace mrv {
 
 ProgressReport::ProgressReport( fltk::Window* main, boost::int64_t start,
                                 boost::int64_t end ) :
-_time( 0 ),
-_frame( start ),
-_end( end )
+    _time( 0 ),
+    _frame( start ),
+    _end( end )
 {
-    w = new fltk::Window( main->x() + main->w() / 2 - 320, 
-                          main->y() + main->h()/2, 
+    w = new fltk::Window( main->x() + main->w() / 2 - 320,
+                          main->y() + main->h()/2,
                           640, 120 );
     w->size_range( 640, 120 );
     w->child_of(main);
@@ -70,13 +70,14 @@ _end( end )
     w->set_modal();
     w->end();
 
-   timer.setDesiredFrameRate( 500.0 );
+    timer.setDesiredFrameRate( 500.0 );
 
 }
 
 ProgressReport::~ProgressReport()
 {
-    delete w; w = NULL;
+    delete w;
+    w = NULL;
 }
 
 void ProgressReport::show()
@@ -84,7 +85,7 @@ void ProgressReport::show()
     w->show();
 }
 
-void ProgressReport::to_hour_min_sec( const double t, 
+void ProgressReport::to_hour_min_sec( const double t,
                                       int& hour, int& min, int& sec )
 {
     hour = int(floor( t / 3600.0 ));
