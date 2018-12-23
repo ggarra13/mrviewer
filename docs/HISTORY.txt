@@ -2,6 +2,18 @@ v4.3.7   - Made showing and hiding of windows be a command.  This makes
 	   them thread safe.
 	 - Bug fixed networking to work with multiple clients.
 	   Previously, only one server and one client were accepted.
+	 - Removed a nasty bug in the shaders' use which would trash
+	   memory. This would make images appear green or gray sometimes.
+	   It would also not show BG images when it should.
+	 - Added previous and next frame counters to grease pencil
+	   drawing shapes.  This replaces the single forwards/backwards
+	   toggle that was there before.
+	 - Made file requester of saving of reels start at the location of
+	   the first image loaded, instead of the current location.
+	 - Made saving of reel support saving the contents of the reel in
+	   relative path mode.
+	 - Added a Saving tab in the Preferences and two options to
+	   control the last two changes.
 
 v4.3.6   - Bug fixed limiting of images for formats without a
 	   display window ( png, jpg, etc).  Now memory setting works
