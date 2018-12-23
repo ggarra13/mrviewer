@@ -103,8 +103,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       #ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
       #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
       INCLUDE_DIRECTORIES( /usr/local/sanitize )
-      #ADD_DEFINITIONS( -fsanitize=address )
-      #SET(LIBRARIES asan ${LIBRARIES} )
+      ADD_DEFINITIONS( -fsanitize=address )
+      SET(LIBRARIES asan ${LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
