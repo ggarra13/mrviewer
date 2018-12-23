@@ -1,0 +1,198 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Item 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "gui/mrvIO.h"} {public
+} 
+
+decl {\#include "core/mrvI8N.h"} {public
+} 
+
+decl {\#include "fltk/visual.h"} {public
+} 
+
+decl {\#include "gui/mrvImageView.h"} {public
+} 
+
+decl {\#include "gui/mrvStereoWindow.h"} {selected public
+} 
+
+decl {\#include "mrViewer.h"} {public
+} 
+
+namespace mrv {open
+} {
+  class StereoUI {open
+  } {
+    decl {mrv::ViewerUI* main_;} {}
+    Function {main()} {return_type {mrv::ViewerUI*}
+    } {
+      code {return main_;} {}
+    }
+    Function {make_window( mrv::ViewerUI* main )} {open
+    } {
+      {fltk::Window} uiMain {
+        label {3D Stereo Options}
+        user_data this user_data_type {mrv::StereoUI*}
+        callback {v->main()->uiView->send_network( "StereoOptions 0" );
+o->hide();}
+        xywh {757 727 280 160} resizable
+        extra_code {main_ = main;
+o->child_of( (fltk::Window*)main->uiMain );
+o->main( main );}
+        class {mrv::StereoWindow} visible
+      } {
+        {fltk::Choice} uiStereoInput {
+          label Input
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {int x = o->value(); 
+CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
+v->uiView->stereo_input( in );}
+          tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.}
+          xywh {80 60 175 25}
+          extra_code {mrv::media fg = main->uiView->foreground();
+
+if ( fg )
+{
+CMedia* img = fg->image();
+CMedia::StereoInput in = img->stereo_input();
+int x = CMedia::from_stereo_input( in );
+o->value( x ); 
+}}
+        } {
+          {fltk::Item} {} {
+            label {Separate layers}
+            }
+          {fltk::Item} {} {
+            label {Top/bottom}
+            }
+          {fltk::Item} {} {
+            label {Left/right}
+            }
+        }
+        {fltk::Choice} uiStereoOutput {
+          label Output
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {int x = o->value(); 
+CMedia::StereoOutput out = CMedia::to_stereo_output( x ); 
+v->uiView->stereo_output( out );}
+          tooltip {Select how to view the stereo images.  You can select no stereo viewing, a view of the stereo pair, top/bottom (and viceversa), left/right (and viceversa), interlaced rows or columns, checkerboard pattern, red/cyan glasses (and viceversa). }
+          xywh {80 100 175 25}
+          extra_code {mrv::media fg = main->uiView->foreground();
+
+if ( fg )
+{
+CMedia* img = fg->image();
+CMedia::StereoOutput out = img->stereo_output();
+int x = CMedia::from_stereo_output( out );
+o->value( x ); 
+}}
+        } {
+          {fltk::Item} {} {
+            label {No Stereo Output}
+            }
+          {fltk::Item} {} {
+            label {Left view}
+            }
+          {fltk::Item} {} {
+            label {Right view}
+            }
+          {fltk::Item} uiStereoOpenGL {
+            label {Stereo OpenGL}
+            
+            extra_code {if ( main->uiView->can_do( fltk::STEREO ) )
+  uiStereoOpenGL->activate();
+else
+  uiStereoOpenGL->deactivate();}
+          }
+          {fltk::Item} {} {
+            label {Top/bottom}
+            }
+          {fltk::Item} {} {
+            label {Bottom/top}
+            }
+          {fltk::Item} {} {
+            label {Left/right}
+            }
+          {fltk::Item} {} {
+            label {Right/left}
+            }
+          {fltk::Item} {} {
+            label {Even/odd rows}
+            }
+          {fltk::Item} {} {
+            label {Even/odd columns}
+            }
+          {fltk::Item} {} {
+            label {Checkerboard pattern}
+            }
+          {fltk::Item} {} {
+            label {Red/cyan glasses}
+            }
+          {fltk::Item} {} {
+            label {Cyan/red glasses}
+            }
+        }
+        {fltk::LightButton} uiVR360Sphere {
+          label {VR 360 Sphere}
+          user_data main user_data_type {ViewerUI*}
+          callback {ImageView::VRType t = ImageView::kNoVR;
+if ( o->value() ) {
+  t = ImageView::kVRSphericalMap;
+  uiVR360Cube->value(0);
+}
+v->uiView->vr( t );
+v->uiView->redraw();}
+          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.}
+          xywh {10 20 135 30}
+        }
+        {fltk::LightButton} uiVR360Cube {
+          label {VR 360 Cube}
+          user_data main user_data_type {ViewerUI*}
+          callback {ImageView::VRType t = ImageView::kNoVR;
+if ( o->value() ) {
+  t = ImageView::kVRCubeMap;
+  uiVR360Sphere->value(0);
+}
+v->uiView->vr( t );
+v->uiView->redraw();}
+          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image, which should be composed of 6 images, is wrapped around a cube when this is active.}
+          xywh {150 20 105 30}
+        }
+      }
+    }
+    Function {StereoUI( ViewerUI* main )} {open
+    } {
+      code {make_window(main);} {}
+    }
+    Function {~StereoUI()} {} {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {refresh()} {open
+    } {
+      code {mrv::ViewerUI* m = main();
+
+if ( m && m->uiView )
+{
+	mrv::media fg = m->uiView->foreground();
+
+	if ( fg )
+	{
+		CMedia* img = fg->image();
+		CMedia::StereoInput in = img->stereo_input();
+		int x = CMedia::from_stereo_input( in );
+		uiStereoInput->value( x ); 
+
+		CMedia::StereoOutput out = img->stereo_output();
+		x = CMedia::from_stereo_output( out );
+		uiStereoOutput->value( x );
+	}
+
+}} {}
+    }
+  }
+} 

@@ -1,0 +1,19 @@
+[Template]
+ver=6
+Name=FLTK2 OpenGL (Static)
+Icon=eide2.ico
+Description=Create GUI, OpenGL application using FLTK2.
+Catagory=GUI
+
+[Unit0]
+CppName=main.cpp
+Cpp=FLTK2OpenGL.txt
+
+[Project]
+UnitCount=1
+Type=0
+IsCpp=1
+Name=FLTK2 OpenGL (Static) project
+ProjectIcon=eide2.ico
+Compiler=-DWIN32_EXTRA_LEAN -DWIN32 -W -D_MSC_DLL -fno-exceptions -g -O0 -D_DEBUG -D_WIN32
+Linker= -lfltk2 -lfltk2_gl -mwindows -lglu32 -lopengl32 -lole32 -luuid -lcomctl32 -lwsock32 -lmsimg32

@@ -1,0 +1,256 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Group 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "core/mrvACES.h"} {public
+} 
+
+decl {\#include "gui/mrvMedia.h"} {public
+} 
+
+decl {\#include "gui/mrvImageView.h"} {public
+} 
+
+namespace mrv {open
+} {
+  class SopNode {open
+  } {
+    decl {mrv::media m;} {}
+    Function {make_window(mrv::ImageView* view)} {open
+    } {
+      {fltk::Window} uiMain {open
+        xywh {500 752 560 325} hide resizable non_modal
+      } {
+        {fltk::Group} {} {
+          label Slope open
+          xywh {56 16 209 135} box ROUNDED_BOX
+        } {
+          {fltk::ValueSlider} SlopeRUI {
+            label R
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.slope( 0, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 20 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} SlopeGUI {
+            label G
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.slope( 1, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 54 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} SlopeBUI {
+            label B
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.slope( 2, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 87 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+        }
+        {fltk::Group} {} {
+          label Power open
+          xywh {56 170 209 134} box ROUNDED_BOX
+        } {
+          {fltk::ValueSlider} PowerRUI {
+            label R
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.power( 0, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 18 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} PowerGUI {
+            label G
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.power( 1, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {32 52 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+          {fltk::ValueSlider} PowerBUI {
+            label B
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.power( 2, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {32 85 160 25} align 4 when RELEASE maximum 10 value 1
+          }
+        }
+        {fltk::Group} {} {
+          label Offset
+          xywh {290 16 209 134} box ROUNDED_BOX
+        } {
+          {fltk::ValueSlider} OffsetRUI {
+            label R
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.offset( 0, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {34 21 160 25} align 4 when RELEASE maximum 10
+          }
+          {fltk::ValueSlider} OffsetGUI {
+            label G
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.offset( 1, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 55 160 25} align 4 when RELEASE maximum 10
+          }
+          {fltk::ValueSlider} OffsetBUI {
+            label B
+            user_data view user_data_type {mrv::ImageView*}
+            callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.offset( 2, o->value() );
+send_sop( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+            xywh {33 88 160 25} align 4 when RELEASE maximum 10
+          }
+        }
+        {fltk::ValueSlider} SaturationUI {
+          label Saturation
+          user_data view user_data_type {mrv::ImageView*}
+          callback {mrv::media m = v->foreground();
+if (! m ) return;
+
+CMedia* img = m->image();
+
+ACES::ASC_CDL& a = img->asc_cdl();
+a.saturation( o->value() );
+send_sat( img, v );
+img->image_damage( img->image_damage() | CMedia::kDamageLut );
+v->redraw();}
+          xywh {355 215 135 25} align 4 when RELEASE value 1
+        }
+      }
+      code {refresh();} {}
+      code {w->child_of( view->fltk_main() );
+w->show();} {}
+    }
+    Function {SopNode( mrv::ImageView* view )} {open
+    } {
+      code {m = view->foreground();
+make_window(view);} {}
+    }
+    Function {~SopNode()} {} {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {refresh()} {} {
+      code {if (!m) return;
+CMedia* img = m->image();
+const ACES::ASC_CDL& cdl = img->asc_cdl();
+SaturationUI->value( cdl.saturation() );
+SlopeRUI->value( cdl.slope(0) );
+SlopeGUI->value( cdl.slope(1) );
+SlopeBUI->value( cdl.slope(2) );
+OffsetRUI->value( cdl.offset(0) );
+OffsetGUI->value( cdl.offset(1) );
+OffsetBUI->value( cdl.offset(2) );
+PowerRUI->value( cdl.power(0) );
+PowerGUI->value( cdl.power(1) );
+PowerBUI->value( cdl.power(2) );} {}
+    }
+    Function {media( const mrv::media& fg )} {open
+    } {
+      code {m = fg;
+refresh();} {}
+    }
+    Function {send_sop( CMedia* img, mrv::ImageView* v )} {open
+    } {
+      code {char buf[1024];
+const ACES::ASC_CDL& a = img->asc_cdl();
+sprintf( buf, "LMT.SOPNode %g %g %g "
+               "%g %g %g "
+               "%g %g %g",
+               a.slope(0),
+               a.slope(1),
+               a.slope(2),
+               a.offset(0),
+               a.offset(1),
+               a.offset(2),
+               a.power(0),
+               a.power(1),
+               a.power(2) );
+
+v->send_network( buf );} {}
+    }
+    Function {send_sat( CMedia* img, mrv::ImageView* v )} {open
+    } {
+      code {char buf[1024];
+const ACES::ASC_CDL& a = img->asc_cdl();
+sprintf( buf, "LMT.SatNode %g",
+               a.saturation() );
+
+v->send_network( buf );} {selected
+      }
+    }
+  }
+} 

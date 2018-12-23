@@ -1,0 +1,84 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0000 
+images_dir images 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <stdio.h>} {} 
+
+decl {\#include <fltk/fl_file_chooser.h>} {} 
+
+Function {} {open private
+} {
+  code {Fl_Shared_Image::set_root_directory("images");} {}
+  Fl_Window window {
+    label {The background is a BMP file} open
+    xywh {179 404 660 405} align 536870944 resizable box NO_BOX image not_inlined {ulon.bmp} visible
+  } {
+    Fl_Box {} {
+      label {tiled GIF image loaded from disk}
+      xywh {23 158 352 197} align 32 labelfont 1 labeltype SHADOW_LABEL image not_inlined {coucou.gif} labelcolor 3
+    }
+    Fl_Box {} {
+      label {PNG image with datas included in code}
+      xywh {100 23 170 102} align 32 labelfont 1 labeltype SHADOW_LABEL image {coucou.png} labelcolor 3
+    }
+    Fl_Box {} {
+      label {XPM image loaded from disk}
+      xywh {408 16 134 109} deactivate labelfont 1 labeltype SHADOW_LABEL image not_inlined {../porsche.xpm} labelcolor 3
+    }
+    Fl_Value_Slider slider {
+      label {Size of the image cache in kilo pixels (0 for unlimited)}
+      callback {Fl_Shared_Image::set_cache_size((int)o->value()*1024);}
+      xywh {40 368 288 22} type {Horz Knob} labelfont 1 labeltype SHADOW_LABEL labelcolor 3 maximum 100 step 1
+    }
+    Fl_Box {} {
+      label {JPEG image stored in the executable}
+      xywh {395 195 230 150} align 32 labelfont 1 labeltype SHADOW_LABEL image {testimg.jpg} labelcolor 3
+    }
+    Fl_Button {} {
+      label {Load an image ...}
+      callback {static char *name=0;
+name = fl_file_chooser("Choose in image", "", name);
+char s[256];
+sprintf(s, "%s%s", name[0]=='/'? "":"../", name);
+static Fl_Shared_Image* im;
+if (im && im!=(Fl_Shared_Image*)&nosuch_bitmap) im->remove();
+im = Fl_Shared_Image::guess(s)->get(s);
+image_box->image(im);
+int w, h;
+im->measure(w, h);
+image_window->size(w, h);
+image_window->show();}
+      xywh {510 15 135 30}
+      code0 {\#include <fltk/Fl_Bitmap.h>}
+    }
+  }
+  Fl_Window browser_window {
+    label {Image in the cache} open
+    xywh {667 762 255 150} visible
+  } {
+    Fl_Browser browser {
+      xywh {0 0 255 115}
+    }
+    Fl_Box {} {
+      label {Italic : out of the cache}
+      xywh {0 115 165 20} align 149
+    }
+    Fl_Box {} {
+      label {Grey : just loaded or unloaded}
+      xywh {0 130 205 20} align 21
+    }
+  }
+  Fl_Window image_window {open
+    xywh {483 617 115 100} visible
+  } {
+    Fl_Box image_box {
+      xywh {0 0 115 100} align 21
+    }
+  }
+  code {window->show();} {selected
+  }
+} 

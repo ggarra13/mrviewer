@@ -1,0 +1,108 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir header_name 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <cstring>} {public
+} 
+
+decl {\#include <string>} {public
+} 
+
+decl {\#include "core/mrvI8N.h"} {} 
+
+decl {\#include "gui/mrvMedia.h"} {public
+} 
+
+decl {\#include "gui/mrvFileRequester.h"} {public
+} 
+
+decl {\#include "gui/mrvLMTBrowser.h"} {public
+} 
+
+decl {\#include "mrViewer.h"} {} 
+
+namespace mrv {open
+} {
+  decl {class ViewerUI;} {public
+  }
+  class LMTModifier {open
+  } {
+    Function {make_window( const mrv::ViewerUI* main )} {open
+    } {
+      {fltk::Window} uiMain {open
+        xywh {627 416 650 485} resizable visible
+      } {
+        {fltk::Group} {} {open
+          xywh {10 5 640 475}
+        } {
+          {fltk::Browser} uiLMTs {
+            label {Look Mod Transforms}
+            xywh {7 20 623 400} type Multi
+            class {mrv::LMTBrowser}
+          } {}
+        }
+        {fltk::Button} {} {
+          label Add
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {mrv::ImageView* view = v->uiView;
+mrv::media fg = view->foreground();
+if (!fg) return;
+
+CMedia* img = fg->image();
+unsigned num = img->number_of_lmts();
+attach_ctl_lmt_script( img, num, v );
+uiLMTs->fill( fg );}
+          xywh {15 440 105 30}
+        }
+        {fltk::Button} {} {
+          label Remove
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {mrv::ImageView* view = v->uiView;
+mrv::media fg = view->foreground();
+if (!fg) return;
+
+typedef std::vector< int > LMTs;
+LMTs r;
+fltk::Widget* w = uiLMTs->goto_top();
+int i = 0;
+for ( ; w; w = uiLMTs->next(), ++i )
+{
+   if ( w->selected() )
+  {
+    r.push_back( i );
+  }
+}
+
+
+CMedia* img = fg->image();
+
+LMTs::const_reverse_iterator s = r.rbegin();
+LMTs::const_reverse_iterator e = r.rend();
+for ( ; s != e; ++s )
+{
+  img->look_mod_transform( *s, NULL );
+}
+uiLMTs->fill( fg );} selected
+          xywh {135 440 105 30}
+        }
+      }
+    }
+    Function {~LMTModifier()} {open
+    } {}
+    Function {LMTModifier( const mrv::ViewerUI* main )} {open
+    } {
+      code {make_window(main);
+uiMain->child_of( main->uiView );
+uiMain->show();} {}
+    }
+    Function {fill( const mrv::media fg )} {open
+    } {
+      code {uiLMTs->fill( fg );
+uiLMTs->redraw();} {}
+    }
+  }
+} 

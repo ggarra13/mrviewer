@@ -1,0 +1,588 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>Drawing Things in FLTK</title></head><body>
+
+<h1>Drawing Things in FLTK</h1>
+
+This chapter covers the drawing functions that are provided with FLTK. 
+
+<h2><a name=dwhen>When Can You Draw Things in FLTK?</a></h2>
+
+There are only certain places you can execute drawing code in FLTK. 
+Calling these functions at other places will result in undefined 
+behavior! 
+
+<ul>
+
+<li>The most common is inside the virtual method <A
+href=subclassing.html#draw><tt> fltk::Widget::draw()</tt></A>.  To write
+code here, you must subclass one of the existing <tt>fltk::Widget</tt>
+classes and implement your own version of <tt>draw()</tt>. 
+
+<li>You can also write <a href=Fl_Boxtype.html>boxtypes</A> and <A
+href=Fl_Labeltype.html> labeltypes</A>.  These are small structures
+with functions in them that rae called by existing
+<tt>fltk::Widget::draw()</tt> methods.  Pointers to these
+structures are stored in the widget's <tt>box()</tt> ,
+<tt>labeltype()</tt>, and possibly other properties. 
+
+<li>You can write <a href=Fl_Image.html>fltk::Image</a> classes, which
+can then be put into the <a
+href=Fl_Widget.html#image>fltk::Widget::image()</a> and be called by
+existing <tt>fltk::Widget::draw()</tt> methods.
+
+<li>You can call <A href=Fl_Window.html#make_current><tt>
+fltk::Window::make_current()</tt></A> to do incremental update of a 
+widget. Use <A href=Fl_Widget.html#window><tt>
+fltk::Widget::window()</tt></A> to  find the window.
+
+</ul>
+
+<h2><a name=dfunc>FLTK Drawing Functions</a></h2>
+
+To use the drawing functions you must first include the <tt>
+&lt;fltk/draw.h&gt;</tt> header file.  FLTK provides the following types of 
+drawing functions: 
+
+<ul>
+<li><A href=#dtransformation>Transformation</A>
+<li><A href=#dclipping>Clipping</A>
+<li><A href=#dcolors>Colors</A>
+<li><A href=#dlines>Line dashes and thickness</A>
+<li><A href=#dpath>Path construction and drawing</A>
+<li><A href=#dfast>Drawing that bypasses the path stuff</A>
+<li><A href=#dtext>Text</A>
+<li><A href=#dimages>Images</A>
+</ul>
+
+<h2><a name=dtransformation>Current Transformation</a></h2>
+
+FLTK provides an arbitrary 2-D linear transformation (ie rotation,
+scale, skew, reflections, and translation). This is very similar to
+PostScript, PDF, and SVG.
+
+<p><i>Due to limited graphics capabilities of some systems, all
+drawing methods that take 4 integer values (defining a box) only
+transform the x and y values, and round them to the nearest
+integer. You should use functions that take floating-point coordinates
+if you want accurately scaled drawings.</i>
+
+<h4><a name=push_matrix>void fltk::push_matrix()</a>
+<br><a name=pop_matrix>void fltk::pop_matrix()</a></h4>
+
+Save and restore the current transformation.  The maximum depth of the 
+stack is 10.
+
+<h4><a name=scale>void fltk::scale(float factor_x, float factor_y)
+<br>void fltk::scale(float factor)</a>
+<br><a name=translate>void fltk::translate(float dx, float dy)</a>
+<br>void fltk::translate(int dx, int dy)
+<br><a name=rotate>void fltk::rotate(float degrees_ccw)</a>
+<br><a name=mult_matrix>void fltk::mult_matrix(float a, float b, float c, float d, float x, float y)</a></h4>
+
+Concatenate another transformation onto the current one.  The rotation 
+angle is in degrees (not radians) and is counter-clockwise. 
+
+<p>fltk::translate(int,int) is provided because it is much faster than
+the floating-point version. However C++ will not "resolve" which one
+you want to call if you try passing doubles as arguments. To get it to
+compile, make sure you cast the arguments to float (add 'f' after
+floating-point constants). Use the 'f' versions (ie sinf(), cosf(),
+etc) of the math functions from &lt;fltk/math.h&gt; to produce floats
+and get maximum calculation speed.
+
+<h4><a name=load_identity>void fltk::load_identity()</a></h4>
+
+Replace the current transform with the identity transform, which puts
+0,0 in the top-left corner of the window and each unit is 1 pixel in
+size.
+
+<h4><a name=transform>void fltk::transform(float& x, float& y)</a></h4>
+
+Replace x and y with the transformed coordinates.
+
+<h4><a name=transform>void fltk::transform(int& x, int& y)</a></h4>
+
+Replace x and y with the transformed coordinates, rounded to the
+nearest integer.
+
+<h4><a name=transform_distance>void fltk::transform_distance(float& x, float& y)</a></h4>
+
+Replace x and y with the tranformed coordinates, ignoring
+translation. This transforms a vector which is measuring a distance
+between two positions, rather than a position.
+
+<h2><a name=dclipping>Clipping</a></h2>
+
+You can limit all your drawing to a region by calling <a
+href="#push_clip"><tt>fltk::push_clip()</tt></a>, and put the drawings
+back by using <a href="#pop_clip"><tt>fltk::pop_clip()</tt></a>.  Fltk
+may also set up clipping before draw() is called to limit the drawing
+to the region of the window that is damaged.
+
+<p>When drawing you can also test the current clip region with
+<tt>fltk::not_clipped()</tt> and <tt>fltk::clip_box()</tt>.  By using these
+to skip over complex drawings that are clipped you can greatly speed
+up your program's redisplay.
+
+<p>Notice that the width and height of the clipping region is measured
+in transformed coordianates.
+
+<h4><a name=push_clip>void fltk::push_clip(int x, int y, int w, int h)</a></h4>
+
+Pushes the <i>intersection</i> of the current region and this
+rectangle onto the clip stack.
+
+<h4><a name=clip_out>void fltk::clip_out(int x, int y, int w, int h)</a></h4>
+
+Remove the rectangle from the current clip region, thus making it a
+more complex shape.  This does not push the stack, it just replaces
+the top of it. <i>This does not work on X or Win32 unless
+<tt>fltk::push_clip()</tt> has been called at least once.</i>
+
+<h4><a name=push_no_clip>void fltk::push_no_clip()</a></h4>
+
+Pushes an empty clip region on the stack so nothing will be clipped.
+This lets you draw outside the current clip region.  <i>You should not
+use this :-)</i>
+
+<h4><a name=pop_clip>void fltk::pop_clip()</a></h4>
+
+Restore the previous clip region. <I>You must call
+<tt>fltk::pop_clip()</tt> exactly once for every time you call
+<tt>fltk::clip()</tt>.  If you return to FLTK with the clip stack not
+empty unpredictable results occur.</I>
+
+<h4><a name=not_clipped>int fltk::not_clipped(int x, int y, int w, int h)</a></h4>
+
+Return non-zero if the intersection of the rectangle and the current
+clip region is non-zero.  If this returns zero you don't have to draw
+anything in that rectangle.  <I>Under X this returns 1 if the
+interesection is equal to the rectangle, and 2 if the intersection is
+only part of the rectangle.</i>
+
+<h4><a name=clip_box>int fltk::clip_box(int x, int y, int w, int h, int& X, int& Y, int& W, int& H)</a></h4>
+
+Find the smallest rectangle that surrounds the intersection of the
+rectangle <tt>x,y,w,h</tt> with the current clip region.  This
+"bounding box" is returned in <tt>X,Y,W,H</tt>.  The return value is
+non-zero if the bounding box is different than the rectangle.  If the
+intersection is empty then <tt>W</tt> and <tt>H</tt> are set to zero.
+
+<p>This can be used to limit complex pixel operations (like drawing
+images) to the smallest rectangle needed to update the visible area.
+
+<h2><a name=dcolors>Colors</a></h2>
+
+<h4><a name=color>void fltk::color(<a href=Fl_Color.html>fltk::Color</a>)</a></h4>
+
+Set the color for all subsequent drawing operations. <tt><a
+href=Fl_Color.html>fltk::Color</a></tt> is a typedef for a 32-bit integer
+containing r,g,b bytes and an "index" byte.  The index is used if
+r,g,b is zero. For instance <tt>0xFF008000</tt> is 255 red, zero
+green, and 128 blue.
+
+<p>(On non-TrueColor X displays fltk rounds the desired color to the
+nearest color in a small (200) set of colors and allocates that from X
+to avoid consuming the entire colormap. On Windows colormapped displays
+the system dithering is used for all colors, which looks lousy, but
+Windows does not have the defective X behavior and thus you usually
+are not forced to set the screen to 8-bit mode)
+
+<h4><a href=Fl_Color.html>fltk::Color fltk::color()</a></h4>
+
+Returns the last <tt>fltk::color()</tt> that was set.  This can be used 
+for state save/restore.
+
+<h2><a name=dlines>Line dashes and thickness</a></h2>
+
+<h4><a name=line_style>void fltk::line_style(int style, int width=0, char* dashes=0)</a></h4>
+
+Set how to draw lines (the "pen").  If you change this it is your
+responsibility to set it back to the default with
+<tt>fltk::line_style(0)</tt>.
+
+<p><i>style</i> is a bitmask in which you 'or' the following values.  If
+you don't specify a dash type you will get a solid line.  If you don't
+specify a cap or join type you will get a system-defined default of
+whatever value is fastest.
+
+<ul>
+<li><tt>fltk::SOLID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -------</tt>
+<li><tt>fltk::DASH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - - - -</tt>
+<li><tt>fltk::DOT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ·········</tt>
+<li><tt>fltk::DASHDOT&nbsp;&nbsp;&nbsp; - · - ·</tt>
+<li><tt>fltk::DASHDOTDOT - ·· - ··</tt>
+<li><tt>fltk::CAP_FLAT</tt>
+<li><tt>fltk::CAP_ROUND</tt>
+<li><tt>fltk::CAP_SQUARE</tt> (extends past end point 1/2 line width)
+<li><tt>fltk::JOIN_MITER</tt> (pointed)
+<li><tt>fltk::JOIN_ROUND</tt>
+<li><tt>fltk::JOIN_BEVEL</tt> (flat)
+</ul>
+
+<p><i>width</i> is the number of pixels thick to draw the lines.  Zero
+results in the system-defined default, which on both X and Windows is
+somewhat different and nicer than 1.
+
+<p><i>dashes</i> is a pointer to an array of dash lengths, measured in
+pixels.  The first location is how long to draw a solid portion, the
+next is how long to draw the gap, then the solid, etc.  It is
+terminated with a zero-length entry.  A null pointer or a zero-length
+array results in a solid line. Odd array sizes are not supported and
+result in undefined behavior.  <i>The dashes array does not work on
+Windows 95/98, use the dash styles instead.</i>
+
+<h2><a name=dpath>Path construction and drawing</a></h2>
+
+These functions let you draw arbitrary shapes with 2-D linear
+transformations.  The functionality matches that found in Adobe&reg;
+PostScript<SUP>TM</SUP>. On both X and WIN32 the transformed vertices are
+rounded to integers before drawing the line segments: this severely
+limits the accuracy of these functions for complex graphics, so use
+OpenGL when greater accuracy and/or performance is required.
+
+<h4><a name=newpath>void fltk::newpath()</a></h4>
+
+Clear the current "path". This is normally done by fltk::fill() or any
+other drawing command.
+
+<h4><a name=vertex>void fltk::vertex(float x, float y)
+<br>void fltk::vertex(int x, int y)</a></h4>
+
+Add a single vertex to the current path. (If you are familiar with
+PostScript, this does a "moveto" if the path is clear or fltk::closepath
+was done last, otherwise it does a "lineto").
+
+<p>fltk::vertex(int,int) is provided because it is much faster than
+the floating-point version. However C++ will not "resolve" which one
+you want to call if you try passing doubles as arguments. To get it to
+compile, make sure you cast the arguments to float (add 'f' after
+floating-point constants). Use the 'f' versions (ie sinf(), cosf(),
+etc) of the math functions from &lt;fltk/math.h&gt; to produce floats
+and get maximum calculation speed.
+
+<h4><a name=vertices>void fltk::vertices(int n, const float v[][2]);
+<br>void fltk::vertices(int n, const int v[][2]);</a></h4>
+
+Add a whole set of vertices to the current path. This is much faster
+than calling fltk::vertex once for each point.
+
+<h4><a name=transformed_vertices>void fltk::transformed_vertices(int n, const float v[][2]);</a></h4>
+
+Add a set of vertices to the current path where the coordinates are
+in the units returned by <a href="#transform">fltk::transform()</a>.
+This is used by <a href="#curve">fltk::curve()</a> and can be used by
+other code to calculate shapes.
+
+<h4><a name=closepath>void fltk::closepath();</a></h4>
+
+Similar to drawing another vertex back at the starting point, but fltk
+knows the path is closed. The next <tt>fltk::vertex</tt> will start a new
+disconnected part of the shape.
+
+<p>It is harmless to call <tt>fltk::closepath()</tt> several times in a
+row, or to call it before the first point. Sections with less than 3
+points in them will not draw anything when filled.
+
+<h4><a name=curve>void fltk::curve(float x, float y, float x1, float y1, float x2, float y2, float x3, float y3)</a></h4>
+
+Add a series of points on a Bezier curve to the path.  The curve ends 
+(and two of the points) are at <tt>x,y</tt> and <tt>x3,y3</tt>. 
+
+<h4><a name=arc>void fltk::arc(float x, float y, float w, float h, float start, float end)</a></h4>
+
+Add a series of points to the current path on the arc of an
+ellipse. The ellipse in inscribed in the <tt>x,y,w,h</tt> rectangle,
+and the <tt>start</tt> and <tt>end</tt> angles are measured in degrees
+counter-clockwise from 3 o'clock, 45 points at the upper-right corner
+of the rectangle.  If <tt> end</tt> is less than <tt>start</tt> then
+it draws the arc in a clockwise direction.
+
+<h4><a name=ellipse>void fltk::ellipse(float x, float y, float w, float h)</a></h4>
+
+Does closepath() and then adds a series of points on the edge of an
+ellipse inscribed in the given rectangle, then another closepath().
+
+<p>This tries to take advantage of the primitive drawing provided by X
+and Win32, which means it only draws the right thing if the rotation
+is a multiple of 90 degrees, or if the shape is a circle. Currently
+there can only be one ellipse or circle in a path.
+
+<h4><a name=circle>void fltk::circle(float x, float y, float r)</a></h4>
+
+<tt>fltk::circle()</tt> draws a circle of radius r centered on the point
+x,y. The result is always a circle, irregardless of scale. This also
+tries to take advantage of the X/Win32 graphics primitives like fltk::ellipse.
+
+<h4><a name=points> void fltk::points()</a></h4>
+
+Draw a point (one pixel) for every vertex in the path, then clear the
+path.
+
+<h4><a name=stroke> void fltk::stroke()</a></h4>
+
+Draw a line between all the points in the path (see fltk::line_type() for
+ways to set the thicknesss and dot pattern of the line), then clear
+the path.
+
+<h4><a name=fill>void fltk::fill()</a></h4>
+
+Does <tt>fltk::closepath()</tt> and then fill with the current color, and
+then clear the path.
+
+<p>For portability, you should only draw polygons that appear the same
+whether "even/odd" or "non-zero" winding rules are used to fill them.
+This mostly means that holes should be drawn in the opposite direction
+of the outside.
+
+<h4><a name=fill_stroke>void fltk::fill_stroke(fltk::Color linecolor)</a></h4>
+
+Does <tt>fltk::fill()</tt>, then sets the current color to
+<i>linecolor</i> and does <tt>fltk::stroke</tt> with the same closed
+path, and then clears the path.
+
+<h2><A name=dfast>Drawing that bypasses the path mechanism</a></h2>
+
+These graphics will go directly to the primitives provided by X or
+GDI. Only the x,y coordinates are transformed and in most cases they
+are rounded to the nearest integer.
+
+<h4><a name=rect>void fltk::rect(int x, int y, int w, int h)</a></h4>
+
+Draw a line <I>inside</I> this bounding box (currently correct only
+for 0-thickness lines).
+
+<h4><a name=rectf>void fltk::rectf(int x, int y, int w, int h)</a></h4>
+
+Color a rectangle that exactly fills the given bounding box.
+
+<h4><a name=line>void fltk::line(int x, int y, int x1, int y1)</a></h4>
+
+Draw a straight line between the two points.
+
+<h4><a name=pie>void fltk::pie(int x, int y, int w, int h, float start, float end, int what=FL_PIE);</a></h4>
+
+These functions match the rather limited circle drawing code provided
+by X and WIN32.  The advantage over using <A
+href=#arc><tt>fltk::arc</tt></A> is that they are faster because they
+often use the hardware, and they draw much nicer small circles, since
+the small sizes are often hard-coded bitmaps. Only the integer
+translation of the current transformation is obeyed on most systems.
+
+<p>The allowed types are:
+
+<ul>
+<li><tt>fltk::PIE</tt> fills a pie-slice shape
+<li><tt>fltk::CHORD</tt> join the ends of the arc with a straight line
+and fill.
+<li><tt>fltk::ARC</tt> stroke the curved edge of the arc.
+</ul>
+
+<h2><a name=dtext>Text</a></h2>
+
+See <a href=Fl_Font.html>fltk::Font</a> for a description of what can be
+passed as a font. For most uses one of the built-in constant fonts
+like <tt>fltk::HELVETICA</tt> can be used.
+
+<h4><A name=font>
+void fltk::font(<a href=Fl_Font.html>fltk::Font</a>, float size)</a></h4>
+
+Set the current font and font scaling so the size is <i>size</i>
+pixels. The size is unaffected by the current transformation matrix
+(you may be able to use <a href="#transform">fltk::transform()</a> to
+get the size to get a properly scaled font).
+
+<p>The size is given in pixels. Many pieces of software express sizes
+in "points" (for mysterious reasons, since everything else is measured
+in pixels!). To convert these point sizes to pixel sizes use the
+following code:
+
+<pre>
+const fltk::Screen_Info& info = <a href="Fl.html#info">fltk::info()</a>;
+float pixels_per_point = info.height/(info.height_mm*(72/25.4));
+float font_pixel_size = font_point_size*pixels_per_point;
+</pre>
+
+<h4><A name=font_named>void fltk::font(const char* name, float size);<br>
+void fltk::font(const char* name, int attributes, float size);</a></h4>
+
+Set the current font by name. Exactly what names work depend on your
+system, it is best to use <a
+href=Fl_Font.html#list_fonts><tt>fltk::list_fonts</tt></a> to see what
+is provided. See <a
+href=Fl_Font.html#find_font><tt>fltk::find_font</tt></a> for how the
+name and attributes are interpreted.
+
+<h4><a name=encoding>void fltk::encoding(const char*);</a></h4>
+
+The encoding determines how the bytes sent to <a
+href=#draw>fltk::draw</a> are turned into glyphs. If the current font
+cannot do the encoding, some default encoding will be used (for
+instance the Symbol font always works without having to set the
+encoding).
+
+<p>In current implementations you must call <a href=#font>fltk::font(...)</a>
+after this for the change in encoding to take effect.
+
+<p>The only way
+to find out what encodings are going to work is to call <a
+href=Fl_Font.html>fltk::Font::encodings()</a>.
+
+<p>In general you should set this on startup to your locale, and leave
+it alone. We hope to support UTF-8 encoding by default in fltk in the
+future. It is likely that when this happens support for fltk::encoding()
+will be removed.
+
+<p>The default is "iso8859-1"
+
+<h4>fltk::Font fltk::font()</h4>
+
+Returns the current font.
+
+<h4><a name=size>float fltk::size()</a></h4>
+
+Returns the current font size.
+
+<h4>const char* fltk::encoding();</h4>
+
+Returns the current encoding.
+
+<h4><a name=height>float fltk::height()</a></h4>
+
+Returns the vertical size of the font according to the system.  I
+recommended that you use <tt>fltk::size()</tt> instead for portability
+and because many X fonts return erroneous values for this. Notice that
+the dimension is in transformed coordinates.
+
+<h4><a name=descent>float fltk::descent()</a></h4>
+
+Recommended distance above the bottom of a <tt>fltk::height()</tt> tall 
+box to draw the text at so it looks centered vertically in that box. 
+Notice that the dimension is in transformed coordinates.
+
+<h4><a name=width>float fltk::width(const char*)
+<br>float fltk::width(const char*, int n)</a></h4>
+
+Return the pixel width of a nul-terminated string, or a string of
+length <tt>n</tt> bytes.  Notice that the dimension is in transformed
+coordinates.
+
+<h4><a name=draw>void fltk::draw(const char*, float x, float y)
+<br>void fltk::draw(const char*, int n, float x, float y)</a></h4>
+
+Draw a nul-terminated string or an array of <i>n</i> bytes
+starting at the given location. 
+
+<h4><a name=transformed_draw>void fltk::transformed_draw(const char*,
+int n, float x, float y)</a></h4>
+
+Draw an array of <i>n</i> bytes starting at the given location,
+which is given in actual device units, such as those returned by <a
+href="#transform">fltk::transform()</a>. You must use this if you wish
+to accurately append pieces of text together.
+
+<h4>void fltk::draw(const char*, int x, int y, int w, int h, fltk::Flags)</h4>
+
+Fancy string drawing function which is used to draw all the labels.
+The string is formatted and aligned inside the passed box (only the
+x/y are transformed, the width and height are in device units).
+Handles '\t' and '\n', expands all other control characters to ^X, and
+aligns inside or against the edges of the box.  See <A
+href=Fl_Labeltype.html> <tt>fltk::Labeltype_::draw()</tt></A> for values
+for the flags (<tt>fltk::ALIGN_INSIDE</tt> is ignored, it acts like it is
+always on).
+
+<h4><a name=measure>void fltk::measure(const char*, int& w, int& h)</a></h4>
+
+Measure how wide and tall the string will be when printed by the
+<tt>fltk::draw(...align)</tt> function.  If the incoming <i>w</i> is
+non-zero it will wrap to that width.  Notice that the dimensions are
+in transformed coordinates.
+
+<h2><a name=dimages>Images</a></h2>
+
+If you plan to draw the same image many times, you may want an <a
+href=Fl_Image.html><tt>fltk::Image</tt></a> subclass such as <A
+href=Fl_Bitmap.html><tt>fltk::Bitmap</tt></A>, <A
+href=Fl_RGB_Image.html> <tt>fltk::RGB_Image</tt></A>, or <A
+href=Fl_Pixmap.html><tt>fltk::Pixmap</tt></A> and call <a
+href=Fl_Image.html#draw><tt>draw()</tt></a> on them. The advantage of
+using the object is that FLTK will cache translated forms of the image
+(on X it uses a server pixmap) and thus redrawing is <I>much</I>
+faster.  In addition, on current systems, <tt>fltk::Image</tt> is the
+only way to get transparency or to draw 1-bit bitmaps.
+
+<p>The advantage of drawing directly is that it is more intuitive, and
+it is faster if the image data changes more often than it is redrawn.
+
+<p>Currently the image is only affected by the integer portion of the
+current transformation. This may change in future versions!
+
+<h4><a name=draw_image>void fltk::draw_image(const uchar*, int X, int Y, int W, int H, int D = 3, int LD = 0)
+<br>void fltk::draw_image_mono(const uchar*, int X, int Y, int W, int H, 
+int D = 1, int LD = 0)</a></h4>
+
+Draw an 8-bit per color RGB or luminance image.  The pointer points at
+the byte of red data of the top-left pixel.  Data must be in <tt>r,g,b</tt>
+order. <tt>X,Y</tt> are where to put the top-left corner. <tt>W</tt>
+and <tt>H</tt> define the size of the image. <tt>D</tt> is the delta
+to add to the pointer between pixels, it may be any value greater or
+equal to <tt>3</tt>, or it can be negative to flip the image
+horizontally. <tt>LD</tt> is the delta to add to the pointer between
+lines (if 0 is passed it uses <tt>W * D</tt>), and may be larger than
+<tt>W * D</tt> to crop data, or negative to flip the image vertically.
+
+<P>It is highly recommended that you put the following code before the 
+first <tt>show()</tt> of <I>any</I> window in your program to get rid 
+of the dithering if possible:
+
+<pre><a name=Fl.html#visual>fltk::visual(fltk::RGB);</a></pre>
+
+Gray scale (1-channel) images may be drawn.  This is done if <tt>abs(D)</tt>
+is less than 3, or by calling <tt>fltk::draw_image_mono()</tt>.  Only one 
+8-bit sample is used for each pixel, and on screens with different 
+numbers of bits for red, green, and blue only gray colors are used. 
+Setting <tt>D</tt> greater than 1 will let you display one channel of 
+a color image.
+
+<P><I>The X version does not support all possible visuals.</I> If FLTK 
+cannot draw the image in the current visual it will abort.  FLTK 
+supports any visual of 8 bits or less, and all common TrueColor visuals 
+up to 32 bits.
+
+<h4>typedef void (*fltk::draw_image_cb)(void*, int x, int y, int w, uchar 
+*)
+<BR>void fltk::draw_image(fltk::draw_image_cb, void*, int X, int Y, int W, 
+int H, int D = 3)
+<BR>void fltk::draw_image_mono(fltk::draw_image_cb, void*, int X, int Y, 
+int W, int H, int D = 1)</h4>
+
+Call the passed function to provide each scan line of the image.  This 
+lets you generate the image as it is being drawn, or do arbitrary 
+decompression of stored data (provided it can be decompressed to 
+individual scan lines easily). 
+
+<P>The callback is called with the <tt>void*</tt> user data pointer 
+(this can be used to point at a structure of information about the 
+image), and the <tt>x</tt>, <tt>y</tt>, and <tt>w</tt> of the scan line 
+desired from the image.  0,0 is the upper-left corner (<I>not <tt>X,Y</tt>
+</I>).  A pointer to a buffer to put the data into is passed.  You must 
+copy <tt>w</tt> pixels from scanline <tt>y</tt>, starting at pixel <tt>x</tt>
+, to this buffer.
+
+<P>Due to cropping, less than the whole image may be requested.  So <tt>
+x</tt> may be greater than zero, the first <tt>y</tt> may be greater 
+than zero, and <tt>w</tt> may be less than <tt>W</tt>.  The buffer is 
+long enough to store the entire <tt>W * D</tt> pixels, this is for 
+convienence with some decompression schemes where you must decompress 
+the entire line at once: decompress it into the buffer, and then if <tt>
+x</tt> is not zero, copy the data over so the <tt>x</tt>'th pixel is at 
+the start of the buffer.
+
+<P>You can assume the <tt>y</tt>'s will be consecutive, except the 
+first one may be greater than zero.
+
+<P>If <tt>D</tt> is 4 or more, you must fill in the unused bytes with 
+zero.
+
+</body></html>

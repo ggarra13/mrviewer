@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>Preferencia De Caches</title>
+
+
+  <meta content="Gonzalo Garramu&ntilde;o" name="author">
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+<body>
+
+<h3>Preferencia De Caches</h3>
+
+<br>
+
+La ficha de preferencia de caches te permite modificar como funcionan los caches de mrViewer.<br>
+
+<br>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 437px; height: 487px;" alt="" src="images/PreferencesCache.png"></td>
+
+      <td>
+      <div class="menu">Cache Activo</div>
+      <br>
+
+Cuando esta opción esta prendida (por defecto), mrViewer grabará en el cache de memoria las secuencias de imágenes y porciones de los videos.<br>
+
+      <br>
+
+      <div class="menu">Precargar Cache</div>
+      <br>
+
+Cuando esta opción esta activada, mrViewer cargará los cuadros de las secuencias de imágenes en el fondo.  Nótese que esto afecta la velocidad de la interactividad de la interfaz (sobre todo se nota con imágenes de multiples capas).<br>
+
+      <br>
+
+      <div class="menu">8-bit Caches</div>
+
+      <br>
+
+Con esta opcion, mrViewer grabara en el cache imágenes como 8-bits only (como se ven en el display) en vez de en coma flotante o media coma flotante in half cuando es posible.  Esto permite ahorrar memoria si la imagen es de coma o media coma flotante.
+
+       <br>
+      <br>
+
+      <div class="menu">Escala</div>
+
+      <br>
+
+Con esta opción, mrViewer grabará en el cache imágenes a resolución completa (1:1), mitad (1:2), un cuarto (1:4) o un octavo (1:8) de la resolución original.
+      Esta es una opcion para intentar ahorrar memoria cuando la secuencia es muy larga, a cambio de una pixelación de la imagen.
+
+      <br>
+
+
+      <br>
+      <div class="menu">CPS</div>
+
+Con esta opción activada (por defecto), el tamaño del cache será determinado por los Cuadros Por Segundo (CPS) -2 veces el valor de CPS- y el tamaño del cache será descartado.
+      <br>
+
+      <br>
+      <div class="menu">Tamaño del Cache</div>
+
+Cuando CPS está apagado, este valor determina el número de cuadros máximos en el cache.  El cache es para atrás excepto cuando se reproduce para atrás o se hace el fregado (scrub), el cache funciona en dos direcciones.
+
+
+      <br>
+
+</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+</body>
+</html>

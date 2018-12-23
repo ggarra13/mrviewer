@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{32818765-8049-47a3-a1bb-26eeefbd1b92}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\fluid\about_panel.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\alignment_panel.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\CodeEditor.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\coding_style.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\factory.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\fluid.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\Fluid_Image.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\fluid_img.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\fluid_menus.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\Fluid_Plugins.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\FluidType.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\function_panel.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\FunctionType.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\image_file_panel.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\keyboard_ui.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\Shortcut_Button.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\undo.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\widget_panel.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fluid\WidgetType.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\fluid\about_panel.cxx" />
+    <ClCompile Include="..\..\fluid\align_widget.cxx" />
+    <ClCompile Include="..\..\fluid\alignment_panel.cxx" />
+    <ClCompile Include="..\..\fluid\code.cxx" />
+    <ClCompile Include="..\..\fluid\CodeEditor.cxx" />
+    <ClCompile Include="..\..\fluid\coding_style.cxx" />
+    <ClCompile Include="..\..\fluid\coding_style_func.cxx" />
+    <ClCompile Include="..\..\fluid\Enumeration.cxx" />
+    <ClCompile Include="..\..\fluid\factory.cxx" />
+    <ClCompile Include="..\..\fluid\file.cxx" />
+    <ClCompile Include="..\..\src\FileInput.cxx" />
+    <ClCompile Include="..\..\fluid\fluid.cxx" />
+    <ClCompile Include="..\..\fluid\Fluid_Image.cxx" />
+    <ClCompile Include="..\..\fluid\fluid_img.cxx" />
+    <ClCompile Include="..\..\fluid\fluid_menus.cxx" />
+    <ClCompile Include="..\..\fluid\Fluid_Plugins.cxx" />
+    <ClCompile Include="..\..\fluid\FluidType.cxx" />
+    <ClCompile Include="..\..\fluid\function_panel.cxx" />
+    <ClCompile Include="..\..\fluid\FunctionType.cxx" />
+    <ClCompile Include="..\..\fluid\GroupType.cxx" />
+    <ClCompile Include="..\..\fluid\MenuType.cxx" />
+    <ClCompile Include="..\..\fluid\template_panel.cxx" />
+    <ClCompile Include="..\..\fluid\undo.cxx" />
+    <ClCompile Include="..\..\fluid\widget_panel.cxx" />
+    <ClCompile Include="..\..\fluid\WidgetClassType.cxx" />
+    <ClCompile Include="..\..\fluid\WidgetType.cxx" />
+    <ClCompile Include="..\..\fluid\WindowType.cxx" />
+  </ItemGroup>
+</Project>

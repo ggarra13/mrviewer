@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>La Utilidad FFMPEG</title>
+
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+
+</head>
+
+
+<body>
+
+<h2 style="text-decoration: underline;">La Utilidad FFMPEG</h2>
+
+
+<br>
+
+mrViewer viene con una copia de ffmpeg, que es una utilidad de comandos usada para crear películas entre otras cosas.  La version actual soporta archivos OpenEXR sin azulejos (non-tiled) imágenes pero solo con zip, rle, pxr24 y modos sin compresión.  Los EXRs deberían ser también RGB, not Ycc.  Usted puede correr ffmpeg del directorio bin de la instalación de mrViewer.
+<br>
+Usted puede crear archivos de películas mp4 desde imágenes con la siguiente sintaxis:
+<br>
+<div class="console">
+ffmpeg -layer Specular -i image.%04d.exr test.mp4
+</div>
+
+<br>
+En Windows:
+<br>
+<div class="console">
+ffmpeg.exe -layer Specular -i image.%04d.exr video.mp4
+</div>
+<br>
+Si no trabaja con un archivo de openexr con multiples capas, el comando puede ser simplificado a:
+<br>
+<div class="console">
+ffmpeg -i image.%04d.exr video.mp4
+</div>
+<br>
+Para encodificar con alta cualidad y gama 2.2, y una velocidad de 24 cuadros por segundo, esto incluye setear otras opciones, como:
+<br>
+<div class="console">
+ffmpeg -gamma 2.2 -i images.%04d.exr -q:v 0 -r 24 video.mp4
+</div>
+<br>
+Aquí -q:v means video quality y -r es la velocidad de cuadros por segundo.
+<br>
+<br>
+Para más información acerca de ffmpeg refiérase a <a href="https://www.ffmpeg.org/ffmpeg.html"> https://www.ffmpeg.org/ffmpeg.html </a>
+
+</body>
+</html>

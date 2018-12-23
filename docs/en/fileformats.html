@@ -1,0 +1,992 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+  
+  <title>File Formats</title>
+</head>
+
+
+<body>
+
+<br>
+
+
+
+<h2 style="text-decoration: underline;">File Formats</h2>
+
+
+
+mrViewer supports a number of image formats for reading and writing.
+&nbsp;Here's a brief summary of them:<br>
+
+
+
+<br>
+
+
+
+<table style="width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+  <tbody>
+
+
+
+    <tr>
+
+
+
+      <th>
+      
+      
+      <h3>Extension</h3>
+
+
+
+      </th>
+
+
+
+      <th>
+      
+      
+      <h3>&nbsp;Name</h3>
+
+
+
+      </th>
+
+
+
+      <th>
+      
+      
+      <h3>&nbsp;Read</h3>
+
+
+
+      </th>
+
+
+
+      <th>
+      
+      
+      <h3>&nbsp;Write</h3>
+
+
+
+      </th>
+
+
+
+      <th>
+      
+      
+      <h3>&nbsp;Comments</h3>
+
+
+
+      </th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.avi</td>
+
+
+
+      <td style="font-family: monospace;"> AVI</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"> All Channels,
+all codecs</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.bmp</td>
+
+
+
+      <td style="font-family: monospace;"> Microsoft's Bitmap</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.cin</td>
+
+
+
+      <td style="font-family: monospace;">Cineon</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.ct</td>
+
+
+
+      <td style="font-family: monospace;"> mental ray
+floating point color images</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.dds</td>
+
+
+
+      <td style="font-family: monospace;">Microsoft Direct
+Draw Surface</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.dpx</td>
+
+
+
+      <td style="font-family: monospace;">DPX</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.exr</td>
+
+
+
+      <td style="font-family: monospace;">ILM OpenEXR</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace;"> All Channels
+and Layers displayed</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.gif</td>
+
+
+
+      <td style="font-family: monospace;">GIF</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.iff</td>
+
+
+
+      <td style="font-family: monospace;"> Maya IFF</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.jpeg</td>
+
+
+
+      <td style="font-family: monospace;">JPEG</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.map</td>
+
+
+
+      <td style="font-family: monospace;"> mental ray
+textures</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"> Only non-tiled
+maps supported</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.mi</td>
+
+
+
+      <td style="font-family: monospace;">mental ray
+network render file stubs</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;">Floating point connections</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.mov</td>
+
+
+
+      <td style="font-family: monospace;"> Quicktime Movies</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.mpeg</td>
+
+
+
+      <td style="font-family: monospace;">Motion Pictures
+Group</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.nt</td>
+
+
+
+      <td style="font-family: monospace;"> mental ray
+floating point normal images</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.ogg</td>
+
+
+
+      <td style="font-family: monospace;">OGG</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.pdf</td>
+
+
+
+      <td style="font-family: monospace;"> Adobe Postscript</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;">Single page, converted to a bitmap</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.pic</td>
+
+
+
+      <td style="font-family: monospace;"> Softimage pic</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.png</td>
+
+
+
+      <td style="font-family: monospace;">PNG</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.psd</td>
+
+
+
+      <td style="font-family: monospace;">Photoshop</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace;"> All Layers
+displayed, paths and vector graphics lost</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.reel</td>
+
+
+
+      <td style="font-family: monospace;">mrViewer's reel
+(EDL) files</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.rpf</td>
+
+
+
+      <td style="font-family: monospace;">Autodesk 3DS
+Rich Picture Format</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+
+
+      <td style="font-family: monospace;">Some layers
+supported</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.shmap</td>
+
+
+
+      <td style="font-family: monospace;"> mental ray
+floating point shadow maps</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.st</td>
+
+
+
+      <td style="font-family: monospace;"> mental ray
+floating point scalar images</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.tga</td>
+
+
+
+      <td style="font-family: monospace;"> Targa</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.tif</td>
+
+
+
+      <td style="font-family: monospace;"> TIFF</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace;"> All Layers
+displayed</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.vob</td>
+
+
+
+      <td style="font-family: monospace;"> DVD Video</td>
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+      <td style="font-family: monospace; text-align: center;">
+    </tr>
+    <tr>
+
+      <td style="font-family: monospace;">.wmv</td>
+
+
+
+      <td style="font-family: monospace;"> Microsoft WMV</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+
+
+      <td style="font-family: monospace;">WMV9 supported,
+but slow</td>
+
+    </tr>
+
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.z</td>
+
+
+
+      <td style="font-family: monospace;">Renderman Shadow
+Maps</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+
+
+      <td style="font-family: monospace;"></td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;">.zt</td>
+
+
+
+      <td style="font-family: monospace;"> mental ray
+floating point z-depth images</td>
+
+
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</body>
+</html>

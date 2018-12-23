@@ -1,0 +1,174 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>FLTK Win32-Specific Interface</title></head><body>
+
+<h2>WIN32</h2>
+
+<h4><tt>#include &lt;fltk/x.h&gt;</tt></h4>
+
+<p>The <tt>&lt;fltk/x.h&gt;</tt> header file defines the interface to FLTK's 
+WIN32-specific functions.  Be warned that some of the structures and 
+calls in it are subject to change in future version of FLTK.  Try to 
+avoid doing this so your code is portable.
+
+<p>This is the same file that the X-specific interface uses, a
+<tt>#ifdef WIN32</tt> in it causes the win32 header portion to be used.
+Because many of the system-specific calls have the same names (just
+different argument) you can write interesting "portable" system
+specific code.
+
+<p>Fltk creates a single WNDCLASSEX called &quot;FLTK&quot;.  The
+window class is created the first time <tt>fltk::Window::show()</tt> is
+called.
+
+<P>You can probably combine FLTK with other libraries that make their
+own WIN32 window classes.  The easiest way is to call
+<tt>fltk::wait()</tt>, it will call <tt>DispatchMessage</tt> for all
+messages to the other windows.  If necessary you can let the other
+library take over (as long as it calls <tt>DispatchMessage()</tt>),
+but you will have to arrange for the function <a
+href=Fl.html#flush><tt>fltk::flush()</tt></a> to be called
+regularily so that widgets are updated. Timeouts, the idle function,
+and file descriptor callbacks will not work in this case.
+
+<h4><a name=add_handler>void fltk::add_handler(int (*f)(int))</a></h4>
+
+Install a function to parse unrecognized messages sent to FLTK 
+windows.  If FLTK cannot figure out what to do with a message, it calls 
+each of these functions (most recent first) until one of them returns 
+non-zero.  The argument passed to the fuctions is zero.  If all the 
+handlers return zero then FLTK calls <tt>DefWindowProc()</tt>. 
+
+<h4><a name=msg>extern MSG fltk::msg</a></h4>
+
+The most recent message read by <tt>GetMessage</tt> (which is called 
+by <a href=Fl.html#wait><tt>fltk::wait()</tt></a>.  This may not 
+be the most recent message sent to an FLTK window (because our
+fun-loving friends at MicroSoft decided that calling the handle
+procedures directly would be a good idea sometimes...)
+
+<h4><a name=WIN32.xid>HWND fltk::xid(const fltk::Window*)</a></h4>
+
+Returns the window handle for a <tt>fltk::Window</tt>, or zero if not
+<tt>shown()</tt>.
+
+<h4><a name=WIN32.find>fltk::Window* fltk::find(HWND xid)</a></h4>
+
+Return the <tt>fltk::Window</tt> that corresponds to the given window 
+handle, or <tt>NULL</tt> if not found.  This uses a cache so it is 
+slightly faster than iterating through the windows yourself. 
+
+<h4><a name=display>extern HINSTANCE fltk::display;</a></h4>
+
+This is set on program initialization to <tt>GetModuleHandle(0)</tt>
+and can be used to identify this application.
+
+<h4><a name=gc>extern HDC fltk::gc;</a></h4>
+
+This is set before <tt>draw()</tt> is called, or by <a
+href=Fl_Window.html#make_current><tt>fltk::Window::make_current()</tt></a>,
+and can be used as an argument to GDI32 calls.
+
+<p>You may also want the position and size of the window, these can be
+found by looking at <a href=Fl_Window.html#make_current><tt>
+fltk::Window::current()</tt></a>, which returns a pointer to the <tt>
+fltk::Window</tt> being drawn.
+
+<h4><a name=wincolor>COLORREF fltk::wincolor(fltk::Color i);</a></h4>
+
+Returns the <tt>COLORREF</tt> fltk will use for the given fltk color,
+typically this is <tt>RGB(r,g,b)</tt> of the color, or
+<tt>PALETTEINDEX(RGB(r,g,b))</tt> if there is a palette.
+
+<h4><a name=colorref>extern COLORREF fltk::colorref;
+<br><a name=pen>extern HPEN fltk::pen;
+<br><a name=brush>extern HBRUSH fltk::brush;</h4>
+
+These are set by <a href=drawing.html#color><tt>fltk::color()</tt></a>
+and by <a href=drawing.html#line_style><tt>fltk::line_style()</tt></a>,
+by using these in your drawing calls you can provide the illusion that
+GDI has a color in it's graphics state.
+
+<h4><a name=palette>extern HPALETTE fltk::palette;</a></h4>
+
+If non-zero this is the palette alloced by fltk on an 8-bit
+screen. Hopefully you can ignore this, they managed to find a way to
+make it <i>more</i> ugly than the X system, which is truly a triumph
+of software engineering!
+
+<h4><a name=clip_region>HRGN fltk::clip_region();</a></h4>
+
+Return the current clip region, or <tt>NULL</tt> if we are currently
+clipping to the entire window. Notice that this will be destroyed by
+the next change to the clipping, copy it if you want to keep it.
+
+<h4>void fltk::clip_region(HRGN);</h4>
+
+Replace the current clip region with this one, or make there be no
+clipping if <tt>NULL</tt> is passed. The old clip region is destroyed.
+
+<h4><a name=icon>void fltk::Window::icon(char*)</a></h4>
+
+Sets the icon for the window to the passed pointer.  You will need to 
+cast the <tt>HICON</tt> handle to a <tt>char*</tt> when calling this 
+method. To set the icon using an icon resource compiled with your 
+application use: 
+
+<PRE>
+window-&gt;icon((char*)LoadIcon(fltk::display, MAKEINTRESOURCE(IDI_ICON)));
+</PRE>
+
+<p>This only works if called <i>before</i> it is shown using the
+<tt>fltk::Window::show()</tt> method.
+
+<h3>How to Not Get a MSDOS Console Window</h3>
+
+WIN32 has a really stupid mode switch stored in the executables that 
+controls whether or not to make a console window. 
+
+<P>To always get a console window you create a console application
+(the &quot;/SUBSYSTEM:CONSOLE&quot; option for the linker). This works
+fine but there is no way to stop Windows from popping up a terminal if
+you run the program from the GUI.
+
+<p>For a GUI-only application create a WIN32 application (the
+&quot;/SUBSYSTEM:WINDOWS&quot; option for the linker).
+FLTK provides a WinMain() function can be overridden by an application and
+is provided for compatibility with programs written for other
+operating systems that conform to the ANSI standard entry point
+<tt>main()</tt>.  This will allow you to build a WIN32 Application
+without having to change your source files.
+
+<p>Because of problems with the Microsoft Visual C++ header files
+and/or compiler, you cannot have a WinMain function in a DLL.
+I don't know why.  Thus, this nifty feature is only available
+if you link to the static library. You may want to compile the souce
+file <tt>fltk::call_main.c</tt> to a .obj and link it with your program
+when using the DLL version of fltk.
+
+<P>WIN32 applications without a console cannot write to <tt>stdout</tt>
+or <tt>stderr</tt>, <i>even if they are run from a console window</i>.  Any 
+output is silently thrown away. We are not sure why, but we do
+question the sanity of the software engineers there sometimes.
+If FLTK is compiled with <tt>-DDEBUG</tt> then the WinMain will
+create a console window for your application so you can put printf()
+statements for debugging or informational purposes.
+
+<h3>Known Bugs</h3>
+
+If a program is deactivated, <tt>fltk::wait()</tt> does not return until 
+it is activated again, even though many events are delivered to the 
+program. This can cause idle background processes to stop unexpectedly. 
+This also happens while the user is dragging or resizing windows or 
+otherwise holding the mouse down.  I was forced to remove most of the 
+efficiency FLTK uses for redrawing in order to get windows to update 
+while being moved.  This is a design error in WIN32 and probably 
+impossible to get around. 
+
+<P>Cut text contains ^J rather than ^M^J to break lines.  This is a 
+feature, not a bug.
+
+<p>The <tt>WinMain</tt> is a horrid mess and always breaking. This is
+due to a concentrated effort by MicroSoft to make it impossible to
+make portable programs without <tt>#ifdef</tt> statements.
+
+</body></html>

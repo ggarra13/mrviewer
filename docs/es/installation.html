@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+  
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  
+  <title>Instalación</title>
+</head>
+
+
+<body>
+<br>
+
+<h2><span style="text-decoration: underline;">Instalando mrViewer</span></h2>
+
+
+La instalación de mrViewer puede ser hecha simplemente descomprimiendo el archivo zip (Windows) o el archivo gzip tar (Linux).  Esto puede ser hecho con las utilidades unzip o winzip (Windows) o tar en Linux. <br>
+<br><div class="console">
+ $ unzip mrViewer-v${VERSION}-Windows-32.zip 
+<br></div>
+<br>
+<br><div class="console">
+ $ tar -xf mrViewer-v${VERSION}-Linux-64.tgz
+<br></div>
+<br>
+<br>
+Desde la version v2.6.7, mrViewer es distribuído con instaladores para cada platforma. 
+<br> 
+<br>Algunos antivirus se quejan que el instalador de Windows puede ser nocivo.  No hay que prestarle atención.  Si duda del instalador, remítase al archivo zip.  El instalador de Windows correrá y puede crear un item de menu en el menu de Comienzo o, opcionalmente, crear un ícono en el Escritorio, así como modificar la variable PATH de entorno.  Notese que si usted modifica la variable PATH, puede que no pueda correr la version de 32bits de mrViewer junto a la version de 64bits.  También puede que cree problemas con otros programas que usan algunas de las bibliotecas de mrViewer.
+<br>
+<br>
+Los instaladores Linux necesitan permiso de administrador.  Ellos registrarán una entrada en las bases de datos DEB or RPM respectivamente y se instalarán en:
+<br><div class="console">
+ /usr/local/mrViewer-v${VERSION}-${PLATFORM} 
+<br></div>
+ Las utilidades dpkg (DEB) or rpm (RPM) adicionalmente crearán uniones simbólicas (symlinks) en /usr/bin/ e instalaran el ícono en /usr/share/applications que hará que aparezca en los menúes (Graphics).  El ícono también será copiado al Escritorio del usuario.
+<br>
+<br>
+
+El directorio <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> entre todas las cosas contiene el archivo mrViewer.exe (Windows) o mrViewer.sh (Linux).  Ejecutar ese archivo o cualquiera de los íconos iniciará el visor.<br>
+
+</body>
+</html>

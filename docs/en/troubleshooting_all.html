@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  
+  <title>Common Troubleshooting</title><meta content="Gonzalo Garramuño" name="author"></head>
+
+<body>
+<h2 style="text-align: center;">Troubleshooting</h2>
+
+<h3 style="text-align: center;">All Platforms</h3>
+<h4>+ Movies do not play back smoothly in reverse.</h4>
+
+Whenever I try to play back a movie in reverse, the playback is choppy.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">Smooth playback of movies in
+reverse is highly dependant on the speed of your computer as well as
+the resolution and&nbsp;codec used to encode the movie. &nbsp;A lot of codecs assume the
+playback is always done forwards and encode frames by taking advantage
+of frame differences.<br>Sometimes to decode even one frame it is
+needed to know up to a second of all the frames that came before it
+(and sometimes after it, too).<br>
+When playing back in reverse, it means mrViewer needs to work harder in
+decoding several back frames before the current frame is actually
+displayed. &nbsp;If your computer is not fast enough to decode those
+frames under the fps playback, you will see the playback stutter.<br>If
+your movie contains audio, you can often improve reverse playback by
+turning off the audio by going to the audio track selection button and
+selecting &lt;no audio&gt;.<br> 
+A codec that is often good for playback in reverse is the prores codec.<br>
+</span>
+
+<h4>+ Opening mrViewer reports another instance is running.</h4>
+
+Whenever I try to open mrViewer, it fails telling me another instance is running.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">mrViewer supports a mode where only an instance of mrViewer is present so that if you try opening an image in another viewer, the image is redirected towards the first opened viewer.  This feature is set in the preferences.  This system works by creating a dummy mrViewer.lock.prefs file inside the preferences directory.  Sometimes if the viewer was not closed properly, this dummy file is left behind and will incorrectly report that another instance of mrViewer is running.  Under Linux that file is /home/@user@/.fltk/filmaura/ and under Windows, it is %APPDATA%/filmaura.  Removing the file will allow you to open a new mrViewer. </span>
+<br><br>
+
+<h4>+ Watching an image with LUT has the black levels set too high.</h4>
+
+Whenever I try to see an image thru the LUT, it shows up with the black levels set too high.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">This usually means your LUT is set too small or set to cover a small span of fstops.  Go to the Preferences->3D Lut section and change the quality settings to 64x64x64 and fstop to 10 at least.</span>
+<br><br>
+
+<h4>+ Playing a movie has the black levels set too high.</h4>
+
+Whenever I try to play a movie, it shows up with the black levels set too high.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">Assuming your LUT is off, the more likely cause of the problem is that the movie advertises itself as one with Color Space of BT709. This setting can be seen in the Media Information Window and effects the conversion from YUV to RGB for display.  Playback of a BT709 movie corresponds to Rec709 HDTV and that's the reason for the black levels being high.  To solve it, set the Color Space to Unspecified or to BT470.  And make sure that once you save your movies, the Color Space is set appropiately.</span>
+<br><br>
+
+<h4>+ I have a 3D Lut in .3dl format and would like to display it.</h4>
+
+I have a 3d Lut in .3dl format but mrViewer supports only CTL.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">Starting with v3.5.1, mrViewer ships with a small Ruby utility that converts .3dl luts (as created by Nuke) into CTL code.  The program 3dlut2ctl.rb is found in the bin directory of mrViewer and it is run command-line from a bash shell or windows cmd.exe.  It works like:<br><br>
+  3dl2ctl.rb [options] input.3dl output.ctl
+
+  <br><br>
+  Example:
+
+  <br><br>
+  <div class="console">
+    $ 3dl2ctl.rb 3dl/bleach.3dl ctl/LMT.bleach.ctl
+  </div>
+  <br><br>
+  Once that is run and the CTL script is named with some prefix and placed in a CTL directory listed in your CTL_MODULE_PATH, you will be able to use it.  For example, in the example above, going to the Assign Look Mod Transform shall open a requester with LMT.bleach.ctl in it.<br>
+  Note that currently the conversion is done in float, and the input/output set to 10/12/16 bits is disregarded.
+  
+</span>
+<br><br>
+
+</body></html>
+ 

@@ -1,0 +1,2600 @@
++ Added SystemMenuBar for Apple OS X.
+/////////////////////////////////////////////////////////////////////
++ Change ItemGroup to follow other group standards : now NO begin() is called
+  anymore in constructor, alternatively one can now use the MenuSection service
+  to automatically genenerate  begin() / end () calls
+  see fluid/fluid_menus.cxx use and doxygen autodocumentation for more info
+/////////////////////////////////////////////////////////////////////
++ New Widget image() extensions and API
+  now context dependent image() API has been added to the Widget
+  it is now possible to affect up to 4 different images for common events.
+  it is also possible to use alternatively on MultipleImage even more, 
+  up to 8 different combination of flags see buttons demo for use of these new API
+
++ new Browser features and API
+  now it is possible to affect images to node depending on their state closed, open and belowmouse.
+  new tree API available to rapidly implement load tree browser with arborescent data (add_leaf(), 
+  add_group(), set_symbol(), get_symbol())  see browser demo for demonstrating these new features
+
++ More genericity to Image and derived classes, now SharedImage::get() allow to load an image 
+  from its name without specifying it's type.
++ Generic fetch() Image method allow to preload an image without drawing it, then new dimension 
+   info. api will allow to dynamically discover its pixel type, depth, scanline size, and other 
+  useful parameters. Used in FileIcon2.cxx to load generically any image with a pixel buffer 
+  or pixmap data buffer.
++ Smart adjustements made to symbols in widgets when image data doesn't match widget size 
+  but still widget has a border
++ Added generic color_average() Image algo and inactive() API to Image base class,  quite differently 
+  from fltk1.1.x, in fltk2 this algo is generic so it will suit potentially any kind of image 
+  and pixel depth (tested successfully with pixmaps, png, jpegs).So now inactive images can have 
+  its data modified by calling inactive() method as in fltk1.1.x to desaturate them. see buttons demo 
+  for demonstration. Still one can override this color_average() method to change the algo.
+/////////////////////////////////////////////////////////////////////
+1. Fl_Window::clear_border() will remove the border from a window,
+   and Fl_Window::border() will return false if this has been done.
+   The functions set_border() and border(value) have been deleted.
+   You can no longer toggle the border on/off.  This only worked on
+   IRIX 4Dwm (and flwm) and did not work on WIN32.  This was only used
+   by Fl_Window::fullscreen to work on IRIX, this hack is now
+   localized to the fullscreen() method.
+
+   On X turning off the border causes "override redirect".  This is
+   only good for short-lived windows where you either don't care if
+   they get buried or if you have Fl::grab() on.  However this is the
+   only reliable and fast way to get a window with no border and is
+   exactly what is wanted for menus and tooltips and that is what fltk
+   needs now so that is what it is going to do...
+
+   On X turning off the border also turns on X "save_under" which on
+   many X servers (like XFree86) can make the window pop-down much
+   faster.  This *would* be nice for modal() windows but it looks like
+   most window managers do not move this property from the child to
+   the border, so setting it is worse than useless.
+
+2. Fltk no longer moves windows from the specified position() to try
+   to get them on the screen.  Notice that most (all?) X window
+   managers do this anyway, so if you are developing under X make
+   sure you are not accidentally placing windows off-screen, in case
+   you want to run on WIN32 or on other X window managers.
+
+   A new method Fl_Window::move(x,y) is the same as position(x,y) but
+   it clamps the position such that the border and contents of the
+   window stay on the screen.
+
+   The Fl_Window::hotspot(x,y) methods also do this clamping.  They
+   take an optional third boolean argument "offscreen", which if true
+   will disable the clamping.
+
+3. Fl_Window::show_inside(window) will make the window with a normal
+   system border and behavior, but place it inside the other window as
+   though it was the desktop.  This is what Windows calls "mdi
+   interface".  Typically the other window (which must already be
+   shown) is a child window so that space can remain around it for a
+   title bar.
+
+   Notice that parent() of the window must be zero and it will remain
+   zero after this is called.  Fltk uses a zero parent to indicate
+   that the system is managing the window.
+
+   On systems that don't support nested desktops (ie X) this does
+   show(window), which produces a normal overlapping window, which
+   IMHO is actually a much nicer interface.  Iconizing the outer
+   window will iconize all the inside windows for most X window
+   managers.
+
+4. Menu items have a new flag, FL_MENU_STAYS_UP.  This indicates that
+   picking this item does the callback but does not dismiss the menu.
+   Normal check+radio buttons are back to the original behavior.  You
+   can set this flag on any items you want, not just check+radio.
+
+These changes have been typed into the WIN32 code but have not been
+tested!
+
+CHECKED IN 10/2/99
+////////////////////////////////////////////////////////////////
+
+Cleaned up and sped up the Fl_Group code (suggestions from Curtis)
+
+Removed the hack that saved a malloc for 1 child of a group.  This
+allows Fl_Group::array() to be an inline method, which probably saves
+more space than the hack did.
+
+Simplified Fl_Valuator by making step_ a single value.
+
+Cleaned up the code for Fl_Slider a lot.
+
+Fl_Slider::slider_size() is now an integer number of pixels.  This may
+be incompatable but makes it possible to draw fixed-sized glyphs as
+the slider.  I added a method slider_position(W,S) so that a subclass
+can find out the pixel position of the slider in order to draw it.
+
+Fl_Scrollbar now has a minimum slider_size of a square, and clicking
+outside the slider causes page up/down.
+
+CHECKED IN 10/3/99
+////////////////////////////////////////////////////////////////
+
+Fl_Gl_Window::ortho() sets the glViewport() to maximum size and places
+the upper right corner at the upper right of the window.  This is so
+that text and images can have origins outside the bottom or left edges
+and still draw.
+
+Disabled XDBE use everywhere.  It does not work on the newest versions
+of Irix (on Octanes and Infernos) and I give up.  The code is there
+but ./configure turns it off for everybody.
+
+Some other fixes from 1.0.6
+
+////////////////////////////////////////////////////////////////
+
+Much simpler and *minimal* thread support in Fl_lock.cxx.  I was
+worried about fltk getting too far away from it's job of doing GUI.
+This minimal version has 3 calls: Fl::lock(), Fl::unlock(), and
+Fl::awake().  Fl::lock() serves the "initialization" purpose.
+
+To create threads or do any other locks requires non-fltk code.  This
+is probably "correct" in that this is not fltk's job, but it may be
+too much of a pain and may cause people to write non-portable code.
+So it may pay off to put the portable wrappers back in?
+
+Other changes:
+
+I moved the creation of the pipe to Fl::lock() and other changes so
+that if it is not called the overhead is minimal.
+
+Fl::lock() is a "recursive lock".  This makes the Windoze version and
+Unix version match.
+
+On Windoze it uses a "CRITICAL_SECTION" rather than a "mutex".  This
+is much lighter object since it is process-local and is the
+equivalent of a pthread mutex.
+
+////////////////////////////////////////////////////////////////
+
+Simpler plugin support:
+
+The function fl_load_plugin(name, type) tries each of the following
+locations to load a shared object:
+
+	$HOME/.type/name (on Windoze it uses $WINDIR if $HOME not set)
+	/usr/local/lib/type/name
+	/lib/type/name
+
+The first one it finds it then loads, and it runs "main(int argc,
+char**argv)" with argc == 1 and argv[0] == plugin file name (this
+allows relative pathnames to be used by the plugin).  I used "main"
+because C++ does not mangle the name, if everybody thinks this is
+stupid we could probably go back to the fltk_plugin idea.
+
+fl_load_plugin() returns true if the plugin was found and main() returns
+zero.
+
+Fltk itself calls this function ONCE, like this (ps this is not done
+by the Windows version yet):
+
+	fl_load_plugin(theme, "fltk/themes");
+
+where "theme" is either the -theme switch or "default".
+
+The plugin is free to call fl_load_plugin itself if it needs several
+pieces of code.
+
+Several rather simple examples of plugins are provided in the themes
+subdirectory.  To use them link this directory to ~/.fltk/themes.  If
+we want to write a theme that parses a file, I suggest we look into
+reading KDE themes, though it should not be hard to write one that
+reads the existing files.
+
+////////////////////////////////////////////////////////////////
+
+I rewrote Fl_Style_Definer so that the list of styles is publically
+accessible, thus allowing the plugins to read them.
+
+////////////////////////////////////////////////////////////////
+
+Fixed the Fl_Color_Chooser so the color chips are visible.
+
+Checked in oct 27
+
+////////////////////////////////////////////////////////////////
+
+FL_SYMBOL_LABEL obeys alignment (makes them square too, without the #
+sign)
+
+Fixed the buttons vanishing in the label demo program (this was a
+problem with the forms emulation).
+
+fl_width uses XTextWidth, which should allow kerning fonts to work
+(though I suspect X does not support these anyway).  We should use
+GetTextExtents on Win32.
+
+Made the sliders & scrollbars highlight when you are pointing at the
+trough.
+
+Fixed the pagesize of the scrollbars.
+
+Removed the remaining occurances of \nnn printing of characters from
+labels and input widgets.
+
+Checked in 11/2
+
+////////////////////////////////////////////////////////////////
+
+Alexandar Mai's changes for OS2
+
+Larry Charltons changes for Borland C++.
+
+Moved all the forms emulation and glut emulation to their own source
+files.  They are now under ./forms and ./glut in the top-level
+directory.
+
+Tried to clean up the lock/unlock.  I moved the entire implementation
+of Fl_Mutex and and fl_create_thread to the header file as inline
+functions.  Also added Fl_SignalMutex, which is both a mutex and a
+signalling mechanism between threads.
+
+You MUST call Fl::lock() to initialize the thread support, so I moved
+the initialization there.  The reason is that if fltk tries to do
+unlock() without lock() having been done pthreads can crash (or at
+least go into a bad state).  Fixed the demo program to do this.
+
+Restored old version where Fl_Widget::color(), etc are simple inline
+functions!  This was an awful lot of work.  See the email.
+
+Checked in 11/6
+
+////////////////////////////////////////////////////////////////
+
+Removed aspect ratio from size_range.  This is unsupported on Win32
+and on many X window managers.
+
+Replaced Fl_Style_Definer with Fl_Named_Style subclass.  This should
+avoid problems with static variables not being created by the
+compiler, and is also a lot simpler.  Need to do the same thing for
+the boxtypes, too...
+
+All the styles are named with the class name with "Fl_" stripped from
+the start.  However I fixed the lookup function so that '_' and ' '
+match.
+
+Removed Fl_Box::default_style.  It is (I believe) useless for a
+theme to modify this one.
+
+Fixes win_gravity.
+
+Fixed fluid to not require libfltk_forms
+
+Removed the "no box fudge factors" from fl_glyph.  The callers should
+adjust the area correctly instead.  I have found that such factors in
+the lower levels are a real pain to get around.
+
+////////////////////////////////////////////////////////////////
+
+Rewrote the glpuzzle demo program to not use glut and put this in the
+test directory (the original still remains in the glut directory)
+
+Fl_Style uses the existence of the revert function to determine if
+they are local or not, got rid of the "dynamic" member.
+
+Put the inactive boxtypes code back, but this time I fixed the code so
+it produces the same colors (rounded to the nearest entry in the
+colormap) as Carl's code does.  The output looks identical to me.
+Also restored the box edge patterns to the less-motif and more rounded
+style I was using (not sure if this was intended by Carl or a
+mistake).
+
+////////////////////////////////////////////////////////////////
+
+Removed the highlight value from Fl_Boxtype.  Replaced with a
+boxdrawing function that draws flat normally and another box type if
+either highlight or value is on.  The value is passed to this other
+boxtype, so it can draw up/down as necessary.
+
+Got rid of the cast-away-const stuff in Fl_Menu_Item::draw.  This does
+not work anyway as the menu-title flag is not set until the first time
+the item is drawn, preventing modifications to the menu title from
+inheriting from the menu-title style.  Instead it directly references
+the menu-title style for box&color, ignoring the menu item's style.
+It also directly references the menu_item default style in some cases
+to get around menu items which set the selection color.
+
+Made both the menu items and the menu titles use "selected" colors to
+indicate that they are chosen.  This makes them consistent with each
+other.  Note that themes that set the highlighted color on menu items
+have to change to set the selected color instead.
+
+Made Fl_Style::dynamic() be an inline method.
+
+Moved all the Fl_Style code into it's own source file, also merged in
+the Fl_Input_Style code to it.
+
+Added "leading" to the style structure.  This is extra line spacing
+between text items.  The Fl_Browser, Fl_Input/Output, and menu windows
+use this.  Replaces fl_extra_menu_spacing.  The default is zero except
+for menu windows which default to 4.  Unfortunately the menu item box
+size is added to this, so if you set the menu item box you probably
+need to change this value.  Perhaps this box and the selected color
+should be on the menu window style so all the related stuff is in the
+same place?
+
+////////////////////////////////////////////////////////////////
+
+Fixed the fonts demo to show characters with the high bit set
+(including the "hole" that MicroSoft filled in on their fonts)
+
+I want the default appearance to be *identical* on all platforms.  If
+this means changing it to be more windoze-like for people to accept
+the toolkit as-is, then I'll do that.  Current differences from win98
+appearance are:
+
+1. The black triangles in menus and scrollbar buttons are larger.
+
+2. Vertical spacing between menu items is much smaller.
+
+3. Highlighting of menubar is disabled, to be consistent with the fact
+   that highlight is disabled everywhere else.
+
+4. Check boxes and radio buttons in menus look just like check and
+   radio buttons on the main windows.
+
+5. The shading of button borders were selected to look more rounded and
+   friendly, and they do match *some* Win32 applications.
+
+Changes required:
+
+   Made FL_NORMAL_SIZE be 12 (it is recommended you shrink all your
+   widgets to match, for instance menubars should be 25 pixels tall).
+
+   Made FL_HIGHLIGHT_UP/DOWN_BOX draw a THIN box.  We do not seem to be
+   using the FL_FLAT_UP/DOWN_BOX and maybe these should be deleted.
+
+Carl: if the user changes the colors on windoze it will wipe out any
+loaded theme.  I recommend you split the color-setting portion from
+the rest of fl_windows() and put it as a static function into
+Fl_win32.  Call it when the first window is shown and in response to
+the event.  Don't call fl_windows() anywhere by default.  Also remove
+the duplicate code from Fl::arg().
+
+////////////////////////////////////////////////////////////////
+
+It uses the current font size instead of fl_height() to measure text
+vertically.  This I think it the source of differences in appearance
+between X and Win32.  On X the font reports a height that is often
+much larger than the point size used to select it.  This also requires
+widgets to open the display just to measure themselves.  With this fix
+the default "leading" of 2 looks correct (and in fact it cannot be
+less than 2 for some X fonts, although True Type fonts are ok).
+
+While I was at it I changed fl_width to return int instead of double.
+Almost every call just cast it to int anyway.  (if a system ever
+returns float we can add a new call for that)
+
+Fl_Tile and Fl_Tabs do their callback() on changes made by the user.
+
+////////////////////////////////////////////////////////////////
+
+Stopped embossed boxes from drawing engraved when pushed.  This seems
+more consistent with Carl's other boxes.
+
+Restored the 3-d choice mark.  But maybe a down-arrow would be
+better.  I altered the code so the FL_Choice and Fl_Menu_Button draw
+the glyph in exactly the same position and size.
+
+////////////////////////////////////////////////////////////////
+
+Made the individual glyph functions private to the widgets that use
+them.  You can still replace them in styles, and even call them by
+copying the pointer out of the default style.
+
+Make draw_glyph() check active_r(), as all calls to it were doing
+this.  This cut out some code.
+
+Tried to fix the indented glyph types in fl_windows.cxx.
+
+////////////////////////////////////////////////////////////////
+
+Made the FL_UP_BOX and FL_NORMAL_BOX back to the same thing.  This
+change had broken several old programs that hard-coded the name
+FL_UP_BOX into them.  This also removed some ugly stuff that was done
+to try to keep the box edge patterns working (a better solution would
+have been to make the "normal" box be it's own class).
+
+Changed the calls to get the wheel deltas to inline functions that
+match the design of fltk better.  They are Fl::event_dx(), etc.
+Deleted the "wheel mode" (if an X user wants to disable the wheel they
+can do so by setting the button numbers to zero).
+
+Removed the configuration for the wheel.  In particular I wanted to
+make sure that calls to "getconf" are not in any source code other
+than options, so that we can rewrite this before release to a straight
+parser.  The wheel now reports it's position in "pixels" (assumming
+that each click is 12 pixels, which appears to be MicroSoft's intent).
+
+Browser changed to have the wheel move by "pixels" and to do something
+(not sure if it is correct) if wheel is moved with a button held down.
+
+Rearranged and simplified the Fl.cxx and Fl_Group.cxx event handling
+so the new FL_MOUSEWHEEL events are handled by the same case as
+several other events, and hopefully new events will also go there.
+
+////////////////////////////////////////////////////////////////
+
+Made fl_rgb(const char*) understand KDE nnn,nnn,nnn format.  This gets
+rid of the need for a special parser for KDE.  Removed
+Fl_get_system_colors.cxx and split it into fl_rgb.cxx and
+fl_background.cxx.  The functions fl_foreground and fl_text_background
+were removed as they are not used by themes.
+
+I redid most (all?) of the changes Carl accidentally deleted.  In
+particular this includes the reservation of FL_KEYUP event number and
+the rewriting of the Fl.cxx and Fl_Group.cxx event handling code.
+
+At the moment the wheel moves by 14*3 pixels per 120 units reported by
+Windows (or per single click reported by X) to correspond to 3 lines
+at standard line spacing.  Still awaiting information about how the UI
+really works, as the current one makes very little sense.  I just
+deleted the configuration stuff, but if we want it we must move the
+"setting" to fl_options.cxx, like all the other settings are.  (I
+would prefer not to have UI-behavior options if at all possible, as it
+can lead to extreme bloat).
+
+Further investigation of the boxtypes shows that the "down" boxes are
+incompatable with fltk1.0, in that making a "down" button and pushing
+it would display an "up" box.  I changed the box definitions to do
+this.  This revealed several places in fl_glyph where it was
+accidentally sending FL_VALUE to the glyph box, which I suspect is why
+Carl had problems with the previous up box.  I tried to fix all the
+occurances I found, but there may be a few more.  "highlight_down_box"
+will not work (it will go up when pushed) but I could not find any
+code that used it, so we may just want to remove it?  I tried the
+Alternative theme and scheme in several test programs and did not see
+any problems.
+
+////////////////////////////////////////////////////////////////
+
+More work on keyboard navigation.  Still having problems with tabs.
+
+Cleaned up Fl_Widget.H:
+
+Got rid of the geti/seti functions and wrote them as real functions,
+this made the code shorter in even the simplest programs (probably
+because the savings of not passing an argument to the function more
+than outweighed the additional code of one function per style entry).
+
+Removed the need for Fl_Group to be a friend by making several
+protected functions public.  This should also eliminate the need for a
+lot of kludges with the Fl_X class used to get around protection of
+the Fl_Window, but I have not fixed this yet.
+
+Larry Charlton's fix so input/output can scroll due to position()
+calls even if they don't have the focus.
+
+////////////////////////////////////////////////////////////////
+
+Fixed selection of multiline Fl_Input when mouse is dragged out top of
+the widget, it puts point at start of text rather than the end.
+
+Fl_Input "grabs" the focus on FL_SHORTCUT if the user types any
+letters and nothing responds to the FL_KEYBOARD event.  This allows
+the navigation to be done without the annoying "dead keyboard" effect
+of other systems.
+
+It looks like only buttons can use the boxtype focus highlighting, and
+even then the colors are wrong.  *All* other widgets need to
+special-case the drawing code.
+
+Vincent's change to make FL_NO_BOX draw highlighting broke Fl_Dial and
+any other widget that assummes it can do minimum update (because the
+widget is erased before it's draw() is called).  Not sure how to fix
+this.  It also looks like only buttons are able to use the boxtype
+focus code (all other widgets need to draw the selection in their own
+way).  If the code was moved to draw_button() it could also use the
+labelcolor to draw the focus so it is visible on dark-colored buttons.
+For now vincent's code only happens if FL_DAMAGE_HIGHLIGHT is on on
+the widget.
+
+////////////////////////////////////////////////////////////////
+
+Keyboard focus now works for the following:
+
+Buttons (space fires the button).  Clicking on a button gives it focus.
+
+Menu buttons and choices work, space brings up the menu.
+
+All valuators except scrollbars.  The arrows, space, backspace, home,
+and end move the.  The sliders/rollers only use arrows in the
+direction they point, allowing other arrows to do navigation.  All
+valuators have a linesize() and pagesize(), which are integer numbers
+of the step() value to move on an arrow or shift-arrow.
+
+Tabs work very much like Windoze.  You can use Ctrl+Tab to cycle the
+tabs enclosing the focus.  You can also navigate to the tabs and use
+left/right arrows or space/backspace to switch tabs.
+
+Browser works, not extensively tested, but it looks good to me.
+
+Input fields grab the focus back if the user starts typing letters,
+hopefully getting rid of the "dead text field" effect that Windoze and
+Motif have.  This works great if there is a single text field, but
+this may need some work if there are multiple ones (it currently goes
+to the last text field).
+
+Scrollbars specifically refuse the focus.  This is to prevent them
+from being navigated to when grouped into a scroll or browser.
+
+Menubars are not done yet.  They will have a default shortcut of the
+alt down/up keystroke (but fltk needs some fixes to detect this), this
+will put them in exactly the same mode as though you clicked on the
+title of the first menu (ie it is already opened!).
+
+////////////////////////////////////////////////////////////////
+
+add_idle adds the new callback to the end of the idle list, rather
+than the start, as suggested by Cliff Miller.  Allows a callback to
+remove/add itself.
+
+Fixed the redraw of the huge scrolling menu (it was not testing for
+the FL_EXPOSE_DAMAGE bit)
+
+Fixed the bad redraw of the checkmark in the menu of the menubar demo
+(caused by it using the wrong color for a highlighted menu title if
+the highlight color was zero)
+
+////////////////////////////////////////////////////////////////
+
+I think I have sucessfully migrated all of Carl's stuff so it is a
+plugin, yet works EXACTLY the same.  See below for description of the
+fltk interface to theme plugins.  This IMHO is highly desirable as it
+removes the database and string constants from the base fltk code, as
+it is *extremely unlikely* these will have anything to do with any
+standard multi-toolkit theme system that may appear, since fltk is not
+quite in a standards-setting position yet :-)
+
+Since one theme can call another (mostly I needed to remove the revert
+calls from them and put that call in loadtheme), I migrated the
+fl_windows, fl_motif, etc functions back as theme plugins as well.
+This is the intention of plugins, they aren't just supposed to call a
+single function back in the main program!
+
+This still needs some work.  It would be nice if most possibilities
+could be named with a single keyword.  Maybe: if the named theme
+plugin is missing, the theme name is passed as an argument to the
+default theme plugin?
+
+changes:
+
+Moved the code in fl_windows, fl_motif, fl_kde, fl_kde_colors,
+fl_options, and conf* out of the library and to the themes
+subdirectory.  See other email describing this.  PLEASE READ, I
+believe this new system works EXACTLY the same!
+
+Changed the config symbol FLTK_LIBDIR to CONFIGDIR and made it contain
+the "/lib/fltk" portion so that can be changed by the programmer.
+
+Removed the "schemes" that simply loaded a theme without doing
+anything else (Classic, Essai, KDE1, Motif, Windows).  These work with
+my rewrite, I removed them just to try to reduce the file count and
+some confusion.
+
+Removed some unused arguments from the Fl_Menu.cxx functions.
+
+Added a (possibly quite slow) version of fl_font(name) to return fonts
+by name, used this to replace code in the themes.
+
+DESCRIPTION OF NEW THEMES CODE:
+
+Fl::theme() indicates a plugin to load.  Fl::scheme() is now just a
+text argument passed in argv[1] of fltk_theme, the theme can interpret
+it any way it wants, though usually it will be a filename for it to read.
+The default theme is "default" and the default scheme is null.  A
+theme of null causes no theme plugin to be loaded.
+
+Fl::theme(theme, scheme=0) changes the current theme.  If any themes
+have been loaded then they are replaced and a redraw is done.  This
+checks if the theme+scheme is unchanged and returns quickly in that
+case.
+
+Fl::scheme(scheme) is emulated by calling Fl::theme(theme(), scheme).
+
+Fl::loadtheme() ensures the current theme is loaded (normally this is
+delayed until the first window is shown).
+
+Fl::reloadtheme() forces the current themes to be reexecuted (this is
+usually called in response to an event that indicates that data from
+the outside world has changed).
+
+Fl::loadtheme(name,scheme=0) allows multiple themes to be loaded atop
+each other (it does not reset things).
+
+Fl::theme_unloader(void (*)()) allows a theme to register a call that
+should be made to get itself unloaded (mostly to remove event handlers
+for dynamically changing themes).  Currently only the last one is
+remembered!
+
+////////////////////////////////////////////////////////////////
+
+Renamed fl_set_fonts.cxx to fl_list_fonts.cxx (since that is the name
+of the function it defines).  Added a TOTALLY UNTESTED fl_list_fonts()
+to the win32 version.
+
+Added fl_font() and fl_size() that return the most recent values
+passed to fl_font(font,size).  These can be used to save/restore the
+font or to check which one is in use in labeltype functions, and to
+avoid having to track it yourself in complex drawing operations.
+
+Patches from Alexander Mai for OS2, mostly to the file chooser
+drive-listing code.
+
+The glyph() function is now responsible for changing the color of the
+label in response to FL_INACTIVE, the color passed to it is normal.
+This matches how label and box drawing functions work, allows a lot
+more freedom to design the glyph functions, eliminated some code, and
+I found lots of code assummed this anyway...
+
+////////////////////////////////////////////////////////////////
+
+Fixed Fl_Pixmap (constructor was written wrong)
+
+Setting both FL_ALIGN_LEFT|FL_ALIGN_RIGHT on a label makes it cut
+the left off if it is too big, but align to the left if it is
+smaller.  This is very useful for displaying pathnames in buttons in
+the file chooser!
+
+Also does the same thing vertically with FL_ALIGN_TOP|FL_ALIGN_BOTTOM.
+
+It now produces FL_KEYUP events, and the menubar uses them: tapping
+Alt is a shortcut into/out of the menubar!  (To check for a shift
+key being "typed" you must look for the 'up' event and also check
+Fl::event_clicks() for non zero.  This is true if the same key is used
+for two events in a row, and is thus only true if the key went down
+and up without any intermediate keys)
+
+Calls layout() on windows before they are shown (but after the theme
+is loaded).  This should be useful for widgets that do automatic
+layout, and gets rid of the need to call it yourself.
+
+Nifty new resizable() demo program, as suggested by Curtis.  Shows a
+realistic layout and some instructions.
+
+////////////////////////////////////////////////////////////////
+
+Added fl_nearest_color(color) to convert an rgb color to the nearest
+index.
+
+Some more cleanup of the styles code.  Made most of the default styles
+private variables in the source code.
+
+Added Fl_Widget::damage_label() which marks outside labels to be
+redrawn.  This does the correct logic and should replace calls to
+damage(FL_DAMAGE_CHILD_LABEL).  Used this to fix the red/black labels
+in fluid.  Also sorted the fluid control panels so keyboard navigation
+works.
+
+Fixes to window positioning from inside the program.  Fixed the huge
+menu.  Added a timeout so huge menus autoscroll without having to move
+the mouse.
+
+////////////////////////////////////////////////////////////////
+
+Made fl_load_plugin take the argc,argv values directly, rather than
+creating them.  Moved the code to test for setuid programs and to make
+the argc,argv over to fl_load_theme().
+
+If the theme() is not found as a plugin, and there is no scheme() set,
+it tries loading the default theme using theme() as the scheme.  I.e
+if you run it with "-theme blah" and there is no blah.fltp, it acts as
+though you typed "-scheme blah".  For most users this means that only
+the theme() ever needs to be set, and a GUI (like in Fluid) to pick a
+theme only needs to set a single string.  The only reasons to set the
+scheme() are: to pass a string to a non-default theme; or to get a
+scheme that has the same name as a theme.
+
+Space selects items off menus (necessary for Choice emulation).
+
+Default style for Choice looks/acts a lot more like a Windows "Combo Box".
+The up/down arrows work to change the current item.  I also fixed the
+classic and motif themes to look like before (although they look a bit
+strange if the choice has the keyboard focus).
+
+////////////////////////////////////////////////////////////////
+
+Fltk 2.0 has been changed so that menu items are normal widgets.
+Although this complicates some of the simple demo programs, it greatly
+improves the usability in large programs with dynamic menus, and
+removes a great deal of kruft from fluid.
+
+Fl_Menu_ (and Fl_Menu_Bar, Fl_Choice, and Fl_Menu_Button) are now
+subclasses of Fl_Group.  Three new widgets: Fl_Item, Fl_Item_Group,
+and Fl_Divider have been created to make items that go into menus.
+
+You can put arbitrary widgets into the menu, which produces
+interesting visual effects.  For future compatability your widgets
+should return 0 for any events sent to handle(), or should have
+output() or inactive() turned on.
+
+Older code that uses Fl_Menu_Item arrays or Fl_Menu_::add() is
+emulated reasonably well, by creating child Fl_Items to copy the
+data.  The main incompatability is that subsequent changes to the
+Fl_Menu_Item array have no effect (since it was copied), and the
+functions that return Fl_Menu_Item pointers are either unimplemented
+or they return pointers to Fl_Widget instead.
+
+Still to be done: I intend to rewrite the browser in exactly the same
+way, so each item is a widget.  "lightweight" groups, which generate
+widgets on the fly, so that a 10,000 item browser does not need the
+space for 10,000 widgets.  Fluid needs to be able to create dividers
+and should somehow read old setups with dividers in them.  Fluid's
+internal code should be rewritten to not use Fl_Menu_Items.  The file
+chooser compiled, but crashes when it attempts to change the items in
+the menu.  This needs to be tracked down, it may indicate a bug in the
+new menu emulation code.
+
+DETAILS:
+
+These changes caused lots of other changes to be made to the fltk
+code, mostly (I hope) these are improvements, in some cases they were
+just necessary so that menu items could be treated just like widgets:
+
+Many changes to Fl_Group to make it more useful as a base class for
+Fl_Menu_:
+
+  Fl_Group::remove(index) - removes a child by index number
+
+  Fl_Group::replace(int index, Fl_Widget&) - replace a child
+
+  Fl_Group::replace(Fl_Widget&, Fl_Widget&) - replace a child
+
+  Fl_Widget* Fl_Group::focus(), Fl_Group::focus(int) - the index of
+  the child of the group that contains the focus.  This value is
+  reused by Fl_Menu_ to track the current item.
+
+  Fl_Widget::take_focus() "works" all the time now.  If the system is
+  not giving focus to one of this application's windows, or the widget
+  is not in a visible window, the widget will get the focus when the
+  window it is in does.  Previous versions did nothing in these cases.
+
+Changed to Fl_Widget to make it more useful for menu items:
+
+  The inline functions Fl_Widget::is_group() and
+  Fl_Widget::is_window() return true if the widget is a subclass of
+  Fl_Group or Fl_Window.  This ability already existed, but these
+  functions make the code much more readable.
+
+  Fl_Widget::takesevents() simplified to do a direct bit check.  The
+  widget is only responsive if this is true for this widget and all
+  parents, but all examples in the code only called this in response
+  to events anyway.  This was needed to make take_focus() work.
+
+  Base Fl_Widget handles shortcuts.  A shortcut can be a key
+  combination stored in the integer value shortcut(), and/or a
+  printing character marked in the label() by putting an '&' sign
+  before it.  The method Fl_Widget::test_shortcut() returns non-zero
+  if the current event matches the shortcut (it returns 1 for
+  shortcut() and 2 for label).  The static methods test_shortcut(int)
+  and test_shortcut(const char*) allow you to run these tests
+  directly.  A widget can do anything it wants with a matching
+  shortcut.  If it returns zero then the shortcut causes the focus to
+  navigate to that widget.
+
+  The flag FL_NO_SHORTCUT_LABEL makes it treat '&' in the label
+  normally and no shortcuts will match the label.  This is useful if
+  your program is generating strings that may contain '&' for the
+  labels.  This is inverted from an older undocumented flag.
+
+  New methods focused(), belowmouse(), and pushed() return true if
+  the widget is equal to Fl::focus(), Fl::belowmouse(), or Fl::pushed().
+
+Styles for menu items had to be rearranged so that arbitrary widgets can
+be put into a menu or browser without horrid kludges in the drawing code:
+
+  I merged the previous menu_window and menu_item styles into a single
+  style called "menu".  The big hack is that the glyph_box is used to
+  draw the box around the individual items, while box is drawn around
+  the outside of the menu.  The selection_color / color is used to
+  draw the glyph_box around each item.
+
+  The new style "Item" is the default style of Fl_Item and controls
+  the label font, color.  The selection_color is used to color in
+  checkboxes, just like Fl_Check_Button.  The glyph and glyph box are
+  used for the checkmarks.
+
+  "Menu title" - Mostly the same, except some fields are irrelevant
+  now since they are taken from the item.  The highlight colors were
+  moved to the Menu_bar style.
+
+  For proper highlighting, menu item draw() methods should use the current
+  fl_color() to draw the label.  This will either be the item's
+  label_color or it will be the menu style selection_text_color.
+
+  All in all, just as confusing as before.  You will have to move the
+  fields in any styles/themes you have designed around.
+
+Fl_Menu_Item has been reverted to the fltk 1.0 version, since it's
+main job is to be back-compatable.  I also reverted the menubar demo
+to test back compatability.
+
+Added a new test/menu.cxx program that demonstrates the creation of
+Fl_Item, Fl_Item_Group, and Fl_Divider.
+
+The checkers and glpuzzle programs had to be fixed as the very old
+popup() calls it uses are not emulated now.
+
+Submenu titles (ie Fl_Item_Group widgets) do not execute unless they
+have a non-zero user_data field.  This was done to prevent them from
+being selected for Fl_Choice widgets.
+
+;;;
+
+EXTENSIVE changes so that the items in menus are normal widgets, which
+is what everybody really wants.  See the attached email.
+
+As part of the above, the default appearance of the menus was changed
+to be more Windows98-like.  In particular the inactive_menu_hack has
+been forced to be on because the switching code got very complicated.
+You can make individual items not highlight by setting output() on
+them, rather than inactive() (this was done for the dividers).
+
+Fl_Choice figures out if motif emulation is on and acts like before in
+that case.  Currently it checks to see if box() is FL_UP_BOX for this.
+
+Fl_Window uses it's shortcut() to select the key to close itself.  The
+default shortcut is FL_Escape.  Changing it to zero disables the close
+on Escape.
+
+Fixed keyboard navigation in the fl_ask and other message popups.
+
+Added two new styles: "Message" and "Message_Icon".  These control the
+text and the punctuation icon in the message popups.
+
+Fixed the colors of sliders to be fltk1.0 compatable.
+
+Fixed sevaral calls to Fl_Valuator::step() with arguments like "1/100"
+(which is zero, not the .01 I expected).
+
+////////////////////////////////////////////////////////////////
+
+Missing source file added.
+
+Changed Fl_x.cxx and Fl_win32.cxx so they are #included by Fl.cxx.
+This mostly was done to make variables which are shared by them static
+so that I can be sure those variables are not used elsewhere.  This is
+not tested on win32, the file Fl_x.cxx (or Fl_win32.cxx) must be
+removed from the build system!
+
+Added fl_windows_colors() to Fl_x.cxx, although it does not do
+anything yet.  Perhaps it should read KDE's XGetDefault settings, this
+is the closest to what windoze does.
+
+Fl_Input should now allow you to insert foreign letters even if you
+have to hold down the Alt or Meta key to type them (untested).
+
+Possible fixes to the shortcut problems people are reporting.
+
+////////////////////////////////////////////////////////////////
+
+-bg switch works even if Fl_Window::show(a,b) is not called, and
+overrides any colors loaded by themes.
+
+Removed the fl_background.cxx source file and put that code in
+Fl_theme.cxx.
+
+////////////////////////////////////////////////////////////////
+
+Window uses an x,y position of FL_USEDEFAULT to indicate that the
+window should be positioned by the system (ie. it works like Win32).
+This value is 0x80000000.
+
+Fixed vertical size of titles on popup menus.
+
+All widgets are created with the layout and damage bits turned on, so
+that layout gets called on everything the first time the window is
+shown.
+
+Changes to what Fl_Group::draw_child and update_child do to make them
+useful for subclasses.  I am trying to get Fl_Scroll to work much
+better so it can be used for the new browser.
+
+////////////////////////////////////////////////////////////////
+
+Fl_Scrollbar uses FL_KEYBOARD instead of FL_SHORTCUT events, like
+other widgets.  It is up to the scroll or browser (nyi) to send
+keystrokes to the scrollbar.  With this change all groups try any key
+as a shortcut to all children before trying it as a navigation key.
+This allows a widget to use arrows or tab as a shortcut.
+
+Vertical Sliders reversed so the minimum() is at the bottom, which is
+how everybody wants them and how Forms has them.  You can get the
+opposite by (like the scrollbars now do) swapping the miniumum() and
+maximum() values.
+
+Style changes to make them more consistent and so that a theme only
+has to change a few styles:
+
+  I added two new fields: window_color and window_box (the names were
+  picked from the Win32 "COLOR_WINDOW").  These are used to color in
+  input fields and other sunken areas.  I also deleted "off_color"
+  (replaced by window_color everywhere) and "glyph_box" (replaced by
+  window_box or box, depending on what the widget wants by default.
+  (This is incompatable with input/browser, as you must set
+  window_color to change the color, this can be fixed if necessary by
+  looking to see if style()->color is non-zero).
+
+  Buttons only use the selection_color() if directly set in their
+  style.  This allows the base style to set selection_color and
+  selection_text_color for all input editing fields.  With these two
+  changes the style of all input fields can be set in default_style.
+
+  Sliders have the color and selection_color meanings swapped.  Now
+  color() is the color of the slider, window_color() is the color of
+  the background.  I got tired of these being different than all other
+  widgets and it was making it difficult to have uniform styles.  This
+  is incompatable.
+
+  Fixed the documentation and theme plugins to match this.
+
+////////////////////////////////////////////////////////////////
+
+Fixed the arrow and page up/down direction on vertical scrollbars.
+
+Lots of fixes to clean up Fl_Scroll.  The scrollbars are no longer
+visible children, so calling clear() and children() and other things
+on an Fl_Scroll do what is expected.  The redrawing is fixed to use
+the same type of clip-out as the group for nice non-blinking resizing.
+They scroll automatically to show the widget with the focus.  This
+required much rewriting and cleanup of Fl_Group code and event
+handling.
+
+Changed how scrollbars draw so they don't blink either.  Requires a
+kludge in motif-style themes to draw the background behind arrow
+triangles.
+
+Renamed Fl_Widget::clear_damage(n) to set_damage(n) for obvious
+clarity reasons.  clear_damage() with no argument remains (it does
+set_damage(0))
+
+New call Fl_Widget::relayout() that sets the layout flag.
+
+FL_FOCUS events are sent to all parent widgets whenever a child gets
+the focus, even if it is from another child.  This allows the parents
+to track which child has focus (and the Fl_Scroll to scroll to show
+it).
+
+Changed return value of fl_clip_box to be the same as fl_not_clipped,
+and implemented partial-clip detection on Win32.  This was needed to
+get scroll to draw correctly when both scrolling and a child being
+damaged happened at the same time.
+
+FL_MOVE events are sent to all widgets even while the mouse is pushed,
+as CET requested.  The highlight now follows the events, and it can
+allow drag&drop interfaces.  Disabled while menus are up.
+
+////////////////////////////////////////////////////////////////
+
+Got started on the new browser.  You can get it by including the
+"Fl_NewBrowser" header file, but eventually I hope this widget will
+replace Fl_Browser completely.  The only program that uses it is the
+"browser" demo program.  Right now you can only scroll it and move the
+selection with the up/down arrows.  Each item in the browser is a
+widget, just like in menus.  Also check out the #ifdef's in it, you
+can change how it is drawn, including duplicating Win32 versions.  
+
+Various changes I made while implementing the browser:
+
+Moved Fl_Grab stuff to the main Fl.cxx to get rid of public static
+variables.  Simpler Fl::grab() that does not require a widget, instead
+it is a callback with an arbitrary argument.  Cleaned up Fl_Menu.cxx
+some.
+
+Fixed popup menu titles to use an FL_UP_BOX if the window_box of the
+button is FL_NO_BOX.
+
+Moved Fl_Window:: methods to Fl_Window.cxx to make them easier to
+find.
+
+Fl_Output takes the focus when you click on it (so there is only one
+selection visible).
+
+Since selection_color() and selection_text_color() can no longer be
+zero, I removed the tests for that.
+
+Removed the unused FL_CLOSE to avoid confusion.  I moved FL_KEYUP to
+fill in the enumeration, because it puts it next to FL_KEY.
+
+Fixed the scrollbar in the valuators demo (it was never initialized so
+the minimum (bottom) was zero, and maximum (top) was 1).  In normal
+use scrollbars are always initialized.
+
+Reversed the vertical roller just like the slider, so that the minimum
+is at the bottom.
+
+Fixed the doublebuffer demo.
+
+Made FL_SHORTCUT work even if no widgets in the window accept focus.
+
+Added --disable_threads and --disable_plugins to the ./configure
+script, and fixed some "test" calls that apparently were not written
+right and did not work.
+
+////////////////////////////////////////////////////////////////
+
+Events sent to Fl::handle() are sent to the window the system says
+they go to, not to the focus.
+
+Fixed accelerators in the menus.
+
+////////////////////////////////////////////////////////////////
+
+Bunch of annoying changes so that clicking on the borders around
+scrollbars in Fl_Scroll and Fl_NewBrowser does not "leak" through and
+click on items hidden behind them.  This pretty much meant removing
+all calls to Fl::event_inside everywhere.
+
+As per popular demand, "Enter" key is a shortcut for buttons, as well
+as space (this popular demand includes me, I kept hitting Enter,
+despite all the logic I put into saying only space is necessary).
+Return buttons will only work if the widget with focus does not use
+Enter as a shortcut.  I replaced the solid return arrow with the
+outline one from fltk 1.0 which I also think looks nicer.  Probably
+should remove return buttons from panels that don't have text input.
+
+Added Fl::first_window(window)
+
+Messed with the documentation some: fixed some function descriptions,
+moved the drawing functions to the reference portion, made a new
+reference section for the pop-up window utilities.
+
+Added Fl_Widget::copy_label(), fixed Fl_Menu_::add to use it.
+
+I put the all-new browser implementation in.  The best demo is the
+"browser" program.  Back compatability was tested with the forms demo
+programs, they seem to work ok but some glitches need to be fixed.
+Biggest problem is that it does not interpret @ in the text, I don't
+know if this is a feature or a bug...  The file chooser also "sort of"
+works, you need to make the icons a subclass of Fl_Image and put them
+into the widget's image, or wait until I get the Fl_List implemented
+to avoid the overhead of 1 widget per file.  Programs using
+Fl_Browser_ do not work at all, for instace fluid does not compile.
+It should work much better after I fix it.  Please try on your own
+programs that use the browser!
+
+This has the all-new Fl_Browser.  Notice that some programs (such as fluid)
+do not compile or work.  However I got it to a point where a lot of programs
+work, such as the forms demos.  Try the "browser" demo (users of the
+ToggleTree widget will find it familiar).  Sorry no documentation yet,
+check the header files.  Each item in the browser is a widget, and
+hierarchy is indicated by having Fl_Group children.
+
+////////////////////////////////////////////////////////////////
+
+Added Fl_List to Fl_Group.  Hopefully this will allow huge menus
+and browsers to be created without the storage overhead of a widget
+per entry.
+
+Changed x.H so that the source files for the drawing functions do not
+depend on Fl_Window.H.  This was to speed up recompilation when I was
+working on the groups, but should also help make the code cleaner...
+
+Moved clipping functions from fl_rect.cxx to new source file fl_clip.cxx.
+
+Patches from Harri Proten to add const-correctness.
+
+////////////////////////////////////////////////////////////////
+
+Added Fl_Widget::width() and Fl_Widget::height(), these are the same
+as w() and h() but call layout() if necessary.
+
+Added an X version of fl_get_system_colors that matches the fltk 1.0
+version.  It reads the X resource database and understands attributes
+set by the krdb program in the KDE destkop.  You can also give
+app-specific colors by using foo.background instead of *background in
+the database.
+
+Renamed window_color to text_background and window_box to text_box.
+These names seem to make more sense and match what X/kde used.
+
+Fl::grab(window*) does not call show() on the window.  Changed it to
+accept a widget instead of a window.
+
+To fix the highlight blinking I left the group as it was and instead
+changed all the widgets that accept FL_ENTER to return 1 for FL_MOVE
+as well (most already did this).  This will allow a widget to be
+non-rectangular by returning 0 if the cursor moves out of it, I
+thought this may be a useful addition, even though it was discovered
+by accident.
+
+Some fixes to the fonts and colbrowser demo.  After much debating I
+decided to leave the value() of browser starting at zero and require
+the application programs to be fixed.
+
+////////////////////////////////////////////////////////////////
+
+Undid a change I did last time: it does not send event 0 to all the
+widgets (Win32 version produced lots of these for messages fltk did
+not understand and this probably caused a great deal of time wasting).
+
+////////////////////////////////////////////////////////////////
+
+Fluid ignores down_box in .fl file (field created by fltk 1.0)
+
+Scrollbar::value() does not crash if l (window height) is <= zero.
+
+Fl_Browser::value(n) does not crash if called before layout().
+
+1.0.8 fixes:
+
+Fixed hardware overlays.  The problem was the new fl_clipped() code,
+which tests against the current window size.  The hardware overlay
+code did not set the current window when drawing the overlay.  I
+needed hardware overlay for DD's code, I'm not sure if these fixes are
+good enough to enable this in our general release.  Hardware overlay
+still only works on SGI Irix.
+
+Some patches to turn off the MSVC++ -Oa (assumme no aliasing)
+optimization flag.  Suprisingly this only broke a few parts of fltk,
+or at least these are the only ones I found.
+
+Does not unmap child windows when the main window is iconized.  This
+reduces flashing when the window is deiconized.
+
+Fl::key() is set to zero by all events except key down/up.  This will
+allow you to reliably test if an event or callback was produced by a
+keystroke.  Fixes the bug posted about stopping Escape from closing
+the window.
+
+User defined cursors on OpenGL windows slowed down NT a *LOT*.  Some
+attempts to fix this by turning off the cursor while drawing the
+window.
+
+Filename completion in the file chooser works better on NT.  Typing
+TAB fixes the case of everything you typed to match the shortest name
+that can be completed.
+
+////////////////////////////////////////////////////////////////
+
+Changed OPTS to FLAGS in the configure script.  I hope this is
+correct, I had to do this to get the -fno_exceptions test to work.
+
+Removed some unnecessary calls to Fl::compose_reset()
+
+Fixed compose yet again so that you can quote control characters with
+it.
+
+////////////////////////////////////////////////////////////////
+
+Per request and some old fltk 2.0 plans, I have fixed the windows so
+that hide() just unmaps windows, and you need to call destroy() to
+actually get rid of them.  This actually simplified things a lot but
+there are some differences.
+
+The main known differences are:
+
+window->shown() will remain true after hide() is called.  This will
+break loops that wait for shown() to turn off.
+
+window->visible() is true when the window is iconized, and the user
+iconizing the window does not cause hide/show events to be sent to the
+window.  The new window->iconic method can be used to test if a window
+is currently iconic.
+
+The default callback for a window calls destroy() rather than hide(),
+this is necessary so that modal windows can be reused with different
+parents (both X and Win32 do not allow.
+
+////////////////////////////////////////////////////////////////
+
+Same changes as to 1.0 for simplifing the timeout/wait code.
+
+Fl::wait(time) returns the result of calling select(): negative for an
+error, 0 if nothing happens, and >0 if anything does (on Win32 0 is
+returned for at timeout of 0.0 and 1 for anything else).
+
+Fl::wait(void) returns the same value (and in fact just calls
+Fl::wait(time) with an "infinite" time).  This return value is
+incompatable with 1.0.
+
+Fl::check(void) returns the same value (and in fact just calls
+wait(0.0)).  This is also incompatable with 1.0.
+
+Replaced Carl's calls to atol() with strtol or strtoul.  These
+functions are used elsewhere in fltk and appear to be portable.
+Deleted the replacement atol code.
+
+Added Fl::has_timeout and Fl::has_idle.
+
+Fixed bug with multiple child windows (like the cube demo).
+FL_SHOW/HIDE was only sent to one of the children.
+
+////////////////////////////////////////////////////////////////
+
+Okay, a better fix for the multiple child windows not showing up
+because I found more programs with bugs:
+
+The rules for handle() are now that returning non-zero means no other
+widgets should get the event.  Widgets should return 0 for FL_SHOW or
+FL_HIDE (most did this already), if they return 1 then the event is
+not sent to other widgets.  Also all widgets should pass events they
+don't understand to their base class with BaseClass::handle(event).
+
+Fluid is fixed so the windows show (it was not passing FL_SHOW to the
+base window class, this is a common problem in fltk 1.0 programs)
+
+Cube demo program fixed for this, also the sliders go the right way
+again.
+
+Fixed Fl_XPM_Image to allow arbitrary sized input (it does not crash
+on the large demo one we got).
+
+////////////////////////////////////////////////////////////////
+
+Slight cleanup of the Win32 drawing code, I deleted the
+fl_current_xmap structure and put the rgb, pen, and brush in single
+variables.  This matches how most of the rest of fltk's drawing state
+is stored.
+
+Made fl_draw_image work on 8-bit StaticColor visuals.  It is not ideal
+but these are rarely (if ever) used.
+
+Change the private style_win Carl added to a public called
+fl_message_window, and made the cut&paste, and fl_kde() use this same
+window.  Probably there are other places that can use it as well.  I
+wasted some time trying to get grab() to use it, apparently X requires
+the grab window to be mapped.  Carl: We may want the atom to be
+FLTK_MESSAGE_WINDOW, and change the message to be FLTKChangeStyle so
+that the names match kde more closely.
+
+Fixed the Alt shortcut for the menubar.
+
+Removed call to getconf_sections, not needed as we can list all the
+named styles.
+
+////////////////////////////////////////////////////////////////
+
+Okay, hopefully without pissing everybody off, I tried to do the
+minimal amount of changes I think are necessary to clean up the
+interface to fl_options.cxx. I did make mistakes before by messing
+with the innards.  My goal here is to remove crap from the header
+files, I really am not trying to break or change anything else.
+
+The Fl_Style::start() stuff seems to be broken, fluid changes a great
+deal of the base window class.  This should be fixed.
+
+  Fl_x.cxx and Fl_win32.cxx call a function in fl_options.cxx when
+  they receive a change signal.  I called this Fl::reload_scheme() but
+  the current implementation matches EXACTLY what Carl did.  (It is
+  quite different on Win32 verses X...)
+
+  This change allows Fl::getconf to be private to fl_options.cxx.
+
+  Fl::scheme(foo) can be called before the display opens.  It just
+  changes the stored string in that case.  The returned string is
+  guaranteed to == the string Fl::scheme(foo) was called with last.
+  This allows FL::arg and other code to call it.
+
+  Removed Fl::add_theme_handler.  We need Fl::remove_handler and
+  themes need to set an exit call so they can do arbitrary cleanup.
+  Currently NYI, but I don't want to clutter up fltk with hacks around
+  this problem.
+
+  Removed fl_find_config_file from the Fl.H header file.  Right now
+  only the essai plugin uses this, and it would not have to if we
+  passed the path to the plugin and used relative names.
+
+  Made the Win32 version search $HOME/.fltk to match the Unix version.
+  This is needed for people who share home directories between
+  machines, or who use Unix emulation shells (like tcsh) on Windows.
+  It then searches $HOMEPATH/fltk so nothing is lost, though perhaps
+  the file should be .fltk there as well.
+
+  I think Fl::theme() should be named load_theme() and it could be
+  private, but I left it for now.
+
+  Temporarily enabled plugin loading in static libraries. Most don't
+  load because of the removal of the .po files, but quite a few do.
+  Maybe it is ok to leave it like this.
+
+fl_load_plugin() prints dlerror() to stderr, which helps debug things
+because it reports the missing symbol names.  Somebody should find out
+if WIN32 has an equivalent function.
+
+Same fix as for 1.0 so shortcuts for buttons in the menubar work.
+
+Removed fluid output files from the repository.
+
+////////////////////////////////////////////////////////////////
+
+Started on xDnD.  This version allows Fl_Input to accept dragged-in
+text from another program on X. The code is similar to Jean-Marc's
+code but I hope greately simplified.  Drag-out nyi.
+
+This has only been tested with the demo program that comes with the
+xDnD documentation.  Dragging of files has not been tested, I hope to
+have them paste their names into text fields.
+
+Cleanup of the event handling of Fl_Input.
+
+Added show_cursor() method to Fl_Input_.
+
+Deleted Fl_cutpaste*.cxx and put that code directly into the
+Fl_x/win32 code (the win32 version has not been tested yet).
+
+////////////////////////////////////////////////////////////////
+
+Xdnd works in both directions now! It can only do text, and the only
+widget that uses it is Fl_Input. Data types and actions are currenlty
+not supported, and I don't think they can be supported without
+system-specific code. I hope to make the necessary variables public in
+the Fl_x header files with enough hooks that it is possible to make an
+X file manager, or to drag or accept non-text, with system-specific
+code.
+
+Many fixes for SelectionNotify copied from Jean-Marc's dnd code.
+
+Deleted Fl_Input_ and merged everything into Fl_Input. The base class
+was pretty much useless.
+
+Instead I added new virtual method replace(...) to Fl_Input. This is
+called to make any changes. Subclasses can override this function to
+limit the editing that can be done. This made implementation of
+Fl_Output and Fl_Float_Input much simpler!
+
+Fixes made in 1.0 for wordwrap have been merged in, and wordwrap is
+available by using the new Fl_Wordwrap_Input (or _Output)
+widgets. This does not replace the need for a fancy text editor, as it
+only works well for small portions of text and there are no
+scrollbars. If nedit works well enough it may be preferrable to delete
+the multiline/wordwrap handling to make Fl_Input much simpler.
+
+Deleted selection_owner, which was not being used and confused the dnd
+stuff.
+
+I tried to get Fl_Text_Editor to do fltk's compose sequences. Seems to
+work, but this bypasses some of the indirection tables so it may break
+the ability to reprogram the printing characters.
+
+PS: nedit seems to work really well!
+
+////////////////////////////////////////////////////////////////
+
+I got worried about "argument bloat" to the functions stored in the
+Fl_Style, and changed box and glyph to take a pointer to the widget as
+the first argument. This resulted in significantly cleaner code, and
+the functions can peek at any information about the widget or style
+they want.  This required massive changes, but it is all for the best,
+I promise! labeltypes should also take the widget argument but I still
+need to look at this...
+
+Visible changes this had:
+
+Some box types use text_color() where they used FL_BLACK before.
+
+Buttons draw with the selecion_color() when pushed in, but only if it
+is stored directly in that button's style. So you no longer need to
+set both color() and selection_color().
+
+Check/radio buttons use text_color() to color the mark. This is to
+avoid interfering with use of selection_color() by menu items and
+browsers.
+
+Deleted the public box pattern strings, which were a bad idea I had...
+
+FL_GLYPH_UP is now just the arrow symbol. FL_GLYPH_UP_BUTTON draws the
+box for use in a scrollbar.
+
+I put the Windows-style engraved disabled labels & glyphs in as the
+default. It is much easier for a theme to turn these off than to turn
+them on, and I think we want the default windows-like.
+
+Unrelated: Fl::local_grab(func,void*) does "grab" for only those
+events the program gets anyway, without messing with the window
+system. Used by dnd.
+
+Commented out the MapNotify stuff, as it seems to break tooltips
+(though I see no reason why) and ConfigureNotify already does this.
+
+////////////////////////////////////////////////////////////////
+
+Made forms compatability work with new style stuff, though maybe I
+should not have renamed draw_label to draw_inside_label, which was the
+main reason things did not work.
+
+Child windows are not destroyed but only hidden on FL_HIDE. This puts
+things exactly the way they are in fltk 1.0 (which actually works
+pretty well, so perhaps the attempt to not destroy the windows was a
+mistake?)
+
+ConfigureNotify & MapNotify are ignored for child windows.
+
+Swapped allocation of black & white in the hope this will fix the
+overlays on Solaris.
+
+PS: Thanks Carl for figuring out what was wrong with the tooltips!
+
+////////////////////////////////////////////////////////////////
+
+Removed the public Fl_Input/Output::default_style, which were not
+being used (where they were used it had no effect as the widget
+already had that style).
+
+Renamed fl_shortcut_label to Fl::key_name. Renamed the source file
+fl_shortcut to Fl_key_name to match.
+
+Documentation fixes for my changes to the methods used to draw things.
+
+Got rid of a lot of warnings when it is compiled with -Wwrite-strings.
+
+Got the fractals demo to work again.
+
+Removed the Emacs control characters from Fl_Input and Fl_Text_Input,
+and put a fallback translator to arrow keys in Fl.cxx. They will thus
+work as long as nobody redefines the control characters on a
+menu. Added the symbol Fl_Clear for ^K, this should do a clear-to-eol.
+
+////////////////////////////////////////////////////////////////
+
+Changed the implementation of Fl_List so that a single Fl_List can
+return an entire hierarchy of Fl_Groups and Fl_Widgets. This appears
+to be necessary to make the browser usable in fluid (and probably any
+other program). See the menu, browser, and fluid Fl_Type.C for
+examples of how to use Fl_List and Fl_String_List.
+
+Fluid changed to use this browser. Looks pretty good so far. But this
+version keeps crashing on me with a malloc error, if anybody wants to
+help track this down with some malloc debug tools that  would help a
+lot!
+
+////////////////////////////////////////////////////////////////
+
+Cleaned up the code in Fl_compose a bit so the table is readable.
+
+Added some "const" to the datas for Fl_Shared_Image
+
+Lots of work trying to get fluid to work with the new browser, and to
+clean up the code some. This now works, but I am still not happy with
+how the browser and menus keep track of the current item and am still
+trying to think of a solution.
+
+////////////////////////////////////////////////////////////////
+
+Fixes so that the text_background of menus is used to color the
+popup menu. Also so that box types that draw pixmaps work.
+
+////////////////////////////////////////////////////////////////
+
+Changes to the fl_vertex drawing code to be more PostScript like. It
+now has only a begin(), and fl_end_line(), fl_end_polygon(), etc
+decide what to do with the path, and the path is saved. This allows
+you to fill and outlike a polygon with only one description of the
+path. fl_gap() now works for fl_end_line() as well.
+
+Makefile changes: "make" just makes the static version.  However
+"make install" and "make shared" will build the shared library.
+I also made the top level makefile exit if there is an error running
+make in any of the subdirectories. These help a lot for building test
+versions of fltk.
+
+I tried making Fl::run() run forever and having the window callback
+do exit(0) when the last window closes. This should make no difference
+for any program that keeps one window open and seems to be easier to
+explain.
+
+Some cleanup of the back-compatability portion of Fl_Window::modal_for().
+The code is now all in Fl.cxx rather than the machine-specific part.
+(warning: this required an untested change to the Fl_win32 code)
+
+Fl_Window::hide() does not destroy the window, just unmaps
+it. Destruction of the window, changing the modal_for(), or calling
+destroy() actually gets rid of the window. I am prepared to put this
+back, as there are warnings it causes problems.
+
+Lots of fixes to the documentation.
+
+////////////////////////////////////////////////////////////////
+
+Fl_Group::add(x) when x is already a child of the group could cause a
+crash (browser demo did this).
+
+Submenu did not always change in a popped-up menu.
+
+Improvements to Fl_Check_Button layout to allow them to pack together
+horizontally.
+
+Upper/lower case shortcuts work in menus.
+
+Tooltips for Fl_Window work.
+
+////////////////////////////////////////////////////////////////
+
+Removed Fl::readqueue(), removed calls to it from fluid.
+
+Fl::first_window and Fl::next_window skip hidden windows.
+
+Fixed missing "break" that let keyboard events go to non-focused
+widgets in modal windows, resulting in very strange behavior
+sometimes.
+
+////////////////////////////////////////////////////////////////
+
+Fl_Gl_Window does not set drawbuffer(BACKBUFFER) for single-buffered
+windows.
+
+Fl_Input::replace(...) correctly updates the display if the replaced
+region does not include the mark, point, or selected region.
+
+Added Fl::add_check(...), Fl::remove_check, and Fl::has_check. These
+are similar to idle callbacks but are only called just before it waits
+for new events. They can be used to watch for changes in global state
+and respond to them.
+
+////////////////////////////////////////////////////////////////
+
+Relative positions have been checked into fltk 2.0.
+
+This seems to work very well, and should have been done a long time
+ago. Fixing existing programs is relatively painless.
+
+* The x() and y() of *all* widgets is relative to their parent.
+
+* draw() methods have the coordinates of drawing relative to the corner
+  of the widget.
+
+* handle() methods have Fl::event_x() and Fl::event_y() relative to the
+  corner of the widget.
+
+* added Fl_Group::fix_old_positions()
+
+* added Fl_Widget::make_current()
+
+* deleted Fl::event_inside(widget)
+
+Fluid .cxx output can be fixed by running the new version of fluid.
+
+When you build nested groups, group->fix_old_positions() may be
+inserted right before the end() to quickly fix old code. If you are
+doing anything more complex than building all your widgets at once you
+will have to edit your code and change the positions of all child
+widgets.
+
+New .fl files are saved with relative coordinates and will not read
+into older versions of fluid. Fluid recognizes old .fl files and
+corrects them when it reads them.
+
+I changed the FL_PATCH_VERSION to 1 so that you can write programs
+that check if relative coordinates are in use (I did not want to
+change the FL_MINOR_VERSION because we want this first official
+release to be 2.0)
+
+I deleted Fl::event_inside(widget) because it won't work if widget is
+not a child of the current one (in particular it won't work if widget
+is this).
+
+If you have written draw() or handle() methods for widgets, they are
+easily fixed by deleting most or all occurrances of x() and y() and
+replacing them with zero. An easy way to locate all these is
+
+	  grep '[^a-zA-Z_][xy](' *.cxx
+
+Check for window->make_current(), you may want to call the new
+widget->make_current() instead, it sets the origin for a given widget.
+
+Never call draw() on any widget directly. If you are implementing a
+group, call draw_child or update_child instead (these may change in
+the future).
+
+////////////////////////////////////////////////////////////////
+
+Alexandar Mai's changes to configure.in
+
+fl_curve uses a much better algorithim to figure out how many pieces
+to cut the curve into.
+
+Missing call to fl_lock_function in Fl_win32 when timeout is zero
+added.
+
+////////////////////////////////////////////////////////////////
+
+Great reduction in the number of fl_draw functions to make it more
+possible to use a dispatch table. See documentation for details.
+
+Moved more X-specific code into it's own source files, to match the
+_win32.cxx files.
+
+Deleted fl_line_style.cxx and moved code to fl_color.cxx.
+
+Bug in XFree86 3.0 drawing the FL_DOT pattern was worked around.
+
+UNTESTED: win32 pen code changed so setting the line style and color
+can be done in any order.
+
+Patches from Alexander Mai for OS/2
+
+Added emulation of lstep() to Fl_Counter.
+
+Added int Fl::event(), which is a static container for the most recent
+event number. You can check for FL_KEYBOARD or FL_PUSHED, etc, without
+having to pass it all the way from the handle() method.
+
+Fl_Window::layout() simplified to take advantage of new relative
+coordinates.
+
+Added FL_STEREO, FL_NO_AUTO_SWAP, and FL_NO_ERASE_OVERLAY to the
+settings for mode() on Fl_Gl_Window.
+
+////////////////////////////////////////////////////////////////
+
+Fixed error in Fl::run that caused fltk to absorb all the machine
+time. It looks like somebody restored Fl::run to the fltk 1.0
+behavior, I left this and removed the redundant exit() in the default
+window callback. (the behavior I tried to get can be had by doing
+"for (;;) fl_wait();").
+
+Fl_Input_Browser uses Fl_List to avoid copying all the menu items over.
+(I may change Fl_List back to the fltk 1.0 style of several virtual
+functions on the Fl_Browser (actually Fl_Menu_) to make the code
+cleaner, any opinions?)
+
+FL_NORMAL_SIZE broke if called in a static constructor, I put it back
+to the constant 12. Just don't use measurements before layout() if you
+want styles to work.
+
+Removed remaining _WIN32 symbols and replaced with WIN32
+
+Tooltip windows are removed with destroy() rather than hide(). This
+was to fix the WIN32 problem that Carl fixed with override() but it
+may be a good idea anyway?
+
+////////////////////////////////////////////////////////////////
+
+Fixes to mousewheel:
+
+  Names changed to FL_MOUSEWHEEL and and Fl_Style::wheel_scroll_lines
+  to match the Windows names. Polarity also changed to match Windows
+  (up is positive).
+
+  Fl::event_dy() is in wheel clicks, the widget should multiply by the
+  wheel_scroll_lines if desired.
+
+  Page-scroll mode sets the mulitplier to 10000 rather than MAX_INT so
+  it won't overflow when multiplied by a delta > 1.
+
+  Settings are intialized when the colors are read in Fl_x and Fl_win32.
+  The X version reads them from the xrdb database instead of the conf
+  file. We need to find out if there is any standard for this stuff.
+
+Fl::grab() restored to only the fltk 1.0 style where you supply a widget
+rather than a function. This seems to be more popular :-)
+
+Documentation fixes.
+
+////////////////////////////////////////////////////////////////
+
+Fl_has_idle fixed, it only tested N-1 callbacks and missed the last
+one.
+
+Restored WM_SYNCPAINT handling.
+
+////////////////////////////////////////////////////////////////
+
+Some '@' signs were ending up in fltk-config. There still is
+@LD_PLUGIN_FLAGS@ in it, but I could not figure this one out.
+
+FL_HIDE was not being passed down to children of groups. This meant
+that Fl_Windows that were in an Fl_Tab did not disappear when the tab
+was switched, amoung other problems.
+
+Fl_Menu_ callbacks further simplified. This gets rid of the static
+Fl_Menu::callback_menu pointer I put in the last version, and allows a
+program to emulate fltk1.0 with the addition of a callback. When a
+menu or browser item is selected, the callback for the menu/browser is
+done, and item() of that menu/browser is set to the selected item.
+There is also Fl_Menu_::default_callback which is installed by the
+constructor, it calls the callback on the item(). Thus by default it
+does it the way Robert and fluid wants, but by replacing the menu's
+callback you can alter the behavior so that things other than the item
+and it's data are passed to the item's callback. Some demo programs
+fixed to work with this.
+
+FL_DIAMOND_UP_BOX and FL_DIAMOND_DOWN_BOX were swapped.
+
+////////////////////////////////////////////////////////////////
+
+Fl_Image::draw() has an added Fl_Flags argument to support image types
+that draw different depending on the pushed (FL_VALUE), active, or
+highlighted state of the widget.
+
+Fl_Image::draw() is also simplified to take just an x,y coordinate for
+the upper-left corner. If you want to draw a portion of an image you
+should use fl_clip before calling it.
+
+I took out the indirection pointers for Fl_Image as that will not
+work, because it bypasses the virtual draw function on Fl_Image. We
+either need to make the _draw() function able to print an offscreen
+image (pixmap/bitmap) onto another device, or the rendering context
+should set a flag that each Fl_Image subclass should check to see
+whether it should draw directly or try to create the offscreen images.
+
+The "image" demo program rewritten to be much nicer and it can be used
+to test Fl_Bitmap, Fl_Pixmap, and Fl_RGB_Image. Other image types can
+be added fairly easily if wanted. Deleted the old bitmap and pixmap
+demos.
+
+////////////////////////////////////////////////////////////////
+
+Shortcuts on invisible menu items still select them. This allows
+invisible items to be used to make more than one shortcut per action,
+or to just make global shortcuts that are otherwise invisible to the
+user.
+
+Fixed Fl_Shaped_Window for NT.
+
+////////////////////////////////////////////////////////////////
+
+Modal and grab stuff *vastly* simplified. See new manual pages. When
+menus are dismissed by clicking outside of them, events are passed on
+to the clicked window. Code and behavior on both X and Win32 copied
+from the Qt source (look for "XGrab" and "XAllow" to see the full
+horror show!) NYI on windows for clicks in the same program.
+
+I renamed Fl_Window::modal_for() to Fl_Window::child_of().
+
+Fl_Window::set_modal() and Fl_Window::set_non_modal() are emulated
+under this new system, but should be avoided.
+
+ComboBox (Fl_Input_Browser) fiddled with a bit to get it to work with
+this and for focus to work, but it's not perfect yet...
+
+Removed x.h from Fl_Image.h and fl_draw.h. We don't want this as it
+defines many symbols (because of Xlib.h and windows.h header files)
+that can cause programs to be non-portable! Required some kludges to
+Fl_Image, unfortunately, as the type of some fields are now void*.
+
+Removed Fl_Window::x_root() and y_root(), they do not work and are
+unnecessary with the relative positioned widgets.
+
+Made Fl_Widget::label(xxx) not be inline.
+
+////////////////////////////////////////////////////////////////
+
+Keyboard focus box of Fl_Light_Button draws black rather than the
+light color.
+
+To make the focus go to Fl_Input widgets when the window is first
+shown, they now return 2 for handle(FL_FOCUS) and groups will search
+for these and put the focus on them (if it fails it puts the focus on
+the *last* widget, which matches how MSoft dialog boxes work). To make
+this work fully all subclasses of Fl_Group must return 2 for FL_FOCUS
+if thier children do, this is only done for Fl_Group and
+Fl_Tabs. However I may change how this is done.
+
+Does not call draw() or layout() on zero-sized windows. Destroys any
+region accumulated for these or invisible windows.
+
+Tried to redesign the web pages somewhat. Feel free to criticize, or
+try your own design.
+
+Changed shortcuts in fluid to use Ctrl instead of Alt.
+
+////////////////////////////////////////////////////////////////
+
+Buttons that have the Enter key as a shortcut will take input focus
+when the window is first displayed, like Fl_Input widgets do.
+
+If a widget does not have a tooltip the tooltip for the enclosing
+group is used. You can use "" as a tooltip to override enclosing
+Fl_Group's tooltips and make the inner widget not have a tooltip.
+
+X version sets Fl::event_clicks() to non-zero when a keyboard key
+repeats, like the Win32 version does.
+
+Menus do not obey shortcuts produced by repeating keys.
+
+Renamed "Meta" to "Super" to match newer XFree86 layouts
+
+Child Fl_Windows nested inside Fl_Groups positioned correctly.
+
+Dragging the mouse in the empty area of a group/window caused FL_DRAG
+& FL_RELEASE events to be sent to a random child widget, messing
+things up pretty bad. Warning: Fl::pushed() is now only true after
+a widget returns true for an FL_PUSH event, if you want to see if
+any mouse buttons are down use Fl::event_state(FL_BUTTONS).
+
+Enumeration fixups. All the XYZ+x things (like FL_F+4 for function key
+4) are replaced with macros that take an argument (like FL_F(4)).
+Added FL_BUTTONS to represent all mouse buttons in Fl::event_state(),
+and macro FL_BUTTON(n) to represent button n (first is 1).
+
+Can be compiled to use Xft (AntiAliased fonts) optionally. Right now
+you have to edit the config.h and makeinclude to get this, we should
+make this a configuration option. Works really spiffy, btw. See the
+other email.
+
+////////////////////////////////////////////////////////////////
+
+Xlib font selection fixed up for changing encodings. Before if an
+encoding was not found for a font it got marked so that no encoding
+search would be done, even if you switched to an encoding that exists.
+
+If you set the value() of a browser that has not been shown yet or has
+had it's contents changed, it will center the item. It used to scroll
+to incorrect positions.
+
+"make depend" makes dependencies for the .shared.o files as well.
+
+fl_encoding(x) does not change current font, instead it changes the
+next fl_font(x) call.
+
+Made Fl_FontSize object private to the various fl_font
+implementations. This should make it easier to support printing models
+where there is no need to cache every font+size we ever found.
+
+On X, if a child window completely filled the parent it would prevent
+expose events from being sent to the parent, defeating the parts of
+fltk that rely on this for synchronization with the window
+manager. One known effect is that if you call resize() on the window
+it would appear to be iconized() and refuse to draw() or layout() from
+then on.
+
+////////////////////////////////////////////////////////////////
+
+New method Fl::version() returns FL_VERSION, so a program can check
+the version of the shared fltk library it found.
+
+////////////////////////////////////////////////////////////////
+
+fl_font_xft changed so it does not produce X protocol errors if you
+have hardware overlays compiled in. (but it does not produce text,
+either).
+
+Seperated HAVE_OVERLAY into parts. "HAVE_OVERLAY" indicates that
+overlay hardware was detected. "USE_OVERLAY" means use the overlay
+hardware for normal windows (ie tooltips and menus). "USE_GL_OVERLAY"
+means use the overlay for OpenGL windows. Fixed so on X USE_GL_OVERLAY
+can be true while USE_OVERLAY is false, so we can use OpenGL overlays
+even if xft is enabled.
+
+Fl_Input uses fl_height() rather than the font size to decide how far
+apart to space the lines.
+
+Restored damage-setting from Fl_Browser::layout() that was causing all
+kinds of problems with the browser not updating.
+
+Changed the "super" key to "win" to match the symbol Windows uses to
+name the keys. "Meta" is provided everywhere for back compatability.
+
+Added "_TYPE" to FL_WINDOW, FL_GROUP, and FL_TABS symbols to hopefully
+make it clearer that they are values for type() (and to avoid
+confusion with the FL_WIN shift flag).
+
+Code donated by Sebastien Recio <recio@besancon.sema.slb.com> to fix
+the prototypes for the fl_list_fonts() for newer Windows systems, and
+to make Fl_Font::sizes() work on Windows. (tested on NT4 only!)
+
+////////////////////////////////////////////////////////////////
+
+Fixed the documentation for Fl_Widget and Fl to match the current set of
+methods. This required considerable editing as I rearranged them into
+the same order as the header files to make comparison easier. Renamed
+"functions.html" to "Fl.html". Small changes to header files to match.
+
+Copied the wxWindows legalese into the license.html and COPYING. This
+explicitly grants an "exception" to the LGPL to allow static-linked
+binaries to be distributed without source code. This wording of the
+exception is apparently common for libraries that are otherwise LGPL.
+Please take a look!
+
+Added a lot of text to CHANGES (I was mistakenly updating a file
+called changes).
+
+Checked in 12/6/01
+////////////////////////////////////////////////////////////////
+
+Edited documentation for Fl_Browser, Fl_Menu_, and Fl_Group to
+match implementation. Deleted documentation for the useless classes
+Fl_Hold_Browser and Fl_Select_Browser. Moved Fl_Free and Fl_Timer
+documentation to the forms-specific stuff.
+
+Fl_Browser changed to make some methods private and rename some stuff
+to hopefully make it easier to use.
+
+Restored w,h arguments to Fl_Image::draw() to allow image types that
+resize to fill an area. Removed FL_ALIGN_TILED in favor of the fltk.1.1
+Fl_Tiled_Image, which I added.
+
+Checked in 12/9/01
+////////////////////////////////////////////////////////////////
+
+relayout() and resize() now set their own field called layout_damage()
+in Fl_Widget. The bits are FL_LAYOUT_X,Y,W,H, and
+FL_LAYOUT_DAMAGE. Now layout() can find out exactly why it is
+called. Made several layout() methods take advantage of this.
+
+Rewrite of how damage() is done to speed up common usage. It no longer
+creates or uses clipping regions for simple redraw() calls on
+widgets, which should get rid of some of the slowdown we have seen.
+
+Renamge damage(n) to redraw(n) and damage(n,x,y,w,h) replaced with
+redraw(x,y,w,h) (because the first argument is ignored in this new
+system). This allows damage(n) to be reserved to do what set_damage(n)
+does now, to match the rest of fltk.
+
+Removed draw_n_clip, instead draw() is expected to fill all pixels if
+FL_DAMAGE_EXPOSE is on, and the caller does the clipping. This appears
+to be how all the widgets were implemented anyway. An internal hack is
+in there for Fl_Tabs and invisible widgets to work like vefore.
+
+Fl_Double_Window cleaned up and the ability to use XDBE restored. XDBE
+tested on Linux and Irix. The code is much simpler and I hope should
+work on Solaris and other XDBE implementations but I can't test that.
+
+Rearranged the fluid widget panel some and added support for multiline
+Fl_Input.
+
+Checked in 12/16/01
+////////////////////////////////////////////////////////////////
+
+Fl_Pack rewritten to use layout(), it works *MUCH* better. We need a
+way to mark widgets as "vertical" to make this really useful, I am
+open to suggestions.
+
+Windows with the (back-compatability) FL_MODAL flag set messed up
+modal state if exec() was called on them. This caused most of the
+Fluid control panels to not work.
+
+Fl_Browser: right,left can be used to open/close parent items and by
+repeatedly holding them down visit every item (somewhat like Windows
+but I hope the behavior is more useful). Double-click open/closes
+parent items like Windows, too. indented(0) is usable for hierarchial
+data. The Enter key can cause the callback if you set
+FL_WHEN_ENTER_KEY, this also causes double-click on non-parents to do
+the callback. Fluid fixed to use this so it is easy to open the
+control panel for an item.
+
+Checked in 1/11/02
+////////////////////////////////////////////////////////////////
+
+Left arrow on an open parent in Fl_Browser closes it.
+
+Fluid: changing the selected set of widgets while the control panel is
+open correctly updates the control panel to show that set. The
+resizable checkbox fixed.
+
+Fl_Menu_Window does not use overlay except on SGI, so that it works
+with xft implementations.
+
+////////////////////////////////////////////////////////////////
+
+Colors changed to be much more back compatable with fltk1.*:
+Removed text_box() and text_background(), it uses box() and color()
+for these. Added new button_box() and button_color() for use by
+widgets that draw internal buttons. Sliders now draw just like 1.1
+
+New flags bit FL_PACK_VERTICAL added to tell Fl_Pack to put the widget
+vertically. This allows arbitrary layout without as many nested Fl_Pack
+widgets.
+
+All type() enumerations are made class members, for instance
+FL_WORDWRAP_INPUT is now Fl_Input::WORDWRAP. Back-compatability
+#defines added to the header files.
+
+Considerable work done on fluid so that values for type are written to
+the saved file and the code as symbols, allowing them to change value
+in the future.
+
+Fluid will generate a subclass for some type() values instead of a
+type() setting.
+
+Reran the new fluid on all the .fl files.
+
+Fixed the julia sets in mandelbrot demo
+
+Fill Dial draws it's background correctly.
+
+New Fl_Bar class. This is a group that can be opened/closed by
+clicking the box at the left edge. You must put this into an Fl_Pack
+for it to be useful. Based on Curtis Edwards' FrameTab (you should be
+able to make it look just like that by changing the glyph function).
+
+Checked in 1/19/02
+////////////////////////////////////////////////////////////////
+
+NT version of fl_circle/fl_ellipse changed to match what X draws.
+
+fl_circle/fl_ellipse round to integer positions differently, makes
+Fl_Dial draw nicer.
+
+X version of fl_fill and fl_fill_stroke fixed to draw a path with more
+than 2 closepaths correctly.
+
+Fl_Input (and subclasses) can draw "inside" labels. The label is put
+into the box at the left of the box followed by a colon. You may want
+to fiddle with the label_size() or label_color() to differentiate it
+from the text.
+
+Added Fl_Numeric_Input. This new class lets you edit numbers with the
+up/down arrow keys (works really well). Fluid fixed to use it, try it
+to see how it works.
+
+Lots of cleanup to the widget/glyph drawing code.
+
+Documentation fixes.
+
+Checked in 1/23/02
+////////////////////////////////////////////////////////////////
+
+Fixed Fl_Browser::goto_index(int), it was going to item n+1
+
+Fixed Fl_Browser::goto_index so that you can go to invisible items.
+
+New Fl_Browser::make_item_visible(where) which does what you want(TM).
+The new browser is distinctly less painful to program than the older
+ones, please read the documentation!
+
+Fixes to documentation so it goes through htmldoc better.
+
+Checked in 1/24/02
+////////////////////////////////////////////////////////////////
+
+X sent fake keyup events when you hold down a repeating key, made fltk
+ignore these.
+
+Typing a key while a menu was up that did not match a menu item shortcut
+crashed.
+
+Fl_Input and Fl_Text_Editor now do a bunch of Emacs Alt+letter
+combinations. These (and Emacs ctrl+letter keys) are only done if the
+program does not use them for a shortcut such as a menu item. The
+implementation of this cleaned up and removed from Fl.cxx.
+
+Checked in 1/26/02
+////////////////////////////////////////////////////////////////
+
+Renamed Fl::event_key(int) to Fl::event_key_state(int) to avoid
+conflict with any future function that sets Fl::event_key(). Renamed
+Fl::get_key(int) to Fl::get_key_state(int) to match.
+
+Check, radio, return, and light buttons use the text_size() to
+determine the size of the glyph (rather than the size of the widget),
+matces fltk1.1. Cleanup of the code to draw them.
+
+Checked in 1/27/02
+////////////////////////////////////////////////////////////////
+
+Redrawing of Check buttons fixed to not overdraw the label, which was
+visible when Xft or other antialiasing was used.
+
+////////////////////////////////////////////////////////////////
+
+Major simplification of the themes, moving "conf" out of fltk and into
+the themes that use it. Added "scheme" theme that emulates the older
+system, making this the default theme will emulate it exactly. This
+now works pretty much the way I intend fltk2.0 to work. Notice that
+this has caused the addition, deletion, and renaming of a number of
+source files.
+
+Added FL_PLASTIC_BOX, copied from fltk1.1.
+
+Seperated the Fl_Radio_Button drawing from the Fl_Check_Button.
+
+Fixed (sort of) the essai theme. It compiles and runs but needs work.
+
+Win32 uses Fl_Window::xclass() as the name of the window class it
+creates.
+
+New fl_arc drawing code by Jim Wilson.
+
+Replaced Fl_Style::start() with new object called Fl_Style_Set. Not
+sure if this is any better but it seems more object-oriented. This is
+not going to work right unless I get rid of fl_background(), but fluid
+loads themes pretty well now.
+
+Checked in 2/10/02
+////////////////////////////////////////////////////////////////
+
+X version of list_fonts changed to match the output of xft more.
+
+Fl_Gl_Window defaults to only using glxSwapBuffers, as attempts to
+copy regions seem broken on the newest win2k drivers. You can change
+this by setting the GL_SWAP_TYPE environment variable.
+
+Fl_Group does not pass FL_DRAG, FL_KEY, FL_KEYUP, and FL_LEAVE events
+to children, so it can be used as a base class for something that does
+handle these events.
+
+////////////////////////////////////////////////////////////////
+
+Win32 version messed up the clipboard for the entire system if you
+closed the window that owned the clipboard.
+
+New sliders with slot and tick marks, design copied from Qt. New
+functions added to base class to make it easier to subclass sliders to
+draw differently. Documentation for these, too.
+
+Fixed drawing of Fl_Light_Button and Fl_Return_Button when you drag
+off and then release the mouse.
+
+Crash in the menus reported by Joe Perkins fixed, I think.
+
+Checked in 2/25/02
+
+////////////////////////////////////////////////////////////////
+
+Fl_Input could recurse forever in the check to see if a key is a
+shortcut for some other widget before using it as an Emacs key.  Also
+fixed the same problem with Fl_Text_Editor.
+
+Sliders changed from Qt/Windows-emulation to style more like Curtis
+did with the tick marks inside the box and behind the slider. Looks a
+lot nicer imho. The underlying functions used by draw() did not have
+to change, so they are sufficient to make a class that looks exactly
+like Qt however.
+
+If an Fl_Window was a subwindow it could return zero for FL_PUSH
+events and then they could be passed to widgets in the parent that are
+hidden behind the window. It now returns one for FL_PUSH all the time.
+
+Tried to fix another crash in Fl_Menu.cxx
+
+Fl_Text_Editor did not take focus when clicked on.
+
+Fl_Text_Editor left Fl_Group::current() pointed at itself in it's
+constructor.
+
+Checked in 3/5/02
+////////////////////////////////////////////////////////////////
+
+Fixed warning messages from Xft. This is probably a temporary fix,
+according to keithp (author of Xft) I am doing this wrong.
+
+Fixed Fl_Window::fullscreen() on X. Under KDE/Gnome it does not hide
+the panel, which is the same problem that exists on Windows,
+too. Fixing on either X or Windows looks difficult.
+
+Fixed the KDE theme plugin to correctly calculate pixel size of fonts
+from point size, added something to documentation about how to do this.
+
+Checked in 3/9/02
+////////////////////////////////////////////////////////////////
+
+Added focus_box to Fl_Style. You can change it (try -theme motif to
+see an example).
+
+X version uses stipple pattern to draw focus box, to avoid bugs that
+are in some X servers. We may want this on Windows, too, but I don't
+know how to get it.
+
+Fixed the documentation for Fl_Boxtype.
+
+////////////////////////////////////////////////////////////////
+
+Updated all the diagrams in the manual to new ones from an Xft
+display. Several other documentation fixes.
+
+Fullscreen fixed yet again to try to get it reliable under Gnome and
+KDE.
+
+////////////////////////////////////////////////////////////////
+
+Xft support changed to manage an XftDraw structure for each
+window, as Keith Packard (author of Xft) requested. This also matches
+how Windows handles "DC"s so I changed the Windows implementation to
+match, I suspect it is more efficient now as it does not
+create/destroy dc's as much as before.
+
+On X, if you use size_range() on a window but don't set resizable(),
+calling resize() would destroy the size_range() settings. This no
+longer does this, it only messes with it for non-resizable windows.
+
+Tooltips fixed up to work like most other toolkits (dragging between
+several widgets with tooltips will instantly display the new tooltip
+if the first one was put up).
+
+////////////////////////////////////////////////////////////////
+
+Removed enumerations chapter from manual, put the remaining info from
+that next to the calls that use it. Added FL_Space (for space key) and
+fixed FL_KP_Last value.
+
+Turned on DnD from Fl_Input and Fl_Text_Editor/Fl_Text_Display.
+Drag-in for Fl_Text_Editor not yet implemented.
+
+Some fixes to X DND to work better with KDE. Now previews whether a
+drop is going to work or not, and defaults the type to "text/plain"
+which makes filenames and other stuff come in better. Dragging inside
+the same fltk application looks the same to the widget as drags from
+outside (the types and action are set). You can preset the types and
+action before calling fl_dnd() to allow drag-out of other data
+(changing the data based on the requested type is not supported,
+however).
+
+////////////////////////////////////////////////////////////////
+
+NT version left clip region set after getting an WM_PAINT message,
+which caused drawing outside the region, such as due to redraw()
+calls, to be thrown away.
+
+Cleaned up the button drawing code a little more.
+
+////////////////////////////////////////////////////////////////
+
+Fl::add_timeout caused Fl::wait to return 0
+
+Numerous typos in documentation reported by Alexander Mai fixed.
+
+Turned off DND-out per popular demand at Digital Domain. What is
+everybody's opinion? This seems to be how KDE and WinXP work.
+
+Checked in 4/11/02
+////////////////////////////////////////////////////////////////
+
+Fixed the documentation to go through htmldoc better.
+
+Fl::add_check() functions that did Fl::add_timeout() did not cause the
+timeout to happen with the last version of the code.
+
+Fl_Output could take the default focus, this is changed so that
+an Fl_Input in the same window gets the focus.
+
+////////////////////////////////////////////////////////////////
+
+Valuators no longer have space and backspace as shortcuts
+
+Win32 version stores all the info passed to WndProc into fl_msg so an
+add_hander method can see it.
+
+MapNotify, ConfigureNotify and UnmapNotify events cause
+Fl::add_handler function to be called after fltk does it's stuff,
+needed for window managers written with fltk.
+
+More errors in docs from Alexander Mai
+
+Checked in 4/15/02
+////////////////////////////////////////////////////////////////
+
+Deactivated windows work (they stop events from going to children)
+
+////////////////////////////////////////////////////////////////
+
+setenv GL_SWAP_TYPE 0 will prevent it from drawing in the front buffer
+to do gl overlays. This will blink less and gets around bugs in some
+drivers.
+
+Groups with a box can become the belowmouse() widget. And when looking
+for a widget to accept FL_PUSH, it stops searching when it reaches the
+belowmouse widget, allowing them to hide any widgets below them
+without having to respond to mouse clicks.
+
+All new send() method that simplifies the event handling and makes it
+easier to make composite widgets without using Fl_Group. This also
+fixes a lot of bugs where opaque overlapping widgets would not block
+events to widgets hidden by them, and where outermost windows did not
+respect activate/deactivate, did not get FL_ENTER events, and
+otherwise acted different than other widgets.
+
+In Win32 version subwindows got FL_ENTER/FL_LEAVE events on every
+mouse move.
+
+Log style Fl_Sliders work, try doing
+widget->type(widget->type()|Fl_Slider::LOG|Fl_Slider::TICK_ABOVE).
+
+////////////////////////////////////////////////////////////////
+
+fl_background() will produce usable gray shades when the color is
+white or black (makes the high-contrast Windows styles work).
+
+Lots of fixes to the WIN32 drawing code to get rid of blinking and
+make the windows update when the application is not active.
+
+Greg's rotation slider added to the symbols demo.
+
+Added Fl_Multi_Image and multiimage demo program.
+
+Valuator reported step() as Infinity, which messed up fluid's saved
+files. Added ability to set line & page size in fluid. Fixed snap-to
+behavior of sliders.
+
+X version will produce characters when Cryillic letters are typed,
+though they are only correct if koi8-r encoding is used.
+
+Restored size and color of text for Fl_Value_Slider (note that this
+also controls the size of the numbers next to the tick marks).
+
+////////////////////////////////////////////////////////////////
+
+Clicking on sliders moves the center of the sliding part to the
+cursor, rather than the edge. Clicking with the center or right mouse
+button moves the edge of the slider, like before. Fl_Scrollbar changed
+so clicking the middle or right mouse button moves the slider using
+this, rather than doing page up/down. This matches how Motif and GTK
+work.
+
+////////////////////////////////////////////////////////////////
+
+The gl_draw font functions rewritten for Xft where the font used for
+OpenGL may not be the same one used for other text. The strings are
+now measured correctly. Also changed gl_draw() functions to take an
+optional z coordinate and made them take floating-point only.
+
+Fl_Return_Button accepts the keypad Enter key as a shortcut (or any
+other key that produces a ^M.
+
+Fl_Input will not handle enter keys if some other widget in the window
+uses the enter key as a shortcut. With these changes you can make the
+keypad Enter key dismiss a control panel but the normal enter key
+confirm an input field, by setting the shortcut for the panel OK
+button to FL_KP_Enter.
+
+Fl_Chart changed to clip the drawing to the interior of the box.
+
+Made Fl_Widget::send() handle the click_to_focus stuff. This allows a
+lot more widgets (such as the browser) to turn on/off whether mouse
+movements set the focus. It also appears that Windows emulation can be
+enabled by turning this flag on on *all* widgets (if not then the
+widgets that don't want this should turn the flag off).
+
+////////////////////////////////////////////////////////////////
+
+gl_draw(char*,int) was missing from gl header file. Glut compatability
+fixed to not need gl_width(char).
+
+////////////////////////////////////////////////////////////////
+
+Fl_Input DnD changed to match OS/X: there is a small timeout before it
+starts DnD, if the user moves the mouse quickly it instead starts a
+new selection.
+
+DnD in the same Fl_Input moves the text rather than copying it. Use
+any shift key to force it to copy.
+
+DnD bug when a group responded to FL_DND_DRAG but cursor is pointing
+at an inner widget that responds to FL_DRAG. It would send the
+FL_DND_RELEASE to the inner widget instead of the group.
+
+////////////////////////////////////////////////////////////////
+
+Added ^o (insert newline after cursor) and ^t (swap characters) Emacs
+commands to Fl_Input.
+
+////////////////////////////////////////////////////////////////
+
+Fl_Value_Input rewritten to look like a MS "Spin Box". Deleted
+Fl_Counter and Fl_Value_Output and emulate them using Fl_Value_Input.
+
+////////////////////////////////////////////////////////////////
+
+New fl_draw.h functions to take arrays of points to draw shapes, and
+to use double for all arguments. Not compete yet, I want to allow
+fonts to be chosen with floating point sizes.
+
+Made the documentation use css. Nothing too complicated and it should
+still go through htmldoc. Somebody with more design sense than me
+should try to improve fltk.css.
+
+Clean up of Fl_Valuator to get rid of a lot of confusing functions and
+make linesize & pagesize be the actual increments.  Fl_Slider draws
+tick marks at intelligent distances (I hope), and if step() is
+non-zero it does a lot of work to select "nice" values (powers of 10
+times 1,2, or 5) depending on the slider scale.
+
+////////////////////////////////////////////////////////////////
+
+Fixed vertical centering of some labels and text.
+
+Sliders can draw differently when pushed (the default glyph function
+draws them the same but some themes could use this).
+
+Scrollbars highlighting cleaned up and tested.
+
+Documentation of new drawing functions.
+
+Added Fl_Window::copy_label()
+
+////////////////////////////////////////////////////////////////
+
+Added EXEEXT to configure.in and makeinclude.in
+
+Fl_Input sets an internal left margin that gets smoothly smaller as
+the widget gets narrower than 12 pixels.
+
+More work on the OS/X port.
+
+Changes suggested by Matt Morrise for fltk1.1. Fix bugs in Tabs, added
+Fl_Chart destructor, changed Fluid to write xywh constructor for a
+window if the class does not contain the word "Window".
+
+Replaced most occurrences in widget drawing of (A-B)/2 with (A-B)>>1
+because this rounds down always and that will preserve the alignment
+of this position whether B is greater or less than A.
+
+Replaced most of the rint(x) with int(floor(x+.5)) (or int(x+.5) when
+the value is known to be positive). This avoids misalignment (most
+visible with engraved labels) when A+B/2 is calculated and rounded and
+A varies between even and odd integers and B is an integer.
+
+Fl_Valuator::step() values that are not integers or 1/integers work.
+
+////////////////////////////////////////////////////////////////
+
+Vertical scrollbars and Fl_Numeric_Input did mousewheel movement backwards.
+
+Changed the arguments for drawing and time from double to float. This
+seems to be more popular for drawing libraries and is faster. Big
+problem is that C++ will not resolve foo(int,int) and foo(float,float)
+unless you identify both arguments as floats or both are
+integers. Also VC++ warns about the int->float conversions. Both of
+these can be fixed with casts but I have not gotten all the VC++
+warnings out yet (I don't turn them off because the double->float
+warning is also turned off and I want that one).
+
+////////////////////////////////////////////////////////////////
+
+Fl_Tooltip::enter() now takes a "generate" function and a void*
+argument. This allows the text to be deferred until the tooltip pops
+up, which may save time if the text is expensive to make.
+
+Fl_Tooltip::current(widget) added, it acts like the tooltip is already
+set for the given widget. This may be useful for preventing tooltips
+from popping up when the mouse moves back into a widget. Unfortunately
+fltk cannot call this itself because it has to allow the callbacks to
+destroy the widgets.
+
+Instead I did other fixes so that when you click and release a mouse
+button, the tooltip does not pop back up. I fixed 3 cases: dragging
+off a button so you are pointing at another, a pop-up menu
+disappearing so the cursor lands in a widget, and a modal window
+disappearing so the cursor lands in a widget. This was a big PITA but
+it should get rid of the biggest problems with fltk's over-exuberance
+for showing tooltips.
+
+The glut emulation pop-up menus have been fixed.
+Fl_Item_Group is now a subclass of Fl_Menu_.
+
+////////////////////////////////////////////////////////////////
+
+Put end() back on the Fl_Menu_ constructor, removing it broke a lot of
+programs.
+
+More fixes so tooltips don't reappear when a menu is dismissed.
+
+////////////////////////////////////////////////////////////////
+
+Middle & right mouse button click on scrollbar arrows jumps to that
+end.
+
+Child window handling assummed that if you destroyed an Fl_Window and
+made a different one that the new one would have a different memory
+address. On Windows 2000 this was not always true (probably due to a
+improved memory allocator) and the result is that modal dialogs would
+often not appear. Fixed so the destroy() of a window will also
+destroy() any windows that are child_of() it. This will also
+replicate Windows behavior on X: child windows go away rather than
+becoming unparented.
+
+Navigation, especially inside an Fl_Tabs, is fixed. This is done by
+making FL_KEY do navigation rather than FL_SHORTCUT.
+
+Changes so Fl_List does not have to check for illegal indexes in
+child() and children() methods. This makes them much easier to
+implement. Instead the calling code insures that such indexes are
+never sent.
+
+////////////////////////////////////////////////////////////////
+
+It looks like Fl_Menu_Window always has set_override() done, and
+set_override() is not done anywhere else. So I made Fl_Menu_Window do
+this automatically and made set_override undocumented. So if you want
+a borderless popup window use Fl_Menu_Window.
+
+Fl_Menu_Window and many other window subclasses did not have the
+default Fl_Escape shortcut due to a small mistake in the code. They
+now all have the same default.
+
+Clicking outside any modal window exits the modal state. This is useful
+for popups so you don't have to make a subclass just to catch this. It
+also appears to be a good GUI idea in general, programs do not appear
+"stuck" just because the user does not notice a modal window.
+
+Fl_Choice: the buttons have been rearranged to go from left to right
+in the same order as the arguments.
+
+Fl_Input: ctrl+y added for "redo". Typing Ctrl+z (undo) or ctrl+y more
+than once returns false, so another widget can handle them. Ie. if
+your application has an undo, and the user edits some text, typing
+ctrl+z will first undo the text editing, typing it again will cause
+your application to undo something.
+
+Clicking on Fl_Output does the callback.
+
+Added FL_CURSOR_NO (slash in circle)
+
+////////////////////////////////////////////////////////////////
+
+Fl_Browser could crash if you used arrow keys to navigate to an item
+who's callback would delete the browser.
+
+Changed to use the fltk:: namespace.
+Use cvs checkout -d to get the new FL subdirectory!
+
+Not yet done:
+
+Back compatability header files in the FL directory are mostly missing
+
+Glut and Forms back compatability not done (we may drop Forms and move
+the Chart object back into fltk).
+
+Only a few of the test/ programs ported, others commented out of the
+makefile.
+
+It's not loading themes, I will fix asap.
+
+////////////////////////////////////////////////////////////////
+
+Mac code updated some. It now compiles about half way. Still need to
+work on it...
+
+Changed strings.c to the official bsd code that returns the correct
+values for strlcat and strlcpy.
+
+////////////////////////////////////////////////////////////////
+
+If X_HAVE_UTF8_STRING is not defined, then the X implementation lacks 
+Xutf8LookupString() and is probably not XFree86. XmbLookupString(3X11) 
+is used in its place and returns a locale-dependent multibyte-encoded 
+buffer which is trancoded to UTF-8 via iconv(3). If iconv_open() does 
+not find a conversion description for multibyte to UTF-8, the 
+non-XInput method is used.
+
+////////////////////////////////////////////////////////////////
+
+Changed SharedImage::guess to fltk::guess_image. This is due to 
+fact that windows dll linker needs all exported functions to be in library.
+Cause SharedImage was declared as FL_API, linker assumes that all SharedImage 
+functions are implemented in libfltk. So I moved SharedImage::guess out of the class
+and made it FL_IMAGES_API.
+
+////////////////////////////////////////////////////////////////
+
+fl_color_win32.cxx loads SetDCPenColor and SetDCBrushColor functions dynamically.
+Uses alternative (old) method, if those functions cannot be loaded (older windows)
+from gdi32.dll
+
+////////////////////////////////////////////////////////////////
+* Added Window::Maximize
+  so far for X11 and Win32
+  TODO: MAC OS X version, and testing
+	And added example of maximize() as part of teset/fullscreen.cxx
+
+* Probably fixed bug: gifImage.cxx:105: error: â€˜U32â€™ was not declared
+  by adding a work around to configure.in
+  in crosscompilation with mingw (linux 64 bit to windows)
+  And documented crosscompilation (TODO - finish it)
+
+* Added Window::system_layout() so that it is possible to override the
+  default Window::layout() method yet still do the operating system
+  stuff needed to resize the window. Only tested on X11.
+
+////////////////////////////////////////////////////////////////
+
+Fixed glibc 2.10 compiler problems (Fedora 11 and others) with scandir()
+(STR #2202, #2205, #2223)
+
+
+////////////////////////////////////////////////////////////////
+
+Fixed TextEditor::text() would return garbage if the "gap" is at the
+beginning of the text buffer (STR #1987)
+
+////////////////////////////////////////////////////////////////
+
+fluid/Makefile didn't respect ${DESTDIR} for fltk2-config --post
+(STR #1701, 2065, 2254)
+
+////////////////////////////////////////////////////////////////
+
+Fix for word wrapping, equivalent to svn -r 5194 for FLTK 1.1.
+This fixes cursor positioning issues when wrap mode is on in
+TextEditor (FLTK 1.1 - STR #1227). This has also been discussed in
+fltk.bugs in Dec. 2008 (please refer to STR #2276), but not yet
+completely fixed.
+
+////////////////////////////////////////////////////////////////
+
+Fixed double free of ValueSlider's label (STR #2412)

@@ -1,0 +1,54 @@
+﻿
+$ErrorActionPreference = 'Stop';
+
+$softVersion = '@VERSION@'
+$shortVersion = '@SHORTVERSION@'
+
+$osBitness = Get-ProcessorBits
+
+$packageName= 'mrViewer'
+$toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+$url        = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${softVersion}-Windows-32.zip"
+$url64      = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${softVersion}-Windows-64.zip"
+$fileLocation = Join-Path $toolsDir "${packageName}-v${softVersion}-Windows-${osBitness}.zip"
+
+If ( $osBitness -Match "32" )
+{
+	$programFiles = $env:ProgramFiles
+}
+Else
+{
+	$programFiles = $env:ProgramW6432
+}
+
+$packageArgs = @{
+  packageName   = $packageName
+  unzipLocation = $programFiles
+  fileType      = 'exe'
+  url           = $url
+  url64bit      = $url64
+
+  softwareName  = 'mrViewer*'
+
+  checksum      = '@CHECKSUM@'
+  checksumType  = 'sha256'
+  checksum64    = '@CHECKSUM64@'
+  checksumType64= 'sha256'
+
+  validExitCodes= @(0, 3010, 1641)
+  silentArgs   = ''
+}
+
+Install-ChocolateyZipPackage @packageArgs
+
+$target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
+Install-ChocolateyPath -PathToInstall "${target}" -PathType 'Machine'
+
+$DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
+
+Install-ChocolateyShortcut -ShortcutFilePath "${DesktopPath}/${packageName}-${osBitness} v${shortVersion}.lnk" -TargetPath "${target}/${packageName}.exe"
+
+$StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
+$StartPath = Join-Path "$StartMenu" "Programs"
+
+Install-ChocolateyShortcut -shortcutFilePath "${StartPath}/${packageName}-${osBitness} v${shortVersion}.lnk" -targetPath "${target}/${packageName}.exe"

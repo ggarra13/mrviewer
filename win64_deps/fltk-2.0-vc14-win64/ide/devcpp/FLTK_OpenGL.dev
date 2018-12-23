@@ -1,0 +1,109 @@
+[Project]
+FileName=FLTK_OpenGL.dev
+Name=FLTK OpenGL
+UnitCount=6
+Type=2
+Ver=1
+ObjFiles=
+Includes=../..;../../OpenGL;.
+Libs=../../lib
+PrivateResource=FLTK_OpenGL_private.rc
+ResourceIncludes=
+MakeIncludes=
+Compiler=-DHAVE_GL_@@_
+CppCompiler=-DHAVE_GL_@@_
+Linker=
+IsCpp=1
+Icon=
+ExeOutput=../../lib
+ObjectOutput=
+OverrideOutput=1
+OverrideOutputName=libfltk_gl.a
+HostApplication=
+Folders=
+CommandLine=
+UseCustomMakefile=0
+CustomMakefile=
+IncludeVersionInfo=1
+SupportXPThemes=0
+CompilerSet=0
+CompilerSettings=0000000000010000000000
+
+[Unit1]
+FileName=..\..\OpenGL\Fl_Gl_Choice.cxx
+CompileCpp=1
+Folder=FLTK OpenGL
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit2]
+FileName=..\..\OpenGL\Fl_Gl_Overlay.cxx
+CompileCpp=1
+Folder=FLTK OpenGL
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=..\..\OpenGL\Fl_Gl_Window.cxx
+CompileCpp=1
+Folder=FLTK OpenGL
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=..\..\OpenGL\gl_draw.cxx
+CompileCpp=1
+Folder=FLTK OpenGL
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit5]
+FileName=..\..\OpenGL\gl_start.cxx
+CompileCpp=1
+Folder=FLTK OpenGL
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[VersionInfo]
+Major=2
+Minor=0
+Release=0
+Build=10
+LanguageID=1033
+CharsetID=1252
+CompanyName=FLTK Development Team
+FileVersion=
+FileDescription=FLTK OpenGL Library
+InternalName=FLTK OpenGL Library
+LegalCopyright=1998-2004 Bill Spitzak and others
+LegalTrademarks=
+OriginalFilename=
+ProductName=FLTK OpenGL Library
+ProductVersion=2.0.0
+AutoIncBuildNr=1
+
+[Unit6]
+FileName=..\..\OpenGL\GlChoice.h
+CompileCpp=1
+Folder=FLTK OpenGL
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+

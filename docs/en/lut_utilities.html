@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  
+  <title>LUT Utilities</title><meta content="Gonzalo Garramuño" name="author"></head>
+
+<body>
+<h2 style="text-align: center;">Lut Utilities</h2>
+
+Starting with v3.5.1, mrViewer ships with two script utilities to convert a LUT in .3dl or .cube format to mrViewer's native CTL.
+
+The program 3dlut2ctl.rb is found in the bin directory of mrViewer and it is run command-line from a bash shell or Windows' cmd.exe.  It works like:<br><br>
+
+<span style="font-family: monospace;">
+  3dl2ctl.rb [options] input.3dl output.ctl
+</span>
+
+  <br><br>
+  Example:
+
+  <br><br>
+  <div class="console">
+    $ 3dl2ctl.rb 3dl/bleach.3dl ctl/LMT.bleach.ctl
+  </div>
+  <br><br>
+  Once that is run and the CTL script is named with some prefix and placed in a CTL directory listed in a path listed in the CTL_MODULE_PATH environment variable, you will be able to use it.  For example, in the example above, going to the Assign Look Mod Transform shall open a requester with LMT.bleach.ctl in it.<br>
+  Note that currently the conversion is done in float, and the input/output set to 10/12/16 bits is disregarded.
+
+
+  <br><br>
+  The other Ruby utility allows you to convert .cube luts (as used in Flame) into CTL code.  The program cube2ctl.rb is found in the bin directory of mrViewer and it is run command-line from a bash shell or windows' cmd.exe. It works like:<br><br>
+
+  <span style="font-family: monospace;">
+  cube2ctl.rb [options] input.cube output.ctl
+</span>
+
+  <br><br>
+  Example:
+
+  <br><br>
+  <div class="console">
+    $ cube2ctl.rb cube/bleach.cube ctl/LMT.bleach.ctl
+  </div>
+  <br><br>
+  
+</span>
+<br><br>
+
+</body></html>
+ 

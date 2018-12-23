@@ -1,0 +1,70 @@
+﻿
+
+
+$ErrorActionPreference = 'Stop';
+
+$softVersion = '@VERSION@'
+$shortVersion = '@SHORTVERSION@'
+
+$osBitness = Get-ProcessorBits
+
+$packageName = 'mrViewer'
+$softwareName = 'mrViewer*'
+$installerType = 'ZIP'
+$toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+
+$fileLocation = "${packageName}-v${softVersion}-Windows-${osBitness}.zip"
+
+
+$validExitCodes = @(0, 3010, 1605, 1614, 1641)
+if ($installerType -ne 'MSI') {
+  $validExitCodes = @(0)
+}
+
+
+If ( $osBitness -Match "32" )
+{
+	$programFiles = $env:ProgramFiles
+}
+Else
+{
+	$programFiles = $env:ProgramW6432
+}
+
+try {
+Uninstall-ChocolateyZipPackage -PackageName "$packageName" -ZipFileName "$fileLocation"
+}
+catch
+{
+Write-Warning "Uninstall-ChocolateyZipPackage failed.  Bug in chocolatey." 
+}
+
+$DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")
+
+$StartMenu = [Environment]::GetFolderPath("CommonStartMenu")
+$StartPath = Join-Path "${StartMenu}" "Programs"
+
+Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
+Remove-Item -Path "${StartPath}/${packageName}-${osBitness} v${shortVersion}.lnk"
+
+$target = Join-Path "$programFiles" "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
+
+
+$PathToRemove = $target
+foreach ($path in [Environment]::GetEnvironmentVariable("PATH","Machine").split(';'))
+{
+  If ($Path)
+  {
+    If (($path -ine "$PathToRemove") -AND ($path -ine "$PathToRemove\"))
+    {
+      [string[]]$Newpath += "$path"
+    }
+  }
+}
+$AssembledNewPath = ($newpath -join(';')).trimend(';')
+
+[Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"Machine")
+
+$target = Join-Path "$programFiles" "${packageName}-v${softVersion}-Windows-${osBitness}"
+
+Remove-Item -Recurse -Force -Path "$target"

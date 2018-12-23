@@ -1,0 +1,29 @@
+For compiling, you need to have:
+
+- boost::uuid
+- tinyxml2
+- a bash shell environment
+
+You can google them for getting the latest.
+
+Compilation is done with cmake. 
+
+So, to compile, you'd do (for windows 64):
+
+$ notepad win64_vars # change paths to point to your locations
+$ source win64_vars
+$ mkdir build-win64
+$ cd build-win64
+$ cmake .. -G'NMake Makefiles' -DCMAKE_BUILD_TYPE=Release -DCMAKE_BUILD_ARCH=64
+$ nmake
+
+from a shell console.  In Windows, you can use mingw or cygwin, with the paths set up for the Microsoft compiler.
+
+
+For Linux:
+
+$ apt-get install libboost1.48-dev
+$ apt-get install libtinyxml2
+$ cd build-linux64
+$ cmake .. -G'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release
+$ make

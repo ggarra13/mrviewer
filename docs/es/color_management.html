@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+  
+  
+  
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+
+
+
+  
+  
+  
+  <title>Manejo de Color</title></head>
+
+<body>
+
+
+<h2 style="text-decoration: underline;">Manejo de Color</h2>
+<br>
+<h4>El problema</h4>
+El color no es, lamentablemente, una ciencia exacta. &nbsp;Aun no podemos medir como ven nuestros ojos. &nbsp;Por ello, cada desarrollo en la 
+area de la imagen ha resultado en una multitud de formas de hacer cosas.
+&nbsp; Por lo que es rojo en un monitor, no necesariamente será del mismo tinte de rojo en otro. El desastre es más complicado por el hecho que otros periféricos de salida, como impresoras y similares, son todas distintas, tienen respuestas de color no lineales, y pueden crear el color en una forma totalmente diferente que un tubo de CRT o un LED.
+
+ <p>La salvación viene con un
+<i>Systema de Manejo de Color</i>, una pieza de software diseñada para convertir
+ colores entre representaciones requeridas para varios equipos. Saber
+las características de tu hardware es la mitad de camino para tener una solutción que funcione.
+En el nivel más básico, para un monitor significa saber los colores primarios y la gama. 
+
+</p>
+
+
+
+
+mrViewer supporta probablemente el sistema de manejo de color más avanzado en uso hoy en día, llamado CTL (Color Transform Language o Lenguaje de Transformación de Color). &nbsp;CTL fue
+desarollado por AMPAS, la Academia de Motion Picture Arts and Sciences,
+con la ayuda de Industrial Light and Magic (ILM).<br>
+
+<br>
+
+Como el nombre insinúa, CTL es en verdadero&nbsp;lenguaje, similar a
+un lenguaje de sombreado (shading language), que puede ser usado para transformación de color de las imágenes.
+&nbsp;Su set de set de características es similar a aquellas de ICC, aunque va mas allá que ello, para también soportar características particulares y especificas al negocio de producción de peliculas. &nbsp;Siendo un lenguaje completo, las
+posibilidades pare corrección de color son ilimitadas y visto que las escrituras (scripts) de CTL
+son&nbsp;solo archivos ASCII, se vuelve más difícil de desinterpretar.<br>
+
+<br>
+
+Desde Enero 2015, AMPAS incluye ACES 1.0, que es una colección de 
+transformaciones CTL and estas están incluídas parcialmente en la distribución de mrViewer.
+
+<br>
+
+
+
+Dentro de mrViewer, dos o mas archivos CTL son procesados y cocinados en un 3D Lut
+de (por defecto) 64x64x64 que luego opera en la imágen completamente con información de coma flotante de 32-bits en tiempo real. &nbsp; Esto te dará una bastante exacta aproximación de inclusive las más complejas transformaciones.
+<br>
+
+
+
+
+<br>
+
+
+
+
+Además de CTL, mrViewer también supporta ICC, que es todavía bastante
+comun con la industria de imprenta así como con algunos manufacturadores de monitores.
+&nbsp;En el future, es probable que el soporte de ICC sea sacado.
+<br><br>
+Para entender a CTL y ACES, usted debería primero leer:<br>
+
+<li><a target="main" href="http://www.openexr.com/UsingOpenEXRandCTL.pdf">http://www.openexr.com/UsingOpenEXRandCTL.pdf</a></li>
+<li><a target="main" href="http://www.openexr.com/OpenEXRColorManagement.pdf">http://www.openexr.com/OpenEXRColorManagement.pdf</a></li>
+
+<br><br>
+<br>
+
+</body></html>

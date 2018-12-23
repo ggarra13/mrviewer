@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>La Ventana de Información del Medio</title>
+
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+<h2><a name="Image_Information_Window"></a><span style="text-decoration: underline;">La Ventana de Información de el Medio</span></h2>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 392px; height: 484px; float: left;" alt="" src="images/imageInfoWindow.png" hspace="20"></td>
+
+      <td>
+      <h2></h2>
+
+      <br>
+
+Usted puede abrir la ventana de Información del Medio haciendo cualquiera de:<br>
+
+      <ul>
+
+        <li>Abriendola con el botón 
+          <div class="menu">W</div>
+de la barra principal.</li>
+
+        <li>Usando
+          <div class="menu">
+BDR-&gt;Ventana-&gt;Información del Medio</div>
+        </li>
+
+        <li>Clickeando doblemente en una imagen el la ventana de Lista de Carrretes.</li>
+
+      </ul>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+La ventana de Información del Medio muestra información detallada acerca de la
+imagen, película o secuencia siendo mostrada en el frente.
+&nbsp;<br>
+Algunos de estos atributos pueden ser interactivamente modificados, ya sea para
+cambiar el comportamiento de la muestra de la imagen o modificar como se graba la imagen.<br>
+La información disponible es:
+<br>
+<h3><a name="Image_Tab"></a>Ficha de Imagen</h3>
+
+<table style="text-align: left; width: 971px; height: 417px;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+      <th>Atributo</th>
+      <th>Explicación</th>
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Directorio</td>
+
+      <td style="font-family: monospace;"> Se refiere al directorio donde el archivo reside.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Nombre de Archivo</td>
+
+      <td style="font-family: monospace;"> Se refiere al nombre o a los nombres de la película, imagen o secuencia.x</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Secuencia</td>
+
+      <td style="font-family: monospace;">Verdadero si el
+nombre de archivo se refiere a toda una secuencia de imagenes, Falso si se referiere a una sola imagen o pelicula.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ancho</td>
+
+      <td style="font-family: monospace;">El ancho veridico de la imagen, secuencia o película medido en pixels.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Altura</span></td>
+
+      <td style="font-family: monospace;">El alto veridico de la imagen, secuencia o película medido en pixels.</td>
+
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Proporción de Aspecto</td>
+
+      <td style="font-family: monospace;">La proporción de aspecto de la imagen
+(es decir, ancho de resolution / alto de resolution ).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Proporción de Pixel</td>
+
+      <td style="font-family: monospace;">La forma de los
+pixels en la imagen. &nbsp;Una proporción de pixel de 1 se refiere a
+pixels cuadrados (como aquellos de una impresora o monitor moderno). &nbsp;Un
+valor diferente se refiere a pixels para otros medios (usualmente, video NTSC o PAL).</td>
+
+    </tr>
+
+   <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Ventana de Display</span></td>
+
+      <td style="font-family: monospace;">La Ventana de Display de la imagen (OpenEXR).</td>
+
+    </tr>
+ <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Ventana de Datos</span></td>
+
+      <td style="font-family: monospace;">La Ventana de Datos de la imagen (OpenEXR).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Profundidad</td>
+
+      <td style="font-family: monospace;">La profundidad de color de cada canal (8-bit, 16-bit, or 32-bit for float images).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Canales de Imagen</td>
+
+      <td style="font-family: monospace;">Numero de Canales en la Imagen.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Intención de Render</span></td>
+
+      <td style="font-family: monospace;">La intención de render empotrada en esta imagen (Perfil ICC).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Gama</td>
+
+      <td style="font-family: monospace;">La gama empotrada de la imagen.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Transformación de
+Dispositivo de Entradata (IDT)<br>
+
+      </td>
+
+      <td style="font-family: monospace;">La transformación de dispositivo de entrada (IDT) de CTL
+(Color Transformation Language) toma la imagen de la camara (encodificada en log usually) into a linear image.<br>
+
+      </td>
+
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Transformación de
+Modificación de Look (LMT)<br>
+
+      </td>
+
+      <td style="font-family: monospace;">Las transformaciones de modificación de look (LMT) de CTL (Color Transformation Language) toma la imagen y aplica una corrección de color como una pasada de desteñido, o una ASC_CTL SOP (Scale Offset Pivot) y Sat (Saturation) sobre la imagen lineal.  Tambien pueden operar en otro formato más dúctil a las correcciones de color como ACEScg.<br>
+
+      </td>
+
+    </tr>
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Transformación de
+Render<br>
+
+      </td>
+
+      <td style="font-family: monospace;">La transformación de render de CTL
+(Color Transformation Language) de ACES colorspace to OCES color space.<br>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Perfil ICC</span></td>
+
+      <td style="font-family: monospace;">Cualquier ICC
+(International Color Consortium) perfil en la imagen.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Formato
+      </td>
+
+      <td style="font-family: monospace;">El formato de la imagen.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Orden de Lineas</span></td>
+
+      <td style="font-family: monospace;">El orden de las lineas grabadas en la imagen (si se aplica)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Memoria</td>
+
+      <td style="font-weight: bold; font-family: monospace;"><span style="font-weight: normal;">La cantidad de memoria que la imagen usa.</span></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Espacio en Disco</span></td>
+
+      <td style="font-family: monospace;">La cantidad de espacio en disco que
+usa la imagen (sólo valido si la imagen está grabada en el sistema de archivos)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Compresión</span></td>
+
+      <td style="font-family: monospace;">Tipo de Compresión usado para grabar la imagen. &nbsp;Algunos formatos permiten cambiar la compresión usada antes de grabar.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><span style="font-family: monospace; font-weight: bold;">Proporción de Compresión</span></td>
+
+      <td style="font-family: monospace;">El porcentaje
+de compresión ( es decir, la diferencia entre el espacio que la imagen usa en memoria y el espacio que usa en el disco)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Fecha de Creación</td>
+
+      <td style="font-family: monospace;"> La fecha en que la imagen fue creada o ultimamente modificada.</td>
+
+    </tr>
+
+
+
+
+
+  </tbody>
+</table>
+<br>
+<h3><a name="Metadata_Tab"></a>Ficha de Metadatos</h3>
+Si la imagen contiene metadatos EXIF, IPTC u otros atributos, serán listados en esta ficha.<br>
+Con el botón derecho del mouse, se accede a un menu que permite agregar, borrar y permutar la modificación de cualquiera de los atributos.<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tr>
+<td>
+<img style="width: 407px; height: 250px; float: left;" alt="" src="images/Add_Attribute.png" hspace="20">
+</td>
+<td>
+<h4><a name="Adding_Attributes"></a>Agregando un Atributo</h4>
+Puede agregar un atributo llendo a <div class="menu">BDR->Agregar Atributo</div> en la ventana de información del medio.
+Cuando se agrega un atributo, debes especificar el tipo de atributo, el nombre clave para el, así como su valor.  Nótese que el tipo de atributo solo se mantiene en imágenes de OpenEXR.  Todos los demás formatos que soportan atributos (MIFF, PNG) modificarán el atributo a tipo de texto.
+</td>
+</tr>
+<tr>
+  <td>
+    <img style="width: 143px; height: 64px; float: left;" alt="" src="images/Modify_Attribute.png" hspace="20">
+</td>
+<td>
+<h4><a name="Modifying_Attributes"></a>Modificando un Atributo</h4>
+Si usted quiere modificar un atributo, debe permutar su estado con <div class="menu">BDR->Permutar Modificar->Attribute</div>.  Como un atajo, puede seleccionar <div class="menu">BDR->Permutar Modificar->Todo</div> que permutará todos los atributos.  Una vez que el atributo está activo, puede tipear el nuevo valor para él y luego presionar TAB para salir y hacer que el nuevo valor esté vigente.  Si el nuevo valor no es compatible con el tipo de atributo, usted verá un mensaje de error a tal efecto.
+</td>
+</tr>
+<tr>
+<td>
+<img style="width: 407px; height: 129px; float: left;" alt="" src="images/Remove_Attribute.png" hspace="20">
+</td>
+<td>
+<h4><a name="Removing_Attributes"></a>Removiendo un Atributo</h4>
+Puede remover un atributo llendo a <div class="menu">BDR->Remover Atributo</div> en la ventana de información del medio.
+Cuando se remueve un atributo, necesita seleccionar el nombre clave del mismo.
+</td>
+</tr>
+</table>
+
+<h3><a name="Video_Tab"></a>Ficha de la Pista de Video<br>
+</h3>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th>Atributo</th>
+      <th>Explicación</th>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Codec</td>
+      <td style="font-family: monospace;">Codec de video usado en la pelicula</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">CPS</td>
+      <td style="font-family: monospace;">Velocidad de reproducción ( en Cuadros Por Segundo )</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Comienzo</td>
+      <td style="font-family: monospace;">Tiempo del comienzo del video</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Duración</td>
+      <td style="font-family: monospace;">Duración del video</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h3><a name="Audio_Tab"></a>Ficha de la Pista de Audio</h3>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th>Atributo</th>
+      <th>Explicación</th>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Codec</td>
+      <td style="font-family: monospace;">Codec de audio usado en la película o en el archivo de audio</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Canales</td>
+      <td style="font-family: monospace;">Numero de canales de audio en película o archivo de audio</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Frecuencia</td><td style="font-family: monospace;">Frecuencia de audio de la pelicula o archivo de audio (en bytes por segundo)</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Bitrate Promedio</td>
+      <td style="font-family: monospace;">Bitrate Promedio del audio</td>    
+    </tr>
+    <tr>
+      
+      <td style="font-family: monospace;">Lenguaje</td>
+      <td style="font-family: monospace;">Lenguaje de la pista de audio si se conoce.</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Comienzo</td>
+      <td style="font-family: monospace;">Tiempo de comienzo del audio</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Duración</td>
+      <td style="font-family: monospace;">Duración del audio</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h3><a name="Subtitle_Tab"></a>Ficha de la Pista de Subtitulos<br>
+</h3>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="font-family: monospace;">Codec</td>
+      <td style="font-family: monospace;">Codec de subtítulo usado en la pelicula</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">FourCC</td>
+      <td style="font-family: monospace;">Nombre de FourCC del codec si lo hay</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Bitrate Promedio</td>
+      <td style="font-family: monospace;">Bitrate promedio de los subtítulos si es posible computarlo</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Comienzo</td>
+      <td style="font-family: monospace;">Tiempo de comienzo de subtítulos</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Duración</td>
+      <td style="font-family: monospace;">Duración de los subtítulos</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+<br>
+
+</body>
+</html>

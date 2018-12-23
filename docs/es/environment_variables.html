@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+
+
+  
+  
+  <title>Variables de Entorno</title>
+</head>
+
+
+<body>
+
+<br>
+
+
+
+<h2 style="text-decoration: underline;"><a name="Environment_Variables"></a>Variables de Entorno</h2>
+
+
+
+Al comenzar y durante diferentes operaciones, mrViewer lee varias
+variables de entorno que te permiten customizar su operación.
+&nbsp;Aquí hay una lista de ellas:<br>
+
+
+
+<br>
+
+
+
+<table style="width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+  <tbody>
+
+
+
+    <tr>
+
+
+
+      <th style="text-align: center; width: 25%;">Variable</th>
+
+
+
+      <th style="text-align: center; width: 50%;"> Explicación</th>
+
+
+
+      <th style="text-align: center; width: 25%;"> Valor por Defecto</th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_MODULE_PATH</td>
+
+
+
+      <td style="font-family: monospace;">Una línea de texto con caminos separados por
+dos puntos (Unix) o semicoma (Windows) donde
+mrViewer encontrará .ctl scripts.</td>
+
+
+
+      <td style="font-family: monospace;">Si no está seteado,
+el subdirectorio ctl de mrViewer</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_ODT_CTL_DISPLAY_TRANSFORM</td>
+
+
+
+      <td style="font-family: monospace;">El script de CTL
+usado para transformar imágenes del espacio CIExy space para mostrar en tu pantalla</td>
+
+
+
+      <td style="font-family: monospace;">
+Ninguno.</td>
+
+
+
+    </tr>
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_ODT_ICC_PROFILE</td>
+      
+
+
+      <td style="font-family: monospace;">El perfil ICC atado al monitor para simular el medio de salida.</td>
+
+
+
+      <td style="font-family: monospace;">
+	Ninguno.</td>
+    </tr>
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_ODT_CTL_DISPLAY_CHROMATICITIES</td>
+
+
+
+      <td style="font-family: monospace;"> Cromaticidades de tu display</td>
+
+
+
+      <td style="font-family: monospace;"> Rec. ITU-R
+BT.709 chromaticidades</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE</td>
+
+
+
+      <td style="font-family: monospace;"> Luminancia de Blanco de tu display</td>
+
+
+
+      <td style="font-family: monospace;"> 120 candelas
+por metro cuadrado</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE</td>
+
+
+
+      <td style="font-family: monospace;"> Luminancia del
+entorno de alrededor</td>
+
+
+
+      <td style="font-family: monospace;"> 12 candelas por metro cuadrado</td>
+
+
+
+    </tr>
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_8bit</td>
+
+
+
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de 8-bits de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguna.</td>
+
+    </tr>
+
+    <tr>
+      <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_16bit</td>
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de 16-bits de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguna.</td>
+    </tr>
+
+    <tr>
+      <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_32bit</td>
+
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de 32-bits de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguna.</td>
+    </tr>
+
+    <tr>
+      <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_float</td>
+
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de coma flotante o media coma flotante de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;"> RRT.a1.0.0</td>
+    </tr>
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_8bit</td>
+
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de 8-bits de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguno.</td>
+
+    </tr>
+
+    <tr>
+      <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_16bit</td>
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de 16-bits de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguno.</td>
+    </tr>
+
+    <tr>
+      <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_32bit</td>
+
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de 32-bits de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguno.</td>
+    </tr>
+
+    <tr>
+      <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_float</td>
+
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de coma flotante o media coma flotante de RGB al espacio CIExy</td>
+
+      <td style="font-family: monospace;">Ninguno.</td>
+    </tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">ICC_PROFILES</td>
+
+
+
+      <td style="font-family: monospace;">Directorio donde los perfiles ICC e ICM residen.</td>
+
+
+
+      <td style="font-family: monospace;">%WINDIR%/SYSTEM32/spool/drivers/color
+en Windows y
+/usr/share/color/icc en Unix</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">HOME</td>
+
+
+
+      <td style="font-family: monospace;"> Directorio Home para el usuario
+donde las preferencias de mrViewer serán grabadas.</td>
+
+
+
+      <td style="font-family: monospace;">$HOME en Unix
+y %HOMEDIR% en Windows</td>
+
+
+
+    </tr>
+
+    <tr>
+
+      <td><span style="font-family: monospace; font-weight: bold;">MRV_SHADER_PATH</span></td>
+
+      <td style="font-family: monospace;">Directorio donde los shaders de mrViewer residen.</td>
+
+      <td style="font-family: monospace;">Indefinido, mrViewer usa el directorio shaders/ o un shader prefijado.</td>
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<span style="font-family: monospace;"></span>
+</body>
+</html>

@@ -1,0 +1,35 @@
+Compiling mrViewer requires a number of dependencies:
+
+- Ninja build system (optional)
+- Boost 1.51 or later
+- OpenEXR 2.2.0 or later
+- CTL 1.5.1 or later
+- OpenEXR_CTL 1.0.1 or later
+- FFMPEG git or 2.3 or later
+- GLUT
+- FLTK 2.0
+- ImageMagick 6.7.4 or later
+- GLEW 1.11 or later
+- TCLAP 1.2.1
+- SampleICC 1.6.6 or later
+- libiconv
+- libintl
+
+The files win32_vars and win64_vars contain definitions for compiling
+on the windows platform. They point to the dependencies directory.
+
+The dependencies directory now contains the latest libraries used to
+compile mrViewer.
+
+More often than not, there will be a build-linux64 directory, for
+example, with a runme.sh shell script for easy compilation.
+Same for windows, albeit on windows you will need some bash emulation,
+like MSYS/MingW.
+Some packages on windows require Visual Studio.  This is true for fltk2,
+and ImageMagick.
+On Windows, some packages come precompiled, like libiconv, libintl, etc.
+
+To compile under windows, you need the Visual Studio 2015 Community Edition.
+The Win32 version of mrViewer is compiled with msvc12.0 (Visual Studio 2013).
+The x64   version of mrViewer is compiled with msvc14.0 (Visual Studio 2015).
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Arreglando Problemas Comunes</title><meta content="Gonzalo Garramuño" name="author"></head>
+
+<body>
+<h2 style="text-align: center;">Arreglando Problemas</h2>
+
+<h3 style="text-align: center;">Todas las Platformas</h3>
+<h4>+ Videos no se reproducen en reversa en forma contínua.</h4>
+
+Cuando intento reproducir una película en reversa, la reproducción es picada.<br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta:</span><br>
+
+<span style="font-family: monospace;">Reproduccion en reversa en forma contínua es altamente dependiente en la velocidad de su computadora, asi como en la resolución y codec usado para codificar la película. &nbsp;Muchos codecs asumen que la reproducción será siempre para adelante y codifican los cuadros tomando ventaja de las diferencias de cuadro a cuadro. <br>A veces para decodificar inclusive un sólo cuadro es necesario saber hasta un segundo entero de todos los cuadros que vinieron antes de este (y a veces, los que vienen después también).<br>
+Cuando se reproduce en reversa, significa que mrViewer necesita trabajar mas duramente en decodificar varios cuadros para atrás antes que el cuadro actual se muestre. &nbsp;Si tu computadora no es lo suficientemente rápida para decodificar esos cuadros en menos tiempo que el cps reproduce, veras la reproducción tartamudear.<br>Si
+su película contiene audio, puede mejorar la reproducción en reversa apagando el audio llendo al botón de selección de pista de audio y seleccionar &lt;no audio&gt;.<br>
+Un codec que es normalmente bueno para reproducción en reversa es el prores.<br>
+ </span>
+
+<h4>+ Abriendo mrViewer reporta otra instancia está corriendo.</h4>
+
+Cuando intento abrir mrViewer, falla diciendome que otra instancia está corriendo.<br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta:</span><br>
+
+<span style="font-family: monospace;">mrViewer soporta un modo donde solo una instancia de mrViewer está presente por lo que si usted intenta abrir la imagen en otro mrViewer, la imagen se redirecciona al mrViewer ya abierto. Esta característica es seteada en las preferencias.  Este sistema funciona creando un archivo mrViewer.lock.prefs dentro del directorio de preferencias.  A veces, si mrViewer no fue cerrado correctamente, este archivo quedará y reportará incorrectamente que otra instancia de mrViewer está corriendo.  Bajo Linux ese archivo está en /home/@user@/.fltk/filmaura/ y bajo Windows, está en %APPDATA%/filmaura.  Eliminando ese archivo falso te permitirá abrir mrViewer de vuelta. </span>
+<br><br>
+
+</body></html>

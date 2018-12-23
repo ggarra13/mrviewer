@@ -1,0 +1,22 @@
+BUGS:
+
+	- DEMOREEL2007 jumps to sound.
+	  DEMOREEL2007 does not loop correctly and audio becomes out of sync.
+	
+
+
+	FIX NOW !!!
+	-----------
+
+	- Stop should rebind images.
+
+	- Seek repeats audio packets? (see cascade_HD - try near 
+	  chips 00::20:00) so even a-v will be 1/0, it is still wrong.
+
+
+	- Reverse playback audio is out of sync ( spiderman.divx ), even
+	  with old caching method.
+
+	- Masking has round-off errors.  Try milkgirls with 2.10 Vistavision.
+
+	- Gamma pulldown menu makes hole in opengl window when refreshing.

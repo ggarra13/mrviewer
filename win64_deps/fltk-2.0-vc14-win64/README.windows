@@ -1,0 +1,24 @@
+BUILDING FLTK UNDER MICROSOFT WINDOWS
+
+    There are three ways to build FLTK under Microsoft Windows.  The
+    first is to use the Microsoft Visual C++ 6.0 project files under
+    the "ide/visualc" directory.  Just open (or double-click on) the
+    "fltk.dsw" file to get the whole shebang.  Use ide/vcnet/fltk.sln
+    for Visual C++ 2008, and change the build type of the subprojects
+    to remove Cairo if you don't use it.
+
+    The second method is to use Borland C++. Please read the file
+    README.bc5 for details.
+
+    The third method is to use the Cygwin or MinGW GNU-based development
+    tools. For information on how to build in this environment, please
+    read the README.cygwin file.
+
+    Also, you can build windows version of the FLTK library on linux
+    using crossbuilding - see also README.mingw32_cross
+
+    Current versions of FLTK may require the winsock2 DLL
+    (WS2_32.DLL).  If you have an older version of Windows 95, you may
+    not have this DLL and you will have to get it from the Microsoft
+    web site.
+

@@ -1,0 +1,377 @@
+#!/bin/sh
+#
+# "$Id: fltk2-config.in 8500 2011-03-03 09:20:46Z bgbnbigben $"
+# 
+# FLTK configuration utility.
+#
+# Copyright 2000-2003 by Bill Spitzak and others.
+# Original version Copyright 2000 by James Dean Palmer
+# Adapted by Vincent Penne and Michael Sweet
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+# USA.
+#
+# Please report all bugs and problems to the website:
+#
+#    http://www.fltk.org/str.php
+#
+
+MAJOR_VERSION=@FL_MAJOR_VERSION@
+MINOR_VERSION=@FL_MINOR_VERSION@
+PATCH_VERSION=@FL_PATCH_VERSION@
+VERSION="$MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION"
+APIVERSION="$MAJOR_VERSION.$MINOR_VERSION"
+
+### BEGIN fltk2-config
+
+# First, we need to figure out where we are, in case we are in a non-installed invocation
+# BUT to do that we need to check if we were called via a symlink or not...
+# AND some systems (e.g. mingw) have neither symlinks, nor readlink, nor which...
+HAVE_READLINK=`type -p readlink`
+if test -z "$HAVE_READLINK"; then
+# We don't have readlink, so just use local dir as selfdir
+  selfdir=`dirname $0`
+else
+# We do have readlink - let us check if we were called via a symlink or not
+  selfdir=`readlink $0`
+  if test -n "$selfdir"; then
+#   Was a symlink, find the real selfdir
+    selfdir=`dirname $selfdir`
+  else
+#   Not a symlink, find the selfdir
+    selfdir=`dirname $0`
+  fi
+fi
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+exec_prefix_set=no
+bindir=@bindir@
+includedir=@includedir@
+libdir=@libdir@
+srcdir=@srcdir@
+
+# compiler names
+CXX="@CXX@"
+CC="@CC@"
+
+# post-process command (only needed for MacOS)
+POSTBUILD="@POSTBUILD@"
+
+# flags for C++ compiler:
+CFLAGS="@CFLAGS@"
+CXXFLAGS="@CXXFLAGS@"
+LDFLAGS="@LDFLAGS@"
+LDLIBS="@LDFLAGS@ @LIBS@"
+
+# libraries to link with:
+LIBNAME="@LIBNAME@"
+DSONAME="@DSONAME@"
+DSOLINK="@DSOLINK@"
+IMAGELIBS="@IMAGELIBS@"
+SHAREDSUFFIX="@SHAREDSUFFIX@"
+
+# Check for local invocation, and update paths accordingly...
+if test -e "$selfdir/fltk/Window.h"; then
+  bindir="$selfdir/fluid"
+  includedir="$selfdir"
+  libdir="$selfdir/lib"
+  prefix="$selfdir"
+	if test -f "$libdir/libfltk2_jpeg.a"; then
+		CFLAGS="-I$includedir/images/jpeg $CFLAGS"
+		CXXFLAGS="-I$includedir/images/jpeg $CXXFLAGS"
+	fi
+
+	if test -f "$libdir/libfltk2_z.a"; then
+		CFLAGS="-I$includedir/images/zlib $CFLAGS"
+		CXXFLAGS="-I$includedir/images/zlib $CXXFLAGS"
+	fi
+
+	if test -f "$libdir/libfltk2_png.a"; then
+		CFLAGS="-I$includedir/images/png $CFLAGS"
+		CXXFLAGS="-I$includedir/images/png $CXXFLAGS"
+	fi
+fi
+
+usage ()
+{
+    echo "Usage: fltk2-config [OPTIONS]
+Options:
+	[--prefix[=DIR]]  return/set where FLTK is installed
+	[--exec-prefix[=DIR]]
+	[--version]
+	[--api-version]
+
+Options telling what we are doing:
+	[--use-gl]        use GL
+	[--use-images]    use extra image formats (PNG, JPEG)
+	[--use-glut]      use glut compatibility layer
+	[--use-forms]     use forms compatibility layer
+
+Options telling what information we request:
+	[--cflags]        return flags to compile C using FLTK
+	[--cxxflags]      return flags to compile C++ using FLTK
+	[--ldflags]       return flags to link against FLTK
+	[--ldstaticflags] return flags to link against static FLTK library
+                                          even if there are DSOs installed
+	[--libs]          return FLTK libraries full path for dependencies
+	[--cxx]           return name of C++ compiler used to build FLTK
+	[--cc]            return name of C compiler used to build FLTK
+
+Option to compile and link an application:
+	[-g]              compile the program with debugging information
+	[--compile program.cxx]
+  [--post program]
+"
+    exit $1
+}
+
+if test $# -eq 0; then
+    usage 1
+fi
+
+no_plugins=no
+compile=
+post=
+debug=
+
+# Parse command line options
+while test $# -gt 0 
+do
+    case "$1" in
+	-*=*) 
+	    optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'`
+	    ;;
+	*)
+	    optarg=
+	    ;;
+    esac
+
+    case $1 in
+	--prefix=*)
+	    prefix=$optarg
+	    if test $exec_prefix_set = no ; then
+              exec_prefix=$optarg
+	    fi
+## FIXME
+#     This fixes --prefix=<path> bug - fltk2-config didn't return proper stuff
+      bindir=${exec_prefix}
+      includedir=${prefix}/include
+      libdir=${prefix}/lib
+      DSOLINK="-Wl,-rpath,${prefix}/lib"
+	    ;;
+	--prefix)
+	    echo_prefix=yes
+	    ;;
+	--exec-prefix=*)
+	    exec_prefix=$optarg
+	    exec_prefix_set=yes
+	    ;;
+	--exec-prefix)
+	    echo_exec_prefix=yes
+	    ;;
+	--version)
+	    echo $VERSION
+	    ;;
+	--api-version)
+	    echo $APIVERSION
+	    ;;
+	--use-gl | --use-glut)
+	    use_gl=yes
+	    ;;
+	--use-forms)
+	    use_forms=yes
+	    ;;
+	--use-images)
+	    use_images=yes
+	    ;;
+	--cflags)
+	    echo_cflags=yes
+	    ;;
+	--cxxflags)
+	    echo_cxxflags=yes
+	    ;;
+	--ldflags)
+	    echo_ldflags=yes
+	    ;;
+	--ldstaticflags)
+	    echo_ldstaticflags=yes
+	    ;;
+	--libs)
+	    echo_libs=yes
+	    ;;
+	-g)
+	    debug=-g
+	    ;;
+	--compile)
+	    compile=$2
+	    post=$2
+	    shift
+	    ;;
+	--cxx)
+	    echo_cxx_name=yes
+	    ;;
+	--cc)
+	    echo_cc_name=yes
+	    ;;	    
+	--post)
+	    post=$2
+	    shift
+	    ;;
+	*)
+	    echo_help=yes
+	    ;;
+    esac
+    shift
+done
+
+if test "$includedir" != /usr/include; then
+    includes=-I$includedir
+else
+    includes=
+fi
+
+if test "$libdir" != /usr/lib -a "$libdir" != /usr/lib32; then
+    libs=-L$libdir
+else
+    libs=
+fi
+
+###
+# Some MinGW variants still need -I/usr/include and -L/usr/lib ...
+#
+case `uname -s` in
+    MINGW*)
+	if test "$includedir" == /usr/include; then
+	  includes=-I$includedir
+	fi
+	if test "$libdir" == /usr/lib; then
+	  libs=-L$libdir
+	fi
+	;;
+esac
+LDSTATIC_PATHS=$libs
+LDLIBS_PATHS=$libs 
+
+# Calculate needed libraries
+LDSTATIC="$libdir/libfltk2.a $LDLIBS"
+LDLIBS="$libs -lfltk2$SHAREDSUFFIX $LDLIBS"
+LIBS="$LIBS $libdir/libfltk2.a"
+
+if test x$use_forms = xyes; then
+    LDLIBS="-lfltk2_forms$SHAREDSUFFIX $LDLIBS"
+    LDSTATIC="$libdir/libfltk2_forms.a $LDSTATIC"
+    LIBS="$LIBS $libdir/libfltk2_forms.a"
+fi
+if test x$use_gl = xyes; then
+    LDLIBS="-lfltk2_gl$SHAREDSUFFIX @GLLIB@ $LDLIBS"
+    LDSTATIC="$libdir/libfltk2_gl.a @GLLIB@ $LDSTATIC"
+    LIBS="$LIBS $libdir/libfltk2_gl.a"
+fi
+if test x$use_images = xyes; then
+    LDLIBS="-lfltk2_images$SHAREDSUFFIX $IMAGELIBS $LDLIBS"
+    LDSTATIC="$libdir/libfltk2_images.a $LDSTATIC $IMAGELIBS"
+fi
+
+LDLIBS="$DSOLINK $LDLIBS"
+LDSTATIC="$LDSTATIC_PATHS $LDSTATIC"
+
+# Answer to user requests
+if test -n "$echo_help"; then
+    usage 1
+fi
+
+if test -n "$compile"; then
+    case $compile in
+        *.cxx)
+            prog=`basename $compile .cxx`
+	    ;;
+        *.cpp)
+            prog=`basename $compile .cpp`
+	    ;;
+        *.cc)
+            prog=`basename $compile .cc`
+	    ;;
+        *.C)
+            prog=`basename $compile .C`
+	    ;;
+	*)
+	    echo "ERROR: Unknown/bad C++ source file extension on \"$compile\"!"
+	    exit 1
+	    ;;
+    esac
+	    
+    post=$prog
+
+    echo $CXX $includes $CXXFLAGS $debug -o $prog $compile $LDSTATIC
+    $CXX $includes $CXXFLAGS $debug -o $prog $compile $LDSTATIC
+fi
+
+if test -n "$post" -a "$POSTBUILD" != ":"; then
+    echo $POSTBUILD $post $includedir/fltk/mac.r
+    $POSTBUILD $post $includedir/fltk/mac.r
+fi
+
+if test "$echo_prefix" = "yes"; then
+    echo $prefix
+fi
+
+if test "$echo_exec_prefix" = "yes"; then
+    echo $exec_prefix
+fi
+
+if test "$echo_cflags" = "yes"; then
+    echo $includes $CFLAGS
+fi
+
+if test "$echo_cxxflags" = "yes"; then
+    echo $includes $CXXFLAGS
+fi
+
+if test "$echo_ldflags" = "yes"; then
+    my_libs=
+    libdirs=$libs
+
+    for i in $LDLIBS ; do
+	if test $i != -L$libdir ; then
+	    if test -z "$my_libs" ; then
+		my_libs="$i"
+	    else
+		my_libs="$my_libs $i"
+	    fi
+	fi
+    done
+    echo $libdirs $my_libs
+fi
+
+if test "$echo_ldstaticflags" = "yes"; then
+    echo $LDSTATIC
+fi
+
+if test "$echo_libs" = "yes"; then
+    echo $LIBS
+fi
+
+if test "$echo_cc_name" = "yes"; then
+    echo $CC
+fi
+
+if test "$echo_cxx_name" = "yes"; then
+    echo $CXX
+fi
+
+#
+# End of "$Id: fltk2-config.in 8500 2011-03-03 09:20:46Z bgbnbigben $".
+#

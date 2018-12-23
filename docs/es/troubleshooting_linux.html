@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>Problemas Comunes en Linux</title>
+
+
+  <meta content="Gonzalo Garramu&ntilde;o" name="author">
+
+</head>
+<body>
+
+<h2 style="text-align: center;">Arreglando</h2>
+
+<h3 style="text-align: center;">Problemas en Linux</h3>
+
+<h4>mrViewer no arranca.</h4>
+
+Cuando intento arrancar mrViewer, hace crash en seguida o tan pronto como una imagen es cargada. <br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta:</span><br>
+
+<span style="font-family: monospace;">Esto puede a veces pasar cuando tu distro hace un update de algunos archivos del kernel que afectan el driver de OpenGL. &nbsp;Chequee otros programas OpenGL para ver si 
+exhiben una conducta similar. &nbsp;Si no funcionan, recompile su driver de tarjeta gráfica de linux o haga un update de su repositorio.</span>
+
+<h4>Algunos formatos de imagen cargan como 8-bit o 16-bit solamente o con
+canal alfa incorrecto.</h4>
+
+Cuando intento cargar una imagen como un archivo tiff, carga solamente como archivo 16-bit o 8-bit o con un canal alfa sin premultiplicar a pesar de que la fila es un archivo de coma flotante con canal alfa.<br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta: </span><br>
+
+<span style="font-family: monospace;">Esto es usualmente un
+problema con su biblioteca de ImageMagick. mrViewer espera que ImageMagick haya sido compilado con soporte para 32-bit coma flotante, pero la mayoría de distribuciones de Linux, lo compilan con 16-bit solamente.
+ &nbsp;La script de shell de mrViewer (mrViewer.sh) 
+debería setear tu LD_LIBRARY_PATH para apuntar a su copia local de la biblioteca ImageMagick para evitar problemas, pero tal vez usted la ha cambiado o tiene un setup diferente. &nbsp;Asegúrese que su
+LD_LIBRARY_PATH apunta a la biblioteca de ImageMagick de mrViewer o compile
+su propia version de ImageMagick pero con 32-bit support.</span><br>
+
+<br>
+
+<h4>Algunos avi o archivos de películas no reproducen su audio.</h4>
+
+A veces, cuando cargo alguna pelicula o archivo avi, el video se reproduce, pero no hay audio.<br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta:</span>
+<br>
+Esto frecuentemente indica la falta de un codec apropiado para reproducir el audio en la biblioteca ffmpeg.  &nbsp;Abra la ventana de Información del Medio y chequee la pista de audio que usted está interesado.
+&nbsp;Chequee si&nbsp;"Codec Conocido"
+dice "Sí". &nbsp;Si dice No, ffmpeg no tiene el codec necesario para la reproducción. &nbsp; Chequee también el nombre del codec y su id fourcc.
+ &nbsp;La mayoría de codecs usan un nombre pero otros se han popularizado por su id fourcc (DIVX o XVID, por ejemplo).<br>
+Quicktime movies y archivos avi son solo formatos para grabar una película.&nbsp;Sin embargo, la forma que la pelicula y el audio se comprimen es manejado por lo que comunmente se refiere como codec (una rutina de codificar - decodificar o plugin).
+&nbsp;mrViewer viene con una biblioteca que maneja casi todo codec conocido. &nbsp;Sin embargo, algunos de estos codecs son proprietarios y estan patentados.<br>
+En paises que aceptan las patentes de software como en los EEUU, esto puede requerir pagar una licencia para distribución o para decodificarlos.
+</body>
+</html>

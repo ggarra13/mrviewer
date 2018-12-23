@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>La Ventana de Listado de Carretes</title>
+
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+<br>
+
+<h2><span style="text-decoration: underline;">Ventana de Listado de Carretes</span></h2>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 415px; height: 377px; float: left;" alt="reelList.png" src="images/reelList.png" hspace="20"></td>
+
+      <td>Puede abrir la ventana de Listado de Carretes haciendo uno de estos:<br>
+
+      <ul>
+
+        <li>Abriendo la ventana desde el botón 
+          <div class="menu">W</div>
+ de la barra superior principal.</li>
+
+        <li>Usando
+          <div class="menu">
+BDR-&gt;Ventana-&gt;Carretes</div>
+        </li>
+
+      </ul>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+La Ventana del Listado de Carretes te permite ver todos los carretes cargados así como las imágenes cargadas en carrete actualmente activo.<br>
+
+Tambien permite que hagas algunas operaciones adicionales en las imágenes cargadas.<br>
+
+<br>
+
+Un Carrete es basicamente una lista de imágenes grabadas bajo un nombre en particular.
+&nbsp;Esta lista de imágenes puede ser reordenada simplemente haciendo drag and
+drop (arrastre y suelte) de la imagen. &nbsp;Usted puede rápidamente cambiar de una imagen o pelicula a otra cliqueando en cualquier item de la lista.<br>
+
+<br>
+
+mrViewer te permite cargar carretes (archivos .reel) de la linea de comando
+ o usando drag and drop (arrastre y suelte). &nbsp;Cuando se carga un carrete, todas las imagenes listadas en el carrete serán cargadas.<br>
+
+<br>
+
+La ventana de los Carretes también te permite abrir una nueva imagen o película, grabar el cuadro o imagen actual, clonificar la imagen actual (util para renders 3d) o remover la imagen del carrete.<br>
+
+Puedes tambien atar una nueva CTL transform (3D Lut) a una imagen, hacer que la imagen aparezca siempre como fondo y reproducir todo el listado del carrete como una sola pelicula en LDE (Lista de Decisión de Edicion).<br>
+
+<br>
+
+<h3><a name="Compositing_Images"></a>Componiendo
+Imágenes</h3>
+
+mrViewer supporta una basica, composición A sobre B sin destrucción de las imágenes..
+&nbsp;Esta composición es para display solamente y no pretende ser para grabar imágenes compuestas.<br>
+
+<br>
+
+Dentro de la Ventana de Listado de Carretes, es possible seleccionar una imagen y luego cliquear en el botón <span style="font-weight: bold;">BG</span>
+para hacer que la imagen sea una imagen de fondo. &nbsp;Seguidamente,
+usted puede cambiar a una nueva imagen y la imagen de fondo sera mostrada en el fondo (siempre y cuando la imagen de frente posea un canal de alfa). &nbsp;La imagen de fondo es siempre estirada para ajustarse al tamaño de la imagen de frente.<br>
+
+<br>
+
+El propósito principal de esta característica es permitirte interactivamente ver tus renders 3d sobre un fondo. &nbsp;Esto funciona
+particularmente
+bien cuando se lee una imagen de frente que cambia su archivo en el disco o cuando se lee una imagen virtual, tal como un talón de render de mental ray.
+
+<h3><a name="Playing_Movies_as_an_EDL_Reel"></a>Reproduciendo
+Peliculas como un Carrete LDE</h3>
+
+Una característica de mrViewer es que te permite mostrar multiple secuencias o películas juntas. &nbsp;Si usted carga varios archivos en un carrete, puede entonces elegir el modo LDE de la Ventana de Listado de Carretes.<br>
+
+El modo LDE te permite mostrar todas las peliculas en un carrete una tras otra, como si todas hubieran sido editadas en una gran pelicula. .<br>
+
+<h3>Removiendo Imágenes del Listado de Carretes</h3>
+
+Una vez que hayas terminado con alguna secuencia de imágenes o pelicula, puede que quieras deshacerte de ella.  Para hacerlo, selecciona la imagen en la ventana del listado de carretes y presione la tecla Delete (<div class="hotkey">Del</div>).<br>
+<br>
+
+<br>
+
+</body>
+</html>

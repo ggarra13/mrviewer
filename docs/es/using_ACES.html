@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+<meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Using the Color Transform Language</title><meta content="Gonzalo Garramu�o" name="author"></head><body><h1 style="text-align: center;">Using ACES (Clip Files)</h1>
+<p>mrViewer es largamente compatible con ACES (Academy Color Encoding System) para la corrección de color y el manejo del mismo.</p>
+<span style="font-family: Andale Mono;">Camera RAW</span><br style="font-family: Andale Mono;">
+
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; ||</span><br style="font-family: Andale Mono;">
+
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp; IDT to</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">ACES workspace</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp; &nbsp; ||</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp; (Optional)</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">LMT ACES to ACEScg</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; ||</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">ASC-CDL transforms</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; ||</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">LMT ACEScg to ACES</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; ||</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">RT from ACES to OCES</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; ||</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
+<span style="font-family: Andale Mono;">ODT from OCES to Display</span><br style="font-family: Andale Mono;">
+<br>
+<p>mrViewer lee archivos ACESClip xml&nbsp; que describen las
+diferentes transformaciones de CTL aplicadas a una imagen.&nbsp;
+Tambien contiene ASC-CDL correcciones de color que son emuladas como
+Look Mod Transforms.<br>
+ </p><p>mrViewer puede tener multiple
+transformaciones de CTL activas al mismo tiempo.&nbsp;
+Una transformación está atada a la vista de la ventana principal y
+representa el monitor, video o film stock.&nbsp; Esta transformación
+dentro de la convención de nombres dentro de CTL es llamada la
+Transformación de Aparato de Salida o Output Device Transform
+(ODT).&nbsp;
+Este transform se setea en las ventana principal de preferencias, en la
+sección de CTL.&nbsp; La mayoría de projectos requerirá que los
+usuarios seteen la ODT una vez y no la cambien.</p><p>mrViewer viene con varias ODTs básicas para emular los monitores comunes. </p><p>Una
+ODT que intenta emular film requerirá frecuentemente una más completa
+tabla de lut de 2D o 3D para intentar emular la inversa de la
+Transformación de Emulación de Impresión en Fílmico o Print Film
+Emulation Transform
+(PFET).&nbsp; La PFET es particular a cada film stock y laboratorio de
+revelado de film y generarla requiere una evaluación cuidadosa del film
+stock y sus condiciones de revelado.&nbsp; Para más información
+acerca de crear la inversa PFET, usted debería consultar con su
+laboratorio de revelado.</p><p>Una
+segunda transformación disponible es la Transformación de Rendering o
+Rendering Transform o RT para abreviar.&nbsp;&nbsp; Esta transformación
+es unica a cada imagen y proyecto y representa la transformación
+necesaria para llevar los valores de pixel RGB guardados en una imagen
+a una agradable representación interna de CIE XYZ (OCES) para el
+proyecto. &nbsp;mrViewer viene con una basica Rendering Transform que
+fue dada por AMPAS para proveer una Transformación de Rendering de
+Referencia o Reference Rendering
+Transform que debería convertirse en el estandar para la mayoria de las
+produciones.&nbsp; Si tu proyecto requiere algun effect especial de
+film
+(como film lavanda), una transformación de rendering especial podría
+tener que ser usada.<br>
+</p>
+<p>Una tercera transformación disponible son las Transformaciones de
+Modificación de Look o Look Modification Transform (LMT).&nbsp;
+Esta transformación esta pensada principalmente para cámaras para
+llevar su imagenes de input y corregir su color basado en ciertos
+parametros como se hace en el set y esto es particular a cada modelo de
+cámara. Usted puede tener un número ilimitado de LMTs.</p>
+<p></p>Finalmente, está una Transformación de Aparato de Entrada o
+Input Device Transform (IDT) que es una transformación usada para
+llevar los datos en crudo de la cámara a un propicio espacio de trabajo
+de ACES.
+mrViewer viene con una pequeña lista de IDTs para algunas cámaras de
+fílmico populares.&nbsp; Si su camara no está listada, contacte a su
+manufacturador de su camera.<br>
+<br>Todas estas transformaciones pueden ser almacenadas en un archivo
+de Clip de Metadata de ACES.&nbsp; mrViewer carga equivalent archivos
+de Clip de Metadata de ACES si se encuentran.&nbsp; Por ejemplo, para
+una secuencia llamada
+nature.%04d.exr, el archivo clip llamado ACESclip.nature.xml sería
+buscado y cargado si está presente.&nbsp; Una vez que el archivo de
+clip es cargado puede presionar el botón de <span style="font-weight: bold;">LUT </span>en la barra de herramientas principal y esperar que se cocine la transformación (que debería llevar unos segundos).<br>
+
+</body></html>

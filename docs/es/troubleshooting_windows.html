@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>Problemas Comunes en Windows</title>
+
+
+  <meta content="Gonzalo Garramu&ntilde;o" name="author">
+
+</head>
+<body>
+
+<h2 style="text-align: center;">Arreglando</h2>
+
+<h3 style="text-align: center;">Problemas en Windows</h3>
+
+<h4>mrViewer no muestra sus opciones de comando.</h4>
+
+Siempre que arranco mrViewer, no deja información en la consola.<br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta:</span><br>
+
+<span style="font-family: monospace;">Este es un problema con Windows.  Para ver las opciones tipee:</div>
+<br>
+<div class="console"> mrViewer -h </div>
+<br>
+Las opciones aparecerán en una nueva consola.  Para ver el resto de los mensajes que mrViewer genera, vaya al menú <div class="menu">Ventana->Mensajes</div>
+</span>
+
+<h4>mrViewer no arranca con un error como ms-win-core*.</h4>
+
+<span style="font-weight: bold;">Respuesta:</span><br>
+
+<span style="font-family: monospace;">Este es un problema con los DLLs the windows.  Asegúrese de que no está mezclando DLLs de 64 bits con los de 32 bits.  Puede utilizar la utilidad Dependency Walker para chequear.  Otra posibilidad es que mrViewer haya sido compilado con el Win10 SDK que sólo es compatible con Windows 8, 8.1 and 10.0.  Lamentablemente hubo varias copias que estaban compiladas así.</span>
+</body>
+</html>

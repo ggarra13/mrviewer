@@ -1,0 +1,808 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="header">
+      <UniqueIdentifier>{4c93e71c-5d0c-4171-bdbb-1eff3c35dea2}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{cadf2cf7-478b-47f9-9fcc-d47a3652777f}</UniqueIdentifier>
+      <Extensions>cxx</Extensions>
+    </Filter>
+    <Filter Include="documentation">
+      <UniqueIdentifier>{64499fa2-74f2-4a21-86dc-df5f8a7b877d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="documentation\doxygen">
+      <UniqueIdentifier>{d329091d-df0e-4638-9c3c-fa4cd9c2ef9d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\fltk\adjuster.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\aligngroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\ask.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\bargroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\box.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\browser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\button.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\checkbutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\choice.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\clock.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\color.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\colorchooser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\ComboBox.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\cursor.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\cyclebutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\damage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\dial.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\dirent.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\divider.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\DoubleBufferWindow.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\draw.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\error.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\events.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\file_chooser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\filebrowser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\filechooser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\fileicon.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\fileinput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\filename.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\FillDial.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\FillSlider.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\fl_api.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\FL_VERSION.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\flags.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\floatinput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\font.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\forms.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\gl.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\gl2opengl.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\glut.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\glut0.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\GlWindow.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\group.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\HelpDialog.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\HelpView.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\highlightbutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\image.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\input.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\inputbrowser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\IntInput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\invisiblebox.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\item.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\itemgroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\labeltype.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\layout.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\lightbutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\LineDial.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\load_plugin.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\mac.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\math.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\menu.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\menubar.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\MenuBuild.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\menuwindow.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\Monitor.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\MultiBrowser.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\multiimage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\MultiLineInput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\MultiLineOutput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\numericinput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\output.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\packedgroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\PixelType.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\popupmenu.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\Preferences.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\progressbar.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\radiobutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\RadioItem.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\RadioLightButton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\rectangle.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\repeatbutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\returnbutton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\rgbimage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\run.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\scrollbar.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\scrollgroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\secretinput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\shapedwindow.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\sharedimage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\show_colormap.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\slider.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\StatusBarGroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\string.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\stringlist.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\style.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\styleset.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\symbol.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\tabgroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\textbuffer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\textdisplay.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\texteditor.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\Threads.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\thumbwheel.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\tiledgroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\tiledimage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\ToggleButton.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\tooltip.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\utf.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\valuator.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\valueinput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\valueoutput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\valueslider.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\visual.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\widget.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\win32.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\window.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\WizardGroup.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\WordwrapInput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\WordwrapOutput.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\x.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\xbmimage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\fltk\xpmimage.h">
+      <Filter>header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\add_idle.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\addarc.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\addcurve.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Adjuster.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\AlignGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\args.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\BarGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\bmpImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Browser.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Button.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CheckButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Choice.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\clip.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Clock.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Color.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\color_chooser.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ComboBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\compose.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Cursor.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\CycleButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\default_glyph.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Dial.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\DiamondBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\dnd.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\drawtext.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\EngravedLabel.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\error.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\event_key_state.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\file_chooser.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FileBrowser.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FileChooser.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FileChooser2.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FileIcon.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FileInput.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filename_absolute.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filename_ext.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filename_isdir.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filename_list.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filename_match.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\filename_name.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fillrect.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Fl_Menu_Item.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\FloatInput.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\fltk_theme.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Font.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gifImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Group.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GSave.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HelpView.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HighlightButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Image.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Input.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\InputBrowser.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\InvisibleWidget.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Item.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\key_name.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LightButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\list_fonts.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\load_plugin.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lock.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Menu.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Menu_add.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Menu_global.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Menu_popup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MenuBar.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MenuWindow.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\message.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MultiImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NumericInput.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\numericsort.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Output.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OvalBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\overlay_rect.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\own_colormap.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PackedGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\path.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PlasticBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PopupMenu.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Preferences.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ProgressBar.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RadioButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\readimage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RepeatButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ReturnButton.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RoundBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\RoundedBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\run.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scandir.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Scrollbar.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ScrollGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scrollrect.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\setcolor.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\setdisplay.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\setvisual.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShadowBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShapedWindow.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SharedImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ShortcutAssignment.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\show_colormap.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Slider.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StatusBarGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\string.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StringList.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Style.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StyleSet.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Symbol.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TabGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TabGroup2.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TextBuffer.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TextDisplay.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TextEditor.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ThumbWheel.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TiledGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TiledImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Tooltip.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\UpBox.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\utf.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Valuator.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ValueInput.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ValueOutput.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ValueSlider.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\vsnprintf.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Widget.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Widget_draw.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\WidgetAssociation.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Window.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Window_fullscreen.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Window_hotspot.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Window_iconize.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\win32\WinMain.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\WizardGroup.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\xbmImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\xpmImage.cxx">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\README">
+      <Filter>documentation</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\README.windows">
+      <Filter>documentation</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\README_fltk1_to_fltk2.txt">
+      <Filter>documentation</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\documentation\Doxyfile">
+      <Filter>documentation\doxygen</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\documentation\README">
+      <Filter>documentation\doxygen</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

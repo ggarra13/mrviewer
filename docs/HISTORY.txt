@@ -1,0 +1,2713 @@
+v4.3.7   - Made showing and hiding of windows be a command.  This makes
+	   them thread safe.
+	 - Bug fixed networking to work with multiple clients.
+	   Previously, only one server and one client were accepted.
+	 - Removed a nasty bug in the shaders' use which would trash
+	   memory. This would make images appear green or gray sometimes.
+	   It would also not show BG images when it should.
+	 - Added previous and next frame counters to grease pencil
+	   drawing shapes.  This replaces the single forwards/backwards
+	   toggle that was there before.
+	 - Made file requester of saving of reels start at the location of
+	   the first image loaded, instead of the current location.
+	 - Made saving of reel support saving the contents of the reel in
+	   relative path mode.
+	 - Added a Saving tab in the Preferences and two options to
+	   control the last two changes.
+
+v4.3.6   - Bug fixed limiting of images for formats without a
+	   display window ( png, jpg, etc).  Now memory setting works
+	   for them too, not just for exrs.
+	 - Bug fixed memory limit in win32 to handle cases of out of
+	   memory elegantly.  An out of memory will limit the Gb of
+	   frames automatically.
+	 - Bug fixed network connections to be thread safe.  Now they
+	   work as they should.  There are some missing commands that
+	   it won't handle yet, but most functionality is there.
+
+v4.3.5   - Bug fixed CTL RRT transform not getting selected when it
+	   was selected thru the menus.  The 8bits, 16bits, float, etc.
+	   would work fine.
+	 - Bug fixed audio scrubbing which would, in latest versions,
+	   not work completely right.
+	 - Preload cache now works correctly when auto playback is off.
+	 - Bug fixed Windows' NVIDIA driver bug showing images with
+	   upped gamma.
+
+v4.3.4   - Bug fixed cache sliding when it was stopped near the end of
+	   a sequence that did not have all frames cached.  This was
+	   a Windows problem.
+	 - Bug fixed cache looping.  Now the preload cache wraps
+	   around the end and starts at the beginning again when
+	   it is stopped near the end.
+	 - Made start up time be much faster, as it now does not load
+	   any frames until the GUI is up and idle.
+	 - Made background image show on first run if it is different
+	   than foreground image.  Note that this makes the gui a tad
+	   slower on start up.
+
+v4.3.3   - Bug fixed EDL playback as it had gotten broken with the new
+	   timeline algorithm.
+	 - Note that playback of BG images works only when the FG caches
+	   are full or, alternatively, when not using cache nor play all
+	   frames.
+
+v4.3.2   - Improved cache loading of 4K and 8K images.  Now the timeline
+	   will recycle those according to a setting in Gb.  The setting,
+	   Preferences->Cache->Maximum Memory allows you to set a
+	   maximum memory for all the cache frames, after which, they
+	   are recycled.
+	 - Improved cache playback sliding itself to the next available
+	   frames to continue playback when playback is stopped.
+	 - Added a Preferences->Playback->Play All Frames switch to play
+	   all frames of a sequence without skipping any.  This is
+	   similar to cache active when the image is high res (4K/6K/8K).
+	   It is on by default and recommended to leave it that way.
+
+v4.3.1   - Reverted saving of movies with audio.
+	   This had gotten broken when the display of in/out in the
+	   timeline was added.
+	   Note that saving with audio has some problems in some rare
+	   movie files that create very short gaps (stutters) in the audio.
+	   Also, saving movies with audio is slow.  It is recommended
+	   you use the ffmpeg standalone that ships with mrViewer
+	   for any sort of audio manipulation.
+	 - Added libx265.so to Linux distribution as it was missing.
+	 - Made S/E buttons set the in and out points of the movie that
+	   is to be saved.
+	 - Made Linux distribution not use rpath anymore in any of its
+	   libraries.  This makes sure LD_LIBRARY_PATH works correctly.
+	   Updated utils/libs.rb accordingly to do it automatically.
+	 - Made GLSL shaders compatible with Mesa library on Linux, as
+	   they were reporting a bunch of errors.
+
+v4.3.0   - Made loading of sequences much more interactive and faster.
+	   Now the GUI does not lock itself as much.
+	 - The option of missing frames now is more interactive.  It only
+	   needs to clear the cache to refresh the image gaps.  There's no
+	   need to quit mrViewer.
+
+v4.2.9   - Added an option in Preferences->Loading to select how missing
+	   frames are displayed.  Currently, the options are as a black
+	   frame, as a repeated frame, or as a repeated frame with a red
+	   cross in the middle.
+	 - Updated libraries to latest OpenEXR (v2.3).
+	 - Bug fixed an incompatability issue with the FFMPEG libraries.
+	 - Bug fixed an incompatability issue with the NVIDIA cg shader-
+	   compiler.
+
+v4.2.8   - Added %ENVVAR% and ${ENVVAR} support to OCIO environment variable.
+	   The two syntaxes work on both platforms.  This allows the OCIO
+	   variable to be defined, like this example:
+	   under Linux syntax:
+	     $ export OCIO=/mnt/show/${SHOW}/${SHOT}/ocio/config.ocio
+	   or in Windows syntax:
+	     $ setx   OCIO 'D:/show/%SHOW%/%SHOT%/ocio/config.ocio'
+	   and then set SHOW and SHOT in the environment that calls mrViewer.
+	 - Made HDR shader show when _has_hdr is set.  This variable is only
+	   set when the shader type is GL.
+	 - Made HDR shader reset itself on new image foreground.  Currently,
+	   it is not possible to have a YCbCr shader in the foreground
+	   (HDR10, for example) and a different one in the background (SDR).
+	 - Bug fixed a bug in looping that got introduced in v4.2.5 and was
+	   NOT fixed in v4.2.6.  Now loop works correctly instead of continu-
+	   ing on sometimes after the last frame.
+	 - Added missing libACESlib.so to Linux distribution.
+
+v4.2.7   - Bug fixed missing DLLs on Windows distributions.
+
+v4.2.6   - Bug fixed a bug in looping which got introduced in v4.2.5.
+	 - Bug fixed audio sync in stepping or scrubbing.  Previously, they
+	   would repeat the audio frames.
+
+	 - Added support for multithreading decoding of video in movies.  This
+	   is needed to play 4K movies in real time.  The setting of automatic
+	   threads is 0 in Preferences->Video->Number of Video Threads.
+
+	 - Added support for HDR10 movies.  They need the 16-bit toggle in
+	   Preferences->Loading and OpenGL shaders (export MRV_SHADER_TYPE=GL).
+	   Since these movies are 4K, you should also watch them with 0 video
+	   threads (auto video threads).
+	   This is a beta feature.  We need to know if it creates some problems
+	   in the compiling/linking of the shader under different gfx cards,
+	   as we are trying to use the lowest compatibility layer possible.
+
+	 - Bug fixed BT709 matrix.
+
+v4.2.5   - Improved cache significantly by changing its algorithm.  Now OIIO
+	   loading works much responsive and faster.
+
+v4.2.4   - Improved cache slightly.
+
+v4.2.3   - Allowed movies to be stored as 16-bits when the source is 10 or 16
+	   bits.  This consumes much more memory but it is more accurate.
+	   This option is off by default.  It must be activated in the
+	   Loading section of the Preferences.
+	 - Added a Waveform monitor to mrViewer.  This works mostly in 8 bits.
+	   It downgrades other formats to 8 bits (without taking into account
+	   lut or gamma).
+
+v4.2.2   - Added interpreting foundry's YCbCr metadata for matrix
+	   transformation.
+	   Currrently, this leads to Rec 709 being added in the mrViewer
+	   color pipeline.
+	 - Bug fixed out of memory errors to not crash the viewer.
+	 - Changed caching to a new algorithm that works better and
+	   faster.  It allows caching large scale images with audio, as
+	   long as memory is available to handle all the frames.
+
+v4.2.1   - Bug fixed a minor memory trashing in ICC browser.
+	 - Added back subtitles on Linux as ffmpeg was being compiled
+	   without libass due to a change in the ffmpeg Makefiles.
+	 - Improved performance of video decoding for yuv444p10le, which
+	   had gotten worse in v4.2.0.
+	 - Removed most tsan warnings.
+
+v4.2.0   - Bug fixed versioning with prefix of v only and matching movie
+	   files, like test.mov.  The substring would index beyond the file
+	   size, aborting the program.
+	 - Bug fixed printing specifier in memory display ( PRIu64 instead
+	   of PRId64 ).
+	 - Removed a memory leak when changing image version due to
+	   thumbnail image being left behind.
+	 - Bug fixed precache when gaps are found as this got broken along
+	   the way when adding the code to versioning.
+	 - Bug fixed precache when first frame was not 1 for OIIO.
+	 - Bug fixed auto reloading of frames when the format was one of
+	   OIIO.
+	 - Bug fixed scrubbing getting turned off after using the drawing
+	   tool.
+	 - Bug fixed a bunch of tsan (ThreadSanitizer) warnings.
+
+v4.1.9   - Removed a subtle bug in looping images that did not start at 1.
+	   The result would go unnoticed, but internally a wrong frame would
+	   get carried.
+	 - Made a second attempt at FFMPEG jpg/png/dpx loaders.  With the
+	   fix above, all seems correct.  You can now switch from
+	   FFMPEG, to OIIO or to ImageMagick.
+	 - Bug fixed a race condition in OIIO readers which could crash
+	   the viewer.  This would mostly be seen when loading DPX
+	   files with the layer menu/shortcuts creation.
+	 - Made OIIO readers the default readers as they handle 10 and 16
+	   bit images correctly and image sequence gaps.
+	 - Made versioning support _v with no version number and not
+	   interpret it as 0, but just skip it.
+	 - Bug fixed versioning for prefixes different than 2 characters.
+	 - Bug fixed Favorites listing in FLU file requester.  Now they
+	   are listed in several columns if there are too many.
+	   Previously, they would get listed in a single column and
+	   scrolling would corrupt the view.
+
+v4.1.8   - Added .rgbe and .hdri as valid HDR image extensions.
+	 - Added versioning to the sequences/movies.
+	   This allows to handle clips of the same shot, but different
+	   versions as one object. For example if you place a clip with
+	   .../SHOT001_v005/SHOT001_v005.%04d.exr
+	   in the reel/timeline, and there is another sequence with:
+	   .../SHOT001_v008/SHOT001_v008.%04d.exr on disk,
+	   you can step through versions by pressing ALT+PgUp (previous
+	   version) or ALT+PgDown (next version).
+	   The version number is found by a prefix, by default '_v'.
+	   This can be changed in the Loading section of the preferences.
+	   Note that the version numbers cannot be more than 10 numbers
+	   apart by default.  This can be changed in the
+	   Preferences->Loading->Max Frames Apart section of the
+	   preferences.
+	 - Bug fixed a movie playback problem that was introduced in
+	   v4.1.1.  Looping would not work properly with some movies and
+	   you'd get a decode error on the first frame of the movie file.
+	 - Bug fixed a bunch of issues in the EDL / BG image playback.
+	 - Reverted the use of FFMPEG for PNG/JPG loading as it was
+	   not caching properly.  Some frames would get repetitions.
+
+v4.1.7   - Switched to OIIO's HDR image loader and saver as it is more
+	   robust than the original Radiance one I was using.
+	 - Added HDRI saver.
+	 - Made HDRI saver allow saving a crop region of the view (smaller
+	   data window than display window).
+	 - Bug fixed EDL editing start and end frames shifting.
+	 - Made PNG/JPG FFMPEG reader work properly once the images were
+	   cached.  Now it works realtime with images that are 4K once
+	   they are cached.
+	 - Reverted naming convention to not use the YYYYMMDD format in
+	   archive name, as it was making other web pages not able to
+	   link to the download directly.
+
+v4.1.6   - Bug fixed hdrImage.cpp which was incorrectly optimized.
+	 - Put back the reporting of LUTs as they are used as it was
+	   unclear before which lut was being used.
+	 - OIIO now has its own requester to save files.  This is mainly
+	   to support MipMap saving to .tx files.
+	 - OIIO now has faster loading of tiff files.
+	 - Bug fixed installer to make it show the icon once again on
+	   Linux.
+	 - Re-added Libraw to oiiotool on Windows. Sent the changes to
+	   github.
+
+v4.1.5   - Made Cancel of save movie file not pop up a requester for a
+	   proper filename with %d symbol.
+	 - Fixed GBRP10LE video color option in ffv1 video.  Previously,
+	   it would get reported as pix_fmt -1.
+	 - Changed code to OIIO reader of JPG/PNG files to be handled by
+	   FFMPEG by default and keep the cache as long as the image cache.
+	   This should bring the best of both worlds (FFMPEG faster loading
+	   with long image caches).  Neither OIIO nor ImageMagick then will
+	   get used.
+	 - Fixed EDL cuts reverting to OCIO's scene_linear color space.
+	   Now the color space of the clip is kept on both sides of the
+	   cut.
+	 - Removed random crashes when loading dpx files (on Windows).
+	 - Removed crash when loading a reel with an invalid (missing)
+	   filename.
+	 - Removed random crashes when loading multiple sequences/movies
+	   thru drag and drop.
+	   Note that if the drag and drop comes from the native file chooser,
+	   it is necessary to close it so that mrViewer can resume normal
+	   operation.
+	 - Made PgUp/PgDown switching of images keep the frame number when
+	   possible as that's the most sensible thing to do.
+	 - Added LMB+Drag once again to select an area, which had gone
+	   missing.
+
+v4.1.4   - Removed debugging statements from exrImage.cpp.
+	 - Made EXR reader read channels in good sorted order in multipart
+	   files so RGBA will appear sorted like that, while XYZ will sort
+	   like that.
+	 - EXR reader now appends the root name to the channel name when it
+	   is not already present.  This helps in multiview EXRs to
+	   distinguish right and left pair of images.
+	 - EXR reader/saver now keeps Color/RGBAZ in their original locations
+	   when reading/saving a multichannel or multipart OpenEXR.  This
+	   means Color, Red, Green, Blue, Alpha and Z remain at the top of
+	   the list.  This option will not work with previously saved images
+	   with the Color at the middle of the list.
+	 - EXR reader now reads stereo files properly once again.
+	 - Made the Pixel Value pulldown more correctly reflect the options.
+	   They are Full (gain, gamma and lut), Lut( gain and lut) and
+	   Original (raw pixels).
+	 - Made changing images keep the frame number if possible.
+	 - Made center an image that is not loaded work properly.
+	 - Added FFV1 codec to save movie requester.
+	 - Added a switch in Preferences->Loading to select OIIO as the
+	   default JPG/PNG loader instead of FFMPEG.  This helps with loading
+	   very large JPG/PNG files which cannot be played in real time.
+
+v4.1.3   - Native file requester on Windows does not leave their menus open
+	   and obstructing the view.
+	 - Previous channel hotkey now works correctly on Color channel when
+	   this channel is in the middle of the channel list.
+	 - Previous channel hotkey now works correctly on Color channel when
+	   the following channel would be alpha overlay (no more than RGBA
+	   is loaded).
+	 - Previous channel hotkey now works correctly on Color channel when
+	   the following channel would be a lumma (RGB or Y,RY,BY only is
+	   loaded).
+	 - Bug fixed IFF image reader to work as all other image readers,
+	   reading the header chunk on each fetch.  Improved the fetching to
+	   only fetch once instead of twice as before.
+	 - Made all shortcuts be a toggle (Z, N, C, R, G, B, A, L and V)
+	   between their counter parts and the previously selected channel.
+	 - Made image switching keep the layer selected when possible.  Note
+	   that this feature does not always work particularly when toggling
+	   the shortcuts (specially when dealing with multipart openexrs),
+	   so it should be considered alpha.
+	 - Made use OCIO button be like the rest of the buttons instead of
+	   a gray one.
+
+v4.1.2   - Updated FFMPEG to a later (almost latest) version.
+	 - Improvements to channel/layer usage per request from Dominik Pott:
+		* Next/Previous channel hotkeys are less granular.  They now
+		  jump RGBA channel groups.
+		* Switching to the Z channel no longer breaks the hotkeys of
+		  RGBA.
+		* Channel names are now sorted according to function (ex.
+		  XYZ, RGB, etc ).
+		* Precaching now starts from the current frame, not from
+		  the start.
+		* Changing channels past the last or first channel loops
+		  to the beginning and to the end channels respectively.
+		* There's a new hotkey (e) to toggle two channels for easy
+		  comparison.
+		* The cache now respects the IN/OUT points in the timeline
+		  and won't cache further than that, except it has already
+		  been cached.
+		* The hotkeys have been changed so that 'c' always brings
+		  you to the color image, while r,g,b change based on what
+		  group of channels you have selected ( N, P, etc ).
+	 - On Windows, the file requester is the native one by default now.
+	   This effects both loading and saving.  Note that if you have
+	   preferences saved, you will need to remove it for this to take
+	   effect or save a new preferences with the native switch on.
+	 - Bug fixed EXR saver to not repeat main layer name twice and
+	   breaking the multipart saving.
+
+v4.1.1   - Bug fixed switching FG/BG images where the start/end frames were
+	   different.  Previously, this would lead to a hang.
+	 - Improved playback of short FG in loop with a long clip in BG.
+	   Previously, this would lead to a crash or to a mutex lock.
+	 - Removed the final code in time2frames() which was wrong and
+	   causing havok.
+	 - Updated oiio and oiiotool to the latest prerelease version.
+	   Note that on windows 32 bits, the code does not use SIMD
+	   optimizations.
+	 - Added Libs that OIIO is compiled with to the About window of
+	   mrViewer.
+
+v4.1.0   - Bug fixes to the choco installer and uninstaller.  The installer
+	   now modifies the machine PATH instead of the user PATH variable.
+	   It also creates the shortcut in the All Users/Desktop.
+	   And it creates a shortcut in the Common Start Menu.
+	 - Added a Image->Switch FG/BG Images to toggle the foreground and
+	   background images, for easy comparing of two sequences and keep
+	   the same frame around.
+	 - Added a shortcut 'j' to switch (jump) between FG and BG images.
+	   This is to be used to keep the same frame in both the FG and BG.
+	   Otherwise, only the FG image drives the same frame.
+	 - Bug fixed a seek issue when setting BG image.  The playback
+	   and stepping among frames would not work anymore.
+	 - Bug fixed a crash in EDL Edit window when dropping a clip onto
+	   a new track.
+	 - Removed the message of already created OCIO transform as it was
+	   too verbose.
+	 - Bug fixed a playback hanging when in EDL mode, after stopping
+	   a short sequence or movie file and continuing it later on.  The
+	   playback would not continue to the next image in the sequence.
+	 - Bug fixed changing FPS in EDL mode.  The playback would get
+	   corrupted.  This change reverts looping working in time instead
+	   of frames, as it was that change that was causing problems.
+
+v4.0.9   - A bug fix release to playback of movies with sound in loop, which
+	   was crashing v4.0.6 and later.
+	 - Bug fixed pixel ratio not being correct and being applied twice.
+
+v4.0.8   - Made HEVC saver report a HVC1 fourcc so that Apple products will
+	   recognize them and show a thumbnail.
+	 - Made Z Depth be reported as "Z" only, as that makes it work on
+	   different languages when saving EXRs.
+	 - Bug fixed Z channel selection being chosen as Color.
+	 - Made OIIO iff saver save only up to 16-bits, as float is not
+	   supported.  Note that OIIO's IFF saver does not support Z channel.
+	 - Added --stereo-input flag to command-line.  It works just like
+	   --stereo-output flag but for the stereo input.
+	 - Bug fixed X and Y flips which got broken in a previous build.
+	 - Bug fixed pixel aspect ratio being applied twice.
+
+v4.0.7   - Added support for libraw in oiiotool on Windows.  This allows us
+	   to support dng, cr2, etc. formats.
+	 - Added oiiotool to Linux distribution.
+	 - Added support for ffmpeg in oiiotool.  This allows using
+	   oiiotool for ffmpeg input formats to extract single frames and
+	   process them.
+	 - Added --stereo-output flag to command line.  This controls the
+	   stereo output setting when loading a stereo set of images.
+	   Options are: Left view, Right view, Top/bottom, Bottom/top,
+			Left/right, Right/left, Even/odd rows,
+			Even/odd columns, Checkerboard pattern,
+			Red/cyan glasses, Cyan/red glasses.
+	 - Reverted the change to timecode/timeline accepting view shortcuts
+	   as it was causing conflict with the presentation mode.
+	 - Improved loading of IFF images to not consume so much memory.
+	   They will no longer load as float images, but as 8 bits or 16
+	   bits images.  Also bug fixed the RLE decoding.
+	 - Added support for reading Z depth channel in maya IFF files.
+	 - Improved channel toggling to not conflict with image loaders.
+	   This is mainly an internal change.
+	 - Bug fixed saving of unknown channel name in OpenEXR saver.
+
+v4.0.6   - Bug fixed looping in movies with an In/Out points.  Now the
+	   looping is more frame accurate.
+	 - Further improved playback of two video tracks as stereo 3d.
+	 - Improved timecode/frame, timeline widgets allowing all the
+	   shortcuts of the main image view.
+	 - Made LUT be on as a default option and the 8 bits OCIO default be
+	   sRGB.
+	   This change is only present if starting mrViewer without
+	   preferences set.
+	   It makes 8 bit formats (png, jpeg, etc) behave like
+	   expected under the nuke-default ocio config, while linear formats
+	   like HDR, OpenEXR, etc. behave also well.
+	   This change is to make mrViewer behave with LUTs just as when it
+	   was using gamma 2.2 only.
+	 - Made Active Views' environment variable OCIO_ACTIVE_VIEWS return
+	   sRGB, rec709, Film, Log, Raw or None in that order on linux as
+	   the active_view setting in the yaml config.ocio file was not
+	   respected on that platform.  This is a bug fix work-around.
+
+v4.0.5   - Bug fixed a crash when reading corrupt EXR files.
+	 - Reversed the order of lut baking/gamma change in MIFF, TIFF,
+	   PIC and PSD.
+	 - Removed a debugging message printing "f " and the frame when
+	   playback started.
+	 - Improved performance of ocio baking by avoiding gamma changes
+	   too, unless they are needed.
+	 - Added T (toggle lut) shortcut to list of shortcuts.
+	 - Added Ctrl+p (toggle pixel ratio) to list of shortcuts.
+	 - Made the S and E buttons (and the corresponding I and O
+	   shortcuts) set the start/end frame of the timeline but not by
+	   shrinking the timeline, but by highlighting the area instead.
+	   This is a preference option in:
+		Preferences->Playback->Timeline->Selection.
+
+v4.0.4   - When lut is active, saving to a MIFF, TIFF, PNG, PIC and PSD
+	   will bake the lut in the picture.
+	 - Made lut more verbose, printing out the lut when it is not
+	   created, too.
+	 - Bug fixed alpha channel presence in imagemagick wand loader.
+	   Previously, it would tag all images with alpha channel and
+	   lead to reporting of colors to 0 premult when no alpha was
+	   there.
+	 - Made saving of TIFF and PNG sequences several times faster.
+	 - Added support for alpha channel in YUVA movies, even if a
+	   shader is not available.  This allows viewing the alpha
+	   channel of ProRes 4444 movies.
+	 - Added saving of alpha channel when codec is prores_ks and
+	   YUV format is YUV444.
+	 - Bug fixed stereo display of inferior/superior which was
+	   placing both images one on top of each other.
+	 - Bug fixed stereo looping of image sequences.  Previously the
+	   loop would not happen.  Looping of two movie tracks or movies
+	   was okay.
+
+v4.0.3   - Bug fixed jpeg loader (ffmpeg) to support .jpeg extension
+	   besides jpg.
+	 - When lut is active, saving to a movie file will now bake the
+	   OCIO transforms.  As the best movie depth is 16bits, the baking
+	   is not perfect, thou, so you might find color incongruencies.
+	 - Made gamma LUT requester behave a tad better.  When you select
+	   a non-view item like default or DCPI3, nothing will change.
+
+v4.0.2   - Bug fixed GLSL 2.0 YCrCbA shader to not throw a syntax error.
+	   This makes mrViewer's YUVA work with other graphic cards other
+	   than NVidia (ATI, Intel, etc).  Note that the YUVA mrViewer
+	   pipeline has not been developed yet.
+	 - Added some changes to OpenGL color selection in windows to try
+	   to avoid a conflict with Windows 7's Aero.
+	 - Removed rpath from IlmCtl and IlmCtlSimd libraries, as it was
+	   not allowing LD_LIBRARY_PATH to work properly.
+
+v4.0.1   - Bug fixed GLSL 2.0 YCrCb shader to not throw a syntax error.
+	   This makes mrViewer work with other graphic cards other than
+	   NVidia (ATI, Intel, etc).
+	 - Bug fixed jpeg loader (ffmpeg), to load files starting at other
+	   frames than 1.
+
+v4.0.0   - Improved loop sync in fg/bg image playback.
+	 - Improved loop sync in 3D stereo playback.
+	 - Made loop work in time instead of frames.  That allows looping
+	   properly two different videos with different fps.
+	 - Made a change in GLEW initialization which should improve OpenGL
+	   compatibility.
+	 - Improved DSO compatibility in Linux distribution.  Previously,
+	   it could lead to broken depencies if IlmCtl was compiled with
+	   different settings.
+
+v3.9.9   - Bug fixed View change in gamma panel which got broken in v3.9.8.
+
+v3.9.8   - Added OCIO ICS/Display/View changes on a network connection.
+	 - Added CTL IDT/RT/ODT in network connections.
+	 - Bug fixed Add to Favorites in file requester as it was not
+	   adding any favorites.  Regression to sorting alphabetically.
+	 - Added ACES ASC CDL transforms to network connections.
+
+v3.9.7   - Made Action Tool - Move Picture work as intended.  It allows
+	   selecting images where the alpha is not 0 and drag them around
+	   on the infinite canvas.
+	 - Added a cache specific to image sequences.  Now it is possible
+	   to set the image cache be smaller than the timeline to save
+	   memory.  A value of -1 (default) keeps the old behavior.
+
+v3.9.6   - Solidified Window's maximize button to also work when the
+	   taskbar is not at the bottom of the screen or is of diferent
+	   size as default.
+	 - Added a command-line option to start the video/image playing.
+	   The shortcut is -P and the full option is --playback.
+	 - Detected JPEG file format with ffmpeg instead of with
+	   ImageMagick, as the reader is faster and can read more bitdepths.
+	 - Made Favorites pulldown and window report the files in
+	   alphabetical order.
+	 - Bug fixed Favorites pulldown in file requester as it was
+	   broken.
+	 - Bug fixed compositing when resize is on.  It was not scaling
+	   the image properly in most cases.
+
+v3.9.5   - Made cache preloading's default to on.  This will take effect
+	   only if you open a fresh mrViewer with no preferences saved.
+	 - Made message when selecting an ocio input color space based on
+	   bit depth a tad more clear.  It is now reported what bit depth
+	   it selected as default.
+	 - Made Preference Window's Revert/Cancel/Save buttons more clearly
+	   visible.
+	 - Bug fixed maximize button on Windows which would place the window
+	   below the taskbar.
+	 - Bug fixed picking an OCIO config from the 3D LUT preference
+	   when another has been selected previously.
+
+v3.9.4   - Bug fixed Video timecode not being read in Spanish locale.
+	 - Made SHIFT+LMB + drag draw a selection area (temporarily
+	   switching from Scrub mode).
+	 - Made tooltips in input color space report useful information.
+
+v3.9.3   - Removed incorrect message about OCIO default for an image.
+	 - Added message of OCIO default and OCIO taken from name of image.
+	 - Made all shaders calculate gain before lut.  This allows exposure
+	   to work correctly.
+	 - Made all color calculations (color picker, color area, vectorscope
+	   and histogram) take gain before lut to allow for exposure to work
+	   properly.
+	 - Made input color space be taken from image filename following
+	   Sony's conventions.
+	 - Bug fixed RY/BY/Y channel selection in luminance/chrominance
+	   images.  Regression from an old version of mrViewer.
+	 - Bug fixed color values showing as NANs when alpha was 0 due to
+	   unpremult.
+
+v3.9.2   - Fixed 'h' (Center Image) when the image was straight.  Regression
+	   from 3.9.1.
+	 - Fixed Text tool in Linux.  Previously the text would not appear
+	   at all or it would show as black squares.
+	 - Made OCIO Lut be a 3 channel lut, while CTL remains a 4 channel
+	   lut.  This saves some memory and calculation time when using OCIO.
+	 - Made OCIO Pick button in the Media Info window also update the
+	   OCIO Input Color Space pull down.
+	 - Made mousewheel in pulldown menus a no-op to avoid hanging.
+	   This required a change in fltk's Menu_popup.cxx to set MODAL to
+	   false.
+	 - Fixed move picture tool to move also the data window.
+	 - Fixed Masking and Safe Areas on rotation of image.
+	 - Fixed OCIO default scene_linear which would not appear in
+	   the ICS popup menu as selected when it was the default space.
+	 - Added hotkey (SHIFT+i) to toggle Input Color Space popup and
+	   fstop controls when Use OCIO is in effect.
+
+v3.9.1   - Improved fixed pixel color when alpha was set to 0.  mrViewer
+	   would incorrectly do a premult of the alpha.  Regression of
+	   v3.9.0.
+	 - Cosmetic change.  Gamma button will no longer display long
+	   transform view names and will truncate them to the widget size.
+	 - Gamma button will always display the current OCIO view
+	   transform.
+	 - Bug fixed alpha display in Area Color Information.  Previously
+	   it would always display it as black.
+	 - Fixed CentOS 7 compatibility by including libstdc++ and
+	   libgcc_s DSOs to the distribution.
+	 - Added an Optional Image Color Space pulldown to the top
+	   toolbar.  It is activated when using ocio and the option
+	   to the toolbar has been selected in the main LUT preference.
+	 - Bug fixed sequences of numbers.ext only, like 00001.exr, 00002.exr,
+	   etc.  Both the command line as well as the file requester now
+	   support them.
+	 - Added an "inputColorSpace" attribute to EXRs to save out/load in
+	   the input color space.
+
+v3.9.0   - Bug fixed coordinate system for drawing, selection, safe
+	   areas, etc.
+	 - Bug fixed off by 1 in mouse coordinates.
+	 - Added support for OCIO's Views to be accessed directly from
+	   the gamma pulldown.  As a convenience, when an OCIO view is
+	   selected the LUT button is turned on and the gamma is set to
+	   1.0.
+	 - Made OCIO's default config be nuke-default's, which now ships
+	   with mrViewer.
+	 - Fixed selection rectangle.
+	 - Added 90 degree rotations to the images.  There's no image
+	   format that sets them.  It is just a user hotkey and menu.
+	   They can be used together with flipping of images.
+	   Also, area selection DOES work properly on rotated images.
+	   However, rotations cannot yet be used with images that
+	   have data_window != display window.
+
+v3.8.9   *** RECALLED DUE TO BUGS IN SELECTION AREAS AND OTHERS ***
+
+v3.8.8   - Bug fixed reversed coordinates as done in v3.8.6 as it
+	   was causing problems with area selection and with exr's
+	   with data window != display window.
+	 - Added https://youtu.be/BLX9Pwcny2c OCIO video tutorial.
+
+v3.8.7   - Improved detection of .hdri images to support those saved
+	   from Photoshop (#?RGBE instead of #?RADIANCE).
+	 - Removed error when creating thumbnails of RAW formats.
+	 - Added support for mipmapsx in .tx files.  Now Media Info
+	   Window has a slider to change mipmap levels.
+	 - Removed crash in Clone Image when cloning a previously cloned
+	   image.
+	 - Added some partial EXIF data support to rawImage formats.
+	 - Added all metadata in .tx images.
+	 - Updated About messages to include OpenColorIO, OpenImageIO
+	   and Libraw copyrights and versions.
+	 - Added a Pixel Toolbar tab in Preferences to control how
+	   the pixel toolbar behaves on startup.
+
+v3.8.6   - Bug fixed GLSL shaders to support scale and offset.
+	 - Removed a syntax error in GLSL rgba shader.
+	 - Added support for CR2, DNG, NEF, RAF formats through libraw.
+	 - Added support for Arnold's .tx format thru OIIO on Windows.
+	 - Reversed coordinate system to make it compatible with Nuke
+	   and Natron.  Now 0,0 is the bottom left corner insted of the
+	   top left corner.
+	 - Updated to newer compilers.  On Windows, VC2015.  On Linux,
+	   gcc-4.9.
+
+v3.8.5   - Added tooltips to all OCIO color spaces and to the Config line.
+	 - Allowed changing OCIO config file from the Preference window.
+	 - Added a button to toggle OCIO on and off.  By default, it is
+	   on.
+	 - Added the environment variable MRV_OCIO_8bits_ICS,
+	   MRV_OCIO_16bits_ICS, MRV_OCIO_32bits_ICS, MRV_OCIO_float_ICS
+	   to control the default input color space for the corresponding
+	   type of image.
+	 - Reversed image coordinates to match Nuke/Natron.  Now the left
+	   bottom corner is 0,0, while the top right one is width/height.
+
+
+v3.8.4   - Add a CUBE regex line in cube2ctl.rb/py for compatability with
+	   some cube luts.
+	 - Added Move Picture Tool to the Action's toolbar.  This tool allows
+	   moving the pictures in the canvas to, for example, position two
+	   shots side by side.
+	   Currently, only two images can be placed (front and back).
+	 - Bug Fixed bg image being loaded twice when stereo images were
+	   loaded command-line.
+	 - Added OCIO support.  Currently this means it reads the OCIO
+	   environment variable, and a new RMB menu called OCIO appears,
+	   while all the CTL/ICC menus disappear.
+
+v3.8.3   - Made choco uninstall remove the mrViewer directory.
+	 - Improved bug error reporting of different ODTs when loading one
+	   incompatible from the ACESclip file.  Now the message names both
+	   ODT names.
+	 - Added TIFF with JPEG support to ctlrender standalone executable
+	   on 64 bits Windows.
+	 - Bug fixed a crash in presentation mode (F12).
+
+v3.8.2   - Added Actions to Preferences.  With them you can select the
+	   action that opens at start-up (scrubbing, drawing, color area
+	   selection, etc).
+	 - Added hotkeys to all window popups (F4-F9).  You can, for
+	   example, pop up the reel window with F4, the media info
+	   window with F5, the Color Area Window with F6, The Action
+	   Window with F7, the 3D Stereo VR360 options with F8
+	   and Preferences with F9.
+	 - Reverted back to VC2013 on Windows, to make the compilation
+	   work under Windows 7 and Vista.  Windows 7 was broken due
+	   to the switch to VC2015 (which would compile with the 10 SDK).
+
+v3.8.1   - ***IMPORTANT***
+	   Made Scrubbing work with the left mouse button only.
+	   The default behavior of the left mouse drag is now scrubbing.
+	   There's no need to use SHIFT/CTRL combo.
+	   You can use the Action Tools Window (renamed from Paint Tools
+	   Window) to change it back to area selection, draw pencil, draw
+	   text or eraser, besides scrubbing.
+	   Removed the scrubbing shortcut.
+	 - Removed work-around for subtitles with ' as a sea of backslashes
+	   quotes the file just fine.  Same with file paths with : in them.
+	 - Bug fixed adding subtitles to audio files only.  This is not
+	   allowed.
+	 - Added missing movie extensions to file requester.  Now: asf,
+	   avc, avchd, m2ts, m2t, ogm, ogv and ts are listed as movie files.
+	   Previously, they would be hidden.
+	 - Made file requester list appropiate files for file extensions
+	   when the file requester has already been opened once.
+	 - Made the EDL timeline follow the viewer's timeline so it will
+	   show the current frame when the EDL Window is opened.
+	 - Made EDL Edit window support PageUp/PageDown shortcuts to go to
+	   the next or previous image sequence/movie.
+	 - Made Compositing->Scale the BG image to the FG image size, when
+	   unselected, place the BG image in the center of the screen,
+	   instead of in a corner.
+	 - Made SOP GUI hide when in presentation mode.
+	 - Made SOP LUT update when switching images with different LUTs.
+	 - Made SOP GUI update when switching images.
+
+v3.8.0   - Bug fixed cutting of clips in EDL Window leaving the right clip
+	   with no audio.
+	 - Changing OpenGL Blend Mode in Preferences now updates the view
+	   interactively, without having to press OK.
+	 - Bug fixed 3D Stereo view when in VR Sphere mode.  Previously,
+	   moving the view would only move one eye (leaving the cyan, for
+	   example, in the same place).  This was a regression from v3.7.8.
+	 - Made preferences a tad more pretty (boxes aligning, etc).
+	 - Allowed loading of subtitles from the command-line
+	   ( -u <srtfile> or --sub <srtfile> ).  It can be specified
+	   multiple times to load subtitles for multiple movies.  Only one
+	   subtitle per movie is allowed.
+	 - Made subtitle appear on both images of a stereo video when the
+	   stereo comes from two movie files or a movie with two tracks.
+	   Previously only the left eye would show subtitles.
+	   Movies which encode both stereo images in a single image
+	   (top/bottom, left/right) do not yet work.
+	 - Made Preferences->Auto Refit Image more intelligent.  When
+	   switching images with PgUp/PgDown they will not refit themselves
+	   if zoomed and the two images have the same display window.
+	   Previously, if Auto Refit was set in the preferences, the refit
+	   would happen regardless.
+	 - Made maximum zoom reach x64 times to match the small resolution
+	   of some samples in ffmpeg.
+	 - Added support to encoding in subtitles in the
+	   Preferences/Subtitles, to allow for subtitles in different
+	   languages other than English.  ISO-8859-1/2 and UTF-8/16
+	   are supported as pulldowns but they are not the only ones.
+	   You can also type in the encoding yourself.
+	 - Added a work-around to play subtitle files with ' in their names.
+	   Basically, the subtitle is copied to $TEMP without the '.
+
+v3.7.9   - Allowed saving movies in all formats, not just avi, mov and wmv.
+	   This includes mkv, ogv, etc.
+	 - Added support for x265 (HEVC) saving ( Profiles Main, Main10 and
+	   RExt ).  Loading was already working.
+	 - Made the movie and image saving popup windows appear on the
+	   center of the screen, instead of randomly placing it.
+	 - Made profiles change when the codec is changed in the movie
+	   saving window.  Now the profile reflects the available profiles
+	   for a codec.
+
+v3.7.8   - Removed filtering on VR 360 Cube to avoid seams.
+	 - Fixed rotation of VR360 cube/sphere when a background image was
+	   present and then turned off.  Previously, the geometry would get
+	   the rotation wrong.  Also, the code is now faster.
+	 - Added a version check to cube2ctl.rb and 3dl2ctl.rb, as they
+	   require at least v1.9 of ruby.
+	 - Added 192x192x192 and 256x256x256 to LUT sizes.  The new sizes
+	   consume a lot of memory but they are really accurate.
+	 - Removed a crash on windows on an assert() of audio buffers
+	   being aligned in mrvWaveEngine.cppp.
+	   The assert was wrong as it was casting the pointer to unsigned
+	   long.
+
+v3.7.7   - Preload cache now works when changing channels.  Previously,
+	   the cache would not get refreshed.
+	 - Cache is smart enough to not reload channel changes to
+	   U, V, W or R, G, B, A or X, Y, Z (albeit Z channel sometimes
+	   may trigger a reload).
+	 - Preferences->Positioning: Fixed Size will now keep the size of
+	   the window even when loading a large image.
+	   Same with Fixed Position.  It will keep the window position.
+	 - Made Add Attribute refresh the view window.  This updates
+	   things like the timecode HUD display.
+	 - Added a first pass at VR 360 Cube Map.  You can find it in
+	   the Stereo 3D Options panel.  This setting takes a
+	   strip of 6 images as OpenEXR uses and maps them onto a cube,
+	   similar to VR360 Sphere.  Note that there are currently
+	   seams in the edges of the cube map.
+
+v3.7.6   - Added a Positioning tab to Preferences.  In it, you can set
+	   the position and size of the view window so that it always
+	   opens in the same place and at the same size.
+	 - Added a button to take the position and size parameters from
+	   the current settings in the view window.
+	 - Removed crashes on network connections when the server is
+	   closed.
+	 - Fixed audio sync on Windows when audio channels equals one.
+
+v3.7.5   - Bug fixed audio scrubbing not choosing the right frames.
+	   Sorting by the pts of the packet rather than the frame would
+	   not work.
+
+v3.7.4   - Made saving of frames in OpenEXR save out the
+	   current timecode for the frame instead of the start timecode
+	   for the sequence.
+	 - Bug fixed 1D LUTs in cube2ctl.py.  Previously there were
+	   syntax errors.
+	 - Bug fixed audio scrubbing not working anymore since v3.7.2.
+
+v3.7.3   - Made VR360 work in network connections.
+	 - Made VR360 not take so many CPU cycles.  Now it is a light
+	   process.
+	 - Bug fixed a problem on Windows' audio not playing files
+	   with very fast frame rates (239.846 fps).
+	 - Bug fixed flipping of image in X and Y when in VR360 mode.
+	 - File requester allows movies with the % character in them.
+	 - File requester allows utf8 characters in filenames.
+	 - Added Compositing Tab to Preferences.  You can now toggle the
+	   resizing of the background image.
+	 - Bug fixed gamma lookup of background image when in compositing
+	   mode.
+
+v3.7.2   - Bug fixed setting image as background when it was done thru
+	   the menu in the view or reel window.  Previously, the reel
+	   would not get stored and this would lead to a crash.
+	 - Bug fixed channel selection on network connections.
+	 - Bug fixed gamma setting on network connections, when switching
+	   images.
+	 - Added cube2ctl.py and 3dl2ctl.py.  These are Python ports of
+	   the Ruby versions (cube2ctl.rb and 3dl2ctl.rb).  They both work
+	   practically the same and produce identical output.
+	 - Fixed movie files with 3 periods in them being recognized as
+	   image sequences when the extension was unknown.
+	 - Fixed loading many movies and reaching the maximum of audio
+	   file descriptors.
+	 - Added optionally saving the metadata for movies.
+
+v3.7.1   - Bug fixed 3D stereo playback to sync the two tracks on loops.
+	 - Bug fixed a sequence detection when files were called
+	   1234.psd or 12345.psd.  Now they are treated as single images,
+	   regardless. Previously, you had to turn off
+	   Preferences/Loading/Load Sequence on File Association &
+	   CommandLine.
+	 - Bug fixed a nasty crash in audio playback, which would appear
+	   when switching images, usually in the background.
+	 - Improved looping with audio.  No longer audio continues in
+	   the background once the last frame is reached.
+	 - Bug fixed file requester on multi selections.  Previously,
+	   using CTRL or SHIFT to multiselect would, in some cases,
+	   not load the files once Okayed.
+
+v3.7.0   - Removed the difference between IPTC and EXIF data, as it was
+	   never clear.  Now they are all called Metadata.
+	 - Made int attributes' slider in Media Info Window update when
+	   changed instead of when released, except for ripmap/mipmap
+	   attribute which remains when released.
+	 - Added the missing attribute types (matrices, boxes, etc) to
+	   RMB->Add->Attributes panel in the Media Info Window.
+	 - Bug fixed timecode parsing of drop frame timecode.
+	   Valid Examples: 00;01;00;02, 00.01.00.02 or 00:01:00.02.
+	 - Added support for multiple video tracks, switching them as
+	   you do with subtitles (RMB->Video->Track #).
+	 - Added stereo from multiple video tracks in a movie file, when
+	   they are the same resolution and have the same frames per
+	   second (fps) and duration.  You still need to go to the
+	   3D Stereo Window and select the stereo output type.
+	 - Bug fixed video/audio/subtitle selection when the codec
+	   could not be located.
+	 - Added support for OpenEXR's opaque attributes.  They are
+	   attributes which cannot be modified.
+
+v3.6.9   - Added saving OpenEXRs with deep data.  Note that this mainly
+	   copies the file and changes the metadata only.
+	 - mrViewer now retrieves all metadata from an OpenEXR file.
+	   Note that except for capDate, all attributes are loaded from
+	   the first image in the sequence.
+	 - Fixed Preferences->Loading->Auto loading of images when
+	   changed on disk. Previously, it was a no-op.  Now it
+	   properly updates the changed image(s).
+	 - Added an Update Frame in Cache (shortcut 'u') to update
+	   only a single frame in the cache.  It reloads the image
+	   from disk.
+	 - Bug fixed saving of all layers when OpenEXR image had
+	   Z and ZBack channels.  Previously, this would crash.
+	 - Fixed saving of metadata on OpenEXR images with no layers.
+	   Previously, no metadata would get saved.
+	 - Fixed a regression which was making loading of multichannel
+	   OpenEXR images be too slow to update the display.
+	 - Added the ability to create/remove/modify the metadata of
+	   a movie or OpenEXR image.  Use the right mouse button on
+	   the Media Info Window to get a menu of options.
+	 - Removed the saving of dpx:television gamma in dpx saving
+	   as it was gamma'ing twice the image.
+	 - Made the OpenEXR attribute 'capDate' be stored and update
+	   on every frame.
+	 - Improved wandImage saving to save all types of attributes
+	   in PNG and MIFF formats only.  PSD, TIFF and DPX do not keep
+	   the additional attributes.
+	 - Note that the current fast PNG reader does not read
+	   attributes.
+	 - Bug fixed saving of Video attributes in movie files.
+
+v3.6.8   - Made timecode start editable in the Media Info Window.
+	   Just type a new timecode and press TAB.
+	 - Added creation and removal of IPTC metadata.  In the
+	   Media Info Window, use the right mouse button and select
+	   Add->IPTC->Metadata or Remove->IPTC->Metadata.
+	 - Added creation and removal of EXIF metadata.  In the
+	   Media Info Window, use the right mouse button and select
+	   Add->EXIF->Metadata or Remove->EXIF->Metadata.
+	 - Allowed to load images which have only a number in them,
+	   like: 2304.exr.  They are treated as single images, not
+	   as sequences.
+	 - Bug fixed loading of images that are like: t09.exr, when
+	   the image loaded is full content, like: t10.exr.  Now
+	   they are both properly recognized as t%02d.exr
+	 - Added an option to Preferences->Loading to allow controlling
+	   how file asocciations behave when loading a single image
+	   or loading it command line.  The option is to load the
+	   whole sequence or just the image.  This is similar to
+	   the Drag&Drop option in the same Preferences->Loading.
+	 - Bug fixed HUD Timecode display.  Previously, the values were
+	   wrong.
+	 - Bug fixed some memory trashing on the Media Info Window's
+	   tooltips.
+	 - Bug fixed reading of timecode in OpenEXR pictures.
+
+v3.6.7   - Made timecode be a separate variable, instead of modifying
+	   frame directly.  This means:
+	      * Frames, Seconds and Time do not take the timecode
+		start into account.
+	      * Timecode Drop Frame and Timecode Non-Drop Frame take
+		timecode start into account.
+	 - Bug fixed OpenEXR timecode ( "timeCode" attribute ) to work
+	   as said in v3.6.6.
+	 - Made playback not start at the point of a preloading cache,
+	   but from the cursor location (start of sequence usually).
+	 - Bug fixed timecode being incorrect.
+	 - Bug fixed Opus audio decoding, which would previously
+	   raise tons of errors.
+
+v3.6.6   - Added support for timecode in movies.  When a movie with
+	   a header entry of "timecode", or a video stream header entry
+	   of "timecode" is found, the timecode is interpreted as an
+	   offset of the current frame.
+	 - Added support for timecode in OpenEXR pictures.  When the
+	   tag "timeCode" is found, the timecode is interpreted.
+	 - Added support for m2ts (AVCHD) [Blu Ray] movies.
+	 - Added support for saving OpenEXRs with both Z and ZBack
+	   channels in a layer.  Previously, the saving would fail.
+
+v3.6.5   - Added tooltips to 3d stereo options panel.
+	 - Made VR360 disregard the display window and wrap the
+	   data window instead.  Previously, no image was displayed.
+	 - Added audio support for playing Dolby TrueHD.
+	 - Removed error reporting while creating thumbnails.  This
+	   avoids the log window to appear when an error in the thumbnail
+	   is found and then not allow closing the log window.
+
+v3.6.4   - Made switching images respect the playback settings.
+	   Next Page and Previous Page keys switch images with playback
+	   still on.
+	 - Bug fixed OpenEXR's framesPerSecond as a string value not
+	   respecting the user's locale.  Previously, floating point
+	   values with a comma would get turned into floating point
+	   values with a period.
+	 - Bug fixed opening the viewer in a second monitor through
+	   file associations.  Previously, the viewer would not open.
+
+v3.6.3   - Added an Override FPS option to preferences.  With it,
+	   you override the FPS of the sequences to that value set in
+	   the preferences.  If not active, FPS is tried to be extracted
+	   from the image sequence when possible or from the resolution
+	   and aspect ratio when not.  Finally, if it all fails, it
+	   uses the preferences' FPS setting.
+	 - Made framesPerSecond attribute in OpenEXRs be read as a
+	   string also, to support Nuke saving it as a string instead of
+	   a rational number.  This setting controls FPS when reading
+	   OpenEXRs.
+	 - Made film.frame_rate and television.frame_rate in DPX files
+	   act correctly as a FPS setting.
+	 - Made television.gamma in DPX act correctly as a gamma
+	   setting.
+	 - Fixed cache line for sequences that did not start at 1.
+	 - Made FPS 23.976 a default instead of 23.97.
+
+v3.6.2   - Made subtitle always use Arial font by default.
+	 - Added selection of font for subtitle in the Preferences.
+	   Subtitle->Font.  It is interactive, you can change it while
+	   playing the movie.
+	 - Made sequence detection more strict by avoiding common movie
+	   extensions.
+
+v3.6.1   - Allowed file names like MovieFrame####20.png.
+	 - In command line, ILM format (not padded) now correctly sets
+	   the start and end frame of sequence.
+	   So, for example, avatar.61-120.png will set
+	   avatar with a start frame of 61 up to 120.  Note that
+	   padding is not supported in ILM format.
+	 - Subtitles now work regardless of the location of mrViewer.
+	   We change directories before loading a subtitle file.
+	 - Embedded subtitles are now loaded automatically.  No
+	   need to call Subtitle->Open for them.
+
+v3.6.0   - Allowed image sequences with more than 4 digits in PNGs.
+	   Now up to 9 digits are allowed.  Previously, files like:
+	   MovieFrame00016.png would get rejected.
+	 - Fixed playback of PNGs due to new code seeking incorrectly.
+	 - Fixed a crash in Media Information window due to use of
+	   an unitialized pointer with PNGs among others.
+
+v3.5.9   - Bug fixed File->Open->Single Image.  It was not doing what
+	   it was supposed to do.  Now it loads a single image and
+	   the built-in file requester lists sequences as separate
+	   images.
+	 - Bug fixed translation of Open Single Image as Abrir Imagen.
+	   Previously it would say Grabar Imagen.
+	 - Bug fixed yellow line in file requester to always redraw
+	   properly and not leave a half line drawn.
+	 - Made thumbnail picture never exceed 150 pixels in width.
+
+v3.5.8   - Bug fixed preload cache of PNGs to do nothing like movie
+	   files.  This fixes loading of PNGs when they don't begin at
+	   frame 1.
+	 - Bug fixed a crash when a single PNG was attempted to be
+	   loaded.  It would raise a floating point exception.
+	 - Bug fixed listing and loading frames with no dots as possible
+	   frame spec ( %, d, l ) as image sequences.  For example,
+	   ballred.png.  Now the check is more rigorous and they are
+	   treated as single images.
+
+v3.5.7   - ** IMPORTANT BUG FIX **  Fixes preloading of image sequences,
+	   which would crash v3.5.6 due to a debugging abort().
+	   Regression.
+	 - Added missing ffmpeg utilities to win32.
+	 - Added missing exr utilities to win32/win64.
+
+v3.5.6   - Made ogg and ogv be valid movie extensions.
+	 - Improved the FFMPEG PNG reader to allow it to start at
+	   any frame in the sequence.
+	 - Made the FFMPEG PNG reader the default one.  This makes
+	   reading PNGs about five (5x) times faster.
+
+v3.5.5   - Made YUV Conversion preference actually work correctly.
+	   Now it sets the color space index upon loading of the movie.
+	   You can now still change it afterwards manually in the
+	   Media Information Window->Color Space.
+	 - Changed algorithm to position window when first opened.
+	   This keeps window on the Desktop and clips centered.
+	   It helps when window would span two monitors.
+	 - Consolidated not finding and loading of images in sequences.
+	   Previously, this could crash the viewer when creating the
+	   icons.
+	 - **IMPORTANT** Moved VR360 channel layer from the channel
+	   pulldown as a button in 3D Stereo Window .  This allows
+	   putting any layer in 360, not just the color layer.
+	 - Made caching of sequences independent of VR 360.
+	   Previously, VR 360 would get deactivated for caching images.
+	 - Added a menu and hotkey (ctrl+h) to toggle the hud display.
+	 - Removed toggle all hud as it is quite useless.
+	 - Bug fixed LUT turning itself off when switching to VR 360.
+	 - Made HUD Resolution always display DAW (Data Window) and
+	   DYW (Display Window).  Previously, when both were equal
+	   only a single line -RES (Resolution)- was displayed.
+	 - Added an environment variable ( USE_FFMPEG_PNG ) to switch
+	   PNG reader to that of FFMPEG.  The FFMPEG reader is faster
+	   and works like a movie file, but it fails when there are
+	   gaps in the sequence of frames and it always requires the
+	   sequence to start at frame 1.
+	 - Made HUD display in VR 360 mode.
+
+v3.5.4   - Restored sRGBColorspace hint as it was not the cause
+	   of double gamma.  It is a bug with Windows' photo
+	   app.
+	 - Allowed sequences without first periods, like:
+		   image0001.pic
+	   instead of image.0001.pic or image_0001.pic
+	 - Improved window positioning when image is too large.
+	   Previously, the borders would be placed outside the
+	   desktop.
+	 - Bug fixed VR 360 which had clipping planes too close
+	   to the enclosing sphere and could run into floating
+	   point errors ( leading to a cut off sphere ).
+	 - Added zooming into the VR 360 view with mousewheel
+	   or ALT+RMB.  The zooming is always done on the
+	   center of the screen.  Not where the mouse is.
+	 - In VR, 'f' key will reset the view angle to 45 degrees.
+	 - In VR, 'h' key will center the rotation the view at 0
+	   degrees in X and Y.
+	 - Added name of maintainer in DEB file.
+	 - Made postrm and posinst scripts in DEB file be 0755
+	   permissions.
+
+v3.5.3   - Using a single instance of mrViewer was not removing
+	   the mrViewer.lock.prefs file.  Fixed.
+	 - OpenGL was crashing the program on loading an image
+	   when the graphics card was not an NVidia card.
+	   Fixed.
+	 - Removed sRGBColorspace hint from wandImage creator
+	   (png, tiffs, etc), as it was leading to two gamma
+	   corrections in other programs.
+
+v3.5.2   - Fixed a bug of NAN values in the 3dl2ctl.rb converter
+	   when 3d lut was a set of values up to 1023 or less.
+	   Now the script properly auto detects the depth to use.
+	 - Added support for 1D luts in cube2ctl.rb.  Previously
+	   only the 3d lut format was supported.
+	 - Fixed a crashing bug in audio display when audio was
+	   short.
+	 - Fixed HUD display of resolution when exr had crop
+	   areas.
+	 - Added a View->Hud->All to toggle on/off all hud settings.
+	 - Made scrubbing be more sensitive to drag. This allows
+	   viewing more frames before reseting the scrub with CTRL.
+	 - Added a new Preference setting:
+		 Playback->Defaults->Scrubbing Sensitivity
+	   which controls the speed of scrubbing when moving the
+	   mouse right and left after SHIFT clicking.
+	   The new setting is 4 times more sensitive than what
+	   was there before.
+	 - Reverted back the swizzling of channels on 5.1 or higher
+	   as it was leading to very quiet dialogues.
+	 - Fixed a huge memory leak when working with sequences.
+	   Deleting them from the reel was not clearing all memory.
+	 - Bug fixed requester in media browser asking if image is
+	   to be removed when the reel is empty.
+
+v3.5.1   - Fixed a memory leak in OpenEXR library.
+	 - Fixed a memory leak in audio buffer.
+	 - Made CTL listing list all ctl scripts alphabetically,
+	   regardless of what directory they are in.  Previously,
+	   each directory would list its files alphabetically.
+	   Also, repeated CTL scripts are avoided.
+	 - Added a preference to the Video section to set the YUV
+	   Colorspace conversion to something consistant (BT709,
+	   Unspecified, BT470BG, etc) instead of reading the
+	   information from the movie file.
+	 - CTL browser now has an Empty button to select an
+	   empty CTL (clear it).  Previously you had to open the
+	   requester to click on an empty area.
+	 - Added a Ruby command-line script that converts .3dl lut
+	   (as created by Nuke) into a (LMT) CTL script. The script
+	   is called 3dl2ctl.rb and is in the bin/ directory of the
+	   distribution.
+	 - Added a Ruby command-line script that converts .cube lut
+	   (as created by Iridas and Adobe) into a (LMT) CTL script.
+	   The script is called cube2ctl.rb and is in the bin/
+	   directory of the distribution.
+
+v3.5.0   - There was a bug in the theme color selection which would
+	   show as random crashes on Windows, particularly when the
+	   viewer was in the background.  Fixed.
+
+v3.4.9   - Added an option in Preferences to select the number of
+	   fstops the LUT will use.  This helps to get more accurate
+	   values on black levels.
+	 - On Windows, turning on the LUT automatically was not
+	   showing the results immediately.  Fixed.
+
+v3.4.8   - Added LUT SOP and Saturation nodes to cover ASC_CDL.
+	 - Added GUI SOP and Saturation to modify the ASC_CDL of
+	   ACESclip files.
+	 - Made GUI SOP and Saturation add 4 look mod transforms if
+	   not present:
+	   ACEScsc.ACES_to_ACEScg -> LMT.SOPNode ->
+		      LMT.SatNode -> ACEScsc.ACEScg_to_ACES
+	 - Made GUI SOP and Saturation turn on LUT automatically.
+	 - Made OpenGL use any fixed text if no font of 16 pixels is
+	   found.
+	 - Added HUD display of directory which was missing.
+	 - Removed libfontconfig.so.1 from Linux distribution as it
+	   should use the one installed in the machine OS.
+	 - Added "Values" button to change values of SOP and Saturation
+	   in the Media Information window.
+	 - Made CTL Preferences not reset the LUT button, but activate
+	   it if it is not on and the preference is set to have it on.
+	 - Bug fixed stereo exr layer selection when images in sequence
+	   change the order or count of layer pairs.  Note that you
+	   cannot expect an image to have layer.rgbaz and the next
+	   have layer.rgba and layer.z.  Only the rgba will be taken
+	   into account in that case.
+	 - Extracted duration of movies from the movie stream instead
+	   of the file context.  This leads to better calculation of
+	   end frame.
+
+v3.4.7   - Made CTL Lut baking calculation faster and more accurate.
+	 - Made CTL/ICC of monitor trigger a refresh of the view.
+	   Previously, the old values were kept until a refresh from
+	   other ways happened (switch to new frame, etc).
+	 - Removed a debugging statement in the seek request.
+	 - Bug fixed ImageMagick loader to work with different color
+	   spaces.  This effects log colorspace as found in DPX images.
+	   Previously rgb layers would not appear and only VR360 would
+	   show up.
+	 - Added all ACES v1.0.3 CTL transforms.
+	 - Made CTL browser list all transforms sorted alphabetically.
+	 - Allowed CTL transform which is only the prefix, like RRT.ctl.
+	   Previously those file names would not get shown.
+	 - Added missing CTL scripts ( LMT.SatNode and LMT.SOPNode )
+	   used to emulate ASC_CDL.
+	 - Compiled libtiff into ImageMagick which was missing in the
+	   previous release on Linux.
+	 - Removed the auto maximize window on Linux as it was buggy.
+	   Now it works like Windows.
+
+v3.4.6   - Made mrViewer compile with Linux 3.13.0-32 (Ubuntu 12.04.5).
+	 - Fixed chocolatey uninstaller to remove the directory of
+	   the mrViewer install.
+	 - Fixed glsl shaders to compile under NVidia's old drivers.
+	 - Added FONTCONFIG_PATH to mrViewer.sh to remove warnings of
+	   fontconfig. Commented out as, supposedly, unneeded.
+	 - Fixed LUT crashes due to new stereo engine OpenGL
+	   conflicts.
+	 - Fixed saving of ACESclip XML files only, on Linux.
+
+v3.4.5   - Bug fixed GIF duration check, which would result in errors
+	   due to ffmpeg new api.  Regression from v3.4.1.
+	 - Bug fixed saving of reels from the gui on Windows.
+	   Previously this led to a crash due to libintl conflicting
+	   with Windows' stdio.
+	 - Bug fixed audio device descriptor count as it seems Windows
+	   or its drivers impose a limit on the number of open devices.
+	   This prevented audio to be played on the 8th clip or so.
+	 - Made 5.1/7.1 Surround not shuffle channels as they now seem
+	   to come ordered from ffmpeg.
+	 - Added input of , to float input requesters to support Spanish
+	   locale on Windows.
+
+v3.4.4   - Bug fixed stuterring NaNs in pixel info bar when loading
+	   an OpenEXR sequence.  This was particularly buggy on Windows.
+	 - Fixed documentation, main_toolbar.html, to reflect the
+	   changes in stereo.
+	 - Fixed a playback bug which would stop playback sooner than at
+	   the end.  In some cases, video playback would not even begin.
+	 - Fixed video frames at the end of movies not being shown.
+	 - Added Disposition to the video, audio and subtitle tracks'
+	   media info.
+	 - Lowered the severity of errors caused by missing frames.  Now
+	   they are warnings instead of errors.
+	 - Bug fixed audio frames on right eye movies at the beginning.
+	 - Bug fixed a problem with multiple images when not in EDL mode
+	   which would lead to stopping and switching to the wrong
+	   image.
+	 - Bug fixed stepping on the second/third/etc. movie in a reel.
+
+v3.4.3   - Bug fixed VR360 on network communication not always opening
+	   in the VR360 view.
+	 - Bug fixed a dead lock of log window due to multiple threads
+	   accessing it when in stereo.  The problem would show up
+	   in Linux, mainly.
+	 - Bug fixed normalized pixel values when in some stereo mode,
+	   like Red/Cyan glasses.
+	 - Allowed graphics cards with small textures display videos
+	   thru scaling down the original video.
+	 - Bug fixed crash of switching to an empty reel when
+	   background image was active.
+	 - Bug fixed background image being shifted by start frame
+	   when not in EDL mode.
+	 - Bug fixed stereo of Z (depth) channels in stereo OpenEXRs
+	   with multipart files.
+	   Previously only one channel would be shown or multiple
+	   errors would show up if the deepest Z channel was chosen.
+	 - Fixed a bug where background images would not appear once
+	   they were offset in the EDL.
+	 - Fixed error reporting with frame number to report the
+	   actual frame, not one before.
+	 - Improved synchronism of background images/movies with
+	   foreground sequences.
+	 - Made looping not effect every image in a reel, only the
+	   foreground image.
+	 - Made VR 360 dragging stop after a while.  This makes it
+	   easier to control.
+	 - Fixed stepping on background images when they are in the
+	   same reel as the foreground image.
+	 - Fixed compositing of foreground images on background
+	   movies due to an overflow in calculations.  Now the values
+	   are clamped to prevent the error, which showed up on
+	   Windows only.
+
+v3.4.2   - Added Paint Tools to the Preferences so it can be opened
+	   on startup.
+	 - Bug fixed color area of bottom/top and right/left on
+	   stereo output.
+	 - Bug fixed a wrong memory access due to a race condition
+	   on a missing mutex.
+	   This bug would often show up as a crash in stereo reels.
+	 - Fixed a bug that would crash the viewer when selecting
+	   stereo viewing and no image was present on the right eye.
+	 - Allowed fit image to fit the right image only when it is
+	   selected in the stereo options window.
+	 - Allowed gamma control on each stereo image when two
+	   sequences or movies are fed.
+	   If both images are shown, both images change gamma.
+	   If only one image is shown, only that image will change
+	   gamma.
+	   Note that for stereo OpenEXRs (sxr) or Top/Bottom or
+	   Left/Right inputs, both images change gamma always.
+	 - Updated log window so it appears as soon as an error is
+	   raised (and the Preferences' option is set to such).
+	   Previously, the mouse had to be moving or the movie had
+	   to be playing.
+	 - Made normalize pixel values (Norm button) be displayed
+	   in pixel bar and in color area, vectorscope and histogram.
+	 - Added Stereo 3D Options window and Paint Tools Window to those
+	   that get hidden on presentation mode (F12 key).  Previously
+	   it would leave the main window in full screen mode only
+	   with OS's toolbars open.
+	 - Made Stereo Options Window and Paint Tools Window appear/
+	   disappear on network connections.
+	 - Made Stereo OpenGL active on card capability albeit it has
+	   not been tested.
+	 - Made stereo input and output work in network connections.
+	 - Bug fixed network connections on different locale (Spanish).
+	 - Removed language selection from the interface.  Now all
+	   is controlled with the environment variable LC_ALL.
+	 - Bug fixed network connections which were severely broken.
+	   Now they shouldn't crash and reconnects should be possible.
+	 - Added VR 360 to network connections.
+
+v3.4.1   - Improved the cache saving with stereo sequences.
+	 - Bug fixed thumbnail creation for sequences with varying
+	   data windows.
+	 - Made stereo 3D cache line in the timeline be bright green.
+	   For non stereo caches, the line remains dark green.
+	 - Bug fixed some movies not showing the last frames of
+	   the film on playback.
+	 - Bug fixed stereo input on images with display windows
+	   (OpenEXRs).  Now selecting stereo input Top/Bottom will
+	   correctly split the image in half to use the top as the
+	   left eye and the bottom as the right eye (or viceversa
+	   according to stereo output).
+	   Using stereo input top/bottom or left/right on images
+	   with different data windows will not work well.
+	 - Made main window appear maximized on startup when showing
+	   some large video or image (Linux only). This works very
+	   nice in Ubuntu's Unity.
+	 - Fixed pixel queries on all stereo input/output states.
+	   Previously the pixel shown could be wrong or point to
+	   undefined memory (leading to potential crashes).
+	 - Made stereo output changes not clear caches on movies.
+	   This removes warnings and errors that would happen
+	   otherwise if the movie was in playback.
+	 - Added Stereo 3D Options Window to preferences, so the
+	   window can be shown on starting up mrViewer.
+	 - Bug fixed color info rectangle to reach the ends of the
+	   image when the image has a data window.
+	 - Bug fixed color info rectangle to work properly on stereo
+	   displays (left/right, top/bottom, interlaced, etc).
+	 - Bug fixed a bug when typing a speed of fps which could
+	   hang the viewer.
+	 - Added documentation for Stereo 3D Options.
+
+v3.4.0   - Bug fixed cache saving for image sequences.  Regression
+	   from v3.3.9.
+	 - Made Stereo Window settings be persistent when loading
+	   new images.
+
+v3.3.9   - Made VR 360 channel appear only once.  Previously, when
+	   switching resolutions of a multiresolution image, several
+	   VR 360 channels would appear.
+	 - Made int slider in Image Information update on release,
+	   instead of on value change.  This makes it behave more
+	   nicely with mipmaps and ripmaps.
+	 - Fixed image coordinates when data window is smaller than
+	   display window.  Previously there would be an offset.
+	 - Added new 3D Stereo Options panel.  This panel allows selecting
+	   the input and output options of stereo images.  It allows
+	   you to show in stereo any group of left/right paired channels
+	   in OpenEXRs, instead of just the beauty channels as before.
+	   It also allows selecting input of images which have the two
+	   stereo channels in them by selecting top-bottom or left-right.
+	   This type of movies is typical of youtube.
+	   You can also mix this with VR360 for a virtual reality 3D
+	   stereo movie.
+	 - Removed old stereo channels from the channels pulldown.  Use
+	   the new stereo options window for controlling 3D stereo.
+	 - Fixed image coordinates and color information on cursor
+	   position when in 3D stereo mode.
+	 - Fixed left and right image sometimes showing up in reverse.
+	 - Made fit image when changing stereo output.
+	 - Bug fixed a memory leak when exiting.
+
+v3.3.8   - Added VR 360 support for environment maps and VR videos.
+	   Images or Videos whose width is twice the height will show
+	   a VR 360 channel in the channel pop up and also those with
+	   less than 6 channels.
+	   When in VR 360° mode, dragging the mouse with the left
+	   mouse button (or the middle mouse button) will orient you
+	   around and up and down.
+	   The resolution supported is the maximum supported by your
+	   graphics card ( See About/HW ).  On relatively new graphics
+	   cards, the maximum resolution is 16384x16384.
+	   Note that 3D VR 360 is currently unsupported.
+	 - Documented VR support in the Main Toolbar section of the
+	   html docs.
+	 - Added a video with the VR 360 workflow
+	   https://youtu.be/hihPKB8En7c     - VR360 workflow
+	 - Removed an error display in preferences wizard selection when
+	   no item is selected.
+
+v3.3.7   - Fixed cache line in timeline for sequences which would
+	   show only the cache from frame forwards.
+	   Regression from v3.3.6.
+	 - Bug fixed a crash in Drag and Drop when several reels were
+	   loaded.
+	 - On Windows fixed the volume indicator which would show only
+	   half the volume.
+	 - Bug fixed audio volume control on Linux.
+	 - Removed empty filename from drag and drop on Linux.
+	 - Made queue size bigger to handle some movies
+	   (Abba_Chiquitita_Español.wmv )
+
+v3.3.6   - Bug fixed EDL playback which got broken in v3.3.5.
+	 - Minimized (fixed) hangings and crashings due to log window.
+	 - Made audio track selection in EDL control all clips of EDL.
+	 - Made Timebar Looping control in EDL control the looping
+	   of all clips in EDL.
+	 - Fixed cache line to not extend beyond the start of clips.
+
+v3.3.5   - Made loop mode be an attribute of the movie or sequence
+	   loaded instead of the timeline.
+	   It is now possible, for example, to have a foreground
+	   sequence with loop on and a background movie with swing
+	   (ping pong) on.
+	 - Allowed image sequences to extend beyond their natural
+	   image boundaries.  The behavior is controlled by the
+	   loop mode.  If a sequence of 100 frames is played for
+	   200 frames, the end behavior of the sequence will be to
+	   stop, loop or ping pong as set accordingly.
+	   Note that this feature does not yet work with videos or
+	   with sequences with audio attached.
+	 - Added the -b flag to the command line to load a sequence
+	   or a movie in the background of the view window.
+	 - Made reloading of images work for images in the background
+	   of the view window.
+	 - Bug fixed a problem in ping pong playback of some short
+	   movie files.
+	 - Bug fixed stepping a frame and changing movie files in EDL
+	   mode as it would sometimes not revert it to the actual frame
+	   needed.
+	 - Bug fixed playback of some movies with audio in EDL.
+	   Previously, some frames would get skipped.
+	 - Removed a hanging bug which would happen if step frame was
+	   set on continuosly while the movie played.
+
+v3.3.4   - Bug fixed reloading of images from disk when the creation
+	   or modification time changed and the image is not complete.
+	   You will get an error when loading the image, but it will
+	   get loaded if tried on a second attempt (when it has
+	   finished being saved).
+	   Previously, the image would not get loaded on a second
+	   attempt.
+	 - Made loop mode be an attribute of the movie or sequence
+	   loaded.  It is now possible to have a foreground sequence
+	   with loop on and a background movie with ping pong on.
+
+v3.3.3   - Audio volume is no longer set at start up unless the
+	   value the Preferences->Override Audio is set.  This
+	   allows you to control the volume from the system's
+	   preferences (gnome-control-center, for example)
+	 - Images (not movies) saved on disk can now be updated and
+	   the viewer will refresh the image by itself.  You
+	   need to check the option in the "Preferences->Loading->
+	   Auto update images when changed on disk"
+	 - Made exit of playback more solid when there are errors
+	   and the error window is up.
+	 - Made the error of a missing frame in the sequence be a
+	   warning instead.
+
+v3.3.2   - Bug fixed file requester closing after typing a filename
+	   and choosing a button other than OK or Cancel.
+	 - Bug fixed file requester not accepting list of images
+	   in the form of %04d.  This was a problem introduced
+	   in v3.3.1.
+	 - Bug fixed thread hanging in decode thread when audio was
+	   on in a sequence of frames.
+	 - Bug fixed name of movie files saving when in EDL mode.
+	   Previously, a number suffix was always added.  Now,
+	   only when more than a single movie is saved the suffix
+	   is added.
+
+v3.3.1   - Bug fixed window fullscreen and presentation on Linux
+	   Ubuntu's Gnome Unity, which would lock the windows in
+	   fullscreen mode.  This was not a problem with KDE.
+	   We apologize for letting this bug remain so long.
+	 - Allowed selection of Favorites, Desktop, My Computer
+	   and Documents from the input browser pulldown on
+	   Windows.
+
+v3.3.0   - Bug fixed gif sequence detection.  Now mrViewer can
+	   load both single animated gifs as well as a sequence of
+	   gif files, as those generated by default in Maya's
+	   playblast.
+	 - Added Softimage .pic (si in maya) loader and saver.
+	 - Bug fixed a crash that could happen when an image was
+	   not loaded.
+
+v3.2.9   - It is now possible to switch audio device in the
+	   Preferences window, Audio section on Windows.
+	   For Linux, the preferred way is to leave the
+	   setting as default and use the default system
+	   audio control (gnome-control-center).
+	   By default, the system default audio device is used.
+	 - In Windows, UNC network paths are now accepted.
+	   For example:
+	       //gga-desktop1/D/movies/test.mov
+	   They can be used from Drag and Drop.  Currently,
+	   it is not possible to type or pick them in yourself.
+
+v3.2.8   - Fixed playback being too fast on 4K video
+	   (Disney's Moana Trailer).
+	 - Fixed video stores being kept too long and eating ton
+	   of memory.  This improves playback of long movies and
+	   4K movies.  On Win32 when playing 4K movies, it may
+	   be needed to size the cache smaller.
+	 - Upgraded Windows compiling to MSVC 2015 Community on
+	   x64.  Win32 uses the MSVC 2012 compiler.
+	   This potentially removes Windows NT and XP compatability.
+	 - When mrViewer runs out of memory it will print an error
+	   into its message console, instead of crashing.
+	 - Bug fixed scrubbing on Windows 8.1.
+	   It works as a toggle now.  You press SHIFT and enter
+	   scrub mode.  Move the mouse left and right.
+	   You press CTRL and exit scrub mode.
+	   If you have preferences (.filmaura/mrViewer.prefs) saved,
+	   no change in scrubbing is made.
+	   If you want the new scrubbing, Untoggle Shift button and
+	   leave hotkey1 to LeftShift and hotkey2 to RightShift in
+	   the Hotkeys selection window for Scrubbing.
+
+v3.2.7   - Updated Histogram in RGB to show colors mixed in areas
+	   where R, G and B overlap.  So you get R+G=YELLOW,
+	   G+B=CYAN, R+B=MAGENTA, R+G+B=WHITE.
+	 - Bug fixed histogram so R,G,B are averaged with the
+	   same maximum value.
+	   Previously, each channel was averaged individually,
+	   leading to overshooting of histogram.
+	 - Made audio offset in EDL window shift in opposite
+	   direction as it is more intuitive.
+	 - Audio offset no longer effects other videos in the
+	   timeline.
+
+v3.2.6   - Audio offset was conflicting with audio loop.  This
+	   got broken in v3.2.3.  Fixed.
+	 - Bug fixed an audio store problem that would remove needed
+	   audio frames.  See Matrix_Reloaded_Trailer.mkv.
+	 - Removed libdl and libpthreads from Linux distribution as
+	   that made them less compatible with current distros.
+
+v3.2.5   - Bug fix release to address the saving of images with
+	   an audio track added.  This got broken in v3.2.4.
+
+v3.2.4   - Added shift audio offset to server-client communication.
+	 - Added an Override FPS setting to the Save Movie requester
+	   to simplify where FPS for saving movies is set.
+	 - Bug fixed audio video sync playback for some movies.
+	   (See Babalar.mp4 sample).  This change fixes audio
+	   stores, too.
+	 - Bug fixed saving of some movies that would result in
+	   mixed frames.
+	 - Made audio offset work in network connections.
+
+v3.2.3   - Audio offsets play nicely with EDL now.
+	 - There's a new audio track below the video track in the
+	   EDL Window.  It reports the audio offset which can be
+	   shifted by RMB+drag on the audio line.  This is
+	   equivalent to setting the offset from the menus
+	   ( Audio->Edit Audio Frame Offset ).
+	 - Avoided a crash in EDL when shifting to a missing frame.
+	 - Made EDL play correctly when audio offset is different
+	   than 0.
+	 - Shifting (RMB+drag) of clips in EDL now shows the frame
+	   being displayed.
+
+v3.2.2   - GIFs now return their proper duration, instead of 200
+	   frames.
+	 - Saving of images with audio added now works again.
+	   Audio offset now works without speeding up the image or
+	   jumping frames.
+	   This bug is a regression from v3.1.0 when it was
+	   introduced.
+	 - Audio offset now works forwards and backwards (negative
+	   values).
+
+v3.2.1   - Presentation Mode (F12) now covers the taskbar on Linux,
+	   just like Windows.
+	 - Removed idle workaround for Windows as it was not needed.
+	   Now the pixel toolbar respects the position of the
+	   cursor in playback mode.
+	 - Bug fixed dummy errors at the end of clips when in
+	   EDL mode.
+	 - Made Log Window show up on Errors on Windows based on
+	   user preferences.  Previously, it would hang the GUI.
+
+v3.2.0   - Thumbnails in file requester are created with the audio
+	   off.  This makes thumbnails a tad faster.
+	 - Thumbnails in file requester now select frame in 1/4 of
+	   the movie to create the thumbnail.  This means thumbnail
+	   creation is slower but more representative of the movie.
+	 - Made fullscreen in presentation mode (F12) cover all the
+	   screen space in Windows, instead of leaving 5 pixels
+	   visible at the bottom.
+	 - Log Window now displays always the bottom of the log so
+	   that it can be read properly on playback.
+	 - Bug fixed audio playback when changing fps on Linux.
+	   Previously, it would change the format of the audio and
+	   result in white noise.
+	 - Bug fixed changing from Native locale to C locale on
+	   Linux.
+	 - Bug fixed volume control on Windows which would sometimes
+	   play the audio in mono.  Previous fix was incorrect.
+
+v3.1.9   **NOTE** If using the Windows installer, it is
+		  recommended you uninstall v3.1.8 before
+		  installing v3.1.9.
+	 - Fixed multithreading issues in file requester.  It should
+	   not crash anymore.
+	 - Added an option in main UI preferences to select what
+	   language the UI works in.  Currently, the options are
+	   Native (as in Native to the OS) or English.  Currently
+	   only Spanish and English are fully supported.
+	 - Updated the English and Spanish documentation.
+	 - Fixed level queries of OpenEXR's mipmaps and ripmaps.
+	   Previously the image was not refreshed properly.
+	 - Made Windows Installer ask if you want to remove a
+	   previous version of the software first.  This should
+	   work with this version on of the program.
+	 - Made Windows Installer provide a GUI at the end to
+	   select which file extensions get associated with
+	   mrViewer.  The association is with the mrViewer
+	   installed last.
+	 - Added libswscale and libavfilter versions to
+	   About mrViewer.
+	 - About mrViewer now reports 32-bits or 64-bits mrViewer
+	   (compilation).
+
+v3.1.8   - Removed a buggy fltk::unlock() that could cause
+	   inestability in the file requester.
+	 - Fixed some compilation issues and upgraded all cmake to
+	   latest version.  This was probably the fix to the audio
+	   playing in mono only.
+	 - Fixed cmake scripts to use WIN64 correctly.
+	 - Removed debugging message when switching subtitle tracks.
+	 - Bug fixed surround sound on Windows when 4 channels are
+	   in the audio track.
+	 - Made selecting no subtitle in the file requester not
+	   effect on subtitle track display.
+	 - Cleaned up docs/ directory which was full of unrelated
+	   technical documents.
+	 - Added more Spanish translations.
+	 - Made file size report in file requester support more than
+	   4GB on Windows.
+	 - mrViewer on Windows now correctly reports multilingual
+	   (utf8) filenames' size.
+	 - Fixed warning of smpteImage not being aligned on 16 bits
+	   boundaries for Windows 32 bits.
+	 - Windows installer will now register most of the file
+	   extensions with the latest installed mrViewer.  Extensions
+	   which belong to editing programs (PSD, etc) are not
+	   registered.  This is somewhat controversial, so we expect
+	   feedback if users don't like the registry entries.
+	 - Created the web page for mrviewer at
+	   mrviewer.sourceforge.net.  Also, uploaded the latest
+	   manual to the web.
+
+v3.1.7   - Made MPEG4 profiles choose more sensible ones.
+	 - Fixed typo in ITU 709 being called ITU 702 in Spanish.
+	 - Bug fixed display of duration and start frame of videos
+	   and audios in Media Information Window.
+	 - Bug fixed duration extraction for video/audio tabs in
+	   Media Information Window.
+	 - Added YUV Hint to the saving of movie files.  This setting
+	   can be set to control the Color Space in the Media Info
+	   Window when the movie is loaded back.  The setting
+	   controls how the YUV->RGB display conversion is done.
+	   For HDTV movies, it is recommended you set the setting to
+	   BT709.  For others, it is recommended you set the setting
+	   to BT470BG (PAL/Secam) or SMPTE170M (NTSC).
+	 - Added tooltips to all settings in the Save Movie dialog
+	   box.
+	 - Bug fixed a memory leak in subtitles when stopping
+	   playback.
+	 - Added subtitles in different files ( .srt, .sub, .ass ).
+	 - Bug fixed Windows audio playback playing only in mono.
+	   Now stereo and 5:1 is respected.  The problem seemed to
+	   be the cmake compilation.  Upgrading to latest cmake
+	   seemed to fix the issue.
+
+v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
+	   YByRy movie or sequence.  The error would show in debug
+	   builds of mrViewer, as an assert failing due to unpremult
+	   missing in shader.
+	 - File requester now opens on the last directory of any
+	   drag and drop file.
+	 - Fixed a rare hanging bug when multiselecting files in the
+	   file requester.
+	 - Shader's YUV display conversion is no longer YCbCr based
+	   on resolution but covers the full gamut of Y.
+	   The type of YUV display conversion is controlled from the
+	   Media Information window, Color Space enum, which in turn
+	   can be hinted in the saved movie file.
+	   To obtain the previous behavior, set the Color Space to
+	   BT709.  This addresses the question why movie files
+	   created and displayed with mrViewer had a high black
+	   pedestal (they were displayed as BT709).
+	   Note that this does not currently change the values of
+	   pixels in the pixel info toolbar nor in the color area
+	   window.
+
+v3.1.5   - Bug fixed focus (hotkeys not working) when loading and
+	   resizing window (a bug introduced in v3.1.4 on Windows
+	   mainly).
+	 - Bug fixed some exif and iptc metadata that was not kept in
+	   OpenEXR saver.
+	 - Bug fixed creation date information on sequences of images.
+	 - Removed a warning about stereo images not being found in
+	   an image when stereo came from two image pairs.
+	 - Bug fixed a NAN display of pixel values when they were 0, due
+	   to a bad optimization added in v3.1.4.
+	 - Made integer slider grow to accomodate values below the 100
+	   range in Media Information window.
+
+v3.1.4   - Bug fixed windows preference of child windows (Reel List, etc),
+	   appearing at the beginning under the main window.  Now they
+	   appear above and don't go behind the main window when not
+	   selected.
+	 - Bug fixed network communication crashes due to server
+	   running in a different thread than the gfx toolkit.  Now
+	   the network thread sends signals to the gfx toolkit, instead
+	   of trying to apply the change in the same thread.
+	 - Bug fixed None audio codec in audio saving in Spanish to Ninguno.
+	 - Made default saver h264, with High profile.
+	 - Made conversion to 16 bits from float/half images 10% faster.
+	 - Bug fixed a display bug in the browser in the media info window
+	   when you clicked and "opened" a category.
+	 - Bug fixed a crash when audio could not be initialized.
+	 - Localized all audio messages.  Added Spanish translation.
+	 - Bug fixed Connections' Create button in Spanish locale.
+	 - Bug fixed audio muting when not saving with audio in Spanish
+	   locale.
+	 - Bug fixed memory and disk space reports in media info.
+	 - Made Reel List save image button save sequences or movie files
+	   instead of a single picture.
+
+v3.1.3   - Made mousewheel on Windows work when multiple screens are
+	   used.  This might fix ticket #21 (mousewheel not working).
+	 - Bug fixed scrollbar in file requester when set to wide view.
+	 - Added some missing Spanish translations.
+	 - Removing a reel or removing an image now present a requester
+	   for confirmation.
+	 - Added support for ProRes movie creation.  The movies are
+	   created with yuv420p10 color information from 16-bits images.
+	   Half and Float images are translated to 16-bits first
+	   taking gamma into account and then encoded.
+	 - Added a profile option to movie saving.  This allows selecting
+	   the algorithms for compatability with other movie software.
+	 - Added an alert and abort to saving over the same movie you are
+	   playing.
+
+v3.1.2   - Made file requester leave headroom for icons on images and
+	   movies.  This avoids the resizing of the scrollbar each
+	   time a movie icon is created.
+	 - Made name of movie or sequence not overlap type, but use
+	   ..., like "batman-vs-superm..."
+	 - Made icon creation in file requester faster.
+	 - Made the file requester not reset its position as images
+	   appear.
+	 - Made the file requester reset its position on dir change.
+	 - Made transcoding of movie files much faster and creation of
+	   movie files from 8 or 16 bits images, too.
+	 - Added partial support for ProRes, but did not expose it in
+	   the GUI as it does not support half or float datatypes yet.
+
+v3.1.1   - Relaxed the minimum zoom factor to 1/64 or less.  This allows
+	   displaying 16K images properly if the card allows it.
+	 - Transcoding movie files now keeps video and audio metadata,
+	   like timecode string.
+	 - Fixed a crash in EDL editing which would happen when modifying
+	   the lengths of the clips.
+	 - Images bigger than gfx card texture size will print a warning
+	   and be drawn as before with a buggy scanline algorithm which
+	   does not support gamma or gain changes.
+	 - Added support for reading MXF and Avid DNxHD in mov container.
+
+v3.1.0   - Fixed "export PULSE_LATENCY_MSEC" on Linux to avoid audio
+	   underruns, which would lead to garbled audio.
+	 - Made Scrubbing hotkey take effect. Previously, the use of
+	   shift dragging was locked.
+	 - Added acesImageContainerFlag set to 1 to exr files saved
+	   with ACES clip metadata sidecar with them.
+	 - Bug fixed data/display window on PSD files being offset by
+	   1 pixel.
+	 - Updated media information window on channel change.
+	 - Bug fixed a crash on exr saving with channels with same
+	   prefix.
+	 - Updated ffmpeg.exe and other utilities to use latest
+	   libraries (avcodec-57.dll, etc).
+	 - Reworked the video-audio sync a little.  It is much
+	   better on Windows now.
+	 - Removed Q16 ImageMagick libraries from linux distro.
+
+v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
+	   main Color layer appears.  Previously, Photoshop would
+	   swallow it without a warning.
+	 - Canvas is now set up properly in the PSD saver.
+	 - Moved to ImageMagick 6.9.3-0 which improves PSD/TIFF saver
+	   a tad.
+	 - Tested under Krita and GIMP and all works well.  Photoshop
+	   CS 2015 (Trial) shows white areas outside data window when
+	   it is smaller than the display window.  Not sure why.
+	 - Bug fixed channel selection in PSD files.  Previously,
+	   switching from main Color channel to an R,G, or B channel
+	   in another layer, would not update properly.
+	 - Bug fixed a crash in file requester when
+	   icons were being created and user selected the favorites
+	   button or changed directories.  Now the running icon
+	   finishes and then the list of favorites or other directory
+	   appears.
+
+v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
+	   It is now possible to take an openexr multi part file and turn
+	   it into a Photoshop file.  Note that this needs more testing
+	   and feedback.
+	 - Consolidated Favorites paths preferences to be stored under
+	   $HOME/.filmaura instead of $HOME/.fltk/filmaura.  You should
+	   move your favorite list accordingly.
+	 - Added Memory Display to HUD.  It displays physical used memory
+	   over total physical memory and virtual used memory over total
+	   virtual memory.
+	 - Fixed a bunch of bugs related to out of bounds memory accesses
+	   and undefined variables.  This makes viewer less prone to
+	   hanging or crashing.
+	 - Extended 8-bit caching and scaling to stereo caches.
+	 - Added support to Adobe's DNG format thru the ufraw-batch
+	   standalone utility.  You need to install it manually in a
+	   place mrViewer can reach (somewhere in your PATH). On Linux,
+	   this just means downloading it with your packet manager, like:
+
+	   $ sudo apt-get install ufraw-batch
+
+	 - Bug fixed audio garbling on Linux once an underrun occurred.
+	 - Bug fixed cache line to not show images cached past the video
+	   length.
+
+v3.0.7   - Bug fixed OpenEXR loader loading the wrong channels in
+	   animation when image was a multipart image.  This could
+	   happen if you selected the Color channel and then selected an
+	   R, G or B channel from another layer.  The image(s) would not
+	   get updated.
+	 - Added OpenEXR preference defaults.  These include:  number of
+	   threads to use when loading files (4 by default),
+	   compression algorithm to use when saving files (PIZ by default)
+	   and DWA compression value (45 by default) for
+	   DWA/DWB compression.
+	 - Added hotkeys for travelling the channels.  By default the
+	   next channel hotkey is } and the previous one is {.
+	 - Improved OpenEXR loader to use less memory on RGB only images
+	   and layers.  Previously, they were stored in memory as RGBA,
+	   with an empty alpha mask.
+	 - Bug fixed OpenEXR's multiview images when in stereo mode.  Only
+	   left stereo was used.  This bug was introduced in v3.0.6.
+	 - Bug fixed the caching of multipart images.  Previously,
+	   switching from, say, diffuse.diffuse.R to diffuse
+	   would trigger the clearing of the cache.  Now the cache is kept.
+
+v3.0.6   - Made OpenEXR saver work with YByRy images.
+	 - Bug fixed loading of YByRy images to display By or Ry layers.
+	 - Improved OpenEXR loader to recognize multi part stereo images as
+	   saved by the saver.
+	 - Removed black frames when loading a sequence for the first time
+	   (before the cache).
+	 - Bug fixed OpenEXR saver when the source was a movie file.
+	 - Added all layers saving to image magick saver.  This works with
+	   TIFFs mostly, albeit somewhat buggy (positions of layers are
+	   not kept).
+
+v3.0.5   - Made PSD, XCF and TIFF reader read the position and bounding
+	   box of layers correctly.
+	 - Made ICC Profiles not crash on embeded profiles.
+	 - Made OpenEXR saver optionally save all layers into OpenEXR
+	   v2 parts model.  This makes images with multiple layers be
+	   extremely efficient.
+	 - Bug fixed audio display leaving the window and crashing
+	   when playing float audio.
+	 - Bug fixed audio timeline tick mark when not playing audio.
+
+v3.0.4   - Made PSD and TIFF reader read alpha channels correctly and
+	   support R,G,B,A in layers.
+	 - Bug fixed background image compositing which had gotten
+	   broken in the stereo transition.
+
+v3.0.3   - Made increasing fps in media info window not reduce the
+	   number of frames played (bug).
+	 - Added a waveform display to audio only playback, similar
+	   to the one in ffplay.
+	 - Bug fixed some uses of AVPackets.
+
+v3.0.2   - Bug fixed a problem when playing audio files that would
+	   sometimes play them way too fast.
+	 - Bug fixed playback of sequences with audio and videos when
+	   looping that would loose sync and report NANs and play
+	   them way too fast.
+	 - Bug fixed EDL's timeline tick mark on playback of such EDL.
+
+v3.0.1   - Allowed loading and saving files with the Windows' native
+	   file browser.
+	 - Made Preferences a tad more eye friendly by replacing all
+	   checkbuttons with raised/pushed checkbuttons.
+	 - Made Preferences more eye friendly by rearranging the size
+	   of buttons and options.
+	 - Made timeline text a bit bigger and more spaced.
+	 - Bug fixed rgba shader to not force alpha to 1 when alpha is 0.
+	   This prevented subtitles from showing up properly.
+	 - Removed the option to reload files when changed on disk as
+	   it would create half images and errors.
+
+v3.0.0   - Bug fixed alpha in shaders for stereo display.  Previously
+	   a border would surround images.
+	 - Bug fixed main Rectangle class.  Previously it could not
+	   merge properly.
+	 - Made display_window and data_window functions take a frame.
+	   This avoids sporadic flashes when loading images.
+	 - Avoided recaching on stereo modes when images have been
+	   loaded.
+	 - Made EDL cuts more seamless.
+	 - Avoided a crash when in anaglyph mode and the sources had
+	   different size.
+	 - Avoided a crash when in stereo mode after selecting
+	   stereo crossed.
+	 - Avoided a crash when sequences were of different length
+	   than the other stereo movie or sequence.
+	 - Bug fixed a bug introduced in v2.9.6 when multiview channels
+	   were displayed in stereo.
+	 - Bug fixed a bug introduced in v2.9.8 when multipart stereo
+	   images were loaded.
+
+v2.9.9   - Added stereo interlaced, interlaced columns and
+	   checkerboard.
+	 - Fixed color queries to support stereo interlaced and
+	   checkerboard.
+	 - Added saving and loading of stereo images in reels.
+	 - Added option to load stereo image on an already loaded
+	   image.
+	 - Added youtube videos to documentation.
+	 - Fixed cache line in timeline when in EDL mode and
+	   with edits.
+
+v2.9.8   - Bug fixed OpenEXR reader for multipart image files that
+	   are not stereo images.  Previously the files would show
+	   the first part only.
+	 - The new audio sync was failing on VOBs.  Changed it to
+	   make it work.
+	 - The win32 release was crashing on file requester due
+	   to wrong ffmpeg libraries.  Fixed.
+
+v2.9.7   - Allowed command-line loading of stereo images/movies
+	   without any prefix.  The syntax is using the -s keyword:
+
+		   mrViewer -s leftimage.1.exr -s rightimage.1.exr
+
+	 - Updated media information's value and sliders to trigger
+	   an update of the slider if the value is typed in.
+	 - Added license and configuration information of ffmpeg
+	   to the About window.
+	 - Reverted an audio optimization which would create problems
+	   in audio playback when loops happened early and audio
+	   packets decoded into multiple frames.
+	 - Reverted a video optimization which was creating problems
+	   in reverse playback.
+	 - Improved video playback when scrubbing which was skipping
+	   some frames incorrectly.  This change should remove all
+	   warnings of missing video frames.
+	 - Improved audio sync after seeks and in normal mode for
+	   Linux and Windows64.
+	 - Bug fixed adjusting of EDL when stereo was on.
+	 - Made music only tracks not report an invalid index for
+	   channel selection.
+	 - Removed stereo interlaced as it was not working properly.
+	 - Bug fixed unshown frames counter when playing backwards.
+
+v2.9.6   - Made channel selection work with toggles more intuitively.
+	   Going to N.x with a 'r' hotkey and then pressing 'r'
+	   again will bring you back to "N", not "Color" as before.
+	 - Made channel selection smarter to avoid reloads when
+	   not needed.  Only switching full layers or multiparts
+	   will cause reloads now.
+	 - Fixed Unshown Frames (UF:) in Hud Display to correctly
+	   count unshown frames.  Previously it would count them
+	   with an addition of one to it each time.
+	 - Fixed a random crash that would happen when LUT was
+	   activated and the sequence was still being loaded.
+	 - Fixed color picker not showing the right colors on
+	   stereo images once cache was cleared.
+	 - Fixed a memory leak of thumbnail pictures.
+	 - Added an elapsed and remaining timings to saving
+	   a sequence or a movie.
+	 - Bug fixed Saving of OpenGL Snapshots for a sequence of
+	   images.  Previously it would crash.
+
+v2.9.5   - Improved OpenEXR loader by a factor of 2.
+	 - Made OpenEXR saver default to PIZ wavelet compression,
+	   instead of None.
+	 - Made audio track selection not throw when invalid tracks
+	   are used.  If an invalid track is used, the audio is
+	   muted ( track is -1 ).
+	 - Same thing with subtitle track.
+	 - Bug fixed Media Info Window not updating on frame change.
+	 - Made images saved with left. or right. prefix not change
+	   to %V. prefix automatically.
+
+v2.9.4   - RMB->Pixel->Copy Pixel Value now respects lut and
+	   gamma if active.
+	 - Changing volume or audio track now effects both
+	   stereo images.
+	 - Bug fixed avi saver to work with images whose
+	   resolution is not a multiple of two.
+	 - Bug fixed thumbnail creation when image is not
+	   a multiple of two.
+	 - Bug fixed gaps in cache that would appear in timeline
+	   when playing in loop.
+	 - Updated to latest ffmpeg version.
+	 - Changed 'o' alpha overlay shortcut to 'v', to avoid clash
+	   with 'o' in changing timeline out point.
+	 - Made channel list work with submenus, for easier access
+	   and less clutter.
+	 - Added stereo interlaced to show images interlaced.  For
+	   this to work it is necessary to be in zoom 1.0 or
+	   presentation mode.
+	 - Bug fixed installation on Linux relying on symlinks.
+
+v2.9.3   - Bug fixed saving of OpenExr files when data window was
+	   smaller than display window.  Previously it would crash.
+	 - Bug fixed a number of memory leaks.
+	 - Bug fixed fit image when in stereo side by side mode.
+	 - Bug fixed saving of files in start directory instead of
+	   directory set in file requester.
+	 - Added support for stereo loading of two set of images
+	   or two sets of movie files with a common prefix.  The
+	   syntax is a single letter prefix or a full keyword:
+	   Examples:
+		  rootname.prefix.number.extension
+		  da20.L.0001.exr
+		  da20.R.0001.exr
+	   For movies:
+		  rootname.prefix.extension
+		  da20.left.mov
+		  da20.right.mov
+
+	   In the file requester, the movies and sequences
+	   will appear as:
+		  da20.%v.mov      # for da20.L|R.mov
+		  da20.%V.%04d.exr # for da20.left|right.0001.exr
+
+	   The names of left and right and L and R can be changed
+	   with environment variables. See documentation.
+
+	   Current Limitations
+	   -------------------
+	   Currently, it is not possible to mix a movie and a
+	   sequence in stereo viewing.
+	   It is also not possible to view in stereo channels
+	   other than RGBA.
+	   Finally, a background image is available for
+	   the left eye only.
+
+v2.9.2   - Bug fixed removing a directory from Favorites.
+	 - Removed all database functions as noone was using them and
+	   they remained under developed.  As a result of this,
+	   opening files is much faster now.
+	 - Added Unix-like permissions to file details in file
+	   requester.
+	 - Made file requester column labels appear translated in
+	   Spanish locale.
+	 - Added a Preload Cache option to both the menus (Image)
+	   and the Preferencess->Cache.  Turning it on loads the
+	   image sequences in the background but it makes the GUI
+	   slow.  Thus, the default is off.
+
+v2.9.1   - Made selection of Favorite follow preferences of a single
+	   click to make it consistent with the travelling of folders.
+	 - Made context sensitive menus in file requester respect
+	   the user's locale settings.
+	 - Fixed a hanging bug when selecting favorites from the pull
+	   down or when changing file type from the other pull down.
+
+v2.9.0   - Moved compilation to use ninja build system on both platforms.
+	 - Fixed some documentation in Spanish and added some more info on
+	   the English docs.
+	 - Bug fixed changing FPS in the Preferences and hitting okay will
+	   no longer change FPS.  FPS set in Preferences is for starting
+	   the viewer.
+	 - Bug fixed loops starting at other frame than 1.  Previously,
+	   the looping would happen twice the frame set.  So if you had
+	   set the loop at frame 30, the loop would happen at frame 60.
+	 - Bug fixed gaps in cache when looping small videos.
+	 - Made the file requester much nicers and multithreaded to
+	   load previews of movies, sequences and images.
+
+v2.8.9   - Made printout of ACES file loaded always display full path to it.
+	 - Added Open/Save menus to Image Browser (Reel List).
+	 - Improved performance of drawing green cache line.
+	 - Bug fixed a hanging bug which would happen when looping from
+	   the last frame of a video.
+	 - Made Clear Cache work on videos, too.
+	 - Made .webm a valid video extension.
+	 - Made shaders unpremult-gamma-premult to avoid edge
+	   fringing in compositing gamma 2.2 images (OpenEXR).
+	   This option is turned on by using a different video
+	   blend mode as set in the preferences.
+	 - Added documentation in Spanish.
+
+v2.8.8   - Fixed some crashing and hanging bugs when playing
+	   backwards or scrubbing backwards.
+	 - Fixed loading of image magick formats on Linux.
+	 - Further refinement of reverse playback to make it faster.
+
+v2.8.7   - Made cache a trailing cache when playing forwards, to
+	   easily allow for scrubbing.
+	 - Made cache a two way cache when scrubbing.
+	 - Allowed user to set cache size in Preferences.  The current
+	   range is 30 to 200 frames or FPS (twice the FPS).  Note
+	   that the requester can be overshot to store even more frames.
+	 - Fixed audio trashing memory sometimes, which could lead
+	   to a crash.
+
+v2.8.6   - Bug fix of audio caches being unlimited.
+	 - Bug fix of reverse playback with audio disappearing.
+	 - Further refinement of caches when scrubbing for smoother
+	   playback.
+	 - Audio offset works with positive values (ie. audio shifted
+	   before video ).  Movies and sequences of frames can be
+	   saved with added audio shifted.
+	 - Added command-line flag (o) to shift audio.
+
+v2.8.5   - Quick bug fix release to remove the bug of playback going
+	   too fast due to not syncing with audio on some movie files.
+
+v2.8.4   - Bug fixed audio playback with offsets.
+	 - Made scrubbing more fluid due to an expanded cache and some
+	   speed optimizations.
+	 - Added In (i) and Out (o) hotkeys to quickly set the in and
+	   out points of the video(s) being played.
+
+v2.8.3   - Bug fixed FPS change to prevent FPS of 0 or less.
+	 - Bug fixed playback of image sequences not showing the
+	   last frame sometimes.
+	 - Bug fixed crash in wmv movie files with wmav2 audio.
+	 - Sped up saving of GL Snapshots a tad.
+	 - Bug fixed audio offset to not play beyond timeline.
+	 - Bug fixed playback of audio with audio offsets in seek.
+	 - Improved performance of seeks since audio was played
+	   twice.
+	 - Bug fixed wrong shortcuts in DEB and RPM builds.
+
+v2.8.2   - Removed incorrect error when buffers were full.
+	 - Added routine to print out decode status in natural
+	   language instead of a code.
+	 - Allowed saving of opengl snapshot to movie files.  This
+	   works identically to saving normal movies, but requires user
+	   to Save explicitally with the GL Snapshots option.
+	 - Bug fixed opengl snapshot saving to save the view without
+	   any additional green headroom.
+	 - Bug fixed opengl snapshots saving being one frame behind.
+	 - Bug fixed a crash when saving movies whose first
+	   audio frame was 0.
+
+v2.8.1   - Improved playback of movies sometimes when pts was skipping
+	   a frame.
+	 - Minor speeding up in movie playback.
+	 - Bug fixed playback of image sequences with attached sound,
+	   which would freeze on a frame.
+	 - Added the option to offset the attached audio file so as to
+	   sync the audio without cutting the original clip.
+	 - Documented RMB menu options.
+	 - Turned off PostgreSQL database driver on Linux by default
+	   so as to avoid errors on startup for new users.
+	 - Fixed crash on wrong locale.  Now it exits gracefully.
+
+v2.8.0   - Bug fixed playback in reverse to not use so much memory.
+	 - Retrofit previous algorithm for movie playback as new
+	   algorithm was not frame accurate.
+	 - Bug fixed playback of one sample movie (PoTC.VOB), which
+	   would start with frame frozen.
+	 - Bug fixed movies that had B frames in it and would show
+	   incorrectly.
+
+v2.7.9   - Bug fixed start frame on BG image, which would offset by 1
+	   frame.
+	 - Added display of FG and BG images to title bar.  Previously,
+	   this would only be used when edl was on.
+	 - Improved performance of seek in video playback and scrubbing.
+	 - Improved performance of reverse playback.
+	 - Reverse playback is now frame accurate, instead of being
+	   shifted by one frame.
+
+v2.7.8   - Fixed hangs and crashes on playback of single images in EDL.
+	 - Fixed file requester not showing negative frames correctly.
+	 - Fixed file association for jpg, png, tiff, and others on Linux
+	   installers.
+	 - Fixed ImageMagick saving.  Gamma is baked in instead of passed
+	   to image attribute.
+	 - Made ImageMagick loader load all images as gamma 1.0,
+	   regardless, as it incorrectly tags images as gamma 0.4545.
+	 - Fixed Clone Image crash due to wrong path check.
+	 - Fixed Clone Image not cloning CTL's IDT transform.
+	 - Internal images like SMPTE color bars don't start with a RRT.
+	 - When saving, if LUT is active, ACES Metadata saving is turned
+	   on. If LUT is not active, ACES Metadata is turned off.
+
+v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
+	   saturated colors.
+	 - Windows64 version of mrViewer was distributed with 16bits
+	   ImageMagick instead of 32 bits HDRI.
+	 - Added sun raster images to mime types under Linux.
+	 - Bug fixed streams' duration to not be always 200 seconds, but
+	   the real duration.
+	 - Streams duration are shown as frames, seconds and time instead
+	   of seconds and time only.
+	 - Bug fixed openexr loader with lumma as it was trashing memory
+	   and possibly hanging the viewer. This also makes the loader a tad
+	   faster.
+	 - Made R,G,B,A,L,Z hotkeys default to main channels only.
+	   Previously they would randomly change depending on what
+	   channel was selected.
+	 - Made LUT not include image in lut path, so multiple images
+	   can share the same lut.  This makes it calculate less luts per
+	   invocation.
+
+v2.7.6   - Fixed LUT comparison of two images.  Previously, LUT could turn
+	   off without any warning when switching images.
+	 - Fixed fit image when image was flipped and not stereo.
+	 - Fixed creation of thumbnails of movies created with ITU 601
+	   colors.
+	 - Fixed color queries of movies created with ITU 601 colors.
+	 - Improved accuracy of 3d lookup color evaluation in pixel queries.
+	 - Made minor adjustments to color bar interface, moving the Pixel
+	   Values widget.
+
+v2.7.5   - Saving out a GradeRef that was turned into LMTs now works
+	   properly.  This allows loading and saving an ACES clip file
+	   without corrupting the transforms.
+	 - Fixed a bug that would remove the last LMT if you chose
+	   cancel on the last empty LMT.
+	 - Fixed a memory corruption if LMT's Choose requester was chosen
+	   twice.
+	 - Fixed the defaults gamma, gain and mask float values in the Spanish
+	   locale (changing the dot for a comma).
+	 - Bug fixed starting up with LUT active (Set in Preferences).
+	   Previously, it would crash the program.
+	 - Bug fixed playback of real media clip that had more than
+	   100 frames of audio at the beginning.
+	 - Fixed a crash that would happen if you selected FPS Default
+	   when no image was loaded.
+	 - Fixed locale problems on Windows, where double and float
+	   conversions were not handled well.
+
+v2.7.4   - Bug fixed a crashing bug in Windows 32 when displaying the
+	   image information window.
+	 - Added support for GradeRef in ACES.  This is done thru a list
+	   of LMTs.
+	 - Parsing of ACESclip .xml file is now more correct and will
+	   output more information when it fails loading it.
+	 - Preference window would not show the CTL_MODULE_PATH variable
+	   under the Spanish locale.
+	 - Made ACEScsc ctl scripts appear when listing LMTs.
+	 - Removed silly error of not finding the ACESclip file for files
+	   that don't have matching ACESclip files.
+
+v2.7.3   - Made LUT pixel and color area lookups a tad faster.
+	 - Added an option in the pixel bar's RGBA toolbar to switch to
+	   display pixels as:
+	   * Full (show pixel values with gamma, gain and lut if on),
+	   * Gamma (show pixel values with gamma and gain only)
+	   * Original (show pixel values unchanged by gain, gamma or lut)
+	 - Made color area window, histogram and vectorscope react
+	   automatically to changes in gamma, gain or lut.  This makes
+	   all tools more interactive and more useful.
+	 - All color tools (pixel values, color area info, vectorscope
+	   and histogram) respect the pixel values setting in the main
+	   pixel toolbar.
+	 - Upgraded ImageMagick to a newer, 32 bits float HDRI version.
+	 - Updated all small popup menus to not draw the glyph for
+	   readability issues.
+	 - Bug fixed a crashing bug on Windows when Add to Favorites
+	   was pushed.  This bug is due to a broken libintl on windows.
+	 - Bug fixed a similar crash on Windows when saving a reel.
+	 - More translated messages into Spanish.
+
+v2.7.2   - Bug fixed a warning in running CTL with ICC preferred.
+	 - Added ACES utilities to distribution: ctlrender, exr_dpx_exr and
+	   exrdpx.
+	 - Made color picker with LUT work in real time.
+	 - Removed the preference switch to show colors in pixel toolbar.
+	 - Added showing color of LUT in Color Area Information Window.
+	 - Bug fixed a startup bug when setlocale failed.
+
+v2.7.1   - With NSIS exe installer, made Windows' icons show the version
+	   number.
+	 - Bug fixed CTL Look Modulation Transform Picker.
+	 - Bug fixed libACESclip to use linkTransform instead of name
+	   when available. Made reader/writer use TransformID instead of name.
+	 - Bug fixed RPM installer not creating ln -s /usr/bin/mrViewer
+	   correctly.
+	 - Color picker now can show colors with the LUT applied.  This
+	   makes the gui (zoom) respond a tad slower when the LUT is on.
+	   As such a preferences option was added.
+	 - Added switch in Preferences to show pixel color values after LUT.
+	 - Made DEB/RPM installer on Linux place an icon in desktop in
+	   any language locale.
+	 - DEB/RPM will register file associations (mime-types) to all of
+	   mrViewer's recognized files.
+	 - Added translation to Spanish when that's the locale default.
+	 - Updated libACESclip to new format according to Jim Houston.
+
+v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
+	 - Made xml and ctl files never show as sequences of frames in
+	   file requester.
+	 - On Linux, now mrViewer is added to the system path thru a symlink.
+	 - On Linux, mrViewer is added to the menus (Graphic) if run from the
+	   deb or rpm file.
+	 - Added Mirror Horizontal and Vertical to Image RMB popup menu.
+	 - Added baking CTL/ICC transforms to a 96x96x96 grid.
+	 - Removed Load button from CTL requester as it was not working right.
+	 - Resolved a quoting issue in mrViewer.sh to work with parameters
+	   with spaces.
+	 - Bug fixed parsing of hotkeys when some ctrl, alt or meta keys were
+	   combined.
+	 - Bug fixed CTL pipeline when CTL file is not found.
+	 - CTL's IDT, RRT, ODT keywords are allowed anywhere in the
+	   filename, not only as prefixes.
+	 - Made saving of ACESclip XML file automatically fill up the name in
+	   file requester.
+	 - NSIS installer: Win64 and Win32 create different icons
+	   (mrViewer-64 and mrViewer-32 respectively).
+
+v2.6.9   - Bug fixed Cancel button in CTL requester.
+	 - Added a Load button to CTL requester to load CTL scripts not in
+	   CTL_MODULE_PATH.
+	 - Added support for CTL Input Device Transforms (IDTs).
+	 - Added support for CTL Look Mod Transforms (LMTs).
+	 - Added support to ACES 1.0 Clip Metadata to store all transforms
+	   in an XML file.
+
+v2.6.8   - Bug fixed lut creation on 32 and 128 sizes.  Previously, they would
+	   get created and not cached.
+	 - Adapted CTL pipeline to be compatible with ACES 1.0.  The one
+	   rendering transform and all output device transforms from ACES
+	   can be used.
+	   Note that the previous transform_RRT and ODT_monitor have been
+	   deprecated as they operate on XYZ.
+
+v2.6.7   - Added installers for both platforms. The main benefit is
+	   for Windows where shortcuts and an icon in Desktop are created.
+
+v2.6.6.3 - Bug fixed pixel info display when mirror X or mirror Y are
+	   in effect.
+	 - Bug fixed color info, histogram and vectorscope when mirror
+	   X or Y are in effect.
+	 - Bug fixed data window display when mirror X or Y are in
+	   effect.
+	 - Bug fixed mirror X and mirror Y in stereo displays.
+
+v2.6.6.2 - Bug fixed center and fit image when pixel ratio was different
+	   than 1.
+	 - Bug fixed mirror X and mirror Y when different data/display
+	   window is present.  Previously, the flipping was done within
+	   the data window.
+	 - Added back again the S and E buttons in the timeline to set
+	   the start and ending of clips or the timeline.  The E button
+	   works well, but the S button is subject to movies caches.
+	 - Use ffmpeg's png loader when cache is off.  The loader is really
+	   fast but requires opening of the file with the avi (ffmpeg) loader.
+	   That means you cannot load the png sequence and then switch to the
+	   non-cache loader without reloading the sequence.
+
+v2.6.6.1 - Reworked the Cache Preferences to allow:
+	   * Not using any cache for streaming images directly from disk.
+	     The performance of this is extremely dependant on the images being
+	     loaded.
+	   * 8 bit caches to save RAM at the expense of baking the gamma in.
+	   * Scale to proxy images (one half, one quarter or one eighth of the
+	     original size) also to save RAM.
+
+v2.6.5.6 - Made caching work on all sequences in reels and timeline in EDL.
+	   Progress goes from one sequence to the next.
+	 - Removed reloading of movie files when they change in disk.
+	   Previously the whole reel would get corrupted.
+	 - Replaced zlib1.dll in win32 distribution as it was corrupt and
+	   would cause crashes when loading some exr images.
+
+v2.6.5.5 - Added a green bar display for frame caches in the timeline for
+	   both movies and sequences.
+	 - Bug fixed a hanging problem when exiting while playing backwards
+	   movie with audio.
+	 - Bug fixed a cache problem not caching the first frame when playing
+	   backwards.
+	 - Changed Release folder to mrViewer-v$VERSION folder.
+
+v2.6.5.4 - Bug fixed some problems with loop playback of movie files in EDL.
+	   Still not perfect.  There are still sync problems after
+	   several loops specially with ping-pong (swing)
+	   playback.
+	 - Bug fixed a hanging of the playback when showing individual images
+	   all in an EDL edit.
+	 - Bug fixed F11 fullscreen not centering the image on Windows.
+	 - Made fullscreen presentation (F12) support covering the taskbar on
+	   Windows.
+	 - Made fullscreen and presentation modes be passed across the network.
+
+v2.6.5.3 - Made preloading of sequences being shown while idle.
+	 - Fixed a crash of Cut tool in EDL when the cut happened in inactive
+	   reel.
+	 - Troubleshoot playback of EDL movies in background.
+	 - Added a BG button to EDL Edit window to more easily set the
+	   background image.
+
+v2.6.5.2 - Upgraded to latest ffmpeg, libx264.
+	 - Fixed swing looping in short movie files which could hang the
+	   viewer.
+	 - Made play backwards faster due to increase in seek speed.
+	 - Fixed wrong calculation of frame differences in backwards playback.
+
+v2.6.5.1 - Fixed subtitles displaying in black only.
+	 - Made grease pencil a property of the image instead of the viewer.
+	 - Grease pencil drawings are saved and loaded to/from a reel.
+	 - Grease pencil drawings are synced over TCP/IP on connection.
+	 - GL Snapshot now can save a sequence of frames.
+	 - Added The Color Transformation Language manual ( CtlManual.pdf )
+	   to the docs folder.
+	 - Made exr loader a tiny bit faster when it is a multiview image.
+	 - Bug fixed a minor memory leak when quitting in color channel string.
+	 - EDL timeline now supports play and step hotkeys.
+	 - Fixed EXR loader not loading exif attributes.
+	 - Fixed EXR saver to save all known attributes of image, except tiling.
+	 - Added a Cut tool to EDL Window.  Allows cutting of clips, to later
+	   delete them or move them somewhere else.
+	 - Added Merge tool to undo the Cut tool.
+	 - Fixed name of zlib1.dll in windows32 distributions.
+
+v2.6.5.0 - Simplified and sped up exr loader.
+	 - Fixed crash of exr loader when working with an image with a single
+	   view.
+	 - Added 3D View to evaluate deep scanline and deep tile image.
+	 - EXR loader now supports deep tile images.
+	 - Bug fixed ILM format of image sequences ( beauty.1-24.exr )
+
+v2.6.4.4 - Sped up reading of image files (specially the first of a sequence).
+	 - Bug fixed OpenEXR stereo crossed not respecting dataWindows
+	   correctly.
+	 - Bug fixed Single Instance to load images that are fed thru another
+	   instance of viewer.
+
+v2.6.4.3 - Updated all platforms to OpenEXR 2.2.
+
+v2.6.4.2 - Added missing ctl and shaders directory to win64 release.
+	 - Added missing rails directory to win64 release.
+	 - Added HISTORY.txt and Videos.txt to win64 release.
+	 - Added docs to win64 release.
+	 - Restored glDrawPixels opengl drawing albeit buggy but needed for
+	   old gfx cards.
+	 - Updated version from v2.6.4.0.
+
+v2.6.4.1 - Made autofit work in EDL timeline when switching images.
+	 - Fixed loading of a single image which would always load all images
+	   in a sequence.
+	 - Fixed BG image and wipe mode in network connections.
+	 - Bug fixed color area window selection in stereo and added a square
+	   displaying the mean color in the color info window.
+	 - Updated to OpenEXR 2.2 on Linux.  Windows is stuck with 2.1.
+	 - Updated -h (help) command-line on windows to pop up a console with
+	   instructions.
+
+v2.6.4.0 - Added a starting audio volume preference to the default
+	   audio preferences.
+	 - Made preferences run when the user hits ok.  Previously ok did
+	   nothing.  This allows testing preferences much easier.
+	 - Pixel Info is now available for background images even when those
+	   background images have a different size than the foreground one.
+	   Note that Color Info Selection shows only the foreground image
+	   values.
+	 - Bug fixed file requester when clicking with rmb on a folder
+	   which would access the folder instead of the menus.
+	 - EXR images with data windows are now saved keeping the data and
+	   display window if saved as EXR.
+	 - GUI for OpenEXR and ImageMagick image options.  Allows selecting
+	   compression and pixel type.
+
+v2.6.3.4 - Bug fixed thumbnails on sequences in file requester.
+	 - Bug fixed some remote image problems including one incorrect
+	   log out.
+	 - Made auto fitting when loading a new image, even if auto refit is
+	   off.
+	 - Fixed an obscure crash when changing reels.
+	 - Added Color Info, Histogram and Vectorscope windows to the things
+	   that can be opened and closed remotely.
+	 - Updated selection to refresh color info, histogram and vectorscope.
+	 - Made single images in EDL be able to play back as a sequence.
+
+v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
+	   documentation for them.
+	 - Bug fixed an audio muting problem on some movies.  This was a
+	   regression bug not present in v2.6.1.0.
+	 - Bug fixed preferences to always be saved in HOME/.filmaura
+	   regardless of platform.
+	   In the case of Windows, the path is %HOME%, or %USERPROFILE%, or
+	   %HOMEDRIVE%\%HOMEPATH% searched in that order.
+	 - Bug fixed drag and drop not centering the image loaded when
+	   auto refit image was off.
+	 - Bug fixed audio saving without pops, which was a regression bug
+	   from v2.6.2.0.
+	 - Bug fixed Frame text input to allow entering a frame number.
+	 - Bug fixed timecode widget to allow time with periods in it.
+	 - Added option in preferences for Display Window.
+	 - Auto fit image when loaded so that pictures don't show from one
+	   corner as a result of the update to image drawing routines.
+	 - Adjusted selection to select one pixel if outside data window.
+	 - Removed crash when playback of no images before loading.
+
+v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
+	 - Improved performance of anaglyph and its memory footprint for
+	   data windows.
+	 - Bug fixed data window in mipmap images.  Now each mipmap shows the
+	   proper data window.
+	 - Removed old GL drawing routines for gfx cards without textures
+	   which were no longer working properly.
+	 - Updated color and pixel info updates on seek.
+	 - Bug fixed loading of openexr images with data window not appearing
+	   in the right location the first time the images were read.
+
+v2.6.3.1 - Fixed selection in all cases for display and data windows.
+	 - Added missing ICC_PROFILES environment variable to search for
+	   ICC/ICM color profiles.
+
+v2.6.3.0 - Fixed display window for all cases and rewrote drawing routines.
+	 - Adapted safe area for display windows.
+	 - Fixed side by side stereo images.
+	 - Adapted anaglyph of stereo images with changing data windows.
+	 - Fixed fit_image to support display window and non display windows.
+	 - Adapted draw/erase/text routines to new drawing routines.
+	   Made drawing out of boundaries of images a valid behavior.
+	 - Adapted mask windows for new drawing routines.
+
+v2.6.2.0 - Added support for OpenEXR's display window and for moving data
+	   windows.  Currently there's still a minor bug in that the size of
+	   the data window effects the positioning of the display window.
+	 - Adapted fit image function to handle moving data window.
+	 - Adapted color info for moving data window.
+	 - Added partial support for animated GIFs. As GIFs don't store
+	   the length of the animation, a length of 100 frames is used as
+	   default.
+	 - Adapted draw routines to draw in data window.
+	 - Adapted masking routines to draw in data window.
+	 - Fixed a bug that would cause a crash when the image information
+	   window would get opened for a multipart OpenEXR image.
+
+v2.6.1.1 - Fixed audio pops in transcoding of movie files.  However, there's
+	   still no way to save a H264 movie with audio from a sequence of
+	   images.
+
+v2.6.1.0 - Fixed audio saving in mpeg4 and H264.  However, there are still
+	   cases that fail or that show pops in the audio.
+
+v2.6.0.0 - Added options to save H264 movie files in YUV420 or YUV444.
+	 - Added options to save audio in MP3 format, but there's still some
+	   "pops" in the output of most files and sync issues.
+	 - Fixed searching to a point with audio not being found.  Now
+	   searching is more solid.
+	 - Made audio saving a non-default option due to the bugs that still
+	   plague it.
+
+v2.5.9.1 - Switching images no longer auto refits them in view when autorefit
+	   is on.  It keeps zoom level and offset so as to compare two images
+	   at closeup. Only when window is resized or the image is loaded,
+	   autofit takes over.
+	 - Made Single Instance of viewer an alert when another instance is
+	   running.  The alert also tells user where to remove the lock file.
+	 - ffmpeg has a new -gamma flag for EXRs to support creating movies
+	   at other gamma values (2.2).
+	 - Bug fixed EDL when more than 2 reels were created and drag happened
+	   to an invisible track.
+	 - Bug fixed EDL when one image was loaded and switched tracks would no
+	   longer play it back.
+	 - Bug fixed CTL creation when path is the same but images (primaries)
+	   are not.
+
+v2.5.9.0 - Added multipart EXR support for multiple parts (new pass system)
+	   and stereo (anaglyph, horizontal and crosseyed).
+	   Support is given for deepscanline and scanline images.
+	   Note that there is no support for deep compositing yet.
+	 - Bug fixed pixel aspect ratio in EXR images.
+	 - Bug fixed normalize in EXR images.
+	 - Bug fixed saving of PNGs (among others) with gamma different
+	   than 1.  Previously that would create a file with banding.
+	 - Display Window of EXRs is not yet supported.  All images loaded
+	   are centered upon display.
+
+v2.5.8.2 - Drag and Drop now supports dragging directories to load all that
+	   is found inside them.
+	 - Drag and Drop now supports dragging single files like mp3s.
+	 - Drag and Drop now supports files with spaces and brackets (Linux).
+	 - Color Info window now displays the gamma/gain'ed image value
+	   instead of just the original values.
+	 - MultiView images (Stereo) now supports a side-by-side and
+	   crossed eye views.
+	 - MultiView images (Stereo) now supports multiple animated images.
+	 - Bug fixed loading of directory for parent ( .. ) directory.
+	 - Single images are now cached in memory.  Previously, they would
+	   be loaded in every time.
+
+v2.5.8.1 - Bug fixed drag and drop of sequences as it had gotten broken.
+	 - Bug fixed preview pictures which could show wrong colors in movie
+	   files.
+	 - Removed a warning of wrong OpenGL pixel type.
+	 - Added support to load all sequences and movies in a directory
+	   through command-line.  Example:
+
+	   $ mrViewer .
+
+	 - Added -a audio flag to load sequences with audio attached.
+	 - Made added audio appear in the audio drop-down window in the
+	   interface, allowing user to toggle the audio of a movie file with
+	   the audio of music or dialogue brought from outside.
+
+v2.5.8.0 - Bug fixed Reel/EDL window when two reels were loaded and clips could
+	   not be selected.
+	 - Bug fixed EDL Edit window to support more than two reels.
+	 - Updated all platforms to use ffmpeg 2.2
+	 - Bug fixed some movies not starting at first frame.
+	 - Bug fixed crash when loading two or more EXRs simultaneously.
+	 - Fixed red and blue dots in preview pictures.
+	 - Added proper detection of Real Media Format.
+	 - Made EDL button a toggle button to better reflect each reel's
+	   edl status.
+
+v2.5.7.4 - Bug fixed ghosting of lines and text in grease marker's previous
+	   or next frames.
+	 - Updated all platforms to use OpenEXR 2.1.0.
+
+v2.5.7.3 - Bug fixed two crashes in EDL window and most of its functionality.
+	 - Bug fixed a hang up in EDL window when not in EDL mode.
+	 - Internally changed PixelType to just Pixel to simplify api.
+	 - Added support to parse commandline for left/right (stereo) images.
+	 - Bug fixed disappearing picture when opening menu in window with
+	   DVD sub.
+	 - Bug fixed movies not starting at first frame.
+
+v2.5.7.2 - Removed Xlib DSOs from linux distribution to make them run in other
+	   machines.
+
+v2.5.7.1 - Added memset() to exr images as changing layers could leave traces
+	   of wrong data.
+
+v2.5.7.0 - Added Text support to OpenGL grease pencil drawing.
+	 - Fixed communications protocol which could lead to missing commands.
+	 - Made EXR reader a tad faster by reading attributes only once.
+	 - Fixed mp4's of mp3 where a single frame is shown all during one song.
+	 - Fixed recognition of some formats like mp3.
+	 - Fixed a crash on remote connections when no image was loaded.
+	 - Fixed a bug that was not using the full paths to the file.
+
+v2.5.6.4 - Bug fixed OpenGL snapshot of stills.  Now it is What You See Is
+	   What You Get.
+	   Made RGBA values represent what is seen (applying gamma and gain).
+
+v2.5.6.3 - Bug fixed drag and drop to support movie files with numbers in them.
+
+v2.5.6.2 - Fixed RGBA movie playback where colors would be reversed.
+	 - Fixed audio hanging up on EDL playback.
+	 - Fixed favorites folder on Windows which had gotten broken.
+	 - Made arrows in popup menus appear behind the text and in dark gray.
+
+v2.5.6.1 - Fixed audio playback of some movies where it could stutter.
+
+v2.5.6   - Fixed reverse playback (albeit still not perfect).
+
+v2.5.5   - Fixed crash in EDL step image on last image.
+	 - Fixed timeline syncing in playback of non-edl movies.
+	 - Fixed reels to not have edl as a default.
+
+v2.5.4   - Fixed audio sync issues during playback of big movies.
+
+v2.5.3   - Fixed EDL playback for EDL timelines.
+
+v2.5.2   - Fixed EDL Edit Window's removal of images.
+
+v2.5.1   - Added EDL Edit window.
+	 - Added reading of images in maya format ( name.ext.number )
+	 - Fixed playback of EDL when edits are made.
+	 - Fixed removal of images in reel list.
+	 - Added Auto Fit Image to Preferences and MainWindow.
+	 - Bug fixed remote communications a lot.
+
+v2.4.1   - Added Blend Modes (Traditional and Premult) for compositing.
+
+v2.3.10  - Fixed playback of Essa.wmv due to use of dts in loop.
+
+v2.3.9   - Fixed reverse playback and looping last frame.
+
+v2.3.8   - Fixed seek of image sequences.
+
+v2.3.7   - Fixed audio loading for image sequences and avi files.
+	 - Fixed movie saving with audio.
+
+v2.3.6   - Made window never expand beyond desktop boundaries, leaving title bar always in view.
+
+v2.3.5   - Added audio float and multichannel playback on windows.
+
+v2.3.4   - Made reverse playback a tad more memory efficient.
+
+v2.3.3   - Fixed reverse playback.

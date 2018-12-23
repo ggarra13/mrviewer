@@ -1,0 +1,347 @@
+!!ARBfp1.0
+# cgc version 3.0.0016, build date Feb 13 2011
+# command line args: -I/media/gga/Datos/code/applications/mrviewer-code/shaders -profile arbfp1
+# source file: YByRyA.cg
+#vendor NVIDIA Corporation
+#version 3.0.0.16
+#profile arbfp1
+#program main
+#semantic main.YImage : TEXUNIT0
+#semantic main.BYImage : TEXUNIT1
+#semantic main.RYImage : TEXUNIT2
+#semantic main.AImage : TEXUNIT4
+#semantic main.lut : TEXUNIT3
+#semantic main.coeffs
+#semantic main.Koff
+#semantic main.Kr
+#semantic main.Kg
+#semantic main.Kb
+#semantic main.yw
+#semantic main.mask
+#semantic main.mask_value
+#semantic main.height
+#semantic main.width
+#semantic main.gain
+#semantic main.gamma
+#semantic main.channel
+#semantic main.premult
+#semantic main.unpremult
+#semantic main.enableNormalization
+#semantic main.normMin
+#semantic main.normSpan
+#semantic main.enableLut
+#semantic main.lutF
+#semantic main.lutMin
+#semantic main.lutMax
+#semantic main.lutM
+#semantic main.lutT
+#semantic main.scale
+#semantic main.offset
+#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
+#var sampler2D YImage : TEXUNIT0 : texunit 0 : 1 : 1
+#var sampler2D BYImage : TEXUNIT1 : texunit 1 : 2 : 1
+#var sampler2D RYImage : TEXUNIT2 : texunit 2 : 3 : 1
+#var sampler2D AImage : TEXUNIT4 : texunit 4 : 4 : 1
+#var sampler3D lut : TEXUNIT3 : texunit 3 : 5 : 1
+#var bool coeffs :  : c[0] : 6 : 1
+#var half3 Koff :  : c[1] : 7 : 1
+#var half3 Kr :  : c[2] : 8 : 1
+#var half3 Kg :  : c[3] : 9 : 1
+#var half3 Kb :  : c[4] : 10 : 1
+#var half3 yw :  : c[5] : 11 : 1
+#var int mask :  : c[6] : 12 : 1
+#var int mask_value :  : c[7] : 13 : 1
+#var int height :  : c[8] : 14 : 1
+#var int width :  : c[9] : 15 : 1
+#var half gain :  : c[10] : 16 : 1
+#var half gamma :  : c[11] : 17 : 1
+#var int channel :  : c[12] : 18 : 1
+#var bool premult :  : c[13] : 19 : 1
+#var bool unpremult :  : c[14] : 20 : 1
+#var bool enableNormalization :  : c[15] : 21 : 1
+#var half normMin :  : c[16] : 22 : 1
+#var half normSpan :  : c[17] : 23 : 1
+#var bool enableLut :  : c[18] : 24 : 1
+#var half lutF :  : c[19] : 25 : 1
+#var half lutMin :  : c[20] : 26 : 1
+#var half lutMax :  : c[21] : 27 : 1
+#var half lutM :  : c[22] : 28 : 1
+#var half lutT :  : c[23] : 29 : 1
+#var half scale :  : c[24] : 30 : 1
+#var half offset :  : c[25] : 31 : 1
+#var float4 main.pixel : $vout.COLOR : COL : -1 : 1
+#const c[26] = 0.5 0.33333334 1 0
+#const c[27] = 2 3 4 5
+#const c[28] = 6 0.00010001659 2.718282 2.71875
+#const c[29] = 0.69335938
+#default yw = 0.21264648 0.71533203 0.07220459
+#default mask = 0
+#default mask_value = 0
+#default height = 256
+#default width = 256
+#default gain = 1
+#default gamma = 1
+#default channel = 0
+#default premult = 0
+#default unpremult = 0
+#default enableNormalization = 0
+#default normMin = 0
+#default normSpan = 1
+#default enableLut = 0
+#default lutF = 0
+PARAM c[30] = { program.local[0..25],
+		{ 0.5, 0.33333334, 1, 0 },
+		{ 2, 3, 4, 5 },
+		{ 6, 0.00010001659, 2.718282, 2.71875 },
+		{ 0.69335938 } };
+TEMP R0;
+TEMP R1;
+TEMP R2;
+TEMP R3;
+TEMP R4;
+TEMP R5;
+TEMP R6;
+TEMP R7;
+TEX R1.x, fragment.texcoord[0], texture[1], 2D;
+TEX R0.x, fragment.texcoord[0], texture[2], 2D;
+MOV R2.z, R0.x;
+TEX R0.x, fragment.texcoord[0], texture[4], 2D;
+MOV R2.y, R1.x;
+MOV R2.w, R0.x;
+TEX R2.x, fragment.texcoord[0], texture[0], 2D;
+MOV R3.xyz, c[1];
+MOV R3.w, c[26];
+ADD R0, R2, R3;
+CMP R0, -c[0].x, R0, R2;
+ADD R1.x, R0.y, c[26].z;
+MUL R1.y, R0.x, R1.x;
+ABS R1.x, c[0];
+DP3 R1.w, R0, c[2];
+CMP R1.z, -R1.x, c[26].w, c[26];
+CMP R1.x, -R1.z, R1.y, R1.w;
+ADD R1.y, R0.z, c[26].z;
+DP3 R1.w, R0, c[4];
+MUL R1.y, R0.x, R1;
+CMP R1.w, -R1.z, R1.y, R1;
+MAD R2.x, -R1, c[5], R0;
+MAD R2.x, -R1.w, c[5].z, R2;
+DP3 R0.x, R0, c[3];
+RCP R1.y, c[5].y;
+MUL R0.y, R2.x, R1;
+CMP R1.y, -R1.z, R0, R0.x;
+MOV R1.z, R1.w;
+RCP R3.w, c[19].x;
+RCP R1.w, c[17].x;
+ADD R0.xyz, R1, -c[16].x;
+MUL R0.xyz, R0, R1.w;
+CMP R0.xyz, -c[15].x, R0, R1;
+MUL R3.xyz, R0, c[10].x;
+MIN R0.xyz, R3, c[21].x;
+MAX R0.xyz, R0, c[20].x;
+MOV R1.w, c[23].x;
+LG2 R0.x, R0.x;
+LG2 R0.y, R0.y;
+LG2 R0.z, R0.z;
+MUL R0.xyz, R0, c[22].x;
+MAD R0.xyz, R0, c[29].x, R1.w;
+MUL R1.xyz, R0, c[19].x;
+FLR R0.xyz, R1;
+ADD R4.xyz, -R0, R1;
+ADD R2.xyz, R0, c[26].z;
+MUL R7.xyz, R3.w, R2;
+MUL R2.xyz, R0, R3.w;
+TEX R1.xyz, R7, texture[3], 3D;
+ADD R2.w, -R4.x, c[26].z;
+MOV R0.x, R2;
+MOV R0.yz, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MUL R1.xyz, R4.x, R1;
+MAD R1.xyz, R2.w, R0, R1;
+MUL R5.xyz, R4.y, R1;
+TEX R1.xyz, R2, texture[3], 3D;
+MOV R0.y, R2;
+MOV R0.xz, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MUL R0.xyz, R4.x, R0;
+MAD R6.xyz, R2.w, R1, R0;
+ADD R3.w, -R4.y, c[26].z;
+MAD R5.xyz, R6, R3.w, R5;
+MOV R6.yz, R2;
+MOV R6.x, R7;
+MOV R0.z, R2;
+MOV R0.xy, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MOV R2.y, R7;
+TEX R2.xyz, R2, texture[3], 3D;
+MUL R0.xyz, R4.x, R0;
+MAD R0.xyz, R2, R2.w, R0;
+TEX R6.xyz, R6, texture[3], 3D;
+MUL R2.xyz, R4.x, R6;
+MAD R1.xyz, R2.w, R1, R2;
+MUL R0.xyz, R4.y, R0;
+MAD R0.xyz, R1, R3.w, R0;
+ABS R2.x, c[19];
+MUL R1.xyz, R4.z, R5;
+ADD R2.y, -R4.z, c[26].z;
+MAD R0.xyz, R0, R2.y, R1;
+CMP R2.x, -R2, c[26].z, c[26].w;
+MUL R1.x, R2, c[18];
+CMP R3.xyz, -R1.x, R0, R3;
+POW R0.x, c[28].w, R3.x;
+POW R0.z, c[28].w, R3.z;
+POW R0.y, c[28].w, R3.y;
+CMP R0.xyz, -R1.x, R0, R3;
+MIN R1.xyz, R0, c[21].x;
+MAX R1.xyz, R1, c[20].x;
+LG2 R1.x, R1.x;
+LG2 R1.z, R1.z;
+LG2 R1.y, R1.y;
+MUL R3.xyz, R1, c[22].x;
+ABS R1.x, R2;
+MAD R2.xyz, R3, c[29].x, R1.w;
+CMP R1.x, -R1, c[26].w, c[26].z;
+MUL R1.w, R1.x, c[18].x;
+CMP R1.xyz, -R1.w, R2, R0;
+MOV R2.w, c[25].x;
+MAD R0.xyz, R1, c[24].x, R2.w;
+TEX R0.xyz, R0, texture[3], 3D;
+POW R0.x, c[28].z, R0.x;
+POW R0.z, c[28].z, R0.z;
+POW R0.y, c[28].z, R0.y;
+CMP R1.xyz, -R1.w, R0, R1;
+RCP R0.y, R0.w;
+SLT R0.x, c[28].y, R0.w;
+MUL R2.xyz, R1, R0.y;
+MUL R0.x, R0, c[14];
+CMP R0.xyz, -R0.x, R2, R1;
+MOV R1, c[27];
+MOV R2.x, c[26].z;
+ADD R2.y, -R2.x, c[12].x;
+ADD R2.z, -R1.x, c[12].x;
+ABS R2.z, R2;
+ABS R2.y, R2;
+CMP R2.z, -R2, c[26].w, c[26];
+POW R0.y, R0.y, c[11].x;
+POW R0.z, R0.z, c[11].x;
+POW R0.x, R0.x, c[11].x;
+CMP R0.xyz, -R2.y, R0, R0.x;
+CMP R2.y, -R2, c[26].w, c[26].z;
+ABS R2.y, R2;
+CMP R2.y, -R2, c[26].w, c[26].z;
+MUL R2.w, R2.y, R2.z;
+CMP R0.xyz, -R2.w, R0.y, R0;
+ADD R2.w, -R1.y, c[12].x;
+ABS R2.z, R2;
+CMP R2.z, -R2, c[26].w, c[26];
+ABS R2.w, R2;
+MUL R2.y, R2, R2.z;
+CMP R2.w, -R2, c[26], c[26].z;
+MUL R2.z, R2.y, R2.w;
+CMP R0.xyz, -R2.z, R0.z, R0;
+ADD R2.z, -R1, c[12].x;
+ABS R1.z, R2.w;
+ABS R2.z, R2;
+CMP R1.z, -R1, c[26].w, c[26];
+MUL R1.z, R2.y, R1;
+CMP R2.z, -R2, c[26].w, c[26];
+MUL R2.y, R1.z, R2.z;
+CMP R0.xyz, -R2.y, R0.w, R0;
+ADD R2.y, -R1.w, c[12].x;
+ABS R1.w, R2.z;
+ABS R2.y, R2;
+CMP R1.w, -R1, c[26], c[26].z;
+MUL R1.w, R1.z, R1;
+CMP R2.y, -R2, c[26].w, c[26].z;
+MUL R1.z, R1.w, R2.y;
+MUL R2.w, R0.x, c[26].x;
+CMP R0.x, -R1.z, R2.w, R0;
+MAD R2.z, R0.w, c[26].x, R0.x;
+CMP R0.x, -R1.z, R2.z, R0;
+ADD R1.z, R0.x, R0.y;
+ADD R1.z, R1, R0;
+MUL R2.w, R1.z, c[26].y;
+MOV R1.z, c[28].x;
+ADD R2.z, -R1, c[12].x;
+ABS R1.z, R2.y;
+ABS R2.y, R2.z;
+CMP R1.z, -R1, c[26].w, c[26];
+MUL R1.z, R1.w, R1;
+ADD R1.w, -R2.x, c[6].x;
+CMP R2.y, -R2, c[26].w, c[26].z;
+MUL R1.z, R1, R2.y;
+CMP R0.xyz, -R1.z, R2.w, R0;
+ADD R2.x, -R1, c[6];
+ABS R2.y, R2.x;
+ABS R1.z, R0.w;
+ABS R1.w, R1;
+CMP R1.x, -R1.w, c[26].w, c[26].z;
+CMP R1.z, -R1, c[26].w, c[26];
+MUL R2.w, R1.x, R1.z;
+CMP R2.w, -R2, c[26].z, R0;
+ABS R2.x, R1;
+CMP R2.z, -R2.y, c[26].w, c[26];
+CMP R2.y, -R2.x, c[26].w, c[26].z;
+MUL R2.x, R2.y, R2.z;
+MUL R0.w, R2.x, R1.z;
+CMP R0.w, -R0, c[26].z, R2;
+ADD R2.w, -R1.y, c[6].x;
+ABS R2.z, R2;
+CMP R1.y, -R2.z, c[26].w, c[26].z;
+ABS R2.z, R2.w;
+MUL R2.y, R2, R1;
+MUL R1.y, fragment.texcoord[0], c[8].x;
+MUL R2.w, fragment.texcoord[0].x, c[9].x;
+CMP R2.z, -R2, c[26].w, c[26];
+FLR R3.y, R1;
+FLR R3.x, R2.w;
+MUL R2.y, R2, R2.z;
+ADD R3.z, R3.x, R3.y;
+SLT R2.z, R3.x, -R3.y;
+MUL R3.z, R3, c[26].x;
+ABS R3.x, R3.z;
+ABS R2.z, R2;
+FRC R3.x, R3;
+CMP R2.z, -R2, c[26].w, c[26];
+MUL R3.x, R3, c[27];
+MUL R2.z, R2.y, R2;
+CMP R2.z, -R2, R3.x, -R3.x;
+MUL R3.x, R2.w, c[26];
+SLT R2.w, R2, c[26];
+ABS R3.x, R3;
+ABS R2.w, R2;
+FRC R3.x, R3;
+CMP R2.w, -R2, c[26], c[26].z;
+MUL R3.x, R3, c[27];
+MUL R2.w, R2.x, R2;
+CMP R2.w, -R2, R3.x, -R3.x;
+MUL R3.x, R1.y, c[26];
+SLT R1.y, R1, c[26].w;
+ABS R3.x, R3;
+ABS R1.y, R1;
+CMP R1.y, -R1, c[26].w, c[26].z;
+MUL R1.x, R1, R1.y;
+ABS R1.y, R2.w;
+FRC R3.x, R3;
+MUL R3.x, R3, c[27];
+CMP R3.x, -R1, R3, -R3;
+SLT R1.x, R2.w, c[26].w;
+FLR R1.y, R1;
+ABS R3.y, R3.x;
+CMP R1.x, -R1, -R1.y, R1.y;
+FLR R3.y, R3;
+SLT R2.w, R3.x, c[26];
+CMP R2.w, -R2, -R3.y, R3.y;
+CMP R1.w, -R1, c[26], R2;
+CMP R1.y, -R2.x, R1.x, R1.w;
+SLT R1.x, R2.z, c[26].z;
+CMP R1.x, -R2.y, R1, R1.y;
+MUL R1.y, R2, R1.z;
+ADD R1.x, R1, -c[7];
+CMP R0.w, -R1.y, c[26].z, R0;
+ABS R1.x, R1;
+CMP R0, -R1.x, R0, c[26].w;
+MUL R1.xyz, R0, R0.w;
+CMP result.color.xyz, -c[13].x, R1, R0;
+MOV result.color.w, R0;
+END
+# 241 instructions, 8 R-regs

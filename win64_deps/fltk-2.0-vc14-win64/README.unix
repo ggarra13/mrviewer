@@ -1,0 +1,44 @@
+BUILDING AND INSTALLING FLTK UNDER LINUX AND UNIX
+
+    In most cases you can just type "make".  This will run configure
+    with the default (no) options and then compile everything.  You
+    then need to run "make install", see below.
+
+    FLTK uses GNU autoconf to configure itself for your UNIX or Cygwin
+    platform.  The main things that the configure script will look for
+    are the X11, OpenGL (or Mesa), and JPEG header and library files.
+    Make sure that they are in the standard include/library locations.
+    If they aren't you need to define the CFLAGS, CXXFLAGS, and LDFLAGS
+    environment variables. Ubuntu users should make sure they install
+    the jpeg, png, and zlib "dev" packages to avoid fltk compiling it's
+    own copy of these.
+
+    If you aren't using the GNU compilers or a compiler / platform
+    supported by one of the build scripts, you will need to run
+    ./configure manually, then run make.  (Or better yet write and
+    send us a build script for your platform.)  You will need to set
+    the "CC" and "CXX" environment variables to your C and C++
+    compilers respectively before running the configure script.
+
+    You can get the exact setup you need. Options that you can pass to
+    ./configure include:
+
+	--disable-xft           - Don't use Xft/XRender (anti-aliased fonts)
+	--enable-debug          - Enable debugging code & symbols
+	--enable-shared         - Enable generation of shared libraries
+
+	--prefix=/dir           - Set the directory prefix for files
+                        	  [default = /usr/local]
+	--bindir=/path          - Set the location for executables
+                        	  [default = /usr/local/bin]
+	--libdir=/path          - Set the location for libraries
+                        	  [default = /usr/local/lib]
+	--includedir=/path      - Set the location for include files.
+                        	  [default = /usr/local/include]
+
+    To install the library, become root and type "make install".  This
+    will copy the "fluid" executable to "bindir", the header files to
+    "includedir"/fltk, and the library files to "libdir".
+
+For crosscompiling see also README.mingw32_cross
+

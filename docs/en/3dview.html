@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>The 3d View Window</title>
+
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+
+</head>
+
+
+<body>
+
+<h2 style="text-decoration: underline;">The 3d View Window</h2>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 333px; height: 269px; float: left;" alt="" src="images/3DView.png" hspace="20"></td>
+
+      <td><br>
+
+You can bring up the 3D View Window by doing any of:<br>
+
+      <ul>
+
+        <li>Opening up the window from the main toolbar's
+          <div class="menu">W</div>
+
+button.</li>
+
+        <li>By using
+          <div class="menu">RMB-&gt;Window-&gt;3D View.</div>
+
+        </li>
+
+      </ul>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+mrViewer supports a 3D View window to display the deep data associated to deep scanline and deep tiled OpenEXR images.  This depth information is displayed in a 3D view for easier checking.
+<br>
+
+<br>
+The 3D View allows translating the view by dragging with the <div class="hotkey">MMB</div>.
+It supports rotating around the center by dragging with the <div class="hotkey">LMB</div>.
+And it supports zooming with either the <div class="hotkey">mouse wheel</div> or dragging with the <div class="hotkey">RMB</div>.
+<br>
+<br>
+
+
+The data for the 3D View is loaded on demand while the window is open.  The data is not cached so it will not allow the playback of an image sequence in real time.  For images that don't carry deep data, nothing will be shown in the 3D View.
+<br>
+<br>
+In addition to the mouse operations, the window supports some customizable hotkeys.  By default, <div class="hotkey">f</div> will fit the view and reset all transformations.  The hotkey <div class="hotkey">d</div> will decrease the density of the points (ie. how many are displayed) for faster feedback.  The hotkey <div class="hotkey">c</div> will do the opposite, raising the density of the points in the view.
+The <div class="hotkey">s</div> hotkey will increase the Z depth by using a multiplier.  While the <div class="hotkey">a</div> hotkey will decrease the Z depth by reducing the multiplier.
+<br>
+If the hotkeys or mouse movements don't work it is very likely the window has lost its focus.  To fix this, just click on the window's top bar.
+<br>
+
+
+</body>
+</html>

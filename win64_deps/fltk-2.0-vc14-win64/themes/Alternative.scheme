@@ -1,0 +1,166 @@
+##
+## This is a FLTK scheme configuration file.
+##
+## See end of file for font and color definitions
+##
+
+description = A sample scheme                     # description of scheme
+author = Carl Thompson (cet@carlthompson.net)     # author of scheme
+version = 1                                       # version number of scheme
+FLTK version = 2.0.0                              # minimum FLTK version needed
+
+[general]
+  themes = Alternative                            # theme plugins to load for this scheme
+
+[global colors]                                   # global color options
+#  background = gray                              # background color
+#  LIGHT1 = red                                   # color for FL_LIGHT1
+#  LIGHT2 = green                                 # color for FL_LIGHT2
+#  LIGHT3 = blue                                  # color for FL_LIGHT3
+#  DARK1 = red                                    # color for FL_DARK1
+#  DARK2 = green                                  # color for FL_DARK2
+#  DARK3 = blue                                   # color for FL_DARK3
+
+[widgets]
+
+  [widgets/default]                               # inherited widget attributes (not all used on all widgets)
+    box = up                                      # you probably don't want to mess with this
+    glyph box = up                                # or this
+    label font = helvetica                        # font of widget label
+    text font = helvetica                         # font of text (if applicable)
+    label type = normal                           # font type of widget label
+    color = gray                                  # color of widget
+    label color = black                           # font color of widget label
+    selection color = puke green                  # background color of selected text
+    selection text color = white                  # color of selected text
+    text background = white                       # may do something depending on the widget
+    highlight color = light1                      # color of widget when highlighted
+    highlight label color = black                 # color of widget label when highlighted
+    text color = black                            # color of text
+    label size = 12                               # font size of widget label
+    text size = 12                                # color of text
+
+  [widgets/menu]                                  # menu attributes
+    selection color = puke green                  # color of picked item
+    selection text color = white                  # color of picked item text
+    glyph box = highlight                         # boxtype of menu items
+
+  [widgets/item]                                  # items in menus
+    text background = gray                        # color of light when not selected
+    text color = red                              # color of menu check & radio glyphs
+
+  [widgets/menu bar]
+    highlight color = light1                      # color of menu title box when it's highlighted
+    selection color = puke green                  # color of menu title box when its submenu selected
+    selection text color = white                  # color of menu title label when its submenu selected
+    text box = highlight                          # boxtype of menu titles
+
+  [widgets/menu button]                           # menu button attributes
+
+  [widgets/choice]                                # choice attributes
+
+  [widgets/browser]                               # browser attributes
+    selection color = puke green                  # color of selections in browser
+    box = up                                      # boxtype of browser
+    selection text color = white                  # color of selected browser text
+
+  [widgets/chart]                                 # chart attributes
+    box = border                                  # boxtype for chart
+    text size = 10                                # size of chart text?
+
+  [widgets/button]
+    selection color = puke green                  # color of button when selected
+    selection text color = white                  # color of button label when selected
+
+  [widgets/highlight button]
+    selection color = puke green                  # color of button when selected
+    selection text color = white                  # color of button label when selected
+
+  [widgets/return button]                         # return button attributes
+    selection color = puke green                  # color of button when selected
+    selection text color = white                  # color of button label when selected
+    box = alternative thick                       # boxtype of button
+
+  [widgets/check button]                          # check button attributes
+    text color = red                              # color of light when selected
+    text background = white                       # color of light when not selected
+    box = none                                    # boxtype of button
+    text box = none                               # glyph background color uses box color
+
+  [widgets/light button]                          # light button attributes
+    selection color = puke green                  # color of button when selected
+    selection text color = white                  # color of button label when selected
+    text color = red                              # color of light when selected
+    text background = black                       # color of light when not selected
+
+  [widgets/slider]                                # slider attributes
+    color = gray                                  # color of the slider thumb
+    selection color = puke green                  # color of nice slider thumb color mark
+    text color = black                            # color of slider thumb symbol (if any)
+    text box = down                               # boxtype of the slider background area
+
+  [widgets/value slider]                          # slider attributes
+    color = gray
+    selection color = puke green                  # color of nice slider thumb color mark
+    text color = black                            # color of slider thumb symbol (if any)
+    text box = down
+
+  [widgets/scrollbar]                             # scroll bar attributes
+    color = gray                                  # color of the scrollbar buttons
+    selection color = puke green                  # color of the scrollbar buttons when pushed
+    text color = black                            # color of scrollbar button symbols
+    selection text color = white                  # color of scrollbar button symbols when pushed
+    text background = scroll bar gray             # color of scrollbar background area
+    text box = down                               # boxtype of the scrollbar background area
+
+  [widgets/input]                                 # input widget attributes
+    text box = down                               # boxtype of the input area
+    selection color = puke green                  # background color of selected text
+    selection text color = white                  # font color of selected text
+
+  [widgets/output]                                # output widget attributes
+    text background = light2                      # color of output area
+    text box = down                               # boxtype of the output area
+    selection color = puke green                  # background color of selected text
+    selection text color = white                  # font color of selected text
+
+  [widgets/value output]                          # value output widget attributes
+    color = light2                                # color of output area
+    box = down                                    # boxtype of the output area
+    selection text color = white                  # font color of selected text
+
+  [widgets/counter]                               # counter attributes
+    text background = light2                      # color of text area
+    selection color = puke green                  # color of buttons when selected
+    selection text color = white                  # color of button symbols when selected
+
+  [widgets/adjuster]                              # adjuster attributes
+    selection color = puke green                  # color of buttons when selected
+    selection text color = white                  # color of button symbols when selected
+
+  [widgets/tooltip]
+    delay = 500                                   # milliseconds before tooltip pops up
+    color = 215                                   # color of tooltip window
+    box = thin up                                 # box around tooltips
+
+[aliases]                                         # user defined fonts (offsets into fl_font)
+# the standard fonts are built in already
+#  helvetica = 0
+#  helvetica bold = 1
+#  helvetica italic = 2
+#  helvetica bold italic = 3
+#  ...
+
+# colors
+# use "col = #rrggbb" to select a 24 bit color
+# use "col = num" to select a cmap entry
+  red = #ff0000
+  green = #00ff00
+  blue = #0000ff
+  gray = 49
+  black = 56                                      # do not use 0 when you want FL_BLACK!
+  puke green = 14
+  white = 7
+  light1 = 51
+  light2 = 53
+  scroll bar gray = 46

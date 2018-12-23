@@ -1,0 +1,101 @@
+// This file is for Doxygen input. It is not compiled.
+
+#include <fltk/Window.h>
+#include <fltk/Widget.h>
+#include <fltk/run.h>
+using namespace fltk;
+
+/*! \page example2 Example 2: Using Callbacks
+
+Every widget in fltk has a single \link fltk::Widget::callback
+callback function\endlink. Fltk assumes that for any type of widget,
+there is exactly one "interesting" thing it does, such as the value
+inside it being changed, or the user changing what is selected, or for
+buttons the user pushing them.
+
+For the Window, the "interesting" thing it does is the user trying to
+close it by pressing the close box. By default this closes the
+window. Lets change the callback in the \ref example1 "hello" program so
+this does something different:
+
+\include helloask.cxx
+
+The window is exactly the same, but when you press the close box it
+will display this question box:
+
+\image html fl_ask.gif
+
+If the user hits the Yes button the window will be closed (by calling
+fltk::Window::hide()) and the program will exit (because fltk::run()
+will return when all the windows are hidden). If the user hits the No
+button then the question box goes away and nothing happens.
+
+Lets look at all the changes between this program and the previous
+one:
+
+\code
+#include <fltk/ask.h>
+\endcode
+
+This line was added so that we can call the fltk::ask() function.
+
+\code
+void window_callback(Widget* widget, void*) {
+  if (ask("Do you really want to exit?"))
+    ((Window*)widget)->hide();
+}
+\endcode
+
+This is the function that will be called when the user hits the
+closebox. All callbacks are of this type. The first argument is the
+Widget that the callback is for, and the second argument arbitrary
+data that the calling program can store in a Widget with
+fltk::Widget::user_data(void*). We are not using this data here.
+
+This callback pops up a question box and waits for the answer by
+calling fltk::ask(). It returns true if the user hits Yes.
+
+If the user hits yes, we call hide() on the window.  Because setting
+the callback is a method on the base Widget class, it has to be
+declared to take a Widget. We know this is a Window so it is safe to
+do the type cast shown here. (It would also be possible to declare this
+function as taking a Window and casting the function type when setting
+the callback, Fluid does this. We could add inline methods to Window
+to do this casting, but doing it correctly when there are multiple
+levels of base classes results in unreadable header files.)
+
+Why are there two arguments? Isn't the second one the same as
+widget->user_data()? In most cases this is true. However having the
+separate arguments allows you to declare the function as taking the
+correct type and casting it when setting the callback. It also allows
+Menus and Browsers to execute the widgets inside them in a way that is
+convenient: the widget argument is the Menu, the callback is from the
+actual item, and the data will be from the item unless it is zero, in
+which case it is from the Menu.
+
+\code
+window->callback(window_callback);
+\endcode
+
+After the window is created this line sets the callback function.
+
+\section buttons Making Widgets talk to each other
+
+Here is a more realistic example where there are several widgets and
+they communicate with each other:
+
+\include callbacks.cxx
+
+Running this gives you a window containing a text input field, a
+slider, and several buttons:
+
+\image html callbacks.gif
+
+At the top of the program are several callback functions. These update
+the text field through the static pointer <tt>intinput</tt> and update
+the slider by using the user_data pointer to point to it (except for
+the slider_callback itself, which uses the Widget argument). See the
+next chapter for how to use classes to avoid such kludges to keep
+track of the pointers.
+
+*/

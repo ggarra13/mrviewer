@@ -1,0 +1,93 @@
+
+
+mrViewer
+--------
+
+	Playback
+	--------
+
+
+  	Bugs
+	----
+
+	Installer
+	---------
+
+	- Add mrViewer's icon to installer's shortcut.
+	  Make icon for i686 and x86_64 versions.
+
+	Priorities
+	----------
+
+	- Change Reel to use EDL Timeline with tracks.
+ 	- Fix differences in text sizes between win32/linux.
+
+	Improvements
+	------------
+	
+	- Timeline should allow displaying time of current movie or
+	  full edl, even when in edl mode.
+
+
+	Code issues
+	-----------
+
+
+	Maya integration
+	----------------
+
+
+	FLU
+	---
+
+	- FLU file requester should really be simplified -- too much
+	  ugly code in there.  Use boost::filename
+
+	Image Information
+	-----------------
+
+	- Resizing of image information window leads to issues when scrollbar
+	  appears
+
+	Database
+	--------
+
+
+	Features
+	--------
+	- Simple effects: rotate
+	- LightTable view (to compare 4-6 more pictures)
+	- Batch renamer
+	- Sets (grouping of pics)
+	- Finding/Sorting
+	- Slideshow
+	- Save Slideshow as movie
+	- Add watermark to web preview
+	- Add Crop/Rotate/Resize/Transform/Remove Grain/Remove Red Eyes
+	- Adjust HSV, Negative, Levels, Color Balance, Brightness, Contrast
+
+
+
+
+
+Make a command-line mrViewer's core format -> AVI using ffmpeg.
+This will force the creation of libmrvcore.so and removal of any non-core
+dependencies.
+
+
+
+
+
+Frame Cycler
+------------
+
+	* Better command-line, with compositing
+	* LTC audio playback (??) - timecode encoded as audio
+	* SDI support to have GUI and playback in different screens.
+	* XML configurable GUI.
+	* REDCode RAW
+	* Versioning of elements (using file system conventions)
+	* Advanced timing using opengl refresh
+	* YIQ invalid display
+	* Review link transmits commands over TCP/IP.  No other data.
+	* Thumbnail size and aspect ratio (at least on file requester).

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{5150ae38-47f4-4f6c-81d5-895a043fadd3}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\fltk\pnmImage.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\images\FileIcon2.cxx" />
+    <ClCompile Include="..\..\images\Fl_Guess_Image.cxx" />
+    <ClCompile Include="..\..\images\fl_jpeg.cxx" />
+    <ClCompile Include="..\..\images\fl_png.cxx" />
+    <ClCompile Include="..\..\images\HelpDialog.cxx" />
+    <ClCompile Include="..\..\images\images_core.cxx" />
+    <ClCompile Include="..\..\images\pnmImage.cxx" />
+    <ClCompile Include="..\..\images\xpmFileImage.cxx" />
+  </ItemGroup>
+</Project>

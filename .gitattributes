@@ -1,0 +1,21 @@
+# Managing line ending conversions
+# See http://git-scm.com/docs/gitattributes#_end-of-line_conversion
+* text=auto
+
+*.cpp text eol=lf
+*.h   text eol=lf
+*.pot text eol=lf
+*.so  text eol=lf
+*.fl  text eol=lf
+*.glsl text eof=lf
+*.cg   text eof=lf
+*.arbfp1 text eof=lf
+*.fp30 text eof=lf
+*.sh   text eof=lf
+*.rb   text eof=lf
+*.py   text eof=lf
+
+*.sln text eol=crlf
+
+*.png binary
+*.jpg binary

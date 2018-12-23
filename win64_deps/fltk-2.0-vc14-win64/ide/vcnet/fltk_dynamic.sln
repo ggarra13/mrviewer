@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltkdll", "fltkdll.vcproj", "{2B18B740-7A7F-47B8-A587-1F64ABACEB95}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltkdll_glut", "fltkdll_glut.vcproj", "{2A35C8F5-04FD-446C-B5FF-4B07B1526613}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546} = {FE820AA8-5011-4EC7-ABFF-2663CDB42546}
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95} = {2B18B740-7A7F-47B8-A587-1F64ABACEB95}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltkdll_images", "fltkdll_images.vcproj", "{42E898D9-E86F-47D5-AAD0-2810F474B5A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95} = {2B18B740-7A7F-47B8-A587-1F64ABACEB95}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltkdll_opengl", "fltkdll_opengl.vcproj", "{FE820AA8-5011-4EC7-ABFF-2663CDB42546}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95} = {2B18B740-7A7F-47B8-A587-1F64ABACEB95}
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1} = {42E898D9-E86F-47D5-AAD0-2810F474B5A1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release MinSize|Win32 = Release MinSize|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95}.Debug|Win32.Build.0 = Debug|Win32
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95}.Release|Win32.ActiveCfg = Release|Win32
+		{2B18B740-7A7F-47B8-A587-1F64ABACEB95}.Release|Win32.Build.0 = Release|Win32
+		{2A35C8F5-04FD-446C-B5FF-4B07B1526613}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2A35C8F5-04FD-446C-B5FF-4B07B1526613}.Debug|Win32.Build.0 = Debug|Win32
+		{2A35C8F5-04FD-446C-B5FF-4B07B1526613}.Release MinSize|Win32.ActiveCfg = Release|Win32
+		{2A35C8F5-04FD-446C-B5FF-4B07B1526613}.Release MinSize|Win32.Build.0 = Release|Win32
+		{2A35C8F5-04FD-446C-B5FF-4B07B1526613}.Release|Win32.ActiveCfg = Release|Win32
+		{2A35C8F5-04FD-446C-B5FF-4B07B1526613}.Release|Win32.Build.0 = Release|Win32
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1}.Debug|Win32.Build.0 = Debug|Win32
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1}.Release|Win32.ActiveCfg = Release|Win32
+		{42E898D9-E86F-47D5-AAD0-2810F474B5A1}.Release|Win32.Build.0 = Release|Win32
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546}.Debug|Win32.Build.0 = Debug|Win32
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546}.Release MinSize|Win32.ActiveCfg = Release|Win32
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546}.Release MinSize|Win32.Build.0 = Release|Win32
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546}.Release|Win32.ActiveCfg = Release|Win32
+		{FE820AA8-5011-4EC7-ABFF-2663CDB42546}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

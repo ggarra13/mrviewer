@@ -1,0 +1,71 @@
+#!/bin/bash
+
+if [ ! -e bin ]; then
+    echo "This file has to be run from main mrViewer directory"
+    exit
+fi
+
+KERNEL=`uname -s`
+
+if [[ $KERNEL == CYGWIN* ]]; then
+    KERNEL=Windows
+    RELEASE=(`cmd /c 'ver'`)
+    RELEASE=${RELEASE[3]%.[0-9]*}
+elif [[ $KERNEL == MINGW* ]]; then
+    RELEASE=(`cmd /c 'ver'`)
+    RELEASE=${RELEASE[3]/]/}
+    KERNEL=Windows
+else
+    RELEASE=`uname -r`
+fi
+
+function remove_mo_files
+{
+    rm -rf share/locale/*
+}
+
+function create_copies()
+{
+    rm -rf LICENSE.txt
+    cp  ../../../LICENSE.txt .
+    rm -rf HISTORY.txt
+    cp ../../../HISTORY.txt .
+    rm -rf Videos.txt
+    cp ../../../Videos.txt .
+    rm -rf ctl
+    cp -r ../../../ctl .
+    rm -rf shaders
+    cp -r ../../../shaders .
+    rm -rf docs
+    cp -r ../../../docs .
+    rm -rf rails
+}
+
+
+if [[ "$RELEASE" == "" ]]; then
+    $RELEASE=`cmd.exe /c 'ver'`
+    echo $RELEASE
+    echo "Could not determine OS version"
+    exit 1
+fi
+
+if [[ $KERNEL == Windows ]]; then
+    echo BUILD/Windows-$RELEASE-32/Release
+    cd BUILD/Windows-$RELEASE-32/Release
+    create_copies
+    remove_mo_files
+    cd ../../..
+
+    echo BUILD/Windows-$RELEASE-64/Release
+    cd BUILD/Windows-$RELEASE-64/Release
+    create_copies
+    remove_mo_files
+    cd ../../..
+else
+    release=`uname -r`
+    cd BUILD/Linux-$release-64/Release
+    create_copies
+    remove_mo_files
+    cd ../../..
+fi
+

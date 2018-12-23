@@ -1,0 +1,307 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>FLTK Widgets & Attributes</title></head><body>
+
+<h2><a name=callbacks>Callbacks</a></h2>
+
+Callbacks are functions that are called when the value of a widget 
+changes. A callback function is sent a <TT>fltk::Widget</TT> pointer of 
+the widget that changed and optionally a pointer to data of some sort: 
+<PRE>
+void xyz_callback(fltk::Widget *w, void *data) {
+...
+}
+</PRE>
+ The <TT>callback()</TT> method sets the callback function for a 
+widget.  You can optionally pass a pointer to some data needed for the 
+callback: 
+<PRE>
+int xyz_data;
+
+button-&gt;callback(xyz_callback, data);
+</PRE>
+ Normally callbacks are performed only when the value of the widget 
+changes. You can change this using the <A
+href=Fl_Widget.html#when><TT>when()</TT></A> method:
+<PRE>
+button-&gt;when(fltk::WHEN_NEVER);
+button-&gt;when(fltk::WHEN_CHANGED);
+button-&gt;when(fltk::WHEN_RELEASE);
+button-&gt;when(fltk::WHEN_RELEASE_ALWAYS);
+button-&gt;when(fltk::WHEN_ENTER_KEY);
+button-&gt;when(fltk::WHEN_ENTER_KEY_ALWAYS);
+button-&gt;when(fltk::WHEN_CHANGED | fltk::WHEN_NOT_CHANGED);
+</PRE>
+
+<h2><a name=buttons>Buttons</a></h2>
+
+ FLTK provides many types of buttons:
+<UL>
+<LI><TT>fltk::Button</TT> - A standard button. </LI>
+<LI><TT>fltk::CheckButton</TT> - A toggle button with a check box. </LI>
+<LI><TT>fltk::LightButton</TT> - A push button with a light. </LI>
+<LI><TT>fltk::RepeatButton</TT> - A push button that repeats it's callback when held. </LI>
+<LI><TT>fltk::ReturnButton</TT> - A push button that is activated by the 
+Enter key. </LI>
+<LI><TT>fltk::Radio_Button</TT> - A button with a circular mark. </LI>
+</UL>
+<P ALIGN=CENTER><IMG SRC="buttons.gif">
+<P>For all of these buttons you just need to include the corresponding <TT>
+&lt;fltk/xyz_Button.h&gt;</TT> header file.  The constructor takes the 
+bounding box of the button and optionally a label string: 
+<PRE>
+fltk::Button *button = new fltk::Button(x, y, width, height, &quot;label&quot;);
+fltk::LightButton *lbutton = new fltk::LightButton(x, y, width, height);
+fltk::RoundButton *rbutton = new fltk::RoundButton(x, y, width, height, &quot;label&quot;);
+</PRE>
+Each button has an associated <A
+href=Fl_Button.html#type><TT>type()</TT></A> which allows it to behave
+as a push button, toggle button, or radio button. This type is
+defaulted for each button type but you can change it.
+<PRE>
+button-&gt;type(0); // default for all other buttons
+button-&gt;type(fltk::TOGGLE_BUTTON); // default for fltk::CheckButton & fltk::LightButton
+button-&gt;type(fltk::RADIO_BUTTON); // default for fltk::Radio_Button
+</PRE>
+
+The <a
+href=Fl_Button.html#value><tt>value()</tt></a> method
+returns the current button state (0 = off, 1 = on) (push buttons are
+on while they are held down).  The <a
+href=Fl_Button.html#set><tt>set()</tt></a> and <a
+href=Fl_Button.html#clear><tt>clear()</tt></a> methods can be used on
+toggle buttons to turn a toggle button on or off, respectively.  Radio
+buttons can be turned on with the <a
+href=Fl_Button.html#setonly><tt>setonly()</tt></a> method; this will also
+turn off other radio buttons in the same group.
+
+<h2><a name=text>Text</a></h2>
+
+FLTK provides several text widgets for displaying and receiving text:
+<UL>
+<LI><TT>fltk::Input</TT> - A standard one-line text input field. </LI>
+<LI><TT>fltk::Output</TT> - A standard one-line text output field. </LI>
+<LI><TT>fltk::MultilineInput</TT> - A standard multi-line text input 
+field. </LI>
+<LI><TT>fltk::MultilineOutput</TT> - A standard multi-line text output 
+field. </LI>
+</UL>
+ The <TT>fltk::Output</TT> and <TT>fltk::MultilineOutput</TT> widgets allow 
+the user to copy text from the output field but not change it. 
+<P>The <A href=Fl_Input.html#value><TT>value()</TT></A> method 
+is used to get or set the string that is displayed: </P>
+<PRE>
+fltk::Input *input = new fltk::Input(x, y, width, height, &quot;label&quot;);
+input-&gt;value(&quot;Now is the time for all good men...&quot;);
+</PRE>
+<p>The string is copied to the widget's own storage when you set the
+<tt>value()</tt> of the widget.
+
+<h2><a name=valuators>Valuators</a></h2>
+
+ Unlike text widgets, valuators keep track of numbers instead of 
+strings. FLTK provides the following valuators: 
+<UL>
+<LI><TT>fltk::ValueInput</TT> - A text field for a number and up/down
+arrow buttons (MicroSoft calls this a "spin box")</LI>
+<LI><TT>fltk::Slider</TT> - A scrollbar with a knob. </LI>
+<LI><TT>fltk::ValueSlider</TT> - A slider that shows the current value. </LI>
+<LI><TT>fltk::Dial</TT> - A round knob. </LI>
+<LI><TT>fltk::Roller</TT> - An SGI-like dolly widget. </LI>
+<LI><TT>fltk::Scrollbar</TT> - A standard scrollbar widget. </LI>
+</UL>
+<P ALIGN=CENTER><IMG SRC="valuators.gif"></P>
+The <A href=Fl_Valuator.html#value><TT>value()</TT></A>
+ method gets and sets the current value of the widget.  The <A href=Fl_Valuator.html#minimum>
+<TT>minimum()</TT></A> and <A href=Fl_Valuator.html#maximum><TT>
+maximum()</TT></A> methods set the range of values that are reported by 
+the widget. 
+
+<h2><a name=groups>Groups</a></h2>
+
+The <TT>fltk::Group</TT> widget class is used as a general purpose 
+&quot;container&quot; widget.  Besides grouping radio buttons, the groups are 
+used to encapsulate windows, tabs, and scrolled windows.  The following 
+group classes are available with FLTK: 
+<UL>
+<LI><TT>fltk::DoubleBufferWindow</TT> - A double-buffered window on the screen. </LI>
+<LI><TT>fltk::GlWindow</TT> - An OpenGL window on the screen. </LI>
+<LI><TT>fltk::Group</TT> - The base container class; can be used to group 
+any widgets together. </LI>
+<LI><TT>fltk::Scroll</TT> - A scrolled window area. </LI>
+<LI><TT>fltk::Tabs</TT> - Displays child widgets as tabs. </LI>
+<LI><TT>fltk::Window</TT> - A window on the screen. </LI>
+</UL>
+
+<h2><a name=size_common>Setting the Size and Position of Widgets</a></h2>
+
+The size and position of widgets is usually set when you create them.
+You can access them with the <tt>x()</tt>, <tt>y()</tt>, <tt>w()</tt>,
+and <tt>h()</tt> methods.
+<p>You can change the size and position by using the <TT>position()</TT>, <TT>
+resize()</TT>, and <TT>size()</TT> methods: 
+<PRE>
+button-&gt;position(x, y);
+group-&gt;resize(x, y, width, height);
+window-&gt;size(width, height);
+</PRE>
+If you change a widget's size or position after it is displayed you
+will have to call <tt>redraw()</tt> on the widget's parent.
+
+<h2><a name=colors_common>Colors</a></h2>
+
+The typedef <a href=Fl_Color.html>fltk::Color</a> is a 32-bit number that
+is used to store a color.  For most widgets only the "indexed" colors
+are used, these are colors with a value less than 256 that is an index
+into a color palette of 256 colors. This is <i>not</i> the X or WIN32
+colormap, but instead is an internal table with fixed contents.
+
+<p>There are symbols for naming some of the more common colors:
+
+<UL>
+<LI><TT>fltk::BLACK</TT>
+<LI><TT>fltk::RED</TT>
+<LI><TT>fltk::GREEN</TT>
+<LI><TT>fltk::YELLOW</TT>
+<LI><TT>fltk::BLUE</TT>
+<LI><TT>fltk::MAGENTA</TT>
+<LI><TT>fltk::CYAN</TT>
+<LI><TT>fltk::WHITE</TT>
+<LI><TT>fltk::GRAY</TT> (this is the default background color of most widgets)</LI>
+</UL>
+
+<p>You can also get an arbitrary color with <a
+href=Fl_Color.html#rgb>fltk::rgb(r,g,b)</a>.  However this does not
+work that well on 8-bit screens.
+
+ The widget color can be set using the <TT>color()</TT> method: 
+<PRE>
+button-&gt;color(fltk::RED);
+button->color(fltk::rgb(128,200,210));
+</PRE>
+ Similarly, the label color can be set using the <TT>labelcolor()</TT>
+ method: 
+<PRE>
+button-&gt;labelcolor(fltk::WHITE);
+</PRE>
+
+<h2><a name=boxtypes>Box Types</a></h2>
+
+<P><A href=Fl_Widget.html#box><TT>fltk::Widget::box()</TT></A>
+is a pointer to a struct <a href=Fl_Boxtype.html>fltk::Box_</a>.  This
+describes how to draw the box around the widget.  By making your own
+you can cause arbitrary drawing code to be called.
+
+<p>There are macros that are pointers to the built-in box types:
+
+<P ALIGN=CENTER><IMG src="boxtypes.gif"></P>
+
+<P><TT>fltk::NO_BOX</TT> means nothing is drawn at all, so whatever is 
+already on the screen remains.  The <TT>fltk::..._FRAME</TT> types only 
+draw their edges, leaving the interior unchanged.  In the above diagram 
+the blue color is the area that is not drawn by the box. </P>
+
+<h2><a name=labels>Labels and Label Types</a></h2>
+
+The <TT>label()</TT>, <tt>image()</tt>, <TT>align()</TT>,
+<TT>labelfont()</TT>, <TT> labelsize()</TT>, and <TT>labeltype()</TT>
+methods control the labeling of widgets.
+
+<H3>label()</H3>
+ The <TT>label()</TT> method sets the string that is displayed for the 
+label. For the <TT>fltk::SYMBOL_LABEL</TT> and image label types the 
+string contains the actual symbol or image data. 
+
+<h3>image()</h3>
+
+The <tt>image()</tt> method sets an image that is drawn with the
+label.  The value is a pointer to a class <a
+href=Fl_Image.html>fltk::Image</a>.  This class stores the data of the
+image and also stores a window-system cached copy that is created when
+the image is first drawn so that redrawing it is very fast.
+
+<p>Different subclasses draw different types of images.  The provided
+types include
+<a href=Fl_Bitmap.html><tt>fltk::Bitmap</tt></a>,
+<a href=Fl_Pixmap.html><tt>fltk::Pixmap</tt></a>,
+<a href=Fl_RGB_Image.html><tt>fltk::RGB_Image</tt></a>.
+
+<H3>align()</H3>
+ The <TT>align()</TT> method positions the label.  The following 
+constants are defined (they may be OR'd together as needed): 
+<UL>
+<LI><TT>fltk::ALIGN_CENTER</TT> - center the label in the widget. </LI>
+<LI><TT>fltk::ALIGN_TOP</TT> - align the label at the top of the widget. </LI>
+<LI><TT>fltk::ALIGN_BOTTOM</TT> - align the label at the bottom of the 
+widget. </LI>
+<LI><TT>fltk::ALIGN_LEFT</TT> - align the label to the left of the widget. </LI>
+<LI><TT>fltk::ALIGN_RIGHT</TT> - align the label to the right of the 
+widget. </LI>
+<LI><TT>fltk::ALIGN_INSIDE</TT> - align the label inside the widget. </LI>
+<LI><TT>fltk::ALIGN_CLIP</TT> - clip the label to the widget's bounding 
+box. </LI>
+<LI><TT>fltk::ALIGN_WRAP</TT> - wrap the label text as needed. </LI>
+</UL>
+
+<p>If there is an image, it is aligned first.  Then the text label is
+aligned in the same way in the space that remains beside the image.
+If you need more complex layout you can try making your own image or
+labeltype objects.
+
+<H3>label_type()</H3>
+
+The <TT>label_type()</TT> method sets how to draw the text label.  It
+does not affect the image.  The following standard label types are
+included:
+
+<UL>
+<LI><TT>fltk::NORMAL_LABEL</TT> - draws the text. </LI>
+<LI><TT>fltk::NO_LABEL</TT> - does nothing </LI>
+<LI><TT>fltk::SYMBOL_LABEL</TT> - draws &quot;@xyz&quot; labels, see &quot;<A href=#symbols>
+Symbol Labels</A>&quot; </LI>
+<LI><TT>fltk::SHADOW_LABEL</TT> - draws a drop shadow under the text </LI>
+<LI><TT>fltk::ENGRAVED_LABEL</TT> - draws edges as though the text is 
+engraved </LI>
+<LI><TT>fltk::EMBOSSED_LABEL</TT> - draws edges as thought the text is 
+raised </LI>
+</UL>
+
+<P><A
+href=Fl_Widget.html#label_type><TT>fltk::Widget::label_type()</TT></A>
+is a pointer to a struct <a href=Fl_Labeltype.html>fltk::Labeltype_</a>.
+By making your own you can cause arbitrary drawing code to be called.
+
+<H4><A name=symbols>Symbol Labels</A></H4>
+The <TT>fltk::SYMBOL_LABEL</TT> label type uses the <TT>label()</TT>
+ string to look up a small drawing procedure in a hash table.  For 
+historical reasons the string always starts with '@'; if it starts with 
+something else (or the symbol is not found) the label is drawn 
+normally: 
+<CENTER><IMG src=./symbols.gif></CENTER>
+ The @ sign may be followed by the following optional &quot;formatting&quot; 
+characters, in this order: </P>
+<UL>
+<LI>'#' forces square scaling, rather than distortion to the  widget's 
+shape. </LI>
+<LI>+[1-9] or -[1-9] tweaks the scaling a little bigger or  smaller. </LI>
+<LI>[1-9] - rotates by a multiple of 45 degrees.  '6' does  nothing, 
+the others point in the direction of that key on a  numeric keypad. </LI>
+</UL>
+
+<h2><a name=shortcuts>Shortcuts</a></h2>
+
+ Shortcuts are key sequences that activate widgets (usually buttons or 
+menu items).  The <TT>shortcut()</TT> method sets the shortcut for a 
+widget: 
+<PRE>
+button-&gt;shortcut(fltk::Enter);
+button-&gt;shortcut(fltk::SHIFT + 'b');
+button-&gt;shortcut(fltk::CTRL + 'b');
+button-&gt;shortcut(fltk::ALT + 'b');
+button-&gt;shortcut(fltk::CTRL + fltk::ALT + 'b');
+button-&gt;shortcut(0); // no shortcut
+</PRE>
+The shortcut value is the key event value (the ASCII value or one of
+the special keys like <a
+href="Fl.html#event_key"><TT>fltk::Enter</TT></a>) combined
+with any modifiers (like shift, alt, and control).
+</BODY></HTML>

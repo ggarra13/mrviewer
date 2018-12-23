@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>Preferencias de Lut 3D</title>
+
+
+  <meta content="Gonzalo Garramu&ntilde;o" name="author">
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+<body>
+
+<h3>Preferencias de Lut 3D</h3>
+
+<br>
+
+La Ficha de Preferencias de LUT te permite configurar el seteo de 3D Lut de mrViewer.<br>
+
+<br>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 640px; height: 487px;" alt="" src="images/Preferences3DLut.png"></td>
+
+      <td>
+      <h3>Display</h3>
+
+
+      <div class="menu">Use OCIO</div>
+      <br>
+      Cuando esta opción está activa y hay un archivo de configuración de ocio (config.ocio), la colorimetría estará a cargo de OpenColorIO (OCIO).  Un nuevo menú aparecerá en <div class="menu">BDR->OCIO</div>.  Cuando está desactivado, el algoritmo a utilizar será CTL o ICC, seteado aqui mas abajo.
+      <br>
+      <br>
+      <div class="menu">Archivo de Configuración de OCIO</div>
+      <br>
+      Este archivo es el principal control de OpenColorIO.  Usará el seteo de la variable de entorno OCIO.  Si no está seteada tomará el valor establecido en las preferencias.
+      <br>
+      <br>
+      <div class="menu">Elegir</div>
+      <br>
+      Este botón le permite elegir un archivo de configuración de ocio (config.ocio) del disco.
+      <br>
+      <br>
+      
+      <div class="menu">Algoritmo</div>
+      <br>
+
+te permite configurar si el LUT preferirá CTL o ICC.<br>
+
+      <br>
+
+      <div class="menu">Intención de Rendering</div>
+      <br>
+
+Esta sección te permite cambiar la Intencion de Rendering para perfiles ICC.<br>
+
+      <br>
+
+      <div class="menu">Resolución</div>
+      <br>
+
+Este seteo especifica la resolución del Lut 3D.  Seteos mas altos son más precisos pero su tarjeta gráfica puede que no lo soporte.<br>
+      <br>
+
+      <div class="menu">Número de FStops</div>
+      <br>
+      El Número de Fstops controla cuantos fstops cubrirá la table de 3d (3d Lut).  Si necesita más detalles en los niveles de negro, éste es el seteo a incrementar.  Nótese que mientras los niveles de negro mejoran en calidad, los tonos medianos disminuyen.  Use este seteo junto a la Resolución para mayor control.
+<br>
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+</body>
+</html>

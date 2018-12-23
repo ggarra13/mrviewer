@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+
+  
+  
+  
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+
+
+
+  
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  
+  
+  
+  <title>Arrancando mrViewer</title>
+</head>
+
+
+<body>
+
+
+<br>
+
+
+
+<h2><span style="font-weight: bold; text-decoration: underline;">Arrancando mrViewer</span></h2>
+
+
+
+
+mrViewer puede ser arrancado en una variedad de formas. &nbsp;<br>
+
+
+
+
+<br>
+
+<br>
+
+
+
+
+Si no tienes un ícono en tu Escritorio, la forma mas simple es
+ir al lugar donde mrViewer fue instalado, busque el directorio
+para la plataforma, version, y arquitectura apropiada para tu máquina y cliquear en el directorio bin/, el archivo
+<div class="hotkey">mrViewer.sh </div> ( Linux )
+o <div class="hotkey">mrViewer.exe</div> ( Windows ) .<br>
+
+
+
+
+<br>
+
+
+
+
+mrViewer puede ser también arrancado desde la línea de comandos o ventana de shell, ya que mrViewer puede que ya haya agregado su directorio a la variable de entorno PATH standard del sistema.
+&nbsp;Abra cualquier ventana de shell y luego tipee:<br>
+<br>
+
+
+
+
+<div class="console">&gt; mrViewer [-opciones] [&lt;imágenes...&gt;]
+</div>
+<br>
+<br>
+
+donde -opciones son parametros opcionales de mrViewer
+y&nbsp;imágenes son opcionalmente imágenes para mostrar. &nbsp;Para una lista de opciones validas, use:<br>
+<br>
+
+
+
+
+<div class="console">&gt; mrViewer -h</div>
+<br>
+<br>
+
+<br>
+En algunas platformas, como Windows, mrViewer puede también asociarse a
+varios archivos de imágenes y video que conoce. En ese caso,
+abriendo una ventana de Windows Explorer y cliqueando doblemente sobre dichos archivos que mrViewer reconoce, puede automaticamente invocar una copia de mrViewer.
+
+<br>
+<br>
+mrViewer comenzará en el lenguaje natural del Sistema Operativo, si hay traduccioes disponibles.  Si usted quiere que mrViewer comience siempre en Inglés, setee la variable de entorno LC_ALL.
+<br>
+En Linux bash, agregue a mrViewer.sh:
+<div class="console">
+export LC_ALL=C
+</div>
+Bajo Windows, cree una .bat file como:
+<div class="console">
+  @echo off
+  <br>
+  export LC_ALL=C
+  <br>
+start "" "/Directorio/a/mrViewer.exe"
+</div>
+<br>
+Tenga en cuenta que las asociaciones de archivos tendran que ser cambiadas.
+
+<br>
+<br>
+Si mrViewer tiene la opcion de una sola instancia de mrViewer en sus preferencias, solo un mrViewer arrancará y cualquier otra imagen que iria a un nuevo visor será redireccionada de vuelta a la primera instancia de mrViewer. <br>
+Para que esto funciones, mrViewer crea un archivo de traba en tu
+directorio de home en:
+
+
+<div class="console">$HOME/.fltk/filmaura/mrViewer.lock.prefs</div>
+en Linux
+</br>
+<br>
+y</br>
+<div class="console">
+$USERPROFILE/filmaura/mrViewer.lock.prefs
+</div>
+en Windows
+<br>
+
+
+Si mrViewer se cae, ese archivo puede ser dejado detras y prevenir de que mrViewer arranque.  Asegurese de borrarlo manualmente en ese caso.
+
+
+</body>
+</html>

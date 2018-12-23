@@ -1,0 +1,52 @@
+
+This file explains how to build the FLTK library and demonstration programs
+under Windows using the free Cygwin tools.  For this release, you must use the
+build script or configure script to generate your makefiles.
+
+Normal FLTK programs that do not use any Cygwin DLL functionality use only
+the Mingw32 components of Cygwin.  Therefore, you are not obligated to pay
+Cygnus (RedHat?) a license for using the Cygwin DLL if you create commercial
+sofware using the Cygwin tools (if the software does not use the Cygwin DLL).
+To be certain, run
+
+   cygcheck <program.exe>
+
+where "<program.exe>" is the name of your program.  Make sure that you don't
+see anything like "cygwin1.dll" anywhere in the output and you are fine.  If
+you need advanced Unix functionality in your commercial Windows NT program,
+please consider licensing the Cygwin DLL from Cygnus (www.cygnus.com).
+
+
+To compile FLTK using Cygwin, you will need to:
+
+1a. Install the Cywin tools (of course).
+
+1b. Update the Cygwin Tools with a recent development snapshot.
+
+2.  Create a C:\TMP directory.
+
+3.  Create a C:\BIN directory and copy SH.EXE from the Cygwin binary
+    directory to it.  (Use Find Files or Folders to find SH.EXE if
+    necessary.)
+
+4.  Open a BASH shell prompt and switch to the toplevel FLTK directory and
+    build the toolkit:
+
+       make
+
+5.  Optionally, you may build the toolkit and install its libraries and
+    headers somewhere:
+
+       ./configure --prefix=<installdir>
+       make
+       make install
+
+    where "<installdir>" is the directory into which you wish to install the
+    FLTK headers and libraries.
+
+Please note that while the Cygwin tools work under Windows 95/98, they work
+_much_ better and faster under Windows NT.  If you have a choice, develop
+on an NT machine.
+
+If you have problems compiling FLTK under Windows and you have followed these
+instructions, please send a bug report to the developers via http://www.fltk.org/str.php.

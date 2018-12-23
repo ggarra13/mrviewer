@@ -1,0 +1,223 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>FLTK Basics</title></head><body>
+
+<h1><a name=basics>FLTK Basics</a></h1>
+
+<p>This chapter will show you how to write and compile a very simple FLTK
+program.
+
+<h2><a name=sample>A sample FLTK program</a></h2>
+
+<pre>
+#include &lt;fltk/Window.h&gt;
+#include &lt;fltk/Widget.h&gt;
+#include &lt;fltk/run.h&gt;
+using namespace fltk;
+
+int main(int argc, char **argv) {
+  Window *window = new Window(300, 180);
+  window->begin();
+  Widget *box = new Widget(20, 40, 260, 100, "Hello, World!");
+  box->box(UP_BOX);
+  box->labelfont(HELVETICA_BOLD_ITALIC);
+  box->labelsize(36);
+  box->labeltype(SHADOW_LABEL);
+  window->end();
+  window->show(argc, argv);
+  return run();
+}
+</pre>
+
+<p>The resulting program will display the window below. You can quit the 
+program by closing the window or pressing the ESCape key. 
+
+<p align=center><img src=./hello.C.gif></p>
+
+<h3>Header Files</h3>
+
+<p>The proper way to include FLTK header files is: 
+
+<pre>
+#include &lt;fltk/Xyz.h&gt;
+</pre>
+
+<p>Each class in fltk has it's own header file. This sample program
+uses <a href=Fl_Window.html>Window</a> and <a
+href=Fl_Widget.html>Widget</a>. Often one header file includes another (for
+instance Widget.h is not needed here as Window.h included it),
+so you don't always need all of them, but it is usually good practice
+to do so.
+
+<p>In addition several non-class functions and symbols are provided,
+they are grouped into header files with lower-case names. You should
+only include the ones you need. In this case "run.h" is included, it
+has functions needed by the main part of a program to get fltk to run.
+
+<p>"using namespace fltk" makes it unnecessary to type "fltk::" in
+front of all the symbols. Depending on how much you are using fltk in
+your program, you may want to do this.
+
+<h3>Creating the Widgets</h3>
+
+<p>After including the required header files, the program then creates a 
+window: 
+
+<pre>
+fltk::Window *window = new <A href=Fl_Window.html#Window>fltk::Window</A>(300,180);
+</pre>
+
+<p>It then calls "begin" on it, which indicates that all widgets
+constructed after this should be "children" of this window:
+
+<pre>
+window->begin();
+</pre>
+
+<p>It then creates a box with the "Hello, World!" string in it, this new
+widget is made a "child" of the window we just created:
+
+<pre>
+fltk::Widget *box = new <A href=Fl_Widget.html#Widget>fltk::Widget</A>(20,40,260,100,"Hello, World!");
+</pre>
+
+<p>For most widgets the arguments to the constructor are:
+
+<pre>
+fltk::Widget(x, y, width, height, label)
+</pre>
+
+<P><i>x</i> and <i>y</i> are the location of the upper-left corner of
+the widget, measured in pixels. For windows this is measured from the
+upper-left corner of the screen, for widgets it is measured from the
+upper-left corner of the window.
+
+<p><i>width</i> and <i>height</i> are the size of the widget. 
+
+<p><i>label</i> is a pointer to a character string to label the
+widget with or <tt>NULL</tt>. If not given it defaults to
+<tt>NULL</tt>. The string is not copied, FLTK assummes it resides in
+static storage. This is true of almost all interfaces in FLTK that
+take string constants, and greatly speeds up FLTK. (see <a
+href=Fl_Widget.html#copy_label>Widget::copy_label()</a> for a
+method that has more traditional behavior).
+
+<h3>Get/Set Methods</h3>
+
+<p>Next we set several "attributes" of the box:
+
+<pre>
+box-&gt;box(fltk::UP_BOX);
+box-&gt;<A href=Fl_Widget.html#label_font>label_font</A>(fltk::HELVETICA_BOLD_ITALIC);
+box-&gt;<A href=Fl_Widget.html#label_size>label_size</A>(36);
+box-&gt;<A href=Fl_Widget.html#label_type>label_type</A>(fltk::SHADOW_LABEL);
+</pre>
+
+<p><tt>box-&gt;box(fltk::UP_BOX)</tt> sets the type of box the box widget
+draws, changing it from the default of <tt>fltk::DOWN_BOX</tt>. In our
+"Hello, World!" example we use <TT>fltk::UP_BOX</TT>, which means that a
+raised button border will be drawn around the widget.  You can see the
+available boxtypes in <A href=common.html#boxtypes> Chapter 3</A>
+
+<p>You can examine the boxtype in by doing
+<tt>box->box()</tt>.  Fltk uses method name overloading to make
+short names for get/set methods.  A "set" method is always of the form 
+"<tt>void&nbsp;name(type)</tt>", and a "get" method is always of the form
+"<tt>type&nbsp;name()&nbsp;const</tt>".
+
+<p>Almost all of these set/get pairs are very fast and short inline
+functions and thus very efficient.  However, <i>the "set" methods do
+not call redraw()</i>, you have to call it yourself.  This greatly
+reduces code size and execution time.  The only common exception is
+<tt>value()</tt>, this does redraw() if necessary.
+
+<h3>Begin/End of groups and windows</h3>
+
+<p>Then we indicate we are done adding widgets to the window:
+
+<pre>
+window-&gt;<A href=Fl_Group.html#end>end</A>();
+</pre>
+
+<p>The method <A href=Fl_Group.html#end>Group::end()</A> restores
+the "current group" to the parent of itself, in this case it is set to
+null because the window has no parent.  You may also find it useful to
+call <a href=Fl_Group.html#current>fltk::Group::current(0)</a> to turn
+this off completely.
+
+<h3>Showing the Window</h3>
+
+<p>Then we cause the window to appear on the screen:
+
+<pre>
+window-&gt;<A href=Fl_Window.html#show>show</A>(argc, argv);
+</pre>
+
+<p>For the first Window you can provide the command-line arguments,
+this runs a rather simple default argument parser that lets the user
+customize the appearance, size, and position of your windows (you are
+not required to use this argument parser, and just calling
+<tt>show()</tt> with no arguments does not do this).
+
+<p>(On some systems the window does not <i>actually</i> appear until
+<tt>fltk::run()</tt> is called, which flushes the cached instructions to
+the window server).
+
+<h3>The Main Event Loop</h3>
+
+<pre>
+return <A href=Fl.html#run>fltk::run</A>();
+</pre>
+
+<p>This will repeatedly wait for and then process events from the user.
+<TT>fltk::run()</TT> does not return until all of the windows under FLTK 
+control are closed (either by the user or your program).
+
+<p>When the user attempts to close the window, the <a
+href=Fl_Widget.html#callback>callback</a> for the window is
+called. If you don't change it, the callback will remove the window
+from the screen.
+
+<p>You can replace this callback with your own code, so you can
+prevent the window from closing, or pop up a confirmation, or create
+another window, or you can call <tt>exit(0)</tt> if you want to exit
+when the user closes the "main" window even if other windows are still
+open.
+
+<p>FLTK was designed to not take over the main event loop. Instead a
+program can call <A href=Fl.html#wait><TT>fltk::wait()</TT></A>,
+which will pause until "something happens" and then return. A program
+can call <tt>fltk::wait()</tt> repeatedly or mix it with other
+calculations. You can do this if there are no windows displayed
+(useful if you used <a href=Fl.html#add_fd><TT>fltk::add_fd()</tt></a>).
+The <tt>fltk::run()</tt> method is equivalent to:
+
+<pre>
+while (fltk::first_window()) fltk::wait();
+return 0;
+</pre>
+
+<h2><a name=compiling>Compiling your program</a></h2>
+
+<p>You will probably need to tell the compiler where to find the
+directory "fltk" with all the header files. This is usually done using
+the <TT>-I</TT> option added to the compiler line:
+
+<pre>
+c++ -I/usr/local/include ...
+</pre>
+
+<p>(In Visual C++ this can be done by selecting "Settings" from the
+"Project" menu and then changing the "Preprocessor" settings under the
+"C/C++" tab)
+
+<p>Similarly, when linking your application you will need to tell the 
+compiler to use the FLTK library and where to find it:
+
+<pre>
+c++ ... -L/usr/local/lib -lfltk2 -lXext -lX11 -lm
+</pre>
+
+<p>(In Visual C++ you need to add the FLTK library to the "Link"
+settings).
+
+</body></html>

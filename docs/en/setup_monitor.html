@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Setting up your Monitor</title><meta content="Gonzalo Garramuño" name="author"><link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css"></head><body><h1 style="text-align: center;">Setting up your Monitor</h1>
+The first thing you should if you want to have a proper color
+management workflow is to properly callibrate your monitor.
+&nbsp;Accurate monitor calibration requires special equipment to
+measure your monitor's display as well as your suroundings.<br>
+However, you still obtain a decent monitor calibration if you do it
+manually following some simple steps. &nbsp;mrViewer can already help
+you with that.<br>
+
+
+
+<h3>Geometric distortions</h3>
+
+
+<p>The first thing you should do after your monitor syncs to the new
+video mode is to adjust position and size of the image on the screen.
+You can do it either the easy way, using the monitor controls.
+
+</p>
+<p>After the size and the position of the image are roughly set, you
+should check if there are any<span style="text-decoration: underline;"></span> geometric distortions and get rid of them if they are present. It's often
+impossible to eliminate geometric distortions completely over the
+entire image area on older monitors, no matter how hard you try. You fix one thing and
+the other one goes wrong.&nbsp;</p>
+<h3>Finding your monitor's gamma</h3>
+
+
+
+
+
+
+
+<p>
+One thing that is puzzling about monitors and tv sets is that they
+operate at a different gamma. &nbsp;Basically, due to voltage
+limitations in the early days of television (and to also target your
+eye's perception more accurately), monitor's screen don't display
+images linearly. &nbsp;Instead, they apply a gamma correction to
+anything displayed on them. &nbsp;<br><br>Also, by a sheer coincidence, your eyes' perception to luminance is also
+nonlinear&nbsp;and happens to also be pretty similar to the gamma
+correction&nbsp;a monitor does, so this distortion of luminance often goes
+unnoticed. &nbsp;Also, most images meant to be displayed on a tv set or monitor already take this
+gamma into account.<br><br>
+Roughly speaking, the gamma correction of your monitor is a power function. &nbsp;<br><br>
+Different monitors have different gamma settings, so you should check
+your monitor's specs. &nbsp; As a general guideline, PC monitors often
+use a gamma value between 2.2 and 2.5 while older Mac monitors use a gamma of
+1.8. &nbsp;SGI monitors often use a gamma of 1.5.<br><br>
+Some advanced modern monitors do not operate using gamma anymore but do
+an internal sRGB color correction. &nbsp;sRGB is very similar to a 2.2
+gamma function, but its curve is tiny bit different.<br><br>
+Scanners, Film&nbsp;and other input sources, on the other
+hand, typically have linear signal response to light intensity.<br><br>
+These days modern monitors have some plug-and-play capabilities that
+may inform your OS about its gamma settings (and other values).
+&nbsp;This information is often called EDID and perhaps some tool of
+your graphics card can access this information. &nbsp; Currently,
+mrViewer does not yet try to read EDID information from your monitor
+but your graphics card may have some utility that does. &nbsp; For
+example, under Linux and with an NVidia graphics card, nvidia-settings
+can often read this information for you.</p><p>
+If you don't know your monitor's gamma, you can try to guess it by doing a simple visual test.<br><br>
+Make sure mrViewer's gamma and gain are at 1.0 and that no LUT is applied.<br><br>
+Open mrViewer and go to the <span class="menu">Reel Window.</span> &nbsp;Then, use the <span class="hotkey">RMB</span> and select <span class="menu">Create-&gt;Linear Gradient</span>.<br>
+This will create a simple linear gradient going from totally black to totally white, covering your whole screen. &nbsp;<br>If you look at the values of the pixels, you will see that they change
+gradually from 0 to 1. &nbsp;You might want to maximize your window to
+see it properly.&nbsp;<br><br><span style="font-style: italic;"></span>If your monitor uses any type
+of gamma, you will see that the gradient's midpoint is not visually at
+the center of the screen. &nbsp;This is because of your monitor's
+gamma. &nbsp;Using mrViewer's gamma slider, try to adjust it until you
+perceive the midpoint to be at the center of the screen, like 0.45, for
+example.</p>
+
+<p>
+The inverse value of that (ie. 1.0 / gamma setting of mrViewer) is
+roughly your monitor's gamma. &nbsp;Thus, if you had to set the slider
+to 0.45 or close-by, your monitor's gamma is probably 2.2.<br></p>
+
+<h3>Calibrating your monitor's gain and brightness</h3>
+
+<p>
+Now that you know your monitor's gamma, to properly calibrate it, you
+then need to use some special image called a gamma chart.
+&nbsp;mrViewer already ships with some gamma charts for some common
+monitors.<br><br>
+Reset mrViewer's gamma and gain back to 1.0.<br><br>
+From the Reel Window, do <span class="hotkey">RMB</span> and select <span class="menu">Create-&gt;Gamma Chart-&gt;2.2</span>
+(or whatever value is closer to what your monitor uses). &nbsp; This&nbsp;creates &nbsp;a
+simple gamma calibration chart for your monitor. &nbsp;Maximize the
+view so the chart covers the whole screen. &nbsp; You should then check
+that gamma chart from a distance, so that each line blends with each
+other. &nbsp;If you don't see the lines blending, you need to adjust
+your monitors' brightness and contrast appropriately.</p>
+
+<h3>Calibrating your monitor's colors</h3>Sadly, adjusting your monitor's color balance is much more tricky without a proper sensor.
+
+
+<p>The color balance controls of the monitor (such as color temperature
+or separate RGB gains) adjust relative intensities of the three phosphors,
+changing the overall color cast of the displayed image. Higher
+temperature setting corresponds to a bluer image, lower temperature -
+to a redder image. These controls are intended to match the white
+balance of the monitor to the workplace lighting conditions, i.e. make
+the white color displayed by monitor match the color of white paper
+placed next to it. It is essential for workplace lighting to be
+consistent. For best results, your workplace should use daylight-balanced light sources.
+
+</p>
+You might also wish to set overall color balance of your monitor at
+this time. Color temperature of 5400K is what the daylight is balanced
+at, so that's what you should set you monitor color control to. Other
+commonly used setting is 6500K. Some monitors default to much cooler
+color rendition (9000K and up).<br><br>If
+your workplace is next to a window, the sunlight coming from it will
+force you to change the color temperature of your monitor as the day
+goes by. &nbsp; In a perfect world, your monitor would come with its
+own sensor to the environment and adjust automatically, but sadly this
+is a technology not yet available.<br><br>If you are able to obtain
+information about the three color primaries of your monitor, you can
+feed this information to mrViewer in its preferences.</body></html>
