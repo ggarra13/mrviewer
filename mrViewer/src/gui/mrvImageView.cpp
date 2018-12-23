@@ -1354,8 +1354,8 @@ spiny( 0.0 ),
 posX( 4 ),
 posY( 22 ),
 flags( 0 ),
-_ghost_previous( true ),
-_ghost_next( true ),
+_ghost_previous( 5 ),
+_ghost_next( 5 ),
 _channel( 0 ),
 _old_channel( 0 ),
 _channelType( kRGB ),
@@ -1373,7 +1373,6 @@ _old_bg_frame( 0 ),
 _reel( 0 ),
 _idle_callback( false ),
 _vr( kNoVR ),
-_event( 0 ),
 _timeout( NULL ),
 _old_fg( NULL ),
 _fg_reel( -1 ),
@@ -1711,7 +1710,7 @@ void ImageView::fg_reel(int idx)
 void ImageView::bg_reel(int idx)
 {
     _bg_reel = idx;
-
+    
     char buf[128];
     sprintf( buf, "BGReel %d", idx );
     send_network( buf );
@@ -3192,7 +3191,7 @@ void ImageView::draw()
     ImageList images;
     images.reserve(2);
 
-    if ( _showBG && bg && bg != fg && bg->image()  )
+    if ( _showBG && bg && bg != fg  )
     {
         TRACE("");
         CMedia* img = bg->image();
@@ -3219,6 +3218,7 @@ void ImageView::draw()
     if ( images.empty() ) return;
     TRACE("");
 
+    
     DBG( __FUNCTION__ << " " << __LINE__ );
     _engine->draw_images( images );
     TRACE("");
@@ -3714,7 +3714,7 @@ int ImageView::leftMouseDown(int x, int y)
               TRACE("");
           }
 
-          if ( _showBG && bg && bg != fg && bg->image()  )
+          if ( _showBG && bg && bg != fg )
           {
               TRACE("");
               CMedia* img = bg->image();
@@ -3840,6 +3840,8 @@ int ImageView::leftMouseDown(int x, int y)
          s->b = b / 255.0f;
          s->a = 1.0f;
          s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
+	 s->next = ghost_next();
+	 s->previous = ghost_previous();
          if ( uiMain->uiPaint->uiAllFrames->value() )
          {
             s->frame = MRV_NOPTS_VALUE;
@@ -5670,11 +5672,6 @@ int ImageView::keyDown(unsigned int rawkey)
         set_as_background_cb( NULL, this );
         return 1;
     }
-    else if ( kToggleLUT.match( rawkey ) )
-    {
-        toggle_lut();
-        return 1;
-    }
     else if ( kSwitchChannels.match( rawkey ) )
     {
         switch_channels_cb(this, this);
@@ -6287,11 +6284,11 @@ void ImageView::show_background( const bool b )
 {
    _showBG = b;
 
-   damage_contents();
-
    char buf[128];
    sprintf( buf, "ShowBG %d", (int) b );
    send_network( buf );
+
+   damage_contents();
 }
 
 /**
@@ -7273,7 +7270,6 @@ void ImageView::gamma( const float f )
      flush_caches();
      smart_refresh();
      update_color_info();
-     redraw();
   }
 }
 
@@ -7846,7 +7842,8 @@ void ImageView::foreground( mrv::media fg )
     update_title_bar( this );
     update_image_info();
     update_color_info( fg );
-    if (_engine && valid() ) _engine->refresh_shaders();
+    
+    //if (_engine && valid() ) _engine->refresh_shaders();
 
     redraw();
 }
@@ -7934,9 +7931,6 @@ void ImageView::background( mrv::media bg )
 
 
   char buf[1024];
-  mrv::media fg = foreground();
-
-  CMedia* img = NULL;
 
   _bg = bg;
 
@@ -7944,23 +7938,24 @@ void ImageView::background( mrv::media bg )
 
   if ( bg )
     {
-      img = bg->image();
+	CMedia* img = bg->image();
 
-      sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
-               img->fileroot(), img->first_frame(), img->last_frame() );
-      send_network( buf );
+	sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
+		 img->fileroot(), img->first_frame(), img->last_frame() );
+	send_network( buf );
 
 
-      img->refresh();
+	img->refresh();
 
-      if ( img->is_sequence() )
-          img->play_fps( fps() );
+	if ( img->is_sequence() )
+	    img->play_fps( fps() );
 
-      img->image_damage( img->image_damage() | CMedia::kDamageContents );
+	img->image_damage( img->image_damage() | CMedia::kDamageLut );
 
-      if ( dynamic_cast< stubImage* >( img ) )
+	
+	if ( dynamic_cast< stubImage* >( img ) )
         {
-          create_timeout( 0.2 );
+	    create_timeout( 0.2 );
         }
     }
   else
@@ -8069,9 +8064,9 @@ void ImageView::resize_main_window()
  */
 void ImageView::toggle_background()
 {
-   show_background( !show_background() );
-   update_title_bar( this );
-   redraw();
+    show_background( !show_background() );
+    update_title_bar( this );
+    redraw();
 }
 
 void ImageView::data_window( const bool b )
@@ -8129,7 +8124,8 @@ void ImageView::damage_contents()
   if (fg)
     {
       CMedia* img = fg->image();
-      img->image_damage( img->image_damage() | CMedia::kDamageContents );
+      img->image_damage( img->image_damage() | CMedia::kDamageContents |
+			 CMedia::kDamageLut );
       redraw();
     }
 
@@ -8137,7 +8133,8 @@ void ImageView::damage_contents()
   if (bg)
     {
       CMedia* img = bg->image();
-      img->image_damage( img->image_damage() | CMedia::kDamageContents );
+      img->image_damage( img->image_damage() | CMedia::kDamageContents |
+			 CMedia::kDamageLut );
       redraw();
     }
 }
@@ -8209,12 +8206,12 @@ void ImageView::toggle_lut()
      }
   }
 
-  redraw();  // force a draw to refresh luts
 
   uiMain->uiLUT->value( _useLUT );
   uiMain->gammaDefaults->copy_label( view.c_str() );
 
   smart_refresh();
+  
   update_color_info();
 }
 
