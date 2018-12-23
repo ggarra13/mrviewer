@@ -562,11 +562,11 @@ class server;
 
        void add_shape( shape_type_ptr shape );
 
-       void ghost_previous( bool x ) { _ghost_previous = x; }
-       void ghost_next( bool x ) { _ghost_next = x; }
+       void ghost_previous( short x ) { _ghost_previous = x; }
+       void ghost_next( short x ) { _ghost_next = x; }
 
-       bool ghost_previous() const { return _ghost_previous; }
-       bool ghost_next()     const { return _ghost_next; }
+       short ghost_previous() const { return _ghost_previous; }
+       short ghost_next()     const { return _ghost_next; }
 
       // Make pre-loading start from scratch
       void reset_caches();
@@ -744,8 +744,8 @@ class server;
     int		lastX, lastY;  //<- last mouse coordinates
     int                flags;  //<- flags containing current user action
 
-    bool       _ghost_previous;
-    bool       _ghost_next;
+    short       _ghost_previous;
+    short       _ghost_next;
 
     //! Channel index
     unsigned short     _channel;
@@ -768,10 +768,6 @@ class server;
 
       VRType        _vr;  // Cube/Spherical VR 360
 
-      ////////////////////////////////////////////////
-      // Events needed to be handled in main thread
-      ////////////////////////////////////////////////
-      std::atomic<unsigned> _event;
       
 
     ///////////////////
