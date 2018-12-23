@@ -158,9 +158,9 @@ class ImageBrowser : public fltk::Browser
      void set_edl();
      void toggle_edl();
 
-     void clear_bg();
-     void set_bg();
-     void change_background();
+    void clear_bg();
+    void set_bg( mrv::media bg );
+    void change_background();
 
      void attach_icc_profile();
     
