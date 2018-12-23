@@ -311,7 +311,7 @@ std::string get_long_view( bool left )
 bool replace_view( std::string& view )
 {
     if ( view.empty() ) return false;
-    
+
     if ( view.substr( view.size()-1, view.size() ) == "." )
         view = view.substr( 0, view.size()-1 );
 
@@ -627,7 +627,7 @@ bool is_valid_view( std::string view )
   bool get_sequence_limits( boost::int64_t& frameStart,
                             boost::int64_t& frameEnd,
                             std::string& fileroot,
-			    const bool error )
+                            const bool error )
   {
       frameStart = AV_NOPTS_VALUE;
       frameEnd = AV_NOPTS_VALUE;
@@ -648,12 +648,12 @@ bool is_valid_view( std::string view )
 
     if ( ( !fs::exists( dir ) ) || ( !fs::is_directory( dir ) ) )
     {
-	if ( error )
-	{
-	    LOG_ERROR( _("Directory ") << dir <<
-		       _(" does not exist or no directory") );
-	}
-	return false;
+        if ( error )
+        {
+            LOG_ERROR( _("Directory ") << dir <<
+                       _(" does not exist or no directory") );
+        }
+        return false;
     }
 
     // Check if sequence is in ILM format first  ( image.1-30.exr )
@@ -829,7 +829,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   is.str( points );
                   is.clear();
                   is >> shape->r >> shape->g >> shape->b >> shape->a
-                     >> shape->pen_size
+                     >> shape->pen_size >> shape->previous >> shape->next
                      >> shape->frame;
                   while ( is >> xy.x >> xy.y )
                   {
@@ -896,7 +896,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
                   shape->font( fonts[i] );
                   is >> font_size >> shape->r >> shape->g >> shape->b
-                     >> shape->a
+                     >> shape->a >> shape->previous >> shape->next
                      >> shape->frame;
                   is >> xy.x >> xy.y;
                   shape->size( font_size );
@@ -953,6 +953,16 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   std::string root;
                   std::getline( is, root, '"' );
                   std::getline( is, root, '"' );
+
+                  fs::path dir  = reelfile;
+                  dir = dir.parent_path();
+                  fs::path file = root;
+
+                  if ( root[0] != '/' && root[1] != ':' )
+                  {
+                      dir /= file;
+                      root = dir.generic_string();
+                  }
 
                   boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
                   is >> first >> last >> start >> end;

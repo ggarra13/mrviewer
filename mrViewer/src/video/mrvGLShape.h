@@ -66,6 +66,7 @@ class GLShape
 {
    public:
      GLShape() : r(0.0), g(1.0), b(0.0), a(1.0), pen_size(5),
+		 previous( 5 ), next( 5 ),
 		 frame( MRV_NOPTS_VALUE )
      {
      };
@@ -82,10 +83,11 @@ class GLShape
 	a = ai;
      }
 
-   public:
-     float r, g, b, a;
-     float pen_size;
-     boost::int64_t frame;
+  public:
+    float r, g, b, a;
+    float pen_size;
+    short previous, next;
+    boost::int64_t frame;
 };
 
 class GLPathShape : public GLShape
