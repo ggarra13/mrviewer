@@ -342,8 +342,7 @@ v->new_reel(name);}
 delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ImageInfoUI {open
-  } {
+  class ImageInfoUI {} {
     decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -352,10 +351,10 @@ delete uiMain; uiMain = NULL;} {}
         user_data this user_data_type {ImageInfoUI*}
         callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();}
-        xywh {374 107 505 530} resizable
+        xywh {374 107 505 530} hide resizable
         extra_code {// Make the window transient
 o->child_of( main->uiMain );
-main_ = main;} visible
+main_ = main;}
       } {
         {fltk::Group} uiInfoText {
           user_data uiInfoText user_data_type {mrv::ImageInformation*} open
@@ -677,8 +676,7 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
@@ -2210,14 +2208,14 @@ This setting thus allows caching less pictures in memory but at an improved qual
           }
           {fltk::Group} {} {
             label Saving open
-            xywh {14 23 424 350} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {14 23 424 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Reels open
               xywh {8 22 406 188} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsRelativePaths {
-                label {Use Relative Paths in Reel Content} selected
+                label {Use Relative Paths in Reel Content}
                 tooltip {With this option, the content of the reel (the reel images/movies) are saved with relative paths to the start of mrViewer.}
                 xywh {25 81 25 25} box UP_BOX
               }
@@ -2882,7 +2880,8 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window( ViewerUI* m )} {open
     } {
@@ -2891,20 +2890,20 @@ o->child_of( main->uiMain );} modal
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();} open
-        xywh {451 557 150 520} horizontal hide resizable
+        xywh {451 557 150 520} horizontal resizable
         extra_code {o->child_of( m->uiMain );
 main_ = m;
 o->main( m );}
-        class {mrv::ActionWindow}
+        class {mrv::ActionWindow} visible
       } {
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {0 11 145 495}
         } {
           {fltk::Button} uiScrub {
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->scrub_mode();}
             tooltip {Scrubbing Tool}
-            xywh {30 14 43 35}
+            xywh {27 14 43 35}
             image not_inlined {../../icons/scrub.xpm} value 1
             extra_code {o->image( scrub );}
           }
@@ -2912,7 +2911,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->move_pic_mode();}
             tooltip {Move Picture Tool}
-            xywh {77 14 43 35}
+            xywh {74 14 43 35}
             image not_inlined {../../icons/move_pic.xpm}
             extra_code {o->image( move_pic );}
           }
@@ -2920,7 +2919,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->selection_mode();}
             tooltip {Area Select Tool}
-            xywh {30 53 43 35}
+            xywh {27 53 43 35}
             image not_inlined {../../icons/select.xpm}
             extra_code {o->image( select_pic );}
           }
@@ -2928,15 +2927,15 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->draw_mode();}
             tooltip {Freehand Drawing Tool}
-            xywh {77 53 43 35}
+            xywh {74 53 43 35}
             image not_inlined {../../icons/draw.xpm}
             extra_code {o->image( draw );}
           }
           {fltk::Button} uiErase {
             user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->erase_mode();}
+            callback {v->uiView->erase_mode();} selected
             tooltip {Eraser Tool}
-            xywh {77 94 43 35}
+            xywh {74 94 43 35}
             image not_inlined {../../icons/erase.xpm}
             extra_code {o->image( erase );}
           }
@@ -2945,7 +2944,7 @@ o->main( m );}
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->text_mode();}
             tooltip {Text Tool}
-            xywh {30 93 43 35} align 32 labelfont 8 labelsize 24
+            xywh {27 93 43 35} align 32 labelfont 8 labelsize 24
           }
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
@@ -3002,7 +3001,7 @@ o->redraw();}
           }
           {fltk::Group} {} {
             label Frames
-            xywh {25 234 95 55} box UP_BOX
+            xywh {15 234 115 55} box UP_BOX
           } {
             {fltk::RadioButton} uiAllFrames {
               label All
@@ -3017,23 +3016,19 @@ o->redraw();}
           }
           {fltk::Group} {} {
             label Ghosting open
-            xywh {25 314 95 65} box UP_BOX
+            xywh {15 314 115 65} box UP_BOX
           } {
-            {fltk::CheckButton} {} {
+            {fltk::ValueInput} {} {
               label Previous
-              user_data m user_data_type {mrv::ViewerUI*}
-              callback {v->uiView->ghost_previous( o->value() );
-v->uiView->redraw();}
-              tooltip {Show shapes of previous frame ghosted.}
-              xywh {10 10 25 25} value 1
+              user_data m user_data_type {ViewerUI*}
+              callback {v->uiView->ghost_previous( o->value() );}
+              xywh {80 5 30 25} maximum 20 step 1 value 5
             }
-            {fltk::CheckButton} {} {
+            {fltk::ValueInput} {} {
               label Next
-              user_data m user_data_type {mrv::ViewerUI*}
-              callback {v->uiView->ghost_next( o->value() );
-v->uiView->redraw();}
-              tooltip {Show next frame shapes ghosted.}
-              xywh {10 30 25 25} value 1
+              user_data m user_data_type {ViewerUI*}
+              callback {v->uiView->ghost_next( o->value() );}
+              xywh {80 37 30 25} maximum 20 step 1 value 5
             }
           }
         }
