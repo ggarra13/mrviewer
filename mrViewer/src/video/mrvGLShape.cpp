@@ -70,8 +70,8 @@ std::string GLPathShape::send() const
 {
    std::string buf = "GLPathShape ";
    char tmp[256];
-   sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
-            pen_size, frame );
+   sprintf( tmp, "%g %g %g %g %g %d &d %" PRId64, r, g, b, a,
+            pen_size, previous, next, frame );
    buf += tmp;
    GLPathShape::PointList::const_iterator i = pts.begin();
    GLPathShape::PointList::const_iterator e = pts.end();
@@ -115,10 +115,10 @@ void GLPathShape::draw( double z )
 
       for ( ; i != e; ++i )
       {
-	 const mrv::Point& p = *i;
-	 glVertex2d( p.x, p.y );
+         const mrv::Point& p = *i;
+         glVertex2d( p.x, p.y );
       }
-      
+
       glEnd();
    }
 
@@ -197,8 +197,8 @@ std::string GLTextShape::send() const
    if (!f) return "";
 
    char tmp[512];
-   sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, font()->name(),
-            text().c_str(), size(), r, g, b, a, frame );
+   sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %d %d %" PRId64, font()->name(),
+            text().c_str(), size(), r, g, b, a, previous, next, frame );
    buf += tmp;
    sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
    buf += tmp;
@@ -226,7 +226,7 @@ void GLTextShape::draw( double z )
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
    glActiveTexture( GL_TEXTURE0 );
-   
+
    glColor4f( r, g, b, a );
 
    fltk::glsetfont(font(), size()*float(z) );
