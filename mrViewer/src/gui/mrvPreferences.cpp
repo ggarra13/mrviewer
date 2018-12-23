@@ -915,7 +915,7 @@ static std::string expandVariables( const std::string &s,
     uiPrefs->uiPrefsMaxImagesApart->value( tmp );
 
     fltk::Preferences saving( base, "saving" );
-    saving.get( "use_relative_paths", tmp, 0 );
+    saving.get( "use_relative_paths", tmp, 1 );
     uiPrefs->uiPrefsRelativePaths->value( tmp );
     
     saving.get( "use_image_path", tmp, 1 );
