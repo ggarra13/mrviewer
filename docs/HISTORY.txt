@@ -1,3 +1,6 @@
+v4.3.8   - Bug fixed saving of shape in reel due to a typo (&d instead of
+	   %d).
+
 v4.3.7   - Made showing and hiding of windows be a command.  This makes
 	   them thread safe.
 	 - Bug fixed networking to work with multiple clients.

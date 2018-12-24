@@ -39,9 +39,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET( VersionMajor 4 )
 SET( VersionMinor 3 )
-SET( VersionPatch 8 )
+SET( VersionPatch 7 )
 #STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
-#STRING( TIMESTAMP VersionDate ".%Y%m%d" )
+STRING( TIMESTAMP VersionDate ".%Y%m%d" )
 #SET( VersionDate "2018-09-07" )
 
 
@@ -49,7 +49,7 @@ SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}${VersionDate}" )
 
 set(mrViewerShortName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
-set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
+set(mrViewerPackageName mrViewer-v${SHORTVERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 
 # use, i.e. don't skip the full RPATH for the build tree
 SET(CMAKE_SKIP_BUILD_RPATH FALSE)

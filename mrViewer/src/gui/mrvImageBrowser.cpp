@@ -1274,7 +1274,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     }
     else
     {
-        img->find_image( img->first_frame() );
+	int64_t f = img->first_frame();
+        img->find_image( f );
     }
 
     img->default_icc_profile();
@@ -1362,7 +1363,8 @@ mrv::media ImageBrowser::load_image( const char* name,
     }
     else
     {
-        img->find_image( img->first_frame() );
+	int64_t f = img->first_frame();
+        img->find_image( f );
     }
 
     img->default_icc_profile();

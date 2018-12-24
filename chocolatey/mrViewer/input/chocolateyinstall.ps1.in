@@ -8,9 +8,9 @@ $osBitness = Get-ProcessorBits
 
 $packageName= 'mrViewer'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${softVersion}-Windows-32.zip"
-$url64      = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${softVersion}-Windows-64.zip"
-$fileLocation = Join-Path $toolsDir "${packageName}-v${softVersion}-Windows-${osBitness}.zip"
+$url        = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${shortVersion}-Windows-32.zip"
+$url64      = "https://sourceforge.net/projects/mrviewer/files/v${shortVersion}/${packageName}-v${shortVersion}-Windows-64.zip"
+$fileLocation = Join-Path $toolsDir "${packageName}-v${shortVersion}-Windows-${osBitness}.zip"
 
 If ( $osBitness -Match "32" )
 {
@@ -41,7 +41,7 @@ $packageArgs = @{
 
 Install-ChocolateyZipPackage @packageArgs
 
-$target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
+$target = Join-Path $programFiles "${packageName}-v${shortVersion}-Windows-${osBitness}/bin"
 Install-ChocolateyPath -PathToInstall "${target}" -PathType 'Machine'
 
 $DesktopPath = [Environment]::GetFolderPath("CommonDesktopDirectory")

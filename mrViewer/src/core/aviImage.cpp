@@ -1554,6 +1554,7 @@ void aviImage::timed_limit_store( const int64_t& frame )
     // We erase from greater to lower to avoid dangling iterators
     std::sort( i, e, std::greater<video_cache_t::iterator>() );
 
+    // Finally, remove the images with the iterators
     i = iters.begin();
     e = iters.end();
     for ( ; i != e; ++i )
@@ -1577,6 +1578,8 @@ void aviImage::limit_video_store(const int64_t frame)
     {
         max_frames = max_image_frames();
     }
+
+    // return timed_limit_store( frame );
 
     int64_t first, last;
 

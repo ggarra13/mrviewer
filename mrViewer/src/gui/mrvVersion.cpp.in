@@ -101,7 +101,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "@VERSION@";
+  static const char* kVersion = "@SHORTVERSION@";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 #if INTPTR_MAX == INT64_MAX

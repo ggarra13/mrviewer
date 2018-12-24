@@ -1149,8 +1149,6 @@ public:
     virtual bool find_image( const int64_t frame );
 
 
-    void thread_exit();
-
     Attributes& attributes()  {
         return _attrs;
     }

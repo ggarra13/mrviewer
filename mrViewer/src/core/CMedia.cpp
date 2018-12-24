@@ -792,12 +792,10 @@ void CMedia::wait_for_load_threads()
 void CMedia::wait_for_threads()
 {
     // Wait for all threads to exit
-    thread_pool_t::iterator i = _threads.begin();
-    thread_pool_t::iterator e = _threads.end();
-    for ( ; i != e; ++i )
+    for ( const auto& i : _threads )
     {
-        (*i)->join();
-        delete *i;
+	i->join();
+	delete i;
     }
 
     _threads.clear();
@@ -898,12 +896,10 @@ CMedia::~CMedia()
     _subtitle_encoding = NULL;
 
     {
-        Attributes::iterator i = _attrs.begin();
-        Attributes::iterator e = _attrs.end();
-        for ( ; i != e; ++i )
-        {
-            delete i->second;
-        }
+	for ( const auto& i : _attrs )
+	{
+	    delete i.second;
+	}
     }
 
     _context = _acontext = NULL;
@@ -2143,11 +2139,9 @@ const char* CMedia::look_mod_transform( const size_t idx )  const
 
 void CMedia::clear_look_mod_transform()
 {
-    LMT::iterator i = _look_mod_transform.begin();
-    LMT::iterator e = _look_mod_transform.end();
-    for ( ; i != e; ++i )
+    for ( const auto& i : _look_mod_transform )
     {
-        free( *i );
+	free( i );
     }
     _look_mod_transform.clear();
 
@@ -2277,22 +2271,6 @@ void CMedia::icc_profile( const char* cfile )
 }
 
 
-/**
- * Force exit and delete all threads
- *
- */
-void CMedia::thread_exit()
-{
-
-    thread_pool_t::iterator i = _threads.begin();
-    thread_pool_t::iterator e = _threads.end();
-    for ( ; i != e; ++i )
-    {
-        delete *i;
-    }
-
-    _threads.clear();
-}
 
 // If sequence or has picture return true
 bool CMedia::valid_video() const
@@ -3385,7 +3363,7 @@ void CMedia::loop_at_end( const int64_t frame )
         {
             if ( get_frame( stream, *i ) >= frame )
             {
-                mrv::PacketQueue::iterator it = (i+1).base();
+		mrv::PacketQueue::iterator it = (i+1).base();
                 _video_packets.erase( it );
             }
         }
@@ -3395,8 +3373,8 @@ void CMedia::loop_at_end( const int64_t frame )
 
     if ( number_of_audio_streams() > 0 )
     {
-        // // With loop at end, we can discard all audio packets that go
-        // // beyond the last frame
+        // With loop at end, we can discard all audio packets that go
+        // beyond the last frame
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );
 
@@ -3487,7 +3465,8 @@ void CMedia::limit_video_store( const int64_t f )
 void CMedia::preroll( const int64_t f )
 {
     // nothing to do for image sequences
-    find_image( f );
+    int64_t frame = f;
+    find_image( frame );
 }
 
 

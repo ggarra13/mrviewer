@@ -289,7 +289,7 @@ SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
 ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
 		    COMMAND xgettext
-		    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com  -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
+		    ARGS --package-name=mrViewer --package-version="$SHORTVERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com  -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
 		    DEPENDS mrViewer
 		    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 		  )
@@ -480,7 +480,7 @@ FOREACH( lang ${LANGUAGES} )
 
   SET( _moDir "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
-  SET( _moFile "${_moDir}/mrViewer${VERSION}.mo" )
+  SET( _moFile "${_moDir}/mrViewer${SHORTVERSION}.mo" )
 
   SET( output_files ${output_files} ${_moFile} )
 
@@ -533,7 +533,7 @@ IF(WIN32)
 
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
-  SET( CPACK_NSIS_DISPLAY_NAME "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
+  SET( CPACK_NSIS_DISPLAY_NAME "mrViewer-${CMAKE_BUILD_ARCH} v${SHORTVERSION}" )
   SET( CPACK_NSIS_PACKAGE_NAME "${CPACK_NSIS_DISPLAY_NAME}" )
   SET( CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
   SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${SHORTVERSION}" )
@@ -556,9 +556,9 @@ ELSEIF (UNIX)
 
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
-      "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
+      "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${SHORTVERSION}.desktop" )
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop"
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${SHORTVERSION}.desktop"
       DESTINATION ${MRV_DESKTOP_DIR})
 
 
@@ -629,7 +629,7 @@ ENDIF(WIN32)
   SET(CPACK_PACKAGE_VERSION_MAJOR ${VersionMajor})
   SET(CPACK_PACKAGE_VERSION_MINOR ${VersionMinor})
   SET(CPACK_PACKAGE_VERSION_PATCH ${VersionPatch})
-  SET(CPACK_PACKAGE_VERSION "${VERSION}" )
+  SET(CPACK_PACKAGE_VERSION "${SHORTVERSION}" )
   SET(CPACK_PACKAGE_FILE_NAME "${mrViewerPackageName}" )
   SET(CPACK_PACKAGE_CONTACT "ggarra13@gmail.com")
 # SET(CPACK_PACKAGE_DESCRIPTION_FILE ${PROJECT_SOURCE_DIR}/README.txt)
@@ -749,7 +749,7 @@ ENDIF(LibRaw_FOUND)
   MESSAGE( STATUS "OIIO library:    ${OIIO_LIBRARY_DIR}" )
   MESSAGE( STATUS "OIIO libraries:  ${OIIO_LIBRARIES}" )
 
-MESSAGE( STATUS "mrViewer version: " ${VERSION} )
+MESSAGE( STATUS "mrViewer version: " ${SHORTVERSION} )
 
 
 # Cmake only adds the default package target if a package config file

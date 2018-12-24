@@ -70,7 +70,7 @@ std::string GLPathShape::send() const
 {
     std::string buf = "GLPathShape ";
     char tmp[256];
-    sprintf( tmp, "%g %g %g %g %g %d &d %" PRId64, r, g, b, a,
+    sprintf( tmp, "%g %g %g %g %g %d %d %" PRId64, r, g, b, a,
              pen_size, previous, next, frame );
     buf += tmp;
     GLPathShape::PointList::const_iterator i = pts.begin();
