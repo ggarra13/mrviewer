@@ -15,6 +15,7 @@
 *.rb   text eof=lf
 *.py   text eof=lf
 
+*.nuspec text eof=crlf
 *.sln text eol=crlf
 
 *.png binary
