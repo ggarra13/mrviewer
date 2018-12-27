@@ -69,6 +69,7 @@
 #include "core/mrvACES.h"
 #include "core/mrvI8N.h"
 
+#include "gui/mrvIO.h"
 
 #include "video/mrvGLShape.h"
 
@@ -1796,6 +1797,8 @@ protected:
     static int _video_cache_size;
     static int _audio_cache_size;
 
+    thread_pool_t  _threads;         //!< any threads associated with process
+
 
     std::atomic<unsigned int>  _w, _h;     //!< width and height of image
     bool   _internal;      //!< image is internal with no filename
@@ -1919,7 +1922,6 @@ protected:
 
     std::atomic<Playback> _playback;        //!< playback direction or stopped
 
-    thread_pool_t  _threads;         //!< any threads associated with process
 
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each

@@ -1533,7 +1533,14 @@ void aviImage::timed_limit_store( const int64_t& frame )
         }
     }
 
-
+    // For backwards playback, we consider _dts to not remove so
+    // many frames.
+    if ( playback() == kBackwards )
+    {
+	max_frames = frame + max_frames;
+	if ( _dts > frame ) max_frames = _dts + max_frames;
+    }
+    
     unsigned count = 0;
     TimedSeqMap::iterator it = tmp.begin();
     typedef std::vector< video_cache_t::iterator > IteratorList;
@@ -1579,36 +1586,36 @@ void aviImage::limit_video_store(const int64_t frame)
         max_frames = max_image_frames();
     }
 
-    // return timed_limit_store( frame );
+    return timed_limit_store( frame );
+    
+    // int64_t first, last;
 
-    int64_t first, last;
+    // switch( playback() )
+    // {
+    // case kBackwards:
+    //     first = frame - max_frames;
+    //     last  = frame;
+    //     if ( _dts < first ) first = _dts;
+    //     break;
+    // case kForwards:
+    //     first = frame - max_frames;
+    //     last  = frame + max_frames;
+    //     if ( _dts > last )   last  = _dts;
+    //     if ( _dts < first )  first = _dts;
+    //     break;
+    // default:
+    //     first = frame - max_frames;
+    //     last  = frame + max_frames;
+    //     if ( _dts > last )   last = _dts;
+    //     if ( _dts < first ) first = _dts;
+    //     break;
+    // }
 
-    switch( playback() )
-    {
-    case kBackwards:
-        first = frame - max_frames;
-        last  = frame;
-        if ( _dts < first ) first = _dts;
-        break;
-    case kForwards:
-        first = frame - max_frames;
-        last  = frame + max_frames;
-        if ( _dts > last )   last  = _dts;
-        if ( _dts < first )  first = _dts;
-        break;
-    default:
-        first = frame - max_frames;
-        last  = frame + max_frames;
-        if ( _dts > last )   last = _dts;
-        if ( _dts < first ) first = _dts;
-        break;
-    }
+    // if ( _images.empty() ) return;
 
-    if ( _images.empty() ) return;
-
-    video_cache_t::iterator end = _images.end();
-    _images.erase( std::remove_if( _images.begin(), end,
-                                   NotInRangeFunctor( first, last ) ), end );
+    // video_cache_t::iterator end = _images.end();
+    // _images.erase( std::remove_if( _images.begin(), end,
+    //                                NotInRangeFunctor( first, last ) ), end );
 
 
 }

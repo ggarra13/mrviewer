@@ -1,5 +1,13 @@
+<<<<<<< Updated upstream
 v4.3.8   - Bug fixed saving of shape in reel due to a typo (&d instead of
 	   %d).
+=======
+v4.3.8   - Fixed saving of reel shapes due to a typo in spec (&d).
+	 - Fixed playback of videos hanging up due to mutex lock in
+	   swing playback.
+	 - Fixed playback of videos not starting at first frame in
+	   swing playback.
+>>>>>>> Stashed changes
 
 v4.3.7   - Made showing and hiding of windows be a command.  This makes
 	   them thread safe.

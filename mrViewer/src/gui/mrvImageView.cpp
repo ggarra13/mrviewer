@@ -6009,7 +6009,7 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( img ) FPS = img->play_fps();
 
         fps( FPS / 2 );
-        if ( playback() != CMedia::kStopped )
+        if ( playback() == CMedia::kForwards )
             stop();
         else
             play_forwards();
@@ -6018,7 +6018,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPlayFwd.match( rawkey ) )
     {
-        if ( playback() != CMedia::kStopped )
+        if ( playback() == CMedia::kForwards )
             stop();
         else
             play_forwards();
@@ -8713,8 +8713,10 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 {
-    if ( playback() == CMedia::kStopped ) return;
-
+    if ( playback() == CMedia::kStopped ) {
+    	return;
+    }
+    
     _playback = CMedia::kStopped;
 
     _last_fps = 0.0;
@@ -8731,8 +8733,8 @@ void ImageView::stop()
         uiMain->uiPlayBackwards->value(0);
 
 
-    frame( frame() - 1 );
-    seek( int64_t(timeline()->value()) );
+    frame( frame() );
+    // seek( int64_t(timeline()->value()) );
 
     if ( CMedia::preload_cache() && ! _idle_callback )
     {

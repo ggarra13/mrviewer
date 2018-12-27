@@ -791,13 +791,12 @@ void CMedia::wait_for_load_threads()
  */
 void CMedia::wait_for_threads()
 {
-    // Wait for all threads to exit
     for ( const auto& i : _threads )
     {
 	i->join();
 	delete i;
     }
-
+    
     _threads.clear();
 }
 
@@ -2418,18 +2417,20 @@ void CMedia::play(const CMedia::Playback dir,
         if ( valid_v || valid_a )
         {
             video_data = new PlaybackData( *data );
-            _threads.push_back( new boost::thread(
-                                    boost::bind( mrv::video_thread,
-                                                 video_data ) ) );
+	    boost::thread* t = new boost::thread(
+                                     boost::bind( mrv::video_thread,
+						  video_data ) );
+            _threads.push_back( t );
         }
 
         if ( valid_a )
         {
             // Audio playback thread
             audio_data = new PlaybackData( *data );
-            _threads.push_back( new boost::thread(
-                                    boost::bind( mrv::audio_thread,
-                                                 audio_data ) ) );
+	    boost::thread* t = new boost::thread(
+                                     boost::bind( mrv::audio_thread,
+						  audio_data ) );
+            _threads.push_back( t );
         }
 
         if ( valid_s )
@@ -2445,9 +2446,10 @@ void CMedia::play(const CMedia::Playback dir,
         // If something was valid, create decode thread
         if ( valid_a || valid_v || valid_s )
         {
-            _threads.push_back( new boost::thread(
-                                    boost::bind( mrv::decode_thread,
-                                                 data ) ) );
+	    boost::thread* t = new boost::thread(
+                                     boost::bind( mrv::decode_thread,
+						  data ) );
+            _threads.push_back( t );
         }
 
 
@@ -2493,7 +2495,6 @@ void CMedia::stop(const bool bg)
     _audio_packets.cond().notify_all();
     _video_packets.cond().notify_all();
     _subtitle_packets.cond().notify_all();
-
 
     // Wait for all threads to exit
     DBG( name() << " Wait for threads" );
