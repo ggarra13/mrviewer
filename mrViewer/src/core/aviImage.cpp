@@ -918,8 +918,8 @@ bool aviImage::seek_to_position( const int64_t frame )
     int flag = AVSEEK_FLAG_BACKWARD;
     int ret = av_seek_frame( _context, -1, offset, flag );
     //int ret = avformat_seek_file( _context, -1,
-    //				  std::numeric_limits<int64_t>::min(), offset,
-    //				  std::numeric_limits<int64_t>::max(), flag );
+    //                            std::numeric_limits<int64_t>::min(), offset,
+    //                            std::numeric_limits<int64_t>::max(), flag );
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << start
@@ -1537,10 +1537,11 @@ void aviImage::timed_limit_store( const int64_t& frame )
     // many frames.
     if ( playback() == kBackwards )
     {
-	max_frames = frame + max_frames;
-	if ( _dts > frame ) max_frames = _dts + max_frames;
+        max_frames = frame + max_frames;
+        if ( _dts > frame ) max_frames = _dts + max_frames;
     }
-    
+
+
     unsigned count = 0;
     TimedSeqMap::iterator it = tmp.begin();
     typedef std::vector< video_cache_t::iterator > IteratorList;
@@ -1554,6 +1555,8 @@ void aviImage::timed_limit_store( const int64_t& frame )
             iters.push_back( it->second );
         }
     }
+
+    if ( iters.empty() ) return;
 
     IteratorList::iterator i = iters.begin();
     IteratorList::iterator e = iters.end();
@@ -1587,15 +1590,16 @@ void aviImage::limit_video_store(const int64_t frame)
     }
 
     return timed_limit_store( frame );
-    
+
     // int64_t first, last;
 
     // switch( playback() )
     // {
     // case kBackwards:
     //     first = frame - max_frames;
-    //     last  = frame;
-    //     if ( _dts < first ) first = _dts;
+    //     last  = frame + max_frames;
+    //     if ( _dts > last )   last  = _dts;
+    //     if ( _dts < first )  first = _dts;
     //     break;
     // case kForwards:
     //     first = frame - max_frames;

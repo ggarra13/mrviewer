@@ -322,7 +322,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        mrv::ViewerUI* uiMain,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
-		       const mrv::CMedia::DecodeStatus end )
+                       const mrv::CMedia::DecodeStatus end )
 {
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
@@ -513,7 +513,7 @@ EndStatus handle_loop( boost::int64_t& frame,
         else if ( loop == CMedia::kPingPong )
         {
             frame = first;
-            step = 1;
+            step  = 1;
             status = kEndChangeDirection;
             if ( init_time )
             {
@@ -695,13 +695,15 @@ void audio_thread( PlaybackData* data )
 
             frame += img->audio_offset();
 
-	    if ( end == kEndChangeDirection && !img->has_picture() )
-	    {
-		CMedia::Playback p = (CMedia::Playback) -img->playback();
-		img->playback( p );
-		view->playback( p );
-	    }
-	    
+            // This has to come here not in handle_loop, to avoid
+            // setting playback dir on decode thread
+            if ( end == kEndChangeDirection  )
+            {
+                CMedia::Playback p = (CMedia::Playback) step;
+                img->playback( p );
+                view->playback( p );
+            }
+
             DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
             continue;
         }
@@ -949,12 +951,8 @@ void video_thread( PlaybackData* data )
     double fps = img->play_fps();
     timer.setDesiredFrameRate( fps );
 
-#if 0
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
             (!fg || ! view->idle_callback() )  )
-#else
-    while ( !img->stopped() && (!fg || ! view->idle_callback() )  )
-#endif
     {
         img->wait_image();
 
@@ -965,8 +963,7 @@ void video_thread( PlaybackData* data )
 
         //TRACE( img->name() << " decode image " << frame );
         CMedia::DecodeStatus status = img->decode_video( frame );
-        // DBG( img->name() << " decoded image " << frame << " status "
-	//      << CMedia::decode_error(status) );
+
 
         switch( status )
         {
@@ -991,8 +988,8 @@ void video_thread( PlaybackData* data )
             //     std::cerr << "waited for img " << img->name() << std::endl;
             // }
 
-	    if ( img->stopped() ) continue;
-	    
+            if ( img->stopped() ) continue;
+
             CMedia::Barrier* barrier = img->loop_barrier();
 
             if ( barrier )
@@ -1006,8 +1003,8 @@ void video_thread( PlaybackData* data )
                 bool ok = barrier->wait();
             }
 
-	    if ( img->stopped() ) continue;
-	    
+            if ( img->stopped() ) continue;
+
             barrier = img->fg_bg_barrier();
             if ( barrier )
             {
@@ -1024,8 +1021,8 @@ void video_thread( PlaybackData* data )
                 //      << " used: " << barrier->used() );
             }
 
-	    if ( img->stopped() ) continue;
-	    
+            if ( img->stopped() ) continue;
+
             barrier = img->stereo_barrier();
             //LOG_INFO( img->name() << "@" << barrier << " wait" );
             if ( barrier )
@@ -1046,14 +1043,15 @@ void video_thread( PlaybackData* data )
                                          uiMain, reel, timeline,
                                          status );
 
+            // This has to come here not in handle_loop, to avoid
+            // setting playback dir on decode thread
+            if ( end == kEndChangeDirection )
+            {
+                CMedia::Playback p = (CMedia::Playback) step;;
+                img->playback( p );
+                view->playback( p );
+            }
 
-	    if ( end == kEndChangeDirection )
-	    {
-		CMedia::Playback p = (CMedia::Playback) -img->playback();
-		img->playback( p );
-		view->playback( p );
-	    }
-	    
             DBG( img->name() << " VIDEO LOOP END frame: " << frame
                  << " step " << step );
 
@@ -1154,9 +1152,9 @@ void video_thread( PlaybackData* data )
         timer.waitUntilNextFrameIsDue();
 
 
-	//DBG( "find image " << frame );
-	// img->debug_video_stores( frame, "find_image", true );
-	
+        // LOG_INFO( "find image " << frame << " delay " << delay );
+        // img->debug_video_stores( frame, "find_image", true );
+
         img->find_image( frame );
 
         if ( reel->edl && fg && img->is_left_eye() )
