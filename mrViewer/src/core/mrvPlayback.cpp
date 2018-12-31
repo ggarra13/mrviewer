@@ -1148,6 +1148,7 @@ void video_thread( PlaybackData* data )
         }
 
 
+	
         timer.setDesiredSecondsPerFrame( delay );
         timer.waitUntilNextFrameIsDue();
 

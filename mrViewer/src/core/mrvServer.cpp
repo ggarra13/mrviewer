@@ -1763,6 +1763,7 @@ tcp_session::tcp_session(boost::asio::io_service& io_service,
     Parser(io_service, v)
 {
 
+    deliver( "sync_image" );
     // The non_empty_output_queue_ deadline_timer is set to pos_infin
     // whenever the output queue is empty. This ensures that the output
     // actor stays asleep until a message is put into the queue.

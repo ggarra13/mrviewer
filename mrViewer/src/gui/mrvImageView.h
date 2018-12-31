@@ -651,11 +651,11 @@ public:
     void undo_draw();
     void redo_draw();
 
-    bool network_send() const {
-        return _network_send;
+    bool network_active() const {
+        return _network_active;
     }
-    void network_send( const bool b ) {
-        _network_send = b;
+    void network_active( const bool b ) {
+        _network_active = b;
     }
 
     void send_network( std::string msg ) const;
@@ -665,10 +665,10 @@ public:
     void add_shape( shape_type_ptr shape );
 
     void ghost_previous( short x ) {
-        _ghost_previous = x;
+        _ghost_previous = x; redraw();
     }
     void ghost_next( short x ) {
-        _ghost_next = x;
+        _ghost_next = x; redraw();
     }
 
     short ghost_previous() const {
@@ -921,7 +921,7 @@ protected:
     ///////////////////
     std::atomic<CMedia::Playback>   _playback;         //!< status of view
 
-    bool _network_send;  //<- whether to send commands across the network
+    bool _network_active;  //<- whether to send commands across the network
 
     ///////////////////
     // FPS calculation

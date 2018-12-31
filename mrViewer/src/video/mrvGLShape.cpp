@@ -66,12 +66,127 @@ extern Display*	xdisplay;
 
 namespace mrv {
 
+// v0 and v1 are normalized
+// t can vary between 0 and 1
+// http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
+Point slerp2d( const Point& v0, const Point& v1, float t )
+{
+    float dot = v0.dot(v1);
+    if( dot < -1.0f ) dot = -1.0f;
+    if( dot > 1.0f ) dot = 1.0f;
+
+    float theta_0 = acos( dot );
+    float theta = theta_0 * t;
+
+    Point v2( -v0.y, v0.x );
+
+    return ( v0*cos(theta) + v2*sin(theta) );
+}
+
+void glCircle( const Point& p, const double radius )
+{
+    GLint triangleAmount = 20;
+    GLdouble twoPi = M_PI * 2.0;
+	
+    glBegin( GL_TRIANGLE_FAN );
+    glVertex2d( p.x, p.y );
+    for ( int i = 0; i <= triangleAmount; ++i )
+    {
+	glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
+		    p.y + (radius * sin( i* twoPi / triangleAmount ))
+		    );
+    }
+    glEnd();
+}
+
+void glPolyline( const vector<mrv::Point>& polyline, float width )
+{
+    if( polyline.size() < 2 ) return;
+    float w = width / 2.0f;
+
+    glBegin(GL_TRIANGLES);
+    for( size_t i = 0; i < polyline.size()-1; ++i )
+    {
+        const Point& cur = polyline[ i ];
+        const Point& nxt = polyline[i+1];
+
+        Point b = (nxt - cur).normalized();
+        Point b_perp( -b.y, b.x );
+
+        Point p0( cur + b_perp*w );
+        Point p1( cur - b_perp*w );
+        Point p2( nxt + b_perp*w );
+        Point p3( nxt - b_perp*w );
+
+        // first triangle
+        glVertex2dv( &p0.x );
+        glVertex2dv( &p1.x );
+        glVertex2dv( &p2.x );
+        // second triangle
+        glVertex2dv( &p2.x );
+        glVertex2dv( &p1.x );
+        glVertex2dv( &p3.x );
+
+        // only do joins when we have a prv
+        if( i == 0 ) continue;
+
+        const Point& prv = polyline[i-1];
+        Point a = (prv - cur).normalized();
+        Point a_perp( a.y, -a.x );
+
+        float det = a.x*b.y - b.x*a.y;
+        if( det > 0 )
+        {
+            a_perp.x = -a_perp.x;
+            a_perp.y = -a_perp.y;
+            b_perp.x = -b_perp.x;
+            b_perp.y = -b_perp.y;
+        }
+
+        // TODO: do inner miter calculation
+
+        // flip around normals and calculate round join points
+	a_perp.x = -a_perp.x;
+	a_perp.y = -a_perp.y;
+	b_perp.x = -b_perp.x;
+	b_perp.y = -b_perp.y;
+
+        size_t num_pts = 4;
+        vector< Point > round( 1 + num_pts + 1 );
+        for( size_t j = 0; j <= num_pts+1; ++j )
+        {
+            float t = (float)j/(float)(num_pts+1);
+            if( det > 0 )
+                round[j] = cur + (slerp2d( b_perp, a_perp, 1.0f-t ) * w);
+            else
+                round[j] = cur + (slerp2d( a_perp, b_perp, t ) * w);
+        }
+
+        for( size_t j = 0; j < round.size()-1; ++j )
+        {
+            glVertex2dv( &cur.x );
+            if( det > 0 )
+            {
+                glVertex2dv( &(round[j+1].x) );
+                glVertex2dv( &(round[j+0].x) );
+            }
+            else
+            {
+                glVertex2dv( &(round[j+0].x) );
+                glVertex2dv( &(round[j+1].x) );
+            }
+        }
+    }
+    glEnd();
+}
+
+
 std::string GLPathShape::send() const
 {
     std::string buf = "GLPathShape ";
     char tmp[256];
-    sprintf( tmp, "%g %g %g %g %g %d %d %" PRId64, r, g, b, a,
-             pen_size, previous, next, frame );
+    sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
+             pen_size, frame );
     buf += tmp;
     GLPathShape::PointList::const_iterator i = pts.begin();
     GLPathShape::PointList::const_iterator e = pts.end();
@@ -102,43 +217,10 @@ void GLPathShape::draw( double z )
     glColor4f( r, g, b, a );
 
 
-    glLineWidth( pen_size * float(z) );
-    glEnable( GL_LINE_SMOOTH );
-
-
-    PointList::const_iterator i = pts.begin();
-    PointList::const_iterator e = pts.end();
-
-    if ( pts.size() > 1 )
-    {
-        glBegin( GL_LINE_STRIP );
-
-        for ( ; i != e; ++i )
-        {
-            const mrv::Point& p = *i;
-            glVertex2d( p.x, p.y );
-        }
-
-        glEnd();
-    }
-
-
-    if ( pts.size() == 1 || a >= 0.95f )
-    {
-        glPointSize( pen_size * float(z) );
-        glDisable( GL_POINT_SMOOTH );
-        glBegin( GL_POINTS );
-
-        i = pts.begin();
-        for ( ; i != e; ++i )
-        {
-            const mrv::Point& p = *i;
-            glVertex2d( p.x, p.y );
-        }
-
-        glEnd();
-    }
-
+    glCircle( pts[0], pen_size / 2.0 );
+    glPolyline( pts, pen_size );
+    glCircle( pts[pts.size()-1], pen_size / 2.0 );
+    
     glDisable( GL_BLEND );
 }
 
@@ -160,6 +242,9 @@ std::string GLErasePathShape::send() const
     return buf;
 }
 
+
+
+
 void GLErasePathShape::draw( double z )
 {
     glColorMask(false, false, false, false);
@@ -168,20 +253,9 @@ void GLErasePathShape::draw( double z )
     glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
     glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
-    glLineWidth( pen_size * float(z) );
-
-    glBegin( GL_LINE_STRIP );
-
-    PointList::const_iterator i = pts.begin();
-    PointList::const_iterator e = pts.end();
-    for ( ; i != e; ++i )
-    {
-        const mrv::Point& p = *i;
-        glVertex2d( p.x, p.y );
-    }
-
-    glEnd();
-
+    glCircle( pts[0], pen_size / 2.0 );
+    glPolyline( pts, pen_size );
+    glCircle( pts[pts.size()-1], pen_size / 2.0 );
 }
 
 
@@ -197,8 +271,8 @@ std::string GLTextShape::send() const
     if (!f) return "";
 
     char tmp[512];
-    sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %d %d %" PRId64, font()->name(),
-             text().c_str(), size(), r, g, b, a, previous, next, frame );
+    sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, font()->name(),
+             text().c_str(), size(), r, g, b, a, frame );
     buf += tmp;
     sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
     buf += tmp;

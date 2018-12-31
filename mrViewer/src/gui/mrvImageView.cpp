@@ -1311,7 +1311,7 @@ bool ImageView::in_presentation() const
 
 void ImageView::send_network( std::string m ) const
 {
-    if ( !_network_send) return;
+    if ( !_network_active) return;
 
     ParserList::const_iterator i = _clients.begin();
     ParserList::const_iterator e = _clients.end();
@@ -1382,7 +1382,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
     _selected_image( NULL ),
     _selection( mrv::Rectd(0,0) ),
     _playback( CMedia::kStopped ),
-    _network_send( true ),
+    _network_active( true ),
     _lastFrame( 0 )
 {
     _timer.setDesiredSecondsPerFrame(0.05f);
@@ -2708,7 +2708,7 @@ void ImageView::handle_commands()
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
-    _network_send = false;
+    _network_active = false;
     Command c = commands.front();
     switch( c.type )
     {
@@ -2883,7 +2883,7 @@ void ImageView::handle_commands()
     }
     }  // switch
 
-    _network_send = true;
+    _network_active = true;
     delete c.data;
     commands.pop_front();
     redraw();
@@ -3369,8 +3369,6 @@ void ImageView::draw()
 
     if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
     {
-
-
         double xf = X;
         double yf = Y;
 
@@ -3697,8 +3695,7 @@ int ImageView::leftMouseDown(int x, int y)
     int button = fltk::event_button();
     if (button == 1)
     {
-        if (fltk::event_key_state(fltk::LeftAltKey) ||
-                vr() )
+        if (fltk::event_key_state(fltk::LeftAltKey) || vr() )
         {
             // Handle ALT+LMB moves
             flags  = kMouseDown;
@@ -3872,8 +3869,9 @@ int ImageView::leftMouseDown(int x, int y)
             s->b = b / 255.0f;
             s->a = 1.0f;
             s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
-            s->next = ghost_next();
-            s->previous = ghost_previous();
+	    if ( _mode == kErase ) s->pen_size *= 2;
+            // s->next = ghost_next();
+            // s->previous = ghost_previous();
             if ( uiMain->uiPaint->uiAllFrames->value() )
             {
                 s->frame = MRV_NOPTS_VALUE;
@@ -3885,7 +3883,6 @@ int ImageView::leftMouseDown(int x, int y)
 
             mrv::Point p( xf, yf );
             s->pts.push_back( p );
-
 
             send_network( str );
 
@@ -7141,7 +7138,7 @@ void ImageView::channel( unsigned short c )
     // If user selected the same channel again, toggle it with
     // other channel (diffuse.r goes to diffuse, for example)
     const mrv::media& fg = foreground();
-    if ( c == _channel && fg && _old_fg == fg->image() && network_send() ) {
+    if ( c == _channel && fg && _old_fg == fg->image() && network_active() ) {
         c = _old_channel;
     }
     _old_channel = _channel;

@@ -40,9 +40,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 SET( VersionMajor 4 )
 SET( VersionMinor 3 )
 SET( VersionPatch 8 )
+
 #STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
-STRING( TIMESTAMP VersionDate ".%Y%m%d" )
-#SET( VersionDate "2018-09-07" )
+#STRING( TIMESTAMP VersionDate ".%Y%m%d" )
+SET( VersionDate "" )
 
 
 SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )

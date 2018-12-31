@@ -1141,11 +1141,7 @@ void GLEngine::draw_cursor( const double x, const double y )
 
     glColor4f( 1, 0, 0, 1 );
 
-    glPointSize( float(_view->main()->uiPaint->uiPenSize->value()) );
-
-    glBegin( GL_POINTS );
-    glVertex2d( x, y );
-    glEnd();
+    glCircle( Point(x,y), _view->main()->uiPaint->uiPenSize->value() );
 }
 
 void GLEngine::draw_square_stencil( const int x, const int y,
@@ -2329,9 +2325,9 @@ void GLEngine::draw_shape( GLShape* const shape )
 {
     double zoomX = _view->zoom();
     DBG( __FUNCTION__ << " " << __LINE__ );
-    if ( shape->previous )
+    if ( _view->ghost_previous() )
     {
-        short num = shape->previous;
+        short num = _view->ghost_previous();
         for ( short i = num; i > 0; --i )
         {
             if ( shape->frame - i == _view->frame() )
@@ -2345,9 +2341,9 @@ void GLEngine::draw_shape( GLShape* const shape )
         }
     }
 
-    if ( shape->next )
+    if ( _view->ghost_next() )
     {
-        short num = shape->next;
+        short num = _view->ghost_next();
         for ( short i = 1; i <= num; ++i )
         {
             if ( shape->frame + i == _view->frame() )
@@ -2362,7 +2358,7 @@ void GLEngine::draw_shape( GLShape* const shape )
     }
 
     if ( shape->frame == MRV_NOPTS_VALUE ||
-            shape->frame == _view->frame() )
+	 shape->frame == _view->frame() )
     {
         shape->draw(zoomX);
     }

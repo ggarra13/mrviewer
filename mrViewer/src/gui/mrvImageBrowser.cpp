@@ -1664,21 +1664,14 @@ void ImageBrowser::load( const mrv::LoadList& files,
             !CMedia::cache_active() ) &&
             uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
             img->first_frame() != img->last_frame() &&
-            view()->network_send() )
+            view()->network_active() )
     {
-        bool b = view()->network_send();
-        view()->network_send(true);
+        bool b = view()->network_active();
+        view()->network_active(true);
         view()->play_forwards();
-        view()->network_send(b);
+        view()->network_active(b);
     }
 
-    // if ( _load_threads.empty() )
-    // {
-    //     LThreadData* data = new LThreadData( view() );
-    //     _load_threads.push_back( new boost::thread(
-    //                              boost::bind( mrv::load_sequence,
-    //                                           data ) ) );
-    // }
 }
 
 

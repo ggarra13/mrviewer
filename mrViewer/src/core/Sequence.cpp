@@ -836,7 +836,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 is.str( points );
                 is.clear();
                 is >> shape->r >> shape->g >> shape->b >> shape->a
-                   >> shape->pen_size >> shape->previous >> shape->next
+                   >> shape->pen_size 
                    >> shape->frame;
                 while ( is >> xy.x >> xy.y )
                 {
@@ -903,7 +903,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
                 shape->font( fonts[i] );
                 is >> font_size >> shape->r >> shape->g >> shape->b
-                   >> shape->a >> shape->previous >> shape->next
+                   >> shape->a
                    >> shape->frame;
                 is >> xy.x >> xy.y;
                 shape->size( font_size );
