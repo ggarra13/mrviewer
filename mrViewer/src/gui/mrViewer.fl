@@ -2209,14 +2209,14 @@ This setting thus allows caching less pictures in memory but at an improved qual
           }
           {fltk::Group} {} {
             label Saving open
-            xywh {14 23 424 350} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {14 23 424 350} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Reels open
               xywh {8 22 406 188} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsRelativePaths {
-                label {Use Relative Paths in Reel Content} selected
+                label {Use Relative Paths in Reel Content}
                 tooltip {With this option, the content of the reel (the reel images/movies) are saved with relative paths to the location of the reel.}
                 xywh {25 81 25 25} box UP_BOX
               }
@@ -2881,9 +2881,11 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     decl {mrv::ViewerUI* main_;} {}
-    Function {make_window( ViewerUI* m )} {} {
+    Function {make_window( ViewerUI* m )} {open
+    } {
       {fltk::Window} uiMain {
         label Action
         user_data this user_data_type {mrv::PaintUI*}
@@ -3021,13 +3023,13 @@ o->redraw();}
               label Previous
               user_data m user_data_type {ViewerUI*}
               callback {v->uiView->ghost_previous( o->value() );}
-              xywh {80 5 30 25} maximum 20 step 1 value 5
+              xywh {65 5 45 25} maximum 99 step 1 value 5
             }
             {fltk::ValueInput} {} {
               label Next
               user_data m user_data_type {ViewerUI*}
-              callback {v->uiView->ghost_next( o->value() );}
-              xywh {80 37 30 25} maximum 20 step 1 value 5
+              callback {v->uiView->ghost_next( o->value() );} selected
+              xywh {65 37 45 25} maximum 99 step 1 value 5
             }
           }
         }

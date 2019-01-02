@@ -226,10 +226,12 @@ bool split_sequence(
  *
  * @param sequences list of sequences.  New sequences are appended in order.
  * @param edl       if sequence is an edl.
+ * @param ghost_previous  number of frames for previous ghosting
+ * @param ghost_next number of frames for next ghosting
  * @param edlfile   filename of .reel file.
  */
-bool parse_reel( LoadList& sequences, bool& edl,
-                 const char* reelfile );
+bool parse_reel( LoadList& sequences, bool& edl, short int& ghost_previous,
+                 short int& ghost_next, const char* reelfile );
 
 /**
  * Obtain the frame range of a sequence by scanning the directory where it

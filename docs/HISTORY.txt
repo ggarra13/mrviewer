@@ -1,3 +1,14 @@
+v4.3.9   - Made ghosting be a global setting instead of a per shape
+	   setting.  This allows easily changing the previous/next
+	   ghosting value and see the result in real time.
+	 - Added "Ghosting <previous> <next>" to list of reel commands
+	   to control the ghosting of previous/next frames.  Note that
+	   even thou it is a reel setting, only one setting is valid
+	   per session (the last loaded).
+	 - Improved OpenGL compatibility by drawing lines and points with
+	   polygons and circles respectively.
+	 - Increased the size of the eraser.
+
 v4.3.8   - Bug fixed saving of shape in reel due to a typo (&d instead of
 	   %d).
 	 - Fixed playback of videos hanging up due to mutex lock in

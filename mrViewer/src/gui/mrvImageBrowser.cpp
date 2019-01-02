@@ -575,7 +575,7 @@ void ImageBrowser::save_reel()
 
     std::string reelname( file );
     if ( reelname.size() < 5 ||
-            reelname.substr(reelname.size()-5, 5) != ".reel" )
+         reelname.substr(reelname.size()-5, 5) != ".reel" )
     {
         reelname += ".reel";
     }
@@ -593,8 +593,11 @@ void ImageBrowser::save_reel()
                   "# mrViewer Reel \"%s\"\n"
                   "# \n"
                   "# Created with mrViewer\n"
-                  "#\n\nVersion 2.0\n"),
-             reel->name.c_str() );
+                  "#\n\nVersion 3.0\nGhosting %d %d\n"),
+             reel->name.c_str(),
+             view()->ghost_previous(),
+             view()->ghost_next()
+        );
 
     mrv::MediaList::iterator i = reel->images.begin();
     mrv::MediaList::iterator e = reel->images.end();
@@ -1274,7 +1277,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     }
     else
     {
-	int64_t f = img->first_frame();
+        int64_t f = img->first_frame();
         img->find_image( f );
     }
 
@@ -1363,7 +1366,7 @@ mrv::media ImageBrowser::load_image( const char* name,
     }
     else
     {
-	int64_t f = img->first_frame();
+        int64_t f = img->first_frame();
         img->find_image( f );
     }
 
@@ -1684,11 +1687,15 @@ void ImageBrowser::load_reel( const char* name )
 {
     bool edl;
     mrv::LoadList sequences;
-    if ( ! parse_reel( sequences, edl, name ) )
+    short previous, next;
+    if ( ! parse_reel( sequences, edl, previous, next, name ) )
     {
         LOG_ERROR( "Could not parse \"" << name << "\"." );
         return;
     }
+
+    view()->ghost_previous( previous );
+    view()->ghost_next( next );
 
     fs::path path( name );
     std::string reelname = path.leaf().string();

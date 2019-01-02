@@ -770,9 +770,11 @@ bool get_sequence_limits( boost::int64_t& frameStart,
 
 
 bool parse_reel( mrv::LoadList& sequences, bool& edl,
+                 short int& ghost_previous, short int& ghost_next,
                  const char* reelfile)
 {
     edl = false;
+    ghost_previous = ghost_next = 5;
 
     setlocale( LC_NUMERIC, "C" );
 
@@ -825,6 +827,11 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
             else if ( cmd == "Version" )
             {
                 is >> version;
+                continue;
+            }
+            else if ( cmd == "Ghosting" )
+            {
+                is >> ghost_previous >> ghost_next;
                 continue;
             }
             else if ( cmd == "GLPathShape" )
