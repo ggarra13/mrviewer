@@ -10,7 +10,8 @@ v4.3.9   - Made ghosting be a global setting instead of a per shape
 	 - Increased the size of the eraser.
 	 - Made swing looping work on a single image when loaded with no
 	   background.
-	 - Removed a crash in EDL when two sequences were played.
+	 - Removed a crash in EDL when two sequences were played and
+	   transitioned one from the other.
 
 v4.3.8   - Bug fixed saving of shape in reel due to a typo (&d instead of
 	   %d).
