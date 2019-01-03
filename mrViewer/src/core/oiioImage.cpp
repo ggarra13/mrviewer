@@ -86,7 +86,7 @@ oiioImage::oiioImage() :
 
 oiioImage::~oiioImage()
 {
-    free( _format );
+    free( _format ); _format = NULL;
 }
 
 

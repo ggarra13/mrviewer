@@ -1110,7 +1110,7 @@ void ImageView::update_ICS() const
         {
             o->copy_label( w->label() );
             o->value(i);
-            if (w->tooltip()) o->tooltip( strdup(w->tooltip()) );
+            if (w->tooltip()) o->tooltip( w->tooltip() );
             o->redraw();
             return;
         }
@@ -2614,16 +2614,38 @@ bool ImageView::preload()
         {
             if ( _preframe < first )
             {
-                _preframe = last;
-                return false;
+                switch( looping() )
+                {
+                    case CMedia::kPingPong:
+                        _preframe = first;
+                        img->playback( CMedia::kForwards );
+                        playback( CMedia::kForwards );
+                        return true;
+                    default:
+                    case CMedia::kLoop:
+                        _preframe = last;
+                        return false;
+                        break;
+                }
             }
         }
         else if ( p == CMedia::kForwards )
         {
             if ( _preframe > last )
             {
-                _preframe = first;
-                return false;
+                switch( looping() )
+                {
+                    case CMedia::kPingPong:
+                        _preframe = last;
+                        img->playback( CMedia::kBackwards );
+                        playback( CMedia::kBackwards );
+                        return true;
+                    default:
+                    case CMedia::kLoop:
+                        _preframe = first;
+                        return false;
+                        break;
+                }
             }
         }
         else

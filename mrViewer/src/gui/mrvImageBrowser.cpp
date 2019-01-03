@@ -1218,7 +1218,8 @@ void ImageBrowser::change_image(int i)
 
     mrv::Reel reel = current_reel();
     send_reel( reel );
-    value(i);
+    fltk::Browser::value( i );
+    send_image( i );
     change_image();
 }
 

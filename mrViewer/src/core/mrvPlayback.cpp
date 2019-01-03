@@ -85,7 +85,7 @@ const char* kModule = "play";
 #undef LOG
 #define LOG(x) //std::cerr << x << std::endl;
 
-//#define DEBUG_THREADS
+#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -515,6 +515,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = first;
             step  = 1;
             status = kEndChangeDirection;
+            LOG_INFO( "END change direction" );
             if ( init_time )
             {
                 init_clock(&img->vidclk, NULL);
@@ -584,7 +585,7 @@ void audio_thread( PlaybackData* data )
     if (!reel) return;
 
 #ifdef DEBUG_THREADS
-    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame << std::endl;
+    LOG_INFO( "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame );
 #endif
     mrv::Timer timer;
 
@@ -793,7 +794,7 @@ void subtitle_thread( PlaybackData* data )
     mrv::Timer timer;
 
 #ifdef DEBUG_THREADS
-    cerr << "ENTER SUBTITLE THREAD " << img->name() << endl;
+    LOG_INFO( "ENTER SUBTITLE THREAD " << img->name() );
 #endif
 
 
@@ -850,8 +851,8 @@ void subtitle_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    cerr << endl << "EXIT  SUBTITLE THREAD " << img->name()
-         << " stopped? " << img->stopped() << endl;
+    LOG_INFO( "EXIT  SUBTITLE THREAD " << img->name()
+              << " stopped? " << img->stopped() );
     assert( img->stopped() );
 #endif
 
@@ -940,9 +941,9 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " view playback "
+    LOG_INFO( "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " view playback "
               << view->playback() << " frame " << frame << " timeline frame "
-              << timeline->value() << std::endl;
+              << timeline->value() );
 #endif
 
 
@@ -1223,9 +1224,9 @@ void decode_thread( PlaybackData* data )
     int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-    std::cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
+    LOG_INFO( "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped()  << " view playback " << view->playback()
               << " at frame " << frame
-              << " step " << step << std::endl;
+              << " step " << step );
 #endif
 
 
