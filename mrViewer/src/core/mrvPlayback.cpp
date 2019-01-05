@@ -82,10 +82,8 @@ const char* kModule = "play";
 // #define TRACE(x)
 
 
-#undef LOG
-#define LOG(x) //std::cerr << x << std::endl;
 
-//#define DEBUG_THREADS
+// #define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -289,7 +287,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         return CMedia::kDecodeLoopStart;
     }
 
-
     return CMedia::kDecodeOK;
 }
 
@@ -300,14 +297,14 @@ CMedia::DecodeStatus check_decode_loop( const int64_t frame,
 {
     int64_t first, last;
     CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline,
-                                  first, last );
+					      first, last );
     if ( status == CMedia::kDecodeLoopEnd )
     {
         img->loop_at_end( last+1 );
     }
     else if ( status == CMedia::kDecodeLoopStart )
     {
-        img->loop_at_start( first-1 );
+	img->loop_at_start( first-1 );
     }
     return status;
 }
@@ -425,6 +422,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = last;
             step  = -1;
             status = kEndChangeDirection;
+	    img->playback( (CMedia::Playback) step );
             if ( init_time )
             {
                 init_clock(&img->vidclk, NULL);
@@ -514,6 +512,9 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = first;
             step  = 1;
+	    img->playback( (CMedia::Playback) step );
+	    // std::cerr << img->name() << " loop ping pong " << first
+	    // 	      << " step " << step << std::endl;
             status = kEndChangeDirection;
             if ( init_time )
             {
@@ -594,7 +595,7 @@ void audio_thread( PlaybackData* data )
     init_clock(&img->vidclk, NULL);
     init_clock(&img->audclk, NULL);
     init_clock(&img->extclk, NULL);
-    set_clock(&img->extclk, get_clock(&img->extclk), false);
+    set_clock(&img->extclk, get_clock(&img->extclk), -1);
 
 
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
@@ -1050,11 +1051,11 @@ void video_thread( PlaybackData* data )
             {
                 CMedia::Playback p = (CMedia::Playback) step;;
                 img->playback( p );
-                view->playback( p );
+		if ( fg ) view->playback( p );
             }
 
-            DBG( img->name() << " VIDEO LOOP END frame: " << frame
-                 << " step " << step );
+            // LOG_INFO( img->name() << " VIDEO LOOP END frame: " << frame
+	    // 	      << " step " << step );
 
             continue;
         }

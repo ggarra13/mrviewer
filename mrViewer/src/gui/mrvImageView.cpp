@@ -5762,13 +5762,13 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         double pen = uiMain->uiPaint->uiPenSize->value();
         // Use exposure hotkey ( default [ and ] )
-        if ( kExposureMore.match( rawkey ) )
+        if ( kPenSizeMore.match( rawkey ) )
         {
             uiMain->uiPaint->uiPenSize->value( pen + 1.0 );
             redraw();
             return 1;
         }
-        else if ( kExposureLess.match( rawkey ) )
+        else if ( kPenSizeLess.match( rawkey ) )
         {
             uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
             redraw();

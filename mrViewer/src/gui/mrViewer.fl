@@ -2950,7 +2950,7 @@ o->main( m );}
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
             tooltip {Selects the size of brush.}
-            xywh {32 144 85 30} align 1 minimum 1 maximum 10 step 1 value 5
+            xywh {32 144 85 30} align 1 minimum 1 maximum 20 step 1 value 5
           }
           {fltk::Group} {} {open
             xywh {30 374 82 50}

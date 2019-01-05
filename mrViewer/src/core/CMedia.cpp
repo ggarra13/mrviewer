@@ -2473,8 +2473,6 @@ void CMedia::stop(const bool bg)
 
     if ( _right_eye ) _right_eye->stop();
 
-
-    
     _playback = kStopped;
 
     //
@@ -3333,6 +3331,7 @@ void CMedia::loop_at_start( const int64_t frame )
     {
         // With loop at start we cannot discard previous frames as they are
         // part of one or multiple prerolls
+	
         _video_packets.loop_at_start( frame );
     }
 
@@ -3597,8 +3596,16 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // We check packet integrity as the length of packets is
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
-            if ( frame > pkt.pts ) return kDecodeOK;
+            if ( frame > pkt.pts ) {
+		// std::cerr << name() << " frame " << frame
+		// 	  << " pkt.pts " << pkt.pts
+		//        << std::endl;
+		return kDecodeOK;
+	    }
 
+	    // std::cerr << name() << " frame " << frame << " pkt.pts " <<  pkt.pts
+	    // 	      << " OK!!!" << std::endl;
+	    
             _video_packets.pop_front();
             return kDecodeLoopStart;
         }

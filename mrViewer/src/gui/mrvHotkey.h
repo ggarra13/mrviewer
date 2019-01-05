@@ -167,6 +167,9 @@ extern Hotkey kZDepthDown;
 extern Hotkey kDensityUp;
 extern Hotkey kDensityDown;
 
+extern Hotkey kPenSizeMore;
+extern Hotkey kPenSizeLess;
+
 extern Hotkey kExposureMore;
 extern Hotkey kExposureLess;
 extern Hotkey kGammaMore;
