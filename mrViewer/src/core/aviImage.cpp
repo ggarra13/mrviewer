@@ -85,7 +85,6 @@ const char* kModule = "avi";
 }
 
 
-#define LOG(x) std::cerr << x << std::endl;
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES

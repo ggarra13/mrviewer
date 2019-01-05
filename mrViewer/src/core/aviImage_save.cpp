@@ -65,7 +65,6 @@ const char* kModule = "save";
                                            + (unsigned int)(c << 16)	\
                                            + (unsigned int)(d <<24 ))
 
-#define LOG(x) std::cerr << x << std::endl;
 
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;

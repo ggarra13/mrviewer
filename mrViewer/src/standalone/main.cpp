@@ -179,6 +179,8 @@ int main( int argc, char** argv )
     fltk::lock();  // This calls XInitThreads on Linux
 
 
+    setbuf( stderr, NULL );
+    
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 

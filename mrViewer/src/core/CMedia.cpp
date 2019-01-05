@@ -2473,6 +2473,8 @@ void CMedia::stop(const bool bg)
 
     if ( _right_eye ) _right_eye->stop();
 
+
+    
     _playback = kStopped;
 
     //

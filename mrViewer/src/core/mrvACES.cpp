@@ -219,10 +219,13 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     c.PTL_end();
 
     if ( ! c.save( filename ) )
+    {
         LOG_ERROR( _("Could not save '") << filename << "'." );
+    }
     else
+    {
         LOG_INFO( _("Saved ACES clip metadata file '") << filename << "'" );
-
+    }
 
     setlocale( LC_NUMERIC, "" );  // Return floating point form to our locale
 

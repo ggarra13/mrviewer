@@ -2522,6 +2522,7 @@ bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
 
+    
     mrv::ImageBrowser* b = browser();
 
     mrv::Reel r = b->reel_at( _reel );
@@ -6665,7 +6666,8 @@ int ImageView::handle(int event)
                 if (!fg) continue;
 
                 CMedia* img = fg->image();
-                if ( img && !img->is_cache_full() && !img->has_video() )
+                if ( img && !img->is_cache_full() && !img->has_video() &&
+		     img->playback() == CMedia::kStopped )
                 {
                     _reel = i;
                     break;
@@ -8673,7 +8675,7 @@ void ImageView::play( const CMedia::Playback dir )
     CMedia* img = fg->image();
 
     if ( CMedia::preload_cache() && _idle_callback &&
-            img->is_cache_full() )
+	 img->is_cache_full() )
     {
         preload_cache_stop();
     }
@@ -8697,7 +8699,7 @@ void ImageView::play( const CMedia::Playback dir )
                 !( CMedia::preload_cache() ||
                    uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
         {
-            DBG( "******* PLAY FG " << img->name() );
+	    preload_cache_stop();
             img->play( dir, uiMain, true );
         }
     }
@@ -8705,17 +8707,16 @@ void ImageView::play( const CMedia::Playback dir )
 
     if ( bg && bg != fg )
     {
-        DBG( "******* PLAY BG " << bg->image()->name() );
         CMedia* img = bg->image();
         img->play( dir, uiMain, false);
         typedef boost::recursive_mutex Mutex;
-        Mutex& fgm = img->video_mutex();
-        SCOPED_LOCK( fgm );
+        Mutex& bgm = img->video_mutex();
+        SCOPED_LOCK( bgm );
         CMedia::Barrier* barrier = img->fg_bg_barrier();
         if ( !barrier ) return;
         img = fg->image();
-        Mutex& bgm = img->video_mutex();
-        SCOPED_LOCK( bgm );
+        Mutex& fgm = img->video_mutex();
+        SCOPED_LOCK( fgm );
         barrier->threshold( barrier->threshold() + img->has_audio() +
                             img->has_picture() );
         img->fg_bg_barrier( barrier );

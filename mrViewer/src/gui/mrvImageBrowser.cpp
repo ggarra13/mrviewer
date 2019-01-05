@@ -1662,12 +1662,11 @@ void ImageBrowser::load( const mrv::LoadList& files,
     if ( ( img->has_picture() || !CMedia::preload_cache() ||
             !CMedia::cache_active() ) &&
             uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
-            img->first_frame() != img->last_frame() &&
-            view()->network_active() )
+            img->first_frame() != img->last_frame() )
     {
         bool b = view()->network_active();
         view()->network_active(true);
-        view()->play_forwards();
+        view()->play( CMedia::kForwards );
         view()->network_active(b);
     }
 
