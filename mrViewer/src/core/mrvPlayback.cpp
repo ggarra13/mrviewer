@@ -515,7 +515,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = first;
             step  = 1;
             status = kEndChangeDirection;
-            LOG_INFO( "END change direction" );
             if ( init_time )
             {
                 init_clock(&img->vidclk, NULL);
@@ -889,6 +888,7 @@ void video_thread( PlaybackData* data )
 
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
+
     mrv::Reel   reel = browser->reel_at( idx );
     if (!reel) return;
 
@@ -1149,7 +1149,7 @@ void video_thread( PlaybackData* data )
         }
 
 
-	
+
         timer.setDesiredSecondsPerFrame( delay );
         timer.waitUntilNextFrameIsDue();
 

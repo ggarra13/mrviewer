@@ -1110,11 +1110,6 @@ void ImageBrowser::change_reel()
     {
         set_bg( view()->foreground() );
     }
-    else
-    {
-        clear_bg();
-    }
-
 
     send_reel( reel );
 

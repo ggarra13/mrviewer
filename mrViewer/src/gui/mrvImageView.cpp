@@ -2577,6 +2577,8 @@ bool ImageView::preload()
     if ( r->edl )
     {
         f = r->global_to_local( _preframe );
+        // first  = img->first_frame();
+        // last   = img->last_frame();
         first = timeline()->display_minimum();
         last  = timeline()->display_maximum();
     }
@@ -2679,6 +2681,7 @@ bool ImageView::preload()
 
     if ( r->edl && p != CMedia::kStopped )
     {
+        // f = _preframe;
         f += r->location(img) - img->first_frame();
         frame( f );
         mrv::media m = r->media_at( f + p );
@@ -3388,7 +3391,6 @@ void ImageView::draw()
 
     _engine->draw_annotation( img->shapes() );
 
-
     if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
     {
         double xf = X;
@@ -3712,15 +3714,16 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-    flags	= kMouseDown;
+    //flags	= kMouseDown;
+    flags	= 0;
 
     int button = fltk::event_button();
     if (button == 1)
     {
+        flags  = kMouseDown;
         if (fltk::event_key_state(fltk::LeftAltKey) || vr() )
         {
             // Handle ALT+LMB moves
-            flags  = kMouseDown;
             flags |= kMouseMove;
             flags |= kMouseMiddle;
             return 1;
@@ -3891,7 +3894,7 @@ int ImageView::leftMouseDown(int x, int y)
             s->b = b / 255.0f;
             s->a = 1.0f;
             s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
-	    if ( _mode == kErase ) s->pen_size *= 2;
+            if ( _mode == kErase ) s->pen_size *= 2;
             // s->next = ghost_next();
             // s->previous = ghost_previous();
             if ( uiMain->uiPaint->uiAllFrames->value() )
@@ -5753,6 +5756,23 @@ int ImageView::keyDown(unsigned int rawkey)
         next_channel_cb(this, this);
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
+    }
+    else if ( _mode == kDraw || _mode == kErase )
+    {
+        double pen = uiMain->uiPaint->uiPenSize->value();
+        // Use exposure hotkey ( default [ and ] )
+        if ( kExposureMore.match( rawkey ) )
+        {
+            uiMain->uiPaint->uiPenSize->value( pen + 1.0 );
+            redraw();
+            return 1;
+        }
+        else if ( kExposureLess.match( rawkey ) )
+        {
+            uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
+            redraw();
+            return 1;
+        }
     }
     else if ( kExposureMore.match( rawkey ) )
     {
@@ -8335,15 +8355,19 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
-
-    _preframe = f;
-
-    // if ( std::abs( f - frame() ) < fps() / 2.0 )
-    // {
-    // stop();
-    // }
-
     mrv::ImageBrowser* b = browser();
+
+    // mrv::Reel r = b->current_reel();
+    // if ( r && r->edl )
+    // {
+    //  _preframe = r->global_to_local( f );
+    // }
+    // else
+    {
+        _preframe = f;
+    }
+
+
     if ( b ) b->seek( f );
 
 
@@ -8733,9 +8757,9 @@ void ImageView::thumbnails()
 void ImageView::stop()
 {
     if ( playback() == CMedia::kStopped ) {
-    	return;
+        return;
     }
-    
+
     _playback = CMedia::kStopped;
 
     _last_fps = 0.0;

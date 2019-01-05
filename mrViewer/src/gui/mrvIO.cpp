@@ -108,7 +108,7 @@ void logbuffer::open_stream()
 
 void errorbuffer::print( const char* c )
 {
-    std::cerr << c;
+    std::cerr << c << std::flush;
 
     // Send string to Log Window
     if ( ViewerUI::uiLog )
@@ -119,7 +119,7 @@ void errorbuffer::print( const char* c )
 
 void warnbuffer::print( const char* c )
 {
-    std::cerr << c;
+    std::cerr << c << std::flush;
 
     // Send string to Log Window
     if ( ViewerUI::uiLog )
@@ -130,7 +130,7 @@ void warnbuffer::print( const char* c )
 
 void infobuffer::print( const char* c )
 {
-    std::cout << c;
+    std::cout << c << std::flush;
 
     // Send string to Log Window
     if ( ViewerUI::uiLog )
@@ -141,7 +141,7 @@ void infobuffer::print( const char* c )
 
 void connbuffer::print( const char* c )
 {
-    std::cout << c;
+    std::cout << c << std::flush;
 
     // Send string to Log Window in Connection panel
     if ( ViewerUI::uiConnection )

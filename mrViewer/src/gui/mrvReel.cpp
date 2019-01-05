@@ -169,7 +169,7 @@ int64_t Reel_t::global_to_local( const int64_t f ) const
         CMedia* img = m->image();
         assert( img != NULL );
         int64_t start = m->position();
-        int64_t end   = start + img->duration();
+        int64_t end   = start + m->duration();
         if ( f >= start && f < end )
         {
             r = f - start + img->first_frame();
