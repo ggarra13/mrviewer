@@ -52,7 +52,7 @@ enum mp_csp avcol_spc_to_mp_csp(int avcolorspace)
 {
     switch (avcolorspace) {
     case AVCOL_SPC_BT709:
-        return MP_CSP_BT_709;
+                return MP_CSP_BT_709;
     case AVCOL_SPC_BT470BG:
         return MP_CSP_BT_601;
     case AVCOL_SPC_BT2020_NCL:
@@ -76,7 +76,7 @@ enum mp_csp_levels avcol_range_to_mp_csp_levels(int avrange)
 {
     switch (avrange) {
     case AVCOL_RANGE_MPEG:
-        return MP_CSP_LEVELS_TV;
+                return MP_CSP_LEVELS_TV;
     case AVCOL_RANGE_JPEG:
         return MP_CSP_LEVELS_PC;
     default:
@@ -88,8 +88,8 @@ enum mp_csp_prim avcol_pri_to_mp_csp_prim(int avpri)
 {
     switch (avpri) {
     case AVCOL_PRI_SMPTE240M:   // Same as below
-    case AVCOL_PRI_SMPTE170M:
-        return MP_CSP_PRIM_BT_601_525;
+            case AVCOL_PRI_SMPTE170M:
+                    return MP_CSP_PRIM_BT_601_525;
     case AVCOL_PRI_BT470BG:
         return MP_CSP_PRIM_BT_601_625;
     case AVCOL_PRI_BT709:
@@ -107,12 +107,12 @@ enum mp_csp_trc avcol_trc_to_mp_csp_trc(int avtrc)
 {
     switch (avtrc) {
     case AVCOL_TRC_BT709:
-    case AVCOL_TRC_SMPTE170M:
-    case AVCOL_TRC_SMPTE240M:
-    case AVCOL_TRC_BT1361_ECG:
-    case AVCOL_TRC_BT2020_10:
-    case AVCOL_TRC_BT2020_12:
-        return MP_CSP_TRC_BT_1886;
+            case AVCOL_TRC_SMPTE170M:
+                case AVCOL_TRC_SMPTE240M:
+                    case AVCOL_TRC_BT1361_ECG:
+                        case AVCOL_TRC_BT2020_10:
+                            case AVCOL_TRC_BT2020_12:
+                                    return MP_CSP_TRC_BT_1886;
     case AVCOL_TRC_IEC61966_2_1:
         return MP_CSP_TRC_SRGB;
     case AVCOL_TRC_LINEAR:
@@ -186,7 +186,7 @@ int mp_csp_prim_to_avcol_pri(enum mp_csp_prim prim)
 int mp_csp_trc_to_avcol_trc(enum mp_csp_trc trc)
 {
     switch (trc) {
-        // We just call it BT.1886 since we're decoding, but it's still BT.709
+    // We just call it BT.1886 since we're decoding, but it's still BT.709
     case MP_CSP_TRC_BT_1886:
         return AVCOL_TRC_BT709;
     case MP_CSP_TRC_SRGB:
@@ -234,7 +234,7 @@ enum mp_chroma_location avchroma_location_to_mp(int avloc)
 {
     switch (avloc) {
     case AVCHROMA_LOC_LEFT:
-        return MP_CHROMA_LEFT;
+                return MP_CHROMA_LEFT;
     case AVCHROMA_LOC_CENTER:
         return MP_CHROMA_CENTER;
     default:
@@ -280,11 +280,11 @@ struct mp_csp_primaries mp_get_csp_primaries(enum mp_csp_prim spc)
 
     // CIE standard illuminant series
     static const struct mp_csp_col_xy
-            d50 = {0.34577, 0.35850},
-        d65 = {0.31271, 0.32902},
-        c   = {0.31006, 0.31616},
-        dci = {0.31400, 0.35100},
-        e   = {1.0/3.0, 1.0/3.0};
+        d50 = {0.34577, 0.35850},
+    d65 = {0.31271, 0.32902},
+    c   = {0.31006, 0.31616},
+    dci = {0.31400, 0.35100},
+    e   = {1.0/3.0, 1.0/3.0};
 
     switch (spc) {
     case MP_CSP_PRIM_BT_470M:

@@ -3178,28 +3178,28 @@ bool exrImage::save( const char* file, const CMedia* img,
             offsets[1] = offsets[2] = 0;
             total_size = offsets[3]*2;
             break;
-            // case image_type::kITU_601_YCbCr410:
-            // case image_type::kITU_709_YCbCr410:
-            // case image_type::kYByRy410:
-            //     {
-            //         //@todo:
-            //         has_yca = true;
-            //         total_size = dw*dh*size*4;
-            //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
-            //         break;
-            //     }
-            // case image_type::kITU_601_YCbCr410A:
-            // case image_type::kITU_709_YCbCr410A:
-            // case image_type::kYByRy410A:
-            //     {
-            //         //@todo:
-            //         has_yca = true;
-            //         total_size = dw*dh*size*4;
-            //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
-            //         break;
-            //     }
-            // case image_type::kITU_601_YCbCr420:
-            // case image_type::kITU_709_YCbCr420:
+        // case image_type::kITU_601_YCbCr410:
+        // case image_type::kITU_709_YCbCr410:
+        // case image_type::kYByRy410:
+        //     {
+        //         //@todo:
+        //         has_yca = true;
+        //         total_size = dw*dh*size*4;
+        //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+        //         break;
+        //     }
+        // case image_type::kITU_601_YCbCr410A:
+        // case image_type::kITU_709_YCbCr410A:
+        // case image_type::kYByRy410A:
+        //     {
+        //         //@todo:
+        //         has_yca = true;
+        //         total_size = dw*dh*size*4;
+        //         offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+        //         break;
+        //     }
+        // case image_type::kITU_601_YCbCr420:
+        // case image_type::kITU_709_YCbCr420:
         case image_type::kYByRy420:
         {
             has_yca = true;

@@ -87,14 +87,14 @@ void glCircle( const Point& p, const double radius )
 {
     GLint triangleAmount = 20;
     GLdouble twoPi = M_PI * 2.0;
-	
+
     glBegin( GL_TRIANGLE_FAN );
     glVertex2d( p.x, p.y );
     for ( int i = 0; i <= triangleAmount; ++i )
     {
-	glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
-		    p.y + (radius * sin( i* twoPi / triangleAmount ))
-		    );
+        glVertex2d( p.x + (radius * cos( i* twoPi / triangleAmount )),
+                    p.y + (radius * sin( i* twoPi / triangleAmount ))
+                  );
     }
     glEnd();
 }
@@ -146,10 +146,10 @@ void glPolyline( const vector<mrv::Point>& polyline, float width )
         // TODO: do inner miter calculation
 
         // flip around normals and calculate round join points
-	a_perp.x = -a_perp.x;
-	a_perp.y = -a_perp.y;
-	b_perp.x = -b_perp.x;
-	b_perp.y = -b_perp.y;
+        a_perp.x = -a_perp.x;
+        a_perp.y = -a_perp.y;
+        b_perp.x = -b_perp.x;
+        b_perp.y = -b_perp.y;
 
         size_t num_pts = 4;
         vector< Point > round( 1 + num_pts + 1 );
@@ -220,7 +220,7 @@ void GLPathShape::draw( double z )
     glCircle( pts[0], pen_size / 2.0 );
     glPolyline( pts, pen_size );
     glCircle( pts[pts.size()-1], pen_size / 2.0 );
-    
+
     glDisable( GL_BLEND );
 }
 

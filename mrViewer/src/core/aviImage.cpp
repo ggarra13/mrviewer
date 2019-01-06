@@ -2243,7 +2243,7 @@ void aviImage::populate()
         // Determine the type and obtain the first index of each type
         switch( ctx->codec_type )
         {
-            // We ignore attachments for now.
+        // We ignore attachments for now.
         case AVMEDIA_TYPE_ATTACHMENT:
         {
             continue;

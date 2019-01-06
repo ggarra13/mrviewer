@@ -605,7 +605,7 @@ bool GLLut3d::calculate_ctl(
     const char** channelNames;
 
     static const char* InRGBAchannels[4] = { N_("rIn"), N_("gIn"), N_("bIn"),
-                                           N_("aIn")
+                                             N_("aIn")
                                            };
 
     channelNames = InRGBAchannels;
@@ -821,8 +821,8 @@ bool GLLut3d::calculate_icc( const Transforms::const_iterator& start,
     {
     case icSigXYZData:
         if ( (flags & kXformLast) ) convert = true;
-        // fall through - No break here
-        // case icSigGrayData:
+    // fall through - No break here
+    // case icSigGrayData:
     case icSigRgbData:
     case icSigLabData:
     case icSigCmyData:
@@ -875,7 +875,7 @@ bool GLLut3d::calculate_icc( const Transforms::const_iterator& start,
         size_t j = i*4;
         status = cmm->Apply( p, &(pixelValues[j]) );
         if ( status != icCmmStatOk) {
-            icc_cmm_error( _("Apply: ") , status );
+            icc_cmm_error( _("Apply: "), status );
             return false;
         }
 

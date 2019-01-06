@@ -58,73 +58,73 @@ public:
 
     inline Point operator-() const
     {
-	return Point( -x, -y );
+        return Point( -x, -y );
     }
-    
+
     inline Point operator*( const double t ) const
     {
-	return Point( x*t, y*t );
+        return Point( x*t, y*t );
     }
-    
+
     inline Point	operator+(const Point &v) const
     {
-	return Point( x + v.x, y + v.y );
+        return Point( x + v.x, y + v.y );
     }
-    
+
     inline Point	operator-(const Point &v) const
     {
-	return Point( x - v.x, y - v.y );
+        return Point( x - v.x, y - v.y );
     }
-    
+
     inline double		dot (const Point &v) const
     {
-	return x * v.x + y * v.y;
+        return x * v.x + y * v.y;
     }
 
     double lengthTiny () const
     {
-	double absX = (x >= double(0))? x: -x;
-	double absY = (y >= double(0))? y: -y;
-	
-	double max = absX;
+        double absX = (x >= double(0))? x: -x;
+        double absY = (y >= double(0))? y: -y;
 
-	if (max < absY)
-	    max = absY;
+        double max = absX;
 
-	if (max == double(0))
-	    return double(0);
+        if (max < absY)
+            max = absY;
 
-	//
-	// Do not replace the divisions by max with multiplications by 1/max.
-	// Computing 1/max can overflow but the divisions below will always
-	// produce results less than or equal to 1.
-	//
-	
-	absX /= max;
-	absY /= max;
-	
-	return max * sqrt (absX * absX + absY * absY);
+        if (max == double(0))
+            return double(0);
+
+        //
+        // Do not replace the divisions by max with multiplications by 1/max.
+        // Computing 1/max can overflow but the divisions below will always
+        // produce results less than or equal to 1.
+        //
+
+        absX /= max;
+        absY /= max;
+
+        return max * sqrt (absX * absX + absY * absY);
     }
-    
+
     inline double length () const
     {
-	double length2 = dot (*this);
+        double length2 = dot (*this);
 
-	if (length2 < 2 * DBL_MIN )
-	    return lengthTiny();
+        if (length2 < 2 * DBL_MIN )
+            return lengthTiny();
 
-	return sqrt (length2);
+        return sqrt (length2);
     }
-    
+
     inline Point normalized() const
     {
-	double l = length();
-	if ( l == 0 )
-	    return Point();
+        double l = length();
+        if ( l == 0 )
+            return Point();
 
-	return Point( x / l, y / l );
+        return Point( x / l, y / l );
     }
-    
+
     double x, y;
 };
 
@@ -139,8 +139,8 @@ class GLShape
 {
 public:
     GLShape() : r(0.0), g(1.0), b(0.0), a(1.0), pen_size(5),
-		//  previous( 5 ), next( 5 ),
-		frame( MRV_NOPTS_VALUE )
+        //  previous( 5 ), next( 5 ),
+        frame( MRV_NOPTS_VALUE )
     {
     };
 

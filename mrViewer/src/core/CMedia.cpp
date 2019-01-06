@@ -793,10 +793,10 @@ void CMedia::wait_for_threads()
 {
     for ( const auto& i : _threads )
     {
-	i->join();
-	delete i;
+        i->join();
+        delete i;
     }
-    
+
     _threads.clear();
 }
 
@@ -895,10 +895,10 @@ CMedia::~CMedia()
     _subtitle_encoding = NULL;
 
     {
-	for ( const auto& i : _attrs )
-	{
-	    delete i.second;
-	}
+        for ( const auto& i : _attrs )
+        {
+            delete i.second;
+        }
     }
 
     _context = _acontext = NULL;
@@ -2140,7 +2140,7 @@ void CMedia::clear_look_mod_transform()
 {
     for ( const auto& i : _look_mod_transform )
     {
-	free( i );
+        free( i );
     }
     _look_mod_transform.clear();
 
@@ -2417,9 +2417,9 @@ void CMedia::play(const CMedia::Playback dir,
         if ( valid_v || valid_a )
         {
             video_data = new PlaybackData( *data );
-	    boost::thread* t = new boost::thread(
-                                     boost::bind( mrv::video_thread,
-						  video_data ) );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::video_thread,
+                             video_data ) );
             _threads.push_back( t );
         }
 
@@ -2427,9 +2427,9 @@ void CMedia::play(const CMedia::Playback dir,
         {
             // Audio playback thread
             audio_data = new PlaybackData( *data );
-	    boost::thread* t = new boost::thread(
-                                     boost::bind( mrv::audio_thread,
-						  audio_data ) );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::audio_thread,
+                             audio_data ) );
             _threads.push_back( t );
         }
 
@@ -2446,9 +2446,9 @@ void CMedia::play(const CMedia::Playback dir,
         // If something was valid, create decode thread
         if ( valid_a || valid_v || valid_s )
         {
-	    boost::thread* t = new boost::thread(
-                                     boost::bind( mrv::decode_thread,
-						  data ) );
+            boost::thread* t = new boost::thread(
+                boost::bind( mrv::decode_thread,
+                             data ) );
             _threads.push_back( t );
         }
 
@@ -3331,7 +3331,7 @@ void CMedia::loop_at_start( const int64_t frame )
     {
         // With loop at start we cannot discard previous frames as they are
         // part of one or multiple prerolls
-	
+
         _video_packets.loop_at_start( frame );
     }
 
@@ -3365,7 +3365,7 @@ void CMedia::loop_at_end( const int64_t frame )
         {
             if ( get_frame( stream, *i ) >= frame )
             {
-		mrv::PacketQueue::iterator it = (i+1).base();
+                mrv::PacketQueue::iterator it = (i+1).base();
                 _video_packets.erase( it );
             }
         }
@@ -3597,15 +3597,15 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
             if ( frame > pkt.pts ) {
-		// std::cerr << name() << " frame " << frame
-		// 	  << " pkt.pts " << pkt.pts
-		//        << std::endl;
-		return kDecodeOK;
-	    }
+                // std::cerr << name() << " frame " << frame
+                // 	  << " pkt.pts " << pkt.pts
+                //        << std::endl;
+                return kDecodeOK;
+            }
 
-	    // std::cerr << name() << " frame " << frame << " pkt.pts " <<  pkt.pts
-	    // 	      << " OK!!!" << std::endl;
-	    
+            // std::cerr << name() << " frame " << frame << " pkt.pts " <<  pkt.pts
+            // 	      << " OK!!!" << std::endl;
+
             _video_packets.pop_front();
             return kDecodeLoopStart;
         }

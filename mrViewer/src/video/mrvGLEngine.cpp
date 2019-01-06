@@ -2358,7 +2358,7 @@ void GLEngine::draw_shape( GLShape* const shape )
     }
 
     if ( shape->frame == MRV_NOPTS_VALUE ||
-	 shape->frame == _view->frame() )
+            shape->frame == _view->frame() )
     {
         shape->draw(zoomX);
     }

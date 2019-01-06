@@ -247,8 +247,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         first = reel->location(img);
         last  = first + img->duration() - 1;
 
-        if ( mx < last && mx > first )  last = mx;
-        if ( mn > first && mn < last ) first = mn;
+        if ( mx < last )  last = mx;
+        if ( mn > first ) first = mn;
 
         last = reel->global_to_local( last );
         img->loop_end( last );
@@ -268,8 +268,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             last = img->last_frame();
 
 
-            if ( mx < last && mx > first )  last = mx;
-            if ( mn > first && mn < last ) first = mn;
+            if ( mx < last )  last = mx;
+            if ( mn > first ) first = mn;
 
             img->loop_start( first );
             img->loop_end( last );
