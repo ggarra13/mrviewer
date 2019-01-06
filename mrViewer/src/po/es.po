@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-01-05 20:29-0300\n"
+"POT-Creation-Date: 2019-01-05 22:47-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -82,7 +82,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:975
+#: core/mrvPlayback.cpp:974
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
@@ -259,7 +259,7 @@ msgstr " no encontrado, eligiendo "
 msgid " not yet supported"
 msgstr " no soportado aún"
 
-#: core/mrvPlayback.cpp:976
+#: core/mrvPlayback.cpp:975
 msgid " returned "
 msgstr " retornó "
 
@@ -1348,14 +1348,14 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:918
+#: core/mrvPlayback.cpp:917
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 "La duración de la imagen de fondo es muy corta.  Repetir en ciclos puede no "
 "funcionar correctamente."
 
-#: core/mrvPlayback.cpp:903
+#: core/mrvPlayback.cpp:902
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
@@ -5437,8 +5437,8 @@ msgstr ""
 msgid "Pen Size"
 msgstr "Tamaño del Lapiz"
 
-#: gui/mrvHotkey.cpp:318
 #
+#: gui/mrvHotkey.cpp:318
 msgid "Pen Size Less"
 msgstr "Tamaño del Lápiz Menor"
 

@@ -701,8 +701,7 @@ void audio_thread( PlaybackData* data )
             if ( end == kEndChangeDirection  )
             {
                 CMedia::Playback p = (CMedia::Playback) step;
-                img->playback( p );
-                view->playback( p );
+                if ( fg ) view->playback( p );
             }
 
             DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
@@ -1050,7 +1049,6 @@ void video_thread( PlaybackData* data )
             if ( end == kEndChangeDirection )
             {
                 CMedia::Playback p = (CMedia::Playback) step;;
-                img->playback( p );
 		if ( fg ) view->playback( p );
             }
 
