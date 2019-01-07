@@ -7292,8 +7292,17 @@ void ImageView::channel( unsigned short c )
     // in the timeline.
     timeline()->redraw();
     if ( _reel >= browser()->number_of_reels() ) _reel = 0;
-    _preframe = frame();
 
+    mrv::Reel r = browser()->current_reel();
+    if ( r && r->edl )
+    {
+	_preframe = 1;
+    }
+    else
+    {
+	_preframe = frame();
+    }
+    
     smart_refresh();
 }
 
@@ -8681,7 +8690,7 @@ void ImageView::play( const CMedia::Playback dir )
     }
     else
     {
-        _preframe = frame();
+	_preframe = frame();
     }
 
 

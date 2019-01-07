@@ -1413,6 +1413,7 @@ void load_sequence( ImageBrowser::LThreadData* data )
 void ImageBrowser::load( const mrv::LoadList& files,
                          const bool stereo,
                          std::string bgimage,
+			 const bool edl,
                          const bool progressBar )
 {
 
@@ -1610,7 +1611,13 @@ void ImageBrowser::load( const mrv::LoadList& files,
         {
             progress->step(1);
             fltk::check();
-        }
+        } 
+
+	if ( edl )
+	{
+	    current_reel()->edl = true;
+	    uiMain->uiTimeline->edl( true );
+	}
     }
 
     if ( w )
@@ -2937,7 +2944,6 @@ void ImageBrowser::seek( const int64_t tframe )
         if ( ! img ) return;
 
 
-        DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 
         if ( f < t->display_minimum() )
@@ -2961,7 +2967,6 @@ void ImageBrowser::seek( const int64_t tframe )
             f = reel->global_to_local( f );
             if ( !img ) return;
 
-            DBG( "seek f local1: " << f );
 
             img->seek( f );
 
@@ -2972,7 +2977,6 @@ void ImageBrowser::seek( const int64_t tframe )
         else
         {
             f = reel->global_to_local( f );
-            DBG( "seek f local2: " << f );
             img->seek( f );
         }
 
@@ -3006,13 +3010,13 @@ void ImageBrowser::seek( const int64_t tframe )
 
         CMedia* img = fg->image();
         img->seek( f );
-        DBG( "img->seek( " << f << " )" );
         DBG( "img->stopped? " << img->stopped() );
 
         mrv::media bg = view()->background();
         if ( bg )
         {
             img = bg->image();
+	    f += img->first_frame() - 1;
             img->seek( f );
         }
     }

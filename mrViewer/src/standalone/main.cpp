@@ -98,13 +98,14 @@ const char* const kModule = "main";
 void load_files( mrv::LoadList& files,
                  mrv::ViewerUI* ui,
                  bool stereo = false,
-                 std::string bgimage = "" )
+                 std::string bgimage = "",
+		 bool edl = false )
 {
     //
     // Window must be shown after images have been loaded.
     //
     mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
-    image_list->load( files, stereo, bgimage );
+    image_list->load( files, stereo, bgimage, edl );
 }
 
 void load_new_files( void* s )
@@ -345,7 +346,15 @@ int main( int argc, char** argv )
             // mrv::open_license( argv[0] );
             // mrv::checkout_license();
 
-            load_files( opts.files, ui, false, opts.bgfile );
+            if ( opts.edl )
+            {
+		std::cerr << "set edl command line" << std::endl;
+		ui->uiReelWindow->uiBrowser->new_reel( "reel" );
+                ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
+                ui->uiTimeline->edl( true );
+            }
+	    
+            load_files( opts.files, ui, false, opts.bgfile, opts.edl );
 
             if ( opts.stereo.size() > 1 )
             {
@@ -418,11 +427,6 @@ int main( int argc, char** argv )
                 ui->uiView->fit_image();
             }
 
-            if ( opts.edl )
-            {
-                ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
-                ui->uiTimeline->edl( true );
-            }
 
             if (opts.fps > 0 )
             {

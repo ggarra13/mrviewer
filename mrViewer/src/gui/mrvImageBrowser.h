@@ -140,6 +140,7 @@ public:
 
     void load( const LoadList& files, const bool stereo = false,
                std::string bgfile = "",
+	       const bool edl = false,
                const bool progressBar = false );
     void load( const stringArray& files, const bool seqs = true,
                const bool stereo = false,

@@ -4099,7 +4099,7 @@ void CMedia::debug_video_packets(const int64_t frame,
     else
     {
         if ( _video_packets.is_loop_end( *iter ) ||
-                _video_packets.is_loop_start( *iter ) )
+	     _video_packets.is_loop_start( *iter ) )
         {
             std::cerr << (*iter).dts;
         }
