@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-01-07 09:40-0300\n"
+"POT-Creation-Date: 2019-01-07 09:57-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: core/mrvPlayback.cpp:977
+#: core/mrvPlayback.cpp:978
 msgid " - Decode of image frame "
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 msgid " not yet supported"
 msgstr ""
 
-#: core/mrvPlayback.cpp:978
+#: core/mrvPlayback.cpp:979
 msgid " returned "
 msgstr ""
 
@@ -1279,6 +1279,13 @@ msgstr ""
 #: core/mrvPlayback.cpp:920
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
+msgstr ""
+
+#: core/mrvPlayback.cpp:927
+#, c-format
+msgid ""
+"Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
+"Looping will not work correctly."
 msgstr ""
 
 #: core/mrvPlayback.cpp:905

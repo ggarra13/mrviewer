@@ -915,20 +915,21 @@ void video_thread( PlaybackData* data )
                 CMedia* bimg = bg->image();
                 int64_t d = bimg->duration();
                 if ( img->duration() > d && d > 1 &&
-                        view->looping() != CMedia::kNoLoop )
+		     view->looping() != CMedia::kNoLoop )
                 {
                     LOG_WARNING( _( "Background image duration is too short.  "
                                     "Looping may not work correctly." ) );
                 }
-                // if ( fabs( img->play_fps() - bimg->play_fps() ) > 0.001 )
-                // {
-                //     char buf[256];
-                //     sprintf( buf, _( "Background image play fps ( %lg ) does "
-                //                      "not match foreground's ( %lg ).  Looping "
-                //                      "will not work correctly." ),
-                //              bimg->play_fps(), img->play_fps() );
-                //     LOG_WARNING( buf );
-                // }
+		
+                if ( std::abs( img->play_fps() - bimg->play_fps() ) > 0.001 )
+                {
+                    char buf[256];
+                    sprintf( buf, _( "Background image play fps ( %lg ) does "
+                                     "not match foreground's ( %lg ).  Looping "
+                                     "will not work correctly." ),
+                             bimg->play_fps(), img->play_fps() );
+                    LOG_WARNING( buf );
+                }
             }
         }
     }
