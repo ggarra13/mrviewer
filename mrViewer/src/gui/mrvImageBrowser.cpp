@@ -414,7 +414,7 @@ mrv::Reel ImageBrowser::reel( const char* name )
  */
 mrv::Reel ImageBrowser::reel( unsigned idx )
 {
-    assert( idx < _reels.size() );
+    assert0( idx < _reels.size() );
     if ( _reel == idx ) {
         change_reel();
         return _reels[ idx ];
@@ -1705,7 +1705,7 @@ void ImageBrowser::load_reel( const char* name )
 
     new_reel( reelname.c_str() );
 
-    load( sequences, false, "", true );
+    load( sequences, false, "", edl, true );
 
     mrv::Reel reel = current_reel();
 
@@ -1727,6 +1727,7 @@ void ImageBrowser::load( const stringArray& files,
                          const bool seqs,
                          const bool stereo,
                          const std::string bgfile,
+			 const bool edl,
                          const bool progress )
 {
     stringArray::const_iterator i = files.begin();
@@ -1767,7 +1768,7 @@ void ImageBrowser::load( const stringArray& files,
         retname = file;
     }
 
-    load( loadlist, stereo, bgfile, progress );
+    load( loadlist, stereo, bgfile, edl, progress );
 }
 
 /**
@@ -3041,10 +3042,12 @@ void ImageBrowser::seek( const int64_t tframe )
  */
 void ImageBrowser::frame( const int64_t f )
 {
-
-    uiMain->uiFrame->value( f );
-    uiMain->uiFrame->redraw();
-
+    if ( uiMain->uiFrame )
+    {
+	uiMain->uiFrame->value( f );
+	uiMain->uiFrame->redraw();
+    }
+    
     mrv::Timeline* t = timeline();
     if ( t )
     {

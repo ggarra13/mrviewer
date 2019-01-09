@@ -308,6 +308,11 @@ IF(NOT WIN32)
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
+  FIND_LIBRARY( Boost_chrono_LIBRARY
+    NAMES boost_chrono boost_chrono_vc100_mt_1_47
+    PATHS ${Boost_LIBRARY_DIRS}
+    )
+  
   FIND_LIBRARY( Boost_system_LIBRARY
     NAMES boost_system boost_system_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
@@ -326,6 +331,7 @@ IF(NOT WIN32)
 
   SET( BOOST_LIBRARIES
     ${Boost_locale_LIBRARY}
+    ${Boost_chrono_LIBRARY}
     ${Boost_system_LIBRARY}
     ${Boost_filesystem_LIBRARY}
     ${Boost_thread_LIBRARY}

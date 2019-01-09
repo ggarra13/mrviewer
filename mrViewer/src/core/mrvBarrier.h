@@ -98,8 +98,9 @@ public:
         }
 
         while (gen == m_generation)
-            CONDITION_WAIT( m_cond, m_mutex )
-            return false;
+            CONDITION_WAIT( m_cond, m_mutex );
+	
+	return false;
     }
 
 protected:

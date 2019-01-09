@@ -378,6 +378,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     using namespace fltk;
 
     int64_t j = frame;
+
+    
 //    if ( !img->has_video() && pos < j ) j = pos;
 
     int64_t max = frame + size;
@@ -606,7 +608,10 @@ void Timeline::draw()
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
                 boost::int64_t first = img->first_frame();
-                draw_cacheline( img, 1,
+		int64_t pos = 1;
+		if ( _edl )
+		    pos = m->position() - img->first_frame();
+                draw_cacheline( img, pos,
                                 img->duration() + img->start_number(),
                                 int64_t(minimum()), int64_t(maximum()),
                                 first, r );

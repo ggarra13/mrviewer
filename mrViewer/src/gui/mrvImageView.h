@@ -876,10 +876,10 @@ protected:
     bool          _showPixelRatio, _useLUT;
     float         _volume;
     FlipDirection _flip;
+    unsigned      _reel;      // <- reel of preframe 
     int64_t     _preframe;
     int64_t     _old_fg_frame;  // <- old frame used to stat fileroot's fg
     int64_t     _old_bg_frame;  // <- old frame used to stat fileroot's bg
-    unsigned    _reel;
     bool        _idle_callback;
 
     VRType        _vr;  // Cube/Spherical VR 360

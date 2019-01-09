@@ -97,6 +97,7 @@ public:
     mrv::Reel reel( const char* name );
     mrv::Reel reel( unsigned int idx );
     mrv::Reel reel_at( unsigned int idx );
+    unsigned reel_index() { return _reel; }
 
     mrv::media current_image();
 
@@ -145,6 +146,7 @@ public:
     void load( const stringArray& files, const bool seqs = true,
                const bool stereo = false,
                const std::string bgfile = "",
+	       const bool edl = false,
                const bool progressBar = false );
 
 

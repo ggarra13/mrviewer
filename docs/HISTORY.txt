@@ -1,3 +1,12 @@
+v4.4.0	 - Bug fixed BG playback of movies and sequences.  It is now
+	   possible to have a FG image and comp it on the background.
+	   This was a regression from some older version.
+	 - You currently cannot put an EDL in the background and have it
+	   play/loop correctly.  It will hang the viewer.
+	 - Added a shortcut to change pen size.  By default it is [,]
+	   when the action mode is draw or erase.
+	 
+
 v4.3.9   - Made ghosting be a global setting instead of a per shape
 	   setting.  This allows easily changing the previous/next
 	   ghosting value and see the result in real time.

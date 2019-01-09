@@ -66,7 +66,7 @@
 #define CONDITION_WAIT( cond, mutex )   cond.wait( lk_##mutex );
 
 #define CONDITION_TIMED_WAIT( cond, mutex, b ) \
-    cond.timed_wait( lk_##mutex, b );
+     cond.wait_until( lk_##mutex, b );
 
 #endif
 

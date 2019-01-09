@@ -346,15 +346,16 @@ int main( int argc, char** argv )
             // mrv::open_license( argv[0] );
             // mrv::checkout_license();
 
-            if ( opts.edl )
-            {
-		std::cerr << "set edl command line" << std::endl;
-		ui->uiReelWindow->uiBrowser->new_reel( "reel" );
-                ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
-                ui->uiTimeline->edl( true );
-            }
 	    
             load_files( opts.files, ui, false, opts.bgfile, opts.edl );
+	    
+            if ( opts.edl )
+            {
+		mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
+		std::cerr << "reel " << r->name << std::endl;
+		r->edl = true;
+                ui->uiTimeline->edl( true );
+            }
 
             if ( opts.stereo.size() > 1 )
             {

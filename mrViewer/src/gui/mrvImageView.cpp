@@ -1368,10 +1368,10 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
     _useLUT( false ),
     _volume( 1.0f ),
     _flip( kFlipNone ),
+    _reel( 0 ),
     _preframe( 1 ),
     _old_fg_frame( 0 ),
     _old_bg_frame( 0 ),
-    _reel( 0 ),
     _idle_callback( false ),
     _vr( kNoVR ),
     _timeout( NULL ),
@@ -2528,10 +2528,11 @@ bool ImageView::preload()
     mrv::Reel r = b->reel_at( _reel );
     if (!r) return false;
 
+    
     mrv::media fg;
     if ( r->edl )
     {
-        fg = r->media_at( _preframe );
+	fg = r->media_at( _preframe );
     }
     else
     {
@@ -2539,6 +2540,7 @@ bool ImageView::preload()
     }
 
     if ( !fg )  return false;
+    
 
     CMedia* img = fg->image();
     if (!img) return false;
@@ -2556,24 +2558,20 @@ bool ImageView::preload()
         img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel
-            _reel++;
-            _preframe = 1;
+	    if ( _reel + 1 < b->number_of_reels() )
+		_reel++;
+	    else
+		_reel = 0;
+	    _preframe = timeline()->display_minimum();
         }
         else
         {
             _preframe = fg->position() + img->duration(); // go to next image
         }
-        if ( _reel >= b->number_of_reels() )
-        {
-            _reel = 0;
-            _preframe = timeline()->display_minimum();
-            preload_cache_stop();
-            return false;
-        }
 
         return true;
     }
-
+			       
     int64_t f, first, last;
     if ( r->edl )
     {
@@ -2692,6 +2690,7 @@ bool ImageView::preload()
             img = m->image();
             seek( f + p ); // seek to new frame
 
+	    preload_cache_stop();
             // if ( img->has_video() )
             {
                 // start video/image playback
@@ -2753,7 +2752,7 @@ void ImageView::handle_commands()
         LoadInfo file = * (LoadInfo*) c.data;
         LoadList files;
         files.push_back( file );
-        b->load( files, false, "", false );
+        b->load( files, false, "", false, false );
         break;
     }
     case kChangeImage:
@@ -2786,7 +2785,6 @@ void ImageView::handle_commands()
     case kRemoveImage:
     {
         int* idx = (int*) c.data;
-        std::cerr << "CALL REMOVE IMAGE " << *idx << std::endl;
         b->remove(*idx);
         break;
     }
@@ -3410,7 +3408,7 @@ void ImageView::draw()
         xf += daw.x();
         yf -= daw.y();
 
-        _engine->draw_cursor( xf, yf );
+        _engine->draw_cursor( xf, yf, _mode );
     }
 
     TRACE("");
@@ -5660,7 +5658,24 @@ void ImageView::mouseDrag(int x,int y)
 int ImageView::keyDown(unsigned int rawkey)
 {
 
-    if ( kOpenImage.match( rawkey ) )
+    if ( _mode == kDraw || _mode == kErase )
+    {
+        double pen = uiMain->uiPaint->uiPenSize->value();
+        // Use exposure hotkey ( default [ and ] )
+        if ( kPenSizeMore.match( rawkey ) )
+        {
+            uiMain->uiPaint->uiPenSize->value( pen + 1.0 );
+            redraw();
+            return 1;
+        }
+        else if ( kPenSizeLess.match( rawkey ) )
+        {
+            uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
+            redraw();
+            return 1;
+        }
+    }
+    else if ( kOpenImage.match( rawkey ) )
     {
         open_cb( this, browser() );
         return 1;
@@ -5757,23 +5772,6 @@ int ImageView::keyDown(unsigned int rawkey)
         next_channel_cb(this, this);
         mouseMove( fltk::event_x(), fltk::event_y() );
         return 1;
-    }
-    else if ( _mode == kDraw || _mode == kErase )
-    {
-        double pen = uiMain->uiPaint->uiPenSize->value();
-        // Use exposure hotkey ( default [ and ] )
-        if ( kPenSizeMore.match( rawkey ) )
-        {
-            uiMain->uiPaint->uiPenSize->value( pen + 1.0 );
-            redraw();
-            return 1;
-        }
-        else if ( kPenSizeLess.match( rawkey ) )
-        {
-            uiMain->uiPaint->uiPenSize->value( pen - 1.0 );
-            redraw();
-            return 1;
-        }
     }
     else if ( kExposureMore.match( rawkey ) )
     {
@@ -6656,8 +6654,9 @@ int ImageView::handle(int event)
                 ( CMedia::preload_cache() ||
                   uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
         {
-            _reel = b->number_of_reels();
-            for ( unsigned i = 0; i < b->number_of_reels(); ++i )
+            unsigned reel = b->number_of_reels();
+	    unsigned i = b->reel_index();
+            for ( ; i < b->number_of_reels(); ++i )
             {
                 mrv::Reel r = b->reel_at( i );
                 if (!r) continue;
@@ -6669,17 +6668,20 @@ int ImageView::handle(int event)
                 if ( img && !img->is_cache_full() && !img->has_video() &&
 		     img->playback() == CMedia::kStopped )
                 {
-                    _reel = i;
+		    reel = i;
                     break;
                 }
             }
 
-            if ( _reel < b->number_of_reels() )
+            if ( reel < b->number_of_reels() )
+	    {
+		b->reel( (unsigned) reel );
                 preload_cache_start();
+	    }
         }
         else
         {
-            if ( _idle_callback && _reel >= b->number_of_reels() )
+            if ( _idle_callback && b->reel_index() >= b->number_of_reels() )
             {
                 fltk::remove_idle( (fltk::TimeoutHandler)static_preload,
                                    this );
@@ -6853,6 +6855,7 @@ void ImageView::clear_reel_cache( size_t idx )
 
     if ( r->edl )
     {
+	timeline()->edl( true );
         for ( size_t i = 0; i < r->images.size(); ++i )
         {
             mrv::media fg = r->images[i];
@@ -6884,7 +6887,6 @@ void ImageView::clear_reel_cache( size_t idx )
         }
     }
 
-    _reel = idx;
     _preframe = frame();
 }
 
@@ -6906,11 +6908,11 @@ void ImageView::flush_image( mrv::media fg )
 
 void ImageView::reset_caches()
 {
-    _reel = 0;
-    mrv::Reel r = browser()->reel_at( _reel );
+    mrv::Reel r = browser()->reel_at( fg_reel() );
     if ( r && r->edl )
     {
-        _preframe = 1;
+	timeline()->edl( true );
+        _preframe = frame();
     }
     else
     {
@@ -6928,11 +6930,11 @@ void ImageView::preload_cache_start()
 
     if (!_idle_callback)
     {
-        _reel = 0;
-        mrv::Reel r = browser()->reel_at( _reel );
+        mrv::Reel r = browser()->reel_at( fg_reel() );
         if ( r && r->edl )
         {
-            _preframe = 1;
+	    timeline()->edl( true );
+            _preframe = frame();
         }
         else
         {
@@ -6960,7 +6962,6 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
-        _reel = browser()->number_of_reels();
         _idle_callback = false;
     }
 }
@@ -7291,12 +7292,14 @@ void ImageView::channel( unsigned short c )
     // When changing channels, the cache may get thrown away.  Reflect that
     // in the timeline.
     timeline()->redraw();
-    if ( _reel >= browser()->number_of_reels() ) _reel = 0;
+    if ( browser()->reel_index() >= browser()->number_of_reels() )
+	browser()->reel( (unsigned)0 );
 
     mrv::Reel r = browser()->current_reel();
     if ( r && r->edl )
     {
-	_preframe = 1;
+	timeline()->edl( true );
+	_preframe = frame();
     }
     else
     {
@@ -7807,6 +7810,7 @@ void ImageView::foreground( mrv::media fg )
     CMedia::StereoInput  stereo_in = stereo_input();
     CMedia::StereoOutput stereo_out = stereo_output();
 
+    _fg_reel = browser()->reel_index();
 
     CMedia* img = NULL;
     if ( fg )
@@ -8349,9 +8353,6 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-    if ( uiMain && uiMain->uiFrame )
-        uiMain->uiFrame->frame(f);
-
     // Redraw browser to update thumbnail
     mrv::ImageBrowser* b = browser();
     if (b) b->frame( f );
@@ -8675,7 +8676,6 @@ void ImageView::play( const CMedia::Playback dir )
         return;
     }
 
-
     mrv::media fg = foreground();
     if (!fg) return;
 
@@ -8701,17 +8701,16 @@ void ImageView::play( const CMedia::Playback dir )
     double fps = uiMain->uiFPS->value();
 
     create_timeout( 0.5/fps );
-
+    
+    if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
+	 !CMedia::cache_active() ||
+	 !( CMedia::preload_cache() ||
+	    uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
     {
-        if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
-                !CMedia::cache_active() ||
-                !( CMedia::preload_cache() ||
-                   uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
-        {
-	    preload_cache_stop();
-            img->play( dir, uiMain, true );
-        }
+	preload_cache_stop();
+	img->play( dir, uiMain, true );
     }
+    
 
 
     if ( bg && bg != fg )
@@ -8769,6 +8768,7 @@ void ImageView::stop()
     if ( playback() == CMedia::kStopped ) {
         return;
     }
+
 
     _playback = CMedia::kStopped;
 

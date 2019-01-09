@@ -130,7 +130,8 @@ public:
                             const int y, const char* text );
     virtual void draw_text(const int x, const int y, const char* text );
 
-    virtual void draw_cursor( const double x, const double y );
+    virtual void draw_cursor( const double x, const double y,
+			      ImageView::Mode mode = ImageView::kDraw );
 
     virtual void draw_annotation( const GLShapeList& shapes );
 

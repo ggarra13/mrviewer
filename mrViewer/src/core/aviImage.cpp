@@ -3724,6 +3724,7 @@ void aviImage::debug_video_stores(const int64_t frame,
     {
         video_cache_t::const_iterator end = last - 1;
 
+	std::cerr << std::dec;
         std::cerr << (*iter)->frame() << "-"
                   << (*end)->frame()
                   << std::endl;
@@ -3736,6 +3737,7 @@ void aviImage::debug_video_stores(const int64_t frame,
 
     if ( dtail )
     {
+	std::cerr << std::dec;
         for ( ; iter != last; ++iter )
         {
             int64_t f = (*iter)->frame();

@@ -83,7 +83,7 @@ const char* kModule = "play";
 
 
 
-// #define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -232,6 +232,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     int64_t mx = int64_t(timeline->display_maximum());
     int64_t mn = int64_t(timeline->display_minimum());
 
+
     // int64_t offset = img->first_frame() - img->start_frame();
     // last = last + offset;
     // first = first + offset;
@@ -247,14 +248,19 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         first = reel->location(img);
         last  = first + img->duration() - 1;
 
+	
+	
         if ( mx < last )  last = mx;
         if ( mn > first ) first = mn;
 
+
         last = reel->global_to_local( last );
+
         img->loop_end( last );
         first = reel->global_to_local( first );
+	
         img->loop_start( first );
-
+	
     }
     else
     {
@@ -287,7 +293,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
     }
     else if ( frame < first )
     {
-        return CMedia::kDecodeLoopStart;
+	return CMedia::kDecodeLoopStart;
     }
 
     return CMedia::kDecodeOK;
@@ -354,7 +360,7 @@ EndStatus handle_loop( boost::int64_t& frame,
         if ( reel->edl )
         {
             boost::int64_t f = frame;
-
+	    
             f -= img->first_frame();
             f += reel->location(img);
 
@@ -746,7 +752,8 @@ void audio_thread( PlaybackData* data )
         frame += step;
     }
 
-
+    Mutex& mtx = img->audio_mutex();
+    SCOPED_LOCK( mtx );
     CMedia::Barrier* barrier = img->loop_barrier();
     if ( barrier ) barrier->notify_all();
     barrier = img->fg_bg_barrier();
@@ -897,16 +904,24 @@ void video_thread( PlaybackData* data )
 
     if (!fg)
     {
-        mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
+	mrv::Reel bgreel = browser->reel_at( view->bg_reel() );
+	if ( bgreel && bgreel->images.size() > 1 && bgreel->edl )
+	{
+	    LOG_ERROR( _("Background reel has several images and has EDL turned on.  This is not allowed.  Turning edl off.") );
+	    bgreel->edl = false;
+	}
+
+	mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
         int64_t d = reel->duration();
         if ( fgreel->duration() > d && d > 1 &&
-                view->looping() != CMedia::kNoLoop )
+	     view->looping() != CMedia::kNoLoop )
         {
             LOG_WARNING( _( "Background reel duration is too short.  "
                             "Looping may not work correctly." ) );
         }
-        else if ( fgreel == reel )
+        else // if ( fgreel == reel )
         {
+
             mrv::media fg = view->foreground();
             mrv::media bg = view->background();
             if ( fg && bg )
@@ -946,8 +961,7 @@ void video_thread( PlaybackData* data )
 
 #ifdef DEBUG_THREADS
     LOG_INFO( "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped() << " view playback "
-              << view->playback() << " frame " << frame << " timeline frame "
-              << timeline->value() );
+              << view->playback() << " frame " << frame );
 #endif
 
 
@@ -968,6 +982,9 @@ void video_thread( PlaybackData* data )
 
         //TRACE( img->name() << " decode image " << frame );
         CMedia::DecodeStatus status = img->decode_video( frame );
+
+	// img->debug_video_stores( frame, img->name().c_str(), true );
+	// img->debug_video_packets( frame, img->name().c_str(), true );
 
 
         switch( status )
@@ -1165,12 +1182,15 @@ void video_thread( PlaybackData* data )
         if ( reel->edl && fg && img->is_left_eye() )
         {
             int64_t f = frame + reel->location(img) - img->first_frame();
-            view->frame( f );
+	    view->frame( f );
         }
 
         frame += step;
     }
 
+    Mutex& mtx = img->video_mutex();
+    SCOPED_LOCK( mtx );
+    
     CMedia::Barrier* barrier = img->loop_barrier();
     if ( barrier ) barrier->notify_all();
     barrier = img->fg_bg_barrier();

@@ -214,7 +214,8 @@ public:
     // Draw film mask
     virtual void draw_mask(const float pct) = 0;
 
-    virtual void draw_cursor( const double x, const double y ) = 0;
+    virtual void draw_cursor( const double x, const double y,
+			      ImageView::Mode mode ) = 0;
 
     virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 

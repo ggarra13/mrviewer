@@ -2407,6 +2407,7 @@ void CMedia::play(const CMedia::Playback dir,
         }
         else if ( _fg_bg_barrier )
         {
+	    _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
 
@@ -4098,6 +4099,7 @@ void CMedia::debug_video_packets(const int64_t frame,
     }
     else
     {
+	std::cerr << std::dec;
         if ( _video_packets.is_loop_end( *iter ) ||
 	     _video_packets.is_loop_start( *iter ) )
         {
@@ -4108,22 +4110,22 @@ void CMedia::debug_video_packets(const int64_t frame,
             if ( stream )
                 std::cerr << pts2frame( stream, (*iter).dts ) - _frame_offset;
             else
-                std::cerr << (*iter).dts;
+                std::cerr << (*iter).dts - _frame_offset;
         }
 
         std::cerr << '-';
 
         if ( _video_packets.is_loop_end( *(last-1) ) ||
-                _video_packets.is_loop_start( *(last-1) ) )
+	     _video_packets.is_loop_start( *(last-1) ) )
         {
-            std::cerr << (*(last-1)).dts;
+            std::cerr << (*(last-1)).dts - _frame_offset;
         }
         else
         {
             if ( stream )
                 std::cerr << pts2frame( stream, (*(last-1)).dts ) - _frame_offset;
             else
-                std::cerr << (*(last-1)).dts;
+                std::cerr << (*(last-1)).dts - _frame_offset;
         }
 
         std::cerr << std::endl;
@@ -4193,7 +4195,7 @@ void CMedia::debug_video_packets(const int64_t frame,
                 if ( f == frame )  std::cerr << "S";
                 if ( f == _dts )   std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
-                std::cerr << f << " ";
+                std::cerr << f - _frame_offset << " ";
             }
         }
         std::cerr << std::endl << std::endl;

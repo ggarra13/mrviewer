@@ -1115,7 +1115,8 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
     glPopAttrib();
 }
 
-void GLEngine::draw_cursor( const double x, const double y )
+void GLEngine::draw_cursor( const double x, const double y,
+			    ImageView::Mode mode )
 {
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity();
@@ -1141,7 +1142,9 @@ void GLEngine::draw_cursor( const double x, const double y )
 
     glColor4f( 1, 0, 0, 1 );
 
-    glCircle( Point(x,y), _view->main()->uiPaint->uiPenSize->value() );
+    double pct = 1.0;
+    if ( mode == ImageView::kDraw ) pct = 0.5;
+    glCircle( Point(x,y), _view->main()->uiPaint->uiPenSize->value() * pct );
 }
 
 void GLEngine::draw_square_stencil( const int x, const int y,
