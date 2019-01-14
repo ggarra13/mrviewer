@@ -79,7 +79,7 @@ unsigned EDLGroup::add_media_track( int r )
     if (e >= 2) return 0;
 
     mrv::media_track* o = new mrv::media_track(x(), y() + 94 * e,
-            w(), kTrackHeight);
+					       w(), kTrackHeight);
 
     o->main( timeline()->main() );
     this->add( o );

@@ -709,12 +709,12 @@ void audio_thread( PlaybackData* data )
             barrier = img->fg_bg_barrier();
             if ( barrier )
             {
-                LOG_INFO( img->name() << " FG/BG BARRIER " << barrier
-                          << " AUDIO LOCK gen: "
-                          << barrier->generation()
-                          << " count: " << barrier->count()
-                          << " threshold: " << barrier->threshold()
-                          << " used: " << barrier->used() );
+                // LOG_INFO( img->name() << " FG/BG BARRIER " << barrier
+                //           << " AUDIO LOCK gen: "
+                //           << barrier->generation()
+                //           << " count: " << barrier->count()
+                //           << " threshold: " << barrier->threshold()
+                //           << " used: " << barrier->used() );
                 bool ok = barrier->wait();
                 // LOG_INFO( img->name() << " BARRIER " << barrier
                 //           << " AUDIO FG/BG PASS gen: "
@@ -1052,11 +1052,11 @@ void video_thread( PlaybackData* data )
             barrier = img->fg_bg_barrier();
             if ( barrier )
             {
-                LOG_WARNING( img->name() << " FG/BG BARRIER " << barrier << " VIDEO FG/BG LOCK gen: "
-                     << barrier->generation()
-                     << " count: " << barrier->count()
-                     << " threshold: " << barrier->threshold()
-                     << " used: " << barrier->used() );
+                // LOG_WARNING( img->name() << " FG/BG BARRIER " << barrier << " VIDEO FG/BG LOCK gen: "
+                //      << barrier->generation()
+                //      << " count: " << barrier->count()
+                //      << " threshold: " << barrier->threshold()
+                //      << " used: " << barrier->used() );
                 bool ok = barrier->wait();
                 // LOG_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG PASS gen: "
                 //      << barrier->generation()
@@ -1304,18 +1304,18 @@ void decode_thread( PlaybackData* data )
 
             if ( barrier )
             {
-                DBG( img->name() << " BARRIER DECODE WAIT      gen: "
-                     << barrier->generation()
-                     << " count: " << barrier->count()
-                     << " threshold: " << barrier->threshold()
-                     << " used: " << barrier->used() );
+                // DBG( img->name() << " BARRIER DECODE WAIT      gen: "
+                //      << barrier->generation()
+                //      << " count: " << barrier->count()
+                //      << " threshold: " << barrier->threshold()
+                //      << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DBG( img->name() << " BARRIER DECODE LOCK PASS gen: "
-                     << barrier->generation()
-                     << " count: " << barrier->count()
-                     << " threshold: " << barrier->threshold()
-                     << " used: " << barrier->used() );
+                // DBG( img->name() << " BARRIER DECODE LOCK PASS gen: "
+                //      << barrier->generation()
+                //      << " count: " << barrier->count()
+                //      << " threshold: " << barrier->threshold()
+                //      << " used: " << barrier->used() );
             }
 
             img->clear_packets();
