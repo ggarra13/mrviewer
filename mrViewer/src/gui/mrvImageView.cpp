@@ -2690,7 +2690,7 @@ bool ImageView::preload()
             img = m->image();
             seek( f + p ); // seek to new frame
 
-	    preload_cache_stop();
+	    // preload_cache_stop();
             // if ( img->has_video() )
             {
                 // start video/image playback
@@ -7862,7 +7862,7 @@ void ImageView::foreground( mrv::media fg )
         if ( img )
         {
             if ( ! img->is_cache_full() && !_idle_callback &&
-                    CMedia::cache_active() && CMedia::preload_cache() )
+		 CMedia::cache_active() && CMedia::preload_cache() )
                 preload_cache_start();
 
             // char buf[1024];

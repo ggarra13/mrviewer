@@ -151,6 +151,7 @@ bool oiioImage::fetch( const boost::int64_t frame )
 
     std::string fmt = in->format_name();
     fmt = "OIIO (" + fmt + ")";
+    free( _format );
     _format = strdup( fmt.c_str() );
 
     if ( _level < 0 )

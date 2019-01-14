@@ -2405,11 +2405,15 @@ void CMedia::play(const CMedia::Playback dir,
         {
             _fg_bg_barrier = new Barrier( valid_v + valid_a );
         }
-        else if ( _fg_bg_barrier )
+        else if ( !fg && _fg_bg_barrier )
         {
 	    _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
+	else
+	{
+	    _fg_bg_barrier = NULL;
+	}
 
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
@@ -2508,10 +2512,12 @@ void CMedia::stop(const bool bg)
     _loop_barrier = NULL;
     delete _stereo_barrier;
     _stereo_barrier = NULL;
-    if ( bg && _fg_bg_barrier ) {
-	delete _fg_bg_barrier;
-	_fg_bg_barrier = NULL;
-    }
+    // if ( bg && _fg_bg_barrier ) {
+    // 	std::cerr << "++++++++ DELETE _fg_bg_barrier " << _fg_bg_barrier
+    // 		  << std::endl;
+    // 	delete _fg_bg_barrier;
+    // 	_fg_bg_barrier = NULL;
+    // }
     
     close_audio();
 

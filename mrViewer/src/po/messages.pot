@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-01-13 22:53-0300\n"
+"POT-Creation-Date: 2019-01-14 20:40-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgid ""
 "No audio or video stream in file"
 msgstr ""
 
-#: core/CMedia.cpp:3122 core/CMedia.cpp:3206
+#: core/CMedia.cpp:3128 core/CMedia.cpp:3212
 msgid ""
 "\n"
 "\n"
@@ -66,11 +66,11 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1017
+#: core/mrvPlayback.cpp:1032
 msgid " - Decode of image frame "
 msgstr ""
 
-#: core/mrvPlayback.cpp:671
+#: core/mrvPlayback.cpp:680
 msgid " - decode Error audio frame "
 msgstr ""
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid " already created: "
 msgstr ""
 
-#: core/CMedia.cpp:3956
+#: core/CMedia.cpp:3962
 msgid " as default"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid " for frame "
 msgstr ""
 
-#: core/CMedia.cpp:3123 core/CMedia.cpp:3207
+#: core/CMedia.cpp:3129 core/CMedia.cpp:3213
 msgid " for stream #"
 msgstr ""
 
@@ -200,11 +200,11 @@ msgstr ""
 msgid " instead"
 msgstr ""
 
-#: core/CMedia.cpp:3823
+#: core/CMedia.cpp:3829
 msgid " is missing."
 msgstr ""
 
-#: core/CMedia.cpp:3844
+#: core/CMedia.cpp:3850
 msgid " is missing. Choosing "
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 msgid " not yet supported"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1018
+#: core/mrvPlayback.cpp:1033
 msgid " returned "
 msgstr ""
 
@@ -318,11 +318,11 @@ msgstr ""
 msgid "' for writing. Reason: "
 msgstr ""
 
-#: core/CMedia.cpp:3956
+#: core/CMedia.cpp:3962
 msgid "' from bitdepth "
 msgstr ""
 
-#: core/CMedia.cpp:3910
+#: core/CMedia.cpp:3916
 msgid "' from filename"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr ""
 msgid ", sample rate "
 msgstr ""
 
-#: core/CMedia.cpp:3123 core/CMedia.cpp:3207
+#: core/CMedia.cpp:3129 core/CMedia.cpp:3213
 msgid ", type "
 msgstr ""
 
@@ -544,7 +544,7 @@ msgstr ""
 msgid "15"
 msgstr ""
 
-#: core/CMedia.cpp:3928
+#: core/CMedia.cpp:3934
 msgid "16 bits"
 msgstr ""
 
@@ -636,7 +636,7 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-#: core/CMedia.cpp:3935
+#: core/CMedia.cpp:3941
 msgid "32 bits"
 msgstr ""
 
@@ -747,7 +747,7 @@ msgstr ""
 msgid "8 bit Caches"
 msgstr ""
 
-#: core/CMedia.cpp:3921
+#: core/CMedia.cpp:3927
 msgid "8 bits"
 msgstr ""
 
@@ -785,7 +785,7 @@ msgstr ""
 msgid ": Error "
 msgstr ""
 
-#: core/oiioImage.cpp:417
+#: core/oiioImage.cpp:418
 msgid ": Unknown pixel type"
 msgstr ""
 
@@ -1276,19 +1276,19 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: core/mrvPlayback.cpp:957
+#: core/mrvPlayback.cpp:971
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:964
+#: core/mrvPlayback.cpp:978
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
 "Looping will not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:941
+#: core/mrvPlayback.cpp:955
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 
@@ -2535,39 +2535,39 @@ msgstr ""
 msgid "Decimal"
 msgstr ""
 
-#: core/CMedia.cpp:171 core/CMedia.cpp:4249
+#: core/CMedia.cpp:171 core/CMedia.cpp:4255
 msgid "Decode Buffer Full"
 msgstr ""
 
-#: core/CMedia.cpp:165 core/CMedia.cpp:4231
+#: core/CMedia.cpp:165 core/CMedia.cpp:4237
 msgid "Decode Done"
 msgstr ""
 
-#: core/CMedia.cpp:166 core/CMedia.cpp:4234
+#: core/CMedia.cpp:166 core/CMedia.cpp:4240
 msgid "Decode Error"
 msgstr ""
 
-#: core/CMedia.cpp:170 core/CMedia.cpp:4246
+#: core/CMedia.cpp:170 core/CMedia.cpp:4252
 msgid "Decode Loop End"
 msgstr ""
 
-#: core/CMedia.cpp:169 core/CMedia.cpp:4243
+#: core/CMedia.cpp:169 core/CMedia.cpp:4249
 msgid "Decode Loop Start"
 msgstr ""
 
-#: core/CMedia.cpp:163 core/CMedia.cpp:4225
+#: core/CMedia.cpp:163 core/CMedia.cpp:4231
 msgid "Decode Missing Frame"
 msgstr ""
 
-#: core/CMedia.cpp:167 core/CMedia.cpp:4237
+#: core/CMedia.cpp:167 core/CMedia.cpp:4243
 msgid "Decode Missing Samples"
 msgstr ""
 
-#: core/CMedia.cpp:168 core/CMedia.cpp:4240
+#: core/CMedia.cpp:168 core/CMedia.cpp:4246
 msgid "Decode No Stream"
 msgstr ""
 
-#: core/CMedia.cpp:164 core/CMedia.cpp:4228
+#: core/CMedia.cpp:164 core/CMedia.cpp:4234
 msgid "Decode OK"
 msgstr ""
 
@@ -3434,7 +3434,7 @@ msgstr ""
 msgid "Go to the parent directory"
 msgstr ""
 
-#: core/CMedia.cpp:3910 core/CMedia.cpp:3955
+#: core/CMedia.cpp:3916 core/CMedia.cpp:3961
 msgid "Got colorspace '"
 msgstr ""
 
@@ -3813,7 +3813,7 @@ msgstr ""
 msgid "ImageBrowser::remove idx value ("
 msgstr ""
 
-#: core/oiioImage.cpp:470
+#: core/oiioImage.cpp:471
 msgid "ImageBufAlgo::make_texture failed."
 msgstr ""
 
@@ -3920,7 +3920,7 @@ msgstr ""
 msgid "Invalid index "
 msgstr ""
 
-#: core/oiioImage.cpp:174
+#: core/oiioImage.cpp:175
 msgid "Invalid mipmap level"
 msgstr ""
 
@@ -4451,7 +4451,7 @@ msgstr ""
 msgid "Mipmap Level"
 msgstr ""
 
-#: core/oiioImage.cpp:166 core/exrImage.cpp:1379
+#: core/oiioImage.cpp:167 core/exrImage.cpp:1379
 #: gui/mrvImageInformation.cpp:2404
 msgid "Mipmap Levels"
 msgstr ""
@@ -4759,7 +4759,7 @@ msgstr ""
 msgid "Not enough compressed data"
 msgstr ""
 
-#: core/oiioImage.cpp:327 core/aviImage.cpp:1087
+#: core/oiioImage.cpp:328 core/aviImage.cpp:1087
 msgid "Not enough memory for image"
 msgstr ""
 
@@ -6813,7 +6813,7 @@ msgstr ""
 msgid "Toggle Waveform Window"
 msgstr ""
 
-#: core/oiioImage.cpp:433
+#: core/oiioImage.cpp:434
 msgid "Too many channels in image.  Saving RGB only"
 msgstr ""
 
@@ -7023,11 +7023,11 @@ msgstr ""
 msgid "Unknown node in GradeRef"
 msgstr ""
 
-#: core/oiioImage.cpp:305
+#: core/oiioImage.cpp:306
 msgid "Unknown number of channels"
 msgstr ""
 
-#: core/oiioImage.cpp:286 core/iffImage.cpp:604
+#: core/oiioImage.cpp:287 core/iffImage.cpp:604
 msgid "Unknown pixel type"
 msgstr ""
 
@@ -7766,7 +7766,7 @@ msgstr ""
 msgid "You cannot load a reel as a stereo image."
 msgstr ""
 
-#: core/oiioImage.cpp:254
+#: core/oiioImage.cpp:255
 msgid "Z"
 msgstr ""
 
@@ -7796,7 +7796,7 @@ msgstr ""
 msgid "ac3"
 msgstr ""
 
-#: core/CMedia.cpp:2884 core/CMedia.cpp:2915
+#: core/CMedia.cpp:2890 core/CMedia.cpp:2921
 msgid "audio"
 msgstr ""
 
@@ -7829,15 +7829,15 @@ msgstr ""
 msgid "change_image index "
 msgstr ""
 
-#: core/CMedia.cpp:3179 core/CMedia.cpp:3263
+#: core/CMedia.cpp:3185 core/CMedia.cpp:3269
 msgid "clean effects"
 msgstr ""
 
-#: core/CMedia.cpp:3167 core/CMedia.cpp:3251
+#: core/CMedia.cpp:3173 core/CMedia.cpp:3257
 msgid "comment"
 msgstr ""
 
-#: core/CMedia.cpp:2887 core/CMedia.cpp:2918
+#: core/CMedia.cpp:2893 core/CMedia.cpp:2924
 msgid "data"
 msgstr ""
 
@@ -7849,15 +7849,15 @@ msgstr ""
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
-#: core/CMedia.cpp:3161 core/CMedia.cpp:3245
+#: core/CMedia.cpp:3167 core/CMedia.cpp:3251
 msgid "default"
 msgstr ""
 
-#: core/CMedia.cpp:3948
+#: core/CMedia.cpp:3954
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr ""
 
-#: core/CMedia.cpp:3163 core/CMedia.cpp:3247
+#: core/CMedia.cpp:3169 core/CMedia.cpp:3253
 msgid "dub"
 msgstr ""
 
@@ -7883,7 +7883,7 @@ msgstr ""
 msgid "float (32-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:3173 core/CMedia.cpp:3257
+#: core/CMedia.cpp:3179 core/CMedia.cpp:3263
 msgid "forced"
 msgstr ""
 
@@ -7900,7 +7900,7 @@ msgstr ""
 msgid "half float (16-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:3943
+#: core/CMedia.cpp:3949
 msgid "half/float"
 msgstr ""
 
@@ -7912,7 +7912,7 @@ msgstr ""
 msgid "hdtv"
 msgstr ""
 
-#: core/CMedia.cpp:3175 core/CMedia.cpp:3259
+#: core/CMedia.cpp:3181 core/CMedia.cpp:3265
 msgid "hearing impaired"
 msgstr ""
 
@@ -7925,7 +7925,7 @@ msgstr ""
 msgid "is a Softimage file, but not a PIC file."
 msgstr ""
 
-#: core/CMedia.cpp:3171 core/CMedia.cpp:3255
+#: core/CMedia.cpp:3177 core/CMedia.cpp:3261
 msgid "karaoke"
 msgstr ""
 
@@ -7942,7 +7942,7 @@ msgstr ""
 msgid "listen to socket failed\n"
 msgstr ""
 
-#: core/CMedia.cpp:3169 core/CMedia.cpp:3253
+#: core/CMedia.cpp:3175 core/CMedia.cpp:3259
 msgid "lyrics"
 msgstr ""
 
@@ -8061,7 +8061,7 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr ""
 
-#: core/CMedia.cpp:3165 core/CMedia.cpp:3249
+#: core/CMedia.cpp:3171 core/CMedia.cpp:3255
 msgid "original"
 msgstr ""
 
@@ -8094,7 +8094,7 @@ msgstr ""
 msgid "store_audio: Invalid data"
 msgstr ""
 
-#: core/CMedia.cpp:2890 core/CMedia.cpp:2921
+#: core/CMedia.cpp:2896 core/CMedia.cpp:2927
 msgid "subtitle"
 msgstr ""
 
@@ -8106,11 +8106,11 @@ msgstr ""
 msgid "tv title"
 msgstr ""
 
-#: core/CMedia.cpp:3140 core/CMedia.cpp:3224
+#: core/CMedia.cpp:3146 core/CMedia.cpp:3230
 msgid "und"
 msgstr ""
 
-#: core/CMedia.cpp:2893 core/CMedia.cpp:2924 core/CMedia.cpp:3915
+#: core/CMedia.cpp:2899 core/CMedia.cpp:2930 core/CMedia.cpp:3921
 #: core/wandImage.cpp:684
 msgid "unknown"
 msgstr ""
@@ -8127,11 +8127,11 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:2881 core/CMedia.cpp:2912
+#: core/CMedia.cpp:2887 core/CMedia.cpp:2918
 msgid "video"
 msgstr ""
 
-#: core/CMedia.cpp:3177 core/CMedia.cpp:3261
+#: core/CMedia.cpp:3183 core/CMedia.cpp:3267
 msgid "visual impaired"
 msgstr ""
 
