@@ -2487,7 +2487,7 @@ void CMedia::stop(const bool bg)
     if ( _loop_barrier )  _loop_barrier->notify_all();
     DBG( name() << " Notify stereo barrier" );
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
-    if ( bg && _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
@@ -2508,9 +2508,11 @@ void CMedia::stop(const bool bg)
     _loop_barrier = NULL;
     delete _stereo_barrier;
     _stereo_barrier = NULL;
-    if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
-    _fg_bg_barrier = NULL;
-
+    if ( bg && _fg_bg_barrier ) {
+	delete _fg_bg_barrier;
+	_fg_bg_barrier = NULL;
+    }
+    
     close_audio();
 
     DBG( name() << " Clear packets" );
@@ -3753,8 +3755,8 @@ bool CMedia::find_image( const int64_t frame )
     {
         if ( file != _filename )
         {
-            SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _data_mutex );
+            SCOPED_LOCK( _mutex );
             should_load = true;
             free( _filename );
             _filename = strdup( file.c_str() );
@@ -3774,10 +3776,10 @@ bool CMedia::find_image( const int64_t frame )
     {
         if ( fs::exists(file) )
         {
+            SCOPED_LOCK( _data_mutex );
             SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );
-            SCOPED_LOCK( _data_mutex );
             if ( fetch( f ) )
             {
                 cache( _hires );
