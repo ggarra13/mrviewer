@@ -8874,6 +8874,8 @@ void ImageView::volume( float v )
 
 CMedia::Looping ImageView::looping() const
 {
+    if ( !uiMain || !uiMain->uiLoopMode )
+	return CMedia::kUnknownLoop;
     return (CMedia::Looping) uiMain->uiLoopMode->value();
 }
 

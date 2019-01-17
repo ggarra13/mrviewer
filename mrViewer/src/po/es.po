@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-01-17 11:06-0300\n"
+"POT-Creation-Date: 2019-01-17 13:02-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -82,7 +82,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1031
+#: core/mrvPlayback.cpp:1038
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
@@ -259,7 +259,7 @@ msgstr " no encontrado, eligiendo "
 msgid " not yet supported"
 msgstr " no soportado aún"
 
-#: core/mrvPlayback.cpp:1032
+#: core/mrvPlayback.cpp:1039
 msgid " returned "
 msgstr " retornó "
 
@@ -1348,7 +1348,7 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:971
+#: core/mrvPlayback.cpp:978
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
@@ -1356,7 +1356,7 @@ msgstr ""
 "funcionar correctamente."
 
 #
-#: core/mrvPlayback.cpp:978
+#: core/mrvPlayback.cpp:985
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1365,11 +1365,19 @@ msgstr ""
 "Los cps de la imagen de fondo ( %lg ) no es igual a la del frente ( %lg ). "
 "Repetir en ciclos no funcionará correctamente."
 
-#: core/mrvPlayback.cpp:955
+#: core/mrvPlayback.cpp:962
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
 "correctamente."
+
+#: core/mrvPlayback.cpp:952
+msgid ""
+"Background reel has several images and has EDL turned on.  This is not "
+"allowed.  Turning edl off."
+msgstr ""
+"El carrete de fondo tiene varias imágenes y EDL activado.  Esto no es "
+"permitido.  Apagando edl."
 
 #: core/mrSocket.cpp:99 core/mrSocket.cpp:152
 msgid "Bad port number "
@@ -1418,7 +1426,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:8916
+#: gui/mrvImageView.cpp:8918
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -3424,7 +3432,7 @@ msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4276
-#: gui/mrvImageView.cpp:8914
+#: gui/mrvImageView.cpp:8916
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -7382,7 +7390,7 @@ msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:8915
+#: gui/mrvImageView.cpp:8917
 msgid "Top"
 msgstr "Superior"
 
@@ -8925,13 +8933,6 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4428
 msgid "xyY CIE xyY"
 msgstr ""
-
-#~ msgid ""
-#~ "Background reel has several images and has EDL turned on.  This is not "
-#~ "allowed.  Turning edl off."
-#~ msgstr ""
-#~ "El carrete de fondo tiene varias imágenes y EDL activado.  Esto no es "
-#~ "permitido.  Apagando edl."
 
 #~ msgid "Show next frame shapes ghosted."
 #~ msgstr "Mostrar el fantasma de las figuras del proximo cuadro"

@@ -86,7 +86,7 @@ const char* kModule = "play";
 #define LOGT_INFO(x) LOG_INFO( get_thread_id() << " " << x );
 #define LOGT_ERROR(x) LOG_ERROR( get_thread_id() << " " << x );
 
-#define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -513,17 +513,17 @@ EndStatus handle_loop( boost::int64_t& frame,
                     {
 			if ( img->fg_bg_barrier() )
 			{
-			    LOGT_WARNING( img->name() << " img barrier "
-			    		 << img->fg_bg_barrier() << std::endl
-			    		 << "passed to " << " "
-			    		 << next->name()
-			    		 );
+			    // LOGT_WARNING( img->name() << " img barrier "
+			    // 		 << img->fg_bg_barrier() << std::endl
+			    // 		 << "passed to " << " "
+			    // 		 << next->name()
+			    // 		 );
 			    CMedia::Barrier* b = img->fg_bg_barrier();
 			    next->fg_bg_barrier( b );
 			    img->fg_bg_barrier( NULL );
-			    LOGT_WARNING( next->name() << " " << (fg ? "FG" : "BG")
-					 << " next barrier "
-					 << next->fg_bg_barrier() );
+			    // LOGT_WARNING( next->name() << " " << (fg ? "FG" : "BG")
+			    // 		 << " next barrier "
+			    // 		 << next->fg_bg_barrier() );
 			}
                         next->seek( f );
                         next->do_seek();
@@ -946,6 +946,13 @@ void video_thread( PlaybackData* data )
 
     if (!fg)
     {
+	mrv::Reel bgreel = browser->reel_at( view->bg_reel() );
+	if ( bgreel && bgreel->images.size() > 1 && bgreel->edl )
+	{
+	    LOGT_ERROR( _("Background reel has several images and has EDL turned on.  This is not allowed.  Turning edl off.") );
+	    bgreel->edl = false;
+	}
+
 
 	mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
         int64_t d = reel->duration();

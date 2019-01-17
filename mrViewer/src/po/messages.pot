@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-01-17 11:06-0300\n"
+"POT-Creation-Date: 2019-01-17 13:02-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1031
+#: core/mrvPlayback.cpp:1038
 msgid " - Decode of image frame "
 msgstr ""
 
@@ -232,7 +232,7 @@ msgstr ""
 msgid " not yet supported"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1032
+#: core/mrvPlayback.cpp:1039
 msgid " returned "
 msgstr ""
 
@@ -1276,20 +1276,26 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: core/mrvPlayback.cpp:971
+#: core/mrvPlayback.cpp:978
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:978
+#: core/mrvPlayback.cpp:985
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
 "Looping will not work correctly."
 msgstr ""
 
-#: core/mrvPlayback.cpp:955
+#: core/mrvPlayback.cpp:962
 msgid "Background reel duration is too short.  Looping may not work correctly."
+msgstr ""
+
+#: core/mrvPlayback.cpp:952
+msgid ""
+"Background reel has several images and has EDL turned on.  This is not "
+"allowed.  Turning edl off."
 msgstr ""
 
 #: core/mrSocket.cpp:99 core/mrSocket.cpp:152
@@ -1338,7 +1344,7 @@ msgstr ""
 msgid "Boost exception: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:8916
+#: gui/mrvImageView.cpp:8918
 msgid "Bottom"
 msgstr ""
 
@@ -3217,7 +3223,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4276
-#: gui/mrvImageView.cpp:8914
+#: gui/mrvImageView.cpp:8916
 msgid "Frame"
 msgstr ""
 
@@ -6821,7 +6827,7 @@ msgstr ""
 msgid "Too much audio used:"
 msgstr ""
 
-#: gui/mrvImageView.cpp:8915
+#: gui/mrvImageView.cpp:8917
 msgid "Top"
 msgstr ""
 
