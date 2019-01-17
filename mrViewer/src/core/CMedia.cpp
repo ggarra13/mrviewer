@@ -3735,7 +3735,6 @@ bool CMedia::find_image( const int64_t frame )
 
         _frame = frame;
 
-        SCOPED_LOCK( _data_mutex );
         free(_filename);
         _filename = NULL;
 
@@ -3754,7 +3753,6 @@ bool CMedia::find_image( const int64_t frame )
         if ( file != _filename )
         {
             SCOPED_LOCK( _mutex );
-            SCOPED_LOCK( _data_mutex );
             should_load = true;
             free( _filename );
             _filename = strdup( file.c_str() );
@@ -3762,7 +3760,6 @@ bool CMedia::find_image( const int64_t frame )
     }
     else
     {
-        SCOPED_LOCK( _data_mutex );
         SCOPED_LOCK( _mutex );
         _filename = strdup( file.c_str() );
         should_load = true;
@@ -3777,7 +3774,6 @@ bool CMedia::find_image( const int64_t frame )
             SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );
-            SCOPED_LOCK( _data_mutex );
             if ( fetch( f ) )
             {
                 cache( _hires );
