@@ -244,7 +244,7 @@ while [ $# -gt 0 ]; do
 	    ;;
 	-v)
 	    shift
-	    opts="VERBOSE=1"
+	    opts="-v"
 	    ;;
 	-G)
 	    shift
