@@ -45,18 +45,18 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
      ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
      ADD_COMPILE_OPTIONS( -W1 )
 
-IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-    ADD_DEFINITIONS( -DDEBUG -D_DEBUG )
-    ADD_COMPILE_OPTIONS( -MDd )
-ELSE()
-    ADD_DEFINITIONS( -DNDEBUG -D_NDEBUG )
-    ADD_COMPILE_OPTIONS( -MD )
-ENDIF()
+     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+       ADD_DEFINITIONS( -DDEBUG -D_DEBUG )
+       ADD_COMPILE_OPTIONS( -MDd )
+     ELSE()
+       ADD_DEFINITIONS( -DNDEBUG -D_NDEBUG )
+       ADD_COMPILE_OPTIONS( -MD )
+     ENDIF()
 
 
-  SET(OS_LIBRARIES
-    Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
-    )
+     SET(OS_LIBRARIES
+       Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
+       )
 
 
    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -76,9 +76,6 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
-    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-      SET( CG_ROOT /usr/local/sanitized/ )
-    ENDIF()
 
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
@@ -94,17 +91,16 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     #ADD_DEFINITIONS( -DLINUX -g -msse -w -fsanitize=thread )
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11)
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x)
-    ADD_DEFINITIONS( -DLINUX -DNDEBUG )
+    ADD_DEFINITIONS( -DLINUX -DNDEBUG  )
     ADD_COMPILE_OPTIONS( -msse -O3 -w -fdiagnostics-color=always  )
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ ${GLEW_LIBRARIES} fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
     IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-      #ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
-      #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
-      INCLUDE_DIRECTORIES( /usr/local/sanitize )
-      ADD_DEFINITIONS( -fsanitize=address )
-      SET(LIBRARIES asan ${LIBRARIES} )
+      ADD_DEFINITIONS(  -I/usr/local/sanitize -I/usr/local/sanitize/OpenEXR -fsanitize=thread -DTHREAD_SANITIZER )
+      SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
+      #ADD_DEFINITIONS( -fsanitize=address )
+      #SET(OS_LIBRARIES asan ${OS_LIBRARIES} )
     ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 
