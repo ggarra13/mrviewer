@@ -112,6 +112,13 @@ Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 Hotkey kSwitchChannels( false, false, false, false, 'e' );
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
+
+Hotkey kDrawMode( false, false, false, true, 'd' );
+Hotkey kEraseMode( false, false, false, true, 'e' );
+Hotkey kScrubMode( false, false, false, true, 's' );
+Hotkey kAreaMode( false, false, false, true, 0 );
+Hotkey kTextMode( false, false, false, true, 't' );
+
 Hotkey kPenSizeMore( false, false, false, false, 0, "]" );
 Hotkey kPenSizeLess( false, false, false, false, 0, "[" );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );
@@ -314,6 +321,11 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
     HotkeyEntry( _("Exposure More"), kExposureMore),
     HotkeyEntry( _("Exposure Less"), kExposureLess),
+    HotkeyEntry( _("Draw Mode"), kDrawMode ),
+    HotkeyEntry( _("Erase Mode"), kEraseMode ),
+    HotkeyEntry( _("Scrub Mode"), kScrubMode ),
+    HotkeyEntry( _("Area Mode"), kAreaMode ),
+    HotkeyEntry( _("Text Mode"), kTextMode ),
     HotkeyEntry( _("Pen Size More"), kPenSizeMore),
     HotkeyEntry( _("Pen Size Less"), kPenSizeLess),
     HotkeyEntry( _("Gamma More"), kGammaMore),

@@ -3730,10 +3730,10 @@ int ImageView::leftMouseDown(int x, int y)
 
         flags |= kMouseLeft;
         if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-                fltk::event_key_state( fltk::RightShiftKey ) )
+	     fltk::event_key_state( fltk::RightShiftKey ) )
         {
             flags |= kLeftShift;
-            selection_mode();
+            // selection_mode();
         }
         else if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
                   fltk::event_key_state( fltk::RightCtrlKey ) )
@@ -5674,8 +5674,33 @@ int ImageView::keyDown(unsigned int rawkey)
             return 1;
         }
     }
-    
-    if ( kOpenImage.match( rawkey ) )
+
+    if ( kDrawMode.match( rawkey ) )
+    {
+	draw_mode();
+	return 1;
+    }
+    else if ( kEraseMode.match( rawkey ) )
+    {
+	erase_mode();
+	return 1;
+    }
+    else if ( kTextMode.match( rawkey ) )
+    {
+	text_mode();
+	return 1;
+    }
+    else if ( kScrubMode.match( rawkey ) )
+    {
+	scrub_mode();
+	return 1;
+    }
+    else if ( kAreaMode.match( rawkey ) )
+    {
+	selection_mode();
+	return 1;
+    }
+    else if ( kOpenImage.match( rawkey ) )
     {
         open_cb( this, browser() );
         return 1;

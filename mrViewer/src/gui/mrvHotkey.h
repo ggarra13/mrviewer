@@ -167,6 +167,12 @@ extern Hotkey kZDepthDown;
 extern Hotkey kDensityUp;
 extern Hotkey kDensityDown;
 
+extern Hotkey kDrawMode;
+extern Hotkey kEraseMode;
+extern Hotkey kScrubMode;
+extern Hotkey kTextMode;
+extern Hotkey kAreaMode;
+
 extern Hotkey kPenSizeMore;
 extern Hotkey kPenSizeLess;
 
