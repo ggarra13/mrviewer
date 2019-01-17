@@ -126,7 +126,7 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            //LOG_CONN( s << " sent to " << *i << " " << p );
+            LOG_CONN( s << " sent to " << *i << " " << p );
             //LOG_INFO( "resending " << s << " to " << p );
             (*i)->deliver( s );
         }
