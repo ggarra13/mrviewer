@@ -1203,6 +1203,9 @@ public:
     inline Barrier* loop_barrier()          {
         return _loop_barrier;
     }
+    inline Mutex& data_mutex()             {
+        return _data_mutex;
+    };
     inline Mutex& video_mutex()             {
         return _mutex;
     };
