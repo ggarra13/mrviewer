@@ -795,11 +795,11 @@ void audio_thread( PlaybackData* data )
     if ( barrier ) barrier->notify_all();
     barrier = img->fg_bg_barrier();
     if ( barrier ) {
-	barrier->notify_all();
-	if ( !fg ) {
-	    delete barrier;
-	}
-	img->fg_bg_barrier( NULL );
+	// barrier->notify_all();
+	// if ( !fg ) {
+	//     delete barrier;
+	// }
+	// img->fg_bg_barrier( NULL );
     }
 
     img->playback( CMedia::kStopped );
@@ -1015,7 +1015,6 @@ void video_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-	std::cerr << img->name() << " frame " << frame << std::endl;
 	
         //TRACE( img->name() << " decode image " << frame );
         CMedia::DecodeStatus status = img->decode_video( frame );

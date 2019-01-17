@@ -25,10 +25,6 @@
  *
  */
 
-#include <OpenImageIO/imagebuf.h>
-#include <OpenImageIO/imagebufalgo.h>
-#include <OpenImageIO/imageio.h>
-OIIO_NAMESPACE_USING;
 
 #include <iostream>
 using namespace std;
@@ -50,6 +46,10 @@ using namespace std;
 #include <ImfStringAttribute.h>
 #include <ImfMatrixAttribute.h>
 
+#include <OpenImageIO/imagebuf.h>
+#include <OpenImageIO/imagebufalgo.h>
+#include <OpenImageIO/imageio.h>
+OIIO_NAMESPACE_USING;
 
 
 #include "core/mrvColorOps.h"

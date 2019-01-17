@@ -2601,7 +2601,7 @@ bool ImageView::preload()
     bool found;
     mrv::image_type_ptr pic;
     {
-        boost::recursive_mutex::scoped_lock lk( img->video_mutex() );
+        boost::recursive_mutex::scoped_lock lkv( img->video_mutex() );
         // Store current frame
         pic = img->hires();
         if (!pic) return false;
@@ -3894,8 +3894,7 @@ int ImageView::leftMouseDown(int x, int y)
             s->a = 1.0f;
             s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
             if ( _mode == kErase ) s->pen_size *= 2;
-            // s->next = ghost_next();
-            // s->previous = ghost_previous();
+
             if ( uiMain->uiPaint->uiAllFrames->value() )
             {
                 s->frame = MRV_NOPTS_VALUE;
@@ -5675,7 +5674,8 @@ int ImageView::keyDown(unsigned int rawkey)
             return 1;
         }
     }
-    else if ( kOpenImage.match( rawkey ) )
+    
+    if ( kOpenImage.match( rawkey ) )
     {
         open_cb( this, browser() );
         return 1;

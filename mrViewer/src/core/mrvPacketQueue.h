@@ -590,12 +590,10 @@ protected:
 
     static AVPacket _flush;      // special packet used to flush buffers
     static AVPacket _seek;       // special packet used to mark seeks to skip
-    // intermediate I/B/P frames
-    static AVPacket _jump;    // special packet used to mark jumps
+    static AVPacket _jump;       // special packet used to mark jumps
     static AVPacket _preroll;    // special packet used to mark preroll seeks
-    static AVPacket _seek_end;   // special packet used to mark seek/preroll
-    // endings
-    // (used when playing backwards)
+    static AVPacket _seek_end;   // special packet used to mark seek/preroll 
+                                 // endings (used when playing backwards)
     static AVPacket _loop_end;   // special packet to mark loops in playback
     static AVPacket _loop_start; // special packet to mark loops in reverse playback
 };

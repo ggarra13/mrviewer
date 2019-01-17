@@ -3364,6 +3364,8 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all video packets that go
         // beyond the last frame
+	SCOPED_LOCK( _mutex ); // needed
+	
         mrv::PacketQueue::Mutex& m = _video_packets.mutex();
         SCOPED_LOCK( m );
 
@@ -3386,6 +3388,9 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all audio packets that go
         // beyond the last frame
+
+	SCOPED_LOCK( _audio_mutex ); // needed 
+	
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );
 
@@ -3743,7 +3748,6 @@ bool CMedia::find_image( const int64_t frame )
 
         _frame = frame;
 
-        SCOPED_LOCK( _data_mutex );
         free(_filename);
         _filename = NULL;
 
@@ -3761,7 +3765,6 @@ bool CMedia::find_image( const int64_t frame )
     {
         if ( file != _filename )
         {
-            SCOPED_LOCK( _data_mutex );
             SCOPED_LOCK( _mutex );
             should_load = true;
             free( _filename );
@@ -3770,7 +3773,6 @@ bool CMedia::find_image( const int64_t frame )
     }
     else
     {
-        SCOPED_LOCK( _data_mutex );
         SCOPED_LOCK( _mutex );
         _filename = strdup( file.c_str() );
         should_load = true;
@@ -3782,7 +3784,6 @@ bool CMedia::find_image( const int64_t frame )
     {
         if ( fs::exists(file) )
         {
-            SCOPED_LOCK( _data_mutex );
             SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );

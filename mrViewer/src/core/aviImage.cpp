@@ -963,15 +963,6 @@ bool aviImage::seek_to_position( const int64_t frame )
 
     int64_t vpts = 0, apts = 0, spts = 0;
 
-    mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-    SCOPED_LOCK( vpm );
-
-    mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
-    SCOPED_LOCK( apm );
-
-    mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
-    SCOPED_LOCK( spm );
-
     if ( !got_video ) {
         vpts = frame2pts( get_video_stream(), start );
     }
@@ -3530,8 +3521,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     debug_video_packets(frame, "decode_video", true);
 #endif
 
-    Mutex& vpm = _video_packets.mutex();
-    SCOPED_LOCK( vpm );
 
     if ( _video_packets.empty() )
     {
