@@ -423,8 +423,6 @@ bool CMedia::seek_to_position( const int64_t frame )
 
     int64_t apts = 0;
 
-    mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
-    SCOPED_LOCK( apm );
 
     if ( !got_audio ) {
         apts = frame2pts( get_audio_stream(), start + _audio_offset );
@@ -1885,7 +1883,7 @@ void CMedia::flush_audio()
 
 void CMedia::close_audio()
 {
-    SCOPED_LOCK( _audio_mutex);
+    SCOPED_LOCK( _audio_mutex );
 
     if ( _audio_engine ) _audio_engine->close();
     _samples_per_sec = 0;

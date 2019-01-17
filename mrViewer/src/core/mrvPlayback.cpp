@@ -397,6 +397,20 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     if ( next->stopped() )
                     {
+#if 0
+			if ( img->fg_bg_barrier() )
+			{
+			    mrv::barrier* b = img->fg_bg_barrier();
+			    b->notify_all();
+			    std::cerr << img->name() << " barrier " << b << std::endl;
+			    next->fg_bg_barrier( b );
+			    b->threshold( next->has_picture() +
+					  next->has_audio() );
+			    // img->fg_bg_barrier( NULL ) ;
+			    std::cerr << next->name() << " barrier "
+				      << next->fg_bg_barrier() << std::endl;
+			}
+#endif
                         next->seek( f );
                         next->do_seek();
                         next->play( CMedia::kForwards, uiMain, fg );
@@ -488,6 +502,16 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     if ( next->stopped() )
                     {
+#if 0
+			if (  img->fg_bg_barrier() )
+			{
+			    mrv::barrier* b = img->fg_bg_barrier();
+			    next->fg_bg_barrier( b );
+			    b->threshold( next->has_picture() +
+					  next->has_audio() );
+			    img->fg_bg_barrier( NULL ) ;
+			}
+#endif
                         next->seek( f );
                         next->do_seek();
                         next->play( CMedia::kBackwards, uiMain, fg );

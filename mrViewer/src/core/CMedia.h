@@ -1823,7 +1823,7 @@ protected:
 
     int _colorspace_index;    //!< YUV Hint for conversion
 
-    double    _avdiff;      //!< Audio-Video Difference
+    std::atomic<double>    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
     Barrier*  _stereo_barrier; //!< Barrier used to sync stereo threads
     Barrier*  _fg_bg_barrier;   //!< Barrier used to sync fg/bg threads

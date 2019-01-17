@@ -2508,9 +2508,13 @@ void CMedia::stop(const bool bg)
     _loop_barrier = NULL;
     delete _stereo_barrier;
     _stereo_barrier = NULL;
-    if ( bg && _fg_bg_barrier ) delete _fg_bg_barrier;
-    _fg_bg_barrier = NULL;
-
+#if 1
+    if ( bg ) {
+	delete _fg_bg_barrier;
+	_fg_bg_barrier = NULL;
+    }
+#endif
+    
     close_audio();
 
     DBG( name() << " Clear packets" );
@@ -3356,6 +3360,8 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all video packets that go
         // beyond the last frame
+	SCOPED_LOCK( _mutex ); // needed
+	
         mrv::PacketQueue::Mutex& m = _video_packets.mutex();
         SCOPED_LOCK( m );
 
@@ -3378,6 +3384,9 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all audio packets that go
         // beyond the last frame
+
+	SCOPED_LOCK( _audio_mutex ); // needed 
+	
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );
 
