@@ -5680,6 +5680,11 @@ int ImageView::keyDown(unsigned int rawkey)
         open_cb( this, browser() );
         return 1;
     }
+    else if ( kScrub.match( rawkey ) )
+    {
+	scrub_mode();
+	return 1;
+    }
     else if ( kOpenSingleImage.match( rawkey ) )
     {
         open_single_cb( this, browser() );
