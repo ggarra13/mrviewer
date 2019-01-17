@@ -39,6 +39,8 @@
 #include <vector>
 #include <algorithm>
 
+#include <ImfStandardAttributes.h>
+
 extern "C" {
 
 #include <libavcodec/avcodec.h>
@@ -52,9 +54,6 @@ extern "C" {
 #include <GL/glew.h>
 #include <MagickWand/MagickWand.h>
 
-#include <OpenColorIO/OpenColorIO.h>
-
-namespace OCIO = OCIO_NAMESPACE;
 
 #include <OpenImageIO/argparse.h>
 #include <OpenImageIO/imageio.h>
@@ -68,8 +67,8 @@ namespace OCIO = OCIO_NAMESPACE;
 #include <OpenImageIO/timer.h>
 #include <OpenImageIO/oiioversion.h>
 
-using namespace OIIO;
-using namespace ImageBufAlgo;
+#include <OpenColorIO/OpenColorIO.h>
+
 
 #include <libraw/libraw.h>
 
@@ -83,6 +82,7 @@ using namespace ImageBufAlgo;
 
 #include "core/mrvOS.h"
 #include "core/mrvCPU.h"
+#include "ImathInt64.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -95,6 +95,9 @@ using namespace ImageBufAlgo;
 #include <psapi.h>
 #endif
 
+namespace OCIO = OCIO_NAMESPACE;
+using namespace OIIO;
+using namespace ImageBufAlgo;
 
 namespace mrv
 {
