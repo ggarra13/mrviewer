@@ -5044,7 +5044,7 @@ void ImageView::mouseMove(int x, int y)
             {
                 outside = false;
                 if ( xp < 0 || xp >= (int)pic->width() ||
-                        yp < 0 || yp >= (int)pic->height() )
+		     yp < 0 || yp >= (int)pic->height() )
                     outside = true;
 
                 if (!outside)
@@ -5119,29 +5119,29 @@ void ImageView::mouseMove(int x, int y)
             }
 
 
-            bool outside2 = false;
+	    CMedia::Pixel bg;
+            bool outside = false;
             if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
             {
-                outside2 = true;
+                outside = true;
             }
             else
             {
-
-                CMedia::Pixel bg = picb->pixel( xp, yp );
-
+		bg = picb->pixel( xp, yp );
                 pixel_processed( bgr, bg );
-
-                if ( outside )
-                {
-                    rgba = bg;
-                }
-                else
-                {
-                    float t = 1.0f - rgba.a;
-                    rgba.r += bg.r * t;
-                    rgba.g += bg.g * t;
-                    rgba.b += bg.b * t;
-                }
+	    }
+	    
+	    if ( outside )
+	    {
+		rgba = bg;
+	    }
+	    else
+	    {
+		float t = 1.0f - rgba.a;
+		rgba.r += bg.r * t;
+		rgba.g += bg.g * t;
+		rgba.b += bg.b * t;
+		
             }
         }
     }
@@ -5695,9 +5695,9 @@ int ImageView::keyDown(unsigned int rawkey)
 	scrub_mode();
 	return 1;
     }
-    else if ( kAreaMode.match( rawkey ) )
+    else if ( kMoveSizeMode.match( rawkey ) )
     {
-	selection_mode();
+	move_pic_mode();
 	return 1;
     }
     else if ( kOpenImage.match( rawkey ) )
@@ -6325,6 +6325,11 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSetOutPoint.match( rawkey ) )
     {
         uiMain->uiEndButton->do_callback();
+    }
+    else if ( kAreaMode.match( rawkey ) )
+    {
+	selection_mode();
+	return 1;
     }
     else if ( rawkey == fltk::LeftAltKey )
     {

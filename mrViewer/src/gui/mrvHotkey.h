@@ -172,6 +172,7 @@ extern Hotkey kEraseMode;
 extern Hotkey kScrubMode;
 extern Hotkey kTextMode;
 extern Hotkey kAreaMode;
+extern Hotkey kMoveSizeMode;
 
 extern Hotkey kPenSizeMore;
 extern Hotkey kPenSizeLess;

@@ -2325,8 +2325,10 @@ void CMedia::play(const CMedia::Playback dir,
 
     if ( _right_eye ) _right_eye->play( dir, uiMain, fg );
 
+    TRACE("");
     stop();
 
+    TRACE("");
     _playback = dir;
 
     assert( uiMain != NULL );
@@ -2353,15 +2355,19 @@ void CMedia::play(const CMedia::Playback dir,
     _audio_buf_used = 0;
 
 
+    TRACE("");
     // clear all packets
     clear_packets();
 
+    TRACE("");
     // This seek is needed to sync audio playback and flush buffers
     if ( dir == kForwards ) _seek_req = true;
 
+    TRACE("");
     if ( ! seek_to_position( _frame ) )
         IMG_ERROR( _("Could not seek to frame ") << _frame );
 
+    TRACE("");
 
     // Start threads
     PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
@@ -2401,20 +2407,25 @@ void CMedia::play(const CMedia::Playback dir,
 
         }
 
+    TRACE("");
         if ( !fg && !_fg_bg_barrier )
         {
+    TRACE("");
             _fg_bg_barrier = new Barrier( valid_v + valid_a );
         }
-        else if ( _fg_bg_barrier )
+        else if ( !fg && _fg_bg_barrier )
         {
+    TRACE("");
 	    _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
 
+    TRACE("");
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
         _loop_barrier = new Barrier( num );
 
+    TRACE("");
         if ( valid_v || valid_a )
         {
             video_data = new PlaybackData( *data );
@@ -2444,6 +2455,7 @@ void CMedia::play(const CMedia::Playback dir,
         }
 
 
+    TRACE("");
         // If something was valid, create decode thread
         if ( valid_a || valid_v || valid_s )
         {
@@ -2458,6 +2470,7 @@ void CMedia::play(const CMedia::Playback dir,
     }
     catch( boost::exception& e )
     {
+    TRACE("");
         LOG_ERROR( boost::diagnostic_information(e) );
     }
 
@@ -2474,6 +2487,7 @@ void CMedia::stop(const bool bg)
 
     if ( _right_eye ) _right_eye->stop();
 
+    TRACE("");
     _playback = kStopped;
 
     //
@@ -2483,19 +2497,26 @@ void CMedia::stop(const bool bg)
     //
     // Notify loop barrier, to exit any wait on a loop
     //
+    TRACE("");
     DBG( name() << " Notify all loop barriers" );
     if ( _loop_barrier )  _loop_barrier->notify_all();
     DBG( name() << " Notify stereo barrier" );
+    TRACE("");
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
     if ( bg && _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
+    TRACE("");
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
     // have turned off audio, but audio thread is still active.
     DBG( name() << " Notify all A/V/S" );
+    TRACE("");
     _audio_packets.cond().notify_all();
+    TRACE("");
     _video_packets.cond().notify_all();
+    TRACE("");
     _subtitle_packets.cond().notify_all();
+    TRACE("");
 
     // Wait for all threads to exit
     DBG( name() << " Wait for threads" );
@@ -2505,22 +2526,28 @@ void CMedia::stop(const bool bg)
     // Clear barrier
     DBG( name() << " Clear barrier" );
     delete _loop_barrier;
+    TRACE("");
     _loop_barrier = NULL;
+    TRACE("");
     delete _stereo_barrier;
     _stereo_barrier = NULL;
 #if 1
     if ( bg ) {
+    TRACE("");
 	delete _fg_bg_barrier;
 	_fg_bg_barrier = NULL;
     }
 #endif
     
+    TRACE("");
     close_audio();
 
     DBG( name() << " Clear packets" );
+    TRACE("");
     // Clear any audio/video/subtitle packets
     clear_packets();
 
+    TRACE("");
     // Queue thumbnail for update
     image_damage( image_damage() | kDamageThumbnail );
 

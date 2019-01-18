@@ -195,10 +195,13 @@ extern errorstream error;
 #define DBG(msg)
 #endif
 
-#define TRACE(msg) do { \
+#if 0
+#  define TRACE(msg) do { \
     std::cerr << _("mrViewer TRACE : ") << msg << std::flush << " at "          \
               << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
 } while(0)
-
+#else
+#  define TRACE(msg)
+#endif
 
 #endif

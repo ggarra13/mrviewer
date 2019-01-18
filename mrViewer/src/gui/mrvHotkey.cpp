@@ -118,6 +118,7 @@ Hotkey kEraseMode( false, false, false, true, 'e' );
 Hotkey kScrubMode( false, false, false, true, 's' );
 Hotkey kAreaMode( false, false, false, true, 0 );
 Hotkey kTextMode( false, false, false, true, 't' );
+Hotkey kMoveSizeMode( false, false, false, true, 'm' );
 
 Hotkey kPenSizeMore( false, false, false, false, 0, "]" );
 Hotkey kPenSizeLess( false, false, false, false, 0, "[" );
@@ -326,6 +327,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Scrub Mode"), kScrubMode ),
     HotkeyEntry( _("Area Mode"), kAreaMode ),
     HotkeyEntry( _("Text Mode"), kTextMode ),
+    HotkeyEntry( _("Move/Size Mode"), kMoveSizeMode ),
     HotkeyEntry( _("Pen Size More"), kPenSizeMore),
     HotkeyEntry( _("Pen Size Less"), kPenSizeLess),
     HotkeyEntry( _("Gamma More"), kGammaMore),
