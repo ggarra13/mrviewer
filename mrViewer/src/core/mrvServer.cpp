@@ -170,7 +170,11 @@ bool Parser::parse( const std::string& s )
     //     std::locale::global( std::locale(env) );
     is.imbue(std::locale());
 
+    typedef CMedia::Mutex Mutex;
+    Mutex& mtx = view()->commands_mutex;
+    SCOPED_LOCK( mtx );
 
+    
     mrv::Reel r;
     mrv::media m;
 
@@ -990,7 +994,9 @@ bool Parser::parse( const std::string& s )
             for ( j = 0; j != e; ++j )
             {
                 mrv::media fg = r->images[j];
-                if ( fg->image()->fileroot() == imgname )
+		CMedia* img = fg->image();
+		std::string file = img->directory() + '/' + img->name();
+                if ( file == imgname )
                     break;
             }
 
@@ -1029,7 +1035,9 @@ bool Parser::parse( const std::string& s )
                 for ( j = 0; j != e; ++j )
                 {
                     mrv::media fg = r->images[j];
-                    if ( fg->image()->fileroot() == imgname )
+		    CMedia* img = fg->image();
+		    std::string file = img->directory() + '/' + img->name();
+                    if ( file == imgname )
                     {
                         m = fg;
                         break;
@@ -1039,10 +1047,12 @@ bool Parser::parse( const std::string& s )
 
             if ( m )
             {
-
+		CMedia* img = m->image();
+		std::string file = img->directory() + '/' + img->name();
+		    
                 for ( j = 0; j != e; ++j )
                 {
-                    if ( j == idx && m->image()->fileroot() == imgname )
+                    if ( j == idx && file == imgname )
                     {
                         browser()->insert( idx, m );
                         browser()->change_image( idx );
@@ -1054,8 +1064,9 @@ bool Parser::parse( const std::string& s )
                         break;
                     }
                 }
-
-                if ( j == e && m->image()->fileroot() == imgname )
+ 
+		
+                if ( j == e && file == imgname )
                 {
                     browser()->add( m );
                     browser()->change_image( unsigned(e) );
@@ -1096,10 +1107,12 @@ bool Parser::parse( const std::string& s )
                 mrv::media fg = *j;
                 if (!fg) continue;
 
-                CMedia* img = fg->image();
-                if ( img->fileroot() == imgname &&
-                        img->first_frame() == start &&
-                        img->last_frame() == end )
+		CMedia* img = fg->image();
+		std::string file = img->directory() + '/' + img->name();
+
+                if ( file == imgname &&
+		     img->first_frame() == start &&
+		     img->last_frame() == end )
                 {
                     found = true;
                     m = fg;
@@ -1160,8 +1173,9 @@ bool Parser::parse( const std::string& s )
             {
                 if ( !(*j) ) continue;
 
-                CMedia* img = (*j)->image();
-                if ( img && imgname == img->fileroot() )
+		CMedia* img = (*j)->image();
+		std::string file = img->directory() + '/' + img->name();
+                if ( img && file == imgname )
                 {
                     found = true;
                     break;
@@ -1236,37 +1250,35 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
+        ImageView::Command c;
+        c.type = ImageView::kBGImage;
+        std::string* img = new std::string(imgname);
+        c.data = img;
+        v->commands.push_back( c );
+	
+	boost::int64_t first, last;
+	is >> first;
+	is >> last;
 
-        if ( imgname.empty() )
-        {
-            v->background( mrv::media() );
-        }
-        else
-        {
-
-            boost::int64_t first, last;
-            is >> first;
-            is >> last;
-
-            if ( r )
-            {
-                mrv::MediaList::iterator j = r->images.begin();
-                mrv::MediaList::iterator e = r->images.end();
-                int idx = 0;
-                for ( ; j != e; ++j, ++idx )
-                {
-                    if ( !(*j) ) continue;
-                    CMedia* img = (*j)->image();
-                    if ( img && img->fileroot() == imgname )
-                    {
+	mrv::Reel r = browser()->current_reel();
+	    
+	if ( r )
+	{
+	    mrv::MediaList::iterator j = r->images.begin();
+	    mrv::MediaList::iterator e = r->images.end();
+	    for ( ; j != e; ++j )
+	    {
+		if ( !(*j) ) continue;
+		CMedia* img = (*j)->image();
+		std::string file = img->directory() + '/' + img->name();
+		if ( img && file == imgname )
+		{
                         img->first_frame( first );
                         img->last_frame( last );
-                        v->background( (*j) );
                         ok = true;
                         break;
-                    }
-                }
-            }
+		}
+	    }
         }
         v->redraw();
     }
