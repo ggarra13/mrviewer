@@ -126,7 +126,7 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            //LOG_CONN( s << " sent to " << *i << " " << p );
+            LOG_CONN( s << " sent to " << *i << " " << p );
             //LOG_INFO( "resending " << s << " to " << p );
             (*i)->deliver( s );
         }
@@ -1251,45 +1251,45 @@ bool Parser::parse( const std::string& s )
         is.clear();
 
 	
-        if ( imgname.empty() )
-        {
-            v->background( mrv::media() );
-	    ok = true;
-        }
-        else
-        {
+	boost::int64_t first, last;
+	is >> first;
+	is >> last;
 
-            boost::int64_t first, last;
-            is >> first;
-            is >> last;
-
-	    mrv::Reel r = browser()->current_reel();
-	    if (!r )
-		std::cerr << "REEL EMPTY" << std::endl;
+	mrv::Reel r = browser()->current_reel();
 	    
-            if ( r )
-            {
-		std::cerr << "REEL " << r->name << std::endl;
-                mrv::MediaList::iterator j = r->images.begin();
-                mrv::MediaList::iterator e = r->images.end();
-                int idx = 0;
-                for ( ; j != e; ++j, ++idx )
-                {
-                    if ( !(*j) ) continue;
-                    CMedia* img = (*j)->image();
-		    if ( !img ) continue;
-		    std::string file = img->directory() + '/' + img->name();
-                    if ( file == imgname )
-                    {
-                        img->first_frame( first );
-                        img->last_frame( last );
-			std::cerr << "set bg to " << file << std::endl;
-                        v->background( (*j) );
-                        ok = true;
-                        break;
-                    }
-                }
-            }
+	if ( r )
+	{
+	    mrv::MediaList::iterator j = r->images.begin();
+	    mrv::MediaList::iterator e = r->images.end();
+	    int idx = 0;
+	    ImageView::Command c;
+	    c.type = ImageView::kBGImage;
+	    
+	    for ( ; j != e; ++j, ++idx )
+	    {
+		if ( !(*j) ) continue;
+		CMedia* img = (*j)->image();
+		std::string file = img->directory() + '/' + img->name();
+		if ( file == imgname )
+		{
+		    int* data = new int(idx);
+		    c.data = data;
+	
+		    img->first_frame( first );
+		    img->last_frame( last );
+		    ok = true;
+		    break;
+		}
+	    }
+
+	    if (!ok )
+	    {
+		int* img = new int(-1);
+		c.data = img;
+	    }
+	    
+	    v->commands.push_back( c );
+	    ok = true;
         }
         v->redraw();
     }

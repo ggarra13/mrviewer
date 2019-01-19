@@ -460,14 +460,11 @@ static void update_title_bar( mrv::ImageView* view )
     mrv::media fg = view->foreground();
     mrv::media bg = view->background();
 
-    std::cerr << fg << " " << bg << std::endl;
-    
+
     char bufs[256];
 
     if ( fg && bg && fg != bg )
     {
-	std::cerr << fg->image()->name() << " fg" << std::endl
-		  << bg->image()->name() << " bg" << std::endl;
         snprintf( bufs, 255, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
                   fg->image()->name().c_str(), view->fg_reel(),
                   bg->image()->name().c_str(), view->bg_reel(),
@@ -475,7 +472,6 @@ static void update_title_bar( mrv::ImageView* view )
     }
     else if ( fg )
     {
-	std::cerr << fg->image()->name() << " fg" << std::endl;
         snprintf( bufs, 255, _("mrViewer    FG: %s"),
                   fg->image()->name().c_str() );
     }
@@ -2695,7 +2691,7 @@ bool ImageView::preload()
             img = m->image();
             seek( f + p ); // seek to new frame
 
-	    preload_cache_stop();
+	    // preload_cache_stop();
             // if ( img->has_video() )
             {
                 // start video/image playback
@@ -2764,6 +2760,24 @@ void ImageView::handle_commands()
     {
         int* idx = (int*) c.data;
         b->change_image(*idx);
+        break;
+    }
+    case kBGImage:
+    {
+        int idx = *( (int*) c.data );
+	if ( idx < 0 ) background( mrv::media() );
+	else
+	{
+	    mrv::Reel r = b->current_reel();
+	    if ( idx < r->images.size() )
+	    {
+		background( r->images[idx] );
+	    }
+	    else
+	    {
+		background( mrv::media() );
+	    }
+	}
         break;
     }
     case kStopVideo:
@@ -7900,7 +7914,7 @@ void ImageView::foreground( mrv::media fg )
         if ( img )
         {
             if ( ! img->is_cache_full() && !_idle_callback &&
-                    CMedia::cache_active() && CMedia::preload_cache() )
+		 CMedia::cache_active() && CMedia::preload_cache() )
                 preload_cache_start();
 
             // char buf[1024];
@@ -8920,6 +8934,8 @@ void ImageView::volume( float v )
 
 CMedia::Looping ImageView::looping() const
 {
+    if ( !uiMain || !uiMain->uiLoopMode )
+	return CMedia::kUnknownLoop;
     return (CMedia::Looping) uiMain->uiLoopMode->value();
 }
 

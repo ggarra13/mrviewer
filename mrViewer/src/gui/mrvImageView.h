@@ -72,6 +72,7 @@ public:
         kCreateReel = 1,
         kLoadImage,
         kChangeImage,
+	kBGImage,
         kStopVideo,
         kSeek,
         kPlayForwards,
@@ -737,7 +738,7 @@ public:
         void*        data;
     };
 
-    CMedia::Mutex         commands_mutex;
+    mutable Mutex         commands_mutex;
     std::deque<Command>   commands;
     bool           _broadcast;
     CMedia::Mutex  _clients_mtx;

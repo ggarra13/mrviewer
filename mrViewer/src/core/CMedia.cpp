@@ -2419,6 +2419,10 @@ void CMedia::play(const CMedia::Playback dir,
 	    _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
+	else
+	{
+	    _fg_bg_barrier = NULL;
+	}
 
     TRACE("");
         unsigned num = 1 + valid_a + valid_v + valid_s;
@@ -2503,7 +2507,7 @@ void CMedia::stop(const bool bg)
     DBG( name() << " Notify stereo barrier" );
     TRACE("");
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
-    if ( bg && _fg_bg_barrier ) _fg_bg_barrier->notify_all();
+    if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
 
     TRACE("");
     // Notify packets, to make sure that audio thread exits any wait lock
@@ -2531,6 +2535,7 @@ void CMedia::stop(const bool bg)
     TRACE("");
     delete _stereo_barrier;
     _stereo_barrier = NULL;
+
 #if 0
     if ( bg ) {
     TRACE("");
