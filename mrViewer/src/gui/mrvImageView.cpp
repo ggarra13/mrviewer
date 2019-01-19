@@ -460,6 +460,8 @@ static void update_title_bar( mrv::ImageView* view )
     mrv::media fg = view->foreground();
     mrv::media bg = view->background();
 
+    std::cerr << "fg " << fg << " bg " << bg << std::endl;
+
     char bufs[256];
 
     if ( fg && bg && fg != bg )
@@ -2922,9 +2924,12 @@ void ImageView::timeout()
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
-    while ( ! commands.empty()  )
     {
-        handle_commands();
+	SCOPED_LOCK( commands_mutex );
+	while ( ! commands.empty()  )
+	{
+	    handle_commands();
+	}
     }
 
     TRACE( "" );
@@ -5680,7 +5685,7 @@ int ImageView::keyDown(unsigned int rawkey)
         open_cb( this, browser() );
         return 1;
     }
-    else if ( kScrub.match( rawkey ) )
+    else if ( kScrubMode.match( rawkey ) )
     {
 	scrub_mode();
 	return 1;

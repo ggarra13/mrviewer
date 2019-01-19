@@ -187,6 +187,8 @@ bool Parser::parse( const std::string& s )
     ParserList c = v->_clients;
     v->_clients.clear();
 
+    Mutex& mtx = v->commands_mutex;
+    SCOPED_LOCK( mtx );
 
 #ifdef DEBUG_COMMANDS
     mrv::media fg = v->foreground();

@@ -112,6 +112,9 @@ Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 Hotkey kSwitchChannels( false, false, false, false, 'e' );
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
+
+Hotkey kScrubMode( false, false, false, true, 's' );
+
 Hotkey kPenSizeMore( false, false, false, false, 0, "]" );
 Hotkey kPenSizeLess( false, false, false, false, 0, "[" );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );

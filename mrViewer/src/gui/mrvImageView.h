@@ -736,6 +736,8 @@ public:
         void*        data;
     };
 
+    typedef CMedia::Mutex Mutex;
+    mutable Mutex         commands_mutex;
     std::deque<Command>   commands;
     bool           _broadcast;
     CMedia::Mutex  _clients_mtx;
