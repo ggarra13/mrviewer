@@ -191,8 +191,6 @@ bool Parser::parse( const std::string& s )
     ParserList c = v->_clients;
     v->_clients.clear();
 
-    Mutex& mtx = v->commands_mutex;
-    SCOPED_LOCK( mtx );
 
 #ifdef DEBUG_COMMANDS
     mrv::media fg = v->foreground();
@@ -1252,11 +1250,6 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
-        ImageView::Command c;
-        c.type = ImageView::kBGImage;
-        std::string* img = new std::string(imgname);
-        c.data = img;
-        v->commands.push_back( c );
 	
 	boost::int64_t first, last;
 	is >> first;
@@ -1268,19 +1261,35 @@ bool Parser::parse( const std::string& s )
 	{
 	    mrv::MediaList::iterator j = r->images.begin();
 	    mrv::MediaList::iterator e = r->images.end();
-	    for ( ; j != e; ++j )
+	    int idx = 0;
+	    ImageView::Command c;
+	    c.type = ImageView::kBGImage;
+	    
+	    for ( ; j != e; ++j, ++idx )
 	    {
 		if ( !(*j) ) continue;
 		CMedia* img = (*j)->image();
 		std::string file = img->directory() + '/' + img->name();
 		if ( img && file == imgname )
 		{
-                        img->first_frame( first );
-                        img->last_frame( last );
-                        ok = true;
-                        break;
+		    int* data = new int(idx);
+		    c.data = data;
+	
+		    img->first_frame( first );
+		    img->last_frame( last );
+		    ok = true;
+		    break;
 		}
 	    }
+
+	    if (!ok )
+	    {
+		int* img = new int(-1);
+		c.data = img;
+	    }
+	    
+	    v->commands.push_back( c );
+	    ok = true;
         }
         v->redraw();
     }

@@ -72,6 +72,7 @@ public:
         kCreateReel = 1,
         kLoadImage,
         kChangeImage,
+	kBGImage,
         kStopVideo,
         kSeek,
         kPlayForwards,

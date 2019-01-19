@@ -2763,6 +2763,24 @@ void ImageView::handle_commands()
         b->change_image(*idx);
         break;
     }
+    case kBGImage:
+    {
+        int idx = *( (int*) c.data );
+	if ( idx < 0 ) background( mrv::media() );
+	else
+	{
+	    mrv::Reel r = b->current_reel();
+	    if ( idx < r->images.size() )
+	    {
+		background( r->images[idx] );
+	    }
+	    else
+	    {
+		background( mrv::media() );
+	    }
+	}
+        break;
+    }
     case kStopVideo:
     {
         stop();
@@ -5684,11 +5702,6 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         open_cb( this, browser() );
         return 1;
-    }
-    else if ( kScrubMode.match( rawkey ) )
-    {
-	scrub_mode();
-	return 1;
     }
     else if ( kOpenSingleImage.match( rawkey ) )
     {
