@@ -1106,10 +1106,10 @@ void ImageBrowser::change_reel()
         clear_edl();
     }
 
-    if ( view()->bg_reel() == _reel )
-    {
-        set_bg( view()->foreground() );
-    }
+    // if ( view()->bg_reel() == _reel )
+    // {
+    //     set_bg( view()->foreground() );
+    // }
 
     send_reel( reel );
 
@@ -2764,6 +2764,10 @@ void ImageBrowser::exchange( int oldsel, int sel )
         return;
     }
 
+    char buf[1024];
+    sprintf( buf, "ExchangeImage %d %d", oldsel, sel );
+    view()->send_network( buf );
+
     Element* e = (Element*) child(oldsel);
     if ( sel > oldsel ) sel += 1;
     fltk::Browser::insert( *e, sel );
@@ -2785,11 +2789,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
     int64_t f = (int64_t) uiMain->uiFrame->value();
     int64_t g = t->offset( img );
     f -= g;
-
-    char buf[1024];
-    sprintf( buf, "ExchangeImage %d %d", oldsel, sel );
-    view()->send_network( buf );
-
+    
     reel->images.erase( reel->images.begin() + oldsel );
     if ( oldsel < sel ) sel -= 1;
 

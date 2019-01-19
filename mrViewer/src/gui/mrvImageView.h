@@ -731,11 +731,13 @@ public:
                                const int W, const int H );
 
 public:
+    typedef CMedia::Mutex Mutex;
     struct Command {
         CommandType  type;
         void*        data;
     };
 
+    CMedia::Mutex         commands_mutex;
     std::deque<Command>   commands;
     bool           _broadcast;
     CMedia::Mutex  _clients_mtx;

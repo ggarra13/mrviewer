@@ -2268,7 +2268,7 @@ void GLEngine::draw_images( ImageList& images )
         quad->draw( texWidth, texHeight );
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
-                Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
+	     Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {
             glDisable( GL_DEPTH );
             glDisable( GL_STENCIL_TEST );

@@ -2531,7 +2531,7 @@ void CMedia::stop(const bool bg)
     TRACE("");
     delete _stereo_barrier;
     _stereo_barrier = NULL;
-#if 1
+#if 0
     if ( bg ) {
     TRACE("");
 	delete _fg_bg_barrier;

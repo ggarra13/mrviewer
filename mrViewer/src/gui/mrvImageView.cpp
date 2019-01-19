@@ -460,18 +460,23 @@ static void update_title_bar( mrv::ImageView* view )
     mrv::media fg = view->foreground();
     mrv::media bg = view->background();
 
+    std::cerr << fg << " " << bg << std::endl;
+    
     char bufs[256];
 
     if ( fg && bg && fg != bg )
     {
-        snprintf( bufs, 256, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
+	std::cerr << fg->image()->name() << " fg" << std::endl
+		  << bg->image()->name() << " bg" << std::endl;
+        snprintf( bufs, 255, _("mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"),
                   fg->image()->name().c_str(), view->fg_reel(),
                   bg->image()->name().c_str(), view->bg_reel(),
                   view->show_background() ? _("Shown") : _("Not Shown") );
     }
     else if ( fg )
     {
-        snprintf( bufs, 256, _("mrViewer    FG: %s"),
+	std::cerr << fg->image()->name() << " fg" << std::endl;
+        snprintf( bufs, 255, _("mrViewer    FG: %s"),
                   fg->image()->name().c_str() );
     }
     else
@@ -2922,9 +2927,12 @@ void ImageView::timeout()
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
-    while ( ! commands.empty()  )
     {
-        handle_commands();
+	SCOPED_LOCK( commands_mutex );
+	while ( ! commands.empty()  )
+	{
+	    handle_commands();
+	}
     }
 
     TRACE( "" );
@@ -8063,14 +8071,22 @@ void ImageView::background( mrv::media bg )
 
     _bg = bg;
 
+    std::cerr << "update title bar" << std::endl;
     update_title_bar( this );
 
+    std::cerr << "updated title bar" << std::endl;
+    
     if ( bg )
     {
         CMedia* img = bg->image();
+	if (!img) return;
 
+	std::string file = img->directory() + '/' + img->name();
+
+	std::cerr << "CURRENT BG IMAGE " << file << std::endl;
+	
         sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
-                 img->fileroot(), img->first_frame(), img->last_frame() );
+                 file.c_str(), img->first_frame(), img->last_frame() );
         send_network( buf );
 
 
