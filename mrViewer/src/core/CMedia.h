@@ -369,7 +369,6 @@ public:
         return true;
     }
 
-
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
 
@@ -525,6 +524,9 @@ public:
     }
     inline PacketQueue& audio_packets() {
         return _audio_packets;
+    }
+    inline PacketQueue& subtitle_packets() {
+        return _subtitle_packets;
     }
 
     inline uint64_t duration() const {

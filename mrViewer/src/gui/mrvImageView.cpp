@@ -2602,7 +2602,18 @@ bool ImageView::preload()
     bool found;
     mrv::image_type_ptr pic;
     {
-        boost::recursive_mutex::scoped_lock lkv( img->video_mutex() );
+	typedef CMedia::Mutex Mutex;
+	mrv::PacketQueue& vp = img->video_packets();
+	CMedia::Mutex& vpm = vp.mutex();
+	SCOPED_LOCK( vpm );
+	mrv::PacketQueue& ap = img->audio_packets();
+	CMedia::Mutex& apm = ap.mutex();
+	SCOPED_LOCK( apm );
+	mrv::PacketQueue& sp = img->subtitle_packets();
+	CMedia::Mutex& spm = sp.mutex();
+	SCOPED_LOCK( spm );
+        Mutex& mtx = img->video_mutex();
+	SCOPED_LOCK( mtx );
         // Store current frame
         pic = img->hires();
         if (!pic) return false;
@@ -2756,6 +2767,9 @@ void ImageView::handle_commands()
         b->load( files, false, "", false, false );
         break;
     }
+    case kCacheClear:
+	clear_caches();
+	break;
     case kChangeImage:
     {
         int* idx = (int*) c.data;
@@ -2779,6 +2793,18 @@ void ImageView::handle_commands()
 	    }
 	}
         break;
+    }
+    case kFGReel:
+    {
+        int idx = *( (int*) c.data );
+	fg_reel( idx );
+	break;
+    }
+    case kBGReel:
+    {
+        int idx = *( (int*) c.data );
+	bg_reel( idx );
+	break;
     }
     case kStopVideo:
     {
@@ -2915,7 +2941,6 @@ void ImageView::handle_commands()
                                CMedia::kDamageLut );
         }
         use_lut( true );
-        // mrv::Preferences::run( main() );
         break;
     }
     default:
@@ -7917,10 +7942,11 @@ void ImageView::foreground( mrv::media fg )
 		 CMedia::cache_active() && CMedia::preload_cache() )
                 preload_cache_start();
 
-            // char buf[1024];
-            // sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
-            //          img->fileroot(), img->first_frame(), img->last_frame() );
-            // send_network( buf );
+            char buf[1024];
+	    std::string file = img->directory() + '/' + img->name(); 
+            sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
+		     file.c_str(), img->first_frame(), img->last_frame() );
+            send_network( buf );
 
             if ( img->looping() == CMedia::kUnknownLoop )
             {
@@ -8085,10 +8111,8 @@ void ImageView::background( mrv::media bg )
 
     _bg = bg;
 
-    std::cerr << "update title bar" << std::endl;
     update_title_bar( this );
 
-    std::cerr << "updated title bar" << std::endl;
     
     if ( bg )
     {
@@ -8096,8 +8120,6 @@ void ImageView::background( mrv::media bg )
 	if (!img) return;
 
 	std::string file = img->directory() + '/' + img->name();
-
-	std::cerr << "CURRENT BG IMAGE " << file << std::endl;
 	
         sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
                  file.c_str(), img->first_frame(), img->last_frame() );
@@ -8720,8 +8742,7 @@ void ImageView::play_forwards()
 void ImageView::play( const CMedia::Playback dir )
 {
 
-    browser()->change_image( browser()->value() );
-
+ 
     if ( dir == CMedia::kForwards )
     {
         send_network("playfwd");

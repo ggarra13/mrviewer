@@ -126,7 +126,7 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            LOG_CONN( s << " sent to " << *i << " " << p );
+            LOG_CONN( s << " sent to " << p );
             //LOG_INFO( "resending " << s << " to " << p );
             (*i)->deliver( s );
         }
@@ -192,7 +192,7 @@ bool Parser::parse( const std::string& s )
     v->_clients.clear();
 
 
-#ifdef DEBUG_COMMANDS
+#if 1 // DEBUG_COMMANDS
     mrv::media fg = v->foreground();
 
     if ( fg )
@@ -265,9 +265,9 @@ bool Parser::parse( const std::string& s )
 
         bool same = true;
         if ( font != old_font || text != old_text || font_size != old_size ||
-                color.r != oldcolor.r || color.g != oldcolor.g ||
-                color.b != oldcolor.b || color.a != oldcolor.a ||
-                frame != old_frame )
+	     color.r != oldcolor.r || color.g != oldcolor.g ||
+	     color.b != oldcolor.b || color.a != oldcolor.a ||
+	     frame != old_frame )
         {
             same = false;
         }
@@ -1148,6 +1148,17 @@ bool Parser::parse( const std::string& s )
 
         ok = true;
     }
+    else if ( cmd == N_("ClearCache") )
+    {
+
+        ImageView::Command c;
+        c.type = ImageView::kCacheClear;
+        c.data = NULL;
+
+        v->commands.push_back( c );
+
+        ok = true;
+    }
     else if ( cmd == N_("CurrentImage") )
     {
         std::string imgname;
@@ -1186,6 +1197,7 @@ bool Parser::parse( const std::string& s )
 
         if ( found )
         {
+	    LOG_INFO( "Change to image #" << idx << " "  << imgname );
             ImageView::Command c;
             c.type = ImageView::kChangeImage;
 
@@ -1197,6 +1209,7 @@ bool Parser::parse( const std::string& s )
         }
         else
         {
+	    LOG_INFO( "Load image " << imgname );
             ImageView::Command c;
             c.type = ImageView::kLoadImage;
 
@@ -1230,7 +1243,12 @@ bool Parser::parse( const std::string& s )
         int idx;
         is >> idx;
 
-        if ( idx >= 0 ) v->fg_reel( idx );
+	ImageView::Command c;
+	c.type = ImageView::kFGReel;
+	c.data = new int(idx);
+
+	v->commands.push_back( c );
+	
         ok = true;
     }
     else if ( cmd == N_("BGReel") )
@@ -1238,7 +1256,12 @@ bool Parser::parse( const std::string& s )
         int idx;
         is >> idx;
 
-        if ( idx >= 0 ) v->bg_reel( idx );
+	ImageView::Command c;
+	c.type = ImageView::kBGReel;
+	c.data = new int(idx);
+
+	v->commands.push_back( c );
+	
         ok = true;
     }
     else if ( cmd == N_("CurrentBGImage") )
@@ -1284,8 +1307,8 @@ bool Parser::parse( const std::string& s )
 
 	    if (!ok )
 	    {
-		int* img = new int(-1);
-		c.data = img;
+		int* data = new int(-1);
+		c.data = data;
 	    }
 	    
 	    v->commands.push_back( c );

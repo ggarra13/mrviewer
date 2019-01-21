@@ -343,9 +343,20 @@ EndStatus handle_loop( boost::int64_t& frame,
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
 
 
+    mrv::PacketQueue& vp = img->video_packets();
+    CMedia::Mutex& vpm1 = vp.mutex();
+    SCOPED_LOCK( vpm1 ); // 1155
+
+    mrv::PacketQueue& ap = img->audio_packets();
+    CMedia::Mutex& apm1 = ap.mutex();
+    SCOPED_LOCK( apm1 );
+
+    mrv::PacketQueue& sp = img->subtitle_packets();
+    CMedia::Mutex& spm1 = sp.mutex();
+    SCOPED_LOCK( spm1 );
 
     CMedia::Mutex& m = img->video_mutex();
-    SCOPED_LOCK( m );
+    SCOPED_LOCK( m );  // 1182
 
     CMedia::Mutex& ma = img->audio_mutex();
     SCOPED_LOCK( ma );
@@ -401,6 +412,15 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 //if ( video )
                 {
+		    mrv::PacketQueue& vp = next->video_packets();
+		    CMedia::Mutex& vpm2 = vp.mutex();
+		    SCOPED_LOCK( vpm2 ); // 1155
+		    mrv::PacketQueue& ap = next->audio_packets();
+		    CMedia::Mutex& apm2 = ap.mutex();
+		    SCOPED_LOCK( apm2 );
+		    mrv::PacketQueue& sp = next->subtitle_packets();
+		    CMedia::Mutex& spm2 = sp.mutex();
+		    SCOPED_LOCK( spm2 );
                     CMedia::Mutex& m2 = next->video_mutex();
                     SCOPED_LOCK( m2 );
 
@@ -506,6 +526,14 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 //if ( video )
                 {
+		    mrv::PacketQueue& vp = next->video_packets();
+		    CMedia::Mutex& vpm = vp.mutex();
+		    SCOPED_LOCK( vpm );
+		    mrv::PacketQueue& ap = next->audio_packets();
+		    CMedia::Mutex& apm = ap.mutex();
+		    SCOPED_LOCK( apm );
+		    mrv::PacketQueue& sp = next->subtitle_packets();
+		    CMedia::Mutex& spm = sp.mutex();
                     CMedia::Mutex& m2 = next->video_mutex();
                     SCOPED_LOCK( m2 );
 

@@ -3392,7 +3392,7 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all video packets that go
         // beyond the last frame
-	SCOPED_LOCK( _mutex ); // needed
+	// SCOPED_LOCK( _mutex ); // needed
 	
         mrv::PacketQueue::Mutex& m = _video_packets.mutex();
         SCOPED_LOCK( m );
@@ -3417,7 +3417,7 @@ void CMedia::loop_at_end( const int64_t frame )
         // With loop at end, we can discard all audio packets that go
         // beyond the last frame
 
-	SCOPED_LOCK( _audio_mutex ); // needed 
+	// SCOPED_LOCK( _audio_mutex ); // needed 
 	
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );

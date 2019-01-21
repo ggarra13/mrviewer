@@ -416,14 +416,14 @@ mrv::Reel ImageBrowser::reel( unsigned idx )
 {
     assert0( idx < _reels.size() );
     if ( _reel == idx ) {
-        change_reel();
+        // change_reel();
         return _reels[ idx ];
     }
 
-    if ( _reel >= 0 )
-    {
-        view()->stop();
-    }
+    // if ( _reel >= 0 )
+    // {
+    //     view()->stop();
+    // }
 
     _reel = idx;
     change_reel();
@@ -767,7 +767,9 @@ void ImageBrowser::insert( unsigned idx, mrv::media m )
 
     send_reel( reel );
 
-    sprintf( buf, "InsertImage %d \"%s\"", idx, m->image()->fileroot() );
+    CMedia* img = m->image();
+    std::string file = img->directory() + '/' + img->name();
+    sprintf( buf, "InsertImage %d \"%s\"", idx, file.c_str() );
     if ( view() ) view()->send_network( buf );
 
     redraw();
@@ -792,7 +794,8 @@ void ImageBrowser::send_current_image( const mrv::media& m )
 
     std::string buf = N_("CurrentImage \"");
     CMedia* img = m->image();
-    buf += img->fileroot();
+    std::string file = img->directory() + '/' + img->name();
+    buf += file;
     char txt[256];
     sprintf( txt, N_("\" %" PRId64 " %" PRId64), img->first_frame(),
              img->last_frame() );
@@ -1213,6 +1216,7 @@ void ImageBrowser::change_image(int i)
 
     mrv::Reel reel = current_reel();
     send_reel( reel );
+
     fltk::Browser::value( i );
     send_image( i );
     change_image();
@@ -1905,7 +1909,8 @@ void ImageBrowser::clone_current()
     this->insert( sel + 1, clone );
 
     char buf[256];
-    sprintf(buf, "CloneImage \"%s\"", img->fileroot() );
+    std::string file = img->directory() + '/' + img->name();
+    sprintf(buf, "CloneImage \"%s\"", file.c_str() );
     view()->send_network( buf );
 
     adjust_timeline();
@@ -2107,8 +2112,10 @@ void ImageBrowser::replace( int i, mrv::media m )
 
     view()->foreground( m );
 
-    char buf[128];
-    sprintf( buf, "ReplaceImage %d \"%s\"", i, m->image()->fileroot() );
+    char buf[1024];
+    CMedia* img = m->image();
+    std::string file = img->directory() + '/' + img->name();
+    sprintf( buf, "ReplaceImage %d \"%s\"", i, file.c_str() );
     view()->send_network( buf );
 }
 
