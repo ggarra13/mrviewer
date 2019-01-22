@@ -352,7 +352,6 @@ int main( int argc, char** argv )
             if ( opts.edl )
             {
 		mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
-		std::cerr << "reel " << r->name << std::endl;
 		r->edl = true;
                 ui->uiTimeline->edl( true );
             }

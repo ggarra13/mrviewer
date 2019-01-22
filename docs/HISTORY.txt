@@ -1,3 +1,14 @@
+v4.4.1   - Bug fixed Connections to work on all (?) commands.
+	 - Bug fixed Connections to not use relative paths in image names.
+	   Full paths are passed instead.  This fixes the problem of
+	   two mrViewers started at different locations.
+	 - Several minor bug fixes to preload caching.  Now precache
+	   reel and gui reel are different variables.
+	 - Added draw, erase, text, move picture hotkeys.  They are
+	   SHIFT+first letter of the tool.  Area selection remains
+	   as SHIFT+Drag.
+	 - Several minor bug fixes to BG playback.
+
 v4.4.0	 - Bug fixed BG playback of movies and sequences.  It is now
 	   possible to have a FG image and comp it on the background.
 	   This was a regression from some older version.

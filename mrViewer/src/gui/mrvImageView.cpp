@@ -1377,7 +1377,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
     _vr( kNoVR ),
     _timeout( NULL ),
     _old_fg( NULL ),
-    _fg_reel( -1 ),
+    _fg_reel( 0 ),
     _bg_reel( -1 ),
     _mode( kNoAction ),
     _selected_image( NULL ),
@@ -2538,24 +2538,19 @@ bool ImageView::preload()
     else
     {
         fg = foreground();
+	if ( !fg )  return false;
     }
 
-    if ( !fg )  return false;
     
 
-    CMedia* img = fg->image();
-    if (!img) return false;
+    CMedia* img = NULL;
+    if ( fg ) img = fg->image();
 
     CMedia::Playback p = playback();
 
 
     // Exit early if we are dealing with a video instead of a sequence
-    if ( !img->is_sequence() || img->has_video() ) {
-        if  ( p != CMedia::kStopped )
-        {
-            preload_cache_stop();
-            return false;
-        }
+    if ( !img || !img->is_sequence() || img->has_video() ) {
         img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel
@@ -6373,7 +6368,8 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         uiMain->uiEndButton->do_callback();
     }
-    else if ( kAreaMode.match( rawkey ) )
+    else if ( ( _mode == kNoAction || _mode == kScrub ) &&
+	      kAreaMode.match( rawkey ) )
     {
 	selection_mode();
 	return 1;
@@ -6728,10 +6724,10 @@ int ImageView::handle(int event)
 
         mrv::ImageBrowser* b = browser();
         if ( b && !_idle_callback && CMedia::cache_active()  &&
-                ( CMedia::preload_cache() ||
-                  uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+	     ( CMedia::preload_cache() ||
+	       uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
         {
-            unsigned reel = b->number_of_reels();
+            unsigned _reel = b->number_of_reels();
 	    unsigned i = b->reel_index();
             for ( ; i < b->number_of_reels(); ++i )
             {
@@ -6742,17 +6738,16 @@ int ImageView::handle(int event)
                 if (!fg) continue;
 
                 CMedia* img = fg->image();
-                if ( img && !img->is_cache_full() && !img->has_video() &&
+                if ( !img->is_cache_full() && !img->has_video() &&
 		     img->playback() == CMedia::kStopped )
                 {
-		    reel = i;
+		    _reel = i;
                     break;
                 }
             }
 
-            if ( reel < b->number_of_reels() )
+            if ( _reel < b->number_of_reels() )
 	    {
-		b->reel( (unsigned) reel );
                 preload_cache_start();
 	    }
         }
@@ -8858,7 +8853,9 @@ void ImageView::stop()
 
     stop_playback();
 
-    send_network( "stop" );
+    char buf[256];
+    sprintf( buf, "stop %" PRId64, frame() );
+    send_network( buf );
 
     if ( uiMain->uiPlayForwards )
         uiMain->uiPlayForwards->value(0);
@@ -8866,10 +8863,11 @@ void ImageView::stop()
     if ( uiMain->uiPlayBackwards )
         uiMain->uiPlayBackwards->value(0);
 
-
+    
     frame( frame() );
     // seek( int64_t(timeline()->value()) );
 
+    
     if ( CMedia::preload_cache() && ! _idle_callback )
     {
         preload_cache_start();

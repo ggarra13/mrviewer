@@ -379,9 +379,9 @@ void ImageBrowser::debug_images() const
 /**
  * Change to a certain reel
  *
- * @param idx reel index
+ * @param name name of reel to look for
  *
- * @return new reel or NULL if invalid index
+ * @return new reel or old reel with same name
  */
 mrv::Reel ImageBrowser::reel( const char* name )
 {
@@ -396,6 +396,7 @@ mrv::Reel ImageBrowser::reel( const char* name )
                 if ( view()->playback() != CMedia::kStopped )
                     view()->stop();
             }
+	    std::cerr << "set _reel to " << idx << std::endl;
             _reel = idx;
             change_reel();
             return *i;
@@ -420,11 +421,7 @@ mrv::Reel ImageBrowser::reel( unsigned idx )
         return _reels[ idx ];
     }
 
-    // if ( _reel >= 0 )
-    // {
-    //     view()->stop();
-    // }
-
+    
     _reel = idx;
     change_reel();
     return _reels[ idx ];

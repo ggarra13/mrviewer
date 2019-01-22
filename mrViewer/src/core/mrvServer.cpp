@@ -934,7 +934,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, name, '"' );
         is.clear();
-
+	
         ImageView::Command c;
         c.type = ImageView::kCreateReel;
         c.data = new std::string( name );
@@ -1122,6 +1122,7 @@ bool Parser::parse( const std::string& s )
 
         if (!found)
         {
+	    LOG_WARNING( "NORMAL load image " <<  imgname );
             ImageView::Command c;
             c.type = ImageView::kLoadImage;
 
@@ -1186,7 +1187,8 @@ bool Parser::parse( const std::string& s )
 
 		CMedia* img = (*j)->image();
 		std::string file = img->directory() + '/' + img->name();
-                if ( img && file == imgname )
+		LOG_WARNING( "COMPARE " << file << " to " << imgname );
+                if ( file == imgname )
                 {
                     found = true;
                     break;
@@ -1197,23 +1199,11 @@ bool Parser::parse( const std::string& s )
 
         if ( found )
         {
-	    LOG_INFO( "Change to image #" << idx << " "  << imgname );
+	    LOG_WARNING( "Change to image #" << idx << " "  << imgname );
             ImageView::Command c;
             c.type = ImageView::kChangeImage;
 
             c.data = new int(idx);
-
-            v->commands.push_back( c );
-
-            ok = true;
-        }
-        else
-        {
-	    LOG_INFO( "Load image " << imgname );
-            ImageView::Command c;
-            c.type = ImageView::kLoadImage;
-
-            c.data = new LoadInfo( imgname, first, last );
 
             v->commands.push_back( c );
 
@@ -1249,6 +1239,8 @@ bool Parser::parse( const std::string& s )
 
 	v->commands.push_back( c );
 	
+	r = browser()->reel_at( idx );
+	
         ok = true;
     }
     else if ( cmd == N_("BGReel") )
@@ -1261,6 +1253,8 @@ bool Parser::parse( const std::string& s )
 	c.data = new int(idx);
 
 	v->commands.push_back( c );
+	
+	r = browser()->reel_at( idx );
 	
         ok = true;
     }
@@ -1278,7 +1272,7 @@ bool Parser::parse( const std::string& s )
 	is >> first;
 	is >> last;
 
-	mrv::Reel r = browser()->current_reel();
+        r = browser()->current_reel();
 	    
 	if ( r )
 	{
@@ -1605,11 +1599,24 @@ bool Parser::parse( const std::string& s )
         boost::int64_t f;
         is >> f;
 
-        ImageView::Command c;
-        c.type = ImageView::kStopVideo;
-        c.data = NULL;
-        v->commands.push_back( c );
+	{
+	    ImageView::Command c;
+	    c.type = ImageView::kStopVideo;
+	    c.data = NULL;
+	    v->commands.push_back( c );
+	}
 
+	// while ( v->playback() != CMedia::kStopped )
+	//     std::cerr << '.';
+	
+	// {
+	//     std::cerr << "SEEK >>> " << f << std::endl;
+	//     ImageView::Command c;
+	//     c.type = ImageView::kSeek;
+	//     c.data = new int64_t( f );
+	//     v->commands.push_back( c );
+	// }
+	
         ok = true;
     }
     else if ( cmd == N_("playfwd") )
@@ -1618,7 +1625,6 @@ bool Parser::parse( const std::string& s )
         c.type = ImageView::kPlayForwards;
         c.data = NULL;
         v->commands.push_back( c );
-        // v->play_forwards();
         ok = true;
     }
     else if ( cmd == N_("playback") )
