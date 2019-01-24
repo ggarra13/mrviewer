@@ -6775,9 +6775,7 @@ int ImageView::handle(int event)
             window()->cursor(fltk::CURSOR_CROSS);
         }
         TRACE("");
-        fltk::GlWindow::handle( event );
-        TRACE("");
-        return 1;
+        return fltk::GlWindow::handle( event );
     }
     case fltk::ENTER:
         TRACE("");

@@ -4,16 +4,16 @@
 
 
 
-  
-  
-  
+
+
+
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
 
 
-  
-  
-  
+
+
+
   <title>Manejo de Color</title></head>
 
 <body>
@@ -22,7 +22,7 @@
 <h2 style="text-decoration: underline;">Manejo de Color</h2>
 <br>
 <h4>El problema</h4>
-El color no es, lamentablemente, una ciencia exacta. &nbsp;Aun no podemos medir como ven nuestros ojos. &nbsp;Por ello, cada desarrollo en la 
+El color no es, lamentablemente, una ciencia exacta. &nbsp;Aun no podemos medir como ven nuestros ojos. &nbsp;Por ello, cada desarrollo en la
 area de la imagen ha resultado en una multitud de formas de hacer cosas.
 &nbsp; Por lo que es rojo en un monitor, no necesariamente será del mismo tinte de rojo en otro. El desastre es más complicado por el hecho que otros periféricos de salida, como impresoras y similares, son todas distintas, tienen respuestas de color no lineales, y pueden crear el color en una forma totalmente diferente que un tubo de CRT o un LED.
 
@@ -30,16 +30,16 @@ area de la imagen ha resultado en una multitud de formas de hacer cosas.
 <i>Systema de Manejo de Color</i>, una pieza de software diseñada para convertir
  colores entre representaciones requeridas para varios equipos. Saber
 las características de tu hardware es la mitad de camino para tener una solutción que funcione.
-En el nivel más básico, para un monitor significa saber los colores primarios y la gama. 
+En el nivel más básico, para un monitor significa saber los colores primarios y la gama.
 
 </p>
 
 
 
 
-mrViewer supporta probablemente el sistema de manejo de color más avanzado en uso hoy en día, llamado CTL (Color Transform Language o Lenguaje de Transformación de Color). &nbsp;CTL fue
+mrViewer supporta probablemente los dos sistemas de manejo de color más avanzado en uso hoy en día, llamados CTL (Color Transform Language o Lenguaje de Transformación de Color) y OCIO. &nbsp;CTL fue
 desarollado por AMPAS, la Academia de Motion Picture Arts and Sciences,
-con la ayuda de Industrial Light and Magic (ILM).<br>
+con la ayuda de Industrial Light and Magic (ILM), mientras que OCIO fue desarrollado por Sony Pictures Imageworks.<br>
 
 <br>
 
@@ -51,26 +51,33 @@ son&nbsp;solo archivos ASCII, se vuelve más difícil de desinterpretar.<br>
 
 <br>
 
-Desde Enero 2015, AMPAS incluye ACES 1.0, que es una colección de 
+Desde Enero 2015, AMPAS incluye ACES 1.0, que es una colección de
 transformaciones CTL and estas están incluídas parcialmente en la distribución de mrViewer.
 
 <br>
 
+OCIO es una mezcla de archivos de configuracion, luts y transformación de matrices que pueden ser concatenados.  Hay scripts de python que permiten obtener OCIO configs de CTL scripts.
 
+<br>
 
 Dentro de mrViewer, dos o mas archivos CTL son procesados y cocinados en un 3D Lut
 de (por defecto) 64x64x64 que luego opera en la imágen completamente con información de coma flotante de 32-bits en tiempo real. &nbsp; Esto te dará una bastante exacta aproximación de inclusive las más complejas transformaciones.
 <br>
 
 
+Desde Enero 2015, AMPAS distribuye ACES 1.0.3, que es una colección de transformaciones de CTL y estas están incluídas en la distribución de mrViewer.  mrViewer tambien distribuye la configuración de OCIO de Nuke y otras pueden obtenerse en:
 
+<a target="main" href="http://opencolorio.org/configurations/">http://opencolorio.org/configurations/</a>
+
+<br>
+<br>
+
+Dentro de mrViewer, dos o más archivos CTL o un set de transformaciones OCIO son procesados y cocinados en un, por lo menos, Lut 3D de 64x64x64 que permite luego operar en la imagen completamente con 32-bit floats en tiempo real.  Esto te ofrecerá una aproximación bastante precisa de las transformaciones más complejas.
+<br>
 
 <br>
 
-
-
-
-Además de CTL, mrViewer también supporta ICC, que es todavía bastante
+Además de CTL y OCIO, mrViewer también supporta ICC, que es todavía bastante
 comun con la industria de imprenta así como con algunos manufacturadores de monitores.
 &nbsp;En el future, es probable que el soporte de ICC sea sacado.
 <br><br>

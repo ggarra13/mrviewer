@@ -2738,6 +2738,9 @@ void ImageBrowser::handle_dnd()
     }
 
     last_image();
+
+    main()->uiMain->take_focus();
+    view()->take_focus();
 }
 
 /**
