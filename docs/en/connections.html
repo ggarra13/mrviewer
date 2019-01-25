@@ -68,4 +68,491 @@ And the client will connect with:
 The client will check all images and reels from the server and mimic it as best as it can, assuming all paths are visible from both machines.
 From then on, you will see different {conn} messages every time the two instances of mrViewer acknoledge each other about a change.
 
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tr>
+    <td>
+      Command
+    </td>
+    <td>
+      Example(s)
+    </td>
+    <td>
+      Effect
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Image "imagename" first_frame last_frame
+    </td>
+    <td>
+      Image "/media/Datos/movies/avengers.mp4" 1 60
+    </td>
+    <td>
+      Load an Image/movie into the viewer with the frame range set.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FPS double
+    </td>
+    <td>
+      FPS 23.976
+    </td>
+    <td>
+      Change frame rate to all images currently shown.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      EDL bool
+    </td>
+    <td>
+      EDL 1
+    </td>
+    <td>
+      Change EDL to reel currently shown.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Looping int
+    </td>
+    <td>
+      Looping 1 ( 1 = loop, 2 = swing, 0 = no loop )
+    </td>
+    <td>
+      Change looping mode in timeline.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Selection x y w h
+    </td>
+    <td>
+      Selection 20 30 120 240
+    </td>
+    <td>
+      Change selection area in image.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      UndoDraw
+    </td>
+    <td>
+      UndoDraw
+    </td>
+    <td>
+      Undoes the last pencil, erase or text drawn.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      RedoDraw
+    </td>
+    <td>
+      RedoDraw
+    </td>
+    <td>
+      Redoes the last pencil, erase or text drawn undone.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Zoom double
+    </td>
+    <td>
+      Zoom 1.5
+    </td>
+    <td>
+      Zooms the view the percentage specified.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Offset double double
+    </td>
+    <td>
+      Offset -320 240
+    </td>
+    <td>
+      Offsets the view when not in VR mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Rotation double double
+    </td>
+    <td>
+      Rotation 20 50
+    </td>
+    <td>
+      Rotates the view when in VR mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Spin double double
+    </td>
+    <td>
+      Spin 10 20
+    </td>
+    <td>
+      Spins the view when in VR mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      MovePicture double double
+    </td>
+    <td>
+      MovePicture -10.6 20.5
+    </td>
+    <td>
+      Moves the picture an offset.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ScalePicture double double
+    </td>
+    <td>
+      ScalePicture 0.5 0.25
+    </td>
+    <td>
+      Scales the picture a percentage.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      UpdateLayers
+    </td>
+    <td>
+      UpdateLayers
+    </td>
+    <td>
+      Updates the layers and color channels
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Channel int
+    </td>
+    <td>
+      Channel 0
+    </td>
+    <td>
+      Changes color channel to a new one.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FieldDisplay int
+    </td>
+    <td>
+      FieldDisplay 0 ( 0 = Both, 1 = Top, 2 = Bottom )
+    </td>
+    <td>
+      Changes field display shown.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Normalize bool
+    </td>
+    <td>
+      Normalize 0
+    </td>
+    <td>
+      Normalizes colors to a gray range (useful for shadow maps).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      WipeVertical double
+    </td>
+    <td>
+      WipeVertical 0.2
+    </td>
+    <td>
+      Wipes the front image with the background image vertically.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      WipeHorizontal double
+    </td>
+    <td>
+      WipeHorizontal 0.2
+    </td>
+    <td>
+      Wipes the front image with the background image horizontally.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      NoWipe
+    </td>
+    <td>
+      NoWipe
+    </td>
+    <td>
+      Turns off wiping.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      OCIO bool
+    </td>
+    <td>
+      OCIO 1
+    </td>
+    <td>
+      Turns on/off OCIO color correction.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      OCIOConfig "config.ocio"
+    </td>
+    <td>
+      OCIOConfig "nuke-default/config.ocio" 
+    </td>
+    <td>
+      Selects an ocio configuration file.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      OCIOView Display View
+    </td>
+    <td>
+      OCIOView default sRGB 
+    </td>
+    <td>
+      Selects a display and a corresponding view.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ICS inputcolorspace
+    </td>
+    <td>
+      ICS sRGB 
+    </td>
+    <td>
+      Selects an input color space for the foreground image.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Gain double
+    </td>
+    <td>
+      Gain 1.0
+    </td>
+    <td>
+      Sets the gain for the foreground image.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Gamma double
+    </td>
+    <td>
+      Gamma 2.2
+    </td>
+    <td>
+      Sets the gamma for the foreground image.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mask double
+    </td>
+    <td>
+      Mask 0.2
+    </td>
+    <td>
+      Sets the mask for the images.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      SafeAreas bool
+    </td>
+    <td>
+      SafeAreas 1
+    </td>
+    <td>
+      Toggles safe areas display on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      DisplayWindow bool
+    </td>
+    <td>
+      DisplayWindow 1
+    </td>
+    <td>
+      Toggles image display window on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      DataWindow bool
+    </td>
+    <td>
+      DataWindow 1
+    </td>
+    <td>
+      Toggles image data window on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Volume double
+    </td>
+    <td>
+      Voulume 0.75
+    </td>
+    <td>
+      Sets the audio volume between 0 (no volume) and 1.0 (full volume).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      UseLUT bool
+    </td>
+    <td>
+      UseLUT 1
+    </td>
+    <td>
+      Toggles 3D Lut on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShowBG bool
+    </td>
+    <td>
+      ShowBG 1
+    </td>
+    <td>
+      Toggles background image on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShowPixelRatio bool
+    </td>
+    <td>
+      ShowPixelRatio 1
+    </td>
+    <td>
+      Toggles pixel ratio for the image on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMax int
+    </td>
+    <td>
+      TimelineMax 2232
+    </td>
+    <td>
+      Sets the timeline maximum frame.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMaxDisplay int
+    </td>
+    <td>
+      TimelineMaxDisplay 2232
+    </td>
+    <td>
+      Sets the timeline maximum display frame, which should be smaller than timeline maximum display.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMin int
+    </td>
+    <td>
+      TimelineMin 1
+    </td>
+    <td>
+      Sets the timeline minimum frame.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMinDisplay int
+    </td>
+    <td>
+      TimelineMinDisplay 32
+    </td>
+    <td>
+      Sets the timeline minimum display frame, which should be bigger than timeline minimum display.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      VRCubic bool
+    </td>
+    <td>
+      VRCubic 1
+    </td>
+    <td>
+      Toggles VR Cubic display on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      VRSpherical bool
+    </td>
+    <td>
+      VRSpherical 1
+    </td>
+    <td>
+      Toggles VR spherical display on and off.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      VRangle double
+    </td>
+    <td>
+      VRangle 30.0
+    </td>
+    <td>
+      Sets the view angle in VR mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FullScreen
+    </td>
+    <td>
+      FullScreen
+    </td>
+    <td>
+      Toggle FullScreen mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      PresentationMode
+    </td>
+    <td>
+      PresentationMode
+    </td>
+    <td>
+      Toggle Presentation mode.
+    </td>
+  </tr>
+</table>
+
 </body>
