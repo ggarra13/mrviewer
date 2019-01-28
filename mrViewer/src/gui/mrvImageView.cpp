@@ -2593,7 +2593,7 @@ bool ImageView::preload()
 
 
 
-    bool found;
+    bool found = false;
     mrv::image_type_ptr pic;
     {
 	typedef CMedia::Mutex Mutex;
@@ -2613,18 +2613,20 @@ bool ImageView::preload()
         if (!pic) return false;
         img->clear_video_packets();
 	image_type_ptr canvas;
-	if ( img->fetch( canvas, f ) )
+	std::string file = img->sequence_filename( f );
+	if ( fs::exists(file) && img->fetch( canvas, f ) )
 	{
 	    img->cache( canvas );
-	    found = img->find_image( f );
-	}
+	    found = true;
+	}	
+	if ( p ) found = img->find_image( img->frame() + p );
     }
     // Frame found. Update _preframe.
     if ( found ) {
         _preframe += p;
         if ( p == CMedia::kBackwards )
         {
-            if ( _preframe < first )
+            if ( _preframe <= first )
             {
                 switch( looping() )
                 {
@@ -2643,7 +2645,7 @@ bool ImageView::preload()
         }
         else if ( p == CMedia::kForwards )
         {
-           if ( _preframe > last )
+           if ( _preframe >= last )
             {
                 switch( looping() )
                 {
@@ -2671,7 +2673,7 @@ bool ImageView::preload()
                       pos_diff < 0 && first_diff + last_diff < max_images ) )
             {
                 _preframe += 1;
-                if ( _preframe > last )
+                if ( _preframe >= last )
                 {
                     _preframe = first;
                     // preload_cache_stop();
@@ -7038,7 +7040,7 @@ void ImageView::preload_cache_stop()
 
     if ( _idle_callback )
     {
-        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+	//fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
         _idle_callback = false;
     }
 }
@@ -8776,7 +8778,9 @@ void ImageView::play( const CMedia::Playback dir )
     }
     else
     {
-	_preframe = frame();
+	CMedia* img = fg->image();
+	_preframe = img->first_cache_empty_frame();
+	// _preframe = frame();
     }
 
 
