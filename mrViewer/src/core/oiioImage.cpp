@@ -307,13 +307,14 @@ bool oiioImage::fetch( const boost::int64_t frame )
         return false;
     }
 
-    if ( allocate_pixels( frame, channels, type, pixel_type, dw, dh ) )
+    image_type_ptr canvas;
+    if ( allocate_pixels( canvas, frame, channels, type, pixel_type, dw, dh ) )
     {
         SCOPED_LOCK( _mutex );
 
         try
         {
-            Pixel* pixels = (Pixel*)_hires->data().get();
+            Pixel* pixels = (Pixel*)canvas->data().get();
             in->read_image (format, &pixels[0]);
         }
         catch ( const std::runtime_error& e )

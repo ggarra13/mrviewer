@@ -2,7 +2,7 @@
 <html><head>
 
 
-  
+
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
 
@@ -31,7 +31,7 @@ The connections window allows you to control two or more mrViewers from a single
   </tbody>
 </table>
 <br>
-<iframe title="YouTube video player" class="youtube-player" type="text/html" 
+<iframe title="YouTube video player" class="youtube-player" type="text/html"
 width="640" height="390" src="http://www.youtube.com/embed/dvEiWKV3WSU"
 frameborder="0" allowFullScreen></iframe>
 <br>
@@ -44,7 +44,7 @@ You can also connect the server or the client command-line, by using:
 
 <p><div class="console">
 > mrViewer -p [port number]  #  to create a server.</div>
-</p> 
+</p>
 <p><div class="console">
 > mrViewer -t [hostname] -p [port number] # to create a client.</div>
 </p>
@@ -67,17 +67,21 @@ And the client will connect with:
 
 The client will check all images and reels from the server and mimic it as best as it can, assuming all paths are visible from both machines.
 From then on, you will see different {conn} messages every time the two instances of mrViewer acknoledge each other about a change.
+<br>
+<br>
+
+<h2 style="text-decoration: underline;">Commands</h2>
 
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
   <tr>
     <td>
-      Command
+      <b>Command</b>
     </td>
     <td>
-      Example(s)
+      <b>Example(s)</b>
     </td>
     <td>
-      Effect
+      <b>Effect</b>
     </td>
   </tr>
   <tr>
@@ -88,7 +92,7 @@ From then on, you will see different {conn} messages every time the two instance
       Image "/media/Datos/movies/avengers.mp4" 1 60
     </td>
     <td>
-      Load an Image/movie into the viewer with the frame range set.
+      Load an Image/movie into the viewer with the frame range set and at the end of the current reel.
     </td>
   </tr>
   <tr>
@@ -135,29 +139,6 @@ From then on, you will see different {conn} messages every time the two instance
       Change selection area in image.
     </td>
   </tr>
-  <tr>
-    <td>
-      UndoDraw
-    </td>
-    <td>
-      UndoDraw
-    </td>
-    <td>
-      Undoes the last pencil, erase or text drawn.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      RedoDraw
-    </td>
-    <td>
-      RedoDraw
-    </td>
-    <td>
-      Redoes the last pencil, erase or text drawn undone.
-    </td>
-  </tr>
-  <tr>
     <td>
       Zoom double
     </td>
@@ -236,10 +217,10 @@ From then on, you will see different {conn} messages every time the two instance
   </tr>
   <tr>
     <td>
-      Channel int
+      Channel int <ChannelName>
     </td>
     <td>
-      Channel 0
+      Channel 0 Color
     </td>
     <td>
       Changes color channel to a new one.
@@ -316,7 +297,7 @@ From then on, you will see different {conn} messages every time the two instance
       OCIOConfig "config.ocio"
     </td>
     <td>
-      OCIOConfig "nuke-default/config.ocio" 
+      OCIOConfig "nuke-default/config.ocio"
     </td>
     <td>
       Selects an ocio configuration file.
@@ -327,7 +308,7 @@ From then on, you will see different {conn} messages every time the two instance
       OCIOView Display View
     </td>
     <td>
-      OCIOView default sRGB 
+      OCIOView default sRGB
     </td>
     <td>
       Selects a display and a corresponding view.
@@ -338,7 +319,7 @@ From then on, you will see different {conn} messages every time the two instance
       ICS inputcolorspace
     </td>
     <td>
-      ICS sRGB 
+      ICS sRGB
     </td>
     <td>
       Selects an input color space for the foreground image.
@@ -473,7 +454,7 @@ From then on, you will see different {conn} messages every time the two instance
       TimelineMaxDisplay 2232
     </td>
     <td>
-      Sets the timeline maximum display frame, which should be smaller than timeline maximum display.
+      Sets the timeline maximum display frame, which should be smaller than timeline maximum frame.
     </td>
   </tr>
   <tr>
@@ -495,7 +476,7 @@ From then on, you will see different {conn} messages every time the two instance
       TimelineMinDisplay 32
     </td>
     <td>
-      Sets the timeline minimum display frame, which should be bigger than timeline minimum display.
+      Sets the timeline minimum display frame, which should be bigger than timeline minimum frame.
     </td>
   </tr>
   <tr>
@@ -553,6 +534,341 @@ From then on, you will see different {conn} messages every time the two instance
       Toggle Presentation mode.
     </td>
   </tr>
+  <tr>
+    <td>
+      ShiftAudio "reel" "imagename" offset
+    </td>
+    <td>
+      ShiftAudio "reel #2" "/media/gga/movies/avatar.mp4" 30
+    </td>
+    <td>
+      Shifts audio of a movie file.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShiftMediaStart "reel" "imagename" offset
+    </td>
+    <td>
+      ShiftMediaStart "reel #2" "/media/gga/movies/avatar.mp4" 30
+    </td>
+    <td>
+      Shifts start of a movie file.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShiftMediaEnd "reel" "imagename" offset
+    </td>
+    <td>
+      ShiftMediaEnd "reel #2" "/media/gga/movies/avatar.mp4" 30
+    </td>
+    <td>
+      Shifts end of a movie file.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CurrentReel "reel"
+   </td>
+    <td>
+      CurrentReel "reel #2"
+    </td>
+    <td>
+      Sets the current reel or creates a new one if the name does not exist.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ReplaceImage index "imagename"
+   </td>
+    <td>
+      ReplaceImage 2 "/media/gga/Datos/pics/file.%04d.exr"
+    </td>
+    <td>
+      Replaces an image at a certain index with a new image name.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      RemoveImage index
+   </td>
+    <td>
+      RemoveImage 2
+    </td>
+    <td>
+      Removes an image at the index from the current reel.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ClomeImage "imgname"
+    </td>
+    <td>
+      CloneImage "D:/images/imgseq.%04d.exr"
+    </td>
+    <td>
+      Clones an image frame from the image from the current reel.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      InsertImage index "imgname"
+    </td>
+    <td>
+      InsertImage 1 "D:/images/imgseq.%04d.exr"
+    </td>
+    <td>
+      Inserts an image at a certain index in the current reel.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ChangeImage index
+    </td>
+    <td>
+      ChangeImage 3
+    </td>
+    <td>
+      Changes the image on the current reel starting at 0.  In the example, it would display image 4 on the reel.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CurrentImage "imgname" first_frame last_frame
+    </td>
+    <td>
+      CurrentImage "/media/images/test.%02d.pic" 1 30
+    </td>
+    <td>
+      Changes the image on the current reel based on image name and start and end frames.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ExchangeImage old_index new_index
+    </td>
+    <td>
+      ExchangeImage 2 0
+    </td>
+    <td>
+      Exchanges the image on the old index with the image in the new index.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FGReel index
+    </td>
+    <td>
+      FGReel 2
+    </td>
+    <td>
+      Sets the reel index for the foreground image.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      BGReel index
+    </td>
+    <td>
+      BGReel 2
+    </td>
+    <td>
+      Sets the reel index for the background image.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CurrentBGImage "imgname" first_frame last_frame
+    </td>
+    <td>
+      CurrentBGImage "/media/images/test.%02d.pic" 1 30
+    </td>
+    <td>
+      Changes the BG image on the current reel based on image name and start and end frames.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      sync_image
+    </td>
+    <td>
+      sync_image
+    </td>
+    <td>
+      Forces a syncing of all images and reels.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      stop
+    </td>
+    <td>
+      stop
+    </td>
+    <td>
+      Stops playback.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      playfwd
+    </td>
+    <td>
+      playfwd
+    </td>
+    <td>
+      Plays forward.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      playback
+    </td>
+    <td>
+      playback
+    </td>
+    <td>
+      Plays backward.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      seek int
+    </td>
+    <td>
+      seek 112
+    </td>
+    <td>
+      Seeks to a certain frame.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      StereoInput int
+    </td>
+    <td>
+      StereoInput 0
+    </td>
+    <td>
+      Sets stereo input. ( 0: no input, 1 = separate layers/images, 2 = top/bottom image, 4 = left/right image ) 
+    </td>
+  </tr>
+  <tr>
+    <td>
+      StereoOutput int
+    </td>
+    <td>
+      StereoOutput 5
+    </td>
+    <td>
+      Sets stereo output. ( 0: no stereo, 1 = stereo left, 2 = stereo right, 4 = stereo OpenGL, 8 = stereo bottom/top, <br> 10 = stereo top/bottom, 16 = stereo side by side, 18 = stereo crossed, <br>32 = stereo interlaced, 96 = stereo interlaced columns, 160 = stereo checkerboard, <br>256 = stereo anaglyph, 258 = stereo right anaglyph )
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3" style="text-align: center">
+     <b> Windows</b>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td>
+      MediaInfoWindow bool
+    </td>
+    <td>
+      MediaInfoWindow 1
+    </td>
+    <td>
+      Toggles Media Information Window.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      ColorInfoWindow bool
+    </td>
+    <td>
+      ColorInfoWindow 1
+    </td>
+    <td>
+      Toggles Color Area Information Window.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      GL3dView bool
+    </td>
+    <td>
+      GL3dView 1
+    </td>
+    <td>
+      Toggles 3D View window for deep images.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      StereoOptions bool
+    </td>
+    <td>
+      StereoOptions 1
+    </td>
+    <td>
+      Toggles 3D Stereo Options Window.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      PaintTools bool
+    </td>
+    <td>
+      PaintTools 1
+    </td>
+    <td>
+      Toggles Paint/Action Tools Window.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      HistogramWindow bool
+    </td>
+    <td>
+      HistogramWindow 1
+    </td>
+    <td>
+      Toggles Histogram Window.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      VectorscopeWindow bool
+    </td>
+    <td>
+      VectorscopeWindow 1
+    </td>
+    <td>
+      Toggles Vectorscope Window.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      WaveformWindow bool
+    </td>
+    <td>
+      WaveformWindow 1
+    </td>
+    <td>
+      Toggles Waveform Window.
+    </td>
+  </tr>
+
 </table>
 
 </body>

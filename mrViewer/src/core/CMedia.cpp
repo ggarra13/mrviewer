@@ -1015,10 +1015,18 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 /**
  * Allocate the float pixels for the image
  *
- * @param ws image width in pixels
- * @param hs image height in pixels
+ * @param canvas canvas where allocated picture will be stored.
+ * @param frame image frame this picture belongs to.
+ * @param channels number of channels in this image.
+ * @param format   format of image (RGBA, A, Luma, YUV, etc).
+ * @param pixel_type  pixel type of image (8 bits, 16 bits, half, float).
+ * @param w image width in pixels.
+ * @param h image height in pixels.
+ *
+ * @returns true for success, false for failure
  */
-bool CMedia::allocate_pixels( const int64_t& frame,
+bool CMedia::allocate_pixels( image_type_ptr& canvas,
+			      const int64_t& frame,
                               const unsigned short channels,
                               const image_type::Format format,
                               const image_type::PixelType pixel_type,
@@ -1038,7 +1046,7 @@ bool CMedia::allocate_pixels( const int64_t& frame,
 
     image_damage( image_damage() & ~kDamageContents );
     try {
-        _hires.reset(  new image_type( frame, w, h,
+        canvas.reset(  new image_type( frame, w, h,
                                        channels, format, pixel_type ) );
     }
     catch( const std::bad_alloc& e )
@@ -1052,7 +1060,7 @@ bool CMedia::allocate_pixels( const int64_t& frame,
         return false;
     }
 
-    if (! _hires->data().get() )
+    if (! canvas->data().get() )
     {
         IMG_ERROR( _("Out of memory") );
         return false;
@@ -1067,7 +1075,8 @@ mrv::image_type_ptr CMedia::left() const
     int64_t f = handle_loops( _frame );
     int64_t idx = f - _frame_start;
 
-    if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+    int64_t num = _frame_end - _frame_start + 1;
+    if ( idx > num ) idx = num - 1;
     else if ( idx < 0 ) idx = 0;
 
     Mutex& mtx = const_cast< Mutex& >( _mutex );
@@ -2691,9 +2700,9 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     int64_t f = pic->frame();
 
     int64_t idx = f - _frame_start;
-
+    int64_t num = _frame_end - _frame_start + 1;
     if ( idx < 0 ) idx = 0;
-    else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+    else if ( idx > num ) idx = num - 1;
 
     if ( !seq || seq[idx] ) return;
 
@@ -2851,6 +2860,20 @@ bool CMedia::is_cache_full()
     return true;
 }
 
+int64_t CMedia::first_cache_empty_frame()
+{
+    if ( dynamic_cast< aviImage* >( this ) != NULL )
+        return first_frame();
+
+    for ( int64_t i = _frame_start; i <= _frame_end; ++i )
+    {
+        if ( is_cache_filled(i) == kNoCache ) {
+	    return i;
+	}
+    }
+    
+    return last_frame();
+}
 /**
  * Flushes all caches
  *
@@ -3758,10 +3781,11 @@ bool CMedia::find_image( const int64_t frame )
     // Check if we have a cached frame for this frame
 
     int64_t idx = f - _frame_start;
+    int64_t num = _frame_end - _frame_start + 1;
     {
         //SCOPED_LOCK( _mutex );
         if ( idx < 0 ) idx = 0;
-        else if ( _numWindows && idx >= _numWindows ) idx = _numWindows-1;
+        else if ( idx >= num ) idx = num - 1;
     }
 
     if ( _sequence && _sequence[idx] )

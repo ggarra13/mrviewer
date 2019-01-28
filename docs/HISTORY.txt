@@ -1,3 +1,7 @@
+v4.4.2   - Bug fixes a playback/cache issue when image sequence did not start
+	   at 1.
+	 - Documented Connections' commands in the html documentation.
+
 v4.4.1   - Bug fixed Connections to work on all (?) commands.
 	 - Bug fixed Connections to not use relative paths in image names.
 	   Full paths are passed instead.  This fixes the problem of
@@ -16,7 +20,7 @@ v4.4.0	 - Bug fixed BG playback of movies and sequences.  It is now
 	   play/loop correctly.  It will hang the viewer.
 	 - Added a shortcut to change pen size.  By default it is [,]
 	   when the action mode is draw or erase.
-	 
+
 
 v4.3.9   - Made ghosting be a global setting instead of a per shape
 	   setting.  This allows easily changing the previous/next

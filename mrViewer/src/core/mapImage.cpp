@@ -189,7 +189,8 @@ bool mapImage::fetch(const boost::int64_t frame )
     _lineOrder = 0;
 
     image_size( dw, dh );
-    allocate_pixels(frame);
+    image_type_ptr canvas;
+    allocate_pixels(canvas, frame);
 
 
     // Skip other data we don't know ( this offset is still wrong

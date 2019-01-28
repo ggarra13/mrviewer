@@ -228,13 +228,14 @@ bool exrImage::test(const boost::uint8_t *data, unsigned)
 
 
 bool exrImage::channels_order(
-    const boost::int64_t& frame,
-    Imf::ChannelList::ConstIterator& s,
-    Imf::ChannelList::ConstIterator& e,
-    const Imf::ChannelList& channels,
-    const Imf::Header& h,
-    Imf::FrameBuffer& fb
-)
+			      mrv::image_type_ptr& canvas,
+			      const boost::int64_t& frame,
+			      Imf::ChannelList::ConstIterator& s,
+			      Imf::ChannelList::ConstIterator& e,
+			      const Imf::ChannelList& channels,
+			      const Imf::Header& h,
+			      Imf::FrameBuffer& fb
+			      )
 {
     const Box2i& displayWindow = h.displayWindow();
     const Box2i& dataWindow = h.dataWindow();
@@ -421,7 +422,7 @@ bool exrImage::channels_order(
         }
     }
 
-    if ( ! allocate_pixels( frame, (unsigned short)numChannels, format,
+    if ( ! allocate_pixels( canvas, frame, (unsigned short)numChannels, format,
                             pixel_type_conversion( imfPixelType ),
                             dw / sx, dh / sy ) )
         return false;
@@ -430,7 +431,7 @@ bool exrImage::channels_order(
 
     if ( _has_yca )
     {
-        size_t t = _hires->pixel_size();
+        size_t t = canvas->pixel_size();
 
         for ( unsigned j = 0; j < 4; ++j )
         {
@@ -445,7 +446,7 @@ bool exrImage::channels_order(
     }
     else
     {
-        unsigned pixels = (unsigned) (_hires->pixel_size() * numChannels);
+        unsigned pixels = (unsigned) (canvas->pixel_size() * numChannels);
 
         for ( unsigned j = 0; j < 4; ++j )
         {
@@ -456,13 +457,13 @@ bool exrImage::channels_order(
         }
     }
 
-    char* pixels = (char*)_hires->data().get();
+    char* pixels = (char*)canvas->data().get();
     if (!pixels) return false;
-    memset( pixels, 0, _hires->data_size() ); // Needed for lumma pics (Fog.exr)
+    memset( pixels, 0, canvas->data_size() ); // Needed for lumma pics (Fog.exr)
 
     // Then, prepare frame buffer for them
-    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
-                  _hires->channels() );
+    int start = ( (-dx - dy * dw) * canvas->pixel_size() *
+                  canvas->channels() );
 
     char* base = pixels + start;
 
@@ -471,7 +472,7 @@ bool exrImage::channels_order(
         int k = order[idx];
         if ( k == -1 ) continue;
 
-        char* buf = base + offsets[k] * _hires->pixel_size();
+        char* buf = base + offsets[k] * canvas->pixel_size();
 
         // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
         //           << " off:" << offsets[k] << " xs,ys "
@@ -492,7 +493,8 @@ bool exrImage::channels_order(
 }
 
 
-void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
+void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame,
+			 image_type_ptr& canvas )
 {
     SCOPED_LOCK( _mutex );
 
@@ -520,12 +522,12 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
     {
         for ( unsigned x = 0; x < w; ++x )
         {
-            CMedia::Pixel p = _hires->pixel( x, y );
+            CMedia::Pixel p = canvas->pixel( x, y );
             rgba->pixel( x, y, p );
         }
     }
 
-    _hires = rgba;
+    canvas = rgba;
 }
 
 /**
@@ -575,7 +577,8 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
 
         FrameBuffer fb;
-        bool ok = find_channels( h, fb, frame );
+	image_type_ptr canvas;
+        bool ok = find_channels( canvas, h, fb, frame );
         if ( !ok ) return false;
 
         _pixel_ratio = h.pixelAspectRatio();
@@ -933,7 +936,8 @@ bool exrImage::find_layers( const Imf::Header& h )
     return true;
 }
 
-bool exrImage::handle_stereo( const boost::int64_t& frame,
+bool exrImage::handle_stereo( mrv::image_type_ptr& canvas,
+			      const boost::int64_t& frame,
                               const Imf::Header& h,
                               Imf::FrameBuffer& fb )
 {
@@ -960,7 +964,8 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         s = channels.begin();
         e = channels.end();
     }
-    bool ok = channels_order( frame, s, e, channels, h, fb );
+
+    bool ok = channels_order( canvas, frame, s, e, channels, h, fb );
 
     // If 3d is because of different headers exit now
     if ( !_multiview )
@@ -968,7 +973,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         return ok;
     }
 
-    _stereo[1] = _hires;
+    _stereo[1] = canvas; //_hires;
 
     //
     // Repeat for left eye
@@ -991,13 +996,14 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         e = channels.end();
     }
 
-    ok = channels_order( frame, s, e, channels, h, fb );
-    _stereo[0] = _hires;
+    ok = channels_order( canvas, frame, s, e, channels, h, fb );
+    _stereo[0] = canvas; //_hires;
 
     return ok;
 }
 
-bool exrImage::find_channels( const Imf::Header& h,
+bool exrImage::find_channels( mrv::image_type_ptr& canvas,
+			      const Imf::Header& h,
                               Imf::FrameBuffer& fb,
                               const boost::int64_t& frame )
 {
@@ -1067,7 +1073,7 @@ bool exrImage::find_channels( const Imf::Header& h,
     {
         free( channelPrefix );
         channelPrefix = NULL;
-        return handle_stereo(frame, h, fb);
+        return handle_stereo( canvas, frame, h, fb);
     }
     else if ( channelPrefix != NULL )
     {
@@ -1102,13 +1108,13 @@ bool exrImage::find_channels( const Imf::Header& h,
         free( channelPrefix );
         channelPrefix = NULL;
 
-        return channels_order( frame, s, e, channels, h, fb );
+        return channels_order( canvas, frame, s, e, channels, h, fb );
     }
     else
     {
         Imf::ChannelList::ConstIterator s = channels.begin();
         Imf::ChannelList::ConstIterator e = channels.end();
-        return channels_order( frame, s, e, channels, h, fb );
+        return channels_order( canvas, frame, s, e, channels, h, fb );
     }
 }
 
@@ -1525,18 +1531,19 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     display_window( displayWindow.min.x, displayWindow.min.y,
                     displayWindow.max.x, displayWindow.max.y, _frame );
 
+    image_type_ptr canvas;
     if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
     {
-        if (! allocate_pixels( _frame, 4, image_type::kRGBA,
+        if (! allocate_pixels( canvas, _frame, 4, image_type::kRGBA,
                                image_type::kHalf ) )
             return;
     }
 
     // display black right now
-    Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    Imf::Rgba* pixels = (Imf::Rgba*)canvas->data().get();
     if (!pixels) return;
 
-    memset( pixels, 0, _hires->data_size() ); // Needed
+    memset( pixels, 0, canvas->data_size() ); // Needed
 
 
     Array< half* > dataR;
@@ -2186,8 +2193,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
 
             FrameBuffer fb;
-
-            bool ok = find_channels( header, fb, frame );
+	    image_type_ptr canvas;
+            bool ok = find_channels( canvas, header, fb, frame );
             if (!ok) {
                 IMG_ERROR( _("Could not locate channels in header") );
                 return false;
@@ -2214,7 +2221,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
             if ( st[0] != st[1] )
             {
-                _stereo[i] = _hires;
+                _stereo[i] = canvas; //_hires;
             }
         }
     }
@@ -2255,7 +2262,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         displayWindow.max.x, displayWindow.max.y, frame );
 
         FrameBuffer fb;
-        bool ok = find_channels( header, fb, frame );
+	image_type_ptr canvas;
+        bool ok = find_channels( canvas, header, fb, frame );
         if (!ok) {
             IMG_ERROR( _("Could not locate channels in header") );
             return false;
@@ -2282,7 +2290,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                             displayWindow.max.x, displayWindow.max.y, frame );
 
             FrameBuffer fb;
-            bool ok = find_channels( header, fb, frame );
+	    image_type_ptr canvas;
+            bool ok = find_channels( canvas, header, fb, frame );
             if (!ok) {
                 IMG_ERROR( _("Could not locate channels in header") );
                 return false;
@@ -2353,7 +2362,8 @@ bool exrImage::fetch( const boost::int64_t frame )
             if ( _use_yca && !supports_yuv() )
             {
                 const Imf::Header& h = inmaster.header(0);
-                ycc2rgba( h, frame );
+		image_type_ptr canvas;
+                ycc2rgba( h, frame, canvas );
             }
         }
     }

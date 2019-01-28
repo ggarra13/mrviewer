@@ -516,6 +516,10 @@ public:
     // For videos, returns false always
     bool is_cache_full();
 
+    // For sequences, returns the first empty cache frame if any.
+    // For videos, returns first frame.
+    int64_t first_cache_empty_frame();
+
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
 
@@ -1697,7 +1701,8 @@ protected:
     void timestamp();
 
     /// Allocate hires image pixels
-    bool allocate_pixels( const int64_t& frame,
+    bool allocate_pixels( mrv::image_type_ptr& canvas,
+			  const int64_t& frame,
                           const unsigned short channels = 4,
                           const image_type::Format format = image_type::kRGBA,
                           const image_type::PixelType pixel_type = image_type::kFloat,

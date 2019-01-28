@@ -2593,7 +2593,6 @@ bool ImageView::preload()
 
 
 
-
     bool found;
     mrv::image_type_ptr pic;
     {
@@ -2639,7 +2638,7 @@ bool ImageView::preload()
         }
         else if ( p == CMedia::kForwards )
         {
-            if ( _preframe > last )
+           if ( _preframe > last )
             {
                 switch( looping() )
                 {
@@ -6957,6 +6956,7 @@ void ImageView::clear_reel_cache( size_t idx )
         }
     }
 
+    std::cerr << "set preframe to " << frame() << std::endl;
     _preframe = frame();
 }
 
@@ -6982,14 +6982,15 @@ void ImageView::reset_caches()
     if ( r && r->edl )
     {
 	timeline()->edl( true );
-        _preframe = frame();
-    }
+	_preframe = frame();
+   }
     else
     {
-        mrv::media fg = foreground();
-        if (!fg) return;
-        CMedia* img = fg->image();
-        _preframe = img->first_frame();
+	mrv::media fg = foreground();
+	if (!fg) return;
+
+	CMedia* img = fg->image();
+	_preframe = img->first_cache_empty_frame();
     }
 }
 
@@ -7004,17 +7005,16 @@ void ImageView::preload_cache_start()
         if ( r && r->edl )
         {
 	    timeline()->edl( true );
-            _preframe = frame();
-        }
-        else
-        {
-            mrv::media fg = foreground();
-            if ( fg )
-            {
-                CMedia* img = fg->image();
-                _preframe = img->first_frame();
-            }
-        }
+	    _preframe = frame();
+       }
+	else
+	{
+	    mrv::media fg = foreground();
+	    if (!fg) return;
+	
+	    CMedia* img = fg->image();
+	    _preframe = img->first_cache_empty_frame();
+	}
         CMedia::preload_cache( true );
         _idle_callback = true;
         fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
@@ -7373,7 +7373,12 @@ void ImageView::channel( unsigned short c )
     }
     else
     {
-	_preframe = frame();
+	mrv::media fg = foreground();
+	if (!fg) return;
+	    
+	CMedia* img = fg->image();
+	_preframe = img->first_cache_empty_frame();
+
     }
     
     smart_refresh();
@@ -8791,11 +8796,13 @@ void ImageView::play( const CMedia::Playback dir )
     {
         CMedia* img = bg->image();
         img->play( dir, uiMain, false);
-        typedef boost::recursive_mutex Mutex;
+
+	typedef boost::recursive_mutex Mutex;
         Mutex& bgm = img->video_mutex();
         SCOPED_LOCK( bgm );
         CMedia::Barrier* barrier = img->fg_bg_barrier();
         if ( !barrier ) return;
+	
         img = fg->image();
         Mutex& fgm = img->video_mutex();
         SCOPED_LOCK( fgm );

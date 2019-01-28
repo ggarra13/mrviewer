@@ -1288,7 +1288,9 @@ bool ddsImage::fetch( const boost::int64_t frame )
     ddsd.dwTextureStage = ReadBlobLSBLong(f);
 
     image_size( ddsd.dwWidth, ddsd.dwHeight );
-    allocate_pixels(frame);
+
+    image_type_ptr canvas;
+    allocate_pixels(canvas, frame);
 
     _gamma = 1.0f;
 

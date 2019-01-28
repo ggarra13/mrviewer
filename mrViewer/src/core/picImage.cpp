@@ -332,9 +332,10 @@ bool picImage::fetch(const boost::int64_t frame)
 
     // Read pixel values
     image_size( dw, dh );
-    allocate_pixels( frame, 4, image_type::kRGBA, pixel_type, dw, dh );
+    image_type_ptr canvas;
+    allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type, dw, dh );
 
-    bool ok = readScanlines(file, (uint32_t*)_hires->data().get(), dw, dh,
+    bool ok = readScanlines(file, (uint32_t*)canvas->data().get(), dw, dh,
                             chan, alpha);
     while(chan) {
         Channel		*prev;

@@ -48,7 +48,8 @@ smpteImage::smpteImage( const smpteImage::Type c, const unsigned int dw,
     _gamma = 1.0f;
     default_layers();
     image_size( dw, dh );
-    allocate_pixels(1);
+    image_type_ptr canvas;
+    allocate_pixels(canvas, 1);
 }
 
 

@@ -141,7 +141,8 @@ bool pxrzImage::fetch(const boost::int64_t frame)
     dh = ntohs( header.height );
 
     image_size( dw, dh );
-    allocate_pixels(frame);
+    image_type_ptr canvas;
+    allocate_pixels( canvas, frame);
 
     if ( _num_channels == 0 )
     {

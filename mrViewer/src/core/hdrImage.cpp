@@ -410,7 +410,8 @@ bool hdrImage::fetch( const boost::int64_t frame )
         if ( f == NULL ) EXCEPTION("could not open file");
 
         read_header(f);
-        allocate_pixels(frame, 4, image_type::kRGBA, image_type::kFloat );
+	image_type_ptr canvas;
+        allocate_pixels(canvas, frame, 4, image_type::kRGBA, image_type::kFloat );
 
         unsigned w = width();
         COLR* scanline = (COLR*) malloc( sizeof(COLR) * w );

@@ -151,22 +151,26 @@ protected:
                                 bool deepComp);
 
     bool find_layers( const Imf::Header& h );
-    bool handle_stereo( const boost::int64_t& frame,
+    bool handle_stereo( mrv::image_type_ptr& canvas,
+			const boost::int64_t& frame,
                         const Imf::Header& hdr,
                         Imf::FrameBuffer& fb );
     bool channels_order(
-        const boost::int64_t& frame,
-        Imf::ChannelList::ConstIterator& s,
-        Imf::ChannelList::ConstIterator& e,
-        const Imf::ChannelList& channels,
-        const Imf::Header& hdr,
-        Imf::FrameBuffer& fb
-    );
-    void ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame );
+			mrv::image_type_ptr& canvas,
+			const boost::int64_t& frame,
+			Imf::ChannelList::ConstIterator& s,
+			Imf::ChannelList::ConstIterator& e,
+			const Imf::ChannelList& channels,
+			const Imf::Header& hdr,
+			Imf::FrameBuffer& fb
+			);
+    void ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame,
+		   mrv::image_type_ptr& canvas );
     bool fetch_mipmap( const boost::int64_t& frame );
     bool fetch_multipart( Imf::MultiPartInputFile& inmaster,
                           const boost::int64_t& frame );
-    bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
+    bool find_channels( mrv::image_type_ptr& canvas,
+			const Imf::Header& h, Imf::FrameBuffer& fb,
                         const boost::int64_t& frame );
     void read_header_attr( const Imf::Header& h,
                            const boost::int64_t& frame );

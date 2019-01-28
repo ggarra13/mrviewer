@@ -40,41 +40,42 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
     default_layers();
 
     _frameStart = _frame_start = 1;
-
+    mrv::image_type_ptr canvas;
+    
     switch( c )
     {
     case kSMPTE_NTSC:
         _fileroot = strdup( "SMPTE NTSC Color Bars" );
         image_size( 720, 480 );
-        allocate_pixels(_frameStart);
+        allocate_pixels(canvas, _frameStart);
         _pixel_ratio = 0.9f;
         _fps = 29.976f;
-        NTSC_color_bars();
+        NTSC_color_bars(canvas);
         break;
     case kPAL:
         _fileroot = strdup( "PAL Color Bars" );
         image_size( 720, 576 );
-        allocate_pixels(_frameStart);
+        allocate_pixels(canvas, _frameStart);
         _fps = 25.0f;
         _pixel_ratio = 1.25f;
-        NTSC_color_bars();
+        NTSC_color_bars(canvas);
         break;
     case kPAL_HDTV:
         _fileroot = strdup( "PAL HDTV Color Bars" );
         image_size( 1920, 1080 );
-        allocate_pixels(_frameStart);
+        allocate_pixels(canvas, _frameStart);
         _pixel_ratio = 1.0;
         _fps = 25.0f;
-        NTSC_HDTV_color_bars();
+        NTSC_HDTV_color_bars(canvas);
         break;
     default:
     case kSMPTE_NTSC_HDTV:
         _fileroot = strdup( "NTSC HDTV Color Bars" );
         image_size( 1920, 1080 );
-        allocate_pixels(_frameStart);
+        allocate_pixels(canvas, _frameStart);
         _pixel_ratio = 1.0;
         _fps = 29.976f;
-        NTSC_HDTV_color_bars();
+        NTSC_HDTV_color_bars(canvas);
         break;
     }
 
@@ -82,11 +83,12 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
 }
 
 void ColorBarsImage::smpte_color_bars(
-    const unsigned int X,
-    const unsigned int W,
-    const unsigned int H,
-    const float pct
-)
+				      image_type_ptr& canvas, 
+				      const unsigned int X,
+				      const unsigned int W,
+				      const unsigned int H,
+				      const float pct
+				      )
 {
     unsigned int WW = width();
     unsigned int bar_w = unsigned(W / 7.0f + 0.5f);
@@ -104,7 +106,7 @@ void ColorBarsImage::smpte_color_bars(
         Pixel( lo, lo, hi ), // blue
     };
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     // Draw top bars
     for ( unsigned int y = 0; y < bar_h; ++y )
@@ -123,7 +125,8 @@ void ColorBarsImage::smpte_color_bars(
 
 }
 
-void ColorBarsImage::smpte_bottom_bars( const unsigned int X,
+void ColorBarsImage::smpte_bottom_bars( image_type_ptr& canvas, 
+					const unsigned int X,
                                         const unsigned int Y,
                                         const unsigned int W,
                                         const unsigned int H )
@@ -145,7 +148,7 @@ void ColorBarsImage::smpte_bottom_bars( const unsigned int X,
         Pixel( black, black, black ),      // black
     };
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     // Draw bottom bars
     for ( unsigned int y = 0; y < bbar_h; ++y )
@@ -181,14 +184,14 @@ void ColorBarsImage::smpte_bottom_bars( const unsigned int X,
     }
 }
 
-void ColorBarsImage::NTSC_color_bars()
+void ColorBarsImage::NTSC_color_bars(mrv::image_type_ptr& canvas)
 {
     unsigned int X  = 0;
     unsigned int W  = width();
     unsigned int H  = height();
     float pct = 2.0f/3.0f;
 
-    smpte_color_bars( X, W, H, pct );
+    smpte_color_bars( canvas, X, W, H, pct );
 
     float hi    = 0.745098f;
     float lo    = 0.0f;
@@ -210,7 +213,7 @@ void ColorBarsImage::NTSC_color_bars()
     };
 
     // Draw middle bars
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     unsigned int mbar_h = unsigned( H / 12 );
     for ( unsigned int y = 0; y < mbar_h; ++y )
     {
@@ -226,18 +229,18 @@ void ColorBarsImage::NTSC_color_bars()
     }
 
     unsigned int Y = bar_h + mbar_h;
-    smpte_bottom_bars( X, Y, W, H );
+    smpte_bottom_bars( canvas, X, Y, W, H );
 
 }
 
-void ColorBarsImage::NTSC_HDTV_color_bars()
+void ColorBarsImage::NTSC_HDTV_color_bars(mrv::image_type_ptr& canvas)
 {
     unsigned int X = unsigned( width() * 0.125f );
     unsigned int W = width() - X * 2;
     unsigned int H = height();
     float pct = 0.58f;
 
-    smpte_color_bars( X, W, H, pct );
+    smpte_color_bars( canvas, X, W, H, pct );
 
     unsigned int WW = width();
     unsigned int bar_h = unsigned(H * pct + 0.5f);
@@ -250,7 +253,7 @@ void ColorBarsImage::NTSC_HDTV_color_bars()
     };
 
     // Draw mid gray rectangles
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for ( unsigned int y = 0; y < bar_h; ++y )
     {
         unsigned int offset = y * WW;

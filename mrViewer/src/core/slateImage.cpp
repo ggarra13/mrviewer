@@ -68,7 +68,8 @@ slateImage::slateImage( const CMedia* src ) :
     _frameEnd   = _frame_end = 60;
 
     image_size( _w, _h );
-    allocate_pixels( _fstart );
+    image_type_ptr canvas;
+    allocate_pixels( canvas, _fstart );
 
     default_layers();
 }

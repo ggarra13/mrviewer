@@ -69,10 +69,13 @@ public:
 
 protected:
     void end_read_chunk( FILE* f, iffChunk& chunk );
-    void read_pixel_chunk( FILE* f, const int depth, const int bytes,
+    void read_pixel_chunk( FILE* f, mrv::image_type_ptr& canvas,
+			   const int depth, const int bytes,
                            const iffChunk& chunk );
 
-    void read_uncompressed_tile( FILE* file, boost::uint8_t* data,
+    void read_uncompressed_tile( FILE* file, 
+				 mrv::image_type_ptr& canvas,
+				 boost::uint8_t* data,
                                  const unsigned int compsize,
                                  const unsigned x, const unsigned y,
                                  const unsigned width, const unsigned height,

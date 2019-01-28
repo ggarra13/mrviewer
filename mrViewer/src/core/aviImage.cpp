@@ -1051,7 +1051,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
 
 mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
-        const int64_t& pts
+					      const int64_t& pts
                                             )
 {
     double aspect_ratio = (double)_w / (double) _h;
@@ -2709,16 +2709,17 @@ void aviImage::populate()
 
     if ( !has_video() )
     {
+	mrv::image_type_ptr canvas;
         if ( !_hires )
         {
             _w = 640;
             _h = 480;
-            allocate_pixels( _frameStart, 3, image_type::kRGB,
+            allocate_pixels( canvas, _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
         }
-        _hires->frame( _frameStart );
-        uint8_t* ptr = (uint8_t*) _hires->data().get();
+        canvas->frame( _frameStart );
+        uint8_t* ptr = (uint8_t*) canvas->data().get();
         memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
     }
 

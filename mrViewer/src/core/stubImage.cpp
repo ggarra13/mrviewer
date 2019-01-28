@@ -759,9 +759,10 @@ void stubImage::parse_stub()
     {
         clear_buffers();
         image_size( W, H );
-        allocate_pixels(1);
+	mrv::image_type_ptr canvas;
+        allocate_pixels(canvas, 1);
         clear_to_NANs();
-        _pixelBuffers.insert( std::make_pair( 0, _hires ) );
+        _pixelBuffers.insert( std::make_pair( 0, canvas ) );
     }
     _host  = strdup( (char*) tokens[3].c_str() );
     _portA = atoi( tokens[6].c_str() );

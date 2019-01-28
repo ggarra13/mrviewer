@@ -2,7 +2,7 @@
 <html><head>
 
 
-  
+
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
 
@@ -29,17 +29,23 @@ La ventana de conexiones te permite controlar dos o mas mrViewers desde una sola
       </tr>
   </tbody>
 </table>
+<br>
+<iframe title="YouTube video player" class="youtube-player" type="text/html"
+width="640" height="390" src="http://www.youtube.com/embed/dvEiWKV3WSU"
+frameborder="0" allowFullScreen></iframe>
+<br>
+<br>
 Para usarla, usted debe crear un servidor en un puerto libre.  El puerto por defecto 4333 debería funcionar bien la mayoría de las veces.
 Una vez que un servidor es creado, los clientes pueden conectarse a él con el nombre de la máquina y puerto.  El nombre de la máquina es por defecto "localhost" que es una conexión local a la máquina local (dos visores corriendo en la misma máquina).  Si accede a dos visores de distintas localidades usted debe especificar el nombre de la máquina remote asi como el número del puerto.
 <br>
-<br>x
+<br>
 
 Puedes tambien crear el servidor o el cliente con la linea de comandos, usando:
 
 <br>
 <p><div class="console">
 > mrViewer -p [port number]  #  para crear un servidor.</div>
-</p> 
+</p>
 <p><div class="console">
 > mrViewer -t [hostname] -p [port number] # para crear un cliente.</div>
 </p>
@@ -62,5 +68,808 @@ Y en el cliente verás:
 
 El cliente chequeará todas las imágenes y carretes del servidor y los imitará lo mejor que pueda, asumiendo que todos los caminos son visibles desde ambas máquinas.
 Desde entonces, verás un diferente {conn} mensaje cada vez que las dos instancias de mrViewer se comuniquen sobre un cambio.
+
+<br>
+<br>
+
+<h2 style="text-decoration: underline;">Comandos</h2>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tr>
+    <td>
+      <b>Comando</b>
+    </td>
+    <td>
+      <b>Ejeplo(s)</b>
+    </td>
+    <td>
+      <b>Efecto</b>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Image "imagename" primer_cuadro último_cuadro
+    </td>
+    <td>
+      Image "/media/Datos/movies/avengers.mp4" 1 60
+    </td>
+    <td>
+     Cargar unn imagen/película en el visor con el rango de cuadros seteados y al final del carrete activo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FPS double
+    </td>
+    <td>
+      FPS 23,976
+    </td>
+    <td>
+      Cambia los cuadros por segundo de todas las imágenes mostradas.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      EDL booleano
+    </td>
+    <td>
+      EDL 1
+    </td>
+    <td>
+      Cambia el LDE del carrete actualmente mostrado.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Looping int
+    </td>
+    <td>
+      Looping 1 ( 1 = loop, 2 = ping-pong, 0 = no loop )
+    </td>
+    <td>
+      Cambia el modo de looping en la línea de tiempo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Selection x y w h
+    </td>
+    <td>
+      Selection 20 30 120 240
+    </td>
+    <td>
+      Cambia el area de selección en la imagen.
+    </td>
+  </tr>
+    <td>
+      Zoom double
+    </td>
+    <td>
+      Zoom 1,5
+    </td>
+    <td>
+      Hace zooms en la vista cuando no está en RV con el percentaje especificado.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Offset double double
+    </td>
+    <td>
+      Offset -320 240
+    </td>
+    <td>
+      Desplaza la vista cuando no está en modo de RV.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Rotation double double
+    </td>
+    <td>
+      Rotation 20 50
+    </td>
+    <td>
+      Rota la vista cuando está en modo RV.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Spin double double
+    </td>
+    <td>
+      Spin 10 20
+    </td>
+    <td>
+      Gira la vista cuando está en modo RV.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      MovePicture double double
+    </td>
+    <td>
+      MovePicture -10.6 20.5
+    </td>
+    <td>
+      Mueve la imagen un desplazamiento.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ScalePicture double double
+    </td>
+    <td>
+      ScalePicture 0.5 0.25
+    </td>
+    <td>
+      Escala la imagen un porcentaje.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      UpdateLayers
+    </td>
+    <td>
+      UpdateLayers
+    </td>
+    <td>
+      Realiza un update de las capas y los canales de color.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Channel int <ChannelName>
+    </td>
+    <td>
+      Channel 0 Color
+    </td>
+    <td>
+      Cambia el canal de color a uno nuevo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FieldDisplay int
+    </td>
+    <td>
+      FieldDisplay 0 ( 0 = Ambos, 1 = Arriba, 2 = Abajo )
+    </td>
+    <td>
+      Cambia que campo de video de la imagen se muestra.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Normalize booleano
+    </td>
+    <td>
+      Normalize 0
+    </td>
+    <td>
+      Normaliza los colores a un rango gris (util para mapeos de sombras).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      WipeVertical double
+    </td>
+    <td>
+      WipeVertical 0,2
+    </td>
+    <td>
+       Limpia la imagen de frente con la de fondo verticalmente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      WipeHorizontal double
+    </td>
+    <td>
+      WipeHorizontal 0,2
+    </td>
+    <td>
+      Limpia la imagen de frente con la de fondo horizontalmente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      NoWipe
+    </td>
+    <td>
+      NoWipe
+    </td>
+    <td>
+      Apaga el limpiado.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      OCIO booleano
+    </td>
+    <td>
+      OCIO 1
+    </td>
+    <td>
+      Prende o apaga la corrección de color de OCIO.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      OCIOConfig "config.ocio"
+    </td>
+    <td>
+      OCIOConfig "nuke-default/config.ocio"
+    </td>
+    <td>
+      Selecciona un archivo de configuración de ocio.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      OCIOView Display View
+    </td>
+    <td>
+      OCIOView default sRGB
+    </td>
+    <td>
+      OCIO: Selecciona un display y su correspondiente vista.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ICS inputcolorspace
+    </td>
+    <td>
+      ICS sRGB
+    </td>
+    <td>
+      Selecciona un espacio de color de entrada para la imagen de frente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Gain double
+    </td>
+    <td>
+      Gain 1,0
+    </td>
+    <td>
+      Setea la ganancia de la imagen de frente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Gamma double
+    </td>
+    <td>
+      Gamma 2,2
+    </td>
+    <td>
+      Setea la gamma para la imagen de frente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mask double
+    </td>
+    <td>
+      Mask 0.2
+    </td>
+    <td>
+      Setea la máscara para las imágenes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      SafeAreas booleano
+    </td>
+    <td>
+      SafeAreas 1
+    </td>
+    <td>
+      Switchea el display de las areas seguras.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      DisplayWindow booleano
+    </td>
+    <td>
+      DisplayWindow 1
+    </td>
+    <td>
+      Switchea la ventana de display de la imagen.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      DataWindow booleano
+    </td>
+    <td>
+      DataWindow 1
+    </td>
+    <td>
+      Switchea la ventana de datos de la imagen.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Volume double
+    </td>
+    <td>
+      Voulume 0,75
+    </td>
+    <td>
+      Establece el volumen de audio entre 0 (sin volumen) y 1,0 (volumen máximo).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      UseLUT booleano
+    </td>
+    <td>
+      UseLUT 1
+    </td>
+    <td>
+      Switchea la 3D Lut.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShowBG booleano
+    </td>
+    <td>
+      ShowBG 1
+    </td>
+    <td>
+       Switchea ver la imagen de fondo a traves de areas sin alfa en la imagen de frente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShowPixelRatio booleano
+    </td>
+    <td>
+      ShowPixelRatio 1
+    </td>
+    <td>
+      Switchea el pixel ratio para la imagen.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMax int
+    </td>
+    <td>
+      TimelineMax 2232
+    </td>
+    <td>
+      Setea el cuadro máximo de la línea de tiempo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMaxDisplay int
+    </td>
+    <td>
+      TimelineMaxDisplay 2232
+    </td>
+    <td>
+      Setea el máximo cuadro de muestreo de la línea de tiempo, que debería ser inferior que la cuadro máximo de la linea de tiempo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMin int
+    </td>
+    <td>
+      TimelineMin 1
+    </td>
+    <td>
+      Setea el cuadro mínimo de la línea de tiempo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      TimelineMinDisplay int
+    </td>
+    <td>
+      TimelineMinDisplay 32
+    </td>
+    <td>
+      Setea el mínimo cuadro de muestreo de la línea de tiempo, que debería ser superior que la cuadro mínimo de la linea de tiempo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      VRCubic booleano
+    </td>
+    <td>
+      VRCubic 1
+    </td>
+    <td>
+      Switchea la muestra de RV Cúbica.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      VRSpherical booleano
+    </td>
+    <td>
+      VRSpherical 1
+    </td>
+    <td>
+      Switchea la muestra de RV Esférica.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      VRangle double
+    </td>
+    <td>
+      VRangle 30.0
+    </td>
+    <td>
+      Setea el ángulo de vision en mode RV.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FullScreen
+    </td>
+    <td>
+      FullScreen
+    </td>
+    <td>
+      Switchea FullScreen mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      PresentationMode
+    </td>
+    <td>
+      PresentationMode
+    </td>
+    <td>
+      Switchea Presentation mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShiftAudio "reel" "imagename" offset
+    </td>
+    <td>
+      ShiftAudio "reel #2" "/media/gga/movies/avatar.mp4" 30
+    </td>
+    <td>
+      Desliza el audio de una película.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShiftMediaStart "reel" "imagename" offset
+    </td>
+    <td>
+      ShiftMediaStart "reel #2" "/media/gga/movies/avatar.mp4" 30
+    </td>
+    <td>
+      Desliza el comienzo de una pelicula o secuencia.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ShiftMediaEnd "reel" "imagename" offset
+    </td>
+    <td>
+      ShiftMediaEnd "reel #2" "/media/gga/movies/avatar.mp4" 30
+    </td>
+    <td>
+      Desliza el final de una pelicula o secuencia.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CurrentReel "reel"
+   </td>
+    <td>
+      CurrentReel "reel #2"
+    </td>
+    <td>
+      Setea el carrete actual o crea uno nuevo si el nombre no existe.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ReplaceImage índice "imagename"
+   </td>
+    <td>
+      ReplaceImage 2 "/media/gga/Datos/pics/file.%04d.exr"
+    </td>
+    <td>
+      Remplaza una imagen/pelicula en un cierto indice en el carrete con una nueva imagen.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      RemoveImage índice
+   </td>
+    <td>
+      RemoveImage 2
+    </td>
+    <td>
+      Borra una imagen en el índice del carrete actual.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ClomeImage "imgname"
+    </td>
+    <td>
+      CloneImage "D:/images/imgseq.%04d.exr"
+    </td>
+    <td>
+      Clona un cuadro de la imagen del carrete actual.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      InsertImage índice "imgname"
+    </td>
+    <td>
+      InsertImage 1 "D:/images/imgseq.%04d.exr"
+    </td>
+    <td>
+      Inserta una secuencia/pelicula en un cierto índice en el carrete actual.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ChangeImage índice
+    </td>
+    <td>
+      ChangeImage 3
+    </td>
+    <td>
+      Cambia la imagen mostrada en el carrete actual, comenzando en 0.  En el ejemplo, mostraría la imagen cuarta en el carrete.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CurrentImage "imgname" primer_cuadro último_cuadro
+    </td>
+    <td>
+      CurrentImage "/media/images/test.%02d.pic" 1 30
+    </td>
+    <td>
+      Cambia la imagen mostrada en el carrete actual basado en el nombre de la imagen y los cuadros de comienzo y final.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      ExchangeImage old_índice new_índice
+    </td>
+    <td>
+      ExchangeImage 2 0
+    </td>
+    <td>
+      Intercambia la imagen en el viejo índice con la imagen en el nuevo índice.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      FGReel índice
+    </td>
+    <td>
+      FGReel 2
+    </td>
+    <td>
+      Setea el índice de carrete para la imagen de frente.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      BGReel índice
+    </td>
+    <td>
+      BGReel 2
+    </td>
+    <td>
+      Setea el índice de carrete para la imagen de fondo.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      CurrentBGImage "imgname" primer_cuadro último_cuadro
+    </td>
+    <td>
+      CurrentBGImage "/media/images/test.%02d.pic" 1 30
+    </td>
+    <td>
+      Cambia la imagen de fondo en el carrete actual, basada en el nombre de la imagen y en los cuadros de comienzo y final.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      sync_image
+    </td>
+    <td>
+      sync_image
+    </td>
+    <td>
+      Fuerza una sincronización de todas las imágenes y carretes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      stop
+    </td>
+    <td>
+      stop
+    </td>
+    <td>
+      Detiene la reproducción.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      playfwd
+    </td>
+    <td>
+      playfwd
+    </td>
+    <td>
+      Reproduce para adelante.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      playback
+    </td>
+    <td>
+      playback
+    </td>
+    <td>
+      Reproduce para atrás.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      seek int
+    </td>
+    <td>
+      seek 112
+    </td>
+    <td>
+      Salta al cuadro especificado.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      StereoInput int
+    </td>
+    <td>
+      StereoInput 0
+    </td>
+    <td>
+      Setea la entrada de stereo. ( 0: no input, 1 = separate layers/images, 2 = top/bottom image, 4 = left/right image )
+    </td>
+  </tr>
+  <tr>
+    <td>
+      StereoOutput int
+    </td>
+    <td>
+      StereoOutput 5
+    </td>
+    <td>
+      Setea la salida de estereo. ( 0: no stereo, 1 = stereo left, 2 = stereo right, 4 = stereo OpenGL, 8 = stereo bottom/top, <br> 10 = stereo top/bottom, 16 = stereo side by side, 18 = stereo crossed, <br>32 = stereo interlaced, 96 = stereo interlaced columns, 160 = stereo checkerboard, <br>256 = stereo anaglyph, 258 = stereo right anaglyph )
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3" style="text-align: center">
+     <b> Windows</b>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td>
+      MediaInfoWindow booleano
+    </td>
+    <td>
+      MediaInfoWindow 1
+    </td>
+    <td>
+      Switchea la Ventana de Información del Medio.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      ColorInfoWindow booleano
+    </td>
+    <td>
+      ColorInfoWindow 1
+    </td>
+    <td>
+      Switchea la Ventana de Color Area Information.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      GL3dView booleano
+    </td>
+    <td>
+      GL3dView 1
+    </td>
+    <td>
+      Switchea la ventana de vista de 3D para imágenes profundas.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      StereoOptions booleano
+    </td>
+    <td>
+      StereoOptions 1
+    </td>
+    <td>
+      Switchea la Ventana de Opciones de 3D Stereo.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      PaintTools booleano
+    </td>
+    <td>
+      PaintTools 1
+    </td>
+    <td>
+      Switchea la Ventana de Herramientas de Pintura/Acción.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      HistogramWindow booleano
+    </td>
+    <td>
+      HistogramWindow 1
+    </td>
+    <td>
+      Switchea la Ventana del Histograma.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      VectorscopeWindow booleano
+    </td>
+    <td>
+      VectorscopeWindow 1
+    </td>
+    <td>
+      Switchea la Ventana del Vectorscopio.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      WaveformWindow booleano
+    </td>
+    <td>
+      WaveformWindow 1
+    </td>
+    <td>
+      Switchea la Ventana de Forma de Onda.
+    </td>
+  </tr>
+
+</table>
 
 </body>
