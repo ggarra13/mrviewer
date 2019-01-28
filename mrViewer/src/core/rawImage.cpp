@@ -162,7 +162,8 @@ bool rawImage::release()
     return true;
 }
 
-bool rawImage::fetch( const boost::int64_t frame )
+bool rawImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
     if ( !iprc )
     {
@@ -208,14 +209,11 @@ bool rawImage::fetch( const boost::int64_t frame )
             lumma_layers();
             alpha_layers();
             image_size( dw, dh );
-	    image_type_ptr canvas;
             const image_type::PixelType pixel_type = image_type::kByte;
             allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type,
                              dw, dh );
 
             {
-                SCOPED_LOCK( _mutex );
-
                 Pixel* pixels = (Pixel*)canvas->data().get();
                 memcpy( pixels, iprc->thumbnail.thumb, dw*dh*4 );
             }

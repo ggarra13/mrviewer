@@ -51,7 +51,8 @@ public:
         return "Pixar shadow map";
     }
 
-    virtual bool fetch( const boost::int64_t frame );
+    virtual bool fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame );
 };
 
 } // namespace mrv

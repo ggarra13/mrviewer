@@ -116,7 +116,8 @@ bool shmapImage::test(const boost::uint8_t *data, unsigned len)
  *
  * @return true on success, false if not
  */
-bool shmapImage::fetch(const boost::int64_t frame)
+bool shmapImage::fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame )
 {
     int dw, dh;
 
@@ -134,7 +135,6 @@ bool shmapImage::fetch(const boost::int64_t frame)
     dh = ntohs( header.height );
 
     image_size( dw, dh );
-    mrv::image_type_ptr canvas;
     allocate_pixels(canvas, frame);
 
     if ( _num_channels == 0 )

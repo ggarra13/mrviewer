@@ -149,11 +149,10 @@ bool mapImage::test(const boost::uint8_t *data, unsigned len)
 
 
 
-bool mapImage::fetch(const boost::int64_t frame )
+bool mapImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
     int dw, dh;
-
-    SCOPED_LOCK( _mutex );
 
     _stub = is_stub();
 
@@ -189,7 +188,6 @@ bool mapImage::fetch(const boost::int64_t frame )
     _lineOrder = 0;
 
     image_size( dw, dh );
-    image_type_ptr canvas;
     allocate_pixels(canvas, frame);
 
 
@@ -268,7 +266,7 @@ bool mapImage::fetch(const boost::int64_t frame )
     }
 
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     // Copy pixel values
     for (int y = 0, i = 0; y < dh; ++y)

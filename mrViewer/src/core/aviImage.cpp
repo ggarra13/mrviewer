@@ -3107,7 +3107,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
 
 
-bool aviImage::fetch(const int64_t frame)
+bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 {
 #ifdef DEBUG_DECODE
     cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected
@@ -3118,7 +3118,8 @@ bool aviImage::fetch(const int64_t frame)
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
     {
         _right_eye->stop();
-        _right_eye->fetch( frame );
+	mrv::image_type_ptr canvas;
+        _right_eye->fetch( canvas, frame );
     }
 
     bool got_video = !has_video();
@@ -3244,7 +3245,8 @@ bool aviImage::frame( const int64_t f )
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
     // else                      _dts = _adts = f;
 
-    bool ok = fetch(f);
+    image_type_ptr canvas;
+    bool ok = fetch(canvas, f);
 
 
 #ifdef DEBUG_DECODE
@@ -3847,7 +3849,9 @@ void aviImage::do_seek()
     {
         if ( _seek_frame != _expected )
             clear_packets();
-        fetch( _seek_frame );
+
+	image_type_ptr canvas;
+        fetch( canvas, _seek_frame );
     }
 
 

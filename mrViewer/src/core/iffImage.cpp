@@ -528,12 +528,12 @@ void iffImage::read_pixel_chunk( FILE* file,
     }
 }
 
-bool iffImage::fetch(const boost::int64_t frame)
+bool iffImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
     _gamma = 1.0f;
     _compression = kNoCompression;
 
-    SCOPED_LOCK( _mutex );
 
     FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
     if (!f) return false;
@@ -542,7 +542,7 @@ bool iffImage::fetch(const boost::int64_t frame)
     bool found = false;
     unsigned tile = 0;
     char buf[1024];
-    image_type_ptr canvas;
+
     while( !feof(f) )
     {
         iffChunk chunk;

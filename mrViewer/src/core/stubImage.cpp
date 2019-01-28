@@ -733,7 +733,7 @@ void stubImage::clear_to_NANs()
     }
 }
 
-void stubImage::parse_stub()
+void stubImage::parse_stub( mrv::image_type_ptr& canvas )
 {
     FILE* f = fltk::fltk_fopen( filename(), N_("rb") );
     char data[129];
@@ -759,7 +759,6 @@ void stubImage::parse_stub()
     {
         clear_buffers();
         image_size( W, H );
-	mrv::image_type_ptr canvas;
         allocate_pixels(canvas, 1);
         clear_to_NANs();
         _pixelBuffers.insert( std::make_pair( 0, canvas ) );
@@ -820,7 +819,8 @@ bool stubImage::has_changed()
             unsigned int portB = _portB;
             char* host = NULL;
             if ( _host ) host = strdup( _host );
-            parse_stub();
+	    mrv::image_type_ptr canvas;
+            parse_stub( canvas );
             bool ret = false;
             if ( _host && host && strcmp( host, _host ) != 0 ) ret = true;
             else if ( _host && !host )  ret = true;
@@ -853,7 +853,7 @@ bool stubImage::has_changed()
     return false;
 }
 
-bool stubImage::fetch(const int64_t frame)
+bool stubImage::fetch( mrv::image_type_ptr& canvas, const int64_t frame)
 {
     if ( !_rthreads.empty() ) return true;
 
@@ -867,7 +867,7 @@ bool stubImage::fetch(const int64_t frame)
 
     // use TCP/IP to connect to machine and port
     // read available data so far
-    parse_stub();
+    parse_stub( canvas );
 
     if ( _host == NULL ) return false;
 
@@ -1057,7 +1057,9 @@ bool stubImage::frame( const int64_t f )
     if ( _filename == NULL )
     {
         timestamp();
-        fetch(f);
+	mrv::image_type_ptr canvas;
+        fetch( canvas, f);
+	cache( canvas );
     }
 
     return true;

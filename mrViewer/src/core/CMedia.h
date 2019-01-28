@@ -365,7 +365,7 @@ public:
 
 public:
     /// Fetch (load) the image for a frame
-    virtual bool fetch(const int64_t frame) {
+    virtual bool fetch(mrv::image_type_ptr& canvas, const int64_t frame) {
         return true;
     }
 

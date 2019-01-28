@@ -53,14 +53,15 @@ smpteImage::smpteImage( const smpteImage::Type c, const unsigned int dw,
 }
 
 
-void smpteImage::gamma_box( unsigned int X, unsigned int Y,
+void smpteImage::gamma_box( mrv::image_type_ptr& canvas,
+			    unsigned int X, unsigned int Y,
                             unsigned int W, unsigned int H )
 {
     // Draw a line of dots
     Pixel c = bg;
     if ( Y % 2 == 0 ) c = fg;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     Pixel* p = pixels + Y * width() + X+1;
     for ( unsigned int x = X+1; x < X+W-1; x += 2, p += 2 )
     {
@@ -96,14 +97,16 @@ void smpteImage::gamma_box( unsigned int X, unsigned int Y,
     }
 }
 
-void smpteImage::gamma_boxes( unsigned int sx,
+void smpteImage::gamma_boxes( 
+			     mrv::image_type_ptr& canvas,
+			     unsigned int sx,
                               unsigned int sy,
                               unsigned int W,
                               unsigned int H,
                               float bgc, float fgc )
 {
     // Fill image with background color
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for ( unsigned int y = sy; y < sy+H; ++y )
     {
         Pixel* p = pixels + y * width() + sx;
@@ -129,40 +132,40 @@ void smpteImage::gamma_boxes( unsigned int sx,
 
     bg = Pixel(fgc, bgc, bgc);
     fg = Pixel(0.0f, bgc, bgc);
-    gamma_box( bx, by, bw, bh );
+    gamma_box( canvas, bx, by, bw, bh );
 
     bg = Pixel( bgc, 0.0f, fgc );
     fg = Pixel( bgc, fgc, 0.0f );
-    gamma_box( bx+ibx, by+iby, ibw, ibh );
+    gamma_box( canvas, bx+ibx, by+iby, ibw, ibh );
 
     // Draw box #2
     bx += bw + bs;
     bg = Pixel( bgc, 0.0f, bgc );
     fg = Pixel( bgc, fgc, bgc );
-    gamma_box( bx, by, bw, bh );
+    gamma_box( canvas, bx, by, bw, bh );
 
     bg = Pixel( 0.0f, bgc, fgc );
     fg = Pixel( fgc, bgc, 0.0f );
-    gamma_box( bx+ibx, by+iby, ibw, ibh );
+    gamma_box( canvas, bx+ibx, by+iby, ibw, ibh );
 
     // Draw box #3
     bx += bw + bs;
     bg = Pixel( bgc, bgc, 0.0f );
     fg = Pixel( bgc, bgc, fgc );
-    gamma_box( bx, by, bw, bh );
+    gamma_box( canvas, bx, by, bw, bh );
 
     bg = Pixel( fgc, 0.0f, bgc );
     fg = Pixel( 0.0f, fgc, bgc );
-    gamma_box( bx+ibx, by+iby, ibw, ibh );
+    gamma_box( canvas, bx+ibx, by+iby, ibw, ibh );
 
     // Draw box #4
     bx += bw + bs;
     bg = Pixel( 0.0f, 0.0f, 0.0f );
     fg = Pixel( fgc, fgc, fgc );
-    gamma_box( bx, by, bw, bh );
+    gamma_box( canvas, bx, by, bw, bh );
 }
 
-void smpteImage::gamma_chart()
+void smpteImage::gamma_chart( mrv::image_type_ptr& canvas )
 {
     char buf[1024];
     sprintf( buf, "Gamma %0.1f Chart", _gamma );
@@ -179,72 +182,72 @@ void smpteImage::gamma_chart()
     {
         b = 0.13725f;
         f = 0.22745f;
-        gamma_boxes( 0, y, W, H, b, f );
+        gamma_boxes( canvas, 0, y, W, H, b, f );
 
         b = 0.37255f;
         f = 0.61176f;
-        gamma_boxes( 0, y+H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+H, W, H, b, f );
 
         b = 0.61176f;
         f = 1.0f;
-        gamma_boxes( 0, y+2*H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+2*H, W, H, b, f );
     }
     else if ( _gamma == 1.8f )
     {
         // gamma1.8
         b = 0.21569f;
         f = 0.31373f;
-        gamma_boxes( 0, y, W, H, b, f );
+        gamma_boxes( canvas, 0, y, W, H, b, f );
 
         b = 0.46275f;
         f = 0.68235f;
-        gamma_boxes( 0, y+H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+H, W, H, b, f );
 
         b = 0.68235f;
         f = 1.0f;
-        gamma_boxes( 0, y+2*H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+2*H, W, H, b, f );
     }
     else if ( _gamma == 2.4f )
     {
         // gamma2.4
         b = 0.31373f;
         f = 0.41961f;
-        gamma_boxes( 0, y, W, H, b, f );
+        gamma_boxes( canvas, 0, y, W, H, b, f );
 
         b = 0.56078f;
         f = 0.74902f;
-        gamma_boxes( 0, y+H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+H, W, H, b, f );
 
         b = 0.74902f;
         f = 1.0f;
-        gamma_boxes( 0, y+2*H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+2*H, W, H, b, f );
     }
     else
     {
         // gamma2.2
         b = 0.28235f;
         f = 0.38824f;
-        gamma_boxes( 0, y, W, H, b, f );
+        gamma_boxes( canvas, 0, y, W, H, b, f );
 
         b = 0.53333f;
         f = 0.72941f;
-        gamma_boxes( 0, y+H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+H, W, H, b, f );
 
         b = 0.72941f;
         f = 1.0f;
-        gamma_boxes( 0, y+2*H, W, H, b, f );
+        gamma_boxes( canvas, 0, y+2*H, W, H, b, f );
     }
 
 }
 
-void smpteImage::linear_gradient()
+void smpteImage::linear_gradient( mrv::image_type_ptr& canvas )
 {
     _fileroot = strdup( "Linear Gradient" );
 
     unsigned int W = width();
     unsigned int H = height();
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for ( unsigned int x = 0; x < W; ++x )
     {
         float val = (float) x / (float) W;
@@ -257,14 +260,14 @@ void smpteImage::linear_gradient()
     }
 }
 
-void smpteImage::luminance_gradient()
+void smpteImage::luminance_gradient( mrv::image_type_ptr& canvas )
 {
     _fileroot = strdup( "Luminance Gradient" );
 
     unsigned int W = width();
     unsigned int H = height();
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for ( unsigned int x = 0; x < W; ++x )
     {
         float val = (float) x / (float) W;
@@ -278,7 +281,7 @@ void smpteImage::luminance_gradient()
     }
 }
 
-void smpteImage::checkered()
+void smpteImage::checkered( mrv::image_type_ptr& canvas )
 {
     _fileroot = strdup( "Checkered" );
 
@@ -293,7 +296,7 @@ void smpteImage::checkered()
     unsigned int dh2 = dh * 2;
 
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for ( unsigned int x = 0; x < W; x += dw )
     {
         for ( unsigned int y = 0; y < H; y += dh )
@@ -325,21 +328,22 @@ void smpteImage::checkered()
 
 }
 
-bool smpteImage::fetch( const boost::int64_t frame )
+bool smpteImage::fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame )
 {
     switch( type_ )
     {
     case kGammaChart:
-        gamma_chart();
+        gamma_chart( canvas );
         break;
     case kLinearGradient:
-        linear_gradient();
+        linear_gradient( canvas );
         break;
     case kLuminanceGradient:
-        luminance_gradient();
+        luminance_gradient( canvas );
         break;
     case kCheckered:
-        checkered();
+        checkered( canvas );
         break;
     default:
         LOG_ERROR("Internal Image: Unknown image type");

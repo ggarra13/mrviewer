@@ -88,7 +88,8 @@ public:
     }
 
 
-    virtual bool fetch( const boost::int64_t frame );
+    virtual bool fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame );
 
     static bool save( const char* file, const CMedia* img,
                       const ImageOpts* const opts );
@@ -138,7 +139,8 @@ public:
 
 protected:
 
-    void loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
+    void loadDeepTileImage( mrv::image_type_ptr& canvas,
+			    Imf::MultiPartInputFile& inmaster,
                             int &zsize,
                             Imf::Array<float*>&       zbuff,
                             Imf::Array<unsigned int>& sampleCount,
@@ -166,8 +168,10 @@ protected:
 			);
     void ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame,
 		   mrv::image_type_ptr& canvas );
-    bool fetch_mipmap( const boost::int64_t& frame );
-    bool fetch_multipart( Imf::MultiPartInputFile& inmaster,
+    bool fetch_mipmap(  mrv::image_type_ptr& canvas,
+			const boost::int64_t& frame );
+    bool fetch_multipart(  mrv::image_type_ptr& canvas,
+			   Imf::MultiPartInputFile& inmaster,
                           const boost::int64_t& frame );
     bool find_channels( mrv::image_type_ptr& canvas,
 			const Imf::Header& h, Imf::FrameBuffer& fb,
@@ -184,7 +188,7 @@ protected:
 
 
 public:
-    static void copy_pixel_data( mrv::image_type_ptr pic,
+    static void copy_pixel_data( mrv::image_type_ptr& pic,
                                  Imf::PixelType save_type,
                                  uint8_t* base,
                                  size_t total_size,

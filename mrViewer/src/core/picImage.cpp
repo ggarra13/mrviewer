@@ -237,7 +237,7 @@ bool picImage::test(const boost::uint8_t *data, unsigned len)
  *
  * @return true on success, false if not
  */
-bool picImage::fetch(const boost::int64_t frame)
+bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
 {
     uint32_t		tmp;
     bool              has_rgb = false;
@@ -332,7 +332,6 @@ bool picImage::fetch(const boost::int64_t frame)
 
     // Read pixel values
     image_size( dw, dh );
-    image_type_ptr canvas;
     allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type, dw, dh );
 
     bool ok = readScanlines(file, (uint32_t*)canvas->data().get(), dw, dh,

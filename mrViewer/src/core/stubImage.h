@@ -54,7 +54,7 @@ public:
     static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
         return CMedia::get(create, name, datas);
     }
-    bool fetch(const int64_t frame);
+    bool fetch( mrv::image_type_ptr& canvas, const int64_t frame);
 
     const char* host() {
         return _host;
@@ -81,7 +81,7 @@ public:
     }
 
     /// Parse a mray stub file and extract host, ports, image res, etc.
-    void parse_stub();
+    void parse_stub( mrv::image_type_ptr& canvas );
 
     void add_layer( const char* name, const int fb );
 

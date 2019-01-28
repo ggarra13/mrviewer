@@ -68,8 +68,6 @@ slateImage::slateImage( const CMedia* src ) :
     _frameEnd   = _frame_end = 60;
 
     image_size( _w, _h );
-    image_type_ptr canvas;
-    allocate_pixels( canvas, _fstart );
 
     default_layers();
 }
@@ -192,7 +190,8 @@ void slateImage::draw_gradient()
     DestroyPixelIterator(iter);
 }
 
-bool slateImage::fetch( const boost::int64_t frame )
+bool slateImage::fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame )
 {
     MagickBooleanType status;
 
@@ -370,8 +369,9 @@ bool slateImage::fetch( const boost::int64_t frame )
     }
 
 
+    allocate_pixels( canvas, _fstart );
     MagickExportImagePixels(wand, 0, 0, W, H, "RGBA", FloatPixel,
-                            _hires->data().get() );
+                            canvas->data().get() );
 
     DestroyPixelWand( pwand );
     DestroyDrawingWand( dwand );

@@ -169,7 +169,7 @@ bool wandImage::release()
     return true;
 }
 
-bool wandImage::fetch( const boost::int64_t frame )
+bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 {
 
     MagickBooleanType status;
@@ -362,7 +362,6 @@ bool wandImage::fetch( const boost::int64_t frame )
     image_size( unsigned(dw), unsigned(dh) );
 
     const char* channels;
-    mrv::image_type_ptr canvas;
     if ( _has_alpha )
     {
 
@@ -381,9 +380,6 @@ bool wandImage::fetch( const boost::int64_t frame )
     }
 
     {
-        SCOPED_LOCK( _mutex );
-
-
         Pixel* pixels = (Pixel*)canvas->data().get();
         MagickExportImagePixels( wand, 0, 0, dw, dh, channels,
                                  storage, pixels );

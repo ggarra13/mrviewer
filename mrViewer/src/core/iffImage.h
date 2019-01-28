@@ -65,7 +65,8 @@ public:
         return kCompression[_compression];
     }
 
-    virtual bool fetch( const boost::int64_t frame );
+    virtual bool fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame );
 
 protected:
     void end_read_chunk( FILE* f, iffChunk& chunk );

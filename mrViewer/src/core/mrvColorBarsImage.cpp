@@ -379,7 +379,10 @@ void ColorBarsImage::NTSC_HDTV_color_bars(mrv::image_type_ptr& canvas)
 }
 
 
-bool ColorBarsImage::fetch( const boost::int64_t frame )
+bool ColorBarsImage::fetch( 
+			   mrv::image_type_ptr& canvas,
+			   const boost::int64_t frame
+			    )
 {
     return true;
 }

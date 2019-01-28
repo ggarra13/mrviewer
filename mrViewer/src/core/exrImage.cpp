@@ -476,7 +476,6 @@ bool exrImage::channels_order(
 
         // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
         //           << " off:" << offsets[k] << " xs,ys "
-        //                << std::endl;
         //           << xs[k] << "," << ys[k]
         //           << " sampling " << xsampling[k]
         //           << " " << ysampling[k]
@@ -535,7 +534,8 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame,
  *
  * @return true if success, false if not
  */
-bool exrImage::fetch_mipmap( const boost::int64_t& frame )
+bool exrImage::fetch_mipmap(  mrv::image_type_ptr& canvas,
+			      const boost::int64_t& frame )
 {
 
     try {
@@ -577,7 +577,6 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
 
         FrameBuffer fb;
-	image_type_ptr canvas;
         bool ok = find_channels( canvas, h, fb, frame );
         if ( !ok ) return false;
 
@@ -1494,10 +1493,11 @@ void exrImage::loadDeepData( int& zsize,
         _type = SCANLINEIMAGE;
         if ( h.hasType() ) _type = h.type();
 
+	image_type_ptr canvas;
         if ( _type == DEEPSCANLINE )
             loadDeepScanlineImage( inmaster, zsize, zbuff, sampleCount, true );
         else if ( _type == DEEPTILE )
-            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
+            loadDeepTileImage( canvas, inmaster, zsize, zbuff, sampleCount, true );
     }
     catch( const std::exception& e )
     {
@@ -1508,11 +1508,13 @@ void exrImage::loadDeepData( int& zsize,
 
 
 void
-exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
-                             int &zsize,
-                             Imf::Array<float*>&       zbuff,
-                             Imf::Array<unsigned int>& sampleCount,
-                             bool deepComp )
+exrImage::loadDeepTileImage(
+			    mrv::image_type_ptr& canvas,
+			    Imf::MultiPartInputFile& inmaster,
+			    int &zsize,
+			    Imf::Array<float*>&       zbuff,
+			    Imf::Array<unsigned int>& sampleCount,
+			    bool deepComp )
 {
     _has_deep_data = true;
 
@@ -1531,8 +1533,7 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     display_window( displayWindow.min.x, displayWindow.min.y,
                     displayWindow.max.x, displayWindow.max.y, _frame );
 
-    image_type_ptr canvas;
-    if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+    if ( !canvas || dw*dh*sizeof(Imf::Rgba) != canvas->data_size() )
     {
         if (! allocate_pixels( canvas, _frame, 4, image_type::kRGBA,
                                image_type::kHalf ) )
@@ -1791,7 +1792,8 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 }
 
 
-bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
+bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
+				 Imf::MultiPartInputFile& inmaster,
                                 const boost::int64_t& frame )
 {
     if (  _numparts > 1 )
@@ -2193,7 +2195,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
 
             FrameBuffer fb;
-	    image_type_ptr canvas;
             bool ok = find_channels( canvas, header, fb, frame );
             if (!ok) {
                 IMG_ERROR( _("Could not locate channels in header") );
@@ -2243,10 +2244,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             if ( ! _read_attr )
                 read_header_attr( header, frame );
 
+	    image_type_ptr canvas;
             int zsize;
             Imf::Array< float* > zbuff;
             Imf::Array< unsigned > sampleCount;
-            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
+            loadDeepTileImage( canvas, inmaster, zsize, zbuff,
+			       sampleCount, true );
             return true;
         }
 
@@ -2262,7 +2265,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         displayWindow.max.x, displayWindow.max.y, frame );
 
         FrameBuffer fb;
-	image_type_ptr canvas;
         bool ok = find_channels( canvas, header, fb, frame );
         if (!ok) {
             IMG_ERROR( _("Could not locate channels in header") );
@@ -2290,7 +2292,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                             displayWindow.max.x, displayWindow.max.y, frame );
 
             FrameBuffer fb;
-	    image_type_ptr canvas;
             bool ok = find_channels( canvas, header, fb, frame );
             if (!ok) {
                 IMG_ERROR( _("Could not locate channels in header") );
@@ -2337,7 +2338,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
  *
  * @return true if success, false if not
  */
-bool exrImage::fetch( const boost::int64_t frame )
+bool exrImage::fetch(  mrv::image_type_ptr& canvas,
+		       const boost::int64_t frame )
 {
 
     try
@@ -2345,7 +2347,7 @@ bool exrImage::fetch( const boost::int64_t frame )
 
         if ( _levelX > 0 || _levelY > 0 )
         {
-            return fetch_mipmap( frame );
+            return fetch_mipmap( canvas, frame );
         }
 
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
@@ -2356,13 +2358,12 @@ bool exrImage::fetch( const boost::int64_t frame )
         if ( _numparts > 0 )
         {
 
-            if ( !  fetch_multipart( inmaster, frame ) )
+            if ( !  fetch_multipart( canvas, inmaster, frame ) )
                 return false;
 
             if ( _use_yca && !supports_yuv() )
             {
                 const Imf::Header& h = inmaster.header(0);
-		image_type_ptr canvas;
                 ycc2rgba( h, frame, canvas );
             }
         }
@@ -2651,7 +2652,7 @@ typedef std::set< std::string > PartNames;
 typedef std::vector< std::string >   LayerList;
 
 
-void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
+void exrImage::copy_pixel_data( mrv::image_type_ptr& pic,
                                 Imf::PixelType save_type,
                                 uint8_t* base,
                                 size_t total_size,

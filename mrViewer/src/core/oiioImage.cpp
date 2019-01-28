@@ -133,7 +133,7 @@ bool oiioImage::release()
 }
 
 
-bool oiioImage::fetch( const boost::int64_t frame )
+bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 {
     std::string file = sequence_filename( frame );
     std::unique_ptr<ImageInput> in = ImageInput::open( file.c_str() );
@@ -307,7 +307,6 @@ bool oiioImage::fetch( const boost::int64_t frame )
         return false;
     }
 
-    image_type_ptr canvas;
     if ( allocate_pixels( canvas, frame, channels, type, pixel_type, dw, dh ) )
     {
         SCOPED_LOCK( _mutex );

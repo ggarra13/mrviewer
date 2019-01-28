@@ -1391,9 +1391,11 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
         img->levelX( w->ivalue() );
         img->levelY( w->ivalue() );
         update_int_slider( w );
-        bool ok = img->fetch( view->frame() );
+	image_type_ptr canvas;
+        bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+	    img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1407,9 +1409,11 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
             mrv::ImageView* view = info->main()->uiView;
             img->level( w->ivalue() );
             update_int_slider( w );
-            bool ok = img->fetch( view->frame() );
+	    image_type_ptr canvas;
+	    bool ok = img->fetch( canvas, view->frame() );
             if (ok)
             {
+		img->cache( canvas );
                 img->refresh();
                 view->fit_image();
                 view->redraw();
@@ -1426,9 +1430,11 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelX( w->ivalue() );
         update_int_slider( w );
-        bool ok = img->fetch( view->frame() );
+	image_type_ptr canvas;
+        bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+	    img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1444,9 +1450,11 @@ static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelY( w->ivalue() );
         update_int_slider( w );
-        bool ok = img->fetch( view->frame() );
+	image_type_ptr canvas;
+        bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+	    img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();

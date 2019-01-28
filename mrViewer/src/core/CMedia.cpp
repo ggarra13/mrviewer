@@ -711,7 +711,9 @@ CMedia::CMedia( const CMedia* other, int64_t f ) :
     _audio_offset = other->audio_offset() + f - 1;
     audio_stream( other->_audio_index );
 
-    fetch( f );
+    image_type_ptr canvas;
+    fetch( canvas, f );
+    cache( canvas );
 }
 
 int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
@@ -773,7 +775,9 @@ void CMedia::update_frame( const int64_t& f )
     _stereo[0].reset();
     _stereo[1].reset();
 
-    fetch( f );
+    image_type_ptr canvas;
+    fetch( canvas, f );
+    cache( canvas );
 
     image_damage( image_damage() | kDamageCache | kDamageContents );
 
@@ -1476,9 +1480,10 @@ void CMedia::sequence( const char* fileroot,
         return;
 
 
-    if ( fetch( start ) )
+    image_type_ptr canvas;
+    if ( fetch( canvas, start ) )
     {
-        cache( _hires );
+        cache( canvas );
     }
 
     default_icc_profile();
@@ -1632,12 +1637,13 @@ bool CMedia::has_changed()
             _sequence[idx].reset();
 
             _is_thumbnail = true;  // to avoid printing errors
-            if ( fetch( f ) )
+	    image_type_ptr canvas;
+            if ( fetch( canvas, f ) )
             {
                 _is_thumbnail = false;
                 _mtime = sbuf.st_mtime;
                 _ctime = sbuf.st_ctime;
-                cache( _hires );
+                cache( canvas );
                 refresh();
                 return true;
             }
@@ -1657,11 +1663,12 @@ bool CMedia::has_changed()
         {
             int64_t f = handle_loops( _frame );
             _is_thumbnail = true; // to avoid printing errors
-            if ( fetch( f ) )
+	    image_type_ptr canvas;
+            if ( fetch( canvas, f ) )
             {
                 _mtime = sbuf.st_mtime;
                 _ctime = sbuf.st_ctime;
-                cache( _hires );
+                cache( canvas );
                 refresh();
                 _is_thumbnail = false;
                 return true;
@@ -1878,10 +1885,10 @@ void CMedia::stereo_output( StereoOutput x )
         if ( is_sequence() ) clear_cache();
         if ( playback() == kStopped )
         {
-            SCOPED_LOCK( _mutex );
-            if ( fetch(_frame) )
+	    image_type_ptr canvas;
+            if ( fetch(canvas, _frame) )
             {
-                cache( _hires );
+                cache( canvas );
             }
         }
         refresh();
@@ -2003,12 +2010,12 @@ void CMedia::channel( const char* c )
 
     if (to_fetch)
     {
-        SCOPED_LOCK( _mutex );
         clear_cache();
         int64_t f = handle_loops( _frame );
-        if ( fetch( f ) )
+	image_type_ptr canvas;
+        if ( fetch( canvas, f ) )
         {
-            cache( _hires );
+            cache( canvas );
         }
         refresh();
     }
@@ -2706,6 +2713,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
     if ( !seq || seq[idx] ) return;
 
+    
     mrv::image_type_ptr np;
 
     unsigned w = pic->width();
@@ -2786,10 +2794,10 @@ void CMedia::cache( const mrv::image_type_ptr pic )
 {
     assert( pic != NULL );
 
+    
     if ( !is_sequence() || !_cache_active || !pic )
         return;
 
-    SCOPED_LOCK( _mutex );
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
@@ -3788,15 +3796,12 @@ bool CMedia::find_image( const int64_t frame )
         else if ( idx >= num ) idx = num - 1;
     }
 
+    
     if ( _sequence && _sequence[idx] )
     {
-        {
-            SCOPED_LOCK( _mutex );
-
-            _hires = _sequence[idx];
-            if ( _right && _right[idx])
-                _stereo[1] = _right[idx];
-        }
+	_hires = _sequence[idx];
+	if ( _right && _right[idx])
+	    _stereo[1] = _right[idx];
 
         _frame = frame;
 
@@ -3836,12 +3841,12 @@ bool CMedia::find_image( const int64_t frame )
     {
         if ( fs::exists(file) )
         {
-            SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );
-            if ( fetch( f ) )
+	    image_type_ptr canvas;
+            if ( fetch( canvas, f ) )
             {
-                cache( _hires );
+                cache( canvas );
                 default_icc_profile();
                 default_rendering_transform();
                 default_ocio_input_color_space();
@@ -3857,8 +3862,9 @@ bool CMedia::find_image( const int64_t frame )
                     Preferences::max_memory = maxmem;
                     LOG_INFO( "[mem] Max memory is now " << maxmem );
                     limit_video_store( frame );
-                    fetch( f );
-                    cache( _hires );
+		    image_type_ptr canvas;
+                    fetch( canvas, f );
+                    cache( canvas );
                     default_icc_profile();
                     default_rendering_transform();
                     default_ocio_input_color_space();

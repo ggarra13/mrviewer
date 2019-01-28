@@ -57,7 +57,7 @@ public:
         return "Built-in Image";
     }
 
-    bool fetch( const boost::int64_t frame );
+    bool fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame );
 
 #ifdef _WIN32
     void* operator new(size_t sz) {
@@ -70,16 +70,18 @@ public:
 #endif
 
 protected:
-    void luminance_gradient();
-    void linear_gradient();
-    void checkered();
+    void luminance_gradient( mrv::image_type_ptr& canvas );
+    void linear_gradient( mrv::image_type_ptr& canvas );
+    void checkered( mrv::image_type_ptr& canvas );
 
-    void gamma_chart();
-    void gamma_boxes( unsigned int x, unsigned int y,
+    void gamma_chart( mrv::image_type_ptr& canvas );
+    void gamma_boxes( mrv::image_type_ptr& canvas,
+		      unsigned int x, unsigned int y,
                       unsigned int w, unsigned int h,
                       float bg, float fg );
-    void gamma_box( unsigned int x, unsigned int y,
-                    unsigned int w, unsigned int h );
+    void gamma_box( mrv::image_type_ptr& canvas,
+		    unsigned int x, unsigned int y,
+		    unsigned int w, unsigned int h );
 
     Pixel bg;
     Pixel fg;

@@ -116,7 +116,9 @@ void ntsc_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -125,7 +127,9 @@ void pal_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -134,7 +138,9 @@ void ntsc_hdtv_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC_HDTV );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -143,7 +149,9 @@ void pal_hdtv_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL_HDTV );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -157,7 +165,9 @@ static void gamma_chart( mrv::ImageBrowser* b, float g )
                              uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kGammaChart, m.w(), m.h() );
     img->gamma(g);
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     img->gamma(1.0f);
     b->add( img );
@@ -189,7 +199,9 @@ void linear_gradient_cb( fltk::Widget* o, mrv::ImageBrowser* b )
                              uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kLinearGradient,
                                       m.w(), m.h() );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -204,7 +216,9 @@ void luminance_gradient_cb( fltk::Widget* o, mrv::ImageBrowser* b )
                              uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient,
                                       m.w(), m.h() );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -215,7 +229,9 @@ void checkered_cb( fltk::Widget* o, mrv::ImageBrowser* b )
     using mrv::smpteImage;
 
     smpteImage* img = new smpteImage( smpteImage::kCheckered, 640, 480 );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -230,7 +246,9 @@ void slate_cb( fltk::Widget* o, mrv::ImageBrowser* b )
     if ( !cur ) return;
 
     slateImage* img = new slateImage( cur->image() );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -1270,7 +1288,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     if ( img->has_video() || img->has_audio() )
     {
-        img->fetch( img->first_frame() );
+	image_type_ptr canvas;
+        img->fetch( canvas, img->first_frame() );
     }
     else
     {

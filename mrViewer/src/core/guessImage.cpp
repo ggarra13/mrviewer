@@ -306,7 +306,9 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 if ( img )
                 {
                     img->filename( name );
-                    img->fetch(1);
+		    image_type_ptr canvas;
+                    img->fetch( canvas, 1);
+		    img->cache( canvas );
                     img->default_icc_profile();
                     img->default_rendering_transform();
                     return img;

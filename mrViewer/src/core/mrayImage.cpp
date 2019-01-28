@@ -134,7 +134,8 @@ bool mrayImage::test(const boost::uint8_t *data, unsigned len)
 
 
 
-bool mrayImage::fetch( const boost::int64_t& frame )
+bool mrayImage::fetch( mrv::image_type_ptr& canvas,
+		       const boost::int64_t& frame )
 {
     int dw, dh;
 
@@ -160,7 +161,6 @@ bool mrayImage::fetch( const boost::int64_t& frame )
 
     image_size( dw, dh );
 
-    image_type_ptr canvas;
     allocate_pixels( canvas, frame );
 
     _layers.clear();

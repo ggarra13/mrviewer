@@ -2612,7 +2612,12 @@ bool ImageView::preload()
         pic = img->hires();
         if (!pic) return false;
         img->clear_video_packets();
-        found = img->find_image( f ); // this loads the frame if not present
+	image_type_ptr canvas;
+	if ( img->fetch( canvas, f ) )
+	{
+	    img->cache( canvas );
+	    found = img->find_image( f );
+	}
     }
     // Frame found. Update _preframe.
     if ( found ) {
@@ -6970,7 +6975,9 @@ void ImageView::flush_image( mrv::media fg )
                 ( _engine->shader_type() == DrawEngine::kNone )  )
         {
             img->clear_cache();
-            img->fetch(frame());
+	    image_type_ptr canvas;
+            img->fetch( canvas, frame() );
+	    img->cache( canvas );
         }
     }
 }
