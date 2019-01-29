@@ -2326,14 +2326,14 @@ CMedia::StereoOutput ImageView::stereo_output() const
  */
 bool ImageView::should_update( mrv::media fg )
 {
-    bool update = false;
+    bool update = _idle_callback;
 
 
     CMedia* img = NULL;
     if ( fg )
     {
         img = fg->image();
-
+	
         if ( img->image_damage() & CMedia::kDamageLayers )
         {
             update_layers();
@@ -2449,12 +2449,12 @@ bool ImageView::should_update( mrv::media fg )
     if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
         int y = fltk::event_y();
-#ifdef LINUX
+#  ifdef LINUX
         if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
-#else
+#  else
         if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
-                                                    (!uiMain->uiMain->border());
-#endif
+					   (!uiMain->uiMain->border());
+#  endif
         mouseMove( fltk::event_x(), y );
 #else
         mouseMove( fltk::event_x(), fltk::event_y() );
@@ -6755,9 +6755,7 @@ int ImageView::handle(int event)
         {
             if ( _idle_callback && b->reel_index() >= b->number_of_reels() )
             {
-                fltk::remove_idle( (fltk::TimeoutHandler)static_preload,
-                                   this );
-                _idle_callback = false;
+		preload_cache_stop();
             }
         }
         timeout();
