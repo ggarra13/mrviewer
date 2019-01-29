@@ -532,8 +532,6 @@ bool iffImage::fetch(const boost::int64_t frame)
     _gamma = 1.0f;
     _compression = kNoCompression;
 
-    SCOPED_LOCK( _mutex );
-
     FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
     if (!f) return false;
 

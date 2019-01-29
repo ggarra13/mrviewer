@@ -309,8 +309,6 @@ bool oiioImage::fetch( const boost::int64_t frame )
 
     if ( allocate_pixels( frame, channels, type, pixel_type, dw, dh ) )
     {
-        SCOPED_LOCK( _mutex );
-
         try
         {
             Pixel* pixels = (Pixel*)_hires->data().get();

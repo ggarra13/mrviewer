@@ -90,7 +90,6 @@ clonedImage::clonedImage( const CMedia* other ) :
     {
         CMedia* img = const_cast< CMedia* >( other );
         CMedia::Mutex& m = img->video_mutex();
-        SCOPED_LOCK(m);
         _hires.reset( new mrv::image_type( other->frame(),
                                            other->width(),
                                            other->height(),

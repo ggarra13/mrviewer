@@ -380,9 +380,6 @@ bool wandImage::fetch( const boost::int64_t frame )
     }
 
     {
-        SCOPED_LOCK( _mutex );
-
-
         Pixel* pixels = (Pixel*)_hires->data().get();
         MagickExportImagePixels( wand, 0, 0, dw, dh, channels,
                                  storage, pixels );

@@ -213,8 +213,6 @@ bool rawImage::fetch( const boost::int64_t frame )
                              dw, dh );
 
             {
-                SCOPED_LOCK( _mutex );
-
                 Pixel* pixels = (Pixel*)_hires->data().get();
                 memcpy( pixels, iprc->thumbnail.thumb, dw*dh*4 );
             }
@@ -328,8 +326,6 @@ bool rawImage::fetch( const boost::int64_t frame )
         allocate_pixels( frame, _num_channels, type, pixel_type, dw, dh );
 
         {
-            SCOPED_LOCK( _mutex );
-
             Pixel* pixels = (Pixel*)_hires->data().get();
             memcpy( pixels, iprc->image, dw*dh*4*sizeof(short) );
         }
