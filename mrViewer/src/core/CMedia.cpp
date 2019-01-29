@@ -755,7 +755,7 @@ void CMedia::clear_cache()
     _stereo[0].reset();
     _stereo[1].reset();
 
-    image_damage( image_damage() | kDamageCache );
+    image_damage( image_damage() | kDamageCache | kDamageContents );
 
 }
 
