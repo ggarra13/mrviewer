@@ -494,7 +494,6 @@ bool exrImage::channels_order(
 
 void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
 {
-    SCOPED_LOCK( _mutex );
 
     Imf::Chromaticities cr;
     if ( Imf::hasChromaticities( hdr ) )
