@@ -750,6 +750,10 @@ public:
 
 protected:
 
+    bool ready_frame( int64_t& f, const CMedia::Playback p,
+		      CMedia* const img,
+		      const int64_t& first, const int64_t& last,
+		      const bool seek = false );
 
     void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
@@ -883,10 +887,10 @@ protected:
     float         _volume;
     FlipDirection _flip;
     unsigned      _reel;      // <- reel of preframe 
-    int64_t     _preframe;
-    int64_t     _old_fg_frame;  // <- old frame used to stat fileroot's fg
-    int64_t     _old_bg_frame;  // <- old frame used to stat fileroot's bg
-    bool        _idle_callback;
+    int64_t       _preframe;
+    int64_t       _old_fg_frame;  // <- old frame used to stat fileroot's fg
+    int64_t       _old_bg_frame;  // <- old frame used to stat fileroot's bg
+    bool          _idle_callback;
 
     VRType        _vr;  // Cube/Spherical VR 360
 

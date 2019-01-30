@@ -2519,6 +2519,61 @@ int timeval_substract(struct timeval *result, struct timeval *x,
 
 Timer t;
 
+bool ImageView::ready_frame( int64_t& f, const CMedia::Playback p,
+			     CMedia* const img,
+			     const int64_t& first, const int64_t& last,
+			     const bool seek )
+{
+    if ( p == CMedia::kBackwards )
+    {
+	if ( f < first )
+	{
+	    switch( looping() )
+	    {
+		case CMedia::kPingPong:
+		    f = first;
+		    img->playback( CMedia::kForwards );
+		    playback( CMedia::kForwards );
+		    break;
+		default:
+		case CMedia::kLoop:
+		    f = last;
+		    break;
+	    }
+	    if ( seek )
+	    {
+		img->seek( f );
+		img->do_seek();
+	    }
+	}
+    }
+    else if ( p == CMedia::kForwards )
+    {
+	if ( f > last )
+	{
+	    switch( looping() )
+	    {
+		case CMedia::kPingPong:
+		    f = last;
+		    img->playback( CMedia::kBackwards );
+		    playback( CMedia::kBackwards );
+		    break;
+		default:
+		case CMedia::kLoop:
+		    f = first;
+		    break;
+	    }
+	    if ( seek )
+	    {
+		img->seek( f );
+		img->do_seek();
+	    }
+	}
+    }
+    return true;
+}
+
+
 bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
@@ -2593,6 +2648,7 @@ bool ImageView::preload()
 
 
 
+    bool played = false;
     bool found = false;
     mrv::image_type_ptr pic;
     {
@@ -2612,56 +2668,40 @@ bool ImageView::preload()
         pic = img->hires();
         if (!pic) return false;
         img->clear_video_packets();
-	image_type_ptr canvas;
-	std::string file = img->sequence_filename( f );
-	if ( fs::exists(file) && img->fetch( canvas, f ) )
+	if ( img->is_cache_filled( f ) )
 	{
-	    img->cache( canvas );
 	    found = true;
-	}	
-	if ( p ) found = img->find_image( img->frame() + p );
+	}
+	else
+	{
+	    image_type_ptr canvas;
+	    std::string file = img->sequence_filename( f );
+	    if ( fs::exists(file) && img->fetch( canvas, f ) )
+	    {
+		std::cerr << "file " << file << " " << f <<  std::endl;
+		std::cerr << "cache " << canvas->frame() << std::endl;
+		img->cache( canvas );
+		found = true;
+	    }	
+	}
+	
+	if ( p )
+	{
+	    f = img->frame() + p;
+	    played = img->find_image( f );
+	}
     }
+
+    if ( played )
+    {
+	std::cerr << "played " << f << std::endl;
+	if ( p ) ready_frame( f, p, img, first, last, true );
+    }
+    
     // Frame found. Update _preframe.
     if ( found ) {
-        _preframe += p;
-        if ( p == CMedia::kBackwards )
-        {
-            if ( _preframe < first )
-            {
-                switch( looping() )
-                {
-                    case CMedia::kPingPong:
-                        _preframe = first;
-                        img->playback( CMedia::kForwards );
-                        playback( CMedia::kForwards );
-                        return true;
-                    default:
-                    case CMedia::kLoop:
-                        _preframe = last;
-                        return false;
-                        break;
-                }
-            }
-        }
-        else if ( p == CMedia::kForwards )
-        {
-           if ( _preframe > last )
-            {
-                switch( looping() )
-                {
-                    case CMedia::kPingPong:
-                        _preframe = last;
-                        img->playback( CMedia::kBackwards );
-                        playback( CMedia::kBackwards );
-                        return true;
-                    default:
-                    case CMedia::kLoop:
-                        _preframe = first;
-                        return false;
-                        break;
-                }
-            }
-        }
+	_preframe += p;
+	if ( p ) ready_frame( _preframe, p, img, first, last );
         else
         {
             size_t max_images = img->max_image_frames() - 2;
@@ -2669,8 +2709,8 @@ bool ImageView::preload()
             int64_t last_diff = last - pic->frame();
             int64_t first_diff = f - first;
             if ( CMedia::preload_cache() &&
-                    ( pos_diff >= 0 && pos_diff < max_images  ||
-                      pos_diff < 0 && first_diff + last_diff < max_images ) )
+		 ( pos_diff >= 0 && pos_diff < max_images  ||
+		   pos_diff < 0 && first_diff + last_diff < max_images ) )
             {
                 _preframe += 1;
                 if ( _preframe >= last )
@@ -7024,7 +7064,8 @@ void ImageView::preload_cache_start()
 	}
         CMedia::preload_cache( true );
         _idle_callback = true;
-        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+
+	fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
@@ -7038,7 +7079,7 @@ void ImageView::preload_cache_stop()
 
     if ( _idle_callback )
     {
-	//fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+	fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
         _idle_callback = false;
     }
 }
