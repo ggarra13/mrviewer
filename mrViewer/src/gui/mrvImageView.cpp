@@ -2519,61 +2519,6 @@ int timeval_substract(struct timeval *result, struct timeval *x,
 
 Timer t;
 
-bool ImageView::ready_frame( int64_t& f, const CMedia::Playback p,
-			     CMedia* const img,
-			     const int64_t& first, const int64_t& last,
-			     const bool seek )
-{
-    if ( p == CMedia::kBackwards )
-    {
-	if ( f < first )
-	{
-	    switch( looping() )
-	    {
-		case CMedia::kPingPong:
-		    f = first;
-		    img->playback( CMedia::kForwards );
-		    playback( CMedia::kForwards );
-		    break;
-		default:
-		case CMedia::kLoop:
-		    f = last;
-		    break;
-	    }
-	    if ( seek )
-	    {
-		img->seek( f );
-		img->do_seek();
-	    }
-	}
-    }
-    else if ( p == CMedia::kForwards )
-    {
-	if ( f > last )
-	{
-	    switch( looping() )
-	    {
-		case CMedia::kPingPong:
-		    f = last;
-		    img->playback( CMedia::kBackwards );
-		    playback( CMedia::kBackwards );
-		    break;
-		default:
-		case CMedia::kLoop:
-		    f = first;
-		    break;
-	    }
-	    if ( seek )
-	    {
-		img->seek( f );
-		img->do_seek();
-	    }
-	}
-    }
-    return true;
-}
-
-
 bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
@@ -2648,8 +2593,8 @@ bool ImageView::preload()
 
 
 
-    bool played = false;
-    bool found = false;
+
+    bool found;
     mrv::image_type_ptr pic;
     {
 	typedef CMedia::Mutex Mutex;
@@ -2668,40 +2613,49 @@ bool ImageView::preload()
         pic = img->hires();
         if (!pic) return false;
         img->clear_video_packets();
-	if ( img->is_cache_filled( f ) )
-	{
-	    found = true;
-	}
-	else
-	{
-	    image_type_ptr canvas;
-	    std::string file = img->sequence_filename( f );
-	    if ( fs::exists(file) && img->fetch( canvas, f ) )
-	    {
-		std::cerr << "file " << file << " " << f <<  std::endl;
-		std::cerr << "cache " << canvas->frame() << std::endl;
-		img->cache( canvas );
-		found = true;
-	    }	
-	}
-	
-	if ( p )
-	{
-	    f = img->frame() + p;
-	    played = img->find_image( f );
-	}
+        found = img->find_image( f ); // this loads the frame if not present
     }
-
-    if ( played )
-    {
-	std::cerr << "played " << f << std::endl;
-	if ( p ) ready_frame( f, p, img, first, last, true );
-    }
-    
     // Frame found. Update _preframe.
     if ( found ) {
-	_preframe += p;
-	if ( p ) ready_frame( _preframe, p, img, first, last );
+        _preframe += p;
+        if ( p == CMedia::kBackwards )
+        {
+            if ( _preframe < first )
+            {
+                switch( looping() )
+                {
+                    case CMedia::kPingPong:
+                        _preframe = first;
+                        img->playback( CMedia::kForwards );
+                        playback( CMedia::kForwards );
+                        return true;
+                    default:
+                    case CMedia::kLoop:
+                        _preframe = last;
+                        return false;
+                        break;
+                }
+            }
+        }
+        else if ( p == CMedia::kForwards )
+        {
+            if ( _preframe > last )
+            {
+                switch( looping() )
+                {
+                    case CMedia::kPingPong:
+                        _preframe = last;
+                        img->playback( CMedia::kBackwards );
+                        playback( CMedia::kBackwards );
+                        return true;
+                    default:
+                    case CMedia::kLoop:
+                        _preframe = first;
+                        return false;
+                        break;
+                }
+            }
+        }
         else
         {
             size_t max_images = img->max_image_frames() - 2;
@@ -2709,11 +2663,11 @@ bool ImageView::preload()
             int64_t last_diff = last - pic->frame();
             int64_t first_diff = f - first;
             if ( CMedia::preload_cache() &&
-		 ( pos_diff >= 0 && pos_diff < max_images  ||
-		   pos_diff < 0 && first_diff + last_diff < max_images ) )
+                    ( pos_diff >= 0 && pos_diff < max_images  ||
+                      pos_diff < 0 && first_diff + last_diff < max_images ) )
             {
                 _preframe += 1;
-                if ( _preframe >= last )
+                if ( _preframe > last )
                 {
                     _preframe = first;
                     // preload_cache_stop();
@@ -7001,7 +6955,6 @@ void ImageView::clear_reel_cache( size_t idx )
         }
     }
 
-    std::cerr << "set preframe to " << frame() << std::endl;
     _preframe = frame();
 }
 
@@ -7016,8 +6969,10 @@ void ImageView::flush_image( mrv::media fg )
         {
             img->clear_cache();
 	    image_type_ptr canvas;
-            img->fetch( canvas, frame() );
-	    img->cache( canvas );
+            if ( img->fetch(canvas, frame() ) )
+	    {
+		img->cache( canvas );
+	    }
         }
     }
 }
@@ -7029,15 +6984,14 @@ void ImageView::reset_caches()
     if ( r && r->edl )
     {
 	timeline()->edl( true );
-	_preframe = frame();
-   }
+        _preframe = frame();
+    }
     else
     {
-	mrv::media fg = foreground();
-	if (!fg) return;
-
-	CMedia* img = fg->image();
-	_preframe = img->first_cache_empty_frame();
+        mrv::media fg = foreground();
+        if (!fg) return;
+        CMedia* img = fg->image();
+        _preframe = img->first_frame();
     }
 }
 
@@ -7052,20 +7006,20 @@ void ImageView::preload_cache_start()
         if ( r && r->edl )
         {
 	    timeline()->edl( true );
-	    _preframe = frame();
-       }
-	else
-	{
-	    mrv::media fg = foreground();
-	    if (!fg) return;
-	
-	    CMedia* img = fg->image();
-	    _preframe = img->first_cache_empty_frame();
-	}
+            _preframe = frame();
+        }
+        else
+        {
+            mrv::media fg = foreground();
+            if ( fg )
+            {
+                CMedia* img = fg->image();
+                _preframe = img->first_frame();
+            }
+        }
         CMedia::preload_cache( true );
         _idle_callback = true;
-
-	fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
@@ -7079,7 +7033,7 @@ void ImageView::preload_cache_stop()
 
     if ( _idle_callback )
     {
-	fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
         _idle_callback = false;
     }
 }
@@ -7421,12 +7375,7 @@ void ImageView::channel( unsigned short c )
     }
     else
     {
-	mrv::media fg = foreground();
-	if (!fg) return;
-	    
-	CMedia* img = fg->image();
-	_preframe = img->first_cache_empty_frame();
-
+	_preframe = frame();
     }
     
     smart_refresh();
@@ -8817,9 +8766,7 @@ void ImageView::play( const CMedia::Playback dir )
     }
     else
     {
-	CMedia* img = fg->image();
-	_preframe = img->first_cache_empty_frame();
-	// _preframe = frame();
+	_preframe = frame();
     }
 
 
@@ -8846,13 +8793,11 @@ void ImageView::play( const CMedia::Playback dir )
     {
         CMedia* img = bg->image();
         img->play( dir, uiMain, false);
-
-	typedef boost::recursive_mutex Mutex;
+        typedef boost::recursive_mutex Mutex;
         Mutex& bgm = img->video_mutex();
         SCOPED_LOCK( bgm );
         CMedia::Barrier* barrier = img->fg_bg_barrier();
         if ( !barrier ) return;
-	
         img = fg->image();
         Mutex& fgm = img->video_mutex();
         SCOPED_LOCK( fgm );
