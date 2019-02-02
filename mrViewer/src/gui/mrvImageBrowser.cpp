@@ -414,7 +414,7 @@ mrv::Reel ImageBrowser::reel( const char* name )
                 if ( view()->playback() != CMedia::kStopped )
                     view()->stop();
             }
-	    std::cerr << "set _reel to " << idx << std::endl;
+            std::cerr << "set _reel to " << idx << std::endl;
             _reel = idx;
             change_reel();
             return *i;
@@ -439,7 +439,7 @@ mrv::Reel ImageBrowser::reel( unsigned idx )
         return _reels[ idx ];
     }
 
-    
+
     _reel = idx;
     change_reel();
     return _reels[ idx ];
@@ -1433,7 +1433,7 @@ void load_sequence( ImageBrowser::LThreadData* data )
 void ImageBrowser::load( const mrv::LoadList& files,
                          const bool stereo,
                          std::string bgimage,
-			 const bool edl,
+                         const bool edl,
                          const bool progressBar )
 {
 
@@ -1631,13 +1631,13 @@ void ImageBrowser::load( const mrv::LoadList& files,
         {
             progress->step(1);
             fltk::check();
-        } 
+        }
 
-	if ( edl )
-	{
-	    current_reel()->edl = true;
-	    uiMain->uiTimeline->edl( true );
-	}
+        if ( edl )
+        {
+            current_reel()->edl = true;
+            uiMain->uiTimeline->edl( true );
+        }
     }
 
     if ( w )
@@ -1747,7 +1747,7 @@ void ImageBrowser::load( const stringArray& files,
                          const bool seqs,
                          const bool stereo,
                          const std::string bgfile,
-			 const bool edl,
+                         const bool edl,
                          const bool progress )
 {
     stringArray::const_iterator i = files.begin();
@@ -2815,7 +2815,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
     int64_t f = (int64_t) uiMain->uiFrame->value();
     int64_t g = t->offset( img );
     f -= g;
-    
+
     reel->images.erase( reel->images.begin() + oldsel );
     if ( oldsel < sel ) sel -= 1;
 
@@ -3037,13 +3037,12 @@ void ImageBrowser::seek( const int64_t tframe )
 
         CMedia* img = fg->image();
         img->seek( f );
-        DBG( "img->stopped? " << img->stopped() );
 
         mrv::media bg = view()->background();
         if ( bg )
         {
             img = bg->image();
-	    f += img->first_frame() - 1;
+            f += img->first_frame() - 1;
             img->seek( f );
         }
     }
@@ -3070,10 +3069,10 @@ void ImageBrowser::frame( const int64_t f )
 {
     if ( uiMain->uiFrame )
     {
-	uiMain->uiFrame->value( f );
-	uiMain->uiFrame->redraw();
+        uiMain->uiFrame->value( f );
+        uiMain->uiFrame->redraw();
     }
-    
+
     mrv::Timeline* t = timeline();
     if ( t )
     {

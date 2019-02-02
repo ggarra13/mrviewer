@@ -655,10 +655,8 @@ public:
                                 const boost::uint8_t* datas = NULL,
                                 const int size = 0,
                                 const bool is_thumbnail = false,
-                                const int64_t
-                                first = AV_NOPTS_VALUE,
-                                const int64_t
-                                end = AV_NOPTS_VALUE,
+                                int64_t first = AV_NOPTS_VALUE,
+                                int64_t   end = AV_NOPTS_VALUE,
                                 const bool avoid_seq = false );
 
     ////////////////////////

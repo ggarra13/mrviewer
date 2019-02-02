@@ -174,7 +174,7 @@ bool Parser::parse( const std::string& s )
     Mutex& mtx = view()->commands_mutex;
     SCOPED_LOCK( mtx );
 
-    
+
     mrv::Reel r;
     mrv::media m;
 
@@ -265,9 +265,9 @@ bool Parser::parse( const std::string& s )
 
         bool same = true;
         if ( font != old_font || text != old_text || font_size != old_size ||
-	     color.r != oldcolor.r || color.g != oldcolor.g ||
-	     color.b != oldcolor.b || color.a != oldcolor.a ||
-	     frame != old_frame )
+             color.r != oldcolor.r || color.g != oldcolor.g ||
+             color.b != oldcolor.b || color.a != oldcolor.a ||
+             frame != old_frame )
         {
             same = false;
         }
@@ -934,7 +934,7 @@ bool Parser::parse( const std::string& s )
         is.clear();
         std::getline( is, name, '"' );
         is.clear();
-	
+
         ImageView::Command c;
         c.type = ImageView::kCreateReel;
         c.data = new std::string( name );
@@ -994,8 +994,8 @@ bool Parser::parse( const std::string& s )
             for ( j = 0; j != e; ++j )
             {
                 mrv::media fg = r->images[j];
-		CMedia* img = fg->image();
-		std::string file = img->directory() + '/' + img->name();
+                CMedia* img = fg->image();
+                std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
                     break;
             }
@@ -1035,8 +1035,8 @@ bool Parser::parse( const std::string& s )
                 for ( j = 0; j != e; ++j )
                 {
                     mrv::media fg = r->images[j];
-		    CMedia* img = fg->image();
-		    std::string file = img->directory() + '/' + img->name();
+                    CMedia* img = fg->image();
+                    std::string file = img->directory() + '/' + img->name();
                     if ( file == imgname )
                     {
                         m = fg;
@@ -1047,9 +1047,9 @@ bool Parser::parse( const std::string& s )
 
             if ( m )
             {
-		CMedia* img = m->image();
-		std::string file = img->directory() + '/' + img->name();
-		    
+                CMedia* img = m->image();
+                std::string file = img->directory() + '/' + img->name();
+
                 for ( j = 0; j != e; ++j )
                 {
                     if ( j == idx && file == imgname )
@@ -1064,8 +1064,8 @@ bool Parser::parse( const std::string& s )
                         break;
                     }
                 }
- 
-		
+
+
                 if ( j == e && file == imgname )
                 {
                     browser()->add( m );
@@ -1091,7 +1091,7 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
-        boost::int64_t start, end;
+        boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
         is >> start;
         is >> end;
 
@@ -1107,12 +1107,12 @@ bool Parser::parse( const std::string& s )
                 mrv::media fg = *j;
                 if (!fg) continue;
 
-		CMedia* img = fg->image();
-		std::string file = img->directory() + '/' + img->name();
+                CMedia* img = fg->image();
+                std::string file = img->directory() + '/' + img->name();
 
                 if ( file == imgname &&
-		     img->first_frame() == start &&
-		     img->last_frame() == end )
+                     img->first_frame() == start &&
+                     img->last_frame() == end )
                 {
                     found = true;
                     m = fg;
@@ -1122,7 +1122,6 @@ bool Parser::parse( const std::string& s )
 
         if (!found)
         {
-	    LOG_WARNING( "NORMAL load image " <<  imgname );
             ImageView::Command c;
             c.type = ImageView::kLoadImage;
 
@@ -1185,9 +1184,9 @@ bool Parser::parse( const std::string& s )
             {
                 if ( !(*j) ) continue;
 
-		CMedia* img = (*j)->image();
-		std::string file = img->directory() + '/' + img->name();
-		LOG_WARNING( "COMPARE " << file << " to " << imgname );
+                CMedia* img = (*j)->image();
+                std::string file = img->directory() + '/' + img->name();
+                LOG_WARNING( "COMPARE " << file << " to " << imgname );
                 if ( file == imgname )
                 {
                     found = true;
@@ -1199,7 +1198,7 @@ bool Parser::parse( const std::string& s )
 
         if ( found )
         {
-	    LOG_WARNING( "Change to image #" << idx << " "  << imgname );
+            LOG_WARNING( "Change to image #" << idx << " "  << imgname );
             ImageView::Command c;
             c.type = ImageView::kChangeImage;
 
@@ -1233,14 +1232,14 @@ bool Parser::parse( const std::string& s )
         int idx;
         is >> idx;
 
-	ImageView::Command c;
-	c.type = ImageView::kFGReel;
-	c.data = new int(idx);
+        ImageView::Command c;
+        c.type = ImageView::kFGReel;
+        c.data = new int(idx);
 
-	v->commands.push_back( c );
-	
-	r = browser()->reel_at( idx );
-	
+        v->commands.push_back( c );
+
+        r = browser()->reel_at( idx );
+
         ok = true;
     }
     else if ( cmd == N_("BGReel") )
@@ -1248,14 +1247,14 @@ bool Parser::parse( const std::string& s )
         int idx;
         is >> idx;
 
-	ImageView::Command c;
-	c.type = ImageView::kBGReel;
-	c.data = new int(idx);
+        ImageView::Command c;
+        c.type = ImageView::kBGReel;
+        c.data = new int(idx);
 
-	v->commands.push_back( c );
-	
-	r = browser()->reel_at( idx );
-	
+        v->commands.push_back( c );
+
+        r = browser()->reel_at( idx );
+
         ok = true;
     }
     else if ( cmd == N_("CurrentBGImage") )
@@ -1267,46 +1266,46 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
-	
-	boost::int64_t first, last;
-	is >> first;
-	is >> last;
+
+        boost::int64_t first, last;
+        is >> first;
+        is >> last;
 
         r = browser()->current_reel();
-	    
-	if ( r )
-	{
-	    mrv::MediaList::iterator j = r->images.begin();
-	    mrv::MediaList::iterator e = r->images.end();
-	    int idx = 0;
-	    ImageView::Command c;
-	    c.type = ImageView::kBGImage;
-	    
-	    for ( ; j != e; ++j, ++idx )
-	    {
-		if ( !(*j) ) continue;
-		CMedia* img = (*j)->image();
-		std::string file = img->directory() + '/' + img->name();
-		if ( file == imgname )
-		{
-		    int* data = new int(idx);
-		    c.data = data;
-	
-		    img->first_frame( first );
-		    img->last_frame( last );
-		    ok = true;
-		    break;
-		}
-	    }
 
-	    if (!ok )
-	    {
-		int* data = new int(-1);
-		c.data = data;
-	    }
-	    
-	    v->commands.push_back( c );
-	    ok = true;
+        if ( r )
+        {
+            mrv::MediaList::iterator j = r->images.begin();
+            mrv::MediaList::iterator e = r->images.end();
+            int idx = 0;
+            ImageView::Command c;
+            c.type = ImageView::kBGImage;
+
+            for ( ; j != e; ++j, ++idx )
+            {
+                if ( !(*j) ) continue;
+                CMedia* img = (*j)->image();
+                std::string file = img->directory() + '/' + img->name();
+                if ( file == imgname )
+                {
+                    int* data = new int(idx);
+                    c.data = data;
+
+                    img->first_frame( first );
+                    img->last_frame( last );
+                    ok = true;
+                    break;
+                }
+            }
+
+            if (!ok )
+            {
+                int* data = new int(-1);
+                c.data = data;
+            }
+
+            v->commands.push_back( c );
+            ok = true;
         }
         v->redraw();
     }
@@ -1599,24 +1598,24 @@ bool Parser::parse( const std::string& s )
         boost::int64_t f;
         is >> f;
 
-	{
-	    ImageView::Command c;
-	    c.type = ImageView::kStopVideo;
-	    c.data = NULL;
-	    v->commands.push_back( c );
-	}
+        {
+            ImageView::Command c;
+            c.type = ImageView::kStopVideo;
+            c.data = NULL;
+            v->commands.push_back( c );
+        }
 
-	// while ( v->playback() != CMedia::kStopped )
-	//     std::cerr << '.';
-	
-	// {
-	//     std::cerr << "SEEK >>> " << f << std::endl;
-	//     ImageView::Command c;
-	//     c.type = ImageView::kSeek;
-	//     c.data = new int64_t( f );
-	//     v->commands.push_back( c );
-	// }
-	
+        // while ( v->playback() != CMedia::kStopped )
+        //     std::cerr << '.';
+
+        // {
+        //     std::cerr << "SEEK >>> " << f << std::endl;
+        //     ImageView::Command c;
+        //     c.type = ImageView::kSeek;
+        //     c.data = new int64_t( f );
+        //     v->commands.push_back( c );
+        // }
+
         ok = true;
     }
     else if ( cmd == N_("playfwd") )

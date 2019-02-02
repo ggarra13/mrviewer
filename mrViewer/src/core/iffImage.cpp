@@ -534,7 +534,6 @@ bool iffImage::fetch( mrv::image_type_ptr& canvas,
     _gamma = 1.0f;
     _compression = kNoCompression;
 
-
     FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
     if (!f) return false;
 

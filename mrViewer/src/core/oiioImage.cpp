@@ -309,8 +309,6 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 
     if ( allocate_pixels( canvas, frame, channels, type, pixel_type, dw, dh ) )
     {
-        SCOPED_LOCK( _mutex );
-
         try
         {
             Pixel* pixels = (Pixel*)canvas->data().get();

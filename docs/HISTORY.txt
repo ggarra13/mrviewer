@@ -1,6 +1,10 @@
-v4.4.2   - Bug fixes a playback/cache issue when image sequence did not start
-	   at 1.
-	 - Documented Connections' commands in the html documentation.
+v4.4.2   - Bug fixed playback/cache of sequences when frames did not
+	   begin at 1.
+	 - Documented all commands in the connections section of the
+	   manual.
+	 - Updated color management docs to talk about OCIO.
+	 - Removed a bunch of SCOPED_LOCK( _mutex ) which were unneeded.
+	 - Made detection of sequences on disk more reliable.
 
 v4.4.1   - Bug fixed Connections to work on all (?) commands.
 	 - Bug fixed Connections to not use relative paths in image names.

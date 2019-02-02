@@ -329,8 +329,6 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 			 dw, dh );
 
         {
-            SCOPED_LOCK( _mutex );
-
             Pixel* pixels = (Pixel*)canvas->data().get();
             memcpy( pixels, iprc->image, dw*dh*4*sizeof(short) );
         }
