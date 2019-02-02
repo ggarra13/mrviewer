@@ -2333,7 +2333,7 @@ bool ImageView::should_update( mrv::media fg )
     if ( fg )
     {
         img = fg->image();
-	
+
         if ( img->image_damage() & CMedia::kDamageLayers )
         {
             update_layers();
@@ -2453,7 +2453,7 @@ bool ImageView::should_update( mrv::media fg )
         if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
 #  else
         if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
-					   (!uiMain->uiMain->border());
+                                           (!uiMain->uiMain->border());
 #  endif
         mouseMove( fltk::event_x(), y );
 #else
@@ -2523,25 +2523,25 @@ bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
 
-    
+
     mrv::ImageBrowser* b = browser();
 
     mrv::Reel r = b->reel_at( _reel );
     if (!r) return false;
 
-    
+
     mrv::media fg;
     if ( r->edl )
     {
-	fg = r->media_at( _preframe );
+        fg = r->media_at( _preframe );
     }
     else
     {
         fg = foreground();
-	if ( !fg )  return false;
+        if ( !fg )  return false;
     }
 
-    
+
 
     CMedia* img = NULL;
     if ( fg ) img = fg->image();
@@ -2554,11 +2554,11 @@ bool ImageView::preload()
         img = r->image_at( _preframe );
         if (!img) {
             // if no image, go to next reel
-	    if ( _reel + 1 < b->number_of_reels() )
-		_reel++;
-	    else
-		_reel = 0;
-	    _preframe = timeline()->display_minimum();
+            if ( _reel + 1 < b->number_of_reels() )
+                _reel++;
+            else
+                _reel = 0;
+            _preframe = timeline()->display_minimum();
         }
         else
         {
@@ -2567,7 +2567,7 @@ bool ImageView::preload()
 
         return true;
     }
-			       
+
     int64_t f, first, last;
     if ( r->edl )
     {
@@ -2597,18 +2597,18 @@ bool ImageView::preload()
     bool found;
     mrv::image_type_ptr pic;
     {
-	typedef CMedia::Mutex Mutex;
-	mrv::PacketQueue& vp = img->video_packets();
-	CMedia::Mutex& vpm = vp.mutex();
-	SCOPED_LOCK( vpm );
-	mrv::PacketQueue& ap = img->audio_packets();
-	CMedia::Mutex& apm = ap.mutex();
-	SCOPED_LOCK( apm );
-	mrv::PacketQueue& sp = img->subtitle_packets();
-	CMedia::Mutex& spm = sp.mutex();
-	SCOPED_LOCK( spm );
+        typedef CMedia::Mutex Mutex;
+        mrv::PacketQueue& vp = img->video_packets();
+        CMedia::Mutex& vpm = vp.mutex();
+        SCOPED_LOCK( vpm );
+        mrv::PacketQueue& ap = img->audio_packets();
+        CMedia::Mutex& apm = ap.mutex();
+        SCOPED_LOCK( apm );
+        mrv::PacketQueue& sp = img->subtitle_packets();
+        CMedia::Mutex& spm = sp.mutex();
+        SCOPED_LOCK( spm );
         Mutex& mtx = img->video_mutex();
-	SCOPED_LOCK( mtx );
+        SCOPED_LOCK( mtx );
         // Store current frame
         pic = img->hires();
         if (!pic) return false;
@@ -2697,7 +2697,7 @@ bool ImageView::preload()
             img = m->image();
             seek( f + p ); // seek to new frame
 
-	    // preload_cache_stop();
+            // preload_cache_stop();
             // if ( img->has_video() )
             {
                 // start video/image playback
@@ -2763,8 +2763,8 @@ void ImageView::handle_commands()
         break;
     }
     case kCacheClear:
-	clear_caches();
-	break;
+        clear_caches();
+        break;
     case kChangeImage:
     {
         int* idx = (int*) c.data;
@@ -2774,32 +2774,32 @@ void ImageView::handle_commands()
     case kBGImage:
     {
         int idx = *( (int*) c.data );
-	if ( idx < 0 ) background( mrv::media() );
-	else
-	{
-	    mrv::Reel r = b->current_reel();
-	    if ( idx < r->images.size() )
-	    {
-		background( r->images[idx] );
-	    }
-	    else
-	    {
-		background( mrv::media() );
-	    }
-	}
+        if ( idx < 0 ) background( mrv::media() );
+        else
+        {
+            mrv::Reel r = b->current_reel();
+            if ( idx < r->images.size() )
+            {
+                background( r->images[idx] );
+            }
+            else
+            {
+                background( mrv::media() );
+            }
+        }
         break;
     }
     case kFGReel:
     {
         int idx = *( (int*) c.data );
-	fg_reel( idx );
-	break;
+        fg_reel( idx );
+        break;
     }
     case kBGReel:
     {
         int idx = *( (int*) c.data );
-	bg_reel( idx );
-	break;
+        bg_reel( idx );
+        break;
     }
     case kStopVideo:
     {
@@ -2962,11 +2962,11 @@ void ImageView::timeout()
     if (!b) return;
 
     {
-	SCOPED_LOCK( commands_mutex );
-	while ( ! commands.empty()  )
-	{
-	    handle_commands();
-	}
+        SCOPED_LOCK( commands_mutex );
+        while ( ! commands.empty()  )
+        {
+            handle_commands();
+        }
     }
 
     TRACE( "" );
@@ -3772,7 +3772,7 @@ int ImageView::leftMouseDown(int x, int y)
 
         flags |= kMouseLeft;
         if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-	     fltk::event_key_state( fltk::RightShiftKey ) )
+             fltk::event_key_state( fltk::RightShiftKey ) )
         {
             flags |= kLeftShift;
             // selection_mode();
@@ -5086,7 +5086,7 @@ void ImageView::mouseMove(int x, int y)
             {
                 outside = false;
                 if ( xp < 0 || xp >= (int)pic->width() ||
-		     yp < 0 || yp >= (int)pic->height() )
+                     yp < 0 || yp >= (int)pic->height() )
                     outside = true;
 
                 if (!outside)
@@ -5161,7 +5161,7 @@ void ImageView::mouseMove(int x, int y)
             }
 
 
-	    CMedia::Pixel bg;
+            CMedia::Pixel bg;
             bool outside = false;
             if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
             {
@@ -5169,21 +5169,21 @@ void ImageView::mouseMove(int x, int y)
             }
             else
             {
-		bg = picb->pixel( xp, yp );
+                bg = picb->pixel( xp, yp );
                 pixel_processed( bgr, bg );
-	    }
-	    
-	    if ( outside )
-	    {
-		rgba = bg;
-	    }
-	    else
-	    {
-		float t = 1.0f - rgba.a;
-		rgba.r += bg.r * t;
-		rgba.g += bg.g * t;
-		rgba.b += bg.b * t;
-		
+            }
+
+            if ( outside )
+            {
+                rgba = bg;
+            }
+            else
+            {
+                float t = 1.0f - rgba.a;
+                rgba.r += bg.r * t;
+                rgba.g += bg.g * t;
+                rgba.b += bg.b * t;
+
             }
         }
     }
@@ -5719,28 +5719,28 @@ int ImageView::keyDown(unsigned int rawkey)
 
     if ( kDrawMode.match( rawkey ) )
     {
-	draw_mode();
-	return 1;
+        draw_mode();
+        return 1;
     }
     else if ( kEraseMode.match( rawkey ) )
     {
-	erase_mode();
-	return 1;
+        erase_mode();
+        return 1;
     }
     else if ( kTextMode.match( rawkey ) )
     {
-	text_mode();
-	return 1;
+        text_mode();
+        return 1;
     }
     else if ( kScrubMode.match( rawkey ) )
     {
-	scrub_mode();
-	return 1;
+        scrub_mode();
+        return 1;
     }
     else if ( kMoveSizeMode.match( rawkey ) )
     {
-	move_pic_mode();
-	return 1;
+        move_pic_mode();
+        return 1;
     }
     else if ( kOpenImage.match( rawkey ) )
     {
@@ -6369,10 +6369,10 @@ int ImageView::keyDown(unsigned int rawkey)
         uiMain->uiEndButton->do_callback();
     }
     else if ( ( _mode == kNoAction || _mode == kScrub ) &&
-	      kAreaMode.match( rawkey ) )
+              kAreaMode.match( rawkey ) )
     {
-	selection_mode();
-	return 1;
+        selection_mode();
+        return 1;
     }
     else if ( rawkey == fltk::LeftAltKey )
     {
@@ -6724,11 +6724,11 @@ int ImageView::handle(int event)
 
         mrv::ImageBrowser* b = browser();
         if ( b && !_idle_callback && CMedia::cache_active()  &&
-	     ( CMedia::preload_cache() ||
-	       uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+             ( CMedia::preload_cache() ||
+               uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
         {
             unsigned _reel = b->number_of_reels();
-	    unsigned i = b->reel_index();
+            unsigned i = b->reel_index();
             for ( ; i < b->number_of_reels(); ++i )
             {
                 mrv::Reel r = b->reel_at( i );
@@ -6739,23 +6739,23 @@ int ImageView::handle(int event)
 
                 CMedia* img = fg->image();
                 if ( !img->is_cache_full() && !img->has_video() &&
-		     img->playback() == CMedia::kStopped )
+                     img->playback() == CMedia::kStopped )
                 {
-		    _reel = i;
+                    _reel = i;
                     break;
                 }
             }
 
             if ( _reel < b->number_of_reels() )
-	    {
+            {
                 preload_cache_start();
-	    }
+            }
         }
         else
         {
             if ( _idle_callback && b->reel_index() >= b->number_of_reels() )
             {
-		preload_cache_stop();
+                preload_cache_stop();
             }
         }
         timeout();
@@ -6923,7 +6923,7 @@ void ImageView::clear_reel_cache( size_t idx )
 
     if ( r->edl )
     {
-	timeline()->edl( true );
+        timeline()->edl( true );
         for ( size_t i = 0; i < r->images.size(); ++i )
         {
             mrv::media fg = r->images[i];
@@ -6979,7 +6979,7 @@ void ImageView::reset_caches()
     mrv::Reel r = browser()->reel_at( fg_reel() );
     if ( r && r->edl )
     {
-	timeline()->edl( true );
+        timeline()->edl( true );
         _preframe = frame();
     }
     else
@@ -7001,7 +7001,7 @@ void ImageView::preload_cache_start()
         mrv::Reel r = browser()->reel_at( fg_reel() );
         if ( r && r->edl )
         {
-	    timeline()->edl( true );
+            timeline()->edl( true );
             _preframe = frame();
         }
         else
@@ -7361,19 +7361,19 @@ void ImageView::channel( unsigned short c )
     // in the timeline.
     timeline()->redraw();
     if ( browser()->reel_index() >= browser()->number_of_reels() )
-	browser()->reel( (unsigned)0 );
+        browser()->reel( (unsigned)0 );
 
     mrv::Reel r = browser()->current_reel();
     if ( r && r->edl )
     {
-	timeline()->edl( true );
-	_preframe = frame();
+        timeline()->edl( true );
+        _preframe = frame();
     }
     else
     {
-	_preframe = frame();
+        _preframe = frame();
     }
-    
+
     smart_refresh();
 }
 
@@ -7930,13 +7930,13 @@ void ImageView::foreground( mrv::media fg )
         if ( img )
         {
             if ( ! img->is_cache_full() && !_idle_callback &&
-		 CMedia::cache_active() && CMedia::preload_cache() )
+                 CMedia::cache_active() && CMedia::preload_cache() )
                 preload_cache_start();
 
             char buf[1024];
-	    std::string file = img->directory() + '/' + img->name(); 
+            std::string file = img->directory() + '/' + img->name();
             sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
-		     file.c_str(), img->first_frame(), img->last_frame() );
+                     file.c_str(), img->first_frame(), img->last_frame() );
             send_network( buf );
 
             if ( img->looping() == CMedia::kUnknownLoop )
@@ -8104,14 +8104,14 @@ void ImageView::background( mrv::media bg )
 
     update_title_bar( this );
 
-    
+
     if ( bg )
     {
         CMedia* img = bg->image();
-	if (!img) return;
+        if (!img) return;
 
-	std::string file = img->directory() + '/' + img->name();
-	
+        std::string file = img->directory() + '/' + img->name();
+
         sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
                  file.c_str(), img->first_frame(), img->last_frame() );
         send_network( buf );
@@ -8733,7 +8733,7 @@ void ImageView::play_forwards()
 void ImageView::play( const CMedia::Playback dir )
 {
 
- 
+
     if ( dir == CMedia::kForwards )
     {
         send_network("playfwd");
@@ -8756,13 +8756,13 @@ void ImageView::play( const CMedia::Playback dir )
     CMedia* img = fg->image();
 
     if ( CMedia::preload_cache() && _idle_callback &&
-	 img->is_cache_full() )
+         img->is_cache_full() )
     {
         preload_cache_stop();
     }
     else
     {
-	_preframe = frame();
+        _preframe = frame();
     }
 
 
@@ -8773,16 +8773,16 @@ void ImageView::play( const CMedia::Playback dir )
     double fps = uiMain->uiFPS->value();
 
     create_timeout( 0.5/fps );
-    
+
     if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
-	 !CMedia::cache_active() ||
-	 !( CMedia::preload_cache() ||
-	    uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
+         !CMedia::cache_active() ||
+         !( CMedia::preload_cache() ||
+            uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) )
     {
-	preload_cache_stop();
-	img->play( dir, uiMain, true );
+        preload_cache_stop();
+        img->play( dir, uiMain, true );
     }
-    
+
 
 
     if ( bg && bg != fg )
@@ -8859,11 +8859,11 @@ void ImageView::stop()
     if ( uiMain->uiPlayBackwards )
         uiMain->uiPlayBackwards->value(0);
 
-    
+
     frame( frame() );
     // seek( int64_t(timeline()->value()) );
 
-    
+
     if ( CMedia::preload_cache() && ! _idle_callback )
     {
         preload_cache_start();
@@ -8950,7 +8950,7 @@ void ImageView::volume( float v )
 CMedia::Looping ImageView::looping() const
 {
     if ( !uiMain || !uiMain->uiLoopMode )
-	return CMedia::kUnknownLoop;
+        return CMedia::kUnknownLoop;
     return (CMedia::Looping) uiMain->uiLoopMode->value();
 }
 

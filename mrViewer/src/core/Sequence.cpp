@@ -359,13 +359,13 @@ bool is_valid_view( std::string view )
  * @return true if a sequence, false if not.
  */
 bool split_sequence(
-    std::string& root,
-    std::string& frame,
-    std::string& view,
-    std::string& ext,
-    const std::string& file,
-    const bool change_view
-)
+		    std::string& root,
+		    std::string& frame,
+		    std::string& view,
+		    std::string& ext,
+		    const std::string& file,
+		    const bool change_view
+		    )
 {
     std::string f = file;
 
@@ -719,7 +719,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     std::string croot, cview, cframe, cext;
     unsigned pad = 1;
 
-
+    
     fs::directory_iterator e; // default constructor yields path iter. end
     for ( fs::directory_iterator i( dir ) ; i != e; ++i )
     {
@@ -745,7 +745,6 @@ bool get_sequence_limits( boost::int64_t& frameStart,
 
         boost::int64_t f = atoi( cframe.c_str() );
 
-
         if ( f < frameStart || frameStart == AV_NOPTS_VALUE ) frameStart = f;
         if ( f > frameEnd || frameEnd == AV_NOPTS_VALUE  )   frameEnd   = f;
     }
@@ -758,8 +757,10 @@ bool get_sequence_limits( boost::int64_t& frameStart,
 
 
     if ( ! split_sequence( root, frame, view, ext, fileroot ) )
+    {
         return false;
-
+    }
+    
     fileroot = root;
     fileroot += view;
     fileroot += buf;

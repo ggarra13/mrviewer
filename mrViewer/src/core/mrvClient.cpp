@@ -313,7 +313,7 @@ void client::handle_read(const boost::system::error_code& ec)
             {
                 if ( msg == N_("OK") || msg.empty() )
                 {
-                    // LOG_CONN("OK");
+                    LOG_CONN("OK");
                 }
                 else if ( msg == N_("Not OK") )
                 {

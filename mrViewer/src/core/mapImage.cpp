@@ -153,8 +153,6 @@ bool mapImage::fetch(const boost::int64_t frame )
 {
     int dw, dh;
 
-    SCOPED_LOCK( _mutex );
-
     _stub = is_stub();
 
     FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
