@@ -97,6 +97,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "core/mrvI8N.h"
 #include "core/mrvLicensing.h"
 #include "core/mrvMath.h"
+#include "core/mrvPlayback.h"
 #include "core/mrvString.h"
 #include "core/Sequence.h"
 #include "core/stubImage.h"
@@ -1401,7 +1402,6 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 
 void ImageView::stop_playback()
 {
-
     mrv::media fg = foreground();
     if ( fg ) fg->image()->stop();
 
@@ -2356,11 +2356,12 @@ bool ImageView::should_update( mrv::media fg )
         if ( img->image_damage() & CMedia::kDamageData )
         {
             update_image_info();
-            uiMain->uiICCProfiles->fill();
+	    if ( uiMain && uiMain->uiICCProfiles )
+		uiMain->uiICCProfiles->fill();
         }
 
         if ( img->image_damage() & CMedia::kDamageTimecode )
-        {
+        {   
             int64_t start = uiMain->uiStartFrame->frame();  // needed not sure why
             int64_t end   = uiMain->uiEndFrame->frame();  // needed not sure why
             int64_t   tc  = img->timecode();
@@ -2378,10 +2379,11 @@ bool ImageView::should_update( mrv::media fg )
             uiMain->uiTimeline->redraw();
             img->image_damage( img->image_damage() & ~CMedia::kDamageCache );
         }
-
-        if ( uiMain->uiGL3dView->uiMain->visible() &&
-                uiMain->uiGL3dView->uiMain->shown() &&
-                (img->image_damage() & CMedia::kDamage3DData) )
+	
+        if ( uiMain->uiGL3dView &&
+	     uiMain->uiGL3dView->uiMain->visible() &&
+	     uiMain->uiGL3dView->uiMain->shown() &&
+	     (img->image_damage() & CMedia::kDamage3DData) )
         {
             int zsize = 0;
             static Imf::Array< float* > zbuff;
@@ -2465,9 +2467,30 @@ bool ImageView::should_update( mrv::media fg )
     return update;
 }
 
+
 void static_preload( mrv::ImageView* v )
 {
     v->preload();
+}
+
+void thread_dispatcher( mrv::ImageView* v )
+{
+    // mrv::media fg = v->foreground();
+    // if ( !fg ) return;
+
+    // CMedia* img = fg->image();
+
+    // while ( ! img->is_cache_full() )
+    // {
+    // 	boost::thread t( boost::bind( static_preload, v ) );
+    // 	t.join();
+    // }
+}
+
+
+void static_playback( mrv::ImageView* v )
+{
+    v->threaded_playback();
 }
 
 
@@ -2519,10 +2542,70 @@ int timeval_substract(struct timeval *result, struct timeval *x,
 
 Timer t;
 
-bool ImageView::preload()
+bool ImageView::ready_frame( std::atomic<int64_t>& f,
+			     CMedia::Playback p,
+			     CMedia* const img,
+			     const int64_t& first,
+			     const int64_t& last,
+			     const bool seek )
+{
+    f += p;
+    if ( p == CMedia::kBackwards )
+    {
+	if ( f < first )
+	{
+	    switch( looping() )
+	    {
+		case CMedia::kPingPong:
+		    f = first;
+		    img->playback( CMedia::kForwards );
+		    playback( CMedia::kForwards );
+		    break;
+		default:
+		case CMedia::kLoop:
+		    f = last;
+		    break;
+	    }
+	    if ( seek )
+	    {
+		img->seek( f );
+		img->do_seek();
+	    }
+	}
+	return true;
+    }
+    else if ( p == CMedia::kForwards )
+    {
+	if ( f > last )
+	{
+	    std::cerr << "f ( " << f << " ) > last ( " << last
+		      << " )" << std::endl;
+	    switch( looping() )
+	    {
+		case CMedia::kPingPong:
+		    f = last;
+		    img->playback( CMedia::kBackwards );
+		    playback( CMedia::kBackwards );
+		    break;
+		default:
+		case CMedia::kLoop:
+		    f = first;
+		    break;
+	    }
+	    if ( seek )
+	    {
+		img->seek( f );
+		img->do_seek();
+	    }
+	}
+	return true;
+    }
+    return false;
+}
+
+bool ImageView::threaded_playback()
 {
     if ( !browser() || !timeline() ) return false;
-
 
     mrv::ImageBrowser* b = browser();
 
@@ -2579,9 +2662,10 @@ bool ImageView::preload()
     }
     else
     {
-        f = _preframe;
-        first  = img->first_frame();
-        last   = img->last_frame();
+        f = img->frame();
+	std::cerr << "find image1 " << f << std::endl;
+        first = img->first_frame();
+        last  = img->last_frame();
         // int64_t tfirst = timeline()->display_minimum();
         // int64_t tlast  = timeline()->display_maximum();
         // if ( tfirst > first && tfirst < last ) first = tfirst;
@@ -2591,11 +2675,7 @@ bool ImageView::preload()
         else if ( f > last ) f = last;
     }
 
-
-
-
     bool found;
-    mrv::image_type_ptr pic;
     {
         typedef CMedia::Mutex Mutex;
         mrv::PacketQueue& vp = img->video_packets();
@@ -2609,112 +2689,183 @@ bool ImageView::preload()
         SCOPED_LOCK( spm );
         Mutex& mtx = img->video_mutex();
         SCOPED_LOCK( mtx );
-        // Store current frame
-        pic = img->hires();
-        if (!pic) return false;
-        img->clear_video_packets();
+	img->frame( f );
         found = img->find_image( f ); // this loads the frame if not present
+    }
+
+    if ( !found ) return false;
+
+    std::atomic< int64_t > pf( f );
+    ready_frame( pf, p, img, first, last, true );
+
+    img->frame( pf );
+    redraw();
+
+    return true;
+}
+
+bool ImageView::preload()
+{
+    if ( !browser() || !timeline() ) return false;
+
+
+    mrv::ImageBrowser* b = browser();
+
+    mrv::Reel r = b->reel_at( _reel );
+    if (!r) return false;
+
+
+    mrv::media fg;
+    if ( r->edl )
+    {
+        fg = r->media_at( _preframe );
+    }
+    else
+    {
+        fg = foreground();
+        if ( !fg )  return false;
+    }
+
+
+
+    CMedia* img = NULL;
+    if ( fg ) img = fg->image();
+
+    CMedia::Playback p = playback();
+
+    // Exit early if we are dealing with a video instead of a sequence
+    if ( !img || !img->is_sequence() || img->has_video() ) {
+        img = r->image_at( _preframe );
+        if (!img) {
+            // if no image, go to next reel
+            if ( _reel + 1 < b->number_of_reels() )
+                _reel++;
+            else
+                _reel = 0;
+            _preframe = timeline()->display_minimum();
+        }
+        else
+        {
+            _preframe = fg->position() + img->duration(); // go to next image
+        }
+
+        return true;
+    }
+
+    int64_t f, first, last;
+    if ( r->edl )
+    {
+        f = r->global_to_local( _preframe );
+        // first  = img->first_frame();
+        // last   = img->last_frame();
+        first = timeline()->display_minimum();
+        last  = timeline()->display_maximum();
+    }
+    else
+    {
+        f = _preframe;
+        first  = img->first_frame();
+        last   = img->last_frame();
+        // int64_t tfirst = timeline()->display_minimum();
+        // int64_t tlast  = timeline()->display_maximum();
+        // if ( tfirst > first && tfirst < last ) first = tfirst;
+        // if ( tlast < last   && tlast > first )  last = tlast;
+
+        if ( f < first ) f = first;
+        else if ( f > last ) f = last;
+    }
+
+
+    bool found;
+    mrv::image_type_ptr pic;
+    {
+        typedef CMedia::Mutex Mutex;
+        mrv::PacketQueue& vp = img->video_packets();
+        Mutex& vpm = vp.mutex();
+        SCOPED_LOCK( vpm );
+        mrv::PacketQueue& ap = img->audio_packets();
+        Mutex& apm = ap.mutex();
+        SCOPED_LOCK( apm );
+        mrv::PacketQueue& sp = img->subtitle_packets();
+        Mutex& spm = sp.mutex();
+        SCOPED_LOCK( spm );
+        Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
+	// if ( img->is_cache_filled( f ) )
+	// {
+	//     found = true;
+	//     pic = img->hires();
+	// }
+        // else
+	{
+	    image_type_ptr canvas;
+	    if ( found = img->fetch( canvas, f ) )
+	    {
+		// this loads the frame if not present
+		std::cerr << "img cache canvas " << canvas->frame()
+			  << std::endl;
+		img->cache( canvas );
+		pic = canvas;
+	    }
+	    
+	    assert0( found == true );
+	}
     }
     // Frame found. Update _preframe.
     if ( found ) {
-        _preframe += p;
-        if ( p == CMedia::kBackwards )
-        {
-            if ( _preframe < first )
-            {
-                switch( looping() )
-                {
-                    case CMedia::kPingPong:
-                        _preframe = first;
-                        img->playback( CMedia::kForwards );
-                        playback( CMedia::kForwards );
-                        return true;
-                    default:
-                    case CMedia::kLoop:
-                        _preframe = last;
-                        return false;
-                        break;
-                }
-            }
-        }
-        else if ( p == CMedia::kForwards )
-        {
-            if ( _preframe > last )
-            {
-                switch( looping() )
-                {
-                    case CMedia::kPingPong:
-                        _preframe = last;
-                        img->playback( CMedia::kBackwards );
-                        playback( CMedia::kBackwards );
-                        return true;
-                    default:
-                    case CMedia::kLoop:
-                        _preframe = first;
-                        return false;
-                        break;
-                }
-            }
-        }
-        else
+	bool ok = ready_frame( _preframe, p, img, first, last );
+        if (!ok)
         {
             size_t max_images = img->max_image_frames() - 2;
             int64_t pos_diff = f - pic->frame();
             int64_t last_diff = last - pic->frame();
             int64_t first_diff = f - first;
             if ( CMedia::preload_cache() &&
-                    ( pos_diff >= 0 && pos_diff < max_images  ||
-                      pos_diff < 0 && first_diff + last_diff < max_images ) )
+		 ( pos_diff >= 0 && pos_diff < max_images  ||
+		   pos_diff < 0 && first_diff + last_diff < max_images ) )
             {
                 _preframe += 1;
                 if ( _preframe > last )
                 {
                     _preframe = first;
-                    // preload_cache_stop();
-                    img->hires( pic );
                     return false;
                 }
             }
-            img->hires( pic );
-        }
-        if ( playback() == CMedia::kStopped )
-            img->hires( pic );
-    }
-    else
-    {
-        img->hires( pic );  // restore old pic position
-    }
-
-    if ( r->edl && p != CMedia::kStopped )
-    {
-        // f = _preframe;
-        f += r->location(img) - img->first_frame();
-        frame( f );
-        mrv::media m = r->media_at( f + p );
-        if ( m != fg )
-        {
-            img->stop();  // stop old image
-            img = m->image();
-            seek( f + p ); // seek to new frame
-
-            // preload_cache_stop();
-            // if ( img->has_video() )
-            {
-                // start video/image playback
-                img->play( p, uiMain, true );
-            }
         }
     }
 
-    //    if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
+    // if ( r->edl && p != CMedia::kStopped )
+    // {
+    //     // f = _preframe;
+    //     f += r->location(img) - img->first_frame();
+    //     frame( f );
+    //     mrv::media m = r->media_at( f + p );
+    //     if ( m != fg )
+    //     {
+    //         img->stop();  // stop old image
+    //         img = m->image();
+    //         seek( f + p ); // seek to new frame
+
+    //         // preload_cache_stop();
+    //         // if ( img->has_video() )
+    //         {
+    //             // start video/image playback
+    //             img->play( p, uiMain, true );
+    //         }
+    //     }
+    // }
+
+    while ( ! img->frame( _preframe ) )
     {
-        t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
-        t.waitUntilNextFrameIsDue();
+	if ( img->stopped() || playback() == CMedia::kStopped )
+	    break;
+	sleep_ms(100);
     }
+    img->refresh();
 
     redraw();
     timeline()->redraw();
-
+    
     return true;
 
 }
@@ -3072,7 +3223,8 @@ void ImageView::timeout()
         TRACE("");
         update_color_info( fg );
         TRACE("");
-        uiMain->uiEDLWindow->uiEDLGroup->redraw();
+	if ( uiMain->uiEDLWindow )
+	    uiMain->uiEDLWindow->uiEDLGroup->redraw();
     }
 
     if ( vr() )
@@ -7002,24 +7154,30 @@ void ImageView::preload_cache_start()
 
     if (!_idle_callback)
     {
+	CMedia* img;
         mrv::Reel r = browser()->reel_at( fg_reel() );
         if ( r && r->edl )
         {
             timeline()->edl( true );
             _preframe = frame();
+	    CMedia* img = r->image_at( _preframe );
         }
         else
         {
             mrv::media fg = foreground();
             if ( fg )
             {
-                CMedia* img = fg->image();
+                img = fg->image();
                 _preframe = img->first_frame();
             }
         }
         CMedia::preload_cache( true );
         _idle_callback = true;
-        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+
+	//fltk::add_idle( (fltk::TimeoutHandler) static_playback, this );
+
+	boost::thread t( boost::bind( thread_dispatcher, this ) );
+	t.detach();
     }
 }
 
@@ -7033,8 +7191,8 @@ void ImageView::preload_cache_stop()
 
     if ( _idle_callback )
     {
-        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
         _idle_callback = false;
+	//fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
@@ -8778,13 +8936,14 @@ void ImageView::play( const CMedia::Playback dir )
 
     create_timeout( 0.5/fps );
 
-    if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
-         !CMedia::cache_active() ||
-         !( CMedia::preload_cache() ||
-            uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) ||
-	 img->has_audio() )
+    // if ( !img->is_sequence() || img->is_cache_full() || (bg && fg != bg) ||
+    //      !CMedia::cache_active() ||
+    //      !( CMedia::preload_cache() ||
+    //         uiMain->uiPrefs->uiPrefsPlayAllFrames->value() ) ||
+    // 	 img->has_audio() )
     {
-        preload_cache_stop();
+        // preload_cache_stop();
+	std::cerr << "PLAY " << dir << " " << img->name() << std::endl;
         img->play( dir, uiMain, true );
     }
 

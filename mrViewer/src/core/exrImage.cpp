@@ -1124,6 +1124,7 @@ void exrImage::read_forced_header_attr( const Imf::Header& h,
         h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
     if ( attr )
     {
+	SCOPED_LOCK( _mutex );
         _cap_date[frame] = attr->value();
     }
 

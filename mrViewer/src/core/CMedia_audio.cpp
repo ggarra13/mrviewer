@@ -2246,7 +2246,7 @@ void CMedia::debug_audio_stores(const int64_t frame,
             if ( f == frame )  std::cerr << "P";
             if ( f == _adts )   std::cerr << "D";
             if ( f == _frame ) std::cerr << "F";
-            std::cerr << " " << f;
+            std::cerr << f << " ";
         }
         std::cerr << std::endl;
     }

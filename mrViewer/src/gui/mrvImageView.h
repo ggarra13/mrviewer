@@ -719,6 +719,8 @@ public:
     // Preload an image into sequence cache
     bool preload();
 
+    bool threaded_playback();
+    
     // Return if in presentation mode or not
     bool in_presentation() const;
 
@@ -822,7 +824,11 @@ protected:
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
 
-
+    bool ready_frame( std::atomic<int64_t>& _preframe,
+		      CMedia::Playback p, CMedia* const img,
+		      const int64_t& first,
+		      const int64_t& last, const bool skip = false );
+    
     /// Resize background image to fit foreground image's dimensions
     void resize_background();
 
@@ -887,7 +893,7 @@ protected:
     float         _volume;
     FlipDirection _flip;
     unsigned      _reel;      // <- reel of preframe 
-    int64_t       _preframe;
+    std::atomic< int64_t >      _preframe;
     int64_t       _old_fg_frame;  // <- old frame used to stat fileroot's fg
     int64_t       _old_bg_frame;  // <- old frame used to stat fileroot's bg
     bool          _idle_callback;

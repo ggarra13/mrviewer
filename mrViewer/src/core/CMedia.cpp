@@ -363,6 +363,7 @@ std::string CMedia::attr2str( const Imf::Attribute* attr )
     return r;
 }
 
+
 /**
  * Constructor
  *
@@ -1036,8 +1037,6 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
                               const image_type::PixelType pixel_type,
                               unsigned w, unsigned h)
 {
-    SCOPED_LOCK( _mutex );
-
     if ( w == 0 )
     {
         w = width();
@@ -2336,6 +2335,7 @@ void CMedia::play(const CMedia::Playback dir,
                   bool fg )
 {
 
+    assert0( dir != kStopped );
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
@@ -2423,15 +2423,12 @@ void CMedia::play(const CMedia::Playback dir,
 
         }
 
-    TRACE("");
         if ( !fg && !_fg_bg_barrier )
         {
-    TRACE("");
             _fg_bg_barrier = new Barrier( valid_v + valid_a );
         }
         else if ( !fg && _fg_bg_barrier )
         {
-    TRACE("");
 	    _fg_bg_barrier->notify_all();
             _fg_bg_barrier->threshold( valid_v + valid_a );
         }
@@ -2440,12 +2437,10 @@ void CMedia::play(const CMedia::Playback dir,
 	    _fg_bg_barrier = NULL;
 	}
 
-    TRACE("");
         unsigned num = 1 + valid_a + valid_v + valid_s;
         delete _loop_barrier;
         _loop_barrier = new Barrier( num );
 
-    TRACE("");
         if ( valid_v || valid_a )
         {
             video_data = new PlaybackData( *data );
@@ -2475,7 +2470,6 @@ void CMedia::play(const CMedia::Playback dir,
         }
 
 
-    TRACE("");
         // If something was valid, create decode thread
         if ( valid_a || valid_v || valid_s )
         {
@@ -2486,11 +2480,10 @@ void CMedia::play(const CMedia::Playback dir,
         }
 
 
-        assert( _threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) + valid_s ) );
+        assert0( _threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) + valid_s ) );
     }
     catch( boost::exception& e )
     {
-    TRACE("");
         LOG_ERROR( boost::diagnostic_information(e) );
     }
 
@@ -2508,6 +2501,8 @@ void CMedia::stop(const bool bg)
     if ( _right_eye ) _right_eye->stop();
 
     TRACE("");
+
+    
     _playback = kStopped;
 
     //
@@ -2641,6 +2636,11 @@ bool CMedia::frame( int64_t f )
     pkt.size = 0;
     pkt.data = NULL;
 
+    bool found = false;
+    found = find_image( _dts );
+
+    std::cerr << "found? " << found << " " << _dts << std::endl;
+    
     _video_packets.push_back( pkt );
 
     if ( has_audio() )
@@ -2701,7 +2701,7 @@ void CMedia::seek( const int64_t f )
 
 
 void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
-                               const mrv::image_type_ptr pic )
+                               const mrv::image_type_ptr& pic )
 {
 
     int64_t f = pic->frame();
@@ -2790,7 +2790,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
  *
  * @param pic       picture to cache
  */
-void CMedia::cache( const mrv::image_type_ptr pic )
+void CMedia::cache( mrv::image_type_ptr& pic )
 {
     assert( pic != NULL );
 
@@ -2807,6 +2807,7 @@ void CMedia::cache( const mrv::image_type_ptr pic )
     else
     {
         update_cache_pic( _sequence, pic );
+	pic.reset();
     }
 
     if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
@@ -3521,10 +3522,10 @@ void CMedia::limit_video_store( const int64_t f )
         if ( count > max_frames )
         {
             uint64_t idx = it->second;
-            // std::cerr << "count " << count << " max frames " << max_frames
-            //           << " delete " << idx << std::endl;
+            std::cerr << "count " << count << " max frames " << max_frames
+		      << " delete " << idx << std::endl;
             _sequence[ idx ].reset();
-            if ( _right[idx] ) _right[ idx ].reset();
+            if ( _right && _right[idx] ) _right[ idx ].reset();
 
             it = tmp.erase(it);
         }
@@ -3629,6 +3630,34 @@ CMedia::DecodeStatus CMedia::handle_video_seek( int64_t& frame,
     debug_video_stores(frame, "AFTER HSEEK");
 #endif
     return got_video;
+}
+
+void CMedia::debug_video_stores(const int64_t frame,
+				const char* routine,
+				const bool detail )
+{
+    std::cerr << this << std::dec << " " << name()
+              << " S:" << _frame << " D:" << _dts
+              << " A:" << frame << " " << routine << " image stores "
+              << ": ";
+    
+    if (detail && _sequence )
+    {
+	uint64_t i = 0;
+	uint64_t num = _frame_end - _frame_start + 1;
+        for ( ; i < num; ++i )
+        {
+	    int64_t f = i + _frame_start - 1;
+            if ( f == frame )  std::cerr << "P";
+            if ( f == _dts )   std::cerr << "D";
+            if ( f == _frame ) std::cerr << "F";
+	    if ( _sequence[i] )
+	    {
+		std::cerr << i << " ";
+	    }
+	}
+	std::cerr << std::endl;
+    }
 }
 
 CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
@@ -3780,11 +3809,14 @@ bool CMedia::find_image( const int64_t frame )
     if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
         _right_eye->find_image(frame);
 
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+    
     int64_t f = handle_loops( frame );
 
     _video_pts   = f / _orig_fps;
     _video_clock = double(av_gettime_relative()) / 1000000.0;
     update_video_pts(this, _video_pts, 0, 0);
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     // Check if we have a cached frame for this frame
 
@@ -3799,17 +3831,23 @@ bool CMedia::find_image( const int64_t frame )
     
     if ( _sequence && _sequence[idx] )
     {
+	std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 	_hires = _sequence[idx];
+	std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 	if ( _right && _right[idx])
 	    _stereo[1] = _right[idx];
+	std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
         _frame = frame;
 
         free(_filename);
         _filename = NULL;
 
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
         refresh();
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
         image_damage( image_damage() | kDamageData | kDamage3DData );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
         limit_video_store(f);
         return true;
     }
@@ -3817,22 +3855,13 @@ bool CMedia::find_image( const int64_t frame )
     bool should_load = false;
 
     std::string file = sequence_filename(f);
+    std::string old  = sequence_filename(_frame);
 
-    if ( _filename )
+    if ( file != old )
     {
-        if ( file != _filename )
-        {
-            SCOPED_LOCK( _mutex );
-            should_load = true;
-            free( _filename );
-            _filename = strdup( file.c_str() );
-        }
-    }
-    else
-    {
-        SCOPED_LOCK( _mutex );
-        _filename = strdup( file.c_str() );
-        should_load = true;
+	should_load = true;
+	free( _filename );
+	_filename = strdup( file.c_str() );
     }
 
     _frame = frame;
@@ -3843,9 +3872,11 @@ bool CMedia::find_image( const int64_t frame )
         {
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );
+	    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 	    image_type_ptr canvas;
             if ( fetch( canvas, f ) )
             {
+		std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                 cache( canvas );
                 default_icc_profile();
                 default_rendering_transform();
@@ -3853,8 +3884,10 @@ bool CMedia::find_image( const int64_t frame )
             }
             else
             {
+		std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                 if ( idx > 1 )
                 {
+		    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                     // If we run out of memory, make sure we sweep the
                     // frames we have in memory.
                     size_t data_size = _sequence[idx-1]->data_size();
@@ -3875,6 +3908,7 @@ bool CMedia::find_image( const int64_t frame )
         {
             if ( ! internal() )
             {
+		std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                 if ( Preferences::missing_frame == Preferences::kBlackFrame )
                 {
                     _hires = mrv::image_type_ptr( new image_type( frame,
@@ -3890,38 +3924,45 @@ bool CMedia::find_image( const int64_t frame )
                 else
                 {
                     // REPEATS LAST FRAME
-
-                    int64_t idx = f - _frame_start - 1;
-                    if ( idx >= 0 && idx < _frame_end )
+		    std::cerr << "idx " << idx << std::endl;
+                    if ( idx >= 0 && idx < num )
                     {
-                        mrv::image_type_ptr old;
-
                         for ( ; !_sequence[idx]; --idx )
                         {
                         }
+			
+			std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
                         if ( idx >= 0 )
                         {
-                            old = _sequence[idx];
+			    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+			    const mrv::image_type_ptr old = _sequence[idx];
                             _hires = mrv::image_type_ptr( new image_type( *old ) );
+			    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                             _hires->frame( f );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                             cache( _hires );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                             IMG_WARNING( file << _(" is missing. Choosing ")
-                                         << old->frame() );
+                                         << _hires->frame() );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                         }
                     }
-
-
                 }
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                 _hires->valid( false ); // mark this frame as invalid
-                refresh();
-                return false;
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+		refresh();
+		return true;
             }
         }
     }
-
+    
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     limit_video_store( f );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     refresh();
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     image_damage( image_damage() | kDamageData | kDamage3DData );
     return true;
 }

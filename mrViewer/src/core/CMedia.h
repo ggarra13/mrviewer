@@ -521,7 +521,7 @@ public:
     int64_t first_cache_empty_frame();
 
     // Store a frame in sequence cache
-    void cache( const mrv::image_type_ptr pic );
+    void cache( mrv::image_type_ptr& pic );
 
     inline PacketQueue& video_packets() {
         return _video_packets;
@@ -1244,7 +1244,7 @@ public:
                                      const bool detail = false);
     virtual void debug_video_stores(const int64_t frame,
                                     const char* routine = "",
-                                    const bool detail = false) {};
+                                    const bool detail = false);
     virtual void debug_subtitle_stores(const int64_t frame,
                                        const char* routine = "",
                                        const bool detail = false) {};
@@ -1627,7 +1627,7 @@ protected:
      *
      */
     void update_cache_pic( mrv::image_type_ptr*& seq,
-                           const mrv::image_type_ptr pic );
+                           const mrv::image_type_ptr& pic );
 
     /**
      * Given a frame number, returns whether audio for that frame is already

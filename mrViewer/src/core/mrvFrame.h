@@ -172,6 +172,8 @@ public:
     {
         gettimeofday( &_ptime, NULL );
         allocate();
+	std::cerr << "memcpy " << _data.get() << " <- " << b.data().get()
+		  << std::endl;
         memcpy( _data.get(), b.data().get(), data_size() );
     }
 

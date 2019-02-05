@@ -82,11 +82,11 @@ const char* kModule = "play";
 // #undef TRACE
 // #define TRACE(x)
 
-#define LOGT_WARNING(x) LOG_WARNING( get_thread_id() << " " << x );
-#define LOGT_INFO(x) LOG_INFO( get_thread_id() << " " << x );
-#define LOGT_ERROR(x) LOG_ERROR( get_thread_id() << " " << x );
+#define LOGT_WARNING(x) LOG_WARNING(  x );
+#define LOGT_INFO(x) LOG_INFO( x );
+#define LOGT_ERROR(x) LOG_ERROR(  x );
 
-//#define DEBUG_THREADS
+#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -670,7 +670,7 @@ void audio_thread( PlaybackData* data )
 
 
     while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-            (!fg || ! view->idle_callback() ) )
+            !fg )
     {
 
         int step = (int) img->playback();
@@ -827,12 +827,13 @@ void audio_thread( PlaybackData* data )
         // img->fg_bg_barrier( NULL );
     }
 
-    img->playback( CMedia::kStopped );
-
 #ifdef DEBUG_THREADS
     LOGT_INFO( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
     assert( img->stopped() );
 #endif
+    
+    img->playback( CMedia::kStopped );
+
 
 } // audio_thread
 
@@ -1038,8 +1039,7 @@ void video_thread( PlaybackData* data )
     double fps = img->play_fps();
     timer.setDesiredFrameRate( fps );
 
-    while ( !img->stopped() && view->playback() != CMedia::kStopped &&
-            (!fg || ! view->idle_callback() )  )
+    while ( !img->stopped() && view->playback() != CMedia::kStopped )
     {
         img->wait_image();
 
@@ -1051,8 +1051,8 @@ void video_thread( PlaybackData* data )
         //TRACE( img->name() << " decode image " << frame );
         CMedia::DecodeStatus status = img->decode_video( frame );
 
-        // img->debug_video_stores( frame, img->name().c_str(), true );
         // img->debug_video_packets( frame, img->name().c_str(), true );
+        // img->debug_video_stores( frame, img->name().c_str(), true );
 
 
         switch( status )
@@ -1066,7 +1066,7 @@ void video_thread( PlaybackData* data )
         case CMedia::kDecodeLoopEnd:
         case CMedia::kDecodeLoopStart:
         {
-            DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
+            //LOG_INFO( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
 
             // CMedia::Barrier* barrier = img->background_barrier();
             // if ( barrier )
@@ -1137,8 +1137,8 @@ void video_thread( PlaybackData* data )
             // setting playback dir on decode thread
             if ( end == kEndChangeDirection )
             {
-                CMedia::Playback p = (CMedia::Playback) step;;
-                if ( fg ) view->playback( p );
+                CMedia::Playback p = (CMedia::Playback) step;
+                if ( fg && step != 0 ) view->playback( p );
             }
 
             // LOGT_INFO( img->name() << " VIDEO LOOP END frame: " << frame
@@ -1243,9 +1243,13 @@ void video_thread( PlaybackData* data )
 
 
         // LOGT_INFO( "find image " << frame << " delay " << delay );
-        // img->debug_video_stores( frame, "find_image", true );
+        //img->debug_video_packets( frame, "find_image", true );
+        //img->debug_video_stores( frame, "find_image", true );
 
-        img->find_image( frame );
+        if ( ! img->find_image( frame ) )
+	{
+	    LOG_ERROR( "Could not find image " << frame );
+	}
 
         if ( reel->edl && fg && img->is_left_eye() )
         {
@@ -1266,14 +1270,15 @@ void video_thread( PlaybackData* data )
     barrier = img->stereo_barrier();
     if ( barrier ) barrier->notify_all();
 
-    img->playback( CMedia::kStopped );
-
 #ifdef DEBUG_THREADS
     LOGT_INFO( "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD "
               << img->name() << " stopped? " << img->stopped()
               << " view playback " << view->playback() << " at " << frame << "  img->frame: " << img->frame() );
     assert( img->stopped() );
 #endif
+    
+    img->playback( CMedia::kStopped );
+
 
 }  // video_thread
 
@@ -1301,7 +1306,7 @@ void decode_thread( PlaybackData* data )
     av_assert0( timeline != NULL );
 
     // delete the data (we don't need it anymore)
-    delete data;
+    //delete data;
 
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
@@ -1331,14 +1336,12 @@ void decode_thread( PlaybackData* data )
             frame = img->dts();
         }
 
-
-
         step = (int) img->playback();
         if ( step == 0 ) break;
 
         frame += step;
         CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
-                                      timeline );
+							 timeline );
 
 
         if ( status != CMedia::kDecodeOK )
@@ -1382,7 +1385,7 @@ void decode_thread( PlaybackData* data )
         while ( !img->frame( frame ) )
         {
             if ( img->stopped() ||
-                    view->playback() == CMedia::kStopped ) break;
+		 view->playback() == CMedia::kStopped ) break;
             sleep_ms( 10 );
         }
 
@@ -1396,15 +1399,16 @@ void decode_thread( PlaybackData* data )
             frame = img->dts();
         }
 
+
     }
-
-
-    img->playback( CMedia::kStopped );
 
 #ifdef DEBUG_THREADS
     LOGT_INFO( "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " view playback " << view->playback() << " frame " << img->frame() << "  dts: " << img->dts() );
     assert( img->stopped() );
 #endif
+
+    img->playback( CMedia::kStopped );
+
 
 }
 
