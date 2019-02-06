@@ -82,11 +82,11 @@ const char* kModule = "play";
 // #undef TRACE
 // #define TRACE(x)
 
-#define LOGT_WARNING(x) LOG_WARNING(  x );
-#define LOGT_INFO(x) LOG_INFO( x );
-#define LOGT_ERROR(x) LOG_ERROR(  x );
+#define LOGT_WARNING(x) LOG_WARNING( get_thread_id() << " " << x );
+#define LOGT_INFO(x) LOG_INFO( get_thread_id() << " " << x );
+#define LOGT_ERROR(x) LOG_ERROR( get_thread_id() << " " << x );
 
-#define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
