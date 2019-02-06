@@ -717,7 +717,7 @@ public:
     void flush_caches();
 
     // Preload an image into sequence cache
-    bool preload();
+    bool preload( int64_t frame );
 
     // Return if in presentation mode or not
     bool in_presentation() const;

@@ -2465,9 +2465,43 @@ bool ImageView::should_update( mrv::media fg )
     return update;
 }
 
-void static_preload( mrv::ImageView* v )
+struct ThreadData
 {
-    v->preload();
+    mrv::ImageView* v;
+    int64_t frame;
+};
+
+void static_preload( ThreadData* d )
+{
+    d->v->preload( d->frame );
+}
+
+
+
+void thread_dispatcher( mrv::ImageView* v )
+{
+    mrv::media fg = v->foreground();
+    if (!fg) return;
+
+    if ( v->playback() != CMedia::kStopped )
+	v->play( v->playback() );
+    
+    CMedia* img = fg->image();
+    
+    for ( int i = 0; i < 10; ++i )
+    {
+	if ( !v->idle_callback() || img->is_cache_full() ||
+	     v->playback() == CMedia::kStopped ) break;
+
+	ThreadData* data = new ThreadData;
+	data->v = v;
+	data->frame = img->frame();
+	data->frame++;
+	
+	boost::thread t( boost::bind( static_preload, data ) );
+	t.detach();
+    }
+
 }
 
 
@@ -2519,7 +2553,7 @@ int timeval_substract(struct timeval *result, struct timeval *x,
 
 Timer t;
 
-bool ImageView::preload()
+bool ImageView::preload( int64_t preframe )
 {
     if ( !browser() || !timeline() ) return false;
 
@@ -2529,6 +2563,7 @@ bool ImageView::preload()
     mrv::Reel r = b->reel_at( _reel );
     if (!r) return false;
 
+    _preframe = preframe;
     
     mrv::media fg;
     if ( r->edl )
@@ -2612,7 +2647,6 @@ bool ImageView::preload()
         // Store current frame
         pic = img->hires();
         if (!pic) return false;
-        img->clear_video_packets();
         found = img->find_image( f ); // this loads the frame if not present
     }
     // Frame found. Update _preframe.
@@ -2685,6 +2719,7 @@ bool ImageView::preload()
         img->hires( pic );  // restore old pic position
     }
 
+#if 0
     if ( r->edl && p != CMedia::kStopped )
     {
         // f = _preframe;
@@ -2705,12 +2740,13 @@ bool ImageView::preload()
             }
         }
     }
+#endif
 
     //    if ( uiMain->uiPrefs->uiPrefsPlayAllFrames->value() )
-    {
-        t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
-        t.waitUntilNextFrameIsDue();
-    }
+    // {
+    //    t.setDesiredSecondsPerFrame( 1.0/img->play_fps() );
+    //    t.waitUntilNextFrameIsDue();
+    // }
 
     redraw();
     timeline()->redraw();
@@ -7015,7 +7051,7 @@ void ImageView::preload_cache_start()
         }
         CMedia::preload_cache( true );
         _idle_callback = true;
-        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+        fltk::add_idle( (fltk::TimeoutHandler) thread_dispatcher, this );
     }
 }
 
@@ -7029,7 +7065,7 @@ void ImageView::preload_cache_stop()
 
     if ( _idle_callback )
     {
-        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+        fltk::remove_idle( (fltk::TimeoutHandler) thread_dispatcher, this );
         _idle_callback = false;
     }
 }

@@ -1397,15 +1397,6 @@ mrv::media ImageBrowser::load_image( const char* name,
     return m;
 }
 
-void load_sequence( ImageBrowser::LThreadData* data )
-{
-    mrv::ImageView* view = data->view;
-    delete data;
-
-    while ( view->preload() )
-        ;;
-}
-
 /**
  * Open new image, sequence or movie file(s) from a load list.
  * If stereo is on, every two files are treated as stereo pairs.

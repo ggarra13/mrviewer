@@ -1172,6 +1172,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             chromaticities( attr->value() );
+            image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1194,6 +1195,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             _attrs.insert( std::make_pair( _("Adopted Neutral"),
                                            attr->copy() ) );
             attrs.insert( N_("adoptedNeutral") );
+            image_damage( image_damage() | kDamageLut );
         }
     }
 
