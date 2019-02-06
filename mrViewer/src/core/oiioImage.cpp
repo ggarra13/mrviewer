@@ -149,11 +149,14 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
     const ImageSpec &s = in->spec();
     ImageSpec& spec = const_cast< ImageSpec& >( s );
 
-    std::string fmt = in->format_name();
-    fmt = "OIIO (" + fmt + ")";
-    free( _format );
-    _format = strdup( fmt.c_str() );
-
+    {
+	SCOPED_LOCK( _mutex );
+	std::string fmt = in->format_name();
+	fmt = "OIIO (" + fmt + ")";
+	free( _format );
+	_format = strdup( fmt.c_str() );
+    }
+    
     if ( _level < 0 )
     {
         while ( in->seek_subimage( 0, _mipmaps, spec ) )

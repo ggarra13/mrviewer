@@ -2475,7 +2475,11 @@ struct ThreadData
 
 void static_preload( ThreadData* d )
 {
-    d->v->preload( d->frame );
+    int64_t f = d->frame;
+    mrv::ImageView* view = d->v;
+    delete d;
+    
+    view->preload( f );
 }
 
 
@@ -8786,8 +8790,7 @@ void ImageView::play( const CMedia::Playback dir )
     // 	 img->has_audio() )
     {
         // preload_cache_stop();
-	std::cerr << "PLAY " << dir << " " << img->name() << std::endl;
-        img->play( dir, uiMain, true );
+	img->play( dir, uiMain, true );
     }
 
 
