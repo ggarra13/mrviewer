@@ -74,7 +74,7 @@ public:
 
     ////////////////// Set the frame for the current image (sequence)
     virtual bool           frame( const int64_t f );
-    virtual int64_t frame() const;
+    inline int64_t frame() const { return _frame; }
 
     /// Returns true if image has an alpha channel
     virtual bool  has_alpha() const {

@@ -2474,6 +2474,7 @@ struct ThreadData
 void static_preload( ThreadData* d )
 {
     d->v->preload( d->frame );
+    delete d;
 }
 
 
@@ -2496,7 +2497,9 @@ void thread_dispatcher( mrv::ImageView* v )
 	ThreadData* data = new ThreadData;
 	data->v = v;
 	data->frame = img->frame();
-	data->frame++;
+
+	while ( img->is_cache_filled( data->frame ) )
+	    data->frame++;
 	
 	boost::thread t( boost::bind( static_preload, data ) );
 	t.detach();

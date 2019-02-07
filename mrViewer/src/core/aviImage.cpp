@@ -1703,12 +1703,6 @@ void aviImage::close_subtitle_codec()
     }
 }
 
-int64_t aviImage::frame() const
-{
-    // Mutex& m = const_cast<Mutex&>( _mutex );
-    // SCOPED_LOCK( m );
-    return _frame;
-}
 
 bool aviImage::find_subtitle( const int64_t frame )
 {
