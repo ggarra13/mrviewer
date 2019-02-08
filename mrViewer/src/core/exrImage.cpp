@@ -237,6 +237,7 @@ bool exrImage::channels_order(
                               Imf::FrameBuffer& fb
                               )
 {
+    SCOPED_LOCK( _mutex );
     const Box2i& displayWindow = h.displayWindow();
     const Box2i& dataWindow = h.dataWindow();
     int dw = dataWindow.max.x - dataWindow.min.x + 1;

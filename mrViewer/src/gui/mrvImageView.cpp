@@ -2468,48 +2468,15 @@ bool ImageView::should_update( mrv::media fg )
     return update;
 }
 
-struct ThreadData
-{
-    mrv::ImageView* v;
-    int64_t frame;
-};
 
-void static_preload( ThreadData* d )
-{
-    int64_t f = d->frame;
-    mrv::ImageView* view = d->v;
-    delete d;
 
-    view->preload( f );
+void static_preload( mrv::ImageView* v )
+{
+    v->preload();
 }
 
 
 
-void thread_dispatcher( mrv::ImageView* v )
-{
-    mrv::media fg = v->foreground();
-    if (!fg) return;
-
-    if ( v->playback() != CMedia::kStopped )
-        v->play( v->playback() );
-
-    CMedia* img = fg->image();
-
-    for ( int i = 0; i < 10; ++i )
-    {
-        if ( !v->idle_callback() || img->is_cache_full() ||
-             v->playback() == CMedia::kStopped ) break;
-
-        ThreadData* data = new ThreadData;
-        data->v = v;
-        data->frame = img->frame();
-        data->frame++;
-
-        boost::thread t( boost::bind( static_preload, data ) );
-        t.detach();
-    }
-
-}
 
 
 
@@ -2559,8 +2526,6 @@ int timeval_substract(struct timeval *result, struct timeval *x,
     return result->tv_sec < 0;
 }
 
-Timer t;
-
 bool ImageView::ready_frame( std::atomic<int64_t>& f,
                              CMedia::Playback p,
                              CMedia* const img,
@@ -2568,10 +2533,9 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
                              const int64_t& last,
                              const bool seek )
 {
-    abort();
-    if ( p == CMedia::kForwards )
+    if ( p == CMedia::kForwards || p == CMedia::kStopped )
     {
-        f += p;
+        ++f;
         if ( f > last )
         {
             switch( looping() )
@@ -2587,8 +2551,10 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
             }
             if ( seek )
             {
-                img->seek( f );
-                img->do_seek();
+		Command c;
+		c.type = kSeek;
+		c.data = new int64_t( f );
+		commands.push_back(c);
             }
         }
         return true;
@@ -2602,8 +2568,8 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
             {
                 case CMedia::kPingPong:
                     f = first;
-                    playback( CMedia::kBackwards );
-                    img->playback( CMedia::kBackwards );
+                    playback( CMedia::kForwards );
+                    img->playback( CMedia::kForwards );
                     break;
                 case CMedia::kLoop:
                     f = last;
@@ -2611,8 +2577,10 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
             }
             if ( seek )
             {
-                img->seek( f );
-                img->do_seek();
+		Command c;
+		c.type = kSeek;
+		c.data = new int64_t( f );
+		commands.push_back(c);
             }
         }
         return true;
@@ -2620,7 +2588,7 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
     return false;
 }
 
-bool ImageView::preload( int64_t preframe )
+bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
 
@@ -2630,7 +2598,6 @@ bool ImageView::preload( int64_t preframe )
     mrv::Reel r = b->reel_at( _reel );
     if (!r) return false;
 
-    _preframe = preframe;
 
     mrv::media fg;
     if ( r->edl )
@@ -2640,13 +2607,13 @@ bool ImageView::preload( int64_t preframe )
     else
     {
         fg = foreground();
-        if ( !fg )  return false;
     }
 
+    if ( !fg )  return false;
 
 
-    CMedia* img = NULL;
-    if ( fg ) img = fg->image();
+
+    CMedia* img = fg->image();
 
     CMedia::Playback p = playback();
 
@@ -2681,7 +2648,7 @@ bool ImageView::preload( int64_t preframe )
     }
     else
     {
-        f = img->frame();
+        f = _preframe;
 
         first = img->first_frame();
         last  = img->last_frame();
@@ -2694,7 +2661,9 @@ bool ImageView::preload( int64_t preframe )
         else if ( f > last ) f = last;
     }
 
-    bool found;
+    bool stopped = img->stopped();
+
+    if ( stopped )
     {
         typedef CMedia::Mutex Mutex;
         mrv::PacketQueue& vp = img->video_packets();
@@ -2709,15 +2678,16 @@ bool ImageView::preload( int64_t preframe )
         Mutex& mtx = img->video_mutex();
         SCOPED_LOCK( mtx );
         img->frame( f );
-        found = img->find_image( f ); // this loads the frame if not present
+    }
+    else
+    {
+	img->find_image( img->frame() );
     }
 
-    if ( !found ) return false;
+    ready_frame( _preframe, p, img, first, last, stopped );
 
-    std::atomic< int64_t > pf( f );
-    ready_frame( pf, p, img, first, last, true );
-
-    img->frame( pf );
+    timeline()->redraw();
+    
     redraw();
 
     return true;
@@ -7027,8 +6997,7 @@ void ImageView::preload_cache_start()
         }
         CMedia::preload_cache( true );
         _idle_callback = true;
-        // boost::thread t( boost::bind( thread_dispatcher, this ) );
-        // t.detach();
+	fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
@@ -7043,6 +7012,7 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         _idle_callback = false;
+	fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
