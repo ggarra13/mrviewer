@@ -134,7 +134,7 @@ bool mrayImage::test(const boost::uint8_t *data, unsigned len)
 
 
 
-bool mrayImage::fetch( mrv::image_type_ptr& canvas,
+bool mrayImage::fetch( mrv::image_type_ptr canvas,
 		       const boost::int64_t& frame )
 {
     int dw, dh;

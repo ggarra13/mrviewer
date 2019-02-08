@@ -71,6 +71,8 @@ protected:
     void smpte_bottom_bars( mrv::image_type_ptr& canvas,
 			    const unsigned int X, const unsigned int Y,
                             const unsigned int W, const unsigned int H );
+
+    mrv::image_type_ptr canvas;
 };
 
 } // namespace mrv

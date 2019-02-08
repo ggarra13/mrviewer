@@ -523,6 +523,9 @@ public:
     // Store a frame in sequence cache
     void cache( mrv::image_type_ptr& pic );
 
+    // Return a frame from cache
+    mrv::image_type_ptr cache( int64_t frame ); 
+    
     inline PacketQueue& video_packets() {
         return _video_packets;
     }
@@ -546,7 +549,7 @@ public:
 
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const {
-        Mutex& mtx = const_cast< Mutex& >( _mutex );
+	Mutex& mtx = const_cast< Mutex& >( _mutex );
         SCOPED_LOCK( mtx );
         return _hires;
     }
@@ -1700,7 +1703,7 @@ protected:
 
     /// Allocate hires image pixels
     bool allocate_pixels( mrv::image_type_ptr& canvas,
-			  const int64_t& frame,
+                          const int64_t& frame,
                           const unsigned short channels = 4,
                           const image_type::Format format = image_type::kRGBA,
                           const image_type::PixelType pixel_type = image_type::kFloat,
@@ -1888,7 +1891,6 @@ protected:
     std::atomic<Damage> _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
-    std::atomic<int64_t> _numWindows;    //!< number of data/display windows
     double      _x, _y;             //!< x,y coordinates in canvas
     double      _scale_x, _scale_y; //!< x,y scale in canvas
     double      _rot_z;             //!< z quad rotation in canvas

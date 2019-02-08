@@ -66,29 +66,30 @@ public:
         return _alpha;
     }
 
-    virtual bool fetch( const boost::int64_t frame );
+    virtual bool fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame );
 
 protected:
     void ReadColors(const unsigned char* Data, Color8888* Out);
     void ReadColor(unsigned short Data, Color8888* Out);
-    void DecompressDXT1(unsigned char* src );
-    void CorrectPreMult();
+    void DecompressDXT1(mrv::image_type_ptr& canvas, unsigned char* src );
+    void CorrectPreMult(mrv::image_type_ptr& canvas );
     void GetBitsFromMask(unsigned int Mask,
                          unsigned int* ShiftLeft,
                          unsigned int* ShiftRight);
 
-    void DecompressDXT2( unsigned char* src );
-    void DecompressDXT3( unsigned char* src );
-    void DecompressDXT4( unsigned char* src );
-    void DecompressDXT5( unsigned char* src );
-    void DecompressARGB( unsigned char* src, DDPFPIXELFORMAT* Head );
-    void DecompressAti1n( unsigned char* src );
-    void Decompress3Dc( unsigned char* src );
-    void DecompressRXGB( unsigned char* src );
-    void UncompressedA16B16G16R16( unsigned char* src );
-    void DecompressFloat( unsigned char* src, unsigned int CompFormat );
+    void DecompressDXT2( mrv::image_type_ptr& canvas, unsigned char* src );
+    void DecompressDXT3( mrv::image_type_ptr& canvas, unsigned char* src );
+    void DecompressDXT4( mrv::image_type_ptr& canvas, unsigned char* src );
+    void DecompressDXT5( mrv::image_type_ptr& canvas, unsigned char* src );
+    void DecompressARGB( mrv::image_type_ptr& canvas, unsigned char* src, DDPFPIXELFORMAT* Head );
+    void DecompressAti1n( mrv::image_type_ptr& canvas, unsigned char* src );
+    void Decompress3Dc( mrv::image_type_ptr& canvas, unsigned char* src );
+    void DecompressRXGB( mrv::image_type_ptr& canvas, unsigned char* src );
+    void UncompressedA16B16G16R16( mrv::image_type_ptr& canvas, unsigned char* src );
+    void DecompressFloat( mrv::image_type_ptr& canvas, unsigned char* src, unsigned int CompFormat );
 
-    void Decompress( unsigned char* src, unsigned int CompFormat,
+    void Decompress( mrv::image_type_ptr& canvas, unsigned char* src, unsigned int CompFormat,
                      DDSURFACEDESC2* ddsd );
 
     // Reading

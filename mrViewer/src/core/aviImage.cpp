@@ -3120,6 +3120,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
         _right_eye->stop();
 	mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
+	_stereo[1] = canvas;
     }
 
     bool got_video = !has_video();
@@ -3524,6 +3525,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 {
     int64_t frame = f;
 
+    
     if ( !has_video() )
     {
         return audio_video_display(_audio_frame);
@@ -3635,6 +3637,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             {
                 pktframe = frame;
             }
+	    
 
             // Avoid storing too many frames in advance
             if ( playback() == kForwards &&
@@ -3655,8 +3658,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                 }
                 continue;
             }
-
-
+;
             got_video = decode_image( pktframe, pkt );
             //assert( !_video_packets.empty() );
             _video_packets.pop_front();

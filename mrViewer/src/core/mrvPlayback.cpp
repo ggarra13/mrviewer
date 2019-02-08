@@ -86,7 +86,7 @@ const char* kModule = "play";
 #define LOGT_INFO(x) LOG_INFO( get_thread_id() << " " << x );
 #define LOGT_ERROR(x) LOG_ERROR( get_thread_id() << " " << x );
 
-//#define DEBUG_THREADS
+#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -1047,8 +1047,7 @@ void video_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-
-        //TRACE( img->name() << " decode image " << frame );
+	
         CMedia::DecodeStatus status = img->decode_video( frame );
 
         // img->debug_video_packets( frame, img->name().c_str(), true );

@@ -40,7 +40,6 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
     default_layers();
 
     _frameStart = _frame_start = 1;
-    mrv::image_type_ptr canvas;
     
     switch( c )
     {
