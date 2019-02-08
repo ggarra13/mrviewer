@@ -3547,8 +3547,9 @@ void ImageView::draw()
 
         CMedia::Playback p = playback();
 
-        if ((p == CMedia::kForwards && _lastFrame < frame) ||
-                (p == CMedia::kBackwards && _lastFrame > frame ) )
+        if (((p == CMedia::kForwards || p == CMedia::kStopped) &&
+	     _lastFrame < frame) ||
+	    (p == CMedia::kBackwards && _lastFrame > frame ) )
         {
             int64_t frame_diff = frame - _lastFrame;
 
