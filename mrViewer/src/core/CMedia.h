@@ -524,7 +524,7 @@ public:
     void cache( mrv::image_type_ptr& pic );
 
     // Return a frame from cache
-    mrv::image_type_ptr cache( int64_t frame ); 
+    mrv::image_type_ptr cache( int64_t frame ) const; 
     
     inline PacketQueue& video_packets() {
         return _video_packets;

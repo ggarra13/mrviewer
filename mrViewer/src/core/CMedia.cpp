@@ -1649,8 +1649,8 @@ bool CMedia::has_changed()
         else if ( idx < 0 ) idx = 0;
 
         if ( !_sequence[idx] ||
-                _sequence[idx]->mtime() != sbuf.st_mtime ||
-                _sequence[idx]->ctime() != sbuf.st_ctime )
+	     _sequence[idx]->mtime() != sbuf.st_mtime ||
+	     _sequence[idx]->ctime() != sbuf.st_ctime )
         {
             assert( f == _sequence[idx]->frame() );
             // update frame...
@@ -2821,7 +2821,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
  *
  * @param frame       frame to retrieve cache from
  */
-mrv::image_type_ptr CMedia::cache( int64_t frame )
+mrv::image_type_ptr CMedia::cache( int64_t frame ) const
 {
 
     mrv::image_type_ptr r;
@@ -3937,7 +3937,7 @@ bool CMedia::find_image( const int64_t frame )
             }
             else
             {
-                if ( idx > 1 )
+                if ( idx > 1 && _sequence[idx-1] )
                 {
                     // If we run out of memory, make sure we sweep the
                     // frames we have in memory.

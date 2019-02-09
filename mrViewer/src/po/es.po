@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-02-09 10:03-0300\n"
+"POT-Creation-Date: 2019-02-09 20:21-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -193,7 +193,7 @@ msgstr " falló. "
 
 #
 #
-#: gui/mrvImageView.cpp:7233
+#: gui/mrvImageView.cpp:7236
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
@@ -402,8 +402,8 @@ msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4141
-#: gui/mrvImageView.cpp:7211 gui/mrvImageView.cpp:7828
-#: gui/mrvImageView.cpp:7829 gui/mrvImageView.cpp:7836
+#: gui/mrvImageView.cpp:7214 gui/mrvImageView.cpp:7831
+#: gui/mrvImageView.cpp:7832 gui/mrvImageView.cpp:7839
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -1077,14 +1077,14 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1854 core/CMedia.cpp:1937 core/exrImage.cpp:3026
-#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:186 gui/mrvImageView.cpp:7323
-#: gui/mrvImageView.cpp:7741
+#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:186 gui/mrvImageView.cpp:7326
+#: gui/mrvImageView.cpp:7744
 msgid "Alpha"
 msgstr "Alfa"
 
 #: core/CMedia.cpp:1856 core/CMedia.cpp:1937 core/exrImage.cpp:3024
 #: core/wandImage.cpp:1163 gui/mrvImageView.cpp:187 gui/mrvImageView.cpp:1554
-#: gui/mrvImageView.cpp:7304
+#: gui/mrvImageView.cpp:7307
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -1419,7 +1419,7 @@ msgstr "Modo de Mezcla"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1990
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
 #: core/CMedia.cpp:1870 core/CMedia.cpp:1936 core/exrImage.cpp:3026
-#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:185 gui/mrvImageView.cpp:7318
+#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:185 gui/mrvImageView.cpp:7321
 msgid "Blue"
 msgstr "Azul"
 
@@ -1427,11 +1427,11 @@ msgstr "Azul"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: standalone/main.cpp:504
+#: standalone/main.cpp:507
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:8982
+#: gui/mrvImageView.cpp:8985
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -1440,7 +1440,7 @@ msgid "Bottom Field"
 msgstr "Campo Inferior"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:106
-#: standalone/main.cpp:396 standalone/main.cpp:416
+#: standalone/main.cpp:390 standalone/main.cpp:410
 msgid "Bottom/top"
 msgstr "Inferior/Superior"
 
@@ -1630,7 +1630,7 @@ msgid "Char"
 msgstr "Caracter"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:111
-#: standalone/main.cpp:406 standalone/main.cpp:420
+#: standalone/main.cpp:400 standalone/main.cpp:414
 msgid "Checkerboard pattern"
 msgstr "Cuadriculado"
 
@@ -1762,7 +1762,7 @@ msgstr "Codecs"
 #: core/exrImage.cpp:3053 core/exrImage.cpp:3055 core/exrImage.cpp:3093
 #: core/exrImage.cpp:3125 core/wandImage.cpp:1124 core/wandImage.cpp:1186
 #: gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:1596 gui/mrvImageView.cpp:1651
-#: gui/mrvImageView.cpp:7791 gui/mrvImageView.cpp:7836
+#: gui/mrvImageView.cpp:7794 gui/mrvImageView.cpp:7839
 msgid "Color"
 msgstr "Color"
 
@@ -1789,7 +1789,7 @@ msgstr "Espacio de Color"
 
 #
 #
-#: gui/mrvImageView.cpp:7133
+#: gui/mrvImageView.cpp:7136
 msgid "Color channel not found at index "
 msgstr "Canal de color no encontrado para índice "
 
@@ -2662,7 +2662,7 @@ msgstr "Cortar Clip en el lugar actual"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:113
-#: standalone/main.cpp:410 standalone/main.cpp:422
+#: standalone/main.cpp:404 standalone/main.cpp:416
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
@@ -3163,12 +3163,12 @@ msgid "Escape"
 msgstr "Escape"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:110
-#: standalone/main.cpp:404 standalone/main.cpp:419
+#: standalone/main.cpp:398 standalone/main.cpp:413
 msgid "Even/odd columns"
 msgstr "Impar/par columnas"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:109
-#: standalone/main.cpp:402 standalone/main.cpp:418
+#: standalone/main.cpp:396 standalone/main.cpp:412
 msgid "Even/odd rows"
 msgstr "Impar/par renglones"
 
@@ -3345,7 +3345,7 @@ msgstr "Nombre"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:500
+#: standalone/main.cpp:503
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -3445,7 +3445,7 @@ msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4276
-#: gui/mrvImageView.cpp:8980
+#: gui/mrvImageView.cpp:8983
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -3677,7 +3677,7 @@ msgstr "Obtuve: "
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1989
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3009
 #: core/CMedia.cpp:1869 core/CMedia.cpp:1935 core/exrImage.cpp:3025
-#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:184 gui/mrvImageView.cpp:7313
+#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:184 gui/mrvImageView.cpp:7316
 msgid "Green"
 msgstr "Verde"
 
@@ -4170,7 +4170,7 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid host: "
 msgstr "Servidor inválido: "
 
-#: gui/mrvImageView.cpp:7233
+#: gui/mrvImageView.cpp:7236
 msgid "Invalid index "
 msgstr "Índice inválido "
 
@@ -4339,14 +4339,14 @@ msgid "Left View"
 msgstr "Vista Izquierda"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:97
-#: standalone/main.cpp:388 standalone/main.cpp:415
+#: standalone/main.cpp:382 standalone/main.cpp:409
 msgid "Left view"
 msgstr "Vista Izquierda"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:77
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:107
-#: standalone/main.cpp:372 standalone/main.cpp:378 standalone/main.cpp:398
-#: standalone/main.cpp:417
+#: standalone/main.cpp:366 standalone/main.cpp:372 standalone/main.cpp:392
+#: standalone/main.cpp:411
 msgid "Left/right"
 msgstr "Izquierda/derecha"
 
@@ -4554,7 +4554,7 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1991
 #: core/CMedia.cpp:1882 core/CMedia.cpp:1937 core/exrImage.cpp:3024
 #: core/wandImage.cpp:1163 gui/mrvImageView.cpp:188 gui/mrvImageView.cpp:1561
-#: gui/mrvImageView.cpp:7327 gui/mrvImageInformation.cpp:2190
+#: gui/mrvImageView.cpp:7330 gui/mrvImageInformation.cpp:2190
 msgid "Lumma"
 msgstr "Luma"
 
@@ -5034,7 +5034,7 @@ msgstr "No Mostrado"
 msgid "Not a GLErasePathShape pointer"
 msgstr "No es un puntero a GLErasePathShape"
 
-#: gui/mrvImageView.cpp:4300 gui/mrvImageView.cpp:5603
+#: gui/mrvImageView.cpp:4300 gui/mrvImageView.cpp:5606
 msgid "Not a GLPathShape pointer"
 msgstr "No es un puntero a GLPathShape"
 
@@ -5042,7 +5042,7 @@ msgstr "No es un puntero a GLPathShape"
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "No es un puntero a GLTextShape en mouseRelease"
 
-#: gui/mrvImageView.cpp:5627
+#: gui/mrvImageView.cpp:5630
 msgid "Not a GLTextShape pointer in position"
 msgstr "No es un puntero a GLPathShape en posición"
 
@@ -5086,8 +5086,8 @@ msgid "Number of Fstops"
 msgstr "Número de FStops"
 
 #
-#: gui/mrvImageInformation.cpp:2169
 #
+#: gui/mrvImageInformation.cpp:2169
 msgid "Number of Parts"
 msgstr "Número de Partes"
 
@@ -5900,7 +5900,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1988
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2991
 #: core/CMedia.cpp:1868 core/CMedia.cpp:1935 core/exrImage.cpp:3025
-#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:7308
+#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:7311
 msgid "Red"
 msgstr "Rojo"
 
@@ -5909,7 +5909,7 @@ msgid "Red value of image pixel under mouse."
 msgstr "Valor Rojo del pixel de imagen bajo el mouse."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:112
-#: standalone/main.cpp:408 standalone/main.cpp:421
+#: standalone/main.cpp:402 standalone/main.cpp:415
 msgid "Red/cyan glasses"
 msgstr "Lentes Rojo/cian"
 
@@ -6064,12 +6064,12 @@ msgid "Right View"
 msgstr "Vista Derecha"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:98
-#: standalone/main.cpp:390 standalone/main.cpp:415
+#: standalone/main.cpp:384 standalone/main.cpp:409
 msgid "Right view"
 msgstr "Vista Derecha"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:108
-#: standalone/main.cpp:400 standalone/main.cpp:417
+#: standalone/main.cpp:394 standalone/main.cpp:411
 msgid "Right/left"
 msgstr "Derecha/izquierda"
 
@@ -6399,7 +6399,7 @@ msgid "Sent"
 msgstr "Enviado"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:75
-#: standalone/main.cpp:368 standalone/main.cpp:377
+#: standalone/main.cpp:362 standalone/main.cpp:371
 msgid "Separate layers"
 msgstr "Capas separadas"
 
@@ -6627,9 +6627,13 @@ msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:99
-#: standalone/main.cpp:392
+#: standalone/main.cpp:386
 msgid "Stereo OpenGL"
 msgstr "Estéreo OpenGL"
+
+#: standalone/main.cpp:408
+msgid "Stereo Output is invalid.  Valid values are: "
+msgstr ""
 
 #: gui/mrvImageInformation.cpp:2129
 msgid "Stereo eye separation"
@@ -7423,7 +7427,7 @@ msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:8981
+#: gui/mrvImageView.cpp:8984
 msgid "Top"
 msgstr "Superior"
 
@@ -7433,8 +7437,8 @@ msgstr "Campo Superior"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:76
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:105
-#: standalone/main.cpp:370 standalone/main.cpp:377 standalone/main.cpp:394
-#: standalone/main.cpp:416
+#: standalone/main.cpp:364 standalone/main.cpp:371 standalone/main.cpp:388
+#: standalone/main.cpp:410
 msgid "Top/bottom"
 msgstr "Superior/inferior"
 
@@ -7541,7 +7545,7 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr "Deshacer La Última Figura Dibujada"
 
-#: standalone/main.cpp:488
+#: standalone/main.cpp:491
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
@@ -7612,7 +7616,7 @@ msgstr "Tipo de dato desconocido para convertir de texto"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: standalone/main.cpp:508
+#: standalone/main.cpp:511
 msgid "Unknown error"
 msgstr "Error Desconocido"
 

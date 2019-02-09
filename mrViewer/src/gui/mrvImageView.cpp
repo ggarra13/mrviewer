@@ -2526,11 +2526,11 @@ int timeval_substract(struct timeval *result, struct timeval *x,
     return result->tv_sec < 0;
 }
 
-bool ImageView::ready_frame( std::atomic<int64_t>& f,
-                             CMedia::Playback p,
-                             CMedia* const img,
-                             const int64_t& first,
-                             const int64_t& last )
+bool ImageView::ready_preframe( std::atomic<int64_t>& f,
+				CMedia::Playback p,
+				CMedia* const img,
+				const int64_t& first,
+				const int64_t& last )
 {
     if ( p == CMedia::kForwards || p == CMedia::kStopped )
     {
@@ -2541,8 +2541,8 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
             {
                 case CMedia::kPingPong:
                     f = last;
-                    playback( CMedia::kBackwards );
-                    img->playback( CMedia::kBackwards );
+                    // playback( CMedia::kBackwards );
+                    // img->playback( CMedia::kBackwards );
                     break;
                 case CMedia::kLoop:
                     f = first;
@@ -2560,8 +2560,8 @@ bool ImageView::ready_frame( std::atomic<int64_t>& f,
             {
                 case CMedia::kPingPong:
                     f = first;
-                    playback( CMedia::kForwards );
-                    img->playback( CMedia::kForwards );
+                    // playback( CMedia::kForwards );
+                    // img->playback( CMedia::kForwards );
                     break;
                 case CMedia::kLoop:
                     f = last;
@@ -2670,7 +2670,7 @@ bool ImageView::preload()
 	img->find_image( img->frame() );
     }
 
-    ready_frame( _preframe, p, img, first, last );
+    ready_preframe( _preframe, p, img, first, last );
 
     timeline()->redraw();
     
@@ -4436,7 +4436,10 @@ void ImageView::pixel_processed( const CMedia* img,
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
-    bool blend = img->hires()->format() != image_type::kLumma;
+    mrv::image_type_ptr pic = img->hires();
+    if (!pic) return;
+    
+    bool blend = pic->format() != image_type::kLumma;
 
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
     switch( mode )

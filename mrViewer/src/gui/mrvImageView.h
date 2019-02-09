@@ -818,11 +818,12 @@ protected:
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
 
-    bool ready_frame( std::atomic<int64_t>& _preframe,
-		      CMedia::Playback p, CMedia* const img,
-		      const int64_t& first,
-		      const int64_t& last );
-    
+    // Ready preframe for next iteration
+    bool ready_preframe( std::atomic<int64_t>& _preframe,
+			 CMedia::Playback p, CMedia* const img,
+			 const int64_t& first,
+			 const int64_t& last );
+
     /// Resize background image to fit foreground image's dimensions
     void resize_background();
 

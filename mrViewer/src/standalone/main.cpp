@@ -356,12 +356,6 @@ int main( int argc, char** argv )
                 ui->uiTimeline->edl( true );
             }
 
-            if ( opts.stereo.size() > 1 )
-            {
-                load_files( opts.stereo, ui, true );
-
-            }
-
             if ( opts.stereo_input != "" )
             {
                 int idx = 0;
@@ -376,15 +370,15 @@ int main( int argc, char** argv )
                     LOG_ERROR( "Stereo Input is invalid.  Valid values are: " );
                     LOG_ERROR( _("Separate layers") << ", " << _("Top/bottom")
                                << ", " << _("Left/right") );
-                    return false;
+                    exit(-1);
                 }
                 ui->uiStereo->uiStereoInput->value( idx );
                 ui->uiStereo->uiStereoInput->do_callback();
             }
 
+	    int idx = 0;
             if ( opts.stereo_output != "" )
             {
-                int idx = 0;
                 if ( opts.stereo_output == _("Left view") )
                     idx = 1;
                 else if ( opts.stereo_output == _("Right view") )
@@ -411,7 +405,7 @@ int main( int argc, char** argv )
                     idx = 12;
                 else
                 {
-                    LOG_ERROR( "Stereo Output is invalid.  Valid values are: " );
+                    LOG_ERROR( _("Stereo Output is invalid.  Valid values are: " ) );
                     LOG_ERROR( _("Left view") << ", " << _("Right view") << ", " );
                     LOG_ERROR( _("Top/bottom") << ", " << _("Bottom/top") << ", " );
                     LOG_ERROR( _("Left/right") << ", " << _("Right/left") << ", " );
@@ -420,13 +414,22 @@ int main( int argc, char** argv )
                     LOG_ERROR( _( "Checkerboard pattern") << ", "
                                << _("Red/cyan glasses") << ", " );
                     LOG_ERROR( _("Cyan/red glasses") );
-                    return false;
+                    exit( -1 );
                 }
+	    }
+
+	    
+            if ( opts.stereo.size() > 1 )
+            {
+                load_files( opts.stereo, ui, true );
+            }
+
+	    if ( idx )
+	    {
                 ui->uiStereo->uiStereoOutput->value( idx );
                 ui->uiStereo->uiStereoOutput->do_callback();
                 ui->uiView->fit_image();
-            }
-
+	    }
 
             if (opts.fps > 0 )
             {
