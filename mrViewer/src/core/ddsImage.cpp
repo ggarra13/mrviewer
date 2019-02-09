@@ -233,7 +233,8 @@ void ddsImage::ReadColor(unsigned short Data, Color8888* Out)
     Out->b = b << 3;
 }
 
-void ddsImage::DecompressDXT1(unsigned char* src )
+void ddsImage::DecompressDXT1(mrv::image_type_ptr& canvas,
+			      unsigned char* src )
 {
     unsigned int x, y;
     int i, j, k, Select;
@@ -246,7 +247,7 @@ void ddsImage::DecompressDXT1(unsigned char* src )
     colours[1].a = 0xFF;
     colours[2].a = 0xFF;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     unsigned int dh = height();
     unsigned int dw = width();
@@ -319,12 +320,12 @@ void ddsImage::DecompressDXT1(unsigned char* src )
     }
 }
 
-void ddsImage::CorrectPreMult()
+void ddsImage::CorrectPreMult(mrv::image_type_ptr& canvas )
 {
     unsigned int x,y;
     unsigned int dh = height();
     unsigned int dw = width();
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for (y = 0; y < dh; ++y) {
         for (x = 0; x < dw; ++x) {
             CMedia::Pixel& p = pixels[ x + y * dw ];
@@ -337,13 +338,13 @@ void ddsImage::CorrectPreMult()
     }
 }
 
-void ddsImage::DecompressDXT2(unsigned char* src )
+void ddsImage::DecompressDXT2(mrv::image_type_ptr& canvas, unsigned char* src )
 {
-    DecompressDXT1( src );
-    CorrectPreMult();
+    DecompressDXT1( canvas, src );
+    CorrectPreMult( canvas );
 }
 
-void ddsImage::DecompressDXT3( unsigned char* src )
+void ddsImage::DecompressDXT3( mrv::image_type_ptr& canvas, unsigned char* src )
 {
     unsigned int x, y;
     int i, j, k, Select;
@@ -354,7 +355,7 @@ void ddsImage::DecompressDXT3( unsigned char* src )
     unsigned short word;
     unsigned char* alpha;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -419,13 +420,13 @@ void ddsImage::DecompressDXT3( unsigned char* src )
 }
 
 
-void ddsImage::DecompressDXT4(unsigned char* src )
+void ddsImage::DecompressDXT4(mrv::image_type_ptr& canvas, unsigned char* src )
 {
-    DecompressDXT3( src );
-    CorrectPreMult();
+    DecompressDXT3( canvas, src );
+    CorrectPreMult( canvas );
 }
 
-void ddsImage::DecompressDXT5( unsigned char* src )
+void ddsImage::DecompressDXT5( mrv::image_type_ptr& canvas, unsigned char* src )
 {
     unsigned int x, y;
     int i, j, k, Select;
@@ -435,7 +436,7 @@ void ddsImage::DecompressDXT5( unsigned char* src )
     unsigned char	alphas[8], *alphamask;
     unsigned int	bits;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -568,7 +569,8 @@ void ddsImage::GetBitsFromMask(unsigned int Mask,
     return;
 }
 
-void ddsImage::DecompressARGB( unsigned char* src, DDPFPIXELFORMAT* Head )
+void ddsImage::DecompressARGB( mrv::image_type_ptr& canvas,
+			       unsigned char* src, DDPFPIXELFORMAT* Head )
 {
     unsigned int ReadI = 0, TempBpp, x, y;
     unsigned int RedL, RedR;
@@ -584,7 +586,7 @@ void ddsImage::DecompressARGB( unsigned char* src, DDPFPIXELFORMAT* Head )
     GetBitsFromMask(Head->dwABitMask, &AlphaL, &AlphaR);
     TempBpp = Head->dwRGBBitCount / 8;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -627,7 +629,7 @@ void ddsImage::DecompressARGB( unsigned char* src, DDPFPIXELFORMAT* Head )
 }
 
 
-void ddsImage::DecompressAti1n( unsigned char* src )
+void ddsImage::DecompressAti1n( mrv::image_type_ptr& canvas, unsigned char* src )
 {
     unsigned int x, y;
     int			i, j, k, t1, t2;
@@ -635,7 +637,7 @@ void ddsImage::DecompressAti1n( unsigned char* src )
     unsigned int		bitmask;
     unsigned char* Temp = src;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -677,7 +679,7 @@ void ddsImage::DecompressAti1n( unsigned char* src )
 }
 
 
-void ddsImage::Decompress3Dc( unsigned char* src )
+void ddsImage::Decompress3Dc( mrv::image_type_ptr& canvas, unsigned char* src )
 {
     unsigned int x, y;
     int	i, j, k, t1, t2;
@@ -685,7 +687,7 @@ void ddsImage::Decompress3Dc( unsigned char* src )
     unsigned char		XColours[8], YColours[8];
     unsigned int		bitmask, bitmask2;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     unsigned int dw = width();
     unsigned int dh = height();
     for (y = 0; y < dh; y += 4) {
@@ -764,7 +766,7 @@ void ddsImage::Decompress3Dc( unsigned char* src )
     }
 }
 
-void ddsImage::DecompressRXGB( unsigned char* src )
+void ddsImage::DecompressRXGB( mrv::image_type_ptr& canvas, unsigned char* src )
 {
     unsigned int x, y;
     int i, j, k, Select;
@@ -775,7 +777,7 @@ void ddsImage::DecompressRXGB( unsigned char* src )
     unsigned int  bits;
     unsigned char* Temp = src;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     unsigned int dw = width();
     unsigned int dh = height();
     for (y = 0; y < dh; y += 4) {
@@ -887,13 +889,13 @@ void ddsImage::DecompressRXGB( unsigned char* src )
     }
 }
 
-void ddsImage::UncompressedA16B16G16R16( unsigned char* src )
+void ddsImage::UncompressedA16B16G16R16( mrv::image_type_ptr& canvas, unsigned char* src )
 {
     unsigned int x, y;
     unsigned short* temp = (unsigned short*) src;
     unsigned int dw = width();
     unsigned int dh = height();
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for (y = 0; y < dh; ++y) {
         for (x = 0; x < dw; ++x) {
             CMedia::Pixel& p = pixels[ x + y*dw ];
@@ -907,14 +909,15 @@ void ddsImage::UncompressedA16B16G16R16( unsigned char* src )
 
 
 
-void ddsImage::DecompressFloat( unsigned char* src, unsigned int CompFormat )
+void ddsImage::DecompressFloat( mrv::image_type_ptr& canvas,
+				unsigned char* src, unsigned int CompFormat )
 {
     unsigned int x, y;
     float* temp = (float*) src;
     half* h = (half*) src;
     unsigned int dw = width();
     unsigned int dh = height();
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for (y = 0; y < dh; ++y) {
         for (x = 0; x < dw; ++x) {
             CMedia::Pixel& p = pixels[ x + y*dw ];
@@ -951,7 +954,8 @@ void ddsImage::DecompressFloat( unsigned char* src, unsigned int CompFormat )
     }
 }
 
-void ddsImage::Decompress( unsigned char* src, unsigned int CompFormat,
+void ddsImage::Decompress( mrv::image_type_ptr& canvas,
+			   unsigned char* src, unsigned int CompFormat,
                            DDSURFACEDESC2* ddsd )
 {
 #ifdef PATENTS
@@ -975,29 +979,29 @@ void ddsImage::Decompress( unsigned char* src, unsigned int CompFormat,
     case PF_RGB:
     case PF_LUMINANCE:
     case PF_LUMINANCE_ALPHA:
-        return DecompressARGB( src, &ddsd->ddpfPixelFormat );
+        return DecompressARGB( canvas, src, &ddsd->ddpfPixelFormat );
     case PF_DXT1:
         alpha_layers();
-        return DecompressDXT1( src );
+        return DecompressDXT1( canvas, src );
     case PF_DXT2:
         alpha_layers();
-        return DecompressDXT2( src );
+        return DecompressDXT2( canvas, src );
     case PF_DXT3:
         alpha_layers();
-        return DecompressDXT3( src );
+        return DecompressDXT3( canvas, src );
     case PF_DXT4:
         alpha_layers();
-        return DecompressDXT4( src );
+        return DecompressDXT4( canvas, src );
     case PF_DXT5:
         alpha_layers();
-        return DecompressDXT5( src );
+        return DecompressDXT5( canvas, src );
     case PF_ATI1N:
-        return DecompressAti1n( src );
+        return DecompressAti1n( canvas, src );
     case PF_3DC:
-        return Decompress3Dc( src );
+        return Decompress3Dc( canvas, src );
     case PF_RXGB:
         alpha_layers();
-        return DecompressRXGB( src );
+        return DecompressRXGB( canvas, src );
     case PF_A16B16G16R16F:
     case PF_A32B32G32R32F:
         alpha_layers();
@@ -1005,11 +1009,11 @@ void ddsImage::Decompress( unsigned char* src, unsigned int CompFormat,
     case PF_G16R16F:
     case PF_R32F:
     case PF_G32R32F:
-        return DecompressFloat( src, CompFormat );
+        return DecompressFloat( canvas, src, CompFormat );
     case PF_A16B16G16R16:
     case PF_UNKNOWN:
         alpha_layers();
-        return UncompressedA16B16G16R16( src );
+        return UncompressedA16B16G16R16( canvas, src );
     }
 }
 
@@ -1241,7 +1245,8 @@ const char* const ddsImage::compression() const
     return kCompressionType[ _compression ];
 }
 
-bool ddsImage::fetch( const boost::int64_t frame )
+bool ddsImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
     DDSURFACEDESC2 ddsd;
     unsigned char* data;
@@ -1288,7 +1293,8 @@ bool ddsImage::fetch( const boost::int64_t frame )
     ddsd.dwTextureStage = ReadBlobLSBLong(f);
 
     image_size( ddsd.dwWidth, ddsd.dwHeight );
-    allocate_pixels(frame);
+
+    allocate_pixels(canvas, frame);
 
     _gamma = 1.0f;
 
@@ -1311,7 +1317,7 @@ bool ddsImage::fetch( const boost::int64_t frame )
       Decompress data
     */
     _compression = compFormat;
-    Decompress( data, compFormat, &ddsd );
+    Decompress( canvas, data, compFormat, &ddsd );
 
     free(data);
 

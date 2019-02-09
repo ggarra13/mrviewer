@@ -228,14 +228,16 @@ bool exrImage::test(const boost::uint8_t *data, unsigned)
 
 
 bool exrImage::channels_order(
-    const boost::int64_t& frame,
-    Imf::ChannelList::ConstIterator& s,
-    Imf::ChannelList::ConstIterator& e,
-    const Imf::ChannelList& channels,
-    const Imf::Header& h,
-    Imf::FrameBuffer& fb
-)
+                              mrv::image_type_ptr& canvas,
+                              const boost::int64_t& frame,
+                              Imf::ChannelList::ConstIterator& s,
+                              Imf::ChannelList::ConstIterator& e,
+                              const Imf::ChannelList& channels,
+                              const Imf::Header& h,
+                              Imf::FrameBuffer& fb
+                              )
 {
+    SCOPED_LOCK( _mutex );
     const Box2i& displayWindow = h.displayWindow();
     const Box2i& dataWindow = h.dataWindow();
     int dw = dataWindow.max.x - dataWindow.min.x + 1;
@@ -421,7 +423,7 @@ bool exrImage::channels_order(
         }
     }
 
-    if ( ! allocate_pixels( frame, (unsigned short)numChannels, format,
+    if ( ! allocate_pixels( canvas, frame, (unsigned short)numChannels, format,
                             pixel_type_conversion( imfPixelType ),
                             dw / sx, dh / sy ) )
         return false;
@@ -430,7 +432,7 @@ bool exrImage::channels_order(
 
     if ( _has_yca )
     {
-        size_t t = _hires->pixel_size();
+        size_t t = canvas->pixel_size();
 
         for ( unsigned j = 0; j < 4; ++j )
         {
@@ -445,7 +447,7 @@ bool exrImage::channels_order(
     }
     else
     {
-        unsigned pixels = (unsigned) (_hires->pixel_size() * numChannels);
+        unsigned pixels = (unsigned) (canvas->pixel_size() * numChannels);
 
         for ( unsigned j = 0; j < 4; ++j )
         {
@@ -456,13 +458,13 @@ bool exrImage::channels_order(
         }
     }
 
-    char* pixels = (char*)_hires->data().get();
+    char* pixels = (char*)canvas->data().get();
     if (!pixels) return false;
-    memset( pixels, 0, _hires->data_size() ); // Needed for lumma pics (Fog.exr)
+    memset( pixels, 0, canvas->data_size() ); // Needed for lumma pics (Fog.exr)
 
     // Then, prepare frame buffer for them
-    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
-                  _hires->channels() );
+    int start = ( (-dx - dy * dw) * canvas->pixel_size() *
+                  canvas->channels() );
 
     char* base = pixels + start;
 
@@ -471,11 +473,10 @@ bool exrImage::channels_order(
         int k = order[idx];
         if ( k == -1 ) continue;
 
-        char* buf = base + offsets[k] * _hires->pixel_size();
+        char* buf = base + offsets[k] * canvas->pixel_size();
 
         // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
         //           << " off:" << offsets[k] << " xs,ys "
-        //                << std::endl;
         //           << xs[k] << "," << ys[k]
         //           << " sampling " << xsampling[k]
         //           << " " << ysampling[k]
@@ -492,7 +493,8 @@ bool exrImage::channels_order(
 }
 
 
-void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
+void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame,
+                         image_type_ptr& canvas )
 {
 
     Imf::Chromaticities cr;
@@ -519,12 +521,12 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
     {
         for ( unsigned x = 0; x < w; ++x )
         {
-            CMedia::Pixel p = _hires->pixel( x, y );
+            CMedia::Pixel p = canvas->pixel( x, y );
             rgba->pixel( x, y, p );
         }
     }
 
-    _hires = rgba;
+    canvas = rgba;
 }
 
 /**
@@ -532,7 +534,8 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
  *
  * @return true if success, false if not
  */
-bool exrImage::fetch_mipmap( const boost::int64_t& frame )
+bool exrImage::fetch_mipmap(  mrv::image_type_ptr& canvas,
+                              const boost::int64_t& frame )
 {
 
     try {
@@ -574,7 +577,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
 
         FrameBuffer fb;
-        bool ok = find_channels( h, fb, frame );
+        bool ok = find_channels( canvas, h, fb, frame );
         if ( !ok ) return false;
 
         _pixel_ratio = h.pixelAspectRatio();
@@ -932,7 +935,8 @@ bool exrImage::find_layers( const Imf::Header& h )
     return true;
 }
 
-bool exrImage::handle_stereo( const boost::int64_t& frame,
+bool exrImage::handle_stereo( mrv::image_type_ptr& canvas,
+                              const boost::int64_t& frame,
                               const Imf::Header& h,
                               Imf::FrameBuffer& fb )
 {
@@ -959,7 +963,8 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         s = channels.begin();
         e = channels.end();
     }
-    bool ok = channels_order( frame, s, e, channels, h, fb );
+
+    bool ok = channels_order( canvas, frame, s, e, channels, h, fb );
 
     // If 3d is because of different headers exit now
     if ( !_multiview )
@@ -967,7 +972,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         return ok;
     }
 
-    _stereo[1] = _hires;
+    _stereo[1] = canvas; //_hires;
 
     //
     // Repeat for left eye
@@ -990,13 +995,14 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         e = channels.end();
     }
 
-    ok = channels_order( frame, s, e, channels, h, fb );
-    _stereo[0] = _hires;
+    ok = channels_order( canvas, frame, s, e, channels, h, fb );
+    _stereo[0] = canvas; //_hires;
 
     return ok;
 }
 
-bool exrImage::find_channels( const Imf::Header& h,
+bool exrImage::find_channels( mrv::image_type_ptr& canvas,
+                              const Imf::Header& h,
                               Imf::FrameBuffer& fb,
                               const boost::int64_t& frame )
 {
@@ -1066,7 +1072,7 @@ bool exrImage::find_channels( const Imf::Header& h,
     {
         free( channelPrefix );
         channelPrefix = NULL;
-        return handle_stereo(frame, h, fb);
+        return handle_stereo( canvas, frame, h, fb);
     }
     else if ( channelPrefix != NULL )
     {
@@ -1101,13 +1107,13 @@ bool exrImage::find_channels( const Imf::Header& h,
         free( channelPrefix );
         channelPrefix = NULL;
 
-        return channels_order( frame, s, e, channels, h, fb );
+        return channels_order( canvas, frame, s, e, channels, h, fb );
     }
     else
     {
         Imf::ChannelList::ConstIterator s = channels.begin();
         Imf::ChannelList::ConstIterator e = channels.end();
-        return channels_order( frame, s, e, channels, h, fb );
+        return channels_order( canvas, frame, s, e, channels, h, fb );
     }
 }
 
@@ -1119,6 +1125,7 @@ void exrImage::read_forced_header_attr( const Imf::Header& h,
         h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
     if ( attr )
     {
+	SCOPED_LOCK( _mutex );
         _cap_date[frame] = attr->value();
     }
 
@@ -1172,6 +1179,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             chromaticities( attr->value() );
+            image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1194,6 +1202,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             _attrs.insert( std::make_pair( _("Adopted Neutral"),
                                            attr->copy() ) );
             attrs.insert( N_("adoptedNeutral") );
+            image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1487,10 +1496,11 @@ void exrImage::loadDeepData( int& zsize,
         _type = SCANLINEIMAGE;
         if ( h.hasType() ) _type = h.type();
 
+        image_type_ptr canvas;
         if ( _type == DEEPSCANLINE )
             loadDeepScanlineImage( inmaster, zsize, zbuff, sampleCount, true );
         else if ( _type == DEEPTILE )
-            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
+            loadDeepTileImage( canvas, inmaster, zsize, zbuff, sampleCount, true );
     }
     catch( const std::exception& e )
     {
@@ -1501,11 +1511,13 @@ void exrImage::loadDeepData( int& zsize,
 
 
 void
-exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
-                             int &zsize,
-                             Imf::Array<float*>&       zbuff,
-                             Imf::Array<unsigned int>& sampleCount,
-                             bool deepComp )
+exrImage::loadDeepTileImage(
+                            mrv::image_type_ptr& canvas,
+                            Imf::MultiPartInputFile& inmaster,
+                            int &zsize,
+                            Imf::Array<float*>&       zbuff,
+                            Imf::Array<unsigned int>& sampleCount,
+                            bool deepComp )
 {
     _has_deep_data = true;
 
@@ -1524,18 +1536,18 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     display_window( displayWindow.min.x, displayWindow.min.y,
                     displayWindow.max.x, displayWindow.max.y, _frame );
 
-    if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+    if ( !canvas || dw*dh*sizeof(Imf::Rgba) != canvas->data_size() )
     {
-        if (! allocate_pixels( _frame, 4, image_type::kRGBA,
+        if (! allocate_pixels( canvas, _frame, 4, image_type::kRGBA,
                                image_type::kHalf ) )
             return;
     }
 
     // display black right now
-    Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    Imf::Rgba* pixels = (Imf::Rgba*)canvas->data().get();
     if (!pixels) return;
 
-    memset( pixels, 0, _hires->data_size() ); // Needed
+    memset( pixels, 0, canvas->data_size() ); // Needed
 
 
     Array< half* > dataR;
@@ -1783,7 +1795,8 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 }
 
 
-bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
+bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
+                                 Imf::MultiPartInputFile& inmaster,
                                 const boost::int64_t& frame )
 {
     if (  _numparts > 1 )
@@ -2085,6 +2098,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     {
         const Imf::Header& header = inmaster.header(0);
         if ( header.hasType() ) _type = header.type();
+        else _type = SCANLINEIMAGE;
 
         if ( _type == DEEPSCANLINE || _type == DEEPTILE )
         {
@@ -2155,7 +2169,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         for ( int i = 0; i < 2; ++i )
         {
             if ( _stereo_output != kNoStereo && st[i] >= 0 &&
-                    _right_eye == NULL )
+                 _right_eye == NULL )
                 _curpart = st[i];
 
 
@@ -2185,8 +2199,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
 
             FrameBuffer fb;
-
-            bool ok = find_channels( header, fb, frame );
+            bool ok = find_channels( canvas, header, fb, frame );
             if (!ok) {
                 IMG_ERROR( _("Could not locate channels in header") );
                 return false;
@@ -2213,7 +2226,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
             if ( st[0] != st[1] )
             {
-                _stereo[i] = _hires;
+                _stereo[i] = canvas; //_hires;
             }
         }
     }
@@ -2238,7 +2251,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             int zsize;
             Imf::Array< float* > zbuff;
             Imf::Array< unsigned > sampleCount;
-            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
+            loadDeepTileImage( canvas, inmaster, zsize, zbuff,
+                               sampleCount, true );
             return true;
         }
 
@@ -2247,6 +2261,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         const Box2i& dataWindow = header.dataWindow();
         const Box2i& displayWindow = header.displayWindow();
 
+
         data_window( dataWindow.min.x, dataWindow.min.y,
                      dataWindow.max.x, dataWindow.max.y, frame );
 
@@ -2254,7 +2269,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         displayWindow.max.x, displayWindow.max.y, frame );
 
         FrameBuffer fb;
-        bool ok = find_channels( header, fb, frame );
+        bool ok = find_channels( canvas, header, fb, frame );
         if (!ok) {
             IMG_ERROR( _("Could not locate channels in header") );
             return false;
@@ -2281,7 +2296,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                             displayWindow.max.x, displayWindow.max.y, frame );
 
             FrameBuffer fb;
-            bool ok = find_channels( header, fb, frame );
+            bool ok = find_channels( canvas, header, fb, frame );
             if (!ok) {
                 IMG_ERROR( _("Could not locate channels in header") );
                 return false;
@@ -2327,7 +2342,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
  *
  * @return true if success, false if not
  */
-bool exrImage::fetch( const boost::int64_t frame )
+bool exrImage::fetch(  mrv::image_type_ptr& canvas,
+                       const boost::int64_t frame )
 {
 
     try
@@ -2335,7 +2351,7 @@ bool exrImage::fetch( const boost::int64_t frame )
 
         if ( _levelX > 0 || _levelY > 0 )
         {
-            return fetch_mipmap( frame );
+            return fetch_mipmap( canvas, frame );
         }
 
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
@@ -2346,13 +2362,13 @@ bool exrImage::fetch( const boost::int64_t frame )
         if ( _numparts > 0 )
         {
 
-            if ( !  fetch_multipart( inmaster, frame ) )
+            if ( !  fetch_multipart( canvas, inmaster, frame ) )
                 return false;
 
             if ( _use_yca && !supports_yuv() )
             {
                 const Imf::Header& h = inmaster.header(0);
-                ycc2rgba( h, frame );
+                ycc2rgba( h, frame, canvas );
             }
         }
     }
@@ -2640,7 +2656,7 @@ typedef std::set< std::string > PartNames;
 typedef std::vector< std::string >   LayerList;
 
 
-void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
+void exrImage::copy_pixel_data( mrv::image_type_ptr& pic,
                                 Imf::PixelType save_type,
                                 uint8_t* base,
                                 size_t total_size,

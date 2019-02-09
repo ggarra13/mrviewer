@@ -169,7 +169,7 @@ bool wandImage::release()
     return true;
 }
 
-bool wandImage::fetch( const boost::int64_t frame )
+bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 {
 
     MagickBooleanType status;
@@ -366,7 +366,7 @@ bool wandImage::fetch( const boost::int64_t frame )
     {
 
         channels = "RGBA";
-        if ( ! allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
+        if ( ! allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type,
                                 unsigned(dw), unsigned(dh) ) )
             return false;
     }
@@ -374,13 +374,13 @@ bool wandImage::fetch( const boost::int64_t frame )
     {
 
         channels = "RGB";
-        if (! allocate_pixels( frame, 3, image_type::kRGB, pixel_type,
+        if (! allocate_pixels( canvas, frame, 3, image_type::kRGB, pixel_type,
                                unsigned(dw), unsigned(dh) ) )
             return false;
     }
 
     {
-        Pixel* pixels = (Pixel*)_hires->data().get();
+        Pixel* pixels = (Pixel*)canvas->data().get();
         MagickExportImagePixels( wand, 0, 0, dw, dh, channels,
                                  storage, pixels );
     }

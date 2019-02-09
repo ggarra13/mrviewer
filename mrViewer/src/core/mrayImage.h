@@ -49,7 +49,8 @@ public:
 
     virtual const char* const format() const;
 
-    virtual bool fetch( const boost::int64_t& frame );
+    virtual bool fetch( mrv::image_type_ptr canvas,
+			const boost::int64_t& frame );
 
 protected:
 

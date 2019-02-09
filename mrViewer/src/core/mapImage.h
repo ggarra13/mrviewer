@@ -56,7 +56,8 @@ public:
 
     virtual bool has_changed();
 
-    virtual bool fetch(const boost::int64_t frame);
+    virtual bool fetch( mrv::image_type_ptr& canvas,
+			const boost::int64_t frame);
 
 protected:
     bool is_stub();

@@ -229,7 +229,9 @@ void iffImage::read_chunk( FILE* f, iffChunk& chunk )
     chunk.swap();
 }
 
-void iffImage::read_uncompressed_tile( FILE* file, boost::uint8_t* src,
+void iffImage::read_uncompressed_tile( FILE* file,
+				       mrv::image_type_ptr& canvas,
+				       boost::uint8_t* src,
                                        const unsigned int compsize,
                                        const unsigned x1, const unsigned y1,
                                        const unsigned w,
@@ -239,12 +241,10 @@ void iffImage::read_uncompressed_tile( FILE* file, boost::uint8_t* src,
 {
     size_t r = fread( src, compsize, 1, file );
 
-    abort();
-
     unsigned int dw = width();
     unsigned int dh = height() - 1;
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     for ( unsigned y = 0; y < h; ++y )
     {
@@ -372,6 +372,7 @@ static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* of
 
 
 void iffImage::read_pixel_chunk( FILE* file,
+				 image_type_ptr& canvas,
                                  const int depth, const int bytes,
                                  const iffChunk& chunk )
 {
@@ -405,7 +406,7 @@ void iffImage::read_pixel_chunk( FILE* file,
 
                 unsigned w = width();
                 unsigned h = height() - 1;
-                float* buffer = (float*)_hires->data().get();
+                float* buffer = (float*)canvas->data().get();
 
                 unsigned base = y1 * w + x1;
                 for (int i = 0; i < tile_height; i++) {
@@ -441,7 +442,7 @@ void iffImage::read_pixel_chunk( FILE* file,
             unsigned w = width();
             unsigned h = height() - 1;
             float* from = tileData;
-            float* pixels = (float*)_hires->data().get();
+            float* pixels = (float*)canvas->data().get();
             for (unsigned i = 0; i < tile_height; i++) {
                 unsigned offset = (w * (h - (y1+i))) + x1;
                 float* to = pixels + depth * offset;
@@ -478,7 +479,7 @@ void iffImage::read_pixel_chunk( FILE* file,
             }
             unsigned w = width();
             unsigned h = height() - 1;
-            uint16_t* pixels = (uint16_t*)_hires->data().get();
+            uint16_t* pixels = (uint16_t*)canvas->data().get();
             uint16_t* from = tileData;
             for (unsigned i = 0; i < tile_height; i++) {
                 unsigned offset = (w * (h - (y1+i))) + x1;
@@ -501,7 +502,7 @@ void iffImage::read_pixel_chunk( FILE* file,
         uint8_t* tileData = read_tile(file, tile_width * tile_height, depth,
                                       compsize, offsets);
         if ( tileData ) {
-            uint8_t* pixels = (uint8_t*)_hires->data().get();
+            uint8_t* pixels = (uint8_t*)canvas->data().get();
             uint8_t* from = tileData;
             unsigned w = width();
             unsigned h = height() - 1;
@@ -527,7 +528,8 @@ void iffImage::read_pixel_chunk( FILE* file,
     }
 }
 
-bool iffImage::fetch(const boost::int64_t frame)
+bool iffImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
     _gamma = 1.0f;
     _compression = kNoCompression;
@@ -539,6 +541,7 @@ bool iffImage::fetch(const boost::int64_t frame)
     bool found = false;
     unsigned tile = 0;
     char buf[1024];
+
     while( !feof(f) )
     {
         iffChunk chunk;
@@ -617,7 +620,7 @@ bool iffImage::fetch(const boost::int64_t frame)
             default:
                 LOG_ERROR( _("Unknown channel type" ) );
             }
-            allocate_pixels( frame, channels, format, pixel_type,
+            allocate_pixels( canvas, frame, channels, format, pixel_type,
                              header.width, header.height );
 
         }
@@ -650,13 +653,14 @@ bool iffImage::fetch(const boost::int64_t frame)
                 if ( chunk.tag == kRGBA_TAG && _channel == NULL )
                 {
                     ++tile;
-                    read_pixel_chunk( f, header.depth, header.bytes, chunk );
+                    read_pixel_chunk( f, canvas, header.depth, header.bytes,
+				      chunk );
                 }
                 else if ( chunk.tag == kZBUF_TAG && _channel &&
                           strcmp( _channel, N_("Z") ) == 0 )
                 {
                     ++tile;
-                    read_pixel_chunk( f, 4, 1, chunk );
+                    read_pixel_chunk( f, canvas, 4, 1, chunk );
                 }
                 else
                 {

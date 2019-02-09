@@ -118,7 +118,8 @@ bool pxrzImage::test(const boost::uint8_t *data, unsigned len)
  *
  * @return true on success, false if not
  */
-bool pxrzImage::fetch(const boost::int64_t frame)
+bool pxrzImage::fetch( mrv::image_type_ptr& canvas,
+		       const boost::int64_t frame )
 {
     int dw, dh;
 
@@ -141,7 +142,7 @@ bool pxrzImage::fetch(const boost::int64_t frame)
     dh = ntohs( header.height );
 
     image_size( dw, dh );
-    allocate_pixels(frame);
+    allocate_pixels( canvas, frame);
 
     if ( _num_channels == 0 )
     {
@@ -169,7 +170,7 @@ bool pxrzImage::fetch(const boost::int64_t frame)
     }
 
     // Copy pixel values
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
     for (int y = 0, i = 0; y < dh; ++y)
     {
         int offset = y * dw;

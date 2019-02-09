@@ -78,7 +78,7 @@ public:
         return _mipmaps;
     }
 
-    bool fetch( const boost::int64_t frame );
+    bool fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame );
 
     static bool save( const char* path, const CMedia* img,
                       const OIIOOpts* opts );

@@ -279,8 +279,8 @@ ImagePixel VideoFrame::pixel( const unsigned int x,
                           std::numeric_limits<float>::quiet_NaN());
     }
 
-    assert( x < _width  );
-    assert( y < _height );
+    av_assert0( x < _width  );
+    av_assert0( y < _height );
 
 
     switch( _type )
@@ -313,8 +313,8 @@ void VideoFrame::pixel( const unsigned int x, const unsigned int y,
     if ( !_data )
         throw std::runtime_error( _("mrv::Frame No pixel data to change") );
 
-    assert( x < _width  );
-    assert( y < _height );
+    av_assert0( x < _width  );
+    av_assert0( y < _height );
 
     switch( _type )
     {

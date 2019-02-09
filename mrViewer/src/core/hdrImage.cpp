@@ -401,7 +401,8 @@ bool hdrImage::save( const boost::int64_t frame )
  *
  * @return true if success, false if not
  */
-bool hdrImage::fetch( const boost::int64_t frame )
+bool hdrImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
 
     try {
@@ -410,7 +411,8 @@ bool hdrImage::fetch( const boost::int64_t frame )
         if ( f == NULL ) EXCEPTION("could not open file");
 
         read_header(f);
-        allocate_pixels(frame, 4, image_type::kRGBA, image_type::kFloat );
+        allocate_pixels(canvas, frame, 4, image_type::kRGBA,
+			image_type::kFloat );
 
         unsigned w = width();
         COLR* scanline = (COLR*) malloc( sizeof(COLR) * w );
@@ -428,7 +430,7 @@ bool hdrImage::fetch( const boost::int64_t frame )
             ys = -1;
         }
 
-        Pixel* pixels = (Pixel*)_hires->data().get();
+        Pixel* pixels = (Pixel*)canvas->data().get();
         for ( ; y != ylast; y += ys )
         {
             memset( scanline, 0, w*sizeof(COLR) );

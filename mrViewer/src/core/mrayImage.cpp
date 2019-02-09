@@ -134,7 +134,8 @@ bool mrayImage::test(const boost::uint8_t *data, unsigned len)
 
 
 
-bool mrayImage::fetch( const boost::int64_t& frame )
+bool mrayImage::fetch( mrv::image_type_ptr canvas,
+		       const boost::int64_t& frame )
 {
     int dw, dh;
 
@@ -159,7 +160,8 @@ bool mrayImage::fetch( const boost::int64_t& frame )
     dh = header.height;
 
     image_size( dw, dh );
-    allocate_pixels( frame );
+
+    allocate_pixels( canvas, frame );
 
     _layers.clear();
     _num_channels = 0;
@@ -244,7 +246,7 @@ bool mrayImage::fetch( const boost::int64_t& frame )
     fclose(f);
 
 
-    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* pixels = (Pixel*)canvas->data().get();
 
     // Copy pixel values
     for (int y = 0, i = 0; y < dh; ++y)

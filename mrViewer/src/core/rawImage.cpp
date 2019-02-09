@@ -162,7 +162,8 @@ bool rawImage::release()
     return true;
 }
 
-bool rawImage::fetch( const boost::int64_t frame )
+bool rawImage::fetch( mrv::image_type_ptr& canvas,
+		      const boost::int64_t frame )
 {
     if ( !iprc )
     {
@@ -209,11 +210,11 @@ bool rawImage::fetch( const boost::int64_t frame )
             alpha_layers();
             image_size( dw, dh );
             const image_type::PixelType pixel_type = image_type::kByte;
-            allocate_pixels( frame, 4, image_type::kRGBA, pixel_type,
+            allocate_pixels( canvas, frame, 4, image_type::kRGBA, pixel_type,
                              dw, dh );
 
             {
-                Pixel* pixels = (Pixel*)_hires->data().get();
+                Pixel* pixels = (Pixel*)canvas->data().get();
                 memcpy( pixels, iprc->thumbnail.thumb, dw*dh*4 );
             }
         }
@@ -322,11 +323,13 @@ bool rawImage::fetch( const boost::int64_t frame )
 
         const image_type::PixelType pixel_type = image_type::kShort;
 
+	image_type_ptr canvas;
         image_type::Format type = image_type::kRGBA;
-        allocate_pixels( frame, _num_channels, type, pixel_type, dw, dh );
+        allocate_pixels( canvas, frame, _num_channels, type, pixel_type,
+			 dw, dh );
 
         {
-            Pixel* pixels = (Pixel*)_hires->data().get();
+            Pixel* pixels = (Pixel*)canvas->data().get();
             memcpy( pixels, iprc->image, dw*dh*4*sizeof(short) );
         }
     }

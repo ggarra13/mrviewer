@@ -54,7 +54,8 @@ public:
     }
 
     bool save( const boost::int64_t frame );
-    bool fetch( const boost::int64_t frame );
+    bool fetch( mrv::image_type_ptr& canvas,
+		const boost::int64_t frame );
 protected:
 
     typedef unsigned char COLR[4];

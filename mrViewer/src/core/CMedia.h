@@ -365,7 +365,7 @@ public:
 
 public:
     /// Fetch (load) the image for a frame
-    virtual bool fetch(const int64_t frame) {
+    virtual bool fetch(mrv::image_type_ptr& canvas, const int64_t frame) {
         return true;
     }
 
@@ -516,9 +516,16 @@ public:
     // For videos, returns false always
     bool is_cache_full();
 
-    // Store a frame in sequence cache
-    void cache( const mrv::image_type_ptr pic );
+    // For sequences, returns the first empty cache frame if any.
+    // For videos, returns first frame.
+    int64_t first_cache_empty_frame();
 
+    // Store a frame in sequence cache
+    void cache( mrv::image_type_ptr& pic );
+
+    // Return a frame from cache
+    mrv::image_type_ptr cache( int64_t frame ); 
+    
     inline PacketQueue& video_packets() {
         return _video_packets;
     }
@@ -542,7 +549,7 @@ public:
 
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const {
-        Mutex& mtx = const_cast< Mutex& >( _mutex );
+	Mutex& mtx = const_cast< Mutex& >( _mutex );
         SCOPED_LOCK( mtx );
         return _hires;
     }
@@ -651,10 +658,8 @@ public:
                                 const boost::uint8_t* datas = NULL,
                                 const int size = 0,
                                 const bool is_thumbnail = false,
-                                const int64_t
-                                first = AV_NOPTS_VALUE,
-                                const int64_t
-                                end = AV_NOPTS_VALUE,
+                                int64_t first = AV_NOPTS_VALUE,
+                                int64_t   end = AV_NOPTS_VALUE,
                                 const bool avoid_seq = false );
 
     ////////////////////////
@@ -1242,7 +1247,7 @@ public:
                                      const bool detail = false);
     virtual void debug_video_stores(const int64_t frame,
                                     const char* routine = "",
-                                    const bool detail = false) {};
+                                    const bool detail = false);
     virtual void debug_subtitle_stores(const int64_t frame,
                                        const char* routine = "",
                                        const bool detail = false) {};
@@ -1625,7 +1630,7 @@ protected:
      *
      */
     void update_cache_pic( mrv::image_type_ptr*& seq,
-                           const mrv::image_type_ptr pic );
+                           const mrv::image_type_ptr& pic );
 
     /**
      * Given a frame number, returns whether audio for that frame is already
@@ -1697,7 +1702,8 @@ protected:
     void timestamp();
 
     /// Allocate hires image pixels
-    bool allocate_pixels( const int64_t& frame,
+    bool allocate_pixels( mrv::image_type_ptr& canvas,
+                          const int64_t& frame,
                           const unsigned short channels = 4,
                           const image_type::Format format = image_type::kRGBA,
                           const image_type::PixelType pixel_type = image_type::kFloat,
@@ -1885,7 +1891,6 @@ protected:
     std::atomic<Damage> _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
 
-    std::atomic<int64_t> _numWindows;    //!< number of data/display windows
     double      _x, _y;             //!< x,y coordinates in canvas
     double      _scale_x, _scale_y; //!< x,y scale in canvas
     double      _rot_z;             //!< z quad rotation in canvas
@@ -1935,6 +1940,8 @@ protected:
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
 
+    image_type::PixelType _depth;
+    
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.

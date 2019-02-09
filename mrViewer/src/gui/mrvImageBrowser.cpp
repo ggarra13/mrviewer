@@ -116,7 +116,9 @@ void ntsc_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -125,7 +127,9 @@ void pal_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -134,7 +138,9 @@ void ntsc_hdtv_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC_HDTV );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -143,7 +149,9 @@ void pal_hdtv_color_bars_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
     using mrv::ColorBarsImage;
     ColorBarsImage* img = new ColorBarsImage( ColorBarsImage::kPAL_HDTV );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     b->add( img );
 }
@@ -157,7 +165,9 @@ static void gamma_chart( mrv::ImageBrowser* b, float g )
                              uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kGammaChart, m.w(), m.h() );
     img->gamma(g);
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_rendering_transform();
     img->gamma(1.0f);
     b->add( img );
@@ -189,7 +199,9 @@ void linear_gradient_cb( fltk::Widget* o, mrv::ImageBrowser* b )
                              uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kLinearGradient,
                                       m.w(), m.h() );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -204,7 +216,9 @@ void luminance_gradient_cb( fltk::Widget* o, mrv::ImageBrowser* b )
                              uiMain->y()+uiMain->h()/2);
     smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient,
                                       m.w(), m.h() );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -215,7 +229,9 @@ void checkered_cb( fltk::Widget* o, mrv::ImageBrowser* b )
     using mrv::smpteImage;
 
     smpteImage* img = new smpteImage( smpteImage::kCheckered, 640, 480 );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -230,7 +246,9 @@ void slate_cb( fltk::Widget* o, mrv::ImageBrowser* b )
     if ( !cur ) return;
 
     slateImage* img = new slateImage( cur->image() );
-    img->fetch(1);
+    mrv::image_type_ptr canvas;
+    img->fetch( canvas, 1 );
+    img->cache( canvas );
     img->default_icc_profile();
     img->default_rendering_transform();
     b->add( img );
@@ -396,7 +414,7 @@ mrv::Reel ImageBrowser::reel( const char* name )
                 if ( view()->playback() != CMedia::kStopped )
                     view()->stop();
             }
-	    std::cerr << "set _reel to " << idx << std::endl;
+            std::cerr << "set _reel to " << idx << std::endl;
             _reel = idx;
             change_reel();
             return *i;
@@ -421,7 +439,7 @@ mrv::Reel ImageBrowser::reel( unsigned idx )
         return _reels[ idx ];
     }
 
-    
+
     _reel = idx;
     change_reel();
     return _reels[ idx ];
@@ -1270,7 +1288,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     if ( img->has_video() || img->has_audio() )
     {
-        img->fetch( img->first_frame() );
+	image_type_ptr canvas;
+        img->fetch( canvas, img->first_frame() );
     }
     else
     {
@@ -1397,15 +1416,6 @@ mrv::media ImageBrowser::load_image( const char* name,
     return m;
 }
 
-void load_sequence( ImageBrowser::LThreadData* data )
-{
-    mrv::ImageView* view = data->view;
-    delete data;
-
-    while ( view->preload() )
-        ;;
-}
-
 /**
  * Open new image, sequence or movie file(s) from a load list.
  * If stereo is on, every two files are treated as stereo pairs.
@@ -1414,7 +1424,7 @@ void load_sequence( ImageBrowser::LThreadData* data )
 void ImageBrowser::load( const mrv::LoadList& files,
                          const bool stereo,
                          std::string bgimage,
-			 const bool edl,
+                         const bool edl,
                          const bool progressBar )
 {
 
@@ -1612,13 +1622,13 @@ void ImageBrowser::load( const mrv::LoadList& files,
         {
             progress->step(1);
             fltk::check();
-        } 
+        }
 
-	if ( edl )
-	{
-	    current_reel()->edl = true;
-	    uiMain->uiTimeline->edl( true );
-	}
+        if ( edl )
+        {
+            current_reel()->edl = true;
+            uiMain->uiTimeline->edl( true );
+        }
     }
 
     if ( w )
@@ -1728,7 +1738,7 @@ void ImageBrowser::load( const stringArray& files,
                          const bool seqs,
                          const bool stereo,
                          const std::string bgfile,
-			 const bool edl,
+                         const bool edl,
                          const bool progress )
 {
     stringArray::const_iterator i = files.begin();
@@ -2796,7 +2806,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
     int64_t f = (int64_t) uiMain->uiFrame->value();
     int64_t g = t->offset( img );
     f -= g;
-    
+
     reel->images.erase( reel->images.begin() + oldsel );
     if ( oldsel < sel ) sel -= 1;
 
@@ -3018,13 +3028,12 @@ void ImageBrowser::seek( const int64_t tframe )
 
         CMedia* img = fg->image();
         img->seek( f );
-        DBG( "img->stopped? " << img->stopped() );
 
         mrv::media bg = view()->background();
         if ( bg )
         {
             img = bg->image();
-	    f += img->first_frame() - 1;
+            f += img->first_frame() - 1;
             img->seek( f );
         }
     }
@@ -3051,10 +3060,10 @@ void ImageBrowser::frame( const int64_t f )
 {
     if ( uiMain->uiFrame )
     {
-	uiMain->uiFrame->value( f );
-	uiMain->uiFrame->redraw();
+        uiMain->uiFrame->value( f );
+        uiMain->uiFrame->redraw();
     }
-    
+
     mrv::Timeline* t = timeline();
     if ( t )
     {

@@ -306,7 +306,9 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 if ( img )
                 {
                     img->filename( name );
-                    img->fetch(1);
+		    image_type_ptr canvas;
+                    img->fetch( canvas, 1);
+		    img->cache( canvas );
                     img->default_icc_profile();
                     img->default_rendering_transform();
                     return img;
@@ -351,12 +353,10 @@ CMedia* CMedia::guess_image( const char* file,
                              const boost::uint8_t* datas,
                              const int len,
                              const bool is_thumbnail,
-                             const int64_t start,
-                             const int64_t end,
+                             int64_t start,
+                             int64_t end,
                              const bool avoid_seq )
 {
-    int64_t lastFrame = end;
-    int64_t frame = start;
 
     std::string tmp;
     std::string root = file;
@@ -366,13 +366,13 @@ CMedia* CMedia::guess_image( const char* file,
     bool is_seq = false;
 
     if ( root.find( "%V" ) != std::string::npos ||
-            root.find( "%v" ) != std::string::npos )
+	 root.find( "%v" ) != std::string::npos )
     {
         is_stereo = true;
     }
 
-    if ( start != AV_NOPTS_VALUE ||
-            end   != AV_NOPTS_VALUE )
+    mrv::get_sequence_limits( start, end, root, false );
+    if ( start != AV_NOPTS_VALUE || end   != AV_NOPTS_VALUE )
     {
         if ( mrv::fileroot( tmp, root ) )
         {
@@ -380,6 +380,9 @@ CMedia* CMedia::guess_image( const char* file,
             root = tmp;
         }
     }
+    
+    int64_t frame = start;
+    int64_t lastFrame = end;
 
     if ( (root.size() > 4 &&
             ( root.substr( root.size() - 4, root.size()) == ".xml" ||

@@ -133,7 +133,7 @@ bool oiioImage::release()
 }
 
 
-bool oiioImage::fetch( const boost::int64_t frame )
+bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 {
     std::string file = sequence_filename( frame );
     std::unique_ptr<ImageInput> in = ImageInput::open( file.c_str() );
@@ -149,11 +149,14 @@ bool oiioImage::fetch( const boost::int64_t frame )
     const ImageSpec &s = in->spec();
     ImageSpec& spec = const_cast< ImageSpec& >( s );
 
-    std::string fmt = in->format_name();
-    fmt = "OIIO (" + fmt + ")";
-    free( _format );
-    _format = strdup( fmt.c_str() );
-
+    {
+	SCOPED_LOCK( _mutex );
+	std::string fmt = in->format_name();
+	fmt = "OIIO (" + fmt + ")";
+	free( _format );
+	_format = strdup( fmt.c_str() );
+    }
+    
     if ( _level < 0 )
     {
         while ( in->seek_subimage( 0, _mipmaps, spec ) )
@@ -307,11 +310,11 @@ bool oiioImage::fetch( const boost::int64_t frame )
         return false;
     }
 
-    if ( allocate_pixels( frame, channels, type, pixel_type, dw, dh ) )
+    if ( allocate_pixels( canvas, frame, channels, type, pixel_type, dw, dh ) )
     {
         try
         {
-            Pixel* pixels = (Pixel*)_hires->data().get();
+            Pixel* pixels = (Pixel*)canvas->data().get();
             in->read_image (format, &pixels[0]);
         }
         catch ( const std::runtime_error& e )

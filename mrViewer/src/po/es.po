@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-02-08 15:04-0300\n"
+"POT-Creation-Date: 2019-02-09 10:03-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:3156 core/CMedia.cpp:3240
+#: core/CMedia.cpp:3244 core/CMedia.cpp:3328
 msgid ""
 "\n"
 "\n"
@@ -61,7 +61,7 @@ msgstr ""
 "(Variable de entorno:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 
-#: gui/mrvImageView.cpp:4405
+#: gui/mrvImageView.cpp:4368
 msgid "   NAN  "
 msgstr ""
 
@@ -73,20 +73,20 @@ msgstr "==>  Usando "
 msgid "  Choosing "
 msgstr "  Eligiendo "
 
-#: gui/mrvImageView.cpp:4410
+#: gui/mrvImageView.cpp:4373
 msgid "  INF.  "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:3360
+#: gui/mrvImageInformation.cpp:3376
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:1063
+#: core/mrvPlayback.cpp:1060
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:705
+#: core/mrvPlayback.cpp:704
 msgid " - decode Error audio frame "
 msgstr " - error de decodificacion del cuadro de audio "
 
@@ -95,7 +95,7 @@ msgstr " - error de decodificacion del cuadro de audio "
 msgid " Color Area Selection"
 msgstr " Seleccion de Área de Color"
 
-#: core/aviImage.cpp:2819
+#: core/aviImage.cpp:2820
 msgid " Could not open file"
 msgstr " No pude abrir el archivo"
 
@@ -135,7 +135,7 @@ msgstr " Fregar"
 msgid " Text"
 msgstr " Texto"
 
-#: gui/mrvImageView.cpp:3593
+#: gui/mrvImageView.cpp:3556
 #, c-format
 msgid " UF: %<PRId64> "
 msgstr " CNM: %<PRId64> "
@@ -145,11 +145,11 @@ msgid " already created: "
 msgstr " ya creada: "
 
 #
-#: core/CMedia.cpp:3991
+#: core/CMedia.cpp:4112
 msgid " as default"
 msgstr " por defecto"
 
-#: core/stubImage.cpp:881
+#: core/stubImage.cpp:882
 msgid " at port "
 msgstr " en el puerto "
 
@@ -193,15 +193,15 @@ msgstr " falló. "
 
 #
 #
-#: gui/mrvImageView.cpp:7245
+#: gui/mrvImageView.cpp:7233
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2201 core/aviImage.cpp:3868
+#: core/CMedia_audio.cpp:2201 core/aviImage.cpp:3875
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:3157 core/CMedia.cpp:3241
+#: core/CMedia.cpp:3245 core/CMedia.cpp:3329
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -225,12 +225,12 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:3858
+#: core/CMedia.cpp:3977
 msgid " is missing."
 msgstr " está faltante."
 
 #
-#: core/CMedia.cpp:3879
+#: core/CMedia.cpp:3998
 msgid " is missing. Choosing "
 msgstr " está faltante. Eligiendo "
 
@@ -242,12 +242,12 @@ msgstr " está seteado.  Cargué "
 msgid " not found"
 msgstr " no encontrado"
 
-#: gui/mrvImageBrowser.cpp:1012
+#: gui/mrvImageBrowser.cpp:1030
 msgid " not found in reel"
 msgstr " no encontrada en el carrete"
 
 #
-#: gui/mrvImageBrowser.cpp:2271
+#: gui/mrvImageBrowser.cpp:2281
 msgid " not found on disk for "
 msgstr " no encontradas en el disco para "
 
@@ -255,15 +255,15 @@ msgstr " no encontradas en el disco para "
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:4020
+#: core/aviImage.cpp:4027
 msgid " not yet supported"
 msgstr " no soportado aún"
 
-#: core/mrvPlayback.cpp:1064
+#: core/mrvPlayback.cpp:1061
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3882
+#: core/aviImage.cpp:3889
 msgid " status: "
 msgstr " estatus: "
 
@@ -272,7 +272,7 @@ msgid " to"
 msgstr " a "
 
 #: core/aviImage_save.cpp:581 gui/FLU/Flu_File_Chooser.cpp:4683
-#: gui/mrvImageBrowser.cpp:2270
+#: gui/mrvImageBrowser.cpp:2280
 msgid " to "
 msgstr " a "
 
@@ -288,15 +288,15 @@ msgstr " cuadro de video, cache "
 msgid " vs. "
 msgstr ""
 
-#: core/exrImage.cpp:352
+#: core/exrImage.cpp:354
 msgid "\" has no channels named with prefix \""
 msgstr "\" no tiene canales con el prefijo \""
 
-#: core/exrImage.cpp:357
+#: core/exrImage.cpp:359
 msgid "\" has no channels."
 msgstr " no tiene canales."
 
-#: core/guessImage.cpp:316
+#: core/guessImage.cpp:318
 msgid "\" not found."
 msgstr "\" no encontrada."
 
@@ -306,9 +306,9 @@ msgstr "\" no encontrada."
 
 #: core/mrSocket.cpp:113 core/mrSocket.cpp:158
 msgid "\" to protocol number"
-msgstr "\" a numero de protocolo"
+msgstr "\" a número de protocolo"
 
-#: gui/mrvImageBrowser.cpp:589
+#: gui/mrvImageBrowser.cpp:607
 #, c-format
 msgid ""
 "#\n"
@@ -329,22 +329,22 @@ msgstr ""
 "Version 3.0\n"
 "Ghosting %d %d\n"
 
-#: gui/mrvImageInformation.cpp:2366
+#: gui/mrvImageInformation.cpp:2381
 #, c-format
 msgid "%4.8g %%"
 msgstr "%4.8g %%"
 
-#: gui/mrvImageInformation.cpp:3348
+#: gui/mrvImageInformation.cpp:3364
 #, c-format
 msgid "%<PRId64> seconds %d ms."
 msgstr "%<PRId64> segundos %d ms."
 
-#: gui/mrvImageInformation.cpp:2542
+#: gui/mrvImageInformation.cpp:2558
 #, c-format
 msgid "%d Hz."
 msgstr "%d Hz."
 
-#: gui/mrvImageInformation.cpp:2544 gui/mrvImageInformation.cpp:2582
+#: gui/mrvImageInformation.cpp:2560 gui/mrvImageInformation.cpp:2598
 #, c-format
 msgid "%d kb/s"
 msgstr "%d kb/s"
@@ -354,12 +354,12 @@ msgid "' for writing. Reason: "
 msgstr "' para escritura. Razón: "
 
 #
-#: core/CMedia.cpp:3991
+#: core/CMedia.cpp:4112
 msgid "' from bitdepth "
 msgstr "' de profundidad en bits: "
 
 #
-#: core/CMedia.cpp:3945
+#: core/CMedia.cpp:4066
 msgid "' from filename"
 msgstr "' del nombre del archivo"
 
@@ -367,7 +367,7 @@ msgstr "' del nombre del archivo"
 msgid "' to save."
 msgstr "' para grabar."
 
-#: gui/mrvImageInformation.cpp:585 gui/mrvImageInformation.cpp:1982
+#: gui/mrvImageInformation.cpp:585 gui/mrvImageInformation.cpp:1990
 msgid "' type '"
 msgstr "' tipo '"
 
@@ -381,29 +381,29 @@ msgstr "El atributo '%s' ya existe"
 msgid "'. Reason: "
 msgstr "'. Razón: "
 
-#: gui/mrvImageInformation.cpp:2297
+#: gui/mrvImageInformation.cpp:2312
 msgid "(IDT) Input Device Transform"
 msgstr "(IDT) Transformación de Dispositivo de Entrada"
 
-#: gui/mrvImageInformation.cpp:2308
+#: gui/mrvImageInformation.cpp:2323
 msgid "(LMT) Look Mod Transform"
 msgstr "(LMT) Transformacion de Modificacion de Look"
 
-#: gui/mrvImageInformation.cpp:2491
+#: gui/mrvImageInformation.cpp:2507
 msgid "(NTSC Fields)"
 msgstr "(Campos NTSC)"
 
-#: gui/mrvImageInformation.cpp:2490
+#: gui/mrvImageInformation.cpp:2506
 msgid "(PAL Fields)"
 msgstr "(Campos PAL)"
 
-#: gui/mrvImageInformation.cpp:2315
+#: gui/mrvImageInformation.cpp:2330
 msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4141
-#: gui/mrvImageView.cpp:7223 gui/mrvImageView.cpp:7840
-#: gui/mrvImageView.cpp:7841 gui/mrvImageView.cpp:7848
+#: gui/mrvImageView.cpp:7211 gui/mrvImageView.cpp:7828
+#: gui/mrvImageView.cpp:7829 gui/mrvImageView.cpp:7836
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -417,7 +417,7 @@ msgid ") for movie file"
 msgstr ") para la película"
 
 #
-#: gui/mrvImageBrowser.cpp:938
+#: gui/mrvImageBrowser.cpp:956
 msgid ") out of bounds"
 msgstr ") fuera de rango"
 
@@ -445,7 +445,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:3157 core/CMedia.cpp:3241
+#: core/CMedia.cpp:3245 core/CMedia.cpp:3329
 msgid ", type "
 msgstr ", tipo "
 
@@ -586,7 +586,7 @@ msgid "15"
 msgstr "15"
 
 #
-#: core/CMedia.cpp:3963
+#: core/CMedia.cpp:4084
 msgid "16 bits"
 msgstr ""
 
@@ -681,7 +681,7 @@ msgstr "29,97"
 msgid "30"
 msgstr "30"
 
-#: core/CMedia.cpp:3970
+#: core/CMedia.cpp:4091
 msgid "32 bits"
 msgstr ""
 
@@ -792,7 +792,7 @@ msgstr "70mm"
 msgid "8 bit Caches"
 msgstr "Caches de 8 bits"
 
-#: core/CMedia.cpp:3956
+#: core/CMedia.cpp:4077
 msgid "8 bits"
 msgstr ""
 
@@ -831,7 +831,7 @@ msgid ": Error "
 msgstr ": Error "
 
 #
-#: core/oiioImage.cpp:416
+#: core/oiioImage.cpp:419
 msgid ": Unknown pixel type"
 msgstr ": Tipo de pixel desconocido"
 
@@ -906,7 +906,7 @@ msgstr "Metadatos ACES Clip"
 msgid "ACES metadata"
 msgstr "Metadatos ACES"
 
-#: gui/mrvImageView.cpp:284
+#: gui/mrvImageView.cpp:285
 msgid "ALPHA"
 msgstr "ALFA"
 
@@ -928,7 +928,7 @@ msgstr "Acerca de mrViewer"
 msgid "About mrViewer"
 msgstr "Acerca de mrViewer"
 
-#: gui/mrvImageInformation.cpp:2260
+#: gui/mrvImageInformation.cpp:2275
 msgid "Absolute"
 msgstr "Absoluto"
 
@@ -994,7 +994,7 @@ msgstr "Agregar Metadata IPTC"
 msgid "Add this directory to my favorites"
 msgstr "Agregar esta carpeta a mis favoritos"
 
-#: core/exrImage.cpp:1194 core/exrImage.cpp:2451 core/exrImage.cpp:2455
+#: core/exrImage.cpp:1202 core/exrImage.cpp:2467 core/exrImage.cpp:2471
 msgid "Adopted Neutral"
 msgstr "Neutral Adoptado"
 
@@ -1076,15 +1076,15 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1819 core/CMedia.cpp:1902 core/exrImage.cpp:3010
-#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:185 gui/mrvImageView.cpp:7335
-#: gui/mrvImageView.cpp:7753
+#: core/CMedia.cpp:1854 core/CMedia.cpp:1937 core/exrImage.cpp:3026
+#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:186 gui/mrvImageView.cpp:7323
+#: gui/mrvImageView.cpp:7741
 msgid "Alpha"
 msgstr "Alfa"
 
-#: core/CMedia.cpp:1821 core/CMedia.cpp:1902 core/exrImage.cpp:3008
-#: core/wandImage.cpp:1163 gui/mrvImageView.cpp:186 gui/mrvImageView.cpp:1553
-#: gui/mrvImageView.cpp:7316
+#: core/CMedia.cpp:1856 core/CMedia.cpp:1937 core/exrImage.cpp:3024
+#: core/wandImage.cpp:1163 gui/mrvImageView.cpp:187 gui/mrvImageView.cpp:1554
+#: gui/mrvImageView.cpp:7304
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -1096,8 +1096,8 @@ msgstr "Valor de alfa de la imagen del pixel bajo el mouse."
 msgid "Alt"
 msgstr "Alt"
 
-#: core/exrImage.cpp:1267 core/exrImage.cpp:2423 core/exrImage.cpp:2427
-#: core/exrImage.cpp:2508 core/exrImage.cpp:2512
+#: core/exrImage.cpp:1276 core/exrImage.cpp:2439 core/exrImage.cpp:2443
+#: core/exrImage.cpp:2524 core/exrImage.cpp:2528
 msgid "Altitude"
 msgstr "Altitud"
 
@@ -1138,7 +1138,7 @@ msgstr "Siempre use Sin Especificar"
 msgid "An error ocurred while trying to delete '%s'."
 msgstr "Un error ocurrió al intentar borrar '%s'."
 
-#: core/exrImage.cpp:1297 core/exrImage.cpp:2531 core/exrImage.cpp:2535
+#: core/exrImage.cpp:1306 core/exrImage.cpp:2547 core/exrImage.cpp:2551
 msgid "Aperture"
 msgstr "Apertura"
 
@@ -1146,7 +1146,7 @@ msgstr "Apertura"
 msgid "Apply: "
 msgstr "Aplicar: "
 
-#: gui/mrvImageBrowser.cpp:1960
+#: gui/mrvImageBrowser.cpp:1970
 msgid ""
 "Are you sure you want to\n"
 "remove image from reel?"
@@ -1154,7 +1154,7 @@ msgstr ""
 "¿Estás seguro que querés\n"
 "borrar la imagen del carrete?"
 
-#: gui/mrvImageBrowser.cpp:688
+#: gui/mrvImageBrowser.cpp:706
 msgid ""
 "Are you sure you want to\n"
 "remove the reel?"
@@ -1175,11 +1175,11 @@ msgstr "Modo de Selección de Area"
 msgid "Area Select Tool"
 msgstr "Herramienta de Seleccion de Área"
 
-#: gui/mrvImageInformation.cpp:2070
+#: gui/mrvImageInformation.cpp:2078
 msgid "Aspect Ratio"
 msgstr "Proporción de Aspecto"
 
-#: gui/mrvImageInformation.cpp:2070
+#: gui/mrvImageInformation.cpp:2078
 msgid "Aspect ratio of clip"
 msgstr "Proporción de Aspecto del clip"
 
@@ -1196,7 +1196,7 @@ msgstr "Asociar Archivo de Audio"
 msgid "Attach ICC Profile"
 msgstr "Agregar Perfil ICC"
 
-#: gui/mrvImageInformation.cpp:2642
+#: gui/mrvImageInformation.cpp:2658
 msgid "Attribute"
 msgstr "Atributo"
 
@@ -1208,7 +1208,7 @@ msgstr "Atributos"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3460
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3675
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3745
-#: gui/mrvImageInformation.cpp:726 gui/mrvImageInformation.cpp:2447
+#: gui/mrvImageInformation.cpp:726 gui/mrvImageInformation.cpp:2463
 msgid "Audio"
 msgstr "Audio"
 
@@ -1222,12 +1222,12 @@ msgstr "Audio "
 msgid "Audio Options"
 msgstr "Opciones de Audio:"
 
-#: gui/mrvImageInformation.cpp:2518
+#: gui/mrvImageInformation.cpp:2534
 #, c-format
 msgid "Audio Stream #%d"
 msgstr "Pista de Audio #%d"
 
-#: gui/mrvImageInformation.cpp:2007
+#: gui/mrvImageInformation.cpp:2015
 msgid "Audio Streams"
 msgstr "Pistas de Audio"
 
@@ -1251,15 +1251,15 @@ msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 msgid "Audio packets empty at end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
-#: gui/mrvImageView.cpp:4245
+#: gui/mrvImageView.cpp:4208
 msgid "Audio/Attach Audio File"
 msgstr "Audio/Agregar Archivo de Audio"
 
-#: gui/mrvImageView.cpp:4250
+#: gui/mrvImageView.cpp:4213
 msgid "Audio/Detach Audio File"
 msgstr "Audio/Disasociar Archivo de Audio"
 
-#: gui/mrvImageView.cpp:4247
+#: gui/mrvImageView.cpp:4210
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
@@ -1293,7 +1293,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Auto load images as they change on disk"
 msgstr "Auto cargar imágenes si cambian en el disco"
 
-#: gui/mrvImageInformation.cpp:2583
+#: gui/mrvImageInformation.cpp:2599
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
@@ -1304,7 +1304,7 @@ msgstr "Bitrate Promedio"
 msgid "B"
 msgstr "A"
 
-#: gui/mrvImageInformation.cpp:2477
+#: gui/mrvImageInformation.cpp:2493
 msgid "B Frames"
 msgstr "Cuadros B"
 
@@ -1323,7 +1323,7 @@ msgstr ""
 msgid "BG"
 msgstr "FD"
 
-#: gui/mrvImageView.cpp:280
+#: gui/mrvImageView.cpp:281
 msgid "BLUE"
 msgstr "AZUL"
 
@@ -1353,7 +1353,7 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:1003
+#: core/mrvPlayback.cpp:1002
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
@@ -1361,7 +1361,7 @@ msgstr ""
 "funcionar correctamente."
 
 #
-#: core/mrvPlayback.cpp:1010
+#: core/mrvPlayback.cpp:1009
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -1370,13 +1370,13 @@ msgstr ""
 "Los cps de la imagen de fondo ( %lg ) no es igual a la del frente ( %lg ). "
 "Repetir en ciclos no funcionará correctamente."
 
-#: core/mrvPlayback.cpp:987
+#: core/mrvPlayback.cpp:986
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
 "correctamente."
 
-#: core/mrvPlayback.cpp:977
+#: core/mrvPlayback.cpp:976
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -1386,13 +1386,13 @@ msgstr ""
 
 #: core/mrSocket.cpp:99 core/mrSocket.cpp:152
 msgid "Bad port number "
-msgstr "Mal numero de puerto"
+msgstr "Mal número de puerto"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:33
 msgid "Baseline"
 msgstr "Básica"
 
-#: gui/mrvImageInformation.cpp:2153
+#: gui/mrvImageInformation.cpp:2161
 msgid "Bit depth of clip"
 msgstr "Profundidad de Bits del clip"
 
@@ -1418,8 +1418,8 @@ msgstr "Modo de Mezcla"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1990
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
-#: core/CMedia.cpp:1835 core/CMedia.cpp:1901 core/exrImage.cpp:3010
-#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:184 gui/mrvImageView.cpp:7330
+#: core/CMedia.cpp:1870 core/CMedia.cpp:1936 core/exrImage.cpp:3026
+#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:185 gui/mrvImageView.cpp:7318
 msgid "Blue"
 msgstr "Azul"
 
@@ -1431,7 +1431,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:8984
+#: gui/mrvImageView.cpp:8982
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -1459,7 +1459,7 @@ msgstr "Caja2 Entero"
 msgid "Buffer underrun: "
 msgstr "Buffer infrautilizado: "
 
-#: core/stubImage.cpp:979
+#: core/stubImage.cpp:980
 msgid "Buffer was NULL - internal error"
 msgstr "Buffer es NULL - error interno"
 
@@ -1484,15 +1484,15 @@ msgstr ""
 msgid "CIE xyY"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:2282
+#: gui/mrvImageInformation.cpp:2297
 msgid "CIExy Chromaticities"
 msgstr "Cromaticidades CIExy"
 
-#: gui/mrvImageInformation.cpp:2284
+#: gui/mrvImageInformation.cpp:2299
 msgid "CIExy White Point"
 msgstr "Punto Blanco CIExy"
 
-#: gui/mrvImageView.cpp:274
+#: gui/mrvImageView.cpp:275
 msgid "COLOR"
 msgstr ""
 
@@ -1565,7 +1565,7 @@ msgstr "No pude crear buffer sink"
 msgid "Cannot create buffer source"
 msgstr "No pude crear buffer source"
 
-#: core/rawImage.cpp:131 core/rawImage.cpp:172
+#: core/rawImage.cpp:131 core/rawImage.cpp:173
 msgid "Cannot create libraw handle"
 msgstr "No pude crear manejo de libraw"
 
@@ -1577,7 +1577,7 @@ msgstr "No puedo mapear \""
 msgid "Cannot set output pixel format"
 msgstr "No pude setear formato de render de pixel de salida"
 
-#: gui/mrvImageView.cpp:504
+#: gui/mrvImageView.cpp:505
 msgid "Cannot switch images.  Foreground and background image are the same."
 msgstr ""
 "No puedo intercambiar imágenes.  La imagen de frente y fondo son la misma."
@@ -1598,8 +1598,8 @@ msgstr "Mensaje"
 msgid "Caption Writer"
 msgstr "Escritor del Mensaje"
 
-#: core/exrImage.cpp:2479 core/exrImage.cpp:2483 core/hdrImage.cpp:170
-#: gui/mrvImageInformation.cpp:2397
+#: core/exrImage.cpp:2495 core/exrImage.cpp:2499 core/hdrImage.cpp:170
+#: gui/mrvImageInformation.cpp:2412
 msgid "Capture Date"
 msgstr "Fecha de Captura"
 
@@ -1619,7 +1619,7 @@ msgstr "Cambia muestreo de cuadro/campo"
 msgid "Channel"
 msgstr "Canal"
 
-#: gui/mrvImageInformation.cpp:2541
+#: gui/mrvImageInformation.cpp:2557
 msgid "Channels"
 msgstr "Canales"
 
@@ -1651,7 +1651,7 @@ msgstr "Cromaticidades"
 msgid "Chromaticities (CIE)"
 msgstr "Cromaticidades (CIE)"
 
-#: core/exrImage.cpp:1183 core/exrImage.cpp:2437 core/exrImage.cpp:2441
+#: core/exrImage.cpp:1191 core/exrImage.cpp:2453 core/exrImage.cpp:2457
 msgid "Chromaticities Name"
 msgstr "Nombre de Cromaticidades"
 
@@ -1679,11 +1679,11 @@ msgstr "Cliente"
 msgid "Client Exception: "
 msgstr "Excepción del cliente: "
 
-#: gui/mrvImageInformation.cpp:2338
+#: gui/mrvImageInformation.cpp:2353
 msgid "Clip Compression"
 msgstr "Compresión del clip"
 
-#: gui/mrvImageInformation.cpp:2015
+#: gui/mrvImageInformation.cpp:2023
 msgid "Clip is a sequence of frames"
 msgstr "El Clip es una secuencia de cuadros."
 
@@ -1695,7 +1695,7 @@ msgstr "Clonar la Imagen"
 msgid "Clone image"
 msgstr "Clonar la Imagen"
 
-#: gui/mrvImageBrowser.cpp:276
+#: gui/mrvImageBrowser.cpp:294
 #, c-format
 msgid ""
 "Cloned Image\n"
@@ -1713,14 +1713,14 @@ msgid "Closed movie file"
 msgstr "Cerré la creación de la película o secuencia"
 
 #
-#: core/mrvServer.cpp:2255
+#: core/mrvServer.cpp:2254
 msgid "Closed server at port "
 msgstr "Cerré el servidor en el puerto "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:138
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:223
-#: gui/mrvImageInformation.cpp:2475 gui/mrvImageInformation.cpp:2526
-#: gui/mrvImageInformation.cpp:2578
+#: gui/mrvImageInformation.cpp:2491 gui/mrvImageInformation.cpp:2542
+#: gui/mrvImageInformation.cpp:2594
 msgid "Codec"
 msgstr "Codec"
 
@@ -1739,7 +1739,7 @@ msgstr ""
 "para DVD y prores es un buen codec para trabajos de edición.  Finalymente, "
 "ffv1 is bueno para la preservación ya que es un codec sin pérdida."
 
-#: gui/mrvImageInformation.cpp:2475 gui/mrvImageInformation.cpp:2526
+#: gui/mrvImageInformation.cpp:2491 gui/mrvImageInformation.cpp:2542
 msgid "Codec Name"
 msgstr "Nombre del Codec"
 
@@ -1747,7 +1747,7 @@ msgstr "Nombre del Codec"
 msgid "Codec has variable frame size.  Setting it to "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:2578
+#: gui/mrvImageInformation.cpp:2594
 msgid "Codec name"
 msgstr "Nombre del Codec"
 
@@ -1757,12 +1757,12 @@ msgstr "Codecs"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:152
-#: core/CMedia.cpp:1832 core/CMedia.cpp:1900 core/exrImage.cpp:2755
-#: core/exrImage.cpp:3012 core/exrImage.cpp:3020 core/exrImage.cpp:3032
-#: core/exrImage.cpp:3037 core/exrImage.cpp:3039 core/exrImage.cpp:3077
-#: core/exrImage.cpp:3109 core/wandImage.cpp:1124 core/wandImage.cpp:1186
-#: gui/mrvImageView.cpp:177 gui/mrvImageView.cpp:1595 gui/mrvImageView.cpp:1650
-#: gui/mrvImageView.cpp:7803 gui/mrvImageView.cpp:7848
+#: core/CMedia.cpp:1867 core/CMedia.cpp:1935 core/exrImage.cpp:2771
+#: core/exrImage.cpp:3028 core/exrImage.cpp:3036 core/exrImage.cpp:3048
+#: core/exrImage.cpp:3053 core/exrImage.cpp:3055 core/exrImage.cpp:3093
+#: core/exrImage.cpp:3125 core/wandImage.cpp:1124 core/wandImage.cpp:1186
+#: gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:1596 gui/mrvImageView.cpp:1651
+#: gui/mrvImageView.cpp:7791 gui/mrvImageView.cpp:7836
 msgid "Color"
 msgstr "Color"
 
@@ -1779,17 +1779,17 @@ msgstr "Información de Area de Color"
 msgid "Color Profiles (*."
 msgstr "Perfiles ICC (*."
 
-#: gui/mrvImageInformation.cpp:2163
+#: gui/mrvImageInformation.cpp:2178
 msgid "Color Range"
 msgstr "Rango de Color"
 
-#: gui/mrvImageInformation.cpp:2160
+#: gui/mrvImageInformation.cpp:2175
 msgid "Color Space"
 msgstr "Espacio de Color"
 
 #
 #
-#: gui/mrvImageView.cpp:7145
+#: gui/mrvImageView.cpp:7133
 msgid "Color channel not found at index "
 msgstr "Canal de color no encontrado para índice "
 
@@ -1808,8 +1808,8 @@ msgstr ""
 msgid "Colorspace details not set "
 msgstr "No pude setear detalles de espacio de color "
 
-#: core/exrImage.cpp:1226 core/exrImage.cpp:2444 core/exrImage.cpp:2447
-#: core/exrImage.cpp:2448 core/exrImage.cpp:2472 core/exrImage.cpp:2476
+#: core/exrImage.cpp:1235 core/exrImage.cpp:2460 core/exrImage.cpp:2463
+#: core/exrImage.cpp:2464 core/exrImage.cpp:2488 core/exrImage.cpp:2492
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -1829,15 +1829,15 @@ msgstr "Composición"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:57
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3606
-#: gui/mrvImageInformation.cpp:2338
+#: gui/mrvImageInformation.cpp:2353
 msgid "Compression"
 msgstr "Compresión"
 
-#: gui/mrvImageInformation.cpp:2367
+#: gui/mrvImageInformation.cpp:2382
 msgid "Compression Ratio"
 msgstr "Proporción de Compresión"
 
-#: core/exrImage.cpp:2785
+#: core/exrImage.cpp:2801
 msgid "Compression method not available. Using PIZ."
 msgstr "Método de compresión no disponible.  Usando PIZ."
 
@@ -2016,11 +2016,11 @@ msgstr "No pude dibujar imagen"
 msgid "Could not encode audio frame: "
 msgstr "No pude codificar cuadro de audio:"
 
-#: core/exrImage.cpp:2126
+#: core/exrImage.cpp:2140
 msgid "Could not find both stereo images in file"
 msgstr "No pude encontrar ambas imágenes de estereo en el archivo"
 
-#: core/exrImage.cpp:2110
+#: core/exrImage.cpp:2124
 msgid "Could not find both stereo images in multiview file"
 msgstr "No pude encontrar ambas imágenes de estereo en el archivo multivista"
 
@@ -2217,15 +2217,15 @@ msgstr "No pude inicializar el cmm: "
 msgid "Could not initialize audio engine"
 msgstr "No pude inicializar el motor de audio"
 
-#: gui/mrvImageView.cpp:1690
+#: gui/mrvImageView.cpp:1691
 msgid "Could not initialize draw engine"
 msgstr "No pude inicializar el motor de dibujo"
 
-#: gui/mrvImageBrowser.cpp:1559
+#: gui/mrvImageBrowser.cpp:1569
 msgid "Could not load '"
 msgstr "No pude cargar '"
 
-#: core/shmapImage.cpp:129
+#: core/shmapImage.cpp:130
 msgid "Could not load shadow map image"
 msgstr "No pude cargar imagen de mapeo de sombras"
 
@@ -2233,7 +2233,7 @@ msgstr "No pude cargar imagen de mapeo de sombras"
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: core/exrImage.cpp:2191 core/exrImage.cpp:2259 core/exrImage.cpp:2286
+#: core/exrImage.cpp:2204 core/exrImage.cpp:2274 core/exrImage.cpp:2301
 msgid "Could not locate channels in header"
 msgstr "No pude localizar canales en el encabezado"
 
@@ -2298,7 +2298,7 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:2368 core/aviImage.cpp:924 core/aviImage.cpp:941
+#: core/CMedia.cpp:2404 core/aviImage.cpp:924 core/aviImage.cpp:941
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -2472,7 +2472,7 @@ msgstr "Código de País"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1007
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4023
-#: core/mrvServer.cpp:2226
+#: core/mrvServer.cpp:2225
 msgid "Create"
 msgstr "Crear"
 
@@ -2492,51 +2492,51 @@ msgstr "Crear conversión de audio desde "
 msgid "Create new directory"
 msgstr "Crear un directorio nuevo"
 
-#: gui/mrvImageBrowser.cpp:2627
+#: gui/mrvImageBrowser.cpp:2637
 msgid "Create/Checkered"
 msgstr "Crear/Cuadriculado"
 
-#: gui/mrvImageBrowser.cpp:2611
+#: gui/mrvImageBrowser.cpp:2621
 msgid "Create/Color Bars/PAL"
 msgstr "Crear/Barras de Color/PAL"
 
-#: gui/mrvImageBrowser.cpp:2613
+#: gui/mrvImageBrowser.cpp:2623
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Crear/Barras de Color/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:2607
+#: gui/mrvImageBrowser.cpp:2617
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Crear/Barras de Color/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:2609
+#: gui/mrvImageBrowser.cpp:2619
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Crear/Barras de Color/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:2615
+#: gui/mrvImageBrowser.cpp:2625
 msgid "Create/Gamma Chart/1.4"
 msgstr "Crear/Carta de Gama/1.4"
 
-#: gui/mrvImageBrowser.cpp:2617
+#: gui/mrvImageBrowser.cpp:2627
 msgid "Create/Gamma Chart/1.8"
 msgstr "Crear/Carta de Gama/1.8"
 
-#: gui/mrvImageBrowser.cpp:2619
+#: gui/mrvImageBrowser.cpp:2629
 msgid "Create/Gamma Chart/2.2"
 msgstr "Crear/Carta de Gama/2.2"
 
-#: gui/mrvImageBrowser.cpp:2621
+#: gui/mrvImageBrowser.cpp:2631
 msgid "Create/Gamma Chart/2.4"
 msgstr "Crear/Carta de Gama/2.4"
 
-#: gui/mrvImageBrowser.cpp:2623
+#: gui/mrvImageBrowser.cpp:2633
 msgid "Create/Gradient/Linear"
 msgstr "Crear/Graduación/Linear"
 
-#: gui/mrvImageBrowser.cpp:2625
+#: gui/mrvImageBrowser.cpp:2635
 msgid "Create/Gradient/Luminance"
 msgstr "Crear/Graduación/Luminancia"
 
-#: gui/mrvImageBrowser.cpp:2631
+#: gui/mrvImageBrowser.cpp:2641
 msgid "Create/Slate"
 msgstr "Crear/Planilla"
 
@@ -2548,11 +2548,11 @@ msgstr "Fecha Creado"
 msgid "Created Time"
 msgstr "Tiempo Creado"
 
-#: core/mrvServer.cpp:2252
+#: core/mrvServer.cpp:2251
 msgid "Created server at port "
 msgstr "Creé un servidor en el puerto "
 
-#: gui/mrvImageInformation.cpp:2373
+#: gui/mrvImageInformation.cpp:2388
 msgid "Creation Date"
 msgstr "Fecha de Creación"
 
@@ -2666,7 +2666,7 @@ msgstr "Cortar Clip en el lugar actual"
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
-#: gui/mrvImageView.cpp:3526
+#: gui/mrvImageView.cpp:3488
 #, c-format
 msgid "DAW: %d,%d %dx%d"
 msgstr "VDA: %d,%d %dx%d"
@@ -2705,21 +2705,21 @@ msgstr ""
 msgid "DWAB"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3531
+#: gui/mrvImageView.cpp:3493
 #, c-format
 msgid "DYW: %d,%d %dx%d"
 msgstr "VDY: %d,%d %dx%d"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2255
-#: gui/mrvHotkey.cpp:290 gui/mrvImageInformation.cpp:2096
+#: gui/mrvHotkey.cpp:290 gui/mrvImageInformation.cpp:2104
 msgid "Data Window"
 msgstr "Ventana de Datos"
 
-#: gui/mrvImageInformation.cpp:2108
+#: gui/mrvImageInformation.cpp:2116
 msgid "Data Window 2"
 msgstr "Ventana de Datos 2"
 
-#: gui/mrvImageInformation.cpp:2096
+#: gui/mrvImageInformation.cpp:2104
 msgid "Data Window of Clip"
 msgstr "Ventana de Datos del Clip"
 
@@ -2731,47 +2731,47 @@ msgstr "Fecha"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/CMedia.cpp:171 core/CMedia.cpp:4284
+#: core/CMedia.cpp:171 core/CMedia.cpp:4405
 msgid "Decode Buffer Full"
 msgstr "Buffer de Decodificación Lleno"
 
-#: core/CMedia.cpp:165 core/CMedia.cpp:4266
+#: core/CMedia.cpp:165 core/CMedia.cpp:4387
 msgid "Decode Done"
 msgstr "Decodificación Terminada"
 
-#: core/CMedia.cpp:166 core/CMedia.cpp:4269
+#: core/CMedia.cpp:166 core/CMedia.cpp:4390
 msgid "Decode Error"
 msgstr "Error de Decodificación"
 
-#: core/CMedia.cpp:170 core/CMedia.cpp:4281
+#: core/CMedia.cpp:170 core/CMedia.cpp:4402
 msgid "Decode Loop End"
 msgstr "Loop de Final en Decodificación"
 
-#: core/CMedia.cpp:169 core/CMedia.cpp:4278
+#: core/CMedia.cpp:169 core/CMedia.cpp:4399
 msgid "Decode Loop Start"
 msgstr "Loop de Comienzo en Decodificación"
 
-#: core/CMedia.cpp:163 core/CMedia.cpp:4260
+#: core/CMedia.cpp:163 core/CMedia.cpp:4381
 msgid "Decode Missing Frame"
 msgstr "Decodificación Faltante de Cuadro"
 
-#: core/CMedia.cpp:167 core/CMedia.cpp:4272
+#: core/CMedia.cpp:167 core/CMedia.cpp:4393
 msgid "Decode Missing Samples"
 msgstr "Decodificacion Faltante de Samples"
 
-#: core/CMedia.cpp:168 core/CMedia.cpp:4275
+#: core/CMedia.cpp:168 core/CMedia.cpp:4396
 msgid "Decode No Stream"
 msgstr "Decodificacion sin Pista"
 
-#: core/CMedia.cpp:164 core/CMedia.cpp:4263
+#: core/CMedia.cpp:164 core/CMedia.cpp:4384
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2199 core/aviImage.cpp:3866
+#: core/CMedia_audio.cpp:2199 core/aviImage.cpp:3873
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3880
+#: core/aviImage.cpp:3887
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2852,7 +2852,7 @@ msgstr "Borrar carrete actual."
 msgid "Delete file(s)"
 msgstr "Borrar archivo(s)"
 
-#: gui/mrvImageInformation.cpp:2153
+#: gui/mrvImageInformation.cpp:2161
 msgid "Depth"
 msgstr "Profundidad"
 
@@ -2898,7 +2898,7 @@ msgid "Digital Video"
 msgstr "Vídeo Digital"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2276
-#: gui/FLU/Flu_File_Chooser.cpp:130 gui/mrvImageInformation.cpp:1992
+#: gui/FLU/Flu_File_Chooser.cpp:130 gui/mrvImageInformation.cpp:2000
 msgid "Directory"
 msgstr "Carpeta"
 
@@ -2906,11 +2906,11 @@ msgstr "Carpeta"
 msgid "Directory "
 msgstr "Carpeta "
 
-#: gui/mrvImageInformation.cpp:1992
+#: gui/mrvImageInformation.cpp:2000
 msgid "Directory where clip resides"
 msgstr "Directorio donde el clip reside"
 
-#: gui/mrvImageBrowser.cpp:289
+#: gui/mrvImageBrowser.cpp:307
 #, c-format
 msgid ""
 "Directory: %s\n"
@@ -2923,7 +2923,7 @@ msgstr ""
 "Resolución: %dx%d\n"
 "Cuadros: %<PRId64>-%<PRId64> CPS %g"
 
-#: core/mrvClient.cpp:259 core/mrvServer.cpp:2197
+#: core/mrvClient.cpp:259 core/mrvServer.cpp:2196
 msgid "Disconnect"
 msgstr "Desconectar"
 
@@ -2931,7 +2931,7 @@ msgstr "Desconectar"
 msgid "Disconnected from "
 msgstr "Desconectado de "
 
-#: gui/mrvImageInformation.cpp:2360
+#: gui/mrvImageInformation.cpp:2375
 msgid "Disk space"
 msgstr "Espacio en Disco"
 
@@ -2940,20 +2940,20 @@ msgstr "Espacio en Disco"
 msgid "Display"
 msgstr "Display"
 
-#: gui/mrvImageInformation.cpp:2272
+#: gui/mrvImageInformation.cpp:2287
 msgid "Display Gamma of Image"
 msgstr "Gama de Display de la Imagen"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2248
-#: gui/mrvHotkey.cpp:289 gui/mrvImageInformation.cpp:2100
+#: gui/mrvHotkey.cpp:289 gui/mrvImageInformation.cpp:2108
 msgid "Display Window"
 msgstr "Ventana de Display"
 
-#: gui/mrvImageInformation.cpp:2115
+#: gui/mrvImageInformation.cpp:2123
 msgid "Display Window 2"
 msgstr "Ventana de Display 2"
 
-#: gui/mrvImageInformation.cpp:2100
+#: gui/mrvImageInformation.cpp:2108
 msgid "Display Window of Clip"
 msgstr "Ventana de Display del Clip"
 
@@ -2970,13 +2970,13 @@ msgstr ""
 "Muestra ganancia como exposición del film y fstop.\n"
 "Cliquea para cambiar de actual valor a exposición normal."
 
-#: gui/mrvImageInformation.cpp:2497 gui/mrvImageInformation.cpp:2550
-#: gui/mrvImageInformation.cpp:2588
+#: gui/mrvImageInformation.cpp:2513 gui/mrvImageInformation.cpp:2566
+#: gui/mrvImageInformation.cpp:2604
 msgid "Disposition"
 msgstr "Disposición"
 
-#: gui/mrvImageInformation.cpp:2497 gui/mrvImageInformation.cpp:2550
-#: gui/mrvImageInformation.cpp:2588
+#: gui/mrvImageInformation.cpp:2513 gui/mrvImageInformation.cpp:2566
+#: gui/mrvImageInformation.cpp:2604
 msgid "Disposition of Track"
 msgstr "Disposición de la Pista"
 
@@ -2994,7 +2994,7 @@ msgstr "¿Quiere reemplazar '%s'?"
 msgid "Double"
 msgstr "Doble"
 
-#: core/exrImage.cpp:1402 gui/mrvHotkey.cpp:394
+#: core/exrImage.cpp:1411 gui/mrvHotkey.cpp:394
 msgid "Down"
 msgstr "Abajo"
 
@@ -3024,20 +3024,20 @@ msgstr "Codigo de Tiempo Derrocha Cuadros"
 msgid "Dropped Frames"
 msgstr "Cuadros Perdidos"
 
-#: gui/mrvImageInformation.cpp:2502 gui/mrvImageInformation.cpp:2555
-#: gui/mrvImageInformation.cpp:2593
+#: gui/mrvImageInformation.cpp:2518 gui/mrvImageInformation.cpp:2571
+#: gui/mrvImageInformation.cpp:2609
 msgid "Duration"
 msgstr "Duración"
 
-#: gui/mrvImageInformation.cpp:2555
+#: gui/mrvImageInformation.cpp:2571
 msgid "Duration of Audio"
 msgstr "Duración del Audio"
 
-#: gui/mrvImageInformation.cpp:2593
+#: gui/mrvImageInformation.cpp:2609
 msgid "Duration of Subtitle"
 msgstr "Duración del Subtítulo"
 
-#: gui/mrvImageInformation.cpp:2502
+#: gui/mrvImageInformation.cpp:2518
 msgid "Duration of Video"
 msgstr "Duración del Vídeo"
 
@@ -3087,11 +3087,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:3348
+#: core/aviImage.cpp:3352
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:3364 core/aviImage.cpp:4229
+#: core/aviImage.cpp:3368 core/aviImage.cpp:4236
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -3174,7 +3174,7 @@ msgstr "Impar/par renglones"
 
 #
 #
-#: gui/mrvImageBrowser.cpp:2226
+#: gui/mrvImageBrowser.cpp:2236
 msgid "Example:  gizmo"
 msgstr "Ejemplos:  gizmo"
 
@@ -3200,7 +3200,7 @@ msgstr "Menos Exposición"
 msgid "Exposure More"
 msgstr "Más Exposición"
 
-#: core/exrImage.cpp:1287 core/exrImage.cpp:2524 core/exrImage.cpp:2528
+#: core/exrImage.cpp:1296 core/exrImage.cpp:2540 core/exrImage.cpp:2544
 msgid "Exposure Time"
 msgstr "Tiempo de Exposición"
 
@@ -3208,7 +3208,7 @@ msgstr "Tiempo de Exposición"
 msgid "Extended"
 msgstr "Extendido"
 
-#: gui/mrvImageInformation.cpp:2121
+#: gui/mrvImageInformation.cpp:2129
 msgid "Eye Separation"
 msgstr "Separación de las Vistas"
 
@@ -3222,7 +3222,7 @@ msgstr "C"
 msgid "F:"
 msgstr "C:"
 
-#: gui/mrvImageView.cpp:3540
+#: gui/mrvImageView.cpp:3502
 msgid "F: "
 msgstr "C: "
 
@@ -3243,12 +3243,12 @@ msgstr "Encajar"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2499
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2718
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4632
-#: gui/mrvImageInformation.cpp:2034 gui/mrvImageInformation.cpp:2494
+#: gui/mrvImageInformation.cpp:2042 gui/mrvImageInformation.cpp:2510
 #: gui/mrvProgressReport.cpp:64
 msgid "FPS"
 msgstr "CPS"
 
-#: gui/mrvImageView.cpp:3597
+#: gui/mrvImageView.cpp:3560
 #, c-format
 msgid "FPS: %.3f"
 msgstr "CPS: %.3f"
@@ -3257,7 +3257,7 @@ msgstr "CPS: %.3f"
 msgid "Failed "
 msgstr "Falló "
 
-#: core/exrImage.cpp:3111
+#: core/exrImage.cpp:3127
 msgid "Failed setting layer to "
 msgstr "Falló setear la capa a "
 
@@ -3295,53 +3295,53 @@ msgstr "Buscador de Archivos"
 msgid "File Types"
 msgstr "Tipos"
 
-#: gui/mrvImageView.cpp:4002 gui/mrvImageBrowser.cpp:2547
+#: gui/mrvImageView.cpp:3965 gui/mrvImageBrowser.cpp:2557
 msgid "File/Open/Clip XML Metadata"
 msgstr "Archivo/Abrir/Clip Metadatos XML"
 
-#: gui/mrvImageView.cpp:3994 gui/mrvImageView.cpp:4005
+#: gui/mrvImageView.cpp:3957 gui/mrvImageView.cpp:3968
 msgid "File/Open/Directory"
 msgstr "Archivo/Abrir/Directorio"
 
-#: gui/mrvImageView.cpp:3987 gui/mrvImageBrowser.cpp:2535
+#: gui/mrvImageView.cpp:3950 gui/mrvImageBrowser.cpp:2545
 #: gui/mrvMediaTrack.cpp:583
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivo/Abrir/Pelicula o Secuencia"
 
-#: gui/mrvImageView.cpp:3989 gui/mrvImageBrowser.cpp:2537
+#: gui/mrvImageView.cpp:3952 gui/mrvImageBrowser.cpp:2547
 msgid "File/Open/Single Image"
 msgstr "Archivo/Abrir/Solo una Imagen"
 
-#: gui/mrvImageView.cpp:3999
+#: gui/mrvImageView.cpp:3962
 msgid "File/Open/Stereo Sequence or Movie"
 msgstr "Archivo/Abrir/Pelicula o Secuencia para Estéreo"
 
-#: gui/mrvImageView.cpp:4016 gui/mrvImageBrowser.cpp:2559
+#: gui/mrvImageView.cpp:3979 gui/mrvImageBrowser.cpp:2569
 msgid "File/Save/Clip XML Metadata As"
 msgstr "Archivo/Grabar/Clip Metadatos XML"
 
-#: gui/mrvImageView.cpp:4012 gui/mrvImageBrowser.cpp:2555
+#: gui/mrvImageView.cpp:3975 gui/mrvImageBrowser.cpp:2565
 msgid "File/Save/Frame As"
 msgstr "Archivo/Grabar/Cuadro Como"
 
-#: gui/mrvImageView.cpp:4014 gui/mrvImageBrowser.cpp:2557
+#: gui/mrvImageView.cpp:3977 gui/mrvImageBrowser.cpp:2567
 msgid "File/Save/GL Snapshots As"
 msgstr "Archivo/Grabar/Instantáneas de Opengl"
 
-#: gui/mrvImageView.cpp:4007 gui/mrvImageBrowser.cpp:2550
+#: gui/mrvImageView.cpp:3970 gui/mrvImageBrowser.cpp:2560
 msgid "File/Save/Movie or Sequence As"
 msgstr "Archivo/Grabar/Pelicula o Secuencia Como"
 
-#: gui/mrvImageView.cpp:4010 gui/mrvImageBrowser.cpp:2553
+#: gui/mrvImageView.cpp:3973 gui/mrvImageBrowser.cpp:2563
 msgid "File/Save/Reel As"
 msgstr "Archivo/Grabar/Carrete Como"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2271
-#: gui/FLU/Flu_File_Chooser.cpp:124 gui/mrvImageInformation.cpp:1995
+#: gui/FLU/Flu_File_Chooser.cpp:124 gui/mrvImageInformation.cpp:2003
 msgid "Filename"
 msgstr "Nombre"
 
-#: gui/mrvImageInformation.cpp:1995
+#: gui/mrvImageInformation.cpp:2003
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
@@ -3349,15 +3349,15 @@ msgstr "Nombre del archivo del clip"
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
-#: core/exrImage.cpp:2552 core/exrImage.cpp:2555
+#: core/exrImage.cpp:2568 core/exrImage.cpp:2571
 msgid "Film Manufacturer Code"
 msgstr "Código de Manufacturador del Film"
 
-#: gui/mrvHotkey.cpp:315 gui/mrvImageInformation.cpp:2020
+#: gui/mrvHotkey.cpp:315 gui/mrvImageInformation.cpp:2028
 msgid "First Frame"
 msgstr "Primer Cuadro"
 
-#: gui/mrvImageInformation.cpp:2020
+#: gui/mrvImageInformation.cpp:2028
 msgid "First frame of clip - User selected"
 msgstr "Primer cuadro del clip - Selección del Usario"
 
@@ -3417,7 +3417,7 @@ msgstr "Disco Floppy"
 msgid "Flushing of buffers failed"
 msgstr "Vaciar los buffers falló"
 
-#: core/exrImage.cpp:1277 core/exrImage.cpp:2516 core/exrImage.cpp:2520
+#: core/exrImage.cpp:1286 core/exrImage.cpp:2532 core/exrImage.cpp:2536
 msgid "Focus"
 msgstr "Foco"
 
@@ -3425,7 +3425,7 @@ msgstr "Foco"
 msgid "Font"
 msgstr "Tipografía"
 
-#: gui/mrvImageInformation.cpp:2325 gui/mrvImageInformation.cpp:2540
+#: gui/mrvImageInformation.cpp:2340 gui/mrvImageInformation.cpp:2556
 msgid "Format"
 msgstr "Formato"
 
@@ -3433,28 +3433,28 @@ msgstr "Formato"
 msgid "Formats"
 msgstr "Formatos"
 
-#: gui/mrvImageInformation.cpp:2476 gui/mrvImageInformation.cpp:2527
-#: gui/mrvImageInformation.cpp:2579
+#: gui/mrvImageInformation.cpp:2492 gui/mrvImageInformation.cpp:2543
+#: gui/mrvImageInformation.cpp:2595
 msgid "Four letter ID"
 msgstr "Identificación de cuatro letras"
 
-#: gui/mrvImageInformation.cpp:2476 gui/mrvImageInformation.cpp:2527
-#: gui/mrvImageInformation.cpp:2579
+#: gui/mrvImageInformation.cpp:2492 gui/mrvImageInformation.cpp:2543
+#: gui/mrvImageInformation.cpp:2595
 msgid "FourCC"
 msgstr "CuatroCC"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4276
-#: gui/mrvImageView.cpp:8982
+#: gui/mrvImageView.cpp:8980
 msgid "Frame"
 msgstr "Cuadro"
 
-#: gui/mrvImageInformation.cpp:3345
+#: gui/mrvImageInformation.cpp:3361
 #, c-format
 msgid "Frame %<PRId64> "
 msgstr "Cuadro %<PRId64> "
 
-#: gui/mrvImageInformation.cpp:2031
+#: gui/mrvImageInformation.cpp:2039
 msgid "Frame End"
 msgstr "Cuadro Final"
 
@@ -3466,7 +3466,7 @@ msgstr "Desplazamiento de Cuadro"
 msgid "Frame Range"
 msgstr "Rango Cuadros"
 
-#: gui/mrvImageInformation.cpp:2030
+#: gui/mrvImageInformation.cpp:2038
 msgid "Frame Start"
 msgstr "Cuadro Comienzo"
 
@@ -3486,11 +3486,11 @@ msgstr "Paso de Cuadro Hacia Delante CPS"
 msgid "Frame Step Forwards"
 msgstr "Paso de Cuadro Hacia Delante"
 
-#: gui/mrvImageInformation.cpp:2031
+#: gui/mrvImageInformation.cpp:2039
 msgid "Frame end of clip in file"
 msgstr "Cuadro de finalización del clip en el archivo"
 
-#: gui/mrvImageInformation.cpp:2030
+#: gui/mrvImageInformation.cpp:2038
 msgid "Frame start of clip in file"
 msgstr "Cuadro de comienzo del clip en el archivo"
 
@@ -3517,11 +3517,11 @@ msgstr "Framebuffer incompleto: Buffer de lectura."
 msgid "Frames"
 msgstr "Cuadros"
 
-#: gui/mrvImageInformation.cpp:2034
+#: gui/mrvImageInformation.cpp:2042
 msgid "Frames Per Second"
 msgstr "Cuadros por Segundo"
 
-#: gui/mrvImageInformation.cpp:2494
+#: gui/mrvImageInformation.cpp:2510
 msgid "Frames per Second"
 msgstr "Cuadros por Segundo"
 
@@ -3529,11 +3529,11 @@ msgstr "Cuadros por Segundo"
 msgid "Freehand Drawing Tool"
 msgstr "Herramienta de Dibujo a Mano Alzada"
 
-#: gui/mrvImageInformation.cpp:2543
+#: gui/mrvImageInformation.cpp:2559
 msgid "Frequency"
 msgstr "Frecuencia"
 
-#: gui/mrvImageInformation.cpp:2543
+#: gui/mrvImageInformation.cpp:2559
 msgid "Frequency of audio"
 msgstr "Frecuencia del audio"
 
@@ -3582,7 +3582,7 @@ msgstr "Error GLSL en archivo "
 msgid "GPU Information"
 msgstr "Información de GPU"
 
-#: gui/mrvImageView.cpp:279
+#: gui/mrvImageView.cpp:280
 msgid "GREEN"
 msgstr "VERDE"
 
@@ -3601,7 +3601,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2199
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3593
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4227
-#: gui/mrvImageInformation.cpp:2272
+#: gui/mrvImageInformation.cpp:2287
 msgid "Gamma"
 msgstr "Gama"
 
@@ -3666,7 +3666,7 @@ msgstr "Ir al final de la secuencia."
 msgid "Go to the parent directory"
 msgstr "Ir a la carpeta anterior"
 
-#: core/CMedia.cpp:3945 core/CMedia.cpp:3990
+#: core/CMedia.cpp:4066 core/CMedia.cpp:4111
 msgid "Got colorspace '"
 msgstr "Obtuve el espacio de color '"
 
@@ -3676,8 +3676,8 @@ msgstr "Obtuve: "
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1989
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3009
-#: core/CMedia.cpp:1834 core/CMedia.cpp:1900 core/exrImage.cpp:3009
-#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:7325
+#: core/CMedia.cpp:1869 core/CMedia.cpp:1935 core/exrImage.cpp:3025
+#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:184 gui/mrvImageView.cpp:7313
 msgid "Green"
 msgstr "Verde"
 
@@ -3740,11 +3740,11 @@ msgstr "Hardware Shaders no disponibles."
 msgid "Headline"
 msgstr "Encabezado"
 
-#: gui/mrvImageInformation.cpp:2041
+#: gui/mrvImageInformation.cpp:2049
 msgid "Height"
 msgstr "Altura"
 
-#: gui/mrvImageInformation.cpp:2041
+#: gui/mrvImageInformation.cpp:2049
 msgid "Height of clip"
 msgstr "Altura del clip"
 
@@ -3807,8 +3807,8 @@ msgstr "Híbrido"
 msgid "ICC"
 msgstr "ICC"
 
-#: core/exrImage.cpp:1350 core/exrImage.cpp:2608 core/exrImage.cpp:2612
-#: gui/mrvImageInformation.cpp:2319
+#: core/exrImage.cpp:1359 core/exrImage.cpp:2624 core/exrImage.cpp:2628
+#: gui/mrvImageInformation.cpp:2334
 msgid "ICC Profile"
 msgstr "Perfil ICC"
 
@@ -3822,7 +3822,7 @@ msgstr "Perfiles ICC"
 msgid "ICC Profiles Inspector"
 msgstr "Inspector de Perfiles ICC"
 
-#: gui/mrvImageInformation.cpp:2266
+#: gui/mrvImageInformation.cpp:2281
 msgid "ICC Rendering Intent"
 msgstr "Intención de Render de ICC"
 
@@ -3834,7 +3834,7 @@ msgstr "Perfil ICC"
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
-#: core/exrImage.cpp:1308 core/exrImage.cpp:2538 core/exrImage.cpp:2542
+#: core/exrImage.cpp:1317 core/exrImage.cpp:2554 core/exrImage.cpp:2558
 msgid "ISO Speed"
 msgstr "Velocidad ISO"
 
@@ -3856,11 +3856,11 @@ msgstr "ITU-601 (PAL/NTSC YCbCr Digital)"
 msgid "ITU-709 (Digital HDTV YCbCr)"
 msgstr "ITU-709 (HDTV YCbCr Digital)"
 
-#: gui/mrvImageBrowser.cpp:1011
+#: gui/mrvImageBrowser.cpp:1029
 msgid "Image"
 msgstr "Imagen"
 
-#: core/guessImage.cpp:316
+#: core/guessImage.cpp:318
 msgid "Image \""
 msgstr "Imagen \""
 
@@ -3873,7 +3873,7 @@ msgstr "CTL Escritura de Imagen"
 msgid "Image Cache Size"
 msgstr "Tamaño de Cache de las Imágenes"
 
-#: gui/mrvImageInformation.cpp:2154
+#: gui/mrvImageInformation.cpp:2162
 msgid "Image Channels"
 msgstr "Canales de Imagen"
 
@@ -3890,23 +3890,23 @@ msgstr "Nombre de Imagen"
 msgid "Image Options"
 msgstr "Grabar Opciones"
 
-#: core/exrImage.cpp:1205 core/exrImage.cpp:2458 core/exrImage.cpp:2462
+#: core/exrImage.cpp:1214 core/exrImage.cpp:2474 core/exrImage.cpp:2478
 msgid "Image State"
 msgstr "Estado de Imagen"
 
-#: gui/mrvImageInformation.cpp:2075
+#: gui/mrvImageInformation.cpp:2083
 msgid "Image X Position in Canvas"
 msgstr "Posición en X de la imagen en el tablero"
 
-#: gui/mrvImageInformation.cpp:2083
+#: gui/mrvImageInformation.cpp:2091
 msgid "Image X Scale in Canvas"
 msgstr "Escale en X de la imagen en el tablero"
 
-#: gui/mrvImageInformation.cpp:2079
+#: gui/mrvImageInformation.cpp:2087
 msgid "Image Y Position in Canvas"
 msgstr "Posición en Y de la imagen en el tablero"
 
-#: gui/mrvImageInformation.cpp:2087
+#: gui/mrvImageInformation.cpp:2095
 msgid "Image Y Scale in Canvas"
 msgstr "Escala en Y de la imagen en el tablero"
 
@@ -3914,7 +3914,7 @@ msgstr "Escala en Y de la imagen en el tablero"
 msgid "Image coordinate of pixel under mouse."
 msgstr "Coordenada de la imagen del pixel bajo el ratón."
 
-#: core/exrImage.cpp:351 core/exrImage.cpp:356
+#: core/exrImage.cpp:353 core/exrImage.cpp:358
 msgid "Image file \""
 msgstr "Archivo de imagen \""
 
@@ -3929,7 +3929,7 @@ msgstr ""
 msgid "Image input color space is undefined."
 msgstr "Espacio de Color de Entrada de la imagen sin definir."
 
-#: gui/mrvImageBrowser.cpp:2167
+#: gui/mrvImageBrowser.cpp:2177
 msgid "Image not found in reel "
 msgstr "Imagen no encontrada en el carrete "
 
@@ -3966,102 +3966,102 @@ msgstr ""
 msgid "Image zoom setting."
 msgstr "Seteo del zoom de la imagen."
 
-#: gui/mrvImageView.cpp:4148
+#: gui/mrvImageView.cpp:4111
 msgid "Image/Add CTL Look Mod Transform"
 msgstr "Imagen/Agregar Modificacion de Look (LMT) de CTL"
 
-#: gui/mrvImageView.cpp:4140
+#: gui/mrvImageView.cpp:4103
 msgid "Image/Attach CTL Input Device Transform"
 msgstr "Imagen/Asignar Input Device Transform (IDT) de CTL"
 
-#: gui/mrvImageView.cpp:4152
+#: gui/mrvImageView.cpp:4115
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Imagen/Asignar Transformacion de Render (RRT) de CTL"
 
-#: gui/mrvImageBrowser.cpp:2592
+#: gui/mrvImageBrowser.cpp:2602
 msgid "Image/Attach CTL Script"
 msgstr "Imagen/Agregar Script de CTL"
 
-#: gui/mrvImageView.cpp:4156 gui/mrvImageBrowser.cpp:2589
+#: gui/mrvImageView.cpp:4119 gui/mrvImageBrowser.cpp:2599
 msgid "Image/Attach ICC Color Profile"
 msgstr "Imagen/Agregar Perfil ICC de Color"
 
-#: gui/mrvImageView.cpp:4122
+#: gui/mrvImageView.cpp:4085
 msgid "Image/Clear Caches"
 msgstr "Imagen/Borrar los Caches"
 
-#: gui/mrvImageView.cpp:4104 gui/mrvImageView.cpp:4112
-#: gui/mrvImageBrowser.cpp:2571 gui/mrvImageBrowser.cpp:2581
+#: gui/mrvImageView.cpp:4067 gui/mrvImageView.cpp:4075
+#: gui/mrvImageBrowser.cpp:2581 gui/mrvImageBrowser.cpp:2591
 msgid "Image/Clone"
 msgstr "Imagen/Clonar"
 
-#: gui/mrvImageView.cpp:4106 gui/mrvImageBrowser.cpp:2573
+#: gui/mrvImageView.cpp:4069 gui/mrvImageBrowser.cpp:2583
 msgid "Image/Clone All Channels"
 msgstr "Imagen/Clonar Todos los Canales"
 
-#: gui/mrvImageView.cpp:4162
+#: gui/mrvImageView.cpp:4125
 msgid "Image/Mirror/Horizontal"
 msgstr "Imagen/Espejo/Horizontal"
 
-#: gui/mrvImageView.cpp:4166
+#: gui/mrvImageView.cpp:4129
 msgid "Image/Mirror/Vertical"
 msgstr "Imagen/Espejo/Vertical"
 
-#: gui/mrvImageView.cpp:4144
+#: gui/mrvImageView.cpp:4107
 msgid "Image/Modify CTL ASC_CDL SOP Saturation"
 msgstr "Imagen/Modificar CTL ASC_CDL SOP y Saturación"
 
-#: gui/mrvImageView.cpp:4094
+#: gui/mrvImageView.cpp:4057
 msgid "Image/Next"
 msgstr "Imagen/Siguiente"
 
 #
-#: gui/mrvImageView.cpp:4086
+#: gui/mrvImageView.cpp:4049
 msgid "Image/Next Version"
 msgstr "Imagen/Versión Siguiente"
 
-#: gui/mrvImageView.cpp:4117
+#: gui/mrvImageView.cpp:4080
 msgid "Image/Preload Caches"
 msgstr "Imagen/Precargar Caches"
 
-#: gui/mrvImageView.cpp:4096
+#: gui/mrvImageView.cpp:4059
 msgid "Image/Previous"
 msgstr "Imagen/Previa"
 
-#: gui/mrvImageView.cpp:4088
+#: gui/mrvImageView.cpp:4051
 msgid "Image/Previous Version"
 msgstr "Imagen/Versión Previa"
 
 #
-#: gui/mrvImageView.cpp:4130
+#: gui/mrvImageView.cpp:4093
 msgid "Image/Rotate +90"
 msgstr "Imagen/Rotarla +90"
 
-#: gui/mrvImageView.cpp:4133
+#: gui/mrvImageView.cpp:4096
 msgid "Image/Rotate -90"
 msgstr "Imagen/Rotarla -90"
 
-#: gui/mrvImageView.cpp:4170 gui/mrvImageBrowser.cpp:2597
+#: gui/mrvImageView.cpp:4133 gui/mrvImageBrowser.cpp:2607
 msgid "Image/Set as Background"
 msgstr "Imagen/Ponerla como Fondo"
 
-#: gui/mrvImageView.cpp:4173
+#: gui/mrvImageView.cpp:4136
 msgid "Image/Switch FG and BG"
 msgstr "Imagen/Cambiar Frente y Fondo"
 
-#: gui/mrvImageView.cpp:4176
+#: gui/mrvImageView.cpp:4139
 msgid "Image/Toggle Background"
 msgstr "Imagen/Permutar Fondo"
 
-#: gui/mrvImageView.cpp:4125
+#: gui/mrvImageView.cpp:4088
 msgid "Image/Update Single Frame in Cache"
 msgstr "Imagen/Actualiza un Cuadro del Cache"
 
-#: gui/mrvImageBrowser.cpp:937
+#: gui/mrvImageBrowser.cpp:955
 msgid "ImageBrowser::remove idx value ("
 msgstr "ImageBrowser::remove valor de índice ("
 
-#: core/oiioImage.cpp:469
+#: core/oiioImage.cpp:472
 msgid "ImageBufAlgo::make_texture failed."
 msgstr "ImageBufAlgo::make_texture falló."
 
@@ -4125,11 +4125,11 @@ msgstr "Entrada"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2878
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4154
-#: core/exrImage.cpp:2434 gui/mrvImageInformation.cpp:2290
+#: core/exrImage.cpp:2450 gui/mrvImageInformation.cpp:2305
 msgid "Input Color Space"
 msgstr "Espacio de Color de Entrada"
 
-#: gui/mrvImageInformation.cpp:2296
+#: gui/mrvImageInformation.cpp:2311
 msgid "Input Device Transform"
 msgstr "Transformación de Dispositivo de Entrada"
 
@@ -4170,11 +4170,11 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid host: "
 msgstr "Servidor inválido: "
 
-#: gui/mrvImageView.cpp:7245
+#: gui/mrvImageView.cpp:7233
 msgid "Invalid index "
 msgstr "Índice inválido "
 
-#: core/oiioImage.cpp:175
+#: core/oiioImage.cpp:178
 msgid "Invalid mipmap level"
 msgstr "Nivel de Mipmap inválido"
 
@@ -4182,7 +4182,7 @@ msgstr "Nivel de Mipmap inválido"
 msgid "Invalid mrv::Frame format: "
 msgstr "Formato de mrv::Frame inválido: "
 
-#: core/stubImage.cpp:988
+#: core/stubImage.cpp:989
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
@@ -4274,8 +4274,8 @@ msgstr "Teclado Numérico Enter"
 msgid "Keyword"
 msgstr "Palabra clave"
 
-#: gui/mrvImageInformation.cpp:2473 gui/mrvImageInformation.cpp:2524
-#: gui/mrvImageInformation.cpp:2576
+#: gui/mrvImageInformation.cpp:2489 gui/mrvImageInformation.cpp:2540
+#: gui/mrvImageInformation.cpp:2592
 msgid "Known Codec"
 msgstr "Codec Conocido"
 
@@ -4288,7 +4288,7 @@ msgstr "Negativo Digital de Kodak"
 msgid "L (Lightness)"
 msgstr "L (Luminosidad)"
 
-#: gui/mrvImageInformation.cpp:2307
+#: gui/mrvImageInformation.cpp:2322
 #, c-format
 msgid "LMTransform %u"
 msgstr "TransformaciónLM %u"
@@ -4302,26 +4302,26 @@ msgstr "LUT"
 msgid "Lab CIELAB (L*a*b*)"
 msgstr "Lab CIELAB (L*a*b*)"
 
-#: gui/mrvImageInformation.cpp:2496 gui/mrvImageInformation.cpp:2548
-#: gui/mrvImageInformation.cpp:2586
+#: gui/mrvImageInformation.cpp:2512 gui/mrvImageInformation.cpp:2564
+#: gui/mrvImageInformation.cpp:2602
 msgid "Language"
 msgstr "Lenguaje"
 
-#: gui/mrvImageInformation.cpp:2496 gui/mrvImageInformation.cpp:2548
-#: gui/mrvImageInformation.cpp:2586
+#: gui/mrvImageInformation.cpp:2512 gui/mrvImageInformation.cpp:2564
+#: gui/mrvImageInformation.cpp:2602
 msgid "Language if known"
 msgstr "Lenguaje si se conoce"
 
-#: gui/mrvHotkey.cpp:316 gui/mrvImageInformation.cpp:2023
+#: gui/mrvHotkey.cpp:316 gui/mrvImageInformation.cpp:2031
 msgid "Last Frame"
 msgstr "Ultimo Cuadro"
 
-#: gui/mrvImageInformation.cpp:2023
+#: gui/mrvImageInformation.cpp:2031
 msgid "Last frame of clip - User selected"
 msgstr "Ultimo cuadro del clip - Selección del Usario"
 
-#: core/exrImage.cpp:1257 core/exrImage.cpp:2416 core/exrImage.cpp:2420
-#: core/exrImage.cpp:2500 core/exrImage.cpp:2504
+#: core/exrImage.cpp:1266 core/exrImage.cpp:2432 core/exrImage.cpp:2436
+#: core/exrImage.cpp:2516 core/exrImage.cpp:2520
 msgid "Latitude"
 msgstr "Latitud"
 
@@ -4395,14 +4395,14 @@ msgid ""
 "Limit on the number of tasks supported by the Windows Sockets implementation "
 "has been reached.\n"
 msgstr ""
-"Se llegó al límite del numero de operaciones soportadas por la "
+"Se llegó al límite del número de operaciones soportadas por la "
 "implementación de Windows Sockets.\n"
 
-#: gui/mrvImageInformation.cpp:2329
+#: gui/mrvImageInformation.cpp:2344
 msgid "Line Order"
 msgstr "Orden de Líneas"
 
-#: gui/mrvImageInformation.cpp:2329
+#: gui/mrvImageInformation.cpp:2344
 msgid "Line order in file"
 msgstr "Orden de las líneas en el archivo"
 
@@ -4424,7 +4424,7 @@ msgstr "Modo de Listado"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3216
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3231
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3246
-#: gui/mrvImageInformation.cpp:2759
+#: gui/mrvImageInformation.cpp:2775
 msgid "Load"
 msgstr "Cargar"
 
@@ -4470,7 +4470,7 @@ msgstr "Cargar Subtítulo"
 msgid "Load XML Clip Metadata"
 msgstr "Cargar Clip XML de Metadatos"
 
-#: gui/mrvImageInformation.cpp:1620
+#: gui/mrvImageInformation.cpp:1628
 msgid "Load an image or movie file"
 msgstr "Cargue una imagen o película"
 
@@ -4485,7 +4485,7 @@ msgstr "Cargué archivo de Clip Metadata de ACES '"
 msgid "Loading"
 msgstr "Cargando"
 
-#: gui/mrvImageBrowser.cpp:1482
+#: gui/mrvImageBrowser.cpp:1492
 #, c-format
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
@@ -4522,8 +4522,8 @@ msgstr "Logaritmico"
 msgid "Logs"
 msgstr "Mensajes"
 
-#: core/exrImage.cpp:1247 core/exrImage.cpp:2409 core/exrImage.cpp:2413
-#: core/exrImage.cpp:2493 core/exrImage.cpp:2497
+#: core/exrImage.cpp:1256 core/exrImage.cpp:2425 core/exrImage.cpp:2429
+#: core/exrImage.cpp:2509 core/exrImage.cpp:2513
 msgid "Longitude"
 msgstr "Longitud"
 
@@ -4552,9 +4552,9 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1991
-#: core/CMedia.cpp:1847 core/CMedia.cpp:1902 core/exrImage.cpp:3008
-#: core/wandImage.cpp:1163 gui/mrvImageView.cpp:187 gui/mrvImageView.cpp:1560
-#: gui/mrvImageView.cpp:7339 gui/mrvImageInformation.cpp:2175
+#: core/CMedia.cpp:1882 core/CMedia.cpp:1937 core/exrImage.cpp:3024
+#: core/wandImage.cpp:1163 gui/mrvImageView.cpp:188 gui/mrvImageView.cpp:1561
+#: gui/mrvImageView.cpp:7327 gui/mrvImageInformation.cpp:2190
 msgid "Lumma"
 msgstr "Luma"
 
@@ -4651,7 +4651,7 @@ msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
 #
-#: gui/mrvImageInformation.cpp:2545
+#: gui/mrvImageInformation.cpp:2561
 msgid "Max. Bitrate"
 msgstr "Bitrate Máximo"
 
@@ -4693,11 +4693,11 @@ msgstr "Informe del Medio"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2321
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2727
-#: gui/mrvImageInformation.cpp:2349
+#: gui/mrvImageInformation.cpp:2364
 msgid "Memory"
 msgstr "Memoria"
 
-#: gui/mrvImageInformation.cpp:2349
+#: gui/mrvImageInformation.cpp:2364
 msgid "Memory without Compression"
 msgstr "Memoria sin Compresión"
 
@@ -4730,12 +4730,12 @@ msgstr "Mínimo"
 msgid "MipMap"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:2409 gui/mrvImageInformation.cpp:2417
+#: gui/mrvImageInformation.cpp:2425 gui/mrvImageInformation.cpp:2433
 msgid "Mipmap Level"
 msgstr "Nivel de Mipmap"
 
-#: core/oiioImage.cpp:167 core/exrImage.cpp:1378
-#: gui/mrvImageInformation.cpp:2404
+#: core/oiioImage.cpp:170 core/exrImage.cpp:1387
+#: gui/mrvImageInformation.cpp:2420
 msgid "Mipmap Levels"
 msgstr "Niveles de Mipmap"
 
@@ -4788,11 +4788,11 @@ msgstr "CTL Escritura del Monitor"
 msgid "Monitor Icc Profile"
 msgstr "Perfil Icc del Monitor"
 
-#: gui/mrvImageView.cpp:4263
+#: gui/mrvImageView.cpp:4226
 msgid "Monitor/Attach CTL Display Transform"
 msgstr "Monitor/Agregar Transformacion de Display de Salida (ODT) de CTL"
 
-#: gui/mrvImageView.cpp:4267
+#: gui/mrvImageView.cpp:4230
 msgid "Monitor/Attach ICC Color Profile"
 msgstr "Monitor/Agregar Perfil de Color ICC"
 
@@ -4897,8 +4897,8 @@ msgstr "Próxima Imagen"
 msgid "Next Image Version"
 msgstr "Próxima Versión de la Imagen"
 
-#: gui/mrvImageBrowser.cpp:690 gui/mrvImageBrowser.cpp:1962
-#: gui/mrvImageInformation.cpp:3604 gui/mrvSave.cpp:223
+#: gui/mrvImageBrowser.cpp:708 gui/mrvImageBrowser.cpp:1972
+#: gui/mrvImageInformation.cpp:3620 gui/mrvSave.cpp:223
 #: video/mrvGLEngine.cpp:238 video/mrvGLEngine.cpp:239
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:242
 #: video/mrvGLEngine.cpp:246 video/mrvGLEngine.cpp:247
@@ -4936,7 +4936,7 @@ msgstr "Ningun atributo llamado '%s'"
 msgid "No audio nor video stream created"
 msgstr "Ningun audio o video creado"
 
-#: gui/mrvImageView.cpp:497
+#: gui/mrvImageView.cpp:498
 msgid "No background image to switch to"
 msgstr "Ninguna imagen de fondo para cambiar"
 
@@ -4952,15 +4952,15 @@ msgstr "No se necesita conversión.  Gama: "
 msgid "No decoder found for audio stream. ID: "
 msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
 
-#: gui/mrvImageView.cpp:490
+#: gui/mrvImageView.cpp:491
 msgid "No foreground image to switch to"
 msgstr "Sin imagen de frente para cambiar"
 
-#: core/rawImage.cpp:243
+#: core/rawImage.cpp:244
 msgid "No image was decoded"
 msgstr "Ninguna imagen fue decodificada"
 
-#: gui/mrvImageBrowser.cpp:1313
+#: gui/mrvImageBrowser.cpp:1332
 msgid "No left image to attach a stereo image pair"
 msgstr "No hay imagen izquierda para atar a un par de imágenes estéreo."
 
@@ -4972,7 +4972,7 @@ msgstr "Sin memoria para cuadro de audio"
 msgid "No memory to allocate filter graph"
 msgstr "Sin memoria para grafica de filtro"
 
-#: core/stubImage.cpp:973
+#: core/stubImage.cpp:974
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
@@ -4984,7 +4984,7 @@ msgstr "No existe una transformación ODT válida: "
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
-#: gui/mrvImageBrowser.cpp:2224
+#: gui/mrvImageBrowser.cpp:2234
 msgid ""
 "No versioning in this clip.  Please create an image or directory named with "
 msgstr ""
@@ -5004,7 +5004,7 @@ msgstr "Texturas Non-POT:\t"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3610
 #: core/aviImage_save.cpp:1330 core/aviImage_save.cpp:1361
-#: core/exrImage.cpp:121 core/iffImage.cpp:60 gui/mrvImageInformation.cpp:2723
+#: core/exrImage.cpp:121 core/iffImage.cpp:60 gui/mrvImageInformation.cpp:2739
 #: gui/mrvSave.cpp:265 gui/mrvSave.cpp:266 gui/mrvSave.cpp:275
 msgid "None"
 msgstr "Ninguno"
@@ -5022,27 +5022,27 @@ msgid "Normalize pixel values to remain in [0,1] range."
 msgstr ""
 "Normalizar los valores de los píxeles para mantener el en el rango [0,1]."
 
-#: gui/mrvImageView.cpp:189
+#: gui/mrvImageView.cpp:190
 msgid "Normals"
 msgstr "Normales"
 
-#: gui/mrvImageView.cpp:471
+#: gui/mrvImageView.cpp:472
 msgid "Not Shown"
 msgstr "No Mostrado"
 
-#: gui/mrvImageView.cpp:4350
+#: gui/mrvImageView.cpp:4313
 msgid "Not a GLErasePathShape pointer"
 msgstr "No es un puntero a GLErasePathShape"
 
-#: gui/mrvImageView.cpp:4337 gui/mrvImageView.cpp:5640
+#: gui/mrvImageView.cpp:4300 gui/mrvImageView.cpp:5603
 msgid "Not a GLPathShape pointer"
 msgstr "No es un puntero a GLPathShape"
 
-#: gui/mrvImageView.cpp:4363
+#: gui/mrvImageView.cpp:4326
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "No es un puntero a GLTextShape en mouseRelease"
 
-#: gui/mrvImageView.cpp:5664
+#: gui/mrvImageView.cpp:5627
 msgid "Not a GLTextShape pointer in position"
 msgstr "No es un puntero a GLPathShape en posición"
 
@@ -5063,7 +5063,7 @@ msgstr "No es una imagen válida para ser atada"
 msgid "Not enough compressed data"
 msgstr "No hay suficiente datos comprimidos"
 
-#: core/oiioImage.cpp:326 core/aviImage.cpp:1087
+#: core/oiioImage.cpp:329 core/aviImage.cpp:1087
 msgid "Not enough memory for image"
 msgstr "Sin memoria para imagen"
 
@@ -5076,34 +5076,40 @@ msgid ""
 "Number of FStops the LUT will cover.  Higher numbers show more detail in the "
 "black levels, while it makes the midrange be less defined."
 msgstr ""
-"Número de FStops que cubrirá la Tabla.  Numeros más altos muestran mas "
+"Número de FStops que cubrirá la Tabla.  Números más altos muestran mas "
 "detalles en los niveles de negro, mientras hace los valores a mitad de rango "
 "menos definidos."
 
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2811
 msgid "Number of Fstops"
-msgstr "Numero de FStops"
+msgstr "Número de FStops"
 
-#: gui/mrvImageInformation.cpp:2541
+#
+#: gui/mrvImageInformation.cpp:2169
+#
+msgid "Number of Parts"
+msgstr "Número de Partes"
+
+#: gui/mrvImageInformation.cpp:2557
 msgid "Number of audio channels"
-msgstr "Numero de canales de audio"
+msgstr "Número de canales de audio"
 
-#: gui/mrvImageInformation.cpp:2007
+#: gui/mrvImageInformation.cpp:2015
 msgid "Number of audio streams in file"
-msgstr "Numero de flujos de audio en el archivo"
+msgstr "Número de flujos de audio en el archivo"
 
-#: gui/mrvImageInformation.cpp:2154
+#: gui/mrvImageInformation.cpp:2162
 msgid "Number of channels in clip"
-msgstr "Numero de canales en el clip"
+msgstr "Número de canales en el clip"
 
-#: gui/mrvImageInformation.cpp:2010
+#: gui/mrvImageInformation.cpp:2018
 msgid "Number of subtitle streams in file"
-msgstr "Numero de flujos de subtitulos en el archivo"
+msgstr "Número de flujos de subtitulos en el archivo"
 
-#: gui/mrvImageInformation.cpp:2005
+#: gui/mrvImageInformation.cpp:2013
 msgid "Number of video streams in file"
-msgstr "Numero de flujos de video en el archivo"
+msgstr "Número de flujos de video en el archivo"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2872
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3665
@@ -5119,7 +5125,7 @@ msgstr "Archivo de Configuracion de OCIO"
 msgid "OCIO Display"
 msgstr "Display OCIO"
 
-#: gui/mrvHotkey.cpp:345 gui/mrvImageInformation.cpp:2291
+#: gui/mrvHotkey.cpp:345 gui/mrvImageInformation.cpp:2306
 msgid "OCIO Input Color Space"
 msgstr "Espacio de Color de Entrada de OCIO"
 
@@ -5138,17 +5144,17 @@ msgstr "La variable de entorno OCIO no existe.  Usando CTL."
 
 #
 #
-#: gui/mrvImageView.cpp:4187
+#: gui/mrvImageView.cpp:4150
 msgid "OCIO/Display"
 msgstr "OCIO/Display"
 
 #
-#: gui/mrvImageView.cpp:4184
+#: gui/mrvImageView.cpp:4147
 msgid "OCIO/Input Color Space"
 msgstr "OCIO/Espacio de Color de Entrada"
 
 #
-#: gui/mrvImageView.cpp:4190
+#: gui/mrvImageView.cpp:4153
 msgid "OCIO/View"
 msgstr "OCIO/Vista"
 
@@ -5315,7 +5321,7 @@ msgstr "Abre diferentes ventanas"
 msgid "Options controlling the OpenEXR reader/writer"
 msgstr "Opciones controlando el lector/escritor de OpenEXR"
 
-#: core/exrImage.cpp:2904
+#: core/exrImage.cpp:2920
 msgid "Options for EXR were empty"
 msgstr "Opciones para EXR estaban vacías"
 
@@ -5344,7 +5350,7 @@ msgstr "Original sin Gama ni Gain ni Lut"
 msgid "Originating Program"
 msgstr "Programa Originario"
 
-#: core/CMedia.cpp:1057
+#: core/CMedia.cpp:1069
 msgid "Out of memory"
 msgstr ""
 
@@ -5393,7 +5399,7 @@ msgstr "Sobre escritura línea (Crudo) ["
 msgid "Overrun scanline (Repeat) ["
 msgstr "Sobre escritura línea (Repetir) ["
 
-#: core/exrImage.cpp:1216 core/exrImage.cpp:2465 core/exrImage.cpp:2469
+#: core/exrImage.cpp:1225 core/exrImage.cpp:2481 core/exrImage.cpp:2485
 #: core/hdrImage.cpp:163 gui/FLU/Flu_File_Chooser.cpp:118
 msgid "Owner"
 msgstr "Propietario"
@@ -5421,7 +5427,7 @@ msgstr "Texturas PBO:\t"
 msgid "PIZ"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3638
+#: gui/mrvImageView.cpp:3601
 #, c-format
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "MemF: %<PRIu64>/%<PRIu64> MB  MemV: %<PRIu64>/%<PRIu64> MB"
@@ -5483,7 +5489,7 @@ msgid "Pen Size More"
 msgstr "Tamaño del Lápiz Mayor"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2833
-#: gui/mrvImageInformation.cpp:2259
+#: gui/mrvImageInformation.cpp:2274
 msgid "Perceptual"
 msgstr "Perceptual"
 
@@ -5506,8 +5512,8 @@ msgstr "Imagen de Photoshop"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3151
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3166
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3181
-#: gui/mrvImageInformation.cpp:2810 gui/mrvImageInformation.cpp:2864
-#: gui/mrvImageInformation.cpp:2916 gui/mrvImageInformation.cpp:2992
+#: gui/mrvImageInformation.cpp:2826 gui/mrvImageInformation.cpp:2880
+#: gui/mrvImageInformation.cpp:2932 gui/mrvImageInformation.cpp:3008
 msgid "Pick"
 msgstr "Elegir"
 
@@ -5522,7 +5528,7 @@ msgstr "Ping Pong"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:40
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:40
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:75
-#: gui/mrvImageInformation.cpp:2480
+#: gui/mrvImageInformation.cpp:2496
 msgid "Pixel Format"
 msgstr "Formato de Pixel"
 
@@ -5530,7 +5536,7 @@ msgstr "Formato de Pixel"
 msgid "Pixel Format to save image.   Usually Half."
 msgstr "Formato de Pixel para grabar la imagen.  Usualmente Half."
 
-#: gui/mrvImageInformation.cpp:2071
+#: gui/mrvImageInformation.cpp:2079
 msgid "Pixel Ratio"
 msgstr "Ratio de Pixel"
 
@@ -5544,7 +5550,7 @@ msgstr "Barra de Pixel"
 msgid "Pixel Values"
 msgstr "Valores de Pixel"
 
-#: gui/mrvImageInformation.cpp:2071
+#: gui/mrvImageInformation.cpp:2079
 msgid "Pixel ratio of clip"
 msgstr "Ratio de Pixel del clip"
 
@@ -5552,7 +5558,7 @@ msgstr "Ratio de Pixel del clip"
 msgid "Pixel type not well supported in waveform monitor"
 msgstr "Tipo de pixel no soportado correctamente en el forma de onda"
 
-#: gui/mrvImageView.cpp:4254
+#: gui/mrvImageView.cpp:4217
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr "Pixel/Copiar Valores RGBA al Clipboard"
 
@@ -5642,7 +5648,7 @@ msgstr "Preferir ICC"
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: gui/mrvImageBrowser.cpp:2183
+#: gui/mrvImageBrowser.cpp:2193
 msgid ""
 "Prefix cannot be an empty string.  Please type some unique characters to "
 "distinguish the version in the filename."
@@ -5713,7 +5719,7 @@ msgstr "Prioridad"
 msgid "Problem allocating image "
 msgstr "Problema asignando imagen"
 
-#: core/iffImage.cpp:523
+#: core/iffImage.cpp:524
 msgid "Problem with tile"
 msgstr "Problema con azulejo"
 
@@ -5775,7 +5781,7 @@ msgstr "Película Quicktime"
 msgid "R"
 msgstr "R"
 
-#: gui/mrvImageInformation.cpp:2279
+#: gui/mrvImageInformation.cpp:2294
 #, c-format
 msgid "R: %g %g    G: %g %g    B: %g %g"
 msgstr ""
@@ -5784,7 +5790,7 @@ msgstr ""
 msgid "RAM Disk"
 msgstr "Disco RAM"
 
-#: gui/mrvImageView.cpp:277
+#: gui/mrvImageView.cpp:278
 msgid "RED"
 msgstr "ROJO"
 
@@ -5796,7 +5802,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:188
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1983
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1987
-#: gui/mrvImageView.cpp:181
+#: gui/mrvImageView.cpp:182
 msgid "RGB"
 msgstr "RGB"
 
@@ -5806,7 +5812,7 @@ msgstr "Imagen RGB"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4365
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4371
-#: gui/mrvImageView.cpp:180
+#: gui/mrvImageView.cpp:181
 msgid "RGBA"
 msgstr "RGBA"
 
@@ -5893,8 +5899,8 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1988
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2991
-#: core/CMedia.cpp:1833 core/CMedia.cpp:1900 core/exrImage.cpp:3009
-#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:7320
+#: core/CMedia.cpp:1868 core/CMedia.cpp:1935 core/exrImage.cpp:3025
+#: core/wandImage.cpp:1164 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:7308
 msgid "Red"
 msgstr "Rojo"
 
@@ -5943,7 +5949,7 @@ msgstr "Servicio de Referencia"
 msgid "Refresh this directory"
 msgstr "Refrescar esta carpeta"
 
-#: gui/mrvImageInformation.cpp:2261
+#: gui/mrvImageInformation.cpp:2276
 msgid "Relative"
 msgstr "Relativo"
 
@@ -5981,7 +5987,7 @@ msgstr "Remover Metadata IPTC"
 msgid "Remove current image from reel."
 msgstr "Borré la imagen actual del carrete."
 
-#: core/mrvClient.cpp:173 core/mrvServer.cpp:1910
+#: core/mrvClient.cpp:173 core/mrvServer.cpp:1909
 msgid "Removed client "
 msgstr "Borré el cliente "
 
@@ -5989,11 +5995,11 @@ msgstr "Borré el cliente "
 msgid "Rename"
 msgstr "Renombrar"
 
-#: gui/mrvImageInformation.cpp:2251
+#: gui/mrvImageInformation.cpp:2266
 msgid "Render Pixel Format"
 msgstr "Formato de Pixel de Render"
 
-#: gui/mrvImageInformation.cpp:2315
+#: gui/mrvImageInformation.cpp:2330
 msgid "Render Transform"
 msgstr "Transformación de Render"
 
@@ -6006,7 +6012,7 @@ msgid "Renderer:\t"
 msgstr "Renderer:\t"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2821
-#: gui/mrvImageInformation.cpp:2266
+#: gui/mrvImageInformation.cpp:2281
 msgid "Rendering Intent"
 msgstr "Intención de Render"
 
@@ -6091,7 +6097,7 @@ msgstr "Rote la Imagen +90 grados"
 msgid "Rotate Image -90 Degrees"
 msgstr "Rote la Imagen -90 grados"
 
-#: core/exrImage.cpp:1401 core/exrImage.cpp:1405
+#: core/exrImage.cpp:1410 core/exrImage.cpp:1414
 msgid "Rounding Mode"
 msgstr "Modo de Redondeo"
 
@@ -6144,7 +6150,7 @@ msgstr "Áreas Seguras"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:248
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2838
-#: gui/mrvImageInformation.cpp:2258
+#: gui/mrvImageInformation.cpp:2273
 msgid "Saturation"
 msgstr "Saturación"
 
@@ -6276,11 +6282,11 @@ msgstr "Sensibilidad de Fregar"
 msgid "Scrubbing Tool"
 msgstr "Herramienta de Fregado"
 
-#: gui/mrvImageInformation.cpp:2108
+#: gui/mrvImageInformation.cpp:2116
 msgid "Second Data Window of Clip"
 msgstr "Segunda Ventana de Datos del Clip"
 
-#: gui/mrvImageInformation.cpp:2115
+#: gui/mrvImageInformation.cpp:2123
 msgid "Second Display Window of Clip"
 msgstr "Segunda Ventana de Display del Clip"
 
@@ -6397,7 +6403,7 @@ msgstr "Enviado"
 msgid "Separate layers"
 msgstr "Capas separadas"
 
-#: gui/mrvImageInformation.cpp:2015
+#: gui/mrvImageInformation.cpp:2023
 msgid "Sequence"
 msgstr "Secuencia"
 
@@ -6506,7 +6512,7 @@ msgstr "Recortada a la Línea de Tiempo"
 msgid "Show Hidden Files"
 msgstr "Mostrar Archivos Ocultos"
 
-#: gui/mrvImageView.cpp:471
+#: gui/mrvImageView.cpp:472
 msgid "Shown"
 msgstr "Mostrado"
 
@@ -6542,7 +6548,7 @@ msgstr "Creación de enchufe falló"
 msgid "Socket creation failed\n"
 msgstr "Creación de enchufe falló\n"
 
-#: core/stubImage.cpp:880
+#: core/stubImage.cpp:881
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
@@ -6587,8 +6593,8 @@ msgstr "Raiz Cuadrada"
 msgid "Src"
 msgstr "Fuente"
 
-#: gui/mrvImageInformation.cpp:2501 gui/mrvImageInformation.cpp:2554
-#: gui/mrvImageInformation.cpp:2592
+#: gui/mrvImageInformation.cpp:2517 gui/mrvImageInformation.cpp:2570
+#: gui/mrvImageInformation.cpp:2608
 msgid "Start"
 msgstr "Comienzo"
 
@@ -6596,15 +6602,15 @@ msgstr "Comienzo"
 msgid "Start Playback when opening files."
 msgstr "Comenzar la Reproducción cuando se abre el archivo."
 
-#: gui/mrvImageInformation.cpp:2554
+#: gui/mrvImageInformation.cpp:2570
 msgid "Start of Audio"
 msgstr "Comienzo del Audio"
 
-#: gui/mrvImageInformation.cpp:2592
+#: gui/mrvImageInformation.cpp:2608
 msgid "Start of Subtitle"
 msgstr "Comienzo del Subtítulo"
 
-#: gui/mrvImageInformation.cpp:2501
+#: gui/mrvImageInformation.cpp:2517
 msgid "Start of Video"
 msgstr "Comienzo del Vídeo"
 
@@ -6625,7 +6631,7 @@ msgstr "Imagen Estéreo de EXR"
 msgid "Stereo OpenGL"
 msgstr "Estéreo OpenGL"
 
-#: gui/mrvImageInformation.cpp:2121
+#: gui/mrvImageInformation.cpp:2129
 msgid "Stereo eye separation"
 msgstr "Separación de las Vistas"
 
@@ -6663,12 +6669,12 @@ msgstr "Texto"
 msgid "Subtitle"
 msgstr "Subtítulo"
 
-#: gui/mrvImageInformation.cpp:2571
+#: gui/mrvImageInformation.cpp:2587
 #, c-format
 msgid "Subtitle Stream #%d"
 msgstr "Pista de Subtítulo #%d"
 
-#: gui/mrvImageInformation.cpp:2009
+#: gui/mrvImageInformation.cpp:2017
 msgid "Subtitle Streams"
 msgstr "Pistas de Subtítulo"
 
@@ -6684,19 +6690,19 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:4019
+#: core/aviImage.cpp:4026
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
-#: gui/mrvImageView.cpp:4217
+#: gui/mrvImageView.cpp:4180
 msgid "Subtitle/Load"
 msgstr "Subtítulo/Cargar"
 
-#: gui/mrvImageView.cpp:4223
+#: gui/mrvImageView.cpp:4186
 msgid "Subtitle/No Subtitle"
 msgstr "Subtítulo/Sin Subtítulo"
 
-#: gui/mrvImageView.cpp:4231
+#: gui/mrvImageView.cpp:4194
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr "Subtítulo/Pista #%d - %s"
@@ -6710,7 +6716,7 @@ msgstr "Subtítulos"
 msgid "Subtitles (*.{"
 msgstr "Subtítulos (*.{"
 
-#: gui/mrvImageView.cpp:1002
+#: gui/mrvImageView.cpp:1003
 msgid "Subtitles are only valid on video files"
 msgstr "Subtitulos son validos solo en archivos de vídeo"
 
@@ -6794,7 +6800,7 @@ msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 msgid "T"
 msgstr "T"
 
-#: gui/mrvImageView.cpp:3552
+#: gui/mrvImageView.cpp:3514
 msgid "T: "
 msgstr "T: "
 
@@ -7409,7 +7415,7 @@ msgstr "Permutar Ventana de Vectorscopio"
 msgid "Toggle Waveform Window"
 msgstr "Permutar Ventana de Forma de Onda"
 
-#: core/oiioImage.cpp:432
+#: core/oiioImage.cpp:435
 msgid "Too many channels in image.  Saving RGB only"
 msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 
@@ -7417,7 +7423,7 @@ msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:8983
+#: gui/mrvImageView.cpp:8981
 msgid "Top"
 msgstr "Superior"
 
@@ -7499,8 +7505,8 @@ msgstr "Elementos de Interfaz de Usario (IU)"
 msgid "UInt"
 msgstr ""
 
-#: core/exrImage.cpp:1237 core/exrImage.cpp:2402 core/exrImage.cpp:2406
-#: core/exrImage.cpp:2486 core/exrImage.cpp:2490
+#: core/exrImage.cpp:1246 core/exrImage.cpp:2418 core/exrImage.cpp:2422
+#: core/exrImage.cpp:2502 core/exrImage.cpp:2506
 msgid "UTC Offset"
 msgstr "Desplazamiento UTC"
 
@@ -7527,7 +7533,7 @@ msgstr "No pude encontrar el rango de volumen '%s', id: %i\n"
 msgid "Unable to rename '%s' to '%s'"
 msgstr "No se pudo renombrar '%s' a '%s'"
 
-#: gui/mrvImageInformation.cpp:2257
+#: gui/mrvImageInformation.cpp:2272
 msgid "Undefined"
 msgstr "Indefinido"
 
@@ -7539,8 +7545,8 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2731
-#: gui/mrvImageInformation.cpp:2054 video/mrvGLEngine.cpp:224
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2732
+#: gui/mrvImageInformation.cpp:2062 video/mrvGLEngine.cpp:224
 #: video/mrvGLEngine.cpp:227 video/mrvGLEngine.cpp:230
 msgid "Unknown"
 msgstr "Desconocido"
@@ -7563,11 +7569,11 @@ msgstr "Toma Desconocida"
 msgid "Unknown Show"
 msgstr "Show Desconocido"
 
-#: gui/mrvImageView.cpp:974
+#: gui/mrvImageView.cpp:975
 msgid "Unknown Window "
 msgstr "Ventana Desconocida "
 
-#: gui/mrvImageView.cpp:760
+#: gui/mrvImageView.cpp:761
 msgid "Unknown Window \""
 msgstr "Ventana Desconocida \""
 
@@ -7576,11 +7582,11 @@ msgid "Unknown attribute to convert from string"
 msgstr "Atributo desconocido para convertir de texto"
 
 #
-#: gui/mrvImageInformation.cpp:1982
+#: gui/mrvImageInformation.cpp:1990
 msgid "Unknown attribute type for '"
 msgstr "Atributo desconocido para '"
 
-#: core/stubImage.cpp:520 gui/mrvImageInformation.cpp:2148
+#: core/stubImage.cpp:520 gui/mrvImageInformation.cpp:2156
 msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
@@ -7589,7 +7595,7 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown c->pix_fmt ("
 msgstr "Tipo de pixel desconocido ("
 
-#: core/iffImage.cpp:618
+#: core/iffImage.cpp:621
 msgid "Unknown channel type"
 msgstr "Tipo de canal desconocido"
 
@@ -7634,19 +7640,19 @@ msgstr "Formato de pixel en mrv::Frame desconocido"
 msgid "Unknown node in GradeRef"
 msgstr "Nodo desconocido en GradeRef"
 
-#: core/oiioImage.cpp:306
+#: core/oiioImage.cpp:309
 msgid "Unknown number of channels"
-msgstr "Numero de canales desconocidos"
+msgstr "Número de canales desconocidos"
 
-#: core/oiioImage.cpp:287 core/iffImage.cpp:602
+#: core/oiioImage.cpp:290 core/iffImage.cpp:605
 msgid "Unknown pixel type"
 msgstr "Tipo de pixel desconocido"
 
-#: gui/mrvImageInformation.cpp:2247
+#: gui/mrvImageInformation.cpp:2262
 msgid "Unknown render pixel format"
 msgstr "Formato de render de pixel desconocido"
 
-#: core/exrImage.cpp:1409
+#: core/exrImage.cpp:1418
 msgid "Unknown rounding mode"
 msgstr "Modo de Redondeo desconocido"
 
@@ -7668,7 +7674,7 @@ msgstr "Sin Especificar"
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
-#: core/exrImage.cpp:1406 gui/mrvHotkey.cpp:391
+#: core/exrImage.cpp:1415 gui/mrvHotkey.cpp:391
 msgid "Up"
 msgstr "Arriba"
 
@@ -7714,7 +7720,7 @@ msgstr "Interfaz de Usuario"
 msgid "Using hardware shader profile: "
 msgstr "Usando perfil de shader de hardware: "
 
-#: gui/mrvImageView.cpp:3560
+#: gui/mrvImageView.cpp:3522
 msgid "V-A: "
 msgstr "V-A: "
 
@@ -7736,7 +7742,7 @@ msgstr "RV 360 Cubo"
 msgid "VR 360 Sphere"
 msgstr "RV 360 Esfera"
 
-#: gui/mrvImageInformation.cpp:242 gui/mrvImageInformation.cpp:2642
+#: gui/mrvImageInformation.cpp:242 gui/mrvImageInformation.cpp:2658
 msgid "Value"
 msgstr "Valor"
 
@@ -7744,7 +7750,7 @@ msgstr "Valor"
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr "Valor (Intensidad) del pixel de la imagen bajo el ratón."
 
-#: gui/mrvImageInformation.cpp:2985
+#: gui/mrvImageInformation.cpp:3001
 msgid "Values"
 msgstr "Valores"
 
@@ -7803,7 +7809,7 @@ msgid "Versioning Prefix"
 msgstr ""
 
 #
-#: gui/mrvImageBrowser.cpp:2270
+#: gui/mrvImageBrowser.cpp:2280
 msgid "Versions "
 msgstr "Versiones "
 
@@ -7812,7 +7818,7 @@ msgstr "Versiones "
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3673
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3737
 #: gui/mrvImageInformation.cpp:725 gui/mrvImageInformation.cpp:810
-#: gui/mrvImageInformation.cpp:2445
+#: gui/mrvImageInformation.cpp:2461
 msgid "Video"
 msgstr "Vídeo"
 
@@ -7830,12 +7836,12 @@ msgstr "Codec de Vídeo"
 msgid "Video Options"
 msgstr "Grabar Opciones"
 
-#: gui/mrvImageInformation.cpp:2467
+#: gui/mrvImageInformation.cpp:2483
 #, c-format
 msgid "Video Stream #%d"
 msgstr "Pista de Vídeo #%d"
 
-#: gui/mrvImageInformation.cpp:2005
+#: gui/mrvImageInformation.cpp:2013
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
@@ -7848,7 +7854,7 @@ msgstr "Video Sync cuadro principal "
 msgid "Video Thread Count"
 msgstr "Número de Threads de Vídeo"
 
-#: gui/mrvImageInformation.cpp:2477
+#: gui/mrvImageInformation.cpp:2493
 msgid "Video has B frames"
 msgstr "Video tiene cuadros B"
 
@@ -7857,7 +7863,7 @@ msgstr "Video tiene cuadros B"
 msgid "Video timecode attribute already exists"
 msgstr "El atributo de Código de Tiempo de Video ya existe"
 
-#: gui/mrvImageView.cpp:4202
+#: gui/mrvImageView.cpp:4165
 #, c-format
 msgid "Video/Track #%d - %s"
 msgstr "Video/Pista #%d - %s"
@@ -7871,30 +7877,30 @@ msgstr "Vista"
 msgid "View Window"
 msgstr "Ventana de Visor"
 
-#: gui/mrvImageView.cpp:4042
+#: gui/mrvImageView.cpp:4005
 msgid "View/Data Window"
 msgstr "Vista/Ventana de Datos"
 
-#: gui/mrvImageView.cpp:4039
+#: gui/mrvImageView.cpp:4002
 msgid "View/Display Window"
 msgstr "Vista/Ventana de Display"
 
-#: gui/mrvImageView.cpp:4065
+#: gui/mrvImageView.cpp:4028
 #, c-format
 msgid "View/Hud/%s"
 msgstr "Vista/Hud/%s"
 
-#: gui/mrvImageView.cpp:4057
+#: gui/mrvImageView.cpp:4020
 #, c-format
 msgid "View/Hud/Toggle Selected"
 msgstr "Vista/Hud/Permutar Seleccionados"
 
-#: gui/mrvImageView.cpp:4049
+#: gui/mrvImageView.cpp:4012
 #, c-format
 msgid "View/Mask/%s"
 msgstr "Vista/Máscara/%s"
 
-#: gui/mrvImageView.cpp:4036
+#: gui/mrvImageView.cpp:3999
 msgid "View/Safe Areas"
 msgstr "Vista/Áreas Seguras"
 
@@ -7907,7 +7913,7 @@ msgstr "W"
 msgid "W:"
 msgstr "W:"
 
-#: gui/mrvImageInformation.cpp:2283
+#: gui/mrvImageInformation.cpp:2298
 #, c-format
 msgid "W: %g %g"
 msgstr ""
@@ -8242,11 +8248,11 @@ msgstr "Modo de listado amplio"
 msgid "Widescreen (HDTV + STV)"
 msgstr "Pantalla Amplia (HDTV + STV)"
 
-#: gui/mrvImageInformation.cpp:2040
+#: gui/mrvImageInformation.cpp:2048
 msgid "Width"
 msgstr "Ancho"
 
-#: gui/mrvImageInformation.cpp:2040
+#: gui/mrvImageInformation.cpp:2048
 msgid "Width of clip"
 msgstr "Ancho del clip"
 
@@ -8254,7 +8260,7 @@ msgstr "Ancho del clip"
 msgid "Window Behavior"
 msgstr "Comportamiento de la Ventana"
 
-#: gui/mrvImageView.cpp:4029
+#: gui/mrvImageView.cpp:3992
 #, c-format
 msgid "Windows/%s"
 msgstr "Ventanas/%s"
@@ -8334,11 +8340,11 @@ msgstr ""
 "Nótese que esto copia la imagen original a la nueva imagen.  Si graba sobre "
 "la misma imagen, la dañará."
 
-#: core/exrImage.cpp:1360 core/exrImage.cpp:2615 core/exrImage.cpp:2619
+#: core/exrImage.cpp:1369 core/exrImage.cpp:2631 core/exrImage.cpp:2635
 msgid "Wrap Modes"
 msgstr "Modo de Wrap"
 
-#: core/exrImage.cpp:1340 core/exrImage.cpp:2601 core/exrImage.cpp:2605
+#: core/exrImage.cpp:1349 core/exrImage.cpp:2617 core/exrImage.cpp:2621
 msgid "Writer"
 msgstr "Escritor"
 
@@ -8346,7 +8352,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:3294
+#: core/aviImage.cpp:3298
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -8355,19 +8361,19 @@ msgid "X"
 msgstr ""
 
 #
-#: gui/mrvImageInformation.cpp:2075
+#: gui/mrvImageInformation.cpp:2083
 msgid "X Position"
 msgstr "Posición X"
 
-#: gui/mrvImageInformation.cpp:2428
+#: gui/mrvImageInformation.cpp:2444
 msgid "X Ripmap Level"
 msgstr "Nivel de Ripmap en X"
 
-#: core/exrImage.cpp:1387 gui/mrvImageInformation.cpp:2423
+#: core/exrImage.cpp:1396 gui/mrvImageInformation.cpp:2439
 msgid "X Ripmap Levels"
 msgstr "Niveles de Ripmap en X"
 
-#: gui/mrvImageInformation.cpp:2083
+#: gui/mrvImageInformation.cpp:2091
 msgid "X Scale"
 msgstr "Escala X"
 
@@ -8397,20 +8403,20 @@ msgstr ""
 msgid "Y (Luminance)"
 msgstr "Y (Luminancia de Blanco)"
 
-#: gui/mrvImageInformation.cpp:2079
+#: gui/mrvImageInformation.cpp:2087
 msgid "Y Position"
 msgstr "Posición Y"
 
-#: gui/mrvImageInformation.cpp:2438
+#: gui/mrvImageInformation.cpp:2454
 msgid "Y Ripmap Level"
 msgstr "Nivel de Ripmap en Y"
 
-#: core/exrImage.cpp:1389 gui/mrvImageInformation.cpp:2433
+#: core/exrImage.cpp:1398 gui/mrvImageInformation.cpp:2449
 msgid "Y Ripmap Levels"
 msgstr "Niveles de Ripmap en Y"
 
 #
-#: gui/mrvImageInformation.cpp:2087
+#: gui/mrvImageInformation.cpp:2095
 msgid "Y Scale"
 msgstr "Escala Y"
 
@@ -8423,7 +8429,7 @@ msgstr "Y' (Luma)"
 msgid "Y:"
 msgstr ""
 
-#: core/exrImage.cpp:2746
+#: core/exrImage.cpp:2762
 msgid "YBYRY"
 msgstr ""
 
@@ -8450,11 +8456,11 @@ msgstr "Soporte YUV:\t"
 msgid "YUV (Analog PAL)"
 msgstr "YUV (PAL Analógico)"
 
-#: gui/mrvImageInformation.cpp:2163
+#: gui/mrvImageInformation.cpp:2178
 msgid "YUV Color Range"
 msgstr "Rango de Color de YUV"
 
-#: gui/mrvImageInformation.cpp:2160
+#: gui/mrvImageInformation.cpp:2175
 msgid ""
 "YUV Color Space conversion.  This value is extracted from the movie file.  "
 "To lock it to always use the same color space, set the value in Preferences-"
@@ -8491,8 +8497,8 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
-#: gui/mrvImageBrowser.cpp:690 gui/mrvImageBrowser.cpp:1962
-#: gui/mrvImageInformation.cpp:3604 gui/mrvSave.cpp:223
+#: gui/mrvImageBrowser.cpp:708 gui/mrvImageBrowser.cpp:1972
+#: gui/mrvImageInformation.cpp:3620 gui/mrvSave.cpp:223
 #: video/mrvGLEngine.cpp:238 video/mrvGLEngine.cpp:239
 #: video/mrvGLEngine.cpp:240 video/mrvGLEngine.cpp:242
 #: video/mrvGLEngine.cpp:246 video/mrvGLEngine.cpp:247
@@ -8505,23 +8511,23 @@ msgid "You are saving over the movie you are playing. Aborting..."
 msgstr ""
 "Estás grabando sobre la pelicula que estás reproduciendo.  Abortando..."
 
-#: gui/mrvImageBrowser.cpp:1796
+#: gui/mrvImageBrowser.cpp:1806
 msgid "You can load only a single stereo image to combine with current one."
 msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 
-#: gui/mrvImageBrowser.cpp:1812
+#: gui/mrvImageBrowser.cpp:1822
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: core/oiioImage.cpp:255
+#: core/oiioImage.cpp:258
 msgid "Z"
 msgstr "Z"
 
-#: gui/mrvImageView.cpp:285
+#: gui/mrvImageView.cpp:286
 msgid "Z DEPTH"
 msgstr ""
 
-#: gui/mrvImageView.cpp:191
+#: gui/mrvImageView.cpp:192
 msgid "Z Depth"
 msgstr "Profundidad Z"
 
@@ -8543,7 +8549,7 @@ msgstr ""
 msgid "ac3"
 msgstr ""
 
-#: core/CMedia.cpp:2918 core/CMedia.cpp:2949
+#: core/CMedia.cpp:3006 core/CMedia.cpp:3037
 msgid "audio"
 msgstr "audio"
 
@@ -8572,19 +8578,19 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:1209
+#: gui/mrvImageBrowser.cpp:1227
 msgid "change_image index "
 msgstr ""
 
-#: core/CMedia.cpp:3213 core/CMedia.cpp:3297
+#: core/CMedia.cpp:3301 core/CMedia.cpp:3385
 msgid "clean effects"
 msgstr "efectos en limpio"
 
-#: core/CMedia.cpp:3201 core/CMedia.cpp:3285
+#: core/CMedia.cpp:3289 core/CMedia.cpp:3373
 msgid "comment"
 msgstr "comentarios"
 
-#: core/CMedia.cpp:2921 core/CMedia.cpp:2952
+#: core/CMedia.cpp:3009 core/CMedia.cpp:3040
 msgid "data"
 msgstr "datos"
 
@@ -8596,15 +8602,15 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
-#: core/CMedia.cpp:3195 core/CMedia.cpp:3279
+#: core/CMedia.cpp:3283 core/CMedia.cpp:3367
 msgid "default"
 msgstr "defecto"
 
-#: core/CMedia.cpp:3983
+#: core/CMedia.cpp:4104
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 
-#: core/CMedia.cpp:3197 core/CMedia.cpp:3281
+#: core/CMedia.cpp:3285 core/CMedia.cpp:3369
 msgid "dub"
 msgstr "doblaje"
 
@@ -8626,11 +8632,11 @@ msgstr "busca_imagen: cuadro "
 msgid "float"
 msgstr "coma flotante"
 
-#: gui/mrvImageInformation.cpp:2145
+#: gui/mrvImageInformation.cpp:2153
 msgid "float (32-bits per channel)"
 msgstr "coma flotante (32-bits por canal)"
 
-#: core/CMedia.cpp:3207 core/CMedia.cpp:3291
+#: core/CMedia.cpp:3295 core/CMedia.cpp:3379
 msgid "forced"
 msgstr "forzado"
 
@@ -8643,23 +8649,23 @@ msgstr "formato "
 msgid "h264"
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:2142
+#: gui/mrvImageInformation.cpp:2150
 msgid "half float (16-bits per channel)"
 msgstr "media coma flotante (16 bits por canal)"
 
-#: core/CMedia.cpp:3978
+#: core/CMedia.cpp:4099
 msgid "half/float"
 msgstr "media/completa coma flotante"
 
 #: core/picImage.cpp:253
 msgid "has invalid magic number in the header."
-msgstr "tiene un numero mágico inválido en el encabezado."
+msgstr "tiene un número mágico inválido en el encabezado."
 
-#: gui/mrvImageView.cpp:3401 gui/mrvImageView.cpp:3416
+#: gui/mrvImageView.cpp:3363 gui/mrvImageView.cpp:3378
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3209 core/CMedia.cpp:3293
+#: core/CMedia.cpp:3297 core/CMedia.cpp:3381
 msgid "hearing impaired"
 msgstr "deficiencias auditivas"
 
@@ -8672,7 +8678,7 @@ msgstr ""
 msgid "is a Softimage file, but not a PIC file."
 msgstr "is un archivo Softimage, pero no un archivo PIC."
 
-#: core/CMedia.cpp:3205 core/CMedia.cpp:3289
+#: core/CMedia.cpp:3293 core/CMedia.cpp:3377
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -8681,7 +8687,7 @@ msgstr "karaoke"
 msgid "kb/s"
 msgstr "kb/s"
 
-#: core/exrImage.cpp:2557
+#: core/exrImage.cpp:2573
 msgid "keyCode"
 msgstr "Código de Llave"
 
@@ -8689,7 +8695,7 @@ msgstr "Código de Llave"
 msgid "listen to socket failed\n"
 msgstr "Escuchar al enchufe falló\n"
 
-#: core/CMedia.cpp:3203 core/CMedia.cpp:3287
+#: core/CMedia.cpp:3291 core/CMedia.cpp:3375
 msgid "lyrics"
 msgstr "letra lírica"
 
@@ -8732,17 +8738,17 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1783
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4073
-#: gui/mrvImageView.cpp:480
+#: gui/mrvImageView.cpp:481
 #, c-format
 msgid "mrViewer"
 msgstr "mrViewer"
 
-#: gui/mrvImageView.cpp:475
+#: gui/mrvImageView.cpp:476
 #, c-format
 msgid "mrViewer    FG: %s"
 msgstr "mrViewer    FRENTE: %s"
 
-#: gui/mrvImageView.cpp:468
+#: gui/mrvImageView.cpp:469
 #, c-format
 msgid "mrViewer    FG: %s [%d]   BG: %s [%d] (%s)"
 msgstr "mrVIewer     FRENTE: %s [%d]    FONDO: %s [%d] (%s)"
@@ -8751,11 +8757,11 @@ msgstr "mrVIewer     FRENTE: %s [%d]    FONDO: %s [%d] (%s)"
 msgid "mrViewer does not support YUV images."
 msgstr "mrViewer no soporta imágenes de YUV."
 
-#: gui/mrvImageInformation.cpp:2473
+#: gui/mrvImageInformation.cpp:2489
 msgid "mrViewer knows codec used"
 msgstr "mrViewer conoce el codec usado"
 
-#: gui/mrvImageInformation.cpp:2524 gui/mrvImageInformation.cpp:2576
+#: gui/mrvImageInformation.cpp:2540 gui/mrvImageInformation.cpp:2592
 msgid "mrViewer knows the codec used"
 msgstr "mrViewer conoce el codec usado"
 
@@ -8842,7 +8848,7 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame No hay datos de pixel a cambiar"
 
-#: core/CMedia.cpp:3199 core/CMedia.cpp:3283
+#: core/CMedia.cpp:3287 core/CMedia.cpp:3371
 msgid "original"
 msgstr "original"
 
@@ -8875,44 +8881,44 @@ msgstr ""
 msgid "store_audio: Invalid data"
 msgstr "almacenar_audio: datos inválidos"
 
-#: core/CMedia.cpp:2924 core/CMedia.cpp:2955
+#: core/CMedia.cpp:3012 core/CMedia.cpp:3043
 msgid "subtitle"
 msgstr "subtítulo"
 
-#: gui/mrvImageView.cpp:3394 gui/mrvImageView.cpp:3424
+#: gui/mrvImageView.cpp:3356 gui/mrvImageView.cpp:3386
 msgid "tv action"
 msgstr "acción de tv"
 
-#: gui/mrvImageView.cpp:3395 gui/mrvImageView.cpp:3425
+#: gui/mrvImageView.cpp:3357 gui/mrvImageView.cpp:3387
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:3174 core/CMedia.cpp:3258
+#: core/CMedia.cpp:3262 core/CMedia.cpp:3346
 msgid "und"
 msgstr "ind"
 
-#: core/CMedia.cpp:2927 core/CMedia.cpp:2958 core/CMedia.cpp:3950
+#: core/CMedia.cpp:3015 core/CMedia.cpp:3046 core/CMedia.cpp:4071
 #: core/wandImage.cpp:681
 msgid "unknown"
 msgstr "desconocido"
 
-#: gui/mrvImageInformation.cpp:2133
+#: gui/mrvImageInformation.cpp:2141
 msgid "unsigned byte (8-bits per channel)"
 msgstr "byte sin signo (8-bits por canal)"
 
-#: gui/mrvImageInformation.cpp:2139
+#: gui/mrvImageInformation.cpp:2147
 msgid "unsigned int (32-bits per channel)"
 msgstr "entero sin signo (32-bits por canal)"
 
-#: gui/mrvImageInformation.cpp:2136
+#: gui/mrvImageInformation.cpp:2144
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2915 core/CMedia.cpp:2946
+#: core/CMedia.cpp:3003 core/CMedia.cpp:3034
 msgid "video"
 msgstr "video"
 
-#: core/CMedia.cpp:3211 core/CMedia.cpp:3295
+#: core/CMedia.cpp:3299 core/CMedia.cpp:3383
 msgid "visual impaired"
 msgstr "discapacitado visual"
 

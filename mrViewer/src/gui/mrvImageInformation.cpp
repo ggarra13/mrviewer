@@ -1391,9 +1391,11 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
         img->levelX( w->ivalue() );
         img->levelY( w->ivalue() );
         update_int_slider( w );
-        bool ok = img->fetch( view->frame() );
+	image_type_ptr canvas;
+        bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+	    img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1407,9 +1409,11 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
             mrv::ImageView* view = info->main()->uiView;
             img->level( w->ivalue() );
             update_int_slider( w );
-            bool ok = img->fetch( view->frame() );
+	    image_type_ptr canvas;
+	    bool ok = img->fetch( canvas, view->frame() );
             if (ok)
             {
+		img->cache( canvas );
                 img->refresh();
                 view->fit_image();
                 view->redraw();
@@ -1426,9 +1430,11 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelX( w->ivalue() );
         update_int_slider( w );
-        bool ok = img->fetch( view->frame() );
+	image_type_ptr canvas;
+        bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+	    img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1444,9 +1450,11 @@ static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelY( w->ivalue() );
         update_int_slider( w );
-        bool ok = img->fetch( view->frame() );
+	image_type_ptr canvas;
+        bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+	    img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -2153,6 +2161,13 @@ void ImageInformation::fill_data()
     add_text( _("Depth"), _("Bit depth of clip"), depth );
     add_int( _("Image Channels"), _("Number of channels in clip"),
              img->number_of_channels() );
+    
+    exrImage* exr = dynamic_cast< exrImage* >( img );
+    if ( exr )
+    {
+	int numparts = exr->numparts();
+	add_int( _("Number of Parts"), _("Number of Parts"), numparts );
+    }
 
     aviImage* avi = dynamic_cast< aviImage* >( img );
     if ( avi )
@@ -2383,18 +2398,19 @@ void ImageInformation::fill_data()
     m_image->relayout();
     m_image->show();
     tooltip( NULL );
-
+    
+    
     const CMedia::Attributes& attrs = img->attributes();
     if ( ! attrs.empty() )
     {
         m_curr = add_browser( m_attributes );
 
-        exrImage* exr = dynamic_cast< exrImage* >( img );
         if ( exr )
         {
             std::string date = exr->capture_date( img->frame() );
             if ( !date.empty() )
                 add_text( _("Capture Date"), _("Capture Date"), date.c_str() );
+
         }
 
         CMedia::Attributes::const_iterator i = attrs.begin();

@@ -1051,7 +1051,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
 
 mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
-        const int64_t& pts
+					      const int64_t& pts
                                             )
 {
     double aspect_ratio = (double)_w / (double) _h;
@@ -2709,16 +2709,17 @@ void aviImage::populate()
 
     if ( !has_video() )
     {
+	mrv::image_type_ptr canvas;
         if ( !_hires )
         {
             _w = 640;
             _h = 480;
-            allocate_pixels( _frameStart, 3, image_type::kRGB,
+            allocate_pixels( canvas, _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
         }
-        _hires->frame( _frameStart );
-        uint8_t* ptr = (uint8_t*) _hires->data().get();
+        canvas->frame( _frameStart );
+        uint8_t* ptr = (uint8_t*) canvas->data().get();
         memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
     }
 
@@ -3106,7 +3107,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
 
 
-bool aviImage::fetch(const int64_t frame)
+bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 {
 #ifdef DEBUG_DECODE
     cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected
@@ -3117,7 +3118,9 @@ bool aviImage::fetch(const int64_t frame)
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
     {
         _right_eye->stop();
-        _right_eye->fetch( frame );
+	mrv::image_type_ptr canvas;
+        _right_eye->fetch( canvas, frame );
+	_stereo[1] = canvas;
     }
 
     bool got_video = !has_video();
@@ -3243,7 +3246,8 @@ bool aviImage::frame( const int64_t f )
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
     // else                      _dts = _adts = f;
 
-    bool ok = fetch(f);
+    image_type_ptr canvas;
+    bool ok = fetch(canvas, f);
 
 
 #ifdef DEBUG_DECODE
@@ -3521,6 +3525,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 {
     int64_t frame = f;
 
+    
     if ( !has_video() )
     {
         return audio_video_display(_audio_frame);
@@ -3632,6 +3637,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             {
                 pktframe = frame;
             }
+	    
 
             // Avoid storing too many frames in advance
             if ( playback() == kForwards &&
@@ -3652,8 +3658,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                 }
                 continue;
             }
-
-
+;
             got_video = decode_image( pktframe, pkt );
             //assert( !_video_packets.empty() );
             _video_packets.pop_front();
@@ -3846,7 +3851,9 @@ void aviImage::do_seek()
     {
         if ( _seek_frame != _expected )
             clear_packets();
-        fetch( _seek_frame );
+
+	image_type_ptr canvas;
+        fetch( canvas, _seek_frame );
     }
 
 

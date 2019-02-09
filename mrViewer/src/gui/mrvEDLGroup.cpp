@@ -658,7 +658,8 @@ void EDLGroup::cut( boost::int64_t frame )
 
     right->first_frame( f );
     right->last_frame( img->last_frame() );
-    right->fetch( f );
+    image_type_ptr canvasR;
+    right->fetch( canvasR, f );
     right->decode_video( f );
     right->find_image( f );
 
@@ -672,7 +673,8 @@ void EDLGroup::cut( boost::int64_t frame )
 
     f -= 1;
     img->last_frame( f );
-    img->fetch( f );
+    image_type_ptr canvasL;
+    img->fetch( canvasL, f );
     img->decode_video( f );
     img->find_image( f );
     img->clear_cache();
