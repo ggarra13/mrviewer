@@ -2648,26 +2648,27 @@ bool ImageView::preload()
 
     bool stopped = img->stopped();
 
+    typedef CMedia::Mutex Mutex;
+    mrv::PacketQueue& vp = img->video_packets();
+    CMedia::Mutex& vpm = vp.mutex();
+    SCOPED_LOCK( vpm );
+    mrv::PacketQueue& ap = img->audio_packets();
+    CMedia::Mutex& apm = ap.mutex();
+    SCOPED_LOCK( apm );
+    mrv::PacketQueue& sp = img->subtitle_packets();
+    CMedia::Mutex& spm = sp.mutex();
+    SCOPED_LOCK( spm );
+    Mutex& mtx = img->video_mutex();
+    SCOPED_LOCK( mtx );
+    
     if ( stopped )
     {
-        typedef CMedia::Mutex Mutex;
-        mrv::PacketQueue& vp = img->video_packets();
-        CMedia::Mutex& vpm = vp.mutex();
-        SCOPED_LOCK( vpm );
-        mrv::PacketQueue& ap = img->audio_packets();
-        CMedia::Mutex& apm = ap.mutex();
-        SCOPED_LOCK( apm );
-        mrv::PacketQueue& sp = img->subtitle_packets();
-        CMedia::Mutex& spm = sp.mutex();
-        SCOPED_LOCK( spm );
-        Mutex& mtx = img->video_mutex();
-        SCOPED_LOCK( mtx );
         img->frame( f );
     }
     else
     {
 	// Needed as video thread may not refresh on time
-	img->find_image( img->frame() );
+	img->find_image( f );
     }
 
     ready_preframe( _preframe, p, img, first, last );
