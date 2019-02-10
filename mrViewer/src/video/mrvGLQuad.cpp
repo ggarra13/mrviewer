@@ -305,6 +305,8 @@ GLQuad::GLQuad( const ImageView* view ) :
     glGenTextures( _num_textures, _texId );
     CHECK_GL;
 
+    _uvMax.u = 1.0;
+    _uvMax.v = 1.0;
 
     for ( unsigned i = 0; i < _num_textures; ++i )
     {
@@ -503,7 +505,7 @@ void GLQuad::update_texsub( unsigned int idx,
 
 }
 
-void GLQuad::bind_texture_yuv( const image_type_ptr pic,
+void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
                                const unsigned int poww,
                                const unsigned int powh )
 {
@@ -711,7 +713,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr pic,
     }
 }
 
-void GLQuad::bind_texture_quad( const image_type_ptr pic,
+void GLQuad::bind_texture_quad( const image_type_ptr& pic,
                                 const unsigned poww, const unsigned int powh )
 {
     if ( pic->format() >= image_type::kYUV )
@@ -879,7 +881,7 @@ void GLQuad::bind_texture_quad( const image_type_ptr pic,
 }
 
 /// Prepare a texture for opengl
-void GLQuad::bind_texture_pixels( const mrv::image_type_ptr pic )
+void GLQuad::bind_texture_pixels( const mrv::image_type_ptr& pic )
 {
     unsigned dw = pic->width();
     unsigned dh = pic->height();

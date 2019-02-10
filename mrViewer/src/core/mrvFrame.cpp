@@ -608,6 +608,8 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
     _mtime    = b.mtime();
     _type     = b.pixel_type();
     allocate();
+    std::cerr << "memcpy " << _data.get() << " <- " << b.data().get()
+	      << std::endl;
     memcpy( _data.get(), b.data().get(), data_size() );
     return *this;
 }

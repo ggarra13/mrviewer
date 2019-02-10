@@ -2661,7 +2661,7 @@ bool ImageView::preload()
     Mutex& mtx = img->video_mutex();
     SCOPED_LOCK( mtx );
     
-    if ( stopped )
+    if ( img->stopped() )
     {
         img->frame( f );
     }

@@ -962,6 +962,8 @@ void video_thread( PlaybackData* data )
     // delete the data (we don't need it anymore)
     delete data;
 
+    if ( !view || !timeline || !browser ) return;
+
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
 

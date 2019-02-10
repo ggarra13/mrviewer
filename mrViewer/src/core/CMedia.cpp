@@ -746,7 +746,7 @@ void CMedia::clear_cache()
     boost::uint64_t num = _frame_end - _frame_start + 1;
     for ( boost::uint64_t i = 0; i < num; ++i )
     {
-        if ( _sequence[i] )
+        if ( _sequence && _sequence[i] )
             _sequence[i].reset();
         if ( _right && _right[i] )
             _right[i].reset();
@@ -2734,6 +2734,9 @@ void CMedia::seek( const int64_t f )
 void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
                                const mrv::image_type_ptr& pic )
 {
+    assert0( seq != NULL );
+    assert0( pic != NULL );
+    assert0( pic.use_count() >= 1 );
 
     int64_t f = pic->frame();
 
@@ -2807,6 +2810,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
         {
             //DBG( "cache seq " << idx << " pic " << pic );
             seq[idx] = pic;
+	    assert0( pic.use_count() >= 2 );
         }
     }
 
