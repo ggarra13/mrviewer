@@ -2041,6 +2041,9 @@ void CMedia::channel( const char* c )
         if ( fetch( canvas, f ) )
         {
             cache( canvas );
+	    default_icc_profile();
+	    default_rendering_transform();
+	    default_ocio_input_color_space();
         }
         refresh();
     }
@@ -2873,7 +2876,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
     {
         update_cache_pic( _sequence, pic );
 	_depth = pic->pixel_type();
-	pic.reset();
+	//pic.reset();
     }
 
     if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
@@ -3984,7 +3987,7 @@ bool CMedia::find_image( const int64_t frame )
 							image_type::kByte ) );
                     memset( canvas->data().get(), 0x0, canvas->data_size() );
 		    canvas->valid( false ); // mark this frame as invalid
-		    SCOPED_LOCK( _mutex );
+		    // SCOPED_LOCK( _mutex );
 		    _hires = canvas;
                     cache( canvas );
 		    default_icc_profile();
@@ -4011,7 +4014,6 @@ bool CMedia::find_image( const int64_t frame )
 			    mrv::image_type_ptr( new image_type( *old ) );
                             canvas->frame( f );
 			    canvas->valid( false ); // mark this frame as invalid
-			    SCOPED_LOCK( _mutex );
 			    _hires = canvas;
                             cache( canvas );
 			    default_icc_profile();

@@ -2,8 +2,10 @@ v4.4.4   - Reworked loading of image sequences to take advantage of threads.
 	   Now one idle thread caches images while playing.  This works
 	   very nicely with multipart OpenEXRs and with small (< 2K) 8 bit
 	   PNGs, IFFs, etc.
-	  - Bug fixed crash when stereo-output/input command line option
-	    was unknown.
+	 - Bug fixed crash when stereo-output/input command line option
+	   was unknown.
+	 - Bug fixed MMB+drag to drag canvas around.  ALT+Shift+LMB remains
+	   the same and does the same.
 
 v4.4.3   - Bug fixed loading of tiff files due to a library conflict on
 	   Linux.

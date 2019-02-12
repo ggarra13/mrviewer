@@ -2646,35 +2646,35 @@ bool ImageView::preload()
         else if ( f > last ) f = last;
     }
 
-    bool stopped = img->stopped();
 
     typedef CMedia::Mutex Mutex;
-    mrv::PacketQueue& vp = img->video_packets();
-    CMedia::Mutex& vpm = vp.mutex();
+    Mutex& vpm = img->video_packets().mutex();
     SCOPED_LOCK( vpm );
-    mrv::PacketQueue& ap = img->audio_packets();
-    CMedia::Mutex& apm = ap.mutex();
+    Mutex& apm = img->audio_packets().mutex();
     SCOPED_LOCK( apm );
-    mrv::PacketQueue& sp = img->subtitle_packets();
-    CMedia::Mutex& spm = sp.mutex();
+    Mutex& spm = img->subtitle_packets().mutex();
     SCOPED_LOCK( spm );
     Mutex& mtx = img->video_mutex();
     SCOPED_LOCK( mtx );
     
     if ( img->stopped() )
     {
+	// Add a frame to image queue
         img->frame( f );
     }
     else
     {
-	// Needed as video thread may not refresh on time
+	// Needed as video thread will probably not refresh on time
 	img->find_image( f );
     }
 
+    // Ready preframe for next iteration
     ready_preframe( _preframe, p, img, first, last );
 
+    // Redraw timeline (cache line)
     timeline()->redraw();
-    
+
+    // Redraw view window
     redraw();
 
     return true;
@@ -7000,16 +7000,6 @@ void ImageView::preload_cache_start()
         {
             timeline()->edl( true );
             _preframe = frame();
-            CMedia* img = r->image_at( _preframe );
-        }
-        else
-        {
-            mrv::media fg = foreground();
-            if ( fg )
-            {
-                img = fg->image();
-                _preframe = img->first_frame();
-            }
         }
         CMedia::preload_cache( true );
         _idle_callback = true;
@@ -8863,9 +8853,15 @@ void ImageView::stop()
     // seek( int64_t(timeline()->value()) );
 
 
-    if ( CMedia::preload_cache() && ! _idle_callback )
+    if ( CMedia::preload_cache() )
     {
-        preload_cache_start();
+	mrv::media fg = foreground();
+	if (fg)
+	{
+	    _preframe = fg->image()->first_cache_empty_frame();
+	}
+	if ( _idle_callback )
+	    preload_cache_start();
     }
 
     mouseMove( fltk::event_x(), fltk::event_y() );

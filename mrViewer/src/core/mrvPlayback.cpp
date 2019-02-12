@@ -1245,6 +1245,7 @@ void video_thread( PlaybackData* data )
         //img->debug_video_packets( frame, "find_image", true );
         //img->debug_video_stores( frame, "find_image", true );
 
+    
         if ( ! img->find_image( frame ) )
 	{
 	    LOG_ERROR( "Could not find image " << frame );
