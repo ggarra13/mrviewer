@@ -482,8 +482,7 @@ bool exrImage::channels_order(
         //           << " " << ysampling[k]
         //           << " buf " << (void*) buf
         //           << std::endl;
-
-
+ 
         fb.insert( channelList[k],
                    Slice( imfPixelType, buf, xs[k], ys[k],
                           xsampling[k], ysampling[k] ) );
@@ -2166,6 +2165,8 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
 
     if ( _is_stereo )
     {
+	SCOPED_LOCK( _mutex );
+	
         for ( int i = 0; i < 2; ++i )
         {
             if ( _stereo_output != kNoStereo && st[i] >= 0 &&
@@ -3494,6 +3495,9 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
             char* buf =  (char*) base + offsets[k] * size;
+	    std::cerr << (void*) buf << " xs " << xs[k] << " ys " << ys[k]
+		      << " xsampling " << xsampling[k] << " ysampling "
+		      << ysampling[k] << std::endl;
             fb.insert( name,
                        Slice( save_type, buf, xs[k], ys[k],
                               xsampling[k], ysampling[k] ) );

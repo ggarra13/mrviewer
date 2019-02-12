@@ -713,6 +713,9 @@ CMedia::CMedia( const CMedia* other, int64_t f ) :
     if ( fetch( canvas, f ) )
     {
 	cache( canvas );
+	default_icc_profile();
+	default_rendering_transform();
+	default_ocio_input_color_space();
     }
 }
 
@@ -779,6 +782,9 @@ void CMedia::update_frame( const int64_t& f )
     if ( fetch( canvas, f ) )
     {
 	cache( canvas );
+	default_icc_profile();
+	default_rendering_transform();
+	default_ocio_input_color_space();
     }
 
     image_damage( image_damage() | kDamageCache | kDamageContents );
@@ -1050,8 +1056,8 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
 
     image_damage( image_damage() & ~kDamageContents );
     try {
-        canvas.reset(  new image_type( frame, w, h,
-                                       channels, format, pixel_type ) );
+        canvas.reset( new image_type( frame, w, h,
+				      channels, format, pixel_type ) );
     }
     catch( const std::bad_alloc& e )
     {
@@ -2867,7 +2873,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
     {
         update_cache_pic( _sequence, pic );
 	_depth = pic->pixel_type();
-	// pic.reset();
+	pic.reset();
     }
 
     if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
@@ -3977,7 +3983,13 @@ bool CMedia::find_image( const int64_t frame )
 							image_type::kLumma,
 							image_type::kByte ) );
                     memset( canvas->data().get(), 0x0, canvas->data_size() );
+		    canvas->valid( false ); // mark this frame as invalid
+		    SCOPED_LOCK( _mutex );
+		    _hires = canvas;
                     cache( canvas );
+		    default_icc_profile();
+		    default_rendering_transform();
+		    default_ocio_input_color_space();
                     IMG_WARNING( file << _(" is missing.") );
                 }
                 else
@@ -3998,15 +4010,18 @@ bool CMedia::find_image( const int64_t frame )
                             canvas =
 			    mrv::image_type_ptr( new image_type( *old ) );
                             canvas->frame( f );
+			    canvas->valid( false ); // mark this frame as invalid
+			    SCOPED_LOCK( _mutex );
+			    _hires = canvas;
                             cache( canvas );
+			    default_icc_profile();
+			    default_rendering_transform();
+			    default_ocio_input_color_space();
                             IMG_WARNING( file << _(" is missing. Choosing ")
                                          << old->frame() << "." );
                         }
                     }
                 }
-		canvas->valid( false ); // mark this frame as invalid
-		SCOPED_LOCK( _mutex );
-		_hires = canvas;
                 refresh();
                 return true;
             }

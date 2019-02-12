@@ -3278,8 +3278,17 @@ void ImageView::draw()
     TRACE("");
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
-    _engine->draw_images( images );
+    CMedia* img = NULL;
+    if ( fg )
+    {
+	img = fg->image();
+	Mutex& mtx = img->video_mutex();
+	SCOPED_LOCK( mtx );
+	
+	DBG( __FUNCTION__ << " " << __LINE__ );
+	_engine->draw_images( images );
+    }
+    
     TRACE("");
 
 
@@ -3288,10 +3297,8 @@ void ImageView::draw()
         _engine->draw_mask( _masking );
     }
 
-    CMedia* img = NULL;
-    if ( fg )
+    if ( img )
     {
-        img = fg->image();
         const char* label = img->label();
         if ( label )
         {
@@ -3725,7 +3732,7 @@ int ImageView::leftMouseDown(int x, int y)
     int button = fltk::event_button();
     if (button == 1)
     {
-        flags  = kMouseDown;
+	flags	= kMouseDown;
         if (fltk::event_key_state(fltk::LeftAltKey) || vr() )
         {
             // Handle ALT+LMB moves
@@ -3933,9 +3940,8 @@ int ImageView::leftMouseDown(int x, int y)
 
     else if ( button == 2 )
     {
-
-
         // handle MMB moves
+	flags  = kMouseDown;
         flags |= kMouseMove;
         flags |= kMouseMiddle;
         return 1;
