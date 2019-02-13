@@ -1504,8 +1504,8 @@ void CMedia::sequence( const char* fileroot,
     image_type_ptr canvas;
     if ( fetch( canvas, start ) )
     {
-        cache( canvas );
 	_hires = canvas;
+        cache( canvas );
 	refresh();
 	default_icc_profile();
 	default_rendering_transform();
@@ -2839,7 +2839,8 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
 
     mrv::image_type_ptr r;
     
-    if ( !is_sequence() || !_cache_active )
+    if ( !is_sequence() || !_cache_active ||
+	 dynamic_cast< const aviImage* >( this ) != NULL )
         return r;
 
     int64_t idx = frame - _frame_start;
@@ -2859,6 +2860,9 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
  */
 void CMedia::cache( mrv::image_type_ptr& pic )
 {
+    if ( dynamic_cast< const aviImage* >( this ) != NULL )
+	return;
+	 
     assert0( pic != NULL );
     assert0( pic.use_count() != 0 );
 

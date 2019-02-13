@@ -7230,7 +7230,8 @@ void ImageView::channel( unsigned short c )
 
         if ( c >= idx )
         {
-            LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum: " )
+            LOG_ERROR( _("Invalid index ") << c
+		       << _(" for channel.  Maximum: " )
                        << idx );
             return;
         }
@@ -7793,7 +7794,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
-                    shortcuts.end())
+		 shortcuts.end())
             {
                 // std::cerr << "add shortcut " << (char) shortcut << " v: "
                 //        << v << " name " << name << " ch " << ch << std::endl;

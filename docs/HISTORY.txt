@@ -1,7 +1,9 @@
-v4.4.4   - Reworked loading of image sequences to take advantage of threads.
-	   Now one idle thread caches images while playing.  This works
-	   very nicely with multipart OpenEXRs and with small (< 2K) 8 bit
-	   PNGs, IFFs, etc.
+v4.4.4.beta1
+	- Reworked loading of image sequences to take advantage of threads.
+	   Now one idle thread caches images while playing.  This seems to
+	   work very nicely with multipart OpenEXRs and with small (< 2K) 8
+	   bit PNGs, IFFs, etc.  This is a first beta with the new algorithm.
+	   Please report successes or failures.
 	 - Bug fixed crash when stereo-output/input command line option
 	   was unknown.
 	 - Bug fixed MMB+drag to drag canvas around.  ALT+Shift+LMB remains

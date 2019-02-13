@@ -3249,7 +3249,6 @@ bool aviImage::frame( const int64_t f )
     image_type_ptr canvas;
     bool ok = fetch(canvas, f);
 
-
 #ifdef DEBUG_DECODE
     IMG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: "
               << _frame << " _expected: "  << _expected );

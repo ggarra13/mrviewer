@@ -2189,6 +2189,9 @@ void ImageInformation::fill_data()
     case VideoFrame::kLumma:
         format = _("Lumma");
         break;
+    case VideoFrame::kLummaA:
+        format = _("Lumma Alpha");
+        break;
     case VideoFrame::kRGB:
         format = N_("RGB");
         break;
