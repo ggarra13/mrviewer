@@ -482,7 +482,7 @@ bool exrImage::channels_order(
         //           << " " << ysampling[k]
         //           << " buf " << (void*) buf
         //           << std::endl;
- 
+
         fb.insert( channelList[k],
                    Slice( imfPixelType, buf, xs[k], ys[k],
                           xsampling[k], ysampling[k] ) );
@@ -1124,7 +1124,7 @@ void exrImage::read_forced_header_attr( const Imf::Header& h,
         h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
     if ( attr )
     {
-	SCOPED_LOCK( _mutex );
+        SCOPED_LOCK( _mutex );
         _cap_date[frame] = attr->value();
     }
 
@@ -1793,7 +1793,6 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 
 }
 
-
 bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                                  Imf::MultiPartInputFile& inmaster,
                                 const boost::int64_t& frame )
@@ -1987,7 +1986,6 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                     continue;
                 }
 
-
                 std::string ext = name;
                 if ( header.hasView() ) ext = header.view();
 
@@ -2011,6 +2009,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                         layerName += s.name();
                         _layers.push_back( layerName );
                     }
+
                     stringArray::iterator it = std::find( _layers.begin(),
                                                           _layers.end(),
                                                           first );
@@ -2044,23 +2043,25 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                             std::sort( it+1, _layers.end()-1,
                                        std::greater<std::string>() );
                         }
+
                     }
                 }
 
+
                 if ( st[1] == -1 &&
-                        ( ext.find( right ) != std::string::npos ||
-                          ext.find( R ) != std::string::npos ) )
+                     ( ext.find( right ) != std::string::npos ||
+                       ext.find( R ) != std::string::npos ) )
                 {
                     if ( !prefix.empty() )
                     {
                         if ( prefix != "Z" &&
-                                name.find( prefix ) == std::string::npos )
+                             name.find( prefix ) == std::string::npos )
                             continue;
                     }
                     if ( !suffix.empty() )
                     {
                         if ( suffix != ".Z" &&
-                                name.rfind( suffix ) == std::string::npos )
+                             name.rfind( suffix ) == std::string::npos )
                             continue;
                     }
                     st[1] = i;
@@ -2069,19 +2070,19 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                     continue;
                 }
                 if ( st[0] == -1 &&
-                        ( ext.find( left ) != std::string::npos ||
-                          ext.find( L ) != std::string::npos ) )
+                     ( ext.find( left ) != std::string::npos ||
+                       ext.find( L ) != std::string::npos ) )
                 {
                     if ( !prefix.empty() )
                     {
                         if ( prefix != "Z" &&
-                                name.find( prefix ) == std::string::npos )
+                             name.find( prefix ) == std::string::npos )
                             continue;
                     }
                     if ( !suffix.empty() )
                     {
                         if ( suffix != ".Z" &&
-                                name.rfind( suffix ) == std::string::npos )
+                             name.rfind( suffix ) == std::string::npos )
                             continue;
                     }
                     _has_left_eye = strdup( name.c_str() );
@@ -2134,7 +2135,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
         {
             std::string root( _fileroot );
             if ( root.find( "%V" ) != std::string::npos ||
-		 root.find( "%v" ) != std::string::npos )
+                 root.find( "%v" ) != std::string::npos )
                 return true;
             IMG_WARNING( _("Could not find both stereo images in file") );
             return false;
@@ -2165,8 +2166,8 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
 
     if ( _is_stereo )
     {
-	SCOPED_LOCK( _mutex );
-	
+        SCOPED_LOCK( _mutex );
+
         for ( int i = 0; i < 2; ++i )
         {
             if ( _stereo_output != kNoStereo && st[i] >= 0 &&
@@ -2357,7 +2358,6 @@ bool exrImage::fetch(  mrv::image_type_ptr& canvas,
 
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
         _numparts = inmaster.parts();
-
 
 
         if ( _numparts > 0 )
@@ -3495,9 +3495,9 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
             char* buf =  (char*) base + offsets[k] * size;
-	    std::cerr << (void*) buf << " xs " << xs[k] << " ys " << ys[k]
-		      << " xsampling " << xsampling[k] << " ysampling "
-		      << ysampling[k] << std::endl;
+            std::cerr << (void*) buf << " xs " << xs[k] << " ys " << ys[k]
+                      << " xsampling " << xsampling[k] << " ysampling "
+                      << ysampling[k] << std::endl;
             fb.insert( name,
                        Slice( save_type, buf, xs[k], ys[k],
                               xsampling[k], ysampling[k] ) );

@@ -1402,7 +1402,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 
 void ImageView::stop_playback()
 {
-    
+
     mrv::media fg = foreground();
     if ( fg ) fg->image()->stop();
 
@@ -2527,10 +2527,10 @@ int timeval_substract(struct timeval *result, struct timeval *x,
 }
 
 bool ImageView::ready_preframe( std::atomic<int64_t>& f,
-				CMedia::Playback p,
-				CMedia* const img,
-				const int64_t& first,
-				const int64_t& last )
+                                CMedia::Playback p,
+                                CMedia* const img,
+                                const int64_t& first,
+                                const int64_t& last )
 {
     if ( p == CMedia::kForwards || p == CMedia::kStopped )
     {
@@ -2656,16 +2656,16 @@ bool ImageView::preload()
     SCOPED_LOCK( spm );
     Mutex& mtx = img->video_mutex();
     SCOPED_LOCK( mtx );
-    
+
     if ( img->stopped() )
     {
-	// Add a frame to image queue
+        // Add a frame to image queue
         img->frame( f );
     }
     else
     {
-	// Needed as video thread will probably not refresh on time
-	img->find_image( f );
+        // Needed as video thread will probably not refresh on time
+        img->find_image( f );
     }
 
     // Ready preframe for next iteration
@@ -3281,14 +3281,14 @@ void ImageView::draw()
     CMedia* img = NULL;
     if ( fg )
     {
-	img = fg->image();
-	Mutex& mtx = img->video_mutex();
-	SCOPED_LOCK( mtx );
-	
-	DBG( __FUNCTION__ << " " << __LINE__ );
-	_engine->draw_images( images );
+        img = fg->image();
+        Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
+
+        DBG( __FUNCTION__ << " " << __LINE__ );
+        _engine->draw_images( images );
     }
-    
+
     TRACE("");
 
 
@@ -3542,8 +3542,8 @@ void ImageView::draw()
         CMedia::Playback p = playback();
 
         if (((p == CMedia::kForwards || p == CMedia::kStopped) &&
-	     _lastFrame < frame) ||
-	    (p == CMedia::kBackwards && _lastFrame > frame ) )
+             _lastFrame < frame) ||
+            (p == CMedia::kBackwards && _lastFrame > frame ) )
         {
             int64_t frame_diff = frame - _lastFrame;
 
@@ -3732,7 +3732,7 @@ int ImageView::leftMouseDown(int x, int y)
     int button = fltk::event_button();
     if (button == 1)
     {
-	flags	= kMouseDown;
+        flags	= kMouseDown;
         if (fltk::event_key_state(fltk::LeftAltKey) || vr() )
         {
             // Handle ALT+LMB moves
@@ -3941,7 +3941,7 @@ int ImageView::leftMouseDown(int x, int y)
     else if ( button == 2 )
     {
         // handle MMB moves
-	flags  = kMouseDown;
+        flags  = kMouseDown;
         flags |= kMouseMove;
         flags |= kMouseMiddle;
         return 1;
@@ -4445,7 +4445,7 @@ void ImageView::pixel_processed( const CMedia* img,
 
     mrv::image_type_ptr pic = img->hires();
     if (!pic) return;
-    
+
     bool blend = pic->format() != image_type::kLumma;
 
     BlendMode mode = (BlendMode)uiMain->uiPrefs->uiPrefsBlendMode->value();
@@ -6726,29 +6726,29 @@ int ImageView::handle(int event)
         }
         else
         {
-	    if ( _idle_callback )
-	    {
-		if ( b->reel_index() >= b->number_of_reels() )
-		{
-		    preload_cache_stop();
-		}
-		else
-		{
-		    mrv::Reel r = b->current_reel();
-		    if ( r && !r->edl )
-		    {
-			mrv::media fg = foreground();
-			if ( fg )
-			{
-			    CMedia* img = fg->image();
-			    if ( img->is_cache_full() )
-			    {
-				preload_cache_stop();
-			    }
-			}
-		    }
-		}
-	    }
+            if ( _idle_callback )
+            {
+                if ( b->reel_index() >= b->number_of_reels() )
+                {
+                    preload_cache_stop();
+                }
+                else
+                {
+                    mrv::Reel r = b->current_reel();
+                    if ( r && !r->edl )
+                    {
+                        mrv::media fg = foreground();
+                        if ( fg )
+                        {
+                            CMedia* img = fg->image();
+                            if ( img->is_cache_full() )
+                            {
+                                preload_cache_stop();
+                            }
+                        }
+                    }
+                }
+            }
         }
         timeout();
         TRACE("");
@@ -7003,7 +7003,7 @@ void ImageView::preload_cache_start()
         }
         CMedia::preload_cache( true );
         _idle_callback = true;
-	fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+        fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
@@ -7018,7 +7018,7 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         _idle_callback = false;
-	fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
     }
 }
 
@@ -7231,7 +7231,7 @@ void ImageView::channel( unsigned short c )
         if ( c >= idx )
         {
             LOG_ERROR( _("Invalid index ") << c
-		       << _(" for channel.  Maximum: " )
+                       << _(" for channel.  Maximum: " )
                        << idx );
             return;
         }
@@ -7692,6 +7692,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     const stringArray& layers = img->layers();
 
+
     stringArray::const_iterator i = layers.begin();
     stringArray::const_iterator e = layers.end();
 
@@ -7737,6 +7738,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     {
 
         const std::string& name = *i;
+
 
         std::string tmp = x + '.';
         if ( o && x != _("Alpha") && tmp != "." && name.find(tmp) == 0 )
@@ -7794,7 +7796,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
-		 shortcuts.end())
+                 shortcuts.end())
             {
                 // std::cerr << "add shortcut " << (char) shortcut << " v: "
                 //        << v << " name " << name << " ch " << ch << std::endl;
@@ -7835,6 +7837,7 @@ void ImageView::update_layers()
 
     const char* lbl = uiColorChannel->label();
     if ( strcmp(lbl, _("(no image)")) == 0 ) lbl = _("Color");
+
 
     int v = update_shortcuts( fg, lbl );
 
@@ -8856,13 +8859,13 @@ void ImageView::stop()
 
     if ( CMedia::preload_cache() )
     {
-	mrv::media fg = foreground();
-	if (fg)
-	{
-	    _preframe = fg->image()->first_cache_empty_frame();
-	}
-	if ( _idle_callback )
-	    preload_cache_start();
+        mrv::media fg = foreground();
+        if (fg)
+        {
+            _preframe = fg->image()->first_cache_empty_frame();
+        }
+        if ( _idle_callback )
+            preload_cache_start();
     }
 
     mouseMove( fltk::event_x(), fltk::event_y() );

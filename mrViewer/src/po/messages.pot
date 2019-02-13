@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-02-12 21:00-0300\n"
+"POT-Creation-Date: 2019-02-13 19:03-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgid ""
 "No audio or video stream in file"
 msgstr ""
 
-#: core/CMedia.cpp:3261 core/CMedia.cpp:3345
+#: core/CMedia.cpp:3274 core/CMedia.cpp:3358
 msgid ""
 "\n"
 "\n"
@@ -123,7 +123,7 @@ msgstr ""
 msgid " already created: "
 msgstr ""
 
-#: core/CMedia.cpp:4137
+#: core/CMedia.cpp:4143
 msgid " as default"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgstr ""
 msgid " for frame "
 msgstr ""
 
-#: core/CMedia.cpp:3262 core/CMedia.cpp:3346
+#: core/CMedia.cpp:3275 core/CMedia.cpp:3359
 msgid " for stream #"
 msgstr ""
 
@@ -200,11 +200,11 @@ msgstr ""
 msgid " instead"
 msgstr ""
 
-#: core/CMedia.cpp:4000
+#: core/CMedia.cpp:4007
 msgid " is missing."
 msgstr ""
 
-#: core/CMedia.cpp:4026
+#: core/CMedia.cpp:4032
 msgid " is missing. Choosing "
 msgstr ""
 
@@ -318,11 +318,11 @@ msgstr ""
 msgid "' for writing. Reason: "
 msgstr ""
 
-#: core/CMedia.cpp:4137
+#: core/CMedia.cpp:4143
 msgid "' from bitdepth "
 msgstr ""
 
-#: core/CMedia.cpp:4091
+#: core/CMedia.cpp:4097
 msgid "' from filename"
 msgstr ""
 
@@ -364,8 +364,8 @@ msgid "(RT) Render Transform"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4141
-#: gui/mrvImageView.cpp:7211 gui/mrvImageView.cpp:7829
-#: gui/mrvImageView.cpp:7830 gui/mrvImageView.cpp:7837
+#: gui/mrvImageView.cpp:7211 gui/mrvImageView.cpp:7831
+#: gui/mrvImageView.cpp:7832 gui/mrvImageView.cpp:7839
 msgid "(no image)"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr ""
 msgid ", sample rate "
 msgstr ""
 
-#: core/CMedia.cpp:3262 core/CMedia.cpp:3346
+#: core/CMedia.cpp:3275 core/CMedia.cpp:3359
 msgid ", type "
 msgstr ""
 
@@ -544,7 +544,7 @@ msgstr ""
 msgid "15"
 msgstr ""
 
-#: core/CMedia.cpp:4109
+#: core/CMedia.cpp:4115
 msgid "16 bits"
 msgstr ""
 
@@ -636,7 +636,7 @@ msgstr ""
 msgid "30"
 msgstr ""
 
-#: core/CMedia.cpp:4116
+#: core/CMedia.cpp:4122
 msgid "32 bits"
 msgstr ""
 
@@ -747,7 +747,7 @@ msgstr ""
 msgid "8 bit Caches"
 msgstr ""
 
-#: core/CMedia.cpp:4102
+#: core/CMedia.cpp:4108
 msgid "8 bits"
 msgstr ""
 
@@ -1013,13 +1013,13 @@ msgstr ""
 msgid "Allows you to set the ending frame for timeline."
 msgstr ""
 
-#: core/CMedia.cpp:1860 core/CMedia.cpp:1943 core/exrImage.cpp:3027
+#: core/CMedia.cpp:1871 core/CMedia.cpp:1954 core/exrImage.cpp:3027
 #: core/wandImage.cpp:1165 gui/mrvImageView.cpp:186 gui/mrvImageView.cpp:7324
-#: gui/mrvImageView.cpp:7742
+#: gui/mrvImageView.cpp:7744
 msgid "Alpha"
 msgstr ""
 
-#: core/CMedia.cpp:1862 core/CMedia.cpp:1943 core/exrImage.cpp:3025
+#: core/CMedia.cpp:1873 core/CMedia.cpp:1954 core/exrImage.cpp:3025
 #: core/wandImage.cpp:1163 gui/mrvImageView.cpp:187 gui/mrvImageView.cpp:1554
 #: gui/mrvImageView.cpp:7305
 msgid "Alpha Overlay"
@@ -1335,7 +1335,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1990
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3027
-#: core/CMedia.cpp:1876 core/CMedia.cpp:1942 core/exrImage.cpp:3027
+#: core/CMedia.cpp:1887 core/CMedia.cpp:1953 core/exrImage.cpp:3027
 #: core/wandImage.cpp:1165 gui/mrvImageView.cpp:185 gui/mrvImageView.cpp:7319
 msgid "Blue"
 msgstr ""
@@ -1348,7 +1348,7 @@ msgstr ""
 msgid "Boost exception: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:8989
+#: gui/mrvImageView.cpp:8992
 msgid "Bottom"
 msgstr ""
 
@@ -1659,12 +1659,12 @@ msgid "Codecs"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:152
-#: core/CMedia.cpp:1873 core/CMedia.cpp:1941 core/exrImage.cpp:2772
+#: core/CMedia.cpp:1884 core/CMedia.cpp:1952 core/exrImage.cpp:2772
 #: core/exrImage.cpp:3029 core/exrImage.cpp:3037 core/exrImage.cpp:3049
 #: core/exrImage.cpp:3054 core/exrImage.cpp:3056 core/exrImage.cpp:3094
 #: core/exrImage.cpp:3126 core/wandImage.cpp:1124 core/wandImage.cpp:1186
 #: gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:1596 gui/mrvImageView.cpp:1651
-#: gui/mrvImageView.cpp:7792 gui/mrvImageView.cpp:7837
+#: gui/mrvImageView.cpp:7794 gui/mrvImageView.cpp:7839
 msgid "Color"
 msgstr ""
 
@@ -1897,11 +1897,11 @@ msgstr ""
 msgid "Could not encode audio frame: "
 msgstr ""
 
-#: core/exrImage.cpp:2139
+#: core/exrImage.cpp:2140
 msgid "Could not find both stereo images in file"
 msgstr ""
 
-#: core/exrImage.cpp:2123
+#: core/exrImage.cpp:2124
 msgid "Could not find both stereo images in multiview file"
 msgstr ""
 
@@ -2053,7 +2053,7 @@ msgstr ""
 msgid "Could not locate ICC profile \""
 msgstr ""
 
-#: core/exrImage.cpp:2205 core/exrImage.cpp:2275 core/exrImage.cpp:2302
+#: core/exrImage.cpp:2206 core/exrImage.cpp:2276 core/exrImage.cpp:2303
 msgid "Could not locate channels in header"
 msgstr ""
 
@@ -2116,7 +2116,7 @@ msgid ""
 "syntax"
 msgstr ""
 
-#: core/CMedia.cpp:2413 core/aviImage.cpp:924 core/aviImage.cpp:941
+#: core/CMedia.cpp:2425 core/aviImage.cpp:924 core/aviImage.cpp:941
 msgid "Could not seek to frame "
 msgstr ""
 
@@ -2545,39 +2545,39 @@ msgstr ""
 msgid "Decimal"
 msgstr ""
 
-#: core/CMedia.cpp:171 core/CMedia.cpp:4430
+#: core/CMedia.cpp:171 core/CMedia.cpp:4436
 msgid "Decode Buffer Full"
 msgstr ""
 
-#: core/CMedia.cpp:165 core/CMedia.cpp:4412
+#: core/CMedia.cpp:165 core/CMedia.cpp:4418
 msgid "Decode Done"
 msgstr ""
 
-#: core/CMedia.cpp:166 core/CMedia.cpp:4415
+#: core/CMedia.cpp:166 core/CMedia.cpp:4421
 msgid "Decode Error"
 msgstr ""
 
-#: core/CMedia.cpp:170 core/CMedia.cpp:4427
+#: core/CMedia.cpp:170 core/CMedia.cpp:4433
 msgid "Decode Loop End"
 msgstr ""
 
-#: core/CMedia.cpp:169 core/CMedia.cpp:4424
+#: core/CMedia.cpp:169 core/CMedia.cpp:4430
 msgid "Decode Loop Start"
 msgstr ""
 
-#: core/CMedia.cpp:163 core/CMedia.cpp:4406
+#: core/CMedia.cpp:163 core/CMedia.cpp:4412
 msgid "Decode Missing Frame"
 msgstr ""
 
-#: core/CMedia.cpp:167 core/CMedia.cpp:4418
+#: core/CMedia.cpp:167 core/CMedia.cpp:4424
 msgid "Decode Missing Samples"
 msgstr ""
 
-#: core/CMedia.cpp:168 core/CMedia.cpp:4421
+#: core/CMedia.cpp:168 core/CMedia.cpp:4427
 msgid "Decode No Stream"
 msgstr ""
 
-#: core/CMedia.cpp:164 core/CMedia.cpp:4409
+#: core/CMedia.cpp:164 core/CMedia.cpp:4415
 msgid "Decode OK"
 msgstr ""
 
@@ -3235,7 +3235,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2281
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4276
-#: gui/mrvImageView.cpp:8987
+#: gui/mrvImageView.cpp:8990
 msgid "Frame"
 msgstr ""
 
@@ -3452,7 +3452,7 @@ msgstr ""
 msgid "Go to the parent directory"
 msgstr ""
 
-#: core/CMedia.cpp:4091 core/CMedia.cpp:4136
+#: core/CMedia.cpp:4097 core/CMedia.cpp:4142
 msgid "Got colorspace '"
 msgstr ""
 
@@ -3462,7 +3462,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1989
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3009
-#: core/CMedia.cpp:1875 core/CMedia.cpp:1941 core/exrImage.cpp:3026
+#: core/CMedia.cpp:1886 core/CMedia.cpp:1952 core/exrImage.cpp:3026
 #: core/wandImage.cpp:1164 gui/mrvImageView.cpp:184 gui/mrvImageView.cpp:7314
 msgid "Green"
 msgstr ""
@@ -4299,7 +4299,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1991
-#: core/CMedia.cpp:1888 core/CMedia.cpp:1943 core/exrImage.cpp:3025
+#: core/CMedia.cpp:1899 core/CMedia.cpp:1954 core/exrImage.cpp:3025
 #: core/wandImage.cpp:1163 gui/mrvImageView.cpp:188 gui/mrvImageView.cpp:1561
 #: gui/mrvImageView.cpp:7328 gui/mrvImageInformation.cpp:2190
 msgid "Lumma"
@@ -5033,7 +5033,7 @@ msgstr ""
 msgid "Originating Program"
 msgstr ""
 
-#: core/CMedia.cpp:1075
+#: core/CMedia.cpp:1077
 msgid "Out of memory"
 msgstr ""
 
@@ -5563,7 +5563,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1988
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2991
-#: core/CMedia.cpp:1874 core/CMedia.cpp:1941 core/exrImage.cpp:3026
+#: core/CMedia.cpp:1885 core/CMedia.cpp:1952 core/exrImage.cpp:3026
 #: core/wandImage.cpp:1164 gui/mrvImageView.cpp:183 gui/mrvImageView.cpp:7309
 msgid "Red"
 msgstr ""
@@ -6863,7 +6863,7 @@ msgstr ""
 msgid "Too much audio used:"
 msgstr ""
 
-#: gui/mrvImageView.cpp:8988
+#: gui/mrvImageView.cpp:8991
 msgid "Top"
 msgstr ""
 
@@ -7838,7 +7838,7 @@ msgstr ""
 msgid "ac3"
 msgstr ""
 
-#: core/CMedia.cpp:3023 core/CMedia.cpp:3054
+#: core/CMedia.cpp:3036 core/CMedia.cpp:3067
 msgid "audio"
 msgstr ""
 
@@ -7871,15 +7871,15 @@ msgstr ""
 msgid "change_image index "
 msgstr ""
 
-#: core/CMedia.cpp:3318 core/CMedia.cpp:3402
+#: core/CMedia.cpp:3331 core/CMedia.cpp:3415
 msgid "clean effects"
 msgstr ""
 
-#: core/CMedia.cpp:3306 core/CMedia.cpp:3390
+#: core/CMedia.cpp:3319 core/CMedia.cpp:3403
 msgid "comment"
 msgstr ""
 
-#: core/CMedia.cpp:3026 core/CMedia.cpp:3057
+#: core/CMedia.cpp:3039 core/CMedia.cpp:3070
 msgid "data"
 msgstr ""
 
@@ -7891,15 +7891,15 @@ msgstr ""
 msgid "decode_audio_packet failed for frame "
 msgstr ""
 
-#: core/CMedia.cpp:3300 core/CMedia.cpp:3384
+#: core/CMedia.cpp:3313 core/CMedia.cpp:3397
 msgid "default"
 msgstr ""
 
-#: core/CMedia.cpp:4129
+#: core/CMedia.cpp:4135
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr ""
 
-#: core/CMedia.cpp:3302 core/CMedia.cpp:3386
+#: core/CMedia.cpp:3315 core/CMedia.cpp:3399
 msgid "dub"
 msgstr ""
 
@@ -7925,7 +7925,7 @@ msgstr ""
 msgid "float (32-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:3312 core/CMedia.cpp:3396
+#: core/CMedia.cpp:3325 core/CMedia.cpp:3409
 msgid "forced"
 msgstr ""
 
@@ -7942,7 +7942,7 @@ msgstr ""
 msgid "half float (16-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:4124
+#: core/CMedia.cpp:4130
 msgid "half/float"
 msgstr ""
 
@@ -7954,7 +7954,7 @@ msgstr ""
 msgid "hdtv"
 msgstr ""
 
-#: core/CMedia.cpp:3314 core/CMedia.cpp:3398
+#: core/CMedia.cpp:3327 core/CMedia.cpp:3411
 msgid "hearing impaired"
 msgstr ""
 
@@ -7967,7 +7967,7 @@ msgstr ""
 msgid "is a Softimage file, but not a PIC file."
 msgstr ""
 
-#: core/CMedia.cpp:3310 core/CMedia.cpp:3394
+#: core/CMedia.cpp:3323 core/CMedia.cpp:3407
 msgid "karaoke"
 msgstr ""
 
@@ -7984,7 +7984,7 @@ msgstr ""
 msgid "listen to socket failed\n"
 msgstr ""
 
-#: core/CMedia.cpp:3308 core/CMedia.cpp:3392
+#: core/CMedia.cpp:3321 core/CMedia.cpp:3405
 msgid "lyrics"
 msgstr ""
 
@@ -8103,7 +8103,7 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr ""
 
-#: core/CMedia.cpp:3304 core/CMedia.cpp:3388
+#: core/CMedia.cpp:3317 core/CMedia.cpp:3401
 msgid "original"
 msgstr ""
 
@@ -8136,7 +8136,7 @@ msgstr ""
 msgid "store_audio: Invalid data"
 msgstr ""
 
-#: core/CMedia.cpp:3029 core/CMedia.cpp:3060
+#: core/CMedia.cpp:3042 core/CMedia.cpp:3073
 msgid "subtitle"
 msgstr ""
 
@@ -8148,11 +8148,11 @@ msgstr ""
 msgid "tv title"
 msgstr ""
 
-#: core/CMedia.cpp:3279 core/CMedia.cpp:3363
+#: core/CMedia.cpp:3292 core/CMedia.cpp:3376
 msgid "und"
 msgstr ""
 
-#: core/CMedia.cpp:3032 core/CMedia.cpp:3063 core/CMedia.cpp:4096
+#: core/CMedia.cpp:3045 core/CMedia.cpp:3076 core/CMedia.cpp:4102
 #: core/wandImage.cpp:681
 msgid "unknown"
 msgstr ""
@@ -8169,11 +8169,11 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:3020 core/CMedia.cpp:3051
+#: core/CMedia.cpp:3033 core/CMedia.cpp:3064
 msgid "video"
 msgstr ""
 
-#: core/CMedia.cpp:3316 core/CMedia.cpp:3400
+#: core/CMedia.cpp:3329 core/CMedia.cpp:3413
 msgid "visual impaired"
 msgstr ""
 

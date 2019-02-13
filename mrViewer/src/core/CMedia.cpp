@@ -409,7 +409,7 @@ CMedia::CMedia() :
     _adts( 1 ),
     _audio_frame( 1 ),
     _audio_offset( 0 ),
-    _frame( 1 ),
+    _frame( AV_NOPTS_VALUE ),
     _tc_frame( 0 ),
     _expected( 1 ),
     _expected_audio( 1 ),
@@ -523,7 +523,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
     _adts( 1 ),
     _audio_frame( 1 ),
     _audio_offset( 0 ),
-    _frame( 1 ),
+    _frame( AV_NOPTS_VALUE ),
     _tc_frame( 0 ),
     _expected( 1 ),
     _expected_audio( 1 ),
@@ -712,10 +712,11 @@ CMedia::CMedia( const CMedia* other, int64_t f ) :
     image_type_ptr canvas;
     if ( fetch( canvas, f ) )
     {
-	cache( canvas );
-	default_icc_profile();
-	default_rendering_transform();
-	default_ocio_input_color_space();
+        _hires = canvas;
+        cache( canvas );
+        default_icc_profile();
+        default_rendering_transform();
+        default_ocio_input_color_space();
     }
 }
 
@@ -781,10 +782,11 @@ void CMedia::update_frame( const int64_t& f )
     image_type_ptr canvas;
     if ( fetch( canvas, f ) )
     {
-	cache( canvas );
-	default_icc_profile();
-	default_rendering_transform();
-	default_ocio_input_color_space();
+        _hires = canvas;
+        cache( canvas );
+        default_icc_profile();
+        default_rendering_transform();
+        default_ocio_input_color_space();
     }
 
     image_damage( image_damage() | kDamageCache | kDamageContents );
@@ -1057,7 +1059,7 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
     image_damage( image_damage() & ~kDamageContents );
     try {
         canvas.reset( new image_type( frame, w, h,
-				      channels, format, pixel_type ) );
+                                      channels, format, pixel_type ) );
     }
     catch( const std::bad_alloc& e )
     {
@@ -1500,16 +1502,16 @@ void CMedia::sequence( const char* fileroot,
     if ( ! initialize() )
         return;
 
-
     image_type_ptr canvas;
     if ( fetch( canvas, start ) )
     {
-	_hires = canvas;
+        _hires = canvas;
+	_depth = _hires->pixel_type();
         cache( canvas );
-	refresh();
-	default_icc_profile();
-	default_rendering_transform();
-	default_ocio_input_color_space();
+        refresh();
+        default_icc_profile();
+        default_rendering_transform();
+        default_ocio_input_color_space();
     }
 
 
@@ -1560,6 +1562,13 @@ void CMedia::filename( const char* n )
 
     _is_sequence = false;
     _is_stereo = false;
+
+    image_type_ptr canvas;
+    if ( fetch( canvas, 1 ) )
+    {
+	_hires = canvas;
+    }
+    
     _dts = _adts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
 
 
@@ -1567,6 +1576,8 @@ void CMedia::filename( const char* n )
 
     if ( ! initialize() )
         return;
+
+    
 
 }
 
@@ -1655,8 +1666,8 @@ bool CMedia::has_changed()
         else if ( idx < 0 ) idx = 0;
 
         if ( !_sequence[idx] ||
-	     _sequence[idx]->mtime() != sbuf.st_mtime ||
-	     _sequence[idx]->ctime() != sbuf.st_ctime )
+             _sequence[idx]->mtime() != sbuf.st_mtime ||
+             _sequence[idx]->ctime() != sbuf.st_ctime )
         {
             assert( f == _sequence[idx]->frame() );
             // update frame...
@@ -2040,10 +2051,11 @@ void CMedia::channel( const char* c )
         image_type_ptr canvas;
         if ( fetch( canvas, f ) )
         {
+            _hires = canvas;
             cache( canvas );
-	    default_icc_profile();
-	    default_rendering_transform();
-	    default_ocio_input_color_space();
+            default_icc_profile();
+            default_rendering_transform();
+            default_ocio_input_color_space();
         }
         refresh();
     }
@@ -2668,17 +2680,19 @@ bool CMedia::frame( int64_t f )
     if ( ! is_cache_filled( _dts ) )
     {
         image_type_ptr canvas;
-	std::string file = sequence_filename( _dts );
-	if ( fs::exists( file ) )
-	{
-	    if ( fetch( canvas, _dts ) )
-	    {
-		cache( canvas );
-		default_icc_profile();
-		default_rendering_transform();
-		default_ocio_input_color_space();
-	    }
-	}
+        std::string file = sequence_filename( _dts );
+
+        if ( fs::exists( file ) )
+        {
+            if ( fetch( canvas, _dts ) )
+            {
+                _hires = canvas;
+                cache( canvas );
+                default_icc_profile();
+                default_rendering_transform();
+                default_ocio_input_color_space();
+            }
+        }
     }
 
     _video_packets.push_back( pkt );
@@ -2748,6 +2762,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     assert0( pic.use_count() >= 1 );
 
     int64_t f = pic->frame();
+    _depth = pic->pixel_type();
 
     int64_t idx = f - _frame_start;
     int64_t num = _frame_end - _frame_start + 1;
@@ -2819,7 +2834,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
         {
             //DBG( "cache seq " << idx << " pic " << pic );
             seq[idx] = pic;
-	    assert0( pic.use_count() >= 2 );
+            assert0( pic.use_count() >= 2 );
         }
     }
 
@@ -2838,9 +2853,9 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
 {
 
     mrv::image_type_ptr r;
-    
+
     if ( !is_sequence() || !_cache_active ||
-	 dynamic_cast< const aviImage* >( this ) != NULL )
+         dynamic_cast< const aviImage* >( this ) != NULL )
         return r;
 
     int64_t idx = frame - _frame_start;
@@ -2861,15 +2876,14 @@ mrv::image_type_ptr CMedia::cache( int64_t frame ) const
 void CMedia::cache( mrv::image_type_ptr& pic )
 {
     if ( dynamic_cast< const aviImage* >( this ) != NULL )
-	return;
-	 
+        return;
+
     assert0( pic != NULL );
     assert0( pic.use_count() != 0 );
 
 
     if ( !is_sequence() || !_cache_active || !pic )
         return;
-
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
@@ -2879,8 +2893,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
     else
     {
         update_cache_pic( _sequence, pic );
-	_depth = pic->pixel_type();
-	//pic.reset();
+        pic.reset();
     }
 
     if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
@@ -3880,7 +3893,7 @@ bool CMedia::find_image( const int64_t frame )
     if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
         _right_eye->find_image(frame);
 
-    
+
     int64_t f = handle_loops( frame );
 
     _video_pts   = f / _orig_fps;
@@ -3896,14 +3909,14 @@ bool CMedia::find_image( const int64_t frame )
         if ( idx < 0 ) idx = 0;
         else if ( idx >= num ) idx = num - 1;
     }
-    
+
 
 
     if ( _sequence && _sequence[idx] )
     {
-	SCOPED_LOCK( _mutex );
+        SCOPED_LOCK( _mutex );
         _hires = _sequence[idx];
-    
+
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
 
@@ -3921,26 +3934,24 @@ bool CMedia::find_image( const int64_t frame )
 
     bool should_load = false;
 
-    
     std::string file = sequence_filename(f);
-    
     std::string old  = sequence_filename(_frame);
-    
 
     if ( file != old )
     {
-    
+
         should_load = true;
         free( _filename );
         _filename = strdup( file.c_str() );
-    
+
     }
+
 
     _frame = frame;
 
     if ( should_load )
     {
-	image_type_ptr canvas;
+        image_type_ptr canvas;
         if ( fs::exists(file) )
         {
             SCOPED_LOCK( _audio_mutex );
@@ -3972,8 +3983,6 @@ bool CMedia::find_image( const int64_t frame )
                     }
                 }
             }
-	    SCOPED_LOCK( _mutex );
-            _hires = canvas;
         }
         else
         {
@@ -3982,21 +3991,19 @@ bool CMedia::find_image( const int64_t frame )
                 if ( Preferences::missing_frame == Preferences::kBlackFrame )
                 {
                     canvas =
-		    mrv::image_type_ptr(
-					new image_type( frame,
-							width(),
-							height(),
-							1,
-							image_type::kLumma,
-							image_type::kByte ) );
+                    mrv::image_type_ptr(
+                                        new image_type( frame,
+                                                        width(),
+                                                        height(),
+                                                        1,
+                                                        image_type::kLumma,
+                                                        image_type::kByte ) );
                     memset( canvas->data().get(), 0x0, canvas->data_size() );
-		    canvas->valid( false ); // mark this frame as invalid
-		    // SCOPED_LOCK( _mutex );
-		    _hires = canvas;
+                    canvas->valid( false ); // mark this frame as invalid
                     cache( canvas );
-		    default_icc_profile();
-		    default_rendering_transform();
-		    default_ocio_input_color_space();
+                    default_icc_profile();
+                    default_rendering_transform();
+                    default_ocio_input_color_space();
                     IMG_WARNING( file << _(" is missing.") );
                 }
                 else
@@ -4005,8 +4012,8 @@ bool CMedia::find_image( const int64_t frame )
                     if ( idx >= 0 && idx < num )
                     {
                         for ( ; ( !_sequence[idx] ||
-				  ( _sequence[idx] && !_sequence[idx]->valid() ));
-			--idx )
+                                  ( _sequence[idx] && !_sequence[idx]->valid() ));
+                        --idx )
                         {
                         }
 
@@ -4015,14 +4022,13 @@ bool CMedia::find_image( const int64_t frame )
                         {
                             const mrv::image_type_ptr old = _sequence[idx];
                             canvas =
-			    mrv::image_type_ptr( new image_type( *old ) );
+                            mrv::image_type_ptr( new image_type( *old ) );
                             canvas->frame( f );
-			    canvas->valid( false ); // mark this frame as invalid
-			    _hires = canvas;
+                            canvas->valid( false ); // mark this frame as invalid
                             cache( canvas );
-			    default_icc_profile();
-			    default_rendering_transform();
-			    default_ocio_input_color_space();
+                            default_icc_profile();
+                            default_rendering_transform();
+                            default_ocio_input_color_space();
                             IMG_WARNING( file << _(" is missing. Choosing ")
                                          << old->frame() << "." );
                         }
@@ -4034,9 +4040,9 @@ bool CMedia::find_image( const int64_t frame )
         }
     }
 
-    
+
     limit_video_store( f );
-    
+
     refresh();
     image_damage( image_damage() | kDamageData | kDamage3DData );
     return true;
