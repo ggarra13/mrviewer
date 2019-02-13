@@ -3495,9 +3495,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
             char* buf =  (char*) base + offsets[k] * size;
-            std::cerr << (void*) buf << " xs " << xs[k] << " ys " << ys[k]
-                      << " xsampling " << xsampling[k] << " ysampling "
-                      << ysampling[k] << std::endl;
+
             fb.insert( name,
                        Slice( save_type, buf, xs[k], ys[k],
                               xsampling[k], ysampling[k] ) );

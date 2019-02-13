@@ -524,8 +524,8 @@ public:
     void cache( mrv::image_type_ptr& pic );
 
     // Return a frame from cache
-    mrv::image_type_ptr cache( int64_t frame ) const; 
-    
+    mrv::image_type_ptr cache( int64_t frame ) const;
+
     inline PacketQueue& video_packets() {
         return _video_packets;
     }
@@ -549,7 +549,7 @@ public:
 
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const {
-	Mutex& mtx = const_cast< Mutex& >( _mutex );
+        Mutex& mtx = const_cast< Mutex& >( _mutex );
         SCOPED_LOCK( mtx );
         return _hires;
     }
@@ -763,6 +763,9 @@ public:
 
     /// Assigns a new rendering transform ( CTL script ) or NULL to remove it
     void rendering_transform( const char* cfile );
+
+    // Adds default OCIO, ICC, and CTL profiles
+    void default_color_corrections();
 
     /// Add default OCIO Input Color Space for this image bit depth.
     void default_ocio_input_color_space();
@@ -1941,7 +1944,7 @@ protected:
 
 
     image_type::PixelType _depth;
-    
+
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.

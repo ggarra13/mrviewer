@@ -714,9 +714,7 @@ CMedia::CMedia( const CMedia* other, int64_t f ) :
     {
         _hires = canvas;
         cache( canvas );
-        default_icc_profile();
-        default_rendering_transform();
-        default_ocio_input_color_space();
+        default_color_corrections();
     }
 }
 
@@ -784,9 +782,7 @@ void CMedia::update_frame( const int64_t& f )
     {
         _hires = canvas;
         cache( canvas );
-        default_icc_profile();
-        default_rendering_transform();
-        default_ocio_input_color_space();
+        default_color_corrections();
     }
 
     image_damage( image_damage() | kDamageCache | kDamageContents );
@@ -1481,7 +1477,7 @@ void CMedia::sequence( const char* fileroot,
 
 
     _is_sequence = true;
-    _dts = _adts = _frame = start;
+    _dts = _adts = start;
     _frameStart = _frame_start = start;
     _frameEnd = _frame_end = end;
 
@@ -1506,12 +1502,10 @@ void CMedia::sequence( const char* fileroot,
     if ( fetch( canvas, start ) )
     {
         _hires = canvas;
-	_depth = _hires->pixel_type();
+        _depth = _hires->pixel_type();
         cache( canvas );
         refresh();
-        default_icc_profile();
-        default_rendering_transform();
-        default_ocio_input_color_space();
+        default_color_corrections();
     }
 
 
@@ -1520,6 +1514,14 @@ void CMedia::sequence( const char* fileroot,
         int64_t f = _frame.load();
         decode_audio( f );
     }
+}
+
+// Adds default OCIO, ICC, and CTL profiles
+void CMedia::default_color_corrections()
+{
+    default_icc_profile();
+    default_rendering_transform();
+    default_ocio_input_color_space();
 }
 
 /**
@@ -1566,10 +1568,12 @@ void CMedia::filename( const char* n )
     image_type_ptr canvas;
     if ( fetch( canvas, 1 ) )
     {
-	_hires = canvas;
+        _hires = canvas;
+        _depth = canvas->pixel_type();
+        default_color_corrections();
     }
-    
-    _dts = _adts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
+
+    _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
 
 
     timestamp();
@@ -1577,7 +1581,7 @@ void CMedia::filename( const char* n )
     if ( ! initialize() )
         return;
 
-    
+
 
 }
 
@@ -2053,9 +2057,7 @@ void CMedia::channel( const char* c )
         {
             _hires = canvas;
             cache( canvas );
-            default_icc_profile();
-            default_rendering_transform();
-            default_ocio_input_color_space();
+            default_color_corrections();
         }
         refresh();
     }
@@ -2688,9 +2690,7 @@ bool CMedia::frame( int64_t f )
             {
                 _hires = canvas;
                 cache( canvas );
-                default_icc_profile();
-                default_rendering_transform();
-                default_ocio_input_color_space();
+                default_color_corrections();
             }
         }
     }
@@ -3959,9 +3959,7 @@ bool CMedia::find_image( const int64_t frame )
             if ( fetch( canvas, f ) )
             {
                 cache( canvas );
-                default_icc_profile();
-                default_rendering_transform();
-                default_ocio_input_color_space();
+                default_color_corrections();
             }
             else
             {
@@ -3977,9 +3975,7 @@ bool CMedia::find_image( const int64_t frame )
                     if ( fetch( canvas, f ) )
                     {
                         cache( canvas );
-                        default_icc_profile();
-                        default_rendering_transform();
-                        default_ocio_input_color_space();
+                        default_color_corrections();
                     }
                 }
             }
@@ -4001,9 +3997,7 @@ bool CMedia::find_image( const int64_t frame )
                     memset( canvas->data().get(), 0x0, canvas->data_size() );
                     canvas->valid( false ); // mark this frame as invalid
                     cache( canvas );
-                    default_icc_profile();
-                    default_rendering_transform();
-                    default_ocio_input_color_space();
+                    default_color_corrections();
                     IMG_WARNING( file << _(" is missing.") );
                 }
                 else
@@ -4026,9 +4020,7 @@ bool CMedia::find_image( const int64_t frame )
                             canvas->frame( f );
                             canvas->valid( false ); // mark this frame as invalid
                             cache( canvas );
-                            default_icc_profile();
-                            default_rendering_transform();
-                            default_ocio_input_color_space();
+                            default_color_corrections();
                             IMG_WARNING( file << _(" is missing. Choosing ")
                                          << old->frame() << "." );
                         }

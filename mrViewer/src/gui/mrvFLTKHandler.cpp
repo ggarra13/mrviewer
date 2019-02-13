@@ -63,13 +63,14 @@ fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
     img->audio_stream( -1 );
     img->seek( f );
     image_type_ptr canvas;
-    std::cerr << img->name() << std::endl;
+
     if ( img->fetch( canvas, f ) )
     {
-	if ( canvas )
-	{
-	    img->hires( canvas );
-	}
+        if ( canvas )
+        {
+            img->hires( canvas );
+            img->default_color_corrections();
+        }
     }
     img->is_thumbnail( false );
 
