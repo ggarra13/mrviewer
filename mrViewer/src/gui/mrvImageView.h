@@ -695,6 +695,10 @@ public:
         return _preframe;
     }
 
+    void preload_frame( int64_t f ) {
+	_preframe = f;
+    }
+
 
     /// Stop preload image caches
     void preload_cache_stop();

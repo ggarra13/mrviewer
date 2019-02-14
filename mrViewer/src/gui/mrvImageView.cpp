@@ -2532,6 +2532,17 @@ bool ImageView::ready_preframe( std::atomic<int64_t>& f,
                                 const int64_t& first,
                                 const int64_t& last )
 {
+    unsigned max_frames = img->max_image_frames();
+
+    uint64_t num = img->end_frame() - img->start_frame() + 1;
+    uint64_t count = 0;
+    for (uint64_t i = 0; i < num; ++i )
+    {
+	if ( img->cache(i) ) ++count;
+    }
+    
+    if ( count > max_frames ) return false;
+    
     if ( p == CMedia::kForwards || p == CMedia::kStopped )
     {
         ++f;
@@ -2665,9 +2676,10 @@ bool ImageView::preload()
     else
     {
         // Needed as video thread will probably not refresh on time
-        img->find_image( f );
+	img->find_image( img->frame() );
     }
 
+    
     // Ready preframe for next iteration
     ready_preframe( _preframe, p, img, first, last );
 
@@ -7356,12 +7368,9 @@ void ImageView::channel( unsigned short c )
     if ( r && r->edl )
     {
         timeline()->edl( true );
-        _preframe = frame();
     }
-    else
-    {
-        _preframe = frame();
-    }
+    
+    _preframe = frame();
 
     smart_refresh();
 }

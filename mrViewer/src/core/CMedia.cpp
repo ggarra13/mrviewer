@@ -2761,6 +2761,8 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     assert0( pic != NULL );
     assert0( pic.use_count() >= 1 );
 
+
+    
     int64_t f = pic->frame();
     _depth = pic->pixel_type();
 
@@ -2771,7 +2773,8 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
     if ( !seq || seq[idx] ) return;
 
-
+    
+    
     mrv::image_type_ptr np;
 
     unsigned w = pic->width();
@@ -3510,7 +3513,7 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all video packets that go
         // beyond the last frame
-        // SCOPED_LOCK( _mutex ); // needed
+        // SCOPED_LOCK( _mutex ); // unneeded
 
         mrv::PacketQueue::Mutex& m = _video_packets.mutex();
         SCOPED_LOCK( m );
@@ -3535,7 +3538,7 @@ void CMedia::loop_at_end( const int64_t frame )
         // With loop at end, we can discard all audio packets that go
         // beyond the last frame
 
-        // SCOPED_LOCK( _audio_mutex ); // needed
+        // SCOPED_LOCK( _audio_mutex ); // unneeded
 
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );
@@ -3572,6 +3575,7 @@ void CMedia::limit_video_store( const int64_t f )
 
     if ( !_sequence ) return;
 
+    
 #undef timercmp
 # define timercmp(a, b, CMP)                                                  \
   (((a).tv_sec == (b).tv_sec) ?					\
@@ -3586,38 +3590,43 @@ void CMedia::limit_video_store( const int64_t f )
         }
     };
 
-    boost::uint64_t num = _frame_end - _frame_start + 1;
 
-    typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
-    TimedSeqMap tmp;
+    boost::uint64_t num  = _frame_end - _frame_start + 1;
+
+    typedef std::multimap< timeval, uint64_t, customMore > TimedMoreSeqMap;
+    
+    TimedMoreSeqMap tmp;
     for ( uint64_t i = 0; i < num; ++i )
     {
-        if ( !_sequence[i] ) continue;
+        if ( !_sequence[i] || _sequence[i]->frame() == f ) continue;
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
 
 
+    
     uint64_t count = 0;
     uint64_t max_frames = max_image_frames();
 
-
-    TimedSeqMap::iterator it = tmp.begin();
-    for ( ; it != tmp.end(); )
     {
-        ++count;
-        if ( count > max_frames )
-        {
-            uint64_t idx = it->second;
-            _sequence[ idx ].reset();
-            if ( _right && _right[idx] ) _right[ idx ].reset();
-
-            it = tmp.erase(it);
-        }
-        else
-        {
-            ++it;
-        }
+	TimedMoreSeqMap::iterator it = tmp.begin();
+	for ( ; it != tmp.end(); )
+	{
+	    ++count;
+	    if ( count > max_frames )
+	    {
+		uint64_t idx = it->second;
+		_sequence[ idx ].reset();
+		if ( _right && _right[idx] ) _right[ idx ].reset();
+	    
+		it = tmp.erase(it);
+	    }
+	    else
+	    {
+		++it;
+	    }
+	}
     }
+    
 
 
 }
@@ -3910,8 +3919,6 @@ bool CMedia::find_image( const int64_t frame )
         else if ( idx >= num ) idx = num - 1;
     }
 
-
-
     if ( _sequence && _sequence[idx] )
     {
         SCOPED_LOCK( _mutex );
@@ -3946,14 +3953,14 @@ bool CMedia::find_image( const int64_t frame )
 
     }
 
-
-    _frame = frame;
+    _frame = f;
 
     if ( should_load )
     {
         image_type_ptr canvas;
         if ( fs::exists(file) )
         {
+            SCOPED_LOCK( _mutex );
             SCOPED_LOCK( _audio_mutex );
             SCOPED_LOCK( _subtitle_mutex );
             if ( fetch( canvas, f ) )
@@ -4026,6 +4033,7 @@ bool CMedia::find_image( const int64_t frame )
                         }
                     }
                 }
+		_hires = canvas;
                 refresh();
                 return true;
             }
