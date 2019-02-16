@@ -154,7 +154,7 @@ void media::create_thumbnail()
     SCOPED_LOCK( mutex );
 
     // Audio only clip?  Return
-    mrv::image_type_ptr pic = _image->hires();
+    mrv::image_type_ptr pic = _image->left();
 
     if ( !pic ) return;
 

@@ -112,7 +112,8 @@ const char* kModule = "img";
 // #define DEBUG_DECODE
 // #define DEBUG_AUDIO_SPLIT
 
-
+#define MEM()
+//#define MEM() std::cerr << memory_used << " " << __FUNCTION__ << " " << __LINE__ << std::endl;
 
 
 namespace mrv {
@@ -145,6 +146,8 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
+
+uint64_t CMedia::memory_used = 0;
 
 int CMedia::_audio_cache_size = 0;
 int CMedia::_video_cache_size = 0;
@@ -712,7 +715,6 @@ CMedia::CMedia( const CMedia* other, int64_t f ) :
     image_type_ptr canvas;
     if ( fetch( canvas, f ) )
     {
-        _hires = canvas;
         cache( canvas );
         default_color_corrections();
     }
@@ -757,6 +759,8 @@ void CMedia::clear_cache()
     _stereo[0].reset();
     _stereo[1].reset();
 
+    memory_used = 0;
+
     image_damage( image_damage() | kDamageCache | kDamageContents );
 
 }
@@ -780,7 +784,6 @@ void CMedia::update_frame( const int64_t& f )
     image_type_ptr canvas;
     if ( fetch( canvas, f ) )
     {
-        _hires = canvas;
         cache( canvas );
         default_color_corrections();
     }
@@ -1501,8 +1504,7 @@ void CMedia::sequence( const char* fileroot,
     image_type_ptr canvas;
     if ( fetch( canvas, start ) )
     {
-        _hires = canvas;
-        _depth = _hires->pixel_type();
+        _depth = canvas->pixel_type();
         cache( canvas );
         refresh();
         default_color_corrections();
@@ -1568,7 +1570,6 @@ void CMedia::filename( const char* n )
     image_type_ptr canvas;
     if ( fetch( canvas, 1 ) )
     {
-        _hires = canvas;
         _depth = canvas->pixel_type();
         default_color_corrections();
     }
@@ -2055,7 +2056,6 @@ void CMedia::channel( const char* c )
         image_type_ptr canvas;
         if ( fetch( canvas, f ) )
         {
-            _hires = canvas;
             cache( canvas );
             default_color_corrections();
         }
@@ -2688,7 +2688,6 @@ bool CMedia::frame( int64_t f )
         {
             if ( fetch( canvas, _dts ) )
             {
-                _hires = canvas;
                 cache( canvas );
                 default_color_corrections();
             }
@@ -2766,14 +2765,17 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     int64_t f = pic->frame();
     _depth = pic->pixel_type();
 
+    
     int64_t idx = f - _frame_start;
     int64_t num = _frame_end - _frame_start + 1;
     if ( idx < 0 ) idx = 0;
     else if ( idx > num ) idx = num - 1;
 
-    if ( !seq || seq[idx] ) return;
+    if ( !seq ) return;
 
     
+    if ( seq[idx] ) memory_used -= seq[idx]->data_size();
+    MEM();
     
     mrv::image_type_ptr np;
 
@@ -2841,6 +2843,9 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
         }
     }
 
+    memory_used += seq[idx]->data_size();
+    MEM();
+    
     _w = w;
     _h = h;
 
@@ -3468,7 +3473,7 @@ int CMedia::max_video_frames()
 
 
 // Return the number of frames cached for jog/shuttle
-int CMedia::max_image_frames()
+uint64_t CMedia::max_image_frames()
 {
 #if 0
     if ( _image_cache_size > 0 )
@@ -3478,8 +3483,18 @@ int CMedia::max_image_frames()
     else
         return std::numeric_limits<int>::max() / 3;
 #else
-    if ( !_hires ) return std::numeric_limits<int>::max() / 3;
-    return (Preferences::max_memory / _hires->data_size());
+    uint64_t i = 0;
+    uint64_t num = _frame_end - _frame_start + 1;
+    for ( ; i < num; ++i )
+    {
+	if ( _sequence[i] ) break;
+    }
+    if ( i >= num ) return std::numeric_limits<int>::max() / 3;
+    MEM();
+    if ( Preferences::max_memory < CMedia::memory_used )
+	return 0;
+    return ((Preferences::max_memory - CMedia::memory_used) * 100.0 / (double)
+	    _sequence[i]->data_size());
 #endif
 }
 
@@ -3572,9 +3587,7 @@ void CMedia::limit_video_store( const int64_t f )
 {
     SCOPED_LOCK( _mutex );
 
-
     if ( !_sequence ) return;
-
     
 #undef timercmp
 # define timercmp(a, b, CMP)                                                  \
@@ -3586,48 +3599,58 @@ void CMedia::limit_video_store( const int64_t f )
         inline bool operator()( const timeval& a,
                                 const timeval& b ) const
         {
-            return timercmp( a, b, > );
+            return timercmp( a, b, < );
         }
     };
 
 
     boost::uint64_t num  = _frame_end - _frame_start + 1;
-
-    typedef std::multimap< timeval, uint64_t, customMore > TimedMoreSeqMap;
     
-    TimedMoreSeqMap tmp;
+    int max_frames = max_image_frames();
+
+#if 1
+    typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
+    
+    TimedSeqMap tmp;
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] || _sequence[i]->frame() == f ) continue;
+	
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
 
-
     
-    uint64_t count = 0;
-    uint64_t max_frames = max_image_frames();
+    if ( tmp.size() < max_frames ) return;
 
-    {
-	TimedMoreSeqMap::iterator it = tmp.begin();
-	for ( ; it != tmp.end(); )
+    TimedSeqMap::iterator it = tmp.begin();
+    uint64_t idx = it->second;
+#else
+	mrv::image_type_ptr p;
+	unsigned count = 0;
+	uint64_t idx = num;
+	for ( uint64_t i = 0; i < num; ++i )
 	{
-	    ++count;
-	    if ( count > max_frames )
+	    if ( !_sequence[i] || _sequence[i]->frame() == f ) continue;
+	    if ( p.use_count() > 0 && customMore()( _sequence[i]->ptime(), p->ptime() ) )
 	    {
-		uint64_t idx = it->second;
-		_sequence[ idx ].reset();
-		if ( _right && _right[idx] ) _right[ idx ].reset();
-	    
-		it = tmp.erase(it);
-	    }
-	    else
-	    {
-		++it;
+		++count;
+		idx = i;
+		p = _sequence[i];
 	    }
 	}
-    }
-    
 
+	if ( idx >= num || count < max_frames ) return;
+#endif
+
+	
+	memory_used -= _sequence[idx]->data_size();
+	MEM();
+	_sequence[ idx ].reset();
+	if ( _right && _right[idx] ) {
+	    memory_used -= _right[idx]->data_size();
+	    MEM();
+	    _right[ idx ].reset();
+	}
 
 }
 
@@ -3922,12 +3945,11 @@ bool CMedia::find_image( const int64_t frame )
     if ( _sequence && _sequence[idx] )
     {
         SCOPED_LOCK( _mutex );
-        _hires = _sequence[idx];
-
-        if ( _right && _right[idx])
-            _stereo[1] = _right[idx];
 
         _frame = frame;
+	
+        if ( _right && _right[idx])
+            _stereo[1] = _right[idx];
 
         free(_filename);
         _filename = NULL;
@@ -4033,13 +4055,13 @@ bool CMedia::find_image( const int64_t frame )
                         }
                     }
                 }
-		_hires = canvas;
                 refresh();
+		limit_video_store( f );
+		image_damage( image_damage() | kDamageData | kDamage3DData );
                 return true;
             }
         }
     }
-
 
     limit_video_store( f );
 

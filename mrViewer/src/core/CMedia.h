@@ -1370,7 +1370,7 @@ public:
     int max_video_frames();
     // Return the maximum number of video frames cached for jog/shuttle
     // or 0 for no cache or numeric_limits<int>max() for full cache
-    int max_image_frames();
+    uint64_t max_image_frames();
 
     virtual void limit_video_store( const int64_t frame );
 
@@ -1992,6 +1992,7 @@ protected:
 
     static std::string _default_subtitle_font;
     static std::string _default_subtitle_encoding;
+    static uint64_t memory_used;
     static bool _aces_metadata;
     static bool _all_layers;
     static bool _8bit_cache;

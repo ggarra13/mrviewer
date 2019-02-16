@@ -2532,16 +2532,6 @@ bool ImageView::ready_preframe( std::atomic<int64_t>& f,
                                 const int64_t& first,
                                 const int64_t& last )
 {
-    unsigned max_frames = img->max_image_frames();
-
-    uint64_t num = img->end_frame() - img->start_frame() + 1;
-    uint64_t count = 0;
-    for (uint64_t i = 0; i < num; ++i )
-    {
-	if ( img->cache(i) ) ++count;
-    }
-    
-    if ( count > max_frames ) return false;
     
     if ( p == CMedia::kForwards || p == CMedia::kStopped )
     {
@@ -2658,25 +2648,46 @@ bool ImageView::preload()
     }
 
 
-    typedef CMedia::Mutex Mutex;
-    Mutex& vpm = img->video_packets().mutex();
-    SCOPED_LOCK( vpm );
-    Mutex& apm = img->audio_packets().mutex();
-    SCOPED_LOCK( apm );
-    Mutex& spm = img->subtitle_packets().mutex();
-    SCOPED_LOCK( spm );
-    Mutex& mtx = img->video_mutex();
-    SCOPED_LOCK( mtx );
-
+    
     if ( img->stopped() )
     {
+	typedef CMedia::Mutex Mutex;
+	Mutex& vpm = img->video_packets().mutex();
+	SCOPED_LOCK( vpm );
+	Mutex& apm = img->audio_packets().mutex();
+	SCOPED_LOCK( apm );
+	Mutex& spm = img->subtitle_packets().mutex();
+	SCOPED_LOCK( spm );
+	Mutex& mtx = img->video_mutex();
+	SCOPED_LOCK( mtx );
+    
+	uint64_t max_frames = img->max_image_frames();
+
+	int64_t end = img->end_frame();
+	uint64_t count = 0;
+	int64_t t = img->start_frame();
+	for ( ; t < end; ++t )
+	{
+	    if ( img->is_cache_filled( t ) ) ++count;
+	}
+
+	// std::cerr << "count " << count <<  " t " << t << " frame " << f
+	// 	  <<  " max frames " << max_frames << std::endl;
+	if ( count > max_frames ) return false;
+    
         // Add a frame to image queue
-        img->frame( f );
+        while ( ! img->frame( f ) )
+	{
+	    if ( img->stopped() || playback() == CMedia::kStopped ) break;
+	    sleep_ms( 20 );
+	}
     }
     else
     {
-        // Needed as video thread will probably not refresh on time
+        // Needed as video thread will probably not refresh on time.
+	// This assures image is loaded and ready.
 	img->find_image( img->frame() );
+	//img->find_image( _preframe );
     }
 
     

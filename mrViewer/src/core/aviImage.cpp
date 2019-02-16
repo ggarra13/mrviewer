@@ -1500,7 +1500,7 @@ void aviImage::clear_packets()
 
 void aviImage::timed_limit_store( const int64_t& frame )
 {
-    int max_frames = max_video_frames();
+    uint64_t max_frames = max_video_frames();
     if ( _has_image_seq )
     {
         max_frames = max_image_frames();

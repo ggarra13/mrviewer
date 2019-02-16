@@ -74,7 +74,7 @@ fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
     }
     img->is_thumbnail( false );
 
-    if ( ! img->hires() ) return NULL;
+    if ( ! img->left() ) return NULL;
 
     mrv::gui::media m( img );
     m.create_thumbnail();

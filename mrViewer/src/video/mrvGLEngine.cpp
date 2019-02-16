@@ -911,12 +911,13 @@ bool GLEngine::init_fbo( ImageList& images )
 
     Image_ptr img = images.back();
 
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     if (!pic) return false;
 
     unsigned w = pic->width();
     unsigned h = pic->height();
 
+    
     glTexImage2D(GL_TEXTURE_2D,
                  0, // level
                  internalFormat, // internal format
@@ -1003,7 +1004,7 @@ void GLEngine::end_fbo( ImageList& images )
     CHECK_GL;
 
     Image_ptr img = images.back();
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     if (!pic) return;
 
     unsigned w = pic->width();
@@ -1867,8 +1868,9 @@ void GLEngine::draw_images( ImageList& images )
     for ( i = images.begin(); i != e; ++i, ++q )
     {
         const Image_ptr& img = *i;
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
         if (!pic)  continue;
+
 
         DBG( "draw image " << img->name() );
 
@@ -2189,13 +2191,13 @@ void GLEngine::draw_images( ImageList& images )
                 prepare_image( img, daw2, texWidth, texHeight, _view );
             }
         }
-        else if ( img->hires() || img->has_subtitle() )
+        else if ( img->left() || img->has_subtitle() )
         {
             stereo = CMedia::kNoStereo;
-            pic = img->hires();
+            pic = img->left();
 
             if ( shader_type() == kNone && img->stopped() &&
-                    pic->pixel_type() != image_type::kByte )
+		 pic->pixel_type() != image_type::kByte )
             {
                 pic = display( pic, img );
             }

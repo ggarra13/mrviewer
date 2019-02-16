@@ -1248,7 +1248,7 @@ void video_thread( PlaybackData* data )
     
         if ( ! img->find_image( frame ) )
 	{
-	    LOG_ERROR( "Could not find image " << frame );
+	    LOG_ERROR( _("Could not find image ") << frame );
 	}
 
         if ( reel->edl && fg && img->is_left_eye() )
@@ -1335,7 +1335,24 @@ void decode_thread( PlaybackData* data )
             img->do_seek();
             frame = img->dts();
         }
+	else if ( img->is_sequence() )
+	{
+	    uint64_t max_frames = img->max_image_frames();
 
+	    int64_t end = img->end_frame();
+	    uint64_t count = 0;
+	    uint64_t empty = 0;
+	    int64_t t = img->start_frame(); // view->preload_frame();
+	    for ( ; t < end; ++t )
+	    {
+		if ( img->is_cache_filled( t ) ) ++count;
+	    }
+
+	    // std::cerr << "count " << count  << " t " << t << " frame " << frame
+	    // 	      <<  " max frames " << max_frames << std::endl;
+	    if ( count > max_frames ) continue;
+	}
+	
         step = (int) img->playback();
         if ( step == 0 ) break;
 
