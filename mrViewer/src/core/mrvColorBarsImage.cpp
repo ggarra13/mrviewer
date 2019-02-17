@@ -27,6 +27,9 @@
  */
 
 
+#include <OpenColorIO/OpenColorIO.h>
+namespace OCIO = OCIO_NAMESPACE;
+
 #include "mrvColorBarsImage.h"
 
 namespace mrv {
@@ -40,54 +43,75 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
     default_layers();
 
     _frameStart = _frame_start = 1;
-    
+
     switch( c )
     {
     case kSMPTE_NTSC:
         _fileroot = strdup( "SMPTE NTSC Color Bars" );
         image_size( 720, 480 );
-        allocate_pixels(canvas, _frameStart);
+        allocate_pixels( _hires, _frameStart);
         _pixel_ratio = 0.9f;
         _fps = 29.976f;
-        NTSC_color_bars(canvas);
+        NTSC_color_bars( _hires );
+        ocio_input_color_space( "sRGB" );
         break;
     case kPAL:
         _fileroot = strdup( "PAL Color Bars" );
         image_size( 720, 576 );
-        allocate_pixels(canvas, _frameStart);
+        allocate_pixels( _hires, _frameStart);
         _fps = 25.0f;
         _pixel_ratio = 1.25f;
-        NTSC_color_bars(canvas);
+        NTSC_color_bars( _hires );
+        ocio_input_color_space( "sRGB" );
         break;
     case kPAL_HDTV:
+    {
         _fileroot = strdup( "PAL HDTV Color Bars" );
         image_size( 1920, 1080 );
-        allocate_pixels(canvas, _frameStart);
+        allocate_pixels( _hires, _frameStart);
         _pixel_ratio = 1.0;
         _fps = 25.0f;
-        NTSC_HDTV_color_bars(canvas);
+        NTSC_HDTV_color_bars( _hires);
+
+        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+        OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("rec709");
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "Rec.709" );
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "sRGB" );
+        ocio_input_color_space( defaultcs->getName() );
         break;
+    }
     default:
     case kSMPTE_NTSC_HDTV:
+    {
         _fileroot = strdup( "NTSC HDTV Color Bars" );
         image_size( 1920, 1080 );
-        allocate_pixels(canvas, _frameStart);
+        allocate_pixels( _hires, _frameStart);
         _pixel_ratio = 1.0;
         _fps = 29.976f;
-        NTSC_HDTV_color_bars(canvas);
+        NTSC_HDTV_color_bars( _hires );
+        OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+        OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("rec709");
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "Rec.709" );
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "sRGB" );
+        ocio_input_color_space( defaultcs->getName() );
         break;
+    }
     }
 
     _frameEnd = _frame_end = int64_t( (_fps * 3) + 0.5f );
 }
 
 void ColorBarsImage::smpte_color_bars(
-				      image_type_ptr& canvas, 
-				      const unsigned int X,
-				      const unsigned int W,
-				      const unsigned int H,
-				      const float pct
-				      )
+                                      image_type_ptr& canvas,
+                                      const unsigned int X,
+                                      const unsigned int W,
+                                      const unsigned int H,
+                                      const float pct
+                                      )
 {
     unsigned int WW = width();
     unsigned int bar_w = unsigned(W / 7.0f + 0.5f);
@@ -124,8 +148,8 @@ void ColorBarsImage::smpte_color_bars(
 
 }
 
-void ColorBarsImage::smpte_bottom_bars( image_type_ptr& canvas, 
-					const unsigned int X,
+void ColorBarsImage::smpte_bottom_bars( image_type_ptr& canvas,
+                                        const unsigned int X,
                                         const unsigned int Y,
                                         const unsigned int W,
                                         const unsigned int H )
@@ -378,10 +402,10 @@ void ColorBarsImage::NTSC_HDTV_color_bars(mrv::image_type_ptr& canvas)
 }
 
 
-bool ColorBarsImage::fetch( 
-			   mrv::image_type_ptr& canvas,
-			   const boost::int64_t frame
-			    )
+bool ColorBarsImage::fetch(
+                           mrv::image_type_ptr& canvas,
+                           const boost::int64_t frame
+                            )
 {
     return true;
 }

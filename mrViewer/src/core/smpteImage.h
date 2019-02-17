@@ -76,12 +76,12 @@ protected:
 
     void gamma_chart( mrv::image_type_ptr& canvas );
     void gamma_boxes( mrv::image_type_ptr& canvas,
-		      unsigned int x, unsigned int y,
+                      unsigned int x, unsigned int y,
                       unsigned int w, unsigned int h,
                       float bg, float fg );
     void gamma_box( mrv::image_type_ptr& canvas,
-		    unsigned int x, unsigned int y,
-		    unsigned int w, unsigned int h );
+                    unsigned int x, unsigned int y,
+                    unsigned int w, unsigned int h );
 
     Pixel bg;
     Pixel fg;

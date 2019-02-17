@@ -751,15 +751,28 @@ void CMedia::clear_cache()
     for ( boost::uint64_t i = 0; i < num; ++i )
     {
         if ( _sequence && _sequence[i] )
+        {
+            memory_used -= _sequence[i]->data_size();
             _sequence[i].reset();
+        }
         if ( _right && _right[i] )
+        {
+            memory_used -= _right[i]->data_size();
             _right[i].reset();
+        }
     }
 
-    _stereo[0].reset();
-    _stereo[1].reset();
+    if ( _stereo[0] )
+    {
+        memory_used -= _stereo[0]->data_size();
+        _stereo[0].reset();
+    }
 
-    memory_used = 0;
+    if ( _stereo[1] )
+    {
+        memory_used -= _stereo[1]->data_size();
+        _stereo[1].reset();
+    }
 
     image_damage( image_damage() | kDamageCache | kDamageContents );
 
@@ -1533,7 +1546,7 @@ void CMedia::default_color_corrections()
  */
 void CMedia::filename( const char* n )
 {
-    assert( n != NULL );
+    assert0( n != NULL );
 
     if ( strncmp( n, "file:", 5 ) == 0 )
         n += 5;
@@ -1569,7 +1582,7 @@ void CMedia::filename( const char* n )
     image_type_ptr canvas;
     if ( fetch( canvas, 1 ) )
     {
-        _depth = canvas->pixel_type();
+        cache( canvas );
         default_color_corrections();
     }
 
@@ -2656,20 +2669,21 @@ bool CMedia::frame( int64_t f )
         _right_eye->frame(f);
 
     static int force_flush = 0;
-    
 
-    if ( Preferences::max_memory - CMedia::memory_used <= 0 )
+
+    assert0( CMedia::memory_used >= 0 );
+    if (Preferences::max_memory - CMedia::memory_used <= 0 )
     {
-	++force_flush;
-	if ( force_flush > play_fps() )
-	{
-	    force_flush = 0;
-	    limit_video_store( f );
-	}
+        ++force_flush;
+        if (  !stopped() && force_flush > play_fps() )
+        {
+            force_flush = 0;
+            limit_video_store( f );
+        }
         return false;
     }
 
-	  
+
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
 #define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
@@ -2678,7 +2692,7 @@ bool CMedia::frame( int64_t f )
         _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
         _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
         _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
-	    
+
     {
         return false;
     }
@@ -2702,7 +2716,7 @@ bool CMedia::frame( int64_t f )
 
         if ( fs::exists( file ) )
         {
-	  
+
             if ( fetch( canvas, _dts ) )
             {
                 cache( canvas );
@@ -2792,6 +2806,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
 
     if ( seq[idx] ) memory_used -= seq[idx]->data_size();
+    assert0( CMedia::memory_used >= 0 );
     MEM();
 
     mrv::image_type_ptr np;
@@ -2903,8 +2918,6 @@ void CMedia::cache( mrv::image_type_ptr& pic )
     if ( dynamic_cast< const aviImage* >( this ) != NULL )
         return;
 
-    assert0( pic != NULL );
-    assert0( pic.use_count() != 0 );
 
 
     if ( !is_sequence() || !_cache_active || !pic )
@@ -3029,6 +3042,12 @@ size_t CMedia::memory() const
         if ( hires() )
         {
             r += _hires->data_size();
+        }
+        else if ( _stereo[0] )
+        {
+            r += _stereo[0]->data_size();
+            if ( _stereo[1] )
+                r += _stereo[1]->data_size();
         }
     }
 
@@ -3502,6 +3521,7 @@ uint64_t CMedia::max_image_frames()
 #else
     if ( _hires )
     {
+        assert0( CMedia::memory_used >= 0 );
         return ((Preferences::max_memory - CMedia::memory_used) * 100.0 /
                 (double) _hires->data_size());
     }
@@ -3511,10 +3531,14 @@ uint64_t CMedia::max_image_frames()
     {
         if ( _sequence[i] ) break;
     }
+
     if ( i >= num ) return std::numeric_limits<int>::max() / 3;
     MEM();
+
     if ( Preferences::max_memory < CMedia::memory_used )
         return 0;
+
+    assert0( CMedia::memory_used >= 0 );
     return ((Preferences::max_memory - CMedia::memory_used) * 100.0 / (double)
             _sequence[i]->data_size());
 #endif
@@ -3637,7 +3661,7 @@ void CMedia::limit_video_store( const int64_t f )
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] || _sequence[i]->frame() == f ||
-	     _sequence[i]->frame() == f + playback() ) continue;
+             _sequence[i]->frame() == _frame ) continue;
 
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
@@ -3646,6 +3670,8 @@ void CMedia::limit_video_store( const int64_t f )
     if ( tmp.size() < max_frames ) return;
 
     TimedSeqMap::iterator it = tmp.begin();
+    if ( it == tmp.end() ) return;
+
     uint64_t idx = it->second;
 #else
     mrv::image_type_ptr p;
@@ -3653,7 +3679,7 @@ void CMedia::limit_video_store( const int64_t f )
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] || _sequence[i]->frame() == f ) continue;
-        if ( p.use_count() > 0 && customMore()( _sequence[i]->ptime(), p->ptime() ) )
+        if ( p && customMore()( _sequence[i]->ptime(), p->ptime() ) )
         {
             idx = i;
             p = _sequence[i];
@@ -3969,7 +3995,7 @@ bool CMedia::find_image( const int64_t frame )
     // too many frames.  Thus, we use this variable to limit or not
     // the cache.
     bool limit = false;
-    
+
     if ( _sequence && _sequence[idx] )
     {
         SCOPED_LOCK( _mutex );
@@ -3979,7 +4005,7 @@ bool CMedia::find_image( const int64_t frame )
             _frame = frame;
             limit = true;
         }
-        
+
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
 
@@ -4012,7 +4038,7 @@ bool CMedia::find_image( const int64_t frame )
         _frame = f;
         limit = true;
     }
-    
+
     if ( should_load )
     {
         image_type_ptr canvas;
@@ -4202,7 +4228,7 @@ void CMedia::default_ocio_input_color_space()
         return;
     }
     if ( n.rfind( ".dpx" ) != std::string::npos ||
-            n.rfind( ".cin")  != std::string::npos )
+         n.rfind( ".cin")  != std::string::npos )
     {
         OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
         OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace("Cineon");

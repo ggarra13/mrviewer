@@ -1872,7 +1872,7 @@ void GLEngine::draw_images( ImageList& images )
         if (!pic)  continue;
 
 
-        DBG( "draw image " << img->name() );
+	DBG( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();

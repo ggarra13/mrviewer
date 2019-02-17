@@ -1006,6 +1006,7 @@ void ImageBrowser::remove( int idx )
 
     if (play) view()->play( play );
 
+    view()->redraw();
     redraw();
 }
 
@@ -1180,6 +1181,7 @@ void ImageBrowser::change_image()
 
             v->fg_reel( _reel );
             v->foreground( m );
+	    v->redraw();
 
             mrv::EDLGroup* e = edl_group();
             if ( e )
