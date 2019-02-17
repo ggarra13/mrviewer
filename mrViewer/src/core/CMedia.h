@@ -369,6 +369,9 @@ public:
         return true;
     }
 
+    inline void actual_frame_rate( double fps ) { _actual_frame_rate = fps; }
+    inline double actual_frame_rate() const { return _actual_frame_rate; }
+
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
 
@@ -1572,6 +1575,7 @@ public:
         kImageMagickLibrary
     };
     static LoadLib load_library;
+    static int64_t memory_used;
 
 protected:
 
@@ -1943,6 +1947,7 @@ protected:
     ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
 
+    double _actual_frame_rate;
     image_type::PixelType _depth;
 
     stringArray  _layers;                //!< list of layers in file
@@ -1992,7 +1997,6 @@ protected:
 
     static std::string _default_subtitle_font;
     static std::string _default_subtitle_encoding;
-    static uint64_t memory_used;
     static bool _aces_metadata;
     static bool _all_layers;
     static bool _8bit_cache;

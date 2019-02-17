@@ -304,7 +304,7 @@ int   Preferences::textcolor;
 int   Preferences::selectioncolor;
 int   Preferences::selectiontextcolor;
 
-uint64_t Preferences::max_memory = 1000000000;
+int64_t Preferences::max_memory = 1000000000;
 
 static std::string expandVariables( const std::string &s,
                                     const char* START_VARIABLE,

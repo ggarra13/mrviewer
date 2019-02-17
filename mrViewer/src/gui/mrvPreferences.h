@@ -84,7 +84,7 @@ public:
     static int selectioncolor;
     static int selectiontextcolor;
 
-    static uint64_t max_memory;
+    static int64_t max_memory;
 
     static std::string OCIO_Display;
     static std::string OCIO_View;

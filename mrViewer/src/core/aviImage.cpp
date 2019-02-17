@@ -195,7 +195,7 @@ aviImage::aviImage() :
     _compression = "";
 
     memset(&_sub, 0, sizeof(AVSubtitle));
-
+    _depth = mrv::image_type::kByte;
 }
 
 
@@ -1051,7 +1051,7 @@ bool aviImage::seek_to_position( const int64_t frame )
 
 
 mrv::image_type_ptr aviImage::allocate_image( const int64_t& frame,
-					      const int64_t& pts
+                                              const int64_t& pts
                                             )
 {
     double aspect_ratio = (double)_w / (double) _h;
@@ -2703,7 +2703,7 @@ void aviImage::populate()
 
     if ( !has_video() )
     {
-	mrv::image_type_ptr canvas;
+        mrv::image_type_ptr canvas;
         if ( !_hires )
         {
             _w = 640;
@@ -3112,9 +3112,9 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
     {
         _right_eye->stop();
-	mrv::image_type_ptr canvas;
+        mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
-	_stereo[1] = canvas;
+        _stereo[1] = canvas;
     }
 
     bool got_video = !has_video();
@@ -3518,7 +3518,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 {
     int64_t frame = f;
 
-    
+
     if ( !has_video() )
     {
         return audio_video_display(_audio_frame);
@@ -3630,7 +3630,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             {
                 pktframe = frame;
             }
-	    
+
 
             // Avoid storing too many frames in advance
             if ( playback() == kForwards &&
@@ -3722,7 +3722,7 @@ void aviImage::debug_video_stores(const int64_t frame,
     {
         video_cache_t::const_iterator end = last - 1;
 
-	std::cerr << std::dec;
+        std::cerr << std::dec;
         std::cerr << (*iter)->frame() << "-"
                   << (*end)->frame()
                   << std::endl;
@@ -3735,7 +3735,7 @@ void aviImage::debug_video_stores(const int64_t frame,
 
     if ( dtail )
     {
-	std::cerr << std::dec;
+        std::cerr << std::dec;
         for ( ; iter != last; ++iter )
         {
             int64_t f = (*iter)->frame();
@@ -3845,7 +3845,7 @@ void aviImage::do_seek()
         if ( _seek_frame != _expected )
             clear_packets();
 
-	image_type_ptr canvas;
+        image_type_ptr canvas;
         fetch( canvas, _seek_frame );
     }
 

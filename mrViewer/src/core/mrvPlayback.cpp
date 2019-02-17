@@ -55,6 +55,7 @@ extern "C" {
 #include "core/mrvBarrier.h"
 
 #include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvReel.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
@@ -830,7 +831,7 @@ void audio_thread( PlaybackData* data )
     LOGT_INFO( "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? "  << img->stopped() << " frame " << img->audio_frame() );
     assert( img->stopped() );
 #endif
-    
+
     img->playback( CMedia::kStopped );
 
 
@@ -921,7 +922,6 @@ void subtitle_thread( PlaybackData* data )
         double fps = img->play_fps();
         timer.setDesiredFrameRate( fps );
         timer.waitUntilNextFrameIsDue();
-
     }
 
 
@@ -1047,7 +1047,7 @@ void video_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-	
+
         CMedia::DecodeStatus status = img->decode_video( frame );
 
         // img->debug_video_packets( frame, img->name().c_str(), true );
@@ -1207,6 +1207,9 @@ void video_thread( PlaybackData* data )
 #if __cplusplus >= 201103L
         using std::isnan;
 #endif
+
+        img->actual_frame_rate( timer.actualFrameRate() );
+
         if (! isnan(diff) )
         {
 
@@ -1245,11 +1248,11 @@ void video_thread( PlaybackData* data )
         //img->debug_video_packets( frame, "find_image", true );
         //img->debug_video_stores( frame, "find_image", true );
 
-    
+
         if ( ! img->find_image( frame ) )
-	{
-	    LOG_ERROR( _("Could not find image ") << frame );
-	}
+        {
+            LOG_ERROR( _("Could not find image ") << frame );
+        }
 
         if ( reel->edl && fg && img->is_left_eye() )
         {
@@ -1276,7 +1279,7 @@ void video_thread( PlaybackData* data )
               << " view playback " << view->playback() << " at " << frame << "  img->frame: " << img->frame() );
     assert( img->stopped() );
 #endif
-    
+
     img->playback( CMedia::kStopped );
 
 
@@ -1326,7 +1329,6 @@ void decode_thread( PlaybackData* data )
 #endif
 
 
-
     while ( !img->stopped() && view->playback() != CMedia::kStopped )
     {
 
@@ -1335,35 +1337,20 @@ void decode_thread( PlaybackData* data )
             img->do_seek();
             frame = img->dts();
         }
-	else if ( img->is_sequence() )
-	{
-	    uint64_t max_frames = img->max_image_frames();
 
-	    int64_t end = img->end_frame();
-	    uint64_t count = 0;
-	    uint64_t empty = 0;
-	    int64_t t = img->start_frame(); // view->preload_frame();
-	    for ( ; t < end; ++t )
-	    {
-		if ( img->is_cache_filled( t ) ) ++count;
-	    }
 
-	    // std::cerr << "count " << count  << " t " << t << " frame " << frame
-	    // 	      <<  " max frames " << max_frames << std::endl;
-	    if ( count > max_frames ) continue;
-	}
-	
         step = (int) img->playback();
         if ( step == 0 ) break;
 
         frame += step;
         CMedia::DecodeStatus status = check_decode_loop( frame, img, reel,
-							 timeline );
+                                                         timeline );
 
 
         if ( status != CMedia::kDecodeOK )
         {
             if ( img->stopped() ) continue;
+
 
             CMedia::Barrier* barrier = img->loop_barrier();
 
@@ -1402,7 +1389,7 @@ void decode_thread( PlaybackData* data )
         while ( !img->frame( frame ) )
         {
             if ( img->stopped() ||
-		 view->playback() == CMedia::kStopped ) break;
+                 view->playback() == CMedia::kStopped ) break;
             sleep_ms( 10 );
         }
 
