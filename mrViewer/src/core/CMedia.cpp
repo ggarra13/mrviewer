@@ -1579,10 +1579,9 @@ void CMedia::filename( const char* n )
     _is_sequence = false;
     _is_stereo = false;
 
-    image_type_ptr canvas;
-    if ( fetch( canvas, 1 ) )
+    if ( fetch( _hires, 1 ) )
     {
-        cache( canvas );
+	_depth = _hires->pixel_type();
         default_color_corrections();
     }
 
@@ -1593,9 +1592,6 @@ void CMedia::filename( const char* n )
 
     if ( ! initialize() )
         return;
-
-
-
 }
 
 
@@ -2672,10 +2668,10 @@ bool CMedia::frame( int64_t f )
 
 
     assert0( CMedia::memory_used >= 0 );
-    if (Preferences::max_memory - CMedia::memory_used <= 0 )
+    if ( !stopped() && ( Preferences::max_memory - CMedia::memory_used <= 0 ) )
     {
         ++force_flush;
-        if (  !stopped() && force_flush > play_fps() )
+        if ( force_flush > play_fps() )
         {
             force_flush = 0;
             limit_video_store( f );
@@ -2794,7 +2790,6 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
 
     int64_t f = pic->frame();
-    _depth = pic->pixel_type();
 
 
     int64_t idx = f - _frame_start;
@@ -2923,6 +2918,8 @@ void CMedia::cache( mrv::image_type_ptr& pic )
     if ( !is_sequence() || !_cache_active || !pic )
         return;
 
+    _depth = pic->pixel_type();
+	
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
         update_cache_pic( _sequence, _stereo[0] );
