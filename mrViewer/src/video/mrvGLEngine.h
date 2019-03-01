@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <fltk/gl.h>
+#include <FL/gl.h>
 #include <boost/shared_array.hpp>
 
 #include "core/mrvAlignedData.h"
