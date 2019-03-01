@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,14 +24,12 @@
 #include <vector>
 #include <iostream>
 
+#include <FL/fl_draw.H>
+
 #include "core/mrvPacketQueue.h" // For MRV_NOPTS_VALUE
 
 #include <boost/shared_ptr.hpp>
 
-namespace fltk
-{
-struct Font;
-}
 
 namespace mrv
 {
@@ -189,7 +187,7 @@ public:
 class GLTextShape : public GLPathShape
 {
 public:
-    GLTextShape() : _font(NULL), _zoom(0), _fontsize(8), _charset(0),
+    GLTextShape() : _font(0), _zoom(0), _fontsize(8), _charset(0),
         GLPathShape() {};
     ~GLTextShape();
 
@@ -205,10 +203,10 @@ public:
         return _text;
     }
 
-    inline void font( fltk::Font* f ) {
+    inline void font( Fl_Font f ) {
         _font = f;
     }
-    inline fltk::Font* font() const   {
+    inline Fl_Font font() const   {
         return _font;
     }
 
@@ -223,7 +221,7 @@ public:
     virtual std::string send() const;
 
 protected:
-    fltk::Font* _font;
+    Fl_Font _font;
     std::string _text, _encoding;
     float    _zoom;
     int      _fontsize;
