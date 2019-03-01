@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,16 +28,11 @@
 #ifndef mrvColorInfo_h
 #define mrvColorInfo_h
 
-// #include <mrvBrowser.h>
-#include <core/mrvRectangle.h>
-#include <gui/mrvBrowser.h>
-
-namespace fltk
-{
-class Widget;
-class Browser;
-class PopupMenu;
-}
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
+#include "core/mrvRectangle.h"
+#include "gui/mrvBrowser.h"
+#include "gui/mrvPopupMenu.h"
 
 
 namespace mrv
@@ -47,12 +42,12 @@ class ColorWidget;
 class ColorBrowser;
 class ImageView;
 
-class ColorInfo : public fltk::Group
+class ColorInfo : public Fl_Group
 {
 public:
     ColorInfo( int x, int y, int w, int h, const char* l = 0 );
 
-    void main( mrv::ViewerUI* m );
+    void main( ViewerUI* m );
     ImageView* view() const;
 
     virtual int handle( int event );
@@ -68,10 +63,10 @@ public:
 
 protected:
     ColorWidget*    dcol;
-    fltk::Widget*    area;
+    Fl_Box*         area;
     ColorBrowser*   browser;
-    fltk::PopupMenu* uiColorB;
-    static mrv::ViewerUI*   uiMain;
+    mrv::PopupMenu* uiColorB;
+    static ViewerUI*   uiMain;
 };
 
 } // namespace mrv
