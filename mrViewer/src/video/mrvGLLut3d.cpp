@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@
 #include <ImfVecAttribute.h>
 #include <CtlExc.h>
 
-#include <fltk/Cursor.h>
+#include <FL/Enumerations.H>
 
 #include <OpenColorIO/OpenColorIO.h>
 namespace OCIO = OCIO_NAMESPACE;
@@ -54,10 +54,12 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/CMedia.h"
 #include "core/mrvColorProfile.h"
 #include "gui/mrvPreferences.h"
-#include "mrViewer.h"
 
-#include "mrvGLLut3d.h"
-#include "mrvGLEngine.h"
+#include "mrViewer.h"
+#include "mrvPreferencesUI.h"
+
+#include "video/mrvGLLut3d.h"
+#include "video/mrvGLEngine.h"
 
 namespace
 {
@@ -232,7 +234,7 @@ unsigned GLLut3d::NUM_STOPS = 8;
 GLLut3d::LutsMap GLLut3d::_luts;
 
 
-GLLut3d::GLLut3d( const mrv::ViewerUI* v, const unsigned N ) :
+GLLut3d::GLLut3d( const ViewerUI* v, const unsigned N ) :
     view( v ),
     lutMin( 0 ),
     lutMax( 0 ),
@@ -1084,10 +1086,10 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
+GLLut3d* GLLut3d::factory( const ViewerUI* view,
                            const CMedia* img )
 {
-    const mrv::PreferencesUI* uiPrefs = view->uiPrefs;
+    const PreferencesUI* uiPrefs = view->uiPrefs;
     std::string path;
     GLLut3d::Transforms transforms;
 
@@ -1214,7 +1216,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
         if ( img->ocio_input_color_space().empty() )
         {
             std::string msg = _( "Image input color space is undefined." );
-            fltk::PopupMenu* uiICS = view->uiICS;
+            mrv::PopupMenu* uiICS = view->uiICS;
             const char* const lbl = "scene_linear";
             for ( int i = 0; i < uiICS->children(); ++i )
             {
@@ -1231,7 +1233,6 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                     c->ocio_input_color_space( name );
                     uiICS->copy_label( lbl );
                     uiICS->value(i);
-                    uiICS->relayout(); // needed
                     uiICS->redraw();
                     break;
                 }
@@ -1240,7 +1241,7 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
         }
         else
         {
-            fltk::PopupMenu* uiICS = view->uiICS;
+            mrv::PopupMenu* uiICS = view->uiICS;
             const std::string& lbl = img->ocio_input_color_space();
             for ( int i = 0; i < uiICS->children(); ++i )
             {
@@ -1249,7 +1250,6 @@ GLLut3d* GLLut3d::factory( const mrv::ViewerUI* view,
                 {
                     uiICS->copy_label( lbl.c_str() );
                     uiICS->value(i);
-                    uiICS->relayout(); // needed
                     uiICS->redraw();
                     break;
                 }
