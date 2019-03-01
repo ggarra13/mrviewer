@@ -16,7 +16,7 @@
 #ifndef _FLU_COMBO_LIST_H
 #define _FLU_COMBO_LIST_H
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Hold_Browser.H>
 
 #include "FLU/Flu_Combo_Box.h"
 
@@ -33,7 +33,7 @@ public:
   ~Flu_Combo_List();
 
   //! Publicly exposed list widget (instance of Fl_Hold_Browser)
-  fltk::Browser list;
+  Fl_Hold_Browser list;
 
  protected:
 
@@ -42,7 +42,7 @@ public:
   const char* _previous();
   void _hilight( int x, int y );
 
-  inline static void _cb( fltk::Widget *w, void *arg )
+  inline static void _cb( Fl_Widget *w, void *arg )
     { ((Flu_Combo_List*)arg)->cb(); }
   void cb();
 
