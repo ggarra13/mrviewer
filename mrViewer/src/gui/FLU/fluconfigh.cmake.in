@@ -1,0 +1,14 @@
+
+
+
+/*
+ * HAVE_DIRENT_H, HAVE_SYS_NDIR_H, HAVE_SYS_DIR_H, HAVE_NDIR_H, HAVE_SCANDIR:
+ *
+ * Where is <dirent.h> (used only by fl_file_chooser and scandir).
+ */
+
+#cmakedefine HAVE_DIRENT_H @HAVE_DIRENT_H@
+#cmakedefine HAVE_SYS_NDIR_H @HAVE_SYS_NDIR_H@
+#cmakedefine HAVE_SYS_DIR_H @HAVE_SYS_DIR_H@
+#cmakedefine HAVE_NDIR_H @HAVE_NDIR_H@
+#cmakedefine HAVE_SCANDIR @HAVE_SCANDIR@
