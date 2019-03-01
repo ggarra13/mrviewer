@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 #include <iostream>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 
 // Image types
@@ -235,7 +235,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     const boost::uint8_t* test_data = datas;
     if (!datas) {
         size = 1024;
-        FILE* fp = fltk::fltk_fopen(name, "rb");
+        FILE* fp = fl_fopen(name, "rb");
         if (!fp)
         {
             if ( is_seq )
@@ -306,9 +306,9 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 if ( img )
                 {
                     img->filename( name );
-		    image_type_ptr canvas;
+                    image_type_ptr canvas;
                     img->fetch( canvas, 1);
-		    img->cache( canvas );
+                    img->cache( canvas );
                     img->default_color_corrections();
                     return img;
                 }
@@ -365,7 +365,7 @@ CMedia* CMedia::guess_image( const char* file,
     bool is_seq = false;
 
     if ( root.find( "%V" ) != std::string::npos ||
-	 root.find( "%v" ) != std::string::npos )
+         root.find( "%v" ) != std::string::npos )
     {
         is_stereo = true;
     }
@@ -379,7 +379,7 @@ CMedia* CMedia::guess_image( const char* file,
             root = tmp;
         }
     }
-    
+
     int64_t frame = start;
     int64_t lastFrame = end;
 

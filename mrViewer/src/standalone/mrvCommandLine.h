@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,61 +19,52 @@
  * @file   mrvCommandLine.h
  * @author gga
  * @date   Mon Aug  6 12:26:40 2007
- *
+ * 
  * @brief  Command-line parser for mrViewer.
- *
- *
+ * 
+ * 
  */
 
 #ifndef mrvCommandLine_h
 #define mrvCommandLine_h
 
-#include "core/Sequence.h"
-
-namespace mrv {
+#include "Sequence.h"
 
 class ViewerUI;
 
+namespace mrv {
+
 typedef std::vector< std::string > stringArray;
 
-struct Options
-{
-    mrv::LoadList files;
-    std::string bgfile;
-    mrv::LoadList stereo;
-    bool edl;
-    bool play;
-    bool run;
-    float gamma;
-    float gain;
+  struct Options
+  {
+       mrv::LoadList files;
+       mrv::LoadList stereo;
+       bool edl;
+       float gamma;
+       float gain;
+       std::string host;
+       stringArray audios;
+       unsigned short port;
+       float fps;
 
-    std::string stereo_input;
-    std::string stereo_output;
-
-    std::string host;
-    stringArray audios;
-    unsigned short port;
-    float fps;
-    bool debug;
-
-    Options() : edl(false), play(false), run( false ),
-        gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 ), debug( false )
+  Options() : edl(false), gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 )
     {}
-};
+  };
 
 
-//
-// Given a directory parse all sequences and movies from it.
-//
-void parse_directory( const std::string& dir,
-                      mrv::Options& opts );
+  //
+  // Given a directory parse all sequences and movies from it.
+  //
+   void parse_directory( const std::string& dir,
+                         mrv::Options& opts );
 
-//
-// Command-line parser
-//
-bool parse_command_line( const int argc, char** argv,
-                         mrv::ViewerUI* ui,
-                         mrv::Options& opts);
+  //
+  // Command-line parser
+  //
+  void parse_command_line( const int argc, const char** argv,
+			   ViewerUI* ui, 
+                           mrv::Options& opts);
 }
 
 
