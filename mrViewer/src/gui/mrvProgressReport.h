@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,22 +18,20 @@
 
 #include "core/mrvTimer.h"
 
-namespace fltk {
-class Window;
-class ProgressBar;
-class Output;
-}
+class Fl_Window;
+class Fl_Progress;
+class Fl_Output;
 
 namespace mrv {
 
 class ProgressReport
 {
 public:
-    ProgressReport( fltk::Window* main, boost::int64_t start,
+    ProgressReport( Fl_Window* main, boost::int64_t start,
                     boost::int64_t end );
     ~ProgressReport();
 
-    fltk::Window* window() const {
+    Fl_Window* window() const {
         return w;
     }
 
@@ -46,11 +44,11 @@ protected:
     void to_hour_min_sec( const double t, int& hour, int& min, int& sec );
 
 protected:
-    fltk::Window* w;
-    fltk::ProgressBar* progress;
-    fltk::Output* elapsed;
-    fltk::Output* remain;
-    fltk::Output* fps;
+    Fl_Window* w;
+    Fl_Progress* progress;
+    Fl_Output* elapsed;
+    Fl_Output* remain;
+    Fl_Output* fps;
     mrv::Timer timer;
 
     boost::int64_t _frame;

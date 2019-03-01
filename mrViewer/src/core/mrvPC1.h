@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,37 +19,37 @@
  * @file   mrvPC1.h
  * @author gga
  * @date   Fri Oct 12 00:38:52 2007
- *
+ * 
  * @brief  PC-1 text encoding with 128-key
- *
- *
+ * 
+ * 
  */
 
 namespace mrv {
-namespace cipher {
+  namespace cipher {
 
-class PC1
-{
-public:
-    unsigned short pkax,pkbx,pkcx,pkdx,pksi,pktmp,x1a2;
-    unsigned short pkres,pki,inter,cfc,cfd,compte;
-    unsigned short x1a0[8];
-    unsigned char cle[17];
-    short pkc, plainlen, ascipherlen;
+    class PC1
+    {
+    public:
+      unsigned short pkax,pkbx,pkcx,pkdx,pksi,pktmp,x1a2;
+      unsigned short pkres,pki,inter,cfc,cfd,compte;
+      unsigned short x1a0[8];
+      unsigned char cle[17];
+      short pkc, plainlen, ascipherlen;
 
-    char *plainText, *ascCipherText;
+      char *plainText, *ascCipherText;
 
-    void pkfin(void);
-    void pkcode(void);
-    void pkassemble(void);
+      void pkfin(void);
+      void pkcode(void);
+      void pkassemble(void);
 
-    void ascii_encrypt128(const char *in, const char *key);
-    void ascii_decrypt128(const char *in, const char *key);
+      void ascii_encrypt128(const char *in, const char *key);
+      void ascii_decrypt128(const char *in, const char *key);
 
-    // Constructor
-    PC1();
+      // Constructor
+      PC1();
 
-};
+    };
 
-}
+  }
 }

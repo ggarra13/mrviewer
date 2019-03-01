@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,17 +22,17 @@
 //! Channel to display in ImageView
 namespace mrv
 {
-enum ChannelType
-{
-    kRGB,
-    kRed,
-    kGreen,
-    kBlue,
-    kAlpha,
-    kAlphaOverlay,
-    kLumma,
-    kLastChannel
-};
+  enum ChannelType
+    {
+      kRGB,
+      kRed,
+      kGreen,
+      kBlue,
+      kAlpha,
+      kAlphaOverlay,
+      kLumma,
+      kLastChannel
+    };
 }
 
 #endif
