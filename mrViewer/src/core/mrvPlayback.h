@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@
  * @file   mrvPlayback.h
  * @author gga
  * @date   Fri Jul  6 17:39:35 2007
- *
+ * 
  * @brief  This file implements a callback that is used to play videos or
  *         image sequences.  This callback is usually run as part of a new
  *         thread.
- *
- *
+ * 
+ * 
  */
 
 #ifndef mrvPlayback_h
@@ -32,63 +32,65 @@
 
 #include <cassert>
 
+
+class CMedia;
 struct Clock;
+class ViewerUI;
 
-
-void sleep_ms(int milliseconds); // cross-platform sleep function
 
 namespace mrv {
 
-class ViewerUI;
-class CMedia;
+
+void sleep_ms( int milliseconds );
 
 void set_clock_at(Clock *c, double pts, int serial, double time);
 double get_clock(Clock* c);
 void sync_clock_to_slave(Clock *c, Clock *slave);
 
 
-enum Playback {
+  enum Playback {
     kBackwards = -1,
     kStopped = 0,
     kForwards = 1,
     kScrubbing = 255
-};
+  };
 
-//
-// Callback data that must be filled
-//
-struct PlaybackData {
-    bool fg;
-    mrv::ViewerUI*   uiMain;
-    CMedia*  image;
+  //
+  // Callback data that must be filled
+  //
+  struct PlaybackData {
+       bool fg;;
+       ViewerUI*   uiMain;
+       CMedia*  image;
 
-    PlaybackData( bool foreground, mrv::ViewerUI* const main,
-                  CMedia* const img ) :
-        fg( foreground ),
-        uiMain( main ),
-        image( img )
-    {
-        assert( image  != NULL );
-    }
+      PlaybackData( bool foreground, ViewerUI* const main,
+                    CMedia* const img ) :
+       fg( foreground ),
+       uiMain( main ),
+       image( img )
+       {
+	  assert( image  != NULL );
+       }
 
-    PlaybackData( const PlaybackData& b ) :
-        fg( b.fg ),
-        uiMain( b.uiMain ),
-        image( b.image )
-    {
-        assert( image != NULL );
-    }
+       PlaybackData( const PlaybackData& b ) :
+       fg( b.fg ),
+       uiMain( b.uiMain ),
+       image( b.image )
+       {
+	  assert( image != NULL );
+       }
 
-    ~PlaybackData()
-    {
-    }
+      ~PlaybackData()
+      {
+      }
 
-};
+  };
 
-void audio_thread( PlaybackData* data );
-void video_thread( PlaybackData* data );
-void subtitle_thread( PlaybackData* data );
-void decode_thread( PlaybackData* data );
+  void audio_thread( PlaybackData* data );
+  void video_thread( PlaybackData* data );
+  void subtitle_thread( PlaybackData* data );
+  void decode_thread( PlaybackData* data );
+
 
 } // namespace mrv
 

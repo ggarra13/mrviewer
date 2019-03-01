@@ -191,7 +191,7 @@ unsigned short VideoFrame::line_size() const
     return size * pixel_size();
 }
 
-size_t VideoFrame::data_size()
+size_t VideoFrame::data_size() const
 {
     size_t size = 0;
 
