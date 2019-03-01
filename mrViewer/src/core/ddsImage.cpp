@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include <cstdlib>
 #include <cmath>
 
-#include <fltk/run.h>
+#include <FL/fl_utf8.h>
 
 #include <half.h>
 #include <halfFunction.h>
@@ -1256,7 +1256,7 @@ bool ddsImage::fetch( mrv::image_type_ptr& canvas,
     /*
       Open image file.
     */
-    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "r" );
+    FILE* f = fl_fopen( sequence_filename(frame).c_str(), "r" );
     if ( !f ) return false;
 
     /*
