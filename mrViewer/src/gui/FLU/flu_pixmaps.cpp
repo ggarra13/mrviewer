@@ -1,14 +1,14 @@
 // $Id: flu_pixmaps.cpp,v 1.10 2003/12/06 16:52:43 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
 
@@ -16,7 +16,7 @@
 #include "FLU/flu_pixmaps.h"
 
 /* XPM */
-const char * const plus_xpm[] = {
+const char * plus_xpm[] = {
 "15 15 4 1",
 "       c None",
 ".      c #444444",
@@ -39,7 +39,7 @@ const char * const plus_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const minus_xpm[] = {
+const char * minus_xpm[] = {
 "15 15 4 1",
 "       c None",
 ".      c #444444",
@@ -62,7 +62,7 @@ const char* const minus_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const folder_save_xpm[] = {
+const char * folder_save_xpm[] = {
 "20 20 180 2",
 "  	c None",
 ". 	c #000000",
@@ -266,7 +266,7 @@ const char* const folder_save_xpm[] = {
 "                                        "};
 
 /* XPM */
-const char* const folder_load_xpm[] = {
+const char * folder_load_xpm[] = {
 "20 20 42 1",
 " 	c None",
 ".	c #000000",
@@ -332,7 +332,7 @@ const char* const folder_load_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const reload_xpm[] = {
+const char * reload_xpm[] = {
 "20 20 41 1",
 " 	c None",
 ".	c #777777",
@@ -397,7 +397,7 @@ const char* const reload_xpm[] = {
 "    .++++++.        "};
 
 /* XPM */
-const char* const home_xpm[] = {
+const char * home_xpm[] = {
 "20 20 46 1",
 " 	c None",
 ".	c #000000",
@@ -467,7 +467,7 @@ const char* const home_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const trash_xpm[] = {
+const char * trash_xpm[] = {
 "20 20 8 1",
 " 	c None",
 ".	c #000000",
@@ -499,7 +499,7 @@ const char* const trash_xpm[] = {
 "      ........      "};
 
 /* XPM */
-const char* const arrow_closed_xpm[] = {
+const char * arrow_closed_xpm[] = {
 "15 15 3 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -521,7 +521,7 @@ const char* const arrow_closed_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const arrow_open_xpm[] = {
+const char * arrow_open_xpm[] = {
 "15 15 3 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -543,7 +543,7 @@ const char* const arrow_open_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const bluedot_xpm[] = {
+const char * bluedot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #D4D4FF",
@@ -569,7 +569,7 @@ const char* const bluedot_xpm[] = {
 "             "};
 
 /* XPM */
-const char* const book_xpm[] = {
+const char * book_xpm[] = {
 "18 18 15 1",
 " 	c None",
 ".	c #840084",
@@ -606,7 +606,7 @@ const char* const book_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const cd_drive_xpm[] = {
+const char * cd_drive_xpm[] = {
 "18 16 29 1",
 " 	c None",
 ".	c #737373",
@@ -655,7 +655,7 @@ const char* const cd_drive_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const computer_xpm[] = {
+const char * computer_xpm[] = {
 "20 20 47 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -726,7 +726,7 @@ const char* const computer_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const ram_drive_xpm[] = {
+const char * ram_drive_xpm[] = {
 "18 16 14 1",
 " 	c None",
 ".	c #444444",
@@ -760,7 +760,7 @@ const char* const ram_drive_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const network_drive_xpm[] = {
+const char * network_drive_xpm[] = {
 "18 16 15 1",
 " 	c None",
 ".	c #A80525",
@@ -795,7 +795,7 @@ const char* const network_drive_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const floppy_drive_xpm[] = {
+const char * floppy_drive_xpm[] = {
 "18 16 12 1",
 " 	c None",
 ".	c #858585",
@@ -827,7 +827,7 @@ const char* const floppy_drive_xpm[] = {
 "  ############    "};
 
 /* XPM */
-const char* const removable_drive_xpm[] = {
+const char * removable_drive_xpm[] = {
 "20 12 12 1",
 " 	c None",
 ".	c #858585",
@@ -855,7 +855,7 @@ const char* const removable_drive_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const disk_drive_xpm[] = {
+const char * disk_drive_xpm[] = {
 "20 12 12 1",
 " 	c None",
 ".	c #737373",
@@ -883,7 +883,7 @@ const char* const disk_drive_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const filled_folder_xpm[] = {
+const char * filled_folder_xpm[] = {
 "18 18 18 1",
 " 	c None",
 ".	c #63639C",
@@ -923,7 +923,7 @@ const char* const filled_folder_xpm[] = {
 "                  "};
 
 /* XPM */
-const char* const folder_up_xpm[] = {
+const char * folder_up_xpm[] = {
 "20 18 8 1",
 " 	c None",
 ".	c #9C9C00",
@@ -953,7 +953,7 @@ const char* const folder_up_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const folder_closed_xpm[] = {
+const char * folder_closed_xpm[] = {
 "20 16 44 1",
 " 	c None",
 ".	c #A68A5E",
@@ -1064,7 +1064,7 @@ const char* const folder_closed_xpm[] = {
 "                    "};
 */
 
-const char* const folder_open_xpm[] = {
+const char * folder_open_xpm[] = {
 "20 16 34 1",
 " 	c None",
 ".	c #A68A5E",
@@ -1179,7 +1179,7 @@ const char* const folder_open_xpm[] = {
 */
 
 /* XPM */
-const char* const greendot_xpm[] = {
+const char * greendot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #D4FFD4",
@@ -1205,7 +1205,7 @@ const char* const greendot_xpm[] = {
 "             "};
 
 /* XPM */
-const char* const purpledot_xpm[] = {
+const char * purpledot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #FFD4FF",
@@ -1230,7 +1230,7 @@ const char* const purpledot_xpm[] = {
 "   .+@#@+.   ",
 "             "};
 /* XPM */
-const char* const question_book_xpm[] = {
+const char * question_book_xpm[] = {
 "18 18 19 1",
 " 	c None",
 ".	c #840084",
@@ -1270,7 +1270,7 @@ const char* const question_book_xpm[] = {
 "        $+        ",
 "                  "};
 /* XPM */
-const char* const reddot_xpm[] = {
+const char * reddot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #FFD4D4",
@@ -1295,7 +1295,7 @@ const char* const reddot_xpm[] = {
 "   .+@#@+.   ",
 "             "};
 /* XPM */
-const char* const tealdot_xpm[] = {
+const char * tealdot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #D4FFFF",
@@ -1320,7 +1320,7 @@ const char* const tealdot_xpm[] = {
 "   .+@#@+.   ",
 "             "};
 /* XPM */
-const char* const textdoc_xpm[] = {
+const char * textdoc_xpm[] = {
 "15 18 5 1",
 " 	c None",
 ".	c #848484",
@@ -1347,7 +1347,7 @@ const char* const textdoc_xpm[] = {
 "               "};
 
 /* XPM */
-const char* const yellowdot_xpm[] = {
+const char * yellowdot_xpm[] = {
 "13 13 9 1",
 " 	c None",
 ".	c #FFFFD4",
@@ -1373,7 +1373,7 @@ const char* const yellowdot_xpm[] = {
 "             "};
 
 /* XPM */
-const char* const cdrom_xpm[] = {
+const char * cdrom_xpm[] = {
 "22 22 39 1",
 "       c None",
 ".      c #ADADAD",
@@ -1438,7 +1438,7 @@ const char* const cdrom_xpm[] = {
 "                      "};
 
 /* XPM */
-const char* const big_folder_new_xpm[] = {
+const char * big_folder_new_xpm[] = {
 "20 20 73 1",
 " 	c None",
 ".	c #000000",
@@ -1535,7 +1535,7 @@ const char* const big_folder_new_xpm[] = {
 "                    "};
 
 /* XPM */
-const char* const big_folder_up_xpm[] = {
+const char * big_folder_up_xpm[] = {
 "20 20 70 1",
 " 	c None",
 ".	c #474747",
@@ -1627,382 +1627,3 @@ const char* const big_folder_up_xpm[] = {
 " .................. ",
 "                    ",
 "                    "};
-/* XPM */
-const char* const reel_xpm[] = {
-"20 20 89 1",
-" 	c None",
-".	c #1D3357",
-"+	c #14243D",
-"@	c #00022C",
-"#	c #254270",
-"$	c #838DA5",
-"%	c #3B4049",
-"&	c #19386B",
-"*	c #B0B1B2",
-"=	c #40525C",
-"-	c #161E3F",
-";	c #B2B2B2",
-">	c #173365",
-",	c #B0B0B2",
-"'	c #494F55",
-")	c #122C5C",
-"!	c #1B3667",
-"~	c #1D4075",
-"{	c #224B82",
-"]	c #26548C",
-"^	c #2A5E98",
-"/	c #373B45",
-"(	c #25416F",
-"_	c #142D5C",
-":	c #9C9FA6",
-"<	c #ADAEB1",
-"[	c #ACADB0",
-"}	c #ABADAF",
-"|	c #7A8BA0",
-"1	c #28568E",
-"2	c #283860",
-"3	c #112857",
-"4	c #294877",
-"5	c #20477C",
-"6	c #0B1A47",
-"7	c #2E3E66",
-"8	c #20305A",
-"9	c #ADAEAF",
-"0	c #888E9C",
-"a	c #163162",
-"b	c #264270",
-"c	c #1C274E",
-"d	c #A4A9BA",
-"e	c #0C1D4A",
-"f	c #192B55",
-"g	c #273661",
-"h	c #283862",
-"i	c #1A2F5E",
-"j	c #142C5C",
-"k	c #506488",
-"l	c #213E6D",
-"m	c #050D37",
-"n	c #212C53",
-"o	c #0A1540",
-"p	c #AEAFB0",
-"q	c #ACADAE",
-"r	c #1F325D",
-"s	c #112657",
-"t	c #98A2B6",
-"u	c #43587F",
-"v	c #01052D",
-"w	c #6C6F88",
-"x	c #6C6C6C",
-"y	c #B1B1B1",
-"z	c #0D1E4D",
-"A	c #273863",
-"B	c #1D2247",
-"C	c #AFAFB1",
-"D	c #A5A5A9",
-"E	c #091743",
-"F	c #0B1A45",
-"G	c #9DA3B5",
-"H	c #22335E",
-"I	c #1A1D40",
-"J	c #01062F",
-"K	c #030933",
-"L	c #040C36",
-"M	c #08123A",
-"N	c #07123D",
-"O	c #57607D",
-"P	c #737B95",
-"Q	c #090B33",
-"R	c #020630",
-"S	c #060B34",
-"T	c #424C6C",
-"U	c #676981",
-"V	c #404360",
-"W	c #080A32",
-"X	c #5E617C",
-"                    ",
-"         ...+++@@@@ ",
-"        #$#.+++@@$@ ",
-"       %$&...+++$$@ ",
-"       &#&****=+++- ",
-"      &$&*;;;;.$.@  ",
-"      >$&,***'.$..  ",
-"      )!&~{]^/((+   ",
-"     &$_:<[}|1$(    ",
-"     2$3;;;;45$(    ",
-"    &6789;;0ab((    ",
-"    cd6efghijkl     ",
-"   &mno,,pqrstu     ",
-"   vwmx;;;yzAs      ",
-"  @@vBC;;DEFGH      ",
-" @@I@@JKLMNOFP      ",
-" @@@QQQQRS@NT       ",
-"    UVWRQQQX        ",
-"                    ",
-"                    "};
-/* XPM */
-const char * const image_xpm[] = {
-"24 24 209 2",
-"  	c None",
-". 	c #565A2E",
-"+ 	c #7A7A43",
-"@ 	c #7E7A47",
-"# 	c #7A723E",
-"$ 	c #76723E",
-"% 	c #767A46",
-"& 	c #767644",
-"* 	c #86824A",
-"= 	c #8A8246",
-"- 	c #8E864A",
-"; 	c #96925A",
-"> 	c #968E56",
-", 	c #5E6236",
-"' 	c #8E824A",
-") 	c #92864E",
-"! 	c #928A4C",
-"~ 	c #8A8A4E",
-"{ 	c #867A42",
-"] 	c #928252",
-"^ 	c #9E8E52",
-"/ 	c #9A8E52",
-"( 	c #AA9A59",
-"_ 	c #A29656",
-": 	c #827E4A",
-"< 	c #666A3E",
-"[ 	c #A69658",
-"} 	c #867A4E",
-"| 	c #524222",
-"1 	c #2A2A10",
-"2 	c #1E1E16",
-"3 	c #625A3A",
-"4 	c #B29E62",
-"5 	c #B6A262",
-"6 	c #B6A664",
-"7 	c #AE9E5A",
-"8 	c #BAA662",
-"9 	c #B6A25C",
-"0 	c #92764A",
-"a 	c #F6D66E",
-"b 	c #CA9A52",
-"c 	c #322E12",
-"d 	c #121A12",
-"e 	c #928A5A",
-"f 	c #BEAA62",
-"g 	c #C6B66A",
-"h 	c #BAAA62",
-"i 	c #A29252",
-"j 	c #4E522A",
-"k 	c #827E42",
-"l 	c #B2A25E",
-"m 	c #CAB66A",
-"n 	c #8A7A46",
-"o 	c #A67E3A",
-"p 	c #E2C262",
-"q 	c #CA9242",
-"r 	c #6E5A2A",
-"s 	c #12160A",
-"t 	c #3A3E26",
-"u 	c #9E9255",
-"v 	c #CABA66",
-"w 	c #C6B262",
-"x 	c #867E46",
-"y 	c #262E1A",
-"z 	c #5A5E32",
-"A 	c #52562A",
-"B 	c #86864A",
-"C 	c #4E4E2E",
-"D 	c #866A36",
-"E 	c #BA863A",
-"F 	c #A28246",
-"G 	c #7E6236",
-"H 	c #161A0D",
-"I 	c #222A10",
-"J 	c #4E5A32",
-"K 	c #565E2A",
-"L 	c #6A6E3A",
-"M 	c #1A260E",
-"N 	c #364626",
-"O 	c #424E28",
-"P 	c #3A4A22",
-"Q 	c #323E26",
-"R 	c #262A1A",
-"S 	c #9E7636",
-"T 	c #BA8E4A",
-"U 	c #D6A252",
-"V 	c #564616",
-"W 	c #121E10",
-"X 	c #3A4E2E",
-"Y 	c #465632",
-"Z 	c #6A7242",
-"` 	c #5E6632",
-" .	c #3E4625",
-"..	c #121A0A",
-"+.	c #32421F",
-"@.	c #36421E",
-"#.	c #363E1E",
-"$.	c #1E2616",
-"%.	c #4A3A22",
-"&.	c #AE823E",
-"*.	c #927236",
-"=.	c #363214",
-"-.	c #1A1A0C",
-";.	c #161E0D",
-">.	c #2A3216",
-",.	c #0E160D",
-"'.	c #223216",
-").	c #3A4622",
-"!.	c #363A1C",
-"~.	c #362E12",
-"{.	c #26260A",
-"].	c #12160E",
-"^.	c #121A0E",
-"/.	c #4A5232",
-"(.	c #323218",
-"_.	c #0E120E",
-":.	c #3E321A",
-"<.	c #8A6E36",
-"[.	c #7E662E",
-"}.	c #2E260A",
-"|.	c #3A4226",
-"1.	c #5E5626",
-"2.	c #565626",
-"3.	c #1E1E0D",
-"4.	c #4A461E",
-"5.	c #1E2612",
-"6.	c #0E1A0E",
-"7.	c #52421D",
-"8.	c #E2B65A",
-"9.	c #EAB252",
-"0.	c #EEB256",
-"a.	c #5E421A",
-"b.	c #2E2214",
-"c.	c #525226",
-"d.	c #726A2E",
-"e.	c #262A0F",
-"f.	c #3A3612",
-"g.	c #5A5626",
-"h.	c #524A18",
-"i.	c #CA9E4A",
-"j.	c #F6CE6A",
-"k.	c #5E3E14",
-"l.	c #4E4A26",
-"m.	c #6E622E",
-"n.	c #221E0E",
-"o.	c #4A421A",
-"p.	c #12120A",
-"q.	c #BA964E",
-"r.	c #E6CA66",
-"s.	c #FAE67A",
-"t.	c #CAAA52",
-"u.	c #2A260A",
-"v.	c #0A0E02",
-"w.	c #060E06",
-"x.	c #121206",
-"y.	c #3E2E12",
-"z.	c #423212",
-"A.	c #120E0A",
-"B.	c #6A461E",
-"C.	c #0A160E",
-"D.	c #222E12",
-"E.	c #2E2E0A",
-"F.	c #46421E",
-"G.	c #0E120A",
-"H.	c #0E1206",
-"I.	c #3A2616",
-"J.	c #26160A",
-"K.	c #624A22",
-"L.	c #564222",
-"M.	c #1A220E",
-"N.	c #0E0E06",
-"O.	c #261E0E",
-"P.	c #1A160C",
-"Q.	c #3E3A16",
-"R.	c #0A1209",
-"S.	c #060A02",
-"T.	c #0A0E0A",
-"U.	c #16120C",
-"V.	c #020A02",
-"W.	c #020A06",
-"X.	c #0A0E06",
-"Y.	c #0A0A0A",
-"Z.	c #26220E",
-"`.	c #1A1212",
-" +	c #060E10",
-".+	c #060A06",
-"++	c #060606",
-"@+	c #020606",
-"#+	c #060602",
-"$+	c #0E0A06",
-"%+	c #060E0A",
-"&+	c #664E1E",
-"*+	c #96622E",
-"=+	c #422E1E",
-"-+	c #060A0E",
-";+	c #020602",
-">+	c #0A0A02",
-",+	c #16160A",
-"'+	c #6E5226",
-")+	c #AE7232",
-"!+	c #B27236",
-"~+	c #825A2E",
-"{+	c #322A0A",
-"]+	c #020202",
-"^+	c #826232",
-"/+	c #664216",
-"(+	c #5E3A26",
-"_+	c #46261A",
-":+	c #0A0602",
-"                                                ",
-"      . + + @ # $ % & @ @ * = = - ; > &         ",
-"      , ' - ) - ' ! ~ { ] ^ ^ / ^ ( _ :         ",
-"      < _ ( _ [ [ } | 1 2 3 4 ( 5 6 4 !         ",
-"      < 7 8 9 4 6 0 a b c d e 8 f g h i         ",
-"      j k ( l m n o p q r s t + u v w x         ",
-"      y , z A B C D E F G H I J K w 7 L         ",
-"      M N O P Q R S T U V W M X Y Z `  .        ",
-"      ..+.@.Q #.$.%.&.*.=.-.;.N N X X >.        ",
-"      ,.'.@.).A !.,.%.~.{.].H N ).+. .>.        ",
-"      ^.Q O P /.(._.:.<.[.}.H y |.1.2.I         ",
-"      3.!.4.!.5.6.7.8.9.0.a.b.3.c.d.2.e.        ",
-"      3.f.g.h.e.{.i.j.j.9.k.7.l.3.C m.h.        ",
-"      n.7.V o.p.:.q.r.s.t.4.u.v.w.x.y.z.        ",
-"      A.k.B.n.C.D.E.F.F.1 G.$.3.].H.I.J.        ",
-"      A.K.L.].C.H H M.M.w.H.5.(.N._.O.P.        ",
-"      -.Q.1 H C.H.R.6.R.S.w.-.N.T.T.s U.        ",
-"      G.H ^.-.H w.w.s V.W.S.V.X.X.w.N.A.        ",
-"      Y.s Z.E.s `. +R..+++@+#+$+S..+%+N.        ",
-"      .+X.=.=.&+q *+=+-+;+#+V.>+#+S.W.++        ",
-"      .+.+N.,+Z.'+)+!+~+b.Z.{+U.S.%+.+]+        ",
-"      ;+S.;+.+| ^+/+~+(+_+}.}.P.#+#+V.:+        ",
-"                                                ",
-"                                                "};
-
-/* XPM */
-const char * const music_xpm[] = {
-"24 24 3 1",
-" 	c None",
-"+	c #000000",
-"@	c #0321FF",
-"                        ",
-"                        ",
-"                        ",
-"           ++++@@@      ",
-"          ++++++@@@     ",
-"          ++++++++@@    ",
-"          ++@@+++++@@   ",
-"         ++@@   +++@@   ",
-"         ++@     ++@@   ",
-"         ++@     ++@@   ",
-"         +@@     ++@@   ",
-"        ++@      ++@    ",
-"      +++@@     ++@@    ",
-"    +++++@      ++@     ",
-"   ++++++@      +@@     ",
-"    ++++@@     ++@@     ",
-"    ++++@     ++@@      ",
-"           +++++@@      ",
-"          ++++++@       ",
-"           ++++@@       ",
-"           +++@@        ",
-"                        ",
-"                        ",
-"                        "};

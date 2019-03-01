@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,14 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 #include <limits>
 
-#include <fltk/events.h>
-#include <fltk/draw.h>
-#include <fltk/Color.h>
-#include <fltk/Window.h>
+#include <FL/fl_draw.H>
+#include <FL/Enumerations.H>
+#include <FL/Fl_Window.H>
 
 #include "mrViewer.h"
+#include "mrvReelUI.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvEDLGroup.h"
@@ -44,7 +47,7 @@ static int kTrackHeight = 88;
 static int kXOffset = 64;
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
-    fltk::Group(x,y,w,h),
+    Fl_Group(x,y,w,h),
     _drag( NULL ),
     _dragX( 0 ),
     _dragY( 0 )
@@ -79,7 +82,7 @@ unsigned EDLGroup::add_media_track( int r )
     if (e >= 2) return 0;
 
     mrv::media_track* o = new mrv::media_track(x(), y() + 94 * e,
-					       w(), kTrackHeight);
+                                               w(), kTrackHeight);
 
     o->main( timeline()->main() );
     this->add( o );
@@ -186,6 +189,26 @@ void EDLGroup::remove_media_track( unsigned i )
     remove( i );
 }
 
+
+void static_move( Fl_Widget* w, EDLGroup* e )
+{
+    int X = Fl::event_x();
+
+    if ( X < 8 ) X = 8;
+
+
+    if ( X >= e->w()-128 ) {
+        e->pan(1);
+        Fl::repeat_timeout( 0.1f, (Fl_Timeout_Handler) static_move, e );
+    }
+    else if ( X <= 128 )
+    {
+        e->pan(-1);
+        Fl::repeat_timeout( 0.1f, (Fl_Timeout_Handler) static_move, e );
+    }
+
+}
+
 // Remove an audio track at index i
 void EDLGroup::remove_audio_track( unsigned i )
 {
@@ -217,18 +240,18 @@ int EDLGroup::handle( int event )
 {
     switch( event )
     {
-    case fltk::PUSH:
+    case FL_PUSH:
     {
-        if ( fltk::event_key() == fltk::MiddleButton )
+        if ( Fl::event_button() == FL_MIDDLE_MOUSE )
         {
-            _dragX = fltk::event_x();
+            _dragX = Fl::event_x();
             return 1;
         }
 
-        if ( fltk::event_key() == fltk::LeftButton )
+        if ( Fl::event_button() == FL_LEFT_MOUSE )
         {
-            _dragX = fltk::event_x();
-            _dragY = fltk::event_y();
+            _dragX = Fl::event_x();
+            _dragY = Fl::event_y();
 
             // LIMITS
             if ( _dragX < 8 ) _dragX = 8;
@@ -273,30 +296,30 @@ int EDLGroup::handle( int event )
 
         for ( int i = 0; i < children(); ++i )
         {
-            fltk::Widget* c = this->child(i);
-            if (fltk::event_x() < c->x() - kXOffset) continue;
-            if (fltk::event_x() >= c->x()+c->w()) continue;
-            if (fltk::event_y() < c->y() - y() ) continue;
-            if (fltk::event_y() >= c->y() - y() +c->h()) continue;
+            Fl_Widget* c = this->child(i);
+            if (Fl::event_x() < c->x() - kXOffset) continue;
+            if (Fl::event_x() >= c->x()+c->w()) continue;
+            if (Fl::event_y() < c->y() - y() ) continue;
+            if (Fl::event_y() >= c->y() - y() +c->h()) continue;
 
-            if ( c->send( event ) ) return 1;
+            if ( c->handle( event ) ) return 1;
         }
         return 0;
         break;
     }
-    case fltk::ENTER:
+    case FL_ENTER:
         focus(this);
         window()->show();
         return 1;
         break;
-    case fltk::FOCUS:
+    case FL_FOCUS:
         return 1;
         break;
-    case fltk::KEY:
+    case FL_KEYBOARD:
     {
-        int key = fltk::event_key();
+        int key = Fl::event_key();
 
-        if ( key == fltk::DeleteKey )
+        if ( key == FL_Delete )
         {
             browser()->remove_current();
             return 1;
@@ -376,8 +399,8 @@ int EDLGroup::handle( int event )
             int64_t tmin = std::numeric_limits<int64_t>::max();
             int64_t tmax = std::numeric_limits<int64_t>::min();
 
-            fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
-            fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
+            Fl_Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+            Fl_Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
 
             int one = c1->value();
             int two = c2->value();
@@ -447,8 +470,8 @@ int EDLGroup::handle( int event )
         }
     }
     break;
-    case fltk::MOUSEWHEEL:
-        if ( fltk::event_dy() < 0.f )
+    case FL_MOUSEWHEEL:
+        if ( Fl::event_dy() < 0.f )
         {
             zoom( 0.5 );
         }
@@ -458,11 +481,11 @@ int EDLGroup::handle( int event )
         }
         return 1;
         break;
-    case fltk::RELEASE:
-        if ( fltk::event_key() == fltk::LeftButton )
+    case FL_RELEASE:
+        if ( Fl::event_button() == FL_LEFT_MOUSE )
         {
-            _dragX = fltk::event_x();
-            _dragY = fltk::event_y();
+            _dragX = Fl::event_x();
+            _dragY = Fl::event_y();
 
             int idx = int( _dragY / kTrackHeight );
             if ( idx < 0 || idx >= 2 || idx >= children() ) {
@@ -533,29 +556,14 @@ int EDLGroup::handle( int event )
             return 1;
         }
         break;
-    case fltk::TIMEOUT:
+    case FL_DRAG:
     {
-        int X = fltk::event_x();
-        if ( X >= w()-128 ) {
-            pan(-1);
-            repeat_timeout( 0.25 );
-        }
-        else if ( X <= 128 )
-        {
-            pan(1);
-            repeat_timeout( 0.25 );
-        }
-        redraw();
-        return 1;
-    }
-    case fltk::DRAG:
-    {
-        int diff = ( fltk::event_x() - _dragX );
+        int diff = ( Fl::event_x() - _dragX );
 
-        if ( fltk::event_key() == fltk::LeftButton )
+        if ( Fl::event_button() == FL_LEFT_MOUSE )
         {
-            int X = fltk::event_x();
-            _dragY = fltk::event_y();
+            int X = Fl::event_x();
+            _dragY = Fl::event_y();
 
             // LIMITS
             if ( _dragY < 33 ) _dragY = 33;
@@ -564,12 +572,12 @@ int EDLGroup::handle( int event )
 
             if ( X >= w()-128 ) {
                 pan(diff * 2);
-                add_timeout( 0.1f );
+                Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
             }
             else if ( X <= 128 )
             {
                 pan(diff * -2);
-                add_timeout( 0.1f );
+                Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
             }
 
             _dragX = X;
@@ -578,10 +586,10 @@ int EDLGroup::handle( int event )
             redraw();
             return 1;
         }
-        else if ( fltk::event_key() == fltk::MiddleButton )
+        else if ( Fl::event_button() == FL_MIDDLE_MOUSE )
         {
             pan(diff * 2);
-            _dragX = fltk::event_x();
+            _dragX = Fl::event_x();
             return 1;
         }
     }
@@ -590,7 +598,7 @@ int EDLGroup::handle( int event )
         break;
     }
 
-    return fltk::Group::handle( event );
+    return Fl_Group::handle( event );
 }
 
 void EDLGroup::zoom( double z )
@@ -598,7 +606,7 @@ void EDLGroup::zoom( double z )
 
     mrv::Timeline* t = timeline();
 
-    double pct = (double) fltk::event_x() / (double)w();
+    double pct = (double) Fl::event_x() / (double)w();
 
     int64_t tmin = int64_t( t->minimum() );
     int64_t tmax = int64_t( t->maximum() );
@@ -635,7 +643,7 @@ void EDLGroup::zoom( double z )
 
 void EDLGroup::cut( boost::int64_t frame )
 {
-    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+    Fl_Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
     int c = c1->value();
     if ( c < 0 ) return;
 
@@ -697,7 +705,7 @@ void EDLGroup::cut( boost::int64_t frame )
 
 void EDLGroup::merge( boost::int64_t frame )
 {
-    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+    Fl_Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
     int c = c1->value();
     if ( c < 0 ) return;
 
@@ -755,11 +763,11 @@ void EDLGroup::refresh()
 void EDLGroup::draw()
 {
 
-    fltk::setcolor( fltk::GRAY20 );
-    fltk::fillrect( 0, 0, w(), h() );
+    fl_color( FL_GRAY0 );
+    fl_rectf( 0, 0, w(), h() );
 
 
-    fltk::Group::draw();
+    Fl_Group::draw();
 
     mrv::Timeline* t = timeline();
     if (!t) return;
@@ -770,23 +778,21 @@ void EDLGroup::draw()
     p += int( t->slider_size()/2.0 );
 
 
-    fltk::setcolor( fltk::YELLOW );
-    fltk::push_clip( 0, 0, w(), h() );
-    fltk::drawline( p, 0, p, h() );
-    fltk::pop_clip();
+    fl_color( FL_YELLOW );
+    fl_push_clip( 0, 0, w(), h() );
+    fl_line( p, 0, p, h() );
+    fl_pop_clip();
 
     if ( _drag )
     {
-        fltk::push_matrix();
-        fltk::translate( _dragX, _dragY );
+        fl_push_matrix();
+        fl_translate( _dragX, _dragY );
         _drag->draw();
         //    int ww, hh;
-        //    fltk::measure( e->label(), ww, hh );
-        //    fltk::drawtext( e->label(), 0, 0 );
-        fltk::pop_matrix();
+        //    Fl_measure( e->label(), ww, hh );
+        //    Fl_drawtext( e->label(), 0, 0 );
+        fl_pop_matrix();
     }
 }
 
 } // namespace mrv
-
-
