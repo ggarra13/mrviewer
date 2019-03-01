@@ -28,13 +28,10 @@
 
 #include <inttypes.h>
 
-#include <fltk/file_chooser.h>
-#include <fltk/ProgressBar.h>
-#include <fltk/Output.h>
-#include <fltk/Cursor.h>
-#include <fltk/events.h>
-#include <fltk/run.h>
-#include <fltk/ask.h>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Output.H>
+#include <FL/Enumerations.H>
+#include <FL/fl_ask.H>
 
 #include "core/mrvString.h"
 #include "core/CMedia.h"
@@ -61,6 +58,7 @@
 #include <GL/gl.h>
 
 #include "FLU/Flu_File_Chooser.h"
+#include <FL/Fl_Native_File_Chooser.H>
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
@@ -124,21 +122,33 @@ const char* file_save_single_requester(
     const char* file = NULL;
     try
     {
-#ifdef _WIN32
         bool native = mrv::Preferences::native_file_chooser;
-        fltk::use_system_file_chooser( native );
         if ( native )
         {
-            fltk::check();
-            file = fltk::file_chooser( title, pattern, startfile,
-                                       compact_images );
-            if ( !file ) return "";
-        }
+            Fl::check(); // Create native chooser
+            Fl_Native_File_Chooser native;
+            native.title(title);
+            native.type(Fl_Native_File_Chooser::BROWSE_SAVE_FILE);
+            native.filter(pattern);
+            native.preset_file(startfile);
+            // Show native chooser
+           switch ( native.show() )
+	   {
+              case -1:
+                 LOG_ERROR( native.errmsg() );
+                 break;	// ERROR
+              case  1:
+                break; // CANCEL
+              default: 								              // PICKED FILE
+                  if ( native.filename() ) {
+	             file = native.filename();
+                  }
+	   }
+	}
         else
-#endif
         {
-            file = flu_save_chooser( title, pattern, startfile,
-                                     compact_images );
+            file = flu_save_chooser( title, pattern, startfile
+				     /* , compact_images @TODO: fltk1.4 */ );
         }
         if ( !file ) return "";
     }
@@ -165,23 +175,41 @@ stringArray file_multi_requester(
     try
     {
         if ( !startfile ) startfile = "";
-#ifdef _WIN32
         bool native = mrv::Preferences::native_file_chooser;
-        fltk::use_system_file_chooser( native );
         if ( native )
         {
-            fltk::check();
-            const char* file = fltk::file_chooser( title,
-                                                   pattern,
-                                                   startfile );
-            if ( file )
-                split( filelist, file, '\n' );
+            Fl::check(); // Create native chooser
+            Fl_Native_File_Chooser native;
+            native.title(title);
+            native.type(Fl_Native_File_Chooser::BROWSE_MULTI_FILE);
+            native.filter(pattern);
+            native.preset_file(startfile);
+            // Show native chooser
+           switch ( native.show() )
+	   {
+              case -1:
+                 LOG_ERROR( native.errmsg() );
+                 break;	// ERROR
+              case  1:
+                break; // CANCEL
+              default: 								              // PICKED FILE
+                  if ( native.count() > 0 ) {
+		      for ( int i = 0; i < native.count(); ++i )
+		      {
+			  filelist.push_back( native.filename(i) );
+		      }
+                  }
+             }
         }
-        else
-#endif
+        else 
         {
+	    FluStringVector files;
             flu_multi_file_chooser( title, pattern, startfile,
-                                    filelist, compact_images );
+                                    &files /* , compact_images @TODO: fltk1.4 */ );
+	    for (int i = 0; i < files.size(); ++i )
+	    {
+		filelist.push_back( files[i].c_str() );
+	    }
         }
     }
     catch ( const std::exception& e )
@@ -202,20 +230,32 @@ const char* file_single_requester(
 {
     const char* file = NULL;
     try {
-#ifdef _WIN32
+        if ( !startfile ) startfile = "";
         bool native = mrv::Preferences::native_file_chooser;
-        fltk::use_system_file_chooser( native );
         if ( native )
         {
-            fltk::check();
-            if ( !startfile ) startfile = "";
-            file = fltk::file_chooser( title, pattern, startfile );
-            // if ( file )
-            //     split( filelist, file, '\n' );
-            // file = filelist[0].c_str();
+            Fl::check(); // Create native chooser
+            Fl_Native_File_Chooser native;
+            native.title(title);
+            native.type(Fl_Native_File_Chooser::BROWSE_FILE);
+            native.filter(pattern);
+            native.preset_file(startfile);
+            // Show native chooser
+           switch ( native.show() )
+	   {
+              case -1:
+                 LOG_ERROR( native.errmsg() );
+                 break;	// ERROR
+              case  1:
+                break; // CANCEL
+              default: 								              // PICKED FILE
+                  if ( native.count() > 0 )
+		  {
+		      file = native.filename();
+		  }
+           }
         }
-        else
-#endif
+        else 
         {
             file = flu_file_chooser( title, pattern, startfile );
         }
@@ -240,7 +280,7 @@ const char* file_single_requester(
  * @return Each reel to be loaded
  */
 stringArray open_reel( const char* startfile,
-                       const mrv::ViewerUI* main )
+                       ViewerUI* main )
 {
     std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                 kReelPattern + "})\t";
@@ -264,12 +304,35 @@ stringArray open_reel( const char* startfile,
  *
  * @return Each file to be opened
  */
-std::string open_directory( const char* startfile, const mrv::ViewerUI* main )
+std::string open_directory( const char* startfile, ViewerUI* main )
 {
     std::string dir;
     std::string title = _("Load Directory");
-    const char* d = flu_dir_chooser( title.c_str(), startfile );
-    if (d) dir = d;
+    bool native = mrv::Preferences::native_file_chooser;
+    if ( native )
+    {
+	Fl_Native_File_Chooser native;
+	native.title( title.c_str() );
+	native.directory(startfile);
+	native.type(Fl_Native_File_Chooser::BROWSE_DIRECTORY);
+	// Show native chooser
+	switch ( native.show() ) {
+	    case -1: LOG_ERROR(native.errmsg());
+		break;	// ERROR
+	    case  1:
+		break;		// CANCEL
+	    default:  // PICKED DIR
+		if ( native.filename() ) {
+		    dir = native.filename();
+		}
+		break;
+	}
+    }
+    else
+    {
+	const char* d = flu_dir_chooser( title.c_str(), startfile );
+	if (d) dir = d;
+    }
     return dir;
 }
 
@@ -281,7 +344,7 @@ std::string open_directory( const char* startfile, const mrv::ViewerUI* main )
  * @return Each file to be opened
  */
 stringArray open_image_file( const char* startfile, const bool compact_images,
-                             const mrv::ViewerUI* main )
+                             ViewerUI* main )
 {
     const std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                       kReelPattern + "})\t";
@@ -309,7 +372,22 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
                                  startfile, compact_images );
 }
 
+// @TODO:  fltk1.4
+std::string make_ocio_browser( const std::string& value,
+                               mrv::OCIOBrowser::Type type )
+{
+    Fl_Window* w = new Fl_Window( Fl::event_x(), Fl::event_y(), 60, 200 );
+    w->set_modal();
+    mrv::OCIOBrowser* b = new mrv::OCIOBrowser( Fl::event_x(),
+                                                Fl::event_y(),
+                                                60, 200 );
+    b->set_selection( value );
+    b->set_type( type );
+    w->add( b );
+    w->show();
 
+    return b->get_selection();
+}
 
 
 void attach_ocio_input_color_space( CMedia* img, ImageView* view )
@@ -341,10 +419,12 @@ void attach_ocio_view( CMedia* img, ImageView* view )
                                          mrv::OCIOBrowser::kView );
     if ( ret.empty() ) return;
     mrv::Preferences::OCIO_View = ret;
-    fltk::PopupMenu* m = view->main()->gammaDefaults;
-    for ( int i = 0; i < m->children(); ++i )
+    Fl_Menu_Button* m = view->main()->gammaDefaults;
+    for ( int i = 0; i < m->size(); ++i )
     {
-        if ( ret == m->child(i)->label() )
+        const char* lbl = m->menu()[i].label();
+        if ( !lbl ) continue;
+        if ( ret == lbl )
         {
             m->value(i);
             break;
@@ -365,7 +445,7 @@ void attach_ocio_view( CMedia* img, ImageView* view )
  */
 const char* open_icc_profile( const char* startfile,
                               const char* title,
-                              const mrv::ViewerUI* main )
+                              ViewerUI* main )
 {
     stringArray filelist;
 
@@ -399,7 +479,7 @@ const char* open_icc_profile( const char* startfile,
 
 const char* open_ctl_dir( const char* startfile,
                           const char* title,
-                          const mrv::ViewerUI* main )
+                          ViewerUI* main )
 {
     std::string path, modulepath, ext;
 
@@ -436,7 +516,7 @@ const char* open_ctl_dir( const char* startfile,
    * @return  opened subtitle file or null
    */
 const char* open_subtitle_file( const char* startfile,
-                                const mrv::ViewerUI* main )
+                                ViewerUI* main )
 {
     std::string kSUBTITLE_PATTERN = _( "Subtitles (*.{" ) +
                                     kSubtitlePattern + "})\t";
@@ -456,7 +536,7 @@ const char* open_subtitle_file( const char* startfile,
    * @return  opened audio file or null
    */
 const char* open_audio_file( const char* startfile,
-                             const mrv::ViewerUI* main )
+                             ViewerUI* main )
 {
     std::string kAUDIO_PATTERN = _( "Audios (*.{" ) +
                                  kAudioPattern + "})\t";
@@ -473,7 +553,7 @@ const char* open_audio_file( const char* startfile,
 
 void attach_icc_profile( CMedia* image,
                          const char* startfile,
-                         const mrv::ViewerUI* main )
+                         ViewerUI* main )
 {
     if ( !image ) return;
 
@@ -485,7 +565,7 @@ void attach_icc_profile( CMedia* image,
 
 
 void attach_icc_profile( CMedia* image,
-                         const mrv::ViewerUI* main )
+                         ViewerUI* main )
 {
     if (!image) return;
     attach_icc_profile( image, image->icc_profile(), main );
@@ -493,7 +573,7 @@ void attach_icc_profile( CMedia* image,
 
 
 void attach_rt_script( CMedia* image, const std::string& script,
-                       const mrv::ViewerUI* main )
+                       ViewerUI* main )
 {
     if ( ! script.empty() )
         main->uiView->send_network( "RT \"" + script + "\"" );
@@ -503,7 +583,7 @@ void attach_rt_script( CMedia* image, const std::string& script,
 }
 
 void attach_ctl_script( CMedia* image, const char* startfile,
-                        const mrv::ViewerUI* main )
+                        ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -514,10 +594,10 @@ void attach_ctl_script( CMedia* image, const char* startfile,
 
 void attach_look_mod_transform( CMedia* image, const std::string& script,
                                 const size_t idx,
-                                const mrv::ViewerUI* main )
+                                ViewerUI* main )
 {
     char buf[1024];
-    sprintf( buf, "LMT %d \"%s\"", idx, script.c_str() );
+    sprintf( buf, "LMT %ld \"%s\"", idx, script.c_str() );
     main->uiView->send_network( buf );
 
     if ( idx >= image->number_of_lmts() && script != "" )
@@ -528,7 +608,7 @@ void attach_look_mod_transform( CMedia* image, const std::string& script,
 
 void attach_ctl_lmt_script( CMedia* image, const char* startfile,
                             const size_t idx,
-                            const mrv::ViewerUI* main )
+                            ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -543,7 +623,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
 
 
 void attach_ctl_script( CMedia* image,
-                        const mrv::ViewerUI* main )
+                        ViewerUI* main )
 {
     if (!image || !main ) {
         return;
@@ -557,7 +637,7 @@ void attach_ctl_script( CMedia* image,
 }
 
 void attach_ctl_idt_script( CMedia* image, const char* startfile,
-                            const mrv::ViewerUI* main )
+                            ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -571,7 +651,7 @@ void attach_ctl_idt_script( CMedia* image, const char* startfile,
 }
 
 void attach_ctl_idt_script( CMedia* image,
-                            const mrv::ViewerUI* main )
+                            ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -581,7 +661,7 @@ void attach_ctl_idt_script( CMedia* image,
 }
 
 void attach_ctl_lmt_script( CMedia* image, const size_t idx,
-                            const mrv::ViewerUI* main )
+                            ViewerUI* main )
 {
     if ( !image || !main ) return;
 
@@ -606,7 +686,7 @@ std::string open_ocio_config( const char* startfile )
 }
 
 void read_clip_xml_metadata( CMedia* img,
-                             const mrv::ViewerUI* main )
+                             ViewerUI* main )
 {
     if ( !img ) return;
 
@@ -629,7 +709,7 @@ void read_clip_xml_metadata( CMedia* img,
 }
 
 void save_clip_xml_metadata( const CMedia* img,
-                             const mrv::ViewerUI* main )
+                             ViewerUI* main )
 {
     if ( !img ) return;
 
@@ -648,7 +728,7 @@ void save_clip_xml_metadata( const CMedia* img,
     save_aces_xml( img, file );
 }
 
-void monitor_ctl_script( const mrv::ViewerUI* main,
+void monitor_ctl_script( ViewerUI* main,
                          const unsigned index, const char* startfile )
 {
     if ( !startfile )
@@ -667,7 +747,7 @@ void monitor_ctl_script( const mrv::ViewerUI* main,
     //     uiCTL_display_transform->do_callback();
 }
 
-void monitor_icc_profile( const mrv::ViewerUI* main,
+void monitor_icc_profile( ViewerUI* main,
                           const unsigned index )
 {
     const char* profile = open_icc_profile( NULL,
@@ -684,7 +764,7 @@ void monitor_icc_profile( const mrv::ViewerUI* main,
 
 void save_image_file( CMedia* image, const char* startdir, bool aces,
                       bool all_layers,
-                      const mrv::ViewerUI* main )
+                      ViewerUI* main )
 {
     if (!image) return;
 
@@ -723,15 +803,15 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
     {
         // Set icon back to WAIT
         main->uiView->toggle_wait();
-        main->uiView->handle( fltk::ENTER );
-        fltk::check();
+        main->uiView->handle( FL_ENTER );
+        Fl::check();
 
         image->save( file, opts );
 
         // Change icon back to ARROW/CROSSHAIR
         main->uiView->toggle_wait();
-        main->uiView->handle( fltk::ENTER );
-        fltk::check();
+        main->uiView->handle( FL_ENTER );
+        Fl::check();
 
         save_xml( image, opts, file );
     }
@@ -739,7 +819,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
     delete opts;
 }
 
-void save_sequence_file( const mrv::ViewerUI* uiMain,
+void save_sequence_file( ViewerUI* uiMain,
                          const char* startdir, const bool opengl)
 {
     std::string kREEL_PATTERN = _( "Reels (*.{" ) +
@@ -776,7 +856,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
  * @param startfile  start filename (directory)
  */
 void attach_audio( CMedia* image, const char* startfile,
-                   const mrv::ViewerUI* main )
+                   ViewerUI* main )
 {
     if ( !image ) return;
     if ( !image->is_sequence() ) return;
@@ -796,7 +876,7 @@ void attach_audio( CMedia* image, const char* startfile,
  * @return filename of reel to save or NULL
  */
 const char* save_reel( const char* startdir,
-                       const mrv::ViewerUI* main )
+                       ViewerUI* main )
 {
     std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                 kReelPattern + "})\t";
