@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,14 +34,14 @@
 #include <sstream>
 #include <fstream>
 
-#include <fltk/ask.h>
+#include <FL/fl_ask.H>
 #include <boost/thread/recursive_mutex.hpp>
 
 #include "core/mrvI8N.h"
 
 namespace mrv {
 
-// Function used to pass a fltk::alert to main thread
+// Function used to pass a Fl::alert to main thread
 void alert( const char* str );
 const char* alert();
 
