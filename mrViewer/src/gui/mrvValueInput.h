@@ -4,21 +4,21 @@
 //
 
 
-#ifndef mrvValueInput_h
-#define mrvValueInput_h
+#ifndef mrvValue_Input_h
+#define mrvValue_Input_h
 
 #include <cstdio>
 #include <cmath>
 #include "core/mrvI8N.h"
-#include <fltk/ValueInput.h>
+#include <FL/Fl_Value_Input.H>
 
 namespace mrv {
 
-class ValueInput : public fltk::ValueInput
+class Value_Input : public Fl_Value_Input
 {
 public:
-    ValueInput( int x, int y, int w, int h, char* l = 0 ) :
-        fltk::ValueInput( x, y, w, h, l )
+    Value_Input( int x, int y, int w, int h, char* l = 0 ) :
+    Fl_Value_Input( x, y, w, h, l )
     {
     }
 
