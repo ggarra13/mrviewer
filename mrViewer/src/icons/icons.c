@@ -1,4 +1,4 @@
-#include <fltk/xpmImage.h>
+#include <FL/Fl_Pixmap.H>
 
 static char * move_pic_xpm[] = {
 "37 36 9 1",
@@ -48,7 +48,7 @@ static char * move_pic_xpm[] = {
 "                                     ",
 "                                     "};
 
-static fltk::xpmImage move_pic(move_pic_xpm);
+static Fl_Pixmap move_pic(move_pic_xpm);
 
 static char * scrub_xpm[] = {
 "28 28 127 2",
@@ -207,7 +207,7 @@ static char * scrub_xpm[] = {
 "                                                        ",
 "                                                        ",
 "                                                        "};
-static fltk::xpmImage scrub(scrub_xpm);
+static Fl_Pixmap scrub(scrub_xpm);
 
 static const char * const reel_new_24_xpm[] = {
 "24 24 108 2",
@@ -343,7 +343,7 @@ static const char * const reel_new_24_xpm[] = {
 "                                                ",
 "                                                ",
 "                                                "};
-static fltk::xpmImage reel_new_24(reel_new_24_xpm);
+static Fl_Pixmap reel_new_24(reel_new_24_xpm);
 
 /* XPM */
 static const char * const reel_delete_24_xpm[] = {
@@ -504,7 +504,7 @@ static const char * const reel_delete_24_xpm[] = {
 "                                                ",
 "                                                ",
 "                                                "};
-static fltk::xpmImage reel_delete_24(reel_delete_24_xpm);
+static Fl_Pixmap reel_delete_24(reel_delete_24_xpm);
 /* XPM */
 static const char * const reel_24_xpm[] = {
 "24 24 51 1",
@@ -583,7 +583,7 @@ static const char * const reel_24_xpm[] = {
 "                        ",
 "                        ",
 "                        "};
-static fltk::xpmImage reel_24(reel_24_xpm);
+static Fl_Pixmap reel_24(reel_24_xpm);
 /* XPM */
 static const char * const reel_save_24_xpm[] = {
 "24 24 72 1",
@@ -683,7 +683,7 @@ static const char * const reel_save_24_xpm[] = {
 " ((CCDCCDCCD(4          ",
 " EF4444444444G          ",
 "                        "};
-static fltk::xpmImage reel_save_24(reel_save_24_xpm);
+static Fl_Pixmap reel_save_24(reel_save_24_xpm);
 /* XPM */
 static const char * const file_open_24_xpm[] = {
 "24 24 209 2",
@@ -920,7 +920,7 @@ static const char * const file_open_24_xpm[] = {
 "      ;+S.;+.+| ^+/+~+(+_+}.}.P.#+#+V.:+        ",
 "                                                ",
 "                                                "};
-static fltk::xpmImage file_open_24(file_open_24_xpm);
+static Fl_Pixmap file_open_24(file_open_24_xpm);
 /* XPM */
 static const char * const file_save_24_xpm[] = {
 "24 24 192 2",
@@ -1140,7 +1140,7 @@ static const char * const file_save_24_xpm[] = {
 "  ^.^..+.+++.+.+++.+.+++^.4.@+}.}.C.P.P.K.#+    ",
 "  $+%+4.4.4.4.4.4.4.4.4.4.&+                    ",
 "                                                "};
-static fltk::xpmImage file_save_24(file_save_24_xpm);
+static Fl_Pixmap file_save_24(file_save_24_xpm);
 /* XPM */
 static const char * const file_clone_24_xpm[] = {
 "24 24 181 2",
@@ -1349,7 +1349,7 @@ static const char * const file_clone_24_xpm[] = {
 "              . B.X X C.l M.N.O.P.J.D.Q.J.z.E.. ",
 "              . G.u.R.w.S.T.U.V.}.w.W.X.z.L.G.. ",
 "              . . . . . . . . . . . . . . . . . "};
-static fltk::xpmImage file_clone_24(file_clone_24_xpm);
+static Fl_Pixmap file_clone_24(file_clone_24_xpm);
 /* XPM */
 static const char * const file_delete_24_xpm[] = {
 "24 24 236 2",
@@ -1613,7 +1613,7 @@ static const char * const file_delete_24_xpm[] = {
 "    . . e+f+!+2 g+h+0+i+j+k+k+R.]+]+l+m+. .     ",
 "      .                                 .       ",
 "                                                "};
-static fltk::xpmImage file_delete_24(file_delete_24_xpm);
+static Fl_Pixmap file_delete_24(file_delete_24_xpm);
 /* XPM */
 static const char * const file_delete_all_24_xpm[] = {
 "24 24 290 2",
@@ -1931,7 +1931,7 @@ static const char * const file_delete_all_24_xpm[] = {
 "      ! ! ! ! O+v+w+w+P+Q+R+S+T+U+V+W+ +! X+Y+J+",
 "      ! ! !   u+u+d+Z+j+`+ @.@+@R.j+@@#@$@%@u+&@",
 "        !     U+*@U+u+q =@-@+@;@>@A.A.g+V+V+z+,@"};
-static fltk::xpmImage file_delete_all_24(file_delete_all_24_xpm);
+static Fl_Pixmap file_delete_all_24(file_delete_all_24_xpm);
 /* XPM */
 static const char * const draw_xpm[] = {
 "26 28 143 2",
@@ -2106,7 +2106,7 @@ static const char * const draw_xpm[] = {
 "                                                    ",
 "                                                    ",
 "                                                    "};
-static fltk::xpmImage draw(draw_xpm);
+static Fl_Pixmap draw(draw_xpm);
 /* XPM */
 static const char * const erase_xpm[] = {
 "28 28 59 1",
@@ -2199,7 +2199,7 @@ static const char * const erase_xpm[] = {
 "                            "};
 
 
-static fltk::xpmImage erase(erase_xpm);
+static Fl_Pixmap erase(erase_xpm);
 /* XPM */
 /* XPM */
 static const char * const undo_xpm[] = {
@@ -2376,7 +2376,7 @@ static const char * const undo_xpm[] = {
 "                                                                ",
 "                                                                ",
 "                                                                "};
-static fltk::xpmImage undo(undo_xpm);
+static Fl_Pixmap undo(undo_xpm);
 /* XPM */
 static const char * const redo_xpm[] = {
 "32 32 140 2",
@@ -2553,7 +2553,7 @@ static const char * const redo_xpm[] = {
 "                                                                ",
 "                                                                "};
 
-static fltk::xpmImage redo(redo_xpm);
+static Fl_Pixmap redo(redo_xpm);
 /* XPM */
 /* XPM */
 static const char * const select_xpm[] = {
@@ -2608,7 +2608,7 @@ static const char * const select_xpm[] = {
 "                           ",
 "                           "};
 
-static fltk::xpmImage select_pic(select_xpm);
+static Fl_Pixmap select_pic(select_xpm);
 
 /* XPM */
 static const char * scissors_xpm[] = {
@@ -2677,7 +2677,7 @@ static const char * scissors_xpm[] = {
 "                      ",
 "                      "};
 
-static fltk::xpmImage scissors(scissors_xpm);
+static Fl_Pixmap scissors(scissors_xpm);
 /* XPM */
 static const char* merge_tool_xpm[]={
 "24 24 151 2",
@@ -2857,4 +2857,4 @@ static const char* merge_tool_xpm[]={
 "Qt.#.#.#.#.#.#.#.#.#.#anao.#.#.#.#.#.#.#.#.#.#.c",
 "ap.#.#.#aqararararararasatararararararararararau"};
 
-static fltk::xpmImage merge_tool(merge_tool_xpm);
+static Fl_Pixmap merge_tool(merge_tool_xpm);
