@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,15 +27,16 @@
 #ifndef mrvHistogram_h
 #define mrvHistogram_h
 
-#include <fltk/Widget.h>
+#include <FL/Fl_Box.H>
 
-class CMedia;
+class ViewerUI;
 
 namespace mrv
 {
-class ViewerUI;
 
-class Histogram : public fltk::Widget
+class CMedia;
+
+class Histogram : public Fl_Box
 {
 public:
     enum Type
@@ -77,16 +78,16 @@ public:
 //     virtual int handle( int event );
 
 
-    void main( mrv::ViewerUI* m ) {
+    void main( ViewerUI* m ) {
         uiMain = m;
     };
-    mrv::ViewerUI* main() {
+    ViewerUI* main() {
         return uiMain;
     };
 
 protected:
-    void   draw_grid( const fltk::Rectangle& r );
-    void draw_pixels( const fltk::Rectangle& r );
+    void   draw_grid( const Fl_Rect& r );
+    void draw_pixels( const Fl_Rect& r );
 
     void count_pixels();
 
@@ -110,7 +111,7 @@ protected:
     CMedia* lastImg;
     int64_t    lastFrame;
 
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
 
 };
 
