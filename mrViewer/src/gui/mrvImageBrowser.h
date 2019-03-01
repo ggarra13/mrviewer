@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,34 +31,32 @@
 #include <vector>
 #include <string>
 
-#include "fltk/Browser.h"
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Tree.H>
 
 #include "core/Sequence.h"
 #include "core/mrvServer.h"
 #include "gui/mrvReelList.h"
+#include "gui/mrvBrowser.h"
+#include "gui/mrvChoice.h"
 #include "gui/mrvMedia.h"
 #include "video/mrvGLShape.h"
 
-namespace fltk
-{
-class Choice;
-class Button;
-}
+
+class ViewerUI;
 
 namespace mrv
 {
-class Database;
 class Element;
-class ViewerUI;
 class Timeline;
 class EDLGroup;
 class ImageView;
 
 
-void start_button_cb(fltk::Button* o, mrv::ViewerUI* v);
-void end_button_cb(fltk::Button* o, mrv::ViewerUI* v);
+void start_button_cb(Fl_Button* o, ViewerUI* v);
+void end_button_cb(Fl_Button* o, ViewerUI* v);
 
-class ImageBrowser : public fltk::Browser
+class ImageBrowser : public Fl_Tree
 {
 public:
     typedef std::vector< boost::thread* > thread_pool_t;
@@ -103,7 +101,7 @@ public:
 
     const mrv::media current_image() const;
 
-    void reel_choice( fltk::Choice* c ) {
+    void reel_choice( mrv::Choice* c ) {
         _reel_choice = c;
     }
 
@@ -182,10 +180,10 @@ public:
     virtual void draw();
     virtual int handle( int event );
 
-    void main( mrv::ViewerUI* m ) {
+    void main( ViewerUI* m ) {
         uiMain = m;
     }
-    mrv::ViewerUI* main() {
+    ViewerUI* main() {
         return uiMain;
     }
 
@@ -229,15 +227,13 @@ protected:
 
     unsigned       _reel;
     mrv::ReelList  _reels;
-    fltk::Choice*  _reel_choice;
+    mrv::Choice*  _reel_choice;
 
     CMedia::Mutex   _mtx;
     mrv::Element* dragging;
     int lastX, lastY;
 
-    mrv::ViewerUI* uiMain;
-
-    mrv::Database* db;
+    ViewerUI* uiMain;
 };
 
 } // namespace mrv
