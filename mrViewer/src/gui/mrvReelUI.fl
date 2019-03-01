@@ -1,0 +1,200 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include <string>} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "core/mrvAudioEngine.h"} {private local
+}
+
+decl {\#include "core/mrvMath.h"} {private local
+}
+
+decl {\#include "core/mrvColorSpaces.h"} {private local
+}
+
+decl {\#include "core/mrvServer.h"} {private local
+}
+
+decl {\#include "core/mrvClient.h"} {private local
+}
+
+decl {\#include "gui/mrvMainWindow.h"} {private local
+}
+
+decl {\#include "gui/mrvImageView.h"} {private local
+}
+
+decl {\#include "gui/mrvImageBrowser.h"} {public global
+}
+
+decl {\#include "gui/mrvBrowser.h"} {private local
+}
+
+decl {\#include "gui/mrvPreferencesBrowser.h"} {private local
+}
+
+decl {\#include "gui/mrvCTLBrowser.h"} {public local
+}
+
+decl {\#include "gui/mrvFileRequester.h"} {private local
+}
+
+decl {\#include "gui/mrvPopupMenu.h"} {public local
+}
+
+decl {\#include "gui/mrvTimecode.h"} {private local
+}
+
+decl {\#include "gui/mrvTimeline.h"} {private local
+}
+
+decl {\#include "gui/mrvColorOps.h"} {private local
+}
+
+decl {\#include "gui/mrvValueInput.h"} {public local
+}
+
+decl {\#include "gui/mrvOCIOBrowser.h"} {public local
+}
+
+decl {\#include "gui/mrvPreferences.h"} {private local
+}
+
+decl {\#include "gui/mrvLogDisplay.h"} {private local
+}
+
+decl {\#include "mrvEDLWindowUI.h"} {private local
+}
+
+decl {\#include "icons/icons.c"} {private local
+}
+
+decl {\#include "FL/fl_ask.H"} {private local
+}
+
+decl {\#include "FL/Fl.H"} {private local
+}
+
+class ReelUI {open
+} {
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label {Reel List} open selected
+      xywh {84 281 405 350} type Double resizable
+      code0 {o->size_range(350,320);} visible
+    } {
+      Fl_Browser uiBrowser {
+        xywh {0 32 405 318} box UP_BOX
+        code0 {o->main( main );
+	// @TODO: fltk1.4
+// o->scrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ) );
+// o->hscrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ));
+// o->scrollbar.color( o->buttoncolor() );
+// o->hscrollbar.color( o->buttoncolor() );
+}
+        class {mrv::ImageBrowser}
+      }
+      Fl_Group {} {open
+        xywh {0 0 405 32} box UP_BOX
+      } {
+        Fl_Choice {} {
+          user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+          callback {v->reel(o->value());} open
+	  class mrv::Choice
+          xywh {5 5 120 20} box THIN_DOWN_BOX down_box BORDER_BOX align 36
+          code0 {uiBrowser->reel_choice(o);}
+        } {}
+        Fl_Group uiReelOps {open
+          xywh {125 0 86 30}
+        } {
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {const char* name = fl_input("Reel Name", "reel" );
+if ( name == NULL ) return;
+v->new_reel(name);}
+            tooltip {Create a new reel} xywh {127 2 26 26} shortcut 0x4006e
+            code0 {o->image( reel_new_24 );}
+          }
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->save_reel();}
+            tooltip {Save current reel} xywh {152 2 26 26}
+            code0 {o->image( reel_save_24 );}
+          }
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->remove_reel();}
+            tooltip {Delete current reel} xywh {177 2 26 26}
+            code0 {o->image( reel_delete_24 );}
+          }
+        }
+        Fl_Group uiImageOps {open
+          xywh {1 0 320 30}
+        } {
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->open();}
+            tooltip {Open new image, sequence or movie} xywh {208 2 26 26} shortcut 0x4006f
+            code0 {o->image(file_open_24);}
+          }
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->save_sequence();}
+            tooltip {Save sequence or movie.} xywh {234 2 26 26} shortcut 0x40073
+            code0 {o->image(file_save_24);}
+          }
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->clone_current();}
+            tooltip {Clone image} xywh {260 2 26 26} shortcut 0x40063
+            code0 {o->image(file_clone_24);}
+          }
+          Fl_Button {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->remove_current();}
+            tooltip {Remove current image from reel.} xywh {286 2 26 26} shortcut 0xffff
+            code0 {o->image(file_delete_24);}
+          }
+        }
+        Fl_Group uiViewerOps {open
+          xywh {0 0 403 29}
+        } {
+          Fl_Button {} {
+            label CTL
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->attach_ctl_script();}
+            tooltip {Set image CTL script} xywh {316 2 26 26} labelfont 1
+          }
+          Fl_Button uiBGButton {
+            label BG
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->change_background();}
+            tooltip {Set reel images as background (needs EDL).} xywh {342 2 26 26} labelfont 1
+          }
+          Fl_Button uiEDLButton {
+            label EDL
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->toggle_edl();}
+            tooltip {Toggle Reel EDL in Timeline} xywh {368 2 26 26} labelfont 1 labelsize 11
+          }
+        }
+      }
+    }
+  }
+  Function {ReelUI(ViewerUI* m)} {open
+  } {
+    code {m->uiMain->make_current();
+make_window( m );} {}
+  }
+  Function {~ReelUI()} {open
+  } {
+    code {delete uiBrowser; uiBrowser = NULL;
+delete uiMain; uiMain = NULL;} {}
+  }
+}
