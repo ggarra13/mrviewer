@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvCPU.h
  * @author gga
  * @date   Mon Jan 14 21:24:10 2008
- *
+ * 
  * @brief  CPU detection routines
- *
- *
+ * 
+ * 
  */
 
 
@@ -32,19 +32,19 @@
 #include <string>
 
 typedef struct cpucaps_s {
-    int cpuType;
-    int cpuModel;
-    int cpuStepping;
-    int hasMMX;
-    int hasMMX2;
-    int has3DNow;
-    int has3DNowExt;
-    int hasSSE;
-    int hasSSE2;
-    int isX86;
-    unsigned cl_size; /* size of cache line */
-    int hasAltiVec;
-    int hasTSC;
+	int cpuType;
+	int cpuModel;
+	int cpuStepping;
+	int hasMMX;
+	int hasMMX2;
+	int has3DNow;
+	int has3DNowExt;
+	int hasSSE;
+	int hasSSE2;
+	int isX86;
+	unsigned cl_size; /* size of cache line */
+        int hasAltiVec;
+	int hasTSC;
 } CpuCaps;
 
 extern CpuCaps gCpuCaps;

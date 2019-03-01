@@ -28,17 +28,22 @@
 //    http://www.fltk.org/str.php
 //
 
-#ifndef fltk_MyPopupMenu_h
-#define fltk_MyPopupMenu_h
+#ifndef mrvPopupMenu_h
+#define mrvPopupMenu_h
 
-#include "fltk/PopupMenu.h"
+#include "FL/Fl_Menu_Button.H"
+#include "FL/Fl_Menu_Item.H"
 
 namespace mrv {
 
-class FL_API PopupMenu : public fltk::PopupMenu {
+class PopupMenu : public Fl_Menu_Button
+{
 public:
     PopupMenu(int,int,int,int,const char* =0);
 
+    unsigned children() { return size(); }
+    const Fl_Menu_Item* child(int i);
+    
     // Undo the overrides of stuff from Group:
     void disable_glyph() {
         _enable_glyph = false;
