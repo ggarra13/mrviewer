@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,7 +41,8 @@
 #  include <cmath>        // for isnan(), isinf()
 #endif
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
+#include <FL/fl_utf8.h>
 
 #include "mrvIO.h"
 #include "pxrzImage.h"
@@ -123,7 +124,7 @@ bool pxrzImage::fetch( mrv::image_type_ptr& canvas,
 {
     int dw, dh;
 
-    FILE* f = fltk::fltk_fopen( filename(), "rb" );
+    FILE* f = fl_fopen( filename(), "rb" );
     if ( !f )
     {
         LOG_ERROR( "Could not open shadow map image." );
