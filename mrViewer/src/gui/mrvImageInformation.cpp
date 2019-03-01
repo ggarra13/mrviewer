@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,27 +25,15 @@
  *
  */
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 
 #include <iostream>
 using namespace std;
 
 #include <algorithm>
 
-#include <fltk/events.h>
-#include <fltk/Symbol.h>
-#include <fltk/Browser.h>
-#include <fltk/Button.h>
-#include <fltk/FloatInput.h>
-#include <fltk/IntInput.h>
-
-#include <fltk/PackedGroup.h>
-#include <fltk/Slider.h>
-#include <fltk/PopupMenu.h>
-
-#include <fltk/InvisibleBox.h>
-
-#include <fltk/ItemGroup.h>
-#include <fltk/PackedGroup.h>
 
 #include <ImfBoxAttribute.h>
 #include <ImfChromaticitiesAttribute.h>
@@ -66,6 +54,9 @@ using namespace std;
 #include <ImfTimeCodeAttribute.h>
 #include <ImfTileDescriptionAttribute.h>
 #include <ImfVecAttribute.h>
+
+#include <FL/Fl_Rect.H>
+#include <FL/Fl_Int_Input.H>
 
 #include "core/oiioImage.h"
 #include "core/mrvString.h"
@@ -96,13 +87,13 @@ namespace mrv
 
 struct CtlLMTData
 {
-    fltk::Widget* widget;
+    Fl_Widget* widget;
     size_t idx;
 };
 
 typedef std::vector< CtlLMTData* > LMTData;
 
-static const fltk::Color kTitleColors[] = {
+static const Fl_Color kTitleColors[] = {
     0x608080ff,
     0x808060ff,
     0x606080ff,
@@ -114,19 +105,19 @@ static const fltk::Color kTitleColors[] = {
 static LMTData widget_data;
 
 static const unsigned int kSizeOfTitleColors = ( sizeof(kTitleColors) /
-        sizeof(fltk::Color) );
+        sizeof(Fl_Color) );
 
-static const fltk::Color kRowColors[] = {
+static const Fl_Color kRowColors[] = {
     0x202020ff,
     0x303030ff,
 };
 
 static const unsigned int kSizeOfRowColors = ( sizeof(kRowColors) /
-        sizeof(fltk::Color) );
+        sizeof(Fl_Color) );
 
 static const int kMiddle = 200;
 
-static void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
+static void change_stereo_image( Fl_Button* w, mrv::ImageInformation* info )
 {
     static CMedia* last = NULL;
     CMedia* img = info->get_image();
@@ -149,105 +140,102 @@ static void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
     info->refresh();
 }
 
-fltk::Choice *uiType=(fltk::Choice *)0;
+mrv::Choice *uiType=(mrv::Choice *)0;
 
-fltk::Input *uiKey=(fltk::Input *)0;
+Fl_Input *uiKey=(Fl_Input *)0;
 
-fltk::Input *uiValue=(fltk::Input *)0;
+Fl_Input *uiValue=(Fl_Input *)0;
 
-fltk::Choice *uiKeyRemove=(fltk::Choice *)0;
+mrv::Choice *uiKeyRemove=(mrv::Choice *)0;
 
-static void cb_OK(fltk::Button*, fltk::Window* v) {
-    v->make_exec_return(true);
+static void cb_OK(Fl_Button*, Fl_Window* v) {
+    // v->make_exec_return(true);  // @TODO: fltk1.4
 }
 
-static void cb_Cancel(fltk::Button*, fltk::Window* v) {
-    v->make_exec_return(false);
+static void cb_Cancel(Fl_Button*, Fl_Window* v) {
+    //  v->make_exec_return(false); // @TODO: fltk1.4
 }
 
 
-static void cb_uiType(fltk::Choice* o, void*) {
+static void cb_uiType(mrv::Choice* o, void*) {
     std::string type = o->child( o->value() )->label();
     if ( type == _("String") )
-        uiValue->text( _("Text") );
+        uiValue->value( _("Text") );
     else if ( type == _("Integer") )
-        uiValue->text( N_("15") );
+        uiValue->value( N_("15") );
     else if ( type == _("Float") || type == _("Double") )
-        uiValue->text( _("2.2") );
+        uiValue->value( _("2.2") );
     else if ( type == N_("Timecode") )
-        uiValue->text( _("00:00:00:00") );
+        uiValue->value( _("00:00:00:00") );
     else if ( type == _("Rational") )
-        uiValue->text( _("24000/1001") );
+        uiValue->value( _("24000/1001") );
     else if ( type == _("Vector2 Integer") )
-        uiValue->text( N_("2 5") );
+        uiValue->value( N_("2 5") );
     else if ( type == _("Vector2 Float") || type == _("Vector2 Double") )
-        uiValue->text( _("2.2 5.1") );
+        uiValue->value( _("2.2 5.1") );
     else if ( type == _("Vector3 Integer") )
-        uiValue->text( N_("2 5 1") );
+        uiValue->value( N_("2 5 1") );
     else if ( type == _("Vector3 Float") || type == _("Vector3 Double") )
-        uiValue->text( _("2.2 5.1 1.4") );
+        uiValue->value( _("2.2 5.1 1.4") );
     else if ( type == _("Box2 Integer") )
-        uiValue->text( N_("2 5  10 20") );
+        uiValue->value( N_("2 5  10 20") );
     else if ( type == _("Box2 Float")  )
-        uiValue->text( _("0.2 5.1  10.5 20.2") );
+        uiValue->value( _("0.2 5.1  10.5 20.2") );
     else if ( type == _("Chromaticities") )
-        uiValue->text( _("0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290") );
+        uiValue->value( _("0.64 0.33  0.3 0.6  0.15 0.06  0.3127 0.3290") );
     else if ( type == _("M33 Float") || type == _("M33 Double")  )
-        uiValue->text( _("1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0") );
+        uiValue->value( _("1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0") );
     else if ( type == _("M44 Float") || type == _("M44 Double") )
-        uiValue->text( _("1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  "
+        uiValue->value( _("1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  "
                          "0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0") );
     else if ( type == _("KeyCode") )
-        uiValue->text( _("** multivalue **") );
+        uiValue->value( _("** multivalue **") );
 }
 
-static fltk::Window* make_attribute_add_window() {
-    fltk::Window* w;
-    {   fltk::Window* o = new fltk::Window(405, 200);
+static Fl_Window* make_attribute_add_window() {
+    Fl_Window* w;
+    {   Fl_Window* o = new Fl_Window(405, 200);
         w = o;
-        o->shortcut(0xff1b);
         o->label( _("Add Attribute") );
         o->begin();
-        {   fltk::Choice* o = uiType = new fltk::Choice( 10, 30, 390, 25, _("Type") );
-            o->align(fltk::ALIGN_TOP);
-            o->begin();
-            new fltk::Item( _("String") );
-            new fltk::Item( _("Integer") );
-            new fltk::Item( _("Float") );
-            new fltk::Item( _("Double") );
-            new fltk::Item( _("Rational") );
-            new fltk::Item( _("M33 Float") );
-            new fltk::Item( _("M44 Float") );
-            new fltk::Item( _("M33 Double") );
-            new fltk::Item( _("M44 Double") );
-            new fltk::Item( N_("Timecode") );
-            new fltk::Item( _("Box2 Integer") );
-            new fltk::Item( _("Box2 Float") );
-            new fltk::Item( _("Vector2 Integer") );
-            new fltk::Item( _("Vector2 Float") );
-            new fltk::Item( _("Vector2 Double") );
-            new fltk::Item( _("Vector3 Integer") );
-            new fltk::Item( _("Vector3 Float") );
-            new fltk::Item( _("Vector3 Double") );
-            new fltk::Item( _("Chromaticities") );
-            new fltk::Item( _("KeyCode") );
-            o->end();
-            o->callback( (fltk::Callback*) cb_uiType, (void*)w );
+        {   mrv::Choice* o = uiType = new mrv::Choice( 10, 30, 390, 25, _("Type") );
+            o->align(FL_ALIGN_TOP);
+            o->add( _("String") );
+            o->add( _("Integer") );
+            o->add( _("Float") );
+            o->add( _("Double") );
+            o->add( _("Rational") );
+            o->add( _("M33 Float") );
+            o->add( _("M44 Float") );
+            o->add( _("M33 Double") );
+            o->add( _("M44 Double") );
+            o->add( N_("Timecode") );
+            o->add( _("Box2 Integer") );
+            o->add( _("Box2 Float") );
+            o->add( _("Vector2 Integer") );
+            o->add( _("Vector2 Float") );
+            o->add( _("Vector2 Double") );
+            o->add( _("Vector3 Integer") );
+            o->add( _("Vector3 Float") );
+            o->add( _("Vector3 Double") );
+            o->add( _("Chromaticities") );
+            o->add( _("KeyCode") );
+            o->callback( (Fl_Callback*) cb_uiType, (void*)w );
             o->value( 9 );
         }
-        {   fltk::Input* o = uiKey = new fltk::Input(10, 70, 390, 25, _("Keyword"));
-            o->text( N_("timecode") );
-            o->align(fltk::ALIGN_TOP);
+        {   Fl_Input* o = uiKey = new Fl_Input(10, 70, 390, 25, _("Keyword"));
+            o->value( N_("timecode") );
+            o->align(FL_ALIGN_TOP);
         }
-        {   fltk::Input* o = uiValue = new fltk::Input(10, 110, 390, 25, _("Value"));
-            o->text( N_("00:00:00:00") );
-            o->align(fltk::ALIGN_TOP);
+        {   Fl_Input* o = uiValue = new Fl_Input(10, 110, 390, 25, _("Value"));
+            o->value( N_("00:00:00:00") );
+            o->align(FL_ALIGN_TOP);
         }
-        {   fltk::Button* o = new fltk::Button(115, 150, 86, 41, _("OK"));
-            o->callback((fltk::Callback*)cb_OK, (void*)(w));
+        {   Fl_Button* o = new Fl_Button(115, 150, 86, 41, _("OK"));
+            o->callback((Fl_Callback*)cb_OK, (void*)(w));
         }
-        {   fltk::Button* o = new fltk::Button(224, 150, 93, 41, _("Cancel"));
-            o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+        {   Fl_Button* o = new Fl_Button(224, 150, 93, 41, _("Cancel"));
+            o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
         }
         o->end();
         o->set_modal();
@@ -256,30 +244,27 @@ static fltk::Window* make_attribute_add_window() {
     return  w;
 }
 
-static fltk::Window* make_remove_window( CMedia::Attributes& attrs ) {
-    fltk::Window* w;
-    {   fltk::Window* o = new fltk::Window(405, 120);
+static Fl_Window* make_remove_window( CMedia::Attributes& attrs ) {
+    Fl_Window* w;
+    {   Fl_Window* o = new Fl_Window(405, 120);
         w = o;
-        o->shortcut(0xff1b);
         o->label( _( "Remove Attribute" ) );
         o->begin();
-        {   fltk::Choice* o =
-                uiKeyRemove = new fltk::Choice(10, 35, 390, 25, _("Keyword"));
-            o->align(fltk::ALIGN_TOP);
-            o->begin();
+        {   mrv::Choice* o =
+                uiKeyRemove = new mrv::Choice(10, 35, 390, 25, _("Keyword"));
+            o->align(FL_ALIGN_TOP);
             CMedia::Attributes::const_iterator i = attrs.begin();
             CMedia::Attributes::const_iterator e = attrs.end();
             for ( ; i != e; ++i )
             {
-                new fltk::Item( i->first.c_str() );
+                o->add( i->first.c_str() );
             }
-            o->end();
         }
-        {   fltk::Button* o = new fltk::Button(115, 70, 86, 41, _("OK"));
-            o->callback((fltk::Callback*)cb_OK, (void*)(w));
+        {   Fl_Button* o = new Fl_Button(115, 70, 86, 41, _("OK"));
+            o->callback((Fl_Callback*)cb_OK, (void*)(w));
         }
-        {   fltk::Button* o = new fltk::Button(224, 70, 93, 41, _("Cancel"));
-            o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+        {   Fl_Button* o = new Fl_Button(224, 70, 93, 41, _("Cancel"));
+            o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
         }
         o->end();
         o->set_modal();
@@ -591,19 +576,19 @@ static void add_attribute( CMedia::Attributes& attrs,
 static
 void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 {
-    fltk::Group* g = (fltk::Group*)info->m_attributes;
+    Fl_Group* g = (Fl_Group*)info->m_attributes;
 
     if ( g == NULL ) return;
 
     if ( g->children() < 2 ) return;
-    g = (fltk::Group*)g->child(1);
+    g = (Fl_Group*)g->child(1);
 
     if ( g->children() < 1 ) return;
-    g = (fltk::Group*)g->child(0);
+    g = (Fl_Group*)g->child(0);
     for ( int i = 0; i < g->children(); ++i )
     {
-        fltk::Group* sg = (fltk::Group*)g->child(i);
-        fltk::Widget* w = sg->child(0);
+        Fl_Group* sg = (Fl_Group*)g->child(i);
+        Fl_Widget* w = sg->child(0);
         if ( key.rfind( _("All") ) != std::string::npos ||
                 key == w->label() ||
                 key + ".filmMfcCode" == w->label() ||
@@ -624,10 +609,10 @@ void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 
 
 static
-void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+void toggle_modify_attribute_cb( Fl_Box* widget, ImageInformation* info )
 {
     std::string key = widget->label();
-    fltk::Group* g = widget->parent();
+    Fl_Group* g = widget->parent();
     std::string label;
     for ( ; g != NULL; g = g->parent() )
     {
@@ -640,13 +625,14 @@ void toggle_modify_attribute_cb( fltk::Widget* widget, ImageInformation* info )
     toggle_modify_attribute( key, info );
 }
 
-static void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+static void add_attribute_cb( Fl_Box* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if (!img) return;
 
-    fltk::Window* w = make_attribute_add_window();
-    if ( ! w->exec() ) return;
+    Fl_Window* w = make_attribute_add_window();
+    w->set_modal();
+    w->show();
 
     std::string key = uiKey->value();
     std::string value = uiValue->value();
@@ -660,15 +646,16 @@ static void add_attribute_cb( fltk::Widget* widget, ImageInformation* info )
 }
 
 
-static void remove_attribute_cb( fltk::Widget* widget, ImageInformation* info )
+static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if (!img) return;
 
     CMedia::Attributes& attrs = img->attributes();
 
-    fltk::Window* w = make_remove_window( attrs );
-    if ( ! w->exec() ) return;
+    Fl_Window* w = make_remove_window( attrs );
+    w->set_modal();
+    w->show();
 
     std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
 
@@ -706,18 +693,16 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
 
 
 
-    Rectangle r(w, h);
-    box()->inset(r);
+    Fl_Rect r( Fl::box_dw(box()), Fl::box_dh(box()));
 
-
-    m_all = new fltk::PackedGroup( r.x(), r.y(), r.w()-20, r.h() );
-    m_all->set_vertical();
+    m_all = new Fl_Pack( r.x(), r.y(), r.w()-20, r.h() );
+    //m_all->set_vertical();
     m_all->spacing(10);
 
     m_all->begin();
 
-    m_button = new fltk::Button( 0, 0, w, 20, _("Left View") );
-    m_button->callback( (fltk::Callback*)change_stereo_image, this );
+    m_button = new Fl_Button( 0, 0, w, 20, _("Left View") );
+    m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
@@ -738,18 +723,18 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
 
 int ImageInformation::handle( int event )
 {
-    if ( event == fltk::MOUSEWHEEL )
+    if ( event == FL_MOUSEWHEEL )
     {
-        fltk::e_dy = fltk::event_dy() * 8;
+        Fl::e_dy = Fl::event_dy() * 8;
     }
 
-    if ( event == fltk::PUSH && fltk::event_button() == 3 && img )
+    if ( event == FL_PUSH && Fl::event_button() == 3 && img )
     {
 
-        fltk::Menu menu(0,0,0,0);
+        Fl_Menu_Button menu(0,0,0,0);
 
         menu.add( _("Add Attribute"), 0,
-                  (fltk::Callback*)add_attribute_cb,
+                  (Fl_Callback*)add_attribute_cb,
                   this);
         {
             CMedia::Attributes& attrs = img->attributes();
@@ -759,31 +744,30 @@ int ImageInformation::handle( int event )
                 CMedia::Attributes::iterator e = attrs.end();
 
                 menu.add( _("Toggle Modify/All"), 0,
-                          (fltk::Callback*)toggle_modify_attribute_cb,
-                          this, fltk::MENU_DIVIDER );
+                          (Fl_Callback*)toggle_modify_attribute_cb,
+                          this, FL_MENU_DIVIDER );
                 for ( ; i != e; ++i )
                 {
                     char buf[256];
                     sprintf( buf,  _("Toggle Modify/%s"),
                              i->first.c_str() );
                     menu.add( buf, 0,
-                              (fltk::Callback*)toggle_modify_attribute_cb,
+                              (Fl_Callback*)toggle_modify_attribute_cb,
                               this );
                 }
 
                 menu.add( _("Remove Attribute"), 0,
-                          (fltk::Callback*)remove_attribute_cb,
+                          (Fl_Callback*)remove_attribute_cb,
                           this);
             }
         }
 
 
-        menu.popup( fltk::Rectangle( fltk::event_x(),
-                                     fltk::event_y(), 80, 1) );
+        menu.popup();
         return 1;
     }
 
-    if ( event == fltk::KEY )
+    if ( event == FL_KEYBOARD )
     {
         int ok = view()->handle( event );
         if (ok) return ok;
@@ -796,7 +780,7 @@ void ImageInformation::layout()
 {
     if ( w()-20 != m_all->w() )
         m_all->resize( 0, 0, w()-20, m_all->h() );
-    ImageInfoParent::layout();
+    //ImageInfoParent::layout();
 }
 
 struct aspectName_t
@@ -827,12 +811,12 @@ static const aspectName_t kAspectRatioNames[] =
     { 2.76, _("MGM Camera 65") },
 };
 
-void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
+void ImageInformation::enum_cb( mrv::PopupMenu* m, ImageInformation* v )
 {
     m->label( m->child( m->value() )->label() );
 }
 
-static void timecode_cb( fltk::Input* w, ImageInformation* info )
+static void timecode_cb( Fl_Input* w, ImageInformation* info )
 {
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) return;
@@ -846,7 +830,7 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
                 i->first == N_("Video timecode") ||
                 i->first == N_("Timecode") )
         {
-            const Imf::TimeCode& t = CMedia::str2timecode( w->text() );
+            const Imf::TimeCode& t = CMedia::str2timecode( w->value() );
             img->process_timecode( t );
             Imf::TimeCodeAttribute attr( t );
             i->second = attr.copy();
@@ -859,47 +843,51 @@ static void timecode_cb( fltk::Input* w, ImageInformation* info )
 }
 
 // Update int slider from int input
-static void update_int_slider( fltk::IntInput* w )
+static void update_int_slider( Fl_Int_Input* w )
 {
-    fltk::Group* g = w->parent();
-    fltk::Slider* s = (fltk::Slider*)g->child(1);
-    s->value( w->ivalue() );
+    Fl_Group* g = w->parent();
+    Fl_Slider* s = (Fl_Slider*)g->child(1);
+    s->value( atoi( w->value() ) );
 }
 
 // Update float slider from float input
-static void update_float_slider( fltk::FloatInput* w )
+static void update_float_slider( Fl_Float_Input* w )
 {
-    fltk::Group* g = w->parent();
-    fltk::Slider* s = (fltk::Slider*)g->child(1);
-    s->value( w->fvalue() );
+    Fl_Group* g = w->parent();
+    Fl_Slider* s = (Fl_Slider*)g->child(1);
+    s->value( atof( w->value() ) );
 }
 
-void ImageInformation::float_slider_cb( fltk::Slider* s, void* data )
+void ImageInformation::float_slider_cb( Fl_Slider* s, void* data )
 {
-    fltk::FloatInput* n = (fltk::FloatInput*) data;
-    n->value( s->value() );
+    Fl_Float_Input* n = (Fl_Float_Input*) data;
+    char buf[64];
+    sprintf( buf, "%g", s->value() );
+    n->value( buf );
     n->do_callback();
 }
 
-void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
+void ImageInformation::int_slider_cb( Fl_Slider* s, void* data )
 {
-    fltk::IntInput* n = (fltk::IntInput*) data;
-    n->value( (int)s->value() );
+    Fl_Int_Input* n = (Fl_Int_Input*) data;
+    char buf[64];
+    sprintf( buf, "%g", s->value() );
+    n->value( buf );
     n->do_callback();
 }
 
-static bool modify_string( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_string( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
-    Imf::StringAttribute attr( w->text() );
+    Imf::StringAttribute attr( w->value() );
     delete i->second;
     i->second = attr.copy();
     return true;
 }
 
-static bool modify_v2i( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_v2i( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     int x, y;
-    int num = sscanf( w->text(), "%d %d", &x, &y );
+    int num = sscanf( w->value(), "%d %d", &x, &y );
     if ( num != 2 ) {
         mrvALERT( _("Could not find two integers for vector ") << i->first );
         return false;
@@ -912,10 +900,10 @@ static bool modify_v2i( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_v2f( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_v2f( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     float x, y;
-    int num = sscanf( w->text(), "%g %g", &x, &y );
+    int num = sscanf( w->value(), "%g %g", &x, &y );
     if ( num != 2 ) {
         mrvALERT( _("Could not find two floats for vector ") << i->first );
         return false;
@@ -928,10 +916,10 @@ static bool modify_v2f( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_v2d( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_v2d( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     double x, y;
-    int num = sscanf( w->text(), "%lg %lg", &x, &y );
+    int num = sscanf( w->value(), "%lg %lg", &x, &y );
     if ( num != 2 ) {
         mrvALERT( _("Could not find two doubles for vector ") << i->first );
         return false;
@@ -944,10 +932,10 @@ static bool modify_v2d( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_v3i( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_v3i( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     int x, y, z;
-    int num = sscanf( w->text(), "%d %d %d", &x, &y, &z );
+    int num = sscanf( w->value(), "%d %d %d", &x, &y, &z );
     if ( num != 3 ) {
         mrvALERT( _("Could not find three integers for vector ") << i->first );
         return false;
@@ -960,10 +948,10 @@ static bool modify_v3i( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_v3f( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_v3f( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     float x, y, z;
-    int num = sscanf( w->text(), "%g %g %g", &x, &y, &z );
+    int num = sscanf( w->value(), "%g %g %g", &x, &y, &z );
     if ( num != 3 ) {
         mrvALERT( _("Could not find three floats for vector ") << i->first );
         return false;
@@ -976,10 +964,10 @@ static bool modify_v3f( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_v3d( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_v3d( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     double x, y, z;
-    int num = sscanf( w->text(), "%lg %lg %lg", &x, &y, &z );
+    int num = sscanf( w->value(), "%lg %lg %lg", &x, &y, &z );
     if ( num != 3 ) {
         mrvALERT( _("Could not find three doubles for vector ") << i->first );
         return false;
@@ -992,11 +980,11 @@ static bool modify_v3d( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_chromaticities( fltk::Input* w,
+static bool modify_chromaticities( Fl_Input* w,
                                    CMedia::Attributes::iterator& i)
 {
     float rx, ry, gx, gy, bx, by, wx, wy;
-    int num = sscanf( w->text(), "%g %g  %g %g  %g %g  %g %g",
+    int num = sscanf( w->value(), "%g %g  %g %g  %g %g  %g %g",
                       &rx, &ry, &gx, &gy, &bx, &by, &wx, &wy );
     if ( num != 8 ) {
         mrvALERT( _("Could not find eight floats for chromaticities ")
@@ -1014,10 +1002,10 @@ static bool modify_chromaticities( fltk::Input* w,
     return true;
 }
 
-static bool modify_m33f( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_m33f( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     float m00,m01,m02,m10,m11,m12,m20,m21,m22;
-    int num = sscanf( w->text(),
+    int num = sscanf( w->value(),
                       "%g %g %g  %g %g %g  %g %g %g",
                       &m00, &m01, &m02,
                       &m10, &m11, &m12,
@@ -1037,10 +1025,10 @@ static bool modify_m33f( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_m33d( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_m33d( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     double m00,m01,m02,m10,m11,m12,m20,m21,m22;
-    int num = sscanf( w->text(),
+    int num = sscanf( w->value(),
                       "%lg %lg %lg  %lg %lg %lg  %lg %lg %lg",
                       &m00, &m01, &m02,
                       &m10, &m11, &m12,
@@ -1060,10 +1048,10 @@ static bool modify_m33d( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_m44f( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_m44f( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     float m00,m01,m02,m03,m10,m11,m12,m13,m20,m21,m22,m23,m30,m31,m32,m33;
-    int num = sscanf( w->text(),
+    int num = sscanf( w->value(),
                       "%g %g %g %g  %g %g %g %g  %g %g %g %g  %g %g %g %g",
                       &m00, &m01, &m02, &m03,
                       &m10, &m11, &m12, &m13,
@@ -1085,10 +1073,10 @@ static bool modify_m44f( fltk::Input* w, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_m44d( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_m44d( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     double m00,m01,m02,m03,m10,m11,m12,m13,m20,m21,m22,m23,m30,m31,m32,m33;
-    int num = sscanf( w->text(),
+    int num = sscanf( w->value(),
                       "%lg %lg %lg %lg  %lg %lg %lg %lg  "
                       "%lg %lg %lg %lg  %lg %lg %lg %lg",
                       &m00, &m01, &m02, &m03,
@@ -1112,10 +1100,10 @@ static bool modify_m44d( fltk::Input* w, CMedia::Attributes::iterator& i)
 }
 
 
-static bool modify_box2i( fltk::Input* widget, CMedia::Attributes::iterator& i)
+static bool modify_box2i( Fl_Input* widget, CMedia::Attributes::iterator& i)
 {
     int x, y, w, h;
-    int num = sscanf( widget->text(),
+    int num = sscanf( widget->value(),
                       "%d %d  %d %d", &x, &y, &w, &h );
     if ( num != 4 ) {
         mrvALERT( _("Could not find four integers for box ")
@@ -1129,10 +1117,10 @@ static bool modify_box2i( fltk::Input* widget, CMedia::Attributes::iterator& i)
     i->second = attr.copy();
     return true;
 }
-static bool modify_box2f( fltk::Input* widget, CMedia::Attributes::iterator& i)
+static bool modify_box2f( Fl_Input* widget, CMedia::Attributes::iterator& i)
 {
     float x, y, w, h;
-    int num = sscanf( widget->text(),
+    int num = sscanf( widget->value(),
                       "%g %g  %g %g", &x, &y, &w, &h );
     if ( num != 4 ) {
         mrvALERT( _("Could not find four floats for box ")
@@ -1147,11 +1135,11 @@ static bool modify_box2f( fltk::Input* widget, CMedia::Attributes::iterator& i)
     return true;
 }
 
-static bool modify_rational( fltk::Input* widget,
+static bool modify_rational( Fl_Input* widget,
                              CMedia::Attributes::iterator& i)
 {
     int n, d;
-    int num = sscanf( widget->text(),
+    int num = sscanf( widget->value(),
                       "%d / %d", &n, &d );
     if ( num != 2 ) {
         mrvALERT( _("Could not find two integers for rational ")
@@ -1166,7 +1154,7 @@ static bool modify_rational( fltk::Input* widget,
     return true;
 }
 
-static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
+static bool modify_value( Fl_Input* w, CMedia::Attributes::iterator& i)
 {
     if ( dynamic_cast< Imf::StringAttribute* >( i->second ) != NULL )
         return modify_string( w, i );
@@ -1203,7 +1191,7 @@ static bool modify_value( fltk::Input* w, CMedia::Attributes::iterator& i)
     return false;
 }
 
-static bool modify_keycode( fltk::IntInput* w,
+static bool modify_keycode( Fl_Int_Input* w,
                             CMedia::Attributes::iterator& i,
                             const std::string& subattr )
 {
@@ -1216,31 +1204,31 @@ static bool modify_keycode( fltk::IntInput* w,
     {
         if ( subattr == "filmMfcCode" )
         {
-            t.setFilmMfcCode( w->ivalue() );
+            t.setFilmMfcCode( atoi( w->value() ) );
         }
         else if ( subattr == "filmType" )
         {
-            t.setFilmType( w->ivalue() );
+            t.setFilmType( atoi( w->value() ) );
         }
         else if ( subattr == "prefix" )
         {
-            t.setPrefix( w->ivalue() );
+            t.setPrefix( atoi( w->value() ) );
         }
         else if ( subattr == "count" )
         {
-            t.setCount( w->ivalue() );
+            t.setCount( atoi( w->value() ) );
         }
         else if ( subattr == "perfOffset" )
         {
-            t.setPerfOffset( w->ivalue() );
+            t.setPerfOffset( atoi( w->value() ) );
         }
         else if ( subattr == "perfsPerFrame" )
         {
-            t.setPerfsPerFrame( w->ivalue() );
+            t.setPerfsPerFrame( atoi( w->value() ) );
         }
         else if ( subattr == "perfsPerCount" )
         {
-            t.setPerfsPerCount( w->ivalue() );
+            t.setPerfsPerCount( atoi( w->value() ) );
         }
         else
         {
@@ -1259,31 +1247,31 @@ static bool modify_keycode( fltk::IntInput* w,
     return true;
 }
 
-static bool modify_int( fltk::IntInput* w, CMedia::Attributes::iterator& i)
+static bool modify_int( Fl_Int_Input* w, CMedia::Attributes::iterator& i)
 {
-    Imf::IntAttribute attr( atoi( w->text() ) );
+    Imf::IntAttribute attr( atoi( w->value() ) );
     delete i->second;
     i->second = attr.copy();
     update_int_slider( w );
     return true;
 }
 
-static bool modify_float( fltk::FloatInput* w, CMedia::Attributes::iterator& i)
+static bool modify_float( Fl_Float_Input* w, CMedia::Attributes::iterator& i)
 {
-    Imf::FloatAttribute attr( (float)w->fvalue() );
+    Imf::FloatAttribute attr( atof( w->value() ) );
     delete i->second;
     i->second = attr.copy();
     update_float_slider( w );
     return true;
 }
 
-static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_float_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) return;
 
-    fltk::Group* g = (fltk::Group*)w->parent()->parent();
-    fltk::Widget* widget = g->child(0);
+    Fl_Group* g = (Fl_Group*)w->parent()->parent();
+    Fl_Widget* widget = g->child(0);
     if ( !widget->label() ) return;
 
     std::string key = widget->label();
@@ -1296,7 +1284,7 @@ static void change_float_cb( fltk::FloatInput* w, ImageInformation* info )
     }
 }
 
-static void change_string_cb( fltk::Input* w, ImageInformation* info )
+static void change_string_cb( Fl_Input* w, ImageInformation* info )
 {
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) {
@@ -1304,8 +1292,8 @@ static void change_string_cb( fltk::Input* w, ImageInformation* info )
         return;
     }
 
-    fltk::Group* g = (fltk::Group*)w->parent();
-    fltk::Widget* widget = g->child(0);
+    Fl_Group* g = (Fl_Group*)w->parent();
+    Fl_Widget* widget = g->child(0);
 
     if ( !widget->label() ) {
         LOG_ERROR( "Widget has no label" );
@@ -1326,13 +1314,13 @@ static void change_string_cb( fltk::Input* w, ImageInformation* info )
     }
 }
 
-static void change_int_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_int_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) return;
 
-    fltk::Group* g = (fltk::Group*)w->parent()->parent();
-    fltk::Widget* widget = g->child(0);
+    Fl_Group* g = (Fl_Group*)w->parent()->parent();
+    Fl_Widget* widget = g->child(0);
     if ( !widget->label() ) return;
 
     std::string key = widget->label();
@@ -1345,13 +1333,13 @@ static void change_int_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_keycode_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_keycode_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     CMedia* img = dynamic_cast<CMedia*>( info->get_image() );
     if ( !img ) return;
 
-    fltk::Group* g = (fltk::Group*)w->parent()->parent();
-    fltk::Widget* widget = g->child(0);
+    Fl_Group* g = (Fl_Group*)w->parent()->parent();
+    Fl_Widget* widget = g->child(0);
     if ( !widget->label() ) return;
 
     std::string key = widget->label();
@@ -1371,7 +1359,7 @@ static void change_keycode_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_colorspace( fltk::PopupMenu* w, ImageInformation* info )
+static void change_colorspace( mrv::PopupMenu* w, ImageInformation* info )
 {
     aviImage* img = dynamic_cast<aviImage*>( info->get_image() );
     if ( !img ) return;
@@ -1382,20 +1370,20 @@ static void change_colorspace( fltk::PopupMenu* w, ImageInformation* info )
     img->image_damage( mrv::CMedia::kDamageAll );
 }
 
-static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_mipmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
-        img->levelX( w->ivalue() );
-        img->levelY( w->ivalue() );
+        img->levelX( atoi( w->value() ) );
+        img->levelY( atoi( w->value() ) );
         update_int_slider( w );
-	image_type_ptr canvas;
+        image_type_ptr canvas;
         bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
-	    img->cache( canvas );
+            img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1407,13 +1395,13 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
         if ( img )
         {
             mrv::ImageView* view = info->main()->uiView;
-            img->level( w->ivalue() );
+            img->level( atoi( w->value() ) );
             update_int_slider( w );
-	    image_type_ptr canvas;
-	    bool ok = img->fetch( canvas, view->frame() );
+            image_type_ptr canvas;
+            bool ok = img->fetch( canvas, view->frame() );
             if (ok)
             {
-		img->cache( canvas );
+                img->cache( canvas );
                 img->refresh();
                 view->fit_image();
                 view->redraw();
@@ -1422,19 +1410,19 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_x_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
-        img->levelX( w->ivalue() );
+        img->levelX( atoi( w->value() ) );
         update_int_slider( w );
-	image_type_ptr canvas;
+        image_type_ptr canvas;
         bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
-	    img->cache( canvas );
+            img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1442,19 +1430,19 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_y_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
-        img->levelY( w->ivalue() );
+        img->levelY( atoi( w->value() ) );
         update_int_slider( w );
-	image_type_ptr canvas;
+        image_type_ptr canvas;
         bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
-	    img->cache( canvas );
+            img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
@@ -1462,17 +1450,19 @@ static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_first_frame_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        int64_t v = w->ivalue();
+        int64_t v = atoi( w->value() );
         if ( v < img->start_frame() )
             v = img->start_frame();
         if ( v > img->last_frame() )
             v = img->last_frame();
-        w->value( (int)v );
+        char buf[64];
+        sprintf( buf, "%" PRId64, v );
+        w->value( buf );
 
         img->first_frame( v );
         update_int_slider( w );
@@ -1481,39 +1471,41 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void eye_separation_cb( fltk::FloatInput* w, ImageInformation* info )
+static void eye_separation_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->eye_separation( (float)w->fvalue() );
+        img->eye_separation( atof( w->value() ) );
         update_float_slider( w );
         info->main()->uiView->redraw();
     }
 }
 
-static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_fps_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->fps( w->fvalue() );
+        img->fps( atof( w->value() ) );
         update_float_slider( w );
     }
 }
 
-static void change_last_frame_cb( fltk::IntInput* w,
+static void change_last_frame_cb( Fl_Int_Input* w,
                                   ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        int64_t v = w->ivalue();
+        int64_t v = atoi( w->value() );
         if ( v < img->first_frame() )
             v = img->first_frame();
         if ( v > img->end_frame() )
             v = img->end_frame();
-        w->value( (int)v );
+        char buf[64];
+        sprintf( buf, "%" PRId64, v );
+        w->value( buf );
 
         img->last_frame( v );
         info->main()->uiView->redraw();
@@ -1521,55 +1513,55 @@ static void change_last_frame_cb( fltk::IntInput* w,
     }
 }
 
-static void change_scale_x_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_scale_x_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->scale_x( w->fvalue() );
+    img->scale_x( atof( w->value() ) );
     info->main()->uiView->redraw();
     update_float_slider( w );
 }
 
-static void change_scale_y_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_scale_y_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->scale_y( w->fvalue() );
+    img->scale_y( atof( w->value() ) );
     info->main()->uiView->redraw();
     update_float_slider( w );
 }
 
-static void change_x_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_x_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->x( w->fvalue() );
+    img->x( atof( w->value() ) );
     info->main()->uiView->redraw();
     update_float_slider( w );
 }
 
-static void change_y_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_y_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->y( w->fvalue() );
+    img->y( atof( w->value() ) );
     info->main()->uiView->redraw();
     update_float_slider( w );
 }
 
-static void change_pixel_ratio_cb( fltk::FloatInput* w,
+static void change_pixel_ratio_cb( Fl_Float_Input* w,
                                    ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->pixel_ratio( w->fvalue() );
+    img->pixel_ratio( atof( w->value() ) );
     info->main()->uiView->redraw();
     update_float_slider( w );
 }
 
-static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_gamma_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->gamma( float(w->fvalue()) );
+    img->gamma( atof( w->value() ) );
     update_float_slider( w );
 
     mrv::ImageView* view = info->main()->uiView;
-    view->gamma( float(w->fvalue()) );
+    view->gamma( atof( w->value() ) );
     view->redraw();
 }
 
@@ -1650,7 +1642,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                                            img->timecode(),
                                            img->play_fps(), true );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*)timecode_cb );
+                      buf, true, false, (Fl_Callback*)timecode_cb );
             return;
         }
     }
@@ -1663,7 +1655,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[64];
             sprintf( buf, "%d / %d", r.n, r.d );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*)change_string_cb );
+                      buf, true, false, (Fl_Callback*)change_string_cb );
             return;
         }
     }
@@ -1674,7 +1666,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         {
             add_float( i->first.c_str(), NULL,
                        (float)attr->value(), true, false,
-                       (fltk::Callback*)change_float_cb );
+                       (Fl_Callback*)change_float_cb );
             return;
         }
     }
@@ -1685,7 +1677,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         {
             add_float( i->first.c_str(), NULL,
                        attr->value(), true, false,
-                       (fltk::Callback*)change_float_cb );
+                       (Fl_Callback*)change_float_cb );
             return;
         }
     }
@@ -1696,8 +1688,8 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         {
             add_int( i->first.c_str(), NULL,
                      attr->value(), true, false,
-                     (fltk::Callback*)change_int_cb, 0, 10,
-                     fltk::WHEN_CHANGED );
+                     (Fl_Callback*)change_int_cb, 0, 10,
+                     FL_WHEN_CHANGED );
             return;
         }
     }
@@ -1710,7 +1702,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V2i& v = attr->value();
             sprintf( buf, "%d %d", v.x, v.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1723,7 +1715,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V2d& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1736,7 +1728,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V2f& v = attr->value();
             sprintf( buf, "%g %g", v.x, v.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1749,7 +1741,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V3i& v = attr->value();
             sprintf( buf, "%d %d %d", v.x, v.y, v.z );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1762,7 +1754,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V3d& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1775,7 +1767,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::V3f& v = attr->value();
             sprintf( buf, "%g %g %g", v.x, v.y, v.z );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1788,7 +1780,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::Box2i& v = attr->value();
             sprintf( buf, "%d %d %d %d", v.min.x, v.min.y, v.max.x, v.max.x );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1801,7 +1793,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             const Imath::Box2f& v = attr->value();
             sprintf( buf, "%g %g %g %g", v.min.x, v.min.y, v.max.x, v.max.x );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1816,7 +1808,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v.red.x, v.red.y, v.green.x, v.green.y,
                      v.blue.x, v.blue.y, v.white.x, v.white.y );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1832,7 +1824,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1848,7 +1840,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[1][0], v[1][1], v[1][2],
                      v[2][0], v[2][1], v[2][2] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1865,7 +1857,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[2][0], v[2][1], v[2][2], v[2][3],
                      v[3][0], v[3][1], v[3][2], v[3][3] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1882,7 +1874,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                      v[2][0], v[2][1], v[2][2], v[2][3],
                      v[3][0], v[3][1], v[3][2], v[3][3] );
             add_text( i->first.c_str(), NULL,
-                      buf, true, false, (fltk::Callback*) change_string_cb );
+                      buf, true, false, (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1897,10 +1889,10 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             char buf[256];
             for ( ; it != et; ++it )
             {
-                sprintf( buf, "%s #%d", i->first.c_str(), (it - ib)+1 );
+                sprintf( buf, "%s #%ld", i->first.c_str(), (it - ib)+1 );
                 add_text( buf, NULL,
                           *it, false, false,
-                          (fltk::Callback*) change_string_cb );
+                          (Fl_Callback*) change_string_cb );
             }
             return;
         }
@@ -1912,7 +1904,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
         {
             add_text( i->first.c_str(), NULL,
                       attr->value().c_str(), true, false,
-                      (fltk::Callback*) change_string_cb );
+                      (Fl_Callback*) change_string_cb );
             return;
         }
     }
@@ -1935,25 +1927,25 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
             std::string key = i->first;
             add_int( (key + ".filmMfcCode").c_str(), NULL,
                      k.filmMfcCode(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 0, 99 );
+                     (Fl_Callback*) change_keycode_cb, 0, 99 );
             add_int( (key + ".filmType").c_str(), NULL,
                      k.filmType(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 0, 99 );
+                     (Fl_Callback*) change_keycode_cb, 0, 99 );
             add_int( (key + ".prefix").c_str(), NULL,
                      k.prefix(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 0, 999999 );
+                     (Fl_Callback*) change_keycode_cb, 0, 999999 );
             add_int( (key + ".count").c_str(), NULL,
                      k.count(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 0, 9999 );
+                     (Fl_Callback*) change_keycode_cb, 0, 9999 );
             add_int( (key + ".perfOffset").c_str(), NULL,
                      k.perfOffset(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 0, 119 );
+                     (Fl_Callback*) change_keycode_cb, 0, 119 );
             add_int( (key + ".perfsPerFrame").c_str(), NULL,
                      k.perfsPerFrame(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 1, 15 );
+                     (Fl_Callback*) change_keycode_cb, 1, 15 );
             add_int( (key + ".perfsPerCount").c_str(), NULL,
                      k.perfsPerCount(), true, false,
-                     (fltk::Callback*) change_keycode_cb, 20, 120 );
+                     (Fl_Callback*) change_keycode_cb, 20, 120 );
             return;
         }
     }
@@ -2027,10 +2019,10 @@ void ImageInformation::fill_data()
     {
         add_int( _("First Frame"), _("First frame of clip - User selected"),
                  (int)img->first_frame(), true, true,
-                 (fltk::Callback*)change_first_frame_cb, 1, 50 );
+                 (Fl_Callback*)change_first_frame_cb, 1, 50 );
         add_int( _("Last Frame"), _("Last frame of clip - User selected"),
                  (int)img->last_frame(), true, true,
-                 (fltk::Callback*)change_last_frame_cb, 2, 55 );
+                 (Fl_Callback*)change_last_frame_cb, 2, 55 );
     }
 
 
@@ -2040,7 +2032,7 @@ void ImageInformation::fill_data()
 
 
     add_float( _("FPS"), _("Frames Per Second"), (float) img->fps(), true, true,
-               (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
+               (Fl_Callback*)change_fps_cb, 1.0f, 100.0f );
 
 
     ++group;
@@ -2078,23 +2070,23 @@ void ImageInformation::fill_data()
     add_text( _("Aspect Ratio"), _("Aspect ratio of clip"), buf );
     add_float( _("Pixel Ratio"), _("Pixel ratio of clip"),
                float(img->pixel_ratio()), true, true,
-               (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
+               (Fl_Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
     add_float( _("X Position"), _("Image X Position in Canvas"),
                img->x(), true, true,
-               (fltk::Callback*)change_x_cb, 0.0f, 720.0f );
+               (Fl_Callback*)change_x_cb, 0.0f, 720.0f );
 
     add_float( _("Y Position"), _("Image Y Position in Canvas"),
                img->y(), true, true,
-               (fltk::Callback*)change_y_cb, 0.0f, 720.0f );
+               (Fl_Callback*)change_y_cb, 0.0f, 720.0f );
 
     add_float( _("X Scale"), _("Image X Scale in Canvas"),
                img->scale_x(), true, true,
-               (fltk::Callback*)change_scale_x_cb, 0.00001f, 1.0f );
+               (Fl_Callback*)change_scale_x_cb, 0.00001f, 1.0f );
 
     add_float( _("Y Scale"), _("Image Y Scale in Canvas"),
                img->scale_y(), true, true,
-               (fltk::Callback*)change_scale_y_cb, 0.00001f, 1.0f );
+               (Fl_Callback*)change_scale_y_cb, 0.00001f, 1.0f );
 
     ++group;
 
@@ -2128,7 +2120,7 @@ void ImageInformation::fill_data()
         if ( img->right() )
             add_float( _("Eye Separation"), _("Stereo eye separation"),
                        img->eye_separation(), true, true,
-                       (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
+                       (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
 
 
@@ -2161,12 +2153,12 @@ void ImageInformation::fill_data()
     add_text( _("Depth"), _("Bit depth of clip"), depth );
     add_int( _("Image Channels"), _("Number of channels in clip"),
              img->number_of_channels() );
-    
+
     exrImage* exr = dynamic_cast< exrImage* >( img );
     if ( exr )
     {
-	int numparts = exr->numparts();
-	add_int( _("Number of Parts"), _("Number of Parts"), numparts );
+        int numparts = exr->numparts();
+        add_int( _("Number of Parts"), _("Number of Parts"), numparts );
     }
 
     aviImage* avi = dynamic_cast< aviImage* >( img );
@@ -2174,7 +2166,7 @@ void ImageInformation::fill_data()
     {
         add_enum( _("Color Space"), _("YUV Color Space conversion.  This value is extracted from the movie file.  To lock it to always use the same color space, set the value in Preferences->Video->YUV Conversion.  That value shall take precedence upon loading of the movie file."),
                   avi->colorspace_index(), kColorSpaces,
-                  11, true, (fltk::Callback*)change_colorspace );
+                  11, true, (Fl_Callback*)change_colorspace );
         add_text( _("Color Range"), _("YUV Color Range"),
                   _(avi->color_range()) );
     }
@@ -2288,7 +2280,7 @@ void ImageInformation::fill_data()
 
 
     add_float( _("Gamma"), _("Display Gamma of Image"), img->gamma(), true,
-               true, (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
+               true, (Fl_Callback*)change_gamma_cb, 0.01f,	4.0f );
 
 
     if ( img->has_chromaticities() )
@@ -2393,16 +2385,16 @@ void ImageInformation::fill_data()
 
 
 
-    m_curr->relayout();
+    // m_curr->relayout();
 
 
 
 
-    m_image->relayout();
+    // m_image->relayout();
     m_image->show();
     tooltip( NULL );
-    
-    
+
+
     const CMedia::Attributes& attrs = img->attributes();
     if ( ! attrs.empty() )
     {
@@ -2427,7 +2419,7 @@ void ImageInformation::fill_data()
                 {
                     add_int( _("Mipmap Level"), _("Mipmap Level"),
                              exr->levelX(), true, true,
-                             (fltk::Callback*)change_mipmap_cb, 0, 20 );
+                             (Fl_Callback*)change_mipmap_cb, 0, 20 );
                     exr->levelY( exr->levelX() );
                 }
                 oiioImage* oiio = dynamic_cast< oiioImage* >( img );
@@ -2435,7 +2427,7 @@ void ImageInformation::fill_data()
                 {
                     add_int( _("Mipmap Level"), _("Mipmap Level"),
                              oiio->level(), true, true,
-                             (fltk::Callback*)change_mipmap_cb, 0,
+                             (Fl_Callback*)change_mipmap_cb, 0,
                              (int)oiio->mipmap_levels()-1 );
                 }
             }
@@ -2446,7 +2438,7 @@ void ImageInformation::fill_data()
                 {
                     add_int( _("X Ripmap Level"), _("X Ripmap Level"),
                              exr->levelX(), true, true,
-                             (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
+                             (Fl_Callback*)change_x_ripmap_cb, 0, 20 );
                 }
             }
             else if ( i->first == _("Y Ripmap Levels") )
@@ -2456,7 +2448,7 @@ void ImageInformation::fill_data()
                 {
                     add_int( _("Y Ripmap Level"), _("Y Ripmap Level"),
                              exr->levelY(), true, true,
-                             (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
+                             (Fl_Callback*)change_y_ripmap_cb, 0, 20 );
                 }
             }
             else
@@ -2470,9 +2462,9 @@ void ImageInformation::fill_data()
                 process_attributes( i );
             }
         }
-        m_curr->relayout();
+        // m_curr->relayout();
 
-        m_curr->parent()->relayout();
+        // m_curr->parent()->relayout();
 
     }
 
@@ -2521,9 +2513,9 @@ void ImageInformation::fill_data()
             add_time( _("Duration"), _("Duration of Video"),
                       s.duration, s.fps );
 
-            m_curr->relayout();
+            // m_curr->relayout();
 
-            m_curr->parent()->relayout();
+            // m_curr->parent()->relayout();
         }
     }
 
@@ -2574,8 +2566,8 @@ void ImageInformation::fill_data()
             add_time( _("Duration"), _("Duration of Audio"),
                       s.duration, img->fps() );
 
-            m_curr->relayout();
-            m_curr->parent()->relayout();
+            // m_curr->relayout();
+            // m_curr->parent()->relayout();
         }
 
         m_audio->parent()->show();
@@ -2612,15 +2604,15 @@ void ImageInformation::fill_data()
             add_time( _("Duration"), _("Duration of Subtitle"),
                       s.duration, img->fps() );
 
-            m_curr->relayout();
-            m_curr->parent()->relayout();
+            //    m_curr->relayout();
+            //     m_curr->parent()->relayout();
         }
 
         m_subtitle->parent()->show();
     }
 
 
-    relayout();
+    // relayout();
 }
 
 void ImageInformation::refresh()
@@ -2649,11 +2641,11 @@ void ImageInformation::refresh()
 
 
 
-mrv::Browser* ImageInformation::add_browser( mrv::CollapsableGroup* g )
+mrv::Table* ImageInformation::add_browser( mrv::CollapsableGroup* g )
 {
     if (!g) return NULL;
 
-    mrv::Browser* browser = new mrv::Browser( 0, 0, w(), 400 );
+    mrv::Table* browser = new mrv::Table( 0, 0, w(), 400 );
     browser->column_separator(true);
     browser->auto_resize( true );
 
@@ -2662,7 +2654,7 @@ mrv::Browser* ImageInformation::add_browser( mrv::CollapsableGroup* g )
     browser->column_labels( headers );
     static const int widths[] = { kMiddle, -1, 0 };
     browser->column_widths( widths );
-    browser->align(fltk::ALIGN_CENTER|fltk::ALIGN_TOP);
+    browser->align(FL_ALIGN_CENTER|FL_ALIGN_TOP);
 
     g->add( browser );
     if ( g->children() == 1 )
@@ -2686,37 +2678,37 @@ int ImageInformation::line_height()
     return 24;
 }
 
-fltk::Color ImageInformation::get_title_color()
+Fl_Color ImageInformation::get_title_color()
 {
     return kTitleColors[ group % kSizeOfTitleColors ];
 }
 
-fltk::Color ImageInformation::get_widget_color()
+Fl_Color ImageInformation::get_widget_color()
 {
-    fltk::Color col = kRowColors[ row % kSizeOfRowColors ];
+    Fl_Color col = kRowColors[ row % kSizeOfRowColors ];
     ++row;
     return col;
 }
 
-void ImageInformation::icc_callback( fltk::Widget* t, ImageInformation* v )
+void ImageInformation::icc_callback( Fl_Widget* t, ImageInformation* v )
 {
     attach_icc_profile( v->get_image() );
     v->refresh(); // @todo: move this somewhere else
 }
 
-void ImageInformation::ctl_callback( fltk::Widget* t, ImageInformation* v )
+void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
 {
     attach_ctl_script( v->get_image(), v->main() );
 }
 
-void ImageInformation::ctl_idt_callback( fltk::Widget* t,
-        ImageInformation* v )
+void ImageInformation::ctl_idt_callback( Fl_Widget* t,
+                                         ImageInformation* v )
 {
     attach_ctl_idt_script( v->get_image(), v->main() );
 }
 
-void ImageInformation::ctl_lmt_callback( fltk::Widget* t,
-        CtlLMTData* c )
+void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
+                                         CtlLMTData* c )
 {
     ImageInformation* v = (ImageInformation*) c->widget;
     size_t idx = c->idx;
@@ -2724,7 +2716,7 @@ void ImageInformation::ctl_lmt_callback( fltk::Widget* t,
     attach_ctl_lmt_script( v->get_image(), idx, v->main() );
 }
 
-void ImageInformation::compression_cb( fltk::PopupMenu* t, ImageInformation* v )
+void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
 {
     unsigned   idx = t->value();
     CMedia* img = v->get_image();
@@ -2736,7 +2728,7 @@ void ImageInformation::add_icc( const char* name,
                                 const char* tooltip,
                                 const char* content,
                                 const bool editable,
-                                fltk::Callback* callback )
+                                Fl_Callback* callback )
 {
     if ( !content )
         content = _("None");
@@ -2744,39 +2736,39 @@ void ImageInformation::add_icc( const char* name,
     if ( !editable )
         return add_text( name, tooltip, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->color( colA );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
 
     {
-        fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+        Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-        fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
         widget->value( content );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( callback )
-            widget->callback( (fltk::Callback*)icc_callback, (void*)this );
+            widget->callback( (Fl_Callback*)icc_callback, (void*)this );
 
         sg->add( widget );
 
-        fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Load") );
-        pick->callback( (fltk::Callback*)icc_callback, (void*)this );
+        Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Load") );
+        pick->callback( (Fl_Callback*)icc_callback, (void*)this );
         sg->add( pick );
         sg->resizable(widget);
 
@@ -2791,43 +2783,43 @@ void ImageInformation::add_ctl( const char* name,
                                 const char* tooltip,
                                 const char* content,
                                 const bool editable,
-                                fltk::Callback* callback )
+                                Fl_Callback* callback )
 {
     if ( !editable )
         return add_text( name, tooltip, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->color( colA );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
 
     {
-        fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+        Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-        fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
         widget->value( content );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( callback )
-            widget->callback( (fltk::Callback*)ctl_callback, (void*)this );
+            widget->callback( (Fl_Callback*)ctl_callback, (void*)this );
 
         sg->add( widget );
 
-        fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-        pick->callback( (fltk::Callback*)ctl_callback, this );
+        Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_callback, this );
         sg->add( pick );
         sg->resizable(widget);
 
@@ -2844,44 +2836,44 @@ void ImageInformation::add_ocio_ics( const char* name,
                                      const char* tooltip,
                                      const char* content,
                                      const bool editable,
-                                     fltk::Callback* callback )
+                                     Fl_Callback* callback )
 {
     if ( !editable )
         return add_text( name, tooltip, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->color( colA );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
 
     {
-        fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+        Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-        fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
         widget->value( content );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( callback )
-            widget->callback( (fltk::Callback*)attach_ocio_ics_cb,
+            widget->callback( (Fl_Callback*)attach_ocio_ics_cb,
                               (void*)view() );
 
         sg->add( widget );
 
-        fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-        pick->callback( (fltk::Callback*)attach_ocio_ics_cb, view() );
+        Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+        pick->callback( (Fl_Callback*)attach_ocio_ics_cb, view() );
         sg->add( pick );
         sg->resizable(widget);
 
@@ -2897,43 +2889,43 @@ void ImageInformation::add_ctl_idt( const char* name,
                                     const char* tooltip,
                                     const char* content,
                                     const bool editable,
-                                    fltk::Callback* callback )
+                                    Fl_Callback* callback )
 {
     if ( !editable )
         return add_text( name, tooltip, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->color( colA );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
 
     {
-        fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+        Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-        fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
         widget->value( content );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( callback )
-            widget->callback( (fltk::Callback*)ctl_idt_callback, (void*)this );
+            widget->callback( (Fl_Callback*)ctl_idt_callback, (void*)this );
 
         sg->add( widget );
 
-        fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-        pick->callback( (fltk::Callback*)ctl_idt_callback, this );
+        Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_idt_callback, this );
         sg->add( pick );
         sg->resizable(widget);
 
@@ -2951,33 +2943,33 @@ void ImageInformation::add_ctl_lmt( const char* name,
                                     const char* content,
                                     const size_t idx,
                                     const bool editable,
-                                    fltk::Callback* callback )
+                                    Fl_Callback* callback )
 {
     if ( !editable )
         return add_text( name, tooltip, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->color( colA );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
 
     {
-        fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+        Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-        fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
         widget->value( content );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -2999,17 +2991,18 @@ void ImageInformation::add_ctl_lmt( const char* name,
             n = n.substr( 4, 7 );
             if ( n == "SOPNode" || n == "SatNode" )
             {
-                widget->w( sg->w() - 100 );
-                fltk::Button* modify = new fltk::Button( sg->w()-100, 0, 50, hh,
+                widget->resize( widget->x(), widget->y(),
+                                sg->w() - 100, widget->h() );
+                Fl_Button* modify = new Fl_Button( sg->w()-100, 0, 50, hh,
                         _("Values") );
                 mrv::ImageView* view = main()->uiView;
-                modify->callback( (fltk::Callback*)modify_sop_sat_cb, view );
+                modify->callback( (Fl_Callback*)modify_sop_sat_cb, view );
                 sg->add( modify );
             }
         }
 
-        fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-        pick->callback( (fltk::Callback*)ctl_lmt_callback, c );
+        Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+        pick->callback( (Fl_Callback*)ctl_lmt_callback, c );
         sg->add( pick );
         sg->resizable(widget);
 
@@ -3026,45 +3019,45 @@ void ImageInformation::add_text( const char* name,
                                  const char* content,
                                  const bool editable,
                                  const bool active,
-                                 fltk::Callback* callback )
+                                 Fl_Callback* callback )
 {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->color( colA );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
 
     {
-        fltk::Widget* widget = NULL;
+        Fl_Widget* widget = NULL;
         if ( !editable )
         {
-            fltk::Output* o = new fltk::Output( kMiddle, 0, w()-kMiddle, hh );
+            Fl_Output* o = new Fl_Output( kMiddle, 0, w()-kMiddle, hh );
             widget = o;
             o->value( content );
         }
         else
         {
-            fltk::Input* o = new fltk::Input( kMiddle, 0, w()-kMiddle, hh );
+            Fl_Input* o = new Fl_Input( kMiddle, 0, w()-kMiddle, hh );
             widget = o;
             o->value( content );
         }
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( !editable )
         {
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
             g->deactivate();
         }
         else
@@ -3086,7 +3079,7 @@ void ImageInformation::add_text( const char* name,
                                  const std::string& content,
                                  const bool editable,
                                  const bool active,
-                                 fltk::Callback* callback )
+                                 Fl_Callback* callback )
 {
     add_text( name, tooltip, content.c_str(), editable, active, callback );
 }
@@ -3094,56 +3087,60 @@ void ImageInformation::add_text( const char* name,
 void ImageInformation::add_int( const char* name, const char* tooltip,
                                 const int content, const bool editable,
                                 const bool active,
-                                fltk::Callback* callback,
+                                Fl_Callback* callback,
                                 const int minV, const int maxV,
                                 const int when )
 {
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
-        widget->labelcolor( fltk::BLACK );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
     }
 
     {
-        fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-        p->box( fltk::FLAT_BOX );
-        p->set_horizontal();
+        char buf[64];
+        Fl_Group* p = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+        p->box( FL_FLAT_BOX );
+        // p->set_horizontal();
         p->begin();
 
         if ( !editable )
         {
-            fltk::IntInput* widget = new fltk::IntInput( 0, 0, p->w(), hh );
-            widget->value( (int)content );
-            widget->align(fltk::ALIGN_LEFT);
+            Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, p->w(), hh );
+            sprintf( buf, "%d", content );
+            widget->value( buf );
+            widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
         }
         else
         {
-            fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
-            widget->value( content );
-            widget->align(fltk::ALIGN_LEFT);
+            Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, 50, hh );
+            sprintf( buf, "%d", content );
+            widget->value( buf );
+            widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
 
             if ( callback ) widget->callback( callback, this );
 
-            fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
-            slider->type(fltk::Slider::TICK_ABOVE);
+            Fl_Slider* slider = new Fl_Slider( 50, 0, p->w()-40, hh );
+            // slider->type(Fl_Slider::TICK_ABOVE);
+            // slider->linesize(1);
             slider->minimum( minV );
             int maxS = maxV;
 
@@ -3156,12 +3153,11 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 
             slider->value( content );
             slider->step( 1.0 );
-            slider->linesize(1);
             // slider->slider_size(10);
             if ( tooltip ) slider->tooltip( tooltip );
             else slider->tooltip( lbl->label() );
             slider->when( when );
-            slider->callback( (fltk::Callback*)int_slider_cb, widget );
+            slider->callback( (Fl_Callback*)int_slider_cb, widget );
 
             p->resizable(slider);
         }
@@ -3179,28 +3175,28 @@ void ImageInformation::add_enum( const char* name,
                                  const char* const* options,
                                  const size_t num,
                                  const bool editable,
-                                 fltk::Callback* callback
+                                 Fl_Callback* callback
                                )
 {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
-        widget->labelcolor( fltk::BLACK );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
     }
 
     {
-        fltk::PopupMenu* widget = new fltk::PopupMenu( kMiddle, 0, w()-kMiddle, hh );
+        mrv::PopupMenu* widget = new mrv::PopupMenu( kMiddle, 0, w()-kMiddle, hh );
         widget->type( 0 );
-        widget->align( fltk::ALIGN_LEFT | fltk::ALIGN_INSIDE );
+        widget->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
         widget->color( colB );
         for ( size_t i = 0; i < num; ++i )
         {
@@ -3214,7 +3210,7 @@ void ImageInformation::add_enum( const char* name,
         if ( !editable )
         {
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
         }
         else
         {
@@ -3234,7 +3230,7 @@ void ImageInformation::add_enum( const char* name,
                                  const std::string& content,
                                  stringArray& options,
                                  const bool editable,
-                                 fltk::Callback* callback
+                                 Fl_Callback* callback
                                )
 {
     size_t index;
@@ -3268,55 +3264,59 @@ void ImageInformation::add_int( const char* name,
                                 const unsigned int content,
                                 const bool editable,
                                 const bool active,
-                                fltk::Callback* callback,
+                                Fl_Callback* callback,
                                 const unsigned int minV,
                                 const unsigned int maxV )
 {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
-        widget->labelcolor( fltk::BLACK );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
     }
 
     {
-        fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-        p->box( fltk::FLAT_BOX );
-        p->set_horizontal();
+        char buf[64];
+        Fl_Group* p = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+        p->box( FL_FLAT_BOX );
+        // p->set_horizontal();
         p->begin();
 
         if ( !editable )
         {
-            fltk::IntInput* widget = new fltk::IntInput( 0, 0, p->w(), hh );
-            widget->value( (int)content );
-            widget->align(fltk::ALIGN_LEFT);
+            Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, p->w(), hh );
+            sprintf( buf, "%d", content );
+            widget->value( buf );
+            widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
         }
         else
         {
-            fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
-            widget->value( (int)content );
-            widget->align(fltk::ALIGN_LEFT);
+            Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, 50, hh );
+            sprintf( buf, "%d", content );
+            widget->value( buf );
+            widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
 
             if ( callback ) widget->callback( callback, this );
 
-            fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
-            slider->type(fltk::Slider::TICK_ABOVE);
+            Fl_Slider* slider = new Fl_Slider( 50, 0, p->w()-40, hh );
+            // slider->type(Fl_Slider::TICK_ABOVE);
+            // slider->linesize(1);
             slider->minimum( minV );
 
             unsigned maxS = maxV;
@@ -3331,12 +3331,11 @@ void ImageInformation::add_int( const char* name,
             slider->maximum( maxS );
             slider->value( content );
             slider->step( 1.0 );
-            slider->linesize(1);
             if ( tooltip ) slider->tooltip( tooltip );
             else slider->tooltip( lbl->label() );
             // slider->slider_size(10);
-            slider->when( fltk::WHEN_RELEASE );
-            slider->callback( (fltk::Callback*)int_slider_cb, widget );
+            slider->when( FL_WHEN_RELEASE );
+            slider->callback( (Fl_Callback*)int_slider_cb, widget );
 
             p->resizable(slider);
         }
@@ -3395,37 +3394,39 @@ void ImageInformation::add_int64( const char* name,
 
 void ImageInformation::add_rect( const char* name, const char* tooltip,
                                  const mrv::Recti& content,
-                                 const bool editable, fltk::Callback* callback )
+                                 const bool editable, Fl_Callback* callback )
 {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
-        widget->labelcolor( fltk::BLACK );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
     }
 
+    char buf[64];
     unsigned dw = (w() - kMiddle) / 6;
-    fltk::Group* g2 = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
+    Fl_Group* g2 = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
     if ( tooltip ) g2->tooltip( tooltip );
     else g2->tooltip( lbl->label() );
     {
-        fltk::IntInput* widget = new fltk::IntInput( 0, 0, dw, hh );
-        widget->value( content.l() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, dw, hh );
+        sprintf( buf, "%d", content.l() );
+        widget->value( buf );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( !editable )
         {
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
         }
         else
         {
@@ -3435,15 +3436,16 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw, 0, dw, hh );
-        widget->value( content.t() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw, 0, dw, hh );
+        sprintf( buf, "%d", content.t() );
+        widget->value( buf );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( !editable )
         {
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
         }
         else
         {
@@ -3453,15 +3455,16 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw*2, 0, dw, hh );
-        widget->value( content.r() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw*2, 0, dw, hh );
+        sprintf( buf, "%d", content.r() );
+        widget->value( buf );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( !editable )
         {
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
         }
         else
         {
@@ -3471,15 +3474,16 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw*3, 0, dw, hh );
-        widget->value( content.b() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw*3, 0, dw, hh );
+        sprintf( buf, "%d", content.b() );
+        widget->value( buf );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( !editable )
         {
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
         }
         else
         {
@@ -3489,23 +3493,25 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw*4, 0, dw, hh, "W:" );
-        widget->value( content.w() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw*4, 0, dw, hh, "W:" );
+        sprintf( buf, "%d", content.w() );
+        widget->value( buf );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         widget->deactivate();
-        widget->box( fltk::FLAT_BOX );
+        widget->box( FL_FLAT_BOX );
         g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw*5, 0, dw, hh, "H:" );
-        widget->value( content.h() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw*5, 0, dw, hh, "H:" );
+        sprintf( buf, "%d", content.h() );
+        widget->value( buf );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         widget->deactivate();
-        widget->box( fltk::FLAT_BOX );
+        widget->box( FL_FLAT_BOX );
         g2->add( widget );
     }
     g->add( g2 );
@@ -3517,54 +3523,58 @@ void ImageInformation::add_float( const char* name,
                                   const char* tooltip,
                                   const float content, const bool editable,
                                   const bool active,
-                                  fltk::Callback* callback,
+                                  Fl_Callback* callback,
                                   const float minV, float maxV )
 {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
-        widget->labelcolor( fltk::BLACK );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
+        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
     }
 
     {
-        fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-        p->box( fltk::FLAT_BOX );
-        p->set_horizontal();
+        char buf[64];
+        Fl_Group* p = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+        p->box( FL_FLAT_BOX );
+        // p->set_horizontal();
         p->begin();
 
         if ( !editable )
         {
-            fltk::FloatInput* widget = new fltk::FloatInput( 0, 0, p->w(), hh );
-            widget->value( content );
-            widget->align(fltk::ALIGN_LEFT);
+            Fl_Float_Input* widget = new Fl_Float_Input( 0, 0, p->w(), hh );
+            sprintf( buf, "%g", content );
+            widget->value( buf );
+            widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
         }
         else
         {
-            fltk::FloatInput* widget = new fltk::FloatInput( 0, 0, 50, hh );
-            widget->value( content );
-            widget->align(fltk::ALIGN_LEFT);
+            Fl_Float_Input* widget = new Fl_Float_Input( 0, 0, 50, hh );
+            sprintf( buf, "%g", content );
+            widget->value( buf );
+            widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
 
             if ( callback ) widget->callback( callback, this );
 
-            fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
-            slider->type(fltk::Slider::TICK_ABOVE);
+            Fl_Slider* slider = new Fl_Slider( 50, 0, p->w()-40, hh );
+            //slider->type(Fl_Slider::TICK_ABOVE);  // @TODO: fltk1.4 (there are more than this one)
+            // slider->linesize(1);
             slider->step( 0.01 );
             slider->minimum( minV );
 
@@ -3578,12 +3588,11 @@ void ImageInformation::add_float( const char* name,
 
             slider->maximum( maxS );
             slider->value( content );
-            slider->linesize(1);
             // slider->slider_size(10);
             if ( tooltip ) slider->tooltip( tooltip );
             else slider->tooltip( lbl->label() );
-            slider->when( fltk::WHEN_CHANGED );
-            slider->callback( (fltk::Callback*)float_slider_cb, widget );
+            slider->when( FL_WHEN_CHANGED );
+            slider->callback( (Fl_Callback*)float_slider_cb, widget );
 
             p->resizable(slider);
         }
@@ -3599,37 +3608,37 @@ void ImageInformation::add_bool( const char* name,
                                  const char* tooltip,
                                  const bool content,
                                  const bool editable,
-                                 fltk::Callback* callback )
+                                 Fl_Callback* callback )
 {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
-    fltk::Widget* lbl;
+    Fl_Box* lbl;
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
 
     {
-        fltk::Widget* widget = lbl = new fltk::Widget( 0, 0, kMiddle, hh );
-        widget->box( fltk::FLAT_BOX );
+        Fl_Box* widget = lbl = new Fl_Box( 0, 0, kMiddle, hh );
+        widget->box( FL_FLAT_BOX );
         widget->copy_label( name );
-        widget->labelcolor( fltk::BLACK );
+        widget->labelcolor( FL_BLACK );
         widget->color( colA );
         g->add( widget );
     }
 
     {
-        fltk::Input* widget = new fltk::Input( kMiddle, 0, w()-kMiddle, 20 );
+        Fl_Input* widget = new Fl_Input( kMiddle, 0, w()-kMiddle, 20 );
         widget->value( content? _("Yes") : _("No") );
-        widget->box( fltk::FLAT_BOX );
-        widget->align(fltk::ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( !editable )
         {
             widget->deactivate();
-            widget->box( fltk::FLAT_BOX );
+            widget->box( FL_FLAT_BOX );
         }
         else
         {
