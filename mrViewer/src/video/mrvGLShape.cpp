@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 
 
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #if defined(WIN32) || defined(WIN64)
@@ -29,7 +31,7 @@
 
 
 #if defined(WIN32) || defined(WIN64)
-#  include <fltk/win32.h>
+#  include <FL/win32.H>
 #  include <GL/wglew.h>
 #elif defined(LINUX)
 #  include <GL/glxew.h>
@@ -38,10 +40,8 @@
 #include <GL/glut.h>
 // #include <GL/gl.h>
 
-#include <fltk/gl.h>
-#include <fltk/Font.h>
-
-#include <fltk/draw.h>
+#include <FL/gl.h>
+#include <FL/fl_draw.H>
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -267,11 +267,11 @@ std::string GLTextShape::send() const
 {
     std::string buf = "GLTextShape ";
 
-    fltk::Font* f = font();
-    if (!f) return "";
+    Fl_Font f = font();
 
     char tmp[512];
-    sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, font()->name(),
+    sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64,
+             Fl::get_font_name( font() ),
              text().c_str(), size(), r, g, b, a, frame );
     buf += tmp;
     sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
@@ -303,7 +303,7 @@ void GLTextShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
-    fltk::glsetfont(font(), size()*float(z) );
+    gl_font(font(), size()*float(z) );
 
 
     std::string txt = text();
@@ -320,14 +320,14 @@ void GLTextShape::draw( double z )
         std::string t;
         if (pos > 0 )
             t = txt.substr( 0, pos );
-        fltk::gldrawtext(t.c_str());
+        gl_draw(t.c_str());
         if ( txt.size() > pos+1 )
             txt = txt.substr( pos+1, txt.size() );
     }
     if ( txt.size() )
     {
         glRasterPos2d( pts[0].x, GLdouble(y) );
-        fltk::gldrawtext(txt.c_str());
+        gl_draw(txt.c_str());
     }
 }
 
