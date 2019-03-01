@@ -1,111 +1,115 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir fltk::Button 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include <iostream>} {selected
-} 
-
-decl {\#include <core/mrvI8N.h>} {public
-} 
-
-decl {\#include <gui/mrvIO.h>} {public
-} 
-
-decl {\#include <core/mrvImageOpts.h>} {public
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include <iostream>} {private local
 }
 
-decl {\#include <gui/mrvMainWindow.h>} {public
+decl {\#include <core/mrvI8N.h>} {public local
 }
 
-decl {\#include <MagickWand/MagickWand.h>} {public
-} 
+decl {\#include <gui/mrvChoice.h>} {public local
+}
 
-decl {\#include <string>} {public
-} 
+decl {\#include <gui/mrvIO.h>} {public local
+}
 
-decl {\#include <mrViewer.h>} {public
-} 
+decl {\#include <core/mrvImageOpts.h>} {public local
+}
 
-namespace mrv {open
+decl {\#include <gui/mrvMainWindow.h>} {public local
+}
+
+decl {\#include <MagickWand/MagickWand.h>} {public local
+}
+
+decl {\#include <string>} {public local
+}
+
+decl {\#include <mrViewer.h>} {public local
+}
+
+class WandOptionsUI {open selected : {public mrv::WandOpts}
 } {
-  class WandOptionsUI {open : {public WandOpts}
+  decl {std::string pixel_type;} {public local
+  }
+  Function {make_window(bool aces, bool all_layers)} {open
   } {
-    decl {std::string pixel_type;} {public
-    }
-    Function {make_window(bool aces, bool all_layers)} {open
+    Fl_Window uiMain {
+      label {ImageMagick Saving} open
+      xywh {193 251 340 295} type Double hide resizable modal noborder
     } {
-      {fltk::Window} uiMain {
-        label {ImageMagick Saving} open
-        xywh {193 251 340 295} hide resizable modal noborder
+      Fl_Group {} {
+        label {Image Options} open
+        xywh {34 33 272 193} box UP_BOX
       } {
-        {fltk::Group} {} {
-          label {Image Options} open
-          xywh {34 33 272 193} box UP_BOX
+        Fl_Choice uiPixelType {
+	  class mrv::Choice
+          label {Pixel Format}
+          callback {pixel_type = o->child(o->value())->label();}
+          xywh {151 137 90 25} down_box BORDER_BOX
         } {
-          {fltk::Choice} uiPixelType {
-            label {Pixel Format}
-            callback {pixel_type = o->child(o->value())->label();}
-            xywh {151 137 90 25}
-          } {
-            {fltk::Item} {} {
-              label Char
-              }
-            {fltk::Item} {} {
-              label Short
-              }
-            {fltk::Item} {} {
-              label Integer
-              }
-            {fltk::Item} {} {
-              label Float
-              }
+          MenuItem {} {
+            label Char
+            xywh {0 0 100 20}
           }
-          {fltk::LightButton} uiAllLayers {
-            label {All Layers}
-            xywh {61 82 155 35}
-            extra_code {o->value( all_layers );}
+          MenuItem {} {
+            label Short
+            xywh {0 0 100 20}
           }
-          {fltk::LightButton} uiACESmetadata {
-            label {ACES metadata}
-            xywh {61 27 155 35}
-            extra_code {o->value( aces );}
+          MenuItem {} {
+            label Integer
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label Float
+            xywh {0 0 100 20}
           }
         }
-        {fltk::Button} {} {
-          label OK
-          user_data this user_data_type {WandOptionsUI*}
-          callback {v->active(true);
-v->uiMain->make_exec_return(true);}
-          xywh {85 257 62 27}
+        Fl_Light_Button uiAllLayers {
+          label {All Layers}
+          xywh {61 82 155 35}
+          code0 {o->value( all_layers );}
         }
-        {fltk::Button} {} {
-          label Cancel
-          user_data this user_data_type {WandOptionsUI*}
-          callback {v->active( false );
-v->uiMain->make_exec_return(false);}
-          xywh {164 257 68 27}
+        Fl_Light_Button uiACESmetadata {
+          label {ACES metadata}
+          xywh {61 27 155 35}
+          code0 {o->value( aces );}
         }
       }
+      Fl_Button {} {
+        label OK
+        user_data this user_data_type {WandOptionsUI*}
+        callback {v->active(true);
+// v->uiMain->make_exec_return(true); // @TODO: fltk1.4 }
+        xywh {85 257 62 27}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {WandOptionsUI*}
+        callback {v->active( false );
+// v->uiMain->make_exec_return(false); // @TODO: fltk1.4 }
+        xywh {164 257 68 27}
+      }
     }
-    Function {convert()} {open
-    } {
-      code {if ( pixel_type == "" || pixel_type == _("Char") ) _pixel_type = CharPixel;
+  }
+  Function {convert()} {open
+  } {
+    code {if ( pixel_type == "" || pixel_type == _("Char") ) _pixel_type = CharPixel;
 else if ( pixel_type == _("Float") ) _pixel_type = FloatPixel;
 else if ( pixel_type == _("Short") ) _pixel_type = ShortPixel;
 else if ( pixel_type == _("Integer") ) _pixel_type = LongPixel;
 _ACESmetadata = uiACESmetadata->value();
 _all_layers = uiAllLayers->value();} {}
-    }
-    Function {WandOptionsUI(const mrv::ViewerUI* main, bool aces, bool all_layers) : WandOpts(aces, all_layers)} {} {
-      code {fltk::Window* w = make_window(aces, all_layers);
+  }
+  Function {WandOptionsUI(const ViewerUI* main, bool aces, bool all_layers) : mrv::WandOpts(aces, all_layers)} {} {
+    code {Fl_Window* w = make_window(aces, all_layers);
       mrv::MainWindow* m = main->uiMain;
       int x = m->x() + ( m->w() - w->w() ) / 2;
       int y = m->y() + ( m->h() - w->h() ) / 2;
-if ( w->exec() ) convert();} {}
-    }
+      w->set_modal();
+      w->show();
+      // @TODO: fltk1.4
+      convert();} {}
   }
-} 
+}
