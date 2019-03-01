@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,20 +27,18 @@
 
 #include <iostream>
 
-// Must come before fltk/x11.h
+// Must come before FL/Fl_x11.H
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvIO.h"
 
-#include <fltk/Cursor.h>
-#include <fltk/events.h>
-#include <fltk/layout.h>
-#include <fltk/run.h>
+#include <FL/Enumerations.H>
+#include <FL/Fl.H>
 
 
 #if !defined(_WIN32)
-#  include <fltk/x11.h>
+#  include <FL/x.H>
 #undef Bool
 #define Bool int
 #  include <X11/xpm.h>
@@ -48,9 +46,12 @@
 #  include "icons/viewer16.xpm"
 #else
 #  include <windows.h>
-#  include <fltk/win32.h>
+#  include <FL/Fl_win32.H>
 #  include "resource.h"
 #endif
+
+#include "mrvPreferencesUI.h"
+#include "mrvReelUI.h"
 
 
 using namespace std;
@@ -62,7 +63,7 @@ Pixmap p, mask;
 #endif
 
 MainWindow::MainWindow( int W, int H, const char* title ) :
-    fltk::Window( W, H, title )
+Fl_Window( W, H, title )
 {
 //#ifdef _WIN32
     // Set icon does not work on Linux yet
@@ -80,10 +81,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::set_icon()
 {
-    fltk::open_display();  // Needed for icons
+    fl_open_display();  // Needed for icons
 
 #if defined(_WIN32) || defined(_WIN64)
-    HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
+    HICON data = LoadIcon(Fl_xdisplay, MAKEINTRESOURCE(IDI_ICON1));
     this->icon(data);
 #else
     // unsigned long buffer[] = {
@@ -100,7 +101,7 @@ void MainWindow::always_on_top()
 {
 #if defined(_WIN32) || defined(_WIN64)
     // Microsoft (R) Windows(TM)
-    SetWindowPos(fltk::xid(this), HWND_TOPMOST,
+    SetWindowPos(fl_xid(this), HWND_TOPMOST,
                  0, 0, w()+8, h()+27, 0);
 #else
     // XOrg / XWindows(TM)
@@ -109,19 +110,19 @@ void MainWindow::always_on_top()
                                           "_NET_WM_STATE_ABOVE"
                                         };
     Atom atoms[ 2 ];
-    fltk::open_display();
-    XInternAtoms(fltk::xdisplay, (char**)names, 2, False, atoms );
+    fl_open_display();
+    XInternAtoms(fl_display, (char**)names, 2, False, atoms );
     Atom net_wm_state = atoms[ 0 ];
     Atom net_wm_state_above = atoms[ 1 ];
     ev.type = ClientMessage;
-    ev.xclient.window = fltk::xid(this);
+    ev.xclient.window = fl_xid(this);
     ev.xclient.message_type = net_wm_state;
     ev.xclient.format = 32;
     ev.xclient.data.l[ 0 ] = active() ? 1 : 0;
     ev.xclient.data.l[ 1 ] = net_wm_state_above;
     ev.xclient.data.l[ 2 ] = 0;
-    XSendEvent(fltk::xdisplay,
-               DefaultRootWindow(fltk::xdisplay),  False,
+    XSendEvent(fl_display,
+               DefaultRootWindow(fl_display),  False,
                SubstructureNotifyMask|SubstructureRedirectMask, &ev);
 #endif
 } // above_all function
@@ -133,32 +134,26 @@ void MainWindow::always_on_top()
  */
 void MainWindow::iconize_all()
 {
-    fltk::Window* uiReelWindow = uiMain->uiReelWindow->uiMain;
+    Fl_Window* uiReelWindow = uiMain->uiReelWindow->uiMain;
     if (uiReelWindow) uiReelWindow->iconize();
-    return fltk::Window::iconize();
+    return Fl_Window::iconize();
 }
 
 /**
- * Handle MainWindow's fltk::events
+ * Handle MainWindow's Fl::events
  *
- * @param event fltk::event enumeration
+ * @param event Fl::event enumeration
  *
  * @return 1 if handled, 0 if not.
  */
 int MainWindow::handle( int event )
 {
-    return fltk::Window::handle( event );
+    return Fl_Window::handle( event );
 }
 
 void MainWindow::layout()
 {
-    fltk::Window::layout();
-
-    if ( layout_damage() & fltk::LAYOUT_W || layout_damage() & fltk::LAYOUT_H )
-    {
-        if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-            uiMain->uiView->fit_image();
-    }
+    redraw(); // @TODO: FLTK1.4
 }
 
 } // namespace mrv
