@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,16 +27,12 @@
 #ifndef mrv_gui_media_h
 #define mrv_gui_media_h
 
-#include <fltk/PixelType.h>
-#include <fltk/Image.h>
+
+#include <FL/Fl_Image.H>
 
 #include <boost/shared_ptr.hpp>
 
 #include "core/CMedia.h"
-
-namespace fltk {
-class Image;
-}
 
 
 namespace mrv {
@@ -71,10 +67,10 @@ public:
         return _image->name();
     }
 
-    inline fltk::Image* thumbnail()             {
+    inline Fl_Image* thumbnail()             {
         return _thumbnail;
     }
-    inline const fltk::Image* thumbnail() const {
+    inline const Fl_Image* thumbnail() const {
         return _thumbnail;
     }
 
@@ -88,13 +84,12 @@ public:
     void create_thumbnail();
 
 protected:
-    void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-                          uchar r, uchar g, uchar b );
+    void thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b );
 
     int64_t  _start;
     int64_t  _pos;
     CMedia*   _image;
-    fltk::Image* _thumbnail;
+    Fl_Image* _thumbnail;
     bool         _thumbnail_frozen;
 
 public:

@@ -1,0 +1,190 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "core/mrvAudioEngine.h"} {private local
+}
+
+decl {\#include "gui/mrvValueInput.h"} {public local
+}
+
+decl {\#include "gui/mrvPreferences.h"} {private local
+}
+
+decl {\#include "gui/mrvBrowser.h"} {public global
+}
+
+decl {\#include "gui/mrvTextDisplay.h"} {selected public global
+}
+
+decl {\#include "gui/mrvMainWindow.h"} {private local
+}
+
+decl {\#include "gui/mrvVersion.h"} {public global
+}
+
+decl {\#include "mrViewer.h"} {public global
+}
+
+decl {\#include "icons/icons.c"} {private local
+}
+
+declblock {\#ifdef _WIN32} {after {\#endif}
+} {
+  decl {\#define unsetenv} {public local
+  }
+}
+
+class AboutUI {open
+} {
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label {About mrViewer} open
+      xywh {1249 432 445 395} type Double hide resizable
+      code0 {// Make the window transient
+//main->uiMain->add(o);} modal
+    } {
+      Fl_Tabs uiAboutTabs {
+	user_data main user_data_type {ViewerUI*}
+	callback {v->uiAbout->uiGPUInfo->clear();
+v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
+	xywh {0 4 445 391}
+      } {
+	Fl_Group {} {
+	  label mrViewer open
+	  xywh {0 23 440 368} hide
+	} {
+	  Fl_Text_Display {} {
+	    xywh {17 23 410 337}
+	    code0 {std::cerr << "1" << std::endl; o->insert( mrv::about_message().c_str() );}
+	    code1 {std::cerr << "2" << std::endl;}
+	    class {mrv::TextDisplay}
+	  }
+	}
+	Fl_Group {} {
+	  label HW open
+	  xywh {0 29 440 362}
+	} {
+	  Fl_Text_Display uiCPUInfo {
+	    label {CPU Information}
+	    xywh {15 44 415 82}
+	    code0 {std::cerr << "3" << std::endl; o->insert( mrv::cpu_information().c_str() );}
+	    code1 {std::cerr << "4" << std::endl;}
+	    class {mrv::TextDisplay}
+	  }
+	  Fl_Browser uiGPUInfo {
+	    label {GPU Information}
+	    xywh {16 151 415 205}
+	    code0 {static int widths[] = {160,o->w()-160,0};}
+	    code1 {o->column_widths( widths );}
+	    code2 {o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	}
+	Fl_Group {} {
+	  label Formats open
+	  xywh {0 20 445 370} hide
+	} {
+	  Fl_Browser {} {
+	    xywh {15 20 415 340}
+	    code0 {static const char* col_labels[] = {
+"",
+"",
+"",
+"Extension",
+"Handler",
+"Format Name",
+0
+};
+
+static int col_widths[] = {
+20,
+20,
+20,
+120,
+120,
+300,
+0
+};
+o->column_labels( col_labels );
+o->column_widths( col_widths );
+
+
+mrv::ffmpeg_formats(*o);
+o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	}
+	Fl_Group {} {
+	  label Codecs open
+	  xywh {0 20 445 375} hide
+	} {
+	  Fl_Browser {} {
+	    label Video
+	    xywh {15 20 410 150}
+	    code0 {mrv::ffmpeg_video_codecs(*o);
+o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	  Fl_Browser {} {
+	    label Audio
+	    xywh {15 190 415 110}
+	    code0 {mrv::ffmpeg_audio_codecs(*o);
+o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	  Fl_Browser {} {
+	    label Subtitles
+	    xywh {15 315 415 55}
+	    code0 {mrv::ffmpeg_subtitle_codecs(*o);
+o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	}
+	Fl_Group {} {
+	  label Protocols open
+	  xywh {0 20 445 370} hide deactivate
+	} {
+	  Fl_Browser {} {
+	    xywh {15 20 415 340}
+	    code0 {o->add( mrv::ffmpeg_protocols().c_str() );
+o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	}
+	Fl_Group {} {
+	  label {Motion Estimation Methods} open
+	  xywh {0 20 445 370} hide
+	} {
+	  Fl_Browser {} {
+	    xywh {15 20 415 340}
+	    code0 {static int col_widths[] = {
+120,
+300,
+0
+};
+o->column_widths( col_widths ); o->add( mrv::ffmpeg_motion_estimation_methods().c_str() ); o->value(-1);}
+	    class {mrv::Browser}
+	  }
+	}
+      }
+    }
+  }
+  Function {AboutUI(ViewerUI* m)} {open
+  } {
+    code {Fl_Group::current( m->uiMain );
+    make_window( m );
+    Fl_Group::current(0);} {}
+  }
+  Function {~AboutUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+}

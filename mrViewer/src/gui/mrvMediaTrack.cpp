@@ -16,12 +16,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#include <fltk/draw.h>
-#include <fltk/events.h>
-#include <fltk/Cursor.h>
+#include <FL/fl_draw.H>
+#include <FL/Enumerations.H>
 
+#include <core/mrvRectangle.h>
 #include "core/mrvI8N.h"
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvImageView.h"
@@ -34,14 +37,16 @@
 #include "gui/mrvIO.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
+#include "mrvImageInfo.h"
+#include "mrvReelUI.h"
 
 namespace {
 const char* kModule = "track";
 }
 
-void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow );
+void open_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
 
-void open_track_cb( fltk::Widget* o, mrv::media_track* track )
+void open_track_cb( Fl_Widget* o, mrv::media_track* track )
 {
     track->browser()->reel( track->reel() );
     open_cb( o, track->browser() );
@@ -53,7 +58,7 @@ mrv::Element* media_track::_selected = NULL;
 bool media_track::_audio_selected = false;
 
 media_track::media_track(int x, int y, int w, int h) :
-    fltk::Group( x, y, w, h ),
+    Fl_Group( x, y, w, h ),
     _zoom( 1.0 )
 {
 }
@@ -532,8 +537,8 @@ int media_track::handle( int event )
 {
     switch( event )
     {
-    case fltk::RELEASE:
-        if ( _selected && fltk::event_key() == fltk::RightButton )
+    case FL_RELEASE:
+        if ( _selected && Fl::event_button() == FL_RIGHT_MOUSE )
         {
             mrv::Timeline* t = main()->uiTimeline;
             if ( ! t->edl() )
@@ -554,14 +559,14 @@ int media_track::handle( int event )
         }
         return 1;
         break;
-    case fltk::PUSH:
+    case FL_PUSH:
     {
-        int xx = _dragX = fltk::event_x();
-        int yy = y() + fltk::event_y();
+        int xx = _dragX = Fl::event_x();
+        int yy = y() + Fl::event_y();
 
-        if ( fltk::event_key() == fltk::RightButton )
+        if ( Fl::event_button() == FL_RIGHT_MOUSE )
         {
-            cursor( fltk::CURSOR_ARROW );
+            window()->cursor( FL_CURSOR_ARROW );
             _playback = (CMedia::Playback) main()->uiView->playback();
             main()->uiView->stop();
             _frame = main()->uiView->frame();
@@ -579,12 +584,11 @@ int media_track::handle( int event )
             else
             {
                 if ( _reel_idx < 0 ) return 1;
-                fltk::Menu menu(0,0,0,0);
+                Fl_Menu_Button menu(0,0,0,0);
                 menu.add( _("File/Open/Movie or Sequence"),
                           kOpenImage.hotkey(),
-                          (fltk::Callback*)open_track_cb, this );
-                menu.popup( fltk::Rectangle( fltk::event_x(),
-                                             fltk::event_y(), 80, 1) );
+                          (Fl_Callback*)open_track_cb, this );
+                menu.popup();
             }
         }
         else
@@ -592,11 +596,11 @@ int media_track::handle( int event )
             return 0;
         }
     }
-    case fltk::KEY:
+    case FL_KEYBOARD:
     {
-        int key = fltk::event_key();
-        if ( key == fltk::DeleteKey ||
-                key == fltk::BackSpaceKey )
+        int key = Fl::event_key();
+        if ( key == FL_Delete ||
+             key == FL_BackSpace )
         {
             if ( _selected )
                 remove( _selected->element() );
@@ -604,18 +608,18 @@ int media_track::handle( int event )
         }
         break;
     }
-    case fltk::ENTER:
+    case FL_ENTER:
         return 1;
-    case fltk::DRAG:
+    case FL_DRAG:
     {
         if ( _selected )
         {
-            cursor( fltk::CURSOR_WE );
+            window()->cursor( FL_CURSOR_WE );
 
             const mrv::Reel& reel = browser()->reel_at( _reel_idx );
             if ( !reel ) return 0;
 
-            int diff = (fltk::event_x() - _dragX);
+            int diff = (Fl::event_x() - _dragX);
 
             mrv::MediaList::const_iterator i = reel->images.begin();
             mrv::MediaList::const_iterator e = reel->images.end();
@@ -644,14 +648,14 @@ int media_track::handle( int event )
             timeline()->redraw();
             redraw();
         }
-        _dragX = fltk::event_x();
+        _dragX = Fl::event_x();
         return 1;
     }
     default:
         break;
     }
 
-    return fltk::Group::handle( event );
+    return Fl_Group::handle( event );
 }
 
 int64_t media_track::minimum() const
@@ -681,21 +685,21 @@ void media_track::draw()
 
     size_t e = reel->images.size();
 
-    fltk::load_identity();
-    fltk::setcolor( fltk::GRAY33 );
+    fl_push_matrix();
+    fl_color( FL_GRAY0 );
 
-    fltk::push_clip( x(), y(), w(), h() );
-    fltk::fillrect( x(), y(), w(), h() );
+    fl_push_clip( x(), y(), w(), h() );
+    fl_rectf( x(), y(), w(), h() );
 
-    fltk::load_identity();
+    fl_pop_matrix();
 
     // {
-    //    fltk::setcolor( fltk::WHITE );
+    //    fl_color( FL_WHITE );
     //    int ww, hh;
     //    const char* buf = reel->name.c_str();
-    //    fltk::setfont( textfont(), 12 );
-    //    fltk::measure( buf, ww, hh );
-    //    fltk::drawtext( buf, 4.0f, float( y()+h()/2 ) );
+    //    fl_font( textfont(), 12 );
+    //    fl_measure( buf, ww, hh );
+    //    fl_draw( buf, 4.0f, float( y()+h()/2 ) );
     // }
 
     mrv::Timeline* t = timeline();
@@ -720,19 +724,19 @@ void media_track::draw()
         dw -= dx;
 
 
-        fltk::Rectangle r(rx+dx, y(), dw, h()-20 );
+        mrv::Recti r(rx+dx, y(), dw, h()-20 );
 
 
         if ( browser()->current_image() == fg )
         {
-            fltk::setcolor( fltk::DARK_YELLOW );
+            fl_color( FL_DARK_YELLOW );
         }
         else
         {
-            fltk::setcolor( fltk::DARK_GREEN );
+            fl_color( FL_DARK_GREEN );
         }
 
-        fltk::fillrect( r );
+        fl_rectf( r.x(), r.y(), r.w(), r.h() );
 
         int stream = img->audio_stream();
         if ( stream >= 0 )
@@ -766,45 +770,45 @@ void media_track::draw()
             int dw = t->slider_position( double( pos+last-offset ), ww );
             dw -= dx;
 
-            fltk::Rectangle ra(rx+dx, h()+y()-20, dw, 20 );
-            fltk::fillrect( ra );
+            mrv::Recti ra(rx+dx, h()+y()-20, dw, 20 );
+            fl_rectf( ra.x(), ra.y(), ra.w(), ra.h() );
 
             if ( _selected && _selected->element() == fg )
-                fltk::setcolor( fltk::WHITE );
+                fl_color( FL_WHITE );
             else
-                fltk::setcolor( fltk::BLACK );
-            fltk::strokerect( ra );
+                fl_color( FL_BLACK );
+            fl_rect( ra.x(), ra.y(), ra.w(), ra.h() );
 
 
             if ( _selected && _selected->element() == fg )
-                fltk::setcolor( fltk::BLACK );
+                fl_color( FL_BLACK );
             else
-                fltk::setcolor( fltk::GRAY33 );
+                fl_color( FL_GRAY0 );
 
             int aw = 0, ah = 0;
             char buf[128];
             sprintf( buf, _("Audio: %" PRId64 ), offset );
-            fltk::setfont( textfont(), textsize() );
-            fltk::measure( buf, aw, ah );
+            fl_font( labelfont(), labelsize() );
+            fl_measure( buf, aw, ah );
 
-            fltk::Rectangle off( rx + dx + dw/2 - aw/2,
+            mrv::Recti off( rx + dx + dw/2 - aw/2,
                                  y() + h()-ah/2, aw, ah );
             ra.intersect( off );
             if ( !ra.empty() )
             {
-                fltk::drawtext( buf, float( off.x()+2 ), float( off.y()+2 ) );
+                fl_draw( buf, float( off.x()+2 ), float( off.y()+2 ) );
 
                 if ( _selected && _selected->element() == fg )
-                    fltk::setcolor( fltk::WHITE );
+                    fl_color( FL_WHITE );
                 else
-                    fltk::setcolor( fltk::BLACK );
+                    fl_color( FL_BLACK );
 
-                fltk::drawtext( buf, float( off.x() ), float( off.y() ) );
+                fl_draw( buf, float( off.x() ), float( off.y() ) );
             }
         }
 
 
-        fltk::Image* thumb = fg->thumbnail();
+        Fl_Image* thumb = fg->thumbnail();
 
         if ( thumb && dw > thumb->w() )
         {
@@ -812,15 +816,15 @@ void media_track::draw()
         }
 
         if ( _selected && _selected->element() == fg )
-            fltk::setcolor( fltk::WHITE );
+            fl_color( FL_WHITE );
         else
-            fltk::setcolor( fltk::BLACK );
-        fltk::strokerect( r );
+            fl_color( FL_BLACK );
+        fl_rect( r.x(), r.y(), r.w(), r.h() );
 
         if ( _selected && _selected->element() == fg )
         {
             char buf[128];
-            fltk::setcolor( fltk::BLUE );
+            fl_color( FL_BLUE );
             int Y = y();
 
             if ( _audio_selected ) Y += h() - 20;
@@ -828,68 +832,66 @@ void media_track::draw()
             int yh = y() + h();
             if ( _at_start )
             {
-                fltk::newpath();
-                fltk::addvertex( r.x(), Y );
-                fltk::addvertex( r.x(), yh );
-                fltk::addvertex( r.x() + dw/2, yh );
-                fltk::closepath();
-                fltk::strokepath();
+                fl_begin_line();
+                fl_vertex( r.x(), Y );
+                fl_vertex( r.x(), yh );
+                fl_vertex( r.x() + dw/2, yh );
+                fl_end_line();
                 if ( ! _audio_selected )
                 {
                     sprintf( buf, "%" PRId64, img->first_frame() );
-                    fltk::drawtext( buf, r.x() + dw/4, yh-5 );
+                    fl_draw( buf, r.x() + dw/4, yh-5 );
                 }
             }
             else
             {
-                fltk::newpath();
-                fltk::addvertex( r.x()+dw, Y );
-                fltk::addvertex( r.x()+dw, yh );
-                fltk::addvertex( r.x()+dw/2, yh );
-                fltk::closepath();
-                fltk::strokepath();
+                fl_begin_line();
+                fl_vertex( r.x()+dw, Y );
+                fl_vertex( r.x()+dw, yh );
+                fl_vertex( r.x()+dw/2, yh );
+                fl_end_line();
                 if ( ! _audio_selected )
                 {
                     sprintf( buf, "%" PRId64, img->last_frame() );
-                    fltk::drawtext( buf, r.x() + dw/2 + dw/4, yh-5 );
+                    fl_draw( buf, r.x() + dw/2 + dw/4, yh-5 );
                 }
             }
         }
 
 
         if ( _selected && _selected->element() == fg )
-            fltk::setcolor( fltk::BLACK );
+            fl_color( FL_BLACK );
         else
-            fltk::setcolor( fltk::GRAY33 );
+            fl_color( FL_GRAY0 );
 
         int ww = 0, hh = 0;
         std::string name = img->name();
         const char* txt = name.c_str();
-        fltk::setfont( textfont(), textsize() );
-        fltk::measure( txt, ww, hh );
+        fl_font( labelfont(), labelsize() );
+        fl_measure( txt, ww, hh );
 
-        fltk::Rectangle text( rx + dx + dw/2 - ww/2,
-                              y() + (h()-20)/2, ww, hh );
+        mrv::Recti text( rx + dx + dw/2 - ww/2,
+                         y() + (h()-20)/2, ww, hh );
         r.intersect( text );
         if ( r.empty() ) continue;
 
 
 
-        fltk::drawtext( txt,
-                        float( text.x() + 2 ),
-                        float( text.y() + 2 ) );
+        fl_draw( txt,
+                 float( text.x() + 2 ),
+                 float( text.y() + 2 ) );
 
         if ( _selected && _selected->element() == fg )
-            fltk::setcolor( fltk::WHITE );
+            fl_color( FL_WHITE );
         else
-            fltk::setcolor( fltk::BLACK );
+            fl_color( FL_BLACK );
 
-        fltk::drawtext( txt,
-                        float( text.x() ),
-                        float( text.y() ) );
+        fl_draw( txt,
+                 float( text.x() ),
+                 float( text.y() ) );
     }
 
-    fltk::pop_clip();
+    fl_pop_clip();
 }
 
 }  // namespace mrv
