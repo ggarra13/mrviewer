@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,7 +39,8 @@
 #  include <netinet/in.h>  // for htonl, etc.
 #endif
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
+#include <FL/fl_utf8.h>
 
 #include "byteSwap.h"
 #include "mrvThread.h"
@@ -156,7 +157,7 @@ bool mapImage::fetch( mrv::image_type_ptr& canvas,
 
     _stub = is_stub();
 
-    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+    FILE* f = fl_fopen( sequence_filename(frame).c_str(), "rb" );
     mapHeader header;
 
     size_t ok = fread( &header, sizeof(header), 1, f );
