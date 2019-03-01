@@ -15,6 +15,7 @@
 #include "gui/mrvSave.h"
 #include "gui/mrvImageBrowser.h"
 #include "mrViewer.h"
+#include "mrvReelUI.h"
 #include "aviSave.h"
 
 #include <boost/filesystem.hpp>
@@ -58,7 +59,7 @@ void decode_some( CMedia* img, int64_t& frame )
 }
 
 
-void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
+void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                              const bool opengl )
 {
     std::string ext = file;
@@ -92,7 +93,7 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
         root = root.substr( 0, root.size() - ext.size() );
     }
 
-    fltk::Window* main = (fltk::Window*)uiMain->uiMain;
+    Fl_Window* main = (Fl_Window*)uiMain->uiMain;
     mrv::ProgressReport* w = new mrv::ProgressReport( main, first, last );
 
     mrv::Reel reel = uiMain->uiReelWindow->uiBrowser->current_reel();
@@ -220,7 +221,7 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
                     char text[4096];
                     sprintf( text, _("Do you want to replace '%s'?"),
                              buf );
-                    int ok = fltk::choice( text, _("Yes"), _("No"), NULL );
+                    int ok = fl_choice( text, _("Yes"), _("No"), NULL );
                     if (ok == 1) // No
                     {
                         break;
