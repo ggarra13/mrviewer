@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,17 +29,18 @@
 
 #include <vector>
 
-#include <fltk/Slider.h>
+#include <FL/Fl_Slider.H>
 
+#include "core/mrvRectangle.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvMedia.h"
 
 
-class CMedia;
+class ViewerUI;
 
 namespace mrv
 {
-class ViewerUI;
+class CMedia;
 class ImageBrowser;
 
 namespace gui {
@@ -47,12 +48,19 @@ class media;
 }
 
 
-class Timeline : public fltk::Slider
+class Timeline : public Fl_Slider
 {
 public:
     typedef CMedia::Mutex   Mutex;
 
 public:
+    enum Ticks
+    {
+    TICK_ABOVE = 1,
+    TICK_BELOW = 2,
+    TICK_BOTH  = 3,
+    NO_TICK
+    };
     enum DisplayMode
     {
         kSingle,
@@ -73,6 +81,9 @@ public:
         redraw();
     }
 
+    inline int tick_size() const { return _tick_size; }
+    inline void tick_size(int i) { _tick_size = i; }
+    
     inline bool edl() const {
         return _edl;
     }
@@ -86,11 +97,11 @@ public:
     }
 
     inline double maximum() const {
-        return fltk::Slider::maximum();
+        return Fl_Slider::maximum();
     }
     void maximum( double x );
     inline double minimum() const {
-        return fltk::Slider::minimum();
+        return Fl_Slider::minimum();
     }
     void minimum( double x );
 
@@ -124,6 +135,7 @@ public:
         return uiMain;
     }
 
+    int slider_position( double p, int w );
 
     size_t index( const int64_t frame ) const;
     mrv::media media_at( const int64_t frame ) const;
@@ -139,19 +151,20 @@ public:
     }
 
 protected:
-    bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
-    void draw_ticks(const fltk::Rectangle& r, int min_spacing);
+    bool draw(const mrv::Recti& sr, int flags, bool slot);
+    void draw_ticks(const mrv::Recti& r, int min_spacing);
 
-    void draw_selection( const fltk::Rectangle& r);
+    void draw_selection( const mrv::Recti& r);
     void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                          int64_t mn, int64_t mx, int64_t frame,
-                         const fltk::Rectangle& r );
+                         const mrv::Recti& r );
 
     ImageBrowser* browser() const;
 
     static mrv::Timecode::Display _display;
     bool   _edl;
     bool _draw_cache;
+    int   _tick_size;
     int64_t _tc;
     double _fps;
     double _display_min;

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -48,13 +48,13 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "core/mrvFrame.h"
 
 class CIccProfile;
+class ViewerUI;
+class PreferencesUI;
 
 
 namespace mrv {
 
-class ViewerUI;
 class CMedia;
-class PreferencesUI;
 
 void prepare_ACES( const CMedia* img, const std::string& name,
                    Imf::Header& h );
@@ -110,7 +110,7 @@ public:
     typedef std::map< std::string, GLLut3d_ptr > LutsMap;
 
 public:
-    GLLut3d( const mrv::ViewerUI* v, const unsigned N );
+    GLLut3d( const ViewerUI* v, const unsigned N );
     // GLLut3d( const GLLut3d& b );
     virtual ~GLLut3d();
 
@@ -199,7 +199,7 @@ public:
     OCIO::GpuShaderDesc shaderDesc;
 
 protected:
-    const mrv::ViewerUI* view;
+    const ViewerUI* view;
     GLuint texId;                          //!< The lut opengl texture index
     unsigned  short  _channels;
     unsigned         _lutN;                //!< Size of lut (one axis)
