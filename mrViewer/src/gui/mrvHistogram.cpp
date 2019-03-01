@@ -32,9 +32,9 @@
 #define isfinite(x) _finite(x)
 #endif
 
-#include <fltk/draw.h>
-#include <fltk/events.h>
-#include <fltk/Symbol.h>
+#include <FL/Enumerations.H>
+#include <FL/Fl_Rect.H>
+#include <FL/fl_draw.H>
 
 #include "GL/glew.h"
 
@@ -55,39 +55,44 @@
 namespace mrv
 {
 
-Histogram::Histogram( int x, int y, int w, int h, const char* l ) :
-    fltk::Widget( x, y, w, h, l ),
-    _channel( kRGB ),
-    _histtype( kLog ),
-    maxLumma( 0 ),
-    maxColor( 0 ),
-    lastImg( NULL ),
-    lastFrame( std::numeric_limits< int64_t >::min() )
+static void static_draw_histogram( Histogram* v )
 {
-    color( fltk::BLACK );
-    buttoncolor( fltk::BLACK );
+    v->redraw();
+}
 
-    add_timeout(0.016f);
+Histogram::Histogram( int x, int y, int w, int h, const char* l ) :
+Fl_Box( x, y, w, h, l ),
+_channel( kRGB ),
+_histtype( kLog ),
+maxLumma( 0 ),
+maxColor( 0 ),
+lastImg( NULL ),
+lastFrame( std::numeric_limits< int64_t >::min() )
+{
+    color( FL_BLACK );
+    //buttoncolor( FL_BLACK );
+
+    Fl::add_timeout(0.016f, (Fl_Timeout_Handler) static_draw_histogram, this );
 }
 
 
-void Histogram::draw_grid(const fltk::Rectangle& r)
+void Histogram::draw_grid(const Fl_Rect& r)
 {
-//     fltk::setcolor( fltk::GRAY75 );
+//     fl_color( FL_GRAY0 );
 
 //     int X = r.x() + 2;
 //     int H = r.h() / 4;
-//     int H2 = ( H + fltk::getsize() ) / 2;
-//     fltk::drawtext( "L", 1, X, H2 );
-//     fltk::drawtext( "R", 1, X, H+H2 );
-//     fltk::drawtext( "G", 1, X, H*2+H2 );
-//     fltk::drawtext( "B", 1, X, H*3+H2 );
+//     int H2 = ( H + FL_getsize() ) / 2;
+//     FL_drawtext( "L", 1, X, H2 );
+//     FL_drawtext( "R", 1, X, H+H2 );
+//     FL_drawtext( "G", 1, X, H*2+H2 );
+//     FL_drawtext( "B", 1, X, H*3+H2 );
 }
 
 void Histogram::draw()
 {
-    fltk::Rectangle r( w(), h() );
-    draw_box(r);
+    Fl_Rect r( 0, 0, w(), h() );
+    draw_box();
 
     // draw_grid(r);
     draw_pixels(r);
@@ -255,7 +260,7 @@ float Histogram::histogram_scale( float val, float maxVal )
     }
 }
 
-void Histogram::draw_pixels( const fltk::Rectangle& r )
+void Histogram::draw_pixels( const Fl_Rect& r )
 {
     count_pixels();
 
@@ -293,62 +298,62 @@ void Histogram::draw_pixels( const fltk::Rectangle& r )
         idx = int( ((float) i / (float) W) * 255 );
         if ( _channel == kLumma )
         {
-            fltk::setcolor( fltk::GRAY75 );
+            fl_color( FL_GRAY0 );
             v = histogram_scale( lumma[idx], maxL );
             int y = int(HH*v);
-            fltk::drawline( x, H, x, H-y );
+            fl_line( x, H, x, H-y );
         }
 
         if ( _channel == kRed || _channel == kRGB )
         {
-            fltk::setcolor( fltk::RED );
+            fl_color( FL_RED );
             v = histogram_scale( red[idx], maxC );
             int y = y1 = int(HH*v);
-            fltk::drawline( x, H, x, H-y );
+            fl_line( x, H, x, H-y );
         }
 
         if ( _channel == kGreen || _channel == kRGB )
         {
-            fltk::setcolor( fltk::GREEN );
+            fl_color( FL_GREEN );
             v = histogram_scale( green[idx], maxC );
             int y = y2 = int(HH*v);
-            fltk::drawline( x, H, x, H-y );
+            fl_line( x, H, x, H-y );
         }
 
         if ( _channel == kBlue || _channel == kRGB )
         {
-            fltk::setcolor( fltk::BLUE );
+            fl_color( FL_BLUE );
             v = histogram_scale( blue[idx], maxC );
             int y = y3 = int(HH*v);
-            fltk::drawline( x, H, x, H-y );
+            fl_line( x, H, x, H-y );
         }
 
         if ( _channel != kRGB ) continue;
 
         if ( y1 > 0 && y2 > 0 )
         {
-            fltk::setcolor( fltk::YELLOW );
-            fltk::drawline( x, H, x, H-(y1 < y2 ? y1 : y2 ) );
+            fl_color( FL_YELLOW );
+            fl_line( x, H, x, H-(y1 < y2 ? y1 : y2 ) );
         }
         if ( y2 > 0 && y3 > 0 )
         {
-            fltk::setcolor( fltk::CYAN );
-            fltk::drawline( x, H, x, H-(y2 < y3 ? y2 : y3 ) );
+            fl_color( FL_CYAN );
+            fl_line( x, H, x, H-(y2 < y3 ? y2 : y3 ) );
         }
         if ( y1 > 0 && y3 > 0 )
         {
-            fltk::setcolor( fltk::MAGENTA );
-            fltk::drawline( x, H, x, H-(y1 < y3 ? y1 : y3 ) );
+            fl_color( FL_MAGENTA );
+            fl_line( x, H, x, H-(y1 < y3 ? y1 : y3 ) );
         }
         if ( y1 > 0 && y2 > 0 && y3 > 0 )
         {
-            fltk::setcolor( fltk::GRAY75 );
+            fl_color( FL_GRAY0 );
             if ( y1 < y2 && y1 < y3 )
-                fltk::drawline( x, H, x, H-y1 );
+                fl_line( x, H, x, H-y1 );
             else if ( y2 < y1 && y2 < y3 )
-                fltk::drawline( x, H, x, H-y2 );
+                fl_line( x, H, x, H-y2 );
             else
-                fltk::drawline( x, H, x, H-y3 );
+                fl_line( x, H, x, H-y3 );
         }
     }
 }

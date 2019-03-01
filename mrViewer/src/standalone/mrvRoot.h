@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,15 +19,15 @@
  * @file   mrvRoot.h
  * @author gga
  * @date   Fri Jan 11 02:04:55 2008
- *
+ * 
  * @brief  sets the MRV_ROOT variable if not defined by trying to find
  *         the executable's root directory.
- *
+ * 
  */
 
 namespace mrv {
 
-void  set_root_path( const int argc = 0, char** argv = NULL );
+  void  set_root_path( const int argc = 0, const char** argv = NULL );
 
 }
 

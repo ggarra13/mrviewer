@@ -17,13 +17,13 @@
 #define _GRIDGROUP_H
 
 /* fltk includes */
-#include <fltk/Group.h>
+#include <FL/Fl_Group.H>
 
 #include <FLU/Flu_Enumerations.h>
 
 //! This class provides an alternative to Fl_Group that automatically arranges the children either left to right and top to bottom (for type() == \c FL_VERTICAL), or top to bottom and left to right (for type() == \c FL_HORIZONTAL), within the available size of the group.
 
-class FLU_EXPORT GridGroup : public fltk::Group
+class FLU_EXPORT GridGroup : public Fl_Group
 {
 
  public:
@@ -32,22 +32,22 @@ class FLU_EXPORT GridGroup : public fltk::Group
   GridGroup( int x = 0, int y = 0, int w = 0, int h = 0, const char *l = 0 );
 
   //! \return the widget that is visibly above \b w in the group, or \c NULL if no such widget exists
-  fltk::Widget *above( fltk::Widget* w );
+  Fl_Widget *above( Fl_Widget* w );
 
   //! \return the widget that is visibly below \b w in the group, or \c NULL if no such widget exists
-  fltk::Widget *below( fltk::Widget* w );
+  Fl_Widget *below( Fl_Widget* w );
 
-  //! Override of fltk::roup::layout()
+  //! Override of Fl_roup::layout()
   virtual void layout();
 
-  //! Override of fltk::roup::draw()
+  //! Override of Fl_roup::draw()
   virtual void draw();
 
   //! \return the widget that is visibly to the left of \b w in the group, or \c NULL if no such widget exists
-  fltk::Widget *left( fltk::Widget* w );
+  Fl_Widget *left( Fl_Widget* w );
 
   //! \return the widget that is logically after \b w in the groups order, or \c NULL if no such widget exists
-  fltk::Widget *next( fltk::Widget* w );
+  Fl_Widget *next( Fl_Widget* w );
 
   //! Set the offset for where the first child starts
   inline void offset( int x, int y )
@@ -62,10 +62,10 @@ class FLU_EXPORT GridGroup : public fltk::Group
     { return _offset[1]; }
 
   //! \return the widget that is logically before \b w in the groups order, or \c NULL if no such widget exists
-  fltk::Widget *previous( fltk::Widget* w );
+  Fl_Widget *previous( Fl_Widget* w );
 
   //! \return the widget that is visibly to the right of \b w in the group, or \c NULL if no such widget exists
-  fltk::Widget *right( fltk::Widget* w );
+  Fl_Widget *right( Fl_Widget* w );
 
   //! Set the spacing between children
   inline void spacing( int x, int y )
@@ -82,7 +82,7 @@ class FLU_EXPORT GridGroup : public fltk::Group
  protected:
   void _measure( int& W, int& H );
 
-  void bbox( fltk::Rectangle& r );
+  void bbox( Fl_Rect& r );
 
   int _offset[2], _spacing[2], _type;
 };
