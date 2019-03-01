@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,40 +20,43 @@
 #include <string.h>
 #include <iostream>
 
-#include "fltk/Window.h"
-#include "fltk/Button.h"
-#include "fltk/Browser.h"
-#include "fltk/TextEditor.h"
-#include "fltk/Font.h"
-#include "fltk/draw.h"
+#include "FL/Fl_Window.H"
+#include "FL/Fl_Button.H"
+#include "FL/Fl_Box.H"
+#include "FL/Fl_Browser.H"
+#include "FL/Fl_Text_Editor.H"
+#include "FL/Enumerations.H"
+#include "FL/fl_draw.H"
+#include "FL/Fl.H"
 
 #include "gui/mrvFontsWindowUI.h"
 
-class FontDisplay : public fltk::TextEditor {
+class FontDisplay : public Fl_Text_Editor {
 public:
-    FontDisplay(fltk::Box* B, int X, int Y, int W, int H, const char* L = 0) :
-        fltk::TextEditor(X,Y,W,H,L) {
+    FontDisplay(Fl_Boxtype B, int X, int Y, int W, int H, const char* L = 0) :
+    Fl_Text_Editor(X,Y,W,H,L) {
         box(B);
+	buffer( new Fl_Text_Buffer() );
     }
 };
 
 
 namespace mrv {
 
-fltk::Font* font_current = NULL;
+Fl_Font  font_current = 0;
 unsigned    font_size = 32;
 std::string font_text;
 
 }
 
 
-fltk::DoubleBufferWindow *uiMain=(fltk::DoubleBufferWindow *)0;
-fltk::ValueSlider* uiFontSize = NULL;
+Fl_Double_Window *uiMain=(Fl_Double_Window *)0;
+Fl_Value_Slider* uiFontSize = NULL;
 FontDisplay *uiText=(FontDisplay *)0;
-fltk::Browser * encobj;
-fltk::Widget* id_box;
+Fl_Browser * encobj;
+Fl_Box* id_box;
 
-void encoding_cb(fltk::Widget *, long) {
+void encoding_cb(Fl_Widget *, long) {
     int i = encobj->value();
     if (i < 0)
         return;
@@ -63,96 +66,100 @@ void encoding_cb(fltk::Widget *, long) {
 
 
 
-static fltk::Font** fonts;
-
-void new_text( fltk::Widget* w, void* data )
+void new_text( Fl_Widget* w, void* data )
 {
-    mrv::font_text = uiText->text();
+    Fl_Text_Buffer* buf = uiText->buffer();
+    mrv::font_text = buf->text();
 }
 
-void new_font( fltk::Widget* w, void* data )
+void new_font( Fl_Widget* w, void* data )
 {
-    fltk::Choice* c = (fltk::Choice*) w;
+    Fl_Choice* c = (Fl_Choice*) w;
     int i = c->value();
     if ( i < 0 ) i = 0;
 
-    mrv::font_text = uiText->text();
-    mrv::font_current = fonts[i];
-    uiText->textfont( fonts[i] );
+    Fl_Text_Buffer* buf = uiText->buffer();
+    mrv::font_text = buf->text();
+    mrv::font_current = (Fl_Font) i;
+    uiText->textfont( (Fl_Font) i );
     uiText->redraw();
 }
 
-void new_size( fltk::Widget* w, void* data )
+void new_size( Fl_Widget* w, void* data )
 {
-    fltk::ValueSlider* s = (fltk::ValueSlider*) w;
+    Fl_Value_Slider* s = (Fl_Value_Slider*) w;
     mrv::font_size = s->value();
     uiText->textsize( s->value() );
     uiText->redraw();
 }
 
-static void cb_Accept(fltk::Button*, fltk::Window* v) {
-    v->make_exec_return(true);
+static void cb_Accept(Fl_Button*, Fl_Window* v) {
+    /// v->make_exec_return(true);  // @TODO: fltk1.4
 }
 
-static void cb_Cancel(fltk::Button*, fltk::Window* v) {
-    v->make_exec_return(false);
+static void cb_Cancel(Fl_Button*, Fl_Window* v) {
+    /// v->make_exec_return(false);  // @TODO: fltk1.4
 }
 
 
 namespace mrv {
 
 bool make_window() {
-    fltk::DoubleBufferWindow* w;
-    {   fltk::DoubleBufferWindow* o = uiMain = new fltk::DoubleBufferWindow(405, 260);
+    Fl_Double_Window* w;
+    {   Fl_Double_Window* o = uiMain = new Fl_Double_Window(405, 260);
         w = o;
         o->type(241);
-        o->shortcut(0xff1b);
         o->begin();
-        {   fltk::Group* o = new fltk::Group(5, 5, 405, 235);
+        {   Fl_Group* o = new Fl_Group(5, 5, 405, 235);
             o->begin();
 
-            uiText = new FontDisplay(fltk::ENGRAVED_BOX, 0, 0, 400, 100);
-            {   fltk::Choice* o = new fltk::Choice(40, 120, 360, 25, "Font");
-                int numfonts = fltk::list_fonts(fonts);
+            uiText = new FontDisplay(FL_ENGRAVED_BOX, 0, 0, 400, 100);
+            {   Fl_Choice* o = new Fl_Choice(40, 120, 360, 25, "Font");
+                int numfonts = Fl::set_fonts("-*");
                 for (int i = 0; i < numfonts; ++i)
-                    o->add(fonts[i]->name());
-                mrv::font_current = fonts[numfonts-1];
+		{
+		    int t; // bold/italic flags
+                    o->add(Fl::get_font_name( (Fl_Font)i, &t ) );
+		}
+                mrv::font_current = (Fl_Font) numfonts-1;
                 uiText->textfont( mrv::font_current );
                 mrv::font_text = "Type here";
-                uiText->text( mrv::font_text.c_str() );
+                uiText->buffer()->text( mrv::font_text.c_str() );
                 uiText->textsize( mrv::font_size );
                 uiText->callback( new_text );
                 o->callback( new_font );
             }
-            {   fltk::ValueSlider* o = uiFontSize = new fltk::ValueSlider(70, 160, 325, 25, "Font Size");
+            {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(70, 160, 325, 25, "Font Size");
                 o->minimum(8);
                 o->maximum(100);
                 o->step(1);
                 o->value(32);
-                o->align(fltk::ALIGN_LEFT);
+                o->align(FL_ALIGN_LEFT);
                 o->callback( new_size );
             }
             o->end();
 
-            {   fltk::Group* g = new fltk::Group( 0, 200, 405, 55 );
+            {   Fl_Group* g = new Fl_Group( 0, 200, 405, 55 );
                 g->begin();
-                {   fltk::Button* o = new fltk::Button( 270, 5, 50, 25, "OK" );
-                    o->callback((fltk::Callback*)cb_Accept, (void*)(w));
+                {   Fl_Button* o = new Fl_Button( 270, 5, 50, 25, "OK" );
+                    o->callback((Fl_Callback*)cb_Accept, (void*)(w));
                 }
-                {   fltk::Button* o = new fltk::Button( 325, 5, 50, 25, "Cancel" );
-                    o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+                {   Fl_Button* o = new Fl_Button( 325, 5, 50, 25, "Cancel" );
+                    o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
                 }
                 g->end();
             }
 
-            fltk::Group::current()->resizable(o);
+            Fl_Group::current()->resizable(o);
         }
 
         o->end();
         o->set_modal();
     }
 
-    return w->exec();
+    w->show();
+    
+    return true;
 }
 
 } // namespace mrv

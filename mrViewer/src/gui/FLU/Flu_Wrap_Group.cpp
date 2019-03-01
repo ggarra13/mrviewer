@@ -1,4 +1,3 @@
-
 // $Id: Flu_Wrap_Group.cpp,v 1.8 2004/01/27 21:44:24 jbryan Exp $
 
 /***************************************************************
@@ -11,365 +10,403 @@
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
  * 
  ***************************************************************/
-#include <iostream>
-using namespace std;
 
-#include <cstring>
-#include <cstdio>
 
-#include "fltk/Symbol.h"
-#include "fltk/Valuator.h"
-#include "fltk/layout.h"
-
-#include "fltk/events.h"
-#include "fltk/damage.h"
-#include "fltk/draw.h"
 
 #include "FLU/Flu_Wrap_Group.h"
-#include "FLU/Flu_File_Chooser.h"
+#include <string.h>
+#include <stdio.h>
 
-#if USE_CLIPOUT
-extern fltk::Widget* fl_did_clipping;
-#endif
+#define MAX( x, y ) ( (x)>(y) ? (x) : (y) )
 
-Flu_Wrap_Group::Flu_Wrap_Group( int x, int y, int w, int h, const char *l )
-  : fltk::ScrollGroup( x, y, w, h, l ),
-    scrollToElement( NULL )
+#define SCROLL_SIZE 15
+
+Flu_Wrap_Group :: Scrollbar :: Scrollbar( int x, int y, int w, int h, const char *l )
+  : Fl_Scrollbar( x, y, w, h, l )
 {
-  uchar r,g,b;
-  fltk::split_color( color(), r, g, b );
-  scrollbar.color( fltk::color(r*2,g*2,b*2) );
-  hscrollbar.color( fltk::color(r*2,g*2,b*2) );
-
-  set_vertical();
-
-  Group::current(parent());
 }
 
-
-void Flu_Wrap_Group::scroll_to( const fltk::Widget* w )
+int Flu_Wrap_Group :: Scrollbar :: handle( int event )
 {
-  scrollToElement = w;
-
-  layout();
-  scrollTo( w->x(), w->y() );
-  relayout();
-}
-
-void Flu_Wrap_Group::scroll_to_beginning()
-{
-  scrollTo(0,0);
-}
-
-void Flu_Wrap_Group::scroll_to_end()
-{
-  scrollTo( int(hscrollbar.maximum()), int(scrollbar.maximum()) );
-}
-
-
-
-void Flu_Wrap_Group::_measure( int& maxW, int& maxH ) const
-{
-  int nchildren = children();
-  maxW = 0; maxH = 0;
-  fltk::Widget* c;
-  for ( int i = 0; i < nchildren; ++i )
+  if( event == FL_MOUSEWHEEL )
     {
-      c = child(i);
-      if ( !c->visible() ) continue;
-      if ( c->w() > maxW ) maxW = c->w();
-      if ( c->h() > maxH ) maxH = c->h();
+      handle_drag( clamp( value() + linesize() * Fl::e_dy ) );
+      return 1;
     }
-
-  maxW += _spacing[0];
-  maxH += _spacing[1];
+  else
+    return Fl_Scrollbar::handle( event );
 }
 
-
-void Flu_Wrap_Group::layout_grid()
+Flu_Wrap_Group :: Flu_Wrap_Group( int x, int y, int w, int h, const char *l )
+  : Fl_Group( x, y, w, h, l ), scrollbar( x+w-SCROLL_SIZE, y, SCROLL_SIZE, h ), group( x, y, w-SCROLL_SIZE, h )
 {
-  int rows = 0; int cols = 0;
+  offset( 0, 0 );
+  spacing( 0, 0 );
+  _type = FL_VERTICAL;
+  scrollTo = NULL;
 
-  int nchildren = children();
-  if ( nchildren == 0 ) return;
+  Fl_Group::add( &scrollbar );
+  scrollbar.callback( _scrollCB, this );
+  scrollbar.linesize( 10 );
+  scrollbar.range( 0, 100 );
+  scrollbar.show();
 
-  // First, find max size of child widgets
-  fltk::Widget* c;
-  int maxW, maxH;
-  _measure( maxW, maxH );
+  Fl_Group::add( &group );
+  Fl_Group::resizable( group );
+  Fl_Group::end();
+  group.begin();
+}
 
-  hscrollbar.clear_visible();
-  scrollbar.clear_visible();
-
-  Rectangle r;
-  r.set(0,0,w(),h()); box()->inset(r);
-
-  int X = -xposition() + box()->dx();
-  int Y = -yposition() + box()->dy();
-  int OX, OY;
-
-  rows = cols = 1;
-  int sw = scrollbar_width();
-  int rowsH = 0;
-
-  // Do vertical arrangement
-  if ( flags() & fltk::LAYOUT_VERTICAL )
+void Flu_Wrap_Group :: resize( int x, int y, int w, int h )
+{
+  group.resizable( NULL );
+  Fl_Group::resize( x, y, w, h );
+  if( type() == FL_VERTICAL )
     {
-      int lastY = Y + r.h();
+      scrollbar.resize( x+w-SCROLL_SIZE-Fl::box_dx(box()), y+Fl::box_dy(box()), SCROLL_SIZE, h-Fl::box_dh(box()) );
+      group.resize( x, y, w-SCROLL_SIZE-Fl::box_dx(box()), h );
+    }
+  else
+    {
+      scrollbar.resize( x+Fl::box_dx(box()), y+h-SCROLL_SIZE-Fl::box_dy(box()), w-Fl::box_dw(box()), SCROLL_SIZE );
+      group.resize( x, y, w, h-SCROLL_SIZE-Fl::box_dh(box()) );
+    }
+  Fl_Group::init_sizes();
+  redraw();
+}
 
-      // will it all fit in one column?
-      // If not, remove the size of the scrollbar
-      if ( Y + maxH > lastY )
+void Flu_Wrap_Group :: scroll_to( const Fl_Widget *w )
+{
+  scrollTo = w;
+  redraw();
+}
+
+void Flu_Wrap_Group :: scroll_to_beginning()
+{
+  ((Fl_Valuator*)&scrollbar)->value( scrollbar.minimum() );
+}
+
+void Flu_Wrap_Group :: scroll_to_end()
+{
+  ((Fl_Valuator*)&scrollbar)->value( scrollbar.maximum() );
+}
+
+void Flu_Wrap_Group :: type( int t )
+{
+  _type = t;
+  resize( x(), y(), w(), h() );
+}
+
+Fl_Widget* Flu_Wrap_Group :: next( Fl_Widget* w )
+{
+  for( int i = 0; i < group.children()-1; i++ )
+    {
+      if( w == group.child(i) )
+	return group.child(i+1);
+    }
+  return NULL;
+}
+
+Fl_Widget* Flu_Wrap_Group :: previous( Fl_Widget* w )
+{
+  for( int i = 1; i < group.children(); i++ )
+    {
+      if( w == group.child(i) )
+	return group.child(i-1);
+    }
+  return NULL;
+}
+
+Fl_Widget* Flu_Wrap_Group :: above( Fl_Widget* w )
+{
+  for( int i = 0; i < group.children(); i++ )
+    {
+      if( w == group.child(i) )
 	{
-	  if ( scrollbar_align()&fltk::ALIGN_TOP )
-	    {
-	      Y += sw;
-	    }
+	  int measure[2];
+	  measure[0] = w->x() + w->w()/2;
+	  measure[1] = w->y() - _spacing[1];
+	  int index = layout( scrollbar.visible(), false, measure );
+	  if( index >= 0 )
+	    return group.child(index);
 	  else
-	    lastY -= sw;
-	}
-
-      OX = X; OY = Y;
-      rows = (lastY - Y) / maxH;
-      for ( int i = 0; i < nchildren; ++i )
-	{
-	  c = child(i);
-	  if( !c->visible() ) continue;
-	  c->position( X, Y );
-	  Y += c->h();
-          rowsH += Y;
-	  if ( i != nchildren-1 && Y + maxH >= lastY ) 
-	    {
-	      Y = OY;
-	      X += maxW;
-	      ++cols;
-	    }
+	    return group.child(0);
 	}
     }
-  else
-    {
-      int lastX = X + r.w();
+  return NULL;
+}
 
-      // will it all fit in one row?  
-      // If not, remove the size of the scrollbar
-      if ( X + maxW * nchildren > lastX )
+Fl_Widget* Flu_Wrap_Group :: below( Fl_Widget* w )
+{
+  for( int i = 0; i < group.children(); i++ )
+    {
+      if( w == group.child(i) )
 	{
-	  if ( scrollbar_align()&fltk::ALIGN_LEFT )
-	    {
-	      X += sw;
-	    }
+	  int measure[2];
+	  measure[0] = w->x() + w->w()/2;
+	  measure[1] = w->y() + w->h() + _spacing[1];
+	  int index = layout( scrollbar.visible(), false, measure );
+	  if( index >= 0 )
+	    return group.child(index);
 	  else
-	    lastX -= sw;
+	    return group.child(group.children()-1);
 	}
+    }
+  return NULL;
+}
 
-      OX = X; OY = Y;
-      cols = (lastX - X) / maxW;
-      for ( int i = 0; i < nchildren; ++i )
+Fl_Widget* Flu_Wrap_Group :: left( Fl_Widget* w )
+{
+  for( int i = 0; i < group.children(); i++ )
+    {
+      if( w == group.child(i) )
 	{
-	  c = child(i);
-	  if( !c->visible() ) continue;
-	  c->position( X, Y );
-	  X += maxW;
-	  if ( i != nchildren-1 && X + maxW >= lastX ) 
+	  int measure[2];
+	  measure[0] = w->x() - _spacing[0];
+	  measure[1] = w->y() + w->h()/2;
+	  int index = layout( scrollbar.visible(), false, measure );
+	  if( index >= 0 )
+	    return group.child(index);
+	  else
+	    return group.child(0);
+	}
+    }
+  return NULL;
+}
+
+Fl_Widget* Flu_Wrap_Group :: right( Fl_Widget* w )
+{
+  for( int i = 0; i < group.children(); i++ )
+    {
+      if( w == group.child(i) )
+	{
+	  int measure[2];
+	  measure[0] = w->x() + w->w() + _spacing[0] + 1;
+	  measure[1] = w->y() + w->h()/2;
+	  int index = layout( scrollbar.visible(), false, measure );
+	  if( index >= 0 )
+	    return group.child(index);
+	  else
+	    return group.child(group.children()-1);
+	}
+    }
+  return NULL;
+}
+
+int Flu_Wrap_Group :: layout( bool sbVisible, bool doScrollTo, int *measure )
+{
+  int xx = x()+Fl::box_dx(box()), yy = y()+Fl::box_dy(box()),
+    ww = w()-Fl::box_dw(box()), hh = h()-Fl::box_dh(box());
+
+  if( type() == FL_VERTICAL )
+    {
+      int i, X, Y, maxH, H, col, row, maxW, scrollY;
+      Fl_Widget *c;
+
+      scrollbar.type( FL_VERTICAL );
+
+    BEGIN_H:
+
+      X = xx+_offset[0];
+      Y = yy+_offset[1] - (sbVisible ? scrollbar.value() : 0);
+      maxH = _offset[1];
+      H = 0;
+      col = 0;
+      row = 0;
+      scrollY = 0;
+      maxW = xx + ww - (sbVisible ? scrollbar.w() : 0);
+
+      for( i = 0; i < group.children(); i++ )
+	{
+	  c = group.child(i);
+	  if( !c->visible() )
+	    continue;
+	  H = MAX( H, c->h() );
+	  if( col == 0 )
+	    maxH += H + _spacing[1];
+	  if( ( X + c->w() ) > maxW )
 	    {
-	      X = OX;
-	      Y += c->h();
-              rowsH += c->h();
-	      ++rows;
-	    }
-	}
-    }
+	      Y += H + _spacing[1];
+	      scrollY += H + _spacing[1];
+	      if( i == group.children()-1 )
+		maxH += H + _spacing[1];
 
-  int W = cols * maxW;
-  if ( W > r.w() )
-    {
-      hscrollbar.set_visible();
-      hscrollbar.resize(r.x(), scrollbar_align()&fltk::ALIGN_TOP ? 
-			r.y() : r.b()-sw, r.w(), sw);
-      hscrollbar.value(r.x()-OX, r.w(), 0, W);
-    }
-  else
-    {
-      for ( int i = 0; i < nchildren; ++i )
-	{
-	  c = child(i);
-	  if( !c->visible() ) continue;
-	  c->position( c->x() + xposition(), c->y() );
-	}
-    }
+	      if( measure )
+		{
+		  if( xx+_offset[0] <= measure[0] && measure[0] <= xx+c->w()+_offset[0]+_spacing[0] &&
+		      Y <= measure[1] && measure[1] <= Y+c->h()+_spacing[1] )
+		    return i;
+		}
+	      else
+		c->position( xx+_offset[0], Y );
 
-  int H = rowsH;
-  if ( H > r.h() )
-    {
-      scrollbar.set_visible();
-      scrollbar.resize(scrollbar_align()&fltk::ALIGN_LEFT ? 
-		       r.x() : r.r()-sw, r.y(), sw, r.h());
-      scrollbar.value(r.y()-OY, r.h(), 0, H);
-    }
-  else
-    {
-      for ( int i = 0; i < nchildren; ++i )
-	{
-	  c = child(i);
-	  if( !c->visible() ) continue;
-	  c->position( c->x(), c->y() + yposition() );
-	}
-    }
-
-  if ( scrollToElement )
-    {
-      scrollTo( scrollToElement->x(), scrollToElement->y() );
-      scrollToElement = NULL;
-    }
-}
-
-
-void Flu_Wrap_Group::layout()
-{
-  layout_grid();
-}
-
-
-
-void Flu_Wrap_Group::draw()
-{
-  draw_box();
-
-  Rectangle r(w(),h()); 
-  box()->inset(r);
-  fltk::push_clip(r);
-  for ( int i = 0; i < children(); ++i )
-    draw_child( *(child(i)) );
-  draw_child(scrollbar);
-  draw_child(hscrollbar);
-  fltk::pop_clip();
-}
-
-
-void Flu_Wrap_Group::grid(unsigned int& cols, unsigned int& rows) const
-{
-  cols = rows = 0;
-  if ( children() == 0 ) return;
-
-  Rectangle r; 
-  Flu_Wrap_Group* w = const_cast<Flu_Wrap_Group*>(this);
-  w->bbox(r);
-  int maxW, maxH;
-  _measure( maxW, maxH );
-  if ( flags() & fltk::LAYOUT_VERTICAL )
-    {
-      rows = r.h() / maxH;
-      cols = children() / rows;
-    }
-  else
-    {
-      cols = r.w() / maxW;
-      rows = children() / cols;
-    }
-  if ( rows == 0 ) rows = 1;
-  if ( cols == 0 ) cols = 1;
-}
-
-void Flu_Wrap_Group::grid_find( unsigned int& col, unsigned int& row,
-				const unsigned int cols, const unsigned int rows,
-				const fltk::Widget* w ) const
-{
-  for ( int i = 0; i < children(); ++i )
-    {
-      if ( child(i) == w )
-	{
-	  if ( flags() & fltk::LAYOUT_VERTICAL )
-	    {
-	      row = i % rows;
-	      col = i - row * rows;
-	      return;
+	      col = 0;
+	      row++;
+	      H = 0;
+	      X = xx+c->w() + _offset[0] + _spacing[0];
 	    }
 	  else
 	    {
-	      col = i % cols;
-	      row = i - col * cols;
-	      return;
+	      if( measure )
+		{
+		  if( X <= measure[0] && measure[0] <= X+c->w()+_spacing[0] &&
+		      Y <= measure[1] && measure[1] <= Y+c->h()+_spacing[1] )
+		    return i;
+		}
+	      else
+		c->position( X, Y );
+	      X += c->w() + _spacing[0];
+	      col++;
 	    }
+
+	  if( doScrollTo && (c == scrollTo) )
+	    {
+	      if( scrollY > scrollbar.maximum() )
+		scrollY = (int)scrollbar.maximum();
+	      ((Fl_Valuator*)&scrollbar)->value( scrollY );
+	      scrollTo = NULL;
+	      goto BEGIN_H;
+	    }
+
+	  // if we exceed the height and the scrollbar is not visible,
+	  // then it will soon become visible so we don't need to process anymore
+	  if( !measure && !sbVisible && maxH > hh )
+	    return 1;
 	}
-    }
-  col = row = 0; // we failed to find widget
-  return;
-}
 
-void Flu_Wrap_Group::grid_find( unsigned int& col, unsigned int& row,
-				const fltk::Widget* w ) const
-{
-  unsigned int cols, rows; grid(cols, rows); grid_find( col, row, cols, rows, w );
-}
-
-unsigned int Flu_Wrap_Group::index_from_grid( const unsigned int c,
-					      const unsigned int r,
-					      const unsigned int cols,
-					      const unsigned int rows ) const
-{
-  if ( flags() & fltk::LAYOUT_VERTICAL )
-    {
-      return c * rows + r;
+      if( measure )
+	return -1;
+      else if( maxH > hh )
+	{
+	  scrollbar.range( 0, maxH-hh );
+	  scrollbar.slider_size( MAX( float(scrollbar.h()-(maxH-hh))/float(scrollbar.h()), 0.08f ) );
+	  return 1;
+	}
+      else
+	return 0;
     }
   else
     {
-      return r * cols + c;
+      int i, X, Y, W, maxW, maxH, col, row, scrollX;
+      Fl_Widget *c;
+
+      scrollbar.type( FL_HORIZONTAL );
+
+    BEGIN_W:
+
+      X = xx+_offset[0] - (sbVisible ? scrollbar.value() : 0);
+      Y = yy+_offset[1];
+      maxW = _offset[0];
+      W = 0;
+      col = 0;
+      row = 0;
+      scrollX = 0;
+      maxH = yy + hh - (sbVisible ? scrollbar.h() : 0);
+
+      for( i = 0; i < group.children(); i++ )
+	{
+	  c = group.child(i);
+	  if( !c->visible() )
+	    continue;
+
+	  W = MAX( W, c->w() );
+
+	  if( row == 0 )
+	    maxW += W + _spacing[0];
+
+	  if( ( Y + c->h() ) > maxH )
+	    {
+	      X += W + _spacing[0];
+	      scrollX += W + _spacing[0];
+	      if( i == group.children()-1 )
+		maxW += W + _spacing[0];
+
+	      if( measure )
+		{
+		  if( X <= measure[0] && measure[0] <= X+c->w()+_spacing[0] &&
+		      yy+_offset[1] <= measure[1] && measure[1] <= yy+c->h()+_offset[1]+_spacing[1] )
+		    return i;
+		}
+	      else
+		c->position( X, yy+_offset[1] );
+
+	      row = 0;
+	      col++;
+	      W = 0;
+	      Y = yy+c->h() + _offset[1] + _spacing[1];
+	    }
+	  else
+	    {
+	      if( measure )
+		{
+		  if( X <= measure[0] && measure[0] <= X+c->w()+_spacing[0] &&
+		      Y <= measure[1] && measure[1] <= Y+c->h()+_spacing[1] )
+		    return i;
+		}
+	      else
+		c->position( X, Y );
+	      Y += c->h() + _spacing[1];
+	      row++;
+	    }
+
+	  if( doScrollTo && (c == scrollTo) )
+	    {
+	      if( scrollX > scrollbar.maximum() )
+		scrollX = (int)scrollbar.maximum();
+	      ((Fl_Valuator*)&scrollbar)->value( scrollX );
+	      scrollTo = NULL;
+	      goto BEGIN_W;
+	    }
+
+	  // if we exceed the width and the scrollbar is not visible,
+	  // then it will soon become visible so we don't need to process anymore
+	  if( !measure && !sbVisible && maxW > ww )
+	    return 1;
+	}
+
+      if( measure )
+	return -1;
+      else if( maxW > ww )
+	{
+	  scrollbar.range( 0, maxW-ww );
+	  scrollbar.slider_size( MAX( float(scrollbar.w()-(maxW-ww))/float(scrollbar.w()), 0.08f ) );
+	  return 1;
+	}
+      else
+	return 0;
     }
-} 
-
-fltk::Widget* Flu_Wrap_Group::above( const fltk::Widget* w ) const  
-{ 
-  unsigned int c, r, cols, rows; grid(cols, rows); grid_find( c, r, cols, rows, w );
-  if ( r == 0 ) return NULL;
-  return child( index_from_grid( c, r, cols, rows ) ); 
 }
 
-fltk::Widget* Flu_Wrap_Group::below( const fltk::Widget* w ) const 
-{ 
-  unsigned int c, r, cols, rows; grid(cols, rows); grid_find( c, r, cols, rows, w );
-  if ( r == rows-1 ) return NULL;
-  return child( index_from_grid( c, r, cols, rows ) );
-}
-
-fltk::Widget* Flu_Wrap_Group::left( const fltk::Widget* w ) const 
-{ 
-  unsigned int c, r, cols, rows; grid(cols, rows); grid_find( c, r, cols, rows, w );
-  if ( c == 0 ) return NULL;
-  return child( index_from_grid( c, r, cols, rows ) ); 
-}
-
-
-fltk::Widget* Flu_Wrap_Group::right( const fltk::Widget* w ) const
+void Flu_Wrap_Group :: draw()
 {
-  unsigned int c, r, cols, rows; grid(cols, rows); grid_find( c, r, cols, rows, w );
-  if ( c == cols-1 ) return NULL;
-  return child( index_from_grid( c, r, cols, rows ) ); 
-}
+  // we first try to fit all children assuming no scrollbar. if they do not all fit, 
+  // we have to turn the scrollbar on and try again
+  if( layout( false, false ) )
+    {
+      scrollbar.show();
+      layout( true, false );
+    }
+  else
+    scrollbar.hide();
 
+  // hack to look right when resizing smaller
+  if( scrollbar.value() > scrollbar.maximum() )
+    {
+      ((Fl_Valuator*)&scrollbar)->value( scrollbar.maximum() );
+      layout( scrollbar.visible(), scrollTo!=NULL );
+    }
+  else if( scrollTo )
+    layout( scrollbar.visible(), true );
 
+  scrollTo = NULL;
 
-//! \return the widget that logically follows the passed widget.
-fltk::Widget* Flu_Wrap_Group::next( const fltk::Widget* w ) const
-{
-  unsigned int i = find( w );
-  if ( i == children() - 1 ) return NULL;
-  return child(i + 1);
-}
-
-//! \return the widget that logically comes before the passed widget.
-fltk::Widget* Flu_Wrap_Group::previous( const fltk::Widget* w ) const
-{
-  unsigned int i = find( w );
-  if ( i == 0 ) return NULL;
-  return child(i - 1);
-}
-
-int Flu_Wrap_Group::handle( int event )
-{
-   if ( event == fltk::MOUSEWHEEL )
-   {
-      fltk::e_dy = fltk::event_dy() * 8;
-   }
-
-   return fltk::ScrollGroup::handle( event );
+  if( damage() & ~FL_DAMAGE_CHILD)
+    {
+      draw_box();
+      draw_label();
+    }
+  fl_push_clip( x()+Fl::box_dx(box()), y()+Fl::box_dy(box()),
+		w()-Fl::box_dw(box()), h()-Fl::box_dh(box()) );
+  draw_children();
+  fl_pop_clip();
 }

@@ -1,0 +1,111 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "core/mrvMath.h"} {private local
+}
+
+decl {\#include "core/mrvColorSpaces.h"} {private local
+}
+
+decl {\#include "core/mrvServer.h"} {private local
+}
+
+decl {\#include "core/mrvClient.h"} {private local
+}
+
+decl {\#include "gui/mrvMainWindow.h"} {private local
+}
+
+decl {\#include "gui/mrvImageView.h"} {private local
+}
+
+decl {\#include "gui/mrvImageBrowser.h"} {private local
+}
+
+decl {\#include "gui/mrvBrowser.h"} {private local
+}
+
+decl {\#include "gui/mrvPreferencesBrowser.h"} {private local
+}
+
+decl {\#include "gui/mrvCTLBrowser.h"} {public local
+}
+
+decl {\#include "mrvFileRequester.h"} {private local
+}
+
+decl {\#include "gui/mrvPopupMenu.h"} {public local
+}
+
+decl {\#include "gui/mrvTimecode.h"} {private local
+}
+
+decl {\#include "gui/mrvTimeline.h"} {private local
+}
+
+decl {\#include "gui/mrvColorOps.h"} {private local
+}
+
+decl {\#include "gui/mrvHistogram.h"} {private local
+}
+
+decl {\#include "gui/mrvValueInput.h"} {public local
+}
+
+decl {\#include "gui/mrvActionWindow.h"} {public local
+}
+
+decl {\#include "gui/mrvVectorscope.h"} {public global
+}
+
+decl {\#include "mrViewer.h"} {selected private global
+}
+
+decl {\#include "icons/icons.c"} {private local
+}
+
+decl {\#include "FL/fl_ask.H"} {private local
+}
+
+decl {\#include "FL/Fl.H"} {private local
+}
+
+class VectorscopeUI {} {
+  decl {ViewerUI* main_;} {private local
+  }
+  Function {make_window(ViewerUI* main)} {private
+  } {
+    Fl_Window uiMain {
+      label Vectorscope
+      user_data this user_data_type {VectorscopeUI*}
+      callback {v->main()->uiView->send_network( "VectorscopeWindow 0" );
+o->hide();} open
+      xywh {107 386 325 240} type Double hide resizable
+      code0 {// Make the window transient
+main_ = main;}
+    } {
+      Fl_Box uiVectorscope {
+        xywh {4 4 319 231}
+        code0 {o->main( main );}
+        class {mrv::Vectorscope}
+      }
+    }
+  }
+  Function {VectorscopeUI(ViewerUI* m)} {} {
+    code {Fl_Group::current( m->uiMain ); make_window( m );} {}
+  }
+  Function {~VectorscopeUI()} {} {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+}
