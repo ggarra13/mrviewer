@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,31 +28,30 @@
 #include <boost/bind.hpp>
 #include <iostream>
 
-#include <core/mrvServer.h>
+#include <mrvServer.h>
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
-namespace mrv {
-
 class ViewerUI;
 
+namespace mrv {
+
+
 class client : public Parser,
-    public boost::enable_shared_from_this< client >
+               public boost::enable_shared_from_this< client >
 {
-public:
+  public:
     client(boost::asio::io_service& io_service,
-           mrv::ViewerUI* v);
-    virtual ~client() {};
+           ViewerUI* v); 
+    virtual ~client() { stop(); };
 
     void start(tcp::resolver::iterator endpoint_iter);
 
     virtual void stop();
     virtual void deliver( const std::string& msg );
 
-    bool stopped() {
-        return stopped_;
-    }
+    bool stopped() { return stopped_; }
 
     void start_connect(tcp::resolver::iterator endpoint_iter);
     void handle_connect(const boost::system::error_code& ec,
@@ -67,10 +66,10 @@ public:
 
     void check_deadline();
 
-    static void create( mrv::ViewerUI* main );
-    static void remove( mrv::ViewerUI* main );
+    static void create( ViewerUI* main );
+    static void remove( ViewerUI* main );
 
-private:
+  private:
     bool stopped_;
     deadline_timer non_empty_output_queue_;
     std::deque< std::string > output_queue_;
@@ -79,6 +78,7 @@ private:
 };
 
 typedef boost::shared_ptr< client > client_ptr;
+typedef std::vector< client* >      ClientList;
 
 void client_thread( const ServerData* s );
 

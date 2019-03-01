@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,21 +18,22 @@
 #ifndef mrvEDLGroup_h
 #define mrvEDLGroup_h
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Browser.H>
 
 #include "mrvMediaTrack.h"
+
+class ViewerUI;
 
 namespace mrv {
 
 class Timeline;
 class Element;
-class ViewerUI;
 class ImageBrowser;
 class ImageView;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
-class EDLGroup : public fltk::Group
+class EDLGroup : public Fl_Group
 {
 public:
     typedef std::vector< audio_track_ptr >  AudioTrack;
@@ -95,10 +96,10 @@ public:
 
     void refresh();
 
-    void main(mrv::ViewerUI* m) {
+    void main(ViewerUI* m) {
         uiMain = m;
     }
-    mrv::ViewerUI* main() {
+    ViewerUI* main() {
         return uiMain;
     }
 
@@ -108,7 +109,6 @@ public:
     virtual int  handle( int event );
     virtual void draw();
 
-protected:
     void pan(int value);
 
 protected:
@@ -118,7 +118,7 @@ protected:
     int        _dragY;
     int        _dragChild;
     AudioTrack _audio_track;
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
     mrv::Timeline* _timeline;
 };
 
