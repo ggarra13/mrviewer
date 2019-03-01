@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #define mrvMediaTrack_h
 
 #include <boost/cstdint.hpp>
-#include <fltk/Group.h>
+#include <FL/Fl_Group.H>
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -30,14 +30,15 @@ extern "C" {
 #include "mrvMedia.h"
 #include "mrvMediaList.h"
 
+class ViewerUI;
+
 namespace mrv {
 
-class ViewerUI;
 class ImageBrowser;
 class Timeline;
 class Element;
 
-class media_track : public fltk::Group
+class media_track : public Fl_Group
 {
 public:
     media_track(int x, int y, int w, int h);
@@ -83,10 +84,10 @@ public:
     bool remove( const mrv::media m );
 
 
-    void main( mrv::ViewerUI* m ) {
+    void main( ViewerUI* m ) {
         _main = m;
     }
-    mrv::ViewerUI* main() const {
+    ViewerUI* main() const {
         return _main;
     }
 
@@ -130,7 +131,7 @@ public:
     virtual void draw();
 
 protected:
-    mrv::ViewerUI* _main;
+    ViewerUI* _main;
     int        _reel_idx;
     int        _dragX;
     bool       _at_start;

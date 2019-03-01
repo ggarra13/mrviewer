@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 #include <boost/shared_array.hpp>
 
 
-#include <fltk/GlWindow.h>  // this should be just Window
+#include <FL/Fl_Gl_Window.H>  // this should be just Window
 
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
@@ -46,16 +46,12 @@
 
 #include "video/mrvGLShape.h"
 
-namespace fltk {
-class Menu;
-}
-
+class ViewerUI;
 
 namespace mrv {
 
-void modify_sop_sat_cb( fltk::Widget* w, mrv::ImageView* view );
+void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
 
-class ViewerUI;
 class ImageBrowser;
 class Timeline;
 class DrawEngine;
@@ -63,7 +59,7 @@ class Event;
 class Parser;
 class server;
 
-class ImageView : public fltk::GlWindow
+class ImageView : public Fl_Gl_Window
 {
 public:
     enum CommandType
@@ -308,7 +304,7 @@ public:
     }
 
     /// Change channel shown in viewer
-    void channel( fltk::Widget* w ); // widget is one of the menus or submenus
+    void channel( Fl_Menu_Item* w ); // widget is one of the menus or submenus
     void channel( unsigned short c );
     unsigned short channel() const {
         return _channel;
@@ -483,25 +479,25 @@ public:
     void vr_angle( const float t );
 
     /// Attaches main window class to this viewer
-    void main( mrv::ViewerUI* b ) {
+    void main( ViewerUI* b ) {
         uiMain = b;
     }
 
     /// Returns the main window class associated to this view
-    mrv::ViewerUI* main()  {
+    ViewerUI* main()  {
         return uiMain;
     }
 
     /// Returns the main window class associated to this view
-    const mrv::ViewerUI* main() const {
+    const ViewerUI* main() const {
         return uiMain;
     }
 
     /// Auxiliary function to return viewer's main fltk window
-    fltk::Window* fltk_main();
+    Fl_Window* fltk_main();
 
     /// Auxiliary function to return viewer's main fltk window
-    const fltk::Window* fltk_main() const;
+    const Fl_Window* fltk_main() const;
 
     void toggle_window( const WindowList idx, const bool force = false );
 
@@ -848,7 +844,7 @@ protected:
     void log() const;
 
 protected:
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
     mrv::DrawEngine*    _engine;
 
     bool         _update;    //<- Freeze opengl updates when not set
@@ -904,7 +900,7 @@ protected:
     ///////////////////
     // Popup menu
     ///////////////////
-    fltk::Menu*  _menu;
+    Fl_Menu_Item*  _menu;
 
     // Event Timeout
     mrv::Event*  _timeout;
