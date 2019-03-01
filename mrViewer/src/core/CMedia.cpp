@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ extern "C" {
 #include <thread>
 #include <mutex>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #undef  __STDC_CONSTANT_MACROS
 
@@ -1538,6 +1538,7 @@ void CMedia::default_color_corrections()
     default_ocio_input_color_space();
 }
 
+
 /**
  * Set a new filename for a single image. If dealing with an image sequence,
  * sequence() should be called instead.
@@ -1551,13 +1552,17 @@ void CMedia::filename( const char* n )
     if ( strncmp( n, "file:", 5 ) == 0 )
         n += 5;
 
+
+
     if ( _fileroot && strcmp( n, _fileroot ) == 0 )
         return;
+
 
 
     std::string name = n;
     if ( name.substr(0, 6) == "Slate " )
         name = name.substr(6, name.size() );
+
 
 
     fs::path file = fs::path( name );
@@ -1573,15 +1578,17 @@ void CMedia::filename( const char* n )
         _fileroot = strdup( file.string().c_str() );
     }
 
+
     free( _filename );
     _filename = NULL;
+
 
     _is_sequence = false;
     _is_stereo = false;
 
+
     if ( fetch( _hires, 1 ) )
     {
-        cache( _hires );
     }
 
     _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
@@ -1938,18 +1945,8 @@ void CMedia::stereo_output( StereoOutput x )
         if ( playback() == kStopped )
         {
             image_type_ptr canvas;
-            int64_t f = _frame;
-            if ( fetch( canvas, f ) )
+            if ( fetch(canvas, _frame) )
             {
-                DecodeStatus status = decode_video( f );
-                if ( status != kDecodeOK )
-                {
-                    LOG_ERROR( "Decoding frame " << f << " failed for "
-                               << name() << ". "
-                               << CMedia::decode_error(status) );
-                    return;
-                }
-                find_image( f );
                 cache( canvas );
             }
         }
@@ -2077,7 +2074,7 @@ void CMedia::channel( const char* c )
         image_type_ptr canvas;
         if ( fetch( canvas, f ) )
         {
-	    if ( !is_sequence() ) _hires = canvas;
+            if ( !is_sequence() ) _hires = canvas;
             cache( canvas );
             default_color_corrections();
         }
@@ -2396,7 +2393,7 @@ bool CMedia::valid_subtitle() const
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir,
-                  mrv::ViewerUI* const uiMain,
+                  ViewerUI* const uiMain,
                   bool fg )
 {
 
