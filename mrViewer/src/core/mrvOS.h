@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvOS.h
  * @author gga
  * @date   Sun Jan 13 09:15:12 2008
- *
+ * 
  * @brief  Auxiliary file hiding platform differences (mainly, non POSIX)
- *
- *
+ * 
+ * 
  */
 
 #ifndef mrvOS_h
@@ -31,6 +31,9 @@
 
 #if (defined(_WIN32) || defined(_WIN64))
 
+#if !(defined vsnprintf)
+#  define vsnprintf       _vsnprintf
+#endif
 
 #if !(defined putenv)
 #  define putenv(x)       _putenv(x)
@@ -50,11 +53,16 @@
 #  define strtok_r(a,b,c) strtok(a,b)
 #endif
 
+#if !(defined snprintf)
+#  define snprintf        _snprintf
+#endif
 
 #if !(defined access)
 #  define access          _access
 #endif
 
+#undef  _ITERATOR_DEBUG_LEVEL 
+#define _ITERATOR_DEBUG_LEVEL 0
 
 #endif // defined(WIN32) || defined(WIN64)
 
