@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 #  define NOMINMAX
 #endif
 
-#include <cmath>
+// #include <cmath>
 
 
 
@@ -62,7 +62,7 @@ inline int64_t modE( int64_t D, int64_t d )
 // Usage is Pow<int>(float).  Example: Pow<3>(2.0f) = 8.0f
 template <int n>
 static Float Pow(Float v) {
-    static_assert(n > 0, "Power can’t be negative");
+    static_assert(n > 0, "Power canÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂt be negative");
     Float n2 = Pow<n / 2>(v);
     return n2 * n2 * Pow<n & 1>(v);
 }

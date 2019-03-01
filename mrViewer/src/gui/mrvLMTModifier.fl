@@ -25,29 +25,27 @@ decl {\#include "gui/mrvLMTBrowser.h"} {public
 
 decl {\#include "mrViewer.h"} {} 
 
-namespace mrv {open
-} {
   decl {class ViewerUI;} {public
   }
   class LMTModifier {open
   } {
-    Function {make_window( const mrv::ViewerUI* main )} {open
+    Function {make_window( const ViewerUI* main )} {open
     } {
-      {fltk::Window} uiMain {open
+      {Fl_Window} uiMain {open
         xywh {627 416 650 485} resizable visible
       } {
-        {fltk::Group} {} {open
+        {Fl_Group} {} {open
           xywh {10 5 640 475}
         } {
-          {fltk::Browser} uiLMTs {
+          {Fl_Browser} uiLMTs {
             label {Look Mod Transforms}
             xywh {7 20 623 400} type Multi
             class {mrv::LMTBrowser}
           } {}
         }
-        {fltk::Button} {} {
+        {Fl_Button} {} {
           label Add
-          user_data main user_data_type {mrv::ViewerUI*}
+          user_data main user_data_type {ViewerUI*}
           callback {mrv::ImageView* view = v->uiView;
 mrv::media fg = view->foreground();
 if (!fg) return;
@@ -58,16 +56,16 @@ attach_ctl_lmt_script( img, num, v );
 uiLMTs->fill( fg );}
           xywh {15 440 105 30}
         }
-        {fltk::Button} {} {
+        {Fl_Button} {} {
           label Remove
-          user_data main user_data_type {mrv::ViewerUI*}
+          user_data main user_data_type {ViewerUI*}
           callback {mrv::ImageView* view = v->uiView;
 mrv::media fg = view->foreground();
 if (!fg) return;
 
 typedef std::vector< int > LMTs;
 LMTs r;
-fltk::Widget* w = uiLMTs->goto_top();
+Fl_Widget* w = uiLMTs->goto_top();
 int i = 0;
 for ( ; w; w = uiLMTs->next(), ++i )
 {
@@ -93,7 +91,7 @@ uiLMTs->fill( fg );} selected
     }
     Function {~LMTModifier()} {open
     } {}
-    Function {LMTModifier( const mrv::ViewerUI* main )} {open
+    Function {LMTModifier( const ViewerUI* main )} {open
     } {
       code {make_window(main);
 uiMain->child_of( main->uiView );
@@ -105,4 +103,3 @@ uiMain->show();} {}
 uiLMTs->redraw();} {}
     }
   }
-} 
