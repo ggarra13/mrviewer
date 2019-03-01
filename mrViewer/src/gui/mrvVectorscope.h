@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,35 +27,36 @@
 #ifndef mrvVectorscope_h
 #define mrvVectorscope_h
 
-#include <fltk/Widget.h>
+#include <FL/Fl_Box.H>
 
-#include "CMedia.h"
+#include "core/CMedia.h"
+#include "core/mrvRectangle.h"
+
+class ViewerUI;
 
 namespace mrv
 {
-class ViewerUI;
-
-class Vectorscope : public fltk::Widget
+class Vectorscope : public Fl_Box
 {
 public:
     Vectorscope( int x, int y, int w, int h, const char* l = 0 );
 
     virtual void draw();
 
-    void main( mrv::ViewerUI* m ) {
+    void main( ViewerUI* m ) {
         uiMain = m;
     }
 
 protected:
-    void draw_grid( const fltk::Rectangle& r );
-    void draw_pixels( const fltk::Rectangle& r );
-    void draw_pixel( const fltk::Rectangle& r,
+    void draw_grid( const mrv::Recti& r );
+    void draw_pixels( const mrv::Recti& r );
+    void draw_pixel( const mrv::Recti& r,
                      const CMedia::Pixel& rgb,
                      const CMedia::Pixel& hsv );
 
     int diameter_;
 
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
 };
 
 }  // namespace mrv
