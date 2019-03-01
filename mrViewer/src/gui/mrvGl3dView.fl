@@ -1,0 +1,66 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+i18n_type 1
+i18n_include <libintl.h>
+i18n_function gettext
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "gui/mrvGlWindow3d.h"} {public local
+}
+
+decl {\#include "gui/mrvHotkey.h"} {private local
+}
+
+decl {\#include "FL/Fl_Color_Chooser.H"} {private local
+}
+
+decl {\#include "FL/fl_ask.H"} {private local
+}
+
+decl {\#include "FL/Fl.H"} {public global
+}
+
+decl {\#include "mrViewer.h"} {public global
+}
+
+decl {\#include "gui/mrvImageView.h"} {selected public global
+}
+
+decl {class ViewerUI;} {public global
+}
+
+class GL3dViewUI {open
+} {
+  decl {ViewerUI* main_;} {private local
+  }
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label {3d View}
+      user_data this user_data_type {GL3dViewUI*}
+      callback {v->main()->uiView->send_network( "GL3dView 0" );
+o->hide();}
+      xywh {158 521 325 240} type Double hide resizable
+      code0 {// Make the window transient
+main_ = main;
+// o->child_of( main->uiMain );}
+      class {mrv::GlWindow3d} non_modal
+    } {}
+  }
+  Function {GL3dViewUI(ViewerUI* m)} {} {
+    code {make_window( m );} {}
+  }
+  Function {~GL3dViewUI()} {} {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+}
