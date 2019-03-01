@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,13 +29,8 @@
 
 #define assert0(x) if ( !(x) ) do { std::cerr << #x << " FAILED"; abort(); } while(0);
 
-#include <fltk/Cursor.h>
-#include <fltk/Box.h>
-
-#include <fltk/damage.h>
-#include <fltk/draw.h>
-#include <fltk/events.h>
-
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Menu_Item.H>
 #include "mrvBrowser.h"
 
 
@@ -43,22 +38,26 @@ namespace mrv
 {
 
 Browser::Browser( int x, int y, int w, int h, const char* l ) :
-    fltk::Browser( x, y, w, h, l ),
-    _column_separator_color( fltk::Color(fltk::BLACK) ),
-    _last_cursor( fltk::CURSOR_DEFAULT ),
-    _column_separator( true ),
-    _dragging ( false ),
-    _auto_resize( false )
+Fl_Browser( x, y, w, h, l ),
+_column_separator_color( Fl_Color(FL_BLACK) ),
+_last_cursor( FL_CURSOR_DEFAULT ),
+_column_separator( true ),
+_dragging ( false ),
+_auto_resize( false )
 {
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     init_sizes();
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 }
 
 // CHANGE CURSOR
 //     Does nothing if cursor already set to value specified.
 //
-void Browser::change_cursor(fltk::Cursor* newcursor) {
+void Browser::change_cursor(Fl_Cursor newcursor) {
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     if ( newcursor != _last_cursor ) {
-        cursor(newcursor);
+        std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+        fl_cursor(newcursor);
         _last_cursor = newcursor;
     }
 }
@@ -67,17 +66,19 @@ void Browser::change_cursor(fltk::Cursor* newcursor) {
 //
 int Browser::which_col_near_mouse() {
     //     int X,Y,W,H;
-    //     fltk::Rectangle r( X, Y, W, H );
+    //     FL_Rectangle r( X, Y, W, H );
     //     box->inset(r);	// area inside browser's box()
     // EVENT NOT INSIDE BROWSER AREA? (eg. on a scrollbar)
-    if ( ! fltk::event_inside(*this) ) {
+    if ( ! Fl::event_inside(this) ) {
         return -1;
     }
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     const int* widths = column_widths();
     if (!widths) return -1;
 
-    int mousex = fltk::event_x() + xposition();
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+    int mousex = Fl::event_x() + xposition();
     int colx = 0;
     for ( int t=0; widths[t]; t++ ) {
         colx += widths[t];
@@ -93,68 +94,86 @@ int Browser::which_col_near_mouse() {
 }
 
 // MANAGE EVENTS TO HANDLE COLUMN RESIZING
+void Browser::set_column_start(int i, int w)
+{
+    int* cols = const_cast<int*>( column_widths() );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+    cols[i] = w;
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+    column_widths( cols );
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+    redraw();
+}
+
+// MANAGE EVENTS TO HANDLE COLUMN RESIZING
 int Browser::handle(int e)
 {
-    // Not showing column separators? Use default fltk::Browser::handle() logic
-    if ( ! column_separator() ) return(fltk::Browser::handle(e));
+    // Not showing column separators? Use default Fl_Browser::handle() logic
+    if ( ! column_separator() ) return(Fl_Browser::handle(e));
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     // Handle column resizing
     int ret = 0;
     switch ( e ) {
-    case fltk::ENTER: {
+    case FL_ENTER: {
         ret = 1;
         break;
     }
-    case fltk::MOVE: {
+    case FL_MOVE: {
+        std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
         if ( which_col_near_mouse() >= 0 ) {
-            change_cursor(fltk::CURSOR_WE);
+            change_cursor(FL_CURSOR_WE);
         } else {
-            change_cursor(fltk::CURSOR_DEFAULT);
+            change_cursor(FL_CURSOR_DEFAULT);
         }
         ret = 1;
         break;
     }
-    case fltk::PUSH: {
-        fltk::event_clicks(0);
+    case FL_PUSH: {
+        Fl::event_clicks(0);
         int whichcol = which_col_near_mouse();
         if ( whichcol >= 0 ) {
+            std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
             // CLICKED ON RESIZER? START DRAGGING
             ret = 1;
             _dragging = true;
             _dragcol = whichcol + 1;
-            change_cursor(fltk::CURSOR_DEFAULT);
+            change_cursor(FL_CURSOR_DEFAULT);
         }
         break;
     }
-    case fltk::DRAG: {
+    case FL_DRAG: {
         if ( _dragging ) {
             // Sum up column widths to determine position
-            int mousex = fltk::event_x() + xposition();
+            int mousex = Fl::event_x() + xposition();
             int newwidth = mousex - x();
 
             if ( newwidth > 0 ) {
+                std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                 set_column_start( _dragcol, newwidth );
-                relayout();
+                std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+                //relayout();  // @TODO: fltk1.4
                 redraw();
             }
         }
         break;
     }
-    case fltk::LEAVE:
-    case fltk::RELEASE: {
+    case FL_LEAVE:
+    case FL_RELEASE: {
         _dragging = false;				// disable drag mode
-        change_cursor(fltk::CURSOR_DEFAULT);	// ensure normal cursor
+        change_cursor(FL_CURSOR_DEFAULT);	// ensure normal cursor
         ret = 1;
         break;
     }
     }
-    if ( _dragging ) return(1);	// dragging? don't pass event to fltk::Browser
-    return(fltk::Browser::handle(e) ? 1 : ret);
+    if ( _dragging ) return(1);	// dragging? don't pass event to FL_Browser
+    return(Fl_Browser::handle(e) ? 1 : ret);
 }
 
 void Browser::layout()
 {
     int nchildren = children();
 
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     if ( _auto_resize )
     {
@@ -162,8 +181,7 @@ void Browser::layout()
         int nchildren = children();
         for ( int i = 0; i < nchildren; ++i )
         {
-            fltk::Widget* c = child(i);
-            c->layout();
+            Fl_Widget* c = child(i);
             hh += c->h();
         }
 
@@ -171,8 +189,9 @@ void Browser::layout()
 
     }
 
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
-    fltk::Browser::layout();
+    // Fl_Browser::layout();
 
     const int* widths = column_widths();
     if (!widths) return;
@@ -182,6 +201,7 @@ void Browser::layout()
     for ( c = widths; *c != 0; ++c, ++num )
     {
     }
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     // If widget is set to resizable, resize all columns equally,
     // unless one column width is set to -1
@@ -210,13 +230,14 @@ void Browser::layout()
     }
 
 
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     for ( int i = 0; i < nchildren; ++i )
     {
-        fltk::Widget* c = child(i);
+        Fl_Widget* c = child(i);
         if (!c) continue;
-        if ( ! c->is_group() ) continue;
+        if ( ! c->as_group() ) continue;
 
-        fltk::Group* g  = (fltk::Group*) c;
+        Fl_Group* g  = (Fl_Group*) c;
 
         int columns = g->children();
         int x = 0;
@@ -239,38 +260,40 @@ void Browser::layout()
 
 void Browser::draw() {
     // DRAW BROWSER
-    fltk::Browser::draw();
+    Fl_Browser::draw();
     if (!column_widths()) return;
+
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     if ( column_separator() ) {
         // DRAW COLUMN SEPARATORS
-        Rectangle r( w(), h() );
-        box()->inset(r);
-        int X = r.x();
-        int Y = r.y();
-        int W = r.w();
-        int H = r.h();
+        int X = x() + Fl::box_dx(box());
+        int Y = y() + Fl::box_dy(box());
+        int W = w() - Fl::box_dw(box());
+        int H = h() - Fl::box_dh(box());
         int colx = X - xposition();
-        fltk::setcolor( column_separator_color() );
+        fl_color( column_separator_color() );
         const int* widths = column_widths();
         for ( int t=0; widths[t]; t++ ) {
             colx += widths[t];
             if ( colx > X && colx < (X+W) ) {
-                fltk::drawline(colx, Y, colx, Y+H-1);
+                fl_line(colx, Y, colx, Y+H-1);
             }
         }
     }
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 }
 
-int Browser::absolute_item_index( const fltk::Group* g )
+int Browser::absolute_item_index( Fl_Group* g )
 {
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     int idx = 1;
     int num = g->children();
     for (int i = 0; i < num; ++i)
     {
-        fltk::Widget* c = g->child(i);
-        if ( c->is_group() )
-            idx += absolute_item_index( (fltk::Group*) c );
+        Fl_Widget* c = g->child(i);
+        if ( c->as_group() )
+            idx += absolute_item_index( (Fl_Group*) c );
         else
             ++idx;
     }
@@ -278,26 +301,24 @@ int Browser::absolute_item_index( const fltk::Group* g )
 }
 
 int Browser::absolute_item_index( bool& found,
-                                  const fltk::Widget* item,
-                                  const fltk::Widget* w )
+                                  Fl_Widget* item,
+                                  Fl_Widget* w )
 {
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     if ( w == item  ) {
         found = true;
         return 0;
     }
 
-    if ( !w->is_group() ) return 1;
+    if ( !w->as_group() ) return 1;
 
-    int idx = 1;
-    fltk::Group* g = (fltk::Group*) w;
-    int num = g->children();
-
-    for ( int i = 0; i < num; ++i )
+    Fl_Group* g = (Fl_Group*) w;
+    int idx = 0;
+    int children = g->children();
+    for ( int i = 0; i < children; ++i )
     {
-        fltk::Widget* c = g->child(i);
-        if (!c) continue;
-        idx += absolute_item_index( found, item, c );
+        idx += absolute_item_index( found, item, w );
         if ( found ) break;
     }
 
@@ -306,22 +327,22 @@ int Browser::absolute_item_index( bool& found,
 
 int Browser::absolute_item_index()
 {
+    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     int main_idx = value();
     if ( main_idx < 0 ) return main_idx;
 
     int idx = 0;
     for (int i = 0; i < main_idx; ++i)
     {
-        fltk::Widget* c = child(i);
-        if (!c) continue;
+        Fl_Widget* c = child(i);
 
-        if ( c->is_group() )
-            idx += absolute_item_index( (fltk::Group*)c );
+        if ( c->as_group() )
+            idx += absolute_item_index( (Fl_Group*) c );
         else
             ++idx;
     }
 
-    fltk::Widget* sel = item();
+    Fl_Widget* sel = (Fl_Widget*) item_at( value() );
     bool found = false;
     idx += absolute_item_index( found, sel, child(main_idx) );
 
