@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,7 +35,9 @@
 #include <limits>
 #include <algorithm>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
+#include <FL/fl_utf8.h>
+
 #include <boost/bind.hpp>
 
 #include <ImfStringAttribute.h>
@@ -735,7 +737,7 @@ void stubImage::clear_to_NANs()
 
 void stubImage::parse_stub( mrv::image_type_ptr& canvas )
 {
-    FILE* f = fltk::fltk_fopen( filename(), N_("rb") );
+    FILE* f = fl_fopen( filename(), N_("rb") );
     char data[129];
     size_t num = fread(data, sizeof(char), 129, f);
     if ( num != 128 ) {

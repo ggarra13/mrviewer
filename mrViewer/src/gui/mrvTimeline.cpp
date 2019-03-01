@@ -1,6 +1,6 @@
 /*
    mrViewer - the professional movie and flipbook playback
-   Copyright (C) 2007-2014  Gonzalo Garramuño
+   Copyright (C) 2007-2014  Gonzalo Garramuno
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  * @author gga
  * @date   Fri Oct 13 13:36:04 2006
  *
- * @brief  An fltk::Widget to draw a timeline.
+ * @brief  An Fl_Widget to draw a timeline.
  *
  *
  */
@@ -28,8 +28,8 @@
 #include <cassert>
 #include <cmath>  // for fabs()
 
-#include <fltk/draw.h>
-#include <fltk/Flags.h>
+#include <core/mrvRectangle.h>
+#include <FL/fl_draw.H>
 
 #include "core/mrvColor.h"
 #include "core/mrvI8N.h"
@@ -40,6 +40,8 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
 #include "mrViewer.h"
+#include "mrvPreferencesUI.h"
+#include "mrvReelUI.h"
 #include "gui/mrvMedia.h"
 #include "gui/mrvMediaList.h"
 
@@ -59,7 +61,7 @@ namespace mrv
 mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
-    fltk::Slider( x, y, w, h, l ),
+    Fl_Slider( x, y, w, h, l ),
     _draw_cache( true ),
     _edl( false ),
     _tc( 0 ),
@@ -68,8 +70,8 @@ Timeline::Timeline( int x, int y, int w, int h, char* l ) :
     _display_max( kMinFrame ),
     uiMain( NULL )
 {
-    fltk::Slider::minimum( 1 );
-    fltk::Slider::maximum( 50 );
+    Fl_Slider::minimum( 1 );
+    Fl_Slider::maximum( 50 );
 }
 
 Timeline::~Timeline()
@@ -114,7 +116,7 @@ void Timeline::display_maximum( const double& x )
 
 void Timeline::minimum( double x )
 {
-    fltk::Slider::minimum( x );
+    Fl_Slider::minimum( x );
     _display_min = x;
 
     if ( uiMain && uiMain->uiView )
@@ -127,7 +129,7 @@ void Timeline::minimum( double x )
 
 void Timeline::maximum( double x )
 {
-    fltk::Slider::maximum( x );
+    Fl_Slider::maximum( x );
     _display_max = x;
 
     if ( uiMain && uiMain->uiView )
@@ -181,10 +183,8 @@ void Timeline::edl( bool x )
 /*! Draw tick marks. These lines cross the passed rectangle perpendicular to
   the slider direction. In the direction parallel to the slider direction
   the box should have the same size as the area the slider moves in. */
-void Timeline::draw_ticks(const fltk::Rectangle& r, int min_spacing)
+void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 {
-    using namespace fltk;
-
     int x1, y1, x2, y2, dx, dy, w;
     x1 = x2 = r.x()+(slider_size()-1)/2;
     dx = 1;
@@ -193,7 +193,7 @@ void Timeline::draw_ticks(const fltk::Rectangle& r, int min_spacing)
     dy = 0;
     w = r.w();
 
-    push_clip( r );
+    fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
     if (w <= 0) return;
 
@@ -248,10 +248,10 @@ void Timeline::draw_ticks(const fltk::Rectangle& r, int min_spacing)
     }
     if ( nummod <= 1 ) nummod = 1;
 
-    Color textcolor = this->textcolor();
-    Color linecolor = lerp(this->color(), textcolor, .66666f);
+    Fl_Color textcolor = this->labelcolor();
+    Fl_Color linecolor = Imath::lerp(this->color(), textcolor, .66666f);
 
-    setcolor(linecolor);
+    fl_color(linecolor);
     char buffer[128];
     for (int n = 0; ; n++) {
         // every ten they get further apart for log slider:
@@ -264,39 +264,39 @@ void Timeline::draw_ticks(const fltk::Rectangle& r, int min_spacing)
         int sm = n%smallmod ? 3 : 0;
         if (v >= A && v <= B) {
             int t = slider_position(v, w);
-            drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
+            fl_line(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
             if (n-1 != 0 && (n-1)%nummod == 0) {
                 mrv::Timecode::format( buffer, _display, boost::int64_t(v),
                                        _tc, _fps );
                 char* p = buffer;
-                setfont(textfont(), textsize());
-                setcolor(textcolor);
+                fl_font(labelfont(), labelsize());
+                fl_color(textcolor);
                 int wt = 0, ht = 0;
-                measure( p, wt, ht );
-                drawtext(p, float(x1+dx*t-wt/2),
-                         float(y1+dy*t+getsize()-getdescent()));
-                setcolor(linecolor);
+                fl_measure( p, wt, ht );
+                fl_draw(p, float(x1+dx*t-wt/2),
+                        float(y1+dy*t+fl_height()-fl_descent()));
+                fl_color(linecolor);
             }
         }
         if (v && -v >= A && -v <= B) {
             int t = slider_position(-v, w);
-            drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
+            fl_line(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
             if (n%nummod == 0) {
                 mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _tc,
                                        _fps );
                 char* p = buffer;
-                setfont(textfont(), textsize());
-                setcolor(textcolor);
+                fl_font(labelfont(), labelsize());
+                fl_color(textcolor);
                 // int wt = 0, ht = 0;
                 // measure( p, wt, ht );
-                drawtext(p, float(x1+dx*t),
-                         float(y1+dy*t+getsize()-getdescent()));
-                setcolor(linecolor);
+                fl_draw(p, float(x1+dx*t),
+                         float(y1+dy*t+fl_height()-fl_descent()));
+                fl_color(linecolor);
             }
         }
     }
 
-    pop_clip();
+    fl_pop_clip();
 }
 
 /*!
@@ -305,18 +305,16 @@ void Timeline::draw_ticks(const fltk::Rectangle& r, int min_spacing)
   the moving slider, and the "slot". The slot only drawn if \a slot
   is true. You should already have drawn the background of the slider.
 */
-bool Timeline::draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot)
+bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
 {
-    using namespace fltk;
-
     // for back compatability, use type flag to set slider size:
     if (type()&16/*FILL*/) slider_size(0);
 
-    Rectangle r = sr;
+    mrv::Recti r = sr;
 
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
-        Rectangle tr = r;
+        mrv::Recti tr = r;
         r.move_b(-tick_size());
         switch (type()&TICK_BOTH) {
         case TICK_BOTH:
@@ -330,33 +328,36 @@ bool Timeline::draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot)
             tr.set_y(r.center_y()+(slot?3:0));
             break;
         }
-        setcolor(inactive(contrast(textcolor(),color()),flags));
+        fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
         draw_ticks(tr, (slider_size()+1)/2);
     }
 
     if (slot) {
         const int slot_size_ = 6;
-        Rectangle sl;
+        mrv::Recti sl;
         int dx = (slider_size()-slot_size_)/2;
         if (dx < 0) dx = 0;
         sl.x(dx+r.x());
         sl.w(r.w()-2*dx);
         sl.y(r.y()+(r.h()-slot_size_+1)/2);
         sl.h(slot_size_);
-        setbgcolor(BLACK);
-        THIN_DOWN_BOX->draw(sl);
+        Fl::set_box_color(FL_BLACK);
+        Fl_Boxtype b = box();
+        box( FL_THIN_DOWN_BOX );
+        draw_box();
+        box( b );
     }
-
-    drawstyle(style(),flags|OUTPUT);
+    // @TODO: fltk1.4
+    //drawstyle(style(),flags|OUTPUT);
     // if user directly set selected_color we use it:
-    if (style()->selection_color_) {
-        setbgcolor(style()->selection_color_);
-        setcolor(contrast(selection_textcolor(), style()->selection_color_));
+    if ( selection_color() ) {
+        Fl::set_box_color( selection_color() );
+        fl_color(fl_contrast(labelcolor(), selection_color()));
     }
 
     // figure out where the slider should be:
-    Rectangle s(r);
-    int sglyph = ALIGN_INSIDE; // draw a box
+    mrv::Recti s(r);
+    int sglyph = FL_ALIGN_INSIDE; // draw a box
     s.x(r.x()+slider_position(value(),r.w()));
     s.w(slider_size());
     if (!s.w()) {
@@ -365,21 +366,20 @@ bool Timeline::draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot)
     }
     else sglyph=0; // draw our own special glyph
 
-    if ( active() )
-        draw_glyph(sglyph, s); // draw slider in new position
+    // @TODO: fltk1.4
+    // if ( active() )
+    //     draw_glyph(sglyph, s); // draw slider in new position
     return true;
 }
 
 void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                                int64_t mn, int64_t mx, int64_t frame,
-                               const fltk::Rectangle& r )
+                               const mrv::Recti& r )
 {
-
-    using namespace fltk;
 
     int64_t j = frame;
 
-    
+
 //    if ( !img->has_video() && pos < j ) j = pos;
 
     int64_t max = frame + size;
@@ -393,15 +393,15 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int ww = r.w();
 
     CMedia::Cache c = CMedia::kLeftCache;
-    setcolor( fltk::DARK_GREEN );
-    line_style( SOLID, 1 );
+    fl_color( FL_DARK_GREEN );
+    fl_line_style( FL_SOLID, 1 );
 
     if ( ( img->stereo_output() != CMedia::kNoStereo &&
             img->stereo_output() != CMedia::kStereoLeft ) ||
             img->stereo_input() > CMedia::kSeparateLayersInput )
     {
         c = CMedia::kStereoCache;
-        setcolor( fltk::GREEN );
+        fl_color( FL_GREEN );
     }
 
 
@@ -437,7 +437,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             {
                 int dx2 = rx + slider_position( double(j), ww );
                 int wh = dx2-dx;
-                fillrect( dx, r.y()+r2, wh, r2+1 );
+                fl_rectf( dx, r.y()+r2, wh, r2+1 );
                 dx = NO_FRAME_VALUE;
                 break;
             }
@@ -449,27 +449,26 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     {
         int dx2 = rx + slider_position( double(j), ww );
         int wh = dx2-dx;
-        fillrect( dx, r.y()+r2, wh, r2+1 );
+        fl_rectf( dx, r.y()+r2, wh, r2+1 );
     }
 
 
 }
 
 
-void Timeline::draw_selection( const fltk::Rectangle& r )
+void Timeline::draw_selection( const mrv::Recti& r )
 {
     int rx = r.x() + (slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
 
-    setcolor( fltk::CYAN );
-    Rectangle r2( rx+dx, r.y(), end-dx, r.h()-8 );
-    fillrect( r2 );
+    fl_color( FL_CYAN );
+    fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
 }
 
 int Timeline::handle( int e )
 {
-    return fltk::Slider::handle( e );
+    return Fl_Slider::handle( e );
     // if ( r != 0 ) return r;
     // return uiMain->uiView->handle( e );
 }
@@ -480,22 +479,22 @@ int Timeline::handle( int e )
  */
 void Timeline::draw()
 {
-    using namespace fltk;
+    // Flags flags = this->flags();
+    // Flags f2 = flags & ~FOCUSED;
+    // if (pushed()) f2 |= PUSHED;
+    // flags &= ~HIGHLIGHT;
 
-    Flags flags = this->flags();
-    Flags f2 = flags & ~FOCUSED;
-    if (pushed()) f2 |= PUSHED;
-    flags &= ~HIGHLIGHT;
+    // drawstyle(style(),flags);
 
-    drawstyle(style(),flags);
-
-    Box* box = this->box();
-    if (!box->fills_rectangle()) draw_background();
+    draw_box();
 
 
-    Rectangle r(w(),h());
-    box->draw(r);
-    box->inset(r);
+    mrv::Recti r( w(), h() );
+
+    // Box* box = this->box();
+    // if (!box->fills_rectangle()) draw_background();
+
+
 
     // Get number of frames
     double mn = minimum();
@@ -543,21 +542,20 @@ void Timeline::draw()
             int  dx = slider_position( double(frame),      ww );
             int end = slider_position( double(frame+size), ww );
 
-            Rectangle lr;
-            lr.set( rx+dx, r.y(), end-dx, r.h() );
+            mrv::Recti lr( rx+dx, r.y(), end-dx, r.h() );
 
             // Draw a block
             if ( v >= frame && v < frame + size )
             {
                 _fps = img->fps();
-                setcolor( highlight_textcolor() );
+                fl_color( fl_lighter( labelcolor() ) );
             }
             else
             {
-                setcolor( labelcolor() );
+                fl_color( labelcolor() );
             }
 
-            fillrect( lr );
+            fl_rectf( lr.x(), lr.y(), lr.w(), lr.h() );
         }
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
@@ -591,10 +589,10 @@ void Timeline::draw()
 
             int dx = rx + slider_position( double(frame), ww );
 
-            setcolor( BLUE );
-            line_style( SOLID, 3 );
-            drawline( dx, r.y(), dx, r.b()-1 ); // -1 to compensate line style
-            line_style( SOLID );
+            fl_color( FL_BLUE );
+            fl_line_style( FL_SOLID, 3 );
+            fl_line( dx, r.y(), dx, r.b()-1 ); // -1 to compensate line style
+            fl_line_style( FL_SOLID );
         }
     }
     else
@@ -608,9 +606,9 @@ void Timeline::draw()
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
                 boost::int64_t first = img->first_frame();
-		int64_t pos = 1;
-		if ( _edl )
-		    pos = m->position() - img->first_frame();
+                int64_t pos = 1;
+                if ( _edl )
+                    pos = m->position() - img->first_frame();
                 draw_cacheline( img, pos,
                                 img->duration() + img->start_number(),
                                 int64_t(minimum()), int64_t(maximum()),
@@ -619,19 +617,21 @@ void Timeline::draw()
         }
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-                ( _display_min != minimum() || _display_max != maximum() ) )
+             ( _display_min != minimum() || _display_max != maximum() ) )
         {
-            draw_selection(r);
+            // @TODO: fltk1.4
+            // draw_selection(r);
         }
 
     }
 
 
-    draw( r, f2, r.y()==0 );
+    Fl_Slider::draw();
+    // draw( r, f2, r.y()==0 );
 
-    // draw the focus indicator inside the box:
-    drawstyle(style(),flags);
-    box->draw_symbol_overlay(r);
+    // @TODO: fltk1.4 draw the focus indicator inside the box:
+    // drawstyle(style(),flags);
+    //box->draw_symbol_overlay(r);
 }
 
 /**
@@ -727,7 +727,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
     return reel->global_to_local( frame );
 }
 
-void change_timeline_display( mrv::ViewerUI* uiMain )
+void change_timeline_display( ViewerUI* uiMain )
 {
     int i = uiMain->uiTimecodeSwitch->value();
     const char* label = uiMain->uiTimecodeSwitch->child(i)->label();
@@ -744,6 +744,12 @@ void change_timeline_display( mrv::ViewerUI* uiMain )
     uiMain->uiStartFrame->display( d );
     uiMain->uiEndFrame->display( d );
     uiMain->uiTimeline->display( d );
+}
+
+int Timeline::slider_position( double p, int w )
+{
+    // @TODO: fltk1.4
+    return p * w;
 }
 
 } // namespace mrv
