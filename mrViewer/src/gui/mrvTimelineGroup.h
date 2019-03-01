@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #ifndef mrvTimelineGroup_h
 #define mrvTimelineGroup_h
 
-#include <fltk/Group.h>
+#include <FL/Fl_Group.H>
 
 
 namespace mrv
@@ -39,7 +39,7 @@ namespace mrv
 class Timeline;
 class Timecode;
 
-class TimelineGroup : public fltk::Group
+class TimelineGroup : public Fl_Group
 {
 public:
     TimelineGroup( int x, int y, int w, int h, char* l = 0);

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 //  distribution.
 //  *       Neither the name of Gonzalo Garramuno nor the names of
 //  its other contributors may be used to endorse or promote products derived
-//  from this software without specific prior written permission.
+//  from this software without specific prior written permission. 
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -59,110 +59,110 @@
 #undef max
 
 
-namespace mr
+namespace mr 
 {
 
 //! Exception handler
 class ExceptionHandler
 {
-public:
+   public:
 
-    //! Initialize Exception Handler
-    ExceptionHandler( );
-    //! Destroy exception handler and restore original exceptions
-    ~ExceptionHandler( );
+     //! Initialize Exception Handler
+     ExceptionHandler( );
+     //! Destroy exception handler and restore original exceptions
+     ~ExceptionHandler( );
 
-    //! Show a Stack Trace so far.
-    static void ShowStack( HANDLE hThread, CONTEXT& c ); // dump a stack
+     //! Show a Stack Trace so far.
+     static void ShowStack( HANDLE hThread, CONTEXT& c ); // dump a stack
 
-    //! Set log file to dump trace and info in case of crash.
-    //! Default name is name of the main program.
-    static void SetLogFileName( PTSTR pszLogFileName );
+     //! Set log file to dump trace and info in case of crash.
+     //! Default name is name of the main program.
+     static void SetLogFileName( PTSTR pszLogFileName );
 
-private:
+   private:
 
-    static void write(const char* c, ...);
+     static void write(const char* c, ...);
+     
+     struct ModuleEntry
+     {
+	  std::string imageName;
+	  std::string moduleName;
+	  DWORD baseAddress;  // Should be UINT_PTR?
+	  DWORD size;
+     };
+     typedef std::vector< ModuleEntry > ModuleList;
+     typedef ModuleList::iterator ModuleListIter;
+     
+     static LONG WINAPI Filter( EXCEPTION_POINTERS *ep );
+     static void enumAndLoadModuleSymbols( HANDLE hProcess, DWORD pid );
+     static bool fillModuleList( ModuleList& modules, DWORD pid,
+				 HANDLE hProcess );
+     static bool fillModuleListTH32( ModuleList& modules, DWORD pid );
+     static bool fillModuleListPSAPI( ModuleList& modules, DWORD pid,
+				      HANDLE hProcess );
 
-    struct ModuleEntry
-    {
-        std::string imageName;
-        std::string moduleName;
-        DWORD baseAddress;  // Should be UINT_PTR?
-        DWORD size;
-    };
-    typedef std::vector< ModuleEntry > ModuleList;
-    typedef ModuleList::iterator ModuleListIter;
+     static BOOL InitImagehlpFunctions( void );
 
-    static LONG WINAPI Filter( EXCEPTION_POINTERS *ep );
-    static void enumAndLoadModuleSymbols( HANDLE hProcess, DWORD pid );
-    static bool fillModuleList( ModuleList& modules, DWORD pid,
-                                HANDLE hProcess );
-    static bool fillModuleListTH32( ModuleList& modules, DWORD pid );
-    static bool fillModuleListPSAPI( ModuleList& modules, DWORD pid,
-                                     HANDLE hProcess );
+     // Variables used by the class
 
-    static BOOL InitImagehlpFunctions( void );
+     // Make typedefs for some IMAGEHLP.DLL functions so that we can use them
+     // with GetProcAddress
+     typedef BOOL (__stdcall *tSC)( IN HANDLE hProcess );
+     
+     typedef PVOID (__stdcall *tSFTA)
+     ( HANDLE hProcess, DWORD AddrBase );
+     
+     typedef BOOL (__stdcall *tSGLFA)
+     ( IN HANDLE hProcess, IN DWORD dwAddr,
+       OUT PDWORD pdwDisplacement, OUT PIMAGEHLP_LINE Line );
+     
+     typedef DWORD (__stdcall *tSGMB)( HANDLE, DWORD );
+     
+     typedef BOOL (__stdcall *tSGMI)
+     ( IN HANDLE hProcess, IN DWORD dwAddr, OUT PIMAGEHLP_MODULE ModuleInfo );
+     
+     typedef DWORD (__stdcall *tSGO)( VOID );
+     
+     typedef BOOL (__stdcall *tSGSFA)
+     ( IN HANDLE hProcess, IN DWORD dwAddr,
+       OUT PDWORD pdwDisplacement, OUT PIMAGEHLP_SYMBOL Symbol );
+     
+     typedef BOOL (__stdcall * tSI)( HANDLE, LPSTR, BOOL );
+     
+     typedef DWORD (__stdcall *tSLM)
+     ( IN HANDLE hProcess, IN HANDLE hFile,
+       IN PSTR ImageName, IN PSTR ModuleName,
+       IN DWORD BaseOfDll, IN DWORD SizeOfDll );
+     
+     typedef DWORD (__stdcall *tSSO)( IN DWORD SymOptions );
 
-    // Variables used by the class
+     typedef BOOL (__stdcall * tSW)
+     ( DWORD, HANDLE, HANDLE, LPSTACKFRAME, LPVOID,
+       PREAD_PROCESS_MEMORY_ROUTINE,PFUNCTION_TABLE_ACCESS_ROUTINE,
+       PGET_MODULE_BASE_ROUTINE, PTRANSLATE_ADDRESS_ROUTINE );
 
-    // Make typedefs for some IMAGEHLP.DLL functions so that we can use them
-    // with GetProcAddress
-    typedef BOOL (__stdcall *tSC)( IN HANDLE hProcess );
+     typedef DWORD (__stdcall WINAPI *tUDSN)
+     ( PCSTR DecoratedName, PSTR UnDecoratedName,
+       DWORD UndecoratedLength, DWORD Flags );
 
-    typedef PVOID (__stdcall *tSFTA)
-    ( HANDLE hProcess, DWORD AddrBase );
+     typedef BOOL (__stdcall *tSSP)( HANDLE, LPSTR, DWORD );
+     
+     static HINSTANCE                                 hImagehlpDll;
+     static TCHAR                        m_szLogFileName[MAX_PATH];
+     static LPTOP_LEVEL_EXCEPTION_FILTER          m_previousFilter;
 
-    typedef BOOL (__stdcall *tSGLFA)
-    ( IN HANDLE hProcess, IN DWORD dwAddr,
-      OUT PDWORD pdwDisplacement, OUT PIMAGEHLP_LINE Line );
-
-    typedef DWORD (__stdcall *tSGMB)( HANDLE, DWORD );
-
-    typedef BOOL (__stdcall *tSGMI)
-    ( IN HANDLE hProcess, IN DWORD dwAddr, OUT PIMAGEHLP_MODULE ModuleInfo );
-
-    typedef DWORD (__stdcall *tSGO)( VOID );
-
-    typedef BOOL (__stdcall *tSGSFA)
-    ( IN HANDLE hProcess, IN DWORD dwAddr,
-      OUT PDWORD pdwDisplacement, OUT PIMAGEHLP_SYMBOL Symbol );
-
-    typedef BOOL (__stdcall * tSI)( HANDLE, LPSTR, BOOL );
-
-    typedef DWORD (__stdcall *tSLM)
-    ( IN HANDLE hProcess, IN HANDLE hFile,
-      IN PSTR ImageName, IN PSTR ModuleName,
-      IN DWORD BaseOfDll, IN DWORD SizeOfDll );
-
-    typedef DWORD (__stdcall *tSSO)( IN DWORD SymOptions );
-
-    typedef BOOL (__stdcall * tSW)
-    ( DWORD, HANDLE, HANDLE, LPSTACKFRAME, LPVOID,
-      PREAD_PROCESS_MEMORY_ROUTINE,PFUNCTION_TABLE_ACCESS_ROUTINE,
-      PGET_MODULE_BASE_ROUTINE, PTRANSLATE_ADDRESS_ROUTINE );
-
-    typedef DWORD (__stdcall WINAPI *tUDSN)
-    ( PCSTR DecoratedName, PSTR UnDecoratedName,
-      DWORD UndecoratedLength, DWORD Flags );
-
-    typedef BOOL (__stdcall *tSSP)( HANDLE, LPSTR, DWORD );
-
-    static HINSTANCE                                 hImagehlpDll;
-    static TCHAR                        m_szLogFileName[MAX_PATH];
-    static LPTOP_LEVEL_EXCEPTION_FILTER          m_previousFilter;
-
-    static tSC            pSC;
-    static tSFTA        pSFTA;
-    static tSGLFA      pSGLFA;
-    static tSGMB        pSGMB;
-    static tSGMI        pSGMI;
-    static tSGO          pSGO;
-    static tSGSFA      pSGSFA;
-    static tSI            pSI;
-    static tSLM          pSLM;
-    static tSSO          pSSO;
-    static tSW            pSW;
-    static tUDSN        pUDSN;
+     static tSC            pSC;
+     static tSFTA        pSFTA;
+     static tSGLFA      pSGLFA;
+     static tSGMB        pSGMB;
+     static tSGMI        pSGMI;
+     static tSGO          pSGO;
+     static tSGSFA      pSGSFA;
+     static tSI            pSI;
+     static tSLM          pSLM;
+     static tSSO          pSSO;
+     static tSW            pSW;
+     static tUDSN        pUDSN;
 //       static tSSP           pSSP;
 
 };
@@ -171,7 +171,7 @@ private:
 
 
 // global instance of class
-extern mr::ExceptionHandler gExceptionHandler;
+extern mr::ExceptionHandler* gExceptionHandler;
 
 
 #endif  // mrStackTrace_win32_h

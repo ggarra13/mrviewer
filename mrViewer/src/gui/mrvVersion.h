@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,20 +29,16 @@
 #define mrvVersion_h
 
 #include <string>
+#include "gui/mrvBrowser.h"
 
-namespace fltk
-{
-class Browser;
-}
 
 namespace mrv
 {
-class ViewerUI;
 
-void ffmpeg_formats( fltk::Browser& b );
-void ffmpeg_video_codecs( fltk::Browser& b );
-void ffmpeg_audio_codecs( fltk::Browser& b  );
-void ffmpeg_subtitle_codecs( fltk::Browser& b);
+void ffmpeg_formats( mrv::Browser& b );
+void ffmpeg_video_codecs( mrv::Browser& b );
+void ffmpeg_audio_codecs( mrv::Browser& b  );
+void ffmpeg_subtitle_codecs( mrv::Browser& b);
 std::string ffmpeg_protocols();
 std::string ffmpeg_motion_estimation_methods();
 
@@ -61,7 +57,7 @@ void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& physMemUsedByMe);
 
 std::string cpu_information();
-std::string gpu_information( mrv::ViewerUI* uiMain );
+std::string gpu_information( ViewerUI* uiMain );
 
 } // namespace mrv
 
