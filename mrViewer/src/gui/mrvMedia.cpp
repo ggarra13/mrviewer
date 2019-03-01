@@ -1,6 +1,6 @@
 /*
     mrViewer - thume professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,15 +25,21 @@
  *
  */
 
+
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #include <math.h>
 
-#include <fltk/SharedImage.h>
+#include <FL/Fl_Shared_Image.H>
 #include <ImathMath.h>   // for Imath::clamp
 // #include <ImathFun.h>   // for Imath::pow
 
 #include "core/mrvThread.h"
 #include "core/CMedia.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvFLTKHandler.h"
 #include "gui/mrvMedia.h"
 
 #ifdef _WIN32
@@ -70,7 +76,7 @@ media::~media()
     if ( _thumbnail )
     {
         // thumbnail is not deleted, as fltk will do it for us.
-        ((fltk::SharedImage*)_thumbnail)->remove();
+        ((Fl_Shared_Image*)_thumbnail)->release();
         _thumbnail = NULL;
     }
 }
@@ -83,57 +89,20 @@ int64_t media::position() const {
     return _image->position();
 }
 
-void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-                             uchar r, uchar g, uchar b )
+void media::thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b )
 {
-    switch( pixeltype )
-    {
-    case fltk::ARGB32:
-    {
-        *ptr++ = b;
-        *ptr++ = g;
-        *ptr++ = r;
-        *ptr++ = 0xff;
-        break;
-    }
-    case fltk::RGB:
-    {
-        *ptr++ = r;
-        *ptr++ = g;
-        *ptr++ = b;
-        break;
-    }
-    case fltk::RGB32:
-    {
-        *ptr++ = 0xff;
-        *ptr++ = r;
-        *ptr++ = g;
-        *ptr++ = b;
-        break;
-    }
-    case fltk::RGBx:
-    case fltk::RGBA:
-    {
-        *ptr++ = r;
-        *ptr++ = g;
-        *ptr++ = b;
-        *ptr++ = 0xff;
-        break;
-    }
-    default:
-    {
-        IMG_ERROR("unknown pixel type for thumbnail");
-    }
-    }
+    *ptr++ = r;
+    *ptr++ = g;
+    *ptr++ = b;
 }
 
 
-class thumbImage : public fltk::SharedImage
+class thumbImage : public Fl_Shared_Image
 {
 public:
     thumbImage() {};
 
-    static fltk::SharedImage* create() {
+    static Fl_Shared_Image* create() {
         return new thumbImage;
     }
 
@@ -178,8 +147,11 @@ void media::create_thumbnail()
     char buf[2048];
     sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
+    Fl_Shared_Image::add_handler( mrv::fltk_handler );
 
-    _thumbnail = fltk::SharedImage::get( thumbImage::create, buf, 0);
+//    _thumbnail = thumbImage::create(); //Fl_Shared_Image::get( buf );
+
+    _thumbnail = Fl_Shared_Image::get( buf, w, h );
 
     if ( !_thumbnail )
     {
@@ -187,19 +159,14 @@ void media::create_thumbnail()
                    << _image->fileroot() << "'" );
         return;
     }
+;
 
-    _thumbnail->setpixeltype( fltk::RGB );
-    _thumbnail->setsize( w, h );
-
-    uchar* ptr = (uchar*) _thumbnail->buffer();
+    uchar* ptr = (uchar*) _thumbnail->data();
     if (!ptr )
     {
         IMG_ERROR( _("Could not allocate thumbnail buffer") );
         return;
     }
-
-    fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
-
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
@@ -222,11 +189,10 @@ void media::create_thumbnail()
             uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
             uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
             uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-            thumbnail_pixel( ptr, pixeltype, r, g, b );
+            thumbnail_pixel( ptr, r, g, b );
         }
     }
 
-    _thumbnail->buffer_changed();
 
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );
