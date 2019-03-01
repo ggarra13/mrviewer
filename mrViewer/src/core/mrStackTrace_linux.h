@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 //  distribution.
 //  *       Neither the name of Gonzalo Garramuno nor the names of
 //  its other contributors may be used to endorse or promote products derived
-//  from this software without specific prior written permission.
+//  from this software without specific prior written permission. 
 //
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -60,28 +60,28 @@ namespace mr
 
 class ExceptionHandler
 {
-public:
-    ExceptionHandler();
-    ~ExceptionHandler();
+   public:
+     ExceptionHandler();
+     ~ExceptionHandler();
+     
+     static void ShowStack();
+   private:
+     static void demangle( const char* name );
+     static void bt_sighandler(int sig, siginfo_t *info,
+			       void *secret);
+     void install_signal_handler();
+     void restore_signal_handler();
 
-    static void ShowStack();
-private:
-    static void demangle( const char* name );
-    static void bt_sighandler(int sig, siginfo_t *info,
-                              void *secret);
-    void install_signal_handler();
-    void restore_signal_handler();
-
-    struct sigaction oldSIGSEGV;
-    struct sigaction oldSIGUSR1;
-    struct sigaction oldSIGBUS;
-    struct sigaction oldSIGILL;
-    struct sigaction oldSIGFPE;
-    struct sigaction oldSIGABRT;
-    struct sigaction oldSIGINT;
-    struct sigaction oldSIGCHLD;
-    struct sigaction oldSIGTRAP;
-    struct sigaction oldSIGSTOP;
+     struct sigaction oldSIGSEGV;
+     struct sigaction oldSIGUSR1;
+     struct sigaction oldSIGBUS;
+     struct sigaction oldSIGILL;
+     struct sigaction oldSIGFPE;
+     struct sigaction oldSIGABRT;
+     struct sigaction oldSIGINT;
+     struct sigaction oldSIGCHLD;
+     struct sigaction oldSIGTRAP;
+     struct sigaction oldSIGSTOP;
 };
 
 }

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvException.h
  * @author gga
  * @date   Fri Jul 20 00:48:02 2007
- *
+ * 
  * @brief  A simple class used to encapsulate mrv exceptions
- *
- *
+ * 
+ * 
  */
 
 #ifndef mrvException_h
@@ -33,49 +33,43 @@
 namespace mrv
 {
 
-class exception : public std::exception
-{
-public:
+  class exception : public std::exception
+  {
+  public:
     exception( const std::string what,
-               const char* file = 0,
-               const unsigned int line = 0) :
-        _what(what),
-        _line(line)
+	       const char* file = 0,
+	       const unsigned int line = 0) :
+      _what(what),
+      _line(line)
     {
-        if ( file ) _file = file;
+      if ( file ) _file = file;
     }
 
     virtual ~exception() throw() {}
 
-    virtual const char* what()  const throw() {
-        return _what.c_str();
-    }
-    virtual const char* file()  const throw() {
-        return _file.c_str();
-    }
-    virtual unsigned int line() const throw() {
-        return _line;
-    }
+    virtual const char* what()  const throw() { return _what.c_str(); }
+    virtual const char* file()  const throw() { return _file.c_str(); }
+    virtual unsigned int line() const throw() { return _line; }
 
 //     std::ostream& operator<<( std::ostream& o ) const
 //     {
-//       o << "mrv::exception "
+//       o << "mrv::exception " 
 // 	<< what() << " at " << file() << " " << line() << endl;
 //       return o;
 //     }
 
-protected:
+  protected:
     std::string  _what;
     std::string  _file;
     unsigned int _line;
-};
+  };
 
 class reinit_exception : public mrv::exception
 {
-public:
+  public:
     reinit_exception( const std::string what,
                       const char* file = 0, const unsigned line = 0) :
-        mrv::exception( what, file, line )
+    mrv::exception( what, file, line )
     {
     }
 };
