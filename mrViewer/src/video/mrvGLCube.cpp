@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,12 +42,11 @@
 #  include <GL/glxew.h>
 #endif
 
-#include <fltk/Cursor.h>
-
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
 #include "mrViewer.h"  // yuck
+#include "mrvPreferencesUI.h"
 
 #include "mrvGLShader.h"
 #include "mrvGLEngine.h"
@@ -209,7 +208,7 @@ void GLCube::draw_cube( const unsigned dw, const unsigned dh ) const
             _shader->setUniform( "enableLut", 0 );
         }
 
-        const mrv::ViewerUI* v = _view->main();
+        const ViewerUI* v = _view->main();
         if (!v) return;
 
         int premult = 0, unpremult = 0;

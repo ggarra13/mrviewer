@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,12 +42,13 @@
 #  include <GL/glxew.h>
 #endif
 
-#include <fltk/Cursor.h>
+#include <FL/Enumerations.H>
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
 #include "mrViewer.h"  // yuck
+#include "mrvPreferencesUI.h"  // yuck
 
 #include "video/mrvGLShader.h"
 #include "video/mrvGLEngine.h"
@@ -1077,7 +1078,7 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
             CHECK_GL;
         }
 
-        const mrv::ViewerUI* v = _view->main();
+        const ViewerUI* v = _view->main();
         if (!v) return;
 
         int premult = 0, unpremult = 0;
@@ -1277,12 +1278,12 @@ void GLQuad::lut( const CMedia* img )
         }
     }
 
-    _view->window()->cursor( fltk::CURSOR_WAIT );
+    _view->window()->cursor( FL_CURSOR_WAIT );
 
     _lut   = mrv::GLLut3d::factory( _view->main(), img );
     _image = img;
 
-    _view->window()->cursor( fltk::CURSOR_DEFAULT );
+    _view->window()->cursor( FL_CURSOR_DEFAULT );
 }
 
 
