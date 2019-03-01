@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,8 +60,8 @@
 
 #include <boost/thread/recursive_mutex.hpp>
 
-#include <fltk/run.h>
-#include <fltk/GlWindow.h>
+#include <FL/Fl.H>
+#include <FL/Fl_Gl_Window.H>
 
 #include <ImfRgba.h>
 #include <ImfArray.h>
@@ -72,7 +72,7 @@ namespace mrv {
 
 const float kFPS = 1.0f / 24.0f;
 
-class GlWindow3d : public fltk::GlWindow
+class GlWindow3d : public Fl_Gl_Window
 {
 public:
     typedef boost::recursive_mutex Mutex;

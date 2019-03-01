@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -50,8 +50,10 @@
 #endif
 
 #if defined(WIN32) || defined(WIN64)
-#  include <fltk/win32.h>   // for fltk::getDC()
+#  include <FL/win32.H>   // for FL::getDC()
 #endif
+
+#include "mrvPreferencesUI.h"
 
 extern "C" {
 
@@ -102,22 +104,13 @@ extern "C" {
 #undef TRACE
 #define TRACE(x)
 
+#include <FL/platform.H>
 
 namespace
 {
 const char* kModule = N_("opengl");
 }
 
-
-namespace fltk {
-
-#ifdef WIN32
-extern HINSTANCE	xdisplay;
-#else
-extern Display*	xdisplay;
-#endif
-
-}
 
 // #define glPushMatrix() do {                     \
 //     glPushMatrix(); \
@@ -259,7 +252,7 @@ void GLEngine::init_charset()
 
 #ifdef WIN32
     DBG( __FUNCTION__ << " " << __LINE__ );
-    HDC   hDC = fltk::getDC();
+    HDC   hDC = Fl::getDC();
     HGLRC hRC = wglGetCurrentContext();
     if (hRC == NULL ) hRC = wglCreateContext( hDC );
 
@@ -290,7 +283,7 @@ void GLEngine::init_charset()
 #else
     DBG( __FUNCTION__ << " " << __LINE__ );
     // Find Window's default font
-    Display* gdc = fltk::xdisplay;
+    Display* gdc = fl_display;
 
     // Load XFont to user's specs
     char font_name[256];
@@ -1734,7 +1727,7 @@ void GLEngine::draw_images( ImageList& images )
     static std::string ODT_CTL_old_transform;
     static unsigned kNumStops = 10;
 
-    mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+    PreferencesUI* uiPrefs = _view->main()->uiPrefs;
 
     bool use_ocio = uiPrefs->uiPrefsUseOcio->value();
 
@@ -1742,7 +1735,7 @@ void GLEngine::draw_images( ImageList& images )
     {
         int RT_lut_algorithm = uiPrefs->RT_algorithm->value();
         int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
-        const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->text();
+        const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->value();
         int lut_quality = uiPrefs->uiLUT_quality->value();
         unsigned num_stops = (unsigned)uiPrefs->uiPrefsNumStops->value();
 
@@ -1890,7 +1883,7 @@ void GLEngine::draw_images( ImageList& images )
         // Handle background image size
         if ( fg != img && stereo == CMedia::kNoStereo )
         {
-            mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+            PreferencesUI* uiPrefs = _view->main()->uiPrefs;
             if ( uiPrefs->uiPrefsResizeBackground->value() == 0 )
             {   // DO NOT SCALE BG IMAGE
                 texWidth = dpw.w();
@@ -3528,7 +3521,7 @@ void pass_ootf( ostringstream& code, enum mp_csp_light light, float peak)
     {
     case MP_CSP_LIGHT_SCENE_HLG:
         // HLG OOTF from BT.2100, assuming a reference display with a
-        // peak of 1000 cd/m² -> gamma = 1.2
+        // peak of 1000 cd/mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ² -> gamma = 1.2
         GLSLF("c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n",
               (1000 / MP_REF_WHITE) / pow(12, 1.2));
         break;
