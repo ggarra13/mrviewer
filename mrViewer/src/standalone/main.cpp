@@ -1,6 +1,7 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramu�o
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,37 +20,33 @@
  * @file   main.cpp
  * @author gga
  * @date   Wed Jul  4 23:16:07 2007
- *
+ * 
  * @brief  Main entry point for mrViewer executable
- *
- *
+ * 
+ * 
  */
 
-#ifdef _WIN32
-// #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
-#endif
+// #define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
 #include <iostream>
 
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
-#ifdef LINUX
-#include <X11/Xlib.h>
-#endif
-
-#include <fltk/ask.h>
-#include <fltk/run.h>
-#include <fltk/Preferences.h>
+#include <FL/fl_ask.H>
+#include <FL/Fl.H>
+#include <FL/Fl_Preferences.H>
 
 #include <MagickWand/MagickWand.h>
-#include <OpenEXR/ImfHeader.h>
 
 #include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+#include "mrvPreferencesUI.h"
+#include "mrvReelUI.h"
 #include "mrViewer.h"
 #include "core/mrvHome.h"
 #include "core/mrvServer.h"
@@ -73,458 +70,338 @@ namespace fs = boost::filesystem;
 #define strtoll _strtoi64
 #endif
 
-#ifdef _WIN32
-
-#include <windows.h>
-
-void release_console()
-{
-    fclose(stdin);
-    fclose(stdout);
-    fclose(stderr);
-    Sleep(100000);
-}
-
-#endif
-
 
 using namespace std;
 
 namespace {
-const char* const kModule = "main";
+const char* const kModule = "main"; 
 }
 
 
-void load_files( mrv::LoadList& files,
-                 mrv::ViewerUI* ui,
-                 bool stereo = false,
-                 std::string bgimage = "",
-		 bool edl = false )
+void load_files( mrv::LoadList& files, 
+                 ViewerUI* ui,
+                 bool stereo = false )
 {
-    //
-    // Window must be shown after images have been loaded.
-    //
-    mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
-    image_list->load( files, stereo, bgimage, edl );
+   //
+   // Window must be shown after images have been loaded.
+   // 
+   mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
+   image_list->load( files, stereo );
 }
 
 void load_new_files( void* s )
 {
-    mrv::ViewerUI* ui = (mrv::ViewerUI*) s;
+    ViewerUI* ui = (ViewerUI*) s;
 
-    mrv::LoadList files;
+   mrv::LoadList files;
 
-    {
-        fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
-                                "mrViewer.lock" );
-        int pid = 1;
-        lock.get( "pid", pid, 1 );
+   {
+      Fl_Preferences lock( mrv::prefspath().c_str(), "filmaura",
+                               "mrViewer.lock" );
+      int pid = 1;
+      lock.get( "pid", pid, 1 );
+      
 
+      
+      char* filename;
+      char* audio;
+      char* firstS;
+      char* lastS;
+      char* startS;
+      char* endS;
+      
+      int groups = lock.groups();
+      
+      for ( int i = 0; i < groups; ++i )
+      {
+	 const char* group = lock.group( i );
+	 Fl_Preferences g( lock, group );
+	 g.get( "filename", filename, "" );
+	 g.get( "audio", audio, "" );
+	 g.get( "first", firstS, "1" );
+	 g.get( "last", lastS, "50" );
+	 g.get( "start", startS, "1" );
+	 g.get( "end", endS, "50" );
 
+         boost::int64_t first = strtoll( firstS, NULL, 10 );
+         boost::int64_t last = strtoll( lastS, NULL, 10 );
+         boost::int64_t start = strtoll( startS, NULL, 10 );
+         boost::int64_t end = strtoll( endS, NULL, 10 );
+	 
+	 mrv::LoadInfo info( filename, first, last, start, end, audio );
+	 files.push_back( info );
+      }
+   }
 
-        char* filename;
-        char* audio;
-        char* firstS;
-        char* lastS;
-        char* startS;
-        char* endS;
+   if ( !files.empty() )
+   {
+       load_files( files, ui );
 
-        int groups = lock.groups();
+       std::string lockfile = mrv::lockfile();
+       
+       if(fs::exists(lockfile))
+       {
+           if ( ! fs::remove( lockfile ) )
+               LOG_ERROR( "Could not remove lock file" );
+       }
 
-        for ( int i = 0; i < groups; ++i )
-        {
-            const char* group = lock.group( i );
-            fltk::Preferences g( lock, group );
-            g.get( "filename", filename, "" );
-            g.get( "audio", audio, "" );
-            g.get( "first", firstS, "1" );
-            g.get( "last", lastS, "50" );
-            g.get( "start", startS, "1" );
-            g.get( "end", endS, "50" );
+       Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                            "mrViewer.lock" );
+       base.set( "pid", 1 );
+   }
 
-            boost::int64_t first = strtoll( firstS, NULL, 10 );
-            boost::int64_t last = strtoll( lastS, NULL, 10 );
-            boost::int64_t start = strtoll( startS, NULL, 10 );
-            boost::int64_t end = strtoll( endS, NULL, 10 );
-
-            mrv::LoadInfo info( filename, first, last, start, end, audio );
-            files.push_back( info );
-        }
-    }
-
-    if ( !files.empty() )
-    {
-        load_files( files, ui );
-
-        std::string lockfile = mrv::lockfile();
-
-        if(fs::exists(lockfile))
-        {
-            if ( ! fs::remove( lockfile ) )
-                LOG_ERROR( "Could not remove lock file" );
-        }
-
-        fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-                                "mrViewer.lock" );
-        base.set( "pid", 1 );
-    }
-
-    fltk::repeat_timeout( 1.0, load_new_files, ui );
+   Fl::repeat_timeout( 1.0, load_new_files, ui ); 
 }
 
-int main( int argc, char** argv )
+int main( int argc, const char** argv ) 
 {
-#ifdef LINUX
-    XInitThreads();
-#endif
-    fltk::lock();  // This calls XInitThreads on Linux
-
-
-    setbuf( stderr, NULL );
-    
+  std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+  Fl::scheme(NULL);
+  std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+  Fl::get_system_colors();
+  std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+  
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
-    const char* tmp = setlocale(LC_ALL, "");
-    // Create and install global locale
-    try {
+    char* loc = _("unknown");
 
-        //std::locale::global(boost::locale::generator().generate(""));
-        const char* env = getenv("LC_ALL");
-        if ( !env )
-            std::locale::global( std::locale("") );
-        else
-            std::locale::global( std::locale(env) );
-        // Make boost.filesystem use it
-        fs::path::imbue(std::locale());
-    }
-    catch( const std::runtime_error& e )
-    {
-        std::cerr << e.what() << std::endl;
-    }
+  const char* tmp = setlocale(LC_ALL, "");
 
+  
+  // Create and install global locale
+  std::locale::global(boost::locale::generator().generate(""));
+  // Make boost.filesystem use it
+  boost::filesystem::path::imbue(std::locale());
+ 
+  if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
-    if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
-// #undef setlocale
-//   if ( tmp )
-//   {
-//       loc = strdup( tmp );
-//       setlocale( LC_ALL, loc );
-//   }
+  if ( tmp )
+  {
+      loc = strdup( tmp );
+  }
+  
 
+  char buf[1024];
+  sprintf( buf, "mrViewer%s", mrv::version() );
 
-    char buf[1024];
-    sprintf( buf, "mrViewer%s", mrv::version() );
+  std::string locale = argv[0];
+  fs::path file = fs::path( locale );
 
-    std::string locale = argv[0];
-    fs::path file = fs::path( locale );
+  int ok = -1;
 
-    int ok = -1;
+  file = fs::absolute( file );
 
-    file = fs::absolute( file );
+  fs::path dir = file.parent_path().branch_path();
+  std::string path = fs::canonical( dir ).string();
 
-    fs::path dir = file.parent_path().branch_path();
-    std::string path = fs::canonical( dir ).string();
+  path += "/share/locale";
+  bindtextdomain(buf, path.c_str() );
+  textdomain(buf);
 
-    path += "/share/locale";
+  if ( loc )
+  {
+      LOG_INFO( _("Changed locale to ") << loc );
+      free(loc);
+  }
 
-    DBG( "bindtextdomain" );
-    const char* bind = bindtextdomain(buf, path.c_str() );
-    DBG( "textdomain" );
-    const char* domain = textdomain(buf);
-
-
-// Try to set MRV_ROOT if not set already
-    DBG( "set MRV_ROOT" );
-    mrv::set_root_path( argc, argv );
+  // Try to set MRV_ROOT if not set already
+  mrv::set_root_path( argc, argv );
 
 
 
-    // Adjust ui based on preferences
-    for (;;) {
+  // Adjust ui based on preferences
+  for (;;) {
 
-        mrv::ViewerUI* ui = NULL;
-        std::string lockfile;
+      ViewerUI* ui = NULL;
+      std::string lockfile;
 
+      try {
 
-        try {
+          ui = new ViewerUI();
 
-            DBG("instantiate mrv::ViewerUI" );
-            ui = new mrv::ViewerUI();
-            DBG("mrv::ViewerUI is now " << ui );
-
-            mrv::Options opts;
-            bool ok = true;
-            if ( argc > 0 )
-                ok = mrv::parse_command_line( argc, argv, ui, opts );
+          mrv::Options opts;
+          if ( argc > 0 )
+              mrv::parse_command_line( argc, argv, ui, opts );
+          argc = 0;
 
 
-            if (!ok) throw std::runtime_error("Could not parse commandline");
+          lockfile = mrv::lockfile();
 
+          bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
+          if ( opts.port != 0 ) {
+              ui->uiPrefs->uiPrefsSingleInstance->value(0);
+              single_instance = false;
+              if ( fs::exists( lockfile ) )
+              {
+                  if ( ! fs::remove( lockfile ) )
+                      LOG_ERROR("Could not remove lock file");
+              }
+          }
 
-            argc = 0;
+          if ( single_instance )
+          {
+              LOG_INFO( "lockfile " << lockfile << ". ");
+              LOG_INFO( "(Remove if mrViewer does not start)" );
+          }
 
+          if ( fs::exists( lockfile ) && single_instance )
+          {
+              int idx;
+              Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                                   "mrViewer.lock" );
+              mrv::LoadList::iterator i = opts.files.begin();
+              mrv::LoadList::iterator e = opts.files.end();
+              for ( idx = 0; i != e ; ++i, ++idx )
+              {
+                  Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                                       "mrViewer.lock" );
 
-            lockfile = mrv::lockfile();
+                  mrv::LoadList::iterator i = opts.files.begin();
+                  mrv::LoadList::iterator e = opts.files.end();
+                  for ( idx = 0; i != e ; ++i, ++idx )
+                  {
+                      char buf[256];
+                      sprintf( buf, "file%d", idx );
+	
+                      Fl_Preferences ui( base, buf );
+                      ui.set( "filename", (*i).filename.c_str() );
+                      ui.set( "audio", (*i).audio.c_str() );
 
-            bool single_instance = false;
+                      sprintf( buf, "%" PRId64, (*i).first );
+                      ui.set( "first", buf );
 
-            if ( !opts.run )
-                single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
-            if ( opts.port != 0 ) {
-                ui->uiPrefs->uiPrefsSingleInstance->value(0);
-                single_instance = false;
-                if ( fs::exists( lockfile ) )
-                {
-                    if ( ! fs::remove( lockfile ) )
-                        LOG_ERROR("Could not remove lock file");
-                }
-            }
+                      sprintf( buf, "%" PRId64, (*i).last );
+                      ui.set( "last", buf );
 
-            if ( single_instance )
-            {
-                LOG_INFO( "lockfile " << lockfile << ". ");
-                LOG_INFO( "(Remove if mrViewer does not start)" );
-            }
+                      sprintf( buf, "%" PRId64, (*i).start );
+                      ui.set( "start", buf );
 
-            if ( fs::exists( lockfile ) && single_instance )
-            {
-                int idx;
-                {
-                    fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-                                            "mrViewer.lock" );
+                      sprintf( buf, "%" PRId64, (*i).end );
+                      ui.set( "end", buf );
 
-                    mrv::LoadList::iterator i = opts.files.begin();
-                    mrv::LoadList::iterator e = opts.files.end();
-                    for ( idx = 0; i != e ; ++i, ++idx )
-                    {
-                        char buf[256];
-                        sprintf( buf, "file%d", idx );
+                      ui.flush();
+                  }
+                  base.flush();
+              }
+              
+          if ( idx == 0 )
+          {
+              mrvALERT( "Another instance of mrViewer is open.\n"
+                        "Remove " << lockfile << " if mrViewer crashed\n"
+                        "or modify Preferences->User Interface->Single Instance.");
+              Fl::check();
+          }
 
-                        fltk::Preferences ui( base, buf );
-                        ui.set( "filename", (*i).filename.c_str() );
-                        ui.set( "audio", (*i).audio.c_str() );
+              exit(0);
+          }
 
-                        sprintf( buf, "%" PRId64, (*i).first );
-                        ui.set( "first", buf );
+      {
+          Fl_Preferences lock( mrv::prefspath().c_str(), "filmaura",
+                                  "mrViewer.lock" );
+          lock.set( "pid", 1 );
+      }
 
-                        sprintf( buf, "%" PRId64, (*i).last );
-                        ui.set( "last", buf );
+          MagickWandGenesis();
 
-                        sprintf( buf, "%" PRId64, (*i).start );
-                        ui.set( "start", buf );
+      // mrv::open_license( argv[0] );
+      // mrv::checkout_license();
 
-                        sprintf( buf, "%" PRId64, (*i).end );
-                        ui.set( "end", buf );
+          load_files( opts.files, ui );
+          if ( opts.stereo.size() > 1 )
+              load_files( opts.stereo, ui, true );
 
-                        ui.flush();
-                    }
-                    base.flush();
-                }
+          if ( opts.edl )
+          {
+              ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
+              ui->uiTimeline->edl( true );
+          }
 
-                if ( idx == 0 )
-                {
-                    mrvALERT( "Another instance of mrViewer is open.\n"
-                              "Remove " << lockfile << " if mrViewer crashed\n"
-                              "or modify Preferences->User Interface->Single Instance.");
-                    fltk::check();
-                }
+          if (opts.fps > 0 )
+          {
+              ui->uiView->fps( opts.fps );
+          }
 
-                exit(0);
-            }
+      if ( single_instance )
+          Fl::add_timeout( 1.0, load_new_files, ui );
+      
+      if (opts.host == "" && opts.port != 0)
+      {
+          mrv::ServerData* data = new mrv::ServerData;
+          data->ui = ui;
+          data->port = opts.port;
+          boost::thread( boost::bind( mrv::server_thread, 
+                                      data ) );
+      }
+      else if ( opts.host != "" && opts.port != 0 )
+      {
+          mrv::ServerData* data = new mrv::ServerData;
+          data->ui = ui;
+          data->host = opts.host;
+          data->port = opts.port;
+          char buf[128];
+          sprintf( buf, "%d", opts.port );
+          data->group = buf;
+          
+          boost::thread( boost::bind( mrv::client_thread, 
+                                      data ) );
+      }
 
-            {
-                fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
-                                        "mrViewer.lock" );
-                lock.set( "pid", 1 );
+      if ( single_instance )
+          Fl::add_timeout( 1.0, load_new_files, ui );
+      
+    
+      ui->uiMain->show();   // so run() does something
+      ok = Fl::run();
+      }
+      catch( const mrv::reinit_exception& e )
+      {
+          LOG_INFO( _(e.what()) );
 
-            }
+          delete ui;
+          continue;
+      }
+      catch( const std::exception& e )
+      {
+          LOG_ERROR( _( e.what() ) );
+          ok = -1;
+      }
+      catch( const char* e )
+      {
+          LOG_ERROR( _(e) );
+          ok = -1;
+      }
+      catch( ... )
+      {
+          LOG_ERROR( _("Unhandled exception") );
+          ok = -1;
+      }
 
-            // Imf::staticInitialize();
-            MagickWandGenesis();
+      if( fs::exists(lockfile) )
+      {
+          try {
+              if ( ! fs::remove( lockfile ) )
+                  LOG_ERROR( "Could not remove lock file!" );
+          }
+          catch( const fs::filesystem_error& e )
+          {
+              LOG_ERROR( _("Filesystem error: ") << e.what() );
+          }
+          catch( const boost::exception& e )
+          {
+              LOG_ERROR( _("Boost exception: ") << boost::diagnostic_information(e) );
+          }
+          catch( ... )
+          {
+              LOG_ERROR( _("Unknown error") );
+          }
+      }
+      break;
+  }
+  MagickWandTerminus();
+  
 
-            // mrv::open_license( argv[0] );
-            // mrv::checkout_license();
-
-	    
-            load_files( opts.files, ui, false, opts.bgfile, opts.edl );
-	    
-            if ( opts.edl )
-            {
-		mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
-		r->edl = true;
-                ui->uiTimeline->edl( true );
-            }
-
-            if ( opts.stereo_input != "" )
-            {
-                int idx = 0;
-                if ( opts.stereo_input == _("Separate layers") )
-                    idx = 0;
-                else if ( opts.stereo_input == _("Top/bottom") )
-                    idx = 1;
-                else if ( opts.stereo_input == _("Left/right") )
-                    idx = 2;
-                else
-                {
-                    LOG_ERROR( "Stereo Input is invalid.  Valid values are: " );
-                    LOG_ERROR( _("Separate layers") << ", " << _("Top/bottom")
-                               << ", " << _("Left/right") );
-                    exit(-1);
-                }
-                ui->uiStereo->uiStereoInput->value( idx );
-                ui->uiStereo->uiStereoInput->do_callback();
-            }
-
-	    int idx = 0;
-            if ( opts.stereo_output != "" )
-            {
-                if ( opts.stereo_output == _("Left view") )
-                    idx = 1;
-                else if ( opts.stereo_output == _("Right view") )
-                    idx = 2;
-                else if ( opts.stereo_output == _("Stereo OpenGL") )
-                    idx = 3;
-                else if ( opts.stereo_output == _("Top/bottom") )
-                    idx = 4;
-                else if ( opts.stereo_output == _("Bottom/top") )
-                    idx = 5;
-                else if ( opts.stereo_output == _("Left/right") )
-                    idx = 6;
-                else if ( opts.stereo_output == _("Right/left") )
-                    idx = 7;
-                else if ( opts.stereo_output == _("Even/odd rows") )
-                    idx = 8;
-                else if ( opts.stereo_output == _("Even/odd columns") )
-                    idx = 9;
-                else if ( opts.stereo_output == _("Checkerboard pattern") )
-                    idx = 10;
-                else if ( opts.stereo_output == _("Red/cyan glasses") )
-                    idx = 11;
-                else if ( opts.stereo_output == _("Cyan/red glasses") )
-                    idx = 12;
-                else
-                {
-                    LOG_ERROR( _("Stereo Output is invalid.  Valid values are: " ) );
-                    LOG_ERROR( _("Left view") << ", " << _("Right view") << ", " );
-                    LOG_ERROR( _("Top/bottom") << ", " << _("Bottom/top") << ", " );
-                    LOG_ERROR( _("Left/right") << ", " << _("Right/left") << ", " );
-                    LOG_ERROR( _("Even/odd rows") << ", "
-                               << _("Even/odd columns") << ", " );
-                    LOG_ERROR( _( "Checkerboard pattern") << ", "
-                               << _("Red/cyan glasses") << ", " );
-                    LOG_ERROR( _("Cyan/red glasses") );
-                    exit( -1 );
-                }
-	    }
-
-	    
-            if ( opts.stereo.size() > 1 )
-            {
-                load_files( opts.stereo, ui, true );
-            }
-
-	    if ( idx )
-	    {
-                ui->uiStereo->uiStereoOutput->value( idx );
-                ui->uiStereo->uiStereoOutput->do_callback();
-                ui->uiView->fit_image();
-	    }
-
-            if (opts.fps > 0 )
-            {
-                ui->uiView->fps( opts.fps );
-            }
-
-            if (opts.host == "" && opts.port != 0)
-            {
-
-                mrv::ServerData* data = new mrv::ServerData;
-                data->ui = ui;
-                data->port = opts.port;
-                boost::thread( boost::bind( mrv::server_thread,
-                                            data ) );
-            }
-            else if ( opts.host != "" && opts.port != 0 )
-            {
-                mrv::ServerData* data = new mrv::ServerData;
-                data->ui = ui;
-                data->host = opts.host;
-                data->port = opts.port;
-                char buf[128];
-                sprintf( buf, "%d", opts.port );
-                data->group = buf;
-
-                boost::thread( boost::bind( mrv::client_thread,
-                                            data ) );
-            }
-
-            if ( single_instance )
-                fltk::add_timeout( 1.0, load_new_files, ui );
-
-            DBG( "show uiMain" );
-            ui->uiMain->show();   // so run() does something
-            DBG( "shown uiMain" );
-
-            // Start playback if command line forced us to do so
-            if ( opts.play )
-            {
-                ui->uiView->play_forwards();
-            }
-            DBG( "fltk::run" );
-            ok = fltk::run();
-            DBG( "fltk::run returned" );
-
-        }
-        catch( const std::exception& e )
-        {
-            LOG_ERROR( _( e.what() ) );
-            ok = -1;
-        }
-        catch( const char* e )
-        {
-            LOG_ERROR( _(e) );
-            ok = -1;
-        }
-        catch( ... )
-        {
-            LOG_ERROR( _("Unhandled exception") );
-            ok = -1;
-        }
-
-        if( fs::exists(lockfile) )
-        {
-            try {
-                if ( ! fs::remove( lockfile ) )
-                    LOG_ERROR( "Could not remove lock file!" );
-            }
-            catch( const fs::filesystem_error& e )
-            {
-                LOG_ERROR( _("Filesystem error: ") << e.what() );
-            }
-            catch( const boost::exception& e )
-            {
-                LOG_ERROR( _("Boost exception: ") << boost::diagnostic_information(e) );
-            }
-            catch( ... )
-            {
-                LOG_ERROR( _("Unknown error") );
-            }
-        }
-        break;
-    }
-
-    MagickWandTerminus();
-    // Imf::staticUninitialize();
-
-#ifdef _WIN32
-    mrv::io::logbuffer* log =
-        static_cast<mrv::io::logbuffer*>( mrv::io::info.rdbuf() );
-    if ( log->_debug )
-        release_console();
-#endif
-
-    return ok;
+  return ok;
 }
 
 
@@ -532,10 +409,11 @@ int main( int argc, char** argv )
 
 #include <windows.h>
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                     LPSTR lpCmdLine, int nCmdShow )
-{
 
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
+		     LPSTR lpCmdLine, int nCmdShow )
+{
+   
 #ifdef ALLOC_CONSOLE
     AllocConsole();
     freopen("conin$", "r", stdin);
@@ -544,15 +422,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
     int rc = main( __argc, __argv );
-
+   
 #ifdef ALLOC_CONSOLE
     fclose(stdin);
     fclose(stdout);
     fclose(stderr);
-    Sleep(100000);
 #endif
 
-    return rc;
+    return rc; 
 }
 
 #endif
