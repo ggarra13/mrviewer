@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,14 +19,14 @@
 #include <algorithm>
 
 #include "core/mrvImageOpts.h"
-#include "OIIOOptionsUI.h"
+// #include "OIIOOptionsUI.h"  // @TODO: fltk1.4
 #include "EXROptionsUI.h"
 #include "WandOptionsUI.h"
 
 namespace mrv {
 
 
-ImageOpts* ImageOpts::build( const mrv::ViewerUI* main, std::string ext,
+ImageOpts* ImageOpts::build( ViewerUI* main, std::string ext,
                              const bool has_deep_data )
 {
     std::transform( ext.begin(), ext.end(), ext.begin(), (int(*)(int)) tolower);
@@ -38,8 +38,9 @@ ImageOpts* ImageOpts::build( const mrv::ViewerUI* main, std::string ext,
                                  has_deep_data );
 
 
-    if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
-        return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
+    // @TODO: for fltk1.4
+    //if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
+    //    return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
 
     return new WandOptionsUI( main,
                               CMedia::aces_metadata(),

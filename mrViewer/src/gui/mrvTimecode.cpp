@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,25 +21,24 @@
  * @date   Fri Oct 13 07:58:06 2006
  *
  * @brief  an fltk input widget to display its internal value as either
- *         frames (normal fltk::ValueInput) or as timecode.
+ *         frames (normal Fl_Value_Input) or as timecode.
  *
  *
  */
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
 
 #include <cassert>
 #include <cstdio> // for sprintf()
 #include <cstring> // for strchr
 
-#include <inttypes.h>  // for PRId64
 #include <iostream>
 using namespace std;
 
-#include <fltk/events.h>
-#include <fltk/damage.h>
-#include <fltk/draw.h>
-#include <fltk/Symbol.h>
-#include <fltk/LabelType.h>
-#include <fltk/Rectangle.h>
+#include <FL/Enumerations.H>
+#include <FL/fl_draw.H>
+#include <FL/Fl_Rect.H>
 
 extern "C" {
 #include <libavutil/mathematics.h>
@@ -60,31 +59,31 @@ namespace mrv
 {
 
 Timecode::Timecode( int x, int y, int w, int h, const char* l ) :
-    fltk::FloatInput( x, y, w, h, l ),
-    _display( mrv::Timecode::kFrames ),
-    _fps( 24.f ),
-    _frame( 1 ),
-    _tc_frame( 0 ),
-    _minimum( 1 ),
-    _maximum( 50 ),
-    _step( 1 )
+Fl_Float_Input( x, y, w, h, l ),
+_display( mrv::Timecode::kFrames ),
+_fps( 24.f ),
+_frame( 1 ),
+_tc_frame( 0 ),
+_minimum( 1 ),
+_maximum( 50 ),
+_step( 1 )
 {
-    textcolor( fltk::BLACK );
+    textcolor( FL_BLACK );
 }
 
 
 Timecode::Timecode( int w, int h, const char* l ) :
-    fltk::FloatInput( 0, 0, w, h, l ),
-    uiMain( NULL ),
-    _display( mrv::Timecode::kFrames ),
-    _fps( 24.f ),
-    _frame( 1 ),
-    _tc_frame( 0 ),
-    _minimum( 1 ),
-    _maximum( 50 ),
-    _step( 1 )
+Fl_Float_Input( 0, 0, w, h, l ),
+uiMain( NULL ),
+_display( mrv::Timecode::kFrames ),
+_fps( 24.f ),
+_frame( 1 ),
+_tc_frame( 0 ),
+_minimum( 1 ),
+_maximum( 50 ),
+_step( 1 )
 {
-    textcolor( fltk::BLACK );
+    textcolor( FL_BLACK );
 }
 
 /**
@@ -120,7 +119,7 @@ bool Timecode::valid_drop_frame( int hours, int mins, int secs, int frames,
 
 int Timecode::handle( int e )
 {
-    return fltk::FloatInput::handle( e );
+    return Fl_Float_Input::handle( e );
     // if ( r != 0 ) return r;
     // return uiMain->uiView->handle( e );
 }
@@ -130,14 +129,16 @@ int64_t Timecode::value() const
     switch( _display )
     {
     case kFrames:
-        return atoi( text() );
+        return atoi( Fl_Input::value() );
     case kSeconds:
-        return int64_t( atof( text() ) * _fps + 0.5 );
+        return int64_t( atof( Fl_Input::value() ) * _fps + 0.5 );
     case kTime:
     {
         int hours = 0, mins = 0, secs = 0, msecs = 0;
-        sscanf( text(), "%02d:%02d:%02d.%03d",
-                &hours, &mins, &secs, &msecs );
+        int num = sscanf( Fl_Input::value(), "%02d:%02d:%02d.%03d",
+                          &hours, &mins, &secs, &msecs );
+        if ( num != 4 )
+            return atoi( Fl_Input::value() );
 
         assert( msecs < 1000 );
         assert( secs < 60 );
@@ -152,8 +153,10 @@ int64_t Timecode::value() const
     case kTimecodeNonDrop:
     {
         int hours = 0, mins = 0, secs = 0, frames = 0;
-        sscanf( text(), "%02d:%02d:%02d:%02d",
-                &hours, &mins, &secs, &frames );
+        int num = sscanf( Fl_Input::value(), "%02d:%02d:%02d:%02d",
+                          &hours, &mins, &secs, &frames );
+        if ( num != 4 )
+            return atoi( Fl_Input::value() );
 
         assert( frames < _fps + 0.5 );
         assert( secs < 60 );
@@ -171,8 +174,10 @@ int64_t Timecode::value() const
     case kTimecodeDropFrame:
     {
         int hours = 0, mins = 0, secs = 0, frames = 0;
-        sscanf( text(), "%02d;%02d;%02d;%02d",
-                &hours, &mins, &secs, &frames );
+        int num = sscanf( Fl_Input::value(), "%02d;%02d;%02d;%02d",
+                          &hours, &mins, &secs, &frames );
+        if ( num != 4 )
+            return atoi( Fl_Input::value() );
 
         assert( frames < _fps + 0.5 );
         assert( secs < 60 );
@@ -261,9 +266,9 @@ void Timecode::display( Timecode::Display x )
 
 
     if ( _display == kFrames || _display == kSeconds )
-        type( FLOAT );
+        type( FL_FLOAT_INPUT );
     else
-        type( NORMAL );
+        type( FL_NORMAL_INPUT );
 
     value( v );
     redraw();
@@ -497,38 +502,38 @@ void Timecode::value( const int64_t x )
 
     char buf[100];
     int n = format( buf, _display, x, _tc_frame, _fps, true );
-    Input::text(buf, n);
+    Fl_Input::value(buf, n);
 }
 
 
 bool Timecode::replace(int b, int e, const char* text, int ilen) {
-    using namespace fltk;
 
     for (int n = 0; n < ilen; n++) {
         char ascii = text[n];
-        compose_reset(); // ignore any foreign letters...
+        Fl::compose_reset(); // ignore any foreign letters...
 
         // Allow only one '.' in FLOAT inputs
-        if (type()==FLOAT && ( ascii=='.' || ascii==',') ) {
-            if (!strchr(this->text(), ascii))
+        if (input_type()==FL_FLOAT_INPUT && ( ascii=='.' || ascii==',') ) {
+            if (!strchr(Fl_Input::value(), ascii))
                 continue;
         } else
             // This is complex to allow "00:00:01" or "00;00;00;22" timecode
             // to be typed:
             if (b+n==0 && (ascii == '+' || ascii == '-') ||
-                    (ascii >= '0' && ascii <= '9') ||
-                    (type()==FLOAT && ascii && strchr(".,eE+-", ascii)) ||
-                    ((type()==NORMAL) && ascii && (ascii == ';' || ascii == ':' ||
-                                                   ascii == '.')))
+                (ascii >= '0' && ascii <= '9') ||
+                (input_type()==FL_FLOAT_INPUT && ascii &&
+                     strchr(".,eE+-", ascii)) ||
+                    ((input_type()==FL_NORMAL_INPUT) &&
+                     ascii && (ascii == ';' ||
+                               ascii == ':' ||
+                               ascii == '.')))
                 continue; // it's ok;
 
         return false;
     }
-    return Input::replace(b,e,text,ilen);
+    return Fl_Input::replace(b,e,text,ilen);
 }
 
 
 
 }  // namespace mrv
-
-
