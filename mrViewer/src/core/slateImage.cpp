@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
  *
  */
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #include <iostream>
@@ -191,7 +193,7 @@ void slateImage::draw_gradient()
 }
 
 bool slateImage::fetch( mrv::image_type_ptr& canvas,
-			const boost::int64_t frame )
+                        const boost::int64_t frame )
 {
     MagickBooleanType status;
 
