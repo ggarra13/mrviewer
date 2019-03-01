@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -19,56 +20,46 @@
  * @file   mrvCollapsableGroup.h
  * @author gga
  * @date   Tue Aug  7 04:48:52 2007
- *
+ * 
  * @brief  A group widget that has a button allowing it to collapse
  *         the contents.
- *
- *
+ * 
+ * 
  */
 
 #ifndef mrvCollapsableGroup_h
 #define mrvCollapsableGroup_h
 
-
-#include <fltk/PackedGroup.h>
-
-namespace fltk {
-class Button;
-}
-
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Pack.H>
+#include <FL/Fl_Button.H>
 
 namespace mrv {
 
-class CollapsableGroup : public fltk::Group
-{
-public:
-    CollapsableGroup( const int x, const int y, const int w,
-                      const int h, const char* l = 0 );
-    ~CollapsableGroup();
+  class CollapsableGroup : public Fl_Group {
+    public:
+      CollapsableGroup( const int x, const int y, const int w, 
+                        const int h, const char* l = 0 );
+      ~CollapsableGroup();
+      void begin() { _contents->begin(); }
+      void end()   { _contents->end(); }
+      void add( Fl_Widget* w );
+      void clear();
+      void spacing( int x );
+      void resize(int X,int Y,int W,int H);
+      Fl_Pack* contents() { return _contents; }
 
-    void add( fltk::Widget* w );
+    protected:
+      Fl_Button*  _button;
+      Fl_Pack*    _contents;
 
-    void clear();
-
-    void remove_all();
-
-    void spacing( int x );
-
-    fltk::PackedGroup* contents() {
-        return _contents;
-    }
-
-    virtual void layout();
-
-protected:
-    fltk::Button*    _button;
-    fltk::PackedGroup* _contents;
-
-    static void toggle_tab( fltk::Button* w, void* data );
-};
-
+      static void toggle_tab_cb( Fl_Button* w, void* data );
+      void        toggle_tab( Fl_Button* w);
+      void layout();
+      void relabel_button();
+      //DEBUG virtual void draw();
+  };
 
 } // namespace mrv
-
 
 #endif // mrvCollapsableGroup_h
