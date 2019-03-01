@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,14 +28,16 @@
 #ifndef mrvBrowser_h
 #define mrvBrowser_h
 
-#include <fltk/Browser.h>
-#include <fltk/Color.h>
+#include <FL/Fl_Browser.H>
+#include <FL/fl_draw.H>
 
+
+class ViewerUI;
 
 namespace mrv
 {
 
-class Browser : public fltk::Browser
+class Browser : public Fl_Browser
 {
 public:
     Browser( int x, int y, int w, int h, const char* l = 0 );
@@ -52,10 +54,14 @@ public:
         _column_separator = t;
     }
 
-    void column_separator_color( fltk::Color c ) {
+    void column_labels( const char** labels )
+    {
+    }
+    
+    void column_separator_color( Fl_Color c ) {
         _column_separator_color = c;
     }
-    fltk::Color column_separator_color() const {
+    Fl_Color column_separator_color() const {
         return _column_separator_color;
     }
 
@@ -68,19 +74,25 @@ public:
         _auto_resize = t;
     }
 
+    inline int xposition() const { return _xposition; }
+    inline void xposition( int x ) { _xposition = x; }
+
 protected:
 
-    int absolute_item_index( const fltk::Group* g );
-    int absolute_item_index( bool& found,
-                             const fltk::Widget* item,
-                             const fltk::Widget* child );
+    void set_column_start( int col, int width );
 
-    void change_cursor( fltk::Cursor* cursor );
+    int absolute_item_index( Fl_Group* g );
+    int absolute_item_index( bool& found,
+                             Fl_Widget* item,
+                             Fl_Widget* child );
+
+    void change_cursor( Fl_Cursor cursor );
     int which_col_near_mouse();
 
 protected:
-    fltk::Color  _column_separator_color;	// color of column separator lines
-    fltk::Cursor* _last_cursor;	// saved cursor state info
+    Fl_Color  _column_separator_color;	// color of column separator lines
+    Fl_Cursor _last_cursor;	// saved cursor state info
+    int       _xposition;
     int       _dragcol;		// col# user is currently dragging
     bool      _column_separator;	// flag to enable drawing column separators
     bool      _dragging;	// true if user dragging a column
