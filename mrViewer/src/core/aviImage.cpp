@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2016  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include <cstdio>
 
 #define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
 #include <iostream>
@@ -834,7 +835,7 @@ void aviImage::clear_cache()
 }
 
 /// VCR play (and cache frames if needed) sequence
-void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
+void aviImage::play( const Playback dir, ViewerUI* const uiMain,
                      const bool fg )
 {
     CMedia::play( dir, uiMain, fg );
@@ -2703,16 +2704,17 @@ void aviImage::populate()
 
     if ( !has_video() )
     {
+        mrv::image_type_ptr canvas;
         if ( !_hires )
         {
             _w = 640;
             _h = 480;
-            allocate_pixels( _hires, _frameStart, 3, image_type::kRGB,
+            allocate_pixels( canvas, _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
         }
-        _hires->frame( _frameStart );
-        uint8_t* ptr = (uint8_t*) _hires->data().get();
+        canvas->frame( _frameStart );
+        uint8_t* ptr = (uint8_t*) canvas->data().get();
         memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
     }
 
@@ -3113,15 +3115,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
         _right_eye->stop();
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
-        int64_t f = frame;
-        DecodeStatus status = _right_eye->decode_video( f );
-        if ( status != kDecodeOK )
-        {
-            LOG_ERROR( "Decoding right frame " << frame << " failed." );
-            return false;
-        }
-        _right_eye->find_image( frame );
-        _stereo[1] = _right_eye->left();
+        _stereo[1] = canvas;
     }
 
     bool got_video = !has_video();
