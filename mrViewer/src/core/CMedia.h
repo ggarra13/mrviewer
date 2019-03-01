@@ -1,8 +1,6 @@
-
-
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -46,6 +44,7 @@
 #include <string>
 #include <deque>
 #include <limits>
+#include <atomic>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
@@ -107,10 +106,10 @@ struct SwrContext;
 // #define DEBUG_DECODE
 
 
+class ViewerUI;
 
 namespace mrv {
 
-class ViewerUI;
 class AudioEngine;
 class ImageOpts;
 
@@ -421,6 +420,7 @@ public:
 
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
     void default_layers();
+
 
 
     const mrv::Recti data_window( int64_t f = AV_NOPTS_VALUE) const;
@@ -980,7 +980,7 @@ public:
 
     /// VCR play (and cache frames if needed) sequence
     virtual void play( const Playback dir,
-                       mrv::ViewerUI* const uiMain,
+                       ViewerUI* const uiMain,
                        const bool fg );
 
 
