@@ -1,7 +1,7 @@
 
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,6 +60,7 @@ extern "C" {
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "mrvReelUI.h"
 #include "mrViewer.h"
 
 #include "mrvPlayback.h"
@@ -93,6 +94,10 @@ typedef boost::recursive_mutex Mutex;
 
 
 
+
+
+namespace mrv {
+
 void sleep_ms(int milliseconds) // cross-platform sleep function
 {
 #ifdef WIN32
@@ -106,10 +111,6 @@ void sleep_ms(int milliseconds) // cross-platform sleep function
     usleep(milliseconds * 1000);
 #endif
 }
-
-
-
-namespace mrv {
 
 
 enum EndStatus {
@@ -332,7 +333,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        CMedia* img,
                        bool    fg,
                        bool init_time,
-                       mrv::ViewerUI* uiMain,
+                       ViewerUI* uiMain,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
                        const mrv::CMedia::DecodeStatus end )
@@ -628,7 +629,7 @@ void audio_thread( PlaybackData* data )
 {
     assert( data != NULL );
 
-    mrv::ViewerUI*     uiMain   = data->uiMain;
+    ViewerUI*     uiMain   = data->uiMain;
     assert( uiMain != NULL );
     CMedia* img = data->image;
     assert( img != NULL );
@@ -846,7 +847,7 @@ void subtitle_thread( PlaybackData* data )
 {
     assert( data != NULL );
 
-    mrv::ViewerUI*     uiMain   = data->uiMain;
+    ViewerUI*     uiMain   = data->uiMain;
 
     CMedia* img = data->image;
     assert( img != NULL );
@@ -946,7 +947,7 @@ void video_thread( PlaybackData* data )
 {
     assert( data != NULL );
 
-    mrv::ViewerUI*     uiMain   = data->uiMain;
+    ViewerUI*     uiMain   = data->uiMain;
     assert( uiMain != NULL );
     CMedia* img = data->image;
     assert( img != NULL );
@@ -1292,7 +1293,7 @@ void decode_thread( PlaybackData* data )
 {
     av_assert0( data != NULL );
 
-    mrv::ViewerUI*     uiMain   = data->uiMain;
+    ViewerUI*     uiMain   = data->uiMain;
     av_assert0( uiMain != NULL );
 
 

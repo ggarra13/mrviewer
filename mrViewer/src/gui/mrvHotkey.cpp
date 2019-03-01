@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,7 @@
 #include <cstdio>
 #include <iostream>
 
-#include <fltk/events.h>
-#include <fltk/run.h>
-
-#include <fltk/Browser.h>
+#include <FL/Enumerations.H>
 
 #include "keyboard_ui.h"
 #include "mrViewer.h"
@@ -59,7 +56,7 @@ Hotkey kZoomMax( false, false, false, false, '9' );
 
 Hotkey kZoomIn( false, false, false, false, '.' );
 Hotkey kZoomOut( false, false, false, false, ',' );
-Hotkey kFullScreen( false, false, false, false, fltk::F11Key );
+Hotkey kFullScreen( false, false, false, false, FL_F + 11 );
 Hotkey kFitScreen( false, false, false, false, 'f' );
 Hotkey kSafeAreas( false, false, false, false, 's' );
 Hotkey kDisplayWindow( false, false, false, false, 'd' );
@@ -69,45 +66,45 @@ Hotkey kFlipX( false, false, false, false, 'x' );
 Hotkey kFlipY( false, false, false, false, 'y' );
 Hotkey kCenterImage( false, false, false, false, 'h' );
 
-Hotkey kFrameStepBack( false, false, false, false, fltk::LeftKey, "",
-                       fltk::Keypad4 );
-Hotkey kFrameStepFPSBack( true, false, false, false, fltk::LeftKey, "",
-                          fltk::Keypad4 );
-Hotkey kFrameStepFwd( false, false, false, false, fltk::RightKey, "",
-                      fltk::Keypad6 );
-Hotkey kFrameStepFPSFwd( true, false, false, false, fltk::RightKey, "",
-                         fltk::Keypad6 );
+Hotkey kFrameStepBack( false, false, false, false, FL_Left, "",
+                       FL_KP + 4 );
+Hotkey kFrameStepFPSBack( true, false, false, false, FL_Left, "",
+                          FL_KP + 4 );
+Hotkey kFrameStepFwd( false, false, false, false, FL_Right, "",
+                      FL_KP + 6 );
+Hotkey kFrameStepFPSFwd( true, false, false, false, FL_Right, "",
+                         FL_KP + 6 );
 Hotkey kPlayBackTwiceSpeed( true, false, false, false,
-                            fltk::UpKey, "", fltk::Keypad8 );
+                            FL_Up, "", FL_KP + 8 );
 Hotkey kPlayBackHalfSpeed( false, false, true, false,
-                           fltk::UpKey, "", fltk::Keypad8 );
-Hotkey kPlayBack( false, false, false, false, fltk::UpKey, "", fltk::Keypad8 );
-Hotkey kPlayFwd( false, false, false, false, fltk::SpaceKey, "",
-                 fltk::Keypad2 );
+                           FL_Up, "", FL_KP + 8 );
+Hotkey kPlayBack( false, false, false, false, FL_Up, "", FL_KP + 8 );
+Hotkey kPlayFwd( false, false, false, false, ' ', "",
+                 FL_KP + 2 );
 Hotkey kPlayFwdTwiceSpeed( true, false, false, false,
-                           fltk::DownKey, "", fltk::Keypad2 );
+                           FL_Down, "", FL_KP + 2 );
 Hotkey kPlayFwdHalfSpeed( false, false, true, false,
-                          fltk::DownKey, "", fltk::Keypad2 );
-Hotkey kStop( false, false, false, false, fltk::ReturnKey, "", fltk::Keypad5 );
+                          FL_Down, "", FL_KP + 2 );
+Hotkey kStop( false, false, false, false, FL_Enter, "", FL_KP + 5 );
 
 Hotkey kSwitchFGBG( false, false, false, false, 'j' );
 
-Hotkey kPreviousVersionImage( false, false, true, false, fltk::PageUpKey );
-Hotkey kNextVersionImage( false, false, true, false, fltk::PageDownKey );
+Hotkey kPreviousVersionImage( false, false, true, false, FL_Page_Up );
+Hotkey kNextVersionImage( false, false, true, false, FL_Page_Down );
 
-Hotkey kPreviousImage( false, false, false, false, fltk::PageUpKey );
-Hotkey kNextImage( false, false, false, false, fltk::PageDownKey );
-
-
-Hotkey kFirstFrame( false, false, false, false, fltk::HomeKey );
-Hotkey kLastFrame( false, false, false, false, fltk::EndKey );
-Hotkey kToggleBG( false, false, false, false, fltk::TabKey );
+Hotkey kPreviousImage( false, false, false, false, FL_Page_Up );
+Hotkey kNextImage( false, false, false, false, FL_Page_Down );
 
 
-Hotkey kToggleTopBar( false, false, false, false, fltk::F1Key );
-Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
-Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
-Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
+Hotkey kFirstFrame( false, false, false, false, FL_Home );
+Hotkey kLastFrame( false, false, false, false, FL_End );
+Hotkey kToggleBG( false, false, false, false, FL_Tab );
+
+
+Hotkey kToggleTopBar( false, false, false, false, FL_F + 1 );
+Hotkey kTogglePixelBar( false, false, false, false, FL_F + 2 );
+Hotkey kToggleTimeline( false, false, false, false, FL_F + 3 );
+Hotkey kTogglePresentation( false, false, false, false, FL_F + 12 );
 
 Hotkey kSwitchChannels( false, false, false, false, 'e' );
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
@@ -159,12 +156,12 @@ Hotkey kOCIOInputColorSpace( false, false, false, false, 0 );
 Hotkey kOCIODisplay( false, false, false, false, 0 );
 Hotkey kOCIOView( false, false, false, false, 0 );
 
-Hotkey kToggleReel( false, false, false, false, fltk::F4Key );
-Hotkey kToggleMediaInfo( false, false, false, false, fltk::F5Key );
-Hotkey kToggleColorInfo( false, false, false, false, fltk::F6Key );
-Hotkey kToggleAction( false, false, false, false, fltk::F7Key );
-Hotkey kToggleStereoOptions( false, false, false, false, fltk::F8Key );
-Hotkey kTogglePreferences( false, false, false, false, fltk::F9Key );;
+Hotkey kToggleReel( false, false, false, false, FL_F + 4 );
+Hotkey kToggleMediaInfo( false, false, false, false, FL_F + 5 );
+Hotkey kToggleColorInfo( false, false, false, false, FL_F + 6 );
+Hotkey kToggleAction( false, false, false, false, FL_F + 7 );
+Hotkey kToggleStereoOptions( false, false, false, false, FL_F + 8 );
+Hotkey kTogglePreferences( false, false, false, false, FL_F + 9 );;
 Hotkey kToggleEDLEdit( false, false, false, false, 0 );
 Hotkey kToggle3dView( false, false, false, false, 0 );
 Hotkey kToggleHistogram( false, false, false, false, 0 );
@@ -173,7 +170,7 @@ Hotkey kToggleWaveform( false, false, false, false, 0 );
 Hotkey kToggleICCProfiles( false, false, false, false, 0 );
 Hotkey kToggleConnections( false, false, false, false, 0 );
 Hotkey kToggleHotkeys( false, false, false, false, 0 );
-Hotkey kToggleLogs( false, false, false, false, fltk::F10Key );
+Hotkey kToggleLogs( false, false, false, false, FL_F + 10 );
 Hotkey kToggleAbout( false, false, false, false, 0 );
 
 Hotkey kRotatePlus90( false, false, false, false, '+' );
@@ -186,65 +183,57 @@ Hotkey kToggleICS( false, false, false, true, 'i' );
 bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
-    if ( (!text.empty()) && text == fltk::event_text() ) {
+    if ( (!text.empty()) && text == Fl::event_text() ) {
         return true;
     }
 
     if ( ctrl )
     {
-        if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                fltk::event_key_state( fltk::RightCtrlKey ) )
+        if ( Fl::event_key( FL_CONTROL ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                fltk::event_key_state( fltk::RightCtrlKey ) )
+        if ( Fl::event_key( FL_CONTROL ) )
             return false;
     }
 
     if ( shift )
     {
-        if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-                fltk::event_key_state( fltk::RightShiftKey ) )
+        if ( Fl::event_key( FL_SHIFT ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-                fltk::event_key_state( fltk::RightShiftKey ) )
+        if ( Fl::event_key( FL_SHIFT ) )
             return false;
     }
     if ( alt )
     {
-        if ( fltk::event_key_state( fltk::LeftAltKey ) ||
-                fltk::event_key_state( fltk::RightAltKey ) )
+        if ( Fl::event_key( FL_ALT ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( fltk::event_key_state( fltk::LeftAltKey ) ||
-                fltk::event_key_state( fltk::RightAltKey ) )
+        if ( Fl::event_key( FL_ALT ) )
             return false;
     }
     if ( meta )
     {
-        if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
-                fltk::event_key_state( fltk::RightMetaKey ) )
+        if ( Fl::event_key( FL_META ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
-                fltk::event_key_state( fltk::RightMetaKey ) )
+        if ( Fl::event_key( FL_META ) )
             return false;
     }
 
@@ -372,63 +361,63 @@ HotkeyEntry hotkeys[] = {
 
 
 struct TableText table[] = {
-    {fltk::EscapeKey, _("Escape")},
-    {fltk::BackSpaceKey, _("BackSpace")},
-    {fltk::TabKey, _("Tab")},
-    {fltk::ReturnKey, _("Return")},
-    {fltk::PrintKey, _("Print")},
+    {FL_Escape, _("Escape")},
+    {FL_BackSpace, _("BackSpace")},
+    {FL_Tab, _("Tab")},
+    {FL_Enter, _("Return")},
+    {FL_Print, _("Print")},
 
-    {fltk::ScrollLockKey, _("ScrollLock")},
-    {fltk::PauseKey, _("Pause")},
-    {fltk::InsertKey, _("Insert")},
-    {fltk::HomeKey, _("Home")},
-    {fltk::PageUpKey, _("PageUp")},
+    {FL_Scroll_Lock, _("ScrollLock")},
+    {FL_Pause, _("Pause")},
+    {FL_Insert, _("Insert")},
+    {FL_Home, _("Home")},
+    {FL_Page_Up, _("PageUp")},
 
-    {fltk::DeleteKey, _("Delete")},
-    {fltk::EndKey, _("End")},
-    {fltk::PageDownKey, _("PageDown")},
-    {fltk::LeftKey, _("Left")},
-    {fltk::UpKey, _("Up")},
+    {FL_Delete, _("Delete")},
+    {FL_End, _("End")},
+    {FL_Page_Down, _("PageDown")},
+    {FL_Left, _("Left")},
+    {FL_Up, _("Up")},
 
-    {fltk::RightKey, _("Right")},
-    {fltk::DownKey, _("Down")},
-    {fltk::LeftShiftKey, _("LeftShift")},
-    {fltk::RightShiftKey, _("RightShift")},
-    {fltk::LeftCtrlKey, _("LeftCtrl")},
+    {FL_Right, _("Right")},
+    {FL_Down, _("Down")},
+    {FL_Shift_L, _("LeftShift")},
+    {FL_Shift_R, _("RightShift")},
+    {FL_Control_L, _("LeftCtrl")},
 
-    {fltk::RightCtrlKey, _("RightCtrl")},
-    {fltk::CapsLockKey, _("CapsLock")},
-    {fltk::LeftAltKey, _("LeftAlt")},
-    {fltk::RightAltKey, _("RightAlt")},
-    {fltk::LeftMetaKey, _("LeftMeta")},
+    {FL_Control_R, _("RightCtrl")},
+    {FL_Caps_Lock, _("CapsLock")},
+    {FL_Alt_L, _("LeftAlt")},
+    {FL_Alt_R, _("RightAlt")},
+    {FL_Meta_L, _("LeftMeta")},
 
-    {fltk::RightMetaKey, _("RightMeta")},
-    {fltk::MenuKey, _("Menu")},
-    {fltk::NumLockKey, _("NumLock")},
-    {fltk::KeypadEnter, _("KeypadEnter")},
-    {fltk::MultiplyKey, _("Multiply")},
+    {FL_Meta_R, _("RightMeta")},
+    {FL_Menu, _("Menu")},
+    {FL_Num_Lock, _("NumLock")},
+    {FL_KP_Enter, _("padEnter")},
 
-    {fltk::AddKey, _("Add")},
-    {fltk::SubtractKey, _("Subtract")},
-    {fltk::DecimalKey, _("Decimal")},
-    {fltk::DivideKey, _("Divide")},
-    {fltk::Keypad0, _("Keypad0")},
+    // {FL_Multiply, _("Multiply")},
+    // {FL_Add, _("Add")},
+    // {FL_Subtract, _("Subtract")},
+    // {FL_Decimal, _("Decimal")},
+    // {FL_Divide, _("Divide")},
+    {FL_KP + 0, _("pad0")},
 
-    {fltk::Keypad1, _("Keypad1")},
-    {fltk::Keypad2, _("Keypad2")},
-    {fltk::Keypad3, _("Keypad3")},
-    {fltk::Keypad4, _("Keypad4")},
-    {fltk::Keypad5, _("Keypad5")},
+    {FL_KP + 1, _("pad1")},
+    {FL_KP + 2, _("pad2")},
+    {FL_KP + 3, _("pad3")},
+    {FL_KP + 4, _("pad4")},
+    {FL_KP + 5, _("pad5")},
 
-    {fltk::Keypad6, _("Keypad6")},
-    {fltk::Keypad7, _("Keypad7")},
-    {fltk::Keypad8, _("Keypad8")},
-    {fltk::Keypad9, _("Keypad9")},
-    {fltk::SpaceKey,_("Space (' ')")}
+    {FL_KP + 6, _("pad6")},
+    {FL_KP + 7, _("pad7")},
+    {FL_KP + 8, _("pad8")},
+    {FL_KP + 9, _("pad9")},
+    {' ',_("Space (' ')")}
 };
 
 
-void fill_ui_hotkeys( fltk::Browser* b )
+void fill_ui_hotkeys( mrv::Browser* b )
 {
     if (!b) return;
 
@@ -462,9 +451,9 @@ void fill_ui_hotkeys( fltk::Browser* b )
 
         if ( !special )
         {
-            if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
+            if (k >= FL_F && k <= FL_F_Last) {
                 char buf[64];
-                sprintf(buf, "F%d", k - fltk::F0Key);
+                sprintf(buf, "F%d", k - FL_F);
                 key += buf;
             }
             else
@@ -486,6 +475,8 @@ void fill_ui_hotkeys( fltk::Browser* b )
 
 void select_hotkey( HotkeyUI* b )
 {
+    return;
+
     int idx = b->uiFunction->value();
 
     Hotkey& hk = hotkeys[idx].hotkey;
@@ -494,12 +485,13 @@ void select_hotkey( HotkeyUI* b )
     h->make_window();
     h->fill();
 
-    fltk::Window* window = h->uiMain;
-    window->child_of( b->uiMain );
+    Fl_Window* window = h->uiMain;
+    Fl_Group::current( b->uiMain );
     window->show();
+    Fl_Group::current( 0 );
 
     while ( window->visible() )
-        fltk::check();
+        Fl::check();
 
     hk = h->hk;
 
