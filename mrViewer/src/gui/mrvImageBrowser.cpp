@@ -629,6 +629,9 @@ void ImageBrowser::save_reel()
             fs::path childPath = img->fileroot();
             fs::path relativePath = fs::relative( childPath, parentPath );
             path = relativePath.generic_string();
+            // Relative path can fail under windows when saving into
+            // different drives.  In that case, we use the full path.
+            if ( path.empty() ) path = img->fileroot();
         }
 
         fprintf( f, "\"%s\" %" PRId64 " %" PRId64

@@ -7277,7 +7277,6 @@ void ImageView::channel( unsigned short c )
     std::string oext = oldChannel;
 
 
-
     size_t pos = ext.rfind('.');
     size_t pos2 = oext.rfind('.');
 
