@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@
 #include <fstream>
 #include <set>
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 
@@ -55,7 +57,6 @@
 #include <boost/asio/streambuf.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
-#include <fltk/Font.h>
 
 #include "core/mrvPlayback.h"
 #include "mrvClient.h"
@@ -72,6 +73,8 @@
 #include "gui/mrvHistogram.h"
 #include "gui/mrvTimeline.h"
 #include "mrvColorAreaUI.h"
+#include "mrvReelUI.h"
+#include "mrvPreferencesUI.h"
 #include "mrViewer.h"
 
 using boost::asio::deadline_timer;
@@ -90,7 +93,7 @@ namespace mrv {
 
 typedef CMedia::Mutex Mutex;
 
-Parser::Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v ) :
+Parser::Parser( boost::asio::io_service& io_service, ViewerUI* v ) :
     connected( false ),
     socket_( io_service ),
     ui( v )
@@ -291,17 +294,17 @@ bool Parser::parse( const std::string& s )
 
         shape->text( text );
 
-        fltk::Font** fonts;
         unsigned i;
-        unsigned num = fltk::list_fonts(fonts);
+        unsigned num = Fl::set_fonts( "-*" );
         for ( i = 0; i < num; ++i )
         {
-            if ( font == fonts[i]->name() ) break;
+            int t;
+            if ( font == Fl::get_font_name( (Fl_Font) i, &t ) ) break;
         }
         if ( i >= num ) i = 0;
 
 
-        shape->font( fonts[i] );
+        shape->font( (Fl_Font) i );
         is >> xy.x >> xy.y;
         shape->size( font_size );
         shape->r = color.r;
@@ -443,7 +446,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kChangeChannel;
-        c.data = new unsigned(ch);
+        int* t = (int*) malloc( sizeof(int*) );
+        *t = ch; c.data = t;
 
         v->commands.push_back( c );
 
@@ -462,7 +466,7 @@ bool Parser::parse( const std::string& s )
         int b;
         is >> b;
         v->normalize( ( b != 0 ) );
-        ui->uiNormalize->state( (b != 0 ) );
+        ui->uiNormalize->value( (b != 0 ) );
         v->redraw();
         ok = true;
     }
@@ -582,7 +586,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kRT;
-        c.data = new string( s );
+        char* t = strdup( s.c_str() );
+        c.data = t;
 
         v->commands.push_back( c );
 
@@ -686,7 +691,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kICS;
-        c.data = new std::string( s );
+        char* t = (char*) strdup( s.c_str() );
+        c.data = t;
 
         v->commands.push_back( c );
 
@@ -753,7 +759,7 @@ bool Parser::parse( const std::string& s )
     {
         int b;
         is >> b;
-        ui->uiLUT->state( (b != 0) );
+        ui->uiLUT->value( (b != 0) );
         v->use_lut( (b != 0) );
         v->redraw();
         ok = true;
@@ -937,7 +943,9 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kCreateReel;
-        c.data = new std::string( name );
+        char* t = strdup( s.c_str() );
+        c.data = t;
+
         v->commands.push_back( c );
 
         ok = true;
@@ -972,7 +980,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kRemoveImage;
-        c.data = new int(idx);
+        int* x = (int*) malloc( sizeof( int ) );
+        *x = idx; c.data = x;
 
         v->commands.push_back( c );
 
@@ -1125,8 +1134,9 @@ bool Parser::parse( const std::string& s )
             ImageView::Command c;
             c.type = ImageView::kLoadImage;
 
-            LoadInfo* tmp = new LoadInfo( imgname, start, end );
-            c.data = tmp;
+            LoadInfo tmp( imgname, start, end );
+            c.data = malloc( sizeof(tmp) );
+            memcpy( c.data, &tmp, sizeof(tmp) );
 
             v->commands.push_back( c );
         }
@@ -1142,7 +1152,8 @@ bool Parser::parse( const std::string& s )
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
 
-        c.data = new int(idx);
+        int* x = (int*) malloc( sizeof( int ) );
+        *x = idx; c.data = x;
 
         v->commands.push_back( c );
 
@@ -1202,7 +1213,8 @@ bool Parser::parse( const std::string& s )
             ImageView::Command c;
             c.type = ImageView::kChangeImage;
 
-            c.data = new int(idx);
+            int* x = (int*) malloc( sizeof( int ) );
+            *x = idx; c.data = x;
 
             v->commands.push_back( c );
 
@@ -1218,9 +1230,9 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kExchangeImage;
-        std::vector<int>* list = new std::vector<int>();
-        list->push_back( oldsel );
-        list->push_back( sel );
+        int* list = (int*)malloc( sizeof( int* )*2 );
+        list[0] = oldsel;
+        list[1] = sel;
         c.data = list;
 
         v->commands.push_back( c );
@@ -1234,7 +1246,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kFGReel;
-        c.data = new int(idx);
+        int* x = (int*) malloc( sizeof( int ) );
+        *x = idx; c.data = x;
 
         v->commands.push_back( c );
 
@@ -1249,7 +1262,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kBGReel;
-        c.data = new int(idx);
+        int* x = (int*) malloc( sizeof( int ) );
+        *x = idx; c.data = x;
 
         v->commands.push_back( c );
 
@@ -1288,8 +1302,8 @@ bool Parser::parse( const std::string& s )
                 std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
                 {
-                    int* data = new int(idx);
-                    c.data = data;
+                    int* x = (int*)malloc( sizeof(int) );
+                    *x = idx; c.data = x;
 
                     img->first_frame( first );
                     img->last_frame( last );
@@ -1300,8 +1314,8 @@ bool Parser::parse( const std::string& s )
 
             if (!ok )
             {
-                int* data = new int(-1);
-                c.data = data;
+                int* x = (int*)malloc( sizeof(int) );
+                *x = -1; c.data = x;
             }
 
             v->commands.push_back( c );
@@ -1371,7 +1385,7 @@ bool Parser::parse( const std::string& s )
                 size_t num_luts = img->number_of_lmts();
                 for ( size_t i = 0; i < num_luts; ++i )
                 {
-                    sprintf( buf, N_("LMT %d \"%s\""), i,
+                    sprintf( buf, N_("LMT %ld \"%s\""), i,
                              img->look_mod_transform(i) );
                     deliver( buf );
                 }
@@ -1514,7 +1528,7 @@ bool Parser::parse( const std::string& s )
         sprintf(buf, N_("OCIO %d"), (int)mrv::Preferences::use_ocio );
         deliver( buf );
 
-        const char* const config = v->main()->uiPrefs->uiPrefsOCIOConfig->text();
+        const char* const config = v->main()->uiPrefs->uiPrefsOCIOConfig->value();
         sprintf(buf, N_("OCIOConfig \"%s\""), config );
         deliver( buf );
 
@@ -1638,7 +1652,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kSeek;
-        c.data = new int64_t( f );
+        int64_t* d = (int64_t*)malloc( sizeof(int64_t) );
+        *d = f; c.data = d;
         v->commands.push_back( c );
 
         ok = true;
@@ -1809,7 +1824,7 @@ const char* const kModule = "server";
 }
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
-                         mrv::ViewerUI* const v) :
+                         ViewerUI* const v) :
     non_empty_output_queue_(io_service),
     Parser(io_service, v)
 {
@@ -2137,7 +2152,7 @@ void tcp_session::check_deadline(deadline_timer* deadline)
 
 server::server(boost::asio::io_service& io_service,
                const tcp::endpoint& endpoint,
-               mrv::ViewerUI* v)
+               ViewerUI* v)
     : io_service_(io_service),
       acceptor_(io_service),
       ui_( v )
@@ -2184,9 +2199,8 @@ void server::handle_accept(tcp_session_ptr session,
     start_accept();
 }
 
-ConnectionUI* ViewerUI::uiConnection = NULL;
 
-void server::create(mrv::ViewerUI* ui)
+void server::create(ViewerUI* ui)
 {
     unsigned short port = (unsigned short) ui->uiConnection->uiServerPort->value();
     ServerData* data = new ServerData;
@@ -2201,7 +2215,7 @@ void server::create(mrv::ViewerUI* ui)
     t.detach();
 }
 
-void server::remove( mrv::ViewerUI* ui )
+void server::remove( ViewerUI* ui )
 {
     if ( !ui || !ui->uiView ) return;
 
