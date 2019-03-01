@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@
 //
 // Copyright (c) 2006, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
-//
+// 
 // All rights reserved.
-//
+// 
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -33,8 +33,8 @@
 // distribution.
 // *       Neither the name of Industrial Light & Magic nor the names of
 // its contributors may be used to endorse or promote products derived
-// from this software without specific prior written permission.
-//
+// from this software without specific prior written permission. 
+// 
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -120,12 +120,12 @@ const char* kRGBChannels[] = { "rIn", "gIn", "bIn", "aIn" };
 
 void
 ctlToLut (std::vector<std::string> transformNames,
-          Header inHeader,
-          size_t lutSize,
-          const float pixelValues[/*lutSize*/],
-          float lut[/*lutSize*/],
-          const char* inChannels[4]
-         )
+	  Header inHeader,
+	  size_t lutSize,
+	  const float pixelValues[/*lutSize*/],
+	  float lut[/*lutSize*/],
+	  const char* inChannels[4]
+)
 {
 
     //
@@ -139,9 +139,9 @@ ctlToLut (std::vector<std::string> transformNames,
     Header outHeader;
 
     if (!hasChromaticities (inHeader))
-    {
-        addChromaticities (inHeader, Chromaticities());
-    }
+      {
+	addChromaticities (inHeader, Chromaticities());
+      }
 
     initializeEnvHeader (envHeader);
 
@@ -154,54 +154,54 @@ ctlToLut (std::vector<std::string> transformNames,
     FrameBuffer inFb;
 
     inFb.insert (inChannels[0],
-                 Slice (Imf::FLOAT,			// type
-                        (char *)pixelValues,		// base
-                        4 * sizeof (float),		// xStride
-                        0));				// yStride
+		 Slice (Imf::FLOAT,			// type
+		        (char *)pixelValues,		// base
+			4 * sizeof (float),		// xStride
+			0));				// yStride
 
     inFb.insert (inChannels[1],
-                 Slice (Imf::FLOAT,			// type
-                        (char *)(pixelValues + 1),	// base
-                        4 * sizeof (float),		// xStride
-                        0));				// yStride
+		 Slice (Imf::FLOAT,			// type
+			(char *)(pixelValues + 1),	// base
+			4 * sizeof (float),		// xStride
+			0));				// yStride
 
     inFb.insert (inChannels[2],
-                 Slice (Imf::FLOAT,			// type
-                        (char *)(pixelValues + 2),	// base
-                        4 * sizeof (float),		// xStride
-                        0));				// yStride
+		 Slice (Imf::FLOAT,			// type
+			(char *)(pixelValues + 2),	// base
+			4 * sizeof (float),		// xStride
+			0));				// yStride
 
     inFb.insert (inChannels[3],
-                 Slice (Imf::FLOAT,			// type
-                        (char *)(pixelValues + 3),	// base
-                        4 * sizeof (float),		// xStride
-                        0));
+		 Slice (Imf::FLOAT,			// type
+			(char *)(pixelValues + 3),	// base
+			4 * sizeof (float),		// xStride
+			0));
 
     FrameBuffer outFb;
 
     outFb.insert ("rOut",
-                  Slice (Imf::FLOAT,			// type
-                         (char *)lut,			// base
-                         4 * sizeof (float),		// xStride
-                         0));				// yStride
+		  Slice (Imf::FLOAT,			// type
+			 (char *)lut,			// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
 
     outFb.insert ("gOut",
-                  Slice (Imf::FLOAT,			// type
-                         (char *)(lut + 1),		// base
-                         4 * sizeof (float),		// xStride
-                         0));				// yStride
+		  Slice (Imf::FLOAT,			// type
+			 (char *)(lut + 1),		// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
 
     outFb.insert ("bOut",
-                  Slice (Imf::FLOAT,			// type
-                         (char *)(lut + 2),		// base
-                         4 * sizeof (float),		// xStride
-                         0));				// yStride
+		  Slice (Imf::FLOAT,			// type
+			 (char *)(lut + 2),		// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
 
     outFb.insert ("aOut",
-                  Slice (Imf::FLOAT,			// type
-                         (char *)(lut + 3),		// base
-                         4 * sizeof (float),		// xStride
-                         0));				// yStride
+		  Slice (Imf::FLOAT,			// type
+			 (char *)(lut + 3),		// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
 
     //
     // Run the CTL transforms.
@@ -209,28 +209,28 @@ ctlToLut (std::vector<std::string> transformNames,
 
     SimdInterpreter interpreter;
 
-#ifdef CTL_MODULE_BASE_PATH
+    #ifdef CTL_MODULE_BASE_PATH
 
-    //
-    // The configuration scripts has defined a default
-    // location for CTL modules.  Include this location
-    // in the CTL module search path.
-    //
+	//
+	// The configuration scripts has defined a default
+	// location for CTL modules.  Include this location
+	// in the CTL module search path.
+	//
 
-    std::vector< std::string > paths = interpreter.modulePaths();
-    paths.push_back (CTL_MODULE_BASE_PATH);
-    interpreter.setModulePaths (paths);
+	std::vector< std::string > paths = interpreter.modulePaths();
+	paths.push_back (CTL_MODULE_BASE_PATH);
+	interpreter.setModulePaths (paths);
 
-#endif
+    #endif
 
     ImfCtl::applyTransforms (interpreter,
-                             transformNames,
-                             Box2i (V2i (0, 0), V2i (unsigned(lutSize) / 4, 0)),
-                             envHeader,
-                             inHeader,
-                             inFb,
-                             outHeader,
-                             outFb);
+			     transformNames,
+			     Box2i (V2i (0, 0), V2i (unsigned(lutSize) / 4, 0)),
+			     envHeader,
+			     inHeader,
+			     inFb,
+			     outHeader,
+			     outFb);
 }
 
 
