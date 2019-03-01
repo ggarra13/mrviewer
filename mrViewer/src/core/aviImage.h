@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,10 +36,10 @@ extern "C" {
 #include "CMedia.h"
 
 
-namespace mrv {
-
-class AviSaveUI;
 class ViewerUI;
+class AviSaveUI;
+
+namespace mrv {
 
 extern const char* const kColorSpaces[];
 
@@ -85,7 +85,7 @@ public:
     virtual void preroll( const int64_t frame );
     virtual bool fetch( mrv::image_type_ptr& canvas, const int64_t frame );
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
+    virtual void play( const Playback dir, ViewerUI* const uiMain,
                        const bool fg );
 
     virtual void clear_cache();
