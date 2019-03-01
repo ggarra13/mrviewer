@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,14 +30,14 @@
 
 #include <string>
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Browser.H>
 
 
 namespace mrv {
 
 class CMedia;
 
-class OCIOBrowser : public fltk::Browser
+class OCIOBrowser : public Fl_Browser
 {
 public:
     enum Type {
@@ -50,7 +50,10 @@ public:
     OCIOBrowser(int x, int y, int w, int h, const char* l = 0);
     ~OCIOBrowser();
 
-    void set_value( const std::string& n ) {
+    const std::string& get_selection() {
+        return _sel;
+    }
+    void set_selection( const std::string& n ) {
         _sel = n;
     }
     void set_type( Type type ) {
