@@ -2703,17 +2703,16 @@ void aviImage::populate()
 
     if ( !has_video() )
     {
-        mrv::image_type_ptr canvas;
         if ( !_hires )
         {
             _w = 640;
             _h = 480;
-            allocate_pixels( canvas, _frameStart, 3, image_type::kRGB,
+            allocate_pixels( _hires, _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
         }
-        canvas->frame( _frameStart );
-        uint8_t* ptr = (uint8_t*) canvas->data().get();
+        _hires->frame( _frameStart );
+        uint8_t* ptr = (uint8_t*) _hires->data().get();
         memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
     }
 
@@ -3114,7 +3113,15 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
         _right_eye->stop();
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
-        _stereo[1] = canvas;
+        int64_t f = frame;
+        DecodeStatus status = _right_eye->decode_video( f );
+        if ( status != kDecodeOK )
+        {
+            LOG_ERROR( "Decoding right frame " << frame << " failed." );
+            return false;
+        }
+        _right_eye->find_image( frame );
+        _stereo[1] = _right_eye->left();
     }
 
     bool got_video = !has_video();
