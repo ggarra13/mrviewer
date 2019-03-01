@@ -16,62 +16,42 @@
 #ifndef _FLU_FILE_CHOOSER_H
 #define _FLU_FILE_CHOOSER_H
 
-#include <vector>
-#include <string>
-#include <ctime>
+#include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Tile.H>
+#include <FL/Fl_Pack.H>
+#include <FL/Fl_Scroll.H>
+#include <FL/Fl_Check_Button.H>
 
-#include <fltk/DoubleBufferWindow.h>
-#include <fltk/Input.h>
-#include <fltk/xpmImage.h>
-#include <fltk/PopupMenu.h>
-#include <fltk/TiledGroup.h>
-#include <fltk/PackedGroup.h>
-//#include <fltk/Scrollbar.h>
-#include <fltk/ScrollGroup.h>
-#include <fltk/CheckButton.h>
-#include <fltk/ToggleButton.h>
-#include <fltk/ReturnButton.h>
-#include <fltk/HighlightButton.h>
-#include <fltk/Browser.h>
-#include <fltk/InputBrowser.h>
-
-#include <boost/thread/recursive_mutex.hpp>
-#include <boost/thread.hpp>
-
-#include "FLU/flu_export.h"
-
-
-
-
-#include "FLU/Flu_Combo_Tree.h"
+#include "FLU/Flu_Button.h"
+#include "FLU/Flu_Return_Button.h"
 #include "FLU/Flu_Wrap_Group.h"
+#include "FLU/Flu_Combo_Tree.h"
+#include "FLU/Flu_Combo_List.h"
+#include "FLU/flu_export.h"
+#include "FLU/FluSimpleString.h"
+#include "FLU/FluVectorClass.h"
 
-
-typedef std::vector< std::string > FluStringVector;
-
-
-
-extern std::string retname;
+FluMakeVectorClass( FluSimpleString, FluStringVector );
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
-FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact );
-FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact = true );
+FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector *filelist );
+FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles );
 FLU_EXPORT const char* flu_file_and_dir_chooser( const char *message, const char *filename );
 
 //! A file and directory choosing widget that looks and acts similar to the stock Windows file chooser
-class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
+class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 {
 
   friend class FileInput;
-  class FileInput : public fltk::Input
+  class FileInput : public Fl_Input
     {
     public:
-      FileInput( int x, int y, int w, int h, const char *l );
+      FileInput( int x, int y, int w, int h, const char *l, Flu_File_Chooser *c );
       ~FileInput();
-
-      void set_chooser( Flu_File_Chooser* c ) { chooser = c; }
 
       int handle( int event );
     protected:
@@ -80,58 +60,59 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
  public:
 
-  //! strings to be set by a programmer to the correct phrase or 
-  //! name for their language (they are in english by default)   */
-  static std::string favoritesTxt;
-  static std::string desktopTxt;
-  static std::string myComputerTxt;
-  static std::string myDocumentsTxt;
+  //! strings to be set by a programmer to the correct phrase or name for their language
+  /*! (they are in english by default)   */
+  static FluSimpleString favoritesTxt;
+  static FluSimpleString desktopTxt;
+  static FluSimpleString myComputerTxt;
+  static FluSimpleString myDocumentsTxt;
 
-  static std::string filenameTxt;
-  static std::string okTxt;
-  static std::string cancelTxt;
-  static std::string locationTxt;
-  static std::string showHiddenTxt;
-  static std::string fileTypesTxt;
-  static std::string directoryTxt;
-  static std::string allFilesTxt;
-  static std::string defaultFolderNameTxt;
+  static FluSimpleString filenameTxt;
+  static FluSimpleString okTxt;
+  static FluSimpleString cancelTxt;
+  static FluSimpleString locationTxt;
+  static FluSimpleString showHiddenTxt;
+  static FluSimpleString fileTypesTxt;
+  static FluSimpleString directoryTxt;
+  static FluSimpleString allFilesTxt;
+  static FluSimpleString defaultFolderNameTxt;
 
-  static std::string backTTxt;
-  static std::string forwardTTxt;
-  static std::string upTTxt;
-  static std::string reloadTTxt;
-  static std::string trashTTxt;
-  static std::string newDirTTxt;
-  static std::string addFavoriteTTxt;
-  static std::string previewTTxt;
-  static std::string listTTxt;
-  static std::string wideListTTxt;
-  static std::string detailTTxt;
+  static FluSimpleString backTTxt;
+  static FluSimpleString forwardTTxt;
+  static FluSimpleString upTTxt;
+  static FluSimpleString reloadTTxt;
+  static FluSimpleString trashTTxt;
+  static FluSimpleString newDirTTxt;
+  static FluSimpleString addFavoriteTTxt;
+  static FluSimpleString previewTTxt;
+  static FluSimpleString listTTxt;
+  static FluSimpleString wideListTTxt;
+  static FluSimpleString detailTTxt;
 
-  static std::string detailTxt[];
-  static std::string contextMenuTxt[3];
-  static std::string diskTypesTxt[6];
+  static FluSimpleString detailTxt[4];
+  static FluSimpleString contextMenuTxt[3];
+  static FluSimpleString diskTypesTxt[6];
 
-  static std::string createFolderErrTxt;
-  static std::string deleteFileErrTxt;
-  static std::string fileExistsErrTxt;
-  static std::string renameErrTxt;
+  static FluSimpleString createFolderErrTxt;
+  static FluSimpleString deleteFileErrTxt;
+  static FluSimpleString fileExistsErrTxt;
+  static FluSimpleString renameErrTxt;
 
-  static bool singleButtonTravelDrawer;
-  static bool thumbnailsFileReq;
-
-  typedef boost::recursive_mutex Mutex;
-  Mutex  mutex;
-
-  typedef std::vector< boost::thread* > thread_pool_t;
-
-  unsigned num_timeouts;
-  unsigned serial;
-
-  thread_pool_t threads;
-
-  bool quick_exit;
+  //! This class must be derived from to create a "preview" widget.
+  /*! Simply derive from this class and overload Fl_Group's methods to create a widget
+    able to preview whatever file type you want. Register it with Flu_File_Chooser::add_preview_handler()
+    When a file is previewed, all registered handlers are visited until the preview() virtual function
+    for one of them returns nonzero. When preview() is called, the absolute path of the file is passed in,
+    and the widget should determine whether it can preview the file and update itself accordingly. If
+    it can preview the file, it should return nonzero, else it should return zero.
+   */
+  class FLU_EXPORT PreviewWidgetBase : public Fl_Group
+    {
+    public:
+      PreviewWidgetBase();
+      virtual ~PreviewWidgetBase();
+      virtual int preview( const char *filename ) = 0;
+    };
 
   //! File entry type
   enum { 
@@ -141,8 +122,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
     ENTRY_FAVORITE = 8,     /*!< A favorite entry */
     ENTRY_DRIVE = 16,       /*!< An entry that refers to a disk drive */
     ENTRY_MYDOCUMENTS = 32, /*!< The entry referring to the current user's documents */
-    ENTRY_MYCOMPUTER = 64,  /*!< The entry referring to "My Computer" in Windows */
-    ENTRY_SEQUENCE = 128,   /*!< An image sequence */
+    ENTRY_MYCOMPUTER = 64   /*!< The entry referring to "My Computer" in Windows */
   };
 
   //! Chooser type
@@ -158,14 +138,13 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   //! Structure holding the info needed for custom file types
   struct FileTypeInfo
   {
-    fltk::Image *icon;
-    std::string extensions;
-    std::string type, shortType;
+    Fl_Image *icon;
+    FluSimpleString extensions;
+    FluSimpleString type, shortType;
   };
 
   //! Constructor opening a file chooser with title \b title visiting directory \b path with files filtered according to \b pattern. \b type is a logical OR of Flu_File_Chooser::SINGLE, Flu_File_Chooser::MULTI, and Flu_File_Chooser::DIRECTORY 
-  Flu_File_Chooser( const char *path, const char *pattern, int type, 
-		    const char *title, const bool compact );
+  Flu_File_Chooser( const char *path, const char *pattern, int type, const char *title );
 
   //! Destructor
   ~Flu_File_Chooser();
@@ -178,12 +157,15 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   static void add_context_handler( int type, const char *ext, const char *name,
 				   void (*cb)(const char*,int,void*), void *cbd );
 
+  //! Add a "preview" widget (derived from class Flu_File_Chooser::PreviewWidgetBase) that will handle custom previewing of files
+  static void add_preview_handler( PreviewWidgetBase *w );
+
   //! Add descriptive information and an icon for a file type
   /*! \param extensions is a space- or comma-delimited list of file extensions, or \c NULL for directories. e.g. "zip,tgz,rar"
     \param short_description is a short description (!) of the file type. e.g. "Compressed Archive"
     \param icon is an optional custom icon to use for this file type
    */
-  static void add_type( const char *extensions, const char *short_description, fltk::Image *icon = NULL );
+  static void add_type( const char *extensions, const char *short_description, Fl_Image *icon = NULL );
 
   //! deprecated - do not use - right click to change filenames
   inline void allow_file_editing( bool b )
@@ -192,10 +174,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   //! deprecated - do not use - right click to change filenames
   inline bool allow_file_editing() const
     { return fileEditing; }
-
-  inline void compact_files( const bool compact ) { _compact = compact; }
-
-  inline bool compact_files() const { return _compact; }
 
   //! Set whether file sorting is case insensitive. Default value is case-insensitive for windows, case-sensitive for everything else
   inline void case_insensitive_sort( bool b )
@@ -215,7 +193,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   int count();
 
   //! Set the default icon to use for all files for which no other icon has been specified
-  inline void default_file_icon( fltk::Image* i )
+  inline void default_file_icon( Fl_Image* i )
     { defaultFileIcon = i; }
 
   //! Alias for cd()
@@ -236,12 +214,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   //! \return the current directory that the browser is visiting
   inline const char* get_current_directory() const
     { return currentDir.c_str(); }
-
-  //! Clear the threads allowing them to finish first
-  void clear_threads();
-
-  //! Clear the filelist and filedetails of all widgets
-  void clear_lists();
 
   //! Override of Fl_Double_Window::handle()
   int handle( int event );
@@ -294,15 +266,17 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   //! For MULTI file queries, get selected file \b n (base 1 - i.e. 1 returns the first file, 2 the second, etc)
   const char *value( int n );
 
+  FileInput filename;
+  // the <Enter> key behavior is not correct for versions before 1.1.4rc2
+#if FL_MAJOR_VERSION >= 1 && FL_MINOR_VERSION >= 1 && FL_PATCH_VERSION >= 4
+  Flu_Return_Button ok;
+#else
+  Flu_Button ok;
+#endif
+  Flu_Button cancel;
 
-  bool _compact;
-
-  FileInput* filename;
-  fltk::ReturnButton* ok;
-  fltk::Button* cancel;
-
-  // apparently there is a bug in VC6 that prevents friend classes 
-  // from accessing non-public members. stupid windows
+  // apparently there is a bug in VC6 that prevents friend classes from accessing
+  // non-public members. stupid windows
   // several other compilers were reported to have a problem with this too, so 
   // i'm just making the whole class public to eliminate potential problems.
   // bad c++ - i know...
@@ -313,173 +287,149 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   class ContextHandler
     {
     public:
-      std::string ext, name;
+      FluSimpleString ext, name;
       int type;
       void (*callback)(const char*,int,void*);
       void *callbackData;
       inline ContextHandler& operator =( const ContextHandler &c )
       { ext = c.ext; name = c.name; type = c.type; callback = c.callback; callbackData = c.callbackData; return *this; }
     };
-
-  typedef std::vector< ContextHandler >  ContextHandlerVector;
+  FluMakeVectorClass( ContextHandler, ContextHandlerVector );
   static ContextHandlerVector contextHandlers;
 
+  typedef PreviewWidgetBase* pPreviewWidgetBase;
+  FluMakeVectorClass( pPreviewWidgetBase, PreviewHandlerVector );
+  static PreviewHandlerVector previewHandlers;
 
-  fltk::CheckButton* hiddenFiles;
-  Flu_Combo_Tree*    location;
+  Fl_Check_Button *hiddenFiles;
+  Flu_Combo_Tree *location;
 
-  static void timeout( void* c );
-
-  inline static void _backCB( fltk::Widget *w, void *arg )
+  inline static void _backCB( Fl_Widget *w, void *arg )
     { ((Flu_File_Chooser*)arg)->backCB(); }
   void backCB();
 
-  inline static void _forwardCB( fltk::Widget *w, void *arg )
+  inline static void _forwardCB( Fl_Widget *w, void *arg )
     { ((Flu_File_Chooser*)arg)->forwardCB(); }
   void forwardCB();
 
-  inline static void _sortCB( fltk::Widget *w, void *arg )
+  inline static void _sortCB( Fl_Widget *w, void *arg )
     { ((Flu_File_Chooser*)arg)->sortCB( w ); }
-  void sortCB( fltk::Widget *w );
+  void sortCB( Fl_Widget *w );
 
-  inline static void _previewCB( fltk::Widget*, void *arg )
+  inline static void _previewCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->previewCB(); }
   void previewCB();
 
-  inline static void _listModeCB( fltk::Widget *w, void *arg )
-    { ((Flu_File_Chooser*)arg)->listModeCB(w); }
-  void listModeCB( fltk::Widget* w );
+  inline static void _listModeCB( Fl_Widget *w, void *arg )
+    { ((Flu_File_Chooser*)arg)->listModeCB(); }
+  void listModeCB();
 
-  inline static void _filenameCB( fltk::Widget *w, void *arg )
+  inline static void _filenameCB( Fl_Widget *w, void *arg )
     { ((Flu_File_Chooser*)arg)->filenameCB(); }
   void filenameCB();
 
-  inline static void _locationCB( fltk::Widget *w, void *arg )
-  { 
-    Flu_Combo_Tree* c = (Flu_Combo_Tree*)w;
-    ((Flu_File_Chooser*)arg)->locationCB( c->text() ); 
-  }
+  inline static void _locationCB( Fl_Widget *w, void *arg )
+    { ((Flu_File_Chooser*)arg)->locationCB( ((Flu_Combo_Tree*)w)->value() ); }
   void locationCB( const char *path );
 
-  inline static void _locationQJCB( fltk::Widget *w, void *arg )
-    { ((Flu_File_Chooser*)arg)->cd( ((fltk::Button*)w)->label() ); }
+  inline static void _locationQJCB( Fl_Widget *w, void *arg )
+    { ((Flu_File_Chooser*)arg)->cd( ((Fl_Button*)w)->label() ); }
 
   inline static void delayedCdCB( void *arg )
     { ((Flu_File_Chooser*)arg)->cd( ((Flu_File_Chooser*)arg)->delayedCd.c_str() ); }
 
   inline static void selectCB( void *arg )
-  { ((Flu_File_Chooser*)arg)->okCB(); }
+    { ((Flu_File_Chooser*)arg)->okCB(); }
 
-  inline static void _cancelCB( fltk::Widget*, void *arg )
+  inline static void _cancelCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->cancelCB(); }
   void cancelCB();
 
-  inline static void _okCB( fltk::Widget*, void *arg )
+  inline static void _okCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->okCB(); }
   void okCB();
 
-  inline static void _trashCB( fltk::Widget*, void *arg )
+  inline static void _trashCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->trashCB(); }
   void trashCB( bool recycle = true );
 
-  inline static void _newFolderCB( fltk::Widget*, void *arg )
+  inline static void _newFolderCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->newFolderCB(); }
   void newFolderCB();
 
-  void saveFavorites();
-
-  inline static void upDirCB( fltk::Widget*, void *arg )
+  inline static void upDirCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->cd( "../" ); }
 
-  inline static void reloadCB( fltk::Widget*, void *arg )
+  inline static void reloadCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->reloadCB(); }
   void reloadCB();
 
-  inline static void _homeCB( fltk::Widget*, void *arg )
+  inline static void _homeCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->homeCB(); }
   void homeCB();
 
-  inline static void _desktopCB( fltk::Widget*, void *arg )
+  inline static void _desktopCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->desktopCB(); }
   void desktopCB();
 
-  inline static void _favoritesCB( fltk::Widget*, void *arg )
+  inline static void _favoritesCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->favoritesCB(); }
   void favoritesCB();
 
-  inline static void _myComputerCB( fltk::Widget*, void *arg )
+  inline static void _myComputerCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->myComputerCB(); }
   void myComputerCB();
 
-  inline static void _addToFavoritesCB( fltk::Widget*, void *arg )
+  inline static void _addToFavoritesCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->addToFavoritesCB(); }
   void addToFavoritesCB();
 
-  inline static void _documentsCB( fltk::Widget*, void *arg )
+  inline static void _documentsCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->documentsCB(); }
   void documentsCB();
 
-  inline static void _hideCB( fltk::Widget*, void *arg )
+  inline static void _hideCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->hideCB(); }
   void hideCB();
   void do_callback();
-  void debug();
 
   enum {
     SORT_NAME = 1,
-    SORT_TYPE = 2,
-    SORT_SIZE = 4,
+    SORT_SIZE = 2,
+    SORT_TYPE = 4,
     SORT_DATE = 8,
     SORT_REVERSE = 16 
   };
-  static void _qSort( int how, bool caseSort, fltk::Group* const g, 
-		      int low, int high );
-
+  static void _qSort( int how, bool caseSort, Fl_Widget **array, int low, int high );
 
   friend class Entry;
-  class Entry : public fltk::Input
+  class Entry : public Fl_Input
     {
     public:
       Entry( const char* name, int t, bool d, Flu_File_Chooser *c );
       ~Entry();
 
       int handle( int event );
-
       void draw();
-
 
       void updateSize();
       void updateIcon();
 
-      // We should really use fltk's flags for this, but this
-      // causes problems with fltk::Browser
-      void set_selected()   { 
-	 selected_ = true; 
-	 color( fltk::DARK_BLUE );
-	 textcolor( fltk::WHITE );
-	 redraw();
-      }
-        void set_colors();
-        bool selected()       { return selected_;  }
-        void clear_selected();
-
-
-        std::string filename, date, filesize, shortname, owner,
+      FluSimpleString filename, date, filesize, shortname, 
 	description, shortDescription, toolTip, altname;
-        std::string permissions;
-        unsigned char pU, pG, pO; // 3-bit unix style permissions
-        unsigned int type;
-        time_t idate;
-        uint64_t isize;
-        int editMode;
-        Flu_File_Chooser *chooser;
-        fltk::Image *icon;
+      //FluSimpleString permissions;
+      //unsigned char pU, pG, pO; // 3-bit unix style permissions
+      unsigned int type, idate;
+      unsigned long isize;
+      bool selected;
+      int editMode;
+      Flu_File_Chooser *chooser;
+      Fl_Image *icon;
 
-        int nameW, typeW, sizeW, dateW, ownerW, permW;
-        bool details;
-        bool selected_;
+      int nameW, typeW, sizeW, dateW;
+      bool details;
 
-      inline static void _inputCB( fltk::Widget *w, void *arg )
+      inline static void _inputCB( Fl_Widget *w, void *arg )
 	{ ((Entry*)arg)->inputCB(); }
       void inputCB();
 
@@ -489,8 +439,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
     };
 
   friend class FileList;
-
-   class FileList : public Flu_Wrap_Group
+  class FileList : public Flu_Wrap_Group
     {
     public:
       FileList( int x, int y, int w, int h, Flu_File_Chooser *c );
@@ -499,13 +448,18 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       int handle( int event );
       void sort( int numDirs = -1 );
 
+      inline Fl_Widget *child(int n) const
+	{ return Flu_Wrap_Group::child(n); }
+
+      inline int children() const
+	{ return Flu_Wrap_Group::children(); }
 
       int numDirs;
-      Flu_File_Chooser* chooser;
+      Flu_File_Chooser *chooser;
     };
 
   friend class FileDetails;
-  class FileDetails : public fltk::Browser
+  class FileDetails : public Fl_Pack
     {
     public:
       FileDetails( int x, int y, int w, int h, Flu_File_Chooser *c );
@@ -514,36 +468,72 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       int handle( int event );
       void sort( int numDirs = -1 );
 
-      virtual void layout();
-
-      void scroll_to( fltk::Widget *w );
-      fltk::Widget* next( fltk::Widget* w );
-      fltk::Widget* previous( fltk::Widget* w );
+      void scroll_to( Fl_Widget *w );
+      Fl_Widget* next( Fl_Widget* w );
+      Fl_Widget* previous( Fl_Widget* w );
 
       int numDirs;
       Flu_File_Chooser *chooser;
     };
 
-
-
-  friend class PreviewTile;
-  class PreviewTile : public fltk::TiledGroup
+  friend class CBTile;
+  class CBTile : public Fl_Tile
     {
     public:
-      PreviewTile( int x, int y, int w, int h, Flu_File_Chooser *c );
+      CBTile( int x, int y, int w, int h, Flu_File_Chooser *c );
+      int handle( int event );
       Flu_File_Chooser *chooser;
     };
 
+  friend class FileColumns;
+  class FileColumns : public Fl_Tile
+    {
+    public:
+      FileColumns( int x, int y, int w, int h, Flu_File_Chooser *c );
+      ~FileColumns();
 
+      int handle( int event );
+      void resize( int x, int y, int w, int h );
+      Flu_File_Chooser *chooser;
+      int W1, W2, W3, W4;
+    };
 
-  fltk::Group *getEntryGroup();
-  fltk::Group *getEntryContainer();
+  friend class PreviewTile;
+  class PreviewTile : public Fl_Tile
+    {
+    public:
+      PreviewTile( int x, int y, int w, int h, Flu_File_Chooser *c );
+      int handle( int event );
+      Flu_File_Chooser *chooser;
+      int last;
+    };
 
-  void win2unix( std::string &s );
+  class ImgTxtPreview : public PreviewWidgetBase
+    {
+    public:
+      int preview( const char *filename );
+      unsigned char previewTxt[1024];
+    };
 
-  void cleanupPath( std::string &s );
+  friend class PreviewGroup;
+  class PreviewGroup : public Fl_Group
+    {
+    public:
+      PreviewGroup( int x, int y, int w, int h, Flu_File_Chooser *c );
+      void draw();
+      Flu_File_Chooser *chooser;
+      FluSimpleString lastFile, file;
+      PreviewWidgetBase* handled;
+    };
 
-  bool correctPath( std::string &path );
+  Fl_Group *getEntryGroup();
+  Fl_Group *getEntryContainer();
+
+  void win2unix( FluSimpleString &s );
+
+  void cleanupPath( FluSimpleString &s );
+
+  bool correctPath( FluSimpleString &path );
 
   void updateEntrySizes();
 
@@ -551,45 +541,46 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
   void updateLocationQJ();
 
-  void statFile( Entry* e, const char* file );
-
   void addToHistory();
 
-  std::string formatDate( const char *d );
+  FluSimpleString formatDate( const char *d );
 
   void recursiveScan( const char *dir, FluStringVector *files );
 
-  bool stripPatterns( std::string s, FluStringVector* patterns );
+  bool stripPatterns( FluSimpleString s, FluStringVector* patterns );
 
   int popupContextMenu( Entry *entry );
 
-  std::string commonStr();
+  FluSimpleString commonStr();
+
+  static ImgTxtPreview *imgTxtPreview;
 
   static int (*customSort)(const char*,const char*);
 
+  PreviewGroup *previewGroup;
   PreviewTile *previewTile;
-  fltk::Group *fileGroup, *locationQuickJump;
-  fltk::Image *defaultFileIcon;
+  Fl_Group *fileGroup, *locationQuickJump;
+  Fl_Menu_Button entryPopup;
+  Fl_Image *defaultFileIcon;
   Entry *lastSelected;
   FileList *filelist;
-  fltk::Group *fileDetailsGroup;
+  FileColumns *filecolumns;
+  Fl_Group *fileDetailsGroup;
+  Fl_Scroll *filescroll;
   FileDetails *filedetails;
-  fltk::Button *detailNameBtn, *detailTypeBtn, *detailSizeBtn, *detailDateBtn;
-  std::string currentDir, delayedCd, rawPattern;
-  std::string configFilename;
-  std::string userHome, userDesktop, userDocs;
-  std::string drives[26];
-  fltk::xpmImage* driveIcons[26];
-  fltk::ToggleButton *fileListBtn, *fileListWideBtn, *fileDetailsBtn;
-  fltk::ToggleButton* previewBtn;
-  fltk::HighlightButton* backBtn, *forwardBtn, *upDirBtn, *reloadBtn, *newDirBtn, *trashBtn, *addFavoriteBtn;
-  fltk::InputBrowser *favoritesList;
-  Flu_Combo_Tree *filePattern;
+  Flu_Button *detailNameBtn, *detailTypeBtn, *detailSizeBtn, *detailDateBtn;
+  FluSimpleString currentDir, delayedCd, rawPattern;
+  FluSimpleString configFilename;
+  FluSimpleString userHome, userDesktop, userDocs;
+  FluSimpleString drives[26];
+  Fl_Pixmap* driveIcons[26];
+  Flu_Button *fileListBtn, *fileListWideBtn, *fileDetailsBtn, *backBtn, *forwardBtn, *upDirBtn, *trashBtn,
+    *newDirBtn, *addFavoriteBtn, *reloadBtn, *previewBtn;
+  Fl_Browser *favoritesList;
+  Flu_Combo_List *filePattern;
   int selectionType;
-  bool filenameEnterCallback, filenameTabCallback, walkingHistory; 
-  bool caseSort, fileEditing;
+  bool filenameEnterCallback, filenameTabCallback, walkingHistory, caseSort, fileEditing;
   int sortMethod;
-  int dragX, dragY;
 
   FluStringVector patterns;
 
@@ -597,19 +588,13 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   static int numTypes;
   static int typeArraySize;
 
-  enum ListModes
-    {
-      kNone,
-      kWide,
-      kDetails
-    };
-
-  ListModes listMode;
+  static FluSimpleString dArrow[4];
+  static FluSimpleString uArrow[4];
 
 #ifdef WIN32
   unsigned int driveMask;
   unsigned int driveTypes[26];
-  std::string volumeNames[26];
+  FluSimpleString volumeNames[26];
   bool refreshDrives;
 #endif
 
@@ -617,13 +602,13 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   {
   public:
     History() { last = next = NULL; }
-    std::string path;
+    FluSimpleString path;
     History *last, *next;
   };
 
   History *history, *currentHist;
 
-  fltk::Callback *_callback;
+  Fl_Callback *_callback;
   void *_userdata;
 
 };

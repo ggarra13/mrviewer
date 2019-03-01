@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
 */
 /**
  * @file   mrvColor.h
- * @author
+ * @author 
  * @date   Fri Oct 13 10:11:05 2006
- *
- * @brief  Some fltk routines to deal with fltk::colors more easily.
- *
- *
+ * 
+ * @brief  Some fltk routines to deal with Fl_colors more easily.
+ * 
+ * 
  */
 
 #ifndef mrvColor_h
@@ -34,14 +34,14 @@
 namespace mrv
 {
 
-enum BrightnessType {
+  enum BrightnessType {
     kAsLuminance,
     kAsLumma,
     kAsLightness,
-};
+  };
 
-float calculate_brightness( const mrv::ImagePixel& rgba,
-                            const mrv::BrightnessType type );
+  float calculate_brightness( const mrv::ImagePixel& rgba,
+			      const mrv::BrightnessType type );
 
 }
 
