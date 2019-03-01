@@ -1,0 +1,66 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
+
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+decl {\#include "gui/mrvOCIOBrowser.h"} {selected public global
+}
+
+decl {std::string orig;} {private local
+}
+
+decl {std::string ctl;} {private local
+}
+
+Function {make_ocio_chooser(std::string c, mrv::OCIOBrowser::Type type )} {open return_type {std::string}
+} {
+  Fl_Window {} {
+    label {CTL Browser} open
+    xywh {691 384 395 445} type Double resizable hotspot
+    code0 {orig = c;} modal visible
+  } {
+    Fl_Group {} {open
+      xywh {5 26 385 411}
+    } {
+      Fl_Browser uiOCIOBrowser {
+        label {Select an OCIO Transform}
+        user_data {&ctl} user_data_type {std::string*}
+        callback {int elem = o->value();
+if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
+*v = o->child(elem)->label();}
+        xywh {5 0 375 365}
+        code0 {o->set_type(type); o->set_selection(ctl);
+o->value(-1);
+if ( !ctl.empty() )
+{
+  for (int i = 0; i < o->children(); ++i )
+  {
+    if ( o->child(i)->label() == ctl ) {
+      o->value(i); break;
+    }
+  }
+}}
+        class {mrv::OCIOBrowser}
+      }
+      Fl_Button {} {
+        label Accept
+        user_data w user_data_type {Fl_Window*}
+        tooltip {Accept the selected CTL file.} xywh {200 375 85 25}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data w user_data_type {Fl_Window*}
+        callback {ctl = orig;}
+        tooltip {Cancel the CTL selection and don't change anything.} xywh {295 375 80 25}
+      }
+    }
+  }
+  code {w->set_modal();
+w->show();
+return ctl;} {}
+}
