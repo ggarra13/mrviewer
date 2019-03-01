@@ -1,0 +1,61 @@
+Videoclub database (NetFlix)
+------------------
+
+# Create assets database
+> mysqladmin.exe -u root -p create assets
+
+# Login to it
+> mysql.exe -u root -p assets
+
+
+MySQL commands
+==============
+
+CREATE DATABASE assets2d_development;
+CREATE DATABASE assets2d_test;
+CREATE DATABASE assets2d_production;
+
+USE assets2d_production;
+USE assets2d_development;
+
+SET NAMES 'utf8';
+
+CREATE TABLE Shows (
+	 id            INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	 name	       VARCHAR(32),
+	 fullname      VARCHAR(256),
+	 director      VARCHAR(256),
+	 producer      VARCHAR(256),
+	 year	       INTEGER UNSIGNED NOT NULL DEFAULT 2006,
+       );
+
+CREATE TABLE Shots (
+	 id            INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	 name	       VARCHAR(32)
+       );
+
+
+CREATE TABLE Images (
+	 id            INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	 location      VARCHAR(1024) NOT NULL,
+	 date          DATE NOT NULL,
+	 online        BOOLEAN NOT NULL DEFAULT TRUE,
+	 user          VARCHAR(40) NOT NULL,
+	 start	       INTEGER,
+	 end	       INTEGER,
+	 show_id       INTEGER UNSIGNED REFERENCES Shows(id),
+	 PRIMARY KEY (id)
+	 );
+
+
+CREATE USER  assets_user;
+GRANT ALL ON assets2d_test.* TO assets_user;
+GRANT ALL ON assets2d_development.* TO assets_user;
+GRANT ALL ON assets2d_production.* TO assets_user;
+
+
+/// Rails commands:  rails assets2d
+///                  ruby script/server
+///                  ruby script/generate model Image
+///                  ruby script/generate controller Image
+

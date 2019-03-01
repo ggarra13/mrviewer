@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
 */
 
 
-#include <fltk/draw.h>
-#include <fltk/Symbol.h>
+#include <FL/fl_draw.H>
 
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
@@ -40,29 +39,29 @@ namespace mrv
 {
 
 Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
-    fltk::Widget( x, y, w, h, l )
+Fl_Box( x, y, w, h, l )
 {
-    color( fltk::BLACK );
-    buttoncolor( fltk::BLACK );
+    color( FL_BLACK );
+    //    buttoncolor( FL_BLACK );
     tooltip( _("Mark an area in the image with the left mouse button") );
 }
 
 
-void Vectorscope::draw_grid(const fltk::Rectangle& r)
+void Vectorscope::draw_grid(const mrv::Recti& r)
 {
     int i;
     int W = diameter_/2;
     int H = diameter_/2;
 
-    fltk::setcolor( fltk::GRAY75 );
+    fl_color( FL_GRAY0 );
 
-    fltk::Rectangle r2( diameter_, diameter_ );
+    mrv::Recti r2( diameter_, diameter_ );
 
-    fltk::push_matrix();
-    fltk::translate( r.w()/2 - W, r.h()/2 - H );
-    fltk::drawline( W, 0, W, diameter_ );
-    fltk::drawline( 0, H, diameter_, H );
-    fltk::pop_matrix();
+    fl_push_matrix();
+    fl_translate( r.w()/2 - W, r.h()/2 - H );
+    fl_line( W, 0, W, diameter_ );
+    fl_line( 0, H, diameter_, H );
+    fl_pop_matrix();
 
     int W2 = r.w() / 2;
     int H2 = r.h() / 2;
@@ -70,25 +69,26 @@ void Vectorscope::draw_grid(const fltk::Rectangle& r)
     float angle = 32;
     for ( i = 0; i < 4; ++i, angle += 90 )
     {
-        fltk::push_matrix();
-        fltk::translate( W2, H2 );
-        fltk::rotate(angle);
-        fltk::drawline( 0, 4, 0, R2 );
-        fltk::pop_matrix();
+        fl_push_matrix();
+        fl_translate( W2, H2 );
+        fl_rotate(angle);
+        fl_line( 0, 4, 0, R2 );
+        fl_pop_matrix();
     }
 
-    fltk::push_matrix();
-    fltk::translate( r.w()/2 - W, r.h()/2 - H );
-    fltk::addchord( r2, 0, 360 );
-    fltk::strokepath();
-    fltk::pop_matrix();
+    fl_push_matrix();
+    fl_translate( r.w()/2 - W, r.h()/2 - H );
+    fl_begin_line();
+    fl_arc( r2.x(), r2.y(), r2.w(), r2.h(), 0, 360 ); // @TODO: fltk1.4 fl_chord
+    fl_end_line();
+    fl_pop_matrix();
 
 
     int RW  = int( diameter_ * 0.05f );
     int RH  = RW;
 
-    fltk::push_matrix();
-    fltk::translate( W2, H2 );
+    fl_push_matrix();
+    fl_translate( W2, H2 );
 
     static const char* names[] = {
         "C",
@@ -102,31 +102,31 @@ void Vectorscope::draw_grid(const fltk::Rectangle& r)
     angle = 15;
     for ( i = 0; i < 6; ++i, angle += 60 )
     {
-        fltk::push_matrix();
-        fltk::rotate(angle);
-        fltk::translate( 0, int(W * 0.75f) );
+        fl_push_matrix();
+        fl_rotate(angle);
+        fl_translate( 0, int(W * 0.75f) );
 
-        fltk::drawline( -RW, -RH, RW, -RH );
-        fltk::drawline( RW, -RH, RW, RH );
-        fltk::drawline( -RW,  RH, RW, RH );
-        fltk::drawline( -RW,  RH, -RW, -RH );
+        fl_line( -RW, -RH, RW, -RH );
+        fl_line( RW, -RH, RW, RH );
+        fl_line( -RW,  RH, RW, RH );
+        fl_line( -RW,  RH, -RW, -RH );
 
-        fltk::translate( 0, int(W * 0.15f) );
+        fl_translate( 0, int(W * 0.15f) );
 
-        fltk::drawtext(names[i], 1, 0, 0);
+        fl_draw(names[i], 1, 0, 0);
 
-        fltk::pop_matrix();
+        fl_pop_matrix();
 
     }
-    fltk::pop_matrix();
+    fl_pop_matrix();
 
 
 }
 
 void Vectorscope::draw()
 {
-    fltk::Rectangle r( w(), h() );
-    draw_box(r);
+    mrv::Recti r( w(), h() );
+    draw_box();
 
     diameter_ = h();
     if ( w() < diameter_ ) diameter_ = w();
@@ -139,23 +139,23 @@ void Vectorscope::draw()
 
 
 
-void Vectorscope::draw_pixel( const fltk::Rectangle& r,
+void Vectorscope::draw_pixel( const mrv::Recti& r,
                               const CMedia::Pixel& rgb,
                               const CMedia::Pixel& hsv )
 {
-    fltk::setcolor( fltk::color( (unsigned char)(rgb.r * 255),
-                                 (unsigned char)(rgb.g * 255),
-                                 (unsigned char)(rgb.b * 255) ) );
+    fl_color( fl_rgb_color( (unsigned char)(rgb.r * 255),
+			    (unsigned char)(rgb.g * 255),
+			    (unsigned char)(rgb.b * 255) ) );
 
-    fltk::push_matrix();
-    fltk::translate( r.w()/2, r.h()/2 );
-    fltk::rotate( -165.0f + hsv.r * 360.0f );
-    fltk::scale( hsv.g * 0.375f );
-    fltk::drawline( 0, diameter_, 1, diameter_+1 );
-    fltk::pop_matrix();
+    fl_push_matrix();
+    fl_translate( r.w()/2, r.h()/2 );
+    fl_rotate( -165.0f + hsv.r * 360.0f );
+    fl_scale( hsv.g * 0.375f );
+    fl_line( 0, diameter_, 1, diameter_+1 );
+    fl_pop_matrix();
 }
 
-void Vectorscope::draw_pixels( const fltk::Rectangle& r )
+void Vectorscope::draw_pixels( const mrv::Recti& r )
 {
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {

@@ -1,14 +1,14 @@
 // $Id: flu_file_chooser_pixmaps.h,v 1.1 2003/12/08 16:25:48 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
 
