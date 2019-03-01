@@ -1,0 +1,70 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
+
+decl {\#include "gui/mrvImageInformation.h"} {selected public global
+}
+
+decl {\#include "gui/mrvImageView.h"} {private local
+}
+
+decl {\#include "mrViewer.h"} {private local
+}
+
+decl {\#include "icons/icons.c"} {private local
+}
+
+decl {\#include "FL/fl_ask.H"} {private local
+}
+
+decl {\#include "FL/Fl.H"} {private local
+}
+
+decl {class ViewerUI;} {public global
+}
+
+declblock {\#ifdef _WIN32} {after {\#endif}
+} {
+  decl {\#define unsetenv} {public local
+  }
+}
+
+class ImageInfoUI {open
+} {
+  decl {ViewerUI* main_;} {private local
+  }
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label {Media Information}
+      user_data this user_data_type {ImageInfoUI*}
+      callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
+o->hide();} open
+      xywh {683 549 505 530} type Double hide resizable
+      code0 {main_ = main;}
+    } {
+      Fl_Group uiInfoText {
+        user_data uiInfoText user_data_type {mrv::ImageInformation*} open
+        xywh {2 2 498 526}
+        code0 {o->main( main );}
+        class {mrv::ImageInformation}
+      } {}
+    }
+  }
+  Function {ImageInfoUI(ViewerUI* m)} {open
+  } {
+    code {Fl_Group::current( (Fl_Window*)m->uiMain );
+make_window( m );} {}
+  }
+  Function {~ImageInfoUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {open return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+}

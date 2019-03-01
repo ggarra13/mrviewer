@@ -21,7 +21,7 @@
 //
 //    http://www.fltk.org/str.php
 
-/*! \class fltk::MyPopupMenu
+/*! \class mrv::PopupMenu
 
 This subclass pops up a menu in response to a user click. The menu is
 popped up positioned so that the mouse is pointing at the last-selected
@@ -43,27 +43,25 @@ so that pressing that button pops up the menu.
 The menu will also pop up in response to shortcuts indicated by
 the shortcut() or by putting '&x' in the label().
 
-Typing the fltk::Widget::shortcut() of any menu items will cause it
+Typing the Fl_Widget::shortcut() of any menu items will cause it
 to be picked. The callback will be done but there will be no visible
 effect to the widget.
 
 */
 
-#include <mrvPopupMenu.h>
-#include <fltk/events.h>
-#include <fltk/damage.h>
-#include <fltk/Box.h>
-#include <fltk/draw.h>
-#include <fltk/Item.h>
+#include "mrvPopupMenu.h"
+
+#include <FL/Fl_Box.H>
+#include <FL/fl_draw.H>
+#include <FL/Fl_Menu_Item.H>
 
 #include <iostream>
 
 
-extern fltk::Widget* fl_did_clipping;
+extern Fl_Widget* fl_did_clipping;
 
 namespace mrv {
 
-using namespace fltk;
 
 static mrv::PopupMenu* pushed;
 
@@ -74,59 +72,24 @@ static mrv::PopupMenu* pushed;
   subclass and replace draw() with your own function.
 */
 void PopupMenu::draw() {
-    if (type()&7) { // draw nothing for the popup types
-        fl_did_clipping = this;
-        return;
-    }
-    // set_item() does not cause a redraw:
-    if (damage() == DAMAGE_VALUE) return;
+    Fl_Menu_Button::draw();
+}
 
-    Box* box = this->buttonbox();
-    if (!box->fills_rectangle()) draw_background();
-    Flags flags = this->flags()|OUTPUT;
-    if (mrv::pushed == this) flags |= PUSHED|HIGHLIGHT;
-    drawstyle(style(), flags);
-    Rectangle r(w(),h());
-    box->draw(r);
-    Rectangle r1(r);
-    box->inset(r1);
-    // draw the little mark at the right:
-
-    if ( _enable_glyph )
-    {
-        box->inset(r);
-        int w1 = r.h();
-        r.move_r(-r.h());
-        r.x(r.r());
-        r.w(w1);
-        const Color saved_color = getcolor();
-        setcolor(fltk::GRAY35);
-        draw_glyph(ALIGN_BOTTOM, r);
-        //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
-        setcolor(saved_color);
-    }
-
-    flags |= ALIGN_CLIP;
-
-    draw_label(r1, flags);
-
-
-    box->draw_symbol_overlay(r);
+const Fl_Menu_Item* PopupMenu::child(int i) {
+    return &(menu()[i]);
 }
 
 
 
-// static NamedStyle style("mrvPopupMenu", 0, &fltk::PopupMenu::default_style);
+// static NamedStyle style("mrvPopupMenu", 0, &Fl_PopupMenu::default_style);
 // NamedStyle* PopupMenu::default_style = &mrv::style;
 
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
-    : fltk::PopupMenu(X,Y,W,H,l),
+    : Fl_Menu_Button(X,Y,W,H,l),
       _enable_glyph( true )
 {
     // set the parent style to Menu::default_style, not Widget::default_style:
-    default_style->parent_ = this->style();
-    style(default_style);
-    align(ALIGN_CENTER);
+    align(FL_ALIGN_CENTER);
 
     //set_click_to_focus();
 }

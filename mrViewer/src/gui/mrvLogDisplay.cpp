@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,10 +31,11 @@
 
 #include <iostream>
 
-#include <fltk/Window.h>
-#include <fltk/TextBuffer.h>
-#include <fltk/events.h>
-#include <fltk/run.h>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Text_Buffer.H>
+#include <FL/Fl_Text_Display.H>
+#include <FL/Fl.H>
+#include <FL/fl_utf8.h>
 
 #include "core/mrvThread.h"
 #include "core/mrvHome.h"
@@ -44,12 +45,12 @@ namespace mrv {
 
 // Style table
 static
-fltk::TextDisplay::StyleTableEntry kLogStyles[] = {
+Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
     // FONT COLOR      FONT FACE   SIZE   ATTR
     // --------------- ----------- ----- ------
-    {  fltk::BLACK,  fltk::HELVETICA, 14,   0 }, // A - Info
-    {  fltk::DARK_YELLOW, fltk::HELVETICA, 14,   0 }, // B - Warning
-    {  fltk::RED,    fltk::HELVETICA, 14,   0 }, // C - Error
+    {  FL_BLACK,  FL_HELVETICA, 14,   0 }, // A - Info
+    {  FL_DARK_YELLOW, FL_HELVETICA, 14,   0 }, // B - Warning
+    {  FL_RED,    FL_HELVETICA, 14,   0 }, // C - Error
 };
 
 LogDisplay::Mutex LogDisplay::mtx;
@@ -60,16 +61,16 @@ std::atomic<bool> LogDisplay::show( false );
 
 
 LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
-    fltk::TextDisplay( x, y, w, h, l ),
-    _lines( 0 )
+Fl_Text_Display( x, y, w, h, l ),
+stylebuffer_( NULL ),
+buffer_(NULL),
+_lines( 0 )
 {
-    color( fltk::GRAY75 );
+    color( FL_GRAY0 );
 
     SCOPED_LOCK( mtx );
-    if ( !stylebuffer_ )
-    {
-        stylebuffer_ = new fltk::TextBuffer();
-    }
+    buffer_ = new Fl_Text_Buffer();
+    stylebuffer_ = new Fl_Text_Buffer();
 
     highlight_data(stylebuffer_, kLogStyles, 3, 'A', 0, 0);
 }
@@ -105,7 +106,7 @@ void LogDisplay::save( const char* file )
 
         SCOPED_LOCK( mtx );
 
-        f = fltk::fltk_fopen( file, "w" );
+        f = fl_fopen( file, "w" );
 
         if ( !f ) throw;
         if ( fputs( buffer_->text(), f ) < 0 ) throw;
