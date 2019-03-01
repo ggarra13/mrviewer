@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -227,7 +227,6 @@ bool exrImage::test(const boost::uint8_t *data, unsigned)
 }
 
 
-
 bool exrImage::channels_order(
                               mrv::image_type_ptr& canvas,
                               const boost::int64_t& frame,
@@ -348,7 +347,6 @@ bool exrImage::channels_order(
 
     size_t numChannels = channelList.size();
 
-    
     if ( numChannels == 0 )
     {
         if ( channel() )
@@ -425,17 +423,11 @@ bool exrImage::channels_order(
         }
     }
 
-    
     if ( ! allocate_pixels( canvas, frame, (unsigned short)numChannels, format,
                             pixel_type_conversion( imfPixelType ),
                             dw / sx, dh / sy ) )
-    {
-	LOG_ERROR( _("Could not allocate pixels for ") << name() << _(" frame ")
-		     << _frame );
         return false;
-    }
 
-    
     size_t xs[4], ys[4];
 
     if ( _has_yca )
@@ -467,10 +459,7 @@ bool exrImage::channels_order(
     }
 
     char* pixels = (char*)canvas->data().get();
-    if (!pixels) {
-	LOG_ERROR( _("Could not allocate pixel data for frame ") << _frame );
-	return false;
-    }
+    if (!pixels) return false;
     memset( pixels, 0, canvas->data_size() ); // Needed for lumma pics (Fog.exr)
 
     // Then, prepare frame buffer for them
@@ -486,7 +475,7 @@ bool exrImage::channels_order(
 
         char* buf = base + offsets[k] * canvas->pixel_size();
 
-	// std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
+        // std::cerr << "LOAD " << idx << ") " << k << " " << channelList[k]
         //           << " off:" << offsets[k] << " xs,ys "
         //           << xs[k] << "," << ys[k]
         //           << " sampling " << xsampling[k]

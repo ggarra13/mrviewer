@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@ struct mp_colorspace {
 
 // For many colorspace conversions, in particular those involving HDR, an
 // implicit reference white level is needed. Since this magic constant shows up
-// a lot, give it an explicit name. The value of 100 cd/m² comes from ITU-R
+// a lot, give it an explicit name. The value of 100 cd/mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ² comes from ITU-R
 // documents such as ITU-R BT.2100
 #define MP_REF_WHITE 100.0
 
