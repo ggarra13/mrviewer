@@ -1,65 +1,64 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir fltk::Button 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include <iostream>} {} 
-
-decl {\#include <fltk/run.h>} {} 
-
-decl {\#include <gui/mrvPreferences.h>} {public
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include <string>} {public local
 }
 
-decl {\#include <gui/mrvMainWindow.h>} {public
-} 
+decl {\#include <iostream>} {private local
+}
 
+decl {\#include <ImfCompression.h>} {public local
+}
 
-decl {\#include <gui/mrvIO.h>} {public
-} 
+decl {\#include <ImfPixelType.h>} {public local
+}
 
-decl {\#include <core/exrImage.h>} {public
-} 
+decl {\#include <FL/Fl.H>} {private local
+}
 
-decl {\#include <core/mrvImageOpts.h>} {public
-} 
+decl {\#include <gui/mrvPreferences.h>} {public local
+}
 
-decl {\#include <ImfCompression.h>} {public
-} 
+decl {\#include <gui/mrvMainWindow.h>} {public local
+}
 
-decl {\#include <ImfPixelType.h>} {public
-} 
+decl {\#include <gui/mrvIO.h>} {public local
+}
 
-decl {\#include <string>} {public
-} 
+decl {\#include <gui/mrvChoice.h>} {public local
+}
 
-decl {\#include <mrViewer.h>} {public
-} 
+decl {\#include <core/exrImage.h>} {public local
+}
 
-namespace mrv {open
+decl {\#include <core/mrvImageOpts.h>} {public local
+}
+
+decl {\#include <mrViewer.h>} {public local
+}
+
+class EXROptionsUI {open selected : {public mrv::EXROpts}
 } {
-  class EXROptionsUI {open : {public EXROpts}
+  decl {std::string compression;} {public local
+  }
+  decl {std::string pixel_type;} {public local
+  }
+  Function {make_window(bool aces, bool all_layers, bool deep_data)} {open
   } {
-    decl {std::string compression;} {public
-    }
-    decl {std::string pixel_type;} {public
-    }
-    Function {make_window(bool aces, bool all_layers, bool deep_data)} {open
+    Fl_Window uiMain {
+      label {OpenEXR Saving} open
+      xywh {536 152 465 445} type Double resizable modal noborder visible
     } {
-      {fltk::Window} uiMain {
-        label {OpenEXR Saving} open
-        xywh {536 152 465 445} resizable modal noborder visible
+      Fl_Group {} {
+        label {OpenEXR Options} open
+        xywh {46 48 372 315} box UP_BOX
       } {
-        {fltk::Group} {} {
-          label {OpenEXR Options} open
-          xywh {46 48 372 315} box UP_BOX
-        } {
-          {fltk::Choice} uiCompression {
-            label Compression
-            user_data this user_data_type {EXROptionsUI*}
-            callback {compression = o->child(o->value())->label();
+        Fl_Choice uiCompression {
+          label Compression
+          user_data this user_data_type {EXROptionsUI*}
+	  class mrv::Choice
+          callback {compression = o->child(o->value())->label();
 if ( compression == "DWAA" ||
      compression == "DWAB" )
 {
@@ -69,123 +68,132 @@ else
 {
 v->uiDWACompression->deactivate();
 }}
-            tooltip {EXR compression algorithm.}
-            xywh {138 30 91 26} align 1
-            extra_code {o->value(exrImage::_default_compression);}
-          } {
-            {fltk::Item} {} {
-              label None
-              }
-            {fltk::Item} {} {
-              label RLE
-              }
-            {fltk::Item} {} {
-              label {ZIP SCANLINE}
-              }
-            {fltk::Item} {} {
-              label ZIP
-              }
-            {fltk::Item} {} {
-              label PIZ
-              }
-            {fltk::Item} {} {
-              label PXR24
-              }
-            {fltk::Item} {} {
-              label B44
-              }
-            {fltk::Item} {} {
-              label B44A
-              }
-            {fltk::Item} {} {
-              label DWAA
-              }
-            {fltk::Item} {} {
-              label DWAB
-              }
+          tooltip {EXR compression algorithm.} xywh {170 84 91 26} down_box BORDER_BOX align 1
+          code0 {o->value(mrv::exrImage::_default_compression);}
+        } {
+          MenuItem {} {
+            label None
+            xywh {0 0 100 20}
           }
-          {fltk::Choice} uiPixelFormat {
-            label {Pixel Format}
-            callback {pixel_type = o->child(o->value())->label();}
-            tooltip {Pixel Format to save image.   Usually Half.}
-            xywh {138 86 90 25} align 1
-          } {
-            {fltk::Item} {} {
-              label Half
-              }
-            {fltk::Item} {} {
-              label Float
-              }
-            {fltk::Item} {} {
-              label UInt
-              }
+          MenuItem {} {
+            label RLE
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label {ZIP SCANLINE}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label ZIP
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label PIZ
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label PXR24
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label B44
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label B44A
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label DWAA
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label DWAB
+            xywh {0 0 100 20}
           }
         }
-        {fltk::ValueSlider} uiDWACompression {
-          label {DWA Compression}
-          tooltip {DWA/DWB compression}
-          xywh {215 181 138 34} align 4 deactivate minimum 1 maximum 250 step 10 value 45
-          extra_code {o->value( exrImage::_default_dwa_compression );}
+        Fl_Choice uiPixelFormat {
+          label {Pixel Format}
+          callback {pixel_type = o->child(o->value())->label();}
+	  class mrv::Choice
+          tooltip {Pixel Format to save image.   Usually Half.} xywh {170 140 90 25} down_box BORDER_BOX align 1
+        } {
+          MenuItem {} {
+            label Half
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label Float
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label UInt
+            xywh {0 0 100 20}
+          }
         }
-        {fltk::LightButton} uiACESmetadata {
-          label {ACES metadata}
-          tooltip {Saves out ACES clip metadata (CTL transforms) into an ACESclip file.}
-          xywh {140 317 185 38}
-          extra_code {o->value( aces );}
-        }
-        {fltk::LightButton} uiAllLayers {
-          label {All Layers}
-          xywh {139 236 186 34}
-          extra_code {o->value( all_layers );}
-        }
-        {fltk::LightButton} uiDeepData {
-          label {Deep Data} selected
-          tooltip {With this option, you can save all the deep data of the image.  Note that this copies the original image onto a new image.  If you save over the same image, you will corrupt it.}
-          xywh {139 276 186 34}
-          extra_code {o->value( deep_data );
+      }
+      Fl_Value_Slider uiDWACompression {
+        label {DWA Compression}
+        tooltip {DWA/DWB compression} xywh {215 181 138 34} type Horizontal align 4 minimum 1 maximum 250 step 10 value 45 deactivate
+        code0 {o->value( mrv::exrImage::_default_dwa_compression );}
+      }
+      Fl_Light_Button uiACESmetadata {
+        label {ACES metadata}
+        tooltip {Saves out ACES clip metadata (CTL transforms) into an ACESclip file.} xywh {140 317 185 38}
+        code0 {o->value( aces );}
+      }
+      Fl_Light_Button uiAllLayers {
+        label {All Layers}
+        xywh {139 236 186 34}
+        code0 {o->value( all_layers );}
+      }
+      Fl_Light_Button uiDeepData {
+        label {Deep Data}
+        tooltip {With this option, you can save all the deep data of the image.  Note that this copies the original image onto a new image.  If you save over the same image, you will corrupt it.} xywh {139 276 186 34}
+        code0 {o->value( deep_data );
 if (!deep_data) 
 {
 o->deactivate();
 }}
-        }
-        {fltk::Button} {} {
-          label OK
-          user_data this user_data_type {EXROptionsUI*}
-          callback {v->active( true );
-v->uiMain->make_exec_return(true);}
-          xywh {115 386 86 41}
-        }
-        {fltk::Button} {} {
-          label Cancel
-          user_data this user_data_type {EXROptionsUI*}
-          callback {v->active( false );
-v->uiMain->make_exec_return(false);}
-          xywh {224 386 93 41}
-        }
+      }
+      Fl_Button {} {
+        label OK
+        user_data this user_data_type {EXROptionsUI*}
+        callback {v->active( true );
+// @TODO: fltk1.4    v->uiMain->make_exec_return(true);}
+        xywh {115 386 86 41}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {EXROptionsUI*}
+        callback {v->active( false );
+// @TODO: fltk1.4    v->uiMain->make_exec_return(false);}
+        xywh {224 386 93 41}
       }
     }
-    Function {convert()} {open
-    } {
-      code {_compression = (Imf::Compression) uiCompression->value();
+  }
+  Function {convert()} {open
+  } {
+    code {_compression = (Imf::Compression) uiCompression->value();
 _dwa_compression_level = (float) uiDWACompression->value();
 _ACESmetadata = uiACESmetadata->value();
 _all_layers = uiAllLayers->value();
 _save_deep_data = uiDeepData->value();} {}
-      code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
+    code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
-    }
-    Function {EXROptionsUI(const mrv::ViewerUI* main, bool aces = false, bool all_layers = false, bool has_deep_data = false) : EXROpts(aces, all_layers)} {open
-    } {
-      code {fltk::Window* w = make_window(aces, all_layers, has_deep_data);
+  }
+  Function {EXROptionsUI(const ViewerUI* main, bool aces = false, bool all_layers = false, bool has_deep_data = false) : mrv::EXROpts(aces, all_layers)} {open
+  } {
+    code {Fl_Window* w = make_window(aces, all_layers, has_deep_data);
       mrv::MainWindow* m = main->uiMain;
       int x = m->x() + ( m->w() - w->w() ) / 2;
       int y = m->y() + ( m->h() - w->h() ) / 2;
-if ( w->exec() ) {
-	w->hide();
-	fltk::check();
+      w->set_modal();
+      w->show();
+// @TODO: fltk1.4    if ( w->exec() ) {
+	Fl::check();
 	convert();
-}} {}
-    }
+//} @TODO: fltk1.4} {}
   }
 }
