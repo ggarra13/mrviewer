@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,18 +21,9 @@
 
 #include <string>
 #include <iostream>
-#include <fltk/events.h>
+#include <gui/mrvBrowser.h>
 
-namespace mrv {
 class HotkeyUI;
-}
-
-namespace fltk {
-
-class Browser;
-
-}
-
 
 namespace mrv {
 
@@ -79,10 +70,10 @@ struct Hotkey
     unsigned hotkey()
     {
         unsigned r = 0;
-        if ( ctrl ) r += fltk::CTRL;
-        if ( shift ) r += fltk::SHIFT;
-        if ( meta ) r += fltk::META;
-        if ( alt ) r += fltk::ALT;
+        if ( ctrl ) r += FL_CTRL;
+        if ( shift ) r += FL_SHIFT;
+        if ( meta ) r += FL_META;
+        if ( alt ) r += FL_ALT;
         r += key;
         return r;
     }
@@ -260,8 +251,8 @@ struct TableText
 extern struct TableText table[];
 extern HotkeyEntry hotkeys[];
 
-void fill_ui_hotkeys( fltk::Browser* o );
-void select_hotkey( mrv::HotkeyUI* m );
+void fill_ui_hotkeys( mrv::Browser* o );
+void select_hotkey( HotkeyUI* m );
 
 }
 
