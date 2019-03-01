@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@
 #endif
 
 
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64 macro
 
 #include <cstdio>
@@ -46,8 +48,8 @@
 #include <string>
 #include <limits>
 
-#include <fltk/run.h>
-#include <fltk/Font.h>
+#include <FL/Fl.H>
+#include <FL/fl_draw.H>
 
 using namespace std;
 
@@ -359,13 +361,13 @@ bool is_valid_view( std::string view )
  * @return true if a sequence, false if not.
  */
 bool split_sequence(
-		    std::string& root,
-		    std::string& frame,
-		    std::string& view,
-		    std::string& ext,
-		    const std::string& file,
-		    const bool change_view
-		    )
+                    std::string& root,
+                    std::string& frame,
+                    std::string& view,
+                    std::string& ext,
+                    const std::string& file,
+                    const bool change_view
+                    )
 {
     std::string f = file;
 
@@ -719,7 +721,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     std::string croot, cview, cframe, cext;
     unsigned pad = 1;
 
-    
+
     fs::directory_iterator e; // default constructor yields path iter. end
     for ( fs::directory_iterator i( dir ) ; i != e; ++i )
     {
@@ -760,7 +762,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     {
         return false;
     }
-    
+
     fileroot = root;
     fileroot += view;
     fileroot += buf;
@@ -779,7 +781,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
     setlocale( LC_NUMERIC, "C" );
 
-    FILE* f = fltk::fltk_fopen( reelfile, "r" );
+    FILE* f = fl_fopen( reelfile, "r" );
     if (!f ) return false;
 
     double version = 1.0;
@@ -844,7 +846,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 is.str( points );
                 is.clear();
                 is >> shape->r >> shape->g >> shape->b >> shape->a
-                   >> shape->pen_size 
+                   >> shape->pen_size
                    >> shape->frame;
                 while ( is >> xy.x >> xy.y )
                 {
@@ -899,17 +901,18 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
                 shape->text( text );
 
-                fltk::Font** fonts;
                 unsigned i;
-                unsigned num = fltk::list_fonts(fonts);
+                unsigned num = Fl::set_fonts("-*");
                 for ( i = 0; i < num; ++i )
                 {
-                    if ( font == fonts[i]->name() ) break;
+                    int t;
+                    const char* name = Fl::get_font_name((Fl_Font)i,&t);
+                    if ( font == name ) break;
                 }
                 if ( i >= num ) i = 0;
 
 
-                shape->font( fonts[i] );
+                shape->font( (Fl_Font) i );
                 is >> font_size >> shape->r >> shape->g >> shape->b
                    >> shape->a
                    >> shape->frame;

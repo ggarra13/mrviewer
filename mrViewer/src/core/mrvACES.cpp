@@ -3,7 +3,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "ACESclipWriter.h"
 #include "ACESclipReader.h"
@@ -45,9 +45,6 @@ std::string aces_xml_filename( const char* file )
 
 bool load_aces_xml( CMedia* img, const char* filename )
 {
-    // If using OCIO, we do not load the ACES XML file.
-    if ( Preferences::use_ocio ) return false;
-
     using namespace ACES;
 
     if(! fs::exists(filename) )
@@ -62,14 +59,16 @@ bool load_aces_xml( CMedia* img, const char* filename )
     }
 
     if ( !c.link_ITL.empty() )
-    {
+      {
         img->idt_transform( c.link_ITL.c_str() );
-    }
+      }
     else if ( c.IDT.status == ACES::kPreview && !c.IDT.name.empty() )
-    {
+      {
         img->idt_transform( c.IDT.name.c_str() );
-    }
+      }
 
+    size_t num = c.LMT.size();
+    size_t i = 0;
     img->clear_look_mod_transform();
 
     if ( c.graderef_status == ACES::kPreview )
@@ -79,12 +78,12 @@ bool load_aces_xml( CMedia* img, const char* filename )
             img->append_look_mod_transform( c.convert_to.c_str() );
 
             size_t num = c.grade_refs.size();
-
             img->asc_cdl( c.sops );
 
             for ( size_t i = 0; i < num; ++i )
             {
                 std::string name = "LMT." + c.grade_refs[i];
+                name += N_(".a1.0.0");
                 img->append_look_mod_transform( name.c_str() );
             }
         }
@@ -100,31 +99,21 @@ bool load_aces_xml( CMedia* img, const char* filename )
         }
     }
 
-    size_t num = c.LMT.size();
-    for ( size_t i = 0; i < num; ++i )
-    {
-        if ( c.LMT[i].status != ACES::kPreview )
-            continue;
-        img->append_look_mod_transform( c.LMT[i].name.c_str() );
-    }
 
+    for ( ; i < num; ++i )
+      {
+        if ( c.LMT[i].status != ACES::kPreview )
+	  continue;
+        img->append_look_mod_transform( c.LMT[i].name.c_str() );
+      }
+    
     if ( c.RRT.status == ACES::kPreview && !c.RRT.name.empty() )
-    {
+      {
         img->rendering_transform( c.RRT.name.c_str() );
-    }
+      }
 
     if ( c.ODT.status == ACES::kPreview && !c.ODT.name.empty() )
-    {
-        if ( ( ! mrv::Preferences::ODT_CTL_transform.empty() ) &&
-                mrv::Preferences::ODT_CTL_transform != c.ODT.name )
-        {
-            LOG_ERROR( _("Image has a different Output Device Transform (ODT) than the one set already.") );
-            LOG_ERROR( mrv::Preferences::ODT_CTL_transform
-                       << _(" is set.  Loaded ") << c.ODT.name );
-            LOG_ERROR( _("At least one LUT will not look correctly.") );
-        }
         mrv::Preferences::ODT_CTL_transform = c.ODT.name;
-    }
 
     LOG_INFO( _("Loaded ACES clip metadata file '") << filename << "'" );
     return true;
@@ -180,7 +169,6 @@ bool save_aces_xml( const CMedia* img, const char* filename )
         for ( unsigned j = 0; j < num_graderefs; ++j )
         {
             const std::string& g = img->look_mod_transform( j+1 );
-            if ( g.size() < 4 ) continue;
             if ( g.substr(4, 7) == N_("SOPNode") )
             {
                 c.gradeRef_SOPNode( t );
@@ -219,13 +207,10 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     c.PTL_end();
 
     if ( ! c.save( filename ) )
-    {
         LOG_ERROR( _("Could not save '") << filename << "'." );
-    }
     else
-    {
         LOG_INFO( _("Saved ACES clip metadata file '") << filename << "'" );
-    }
+
 
     setlocale( LC_NUMERIC, "" );  // Return floating point form to our locale
 
