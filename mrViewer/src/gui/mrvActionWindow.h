@@ -3,22 +3,23 @@
 #ifndef mrvActionWindow_h
 #define mrvActionWindow_h
 
-#include <fltk/Window.h>
+#include <FL/Fl_Window.H>
+
+class ViewerUI;
 
 namespace mrv {
 
-class ViewerUI;
 class ImageView;
 
-class ActionWindow : public fltk::Window
+class ActionWindow : public Fl_Window
 {
 public:
     ActionWindow( int w, int h, const char* const  lbl = 0 ) :
-        fltk::Window( w, h, lbl )
+    Fl_Window( w, h, lbl )
     {
     }
 
-    void main( mrv::ViewerUI* m ) {
+    void main( ViewerUI* m ) {
         uiMain = m;
     }
     ImageView* view() const;
@@ -26,7 +27,7 @@ public:
     virtual int handle( int event );
 
 protected:
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
 };
 
 
