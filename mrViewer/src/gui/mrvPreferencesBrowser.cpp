@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,29 +34,36 @@
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/operations.hpp>
 
-#include <fltk/WizardGroup.h>
-#include <fltk/xpmImage.h>
-#include <fltk/MultiImage.h>
+#include <FL/Fl_Wizard.H>
+#include <FL/Fl_XPM_Image.H>
+#include <FL/Fl_Multi_Label.H>
 
 #include "mrViewer.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvPreferencesBrowser.h"
 #include "gui/FLU/flu_pixmaps.h"
+#include "mrvPreferencesUI.h"
 
 namespace fs = boost::filesystem;
 
 typedef boost::tokenizer< boost::char_separator<char> > Tokenizer_t;
 
 namespace {
-fltk::xpmImage book_closed(book_xpm);
-fltk::xpmImage book_open(question_book_xpm);
-fltk::xpmImage folder_filled(filled_folder_xpm);
-fltk::xpmImage folder_closed(folder_closed_xpm);
-fltk::MultiImage folder( folder_closed,
-                         fltk::OPENED, folder_filled );
-fltk::MultiImage book( book_closed,
-                       fltk::SELECTED, book_open );
+Fl_Pixmap book_closed(book_xpm);
+Fl_Pixmap book_open(question_book_xpm);
+Fl_Pixmap folder_filled(filled_folder_xpm);
+Fl_Pixmap folder_closed(folder_closed_xpm);
+Fl_Pixmap folder( folder_closed_xpm );
+Fl_Pixmap book( book_xpm );
+// Fl_Multi_Label book( book_closed,
+// 		     FL_SELECTED, book_open );
+
+// @TODO: fltk1.4
+// Fl_Multi_Label folder( folder_closed,
+// 		       FL_OPENED, folder_filled );
+// Fl_Multi_Label book( book_closed,
+// 		     FL_SELECTED, book_open );
 
 const char* kModule = "pbrowser";
 }
@@ -68,8 +75,9 @@ PreferencesBrowser::PreferencesBrowser( const int x, const int y,
                                         const char* lbl ) :
     mrv::Browser( x, y, w, h, lbl )
 {
-    leaf_symbol( &book );
-    group_symbol( &folder );
+    // @TOOD: fltk1.4
+    // leaf_symbol( &book );
+    // group_symbol( &folder );
 }
 
 PreferencesBrowser::~PreferencesBrowser()
@@ -78,19 +86,19 @@ PreferencesBrowser::~PreferencesBrowser()
 
 int PreferencesBrowser::handle( int e )
 {
-    return fltk::Browser::handle( e );
+    return Fl_Browser::handle( e );
 }
 
 //
 // Routine to update the main CTL group (paths and ctl scripts)
 //
-void PreferencesBrowser::update_ctl_tab( mrv::PreferencesUI* prefs )
+void PreferencesBrowser::update_ctl_tab( PreferencesUI* prefs )
 {
 
     if ( !prefs ) return;
 
-    fltk::Browser* ctlpaths = prefs->uiPrefsCTLModulePath;
-    fltk::Browser* scripts  = prefs->uiPrefsCTLScripts;
+    Fl_Browser* ctlpaths = prefs->uiPrefsCTLModulePath;
+    Fl_Browser* scripts  = prefs->uiPrefsCTLScripts;
     ctlpaths->clear();
     scripts->clear();
 
@@ -140,11 +148,11 @@ void PreferencesBrowser::update_ctl_tab( mrv::PreferencesUI* prefs )
 
 }
 
-void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
+void PreferencesBrowser::update( PreferencesUI* prefs )
 {
     if ( prefs == NULL ) return;
 
-    fltk::WizardGroup* uiWizard = prefs->uiWizard;
+    Fl_Wizard* uiWizard = prefs->uiWizard;
     if (uiWizard == NULL ) return;
 
     int wizard_index = absolute_item_index();
@@ -156,7 +164,7 @@ void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
         return;
     }
 
-    fltk::Widget* child = uiWizard->child( wizard_index );
+    Fl_Widget* child = uiWizard->child( wizard_index );
     if ( !child ) return;
 
     std::string name = child->label();
