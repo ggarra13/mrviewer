@@ -1,6 +1,6 @@
 
 
-#include <fltk/events.h>
+#include <FL/Enumerations.H>
 
 #include "gui/mrvStereoWindow.h"
 #include "gui/mrvImageView.h"
@@ -15,9 +15,9 @@ ImageView* StereoWindow::view() const {
 int StereoWindow::handle( int event )
 {
     int ok = 0;
-    if ( event == fltk::KEY )
+    if ( event == FL_KEYBOARD )
         ok = view()->handle( event );
-    if ( !ok ) ok = fltk::Window::handle( event );
+    if ( !ok ) ok = Fl_Window::handle( event );
     return ok;
 }
 
