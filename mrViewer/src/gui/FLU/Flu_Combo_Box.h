@@ -16,14 +16,14 @@
 #ifndef _FLU_COMBO_BOX_H
 #define _FLU_COMBO_BOX_H
 
-#include <fltk/DoubleBufferWindow.h>
-#include <fltk/Input.h>
-#include <fltk/Group.h>
+#include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Group.H>
 
 #include "FLU/Flu_Enumerations.h"
 
 //! This is a generic base class for implementing widgets with combo-box-like behavior (i.e. a pulldown menu where the "input" area is editable
-class FLU_EXPORT Flu_Combo_Box : public fltk::Group
+class FLU_EXPORT Flu_Combo_Box : public Fl_Group
 {
 
 public:
@@ -36,11 +36,11 @@ public:
 
   //! Get whether the input field can be edited. Default is \c true
   inline bool editable() const
-    { return input.active(); }
+    { return (int)(!input.readonly()); }
 
   //! Set whether the input field can be edited.
   inline void editable( bool b )
-    { input.activate( b ); }
+    { input.readonly( (int)(!b) ); }
 
   //! Get the string in the input field
   inline const char* value() const
@@ -64,15 +64,15 @@ public:
   void resize( int X, int Y, int W, int H );
 
   //! Set the function that will be called when the input area is interacted with
-  inline void input_callback( void (*cb)(fltk::Widget*,void*), void* cbd = NULL )
+  inline void input_callback( void (*cb)(Fl_Widget*,void*), void* cbd = NULL )
     { _inputCB = cb; _inputCBD = cbd; }
 
   //! Publicly exposed input widget
-  fltk::Input input;
+  Fl_Input input;
 
 protected:
 
-  void (*_inputCB)(fltk::Widget*,void*);
+  void (*_inputCB)(Fl_Widget*,void*);
   void* _inputCBD;
  
   virtual bool _value( const char *v ) = 0;
@@ -84,21 +84,21 @@ protected:
 
   void selected( const char *v );
 
-  void set_combo_widget( fltk::Widget *w );
+  void set_combo_widget( Fl_Widget *w );
 
-  fltk::Box* _valbox;
+  uchar _valbox;
   bool _pushed, _popped;
-  fltk::Widget *_cbox;
+  Fl_Widget *_cbox;
   int popHeight;
 
-  static void input_cb( fltk::Widget*, void* v );
+  static void input_cb( Fl_Widget*, void* v );
 
-  class FLU_EXPORT Popup : public fltk::DoubleBufferWindow
+  class FLU_EXPORT Popup : public Fl_Double_Window
     {
 
     public:
 
-      Popup( Flu_Combo_Box *b, fltk::Widget *c, int H );
+      Popup( Flu_Combo_Box *b, Fl_Widget *c, int H );
 
       ~Popup();
 

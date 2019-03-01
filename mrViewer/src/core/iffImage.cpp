@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,7 +40,8 @@ extern "C" {
 #include <libavutil/avassert.h>
 }
 
-#include <fltk/run.h>
+#include <FL/fl_utf8.h>
+#include <FL/Fl.H>
 
 #include "iffImage.h"
 #include "byteSwap.h"
@@ -354,7 +355,11 @@ static uint8_t* read_tile(FILE* file, int size, int depth, int datasize, int* of
 {
     uint8_t* result = (uint8_t*)malloc( size * depth );
     if (datasize >= size * depth) {
-        fread(result, 1, size * depth, file);
+        size_t r = fread(result, 1, size * depth, file);
+	if ( r < datasize )
+	{
+	    LOG_ERROR( "Corrupt tile in iff file" );
+	}
     }
     else {
         // compressed tile
@@ -534,7 +539,7 @@ bool iffImage::fetch( mrv::image_type_ptr& canvas,
     _gamma = 1.0f;
     _compression = kNoCompression;
 
-    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+    FILE* f = fl_fopen( sequence_filename(frame).c_str(), "rb" );
     if (!f) return false;
 
     iffHeader header;

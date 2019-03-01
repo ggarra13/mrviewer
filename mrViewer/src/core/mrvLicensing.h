@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvProtection.h
  * @author gga
  * @date   Sat Oct 28 05:53:19 2006
- *
+ * 
  * @brief  A simple copy-protection/license mechanism
- *
- *
+ * 
+ * 
  */
 
 #include <ctime>
@@ -31,10 +31,10 @@
 
 namespace mrv
 {
-bool open_license(const char* prog);
-bool close_license();
-bool checkout_license();
-bool check_license_status();
-bool checkin_license();
+  bool open_license(const char* prog);
+  bool close_license();
+  bool checkout_license();
+  bool check_license_status();
+  bool checkin_license();
 
 }
