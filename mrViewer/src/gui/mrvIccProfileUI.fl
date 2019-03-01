@@ -1,99 +1,111 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir header_name 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include <cstring>} {public
-} 
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include <cstring>} {public local
+}
 
-decl {\#include <string>} {public
-} 
+decl {\#include <string>} {public local
+}
 
-decl {\#include <algorithm>} {} 
+decl {\#include <algorithm>} {private local
+}
 
-decl {\#include "core/mrvI8N.h"} {} 
+decl {\#include "core/mrvI8N.h"} {private local
+}
 
-decl {\#include "IccProfile.h"} {} 
+decl {\#include "IccProfile.h"} {private local
+}
 
-decl {\#include "IccUtil.h"} {} 
+decl {\#include "IccUtil.h"} {private local
+}
 
-decl {\#include "core/mrvColorProfile.h"} {} 
+decl {\#include "gui/mrvBrowser.h"} {public local
+}
 
-decl {\#include "mrViewer.h"} {} 
+decl {\#include "gui/mrvMainWindow.h"} {public local
+}
 
-decl {class CIccProfile;} {public
-} 
+decl {\#include "core/mrvColorProfile.h"} {private local
+}
 
-namespace mrv {open
+decl {\#include "mrViewer.h"} {private local
+}
+
+decl {class CIccProfile;} {public local
+}
+
+decl {class ViewerUI;} {public local
+}
+
+class ICCProfileUI {open
 } {
-  decl {class ViewerUI;} {public
+  decl {Fl_Text_Buffer* uiText;} {private local
   }
-  class ICCProfileUI {open
-  } {
-    decl {CIccProfile* _profile;} {}
-    Function {ICCProfileUI()} {open
-    } {
-      code {_profile = NULL;
+  decl {CIccProfile* _profile;} {private local
+  }
+  Function {ICCProfileUI()} {} {
+    code {_profile = NULL;
 make_window();} {}
-    }
-    Function {~ICCProfileUI()} {} {}
-    Function {make_window()} {} {
-      {fltk::Window} uiMain {open
-        xywh {627 276 650 485} resizable visible
+  }
+  Function {~ICCProfileUI()} {open
+  } {}
+  Function {make_window()} {open
+  } {
+    Fl_Window uiMain {open
+      xywh {627 276 650 485} type Double resizable visible
+    } {
+      Fl_Pack {} {open
+	xywh {0 0 637 485}
       } {
-        {fltk::PackedGroup} {} {open
-          xywh {12 14 625 471}
-          extra_code {o->set_vertical();}
-        } {
-          {fltk::Group} {} {open
-            xywh {0 0 623 161}
-          } {
-            {fltk::Browser} uiTags {
-              label Tags
-              user_data this user_data_type {ICCProfileUI*}
-              callback {v->fill_text();}
-              xywh {0 6 623 155}
-              extra_code {static const int widths[] = { -1, 120, 80,  80, 0 };
+	Fl_Group {} {open
+	  xywh {0 0 623 161}
+	} {
+	  Fl_Browser uiTags {
+	    label Tags
+	    user_data this user_data_type {ICCProfileUI*}
+	    callback {v->fill_text();}
+	    xywh {0 6 623 155}
+	    code0 {static const int widths[] = { -1, 120, 80,  80, 0 };
 static const char* labels[] = { "ID", "Tag", "Offset", "Size", NULL };
 
 o->column_widths( widths );
 o->column_labels( labels );}
-            } {}
-          }
-          {fltk::Group} {} {open
-            xywh {0 166 625 295}
-          } {
-            {fltk::WizardGroup} uiWizard {open
-              xywh {0 0 625 295}
-              extra_code {o->value(0);}
-            } {
-              {fltk::TextDisplay} uiText {
-                xywh {3 5 620 285}
-              }
-              {fltk::Group} {} {open
-                xywh {3 5 620 285} hide
-              } {
-                {fltk::Widget} uiDrawing {
-                  xywh {0 0 620 285}
-                }
-              }
-            }
-          }
-        }
+	    class {mrv::Browser}
+	  }
+	}
+	Fl_Group {} {open
+	  xywh {0 0 625 461}
+	} {
+	  Fl_Wizard uiWizard {open
+	    xywh {0 0 625 295}
+	    code0 {o->value(0);}
+	  } {
+	    Fl_Text_Display uiTextDisplay {selected
+	      xywh {5 10 620 285} hide
+	      code0 {uiText = new Fl_Text_Buffer;}
+	    }
+	    Fl_Group {} {open
+	      xywh {0 0 623 290}
+	    } {
+	      Fl_Box uiDrawing {
+		xywh {0 0 620 285}
+	      }
+	    }
+	  }
+	}
       }
     }
-    Function {replace( const std::string& name )} {open
-    } {
-      code {_profile = mrv::colorProfile::get( name.c_str() );
+  }
+  Function {replace( const std::string& name )} {open
+  } {
+    code {_profile = mrv::colorProfile::get( name.c_str() );
 if (_profile) fill( name );
 uiMain->show();} {}
-    }
-    Function {fill( const std::string& name )} {private
-    } {
-      code {uiMain->copy_label( name.c_str() );
+  }
+  Function {fill( const std::string& name )} {open private
+  } {
+    code {uiMain->copy_label( name.c_str() );
 uiText->text(N_(""));
 uiTags->clear();
 
@@ -107,11 +119,11 @@ TagEntryList::iterator i = _profile->m_Tags->begin();
 TagEntryList::iterator e = _profile->m_Tags->end();
 char buf[256];
 char sig[64];
-for ( ; i != e; ++i ) 
+for ( ; i != e; ++i )
 {
-  sprintf( buf, "%s\\t%s\\t%8d\\t%8d", 
-           Fmt.GetTagSigName(i->TagInfo.sig),
-           icGetSig(sig, i->TagInfo.sig, false), 
+  sprintf( buf, "%s\\t%s\\t%8d\\t%8d",
+	   Fmt.GetTagSigName(i->TagInfo.sig),
+	   icGetSig(sig, i->TagInfo.sig, false),
 	   i->TagInfo.offset, i->TagInfo.size);
   uiTags->add( strdup(buf) );
 }
@@ -119,9 +131,10 @@ for ( ; i != e; ++i )
 uiTags->redraw();
 
 fill_text();} {}
-    }
-    Function {fill_text()} {} {
-      code {uiText->text(N_(""));
+  }
+  Function {fill_text()} {open
+  } {
+    code {uiText->text(N_(""));
 if (!_profile) return;
 
 int idx = uiTags->value();
@@ -136,73 +149,73 @@ TagEntryList::iterator i = _profile->m_Tags->begin();
 std::advance( i, idx-1 );
 IccTagEntry& entry = *i;
 uiText->text( mrv::colorProfile::dump_tag( _profile, entry.TagInfo.sig ).c_str() );
-uiText->redraw();} {}
-    }
+uiTextDisplay->redraw();} {}
   }
-  class ICCProfileListUI {open
+}
+
+class ICCProfileListUI {} {
+  decl {ICCProfileUI* _info;} {private local
+  }
+  Function {make_window()} {open
   } {
-    decl {ICCProfileUI* _info;} {}
-    Function {make_window()} {open
+    Fl_Window uiMain {
+      label {ICC Profiles Inspector} open
+      xywh {414 58 630 460} type Double hide resizable
     } {
-      {fltk::Window} uiMain {
-        label {ICC Profiles Inspector}
-        xywh {414 58 630 460} hide resizable
+      Fl_Pack {} {open
+	xywh {0 14 625 431} box UP_BOX
       } {
-        {fltk::PackedGroup} {} {open
-          xywh {0 14 625 431} box UP_BOX
-        } {
-          {fltk::Group} {} {open
-            xywh {2 0 623 381}
-          } {
-            {fltk::Browser} uiProfiles {
-              label {ICC Profiles} open
-              xywh {8 26 605 335}
-            } {}
-          }
-          {fltk::Group} {} {open
-            xywh {10 371 605 50}
-          } {
-            {fltk::Button} {} {
-              label Info
-              user_data this user_data_type {ICCProfileListUI*}
-              callback {v->show_info();}
-              xywh {480 5 110 35}
-            }
-          }
-        }
-      }
-      code {_info = new ICCProfileUI();} {selected
+	Fl_Group {} {open
+	  xywh {2 0 623 381}
+	} {
+	  Fl_Browser uiProfiles {
+	    label {ICC Profiles}
+	    xywh {8 26 605 335}
+	  }
+	}
+	Fl_Group {} {open
+	  xywh {10 371 605 50}
+	} {
+	  Fl_Button {} {
+	    label Info
+	    user_data this user_data_type {ICCProfileListUI*}
+	    callback {v->show_info();}
+	    xywh {480 5 110 35}
+	  }
+	}
       }
     }
-    Function {ICCProfileListUI( mrv::ViewerUI* main )} {} {
-      code {uiMain = make_window();
-uiMain->child_of( (fltk::Window*)main->uiMain );
-_info->uiMain->child_of( uiMain );
-fill();} {}
-    }
-    Function {~ICCProfileListUI()} {open
-    } {
-      code {delete uiMain; uiMain = NULL;} {}
-    }
-    Function {fill()} {} {
-      code {uiProfiles->clear();
+    code {_info = new ICCProfileUI();} {}
+  }
+  Function {ICCProfileListUI( ViewerUI* main )} {} {
+    code {Fl_Group::current( main->uiMain );
+      uiMain = make_window();
+      Fl_Group::current(0);
+      fill();} {}
+  }
+  Function {~ICCProfileListUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {fill()} {open
+  } {
+    code {uiProfiles->clear();
 const stringArray& profiles = mrv::colorProfile::list();
 stringArray::const_iterator i = profiles.begin();
 stringArray::const_iterator e = profiles.end();
 for ( ; i != e; ++i )
   uiProfiles->add( (*i).c_str() );
 uiProfiles->redraw();} {}
-    }
-    Function {show_info()} {open
-    } {
-      code {int idx = uiProfiles->value();
+  }
+  Function {show_info()} {open
+  } {
+    code {int idx = uiProfiles->value();
 if ( idx < 0 ) return;
-fltk::Widget* w = uiProfiles->child(idx);
+Fl_Widget* w = uiProfiles->child(idx);
 if (!w) return;
 const char* label = w->label();
 if (!label) return;
 if (!_info) return;
 _info->replace( label );} {}
-    }
   }
-} 
+}
