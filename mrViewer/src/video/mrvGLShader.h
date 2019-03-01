@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,10 +19,10 @@
  * @file   mrvGLShader.h
  * @author gga
  * @date   Fri Jan 18 22:42:38 2008
- *
- * @brief
- *
- *
+ * 
+ * @brief  
+ * 
+ * 
  */
 
 #include <GL/glew.h>
@@ -32,19 +32,15 @@
 
 namespace mrv {
 
-class GLShader
-{
-public:
+  class GLShader
+  {
+  public:
     GLShader();
     GLShader( const char* filename );
     ~GLShader();
 
-    GLhandleARB program()         {
-        return _program;
-    }
-    GLuint      fragment_shader() {
-        return _frag_shader;
-    }
+    GLhandleARB program()         { return _program;  }
+    GLuint      fragment_shader() { return _frag_shader; }
 
     void bind();
     void enable();
@@ -57,33 +53,33 @@ public:
 
     void setUniform( const GLint location, const float x );
     void setUniform( const GLint location, const float x, const float y );
-    void setUniform( const GLint location, const float x, const float y,
-                     const float z );
-    void setUniform( const GLint location, const float x, const float y,
-                     const float z, const float w );
+    void setUniform( const GLint location, const float x, const float y, 
+		     const float z );
+    void setUniform( const GLint location, const float x, const float y, 
+		     const float z, const float w );
 
     void setUniform( const char* uniform, const float x );
     void setUniform( const char* uniform, const float x, const float y);
-    void setUniform( const char* uniform, const float x, const float y,
-                     const float z );
-    void setUniform( const char* uniform, const float x, const float y,
-                     const float z, const float w );
+    void setUniform( const char* uniform, const float x, const float y, 
+		     const float z );
+    void setUniform( const char* uniform, const float x, const float y, 
+		     const float z, const float w );
 
     void setUniform( const GLint location, const int x );
     void setUniform( const GLint location, const int x, const int y );
-    void setUniform( const GLint location, const int x, const int y,
-                     const int z );
-    void setUniform( const GLint location, const int x, const int y,
-                     const int z, const int w );
+    void setUniform( const GLint location, const int x, const int y, 
+		     const int z );
+    void setUniform( const GLint location, const int x, const int y, 
+		     const int z, const int w );
 
     void setUniform( const char* uniform, const int x );
     void setUniform( const char* uniform, const int x, const int y);
-    void setUniform( const char* uniform, const int x, const int y,
-                     const int z );
-    void setUniform( const char* uniform, const int x, const int y,
-                     const int z, const int w );
+    void setUniform( const char* uniform, const int x, const int y, 
+		     const int z );
+    void setUniform( const char* uniform, const int x, const int y, 
+		     const int z, const int w );
 
-protected:
+  protected:
 
     void  store_uniforms( const char* arbfp1_code );
     GLint uniform_location( const char* uniform );
@@ -93,7 +89,7 @@ protected:
     const char* get_shader_error(GLuint shader);
     const char* get_program_error(GLuint program);
 
-protected:
+  protected:
     GLuint      _frag_target;
     GLuint      _frag_shader;
 
@@ -101,5 +97,5 @@ protected:
 
     typedef std::map< std::string, GLint > UniformMap;
     UniformMap _uniforms;
-};
+  };
 }

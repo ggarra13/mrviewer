@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ const char* kModule = "lmt";
 namespace mrv {
 
 LMTBrowser::LMTBrowser(int x, int y, int w, int h, const char* l) :
-    fltk::Browser( x, y, w, h, l )
+    Fl_Browser( x, y, w, h, l )
 {
 }
 
@@ -67,7 +67,7 @@ void LMTBrowser::fill( const mrv::media& fg )
 
 int LMTBrowser::handle( int e )
 {
-    return fltk::Browser::handle( e );
+    return Fl_Browser::handle( e );
 }
 
 
