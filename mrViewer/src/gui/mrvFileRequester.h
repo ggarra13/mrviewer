@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@
 #define mrvFileRequester_h
 
 #include "mrvString.h"
-#include "gui/mrvMedia.h"
 
+class ViewerUI;
 
 namespace mrv
 {
@@ -38,7 +38,7 @@ namespace mrv
 class CMedia;
 
 std::string open_directory( const char* startfile = NULL,
-                            const mrv::ViewerUI* main = NULL );
+                            ViewerUI* main = NULL );
 
 /**
  * Opens a file requester to load a reel
@@ -48,7 +48,7 @@ std::string open_directory( const char* startfile = NULL,
  * @return opened reel(s)
  */
 stringArray open_reel( const char* startfile = NULL,
-                       const mrv::ViewerUI* main = NULL);
+                       ViewerUI* main = NULL);
 
 /**
  * Opens a file requester to load an image
@@ -59,7 +59,7 @@ stringArray open_reel( const char* startfile = NULL,
  */
 stringArray open_image_file( const char* startfile = NULL,
                              const bool compact_files = true,
-                             const mrv::ViewerUI* main = NULL );
+                             ViewerUI* main = NULL );
 
 /**
  * Opens a file requester to load a color profile
@@ -70,14 +70,14 @@ stringArray open_image_file( const char* startfile = NULL,
  */
 const char* open_icc_profile( const char* startfile = NULL,
                               const char* title = "Load Image's ICC Profile",
-                              const mrv::ViewerUI* main = NULL );
+                                ViewerUI* main = NULL );
 
 const char* open_ctl_dir( const char* startfile = NULL,
                           const char* title = "Append CTL Directory",
-                          const mrv::ViewerUI* main = NULL);
+			  ViewerUI* main = NULL);
 
 
-void attach_ocio_ics_cb( fltk::Widget* o, mrv::ImageView* view );
+void attach_ocio_ics_cb( Fl_Widget* o, mrv::ImageView* view );
 void attach_ocio_input_color_space( CMedia* img, ImageView* view );
 void attach_ocio_display( CMedia* img, ImageView* view );
 void attach_ocio_view( CMedia* img, ImageView* view );
@@ -89,9 +89,9 @@ void attach_ocio_view( CMedia* img, ImageView* view );
  * @param startfile  start filename (directory)
  */
 void attach_icc_profile( CMedia* image, const char* startfile,
-                         const mrv::ViewerUI* main = NULL );
+                         ViewerUI* main = NULL );
 void attach_icc_profile( CMedia* image,
-                         const mrv::ViewerUI* main = NULL );
+                           ViewerUI* main = NULL );
 
 
 /**
@@ -99,17 +99,19 @@ void attach_icc_profile( CMedia* image,
  *
  * @param index monitor index
  */
-void monitor_ctl_script( const mrv::ViewerUI* main,
+void monitor_ctl_script( ViewerUI* main,
                          const unsigned index = 0,
-                         const char* startfile = NULL );
+			 const char* startfile = NULL
+			 );
 
 /**
  * Attach an ICC/ICM color profile to a monitor display
  *
  * @param index monitor index
  */
-void monitor_icc_profile( const mrv::ViewerUI* main = NULL,
-                          const unsigned index = 0 );
+void monitor_icc_profile(  ViewerUI* main = NULL,
+			   const unsigned index = 0
+                           );
 
 
 /**
@@ -119,15 +121,15 @@ void monitor_icc_profile( const mrv::ViewerUI* main = NULL,
  * @param startfile  start filename (directory)
  */
 void attach_rt_script( CMedia* image, const std::string& startfile,
-                       const mrv::ViewerUI* main );
+		       ViewerUI* main );
 void attach_ctl_script( CMedia* image, const char* ctlfile,
-                        const mrv::ViewerUI* main = NULL  );
+                          ViewerUI* main = NULL  );
 void attach_ctl_script( CMedia* image,
-                        const mrv::ViewerUI* main = NULL  );
+                          ViewerUI* main = NULL  );
 
 void attach_look_mod_transform( CMedia* image, const std::string& script,
                                 const size_t idx,
-                                const mrv::ViewerUI* main );
+                                ViewerUI* main );
 /**
  * Attach a CTL (Color Transform Language) LMT script to an image for display.
  *
@@ -135,9 +137,9 @@ void attach_look_mod_transform( CMedia* image, const std::string& script,
  * @param startfile  start filename (directory)
  */
 void attach_ctl_lmt_script( CMedia* image, const char* ctlfile,
-                            const size_t idx, const mrv::ViewerUI* main = NULL);
+                            const size_t idx, ViewerUI* main = NULL);
 void attach_ctl_lmt_script( CMedia* image, const size_t idx,
-                            const mrv::ViewerUI* main = NULL);
+                            ViewerUI* main = NULL);
 
 /**
  * Attach a CTL (Color Transform Language) IDT script to an image for display.
@@ -146,14 +148,14 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
  * @param startfile  start filename (directory)
  */
 void attach_ctl_idt_script( CMedia* image, const char* ctlfile,
-                            const mrv::ViewerUI* main = NULL  );
+                              ViewerUI* main = NULL  );
 void attach_ctl_idt_script( CMedia* image,
-                            const mrv::ViewerUI* main = NULL  );
+                              ViewerUI* main = NULL  );
 
 void read_clip_xml_metadata( CMedia* image,
-                             const mrv::ViewerUI* main = NULL  );
+                             ViewerUI* main = NULL  );
 void save_clip_xml_metadata( const CMedia* image,
-                             const mrv::ViewerUI* main = NULL  );
+                             ViewerUI* main = NULL  );
 
 /**
  * Opens a file requester to load a subtitle file
@@ -163,7 +165,7 @@ void save_clip_xml_metadata( const CMedia* image,
  * @return  opened subtitle file or null
  */
 const char* open_subtitle_file( const char* startfile = NULL,
-                                const mrv::ViewerUI* main = NULL  );
+                                  ViewerUI* main = NULL  );
 
 /**
  * Opens a file requester to load audio files
@@ -173,7 +175,7 @@ const char* open_subtitle_file( const char* startfile = NULL,
  * @return  opened audio file or null
  */
 const char* open_audio_file( const char* startfile = NULL,
-                             const mrv::ViewerUI* main = NULL  );
+                               ViewerUI* main = NULL  );
 
 /**
  * Attach a new audio file to loaded sequence
@@ -182,8 +184,7 @@ const char* open_audio_file( const char* startfile = NULL,
  * @param startfile  start filename (directory)
  */
 void attach_audio( CMedia* image, const char* startfile,
-                   const mrv::ViewerUI* main = NULL );
-
+                     ViewerUI* main = NULL );
 
 std::string open_ocio_config( const char* startfile );
 
@@ -197,7 +198,7 @@ void save_image_file( CMedia* image,
                       const char* startdir = NULL,
                       const bool aces = false,
                       const bool all_layers = false,
-                      const mrv::ViewerUI* main = NULL  );
+                        ViewerUI* main = NULL  );
 /**
  * Save an image under a new filename
  *
@@ -205,7 +206,7 @@ void save_image_file( CMedia* image,
  * @param startdir   start directory to save to
  * @param opengl     use opengl snapshots
  */
-void save_sequence_file( const mrv::ViewerUI* uiMain,
+  void save_sequence_file( ViewerUI* uiMain,
                          const char* startdir = NULL,
                          bool opengl = false  );
 
@@ -217,7 +218,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
  * @return reel to save or NULL
  */
 const char* save_reel( const char* startdir = NULL,
-                       const mrv::ViewerUI* main = NULL );
+                       ViewerUI* main = NULL );
 
 } // namespace mrv
 
