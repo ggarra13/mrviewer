@@ -1581,8 +1581,7 @@ void CMedia::filename( const char* n )
 
     if ( fetch( _hires, 1 ) )
     {
-	_depth = _hires->pixel_type();
-        default_color_corrections();
+        cache( _hires );
     }
 
     _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
@@ -1592,6 +1591,10 @@ void CMedia::filename( const char* n )
 
     if ( ! initialize() )
         return;
+
+    if ( _hires ) _depth = _hires->pixel_type();
+    else _depth = image_type::kByte;
+    default_color_corrections();
 }
 
 
@@ -1935,8 +1938,18 @@ void CMedia::stereo_output( StereoOutput x )
         if ( playback() == kStopped )
         {
             image_type_ptr canvas;
-            if ( fetch(canvas, _frame) )
+            int64_t f = _frame;
+            if ( fetch( canvas, f ) )
             {
+                DecodeStatus status = decode_video( f );
+                if ( status != kDecodeOK )
+                {
+                    LOG_ERROR( "Decoding frame " << f << " failed for "
+                               << name() << ". "
+                               << CMedia::decode_error(status) );
+                    return;
+                }
+                find_image( f );
                 cache( canvas );
             }
         }
@@ -2064,6 +2077,7 @@ void CMedia::channel( const char* c )
         image_type_ptr canvas;
         if ( fetch( canvas, f ) )
         {
+	    if ( !is_sequence() ) _hires = canvas;
             cache( canvas );
             default_color_corrections();
         }
@@ -2919,7 +2933,7 @@ void CMedia::cache( mrv::image_type_ptr& pic )
         return;
 
     _depth = pic->pixel_type();
-	
+
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
         update_cache_pic( _sequence, _stereo[0] );
