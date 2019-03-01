@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,10 +25,11 @@
  *
  */
 
-#include <fltk/Color.h>
+#include <FL/Enumerations.H>
 
 namespace mrv {
 
-fltk::Color darker(  fltk::Color c, uchar v = 0x20 );
-fltk::Color lighter( fltk::Color c, uchar v = 0x20 );
+Fl_Color set_color( uchar r, uchar g, uchar b );
+Fl_Color darker(  Fl_Color c, uchar v = 0x20 );
+Fl_Color lighter( Fl_Color c, uchar v = 0x20 );
 }
