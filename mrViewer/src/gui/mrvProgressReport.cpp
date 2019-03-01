@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,14 +16,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <inttypes.h>
+#define __STDC_LIMIT_MACROS
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
 
-#include <fltk/Output.h>
-#include <fltk/ProgressBar.h>
-#include <fltk/Window.h>
-#include <fltk/Box.h>
-#include <fltk/run.h>
-#include <fltk/ask.h>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl.H>
+#include <FL/fl_ask.H>
 
 
 #include "mrvProgressReport.h"
@@ -31,44 +33,46 @@
 
 namespace mrv {
 
-ProgressReport::ProgressReport( fltk::Window* main, boost::int64_t start,
+ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
                                 boost::int64_t end ) :
     _time( 0 ),
     _frame( start ),
     _end( end )
 {
-    w = new fltk::Window( main->x() + main->w() / 2 - 320,
+    Fl_Group::current(main);
+    w = new Fl_Window( main->x() + main->w() / 2 - 320,
                           main->y() + main->h()/2,
                           640, 120 );
     w->size_range( 640, 120 );
-    w->child_of(main);
     w->begin();
-    fltk::Group* g = new fltk::Group( 0, 0, w->w(), 120 );
+    Fl_Group* g = new Fl_Group( 0, 0, w->w(), 120 );
     g->begin();
-    progress = new fltk::ProgressBar( 0, 20, g->w(), 40 );
-    progress->range( 0, double( end - start + 1) );
-    progress->align( fltk::ALIGN_TOP );
+    progress = new Fl_Progress( 0, 20, g->w(), 40 );
+    progress->minimum( 0 );
+    progress->maximum( double( end - start + 1) );
+    progress->align( FL_ALIGN_TOP );
     char title[1024];
     sprintf( title, _( "Saving Sequence(s) %" PRId64 " - %" PRId64 ),
              start, end );
     progress->copy_label( title );
-    progress->showtext(true);
-    elapsed = new fltk::Output( 120, 80, 120, 20, _("Elapsed") );
+    // progress->showtext(true);
+    elapsed = new Fl_Output( 120, 80, 120, 20, _("Elapsed") );
     elapsed->labelsize( 16 );
-    elapsed->box( new fltk::FlatBox("") );
+    elapsed->box( FL_FLAT_BOX );
     elapsed->set_output(); // needed so no selection appears
-    remain = new fltk::Output( 350, 80, 120, 20, _("Remaining") );
+    remain = new Fl_Output( 350, 80, 120, 20, _("Remaining") );
     remain->labelsize( 16 );
-    remain->box( new fltk::FlatBox("") );
+    remain->box( FL_FLAT_BOX );
     remain->set_output(); // needed so no selection appears
-    fps = new fltk::Output( 550, 80, 60, 20, _("FPS") );
+    fps = new Fl_Output( 550, 80, 60, 20, _("FPS") );
     fps->labelsize( 16 );
-    fps->box( new fltk::FlatBox("") );
+    fps->box( FL_FLAT_BOX );
     fps->set_output(); // needed so no selection appears
     g->end();
     w->resizable(w);
     w->set_modal();
     w->end();
+    Fl_Group::current(0);
 
     timer.setDesiredFrameRate( 500.0 );
 
@@ -95,7 +99,7 @@ void ProgressReport::to_hour_min_sec( const double t,
 
 bool ProgressReport::tick()
 {
-    progress->step(1);
+    progress->value( progress->value() + 1);
 
     timer.waitUntilNextFrameIsDue();
     double now = timer.timeSinceLastFrame();
@@ -121,7 +125,7 @@ bool ProgressReport::tick()
     sprintf( buf, " %3.2f", timer.actualFrameRate() );
     fps->value( buf );
 
-    fltk::check();
+    Fl::check();
     ++_frame;
 
     if ( !w->visible() ) return false;

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2018 Gonzalo Garramuño
+    Copyright (C) 2007-2018 Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This code is largely based on vf_waveform of the ffmpeg project, which is:
     Copyright (c) 2012-2016 Paul B Mahol
@@ -21,8 +21,7 @@
 */
 
 
-#include <fltk/draw.h>
-#include <fltk/Symbol.h>
+#include <FL/fl_draw.H>
 
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
@@ -52,25 +51,25 @@ namespace mrv
 {
 
 Waveform::Waveform( int x, int y, int w, int h, const char* l ) :
-    fltk::Widget( x, y, w, h, l ),
-    fli( NULL ),
-    _intensity( 0.04f )
+Fl_Box( x, y, w, h, l ),
+fli( NULL ),
+_intensity( 0.04f )
 {
-    color( fltk::BLACK );
-    buttoncolor( fltk::BLACK );
+    color( FL_BLACK );
+    // buttoncolor( FL_BLACK );
     tooltip( _("Mark an area in the image with the left mouse button") );
 }
 
 
-void Waveform::draw_grid(const fltk::Rectangle& r)
+void Waveform::draw_grid(const mrv::Recti& r)
 {
 
 }
 
 void Waveform::draw()
 {
-    fltk::Rectangle r( w(), h() );
-    draw_box(r);
+    mrv::Recti r( w(), h() );
+    draw_box();
     draw_pixels(r);
 }
 
@@ -295,7 +294,7 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
 
 }
 
-void Waveform::draw_pixels( const fltk::Rectangle& r )
+void Waveform::draw_pixels( const mrv::Recti& r )
 {
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
@@ -354,8 +353,8 @@ void Waveform::draw_pixels( const fltk::Rectangle& r )
 
     if ( fli == NULL )
     {
-        fli = new fltk::Image( fltk::MONO, pic->width(),
-                               pic->height() );
+        fli = new Fl_Image( pic->width(),
+			    pic->height(), 1 );
     }
 
     if ( !out || out->width() != w() || out->height() != h() )
@@ -464,11 +463,10 @@ void Waveform::draw_pixels( const fltk::Rectangle& r )
     }
     }
 
-    fli->setimage( (uchar*) out->data().get(), fltk::MONO, out->width(),
-                   out->height() );
-    fltk::push_matrix();
-    fli->draw(r);
-    fltk::pop_matrix();
+    fl_push_matrix();
+    // @TODO:  fltk1.4
+    fli->draw(r.x(), r.y(), r.w(), r.h());
+    fl_pop_matrix();
 
 }
 
