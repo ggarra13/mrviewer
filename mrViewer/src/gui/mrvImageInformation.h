@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,31 +28,30 @@
 #ifndef mrvImageInformation_h
 #define mrvImageInformation_h
 
+#define __STDC_FORMAT_MACROS
+#define __STDC_LIMIT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#include <fltk/ScrollGroup.h>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Pack.H>
+#include <FL/Fl_Scroll.H>
 
 #include "core/CMedia.h"
 #include "core/mrvRectangle.h"
 #include "core/mrvString.h"
+#include "gui/mrvPopupMenu.h"
 #include "gui/mrvBrowser.h"
+#include "gui/mrvTable.h"
 #include "gui/mrvCollapsableGroup.h"
 
 
-namespace fltk
-{
-class PackedGroup;
-class ItemGroup;
-class PopupMenu;
-}
 
+#define ImageInfoParent Fl_Scroll
 
-#define ImageInfoParent fltk::ScrollGroup
-
+class ViewerUI;
 
 namespace mrv
 {
-class ViewerUI;
 class CMedia;
 struct CtlLMTData;
 class ImageView;
@@ -78,85 +77,86 @@ public:
     virtual void layout();
     virtual int handle( int event );
 
-    void main( mrv::ViewerUI* m ) {
+    void main( ViewerUI* m ) {
         uiMain = m;
     }
-    mrv::ViewerUI* main() {
+    ViewerUI* main() {
         return uiMain;
     }
+
 
     ImageView*  view() const;
 
 protected:
-    fltk::Color get_title_color();
-    fltk::Color get_widget_color();
+    Fl_Color get_title_color();
+    Fl_Color get_widget_color();
 
     void clear_callback_data();
 
     void hide_tabs();
 
-    static void ctl_callback( fltk::Widget* t, ImageInformation* v );
-    static void ctl_lmt_callback( fltk::Widget* t, CtlLMTData* v );
-    static void ctl_idt_callback( fltk::Widget* t, ImageInformation* v );
-    static void icc_callback( fltk::Widget* t, ImageInformation* v );
-    static void compression_cb( fltk::PopupMenu* t, ImageInformation* v );
-    static void enum_cb( fltk::PopupMenu* w, ImageInformation* v );
+    static void ctl_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_lmt_callback( Fl_Widget* t, CtlLMTData* v );
+    static void ctl_idt_callback( Fl_Widget* t, ImageInformation* v );
+    static void icc_callback( Fl_Widget* t, ImageInformation* v );
+    static void compression_cb( mrv::PopupMenu* t, ImageInformation* v );
+    static void enum_cb( mrv::PopupMenu* w, ImageInformation* v );
 
-    static void toggle_tab( fltk::Widget* w, void* data );
-    static void int_slider_cb( fltk::Slider* w, void* data );
-    static void float_slider_cb( fltk::Slider* w, void* data );
+    static void toggle_tab( Fl_Widget* w, void* data );
+    static void int_slider_cb( Fl_Slider* w, void* data );
+    static void float_slider_cb( Fl_Slider* w, void* data );
 
     double to_memory( long double value, const char*& extension );
 
-    mrv::Browser* add_browser( mrv::CollapsableGroup* g );
+    mrv::Table* add_browser( mrv::CollapsableGroup* g );
 
     void add_icc( const char* name, const char* tooltip,
                   const char* content,
                   const bool editable = true,
-                  fltk::Callback* callback = NULL );
+                  Fl_Callback* callback = NULL );
 
     void add_ctl( const char* name, const char* tooltip,
                   const char* content,
                   const bool editable = true,
-                  fltk::Callback* callback = NULL );
+                  Fl_Callback* callback = NULL );
 
     void add_ctl_lmt( const char* name, const char* tooltip,
                       const char* content,
                       const size_t idx,
                       const bool editable = true,
-                      fltk::Callback* callback = NULL );
+                      Fl_Callback* callback = NULL );
 
     void add_ctl_idt( const char* name, const char* tooltip,
                       const char* content,
                       const bool editable = true,
-                      fltk::Callback* callback = NULL );
+                      Fl_Callback* callback = NULL );
 
 
     void add_ocio_ics( const char* name, const char* tooltip,
                        const char* content,
                        const bool editable = true,
-                       fltk::Callback* callback = NULL );
+                       Fl_Callback* callback = NULL );
 
     void add_text( const char* name, const char* tooltip,
                    const char* content,
                    const bool editable = false,
                    const bool active = false,
-                   fltk::Callback* callback = NULL );
+                   Fl_Callback* callback = NULL );
     void add_text( const char* name, const char* tooltip,
                    const std::string& content,
                    const bool editable = false,
                    const bool active = false,
-                   fltk::Callback* callback = NULL );
+                   Fl_Callback* callback = NULL );
     void add_float( const char* name, const char* tooltip,
                     const float content,
                     const bool editable = false,
                     const bool active = false,
-                    fltk::Callback* callback = NULL,
+                    Fl_Callback* callback = NULL,
                     const float minV = 0.0f, const float maxV = 1.0f );
     void add_rect( const char* name, const char* tooltip,
                    const mrv::Recti& content,
                    const bool editable = false,
-                   fltk::Callback* callback = NULL );
+                   Fl_Callback* callback = NULL );
 
     void add_time( const char* name, const char* tooltip,
                    const double content,
@@ -166,12 +166,12 @@ protected:
                    const size_t content,
                    const char* const* options,
                    const size_t num, const bool editable = false,
-                   fltk::Callback* callback = NULL );
+                   Fl_Callback* callback = NULL );
 
     void add_enum( const char* name, const char* tooltip,
                    const std::string& content,
                    stringArray& options, const bool editable = false,
-                   fltk::Callback* callback = NULL );
+                   Fl_Callback* callback = NULL );
 
     void add_int64( const char* name, const char* tooltip,
                     const int64_t content );
@@ -180,20 +180,20 @@ protected:
                   const int content,
                   const bool editable = false,
                   const bool active = false,
-                  fltk::Callback* callback = NULL,
+                  Fl_Callback* callback = NULL,
                   const int minV = 0, const int maxV = 10,
-                  const int when = fltk::WHEN_RELEASE );
+                  const int when = FL_WHEN_RELEASE );
     void add_int( const char* name, const char* tooltip,
                   const unsigned int content,
                   const bool editable = false,
                   const bool active = false,
-                  fltk::Callback* callback = NULL,
+                  Fl_Callback* callback = NULL,
                   const unsigned int minV = 0,
                   const unsigned int maxV = 9999 );
     void add_bool( const char* name, const char* tooltip,
                    const bool content,
                    const bool editable = false,
-                   fltk::Callback* callback = NULL );
+                   Fl_Callback* callback = NULL );
 
     int line_height();
     void fill_data();
@@ -202,17 +202,17 @@ protected:
     ViewerUI*    uiMain;
     CMedia*   img;
 
-    fltk::Button*                m_button;
+    Fl_Button*                   m_button;
     mrv::CollapsableGroup*       m_image;
     mrv::CollapsableGroup*       m_video;
     mrv::CollapsableGroup*       m_audio;
     mrv::CollapsableGroup*       m_subtitle;
 
-    fltk::PackedGroup* m_all;
-    fltk::PackedGroup* m_main;
-    mrv::Browser*      m_curr;
-    fltk::Color        m_color;
-    CMedia::Mutex      _mutex;
+    Fl_Pack*       m_all;
+    Fl_Pack*       m_main;
+    mrv::Table*     m_curr;
+    Fl_Color          m_color;
+    CMedia::Mutex     _mutex;
     unsigned int group;
     unsigned int row;
 
