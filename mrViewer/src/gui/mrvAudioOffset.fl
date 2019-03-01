@@ -1,36 +1,34 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir decl 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include "core/CMedia.h"} {} 
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "core/CMedia.h"} {private local
+}
 
-decl {\#include "gui/mrvMedia.h"} {} 
+decl {\#include "gui/mrvMedia.h"} {private local
+}
 
-decl {\#include "gui/mrvImageView.h"} {} 
+decl {\#include "gui/mrvImageView.h"} {private local
+}
 
-namespace mrv {open
+decl {\#include "namespace.h"} {public global
+}
+
+Function {edit_audio_window( Fl_Widget* o, mrv::ImageView* view )} {open selected
 } {
-  decl {CMedia* img;} {}
-  decl {class ImageView;} {public
-  }
-} 
-
-Function {edit_audio_window( fltk::Widget* o, mrv::ImageView* view )} {selected
-} {
-  {fltk::Window} uiMainAudio {open
-    xywh {398 184 235 170} resizable modal visible
+  code {mrv::CMedia* img = NULL;} {}
+  Fl_Window uiMainAudio {open
+    xywh {393 179 235 170} type Double resizable
+    code0 {mrv::CMedia* img = NULL;} modal visible
   } {
-    {fltk::Group} {} {open
+    Fl_Group {} {open
       xywh {12 12 203 139}
     } {
-      {fltk::ValueInput} uiFrameOffset {
+      Fl_Value_Input uiFrameOffset {
         label {Frame Offset}
-        xywh {63 38 70 25} align 1 minimum -1000 maximum 1000 step 1
-        extra_code {mrv::media fg = view->foreground();
+        xywh {75 50 70 25} align 1 minimum -1000 maximum 1000 step 1
+        code0 {mrv::media fg = view->foreground();
+
 if ( !fg ) return NULL;
 
 img = fg->image();
@@ -38,19 +36,19 @@ if ( !img->has_audio() ) return NULL;
 
 o->value( img->audio_offset() );}
       }
-      {fltk::Button} {} {
+      Fl_Button {} {
         label OK
-        user_data img user_data_type {CMedia*}
+        user_data img user_data_type {mrv::CMedia*}
         callback {v->audio_offset( uiFrameOffset->value() );
 uiMainAudio->hide();}
-        xywh {23 83 70 25}
+        xywh {35 95 70 25}
       }
-      {fltk::Button} {} {
+      Fl_Button {} {
         label Cancel
         callback {uiMainAudio->hide();}
-        xywh {98 83 75 25}
+        xywh {110 95 75 25}
       }
     }
   }
   code {uiMainAudio->show();} {}
-} 
+}
