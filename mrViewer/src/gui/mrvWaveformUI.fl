@@ -1,71 +1,73 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir fltk::Button 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include "core/mrvI8N.h"} {} 
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "core/mrvI8N.h"} {private local
+}
 
-decl {\#include "gui/mrvWaveform.h"} {} 
+decl {\#include "gui/mrvWaveform.h"} {selected public global
+}
 
-decl {\#include "gui/mrvMainWindow.h"} {} 
+decl {\#include "gui/mrvMainWindow.h"} {private local
+}
 
-decl {\#include "mrViewer.h"} {} 
+decl {\#include "gui/mrvWaveform.h"} {private local
+}
 
-namespace mrv {open
+decl {\#include "mrViewer.h"} {private local
+}
+
+decl {class ViewerUI;} {public local
+}
+
+class WaveformUI {open
 } {
-  decl {class Waveform;} {public
+  decl {ViewerUI* main_;} {private local
   }
-  decl {class ViewerUI;} {public
-  }
-  class WaveformUI {open
+  Function {make_window(ViewerUI* main)} {open private
   } {
-    decl {mrv::ViewerUI* main_;} {}
-    Function {make_window(ViewerUI* main)} {open private
-    } {
-      {fltk::Window} uiMain {
-        label Waveform
-        user_data this user_data_type {WaveformUI*}
-        callback {v->main()->uiView->send_network( "WaveformWindow 0" );
+    Fl_Window uiMain {
+      label Waveform
+      user_data this user_data_type {WaveformUI*}
+      callback {v->main()->uiView->send_network( "WaveformWindow 0" );
 o->hide();} open
-        xywh {107 386 330 290} resizable
-        extra_code {// Make the window transient
-main_ = main;
-o->child_of( main->uiMain );} visible
+      xywh {108 509 330 290} type Double resizable
+      code0 {// Make the window transient
+main_ = main;} visible
+    } {
+      Fl_Group {} {open
+        xywh {0 0 328 279} resizable
       } {
-        {fltk::Group} {} {open
-          xywh {5 5 323 274} resizable
+        Fl_Box uiWaveform {
+          xywh {0 0 323 230} resizable
+          code0 {o->main( main );}
+          class {mrv::Waveform}
+        }
+        Fl_Group {} {open
+          xywh {0 20 321 254}
         } {
-          {fltk::Widget} uiWaveform {selected
-            xywh {0 0 323 230} resizable
-            extra_code {o->main( main );}
-            class {mrv::Waveform}
-          }
-          {fltk::Group} {} {open
-            xywh {0 234 321 40}
-          } {
-            {fltk::ValueSlider} {} {
-              label Intensity
-              callback {uiWaveform->intensity( o->value() );
-uiWaveform->redraw();}
-              xywh {20 11 280 25} align 1 value 0.04
-            }
+          Fl_Value_Slider {} {
+            label Intensity
+            user_data this user_data_type {WaveformUI*}
+            callback {v->uiWaveform->intensity( o->value() );
+v->uiWaveform->redraw();}
+            xywh {20 20 280 25} type Horizontal align 1 value 0.04
           }
         }
       }
     }
-    Function {WaveformUI(ViewerUI* m)} {} {
-      code {make_window( m );} {}
-    }
-    Function {~WaveformUI()} {open
-    } {
-      code {delete uiMain; uiMain = NULL;} {}
-    }
-    Function {main()} {open return_type {mrv::ViewerUI*}
-    } {
-      code {return main_;} {}
-    }
   }
-} 
+  Function {WaveformUI(ViewerUI* m)} {} {
+    code {Fl_Group::current( m->uiMain );
+      make_window( m );
+      Fl_Group::current(0);} {}
+  }
+  Function {~WaveformUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {open return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+}
