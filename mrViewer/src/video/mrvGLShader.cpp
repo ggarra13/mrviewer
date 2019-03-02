@@ -25,12 +25,13 @@
  *
  */
 
+#include "core/mrvI8N.h"
+
 #include <iostream>
 #include <Iex.h>
 
 #include <fltk/run.h>
 
-#include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 
 #include "mrvGLShader.h"
