@@ -17,15 +17,18 @@
 */
 
 
+#include "gui/mrvIO.h"
+
 #define __STDC_LIMIT_MACROS
 #include <inttypes.h>
 
 #include <cstdio>
 #include <cmath>
 
-using namespace std;
+///using namespace std;
 
 #ifdef _WIN32
+#undef snprintf
 #define snprintf _snprintf
 #define isfinite(x) _finite(x)
 #endif
@@ -51,7 +54,6 @@ extern "C" {
 #include "core/mrvColorSpaces.h"
 
 #include "gui/mrvPreferences.h"
-#include "gui/mrvIO.h"
 
 #include "aviSave.h"
 
