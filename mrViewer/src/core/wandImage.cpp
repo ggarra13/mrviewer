@@ -25,6 +25,7 @@
  *
  */
 
+#include "core/mrvI8N.h"
 #include <iostream>
 using namespace std;
 
@@ -59,7 +60,6 @@ using namespace std;
 #include "core/exrImage.h"
 #include "core/aviImage.h"
 #include "core/mrvThread.h"
-#include "core/mrvI8N.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvPreferences.h"
 #include "mrViewer.h"
