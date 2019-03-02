@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "Running install script"
+
+# Remove old symlinks just in case
+rm -f /usr/bin/mrViewer
+rm -f /usr/bin/3dl2ctl.rb
+rm -f /usr/bin/cube2ctl.rb
+rm -f /usr/bin/3dl2ctl.py
+rm -f /usr/bin/cube2ctl.py
+
+#
+# Add mrViewer to path
+#
+echo "Installing /usr/bin/mrViewer"
+ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
+echo "Installing /usr/bin/3dl2ctl.rb"
+ln -s @CPACK_INSTALL_PREFIX@/bin/3dl2ctl.rb /usr/bin/3dl2ctl.rb
+echo "Installing /usr/bin/cube2ctl.rb"
+ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.rb /usr/bin/cube2ctl.rb
+echo "Installing /usr/bin/3dl2ctl.py"
+ln -s @CPACK_INSTALL_PREFIX@/bin/3dl2ctl.py /usr/bin/3dl2ctl.py
+echo "Installing /usr/bin/cube2ctl.py"
+ln -s @CPACK_INSTALL_PREFIX@/bin/cube2ctl.py /usr/bin/cube2ctl.py
+
+#
+# Install Desktop icon
+#
+dir=$(xdg-user-dir DESKTOP)
+cp -f /usr/share/applications/mrViewer-v@VERSION@.desktop "${dir}"
+
+xdg-mime default mrViewer-v@VERSION@.desktop video/mp4 video/mpeg video/quicktime video/x-javafx video/x-flv video/x-matroska video/x-ms-wmv video/x-msvideo image/x-avi image/x-mov image/x-mp4
+
+xdg-mime default mrViewer-v@VERSION@.desktop  image/bmp image/cin image/dpx image/gif image/x-jpeg image/x-png image/x-tiff image/vnd.adobe.photoshop image/vnd.microsoft.icon image/x-exr image/x-miff image/x-iff image/x-sgi image/x-sxr image/x-tga image/x-xcf image/x-xbitmap image/x-xpixmap image/x-sun-raster
+
+update-desktop-database
+update-mime-database /usr/share/mime
