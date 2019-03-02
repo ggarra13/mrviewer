@@ -25,6 +25,7 @@
  *
  */
 
+#include "core/mrvI8N.h"
 #include <cassert>
 #include <cmath>  // for fabs()
 
@@ -32,7 +33,6 @@
 #include <fltk/Flags.h>
 
 #include "core/mrvColor.h"
-#include "core/mrvI8N.h"
 #include "core/mrvThread.h"
 
 #include "gui/mrvImageBrowser.h"
