@@ -26,6 +26,7 @@
  */
 
 
+#include "core/mrvI8N.h"
 #include <iostream>
 using namespace std;
 
@@ -83,7 +84,6 @@ using namespace std;
 #include "CMedia.h"
 #include "mrvIO.h"
 
-#include "mrvI8N.h"
 
 
 namespace {
