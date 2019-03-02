@@ -25,6 +25,9 @@
  *
  *
  */
+
+
+#include "core/mrvI8N.h"
 #include <string>
 #include <sstream>
 #include <limits>
@@ -48,7 +51,6 @@ using namespace std;
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
 #include "core/mrvString.h"
-#include "core/mrvI8N.h"
 #include "core/mrvColor.h"
 
 #include "gui/mrvMedia.h"
