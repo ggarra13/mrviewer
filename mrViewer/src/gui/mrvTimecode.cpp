@@ -26,6 +26,8 @@
  *
  */
 
+#include "core/mrvI8N.h"
+
 #include <cassert>
 #include <cstdio> // for sprintf()
 #include <cstring> // for strchr
