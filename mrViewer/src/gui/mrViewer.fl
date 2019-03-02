@@ -6,10 +6,13 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
+
+decl {\#include "core/mrvI8N.h"} {public
+}
+
 decl {\#include "string"} {public
 } 
 
-decl {\#include "core/mrvI8N.h"} {} 
 
 decl {\#include "core/mrvAudioEngine.h"} {} 
 

@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "core/mrvI8N.h"
 #include <sys/stat.h>
 #include <cstdio>
 #include <cassert>
@@ -34,7 +35,6 @@
 
 
 #include "core/mrvColorProfile.h"
-#include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 
 namespace {
