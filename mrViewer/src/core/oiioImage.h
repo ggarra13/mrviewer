@@ -28,8 +28,8 @@
 #ifndef oiioImage_h
 #define oiioImage_h
 
-#include <CMedia.h>
-#include <mrvImageOpts.h>
+#include "mrvImageOpts.h"
+#include "CMedia.h"
 
 namespace mrv {
 
