@@ -301,28 +301,28 @@ IF(NOT WIN32)
 
 
   FIND_LIBRARY( Boost_locale_LIBRARY
-    NAMES boost_locale boost_locale_vc100_mt_1_47
+    NAMES boost_locale boost_locale-vc140_mt_1_69
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_chrono_LIBRARY
-    NAMES boost_chrono boost_chrono_vc100_mt_1_47
+    NAMES boost_chrono boost_chrono-vc140-mt-x${CMAKE_BUILD_ARCH}-1_69
     PATHS ${Boost_LIBRARY_DIRS}
     )
   
   FIND_LIBRARY( Boost_system_LIBRARY
-    NAMES boost_system boost_system_vc100_mt_1_47
+    NAMES boost_system boost_system-vc140-mt-x${CMAKE_BUILD_ARCH}-1_69
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY
-    NAMES boost_filesystem boost_filesystem_vc100_mt_1_47
+    NAMES boost_filesystem boost_filesystem-vc140-mt-x${CMAKE_BUILD_ARCH}-1_69
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_thread_LIBRARY
-    NAMES boost_thread boost_thread_vc100_mt_1_47
+    NAMES boost_thread boost_thread_vc140-mt-x${CMAKE_BUILD_ARCH}-1_69
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
