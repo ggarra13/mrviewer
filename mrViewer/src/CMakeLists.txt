@@ -74,7 +74,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
     ADD_COMPILE_OPTIONS( -O3 -fdiagnostics-color=always -msse )
     SET(OS_LIBRARIES
-      asound ass ${Xpm} dl png X11 Xi Xft Xrender Xinerama Xext Xcursor Xfixes stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
+      asound ass ${Xpm} dl png X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx
       )
 
   ENDIF(APPLE)
