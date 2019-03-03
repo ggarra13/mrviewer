@@ -76,7 +76,7 @@ media::~media()
     if ( _thumbnail )
     {
         // thumbnail is not deleted, as fltk will do it for us.
-        ((Fl_Shared_Image*)_thumbnail)->release();
+        //((Fl_Shared_Image*)_thumbnail)->release();
         _thumbnail = NULL;
     }
 }
@@ -110,8 +110,6 @@ public:
         return true;
     }
 };
-
-
 
 
 void media::create_thumbnail()
@@ -151,7 +149,7 @@ void media::create_thumbnail()
 
 //    _thumbnail = thumbImage::create(); //Fl_Shared_Image::get( buf );
 
-    _thumbnail = Fl_Shared_Image::get( buf, w, h );
+    _thumbnail = new mrvImage( w, h ); //Fl_Shared_Image::get( buf, w, h );
 
     if ( !_thumbnail )
     {
@@ -161,7 +159,9 @@ void media::create_thumbnail()
     }
 ;
 
-    uchar* ptr = (uchar*) _thumbnail->data();
+    uchar* data = new uchar[ w * h * 3 ];
+    uchar* ptr = data;
+    //uchar* ptr = (uchar*) _thumbnail->data();
     if (!ptr )
     {
         IMG_ERROR( _("Could not allocate thumbnail buffer") );
@@ -193,6 +193,7 @@ void media::create_thumbnail()
         }
     }
 
+    _thumbnail->set_data( &data, 1 );
 
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );
