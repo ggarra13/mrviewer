@@ -1121,7 +1121,7 @@ void ImageView::update_ICS() const
     for ( int i = 0; i < n; ++i )
     {
         const Fl_Menu_Item* w = o->child(i);
-        if ( img->ocio_input_color_space() == w->label() )
+        if ( w->label() && img->ocio_input_color_space() == w->label() )
         {
             o->copy_label( w->label() );
             o->value(i);
