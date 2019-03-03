@@ -62,31 +62,29 @@ std::atomic<bool> LogDisplay::show( false );
 
 LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
 Fl_Text_Display( x, y, w, h, l ),
-stylebuffer_( NULL ),
-buffer_(NULL),
 _lines( 0 )
 {
     color( FL_GRAY0 );
 
     SCOPED_LOCK( mtx );
-    buffer_ = new Fl_Text_Buffer();
-    stylebuffer_ = new Fl_Text_Buffer();
 
-    highlight_data(stylebuffer_, kLogStyles, 3, 'A', 0, 0);
+    delete mBuffer;
+    delete mStyleBuffer;
+    mBuffer = new Fl_Text_Buffer();
+    mStyleBuffer = new Fl_Text_Buffer();
+    highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
+
 }
 
 LogDisplay::~LogDisplay()
 {
-    SCOPED_LOCK( mtx );
-    delete stylebuffer_;
-    stylebuffer_ = NULL;
 }
 
 void LogDisplay::clear()
 {
     SCOPED_LOCK( mtx );
-    stylebuffer_->text("");
-    buffer_->text("");
+    mStyleBuffer->text("");
+    mBuffer->text("");
     _lines = 0;
 }
 
@@ -137,8 +135,8 @@ void LogDisplay::info( const char* x )
         if ( x[t] == '\n' ) ++_lines;
         buf[t] = 'A';
     }
-    stylebuffer_->append( buf );
-    buffer_->append( x );
+    mStyleBuffer->append( buf );
+    mBuffer->append( x );
     delete [] buf;
 }
 
@@ -154,8 +152,8 @@ void LogDisplay::warning( const char* x )
         if ( x[t] == '\n' ) ++_lines;
         buf[t] = 'B';
     }
-    stylebuffer_->append( buf );
-    buffer_->append( x );
+    mStyleBuffer->append( buf );
+    mBuffer->append( x );
     delete [] buf;
 
 }
@@ -172,8 +170,8 @@ void LogDisplay::error( const char* x )
         if ( x[t] == '\n' ) ++_lines;
         buf[t] = 'C';
     }
-    stylebuffer_->append( buf );
-    buffer_->append( x );
+    mStyleBuffer->append( buf );
+    mBuffer->append( x );
     delete [] buf;
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
@@ -184,4 +182,3 @@ void LogDisplay::error( const char* x )
 }
 
 }
-

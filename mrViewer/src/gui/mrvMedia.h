@@ -37,6 +37,16 @@
 
 namespace mrv {
 
+    class mrvImage : public Fl_Image
+    {
+    public:
+        mrvImage(int w, int h) : Fl_Image( w, h, 3 ) {};
+
+        void set_data( const uchar* const* ptrs, int c )
+            {
+                Fl_Image::data( (const char** const)ptrs, c );
+            }
+    };
 
 namespace gui {
 
@@ -67,10 +77,10 @@ public:
         return _image->name();
     }
 
-    inline Fl_Image* thumbnail()             {
+    inline mrvImage* thumbnail()             {
         return _thumbnail;
     }
-    inline const Fl_Image* thumbnail() const {
+    inline const mrvImage* thumbnail() const {
         return _thumbnail;
     }
 
@@ -89,7 +99,7 @@ protected:
     int64_t  _start;
     int64_t  _pos;
     CMedia*   _image;
-    Fl_Image* _thumbnail;
+    mrvImage* _thumbnail;
     bool         _thumbnail_frozen;
 
 public:
