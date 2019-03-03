@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-03 09:55-0300\n"
+"POT-Creation-Date: 2019-03-03 14:04-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1036,6 +1036,15 @@ msgstr ""
 msgid "Clone Image"
 msgstr ""
 
+#: gui/mrvElement.cpp:49
+#, c-format
+msgid ""
+"Cloned Image\n"
+"Name: %s\n"
+"Date: %s\n"
+"Resolution: %dx%d"
+msgstr ""
+
 #: core/aviImage_save.cpp:1658
 msgid "Closed movie file"
 msgstr ""
@@ -1877,6 +1886,15 @@ msgstr ""
 
 #: gui/mrvImageInformation.cpp:1992
 msgid "Directory where clip resides"
+msgstr ""
+
+#: gui/mrvElement.cpp:62
+#, c-format
+msgid ""
+"Directory: %s\n"
+"Name: %s\n"
+"Resolution: %dx%d\n"
+"Frames: %<PRId64>-%<PRId64> FPS %g"
 msgstr ""
 
 #: core/mrvClient.cpp:223 core/mrvServer.cpp:2210
