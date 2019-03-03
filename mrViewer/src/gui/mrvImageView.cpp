@@ -3754,7 +3754,7 @@ int ImageView::leftMouseDown(int x, int y)
              fltk::event_key_state( fltk::RightShiftKey ) )
         {
             flags |= kLeftShift;
-            // selection_mode();
+            selection_mode();
         }
         else if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
                   fltk::event_key_state( fltk::RightCtrlKey ) )
