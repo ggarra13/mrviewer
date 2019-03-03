@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-03 09:31-0300\n"
+"POT-Creation-Date: 2019-03-03 14:04-0300\n"
 "PO-Revision-Date: 2016-07-20 15:46-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: EspaÃÂÃÂÃÂÃÂ±ol <ggarra13@gmail.com>\n"
@@ -1100,6 +1100,19 @@ msgstr "El Clip es una secuencia de cuadros."
 msgid "Clone Image"
 msgstr "Clonar la Imagen"
 
+#: gui/mrvElement.cpp:49
+#, c-format
+msgid ""
+"Cloned Image\n"
+"Name: %s\n"
+"Date: %s\n"
+"Resolution: %dx%d"
+msgstr ""
+"Imagen Clonada\n"
+"Nombre: %s\n"
+"Fecha: %s\n"
+"ResoluciÃÂÃÂÃÂÃÂ³n: %dx%d"
+
 #: core/aviImage_save.cpp:1658
 #, fuzzy
 msgid "Closed movie file"
@@ -1998,6 +2011,19 @@ msgstr "Carpeta '"
 #: gui/mrvImageInformation.cpp:1992
 msgid "Directory where clip resides"
 msgstr "Directorio donde el clip reside"
+
+#: gui/mrvElement.cpp:62
+#, fuzzy, c-format
+msgid ""
+"Directory: %s\n"
+"Name: %s\n"
+"Resolution: %dx%d\n"
+"Frames: %<PRId64>-%<PRId64> FPS %g"
+msgstr ""
+"Carpeta: %s\n"
+"Nombre: %s\n"
+"ResoluciÃÂÃÂÃÂÃÂ³n: %dx%d\n"
+"Cuadros: %<PRId64>-%<PRId64>"
 
 #: core/mrvClient.cpp:223 core/mrvServer.cpp:2210
 msgid "Disconnect"
@@ -5514,17 +5540,6 @@ msgstr ""
 #~ msgid "Clone image"
 #~ msgstr "Clonar la Imagen"
 
-#~ msgid ""
-#~ "Cloned Image\n"
-#~ "Name: %s\n"
-#~ "Date: %s\n"
-#~ "Resolution: %dx%d"
-#~ msgstr ""
-#~ "Imagen Clonada\n"
-#~ "Nombre: %s\n"
-#~ "Fecha: %s\n"
-#~ "ResoluciÃÂÃÂÃÂÃÂ³n: %dx%d"
-
 #~ msgid "Codecs"
 #~ msgstr "Codecs"
 
@@ -5581,17 +5596,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Device"
 #~ msgstr "Aparatos"
-
-#~ msgid ""
-#~ "Directory: %s\n"
-#~ "Name: %s\n"
-#~ "Resolution: %dx%d\n"
-#~ "Frames: %<PRId64>-%<PRId64>"
-#~ msgstr ""
-#~ "Carpeta: %s\n"
-#~ "Nombre: %s\n"
-#~ "ResoluciÃÂÃÂÃÂÃÂ³n: %dx%d\n"
-#~ "Cuadros: %<PRId64>-%<PRId64>"
 
 #~ msgid "Driver"
 #~ msgstr "Driver"
