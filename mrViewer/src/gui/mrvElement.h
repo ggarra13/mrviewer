@@ -43,8 +43,8 @@ Element(mrv::media& m) : Fl_Group(0,0,1,80+VMARGIN*2),
 
         CMedia* img = m->image();
         m->create_thumbnail();
-        image->image( m->thumbnail() );
         image = new Fl_Box(0,VMARGIN,image->w(),image->h());
+        image->image( m->thumbnail() );
         // Create label
         label = new Fl_Box(image->w(), VMARGIN, 800, 80);
         char info[2048];
