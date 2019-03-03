@@ -749,13 +749,14 @@ static const float kMaxZoom = 64.f;   // Zoom 64x
 
 namespace mrv {
 
-void window_cb( Fl_Widget* o, const ViewerUI* uiMain )
+    void window_cb( mrv::PopupMenu* m, const ViewerUI* uiMain )
 {
     int idx = -1;
-    Fl_Group* g = o->parent();
+    const Fl_Menu_Item* o = m->child( m->value() );
+    mrv::PopupMenu* g = uiMain->uiWindows;
     for ( int i = 0; i < g->children(); ++i )
     {
-        if ( o == g->child(i) ) {
+        if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
             idx = i;
             break;
         }
@@ -767,6 +768,7 @@ void window_cb( Fl_Widget* o, const ViewerUI* uiMain )
         LOG_ERROR( _("Unknown Window \"") << name << "\"" );
         return;
     }
+
 
     uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
