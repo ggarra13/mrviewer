@@ -41,6 +41,8 @@ class PopupMenu : public Fl_Menu_Button
 public:
     PopupMenu(int,int,int,int,const char* =0);
 
+    int add_leaf( const char* name, Fl_Menu_Item* g );
+    
     unsigned children() { return size(); }
     const Fl_Menu_Item* child(int i);
     
