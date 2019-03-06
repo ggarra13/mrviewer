@@ -155,11 +155,8 @@ void load_new_files( void* s )
 
 int main( int argc, const char** argv ) 
 {
-  std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
   Fl::scheme(NULL);
-  std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
   Fl::get_system_colors();
-  std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
   
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
