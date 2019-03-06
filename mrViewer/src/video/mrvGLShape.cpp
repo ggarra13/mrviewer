@@ -52,16 +52,7 @@ namespace {
 const char* kModule = N_("shape");
 }
 
-
-namespace fltk {
-
-#ifdef WIN32
-extern HINSTANCE	xdisplay;
-#else
-extern Display*	xdisplay;
-#endif
-
-}
+ 
 
 
 namespace mrv {
