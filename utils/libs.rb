@@ -17,6 +17,7 @@ librt.*
 libdl.*
 libxcb.*
 libasound.*
+libglib.*
 libfontconfig.*
 )
 
