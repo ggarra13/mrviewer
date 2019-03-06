@@ -17,6 +17,9 @@ decl {\#include "core/mrvAudioEngine.h"} {private local
 decl {\#include "core/exrImage.h"} {private local
 }
 
+decl {\#include "core/mrvMath.h"} {private local
+}
+
 decl {\#include "core/stubImage.h"} {private local
 }
 
@@ -910,7 +913,9 @@ uiICCProfiles->uiMain->show();}
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->channel( o->value() );} open
+              callback { Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
+	      v->uiView->channel( m );
+	      //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {30 5 90 19}
               class {mrv::PopupMenu}
             } {}
@@ -938,7 +943,7 @@ v->uiGainInput->value( (float) o->value() );}
             Fl_Menu_Button uiICS {
               label {Input Color Space}
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->channel( o->value() );} open
+              callback {v->uiView->update_ICS();} open
               tooltip {OCIO input color space for the image} xywh {265 1 135 24}
               class {mrv::PopupMenu}
             } {}
@@ -1003,11 +1008,52 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
                 Fl_Menu_Button gammaDefaults {
                   label Gamma
                   user_data this user_data_type {ViewerUI*}
-                  callback {float g = (float) atof( o->text( o->value() ));
-v->uiGamma->value(g);
-v->uiGammaInput->value( g );
-v->uiView->gamma(g);}
-                  tooltip {Some default gamma settings.} xywh {405 5 50 19}
+                  callback {float g = (float) atof( o->child( o->value() )->label() );
+if ( !mrv::is_equal( g, 0.0f ) )
+{
+   v->uiGamma->value(g);
+   v->uiGammaInput->value( g );
+   v->uiView->gamma(g);
+   v->uiView->use_lut(false);
+   v->uiLUT->value(false);
+   o->copy_label( _("Gamma") );
+}
+else
+{
+    int idx = o->value();
+    const Fl_Menu_Item* w = gammaDefaults->mvalue();
+    const char* lbl = w->label();
+    const Fl_Menu_Item* parent = o->child( o->value() );
+    const Fl_Menu_Item* p = o->child(0);
+    const Fl_Menu_Item* c = p;
+    for ( ; c->label(); c = c->next() )
+    {
+	if ( c->flags & FL_SUBMENU ) p = c;
+	if ( c == w ) break;
+    }
+    
+    if ( strcmp( lbl, parent->label() ) == 0 )
+       return;
+    if ( p && p->label() )
+       mrv::Preferences::OCIO_Display = p->label();
+    if ( lbl && p->label() && strcmp(lbl, p->label()) != 0 )
+    {
+       v->uiGamma->value( 1.0f );
+	v->uiGammaInput->value( 1.0f );
+	v->uiView->gamma( 1.0f );
+
+	mrv::Preferences::OCIO_View = lbl;
+
+	v->uiView->use_lut(true);
+	v->uiLUT->value(true);
+	mrv::media fg = v->uiView->foreground();
+	if ( !fg ) return;
+	fg->image()->image_damage( mrv::CMedia::kDamageAll );
+	v->uiView->redraw();
+    }
+    }
+}
+tooltip {Some default gamma settings.} xywh {405 5 50 19}
                   class {mrv::PopupMenu}
                 } {
                   MenuItem {} {
