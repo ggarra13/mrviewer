@@ -5762,7 +5762,6 @@ void ImageView::mouseDrag(int x,int y)
  */
 int ImageView::keyDown(unsigned int rawkey)
 {
-
     if ( _mode == kDraw || _mode == kErase )
     {
         double pen = uiMain->uiPaint->uiPenSize->value();
@@ -5781,6 +5780,7 @@ int ImageView::keyDown(unsigned int rawkey)
         }
     }
 
+    
     if ( kDrawMode.match( rawkey ) )
     {
         draw_mode();
@@ -6444,21 +6444,9 @@ int ImageView::keyDown(unsigned int rawkey)
             const Fl_Menu_Item* w = uiColorChannel->child(c);
             if ( rawkey == w->shortcut() )
             {
+		std::cerr << w->label() << " " << rawkey << std::endl;   
                 channel( idx );
                 return 1;
-            }
-
-            if ( w->flags & FL_SUBMENU )
-            {
-                for ( ; w->label(); w = w->next() )
-                {
-                    ++idx;
-                    if ( rawkey == w->shortcut() )
-                    {
-                        channel( idx );
-                        return 1;
-                    }
-                }
             }
         }
     }
@@ -6520,7 +6508,7 @@ void ImageView::toggle_fullscreen()
     fit_image();
 
     // These two take focus are needed
-    fltk_main()->take_focus();
+    // fltk_main()->take_focus();
 
     take_focus();
 
@@ -6622,7 +6610,7 @@ void ImageView::toggle_presentation()
     fit_image();
 
     // These two take focus are needed
-    fltk_main()->take_focus();
+    // fltk_main()->take_focus();
 
     take_focus();
 
@@ -6838,7 +6826,7 @@ int ImageView::handle(int event)
             window()->cursor(FL_CURSOR_CROSS);
         }
 
-        return Fl_Gl_Window::handle( event );
+        return 1; Fl_Gl_Window::handle( event );
     }
     case FL_ENTER:
 
@@ -7164,38 +7152,23 @@ char* ImageView::get_layer_label( unsigned short c )
     char* lbl = NULL;
     unsigned short idx = 0;
     unsigned num = uiColorChannel->children();
+    std::string layername;
+    const Fl_Menu_Item* o = NULL;
+    const Fl_Menu_Item* w = uiColorChannel->child(0);
     for ( unsigned i = 0; i < num; ++i, ++idx )
     {
-        const Fl_Menu_Item* w = uiColorChannel->child(i);
+	w = uiColorChannel->child(i);
+	if ( w->flags & FL_SUBMENU )
+	    o = w;
+	if ( ! w->label() ) o = w;
         if ( idx == c )
         {
-            lbl = strdup( w->label() );
-            // if ( w->is_group() ||
-            //      strcmp( lbl, _("Color") ) == 0 )
-            //     _old_channel = idx;
+	    if ( w != o && o->label() ) layername = o->label();
+	    if ( !layername.empty() ) layername += '.';
+	    if ( w->label() ) layername += w->label();
+	    lbl = strdup( layername.c_str() );
             break;
         }
-
-        if ( w->flags & FL_SUBMENU )
-        {
-            std::string layername;
-            if ( w->label() )
-                layername = w->label();
-            for ( ; w->label(); w = w->next() )
-            {
-                ++idx;
-                if ( idx == c )
-                {
-                    if ( !layername.empty() ) layername += '.';
-                    if ( w->label() ) layername += w->label();
-                    lbl = strdup( layername.c_str() );
-                    break;
-                }
-
-            }
-        }
-
-        if ( lbl ) break;
     }
 
 
@@ -7212,39 +7185,21 @@ void ImageView::channel( Fl_Menu_Item* o )
 {
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
-    unsigned short idx = 0;
-    bool found = false;
-    for ( unsigned short i = 0; i < num; ++i, ++idx )
+    unsigned int i = 0;
+    for ( ; i < num; ++i )
     {
-        const Fl_Menu_Item* w = uiColorChannel->child(i);
-        if ( w == o ) {
-            found = true;
-            break;
-        }
-
-        if ( w->flags & FL_SUBMENU )
-        {
-            for ( ; w->label(); w = w->next() )
-            {
-                ++idx;
-                if ( w == o )
-                {
-                    found = true;
-                    break;
-                }
-            }
-        }
-        if ( found ) break;
+	const Fl_Menu_Item* w = uiColorChannel->child(i);
+	if ( w == o )
+	    break;
     }
 
-
-    if ( !found )
+    if ( i >= num )
     {
-        LOG_ERROR( "Widget " << o->label() << " not found" );
-        return;
+	LOG_ERROR( "Channel " << i << " not found in image" );
+	return;
     }
 
-    channel( idx );
+    channel( i );
 }
 
 /**
@@ -7268,7 +7223,6 @@ void ImageView::channel( unsigned short c )
         const Fl_Menu_Item* w = uiColorChannel->child(i);
         if ( w->flags & FL_SUBMENU )
         {
-            int idx = 0;
             for ( ; w->label(); w = w->next() )
                 ++idx;
         }
@@ -7280,11 +7234,24 @@ void ImageView::channel( unsigned short c )
         const char* lbl = uiColorChannel->label();
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
+	    bool found = false;
             num = uiColorChannel->children();
             for ( unsigned short i = 0; i < num; ++i, ++c )
             {
                 const Fl_Menu_Item* w = uiColorChannel->child(i);
-                if ( strcmp( w->label(), lbl ) == 0 ) break;
+                if ( strcmp( w->label(), lbl ) == 0 )  break;
+		if ( w->flags & FL_SUBMENU )
+		{
+		    for ( ; w->label(); w = w->next(), ++idx )
+		    {
+			if ( strcmp( w->label(), lbl ) == 0 )
+			{
+			    found = true;
+			    break;
+			}
+		    }
+		    if ( found ) break;
+		}
             }
         }
 
@@ -7314,6 +7281,8 @@ void ImageView::channel( unsigned short c )
     char* lbl = get_layer_label( c );
     if ( !lbl ) return;
 
+    std::cerr << "SELECTED CHANNEL " << c << " " << lbl << std::endl;
+    
     _channel = c;
 
 
@@ -7786,6 +7755,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         }
     }
 
+    
     bool group = false;
     std::string x;
     Fl_Menu_Item* g = NULL;
@@ -7804,16 +7774,17 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             {
                 // Copy shortcut to group and replace leaf with group
                 unsigned s = 0;
-                if ( uiColorChannel->children() >= 1 )
+                if ( uiColorChannel->children() >= 2 )
                 {
-                    unsigned last = uiColorChannel->children()-1;
+                    unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
                     s = w->shortcut();
+		    uiColorChannel->clear_submenu( last );
                     uiColorChannel->remove( last );  // @TODO: fltk1.4 verify
                 }
 
-                int idx = uiColorChannel->add( x.c_str(), s, NULL );
-                g  = (Fl_Menu_Item*) uiColorChannel->child(idx);
+                // int idx = uiColorChannel->add( x.c_str(), s, NULL, 0 );
+                // g  = (Fl_Menu_Item*) uiColorChannel->child(idx);
                 group = false;
             }
 
@@ -7821,7 +7792,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             std::string y = name;
 
             if ( x.size() < name.size() )
-                y = name.substr( x.size()+1, name.size() );
+                y = x + '/' + name.substr( x.size()+1, name.size() );
 
             int idx = uiColorChannel->add( y.c_str() ); // , g @TODO: fltk1.4
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
@@ -7832,7 +7803,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             group = true;
             x = name;
 
-            int idx = uiColorChannel->add( name.c_str(), 0, NULL );
+            int idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
 
