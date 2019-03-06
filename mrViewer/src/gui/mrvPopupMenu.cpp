@@ -79,6 +79,18 @@ const Fl_Menu_Item* PopupMenu::child(int i) {
     return &(menu()[i]);
 }
 
+int PopupMenu::add_leaf( const char* name, Fl_Menu_Item* g )
+{
+    for ( int i = 0; i < children(); ++i )
+    {
+	const Fl_Menu_Item* w = child(i);
+	if ( w == g )
+	{
+	    int idx = g->add( name, 0, NULL );
+	    return i + idx;
+	}
+    }
+}
 
 
 // static NamedStyle style("mrvPopupMenu", 0, &Fl_PopupMenu::default_style);
