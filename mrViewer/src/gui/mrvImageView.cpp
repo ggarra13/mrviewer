@@ -7236,22 +7236,22 @@ void ImageView::channel( unsigned short c )
         {
 	    bool found = false;
             num = uiColorChannel->children();
-            for ( unsigned short i = 0; i < num; ++i, ++c )
+            for ( unsigned short i = 0; i < num; ++i, ++c, ++idx )
             {
                 const Fl_Menu_Item* w = uiColorChannel->child(i);
-                if ( strcmp( w->label(), lbl ) == 0 )  break;
-		if ( w->flags & FL_SUBMENU )
-		{
-		    for ( ; w->label(); w = w->next(), ++idx )
-		    {
-			if ( strcmp( w->label(), lbl ) == 0 )
-			{
-			    found = true;
-			    break;
-			}
-		    }
-		    if ( found ) break;
-		}
+                if ( w->label() && strcmp( w->label(), lbl ) == 0 )  break;
+		// if ( w->flags & FL_SUBMENU )
+		// {
+		//     for ( ; w->label(); w = w->next(), ++idx )
+		//     {
+		// 	if ( strcmp( w->label(), lbl ) == 0 )
+		// 	{
+		// 	    found = true;
+		// 	    break;
+		// 	}
+		//     }
+		//     if ( found ) break;
+		//   }
             }
         }
 
@@ -7724,7 +7724,6 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
 
     int v   = -1;
-    int idx = 0;
     std::set< unsigned short > shortcuts;
 
     std::string root;
@@ -7755,7 +7754,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         }
     }
 
-    
+    int idx = -1;
     bool group = false;
     std::string x;
     Fl_Menu_Item* g = NULL;
@@ -7794,7 +7793,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( x.size() < name.size() )
                 y = x + '/' + name.substr( x.size()+1, name.size() );
 
-            int idx = uiColorChannel->add( y.c_str() ); // , g @TODO: fltk1.4
+            idx = uiColorChannel->add( y.c_str() ); // , g @TODO: fltk1.4
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
         else
@@ -7803,7 +7802,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             group = true;
             x = name;
 
-            int idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
+	    idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
 
@@ -7811,14 +7810,18 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // store the index to the channel.
         std::string chx = remove_hash_number( x );
         std::string chroot = remove_hash_number( root );
-        if ( v == -1 && ( chx == chroot ||
+        if ( v >= -1 && ( chx == chroot ||
                           (channelName && name == channelName) ) )
         {
+	    std::cerr << v << " " << chx << " == " << chroot << " || "
+		      << name << " == " << (channelName? channelName : "NULL")
+		      << std::endl;
             v = idx;
         }
 
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
+	std::cerr << "v is now " << v << " " << (char)shortcut << std::endl;
 
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
