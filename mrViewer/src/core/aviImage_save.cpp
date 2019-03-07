@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,16 +17,18 @@
 */
 
 
+#include "gui/mrvIO.h"
+
 #define __STDC_LIMIT_MACROS
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
 #include <cstdio>
 #include <cmath>
 
-using namespace std;
+///using namespace std;
 
 #ifdef _WIN32
+#undef snprintf
 #define snprintf _snprintf
 #define isfinite(x) _finite(x)
 #endif
@@ -52,7 +54,6 @@ extern "C" {
 #include "core/mrvColorSpaces.h"
 
 #include "gui/mrvPreferences.h"
-#include "gui/mrvIO.h"
 
 #include "aviSave.h"
 
@@ -840,15 +841,15 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     //                              frame_size);
     //     if ( ret < 0 )
     //     {
-    //     LOG_ERROR( _("Could not read samples from fifo buffer.  Error: ")
+    // 	   LOG_ERROR( _("Could not read samples from fifo buffer.  Error: ")
     //                    << get_error_text(ret) );
-    //     av_packet_unref( &pkt );
-    //     return false;
+    // 	   av_packet_unref( &pkt );
+    // 	   return false;
     //     }
 
     //     memset( audio_frame->extended_data[0], 0,
-    //         frame_size - av_audio_fifo_size(fifo) * c->channels *
-    //         av_get_bytes_per_sample(aformat) );
+    // 	       frame_size - av_audio_fifo_size(fifo) * c->channels *
+    // 	       av_get_bytes_per_sample(aformat) );
 
 
     //     audio_frame->pts = av_rescale_q( samples_count, ratio,
@@ -859,7 +860,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     //     {
     //         LOG_ERROR( _("Could not encode audio frame: ") <<
     //                    get_error_text(ret) );
-    //     av_packet_unref( &pkt );
+    // 	   av_packet_unref( &pkt );
     //         return false;
     //     }
 
@@ -869,7 +870,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     //     if (ret < 0) {
     //         LOG_ERROR( "Error while writing audio frame: " <<
     //                    get_error_text(ret) );
-    //     av_packet_unref( &pkt );
+    // 	   av_packet_unref( &pkt );
     //         return false;
     //     }
 
