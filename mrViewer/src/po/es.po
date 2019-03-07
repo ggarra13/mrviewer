@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-07 17:51-0300\n"
+"POT-Creation-Date: 2019-03-07 18:33-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -154,7 +154,7 @@ msgstr " falló. "
 
 #
 #
-#: gui/mrvImageView.cpp:7261
+#: gui/mrvImageView.cpp:7260
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
@@ -358,8 +358,8 @@ msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1501
-#: gui/mrvImageView.cpp:7235 gui/mrvImageView.cpp:7865
-#: gui/mrvImageView.cpp:7866 gui/mrvImageView.cpp:7873
+#: gui/mrvImageView.cpp:7234 gui/mrvImageView.cpp:7857
+#: gui/mrvImageView.cpp:7858 gui/mrvImageView.cpp:7865
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -685,14 +685,14 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1894 core/CMedia.cpp:1977 core/exrImage.cpp:3027
-#: core/wandImage.cpp:1166 gui/mrvImageView.cpp:193 gui/mrvImageView.cpp:7353
-#: gui/mrvImageView.cpp:7770
+#: core/wandImage.cpp:1166 gui/mrvImageView.cpp:193 gui/mrvImageView.cpp:7350
+#: gui/mrvImageView.cpp:7767
 msgid "Alpha"
 msgstr "Alfa"
 
 #: core/CMedia.cpp:1896 core/CMedia.cpp:1977 core/exrImage.cpp:3025
 #: core/wandImage.cpp:1164 gui/mrvImageView.cpp:194 gui/mrvImageView.cpp:1573
-#: gui/mrvImageView.cpp:7334
+#: gui/mrvImageView.cpp:7331
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -904,7 +904,7 @@ msgid "Bitrate"
 msgstr "Ratio de bits"
 
 #: core/CMedia.cpp:1910 core/CMedia.cpp:1976 core/exrImage.cpp:3027
-#: core/wandImage.cpp:1166 gui/mrvImageView.cpp:192 gui/mrvImageView.cpp:7348
+#: core/wandImage.cpp:1166 gui/mrvImageView.cpp:192 gui/mrvImageView.cpp:7345
 msgid "Blue"
 msgstr "Azul"
 
@@ -916,7 +916,7 @@ msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
-#: gui/mrvImageView.cpp:9021
+#: gui/mrvImageView.cpp:9013
 msgid "Bottom"
 msgstr "Inferior"
 
@@ -1139,7 +1139,7 @@ msgstr "Nombre del Codec"
 #: core/exrImage.cpp:3054 core/exrImage.cpp:3056 core/exrImage.cpp:3094
 #: core/exrImage.cpp:3126 core/wandImage.cpp:1125 core/wandImage.cpp:1187
 #: gui/mrvImageView.cpp:185 gui/mrvImageView.cpp:1617 gui/mrvImageView.cpp:1673
-#: gui/mrvImageView.cpp:7828 gui/mrvImageView.cpp:7873
+#: gui/mrvImageView.cpp:7821 gui/mrvImageView.cpp:7865
 msgid "Color"
 msgstr "Color"
 
@@ -1157,7 +1157,7 @@ msgstr "Espacio de Color"
 
 #
 #
-#: gui/mrvImageView.cpp:7177
+#: gui/mrvImageView.cpp:7176
 msgid "Color channel not found at index "
 msgstr "Canal de color no encontrado para índice "
 
@@ -2419,7 +2419,7 @@ msgstr "Identificación de cuatro letras"
 msgid "FourCC"
 msgstr "CuatroCC"
 
-#: gui/mrvImageView.cpp:9019
+#: gui/mrvImageView.cpp:9011
 msgid "Frame"
 msgstr "Cuadro"
 
@@ -2587,7 +2587,7 @@ msgid "Got: "
 msgstr "Obtuve: "
 
 #: core/CMedia.cpp:1909 core/CMedia.cpp:1975 core/exrImage.cpp:3026
-#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:191 gui/mrvImageView.cpp:7343
+#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:191 gui/mrvImageView.cpp:7340
 msgid "Green"
 msgstr "Verde"
 
@@ -2919,7 +2919,7 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid host: "
 msgstr "Servidor inválido: "
 
-#: gui/mrvImageView.cpp:7260
+#: gui/mrvImageView.cpp:7259
 msgid "Invalid index "
 msgstr "Índice inválido "
 
@@ -3135,7 +3135,7 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: core/CMedia.cpp:1922 core/CMedia.cpp:1977 core/exrImage.cpp:3025
 #: core/wandImage.cpp:1164 gui/mrvImageView.cpp:195 gui/mrvImageView.cpp:1580
-#: gui/mrvImageView.cpp:7357 gui/mrvImageInformation.cpp:2182
+#: gui/mrvImageView.cpp:7354 gui/mrvImageInformation.cpp:2182
 msgid "Lumma"
 msgstr "Luma"
 
@@ -3928,7 +3928,7 @@ msgid "Read"
 msgstr "Leer"
 
 #: core/CMedia.cpp:1908 core/CMedia.cpp:1975 core/exrImage.cpp:3026
-#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:190 gui/mrvImageView.cpp:7338
+#: core/wandImage.cpp:1165 gui/mrvImageView.cpp:190 gui/mrvImageView.cpp:7335
 msgid "Red"
 msgstr "Rojo"
 
@@ -4629,7 +4629,7 @@ msgstr "Demasiados canales en la imagen.  Grabando RGB solamente."
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
-#: gui/mrvImageView.cpp:9020
+#: gui/mrvImageView.cpp:9012
 msgid "Top"
 msgstr "Superior"
 
