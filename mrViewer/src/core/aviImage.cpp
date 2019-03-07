@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2016  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
 #include <cstdio>
 
 #define __STDC_LIMIT_MACROS
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
 #include <iostream>
@@ -1346,10 +1345,6 @@ aviImage::decode_video_packet( int64_t& ptsframe,
                 ptsframe = pkt->dts;
             }
 
-            if ( ptsframe == AV_NOPTS_VALUE )
-            {
-                ptsframe = _av_frame->pkt_pts;
-            }
 
 
             // needed for some corrupt movies
@@ -2704,17 +2699,16 @@ void aviImage::populate()
 
     if ( !has_video() )
     {
-        mrv::image_type_ptr canvas;
         if ( !_hires )
         {
             _w = 640;
             _h = 480;
-            allocate_pixels( canvas, _frameStart, 3, image_type::kRGB,
+            allocate_pixels( _hires, _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
         }
-        canvas->frame( _frameStart );
-        uint8_t* ptr = (uint8_t*) canvas->data().get();
+        _hires->frame( _frameStart );
+        uint8_t* ptr = (uint8_t*) _hires->data().get();
         memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
     }
 
@@ -2759,8 +2753,6 @@ bool aviImage::initialize()
 {
     if ( !_initialize )
     {
-        avfilter_register_all();
-
 
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "initial_pause", "1", 0);
@@ -3115,7 +3107,15 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
         _right_eye->stop();
         mrv::image_type_ptr canvas;
         _right_eye->fetch( canvas, frame );
-        _stereo[1] = canvas;
+        int64_t f = frame;
+        DecodeStatus status = _right_eye->decode_video( f );
+        if ( status != kDecodeOK )
+        {
+            LOG_ERROR( "Decoding right frame " << frame << " failed." );
+            return false;
+        }
+        _right_eye->find_image( frame );
+        _stereo[1] = _right_eye->left();
     }
 
     bool got_video = !has_video();
