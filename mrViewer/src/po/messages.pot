@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-06 15:35-0300\n"
+"POT-Creation-Date: 2019-03-07 12:59-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:614 core/aviImage.cpp:2323
+#: core/CMedia_audio.cpp:614 core/aviImage.cpp:2318
 msgid ""
 "\n"
 "\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid " - decode Error audio frame "
 msgstr ""
 
-#: core/aviImage.cpp:2815
+#: core/aviImage.cpp:2807
 msgid " Could not open file"
 msgstr ""
 
@@ -88,7 +88,7 @@ msgstr ""
 msgid " Hz is not supported by your hardware."
 msgstr ""
 
-#: core/aviImage.cpp:2340
+#: core/aviImage.cpp:2335
 msgid " No audio or video stream in file"
 msgstr ""
 
@@ -118,7 +118,7 @@ msgstr ""
 msgid " attribute"
 msgstr ""
 
-#: core/aviImage_save.cpp:579 core/aviImage_save.cpp:585
+#: core/aviImage_save.cpp:580 core/aviImage_save.cpp:586
 msgid " channels "
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid " does not exist or no directory"
 msgstr ""
 
-#: core/aviImage_save.cpp:1591
+#: core/aviImage_save.cpp:1592
 msgid " encoding"
 msgstr ""
 
@@ -158,11 +158,11 @@ msgstr ""
 msgid " for stream #"
 msgstr ""
 
-#: core/aviImage_save.cpp:1608
+#: core/aviImage_save.cpp:1609
 msgid " frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:1598
+#: core/aviImage_save.cpp:1599
 msgid " frames"
 msgstr ""
 
@@ -174,7 +174,7 @@ msgstr ""
 msgid " has different display window than "
 msgstr ""
 
-#: core/aviImage.cpp:1825
+#: core/aviImage.cpp:1820
 msgid " instead"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 msgid " is missing. Choosing "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1841 core/aviImage.cpp:1834
+#: core/CMedia_audio.cpp:1841 core/aviImage.cpp:1829
 msgid " not found"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid " not found on disk for "
 msgstr ""
 
-#: core/aviImage.cpp:1824
+#: core/aviImage.cpp:1819
 msgid " not found, choosing "
 msgstr ""
 
@@ -218,15 +218,15 @@ msgstr ""
 msgid " to"
 msgstr ""
 
-#: core/aviImage_save.cpp:582 gui/mrvImageBrowser.cpp:2255
+#: core/aviImage_save.cpp:583 gui/mrvImageBrowser.cpp:2255
 msgid " to "
 msgstr ""
 
-#: core/aviImage.cpp:1472
+#: core/aviImage.cpp:1467
 msgid " type "
 msgstr ""
 
-#: core/aviImage.cpp:1796
+#: core/aviImage.cpp:1791
 msgid " video frame, cache "
 msgstr ""
 
@@ -342,11 +342,11 @@ msgstr ""
 msgid "(no image)"
 msgstr ""
 
-#: core/aviImage.cpp:1797
+#: core/aviImage.cpp:1792
 msgid ") cache size: "
 msgstr ""
 
-#: core/aviImage_save.cpp:434
+#: core/aviImage_save.cpp:435
 msgid ") for movie file"
 msgstr ""
 
@@ -370,7 +370,7 @@ msgstr ""
 msgid ", format "
 msgstr ""
 
-#: core/aviImage_save.cpp:579 core/aviImage_save.cpp:586
+#: core/aviImage_save.cpp:580 core/aviImage_save.cpp:587
 msgid ", freq "
 msgstr ""
 
@@ -724,8 +724,8 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: core/CMedia_audio.cpp:709 core/aviImage_save.cpp:497
-#: core/aviImage_save.cpp:1027
+#: core/CMedia_audio.cpp:709 core/aviImage_save.cpp:498
+#: core/aviImage_save.cpp:1028
 msgid "Audio "
 msgstr ""
 
@@ -742,7 +742,7 @@ msgstr ""
 msgid "Audio Volume"
 msgstr ""
 
-#: core/aviImage_save.cpp:577
+#: core/aviImage_save.cpp:578
 msgid "Audio conversion of "
 msgstr ""
 
@@ -920,15 +920,15 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: core/aviImage_save.cpp:709
+#: core/aviImage_save.cpp:710
 msgid "Cannot allocate dst samples"
 msgstr ""
 
-#: core/aviImage.cpp:485
+#: core/aviImage.cpp:484
 msgid "Cannot create buffer sink"
 msgstr ""
 
-#: core/aviImage.cpp:477
+#: core/aviImage.cpp:476
 msgid "Cannot create buffer source"
 msgstr ""
 
@@ -940,7 +940,7 @@ msgstr ""
 msgid "Cannot map \""
 msgstr ""
 
-#: core/aviImage.cpp:492
+#: core/aviImage.cpp:491
 msgid "Cannot set output pixel format"
 msgstr ""
 
@@ -1045,7 +1045,7 @@ msgid ""
 "Resolution: %dx%d"
 msgstr ""
 
-#: core/aviImage_save.cpp:1658
+#: core/aviImage_save.cpp:1659
 msgid "Closed movie file"
 msgstr ""
 
@@ -1062,7 +1062,7 @@ msgstr ""
 msgid "Codec Name"
 msgstr ""
 
-#: core/aviImage_save.cpp:667
+#: core/aviImage_save.cpp:668
 msgid "Codec has variable frame size.  Setting it to "
 msgstr ""
 
@@ -1095,11 +1095,11 @@ msgstr ""
 msgid "Color channel not found at index "
 msgstr ""
 
-#: core/aviImage.cpp:1170
+#: core/aviImage.cpp:1169
 msgid "Colorspace details not gotten "
 msgstr ""
 
-#: core/aviImage.cpp:1199
+#: core/aviImage.cpp:1198
 msgid "Colorspace details not set "
 msgstr ""
 
@@ -1159,43 +1159,43 @@ msgstr ""
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr ""
 
-#: core/aviImage_save.cpp:553
+#: core/aviImage_save.cpp:554
 msgid "Could not alloc swr_ctx"
 msgstr ""
 
-#: core/aviImage_save.cpp:467
+#: core/aviImage_save.cpp:468
 msgid "Could not allocate audio frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:603
+#: core/aviImage_save.cpp:604
 msgid "Could not allocate destination samples"
 msgstr ""
 
-#: core/aviImage_save.cpp:679
+#: core/aviImage_save.cpp:680
 msgid "Could not allocate fifo buffer"
 msgstr ""
 
-#: core/aviImage.cpp:703
+#: core/aviImage.cpp:702
 msgid "Could not allocate filter frame.  Not enough memory."
 msgstr ""
 
-#: core/aviImage_save.cpp:526
+#: core/aviImage_save.cpp:527
 msgid "Could not allocate output frame samples. Error: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1057
+#: core/aviImage_save.cpp:1058
 msgid "Could not allocate picture"
 msgstr ""
 
-#: core/aviImage_save.cpp:927
+#: core/aviImage_save.cpp:928
 msgid "Could not allocate raw picture buffer"
 msgstr ""
 
-#: core/aviImage_save.cpp:537
+#: core/aviImage_save.cpp:538
 msgid "Could not allocate source samples. Error: "
 msgstr ""
 
-#: core/aviImage_save.cpp:254
+#: core/aviImage_save.cpp:255
 msgid "Could not allocate stream"
 msgstr ""
 
@@ -1203,15 +1203,15 @@ msgstr ""
 msgid "Could not allocate thumbnail buffer"
 msgstr ""
 
-#: core/aviImage.cpp:1403
+#: core/aviImage.cpp:1398
 msgid "Could not clone subtitle frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:482 core/aviImage_save.cpp:1011
+#: core/aviImage_save.cpp:483 core/aviImage_save.cpp:1012
 msgid "Could not copy context to parameters"
 msgstr ""
 
-#: core/aviImage.cpp:618 core/aviImage.cpp:2235
+#: core/aviImage.cpp:617 core/aviImage.cpp:2230
 msgid "Could not copy parameters to context"
 msgstr ""
 
@@ -1231,11 +1231,11 @@ msgstr ""
 msgid "Could not create wand"
 msgstr ""
 
-#: core/aviImage.cpp:1471
+#: core/aviImage.cpp:1466
 msgid "Could not decode video frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1315
+#: core/aviImage_save.cpp:1316
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 
@@ -1243,7 +1243,7 @@ msgstr ""
 msgid "Could not draw image"
 msgstr ""
 
-#: core/aviImage_save.cpp:811 core/aviImage_save.cpp:1535
+#: core/aviImage_save.cpp:812 core/aviImage_save.cpp:1536
 msgid "Could not encode audio frame: "
 msgstr ""
 
@@ -1263,7 +1263,7 @@ msgstr ""
 msgid "Could not find eight floats for chromaticities "
 msgstr ""
 
-#: core/aviImage_save.cpp:245
+#: core/aviImage_save.cpp:246
 msgid "Could not find encoder for '"
 msgstr ""
 
@@ -1319,7 +1319,7 @@ msgstr ""
 msgid "Could not find sixteen floats for matrix 4x4 "
 msgstr ""
 
-#: core/aviImage.cpp:646
+#: core/aviImage.cpp:645
 msgid "Could not find subtitle in '"
 msgstr ""
 
@@ -1375,7 +1375,7 @@ msgstr ""
 msgid "Could not find two integers for vector "
 msgstr ""
 
-#: core/aviImage.cpp:1150
+#: core/aviImage.cpp:1149
 msgid "Could not get image conversion context."
 msgstr ""
 
@@ -1411,7 +1411,7 @@ msgstr ""
 msgid "Could not locate channels in header"
 msgstr ""
 
-#: core/aviImage_save.cpp:1413
+#: core/aviImage_save.cpp:1414
 msgid "Could not open '"
 msgstr ""
 
@@ -1427,7 +1427,7 @@ msgstr ""
 msgid "Could not open any font of size "
 msgstr ""
 
-#: core/aviImage_save.cpp:475
+#: core/aviImage_save.cpp:476
 msgid "Could not open audio codec"
 msgstr ""
 
@@ -1439,11 +1439,11 @@ msgstr ""
 msgid "Could not open audio driver"
 msgstr ""
 
-#: core/aviImage_save.cpp:1320
+#: core/aviImage_save.cpp:1321
 msgid "Could not open mpeg movie"
 msgstr ""
 
-#: core/aviImage_save.cpp:1004
+#: core/aviImage_save.cpp:1005
 msgid "Could not open video codec"
 msgstr ""
 
@@ -1451,11 +1451,11 @@ msgstr ""
 msgid "Could not play audio frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1523
+#: core/aviImage_save.cpp:1524
 msgid "Could not read audio fifo: "
 msgstr ""
 
-#: core/aviImage_save.cpp:799
+#: core/aviImage_save.cpp:800
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr ""
 
@@ -1470,7 +1470,7 @@ msgid ""
 "syntax"
 msgstr ""
 
-#: core/CMedia.cpp:2446 core/aviImage.cpp:925 core/aviImage.cpp:942
+#: core/CMedia.cpp:2446 core/aviImage.cpp:924 core/aviImage.cpp:941
 msgid "Could not seek to frame "
 msgstr ""
 
@@ -1483,11 +1483,11 @@ msgstr ""
 msgid "Could not set "
 msgstr ""
 
-#: core/aviImage_save.cpp:771
+#: core/aviImage_save.cpp:772
 msgid "Could not write to fifo buffer. Error:"
 msgstr ""
 
-#: core/aviImage_save.cpp:755
+#: core/aviImage_save.cpp:756
 msgid "Could not write to fifo buffer. Error: "
 msgstr ""
 
@@ -1867,11 +1867,11 @@ msgid ""
 "as RGB."
 msgstr ""
 
-#: core/aviImage_save.cpp:758
+#: core/aviImage_save.cpp:759
 msgid "Did not write all dst samples to fifo. Error: "
 msgstr ""
 
-#: core/aviImage_save.cpp:774
+#: core/aviImage_save.cpp:775
 msgid "Did not write all src samples to fifo. Error: "
 msgstr ""
 
@@ -2021,35 +2021,35 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr ""
 
-#: core/aviImage.cpp:532
+#: core/aviImage.cpp:531
 msgid "Error configuring filter graph"
 msgstr ""
 
-#: core/aviImage_save.cpp:1426
+#: core/aviImage_save.cpp:1427
 msgid "Error occurred when opening output file: "
 msgstr ""
 
-#: core/aviImage.cpp:526
+#: core/aviImage.cpp:525
 msgid "Error parsing filter description"
 msgstr ""
 
-#: core/aviImage_save.cpp:725
+#: core/aviImage_save.cpp:726
 msgid "Error while converting audio: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1197
+#: core/aviImage_save.cpp:1198
 msgid "Error while encoding video frame: "
 msgstr ""
 
-#: core/aviImage.cpp:1383
+#: core/aviImage.cpp:1378
 msgid "Error while feeding the filtergraph"
 msgstr ""
 
-#: core/aviImage_save.cpp:1210
+#: core/aviImage_save.cpp:1211
 msgid "Error while writing video frame: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1608
+#: core/aviImage_save.cpp:1609
 msgid "Error writing "
 msgstr ""
 
@@ -2121,7 +2121,7 @@ msgstr ""
 msgid "FPS: %.3f"
 msgstr ""
 
-#: core/aviImage_save.cpp:1591
+#: core/aviImage_save.cpp:1592
 msgid "Failed "
 msgstr ""
 
@@ -2137,11 +2137,11 @@ msgstr ""
 msgid "Failed to init swresample library with "
 msgstr ""
 
-#: core/aviImage_save.cpp:1168
+#: core/aviImage_save.cpp:1169
 msgid "Failed to initialize swscale conversion context"
 msgstr ""
 
-#: core/aviImage_save.cpp:610
+#: core/aviImage_save.cpp:611
 msgid "Failed to initialize the resampling context"
 msgstr ""
 
@@ -2238,7 +2238,7 @@ msgstr ""
 msgid "Float Textures:\t"
 msgstr ""
 
-#: core/aviImage_save.cpp:1627
+#: core/aviImage_save.cpp:1628
 msgid "Flushing of buffers failed"
 msgstr ""
 
@@ -2776,7 +2776,7 @@ msgstr ""
 msgid "Invalid timecode "
 msgstr ""
 
-#: core/aviImage.cpp:1873
+#: core/aviImage.cpp:1868
 msgid "Invalid video stream "
 msgstr ""
 
@@ -3066,7 +3066,7 @@ msgstr ""
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr ""
 
-#: core/aviImage_save.cpp:1274
+#: core/aviImage_save.cpp:1275
 msgid "Missing audio frame "
 msgstr ""
 
@@ -3181,7 +3181,7 @@ msgstr ""
 msgid "No attribute named '%s'"
 msgstr ""
 
-#: core/aviImage_save.cpp:1390
+#: core/aviImage_save.cpp:1391
 msgid "No audio nor video stream created"
 msgstr ""
 
@@ -3217,7 +3217,7 @@ msgstr ""
 msgid "No memory for audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:455
+#: core/aviImage.cpp:454
 msgid "No memory to allocate filter graph"
 msgstr ""
 
@@ -3243,7 +3243,7 @@ msgid "Non-POT Textures:\t"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:172
-#: core/aviImage_save.cpp:1331 core/aviImage_save.cpp:1362
+#: core/aviImage_save.cpp:1332 core/aviImage_save.cpp:1363
 #: core/exrImage.cpp:121 core/iffImage.cpp:61 gui/mrvImageInformation.cpp:2734
 #: gui/mrvSave.cpp:266 gui/mrvSave.cpp:267 gui/mrvSave.cpp:276
 msgid "None"
@@ -3297,7 +3297,7 @@ msgstr ""
 msgid "Not enough compressed data"
 msgstr ""
 
-#: core/aviImage.cpp:1088 core/oiioImage.cpp:329
+#: core/aviImage.cpp:1087 core/oiioImage.cpp:329
 msgid "Not enough memory for image"
 msgstr ""
 
@@ -3397,7 +3397,7 @@ msgstr ""
 msgid "Open Single Image"
 msgstr ""
 
-#: core/aviImage_save.cpp:250
+#: core/aviImage_save.cpp:251
 msgid "Open encoder "
 msgstr ""
 
@@ -3624,7 +3624,7 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-#: core/aviImage.cpp:1093
+#: core/aviImage.cpp:1092
 msgid "Problem allocating image "
 msgstr ""
 
@@ -3632,16 +3632,16 @@ msgstr ""
 msgid "Problem with tile"
 msgstr ""
 
-#: core/aviImage_save.cpp:445
+#: core/aviImage_save.cpp:446
 msgid "Profile name "
 msgstr ""
 
-#: core/aviImage.cpp:2573
+#: core/aviImage.cpp:2568
 #, c-format
 msgid "Program %d "
 msgstr ""
 
-#: core/aviImage.cpp:2569
+#: core/aviImage.cpp:2564
 #, c-format
 msgid "Program %d: %s"
 msgstr ""
@@ -3805,7 +3805,7 @@ msgstr ""
 msgid "Resampling failed"
 msgstr ""
 
-#: core/aviImage.cpp:138
+#: core/aviImage.cpp:137
 msgid "Reserved"
 msgstr ""
 
@@ -4101,7 +4101,7 @@ msgstr ""
 msgid "Stop playback."
 msgstr ""
 
-#: core/aviImage_save.cpp:1597
+#: core/aviImage_save.cpp:1598
 msgid "Stopped encoding cached "
 msgstr ""
 
@@ -4131,15 +4131,15 @@ msgstr ""
 msgid "Subtitle Streams"
 msgstr ""
 
-#: core/aviImage.cpp:676
+#: core/aviImage.cpp:675
 msgid "Subtitle encoding "
 msgstr ""
 
-#: core/aviImage.cpp:674
+#: core/aviImage.cpp:673
 msgid "Subtitle file "
 msgstr ""
 
-#: core/aviImage.cpp:675
+#: core/aviImage.cpp:674
 msgid "Subtitle font "
 msgstr ""
 
@@ -4428,7 +4428,7 @@ msgstr ""
 msgid "Unhandled exception"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2727
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2721
 #: gui/mrvImageInformation.cpp:2054 video/mrvGLEngine.cpp:217
 #: video/mrvGLEngine.cpp:220 video/mrvGLEngine.cpp:223
 msgid "Unknown"
@@ -4470,7 +4470,7 @@ msgstr ""
 msgid "Unknown bit depth"
 msgstr ""
 
-#: core/aviImage_save.cpp:432
+#: core/aviImage_save.cpp:433
 msgid "Unknown c->pix_fmt ("
 msgstr ""
 
@@ -4486,7 +4486,7 @@ msgstr ""
 msgid "Unknown data type to convert to string"
 msgstr ""
 
-#: core/aviImage.cpp:2123
+#: core/aviImage.cpp:2118
 msgid "Unknown destination video frame format: "
 msgstr ""
 
@@ -4538,7 +4538,7 @@ msgstr ""
 msgid "Unknown wipe direction"
 msgstr ""
 
-#: core/aviImage.cpp:129 core/aviImage.cpp:137 video/mrvGLQuad.cpp:1129
+#: core/aviImage.cpp:128 core/aviImage.cpp:136 video/mrvGLQuad.cpp:1129
 #: video/mrvGLCube.cpp:252 video/mrvGLSphere.cpp:254
 msgid "Unspecified"
 msgstr ""
@@ -4631,7 +4631,7 @@ msgstr ""
 msgid "Video"
 msgstr ""
 
-#: core/aviImage_save.cpp:1026 core/aviImage_save.cpp:1042
+#: core/aviImage_save.cpp:1027 core/aviImage_save.cpp:1043
 msgid "Video "
 msgstr ""
 
@@ -4644,7 +4644,7 @@ msgstr ""
 msgid "Video Streams"
 msgstr ""
 
-#: core/aviImage.cpp:1794
+#: core/aviImage.cpp:1789
 msgid "Video Sync master frame "
 msgstr ""
 
@@ -4820,7 +4820,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: core/aviImage_save.cpp:1297
+#: core/aviImage_save.cpp:1298
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr ""
 
@@ -4848,11 +4848,11 @@ msgstr ""
 msgid "audio"
 msgstr ""
 
-#: core/aviImage_save.cpp:644
+#: core/aviImage_save.cpp:645
 msgid "audio frame is missing"
 msgstr ""
 
-#: core/aviImage.cpp:751
+#: core/aviImage.cpp:750
 msgid "avcodec_context_from_parameters failed for video"
 msgstr ""
 
@@ -4860,7 +4860,7 @@ msgstr ""
 msgid "avcodec_copy_context failed for audio"
 msgstr ""
 
-#: core/aviImage.cpp:1676
+#: core/aviImage.cpp:1671
 msgid "avcodec_copy_context failed for subtitle"
 msgstr ""
 
@@ -4908,7 +4908,7 @@ msgstr ""
 msgid "files"
 msgstr ""
 
-#: core/aviImage.cpp:1823 core/aviImage.cpp:1834
+#: core/aviImage.cpp:1818 core/aviImage.cpp:1829
 msgid "find_image: frame "
 msgstr ""
 
@@ -5073,7 +5073,7 @@ msgstr ""
 msgid "send() failed"
 msgstr ""
 
-#: core/aviImage_save.cpp:660
+#: core/aviImage_save.cpp:661
 msgid "src_nb_samples is 0"
 msgstr ""
 
