@@ -163,7 +163,7 @@ namespace fs = boost::filesystem;
 // FLTK2 currently has a problem on Linux with timout's Fl::event_x/y not
 // taking into account other child widgets.  This works around it.
 //#ifndef _WIN32
-#  define FLTK_TIMEOUT_EVENT_BUG 1
+//#  define FLTK_TIMEOUT_EVENT_BUG 1
 //#endif
 
 
@@ -6444,7 +6444,6 @@ int ImageView::keyDown(unsigned int rawkey)
             const Fl_Menu_Item* w = uiColorChannel->child(c);
             if ( rawkey == w->shortcut() )
             {
-		std::cerr << w->label() << " " << rawkey << std::endl;   
                 channel( idx );
                 return 1;
             }
@@ -7280,8 +7279,6 @@ void ImageView::channel( unsigned short c )
 
     char* lbl = get_layer_label( c );
     if ( !lbl ) return;
-
-    std::cerr << "SELECTED CHANNEL " << c << " " << lbl << std::endl;
     
     _channel = c;
 
@@ -7772,12 +7769,12 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( group )
             {
                 // Copy shortcut to group and replace leaf with group
-                unsigned s = 0;
+                // unsigned s = 0;
                 if ( uiColorChannel->children() >= 2 )
                 {
                     unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
-                    s = w->shortcut();
+                    // s = w->shortcut();
 		    uiColorChannel->clear_submenu( last );
                     uiColorChannel->remove( last );  // @TODO: fltk1.4 verify
                 }
@@ -7810,30 +7807,25 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // store the index to the channel.
         std::string chx = remove_hash_number( x );
         std::string chroot = remove_hash_number( root );
-        if ( v >= -1 && ( chx == chroot ||
+        if ( v == -1 && ( chx == chroot ||
                           (channelName && name == channelName) ) )
         {
-	    std::cerr << v << " " << chx << " == " << chroot << " || "
-		      << name << " == " << (channelName? channelName : "NULL")
-		      << std::endl;
             v = idx;
         }
 
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
-	std::cerr << "v is now " << v << " " << (char)shortcut << std::endl;
 
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
-        if ( v >= 0 || name == _("Color") || chx == "N" || chx == "Z" )
+        if ( v >= 0 || ( name == _("Color")
+			 /* || chx == "N" || chx == "Z" */ ) )
         {
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
-                // std::cerr << "add shortcut " << (char) shortcut << " v: "
-                //        << v << " name " << name << " ch " << ch << std::endl;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
