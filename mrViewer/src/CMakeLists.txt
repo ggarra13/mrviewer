@@ -92,7 +92,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++11)
     # ADD_DEFINITIONS( -DLINUX -msse -w --std=c++0x)
     ADD_DEFINITIONS( -DLINUX -DNDEBUG  )
-    ADD_COMPILE_OPTIONS( -msse -O3 -w -fdiagnostics-color=always  )
+    ADD_COMPILE_OPTIONS( -msse -O3 -w -fdiagnostics-color=always -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Werror -Wno-unused )
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ ${GLEW_LIBRARIES} fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
@@ -761,6 +761,8 @@ MESSAGE( STATUS "mrViewer version: " ${SHORTVERSION} )
 # different name, we prevent the "target" path from being generated.
 SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
+
+# set( TEST_BUNDLE 1 )
 
 IF( TEST_BUNDLE  )
 # A dummy target so that we can test post_build commands faster
