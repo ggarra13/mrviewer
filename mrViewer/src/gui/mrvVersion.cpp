@@ -521,9 +521,6 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
     av_log_set_callback( mrv::av_log_redirect );
 
 
-    avcodec_register_all();
-
-    av_register_all();
     avformat_network_init();
 
 
