@@ -914,6 +914,7 @@ uiICCProfiles->uiMain->show();}
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
               callback { Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
+	      std::cerr << "*********** CALLBACK" << std::endl;
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {30 5 90 19}
