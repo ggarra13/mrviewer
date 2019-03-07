@@ -15,13 +15,6 @@ def check_files( files, arch )
     h = `dumpbin -headers #{f}`
     if h =~ /machine.*^#{arch}/
       puts "ERROR: #{f} is wrong architecture when it should be #{arch}"
-      if h =~ /debug/i
-        puts "ERROR: #{f} is set incorrectly wrong #{arch} debug"
-      end
-    else
-      if h =~ /debug/i
-        puts "ERROR: #{f} is set to #{arch} debug"
-      end
     end
   end
 end
