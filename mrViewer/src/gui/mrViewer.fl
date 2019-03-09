@@ -541,7 +541,7 @@ class PaintUI {open
   } {
     Fl_Window uiMain {
       label Paint open
-      xywh {733 95 165 505} type Double resizable non_modal visible
+      xywh {733 95 165 505} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {5 14 149 481}
@@ -828,8 +828,8 @@ o->main( this );}
           xywh {0 0 640 28} box ENGRAVED_BOX
         } {
           Fl_Menu_Button uiWindows {
-            label W
-            tooltip {Opens different windows} xywh {5 5 20 20}
+            label W open
+            tooltip {Opens different windows} xywh {5 5 25 20}
             code0 {o->disable_glyph();}
             class {mrv::PopupMenu}
           } {
@@ -856,9 +856,14 @@ uiView->update_color_info();}
               xywh {0 0 100 20}
             }
             MenuItem {} {
-              label {Paint Tools} user_data_type {void*}
-              callback {uiPaint->uiMain->show();}
+              label {Action Tools} user_data_type {void*}
+              callback {uiPaint->uiMain->show();} selected
               xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label {Stereo 3D Options} user_data_type {void*}
+              callback {uiGL3dView->uiMain->show();}
+              xywh {10 10 100 20}
             }
             MenuItem {} {
               label 3dView user_data_type {void*}
@@ -913,7 +918,7 @@ uiICCProfiles->uiMain->show();}
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
-              callback { Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
+              callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
 	      std::cerr << "*********** CALLBACK" << std::endl;
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
@@ -944,8 +949,7 @@ v->uiGainInput->value( (float) o->value() );}
             Fl_Menu_Button uiICS {
               label {Input Color Space}
               user_data this user_data_type {ViewerUI*}
-              callback {
-mrv::media fg = v->uiView->foreground();
+              callback {mrv::media fg = v->uiView->foreground();
 if (!fg) return;
 
 mrv::CMedia* img = fg->image();
@@ -960,8 +964,7 @@ char buf[256];
 sprintf( buf, "ICS \\"%s\\"", c.c_str() );
 v->uiView->send_network( buf );
 v->uiView->use_lut(true);
-v->uiLUT->value(true);
-} open
+v->uiLUT->value(true);} open
               tooltip {OCIO input color space for the image} xywh {265 1 135 24}
               class {mrv::PopupMenu}
             } {}
@@ -1009,7 +1012,7 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
               Fl_Button uiNormalize {
                 label Norm
                 user_data this user_data_type {ViewerUI*}
-                callback {v->uiView->toggle_normalize();} selected
+                callback {v->uiView->toggle_normalize();}
                 tooltip {Normalize pixel values to remain in [0,1] range.} xywh {360 5 40 19}
               }
             }
@@ -1069,9 +1072,8 @@ else
 	fg->image()->image_damage( mrv::CMedia::kDamageAll );
 	v->uiView->redraw();
     }
-    }
-}
-tooltip {Some default gamma settings.} xywh {405 5 50 19}
+    }}
+                  tooltip {Some default gamma settings.} xywh {405 5 50 19}
                   class {mrv::PopupMenu}
                 } {
                   MenuItem {} {
