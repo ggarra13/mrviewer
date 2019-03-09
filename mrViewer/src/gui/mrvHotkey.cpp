@@ -441,7 +441,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
         unsigned k = h.hotkey.key;
 
         bool special = false;
-        for ( int j = 0; j < 45; ++j )
+        for ( int j = 0; j < sizeof(table)/sizeof(TableText); ++j )
             if ( k == table[j].n )
             {
                 key += table[j].text;
@@ -475,8 +475,6 @@ void fill_ui_hotkeys( mrv::Browser* b )
 
 void select_hotkey( HotkeyUI* b )
 {
-    return;
-
     int idx = b->uiFunction->value();
 
     Hotkey& hk = hotkeys[idx].hotkey;
