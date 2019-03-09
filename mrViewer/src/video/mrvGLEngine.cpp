@@ -3521,7 +3521,7 @@ void pass_ootf( ostringstream& code, enum mp_csp_light light, float peak)
     {
     case MP_CSP_LIGHT_SCENE_HLG:
         // HLG OOTF from BT.2100, assuming a reference display with a
-        // peak of 1000 cd/mÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ² -> gamma = 1.2
+        // peak of 1000 cd² -> gamma = 1.2
         GLSLF("c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n",
               (1000 / MP_REF_WHITE) / pow(12, 1.2));
         break;
