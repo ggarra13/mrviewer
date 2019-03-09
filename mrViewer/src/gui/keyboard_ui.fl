@@ -1,60 +1,58 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 1.04
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include <cstdio>} {} 
-
-decl {\#include <iostream>} {} 
-
-decl {\#include "gui/mrvPopupMenu.h"} {public
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include <cstdio>} {private local
 }
 
-decl {\#include "mrvHotkey.h"} {public
-} 
+decl {\#include <iostream>} {private local
+}
 
-decl {\#include "core/mrvI8N.h"} {} 
+decl {\#include "gui/mrvPopupMenu.h"} {public local
+}
 
+decl {\#include "mrvHotkey.h"} {public local
+}
 
-  class ChooseHotkey {open
+decl {\#include "core/mrvI8N.h"} {private local
+}
+
+class ChooseHotkey {open
+} {
+  decl {mrv::Hotkey hk;} {public local
+  }
+  decl {mrv::Hotkey backup;} {public local
+  }
+  Function {make_window()} {open
   } {
-    decl {mrv::Hotkey hk;} {public
-    }
-    decl {mrv::Hotkey backup;} {public
-    }
-    Function {make_window()} {open
+    Fl_Window uiMain {
+      label {Choose Hotkey} open
+      xywh {346 247 360 140} type Double resizable modal visible
     } {
-      {Fl_Window} uiMain {
-        label {Choose Hotkey} open
-        xywh {346 247 360 140} resizable
-        extra_code {} modal visible
-      } {
-        {Fl_Input} uiKey {
-          label Key
-          xywh {60 5 140 27}
-        }
-        {Fl_Check_Button} uiShift {
-          label Shift
-          xywh {65 68 20 27}
-        }
-        {Fl_Check_Button} uiCtrl {
-          label Ctrl
-          xywh {160 69 25 27} 
-        }
-        {Fl_Check_Button} uiAlt {
-          label Alt
-          xywh {65 103 25 27} 
-        }
-        {Fl_Check_Button} uiMeta {
-          label Meta
-          xywh {160 103 25 27} 
-        }
-        {Fl_Button} {} {
-          label Okay
-          user_data this user_data_type {ChooseHotkey*}
-          callback {v->hk.ctrl  = v->uiCtrl->value();
+      Fl_Input uiKey {
+        label Key
+        xywh {60 5 140 27}
+      }
+      Fl_Check_Button uiShift {
+        label Shift
+        xywh {65 68 20 27} down_box DOWN_BOX
+      }
+      Fl_Check_Button uiCtrl {
+        label Ctrl
+        xywh {160 69 25 27} down_box DOWN_BOX
+      }
+      Fl_Check_Button uiAlt {
+        label Alt
+        xywh {65 103 25 27} down_box DOWN_BOX
+      }
+      Fl_Check_Button uiMeta {
+        label Meta
+        xywh {160 103 25 27} down_box DOWN_BOX
+      }
+      Fl_Button {} {
+        label Okay
+        user_data this user_data_type {ChooseHotkey*}
+        callback {v->hk.ctrl  = v->uiCtrl->value();
 v->hk.alt   = v->uiAlt->value();
 v->hk.meta  = v->uiMeta->value();
 v->hk.shift = v->uiShift->value();
@@ -64,7 +62,7 @@ if ( v->uiKey->value() )
   std::string text = v->uiKey->value();
 
   unsigned key = 0;
-  for (int i = 0; i < 45; i++)
+  for (int i = 0; i < 40; i++)
      if (text == mrv::table[i].text) {key = mrv::table[i].n; break;}
 
   if ( key == 0 )
@@ -87,7 +85,7 @@ if ( v->uiKey2->value() )
   std::string text = v->uiKey2->value();
 
   unsigned key = 0;
-  for (int i = 0; i < 45; i++)
+  for (int i = 0; i < 40; i++)
      if (text == mrv::table[i].text) {key = mrv::table[i].n; break;}
 
   if ( key == 0 )
@@ -105,24 +103,23 @@ if ( v->uiKey2->value() )
 }
 
 v->uiMain->hide();}
-          xywh {225 92 55 26}
-        }
-        {Fl_Button} {} {
-          label Cancel
-          user_data this user_data_type {ChooseHotkey*}
-          callback {v->hk = v->backup;
+        xywh {225 92 55 26}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {ChooseHotkey*}
+        callback {v->hk = v->backup;
 v->uiMain->hide();} selected
-          xywh {285 92 70 26}
-        }
-        {Fl_Menu_Button} uiSpecialKey {
-          label Special
-	  class mrv::PopupMenu
-          user_data uiKey user_data_type {Fl_Input*}
-          callback {int idx = o->value();
+        xywh {285 92 70 26}
+      }
+      Fl_Menu_Button uiSpecialKey {
+        label Special
+        user_data uiKey user_data_type {Fl_Input*}
+        callback {int idx = o->value();
 const char* text = o->child(idx)->label();
-uiKey->value( text );}
-          xywh {210 5 65 27}
-          extra_code {for (int i = 0; i < 45; i++)
+uiKey->value( text );} open
+        xywh {210 5 110 27}
+        code0 {for (int i = 0; i < 40; i++)
 {
    uiSpecialKey->add( mrv::table[i].text );
 }
@@ -132,20 +129,20 @@ for (int i = 1; i < 13; i++)
    sprintf( buf, "F%d", i );
    uiSpecialKey->add(buf);
 }}
-        } {}
-        {Fl_Input} uiKey2 {
-          label Key2
-          xywh {60 38 140 27}
-        }
-        {Fl_Menu_Button} uiSpecialKey2 {
-          label Special
-	  class mrv::PopupMenu
-          user_data uiKey2 user_data_type {Fl_Input*}
-          callback {int idx = o->value();
+        class {mrv::PopupMenu}
+      } {}
+      Fl_Input uiKey2 {
+        label Key2
+        xywh {60 38 140 27}
+      }
+      Fl_Menu_Button uiSpecialKey2 {
+        label Special
+        user_data uiKey2 user_data_type {Fl_Input*}
+        callback {int idx = o->value();
 const char* text = o->child(idx)->label();
 uiKey2->value( text );} open
-          xywh {210 38 65 27}
-          extra_code {for (int i = 0; i < 45; i++)
+        xywh {210 38 110 27}
+        code0 {for (int i = 0; i < 40; i++)
 {
    uiSpecialKey2->add( mrv::table[i].text );
 }
@@ -155,17 +152,18 @@ for (int i = 1; i < 13; i++)
    sprintf( buf, "F%d", i );
    uiSpecialKey2->add(buf);
 }}
-        } {}
-      }
+        class {mrv::PopupMenu}
+      } {}
     }
-    Function {ChooseHotkey( const mrv::Hotkey& h )} {open
-    } {
-      code {backup = h;
+  }
+  Function {ChooseHotkey( const mrv::Hotkey& h )} {open
+  } {
+    code {backup = h;
 hk = h;} {}
-    }
-    Function {fill()} {open
-    } {
-      code {uiCtrl->value( hk.ctrl );
+  }
+  Function {fill()} {open
+  } {
+    code {uiCtrl->value( hk.ctrl );
 uiMeta->value( hk.meta );
 uiAlt->value( hk.alt );
 uiShift->value( hk.shift );
@@ -183,7 +181,7 @@ if (!k) {
       sprintf(buffer, "F%d", k - FL_F);
    } else {
       sprintf(buffer, "0x%04x", k);
-      for (int i = 0; i < 45; i++)
+      for (int i = 0; i < 40; ++i)
       {
 	 if (mrv::table[i].n == k) {
 	 	keyname = mrv::table[i].text; 
@@ -208,7 +206,7 @@ if (!k) {
       sprintf(buffer, "F%d", k - FL_F );
    } else {
       sprintf(buffer, "0x%04x", k);
-      for (int i = 0; i < 45; i++)
+      for (int i = 0; i < 40; ++i)
       {
 	 if (mrv::table[i].n == k) {
 	 	keyname = mrv::table[i].text; 
@@ -219,9 +217,9 @@ if (!k) {
 
 if (k != 0 )
    uiKey2->value( keyname );} {}
-    }
-    Function {~ChooseHotkey()} {open
-    } {
-      code {delete uiMain; uiMain = NULL;} {}
-    }
   }
+  Function {~ChooseHotkey()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+}
