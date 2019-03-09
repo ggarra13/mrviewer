@@ -163,7 +163,7 @@ namespace fs = boost::filesystem;
 // FLTK2 currently has a problem on Linux with timout's Fl::event_x/y not
 // taking into account other child widgets.  This works around it.
 //#ifndef _WIN32
-//#  define FLTK_TIMEOUT_EVENT_BUG 1
+#  define FLTK_TIMEOUT_EVENT_BUG 1
 //#endif
 
 
@@ -1537,17 +1537,7 @@ bool ImageView::previous_channel()
     const Fl_Menu_Item* w;
 
     // Count (total) number of channels
-    for ( unsigned j = 0; j < num; ++j, ++total )
-    {
-        w = uiColorChannel->child(j);
-        if ( w->flags & FL_SUBMENU )
-        {
-            unsigned c = 0;
-            for ( ; w->label(); w = w->next() )
-                ++c;
-            total += c;
-        }
-    }
+    total = uiColorChannel->children() - 1;
 
     unsigned short idx = 0;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -1559,7 +1549,8 @@ bool ImageView::previous_channel()
         if ( c == 0 && c == idx )
         {
             // Select last channel (group)
-            const Fl_Menu_Item* last = uiColorChannel->child(num-1);
+            const Fl_Menu_Item* last = uiColorChannel->child(total-1);
+
             // Jump to Z based on label
             if ( total > 8 &&
                  strcmp( last->label(), N_("Z") ) == 0 )
@@ -1576,7 +1567,7 @@ bool ImageView::previous_channel()
                 is_group = true;
                 break;
             }
-            else if ( total > 5 &&
+            else if ( total > 5 && last->label() &&
                       strcmp( last->label(), _("Lumma") ) == 0 )
             {
                 previous = total-5;
@@ -1586,7 +1577,7 @@ bool ImageView::previous_channel()
         }
 
         // This handles jump from Z to Color
-        if ( c == idx && c >= 4 &&
+        if ( c == idx && c >= 4 && w->label() &&
              ( ( strcmp( w->label(), N_("Z") ) == 0 )  ) )
         {
             // Handle Z, Alpha Overlay and Lumma and RGBA
@@ -1600,20 +1591,13 @@ bool ImageView::previous_channel()
         }
         if ( w->flags & FL_SUBMENU )
         {
-            unsigned numc = 0;
-
-            for ( ; w->label(); w = w->next() )
-                ++numc;
-
             if ( c == idx && previous >= 0) {
                 is_group = true;
             }
 
             if ( !is_group ) previous = idx;
-
-            idx += numc;
         }
-        else if ( c == idx &&
+        else if ( c == idx && w->label() &&
                   previous >= 0 && strcmp( w->label(), _("Color") ) == 0 )
         {
             is_group = true;
@@ -1651,6 +1635,8 @@ bool ImageView::next_channel()
 
     int c = channel();
 
+    --num;
+
     bool is_group = false;
     unsigned short next = 0;
     unsigned short idx = 0;
@@ -1660,17 +1646,16 @@ bool ImageView::next_channel()
         if ( w->flags & FL_SUBMENU )
         {
             unsigned numc = 0;
-            for ( ; w->label(); w = w->next() )
-                ++numc;
-
+            for ( ; w->label(); ++w )
+		++numc;
+	    
             if ( c == idx ) {
                 is_group = true;
                 next = idx + numc + 1;
             }
-            idx += numc;
             continue;
         }
-        if ( c == idx && strcmp( w->label(), _("Color") ) == 0 )
+        if ( c == idx && w->label() && strcmp( w->label(), _("Color") ) == 0 )
         {
             if ( num > 7 )
             {
@@ -1679,6 +1664,7 @@ bool ImageView::next_channel()
             }
         }
     }
+
 
     if ( (is_group && next < idx) || (!is_group && c < idx-1) )
     {
@@ -5296,7 +5282,7 @@ void ImageView::mouseMove(int x, int y)
     col[1] = uchar(rgba.g * 255.f);
     col[2] = uchar(rgba.b * 255.f);
 
-    Fl_Color c( mrv::set_color( col[0], col[1], col[2] ) );
+    Fl_Color c( fl_rgb_color( col[0], col[1], col[2] ) );
 
     // bug in fltk color lookup? (0 != Fl_BLACK)
     if ( c == 0 )
@@ -7153,16 +7139,17 @@ char* ImageView::get_layer_label( unsigned short c )
     unsigned num = uiColorChannel->children();
     std::string layername;
     const Fl_Menu_Item* o = NULL;
-    const Fl_Menu_Item* w = uiColorChannel->child(0);
+    const Fl_Menu_Item* w; //uiColorChannel->child(0);
     for ( unsigned i = 0; i < num; ++i, ++idx )
     {
 	w = uiColorChannel->child(i);
 	if ( w->flags & FL_SUBMENU )
 	    o = w;
-	if ( ! w->label() ) o = w;
+	else
+	    if ( !w->label() ) o = NULL;
         if ( idx == c )
         {
-	    if ( w != o && o->label() ) layername = o->label();
+	    if ( w != o && o && o->label() ) layername = o->label();
 	    if ( !layername.empty() ) layername += '.';
 	    if ( w->label() ) layername += w->label();
 	    lbl = strdup( layername.c_str() );
@@ -7210,19 +7197,23 @@ void ImageView::channel( unsigned short c )
 {
     boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
 
+    
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return; // Audio only - no channels
 
+    
+    const Fl_Menu_Item* o = uiColorChannel->child(c);
 
     // @TODO: verify fltk1.4
     unsigned short idx = 0;
+    const Fl_Menu_Item* w ;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
-        const Fl_Menu_Item* w = uiColorChannel->child(i);
+	w = uiColorChannel->child(i);
         if ( w->flags & FL_SUBMENU )
         {
-            for ( ; w->label(); w = w->next() )
+            for ( ++w; w->label(); ++w )
                 ++idx;
         }
     }
@@ -7254,7 +7245,7 @@ void ImageView::channel( unsigned short c )
             }
         }
 
-        if ( c >= idx )
+        if ( c >= idx || ! w->label())
         {
             LOG_ERROR( _("Invalid index ") << c
                        << _(" for channel.  Maximum: " )
