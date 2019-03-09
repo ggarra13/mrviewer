@@ -1008,8 +1008,8 @@ static const char* kCLocale = "English";
 static const char* kCLocale = "C";
 #endif
 
-#undef DBG
-#define DBG(c) std::cerr << c << " " << __FUNCTION__ << " "  \
+//#undef DBG
+//#define DBG(c) std::cerr << c << " " << __FUNCTION__ << " "	\
     << __LINE__ << std::endl;
 
 void Preferences::run( ViewerUI* main )
@@ -1285,8 +1285,6 @@ void Preferences::run( ViewerUI* main )
             DBG( "No more displays" );
 
 
-#undef DBG
-#define DBG(x)
 
             main->gammaDefaults->redraw();
 
