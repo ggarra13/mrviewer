@@ -693,9 +693,9 @@ void ColorInfo::update( const CMedia* img,
                 col = FL_BLACK;
             else
             {
-                col = mrv::set_color((uchar)(r*255),
-				     (uchar)(g*255),
-				     (uchar)(b*255));
+                col = fl_rgb_color((uchar)(r*255),
+				   (uchar)(g*255),
+				   (uchar)(b*255));
             }
         }
 
