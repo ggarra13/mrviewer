@@ -750,27 +750,27 @@ static const float kMaxZoom = 64.f;   // Zoom 64x
 namespace mrv {
 
     void window_cb( mrv::PopupMenu* m, const ViewerUI* uiMain )
-{
-    int idx = -1;
-    const Fl_Menu_Item* o = m->child( m->value() );
-    mrv::PopupMenu* g = uiMain->uiWindows;
-    for ( int i = 0; i < g->children(); ++i )
     {
-        if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
-            idx = i;
-            break;
-        }
-    }
+	int idx = -1;
+	const Fl_Menu_Item* o = m->child( m->value() );
+	mrv::PopupMenu* g = uiMain->uiWindows;
+	for ( int i = 0; i < g->children(); ++i )
+	{
+	    if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
+		idx = i;
+		break;
+	    }
+	}
 
-    if ( idx == -1 )
-    {
-        const char* name = o->label();
-        LOG_ERROR( _("Unknown Window \"") << name << "\"" );
-        return;
-    }
+	if ( idx == -1 )
+	{
+	    const char* name = o->label();
+	    LOG_ERROR( _("Unknown Window \"") << name << "\"" );
+	    return;
+	}
 
 
-    uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
+	uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
 
 void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
@@ -3738,8 +3738,6 @@ bool PointInTriangle (const Imath::V2i& pt,
  * @param y Fl::event_y() coordinate
  */
 
-#undef TRACE
-#define TRACE() std::cerr << __FUNCTION__ << " "  << __LINE__ << std::endl;
 
 int ImageView::leftMouseDown(int x, int y)
 {
@@ -3748,8 +3746,8 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-    //flags	= kMouseDown;
-    flags	= 0;
+    flags	= kMouseDown;
+    //flags	= 0;
 
     int button = Fl::event_button();
     if (button == 1)
@@ -3767,7 +3765,7 @@ int ImageView::leftMouseDown(int x, int y)
         if ( Fl::event_key( FL_SHIFT ) )
         {
             flags |= kLeftShift;
-            // selection_mode();
+            selection_mode();
         }
         else if ( Fl::event_key( FL_CTRL ) )
         {
@@ -3973,9 +3971,8 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE();
 
             int idx;
-            Fl_Menu_Button menu(0,0,0,0);
+            Fl_Menu_Button menu(Fl::event_x(), Fl::event_y(),0,0);
 
-            TRACE();
             menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
             menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
@@ -5792,6 +5789,12 @@ int ImageView::keyDown(unsigned int rawkey)
         move_pic_mode();
         return 1;
     }
+    else if ( ( _mode == kNoAction || _mode == kScrub ) &&
+              kAreaMode.match( rawkey ) )
+    {
+        selection_mode();
+        return 1;
+    }
     else if ( kOpenImage.match( rawkey ) )
     {
         open_cb( this, browser() );
@@ -6405,12 +6408,6 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kSetOutPoint.match( rawkey ) )
     {
         uiMain->uiEndButton->do_callback();
-    }
-    else if ( ( _mode == kNoAction || _mode == kScrub ) &&
-              kAreaMode.match( rawkey ) )
-    {
-        selection_mode();
-        return 1;
     }
     else if ( rawkey == FL_Alt_L )
     {
