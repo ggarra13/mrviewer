@@ -29,7 +29,6 @@
 
 namespace mrv {
 
-Fl_Color set_color( uchar r, uchar g, uchar b );
 Fl_Color darker(  Fl_Color c, uchar v = 0x20 );
 Fl_Color lighter( Fl_Color c, uchar v = 0x20 );
 }
