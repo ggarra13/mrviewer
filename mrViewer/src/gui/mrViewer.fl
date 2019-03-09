@@ -515,7 +515,7 @@ class HotkeyUI {} {
           user_data this user_data_type {HotkeyUI*}
           callback {mrv::select_hotkey( v );}
           xywh {25 25 415 315}
-          code0 {//mrv::fill_ui_hotkeys( o );}
+          code0 {mrv::fill_ui_hotkeys( o );}
           class {mrv::Browser}
         }
         Fl_Button {} {
@@ -857,7 +857,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label {Action Tools} user_data_type {void*}
-              callback {uiPaint->uiMain->show();} selected
+              callback {uiPaint->uiMain->show();}
               xywh {0 0 100 20}
             }
             MenuItem {} {
@@ -879,6 +879,11 @@ uiView->update_color_info();}
               label Vectorscope user_data_type {void*}
               callback {uiVectorscope->uiMain->show();}
               xywh {0 0 100 20}
+            }
+            MenuItem {} {
+              label Waveform user_data_type {void*}
+              callback {uiVectorscope->uiMain->show();} selected
+              xywh {10 10 100 20}
             }
             MenuItem {} {
               label {ICC Profiles} user_data_type {void*}
