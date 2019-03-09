@@ -3750,7 +3750,7 @@ int ImageView::leftMouseDown(int x, int y)
     //flags	= 0;
 
     int button = Fl::event_button();
-    if (button == 1)
+    if ( button == FL_LEFT_MOUSE )
     {
         flags	= kMouseDown;
         if (Fl::event_key(FL_Alt_L) || vr() )
@@ -3762,12 +3762,12 @@ int ImageView::leftMouseDown(int x, int y)
         }
 
         flags |= kMouseLeft;
-        if ( Fl::event_key( FL_SHIFT ) )
+        if ( Fl::event_state( FL_SHIFT ) )
         {
             flags |= kLeftShift;
             selection_mode();
         }
-        else if ( Fl::event_key( FL_CTRL ) )
+        else if ( Fl::event_state( FL_CTRL ) )
         {
             flags |= kMouseLeft;
             flags |= kLeftCtrl;
@@ -3836,7 +3836,7 @@ int ImageView::leftMouseDown(int x, int y)
                     Imath::V2i v1( W, H );
                     Imath::V2i v2( W-kSize, H );
                     Imath::V2i v3( W, H-kSize );
-                    if ( Fl::event_key( FL_CTRL ) ||
+                    if ( Fl::event_state( FL_CTRL ) ||
                          PointInTriangle( pt, v1, v2, v3 ) )
                     {
                         scale_pic_mode();
@@ -3955,7 +3955,7 @@ int ImageView::leftMouseDown(int x, int y)
         return 1;
     }
 
-    else if ( button == 2 )
+    else if ( button == FL_MIDDLE_MOUSE )
     {
         // handle MMB moves
         flags  = kMouseDown;
@@ -4350,9 +4350,9 @@ void ImageView::leftMouseUp( int x, int y )
     flags &= ~kZoom;
 
     int button = Fl::event_button();
-    if (button == 1)
+    if ( button == FL_LEFT_MOUSE )
         flags &= ~kMouseLeft;
-    else if ( button == 2 )
+    else if ( button == FL_MIDDLE_MOUSE )
         flags &= ~kMouseMiddle;
     else
         flags &= ~kMouseRight;
@@ -5926,7 +5926,7 @@ int ImageView::keyDown(unsigned int rawkey)
         else
         {
             float z = (float) (rawkey - kZoomMin.key);
-            if ( Fl::event_key( FL_CTRL ) )
+            if ( Fl::event_state( FL_CTRL ) )
                 z = 1.0f / z;
             zoom_under_mouse( z, Fl::event_x(), Fl::event_y() );
         }
@@ -6257,7 +6257,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kFirstFrame.match( rawkey ) )
     {
-        if ( Fl::event_key( FL_CTRL ) )
+        if ( Fl::event_state( FL_CTRL ) )
             first_frame_timeline();
         else
             first_frame();
@@ -6266,7 +6266,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kLastFrame.match( rawkey ) )
     {
-        if ( Fl::event_key( FL_CTRL ) )
+        if ( Fl::event_state( FL_CTRL ) )
             last_frame_timeline();
         else
             last_frame();
