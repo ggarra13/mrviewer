@@ -659,15 +659,15 @@ void ColorInfo::update( const CMedia* img,
         hmean.b /= c;
         hmean.a /= c;
 
-        static const char* kR = "@C0xFF808000;";
-        static const char* kG = "@C0x80FF8000;";
-        static const char* kB = "@C0x8080FF00;";
-        static const char* kA = "@C0xB0B0B000;";
+        static const char* kR = "@C4286611456@c";
+        static const char* kG = "@C2164228096@c";
+        static const char* kB = "@C2155937536@c";
+        static const char* kA = "@C2964369408@c";
 
-        static const char* kH = "@C0xB0B00000;";
-        static const char* kS = "@C0xB0B00000;";
-        static const char* kV = "@C0xB0B00000;";
-        static const char* kL = "@C0xB0B0B000;";
+        static const char* kH = "@C2964324352@c";
+        static const char* kS = "@C2964324352@c";
+        static const char* kV = "@C2964324352@c";
+        static const char* kL = "@C2964324352@c";
 
 
 
@@ -705,7 +705,7 @@ void ColorInfo::update( const CMedia* img,
 
 
         text.str("");
-        text << "@b;\t"
+        text << "@b\t"
              << kR
              << _("R") << "\t"
              << kG
@@ -713,7 +713,7 @@ void ColorInfo::update( const CMedia* img,
              << kB
              << _("B") << "\t"
              << kA
-             << _("A") << "@n;"
+             << _("A")
              << std::endl
              << _("Maximum") << ":\t"
              << float_printf(pmax.r) << "\t"
@@ -737,7 +737,7 @@ void ColorInfo::update( const CMedia* img,
              << float_printf(r.g) << "\t"
              << float_printf(r.b) << "\t"
              << float_printf(r.a) << std::endl
-             << "@b;" << _("Mean") << ":@n;\t"
+             << "@b" << _("Mean") << ":\t"
              << kR
              << float_printf(pmean.r) << "\t"
              << kG
@@ -747,7 +747,7 @@ void ColorInfo::update( const CMedia* img,
              << kA
              << float_printf(pmean.a) << std::endl
              << std::endl
-             << "@b;\t";
+             << "@b\t";
 
         switch( uiMain->uiBColorType->value()+1 )
         {
@@ -824,8 +824,7 @@ void ColorInfo::update( const CMedia* img,
             break;
         }
 
-        text << "@n;"
-             << std::endl
+        text << std::endl
              << _("Maximum") << ":\t"
              << float_printf(hmax.r) << "\t"
              << float_printf(hmax.g) << "\t"
@@ -848,7 +847,7 @@ void ColorInfo::update( const CMedia* img,
              << float_printf(r.g) << "\t"
              << float_printf(r.b) << "\t"
              << float_printf(r.a) << std::endl
-             << "@b;" << _("Mean") << ":@n;\t"
+             << "@b" << _("Mean") << ":\t"
              << kH
              << float_printf(hmean.r) << "\t"
              << kS
