@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuno
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -263,8 +263,6 @@ void Browser::draw() {
     Fl_Browser::draw();
     if (!column_widths()) return;
 
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
-
     if ( column_separator() ) {
         // DRAW COLUMN SEPARATORS
         int X = x() + Fl::box_dx(box());
@@ -281,12 +279,10 @@ void Browser::draw() {
             }
         }
     }
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 }
 
 int Browser::absolute_item_index( Fl_Group* g )
 {
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     int idx = 1;
     int num = g->children();
     for (int i = 0; i < num; ++i)
@@ -304,7 +300,6 @@ int Browser::absolute_item_index( bool& found,
                                   Fl_Widget* item,
                                   Fl_Widget* w )
 {
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     if ( w == item  ) {
         found = true;
@@ -327,7 +322,6 @@ int Browser::absolute_item_index( bool& found,
 
 int Browser::absolute_item_index()
 {
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     int main_idx = value();
     if ( main_idx < 0 ) return main_idx;
 
