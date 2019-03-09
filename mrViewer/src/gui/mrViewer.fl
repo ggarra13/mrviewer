@@ -944,7 +944,24 @@ v->uiGainInput->value( (float) o->value() );}
             Fl_Menu_Button uiICS {
               label {Input Color Space}
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->update_ICS();} open
+              callback {
+mrv::media fg = v->uiView->foreground();
+if (!fg) return;
+
+mrv::CMedia* img = fg->image();
+
+int i = o->value();
+if ( i < 0 || i >= o->children() ) return;
+
+std::string c = o->child( i )->label();
+o->copy_label( c.c_str() );
+img->ocio_input_color_space( c );
+char buf[256];
+sprintf( buf, "ICS \\"%s\\"", c.c_str() );
+v->uiView->send_network( buf );
+v->uiView->use_lut(true);
+v->uiLUT->value(true);
+} open
               tooltip {OCIO input color space for the image} xywh {265 1 135 24}
               class {mrv::PopupMenu}
             } {}
