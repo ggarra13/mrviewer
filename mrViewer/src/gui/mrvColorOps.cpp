@@ -30,12 +30,6 @@
 
 namespace mrv {
 
-Fl_Color set_color( uchar r, uchar g, uchar b )
-{
-    unsigned c = r << 24 + g << 16 + b << 8;
-    return Fl_Color(c);
-}
-
 
 Fl_Color darker( Fl_Color c, uchar v )
 {
@@ -47,7 +41,7 @@ Fl_Color darker( Fl_Color c, uchar v )
     else g = 0;
     if (b > v ) b -= v;
     else b = 0;
-    return set_color( r, g, b );
+    return fl_rgb_color( r, g, b );
 }
 
 Fl_Color lighter( Fl_Color c, uchar v )
@@ -62,7 +56,7 @@ Fl_Color lighter( Fl_Color c, uchar v )
     if ( 0xff - b > v ) b += v;
     else b = 0xff;
 
-    return set_color( r, g, b );
+    return fl_rgb_color( r, g, b );
 }
 
 }
