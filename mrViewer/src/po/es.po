@@ -43,13 +43,17 @@ msgstr ""
 "No es un tipo de pista conocido para la pista #"
 
 #: standalone/mrvCommandLine.cpp:96
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "\n"
 "Options:\n"
 "\n"
-msgstr "Opciones:"
+msgstr ""
+"\n"
+"\n"
+"Opciones:\n"
+"\n"
 
 #: gui/mrvImageView.cpp:4449
 msgid "   NAN  "
@@ -2219,11 +2223,13 @@ msgstr "Ejemplos:  gizmo"
 
 #
 #: standalone/mrvCommandLine.cpp:124
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Examples:\n"
 "\n"
-msgstr "Ejemplos:"
+msgstr ""
+"Ejemplos:\n"
+"\n"
 
 #: gui/mrvPreferences.cpp:1206
 msgid "Expanded OCIO environment variable to:"
@@ -3309,11 +3315,12 @@ msgid "Name (.ext)"
 msgstr ""
 
 #: standalone/mrvCommandLine.cpp:123
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Names cannot contain spaces in their paths.\n"
 "\n"
-msgstr "Los nombres no pueden contener espacios en sus directorios."
+msgstr "Los nombres no pueden contener espacios en sus directorios.\n"
+"\n"
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:643
 msgid "Next"
@@ -3535,7 +3542,7 @@ msgid "OCIO environment variable is not set.  Defaulting to CTL. "
 msgstr "La variable de entorno OCIO no existe.  Usando CTL."
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1573
-#, fuzzy
+#
 msgid "OCIO input color space for the image"
 msgstr "Espacio de Color de Entrada de la imagen sin definir."
 
@@ -3990,7 +3997,7 @@ msgid "Removed client "
 msgstr "Borré el cliente "
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:178
-#, fuzzy
+#
 msgid "Render Intent"
 msgstr "Intención de Render"
 
@@ -4110,7 +4117,7 @@ msgid "Save Image"
 msgstr "Grabar Imagen"
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:146
-#, fuzzy
+#
 msgid "Save Options"
 msgstr "Grabar Opciones"
 
@@ -4313,9 +4320,9 @@ msgid "Stop"
 msgstr "Parar"
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2058
-#, fuzzy
+#
 msgid "Stop playback."
-msgstr "Auto Playback"
+msgstr "Detener Playback."
 
 #: core/aviImage_save.cpp:1598
 msgid "Stopped encoding cached "
@@ -4495,7 +4502,6 @@ msgstr ""
 "implementación particular de Windows Sockets.\n"
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1960
-#, fuzzy
 msgid "Timeline."
 msgstr "Línea Temporal"
 
@@ -4648,7 +4654,7 @@ msgstr "Tipo"
 #
 #
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1882
-#, fuzzy
+#
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -5293,57 +5299,57 @@ msgid "original"
 msgstr "original"
 
 #: gui/mrvHotkey.cpp:404
-#, fuzzy
+#
 msgid "pad0"
 msgstr "Teclado Numérico 0"
 
 #: gui/mrvHotkey.cpp:406
-#, fuzzy
+#
 msgid "pad1"
 msgstr "Teclado Numérico 1"
 
 #: gui/mrvHotkey.cpp:407
-#, fuzzy
+#
 msgid "pad2"
 msgstr "Teclado Numérico 2"
 
 #: gui/mrvHotkey.cpp:408
-#, fuzzy
+#
 msgid "pad3"
 msgstr "Teclado Numérico 3"
 
 #: gui/mrvHotkey.cpp:409
-#, fuzzy
+#
 msgid "pad4"
 msgstr "Teclado Numérico 4"
 
 #: gui/mrvHotkey.cpp:410
-#, fuzzy
+#
 msgid "pad5"
 msgstr "Teclado Numérico 5"
 
 #: gui/mrvHotkey.cpp:412
-#, fuzzy
+#
 msgid "pad6"
 msgstr "Teclado Numérico 6"
 
 #: gui/mrvHotkey.cpp:413
-#, fuzzy
+#
 msgid "pad7"
 msgstr "Teclado Numérico 7"
 
 #: gui/mrvHotkey.cpp:414
-#, fuzzy
+#
 msgid "pad8"
 msgstr "Teclado Numérico 8"
 
 #: gui/mrvHotkey.cpp:415
-#, fuzzy
+#
 msgid "pad9"
 msgstr "Teclado Numérico 9"
 
 #: gui/mrvHotkey.cpp:397
-#, fuzzy
+#
 msgid "padEnter"
 msgstr "Teclado Numérico Enter"
 
@@ -7953,7 +7959,7 @@ msgstr ""
 #~ msgid "Create reel \""
 #~ msgstr "Crear carrete \""
 
-#, fuzzy
+#
 #~ msgid "Empty open audio device "
 #~ msgstr "No pude abrir el dispositivo de audio %s: %s"
 
