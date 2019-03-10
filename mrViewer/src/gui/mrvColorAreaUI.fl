@@ -1,64 +1,66 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 1.04
-header_name {.h} 
-code_name {.cxx} 
-gridx 5
-gridy 5 
-snap 3
-decl {\#include "string"} {public
-} 
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "string"} {public local
+}
 
-decl {\#include "core/mrvI8N.h"} {public
-} 
+decl {\#include "core/mrvI8N.h"} {public local
+}
 
-decl {\#include "core/mrvColorSpaces.h"} {} 
+decl {\#include "core/mrvColorSpaces.h"} {private local
+}
 
-decl {\#include "gui/mrvColorInfo.h"} { public global } 
+decl {\#include "gui/mrvColorInfo.h"} {public global
+}
 
-decl {\#include "gui/mrvImageView.h"} {} 
+decl {\#include "gui/mrvImageView.h"} {private local
+}
 
-decl {\#include "mrViewer.h"} {} 
+decl {\#include "mrViewer.h"} {private local
+}
 
+decl {class ViewerUI;} {public local
+}
 
-  decl {class ViewerUI;} {public
+decl {class ColorInfo;} {public local
+}
+
+class ColorAreaUI {open
+} {
+  decl {ViewerUI* main_;} {private local
   }
-  decl {class ColorInfo;} {public
-  }
-  class ColorAreaUI {open
+  Function {make_window(ViewerUI* main)} {open private
   } {
-    decl {ViewerUI* main_;} {}
-    Function {make_window(ViewerUI* main)} {open private
-    } {
-      {Fl_Window} uiMain {
-        label {Color Information}
-        user_data this user_data_type {ColorAreaUI*}
-        callback {v->main()->uiView->send_network( "ColorInfoWindow 0" );
+    Fl_Window uiMain {
+      label {Color Information}
+      user_data this user_data_type {ColorAreaUI*}
+      callback {v->main()->uiView->send_network( "ColorInfoWindow 0" );
 o->hide();} selected
-        xywh {430 501 400 260} resizable
-        extra_code {// Make the window transient
+      xywh {430 501 400 260} type Double resizable
+      code0 {// Make the window transient
 main_ = main;
-o->size_range( 400, 260 );} visible
-      } {
-        {Fl_Browser} uiColorText {open
-          xywh {0 0 400 260}
-          extra_code {o->main( main );}
-          class {mrv::ColorInfo}
-        }
+o->size_range( 400, 260 );} non_modal visible
+    } {
+      Fl_Browser uiColorText {
+        xywh {0 0 400 260}
+        code0 {o->main( main );}
+        class {mrv::ColorInfo}
       }
     }
-    Function {ColorAreaUI(ViewerUI* m)} {open
-    } {
-      code {
-      Fl_Group::current( (Fl_Group*) m->uiMain );
+  }
+  Function {ColorAreaUI(ViewerUI* m)} {open
+  } {
+    code {Fl_Group::current( (Fl_Group*) m->uiMain );
       make_window( m );
       Fl_Group::current(0);} {}
-    }
-    Function {~ColorAreaUI()} {open
-    } {
-      code {delete uiMain; uiMain = NULL;} {}
-    }
-    Function {main()} {open return_type {ViewerUI*}
-    } {
-      code {return main_;} {}
-    }
   }
+  Function {~ColorAreaUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {open return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+}
