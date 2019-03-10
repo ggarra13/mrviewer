@@ -78,7 +78,7 @@
 #include <FL/Fl_Preferences.H>
 
 #ifdef LINUX
-#include <FL/x.H>
+#include <FL/platform.H>
 static Atom fl_NET_WM_STATE;
 static Atom fl_NET_WM_STATE_FULLSCREEN;
 #endif
@@ -312,35 +312,35 @@ short get_shortcut( const char* channel )
     return 0;
 }
 
-// #ifdef LINUX
-// void send_wm_event(XWindow wnd, Atom message,
-//                    unsigned long d0, unsigned long d1=0,
-//                    unsigned long d2=0, unsigned long d3=0,
-//                    unsigned long d4=0) {
-//     XEvent e;
-//     e.xany.type = ClientMessage;
-//     e.xany.window = wnd;
-//     e.xclient.message_type = message;
-//     e.xclient.format = 32;
-//     e.xclient.data.l[0] = d0;
-//     e.xclient.data.l[1] = d1;
-//     e.xclient.data.l[2] = d2;
-//     e.xclient.data.l[3] = d3;
-//     e.xclient.data.l[4] = d4;
-//     XSendEvent(Fl_xdisplay, RootWindow(Fl_xdisplay, Fl_xscreen),
-//                0, SubstructureNotifyMask | SubstructureRedirectMask,
-//                &e);
-// }
+#ifdef LINUX
+void send_wm_event(Window wnd, Atom message,
+                   unsigned long d0, unsigned long d1=0,
+                   unsigned long d2=0, unsigned long d3=0,
+                   unsigned long d4=0) {
+    XEvent e;
+    e.xany.type = ClientMessage;
+    e.xany.window = wnd;
+    e.xclient.message_type = message;
+    e.xclient.format = 32;
+    e.xclient.data.l[0] = d0;
+    e.xclient.data.l[1] = d1;
+    e.xclient.data.l[2] = d2;
+    e.xclient.data.l[3] = d3;
+    e.xclient.data.l[4] = d4;
+    XSendEvent(fl_display, RootWindow(fl_display, fl_screen),
+               0, SubstructureNotifyMask | SubstructureRedirectMask,
+               &e);
+}
 
-// #define _NET_WM_STATE_REMOVE        0  /* remove/unset property */
-// #define _NET_WM_STATE_ADD           1  /* add/set property */
-// #define _NET_WM_STATE_TOGGLE        2  /* toggle property  */
+#define _NET_WM_STATE_REMOVE        0  /* remove/unset property */
+#define _NET_WM_STATE_ADD           1  /* add/set property */
+#define _NET_WM_STATE_TOGGLE        2  /* toggle property  */
 
-// void send_wm_state_event(XWindow wnd, int add, Atom prop) {
-//     send_wm_event(wnd, fl_NET_WM_STATE,
-//                   add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE, prop);
-// }
-// #endif
+void send_wm_state_event(Window wnd, int add, Atom prop) {
+    send_wm_event(wnd, fl_NET_WM_STATE,
+                  add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE, prop);
+}
+#endif
 
 }
 
@@ -1699,10 +1699,10 @@ void ImageView::init_draw_engine()
         mrvALERT( _("Could not initialize draw engine") );
         return;
     }
-// #ifdef LINUX
-//     fl_NET_WM_STATE       = XInternAtom(fl_display, "_NET_WM_STATE",       0);
-//     fl_NET_WM_STATE_FULLSCREEN = XInternAtom(fl_display, "_NET_WM_STATE_FULLSCREEN", 0);
-// #endif
+#ifdef LINUX
+    fl_NET_WM_STATE       = XInternAtom(fl_display, "_NET_WM_STATE",       0);
+    fl_NET_WM_STATE_FULLSCREEN = XInternAtom(fl_display, "_NET_WM_STATE_FULLSCREEN", 0);
+#endif
 
     CMedia::supports_yuv( _engine->supports_yuv() );
     CMedia::supports_yuva( _engine->supports_yuva() );
@@ -2078,6 +2078,7 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
 
+    
     const CMedia* img = fg->image();
 
     mrv::image_type_ptr pic = img->left();
@@ -6283,6 +6284,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( uiMain->uiTopBar->visible() ) uiMain->uiTopBar->hide();
         else uiMain->uiTopBar->show();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -6291,6 +6293,7 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( uiMain->uiPixelBar->visible() ) uiMain->uiPixelBar->hide();
         else uiMain->uiPixelBar->show();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -6298,7 +6301,14 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( uiMain->uiBottomBar->visible() ) uiMain->uiBottomBar->hide();
         else uiMain->uiBottomBar->show();
+	int X = uiMain->uiRegion->x();
+	int Y = uiMain->uiRegion->y();
+	int W = uiMain->uiRegion->w();
+	int H = uiMain->uiRegion->h();
+	uiMain->uiRegion->resize( X, Y, W, H );
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
+        // fltk_main()->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
@@ -6487,10 +6497,10 @@ void ImageView::toggle_fullscreen()
         resize_main_window();
     }
 
+    uiMain->uiRegion->init_sizes();
+	
     fit_image();
 
-    // These two take focus are needed
-    // fltk_main()->take_focus();
 
     take_focus();
 
@@ -6546,14 +6556,14 @@ void ImageView::toggle_presentation()
         uiEDLWindow->hide();
         uiPrefs->hide();
         uiAbout->hide();
-        uiMain->uiTopBar->hide();
-        uiMain->uiPixelBar->hide();
         uiMain->uiBottomBar->hide();
-
+        uiMain->uiPixelBar->hide();
+        uiMain->uiTopBar->hide();
 
         presentation = true;
 
         fltk_main()->fullscreen();
+	uiMain->uiRegion->init_sizes();
 // #ifdef WIN32
 //         fltk_main()->fullscreen();
 //         fltk_main()->resize(0, 0,
@@ -6586,13 +6596,12 @@ void ImageView::toggle_presentation()
 // #endif
         presentation = false;
         FullScreen = false;
+	uiMain->uiRegion->init_sizes();
         resize_main_window();
     }
 
     fit_image();
 
-    // These two take focus are needed
-    // fltk_main()->take_focus();
 
     take_focus();
 
@@ -8239,6 +8248,8 @@ void ImageView::resize_main_window()
 
     fltk_main()->fullscreen_off( posX, posY, w, h );
     fltk_main()->resize( posX, posY, w, h );
+    uiMain->uiRegion->init_sizes();
+    uiMain->uiRegion->redraw();
 #ifdef LINUX
     fltk_main()->show();
 #endif
