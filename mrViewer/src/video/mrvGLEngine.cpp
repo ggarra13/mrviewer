@@ -1708,7 +1708,7 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
 
 void GLEngine::draw_images( ImageList& images )
 {
-    TRACE( "" );
+    
 
     if ( _YCbCr == NULL )
     {
@@ -1775,7 +1775,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-    TRACE( "" );
+    
     if ( _view->normalize() )
     {
         minmax(); // calculate min-max
@@ -1783,7 +1783,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-    TRACE( "" );
+    
     size_t num_quads = 0;
     ImageList::iterator i = images.begin();
     ImageList::iterator e = images.end();
@@ -1797,7 +1797,7 @@ void GLEngine::draw_images( ImageList& images )
         if ( stereo )    ++num_quads;
     }
 
-    TRACE( "" );
+    
 
     CHECK_GL;
 
@@ -1828,8 +1828,6 @@ void GLEngine::draw_images( ImageList& images )
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
 
-
-    TRACE( "" );
 
     double x = _view->spin_x();
     double y = _view->spin_y();
@@ -3521,7 +3519,7 @@ void pass_ootf( ostringstream& code, enum mp_csp_light light, float peak)
     {
     case MP_CSP_LIGHT_SCENE_HLG:
         // HLG OOTF from BT.2100, assuming a reference display with a
-        // peak of 1000 cd² -> gamma = 1.2
+        // peak of 1000 cd2 -> gamma = 1.2
         GLSLF("c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n",
               (1000 / MP_REF_WHITE) / pow(12, 1.2));
         break;
@@ -3986,7 +3984,6 @@ GLEngine::loadBuiltinFragShader()
 
 void GLEngine::clear_quads()
 {
-    TRACE("");
     DBG( __FUNCTION__ << " " << __LINE__ );
     QuadList::iterator i = _quads.begin();
     QuadList::iterator e = _quads.end();
@@ -4001,29 +3998,23 @@ void GLEngine::clear_quads()
 
 void GLEngine::release()
 {
-    TRACE("");
     clear_quads();
 
-    TRACE("");
     GLLut3d::clear();
 
-    TRACE("");
     if ( sCharset ) {
         glDeleteLists( sCharset, 255 );
         CHECK_GL;
     }
-
-    TRACE("");
-
+ 
     if (_rgba)  delete _rgba;
     _rgba = NULL;
 
-    TRACE("");
 
     if (_YByRy) delete _YByRy;
     _YByRy = NULL;
 
-    TRACE("");
+    
 
     if (_YCbCr) delete _YCbCr;
     _YCbCr = NULL;
@@ -4031,7 +4022,7 @@ void GLEngine::release()
     if (_YByRyA) delete _YByRyA;
     _YByRyA = NULL;
 
-    TRACE("");
+    
 
     if (_YCbCrA) delete _YCbCrA;
     _YCbCrA = NULL;
