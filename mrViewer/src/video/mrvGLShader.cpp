@@ -62,7 +62,7 @@ namespace mrv {
   const char* GLShader::get_error(const char *data, int pos) 
   {
     char *s = (char*) data;
-    if ( !s ) return "";
+    if ( !s ) return N_("");
     while(*s && pos--) s++;
     while(s >= data && *s != '\n') s--;
     char *e = ++s;
