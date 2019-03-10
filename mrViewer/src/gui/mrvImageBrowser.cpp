@@ -2635,7 +2635,7 @@ void ImageBrowser::handle_dnd()
 #if defined(_WIN32) || defined(_WIN64)
     mrv::split_string( files, filenames, "\n" );
 #else
-    mrv::split_string( files, filenames, "\r\n" );
+    mrv::split_string( files, filenames, "\n" );
 #endif
 
     std::sort( files.begin(), files.end() );
