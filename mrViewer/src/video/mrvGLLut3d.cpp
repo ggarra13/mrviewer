@@ -1300,8 +1300,8 @@ GLLut3d* GLLut3d::factory( const ViewerUI* view,
         setlocale(LC_NUMERIC, "C" );
         std::locale::global( std::locale("C") );
         lut->calculate_ocio( img );
-        std::locale::global( std::locale("") );
-        setlocale(LC_NUMERIC, "" );
+        std::locale::global( std::locale(N_("")) );
+        setlocale(LC_NUMERIC, N_("") );
     }
     else
     {
