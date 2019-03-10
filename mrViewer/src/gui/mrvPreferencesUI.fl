@@ -89,9 +89,9 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {940 241 675 455} type Double resizable
+      xywh {601 72 675 455} type Double resizable
       code0 {o->main(m);}
-      class {mrv::ActionWindow} visible
+      class {mrv::ActionWindow} non_modal visible
     } {
       Fl_Wizard uiWizard {
         label Settings open
@@ -191,7 +191,7 @@ If you try to open several mrViewers with different images, all these images wil
         }
         Fl_Group {} {
           label {View Window}
-          xywh {220 28 423 417} box EMBOSSED_BOX align 5 hide
+          xywh {220 28 423 417} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Defaults
@@ -1760,7 +1760,7 @@ where SC is source color, SA is source alpha, and DC is destination color.} xywh
           }
         }
         Fl_Group {} {
-          label Audio open
+          label Audio
           xywh {225 38 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Choice uiPrefsAudioDevice {
@@ -1807,7 +1807,7 @@ else
           }
         }
         Fl_Group {} {
-          label Subtitles open
+          label Subtitles
           xywh {220 76 420 304} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Choice uiPrefsSubtitleFont {
@@ -1837,7 +1837,7 @@ v->uiView->redraw();}
             user_data m user_data_type {ViewerUI*}
             callback {int i = o->value();
 uiPrefsSubtitleEncoding->value( o->child(i)->label() );
-uiPrefsSubtitleEncoding->do_callback();} open
+uiPrefsSubtitleEncoding->do_callback();}
             xywh {435 185 150 30} box THIN_DOWN_BOX down_box BORDER_BOX
             class {mrv::Choice}
           } {
@@ -1901,7 +1901,7 @@ v->uiView->redraw();}
           }
         }
         Fl_Group {} {
-          label Images open
+          label Images
           tooltip {Options controlling the OpenEXR reader/writer} xywh {225 38 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -1919,11 +1919,11 @@ v->uiView->redraw();}
           }
         }
         Fl_Group {} {
-          label OpenEXR open
-          tooltip {Options controlling the OpenEXR reader/writer} xywh {220 38 423 367} box EMBOSSED_BOX align 5
+          label OpenEXR
+          tooltip {Options controlling the OpenEXR reader/writer} xywh {220 38 423 367} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label Loading open selected
+            label Loading open
             xywh {255 83 325 127} box ROUNDED_BOX labelsize 15
           } {
             Fl_Value_Input uiPrefsOpenEXRThreadCount {
@@ -2003,111 +2003,33 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           }
         }
       }
-      Fl_Group {} {
-        xywh {0 5 212 430}
+      Fl_Group {} {open
+        xywh {-25 5 237 430}
       } {
-        Fl_Choice {} {
+        Fl_Tree {} {
           label Module
           user_data this user_data_type {PreferencesUI*}
-          callback {uiWizard->value( uiWizard->child( o->value() ) );} open
-          xywh {0 20 195 410} down_box BORDER_BOX
-          class {mrv::Choice}
-        } {
-          Submenu {} {
-            label {User Interface}
-            xywh {0 0 100 20}
-          } {
-            Submenu {} {
-              label {View Window}
-              xywh {0 0 100 20}
-            } {
-              MenuItem {} {
-                label Colors
-                xywh {0 0 100 20}
-              }
-            }
-            MenuItem {} {
-              label {File Requester}
-              xywh {0 0 100 20}
-            }
-            MenuItem {} {
-              label Positioning
-              xywh {0 0 100 20}
-            }
-          }
-          MenuItem {} {
-            label Playback
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label {Pixel Toolbar}
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Actions
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Caches
-            xywh {0 0 100 20}
-          }
-          Submenu {} {
-            label {3D Luts}
-            xywh {0 0 100 20}
-          } {
-            MenuItem {} {
-              label OCIO
-              xywh {0 0 100 20}
-            }
-            MenuItem {} {
-              label Paths
-              xywh {0 0 100 20}
-            }
-            MenuItem {} {
-              label {Default ODT}
-              xywh {0 0 100 20}
-            }
-            MenuItem {} {
-              label {Default RT}
-              xywh {0 0 100 20}
-            }
-          }
-          MenuItem {} {
-            label Loading
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Saving
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Video
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Compositing
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Audio
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Subtitle
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Errors
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Images
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label OpenEXR
-            xywh {0 0 100 20}
-          }
+          callback {
+	  Fl_Widget* w = uiWizard->value();
+	  bool found = true;
+	  for ( ; w = uiWizard->value(); uiWizard->next() )
+	      if ( strcmp( w->label(),
+	      	   	   o->first_selected_item()->label() ) == 0 )
+			   {
+			     found = true;
+	      		     break;
+			    }
+	  if (!found )
+	  {
+		Fl_Widget* w = uiWizard->value();
+	  	for ( ; w = uiWizard->value(); uiWizard->prev() )
+	  	if ( strcmp( w->label(),
+	      	      	   o->first_selected_item()->label() ) == 0 )
+	      	 break;
+	   }
+	   }
+          xywh {0 25 195 410}
+          code0 {fill_tree(o);}
         }
       }
       Fl_Group {} {
@@ -2148,5 +2070,31 @@ v->uiPrefs->run(v);}
   Function {run(ViewerUI* m)} {open
   } {
     code {mrv::Preferences::run( m );} {}
+  }
+  Function {fill_tree(Fl_Tree* o)} {open
+  } {
+    code {o->add( _("User Interface") );
+o->add( _("User Interface/View Window") );
+o->add( _("User Interface/View Window/Colors") );
+o->add( _("User Interface/Positioning") );
+o->add( _("Playback") );
+o->add( _("Pixel Toolbar") );
+o->add( _("Actions") );
+o->add( _("Caches") );
+o->add( _("3D Luts") );
+o->add( _("3D Luts/OCIO") );
+o->add( _("3D Luts/CTL Paths") );
+o->add( _("3D Luts/Default Output Device") );
+o->add( _("3D Luts/Default Rendering Transform") );
+o->add( _("Loading") );
+o->add( _("Saving") );
+o->add( _("Video") );
+o->add( _("Compositing") );
+o->add( _("Audio") );
+o->add( _("Subtitles") );
+o->add( _("Errors") );
+o->add( _("Images") );
+o->add( _("OpenEXR") );} {selected
+    }
   }
 }
