@@ -86,8 +86,8 @@ class ReelUI {open
   } {
     Fl_Window uiMain {
       label {Reel List} open selected
-      xywh {84 281 405 350} type Double resizable
-      code0 {o->size_range(350,320);} visible
+      xywh {620 264 405 350} type Double resizable
+      code0 {o->size_range(350,320);} non_modal visible
     } {
       Fl_Browser uiBrowser {
         xywh {0 32 405 318} box UP_BOX
@@ -96,8 +96,7 @@ class ReelUI {open
 // o->scrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ) );
 // o->hscrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ));
 // o->scrollbar.color( o->buttoncolor() );
-// o->hscrollbar.color( o->buttoncolor() );
-}
+// o->hscrollbar.color( o->buttoncolor() );}
         class {mrv::ImageBrowser}
       }
       Fl_Group {} {open
@@ -106,9 +105,9 @@ class ReelUI {open
         Fl_Choice {} {
           user_data uiBrowser user_data_type {mrv::ImageBrowser*}
           callback {v->reel(o->value());} open
-	  class mrv::Choice
           xywh {5 5 120 20} box THIN_DOWN_BOX down_box BORDER_BOX align 36
           code0 {uiBrowser->reel_choice(o);}
+          class {mrv::Choice}
         } {}
         Fl_Group uiReelOps {open
           xywh {125 0 86 30}
