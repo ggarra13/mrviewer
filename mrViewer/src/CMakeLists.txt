@@ -287,7 +287,7 @@ IF(NOT WIN32)
 
   ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
     COMMAND xgettext
-    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
+    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" -a --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
     DEPENDS mrViewer
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     )
