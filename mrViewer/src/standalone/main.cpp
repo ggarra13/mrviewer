@@ -163,11 +163,11 @@ int main( int argc, const char** argv )
 
     char* loc = _("unknown");
 
-  const char* tmp = setlocale(LC_ALL, "");
+    const char* tmp = setlocale(LC_ALL, N_(""));
 
   
   // Create and install global locale
-  std::locale::global(boost::locale::generator().generate(""));
+  std::locale::global(boost::locale::generator().generate( N_("") ));
   // Make boost.filesystem use it
   boost::filesystem::path::imbue(std::locale());
  
@@ -322,7 +322,7 @@ int main( int argc, const char** argv )
       if ( single_instance )
           Fl::add_timeout( 1.0, load_new_files, ui );
       
-      if (opts.host == "" && opts.port != 0)
+      if (opts.host.empty() && opts.port != 0)
       {
           mrv::ServerData* data = new mrv::ServerData;
           data->ui = ui;
@@ -330,7 +330,7 @@ int main( int argc, const char** argv )
           boost::thread( boost::bind( mrv::server_thread, 
                                       data ) );
       }
-      else if ( opts.host != "" && opts.port != 0 )
+      else if ( ! opts.host.empty() && opts.port != 0 )
       {
           mrv::ServerData* data = new mrv::ServerData;
           data->ui = ui;
