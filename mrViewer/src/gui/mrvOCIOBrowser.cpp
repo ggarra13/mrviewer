@@ -47,9 +47,10 @@ const char* kModule = "ocio";
 namespace mrv {
 
 OCIOBrowser::OCIOBrowser(int x, int y, int w, int h, const char* l) :
-    Fl_Browser( x, y, w, h, l ),
+    Fl_Select_Browser( x, y, w, h, l ),
     _type( kNone )
 {
+    when( FL_WHEN_RELEASE );
 }
 
 OCIOBrowser::~OCIOBrowser()
@@ -74,7 +75,7 @@ void OCIOBrowser::fill_view()
         add( views[i].c_str() );
         if ( views[i] == _sel )
         {
-            value(i);
+            value(i+1);
         }
     }
 }
@@ -95,7 +96,7 @@ void OCIOBrowser::fill_display()
         add( displays[i].c_str() );
         if ( displays[i] == _sel )
         {
-            value(i);
+            value(i+1);
         }
     }
 }
@@ -125,7 +126,7 @@ void OCIOBrowser::fill_input_color_space()
         //w->tooltip( strdup( cs->getDescription() ) );
         if ( spaces[i] == _sel )
         {
-            value(i);
+            value(i+1);
         }
     }
 }
@@ -154,11 +155,6 @@ void OCIOBrowser::fill()
     }
     std::locale::global( std::locale("") );
     setlocale( LC_NUMERIC, "" );
-}
-
-int OCIOBrowser::handle( int e )
-{
-    return Fl_Browser::handle( e );
 }
 
 
