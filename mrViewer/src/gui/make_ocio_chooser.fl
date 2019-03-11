@@ -2,65 +2,59 @@
 version 1.0400
 header_name {.h}
 code_name {.cxx}
-decl {\#include "string"} {public local
+decl {\#include <string>} {public local
+}
+
+decl {\#include <iostream>} {public local
 }
 
 decl {\#include "core/mrvI8N.h"} {private local
 }
 
-decl {\#include "gui/mrvOCIOBrowser.h"} {selected public global
+decl {\#include "gui/mrvOCIOBrowser.h"} {public global
 }
 
 decl {std::string orig;} {private local
 }
 
-decl {std::string ctl;} {private local
+decl {std::string ocio;} {private local
 }
 
 Function {make_ocio_chooser(std::string c, mrv::OCIOBrowser::Type type )} {open return_type {std::string}
 } {
   Fl_Window {} {
-    label {CTL Browser} open
+    label {OCIO Browser} open
     xywh {691 384 395 445} type Double resizable hotspot
-    code0 {orig = c;} modal visible
+    code0 {orig = ocio = c;} modal visible
   } {
     Fl_Group {} {open
       xywh {5 26 385 411}
     } {
       Fl_Browser uiOCIOBrowser {
         label {Select an OCIO Transform}
-        user_data {&ctl} user_data_type {std::string*}
+        user_data {&ocio} user_data_type {std::string*}
         callback {int elem = o->value();
-if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
-*v = o->child(elem)->label();}
-        xywh {5 0 375 365}
-        code0 {o->set_type(type); o->set_selection(ctl);
-o->value(-1);
-if ( !ctl.empty() )
-{
-  for (int i = 0; i < o->children(); ++i )
-  {
-    if ( o->child(i)->label() == ctl ) {
-      o->value(i); break;
-    }
-  }
-}}
+if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
+*v = o->text(elem);} selected
+        xywh {5 0 375 355} when 4
+        code0 {o->set_selection(c); o->set_type(type);}
         class {mrv::OCIOBrowser}
       }
       Fl_Button {} {
         label Accept
         user_data w user_data_type {Fl_Window*}
-        tooltip {Accept the selected CTL file.} xywh {200 375 85 25}
+        callback {delete v;}
+        tooltip {Accept the selected OCIO file.} xywh {200 380 85 25}
       }
       Fl_Button {} {
         label Cancel
         user_data w user_data_type {Fl_Window*}
-        callback {ctl = orig;}
-        tooltip {Cancel the CTL selection and don't change anything.} xywh {295 375 80 25}
+        callback {ocio = orig; delete v;}
+        tooltip {Cancel the OCIO selection and don't change anything.} xywh {295 380 80 25}
       }
     }
   }
   code {w->set_modal();
 w->show();
-return ctl;} {}
+return ocio;} {}
 }
