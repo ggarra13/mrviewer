@@ -2009,27 +2009,21 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
         Fl_Tree {} {
           label Module
           user_data this user_data_type {PreferencesUI*}
-          callback {
-	  Fl_Widget* w = uiWizard->value();
-	  bool found = true;
-	  for ( ; w = uiWizard->value(); uiWizard->next() )
-	      if ( strcmp( w->label(),
-	      	   	   o->first_selected_item()->label() ) == 0 )
-			   {
-			     found = true;
-	      		     break;
-			    }
-	  if (!found )
-	  {
-		Fl_Widget* w = uiWizard->value();
-	  	for ( ; w = uiWizard->value(); uiWizard->prev() )
-	  	if ( strcmp( w->label(),
-	      	      	   o->first_selected_item()->label() ) == 0 )
-	      	 break;
-	   }
-	   }
+          callback {for ( int i = 0; i < uiWizard->children(); ++i )
+{
+    Fl_Widget* w = uiWizard->child(i);
+    Fl_Tree_Item* t = o->find_clicked();
+    if (!t || !w) return;
+
+    if ( strcmp( _( w->label() ), t->label() ) == 0 )
+	{
+	     uiWizard->value( w );
+	     break;
+	 }
+}}
           xywh {0 25 195 410}
           code0 {fill_tree(o);}
+          code1 {o->showroot(false);}
         }
       }
       Fl_Group {} {
@@ -2077,6 +2071,7 @@ v->uiPrefs->run(v);}
 o->add( _("User Interface/View Window") );
 o->add( _("User Interface/View Window/Colors") );
 o->add( _("User Interface/Positioning") );
+o->add( _("User Interface/File Requester") );
 o->add( _("Playback") );
 o->add( _("Pixel Toolbar") );
 o->add( _("Actions") );
