@@ -372,27 +372,11 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
                                  startfile, compact_images );
 }
 
-// @TODO:  fltk1.4
-std::string make_ocio_browser( const std::string& value,
-                               mrv::OCIOBrowser::Type type )
-{
-    Fl_Window* w = new Fl_Window( Fl::event_x(), Fl::event_y(), 60, 200 );
-    w->set_modal();
-    mrv::OCIOBrowser* b = new mrv::OCIOBrowser( Fl::event_x(),
-                                                Fl::event_y(),
-                                                60, 200 );
-    b->set_selection( value );
-    b->set_type( type );
-    w->add( b );
-    w->show();
-
-    return b->get_selection();
-}
 
 
 void attach_ocio_input_color_space( CMedia* img, ImageView* view )
 {
-    std::string ret = make_ocio_browser( img->ocio_input_color_space(),
+    std::string ret = make_ocio_chooser( img->ocio_input_color_space(),
                                          mrv::OCIOBrowser::kInputColorSpace );
     if ( ret.empty() ) return;
 
@@ -405,7 +389,7 @@ void attach_ocio_input_color_space( CMedia* img, ImageView* view )
 
 void attach_ocio_display( CMedia* img, ImageView* view )
 {
-    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_Display,
+    std::string ret = make_ocio_chooser( mrv::Preferences::OCIO_Display,
                                          mrv::OCIOBrowser::kDisplay );
     if ( ret.empty() ) return;
     mrv::Preferences::OCIO_Display = ret;
@@ -415,7 +399,7 @@ void attach_ocio_display( CMedia* img, ImageView* view )
 
 void attach_ocio_view( CMedia* img, ImageView* view )
 {
-    std::string ret = make_ocio_browser( mrv::Preferences::OCIO_View,
+    std::string ret = make_ocio_chooser( mrv::Preferences::OCIO_View,
                                          mrv::OCIOBrowser::kView );
     if ( ret.empty() ) return;
     mrv::Preferences::OCIO_View = ret;
