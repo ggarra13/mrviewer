@@ -1035,6 +1035,7 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
                   label Gamma
                   user_data this user_data_type {ViewerUI*}
                   callback {float g = (float) atof( o->child( o->value() )->label() );
+		  std::cerr << "gamma " << g << std::endl;
 if ( !mrv::is_equal( g, 0.0f ) )
 {
    v->uiGamma->value(g);
@@ -1052,13 +1053,12 @@ else
     const Fl_Menu_Item* parent = o->child( o->value() );
     const Fl_Menu_Item* p = o->child(0);
     const Fl_Menu_Item* c = p;
-    for ( ; c->label(); c = c->next() )
+    for ( ; c->label(); ++c )
     {
 	if ( c->flags & FL_SUBMENU ) p = c;
 	if ( c == w ) break;
     }
-    
-    if ( strcmp( lbl, parent->label() ) == 0 )
+    if ( strcmp( lbl, p->label() ) == 0 )
        return;
     if ( p && p->label() )
        mrv::Preferences::OCIO_Display = p->label();
