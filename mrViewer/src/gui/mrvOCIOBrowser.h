@@ -30,14 +30,14 @@
 
 #include <string>
 
-#include <FL/Fl_Browser.H>
+#include <FL/Fl_Select_Browser.H>
 
 
 namespace mrv {
 
 class CMedia;
 
-class OCIOBrowser : public Fl_Browser
+class OCIOBrowser : public Fl_Select_Browser
 {
 public:
     enum Type {
@@ -61,7 +61,6 @@ public:
         fill();
     }
 
-    virtual int handle( int event );
 
 protected:
     void fill();
