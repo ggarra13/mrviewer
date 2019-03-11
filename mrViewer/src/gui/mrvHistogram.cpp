@@ -298,7 +298,7 @@ void Histogram::draw_pixels( const Fl_Rect& r )
         idx = int( ((float) i / (float) W) * 255 );
         if ( _channel == kLumma )
         {
-            fl_color( FL_GRAY0 );
+            fl_color( FL_WHITE );
             v = histogram_scale( lumma[idx], maxL );
             int y = int(HH*v);
             fl_line( x, H, x, H-y );
@@ -347,7 +347,7 @@ void Histogram::draw_pixels( const Fl_Rect& r )
         }
         if ( y1 > 0 && y2 > 0 && y3 > 0 )
         {
-            fl_color( FL_GRAY0 );
+            fl_color( FL_WHITE );
             if ( y1 < y2 && y1 < y3 )
                 fl_line( x, H, x, H-y1 );
             else if ( y2 < y1 && y2 < y3 )
