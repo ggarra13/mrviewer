@@ -41,7 +41,7 @@ decl {\#include "gui/mrvGlWindow3d.h"} {public local
 decl {\#include "mrvHistogram.h"} {public local
 }
 
-decl {\#include "mrViewer.h"} {selected private global
+decl {\#include "mrViewer.h"} {private global
 }
 
 decl {\#include "icons/icons.c"} {private local
@@ -53,7 +53,8 @@ decl {\#include "FL/fl_ask.H"} {private local
 decl {\#include "FL/Fl.H"} {private local
 }
 
-class HistogramUI {} {
+class HistogramUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
   Function {make_window(ViewerUI* main)} {open private
@@ -62,36 +63,36 @@ class HistogramUI {} {
       label Histogram
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send_network( "HistogramWindow 0" );
-o->hide();}
-      xywh {206 308 325 240} type Double hide resizable
+o->hide();} open selected
+      xywh {1174 519 325 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;
-o->size_range(325, 80);}
+o->size_range(325, 80);} non_modal visible
     } {
       Fl_Pack {} {open
-        xywh {3 5 321 230}
+        xywh {1 -130 324 365}
       } {
         Fl_Box uiHistogram {
-          xywh {1 0 319 190} resizable
+          xywh {5 45 319 190} resizable
           code0 {o->main( main );}
           class {mrv::Histogram}
         }
-        Fl_Group {} {
-          xywh {7 195 310 30}
+        Fl_Group {} {open
+          xywh {1 -130 324 355}
         } {
           Fl_Group {} {open
-            xywh {0 5 160 25}
+            xywh {160 5 165 45}
           } {
             Fl_Box {} {
               label Channel
-              xywh {0 0 65 25} align 32
+              xywh {166 6 65 30} align 32
             }
             Fl_Menu_Button {} {
               label RGB
               callback {int c = o->value();
 uiHistogram->channel( (mrv::Histogram::Channel) c );
 o->label( o->child( c )->label() );}
-              xywh {66 0 85 25} align 48
+              xywh {235 8 85 25} align 48
               code0 {o->value(0);}
               class {mrv::PopupMenu}
             } {
@@ -118,18 +119,18 @@ o->label( o->child( c )->label() );}
             }
           }
           Fl_Group {} {open
-            xywh {164 5 146 25}
+            xywh {5 10 165 35}
           } {
             Fl_Box {} {
               label Type
-              xywh {1 0 49 25} align 32
+              xywh {10 10 54 25} align 32
             }
             Fl_Menu_Button {} {
               label Linear
               callback {int c = o->value();
 uiHistogram->histogram_type( (mrv::Histogram::Type) c);
 o->label( o->child( c )->label() );} open
-              xywh {51 0 95 25} align 48
+              xywh {65 10 95 25} align 48
               code0 {o->value( (int) uiHistogram->histogram_type() );
 o->label( o->child( o->value() )->label() );}
               class {mrv::PopupMenu}
