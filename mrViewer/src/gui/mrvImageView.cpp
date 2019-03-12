@@ -8630,7 +8630,9 @@ void ImageView::update_color_info( const mrv::media& fg ) const
     {
         Fl_Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
         if ( uiColorWindow->visible() )
+	{
             uiMain->uiColorArea->uiColorText->update();
+	}
     }
 
     if ( uiMain->uiSOPNode )
