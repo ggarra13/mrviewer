@@ -20,10 +20,10 @@
  * @file   main.cpp
  * @author gga
  * @date   Wed Jul  4 23:16:07 2007
- * 
+ *
  * @brief  Main entry point for mrViewer executable
- * 
- * 
+ *
+ *
  */
 
 // #define ALLOC_CONSOLE
@@ -38,6 +38,7 @@
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
 #include <FL/Fl_Preferences.H>
+#include <FL/Fl_Native_File_Chooser.H>
 
 #include <MagickWand/MagickWand.h>
 
@@ -74,17 +75,17 @@ namespace fs = boost::filesystem;
 using namespace std;
 
 namespace {
-const char* const kModule = "main"; 
+const char* const kModule = "main";
 }
 
 
-void load_files( mrv::LoadList& files, 
+void load_files( mrv::LoadList& files,
                  ViewerUI* ui,
                  bool stereo = false )
 {
    //
    // Window must be shown after images have been loaded.
-   // 
+   //
    mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
    image_list->load( files, stereo );
 }
@@ -100,36 +101,36 @@ void load_new_files( void* s )
                                "mrViewer.lock" );
       int pid = 1;
       lock.get( "pid", pid, 1 );
-      
 
-      
+
+
       char* filename;
       char* audio;
       char* firstS;
       char* lastS;
       char* startS;
       char* endS;
-      
+
       int groups = lock.groups();
-      
+
       for ( int i = 0; i < groups; ++i )
       {
-	 const char* group = lock.group( i );
-	 Fl_Preferences g( lock, group );
-	 g.get( "filename", filename, "" );
-	 g.get( "audio", audio, "" );
-	 g.get( "first", firstS, "1" );
-	 g.get( "last", lastS, "50" );
-	 g.get( "start", startS, "1" );
-	 g.get( "end", endS, "50" );
+         const char* group = lock.group( i );
+         Fl_Preferences g( lock, group );
+         g.get( "filename", filename, "" );
+         g.get( "audio", audio, "" );
+         g.get( "first", firstS, "1" );
+         g.get( "last", lastS, "50" );
+         g.get( "start", startS, "1" );
+         g.get( "end", endS, "50" );
 
          boost::int64_t first = strtoll( firstS, NULL, 10 );
          boost::int64_t last = strtoll( lastS, NULL, 10 );
          boost::int64_t start = strtoll( startS, NULL, 10 );
          boost::int64_t end = strtoll( endS, NULL, 10 );
-	 
-	 mrv::LoadInfo info( filename, first, last, start, end, audio );
-	 files.push_back( info );
+
+         mrv::LoadInfo info( filename, first, last, start, end, audio );
+         files.push_back( info );
       }
    }
 
@@ -138,7 +139,7 @@ void load_new_files( void* s )
        load_files( files, ui );
 
        std::string lockfile = mrv::lockfile();
-       
+
        if(fs::exists(lockfile))
        {
            if ( ! fs::remove( lockfile ) )
@@ -150,14 +151,16 @@ void load_new_files( void* s )
        base.set( "pid", 1 );
    }
 
-   Fl::repeat_timeout( 1.0, load_new_files, ui ); 
+   Fl::repeat_timeout( 1.0, load_new_files, ui );
 }
 
-int main( int argc, const char** argv ) 
+int main( int argc, const char** argv )
 {
   Fl::scheme(NULL);
   Fl::get_system_colors();
-  
+#ifdef LINUX
+  Fl_File_Icon::load_system_icons();
+#endif
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
@@ -165,19 +168,19 @@ int main( int argc, const char** argv )
 
     const char* tmp = setlocale(LC_ALL, N_(""));
 
-  
+
   // Create and install global locale
   std::locale::global(boost::locale::generator().generate( N_("") ));
   // Make boost.filesystem use it
   boost::filesystem::path::imbue(std::locale());
- 
+
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
   if ( tmp )
   {
       loc = strdup( tmp );
   }
-  
+
 
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
@@ -260,7 +263,7 @@ int main( int argc, const char** argv )
                   {
                       char buf[256];
                       sprintf( buf, "file%d", idx );
-	
+
                       Fl_Preferences ui( base, buf );
                       ui.set( "filename", (*i).filename.c_str() );
                       ui.set( "audio", (*i).audio.c_str() );
@@ -281,7 +284,7 @@ int main( int argc, const char** argv )
                   }
                   base.flush();
               }
-              
+
           if ( idx == 0 )
           {
               mrvALERT( "Another instance of mrViewer is open.\n"
@@ -321,13 +324,13 @@ int main( int argc, const char** argv )
 
       if ( single_instance )
           Fl::add_timeout( 1.0, load_new_files, ui );
-      
+
       if (opts.host.empty() && opts.port != 0)
       {
           mrv::ServerData* data = new mrv::ServerData;
           data->ui = ui;
           data->port = opts.port;
-          boost::thread( boost::bind( mrv::server_thread, 
+          boost::thread( boost::bind( mrv::server_thread,
                                       data ) );
       }
       else if ( ! opts.host.empty() && opts.port != 0 )
@@ -339,15 +342,15 @@ int main( int argc, const char** argv )
           char buf[128];
           sprintf( buf, "%d", opts.port );
           data->group = buf;
-          
-          boost::thread( boost::bind( mrv::client_thread, 
+
+          boost::thread( boost::bind( mrv::client_thread,
                                       data ) );
       }
 
       if ( single_instance )
           Fl::add_timeout( 1.0, load_new_files, ui );
-      
-    
+
+
       ui->uiMain->show();   // so run() does something
       ok = Fl::run();
       }
@@ -396,7 +399,7 @@ int main( int argc, const char** argv )
       break;
   }
   MagickWandTerminus();
-  
+
 
   return ok;
 }
@@ -407,10 +410,10 @@ int main( int argc, const char** argv )
 #include <windows.h>
 
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
-		     LPSTR lpCmdLine, int nCmdShow )
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+                     LPSTR lpCmdLine, int nCmdShow )
 {
-   
+
 #ifdef ALLOC_CONSOLE
     AllocConsole();
     freopen("conin$", "r", stdin);
@@ -419,14 +422,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
     int rc = main( __argc, __argv );
-   
+
 #ifdef ALLOC_CONSOLE
     fclose(stdin);
     fclose(stdout);
     fclose(stderr);
 #endif
 
-    return rc; 
+    return rc;
 }
 
 #endif
