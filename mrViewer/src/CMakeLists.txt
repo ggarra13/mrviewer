@@ -71,6 +71,13 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/lib
       )
 
+    FIND_LIBRARY( png png
+      PATHS
+      /usr/local/lib
+      /usr/lib/x86_64-linux-gnu/
+      /usr/lib
+      )
+    
     FIND_LIBRARY( Zlib z
       PATHS
       /usr/local/lib
@@ -88,7 +95,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
     ADD_COMPILE_OPTIONS( -O3 -fdiagnostics-color=always -msse )
     SET(OS_LIBRARIES
-      asound ass ${Xpm} png ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx
+      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx
       )
 
   ENDIF(APPLE)
