@@ -309,8 +309,8 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
 
                 if ( opengl )
                 {
-                    unsigned w = img->hires()->width();
-                    unsigned h = img->hires()->height();
+                    unsigned w = img->left()->width();
+                    unsigned h = img->left()->height();
                     img->width( w );
                     img->height( h );
                 }
@@ -340,7 +340,7 @@ void save_movie_or_sequence( const char* file, const mrv::ViewerUI* uiMain,
 
             // Store real frame image we may replace
             float gamma = img->gamma();
-            mrv::image_type_ptr old_i = img->hires();
+            mrv::image_type_ptr old_i = img->left();
 
             if ( opengl )
             {
