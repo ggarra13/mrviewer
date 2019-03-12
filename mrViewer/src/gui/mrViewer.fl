@@ -554,7 +554,7 @@ uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiMovePic->value(0);}
-          tooltip {Area Select Tool} image not_inlined xywh {35 25 43 35} value 1
+          tooltip {Area Select Tool} xywh {35 25 43 35} value 1
           code0 {o->value(1);
 o->image( scrub );}
         }
@@ -565,7 +565,7 @@ o->value(1);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);}
-          tooltip {Area Select Tool} image not_inlined xywh {34 64 43 35} value 1
+          tooltip {Area Select Tool} xywh {34 64 43 35} value 1
           code0 {o->value(1);
 o->image( select_pic );}
         }
@@ -576,7 +576,7 @@ o->value(1);
 uiSelection->value(0);
 uiErase->value(0);
 uiText->value(0);}
-          tooltip {Freehand Drawing Tool} image not_inlined xywh {82 64 40 35}
+          tooltip {Freehand Drawing Tool} xywh {82 64 40 35}
           code0 {o->image( draw );}
         }
         Fl_Button uiErase {
@@ -586,7 +586,7 @@ o->value(1);
 uiSelection->value(0);
 uiDraw->value(0);
 uiText->value(0);}
-          tooltip {Eraser Tool} image not_inlined xywh {82 105 40 35}
+          tooltip {Eraser Tool} xywh {82 105 40 35}
           code0 {o->image( erase );}
         }
         Fl_Button uiText {
@@ -609,7 +609,7 @@ v->uiView->text_mode();}
 
 if ( !v->uiView->has_undo() )
  o->deactivate();}
-            tooltip {Undo Last Shape Drawn} image not_inlined xywh {40 425 34 35}
+            tooltip {Undo Last Shape Drawn} xywh {40 425 34 35}
             code0 {o->image( undo );
 if ( !m->uiView->has_undo() )
  o->deactivate();
@@ -623,7 +623,7 @@ if ( !v->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
-            tooltip {Redo Previous Shape Drawn} image not_inlined xywh {80 425 34 35}
+            tooltip {Redo Previous Shape Drawn} xywh {80 425 34 35}
             code0 {o->image( redo );
 if ( !m->uiView->has_redo() )
    o->deactivate();
@@ -684,7 +684,7 @@ uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
 uiScrub->value(0);}
-          tooltip {Area Select Tool} image not_inlined xywh {80 25 43 35} value 1
+          tooltip {Area Select Tool} xywh {80 25 43 35} value 1
           code0 {o->image( move_pic );}
         }
       }
