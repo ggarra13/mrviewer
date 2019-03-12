@@ -42,7 +42,7 @@ using namespace std;
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
- #include <FL/Enumerations.H>
+#include <FL/Enumerations.H>
 
 
 #include "core/mrvThread.h"
@@ -177,7 +177,7 @@ class ColorWidget : public Fl_Box
 
 public:
     ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
-        Fl_Box( x, y, w, h, l )
+    Fl_Box( x, y, w, h, l )
     {
     }
 
@@ -677,13 +677,12 @@ void ColorInfo::update( const CMedia* img,
 
         Fl_Color col;
 
-        {
+	{
+	    float r = pmean.r;
+	    float g = pmean.g;
+	    float b = pmean.b;
 
-            float r = pmean.r;
-            float g = pmean.g;
-            float b = pmean.b;
-
-            if ( r < 0.f ) r = 0.0f;
+	    if ( r < 0.f ) r = 0.0f;
             else if ( r > 1.f ) r = 1.0f;
 
             if ( g < 0.f ) g = 0.0f;
@@ -697,10 +696,10 @@ void ColorInfo::update( const CMedia* img,
             else
             {
                 col = fl_rgb_color((uchar)(r*255),
-				   (uchar)(g*255),
-				   (uchar)(b*255));
-            }
-        }
+			       (uchar)(g*255),
+			       (uchar)(b*255));
+	    }
+	}
 
         dcol->color( col );
         dcol->redraw();
