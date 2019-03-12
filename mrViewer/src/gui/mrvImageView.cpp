@@ -1870,7 +1870,7 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     // If image is smaller than display window, we are dealing
     // with a RY or BY image.  We divide the window coordinates by 2.
     //
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     std::string ch;
     if ( img->channel() ) ch = img->channel();
     if ( pic && ( ch == "RY" || ch == "BY" ) )
@@ -2024,7 +2024,7 @@ void ImageView::center_image()
     double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
 
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     int H = dpw.h();
     if ( H == 0 ) H = pic->height();
     int W = dpw.w();
@@ -4518,7 +4518,7 @@ void ImageView::pixel_processed( const CMedia* img,
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     if (!pic) return;
 
     bool blend = pic->format() != image_type::kLumma;
@@ -5165,7 +5165,7 @@ void ImageView::mouseMove(int x, int y)
     if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
     {
         double xf, yf;
-        const mrv::image_type_ptr picb = bgr->hires();
+        const mrv::image_type_ptr picb = bgr->left();
         const mrv::Recti& dpw = img->display_window();
         const mrv::Recti& daw = img->data_window();
         const mrv::Recti& dpwb = bgr->display_window(picb->frame());
