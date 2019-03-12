@@ -303,7 +303,7 @@ void Waveform::draw_pixels( const fltk::Rectangle& r )
         return;
     }
     CMedia* img = m->image();
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     if ( !pic ) return;
 
 
