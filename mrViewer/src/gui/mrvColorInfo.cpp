@@ -409,7 +409,7 @@ void ColorInfo::update( const CMedia* img,
 
 
 
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
         if (!pic) return;
 
         unsigned count = 0;
