@@ -59,7 +59,7 @@
 #: gui/mrvHotkey.cpp:78 gui/mrvHotkey.cpp:80 gui/mrvHotkey.cpp:81
 #: gui/mrvHotkey.cpp:82 gui/mrvHotkey.cpp:85 gui/mrvHotkey.cpp:87
 #: gui/mrvHotkey.cpp:88 gui/mrvHotkey.cpp:462 gui/mrvColorInfo.cpp:385
-#: gui/mrvColorInfo.cpp:710 gui/mrvFileRequester.cpp:153
+#: gui/mrvColorInfo.cpp:709 gui/mrvFileRequester.cpp:153
 #: gui/mrvFileRequester.cpp:177 gui/mrvFileRequester.cpp:233
 #: gui/mrvFileRequester.cpp:587 gui/mrvFileRequester.cpp:643
 #: gui/mrvFileRequester.cpp:653 gui/mrvFileRequester.cpp:668
@@ -108,7 +108,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-12 06:56-0300\n"
+"POT-Creation-Date: 2019-03-12 07:42-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,23 +118,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: gui/FLU/Flu_File_Chooser.cpp:309 gui/FLU/Flu_File_Chooser.cpp:354
-#: gui/mrvHotkey.cpp:468 gui/mrvColorInfo.cpp:713 gui/mrvColorInfo.cpp:715
-#: gui/mrvColorInfo.cpp:717 gui/mrvColorInfo.cpp:722 gui/mrvColorInfo.cpp:723
-#: gui/mrvColorInfo.cpp:724 gui/mrvColorInfo.cpp:727 gui/mrvColorInfo.cpp:728
-#: gui/mrvColorInfo.cpp:729 gui/mrvColorInfo.cpp:739 gui/mrvColorInfo.cpp:740
-#: gui/mrvColorInfo.cpp:741 gui/mrvColorInfo.cpp:745 gui/mrvColorInfo.cpp:747
-#: gui/mrvColorInfo.cpp:749 gui/mrvColorInfo.cpp:758 gui/mrvColorInfo.cpp:759
-#: gui/mrvColorInfo.cpp:763 gui/mrvColorInfo.cpp:764 gui/mrvColorInfo.cpp:768
-#: gui/mrvColorInfo.cpp:769 gui/mrvColorInfo.cpp:773 gui/mrvColorInfo.cpp:774
-#: gui/mrvColorInfo.cpp:778 gui/mrvColorInfo.cpp:779 gui/mrvColorInfo.cpp:783
-#: gui/mrvColorInfo.cpp:784 gui/mrvColorInfo.cpp:788 gui/mrvColorInfo.cpp:789
-#: gui/mrvColorInfo.cpp:793 gui/mrvColorInfo.cpp:794 gui/mrvColorInfo.cpp:798
-#: gui/mrvColorInfo.cpp:799 gui/mrvColorInfo.cpp:803 gui/mrvColorInfo.cpp:804
-#: gui/mrvColorInfo.cpp:809 gui/mrvColorInfo.cpp:810 gui/mrvColorInfo.cpp:815
-#: gui/mrvColorInfo.cpp:832 gui/mrvColorInfo.cpp:833 gui/mrvColorInfo.cpp:834
-#: gui/mrvColorInfo.cpp:837 gui/mrvColorInfo.cpp:838 gui/mrvColorInfo.cpp:839
-#: gui/mrvColorInfo.cpp:849 gui/mrvColorInfo.cpp:850 gui/mrvColorInfo.cpp:851
-#: gui/mrvColorInfo.cpp:855 gui/mrvColorInfo.cpp:857 gui/mrvColorInfo.cpp:859
+#: gui/mrvHotkey.cpp:468 gui/mrvColorInfo.cpp:712 gui/mrvColorInfo.cpp:714
+#: gui/mrvColorInfo.cpp:716 gui/mrvColorInfo.cpp:721 gui/mrvColorInfo.cpp:722
+#: gui/mrvColorInfo.cpp:723 gui/mrvColorInfo.cpp:726 gui/mrvColorInfo.cpp:727
+#: gui/mrvColorInfo.cpp:728 gui/mrvColorInfo.cpp:738 gui/mrvColorInfo.cpp:739
+#: gui/mrvColorInfo.cpp:740 gui/mrvColorInfo.cpp:744 gui/mrvColorInfo.cpp:746
+#: gui/mrvColorInfo.cpp:748 gui/mrvColorInfo.cpp:757 gui/mrvColorInfo.cpp:758
+#: gui/mrvColorInfo.cpp:762 gui/mrvColorInfo.cpp:763 gui/mrvColorInfo.cpp:767
+#: gui/mrvColorInfo.cpp:768 gui/mrvColorInfo.cpp:772 gui/mrvColorInfo.cpp:773
+#: gui/mrvColorInfo.cpp:777 gui/mrvColorInfo.cpp:778 gui/mrvColorInfo.cpp:782
+#: gui/mrvColorInfo.cpp:783 gui/mrvColorInfo.cpp:787 gui/mrvColorInfo.cpp:788
+#: gui/mrvColorInfo.cpp:792 gui/mrvColorInfo.cpp:793 gui/mrvColorInfo.cpp:797
+#: gui/mrvColorInfo.cpp:798 gui/mrvColorInfo.cpp:802 gui/mrvColorInfo.cpp:803
+#: gui/mrvColorInfo.cpp:808 gui/mrvColorInfo.cpp:809 gui/mrvColorInfo.cpp:814
+#: gui/mrvColorInfo.cpp:831 gui/mrvColorInfo.cpp:832 gui/mrvColorInfo.cpp:833
+#: gui/mrvColorInfo.cpp:836 gui/mrvColorInfo.cpp:837 gui/mrvColorInfo.cpp:838
+#: gui/mrvColorInfo.cpp:848 gui/mrvColorInfo.cpp:849 gui/mrvColorInfo.cpp:850
+#: gui/mrvColorInfo.cpp:854 gui/mrvColorInfo.cpp:856 gui/mrvColorInfo.cpp:858
 #: gui/mrvVersion.cpp:344 gui/mrvVersion.cpp:345 gui/mrvVersion.cpp:409
 msgid "\t"
 msgstr ""
@@ -197,7 +197,7 @@ msgstr ""
 #: core/stubImage.cpp:218 core/stubImage.cpp:275 core/mrvClient.cpp:240
 #: core/mrvServer.cpp:1894 core/Sequence.cpp:895
 #: gui/FLU/Flu_File_Chooser.cpp:2261 gui/FLU/Flu_File_Chooser.cpp:2262
-#: gui/mrvColorInfo.cpp:865 gui/mrvImageBrowser.cpp:2636
+#: gui/mrvColorInfo.cpp:864 gui/mrvImageBrowser.cpp:2636
 #: gui/mrvImageBrowser.cpp:2638 video/mrvGLEngine.cpp:3033
 #: standalone/mrvCommandLine.cpp:122
 #, c-format
@@ -9120,8 +9120,8 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:182
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:207
-#: core/Sequence.cpp:1019 core/mrvCPU.cpp:266 gui/mrvColorInfo.cpp:759
-#: gui/mrvColorInfo.cpp:764
+#: core/Sequence.cpp:1019 core/mrvCPU.cpp:266 gui/mrvColorInfo.cpp:758
+#: gui/mrvColorInfo.cpp:763
 msgid "0"
 msgstr ""
 
@@ -9291,7 +9291,7 @@ msgid "0x%08x"
 msgstr ""
 
 #: core/CMedia_audio.cpp:216 core/aviImage.cpp:800 core/aviImage.cpp:2760
-#: gui/mrvColorInfo.cpp:765 standalone/main.cpp:122 standalone/main.cpp:124
+#: gui/mrvColorInfo.cpp:764 standalone/main.cpp:122 standalone/main.cpp:124
 msgid "1"
 msgstr ""
 
@@ -10451,7 +10451,7 @@ msgstr ""
 msgid "5:1"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:763
+#: gui/mrvColorInfo.cpp:762
 msgid "6"
 msgstr ""
 
@@ -10586,7 +10586,7 @@ msgstr ""
 msgid "64x64x64"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:758
+#: gui/mrvColorInfo.cpp:757
 msgid "7"
 msgstr ""
 
@@ -10869,7 +10869,7 @@ msgstr ""
 msgid "8bits"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:760
+#: gui/mrvColorInfo.cpp:759
 msgid "9"
 msgstr ""
 
@@ -10997,9 +10997,9 @@ msgstr ""
 msgid ":"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:721 gui/mrvColorInfo.cpp:726 gui/mrvColorInfo.cpp:738
-#: gui/mrvColorInfo.cpp:743 gui/mrvColorInfo.cpp:831 gui/mrvColorInfo.cpp:836
-#: gui/mrvColorInfo.cpp:848 gui/mrvColorInfo.cpp:853
+#: gui/mrvColorInfo.cpp:720 gui/mrvColorInfo.cpp:725 gui/mrvColorInfo.cpp:737
+#: gui/mrvColorInfo.cpp:742 gui/mrvColorInfo.cpp:830 gui/mrvColorInfo.cpp:835
+#: gui/mrvColorInfo.cpp:847 gui/mrvColorInfo.cpp:852
 msgid ":\t"
 msgstr ""
 
@@ -12158,11 +12158,11 @@ msgstr ""
 msgid "@C4286611456@c"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:743 gui/mrvColorInfo.cpp:853
+#: gui/mrvColorInfo.cpp:742 gui/mrvColorInfo.cpp:852
 msgid "@b"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:711 gui/mrvColorInfo.cpp:753
+#: gui/mrvColorInfo.cpp:710 gui/mrvColorInfo.cpp:752
 msgid "@b\t"
 msgstr ""
 
@@ -12188,7 +12188,7 @@ msgstr ""
 #: core/exrImage.cpp:325 core/exrImage.cpp:853 core/exrImage.cpp:873
 #: core/exrImage.cpp:1051 core/exrImage.cpp:1094 core/exrImage.cpp:1590
 #: core/exrImage.cpp:1644 core/exrImage.cpp:1761 core/exrImage.cpp:1976
-#: core/exrImage.cpp:2782 core/exrImage.cpp:3384 gui/mrvColorInfo.cpp:719
+#: core/exrImage.cpp:2782 core/exrImage.cpp:3384 gui/mrvColorInfo.cpp:718
 #: gui/mrvImageView.cpp:292 gui/mrvImageView.cpp:7347 gui/mrvVersion.cpp:396
 msgid "A"
 msgstr ""
@@ -12839,7 +12839,7 @@ msgstr ""
 #: core/exrImage.cpp:315 core/exrImage.cpp:816 core/exrImage.cpp:872
 #: core/exrImage.cpp:1042 core/exrImage.cpp:1051 core/exrImage.cpp:1095
 #: core/exrImage.cpp:1580 core/exrImage.cpp:1634 core/exrImage.cpp:1942
-#: core/exrImage.cpp:2778 core/exrImage.cpp:3378 gui/mrvColorInfo.cpp:717
+#: core/exrImage.cpp:2778 core/exrImage.cpp:3378 gui/mrvColorInfo.cpp:716
 #: gui/mrvImageView.cpp:288 gui/mrvImageView.cpp:7342 gui/mrvVectorscope.cpp:95
 msgid "B"
 msgstr ""
@@ -14952,7 +14952,7 @@ msgstr ""
 msgid "DateTime"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:774
+#: gui/mrvColorInfo.cpp:773
 msgid "Db"
 msgstr ""
 
@@ -15234,7 +15234,7 @@ msgstr ""
 msgid "Down"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:775
+#: gui/mrvColorInfo.cpp:774
 msgid "Dr"
 msgstr ""
 
@@ -16249,7 +16249,7 @@ msgstr ""
 #: core/exrImage.cpp:305 core/exrImage.cpp:815 core/exrImage.cpp:872
 #: core/exrImage.cpp:1051 core/exrImage.cpp:1094 core/exrImage.cpp:1584
 #: core/exrImage.cpp:1627 core/exrImage.cpp:1941 core/exrImage.cpp:2776
-#: core/exrImage.cpp:3372 gui/mrvColorInfo.cpp:715 gui/mrvImageView.cpp:286
+#: core/exrImage.cpp:3372 gui/mrvColorInfo.cpp:714 gui/mrvImageView.cpp:286
 #: gui/mrvImageView.cpp:7337 gui/mrvVectorscope.cpp:99
 msgid "G"
 msgstr ""
@@ -16650,7 +16650,7 @@ msgstr ""
 msgid "Green value of image pixel under mouse."
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:803 gui/mrvColorInfo.cpp:809
+#: gui/mrvColorInfo.cpp:802 gui/mrvColorInfo.cpp:808
 msgid "H"
 msgstr ""
 
@@ -16915,7 +16915,7 @@ msgstr ""
 msgid "Hybrid"
 msgstr ""
 
-#: core/wandImage.cpp:1219 gui/mrvColorInfo.cpp:769
+#: core/wandImage.cpp:1219 gui/mrvColorInfo.cpp:768
 msgid "I"
 msgstr ""
 
@@ -17837,8 +17837,8 @@ msgstr ""
 msgid "Kr"
 msgstr ""
 
-#: core/CMedia.cpp:4431 core/Sequence.cpp:286 gui/mrvColorInfo.cpp:783
-#: gui/mrvColorInfo.cpp:788 gui/mrvColorInfo.cpp:805 gui/mrvColorInfo.cpp:826
+#: core/CMedia.cpp:4431 core/Sequence.cpp:286 gui/mrvColorInfo.cpp:782
+#: gui/mrvColorInfo.cpp:787 gui/mrvColorInfo.cpp:804 gui/mrvColorInfo.cpp:825
 msgid "L"
 msgstr ""
 
@@ -18567,7 +18567,7 @@ msgstr ""
 msgid "Max. Texture Size:\t"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:721 gui/mrvColorInfo.cpp:831
+#: gui/mrvColorInfo.cpp:720 gui/mrvColorInfo.cpp:830
 msgid "Maximum"
 msgstr ""
 
@@ -18590,7 +18590,7 @@ msgstr ""
 msgid "Mb"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:743 gui/mrvColorInfo.cpp:853
+#: gui/mrvColorInfo.cpp:742 gui/mrvColorInfo.cpp:852
 msgid "Mean"
 msgstr ""
 
@@ -18656,7 +18656,7 @@ msgstr ""
 msgid "Microsoft Direct Draw Surface"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:726 gui/mrvColorInfo.cpp:836
+#: gui/mrvColorInfo.cpp:725 gui/mrvColorInfo.cpp:835
 msgid "Minimum"
 msgstr ""
 
@@ -20202,7 +20202,7 @@ msgstr ""
 msgid "Pxr24"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:770
+#: gui/mrvColorInfo.cpp:769
 msgid "Q"
 msgstr ""
 
@@ -20280,7 +20280,7 @@ msgstr ""
 #: core/exrImage.cpp:295 core/exrImage.cpp:814 core/exrImage.cpp:872
 #: core/exrImage.cpp:1051 core/exrImage.cpp:1094 core/exrImage.cpp:1576
 #: core/exrImage.cpp:1620 core/exrImage.cpp:1940 core/exrImage.cpp:2774
-#: core/exrImage.cpp:3366 core/Sequence.cpp:288 gui/mrvColorInfo.cpp:713
+#: core/exrImage.cpp:3366 core/Sequence.cpp:288 gui/mrvColorInfo.cpp:712
 #: gui/mrvImageView.cpp:284 gui/mrvImageView.cpp:7332 gui/mrvVectorscope.cpp:97
 msgid "R"
 msgstr ""
@@ -20514,7 +20514,7 @@ msgstr ""
 msgid "Random Y"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:738 gui/mrvColorInfo.cpp:848
+#: gui/mrvColorInfo.cpp:737 gui/mrvColorInfo.cpp:847
 msgid "Range"
 msgstr ""
 
@@ -20825,8 +20825,8 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2148
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2176
 #: core/CMedia.cpp:4476 core/CMedia_audio.cpp:2428 core/aviImage.cpp:3698
-#: core/aviImage.cpp:3745 core/aviImage.cpp:3821 gui/mrvColorInfo.cpp:804
-#: gui/mrvColorInfo.cpp:810 gui/mrvImageView.cpp:7333 gui/mrvVersion.cpp:399
+#: core/aviImage.cpp:3745 core/aviImage.cpp:3821 gui/mrvColorInfo.cpp:803
+#: gui/mrvColorInfo.cpp:809 gui/mrvImageView.cpp:7333 gui/mrvVersion.cpp:399
 msgid "S"
 msgstr ""
 
@@ -22420,7 +22420,7 @@ msgid "Type:             "
 msgstr ""
 
 #: core/exrImage.cpp:296 core/exrImage.cpp:1052 core/exrImage.cpp:1096
-#: core/exrImage.cpp:3367 gui/mrvColorInfo.cpp:779 gui/mrvImageView.cpp:284
+#: core/exrImage.cpp:3367 gui/mrvColorInfo.cpp:778 gui/mrvImageView.cpp:284
 #: gui/mrvImageView.cpp:7333
 msgid "U"
 msgstr ""
@@ -22807,7 +22807,7 @@ msgid "Using hardware shader profile: "
 msgstr ""
 
 #: core/exrImage.cpp:306 core/exrImage.cpp:1053 core/exrImage.cpp:1096
-#: core/exrImage.cpp:3373 gui/mrvColorInfo.cpp:780 gui/mrvColorInfo.cpp:811
+#: core/exrImage.cpp:3373 gui/mrvColorInfo.cpp:779 gui/mrvColorInfo.cpp:810
 #: gui/mrvImageView.cpp:286 gui/mrvImageView.cpp:7338 gui/mrvVersion.cpp:393
 msgid "V"
 msgstr ""
@@ -23600,7 +23600,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1800
 #: core/exrImage.cpp:297 core/exrImage.cpp:1052 core/exrImage.cpp:1095
-#: core/exrImage.cpp:3368 gui/mrvColorInfo.cpp:798 gui/mrvImageView.cpp:284
+#: core/exrImage.cpp:3368 gui/mrvColorInfo.cpp:797 gui/mrvImageView.cpp:284
 #: gui/mrvImageView.cpp:7332
 msgid "X"
 msgstr ""
@@ -23717,9 +23717,9 @@ msgstr ""
 #: core/exrImage.cpp:1952 core/exrImage.cpp:2758 core/exrImage.cpp:2765
 #: core/exrImage.cpp:2962 core/exrImage.cpp:3039 core/exrImage.cpp:3044
 #: core/exrImage.cpp:3051 core/exrImage.cpp:3090 core/exrImage.cpp:3116
-#: core/exrImage.cpp:3367 core/exrImage.cpp:3374 gui/mrvColorInfo.cpp:768
-#: gui/mrvColorInfo.cpp:773 gui/mrvColorInfo.cpp:778 gui/mrvColorInfo.cpp:795
-#: gui/mrvColorInfo.cpp:799 gui/mrvColorInfo.cpp:820 gui/mrvImageView.cpp:286
+#: core/exrImage.cpp:3367 core/exrImage.cpp:3374 gui/mrvColorInfo.cpp:767
+#: gui/mrvColorInfo.cpp:772 gui/mrvColorInfo.cpp:777 gui/mrvColorInfo.cpp:794
+#: gui/mrvColorInfo.cpp:798 gui/mrvColorInfo.cpp:819 gui/mrvImageView.cpp:286
 #: gui/mrvImageView.cpp:7337 gui/mrvVectorscope.cpp:98
 msgid "Y"
 msgstr ""
@@ -23821,7 +23821,7 @@ msgstr ""
 msgid "Y U V"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:823
+#: gui/mrvColorInfo.cpp:822
 msgid "Y'"
 msgstr ""
 
@@ -24033,7 +24033,7 @@ msgstr ""
 #: core/exrImage.cpp:3368 core/exrImage.cpp:3380 core/exrImage.cpp:3388
 #: core/iffImage.cpp:393 core/iffImage.cpp:586 core/iffImage.cpp:592
 #: core/iffImage.cpp:665 core/wandImage.cpp:286 core/wandImage.cpp:1183
-#: core/oiioImage.cpp:258 gui/mrvColorInfo.cpp:800 gui/mrvImageView.cpp:198
+#: core/oiioImage.cpp:258 gui/mrvColorInfo.cpp:799 gui/mrvImageView.cpp:198
 #: gui/mrvImageView.cpp:289 gui/mrvImageView.cpp:293 gui/mrvImageView.cpp:309
 #: gui/mrvImageView.cpp:1556 gui/mrvImageView.cpp:1581
 #: gui/mrvImageView.cpp:7342 gui/mrvVersion.cpp:204
@@ -24794,7 +24794,7 @@ msgstr ""
 msgid "`.\tc #FFF3A8"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:789 standalone/mrvCommandLine.cpp:370
+#: gui/mrvColorInfo.cpp:788 standalone/mrvCommandLine.cpp:370
 msgid "a"
 msgstr ""
 
@@ -25085,7 +25085,7 @@ msgstr ""
 msgid "await_output exception.  "
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:790
+#: gui/mrvColorInfo.cpp:789
 msgid "b"
 msgstr ""
 
@@ -29527,7 +29527,7 @@ msgstr ""
 msgid "type"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:784
+#: gui/mrvColorInfo.cpp:783
 msgid "u"
 msgstr ""
 
@@ -29699,7 +29699,7 @@ msgstr ""
 msgid "utcOffset"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:785
+#: gui/mrvColorInfo.cpp:784
 msgid "v"
 msgstr ""
 
@@ -30010,7 +30010,7 @@ msgstr ""
 msgid "writer"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:492 gui/mrvColorInfo.cpp:793
+#: gui/mrvColorInfo.cpp:492 gui/mrvColorInfo.cpp:792
 msgid "x"
 msgstr ""
 
@@ -30177,7 +30177,7 @@ msgstr ""
 msgid "xyY CIE xyY"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:794
+#: gui/mrvColorInfo.cpp:793
 msgid "y"
 msgstr ""
 
