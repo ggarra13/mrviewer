@@ -45,18 +45,14 @@ _column_separator( true ),
 _dragging ( false ),
 _auto_resize( false )
 {
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     init_sizes();
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 }
 
 // CHANGE CURSOR
 //     Does nothing if cursor already set to value specified.
 //
 void Browser::change_cursor(Fl_Cursor newcursor) {
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     if ( newcursor != _last_cursor ) {
-        std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
         fl_cursor(newcursor);
         _last_cursor = newcursor;
     }
@@ -110,7 +106,7 @@ int Browser::handle(int e)
 {
     // Not showing column separators? Use default Fl_Browser::handle() logic
     if ( ! column_separator() ) return(Fl_Browser::handle(e));
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+
     // Handle column resizing
     int ret = 0;
     switch ( e ) {
@@ -172,8 +168,6 @@ int Browser::handle(int e)
 void Browser::layout()
 {
     int nchildren = children();
-
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     if ( _auto_resize )
     {
