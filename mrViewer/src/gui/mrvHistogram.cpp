@@ -128,7 +128,7 @@ void Histogram::count_pixels()
         return;
     }
 
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     if (!pic) return;
 
     tooltip( NULL );
