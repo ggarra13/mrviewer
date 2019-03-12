@@ -366,7 +366,6 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
     if ( compact_images ) {
         title = _("Load Movie or Sequence");
         pattern = kALL_PATTERN;
-        std::cerr << kALL_PATTERN << std::endl;
     }
 
     return file_multi_requester( title.c_str(), pattern.c_str(),
@@ -449,8 +448,8 @@ const char* open_icc_profile( const char* startfile,
 #endif
     }
 
-    std::string kICC_PATTERN   = _("Color Profiles (*." ) +
-                                 kProfilePattern + ")";
+    std::string kICC_PATTERN   = _("Color Profiles\t{*." ) +
+                                 kProfilePattern + "}\n";
 
     const char* profile = file_single_requester( title, kICC_PATTERN.c_str(),
                           startfile );
@@ -503,8 +502,8 @@ const char* open_ctl_dir( const char* startfile,
 const char* open_subtitle_file( const char* startfile,
                                 ViewerUI* main )
 {
-    std::string kSUBTITLE_PATTERN = _( "Subtitles (*.{" ) +
-                                    kSubtitlePattern + "})\t";
+    std::string kSUBTITLE_PATTERN = _( "Subtitles\t*.{" ) +
+                                    kSubtitlePattern + "}\n";
 
     std::string title = _("Load Subtitle");
 
@@ -523,8 +522,8 @@ const char* open_subtitle_file( const char* startfile,
 const char* open_audio_file( const char* startfile,
                              ViewerUI* main )
 {
-    std::string kAUDIO_PATTERN = _( "Audios (*.{" ) +
-                                 kAudioPattern + "})\t";
+    std::string kAUDIO_PATTERN = _( "Audios\t*.{" ) +
+                                 kAudioPattern + "}\n";
 
     std::string title = _("Load Audio");
 
@@ -659,8 +658,8 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
 
 std::string open_ocio_config( const char* startfile )
 {
-    std::string kOCIO_PATTERN = _("OCIO config (*.{") +
-                                kOCIOPattern + "})\t";
+    std::string kOCIO_PATTERN = _("OCIO config\t*.{") +
+                                kOCIOPattern + "}\n";
     std::string title = _("Load OCIO Config");
 
     const char* file = file_single_requester( title.c_str(),
@@ -757,7 +756,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
 
     std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
                                 kReelPattern + "}\n";
-    std::string kIMAGE_PATTERN = _("All Recognized *.{") +
+    std::string kIMAGE_PATTERN = _("All Recognized\t*.{") +
                                  kImagePattern + "," + kMoviePattern +
                                  "," + kReelPattern + "," +
                                  kAudioPattern + "}\n" +
@@ -809,7 +808,7 @@ void save_sequence_file( ViewerUI* uiMain,
 {
     std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
                                 kReelPattern + "}\n";
-    std::string kIMAGE_PATTERN = _("All Recognized *.{") +
+    std::string kIMAGE_PATTERN = _("All Recognized\t*.{") +
                                  kImagePattern + "," + kMoviePattern +
                                  "," + kReelPattern + "," +
                                  kAudioPattern + "}\n" +
@@ -863,8 +862,8 @@ void attach_audio( CMedia* image, const char* startfile,
 const char* save_reel( const char* startdir,
                        ViewerUI* main )
 {
-    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
-                                kReelPattern + "})\t";
+    std::string kREEL_PATTERN = _( "Reels\t*.{" ) +
+                                kReelPattern + "}\n";
 
     std::string title = _("Save Reel");
     if ( !startdir ) startdir = "";
