@@ -381,10 +381,11 @@ void ColorInfo::update( const CMedia* img,
 {
     if ( !visible_r() ) return;
 
+    
     area->label( "" );
 
     std::ostringstream text;
-    if ( img && (selection.w() > 0 || selection.h() < 0) )
+    if ( img && (selection.w() > 0 || selection.h() > 0) )
     {
         CMedia::Pixel hmin( std::numeric_limits<float>::max(),
                             std::numeric_limits<float>::max(),
@@ -408,7 +409,7 @@ void ColorInfo::update( const CMedia* img,
 
 
 
-        mrv::image_type_ptr pic = img->hires();
+        mrv::image_type_ptr pic = img->left();
         if (!pic) return;
 
         unsigned count = 0;
@@ -645,6 +646,8 @@ void ColorInfo::update( const CMedia* img,
                 hmean.a += hsv.a;
             }
         }
+
+
 
 
         float c = float(count);
