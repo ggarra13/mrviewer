@@ -489,6 +489,8 @@ void Timeline::draw()
     draw_box();
 
 
+    Fl_Slider::draw();
+    // mrv::Recti r( x(), y(), w(), h() );
     mrv::Recti r( w(), h() );
 
     // Box* box = this->box();
@@ -620,13 +622,12 @@ void Timeline::draw()
              ( _display_min != minimum() || _display_max != maximum() ) )
         {
             // @TODO: fltk1.4
-            // draw_selection(r);
+            draw_selection(r);
         }
 
     }
 
 
-    Fl_Slider::draw();
     // draw( r, f2, r.y()==0 );
 
     // @TODO: fltk1.4 draw the focus indicator inside the box:
