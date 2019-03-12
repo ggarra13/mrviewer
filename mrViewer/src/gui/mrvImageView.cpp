@@ -4015,7 +4015,7 @@ int ImageView::leftMouseDown(int x, int y)
             char buf[256];
             const char* tmp;
             Fl_Menu_Item* item;
-            int num = uiMain->uiWindows->children();
+            int num = uiMain->uiWindows->children() - 1;
             int i;
             for ( i = 0; i < num; ++i )
             {
