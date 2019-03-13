@@ -196,7 +196,6 @@ protected:
 
 public:
     float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
-    OCIO::GpuShaderDesc shaderDesc;
 
 protected:
     const mrv::ViewerUI* view;
