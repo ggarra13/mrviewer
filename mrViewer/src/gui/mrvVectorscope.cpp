@@ -57,29 +57,43 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     mrv::Recti r2( diameter_, diameter_ );
 
-    fl_push_matrix();
-    fl_translate( r.w()/2 - W, r.h()/2 - H );
-    fl_line( W, 0, W, diameter_ );
-    fl_line( 0, H, diameter_, H );
-    fl_pop_matrix();
-
     int W2 = r.w() / 2;
     int H2 = r.h() / 2;
+    
     int R2 = diameter_ / 2;
     float angle = 32;
+    // Draw diagonal center lines
     for ( i = 0; i < 4; ++i, angle += 90 )
     {
         fl_push_matrix();
-        fl_translate( W2, H2 );
+	fl_translate( W2 + W, H2 + H );
         fl_rotate(angle);
-        fl_line( 0, 4, 0, R2 );
+	fl_begin_line();
+          fl_vertex( 0, 4 );
+	  fl_vertex( 0, R2 );
+	fl_end_line();
         fl_pop_matrix();
     }
-
+    
+    // Draw cross
     fl_push_matrix();
-    fl_translate( r.w()/2 - W, r.h()/2 - H );
+    fl_translate( W2, H2 );
+	fl_begin_line();
+	  fl_vertex( W, 0);
+	  fl_vertex( W, diameter_ );
+	fl_end_line();
+	fl_begin_line();
+	   fl_vertex( 0, H );
+           fl_vertex( diameter_, H );
+	fl_end_line();
+    fl_pop_matrix();
+
+
+    // Draw surronding circle
+    fl_push_matrix();
+    fl_translate( W2 - W, H2 - H );
     fl_begin_line();
-    fl_arc( r2.x(), r2.y(), r2.w(), r2.h(), 0, 360 ); // @TODO: fltk1.4 fl_chord
+       fl_arc( r2.x(), r2.y(), r2.w(), r2.h(), 0, 360 ); // @TODO: fltk1.4 fl_chord
     fl_end_line();
     fl_pop_matrix();
 
@@ -87,8 +101,9 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     int RW  = int( diameter_ * 0.05f );
     int RH  = RW;
 
+    // Translate cursor to center of drawing
     fl_push_matrix();
-    fl_translate( W2, H2 );
+    fl_translate( W2 + W, H2 + H );
 
     static const char* names[] = {
         "C",
@@ -99,6 +114,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
         "G"
     };
 
+    // Draw rectangles with letters near them
     angle = 15;
     for ( i = 0; i < 6; ++i, angle += 60 )
     {
@@ -106,13 +122,22 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
         fl_rotate(angle);
         fl_translate( 0, int(W * 0.75f) );
 
-        fl_line( -RW, -RH, RW, -RH );
-        fl_line( RW, -RH, RW, RH );
-        fl_line( -RW,  RH, RW, RH );
-        fl_line( -RW,  RH, -RW, -RH );
+	fl_begin_loop();
+	fl_vertex(  -RW, -RH );
+	fl_vertex( RW, -RH );
+        fl_vertex( RW, -RH );
+	fl_vertex( RW, RH );
+        fl_vertex( -RW,  RH );
+	fl_vertex( RW, RH );
+        fl_vertex( -RW,  RH );
+	fl_vertex( -RW, -RH );
+	fl_end_loop();
 
-        fl_translate( 0, int(W * 0.15f) );
+        fl_pop_matrix();
+	
+        fl_push_matrix();
 
+	fl_translate( 0, int(W * 0.15f) );
         fl_draw(names[i], 1, 0, 0);
 
         fl_pop_matrix();
@@ -125,12 +150,16 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
 void Vectorscope::draw()
 {
-    mrv::Recti r( w(), h() );
     draw_box();
 
+    mrv::Recti r( Fl::box_dx(box()),
+		  Fl::box_dy(box()),
+		  Fl::box_dw(box()),
+		  Fl::box_dh(box()) );
+    
     diameter_ = h();
     if ( w() < diameter_ ) diameter_ = w();
-    diameter_ = int(diameter_ * 0.9f );
+    diameter_ *= 0.95;
 
     draw_grid(r);
     draw_pixels(r);
@@ -147,11 +176,17 @@ void Vectorscope::draw_pixel( const mrv::Recti& r,
 			    (unsigned char)(rgb.g * 255),
 			    (unsigned char)(rgb.b * 255) ) );
 
+    int W2 = (r.w() + diameter_) / 2;
+    int H2 = (r.h() + diameter_ )/ 2;
+    
     fl_push_matrix();
-    fl_translate( r.w()/2, r.h()/2 );
+    fl_translate( W2, H2 );
     fl_rotate( -165.0f + hsv.r * 360.0f );
     fl_scale( hsv.g * 0.375f );
-    fl_line( 0, diameter_, 1, diameter_+1 );
+    fl_begin_line();
+    fl_vertex( 0, diameter_ );
+    fl_vertex( 1, diameter_+1 );
+    fl_end_line();
     fl_pop_matrix();
 }
 
