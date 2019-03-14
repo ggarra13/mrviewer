@@ -1571,7 +1571,7 @@ bool flush_video_and_audio( const CMedia* img )
         while( ret >= 0 ) {
 
             const char* desc;
-            switch (s->codec->codec_type) {
+            switch (s->codecpar->codec_type) {
             case AVMEDIA_TYPE_AUDIO:
                 desc   = "audio";
                 break;
