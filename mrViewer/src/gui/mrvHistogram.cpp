@@ -33,7 +33,6 @@
 #endif
 
 #include <FL/Enumerations.H>
-#include <FL/Fl_Rect.H>
 #include <FL/fl_draw.H>
 
 #include "GL/glew.h"
@@ -76,7 +75,7 @@ lastFrame( std::numeric_limits< int64_t >::min() )
 }
 
 
-void Histogram::draw_grid(const Fl_Rect& r)
+void Histogram::draw_grid(const mrv::Recti& r)
 {
 //     fl_color( FL_GRAY0 );
 
@@ -91,7 +90,7 @@ void Histogram::draw_grid(const Fl_Rect& r)
 
 void Histogram::draw()
 {
-    Fl_Rect r( 0, 0, w(), h() );
+    mrv::Recti r( 0, 0, w(), h() );
     draw_box();
 
     // draw_grid(r);
@@ -260,7 +259,7 @@ float Histogram::histogram_scale( float val, float maxVal )
     }
 }
 
-void Histogram::draw_pixels( const Fl_Rect& r )
+void Histogram::draw_pixels( const mrv::Recti& r )
 {
     count_pixels();
 
