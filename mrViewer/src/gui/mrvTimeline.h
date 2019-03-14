@@ -29,9 +29,8 @@
 
 #include <vector>
 
-#include <FL/Fl_Slider.H>
-
 #include "core/mrvRectangle.h"
+#include "gui/mrvSlider.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvMedia.h"
 
@@ -48,7 +47,7 @@ class media;
 }
 
 
-class Timeline : public Fl_Slider
+class Timeline : public mrv::Slider
 {
 public:
     typedef CMedia::Mutex   Mutex;
@@ -80,9 +79,6 @@ public:
         _display = x;
         redraw();
     }
-
-    inline int tick_size() const { return _tick_size; }
-    inline void tick_size(int i) { _tick_size = i; }
     
     inline bool edl() const {
         return _edl;
@@ -164,7 +160,6 @@ protected:
     static mrv::Timecode::Display _display;
     bool   _edl;
     bool _draw_cache;
-    int   _tick_size;
     int64_t _tc;
     double _fps;
     double _display_min;
