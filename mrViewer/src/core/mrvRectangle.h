@@ -86,9 +86,9 @@ namespace mrv
     void set_b(T v) {h_ = v-y_;}
 
   /*! Integer center position. Rounded to the left if w() is odd. */
-      inline T center_x() const {return x_+(w_>>1);}
+      inline T center_x() const {return x_+ w_ / 2;}
       /*! Integer center position. Rounded to lower y if h() is odd. */
-      inline T center_y() const {return y_+(h_>>1);}
+      inline T center_y() const {return y_+ h_/ 2;}
       
       bool empty() const { return ( h_ == 0 && w_ == 0 ); }
       
