@@ -269,6 +269,7 @@ SET( SOURCES
   gui/mrvProgressReport.cpp
   gui/mrvReel.cpp
   gui/mrvSave.cpp
+  gui/mrvSlider.cpp
   gui/mrvStereoWindow.cpp
   gui/mrvTable.cpp
   gui/mrvTextDisplay.cpp
