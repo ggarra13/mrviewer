@@ -179,6 +179,7 @@ public:
     ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
     Fl_Box( x, y, w, h, l )
     {
+	box( FL_FRAME_BOX );
     }
 
     int mousePush( int x, int y )
@@ -204,7 +205,7 @@ public:
         switch( event )
         {
         case FL_PUSH:
-            if ( Fl::event_button() == 3 )
+            if ( Fl::event_button() == FL_RIGHT_MOUSE )
                 return mousePush( Fl::event_x(), Fl::event_y() );
         default:
             return Fl_Box::handle( event );
@@ -224,8 +225,9 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
     area->box( FL_FLAT_BOX );
     area->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
 
+    int w4 = w / 4;
     int w5 = w / 5;
-    static int col_widths[] = { w5, w5, w5, w5, w5, 0 };
+    static int col_widths[] = { w4, w5, w5, w5, w5, 0 };
     browser = new ColorBrowser( 0, area->h(), w, h - area->h() );
     browser->column_widths( col_widths );
     browser->resizable(browser);
@@ -662,15 +664,15 @@ void ColorInfo::update( const CMedia* img,
         hmean.b /= c;
         hmean.a /= c;
 
-        static const char* kR = "@C4286611456@c";
-        static const char* kG = "@C2164228096@c";
-        static const char* kB = "@C2155937536@c";
-        static const char* kA = "@C2964369408@c";
+        static const char* kR = "@C4286611456";
+        static const char* kG = "@C2164228096";
+        static const char* kB = "@C2155937536";
+        static const char* kA = "@C2964369408";
 
-        static const char* kH = "@C2964324352@c";
-        static const char* kS = "@C2964324352@c";
-        static const char* kV = "@C2964324352@c";
-        static const char* kL = "@C2964324352@c";
+        static const char* kH = "@C2964324352";
+        static const char* kS = "@C2964324352";
+        static const char* kV = "@C2964324352";
+        static const char* kL = "@C2964324352";
 
 
 
@@ -708,13 +710,13 @@ void ColorInfo::update( const CMedia* img,
 
         text.str("");
         text << "@b\t"
-             << kR
+             << kR << "@c"
              << _("R") << "\t"
-             << kG
+             << kG << "@c"
              << _("G") << "\t"
-             << kB
+             << kB << "@c"
              << _("B") << "\t"
-             << kA
+             << kA << "@c"
              << _("A")
              << std::endl
              << _("Maximum") << ":\t"
