@@ -27,6 +27,7 @@
 #ifndef mrvHistogram_h
 #define mrvHistogram_h
 
+#include <core/mrvRectangle.h>
 #include <FL/Fl_Box.H>
 
 class ViewerUI;
@@ -86,8 +87,8 @@ public:
     };
 
 protected:
-    void   draw_grid( const Fl_Rect& r );
-    void draw_pixels( const Fl_Rect& r );
+    void   draw_grid( const mrv::Recti& r );
+    void draw_pixels( const mrv::Recti& r );
 
     void count_pixels();
 
