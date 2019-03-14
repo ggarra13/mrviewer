@@ -40,6 +40,7 @@
 #include <GL/glut.h>
 // #include <GL/gl.h>
 
+#include <FL/Fl.H>
 #include <FL/gl.h>
 #include <FL/fl_draw.H>
 
