@@ -61,15 +61,16 @@ namespace mrv
 mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
-    Fl_Slider( x, y, w, h, l ),
-    _draw_cache( true ),
-    _edl( false ),
-    _tc( 0 ),
-    _fps( 24 ),
-    _display_min( kMaxFrame ),
-    _display_max( kMinFrame ),
-    uiMain( NULL )
+mrv::Slider( x, y, w, h, l ),
+_draw_cache( true ),
+_edl( false ),
+_tc( 0 ),
+_fps( 24 ),
+_display_min( kMaxFrame ),
+_display_max( kMinFrame ),
+uiMain( NULL )
 {
+    type( TICK_ABOVE );
     Fl_Slider::minimum( 1 );
     Fl_Slider::maximum( 50 );
 }
@@ -179,10 +180,6 @@ void Timeline::edl( bool x )
 
     redraw();
 }
-
-/*! Draw tick marks. These lines cross the passed rectangle perpendicular to
-  the slider direction. In the direction parallel to the slider direction
-  the box should have the same size as the area the slider moves in. */
 void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 {
     int x1, y1, x2, y2, dx, dy, w;
@@ -249,7 +246,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     if ( nummod <= 1 ) nummod = 1;
 
     Fl_Color textcolor = this->labelcolor();
-    Fl_Color linecolor = Imath::lerp(this->color(), textcolor, .66666f);
+    Fl_Color linecolor = FL_DARK_BLUE; //Imath::lerp(this->color(), textcolor, .66666f);
 
     fl_color(linecolor);
     char buffer[128];
@@ -311,7 +308,6 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     if (type()&16/*FILL*/) slider_size(0);
 
     mrv::Recti r = sr;
-
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
         mrv::Recti tr = r;
@@ -328,7 +324,8 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
             tr.set_y(r.center_y()+(slot?3:0));
             break;
         }
-        fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
+        //fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
+	fl_color( FL_BLACK );
         draw_ticks(tr, (slider_size()+1)/2);
     }
 
@@ -367,8 +364,6 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     else sglyph=0; // draw our own special glyph
 
     // @TODO: fltk1.4
-    // if ( active() )
-    //     draw_glyph(sglyph, s); // draw slider in new position
     return true;
 }
 
@@ -403,7 +398,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         c = CMedia::kStereoCache;
         fl_color( FL_GREEN );
     }
-
 
 
     int dx;
@@ -484,12 +478,13 @@ void Timeline::draw()
     // if (pushed()) f2 |= PUSHED;
     // flags &= ~HIGHLIGHT;
 
+    int f2 = 0;
+    
     // drawstyle(style(),flags);
 
     draw_box();
 
 
-    Fl_Slider::draw();
     // mrv::Recti r( x(), y(), w(), h() );
     mrv::Recti r( w(), h() );
 
@@ -628,8 +623,9 @@ void Timeline::draw()
     }
 
 
-    // draw( r, f2, r.y()==0 );
+    draw( r, f2, r.y()==0 );
 
+    Fl_Slider::draw();
     // @TODO: fltk1.4 draw the focus indicator inside the box:
     // drawstyle(style(),flags);
     //box->draw_symbol_overlay(r);
@@ -747,10 +743,38 @@ void change_timeline_display( ViewerUI* uiMain )
     uiMain->uiTimeline->display( d );
 }
 
-int Timeline::slider_position( double p, int w )
+int Timeline::slider_position( double value, int w ) 
 {
-    // @TODO: fltk1.4
-    return p * w;
+    double A = minimum();
+    double B = maximum();
+    if (B == A) return 0;
+    bool flip = B < A;
+    if (flip) {A = B; B = minimum();}
+    if (!horizontal()) flip = !flip;
+    // if both are negative, make the range positive:
+    if (B <= 0) {flip = !flip; double t = A; A = -B; B = -t; value = -value;}
+    double fraction;
+    if (!(slider_type() & kLOG)) {
+	// linear slider
+    fraction = (value-A)/(B-A);
+  } else if (A > 0) {
+    // logatithmic slider
+    if (value <= A) fraction = 0;
+    else fraction = (::log(value)-::log(A))/(::log(B)-::log(A));
+  } else if (A == 0) {
+    // squared slider
+    if (value <= 0) fraction = 0;
+    else fraction = sqrt(value/B);
+  } else {
+    // squared signed slider
+    if (value < 0) fraction = (1-sqrt(value/A))*.5;
+    else fraction = (1+sqrt(value/B))*.5;
+  }
+  if (flip) fraction = 1-fraction;
+  w -= slider_size(); if (w <= 0) return 0;
+  if (fraction >= 1) return w;
+  else if (fraction <= 0) return 0;
+  else return int(fraction*w+.5);
 }
 
 } // namespace mrv
