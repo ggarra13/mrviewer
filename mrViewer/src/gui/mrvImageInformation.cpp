@@ -55,7 +55,7 @@ using namespace std;
 #include <ImfTileDescriptionAttribute.h>
 #include <ImfVecAttribute.h>
 
-#include <FL/Fl_Rect.H>
+#include <core/mrvRectangle.h>
 #include <FL/Fl_Int_Input.H>
 
 #include "core/oiioImage.h"
@@ -693,7 +693,7 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
 
 
 
-    Fl_Rect r( Fl::box_dw(box()), Fl::box_dh(box()));
+    mrv::Recti r( Fl::box_dw(box()), Fl::box_dh(box()));
 
     m_all = new Fl_Pack( r.x(), r.y(), r.w()-20, r.h() );
     //m_all->set_vertical();
