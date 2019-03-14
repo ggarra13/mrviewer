@@ -38,7 +38,7 @@ using namespace std;
 
 #include <FL/Enumerations.H>
 #include <FL/fl_draw.H>
-#include <FL/Fl_Rect.H>
+#include <core/mrvRectangle.h>
 
 extern "C" {
 #include <libavutil/mathematics.h>
