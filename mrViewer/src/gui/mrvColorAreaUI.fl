@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1.03
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -37,13 +37,13 @@ class ColorAreaUI {open
       user_data this user_data_type {ColorAreaUI*}
       callback {v->main()->uiView->send_network( "ColorInfoWindow 0" );
 o->hide();} selected
-      xywh {430 501 400 260} type Double resizable
+      xywh {430 501 500 280} type Double resizable
       code0 {// Make the window transient
 main_ = main;
-o->size_range( 400, 260 );} non_modal visible
+o->size_range( 500, 280 );} non_modal visible
     } {
       Fl_Browser uiColorText {
-        xywh {0 0 400 260}
+        xywh {0 0 500 280}
         code0 {o->main( main );}
         class {mrv::ColorInfo}
       }
