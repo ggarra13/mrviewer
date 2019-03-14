@@ -36,8 +36,11 @@
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;
 
+#define FLTK_ABI_VERSION 10301
+
 #include <FL/fl_ask.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl_Tree_Prefs.H>
 #include <FL/Enumerations.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Menu_Item.H>
@@ -281,7 +284,6 @@ static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 namespace mrv {
 
 
-
 /**
  * Constructor
  *
@@ -298,7 +300,7 @@ dragging( NULL )
     showroot(0);				// don't show root of tree
     // Add some regular text nodes
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
-    item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
+    //item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
 }
 
 ImageBrowser::~ImageBrowser()
