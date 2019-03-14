@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0400
+version 1.03
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -65,7 +65,7 @@ decl {\#include "gui/mrvActionWindow.h"} {public local
 decl {\#include "gui/mrvVectorscope.h"} {public global
 }
 
-decl {\#include "mrViewer.h"} {selected private global
+decl {\#include "mrViewer.h"} {private global
 }
 
 decl {\#include "icons/icons.c"} {private local
@@ -77,19 +77,20 @@ decl {\#include "FL/fl_ask.H"} {private local
 decl {\#include "FL/Fl.H"} {private local
 }
 
-class VectorscopeUI {} {
+class VectorscopeUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
-  Function {make_window(ViewerUI* main)} {private
+  Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
       label Vectorscope
       user_data this user_data_type {VectorscopeUI*}
       callback {v->main()->uiView->send_network( "VectorscopeWindow 0" );
-o->hide();} open
-      xywh {107 386 325 240} type Double hide resizable
+o->hide();} open selected
+      xywh {107 386 325 240} type Double resizable
       code0 {// Make the window transient
-main_ = main;}
+main_ = main;} non_modal visible
     } {
       Fl_Box uiVectorscope {
         xywh {4 4 319 231}
