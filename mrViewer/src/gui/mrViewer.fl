@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0305
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -51,6 +51,9 @@ decl {\#include "gui/mrvCTLBrowser.h"} {public local
 }
 
 decl {\#include "mrvFileRequester.h"} {private local
+}
+
+decl {\#include "gui/mrvSlider.h"} {public local
 }
 
 decl {\#include "gui/mrvChoice.h"} {public local
@@ -882,7 +885,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label Waveform user_data_type {void*}
-              callback {uiVectorscope->uiMain->show();} selected
+              callback {uiVectorscope->uiMain->show();}
               xywh {10 10 100 20}
             }
             MenuItem {} {
@@ -924,7 +927,6 @@ uiICCProfiles->uiMain->show();}
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
-	      std::cerr << "*********** CALLBACK" << std::endl;
 	      v->uiView->channel( m );
 	      //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {30 5 90 19}
@@ -941,8 +943,8 @@ uiICCProfiles->uiMain->show();}
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
-v->uiGain->value( (float) o->value() );}
-              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 7 35 18} color -1733777408 selection_color 0 minimum 0.01 maximum 1024 step 0.001 value 1
+v->uiGain->value( (float) o->value() );} selected
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 7 35 18} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.001 value 1
               code0 {o->textsize( 12 );}
             }
             Fl_Slider uiGain {
@@ -950,6 +952,7 @@ v->uiGain->value( (float) o->value() );}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
               tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 7 70 18} type {Horz Knob} minimum 0.015625 maximum 64 step 1 value 1
+              class {mrv::Slider}
             }
             Fl_Menu_Button uiICS {
               label {Input Color Space}
