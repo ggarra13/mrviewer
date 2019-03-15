@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ Pixmap p, mask;
 #endif
 
 MainWindow::MainWindow( int W, int H, const char* title ) :
-Fl_Window( W, H, title )
+Fl_Double_Window( W, H, title )
 {
 //#ifdef _WIN32
     // Set icon does not work on Linux yet
