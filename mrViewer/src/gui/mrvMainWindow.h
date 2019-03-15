@@ -29,14 +29,14 @@
 #define mrvMainWindow_h
 
 
-#include <FL/Fl_Window.H>
+#include <FL/Fl_Double_Window.H>
 
 class ViewerUI;
 
 namespace mrv {
 
 
-class MainWindow : public Fl_Window
+class MainWindow : public Fl_Double_Window
 {
 public:
     MainWindow( int W, int H, const char* title );
