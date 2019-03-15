@@ -6282,8 +6282,19 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kToggleTopBar.match( rawkey ) )
     {
-        if ( uiMain->uiTopBar->visible() ) uiMain->uiTopBar->hide();
-        else uiMain->uiTopBar->show();
+	int H = uiMain->uiRegion->h();
+        if ( uiMain->uiTopBar->visible() ) {
+	    uiMain->uiTopBar->hide();
+	    H += uiMain->uiTopBar->h();
+	}
+        else {
+	    uiMain->uiTopBar->show();
+	    H -= uiMain->uiTopBar->h();
+	}
+	int X = uiMain->uiRegion->x();
+	int Y = uiMain->uiRegion->y();
+	int W = uiMain->uiRegion->w();
+	uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
@@ -6291,24 +6302,42 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kTogglePixelBar.match( rawkey ) )
     {
-        if ( uiMain->uiPixelBar->visible() ) uiMain->uiPixelBar->hide();
-        else uiMain->uiPixelBar->show();
+	int H = uiMain->uiRegion->h();
+        if ( uiMain->uiPixelBar->visible() ) {
+	    uiMain->uiPixelBar->hide();
+	    H += uiMain->uiPixelBar->h();
+	}
+        else {
+	    uiMain->uiPixelBar->show();
+	    H -= uiMain->uiPixelBar->h();
+	}
+	int X = uiMain->uiRegion->x();
+	int Y = uiMain->uiRegion->y();
+	int W = uiMain->uiRegion->w();
+	uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         return 1;
     }
     else if ( kToggleTimeline.match( rawkey ) )
     {
-        if ( uiMain->uiBottomBar->visible() ) uiMain->uiBottomBar->hide();
-        else uiMain->uiBottomBar->show();
+	int H = uiMain->uiRegion->h();
+        if ( uiMain->uiBottomBar->visible() ) {
+	    uiMain->uiBottomBar->hide();
+	    H += uiMain->uiBottomBar->h();
+	}
+        else {
+	    uiMain->uiBottomBar->show();
+	    H -= uiMain->uiBottomBar->h();
+	}
 	int X = uiMain->uiRegion->x();
 	int Y = uiMain->uiRegion->y();
 	int W = uiMain->uiRegion->w();
-	int H = uiMain->uiRegion->h();
 	uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
-        // fltk_main()->redraw();
+	uiMain->uiBottomBar->redraw();
+        fltk_main()->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
