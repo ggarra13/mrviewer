@@ -71,6 +71,7 @@ _display_max( kMinFrame ),
 uiMain( NULL )
 {
     type( TICK_ABOVE );
+    slider_type( kNORMAL );
     Fl_Slider::minimum( 1 );
     Fl_Slider::maximum( 50 );
 }
@@ -190,13 +191,14 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     dy = 0;
     w = r.w();
 
+
     fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
     if (w <= 0) return;
 
     double A,B;
     if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
-            ( display_minimum() != minimum() || display_maximum() != maximum() ) )
+	 ( display_minimum() != minimum() || display_maximum() != maximum() ) )
     {
         A = display_minimum();
         B = display_maximum();
@@ -246,7 +248,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     if ( nummod <= 1 ) nummod = 1;
 
     Fl_Color textcolor = this->labelcolor();
-    Fl_Color linecolor = FL_DARK_BLUE; //Imath::lerp(this->color(), textcolor, .66666f);
+    Fl_Color linecolor = FL_BLACK;
 
     fl_color(linecolor);
     char buffer[128];
@@ -308,24 +310,24 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     if (type()&16/*FILL*/) slider_size(0);
 
     mrv::Recti r = sr;
+    
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
         mrv::Recti tr = r;
-        r.move_b(-tick_size());
-        switch (type()&TICK_BOTH) {
-        case TICK_BOTH:
-            r.y(r.y()+tick_size()/2);
-            break;
-        case TICK_ABOVE:
-            r.y(r.y()+tick_size());
-            tr.set_b(r.center_y());
-            break;
-        case TICK_BELOW:
-            tr.set_y(r.center_y()+(slot?3:0));
-            break;
-        }
-        //fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
-	fl_color( FL_BLACK );
+        // r.move_b(-tick_size());
+        // switch (type()&TICK_BOTH) {
+        // case TICK_BOTH:
+        //     r.y(r.y()+tick_size()/2);
+        //     break;
+        // case TICK_ABOVE:
+        //     r.y(r.h()-tick_size());
+        //     tr.set_b(r.center_y());
+        //     break;
+        // case TICK_BELOW:
+        //     tr.set_y(r.center_y()+(slot?3:0));
+        //     break;
+        // }
+        fl_color(fl_inactive(fl_contrast(labelcolor(),color())));
         draw_ticks(tr, (slider_size()+1)/2);
     }
 
@@ -482,15 +484,19 @@ void Timeline::draw()
     
     // drawstyle(style(),flags);
 
+
+    int X = x();
+    int Y = y();
+    int W = w();
+    int H = h();
+
+    mrv::Recti r( X, Y, W, H );
+
+    
     draw_box();
-
-
-    // mrv::Recti r( x(), y(), w(), h() );
-    mrv::Recti r( w(), h() );
-
+    
     // Box* box = this->box();
     // if (!box->fills_rectangle()) draw_background();
-
 
 
     // Get number of frames
@@ -545,11 +551,11 @@ void Timeline::draw()
             if ( v >= frame && v < frame + size )
             {
                 _fps = img->fps();
-                fl_color( fl_lighter( labelcolor() ) );
+                fl_color( fl_lighter( FL_YELLOW ) );
             }
             else
             {
-                fl_color( labelcolor() );
+                fl_color( fl_lighter( labelcolor() ) );
             }
 
             fl_rectf( lr.x(), lr.y(), lr.w(), lr.h() );
@@ -622,10 +628,17 @@ void Timeline::draw()
 
     }
 
+    //Fl_Slider::draw();
 
     draw( r, f2, r.y()==0 );
 
-    Fl_Slider::draw();
+    X = slider_position( value(), w() );
+    Y = y() + Fl::box_dy(box());
+    W = 10;
+    H = h() - Fl::box_dh(box());
+    Fl_Color c = color();
+    draw_box( FL_ROUND_UP_BOX, X, Y, W, H, c );
+    clear_damage();
     // @TODO: fltk1.4 draw the focus indicator inside the box:
     // drawstyle(style(),flags);
     //box->draw_symbol_overlay(r);
