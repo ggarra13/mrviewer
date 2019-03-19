@@ -952,6 +952,7 @@ v->uiGain->value( (float) o->value() );} selected
               callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
               tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 7 70 18} type {Horz Knob} minimum 0.015625 maximum 64 step 1 value 1
+	      code0 { o->slider_type( mrv::Slider::kLOG ); }
               class {mrv::Slider}
             }
             Fl_Menu_Button uiICS {
