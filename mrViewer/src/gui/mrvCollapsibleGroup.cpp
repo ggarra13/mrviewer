@@ -37,7 +37,7 @@ using namespace std;
 #include <FL/Fl_Window.H>
 #include <FL/fl_draw.H>
 
-#include "mrvCollapsableGroup.h"
+#include "mrvCollapsibleGroup.h"
 
 #define BUTTON_H        20
 #define GROUP_MARGIN    8               // compensates for FL_ROUND_BUTTON (?)
@@ -45,7 +45,7 @@ using namespace std;
 namespace mrv {
 
   // Change button label based on open/closed state of pack
-  void CollapsableGroup::relabel_button() {
+  void CollapsibleGroup::relabel_button() {
     int open = _contents->visible() ? 1 : 0;
     char buf[256];
     // Draw arrow in label
@@ -57,7 +57,7 @@ namespace mrv {
   }
 
   // Enforce layout
-  void CollapsableGroup::layout() {
+  void CollapsibleGroup::layout() {
 
     // Size self based on visible() of pack
     int cvis = _contents->visible();                                    // content visible?
@@ -86,14 +86,14 @@ namespace mrv {
     printf("pack: %d,%d,%d,%d\n", _contents->x(), _contents->y(), _contents->w(), _contents->h());
   }
 
-  void CollapsableGroup::toggle_tab_cb(Fl_Button* w, void *data) {
-    mrv::CollapsableGroup* g = (mrv::CollapsableGroup*) data;
+  void CollapsibleGroup::toggle_tab_cb(Fl_Button* w, void *data) {
+    mrv::CollapsibleGroup* g = (mrv::CollapsibleGroup*) data;
     g->toggle_tab(w);
   }
 
   // Collapse the widget or open it to show its contents
-  void CollapsableGroup::toggle_tab( Fl_Button* b) {
-    //DEBUG std::cerr << "toggle tab collapsable group" << std::endl; 
+  void CollapsibleGroup::toggle_tab( Fl_Button* b) {
+    //DEBUG std::cerr << "toggle tab collapsible group" << std::endl; 
     if ( _contents->visible() )
       _contents->hide();
     else
@@ -107,7 +107,7 @@ namespace mrv {
   }
 
   // CTOR
-  CollapsableGroup::CollapsableGroup( const int x, const int y, 
+  CollapsibleGroup::CollapsibleGroup( const int x, const int y, 
                                       const int w, const int h, 
                                       const char* l ) : Fl_Group( x, y, w, h, l ) {
     box( FL_ROUNDED_BOX );
@@ -135,24 +135,24 @@ namespace mrv {
     resizable(0);               // prevent FLTK auto-sizing -- we handle children ourself
   }
 
-  CollapsableGroup::~CollapsableGroup() {
+  CollapsibleGroup::~CollapsibleGroup() {
     _contents->clear();
     Fl_Group::clear();  // delete _button and _contents
   }
 
-  void CollapsableGroup::spacing( int x ) {
+  void CollapsibleGroup::spacing( int x ) {
     _contents->spacing( x );
     redraw();
   }
 
-  void CollapsableGroup::clear() {
+  void CollapsibleGroup::clear() {
     _contents->clear();
     redraw();
   }
 
   /** DEBUG
   // We don't really need this other than for debugging..
-  void CollapsableGroup::draw() {
+  void CollapsibleGroup::draw() {
      fl_push_clip(x(), y(), w(), h());  // enforce clipping
      Fl_Group::draw();                  // let group draw itself and children
      fl_pop_clip();                     // enforce clipping
@@ -165,12 +165,12 @@ namespace mrv {
   }
  **/
 
-  void CollapsableGroup::add( Fl_Widget* w ) {
+  void CollapsibleGroup::add( Fl_Widget* w ) {
     _contents->add( w );
     _contents->redraw();
   }
 
-  void CollapsableGroup::resize(int X,int Y,int W,int H) {
+  void CollapsibleGroup::resize(int X,int Y,int W,int H) {
     Fl_Group::resize(X,Y,W,H);  // let group resize
     layout();                   // let layout() handle child pos/sizes
   }
