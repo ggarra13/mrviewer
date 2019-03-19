@@ -708,23 +708,23 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
-    m_image = new mrv::CollapsableGroup( r.x(), r.y(), r.w(),
+    m_image = new mrv::CollapsibleGroup( r.x(), r.y(), r.w(),
 					 1200, _("Main")  );
     
-    m_video = new mrv::CollapsableGroup( r.x(), r.y() + m_image->h(),
+    m_video = new mrv::CollapsibleGroup( r.x(), r.y() + m_image->h(),
 					 r.w(), 200, _("Video") );
     
-    m_audio = new mrv::CollapsableGroup( r.x(), r.y() + m_image->h() +
+    m_audio = new mrv::CollapsibleGroup( r.x(), r.y() + m_image->h() +
 					 m_video->h(),
 					 r.w(), 200, _("Audio") );
     
-    m_subtitle = new mrv::CollapsableGroup( r.x(), r.y() +
+    m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y() +
 					    m_audio->h() +
 					    m_image->h() +
 					    m_video->h(),
 					    r.w(), 200, _("Subtitle") );
     
-    m_attributes  = new mrv::CollapsableGroup( r.x(), r.y()  +
+    m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()  +
 					       m_audio->h() +
 					       m_image->h() +
 					       m_video->h() +
@@ -2731,7 +2731,7 @@ void ImageInformation::refresh()
 
 
 
-mrv::Table* ImageInformation::add_browser( mrv::CollapsableGroup* g )
+mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
 {
     if (!g) return NULL;
 
