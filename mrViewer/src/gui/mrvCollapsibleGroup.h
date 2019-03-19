@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   mrvCollapsableGroup.h
+ * @file   mrvCollapsibleGroup.h
  * @author gga
  * @date   Tue Aug  7 04:48:52 2007
  * 
@@ -27,8 +27,8 @@
  * 
  */
 
-#ifndef mrvCollapsableGroup_h
-#define mrvCollapsableGroup_h
+#ifndef mrvCollapsibleGroup_h
+#define mrvCollapsibleGroup_h
 
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Pack.H>
@@ -36,11 +36,11 @@
 
 namespace mrv {
 
-  class CollapsableGroup : public Fl_Group {
+  class CollapsibleGroup : public Fl_Group {
     public:
-      CollapsableGroup( const int x, const int y, const int w, 
+      CollapsibleGroup( const int x, const int y, const int w, 
                         const int h, const char* l = 0 );
-      ~CollapsableGroup();
+      ~CollapsibleGroup();
       void begin() { _contents->begin(); }
       void end()   { _contents->end(); }
       void add( Fl_Widget* w );
@@ -62,4 +62,4 @@ namespace mrv {
 
 } // namespace mrv
 
-#endif // mrvCollapsableGroup_h
+#endif // mrvCollapsibleGroup_h
