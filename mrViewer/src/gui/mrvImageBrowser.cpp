@@ -297,10 +297,12 @@ Fl_Tree( x, y, w, h ),
 _reel( 0 ),
 dragging( NULL )
 {
-    showroot(0);				// don't show root of tree
+    showroot(0);// don't show root of tree
     // Add some regular text nodes
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
-    //item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
+    item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
+    Fl_Tree_Prefs& p = const_cast< Fl_Tree_Prefs& >( prefs() );
+    p.connectorstyle( FL_TREE_CONNECTOR_NONE );
 }
 
 ImageBrowser::~ImageBrowser()
@@ -835,7 +837,18 @@ mrv::media ImageBrowser::add( mrv::media& m )
     Element* nw = new_item( m );
 
     CMedia* img = nw->element()->image();
-    Fl_Tree_Item* item = Fl_Tree::add( img->fileroot() );
+
+    std::string path = img->fileroot();
+
+    size_t found = 0, next = 0;
+    while( (found = path.find('/', next)) != std::string::npos )
+    {
+	path.insert(found, "\\");
+	next = found+3;
+    }
+
+
+    Fl_Tree_Item* item = Fl_Tree::add( path.c_str() );
     begin();
     item->widget( nw );
     end();
