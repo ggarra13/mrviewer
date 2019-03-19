@@ -25,6 +25,9 @@
  *
  */
 
+#ifndef mrvTable_h
+#define mrvTable_h
+
 #include <FL/Fl_Table.H>
 
 namespace mrv {
@@ -35,8 +38,8 @@ class Table : public Fl_Table
     Table( int x, int y, int w, int h, const char* l = 0 );
     virtual ~Table();
 
-  virtual void draw_cell(TableContext context, int R=0, int C=0, 
-                         int X=0, int Y=0, int W=0, int H=0);
+    virtual void draw_cell(TableContext context, int R=0, int C=0, 
+			   int X=0, int Y=0, int W=0, int H=0);
 
     inline void column_labels( const char** h ) { headers = h; }
     inline void column_widths( const int* w ) { widths = w; }
@@ -44,7 +47,11 @@ class Table : public Fl_Table
     inline void column_separator(bool t = true) { _column_separator = t; }
     inline void auto_resize( bool t = true ) { _auto_resize = t; }
 
+    void add( Fl_Widget* w );
+    
   protected:
+    void DrawHeader(const char *s, int X, int Y, int W, int H);
+    
     const int* widths;
     const char** headers;
     bool _column_separator;
@@ -53,3 +60,6 @@ class Table : public Fl_Table
 };
 
 }
+
+
+#endif

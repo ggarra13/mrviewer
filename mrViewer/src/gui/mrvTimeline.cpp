@@ -386,8 +386,9 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     if ( max - j > kMAX_FRAMES ) return;
 
     int rx = r.x() + (slider_size()-1)/2;
-    int r2 = r.b()/2;
+    int ry = r.y() + r.h()/2;
     int ww = r.w();
+    int hh = r.h() - 8;
 
     CMedia::Cache c = CMedia::kLeftCache;
     fl_color( FL_DARK_GREEN );
@@ -433,7 +434,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             {
                 int dx2 = rx + slider_position( double(j), ww );
                 int wh = dx2-dx;
-                fl_rectf( dx, r.y()+r2, wh, r2+1 );
+                fl_rectf( dx, ry, wh, hh );
                 dx = NO_FRAME_VALUE;
                 break;
             }
@@ -445,7 +446,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     {
         int dx2 = rx + slider_position( double(j), ww );
         int wh = dx2-dx;
-        fl_rectf( dx, r.y()+r2, wh, r2+1 );
+        fl_rectf( dx, ry, wh, hh );
     }
 
 
@@ -457,7 +458,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
     int rx = r.x() + (slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
-
+    
     fl_color( FL_CYAN );
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
 }

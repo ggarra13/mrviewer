@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@
 #include "gui/mrvBrowser.h"
 #include "gui/mrvTable.h"
 #include "gui/mrvCollapsableGroup.h"
-
+#include "gui/mrvScroll.h"
 
 
 #define ImageInfoParent Fl_Scroll
@@ -208,13 +208,14 @@ protected:
     mrv::CollapsableGroup*       m_audio;
     mrv::CollapsableGroup*       m_subtitle;
 
-    Fl_Pack*       m_all;
-    Fl_Pack*       m_main;
-    mrv::Table*     m_curr;
+    Fl_Pack*          m_all;
+    Fl_Pack*          m_main;
+    mrv::Table*       m_curr;
     Fl_Color          m_color;
     CMedia::Mutex     _mutex;
     unsigned int group;
     unsigned int row;
+    unsigned int X, Y, W, H;
 
 public:
     mrv::CollapsableGroup*       m_attributes;
