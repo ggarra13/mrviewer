@@ -1,11 +1,11 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0305
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
 }
 
-decl {\#include "gui/mrvImageInformation.h"} {selected public global
+decl {\#include "gui/mrvImageInformation.h"} {public global
 }
 
 decl {\#include "gui/mrvImageView.h"} {private local
@@ -42,13 +42,13 @@ class ImageInfoUI {open
       label {Media Information}
       user_data this user_data_type {ImageInfoUI*}
       callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
-o->hide();} open
-      xywh {683 549 505 530} type Double hide resizable
-      code0 {main_ = main;}
+o->hide();} open selected
+      xywh {683 549 505 530} type Double resizable
+      code0 {main_ = main;} non_modal visible
     } {
       Fl_Group uiInfoText {
         user_data uiInfoText user_data_type {mrv::ImageInformation*} open
-        xywh {2 2 498 526}
+        xywh {2 2 500 1200}
         code0 {o->main( main );}
         class {mrv::ImageInformation}
       } {}
@@ -56,8 +56,9 @@ o->hide();} open
   }
   Function {ImageInfoUI(ViewerUI* m)} {open
   } {
-    code {Fl_Group::current( (Fl_Window*)m->uiMain );
-make_window( m );} {}
+    code {Fl_Group::current( m->uiMain );
+make_window( m );
+Fl_Group::current(0);} {}
   }
   Function {~ImageInfoUI()} {open
   } {
