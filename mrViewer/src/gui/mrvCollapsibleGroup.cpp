@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2014  Gonzalo Garramu?o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -79,12 +79,11 @@ namespace mrv {
                       _button->w(),                     // width tracks button
                       ch);                              // derived from parent's height
 
-    /** DEBUG
+    // DEBUG
     printf("-----------------\n");
     printf(" grp: %d,%d,%d,%d\n", x(),y(),w(),h());
     printf(" but: %d,%d,%d,%d\n", _button->x(), _button->y(), _button->w(), _button->h());
     printf("pack: %d,%d,%d,%d\n", _contents->x(), _contents->y(), _contents->w(), _contents->h());
-    **/
   }
 
   void CollapsableGroup::toggle_tab_cb(Fl_Button* w, void *data) {
