@@ -42,7 +42,7 @@
 #include "gui/mrvPopupMenu.h"
 #include "gui/mrvBrowser.h"
 #include "gui/mrvTable.h"
-#include "gui/mrvCollapsableGroup.h"
+#include "gui/mrvCollapsibleGroup.h"
 #include "gui/mrvScroll.h"
 
 
@@ -108,7 +108,7 @@ protected:
 
     double to_memory( long double value, const char*& extension );
 
-    mrv::Table* add_browser( mrv::CollapsableGroup* g );
+    mrv::Table* add_browser( mrv::CollapsibleGroup* g );
 
     void add_icc( const char* name, const char* tooltip,
                   const char* content,
@@ -203,10 +203,10 @@ protected:
     CMedia*   img;
 
     Fl_Button*                   m_button;
-    mrv::CollapsableGroup*       m_image;
-    mrv::CollapsableGroup*       m_video;
-    mrv::CollapsableGroup*       m_audio;
-    mrv::CollapsableGroup*       m_subtitle;
+    mrv::CollapsibleGroup*       m_image;
+    mrv::CollapsibleGroup*       m_video;
+    mrv::CollapsibleGroup*       m_audio;
+    mrv::CollapsibleGroup*       m_subtitle;
 
     Fl_Pack*          m_all;
     Fl_Pack*          m_main;
@@ -218,7 +218,7 @@ protected:
     unsigned int X, Y, W, H;
 
 public:
-    mrv::CollapsableGroup*       m_attributes;
+    mrv::CollapsibleGroup*       m_attributes;
 };
 
 } // namespace mrv
