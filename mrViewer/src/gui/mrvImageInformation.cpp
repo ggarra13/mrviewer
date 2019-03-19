@@ -701,7 +701,7 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
     m_all = new Fl_Pack( r.x(), r.y(), r.w()-20, r.h() );
     //m_all->set_vertical();
     m_all->spacing(10);
-
+    m_all->type( Fl_Pack::VERTICAL );
     m_all->begin();
 
     m_button = new Fl_Button( r.x(), r.y(), r.w(), 20, _("Left View") );
@@ -733,7 +733,7 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
 
     m_all->end();
 
-    //resizable( m_all );  // this seems broken, that's why I redo layout
+    // resizable( m_all );  // this seems broken, that's why I redo layout
     end();
 
     hide_tabs();
@@ -2741,7 +2741,7 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     g->end();
 
     
-    mrv::Table* browser = new mrv::Table( X, Y, w(), g->h() );
+    mrv::Table* browser = new mrv::Table( X, Y, w(), g->h()-Y );
     browser->column_separator(true);
     browser->auto_resize( true );
 
