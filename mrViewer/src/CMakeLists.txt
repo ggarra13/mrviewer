@@ -254,7 +254,7 @@ SET( SOURCES
   gui/mrvMedia.cpp
   gui/mrvBrowser.cpp
   gui/mrvCTLBrowser.cpp
-  gui/mrvCollapsableGroup.cpp
+  gui/mrvCollapsibleGroup.cpp
   gui/mrvColorInfo.cpp
   gui/mrvChoice.cpp
   # gui/mrvDatabaseBrowser.cpp
