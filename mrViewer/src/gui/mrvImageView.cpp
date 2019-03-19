@@ -8239,7 +8239,7 @@ void ImageView::resize_main_window()
 
     int minx, miny, maxw, maxh;
 
-    Fl::screen_xywh( minx, miny, maxw, maxh );
+    Fl::screen_work_area( minx, miny, maxw, maxh );
     int maxx = minx + maxw;
     int maxy = miny + maxh;
 
