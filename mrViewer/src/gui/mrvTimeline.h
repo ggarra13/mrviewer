@@ -53,13 +53,6 @@ public:
     typedef CMedia::Mutex   Mutex;
 
 public:
-    enum Ticks
-    {
-    TICK_ABOVE = 1,
-    TICK_BELOW = 2,
-    TICK_BOTH  = 3,
-    NO_TICK
-    };
     enum DisplayMode
     {
         kSingle,
