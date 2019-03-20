@@ -1,6 +1,6 @@
 /*
     mrViewer - thume professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -145,12 +145,14 @@ void media::create_thumbnail()
     char buf[2048];
     sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
-    Fl_Shared_Image::add_handler( mrv::fltk_handler );
+    // Fl_Shared_Image::add_handler( mrv::fltk_handler );
 
 //    _thumbnail = thumbImage::create(); //Fl_Shared_Image::get( buf );
 
-    _thumbnail = new mrvImage( w, h ); //Fl_Shared_Image::get( buf, w, h );
-
+    uchar* data = new uchar[ w * h * 3 ];
+    _thumbnail = new Fl_RGB_Image( data, w, h, 3 );
+    _thumbnail->alloc_array = 1;
+    
     if ( !_thumbnail )
     {
         IMG_ERROR( _("Could not create thumbnail picture for '")
@@ -159,9 +161,7 @@ void media::create_thumbnail()
     }
 ;
 
-    uchar* data = new uchar[ w * h * 3 ];
     uchar* ptr = data;
-    //uchar* ptr = (uchar*) _thumbnail->data();
     if (!ptr )
     {
         IMG_ERROR( _("Could not allocate thumbnail buffer") );
@@ -193,7 +193,6 @@ void media::create_thumbnail()
         }
     }
 
-    _thumbnail->set_data( &data, 1 );
 
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );
