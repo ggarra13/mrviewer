@@ -834,9 +834,13 @@ mrv::media ImageBrowser::add( mrv::media& m )
 
     reel->images.push_back( m );
 
+    begin();
+
+    
     Element* nw = new_item( m );
 
     CMedia* img = nw->element()->image();
+    std::cerr << "add " << img->name() << std::endl; 
 
     std::string path = img->fileroot();
 
@@ -849,9 +853,10 @@ mrv::media ImageBrowser::add( mrv::media& m )
 
 
     Fl_Tree_Item* item = Fl_Tree::add( path.c_str() );
-    begin();
     item->widget( nw );
+
     end();
+    
     Fl_Group::resizable(0);
 
 
@@ -2477,7 +2482,7 @@ int ImageBrowser::mousePush( int x, int y )
 
     DBG( "Clicked on " << sel );
 
-    if ( button == 1 )
+    if ( button == FL_LEFT_MOUSE )
     {
         int clicks = Fl::event_clicks();
         if ( sel < 0 )
@@ -2499,10 +2504,10 @@ int ImageBrowser::mousePush( int x, int y )
 
             DBG( "sel " << sel << "  old_sel " << old_sel );
 
-            if ( sel == old_sel ) return ok;
 
             lastX = x;
             lastY = y;
+	    dragging = item_clicked();
             change_image();
 
             mrv::media m = current_image();
@@ -2517,7 +2522,7 @@ int ImageBrowser::mousePush( int x, int y )
             view()->play( play );
         return 1;
     }
-    else if ( button == 3 )
+    else if ( button == FL_RIGHT_MOUSE )
     {
 
         Fl_Menu_Button menu(0,0,0,0);
@@ -2757,7 +2762,8 @@ int ImageBrowser::mouseDrag( int x, int y )
     int sel = value();
     if (sel < 0) return 0;
 
-    dragging = (Element*) child(sel);
+    if ( dragging ) redraw();
+    
     if (y < 0) lastY = 0;
     else       lastY = y;
     redraw();
@@ -3257,12 +3263,12 @@ void ImageBrowser::draw()
 {
     Fl_Tree::draw();
 
-    if ( dragging )
+    if ( dragging && dragging->widget() )
     {
-        fl_push_matrix();
-        fl_translate( 0, lastY );
-        dragging->draw();
-        fl_pop_matrix();
+	mrv::Element* elem = (mrv::Element*) dragging->widget();
+	fl_push_clip( _tix, _tiy, _tiw, _tih );
+	elem->DrawAt( Fl::event_x(), Fl::event_y() );
+	fl_pop_clip();
     }
 }
 
