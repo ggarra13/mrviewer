@@ -77,10 +77,10 @@ public:
         return _image->name();
     }
 
-    inline mrvImage* thumbnail()             {
+    inline Fl_RGB_Image* thumbnail()             {
         return _thumbnail;
     }
-    inline const mrvImage* thumbnail() const {
+    inline const Fl_RGB_Image* thumbnail() const {
         return _thumbnail;
     }
 
@@ -99,7 +99,7 @@ protected:
     int64_t  _start;
     int64_t  _pos;
     CMedia*   _image;
-    mrvImage* _thumbnail;
+    Fl_RGB_Image* _thumbnail;
     bool         _thumbnail_frozen;
 
 public:
