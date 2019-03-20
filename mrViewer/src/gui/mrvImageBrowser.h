@@ -230,7 +230,7 @@ protected:
     mrv::Choice*  _reel_choice;
 
     CMedia::Mutex   _mtx;
-    mrv::Element* dragging;
+    Fl_Tree_Item*    dragging;
     int lastX, lastY;
 
     ViewerUI* uiMain;
