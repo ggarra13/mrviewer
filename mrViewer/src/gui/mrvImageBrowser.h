@@ -147,7 +147,7 @@ public:
 	       const bool edl = false,
                const bool progressBar = false );
 
-
+    
     void replace( int idx, mrv::media m );
 
     void remove( mrv::media m );
@@ -158,7 +158,7 @@ public:
     void seek( const int64_t f );
 
     void frame( const int64_t f );
-
+    
     void clear_edl();
     void set_edl();
     void toggle_edl();
@@ -212,8 +212,6 @@ protected:
                            const bool avoid_seq = false );
 
 
-    void wait_on_threads();
-
     int mouseDrag( int x, int y );
     int mousePush( int x, int y );
     int mouseRelease( int x, int y );
@@ -231,7 +229,9 @@ protected:
 
     CMedia::Mutex   _mtx;
     Fl_Tree_Item*    dragging;
+    Fl_Tree_Item*    old_dragging;
     int lastX, lastY;
+    int old_sel;
 
     ViewerUI* uiMain;
 };
