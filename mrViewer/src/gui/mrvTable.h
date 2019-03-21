@@ -30,6 +30,7 @@
 
 #include <FL/Fl_Table.H>
 
+
 namespace mrv {
 
 class Table : public Fl_Table
@@ -39,20 +40,27 @@ class Table : public Fl_Table
     virtual ~Table();
 
     virtual void draw_cell(TableContext context, int R=0, int C=0, 
-			   int X=0, int Y=0, int W=0, int H=0);
+                           int X=0, int Y=0, int W=0, int H=0);
 
     inline void column_labels( const char** h ) { headers = h; }
-    inline void column_widths( const int* w ) { widths = w; }
+    // inline void column_widths( const int* w ) { widths = w; }   // REMOVED: use Fl_Table::col_width(int) to get, and col_width(int,int) to set
     
     inline void column_separator(bool t = true) { _column_separator = t; }
     inline void auto_resize( bool t = true ) { _auto_resize = t; }
 
     void add( Fl_Widget* w );
+    void layout();
     
   protected:
     void DrawHeader(const char *s, int X, int Y, int W, int H);
+
+    Fl_Color get_title_color()  { return FL_WHITE; }
+    Fl_Color get_widget_color() { return FL_BLACK; }
     
-    const int* widths;
+    int line_height() const { return 24; }
+
+    int X, Y;
+    
     const char** headers;
     bool _column_separator;
     bool _auto_resize;
