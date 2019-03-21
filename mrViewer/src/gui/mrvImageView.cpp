@@ -6920,7 +6920,9 @@ int ImageView::handle(int event)
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();
-        return keyDown(Fl::event_key());
+	if ( !keyDown(Fl::event_key() ) )
+	    return Fl_Gl_Window::handle( event );
+	return 1;
     case FL_KEYUP:
         return keyUp(Fl::event_key());
     case FL_MOUSEWHEEL:
