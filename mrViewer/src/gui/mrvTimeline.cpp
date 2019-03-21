@@ -346,8 +346,7 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
         draw_box();
         box( b );
     }
-    // @TODO: fltk1.4
-    //drawstyle(style(),flags|OUTPUT);
+    
     // if user directly set selected_color we use it:
     if ( selection_color() ) {
         Fl::set_box_color( selection_color() );
@@ -365,7 +364,6 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     }
     else sglyph=0; // draw our own special glyph
 
-    // @TODO: fltk1.4
     return true;
 }
 
@@ -623,7 +621,6 @@ void Timeline::draw()
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
              ( _display_min != minimum() || _display_max != maximum() ) )
         {
-            // @TODO: fltk1.4
             draw_selection(r);
         }
 
@@ -637,9 +634,11 @@ void Timeline::draw()
     Y = y() + Fl::box_dy(box());
     W = 10;
     H = h() - Fl::box_dh(box());
-    Fl_Color c = color();
+    fl_push_clip( X, Y, W, H );
+    Fl_Color c = FL_YELLOW;
     draw_box( FL_ROUND_UP_BOX, X, Y, W, H, c );
     clear_damage();
+    fl_pop_clip();
     // @TODO: fltk1.4 draw the focus indicator inside the box:
     // drawstyle(style(),flags);
     //box->draw_symbol_overlay(r);
