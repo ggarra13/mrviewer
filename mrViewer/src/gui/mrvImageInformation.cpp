@@ -75,6 +75,7 @@ using namespace std;
 #include "mrvIO.h"
 
 #include "mrvI8N.h"
+#include "gui/MyPack.h"
 
 
 namespace {
@@ -686,52 +687,49 @@ ImageView* ImageInformation::view() const
 ImageInformation::ImageInformation( int x, int y, int w, int h,
                                     const char* l ) :
     ImageInfoParent( x, y, w, h, l ),
-    img( NULL ),
-    m_main( NULL )
+    img( NULL )
 {
-    type( Fl_Scroll::VERTICAL );
     
     begin();
 
 
 
+    int sw = Fl::scrollbar_size();                // scrollbar width
+    
     mrv::Recti r( x + Fl::box_dx(box()), y + Fl::box_dy(box()),
 		  w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
-    m_all = new Fl_Pack( r.x(), r.y(), r.w()-20, r.h() );
-    //m_all->set_vertical();
-    m_all->spacing(10);
-    m_all->type( Fl_Pack::VERTICAL );
-    m_all->begin();
-
+    m_all = new mrvPack( x, y, w-sw, 20, "all" );
+    
     m_button = new Fl_Button( r.x(), r.y(), r.w(), 20, _("Left View") );
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
-    m_image = new mrv::CollapsibleGroup( r.x(), r.y(), r.w(),
-					 1200, _("Main")  );
+    m_all->add( m_button );
     
-    m_video = new mrv::CollapsibleGroup( r.x(), r.y() + m_image->h(),
-					 r.w(), 200, _("Video") );
+    // CollapsibleGrop recalcs, we don't care its xyh sizes
+    m_image = new mrv::CollapsibleGroup( 0, 40, r.w(),
+					 840, _("Main")  );
+    m_all->add( m_image );
     
-    m_audio = new mrv::CollapsibleGroup( r.x(), r.y() + m_image->h() +
-					 m_video->h(),
-					 r.w(), 200, _("Audio") );
+    m_video = new mrv::CollapsibleGroup( r.x(), r.y()+840,
+					 r.w(), 400, _("Video") );
+    m_all->add( m_video );
     
-    m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y() +
-					    m_audio->h() +
-					    m_image->h() +
-					    m_video->h(),
-					    r.w(), 200, _("Subtitle") );
+    m_audio = new mrv::CollapsibleGroup( r.x(), r.y()+1240,
+					 r.w(), 400, _("Audio") );
+    m_all->add( m_audio );
+	
     
-    m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()  +
-					       m_audio->h() +
-					       m_image->h() +
-					       m_video->h() +
-					       m_subtitle->h(),
-					       r.w(), 300, _("Metadata")  );
+    m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y()+1640,
+					    r.w(), 400, _("Subtitle") );
 
-    m_all->end();
+    m_all->add( m_subtitle );
+	
+    m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2040,
+					       r.w(), 400, _("Metadata")  );
+
+    m_all->add( m_attributes );
 
     // resizable( m_all );  // this seems broken, that's why I redo layout
     end();
@@ -748,7 +746,7 @@ int ImageInformation::handle( int event )
         Fl::e_dy = Fl::event_dy() * 8;
     }
 
-    if ( event == FL_PUSH && Fl::event_button() == 3 && img )
+    if ( event == FL_PUSH && Fl::event_button() == FL_RIGHT_MOUSE && img )
     {
 
         Fl_Menu_Button menu(0,0,0,0);
@@ -796,12 +794,6 @@ int ImageInformation::handle( int event )
     return ImageInfoParent::handle( event );
 }
 
-void ImageInformation::layout()
-{
-    if ( w()-20 != m_all->w() )
-        m_all->resize( 0, 0, w()-20, m_all->h() );
-    //ImageInfoParent::layout();
-}
 
 struct aspectName_t
 {
@@ -2006,20 +1998,25 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
 void ImageInformation::fill_data()
 {
 
+    char buf[1024];
     m_curr = add_browser(m_image);
 
 
     add_text( _("Directory"), _("Directory where clip resides"), img->directory() );
 
     
-    char buf[1024];
     add_text( _("Filename"), _("Filename of the clip"), img->name().c_str() );
     
     ++group;
+
+
+
+
     
     unsigned int num_video_streams = unsigned( img->number_of_video_streams() );
     unsigned int num_audio_streams = unsigned( img->number_of_audio_streams() );
     unsigned int num_subtitle_streams = unsigned( img->number_of_subtitle_streams() );
+    
     if ( img->has_video() || img->has_audio() )
     {
         add_int( _("Video Streams"), _("Number of video streams in file"),
@@ -2431,12 +2428,6 @@ void ImageInformation::fill_data()
 
 
 
-    // m_curr->relayout();
-
-
-
-
-    // m_image->relayout();
    
     m_image->show();
    
@@ -2446,6 +2437,7 @@ void ImageInformation::fill_data()
     const CMedia::Attributes& attrs = img->attributes();
     if ( ! attrs.empty() )
     {
+	m_attributes->show();
         m_curr = add_browser( m_attributes );
 
    
@@ -2521,17 +2513,19 @@ void ImageInformation::fill_data()
 
 
 
-   
+    
     if ( num_video_streams > 0 )
     {
    
+	m_video->show();
         for ( unsigned i = 0; i < num_video_streams; ++i )
         {
    
             char buf[256];
             sprintf( buf, _("Video Stream #%d"), i+1 );
+	    
             m_curr = add_browser( m_video );
-   
+
             m_curr->copy_label( buf );
    
 
@@ -2583,8 +2577,10 @@ void ImageInformation::fill_data()
         }
     }
 
+
     if ( num_audio_streams > 0 )
     {
+	m_audio->show();
         for ( unsigned i = 0; i < num_audio_streams; ++i )
         {
             char buf[256];
@@ -2651,9 +2647,12 @@ void ImageInformation::fill_data()
 
     if ( num_subtitle_streams > 0 )
     {
+	std::cerr << "num subtitle streams " << num_subtitle_streams << std::endl;
+	m_subtitle->show();
         for ( unsigned i = 0; i < num_subtitle_streams; ++i )
         {
             char buf[256];
+	    
             m_curr = add_browser( m_subtitle );
             sprintf( buf, _("Subtitle Stream #%d"), i+1 );
             m_curr->copy_label( buf );
@@ -2686,20 +2685,17 @@ void ImageInformation::fill_data()
 
     }
 
-    m_all->redraw();
-    m_image->redraw();
-    m_video->redraw();
-    m_audio->redraw();
-    m_subtitle->redraw();
-    m_attributes->redraw();
-    // relayout();
+
+    m_all->layout();
+    end();
+    
+
 }
 
 void ImageInformation::refresh()
 {
     // SCOPED_LOCK( _mutex );
 
-    hide_tabs();
 
     m_image->clear();
     m_video->clear();
@@ -2714,17 +2710,18 @@ void ImageInformation::refresh()
     else
         m_button->hide();
 
-    X = 8;
-    Y = 0;
     
     fill_data();
-    
+
+
     m_all->show();
-    m_image->show();
-    m_video->show();
-    m_audio->show();
-    m_subtitle->show();
-    m_attributes->show();
+    
+    m_image->end();
+    m_video->end();
+    m_audio->end();
+    m_subtitle->end();
+    m_attributes->end();
+    
     
 
 }
@@ -2738,31 +2735,21 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     X = 0;
     Y = g->y() + line_height();
 
-    g->end();
 
     
-    mrv::Table* browser = new mrv::Table( X, Y, w(), g->h()-Y );
+    
+    mrv::Table* browser = new mrv::Table( 0, 0, w(), 20, g->label() );
     browser->column_separator(true);
     browser->auto_resize( true );
+    browser->labeltype(FL_NO_LABEL);
 
 
     static const char* headers[] = { _("Attribute"), _("Value"), 0 };
     browser->column_labels( headers );
-    static const int widths[] = { kMiddle, -1, 0 };
-    browser->column_widths( widths );
     browser->align(FL_ALIGN_CENTER);
-    browser->end();
 
     g->add( browser );
     
-    if ( g->children() == 1 )
-    {
-        g->spacing( 0 );
-    }
-    else
-    {
-        g->spacing( int(browser->labelsize() + 4) );
-    }
 
 
     group = row = 0; // controls line colors
@@ -2840,7 +2827,7 @@ void ImageInformation::add_icc( const char* name,
 
     int hh = line_height();
     Y += hh;
-    Fl_Group* g = new Fl_Group( X, Y, w(), hh );
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
     g->end();
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
@@ -2850,6 +2837,7 @@ void ImageInformation::add_icc( const char* name,
         widget->copy_label( name );
         g->add( widget );
     }
+    m_curr->add( g );
 
     {
         Fl_Group* sg = new Fl_Group( kMiddle, Y, g->w()-kMiddle, hh );
@@ -2873,13 +2861,10 @@ void ImageInformation::add_icc( const char* name,
         sg->resizable(widget);
 	sg->end();
 	
-        g->add( sg );
-        g->resizable( sg );
-	g->end();
-	Y += hh;
+	m_curr->add( sg );
     }
 
-    m_curr->add( g );
+    m_curr->layout();
 }
 
 void ImageInformation::add_ctl( const char* name,
@@ -2925,15 +2910,16 @@ void ImageInformation::add_ctl( const char* name,
 
         sg->add( widget );
 
-        Fl_Button* pick = new Fl_Button( sg->w()-50, Y, 50, hh, _("Pick") );
+        Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
+					 _("Pick") );
         pick->callback( (Fl_Callback*)ctl_callback, this );
         sg->add( pick );
         sg->resizable(widget);
 	sg->end();
 
         m_curr->add( sg );
-	Y += hh;
     }
+    m_curr->layout();
 }
 
 
@@ -2953,7 +2939,7 @@ void ImageInformation::add_ocio_ics( const char* name,
     Fl_Box* lbl;
     int hh = line_height();
     Y += hh;
-    Fl_Group* g = new Fl_Group( X, Y, w(), hh );
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
     g->end();
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
@@ -2962,11 +2948,11 @@ void ImageInformation::add_ocio_ics( const char* name,
         widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
-	m_curr->add( g );
     }
+    m_curr->add( g );
 
     {
-        Fl_Group* sg = new Fl_Group( kMiddle, Y, g->w()-kMiddle, hh );
+        Fl_Group* sg = new Fl_Group( kMiddle, Y, kMiddle, hh );
 	sg->end();
 
         Fl_Input* widget = new Fl_Input( kMiddle, Y, sg->w()-50, hh );
@@ -2974,21 +2960,21 @@ void ImageInformation::add_ocio_ics( const char* name,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
-        if ( tooltip ) widget->tooltip( tooltip );
-        else widget->tooltip( lbl->label() );
+        widget->tooltip( tooltip ? tooltip : lbl->label() );
         if ( callback )
             widget->callback( (Fl_Callback*)attach_ocio_ics_cb,
                               (void*)view() );
 
         sg->add( widget );
 
-        Fl_Button* pick = new Fl_Button( sg->w()-50, Y, 50, hh, _("Pick") );
+        Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
+					 _("Pick") );
         pick->callback( (Fl_Callback*)attach_ocio_ics_cb, view() );
         sg->add( pick );
 	
-	Y += hh;
 	m_curr->add( sg );
     }
+    m_curr->layout();
 }
 
 
@@ -3035,14 +3021,15 @@ void ImageInformation::add_ctl_idt( const char* name,
 
         sg->add( widget );
 
-        Fl_Button* pick = new Fl_Button( sg->w()-50, Y, 50, hh, _("Pick") );
+        Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
+					 _("Pick") );
         pick->callback( (Fl_Callback*)ctl_idt_callback, this );
         sg->add( pick );
         sg->resizable(widget);
 
-	Y += hh;
         m_curr->add( sg );
     }
+    m_curr->layout();
 }
 
 
@@ -3114,13 +3101,15 @@ void ImageInformation::add_ctl_lmt( const char* name,
             }
         }
 
-        Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+        Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, 0, 50, hh,
+					 _("Pick") );
         pick->callback( (Fl_Callback*)ctl_lmt_callback, c );
         sg->add( pick );
         sg->resizable(widget);
 
         m_curr->add( sg );
     }
+    m_curr->layout();
 }
 
 
@@ -3145,7 +3134,7 @@ void ImageInformation::add_text( const char* name,
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
         widget->color( colA );
-	widget->labelcolor( FL_WHITE );
+	widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         g->add( widget );
     }
@@ -3183,6 +3172,7 @@ void ImageInformation::add_text( const char* name,
         }
 	m_curr->add( widget );
     }
+    m_curr->layout();
 }
 
 
@@ -3220,6 +3210,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
         widget->color( colA );
         g->add( widget );
     }
+    m_curr->add( g );
 
     {
         char buf[64];
@@ -3278,12 +3269,14 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
             p->resizable(slider);
         }
         p->end();
-        // g->resizable( p );
-	m_curr->add( g );
 	m_curr->add( p );
-	Y += hh;
-        if ( !active ) g->deactivate();
+        if ( !active )
+	{
+	    g->deactivate();
+	    p->deactivate();
+	}
     }
+    m_curr->layout();
 }
 
 void ImageInformation::add_enum( const char* name,
@@ -3301,7 +3294,7 @@ void ImageInformation::add_enum( const char* name,
     Fl_Box* lbl;
     int hh = line_height();
     Y += hh;
-    Fl_Group* g = new Fl_Group( X, Y, w(), hh );
+    Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
     g->end();
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
@@ -3311,6 +3304,7 @@ void ImageInformation::add_enum( const char* name,
         widget->color( colA );
         g->add( widget );
     }
+    m_curr->add( g );
 
     {
         mrv::PopupMenu* widget = new mrv::PopupMenu( kMiddle, Y,
@@ -3337,11 +3331,9 @@ void ImageInformation::add_enum( const char* name,
             if ( callback )
                 widget->callback( callback, this );
         }
-	m_curr->add( g );
 	m_curr->add( widget );
     }
-    Y += hh;
-
+    m_curr->layout();
 }
 
 
@@ -3420,7 +3412,7 @@ void ImageInformation::add_int( const char* name,
             sprintf( buf, "%d", content );
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
-            widget->textcolor( FL_WHITE );
+            widget->textcolor( FL_BLACK );
             widget->color( colB );
             widget->box( FL_FLAT_BOX );
             if ( tooltip ) widget->tooltip( tooltip );
@@ -3432,7 +3424,7 @@ void ImageInformation::add_int( const char* name,
             sprintf( buf, "%d", content );
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
-            widget->textcolor( FL_WHITE );
+            widget->textcolor( FL_BLACK );
             widget->color( colB );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
@@ -3470,6 +3462,7 @@ void ImageInformation::add_int( const char* name,
         m_curr->add( p );
     }
 
+    m_curr->layout();
 }
 
 
@@ -3538,8 +3531,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
-	m_curr->add( g );
     }
+    m_curr->add( g );
 
     char buf[64];
     unsigned dw = (w() - kMiddle) / 6;
@@ -3648,6 +3641,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         g2->add( widget );
     }
     m_curr->add( g2 );
+    m_curr->layout();
 }
 
 void ImageInformation::add_float( const char* name,
@@ -3674,8 +3668,8 @@ void ImageInformation::add_float( const char* name,
         widget->copy_label( name );
         widget->color( colA );
         g->add( widget );
-	m_curr->add( g );
     }
+    m_curr->add( g );
 
     {
         char buf[64];
@@ -3698,7 +3692,7 @@ void ImageInformation::add_float( const char* name,
         }
         else
         {
-            Fl_Float_Input* widget = new Fl_Float_Input( kMiddle, Y, 50, hh );
+            Fl_Float_Input* widget = new Fl_Float_Input( kMiddle, Y, 60, hh );
             sprintf( buf, "%g", content );
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
@@ -3708,7 +3702,7 @@ void ImageInformation::add_float( const char* name,
 
             if ( callback ) widget->callback( callback, this );
 
-	    mrv::Slider* slider = new mrv::Slider( kMiddle+50, Y,
+	    mrv::Slider* slider = new mrv::Slider( kMiddle+60, Y,
 						   p->w()-40, hh );
             slider->ticks(mrv::Slider::TICK_ABOVE); 
             // slider->linesize(1);
@@ -3736,8 +3730,12 @@ void ImageInformation::add_float( const char* name,
         }
         p->end();
 	m_curr->add( p );
-        if ( !active ) g->deactivate();
+        if ( !active ) {
+	    g->deactivate();
+	    p->deactivate();
+	}
     }
+    m_curr->layout();
 }
 
 void ImageInformation::add_bool( const char* name,
@@ -3786,6 +3784,7 @@ void ImageInformation::add_bool( const char* name,
         }
 	m_curr->add( widget );
     }
+    m_curr->layout();
 
 }
 
