@@ -156,7 +156,7 @@ void load_new_files( void* s )
 
 int main( int argc, const char** argv )
 {
-  Fl::scheme(NULL);
+  Fl::scheme("gtk+");
   Fl::get_system_colors();
 #ifdef LINUX
   Fl_File_Icon::load_system_icons();
