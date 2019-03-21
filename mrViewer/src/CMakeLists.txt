@@ -245,6 +245,7 @@ SET( SOURCES
  gui/FLU/Flu_File_Chooser.cpp
  gui/FLU/flu_pixmaps.cpp
 
+ gui/MyPack.cpp
  gui/mrvActionWindow.cpp
   gui/mrvOCIOBrowser.cpp
   gui/mrvDoubleWindow.cpp
