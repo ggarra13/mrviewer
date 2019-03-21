@@ -295,33 +295,22 @@ namespace mrv {
 ImageBrowser::ImageBrowser( int x, int y, int w, int h ) :
 Fl_Tree( x, y, w, h ),
 _reel( 0 ),
-dragging( NULL )
+dragging( NULL ),
+old_sel( -1 )
 {
     showroot(0);// don't show root of tree
     // Add some regular text nodes
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
     item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
-    Fl_Tree_Prefs& p = const_cast< Fl_Tree_Prefs& >( prefs() );
-    p.connectorstyle( FL_TREE_CONNECTOR_NONE );
+    connectorstyle( FL_TREE_CONNECTOR_NONE );
 }
 
 ImageBrowser::~ImageBrowser()
 {
     clear();
-    wait_on_threads();
     uiMain = NULL;
 }
 
-void ImageBrowser::wait_on_threads()
-{
-    thread_pool_t::iterator i = _load_threads.begin();
-    thread_pool_t::iterator e = _load_threads.end();
-    for ( ; i != e; ++i )
-    {
-        (*i)->join();
-        delete *i;
-    }
-}
 
 mrv::Timeline* ImageBrowser::timeline()
 {
@@ -840,7 +829,6 @@ mrv::media ImageBrowser::add( mrv::media& m )
     Element* nw = new_item( m );
 
     CMedia* img = nw->element()->image();
-    std::cerr << "add " << img->name() << std::endl; 
 
     std::string path = img->fileroot();
 
@@ -854,7 +842,7 @@ mrv::media ImageBrowser::add( mrv::media& m )
 
     Fl_Tree_Item* item = Fl_Tree::add( path.c_str() );
     item->widget( nw );
-
+    
     end();
     
     Fl_Group::resizable(0);
@@ -1195,16 +1183,11 @@ void ImageBrowser::change_image()
 
 void ImageBrowser::value( int idx )
 {
+    // @TODO: fltk1.4
     send_image( idx );
     seek( view()->frame() );
-    // Fl_Tree::value( idx );  // @TODO: fltk1.4
 }
 
-int ImageBrowser::value() const
-{
-    return 0; // @TODO: fltk1.4
-    //    return Fl_Tree::value();
-}
 
 void ImageBrowser::send_image( int i )
 {
@@ -1225,7 +1208,7 @@ void ImageBrowser::change_image(int i)
     mrv::Reel reel = current_reel();
     send_reel( reel );
 
-    //    Fl_Tree::value( i );  @TODO: fltk1.4
+    // Fl_Tree::value( i );  // @TODO: fltk1.4
     send_image( i );
     change_image();
 }
@@ -2458,6 +2441,27 @@ void ImageBrowser::previous_image()
     if ( play ) view()->play(play);
 }
 
+int ImageBrowser::value() const
+{
+    ImageBrowser* b = const_cast< ImageBrowser* >( this );
+    Fl_Tree_Item* item;
+    Fl_Tree_Item* clicked = b->item_clicked();
+    if ( !clicked ) clicked = b->last();
+    int sel = -1;
+    bool found = false;
+    for ( item = b->first(); item; item = b->next(item), ++sel )
+    {
+	if ( item == clicked )
+	{
+	    found = true;
+	    break;
+	}
+    }
+    if ( found ) {
+	return sel;
+    }
+    return -1;
+}
 
 /**
  * Handle a mouse push
@@ -2469,9 +2473,6 @@ void ImageBrowser::previous_image()
  */
 int ImageBrowser::mousePush( int x, int y )
 {
-    int old_sel = value();
-
-    int ok = Fl_Tree::handle( FL_PUSH );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
@@ -2479,7 +2480,7 @@ int ImageBrowser::mousePush( int x, int y )
 
     int button = Fl::event_button();
     int sel = value();
-
+    
     DBG( "Clicked on " << sel );
 
     if ( button == FL_LEFT_MOUSE )
@@ -2491,7 +2492,13 @@ int ImageBrowser::mousePush( int x, int y )
         }
         else
         {
-            if ( sel == old_sel && clicks > 0 )
+
+
+            lastX = x;
+            lastY = y;
+	    dragging = item_clicked();
+
+            if ( dragging == old_dragging && clicks > 0 )
             {
                 Fl::event_clicks(0);
                 uiMain->uiImageInfo->uiMain->show();
@@ -2499,17 +2506,11 @@ int ImageBrowser::mousePush( int x, int y )
                 //view()->send_network( "MediaInfoWindow 1" );
                 if ( play != CMedia::kStopped )
                     view()->play( play );
-                return ok;
+                return 1;
             }
 
-            DBG( "sel " << sel << "  old_sel " << old_sel );
-
-
-            lastX = x;
-            lastY = y;
-	    dragging = item_clicked();
-            change_image();
-
+	    old_dragging = dragging;
+	    
             mrv::media m = current_image();
             if ( timeline()->edl() && m )
             {
@@ -2639,7 +2640,7 @@ int ImageBrowser::mousePush( int x, int y )
         return 1;
     }
 
-    return ok;
+    return 1;
 }
 
 
@@ -2883,24 +2884,15 @@ int ImageBrowser::mouseRelease( int x, int y )
  */
 int ImageBrowser::handle( int event )
 {
-    switch( event )
-    {
-    case FL_KEYBOARD:
+    if ( event == FL_KEYBOARD )
     {
         int ok = view()->handle( event );
-        if (!ok) ok = Fl_Tree::handle( event );
-        return ok;
+	if ( ok ) return ok;
     }
-    case FL_ENTER:
-        take_focus();
-        window()->show();
-        return 1;
-    case FL_PUSH:
-        return mousePush( Fl::event_x(), Fl::event_y() );
-    case FL_DRAG:
-        return mouseDrag( Fl::event_x(), Fl::event_y() );
-    case FL_RELEASE:
-        return mouseRelease( Fl::event_x(), Fl::event_y() );
+    
+    int ret = Fl_Tree::handle( event );
+    switch( event )
+    {
     case FL_DND_ENTER:
     case FL_DND_LEAVE:
     case FL_DND_DRAG:
@@ -2909,13 +2901,15 @@ int ImageBrowser::handle( int event )
     case FL_PASTE:
         handle_dnd();
         return 1;
+    case FL_PUSH:
+        return mousePush( Fl::event_x(), Fl::event_y() );
+    case FL_DRAG:
+	return mouseDrag( Fl::event_x(), Fl::event_y() );
+    case FL_RELEASE:
+        //mouseRelease( Fl::event_x(), Fl::event_y() );
+	dragging = NULL;
     }
-    int old_sel = value();
-    int ok = Fl_Tree::handle( event );
-    if ( value() != old_sel ) {
-        change_image();
-    }
-    return ok;
+    return ret;
 }
 
 
