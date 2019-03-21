@@ -189,51 +189,51 @@ bool Hotkey::match( unsigned rawkey )
 
     if ( ctrl )
     {
-        if ( Fl::event_key( FL_CONTROL ) )
+        if ( Fl::event_state( FL_CTRL ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( Fl::event_key( FL_CONTROL ) )
+        if ( Fl::event_state( FL_CTRL ) )
             return false;
     }
 
     if ( shift )
     {
-        if ( Fl::event_key( FL_SHIFT ) )
+        if ( Fl::event_state( FL_SHIFT ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( Fl::event_key( FL_SHIFT ) )
+        if ( Fl::event_state( FL_SHIFT ) )
             return false;
     }
     if ( alt )
     {
-        if ( Fl::event_key( FL_ALT ) )
+        if ( Fl::event_state( FL_ALT ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( Fl::event_key( FL_ALT ) )
+        if ( Fl::event_state( FL_ALT ) )
             return false;
     }
     if ( meta )
     {
-        if ( Fl::event_key( FL_META ) )
+        if ( Fl::event_state( FL_META ) )
             ok = true;
         else
             return false;
     }
     else
     {
-        if ( Fl::event_key( FL_META ) )
+        if ( Fl::event_state( FL_META ) )
             return false;
     }
 
