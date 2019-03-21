@@ -31,8 +31,8 @@
 #define mrvCollapsibleGroup_h
 
 #include <FL/Fl_Group.H>
-#include <FL/Fl_Pack.H>
 #include <FL/Fl_Button.H>
+#include "MyPack.h"
 
 namespace mrv {
 
@@ -41,23 +41,40 @@ namespace mrv {
       CollapsibleGroup( const int x, const int y, const int w, 
                         const int h, const char* l = 0 );
       ~CollapsibleGroup();
-      void begin() { _contents->begin(); }
-      void end()   { _contents->end(); }
+      void begin() {
+          Fl_Group::begin();
+          _contents->begin();
+      }
+      void end() {
+          _contents->end();
+          Fl_Group::end();
+          _contents->layout();  // force recalculation of widget's layout based on children contents
+          layout();             // recalc our own layout
+      }
       void add( Fl_Widget* w );
       void clear();
       void spacing( int x );
       void resize(int X,int Y,int W,int H);
-      Fl_Pack* contents() { return _contents; }
+      MyPack* contents() { return _contents; }
 
     protected:
       Fl_Button*  _button;
-      Fl_Pack*    _contents;
+      MyPack*     _contents;
 
       static void toggle_tab_cb( Fl_Button* w, void* data );
       void        toggle_tab( Fl_Button* w);
       void layout();
       void relabel_button();
-      //DEBUG virtual void draw();
+      // virtual void draw();  // DEBUG
+
+    public:     // added these -erco
+      // Open/close the widget
+      void open();
+      void close();
+      // Is widget open?
+      bool is_open() const {
+          return _contents->visible() ? true : false;
+      }
   };
 
 } // namespace mrv
