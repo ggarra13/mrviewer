@@ -47,7 +47,9 @@
 
 
 #define ImageInfoParent Fl_Scroll
+#define mrvPack MyPack
 
+class MyPack;
 class ViewerUI;
 
 namespace mrv
@@ -74,7 +76,6 @@ public:
     void set_image( CMedia* img );
 
     void refresh();
-    virtual void layout();
     virtual int handle( int event );
 
     void main( ViewerUI* m ) {
@@ -208,8 +209,9 @@ protected:
     mrv::CollapsibleGroup*       m_audio;
     mrv::CollapsibleGroup*       m_subtitle;
 
-    Fl_Pack*          m_all;
-    Fl_Pack*          m_main;
+    mrv::CollapsibleGroup*       m_group;
+    
+    mrvPack*           m_all;
     mrv::Table*       m_curr;
     Fl_Color          m_color;
     CMedia::Mutex     _mutex;
