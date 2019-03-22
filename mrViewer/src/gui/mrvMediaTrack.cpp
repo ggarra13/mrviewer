@@ -543,7 +543,7 @@ int media_track::handle( int event )
             mrv::Timeline* t = main()->uiTimeline;
             if ( ! t->edl() )
             {
-                mrv::media fg = _selected->element();
+                mrv::media fg = _selected->media();
                 int64_t start = fg->image()->first_frame();
                 int64_t end   = fg->image()->last_frame();
                 t->minimum( double(start) );
@@ -603,7 +603,7 @@ int media_track::handle( int event )
              key == FL_BackSpace )
         {
             if ( _selected )
-                remove( _selected->element() );
+                remove( _selected->media() );
             return 1;
         }
         break;
@@ -626,19 +626,19 @@ int media_track::handle( int event )
 
             for ( ; i != e; ++i )
             {
-                if ( *i == _selected->element() )
+                if ( *i == _selected->media() )
                 {
                     if ( _audio_selected )
                     {
-                        shift_audio( _selected->element(), diff );
+                        shift_audio( _selected->media(), diff );
                     }
                     else
                     {
                         if ( _at_start )
-                            shift_media_start( _selected->element(), diff );
+                            shift_media_start( _selected->media(), diff );
                         else
-                            shift_media_end( _selected->element(), diff );
-                        _selected->element()->create_thumbnail();
+                            shift_media_end( _selected->media(), diff );
+                        _selected->media()->create_thumbnail();
                     }
 
 
@@ -773,14 +773,14 @@ void media_track::draw()
             mrv::Recti ra(rx+dx, h()+y()-20, dw, 20 );
             fl_rectf( ra.x(), ra.y(), ra.w(), ra.h() );
 
-            if ( _selected && _selected->element() == fg )
+            if ( _selected && _selected->media() == fg )
                 fl_color( FL_WHITE );
             else
                 fl_color( FL_BLACK );
             fl_rect( ra.x(), ra.y(), ra.w(), ra.h() );
 
 
-            if ( _selected && _selected->element() == fg )
+            if ( _selected && _selected->media() == fg )
                 fl_color( FL_BLACK );
             else
                 fl_color( FL_GRAY0 );
@@ -798,7 +798,7 @@ void media_track::draw()
             {
                 fl_draw( buf, float( off.x()+2 ), float( off.y()+2 ) );
 
-                if ( _selected && _selected->element() == fg )
+                if ( _selected && _selected->media() == fg )
                     fl_color( FL_WHITE );
                 else
                     fl_color( FL_BLACK );
@@ -815,13 +815,13 @@ void media_track::draw()
             thumb->draw( r.x()+2, y()+2 );
         }
 
-        if ( _selected && _selected->element() == fg )
+        if ( _selected && _selected->media() == fg )
             fl_color( FL_WHITE );
         else
             fl_color( FL_BLACK );
         fl_rect( r.x(), r.y(), r.w(), r.h() );
 
-        if ( _selected && _selected->element() == fg )
+        if ( _selected && _selected->media() == fg )
         {
             char buf[128];
             fl_color( FL_BLUE );
@@ -859,7 +859,7 @@ void media_track::draw()
         }
 
 
-        if ( _selected && _selected->element() == fg )
+        if ( _selected && _selected->media() == fg )
             fl_color( FL_BLACK );
         else
             fl_color( FL_GRAY0 );
@@ -881,7 +881,7 @@ void media_track::draw()
                  float( text.x() + 2 ),
                  float( text.y() + 2 ) );
 
-        if ( _selected && _selected->element() == fg )
+        if ( _selected && _selected->media() == fg )
             fl_color( FL_WHITE );
         else
             fl_color( FL_BLACK );
