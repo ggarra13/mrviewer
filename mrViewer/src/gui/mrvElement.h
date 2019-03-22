@@ -45,7 +45,7 @@ public:
     // Draw ourself at a specific X,Y position
     void DrawAt(int X, int Y);
 
-    const mrv::media& element() const;
+    const mrv::media& media() const;
 
     void draw();
 
