@@ -434,6 +434,8 @@ const mrv::media ImageBrowser::current_image() const
  */
 mrv::Reel ImageBrowser::new_reel( const char* orig )
 {
+    view()->stop();
+    
     mrv::ReelList::const_iterator i = _reels.begin();
     mrv::ReelList::const_iterator e = _reels.end();
     std::string name = orig;
@@ -464,53 +466,8 @@ mrv::Reel ImageBrowser::new_reel( const char* orig )
     _reel_choice->add( name.c_str() );
     _reel_choice->value( _reel );
 
-    mrv::EDLGroup* eg = edl_group();
-    if ( eg )
-    {
-        eg->add_media_track( _reel );
-    }
+    std::cerr << "REEL " << _reel << " " << current_reel()->name << std::endl;
 
-    if ( !main()->uiEDLWindow ) return reel;
-
-    Fl_Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
-    Fl_Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
-
-    int one = c1->value();
-    c1->clear();
-
-    int two = c2->value();
-    c2->clear();
-
-    size_t reels = number_of_reels();
-    for ( size_t i = 0; i < reels; ++i )
-    {
-        mrv::Reel r = this->reel( (unsigned int) i );
-
-        c1->add( r->name.c_str() );
-        c2->add( r->name.c_str() );
-    }
-
-    if ( one == -1 && two == -1 )
-    {
-        c1->value(0);
-        if ( reels > 1 ) c2->value(1);
-    }
-    else
-    {
-        c1->value( one );
-        if ( two == -1 && reels > 1 )
-            c2->value( 1 );
-        else
-            c2->value( two );
-    }
-    c1->redraw();
-    c2->redraw();
-
-    if ( eg )
-    {
-        eg->refresh();
-        eg->redraw();
-    }
 
     if ( ! _reels.empty() ) change_reel();
     return reel;
@@ -707,7 +664,11 @@ void ImageBrowser::remove_reel()
 Element* ImageBrowser::new_item( mrv::media m )
 {
     Element* nw = new Element( m );
-
+    if ( !nw )
+    {
+	LOG_ERROR( _("Could not allocate new element" ) );
+    }
+    
     nw->labelsize( 30 );
     nw->box( FL_BORDER_BOX );
     return nw;
@@ -818,17 +779,23 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
 mrv::media ImageBrowser::add( mrv::media& m )
 {
+    std::cerr << __LINE__ << " add " << m->image()->name() << std::endl;
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
     reel->images.push_back( m );
 
-    begin();
+    std::cerr << __LINE__ << " " << reel->name << " has now "
+	      << m->image()->name() << std::endl;
+    
+    Fl_Group::end();
 
+    std::cerr << __LINE__ << std::endl;
     
     Element* nw = new_item( m );
-
-    CMedia* img = nw->element()->image();
+    
+    std::cerr << __LINE__ << std::endl;
+    CMedia* img = nw->media()->image();
 
     std::string path = img->fileroot();
 
@@ -839,31 +806,27 @@ mrv::media ImageBrowser::add( mrv::media& m )
 	next = found+3;
     }
 
+    std::cerr << __LINE__ << std::endl;
 
     Fl_Tree_Item* item = Fl_Tree::add( path.c_str() );
     item->widget( nw );
     
-    end();
+    std::cerr << __LINE__ << std::endl;
     
+    std::cerr << __LINE__ << std::endl;
     Fl_Group::resizable(0);
 
+    std::cerr << __LINE__ << std::endl;
 
     if ( reel->images.size() == 1 )
     {
+    std::cerr << __LINE__ << std::endl;
         value(0);
         change_image();
     }
 
     //send_reel( reel );
     //send_current_image( m );
-
-
-    mrv::EDLGroup* e = edl_group();
-    if ( e )
-    {
-        e->refresh();
-        e->redraw();
-    }
 
     adjust_timeline();
 
@@ -1046,12 +1009,11 @@ void ImageBrowser::clear_bg()
  */
 void ImageBrowser::change_reel()
 {
-    DBG( "Change reel" );
-    clear();
+    Fl_Tree::clear();
 
     mrv::Reel reel = current_reel();
     if ( !reel ) {
-        DBG( "Invalid reel" );
+        LOG_ERROR(  _("Invalid reel") );
         change_image( -1 );
         return;
     }
@@ -1068,27 +1030,20 @@ void ImageBrowser::change_reel()
     {
 
         DBG( "Add images in browser" );
-        Fl_Tree::clear();
 
         mrv::MediaList::iterator i = reel->images.begin();
-        MediaList::iterator j;
         mrv::MediaList::iterator e = reel->images.end();
         for ( ; i != e; ++i )
         {
-            Element* nw = new_item( *i );
-
-            CMedia* img = nw->element()->image();
-            Fl_Tree_Item* item = Fl_Tree::add( img->fileroot() );
-            begin();
-            item->widget( nw );
-            end();
-            Fl_Tree::resizable(0);
+	    std::cerr << reel->name << " HAS " << (*i)->image()->name()
+		      << std::endl;
+	    add( *i );
         }
 
         DBG( "Make images contiguous in timeline" );
         adjust_timeline();
 
-        change_image(0);
+	change_image(0);
         seek( view()->frame() );
     }
 
@@ -1103,12 +1058,10 @@ void ImageBrowser::change_reel()
         clear_edl();
     }
 
-    // if ( view()->bg_reel() == _reel )
-    // {
-    //     set_bg( view()->foreground() );
-    // }
 
     send_reel( reel );
+
+    redraw();
 
 }
 
@@ -2479,46 +2432,52 @@ int ImageBrowser::mousePush( int x, int y )
         view()->stop();
 
     int button = Fl::event_button();
-    int sel = value();
-    
-    DBG( "Clicked on " << sel );
 
     if ( button == FL_LEFT_MOUSE )
     {
         int clicks = Fl::event_clicks();
-        if ( sel < 0 )
-        {
-            value( old_sel );
-        }
-        else
-        {
 
+	std::cerr << __LINE__ << std::endl;
+	lastX = x;
+	lastY = y;
+	std::cerr << __LINE__ << std::endl;
+	dragging = item_clicked();
+	std::cerr << __LINE__ << std::endl;
+	if ( !dragging || !dragging->widget() ) return 0;
+	std::cerr << __LINE__ << std::endl;
 
-            lastX = x;
-            lastY = y;
-	    dragging = item_clicked();
+	if ( dragging == old_dragging && clicks > 0 )
+	{
+	std::cerr << __LINE__ << std::endl;
+	    Fl::event_clicks(0);
+	std::cerr << __LINE__ << std::endl;
+	    uiMain->uiImageInfo->uiMain->show();
+	std::cerr << __LINE__ << std::endl;
+	    view()->update_image_info();
+	    if ( play != CMedia::kStopped )
+		view()->play( play );
+	    return 1;
+	}
 
-            if ( dragging == old_dragging && clicks > 0 )
-            {
-                Fl::event_clicks(0);
-                uiMain->uiImageInfo->uiMain->show();
-                view()->update_image_info();
-                //view()->send_network( "MediaInfoWindow 1" );
-                if ( play != CMedia::kStopped )
-                    view()->play( play );
-                return 1;
-            }
-
-	    old_dragging = dragging;
+	std::cerr << __LINE__ << std::endl;
+	old_dragging = dragging;
 	    
-            mrv::media m = current_image();
-            if ( timeline()->edl() && m )
-            {
-                int64_t s = m->position();
-                DBG("seek to " << s );
-                seek( s );
-            }
-        }
+	std::cerr << __LINE__ << std::endl;
+	mrv::media m = current_image();
+	if ( timeline()->edl() && m )
+	{
+	    int64_t s = m->position();
+	    DBG("seek to " << s );
+	    seek( s );
+	}
+	else
+	{
+	std::cerr << __LINE__ << std::endl;
+	    mrv::Element* e = (mrv::Element*) dragging->widget();
+	std::cerr << __LINE__ << std::endl;
+	    view()->foreground( e->media() );
+	std::cerr << __LINE__ << std::endl;
+	}
         if ( play != CMedia::kStopped )
             view()->play( play );
         return 1;
@@ -2526,13 +2485,14 @@ int ImageBrowser::mousePush( int x, int y )
     else if ( button == FL_RIGHT_MOUSE )
     {
 
-        Fl_Menu_Button menu(0,0,0,0);
+        Fl_Menu_Button menu( Fl::event_x(), Fl::event_y(),0,0);
 
         mrv::Reel reel = current_reel();
         if (!reel) {
             new_reel("reel");
             reel = current_reel();
             if ( !reel ) return 0;
+	    redraw();
         }
 
         CMedia* img = NULL;
@@ -2543,6 +2503,7 @@ int ImageBrowser::mousePush( int x, int y )
         menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                   (Fl_Callback*)open_single_cb, this);
 
+	int sel = value();  // @TODO: fix for fltk1.4
         if ( sel >= 0 )
         {
             change_image();
