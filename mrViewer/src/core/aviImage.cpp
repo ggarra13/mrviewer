@@ -1972,9 +1972,6 @@ void aviImage::video_stream( int x )
         fmt.push_back( AV_PIX_FMT_YUV444P );
         fmt.push_back( AV_PIX_FMT_YUV422P );
         fmt.push_back( AV_PIX_FMT_YUV420P );
-        fmt.push_back( AV_PIX_FMT_YUVJ444P );
-        fmt.push_back( AV_PIX_FMT_YUVJ422P );
-        fmt.push_back( AV_PIX_FMT_YUVJ420P );
         fmt.push_back( AV_PIX_FMT_NONE );
         fmts = &fmt[0];
     }
@@ -2033,13 +2030,13 @@ void aviImage::video_stream( int x )
     lumma_layers();
 
     if ( _av_dst_pix_fmt == AV_PIX_FMT_RGBA ||
-            _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P16LE ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P16LE ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P16LE ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
-            _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
+	 _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
+	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P16LE ||
+	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P16LE ||
+	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P16LE ||
+	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
+	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
+	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
 
     // if (ctx->lowres) {
     //     ctx->flags |= CODEC_FLAG_EMU_EDGE;
