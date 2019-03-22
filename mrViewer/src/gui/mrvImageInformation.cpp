@@ -150,11 +150,12 @@ Fl_Input *uiValue=(Fl_Input *)0;
 mrv::Choice *uiKeyRemove=(mrv::Choice *)0;
 
 static void cb_OK(Fl_Button*, Fl_Window* v) {
-    // v->make_exec_return(true);  // @TODO: fltk1.4
+    v->damage( FL_DAMAGE_ALL );  // like fltk2.0's exec return true
+    v->hide();
 }
 
 static void cb_Cancel(Fl_Button*, Fl_Window* v) {
-    //  v->make_exec_return(false); // @TODO: fltk1.4
+    v->hide();
 }
 
 
@@ -193,9 +194,9 @@ static void cb_uiType(mrv::Choice* o, void*) {
         uiValue->value( _("** multivalue **") );
 }
 
-static Fl_Window* make_attribute_add_window() {
-    Fl_Window* w;
-    {   Fl_Window* o = new Fl_Window(405, 200);
+static Fl_Double_Window* make_attribute_add_window() {
+    Fl_Double_Window* w;
+    {   Fl_Double_Window* o = new Fl_Double_Window(405, 200);
         w = o;
         o->label( _("Add Attribute") );
         o->begin();
@@ -577,19 +578,45 @@ static void add_attribute( CMedia::Attributes& attrs,
 static
 void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 {
-    Fl_Group* g = (Fl_Group*)info->m_attributes;
+    if ( info->m_attributes == NULL ) {
+	std::cerr << "attributes not found" << std::endl;
+	return;
+    }
+    
+    mrv::CollapsibleGroup* g =
+    dynamic_cast< mrv::CollapsibleGroup* >( info->m_attributes );
 
-    if ( g == NULL ) return;
+    if ( g == NULL ) {
+	std::cerr << "collapsiblegroup not found" << std::endl;
+	return;
+    }
+    
+    //if ( g->children() < 2 ) return;
+    MyPack* p = dynamic_cast< MyPack* >( g->child(1) ); // pack
+    if ( p == NULL ) {
+	std::cerr << "mypack not found" << std::endl;
+	return;
+    }
 
-    if ( g->children() < 2 ) return;
-    g = (Fl_Group*)g->child(1);
-
-    if ( g->children() < 1 ) return;
-    g = (Fl_Group*)g->child(0);
-    for ( int i = 0; i < g->children(); ++i )
+    // Index is 3 for two scrollbars and a root node
+    mrv::Table* t = dynamic_cast< mrv::Table* >( p->child(0) );
+    if ( t == NULL )
     {
-        Fl_Group* sg = (Fl_Group*)g->child(i);
-        Fl_Widget* w = sg->child(0);
+	std::cerr << "not a table" << std::endl;
+	return;
+    }
+    
+    for ( int r = 0; r < t->rows(); ++r )
+    {
+	int i = 2 * r;
+	if ( i >= t->children() ) break;
+        Fl_Group* sg = dynamic_cast< Fl_Group* >( t->child(i) );
+	if ( !sg ) {
+	    std::cerr << "not group child in table " << i << std::endl;
+	    break;
+	}
+	Fl_Widget* w = sg->child(0);
+	if ( ! w->label() ) continue;
         if ( key.rfind( _("All") ) != std::string::npos ||
                 key == w->label() ||
                 key + ".filmMfcCode" == w->label() ||
@@ -600,29 +627,25 @@ void toggle_modify_attribute( const std::string& key, ImageInformation* info )
                 key + ".perfsPerFrame" == w->label() ||
                 key + ".perfsPerCount" == w->label() )
         {
-            if ( sg->active() )
-                sg->deactivate();
+	    w = (Fl_Widget*)t->child(i+1);
+            if ( w->active() )
+	    {
+		w->deactivate();
+	    }
             else
-                sg->activate();
+	    {
+		w->activate();
+	    }
         }
     }
 }
 
 
 static
-void toggle_modify_attribute_cb( Fl_Box* widget, ImageInformation* info )
+void toggle_modify_attribute_cb( Fl_Menu_Button* widget,
+				 ImageInformation* info )
 {
-    std::string key = widget->label();
-    Fl_Group* g = widget->parent();
-    std::string label;
-    for ( ; g != NULL; g = g->parent() )
-    {
-        if ( !g->label() ) break;
-        label = g->label();
-        if ( label == _("Toggle Modify") ) break;
-        key = label + "/" + key;
-    }
-
+    std::string key = widget->text();
     toggle_modify_attribute( key, info );
 }
 
@@ -631,10 +654,15 @@ static void add_attribute_cb( Fl_Box* widget, ImageInformation* info )
     CMedia* img = info->get_image();
     if (!img) return;
 
-    Fl_Window* w = make_attribute_add_window();
-    w->set_modal();
+    Fl_Group::current(0);
+    Fl_Double_Window* w = make_attribute_add_window();
     w->show();
+    while ( w->visible() )
+	Fl::check();
 
+    if ( ! (w->damage() & FL_DAMAGE_ALL) )
+	return;
+    
     std::string key = uiKey->value();
     std::string value = uiValue->value();
 
@@ -654,10 +682,16 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
 
     CMedia::Attributes& attrs = img->attributes();
 
+    Fl_Group::current(0);
     Fl_Window* w = make_remove_window( attrs );
     w->set_modal();
     w->show();
+    while ( w->visible() )
+	Fl::check();
 
+
+    if ( ! ( w->damage() & FL_DAMAGE_ALL ) ) return;
+    
     std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
 
     CMedia::Attributes::iterator i = attrs.find( key );
@@ -700,38 +734,33 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
 		  w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
     m_all = new mrvPack( x, y, w-sw, 20, "all" );
+    m_all->begin();
     
     m_button = new Fl_Button( r.x(), r.y(), r.w(), 20, _("Left View") );
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
-    m_all->add( m_button );
     
     // CollapsibleGrop recalcs, we don't care its xyh sizes
     m_image = new mrv::CollapsibleGroup( 0, 40, r.w(),
 					 840, _("Main")  );
-    m_all->add( m_image );
     
     m_video = new mrv::CollapsibleGroup( r.x(), r.y()+840,
 					 r.w(), 400, _("Video") );
-    m_all->add( m_video );
     
     m_audio = new mrv::CollapsibleGroup( r.x(), r.y()+1240,
 					 r.w(), 400, _("Audio") );
-    m_all->add( m_audio );
 	
     
     m_subtitle = new mrv::CollapsibleGroup( r.x(), r.y()+1640,
 					    r.w(), 400, _("Subtitle") );
-
-    m_all->add( m_subtitle );
 	
     m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2040,
 					       r.w(), 400, _("Metadata")  );
 
-    m_all->add( m_attributes );
-
-    // resizable( m_all );  // this seems broken, that's why I redo layout
+    m_all->end();
+    
+    //   resizable( m_all );  // this seems broken, that's why I redo layout
     end();
 
     hide_tabs();
@@ -748,8 +777,10 @@ int ImageInformation::handle( int event )
 
     if ( event == FL_PUSH && Fl::event_button() == FL_RIGHT_MOUSE && img )
     {
-
-        Fl_Menu_Button menu(0,0,0,0);
+	begin();
+	
+        Fl_Menu_Button menu(0,0,w(),h());
+	menu.type( Fl_Menu_Button::POPUP3 );
 
         menu.add( _("Add Attribute"), 0,
                   (Fl_Callback*)add_attribute_cb,
@@ -779,6 +810,7 @@ int ImageInformation::handle( int event )
                           this);
             }
         }
+	end();
 
 
         menu.popup();
@@ -1304,15 +1336,46 @@ static void change_string_cb( Fl_Input* w, ImageInformation* info )
         return;
     }
 
-    Fl_Group* g = (Fl_Group*)w->parent();
-    Fl_Widget* widget = g->child(0);
 
-    if ( !widget->label() ) {
-        LOG_ERROR( "Widget has no label" );
+    mrv::Table* t = dynamic_cast< mrv::Table* >( w->parent()->parent() );
+    if ( t == NULL )
+    {
+	std::cerr << "not a table" << std::endl;
+	return;
+    }
+    
+    Fl_Widget* box;
+    bool found = false;
+    for ( int r = 0; r < t->rows(); ++r )
+    {
+	int i = 2 * r;
+	if ( i >= t->children() ) break;
+	Fl_Group* sg = dynamic_cast< Fl_Group* >( t->child(i) );
+	if ( !sg ) {
+	    std::cerr << "not group child in table " << i << std::endl;
+	    break;
+	}
+	box = (Fl_Widget*)sg->child(0);
+	Fl_Widget* widget = t->child(i+1);
+	if ( widget == w ) {
+	    found = true;
+	    break;
+	}
+    }
+
+    if (!found )
+    {
+	LOG_ERROR( _("Could not find attribute \"") << w->label() << "\"");
+	return;
+    }
+    
+
+    if ( !box->label() ) {
+        LOG_ERROR( _("Widget has no label") );
         return;
     }
 
-    std::string key = widget->label();
+    std::string key = box->label();
     CMedia::Attributes& attributes = img->attributes();
     CMedia::Attributes::iterator i = attributes.find( key );
     if ( i != attributes.end() )
@@ -1499,7 +1562,8 @@ static void change_fps_cb( Fl_Float_Input* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->fps( atof( w->value() ) );
+	float f = atof( w->value() );
+	img->play_fps( f );
         update_float_slider( w );
     }
 }
@@ -2013,9 +2077,9 @@ void ImageInformation::fill_data()
 
 
     
-    unsigned int num_video_streams = unsigned( img->number_of_video_streams() );
-    unsigned int num_audio_streams = unsigned( img->number_of_audio_streams() );
-    unsigned int num_subtitle_streams = unsigned( img->number_of_subtitle_streams() );
+    int num_video_streams = img->number_of_video_streams();
+    int num_audio_streams = img->number_of_audio_streams();
+    int num_subtitle_streams = img->number_of_subtitle_streams();
     
     if ( img->has_video() || img->has_audio() )
     {
@@ -2516,7 +2580,6 @@ void ImageInformation::fill_data()
     
     if ( num_video_streams > 0 )
     {
-   
 	m_video->show();
         for ( unsigned i = 0; i < num_video_streams; ++i )
         {
@@ -2696,6 +2759,7 @@ void ImageInformation::refresh()
 {
     // SCOPED_LOCK( _mutex );
 
+    hide_tabs();
 
     m_image->clear();
     m_video->clear();
