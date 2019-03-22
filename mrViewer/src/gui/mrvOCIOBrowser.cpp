@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,10 +47,10 @@ const char* kModule = "ocio";
 namespace mrv {
 
 OCIOBrowser::OCIOBrowser(int x, int y, int w, int h, const char* l) :
-    Fl_Select_Browser( x, y, w, h, l ),
+    Fl_Hold_Browser( x, y, w, h, l ),
     _type( kNone )
 {
-    when( FL_WHEN_RELEASE );
+    //   when( FL_WHEN_RELEASE );
 }
 
 OCIOBrowser::~OCIOBrowser()
@@ -112,11 +112,13 @@ void OCIOBrowser::fill_input_color_space()
     }
 
     if ( std::find( spaces.begin(), spaces.end(), OCIO::ROLE_SCENE_LINEAR ) ==
-            spaces.end() )
+	 spaces.end() )
     {
         spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
     }
 
+    std::cerr << "fill ocio input color space" << std::endl;
+    
     std::sort( spaces.begin(), spaces.end() );
     for ( size_t i = 0; i < spaces.size(); ++i )
     {
