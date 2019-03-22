@@ -1497,7 +1497,7 @@ static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->fps( w->fvalue() );
+        img->play_fps( w->fvalue() );
         update_float_slider( w );
     }
 }
@@ -2063,10 +2063,9 @@ void ImageInformation::fill_data()
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
     for ( int i = 0; i < num; ++i )
     {
-        static const float fuzz = 0.005f;
-        if ( aspect_ratio > kAspectRatioNames[i].ratio - fuzz &&
-                aspect_ratio < kAspectRatioNames[i].ratio + fuzz)
-        {
+        static const double fuzz = 0.01f;
+        if ( mrv::is_equal( aspect_ratio, kAspectRatioNames[i].ratio, fuzz ) )
+	{
             name = _( kAspectRatioNames[i].name );
             break;
         }
