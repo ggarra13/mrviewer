@@ -517,7 +517,7 @@ int EDLGroup::handle( int event )
 
 
             mrv::Reel r = browser()->current_reel();
-            mrv::media m = _drag->element();
+            mrv::media m = _drag->media();
             if ( t1 == t2 )
             {
                 if ( pt < m->position() )
