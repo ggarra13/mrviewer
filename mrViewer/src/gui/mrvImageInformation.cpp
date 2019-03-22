@@ -579,7 +579,7 @@ static
 void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 {
     if ( info->m_attributes == NULL ) {
-	std::cerr << "attributes not found" << std::endl;
+	LOG_ERROR( _("attributes not found") );
 	return;
     }
     
@@ -587,14 +587,14 @@ void toggle_modify_attribute( const std::string& key, ImageInformation* info )
     dynamic_cast< mrv::CollapsibleGroup* >( info->m_attributes );
 
     if ( g == NULL ) {
-	std::cerr << "collapsiblegroup not found" << std::endl;
+	LOG_ERROR( _("CollapsibleGroup not found") );
 	return;
     }
     
     //if ( g->children() < 2 ) return;
     MyPack* p = dynamic_cast< MyPack* >( g->child(1) ); // pack
     if ( p == NULL ) {
-	std::cerr << "mypack not found" << std::endl;
+	LOG_ERROR( _("MyPack not found") );
 	return;
     }
 
@@ -602,7 +602,7 @@ void toggle_modify_attribute( const std::string& key, ImageInformation* info )
     mrv::Table* t = dynamic_cast< mrv::Table* >( p->child(0) );
     if ( t == NULL )
     {
-	std::cerr << "not a table" << std::endl;
+	LOG_ERROR( _("Not a table") );
 	return;
     }
     
@@ -612,7 +612,7 @@ void toggle_modify_attribute( const std::string& key, ImageInformation* info )
 	if ( i >= t->children() ) break;
         Fl_Group* sg = dynamic_cast< Fl_Group* >( t->child(i) );
 	if ( !sg ) {
-	    std::cerr << "not group child in table " << i << std::endl;
+	    LOG_ERROR( _("Not group child in table row ") << i );
 	    break;
 	}
 	Fl_Widget* w = sg->child(0);
@@ -3226,7 +3226,6 @@ void ImageInformation::add_text( const char* name,
         if ( !editable )
         {
             widget->box( FL_FLAT_BOX );
-            g->deactivate();
         }
         else
         {
@@ -3336,7 +3335,6 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	m_curr->add( p );
         if ( !active )
 	{
-	    g->deactivate();
 	    p->deactivate();
 	}
     }
@@ -3795,7 +3793,6 @@ void ImageInformation::add_float( const char* name,
         p->end();
 	m_curr->add( p );
         if ( !active ) {
-	    g->deactivate();
 	    p->deactivate();
 	}
     }
