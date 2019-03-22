@@ -3972,7 +3972,8 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE();
 
             int idx;
-            Fl_Menu_Button menu(Fl::event_x(), Fl::event_y(),0,0);
+            Fl_Menu_Button menu(0,0,w(),h());
+	    menu.type( Fl_Menu_Button::POPUP3 );
 
             menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
