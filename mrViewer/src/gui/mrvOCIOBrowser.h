@@ -30,14 +30,14 @@
 
 #include <string>
 
-#include <FL/Fl_Select_Browser.H>
+#include <FL/Fl_Hold_Browser.H>
 
 
 namespace mrv {
 
 class CMedia;
 
-class OCIOBrowser : public Fl_Select_Browser
+class OCIOBrowser : public Fl_Hold_Browser
 {
 public:
     enum Type {
