@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include <string>} {public local
@@ -24,7 +24,7 @@ Function {make_ocio_chooser(std::string c, mrv::OCIOBrowser::Type type )} {open 
 } {
   Fl_Window {} {
     label {OCIO Browser} open
-    xywh {691 384 395 445} type Double resizable hotspot
+    xywh {691 384 395 445} type Single resizable hotspot
     code0 {orig = ocio = c;} modal visible
   } {
     Fl_Group {} {open
@@ -35,7 +35,7 @@ Function {make_ocio_chooser(std::string c, mrv::OCIOBrowser::Type type )} {open 
         user_data {&ocio} user_data_type {std::string*}
         callback {int elem = o->value();
 if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
-*v = o->text(elem);} selected
+*v = o->text(elem); o->set_selection( *v ); o->value( elem );}
         xywh {5 0 375 355} when 4
         code0 {o->set_selection(c); o->set_type(type);}
         class {mrv::OCIOBrowser}
@@ -54,7 +54,9 @@ if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
       }
     }
   }
-  code {w->set_modal();
-w->show();
-return ocio;} {}
+  code {w->show();
+  while ( w->visible() )
+      Fl::check();
+return ocio;} {selected
+  }
 }
