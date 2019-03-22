@@ -104,10 +104,10 @@ namespace mrv {
                                       const int w, const int h, 
                                       const char* l ) : Fl_Group( x, y, w, h, l ) {
    
-    //SIMPLIFY box( FL_ROUNDED_BOX );   // get fancy later, after we debug. It's harder to see problems with round box. -erco
+    box( FL_ROUNDED_BOX );   // get fancy later, after we debug. It's harder to see problems with round box. -erco
 
     // Use a border box for now, so we can see our bounds in parent MyPack.
-    box(FL_BORDER_BOX);
+    //box(FL_BORDER_BOX);
 
     // Disable label from being shown; we show the label only in the button.
     labeltype(FL_NO_LABEL);
@@ -120,15 +120,18 @@ namespace mrv {
                             BUTTON_H);                // button height fixed size
     _button->align( FL_ALIGN_LEFT| FL_ALIGN_INSIDE );
     _button->labelsize( 16 );
-    //_button->box( FL_FLAT_BOX );    // commented out for easier debugging. Revert when needed
+    _button->box( FL_FLAT_BOX );    // commented out for easier debugging. Revert when needed
     _button->callback( (Fl_Callback*)toggle_tab_cb, this );
 
     _contents = new MyPack(_button->x(),                     // lines up with button on x
                            y+_button->y()+_button->h(),      // just below button
                            w-(GROUP_MARGIN*2),               // width same as group within margin
                            10, l);                              // changes when child add()ed
-    _contents->end();
+    
     // Don't end() _contents; we want it to begin() sucking up child widgets on return
+    _contents->end();
+    Fl_Group::end();
+    
     relabel_button();         // relabel button once pack created
     resizable(0);             // prevent FLTK auto-sizing -- we handle children ourself
   }
