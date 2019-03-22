@@ -48,7 +48,6 @@ namespace mrv {
       void end() {
           _contents->end();
           Fl_Group::end();
-          _contents->layout();  // force recalculation of widget's layout based on children contents
           layout();             // recalc our own layout
       }
       void add( Fl_Widget* w );
