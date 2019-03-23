@@ -1134,14 +1134,29 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                 _shader->setUniform( "coeffs", 1 );
                 CHECK_GL;
                 // HDTV  YCbCr coefficients,
-                _shader->setUniform( "Koff", -0.0625f, -0.5f, -0.5f );
+                _shader->setUniform( "Koff", -0.0627451017f, -0.501960814f,
+				     -0.501960814f );
                 CHECK_GL;
                 _shader->setUniform( "Kr", 1.16438356f, 0.f, 1.79274107f );
                 CHECK_GL;
-                _shader->setUniform( "Kg", 1.16438356f, -0.21324861,
-                                     -0.53290933 );
+                _shader->setUniform( "Kg", 1.16438356f, -0.21324861f,
+                                     -0.53290933f );
                 CHECK_GL;
                 _shader->setUniform( "Kb", 1.16438356f, 2.11240179f, 0.0f );
+                CHECK_GL
+            }
+            else if ( colorspace == "JPEG" )
+            {
+                _shader->setUniform( "coeffs", 1 );
+                CHECK_GL;
+                // JPEG  YCbCr coefficients,
+                _shader->setUniform( "Koff", 0.0f, -0.501960814f, -0.501960814f );
+                CHECK_GL;
+                _shader->setUniform( "Kr", 1.f, 0.f, 1.402f );
+                CHECK_GL;
+                _shader->setUniform( "Kg", 1.f, -0.3441, -0.7141 );
+                CHECK_GL;
+                _shader->setUniform( "Kb", 1.f, 1.772f, 0.0f );
                 CHECK_GL
             }
             else if ( colorspace == "BT470BG" ||
