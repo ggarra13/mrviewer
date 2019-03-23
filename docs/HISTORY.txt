@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+=======
+v4.4.7   - Bug fixed AVIs with yuvj422p color schemes as they were being
+	   read darker by swscale (deprecated format).
+	 - Bug fixed inverse fps change in image information window.
+	 - Bug fixed naming of aspect ratio in image informaion window.
+	 - Bug fixed pixel format always showing Lumma in image info window.
+
+v4.4.6   - Bug fixed histogram, color area, vectorscope and waveform to
+	   work with image sequences.
+
+>>>>>>> b117193cc... Improved YUV color conversion.
 v4.4.5
          - Bug fixed thumbnails in our own file requester which was crashing
            the viewer in beta-2.
