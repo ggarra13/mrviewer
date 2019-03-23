@@ -91,15 +91,13 @@ public:
         return _reels.size();
     }
     mrv::Reel new_reel( const char* name = "reel" );
-    mrv::Reel current_reel() const;
+    mrv::Reel current_reel();
     mrv::Reel reel( const char* name );
     mrv::Reel reel( unsigned int idx );
     mrv::Reel reel_at( unsigned int idx );
     unsigned reel_index() { return _reel; }
 
     mrv::media current_image();
-
-    const mrv::media current_image() const;
 
     void reel_choice( mrv::Choice* c ) {
         _reel_choice = c;
@@ -174,8 +172,8 @@ public:
 
     void handle_dnd();
 
-    void value( int idx );
-    int value() const;
+    void value( int idx ) { _value = idx; }
+    int value() const { return _value; }
 
     virtual void draw();
     virtual int handle( int event );
@@ -195,6 +193,9 @@ public:
     static mrv::Element* new_item(mrv::media img);
 
 protected:
+
+    std::string media_to_pathname( const mrv::media m );
+    
     void send_reel( const mrv::Reel& r );
     void send_images( const mrv::Reel& r);
     void send_current_image( const mrv::media& m );
@@ -226,6 +227,7 @@ protected:
     unsigned       _reel;
     mrv::ReelList  _reels;
     mrv::Choice*  _reel_choice;
+    int           _value;
 
     CMedia::Mutex   _mtx;
     Fl_Tree_Item*    dragging;
