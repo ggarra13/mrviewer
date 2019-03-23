@@ -2042,7 +2042,6 @@ void aviImage::video_stream( int x )
     if ( colorspace_override ) _colorspace_index = colorspace_override;
     else _colorspace_index = ctx->color_space;
 
-    std::cerr << "color space index " << _colorspace_index << std::endl;
     
     switch( _av_dst_pix_fmt )
     {
