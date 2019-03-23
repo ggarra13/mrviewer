@@ -520,8 +520,10 @@ Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsSaveOcio->value( tmp );
 
     ocio.get( "config", tmpS, "", 2048 );
-    uiPrefs->uiPrefsOCIOConfig->text( tmpS );
-
+    if ( strlen(tmpS) > 0 )
+    {
+	uiPrefs->uiPrefsOCIOConfig->text( tmpS );
+    }
 
     fltk::Preferences ics( ocio, "ICS" );
     {
@@ -1214,7 +1216,7 @@ void Preferences::run( mrv::ViewerUI* main )
         putenv( strdup(buf) );
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
-#ifdef __linux__
+#if 0 
         char tmpS[256];
         sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
         const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
@@ -1747,6 +1749,11 @@ void Preferences::save()
             ocio.set( "save_config", 1 );
             ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
         }
+	else
+	{
+            ocio.set( "save_config", 1 );
+            ocio.set( "config", "" );
+	}
 
         fltk::Preferences ics( ocio, "ICS" );
         {
