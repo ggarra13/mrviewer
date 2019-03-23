@@ -1216,7 +1216,7 @@ void Preferences::run( mrv::ViewerUI* main )
         putenv( strdup(buf) );
         uiPrefs->uiPrefsOCIOConfig->text( var );
 
-#if 0 
+#if 0 // __linux__
         char tmpS[256];
         sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
         const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
