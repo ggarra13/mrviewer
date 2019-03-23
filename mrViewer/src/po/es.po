@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-23 07:34-0300\n"
+"POT-Creation-Date: 2019-03-23 07:47-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:614 core/aviImage.cpp:2319
+#: core/CMedia_audio.cpp:614 core/aviImage.cpp:2315
 msgid ""
 "\n"
 "\n"
@@ -95,7 +95,7 @@ msgstr " - error de decodificacion del cuadro de audio "
 msgid " Color Area Selection"
 msgstr " Seleccion de Área de Color"
 
-#: core/aviImage.cpp:2810
+#: core/aviImage.cpp:2806
 msgid " Could not open file"
 msgstr " No pude abrir el archivo"
 
@@ -118,7 +118,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " Move Picture"
 msgstr " Mover la Imagen"
 
-#: core/aviImage.cpp:2336
+#: core/aviImage.cpp:2332
 msgid " No audio or video stream in file"
 msgstr " No hay audio o video en el archivo"
 
@@ -197,7 +197,7 @@ msgstr " falló. "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2201 core/aviImage.cpp:3872
+#: core/CMedia_audio.cpp:2201 core/aviImage.cpp:3868
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -260,7 +260,7 @@ msgstr " no encontradas en el disco para "
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:4024
+#: core/aviImage.cpp:4020
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -268,7 +268,7 @@ msgstr " no soportado aún"
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3886
+#: core/aviImage.cpp:3882
 msgid " status: "
 msgstr " estatus: "
 
@@ -1135,9 +1135,9 @@ msgstr "Siempre use BT709"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3408
-#, fuzzy
+#,
 msgid "Always use JPEG"
-msgstr "Siempre use BT709"
+msgstr "Siempre use JPEG"
 
 #
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3406
@@ -1878,7 +1878,7 @@ msgstr "Linea Base Contenida"
 #
 #
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3397
-#, fuzzy
+#
 msgid ""
 "Controls the YUV Conversion of the movie in the shader to emulate different "
 "tv standards.\n"
@@ -1897,7 +1897,7 @@ msgstr ""
 "BT709 es una emulación de Rec.709 (HDTV) y tiene niveles de negro 16 en el "
 "rango de 255.\n"
 "Unspecified es el standard de conversión de computadora de YUV.\n"
-"BT470BG/SMPTE170M emulan ITU-R BT 601-6 625 (PAL/SECAM)."
+"BT470BG/SMPTE170M emulan ITU-R BT 601-6 625 (PAL/SECAM).  JPEG es como es usado en imagenes JPEG y tiene un rango de 0 a 255."
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3419
 msgid "Controls the codec used by default in saving a movie file."
@@ -1992,7 +1992,7 @@ msgstr "No pude clonar cuadro de subtítulos"
 msgid "Could not copy context to parameters"
 msgstr "No pude copiar el contexto a los parámetros"
 
-#: core/aviImage.cpp:618 core/aviImage.cpp:2231
+#: core/aviImage.cpp:618 core/aviImage.cpp:2227
 msgid "Could not copy parameters to context"
 msgstr "No pude copiar los parámetros al contexto de codec"
 
@@ -2795,11 +2795,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2199 core/aviImage.cpp:3870
+#: core/CMedia_audio.cpp:2199 core/aviImage.cpp:3866
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3884
+#: core/aviImage.cpp:3880
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -3115,11 +3115,11 @@ msgstr "Transcurrido"
 msgid "Empty"
 msgstr "Vacío"
 
-#: core/aviImage.cpp:3349
+#: core/aviImage.cpp:3345
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:3365 core/aviImage.cpp:4233
+#: core/aviImage.cpp:3361 core/aviImage.cpp:4229
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -5760,12 +5760,12 @@ msgstr "Perfil"
 msgid "Profile name "
 msgstr "Nombre de Perfil "
 
-#: core/aviImage.cpp:2569
+#: core/aviImage.cpp:2565
 #, c-format
 msgid "Program %d "
 msgstr "Programa %d "
 
-#: core/aviImage.cpp:2565
+#: core/aviImage.cpp:2561
 #, c-format
 msgid "Program %d: %s"
 msgstr "Programa %d: %s"
@@ -6722,7 +6722,7 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:4023
+#: core/aviImage.cpp:4019
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -7577,7 +7577,7 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2722
+#: audio/mrvALSAEngine.cpp:132 core/aviImage.cpp:2718
 #: gui/mrvImageInformation.cpp:2062 video/mrvGLEngine.cpp:224
 #: video/mrvGLEngine.cpp:227 video/mrvGLEngine.cpp:230
 msgid "Unknown"
@@ -7640,7 +7640,7 @@ msgstr "Tipo de dato desconocido para clave '"
 msgid "Unknown data type to convert to string"
 msgstr "Tipo de dato desconocido para convertir de texto"
 
-#: core/aviImage.cpp:2119
+#: core/aviImage.cpp:2115
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -8380,7 +8380,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:3295
+#: core/aviImage.cpp:3291
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
