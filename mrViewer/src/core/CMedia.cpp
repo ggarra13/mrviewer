@@ -1848,15 +1848,25 @@ void CMedia::image_size( int w, int h )
 
 image_type::Format CMedia::pixel_format() const
 {
+<<<<<<< HEAD
     const mrv::image_type_ptr& m = left();
     if ( m )      return m->format();
+=======
+    mrv::image_type_ptr pic = left();
+    if ( pic )      return pic->format();
+>>>>>>> b117193cc... Improved YUV color conversion.
     else return image_type::kLumma;
 }
 
 const char* const CMedia::pixel_format_name() const
 {
+<<<<<<< HEAD
     const mrv::image_type_ptr m = left();
     if ( m )      return m->pixel_format();
+=======
+    mrv::image_type_ptr pic = left();
+    if ( pic )      return pic->pixel_format();
+>>>>>>> b117193cc... Improved YUV color conversion.
     else return "Lumma";
 }
 
