@@ -1841,13 +1841,15 @@ void CMedia::image_size( int w, int h )
 
 image_type::Format CMedia::pixel_format() const
 {
-    if ( _hires )      return _hires->format();
+    mrv::image_type_ptr pic = left();
+    if ( pic )      return pic->format();
     else return image_type::kLumma;
 }
 
 const char* const CMedia::pixel_format_name() const
 {
-    if ( _hires ) return _hires->pixel_format();
+    mrv::image_type_ptr pic = left();
+    if ( pic )      return pic->pixel_format();
     else return "Lumma";
 }
 
