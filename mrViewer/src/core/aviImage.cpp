@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2016  Gonzalo GarramuÃ±o
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1968,9 +1968,6 @@ void aviImage::video_stream( int x )
         fmt.push_back( AV_PIX_FMT_YUV444P );
         fmt.push_back( AV_PIX_FMT_YUV422P );
         fmt.push_back( AV_PIX_FMT_YUV420P );
-        fmt.push_back( AV_PIX_FMT_YUVJ444P );
-        fmt.push_back( AV_PIX_FMT_YUVJ422P );
-        fmt.push_back( AV_PIX_FMT_YUVJ420P );
         fmt.push_back( AV_PIX_FMT_NONE );
         fmts = &fmt[0];
     }
@@ -2751,6 +2748,8 @@ bool aviImage::initialize()
 {
     if ( !_initialize )
     {
+        avfilter_register_all();
+
 
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "initial_pause", "1", 0);
