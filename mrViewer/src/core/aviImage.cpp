@@ -142,6 +142,7 @@ const char* const kColorSpaces[] = {
     "SMPTE170M", ///< also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC / functionally identical to above
     "SMPTE240M",
     "YCOCG", ///< Used by Dirac / VC-2 and H.264 FRext, see ITU-T SG16
+    "JPEG",  ///< as found in SDL2 code
     "BT2020_NCL", ///< ITU-R BT2020 non-constant luminance system
     "BT2020_CL", ///< ITU-R BT2020 constant luminance system
 };
