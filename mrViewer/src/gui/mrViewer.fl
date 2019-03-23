@@ -2269,15 +2269,16 @@ case 2:
 idx = 2; break;
 case 3:
 idx = 5; break;
+case 4:
 default:
-idx = 9; break;
+idx = 11; break;
 }
 CMedia::colorspace_override = idx;}
                 tooltip {Controls the YUV Conversion of the movie in the shader to emulate different tv standards.
 Use File YUV Hint will take the value from the movie being loaded if the data is present.
 BT709 is a Rec.709 emulation (HDTV) and has black levels in the 16 range of 255.
-Unspecified is your standard computer translation of YUV.  JPEG is as used in JPEG images and has a range of 0 to 255.
-BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).}
+Unspecified is your standard computer translation of YUV.
+BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).  JPEG is as used in JPEG images and has a range of 0 to 255.}
                 xywh {130 45 167 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
