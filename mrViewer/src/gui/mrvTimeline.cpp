@@ -630,18 +630,15 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
-    X = slider_position( value(), w() );
+    X = x() + Fl::box_dx(box()) + slider_position( value(), w() );
     Y = y() + Fl::box_dy(box());
-    W = 10;
+    W = 15  - Fl::box_dw(box());
     H = h() - Fl::box_dh(box());
     fl_push_clip( X, Y, W, H );
     Fl_Color c = FL_YELLOW;
     draw_box( FL_ROUND_UP_BOX, X, Y, W, H, c );
     clear_damage();
     fl_pop_clip();
-    // @TODO: fltk1.4 draw the focus indicator inside the box:
-    // drawstyle(style(),flags);
-    //box->draw_symbol_overlay(r);
 }
 
 /**
