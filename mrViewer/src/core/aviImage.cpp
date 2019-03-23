@@ -142,9 +142,9 @@ const char* const kColorSpaces[] = {
     "SMPTE170M", ///< also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC / functionally identical to above
     "SMPTE240M",
     "YCOCG", ///< Used by Dirac / VC-2 and H.264 FRext, see ITU-T SG16
-    "JPEG",  ///< as found in SDL2 code
     "BT2020_NCL", ///< ITU-R BT2020 non-constant luminance system
     "BT2020_CL", ///< ITU-R BT2020 constant luminance system
+    "JPEG"  ///< as found in SDL2 code
 };
 
 const size_t aviImage::colorspace_index() const
@@ -1117,23 +1117,23 @@ void aviImage::store_image( const int64_t frame,
                           w, h, 1);
 
     AVPixelFormat fmt = _video_ctx->pix_fmt;
-    switch (fmt)
-    {
-    case AV_PIX_FMT_YUVJ420P:
-        fmt = AV_PIX_FMT_YUV420P;
-        break;
-    case AV_PIX_FMT_YUVJ422P:
-        fmt = AV_PIX_FMT_YUV422P;
-        break;
-    case AV_PIX_FMT_YUVJ444P:
-        fmt = AV_PIX_FMT_YUV444P;
-        break;
-    case AV_PIX_FMT_YUVJ440P:
-        fmt = AV_PIX_FMT_YUV440P;
-        break;
-    default:
-        break;
-    }
+    // switch (fmt)
+    // {
+    // case AV_PIX_FMT_YUVJ420P:
+    //     fmt = AV_PIX_FMT_YUV420P;
+    //     break;
+    // case AV_PIX_FMT_YUVJ422P:
+    //     fmt = AV_PIX_FMT_YUV422P;
+    //     break;
+    // case AV_PIX_FMT_YUVJ444P:
+    //     fmt = AV_PIX_FMT_YUV444P;
+    //     break;
+    // case AV_PIX_FMT_YUVJ440P:
+    //     fmt = AV_PIX_FMT_YUV440P;
+    //     break;
+    // default:
+    //     break;
+    // }
     int sws_flags = 0;
     if ( (int)w < _video_ctx->width || (int)h < _video_ctx->height )
         sws_flags = SWS_BICUBIC;
@@ -1942,9 +1942,6 @@ void aviImage::video_stream( int x )
         fmt.push_back( AV_PIX_FMT_YUV444P );
         fmt.push_back( AV_PIX_FMT_YUV422P );
         fmt.push_back( AV_PIX_FMT_YUV420P );
-        fmt.push_back( AV_PIX_FMT_YUVJ444P );
-        fmt.push_back( AV_PIX_FMT_YUVJ422P );
-        fmt.push_back( AV_PIX_FMT_YUVJ420P );
         fmt.push_back( AV_PIX_FMT_NONE );
         fmts = &fmt[0];
     }
@@ -2040,15 +2037,14 @@ void aviImage::video_stream( int x )
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
 
-    // if (ctx->lowres) {
-    //     ctx->flags |= CODEC_FLAG_EMU_EDGE;
-    // }
 
     _ptype = VideoFrame::kByte;
 
     if ( colorspace_override ) _colorspace_index = colorspace_override;
     else _colorspace_index = ctx->color_space;
 
+    std::cerr << "color space index " << _colorspace_index << std::endl;
+    
     switch( _av_dst_pix_fmt )
     {
     case AV_PIX_FMT_RGBA64BE:
@@ -2096,7 +2092,7 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV422P:
     case AV_PIX_FMT_YUVJ422P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-                ( ctx->height >= 630 && ctx->width >= 1120 )  )
+	     ( ctx->height >= 630 && ctx->width >= 1120 )  )
             _pix_fmt = VideoFrame::kITU_709_YCbCr422;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr422;
@@ -2106,7 +2102,7 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV420P:
     case AV_PIX_FMT_YUVJ420P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-                ( ctx->height >= 630 && ctx->width >= 1120 ) )
+	     ( ctx->height >= 630 && ctx->width >= 1120 ) )
             _pix_fmt = VideoFrame::kITU_709_YCbCr420;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr420;
