@@ -2248,7 +2248,7 @@ void ImageInformation::fill_data()
     {
         add_enum( _("Color Space"), _("YUV Color Space conversion.  This value is extracted from the movie file.  To lock it to always use the same color space, set the value in Preferences->Video->YUV Conversion.  That value shall take precedence upon loading of the movie file."),
                   avi->colorspace_index(), kColorSpaces,
-                  11, true, (Fl_Callback*)change_colorspace );
+                  12, true, (Fl_Callback*)change_colorspace );
         add_text( _("Color Range"), _("YUV Color Range"),
                   _(avi->color_range()) );
     }
