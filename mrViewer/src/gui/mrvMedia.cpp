@@ -101,7 +101,6 @@ void media::create_thumbnail()
 {
     if ( !_image->stopped() || thumbnail_frozen() ) return;
 
-    
     // Make sure frame memory is not deleted
     Mutex& mutex = _image->video_mutex();
     SCOPED_LOCK( mutex );
@@ -132,9 +131,25 @@ void media::create_thumbnail()
     sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
 
+<<<<<<< HEAD
     
 
     if (!_thumbnail )
+=======
+    uchar* data = new uchar[ w * h * 3 ];
+    _thumbnail = new Fl_RGB_Image( data, w, h, 3 );
+    _thumbnail->alloc_array = 1;
+    
+    if ( !_thumbnail )
+    {
+        IMG_ERROR( _("Could not create thumbnail picture for '")
+                   << _image->fileroot() << "'" );
+        return;
+    }
+
+    uchar* ptr = data;
+    if (!ptr )
+>>>>>>> clean_fltk
     {
 	uchar* data = new uchar[ w * h * 3 ];
 	_thumbnail = new Fl_RGB_Image( data, w, h, 3 );
@@ -147,7 +162,10 @@ void media::create_thumbnail()
 
 	_thumbnail->alloc_array = 1;
     }
+<<<<<<< HEAD
     uchar* ptr = (uchar*) _thumbnail->data()[0];
+=======
+>>>>>>> clean_fltk
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
@@ -174,7 +192,10 @@ void media::create_thumbnail()
         }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> clean_fltk
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );
 }
