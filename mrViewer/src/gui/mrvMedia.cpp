@@ -101,36 +101,26 @@ void media::create_thumbnail()
 {
     if ( !_image->stopped() || thumbnail_frozen() ) return;
 
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
-    
     // Make sure frame memory is not deleted
     Mutex& mutex = _image->video_mutex();
     SCOPED_LOCK( mutex );
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
-
+    
     // Audio only clip?  Return
     mrv::image_type_ptr pic = _image->left();
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
-
     if ( !pic ) return;
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
-
+    
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw == 0 || dh == 0 ) return;
 
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
     unsigned int h = _thumbnail_height;
 
     float yScale = (float)(h+0.5) / (float)dh;
     unsigned int w = (float)(dw+0.5) * (float)yScale;
     if ( w > 150 ) w = 150;
 
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
     // Resize image to thumbnail size
     pic.reset( pic->quick_resize( w, h ) );
-
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
 
     w = pic->width();
     h = pic->height();
@@ -140,12 +130,10 @@ void media::create_thumbnail()
     sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
 
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
     uchar* data = new uchar[ w * h * 3 ];
     _thumbnail = new Fl_RGB_Image( data, w, h, 3 );
     _thumbnail->alloc_array = 1;
     
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
     if ( !_thumbnail )
     {
         IMG_ERROR( _("Could not create thumbnail picture for '")
@@ -153,14 +141,12 @@ void media::create_thumbnail()
         return;
     }
 
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
     uchar* ptr = data;
     if (!ptr )
     {
         IMG_ERROR( _("Could not allocate thumbnail buffer") );
         return;
     }
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
@@ -186,8 +172,6 @@ void media::create_thumbnail()
             thumbnail_pixel( ptr, r, g, b );
         }
     }
-
-    std::cerr << __FUNCTION__ << " " <<__LINE__ << std::endl;
 
     _image->image_damage( _image->image_damage() &
                           ~CMedia::kDamageThumbnail );
