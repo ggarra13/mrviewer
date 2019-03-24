@@ -101,14 +101,14 @@
 #: standalone/mrvCommandLine.cpp:235 standalone/mrvCommandLine.cpp:282
 #: standalone/mrvCommandLine.cpp:319 standalone/mrvCommandLine.cpp:352
 #: standalone/mrvCommandLine.cpp:507 standalone/mrvCommandLine.cpp:530
-#: standalone/main.cpp:120 standalone/main.cpp:121 standalone/main.cpp:169
-#: standalone/main.cpp:173
+#: standalone/main.cpp:120 standalone/main.cpp:121 standalone/main.cpp:170
+#: standalone/main.cpp:174
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-23 11:26-0300\n"
+"POT-Creation-Date: 2019-03-23 22:49-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,10 +265,6 @@ msgstr ""
 #: core/slateImage.cpp:369 core/wandImage.cpp:87 core/mrvServer.cpp:1212
 #: core/mrvServer.cpp:1812 core/mrvPlayback.cpp:87 core/mrvPlayback.cpp:88
 #: core/mrvPlayback.cpp:89 gui/FLU/Flu_Tree_Browser.cpp:1667
-#: gui/mrvMedia.cpp:104 gui/mrvMedia.cpp:109 gui/mrvMedia.cpp:113
-#: gui/mrvMedia.cpp:116 gui/mrvMedia.cpp:122 gui/mrvMedia.cpp:129
-#: gui/mrvMedia.cpp:133 gui/mrvMedia.cpp:143 gui/mrvMedia.cpp:148
-#: gui/mrvMedia.cpp:156 gui/mrvMedia.cpp:163 gui/mrvMedia.cpp:190
 #: gui/mrvBrowser.cpp:71 gui/mrvBrowser.cpp:76 gui/mrvBrowser.cpp:96
 #: gui/mrvBrowser.cpp:98 gui/mrvBrowser.cpp:100 gui/mrvBrowser.cpp:118
 #: gui/mrvBrowser.cpp:131 gui/mrvBrowser.cpp:147 gui/mrvBrowser.cpp:149
@@ -3603,7 +3599,7 @@ msgstr ""
 msgid " has now "
 msgstr ""
 
-#: standalone/main.cpp:291
+#: standalone/main.cpp:292
 msgid ""
 " if mrViewer crashed\n"
 "or modify Preferences->User Interface->Single Instance."
@@ -3657,7 +3653,7 @@ msgstr ""
 msgid " meta"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3148
+#: gui/mrvImageBrowser.cpp:3152
 msgid " moved to frame "
 msgstr ""
 
@@ -5566,8 +5562,8 @@ msgstr ""
 #: core/aviImage.cpp:2768 gui/mrvImageInformation.cpp:1539
 #: gui/mrvImageInformation.cpp:1583 gui/mrvImageInformation.cpp:3491
 #: gui/mrvMediaTrack.cpp:842 gui/mrvMediaTrack.cpp:855 gui/mrvTimecode.cpp:285
-#: standalone/main.cpp:271 standalone/main.cpp:274 standalone/main.cpp:277
-#: standalone/main.cpp:280
+#: standalone/main.cpp:272 standalone/main.cpp:275 standalone/main.cpp:278
+#: standalone/main.cpp:281
 #, c-format
 msgid "%<PRId64>"
 msgstr ""
@@ -5625,7 +5621,7 @@ msgstr ""
 #: gui/mrvImageInformation.cpp:3545 gui/mrvImageInformation.cpp:3564
 #: gui/mrvImageInformation.cpp:3583 gui/mrvImageInformation.cpp:3603
 #: gui/mrvImageInformation.cpp:3615 gui/mrvPreferences.cpp:1379
-#: standalone/mrvCommandLine.cpp:258 standalone/main.cpp:343
+#: standalone/mrvCommandLine.cpp:258 standalone/main.cpp:344
 #, c-format
 msgid "%d"
 msgstr ""
@@ -5975,7 +5971,7 @@ msgstr ""
 msgid "%s: Patented DXT codec, setenv MRV_DXT"
 msgstr ""
 
-#: gui/mrvMedia.cpp:140
+#: gui/mrvMedia.cpp:130
 #, c-format
 msgid "%s_%<PRId64>"
 msgstr ""
@@ -6194,7 +6190,7 @@ msgstr ""
 
 #: core/aviImage.cpp:649 core/aviImage.cpp:685 core/aviImage_save.cpp:247
 #: core/aviImage_save.cpp:1415 core/mrvACES.cpp:118 core/mrvACES.cpp:163
-#: core/mrvACES.cpp:212 gui/mrvMedia.cpp:152 gui/mrvImageBrowser.cpp:515
+#: core/mrvACES.cpp:212 gui/mrvMedia.cpp:140 gui/mrvImageBrowser.cpp:515
 #: gui/mrvImageBrowser.cpp:1502 gui/mrvImageInformation.cpp:573
 #: gui/mrvImageInformation.cpp:2059 gui/mrvSave.cpp:294
 msgid "'"
@@ -6604,7 +6600,7 @@ msgstr ""
 msgid "(RT) Render Transform"
 msgstr ""
 
-#: standalone/main.cpp:245
+#: standalone/main.cpp:246
 msgid "(Remove if mrViewer does not start)"
 msgstr ""
 
@@ -7898,7 +7894,7 @@ msgstr ""
 msgid ".\tc #FFFFFF"
 msgstr ""
 
-#: standalone/main.cpp:244
+#: standalone/main.cpp:245
 msgid ". "
 msgstr ""
 
@@ -9103,7 +9099,7 @@ msgstr ""
 msgid "/shaders"
 msgstr ""
 
-#: standalone/main.cpp:198
+#: standalone/main.cpp:199
 msgid "/share/locale"
 msgstr ""
 
@@ -12638,7 +12634,7 @@ msgstr ""
 msgid "Analog SECAM/PAL-N"
 msgstr ""
 
-#: standalone/main.cpp:290
+#: standalone/main.cpp:291
 msgid ""
 "Another instance of mrViewer is open.\n"
 "Remove "
@@ -13136,7 +13132,7 @@ msgstr ""
 msgid "Blue value of image pixel under mouse."
 msgstr ""
 
-#: standalone/main.cpp:392
+#: standalone/main.cpp:393
 msgid "Boost exception: "
 msgstr ""
 
@@ -13576,7 +13572,7 @@ msgstr ""
 msgid "Changed image "
 msgstr ""
 
-#: standalone/main.cpp:204
+#: standalone/main.cpp:205
 msgid "Changed locale to "
 msgstr ""
 
@@ -13705,7 +13701,7 @@ msgstr ""
 msgid "CloneImageAll \"%s\""
 msgstr ""
 
-#: gui/mrvElement.cpp:61
+#: gui/mrvElement.cpp:53
 #, c-format
 msgid ""
 "Cloned Image\n"
@@ -14007,7 +14003,7 @@ msgstr ""
 msgid "Could not allocate stream"
 msgstr ""
 
-#: gui/mrvMedia.cpp:160
+#: gui/mrvMedia.cpp:147
 msgid "Could not allocate thumbnail buffer"
 msgstr ""
 
@@ -14042,7 +14038,7 @@ msgstr ""
 msgid "Could not create pixel wand"
 msgstr ""
 
-#: gui/mrvMedia.cpp:151
+#: gui/mrvMedia.cpp:139
 msgid "Could not create thumbnail picture for '"
 msgstr ""
 
@@ -14319,11 +14315,11 @@ msgstr ""
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr ""
 
-#: standalone/main.cpp:146 standalone/main.cpp:238
+#: standalone/main.cpp:146 standalone/main.cpp:239
 msgid "Could not remove lock file"
 msgstr ""
 
-#: standalone/main.cpp:384
+#: standalone/main.cpp:385
 msgid "Could not remove lock file!"
 msgstr ""
 
@@ -15165,7 +15161,7 @@ msgstr ""
 msgid "Directory where clip resides"
 msgstr ""
 
-#: gui/mrvElement.cpp:74
+#: gui/mrvElement.cpp:66
 #, c-format
 msgid ""
 "Directory: %s\n"
@@ -15385,12 +15381,12 @@ msgstr ""
 msgid "EDL\n"
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:3064
+#: gui/mrvImageBrowser.cpp:3068
 #, c-format
 msgid "EDL 0"
 msgstr ""
 
-#: core/mrvServer.cpp:1443 gui/mrvImageBrowser.cpp:3093
+#: core/mrvServer.cpp:1443 gui/mrvImageBrowser.cpp:3097
 #, c-format
 msgid "EDL 1"
 msgstr ""
@@ -15494,7 +15490,7 @@ msgstr ""
 msgid "Elapsed"
 msgstr ""
 
-#: gui/mrvElement.cpp:22 gui/mrvElement.cpp:31
+#: gui/mrvElement.cpp:21 gui/mrvElement.cpp:29
 msgid "Empty element provided to Element constructor"
 msgstr ""
 
@@ -15502,7 +15498,7 @@ msgstr ""
 msgid "Empty headers for "
 msgstr ""
 
-#: gui/mrvElement.cpp:46
+#: gui/mrvElement.cpp:41
 msgid "Empty image in thumbnail"
 msgstr ""
 
@@ -16021,7 +16017,7 @@ msgstr ""
 msgid "Filename of the clip"
 msgstr ""
 
-#: standalone/main.cpp:388
+#: standalone/main.cpp:389
 msgid "Filesystem error: "
 msgstr ""
 
@@ -22531,7 +22527,7 @@ msgstr ""
 msgid "UndoDraw"
 msgstr ""
 
-#: standalone/main.cpp:376
+#: standalone/main.cpp:377
 msgid "Unhandled exception"
 msgstr ""
 
@@ -22613,7 +22609,7 @@ msgstr ""
 msgid "Unknown destination video frame format: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:710 standalone/main.cpp:396
+#: video/mrvGLLut3d.cpp:710 standalone/main.cpp:397
 msgid "Unknown error"
 msgstr ""
 
@@ -24969,7 +24965,7 @@ msgstr ""
 #: core/CMedia.cpp:3090 core/CMedia.cpp:3121 core/CMedia_audio.cpp:80
 #: core/aviImage_save.cpp:1576 gui/mrvPreferences.cpp:683
 #: gui/mrvPreferences.cpp:1883 standalone/mrvCommandLine.cpp:370
-#: standalone/main.cpp:121 standalone/main.cpp:269
+#: standalone/main.cpp:121 standalone/main.cpp:270
 msgid "audio"
 msgstr ""
 
@@ -25579,11 +25575,11 @@ msgstr ""
 msgid "config"
 msgstr ""
 
-#: standalone/main.cpp:419
+#: standalone/main.cpp:420
 msgid "conin$"
 msgstr ""
 
-#: standalone/main.cpp:420 standalone/main.cpp:421
+#: standalone/main.cpp:421 standalone/main.cpp:422
 msgid "conout$"
 msgstr ""
 
@@ -26064,7 +26060,7 @@ msgstr ""
 msgid "encoding"
 msgstr ""
 
-#: standalone/main.cpp:125 standalone/main.cpp:281
+#: standalone/main.cpp:125 standalone/main.cpp:282
 msgid "end"
 msgstr ""
 
@@ -26249,7 +26245,7 @@ msgstr ""
 msgid "file"
 msgstr ""
 
-#: standalone/main.cpp:265
+#: standalone/main.cpp:266
 #, c-format
 msgid "file%d"
 msgstr ""
@@ -26270,7 +26266,7 @@ msgid "file_requester"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:541 gui/mrvPreferences.cpp:1765
-#: standalone/main.cpp:120 standalone/main.cpp:268
+#: standalone/main.cpp:120 standalone/main.cpp:269
 msgid "filename"
 msgstr ""
 
@@ -26291,8 +26287,8 @@ msgid "filmType"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:354 gui/mrvPreferences.cpp:1664
-#: standalone/main.cpp:100 standalone/main.cpp:149 standalone/main.cpp:251
-#: standalone/main.cpp:257 standalone/main.cpp:300
+#: standalone/main.cpp:100 standalone/main.cpp:149 standalone/main.cpp:252
+#: standalone/main.cpp:258 standalone/main.cpp:301
 msgid "filmaura"
 msgstr ""
 
@@ -26304,7 +26300,7 @@ msgstr ""
 msgid "find_image: frame "
 msgstr ""
 
-#: standalone/main.cpp:122 standalone/main.cpp:272
+#: standalone/main.cpp:122 standalone/main.cpp:273
 msgid "first"
 msgstr ""
 
@@ -26608,7 +26604,7 @@ msgstr ""
 msgid "green_y"
 msgstr ""
 
-#: standalone/main.cpp:159
+#: standalone/main.cpp:160
 msgid "gtk+"
 msgstr ""
 
@@ -27334,7 +27330,7 @@ msgstr ""
 msgid "language"
 msgstr ""
 
-#: standalone/main.cpp:123 standalone/main.cpp:275
+#: standalone/main.cpp:123 standalone/main.cpp:276
 msgid "last"
 msgstr ""
 
@@ -27423,7 +27419,7 @@ msgstr ""
 msgid "localhost"
 msgstr ""
 
-#: standalone/main.cpp:244
+#: standalone/main.cpp:245
 msgid "lockfile "
 msgstr ""
 
@@ -27817,13 +27813,13 @@ msgid ""
 "the same algorithm (CTL or ICC)."
 msgstr ""
 
-#: standalone/main.cpp:186
+#: standalone/main.cpp:187
 #, c-format
 msgid "mrViewer%s"
 msgstr ""
 
-#: standalone/main.cpp:101 standalone/main.cpp:150 standalone/main.cpp:252
-#: standalone/main.cpp:258 standalone/main.cpp:301
+#: standalone/main.cpp:101 standalone/main.cpp:150 standalone/main.cpp:253
+#: standalone/main.cpp:259 standalone/main.cpp:302
 msgid "mrViewer.lock"
 msgstr ""
 
@@ -28372,7 +28368,7 @@ msgstr ""
 msgid "pic"
 msgstr ""
 
-#: standalone/main.cpp:103 standalone/main.cpp:151 standalone/main.cpp:302
+#: standalone/main.cpp:103 standalone/main.cpp:151 standalone/main.cpp:303
 msgid "pid"
 msgstr ""
 
@@ -28626,7 +28622,7 @@ msgstr ""
 #: core/ddsImage.cpp:1259 core/Sequence.cpp:784 core/mrvCPU.cpp:739
 #: gui/FLU/Flu_File_Chooser.cpp:753 gui/FLU/Flu_File_Chooser.cpp:3361
 #: gui/mrvVersion.cpp:676 gui/mrvVersion.cpp:692
-#: standalone/mrvCommandLine.cpp:74 standalone/main.cpp:419
+#: standalone/mrvCommandLine.cpp:74 standalone/main.cpp:420
 msgid "r"
 msgstr ""
 
@@ -29235,7 +29231,7 @@ msgstr ""
 msgid "srw"
 msgstr ""
 
-#: standalone/main.cpp:124 standalone/main.cpp:278
+#: standalone/main.cpp:124 standalone/main.cpp:279
 msgid "start"
 msgstr ""
 
@@ -29617,7 +29613,7 @@ msgid "uniform vec3 "
 msgstr ""
 
 #: core/CMedia.cpp:3099 core/CMedia.cpp:3130 core/CMedia.cpp:4196
-#: core/wandImage.cpp:682 standalone/main.cpp:167
+#: core/wandImage.cpp:682 standalone/main.cpp:168
 msgid "unknown"
 msgstr ""
 
@@ -29833,7 +29829,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1140 gui/FLU/Flu_File_Chooser.cpp:3044
 #: gui/mrvImageBrowser.cpp:512 gui/mrvLogDisplay.cpp:109
 #: standalone/mrvCommandLine.cpp:75 standalone/mrvCommandLine.cpp:76
-#: standalone/main.cpp:420 standalone/main.cpp:421
+#: standalone/main.cpp:421 standalone/main.cpp:422
 msgid "w"
 msgstr ""
 
