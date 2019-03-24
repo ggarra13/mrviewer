@@ -3010,6 +3010,7 @@ void ImageBrowser::seek( const int64_t tframe )
  */
 void ImageBrowser::frame( const int64_t f )
 {
+    Fl::lock();
     if ( uiMain->uiFrame )
     {
         uiMain->uiFrame->value( f );
@@ -3030,6 +3031,9 @@ void ImageBrowser::frame( const int64_t f )
 
     t->value( double(f) );
     t->redraw();
+
+    Fl::unlock();
+    Fl::awake();
 }
 
 void ImageBrowser::clear_edl()
