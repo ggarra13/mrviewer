@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -284,6 +284,7 @@ static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 namespace mrv {
 
 
+
 /**
  * Constructor
  *
@@ -327,7 +328,7 @@ mrv::Timeline* ImageBrowser::timeline()
 mrv::Reel ImageBrowser::current_reel()
 {
     if ( _reels.empty() ) {
-	new_reel( "reel" );
+	new_reel("reel");
 	_reel = 0;
     }
     return _reels[ _reel ];
@@ -337,6 +338,10 @@ void ImageBrowser::debug_images() const
 {
 #ifdef DEBUG_IMAGES
     mrv::Reel reel = current_reel();
+    if ( !reel ) {
+        LOG_INFO( "NO REEL" );
+        return;
+    }
 
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
@@ -412,10 +417,8 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
  */
 mrv::media ImageBrowser::current_image()
 {
-    mrv::Reel r = current_reel();
-    int v = value();
-    if ( v < 0 || v >= r->images.size() ) return mrv::media();
-    return r->images[ v ];
+    if ( !view() ) return mrv::media();
+    return view()->foreground();
 }
 
 
@@ -428,8 +431,6 @@ mrv::media ImageBrowser::current_image()
  */
 mrv::Reel ImageBrowser::new_reel( const char* orig )
 {
-    view()->stop();
-    
     mrv::ReelList::const_iterator i = _reels.begin();
     mrv::ReelList::const_iterator e = _reels.end();
     std::string name = orig;
@@ -460,8 +461,53 @@ mrv::Reel ImageBrowser::new_reel( const char* orig )
     _reel_choice->add( name.c_str() );
     _reel_choice->value( _reel );
 
-    std::cerr << "REEL " << _reel << " " << current_reel()->name << std::endl;
+    mrv::EDLGroup* eg = edl_group();
+    if ( eg )
+    {
+        eg->add_media_track( _reel );
+    }
 
+    if ( !main()->uiEDLWindow ) return reel;
+
+    Fl_Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+    Fl_Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
+
+    int one = c1->value();
+    c1->clear();
+
+    int two = c2->value();
+    c2->clear();
+
+    size_t reels = number_of_reels();
+    for ( size_t i = 0; i < reels; ++i )
+    {
+        mrv::Reel r = this->reel( (unsigned int) i );
+
+        c1->add( r->name.c_str() );
+        c2->add( r->name.c_str() );
+    }
+
+    if ( one == -1 && two == -1 )
+    {
+        c1->value(0);
+        if ( reels > 1 ) c2->value(1);
+    }
+    else
+    {
+        c1->value( one );
+        if ( two == -1 && reels > 1 )
+            c2->value( 1 );
+        else
+            c2->value( two );
+    }
+    c1->redraw();
+    c2->redraw();
+
+    if ( eg )
+    {
+        eg->refresh();
+        eg->redraw();
+    }
 
     if ( ! _reels.empty() ) change_reel();
     return reel;
@@ -478,6 +524,7 @@ mrv::Reel ImageBrowser::new_reel( const char* orig )
 void ImageBrowser::save_reel()
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
     std::string dir;
 
@@ -679,6 +726,7 @@ void ImageBrowser::insert( unsigned idx, mrv::media m )
     if ( !m ) return;
 
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
 
     reel->images.insert( reel->images.begin() + idx, m );
@@ -788,6 +836,7 @@ std::string ImageBrowser::media_to_pathname( const mrv::media m )
 mrv::media ImageBrowser::add( mrv::media& m )
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) reel = new_reel();
 
     reel->images.push_back( m );
 
@@ -812,6 +861,14 @@ mrv::media ImageBrowser::add( mrv::media& m )
 
     //send_reel( reel );
     //send_current_image( m );
+
+
+    mrv::EDLGroup* e = edl_group();
+    if ( e )
+    {
+        e->refresh();
+        e->redraw();
+    }
 
     adjust_timeline();
 
@@ -867,6 +924,7 @@ mrv::media ImageBrowser::add( const char* filename,
 void ImageBrowser::remove( int idx )
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
     CMedia::Playback play = view()->playback();
     view()->stop();
@@ -940,6 +998,7 @@ void ImageBrowser::remove( int idx )
 void ImageBrowser::remove( mrv::media m )
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
 
     mrv::MediaList::iterator begin = reel->images.begin();
@@ -970,6 +1029,7 @@ void ImageBrowser::remove( mrv::media m )
 void ImageBrowser::set_bg( mrv::media bg )
 {
     mrv::Reel reel = reel_at( _reel );
+    if ( !reel ) return;
 
     view()->bg_reel( _reel );
     view()->background( bg );
@@ -991,9 +1051,15 @@ void ImageBrowser::clear_bg()
  */
 void ImageBrowser::change_reel()
 {
-    Fl_Tree::clear();
+    DBG( "Change reel" );
+    clear();
 
     mrv::Reel reel = current_reel();
+    if ( !reel ) {
+        DBG( "Invalid reel" );
+        change_image( -1 );
+        return;
+    }
 
     _reel_choice->value( _reel );
 
@@ -1007,8 +1073,10 @@ void ImageBrowser::change_reel()
     {
 
         DBG( "Add images in browser" );
+        Fl_Tree::clear();
 
         mrv::MediaList::iterator i = reel->images.begin();
+        MediaList::iterator j;
         mrv::MediaList::iterator e = reel->images.end();
         for ( ; i != e; ++i )
         {
@@ -1038,8 +1106,6 @@ void ImageBrowser::change_reel()
 
     send_reel( reel );
 
-    redraw();
-
 }
 
 /**
@@ -1067,12 +1133,20 @@ void ImageBrowser::change_image()
     else
     {
         mrv::Reel reel = current_reel();
+        if ( !reel ) return;
 
+        assert( (unsigned)sel < reel->images.size() );
      
-        mrv::media om = v->foreground();
+        mrv::media om = current_image();
+
+        int audio_idx = -1;
+        int sub_idx = -1;
+
+        mrv::Timeline* t = timeline();
 
 
-        mrv::media m = current_image();
+        mrv::media m;
+        if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
 
 
         if ( m != om && m && v )
@@ -1092,6 +1166,11 @@ void ImageBrowser::change_image()
 
             adjust_timeline();
             //send_current_image( m );
+        }
+        else
+        {
+            DBG( "FG REEL " << _reel << " om: " << om->image()->name() );
+            //send_current_image( om );
         }
 
     }
@@ -1117,7 +1196,7 @@ void ImageBrowser::change_image(int i)
     mrv::Reel reel = current_reel();
     send_reel( reel );
 
-    // Fl_Tree::value( i );  // @TODO: fltk1.4
+    //    Fl_Tree::value( i );  @TODO: fltk1.4
     send_image( i );
     change_image();
 }
@@ -1129,6 +1208,7 @@ void ImageBrowser::change_image(int i)
 void ImageBrowser::last_image()
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
     change_image( (int) reel->images.size()-1 );
 }
@@ -1842,7 +1922,7 @@ void ImageBrowser::clone_all_current()
 void ImageBrowser::remove_current()
 {
     mrv::Reel reel = current_reel();
-    if ( reel->images.empty() ) return;
+    if (!reel || reel->images.empty() ) return;
 
     if ( view()->playback() != CMedia::kStopped )
         view()->stop();
@@ -1896,6 +1976,7 @@ void ImageBrowser::remove_current()
 void ImageBrowser::change_background()
 {
     mrv::Reel reel = current_reel();
+    if (!reel) return;
 
     int sel = value();
     if ( sel < 0 ) return;
@@ -1933,6 +2014,7 @@ void ImageBrowser::refresh( mrv::media m )
 void ImageBrowser::replace( int i, mrv::media m )
 {
     mrv::Reel reel = current_reel();
+    if (!reel) return;
 
     if ( i < 0 || i >= reel->images.size() ) return;
 
@@ -2031,6 +2113,7 @@ void ImageBrowser::previous_image_version()
 void ImageBrowser::image_version( int sum )
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
     CMedia::Playback play = view()->playback();
     if ( play != CMedia::kStopped )
@@ -2238,6 +2321,7 @@ void ImageBrowser::image_version( int sum )
 void ImageBrowser::next_image()
 {
     mrv::Reel reel = current_reel();
+    if ( !reel ) return;
 
     DBG( "reel name " << reel->name );
 
@@ -2354,6 +2438,7 @@ void ImageBrowser::previous_image()
     if ( play ) view()->play(play);
 }
 
+
 /**
  * Handle a mouse push
  *
@@ -2364,12 +2449,18 @@ void ImageBrowser::previous_image()
  */
 int ImageBrowser::mousePush( int x, int y )
 {
+    int old_sel = value();
+
+    int ok = Fl_Tree::handle( FL_PUSH );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
         view()->stop();
 
     int button = Fl::event_button();
+    int sel = value();
+
+    DBG( "Clicked on " << sel );
 
     if ( button == FL_LEFT_MOUSE )
     {
@@ -2885,7 +2976,7 @@ void ImageBrowser::seek( const int64_t tframe )
     {
         mrv::Reel reel = current_reel();
 
-        mrv::media fg = current_image();
+        mrv::media fg = view()->foreground();
         if (!fg) return;
 
         CMedia* img = fg->image();
@@ -2920,7 +3011,6 @@ void ImageBrowser::seek( const int64_t tframe )
  */
 void ImageBrowser::frame( const int64_t f )
 {
-    Fl::lock();
     if ( uiMain->uiFrame )
     {
         uiMain->uiFrame->value( f );
@@ -2934,18 +3024,14 @@ void ImageBrowser::frame( const int64_t f )
         t->redraw();
     }
 
-    return; // @TODO: remove for fltk1.4
-    
     if ( !uiMain->uiEDLWindow ) return;
-
+    
     t = uiMain->uiEDLWindow->uiTimeline;
     if (!t) return;
 
     t->value( double(f) );
     t->redraw();
 
-    Fl::unlock();
-    Fl::awake();
 }
 
 void ImageBrowser::clear_edl()
