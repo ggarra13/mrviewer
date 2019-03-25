@@ -844,10 +844,14 @@ mrv::media ImageBrowser::add( mrv::media& m )
 
 
     std::string path = media_to_pathname( m );
-    std::cerr << "adding " << m->image()->name() << " as " << path << std::endl;
-    
 
-    Fl_Tree_Item* item = Fl_Tree::add( path.c_str() );
+    Fl_Tree_Item* item = find_item( path.c_str() );
+    if ( item )
+    {
+	path += "#2";
+    }
+
+    item = Fl_Tree::add( path.c_str() );
     Element* nw = new_item( m );
     item->widget( nw );
     
@@ -1196,7 +1200,7 @@ void ImageBrowser::change_image(int i)
     mrv::Reel reel = current_reel();
     send_reel( reel );
 
-    //    Fl_Tree::value( i );  @TODO: fltk1.4
+    value( i );  // @TODO: fltk1.4
     send_image( i );
     change_image();
 }
@@ -2006,9 +2010,12 @@ void ImageBrowser::refresh( mrv::media m )
 {
     if ( ! m ) return;
 
-    // @TODO: fltk1.4
-    //    Fl_Widget* ow = this->find( m->image()->filename() );
-    //  ow->redraw();
+    std::string path = media_to_pathname( m );
+    Fl_Tree_Item* item = find_item( path.c_str() );
+    if ( item->widget() )
+    {
+	item->widget()->redraw();
+    }
 }
 
 void ImageBrowser::replace( int i, mrv::media m )
@@ -3013,25 +3020,8 @@ void ImageBrowser::frame( const int64_t f )
 {
     if ( uiMain->uiFrame )
     {
-        uiMain->uiFrame->value( f );
-        uiMain->uiFrame->redraw();
+	uiMain->uiFrame->frame( f );
     }
-
-    mrv::Timeline* t = timeline();
-    if ( t )
-    {
-        t->value( double(f) );
-        t->redraw();
-    }
-
-    if ( !uiMain->uiEDLWindow ) return;
-    
-    t = uiMain->uiEDLWindow->uiTimeline;
-    if (!t) return;
-
-    t->value( double(f) );
-    t->redraw();
-
 }
 
 void ImageBrowser::clear_edl()
