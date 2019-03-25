@@ -40,7 +40,7 @@ o->hide();}
         xywh {757 727 280 160} resizable
         extra_code {main_ = main;
 o->main( main );}
-        class {mrv::StereoWindow} visible
+        class {mrv::StereoWindow} visible non_modal
       } {
         {Fl_Choice} uiStereoInput {
           label Input
