@@ -48,12 +48,12 @@ double get_clock(Clock* c);
 void sync_clock_to_slave(Clock *c, Clock *slave);
 
 
-  enum Playback {
-    kBackwards = -1,
-    kStopped = 0,
-    kForwards = 1,
-    kScrubbing = 255
-  };
+  // enum Playback {
+  //   kBackwards = -1,
+  //   kStopped = 0,
+  //   kForwards = 1,
+  //   kScrubbing = 255
+  // };
 
   //
   // Callback data that must be filled
