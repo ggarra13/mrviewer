@@ -2482,6 +2482,14 @@ bool ImageView::should_update( mrv::media fg )
 void static_preload( mrv::ImageView* v )
 {
     v->preload();
+
+    mrv::media m = v->foreground();
+    if ( m )
+    {
+	CMedia* img = m->image();
+	double delay = 1.0 / img->fps();
+	Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
+    }
 }
 
 
@@ -2669,7 +2677,6 @@ bool ImageView::preload()
         SCOPED_LOCK( spm );
         Mutex& mtx = img->video_mutex();
         SCOPED_LOCK( mtx );
-
 
         // Add a frame to image queue
         while ( ! img->frame( f ) )
@@ -2965,8 +2972,21 @@ void ImageView::timeout()
 
     mrv::media fg = foreground();
 
-    int64_t tframe = int64_t( timeline->value() );
+    int64_t tframe = int64_t( uiMain->uiFrame->frame() );
+    timeline->value( double(tframe) );
+    timeline->redraw();
+    uiMain->uiFrame->value( tframe );  // so it is displayed properly
 
+    if ( uiMain->uiEDLWindow )
+    {
+	mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
+	if (t)
+	{
+	    t->value( double(tframe) );
+	    t->redraw();
+	}
+    }
+    
     if ( reel && reel->edl )
     {
         TRACE("");
@@ -6794,7 +6814,7 @@ int ImageView::handle(int event)
 
                 CMedia* img = fg->image();
                 if ( !img->is_cache_full() && !img->has_video() &&
-                     img->playback() == CMedia::kStopped )
+                     img->stopped() )
                 {
                     _reel = i;
                     break;
@@ -7078,16 +7098,22 @@ void ImageView::preload_cache_start()
 
     if (!_idle_callback)
     {
-        CMedia* img;
+        CMedia* img = NULL;
         mrv::Reel r = browser()->reel_at( fg_reel() );
         if ( r && r->edl )
         {
             timeline()->edl( true );
             _preframe = frame();
         }
-        CMedia::preload_cache( true );
-        _idle_callback = true;
-        Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
+	mrv::media m = foreground();
+	if ( m ) {
+	    img = m->image();
+	    CMedia::preload_cache( true );
+	    _idle_callback = true;
+	    Fl::add_timeout( 1.0/img->fps(),
+			     (Fl_Timeout_Handler) static_preload, this );
+	}
+        //Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
     }
 }
 
@@ -7102,7 +7128,8 @@ void ImageView::preload_cache_stop()
     if ( _idle_callback )
     {
         _idle_callback = false;
-        Fl::remove_idle( (Fl_Timeout_Handler) static_preload, this );
+        Fl::remove_timeout( (Fl_Timeout_Handler) static_preload, this );
+        //Fl::remove_idle( (Fl_Timeout_Handler) static_preload, this );
     }
 }
 
