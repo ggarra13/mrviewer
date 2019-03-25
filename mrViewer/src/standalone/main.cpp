@@ -156,7 +156,6 @@ void load_new_files( void* s )
 
 int main( int argc, const char** argv )
 {
-    Fl::lock(); // Init multithreading
     Fl::scheme("gtk+");
     Fl::get_system_colors();
 #ifdef LINUX
