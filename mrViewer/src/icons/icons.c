@@ -1,6 +1,6 @@
 #include <FL/Fl_Pixmap.H>
 
-static char * move_pic_xpm[] = {
+static const char * move_pic_xpm[] = {
 "37 36 9 1",
 " 	c None",
 ".	c #204A87",
@@ -50,7 +50,7 @@ static char * move_pic_xpm[] = {
 
 static Fl_Pixmap move_pic(move_pic_xpm);
 
-static char * scrub_xpm[] = {
+static const char * scrub_xpm[] = {
 "28 28 127 2",
 "  	c None",
 ". 	c #C89A98",
