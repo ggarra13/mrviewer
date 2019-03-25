@@ -97,7 +97,7 @@ public:
         return _frame;
     }
     inline void frame( const int64_t& f ) {
-        value(f);
+        _frame = f;
     }
 
     inline void timecode( const int64_t& f ) {
