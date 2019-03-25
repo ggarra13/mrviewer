@@ -877,10 +877,10 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
 
-    if ( playback() == kStopped &&
-            (got_video || in_video_store( frame )) &&
-            (got_audio || in_audio_store( frame + _audio_offset )) &&
-            (got_subtitle || in_subtitle_store( frame )) )
+    if ( stopped() &&
+	 (got_video || in_video_store( frame )) &&
+	 (got_audio || in_audio_store( frame + _audio_offset )) &&
+	 (got_subtitle || in_subtitle_store( frame )) )
     {
         skip = true;
     }
@@ -1342,7 +1342,7 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
             // The following is a work around for bug in decoding
             // bgc.sub.dub.ogm
-            if ( playback() != kStopped && pkt && pkt->dts != AV_NOPTS_VALUE &&
+            if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
                     pkt->dts < ptsframe  )
             {
                 ptsframe = pkt->dts;
@@ -1731,7 +1731,7 @@ bool aviImage::find_subtitle( const int64_t frame )
 bool aviImage::find_image( const int64_t frame )
 {
 
-    if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
+    if ( _right_eye && (stopped() || saving() ) )
         _right_eye->find_image( frame );
 
 
