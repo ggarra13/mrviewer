@@ -354,16 +354,15 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     }
 
     // figure out where the slider should be:
-    mrv::Recti s(r);
-    int sglyph = FL_ALIGN_INSIDE; // draw a box
-    s.x(r.x()+slider_position(value(),r.w()));
-    s.w(slider_size());
-    if (!s.w()) {
-        s.w(s.x()-r.x());    // fill slider
-        s.x(r.x());
-    }
-    else sglyph=0; // draw our own special glyph
-
+    // mrv::Recti s(r);
+    // int sglyph = FL_ALIGN_INSIDE; // draw a box
+    // s.x(r.x()+slider_position(value(),r.w()));
+    // s.w(slider_size());
+    // if (!s.w()) {
+    //     s.w(s.x()-r.x());    // fill slider
+    //     s.x(r.x());
+    // }
+    
     return true;
 }
 
@@ -630,7 +629,7 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
-    X = x() + Fl::box_dx(box()) + slider_position( value(), w() );
+    X = x() + slider_position( value(), w() );
     Y = y() + Fl::box_dy(box());
     W = 15  - Fl::box_dw(box());
     H = h() - Fl::box_dh(box());
