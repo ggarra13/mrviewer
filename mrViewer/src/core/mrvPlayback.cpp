@@ -1,7 +1,7 @@
 
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ const char* kModule = "play";
 #define LOGT_INFO(x) LOG_INFO( get_thread_id() << " " << x );
 #define LOGT_ERROR(x) LOG_ERROR( get_thread_id() << " " << x );
 
-#define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -336,7 +336,8 @@ EndStatus handle_loop( boost::int64_t& frame,
                        ViewerUI* uiMain,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
-                       const mrv::CMedia::DecodeStatus end )
+                       const mrv::CMedia::DecodeStatus end,
+		       bool decode = false )
 {
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
@@ -444,8 +445,8 @@ EndStatus handle_loop( boost::int64_t& frame,
                         //           << next->fg_bg_barrier() );
                     }
 
-                    img->playback( CMedia::kStopped );
-                    img->flush_all();
+		    img->playback( CMedia::kStopped );
+		    img->flush_all();
                     if ( img->has_video() ) img->clear_cache();
                 }
 
@@ -484,8 +485,8 @@ EndStatus handle_loop( boost::int64_t& frame,
         }
         else
         {
-            if (fg) view->playback( CMedia::kStopped );
-            img->playback( CMedia::kStopped );
+	    if (fg) view->playback( CMedia::kStopped );
+	    img->playback( CMedia::kStopped );
         }
         break;
     }
@@ -557,7 +558,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                         next->play( CMedia::kBackwards, uiMain, fg );
                     }
 
-                    img->playback( CMedia::kStopped );
+		    img->playback( CMedia::kStopped );
                     img->flush_all();
                     if ( img->has_video() ) img->clear_cache();
                 }
@@ -599,9 +600,9 @@ EndStatus handle_loop( boost::int64_t& frame,
         }
         else
         {
-            img->playback( CMedia::kStopped );
-            if (fg) view->playback( CMedia::kStopped );
-        }
+	    img->playback( CMedia::kStopped );
+	    if (fg) view->playback( CMedia::kStopped );
+	}
         break;
     }
     default:
@@ -1261,6 +1262,7 @@ void video_thread( PlaybackData* data )
             view->frame( f );
         }
 
+
         frame += step;
     }
 
@@ -1378,7 +1380,7 @@ void decode_thread( PlaybackData* data )
             // This handle loop has to come after the barrier as decode thread
             // goes faster than video or audio threads
             EndStatus end = handle_loop( frame, step, img, fg, true,
-                                         uiMain, reel, timeline, status );
+                                         uiMain, reel, timeline, status, true );
 
             if ( img->stopped() ) continue;
             // img->seek( frame );
