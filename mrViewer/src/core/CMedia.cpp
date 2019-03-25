@@ -1944,7 +1944,7 @@ void CMedia::stereo_output( StereoOutput x )
     {
         _stereo_output = x;
         if ( is_sequence() ) clear_cache();
-        if ( playback() == kStopped )
+        if ( stopped() )
         {
             image_type_ptr canvas;
             if ( fetch(canvas, _frame) )
@@ -2566,6 +2566,7 @@ void CMedia::stop(const bool bg)
 
     TRACE("");
 
+    assert( 0 );
 
     _playback = kStopped;
 
@@ -2674,7 +2675,7 @@ bool CMedia::frame( int64_t f )
 {
     assert( _fileroot != NULL );
 
-    if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
+    if ( stopped() && _right_eye && _stereo_output )
         _right_eye->frame(f);
 
     static int force_flush = 0;
@@ -3835,7 +3836,7 @@ void CMedia::debug_video_stores(const int64_t frame,
 
 CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
 {
-    if ( ( playback() == kStopped ) && _right_eye && _stereo_output ) {
+    if ( stopped() && _right_eye && _stereo_output ) {
         int64_t f = frame;
         _right_eye->decode_video(f);
     }
@@ -3979,7 +3980,7 @@ int64_t CMedia::handle_loops( const int64_t frame ) const
 
 bool CMedia::find_image( const int64_t frame )
 {
-    if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
+    if ( stopped() && _right_eye && _stereo_output )
         _right_eye->find_image(frame);
 
 
