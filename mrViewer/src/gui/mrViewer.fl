@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0305
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -196,7 +196,8 @@ if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
 return ctl;} {}
 }
 
-class SaveOptionsUI {} {
+class SaveOptionsUI {selected
+} {
   Function {make_window(ViewerUI* main)} {private
   } {
     Fl_Window uiMain {
@@ -355,105 +356,6 @@ class SaveOptionsUI {} {
     code {make_window( m );} {}
   }
   Function {~SaveOptionsUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
-  }
-}
-
-class StatisticsUI {} {
-  Function {make_window(ViewerUI* main)} {open
-  } {
-    Fl_Window uiMain {
-      label Statistics open
-      xywh {623 472 445 235} type Double hide resizable
-      code0 {//o->child_of( main->uiMain );} non_modal
-    } {
-      Fl_Group {} {open
-        xywh {9 5 344 218}
-      } {
-        Fl_Group {} {
-          label Video open
-          xywh {229 20 200 75} box BORDER_BOX
-        } {
-          Fl_Value_Output uiVideoFramesDropped {
-            label {Dropped Frames}
-            xywh {339 60 80 25}
-          }
-          Fl_Value_Output uiVideoBlocksDecoded {
-            label {Decoded Blocks}
-            xywh {339 30 80 25}
-          }
-        }
-        Fl_Value_Output uiAVDifference {
-          label {A/V Difference}
-          xywh {339 195 80 25}
-        }
-        Fl_Group {} {
-          label Audio open
-          xywh {229 115 200 75} box BORDER_BOX
-        } {
-          Fl_Value_Output uiAudioFramesDropped {
-            label {Dropped Frames}
-            xywh {339 160 80 25}
-          }
-          Fl_Value_Output uiAudioBlocksDecoded {
-            label {Decoded Blocks}
-            xywh {339 130 80 25}
-          }
-        }
-        Fl_Group {} {
-          label Input open
-          xywh {14 20 205 75} box BORDER_BOX
-        } {
-          Fl_Value_Output uiInputRead {
-            label Read
-            xywh {79 30 95 25}
-          }
-          Fl_Value_Output uiInputBitrate {
-            label Bitrate
-            xywh {79 60 95 25}
-          }
-          Fl_Box {} {
-            label {KB.}
-            xywh {179 30 30 25} box FLAT_BOX
-          }
-          Fl_Box {} {
-            label {kb/s}
-            xywh {179 60 30 25} box FLAT_BOX
-          }
-        }
-        Fl_Group {} {
-          label Streaming open
-          xywh {14 115 205 100} box BORDER_BOX
-        } {
-          Fl_Value_Output uiStreamSent {
-            label Sent
-            xywh {79 155 95 25}
-          }
-          Fl_Value_Output uiStreamBitrate {
-            label Bitrate
-            xywh {79 185 95 25}
-          }
-          Fl_Box {} {
-            label {KB.}
-            xywh {179 155 30 25} box FLAT_BOX
-          }
-          Fl_Box {} {
-            label {kb/s}
-            xywh {179 185 30 25} box FLAT_BOX
-          }
-          Fl_Value_Output uiStreamPackets {
-            label Packets
-            xywh {79 125 95 25}
-          }
-        }
-      }
-    }
-  }
-  Function {StatisticsUI(ViewerUI* m)} {open
-  } {
-    code {make_window( m );} {}
-  }
-  Function {~StatisticsUI()} {} {
     code {delete uiMain; uiMain = NULL;} {}
   }
 }
@@ -943,7 +845,7 @@ uiICCProfiles->uiMain->show();}
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
-v->uiGain->value( (float) o->value() );} selected
+v->uiGain->value( (float) o->value() );}
               tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 7 35 18} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.001 value 1
               code0 {o->textsize( 12 );}
             }
@@ -952,7 +854,7 @@ v->uiGain->value( (float) o->value() );} selected
               callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
               tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 7 70 18} type {Horz Knob} minimum 0.015625 maximum 64 step 1 value 1
-	      code0 { o->slider_type( mrv::Slider::kLOG ); }
+              code0 {o->slider_type( mrv::Slider::kLOG );}
               class {mrv::Slider}
             }
             Fl_Menu_Button uiICS {
@@ -1039,7 +941,6 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
                   label Gamma
                   user_data this user_data_type {ViewerUI*}
                   callback {float g = (float) atof( o->child( o->value() )->label() );
-		  std::cerr << "gamma " << g << std::endl;
 if ( !mrv::is_equal( g, 0.0f ) )
 {
    v->uiGamma->value(g);
@@ -1729,7 +1630,7 @@ o->value(24);}
                     label S
                     user_data this user_data_type {ViewerUI*}
                     callback {double f = (double) o->value();
-v->uiTimeline->minimum( f );
+v->uiTimeline->display_minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                     tooltip {Allows you to set starting frame for timeline.} xywh {475 513 70 20} color -1733777408 selection_color 0
@@ -1740,7 +1641,7 @@ v->uiTimeline->redraw();}
                     label E
                     user_data this user_data_type {ViewerUI*}
                     callback {boost::int64_t f = o->value();
-v->uiTimeline->maximum( float(f) );
+v->uiTimeline->display_maximum( float(f) );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                     tooltip {Allows you to set the ending frame for timeline.} xywh {565 513 70 20} color -1733777408 selection_color 0
@@ -1779,7 +1680,7 @@ else
    {
      // edl
      mrv::Reel reel = v->uiReelWindow->uiBrowser->current_reel();
-     if ( !reel || reel->images.size() == 0 ) return;
+     if ( reel->images.size() == 0 ) return;
 
      mrv::media fg = reel->images[0];
      if ( fg ) f = fg->position();
@@ -1787,7 +1688,7 @@ else
 }
 
 v->uiStartFrame->value( f );
-v->uiTimeline->minimum( f );
+v->uiTimeline->display_minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                     xywh {456 513 20 20}
@@ -1826,7 +1727,7 @@ else
 }
 
 v->uiEndFrame->value( f );
-v->uiTimeline->maximum( f );
+v->uiTimeline->display_maximum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                     xywh {546 513 20 20}
