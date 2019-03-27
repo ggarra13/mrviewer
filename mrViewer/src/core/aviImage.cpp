@@ -2748,8 +2748,6 @@ bool aviImage::initialize()
 {
     if ( !_initialize )
     {
-        avfilter_register_all();
-
 
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "initial_pause", "1", 0);
