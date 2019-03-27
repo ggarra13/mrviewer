@@ -3052,6 +3052,7 @@ void ImageView::timeout()
 
     }
 
+
     if ( timeline && timeline->visible() )
     {
 
