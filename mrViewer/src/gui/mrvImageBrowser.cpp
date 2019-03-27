@@ -305,6 +305,7 @@ old_sel( -1 )
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
     item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
     connectorstyle( FL_TREE_CONNECTOR_NONE );
+    connectorwidth( 0 );
 }
 
 ImageBrowser::~ImageBrowser()
@@ -942,13 +943,16 @@ void ImageBrowser::remove( int idx )
 
 
 
-    // Remove icon from browser
-    Fl_Tree_Item* w = (Fl_Tree_Item*) child(idx);
-    Fl_Tree::remove( w );
-    delete w;
 
     // Remove image from reel
     mrv::MediaList::iterator i = reel->images.begin();
+
+    // Remove icon from browser
+    std::string path = media_to_pathname( *i );
+    Fl_Tree_Item* item = find_item( path.c_str() );
+    delete item->widget();
+    Fl_Tree::remove( item );
+    
     reel->images.erase( i + idx );
 
 
@@ -1167,6 +1171,9 @@ void ImageBrowser::change_image()
                 e->redraw();
             }
 
+	    std::string path = media_to_pathname( m );
+	    Fl_Tree::select( path.c_str(), 0 );
+
 
             adjust_timeline();
             //send_current_image( m );
@@ -1191,16 +1198,23 @@ void ImageBrowser::send_image( int i )
 
 void ImageBrowser::change_image(int i)
 {
-    if ( i >= children() ) {
-        LOG_ERROR( _("change_image index ") << i << N_(" >= ")
-                   << children() );
-        return;
-    }
 
     mrv::Reel reel = current_reel();
+    if ( i < 0 ) {
+	view()->foreground( mrv::media() );
+	view()->background( mrv::media() );
+	return;
+    }
+    
+    if ( i >= reel->images.size() ) {
+        LOG_ERROR( _("change_image index ") << i << N_(" >= ")
+                   << reel->images.size() );
+        return;
+    }
+    
     send_reel( reel );
 
-    value( i );  // @TODO: fltk1.4
+    value( i );
     send_image( i );
     change_image();
 }
@@ -2032,58 +2046,43 @@ void ImageBrowser::replace( int i, mrv::media m )
     mrv::media fg = current_image();
     if (!fg) return;
 
-    // {
-    //  mrv::MediaList::const_iterator j = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
 
-    //  int idx = 0;
-    //  LOG_INFO( "**** REPLACE BEFORE REMOVE" );
-    //  for ( ; j != e; ++j, ++idx )
-    //  {
-    //      Fl_Widget* w = child(idx);
-    //      LOG_INFO( "\t" << (*j)->name() );
-    //  }
-    // }
+    // Sanely remove item from tree
+    std::string path = media_to_pathname( fg );
+    Fl_Tree_Item* item = find_item( path.c_str() );
+    Element* oldnw = (Element*)item->widget();
 
-    // Sanely remove thumbnail from reel
+    // Create new item
+    std::string newpath = media_to_pathname( m );
     Element* nw = new_item( m );
-    Fl_Widget* w = child( i );
-    // Fl_Tree::replace( i, *nw );  // @TODO: fltk1.4
-    delete w;
+
+    // Insert new item and select it
+    Fl_Tree_Item* newitem = Fl_Tree::insert( item, newpath.c_str(), 0 );
+    Fl_Tree::select( newpath.c_str(), 0 );
+
+    // We resize new widget to old to avoid redraw issues
+    nw->resize( oldnw->x(), oldnw->y(), oldnw->w(), oldnw->h() );
+
+    // We attach widget to tree
+    newitem->widget( nw );
+
+    delete oldnw;  // Delete old element
+    
+    Fl_Tree::remove( item );
+
+
+    redraw();
+    window()->redraw();
 
     // Sanely remove image from reel
     mrv::MediaList::const_iterator j = reel->images.begin();
     reel->images.erase( j + i );
 
-    // {
-    //  mrv::MediaList::const_iterator j = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  LOG_INFO( "**** REPLACE AFTER REMOVE" );
-    //  for ( ; j != e; ++j, ++idx )
-    //  {
-    //      Fl_Widget* w = child(idx);
-    //      LOG_INFO( "\t" << (*j)->name() );
-    //  }
-    // }
 
     // Insert item in right place on list
     j = reel->images.begin();
     reel->images.insert( j + i, m );
 
-    // {
-    //  mrv::MediaList::const_iterator j = reel->images.begin();
-    //  mrv::MediaList::const_iterator e = reel->images.end();
-
-    //  int idx = 0;
-    //  LOG_INFO( "**** REPLACE AFTER INSERT" );
-    //  for ( ; j != e; ++j, ++idx )
-    //  {
-    //      Fl_Widget* w = child(idx);
-    //      LOG_INFO( "\t" << (*j)->name() );
-    //  }
-    // }
 
     view()->foreground( m );
 
@@ -2290,9 +2289,6 @@ void ImageBrowser::image_version( int sum )
     // Sanely remove icon item from browser and replace it with another
     this->replace( int(i), m );
 
-    // Remove last loaded element from reel (ie. m)
-    this->remove( children() - 1 );
-
     change_image( int(i) );
 
     seek( view()->frame() );
@@ -2346,12 +2342,19 @@ void ImageBrowser::next_image()
 	return;
     }
 
+    std::string path = media_to_pathname( orig );
+    int ok = deselect( path.c_str(), 0 );
+    if ( ok < 0 )
+    {
+	LOG_ERROR( path << _(" was not found in tree.") );
+	return;
+    }
     
     value( v );
     mrv::media m = reel->images[v];
     
-    std::string path = media_to_pathname( m );
-    int ok = select( path.c_str(), 0 );
+    path = media_to_pathname( m );
+    ok = select( path.c_str(), 0 );
     if ( ok < 0 )
     {
 	LOG_ERROR( path << _(" was not found in tree.") );
@@ -2502,6 +2505,8 @@ int ImageBrowser::mousePush( int x, int y )
 	{
 	    mrv::Element* e = (mrv::Element*) dragging->widget();
 	    view()->foreground( e->media() );
+
+	    adjust_timeline();
  	}
         if ( play != CMedia::kStopped )
             view()->play( play );
@@ -2755,6 +2760,8 @@ void ImageBrowser::exchange( int oldsel, int sel )
 {
     if ( sel < 0 || oldsel < 0 || sel == oldsel )
     {
+	std::cerr << "NO EXCHANGE sel " << sel
+		  << " oldsel " << oldsel << std::endl;
         redraw();
         return;
     }
@@ -2762,12 +2769,6 @@ void ImageBrowser::exchange( int oldsel, int sel )
     char buf[1024];
     sprintf( buf, "ExchangeImage %d %d", oldsel, sel );
     view()->send_network( buf );
-
-    Element* e = (Element*) child(oldsel);
-    if ( sel > oldsel ) sel += 1;
-    //Fl_Tree::insert( *e, sel );
-
-    redraw();
 
     mrv::Reel reel = current_reel();
 
@@ -2785,6 +2786,10 @@ void ImageBrowser::exchange( int oldsel, int sel )
 
 
     reel->images.insert( reel->images.begin() + sel, m );
+
+    std::cerr << "new exchange image order: " << std::endl;
+    for ( int i = 0; i < reel->images.size(); ++i )
+	std::cerr << reel->images[i]->name() << std::endl;
 
     //
     // Adjust timeline position
@@ -2835,10 +2840,14 @@ int ImageBrowser::mouseRelease( int x, int y )
 
     if ( y < 0 ) Fl::e_y = 0;
 
-    Fl_Tree::handle( FL_PUSH );
+    Fl_Tree::handle( FL_RELEASE );
 
     int sel = value();
 
+    std::cerr << "new release image order: " << std::endl;
+    for ( int i = 0; i < reel->images.size(); ++i )
+	std::cerr << reel->images[i]->name() << std::endl;
+    
     exchange( oldsel, sel );
 
 
@@ -3124,39 +3133,23 @@ void ImageBrowser::adjust_timeline()
 
     if ( reel->edl )
     {
-        mrv::MediaList::iterator i = reel->images.begin();
-        MediaList::iterator j;
-        mrv::MediaList::iterator e = reel->images.end();
-        if ( i != e )
-        {
-            (*i)->position( 1 );
+	{
+	    mrv::MediaList::iterator i = reel->images.begin();
+	    MediaList::iterator j;
+	    mrv::MediaList::iterator e = reel->images.end();
+	    if ( i != e )
+	    {
+		(*i)->position( 1 );
 
-            for ( j = i, ++i; i != e; j = i, ++i )
-            {
-                int64_t frame = (*j)->position() + (*j)->duration();
-                DBG( (*i)->image()->name() << " moved to frame " << frame );
-                (*i)->position( frame );
-            }
-        }
-    }
-
-
-    if ( ! reel->edl )
-    {
-        mrv::media m = current_image();
-        if ( ! m ) return;
-        CMedia* img = m->image();
-
-        first = img->first_frame();
-        f = img->frame();
-        last  = img->last_frame();
-
-        if (f > last ) f = last;
-        if (f < first ) f = first;
-
-    }
-    else
-    {
+		for ( j = i, ++i; i != e; j = i, ++i )
+		{
+		    int64_t frame = (*j)->position() + (*j)->duration();
+		    DBG( (*i)->image()->name() << " moved to frame " << frame );
+		    (*i)->position( frame );
+		}
+	    }
+	}
+	
         mrv::EDLGroup* e = edl_group();
         if ( e )
         {
@@ -3177,6 +3170,22 @@ void ImageBrowser::adjust_timeline()
 
         last = m->position() + m->duration() - 1;
     }
+    else
+    {
+        mrv::media m = current_image();
+        if ( ! m ) return;
+        CMedia* img = m->image();
+
+        first = img->first_frame();
+        f = img->frame();
+        last  = img->last_frame();
+
+        if (f > last ) f = last;
+        if (f < first ) f = first;
+    }
+    
+    
+	
 
     // for ( int i = 0; i < reel->images.size(); ++i )
     // {
@@ -3205,6 +3214,15 @@ void ImageBrowser::adjust_timeline()
 
 void ImageBrowser::draw()
 {
+    Fl_Tree_Item* i = NULL;
+    for ( i = first(); i; i = next(i) )
+    {
+	if ( ! i->widget() ) continue;
+
+	mrv::Element* elem = (mrv::Element*) i->widget();
+	elem->make_thumbnail();
+    }
+    
     Fl_Tree::draw();
 
     if ( dragging && dragging->widget() )
