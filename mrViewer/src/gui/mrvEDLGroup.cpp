@@ -254,8 +254,8 @@ int EDLGroup::handle( int event )
             _dragY = Fl::event_y();
 
             // LIMITS
-            if ( _dragX < 8 ) _dragX = 8;
-            if ( _dragY < 33 ) _dragY = 33;
+            if ( _dragX < x() + 8 ) _dragX = x() + 8;
+            if ( _dragY < y() + 33 ) _dragY = y() + 33;
 
             int idx = int( _dragY / kTrackHeight );
             if ( idx < 0 || idx >= children() ) {
@@ -774,7 +774,7 @@ void EDLGroup::draw()
 
     double frame = t->value();
 
-    int p = t->slider_position( frame, t->w() );
+    int p = t->x() + t->slider_position( frame, t->w() );
     p += int( t->slider_size()/2.0 );
 
 
@@ -785,13 +785,10 @@ void EDLGroup::draw()
 
     if ( _drag )
     {
-        fl_push_matrix();
-        fl_translate( _dragX, _dragY );
-        _drag->draw();
-        //    int ww, hh;
-        //    Fl_measure( e->label(), ww, hh );
-        //    Fl_drawtext( e->label(), 0, 0 );
-        fl_pop_matrix();
+	std::cerr << "drag " << std::endl;
+	fl_push_clip( t->x(), t->y(), t->w(), t->h() );
+	_drag->DrawAt( Fl::event_x(), Fl::event_y() );
+	fl_pop_clip();
     }
 }
 
