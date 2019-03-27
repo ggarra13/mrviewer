@@ -197,7 +197,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     if (w <= 0) return;
 
     double A,B;
-    if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
+    if ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
 	 ( display_minimum() != minimum() || display_maximum() != maximum() ) )
     {
         A = display_minimum();
@@ -501,7 +501,7 @@ void Timeline::draw()
     double mn = minimum();
     double mx = maximum();
 
-    if ( !uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+    if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
         mn = display_minimum();
         mx = display_maximum();
@@ -559,8 +559,9 @@ void Timeline::draw()
             fl_rectf( lr.x(), lr.y(), lr.w(), lr.h() );
         }
 
+
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-                ( _display_min != minimum() || _display_max != maximum() ) )
+	     ( _display_min != minimum() || _display_max != maximum() ) )
         {
             draw_selection(r);
         }
@@ -615,7 +616,7 @@ void Timeline::draw()
                                 int64_t(minimum()), int64_t(maximum()),
                                 first, r );
             }
-        }
+        };
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
              ( _display_min != minimum() || _display_max != maximum() ) )
