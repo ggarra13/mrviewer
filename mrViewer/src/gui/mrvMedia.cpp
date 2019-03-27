@@ -59,7 +59,7 @@ namespace mrv {
 namespace gui {
 
 int media::_thumbnail_width = 128;
-int media::_thumbnail_height = 64;
+int media::_thumbnail_height = 80;
 
 media::media( CMedia* const img ) :
     _start( img->first_frame() ),
@@ -76,7 +76,8 @@ media::~media()
     if ( _thumbnail )
     {
         // thumbnail is not deleted, as fltk will do it for us.
-        //((Fl_Shared_Image*)_thumbnail)->release();
+        //((Fl_Shared_Image*)_thumbnail)->release();  // @TODO: fltk1.4
+	delete _thumbnail;
         _thumbnail = NULL;
     }
 }
