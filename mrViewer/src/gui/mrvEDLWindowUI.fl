@@ -1,128 +1,127 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 1.03
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include "mrvEDLGroup.h"} {public
-} 
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "mrvEDLGroup.h"} {public local
+}
 
-decl {\#include "mrViewer.h"} {public
-} 
+decl {\#include "mrViewer.h"} {public local
+}
 
-decl {\#include "FL/fl_ask.H"} {} 
+decl {\#include "FL/fl_ask.H"} {private local
+}
 
-decl {\#include "core/mrvI8N.h"} {} 
+decl {\#include "core/mrvI8N.h"} {private local
+}
 
-decl {\#include "gui/mrvTimeline.h"} {} 
+decl {\#include "gui/mrvTimeline.h"} {private local
+}
 
-decl {\#include "gui/mrvImageBrowser.h"} {} 
+decl {\#include "gui/mrvImageBrowser.h"} {private local
+}
 
-decl {\#include "gui/mrvChoice.h"} {}
+decl {\#include "gui/mrvChoice.h"} {private local
+}
 
-decl {\#include "gui/mrvMainWindow.h"} {} 
+decl {\#include "gui/mrvMainWindow.h"} {private local
+}
 
-decl {\#include "mrvReelUI.h"} {}
+decl {\#include "mrvReelUI.h"} {private local
+}
 
-decl {\#include "gui/mrvImageView.h"} {} 
+decl {\#include "gui/mrvImageView.h"} {private local
+}
 
-decl {\#include "icons/icons.c"} {} 
+decl {\#include "icons/icons.c"} {private local
+}
 
-  class EDLWindowUI {open
+class EDLWindowUI {open
+} {
+  Function {make_window( ViewerUI* main )} {open
   } {
-    Function {make_window( ViewerUI* main )} {open
+    Fl_Window uiMain {
+      label {EDL Window} open
+      xywh {393 681 1015 260} type Double resizable non_modal visible
     } {
-      {Fl_Window} uiMain {
-        label {EDL Window} open
-        xywh {175 234 1015 260} resizable non_modal visible
+      Fl_Group uiEDLRedraw {open
+        xywh {0 -5 1015 265}
       } {
-        {Fl_Group} uiEDLRedraw {open
-          xywh {0 0 1015 260}
+        Fl_Group {} {open
+          xywh {101 -5 215 36}
         } {
-          {Fl_Group} {} {open
-            xywh {105 4 131 26}
-          } {
-            {Fl_Button} {} {
-              user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
-              callback {const char* name = fl_input("Reel Name", "reel" );
+          Fl_Button {} {
+            user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
+            callback {const char* name = fl_input("Reel Name", "reel" );
 if ( name == NULL ) return;
 v->new_reel(name);}
-              tooltip {Create a new reel or EDL track}
-              xywh {0 1 25 25} 
-              extra_code {o->image( reel_new_24 );}
-            }
-            {Fl_Button} {} {
-              user_data main user_data_type {ViewerUI*}
-              callback {v->uiEDLWindow->uiEDLGroup->cut( v->uiTimeline->value() );}
-              tooltip {Cut Clip at current location}
-              xywh {30 1 25 25} 
-              extra_code {o->image( scissors );}
-            }
-            {Fl_Button} {} {
-              user_data main user_data_type {ViewerUI*}
-              callback {v->uiEDLWindow->uiEDLGroup->merge( v->uiTimeline->value() );}
-              tooltip {Merge two clips near current location.  Clips must be of the same movie or sequence and the left clip must end where the right clip begins.}
-              xywh {60 1 25 25} 
-              extra_code {o->image( merge_tool );}
-            }
-            {Fl_Button} uiBGButton {
-              label BG
-              user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
-              callback {v->change_background();}
-              tooltip {Set selected reel images as background.}
-              xywh {105 0 26 26} box UP_BOX labelfont 1
-            }
+            tooltip {Create a new reel or EDL track} xywh {101 5 25 26}
+            code0 {o->image( reel_new_24 );}
           }
-          {Fl_Slider} uiTimeline {
+          Fl_Button {} {
             user_data main user_data_type {ViewerUI*}
-            callback {int64_t frame = (int64_t) o->value();
+            callback {v->uiEDLWindow->uiEDLGroup->cut( v->uiTimeline->value() );}
+            tooltip {Cut Clip at current location} xywh {126 5 25 26}
+            code0 {o->image( scissors );}
+          }
+          Fl_Button {} {
+            user_data main user_data_type {ViewerUI*}
+            callback {v->uiEDLWindow->uiEDLGroup->merge( v->uiTimeline->value() );}
+            tooltip {Merge two clips near current location.  Clips must be of the same movie or sequence and the left clip must end where the right clip begins.} xywh {151 5 25 26}
+            code0 {o->image( merge_tool );}
+          }
+          Fl_Button uiBGButton {
+            label BG
+            user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
+            callback {v->change_background();}
+            tooltip {Set selected reel images as background.} xywh {176 4 26 27} labelfont 1
+          }
+        }
+        Fl_Slider uiTimeline {
+          user_data main user_data_type {ViewerUI*}
+          callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );
 v->uiEDLWindow->uiEDLGroup->redraw();} selected
-            xywh {95 41 920 32} type TICK_ABOVE textfont 1 textcolor 0x2020200 textsize 12 minimum 1 maximum 100 step 1 value 1 slider_size 10
-            extra_code {o->main( main ); 
+          xywh {95 41 920 32} minimum 1 maximum 100 step 1 value 1 slider_size 1
+          code0 {o->main( main ); 
 o->draw_cache( false );}
-            class {mrv::Timeline}
-          }
-          {Fl_Group} uiEDLGroup {
-            xywh {95 75 920 185}
-            extra_code {o->timeline( uiTimeline ); o->main( main );}
-            class {mrv::EDLGroup}
-          } {}
-          {Fl_Group} {} {open
-            xywh {5 72 95 175}
+          class {mrv::Timeline}
+        }
+        Fl_Group uiEDLGroup {open
+          xywh {95 75 920 185}
+          code0 {o->timeline( uiTimeline ); o->main( main );}
+          class {mrv::EDLGroup}
+        } {}
+        Fl_Group {} {open
+          xywh {0 0 95 180}
+        } {
+          Fl_Group {} {open
+            xywh {0 8 95 72}
           } {
-            {Fl_Group} {} {
-              xywh {10 5 85 68}
+            Fl_Group {} {open
+              xywh {5 8 90 37}
             } {
-              {Fl_Group} {} {open
-                xywh {0 0 85 30}
-              } {
-                {Fl_Button} {} {
-                  user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
-                  callback {v->open();
+              Fl_Button {} {
+                user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
+                callback {v->open();
 int idx = uiEDLChoiceOne->children()-1;
 uiEDLChoiceOne->value( idx );}
-                  tooltip {Open a new reel}
-                  xywh {0 0 25 25} 
-                  extra_code {o->image( reel_24 );}
-                }
-                {Fl_Button} {} {
-                  user_data main user_data_type {ViewerUI*}
-                  callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
+                tooltip {Open a new reel} xywh {5 8 25 25}
+                code0 {o->image( reel_24 );}
+              }
+              Fl_Button {} {
+                user_data main user_data_type {ViewerUI*}
+                callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
 if ( c->value() < 0 ) return;
 
 b->reel( c->value() );
 b->save_reel();}
-                  tooltip {Save current reel
-}
-                  xywh {25 0 25 25} 
-                  extra_code {o->image( reel_save_24 );}
-                }
-                {Fl_Button} {} {
-                  user_data main user_data_type {ViewerUI*}
-                  callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
+                tooltip {Save current reel} xywh {30 8 25 25}
+                code0 {o->image( reel_save_24 );}
+              }
+              Fl_Button {} {
+                user_data main user_data_type {ViewerUI*}
+                callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceOne;
 
 int sel = c->value();
@@ -130,16 +129,14 @@ if ( sel < 0 ) return;
 
 b->reel( sel );
 b->remove_reel();}
-                  tooltip {Delete current reel}
-                  xywh {50 0 25 25} 
-                  extra_code {o->image( reel_delete_24 );}
-                }
+                tooltip {Delete current reel} xywh {55 8 25 25}
+                code0 {o->image( reel_delete_24 );}
               }
-              {Fl_Choice} uiEDLChoiceOne {
-                label {Track \#0}
-		class mrv::Choice
-                user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
-                callback {if ( o->value() >= 0 && v->media_track(0) )
+            }
+            Fl_Choice uiEDLChoiceOne {
+              label {Track \#0}
+              user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
+              callback {if ( o->value() >= 0 && v->media_track(0) )
 {
    v->media_track(0)->reel( o->value() );
    v->redraw();
@@ -147,41 +144,39 @@ b->remove_reel();}
 else
 {
    o->value(-1);
-}} open
-                xywh {0 43 75 25} align 5
-              } {}
-            }
-            {Fl_Group} {} {
-              xywh {10 98 85 67}
+}}
+              xywh {5 52 80 28} down_box BORDER_BOX align 5
+              class {mrv::Choice}
+            } {}
+          }
+          Fl_Group {} {open
+            xywh {0 67 95 113}
+          } {
+            Fl_Group {} {open
+              xywh {5 71 80 50}
             } {
-              {Fl_Group} {} {
-                xywh {0 0 85 32}
-              } {
-                {Fl_Button} {} {
-                  user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
-                  callback {v->open();
+              Fl_Button {} {
+                user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
+                callback {v->open();
 int idx = uiEDLChoiceTwo->children()-1;
 uiEDLChoiceTwo->value( idx );}
-                  tooltip {Open a new reel}
-                  xywh {0 0 25 25} 
-                  extra_code {o->image( reel_24 );}
-                }
-                {Fl_Button} {} {
-                  user_data main user_data_type {ViewerUI*}
-                  callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
+                tooltip {Open a new reel} xywh {5 96 25 25}
+                code0 {o->image( reel_24 );}
+              }
+              Fl_Button {} {
+                user_data main user_data_type {ViewerUI*}
+                callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
 if ( c->value() < 0 ) return;
 
 b->reel( c->value() );
 b->save_reel();}
-                  tooltip {Save current reel
-}
-                  xywh {25 0 25 25} 
-                  extra_code {o->image( reel_save_24 );}
-                }
-                {Fl_Button} {} {
-                  user_data main user_data_type {ViewerUI*}
-                  callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
+                tooltip {Save current reel} xywh {30 96 25 25}
+                code0 {o->image( reel_save_24 );}
+              }
+              Fl_Button {} {
+                user_data main user_data_type {ViewerUI*}
+                callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 mrv::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
 
 int sel = c->value();
@@ -189,16 +184,14 @@ if ( sel < 0 ) return;
 
 b->reel( sel );
 b->remove_reel();}
-                  tooltip {Delete current reel}
-                  xywh {50 0 25 25} 
-                  extra_code {o->image( reel_delete_24 );}
-                }
+                tooltip {Delete current reel} xywh {55 96 25 25}
+                code0 {o->image( reel_delete_24 );}
               }
-              {Fl_Choice} uiEDLChoiceTwo {
-                label {Track \#1}
-		class mrv::Choice
-                user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
-                callback {if (o->value() >= 0 && v->media_track(1) )
+            }
+            Fl_Choice uiEDLChoiceTwo {
+              label {Track \#1}
+              user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
+              callback {if (o->value() >= 0 && v->media_track(1) )
 {
   v->media_track(1)->reel( o->value() );
   v->redraw();
@@ -207,21 +200,21 @@ else
 {
   o->value(-1);
 }} open
-                xywh {0 42 75 25} align 5
-                extra_code {o->value( -1 );}
-              } {}
-            }
+              xywh {5 142 80 28} down_box BORDER_BOX align 5
+              code0 {o->value( -1 );}
+              class {mrv::Choice}
+            } {}
           }
         }
       }
     }
-    Function {EDLWindowUI( ViewerUI* m )} {} {
-      code {Fl_Group::current( m->uiMain );
-      make_window(m);
-     } {}
-    }
-    Function {~EDLWindowUI()} {} {
-      code {delete uiEDLGroup; uiEDLGroup = NULL;
-delete uiMain; uiMain = NULL;} {}
-    }
   }
+  Function {EDLWindowUI( ViewerUI* m )} {} {
+    code {Fl_Group::current( m->uiMain );
+      make_window(m);} {}
+  }
+  Function {~EDLWindowUI()} {} {
+    code {delete uiEDLGroup; uiEDLGroup = NULL;
+delete uiMain; uiMain = NULL;} {}
+  }
+}
