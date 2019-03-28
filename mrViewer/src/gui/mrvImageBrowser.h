@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -118,6 +118,8 @@ public:
     void previous_image();
     void next_image();
 
+    void match_tree_order();
+
     void insert( unsigned idx, mrv::media m );
 
     // @todo: these should be factored to a database helper class
@@ -233,7 +235,6 @@ protected:
     Fl_Tree_Item*    dragging;
     Fl_Tree_Item*    old_dragging;
     int lastX, lastY;
-    int old_sel;
 
     ViewerUI* uiMain;
 };
