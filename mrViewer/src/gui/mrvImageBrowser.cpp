@@ -88,6 +88,8 @@ const char* kModule = "reel";
 }
 
 
+// #define DEBUG_IMAGES_ORDER
+
 using namespace std;
 
 extern void set_as_background_cb( Fl_Widget* o, mrv::ImageView* v );
@@ -297,8 +299,7 @@ ImageBrowser::ImageBrowser( int x, int y, int w, int h ) :
 Fl_Tree( x, y, w, h ),
 _reel( 0 ),
 dragging( NULL ),
-_value( 0 ),
-old_sel( -1 )
+_value( -1 )
 {
     showroot(0);// don't show root of tree
     // Add some regular text nodes
@@ -1171,6 +1172,8 @@ void ImageBrowser::change_image()
                 e->redraw();
             }
 
+	    Fl_Tree::deselect_all( NULL, 0 );
+	    
 	    std::string path = media_to_pathname( m );
 	    Fl_Tree::select( path.c_str(), 0 );
 
@@ -1214,6 +1217,7 @@ void ImageBrowser::change_image(int i)
     
     send_reel( reel );
 
+    DBG( "CHANGE IMAGE TO INDEX " << i );
     value( i );
     send_image( i );
     change_image();
@@ -2431,7 +2435,7 @@ void ImageBrowser::previous_image()
     
     if ( reel->edl )
     {
-        int64_t pos = m->position() + m->duration() - 1;
+        int64_t pos = m->position();
         DBG( "seek to " << pos );
         seek( pos );
     }
@@ -2459,8 +2463,6 @@ void ImageBrowser::previous_image()
  */
 int ImageBrowser::mousePush( int x, int y )
 {
-    int old_sel = value();
-
     int ok = Fl_Tree::handle( FL_PUSH );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
@@ -2468,9 +2470,6 @@ int ImageBrowser::mousePush( int x, int y )
         view()->stop();
 
     int button = Fl::event_button();
-    int sel = value();
-
-    DBG( "Clicked on " << sel );
 
     if ( button == FL_LEFT_MOUSE )
     {
@@ -2493,21 +2492,27 @@ int ImageBrowser::mousePush( int x, int y )
 	}
 
 	old_dragging = dragging;
-	    
-	mrv::media m = current_image();
-	if ( timeline()->edl() && m )
+
+	DBG( "DRAGGING LEFT MOUSE BUTTON" );
+
+	mrv::Reel reel = current_reel();
+	mrv::Element* e = (mrv::Element*) dragging->widget();
+	mrv::media m = e->media();
+	view()->foreground( m );
+	
+	
+	
+	match_tree_order();
+	
+	adjust_timeline();
+	
+	if ( reel->edl && m )
 	{
 	    int64_t s = m->position();
-	    DBG("seek to " << s );
+	    DBG("seek to " << s << " " << m->image()->name() );
 	    seek( s );
 	}
-	else
-	{
-	    mrv::Element* e = (mrv::Element*) dragging->widget();
-	    view()->foreground( e->media() );
-
-	    adjust_timeline();
- 	}
+	
         if ( play != CMedia::kStopped )
             view()->play( play );
         return 1;
@@ -2527,7 +2532,9 @@ int ImageBrowser::mousePush( int x, int y )
         menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                   (Fl_Callback*)open_single_cb, this);
 
-	int sel = value();  // @TODO: fix for fltk1.4
+	match_tree_order();
+	
+	int sel = value();  
         if ( sel >= 0 )
         {
             change_image();
@@ -2625,7 +2632,7 @@ int ImageBrowser::mousePush( int x, int y )
         return 1;
     }
 
-    return 1;
+    return ok;
 }
 
 
@@ -2758,10 +2765,14 @@ int ImageBrowser::mouseDrag( int x, int y )
 
 void ImageBrowser::exchange( int oldsel, int sel )
 {
-    if ( sel < 0 || oldsel < 0 || sel == oldsel )
+    if ( oldsel == sel )
     {
-	std::cerr << "NO EXCHANGE sel " << sel
-		  << " oldsel " << oldsel << std::endl;
+	LOG_ERROR( _("Same indices to exchange.") );
+	return;
+    }
+    if ( sel < 0 || oldsel < 0  )
+    {
+	LOG_ERROR( _("Negative indices to exchange") );
         redraw();
         return;
     }
@@ -2815,11 +2826,48 @@ void ImageBrowser::exchange( int oldsel, int sel )
     }
 }
 
+void ImageBrowser::match_tree_order()
+{
+    mrv::Reel r = current_reel();
+    r->images.clear();
+
+    value( -1 );
+
+    mrv::media fg = view()->foreground();
+    
+    Fl_Tree_Item* i;
+    for ( i = first(); i; i = next(i) )
+    {
+	if ( ! i->widget() ) continue;
+
+	mrv::Element* elem = (mrv::Element*) i->widget();
+	mrv::media m = elem->media();
+	if ( m == fg ) {
+	    value( r->images.size() );
+
+	    Fl_Tree::deselect_all(NULL, 0);
+	    
+	    std::string path = media_to_pathname( m );
+	    Fl_Tree::select( path.c_str(), 0 );
+	}
+	r->images.push_back( m );
+    }
+
+#ifdef DEBUG_IMAGES_ORDER
+    std::cerr << "images order: " << std::endl;
+    for ( unsigned j = 0; j < r->images.size(); ++ j )
+    {
+	std::cerr << r->images[j]->name();
+	if ( j == value() ) std::cerr << " <----";
+	std::cerr << "\n";
+    }
+#endif
+    
+}
+
 int ImageBrowser::mouseRelease( int x, int y )
 {
-
-    int oldsel = value();
-    if (oldsel < 0 || !dragging )
+    if (!dragging )
     {
         redraw();
         return 0;
@@ -2827,31 +2875,15 @@ int ImageBrowser::mouseRelease( int x, int y )
 
     dragging = NULL;
 
-    mrv::Reel reel = current_reel();
 
-    mrv::media m = reel->images[oldsel];
-    CMedia* img = m->image();
+    int ok = Fl_Tree::handle( FL_RELEASE );
 
-    mrv::Timeline* t = timeline();
-
-    int64_t f = (int64_t) uiMain->uiFrame->value();
-    int64_t g = t->offset( img );
-    f -= g;
-
-    if ( y < 0 ) Fl::e_y = 0;
-
-    Fl_Tree::handle( FL_RELEASE );
-
-    int sel = value();
-
-    std::cerr << "new release image order: " << std::endl;
-    for ( int i = 0; i < reel->images.size(); ++i )
-	std::cerr << reel->images[i]->name() << std::endl;
     
-    exchange( oldsel, sel );
-
-
-    return 1;
+    match_tree_order();
+    
+    adjust_timeline();
+    
+    return ok;
 }
 
 /**
@@ -2885,8 +2917,7 @@ int ImageBrowser::handle( int event )
     case FL_DRAG:
 	return mouseDrag( Fl::event_x(), Fl::event_y() );
     case FL_RELEASE:
-        //mouseRelease( Fl::event_x(), Fl::event_y() );
-	dragging = NULL;
+        mouseRelease( Fl::event_x(), Fl::event_y() );
     }
     return ret;
 }
@@ -3079,6 +3110,9 @@ void ImageBrowser::set_edl()
 
     uiMain->uiReelWindow->uiEDLButton->value(1);
 
+    match_tree_order();
+    adjust_timeline();
+
     mrv::media m = current_image();
     if (!m) return;
 
@@ -3140,7 +3174,7 @@ void ImageBrowser::adjust_timeline()
 	    if ( i != e )
 	    {
 		(*i)->position( 1 );
-
+	    
 		for ( j = i, ++i; i != e; j = i, ++i )
 		{
 		    int64_t frame = (*j)->position() + (*j)->duration();
@@ -3150,12 +3184,12 @@ void ImageBrowser::adjust_timeline()
 	    }
 	}
 	
-        mrv::EDLGroup* e = edl_group();
-        if ( e )
-        {
-            e->redraw();
-        }
-
+	mrv::EDLGroup* e = edl_group();
+	if ( e )
+	{
+	    e->redraw();
+	}
+    
         first = 1;
 
         mrv::media m = current_image();
