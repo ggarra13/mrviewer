@@ -846,7 +846,7 @@ static const aspectName_t kAspectRatioNames[] =
     { 1.56, _("Widescreen (HDTV + STV)") },
     { 1.66, _("35mm European Widescreen") },
     { 1.75, _("Early 35mm") },
-    { 1.77, _("HDTV / Widescreen 16:9") },
+    { 1.777778, _("HDTV / Widescreen 16:9") },
     { 1.85, _("35mm Flat") },
     { 2.2,  _("70mm") },
     { 2.35, _("35mm Anamorphic") },
@@ -2137,10 +2137,8 @@ void ImageInformation::fill_data()
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
     for ( int i = 0; i < num; ++i )
     {
-        static const float fuzz = 0.005f;
-        if ( aspect_ratio > kAspectRatioNames[i].ratio - fuzz &&
-                aspect_ratio < kAspectRatioNames[i].ratio + fuzz)
-        {
+        static const double fuzz = 0.001;
+        if ( mrv::is_equal( aspect_ratio, kAspectRatioNames[i].ratio, fuzz ) )   {
             name = _( kAspectRatioNames[i].name );
             break;
         }
