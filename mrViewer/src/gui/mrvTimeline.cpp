@@ -387,6 +387,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int ww = r.w();
     int hh = r.h() - 8;
 
+    fl_push_clip( rx, ry, ww, hh );
+
     CMedia::Cache c = CMedia::kLeftCache;
     fl_color( FL_DARK_GREEN );
     fl_line_style( FL_SOLID, 1 );
@@ -446,6 +448,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         fl_rectf( dx, ry, wh, hh );
     }
 
+    fl_pop_clip();
 
 }
 
