@@ -3270,7 +3270,7 @@ double CMedia::calculate_fps( const AVStream* stream )
     double fps;
 
     assert( stream != NULL );
-    const AVRational& rate = av_stream_get_r_frame_rate( stream );
+    const AVRational& rate = stream->r_frame_rate;
 
     if ( stream->avg_frame_rate.den && stream->avg_frame_rate.num )
     {
