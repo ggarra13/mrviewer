@@ -59,7 +59,7 @@ namespace mrv {
 namespace gui {
 
 int media::_thumbnail_width = 128;
-int media::_thumbnail_height = 80;
+int media::_thumbnail_height = 64;
 
 media::media( CMedia* const img ) :
     _start( img->first_frame() ),
