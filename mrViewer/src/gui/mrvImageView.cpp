@@ -2998,6 +2998,7 @@ void ImageView::timeout()
             DBG( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
                  << tframe );
             foreground( fg );
+	    browser()->match_tree_order();
 
             fit_image();
         }
@@ -8763,6 +8764,7 @@ void ImageView::update_image_info() const
 
 void ImageView::playback( const CMedia::Playback b )
 {
+    
     _playback = b;
 
     _lastFrame = frame();
