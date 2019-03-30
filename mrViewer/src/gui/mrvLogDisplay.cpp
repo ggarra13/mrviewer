@@ -134,8 +134,14 @@ void LogDisplay::info( const char* x )
     buf[t] = 0;
     while( t-- )
     {
-        if ( x[t] == '\n' ) ++_lines;
-        buf[t] = 'A';
+        if ( x[t] == '\n' ) {
+	    ++_lines;
+	    buf[t] = '\n';
+	}
+	else
+	{
+	    buf[t] = 'A';
+	}
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
@@ -151,8 +157,14 @@ void LogDisplay::warning( const char* x )
     buf[t] = 0;
     while( t-- )
     {
-        if ( x[t] == '\n' ) ++_lines;
-        buf[t] = 'B';
+        if ( x[t] == '\n' ) {
+	    ++_lines;
+	    buf[t] = '\n';
+	}
+	else
+	{
+	    buf[t] = 'B';
+	}
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
@@ -169,8 +181,14 @@ void LogDisplay::error( const char* x )
     buf[t] = 0;
     while( t-- )
     {
-        if ( x[t] == '\n' ) ++_lines;
-        buf[t] = 'C';
+        if ( x[t] == '\n' ) {
+	    ++_lines;
+	    buf[t] = '\n';
+	}
+	else
+	{
+	    buf[t] = 'C';
+	}
     }
     mStyleBuffer->append( buf );
     mBuffer->append( x );
