@@ -193,7 +193,6 @@ mrv::media media_track::media_at( const boost::int64_t frame )
 void media_track::insert( const boost::int64_t frame, mrv::media m )
 {
     int idx = index_at( frame );
-    if ( idx < 0 ) idx = 0;
     if ( _reel_idx < 0 ) return;
 
     browser()->reel( _reel_idx );
