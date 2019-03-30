@@ -633,13 +633,13 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
-    X = x() + slider_position( value(), w() );
+    X = x() - Fl::box_dx(box()) + slider_position( value(), w() );
     Y = y() + Fl::box_dy(box());
     W = 15  - Fl::box_dw(box());
     H = h() - Fl::box_dh(box());
     fl_push_clip( X, Y, W, H );
-    Fl_Color c = FL_YELLOW;
-    draw_box( FL_ROUND_UP_BOX, X, Y, W, H, c );
+    Fl_Color c = fl_rgb_color( 180, 180, 128 );
+    draw_box( FL_PLASTIC_UP_BOX, X, Y, W, H, c );
     clear_damage();
     fl_pop_clip();
 }
