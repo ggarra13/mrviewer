@@ -307,6 +307,7 @@ _value( -1 )
     item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
     connectorstyle( FL_TREE_CONNECTOR_NONE );
     connectorwidth( 0 );
+
 }
 
 ImageBrowser::~ImageBrowser()
@@ -376,7 +377,6 @@ mrv::Reel ImageBrowser::reel( const char* name )
                 if ( view()->playback() != CMedia::kStopped )
                     view()->stop();
             }
-            std::cerr << "set _reel to " << idx << std::endl;
             _reel = idx;
             change_reel();
             return *i;
@@ -728,20 +728,27 @@ void ImageBrowser::insert( unsigned idx, mrv::media m )
     if ( !m ) return;
 
     mrv::Reel reel = current_reel();
-    if ( !reel ) return;
 
-
-    reel->images.insert( reel->images.begin() + idx, m );
-
+    if ( idx >= reel->images.size() )
+    {
+	LOG_ERROR( _("Index too big for images in reel") );
+	return;
+    }
+    
+    std::string path = media_to_pathname( m );
+    Fl_Tree_Item* item = Fl_Tree::insert( root(), path.c_str(),
+					  root()->children() );
     Element* nw = new_item( m );
-    // Fl_Tree::insert( *nw, idx );
+    item->widget( nw );
 
-    char buf[256];
+    match_tree_order();
 
     send_reel( reel );
 
     CMedia* img = m->image();
     std::string file = img->directory() + '/' + img->name();
+    
+    char buf[256];
     sprintf( buf, "InsertImage %d \"%s\"", idx, file.c_str() );
     if ( view() ) view()->send_network( buf );
 
@@ -819,9 +826,14 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     }
 }
 
+
+
 std::string ImageBrowser::media_to_pathname( const mrv::media m )
 {
+    if ( !m ) return "";
+    
     CMedia* img = m->image();
+     if ( !img || !img->fileroot() ) return "";
 
     std::string path = img->fileroot();
 
@@ -835,25 +847,26 @@ std::string ImageBrowser::media_to_pathname( const mrv::media m )
     return path;
 }
 
-mrv::media ImageBrowser::add( mrv::media& m )
+mrv::media ImageBrowser::add( const mrv::media m )
 {
     mrv::Reel reel = current_reel();
-    if ( !reel ) reel = new_reel();
 
     reel->images.push_back( m );
 
     Fl_Group::end();
 
-
     std::string path = media_to_pathname( m );
 
-    Fl_Tree_Item* item = find_item( path.c_str() );
-    if ( item )
+    Fl_Tree_Item* item = Fl_Tree::find_item( path.c_str() );
+    while ( item )
     {
 	path += "#2";
+	item = Fl_Tree::find_item( path.c_str() );
     }
 
-    item = Fl_Tree::add( path.c_str() );
+    int total = root()->children();
+    item = Fl_Tree::insert( root(), path.c_str(),
+			    root()->children() );
     Element* nw = new_item( m );
     item->widget( nw );
     
@@ -932,9 +945,6 @@ void ImageBrowser::remove( int idx )
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    CMedia::Playback play = view()->playback();
-    view()->stop();
-
     if ( idx < 0 || unsigned(idx) >= reel->images.size() )
     {
         LOG_ERROR( _("ImageBrowser::remove idx value (") << idx <<
@@ -942,48 +952,58 @@ void ImageBrowser::remove( int idx )
         return;
     }
 
+    remove( reel->images[idx] );
+}
 
 
+/**
+ * Remove an image from image browser list
+ *
+ * @param img image to remove
+ */
+void ImageBrowser::remove( mrv::media m )
+{
+    mrv::Reel reel = current_reel();
 
-    // Remove image from reel
-    mrv::MediaList::iterator i = reel->images.begin();
+    mrv::MediaList::iterator begin = reel->images.begin();
+    mrv::MediaList::iterator end   = reel->images.end();
+    mrv::MediaList::iterator i = std::find( begin, end, m );
+    if ( i == end )
+    {
+        LOG_ERROR( _("Image") << " " << m->image()->filename()
+                   << _(" not found in reel") );
+        return;
+    }
 
+    CMedia::Playback play = view()->playback();
+    if ( play ) view()->stop();
+
+    int idx = i-begin;
+    
     // Remove icon from browser
-    std::string path = media_to_pathname( *i );
-    Fl_Tree_Item* item = find_item( path.c_str() );
+    Fl_Tree_Item* item = root()->child(idx);
+    if ( !item )
+    {
+	LOG_ERROR( _("New item not found in tree.") );
+	return;
+    }
     delete item->widget();
     Fl_Tree::remove( item );
     
-    reel->images.erase( i + idx );
-
-
+    
+    if ( view()->background() == m )
+    {
+        view()->bg_reel( -1 );
+        view()->background( mrv::media() );
+    }
 
     char buf[256];
-    sprintf( buf, "RemoveImage %d", idx );
+    sprintf( buf, "RemoveImage \"%s\"", m->image()->fileroot() );
     view()->send_network( buf );
 
-
-    view()->fg_reel( _reel );
-    send_reel( reel );
-
-
-
-    change_image( idx-1 );
-    // if ( unsigned(idx) < reel->images.size() )
-    // {
-    //  view()->foreground( *(i + idx) );
-    // }
-    // else if ( unsigned( idx-1) < reel->images.size() )
-    // {
-    //  view()->foreground( *(i + idx - 1) );
-    // }
-    // else
-    // {
-    //  view()->foreground( mrv::media() );
-    // }
-
-
-
+    // Remove image from reel
+    reel->images.erase( i );
+    
     mrv::EDLGroup* e = edl_group();
     if ( e )
     {
@@ -996,41 +1016,6 @@ void ImageBrowser::remove( int idx )
 
     view()->redraw();
     redraw();
-}
-
-
-/**
- * Remove an image from image browser list
- *
- * @param img image to remove
- */
-void ImageBrowser::remove( mrv::media m )
-{
-    mrv::Reel reel = current_reel();
-    if ( !reel ) return;
-
-
-    mrv::MediaList::iterator begin = reel->images.begin();
-    mrv::MediaList::iterator end   = reel->images.end();
-    mrv::MediaList::iterator i = std::find( begin, end, m );
-    if ( i == end )
-    {
-        LOG_ERROR( _("Image") << " " << m->image()->filename()
-                   << _(" not found in reel") );
-        return;
-    }
-
-    CMedia::Playback p = view()->playback();
-    view()->stop();
-
-    if ( view()->background() == m )
-    {
-        view()->bg_reel( -1 );
-        view()->background( mrv::media() );
-    }
-
-    int idx = (int) (i - begin);
-    this->remove( idx );
 }
 
 
@@ -1061,7 +1046,6 @@ void ImageBrowser::clear_bg()
 void ImageBrowser::change_reel()
 {
     DBG( "Change reel" );
-    clear();
 
     mrv::Reel reel = current_reel();
     if ( !reel ) {
@@ -1082,15 +1066,12 @@ void ImageBrowser::change_reel()
     {
 
         DBG( "Add images in browser" );
-        Fl_Tree::clear();
 
         mrv::MediaList::iterator i = reel->images.begin();
         MediaList::iterator j;
         mrv::MediaList::iterator e = reel->images.end();
         for ( ; i != e; ++i )
         {
-	    std::cerr << reel->name << " HAS " << (*i)->image()->name()
-		      << std::endl;
 	    add( *i );
         }
 
@@ -2059,10 +2040,10 @@ void ImageBrowser::replace( int i, mrv::media m )
     // Create new item
     std::string newpath = media_to_pathname( m );
     Element* nw = new_item( m );
-
+    
     // Insert new item and select it
-    Fl_Tree_Item* newitem = Fl_Tree::insert( item, newpath.c_str(), 0 );
-    Fl_Tree::select( newpath.c_str(), 0 );
+    Fl_Tree_Item* newitem = Fl_Tree::insert( root(), newpath.c_str(), i );
+    Fl_Tree::select( newitem, 0 );
 
     // We resize new widget to old to avoid redraw issues
     nw->resize( oldnw->x(), oldnw->y(), oldnw->w(), oldnw->h() );
@@ -2070,8 +2051,7 @@ void ImageBrowser::replace( int i, mrv::media m )
     // We attach widget to tree
     newitem->widget( nw );
 
-    delete oldnw;  // Delete old element
-    
+    delete oldnw;  // Delete old element and item
     Fl_Tree::remove( item );
 
 
@@ -2346,22 +2326,22 @@ void ImageBrowser::next_image()
 	return;
     }
 
-    std::string path = media_to_pathname( orig );
-    int ok = deselect( path.c_str(), 0 );
+    Fl_Tree_Item* item = root()->child(v-1);
+    int ok = deselect( item, 0 );
     if ( ok < 0 )
     {
-	LOG_ERROR( path << _(" was not found in tree.") );
+	LOG_ERROR( _("Old item was not found in tree.") );
 	return;
     }
     
     value( v );
     mrv::media m = reel->images[v];
-    
-    path = media_to_pathname( m );
-    ok = select( path.c_str(), 0 );
+
+    item = root()->child(v);
+    ok = select( item, 0 );
     if ( ok < 0 )
     {
-	LOG_ERROR( path << _(" was not found in tree.") );
+	LOG_ERROR( _("New item was not found in tree.") );
 	return;
     }
 
@@ -2413,24 +2393,24 @@ void ImageBrowser::previous_image()
 
     
     value( v );
-    mrv::media m = reel->images[v];
-    
-    std::string path = media_to_pathname( orig );
-    int ok = deselect( path.c_str(), 0 );
+
+    Fl_Tree_Item* item = root()->child( v+1 );
+    int ok = deselect( item, 0 );
     if ( ok < 0 )
     {
-	LOG_ERROR( path << _(" was not found in tree.") );
+	LOG_ERROR( _("Item was not found in tree.") );
 	return;
     }
     
-    path = media_to_pathname( m );
-    ok = select( path.c_str(), 0 );
+    item = root()->child( v );
+    ok = select( item, 0 );
     if ( ok < 0 )
     {
-	LOG_ERROR( path << _(" was not found in tree.") );
+	LOG_ERROR( _("Item was not found in tree.") );
 	return;
     }
 
+    mrv::media m = reel->images[v];
     view()->foreground( m );
     
     if ( reel->edl )
@@ -2493,7 +2473,15 @@ int ImageBrowser::mousePush( int x, int y )
 
 	old_dragging = dragging;
 
-	DBG( "DRAGGING LEFT MOUSE BUTTON" );
+	Fl_Tree::deselect_all( NULL, 0 );
+	int ok = select( dragging, 0 );
+	if ( ok < 0 )
+	{
+	    LOG_ERROR( "Could not select " << dragging->label() );
+	}
+
+	
+	DBG( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 
 	mrv::Reel reel = current_reel();
 	mrv::Element* e = (mrv::Element*) dragging->widget();
@@ -2847,8 +2835,7 @@ void ImageBrowser::match_tree_order()
 
 	    Fl_Tree::deselect_all(NULL, 0);
 	    
-	    std::string path = media_to_pathname( m );
-	    Fl_Tree::select( path.c_str(), 0 );
+	    Fl_Tree::select( i, 0 );
 	}
 	r->images.push_back( m );
     }
