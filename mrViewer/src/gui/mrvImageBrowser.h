@@ -129,7 +129,7 @@ public:
     void add_audio( const mrv::media& m );
 #endif
 
-    mrv::media add( mrv::media& m );
+    mrv::media add( const mrv::media m );
     mrv::media add( CMedia* img );
     mrv::media add( const char* filename,
                     const int64_t start = -999999,
