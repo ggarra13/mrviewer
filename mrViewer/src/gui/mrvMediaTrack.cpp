@@ -686,7 +686,7 @@ void media_track::draw()
     size_t e = reel->images.size();
 
     fl_push_matrix();
-    fl_color( FL_GRAY0 );
+    fl_color( fl_rgb_color( 128, 128, 128 ) );
 
     fl_push_clip( x(), y(), w(), h() );
     fl_rectf( x(), y(), w(), h() );
@@ -783,7 +783,7 @@ void media_track::draw()
             if ( _selected && _selected->media() == fg )
                 fl_color( FL_BLACK );
             else
-                fl_color( FL_GRAY0 );
+                fl_color( fl_rgb_color( 128, 128, 128 ) );
 
             int aw = 0, ah = 0;
             char buf[128];
@@ -792,7 +792,7 @@ void media_track::draw()
             fl_measure( buf, aw, ah );
 
             mrv::Recti off( rx + dx + dw/2 - aw/2,
-                                 y() + h()-ah/2, aw, ah );
+			    y() + h()-ah/2, aw, ah );
             ra.intersect( off );
             if ( !ra.empty() )
             {
@@ -862,7 +862,7 @@ void media_track::draw()
         if ( _selected && _selected->media() == fg )
             fl_color( FL_BLACK );
         else
-            fl_color( FL_GRAY0 );
+            fl_color( fl_rgb_color( 128, 128, 128 ) );
 
         int ww = 0, hh = 0;
         std::string name = img->name();
