@@ -109,12 +109,19 @@ void media::create_thumbnail()
     // Audio only clip?  Return
     mrv::image_type_ptr pic = _image->left();
 
-    if ( !pic ) return;
-
+    if ( !pic ) {
+	LOG_ERROR( _("Empty pic file for media ") << _image->name() );
+	abort();
+	return;
+    }
+    
     unsigned dw = pic->width();
     unsigned dh = pic->height();
-    if ( dw == 0 || dh == 0 ) return;
-
+    if ( dw == 0 || dh == 0 ) {
+	LOG_ERROR( _("Media file has zero size in width or height") );
+	return;
+    }
+    
     unsigned int h = _thumbnail_height;
 
     float yScale = (float)(h+0.5) / (float)dh;
@@ -144,19 +151,6 @@ void media::create_thumbnail()
     }
 
     uchar* ptr = data;
-    if (!ptr )
-    {
-	uchar* data = new uchar[ w * h * 3 ];
-	_thumbnail = new Fl_RGB_Image( data, w, h, 3 );
-	if ( !_thumbnail )
-	{
-	    IMG_ERROR( _("Could not create thumbnail picture for '")
-		       << _image->fileroot() << "'" );
-	    return;
-	}
-
-	_thumbnail->alloc_array = 1;
-    }
 
     // Copy to thumbnail and gamma it
     float gamma = 1.0f / _image->gamma();
