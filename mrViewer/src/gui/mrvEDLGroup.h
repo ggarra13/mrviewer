@@ -60,7 +60,7 @@ public:
     mrv::media_track* media_track( int i )
     {
         if ( i < 0 || i >= children() ) return NULL;
-        return (mrv::media_track*)this->child(i);
+	return (mrv::media_track*)this->child(i);
     }
 
     bool shift_audio( unsigned track_idx, std::string image,
