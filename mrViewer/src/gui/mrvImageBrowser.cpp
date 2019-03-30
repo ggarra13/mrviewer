@@ -721,23 +721,25 @@ Element* ImageBrowser::new_item( mrv::media m )
  * Insert a new image into image browser list
  *
  * @param idx where to insert new image
- * @param img image to insert
+ * @param m   media image to insert
  */
-void ImageBrowser::insert( unsigned idx, mrv::media m )
+void ImageBrowser::insert( int idx, mrv::media m )
 {
     if ( !m ) return;
 
     mrv::Reel reel = current_reel();
 
-    if ( idx >= reel->images.size() )
+    if ( idx > (int)reel->images.size() )
     {
-	LOG_ERROR( _("Index too big for images in reel") );
+	LOG_ERROR( _("Index ") << idx << (" too big for images in reel ")
+		   << reel->images.size() );
 	return;
     }
+
     
     std::string path = media_to_pathname( m );
     Fl_Tree_Item* item = Fl_Tree::insert( root(), path.c_str(),
-					  root()->children() );
+					  idx );
     Element* nw = new_item( m );
     item->widget( nw );
 
@@ -857,18 +859,12 @@ mrv::media ImageBrowser::add( const mrv::media m )
 
     std::string path = media_to_pathname( m );
 
-    Fl_Tree_Item* item = Fl_Tree::find_item( path.c_str() );
-    while ( item )
-    {
-	path += "#2";
-	item = Fl_Tree::find_item( path.c_str() );
-    }
-
-    int total = root()->children();
-    item = Fl_Tree::insert( root(), path.c_str(),
-			    root()->children() );
+    Fl_Tree_Item* item = Fl_Tree::insert( root(), path.c_str(),
+					  root()->children() );
     Element* nw = new_item( m );
     item->widget( nw );
+
+    match_tree_order();
     
     Fl_Group::resizable(0);
 
@@ -1040,7 +1036,7 @@ void ImageBrowser::clear_bg()
 
 
 /**
- * Change image in image view display to reflect browser's change
+ * Change reel in browser to display to reflect browser's change
  *
  */
 void ImageBrowser::change_reel()
@@ -1048,15 +1044,12 @@ void ImageBrowser::change_reel()
     DBG( "Change reel" );
 
     mrv::Reel reel = current_reel();
-    if ( !reel ) {
-        DBG( "Invalid reel" );
-        change_image( -1 );
-        return;
-    }
 
     _reel_choice->value( _reel );
 
 
+    clear_children( root() );
+    
     if ( reel->images.empty() )
     {
         DBG( "NO images in reel" );
@@ -1064,7 +1057,6 @@ void ImageBrowser::change_reel()
     }
     else
     {
-
         DBG( "Add images in browser" );
 
         mrv::MediaList::iterator i = reel->images.begin();
