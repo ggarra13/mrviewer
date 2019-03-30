@@ -120,7 +120,7 @@ public:
 
     void match_tree_order();
 
-    void insert( unsigned idx, mrv::media m );
+    void insert( int idx, mrv::media m );
 
     // @todo: these should be factored to a database helper class
 #if 0
