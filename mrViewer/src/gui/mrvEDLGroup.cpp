@@ -190,20 +190,21 @@ void EDLGroup::remove_media_track( unsigned i )
 }
 
 
-void static_move( Fl_Widget* w, EDLGroup* e )
+void static_move( EDLGroup* e )
 {
     int X = Fl::event_x();
 
     if ( X < 8 ) X = 8;
 
+    int quarter = e->w() / 4;
 
-    if ( X >= e->w()-128 ) {
-        e->pan(1);
+    if ( X >= e->x() + e->w() - quarter ) {
+        e->pan(-1);
         Fl::repeat_timeout( 0.1f, (Fl_Timeout_Handler) static_move, e );
     }
-    else if ( X <= 128 )
+    else if ( X <= e->x() + quarter )
     {
-        e->pan(-1);
+        e->pan(1);
         Fl::repeat_timeout( 0.1f, (Fl_Timeout_Handler) static_move, e );
     }
 
@@ -257,7 +258,7 @@ int EDLGroup::handle( int event )
             if ( _dragX < x() + 8 ) _dragX = x() + 8;
             if ( _dragY < y() + 33 ) _dragY = y() + 33;
 
-            int idx = int( _dragY / kTrackHeight );
+            int idx = int( (_dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= children() ) {
                 return 0;
             }
@@ -268,7 +269,7 @@ int EDLGroup::handle( int event )
 
             int ww = t->w();
             double len = (t->maximum() - t->minimum() + 1);
-            double p = double(_dragX) / double(ww);
+            double p = double( _dragX - x() ) / double(ww);
             p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
 
@@ -277,7 +278,7 @@ int EDLGroup::handle( int event )
 
             if ( m )
             {
-                _drag = ImageBrowser::new_item( m );
+		_drag = ImageBrowser::new_item( m );
                 int j = track->index_for( m );
                 if ( j < 0 ) {
                     return 0;
@@ -292,16 +293,19 @@ int EDLGroup::handle( int event )
                 browser()->redraw();
                 return 1;
             }
+	    else
+	    {
+		delete _drag; _drag = NULL;
+	    }
         }
 
         for ( int i = 0; i < children(); ++i )
         {
             Fl_Widget* c = this->child(i);
-            if (Fl::event_x() < c->x() - kXOffset) continue;
-            if (Fl::event_x() >= c->x()+c->w()) continue;
-            if (Fl::event_y() < c->y() - y() ) continue;
-            if (Fl::event_y() >= c->y() - y() +c->h()) continue;
-
+            // if (Fl::event_x() < c->x() - kXOffset) continue;
+            // if (Fl::event_x() >= c->x()+c->w()) continue;
+            // if (Fl::event_y() < c->y() - y() ) continue;
+            // if (Fl::event_y() >= c->y() - y() +c->h()) continue;
             if ( c->handle( event ) ) return 1;
         }
         return 0;
@@ -487,7 +491,7 @@ int EDLGroup::handle( int event )
             _dragX = Fl::event_x();
             _dragY = Fl::event_y();
 
-            int idx = int( _dragY / kTrackHeight );
+            int idx = int( ( _dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= 2 || idx >= children() ) {
                 delete _drag;
                 _drag = NULL;
@@ -511,7 +515,7 @@ int EDLGroup::handle( int event )
 
             int ww = t->w();
             double len = (t->maximum() - t->minimum() + 1);
-            double p = double(_dragX) / double(ww);
+            double p = double( _dragX - x() ) / double(ww);
             p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
 
@@ -569,12 +573,13 @@ int EDLGroup::handle( int event )
             if ( _dragY < 33 ) _dragY = 33;
             if ( X < 8 ) X = 8;
 
+	    int quarter = w() / 4;
 
-            if ( X >= w()-128 ) {
+            if ( X >= x() + w() - quarter ) {
                 pan(diff * 2);
                 Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
             }
-            else if ( X <= 128 )
+            else if ( X <= x() + quarter )
             {
                 pan(diff * -2);
                 Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
@@ -650,6 +655,7 @@ void EDLGroup::cut( boost::int64_t frame )
     const mrv::Reel& r = browser()->reel_at(c);
     if (!r) return;
 
+    
     CMedia* img = r->image_at( frame );
     if ( !img ) return;
 
@@ -664,10 +670,13 @@ void EDLGroup::cut( boost::int64_t frame )
                                          img->last_frame() );
     if (!right) return;
 
+    mrv::media m( new mrv::gui::media( right ) );
+    
     right->first_frame( f );
     right->last_frame( img->last_frame() );
     image_type_ptr canvasR;
     right->fetch( canvasR, f );
+    right->cache( canvasR );
     right->decode_video( f );
     right->find_image( f );
 
@@ -677,28 +686,28 @@ void EDLGroup::cut( boost::int64_t frame )
     right->audio_offset( img->audio_offset() );
     right->seek( f );
 
-    mrv::media m( new mrv::gui::media( right ) );
 
     f -= 1;
     img->last_frame( f );
     image_type_ptr canvasL;
     img->fetch( canvasL, f );
+    img->cache( canvasL );
     img->decode_video( f );
     img->find_image( f );
-    img->clear_cache();
 
     m->create_thumbnail();
 
     r->edl = true;
 
     browser()->reel( c );
-    browser()->insert( unsigned(idx+1), m );
+    browser()->insert( unsigned(idx), m );
     browser()->value( int(idx+1) );
 
     refresh();
 
     uiMain->uiTimeline->edl(true);
     right->ocio_input_color_space( img->ocio_input_color_space() );
+    right->rendering_transform( img->rendering_transform() );
 
     redraw();
 }
@@ -763,9 +772,8 @@ void EDLGroup::refresh()
 void EDLGroup::draw()
 {
 
-    fl_color( FL_GRAY0 );
-    fl_rectf( 0, 0, w(), h() );
-
+    fl_color( fl_rgb_color( 128, 128, 128 ) );
+    fl_rectf( x(), y(), w(), h() );
 
     Fl_Group::draw();
 
@@ -779,14 +787,13 @@ void EDLGroup::draw()
 
 
     fl_color( FL_YELLOW );
-    fl_push_clip( 0, 0, w(), h() );
-    fl_line( p, 0, p, h() );
+    fl_push_clip( x(), y(), w(), y()+h() );
+    fl_line( p, y(), p, y()+h() );
     fl_pop_clip();
 
     if ( _drag )
     {
-	std::cerr << "drag " << std::endl;
-	fl_push_clip( t->x(), t->y(), t->w(), t->h() );
+	fl_push_clip( x(), y(), w(), h() );
 	_drag->DrawAt( Fl::event_x(), Fl::event_y() );
 	fl_pop_clip();
     }
