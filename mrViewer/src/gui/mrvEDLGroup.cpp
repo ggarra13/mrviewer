@@ -659,7 +659,7 @@ void EDLGroup::cut( boost::int64_t frame )
     CMedia* img = r->image_at( frame );
     if ( !img ) return;
 
-    size_t idx = r->index( frame );
+    int idx = (int) r->index( frame );
     int64_t f = r->global_to_local( frame );
 
     if ( img->first_frame() == f || img->last_frame() == f )
@@ -700,8 +700,8 @@ void EDLGroup::cut( boost::int64_t frame )
     r->edl = true;
 
     browser()->reel( c );
-    browser()->insert( unsigned(idx), m );
-    browser()->value( int(idx+1) );
+    browser()->insert( idx+1, m );
+    browser()->value( idx+1 );
 
     refresh();
 
