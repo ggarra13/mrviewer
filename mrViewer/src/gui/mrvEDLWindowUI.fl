@@ -34,10 +34,11 @@ decl {\#include "icons/icons.c"} {private local
 
 class EDLWindowUI {open
 } {
-  Function {make_window( ViewerUI* main )} {} {
+  Function {make_window( ViewerUI* main )} {open
+  } {
     Fl_Window uiMain {
-      label {EDL Window}
-      xywh {2 541 1015 265} type Double resizable non_modal visible
+      label {EDL Window} open
+      xywh {601 485 1015 265} type Double hide resizable non_modal
     } {
       Fl_Group uiEDLRedraw {open
         xywh {0 -3 1006 268}
@@ -52,8 +53,13 @@ v->uiEDLWindow->uiEDLGroup->redraw();}
 o->draw_cache( false );}
           class {mrv::Timeline}
         }
+        Fl_Group uiEDLGroup {open
+          xywh {90 65 916 185} resizable
+          code0 {o->timeline( uiTimeline ); o->main( main );}
+          class {mrv::EDLGroup}
+        } {}
         Fl_Group {} {open
-          xywh {0 63 95 162}
+          xywh {0 63 95 177}
         } {
           Fl_Group {} {open
             xywh {5 63 80 31}
@@ -102,22 +108,22 @@ b->remove_reel();}
 else
 {
    o->value(-1);
-}}
+}} selected
             xywh {5 107 80 28} down_box BORDER_BOX align 5
             class {mrv::Choice}
           } {}
           Fl_Group {} {open
-            xywh {5 153 90 72}
+            xywh {5 168 90 72}
           } {
-            Fl_Group {} {open
-              xywh {6 153 80 31}
+            Fl_Group {} {
+              xywh {6 168 80 31}
             } {
               Fl_Button {} {
                 user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
                 callback {v->open();
 int idx = uiEDLChoiceOne->children()-1;
 uiEDLChoiceOne->value( idx );}
-                tooltip {Open a new reel} xywh {6 153 28 26}
+                tooltip {Open a new reel} xywh {6 168 28 26}
                 code0 {o->image( reel_24 );}
               }
               Fl_Button {} {
@@ -128,7 +134,7 @@ if ( c->value() < 0 ) return;
 
 b->reel( c->value() );
 b->save_reel();}
-                tooltip {Save current reel} xywh {33 153 28 26}
+                tooltip {Save current reel} xywh {33 168 28 26}
                 code0 {o->image( reel_save_24 );}
               }
               Fl_Button {} {
@@ -141,7 +147,7 @@ if ( sel < 0 ) return;
 
 b->reel( sel );
 b->remove_reel();}
-                tooltip {Delete current reel} xywh {60 153 26 26}
+                tooltip {Delete current reel} xywh {60 168 26 26}
                 code0 {o->image( reel_delete_24 );}
               }
             }
@@ -150,6 +156,7 @@ b->remove_reel();}
               user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
               callback {if ( o->value() >= 0 && v->media_track(1) )
 {
+   std::cerr << "media track 1" << std::endl;
    v->media_track(1)->reel( o->value() );
    v->redraw();
 }
@@ -157,16 +164,11 @@ else
 {
    o->value(-1);
 }}
-              xywh {6 197 80 28} down_box BORDER_BOX align 5
+              xywh {6 212 80 28} down_box BORDER_BOX align 5
               class {mrv::Choice}
             } {}
           }
         }
-        Fl_Group uiEDLGroup {open
-          xywh {90 65 916 185} resizable
-          code0 {o->timeline( uiTimeline ); o->main( main );}
-          class {mrv::EDLGroup}
-        } {}
         Fl_Group {} {open
           xywh {125 2 104 33}
         } {
@@ -202,8 +204,7 @@ v->new_reel(name);}
   }
   Function {EDLWindowUI( ViewerUI* main )} {open
   } {
-    code {make_window( main );} {selected
-    }
+    code {make_window( main );} {}
   }
   Function {~EDLWindowUI()} {open
   } {
