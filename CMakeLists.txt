@@ -37,9 +37,9 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 
-SET( VersionMajor 4 )
-SET( VersionMinor 4 )
-SET( VersionPatch 5 )
+SET( VersionMajor 5 )
+SET( VersionMinor 0 )
+SET( VersionPatch 1 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
 #STRING( TIMESTAMP VersionDate ".%Y%m%d" )
