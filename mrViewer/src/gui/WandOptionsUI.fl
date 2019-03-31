@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include <iostream>} {private local
@@ -29,7 +29,7 @@ decl {\#include <string>} {public local
 decl {\#include <mrViewer.h>} {public local
 }
 
-class WandOptionsUI {open selected : {public mrv::WandOpts}
+class WandOptionsUI {open : {public mrv::WandOpts}
 } {
   decl {std::string pixel_type;} {public local
   }
@@ -37,17 +37,17 @@ class WandOptionsUI {open selected : {public mrv::WandOpts}
   } {
     Fl_Window uiMain {
       label {ImageMagick Saving} open
-      xywh {193 251 340 295} type Double hide resizable modal noborder
+      xywh {193 251 340 295} type Double resizable modal noborder visible
     } {
       Fl_Group {} {
-        label {Image Options} open
+        label {Image Options} open selected
         xywh {34 33 272 193} box UP_BOX
       } {
         Fl_Choice uiPixelType {
-	  class mrv::Choice
           label {Pixel Format}
           callback {pixel_type = o->child(o->value())->label();}
-          xywh {151 137 90 25} down_box BORDER_BOX
+          xywh {175 175 90 25} down_box BORDER_BOX
+          class {mrv::Choice}
         } {
           MenuItem {} {
             label Char
@@ -68,12 +68,12 @@ class WandOptionsUI {open selected : {public mrv::WandOpts}
         }
         Fl_Light_Button uiAllLayers {
           label {All Layers}
-          xywh {61 82 155 35}
+          xywh {85 120 155 35}
           code0 {o->value( all_layers );}
         }
         Fl_Light_Button uiACESmetadata {
           label {ACES metadata}
-          xywh {61 27 155 35}
+          xywh {85 65 155 35}
           code0 {o->value( aces );}
         }
       }
@@ -81,14 +81,14 @@ class WandOptionsUI {open selected : {public mrv::WandOpts}
         label OK
         user_data this user_data_type {WandOptionsUI*}
         callback {v->active(true);
-// v->uiMain->make_exec_return(true); // @TODO: fltk1.4 }
+v->uiMain->hide();}
         xywh {85 257 62 27}
       }
       Fl_Button {} {
         label Cancel
         user_data this user_data_type {WandOptionsUI*}
         callback {v->active( false );
-// v->uiMain->make_exec_return(false); // @TODO: fltk1.4 }
+v->uiMain->hide();}
         xywh {164 257 68 27}
       }
     }
@@ -109,7 +109,9 @@ _all_layers = uiAllLayers->value();} {}
       int y = m->y() + ( m->h() - w->h() ) / 2;
       w->set_modal();
       w->show();
-      // @TODO: fltk1.4
-      convert();} {}
+      while ( w->visible() )
+        Fl::check();
+	if ( w->active() )
+      	   convert();} {}
   }
 }
