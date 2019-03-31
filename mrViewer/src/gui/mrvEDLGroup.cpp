@@ -299,16 +299,18 @@ int EDLGroup::handle( int event )
 	    }
         }
 
-        for ( int i = 0; i < children(); ++i )
-        {
-            Fl_Widget* c = this->child(i);
-            // if (Fl::event_x() < c->x() - kXOffset) continue;
-            // if (Fl::event_x() >= c->x()+c->w()) continue;
-            // if (Fl::event_y() < c->y() - y() ) continue;
-            // if (Fl::event_y() >= c->y() - y() +c->h()) continue;
-            if ( c->handle( event ) ) return 1;
-        }
-        return 0;
+	return Fl_Group::handle( event );
+	
+        // for ( int i = 0; i < children(); ++i )
+        // {
+        //     Fl_Widget* c = this->child(i);
+        //     // if (Fl::event_x() < c->x() - kXOffset) continue;
+        //     // if (Fl::event_x() >= c->x()+c->w()) continue;
+        //     // if (Fl::event_y() < c->y() - y() ) continue;
+        //     // if (Fl::event_y() >= c->y() - y() +c->h()) continue;
+        //     if ( c->handle( event ) ) return 1;
+        // }
+        // return 0;
         break;
     }
     case FL_ENTER:
@@ -597,6 +599,7 @@ int EDLGroup::handle( int event )
             _dragX = Fl::event_x();
             return 1;
         }
+	return 0;
     }
     break;
     default:
