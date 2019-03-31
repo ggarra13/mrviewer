@@ -30,10 +30,18 @@
 
 #ifdef USE_GETTEXT
 
+#include <string.h>
 #include <libintl.h>
-#define _(String)  gettext(String)
+#define _(String)  gettext2(String)
 #define gettext_noop(String) String
 #define N_(String) gettext_noop (String)
+
+static char *gettext2 (const char* msgid)
+{
+    const char* const empty = "";
+    if ( strlen( msgid ) == 0 ) return (char*)empty;
+    return gettext( msgid );
+};
 
 #ifdef _WIN32
 #undef fprintf
