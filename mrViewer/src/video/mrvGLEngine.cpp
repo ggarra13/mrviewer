@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -725,8 +725,6 @@ void GLEngine::reset_view_matrix()
     CHECK_GL;
     glDisable(GL_LIGHTING);
     CHECK_GL;
-
-
 
 }
 
