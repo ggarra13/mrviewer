@@ -650,8 +650,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     ++frame_audio;
 
     if ( audio->frame() == AV_NOPTS_VALUE ) {
-        LOG_ERROR( "audio frame has NOPTS value" );
-        return false;
+        LOG_ERROR( _("Audio frame has NOPTS value.") );
+	return false;
     }
 
     src_nb_samples = audio->size();
@@ -1259,7 +1259,7 @@ audio_type_ptr CMedia::get_audio_frame(const int64_t f )
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = end;
-#if 0  // less correct
+#if 1  // less correct
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
