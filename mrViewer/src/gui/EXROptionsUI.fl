@@ -160,17 +160,17 @@ o->deactivate();
         label OK
         user_data this user_data_type {EXROptionsUI*}
         callback {v->active( true );
-// @TODO: fltk1.4    v->uiMain->make_exec_return(true);}
+v->uiMain->hide(); }
         xywh {115 386 86 41}
       }
       Fl_Button {} {
         label Cancel
         user_data this user_data_type {EXROptionsUI*}
         callback {v->active( false );
-// @TODO: fltk1.4    v->uiMain->make_exec_return(false);}
+v->uiMain->hide(); }
         xywh {224 386 93 41}
       }
-    }
+      }
   }
   Function {convert()} {open
   } {
@@ -191,9 +191,8 @@ else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
       int y = m->y() + ( m->h() - w->h() ) / 2;
       w->set_modal();
       w->show();
-// @TODO: fltk1.4    if ( w->exec() ) {
-	Fl::check();
-	convert();
-//} @TODO: fltk1.4} {}
+      while ( w->visible() )
+         Fl::check();
+       convert();} {}
   }
 }
