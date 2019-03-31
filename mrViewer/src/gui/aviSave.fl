@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include <iostream>} {private local
@@ -45,19 +45,60 @@ class AviSaveUI {open
   }
   Function {make_window()} {open
   } {
-  Fl_Window uiMain {
-    label {Movie Saving Preferences} open
-    xywh {510 465 300 595} type Double resizable modal noborder visible
-  } {
-    Fl_Group {} {
-      label {Video Options} open
-      xywh {25 25 245 305} box UP_BOX
+    Fl_Window uiMain {
+      label {Movie Saving Preferences} open
+      xywh {510 465 300 595} type Double resizable modal noborder visible
     } {
-      Fl_Choice uiVideoCodec {
-        label Codec
-	class mrv::Choice
-        user_data this user_data_type {AviSaveUI*}
-        callback {mrv::Choice* c = v->uiVideoColor;
+      Fl_Group {} {
+        label {Video Options} open
+        xywh {25 25 245 305} box UP_BOX
+      } {
+        Fl_Choice uiVideoProfile {
+          label Profile
+          tooltip {The profile controls the characteristics and quality of the codec.  If in doubt, set it to the highest setting.} xywh {120 170 90 25} down_box BORDER_BOX
+          code0 {o->value(2);}
+          class {mrv::Choice}
+        } {
+          MenuItem {} {
+            label Main
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label {Main 10}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label RExt
+            xywh {0 0 100 20}
+          }
+        }
+        Fl_Choice uiVideoColor {
+          label Color
+          tooltip {This setting controls the YUV color subsampling of the movie.  YUV444 is the best, with no subsampling, just 3 bytes per pixel.  YUV422 uses 4 bytes per 2 pixels, and YUV420 uses 6 bytes per 4 pixels.} xywh {120 97 90 25} down_box BORDER_BOX
+          code0 {video_color = "YUV420";}
+          class {mrv::Choice}
+        } {
+          MenuItem {} {
+            label YUV420
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label YUV422
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label YUV444
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label GBRP10LE
+            xywh {0 0 100 20}
+          }
+        }
+        Fl_Choice uiVideoCodec {
+          label Codec
+          user_data this user_data_type {AviSaveUI*}
+          callback {mrv::Choice* c = v->uiVideoColor;
 mrv::Choice* p = v->uiVideoProfile;
 p->clear();
 
@@ -134,179 +175,138 @@ item->activate();
 c->value(2);
 p->add( _("Main") );
 p->value(0);
-}} open selected
-        tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.  Finally, ffv1 is good for preservation as it is a lossless codec.} xywh {120 55 91 26} down_box BORDER_BOX
-        code0 {uiVideoCodec->do_callback();}
+}}
+          tooltip {Codec (encoder) used to encode the movie.  hevc and h264 are the preferred codecs in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.  Finally, ffv1 is good for preservation as it is a lossless codec.} xywh {120 55 91 26} down_box BORDER_BOX
+          code0 {uiVideoCodec->do_callback();}
+          class {mrv::Choice}
+        } {
+          MenuItem {} {
+            label hevc
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label h264
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label mpeg4
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label prores_ks
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label ffv1
+            xywh {0 0 100 20}
+          }
+        }
+        Fl_Value_Input uiVideoBitrate {
+          label Bitrate
+          tooltip {This setting controls the quality of the movie file.  A smaller bitrate has more compression and artifacts.} xywh {120 135 90 25} selection_color 0 minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
+        }
+        Fl_Choice uiYUVHint {
+          label {YUV Hint}
+          tooltip {This setting controls how the YUV->RGB conversion is done once the movie is decoded.  It is a hint to the viewer program and does not effect the colors saved in the movie file.} xywh {120 205 90 25} down_box BORDER_BOX
+          code0 {o->value(2);}
+          class {mrv::Choice}
+        } {
+          MenuItem {} {
+            label RGB
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label BT709
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label Unspecified
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label Reserved
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label FCC
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label BT470BG
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label SMPTE170M
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label SMPTE240M
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label YCOCG
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label BT2020_NCL
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label BT2020_CL
+            xywh {0 0 100 20}
+          }
+        }
+        Fl_Check_Button uiOverrideFPS {
+          label {Override FPS}
+          tooltip {When this setting is on, Media Information Window's FPS setting is not taken into account, but the setting from this GUI is.} xywh {105 250 20 25} down_box DOWN_BOX
+        }
+        Fl_Value_Input uiFPS {
+          label FPS
+          tooltip {When Override FPS is on, this setting controls the FPS of all movie files saved, instead of relying in Media Information->FPS.} xywh {125 280 90 25} selection_color 0 minimum 0.1 maximum 180 step 0.001 value 24
+        }
+      }
+      Fl_Group {} {
+        label {Audio Options} open
+        xywh {25 352 250 97} box UP_BOX
       } {
-        MenuItem {} {
-          label hevc
-          xywh {0 0 100 20}
+        Fl_Choice uiAudioCodec {
+          label Codec
+          tooltip {This setting controls the encoder (codec) used for audio saving.  ac3 and aac are the best codecs to use.  mp3 is popular as it is commonly used for compressing CDs.} xywh {125 375 91 26} down_box BORDER_BOX
+          code0 {audio_codec = "ac3";}
+          class {mrv::Choice}
+        } {
+          MenuItem {} {
+            label ac3
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label aac
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label mp3
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label None
+            xywh {0 0 100 20}
+          }
         }
-        MenuItem {} {
-          label h264
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label mpeg4
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label prores_ks
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label ffv1
-          xywh {0 0 100 20}
-        }
-      }
-      Fl_Choice uiVideoColor {
-        label Color
-        tooltip {This setting controls the YUV color subsampling of the movie.  YUV444 is the best, with no subsampling, just 3 bytes per pixel.  YUV422 uses 4 bytes per 2 pixels, and YUV420 uses 6 bytes per 4 pixels.} xywh {120 97 90 25} down_box BORDER_BOX
-	class mrv::Choice
-        code0 {video_color = "YUV420";}
-      } {
-        MenuItem {} {
-          label YUV420
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label YUV422
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label YUV444
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label GBRP10LE
-          xywh {0 0 100 20}
+        Fl_Value_Input uiAudioBitrate {
+          label Bitrate
+          tooltip {This setting controls the quality of the audio encoding.  A smaller setting yields less quality but smaller sizes.} xywh {125 405 90 25} selection_color 0 minimum 100 maximum 4.48e+06 step 1000 value 128000
         }
       }
-      Fl_Value_Input uiVideoBitrate {
-        label Bitrate
-        tooltip {This setting controls the quality of the movie file.  A smaller bitrate has more compression and artifacts.} xywh {120 135 90 25} selection_color 0 minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
+      Fl_Light_Button uiMetadata {
+        label {Save Metadata}
+        xywh {20 469 255 43}
+        code0 {o->value(1);}
       }
-      Fl_Choice uiVideoProfile {
-        label Profile
-        tooltip {The profile controls the characteristics and quality of the codec.  If in doubt, set it to the highest setting.} xywh {120 170 90 25} down_box BORDER_BOX
-	class mrv::Choice
-        code0 {o->value(2);}
-      } {
-        MenuItem {} {
-          label Main
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label {Main 10}
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label RExt
-          xywh {0 0 100 20}
-        }
-      }
-      Fl_Choice uiYUVHint {
-        label {YUV Hint}
-	class mrv::Choice
-        tooltip {This setting controls how the YUV->RGB conversion is done once the movie is decoded.  It is a hint to the viewer program and does not effect the colors saved in the movie file.} xywh {120 205 90 25} down_box BORDER_BOX
-        code0 {o->value(2);}
-      } {
-        MenuItem {} {
-          label RGB
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label BT709
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label Unspecified
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label Reserved
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label FCC
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label BT470BG
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label SMPTE170M
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label SMPTE240M
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label YCOCG
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label BT2020_NCL
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label BT2020_CL
-          xywh {0 0 100 20}
-        }
-      }
-      Fl_Check_Button uiOverrideFPS {
-        label {Override FPS}
-        tooltip {When this setting is on, Media Information Window's FPS setting is not taken into account, but the setting from this GUI is.} xywh {105 250 20 25} down_box DOWN_BOX
-      }
-      Fl_Value_Input uiFPS {
-        label FPS
-        tooltip {When Override FPS is on, this setting controls the FPS of all movie files saved, instead of relying in Media Information->FPS.} xywh {125 280 90 25} selection_color 0 minimum 0.1 maximum 180 step 0.001 value 24
-      }
-    }
-    Fl_Group {} {
-      label {Audio Options} open
-      xywh {25 352 250 97} box UP_BOX
-    } {
-      Fl_Choice uiAudioCodec {
-        label Codec
-        tooltip {This setting controls the encoder (codec) used for audio saving.  ac3 and aac are the best codecs to use.  mp3 is popular as it is commonly used for compressing CDs.} xywh {125 375 91 26} down_box BORDER_BOX
-	class mrv::Choice
-        code0 {audio_codec = "ac3";}
-      } {
-        MenuItem {} {
-          label ac3
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label aac
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label mp3
-          xywh {0 0 100 20}
-        }
-        MenuItem {} {
-          label None
-          xywh {0 0 100 20}
-        }
-      }
-      Fl_Value_Input uiAudioBitrate {
-        label Bitrate
-        tooltip {This setting controls the quality of the audio encoding.  A smaller setting yields less quality but smaller sizes.} xywh {125 405 90 25} selection_color 0 minimum 100 maximum 4.48e+06 step 1000 value 128000
-      }
-    }
-    Fl_Light_Button uiMetadata {
-      label {Save Metadata}
-      xywh {20 469 255 43}
-      code0 {o->value(1);}
-    }
-    Fl_Button {} {
-      label OK
-      user_data this user_data_type {AviSaveUI*}
-      callback {video_codec = v->uiVideoCodec->child( v->uiVideoCodec->value() )->label();
-video_color = v->uiVideoColor->child( v->uiVideoColor->value() )->label();
+      Fl_Button {} {
+        label OK
+        user_data this user_data_type {AviSaveUI*}
+        callback {video_codec = v->uiVideoCodec->text( v->uiVideoCodec->value() );
+video_color = v->uiVideoColor->text( v->uiVideoColor->value() );
 video_profile = (unsigned)v->uiVideoProfile->value();
 video_bitrate = (unsigned)v->uiVideoBitrate->value();
 yuv_hint = (unsigned) v->uiYUVHint->value();
@@ -315,16 +315,16 @@ if ( v->uiOverrideFPS->value() )
 {
   fps = v->uiFPS->value();
 }
-audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
+audio_codec = v->uiAudioCodec->text( v->uiAudioCodec->value() );
 audio_bitrate = (unsigned)v->uiAudioBitrate->value();
 metadata = v->uiMetadata->value();
-// this->uiMain->make_exec_return(true); // @TODO: fltk1.4}
-      xywh {75 543 55 35}
-    }
-    Fl_Button {} {
-      label Cancel
-      user_data this user_data_type {AviSaveUI*}
-      callback {video_bitrate = 0;
+v->uiMain->hide();}
+        xywh {75 543 55 35}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {AviSaveUI*}
+        callback {video_bitrate = 0;
 video_codec = "";
 video_color = "";
 yuv_hint = 0;
@@ -333,9 +333,9 @@ fps = -1.0;
 audio_codec = "";
 audio_bitrate = 0;
 metadata = false;
-
-//v->uiMain->make_exec_return(false); // @TODO: fltk1.4 }
-      xywh {145 543 60 35}
+v->uiMain->hide();}
+        xywh {145 543 60 35}
+      }
     }
   }
   Function {AviSaveUI(const ViewerUI* main)} {open
@@ -351,12 +351,13 @@ metadata = false;
 	PreferencesUI* uiPrefs = main->uiPrefs;
 	int idx = uiPrefs->uiPrefsVideoCodec->value();
 	uiVideoCodec->value(idx);
-	video_codec = uiVideoCodec->child(idx)->label();
 	uiVideoCodec->do_callback();
 	w->set_modal();
 	w->show();
-     }} {}
+	while ( w->visible() )
+	      Fl::check();
+	delete uiMain; uiMain = NULL;
+     }} {selected
+    }
   }
- }
 }
-
