@@ -134,15 +134,12 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_end_loop();
 
         fl_pop_matrix();
-	
-        fl_push_matrix();
 
-	fl_translate( 0, int(W * 0.15f) );
-        fl_draw(names[i], 1, 0, 0);
-
-        fl_pop_matrix();
-
+	// @TODO: fltk1.4 cannot draw letters
+	// fl_translate( 0, int(W * 0.15f) );
+        // fl_draw(i, names[i], 0.15f, 0, 0);
     }
+
     fl_pop_matrix();
 
 
