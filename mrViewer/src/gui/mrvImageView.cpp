@@ -706,14 +706,23 @@ void hud_toggle_cb( Fl_Widget* o, ViewerUI* uiMain )
 
 void hud_cb( Fl_Widget* o, ViewerUI* uiMain )
 {
+    Fl_Menu_Item* item = (Fl_Menu_Item*) o;
     mrv::ImageView* view = uiMain->uiView;
 
+    if ( item->label() == NULL )
+    {
+	LOG_ERROR( "Label is null" );
+	return;
+    }
+    
     int i;
-    int num = uiMain->uiPrefs->uiPrefsHud->children();
+    Fl_Menu_* menu = (Fl_Menu_*) uiMain->uiPrefs->uiPrefsHud;
+    int num = menu->size();
     for ( i = 0; i < num; ++i )
     {
-        const char* fmt = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
-        if ( strcmp( fmt, o->label() ) == 0 ) break;
+        const char* fmt = menu->text(i);
+	if (!fmt) continue;
+        if ( strcmp( fmt, item->label() ) == 0 ) break;
     }
 
     unsigned int hud = view->hud();
@@ -3110,7 +3119,7 @@ void ImageView::timeout()
             if ( delay > 0.03 ) delay = 0.03;
             redraw();
         }
-    }
+   }
 
 
     Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_timeout, this );
@@ -3219,7 +3228,7 @@ void ImageView::draw()
 {
 
     DBG( "draw valid? " << (int)valid() );
-    if ( !valid() )
+    if ( !valid() || vr() )
     {
         if ( ! _engine )
         {
@@ -3490,10 +3499,12 @@ void ImageView::draw()
         glPushMatrix();
         glLoadIdentity();
         ortho();
+	FLUSH_GL_ERRORS;
 
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
+	FLUSH_GL_ERRORS;
     }
 
     int y = h()-25;
@@ -3674,11 +3685,14 @@ void ImageView::draw()
 
     if ( vr() )
     {
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-
+	FLUSH_GL_ERRORS;
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
+	FLUSH_GL_ERRORS;
+	
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+	FLUSH_GL_ERRORS;
     }
 }
 
