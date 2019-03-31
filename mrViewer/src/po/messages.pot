@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-03-30 23:33-0300\n"
+"POT-Creation-Date: 2019-03-31 17:21-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8612,7 +8612,7 @@ msgstr ""
 msgid ".gif"
 msgstr ""
 
-#: core/oiioImage.cpp:433
+#: core/oiioImage.cpp:433 core/mrvImageOpts.cpp:40
 msgid ".hdr"
 msgstr ""
 
@@ -8620,7 +8620,7 @@ msgstr ""
 msgid ".hdri"
 msgstr ""
 
-#: core/oiioImage.cpp:370 core/Sequence.cpp:233
+#: core/oiioImage.cpp:370 core/Sequence.cpp:233 core/mrvImageOpts.cpp:40
 msgid ".iff"
 msgstr ""
 
@@ -8808,6 +8808,7 @@ msgid ".ts"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer-all/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:61
+#: core/mrvImageOpts.cpp:40
 msgid ".tx"
 msgstr ""
 
