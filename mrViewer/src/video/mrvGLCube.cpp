@@ -124,7 +124,7 @@ void GLCube::draw_cube( const unsigned dw, const unsigned dh ) const
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
     // We use a linear texture filter always on the cube
-    GLenum filter = GL_NONE;
+    GLenum filter = GL_LINEAR;
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
     {
