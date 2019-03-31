@@ -19,7 +19,7 @@
 #include <algorithm>
 
 #include "core/mrvImageOpts.h"
-// #include "OIIOOptionsUI.h"  // @TODO: fltk1.4
+#include "OIIOOptionsUI.h"
 #include "EXROptionsUI.h"
 #include "WandOptionsUI.h"
 
@@ -37,10 +37,8 @@ ImageOpts* ImageOpts::build( ViewerUI* main, std::string ext,
                                  CMedia::all_layers(),
                                  has_deep_data );
 
-
-    // @TODO: for fltk1.4
-    //if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
-    //    return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
+    if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
+        return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
 
     return new WandOptionsUI( main,
                               CMedia::aces_metadata(),
