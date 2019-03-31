@@ -424,6 +424,9 @@ public:
     inline boost::int64_t   frame() const {
         return _frame;
     }
+
+    inline void frame( int64_t f ) { _frame = f; }
+    
     inline unsigned int frequency() const {
         return _freq;
     }

@@ -264,7 +264,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                 if ( ( opts->video_bitrate == 0 &&
                         opts->audio_bitrate == 0 ) ||
                         ( opts->audio_codec == _("None") &&
-                          opts->video_codec == _("None") ) )
+                          opts->video_codec == _("None") ) ||
+		     opts->video_codec == N_("") )
                 {
                     delete opts;
                     delete w;
