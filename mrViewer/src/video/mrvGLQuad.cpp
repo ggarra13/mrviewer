@@ -1144,8 +1144,8 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                                      -0.53290933f );
                 CHECK_GL;
                 _shader->setUniform( "Kb", 1.16438356f, 2.11240179f, 0.0f );
-                CHECK_GL
-            }
+                CHECK_GL;
+	    }
             else if ( colorspace == "JPEG" )
             {
                 _shader->setUniform( "coeffs", 1 );
@@ -1158,7 +1158,7 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                 _shader->setUniform( "Kg", 1.f, -0.3441, -0.7141 );
                 CHECK_GL;
                 _shader->setUniform( "Kb", 1.f, 1.772f, 0.0f );
-                CHECK_GL
+                CHECK_GL;
             }
             else if ( colorspace == "BT470BG" ||
                       colorspace == "SMPTE170M" )
