@@ -208,7 +208,7 @@ void CMedia::open_audio_codec()
         throw _("avcodec_copy_context failed for audio");
     }
 
-    av_codec_set_pkt_timebase(_audio_ctx, get_audio_stream()->time_base);
+    _audio_ctx->pkt_timebase = get_audio_stream()->time_base;
 
     AVDictionary* opts = NULL;
     if (!av_dict_get(opts, "threads", NULL, 0))
