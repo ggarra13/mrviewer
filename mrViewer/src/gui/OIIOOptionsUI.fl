@@ -82,18 +82,20 @@ class OIIOOptionsUI {open selected : {public mrv::OIIOOpts}
       Fl_Button {} {
         label OK
         user_data this user_data_type {OIIOOptionsUI*}
-        callback {v->active();
-//v->uiMain->make_exec_return(true); // @TODO: fltk1.4}
+        callback {v->active(true);
+	v->uiMain->hide();
+	}
         xywh {85 253 62 26}
       }
       Fl_Button {} {
         label Cancel
         user_data this user_data_type {OIIOOptionsUI*}
         callback {v->active(false);
-//v->uiMain->make_exec_return(false); // @TODO: fltk1.4}
+	v->uiMain->hide();
+	}
         xywh {164 253 68 26}
       }
-    }
+      }
   }
   Function {convert()} {open
   } {
@@ -113,7 +115,8 @@ _mipmap = uiMipMap->value();} {}
       int y = m->y() + ( m->h() - w->h() ) / 2;
       w->set_modal();
       w->show();
-      // @TODO: fltk1.4
+      while ( w->visible() )
+        Fl::check();
       convert();} {}
   }
 }
