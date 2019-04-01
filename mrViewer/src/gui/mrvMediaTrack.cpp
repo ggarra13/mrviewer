@@ -312,8 +312,6 @@ void media_track::shift_audio( mrv::media m, boost::int64_t diff )
 
 void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 {
-    std::cerr << "SHIFT MEDIA START " << m->image()->name()
-	      << std::endl;
     
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) return;
@@ -326,8 +324,6 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
         mrv::media fg = reel->images[i];
         if ( fg == m )
         {
-	    std::cerr << "SHIFT MEDIA START " << m->image()->name()
-		      << std::endl;
             idx = i;
             int64_t newpos = m->position() + diff;
             if ( newpos < (int64_t) ( m->position() + m->duration() ) )
@@ -403,7 +399,7 @@ bool media_track::select_media( const boost::int64_t pos,
         CMedia* img = fg->image();
 
         int64_t start = fg->position();
-        int64_t duration = (int64_t)img->duration() - img->first_frame() + 1;
+        int64_t duration = fg->duration() - img->first_frame() + 1;
 
         if ( pos >= start && pos < start + duration)
         {
@@ -418,7 +414,8 @@ bool media_track::select_media( const boost::int64_t pos,
 
             ok = true;
             _audio_selected = false;
-            if ( Y > h()-20 && Y < h() ) _audio_selected = true;
+	    std::cerr << "Y " << Y << " h() " << y()+h() << std::endl;
+            if ( Y > y() + h()-20 && Y < y() + h() ) _audio_selected = true;
             _selected = ImageBrowser::new_item( fg );
             focus(this);
 
@@ -436,7 +433,6 @@ bool media_track::select_media( const boost::int64_t pos,
             break;
         }
     }
-    std::cerr << __LINE__ << std::endl;
     timeline()->redraw();
     parent()->redraw();
     return ok;
@@ -569,7 +565,7 @@ int media_track::handle( int event )
 	case FL_PUSH:
 	    {
 		int xx = _dragX = Fl::event_x();
-		int yy = y() + Fl::event_y();
+		int yy = Fl::event_y();
 
 		if ( Fl::event_button() == FL_RIGHT_MOUSE )
 		{
@@ -583,12 +579,11 @@ int media_track::handle( int event )
 		    int ww = t->w();
 
 		    double len = (t->maximum() - t->minimum() + 1);
-		    double p = double(xx+t->x()) / double(ww);
+		    double p = double( xx - x() ) / double(ww);
 		    p = t->minimum() + p * len + 0.5f;
 
 		    if ( select_media( int64_t(p), yy ) )
 		    {
-			std::cerr << "selected media " << _selected << std::endl;
 			return 1;
 		    }
 		    else
@@ -617,7 +612,6 @@ int media_track::handle( int event )
 	    }
 	case FL_DRAG:
 	    {
-		std::cerr << "DRAG selected " << _selected << std::endl;
 		if ( _selected )
 		{
 		    window()->cursor( FL_CURSOR_WE );
@@ -634,8 +628,6 @@ int media_track::handle( int event )
 		    {
 			if ( *i == _selected->media() )
 			{
-			    std::cerr << "SHIFT MEDIA " << (*i)->image()->name()
-				      << std::endl;
 			    if ( _audio_selected )
 			    {
 				shift_audio( _selected->media(), diff );
@@ -848,7 +840,6 @@ void media_track::draw()
                 if ( ! _audio_selected )
                 {
                     sprintf( buf, "%" PRId64, img->first_frame() );
-		    std::cerr << buf << std::endl;
                     fl_draw( buf, r.x() + dw/4, yh-5 );
                 }
             }
