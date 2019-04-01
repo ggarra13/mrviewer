@@ -154,7 +154,7 @@ void Timeline::edl( bool x )
         minimum( 1 );
         if ( uiMain->uiStartFrame )
             uiMain->uiStartFrame->frame( 1 );
-        if ( uiMain->uiFrame && uiMain->uiFrame->frame() < 1 )
+        if ( uiMain->uiFrame && uiMain->uiFrame->value() < 1 )
             uiFrame->frame(1);
 
         uint64_t total = 0;
@@ -175,7 +175,7 @@ void Timeline::edl( bool x )
 
         maximum( double(total) );
         if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->frame( total );
-        if ( uiFrame && uiFrame->frame() > int64_t(total) )
+        if ( uiFrame && uiFrame->value() > int64_t(total) )
             uiFrame->frame(total);
     }
 
