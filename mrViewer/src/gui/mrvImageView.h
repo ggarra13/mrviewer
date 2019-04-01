@@ -941,6 +941,7 @@ protected:
     double       _real_fps;     //!< current fps
     double       _last_fps;     //!< last fps
     int          _redraws_fps;  //!< # of redraws done for fps calculation
+    int64_t      _frame;        //!< current frame in viewer
     int64_t      _lastFrame;    //!< last frame for fps calculation
     bool       _do_seek;
     CMedia::Mutex _shortcut_mutex;
