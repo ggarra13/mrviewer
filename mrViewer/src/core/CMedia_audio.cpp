@@ -1838,7 +1838,10 @@ bool CMedia::find_audio( const int64_t frame )
 #endif
         if ( i == end )
         {
-            IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
+	    if ( _audio_offset == 0 )
+	    {
+		IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
+	    }
             return false;
         }
 
