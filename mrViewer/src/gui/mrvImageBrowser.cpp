@@ -3037,9 +3037,9 @@ void ImageBrowser::seek( const int64_t tframe )
  */
 void ImageBrowser::frame( const int64_t f )
 {
-    if ( uiMain->uiFrame )
+    if ( uiMain->uiView )
     {
-	uiMain->uiFrame->frame( f );
+	uiMain->uiView->frame( f );
     }
 }
 

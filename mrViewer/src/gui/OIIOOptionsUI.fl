@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include <iostream>} {private local
@@ -10,7 +10,6 @@ decl {\#include <core/mrvI8N.h>} {public local
 
 decl {\#include <gui/mrvIO.h>} {public local
 }
-
 
 decl {\#include <core/mrvImageOpts.h>} {public local
 }
@@ -24,7 +23,7 @@ decl {\#include <string>} {public local
 decl {\#include <mrViewer.h>} {public local
 }
 
-class OIIOOptionsUI {open selected : {public mrv::OIIOOpts}
+class OIIOOptionsUI {open : {public mrv::OIIOOpts}
 } {
   decl {std::string pixel_type;} {public local
   }
@@ -83,19 +82,17 @@ class OIIOOptionsUI {open selected : {public mrv::OIIOOpts}
         label OK
         user_data this user_data_type {OIIOOptionsUI*}
         callback {v->active(true);
-	v->uiMain->hide();
-	}
+	v->uiMain->hide();}
         xywh {85 253 62 26}
       }
       Fl_Button {} {
         label Cancel
         user_data this user_data_type {OIIOOptionsUI*}
         callback {v->active(false);
-	v->uiMain->hide();
-	}
+	v->uiMain->hide();}
         xywh {164 253 68 26}
       }
-      }
+    }
   }
   Function {convert()} {open
   } {
@@ -117,6 +114,8 @@ _mipmap = uiMipMap->value();} {}
       w->show();
       while ( w->visible() )
         Fl::check();
-      convert();} {}
+        if ( active() )
+      		convert();} {selected
+    }
   }
 }
