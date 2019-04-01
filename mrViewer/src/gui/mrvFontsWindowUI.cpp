@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -94,10 +94,14 @@ void new_size( Fl_Widget* w, void* data )
 }
 
 static void cb_Accept(Fl_Button*, Fl_Window* v) {
+    v->activate();
+    v->hide();
     /// v->make_exec_return(true);  // @TODO: fltk1.4
 }
 
 static void cb_Cancel(Fl_Button*, Fl_Window* v) {
+    v->deactivate();
+    v->hide();
     /// v->make_exec_return(false);  // @TODO: fltk1.4
 }
 
@@ -121,7 +125,8 @@ bool make_window() {
 		    int t; // bold/italic flags
                     o->add(Fl::get_font_name( (Fl_Font)i, &t ) );
 		}
-                mrv::font_current = (Fl_Font) numfonts-1;
+		o->value(0);
+                mrv::font_current = (Fl_Font) 0;
                 uiText->textfont( mrv::font_current );
                 mrv::font_text = "Type here";
                 uiText->buffer()->text( mrv::font_text.c_str() );
@@ -130,6 +135,7 @@ bool make_window() {
                 o->callback( new_font );
             }
             {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(70, 160, 325, 25, "Font Size");
+		o->type( FL_HORIZONTAL );
                 o->minimum(8);
                 o->maximum(100);
                 o->step(1);
@@ -139,12 +145,12 @@ bool make_window() {
             }
             o->end();
 
-            {   Fl_Group* g = new Fl_Group( 0, 200, 405, 55 );
+            {   Fl_Group* g = new Fl_Group( 0, 200, 205, 55 );
                 g->begin();
-                {   Fl_Button* o = new Fl_Button( 270, 5, 50, 25, "OK" );
+                {   Fl_Button* o = new Fl_Button( 75, 200, 50, 25, "OK" );
                     o->callback((Fl_Callback*)cb_Accept, (void*)(w));
                 }
-                {   Fl_Button* o = new Fl_Button( 325, 5, 50, 25, "Cancel" );
+                {   Fl_Button* o = new Fl_Button( 150, 200, 50, 25, "Cancel" );
                     o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
                 }
                 g->end();
@@ -158,7 +164,13 @@ bool make_window() {
     }
 
     w->show();
-    
+    while ( w->visible() )
+	Fl::check();
+    if ( ! w->active() ) {
+	delete w;
+	return false;
+    }
+    delete w;
     return true;
 }
 
