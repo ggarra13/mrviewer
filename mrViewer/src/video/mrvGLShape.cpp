@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -272,7 +272,7 @@ std::string GLTextShape::send() const
     return buf;
 }
 
-void GLTextShape::draw( double z )
+void GLTextShape::draw( double z )  // @TOOD: fltk1.4
 {
     //Turn on Color Buffer and Depth Buffer
     glColorMask(true, true, true, true);
@@ -295,32 +295,28 @@ void GLTextShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
+
     gl_font(font(), size()*float(z) );
 
 
     std::string txt = text();
+    
     std::size_t pos = txt.find('\n');
-    double y = pts[0].y;
-    for ( ; pos != std::string::npos; y -= size(), pos = txt.find('\n') )
+    float y = -pts[0].y;
+    for ( ; pos != std::string::npos; y += size(), pos = txt.find('\n') )
     {
-#if 0
-        glRasterPos2i(0,0);
-        glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x), GLfloat(y), NULL );
-#else
-        glRasterPos2d( pts[0].x, y );
-#endif
         std::string t;
         if (pos > 0 )
             t = txt.substr( 0, pos );
-        gl_draw(t.c_str());
-        if ( txt.size() > pos+1 )
+        gl_draw(t.c_str(), pts[0].x, y);
+        if ( txt.size() > pos )
             txt = txt.substr( pos+1, txt.size() );
     }
     if ( txt.size() )
     {
-        glRasterPos2d( pts[0].x, GLdouble(y) );
-        gl_draw(txt.c_str());
+        gl_draw( txt.c_str(), pts[0].x, y );
     }
+
 }
 
 
