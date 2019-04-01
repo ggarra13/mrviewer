@@ -217,7 +217,7 @@ public:
 ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
     Fl_Group( x, y, w, h, l )
 {
-    tooltip( _("Mark an area in the image with the left mouse button") );
+    tooltip( _("Mark an area in the image with SHIFT + the left mouse button") );
 
     dcol = new ColorWidget( 16, 10, 32, 32 );
 
@@ -664,15 +664,15 @@ void ColorInfo::update( const CMedia* img,
         hmean.b /= c;
         hmean.a /= c;
 
-        static const char* kR = "@C4286611456";
-        static const char* kG = "@C2164228096";
-        static const char* kB = "@C2155937536";
-        static const char* kA = "@C2964369408";
+        static const char* kR = "@C4286611456@c";
+        static const char* kG = "@C2164228096@c";
+        static const char* kB = "@C2155937536@c";
+        static const char* kA = "@C2964369408@c";
 
-        static const char* kH = "@C2964324352";
-        static const char* kS = "@C2964324352";
-        static const char* kV = "@C2964324352";
-        static const char* kL = "@C2964324352";
+        static const char* kH = "@C2964324352@c";
+        static const char* kS = "@C2964324352@c";
+        static const char* kV = "@C2964324352@c";
+        static const char* kL = "@C2964324352@c";
 
 
 
@@ -710,24 +710,24 @@ void ColorInfo::update( const CMedia* img,
 
         text.str("");
         text << "@b\t"
-             << kR << "@c"
+             << kR
              << _("R") << "\t"
-             << kG << "@c"
+             << kG
              << _("G") << "\t"
-             << kB << "@c"
+             << kB
              << _("B") << "\t"
-             << kA << "@c"
+             << kA
              << _("A")
              << std::endl
-             << _("Maximum") << ":\t"
-             << float_printf(pmax.r) << "\t"
-             << float_printf(pmax.g) << "\t"
-             << float_printf(pmax.b) << "\t"
+             << _("Maximum") << ":\t@c"
+             << float_printf(pmax.r) << "\t@c"
+             << float_printf(pmax.g) << "\t@c"
+             << float_printf(pmax.b) << "\t@c"
              << float_printf(pmax.a) << std::endl
-             << _("Minimum") << ":\t"
-             << float_printf(pmin.r) << "\t"
-             << float_printf(pmin.g) << "\t"
-             << float_printf(pmin.b) << "\t"
+             << _("Minimum") << ":\t@c"
+             << float_printf(pmin.r) << "\t@c"
+             << float_printf(pmin.g) << "\t@c"
+             << float_printf(pmin.b) << "\t@c"
              << float_printf(pmin.a) << std::endl;
 
         CMedia::Pixel r(pmax);
@@ -736,18 +736,18 @@ void ColorInfo::update( const CMedia* img,
         r.b -= pmin.b;
         r.a -= pmin.a;
 
-        text << _("Range") << ":\t"
-             << float_printf(r.r) << "\t"
-             << float_printf(r.g) << "\t"
-             << float_printf(r.b) << "\t"
+        text << _("Range") << ":\t@c"
+             << float_printf(r.r) << "\t@c"
+             << float_printf(r.g) << "\t@c"
+             << float_printf(r.b) << "\t@c"
              << float_printf(r.a) << std::endl
-             << "@b" << _("Mean") << ":\t"
+             << "@b" << _("Mean") << ":\t@c"
              << kR
-             << float_printf(pmean.r) << "\t"
+             << float_printf(pmean.r) << "\t@c"
              << kG
-             << float_printf(pmean.g) << "\t"
+             << float_printf(pmean.g) << "\t@c"
              << kB
-             << float_printf(pmean.b) << "\t"
+             << float_printf(pmean.b) << "\t@c"
              << kA
              << float_printf(pmean.a) << std::endl
              << std::endl
@@ -756,59 +756,59 @@ void ColorInfo::update( const CMedia* img,
         switch( uiMain->uiBColorType->value()+1 )
         {
         case color::kITU_709:
-            text << kH << N_("7") << "\t"
-                 << kS << N_("0") << "\t"
+            text << kH << N_("7") << "\t@c"
+                 << kS << N_("0") << "\t@c"
                  << kL << N_("9");
             break;
         case color::kITU_601:
-            text << kH << N_("6") << "\t"
-                 << kS << N_("0") << "\t"
+            text << kH << N_("6") << "\t@c"
+                 << kS << N_("0") << "\t@c"
                  << kL << N_("1");
             break;
         case color::kYIQ:
-            text << kH << N_("Y") << "\t"
-                 << kS << N_("I") << "\t"
+            text << kH << N_("Y") << "\t@c"
+                 << kS << N_("I") << "\t@c"
                  << kL << N_("Q");
             break;
         case color::kYDbDr:
-            text << kH << N_("Y") << "\t"
-                 << kS << N_("Db") << "\t"
+            text << kH << N_("Y") << "\t@c"
+                 << kS << N_("Db") << "\t@c"
                  << kL << N_("Dr");
             break;
         case color::kYUV:
-            text << kH << N_("Y") << "\t"
-                 << kS << N_("U") << "\t"
+            text << kH << N_("Y") << "\t@c"
+                 << kS << N_("U") << "\t@c"
                  << kL << N_("V");
             break;
         case color::kCIE_Luv:
-            text << kH << N_("L") << "\t"
-                 << kS << N_("u") << "\t"
+            text << kH << N_("L") << "\t@c"
+                 << kS << N_("u") << "\t@c"
                  << kL << N_("v");
             break;
         case color::kCIE_Lab:
-            text << kH << N_("L") << "\t"
-                 << kS << N_("a") << "\t"
+            text << kH << N_("L") << "\t@c"
+                 << kS << N_("a") << "\t@c"
                  << kL << N_("b");
             break;
         case color::kCIE_xyY:
-            text << kH << N_("x") << "\t"
-                 << kS << N_("y") << "\t"
+            text << kH << N_("x") << "\t@c"
+                 << kS << N_("y") << "\t@c"
                  << kL << N_("Y");
             break;
         case color::kCIE_XYZ:
-            text << kH << N_("X") << "\t"
-                 << kS << N_("Y") << "\t"
+            text << kH << N_("X") << "\t@c"
+                 << kS << N_("Y") << "\t@c"
                  << kL << N_("Z");
             break;
         case color::kHSL:
-            text << kH << N_("H") << "\t"
-                 << kS << N_("S") << "\t"
+            text << kH << N_("H") << "\t@c"
+                 << kS << N_("S") << "\t@c"
                  << kL << N_("L");
             break;
         case color::kHSV:
         default:
-            text << kH << N_("H") << "\t"
-                 << kS << N_("S") << "\t"
+            text << kH << N_("H") << "\t@c"
+                 << kS << N_("S") << "\t@c"
                  << kV << N_("V");
             break;
         }
@@ -829,15 +829,15 @@ void ColorInfo::update( const CMedia* img,
         }
 
         text << std::endl
-             << _("Maximum") << ":\t"
-             << float_printf(hmax.r) << "\t"
-             << float_printf(hmax.g) << "\t"
-             << float_printf(hmax.b) << "\t"
+             << _("Maximum") << ":\t@c"
+             << float_printf(hmax.r) << "\t@c"
+             << float_printf(hmax.g) << "\t@c"
+             << float_printf(hmax.b) << "\t@c"
              << float_printf(hmax.a) << std::endl
-             << _("Minimum") << ":\t"
-             << float_printf(hmin.r) << "\t"
-             << float_printf(hmin.g) << "\t"
-             << float_printf(hmin.b) << "\t"
+             << _("Minimum") << ":\t@c"
+             << float_printf(hmin.r) << "\t@c"
+             << float_printf(hmin.g) << "\t@c"
+             << float_printf(hmin.b) << "\t@c"
              << float_printf(hmin.a) << std::endl;
 
         r = hmax;
@@ -846,18 +846,18 @@ void ColorInfo::update( const CMedia* img,
         r.b -= hmin.b;
         r.a -= hmin.a;
 
-        text << _("Range") << ":\t"
-             << float_printf(r.r) << "\t"
-             << float_printf(r.g) << "\t"
-             << float_printf(r.b) << "\t"
+        text << _("Range") << ":\t@c"
+             << float_printf(r.r) << "\t@c"
+             << float_printf(r.g) << "\t@c"
+             << float_printf(r.b) << "\t@c"
              << float_printf(r.a) << std::endl
-             << "@b" << _("Mean") << ":\t"
+             << "@b" << _("Mean") << ":\t@c"
              << kH
-             << float_printf(hmean.r) << "\t"
+             << float_printf(hmean.r) << "\t@c"
              << kS
-             << float_printf(hmean.g) << "\t"
+             << float_printf(hmean.g) << "\t@c"
              << kV
-             << float_printf(hmean.b) << "\t"
+             << float_printf(hmean.b) << "\t@"
              << kL
              << float_printf(hmean.a);
     }
@@ -868,10 +868,11 @@ void ColorInfo::update( const CMedia* img,
     stringArray::iterator e = lines.end();
     area->redraw_label();
     browser->clear();
-    for ( ; i != e; ++i )
+    int idx = 0;
+    for ( ; i != e; ++i, ++idx )
     {
-        browser->add( (*i).c_str() );
-        // @TODO: fltk1.4  w=above; if ( w ) w->align( FL_ALIGN_CENTER );
+	browser->add( (*i).c_str() );
+        //child(idx)->align( FL_ALIGN_CENTER );
     }
     browser->redraw();
 }
