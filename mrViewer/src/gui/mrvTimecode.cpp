@@ -62,7 +62,7 @@ Timecode::Timecode( int x, int y, int w, int h, const char* l ) :
 Fl_Float_Input( x, y, w, h, l ),
 _display( mrv::Timecode::kFrames ),
 _fps( 24.f ),
-_frame( 1 ),
+_frame( AV_NOPTS_VALUE ),
 _tc_frame( 0 ),
 _minimum( 1 ),
 _maximum( 50 ),
@@ -120,8 +120,6 @@ bool Timecode::valid_drop_frame( int hours, int mins, int secs, int frames,
 int Timecode::handle( int e )
 {
     return Fl_Float_Input::handle( e );
-    // if ( r != 0 ) return r;
-    // return uiMain->uiView->handle( e );
 }
 
 int64_t Timecode::value() const
@@ -498,6 +496,7 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
 
 void Timecode::value( const int64_t x )
 {
+    if ( x == _frame ) return;
     _frame = x;
 
     char buf[100];
