@@ -91,12 +91,7 @@ class ReelUI {open
     } {
       Fl_Browser uiBrowser {
         xywh {0 32 405 318} box UP_BOX
-        code0 {o->main( main );
-	// @TODO: fltk1.4
-// o->scrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ) );
-// o->hscrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ));
-// o->scrollbar.color( o->buttoncolor() );
-// o->hscrollbar.color( o->buttoncolor() );}
+        code0 {o->main( main );}
         class {mrv::ImageBrowser}
       }
       Fl_Group {} {open
