@@ -1414,6 +1414,7 @@ _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
 _playback( CMedia::kStopped ),
 _network_active( true ),
+_frame( 1 ),
 _lastFrame( 0 )
 {
     _timer.setDesiredSecondsPerFrame(0.05f);
@@ -2981,10 +2982,11 @@ void ImageView::timeout()
 
     mrv::media fg = foreground();
 
-    int64_t tframe = int64_t( uiMain->uiFrame->frame() );
+    int64_t tframe = _frame;
     timeline->value( double(tframe) );
     timeline->redraw();
     uiMain->uiFrame->value( tframe );  // so it is displayed properly
+    uiMain->uiFrame->redraw();
 
     if ( uiMain->uiEDLWindow )
     {
@@ -8503,7 +8505,7 @@ void ImageView::resize_background()
 /// Returns current frame number in view (uiFrame)
 int64_t ImageView::frame() const
 {
-    return uiMain->uiFrame->frame();
+    return _frame;
 }
 
 /**
@@ -8514,8 +8516,8 @@ int64_t ImageView::frame() const
 void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
-    mrv::ImageBrowser* b = browser();
-    if (b) b->frame( f );
+    _frame = f;
+    browser()->redraw();
 }
 
 
