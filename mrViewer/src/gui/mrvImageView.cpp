@@ -628,13 +628,14 @@ void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view )
 
 
 
-void masking_cb( Fl_Widget* o, ViewerUI* uiMain )
+void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
 {
     mrv::ImageView* view = uiMain->uiView;
 
+    const Fl_Menu_Item* o = menu->mvalue();
+    
     float mask = 1.0f;
     const char* fmt = o->label();
-
     mask = (float) atof( fmt );
 
     char buf[128];
@@ -704,9 +705,9 @@ void hud_toggle_cb( Fl_Widget* o, ViewerUI* uiMain )
     view->redraw();
 }
 
-void hud_cb( Fl_Widget* o, ViewerUI* uiMain )
+void hud_cb( mrv::PopupMenu* o, ViewerUI* uiMain )
 {
-    Fl_Menu_Item* item = (Fl_Menu_Item*) o;
+    const Fl_Menu_Item* item = o->mvalue();
     mrv::ImageView* view = uiMain->uiView;
 
     if ( item->label() == NULL )
@@ -716,11 +717,11 @@ void hud_cb( Fl_Widget* o, ViewerUI* uiMain )
     }
     
     int i;
-    Fl_Menu_* menu = (Fl_Menu_*) uiMain->uiPrefs->uiPrefsHud;
-    int num = menu->size();
+    Fl_Group* menu = uiMain->uiPrefs->uiPrefsHud;
+    int num = menu->children();
     for ( i = 0; i < num; ++i )
     {
-        const char* fmt = menu->text(i);
+        const char* fmt = menu->child(i)->label();
 	if (!fmt) continue;
         if ( strcmp( fmt, item->label() ) == 0 ) break;
     }
@@ -826,9 +827,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
     {
         if ( force || !uiMain->uiStereo->uiMain->visible() )
         {
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiStereo->uiMain->show();
-            Fl_Group::current( 0 );
             send_network( "StereoOptions 1" );
         }
         else
@@ -842,9 +841,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiEDLWindow->uiMain->visible() )
         {
             uiMain->uiReelWindow->uiBrowser->set_edl();
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiEDLWindow->uiMain->show();
-            Fl_Group::current( 0 );
         }
         else
         {
@@ -869,9 +866,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
         if ( force || !uiMain->uiPaint->uiMain->visible() )
         {
             // Paint Tools
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiPaint->uiMain->show();
-            Fl_Group::current( 0 );
             send_network( "PaintTools 1" );
         }
         else
@@ -3230,7 +3225,7 @@ void ImageView::draw()
 {
 
     DBG( "draw valid? " << (int)valid() );
-    if ( !valid() || vr() )
+    if ( !valid() )
     {
         if ( ! _engine )
         {
@@ -3452,8 +3447,10 @@ void ImageView::draw()
 
     }
 
-    if ( !fg ) return;
-
+    if ( !fg ) {
+	return;
+    }
+    
     _engine->draw_annotation( img->shapes() );
 
     if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
@@ -3483,18 +3480,9 @@ void ImageView::draw()
         return;
 
 
-    std::ostringstream hud;
-    hud.str().reserve( 512 );
-
-    uchar r, g, b;
-    Fl::get_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
-    _engine->color( r, g, b );
-
-
     //
     // Draw HUD
     //
-
     if ( vr() )
     {
         glMatrixMode(GL_PROJECTION);
@@ -3508,6 +3496,14 @@ void ImageView::draw()
         glLoadIdentity();
 	FLUSH_GL_ERRORS;
     }
+
+
+    std::ostringstream hud;
+    hud.str().reserve( 512 );
+
+    uchar r, g, b;
+    Fl::get_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
+    _engine->color( r, g, b );
 
     int y = h()-25;
     int yi = 25;
@@ -3687,15 +3683,17 @@ void ImageView::draw()
 
     if ( vr() )
     {
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
 	FLUSH_GL_ERRORS;
+	
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
 	FLUSH_GL_ERRORS;
 	
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-	FLUSH_GL_ERRORS;
     }
+
+    
 }
 
 
@@ -3942,6 +3940,8 @@ int ImageView::leftMouseDown(int x, int y)
                     t->size( mrv::font_size );
                     t->text( mrv::font_text );
 
+		    std::cerr << "draw shape" << std::endl;
+		    
                     mrv::font_text = "";
                     s = t;
                 }
