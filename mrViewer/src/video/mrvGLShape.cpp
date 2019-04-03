@@ -295,14 +295,17 @@ void GLTextShape::draw( double z )  // @TOOD: fltk1.4
 
     glColor4f( r, g, b, a );
 
-
+    glMatrixMode( GL_MODELVIEW );
+    glPushMatrix();
+    glLoadIdentity();
+    
     gl_font(font(), size()*float(z) );
 
 
     std::string txt = text();
     
     std::size_t pos = txt.find('\n');
-    float y = -pts[0].y;
+    float y = pts[0].y;
     for ( ; pos != std::string::npos; y += size(), pos = txt.find('\n') )
     {
         std::string t;
@@ -316,6 +319,10 @@ void GLTextShape::draw( double z )  // @TOOD: fltk1.4
     {
         gl_draw( txt.c_str(), pts[0].x, y );
     }
+
+    glMatrixMode( GL_MODELVIEW );
+    glPopMatrix();
+    
 
 }
 
