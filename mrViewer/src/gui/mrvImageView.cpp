@@ -1414,7 +1414,6 @@ _lastFrame( 0 )
 {
     _timer.setDesiredSecondsPerFrame(0.05f);
 
-
     int stereo = 0;
     if ( can_do( FL_STEREO ) ) stereo = 0; // should be Fl_STEREO
 
@@ -3237,12 +3236,13 @@ void ImageView::draw()
         if ( !_engine ) return;
 
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
-        _engine->reset_view_matrix();
+	DBG( __FUNCTION__ << " " << __LINE__ );
+	_engine->reset_view_matrix();
 
 
         valid(1);
     }
+    
 
 
 
@@ -3325,7 +3325,6 @@ void ImageView::draw()
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
     TRACE("");
-
 
     CMedia* img = NULL;
     if ( fg )
@@ -3447,6 +3446,7 @@ void ImageView::draw()
 
     }
 
+    
     if ( !fg ) {
 	return;
     }
@@ -3487,17 +3487,18 @@ void ImageView::draw()
     {
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
-        glLoadIdentity();
-        ortho();
-	FLUSH_GL_ERRORS;
+	glViewport( 0, 0, w(), h() );
+	glOrtho( 0, w(), 0, h(), -1, 1 );
 
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
 	FLUSH_GL_ERRORS;
+
     }
 
 
+	
     std::ostringstream hud;
     hud.str().reserve( 512 );
 
@@ -3693,6 +3694,14 @@ void ImageView::draw()
 	
     }
 
+#define DEBUG_GL_CROSS
+#ifdef DEBUG_GL_CROSS
+    int W = w();
+    int H = h();
+    glColor4f( 1, 0, 0, 1 );
+    glBegin(GL_LINE_STRIP); glVertex2f(0,0); glVertex2f(W,H); glEnd();
+    glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
+#endif
     
 }
 
@@ -3939,8 +3948,6 @@ int ImageView::leftMouseDown(int x, int y)
                     t->font( mrv::font_current );
                     t->size( mrv::font_size );
                     t->text( mrv::font_text );
-
-		    std::cerr << "draw shape" << std::endl;
 		    
                     mrv::font_text = "";
                     s = t;
