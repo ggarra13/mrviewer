@@ -693,7 +693,7 @@ void GLEngine::initialize()
 void GLEngine::reset_view_matrix()
 {
     glMatrixMode(GL_PROJECTION);
-
+    glLoadIdentity();
 
     if ( _view->vr() != vr )
     {
@@ -705,7 +705,11 @@ void GLEngine::reset_view_matrix()
     if ( view->vr() == ImageView::kNoVR )
     {
         CHECK_GL;
-        view->ortho();
+        //view->ortho();
+	int W = view->w();
+	int H = view->h();
+	glViewport( 0, 0, W, H );
+	glOrtho( 0, W, 0, H, -1, 1 );
         _rotX = _rotY = 0.0;
         CHECK_GL;
     }
@@ -713,7 +717,6 @@ void GLEngine::reset_view_matrix()
     {
         unsigned w = _view->w();
         unsigned h = _view->h();
-        glLoadIdentity();
         glViewport(0, 0, w, h);
         gluPerspective( vr_angle, (float)w / (float)h, 0.1, 3.0);
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
