@@ -5736,8 +5736,7 @@ void ImageView::mouseDrag(int x,int y)
                 else
                 {
 
-                    yn = H - yn;
-                    yn -= H;
+                    yn = -yn;
 
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
@@ -5759,8 +5758,7 @@ void ImageView::mouseDrag(int x,int y)
                 }
                 else
                 {
-                    yn = H - yn;
-                    yn -= H;
+                    yn = H-yn;
 
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
