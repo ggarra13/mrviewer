@@ -2320,6 +2320,7 @@ void GLEngine::draw_images( ImageList& images )
 
 void GLEngine::draw_shape( GLShape* const shape )
 {
+    
     double zoomX = _view->zoom();
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( _view->ghost_previous() )
@@ -2355,10 +2356,11 @@ void GLEngine::draw_shape( GLShape* const shape )
     }
 
     if ( shape->frame == MRV_NOPTS_VALUE ||
-            shape->frame == _view->frame() )
+	 shape->frame == _view->frame() )
     {
         shape->draw(zoomX);
     }
+    
 }
 
 
