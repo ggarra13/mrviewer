@@ -272,7 +272,7 @@ std::string GLTextShape::send() const
     return buf;
 }
 
-void GLTextShape::draw( double z )  // @TOOD: fltk1.4
+void GLTextShape::draw( double z )
 {
     //Turn on Color Buffer and Depth Buffer
     glColorMask(true, true, true, true);
@@ -295,9 +295,6 @@ void GLTextShape::draw( double z )  // @TOOD: fltk1.4
 
     glColor4f( r, g, b, a );
 
-    glMatrixMode( GL_MODELVIEW );
-    glPushMatrix();
-    glLoadIdentity();
     
     gl_font(font(), size()*float(z) );
 
@@ -319,10 +316,6 @@ void GLTextShape::draw( double z )  // @TOOD: fltk1.4
     {
         gl_draw( txt.c_str(), pts[0].x, y );
     }
-
-    glMatrixMode( GL_MODELVIEW );
-    glPopMatrix();
-    
 
 }
 
