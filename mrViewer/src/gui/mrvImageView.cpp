@@ -3694,7 +3694,6 @@ void ImageView::draw()
 	
     }
 
-#define DEBUG_GL_CROSS
 #ifdef DEBUG_GL_CROSS
     int W = w();
     int H = h();
@@ -5566,7 +5565,6 @@ void ImageView::mouseDrag(int x,int y)
             double yn = double(y);
             data_window_coordinates( img, xn, yn, true );
 
-
             short idx = 0;
 
             unsigned W = dpw[0].w();
@@ -5646,8 +5644,6 @@ void ImageView::mouseDrag(int x,int y)
 
             xn = floor(xn+0.5f);
             yn = floor(yn+0.5f);
-
-
 
             if ( _mode == kSelection )
             {
@@ -5736,7 +5732,7 @@ void ImageView::mouseDrag(int x,int y)
                 else
                 {
 
-                    yn = -yn;
+		    yn = -yn;
 
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
@@ -5758,7 +5754,7 @@ void ImageView::mouseDrag(int x,int y)
                 }
                 else
                 {
-                    yn = H-yn;
+                    yn = -yn;
 
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
