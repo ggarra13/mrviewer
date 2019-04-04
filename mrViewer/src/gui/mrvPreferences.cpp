@@ -661,7 +661,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsCacheFPS->value( (bool) tmp );
     if ( !tmp )
     {
-        caches.get( "size", tmp, 60 );
+        caches.get( "size", tmp, 20 );
         uiPrefs->uiPrefsCacheSize->activate();
         uiPrefs->uiPrefsCacheSize->value( tmp );
         CMedia::video_cache_size( tmp );
@@ -674,7 +674,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         CMedia::audio_cache_size( 0 );
     }
 
-    caches.get( "cache_memory", tmpF, 1.0 );
+    caches.get( "cache_memory", tmpF, 4.0 );
     uiPrefs->uiPrefsCacheMemory->value( tmpF );
 
     //
