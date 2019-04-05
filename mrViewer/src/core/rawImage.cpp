@@ -29,7 +29,11 @@
 using namespace std;
 
 #include <cstdio>
-#define __STDC_LIMIT_MACROS
+#ifndef __STDC_LIMIT_MACROS
+#  define __STDC_LIMIT_MACROS
+#  define __STDC_FORMAT_LIMITS
+#endif
+
 #include <inttypes.h>
 #include <cmath>
 #ifdef _WIN32
