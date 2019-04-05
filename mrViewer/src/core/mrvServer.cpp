@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,8 +37,11 @@
 #include <fstream>
 #include <set>
 
-#define __STDC_LIMIT_MACROS
-#define __STDC_FORMAT_MACROS
+#ifndef __STDC_LIMIT_MACROS
+#  define __STDC_LIMIT_MACROS
+#  define __STDC_FORMAT_MACROS
+#endif
+
 #include <inttypes.h>  // for PRId64
 
 
