@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@
 #pragma warning(disable: 4800)
 #endif
 
+#include "core/mrvFrame.h"
+
 
 #include <ctime>
 
@@ -57,7 +59,6 @@
 #include <ImfTimeCode.h>
 #include <ACESclipReader.h>
 
-#include "core/mrvFrame.h"
 #include "core/mrvString.h"
 #include "core/mrvPacketQueue.h"
 #include "core/mrvImagePixel.h"
