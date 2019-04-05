@@ -5,6 +5,9 @@ code_name {.cxx}
 decl {\#include <iostream>} {private local
 }
 
+decl {\#include <core/mrvFrame.h>} {public local
+}
+
 decl {\#include <gui/mrvIO.h>} {public local
 }
 
