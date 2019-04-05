@@ -25,6 +25,8 @@
  * 
  */
 
+#include "core/mrvFrame.h"
+
 #include <iostream>
 #include <Iex.h>
 
