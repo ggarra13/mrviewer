@@ -250,7 +250,7 @@ Imf::Chromaticities chromaticities(
 )
 {
     Imf::Chromaticities tmpC;
-    bool ok  = chroma.get( "red_x", tmpC.red.x, defaultValue.red.x );
+    int ok  = chroma.get( "red_x", tmpC.red.x, defaultValue.red.x );
     ok &= chroma.get( "red_y",   tmpC.red.y,    defaultValue.red.y );
     ok &= chroma.get( "green_x", tmpC.green.x,  defaultValue.green.x );
     ok &= chroma.get( "green_y", tmpC.green.y,  defaultValue.green.y );
@@ -1010,7 +1010,7 @@ static const char* kCLocale = "C";
 
 //#undef DBG
 //#define DBG(c) std::cerr << c << " " << __FUNCTION__ << " "	\
-    << __LINE__ << std::endl;
+//    << __LINE__ << std::endl;
 
 void Preferences::run( ViewerUI* main )
 {
@@ -1584,7 +1584,8 @@ void Preferences::run( ViewerUI* main )
     DBG( __FUNCTION__ << " " << __LINE__ );
 
 #if defined(_WIN32) || defined(_WIN64)
-    main->uiMain->resize( main->uiMain->w(), main->uiMain->h()-20 );
+    main->uiMain->resize(  main->uiMain->x(), main->uiMain->y(),
+                           main->uiMain->w(), main->uiMain->h()-20 );
 #endif
 
     DBG( __FUNCTION__ << " " << __LINE__ );
