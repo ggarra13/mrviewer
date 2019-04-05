@@ -25,7 +25,9 @@
  *
  */
 
-#include <cmath>
+#include "core/mrvFrame.h"
+
+#include <math.h>
 #include <limits>
 
 #ifdef _WIN32
