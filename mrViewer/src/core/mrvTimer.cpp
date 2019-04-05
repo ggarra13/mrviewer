@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -56,33 +56,26 @@
 //
 //----------------------------------------------------------------------------
 
+#include "core/mrvFrame.h"
 #include <mrvTimer.h>
 #include <time.h>
 
 #ifdef _WIN32
 
-namespace {
-
-  static int
-  gettimeofday (struct timeval *tv, void *tz)
-  {
+int gettimeofday (struct timeval *tv, void *tz)
+{
     union
     {
       ULONGLONG ns100;  // time since 1 Jan 1601 in 100ns units
       FILETIME ft;
-	} now;
-    
+       } now;
+
     GetSystemTimeAsFileTime (&now.ft);
     tv->tv_usec = long ((now.ns100 / 10LL) % 1000000LL);
     tv->tv_sec = long ((now.ns100 - 116444736000000000LL) / 10000000LL);
-    
     return 0;
-  } 
-
-}
-
+  }
 #endif
-
 
 namespace mrv {
 
@@ -150,7 +143,7 @@ Timer::waitUntilNextFrameIsDue ()
     // or a little too late.  Keep track of the difference between
     // now and the exact time when we wanted to wake up; next time
     // we'll try sleep that much longer or shorter.  This should
-    // keep our average frame rate close to one fame every _spf seconds.
+    // keep our average frame rate close to one frame every _spf seconds.
     //
 
     gettimeofday (&now, 0);
