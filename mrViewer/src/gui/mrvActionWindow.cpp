@@ -2,6 +2,10 @@
 
 #include <FL/Enumerations.H>
 
+#if defined(_WIN32) || defined(_WIN64) 
+#include "winsock2.h"
+#endif
+
 #include "gui/mrvActionWindow.h"
 #include "gui/mrvImageView.h"
 #include "mrViewer.h"
