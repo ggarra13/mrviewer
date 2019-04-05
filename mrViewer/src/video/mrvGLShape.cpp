@@ -31,8 +31,7 @@
 
 
 #if defined(WIN32) || defined(WIN64)
-#  include <FL/win32.H>
-#  include <GL/wglew.h>
+#  include <FL/platform.H>
 #elif defined(LINUX)
 #  include <GL/glxew.h>
 #endif
