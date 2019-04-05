@@ -29,17 +29,26 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#include <cassert>
+#ifdef _WIN32
+#include <winsock2.h>
+#include <windows.h>
 #include <cmath>
-
-
-
+#endif
 
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
 #  define isnan(x) _isnan(x)
+#define isfinite(x) _finite(x)
 #endif
+
+#include <math.h>
+
+
+
+
+
+
 
 #include <iostream>
 #include <sstream>
@@ -47,12 +56,6 @@
 #include <iomanip>
 #include <sstream>
 #include <set>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#include <windows.h>
-#define isfinite(x) _finite(x)
-#endif
 
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
@@ -135,8 +138,6 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvImageView.h"
 
-#undef TRACE
-#define TRACE(x)
 
 #undef LOG
 #define LOG(x) std::cerr << x << std::endl;
@@ -4013,7 +4014,7 @@ int ImageView::leftMouseDown(int x, int y)
         if ( (flags & kLeftAlt) == 0 )
         {
 
-            TRACE();
+            TRACE("");
 
             int idx;
             Fl_Menu_Button menu(0,0,w(),h());
@@ -4024,7 +4025,7 @@ int ImageView::leftMouseDown(int x, int y)
             menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                       (Fl_Callback*)open_single_cb, browser() );
 
-            TRACE();
+            TRACE("");
             mrv::media fg = foreground();
             if ( !fg )
             {
@@ -4055,7 +4056,7 @@ int ImageView::leftMouseDown(int x, int y)
                           (Fl_Callback*)save_clip_xml_metadata_cb, this );
             }
 
-            TRACE();
+            TRACE("");
 
             char buf[256];
             const char* tmp;
@@ -4070,7 +4071,7 @@ int ImageView::leftMouseDown(int x, int y)
             }
 
 
-            TRACE();
+            TRACE("");
             if ( fg && fg->image()->has_picture() )
             {
 
@@ -4083,7 +4084,7 @@ int ImageView::leftMouseDown(int x, int y)
                 menu.add( _("View/Data Window"), kDataWindow.hotkey(),
                           (Fl_Callback*)data_window_cb, this );
 
-                TRACE();
+                TRACE("");
                 num = uiMain->uiPrefs->uiPrefsCropArea->children();
                 for ( i = 0; i < num; ++i )
                 {
@@ -4095,11 +4096,11 @@ int ImageView::leftMouseDown(int x, int y)
                     item = (Fl_Menu_Item*) &(menu.menu()[idx]);
                     float mask = -1.0f;
                     mask = (float) atof( tmp );
-                    TRACE();
+                    TRACE("");
                     if ( mask == _masking ) item->set();
                 }
 
-            TRACE();
+            TRACE("");
 
                 sprintf( buf, _("View/Hud/Toggle Selected") );
                 menu.add( buf, kHudToggle.hotkey(),
@@ -4117,7 +4118,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 bool has_version = false;
 
                 CMedia* img = fg->image();
@@ -4132,7 +4133,7 @@ int ImageView::leftMouseDown(int x, int y)
                     has_version = true;
 
 
-            TRACE();
+            TRACE("");
                 if ( has_version )
                 {
                     menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
@@ -4144,7 +4145,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 menu.add( _("Image/Next"), kNextImage.hotkey(),
                           (Fl_Callback*)next_image_cb, browser());
                 menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
@@ -4154,7 +4155,7 @@ int ImageView::leftMouseDown(int x, int y)
 
                 const stubImage* simg = dynamic_cast< const stubImage* >( image() );
 
-            TRACE();
+            TRACE("");
                 if ( simg )
                 {
                     menu.add( _("Image/Clone"), kCloneImage.hotkey(),
@@ -4171,7 +4172,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 idx = menu.add( _("Image/Preload Caches"),
                                 kPreloadCache.hotkey(),
                                 (Fl_Callback*)preload_image_cache_cb, this,
@@ -4180,7 +4181,7 @@ int ImageView::leftMouseDown(int x, int y)
                 if ( CMedia::preload_cache() ) item->set();
 
 
-            TRACE();
+            TRACE("");
                 menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
                           (Fl_Callback*)clear_image_cache_cb, this );
 
@@ -4190,7 +4191,7 @@ int ImageView::leftMouseDown(int x, int y)
                           FL_MENU_DIVIDER );
 
 
-            TRACE();
+            TRACE("");
                 menu.add( _("Image/Rotate +90"),
                           kRotatePlus90.hotkey(),
                           (Fl_Callback*)rotate_plus_90_cb, this );
@@ -4200,11 +4201,11 @@ int ImageView::leftMouseDown(int x, int y)
                           FL_MENU_DIVIDER );
 
 
-            TRACE();
+            TRACE("");
                 if ( !Preferences::use_ocio )
                 {
 
-            TRACE();
+            TRACE("");
                     menu.add( _("Image/Attach CTL Input Device Transform"),
                               kIDTScript.hotkey(),
                               (Fl_Callback*)attach_ctl_idt_script_cb,
@@ -4228,7 +4229,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 menu.add( _("Image/Mirror/Horizontal"),
                           kFlipX.hotkey(),
                           (Fl_Callback*)flip_x_cb,
@@ -4241,7 +4242,7 @@ int ImageView::leftMouseDown(int x, int y)
                           (Fl_Callback*)set_as_background_cb,
                           (void*)this);
 
-            TRACE();
+            TRACE("");
                 menu.add( _("Image/Switch FG and BG"),
                           kSwitchFGBG.hotkey(),
                           (Fl_Callback*)switch_fg_bg_cb, (void*)this);
@@ -4252,11 +4253,11 @@ int ImageView::leftMouseDown(int x, int y)
                 Image_ptr image = fg->image();
 
 
-            TRACE();
+            TRACE("");
                 if ( Preferences::use_ocio )
                 {
 
-            TRACE();
+            TRACE("");
                     menu.add( _("OCIO/Input Color Space"),
                               kOCIOInputColorSpace.hotkey(),
                               (Fl_Callback*)attach_ocio_ics_cb, (void*)this);
@@ -4270,12 +4271,12 @@ int ImageView::leftMouseDown(int x, int y)
 
 
 
-            TRACE();
+            TRACE("");
                 size_t num = image->number_of_video_streams();
                 if ( num > 1 )
                 {
 
-            TRACE();
+            TRACE("");
                     for ( unsigned i = 0; i < num; ++i )
                     {
                         char buf[256];
@@ -4300,7 +4301,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 if ( num > 0 )
                 {
                     idx = menu.add( _("Subtitle/No Subtitle"), 0,
@@ -4324,7 +4325,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 if ( 1 )
                 {
 
@@ -4338,7 +4339,7 @@ int ImageView::leftMouseDown(int x, int y)
                 }
 
 
-            TRACE();
+            TRACE("");
                 menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
                           kCopyRGBAValues.hotkey(),
                           (Fl_Callback*)copy_pixel_rgba_cb, (void*)this);
@@ -4348,7 +4349,7 @@ int ImageView::leftMouseDown(int x, int y)
             if ( !Preferences::use_ocio )
             {
 
-            TRACE();
+            TRACE("");
 
                 menu.add( _("Monitor/Attach CTL Display Transform"),
                           kMonitorCTLScript.hotkey(),
@@ -4359,9 +4360,9 @@ int ImageView::leftMouseDown(int x, int y)
                           (Fl_Callback*)monitor_icc_profile_cb,
                           uiMain, FL_MENU_DIVIDER);
             }
-            TRACE();
+            TRACE("");
             menu.popup();
-            TRACE();
+            TRACE("");
         }
         else
         {
