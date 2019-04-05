@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@
 #ifndef mrvFrame_h
 #define mrvFrame_h
 
-#if defined(WIN32) || defined(WIN64)
-#include <winsock2.h>
+#if defined(_WIN32) || defined(_WIN64)
+#include <Winsock2.h>
 #include <windows.h>
 #undef min
 #undef max
