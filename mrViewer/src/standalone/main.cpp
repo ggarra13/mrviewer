@@ -154,7 +154,7 @@ void load_new_files( void* s )
    Fl::repeat_timeout( 1.0, load_new_files, ui );
 }
 
-int main( int argc, const char** argv )
+int main( int argc, char** argv )
 {
     Fl::scheme("gtk+");
     Fl::get_system_colors();
