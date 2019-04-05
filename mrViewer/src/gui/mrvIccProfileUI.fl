@@ -8,6 +8,9 @@ decl {\#include <cstring>} {public local
 decl {\#include <string>} {public local
 }
 
+decl {\#include "core/mrvFrame.h" } { public local
+}
+
 decl {\#include <algorithm>} {private local
 }
 
