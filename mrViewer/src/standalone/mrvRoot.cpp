@@ -32,6 +32,7 @@
 #include <mrvIO.h>
 
 #if defined(WIN32) || defined(WIN64)
+#  include <winsock2.h>
 #  include <io.h>      // for _access
 #  include <windows.h> // for GetModuleFileName
 #else
@@ -185,7 +186,7 @@ namespace {
 namespace mrv {
 
 
-  void set_root_path( const int argc, const char** argv )
+  void set_root_path( const int argc, char** argv )
   {
     char* root = getenv("MRV_ROOT");
 
