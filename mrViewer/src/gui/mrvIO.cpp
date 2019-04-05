@@ -25,6 +25,7 @@
  *
  */
 
+#include "core/mrvFrame.h"
 #include <cstdlib> // for free/malloc
 #include <cstring> // for strcpy
 
