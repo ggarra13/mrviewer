@@ -5,70 +5,16 @@ code_name {.cxx}
 decl {\#include <string>} {public local
 }
 
+decl {\#include "core/mrvFrame.h"} {public local
+}
+
 decl {\#include "core/mrvI8N.h"} {private local
 }
 
-decl {\#include "core/mrvAudioEngine.h"} {private local
+decl {\#include "gui/mrvImageBrowser.h"} {public local
 }
 
-decl {\#include "core/mrvMath.h"} {private local
-}
-
-decl {\#include "core/mrvColorSpaces.h"} {private local
-}
-
-decl {\#include "core/mrvServer.h"} {private local
-}
-
-decl {\#include "core/mrvClient.h"} {private local
-}
-
-decl {\#include "gui/mrvMainWindow.h"} {private local
-}
-
-decl {\#include "gui/mrvImageView.h"} {private local
-}
-
-decl {\#include "gui/mrvImageBrowser.h"} {public global
-}
-
-decl {\#include "gui/mrvBrowser.h"} {private local
-}
-
-decl {\#include "gui/mrvPreferencesBrowser.h"} {private local
-}
-
-decl {\#include "gui/mrvCTLBrowser.h"} {public local
-}
-
-decl {\#include "gui/mrvFileRequester.h"} {private local
-}
-
-decl {\#include "gui/mrvPopupMenu.h"} {public local
-}
-
-decl {\#include "gui/mrvTimecode.h"} {private local
-}
-
-decl {\#include "gui/mrvTimeline.h"} {private local
-}
-
-decl {\#include "gui/mrvColorOps.h"} {private local
-}
-
-decl {\#include "gui/mrvValueInput.h"} {public local
-}
-
-decl {\#include "gui/mrvOCIOBrowser.h"} {public local
-}
-
-decl {\#include "gui/mrvPreferences.h"} {private local
-}
-
-decl {\#include "gui/mrvLogDisplay.h"} {private local
-}
-
-decl {\#include "mrvEDLWindowUI.h"} {private local
+decl {\#include "mrViewer.h"} {private local
 }
 
 decl {\#include "icons/icons.c"} {private local
