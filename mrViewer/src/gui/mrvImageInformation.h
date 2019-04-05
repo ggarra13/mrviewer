@@ -28,8 +28,11 @@
 #ifndef mrvImageInformation_h
 #define mrvImageInformation_h
 
-#define __STDC_FORMAT_MACROS
-#define __STDC_LIMIT_MACROS
+#ifndef __STDC_FORMAT_MACROS
+#  define __STDC_FORMAT_MACROS
+#  define __STDC_LIMIT_MACROS
+#endif
+
 #include <inttypes.h>  // for PRId64
 
 #include <FL/Fl_Button.H>
