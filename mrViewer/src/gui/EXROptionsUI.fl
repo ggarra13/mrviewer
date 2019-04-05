@@ -2,8 +2,13 @@
 version 1.04
 header_name {.h}
 code_name {.cxx}
+
+decl {\#include <core/mrvFrame.h>} {public local
+}
+
 decl {\#include <string>} {public local
 }
+
 
 decl {\#include <iostream>} {private local
 }
