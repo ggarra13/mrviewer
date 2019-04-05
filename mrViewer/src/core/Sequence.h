@@ -27,6 +27,11 @@
 #ifndef mrvSequence_h
 #define mrvSequence_h
 
+#if defined(_WIN32) || defined(_WIN64)
+#include "winsock2.h"
+#endif
+
+
 #include <vector>
 #include <string>
 #include <limits>
