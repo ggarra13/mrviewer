@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ typedef std::vector< std::string > stringArray;
   //
   // Command-line parser
   //
-  void parse_command_line( const int argc, const char** argv,
+  void parse_command_line( const int argc, char** argv,
 			   ViewerUI* ui, 
                            mrv::Options& opts);
 }
