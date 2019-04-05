@@ -25,6 +25,9 @@
 //#include <config.h>
 #include "flu-config.h"
 
+#if defined(_WIN32)
+#undef HAVE_SCANDIR
+#endif
 
 #if defined(__APPLE__)
 
