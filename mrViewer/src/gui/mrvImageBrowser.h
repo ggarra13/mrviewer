@@ -28,6 +28,8 @@
 #ifndef mrvImageBrowser_h
 #define mrvImageBrowser_h
 
+#include "core/mrvFrame.h"
+
 #include <vector>
 #include <string>
 
