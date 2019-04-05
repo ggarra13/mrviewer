@@ -2,6 +2,10 @@
 version 1.03
 header_name {.h}
 code_name {.cxx}
+
+decl {\#include "core/mrvFrame.h"} {public local
+}
+
 decl {\#include "core/mrvI8N.h"} {private local
 }
 
