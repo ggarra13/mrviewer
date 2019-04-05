@@ -27,7 +27,7 @@
 
 namespace mrv {
 
-  void  set_root_path( const int argc = 0, const char** argv = NULL );
+  void  set_root_path( const int argc = 0, char** argv = NULL );
 
 }
 
