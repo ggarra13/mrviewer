@@ -50,7 +50,7 @@
 #endif
 
 #if defined(WIN32) || defined(WIN64)
-#  include <FL/win32.H>   // for FL::getDC()
+#  include <FL/platform.H>   // for Fl::getDC()
 #endif
 
 #include "mrvPreferencesUI.h"
@@ -251,8 +251,8 @@ void GLEngine::init_charset()
     int fontsize = 16;
 
 #ifdef WIN32
-    DBG( __FUNCTION__ << " " << __LINE__ );
-    HDC   hDC = Fl::getDC();
+    // DBG( __FUNCTION__ << " " << __LINE__ );
+    HDC   hDC = fl_gc;
     HGLRC hRC = wglGetCurrentContext();
     if (hRC == NULL ) hRC = wglCreateContext( hDC );
 
