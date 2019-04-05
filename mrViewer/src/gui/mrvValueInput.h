@@ -7,8 +7,8 @@
 #ifndef mrvValue_Input_h
 #define mrvValue_Input_h
 
-#include <cstdio>
-#include <cmath>
+#include <stdio.h>
+#include <math.h>
 #include "core/mrvI8N.h"
 #include <FL/Fl_Value_Input.H>
 
