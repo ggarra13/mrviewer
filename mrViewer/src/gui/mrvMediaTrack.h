@@ -18,6 +18,8 @@
 #ifndef mrvMediaTrack_h
 #define mrvMediaTrack_h
 
+#include "core/mrvFrame.h"
+
 #include <boost/cstdint.hpp>
 #include <FL/Fl_Group.H>
 
