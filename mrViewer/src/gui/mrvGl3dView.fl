@@ -57,7 +57,7 @@ main_ = main;
     } {}
   }
   Function {GL3dViewUI(ViewerUI* m)} {} {
-    code {make_window( m );} {}
+    code {Fl_Group::current(0); make_window( m );} {}
   }
   Function {~GL3dViewUI()} {} {
     code {delete uiMain; uiMain = NULL;} {}
