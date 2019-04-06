@@ -46,8 +46,6 @@ public:
         uiMain = m;
     };
 
-    virtual void layout();
-
     virtual int handle( int event );
 
     /**
