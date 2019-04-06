@@ -137,9 +137,5 @@ int MainWindow::handle( int event )
     return Fl_Window::handle( event );
 }
 
-void MainWindow::layout()
-{
-    redraw(); // @TODO: FLTK1.4
-}
 
 } // namespace mrv
