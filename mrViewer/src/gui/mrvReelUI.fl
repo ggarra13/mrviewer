@@ -129,7 +129,7 @@ v->new_reel(name);}
   }
   Function {ReelUI(ViewerUI* m)} {open
   } {
-    code {m->uiMain->make_current();
+    code {Fl_Group::current(0);
 make_window( m );} {}
   }
   Function {~ReelUI()} {open
