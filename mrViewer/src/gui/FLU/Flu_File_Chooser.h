@@ -588,6 +588,9 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   static int numTypes;
   static int typeArraySize;
 
+  static bool thumbnailsFileReq;
+  static bool singleButtonTravelDrawer;
+  
   static FluSimpleString dArrow[4];
   static FluSimpleString uArrow[4];
 
