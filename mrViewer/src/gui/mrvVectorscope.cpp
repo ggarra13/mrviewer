@@ -135,7 +135,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
         fl_pop_matrix();
 
-	// @TODO: fltk1.4 cannot draw letters
+	// @TODO: fltk1.4 cannot draw transformed letters
 	// fl_translate( 0, int(W * 0.15f) );
         // fl_draw(i, names[i], 0.15f, 0, 0);
     }
