@@ -425,10 +425,15 @@ void fill_ui_hotkeys( mrv::Browser* b )
 
     const char* labels[] = { _("Function"), _("Hotkey"), NULL};
     b->column_labels( labels );
-    const int widths[] = {240, -1, 0};
+    const int widths[] = {1200, 200, 0};
     b->column_widths( widths );
+    b->showcolsep(1);
+    //b->colsepcolor(FL_RED);
+    b->column_char('\t');                                                       // tabs as column delimiters
 
     b->clear();
+
+    b->add( "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey" );
 
 
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
@@ -469,6 +474,8 @@ void fill_ui_hotkeys( mrv::Browser* b )
         std::string row( _(h.name.c_str()) );
         row += "\t" + key;
 
+	std::cerr << row << std::endl;
+	
         b->add( row.c_str() );
     }
 }
@@ -486,9 +493,8 @@ void select_hotkey( HotkeyUI* b )
     h->fill();
 
     Fl_Window* window = h->uiMain;
-    Fl_Group::current( b->uiMain );
-    window->show();
     Fl_Group::current( 0 );
+    window->show();
 
     while ( window->visible() )
         Fl::check();
