@@ -982,18 +982,19 @@ void ImageBrowser::remove( mrv::media m )
     Fl_Tree_Item* item = root()->child(idx);
     if ( !item )
     {
-	LOG_ERROR( _("New item not found in tree.") );
+	LOG_ERROR( _("Removal item not found in tree.") );
 	return;
     }
-    delete item->widget();
+    delete item->widget(); item->widget(NULL);
+
     Fl_Tree::remove( item );
     
     
-    if ( view()->background() == m )
-    {
-        view()->bg_reel( -1 );
-        view()->background( mrv::media() );
-    }
+    // if ( view()->background() == m )
+    // {
+    //     view()->bg_reel( -1 );
+    //     view()->background( mrv::media() );
+    // }
 
     char buf[256];
     sprintf( buf, "RemoveImage \"%s\"", m->image()->fileroot() );
@@ -1001,6 +1002,10 @@ void ImageBrowser::remove( mrv::media m )
 
     // Remove image from reel
     reel->images.erase( i );
+
+    match_tree_order();
+
+    adjust_timeline();
     
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -1009,11 +1014,15 @@ void ImageBrowser::remove( mrv::media m )
         e->refresh();
         e->redraw();
     }
-
+    
+    // clear dragging in case we were dragging the removed media
+    dragging = NULL;  
+    
     if (play) view()->play( play );
-
+    
     view()->redraw();
     redraw();
+	
 }
 
 
@@ -2643,8 +2652,7 @@ void ImageBrowser::handle_dnd()
     std::string oldroot, oldview, oldext;
 
     if ( i != e ) {
-        // @TODO: fltk1.4
-        // retname = *i;  // to open file requester in last directory
+        // retname = *i;  // @TODO: fltk1.4 to open file requester in last directory
     }
 
     for ( ; i != e; ++i )
@@ -3237,6 +3245,7 @@ void ImageBrowser::draw()
 	mrv::Element* elem = (mrv::Element*) i->widget();
 	elem->make_thumbnail();
     }
+    
     
     Fl_Tree::draw();
 
