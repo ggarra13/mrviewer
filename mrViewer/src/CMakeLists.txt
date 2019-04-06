@@ -275,7 +275,6 @@ SET( SOURCES
   gui/mrvMainWindow.cpp
   gui/mrvPopupMenu.cpp
   gui/mrvPreferences.cpp
-  gui/mrvPreferencesBrowser.cpp
   gui/mrvProgressReport.cpp
   gui/mrvReel.cpp
   gui/mrvSave.cpp
