@@ -157,7 +157,7 @@ o->label( o->child( o->value() )->label() );}
     }
   }
   Function {HistogramUI(ViewerUI* m)} {} {
-    code {Fl_Group::current( m->uiMain );
+    code {Fl_Group::current( 0 );
       make_window( m );} {}
   }
   Function {~HistogramUI()} {} {
