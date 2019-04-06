@@ -96,13 +96,11 @@ void new_size( Fl_Widget* w, void* data )
 static void cb_Accept(Fl_Button*, Fl_Window* v) {
     v->activate();
     v->hide();
-    /// v->make_exec_return(true);  // @TODO: fltk1.4
 }
 
 static void cb_Cancel(Fl_Button*, Fl_Window* v) {
     v->deactivate();
     v->hide();
-    /// v->make_exec_return(false);  // @TODO: fltk1.4
 }
 
 
