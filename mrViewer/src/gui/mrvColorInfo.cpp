@@ -665,7 +665,8 @@ void ColorInfo::update( const CMedia* img,
         hmean.a /= c;
 
         static const char* kR = "@C4286611456@c";
-        static const char* kG = "@C2164228096@c";
+        // static const char* kG = "@C2164228096@c";
+	static const char* kG = "@C1623228416@c";
         static const char* kB = "@C2155937536@c";
         static const char* kA = "@C2964369408@c";
 
@@ -857,7 +858,7 @@ void ColorInfo::update( const CMedia* img,
              << kS
              << float_printf(hmean.g) << "\t@c"
              << kV
-             << float_printf(hmean.b) << "\t@"
+             << float_printf(hmean.b) << "\t@c"
              << kL
              << float_printf(hmean.a);
     }
