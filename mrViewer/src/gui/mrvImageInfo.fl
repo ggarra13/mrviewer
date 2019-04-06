@@ -56,7 +56,7 @@ o->hide();} open
   }
   Function {ImageInfoUI(ViewerUI* m)} {open
   } {
-    code {make_window( m );} {}
+    code {Fl_Group::current(0); make_window( m );} {}
   }
   Function {~ImageInfoUI()} {open
   } {
