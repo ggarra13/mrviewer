@@ -47,9 +47,6 @@ decl {\#include "gui/mrvImageBrowser.h"} {private local
 decl {\#include "gui/mrvBrowser.h"} {private local
 }
 
-decl {\#include "gui/mrvPreferencesBrowser.h"} {private local
-}
-
 decl {\#include "gui/mrvCTLBrowser.h"} {public local
 }
 
@@ -405,30 +402,31 @@ class LogUI {} {
   }
 }
 
-class HotkeyUI {} {
+class HotkeyUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
       label Hotkeys open
-      xywh {364 235 450 400} type Double hide resizable
+      xywh {364 235 635 430} type Double resizable
       code0 {// Make the window transient
-//o->child_of( main->uiMain );} modal
+//o->child_of( main->uiMain );} modal visible
     } {
       Fl_Group {} {open
-        xywh {5 25 445 375}
+        xywh {5 25 820 380}
       } {
         Fl_Browser uiFunction {
-          label Function
+          label Hotkeys
           user_data this user_data_type {HotkeyUI*}
           callback {mrv::select_hotkey( v );}
-          xywh {25 25 415 315}
+          xywh {25 25 600 320}
           code0 {mrv::fill_ui_hotkeys( o );}
           class {mrv::Browser}
         }
         Fl_Button {} {
           label Save
-          callback {mrv::Preferences::save();}
-          xywh {370 355 65 30}
+          callback {mrv::Preferences::save();} selected
+          xywh {540 375 65 30}
         }
       }
     }
@@ -442,13 +440,12 @@ class HotkeyUI {} {
   }
 }
 
-class PaintUI {open
-} {
+class PaintUI {} {
   Function {make_window( ViewerUI* m )} {open
   } {
     Fl_Window uiMain {
       label Paint open
-      xywh {733 95 165 505} type Double resizable non_modal visible
+      xywh {733 95 165 505} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {5 14 149 481}
@@ -609,8 +606,7 @@ uiScrub->value(0);}
   }
 }
 
-class ConnectionUI {open
-} {
+class ConnectionUI {} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -682,8 +678,7 @@ else
   }
 }
 
-class ViewerUI {open
-} {
+class ViewerUI {} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -927,7 +922,7 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
               Fl_Button uiNormalize {
                 label Norm
                 user_data this user_data_type {ViewerUI*}
-                callback {v->uiView->toggle_normalize();} selected
+                callback {v->uiView->toggle_normalize();}
                 tooltip {Normalize pixel values to remain in [0,1] range.} xywh {360 2 40 22} align 64
               }
             }
@@ -1769,12 +1764,14 @@ mrv::Preferences prefs( uiPrefs );} {}
   Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {} {
+  Function {~ViewerUI()} {open
+  } {
     code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
 delete uiHistogram; uiHistogram = NULL;
 delete uiVectorscope; uiVectorscope = NULL;
+delete uiWaveform; uiWaveform = NULL;
 delete uiGL3dView; uiGL3dView = NULL;
 delete uiStereo; uiStereo = NULL;
 delete uiAbout; uiAbout = NULL;

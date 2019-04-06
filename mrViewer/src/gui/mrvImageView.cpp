@@ -786,6 +786,7 @@ namespace mrv {
 
 void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
 {
+    Fl_Group::current(0);
     if ( idx == kReelWindow )
     {
         // Reel window

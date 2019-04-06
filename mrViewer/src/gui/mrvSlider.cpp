@@ -79,7 +79,7 @@ void Slider::draw_ticks(const mrv::Recti& r, int min_spacing)
     fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
     Fl_Color textcolor = this->labelcolor();
-    Fl_Color linecolor = fl_contrast( textcolor, FL_BLACK );
+    Fl_Color linecolor = fl_contrast( textcolor, FL_GRAY );
 
     fl_color(linecolor);
     fl_font( fl_font(), labelsize() );
