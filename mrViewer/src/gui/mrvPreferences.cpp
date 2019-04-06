@@ -574,14 +574,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiWindowYSize->value( tmp );
 
     Fl_Preferences flu( ui, "file_requester" );
-    // @TODO: fltk1.4
     //
-    // flu.get("quick_folder_travel", tmp, 1 );
-    // uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
-    // Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
-    // flu.get("thumbnails", tmp, 1 );
-    // uiPrefs->uiPrefsFileReqThumbnails->value( (bool) tmp );
-    // Flu_File_Chooser::thumbnailsFileReq = (bool) tmp;
+    
+    flu.get("quick_folder_travel", tmp, 1 );
+    uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
+    Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
+    flu.get("thumbnails", tmp, 1 );
+    uiPrefs->uiPrefsFileReqThumbnails->value( (bool) tmp );
+    Flu_File_Chooser::thumbnailsFileReq = (bool) tmp;
 
     //
     // playback
@@ -1383,11 +1383,11 @@ void Preferences::run( ViewerUI* main )
     // Handle file requester
     //
     // @TODO: fltk1.4
-    // Flu_File_Chooser::thumbnailsFileReq = (bool)
-    //                                       uiPrefs->uiPrefsFileReqThumbnails->value();
+    Flu_File_Chooser::thumbnailsFileReq = (bool)
+                                          uiPrefs->uiPrefsFileReqThumbnails->value();
 
-    // Flu_File_Chooser::singleButtonTravelDrawer = (bool)
-    //         uiPrefs->uiPrefsFileReqFolder->value();
+    Flu_File_Chooser::singleButtonTravelDrawer = (bool)
+            uiPrefs->uiPrefsFileReqFolder->value();
 
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
@@ -1802,10 +1802,10 @@ void Preferences::save()
     flu.set("thumbnails", uiPrefs->uiPrefsFileReqThumbnails->value());
 
     // @TODO: fltk1.4
-    // Flu_File_Chooser::singleButtonTravelDrawer =
-    //     uiPrefs->uiPrefsFileReqFolder->value();
-    // Flu_File_Chooser::thumbnailsFileReq =
-    //     uiPrefs->uiPrefsFileReqThumbnails->value();
+    Flu_File_Chooser::singleButtonTravelDrawer =
+        uiPrefs->uiPrefsFileReqFolder->value();
+    Flu_File_Chooser::thumbnailsFileReq =
+        uiPrefs->uiPrefsFileReqThumbnails->value();
 
     //
     // playback prefs
