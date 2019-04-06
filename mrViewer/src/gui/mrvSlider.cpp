@@ -9,101 +9,161 @@
 namespace mrv {
 
 
+static char* printtick(char* buffer, double v) {
+  if (fabs(v)>=1) {
+    sprintf(buffer, "%g", v);
+    return buffer;
+  } else {
+    sprintf(buffer, "%.3g", v);
+    char* p = buffer;
+    if (v < 0) p++;
+    while (p[0]=='0' && p[1]) p++;
+    if (v < 0) *--p = '-';
+    return p;
+  }
+}
+
 void Slider::draw_ticks(const mrv::Recti& r, int min_spacing)
 {
-    int x1, y1, x2, y2, dx, dy, w;
-    x1 = x2 = r.x()+(slider_size()-1)/2;
-    dx = 1;
-    y1 = r.y();
-    y2 = r.b()-1;
-    dy = 0;
+  int x1, sx1, y1, sy1, x2, y2, dx, dy, w;
+  if (horizontal()) {
+      sx1 = x1 = x2 = r.x()+(slider_size()-1)/2; dx = 1;
+    y1 = r.y(); y2 = r.b()-1; dy = 0;
+    sy1 = y1+1+r.h()/4;
     w = r.w();
-
-
-    fl_push_clip( r.x(), r.y(), r.w(), r.h() );
-
-    if (w <= 0) return;
-
-    double A = minimum();
-    double B = maximum();
-    if (A > B) {
-	A = B;
-	B = minimum();
-    }
-    //if (!finite(A) || !finite(B)) return;
-
-    if (min_spacing < 1) min_spacing = 10; // fix for fill sliders
-    // Figure out approximate size of min_spacing at zero:
-
-    double mul = 1; // how far apart tick marks are
-    double div = 1;
-    int smallmod = 5; // how many tick marks apart "larger" ones are
-    int nummod = 15; // how many tick marks apart numbers are
-
-
-    int powincr = 10000;
-
+  } else {
+    x1 = r.x(); x2 = r.r()-1; dx = 0;
+    sx1 = x1+1+r.w()/4;
+    sy1 = y1 = y2 = r.y()+(slider_size()-1)/2; dy = 1;
+    w = r.h();
+  }
+  if (w <= 0) return;
+  double A = minimum();
+  double B = maximum();
+  if (A > B) {A = B; B = minimum();}
+  
+  if (min_spacing < 1) min_spacing = 10; // fix for fill sliders
+  
+  double mul = 1; // how far apart tick marks are
+  double div = 1;
+  int smallmod = 5; // how many tick marks apart "larger" ones are
+  int nummod = 10; // how many tick marks apart numbers are
+  int powincr = 10000;
+  
+  if (!log()) {
     double derivative = (B-A)*min_spacing/w;
     if (derivative < step()) derivative = step();
     while (mul*5 <= derivative) mul *= 10;
     while (mul > derivative*2*div) div *= 10;
-    if (derivative*div > mul*2) {
-        mul *= 5;
-        smallmod = 2;
-    }
-    else if (derivative*div > mul) {
-        mul *= 2;
-        nummod /= 2;
-    }
-    if ( nummod <= 1 ) nummod = 1;
+    if (derivative*div > mul*2) {mul *= 5; smallmod = 2;}
+    else if (derivative*div > mul) {mul *= 2; nummod = 5;}
+  } else if (A > 0) {
+    // log slider
+    while (mul*5 <= A) mul *= 10;
+    while (mul > A*2*div) div *= 10;
+    powincr = 10;
+    double d = exp(min_spacing*::log(B/A)/w*3);
+    if (d >= 5) {mul *= 10; smallmod = nummod = 1; powincr = 1;}
+    else if (d >= 2) {mul *= 5; smallmod = powincr = nummod = 2;}
+  } else {
+    // squared slider, derivative at edge is zero, use value at 1 pixel
+    double derivative = B*min_spacing*min_spacing/(w*w);
+    if (A < 0) derivative *= 4;
+    if (derivative < step()) derivative = step();
+    while (mul < derivative) mul *= 10;
+    while (mul >= 10*derivative*div) div *= 10;
+    powincr = 10;
+    //if (derivative > num) {num *= 5; smallmod = powincr = nummod = 2;}
+  }
+  
+    fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
     Fl_Color textcolor = this->labelcolor();
-    Fl_Color linecolor = FL_BLACK;
+    Fl_Color linecolor = fl_contrast( textcolor, FL_BLACK );
 
     fl_color(linecolor);
-    char buffer[128];
+    fl_font( fl_font(), labelsize() );
+    
+    float yt = horizontal() ? y1+fl_size()-fl_descent() : y1 -1;
+    double v; char buffer[20]; char* p; int t; float x, y;
     for (int n = 0; ; n++) {
-        // every ten they get further apart for log slider:
-        if (n > powincr) {
-            mul *= 10;
-            n = (n-1)/10+1;
-        }
-        double v = mul*n/div;
-        if (v > fabs(A) && v > fabs(B)) break;
-        int sm = n%smallmod ? 3 : 0;
-        if (v >= A && v <= B) {
-            int t = slider_position(v, w);
-            fl_line(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
-            if (n-1 != 0 && (n-1)%nummod == 0) {
-		sprintf( buffer, "%g", v );
-                char* p = buffer;
-                fl_font(labelfont(), labelsize());
-                fl_color(textcolor);
-                int wt = 0, ht = 0;
-                fl_measure( p, wt, ht );
-                fl_draw(p, float(x1+dx*t-wt/2),
-                        float(y1+dy*t+fl_height()-fl_descent()));
-                fl_color(linecolor);
-            }
-        }
-        if (v && -v >= A && -v <= B) {
-            int t = slider_position(-v, w);
-            fl_line(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
-            if (n%nummod == 0) {
-		sprintf( buffer, "%g", -v );
-                char* p = buffer;
-                fl_font(labelfont(), labelsize());
-                fl_color(textcolor);
-                // int wt = 0, ht = 0;
-                // measure( p, wt, ht );
-                fl_draw(p, float(x1+dx*t),
-                         float(y1+dy*t+fl_height()-fl_descent()));
-                fl_color(linecolor);
-            }
-        }
+	// every ten they get further apart for log slider:
+	if (n > powincr) {mul *= 10; n = (n-1)/10+1;}
+	v = mul*n/div;
+	if (v >= fabs(A) && v >= fabs(B)) break;
+	if (n%smallmod) {
+	    if (v > A && v < B) {
+		t = slider_position(v, w);
+		fl_line(sx1+dx*t, sy1+dy*t, x2+dx*t, y2+dy*t);
+	    }
+	    if (v && -v > A && -v < B) {
+		t = slider_position(-v, w);
+		fl_line(sx1+dx*t, sy1+dy*t, x2+dx*t, y2+dy*t);
+	    }
+	}
+	else
+	{
+	    if (v > A && v < B) {
+		t = slider_position(v, w);
+		fl_line(x1+dx*t, y1+dy*t, x2+dx*t, y2+dy*t);
+		if (n%nummod == 0) {
+		    p = printtick(buffer, v);
+		    x = x1+dx*t+1;
+		    y = yt+dy*t;
+		    if (dx && (x < r.x()+3*min_spacing ||
+			       x >= r.r()-5*min_spacing));
+		    else if (dy && (y < r.y()+5*min_spacing ||
+				    y >= r.b()-3*min_spacing));
+		    else {
+			fl_color(textcolor);
+			fl_draw(p, x,y);
+			fl_color(linecolor);
+		    }
+		}
+	    }
+	    if (v && -v > A && -v < B) {
+		t = slider_position(-v, w);
+		fl_line(x1+dx*t, y1+dy*t, x2+dx*t, y2+dy*t);
+		if (n%nummod == 0) {
+		    p = printtick(buffer, v);
+		    x = x1+dx*t+1;
+		    y = yt+dy*t;
+		    if (dx && (x < r.x()+3*min_spacing || x >= r.r()-5*min_spacing));
+		    else if (dy && (y < r.y()+5*min_spacing || y >= r.b()-3*min_spacing));
+		    else {
+			fl_color(textcolor);
+			fl_draw(p, x,y);
+			fl_color(linecolor);
+		    }
+		}
+	    }
+	}
     }
 
-    fl_pop_clip();
+  // draw the end ticks with numbers:
+
+  v = minimum();
+  t = slider_position(v, w);
+  fl_line(x1+dx*t, y1+dy*t, x2+dx*t, y2+dy*t);
+  p = printtick(buffer, v);
+  x = x1+dx*t+1;
+  y = yt+dy*t;
+  fl_color(textcolor);
+  fl_draw(p, x,y);
+  fl_color(linecolor);
+
+  v = maximum();
+  t = slider_position(v, w);
+  fl_line(x1+dx*t, y1+dy*t, x2+dx*t, y2+dy*t);
+  p = printtick(buffer, v);
+  x = x1+dx*t+1;
+  if (dx) {float w = fl_width(p); if (x+w > r.r()) x -= 2+w;}
+  y = yt+dy*t;
+  if (dy) y += fl_size();
+  fl_color(textcolor);
+  fl_draw(p, x,y);
+  
+  fl_pop_clip();
 }
 
 int Slider::slider_position( double value, int w )
@@ -117,7 +177,7 @@ int Slider::slider_position( double value, int w )
     // if both are negative, make the range positive:
     if (B <= 0) {flip = !flip; double t = A; A = -B; B = -t; value = -value;}
     double fraction;
-    if (!(slider_type() & kLOG)) {
+    if (!log()) {
 	// linear slider
     fraction = (value-A)/(B-A);
   } else if (A > 0) {
@@ -192,6 +252,7 @@ double Slider::position_value(int X, int w) {
     if (flip) return -value;
     return value;
 }
+
 
 int Slider::handle( int event )
 {
