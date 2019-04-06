@@ -148,6 +148,9 @@ int (*Flu_File_Chooser::customSort)(const char*,const char*) = 0;
 FluSimpleString Flu_File_Chooser::dArrow[4];
 FluSimpleString Flu_File_Chooser::uArrow[4];
 
+bool Flu_File_Chooser::thumbnailsFileReq = true;
+bool Flu_File_Chooser::singleButtonTravelDrawer = true;
+
 #ifdef WIN32
 // Internationalized windows folder name access
 // Fix suggested by Fabien Costantini
