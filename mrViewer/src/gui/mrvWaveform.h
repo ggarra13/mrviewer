@@ -28,7 +28,7 @@
 #define mrvWaveform_h
 
 #include <FL/Fl_Box.H>
-#include <FL/Fl_Image.H>
+#include <FL/Fl_RGB_Image.H>
 
 #include "core/CMedia.h"
 #include "core/mrvRectangle.h"
@@ -42,7 +42,8 @@ class Waveform : public Fl_Box
 {
 public:
     Waveform( int x, int y, int w, int h, const char* l = 0 );
-
+    virtual ~Waveform();
+    
     virtual void draw();
 
     void intensity( float x ) {
@@ -64,7 +65,7 @@ protected:
     float _intensity;
     mrv::image_type_ptr in;  // input picture (used when format is not 8 bits)
     mrv::image_type_ptr out; // waveform image data
-    Fl_Image* fli; // waveform b&w image
+    Fl_RGB_Image* fli; // waveform b&w image
     ViewerUI* uiMain;
 };
 
