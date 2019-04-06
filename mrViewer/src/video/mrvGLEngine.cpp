@@ -58,6 +58,8 @@
 extern "C" {
 
 #include <GL/glew.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 
 #if defined(WIN32) || defined(WIN64)
 #  include <GL/wglew.h>
@@ -66,8 +68,6 @@ extern "C" {
 #endif
 
 #include <libavutil/mastering_display_metadata.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
 
 }
 

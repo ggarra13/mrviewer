@@ -36,6 +36,7 @@ namespace mrv {
   {
   public:
     clonedImage( const CMedia* other );
+      virtual ~clonedImage() { };
 
     virtual const char* const format() const { return "Cloned Image"; }
 
