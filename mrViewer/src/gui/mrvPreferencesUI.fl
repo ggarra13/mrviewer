@@ -50,6 +50,9 @@ decl {\#include "gui/mrvPopupMenu.h"} {public local
 decl {\#include "gui/mrvColorOps.h"} {private local
 }
 
+decl {\#include "gui/mrvTree.h"} {public local
+}
+
 decl {\#include "gui/mrvValueInput.h"} {public local
 }
 
@@ -2017,7 +2020,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
 	     uiWizard->value( w );
 	     break;
 	 }
-}}
+}} class { mrv::Tree }
           xywh {0 25 195 410}
           code0 {fill_tree(o);}
           code1 {o->showroot(false);}
@@ -2062,7 +2065,7 @@ v->uiPrefs->run(v);}
   } {
     code {mrv::Preferences::run( m );} {}
   }
-  Function {fill_tree(Fl_Tree* o)} {open
+  Function {fill_tree(mrv::Tree* o)} {open
   } {
     code {o->add( _("User Interface") );
 o->add( _("User Interface/View Window") );
@@ -2086,6 +2089,7 @@ o->add( _("Audio") );
 o->add( _("Subtitles") );
 o->add( _("Errors") );
 o->add( _("Images") );
-o->add( _("OpenEXR") );} {}
+o->add( _("OpenEXR") );
+	} {}
   }
 }
