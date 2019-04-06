@@ -35,9 +35,6 @@ decl {\#include "gui/mrvImageBrowser.h"} {private local
 decl {\#include "gui/mrvBrowser.h"} {private local
 }
 
-decl {\#include "gui/mrvPreferencesBrowser.h"} {private local
-}
-
 decl {\#include "gui/mrvCTLBrowser.h"} {public local
 }
 
@@ -103,7 +100,7 @@ main_ = main;} non_modal visible
     }
   }
   Function {VectorscopeUI(ViewerUI* m)} {} {
-    code {make_window( m );} {}
+    code {Fl_Group::current(0); make_window( m );} {}
   }
   Function {~VectorscopeUI()} {} {
     code {delete uiMain; uiMain = NULL;} {}

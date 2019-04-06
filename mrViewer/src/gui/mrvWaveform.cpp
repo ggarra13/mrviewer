@@ -300,6 +300,9 @@ void Waveform::create_image( const mrv::image_type_ptr pic )
 
 void Waveform::draw_pixels( const mrv::Recti& r )
 {
+    if ( ! uiMain->uiView )
+	return;
+    
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
         tooltip( _("Mark an area in the image with SHIFT + LMB") );
