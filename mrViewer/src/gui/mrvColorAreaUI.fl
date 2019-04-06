@@ -54,9 +54,8 @@ o->size_range( 500, 280 );} non_modal visible
   }
   Function {ColorAreaUI(ViewerUI* m)} {open
   } {
-    code {Fl_Group::current( (Fl_Group*) m->uiMain );
-      make_window( m );
-      Fl_Group::current(0);} {}
+    code {Fl_Group::current(0); 
+      make_window( m );} {}
   }
   Function {~ColorAreaUI()} {open
   } {
