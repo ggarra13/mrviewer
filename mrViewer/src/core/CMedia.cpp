@@ -102,9 +102,6 @@ const char* kModule = "img";
 }
 
 
-#undef DBG
-#define DBG(x)
-
 // #define DEBUG_SEEK
 // #define DEBUG_VIDEO_PACKETS
 //#define DEBUG_STORES
@@ -826,6 +823,7 @@ void CMedia::wait_for_threads()
     _threads.clear();
 }
 
+
 /**
  * Destructor
  *
@@ -837,47 +835,64 @@ CMedia::~CMedia()
     SCOPED_LOCK( _audio_mutex );
     SCOPED_LOCK( _subtitle_mutex );
 
-
+    
     if ( !stopped() )
         stop();
 
+    
     delete _right_eye;
     _right_eye = NULL;
 
     image_damage( kNoDamage );
 
+    
     free( _channel );
+    
     free( _label );
+    
     free( _profile );
+    
     free( _rendering_transform );
 
+    
     clear_look_mod_transform();
+    
     free( _idt_transform );
 
+    
     delete [] _dataWindow;
     _dataWindow = NULL;
+    
     delete [] _dataWindow2;
     _dataWindow2 = NULL;
+    
     delete [] _displayWindow;
     _displayWindow = NULL;
+    
     delete [] _displayWindow2;
     _displayWindow2 = NULL;
 
+    
     _hires.reset();
 
+    
     clear_cache();
+    
     delete [] _sequence;
     _sequence = NULL;
+    
     delete [] _right;
     _right = NULL;
 
 
 
+    
     delete [] _audio_buf;
     _audio_buf = NULL;
 
     if ( has_audio() )
     {
+	
         close_audio();
 
         close_audio_codec();
@@ -900,33 +915,41 @@ CMedia::~CMedia()
         av_frame_free(&_aframe);
     }
 
+    
     free( _fileroot );
     _fileroot = NULL;
+    
     free( _filename );
     _filename = NULL;
 
     if ( _context )
     {
+	
         avformat_close_input( &_context );
     }
 
     if ( _acontext )
     {
+	
         avformat_close_input( &_acontext );
     }
 
+    
     free( _subtitle_font );
     _subtitle_font = NULL;
+    
     free( _subtitle_encoding);
     _subtitle_encoding = NULL;
 
     {
+	
         for ( const auto& i : _attrs )
         {
             delete i.second;
         }
     }
 
+    
     _context = _acontext = NULL;
 }
 
@@ -1340,7 +1363,7 @@ void CMedia::display_window( const int xmin, const int ymin,
     SCOPED_LOCK( _data_mutex );
     _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
+    
 }
 
 void CMedia::display_window2( const int xmin, const int ymin,
@@ -1363,7 +1386,7 @@ void CMedia::display_window2( const int xmin, const int ymin,
     SCOPED_LOCK( _data_mutex );
     _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    DBG( "display window2 frame " << _frame << " is " << _displayWindow2[idx] );
+    
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
@@ -1387,7 +1410,7 @@ void CMedia::data_window( const int xmin, const int ymin,
 
     _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    // DBG( "data window setframe " << _frame << " is " << _dataWindow[idx] );
+    // 
 }
 
 
@@ -1411,7 +1434,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
     SCOPED_LOCK( _data_mutex );
     _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    DBG( "data window2 frame " << _frame << " is " << _dataWindow2[idx] );
+    
 }
 
 
@@ -2422,7 +2445,7 @@ void CMedia::play(const CMedia::Playback dir,
 
     _dts = _frame.load();
 
-    DBG( name() << " Play from frame " << _dts << " expected " << _expected );
+    
 
     _audio_clock = double( av_gettime_relative() ) / 1000000.0;
     _video_clock = double( av_gettime_relative() ) / 1000000.0;
@@ -2578,9 +2601,9 @@ void CMedia::stop(const bool bg)
     // Notify loop barrier, to exit any wait on a loop
     //
     TRACE("");
-    DBG( name() << " Notify all loop barriers" );
+    
     if ( _loop_barrier )  _loop_barrier->notify_all();
-    DBG( name() << " Notify stereo barrier" );
+    
     TRACE("");
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
     if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
@@ -2589,7 +2612,7 @@ void CMedia::stop(const bool bg)
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
     // have turned off audio, but audio thread is still active.
-    DBG( name() << " Notify all A/V/S" );
+    
     TRACE("");
     _audio_packets.cond().notify_all();
     TRACE("");
@@ -2599,12 +2622,12 @@ void CMedia::stop(const bool bg)
     TRACE("");
 
     // Wait for all threads to exit
-    DBG( name() << " Wait for threads" );
+    
     wait_for_threads();
-    DBG( name() << " Waited for threads" );
+    
 
     // Clear barrier
-    DBG( name() << " Clear barrier" );
+    
     delete _loop_barrier;
     TRACE("");
     _loop_barrier = NULL;
@@ -2623,7 +2646,7 @@ void CMedia::stop(const bool bg)
     TRACE("");
     close_audio();
 
-    DBG( name() << " Clear packets" );
+    
     TRACE("");
     // Clear any audio/video/subtitle packets
     clear_packets();
@@ -2878,7 +2901,6 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
         }
         else
         {
-            //DBG( "cache seq " << idx << " pic " << pic );
             seq[idx] = pic;
             assert0( pic.use_count() >= 2 );
         }
