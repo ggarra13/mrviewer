@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2018 Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2018 Gonzalo Garramuño
 
     This code is largely based on vf_waveform of the ffmpeg project, which is:
     Copyright (c) 2012-2016 Paul B Mahol
@@ -51,15 +51,19 @@ namespace mrv
 {
 
 Waveform::Waveform( int x, int y, int w, int h, const char* l ) :
-Fl_Box( x, y, w, h, l ),
+Fl_Box( x, y, w, 256, l ),
 fli( NULL ),
 _intensity( 0.04f )
 {
     color( FL_BLACK );
     // buttoncolor( FL_BLACK );
-    tooltip( _("Mark an area in the image with the left mouse button") );
+    tooltip( _("Mark an area in the image with SHIFT + the left mouse button") );
 }
 
+Waveform::~Waveform()
+{
+    delete fli; fli = NULL;
+}
 
 void Waveform::draw_grid(const mrv::Recti& r)
 {
@@ -68,8 +72,8 @@ void Waveform::draw_grid(const mrv::Recti& r)
 
 void Waveform::draw()
 {
-    mrv::Recti r( w(), h() );
-    draw_box();
+    mrv::Recti r( x(), y(), w(), h() );
+    //draw_box();
     draw_pixels(r);
 }
 
@@ -298,7 +302,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 {
     mrv::media m = uiMain->uiView->foreground();
     if (!m) {
-        tooltip( _("Mark an area in the image with the SHIFT + LMB") );
+        tooltip( _("Mark an area in the image with SHIFT + LMB") );
         return;
     }
     CMedia* img = m->image();
@@ -339,23 +343,10 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     if ( xmax >= (int)pic->width() ) xmax = (int)pic->width()-1;
     if ( ymax >= (int)pic->height() ) ymax = (int)pic->height()-1;
 
-
-
-    unsigned stepX = (xmax - xmin + 1) / w();
-    unsigned stepY = (ymax - ymin + 1) / h();
-    if ( stepX < 1 ) stepX = 1;
-    if ( stepY < 1 ) stepY = 1;
-    stepX = stepY = 1;
-
     assert( xmax < pic->width() );
     assert( ymax < pic->height() );
 
 
-    if ( fli == NULL )
-    {
-        fli = new Fl_Image( pic->width(),
-			    pic->height(), 1 );
-    }
 
     if ( !out || out->width() != w() || out->height() != h() )
     {
@@ -365,9 +356,10 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 
         try
         {
-            out.reset( new image_type( 1, pic->width(), 256, 1,
+            out.reset( new image_type( pic->frame(), w(), h(), 1,
                                        mrv::image_type::kLumma,
                                        VideoFrame::kByte ) );
+	    
         }
         catch( const std::bad_alloc& e )
         {
@@ -463,10 +455,14 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     }
     }
 
-    fl_push_matrix();
-    // @TODO:  fltk1.4
+    if ( fli == NULL || w() != fli->w() || h() != fli->h() )
+    {
+	fli = new Fl_RGB_Image( (const uchar*)out->data().get(),
+				out->width(), out->height(), 1 );
+	fli->alloc_array = 0;
+    }
     fli->draw(r.x(), r.y(), r.w(), r.h());
-    fl_pop_matrix();
+    fli->uncache();
 
 }
 
