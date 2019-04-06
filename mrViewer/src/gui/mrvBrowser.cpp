@@ -20,7 +20,7 @@
  * @author gga
  * @date   Wed Jan 31 14:28:24 2007
  *
- * @brief
+ * @brief  @TODO: fltk1.4
  *
  *
  */
@@ -68,12 +68,10 @@ int Browser::which_col_near_mouse() {
     if ( ! Fl::event_inside(this) ) {
         return -1;
     }
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     const int* widths = column_widths();
     if (!widths) return -1;
 
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     int mousex = Fl::event_x() + xposition();
     int colx = 0;
     for ( int t=0; widths[t]; t++ ) {
@@ -115,7 +113,6 @@ int Browser::handle(int e)
         break;
     }
     case FL_MOVE: {
-        std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
         if ( which_col_near_mouse() >= 0 ) {
             change_cursor(FL_CURSOR_WE);
         } else {
@@ -128,7 +125,6 @@ int Browser::handle(int e)
         Fl::event_clicks(0);
         int whichcol = which_col_near_mouse();
         if ( whichcol >= 0 ) {
-            std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
             // CLICKED ON RESIZER? START DRAGGING
             ret = 1;
             _dragging = true;
@@ -144,11 +140,8 @@ int Browser::handle(int e)
             int newwidth = mousex - x();
 
             if ( newwidth > 0 ) {
-                std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
                 set_column_start( _dragcol, newwidth );
-                std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
-                //relayout();  // @TODO: fltk1.4
-                redraw();
+		redraw();
             }
         }
         break;
@@ -183,7 +176,6 @@ void Browser::layout()
 
     }
 
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     // Fl_Browser::layout();
 
@@ -195,7 +187,6 @@ void Browser::layout()
     for ( c = widths; *c != 0; ++c, ++num )
     {
     }
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
     // If widget is set to resizable, resize all columns equally,
     // unless one column width is set to -1
@@ -224,7 +215,6 @@ void Browser::layout()
     }
 
 
-    std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
     for ( int i = 0; i < nchildren; ++i )
     {
         Fl_Widget* c = child(i);
