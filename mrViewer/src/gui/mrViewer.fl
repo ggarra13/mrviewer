@@ -556,7 +556,7 @@ o->redraw();}
           xywh {30 245 95 55} box UP_BOX
         } {
           Fl_Round_Button uiCurrentFrame {
-            label Current user_data_type {void*} selected
+            label Current user_data_type {void*}
             xywh {40 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1
             code0 {o->value(1);}
           }
@@ -844,7 +844,7 @@ uiICCProfiles->uiMain->show();}
           } {
             Fl_Box {} {
               label Gain
-              xywh {125 2 28 22} align 32
+              xywh {125 2 28 22} align 96
             }
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
@@ -883,7 +883,7 @@ v->uiLUT->value(true);} open
               tooltip {OCIO input color space for the image} xywh {260 2 146 22} align 96
               class {mrv::PopupMenu}
             } {}
-            Fl_Group uiFstopGroup {
+            Fl_Group uiFstopGroup {open
               xywh {260 2 146 22}
             } {
               Fl_Group {} {open
@@ -927,8 +927,8 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
               Fl_Button uiNormalize {
                 label Norm
                 user_data this user_data_type {ViewerUI*}
-                callback {v->uiView->toggle_normalize();}
-                tooltip {Normalize pixel values to remain in [0,1] range.} xywh {360 2 40 22}
+                callback {v->uiView->toggle_normalize();} selected
+                tooltip {Normalize pixel values to remain in [0,1] range.} xywh {360 2 40 22} align 64
               }
             }
           }
