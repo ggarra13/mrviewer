@@ -259,7 +259,6 @@ SET( SOURCES
   gui/mrvCollapsibleGroup.cpp
   gui/mrvColorInfo.cpp
   gui/mrvChoice.cpp
-  # gui/mrvDatabaseBrowser.cpp
   gui/mrvEDLGroup.cpp
   gui/mrvElement.cpp
   gui/mrvFileRequester.cpp
@@ -284,6 +283,7 @@ SET( SOURCES
   gui/mrvTextDisplay.cpp
   gui/mrvTimecode.cpp
   gui/mrvTimeline.cpp
+  gui/mrvTree.cpp
   gui/mrvVectorscope.cpp
   gui/mrvVersion.cpp
   gui/mrvWaveform.cpp
