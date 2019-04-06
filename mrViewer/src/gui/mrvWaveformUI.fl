@@ -31,17 +31,14 @@ class WaveformUI {open
   } {
     Fl_Window uiMain {
       label Waveform
-      user_data this user_data_type {WaveformUI*}
-      callback {v->main()->uiView->send_network( "WaveformWindow 0" );
-o->hide();} open
+      user_data this user_data_type {WaveformUI*} open selected
       xywh {108 509 335 315} type Double resizable
-      code0 {// Make the window transient
-main_ = main;} non_modal visible
+      code0 {main_ = main;} non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 0 330 306} resizable
       } {
-        Fl_Box uiWaveform {selected
+        Fl_Box uiWaveform {
           xywh {6 50 323 256} resizable
           code0 {o->main( main );}
           class {mrv::Waveform}
@@ -62,7 +59,8 @@ v->uiWaveform->redraw();}
   }
   Function {WaveformUI(ViewerUI* m)} {open
   } {
-    code {make_window( m );} {}
+    code {Fl_Group::current( 0 );
+make_window( m );} {}
   }
   Function {~WaveformUI()} {open
   } {
