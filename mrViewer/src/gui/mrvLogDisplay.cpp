@@ -58,7 +58,13 @@ LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 
-static void emptyCB_0( Fl_Text_Buffer* w, void* arg )
+void modify_cb(int pos, int nInserted, int nDeleted,
+	       int nRestyled, const char* deletedText,
+	       void* cbArg)
+{
+}
+
+void predelete_cb( int pos, int nDeleted, void* cbArg )
 {
 }
 
@@ -75,11 +81,12 @@ _lines( 0 )
     mBuffer = new Fl_Text_Buffer();
     mStyleBuffer = new Fl_Text_Buffer();
     highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
-
 }
 
 LogDisplay::~LogDisplay()
 {
+    delete mBuffer; mBuffer = NULL;
+    delete mStyleBuffer; mStyleBuffer = NULL;
 }
 
 void LogDisplay::clear()
