@@ -58,7 +58,7 @@ namespace mrv {
     sprintf( name, "%s\t%s", now, orig );
     filename( name );
 
-    _filename = strdup( other->filename() );
+    _fileroot = strdup( other->fileroot() );
 
     unsigned int ws = other->width();
     unsigned int wh = other->height();
@@ -86,29 +86,15 @@ namespace mrv {
       CMedia::Mutex& m = img->video_mutex();
       SCOPED_LOCK(m);
       _hires.reset( new mrv::image_type() );
-      *_hires = *(img->hires());
+      *_hires = *(img->left());
     }
 
 
-    //   setsize( -1, -1 );
-
     { // Copy attributes
-      _attrs = other->attributes();
-      //_iptc = other->iptc();
-      //     Attributes::const_iterator i = other->exif().begin();
-      //     Attributes::const_iterator e = other->exif().end();
-      //     for ( ; i != e; ++i )
-      //       {
-      //        _exif.insert( std::make_pair( (*i).first, (*i).second ) );
-      //       }
-
-      // Copy attributes
-      //     Attributes::const_iterator i = other->exif().begin();
-      //     Attributes::const_iterator e = other->exif().end();
-      //     for ( ; i != e; ++i )
-      //       {
-      //        _exif.insert( std::make_pair( (*i).first, (*i).second ) );
-      //       }
+	for ( const auto& i : other->attributes() )
+	{
+	    _attrs[i.first] = i.second->copy();
+	}
     }
 
     const char* profile = other->icc_profile();
@@ -129,6 +115,11 @@ namespace mrv {
     transform = other->rendering_transform();
     if ( transform )  rendering_transform( strdup(transform) );
 
+
+    std::string ocio = other->ocio_input_color_space();
+    ocio_input_color_space( ocio );
+
+    _label = NULL;
     const char* lbl = other->label();
     if ( lbl )  _label = strdup( lbl );
 
