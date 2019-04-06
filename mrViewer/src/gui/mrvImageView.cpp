@@ -3246,7 +3246,6 @@ void ImageView::draw()
     
 
 
-
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
 
     //
@@ -7290,7 +7289,6 @@ void ImageView::channel( unsigned short c )
     
     const Fl_Menu_Item* o = uiColorChannel->child(c);
 
-    // @TODO: verify fltk1.4
     unsigned short idx = 0;
     const Fl_Menu_Item* w ;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -7852,7 +7850,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
                     // s = w->shortcut();
 		    uiColorChannel->clear_submenu( last );
-                    uiColorChannel->remove( last );  // @TODO: fltk1.4 verify
+                    uiColorChannel->remove( last );  
                 }
 
                 // int idx = uiColorChannel->add( x.c_str(), s, NULL, 0 );
@@ -7866,7 +7864,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( x.size() < name.size() )
                 y = x + '/' + name.substr( x.size()+1, name.size() );
 
-            idx = uiColorChannel->add( y.c_str() ); // , g @TODO: fltk1.4
+            idx = uiColorChannel->add( y.c_str() ); 
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
         else
