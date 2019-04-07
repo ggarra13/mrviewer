@@ -173,7 +173,6 @@ public:
         _widths      = _nowidths;
     }
 
-    int absolute_item_index();
 
     // GET/SET COLUMN SEPARATOR LINE COLOR
     Fl_Color colsepcolor() const {
