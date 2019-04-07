@@ -334,14 +334,14 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: insert( const char* fullpath
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: insert_branch( const char* fullpath, int pos )
 {
-  FluSimpleString p( fullpath );
+  std::string p( fullpath );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   return insert( p.c_str(), pos );
 }
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: insert_leaf( const char* fullpath, int pos )
 {
-  FluSimpleString p( fullpath );
+  std::string p( fullpath );
   if( p.size() && ( p[p.size()-1] == '/' || p[p.size()-1] == '\\' ) ) p[p.size()-1] = '\0';
   return insert( p.c_str(), pos );
 }
@@ -2945,7 +2945,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: add( const char* fullpath, Fl_Widget
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: add( const char* path, const char* text, Fl_Widget *w, bool showLabel )
 {
   // if the path does not end in '/', add it
-  FluSimpleString s = path;
+  std::string s = path;
   if( path[strlen(path)-1] != '/' )
     s += "/";
   s += text;
@@ -2955,28 +2955,28 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: add( const char* path, const char* t
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: add_branch( const char* fullpath, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( fullpath );
+  std::string p( fullpath );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   return add( p.c_str(), w, showLabel );
 }
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: add_branch( const char* path, const char* name, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( name );
+  std::string p( name );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   return add( path, p.c_str(), w, showLabel );
 }
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: add_leaf( const char* fullpath, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( fullpath );
+  std::string p( fullpath );
   if( p.size() && ( p[p.size()-1] == '/' || p[p.size()-1] == '\\' ) ) p[p.size()-1] = '\0';
   return add( p.c_str(), w, showLabel );
 }
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: add_leaf( const char* path, const char* name, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( name );
+  std::string p( name );
   if( p.size() && ( p[p.size()-1] == '/' || p[p.size()-1] == '\\' ) ) p[p.size()-1] = '\0';
   return add( path, p.c_str(), w, showLabel );
 }
@@ -2995,7 +2995,7 @@ unsigned int Flu_Tree_Browser :: remove( const char *fullpath )
 unsigned int Flu_Tree_Browser :: remove( const char *path, const char *text )
 {
   // if the path does not end in '/', add it
-  FluSimpleString s = path;
+  std::string s = path;
   if( path[strlen(path)-1] != '/' )
     s += "/";
   s += text;
@@ -3081,7 +3081,7 @@ int Flu_Tree_Browser :: find_number( const char *fullpath )
 int Flu_Tree_Browser :: find_number( const char *path, const char *text )
 {
   // if the path does not end in '/', add it
-  FluSimpleString s = path;
+  std::string s = path;
   if( path[strlen(path)-1] != '/' )
     s += "/";
   s += text;
@@ -3100,7 +3100,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: find_next( const char *fullpath, Nod
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: find_next( const char *path, const char *text )
 {
   // if the path does not end in '/', add it
-  FluSimpleString s = path;
+  std::string s = path;
   if( path[strlen(path)-1] != '/' )
     s += "/";
   s += text;
@@ -3110,7 +3110,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: find_next( const char *path, const c
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: find( const char *path, const char *text )
 {
   // if the path does not end in '/', add it
-  FluSimpleString s = path;
+  std::string s = path;
   if( path[strlen(path)-1] != '/' )
     s += "/";
   s += text;
@@ -3305,21 +3305,21 @@ unsigned short Flu_Tree_Browser :: Node :: depth() const
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add_branch( const char* fullpath, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( fullpath );
+  std::string p( fullpath );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   return add( p.c_str(), w, showLabel );
 }
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add_leaf( const char* fullpath, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( fullpath );
+  std::string p( fullpath );
   if( p.size() && ( p[p.size()-1] == '/' || p[p.size()-1] == '\\' ) ) p[p.size()-1] = '\0';
   return add( p.c_str(), w, showLabel );
 }
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add( const char* path, const char* name, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( path );
+  std::string p( path );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   p += name;
   return add( p.c_str(), w, showLabel );
@@ -3327,7 +3327,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add( const char* path, const
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add_branch( const char* path, const char* name, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( path );
+  std::string p( path );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   p += name;
   return add_branch( p.c_str(), w, showLabel );
@@ -3335,7 +3335,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add_branch( const char* path
 
 Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: add_leaf( const char* path, const char* name, Fl_Widget *w, bool showLabel )
 {
-  FluSimpleString p( path );
+  std::string p( path );
   if( p.size() && p[p.size()-1] != '/' && p[p.size()-1] != '\\' ) p += "/";
   p += name;
   return add_leaf( p.c_str(), w, showLabel );
