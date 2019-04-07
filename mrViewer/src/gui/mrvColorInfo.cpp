@@ -64,15 +64,18 @@ namespace
 
 void copy_color_cb( void*, mrv::Browser* w )
 {
-    if ( w->value() < 0 || w->value() >= w->children() )
+    if ( w->value() < 2 || w->value() > 11 )
         return;
+
+    if ( w->text( w->value() ) == NULL ) return;
+    
     size_t last;
-    std::string line( w->child( w->value() )->label() );
+    std::string line( w->text( w->value() ) );
     size_t start = line.find( '\t', 0 );
     line = line.substr( start + 1, line.size()-1 );
     while ( (start = line.find( '@', 0 )) != std::string::npos )
     {
-        last = line.find( ';', start );
+        last = line.find( 'c', start );
         if ( last == std::string::npos ) break;
 
         if ( start > 0 )
@@ -110,10 +113,12 @@ extern std::string float_printf( float x );
 
 class ColorBrowser : public mrv::Browser
 {
+    int _value;
     ViewerUI*   uiMain;
 public:
     ColorBrowser( int x, int y, int w, int h, const char* l = 0 ) :
-        mrv::Browser( x, y, w, h, l )
+    mrv::Browser( x, y, w, h, l ),
+    _value( -1 )
     {
     }
 
@@ -128,7 +133,7 @@ public:
     {
         if ( value() < 0 ) return 0;
 
-        Fl_Menu_Button menu(0,0,0,0);
+        Fl_Menu_Button menu(x,y,0,0);
 
         menu.add( _("Copy/Color"),
                   FL_COMMAND + 'C',
@@ -138,16 +143,39 @@ public:
         return 1;
     }
 
+    bool valid_value()
+    {
+	int line = value();
+	if (( line < 2 || line > 11 ) ||
+	    ( line > 5 && line < 8 ))
+	{
+	    value(-1);
+	    return false;
+	}
+	_value = line;
+	return true;
+    }
+
+    void draw()
+    {
+	value( _value );
+	mrv::Browser::draw();
+    }
+
     int handle( int event )
     {
         int ok = 0;
         switch( event )
         {
         case FL_PUSH:
+	    {
             if ( Fl::event_button() == 3 )
                 return mousePush( Fl::event_x(), Fl::event_y() );
+            ok = Fl_Browser::handle( event );
+	    if ( valid_value() ) return 1;
+	    return ok;
+	    }
         case FL_ENTER:
-            take_focus();
             return 1;
         case FL_FOCUS:
             return 1;
@@ -157,14 +185,7 @@ public:
             return ok;
         default:
             ok = Fl_Browser::handle( event );
-
-            int line = value();
-            if (( line < 1 || line > 10 ) ||
-                    ( line > 4 && line < 7 ))
-            {
-                value(-1);
-                return 0;
-            }
+	    if ( valid_value() ) return 1;
             return ok;
         }
     }
@@ -186,7 +207,7 @@ public:
     {
         color_browser_->value( 4 );
 
-        Fl_Menu_Button menu(0,0,0,0);
+        Fl_Menu_Button menu(x,y,0,0);
 
         menu.add( _("Copy/Color"),
                   FL_COMMAND + 'C',
@@ -230,6 +251,8 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
     static int col_widths[] = { w4, w5, w5, w5, w5, 0 };
     browser = new ColorBrowser( 0, area->h(), w, h - area->h() );
     browser->column_widths( col_widths );
+    browser->showcolsep( 1 );
+    browser->type(FL_HOLD_BROWSER);
     browser->resizable(browser);
     resizable(this);
 
@@ -665,7 +688,6 @@ void ColorInfo::update( const CMedia* img,
         hmean.a /= c;
 
         static const char* kR = "@C4286611456@c";
-        // static const char* kG = "@C2164228096@c";
 	static const char* kG = "@C1623228416@c";
         static const char* kB = "@C2155937536@c";
         static const char* kA = "@C2964369408@c";
