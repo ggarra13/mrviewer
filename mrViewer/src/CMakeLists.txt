@@ -103,7 +103,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
        #ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
        #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
        ADD_COMPILE_OPTIONS( -fsanitize=address )
-       SET(OS_LIBRARIES asan ${OS_LIBRARIES} )
+       SET(LIBRARIES asan ${LIBRARIES} )
      ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
   ENDIF(APPLE)
@@ -143,14 +143,15 @@ INCLUDE_DIRECTORIES(
 FLTK_WRAP_UI( mrViewer
   gui/aviSave.fl
   gui/AboutUI.fl
-  gui/EXROptionsUI.fl
+  gui/mrvAudioOffset.fl
   gui/mrvGl3dView.fl
+  gui/EXROptionsUI.fl
   gui/OIIOOptionsUI.fl
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl
+  gui/mrvHotkeyUI.fl
   gui/keyboard_ui.fl
-  gui/mrvAudioOffset.fl
   gui/mrvImageInfo.fl
   gui/mrvReelUI.fl
   gui/mrvSOPNode.fl
@@ -361,6 +362,7 @@ ENDIF(NOT WIN32)
 
 
 SET( LIBRARIES
+  ${LIBRARIES}
   ${LIBINTL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
