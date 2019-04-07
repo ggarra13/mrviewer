@@ -129,7 +129,7 @@ void Flu_Collapsable_Group :: draw()
 {
   int X;
 
-  FluSimpleString l = open() ? "- " : "+ ";
+  std::string l = open() ? "- " : "+ ";
   l += label();
   button.label( l.c_str() );
 
