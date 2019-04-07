@@ -90,7 +90,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   static std::string wideListTTxt;
   static std::string detailTTxt;
 
-  static std::string detailTxt[4];
+  static std::string detailTxt[7];
   static std::string contextMenuTxt[3];
   static std::string diskTypesTxt[6];
 
@@ -123,7 +123,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     ENTRY_FAVORITE = 8,     /*!< A favorite entry */
     ENTRY_DRIVE = 16,       /*!< An entry that refers to a disk drive */
     ENTRY_MYDOCUMENTS = 32, /*!< The entry referring to the current user's documents */
-    ENTRY_MYCOMPUTER = 64   /*!< The entry referring to "My Computer" in Windows */
+    ENTRY_MYCOMPUTER = 64,   /*!< The entry referring to "My Computer" in Windows */
+    ENTRY_SEQUENCE = 128 /*!< The entry referring to a sequence of frames */
   };
 
   //! Chooser type
@@ -413,13 +414,15 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       int handle( int event );
       void draw();
 
+      void set_colors();
+	
       void updateSize();
       void updateIcon();
 
-      std::string filename, date, filesize, shortname, 
+      std::string filename, date, filesize, shortname, owner, 
 	description, shortDescription, toolTip, altname;
-      //std::string permissions;
-      //unsigned char pU, pG, pO; // 3-bit unix style permissions
+      std::string permissions;
+      unsigned char pU, pG, pO; // 3-bit unix style permissions
       unsigned int type, idate;
       unsigned long isize;
       bool selected;
