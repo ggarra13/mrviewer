@@ -16,6 +16,9 @@
 #ifndef _FLU_FILE_CHOOSER_H
 #define _FLU_FILE_CHOOSER_H
 
+#include <string>
+#include <vector>
+
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Menu_Button.H>
@@ -30,9 +33,8 @@
 #include "FLU/Flu_Combo_Tree.h"
 #include "FLU/Flu_Combo_List.h"
 #include "FLU/flu_export.h"
-#include "FLU/FluVectorClass.h"
 
-FluMakeVectorClass( std::string, FluStringVector );
+typedef std::vector< std::string > FluStringVector;
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
 FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector *filelist );
@@ -293,11 +295,11 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       inline ContextHandler& operator =( const ContextHandler &c )
       { ext = c.ext; name = c.name; type = c.type; callback = c.callback; callbackData = c.callbackData; return *this; }
     };
-  FluMakeVectorClass( ContextHandler, ContextHandlerVector );
+  typedef std::vector< ContextHandler > ContextHandlerVector;
   static ContextHandlerVector contextHandlers;
 
   typedef PreviewWidgetBase* pPreviewWidgetBase;
-  FluMakeVectorClass( pPreviewWidgetBase, PreviewHandlerVector );
+  typedef std::vector< pPreviewWidgetBase > PreviewHandlerVector;
   static PreviewHandlerVector previewHandlers;
 
   Fl_Check_Button *hiddenFiles;
