@@ -19,13 +19,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <string>
+
 /* fltk includes */
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
 
-#include "FLU/FluSimpleString.h"
 #include "FLU/Flu_Button.h"
 
 //! This widget implements a collapsable group with a configurable framerate
@@ -189,7 +190,7 @@ class FLU_EXPORT Flu_Collapsable_Group : public Fl_Group
 
   bool _open, _changing, _fit;
   unsigned char _align;
-  FluSimpleString _label;
+  std::string _label;
 
 };
 
