@@ -8,6 +8,9 @@ decl {\#include "string"} {public local
 decl {\#include "core/mrvI8N.h"} {private local
 }
 
+decl {\#include "gui/mrvTree.h"} {public global
+}
+
 decl {\#include "gui/mrvPreferences.h"} {public global
 }
 
@@ -454,10 +457,10 @@ v->refresh();}
         }
         Fl_Group {} {
           label {File Requester} open
-          xywh {220 41 423 350} box EMBOSSED_BOX align 5
+          xywh {220 41 423 350} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Check_Button uiPrefsFileReqFolder {
-            label {Single Click to Travel Drawers} selected
+            label {Single Click to Travel Drawers}
             xywh {267 64 25 25} box UP_BOX down_box DOWN_BOX align 8
           }
           Fl_Check_Button uiPrefsFileReqThumbnails {
@@ -1186,7 +1189,7 @@ uiOCIO_float_ics->do_callback();}
         }
         Fl_Group {} {
           label {Default Output Device Transform (ODT)}
-          xywh {225 35 435 361} box EMBOSSED_BOX align 5 hide
+          xywh {225 35 435 361} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Display open
@@ -2020,10 +2023,11 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
 	     uiWizard->value( w );
 	     break;
 	 }
-}} class { mrv::Tree }
+}}
           xywh {0 25 195 410}
           code0 {fill_tree(o);}
           code1 {o->showroot(false);}
+          class {mrv::PreferencesTree}
         }
       }
       Fl_Group {} {open
@@ -2065,7 +2069,7 @@ v->uiPrefs->run(v);}
   } {
     code {mrv::Preferences::run( m );} {}
   }
-  Function {fill_tree(mrv::Tree* o)} {open
+  Function {fill_tree(mrv::PreferencesTree* o)} {open
   } {
     code {o->add( _("User Interface") );
 o->add( _("User Interface/View Window") );
@@ -2079,8 +2083,8 @@ o->add( _("Caches") );
 o->add( _("3D Luts") );
 o->add( _("3D Luts/OCIO") );
 o->add( _("3D Luts/CTL Paths") );
-o->add( _("3D Luts/Default Output Device") );
-o->add( _("3D Luts/Default Rendering Transform") );
+o->add( _("3D Luts/Default Output Device Transform (ODT)") );
+o->add( _("3D Luts/Default Rendering Transform (RT)") );
 o->add( _("Loading") );
 o->add( _("Saving") );
 o->add( _("Video") );
@@ -2089,7 +2093,7 @@ o->add( _("Audio") );
 o->add( _("Subtitles") );
 o->add( _("Errors") );
 o->add( _("Images") );
-o->add( _("OpenEXR") );
-	} {}
+o->add( _("OpenEXR") );} {selected
+    }
   }
 }
