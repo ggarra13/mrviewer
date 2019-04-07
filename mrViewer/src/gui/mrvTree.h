@@ -1,4 +1,7 @@
 
+#ifndef mrvTree_h
+#define mrvTree_h
+
 #include <FL/Fl_Tree.H>
 
 namespace mrv
@@ -12,3 +15,6 @@ class PreferencesTree : public Fl_Tree
 
 
 } // namespace mrv
+
+
+#endif
