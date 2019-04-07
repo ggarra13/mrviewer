@@ -134,6 +134,9 @@ decl {\#include "mrvReelUI.h"} {private local
 decl {\#include "mrvStereoUI.h"} {public global
 }
 
+decl {\#include "mrvHotkeyUI.h"} {selected public global
+}
+
 decl {\#include "mrvWaveformUI.h"} {private local
 }
 
@@ -398,44 +401,6 @@ class LogUI {} {
     code {make_window( m );} {}
   }
   Function {~LogUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
-  }
-}
-
-class HotkeyUI {open
-} {
-  Function {make_window(ViewerUI* main)} {open private
-  } {
-    Fl_Window uiMain {
-      label Hotkeys open
-      xywh {364 235 635 430} type Double resizable
-      code0 {// Make the window transient
-//o->child_of( main->uiMain );} modal visible
-    } {
-      Fl_Group {} {open
-        xywh {5 25 820 380}
-      } {
-        Fl_Browser uiFunction {
-          label Hotkeys
-          user_data this user_data_type {HotkeyUI*}
-          callback {mrv::select_hotkey( v );}
-          xywh {25 25 600 320}
-          code0 {mrv::fill_ui_hotkeys( o );}
-          class {mrv::Browser}
-        }
-        Fl_Button {} {
-          label Save
-          callback {mrv::Preferences::save();} selected
-          xywh {540 375 65 30}
-        }
-      }
-    }
-  }
-  Function {HotkeyUI(ViewerUI* m)} {} {
-    code {make_window( m );} {}
-  }
-  Function {~HotkeyUI()} {open
-  } {
     code {delete uiMain; uiMain = NULL;} {}
   }
 }
@@ -1779,6 +1744,7 @@ delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
+delete uiHotkey; uiHotkey = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
   }
 }
