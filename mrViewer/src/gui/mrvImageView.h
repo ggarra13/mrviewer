@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 
-
+#include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Gl_Window.H>  // this should be just Window
 
 #include "core/mrvRectangle.h"
@@ -900,8 +900,9 @@ protected:
     ///////////////////
     // Popup menu
     ///////////////////
-    Fl_Menu_Item*  _menu;
+    Fl_Menu_Button menu;
 
+    
     // Event Timeout
     mrv::Event*  _timeout;
 
@@ -947,6 +948,7 @@ protected:
     CMedia::Mutex _shortcut_mutex;
     CMedia::Mutex _draw_mutex;
 
+    
     mrv::Timer   _dtimer;
 };
 
