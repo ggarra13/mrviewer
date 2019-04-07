@@ -20,6 +20,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <string>
 //#define USE_FLU_DND
 
 /* fltk includes */
@@ -33,7 +34,6 @@
 
 /* flu includes */
 #include "FLU/Flu_Enumerations.h"
-#include "FLU/FluSimpleString.h"
 #ifdef USE_FLU_DND
 #include "FLU/Flu_DND.h"
 #else
@@ -687,7 +687,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
     Fl_Color lineColor, bgColor, selectionColor;
     bool forceResize;  // force the browser to resize on the next draw (which forces a recalculation of the tree layout)
     unsigned int nextId;  // monotonically increasing id of each entry
-    FluSimpleString path;  // used to construct the full path during a findPath() operation
+    std::string path;  // used to construct the full path during a findPath() operation
     IntStack branchConnectors;
 
     // static objects (from the perspective of each node during a recursive descent)
@@ -1208,7 +1208,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       NodeList _children;
       Node *_parent;
       Flu_Tree_Browser *tree;
-      FluSimpleString text;
+      std::string text;
       WidgetInfo *_widget;  // memory overhead deferred to WidgetInfo. present only if widget is
       Fl_Group *_group;
       void *userData;
