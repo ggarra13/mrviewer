@@ -1406,6 +1406,7 @@ _timeout( NULL ),
 _old_fg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
+menu( X, Y, W, H ),
 _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
@@ -1422,6 +1423,8 @@ _lastFrame( 0 )
     mode( FL_RGB | FL_DOUBLE | FL_ALPHA |
           FL_STENCIL | stereo );
 
+    menu.type( Fl_Menu_Button::POPUP3 );
+    
     create_timeout( 0.02f );
 }
 
@@ -4017,8 +4020,8 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
 
             int idx;
-            Fl_Menu_Button menu(x,y, 0, 0);
-
+            //Fl_Menu_Button menu(x,y, 0, 0, "Action");
+	    
             menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
             menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
