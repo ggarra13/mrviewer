@@ -2063,7 +2063,7 @@ v->uiPrefs->run(v);}
     code {delete uiMain; uiMain = NULL;} {}
   }
   Function {refresh()} {} {
-    code {//@TODO: fltk1.4 redraw all windows} {}
+    code {} {}
   }
   Function {run(ViewerUI* m)} {open
   } {
