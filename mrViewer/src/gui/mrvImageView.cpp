@@ -4017,8 +4017,7 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
 
             int idx;
-            Fl_Menu_Button menu(0,0,w(),h());
-	    menu.type( Fl_Menu_Button::POPUP3 );
+            Fl_Menu_Button menu(x,y, 0, 0);
 
             menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
@@ -4363,6 +4362,7 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
             menu.popup();
             TRACE("");
+	    return 1;
         }
         else
         {
