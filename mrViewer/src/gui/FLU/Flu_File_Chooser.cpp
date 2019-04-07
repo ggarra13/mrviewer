@@ -298,14 +298,14 @@ void Flu_File_Chooser :: add_context_handler( int type, const char *ext, const c
   h.name = name;
   h.callback = cb;
   h.callbackData = cbd;
-  Flu_File_Chooser::contextHandlers.add( h );
+  Flu_File_Chooser::contextHandlers.push_back( h );
 }
 
 void Flu_File_Chooser :: add_preview_handler( PreviewWidgetBase *w )
 {
   if( w == NULL )
     return;
-  Flu_File_Chooser::previewHandlers.add( w );
+  Flu_File_Chooser::previewHandlers.push_back( w );
 }
 
 // extensions == NULL implies directories
@@ -784,7 +784,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 		      }
 		  }
 		if( !duplicate )
-		  favoritesList->add( buf );
+		    favoritesList->add( buf );
 	      }
 	  }
 	fclose( f );
@@ -795,7 +795,9 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     {
       imgTxtPreview = new ImgTxtPreview();
       // make the text previewer the first one
-      Flu_File_Chooser::previewHandlers.insert( 0, imgTxtPreview );
+      Flu_File_Chooser::previewHandlers.insert(
+					       Flu_File_Chooser::previewHandlers.begin(),
+						imgTxtPreview );
     }
 
   pattern( pat );
@@ -883,7 +885,7 @@ void Flu_File_Chooser :: pattern( const char *p )
 	{
 	  addedAll = true;
 	  filePattern->list.add( allFilesTxt.c_str() );
-	  patterns.add( "*" );
+	  patterns.push_back( "*" );
 	  next = strtok( NULL, "\t|;" );
 	  continue;
 	}
@@ -939,7 +941,7 @@ void Flu_File_Chooser :: pattern( const char *p )
 	{
 	  // add the whole string to the list
 	  filePattern->list.add( next );
-	  patterns.add( pattern );
+	  patterns.push_back( pattern );
 	}
 
       // advance to the pattern token
@@ -950,7 +952,7 @@ void Flu_File_Chooser :: pattern( const char *p )
   if( !addedAll )
     {
       filePattern->list.add( allFilesTxt.c_str() );
-      patterns.add( "*" );
+      patterns.push_back( "*" );
     }
 
   // choose the first added item
@@ -1072,9 +1074,9 @@ void Flu_File_Chooser :: recursiveScan( const char *dir, FluStringVector *files 
       if( fl_filename_isdir( fullpath.c_str() ) != 0 )
 	recursiveScan( fullpath.c_str(), files );
 
-      files->add( fullpath );
+      files->push_back( fullpath );
     }
-  files->add( dir );
+  files->push_back( dir );
 }
 
 void Flu_File_Chooser :: trashCB( bool recycle )
@@ -2755,7 +2757,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
       break;
 
    case ENTRY_FAVORITE:
-     entryPopup.add( contextMenuTxt[2].c_str(), 0, 0, (void*)ACTION_DELETE );
+       entryPopup.add( contextMenuTxt[2].c_str(), 0, 0, (void*)ACTION_DELETE );
       break;
 
     case ENTRY_DRIVE:
@@ -3255,11 +3257,11 @@ void Flu_File_Chooser :: buildLocationCombo()
   char volumeName[1024];
   Flu_Tree_Browser::Node *n;
   s = desktopTxt+"/";
-  n = location->tree.add( s.c_str() ); n->branch_icon( &little_desktop );
+  n = location->tree.push_back( s.c_str() ); n->branch_icon( &little_desktop );
   s = desktopTxt+"/"+myDocumentsTxt+"/";
-  n = location->tree.add( s.c_str() ); n->branch_icon( &documents );
+  n = location->tree.push_back( s.c_str() ); n->branch_icon( &documents );
   s = desktopTxt+"/"+myComputerTxt+"/";
-  n = location->tree.add( s.c_str() ); n->branch_icon( &computer );
+  n = location->tree.push_back( s.c_str() ); n->branch_icon( &computer );
   // get the location and add them
   {
     if( refreshDrives )
@@ -3318,7 +3320,7 @@ void Flu_File_Chooser :: buildLocationCombo()
 	      }
 	    drives[i] = std::string(disk) + " (" + std::string(drive) + ")/";
 	    s += drives[i];
-	    n = location->tree.add( s.c_str() ); n->branch_icon( driveIcons[i] );
+	    n = location->tree.push_back( s.c_str() ); n->branch_icon( driveIcons[i] );
 	    // erase the trailing '/' to make things look nicer
 	    drives[i][ drives[i].size()-1 ] = '\0';
 	  }
@@ -3326,7 +3328,7 @@ void Flu_File_Chooser :: buildLocationCombo()
       }
   }
   s = favoritesTxt+"/";
-  n = location->tree.add( s.c_str() ); n->branch_icon( &little_favorites );
+  n = location->tree.push_back( s.c_str() ); n->branch_icon( &little_favorites );
   refreshDrives = false;
 
 #elif defined __APPLE__
@@ -3357,7 +3359,7 @@ void Flu_File_Chooser :: buildLocationCombo()
 	  std::string fullpath = "/Volumes/";
 	  fullpath += name;
 	  fullpath += "/";
-	  location->tree.add( fullpath.c_str() );
+	  location->tree.push_back( fullpath.c_str() );
 	}
     }
 
@@ -3473,7 +3475,7 @@ bool Flu_File_Chooser :: stripPatterns( std::string s, FluStringVector* patterns
       tokens++;
       if( tok[0] == ' ' )
 	tok++; // skip whitespace
-      patterns->add( tok );
+      patterns->push_back( tok );
       tok = strtok( NULL, "|;" );
     }
 
@@ -3801,7 +3803,7 @@ void Flu_File_Chooser :: cd( const char *path )
       location->input.value( currentDir.c_str() );
 #ifdef WIN32
       std::string treePath = "/"+desktopTxt+"/"+myComputerTxt+"/"+currentDir;
-      Flu_Tree_Browser::Node *n = location->tree.add( treePath.c_str() );
+      Flu_Tree_Browser::Node *n = location->tree.push_back( treePath.c_str() );
       if( currentDir == (userHome+desktopTxt+"/") )
 	n->branch_icon( &little_desktop );
       if( currentDir == (userHome+myDocumentsTxt+"/") )
@@ -3835,7 +3837,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	  {
 	    if( pat != "*" )
 	      pat = "*." + pat;
-	    currentPatterns.add( pat );
+	    currentPatterns.push_back( pat );
 	    break;
 	  }
 	else
@@ -3844,7 +3846,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	    pat[p] = '\0';
 	    if( pat != "*" )
 	      pat = "*." + pat;
-	    currentPatterns.add( pat );
+	    currentPatterns.push_back( pat );
 	    pat = s;
 	  }
       }
@@ -4227,7 +4229,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
 	{
 	  *count = fc->count();
 	  for( int i = 1; i <= *count; i++ )
-	    filelist->add( std::string(fc->value(i)) );
+	    filelist->push_back( std::string(fc->value(i)) );
 	}
       retname = fc->value();
       return retname.c_str();
