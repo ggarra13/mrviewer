@@ -21,6 +21,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <iostream>
+#include <algorithm>
+
 #define FLU_USE_REGISTRY
 
 #ifdef WIN32
@@ -35,6 +38,7 @@
 #else
 #include <unistd.h>
 #endif
+
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
@@ -55,52 +59,53 @@
 #include "FLU/flu_file_chooser_pixmaps.h"
 #include "FLU/flu_pixmaps.h"
 
-#include "flu_filename_list.h"
+
+#include "core/mrvOS.h"
 
 // set default language strings
-FluSimpleString Flu_File_Chooser::favoritesTxt = "Favorites";
+std::string Flu_File_Chooser::favoritesTxt = "Favorites";
 #ifdef WIN32
-FluSimpleString Flu_File_Chooser::myComputerTxt = "My Computer";
-FluSimpleString Flu_File_Chooser::myDocumentsTxt = "My Documents";
-FluSimpleString Flu_File_Chooser::desktopTxt = "Desktop";
+std::string Flu_File_Chooser::myComputerTxt = "My Computer";
+std::string Flu_File_Chooser::myDocumentsTxt = "My Documents";
+std::string Flu_File_Chooser::desktopTxt = "Desktop";
 #else
-FluSimpleString Flu_File_Chooser::myComputerTxt = "Home";
-FluSimpleString Flu_File_Chooser::myDocumentsTxt = "Temporary";
-FluSimpleString Flu_File_Chooser::desktopTxt = "Desktop";
+std::string Flu_File_Chooser::myComputerTxt = "Home";
+std::string Flu_File_Chooser::myDocumentsTxt = "Temporary";
+std::string Flu_File_Chooser::desktopTxt = "Desktop";
 #endif
 
-FluSimpleString Flu_File_Chooser::detailTxt[4] = { "Name", "Size", "Date", "Type" };
-FluSimpleString Flu_File_Chooser::contextMenuTxt[3] = { "New Folder", "Rename", "Delete" };
-FluSimpleString Flu_File_Chooser::diskTypesTxt[6] = { "Floppy Disk", "Removable Disk",
+std::string Flu_File_Chooser::detailTxt[4] = { "Name", "Size", "Date", "Type" };
+std::string Flu_File_Chooser::contextMenuTxt[3] = { "New Folder", "Rename", "Delete" };
+std::string Flu_File_Chooser::diskTypesTxt[6] = { "Floppy Disk", "Removable Disk",
 						      "Local Disk", "Compact Disk",
 						      "Network Disk", "RAM Disk" };
 
-FluSimpleString Flu_File_Chooser::filenameTxt = "Filename";
-FluSimpleString Flu_File_Chooser::okTxt = "Ok";
-FluSimpleString Flu_File_Chooser::cancelTxt = "Cancel";
-FluSimpleString Flu_File_Chooser::locationTxt = "Location";
-FluSimpleString Flu_File_Chooser::showHiddenTxt = "Show Hidden Files";
-FluSimpleString Flu_File_Chooser::fileTypesTxt = "File Types";
-FluSimpleString Flu_File_Chooser::directoryTxt = "Directory";
-FluSimpleString Flu_File_Chooser::allFilesTxt = "All Files (*)";
-FluSimpleString Flu_File_Chooser::defaultFolderNameTxt = "New Folder";
+std::string Flu_File_Chooser::filenameTxt = "Filename";
+std::string Flu_File_Chooser::okTxt = "Ok";
+std::string Flu_File_Chooser::cancelTxt = "Cancel";
+std::string Flu_File_Chooser::locationTxt = "Location";
+std::string Flu_File_Chooser::showHiddenTxt = "Show Hidden Files";
+std::string Flu_File_Chooser::fileTypesTxt = "File Types";
+std::string Flu_File_Chooser::directoryTxt = "Directory";
+std::string Flu_File_Chooser::allFilesTxt = "All Files (*)";
+std::string Flu_File_Chooser::defaultFolderNameTxt = "New Folder";
 
-FluSimpleString Flu_File_Chooser::backTTxt = "Go back one directory in the history";
-FluSimpleString Flu_File_Chooser::forwardTTxt = "Go forward one directory in the history";
-FluSimpleString Flu_File_Chooser::upTTxt = "Go to the parent directory";
-FluSimpleString Flu_File_Chooser::reloadTTxt = "Refresh this directory";
-FluSimpleString Flu_File_Chooser::trashTTxt = "Delete file(s)";
-FluSimpleString Flu_File_Chooser::newDirTTxt = "Create new directory";
-FluSimpleString Flu_File_Chooser::addFavoriteTTxt = "Add this directory to my favorites";
-FluSimpleString Flu_File_Chooser::previewTTxt = "Preview files";
-FluSimpleString Flu_File_Chooser::listTTxt = "List mode";
-FluSimpleString Flu_File_Chooser::wideListTTxt = "Wide list mode";
-FluSimpleString Flu_File_Chooser::detailTTxt = "Detail mode";
+std::string Flu_File_Chooser::backTTxt = "Go back one directory in the history";
+std::string Flu_File_Chooser::forwardTTxt = "Go forward one directory in the history";
+std::string Flu_File_Chooser::upTTxt = "Go to the parent directory";
+std::string Flu_File_Chooser::reloadTTxt = "Refresh this directory";
+std::string Flu_File_Chooser::trashTTxt = "Delete file(s)";
+std::string Flu_File_Chooser::newDirTTxt = "Create new directory";
+std::string Flu_File_Chooser::addFavoriteTTxt = "Add this directory to my favorites";
+std::string Flu_File_Chooser::previewTTxt = "Preview files";
+std::string Flu_File_Chooser::listTTxt = "List mode";
+std::string Flu_File_Chooser::wideListTTxt = "Wide list mode";
+std::string Flu_File_Chooser::detailTTxt = "Detail mode";
 
-FluSimpleString Flu_File_Chooser::createFolderErrTxt = "Could not create directory '%s'. You may not have permission to perform this operation.";
-FluSimpleString Flu_File_Chooser::deleteFileErrTxt = "An error ocurred while trying to delete '%s'.";
-FluSimpleString Flu_File_Chooser::fileExistsErrTxt = "File '%s' already exists!";
-FluSimpleString Flu_File_Chooser::renameErrTxt = "Unable to rename '%s' to '%s'";
+std::string Flu_File_Chooser::createFolderErrTxt = "Could not create directory '%s'. You may not have permission to perform this operation.";
+std::string Flu_File_Chooser::deleteFileErrTxt = "An error ocurred while trying to delete '%s'.";
+std::string Flu_File_Chooser::fileExistsErrTxt = "File '%s' already exists!";
+std::string Flu_File_Chooser::renameErrTxt = "Unable to rename '%s' to '%s'";
 
 // just a string that no file could probably ever be called
 #define FAVORITES_UNIQUE_STRING   "\t!@#$%^&*(Favorites)-=+"
@@ -145,8 +150,8 @@ Flu_File_Chooser::ContextHandlerVector Flu_File_Chooser::contextHandlers;
 Flu_File_Chooser::PreviewHandlerVector Flu_File_Chooser::previewHandlers;
 Flu_File_Chooser::ImgTxtPreview* Flu_File_Chooser::imgTxtPreview = 0;
 int (*Flu_File_Chooser::customSort)(const char*,const char*) = 0;
-FluSimpleString Flu_File_Chooser::dArrow[4];
-FluSimpleString Flu_File_Chooser::uArrow[4];
+std::string Flu_File_Chooser::dArrow[4];
+std::string Flu_File_Chooser::uArrow[4];
 
 bool Flu_File_Chooser::thumbnailsFileReq = true;
 bool Flu_File_Chooser::singleButtonTravelDrawer = true;
@@ -159,7 +164,7 @@ bool Flu_File_Chooser::singleButtonTravelDrawer = true;
   CSIDL_PERSONAL -- my documents
   CSIDL_PERSONAL and strip back to last "/" -> home
  */
-static FluSimpleString flu_get_special_folder( int csidl )
+static std::string flu_get_special_folder( int csidl )
 {
   static char path[MAX_PATH+1];
 
@@ -287,7 +292,8 @@ void Flu_File_Chooser :: add_context_handler( int type, const char *ext, const c
     return;
   ContextHandler h;
   h.ext = ext ? ext : "";
-  h.ext.downcase();
+  std::transform( h.ext.begin(), h.ext.end(), h.ext.begin(),
+		  (int(*)(int)) tolower);
   h.type = type;
   h.name = name;
   h.callback = cb;
@@ -305,12 +311,13 @@ void Flu_File_Chooser :: add_preview_handler( PreviewWidgetBase *w )
 // extensions == NULL implies directories
 void Flu_File_Chooser :: add_type( const char *extensions, const char *short_description, Fl_Image *icon )
 {
-  FluSimpleString ext;
+  std::string ext;
   if( extensions )
     ext = extensions;
   else
     ext = "\t"; // indicates a directory
-  ext.upcase();
+  std::transform( ext.begin(), ext.end(), ext.begin(),
+		  (int(*)(int)) toupper);
 
   // are we overwriting an existing type?
   for( int i = 0; i < numTypes; i++ )
@@ -350,18 +357,19 @@ void Flu_File_Chooser :: add_type( const char *extensions, const char *short_des
 
 Flu_File_Chooser::FileTypeInfo* Flu_File_Chooser :: find_type( const char *extension )
 {
-  FluSimpleString ext;
+  std::string ext;
   if( extension )
     ext = extension;
   else
     ext = "\t"; // indicates a directory
-  ext.upcase();
+  std::transform( ext.begin(), ext.end(), ext.begin(),
+		  (int(*)(int)) toupper);
 
   // lookup the type based on the extension
   for( int i = 0; i < numTypes; i++ )
     {
       // check extension against every token
-      FluSimpleString e = types[i].extensions;
+      std::string e = types[i].extensions;
       char *tok = strtok( (char*)e.c_str(), " ," );
       while( tok )
 	{
@@ -856,7 +864,7 @@ void Flu_File_Chooser :: pattern( const char *p )
   else if( p[0] == '\0' )
     p = "*";
 
-  FluSimpleString pat = p, pattern;
+  std::string pat = p, pattern;
 
   bool addedAll = false;
   const char *next = strtok( (char*)pat.c_str(), "\t|;" );
@@ -977,7 +985,7 @@ int Flu_File_Chooser :: handle( int event )
 void Flu_File_Chooser :: newFolderCB()
 {
   // start with the name "New Folder". while the name exists, keep appending a number (1..2..etc)
-  FluSimpleString newName = defaultFolderNameTxt.c_str(), path = currentDir + newName;
+  std::string newName = defaultFolderNameTxt.c_str(), path = currentDir + newName;
   int count = 1;
   int i;
   for(;;)
@@ -999,7 +1007,7 @@ void Flu_File_Chooser :: newFolderCB()
 	{
 	  char buf[16];
 	  sprintf( buf, "%d", count++ );
-	  newName = defaultFolderNameTxt.c_str() + FluSimpleString(buf);
+	  newName = defaultFolderNameTxt.c_str() + std::string(buf);
 	  path = currentDir + newName;
 	}
       else
@@ -1043,8 +1051,8 @@ void Flu_File_Chooser :: recursiveScan( const char *dir, FluStringVector *files 
 {
   dirent **e;
   char *name;
-  FluSimpleString fullpath;
-  int num = flu_filename_list( dir, &e );
+  std::string fullpath;
+  int num = fl_filename_list( dir, &e );
   for( int i = 0; i < num; i++ )
     {
       name = e[i]->d_name;
@@ -1081,7 +1089,7 @@ void Flu_File_Chooser :: trashCB( bool recycle )
     recycle = false;
 
   // see how many files are selected
-  FluSimpleString name;
+  std::string name;
   int selected = 0;
   int i;
   const char *first = "";
@@ -1305,7 +1313,7 @@ int Flu_File_Chooser :: FileInput :: handle( int event )
       if( Fl::event_key(FL_Tab) )
 	{
 	  chooser->filenameTabCallback = true;
-	  FluSimpleString v(value());
+	  std::string v(value());
 #ifdef WIN32
 	  // turn "C:" into "C:\"
 	  if( v.size() >= 2 )
@@ -1726,7 +1734,7 @@ void Flu_File_Chooser :: okCB()
   if( !( selectionType & DIRECTORY ) && !( selectionType & STDFILE ) )
     {
       Fl_Group *g = getEntryGroup();
-      FluSimpleString dir;
+      std::string dir;
       int count = 0;
       for( int i = 0; i < g->children(); i++ )
 	{
@@ -1738,7 +1746,7 @@ void Flu_File_Chooser :: okCB()
 	}
       if( count == 1 )
 	{
-	  FluSimpleString path = currentDir + dir;
+	  std::string path = currentDir + dir;
 	  if( fl_filename_isdir( path.c_str() ) )
 	    {
 	      cd( dir.c_str() );
@@ -1792,7 +1800,7 @@ void Flu_File_Chooser :: okCB()
 	      }
 
 	  // prepend the path
-	  FluSimpleString path = currentDir + filename.value();
+	  std::string path = currentDir + filename.value();
 	  filename.value( path.c_str() );
 	  filename.position( filename.size(), filename.size() );
 	  do_callback();
@@ -1830,18 +1838,18 @@ void Flu_File_Chooser :: desktopCB()
 	     ((Flu_File_Chooser::Entry*)array[pivot])->field ) right--
 
 #define CASE_QSCANL( field ) \
-      while( casecompare( ((Flu_File_Chooser::Entry*)array[left])->field, \
-             ((Flu_File_Chooser::Entry*)array[pivot])->field ) < 0 ) left++
+while( strcasecmp( ((Flu_File_Chooser::Entry*)array[left])->field.c_str(),	\
+		((Flu_File_Chooser::Entry*)array[pivot])->field.c_str() ) < 0 ) left++
 #define CASE_QSCANR( field ) \
-      while( casecompare( ((Flu_File_Chooser::Entry*)array[right])->field, \
-	     ((Flu_File_Chooser::Entry*)array[pivot])->field ) > 0 ) right--
+while( strcasecmp( ((Flu_File_Chooser::Entry*)array[right])->field.c_str(), \
+		((Flu_File_Chooser::Entry*)array[pivot])->field.c_str() ) > 0 ) right--
 
 #define CASE_RQSCANL( field ) \
-      while( casecompare( ((Flu_File_Chooser::Entry*)array[left])->field, \
-             ((Flu_File_Chooser::Entry*)array[pivot])->field ) > 0 ) left++
+while( strcasecmp( ((Flu_File_Chooser::Entry*)array[left])->field.c_str(),	\
+		((Flu_File_Chooser::Entry*)array[pivot])->field.c_str() ) > 0 ) left++
 #define CASE_RQSCANR( field ) \
-      while( casecompare( ((Flu_File_Chooser::Entry*)array[right])->field, \
-	     ((Flu_File_Chooser::Entry*)array[pivot])->field ) < 0 ) right--
+while( strcasecmp( ((Flu_File_Chooser::Entry*)array[right])->field.c_str(), \
+		((Flu_File_Chooser::Entry*)array[pivot])->field.c_str() ) < 0 ) right--
 
 #define CUSTOM_QSCANL( field ) \
       while( customSort( ((Flu_File_Chooser::Entry*)array[left])->field, \
@@ -2418,7 +2426,7 @@ void Flu_File_Chooser :: Entry :: inputCB()
   if( strcmp( value(), filename.c_str() ) != 0 )
     {
       // build the total old filename and new filename
-      FluSimpleString oldName = chooser->currentDir + filename,
+      std::string oldName = chooser->currentDir + filename,
 	newName = chooser->currentDir + value();
       // see if new name already exists
       struct stat s;
@@ -3010,7 +3018,7 @@ const char* Flu_File_Chooser :: value( int n )
 	  n--;
 	  if( n == 0 )
 	    {
-	      FluSimpleString s = currentDir + ((Entry*)g->child(i))->filename;
+	      std::string s = currentDir + ((Entry*)g->child(i))->filename;
 	      filename.value( s.c_str() );
 	      filename.position( filename.size(), filename.size() );
 	      return value();
@@ -3053,11 +3061,11 @@ void Flu_File_Chooser :: addToFavoritesCB()
     }
 }
 
-FluSimpleString Flu_File_Chooser :: formatDate( const char *d )
+std::string Flu_File_Chooser :: formatDate( const char *d )
 {
   if( d == 0 )
     {
-      FluSimpleString s;
+      std::string s;
       return s;
     }
 
@@ -3090,12 +3098,12 @@ FluSimpleString Flu_File_Chooser :: formatDate( const char *d )
 
   sprintf( dummy, "%d/%d/%02d %d:%02d %s", month, day, year, hour, minute, pm?"PM":"AM" );
 
-  FluSimpleString formatted = dummy;
+  std::string formatted = dummy;
 
   return formatted;
 }
 
-void Flu_File_Chooser :: win2unix( FluSimpleString &s )
+void Flu_File_Chooser :: win2unix( std::string &s )
 {
   int len = s.size();
   for( int i = 0; i < len; i++ )
@@ -3103,12 +3111,13 @@ void Flu_File_Chooser :: win2unix( FluSimpleString &s )
       s[i] = '/';
 }
 
-void Flu_File_Chooser :: cleanupPath( FluSimpleString &s )
+void Flu_File_Chooser :: cleanupPath( std::string &s )
 {
   // convert all '\' to '/'
   win2unix( s );
 
-  FluSimpleString newS(s.size()+1);
+  std::string newS;
+  newS.resize(s.size()+1);
 
   int oldPos, newPos;
   for( oldPos = 0, newPos = 0; oldPos < s.size(); oldPos++ )
@@ -3147,7 +3156,7 @@ void Flu_File_Chooser :: cleanupPath( FluSimpleString &s )
       newPos++;
     }
 
-  newS[newPos] = '\0';
+  newS = newS.substr(0, newPos );
   s = newS;
 }
 
@@ -3175,7 +3184,7 @@ void Flu_File_Chooser :: forwardCB()
     }
 }
 
-bool Flu_File_Chooser :: correctPath( FluSimpleString &path )
+bool Flu_File_Chooser :: correctPath( std::string &path )
 {
   // the path may or may not be an alias, needing corrected
 #ifdef WIN32
@@ -3200,7 +3209,7 @@ bool Flu_File_Chooser :: correctPath( FluSimpleString &path )
 void Flu_File_Chooser :: locationCB( const char *path )
 {
 #ifdef WIN32
-  FluSimpleString p = path;
+  std::string p = path;
   if( p == "/"+favoritesTxt+"/" )
     favoritesCB();
   else if( p == "/"+desktopTxt+"/"+myComputerTxt+"/" )
@@ -3213,7 +3222,7 @@ void Flu_File_Chooser :: locationCB( const char *path )
   // to the remaining
   else
     {
-      FluSimpleString s = "/"+desktopTxt+"/"+myComputerTxt+"/";
+      std::string s = "/"+desktopTxt+"/"+myComputerTxt+"/";
       if( strstr( path, s.c_str() ) == path )
 	{
 	  // seach for '(' and if present, extract the drive name and cd to it
@@ -3242,7 +3251,7 @@ void Flu_File_Chooser :: buildLocationCombo()
   location->tree.clear();
 
 #ifdef WIN32
-  FluSimpleString s;
+  std::string s;
   char volumeName[1024];
   Flu_Tree_Browser::Node *n;
   s = desktopTxt+"/";
@@ -3307,7 +3316,7 @@ void Flu_File_Chooser :: buildLocationCombo()
 		driveIcons[i] = &ram_drive;
 		break;
 	      }
-	    drives[i] = FluSimpleString(disk) + " (" + FluSimpleString(drive) + ")/";
+	    drives[i] = std::string(disk) + " (" + std::string(drive) + ")/";
 	    s += drives[i];
 	    n = location->tree.add( s.c_str() ); n->branch_icon( driveIcons[i] );
 	    // erase the trailing '/' to make things look nicer
@@ -3345,7 +3354,7 @@ void Flu_File_Chooser :: buildLocationCombo()
 	  if( name[strlen(name)-1] == '/' )
 	    name[strlen(name)-1] = '\0';
 
-	  FluSimpleString fullpath = "/Volumes/";
+	  std::string fullpath = "/Volumes/";
 	  fullpath += name;
 	  fullpath += "/";
 	  location->tree.add( fullpath.c_str() );
@@ -3359,7 +3368,7 @@ void Flu_File_Chooser :: buildLocationCombo()
   // get all mount points and add to the location combobox
   FILE	*fstab;		// /etc/mtab or /etc/mnttab file
   char	dummy[256], mountPoint[256], line[1024];	// Input line
-  FluSimpleString mount;
+  std::string mount;
 
   fstab = fopen( "/etc/fstab", "r" );	// Otherwise fallback to full list
   if( fstab )
@@ -3452,7 +3461,7 @@ void Flu_File_Chooser :: addToHistory()
 
 // treating the string as a '|' or ';' delimited sequence of patterns, strip them out and place in patterns
 // return whether it is likely that "s" represents a regexp file-matching pattern
-bool Flu_File_Chooser :: stripPatterns( FluSimpleString s, FluStringVector* patterns )
+bool Flu_File_Chooser :: stripPatterns( std::string s, FluStringVector* patterns )
 {
   if( s.size() == 0 )
     return false;
@@ -3548,7 +3557,7 @@ void Flu_File_Chooser :: cd( const char *path )
       //updateEntrySizes();
     }
 
-  FluSimpleString currentFile = filename.value();
+  std::string currentFile = filename.value();
   filescroll->position( 0, 0 );
   //Fl::focus( &filename );
   upDirBtn->activate();
@@ -3628,11 +3637,11 @@ void Flu_File_Chooser :: cd( const char *path )
 	  {
 	    // strip everything off the end to the next "/"
 	    int end = currentDir.size()-1;
-	    currentDir[end] = '\0';
+	    currentDir = currentDir.substr( 0, end );
 	    while( currentDir[end] != '/' )
 	      {
-		currentDir[end] = '\0';
-		end--;
+		  currentDir = currentDir.substr( 0, end );
+		  end--;
 	      }
 	  }
     }
@@ -3764,7 +3773,7 @@ void Flu_File_Chooser :: cd( const char *path )
 
 #ifdef WIN32
   {
-    FluSimpleString tmp = currentDir;
+    std::string tmp = currentDir;
     if( isTopDesktop )
       currentDir = "/"+desktopTxt+"/";
     addToHistory();
@@ -3791,7 +3800,7 @@ void Flu_File_Chooser :: cd( const char *path )
     {
       location->input.value( currentDir.c_str() );
 #ifdef WIN32
-      FluSimpleString treePath = "/"+desktopTxt+"/"+myComputerTxt+"/"+currentDir;
+      std::string treePath = "/"+desktopTxt+"/"+myComputerTxt+"/"+currentDir;
       Flu_Tree_Browser::Node *n = location->tree.add( treePath.c_str() );
       if( currentDir == (userHome+desktopTxt+"/") )
 	n->branch_icon( &little_desktop );
@@ -3809,7 +3818,7 @@ void Flu_File_Chooser :: cd( const char *path )
     return;
 #endif
 
-  FluSimpleString pathbase, fullpath;
+  std::string pathbase, fullpath;
   bool isDir, isCurrentFile = false;
   const char *lastAddedFile = NULL, *lastAddedDir = NULL;
 
@@ -3818,7 +3827,7 @@ void Flu_File_Chooser :: cd( const char *path )
   // take the current pattern and make a list of filter pattern strings
   FluStringVector currentPatterns;
   {
-    FluSimpleString pat = patterns[filePattern->list.value()-1];
+    std::string pat = patterns[filePattern->list.value()-1];
     while( pat.size() )
       {
 	int p = pat.find( ',' );
@@ -3831,7 +3840,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	  }
 	else
 	  {
-	    FluSimpleString s = pat.c_str() + p + 1;
+	    std::string s = pat.c_str() + p + 1;
 	    pat[p] = '\0';
 	    if( pat != "*" )
 	      pat = "*." + pat;
@@ -3851,7 +3860,7 @@ void Flu_File_Chooser :: cd( const char *path )
   // read the directory
   dirent **e;
   char *name;
-  int num = flu_filename_list( pathbase.c_str(), &e );
+  int num = fl_filename_list( pathbase.c_str(), &e );
   if( num > 0 )
     {
       int i;
@@ -3872,7 +3881,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	  // file or directory?
 	  fullpath = pathbase + name;
 	  isDir = ( fl_filename_isdir( fullpath.c_str() ) != 0 );
-
+	  
 	  // was this file specified explicitly?
 	  isCurrentFile = ( currentFile == name );
 
@@ -4041,10 +4050,10 @@ void Flu_File_Chooser :: cd( const char *path )
     {
       filenameTabCallback = false;
 
-      FluSimpleString prefix = commonStr();
+      std::string prefix = commonStr();
 
       if( numDirs == 1 && 
-	  currentFile == (FluSimpleString(lastAddedDir)+"*") )
+	  currentFile == (std::string(lastAddedDir)+"*") )
 	{
 	  delayedCd = lastAddedDir;
 	  Fl::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, this );
@@ -4058,7 +4067,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	  if( filename.value()[0] == '/' )
 #endif
 	    {
-	      FluSimpleString s = currentDir + lastAddedDir + "/";
+	      std::string s = currentDir + lastAddedDir + "/";
 	      filename.value( s.c_str() );
 	    }
 	  else
@@ -4072,7 +4081,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	  if( filename.value()[0] == '/' )
 #endif
 	    {
-	      FluSimpleString s = currentDir + lastAddedFile;
+	      std::string s = currentDir + lastAddedFile;
 	      filename.value( s.c_str() );
 	    }
 	  else
@@ -4086,7 +4095,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	  if( filename.value()[0] == '/' )
 #endif
 	    {
-	      FluSimpleString s = currentDir + prefix;
+	      std::string s = currentDir + prefix;
 	      filename.value( s.c_str() );
 	    }
 	  else
@@ -4131,9 +4140,9 @@ void Flu_File_Chooser :: cd( const char *path )
 }
 
 // find the prefix string that is common to all entries in the list
-FluSimpleString Flu_File_Chooser :: commonStr()
+std::string Flu_File_Chooser :: commonStr()
 {
-  FluSimpleString common;
+  std::string common;
   int index = 0;
   const char* name;
   int len, i;
@@ -4167,7 +4176,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
 	int *count = 0, FluStringVector *filelist = 0 )
 {
   static Flu_File_Chooser *fc = NULL;
-  static FluSimpleString retname;
+  static std::string retname;
 
   if( !fc )
     {
@@ -4218,7 +4227,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
 	{
 	  *count = fc->count();
 	  for( int i = 1; i <= *count; i++ )
-	    filelist->add( FluSimpleString(fc->value(i)) );
+	    filelist->add( std::string(fc->value(i)) );
 	}
       retname = fc->value();
       return retname.c_str();
