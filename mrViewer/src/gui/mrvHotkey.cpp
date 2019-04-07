@@ -421,20 +421,20 @@ struct TableText table[] = {
 
 void fill_ui_hotkeys( mrv::Browser* b )
 {
-    if (!b) return;
-
-    const char* labels[] = { _("Function"), _("Hotkey"), NULL};
-    b->column_labels( labels );
-    const int widths[] = {1200, 200, 0};
-    b->column_widths( widths );
-    b->showcolsep(1);
-    //b->colsepcolor(FL_RED);
-    b->column_char('\t');                                                       // tabs as column delimiters
-
+    b->type( FL_SELECT_BROWSER );
     b->clear();
+    
+    int w2 = b->w() / 4;
+    int w1 = w2 * 3;
+    static int widths[] = {w1-20, w2, 0 };
+    b->column_widths( widths );
+    //b->showcolsep(1);
+    //b->colsepcolor(FL_RED);
+    b->column_char('\t');  // tabs as column delimiters
 
+    
+    // Labels
     b->add( "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey" );
-
 
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
@@ -449,17 +449,19 @@ void fill_ui_hotkeys( mrv::Browser* b )
 
         bool special = false;
         for ( int j = 0; j < sizeof(table)/sizeof(TableText); ++j )
+	{
             if ( k == table[j].n )
             {
                 key += table[j].text;
                 special = true;
                 break;
             }
-
+	}
+	
         if ( !special )
         {
             if (k >= FL_F && k <= FL_F_Last) {
-                char buf[64];
+                char buf[16];
                 sprintf(buf, "F%d", k - FL_F);
                 key += buf;
             }
@@ -474,18 +476,18 @@ void fill_ui_hotkeys( mrv::Browser* b )
         std::string row( _(h.name.c_str()) );
         row += "\t" + key;
 
-	std::cerr << row << std::endl;
-	
         b->add( row.c_str() );
     }
+    
 }
 
 
 
 void select_hotkey( HotkeyUI* b )
 {
-    int idx = b->uiFunction->value();
-
+    int idx = b->uiFunction->value() - 2;  // 1 for browser offset, 1 for title
+    if ( idx < 0 ) return;
+    
     Hotkey& hk = hotkeys[idx].hotkey;
 
     ChooseHotkey* h = new ChooseHotkey(hk);
