@@ -30,10 +30,9 @@
 #include "FLU/Flu_Combo_Tree.h"
 #include "FLU/Flu_Combo_List.h"
 #include "FLU/flu_export.h"
-#include "FLU/FluSimpleString.h"
 #include "FLU/FluVectorClass.h"
 
-FluMakeVectorClass( FluSimpleString, FluStringVector );
+FluMakeVectorClass( std::string, FluStringVector );
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
 FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector *filelist );
@@ -62,41 +61,41 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   //! strings to be set by a programmer to the correct phrase or name for their language
   /*! (they are in english by default)   */
-  static FluSimpleString favoritesTxt;
-  static FluSimpleString desktopTxt;
-  static FluSimpleString myComputerTxt;
-  static FluSimpleString myDocumentsTxt;
+  static std::string favoritesTxt;
+  static std::string desktopTxt;
+  static std::string myComputerTxt;
+  static std::string myDocumentsTxt;
 
-  static FluSimpleString filenameTxt;
-  static FluSimpleString okTxt;
-  static FluSimpleString cancelTxt;
-  static FluSimpleString locationTxt;
-  static FluSimpleString showHiddenTxt;
-  static FluSimpleString fileTypesTxt;
-  static FluSimpleString directoryTxt;
-  static FluSimpleString allFilesTxt;
-  static FluSimpleString defaultFolderNameTxt;
+  static std::string filenameTxt;
+  static std::string okTxt;
+  static std::string cancelTxt;
+  static std::string locationTxt;
+  static std::string showHiddenTxt;
+  static std::string fileTypesTxt;
+  static std::string directoryTxt;
+  static std::string allFilesTxt;
+  static std::string defaultFolderNameTxt;
 
-  static FluSimpleString backTTxt;
-  static FluSimpleString forwardTTxt;
-  static FluSimpleString upTTxt;
-  static FluSimpleString reloadTTxt;
-  static FluSimpleString trashTTxt;
-  static FluSimpleString newDirTTxt;
-  static FluSimpleString addFavoriteTTxt;
-  static FluSimpleString previewTTxt;
-  static FluSimpleString listTTxt;
-  static FluSimpleString wideListTTxt;
-  static FluSimpleString detailTTxt;
+  static std::string backTTxt;
+  static std::string forwardTTxt;
+  static std::string upTTxt;
+  static std::string reloadTTxt;
+  static std::string trashTTxt;
+  static std::string newDirTTxt;
+  static std::string addFavoriteTTxt;
+  static std::string previewTTxt;
+  static std::string listTTxt;
+  static std::string wideListTTxt;
+  static std::string detailTTxt;
 
-  static FluSimpleString detailTxt[4];
-  static FluSimpleString contextMenuTxt[3];
-  static FluSimpleString diskTypesTxt[6];
+  static std::string detailTxt[4];
+  static std::string contextMenuTxt[3];
+  static std::string diskTypesTxt[6];
 
-  static FluSimpleString createFolderErrTxt;
-  static FluSimpleString deleteFileErrTxt;
-  static FluSimpleString fileExistsErrTxt;
-  static FluSimpleString renameErrTxt;
+  static std::string createFolderErrTxt;
+  static std::string deleteFileErrTxt;
+  static std::string fileExistsErrTxt;
+  static std::string renameErrTxt;
 
   //! This class must be derived from to create a "preview" widget.
   /*! Simply derive from this class and overload Fl_Group's methods to create a widget
@@ -139,8 +138,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   struct FileTypeInfo
   {
     Fl_Image *icon;
-    FluSimpleString extensions;
-    FluSimpleString type, shortType;
+    std::string extensions;
+    std::string type, shortType;
   };
 
   //! Constructor opening a file chooser with title \b title visiting directory \b path with files filtered according to \b pattern. \b type is a logical OR of Flu_File_Chooser::SINGLE, Flu_File_Chooser::MULTI, and Flu_File_Chooser::DIRECTORY 
@@ -287,7 +286,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   class ContextHandler
     {
     public:
-      FluSimpleString ext, name;
+      std::string ext, name;
       int type;
       void (*callback)(const char*,int,void*);
       void *callbackData;
@@ -415,9 +414,9 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       void updateSize();
       void updateIcon();
 
-      FluSimpleString filename, date, filesize, shortname, 
+      std::string filename, date, filesize, shortname, 
 	description, shortDescription, toolTip, altname;
-      //FluSimpleString permissions;
+      //std::string permissions;
       //unsigned char pU, pG, pO; // 3-bit unix style permissions
       unsigned int type, idate;
       unsigned long isize;
@@ -522,18 +521,18 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       PreviewGroup( int x, int y, int w, int h, Flu_File_Chooser *c );
       void draw();
       Flu_File_Chooser *chooser;
-      FluSimpleString lastFile, file;
+      std::string lastFile, file;
       PreviewWidgetBase* handled;
     };
 
   Fl_Group *getEntryGroup();
   Fl_Group *getEntryContainer();
 
-  void win2unix( FluSimpleString &s );
+  void win2unix( std::string &s );
 
-  void cleanupPath( FluSimpleString &s );
+  void cleanupPath( std::string &s );
 
-  bool correctPath( FluSimpleString &path );
+  bool correctPath( std::string &path );
 
   void updateEntrySizes();
 
@@ -543,15 +542,15 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   void addToHistory();
 
-  FluSimpleString formatDate( const char *d );
+  std::string formatDate( const char *d );
 
   void recursiveScan( const char *dir, FluStringVector *files );
 
-  bool stripPatterns( FluSimpleString s, FluStringVector* patterns );
+  bool stripPatterns( std::string s, FluStringVector* patterns );
 
   int popupContextMenu( Entry *entry );
 
-  FluSimpleString commonStr();
+  std::string commonStr();
 
   static ImgTxtPreview *imgTxtPreview;
 
@@ -569,10 +568,10 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   Fl_Scroll *filescroll;
   FileDetails *filedetails;
   Flu_Button *detailNameBtn, *detailTypeBtn, *detailSizeBtn, *detailDateBtn;
-  FluSimpleString currentDir, delayedCd, rawPattern;
-  FluSimpleString configFilename;
-  FluSimpleString userHome, userDesktop, userDocs;
-  FluSimpleString drives[26];
+  std::string currentDir, delayedCd, rawPattern;
+  std::string configFilename;
+  std::string userHome, userDesktop, userDocs;
+  std::string drives[26];
   Fl_Pixmap* driveIcons[26];
   Flu_Button *fileListBtn, *fileListWideBtn, *fileDetailsBtn, *backBtn, *forwardBtn, *upDirBtn, *trashBtn,
     *newDirBtn, *addFavoriteBtn, *reloadBtn, *previewBtn;
@@ -591,13 +590,13 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   static bool thumbnailsFileReq;
   static bool singleButtonTravelDrawer;
   
-  static FluSimpleString dArrow[4];
-  static FluSimpleString uArrow[4];
+  static std::string dArrow[4];
+  static std::string uArrow[4];
 
 #ifdef WIN32
   unsigned int driveMask;
   unsigned int driveTypes[26];
-  FluSimpleString volumeNames[26];
+  std::string volumeNames[26];
   bool refreshDrives;
 #endif
 
@@ -605,7 +604,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   {
   public:
     History() { last = next = NULL; }
-    FluSimpleString path;
+    std::string path;
     History *last, *next;
   };
 
