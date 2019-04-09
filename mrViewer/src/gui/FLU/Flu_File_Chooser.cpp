@@ -334,7 +334,7 @@ static void loadRealIcon( RealIcon* e)
 
     if ( e->chooser->quick_exit ) {
         DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
-	goto OUT;
+	goto SALIDA;
     }
 
     char fmt[1024];
@@ -401,12 +401,12 @@ static void loadRealIcon( RealIcon* e)
         } catch( const std::exception& er )
         {
             LOG_ERROR( er.what() );
-	    goto OUT;
+	    goto SALIDA;
         }
 
         if ( !img ) {
             DBG( "Img is NULL" );
-	    goto OUT;
+	    goto SALIDA;
         }
 
 
@@ -420,7 +420,7 @@ static void loadRealIcon( RealIcon* e)
 
     }
 
-	  OUT:
+	  SALIDA:
     delete e;
 
 #ifdef ICONS_SINGLE_THREAD
@@ -3638,7 +3638,7 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
     wchar_t buf[1024];
     struct _stati64 s;
     s.st_size = 0;
-    utf8towc( file, strlen(file), buf, 1024 );
+    fl_utf8towc( file, strlen(file), buf, 1024 );
     ::_wstati64( buf, &s );
 #else
     struct stat s;
