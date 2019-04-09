@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ const char* kModule = "icon";
 namespace mrv {
 
 Fl_Image* fltk_handler( const char* filename, uchar* header,
-                        int len )
+			    int len )
 {
     std::string ext = filename;
     size_t start = ext.rfind( '.' );
@@ -79,7 +79,6 @@ Fl_Image* fltk_handler( const char* filename, uchar* header,
     mrv::gui::media m( img );
     m.create_thumbnail();
 
-
-    return (Fl_Image*) m.thumbnail();
+    return (Fl_Image*) m.thumbnail()->copy();
 }
 }
