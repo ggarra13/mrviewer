@@ -92,7 +92,7 @@
 #: gui/mrvImageBrowser.cpp:1402 gui/mrvImageBrowser.cpp:1561
 #: gui/mrvImageBrowser.cpp:1568 gui/mrvImageBrowser.cpp:1689
 #: gui/mrvImageBrowser.cpp:2698 gui/mrvImageInformation.cpp:2524
-#: gui/mrvLogDisplay.cpp:95 gui/mrvLogDisplay.cpp:96 gui/mrvPreferences.cpp:323
+#: gui/mrvLogDisplay.cpp:91 gui/mrvLogDisplay.cpp:92 gui/mrvPreferences.cpp:323
 #: gui/mrvPreferences.cpp:518 gui/mrvPreferences.cpp:531
 #: gui/mrvPreferences.cpp:532 gui/mrvPreferences.cpp:533
 #: gui/mrvPreferences.cpp:826 gui/mrvPreferences.cpp:842
@@ -116,7 +116,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-04-09 12:54-0300\n"
+"POT-Creation-Date: 2019-04-09 13:27-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -4963,7 +4963,7 @@ msgstr ""
 
 #: core/exrImage.cpp:356 core/mrvColorProfile.cpp:120
 #: core/mrvColorProfile.cpp:140 core/mrvColorProfile.cpp:158
-#: gui/mrvImageBrowser.cpp:1676 gui/mrvLogDisplay.cpp:124
+#: gui/mrvImageBrowser.cpp:1676 gui/mrvLogDisplay.cpp:120
 #: gui/mrvPreferences.cpp:711
 msgid "\"."
 msgstr ""
@@ -6224,7 +6224,7 @@ msgstr ""
 msgid "%s/SYSTEM32/spool/drivers/color"
 msgstr ""
 
-#: gui/mrvLogDisplay.cpp:106
+#: gui/mrvLogDisplay.cpp:102
 #, c-format
 msgid "%s/mrViewer.log"
 msgstr "mrViewer"
@@ -14966,7 +14966,7 @@ msgstr " No pude abrir el archivo"
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: gui/mrvLogDisplay.cpp:128
+#: gui/mrvLogDisplay.cpp:124
 #, c-format
 msgid "Could not save log file \"%s\"."
 msgstr "No pude localizar el perfil ICC \""
@@ -22084,7 +22084,7 @@ msgstr "Grabar secuencia o película."
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabé archivo de Clip Metadata de ACES '"
 
-#: gui/mrvLogDisplay.cpp:122
+#: gui/mrvLogDisplay.cpp:118
 msgid "Saved log as \""
 msgstr ""
 
@@ -31668,7 +31668,7 @@ msgid "vorbis"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:1424 gui/FLU/Flu_File_Chooser.cpp:3187
-#: gui/mrvImageBrowser.cpp:556 gui/mrvLogDisplay.cpp:116
+#: gui/mrvImageBrowser.cpp:556 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:75 standalone/mrvCommandLine.cpp:76
 #: standalone/main.cpp:420 standalone/main.cpp:421
 msgid "w"
