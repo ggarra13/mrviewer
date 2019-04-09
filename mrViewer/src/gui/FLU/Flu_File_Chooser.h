@@ -35,6 +35,7 @@
 #include "FLU/flu_export.h"
 
 #include <boost/thread/recursive_mutex.hpp>
+#include <boost/thread.hpp>
 #include "gui/MyPack.h"
 
 typedef std::vector< std::string > FluStringVector;
@@ -568,9 +569,12 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   typedef boost::recursive_mutex Mutex;
   Mutex  mutex;
 
+  typedef std::vector< boost::thread* > thread_pool_t;
+  
   unsigned num_timeouts;
   unsigned serial;
 
+  thread_pool_t threads;
   bool quick_exit;
   
   static std::string dArrow[4];
