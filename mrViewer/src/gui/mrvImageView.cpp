@@ -1406,7 +1406,7 @@ _timeout( NULL ),
 _old_fg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
-menu( X, Y, W, H ),
+menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
@@ -1423,7 +1423,7 @@ _lastFrame( 0 )
     mode( FL_RGB | FL_DOUBLE | FL_ALPHA |
           FL_STENCIL | stereo );
 
-    menu.type( Fl_Menu_Button::POPUP3 );
+    menu->type( Fl_Menu_Button::POPUP3 );
     
     create_timeout( 0.02f );
 }
@@ -4020,40 +4020,39 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
 
             int idx;
-            //Fl_Menu_Button menu(x,y, 0, 0, "Action");
 	    
-            menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
+            menu->add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
-            menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
+            menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                       (Fl_Callback*)open_single_cb, browser() );
 
             TRACE("");
             mrv::media fg = foreground();
             if ( !fg )
             {
-                menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                           (Fl_Callback*)open_dir_cb, browser() );
             }
             if ( fg )
             {
-                menu.add( _("File/Open/Stereo Sequence or Movie"),
+                menu->add( _("File/Open/Stereo Sequence or Movie"),
                           kOpenStereoImage.hotkey(),
                           (Fl_Callback*)open_stereo_cb, browser() );
-                menu.add( _("File/Open/Clip XML Metadata"),
+                menu->add( _("File/Open/Clip XML Metadata"),
                           kOpenClipXMLMetadata.hotkey(),
                           (Fl_Callback*)open_clip_xml_metadata_cb, this );
-                menu.add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
+                menu->add( _("File/Open/Directory"), kOpenDirectory.hotkey(),
                           (Fl_Callback*)open_dir_cb, browser() );
-                menu.add( _("File/Save/Movie or Sequence As"),
+                menu->add( _("File/Save/Movie or Sequence As"),
                           kSaveSequence.hotkey(),
                           (Fl_Callback*)save_sequence_cb, this );
-                menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
+                menu->add( _("File/Save/Reel As"), kSaveReel.hotkey(),
                           (Fl_Callback*)save_reel_cb, this );
-                menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
+                menu->add( _("File/Save/Frame As"), kSaveImage.hotkey(),
                           (Fl_Callback*)save_cb, this );
-                menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
+                menu->add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
                           (Fl_Callback*)save_snap_cb, this );
-                menu.add( _("File/Save/Clip XML Metadata As"),
+                menu->add( _("File/Save/Clip XML Metadata As"),
                           kSaveClipXMLMetadata.hotkey(),
                           (Fl_Callback*)save_clip_xml_metadata_cb, this );
             }
@@ -4069,7 +4068,7 @@ int ImageView::leftMouseDown(int x, int y)
             {
                 tmp = uiMain->uiWindows->child(i)->label();
                 sprintf( buf, _("Windows/%s"), tmp );
-                menu.add( buf, 0, (Fl_Callback*)window_cb, uiMain );
+                menu->add( buf, 0, (Fl_Callback*)window_cb, uiMain );
             }
 
 
@@ -4077,13 +4076,13 @@ int ImageView::leftMouseDown(int x, int y)
             if ( fg && fg->image()->has_picture() )
             {
 
-                menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(),
+                menu->add( _("View/Safe Areas"), kSafeAreas.hotkey(),
                           (Fl_Callback*)safe_areas_cb, this );
 
-                menu.add( _("View/Display Window"), kDisplayWindow.hotkey(),
+                menu->add( _("View/Display Window"), kDisplayWindow.hotkey(),
                           (Fl_Callback*)display_window_cb, this );
 
-                menu.add( _("View/Data Window"), kDataWindow.hotkey(),
+                menu->add( _("View/Data Window"), kDataWindow.hotkey(),
                           (Fl_Callback*)data_window_cb, this );
 
                 TRACE("");
@@ -4093,9 +4092,9 @@ int ImageView::leftMouseDown(int x, int y)
                     tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
                     if ( !tmp ) continue;
                     sprintf( buf, _("View/Mask/%s"), tmp );
-                    idx = menu.add( buf, 0, (Fl_Callback*)masking_cb, uiMain,
+                    idx = menu->add( buf, 0, (Fl_Callback*)masking_cb, uiMain,
                                     FL_MENU_RADIO );
-                    item = (Fl_Menu_Item*) &(menu.menu()[idx]);
+                    item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                     float mask = -1.0f;
                     mask = (float) atof( tmp );
                     TRACE("");
@@ -4105,7 +4104,7 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
 
                 sprintf( buf, _("View/Hud/Toggle Selected") );
-                menu.add( buf, kHudToggle.hotkey(),
+                menu->add( buf, kHudToggle.hotkey(),
                           (Fl_Callback*)hud_toggle_cb, uiMain );
 
                 num = uiMain->uiPrefs->uiPrefsHud->children();
@@ -4113,9 +4112,9 @@ int ImageView::leftMouseDown(int x, int y)
                 {
                     tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
                     sprintf( buf, _("View/Hud/%s"), tmp );
-                    idx = menu.add( buf, 0, (Fl_Callback*)hud_cb, uiMain,
+                    idx = menu->add( buf, 0, (Fl_Callback*)hud_cb, uiMain,
                                     FL_MENU_TOGGLE );
-                    item = (Fl_Menu_Item*) &(menu.menu()[idx]);
+                    item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                     if ( hud() & (1 << i) ) item->set();
                 }
 
@@ -4138,9 +4137,9 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
                 if ( has_version )
                 {
-                    menu.add( _("Image/Next Version"), kNextVersionImage.hotkey(),
+                    menu->add( _("Image/Next Version"), kNextVersionImage.hotkey(),
                               (Fl_Callback*)next_image_version_cb, browser());
-                    menu.add( _("Image/Previous Version"),
+                    menu->add( _("Image/Previous Version"),
                               kPreviousVersionImage.hotkey(),
                               (Fl_Callback*)previous_image_version_cb,
                               browser(), FL_MENU_DIVIDER);
@@ -4148,9 +4147,9 @@ int ImageView::leftMouseDown(int x, int y)
 
 
             TRACE("");
-                menu.add( _("Image/Next"), kNextImage.hotkey(),
+                menu->add( _("Image/Next"), kNextImage.hotkey(),
                           (Fl_Callback*)next_image_cb, browser());
-                menu.add( _("Image/Previous"), kPreviousImage.hotkey(),
+                menu->add( _("Image/Previous"), kPreviousImage.hotkey(),
                           (Fl_Callback*)previous_image_cb,
                           browser(), FL_MENU_DIVIDER);
 
@@ -4160,44 +4159,44 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
                 if ( simg )
                 {
-                    menu.add( _("Image/Clone"), kCloneImage.hotkey(),
+                    menu->add( _("Image/Clone"), kCloneImage.hotkey(),
                               (Fl_Callback*)clone_image_cb, browser());
-                    menu.add( _("Image/Clone All Channels"), 0,
+                    menu->add( _("Image/Clone All Channels"), 0,
                               (Fl_Callback*)clone_all_cb,
                               browser(), FL_MENU_DIVIDER);
                 }
                 else
                 {
-                    menu.add( _("Image/Clone"), kCloneImage.hotkey(),
+                    menu->add( _("Image/Clone"), kCloneImage.hotkey(),
                               (Fl_Callback*)clone_image_cb, browser(),
                               FL_MENU_DIVIDER );
                 }
 
 
             TRACE("");
-                idx = menu.add( _("Image/Preload Caches"),
+                idx = menu->add( _("Image/Preload Caches"),
                                 kPreloadCache.hotkey(),
                                 (Fl_Callback*)preload_image_cache_cb, this,
                                 FL_MENU_TOGGLE );
-                item = (Fl_Menu_Item*) &(menu.menu()[idx]);
+                item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                 if ( CMedia::preload_cache() ) item->set();
 
 
             TRACE("");
-                menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
+                menu->add( _("Image/Clear Caches"), kClearCache.hotkey(),
                           (Fl_Callback*)clear_image_cache_cb, this );
 
-                menu.add( _("Image/Update Single Frame in Cache"),
+                menu->add( _("Image/Update Single Frame in Cache"),
                           kClearSingleFrameCache.hotkey(),
                           (Fl_Callback*)update_frame_cb, this,
                           FL_MENU_DIVIDER );
 
 
             TRACE("");
-                menu.add( _("Image/Rotate +90"),
+                menu->add( _("Image/Rotate +90"),
                           kRotatePlus90.hotkey(),
                           (Fl_Callback*)rotate_plus_90_cb, this );
-                menu.add( _("Image/Rotate -90"),
+                menu->add( _("Image/Rotate -90"),
                           kRotateMinus90.hotkey(),
                           (Fl_Callback*)rotate_minus_90_cb, this,
                           FL_MENU_DIVIDER );
@@ -4208,23 +4207,23 @@ int ImageView::leftMouseDown(int x, int y)
                 {
 
             TRACE("");
-                    menu.add( _("Image/Attach CTL Input Device Transform"),
+                    menu->add( _("Image/Attach CTL Input Device Transform"),
                               kIDTScript.hotkey(),
                               (Fl_Callback*)attach_ctl_idt_script_cb,
                               this);
-                    menu.add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
+                    menu->add( _("Image/Modify CTL ASC_CDL SOP Saturation"),
                               kSOPSatNodes.hotkey(),
                               (Fl_Callback*)modify_sop_sat_cb,
                               this);
-                    menu.add( _("Image/Add CTL Look Mod Transform"),
+                    menu->add( _("Image/Add CTL Look Mod Transform"),
                               kLookModScript.hotkey(),
                               (Fl_Callback*)attach_ctl_lmt_script_cb,
                               this);
-                    menu.add( _("Image/Attach CTL Rendering Transform"),
+                    menu->add( _("Image/Attach CTL Rendering Transform"),
                               kCTLScript.hotkey(),
                               (Fl_Callback*)attach_ctl_script_cb,
                               this, FL_MENU_DIVIDER);
-                    menu.add( _("Image/Attach ICC Color Profile"),
+                    menu->add( _("Image/Attach ICC Color Profile"),
                               kIccProfile.hotkey(),
                               (Fl_Callback*)attach_color_profile_cb,
                               this, FL_MENU_DIVIDER);
@@ -4232,23 +4231,23 @@ int ImageView::leftMouseDown(int x, int y)
 
 
             TRACE("");
-                menu.add( _("Image/Mirror/Horizontal"),
+                menu->add( _("Image/Mirror/Horizontal"),
                           kFlipX.hotkey(),
                           (Fl_Callback*)flip_x_cb,
                           this);
-                menu.add( _("Image/Mirror/Vertical"),
+                menu->add( _("Image/Mirror/Vertical"),
                           kFlipY.hotkey(),
                           (Fl_Callback*)flip_y_cb,
                           this);
-                menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
+                menu->add( _("Image/Set as Background"), kSetAsBG.hotkey(),
                           (Fl_Callback*)set_as_background_cb,
                           (void*)this);
 
             TRACE("");
-                menu.add( _("Image/Switch FG and BG"),
+                menu->add( _("Image/Switch FG and BG"),
                           kSwitchFGBG.hotkey(),
                           (Fl_Callback*)switch_fg_bg_cb, (void*)this);
-                menu.add( _("Image/Toggle Background"),
+                menu->add( _("Image/Toggle Background"),
                           kToggleBG.hotkey(),
                           (Fl_Callback*)toggle_background_cb, (void*)this);
 
@@ -4260,13 +4259,13 @@ int ImageView::leftMouseDown(int x, int y)
                 {
 
             TRACE("");
-                    menu.add( _("OCIO/Input Color Space"),
+                    menu->add( _("OCIO/Input Color Space"),
                               kOCIOInputColorSpace.hotkey(),
                               (Fl_Callback*)attach_ocio_ics_cb, (void*)this);
-                    menu.add( _("OCIO/Display"),
+                    menu->add( _("OCIO/Display"),
                               kOCIODisplay.hotkey(),
                               (Fl_Callback*)attach_ocio_display_cb, (void*)this);
-                    menu.add( _("OCIO/View"),
+                    menu->add( _("OCIO/View"),
                               kOCIOView.hotkey(),
                               (Fl_Callback*)attach_ocio_view_cb, (void*)this);
                 }
@@ -4285,10 +4284,10 @@ int ImageView::leftMouseDown(int x, int y)
                         sprintf( buf, _("Video/Track #%d - %s"), i,
                                  image->video_info(i).language.c_str() );
 
-                        idx = menu.add( buf, 0,
+                        idx = menu->add( buf, 0,
                                         (Fl_Callback*)change_video_cb, this,
                                         FL_MENU_RADIO );
-                        item = (Fl_Menu_Item*) &(menu.menu()[idx]);
+                        item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                         if ( image->video_stream() == i )
                             item->set();
                     }
@@ -4298,7 +4297,7 @@ int ImageView::leftMouseDown(int x, int y)
 
                 if ( dynamic_cast< aviImage* >( image ) != NULL )
                 {
-                    menu.add( _("Subtitle/Load"), 0,
+                    menu->add( _("Subtitle/Load"), 0,
                               (Fl_Callback*)load_subtitle_cb, uiMain );
                 }
 
@@ -4306,10 +4305,10 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
                 if ( num > 0 )
                 {
-                    idx = menu.add( _("Subtitle/No Subtitle"), 0,
+                    idx = menu->add( _("Subtitle/No Subtitle"), 0,
                                      (Fl_Callback*)change_subtitle_cb, this,
                                      FL_MENU_TOGGLE  );
-                    Fl_Menu_Item* item = (Fl_Menu_Item*) &(menu.menu()[idx]);
+                    Fl_Menu_Item* item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                     if ( image->subtitle_stream() == -1 )
                         item->set();
                     for ( unsigned i = 0; i < num; ++i )
@@ -4318,9 +4317,9 @@ int ImageView::leftMouseDown(int x, int y)
                         sprintf( buf, _("Subtitle/Track #%d - %s"), i,
                                  image->subtitle_info(i).language.c_str() );
 
-                        idx = menu.add( buf, 0,
+                        idx = menu->add( buf, 0,
                                         (Fl_Callback*)change_subtitle_cb, this, FL_MENU_RADIO );
-                        item = (Fl_Menu_Item*) &(menu.menu()[idx]);
+                        item = (Fl_Menu_Item*) &(menu->menu()[idx]);
                         if ( image->subtitle_stream() == i )
                             item->set();
                     }
@@ -4331,18 +4330,18 @@ int ImageView::leftMouseDown(int x, int y)
                 if ( 1 )
                 {
 
-                    menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
+                    menu->add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
                               (Fl_Callback*)attach_audio_cb, this );
-                    menu.add( _("Audio/Edit Audio Frame Offset"),
+                    menu->add( _("Audio/Edit Audio Frame Offset"),
                               kEditAudio.hotkey(),
                               (Fl_Callback*)edit_audio_cb, this );
-                    menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
+                    menu->add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
                               (Fl_Callback*)detach_audio_cb, this );
                 }
 
 
             TRACE("");
-                menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
+                menu->add( _("Pixel/Copy RGBA Values to Clipboard"),
                           kCopyRGBAValues.hotkey(),
                           (Fl_Callback*)copy_pixel_rgba_cb, (void*)this);
             }
@@ -4353,17 +4352,19 @@ int ImageView::leftMouseDown(int x, int y)
 
             TRACE("");
 
-                menu.add( _("Monitor/Attach CTL Display Transform"),
+                menu->add( _("Monitor/Attach CTL Display Transform"),
                           kMonitorCTLScript.hotkey(),
                           (Fl_Callback*)monitor_ctl_script_cb,
                           uiMain);
-                menu.add( _("Monitor/Attach ICC Color Profile"),
+                menu->add( _("Monitor/Attach ICC Color Profile"),
                           kMonitorIccProfile.hotkey(),
                           (Fl_Callback*)monitor_icc_profile_cb,
                           uiMain, FL_MENU_DIVIDER);
             }
             TRACE("");
-            menu.popup();
+            menu->popup();
+
+	    menu->clear();
             TRACE("");
 	    return 1;
         }
@@ -6890,10 +6891,10 @@ int ImageView::handle(int event)
             window()->cursor(FL_CURSOR_CROSS);
         }
 
-        return 1; Fl_Gl_Window::handle( event );
+	Fl_Gl_Window::handle( event );
+        return 1; 
     }
     case FL_ENTER:
-
         focus(this);
         window()->cursor(FL_CURSOR_CROSS);
 
@@ -6916,7 +6917,6 @@ int ImageView::handle(int event)
         return 1;
         break;
     case FL_MOVE:
-
         X = Fl::event_x();
         Y = Fl::event_y();
 
@@ -6944,7 +6944,7 @@ int ImageView::handle(int event)
             return 1;
         }
 
-        mouseMove(Fl::event_x(), Fl::event_y());
+        mouseMove(X, Y);
 
         if ( _mode == kDraw || _mode == kErase )
             redraw();
