@@ -731,7 +731,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label {Stereo 3D Options} user_data_type {void*}
-              callback {uiGL3dView->uiMain->show();}
+              callback {uiStereo->uiMain->show();}
               xywh {10 10 100 20}
             }
             MenuItem {} {
@@ -751,7 +751,7 @@ uiView->update_color_info();}
             }
             MenuItem {} {
               label Waveform user_data_type {void*}
-              callback {uiVectorscope->uiMain->show();}
+              callback {uiWaveform->uiMain->show();}
               xywh {10 10 100 20}
             }
             MenuItem {} {
