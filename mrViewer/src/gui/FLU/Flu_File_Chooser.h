@@ -34,13 +34,14 @@
 #include "FLU/Flu_Combo_List.h"
 #include "FLU/flu_export.h"
 
+#include <boost/thread/recursive_mutex.hpp>
 #include "gui/MyPack.h"
 
 typedef std::vector< std::string > FluStringVector;
 
-FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
-FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector *filelist );
-FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename );
+FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files = true );
+FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files = true );
+FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files = true );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles );
 FLU_EXPORT const char* flu_file_and_dir_chooser( const char *message, const char *filename );
@@ -189,6 +190,15 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   //! Clear the history of which directories have been visited
   void clear_history();
 
+  //! Clear threads or timeouts used to create icons
+  void clear_threads();
+
+  inline static void _previewCB( Fl_Widget*, void *arg )
+    { ((Flu_File_Chooser*)arg)->previewCB(); }
+  
+  //! previewCB handle icon creation
+  void previewCB();
+  
   //! \return how many files are selected
   int count();
 
@@ -554,6 +564,14 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   static bool thumbnailsFileReq;
   static bool singleButtonTravelDrawer;
+  
+  typedef boost::recursive_mutex Mutex;
+  Mutex  mutex;
+
+  unsigned num_timeouts;
+  unsigned serial;
+
+  bool quick_exit;
   
   static std::string dArrow[4];
   static std::string uArrow[4];
