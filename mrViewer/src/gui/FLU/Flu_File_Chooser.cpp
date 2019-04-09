@@ -62,8 +62,14 @@
 #include "FLU/flu_pixmaps.h"
 
 
-#include "core/mrvOS.h"
+#include "core/mrvHome.h"
+#include "core/Sequence.h"
+#include "core/mrvThread.h"
 #include "core/mrvI8N.h"
+#undef fprintf
+#include "gui/mrvFLTKHandler.h"
+#include "gui/mrvMedia.h"
+#include "gui/mrvIO.h"
 
 // set default language strings
 std::string Flu_File_Chooser::favoritesTxt = "Favorites";
@@ -150,8 +156,6 @@ Flu_File_Chooser::FileTypeInfo* Flu_File_Chooser::types = NULL;
 int Flu_File_Chooser::numTypes = 0;
 int Flu_File_Chooser::typeArraySize = 0;
 Flu_File_Chooser::ContextHandlerVector Flu_File_Chooser::contextHandlers;
-Flu_File_Chooser::PreviewHandlerVector Flu_File_Chooser::previewHandlers;
-Flu_File_Chooser::ImgTxtPreview* Flu_File_Chooser::imgTxtPreview = 0;
 int (*Flu_File_Chooser::customSort)(const char*,const char*) = 0;
 std::string Flu_File_Chooser::dArrow[4];
 std::string Flu_File_Chooser::uArrow[4];
@@ -304,12 +308,6 @@ void Flu_File_Chooser :: add_context_handler( int type, const char *ext, const c
   Flu_File_Chooser::contextHandlers.push_back( h );
 }
 
-void Flu_File_Chooser :: add_preview_handler( PreviewWidgetBase *w )
-{
-  if( w == NULL )
-    return;
-  Flu_File_Chooser::previewHandlers.push_back( w );
-}
 
 // extensions == NULL implies directories
 void Flu_File_Chooser :: add_type( const char *extensions, const char *short_description, Fl_Image *icon )
@@ -385,11 +383,12 @@ Flu_File_Chooser::FileTypeInfo* Flu_File_Chooser :: find_type( const char *exten
   return NULL;
 }
 
-Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int type, const char *title )
+Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int type, const char *title, const bool compact )
   : Fl_Double_Window( 600, 400, title ),
     filename( 70, h()-60, w()-70-85-10, 25, "", this ),
     ok( w()-90, h()-60, 85, 25 ),
     cancel( w()-90, h()-30, 85, 25 ),
+    _compact( compact ),
     entryPopup( 0, 0, 0, 0 )
 {
   int oldNormalSize = FL_NORMAL_SIZE;
@@ -660,7 +659,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   previewBtn = new Flu_Button( 482, 43, 23, 25 );
   previewBtn->type( FL_TOGGLE_BUTTON );
   previewBtn->image( preview_img );
-  previewBtn->callback( _previewCB, this );
+  // previewBtn->callback( _previewCB, this );
   previewBtn->tooltip( previewTTxt.c_str() );
 
   {
@@ -692,7 +691,6 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   ////////////////////////////////////////////////////////////////
 
-  previewTile = new PreviewTile( 110, 70, w()-110-5, h()-80-40-15, this );
   fileGroup = new Fl_Group( 110, 70, w()-120-5, h()-80-40-15 );
   {
     fileGroup->box( FL_DOWN_FRAME );
@@ -701,7 +699,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     filelist->box( FL_FLAT_BOX );
     filelist->color( FL_WHITE );
     filelist->type( FL_HORIZONTAL );
-    filelist->spacing( 4, 1 );
+    filelist->spacing( 2, 0 );
     filelist->scrollbar.linesize( DEFAULT_ENTRY_WIDTH+4 );
     filelist->end();
 
@@ -718,8 +716,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 		filedetails = new FileDetails( filescroll->x()+2, filescroll->y()+2, filescroll->w()-4, filescroll->h()-20-4, this );
 		filedetails->end();
 	    }
-	    filescroll->end();
-	    
+	    filescroll->end();	    
 	    {
 		filecolumns = new FileColumns( fileGroup->x()+2, fileGroup->y()+2, fileGroup->w()-4, 20, this );
 		filecolumns->end();
@@ -733,18 +730,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   }
   fileGroup->end();
 
-  previewGroup = new PreviewGroup( fileGroup->x()+fileGroup->w(), fileGroup->y(), previewTile->w()-fileGroup->w(), fileGroup->h(), this );
-  previewGroup->end();
-  {
-    Fl_Box *b = new Fl_Box( previewTile->x()+250, previewTile->y(), previewTile->w()-350, previewTile->h() );
-    previewTile->add_resizable( *b );
-  }
-  previewTile->end();
-  previewTile->position( previewGroup->x(), previewGroup->y(), previewTile->x()+previewTile->w(), previewGroup->y() );
-  previewTile->last = previewTile->x()+previewTile->w()-200;
-
-  resizable( previewTile );
-
+  
   filePattern = new Flu_Combo_List( 70, h()-30, w()-70-85-10, 25, fileTypesTxt.c_str() );
   filePattern->editable( false );
   filePattern->callback( reloadCB, this );
@@ -768,6 +754,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   end();
 
+  
   FL_NORMAL_SIZE = oldNormalSize;
 
   char buf[1024];
@@ -804,14 +791,6 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
       }
   }
 
-  if( !imgTxtPreview )
-    {
-      imgTxtPreview = new ImgTxtPreview();
-      // make the text previewer the first one
-      Flu_File_Chooser::previewHandlers.insert(
-					       Flu_File_Chooser::previewHandlers.begin(),
-						imgTxtPreview );
-    }
 
   pattern( pat );
   default_file_icon( &default_file );
@@ -1377,231 +1356,6 @@ int Flu_File_Chooser :: FileInput :: handle( int event )
   return Fl_Input::handle( event );
 }
 
-Flu_File_Chooser :: PreviewTile :: PreviewTile( int x, int y, int w, int h, Flu_File_Chooser *c )
-   : Fl_Tile( x, y, w, h )
-{
-  chooser = c;
-}
-
-int Flu_File_Chooser :: PreviewTile :: handle( int event )
-{
-  // if we're not in preview mode, then the user isn't allowed to resize the tile
-  if( !chooser->previewBtn->value() )
-    return Fl_Group::handle( event );
-  if( event == FL_DRAG )
-    {
-      // the user is probably dragging to resize the columns
-      // update the sizes for each entry
-      chooser->updateEntrySizes();
-      chooser->redraw();
-    }
-  return Fl_Tile::handle(event);
-}
-
-Flu_File_Chooser :: PreviewWidgetBase :: PreviewWidgetBase()
-  : Fl_Group( 0, 0, 0, 0 )
-{
-}
-
-Flu_File_Chooser :: PreviewWidgetBase :: ~PreviewWidgetBase()
-{
-}
-
-Flu_File_Chooser :: PreviewGroup :: PreviewGroup( int x, int y, int w, int h, Flu_File_Chooser *c )
-  : Fl_Group( x, y, w, h )
-{
-  box( FL_DOWN_BOX );
-  align( FL_ALIGN_CENTER | FL_ALIGN_CLIP );
-  labelsize( 60 );
-  labelfont( FL_HELVETICA );
-  chooser = c;
-  handled = 0;
-  lastFile = "";
-}
-
-void Flu_File_Chooser :: PreviewGroup :: draw()
-{
-  if( !chooser->previewBtn->value() )
-    return;
-
-  if( file.size() == 0 )
-    return;
-
-  FILE *f = fopen( file.c_str(), "rb" );
-  if( !f )
-    {
-      label( "" );
-      Fl_Group::draw();
-      return;
-    }
-  fclose( f );
-
-  if( lastFile != file )
-    {
-      lastFile = file;
-
-      handled = 0;
-      PreviewWidgetBase *next;
-      for( int i = chooser->previewHandlers.size()-1; i >= 0; i-- )
-	{
-	  next = chooser->previewHandlers[i];
-	  next->hide();
-	  if( !handled )
-	    {
-	      Fl_Group *p = next->parent();
-	      Fl_Group::add( next );
-	      if( next->preview( file.c_str() ) != 0 )
-		{
-		  handled = next;
-		}
-	      Fl_Group::remove( *next );
-	      if( p )
-		p->add( next );
-	    }
-	}
-    }
-
-  if( handled == 0 )
-    {
-      label( "?" );
-      Fl_Group::draw();
-    }
-  else
-    {
-      label( "" );
-      Fl_Group *p = handled->parent();
-      handled->show();
-      Fl_Group::add( handled );
-      handled->resize( x()+Fl::box_dx(box()), y()+Fl::box_dy(box()),
-		       w()-Fl::box_dw(box()), h()-Fl::box_dh(box()) );
-      Fl_Group::draw();
-      Fl_Group::remove( *handled );
-      handled->hide();
-      if( p )
-	p->add( handled );
-    }
-}
-
-// adapted from Fl_File_Chooser2.cxx : update_preview()
-int Flu_File_Chooser :: ImgTxtPreview ::  preview( const char *filename )
-{
-  Fl_Shared_Image	*img,		// New image
-			*oldimg;	// Old image
-  int			pbw, pbh;	// Width and height of preview box
-  int			w, h;		// Width and height of preview image
-
-  window()->cursor( FL_CURSOR_WAIT );
-  Fl::check();
-
-  img = Fl_Shared_Image::get( filename );
-  if( img )
-    {
-      window()->cursor( FL_CURSOR_DEFAULT );
-      Fl::check();
-    }
-
-  oldimg = (Fl_Shared_Image*)image();
-  if( oldimg )
-    oldimg->release();
-  image(0);
-
-  if( !img )
-    {
-      // Try reading the first 1k of data for a label...
-      FILE *f = fopen( filename, "rb" );
-      if( f )
-	{
-	  int bytes = fread( previewTxt, 1, sizeof(previewTxt) - 1, f );
-	  previewTxt[bytes] = '\0';
-	  fclose( f );
-	} 
-      else
-	return 0;
-
-      window()->cursor( FL_CURSOR_DEFAULT );
-      Fl::check();
-
-      // Scan the buffer for printable chars...
-      unsigned char *ptr;
-      for( ptr = previewTxt; *ptr && (isprint(*ptr) || isspace(*ptr)); ptr++ ) {}
-
-      if( *ptr || ptr == previewTxt )
-	{
-	  // Non-printable file - can't handle
-	  return 0;
-	} 
-      else
-	{
-	  // Show the first 1k of text...
-	  label( (const char*)previewTxt );
-	  align((Fl_Align)(FL_ALIGN_CLIP | FL_ALIGN_INSIDE | FL_ALIGN_LEFT | FL_ALIGN_TOP));
-	  labelsize( 12 );
-	  labelfont( FL_COURIER );
-	}
-    }
-  else if( img->w() > 0 && img->h() > 0 )
-    {
-
-      pbw = this->w() - 20;
-      pbh = this->h() - 20;
-      pbw = (pbw < 10) ? 10 : pbw;
-      pbh = (pbh < 10) ? 10 : pbh;
-
-      if( img->w() > pbw || img->h() > pbh )
-	{
-	  w = pbw;
-	  h = int(float(w*img->h()) / float(img->w()));
-
-	  if( h > pbh )
-	    {
-	      h = pbh;
-	      w = int(float(h*img->w()) / float(img->h()));
-	    }
-
-	  oldimg = (Fl_Shared_Image *)img->copy(w, h);
-	  image((Fl_Image *)oldimg);
-
-	  img->release();
-	}
-      else
-	image((Fl_Image *)img);
-
-      align( FL_ALIGN_CLIP );
-      label(0);
-    }
-
-  redraw();
-
-  return 1;
-}
-
-void Flu_File_Chooser :: previewCB()
-{
-  if( previewBtn->value() )
-    {
-      fileGroup->resize( fileGroup->x(), fileGroup->y(), previewTile->last-fileGroup->x(), fileGroup->h() );
-      previewGroup->resize( previewTile->last, previewGroup->y(), previewTile->w()-fileGroup->w(), previewGroup->h() );
-      previewGroup->show();
-    }
-  else
-    {
-      previewTile->last = previewGroup->x();
-      fileGroup->resize( fileGroup->x(), fileGroup->y(), previewTile->w(), fileGroup->h() );
-      previewGroup->resize( previewTile->x()+previewTile->w(), previewGroup->y(), 0, previewGroup->h() );
-      previewGroup->hide();
-    }
-  previewGroup->redraw();
-  previewTile->init_sizes();
-  fileDetailsGroup->parent()->init_sizes();
-  updateEntrySizes();
-  redraw();
-  if( previewBtn->value() )
-    {
-      Fl::check();
-      previewGroup->redraw();
-    }
-}
-
 void Flu_File_Chooser :: sortCB( Fl_Widget *w )
 {
   // if the sort method is already selected, toggle the REVERSE bit
@@ -2085,8 +1839,6 @@ int Flu_File_Chooser :: FileList :: handle( int event )
 	      chooser->filename.value( e->filename.c_str() );
 	      chooser->filename.position( chooser->filename.size(), chooser->filename.size() );
 	      chooser->redraw();
-	      if( e->type == ENTRY_FILE )
-		chooser->previewGroup->file = chooser->currentDir + e->filename;
 	      scroll_to( e );
 	      return 1;
 	    }
@@ -2517,8 +2269,14 @@ static const int kColorTwo = fl_rgb_color( 180, 180, 180 );
 
 void Flu_File_Chooser::Entry::set_colors() {
     Fl_Group* g = chooser->getEntryGroup();
-    if ( !g || selected ) return;
-    for ( int i = 0; i < g->children(); ++i )
+    if ( !g ) return;
+    if ( selected )
+    {
+	color( FL_DARK_BLUE );
+	return;
+    }
+    unsigned num = g->children();
+    for ( unsigned i = 0; i < num; ++i )
     {
         Entry* e = (Entry*) g->child(i);
         if ( e != this ) continue;
@@ -2567,16 +2325,10 @@ int Flu_File_Chooser :: Entry :: handle( int event )
   if( event == FL_LEAVE )
   {
      // if user leaves an entry cell, color it gray or blue
-     if (selected) {
-	 color( FL_DARK_BLUE );
-     }
-     else
-     {
-         set_colors();
-     }
-     redraw();
-     chooser->redraw();
-     return 1;
+      set_colors();
+      redraw();
+      chooser->redraw();
+      return 1;
   }
 
   Fl_Group *g = chooser->getEntryGroup();
@@ -2587,7 +2339,7 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 	  // double-clicking a directory cd's to it or single travel too
 	    if(  ( Flu_File_Chooser::singleButtonTravelDrawer ||
 		   Fl::event_clicks() > 0 ) &&
-		 type != ENTRY_FILE && type != ENTRY_SEQUENCE )
+		 ( type != ENTRY_FILE && type != ENTRY_SEQUENCE ) )
 	    {
 		Fl::event_clicks(0);
 #ifdef WIN32
@@ -2639,8 +2391,6 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 	    {
 	      selected = !selected;  // toggle this item
 	      chooser->lastSelected = this;
-	      if( type == ENTRY_FILE )
-		chooser->previewGroup->file = chooser->currentDir + filename;
 	      chooser->redraw();
 	      chooser->getEntryContainer()->take_focus();
 	    }
@@ -2651,8 +2401,6 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 		{
 		  selected = true;
 		  chooser->lastSelected = this;
-		  if( type == ENTRY_FILE )
-		    chooser->previewGroup->file = chooser->currentDir + filename;
 		  chooser->redraw();
 		  chooser->getEntryContainer()->take_focus();
 		}
@@ -2686,8 +2434,6 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 			  e->redraw();
 			}
 		      chooser->lastSelected = this;
-		      if( type == ENTRY_FILE )
-			chooser->previewGroup->file = chooser->currentDir + filename;
 		      chooser->redraw();
 		      chooser->getEntryContainer()->take_focus();
 		    }
@@ -2698,8 +2444,6 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 	      chooser->unselect_all();
 	      selected = true;
 	      chooser->lastSelected = this;
-	      if( type == ENTRY_FILE )
-		chooser->previewGroup->file = chooser->currentDir + filename;
 	      chooser->redraw();
 	      chooser->getEntryContainer()->take_focus();
 	    }
@@ -2725,8 +2469,6 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 	  chooser->unselect_all();
 	  selected = true;
 	  chooser->lastSelected = this;
-	  if( type == ENTRY_FILE )
-	    chooser->previewGroup->file = chooser->currentDir + filename;
 	  chooser->redraw();
 	  chooser->getEntryContainer()->take_focus();
 	}
@@ -2744,7 +2486,7 @@ int Flu_File_Chooser :: Entry :: handle( int event )
       // or if we are in SAVING mode
       if( (chooser->selectionType & Flu_File_Chooser::DIRECTORY) ||
 	  (chooser->selectionType & Flu_File_Chooser::STDFILE) ||
-	  type==ENTRY_FILE )
+	  type==ENTRY_FILE || type == ENTRY_SEQUENCE )
 	chooser->filename.value( filename.c_str() );
       else if( !(chooser->selectionType & Flu_File_Chooser::SAVING ) )
 	chooser->filename.value( "" );
@@ -2788,8 +2530,6 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 		      e->redraw();
 		    }
 		  chooser->lastSelected = this;
-		  if( type == ENTRY_FILE )
-		    chooser->previewGroup->file = chooser->currentDir + filename;
 		  chooser->redraw();
 		}
 	      redraw();
@@ -2865,6 +2605,9 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
 
     case ENTRY_MYCOMPUTER:
       break;
+      
+    case ENTRY_SEQUENCE:
+      break;
     }
 
   // add the programmable context handlers
@@ -2872,7 +2615,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
     {
       if( !(contextHandlers[i].type & type) )
 	continue;
-      if( type == ENTRY_FILE )
+      if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
 	if( contextHandlers[i].ext.size() && contextHandlers[i].ext != ext )
 	  continue;
       entryPopup.add( contextHandlers[i].name.c_str(), 0, 0, (void*)i );
@@ -2988,10 +2731,9 @@ void Flu_File_Chooser :: unselect_all()
       e = ((Entry*)g->child(i));
       e->selected = false;
       e->editMode = 0;
+      e->set_colors();
     }
   lastSelected = 0;
-  previewGroup->file = "";
-  previewGroup->redraw();
   trashBtn->deactivate();
   redraw();
 }
@@ -3002,17 +2744,14 @@ void Flu_File_Chooser :: select_all()
     return;
   Fl_Group *g = getEntryGroup();
   Entry *e;
-  previewGroup->file = "";
   for( int i = 0; i < g->children(); i++ )
     {
       e = ((Entry*)g->child(i));
       e->selected = true;
       e->editMode = 0;
-      previewGroup->file = e->filename;
       filename.value( e->filename.c_str() );
     }
   lastSelected = 0;
-  previewGroup->redraw();
   trashBtn->deactivate();
   redraw();
 }
@@ -3590,6 +3329,88 @@ bool Flu_File_Chooser :: stripPatterns( std::string s, FluStringVector* patterns
     return true;
 }
 
+
+void Flu_File_Chooser::statFile( Entry* entry, const char* file )
+{
+#ifdef _WIN32
+    wchar_t buf[1024];
+    struct _stati64 s;
+    s.st_size = 0;
+    utf8towc( file, strlen(file), buf, 1024 );
+    ::_wstati64( buf, &s );
+#else
+    struct stat s;
+    ::stat( file, &s );
+#endif
+
+    bool isDir = ( fl_filename_isdir( file ) != 0 );
+
+    // store size as human readable and sortable integer
+#if _WIN32
+#else
+    passwd* pwd = getpwuid( s.st_uid ); // this must not be freed
+    if ( pwd != NULL ) entry->owner = pwd->pw_name;
+    else entry->owner = "unknown";
+#endif
+
+    entry->isize = s.st_size;
+    entry->permissions = "";
+
+    if( isDir && entry->isize == 0 )
+    {
+        entry->filesize = "";
+        entry->permissions = 'd';
+    }
+    else
+    {
+        char buf[32];
+        if( (entry->isize >> 30) > 0 ) // gigabytes
+        {
+            double GB = double(entry->isize)/double(1<<30);
+            sprintf( buf, "%.1f GB", GB );
+        }
+        else if( (entry->isize >> 20) > 0 ) // megabytes
+        {
+            double MB = double(entry->isize)/double(1<<20);
+            sprintf( buf, "%.1f MB", MB );
+        }
+        else if( (entry->isize >> 10) > 0 ) // kilabytes
+        {
+            double KB = double(entry->isize)/double(1<<10);
+            sprintf( buf, "%.1f KB", KB );
+        }
+        else // bytes
+        {
+            sprintf( buf, "%d bytes", (int)entry->isize );
+        }
+        entry->filesize = buf;
+    }
+
+    // store date as human readable and sortable integer
+    entry->date = formatDate( ctime( &s.st_mtime ) );
+    entry->idate = s.st_mtime;
+
+    // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
+    unsigned int p = s.st_mode;
+#ifdef _WIN32
+    entry->pU = int( bool(p & _S_IREAD )<<2 ) |
+                int( bool(p & _S_IWRITE)<<1 ) |
+                int( bool(p & _S_IEXEC ) );
+    entry->pG = entry->pU;
+    entry->pO = entry->pG;
+#else
+    entry->pU = bool(p&S_IRUSR)<<2 | bool(p&S_IWUSR)<<1 | bool(p&S_IXUSR);
+    entry->pG = bool(p&S_IRGRP)<<2 | bool(p&S_IWGRP)<<1 | bool(p&S_IXGRP);
+    entry->pO = bool(p&S_IROTH)<<2 | bool(p&S_IWOTH)<<1 | bool(p&S_IXOTH);
+#endif
+    const char* perms[8] =
+    { "---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx" };
+    entry->permissions += perms[entry->pU];
+    entry->permissions += perms[entry->pG];
+    entry->permissions += perms[entry->pO];
+
+}
+
 void Flu_File_Chooser :: cd( const char *path )
 {
   Entry *entry;
@@ -3612,11 +3433,9 @@ void Flu_File_Chooser :: cd( const char *path )
     }
 
   lastSelected = 0;
-  previewGroup->file = "";
-  previewGroup->redraw();
 
   filelist->scroll_to_beginning();
-  filescroll->position( 0, 0 );
+  filescroll->scroll_to( 0, 0 );
 
   bool listMode = !fileDetailsBtn->value() || streq( path, FAVORITES_UNIQUE_STRING );
 
@@ -3657,7 +3476,7 @@ void Flu_File_Chooser :: cd( const char *path )
     }
 
   std::string currentFile = filename.value();
-  filescroll->position( 0, 0 );
+  filescroll->scroll_to( 0, 0 );
   //Fl::focus( &filename );
   upDirBtn->activate();
   ok.activate();
@@ -3687,13 +3506,22 @@ void Flu_File_Chooser :: cd( const char *path )
 	  entry = new Entry( favoritesList->text(i), ENTRY_FAVORITE, false/*fileDetailsBtn->value()*/, this );
 	  entry->updateSize();
 	  entry->updateIcon();
-	  entry->set_colors();
 	}
       if( listMode )
 	filelist->end();
       else
+      {
 	filedetails->end();
-
+      }
+      
+      Fl_Group* g = getEntryGroup();
+      unsigned num = g->children();
+      for ( unsigned i = 0; i < num; ++i )
+      {
+	  Entry* c = (Entry*)g->child(i);
+	  c->set_colors();
+      }
+      
       redraw();
       ok.deactivate();
       return;
@@ -3765,6 +3593,7 @@ void Flu_File_Chooser :: cd( const char *path )
   filelist->clear();
   filedetails->clear();
 
+
   cleanupPath( currentDir );
 
 #ifdef WIN32
@@ -3807,13 +3636,22 @@ void Flu_File_Chooser :: cd( const char *path )
 	      entry->altname = drives[i];
 	      entry->updateSize();
 	      entry->updateIcon();
-	      entry->set_colors();
 	    }
 	}
       if( listMode )
 	filelist->end();
       else
+      {
 	filedetails->end();
+      }
+
+      Fl_Group* g = getEntryGroup();
+      unsigned num = g->children();
+      for ( unsigned i = 0; i < num; ++i )
+      {
+	  Entry* c = (Entry*)g->child(i);
+	  c->set_colors();
+      }
 
       redraw();
     }
@@ -3833,10 +3671,21 @@ void Flu_File_Chooser :: cd( const char *path )
       if( listMode )
 	filelist->end();
       else
+      {
 	filedetails->end();
+      }
       numDirs += 2;
+      
+      Fl_Group* g = getEntryGroup();
+      unsigned num = g->children();
+      for ( unsigned i = 0; i < num; ++i )
+      {
+	  Entry* c = (Entry*)g->child(i);
+	  c->set_colors();
+      }
     }
 #endif
+
 
   // see if currentDir is in fact a directory
   // if so, make sure there is a trailing "/" and we're done
@@ -3857,6 +3706,7 @@ void Flu_File_Chooser :: cd( const char *path )
 	currentFile = "";
     }
 
+
   // now we have the current directory and possibly a file at the end
   // try to split into path and file
   if( currentDir[currentDir.size()-1] != '/' )
@@ -3872,6 +3722,7 @@ void Flu_File_Chooser :: cd( const char *path )
   if( currentDir[currentDir.size()-1] != '/' )
     currentDir += "/";
 
+
 	
 #ifdef WIN32
   {
@@ -3883,8 +3734,11 @@ void Flu_File_Chooser :: cd( const char *path )
       currentDir = tmp;
   }
 #else
+
   addToHistory();
+
 #endif
+
 
   delayedCd = "./";
 
@@ -3900,6 +3754,7 @@ void Flu_File_Chooser :: cd( const char *path )
   else
 #endif
     {
+
       location->input.value( currentDir.c_str() );
 #ifdef WIN32
       std::string treePath = "/"+desktopTxt+"/"+myComputerTxt+"/"+currentDir;
@@ -3909,11 +3764,15 @@ void Flu_File_Chooser :: cd( const char *path )
       if( currentDir == (userHome+myDocumentsTxt+"/") )
 	n->branch_icon( &documents );
 #else
+
       location->tree.add( currentDir.c_str() );
+
 #endif
     }
 
+
   updateLocationQJ();
+
 
 #ifdef WIN32
   if( root )
@@ -3952,6 +3811,7 @@ void Flu_File_Chooser :: cd( const char *path )
       }
   }
 
+
   // add any user-defined patterns
   FluStringVector userPatterns;
   // if the user just hit <Tab> but the filename input area is empty,
@@ -3959,6 +3819,13 @@ void Flu_File_Chooser :: cd( const char *path )
   if( !filenameTabCallback || currentFile != "*" )
     stripPatterns( currentFile, &userPatterns );
 
+  typedef std::vector< std::string > Directories;
+  Directories dirs;
+  typedef std::vector< std::string > Files;
+  Files files;
+
+  mrv::Sequences tmpseqs;
+  
   // read the directory
   dirent **e;
   char *name;
@@ -3966,6 +3833,8 @@ void Flu_File_Chooser :: cd( const char *path )
   if( num > 0 )
     {
       int i;
+
+      std::string croot, cview, cext;
       for( i = 0; i < num; i++ )
 	{
 	  name = e[i]->d_name;
@@ -4042,137 +3911,282 @@ void Flu_File_Chooser :: cd( const char *path )
 		}
 	    }
 
+
 	  // add directories at the beginning, and files at the end
 	  entry = new Entry( name, isDir?ENTRY_DIR:ENTRY_FILE, fileDetailsBtn->value(), this );
 	  if( isDir )
 	    {
-	      if( listMode )
-		filelist->insert( *entry, 0 );
-	      else
-		filedetails->insert( *entry, 0 );
-	      numDirs++;
-	      lastAddedDir = entry->filename.c_str();
+                dirs.push_back( name );
 	    }
 	  else
 	    {
-	      if( listMode )
-		filelist->add( entry );
-	      else
-		filedetails->add( entry );
-	      numFiles++;
-	      lastAddedFile = entry->filename.c_str();
+		bool is_sequence = false;
+                 std::string root, frame, view, ext;
+                 bool ok = mrv::split_sequence( root, frame, view, ext, name );
+
+                 if ( compact_files() )
+                 {
+                     if ( (!root.empty() || !ext.empty()) && !frame.empty() )
+                       is_sequence = true;
+
+                    std::string tmp = ext;
+                    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+                                    (int(*)(int)) tolower);
+                    if ( mrv::is_valid_movie( tmp.c_str() ) ||
+                         mrv::is_valid_audio( tmp.c_str() ) ||
+                         mrv::is_valid_subtitle( tmp.c_str() ) ||
+                         tmp == N_(".icc")  ||
+                         tmp == N_(".icm")  ||
+                         tmp == N_(".ctl")  ||
+                         tmp == N_(".xml")  ||
+                         tmp == N_(".ocio") )
+                       is_sequence = false;
+                 }
+                 else
+                 {
+                    is_sequence = false;
+                 }
+
+                 if ( is_sequence )
+                 {
+                     mrv::Sequence seq;
+                     seq.ext = ext;
+                     seq.view = view;
+                     seq.number = frame;
+                     seq.root = root;
+                     tmpseqs.push_back( seq );
+                  }
+                else
+                  {
+                      if ( compact_files() &&
+                           root == croot && ext == cext && view == cview )
+                          continue;
+
+                      if ( root == "" )
+                      {
+                          files.push_back( name );
+                          continue;
+                      }
+
+                      croot = root;
+                      cext = ext;
+                      cview = view;
+
+                      std::string tmp = root + view + frame + ext;
+                      files.push_back( tmp );
+                  }
 	    }
 
-	  // get some information about the file
-    // store size as human readable and sortable integer
+	}
+
+      //
+      // Add all directories first
+      //
+      {
+        Directories::const_iterator i = dirs.begin();
+        Directories::const_iterator e = dirs.end();
+        for ( ; i != e; ++i )
+          {
+            entry = new Entry( (*i).c_str(), ENTRY_DIR,
+                               fileDetailsBtn->value(), this );
+            if (!entry) continue;
+
+            if( listMode )
+              filelist->insert( *entry, 0 );
+            else
+              filedetails->insert( *entry, 0 );
+            ++numDirs;
+            lastAddedDir = entry->filename.c_str();
+
+            fullpath = pathbase + *i;
+            statFile( entry, fullpath.c_str() );
+          }
+      }
+
+      //
+      // Then, sort sequences and collapse them into a single file entry
+      //
+      {
+         std::sort( tmpseqs.begin(), tmpseqs.end(), mrv::SequenceSort() );
+
+
+        std::string root;
+        std::string first;
+        std::string number;
+        std::string view;
+        std::string ext;
+        int zeros = -1;
+
+        std::string seqname;
+        mrv::Sequences seqs;
+
+        {
+           mrv::Sequences::iterator i = tmpseqs.begin();
+           mrv::Sequences::iterator e = tmpseqs.end();
+           for ( ; i != e; ++i )
+            {
+              const char* s = (*i).number.c_str();
+              int z = 0;
+              for ( ; *s == '0'; ++s )
+                ++z;
+
+              if ( (*i).root != root || (*i).view != view ||
+                   (*i).ext != ext || ( zeros != z && z != zeros-1 ) )
+              {
+                  // New sequence
+                  if ( seqname != "" )
+                    {
+                       mrv::Sequence seq;
+                       seq.root = seqname;
+                       seq.number = seq.ext = first;
+                       if ( first != number )
+                       {
+                          seq.ext = number;
+                       }
+                       seq.view = (*i).view;
+                       seqs.push_back( seq );
+                    }
+
+                  root   = (*i).root;
+                  zeros  = z;
+                  number = first = (*i).number;
+                  view   = (*i).view;
+                  ext    = (*i).ext;
+
+                  seqname  = root;
+                  seqname += view;
+                  if ( z == 0 )
+                    seqname += "%d";
+                  else
+                    {
+                      seqname += "%0";
+                      char buf[19]; buf[18] = 0;
+#ifdef WIN32
+                      seqname += itoa( int((*i).number.size()), buf, 10 );
+#else
+                      sprintf( buf, "%ld", (*i).number.size() );
+                      seqname += buf;
+#endif
+                      seqname += "d";
+                    }
+                  seqname += ext;
+                }
+              else
+                {
+                  zeros  = z;
+                  number = (*i).number;
+                }
+            }
+        }
+
+        if ( ! root.empty() || ! first.empty() )
+          {
+             mrv::Sequence seq;
+             seq.root = seqname;
+             seq.number = seq.ext = first;
+             seq.view = view;
+             if ( first != number )
+             {
+                seq.ext = number;
+             }
+             seqs.push_back( seq );
+          }
+
+        mrv::Sequences::const_iterator i = seqs.begin();
+        mrv::Sequences::const_iterator e = seqs.end();
+        for ( ; i != e; ++i )
+        {
+          entry = new Entry( (*i).root.c_str(), ENTRY_SEQUENCE,
+                             fileDetailsBtn->value(), this );
+          entry->isize = 1 + ( atoi( (*i).ext.c_str() ) -
+                               atoi( (*i).number.c_str() ) );
+          entry->altname = (*i).root.c_str();
+
+          entry->filesize = (*i).number;
+          if ( entry->isize > 1 )
+          {
+              entry->filesize += _(" to ");
+              // entry->filesize += (*i).view;
+              entry->filesize += (*i).ext;
+          }
     
-#ifdef _WIN32
-	  wchar_t buf[1024];
-	  struct _stati64 s;
-	  s.st_size = 0;
-	  fl_utf8towc( fullpath.c_str(), fullpath.size(), buf, 1024 );
-	  ::_wstati64( buf, &s );
-#else
-	  struct stat s;
-	  ::stat( fullpath.c_str(), &s );
-#endif
-
-#if _WIN32
-#else
-    passwd* pwd = getpwuid( s.st_uid ); // this must not be freed
-    if ( pwd != NULL ) entry->owner = pwd->pw_name;
-    else entry->owner = "unknown";
-#endif
-	  // store size as human readable and sortable integer
-	  entry->isize = s.st_size;
-	  entry->permissions = "";
-	  if( isDir && entry->isize == 0 )
-	  {
-	    entry->filesize = "";
-	    entry->permissions = 'd';
-	  }
-	  else
-	    {
-	      char buf[32];
-	      /*
-		if( (entry->isize >> 40) > 0 ) // terrabytes
-		{
-		double TB = double(entry->isize)/double(1<<40);
-		sprintf( buf, "%.1f TB", TB );
-		}
-	      */
-	      if( (entry->isize >> 30) > 0 ) // gigabytes
-		{
-		  double GB = double(entry->isize)/double(1<<30);
-		  sprintf( buf, "%.1f GB", GB );
-		}
-	      else if( (entry->isize >> 20) > 0 ) // megabytes
-		{
-		  double MB = double(entry->isize)/double(1<<20);
-		  sprintf( buf, "%.1f MB", MB );
-		}
-	      else if( (entry->isize >> 10) > 0 ) // kilabytes
-		{
-		  double KB = double(entry->isize)/double(1<<10);
-		  sprintf( buf, "%.1f KB", KB );
-		}
-	      else // bytes
-		{
-		  sprintf( buf, "%d bytes", (int)entry->isize );
-		}
-	      entry->filesize = buf;
-	    }
-
-	  // store date as human readable and sortable integer
-	  entry->date = formatDate( ctime( &s.st_mtime ) );//ctime( &s.st_mtime );
-	  entry->idate = s.st_mtime;
-
-	  // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
-	  unsigned int p = s.st_mode;
-#ifdef _WIN32
-	  entry->pU = int( bool(p & _S_IREAD )<<2 ) |
-	  int( bool(p & _S_IWRITE)<<1 ) |
-	  int( bool(p & _S_IEXEC ) );
-	  entry->pG = entry->pU;
-	  entry->pO = entry->pG;
-#else
-	  entry->pU = bool(p&S_IRUSR)<<2 | bool(p&S_IWUSR)<<1 | bool(p&S_IXUSR);
-	  entry->pG = bool(p&S_IRGRP)<<2 | bool(p&S_IWGRP)<<1 | bool(p&S_IXGRP);
-	  entry->pO = bool(p&S_IROTH)<<2 | bool(p&S_IWOTH)<<1 | bool(p&S_IXOTH);
-#endif
-	  const char* perms[8] =
-	  { "---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx" };
-	  entry->permissions += perms[entry->pU];
-	  entry->permissions += perms[entry->pG];
-	  entry->permissions += perms[entry->pO];
-
 	  entry->updateSize();
 	  entry->updateIcon();
 
+
+          ++numFiles;
+          if( listMode )
+            filelist->add( entry );
+          else
+            filedetails->add( entry );
+        }
+
+      }
+
+      
+      {
+        Files::const_iterator i = files.begin();
+        Files::const_iterator e = files.end();
+        for ( ; i != e; ++i )
+        {
+            entry = new Entry( (*i).c_str(), ENTRY_FILE,
+                               fileDetailsBtn->value(), this );
+
+            if( listMode )
+            {
+                filelist->add( entry );
+            }
+            else
+            {
+                filedetails->add( entry );
+            }
+            numFiles++;
+            lastAddedFile = entry->filename.c_str();
+
+
+            // get some information about the file
+            fullpath = pathbase + *i;
+            statFile( entry, fullpath.c_str() );
+
+          entry->updateIcon();
+          entry->updateSize();
+
+          // was this file specified explicitly?
+          isCurrentFile = ( currentFile == entry->filename );
 	  if( isCurrentFile )
 	    {
 	      filename.value( name );
 	      entry->selected = true;
 	      lastSelected = entry;
-	      if( entry->type == ENTRY_FILE )
-		previewGroup->file = currentDir + name;
-	      previewGroup->redraw();
+
 	      filelist->scroll_to( entry );
+
 	      filedetails->scroll_to( entry );
+
 	      //break;
 	    }
-	}
+	} // i != e
+      }
 
       for( i = 0; i < num; i++ )
 	free((void*)(e[i]));
       free((void*)e);
-    }
+    } // num > 0
 
   // sort the files: directories first, then files
+
   if( listMode )
     filelist->sort( numDirs );
   else
     filedetails->sort( numDirs );
+
+  Fl_Group* g = getEntryGroup();
+  num = g->children();
+  for ( int i = 0; i < num; ++i )
+  {
+      Entry* c = (Entry*)g->child(i);
+      c->set_colors();
+  }
 
   // see if the user pushed <Tab> in the filename input field
   if( filenameTabCallback )
@@ -4264,6 +4278,7 @@ void Flu_File_Chooser :: cd( const char *path )
   else
     filename.position( filename.size(), filename.size() );
   filename.take_focus();
+
 
   redraw();
 }
