@@ -322,12 +322,19 @@ static void loadRealIcon( RealIcon* e)
     typedef boost::recursive_mutex Mutex;
 
 
+#ifdef ICONS_SINGLE_THREAD
     Mutex::scoped_lock lk_m( e->chooser->mutex );
+#else
+    Fl::lock();
+#endif
+
+    int frameStart;
+    std::string view, file, ext;
+    size_t p;
 
     if ( e->chooser->quick_exit ) {
         DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
-        delete e;
-        return;
+	goto OUT;
     }
 
     char fmt[1024];
@@ -335,19 +342,17 @@ static void loadRealIcon( RealIcon* e)
 
 
 
-    std::string view;
 
     if ( e->filename.find( "%v" ) )
         view = mrv::get_short_view(true);
     else if ( e->filename.find( "%V" ) )
         view = mrv::get_long_view(true);
 
-    int frameStart = atoi( e->filesize.c_str() );
+    frameStart = atoi( e->filesize.c_str() );
 
-    std::string file = e->filename;
+    file = e->filename;
 
-    std::string ext;
-    size_t p = file.rfind( '.' );
+    p = file.rfind( '.' );
     if ( p != std::string::npos )
     {
         ext = file.substr( p, file.size() );
@@ -396,14 +401,12 @@ static void loadRealIcon( RealIcon* e)
         } catch( const std::exception& er )
         {
             LOG_ERROR( er.what() );
-            delete e;
-            return;
+	    goto OUT;
         }
 
         if ( !img ) {
             DBG( "Img is NULL" );
-            delete e;
-            return;
+	    goto OUT;
         }
 
 
@@ -414,12 +417,17 @@ static void loadRealIcon( RealIcon* e)
             e->entry->icon = img;
             e->entry->updateSize();
         }
+
     }
 
+	  OUT:
     delete e;
 
 #ifdef ICONS_SINGLE_THREAD
     Fl::check();
+#else
+    Fl::unlock();
+    Fl::awake();
 #endif
 
     // e->chooser->relayout();
