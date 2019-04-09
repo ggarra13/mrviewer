@@ -2025,8 +2025,11 @@ void ImageBrowser::replace( int i, mrv::media m )
     mrv::Reel reel = current_reel();
     if (!reel) return;
 
-    if ( i < 0 || i >= reel->images.size() ) return;
-
+    if ( i < 0 || i >= reel->images.size() ) {
+	LOG_ERROR( _("Replace image index is out of range") );
+	return;
+    }
+    
     CMedia::Playback play = view()->playback();
     if ( play != CMedia::kStopped )
         view()->stop();
@@ -2038,25 +2041,34 @@ void ImageBrowser::replace( int i, mrv::media m )
     // Sanely remove item from tree
     std::string path = media_to_pathname( fg );
     Fl_Tree_Item* item = find_item( path.c_str() );
+    if ( !item )
+    {
+	LOG_ERROR( _("Path to removal item not found ") << path );
+	return;
+    }
     Element* oldnw = (Element*)item->widget();
 
+    Fl_Tree::remove( item );
+    
     // Create new item
     std::string newpath = media_to_pathname( m );
     Element* nw = new_item( m );
     
     // Insert new item and select it
     Fl_Tree_Item* newitem = Fl_Tree::insert( root(), newpath.c_str(), i );
+    if ( !newitem )
+    {
+	LOG_ERROR( _("New item not created at ") << i << " " << newpath );
+	return;
+    }
     Fl_Tree::select( newitem, 0 );
 
     // We resize new widget to old to avoid redraw issues
     nw->resize( oldnw->x(), oldnw->y(), oldnw->w(), oldnw->h() );
+    delete oldnw;  // Delete old element and item
 
     // We attach widget to tree
     newitem->widget( nw );
-
-    delete oldnw;  // Delete old element and item
-    Fl_Tree::remove( item );
-
 
     redraw();
     window()->redraw();
@@ -2274,7 +2286,8 @@ void ImageBrowser::image_version( int sum )
 
 
     // Sanely remove icon item from browser and replace it with another
-    this->replace( int(i), m );
+    // this->replace( int(i), m );
+    remove( i );
 
     change_image( int(i) );
 
