@@ -273,29 +273,45 @@ int EDLGroup::handle( int event )
             p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
 
+
+
             mrv::media_track* track = (mrv::media_track*) child(idx);
+	    if ( !track ) return 0;
+	    
+
             mrv::media m = track->media_at( pt );
+
 
             if ( m )
             {
+
 		_drag = ImageBrowser::new_item( m );
+
                 int j = track->index_for( m );
                 if ( j < 0 ) {
+
                     return 0;
                 }
+
 
                 browser()->reel( track->reel() );
                 DBG("Change  image " << j );
                 // browser()->change_image( j );
+
                 view()->stop();
+
                 view()->seek( pt );
+
                 DBG("Changed image " << j );
                 browser()->redraw();
                 return 1;
             }
 	    else
 	    {
+
 		delete _drag; _drag = NULL;
+
+		return 1;
 	    }
         }
 
@@ -490,10 +506,13 @@ int EDLGroup::handle( int event )
     case FL_RELEASE:
         if ( Fl::event_button() == FL_LEFT_MOUSE )
         {
+	    window()->cursor( FL_CURSOR_DEFAULT );
+	    
             _dragX = Fl::event_x();
             _dragY = Fl::event_y();
 
-            int idx = int( ( _dragY - y() ) / kTrackHeight );
+	    Fl::remove_timeout( (Fl_Timeout_Handler) static_move, this );
+	    int idx = int( ( _dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= 2 || idx >= children() ) {
                 delete _drag;
                 _drag = NULL;
@@ -501,11 +520,15 @@ int EDLGroup::handle( int event )
                 return 1;
             }
 
+	    if ( _dragChild < 0 || !_drag ) return 1;
+	    
+
 
             mrv::media_track* t1 = (mrv::media_track*)child( _dragChild );
             mrv::media_track* t2 = (mrv::media_track*)child( idx );
 
-            if ( t2->reel() == -1 ) {
+
+            if ( !t2 || t2->reel() == -1 ) {
                 delete _drag;
                 _drag = NULL;
                 redraw();
@@ -515,6 +538,7 @@ int EDLGroup::handle( int event )
             mrv::Timeline* t = timeline();
             if (!t) return 0;
 
+
             int ww = t->w();
             double len = (t->maximum() - t->minimum() + 1);
             double p = double( _dragX - x() ) / double(ww);
@@ -523,34 +547,44 @@ int EDLGroup::handle( int event )
 
 
             mrv::Reel r = browser()->current_reel();
+
             mrv::media m = _drag->media();
+
+
             if ( t1 == t2 )
             {
+
                 if ( pt < m->position() )
                 {
+
                     t1->remove( m );
                     t1->insert( pt, m );
                     t1->refresh();
                 }
                 else
                 {
+
                     t1->insert( pt, m );
                     t1->remove( m );
                     t1->refresh();
                 }
+
 
                 browser()->reel( r->name.c_str() );
                 browser()->redraw();
             }
             else
             {
+
                 t2->insert( pt, m );
                 t1->remove( m );
                 t2->refresh();
 
+
                 browser()->reel( r->name.c_str() );
                 browser()->redraw();
             }
+
 
             browser()->set_edl();
             timeline()->value( (double)pt );
