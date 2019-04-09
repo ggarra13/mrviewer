@@ -50,5 +50,8 @@ FLU_EXPORT extern const char* cdrom_xpm[];
 FLU_EXPORT extern const char* trash_xpm[];
 FLU_EXPORT extern const char* home_xpm[];
 FLU_EXPORT extern const char* reload_xpm[];
+FLU_EXPORT extern const char* const reel_xpm[];
+FLU_EXPORT extern const char* const image_xpm[];
+FLU_EXPORT extern const char* const music_xpm[];
 
 #endif
