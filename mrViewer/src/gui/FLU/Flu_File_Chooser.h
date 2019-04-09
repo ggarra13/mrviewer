@@ -34,6 +34,8 @@
 #include "FLU/Flu_Combo_List.h"
 #include "FLU/flu_export.h"
 
+#include "gui/MyPack.h"
+
 typedef std::vector< std::string > FluStringVector;
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
@@ -107,14 +109,6 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     and the widget should determine whether it can preview the file and update itself accordingly. If
     it can preview the file, it should return nonzero, else it should return zero.
    */
-  class FLU_EXPORT PreviewWidgetBase : public Fl_Group
-    {
-    public:
-      PreviewWidgetBase();
-      virtual ~PreviewWidgetBase();
-      virtual int preview( const char *filename ) = 0;
-    };
-
   //! File entry type
   enum { 
     ENTRY_NONE = 1,         /*!< An empty (or non-existant) entry */
@@ -146,7 +140,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   };
 
   //! Constructor opening a file chooser with title \b title visiting directory \b path with files filtered according to \b pattern. \b type is a logical OR of Flu_File_Chooser::SINGLE, Flu_File_Chooser::MULTI, and Flu_File_Chooser::DIRECTORY 
-  Flu_File_Chooser( const char *path, const char *pattern, int type, const char *title );
+  Flu_File_Chooser( const char *path, const char *pattern, int type, const char *title, const bool compact = true );
 
   //! Destructor
   ~Flu_File_Chooser();
@@ -159,8 +153,6 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   static void add_context_handler( int type, const char *ext, const char *name,
 				   void (*cb)(const char*,int,void*), void *cbd );
 
-  //! Add a "preview" widget (derived from class Flu_File_Chooser::PreviewWidgetBase) that will handle custom previewing of files
-  static void add_preview_handler( PreviewWidgetBase *w );
 
   //! Add descriptive information and an icon for a file type
   /*! \param extensions is a space- or comma-delimited list of file extensions, or \c NULL for directories. e.g. "zip,tgz,rar"
@@ -177,6 +169,12 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   inline bool allow_file_editing() const
     { return fileEditing; }
 
+  // Make sequences be displayed as a single line
+  inline void compact_files( const bool compact ) { _compact = compact; }
+
+  // Return if sequences are displayed as a single line
+  inline bool compact_files() const { return _compact; }
+  
   //! Set whether file sorting is case insensitive. Default value is case-insensitive for windows, case-sensitive for everything else
   inline void case_insensitive_sort( bool b )
     { caseSort = !b; }
@@ -227,13 +225,6 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   inline const char* pattern() const
     { return rawPattern.c_str(); }
 
-  //! Set the state of the preview button
-  inline void preview( bool b )
-    { previewBtn->value(b); previewBtn->do_callback(); }
-
-  //! Get the state of the preview button
-  inline int preview() const
-    { return previewBtn->value(); }
 
   //! Refresh the current directory
   inline void rescan() { reloadCB(); }
@@ -268,6 +259,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   //! For MULTI file queries, get selected file \b n (base 1 - i.e. 1 returns the first file, 2 the second, etc)
   const char *value( int n );
 
+  bool _compact;
+  
   FileInput filename;
   // the <Enter> key behavior is not correct for versions before 1.1.4rc2
 #if FL_MAJOR_VERSION >= 1 && FL_MINOR_VERSION >= 1 && FL_PATCH_VERSION >= 4
@@ -299,9 +292,6 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   typedef std::vector< ContextHandler > ContextHandlerVector;
   static ContextHandlerVector contextHandlers;
 
-  typedef PreviewWidgetBase* pPreviewWidgetBase;
-  typedef std::vector< pPreviewWidgetBase > PreviewHandlerVector;
-  static PreviewHandlerVector previewHandlers;
 
   Fl_Check_Button *hiddenFiles;
   Flu_Combo_Tree *location;
@@ -318,9 +308,6 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     { ((Flu_File_Chooser*)arg)->sortCB( w ); }
   void sortCB( Fl_Widget *w );
 
-  inline static void _previewCB( Fl_Widget*, void *arg )
-    { ((Flu_File_Chooser*)arg)->previewCB(); }
-  void previewCB();
 
   inline static void _listModeCB( Fl_Widget *w, void *arg )
     { ((Flu_File_Chooser*)arg)->listModeCB(); }
@@ -469,8 +456,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       FileDetails( int x, int y, int w, int h, Flu_File_Chooser *c );
       ~FileDetails();
 
-      int handle( int event );
-      void sort( int numDirs = -1 );
+	int handle( int event );
+	void sort( int numDirs = -1 );
 
       void scroll_to( Fl_Widget *w );
       Fl_Widget* next( Fl_Widget* w );
@@ -502,33 +489,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       int W1, W2, W3, W4;
     };
 
-  friend class PreviewTile;
-  class PreviewTile : public Fl_Tile
-    {
-    public:
-      PreviewTile( int x, int y, int w, int h, Flu_File_Chooser *c );
-      int handle( int event );
-      Flu_File_Chooser *chooser;
-      int last;
-    };
 
-  class ImgTxtPreview : public PreviewWidgetBase
-    {
-    public:
-      int preview( const char *filename );
-      unsigned char previewTxt[1024];
-    };
-
-  friend class PreviewGroup;
-  class PreviewGroup : public Fl_Group
-    {
-    public:
-      PreviewGroup( int x, int y, int w, int h, Flu_File_Chooser *c );
-      void draw();
-      Flu_File_Chooser *chooser;
-      std::string lastFile, file;
-      PreviewWidgetBase* handled;
-    };
 
   Fl_Group *getEntryGroup();
   Fl_Group *getEntryContainer();
@@ -545,6 +506,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   void updateLocationQJ();
 
+  void statFile( Entry* e, const char* file );
+  
   void addToHistory();
 
   std::string formatDate( const char *d );
@@ -557,12 +520,9 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   std::string commonStr();
 
-  static ImgTxtPreview *imgTxtPreview;
 
   static int (*customSort)(const char*,const char*);
 
-  PreviewGroup *previewGroup;
-  PreviewTile *previewTile;
   Fl_Group *fileGroup, *locationQuickJump;
   Fl_Menu_Button entryPopup;
   Fl_Image *defaultFileIcon;
