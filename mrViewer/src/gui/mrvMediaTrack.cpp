@@ -414,7 +414,6 @@ bool media_track::select_media( const boost::int64_t pos,
 
             ok = true;
             _audio_selected = false;
-	    std::cerr << "Y " << Y << " h() " << y()+h() << std::endl;
             if ( Y > y() + h()-20 && Y < y() + h() ) _audio_selected = true;
             _selected = ImageBrowser::new_item( fg );
             focus(this);
@@ -589,7 +588,7 @@ int media_track::handle( int event )
 		    else
 		    {
 			if ( _reel_idx < 0 ) return 1;
-			Fl_Menu_Button menu(x(),y(),w(),h());
+			Fl_Menu_Button menu(0,0,0,0);
 			menu.add( _("File/Open/Movie or Sequence"),
 				  kOpenImage.hotkey(),
 				  (Fl_Callback*)open_track_cb, this );
