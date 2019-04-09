@@ -106,14 +106,23 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     fl_translate( W2 + W, H2 + H );
 
     static const char* names[] = {
-        "C",
+        "R",
         "B",
         "M",
-        "R",
         "Y",
+        "C",
         "G"
     };
 
+    const float coords[][2] = {
+    {8,   3}, //
+    {18, 14}, //
+    {15,  5}, //
+    {3,  10}, //
+    {12, 19}, //
+    {3,  17}, //
+    };
+    
     // Draw rectangles with letters near them
     angle = 15;
     for ( i = 0; i < 6; ++i, angle += 60 )
@@ -137,7 +146,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
 	// @TODO: fltk1.4 cannot draw transformed letters
 	// fl_translate( 0, int(W * 0.15f) );
-        // fl_draw(i, names[i], 0.15f, 0, 0);
+        fl_draw(names[i], coords[i][0] * RW, coords[i][1] * RH);
     }
 
     fl_pop_matrix();
