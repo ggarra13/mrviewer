@@ -30,13 +30,6 @@
 //#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
 //#define DEBUG_COMMANDS
 
-#include <algorithm>
-#include <cstdlib>
-#include <deque>
-#include <iostream>
-#include <fstream>
-#include <set>
-
 #ifndef __STDC_LIMIT_MACROS
 #  define __STDC_LIMIT_MACROS
 #  define __STDC_FORMAT_MACROS
@@ -44,6 +37,12 @@
 
 #include <inttypes.h>  // for PRId64
 
+#include <algorithm>
+#include <cstdlib>
+#include <deque>
+#include <iostream>
+#include <fstream>
+#include <set>
 
 #include <boost/locale.hpp>
 #include <boost/bind.hpp>
