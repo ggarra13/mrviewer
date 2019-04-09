@@ -813,8 +813,8 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label Caches
-          xywh {225 27 423 364} box EMBOSSED_BOX align 5 hide
+          label Caches open
+          xywh {225 27 423 364} box EMBOSSED_BOX align 5
         } {
           Fl_Check_Button uiPrefsCacheActive {
             label {Cache Active}
@@ -855,8 +855,8 @@ This setting thus allows caching more pictures in memory for float and half pict
             label {Cache Size} open
             xywh {235 186 352 188} box ROUNDED_BOX
           } {
-            Fl_Value_Slider uiPrefsCacheSize {
-              tooltip {Size in frames of the video and audio cache.} xywh {240 214 261 27} type Horizontal align 1 minimum 30 maximum 200 step 1 value 60
+            Fl_Value_Slider uiPrefsCacheSize {selected
+              tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {240 214 261 27} type Horizontal align 1 minimum 30 maximum 500 step 1 value 60
               code0 {o->deactivate();}
             }
             Fl_Light_Button uiPrefsCacheFPS {
@@ -873,7 +873,7 @@ This setting thus allows caching more pictures in memory for float and half pict
           } {
             Fl_Value_Input uiPrefsCacheMemory {
               label Memory
-              xywh {350 306 75 25} minimum 0.5 maximum 100 step 0.5 value 1
+              tooltip {Size of the IMAGE cache in Gigabytes} xywh {350 306 75 25} minimum 0.5 maximum 100 step 0.5 value 3.5
             }
             Fl_Box {} {
               label Gb
@@ -1189,7 +1189,7 @@ uiOCIO_float_ics->do_callback();}
         }
         Fl_Group {} {
           label {Default Output Device Transform (ODT)}
-          xywh {225 35 435 361} box EMBOSSED_BOX align 5
+          xywh {225 35 435 361} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label Display open
@@ -2093,7 +2093,6 @@ o->add( _("Audio") );
 o->add( _("Subtitles") );
 o->add( _("Errors") );
 o->add( _("Images") );
-o->add( _("OpenEXR") );} {selected
-    }
+o->add( _("OpenEXR") );} {}
   }
 }
