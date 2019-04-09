@@ -900,7 +900,7 @@ protected:
     ///////////////////
     // Popup menu
     ///////////////////
-    Fl_Menu_Button menu;
+    Fl_Menu_Button* menu;
 
     
     // Event Timeout
