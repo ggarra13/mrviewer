@@ -203,13 +203,8 @@ stringArray file_multi_requester(
         }
         else
         {
-            FluStringVector files;
             flu_multi_file_chooser( title, pattern, startfile,
-                                    &files /* , compact_images @TODO: fltk1.4 */ );
-            for (int i = 0; i < files.size(); ++i )
-            {
-                filelist.push_back( files[i].c_str() );
-            }
+                                    filelist, compact_images );
         }
     }
     catch ( const std::exception& e )
