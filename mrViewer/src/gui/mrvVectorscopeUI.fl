@@ -88,7 +88,7 @@ class VectorscopeUI {open
       user_data this user_data_type {VectorscopeUI*}
       callback {v->main()->uiView->send_network( "VectorscopeWindow 0" );
 o->hide();} open selected
-      xywh {107 386 325 240} type Double resizable
+      xywh {107 386 240 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;} non_modal visible
     } {
