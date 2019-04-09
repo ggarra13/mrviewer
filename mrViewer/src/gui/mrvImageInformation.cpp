@@ -2297,13 +2297,9 @@ void ImageInformation::fill_data()
     //std::cerr << "prefs:use_ocio " << Preferences::use_ocio << std::endl;
     if ( Preferences::use_ocio )
     {
-	
-
         add_ocio_ics( _("Input Color Space"),
                       _("OCIO Input Color Space"),
-                      img->ocio_input_color_space().c_str() );
-	
-
+                      img->ocio_input_color_space().c_str() );	
     }
     else
     {   
@@ -2942,9 +2938,6 @@ void ImageInformation::add_ocio_ics( const char* name,
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
         widget->tooltip( tooltip ? tooltip : lbl->label() );
-        if ( callback )
-            widget->callback( (Fl_Callback*)attach_ocio_ics_cb,
-                              (void*)view() );
 
         sg->add( widget );
 
