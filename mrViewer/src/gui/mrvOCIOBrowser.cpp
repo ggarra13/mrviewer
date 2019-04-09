@@ -116,8 +116,6 @@ void OCIOBrowser::fill_input_color_space()
     {
         spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
     }
-
-    std::cerr << "fill ocio input color space" << std::endl;
     
     std::sort( spaces.begin(), spaces.end() );
     for ( size_t i = 0; i < spaces.size(); ++i )
