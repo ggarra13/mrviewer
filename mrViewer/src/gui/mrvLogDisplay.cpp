@@ -58,15 +58,6 @@ LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 std::atomic<bool> LogDisplay::shown( false );
 std::atomic<bool> LogDisplay::show( false );
 
-void modify_cb(int pos, int nInserted, int nDeleted,
-	       int nRestyled, const char* deletedText,
-	       void* cbArg)
-{
-}
-
-void predelete_cb( int pos, int nDeleted, void* cbArg )
-{
-}
 
 LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
 Fl_Text_Display( x, y, w, h, l ),
@@ -76,11 +67,16 @@ _lines( 0 )
 
     SCOPED_LOCK( mtx );
 
+    scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT );
+
+    wrap_mode( WRAP_AT_BOUNDS, 80 );
+    
     delete mBuffer;
     delete mStyleBuffer;
     mBuffer = new Fl_Text_Buffer();
     mStyleBuffer = new Fl_Text_Buffer();
     highlight_data(mStyleBuffer, kLogStyles, 3, 'A', 0, 0);
+;
 }
 
 LogDisplay::~LogDisplay()
@@ -153,6 +149,8 @@ void LogDisplay::info( const char* x )
     mStyleBuffer->append( buf );
     mBuffer->append( x );
     delete [] buf;
+
+    update_v_scrollbar();
 }
 
 void LogDisplay::warning( const char* x )
@@ -177,6 +175,7 @@ void LogDisplay::warning( const char* x )
     mBuffer->append( x );
     delete [] buf;
 
+    update_v_scrollbar();
 }
 
 void LogDisplay::error( const char* x )
@@ -201,6 +200,7 @@ void LogDisplay::error( const char* x )
     mBuffer->append( x );
     delete [] buf;
 
+    update_v_scrollbar();
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
         shown = true;
