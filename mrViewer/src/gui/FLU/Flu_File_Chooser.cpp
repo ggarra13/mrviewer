@@ -71,6 +71,15 @@
 #include "gui/mrvMedia.h"
 #include "gui/mrvIO.h"
 
+#include <boost/filesystem.hpp>
+
+
+static const char* kModule = "filereq";
+
+
+#define ICONS_SINGLE_THREAD
+
+
 // set default language strings
 std::string Flu_File_Chooser::favoritesTxt = "Favorites";
 #ifdef WIN32
@@ -148,7 +157,10 @@ Fl_Pixmap up_folder_img( (char*const*)big_folder_up_xpm ),
   little_favorites( (char*const*)mini_folder_favorites_xpm ),
   little_desktop( (char*const*)mini_desktop_xpm ),
   bigdocuments( (char*const*)bigdocuments_xpm ),
-  bigtemporary( (char*const*)bigtemporary_xpm );
+bigtemporary( (char*const*)bigtemporary_xpm ),
+  reel( (char*const*) reel_xpm ),
+picture( (char*const*) image_xpm ),
+music( (char*const*) music_xpm );
 
 #define streq(a,b) (strcmp(a,b)==0)
 
@@ -292,6 +304,183 @@ static int flu_filename_match(const char *s, const char *p)
   }
 }
 
+
+struct RealIcon
+{
+    Flu_File_Chooser*  chooser;
+    Flu_File_Chooser::Entry* entry;
+    std::string dir;
+    std::string filename;
+    std::string filesize;
+    unsigned serial;
+};
+
+
+static void loadRealIcon( RealIcon* e)
+{
+    namespace fs = boost::filesystem;
+    typedef boost::recursive_mutex Mutex;
+
+
+    Mutex::scoped_lock lk_m( e->chooser->mutex );
+
+    if ( e->chooser->quick_exit ) {
+        DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
+        delete e;
+        return;
+    }
+
+    char fmt[1024];
+    char buf[1024];
+
+
+
+    std::string view;
+
+    if ( e->filename.find( "%v" ) )
+        view = mrv::get_short_view(true);
+    else if ( e->filename.find( "%V" ) )
+        view = mrv::get_long_view(true);
+
+    int frameStart = atoi( e->filesize.c_str() );
+
+    std::string file = e->filename;
+
+    std::string ext;
+    size_t p = file.rfind( '.' );
+    if ( p != std::string::npos )
+    {
+        ext = file.substr( p, file.size() );
+    }
+
+    if ( mrv::is_valid_movie( ext.c_str() ) )
+    {
+        size_t p = 0;
+        while ( (p = file.find( '%', p )) != std::string::npos )
+        {
+            file.replace( p, 1, "%%" );
+            p += 2;
+        }
+    }
+
+    if ( ! view.empty() )
+    {
+        std::string tmp = mrv::parse_view( file, true );
+        sprintf( fmt, "%s%s", e->dir.c_str(), tmp.c_str() );
+    }
+    else
+    {
+        sprintf( fmt, "%s%s", e->dir.c_str(), file.c_str() );
+    }
+
+    sprintf( buf, fmt, frameStart );
+
+
+    DBG( "lri file exists? " << buf );
+
+
+    // if ( ! fs::exists( buf ) ) {
+    //     LOG_INFO( buf << " does not exist" );
+    //     delete e;
+    //     return;
+    // }
+
+    DBG( "lri process icon " << e->entry << " " << e->filename
+         << " chooser " << e->chooser );
+
+    if ( e->serial == e->chooser->serial )
+    {
+        Fl_Image* img;
+        try {
+            img = mrv::fltk_handler( buf, NULL, 0 );
+        } catch( const std::exception& er )
+        {
+            LOG_ERROR( er.what() );
+            delete e;
+            return;
+        }
+
+        if ( !img ) {
+            DBG( "Img is NULL" );
+            delete e;
+            return;
+        }
+
+
+        DBG( "lri processed icon " << e->entry << " " << e->filename
+             << " chooser " << e->chooser  );
+        if ( e->serial == e->chooser->serial )
+        {
+            e->entry->icon = img;
+            e->entry->updateSize();
+        }
+    }
+
+    delete e;
+
+#ifdef ICONS_SINGLE_THREAD
+    Fl::check();
+#endif
+
+    // e->chooser->relayout();
+    // e->chooser->redraw();
+}
+
+void Flu_File_Chooser::previewCB()
+{
+    bool inFavorites = ( currentDir == FAVORITES_UNIQUE_STRING );
+    if ( inFavorites ) return;
+
+    Fl_Group *g = getEntryGroup();
+    int c = g->children();
+
+    if ( previewBtn->value() && thumbnailsFileReq )
+    {
+	// Make sure all other previews have finished
+	clear_threads();
+	
+	quick_exit = false;
+
+	for ( int i = 0; i < c; ++i )
+	{
+	    Entry* e = (Entry*) g->child(i);
+	    e->set_colors();
+	    
+	    if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
+	    {
+		if ( e->filename.rfind( ".ocio" ) != std::string::npos )
+		    continue;
+		// Add new thread to handle icon
+		RealIcon* ri = new RealIcon;
+		ri->entry = e;
+		ri->chooser = this;
+		ri->dir = get_current_directory();
+		ri->filename = e->filename;
+		ri->filesize = e->filesize;
+		ri->serial   = serial;
+#ifdef ICONS_SINGLE_THREAD
+		Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) loadRealIcon, ri );
+#else
+		boost::thread* t = new boost::thread( boost::bind( loadRealIcon,
+								   ri ) );
+		threads.push_back( t );
+#endif
+	    }
+	}
+    }
+    else
+    {
+	quick_exit = true;
+	SCOPED_LOCK( mutex );
+	for ( int i = 0; i < c; ++i )
+	{
+	    Entry* e = (Entry*) g->child(i);
+	    e->set_colors();
+	    e->updateIcon();
+	}
+    }
+}
+
 void Flu_File_Chooser :: add_context_handler( int type, const char *ext, const char *name,
 					      void (*cb)(const char*,int,void*), void *cbd )
 {
@@ -385,6 +574,9 @@ Flu_File_Chooser::FileTypeInfo* Flu_File_Chooser :: find_type( const char *exten
 
 Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int type, const char *title, const bool compact )
   : Fl_Double_Window( 600, 400, title ),
+    num_timeouts( 0 ),
+    serial( 0 ),
+    quick_exit( false ),
     filename( 70, h()-60, w()-70-85-10, 25, "", this ),
     ok( w()-90, h()-60, 85, 25 ),
     cancel( w()-90, h()-30, 85, 25 ),
@@ -409,6 +601,65 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   cancel.labelsize( FL_NORMAL_SIZE );
 
   add_type( NULL, directoryTxt.c_str(), &folder_closed );
+  add_type( N_("3gp"),   _( "3GP Movie"), &reel );
+  add_type( N_("asf"),   _( "Advanced Systems Format Media"), &reel );
+  add_type( N_("avc"),   _( "AVCHD Video"), &reel );
+  add_type( N_("avchd"), _( "AVCHD Video"), &reel );
+  add_type( N_("avi"),   _( "AVI Movie"), &reel );
+  add_type( N_("divx"),  _( "DIVX Movie"), &reel );
+  add_type( N_("dv"),    _( "Digital Video"), &reel );
+  add_type( N_("flv"),   _( "Flash Movie"), &reel );
+  add_type( N_("m2ts"),  _( "AVCHD Video"), &reel );
+  add_type( N_("m2t"),   _( "AVCHD Video"), &reel );
+  add_type( N_("mkv"),   _( "Matroska Movie"), &reel );
+  add_type( N_("mov"),   _( "Quicktime Movie"), &reel );
+  add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
+  add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
+  add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
+  add_type( N_("mxf"),   _( "MXF Movie"), &reel );
+  add_type( N_("ogm"),   _( "Ogg Movie"), &reel );
+  add_type( N_("ogv"),   _( "Ogg Video"), &reel );
+  add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
+  add_type( N_("rm"),    _( "Real Media Movie"), &reel );
+  add_type( N_("ts"),    _( "AVCHD Video"), &reel );
+  add_type( N_("vob"),   _( "VOB Movie"), &reel );
+  add_type( N_("webm"),  _( "WebM Movie"), &reel );
+  add_type( N_("wmv"),   _( "WMV Movie"), &reel );
+
+  add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
+  add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
+  add_type( N_("cin"),   _( "Cineon Picture"), &picture );
+  add_type( N_("cr2"),   _( "Canon Raw Picture"), &picture );
+  add_type( N_("ct"),    _( "mental ray Contour Picture"), &picture );
+  add_type( N_("dng"),   _( "Kodak Digital Negative"), &picture );
+  add_type( N_("dpx"),   _( "DPX Picture"), &picture );
+  add_type( N_("exr"),   _( "EXR Picture"), &picture );
+  add_type( N_("hdr"),   _( "HDRI Picture"), &picture );
+  add_type( N_("tif"),   _( "TIFF Picture"), &picture );
+  add_type( N_("iff"),   _( "IFF Picture"), &picture );
+  add_type( N_("jpg"),   _( "JPEG Picture"), &picture );
+  add_type( N_("jpeg"),  _( "JPEG Picture"), &picture );
+  add_type( N_("map"),   _( "Map Picture"), &picture );
+  add_type( N_("gif"),   _( "GIF Picture"), &picture );
+  add_type( N_("nt"),    _( "mental ray Normal Picture"), &picture );
+  add_type( N_("mt"),    _( "mental ray Motion Picture"), &picture );
+  add_type( N_("pic"),   _( "Softimage Picture"), &picture );
+  add_type( N_("png"),   _( "PNG Picture"), &picture );
+  add_type( N_("psd"),   _( "Photoshop Picture"), &picture );
+  add_type( N_("rgb"),   _( "RGB Picture"), &picture );
+  add_type( N_("rpf"),   _( "Rich Picture Format"), &picture );
+  add_type( N_("shmap"), _( "mental ray Shadow Map"), &picture );
+  add_type( N_("sgi"),   _( "SGI Picture"), &picture );
+  add_type( N_("st"),    _( "mental ray Scalar Picture"), &picture );
+  add_type( N_("sxr"),   _( "Stereo EXR Picture"), &picture );
+  add_type( N_("tga"),   _( "Targa Picture"), &picture );
+  add_type( N_("tif"),   _( "TIFF Picture"), &picture );
+  add_type( N_("tiff"),  _( "TIFF Picture"), &picture );
+  add_type( N_("zt"),    _( "mental ray Z Depth Picture"), &picture );
+
+  add_type( N_("mp3"),   _( "MP3 music"), &music );
+  add_type( N_("ogg"),   _( "OGG Vorbis music"), &music );
+  add_type( N_("wav"),   _( "Wave music"), &music );
 
   for( int j = 0; j < 4; j++ )
     {
@@ -658,8 +909,9 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   previewBtn = new Flu_Button( 482, 43, 23, 25 );
   previewBtn->type( FL_TOGGLE_BUTTON );
+  previewBtn->value( 1 );
   previewBtn->image( preview_img );
-  // previewBtn->callback( _previewCB, this );
+  previewBtn->callback( _previewCB, this );
   previewBtn->tooltip( previewTTxt.c_str() );
 
   {
@@ -951,6 +1203,32 @@ void Flu_File_Chooser :: pattern( const char *p )
   filePattern->value( filePattern->list.text(1) );
 }
 
+
+void Flu_File_Chooser::clear_threads()
+{
+  quick_exit = true;
+  ++serial;
+
+#ifdef ICONS_SINGLE_THREAD
+    for (unsigned i = 0; i < num_timeouts; ++i )
+        Fl::remove_timeout( (Fl_Timeout_Handler) loadRealIcon );
+    num_timeouts = 0;
+#else
+
+  thread_pool_t::iterator it = threads.begin();
+  thread_pool_t::iterator ie = threads.end();
+
+  for ( ;it != ie; ++it )
+  {
+      (*it)->join();
+      delete *it;
+  }
+
+  threads.clear();
+#endif
+}
+
+ 
 int Flu_File_Chooser :: handle( int event )
 {
   if( Fl_Double_Window::callback() != _hideCB )
@@ -1080,13 +1358,14 @@ void Flu_File_Chooser :: trashCB( bool recycle )
 
   bool inFavorites = ( currentDir == FAVORITES_UNIQUE_STRING );
   if( inFavorites )
-    recycle = false;
-
+      recycle = false;
+  
   // see how many files are selected
   std::string name;
   int selected = 0;
   int i;
   const char *first = "";
+  
   Fl_Group *g = getEntryGroup();
   for( i = 0; i < g->children(); i++ )
     {
@@ -1870,7 +2149,7 @@ void Flu_File_Chooser :: FileDetails :: scroll_to( Fl_Widget *w )
 	{
 	  if( H > (int)chooser->filescroll->scrollbar.maximum() )
 	    H = (int)chooser->filescroll->scrollbar.maximum();
-	  chooser->filescroll->position( 0, H );
+	  chooser->filescroll->scroll_to( 0, H );
 	  return;
 	}
       H += w->h();
@@ -2120,12 +2399,25 @@ void Flu_File_Chooser :: listModeCB()
 
 void Flu_File_Chooser :: Entry :: updateSize()
 {
+    int H = 20;
+    if ( icon ) {
+        if ( chooser->previewBtn->value() &&
+             ( icon == &reel || icon == &picture ) &&
+             thumbnailsFileReq )
+        {
+            H = 68;
+        }
+        else
+        {
+            H = icon->h() + 4;
+        }
+    }
   if( type==ENTRY_FAVORITE || chooser->fileListWideBtn->value() )
     {
-      resize( x(), y(), chooser->filelist->w()-4, 20 );
+      resize( x(), y(), chooser->filelist->w()-4, H );
     }
   else
-    resize( x(), y(), DEFAULT_ENTRY_WIDTH, 20 );
+    resize( x(), y(), DEFAULT_ENTRY_WIDTH, H );
 
   details = chooser->fileDetailsBtn->value() && ( type != ENTRY_FAVORITE );
 
@@ -2135,7 +2427,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
       typeW = chooser->detailTypeBtn->w();
       sizeW = chooser->detailSizeBtn->w();
       dateW = chooser->detailDateBtn->w();
-      resize( x(), y(), chooser->filedetails->w(), 20 );
+      resize( x(), y(), chooser->filedetails->w(), H );
     }
   else
     nameW = w();
@@ -2151,7 +2443,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
   fl_font( textfont(), textsize() );
 
   // measure the name and see if we need a truncated version
-  int W = 0, H = 0;
+  int W = 0; H = 0;
   fl_measure( filename.c_str(), W, H );  
   if( W > nameW-iW )
     {
@@ -2348,9 +2640,11 @@ int Flu_File_Chooser :: Entry :: handle( int event )
 	      else
 #endif
 		chooser->delayedCd = chooser->currentDir + filename + "/";
+	      if ( type == ENTRY_FAVORITE )
+		  chooser->delayedCd = filename;
 	      Fl::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, chooser );
 	    }
-	  // double-clicking a favorite cd's to it
+	    // double-clicking a favorite cd's to it
 	    if ( Fl::event_clicks() > 0 )
 	    {
 		if( type == ENTRY_FAVORITE )
@@ -3477,7 +3771,7 @@ void Flu_File_Chooser :: cd( const char *path )
 
   std::string currentFile = filename.value();
   filescroll->scroll_to( 0, 0 );
-  //Fl::focus( &filename );
+  Fl::focus( &filename );
   upDirBtn->activate();
   ok.activate();
 
@@ -3912,8 +4206,8 @@ void Flu_File_Chooser :: cd( const char *path )
 	    }
 
 
-	  // add directories at the beginning, and files at the end
-	  entry = new Entry( name, isDir?ENTRY_DIR:ENTRY_FILE, fileDetailsBtn->value(), this );
+	    // add directories at the beginning, then sequences and files at
+	    // the end
 	  if( isDir )
 	    {
                 dirs.push_back( name );
@@ -4279,6 +4573,8 @@ void Flu_File_Chooser :: cd( const char *path )
     filename.position( filename.size(), filename.size() );
   filename.take_focus();
 
+  // Handle loading of icons
+  previewCB();
 
   redraw();
 }
@@ -4316,15 +4612,15 @@ std::string Flu_File_Chooser :: commonStr()
   return common;
 }
 
-static const char* _flu_file_chooser( const char *message, const char *pattern, const char *filename, int type,
-	int *count = 0, FluStringVector *filelist = 0 )
+static const char* _flu_file_chooser( const char *message, const char *pattern, const char *filename, int type, FluStringVector& filelist, const bool compact_files = true )
 {
   static Flu_File_Chooser *fc = NULL;
   static std::string retname;
 
   if( !fc )
     {
-      fc = new Flu_File_Chooser( filename, pattern, type, message );
+	fc = new Flu_File_Chooser( filename, pattern, type, message,
+				   compact_files );
     }
   else
     {
@@ -4367,12 +4663,8 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
 
   if( fc->value() )
     {
-      if( count && filelist )
-	{
-	  *count = fc->count();
-	  for( int i = 1; i <= *count; i++ )
-	    filelist->push_back( std::string(fc->value(i)) );
-	}
+	for( int i = 1; i <= fc->count(); i++ )
+	    filelist.push_back( std::string(fc->value(i)) );
       retname = fc->value();
       return retname.c_str();
     }
@@ -4380,38 +4672,43 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
     return 0;
 }
 
-int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector *filelist )
+int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files )
 {
-  int count = 0;
-  _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::MULTI, &count, filelist );
-  return count;
+  _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::MULTI,
+		     filelist, compact_files );
+  return filelist.size();
 }
 
-const char* flu_file_chooser( const char *message, const char *pattern, const char *filename )
+const char* flu_file_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files )
 {
-  return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE );
+    FluStringVector filelist;
+    return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE, filelist );
 }
 
-const char* flu_save_chooser( const char *message, const char *pattern, const char *filename )
+const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files )
 {
-  return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE | Flu_File_Chooser::SAVING );
+    FluStringVector filelist;
+    return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE | Flu_File_Chooser::SAVING, filelist, compact_files );
 }
 
 const char* flu_dir_chooser( const char *message, const char *filename )
 {
-  return _flu_file_chooser( message, "*", filename, Flu_File_Chooser::DIRECTORY );
+    FluStringVector filelist;
+    return _flu_file_chooser( message, "*", filename, Flu_File_Chooser::DIRECTORY, filelist );
 }
 
 const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles )
 {
+    FluStringVector filelist;
   if( showFiles )
     return _flu_file_chooser( message, "*", filename,
-			      Flu_File_Chooser::DIRECTORY | Flu_File_Chooser::DEACTIVATE_FILES );
+			      Flu_File_Chooser::DIRECTORY | Flu_File_Chooser::DEACTIVATE_FILES, filelist );
   else
     return( flu_dir_chooser( message, filename ) );
 }
 
 const char* flu_file_and_dir_chooser( const char *message, const char *filename )
 {
-  return _flu_file_chooser( message, "*", filename, Flu_File_Chooser::STDFILE );
+    FluStringVector filelist;
+    return _flu_file_chooser( message, "*", filename, Flu_File_Chooser::STDFILE, filelist );
 }
