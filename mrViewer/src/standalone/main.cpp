@@ -158,6 +158,8 @@ int main( int argc, char** argv )
 {
     Fl::scheme("gleam");
 
+    Fl::background( 32, 32, 32 );
+    Fl::set_box_color( fl_rgb_color( 64, 64, 64 ) );
     // Fl::lock();
 #ifdef LINUX
   Fl_File_Icon::load_system_icons();
