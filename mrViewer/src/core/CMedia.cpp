@@ -3680,7 +3680,6 @@ void CMedia::limit_video_store( const int64_t f )
 
     int max_frames = max_image_frames();
 
-#if 1
     typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
 
     TimedSeqMap tmp;
