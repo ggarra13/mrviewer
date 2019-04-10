@@ -740,7 +740,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     userDocs = "/tmp/";
   }
 #endif
-  configFilename = userHome + ".Flu_File_Chooser.favorites";
+  configFilename = userHome + ".filmaura/mrViewer.favorites";
 
   selectionType = type;
   filenameEnterCallback = filenameTabCallback = false;
