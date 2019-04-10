@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,6 +35,8 @@
 #include "core/mrvI8N.h"
 #include "mrvGLShader.h"
 #include "mrvGLEngine.h"
+
+#undef CHECK_GL
 
 #ifdef DEBUG
 #define CHECK_GL(x) GLEngine::handle_gl_errors(__FUNCTION__, __LINE__, true )
