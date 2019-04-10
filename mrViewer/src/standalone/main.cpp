@@ -157,7 +157,7 @@ void load_new_files( void* s )
 int main( int argc, char** argv )
 {
     Fl::scheme("gleam");
-    // Fl::get_system_colors();
+
     // Fl::lock();
 #ifdef LINUX
   Fl_File_Icon::load_system_icons();
