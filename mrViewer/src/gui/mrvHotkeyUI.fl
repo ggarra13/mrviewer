@@ -1,0 +1,51 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+i18n_type 1
+i18n_include <libintl.h>
+i18n_function gettext
+header_name {.h}
+code_name {.cxx}
+decl {\#include "gui/mrvHotkey.h"} {private local
+}
+
+decl {\#include "gui/mrvPreferences.h"} {selected private local
+}
+
+decl {\#include "FL/Fl.H"} {public global
+}
+
+decl {\#include "namespace.h"} {public global
+}
+
+class HotkeyUI {open
+} {
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    Fl_Window uiMain {
+      label Hotkeys open
+      xywh {620 382 635 430} type Double resizable
+      modal visible
+    } {
+      Fl_Browser uiFunction {
+        label Hotkeys
+        user_data this user_data_type {HotkeyUI*}
+        callback {mrv::select_hotkey( v );}
+        xywh {10 30 600 320}
+        code0 {mrv::fill_ui_hotkeys( o );}
+        class {mrv::Browser}
+      }
+      Fl_Button {} {
+        label Save
+        callback {mrv::Preferences::save();}
+        xywh {545 380 65 30}
+      }
+    }
+  }
+  Function {HotkeyUI(ViewerUI* m)} {} {
+    code {make_window( m );} {}
+  }
+  Function {~HotkeyUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+}
