@@ -835,64 +835,64 @@ CMedia::~CMedia()
     SCOPED_LOCK( _audio_mutex );
     SCOPED_LOCK( _subtitle_mutex );
 
-    
+
     if ( !stopped() )
         stop();
 
-    
+
     delete _right_eye;
     _right_eye = NULL;
 
     image_damage( kNoDamage );
 
-    
+
     free( _channel );
-    
+
     free( _label );
-    
+
     free( _profile );
-    
+
     free( _rendering_transform );
 
-    
+
     clear_look_mod_transform();
-    
+
     free( _idt_transform );
 
-    
+
     delete [] _dataWindow;
     _dataWindow = NULL;
-    
+
     delete [] _dataWindow2;
     _dataWindow2 = NULL;
-    
+
     delete [] _displayWindow;
     _displayWindow = NULL;
-    
+
     delete [] _displayWindow2;
     _displayWindow2 = NULL;
 
-    
+
     _hires.reset();
 
-    
+
     clear_cache();
-    
+
     delete [] _sequence;
     _sequence = NULL;
-    
+
     delete [] _right;
     _right = NULL;
 
 
 
-    
+
     delete [] _audio_buf;
     _audio_buf = NULL;
 
     if ( has_audio() )
     {
-	
+
         close_audio();
 
         close_audio_codec();
@@ -915,41 +915,41 @@ CMedia::~CMedia()
         av_frame_free(&_aframe);
     }
 
-    
+
     free( _fileroot );
     _fileroot = NULL;
-    
+
     free( _filename );
     _filename = NULL;
 
     if ( _context )
     {
-	
+
         avformat_close_input( &_context );
     }
 
     if ( _acontext )
     {
-	
+
         avformat_close_input( &_acontext );
     }
 
-    
+
     free( _subtitle_font );
     _subtitle_font = NULL;
-    
+
     free( _subtitle_encoding);
     _subtitle_encoding = NULL;
 
     {
-	
+
         for ( const auto& i : _attrs )
         {
             delete i.second;
         }
     }
 
-    
+
     _context = _acontext = NULL;
 }
 
@@ -1363,7 +1363,7 @@ void CMedia::display_window( const int xmin, const int ymin,
     SCOPED_LOCK( _data_mutex );
     _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    
+
 }
 
 void CMedia::display_window2( const int xmin, const int ymin,
@@ -1386,7 +1386,7 @@ void CMedia::display_window2( const int xmin, const int ymin,
     SCOPED_LOCK( _data_mutex );
     _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    
+
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
@@ -1410,7 +1410,7 @@ void CMedia::data_window( const int xmin, const int ymin,
 
     _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    // 
+    //
 }
 
 
@@ -1434,7 +1434,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
     SCOPED_LOCK( _data_mutex );
     _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
     image_damage( image_damage() | kDamageData );
-    
+
 }
 
 
@@ -2445,7 +2445,7 @@ void CMedia::play(const CMedia::Playback dir,
 
     _dts = _frame.load();
 
-    
+
 
     _audio_clock = double( av_gettime_relative() ) / 1000000.0;
     _video_clock = double( av_gettime_relative() ) / 1000000.0;
@@ -2601,9 +2601,9 @@ void CMedia::stop(const bool bg)
     // Notify loop barrier, to exit any wait on a loop
     //
     TRACE("");
-    
+
     if ( _loop_barrier )  _loop_barrier->notify_all();
-    
+
     TRACE("");
     if ( _stereo_barrier ) _stereo_barrier->notify_all();
     if ( _fg_bg_barrier ) _fg_bg_barrier->notify_all();
@@ -2612,7 +2612,7 @@ void CMedia::stop(const bool bg)
     // Notify packets, to make sure that audio thread exits any wait lock
     // This needs to be done even if no audio is playing, as user might
     // have turned off audio, but audio thread is still active.
-    
+
     TRACE("");
     _audio_packets.cond().notify_all();
     TRACE("");
@@ -2622,12 +2622,12 @@ void CMedia::stop(const bool bg)
     TRACE("");
 
     // Wait for all threads to exit
-    
+
     wait_for_threads();
-    
+
 
     // Clear barrier
-    
+
     delete _loop_barrier;
     TRACE("");
     _loop_barrier = NULL;
@@ -2646,7 +2646,7 @@ void CMedia::stop(const bool bg)
     TRACE("");
     close_audio();
 
-    
+
     TRACE("");
     // Clear any audio/video/subtitle packets
     clear_packets();
@@ -2701,19 +2701,12 @@ bool CMedia::frame( int64_t f )
     if ( stopped() && _right_eye && _stereo_output )
         _right_eye->frame(f);
 
-    static int force_flush = 0;
 
-
-    assert0( CMedia::memory_used >= 0 );
-    if ( !stopped() && ( Preferences::max_memory - CMedia::memory_used <= 0 ) )
+    if ( Preferences::max_memory <= CMedia::memory_used )
     {
-        ++force_flush;
-        if ( force_flush > play_fps() )
-        {
-            force_flush = 0;
-            limit_video_store( f );
-        }
-        return false;
+        if ( stopped() )
+            return false;
+        limit_video_store( f );
     }
 
 
@@ -3694,7 +3687,8 @@ void CMedia::limit_video_store( const int64_t f )
     for ( uint64_t i = 0; i < num; ++i )
     {
         if ( !_sequence[i] || _sequence[i]->frame() == f ||
-             _sequence[i]->frame() == _frame ) continue;
+             _sequence[i]->frame() == _frame ||
+             _sequence[i]->data_size() == 0 ) continue;
 
         tmp.insert( std::make_pair( _sequence[i]->ptime(), i ) );
     }
@@ -3702,34 +3696,28 @@ void CMedia::limit_video_store( const int64_t f )
 
     if ( tmp.size() < max_frames ) return;
 
-    TimedSeqMap::iterator it = tmp.begin();
-    if ( it == tmp.end() ) return;
-
-    uint64_t idx = it->second;
-#else
-    mrv::image_type_ptr p;
-    uint64_t idx = num;
-    for ( uint64_t i = 0; i < num; ++i )
+    // Erase enough frames to make sure memory used is less than max memory
+    while ( Preferences::max_memory <= memory_used && !tmp.empty() )
     {
-        if ( !_sequence[i] || _sequence[i]->frame() == f ) continue;
-        if ( p && customMore()( _sequence[i]->ptime(), p->ptime() ) )
+
+        TimedSeqMap::iterator it = tmp.begin();
+        if ( it == tmp.end() ) return;
+
+        uint64_t idx = it->second;
+        if ( _sequence[idx] )
         {
-            idx = i;
-            p = _sequence[i];
+            memory_used -= _sequence[idx]->data_size();
+            MEM();
+            _sequence[ idx ].reset();
         }
-    }
 
-    if ( idx >= num ) return;
-#endif
+        if ( _right && _right[idx] ) {
+            memory_used -= _right[idx]->data_size();
+            MEM();
+            _right[ idx ].reset();
+        }
 
-
-    memory_used -= _sequence[idx]->data_size();
-    MEM();
-    _sequence[ idx ].reset();
-    if ( _right && _right[idx] ) {
-        memory_used -= _right[idx]->data_size();
-        MEM();
-        _right[ idx ].reset();
+        tmp.erase( it );
     }
 
 }
