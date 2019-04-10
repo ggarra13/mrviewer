@@ -90,6 +90,7 @@ int PopupMenu::add_leaf( const char* name, Fl_Menu_Item* g )
 	    return i + idx;
 	}
     }
+    return -1;
 }
 
 
