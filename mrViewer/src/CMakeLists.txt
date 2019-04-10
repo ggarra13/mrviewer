@@ -448,6 +448,8 @@ FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 IF (WIN32 OR WIN64)
   FILE(GLOB dllfiles ${EXE_DIR}/*.dll ${CMAKE_BINARY_DIR}/../lib/ )
+  LIST( FILTER dllfiles EXCLUDE REGEX .*fltk2.*.dll )
+  MESSAGE( STATUS ${dllfiles} )
   MESSAGE( STATUS "Copying DLLs..." )
   FILE(COPY ${dllfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ELSE(WIN32 OR WIN64)
@@ -472,19 +474,18 @@ INSTALL( FILES
 
 SET( LANGUAGES "es" )
 
-
 SET( output_files "${_absPotFile}" )
 
 FOREACH( lang ${LANGUAGES} )
 
   SET( _moDir "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
-  SET( _moFile "${_moDir}/mrViewer${VERSION}.mo" )
+  SET( _moFile "${_moDir}/mrViewer${SHORTVERSION}.mo" )
 
   SET( output_files ${output_files} ${_moFile} )
 
-  FILE( MAKE_DIRECTORY
-   "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
+  FILE( REMOVE_RECURSE "${_moDir}" ) # Remove dir to remove old .mo files
+  FILE( MAKE_DIRECTORY "${_moDir}" ) # Recreate dir to place new .mo file
 
  SET( _absFile "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" )
 
@@ -499,8 +500,11 @@ ENDFOREACH( lang )
 
 ADD_CUSTOM_TARGET(
   "translations" ALL
-  DEPENDS ${output_files}
+  DEPENDS ${output_files} ${PROJECT_NAME}
   )
+
+# Install for language files
+INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 
 IF(WIN32)
 
@@ -510,11 +514,10 @@ IF(WIN32)
   # sure there is at least one SET of four (4) backlasshes.
   SET(CPACK_NSIS_MODIFY_PATH ON)
 
-  SET(CPACK_GENERATOR NSIS ZIP )
+  SET(CPACK_GENERATOR ZIP NSIS )
 
   #  SET(CMAKE_INSTALL_DEBUG_LIBRARIES true)
 
-  include(InstallRequiredSystemLibraries)
 
   SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
   SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
@@ -529,15 +532,16 @@ IF(WIN32)
 
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
-  SET( CPACK_NSIS_DISPLAY_NAME "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
+  SET( CPACK_NSIS_DISPLAY_NAME "mrViewer-${CMAKE_BUILD_ARCH} v${SHORTVERSION}" )
   SET( CPACK_NSIS_PACKAGE_NAME "${CPACK_NSIS_DISPLAY_NAME}" )
   SET( CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
-  SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
-  SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
+  SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${SHORTVERSION}" )
+  SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${SHORTVERSION}" )
 
   SET( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON )
 
   INCLUDE( CMakeRegistry.cmake )
+
 
 ELSEIF (UNIX)
 
@@ -550,10 +554,10 @@ ELSEIF (UNIX)
 
 
     CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
-		    "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
+		    "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${SHORTVERSION}.desktop" )
 
 
-    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop"
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${SHORTVERSION}.desktop"
 	    DESTINATION ${MRV_DESKTOP_DIR})
     INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer.png
 	    DESTINATION ${MRV_PIXMAPS_DIR})
@@ -565,7 +569,7 @@ ELSEIF (UNIX)
     # SET the installation directory.
 
     SET(CPACK_SET_DESTDIR true) # Needed
-    SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
+    SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
 
     # Configure install/uninstall scripts
 
@@ -640,7 +644,6 @@ MESSAGE( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
 MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
 MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
-#MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
 MESSAGE( STATUS "CTL:           ${CTL_FOUND} ${CTL_VERSION}" )
 MESSAGE( STATUS "libintl:       ${LIBINTL_FOUND} ${LIBINTL_VERSION}" )
@@ -661,11 +664,6 @@ IF(MAGICK_FOUND)
   MESSAGE( STATUS "ImageMagick   library: ${MAGICK_LIBRARY_DIR}" )
 ENDIF(MAGICK_FOUND)
 
-IF(MAGICK++_FOUND)
-  MESSAGE( STATUS "ImageMagick++ include: ${MAGICK++_INCLUDE_DIR}" )
-  MESSAGE( STATUS "ImageMagick++ library: ${MAGICK++_LIBRARY_DIR}" )
-  MESSAGE( STATUS "ImageMagick++ libs:    ${MAGICK++_LIBRARIES}" )
-ENDIF(MAGICK++_FOUND)
 
 IF(OPENEXR_FOUND)
   MESSAGE( STATUS "OpenEXR include:       ${OPENEXR_INCLUDE_DIR}" )
@@ -690,11 +688,6 @@ IF(FFMPEG_FOUND)
   MESSAGE( STATUS "ffmpeg LGPL codecs:    ${FFMPEG_LGPL_LIBRARIES}" )
   MESSAGE( STATUS "ffmpeg libraries:      ${FFMPEG_LIBRARIES}" )
 ENDIF(FFMPEG_FOUND)
-
-#IF(POSTGRESQL_FOUND)
-#  MESSAGE( STATUS "PostgreSQL include:    ${POSTGRESQL_INCLUDE_DIR}" )
-#  MESSAGE( STATUS "PostgreSQL library:    ${POSTGRESQL_LIBRARY_DIR}" )
-#ENDIF(POSTGRESQL_FOUND)
 
 IF(TCLAP_FOUND)
   MESSAGE( STATUS "TCLAP include:    ${TCLAP_INCLUDE_DIR}" )
@@ -729,7 +722,7 @@ ENDIF(TINYXML2_FOUND)
 #  MESSAGE( STATUS "RLM libraries:  ${RLM_LIBRARIES}" )
 #ENDIF(RLM_FOUND)
 
-MESSAGE( STATUS "mrViewer version: " ${VERSION} )
+MESSAGE( STATUS "mrViewer version: " ${SHORTVERSION} )
 
 
 SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
