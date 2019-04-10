@@ -156,7 +156,7 @@ void load_new_files( void* s )
 
 int main( int argc, char** argv )
 {
-    Fl::scheme("gleam");
+    Fl::scheme("plastic");
 
     // Fl::background( 32, 32, 32 );
     // Fl::foreground( 190, 190, 190 );
