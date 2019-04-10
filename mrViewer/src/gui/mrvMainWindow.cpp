@@ -39,9 +39,8 @@
 #include <FL/platform.H>
 
 
-#include "resource.h"
 #include "icons/viewer16.xpm"
-
+#include "resource.h"
 
 #include "mrvPreferencesUI.h"
 #include "mrvReelUI.h"
@@ -73,8 +72,8 @@ void MainWindow::set_icon()
 
     
 #if defined(_WIN32) || defined(_WIN64)
-    HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
-    this->icon(data);
+     HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
+     this->icon(data);
 #else
     Fl_Pixmap* pic = new Fl_Pixmap( viewer16_xpm );
     Fl_RGB_Image* rgb = new Fl_RGB_Image( pic );
