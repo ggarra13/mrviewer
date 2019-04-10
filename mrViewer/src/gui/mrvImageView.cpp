@@ -634,7 +634,7 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
     mrv::ImageView* view = uiMain->uiView;
 
     const Fl_Menu_Item* o = menu->mvalue();
-    
+
     float mask = 1.0f;
     const char* fmt = o->label();
     mask = (float) atof( fmt );
@@ -713,17 +713,17 @@ void hud_cb( mrv::PopupMenu* o, ViewerUI* uiMain )
 
     if ( item->label() == NULL )
     {
-	LOG_ERROR( "Label is null" );
-	return;
+        LOG_ERROR( "Label is null" );
+        return;
     }
-    
+
     int i;
     Fl_Group* menu = uiMain->uiPrefs->uiPrefsHud;
     int num = menu->children();
     for ( i = 0; i < num; ++i )
     {
         const char* fmt = menu->child(i)->label();
-	if (!fmt) continue;
+        if (!fmt) continue;
         if ( strcmp( fmt, item->label() ) == 0 ) break;
     }
 
@@ -762,26 +762,26 @@ namespace mrv {
 
     void window_cb( mrv::PopupMenu* m, const ViewerUI* uiMain )
     {
-	int idx = -1;
-	const Fl_Menu_Item* o = m->child( m->value() );
-	mrv::PopupMenu* g = uiMain->uiWindows;
-	for ( int i = 0; i < g->children(); ++i )
-	{
-	    if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
-		idx = i;
-		break;
-	    }
-	}
+        int idx = -1;
+        const Fl_Menu_Item* o = m->child( m->value() );
+        mrv::PopupMenu* g = uiMain->uiWindows;
+        for ( int i = 0; i < g->children(); ++i )
+        {
+            if ( stricmp( o->label(),  g->child(i)->label() ) == 0 ) {
+                idx = i;
+                break;
+            }
+        }
 
-	if ( idx == -1 )
-	{
-	    const char* name = o->label();
-	    LOG_ERROR( _("Unknown Window \"") << name << "\"" );
-	    return;
-	}
+        if ( idx == -1 )
+        {
+            const char* name = o->label();
+            LOG_ERROR( _("Unknown Window \"") << name << "\"" );
+            return;
+        }
 
 
-	uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
+        uiMain->uiView->toggle_window( (ImageView::WindowList)idx, true );
 }
 
 void ImageView::toggle_window( const ImageView::WindowList idx, const bool force )
@@ -1424,7 +1424,7 @@ _lastFrame( 0 )
           FL_STENCIL | stereo );
 
     menu->type( Fl_Menu_Button::POPUP3 );
-    
+
     create_timeout( 0.02f );
 }
 
@@ -1656,8 +1656,8 @@ bool ImageView::next_channel()
         {
             unsigned numc = 0;
             for ( ; w->label(); ++w )
-		++numc;
-	    
+                ++numc;
+
             if ( c == idx ) {
                 is_group = true;
                 next = idx + numc + 1;
@@ -2087,7 +2087,7 @@ void ImageView::fit_image()
     if ( !fg ) return;
 
 
-    
+
     const CMedia* img = fg->image();
 
     mrv::image_type_ptr pic = img->left();
@@ -2495,9 +2495,9 @@ void static_preload( mrv::ImageView* v )
     mrv::media m = v->foreground();
     if ( m )
     {
-	CMedia* img = m->image();
-	double delay = 1.0 / img->fps();
-	Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
+        CMedia* img = m->image();
+        double delay = 1.0 / img->fps();
+        Fl::repeat_timeout( delay, (Fl_Timeout_Handler) static_preload, v );
     }
 }
 
@@ -2989,14 +2989,14 @@ void ImageView::timeout()
 
     if ( uiMain->uiEDLWindow )
     {
-	mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
-	if (t)
-	{
-	    t->value( double(tframe) );
-	    t->redraw();
-	}
+        mrv::Timeline* t = uiMain->uiEDLWindow->uiTimeline;
+        if (t)
+        {
+            t->value( double(tframe) );
+            t->redraw();
+        }
     }
-    
+
     if ( reel && reel->edl )
     {
         TRACE("");
@@ -3008,7 +3008,7 @@ void ImageView::timeout()
             DBG( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
                  << tframe );
             foreground( fg );
-	    browser()->match_tree_order();
+            browser()->match_tree_order();
 
             fit_image();
         }
@@ -3241,13 +3241,13 @@ void ImageView::draw()
         if ( !_engine ) return;
 
 
-	DBG( __FUNCTION__ << " " << __LINE__ );
-	_engine->reset_view_matrix();
+        DBG( __FUNCTION__ << " " << __LINE__ );
+        _engine->reset_view_matrix();
 
 
         valid(1);
     }
-    
+
 
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
@@ -3450,11 +3450,11 @@ void ImageView::draw()
 
     }
 
-    
+
     if ( !fg ) {
-	return;
+        return;
     }
-    
+
     _engine->draw_annotation( img->shapes() );
 
     if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
@@ -3491,18 +3491,18 @@ void ImageView::draw()
     {
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
-	glViewport( 0, 0, w(), h() );
-	glOrtho( 0, w(), 0, h(), -1, 1 );
+        glViewport( 0, 0, w(), h() );
+        glOrtho( 0, w(), 0, h(), -1, 1 );
 
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
-	FLUSH_GL_ERRORS;
+        FLUSH_GL_ERRORS;
 
     }
 
 
-	
+
     std::ostringstream hud;
     hud.str().reserve( 512 );
 
@@ -3690,12 +3690,12 @@ void ImageView::draw()
     {
         glMatrixMode(GL_PROJECTION);
         glPopMatrix();
-	FLUSH_GL_ERRORS;
-	
+        FLUSH_GL_ERRORS;
+
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
-	FLUSH_GL_ERRORS;
-	
+        FLUSH_GL_ERRORS;
+
     }
 
 #ifdef DEBUG_GL_CROSS
@@ -3705,7 +3705,7 @@ void ImageView::draw()
     glBegin(GL_LINE_STRIP); glVertex2f(0,0); glVertex2f(W,H); glEnd();
     glBegin(GL_LINE_STRIP); glVertex2f(0,H); glVertex2f(W,0); glEnd();
 #endif
-    
+
 }
 
 
@@ -3951,7 +3951,7 @@ int ImageView::leftMouseDown(int x, int y)
                     t->font( mrv::font_current );
                     t->size( mrv::font_size );
                     t->text( mrv::font_text );
-		    
+
                     mrv::font_text = "";
                     s = t;
                 }
@@ -4020,7 +4020,7 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
 
             int idx;
-	    
+
             menu->add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                       (Fl_Callback*)open_cb, browser() );
             menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
@@ -4364,9 +4364,9 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
             menu->popup();
 
-	    menu->clear();
+            menu->clear();
             TRACE("");
-	    return 1;
+            return 1;
         }
         else
         {
@@ -5737,7 +5737,7 @@ void ImageView::mouseDrag(int x,int y)
                 else
                 {
 
-		    yn = -yn;
+                    yn = -yn;
 
                     xn += daw[idx].x();
                     yn -= daw[idx].y();
@@ -5809,7 +5809,7 @@ int ImageView::keyDown(unsigned int rawkey)
         }
     }
 
-    
+
     if ( kDrawMode.match( rawkey ) )
     {
         draw_mode();
@@ -6327,19 +6327,19 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kToggleTopBar.match( rawkey ) )
     {
-	int H = uiMain->uiRegion->h();
+        int H = uiMain->uiRegion->h();
         if ( uiMain->uiTopBar->visible() ) {
-	    uiMain->uiTopBar->hide();
-	    H += uiMain->uiTopBar->h();
-	}
+            uiMain->uiTopBar->hide();
+            H += uiMain->uiTopBar->h();
+        }
         else {
-	    uiMain->uiTopBar->show();
-	    H -= uiMain->uiTopBar->h();
-	}
-	int X = uiMain->uiRegion->x();
-	int Y = uiMain->uiRegion->y();
-	int W = uiMain->uiRegion->w();
-	uiMain->uiRegion->resize( X, Y, W, H );
+            uiMain->uiTopBar->show();
+            H -= uiMain->uiTopBar->h();
+        }
+        int X = uiMain->uiRegion->x();
+        int Y = uiMain->uiRegion->y();
+        int W = uiMain->uiRegion->w();
+        uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
@@ -6347,41 +6347,41 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kTogglePixelBar.match( rawkey ) )
     {
-	int H = uiMain->uiRegion->h();
+        int H = uiMain->uiRegion->h();
         if ( uiMain->uiPixelBar->visible() ) {
-	    uiMain->uiPixelBar->hide();
-	    H += uiMain->uiPixelBar->h();
-	}
+            uiMain->uiPixelBar->hide();
+            H += uiMain->uiPixelBar->h();
+        }
         else {
-	    uiMain->uiPixelBar->show();
-	    H -= uiMain->uiPixelBar->h();
-	}
-	int X = uiMain->uiRegion->x();
-	int Y = uiMain->uiRegion->y();
-	int W = uiMain->uiRegion->w();
-	uiMain->uiRegion->resize( X, Y, W, H );
+            uiMain->uiPixelBar->show();
+            H -= uiMain->uiPixelBar->h();
+        }
+        int X = uiMain->uiRegion->x();
+        int Y = uiMain->uiRegion->y();
+        int W = uiMain->uiRegion->w();
+        uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         return 1;
     }
     else if ( kToggleTimeline.match( rawkey ) )
     {
-	int H = uiMain->uiRegion->h();
+        int H = uiMain->uiRegion->h();
         if ( uiMain->uiBottomBar->visible() ) {
-	    uiMain->uiBottomBar->hide();
-	    H += uiMain->uiBottomBar->h();
-	}
+            uiMain->uiBottomBar->hide();
+            H += uiMain->uiBottomBar->h();
+        }
         else {
-	    uiMain->uiBottomBar->show();
-	    H -= uiMain->uiBottomBar->h();
-	}
-	int X = uiMain->uiRegion->x();
-	int Y = uiMain->uiRegion->y();
-	int W = uiMain->uiRegion->w();
-	uiMain->uiRegion->resize( X, Y, W, H );
+            uiMain->uiBottomBar->show();
+            H -= uiMain->uiBottomBar->h();
+        }
+        int X = uiMain->uiRegion->x();
+        int Y = uiMain->uiRegion->y();
+        int W = uiMain->uiRegion->w();
+        uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
-	uiMain->uiBottomBar->redraw();
+        uiMain->uiBottomBar->redraw();
         fltk_main()->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -6572,7 +6572,7 @@ void ImageView::toggle_fullscreen()
     }
 
     uiMain->uiRegion->init_sizes();
-	
+
     fit_image();
 
 
@@ -6637,7 +6637,7 @@ void ImageView::toggle_presentation()
         presentation = true;
 
         fltk_main()->fullscreen();
-	uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->init_sizes();
 // #ifdef WIN32
 //         fltk_main()->fullscreen();
 //         fltk_main()->resize(0, 0,
@@ -6670,7 +6670,7 @@ void ImageView::toggle_presentation()
 // #endif
         presentation = false;
         FullScreen = false;
-	uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->init_sizes();
         resize_main_window();
     }
 
@@ -6891,8 +6891,8 @@ int ImageView::handle(int event)
             window()->cursor(FL_CURSOR_CROSS);
         }
 
-	Fl_Gl_Window::handle( event );
-        return 1; 
+        Fl_Gl_Window::handle( event );
+        return 1;
     }
     case FL_ENTER:
         focus(this);
@@ -6964,9 +6964,9 @@ int ImageView::handle(int event)
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();
-	if ( !keyDown(Fl::event_key() ) )
-	    return Fl_Gl_Window::handle( event );
-	return 1;
+        if ( !keyDown(Fl::event_key() ) )
+            return Fl_Gl_Window::handle( event );
+        return 1;
     case FL_KEYUP:
         return keyUp(Fl::event_key());
     case FL_MOUSEWHEEL:
@@ -7128,14 +7128,14 @@ void ImageView::preload_cache_start()
             timeline()->edl( true );
             _preframe = frame();
         }
-	mrv::media m = foreground();
-	if ( m ) {
-	    img = m->image();
-	    CMedia::preload_cache( true );
-	    _idle_callback = true;
-	    Fl::add_timeout( 1.0/img->fps(),
-			     (Fl_Timeout_Handler) static_preload, this );
-	}
+        mrv::media m = foreground();
+        if ( m ) {
+            img = m->image();
+            CMedia::preload_cache( true );
+            _idle_callback = true;
+            Fl::add_timeout( 1.0/img->fps(),
+                             (Fl_Timeout_Handler) static_preload, this );
+        }
         //Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
     }
 }
@@ -7230,17 +7230,17 @@ char* ImageView::get_layer_label( unsigned short c )
     const Fl_Menu_Item* w; //uiColorChannel->child(0);
     for ( unsigned i = 0; i < num; ++i, ++idx )
     {
-	w = uiColorChannel->child(i);
-	if ( w->flags & FL_SUBMENU )
-	    o = w;
-	else
-	    if ( !w->label() ) o = NULL;
+        w = uiColorChannel->child(i);
+        if ( w->flags & FL_SUBMENU )
+            o = w;
+        else
+            if ( !w->label() ) o = NULL;
         if ( idx == c )
         {
-	    if ( w != o && o && o->label() ) layername = o->label();
-	    if ( !layername.empty() ) layername += '.';
-	    if ( w->label() ) layername += w->label();
-	    lbl = strdup( layername.c_str() );
+            if ( w != o && o && o->label() ) layername = o->label();
+            if ( !layername.empty() ) layername += '.';
+            if ( w->label() ) layername += w->label();
+            lbl = strdup( layername.c_str() );
             break;
         }
     }
@@ -7262,15 +7262,15 @@ void ImageView::channel( Fl_Menu_Item* o )
     unsigned int i = 0;
     for ( ; i < num; ++i )
     {
-	const Fl_Menu_Item* w = uiColorChannel->child(i);
-	if ( w == o )
-	    break;
+        const Fl_Menu_Item* w = uiColorChannel->child(i);
+        if ( w == o )
+            break;
     }
 
     if ( i >= num )
     {
-	LOG_ERROR( "Channel " << i << " not found in image" );
-	return;
+        LOG_ERROR( "Channel " << i << " not found in image" );
+        return;
     }
 
     channel( i );
@@ -7285,19 +7285,19 @@ void ImageView::channel( unsigned short c )
 {
     boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
 
-    
+
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return; // Audio only - no channels
 
-    
+
     const Fl_Menu_Item* o = uiColorChannel->child(c);
 
     unsigned short idx = 0;
     const Fl_Menu_Item* w ;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
-	w = uiColorChannel->child(i);
+        w = uiColorChannel->child(i);
         if ( w->flags & FL_SUBMENU )
         {
             for ( ++w; w->label(); ++w )
@@ -7311,24 +7311,24 @@ void ImageView::channel( unsigned short c )
         const char* lbl = uiColorChannel->label();
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
-	    bool found = false;
+            bool found = false;
             num = uiColorChannel->children();
             for ( unsigned short i = 0; i < num; ++i, ++c, ++idx )
             {
                 const Fl_Menu_Item* w = uiColorChannel->child(i);
                 if ( w->label() && strcmp( w->label(), lbl ) == 0 )  break;
-		// if ( w->flags & FL_SUBMENU )
-		// {
-		//     for ( ; w->label(); w = w->next(), ++idx )
-		//     {
-		// 	if ( strcmp( w->label(), lbl ) == 0 )
-		// 	{
-		// 	    found = true;
-		// 	    break;
-		// 	}
-		//     }
-		//     if ( found ) break;
-		//   }
+                // if ( w->flags & FL_SUBMENU )
+                // {
+                //     for ( ; w->label(); w = w->next(), ++idx )
+                //     {
+                //      if ( strcmp( w->label(), lbl ) == 0 )
+                //      {
+                //          found = true;
+                //          break;
+                //      }
+                //     }
+                //     if ( found ) break;
+                //   }
             }
         }
 
@@ -7357,7 +7357,7 @@ void ImageView::channel( unsigned short c )
 
     char* lbl = get_layer_label( c );
     if ( !lbl ) return;
-    
+
     _channel = c;
 
 
@@ -7853,8 +7853,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                     unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
                     // s = w->shortcut();
-		    uiColorChannel->clear_submenu( last );
-                    uiColorChannel->remove( last );  
+                    uiColorChannel->clear_submenu( last );
+                    uiColorChannel->remove( last );
                 }
 
                 // int idx = uiColorChannel->add( x.c_str(), s, NULL, 0 );
@@ -7868,7 +7868,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( x.size() < name.size() )
                 y = x + '/' + name.substr( x.size()+1, name.size() );
 
-            idx = uiColorChannel->add( y.c_str() ); 
+            idx = uiColorChannel->add( y.c_str() );
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
         else
@@ -7877,7 +7877,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             group = true;
             x = name;
 
-	    idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
+            idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
 
@@ -7897,7 +7897,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
         if ( v >= 0 || ( name == _("Color")
-			 /* || chx == "N" || chx == "Z" */ ) )
+                         /* || chx == "N" || chx == "Z" */ ) )
         {
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
@@ -8711,9 +8711,9 @@ void ImageView::update_color_info( const mrv::media& fg ) const
     {
         Fl_Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
         if ( uiColorWindow->visible() )
-	{
+        {
             uiMain->uiColorArea->uiColorText->update();
-	}
+        }
     }
 
     if ( uiMain->uiSOPNode )
@@ -8784,7 +8784,7 @@ void ImageView::update_image_info() const
 
 void ImageView::playback( const CMedia::Playback b )
 {
-    
+
     _playback = b;
 
     _lastFrame = frame();
