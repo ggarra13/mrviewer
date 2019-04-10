@@ -1,17 +1,23 @@
-v5.0.1alpha1
-	 - Bug fixed clone image and deleting it afterwards twice.
-	 - Bug fixed exiting with the Waveform window open.
+v5.0.1-alpha1
+         - Bug fixed clone image and deleting it afterwards twice.
+         - Bug fixed exiting with the Waveform window open.
+         - Bug fixed cache loading when image is stopped.
+         - Bug fixed playback starting too slow when cache was full.
+         - Bug fixed crash on EDL group when selecting an empty media track.
+         - Ported code to fltk1.4.  Now it should be possible to compile on
+           a Mac (if I get my hands on one).  Also, code is better supported
+           and there's temporary support for hiDPI screens.
 
 v4.4.8   - Bug fixed timeline min/max setting with S/E buttons.
 
 v4.4.7   - Bug fixed AVIs with yuvj422p color schemes as they were being
-	   read darker by swscale (deprecated format).
-	 - Bug fixed inverse fps change in image information window.
-	 - Bug fixed naming of aspect ratio in image informaion window.
-	 - Bug fixed pixel format always showing Lumma in image info window.
+           read darker by swscale (deprecated format).
+         - Bug fixed inverse fps change in image information window.
+         - Bug fixed naming of aspect ratio in image informaion window.
+         - Bug fixed pixel format always showing Lumma in image info window.
 
 v4.4.6   - Bug fixed histogram, color area, vectorscope and waveform to
-	   work with image sequences.
+           work with image sequences.
 
 v4.4.5
          - Bug fixed thumbnails in our own file requester which was crashing
@@ -21,7 +27,7 @@ v4.4.5
          - Bug fixed crash in custom file requester when showing movies or
            music.
          - Bug fixed crash when loading music.
-	 - Bug fixed loading of exr channels of single images.
+         - Bug fixed loading of exr channels of single images.
 
 v4.4.4-beta2
          - Fixed Color Bars, Gamma Charts, Gradients and Checkerboard images
