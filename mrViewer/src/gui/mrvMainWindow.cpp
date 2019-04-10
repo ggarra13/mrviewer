@@ -39,6 +39,7 @@
 #include <FL/platform.H>
 
 
+#include "resource.h"
 #include "icons/viewer16.xpm"
 
 
@@ -71,14 +72,14 @@ void MainWindow::set_icon()
     fl_open_display();  // Needed for icons
 
     
-// #if defined(_WIN32) || defined(_WIN64)
-//     HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
-//     this->icon(data);
-// #else
+#if defined(_WIN32) || defined(_WIN64)
+    HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
+    this->icon(data);
+#else
     Fl_Pixmap* pic = new Fl_Pixmap( viewer16_xpm );
     Fl_RGB_Image* rgb = new Fl_RGB_Image( pic );
     icon( rgb );
-// #endif
+#endif
 
 }
 
