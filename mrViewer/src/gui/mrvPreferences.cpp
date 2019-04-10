@@ -675,8 +675,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
     caches.get( "cache_memory", tmpF, 4.0 );
+#if defined( _WIN64 ) || defined( LINUX )
+    if ( tmpF == 1.5f )
+    {
+        tmpF = 4.0;
+    }
+#endif
     uiPrefs->uiPrefsCacheMemory->value( tmpF );
-
+    
     //
     // audio
     //
