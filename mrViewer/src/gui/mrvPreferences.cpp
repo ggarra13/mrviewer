@@ -467,14 +467,16 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // ui/colors
     //
     Fl_Preferences colors( ui, "colors" );
+    colors.get( "scheme", tmpS, "plastic", 2048 );
+    const Fl_Menu_Item* item = uiPrefs->uiScheme->find_item( tmpS );
+    if ( item )
+    {
+        uiPrefs->uiScheme->picked( item );
+    }
     colors.get( "background_color", bgcolor, 0x43434300 );
-    uiPrefs->uiPrefsUIBG->color( bgcolor );
     colors.get( "text_color", textcolor, 0xababab00 );
-    uiPrefs->uiPrefsUIText->color( textcolor );
     colors.get( "selection_color", selectioncolor, 0x97a8a800 );
-    uiPrefs->uiPrefsUISelection->color( selectioncolor );
     colors.get( "selection_text_color", selectiontextcolor, 0x00000000 );
-    uiPrefs->uiPrefsUISelectionText->color( selectiontextcolor );
 
     //
     // ui/view/colors
@@ -575,7 +577,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     Fl_Preferences flu( ui, "file_requester" );
     //
-    
+
     flu.get("quick_folder_travel", tmp, 1 );
     uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
@@ -682,7 +684,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 #endif
     uiPrefs->uiPrefsCacheMemory->value( tmpF );
-    
+
     //
     // audio
     //
@@ -1794,13 +1796,10 @@ void Preferences::save()
     // ui/colors prefs
     //
     Fl_Preferences colors( ui, "colors" );
-    bgcolor = uiPrefs->uiPrefsUIBG->color();
+    colors.set( "scheme", uiPrefs->uiScheme->text() );
     colors.set( "background_color", bgcolor );
-    textcolor = uiPrefs->uiPrefsUIText->color();
     colors.set( "text_color", textcolor );
-    selectioncolor = uiPrefs->uiPrefsUISelection->color();
     colors.set( "selection_color", selectioncolor );
-    selectioncolor = uiPrefs->uiPrefsUISelectionText->color();
     colors.set( "selection_text_color", selectiontextcolor );
 
     Fl_Preferences flu( ui, "file_requester" );
