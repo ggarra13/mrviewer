@@ -2171,8 +2171,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
 
         for ( int i = 0; i < 2; ++i )
         {
-            if ( _stereo_output != kNoStereo && st[i] >= 0 &&
-                 _right_eye == NULL )
+            if ( st[i] >= 0 && _right_eye == NULL )
                 _curpart = st[i];
 
 
@@ -2225,7 +2224,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             }
 
             // Quick exit if stereo is off or multiview
-            if ( _stereo_output == kNoStereo ) break;
+            // if ( _stereo_output == kNoStereo ) break;
 
             if ( st[0] != st[1] )
             {

@@ -134,7 +134,7 @@ decl {\#include "mrvReelUI.h"} {private local
 decl {\#include "mrvStereoUI.h"} {public global
 }
 
-decl {\#include "mrvHotkeyUI.h"} {selected public global
+decl {\#include "mrvHotkeyUI.h"} {public global
 }
 
 decl {\#include "mrvWaveformUI.h"} {private local
@@ -643,7 +643,8 @@ else
   }
 }
 
-class ViewerUI {} {
+class ViewerUI {open
+} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -787,7 +788,7 @@ uiICCProfiles->uiMain->show();}
             }
           }
           Fl_Group {} {open
-            xywh {30 5 90 20} color 1397969664
+            xywh {30 2 90 23} color 1397969664
           } {
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
@@ -800,24 +801,25 @@ uiICCProfiles->uiMain->show();}
             } {}
           }
           Fl_Group {} {open
-            xywh {125 1 279 24} color 1397969664
+            xywh {125 1 281 24} color 1397969664
           } {
             Fl_Box {} {
               label Gain
-              xywh {125 2 28 22} align 96
+              xywh {125 2 28 22} labelsize 12 align 96
             }
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
-              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.001 value 1
+              tooltip {Gain image value.  A simple multiplier of the image pixel values.} xywh {155 2 35 22} color -1733777408 selection_color 0 minimum 0.01 maximum 64 step 0.01 value 1
               code0 {o->textsize( 12 );}
+              code1 {o->textcolor( FL_BLACK );}
             }
             Fl_Slider uiGain {
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
-              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0.015625 maximum 64 step 1 value 1
+              tooltip {Allows you to adjust the gain or exposure of the image.} xywh {190 2 70 22} type {Horz Knob} minimum 0.02 maximum 64 step 1 value 1
               code0 {o->slider_type( mrv::Slider::kLOG );}
               class {mrv::Slider}
             }
@@ -840,7 +842,7 @@ sprintf( buf, "ICS \\"%s\\"", c.c_str() );
 v->uiView->send_network( buf );
 v->uiView->use_lut(true);
 v->uiLUT->value(true);} open
-              tooltip {OCIO input color space for the image} xywh {260 2 146 22} align 96
+              tooltip {OCIO input color space for the image} xywh {260 2 146 22} labelsize 12 align 96
               class {mrv::PopupMenu}
             } {}
             Fl_Group uiFstopGroup {open
@@ -893,13 +895,13 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
             }
           }
           Fl_Group {} {open
-            xywh {405 5 155 20} color 1397969664
+            xywh {405 2 155 23} color 1397969664
           } {
             Fl_Group {} {open
-              xywh {405 5 155 20}
+              xywh {405 2 155 23}
             } {
               Fl_Group {} {open
-                xywh {405 5 155 20}
+                xywh {405 2 155 23}
               } {
                 Fl_Menu_Button gammaDefaults {
                   label Gamma
@@ -947,7 +949,7 @@ else
 	v->uiView->redraw();
     }
     }}
-                  tooltip {Some default gamma settings.} xywh {405 3 50 21}
+                  tooltip {Some default gamma settings.} xywh {405 3 50 21} labelsize 12
                   class {mrv::PopupMenu}
                 } {
                   MenuItem {} {
@@ -976,21 +978,22 @@ else
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGamma->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {455 5 35 18} color -1733777408 selection_color 0 minimum 0.015625 maximum 64 step 0.01 value 1
+Value is:  pow( 2, 1/x );} xywh {455 2 35 22} color -1733777408 selection_color 0 minimum 0.015625 maximum 64 step 0.01 value 1
                   code0 {o->textsize(12);}
+                  code1 {o->textcolor( FL_BLACK );}
                 }
                 Fl_Slider uiGamma {
                   user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->gamma( (float) o->value() );
 v->uiGammaInput->value( (float) o->value() );}
                   tooltip {Allows you to adjust gamma curve for display.
-Value is:  pow( 2, 1/x );} xywh {490 5 60 18} type {Horz Knob} minimum 0.25 maximum 4 step 0.01 value 0.25
+Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maximum 4 step 0.01 value 0.25
                 }
               }
             }
           }
           Fl_Group {} {open
-            xywh {550 5 80 20}
+            xywh {550 3 80 22}
           } {
             Fl_Menu_Button uiField {
               label F
@@ -1017,13 +1020,13 @@ Value is:  pow( 2, 1/x );} xywh {490 5 60 18} type {Horz Knob} minimum 0.25 maxi
               label {1:1}
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_pixel_ratio();}
-              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {570 3 30 22} shortcut 0x40070
+              tooltip {Stretch image to compensate for image's pixel ratio.} xywh {570 3 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x40070 selection_color 95
             }
             Fl_Button uiLUT {
               label LUT
               user_data this user_data_type {ViewerUI*}
               callback {v->uiView->toggle_lut();}
-              tooltip {Activate viewer's 3D Lut.} xywh {600 3 30 22} shortcut 0x74
+              tooltip {Activate viewer's 3D Lut.} xywh {600 3 30 22} down_box PLASTIC_ROUND_DOWN_BOX shortcut 0x74 selection_color 95
             }
           }
         }
@@ -1140,7 +1143,7 @@ o->value(8);}
                 xywh {0 0 100 20}
               }
             }
-            Fl_Group {} {
+            Fl_Group {} {open
               xywh {31 458 605 25}
             } {
               Fl_Output uiCoord {
@@ -1162,7 +1165,7 @@ o->value(8);}
                       callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( o->text(i) );} open
-                      tooltip {Switch RGBA display between floating point, hexadecimal (0..0xff) and decimal (0..255).} xywh {116 461 30 20} labelsize 9
+                      tooltip {Switch RGBA display between floating point, hexadecimal (0..0xff) and decimal (0..255).} xywh {116 461 30 20} labelsize 9 align 48
                       code0 {o->value(0);
 o->disable_glyph();}
                       class {mrv::PopupMenu}
@@ -1194,10 +1197,10 @@ o->disable_glyph();}
                     }
                   }
                   Fl_Output uiPixelView {
-                    tooltip {8-bit sample of image pixel under mouse.} xywh {365 460 20 20} box FLAT_BOX color 1397969664
+                    tooltip {8-bit sample of image pixel under mouse.} xywh {369 460 20 20} box FLAT_BOX color 1397969664
                   }
                   Fl_Group {} {
-                    xywh {391 461 173 22}
+                    xywh {390 461 174 22}
                   } {
                     Fl_Menu_Button uiBColorType {
                       label HSV
@@ -1206,7 +1209,7 @@ o->disable_glyph();}
 if ( i < 0 ) return;
 o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
 v->update_color_info();}
-                      tooltip {Switch pixel color space information display for the pixel under the cursor.} xywh {391 461 23 20} labelsize 9
+                      tooltip {Switch pixel color space information display for the pixel under the cursor.} xywh {391 461 23 20} labelsize 9 align 48
                       code0 {o->value(0);
 o->disable_glyph();}
                       class {mrv::PopupMenu}
@@ -1279,7 +1282,7 @@ v->update_color_info();}
                     tooltip {Type of pixel values to show:
 + Full:  pixel with gamma, gain and lut.
 + Gamma: pixel with gamma and gain but no lut.
-+ Original: pixel without gamma, gain or lut.} xywh {350 461 13 20} align 48
++ Original: pixel without gamma, gain or lut.} xywh {350 461 18 20} align 48
                     code0 {o->value(0);
 o->disable_glyph();}
                     class {mrv::PopupMenu}
@@ -1305,7 +1308,7 @@ o->disable_glyph();}
                       callback {int x = o->value();
 const char* lbl = o->text(x);
 const char name[3] = { lbl[0], lbl[1], 0 };
-o->copy_label( name );}
+o->copy_label( name );} selected
                       tooltip {Switch brightness calculation.
 
 Y (Luminance) is the pixel value according to Rec709:
@@ -1317,7 +1320,7 @@ Y' (Lumma) is the weighted pixel value according to:
 L (Lightness) is the human perception of luminance of the image which is non linear.
 According to CIE No.15.2:
       L = (116 * Y ^ 1/3 - 16) / 100
-A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).} xywh {567 461 15 20}
+A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).} xywh {567 461 16 20} align 48
                       code0 {o->value(0);
 o->disable_glyph();}
                       class {mrv::PopupMenu}
@@ -1583,7 +1586,7 @@ o->value(24);}
                     Fl_Slider uiVolume {
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->volume((float) o->value() );}
-                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 step 0.01 value 1
+                      tooltip {Audio Volume} xywh {400 515 55 15} type Horizontal align 4 step 0.01 value 1 slider_size 0.3
                     }
                   }
                 }
@@ -1729,8 +1732,7 @@ mrv::Preferences prefs( uiPrefs );} {}
   Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {open
-  } {
+  Function {~ViewerUI()} {} {
     code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
@@ -1746,6 +1748,27 @@ delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
 delete uiHotkey; uiHotkey = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
+  }
+  Function {refresh()} {open
+  } {
+    code {if ( uiMain ) uiMain->redraw();
+if ( uiPrefs ) uiPrefs->uiMain->redraw();
+if ( uiLog ) uiLog->uiMain->redraw();
+if ( uiAbout ) uiAbout->uiMain->redraw();
+if ( uiICCProfiles ) uiICCProfiles->uiMain->redraw();
+if ( uiHotkey ) uiHotkey->uiMain->redraw();
+if ( uiConnection ) uiConnection->uiMain->redraw();
+if ( uiReelWindow ) uiReelWindow->uiMain->redraw();
+if ( uiImageInfo ) uiImageInfo->uiMain->redraw();
+if ( uiGL3dView ) uiGL3dView->uiMain->redraw();
+if ( uiColorArea ) uiColorArea->uiMain->redraw();
+if ( uiHistogram ) uiHistogram->uiMain->redraw();
+if ( uiVectorscope ) uiVectorscope->uiMain->redraw();
+if ( uiWaveform ) uiWaveform->uiMain->redraw();
+if ( uiPaint ) uiPaint->uiMain->redraw();
+if ( uiSOPNode ) uiSOPNode->uiMain->redraw();
+if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
+if ( uiStereo ) uiStereo->uiMain->redraw();} {}
   }
 }
 
