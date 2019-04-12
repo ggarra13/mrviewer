@@ -2119,8 +2119,8 @@ void ImageInformation::fill_data()
 
     ++group;
 
-    add_int( _("Width"), _("Width of clip"), img->width() );
-    add_int( _("Height"), _("Height of clip"), img->height() );
+    add_int( _("Width"), _("Width of clip"), img->width(), false );
+    add_int( _("Height"), _("Height of clip"), img->height(), false );
 
 
     double aspect_ratio = 0;
@@ -2232,7 +2232,7 @@ void ImageInformation::fill_data()
 
     add_text( _("Depth"), _("Bit depth of clip"), depth );
     add_int( _("Image Channels"), _("Number of channels in clip"),
-             img->number_of_channels() );
+             img->number_of_channels(), false );
 
     exrImage* exr = dynamic_cast< exrImage* >( img );
     if ( exr )
@@ -2877,6 +2877,7 @@ void ImageInformation::add_ctl( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -2934,6 +2935,7 @@ void ImageInformation::add_ocio_ics( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         widget->tooltip( tooltip ? tooltip : lbl->label() );
 
@@ -2985,6 +2987,7 @@ void ImageInformation::add_ctl_idt( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -3042,6 +3045,7 @@ void ImageInformation::add_ctl_lmt( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -3119,12 +3123,14 @@ void ImageInformation::add_text( const char* name,
             Fl_Output* o = new Fl_Output( kMiddle, Y, w()-kMiddle, hh );
             widget = o;
             o->value( content );
+	    o->textcolor( FL_BLACK );
         }
         else
         {
             Fl_Input* o = new Fl_Input( kMiddle, Y, w()-kMiddle, hh );
             widget = o;
             o->value( content );
+	    o->textcolor( FL_BLACK );
         }
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
@@ -3200,6 +3206,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
             widget->color( colB );
             widget->deactivate();
             widget->box( FL_FLAT_BOX );
+	    widget->textcolor( FL_BLACK );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
         }
@@ -3210,6 +3217,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
+	    widget->textcolor( FL_BLACK );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
 
@@ -3384,6 +3392,7 @@ void ImageInformation::add_int( const char* name,
             widget->align(FL_ALIGN_LEFT);
             widget->textcolor( FL_BLACK );
             widget->color( colB );
+            widget->deactivate();
             widget->box( FL_FLAT_BOX );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
@@ -3515,6 +3524,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         sprintf( buf, "%d", content.l() );
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
+        widget->textcolor( FL_BLACK );
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
         if ( !editable )
@@ -3535,6 +3545,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( !editable )
         {
@@ -3554,6 +3565,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( !editable )
         {
@@ -3573,6 +3585,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( !editable )
         {
@@ -3594,6 +3607,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
+        widget->textcolor( FL_BLACK );
         widget->deactivate();
         widget->box( FL_FLAT_BOX );
         g2->add( widget );
@@ -3606,6 +3620,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
+        widget->textcolor( FL_BLACK );
         widget->deactivate();
         widget->box( FL_FLAT_BOX );
         g2->add( widget );
@@ -3655,6 +3670,7 @@ void ImageInformation::add_float( const char* name,
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
+	    widget->textcolor( FL_BLACK );
             widget->deactivate();
             widget->box( FL_FLAT_BOX );
             if ( tooltip ) widget->tooltip( tooltip );
@@ -3667,6 +3683,7 @@ void ImageInformation::add_float( const char* name,
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
             widget->color( colB );
+	    widget->textcolor( FL_BLACK );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
 
@@ -3726,8 +3743,8 @@ void ImageInformation::add_bool( const char* name,
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
+	widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
-        widget->labelcolor( FL_BLACK );
         widget->color( colA );
         g->add( widget );
     }
@@ -3738,6 +3755,7 @@ void ImageInformation::add_bool( const char* name,
         widget->value( content? _("Yes") : _("No") );
         widget->box( FL_FLAT_BOX );
         widget->align(FL_ALIGN_LEFT);
+        widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
