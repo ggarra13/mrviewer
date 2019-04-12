@@ -706,10 +706,10 @@ void GLEngine::reset_view_matrix()
     {
         CHECK_GL;
         //view->ortho();
-	int W = view->w();
-	int H = view->h();
-	glViewport( 0, 0, W, H );
-	glOrtho( 0, W, 0, H, -1, 1 );
+        int W = view->w();
+        int H = view->h();
+        glViewport( 0, 0, W, H );
+        glOrtho( 0, W, 0, H, -1, 1 );
         _rotX = _rotY = 0.0;
         CHECK_GL;
     }
@@ -911,7 +911,7 @@ bool GLEngine::init_fbo( ImageList& images )
     unsigned w = pic->width();
     unsigned h = pic->height();
 
-    
+
     glTexImage2D(GL_TEXTURE_2D,
                  0, // level
                  internalFormat, // internal format
@@ -1111,7 +1111,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
 }
 
 void GLEngine::draw_cursor( const double x, const double y,
-			    ImageView::Mode mode )
+                            ImageView::Mode mode )
 {
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity();
@@ -1709,7 +1709,7 @@ void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
 
 void GLEngine::draw_images( ImageList& images )
 {
-    
+
 
     if ( _YCbCr == NULL )
     {
@@ -1776,7 +1776,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-    
+
     if ( _view->normalize() )
     {
         minmax(); // calculate min-max
@@ -1784,7 +1784,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-    
+
     size_t num_quads = 0;
     ImageList::iterator i = images.begin();
     ImageList::iterator e = images.end();
@@ -1798,7 +1798,7 @@ void GLEngine::draw_images( ImageList& images )
         if ( stereo )    ++num_quads;
     }
 
-    
+
 
     CHECK_GL;
 
@@ -1864,7 +1864,7 @@ void GLEngine::draw_images( ImageList& images )
         if (!pic)  continue;
 
 
-	DBG( "draw image " << img->name() );
+        DBG( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
@@ -2189,7 +2189,7 @@ void GLEngine::draw_images( ImageList& images )
             pic = img->left();
 
             if ( shader_type() == kNone && img->stopped() &&
-		 pic->pixel_type() != image_type::kByte )
+                 pic->pixel_type() != image_type::kByte )
             {
                 pic = display( pic, img );
             }
@@ -2262,7 +2262,7 @@ void GLEngine::draw_images( ImageList& images )
         quad->draw( texWidth, texHeight );
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
-	     Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
+             Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {
             glDisable( GL_DEPTH );
             glDisable( GL_STENCIL_TEST );
@@ -2320,7 +2320,7 @@ void GLEngine::draw_images( ImageList& images )
 
 void GLEngine::draw_shape( GLShape* const shape )
 {
-    
+
     double zoomX = _view->zoom();
     DBG( __FUNCTION__ << " " << __LINE__ );
     if ( _view->ghost_previous() )
@@ -2356,11 +2356,11 @@ void GLEngine::draw_shape( GLShape* const shape )
     }
 
     if ( shape->frame == MRV_NOPTS_VALUE ||
-	 shape->frame == _view->frame() )
+         shape->frame == _view->frame() )
     {
         shape->draw(zoomX);
     }
-    
+
 }
 
 
@@ -4009,7 +4009,7 @@ void GLEngine::release()
         glDeleteLists( sCharset, 255 );
         CHECK_GL;
     }
- 
+
     if (_rgba)  delete _rgba;
     _rgba = NULL;
 
@@ -4017,7 +4017,7 @@ void GLEngine::release()
     if (_YByRy) delete _YByRy;
     _YByRy = NULL;
 
-    
+
 
     if (_YCbCr) delete _YCbCr;
     _YCbCr = NULL;
@@ -4025,7 +4025,7 @@ void GLEngine::release()
     if (_YByRyA) delete _YByRyA;
     _YByRyA = NULL;
 
-    
+
 
     if (_YCbCrA) delete _YCbCrA;
     _YCbCrA = NULL;
