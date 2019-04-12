@@ -183,14 +183,14 @@ protected:
     void add_int( const char* name, const char* tooltip,
                   const int content,
                   const bool editable = false,
-                  const bool active = false,
+                  const bool active = true,
                   Fl_Callback* callback = NULL,
                   const int minV = 0, const int maxV = 10,
                   const int when = FL_WHEN_RELEASE );
     void add_int( const char* name, const char* tooltip,
                   const unsigned int content,
                   const bool editable = false,
-                  const bool active = false,
+                  const bool active = true,
                   Fl_Callback* callback = NULL,
                   const unsigned int minV = 0,
                   const unsigned int maxV = 9999 );
@@ -213,7 +213,7 @@ protected:
     mrv::CollapsibleGroup*       m_subtitle;
 
     mrv::CollapsibleGroup*       m_group;
-    
+
     mrvPack*           m_all;
     mrv::Table*       m_curr;
     Fl_Color          m_color;
