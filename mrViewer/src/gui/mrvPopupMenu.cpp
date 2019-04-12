@@ -63,7 +63,7 @@ extern Fl_Widget* fl_did_clipping;
 namespace mrv {
 
 
-static mrv::PopupMenu* pushed;
+static mrv::PopupMenu* pressed_menu_button_ = NULL;
 
 
 /*! The little down-arrow indicator can be replaced by setting a new
@@ -72,7 +72,21 @@ static mrv::PopupMenu* pushed;
   subclass and replace draw() with your own function.
 */
 void PopupMenu::draw() {
-    Fl_Menu_Button::draw();
+    //Fl_Menu_Button::draw();
+  if (!box() || type()) return;
+  int H = 0;
+  if ( _enable_glyph ) H = (labelsize()-3)&-2;
+  int X = x()+w()-H-Fl::box_dx(box())-Fl::box_dw(box())-1;
+  int Y = y()+(h()-H)/2;
+  draw_box(pressed_menu_button_ == this ? fl_down(box()) : box(), color());
+  draw_label(x()+Fl::box_dx(box()), y(), X-x()+2, h());
+  if (Fl::focus() == this) draw_focus();
+  // ** if (box() == FL_FLAT_BOX) return; // for XForms compatibility
+  if ( !_enable_glyph ) return;
+  fl_color(active_r() ? FL_DARK3 : fl_inactive(FL_DARK3));
+  fl_line(X+H/2, Y+H, X, Y, X+H, Y);
+  fl_color(active_r() ? FL_LIGHT3 : fl_inactive(FL_LIGHT3));
+  fl_line(X+H, Y, X+H/2, Y+H);
 }
 
 const Fl_Menu_Item* PopupMenu::child(int i) {
@@ -93,6 +107,21 @@ int PopupMenu::add_leaf( const char* name, Fl_Menu_Item* g )
     return -1;
 }
 
+const Fl_Menu_Item* PopupMenu::popup() {
+  const Fl_Menu_Item* m;
+  pressed_menu_button_ = this;
+  redraw();
+  Fl_Widget_Tracker mb(this);
+  if (!box() || type()) {
+    m = menu()->popup(Fl::event_x(), Fl::event_y(), label(), mvalue(), this);
+  } else {
+    m = menu()->pulldown(x(), y(), w(), h(), 0, this);
+  }
+  picked(m);
+  pressed_menu_button_ = 0;
+  if (mb.exists()) redraw();
+  return m;
+}
 
 // static NamedStyle style("mrvPopupMenu", 0, &Fl_PopupMenu::default_style);
 // NamedStyle* PopupMenu::default_style = &mrv::style;
