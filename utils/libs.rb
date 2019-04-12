@@ -126,6 +126,8 @@ FileUtils.cp_r( "shaders/", "#{build}/#{@debug}/" )
 $stderr.puts "Copy docs"
 FileUtils.rm_f( "#{@debug}/docs" )
 FileUtils.cp_r( "docs/", "#{build}/#{@debug}/" )
+FileUtils.rm_f( "#{@debug}/colors" )
+FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
 $stderr.puts "Copy ctl scripts"
 FileUtils.rm_f( "#{@debug}/ctl" )
 FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
