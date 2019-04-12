@@ -12,16 +12,19 @@ static const int VMARGIN = 4;
 void Element::make_thumbnail()
 {
     _elem->create_thumbnail();
-    
+
     Fl_RGB_Image* b = _elem->thumbnail();
     if ( !b || b->w() < 1 )
     {
-	LOG_ERROR( "Empty image in thumbnail"  );
+        LOG_ERROR( "Empty image in thumbnail"  );
     }
     if ( !image )
-	image = new Fl_Box(0,VMARGIN,b->w(), b->h()-VMARGIN);
+    {
+        image = new Fl_Box(0,VMARGIN,b->w(), b->h()-VMARGIN);
+        image->selection_color( FL_YELLOW );
+    }
     if ( b ) image->image( b );
-    
+
 }
 
     Element::Element(mrv::media& m) :
@@ -46,8 +49,8 @@ void Element::make_thumbnail()
             return;
         }
 
-	
-	make_thumbnail();
+
+        make_thumbnail();
         // Create label
 
         label = new Fl_Box(image->w(), VMARGIN, 800, 64);
@@ -86,6 +89,7 @@ void Element::make_thumbnail()
         label->copy_label( info );
 
         label->color(0xddddff00);
+        label->labelcolor( FL_BLACK );
 
         label->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
 
@@ -96,7 +100,7 @@ void Element::make_thumbnail()
     }
 
    void Element::Label(const char *s) {
-	if ( label ) label->copy_label(s);
+        if ( label ) label->copy_label(s);
     }
 
     // Draw ourself at a specific X,Y position
