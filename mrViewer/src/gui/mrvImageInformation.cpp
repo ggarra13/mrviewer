@@ -2826,6 +2826,7 @@ void ImageInformation::add_icc( const char* name,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
+	widget->textcolor( FL_BLACK );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
         if ( callback )
@@ -3373,9 +3374,9 @@ void ImageInformation::add_int( const char* name,
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
-        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
+        widget->labelcolor( FL_BLACK );
         g->add( widget );
     }
     m_curr->add( g );
@@ -3406,7 +3407,7 @@ void ImageInformation::add_int( const char* name,
             sprintf( buf, "%d", content );
             widget->value( buf );
             widget->align(FL_ALIGN_LEFT);
-            widget->textcolor( FL_BLACK );
+	    widget->textcolor( FL_BLACK );
             widget->color( colB );
             if ( tooltip ) widget->tooltip( tooltip );
             else widget->tooltip( lbl->label() );
@@ -3509,9 +3510,9 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
-        widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
         widget->color( colA );
+	widget->labelcolor( FL_BLACK );
         g->add( widget );
     }
     m_curr->add( g );
@@ -3527,9 +3528,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         sprintf( buf, "%d", content.l() );
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
-        widget->textcolor( FL_BLACK );
+	widget->textcolor( FL_BLACK );
         widget->box( FL_FLAT_BOX );
-        widget->color( colB );
         if ( !editable )
         {
             widget->deactivate();
@@ -3548,7 +3548,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_BLACK );
+	widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( !editable )
         {
@@ -3568,7 +3568,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_BLACK );
+	widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( !editable )
         {
@@ -3588,7 +3588,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_BLACK );
+	widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( !editable )
         {
@@ -3610,7 +3610,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
-        widget->textcolor( FL_BLACK );
+	widget->textcolor( FL_BLACK );
         widget->deactivate();
         widget->box( FL_FLAT_BOX );
         g2->add( widget );
@@ -3622,8 +3622,8 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+	widget->textcolor( FL_BLACK );
         widget->color( colB );
-        widget->textcolor( FL_BLACK );
         widget->deactivate();
         widget->box( FL_FLAT_BOX );
         g2->add( widget );
@@ -3758,7 +3758,7 @@ void ImageInformation::add_bool( const char* name,
         widget->value( content? _("Yes") : _("No") );
         widget->box( FL_FLAT_BOX );
         widget->align(FL_ALIGN_LEFT);
-        widget->textcolor( FL_BLACK );
+	widget->textcolor( FL_BLACK );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
