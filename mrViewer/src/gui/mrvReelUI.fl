@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include <string>} {public local
@@ -33,25 +33,25 @@ class ReelUI {open
     Fl_Window uiMain {
       label {Reel List} open selected
       xywh {620 264 405 350} type Double resizable
-      code0 {o->size_range(350,320);} non_modal visible
+      code0 {o->size_range(350,320);} non_modal size_range {405 350 800 800} visible
     } {
-      Fl_Browser uiBrowser {
+      Fl_Tree uiBrowser {
         xywh {0 32 405 318} box UP_BOX
         code0 {o->main( main );}
         class {mrv::ImageBrowser}
       }
-      Fl_Group {} {open
+      Fl_Group uiControls {open
         xywh {0 0 405 32} box UP_BOX
       } {
         Fl_Choice {} {
           user_data uiBrowser user_data_type {mrv::ImageBrowser*}
           callback {v->reel(o->value());} open
-          xywh {5 5 120 20} box THIN_DOWN_BOX down_box BORDER_BOX align 36
+          xywh {5 4 120 24} box THIN_DOWN_BOX down_box BORDER_BOX align 36
           code0 {uiBrowser->reel_choice(o);}
           class {mrv::Choice}
         } {}
         Fl_Group uiReelOps {open
-          xywh {125 0 86 30}
+          xywh {125 0 80 30}
         } {
           Fl_Button {} {
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
@@ -75,7 +75,7 @@ v->new_reel(name);}
           }
         }
         Fl_Group uiImageOps {open
-          xywh {1 0 320 30}
+          xywh {205 0 110 30}
         } {
           Fl_Button {} {
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
@@ -103,7 +103,7 @@ v->new_reel(name);}
           }
         }
         Fl_Group uiViewerOps {open
-          xywh {0 0 403 29}
+          xywh {310 0 93 29}
         } {
           Fl_Button {} {
             label CTL

@@ -88,7 +88,8 @@ public:
         return uiMain;
     }
 
-
+    void resize( int x, int y, int w, int h );
+    
     ImageView*  view() const;
 
 protected:
