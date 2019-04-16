@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include "string"} {public local
@@ -66,14 +66,14 @@ class HistogramUI {open
       label Histogram
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send_network( "HistogramWindow 0" );
-o->hide();} open selected
+o->hide();} open
       xywh {1174 519 325 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;
 o->size_range(325, 80);} non_modal visible
     } {
       Fl_Pack {} {open
-        xywh {1 -130 324 365}
+        xywh {0 -130 325 365}
       } {
         Fl_Box uiHistogram {
           xywh {5 45 319 190} resizable
@@ -81,14 +81,14 @@ o->size_range(325, 80);} non_modal visible
           class {mrv::Histogram}
         }
         Fl_Group {} {open
-          xywh {1 -130 324 355}
+          xywh {0 -130 325 355}
         } {
           Fl_Group {} {open
             xywh {160 5 165 45}
           } {
             Fl_Box {} {
-              label Channel
-              xywh {166 6 65 30} align 32
+              label Channel selected
+              xywh {166 6 65 30} selection_color 32 labelcolor 32 align 32
             }
             Fl_Menu_Button {} {
               label RGB
@@ -122,18 +122,18 @@ o->label( o->child( c )->label() );}
             }
           }
           Fl_Group {} {open
-            xywh {5 10 165 35}
+            xywh {0 10 170 35}
           } {
             Fl_Box {} {
               label Type
-              xywh {10 10 54 25} align 32
+              xywh {0 10 54 25} labelcolor 32 align 32
             }
             Fl_Menu_Button {} {
               label Linear
               callback {int c = o->value();
 uiHistogram->histogram_type( (mrv::Histogram::Type) c);
 o->label( o->child( c )->label() );} open
-              xywh {65 10 95 25} align 48
+              xywh {55 10 105 25} align 48
               code0 {o->value( (int) uiHistogram->histogram_type() );
 o->label( o->child( o->value() )->label() );}
               class {mrv::PopupMenu}
