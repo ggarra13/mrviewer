@@ -88,7 +88,9 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 
 #include <ImathMath.h> // for Math:: functions
 #include <ImfRationalAttribute.h>
+#include <ImfIntAttribute.h>
 #include <ImfStringAttribute.h>
+#include <ImfStandardAttributes.h>
 
 // CORE classes
 #include "core/mrvClient.h"
@@ -1724,7 +1726,7 @@ void ImageView::fg_reel(int idx)
     _fg_reel = idx;
 
     char buf[128];
-    sprintf( buf, "FGReel %d", idx );
+    sprintf( buf, N_("FGReel %d"), idx );
     send_network( buf );
 }
 
@@ -1733,7 +1735,7 @@ void ImageView::bg_reel(int idx)
     _bg_reel = idx;
 
     char buf[128];
-    sprintf( buf, "BGReel %d", idx );
+    sprintf( buf, N_("BGReel %d"), idx );
     send_network( buf );
 }
 
@@ -2743,7 +2745,8 @@ void ImageView::handle_commands()
     {
     case kCreateReel:
     {
-        std::string s = *(std::string*)c.data;
+        Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
+        const std::string& s = attr->value();
         mrv::Reel r = b->reel( s.c_str() );
         if ( !r )
         {
@@ -2753,7 +2756,7 @@ void ImageView::handle_commands()
     }
     case kLoadImage:
     {
-        LoadInfo file = * (LoadInfo*) c.data;
+        LoadInfo file = * (LoadInfo*) c.linfo;
         LoadList files;
         files.push_back( file );
         b->load( files, false, "", false, false );
@@ -2764,13 +2767,15 @@ void ImageView::handle_commands()
         break;
     case kChangeImage:
     {
-        int* idx = (int*) c.data;
-        b->change_image(*idx);
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        int idx = attr->value();
+        b->change_image(idx);
         break;
     }
     case kBGImage:
     {
-        int idx = *( (int*) c.data );
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        int idx = attr->value();
         if ( idx < 0 ) background( mrv::media() );
         else
         {
@@ -2788,25 +2793,27 @@ void ImageView::handle_commands()
     }
     case kFGReel:
     {
-        int idx = *( (int*) c.data );
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        int idx = attr->value();
         fg_reel( idx );
         break;
     }
     case kBGReel:
     {
-        int idx = *( (int*) c.data );
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        int idx = attr->value();
         bg_reel( idx );
         break;
     }
     case kStopVideo:
     {
         stop();
+        seek( c.frame );
         break;
     }
     case kSeek:
     {
-        int64_t f = * ((int64_t*) c.data);
-        seek( f );
+        seek( c.frame );
         break;
     }
     case kPlayForwards:
@@ -2821,38 +2828,42 @@ void ImageView::handle_commands()
     }
     case kRemoveImage:
     {
-        int* idx = (int*) c.data;
-        b->remove(*idx);
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        int idx = attr->value();
+        b->remove(idx);
         break;
     }
     case kExchangeImage:
     {
-        std::vector<int>* list = (std::vector<int>*) c.data;
-        int oldsel = (*list)[0];
-        int sel = (*list)[1];
+        Imf::V2iAttribute* attr = dynamic_cast< Imf::V2iAttribute* >( c.data );
+        const Imath::V2i& list = attr->value();
+        int oldsel = list[0];
+        int sel = list[1];
         b->exchange(oldsel, sel);
         break;
     }
     case kICS:
     {
-        std::string* s = (std::string*) c.data;
+        Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
+        const std::string& s = attr->value();
         mrv::media fg = foreground();
         if (fg)
         {
             CMedia* img = fg->image();
-            img->ocio_input_color_space( *s );
+            img->ocio_input_color_space( s );
             update_ICS();
         }
         break;
     }
     case kRT:
     {
-        std::string* s = (std::string*) c.data;
+        Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
+        const std::string& s = attr->value();
         mrv::media fg = foreground();
         if (fg)
         {
             CMedia* img = fg->image();
-            img->rendering_transform( s->c_str() );
+            img->rendering_transform( s.c_str() );
             img->image_damage( img->image_damage() |
                                CMedia::kDamageLut );
         }
@@ -2860,7 +2871,8 @@ void ImageView::handle_commands()
     }
     case kChangeChannel:
     {
-        unsigned idx = * (unsigned*) c.data;
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        unsigned idx = attr->value();
         if ( foreground() )
         {
             channel( idx );
@@ -2935,6 +2947,20 @@ void ImageView::handle_commands()
         use_lut( true );
         break;
     }
+	case kGAIN:
+	    {
+		Imf::FloatAttribute* f =
+		dynamic_cast< Imf::FloatAttribute* >( c.data );
+		gain( f->value() );
+		break;
+	    }
+	case kGAMMA:
+	    {
+		Imf::FloatAttribute* f =
+		dynamic_cast< Imf::FloatAttribute* >( c.data );
+		gamma( f->value() );
+		break;
+	    }
     default:
     {
         LOG_ERROR( "Unknown mrv event " << commands.size() << " "
@@ -2945,6 +2971,7 @@ void ImageView::handle_commands()
 
     _network_active = true;
     delete c.data;
+    delete c.linfo;
     commands.pop_front();
     redraw();
 }
@@ -3491,7 +3518,7 @@ void ImageView::draw()
     {
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
-        glViewport( 0, 0, w(), h() );
+        glViewport( 0, 0, pixel_w(), pixel_h() );
         glOrtho( 0, w(), 0, h(), -1, 1 );
 
         glMatrixMode(GL_MODELVIEW);
@@ -7543,17 +7570,17 @@ void ImageView::zoom( float z )
     static char tmp[128];
     if ( z >= 1.0f )
     {
-        sprintf( tmp, "x%.2g", z );
+        sprintf( tmp, N_("x%.2g"), z );
     }
     else
     {
-        sprintf( tmp, "1/%.3g", 1/z );
+        sprintf( tmp, N_("1/%.3g"), 1/z );
     }
     uiMain->uiZoom->label( tmp );
     uiMain->uiZoom->redraw();
 
     char buf[128];
-    sprintf( buf, "Zoom %g", z );
+    sprintf( buf, N_("Zoom %g"), z );
     send_network( buf );
 
     _zoom = z;
@@ -7716,7 +7743,7 @@ void ImageView::exposure_change( float d )
     uiMain->uiGainInput->value( _gain );
 
     char buf[64];
-    sprintf( buf, "Gain %g", _gain );
+    sprintf( buf, N_("Gain %g"), _gain );
     uiMain->uiView->send_network( buf );
 }
 
@@ -7768,7 +7795,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
     yoffset += (offy / _zoom * ratio);
 
     char buf[128];
-    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+    sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send_network( buf );
 
     mouseMove( x, y );
@@ -8031,7 +8058,7 @@ void ImageView::foreground( mrv::media fg )
 
             char buf[1024];
             std::string file = img->directory() + '/' + img->name();
-            sprintf( buf, "CurrentImage \"%s\" %" PRId64 " %" PRId64,
+            sprintf( buf, N_("CurrentImage \"%s\" %" PRId64 " %" PRId64),
                      file.c_str(), img->first_frame(), img->last_frame() );
             send_network( buf );
 
@@ -8208,7 +8235,7 @@ void ImageView::background( mrv::media bg )
 
         std::string file = img->directory() + '/' + img->name();
 
-        sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64,
+        sprintf( buf, N_("CurrentBGImage \"%s\" %" PRId64 " %" PRId64),
                  file.c_str(), img->first_frame(), img->last_frame() );
         send_network( buf );
 
@@ -8228,7 +8255,7 @@ void ImageView::background( mrv::media bg )
     }
     else
     {
-        sprintf( buf, "CurrentBGImage \"\"" );
+        sprintf( buf, N_("CurrentBGImage \"\"") );
         send_network( buf );
     }
 
@@ -8356,7 +8383,7 @@ void ImageView::data_window( const bool b )
     _dataWindow = b;
 
     char buf[128];
-    sprintf( buf, "DataWindow %d", (int)b );
+    sprintf( buf, N_("DataWindow %d"), (int)b );
     send_network( buf );
 }
 
@@ -8365,7 +8392,7 @@ void ImageView::display_window( const bool b )
     _displayWindow = b;
 
     char buf[128];
-    sprintf( buf, "DisplayWindow %d", (int)b );
+    sprintf( buf, N_("DisplayWindow %d"), (int)b );
     send_network( buf );
 }
 
@@ -8374,7 +8401,7 @@ void ImageView::safe_areas( const bool b )
     _safeAreas = b;
 
     char buf[128];
-    sprintf( buf, "SafeAreas %d", (int)b );
+    sprintf( buf, N_("SafeAreas %d"), (int)b );
     send_network( buf );
 }
 
@@ -8393,7 +8420,7 @@ void ImageView::normalize( const bool normalize)
     uiMain->uiNormalize->value( normalize );
 
     char buf[128];
-    sprintf( buf, "Normalize %d", (int) _normalize );
+    sprintf( buf, N_("Normalize %d"), (int) _normalize );
     send_network( buf );
 
     damage_contents();
@@ -8449,7 +8476,7 @@ void ImageView::show_pixel_ratio( const bool b )
     _showPixelRatio = b;
 
     char buf[64];
-    sprintf( buf, "ShowPixelRatio %d", (int) b );
+    sprintf( buf, N_("ShowPixelRatio %d"), (int) b );
     send_network( buf );
 
     uiMain->uiPixelRatio->value( b );
@@ -8473,11 +8500,12 @@ void ImageView::toggle_lut()
     char buf[1024];
     if ( _useLUT )
     {
-        sprintf( buf, "OCIOView \"%s\" \"%s\"", display.c_str(), view.c_str() );
+        sprintf( buf, N_("OCIOView \"%s\" \"%s\""), display.c_str(),
+                 view.c_str() );
         send_network( buf );
     }
 
-    sprintf( buf, "UseLUT %d", (int)_useLUT );
+    sprintf( buf, N_("UseLUT %d"), (int)_useLUT );
     send_network( buf );
 
     flush_caches();
@@ -8832,11 +8860,11 @@ void ImageView::play( const CMedia::Playback dir )
 
     if ( dir == CMedia::kForwards )
     {
-        send_network("playfwd");
+        send_network(N_("playfwd"));
     }
     else if ( dir == CMedia::kBackwards )
     {
-        send_network("playback");
+        send_network(N_("playback"));
     }
     else
     {
@@ -8947,7 +8975,7 @@ void ImageView::stop()
     stop_playback();
 
     char buf[256];
-    sprintf( buf, "stop %" PRId64, frame() );
+    sprintf( buf, N_("stop %" PRId64), frame() );
     send_network( buf );
 
     if ( uiMain->uiPlayForwards )
@@ -9012,7 +9040,7 @@ void ImageView::fps( double x )
     uiMain->uiFPS->value( x );
 
     char buf[128];
-    sprintf( buf, "FPS %g", x );
+    sprintf( buf, N_("FPS %g"), x );
     send_network( buf );
 }
 
@@ -9045,7 +9073,7 @@ void ImageView::volume( float v )
 
 
     char buf[128];
-    sprintf( buf, "Volume %g", v );
+    sprintf( buf, N_("Volume %g"), v );
     send_network( buf );
 
 }
@@ -9076,7 +9104,7 @@ void  ImageView::looping( CMedia::Looping x )
     }
 
     char buf[64];
-    sprintf( buf, "Looping %d", x );
+    sprintf( buf, N_("Looping %d"), x );
     send_network( buf );
 
 }
