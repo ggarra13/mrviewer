@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -287,7 +287,7 @@ void GLLut3d::clear_lut()
     _inited = false;
     // @bug: CTL would hang or crash if lut_size is used.
     //       We pad it with 4 additional values and all seems fine.
-    unsigned long num = lut_size() + 4;
+    unsigned long num = lut_size();
     lut.resizeErase( num );
     memset( &lut[0], 0x00, num*sizeof(float) );
 }
@@ -489,11 +489,6 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
     // value is used to perform a texture lookup and the shader computes
     // e raised to the power of the result of the texture lookup.
     //
-    //
-    // Generate output pixel values by applying CTL transforms
-    // to the pixel values.  (If the CTL transforms fail to
-    // write to the output values, zero-initialization, above,
-    // causes the displayed image to be black.)
     //
     if ( !_inited )
     {
@@ -1086,8 +1081,8 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-GLLut3d* GLLut3d::factory( const ViewerUI* view,
-                           const CMedia* img )
+GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
+				       const CMedia* img )
 {
     const PreferencesUI* uiPrefs = view->uiPrefs;
     std::string path;
@@ -1207,7 +1202,7 @@ GLLut3d* GLLut3d::factory( const ViewerUI* view,
             LOG_INFO( _("3D Lut for ") << img->name()
                       << _(" already created: " ) );
             LOG_INFO( path );
-            return i->second.get();
+            return i->second;
         }
     }
 
@@ -1245,7 +1240,7 @@ GLLut3d* GLLut3d::factory( const ViewerUI* view,
             const std::string& lbl = img->ocio_input_color_space();
             for ( int i = 0; i < uiICS->children(); ++i )
             {
-                std::string name = uiICS->child(i)->label();
+                const std::string& name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
                     uiICS->copy_label( lbl.c_str() );
@@ -1344,10 +1339,10 @@ GLLut3d* GLLut3d::factory( const ViewerUI* view,
 
     if ( _luts.find( path ) != _luts.end() ) _luts.erase( path );
     _luts.insert( std::make_pair( path, lut ) );
-    return lut.get();
+    return lut;
 }
 
-
+ 
 void GLLut3d::clear()
 {
     _luts.clear();
