@@ -1059,7 +1059,8 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   cd( pathname );
 
   // if pathname does not start with "/" or "~", set the filename to it
-  if( pathname && pathname[0] != '/' && pathname[1] != ':' && pathname[0] != '~' )
+  if( pathname && pathname[0] != '/' && pathname[0] != '~' &&
+      (strlen(pathname) < 2 || pathname[1] != ':' ) )
     filename.value( pathname );
 }
 
