@@ -192,6 +192,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     w = r.w();
 
 
+    
     fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
     if (w <= 0) return;
@@ -247,7 +248,8 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     }
     if ( nummod <= 1 ) nummod = 1;
 
-    Fl_Color textcolor = this->labelcolor();
+    Fl_Color textcolor = fl_contrast( this->labelcolor(), color() );
+    if ( _edl ) textcolor = FL_BLACK;
     Fl_Color linecolor = FL_BLACK;
 
     fl_color(linecolor);
@@ -486,10 +488,10 @@ void Timeline::draw()
     // drawstyle(style(),flags);
 
 
-    int X = x();
-    int Y = y();
-    int W = w();
-    int H = h();
+    int X = x() + Fl::box_dx(box());
+    int Y = y() + Fl::box_dy(box());
+    int W = w() - Fl::box_dw(box());
+    int H = h() - Fl::box_dh(box());
 
     mrv::Recti r( X, Y, W, H );
 
@@ -552,7 +554,7 @@ void Timeline::draw()
             if ( v >= frame && v < frame + size )
             {
                 _fps = img->fps();
-                fl_color( fl_lighter( FL_YELLOW ) );
+                fl_color( fl_darker( FL_YELLOW ) );
             }
             else
             {
