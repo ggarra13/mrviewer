@@ -873,6 +873,9 @@ CMedia::~CMedia()
     _displayWindow2 = NULL;
 
 
+    free( _subtitle_encoding );
+    free( _subtitle_font );
+    
     _hires.reset();
 
 
