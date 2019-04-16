@@ -1,59 +1,59 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 1.03
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include "core/mrvFrame.h"} {public
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {.h}
+code_name {.cxx}
+decl {\#include "core/mrvFrame.h"} {public local
 }
 
-decl {\#include "gui/mrvIO.h"} {public
-} 
-
-decl {\#include "core/mrvI8N.h"} {public
-} 
-
-decl {\#include "gui/mrvImageView.h"} {public
-} 
-
-decl {\#include "gui/mrvMainWindow.h"} { public
+decl {\#include "gui/mrvIO.h"} {public local
 }
 
-decl {\#include "gui/mrvStereoWindow.h"} {selected public
-} 
+decl {\#include "core/mrvI8N.h"} {public local
+}
 
-decl {\#include "mrViewer.h"} {public
-} 
+decl {\#include "gui/mrvImageView.h"} {public local
+}
+
+decl {\#include "gui/mrvMainWindow.h"} {public local
+}
+
+decl {\#include "gui/mrvStereoWindow.h"} {public local
+}
+
+decl {\#include "mrViewer.h"} {public local
+}
 
 class StereoUI {open
+} {
+  decl {ViewerUI* main_;} {private local
+  }
+  Function {main()} {return_type {ViewerUI*}
   } {
-    decl {ViewerUI* main_;} {}
-    Function {main()} {return_type {ViewerUI*}
-    } {
-      code {return main_;} {}
-    }
-    Function {make_window( ViewerUI* main )} {open
-    } {
-      {Fl_Window} uiMain {
-        label {3D Stereo Options}
-        user_data this user_data_type {StereoUI*}
-        callback {v->main()->uiView->send_network( "StereoOptions 0" );
-o->hide();}
-        xywh {757 727 280 160} resizable
-        extra_code {main_ = main;
+    code {return main_;} {}
+  }
+  Function {make_window( ViewerUI* main )} {open
+  } {
+    Fl_Window uiMain {
+      label {3D Stereo Options}
+      user_data this user_data_type {StereoUI*}
+      callback {v->main()->uiView->send_network( "StereoOptions 0" );
+o->hide();} open
+      xywh {866 456 280 160} type Double resizable
+      code0 {main_ = main;
 o->main( main );}
-        class {mrv::StereoWindow} visible non_modal
+      class {mrv::StereoWindow} non_modal visible
+    } {
+      Fl_Group {} {open selected
+        xywh {0 0 280 160} box UP_BOX
       } {
-        {Fl_Choice} uiStereoInput {
+        Fl_Choice uiStereoInput {
           label Input
           user_data main user_data_type {ViewerUI*}
           callback {int x = o->value(); 
 mrv::CMedia::StereoInput in = mrv::CMedia::to_stereo_input( x ); 
-v->uiView->stereo_input( in );}
-          tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.}
-          xywh {80 60 175 25}
-          extra_code {mrv::media fg = main->uiView->foreground();
+v->uiView->stereo_input( in );} open
+          tooltip {Select how stereo is encoded in the image.  It can be as separate layers (using a letter or view prefix), as Top/Bottom in the same image or as Left/Right in the same image.} xywh {80 60 175 25} down_box BORDER_BOX
+          code0 {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
 {
@@ -63,25 +63,27 @@ int x = mrv::CMedia::from_stereo_input( in );
 o->value( x ); 
 }}
         } {
-          {MenuItem} {} {
+          MenuItem {} {
             label {Separate layers}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Top/bottom}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Left/right}
-            }
+            xywh {0 0 100 20}
+          }
         }
-        {Fl_Choice} uiStereoOutput {
+        Fl_Choice uiStereoOutput {
           label Output
           user_data main user_data_type {ViewerUI*}
           callback {int x = o->value(); 
 mrv::CMedia::StereoOutput out = mrv::CMedia::to_stereo_output( x ); 
-v->uiView->stereo_output( out );}
-          tooltip {Select how to view the stereo images.  You can select no stereo viewing, a view of the stereo pair, top/bottom (and viceversa), left/right (and viceversa), interlaced rows or columns, checkerboard pattern, red/cyan glasses (and viceversa). }
-          xywh {80 100 175 25}
-          extra_code {mrv::media fg = main->uiView->foreground();
+v->uiView->stereo_output( out );} open
+          tooltip {Select how to view the stereo images.  You can select no stereo viewing, a view of the stereo pair, top/bottom (and viceversa), left/right (and viceversa), interlaced rows or columns, checkerboard pattern, red/cyan glasses (and viceversa).} xywh {80 100 175 30} down_box BORDER_BOX
+          code0 {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
 {
@@ -91,52 +93,64 @@ int x = mrv::CMedia::from_stereo_output( out );
 o->value( x ); 
 }}
         } {
-          {MenuItem} {} {
+          MenuItem {} {
             label {No Stereo Output}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Left view}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Right view}
-            }
-          {MenuItem} uiStereoOpenGL {
+            xywh {0 0 100 20}
+          }
+          MenuItem uiStereoOpenGL {
             label {Stereo OpenGL}
-            
-            extra_code {if ( main->uiView->can_do( FL_STEREO ) )
+            xywh {0 0 100 20}
+            code0 {if ( main->uiView->can_do( FL_STEREO ) )
   uiStereoOpenGL->activate();
 else
   uiStereoOpenGL->deactivate();}
           }
-          {MenuItem} {} {
+          MenuItem {} {
             label {Top/bottom}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Bottom/top}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Left/right}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Right/left}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Even/odd rows}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Even/odd columns}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Checkerboard pattern}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Red/cyan glasses}
-            }
-          {MenuItem} {} {
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
             label {Cyan/red glasses}
-            }
+            xywh {0 0 100 20}
+          }
         }
-        {Fl_Light_Button} uiVR360Sphere {
+        Fl_Light_Button uiVR360Sphere {
           label {VR 360 Sphere}
           user_data main user_data_type {ViewerUI*}
           callback {mrv::ImageView::VRType t = mrv::ImageView::kNoVR;
@@ -146,10 +160,9 @@ if ( o->value() ) {
 }
 v->uiView->vr( t );
 v->uiView->redraw();}
-          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.}
-          xywh {10 20 135 30}
+          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image is wrapped around a sphere when this is active.} xywh {15 15 135 40}
         }
-        {Fl_Light_Button} uiVR360Cube {
+        Fl_Light_Button uiVR360Cube {
           label {VR 360 Cube}
           user_data main user_data_type {ViewerUI*}
           callback {mrv::ImageView::VRType t = mrv::ImageView::kNoVR;
@@ -159,24 +172,23 @@ if ( o->value() ) {
 }
 v->uiView->vr( t );
 v->uiView->redraw();}
-          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image, which should be composed of 6 images, is wrapped around a cube when this is active.}
-          xywh {150 20 105 30}
+          tooltip {Toggle VR 360 (Panoramic) view of the image.   The image, which should be composed of 6 images, is wrapped around a cube when this is active.} xywh {155 15 110 40}
         }
       }
     }
-    Function {StereoUI( ViewerUI* main )} {open
-    } {
-      code {
-      Fl_Group::current( main->uiMain );
+  }
+  Function {StereoUI( ViewerUI* main )} {open
+  } {
+    code {Fl_Group::current( main->uiMain );
       make_window(main);
       Fl_Group::current(0);} {}
-    }
-    Function {~StereoUI()} {} {
-      code {delete uiMain; uiMain = NULL;} {}
-    }
-    Function {refresh()} {open
-    } {
-      code {ViewerUI* m = main();
+  }
+  Function {~StereoUI()} {} {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {refresh()} {open
+  } {
+    code {ViewerUI* m = main();
 
 if ( m && m->uiView )
 {
@@ -195,6 +207,5 @@ if ( m && m->uiView )
 	}
 
 }} {}
-    }
+  }
 }
-
