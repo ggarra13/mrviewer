@@ -1,4 +1,19 @@
-v5.0.1-alpha1
+v5.0.1-RC3
+        - Made color maps restore Default before applying a new one.  This
+          avoids some errors that would happen with some color maps applied
+          one after the other and not using all entries of the cmaps.
+        - Fixed radio buttons in Preferences->Action wizard.
+        - Corrected a memory leak in server/client connections.
+        - Bug fixed network connections not working in Spanish.
+
+
+v5.0.1-RC2
+        - Improved the look and feel of the UI.
+        - Added color themes and widget schemes to the Preferences.
+        - Made the Shake ( a Dark Grey version ) the default color scheme.
+
+
+v5.0.1-RC1
          - Bug fixed clone image and deleting it afterwards twice.
          - Bug fixed exiting with the Waveform window open.
          - Bug fixed cache loading when image is stopped.
