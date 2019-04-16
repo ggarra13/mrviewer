@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -168,7 +168,7 @@ public:
         const CMedia* img,
         const XformFlags flags
     );
-    static GLLut3d* factory( const ViewerUI* ui, const CMedia* img );
+    static GLLut3d_ptr factory( const ViewerUI* ui, const CMedia* img );
     static void     clear();
     static void   transform_names( Transforms& t,
                                    const CMedia* img );
