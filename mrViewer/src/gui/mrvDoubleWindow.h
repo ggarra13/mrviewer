@@ -12,7 +12,7 @@ class mrvDoubleWindow : public Fl_Double_Window
 
     bool exec();
 
-    void make_exec_return( bool b ) { _exec = b; }
+    void make_exec_return( bool b ) { _exec = b; hide(); }
 
   protected:
     bool _exec;
