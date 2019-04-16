@@ -42,13 +42,13 @@ class ImageInfoUI {open
       label {Media Information}
       user_data this user_data_type {ImageInfoUI*}
       callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
-o->hide();} open
-      xywh {500 197 605 800} type Double hide resizable
-      code0 {main_ = main;} non_modal
+o->hide();} open selected
+      xywh {500 197 605 800} type Double resizable
+      code0 {main_ = main;} non_modal visible
     } {
       Fl_Scroll uiInfoText {
-        user_data uiInfoText user_data_type {mrv::ImageInformation*} open selected
-        xywh {0 0 600 800}
+        user_data uiInfoText user_data_type {mrv::ImageInformation*} open
+        xywh {0 0 600 800} resizable
         code0 {o->main( main );}
         class {mrv::ImageInformation}
       } {}
