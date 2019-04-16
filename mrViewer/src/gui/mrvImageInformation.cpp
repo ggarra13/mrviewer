@@ -736,7 +736,7 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
     m_all = new mrvPack( x, y, w-sw, 20, "all" );
     m_all->begin();
 
-    m_button = new Fl_Button( r.x(), r.y(), r.w(), 20, _("Left View") );
+    m_button = new Fl_Button( r.x(), r.y(), r.w(), 40, _("Left View") );
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
@@ -760,7 +760,7 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
 
     m_all->end();
 
-    //   resizable( m_all );  // this seems broken, that's why I redo layout
+    // resizable( this );  // this seems broken, that's why I redo layout
     end();
 
     hide_tabs();
@@ -2701,7 +2701,12 @@ void ImageInformation::refresh()
 
 }
 
-
+void
+ImageInformation::resize( int x, int y, int w, int h )
+{
+    m_all->resize( x, y, w, h );
+    Fl_Scroll::resize( x, y, w, h );
+}
 
 mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
 {
@@ -2711,25 +2716,23 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     Y = g->y() + line_height();
 
 
-
-
-    mrv::Table* browser = new mrv::Table( 0, 0, w(), 20, g->label() );
-    browser->column_separator(true);
-    browser->auto_resize( true );
-    browser->labeltype(FL_NO_LABEL);
+    mrv::Table* table = new mrv::Table( 0, 0, w(), 20, g->label() );
+    table->column_separator(true);
+    table->auto_resize( true );
+    table->labeltype(FL_NO_LABEL);
 
 
     static const char* headers[] = { _("Attribute"), _("Value"), 0 };
-    browser->column_labels( headers );
-    browser->align(FL_ALIGN_CENTER);
+    table->column_labels( headers );
+    table->align(FL_ALIGN_CENTER);
 
-    g->add( browser );
+    g->add( table );
 
 
 
     group = row = 0; // controls line colors
 
-    return browser;
+    return table;
 }
 
 int ImageInformation::line_height()
