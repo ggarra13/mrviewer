@@ -60,6 +60,11 @@
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
 
+#include <ImfStandardAttributes.h>
+#include <ImfVecAttribute.h>
+#include <ImfIntAttribute.h>
+#include <ImfStringAttribute.h>
+
 #include "core/mrvPlayback.h"
 #include "mrvClient.h"
 #include "mrvServer.h"
@@ -418,7 +423,10 @@ bool Parser::parse( const std::string& s )
         double x, y;
         is >> x >> y;
         mrv::media fg = v->foreground();
-        if ( !fg ) return false;
+        if ( !fg ) {
+	    v->_clients = c;
+	    return false;
+	}
         CMedia* img = fg->image();
         img->x( x );
         img->y( y );
@@ -429,7 +437,10 @@ bool Parser::parse( const std::string& s )
         double x, y;
         is >> x >> y;
         mrv::media fg = v->foreground();
-        if ( !fg ) return false;
+        if ( !fg ) {
+	    v->_clients = c;
+	    return false;
+	}
         CMedia* img = fg->image();
         img->scale_x( x );
         img->scale_y( y );
@@ -448,8 +459,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kChangeChannel;
-        int* t = (int*) malloc( sizeof(int*) );
-        *t = ch; c.data = t;
+        c.data = new Imf::IntAttribute( ch );
 
         v->commands.push_back( c );
 
@@ -588,8 +598,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kRT;
-        char* t = strdup( s.c_str() );
-        c.data = t;
+        c.data = new Imf::StringAttribute( s );
 
         v->commands.push_back( c );
 
@@ -621,7 +630,6 @@ bool Parser::parse( const std::string& s )
         {
             ImageView::Command c;
             c.type = ImageView::kLUT_CHANGE;
-            c.data = NULL;
             v->commands.push_back( c );
         }
         ok = true;
@@ -640,7 +648,6 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kLUT_CHANGE;
-        c.data = NULL;
         v->commands.push_back( c );
 
         ok = true;
@@ -693,8 +700,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kICS;
-        char* t = (char*) strdup( s.c_str() );
-        c.data = t;
+        c.data = new Imf::StringAttribute( s );
 
         v->commands.push_back( c );
 
@@ -866,7 +872,6 @@ bool Parser::parse( const std::string& s )
         is >> on;
         ImageView::Command c;
         c.type = ImageView::kFULLSCREEN;
-        c.data = NULL;
         v->commands.push_back( c );
         ok = true;
     }
@@ -876,7 +881,6 @@ bool Parser::parse( const std::string& s )
         is >> on;
         ImageView::Command c;
         c.type = ImageView::kPRESENTATION;
-        c.data = NULL;
         v->commands.push_back( c );
         ok = true;
     }
@@ -945,8 +949,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kCreateReel;
-        char* t = strdup( s.c_str() );
-        c.data = t;
+        c.data = new Imf::StringAttribute( name );
 
         v->commands.push_back( c );
 
@@ -982,8 +985,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kRemoveImage;
-        int* x = (int*) malloc( sizeof( int ) );
-        *x = idx; c.data = x;
+        c.data = new Imf::IntAttribute( idx );
 
         v->commands.push_back( c );
 
@@ -1136,9 +1138,7 @@ bool Parser::parse( const std::string& s )
             ImageView::Command c;
             c.type = ImageView::kLoadImage;
 
-            LoadInfo tmp( imgname, start, end );
-            c.data = malloc( sizeof(tmp) );
-            memcpy( c.data, &tmp, sizeof(tmp) );
+            c.linfo = new LoadInfo(imgname, start, end);
 
             v->commands.push_back( c );
         }
@@ -1153,9 +1153,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
-
-        int* x = (int*) malloc( sizeof( int ) );
-        *x = idx; c.data = x;
+        c.data = new Imf::IntAttribute( idx );
 
         v->commands.push_back( c );
 
@@ -1166,7 +1164,6 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kCacheClear;
-        c.data = NULL;
 
         v->commands.push_back( c );
 
@@ -1214,12 +1211,19 @@ bool Parser::parse( const std::string& s )
             LOG_WARNING( "Change to image #" << idx << " "  << imgname );
             ImageView::Command c;
             c.type = ImageView::kChangeImage;
-
-            int* x = (int*) malloc( sizeof( int ) );
-            *x = idx; c.data = x;
+            c.data = new Imf::IntAttribute( idx );
 
             v->commands.push_back( c );
 
+            ok = true;
+        }
+        else
+        {
+            ImageView::Command c;
+            c.type = ImageView::kLoadImage;
+            c.linfo = new LoadInfo(imgname, first, last);
+
+            v->commands.push_back( c );
             ok = true;
         }
 
@@ -1232,10 +1236,8 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kExchangeImage;
-        int* list = (int*)malloc( sizeof( int* )*2 );
-        list[0] = oldsel;
-        list[1] = sel;
-        c.data = list;
+        Imath::V2i vec( oldsel, sel );
+        c.data = new Imf::V2iAttribute( vec );
 
         v->commands.push_back( c );
 
@@ -1248,8 +1250,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kFGReel;
-        int* x = (int*) malloc( sizeof( int ) );
-        *x = idx; c.data = x;
+        c.data = new Imf::IntAttribute( idx );
 
         v->commands.push_back( c );
 
@@ -1264,8 +1265,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kBGReel;
-        int* x = (int*) malloc( sizeof( int ) );
-        *x = idx; c.data = x;
+        c.data = new Imf::IntAttribute( idx );
 
         v->commands.push_back( c );
 
@@ -1304,8 +1304,7 @@ bool Parser::parse( const std::string& s )
                 std::string file = img->directory() + '/' + img->name();
                 if ( file == imgname )
                 {
-                    int* x = (int*)malloc( sizeof(int) );
-                    *x = idx; c.data = x;
+                    c.data = new Imf::IntAttribute( idx );
 
                     img->first_frame( first );
                     img->last_frame( last );
@@ -1316,8 +1315,7 @@ bool Parser::parse( const std::string& s )
 
             if (!ok )
             {
-                int* x = (int*)malloc( sizeof(int) );
-                *x = -1; c.data = x;
+                c.data = new Imf::IntAttribute( -1 );
             }
 
             v->commands.push_back( c );
@@ -1471,7 +1469,10 @@ bool Parser::parse( const std::string& s )
             }
 
             mrv::media fg = view()->foreground();
-            if (!fg) return false;
+	    if ( !fg ) {
+		v->_clients = c;
+		return false;
+	    }
 
             CMedia* img = fg->image();
 
@@ -1588,7 +1589,10 @@ bool Parser::parse( const std::string& s )
         }
 
         mrv::media fg = v->foreground();
-        if (!fg) return false;
+        if ( !fg ) {
+	    v->_clients = c;
+	    return false;
+	}
 
         CMedia* img = fg->image();
 
@@ -1600,7 +1604,6 @@ bool Parser::parse( const std::string& s )
             deliver( "playfwd" );
             ImageView::Command c;
             c.type = ImageView::kPlayForwards;
-            c.data = NULL;
             v->commands.push_back( c );
         }
 
@@ -1617,20 +1620,10 @@ bool Parser::parse( const std::string& s )
         {
             ImageView::Command c;
             c.type = ImageView::kStopVideo;
-            c.data = NULL;
+            c.frame = f;
             v->commands.push_back( c );
         }
 
-        // while ( v->playback() != CMedia::kStopped )
-        //     std::cerr << '.';
-
-        // {
-        //     std::cerr << "SEEK >>> " << f << std::endl;
-        //     ImageView::Command c;
-        //     c.type = ImageView::kSeek;
-        //     c.data = new int64_t( f );
-        //     v->commands.push_back( c );
-        // }
 
         ok = true;
     }
@@ -1638,7 +1631,6 @@ bool Parser::parse( const std::string& s )
     {
         ImageView::Command c;
         c.type = ImageView::kPlayForwards;
-        c.data = NULL;
         v->commands.push_back( c );
         ok = true;
     }
@@ -1654,8 +1646,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kSeek;
-        int64_t* d = (int64_t*)malloc( sizeof(int64_t) );
-        *d = f; c.data = d;
+        c.frame = f;
         v->commands.push_back( c );
 
         ok = true;
