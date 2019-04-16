@@ -874,7 +874,10 @@ CMedia::~CMedia()
 
 
     free( _subtitle_encoding );
+    _subtitle_encoding = NULL;
+    
     free( _subtitle_font );
+    _subtitle_font = NULL;
     
     _hires.reset();
 
@@ -937,12 +940,6 @@ CMedia::~CMedia()
         avformat_close_input( &_acontext );
     }
 
-
-    free( _subtitle_font );
-    _subtitle_font = NULL;
-
-    free( _subtitle_encoding);
-    _subtitle_encoding = NULL;
 
     {
 
