@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -172,5 +172,17 @@ int CTLBrowser::handle( int e )
     return Fl_Browser::handle( e );
 }
 
+bool CTLBrowser::find( const char* s )
+{
+    for ( int i = 1; i <= size(); ++i )
+    {
+	if ( strcmp( s, text(i) ) == 0 )
+	{
+	    value(i);
+	    return true;
+	}
+    }
+    return false;
+}
 
 } // namespace mrv

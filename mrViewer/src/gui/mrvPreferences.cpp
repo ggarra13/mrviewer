@@ -492,15 +492,15 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     if ( loaded )
     {
-	LOG_INFO( _("Loaded color themes from ") << colorname << "." );
+        LOG_INFO( _("Loaded color themes from ") << colorname << "." );
     }
-    
+
     for ( auto& s: schemes.themes )
     {
         uiPrefs->uiColorTheme->add( s.name.c_str() );
     }
 
-    colors.get( "theme", tmpS, "Dark Grey", 2048 );
+    colors.get( "theme", tmpS, "Shake", 2048 );
     item = uiPrefs->uiColorTheme->find_item( tmpS );
     if ( item )
     {
