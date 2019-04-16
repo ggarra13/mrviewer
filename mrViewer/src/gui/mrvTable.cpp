@@ -105,8 +105,8 @@ void Table::draw_cell(TableContext context, int ROW, int COL,
                 // width of table minus Attribute's current col_width(),
                 // which may have been changed interactively by user.
                 // Note: use of Fl_Table:tiw for table's "inner width"
+		
                 col_width(1, tiw - col_width(0));
-                
           
                 int X, Y, W, H;
                 int index = 0;
