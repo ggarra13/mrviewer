@@ -92,7 +92,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {1244 172 675 455} type Double resizable
+      xywh {1237 172 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -358,7 +358,7 @@ If you try to open several mrViewers with different images, all these images wil
         }
         Fl_Group {} {
           label Colors open
-          xywh {200 42 439 409} box EMBOSSED_BOX align 5
+          xywh {200 42 439 409} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label UI open
@@ -390,7 +390,7 @@ If you try to open several mrViewers with different images, all these images wil
               label {Color Theme}
               user_data m user_data_type {ViewerUI*}
               callback {mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
-v->refresh(); } open selected
+v->refresh();} open
               xywh {355 165 150 25} down_box BORDER_BOX align 1
             } {}
           }
@@ -766,7 +766,7 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label Actions
+          label Actions open
           xywh {215 33 423 358} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -775,27 +775,27 @@ uiPrefsFPS->value( g );} open
           } {
             Fl_Round_Button uiScrub {
               label { Scrub}
-              xywh {255 126 20 25} down_box ROUND_DOWN_BOX
+              xywh {255 126 20 25} type Radio down_box ROUND_DOWN_BOX
             }
             Fl_Round_Button uiMovePicture {
               label { Move Picture}
-              xywh {255 151 20 25} down_box ROUND_DOWN_BOX
+              xywh {255 151 20 25} type Radio down_box ROUND_DOWN_BOX
             }
             Fl_Round_Button uiSelection {
               label { Color Area Selection}
-              xywh {255 176 20 25} down_box ROUND_DOWN_BOX
+              xywh {255 176 20 25} type Radio down_box ROUND_DOWN_BOX
             }
             Fl_Round_Button uiDraw {
               label { Pencil}
-              xywh {255 206 20 25} down_box ROUND_DOWN_BOX
+              xywh {255 206 20 25} type Radio down_box ROUND_DOWN_BOX
             }
             Fl_Round_Button uiText {
               label { Text}
-              xywh {255 236 20 25} down_box ROUND_DOWN_BOX
+              xywh {255 236 20 25} type Radio down_box ROUND_DOWN_BOX
             }
             Fl_Round_Button uiErase {
               label { Eraser}
-              xywh {255 266 20 25} down_box ROUND_DOWN_BOX
+              xywh {255 266 20 25} type Radio down_box ROUND_DOWN_BOX
             }
           }
         }
@@ -1336,11 +1336,11 @@ uiODT_ICC_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label {Default Rendering Transform (RT)}
-          xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
+          label {Default Rendering Transform (RT)} open
+          xywh {225 42 423 352} box EMBOSSED_BOX align 5
         } {
           Fl_Group uiRT_CTL {
-            label {Render Transforms}
+            label {Render Transforms} selected
             xywh {241 45 390 149} box ROUNDED_BOX
           } {
             Fl_Group {} {open
