@@ -40,7 +40,6 @@ namespace fs = boost::filesystem;
 
 #define FLTK_ABI_VERSION 10301
 
-#include <FL/fl_ask.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Tree_Prefs.H>
 #include <FL/Enumerations.H>
@@ -62,6 +61,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvThread.h"
 #include "core/mrStackTrace.h"
 
+#include "gui/mrvAsk.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvTimeline.h"
@@ -659,9 +659,9 @@ void ImageBrowser::remove_reel()
 
     if ( _reels.empty() ) return;
 
-    int ok = fl_choice( _( "Are you sure you want to\n"
-                              "remove the reel?" ),
-                           _("Yes"), _("No"), NULL );
+    int ok = mrv::fl_choice( _( "Are you sure you want to\n"
+				"remove the reel?" ),
+			     _("Yes"), _("No"), NULL );
     if ( ok == 1 ) return; // No
 
     _reel_choice->remove(_reel);
@@ -1955,9 +1955,9 @@ void ImageBrowser::remove_current()
     if ( view()->playback() != CMedia::kStopped )
         view()->stop();
 
-    int ok = fl_choice( _( "Are you sure you want to\n"
-                              "remove image from reel?" ),
-                           _("Yes"), _("No"), NULL );
+    int ok = mrv::fl_choice( _( "Are you sure you want to\n"
+				"remove image from reel?" ),
+			     _("Yes"), _("No"), NULL );
     if ( ok == 1 ) return; // No
 
     int sel = value();
@@ -2562,7 +2562,10 @@ int ImageBrowser::mousePush( int x, int y )
         menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                   (Fl_Callback*)open_single_cb, this);
 
+	match_tree_order();
+	
         int sel = value();
+    
         if ( sel >= 0 )
         {
             change_image();
