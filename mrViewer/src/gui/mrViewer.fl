@@ -158,26 +158,26 @@ decl {\#include "FL/Fl.H"} {public global
 decl {\#include "namespace.h"} {public global
 }
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
 } {
   code {std::string orig = ctl;} {}
   Fl_Window {} {
     label {CTL Browser} open
-    xywh {484 321 395 440} type Double hide resizable hotspot
+    xywh {566 476 395 440} type Double hide resizable hotspot
     class mrvDoubleWindow modal
   } {
     Fl_Group {} {open
       xywh {10 25 375 405}
     } {
-      Fl_Browser browser {
+      Fl_Browser uiBrowser {
         label {Select a CTL script}
         user_data {&ctl} user_data_type {std::string*}
         callback {int elem = o->value();
-if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
+if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
 *v = o->text(elem);}
-        xywh {10 25 375 365}
-        code0 {o->set_prefix(prefix);
-// @todo:  o->find( ctl.c_str() );}
+        private xywh {10 25 375 365} type Hold
+        code0 {o->set_prefix(prefix);}
+        code1 {o->find( ctl.c_str() );}
         class {mrv::CTLBrowser}
       }
       Fl_Button {} {
@@ -405,12 +405,13 @@ class LogUI {} {
   }
 }
 
-class PaintUI {} {
+class PaintUI {open
+} {
   Function {make_window( ViewerUI* m )} {open
   } {
     Fl_Window uiMain {
       label Paint open
-      xywh {733 95 165 505} type Double hide resizable non_modal
+      xywh {733 95 165 505} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {5 14 149 481}
@@ -468,6 +469,7 @@ v->uiView->text_mode();}
         Fl_Value_Slider uiPenSize {
           label {Pen Size}
           tooltip {Selects the size of brush.} xywh {37 155 85 30} type Horizontal align 1 minimum 1 maximum 10 step 1 value 5
+          code0 {o->labelcolor( FL_BLACK );}
         }
         Fl_Group {} {open
           xywh {40 415 84 70}
@@ -511,40 +513,47 @@ if ( r == 0 && g == 0 && b == 0 )
 else
    o->color( c );
 o->redraw();}
-          tooltip {Selects the current pen color.} xywh {92 200 25 25} box EMBOSSED_BOX color 167706624 labelsize 11 align 4
+          tooltip {Selects the current pen color.} xywh {92 200 25 25} box EMBOSSED_BOX color 111 labelsize 11 align 4
+          code0 {o->labelcolor( FL_BLACK );}
         }
         Fl_Group {} {
           label Frames open
           xywh {30 245 95 55} box UP_BOX
+          code0 {o->labelcolor( FL_BLACK );}
         } {
           Fl_Round_Button uiCurrentFrame {
             label Current user_data_type {void*}
-            xywh {40 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1
+            xywh {40 250 80 25} type Radio down_box ROUND_DOWN_BOX value 1 labelcolor 8
             code0 {o->value(1);}
+            code1 {o->labelcolor( FL_BLACK );}
           }
           Fl_Round_Button uiAllFrames {
             label All user_data_type {void*}
             xywh {40 270 80 25} type Radio down_box ROUND_DOWN_BOX
             code0 {o->value(0);}
+            code1 {o->labelcolor( FL_BLACK );}
           }
         }
         Fl_Group {} {
           label Ghosting open
           xywh {30 330 100 85} box UP_BOX
+          code0 {o->labelcolor( FL_BLACK );}
         } {
           Fl_Counter {} {
             label Previous
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
-            xywh {45 349 64 21} align 1 minimum 1 maximum 100 step 1 value 5
+            xywh {45 349 64 21} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
+            code0 {o->labelcolor( FL_BLACK );}
           }
           Fl_Counter {} {
             label Next
             user_data m user_data_type {ViewerUI*}
             callback {v->uiView->ghost_next( o->value() );
-v->uiView->redraw();}
-            xywh {45 389 64 21} align 1 minimum 1 maximum 100 step 1 value 5
+v->uiView->redraw();} selected
+            xywh {45 389 64 21} labelcolor 8 align 1 minimum 1 maximum 100 step 1 value 5
+            code0 {o->labelcolor( FL_BLACK );}
           }
         }
         Fl_Button uiMovePic {
@@ -594,7 +603,7 @@ class ConnectionUI {} {
           Fl_Button uiCreate {
             label Create
             user_data main user_data_type {ViewerUI*}
-            callback {if ( strcmp( o->label(), "Create" ) == 0 )
+            callback {if ( strcmp( o->label(), _("Create") ) == 0 )
     mrv::server::create(v);
 else
     mrv::server::remove(v);}
@@ -617,7 +626,7 @@ else
           Fl_Button uiConnect {
             label Connect
             user_data main user_data_type {ViewerUI*}
-            callback {if ( strcmp( o->label(), "Connect" ) == 0 )
+            callback {if ( strcmp( o->label(), _("Connect") ) == 0 )
    mrv::client::create(v);
 else
    mrv::client::remove(v);}
@@ -1308,7 +1317,7 @@ o->disable_glyph();}
                       callback {int x = o->value();
 const char* lbl = o->text(x);
 const char name[3] = { lbl[0], lbl[1], 0 };
-o->copy_label( name );} selected
+o->copy_label( name );}
                       tooltip {Switch brightness calculation.
 
 Y (Luminance) is the pixel value according to Rec709:
@@ -1369,12 +1378,13 @@ v->uiView->seek( frame );}
                 class {mrv::Timeline}
               }
               Fl_Menu_Button uiLoopMode {
-                label {@b;L}
+                label {L}
                 user_data this user_data_type {ViewerUI*}
                 callback {int c = o->value();
 o->label(o->text(c));
-v->uiView->looping( (mrv::CMedia::Looping)c );}
+v->uiView->looping( (mrv::CMedia::Looping)c );} open
                 tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )} xywh {615 488 21 23}
+                code0 {o->disable_glyph();}
                 class {mrv::PopupMenu}
               } {
                 MenuItem {} {
@@ -1382,7 +1392,7 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
                   xywh {0 0 100 20}
                 }
                 MenuItem {} {
-                  label {@b;L}
+                  label {L}
                   xywh {0 0 100 20}
                 }
                 MenuItem {} {
