@@ -77,7 +77,9 @@ void MainWindow::set_icon()
 #else
     Fl_Pixmap* pic = new Fl_Pixmap( viewer16_xpm );
     Fl_RGB_Image* rgb = new Fl_RGB_Image( pic );
+    delete pic;
     icon( rgb );
+    delete rgb;
 #endif
 
 }
