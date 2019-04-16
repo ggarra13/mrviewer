@@ -128,8 +128,12 @@ bool ALSAEngine::initialize()
                 continue;
             }
 
+	    std::string card_name = _("Unknown");
             err = snd_card_get_name(card, &psz_card_name);
-            if ( err < 0 ) psz_card_name = _("Unknown");
+            if ( err >= 0 ) {
+		card_name = psz_card_name;
+		free( psz_card_name );
+	    }
 
             snd_pcm_info_alloca(&pcm_info);
             memset(pcm_info, 0, snd_pcm_info_sizeof());
@@ -150,7 +154,7 @@ bool ALSAEngine::initialize()
 
                 char psz_device[256], psz_descr[1024];
                 sprintf( psz_device, "plughw:%d,%d", card, pcm_device );
-                sprintf( psz_descr, "%s: %s (%s)", psz_card_name,
+                sprintf( psz_descr, "%s: %s (%s)", card_name.c_str(),
                          snd_pcm_info_get_name(pcm_info), psz_device );
 
                 Device dev( psz_device, psz_descr );
