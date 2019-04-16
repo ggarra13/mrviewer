@@ -714,7 +714,6 @@ void monitor_ctl_script( ViewerUI* main,
         startfile = mrv::Preferences::ODT_CTL_transform.c_str();
 
     std::string script = make_ctl_browser( startfile, "ODT" );
-    if ( script.empty() ) return;
 
     mrv::Preferences::ODT_CTL_transform = script;
     main->uiView->send_network( "ODT \"" + script + "\"" );
