@@ -7,7 +7,7 @@ namespace {
 
 namespace mrv {
 
-static const int VMARGIN = 4;
+static const int VMARGIN = 6;
 
 void Element::make_thumbnail()
 {
@@ -27,8 +27,8 @@ void Element::make_thumbnail()
 
 }
 
-    Element::Element(mrv::media& m) :
-    Fl_Group(0,0,1,64+VMARGIN*2),
+    Element::Element(mrv::media m) :
+    Fl_Group(0,0,VMARGIN,64+VMARGIN*2),
     image(NULL),
     _elem( m )
     {		// VMARGIN makes group slightly larger than items
@@ -38,7 +38,8 @@ void Element::make_thumbnail()
         if ( !m )
         {
             LOG_ERROR("Empty media provided to Element constructor" );
-            abort();
+	    abort();
+	    return;
         }
 
 
