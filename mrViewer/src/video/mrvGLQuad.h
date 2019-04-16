@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,11 +28,10 @@
 #ifndef mrvGLQuad_h
 #define mrvGLQuad_h
 
-
+#include "mrvGLLut3d.h"
 
 namespace mrv {
 
-class GLLut3d;
 class GLShader;
 class ImageView;
 
@@ -91,7 +90,7 @@ public:
         _shader = x;
     }
 
-    inline const GLLut3d* lut() const {
+    inline const GLLut3d::GLLut3d_ptr lut() const {
         return _lut;
     }
     void lut( const CMedia* img );
@@ -153,7 +152,7 @@ protected:
 protected:
     const ImageView*   _view;
     GLShader*    _shader;
-    GLLut3d*     _lut;
+    GLLut3d::GLLut3d_ptr     _lut;
     const CMedia*   _image;
     unsigned short _lut_attempt;
 
