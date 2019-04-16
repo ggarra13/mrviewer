@@ -92,7 +92,7 @@ class PreferencesUI {open
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {1237 172 675 455} type Double resizable
+      xywh {1235 171 675 455} type Double resizable
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
@@ -101,7 +101,7 @@ class PreferencesUI {open
         xywh {200 25 470 515}
       } {
         Fl_Group {} {
-          label {User Interface} open
+          label {User Interface}
           xywh {222 43 448 497} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -193,7 +193,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label {View Window}
+          label {View Window} open
           xywh {220 34 423 417} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -302,57 +302,57 @@ If you try to open several mrViewers with different images, all these images wil
             Fl_Check_Button uiPrefsHudFilename {
               label Filename
               user_data this user_data_type {PreferencesUI*}
-              xywh {387 341 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {387 341 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudDirectory {
               label Directory
               user_data this user_data_type {PreferencesUI*}
-              xywh {387 315 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {387 315 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudFrame {
               label Frame
               user_data this user_data_type {PreferencesUI*}
-              xywh {251 289 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {251 289 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudFrameRange {
               label {Frame Range}
               user_data this user_data_type {PreferencesUI*}
-              xywh {250 316 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {250 316 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudResolution {
               label Resolution
               user_data this user_data_type {PreferencesUI*}
-              xywh {387 264 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {387 264 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudFPS {
               label FPS
               user_data this user_data_type {PreferencesUI*}
-              xywh {251 264 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {251 264 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudAttributes {
               label Attributes
               user_data this user_data_type {PreferencesUI*}
-              xywh {515 265 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {515 265 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudAVDifference {
               label {VA Difference}
               user_data this user_data_type {PreferencesUI*}
-              xywh {387 289 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {387 289 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudTimecode {
               label Timecode
               user_data this user_data_type {PreferencesUI*}
-              xywh {250 341 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {250 341 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudWipeMode {
               label {Wipe Mode}
               user_data this user_data_type {PreferencesUI*}
-              xywh {516 290 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {516 290 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHudMemory {
               label Memory
               user_data this user_data_type {PreferencesUI*}
-              xywh {516 316 20 20} box UP_BOX down_box DOWN_BOX align 8
+              xywh {516 316 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
           }
         }
@@ -361,7 +361,7 @@ If you try to open several mrViewers with different images, all these images wil
           xywh {200 42 439 409} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label UI open
+            label UI
             xywh {230 65 385 165} box ROUNDED_BOX
           } {
             Fl_Choice uiScheme {
@@ -395,7 +395,7 @@ v->refresh();} open
             } {}
           }
           Fl_Group {} {
-            label View open
+            label View
             xywh {230 252 390 109} box ROUNDED_BOX
           } {
             Fl_Button uiPrefsViewBG {
@@ -440,23 +440,6 @@ o->redraw();
 v->refresh();}
               tooltip {Selects the color of HUD overlays.} xywh {509 304 21 20} box EMBOSSED_BOX align 4
             }
-          }
-        }
-        Fl_Group {} {
-          label {File Requester} open
-          xywh {220 41 423 350} box EMBOSSED_BOX align 5 hide
-        } {
-          Fl_Check_Button uiPrefsFileReqFolder {
-            label {Single Click to Travel Drawers}
-            xywh {267 64 25 25} box UP_BOX down_box DOWN_BOX align 8
-          }
-          Fl_Check_Button uiPrefsFileReqThumbnails {
-            label {Thumbnails Active}
-            xywh {268 106 25 25} box UP_BOX down_box DOWN_BOX align 8
-          }
-          Fl_Check_Button uiPrefsNativeFileChooser {
-            label {Use Native File Chooser}
-            tooltip {If selected, the natlve file chooser will be used.  If unselected, mrViewer's standard file chooser will be used.} xywh {270 146 25 25} box UP_BOX down_box DOWN_BOX align 8
           }
         }
         Fl_Group {} {
@@ -505,9 +488,26 @@ uiWindowYSize->value( v->uiMain->h() );}
             xywh {250 306 355 40}
           }
         }
+        Fl_Group {} {
+          label {File Requester}
+          xywh {220 41 423 350} box EMBOSSED_BOX align 5 hide
+        } {
+          Fl_Check_Button uiPrefsFileReqFolder {
+            label {Single Click to Travel Drawers}
+            xywh {267 64 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+          }
+          Fl_Check_Button uiPrefsFileReqThumbnails {
+            label {Thumbnails Active}
+            xywh {268 106 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+          }
+          Fl_Check_Button uiPrefsNativeFileChooser {
+            label {Use Native File Chooser}
+            tooltip {If selected, the natlve file chooser will be used.  If unselected, mrViewer's standard file chooser will be used.} xywh {270 146 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+          }
+        }
         Fl_Group Playback {
-          label Playback
-          xywh {215 25 423 371} box EMBOSSED_BOX align 5 hide
+          label Playback open
+          xywh {215 25 423 371} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
             label Defaults open
@@ -515,14 +515,14 @@ uiWindowYSize->value( v->uiMain->h() );}
           } {
             Fl_Check_Button uiPrefsAutoPlayback {
               label {Auto Playback}
-              tooltip {Start Playback when opening files.} xywh {375 61 25 25} box UP_BOX down_box DOWN_BOX align 4
+              tooltip {Start Playback when opening files.} xywh {375 61 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
             Fl_Group {} {open
               xywh {260 107 300 154} box ROUNDED_BOX
             } {
               Fl_Check_Button uiPrefsOverrideFPS {
-                label {Override FPS}
-                tooltip {Override playback fps when loading sequences.} xywh {422 111 20 25} box UP_BOX down_box DOWN_BOX align 4
+                label {Override FPS} selected
+                tooltip {Override playback fps when loading sequences.} xywh {422 111 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
               }
               Fl_Group {} {open
                 xywh {300 134 225 37}
@@ -605,7 +605,7 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Check_Button uiPrefsPlayAllFrames {
               label {Play All Frames}
-              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {530 60 25 25} box UP_BOX down_box DOWN_BOX align 4
+              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {530 60 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
           }
           Fl_Group {} {
@@ -775,27 +775,27 @@ uiPrefsFPS->value( g );} open
           } {
             Fl_Round_Button uiScrub {
               label { Scrub}
-              xywh {255 126 20 25} type Radio down_box ROUND_DOWN_BOX
+              xywh {255 126 20 25} type Radio down_box ROUND_DOWN_BOX selection_color 15
             }
             Fl_Round_Button uiMovePicture {
               label { Move Picture}
-              xywh {255 151 20 25} type Radio down_box ROUND_DOWN_BOX
+              xywh {255 151 20 25} type Radio down_box ROUND_DOWN_BOX selection_color 15
             }
             Fl_Round_Button uiSelection {
               label { Color Area Selection}
-              xywh {255 176 20 25} type Radio down_box ROUND_DOWN_BOX
+              xywh {255 176 20 25} type Radio down_box ROUND_DOWN_BOX selection_color 15
             }
             Fl_Round_Button uiDraw {
               label { Pencil}
-              xywh {255 206 20 25} type Radio down_box ROUND_DOWN_BOX
+              xywh {255 206 20 25} type Radio down_box ROUND_DOWN_BOX selection_color 15
             }
             Fl_Round_Button uiText {
               label { Text}
-              xywh {255 236 20 25} type Radio down_box ROUND_DOWN_BOX
+              xywh {255 236 20 25} type Radio down_box ROUND_DOWN_BOX selection_color 15
             }
             Fl_Round_Button uiErase {
               label { Eraser}
-              xywh {255 266 20 25} type Radio down_box ROUND_DOWN_BOX
+              xywh {255 266 20 25} type Radio down_box ROUND_DOWN_BOX selection_color 15
             }
           }
         }
@@ -805,16 +805,16 @@ uiPrefsFPS->value( g );} open
         } {
           Fl_Check_Button uiPrefsCacheActive {
             label {Cache Active}
-            tooltip {Image sequences will be cached in memory.  If this setting is off, images will be loaded on demand but fluid playback may not be possible.} xywh {251 49 20 25} box UP_BOX down_box DOWN_BOX align 8
+            tooltip {Image sequences will be cached in memory.  If this setting is off, images will be loaded on demand but fluid playback may not be possible.} xywh {251 49 20 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
           }
           Fl_Check_Button uiPrefs8BitCaches {
             label {8 bit Caches}
             tooltip {Image sequences will be cached as 8-bit pictures, instead of being cached as the original depth of the sequence.
-This setting thus allows caching more pictures in memory for float and half pictures.} xywh {251 88 20 25} box UP_BOX down_box DOWN_BOX align 8
+This setting thus allows caching more pictures in memory for float and half pictures.} xywh {251 88 20 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
           }
           Fl_Check_Button uiPrefsPreloadCache {
             label {Preload Cache}
-            tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.  Note however, that this may make the GUI less responsive.} xywh {451 48 20 25} box UP_BOX down_box DOWN_BOX align 8
+            tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.  Note however, that this may make the GUI less responsive.} xywh {451 48 20 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
           }
           Fl_Choice uiPrefsCacheScale {
             label Scale
@@ -1337,10 +1337,10 @@ uiODT_ICC_profile->do_callback();}
         }
         Fl_Group {} {
           label {Default Rendering Transform (RT)} open
-          xywh {225 42 423 352} box EMBOSSED_BOX align 5
+          xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group uiRT_CTL {
-            label {Render Transforms} selected
+            label {Render Transforms}
             xywh {241 45 390 149} box ROUNDED_BOX
           } {
             Fl_Group {} {open
@@ -1515,10 +1515,10 @@ uiICC_float_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label Loading
+          label Loading open
           xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
-          Fl_Group {} {
+          Fl_Group {} {open
             xywh {235 62 405 209} box ROUNDED_BOX
           } {
             Fl_Choice uiPrefsLoadLibrary {
@@ -1559,20 +1559,20 @@ uiICC_float_profile->do_callback();}
             }
             Fl_Check_Button uiPrefsLoadSequence {
               label {Load Sequence on Drag&&Drop}
-              tooltip {When dragging and dropping a frame from a sequence, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 137 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When dragging and dropping a frame from a sequence, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 137 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsLoadSequenceOnAssoc {
               label {Load Sequence on File Association & CommandLine}
-              tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 170 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When loading a frame from a sequence from a file association or command-line, make mrViewer load the full sequence.   Otherwise it loads the frame only.} xywh {246 170 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsAutoLoadImages {
               label {Auto load images as they change on disk}
-              tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.} xywh {246 203 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When this option is active and an image changes on disk, mrViewer reloads it automatically.} xywh {246 203 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsUses16Bits {
               label {Read 16 bit movies when possible}
               tooltip {Movie files will be read as 16bit pictures, instead of being loaded and cached as 8 bits.
-This setting thus allows caching less pictures in memory but at an improved quality.} xywh {246 233 25 25} box UP_BOX down_box DOWN_BOX align 8
+This setting thus allows caching less pictures in memory but at an improved quality.} xywh {246 233 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
           }
           Fl_Group {} {
@@ -1592,7 +1592,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
           }
         }
         Fl_Group {} {
-          label Saving
+          label Saving open
           xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -1601,11 +1601,11 @@ This setting thus allows caching less pictures in memory but at an improved qual
           } {
             Fl_Check_Button uiPrefsImagePathReelPath {
               label {Use Image Path to Set Default Reel Saving Path}
-              tooltip {With this option on, saving of a reel will default to the path of the first image loaded.} xywh {250 112 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {With this option on, saving of a reel will default to the path of the first image loaded.} xywh {250 112 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsRelativePaths {
               label {Use Relative Paths in Reel Content}
-              tooltip {With this option, the content of the reel (the reel images/movies) are saved with relative paths to the location of the reel.} xywh {252 157 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {With this option, the content of the reel (the reel images/movies) are saved with relative paths to the location of the reel.} xywh {252 157 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
           }
         }
@@ -1704,16 +1704,16 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 167 31}
           }
         }
         Fl_Group {} {
-          label Compositing
+          label Compositing open
           xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
         } {
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {252 87 345 138} box ROUNDED_BOX
           } {
             Fl_Choice uiPrefsBlendMode {
               label {Blend Mode}
               user_data m user_data_type {ViewerUI*}
-              callback {v->uiView->redraw();} open
+              callback {v->uiView->redraw();}
               tooltip {OpenGL blend compositing mode.
 Traditional:
 SC x SA + DC x ( 1 - SA)
@@ -1740,7 +1740,7 @@ where SC is source color, SA is source alpha, and DC is destination color.} xywh
               }
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {257 259 353 117} box ROUNDED_BOX
           } {
             Fl_Light_Button uiPrefsResizeBackground {
@@ -1773,7 +1773,7 @@ for ( ; i != e; ++i )
    }}
             class {mrv::Choice}
           } {}
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {252 140 324 133} box ROUND_DOWN_BOX
           } {
             Fl_Slider uiPrefsAudioVolume {
