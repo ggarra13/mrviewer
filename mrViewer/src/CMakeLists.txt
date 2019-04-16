@@ -225,30 +225,28 @@ SET( SOURCES
   core/mrvImageOpts.cpp
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
+  
 
- # db/mrvDatabase.cpp
- # db/mrvPostgreSQL.cpp
-  #   #db/mrvMySQL.cpp # unneeded
+  gui/FLU/Flu_Combo_Box.cpp      # needed?
+  gui/FLU/Flu_Combo_Tree.cpp     # needed?
+  gui/FLU/Flu_Combo_List.cpp     # needed?
+  gui/FLU/Flu_Separator.cpp     # needed?
+  gui/FLU/Flu_Tree_Browser.cpp     # needed?
+  gui/FLU/FluSimpleString.cpp
+  gui/FLU/Flu_Button.cpp
+  gui/FLU/Flu_Return_Button.cpp
+  gui/FLU/Flu_Label.cpp
+  gui/FLU/flu_filename_list.cxx
+  gui/FLU/flu_scandir.c
+  gui/FLU/flu_numericsort.c
+  gui/FLU/flu_file_chooser_pixmaps.cpp
+  gui/FLU/Flu_Wrap_Group.cpp
+  gui/FLU/Flu_File_Chooser.cpp
+  gui/FLU/flu_pixmaps.cpp
 
- gui/FLU/Flu_Combo_Box.cpp      # needed?
- gui/FLU/Flu_Combo_Tree.cpp     # needed?
- gui/FLU/Flu_Combo_List.cpp     # needed?
- gui/FLU/Flu_Separator.cpp     # needed?
- gui/FLU/Flu_Tree_Browser.cpp     # needed?
- gui/FLU/FluSimpleString.cpp
- gui/FLU/Flu_Button.cpp
- gui/FLU/Flu_Return_Button.cpp
- gui/FLU/Flu_Label.cpp
- gui/FLU/flu_filename_list.cxx
- gui/FLU/flu_scandir.c
- gui/FLU/flu_numericsort.c
- gui/FLU/flu_file_chooser_pixmaps.cpp
- gui/FLU/Flu_Wrap_Group.cpp
- gui/FLU/Flu_File_Chooser.cpp
- gui/FLU/flu_pixmaps.cpp
-
- gui/MyPack.cpp
- gui/mrvActionWindow.cpp
+  gui/MyPack.cpp
+  gui/mrvActionWindow.cpp
+  gui/mrvAsk.cpp
   gui/mrvOCIOBrowser.cpp
   gui/mrvColorSchemes.cpp
   gui/mrvDoubleWindow.cpp
