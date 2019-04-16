@@ -35,6 +35,8 @@
 #include <FL/Fl_Menu_Button.H>
 #include <FL/Fl_Gl_Window.H>  // this should be just Window
 
+#include <ImfAttribute.h>
+
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
 #include "core/mrvServer.h"
@@ -52,6 +54,7 @@ namespace mrv {
 
 void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
 
+class LoadInfo;
 class ImageBrowser;
 class Timeline;
 class DrawEngine;
@@ -80,6 +83,8 @@ public:
 	kCacheClear,
         kICS,
         kRT,
+	kGAIN,
+	kGAMMA,
         kChangeChannel,
         kFULLSCREEN,
         kPRESENTATION,
@@ -737,8 +742,12 @@ public:
 public:
     typedef CMedia::Mutex Mutex;
     struct Command {
-        CommandType  type;
-        void*        data;
+        Command() : frame(AV_NOPTS_VALUE), data(NULL), linfo(NULL) {}; 
+        
+        CommandType     type;
+        int64_t         frame;
+        Imf::Attribute* data;
+        LoadInfo*       linfo;
     };
 
     mutable Mutex         commands_mutex;
