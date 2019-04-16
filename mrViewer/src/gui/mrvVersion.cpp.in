@@ -621,7 +621,9 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << "zlib v" << ZLIB_VERSION
       << "(C) 2008-2017 Jean-loup Gailly and Mark Adler"
       << endl
-      << endl;
+      << endl
+      << "A big thank you goes to Greg Ercolano who helped with" << endl
+      << "the porting and with the color schemes.";
 
     return o.str();
   }
