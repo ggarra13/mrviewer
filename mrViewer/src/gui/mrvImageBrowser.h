@@ -168,8 +168,6 @@ public:
                     const int64_t start = -999999,
                     const int64_t end = -999999 );
 
-    void debug_images() const;
-
     //! Loads files as media to tree
     void load( const LoadList& files, const bool stereo = false,
                std::string bgfile = "",
@@ -255,7 +253,7 @@ protected:
     //! These functions send reel, images o current image to network
     void send_reel( const mrv::Reel& r );
     void send_images( const mrv::Reel& r);
-    void send_current_image( const mrv::media& m );
+    void send_current_image( int idx, const mrv::media& m );
 
     //! Change reel to new one selected
     void change_reel();
