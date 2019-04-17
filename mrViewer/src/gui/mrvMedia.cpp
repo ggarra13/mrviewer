@@ -138,6 +138,8 @@ void media::create_thumbnail()
     char buf[2048];
     sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
+    delete _thumbnail;
+    
     uchar* data = new uchar[ w * h * 3 ];
     _thumbnail = new Fl_RGB_Image( data, w, h, 3 );
     _thumbnail->alloc_array = 1;
