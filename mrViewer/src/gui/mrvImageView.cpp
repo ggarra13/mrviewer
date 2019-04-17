@@ -1449,12 +1449,12 @@ ImageView::~ImageView()
     if ( CMedia::preload_cache() )
         preload_cache_stop();
 
-    ParserList::iterator i = _clients.begin();
-    ParserList::iterator e = _clients.end();
-    for ( ; i != e; ++i )
-    {
-        (*i)->connected = false;
-    }
+    // ParserList::iterator i = _clients.begin();
+    // ParserList::iterator e = _clients.end();
+    // for ( ; i != e; ++i )
+    // {
+    //     (*i)->connected = false;
+    // }
 
     _clients.clear();
 
@@ -2741,6 +2741,7 @@ void ImageView::handle_commands()
 
     _network_active = false;
     Command c = commands.front();
+          again:
     switch( c.type )
     {
     case kCreateReel:
@@ -2752,6 +2753,7 @@ void ImageView::handle_commands()
         {
             b->new_reel( s.c_str() );
         }
+        // std::cerr << "COMMAND: change to reel " << s << std::endl;
         break;
     }
     case kLoadImage:
@@ -2764,22 +2766,57 @@ void ImageView::handle_commands()
     }
     case kCacheClear:
         clear_caches();
+        // std::cerr << "COMMAND: clear caches "  << std::endl;
         break;
     case kChangeImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
-        b->change_image(idx);
+        mrv::Reel r = b->current_reel();
+        bool found = false;
+        mrv::MediaList::iterator j = r->images.begin();
+        mrv::MediaList::iterator e = r->images.end();
+        int i = 0;
+        if ( c.linfo )
+        {
+            const std::string imgname = c.linfo->filename;
+            // std::cerr << "COMMAND: change image #" << idx << " "
+            //           << imgname << std::endl;
+            for ( ; j != e; ++j, ++i )
+            {
+                if ( !(*j) ) continue;
+
+                CMedia* img = (*j)->image();
+                std::string file = img->directory() + '/' + img->name();
+                if ( i == idx && file == imgname )
+                {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            found = (idx < r->images.size() );
+        }
+        if ( found ) b->change_image(idx);
+        else {
+            c.type = kLoadImage;
+            goto again;
+        }
         break;
     }
     case kBGImage:
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
+
+        // std::cerr << "COMMAND: change bg image #" << idx << std::endl;
+
         if ( idx < 0 ) background( mrv::media() );
         else
         {
-            mrv::Reel r = b->current_reel();
+            mrv::Reel r = b->reel_at( bg_reel() );
             if ( idx < r->images.size() )
             {
                 background( r->images[idx] );
@@ -2795,6 +2832,7 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
+        // std::cerr << "COMMAND: change fg reel #" << idx << std::endl;
         fg_reel( idx );
         break;
     }
@@ -2802,27 +2840,32 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
+        // std::cerr << "COMMAND: change bg reel #" << idx << std::endl;
         bg_reel( idx );
         break;
     }
     case kStopVideo:
     {
+        // std::cerr << "COMMAND: stop at " << c.frame << std::endl;
         stop();
         seek( c.frame );
         break;
     }
     case kSeek:
     {
+        // std::cerr << "COMMAND: seek " << c.frame << std::endl;
         seek( c.frame );
         break;
     }
     case kPlayForwards:
     {
+        // std::cerr << "COMMAND: playfwd " << std::endl;
         play_forwards();
         break;
     }
     case kPlayBackwards:
     {
+        // std::cerr << "COMMAND: playbwd " << std::endl;
         play_backwards();
         break;
     }
@@ -2830,6 +2873,7 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
+        // std::cerr << "COMMAND: remove image " << idx << std::endl;
         b->remove(idx);
         break;
     }
@@ -2839,6 +2883,7 @@ void ImageView::handle_commands()
         const Imath::V2i& list = attr->value();
         int oldsel = list[0];
         int sel = list[1];
+        // std::cerr << "COMMAND: exchange " << oldsel << " with " << sel << std::endl;
         b->exchange(oldsel, sel);
         break;
     }
@@ -2846,6 +2891,7 @@ void ImageView::handle_commands()
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
         const std::string& s = attr->value();
+        // std::cerr << "COMMAND: ICS " << s << std::endl;
         mrv::media fg = foreground();
         if (fg)
         {
@@ -2859,6 +2905,7 @@ void ImageView::handle_commands()
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
         const std::string& s = attr->value();
+        // std::cerr << "COMMAND: RT " << s << std::endl;
         mrv::media fg = foreground();
         if (fg)
         {
@@ -2873,6 +2920,7 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         unsigned idx = attr->value();
+        // std::cerr << "COMMAND: Change Channel " << idx << std::endl;
         if ( foreground() )
         {
             channel( idx );
@@ -2937,6 +2985,7 @@ void ImageView::handle_commands()
         break;
     case kLUT_CHANGE:
     {
+        // std::cerr << "COMMAND: LUT CHANGE " << std::endl;
         mrv::media fg = foreground();
         if ( fg )
         {
@@ -2947,20 +2996,22 @@ void ImageView::handle_commands()
         use_lut( true );
         break;
     }
-	case kGAIN:
-	    {
-		Imf::FloatAttribute* f =
-		dynamic_cast< Imf::FloatAttribute* >( c.data );
-		gain( f->value() );
-		break;
-	    }
-	case kGAMMA:
-	    {
-		Imf::FloatAttribute* f =
-		dynamic_cast< Imf::FloatAttribute* >( c.data );
-		gamma( f->value() );
-		break;
-	    }
+    case kGAIN:
+        {
+            Imf::FloatAttribute* f =
+            dynamic_cast< Imf::FloatAttribute* >( c.data );
+            // std::cerr << "COMMAND: gain " << f->value() << std::endl;
+            gain( f->value() );
+            break;
+        }
+    case kGAMMA:
+        {
+            Imf::FloatAttribute* f =
+            dynamic_cast< Imf::FloatAttribute* >( c.data );
+            // std::cerr << "COMMAND: gamma " << f->value() << std::endl;
+            gamma( f->value() );
+            break;
+        }
     default:
     {
         LOG_ERROR( "Unknown mrv event " << commands.size() << " "
@@ -2970,8 +3021,8 @@ void ImageView::handle_commands()
     }  // switch
 
     _network_active = true;
-    delete c.data;
-    delete c.linfo;
+    delete c.data;  c.data = NULL;
+    delete c.linfo; c.linfo = NULL;
     commands.pop_front();
     redraw();
 }
@@ -8056,11 +8107,6 @@ void ImageView::foreground( mrv::media fg )
                  CMedia::cache_active() && CMedia::preload_cache() )
                 preload_cache_start();
 
-            char buf[1024];
-            std::string file = img->directory() + '/' + img->name();
-            sprintf( buf, N_("CurrentImage \"%s\" %" PRId64 " %" PRId64),
-                     file.c_str(), img->first_frame(), img->last_frame() );
-            send_network( buf );
 
             if ( img->looping() == CMedia::kUnknownLoop )
             {
