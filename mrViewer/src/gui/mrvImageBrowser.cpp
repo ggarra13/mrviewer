@@ -81,7 +81,6 @@ namespace fs = boost::filesystem;
 
 #include "standalone/mrvCommandLine.h"
 
-// #define DEBUG_IMAGES
 
 namespace
 {
@@ -339,25 +338,6 @@ mrv::Reel ImageBrowser::current_reel()
     return _reels[ _reel ];
 }
 
-void ImageBrowser::debug_images() const
-{
-#ifdef DEBUG_IMAGES
-    mrv::Reel reel = current_reel();
-    if ( !reel ) {
-        LOG_INFO( "NO REEL" );
-        return;
-    }
-
-    mrv::MediaList::const_iterator i = reel->images.begin();
-    mrv::MediaList::const_iterator e = reel->images.end();
-
-    unsigned idx = 0;
-    for ( ; i != e; ++i, ++idx )
-    {
-        LOG_INFO( "#" << idx << " " << (*i)->image()->name() );
-    }
-#endif
-}
 
 /**
  * Change to a certain reel
@@ -769,15 +749,16 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
     if ( view() ) view()->send_network( buf );
 }
 
-void ImageBrowser::send_current_image( const mrv::media& m )
+void ImageBrowser::send_current_image( int idx, const mrv::media& m )
 {
     if (!m) return;
 
     mrv::ImageView* v = view();
     if (!v) return;
 
-    
-    std::string buf = N_("CurrentImage \"");
+    char text[64];
+    sprintf( text, N_("CurrentImage %d \""), idx );
+    std::string buf = text;
     CMedia* img = m->image();
     std::string file = img->directory() + '/' + img->name();
     buf += file;
@@ -828,9 +809,10 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
 
-    for ( ; i != e; ++i )
+    int idx = 0;
+    for ( ; i != e; ++i, ++idx )
     {
-        send_current_image( *i );
+        send_current_image( idx, *i );
     }
 }
 
@@ -884,7 +866,7 @@ mrv::media ImageBrowser::add( const mrv::media m )
 
     send_reel( reel );
     
-    send_current_image( m );
+    send_current_image( reel->images.size() - 1, m );
 
     adjust_timeline();
     
@@ -1005,7 +987,7 @@ void ImageBrowser::remove( mrv::media m )
     // }
 
     char buf[256];
-    sprintf( buf, N_("RemoveImage \"%s\""), m->image()->fileroot() );
+    sprintf( buf, N_("RemoveImage %d"), idx );
     view()->send_network( buf );
 
     // Remove image from reel
@@ -1068,7 +1050,8 @@ void ImageBrowser::change_reel()
     _reel_choice->value( _reel );
 
     clear_children( root() );
-
+    dragging = NULL;
+    
     if ( reel->images.empty() )
     {
         DBG( "NO images in reel" );
@@ -2797,7 +2780,6 @@ void ImageBrowser::exchange( int oldsel, int sel )
 {
     if ( oldsel == sel )
     {
-        LOG_ERROR( _("Same indices to exchange.") );
         return;
     }
     if ( sel < 0 || oldsel < 0  )
@@ -2811,27 +2793,23 @@ void ImageBrowser::exchange( int oldsel, int sel )
     sprintf( buf, _("ExchangeImage %d %d"), oldsel, sel );
     view()->send_network( buf );
 
-    mrv::Reel reel = current_reel();
+    CMedia::Playback playback = view()->playback();
 
-    mrv::media m = reel->images[oldsel];
-    CMedia* img = m->image();
-
-    mrv::Timeline* t = timeline();
-
-    int64_t f = (int64_t) uiMain->uiFrame->value();
-    int64_t g = t->offset( img );
-    f -= g;
-
-    reel->images.erase( reel->images.begin() + oldsel );
-    if ( oldsel < sel ) sel -= 1;
-
-
-    reel->images.insert( reel->images.begin() + sel, m );
-
+    if ( playback != CMedia::kStopped )
+        view()->stop();
     
-    for ( int i = 0; i < reel->images.size(); ++i )
-        
+    root()->swap_children( oldsel, sel );
 
+    match_tree_order();
+    
+    mrv::Timeline* t = timeline();
+    if ( !t ) return;
+
+    mrv::Reel r = current_reel();
+    mrv::media m = r->images[sel];
+    CMedia* img = m->image();
+    int64_t f = img->frame();
+    
     //
     // Adjust timeline position
     //
@@ -2855,6 +2833,9 @@ void ImageBrowser::exchange( int oldsel, int sel )
         frame( f );
     }
 
+    if ( playback != CMedia::kStopped )
+        view()->play(playback);
+    
     redraw();
 }
 
@@ -2876,17 +2857,20 @@ void ImageBrowser::match_tree_order()
 	
         mrv::Element* elem = (mrv::Element*) i->widget();
         mrv::media m = elem->media();
+        r->images.push_back( m );
         if ( m == fg && m ) {
-            value( r->images.size() );
-
+	    int idx = r->images.size() - 1;
+	    change_image(idx);
             Fl_Tree::deselect_all(NULL, 0);
-
             Fl_Tree::select( i, 0 );
         }
-        r->images.push_back( m );
     }
 
 #ifdef DEBUG_IMAGES_ORDER
+    if ( value() < 0 )
+    {
+	std::cerr << "++++++++++++++ NO SELECTED IMAGE" << std::endl;
+    }
     
     for ( unsigned j = 0; j < r->images.size(); ++j )
     {
@@ -2894,6 +2878,7 @@ void ImageBrowser::match_tree_order()
         if ( j == value() ) std::cerr << " <----";
         std::cerr << "\n";
     }
+    std::cerr << "\n\n";
 #endif
 
 }
@@ -2908,11 +2893,17 @@ int ImageBrowser::mouseRelease( int x, int y )
 
     dragging = NULL;
 
+    int old = value();
 
     int ok = Fl_Tree::handle( FL_RELEASE );
 
-
     match_tree_order();
+
+    int sel = value();
+
+    char buf[1024];
+    sprintf( buf, _("ExchangeImage %d %d"), sel, old );
+    view()->send_network( buf );
 
     adjust_timeline();
 
@@ -3285,8 +3276,11 @@ bool ImageBrowser::add_to_tree( mrv::media m )
     
     Fl_Tree_Item* item = Fl_Tree::insert( root(), path.c_str(),
                                           root()->children() );
+    if ( !item ) return false;
     Element* nw = new_item( m );
+    if ( !nw ) return false;
     item->widget( nw );
+    return true;
 }
 
 void ImageBrowser::draw()
