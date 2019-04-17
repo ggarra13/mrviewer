@@ -968,13 +968,10 @@ bool Parser::parse( const std::string& s )
 
         stringArray files;
         files.push_back( imgname );
-        browser()->debug_images();
         browser()->load( files );
 
-        browser()->debug_images();
         mrv::media m = view()->foreground();
         browser()->replace( idx, m );
-        browser()->debug_images();
         v->redraw();
         ok = true;
     }
@@ -1154,6 +1151,7 @@ bool Parser::parse( const std::string& s )
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
+	c.linfo = NULL;
 
         v->commands.push_back( c );
 
@@ -1171,7 +1169,9 @@ bool Parser::parse( const std::string& s )
     }
     else if ( cmd == N_("CurrentImage") )
     {
+        int idx = 0;
         std::string imgname;
+	is >> idx;
         is.clear();
         std::getline( is, imgname, '"' ); // skip first quote
         is.clear();
@@ -1182,50 +1182,15 @@ bool Parser::parse( const std::string& s )
         is >> first;
         is >> last;
 
-        bool found = false;
-        int idx = 0;
+	LOG_WARNING( "Change to image #" << idx << " "  << imgname );
+	ImageView::Command c;
+	c.type = ImageView::kChangeImage;
+	c.data = new Imf::IntAttribute( idx );
+	c.linfo = new LoadInfo(imgname, first, last);
 
-        r = browser()->current_reel();
-        if ( r )
-        {
-            mrv::MediaList::iterator j = r->images.begin();
-            mrv::MediaList::iterator e = r->images.end();
-            for ( ; j != e; ++j, ++idx )
-            {
-                if ( !(*j) ) continue;
+	v->commands.push_back( c );
 
-                CMedia* img = (*j)->image();
-                std::string file = img->directory() + '/' + img->name();
-                LOG_WARNING( "COMPARE " << file << " to " << imgname );
-                if ( file == imgname )
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-        }
-
-        if ( found )
-        {
-            LOG_WARNING( "Change to image #" << idx << " "  << imgname );
-            ImageView::Command c;
-            c.type = ImageView::kChangeImage;
-            c.data = new Imf::IntAttribute( idx );
-
-            v->commands.push_back( c );
-
-            ok = true;
-        }
-        else
-        {
-            ImageView::Command c;
-            c.type = ImageView::kLoadImage;
-            c.linfo = new LoadInfo(imgname, first, last);
-
-            v->commands.push_back( c );
-            ok = true;
-        }
+	ok = true;
 
     }
     else if ( cmd == N_("ExchangeImage") )
@@ -1445,10 +1410,13 @@ bool Parser::parse( const std::string& s )
             }
         }
 
-        char buf[256];
-        sprintf( buf, N_("ChangeImage %d"), browser()->value() );
-        deliver( buf );
-
+	char buf[256];
+	if ( browser()->value() >= 0 )
+	{
+	    sprintf( buf, N_("ChangeImage %d"), browser()->value() );
+	    deliver( buf );
+	}
+	
         {
             mrv::media bg = v->background();
             if ( bg )
