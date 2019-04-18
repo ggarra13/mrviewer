@@ -53,6 +53,9 @@ Fl_Text_Display( x, y, w, h, l )
 
 TextDisplay::~TextDisplay()
 {
+    Fl_Text_Buffer* b = buffer();
+    buffer(NULL);
+    delete b;
 }
 
 
