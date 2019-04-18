@@ -2,13 +2,7 @@
 version 1.0400
 header_name {.h}
 code_name {.cxx}
-decl {\#include <cstring>} {public local
-}
-
 decl {\#include <string>} {public local
-}
-
-decl {\#include "core/mrvFrame.h"} {public local
 }
 
 decl {\#include <algorithm>} {private local
@@ -27,6 +21,9 @@ decl {\#include "gui/mrvBrowser.h"} {public local
 }
 
 decl {\#include "gui/mrvMainWindow.h"} {public local
+}
+
+decl {\#include "gui/mrvTextDisplay.h"} {public local
 }
 
 decl {\#include "core/mrvColorProfile.h"} {private local
@@ -53,56 +50,41 @@ make_window();} {}
   }
   Function {~ICCProfileUI()} {open
   } {
-    code {
-    uiTextDisplay->buffer( 0 );
-    delete uiText; 
-    delete uiMain; uiMain = NULL;
+    code {uiTextDisplay->buffer( NULL );
+delete uiText;
+delete uiMain; uiMain = NULL;
 delete _profile;} {}
   }
   Function {make_window()} {open
   } {
+    code {uiText = new Fl_Text_Buffer();} {}
     Fl_Window uiMain {open
-      xywh {627 276 650 485} type Double resizable visible
+      xywh {98 381 650 485} type Double resizable visible
     } {
-      Fl_Pack {} {open
-        xywh {0 0 637 485}
+      Fl_Group {} {
+        xywh {0 0 650 485}
       } {
         Fl_Group {} {open
-          xywh {0 0 623 161}
+          xywh {0 0 650 185} box PLASTIC_DOWN_BOX
         } {
           Fl_Browser uiTags {
             label Tags
             user_data this user_data_type {ICCProfileUI*}
-            callback {v->fill_text();} selected
-            xywh {0 6 623 155} type Hold
-            code0 {static const int widths[] = { -1, 120, 80,  80, 0 };
-static const char* labels[] = { "ID", "Tag", "Offset", "Size", NULL };
+            callback {v->fill_text();}
+            xywh {0 26 650 159} type Hold align 1
+            code0 {static const int widths[] = { 220, 120, 80,  80, 0 };
 
-o->column_widths( widths );
-o->column_labels( labels );}
+o->column_widths( widths );}
             class {mrv::Browser}
           }
         }
-        Fl_Group {} {open
-          xywh {0 0 635 461}
-        } {
-          Fl_Wizard uiWizard {open
-            xywh {0 0 635 295}
-            code0 {o->value(0);}
-          } {
-            Fl_Text_Display uiTextDisplay {
-              xywh {5 10 620 285} hide
-              code0 { o->buffer( new Fl_Text_Buffer );
-	      uiText = o->buffer(); }
-            }
-            Fl_Group {} {open
-              xywh {0 0 635 290}
-            } {
-              Fl_Box uiDrawing {
-                xywh {15 5 620 285}
-              }
-            }
-          }
+      }
+      Fl_Group {} {open
+        xywh {0 184 650 301} box PLASTIC_UP_BOX
+      } {
+        Fl_Text_Display uiTextDisplay {
+          xywh {5 189 640 296} textcolor 32
+          code0 {o->buffer(uiText); o->wrap_mode( Fl_Text_Display::WRAP_AT_BOUNDS, 80 ); o->scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT ); uiText->text( "some text\\nline 2\\n" );}
         }
       }
     }
@@ -113,16 +95,19 @@ o->column_labels( labels );}
 if (_profile) fill( name );
 uiMain->show();} {}
   }
-  Function {fill( const std::string& name )} {open private
+  Function {fill( const std::string& name )} {open selected private
   } {
     code {uiMain->copy_label( name.c_str() );
-uiText->text(N_(""));
+//uiText->text(N_(""));
 uiTags->clear();
 
 if (!_profile) return;
 
-uiTags->add("Header");
+static const char* labels = "@b@B8ID	@b@B8Tag	@b@B8Offset	@b@B8Size";
+uiTags->add(labels);
 uiTags->value(0);
+uiTags->add( "Header" );
+
 
 CIccInfo Fmt;
 TagEntryList::iterator i = _profile->m_Tags->begin();
@@ -135,7 +120,7 @@ for ( ; i != e; ++i )
 	   Fmt.GetTagSigName(i->TagInfo.sig),
 	   icGetSig(sig, i->TagInfo.sig, false),
 	   i->TagInfo.offset, i->TagInfo.size);
-  uiTags->add( strdup(buf) );
+  uiTags->add( buf );
 }
 
 uiTags->redraw();
@@ -148,17 +133,20 @@ fill_text();} {}
 if (!_profile) return;
 
 int idx = uiTags->value();
-if ( idx < 1 ) return;
+if ( idx < 2 ) return;
 
-if ( idx == 1 ) {
-  uiText->text( mrv::colorProfile::header( _profile ).c_str() );
+if ( idx == 2 ) {
+  const std::string& text = mrv::colorProfile::header( _profile );
+  uiText->text( text.c_str() );
   return;
 }
 
 TagEntryList::iterator i = _profile->m_Tags->begin();
-std::advance( i, idx-1 );
+std::advance( i, idx-3 );
 IccTagEntry& entry = *i;
-uiText->text( mrv::colorProfile::dump_tag( _profile, entry.TagInfo.sig ).c_str() );
+const std::string& text = mrv::colorProfile::dump_tag( _profile,
+      		   	  			       entry.TagInfo.sig );
+uiText->text( text.c_str() );
 uiTextDisplay->redraw();} {}
   }
 }
@@ -171,27 +159,19 @@ class ICCProfileListUI {open
   } {
     Fl_Window uiMain {
       label {ICC Profiles Inspector} open
-      xywh {414 58 630 460} type Double resizable visible
+      xywh {916 103 630 460} type Double resizable visible
     } {
       Fl_Group {} {open
         xywh {0 0 630 460} box PLASTIC_UP_BOX
       } {
         Fl_Group {} {open
-          xywh {0 0 630 366}
+          xywh {0 0 630 420}
         } {
           Fl_Browser uiProfiles {
             label {ICC Profiles}
-            xywh {6 26 605 335} type Hold box PLASTIC_DOWN_BOX resizable
-          }
-        }
-        Fl_Group {} {open
-          xywh {430 371 178 58} box UP_BOX
-        } {
-          Fl_Button {} {
-            label Info
             user_data this user_data_type {ICCProfileListUI*}
             callback {v->show_info();}
-            xywh {463 380 110 35} box PLASTIC_UP_BOX
+            xywh {6 26 605 394} type Hold box PLASTIC_DOWN_BOX resizable
           }
         }
       }
@@ -200,9 +180,8 @@ class ICCProfileListUI {open
   }
   Function {ICCProfileListUI( ViewerUI* main )} {open
   } {
-    code {Fl_Group::current( main->uiMain );
+    code {Fl_Group::current(0);
       uiMain = make_window();
-      Fl_Group::current(0);
       fill();} {}
   }
   Function {~ICCProfileListUI()} {open
@@ -214,10 +193,8 @@ delete _info; _info = NULL;} {}
   } {
     code {uiProfiles->clear();
 const stringArray& profiles = mrv::colorProfile::list();
-stringArray::const_iterator i = profiles.begin();
-stringArray::const_iterator e = profiles.end();
-for ( ; i != e; ++i )
-  uiProfiles->add( (*i).c_str() );
+for ( auto& i: profiles )
+  uiProfiles->add( i.c_str() );
 uiProfiles->redraw();} {}
   }
   Function {show_info()} {open
