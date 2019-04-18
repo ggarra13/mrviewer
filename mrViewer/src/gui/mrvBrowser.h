@@ -199,6 +199,7 @@ public:
 
     void column_labels( const char** labels )
     {
+	add( labels[0] );
     }
     
     void column_widths(const int *val) {
