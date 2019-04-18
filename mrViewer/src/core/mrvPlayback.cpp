@@ -1312,7 +1312,7 @@ void decode_thread( PlaybackData* data )
     av_assert0( timeline != NULL );
 
     // delete the data (we don't need it anymore)
-    //delete data;
+    delete data;
 
     int idx = fg ? view->fg_reel() : view->bg_reel();
 
