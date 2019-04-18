@@ -39,8 +39,6 @@ public:
     TextDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~TextDisplay();
 
-public:
-    Fl_Text_Buffer* buffer_;
 };
 
 }
