@@ -909,8 +909,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 #define ICC_PROFILE(x, d)						\
           ok = icc.get( #x, tmpS, d, 2048 );				\
           CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
-	  uiPrefs->uiICC_## x ## _profile->value( tmpS );
-
+	  uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
+	  if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
                 ICC_PROFILE( 8bits,  "" );
                 ICC_PROFILE( 16bits, "" );
                 ICC_PROFILE( 32bits, "" );
@@ -1541,9 +1541,9 @@ void Preferences::run( ViewerUI* main )
     DBG( __FUNCTION__ << " " << __LINE__ );
     change_timeline_display(main);
 
-    double mn, mx,
-           dmn = main->uiTimeline->display_minimum(),
-           dmx = main->uiTimeline->display_maximum();
+    double mn = 1, mx = 50,
+    dmn = main->uiTimeline->display_minimum(),
+    dmx = main->uiTimeline->display_maximum();
 
     if ( !main->uiTimeline->edl() )
     {
