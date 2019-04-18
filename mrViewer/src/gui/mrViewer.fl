@@ -426,7 +426,7 @@ o->value(1);
 uiDraw->value(0);
 uiErase->value(0);
 uiText->value(0);
-uiMovePic->value(0);} selected
+uiMovePic->value(0);}
             tooltip {Area Select Tool} xywh {35 15 43 35} value 1
             code0 {o->value(1);
 o->image( scrub );}
@@ -814,11 +814,11 @@ uiICCProfiles->uiMain->show();}
             } {}
           }
           Fl_Group {} {open
-            xywh {125 1 281 24} color 1397969664
+            xywh {120 1 286 24} color 1397969664
           } {
             Fl_Box {} {
-              label Gain
-              xywh {125 2 28 22} labelsize 12 align 96
+              label Gain selected
+              xywh {120 2 33 22} labelsize 12 align 120
             }
             Fl_Value_Input uiGainInput {
               user_data this user_data_type {ViewerUI*}
@@ -1411,7 +1411,7 @@ v->uiView->looping( (mrv::CMedia::Looping)c );} open
                   xywh {4 513 94 20}
                 } {
                   Fl_Menu_Button uiTimecodeSwitch {
-                    label {F:}
+                    label F
                     user_data this user_data_type {ViewerUI*}
                     callback {mrv::change_timeline_display(v);} open
                     tooltip {Switch between Frame, Seconds and Timecode display} xywh {4 513 20 20} box DOWN_BOX
