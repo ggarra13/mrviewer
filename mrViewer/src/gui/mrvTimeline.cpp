@@ -66,8 +66,8 @@ _draw_cache( true ),
 _edl( false ),
 _tc( 0 ),
 _fps( 24 ),
-_display_min( kMaxFrame ),
-_display_max( kMinFrame ),
+_display_min( 1 ),
+_display_max( 50 ),
 uiMain( NULL )
 {
     type( TICK_ABOVE );
@@ -94,7 +94,7 @@ mrv::ImageBrowser* Timeline::browser() const
 
 void Timeline::display_minimum( const double& x )
 {
-    if ( x >= minimum() ) _display_min = x;
+    if ( x > minimum() ) _display_min = x;
 
     if ( uiMain && uiMain->uiView )
     {
@@ -106,7 +106,7 @@ void Timeline::display_minimum( const double& x )
 
 void Timeline::display_maximum( const double& x )
 {
-    if ( x <= maximum() ) _display_max = x;
+    if ( x < maximum() ) _display_max = x;
 
     if ( uiMain && uiMain->uiView )
     {
@@ -199,7 +199,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 
     double A,B;
     if ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
-	 ( display_minimum() != minimum() || display_maximum() != maximum() ) )
+	 ( display_minimum() > minimum() || display_maximum() < maximum() ) )
     {
         A = display_minimum();
         B = display_maximum();
@@ -460,6 +460,8 @@ void Timeline::draw_selection( const mrv::Recti& r )
     int rx = r.x() + (slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
+
+    std::cerr << _display_min << " to " << _display_max << std::endl;
     
     fl_color( FL_CYAN );
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
@@ -566,7 +568,7 @@ void Timeline::draw()
 
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-	     ( _display_min != minimum() || _display_max != maximum() ) )
+	     ( _display_min > minimum() || _display_max < maximum() ) )
         {
             draw_selection(r);
         }
@@ -624,7 +626,7 @@ void Timeline::draw()
         };
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-             ( _display_min != minimum() || _display_max != maximum() ) )
+             ( _display_min > minimum() || _display_max < maximum() ) )
         {
             draw_selection(r);
         }
