@@ -5,8 +5,7 @@
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:91
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:92
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:83
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:88
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:116
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:110
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:79
 #: core/CMedia.cpp:2001 core/CMedia.cpp:2005 core/CMedia.cpp:2431
 #: core/CMedia.cpp:2434 core/CMedia.cpp:2461 core/CMedia.cpp:2465
@@ -116,7 +115,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-04-17 22:20-0300\n"
+"POT-Creation-Date: 2019-04-18 19:09-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -3518,9 +3517,10 @@ msgstr ""
 msgid " Eraser"
 msgstr " Goma de Borrar"
 
+#
 #: core/CMedia_audio.cpp:2314
 msgid " F:"
-msgstr "C:"
+msgstr " C:"
 
 #: gui/mrvBrowser.cpp:30
 msgid " FAILED"
@@ -4015,7 +4015,7 @@ msgid " to"
 msgstr " a "
 
 #: core/aviImage_save.cpp:584 gui/FLU/Flu_File_Chooser.cpp:4411
-#: gui/mrvImageBrowser.cpp:2251
+#: gui/mrvImageBrowser.cpp:2251 gui/mrvTimeline.cpp:464
 msgid " to "
 msgstr " a "
 
@@ -6136,7 +6136,7 @@ msgstr ""
 msgid "%s\t%s"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:103
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:97
 #, c-format
 msgid "%s\t%s\t%8d\t%8d"
 msgstr ""
@@ -12657,6 +12657,10 @@ msgstr ""
 msgid "@b\t"
 msgstr ""
 
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:84
+msgid "@b@B8ID\t@b@B8Tag\t@b@B8Offset\t@b@B8Size"
+msgstr ""
+
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1956
 msgid "@|<"
 msgstr ""
@@ -16461,6 +16465,7 @@ msgstr "Separación de las Vistas"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1573
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1794
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1916
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1938
 #: core/CMedia.cpp:3836 core/CMedia.cpp:4490 core/CMedia_audio.cpp:2251
 #: core/CMedia_audio.cpp:2433 core/aviImage.cpp:3697 core/aviImage.cpp:3744
@@ -16563,10 +16568,7 @@ msgstr ""
 msgid "F.\tc #FFE89E"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1916
-msgid "F:"
-msgstr "C:"
-
+#
 #: gui/mrvImageView.cpp:3645
 msgid "F: "
 msgstr "C: "
@@ -17629,7 +17631,7 @@ msgstr "Shaders de Hardware:\t"
 msgid "Hardware shaders not available."
 msgstr "Hardware Shaders no disponibles."
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:93
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:87
 #: core/mrvColorProfile.cpp:249
 msgid "Header"
 msgstr "Encabezado"
@@ -17811,13 +17813,13 @@ msgstr "ICC"
 msgid "ICC Profile"
 msgstr "Perfil ICC"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:147
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:144
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1983
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:792
 msgid "ICC Profiles"
 msgstr "Perfiles ICC"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:142
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:139
 msgid "ICC Profiles Inspector"
 msgstr "Inspector de Perfiles ICC"
 
@@ -17843,10 +17845,6 @@ msgstr "ICC"
 #: video/mrvGLLut3d.cpp:1225
 #, c-format
 msgid "ICS \"%s\""
-msgstr ""
-
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:48
-msgid "ID"
 msgstr ""
 
 #: core/aviImage.cpp:334
@@ -18281,10 +18279,6 @@ msgstr "Incrementando en Y"
 #: gui/mrvImageBrowser.cpp:716
 msgid "Index "
 msgstr "Índice inválido "
-
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:156
-msgid "Info"
-msgstr "Información"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvStereoUI.cxx:100
 msgid "Input"
@@ -20430,7 +20424,6 @@ msgstr "Ciclo de Objeto"
 msgid "Oct"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:48
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:212
 #: core/mrvServer.cpp:412 core/mrvColorProfile.cpp:297
 msgid "Offset"
@@ -21886,11 +21879,11 @@ msgstr "Modo de Redondeo"
 #: core/aviImage.cpp:3742 core/aviImage.cpp:3818 gui/mrvColorInfo.cpp:828
 #: gui/mrvColorInfo.cpp:834 gui/mrvImageView.cpp:7492 gui/mrvVersion.cpp:399
 msgid "S"
-msgstr "S"
+msgstr ""
 
 #: gui/mrvVersion.cpp:410
 msgid "S\t"
-msgstr "S"
+msgstr ""
 
 #: gui/FLU/flu_pixmaps.cpp:1716
 msgid "S\tc #060B34"
@@ -22514,7 +22507,6 @@ msgstr "Un Solo Click para Viajar a las Carpetas"
 msgid "Single Instance"
 msgstr "Una Sola Instancia"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:48
 #: core/mrvColorProfile.cpp:297 gui/FLU/Flu_File_Chooser.cpp:95
 #: gui/mrvColorInfo.cpp:517
 msgid "Size"
@@ -22914,9 +22906,10 @@ msgstr ""
 msgid "T.\tc #FFE9A0"
 msgstr ""
 
+#
 #: gui/mrvImageView.cpp:3657
 msgid "T: "
-msgstr "T: "
+msgstr "C: "
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:114
 msgid "TIFF (.tif)"
@@ -22935,7 +22928,6 @@ msgstr "T"
 msgid "Tab"
 msgstr "Tab"
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:48
 #: core/mrayImage.cpp:182 core/mrvColorProfile.cpp:296
 msgid "Tag"
 msgstr "Tags"
@@ -22944,7 +22936,7 @@ msgstr "Tags"
 msgid "Tag ("
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:35
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:37
 msgid "Tags"
 msgstr "Tags"
 
@@ -31160,6 +31152,12 @@ msgstr ""
 msgid "sock"
 msgstr ""
 
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:61
+msgid ""
+"some text\n"
+"line 2\n"
+msgstr ""
+
 #: core/rawImage.cpp:80
 msgid "sr2"
 msgstr ""
@@ -32988,6 +32986,25 @@ msgstr ""
 msgid "~/"
 msgstr ""
 
+#, fuzzy
+#~ msgid "set display max to  "
+#~ msgstr "Display"
+
+#, fuzzy
+#~ msgid "set display min to  "
+#~ msgstr "Display"
+
+#, fuzzy
+#~ msgid "maximum set to "
+#~ msgstr " a "
+
+#
+#~ msgid "Information"
+#~ msgstr "Información"
+
+#~ msgid "Info"
+#~ msgstr "Información"
+
 #
 #~ msgid " with "
 #~ msgstr " falló con "
@@ -33429,12 +33446,6 @@ msgstr ""
 
 #~ msgid "2 "
 #~ msgstr "25"
-
-#~ msgid "display max "
-#~ msgstr "Display"
-
-#~ msgid "display min "
-#~ msgstr "Display"
 
 #~ msgid "preload stop"
 #~ msgstr "Precargar Cache"
