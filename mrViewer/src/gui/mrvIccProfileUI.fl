@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include <cstring>} {public local
@@ -8,7 +8,7 @@ decl {\#include <cstring>} {public local
 decl {\#include <string>} {public local
 }
 
-decl {\#include "core/mrvFrame.h" } { public local
+decl {\#include "core/mrvFrame.h"} {public local
 }
 
 decl {\#include <algorithm>} {private local
@@ -52,51 +52,58 @@ class ICCProfileUI {open
 make_window();} {}
   }
   Function {~ICCProfileUI()} {open
-  } {}
+  } {
+    code {
+    uiTextDisplay->buffer( 0 );
+    delete uiText; 
+    delete uiMain; uiMain = NULL;
+delete _profile;} {}
+  }
   Function {make_window()} {open
   } {
     Fl_Window uiMain {open
       xywh {627 276 650 485} type Double resizable visible
     } {
       Fl_Pack {} {open
-	xywh {0 0 637 485}
+        xywh {0 0 637 485}
       } {
-	Fl_Group {} {open
-	  xywh {0 0 623 161}
-	} {
-	  Fl_Browser uiTags {
-	    label Tags
-	    user_data this user_data_type {ICCProfileUI*}
-	    callback {v->fill_text();}
-	    xywh {0 6 623 155}
-	    code0 {static const int widths[] = { -1, 120, 80,  80, 0 };
+        Fl_Group {} {open
+          xywh {0 0 623 161}
+        } {
+          Fl_Browser uiTags {
+            label Tags
+            user_data this user_data_type {ICCProfileUI*}
+            callback {v->fill_text();} selected
+            xywh {0 6 623 155} type Hold
+            code0 {static const int widths[] = { -1, 120, 80,  80, 0 };
 static const char* labels[] = { "ID", "Tag", "Offset", "Size", NULL };
 
 o->column_widths( widths );
 o->column_labels( labels );}
-	    class {mrv::Browser}
-	  }
-	}
-	Fl_Group {} {open
-	  xywh {0 0 625 461}
-	} {
-	  Fl_Wizard uiWizard {open
-	    xywh {0 0 625 295}
-	    code0 {o->value(0);}
-	  } {
-	    Fl_Text_Display uiTextDisplay {selected
-	      xywh {5 10 620 285} hide
-	      code0 {uiText = new Fl_Text_Buffer;}
-	    }
-	    Fl_Group {} {open
-	      xywh {0 0 623 290}
-	    } {
-	      Fl_Box uiDrawing {
-		xywh {0 0 620 285}
-	      }
-	    }
-	  }
-	}
+            class {mrv::Browser}
+          }
+        }
+        Fl_Group {} {open
+          xywh {0 0 635 461}
+        } {
+          Fl_Wizard uiWizard {open
+            xywh {0 0 635 295}
+            code0 {o->value(0);}
+          } {
+            Fl_Text_Display uiTextDisplay {
+              xywh {5 10 620 285} hide
+              code0 { o->buffer( new Fl_Text_Buffer );
+	      uiText = o->buffer(); }
+            }
+            Fl_Group {} {open
+              xywh {0 0 635 290}
+            } {
+              Fl_Box uiDrawing {
+                xywh {15 5 620 285}
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -141,9 +148,9 @@ fill_text();} {}
 if (!_profile) return;
 
 int idx = uiTags->value();
-if ( idx < 0 ) return;
+if ( idx < 1 ) return;
 
-if ( idx == 0 ) {
+if ( idx == 1 ) {
   uiText->text( mrv::colorProfile::header( _profile ).c_str() );
   return;
 }
@@ -156,41 +163,43 @@ uiTextDisplay->redraw();} {}
   }
 }
 
-class ICCProfileListUI {} {
+class ICCProfileListUI {open
+} {
   decl {ICCProfileUI* _info;} {private local
   }
   Function {make_window()} {open
   } {
     Fl_Window uiMain {
       label {ICC Profiles Inspector} open
-      xywh {414 58 630 460} type Double hide resizable
+      xywh {414 58 630 460} type Double resizable visible
     } {
-      Fl_Pack {} {open
-	xywh {0 14 625 431} box UP_BOX
+      Fl_Group {} {open
+        xywh {0 0 630 460} box PLASTIC_UP_BOX
       } {
-	Fl_Group {} {open
-	  xywh {2 0 623 381}
-	} {
-	  Fl_Browser uiProfiles {
-	    label {ICC Profiles}
-	    xywh {8 26 605 335}
-	  }
-	}
-	Fl_Group {} {open
-	  xywh {10 371 605 50}
-	} {
-	  Fl_Button {} {
-	    label Info
-	    user_data this user_data_type {ICCProfileListUI*}
-	    callback {v->show_info();}
-	    xywh {480 5 110 35}
-	  }
-	}
+        Fl_Group {} {open
+          xywh {0 0 630 366}
+        } {
+          Fl_Browser uiProfiles {
+            label {ICC Profiles}
+            xywh {6 26 605 335} type Hold box PLASTIC_DOWN_BOX resizable
+          }
+        }
+        Fl_Group {} {open
+          xywh {430 371 178 58} box UP_BOX
+        } {
+          Fl_Button {} {
+            label Info
+            user_data this user_data_type {ICCProfileListUI*}
+            callback {v->show_info();}
+            xywh {463 380 110 35} box PLASTIC_UP_BOX
+          }
+        }
       }
     }
     code {_info = new ICCProfileUI();} {}
   }
-  Function {ICCProfileListUI( ViewerUI* main )} {} {
+  Function {ICCProfileListUI( ViewerUI* main )} {open
+  } {
     code {Fl_Group::current( main->uiMain );
       uiMain = make_window();
       Fl_Group::current(0);
@@ -198,7 +207,8 @@ class ICCProfileListUI {} {
   }
   Function {~ICCProfileListUI()} {open
   } {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;
+delete _info; _info = NULL;} {}
   }
   Function {fill()} {open
   } {
@@ -213,10 +223,8 @@ uiProfiles->redraw();} {}
   Function {show_info()} {open
   } {
     code {int idx = uiProfiles->value();
-if ( idx < 0 ) return;
-Fl_Widget* w = uiProfiles->child(idx);
-if (!w) return;
-const char* label = w->label();
+if ( idx < 1 ) return;
+const char* label = uiProfiles->text(idx);
 if (!label) return;
 if (!_info) return;
 _info->replace( label );} {}
