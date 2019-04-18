@@ -31,14 +31,11 @@
 
 #include <iostream>
 
-#include <FL/Fl_Window.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl.H>
 #include <FL/fl_utf8.h>
 
-#include "core/mrvThread.h"
-#include "core/mrvHome.h"
 #include "gui/mrvTextDisplay.h"
 
 namespace mrv {
