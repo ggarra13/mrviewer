@@ -908,7 +908,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
             {
 #define ICC_PROFILE(x, d)						\
           ok = icc.get( #x, tmpS, d, 2048 );				\
-          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok )
+          CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
+	  uiPrefs->uiICC_## x ## _profile->value( tmpS );
 
                 ICC_PROFILE( 8bits,  "" );
                 ICC_PROFILE( 16bits, "" );
