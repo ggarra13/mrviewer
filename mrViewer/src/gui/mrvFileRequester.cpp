@@ -147,8 +147,7 @@ const char* file_save_single_requester(
         }
         else
         {
-            file = flu_save_chooser( title, pattern, startfile
-                                     /* , compact_images @TODO: fltk1.4 */ );
+            file = flu_save_chooser( title, pattern, startfile, compact_images );
         }
         if ( !file ) return "";
     }
@@ -431,7 +430,7 @@ const char* open_icc_profile( const char* startfile,
     if ( !startfile )
         startfile = getenv("ICC_PROFILES");
 
-    if ( !startfile || strlen( startfile ) <= 0 )
+    if ( !startfile || strlen( startfile ) == 0 )
     {
 #if defined(WIN32) || defined(WIN64)
         char buf[256];
