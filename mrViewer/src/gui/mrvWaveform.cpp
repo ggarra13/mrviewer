@@ -134,6 +134,8 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     // 	     src_linesize, dst_linesize );
     // fprintf( stderr, "dst_signed_linesize=%d\n", dst_signed_linesize );
     // fprintf( stderr, "src_w=%d src_h=%d\n", src_w, src_h );
+    // fprintf( stderr, "dst_w=%d dst_h=%d\n\n\n", out->width(), out->height() );
+    // fprintf( stderr, "offset_x=%d offset_y=%d\n\n\n", offset_x, offset_y );
     // fprintf( stderr, "jobnr=%d\n\n\n\n", jobnr );
     // fprintf( stderr, "nb_jobs=%d\n\n\n\n", nb_jobs );
     // fprintf( stderr, "sliceh_start=%d sliceh_end=%d\n",
@@ -142,7 +144,8 @@ static av_always_inline void lowpass(mrv::image_type_ptr in,
     // 	     slicew_start, slicew_end );
     // fprintf( stderr, "s->size=%d\n\n\n\n", ssize );
     // fprintf( stderr, "step=%d\n\n\n\n", step );
-
+    // fprintf( stderr, "data=%p", out->data().get() );
+    
     if (!column && mirror)
         dst_data += ssize;
 
@@ -204,7 +207,7 @@ static av_always_inline void lowpass16(mrv::image_type_ptr in,
                                        int offset_y, int offset_x)
 {
     const int column = 1;
-    const int mirror = 1;
+    const int mirror = 0;
     const int ssize = out->height();
     const int smax = 256;
     const int jobnr = 0;
@@ -351,7 +354,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 
 
 
-    if ( !out || out->width() != w() || out->height() != h() )
+    if ( !out || out->width() != pic->width() || out->height() != 256 )
     {
         typedef CMedia::Mutex Mutex;
         Mutex& mtx = img->video_mutex();
@@ -359,7 +362,8 @@ void Waveform::draw_pixels( const mrv::Recti& r )
 
         try
         {
-            out.reset( new image_type( pic->frame(), w(), h(), 1,
+            out.reset( new image_type( pic->frame(), pic->width(),
+				       256, 1,
                                        mrv::image_type::kLumma,
                                        VideoFrame::kByte ) );
 	    
@@ -394,12 +398,12 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     case VideoFrame::kITU_601_YCbCr420A:
         if ( pic->pixel_type() == VideoFrame::kByte )
         {
-            int value = _intensity * 256;
+            int value = _intensity * 255;
             lowpass( pic, out, 0, value, 0, 0 );
         }
         else if ( pic->pixel_type() == VideoFrame::kShort )
         {
-            int value = _intensity * 256;
+            int value = _intensity * 255;
             create_image( pic );
             lowpass( in, out, 0, value, 0, 0);
         }
@@ -423,7 +427,7 @@ void Waveform::draw_pixels( const mrv::Recti& r )
     {
         if ( pic->pixel_type() == VideoFrame::kByte )
         {
-            int value = _intensity * 256;
+            int value = _intensity * 255;
             lowpass( pic, out, 0, value, 0, 0 );
         }
         // else if ( pic->pixel_type() == VideoFrame::kShort )
