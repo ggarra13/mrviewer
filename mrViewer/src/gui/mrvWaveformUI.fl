@@ -33,7 +33,7 @@ class WaveformUI {open
       label Waveform
       user_data this user_data_type {WaveformUI*} open selected
       xywh {108 509 335 315} type Double resizable
-      code0 {main_ = main;} non_modal visible
+      code0 {main_ = main;} non_modal size_range {335 315 0 0} visible
     } {
       Fl_Group {} {open
         xywh {0 0 330 306} resizable
