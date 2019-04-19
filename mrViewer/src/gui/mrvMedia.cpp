@@ -75,8 +75,6 @@ media::~media()
     _image = NULL;
     if ( _thumbnail )
     {
-        // thumbnail is not deleted, as fltk will do it for us.
-        //((Fl_Shared_Image*)_thumbnail)->release();  // @TODO: fltk1.4
 	delete _thumbnail;
         _thumbnail = NULL;
     }
