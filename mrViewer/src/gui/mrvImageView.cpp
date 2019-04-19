@@ -2780,8 +2780,8 @@ void ImageView::handle_commands()
         if ( c.linfo )
         {
             const std::string imgname = c.linfo->filename;
-            // std::cerr << "COMMAND: change image #" << idx << " "
-            //           << imgname << std::endl;
+            std::cerr << "COMMAND: change image #" << idx << " "
+		      << imgname << std::endl;
             for ( ; j != e; ++j, ++i )
             {
                 if ( !(*j) ) continue;
@@ -2920,7 +2920,7 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         unsigned idx = attr->value();
-        // std::cerr << "COMMAND: Change Channel " << idx << std::endl;
+        std::cerr << "COMMAND: Change Channel " << idx << std::endl;
         if ( foreground() )
         {
             channel( idx );
@@ -7386,27 +7386,28 @@ void ImageView::channel( unsigned short c )
     if ( c >= idx )
     {
         c = 0;
+	const Fl_Menu_Item* w;
         const char* lbl = uiColorChannel->label();
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
             bool found = false;
             num = uiColorChannel->children();
-            for ( unsigned short i = 0; i < num; ++i, ++c, ++idx )
+            for ( unsigned short i = 0; i < num; ++i, ++c )
             {
-                const Fl_Menu_Item* w = uiColorChannel->child(i);
+                w = uiColorChannel->child(i);
                 if ( w->label() && strcmp( w->label(), lbl ) == 0 )  break;
                 // if ( w->flags & FL_SUBMENU )
                 // {
                 //     for ( ; w->label(); w = w->next(), ++idx )
                 //     {
-                //      if ( strcmp( w->label(), lbl ) == 0 )
-                //      {
-                //          found = true;
-                //          break;
-                //      }
+		// 	if ( strcmp( w->label(), lbl ) == 0 )
+		// 	{
+		// 	    found = true;
+		// 	    break;
+		// 	}
                 //     }
-                //     if ( found ) break;
-                //   }
+		//     if ( found ) break;
+		// }
             }
         }
 
@@ -7414,7 +7415,8 @@ void ImageView::channel( unsigned short c )
         {
             LOG_ERROR( _("Invalid index ") << c
                        << _(" for channel.  Maximum: " )
-                       << idx );
+                       << idx << _(". Widget label is ")
+		       << (w->label() ? w->label() : "empty" ) );
             return;
         }
     }
@@ -8918,12 +8920,16 @@ void ImageView::play( const CMedia::Playback dir )
         return;
     }
 
+    
     mrv::media fg = foreground();
     if (!fg) return;
 
     mrv::media bg = background();
 
     CMedia* img = fg->image();
+
+    if ( img->first_frame() == img->last_frame() )
+	return;
 
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
