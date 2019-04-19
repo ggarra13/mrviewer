@@ -120,7 +120,7 @@ v->new_reel(name);}
           Fl_Button uiEDLButton {
             label EDL
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-            callback {v->toggle_edl();} selected
+            callback {v->toggle_edl();}
             tooltip {Toggle Reel EDL in Timeline} xywh {368 2 26 26} down_box PLASTIC_DOWN_BOX selection_color 94 labelfont 1 labelsize 11
           }
         }
@@ -129,8 +129,10 @@ v->new_reel(name);}
   }
   Function {ReelUI(ViewerUI* m)} {open
   } {
-    code {Fl_Group::current(0);
-make_window( m );} {}
+    code {Fl_Group::current( m->uiMain );
+make_window( m );
+Fl_Group::current(0);} {selected
+    }
   }
   Function {~ReelUI()} {open
   } {
