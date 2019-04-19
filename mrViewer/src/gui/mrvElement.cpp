@@ -13,7 +13,7 @@ void Element::make_thumbnail()
 {
     _elem->create_thumbnail();
 
-    Fl_RGB_Image* b = _elem->thumbnail();
+    Fl_Image* b = _elem->thumbnail()->copy();
     if ( !b || b->w() < 1 )
     {
         LOG_ERROR( "Empty image in thumbnail"  );
@@ -31,14 +31,12 @@ void Element::make_thumbnail()
     Fl_Group(0,0,VMARGIN,64+VMARGIN*2),
     image(NULL),
     _elem( m )
-    {		// VMARGIN makes group slightly larger than items
+    {	// VMARGIN makes group slightly larger than items
         // Create widget to hold image
-        //     Assign different image to each instance of us for demo purposes..
         //
         if ( !m )
         {
-            LOG_ERROR("Empty media provided to Element constructor" );
-	    abort();
+            LOG_ERROR( _("Empty media provided to Element constructor") );
 	    return;
         }
 
@@ -46,7 +44,7 @@ void Element::make_thumbnail()
         CMedia* img = m->image();
         if ( !img )
         {
-            LOG_ERROR("Empty element provided to Element constructor" );
+            LOG_ERROR( _("Empty image provided to Element constructor") );
             return;
         }
 
@@ -99,6 +97,13 @@ void Element::make_thumbnail()
         end();
 
     }
+
+Element::~Element()
+{
+    delete image; image = NULL;
+    delete label; label = NULL;
+}
+
 
    void Element::Label(const char *s) {
         if ( label ) label->copy_label(s);
