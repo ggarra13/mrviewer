@@ -39,6 +39,7 @@ class Element : public Fl_Group {
     Fl_Box *label;		// label part of widget
 public:
     Element(mrv::media m);
+    ~Element();
 
     void Label(const char *s);
 
