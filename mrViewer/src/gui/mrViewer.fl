@@ -584,7 +584,8 @@ v->uiView->redraw();}
   }
 }
 
-class ConnectionUI {} {
+class ConnectionUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -817,7 +818,7 @@ uiICCProfiles->uiMain->show();}
             xywh {120 1 286 24} color 1397969664
           } {
             Fl_Box {} {
-              label Gain selected
+              label Gain
               xywh {120 2 33 22} labelsize 12 align 120
             }
             Fl_Value_Input uiGainInput {
@@ -1746,7 +1747,8 @@ mrv::Preferences prefs( uiPrefs );} {}
   Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {} {
+  Function {~ViewerUI()} {open
+  } {
     code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
@@ -1759,9 +1761,11 @@ delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
+delete uiConnection; uiConnection = NULL;
 delete uiMain; uiMain = NULL;
 delete uiHotkey; uiHotkey = NULL;
-delete uiReelWindow; uiReelWindow = NULL;} {}
+delete uiReelWindow; uiReelWindow = NULL;} {selected
+    }
   }
   Function {refresh()} {open
   } {
