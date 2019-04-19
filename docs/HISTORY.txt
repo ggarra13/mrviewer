@@ -1,5 +1,9 @@
 v5.0.1-RC4
 	- Made ICC Profiles and ICC Profile Inspector actually work again.
+	- Bug fixed a small problem with single images not refreshing when
+	  a movie was played and the foreground was switched to the image.
+	- Bug fixed a memory trashing in the waveform monitor.
+	- Bug fixed some memory leaks in filename printfs.
 
 
 v5.0.1-RC3
