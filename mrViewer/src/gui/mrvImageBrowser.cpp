@@ -1050,6 +1050,7 @@ void ImageBrowser::change_reel()
     _reel_choice->value( _reel );
 
     clear_children( root() );
+    callback_item( NULL );
     dragging = NULL;
     
     if ( reel->images.empty() )
@@ -1103,6 +1104,7 @@ void ImageBrowser::change_reel()
  */
 void ImageBrowser::change_image()
 {
+    
     int sel = value();
 
     mrv::ImageView* v = view();
@@ -1138,7 +1140,7 @@ void ImageBrowser::change_image()
         if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
 
 
-        if ( m != om && m && v )
+        if ( m && v )
         {
             DBG( "FG REEL " << _reel << " m: " << m->image()->name() );
 
@@ -1157,14 +1159,9 @@ void ImageBrowser::change_image()
             std::string path = media_to_pathname( m );
             Fl_Tree::select( path.c_str(), 0 );
 
-
+	    send_image( sel );
+	    
             adjust_timeline();
-            //send_current_image( m );
-        }
-        else
-        {
-            DBG( "FG REEL " << _reel << " om: " << om->image()->name() );
-            //send_current_image( om );
         }
 
     }
@@ -2383,6 +2380,8 @@ void ImageBrowser::next_image()
     }
 
     adjust_timeline();
+    
+    send_image( v );
 
     if ( play ) view()->play(play);
 }
@@ -2448,6 +2447,8 @@ void ImageBrowser::previous_image()
         img->do_seek();
     }
 
+    send_image( v );
+    
     adjust_timeline();
 
     if ( play ) view()->play(play);
@@ -2510,7 +2511,9 @@ int ImageBrowser::mousePush( int x, int y )
 
         mrv::Reel reel = current_reel();
         mrv::Element* e = (mrv::Element*) dragging->widget();
+	assert0( e != NULL );
         mrv::media m = e->media();
+	assert0( m );
         view()->foreground( m );
 
 
