@@ -201,6 +201,7 @@ exrImage::exrImage() :
 
 exrImage::~exrImage()
 {
+    _cap_date.clear();
     free( _has_right_eye );
     free( _has_left_eye );
 }
