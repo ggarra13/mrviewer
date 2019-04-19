@@ -1501,7 +1501,7 @@ void CMedia::sequence( const char* fileroot,
 	 start == _frame_start && end == _frame_end )
         return;
 
-
+    free( _fileroot );
     _fileroot = strdup( fileroot );
 
     std::string f = _fileroot;
@@ -1530,8 +1530,8 @@ void CMedia::sequence( const char* fileroot,
 
     if ( dynamic_cast< aviImage* >( this ) == NULL )
     {
-        _sequence = new mrv::image_type_ptr[ unsigned(num) ];
-        _right    = new mrv::image_type_ptr[ unsigned(num) ];
+        _sequence = new mrv::image_type_ptr[ num ];
+        _right    = new mrv::image_type_ptr[ num ];
     }
 
     if ( ! initialize() )
@@ -1591,6 +1591,7 @@ void CMedia::filename( const char* n )
     fs::path file = fs::path( name );
     file = fs::absolute( file );
 
+    free( _fileroot );
     if ( fs::exists( file ) )
     {
         std::string path = fs::canonical( file ).string();
@@ -1645,6 +1646,7 @@ const char* const CMedia::filename() const
 
     CMedia* self = const_cast< CMedia* >(this);
     std::string file = self->sequence_filename( _dts );
+    free( self->_filename );
     self->_filename = (char*) malloc( 1024 * sizeof(char) );
     strncpy( self->_filename, file.c_str(), 1023 );
     return _filename;
