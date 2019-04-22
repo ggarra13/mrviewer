@@ -16,8 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+<<<<<<< HEAD
+#include "core/mrvI8N.h"
+=======
 #include "core/mrvFrame.h"
 
+>>>>>>> v5.0.1-RC4
 #include <cstdio>
 #include <iostream>
 
@@ -25,8 +29,6 @@
 
 #include "keyboard_ui.h"
 #include "mrViewer.h"
-
-#include "core/mrvI8N.h"
 
 #include "mrvHotkey.h"
 
