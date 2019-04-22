@@ -875,10 +875,10 @@ CMedia::~CMedia()
 
     free( _subtitle_encoding );
     _subtitle_encoding = NULL;
-    
+
     free( _subtitle_font );
     _subtitle_font = NULL;
-    
+
     _hires.reset();
 
 
@@ -967,32 +967,32 @@ int CMedia::from_stereo_output( CMedia::StereoOutput x )
 {
     switch( x )
     {
-	case kStereoLeft:
-	    return 1;
-	case kStereoRight:
-	    return 2;
-	case kStereoOpenGL:
-	    return 3;
-	case kStereoTopBottom:
-	    return 4;
-	case kStereoBottomTop:
-	    return 5;
-	case kStereoSideBySide:
-	    return 6;
-	case kStereoCrossed:
-	    return 7;
-	case kStereoInterlaced:
-	    return 8;
-	case kStereoInterlacedColumns:
-	    return 9;
-	case kStereoCheckerboard:
-	    return 10;
-	case kStereoAnaglyph:
-	    return 11;
-	case kStereoRightAnaglyph:
-	    return 12;
-	default:
-	    return 0;
+        case kStereoLeft:
+            return 1;
+        case kStereoRight:
+            return 2;
+        case kStereoOpenGL:
+            return 3;
+        case kStereoTopBottom:
+            return 4;
+        case kStereoBottomTop:
+            return 5;
+        case kStereoSideBySide:
+            return 6;
+        case kStereoCrossed:
+            return 7;
+        case kStereoInterlaced:
+            return 8;
+        case kStereoInterlacedColumns:
+            return 9;
+        case kStereoCheckerboard:
+            return 10;
+        case kStereoAnaglyph:
+            return 11;
+        case kStereoRightAnaglyph:
+            return 12;
+        default:
+            return 0;
     }
 }
 
@@ -1000,33 +1000,33 @@ CMedia::StereoOutput CMedia::to_stereo_output( int x )
 {
     switch( x )
     {
-	case 1:
-	    return kStereoLeft;
-	case 2:
-	    return kStereoRight;
-	case 3:
-	    return kStereoOpenGL;
-	case 4:
-	    return kStereoTopBottom;
-	case 5:
-	    return kStereoBottomTop;
-	case 6:
-	    return kStereoSideBySide;
-	case 7:
-	    return kStereoCrossed;
-	case 8:
-	    return kStereoInterlaced;
-	case 9:
-	    return kStereoInterlacedColumns;
-	case 10:
-	    return kStereoCheckerboard;
-	case 11:
-	    return kStereoAnaglyph;
-	case 12:
-	    return kStereoRightAnaglyph;
-	case 0:
-	default:
-	    return kNoStereo;
+        case 1:
+            return kStereoLeft;
+        case 2:
+            return kStereoRight;
+        case 3:
+            return kStereoOpenGL;
+        case 4:
+            return kStereoTopBottom;
+        case 5:
+            return kStereoBottomTop;
+        case 6:
+            return kStereoSideBySide;
+        case 7:
+            return kStereoCrossed;
+        case 8:
+            return kStereoInterlaced;
+        case 9:
+            return kStereoInterlacedColumns;
+        case 10:
+            return kStereoCheckerboard;
+        case 11:
+            return kStereoAnaglyph;
+        case 12:
+            return kStereoRightAnaglyph;
+        case 0:
+        default:
+            return kNoStereo;
     }
 }
 
@@ -1034,15 +1034,15 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
 {
     switch( x )
     {
-	case kSeparateLayersInput:
-	    return 0;
-	case kTopBottomStereoInput:
-	    return 1;
-	case kLeftRightStereoInput:
-	    return 2;
-	case kNoStereoInput:
-	default:
-	    return 0;
+        case kSeparateLayersInput:
+            return 0;
+        case kTopBottomStereoInput:
+            return 1;
+        case kLeftRightStereoInput:
+            return 2;
+        case kNoStereoInput:
+        default:
+            return 0;
     }
 }
 
@@ -1050,14 +1050,14 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 {
     switch( x )
     {
-	case 0:
-	    return kSeparateLayersInput;
-	case 1:
-	    return kTopBottomStereoInput;
-	case 2:
-	    return kLeftRightStereoInput;
-	default:
-	    return kNoStereoInput;
+        case 0:
+            return kSeparateLayersInput;
+        case 1:
+            return kTopBottomStereoInput;
+        case 2:
+            return kLeftRightStereoInput;
+        default:
+            return kNoStereoInput;
     }
 }
 
@@ -1152,7 +1152,7 @@ mrv::image_type_ptr CMedia::right() const
     SCOPED_LOCK( mtx );
 
     if ( stereo_input() == kTopBottomStereoInput ||
-	 stereo_input() == kLeftRightStereoInput )
+         stereo_input() == kLeftRightStereoInput )
         return _stereo[0] ? _stereo[0] : _hires;
 
     int64_t num = _frame_end - _frame_start + 1;
@@ -1498,7 +1498,7 @@ void CMedia::sequence( const char* fileroot,
         fileroot += 5;
 
     if ( _fileroot && strcmp( fileroot, _fileroot ) == 0 &&
-	 start == _frame_start && end == _frame_end )
+         start == _frame_start && end == _frame_end )
         return;
 
     free( _fileroot );
@@ -1704,7 +1704,7 @@ bool CMedia::has_changed()
 
         int result = stat( file.c_str(), &sbuf );
         if ( (result == -1) || (f < _frame_start) ||
-	     ( f > _frame_end ) ) return false;
+             ( f > _frame_end ) ) return false;
 
         int64_t idx = f - _frame_start;
 
@@ -1744,7 +1744,7 @@ bool CMedia::has_changed()
         if ( result == -1 ) return false;
 
         if ( ( _mtime != sbuf.st_mtime ) ||
-	     ( _ctime != sbuf.st_ctime ) )
+             ( _ctime != sbuf.st_ctime ) )
         {
             int64_t f = handle_loops( _frame );
             _is_thumbnail = true; // to avoid printing errors
@@ -2000,8 +2000,8 @@ void CMedia::channel( const char* c )
 
 
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") ||
-	     ch == _("Blue")  || ch == "" ||
-	     ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
+             ch == _("Blue")  || ch == "" ||
+             ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
         {
             c = NULL;
             ch = "";
@@ -2019,7 +2019,7 @@ void CMedia::channel( const char* c )
 
         // If stereo not set, don't fetch anything.
         if ( _channel == NULL && _right_eye &&
-	     _stereo_output != kNoStereo ) to_fetch = false;
+             _stereo_output != kNoStereo ) to_fetch = false;
         else
         {
             // No easy case.  Check the root names to see if one of them
@@ -2071,11 +2071,11 @@ void CMedia::channel( const char* c )
             }
 
             if ( ( ch == "Y" || ch == "RY" || ch == "BY" ) ||
-		 ( ch.find(ch2) == std::string::npos &&
-		   ch2.find(ch) == std::string::npos ) ||
-		 ( ext == "Z" && chl.size() > 1 ) ||
-		 ( ext2 == "Z" && chl2.size() > 1 ) ||
-		 _channel == NULL || c == NULL)
+                 ( ch.find(ch2) == std::string::npos &&
+                   ch2.find(ch) == std::string::npos ) ||
+                 ( ext == "Z" && chl.size() > 1 ) ||
+                 ( ext2 == "Z" && chl2.size() > 1 ) ||
+                 _channel == NULL || c == NULL)
             {
                 // To fetch Z channel, we must make it part of the channel name
                 if ( ext == "Z" ) ch += '.' + ext;
