@@ -111,6 +111,7 @@ public:
     }
 
     virtual void video_stream( int x );
+    virtual int video_stream() const { return _video_index; }
 
     virtual AVStream* get_video_stream() const;
 
