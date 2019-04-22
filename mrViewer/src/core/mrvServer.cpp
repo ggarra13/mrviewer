@@ -136,7 +136,7 @@ void Parser::write( const std::string& s, const std::string& id )
             {
                 continue;
             }
-            LOG_CONN( s << " sent to " << p );
+            //LOG_CONN( s << " sent to " << p );
             //LOG_INFO( "resending " << s << " to " << p );
             (*i)->deliver( s );
         }
@@ -202,18 +202,8 @@ bool Parser::parse( const std::string& s )
     v->_clients.clear();
 
 
-#if 1 // DEBUG_COMMANDS
-    mrv::media fg = v->foreground();
-
-    if ( fg )
-    {
-        CMedia* img = fg->image();
-        LOG_INFO( "received: " << s << " for " << img->name() );
-    }
-    else
-    {
-        LOG_INFO( "received: " << s << " for (empty image)" );
-    }
+#ifdef DEBUG_COMMANDS
+    LOG_INFO( "received: " << s );
 #endif
 
     if ( cmd == N_("GLPathShape") )
@@ -800,40 +790,40 @@ bool Parser::parse( const std::string& s )
     {
         double x;
         is >> x;
-        ui->uiTimeline->maximum( x );
-        ui->uiTimeline->redraw();
-        ui->uiEndFrame->value( boost::int64_t(x) );
-        ui->uiEndFrame->redraw();
-        ok = true;
+
+	ImageView::Command c;
+	c.type = ImageView::kTimelineMax;
+	c.frame = (int64_t) x;
+	ok = true;
     }
     else if ( cmd == N_("TimelineMaxDisplay") )
     {
         double x;
         is >> x;
-        ui->uiTimeline->display_maximum( x );
-        ui->uiTimeline->redraw();
-        ui->uiEndFrame->value( boost::int64_t(x) );
-        ui->uiEndFrame->redraw();
+        
+	ImageView::Command c;
+	c.type = ImageView::kTimelineMaxDisplay;
+	c.frame = (int64_t) x;
         ok = true;
     }
     else if ( cmd == N_("TimelineMin") )
     {
         double x;
         is >> x;
-        ui->uiTimeline->minimum( x );
-        ui->uiTimeline->redraw();
-        ui->uiStartFrame->value( boost::int64_t(x) );
-        ui->uiStartFrame->redraw();
+
+	ImageView::Command c;
+	c.type = ImageView::kTimelineMin;
+	c.frame = (int64_t) x;
+	
         ok = true;
     }
     else if ( cmd == N_("TimelineMinDisplay") )
     {
         double x;
         is >> x;
-        ui->uiTimeline->display_minimum( x );
-        ui->uiTimeline->redraw();
-        ui->uiStartFrame->value( boost::int64_t(x) );
-        ui->uiStartFrame->redraw();
+	ImageView::Command c;
+	c.type = ImageView::kTimelineMinDisplay;
+	c.frame = (int64_t) x;
         ok = true;
     }
     else if ( cmd == N_("VRCubic") )
@@ -1032,116 +1022,11 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
-        r = browser()->current_reel();
+	ImageView::Command c;
+	c.type = ImageView::kInsertImage;
+	c.data = new Imf::IntAttribute( idx );
+	c.linfo = new LoadInfo( imgname );
 
-
-        if ( r )
-        {
-            int j;
-            size_t e = r->images.size();
-
-            if ( ! m )
-            {
-                for ( j = 0; j != e; ++j )
-                {
-                    mrv::media fg = r->images[j];
-                    CMedia* img = fg->image();
-                    std::string file = img->directory() + '/' + img->name();
-                    if ( file == imgname )
-                    {
-                        m = fg;
-                        break;
-                    }
-                }
-            }
-
-            if ( m )
-            {
-                CMedia* img = m->image();
-                std::string file = img->directory() + '/' + img->name();
-
-                for ( j = 0; j != e; ++j )
-                {
-                    if ( j == idx && file == imgname )
-                    {
-                        browser()->insert( idx, m );
-                        browser()->change_image( idx );
-                        browser()->redraw();
-                        edl_group()->refresh();
-                        edl_group()->redraw();
-                        v->redraw();
-                        ok = true;
-                        break;
-                    }
-                }
-
-
-                if ( j == e && file == imgname )
-                {
-                    browser()->add( m );
-                    browser()->change_image( unsigned(e) );
-                    browser()->redraw();
-                    edl_group()->refresh();
-                    edl_group()->redraw();
-                    v->redraw();
-                    ok = true;
-                }
-
-                m.reset();
-            }
-        }
-
-    }
-    else if ( cmd == N_("Image") )
-    {
-        std::string imgname;
-        is.clear();
-        std::getline( is, imgname, '"' ); // skip first quote
-        is.clear();
-        std::getline( is, imgname, '"' );
-        is.clear();
-
-        boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
-        is >> start;
-        is >> end;
-
-        bool found = false;
-        r = browser()->current_reel();
-
-        if ( r )
-        {
-            mrv::MediaList::iterator j = r->images.begin();
-            mrv::MediaList::iterator e = r->images.end();
-            for ( ; j != e; ++j )
-            {
-                mrv::media fg = *j;
-                if (!fg) continue;
-
-                CMedia* img = fg->image();
-                std::string file = img->directory() + '/' + img->name();
-
-                if ( file == imgname &&
-                     img->first_frame() == start &&
-                     img->last_frame() == end )
-                {
-                    found = true;
-                    m = fg;
-                }
-            }
-        }
-
-        if (!found)
-        {
-            ImageView::Command c;
-            c.type = ImageView::kLoadImage;
-
-            c.linfo = new LoadInfo(imgname, start, end);
-
-            v->commands.push_back( c );
-        }
-
-
-        ok = true;
     }
     else if ( cmd == N_("ChangeImage") )
     {
@@ -1182,7 +1067,7 @@ bool Parser::parse( const std::string& s )
         is >> first;
         is >> last;
 
-	LOG_WARNING( "Change to image #" << idx << " "  << imgname );
+ 	LOG_WARNING( "Change to image #" << idx << " "  << imgname );
 	ImageView::Command c;
 	c.type = ImageView::kChangeImage;
 	c.data = new Imf::IntAttribute( idx );
@@ -1310,7 +1195,7 @@ bool Parser::parse( const std::string& s )
 
                 CMedia* img = (*j)->image();
 
-                cmd = N_("Image \"");
+                cmd = N_("CurrentImage \"");
                 cmd += img->directory();
                 cmd += "/";
                 cmd += img->name();
