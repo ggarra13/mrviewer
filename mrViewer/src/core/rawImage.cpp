@@ -25,6 +25,7 @@
  *
  */
 
+#include "core/mrvI8N.h"
 #include <iostream>
 using namespace std;
 
@@ -54,7 +55,6 @@ using namespace std;
 #include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/rawImage.h"
-#include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 
 
