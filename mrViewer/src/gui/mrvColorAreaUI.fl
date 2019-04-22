@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir header_name 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "core/mrvI8N.h"} {public
+} 
+
+decl {\#include <string>} {public
+} 
+=======
 # data file for the Fltk User Interface Designer (fluid)
 version 1.03
 header_name {.h}
@@ -7,6 +22,7 @@ decl {\#include "string"} {public local
 
 decl {\#include "core/mrvFrame.h"} {public local
 }
+>>>>>>> v5.0.1-RC4
 
 decl {\#include "core/mrvI8N.h"} {public local
 }
