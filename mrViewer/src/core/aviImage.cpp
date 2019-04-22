@@ -2030,15 +2030,6 @@ void aviImage::video_stream( int x )
     lumma_layers();
 
     if ( _av_dst_pix_fmt == AV_PIX_FMT_RGBA ||
-<<<<<<< HEAD
-	 _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
-	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P16LE ||
-	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P16LE ||
-	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P16LE ||
-	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
-	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
-	 _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
-=======
             _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P16LE ||
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P16LE ||
@@ -2046,7 +2037,6 @@ void aviImage::video_stream( int x )
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P ||
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA422P ||
             _av_dst_pix_fmt == AV_PIX_FMT_YUVA444P ) alpha_layers();
->>>>>>> v5.0.1-RC4
 
 
     _ptype = VideoFrame::kByte;
