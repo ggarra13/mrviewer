@@ -618,12 +618,19 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       << "(C) 2008-2018 LibRaw LLC (info@libraw.org)"
       << endl
       << endl
+<<<<<<< HEAD
+      << "zlib v" << ZLIB_VERSION << endl
+      << "(C) 2008-2017 Jean-loup Gailly and Mark Adler"
+      << endl
+      << endl;
+=======
       << "zlib v" << ZLIB_VERSION
       << "(C) 2008-2017 Jean-loup Gailly and Mark Adler"
       << endl
       << endl
       << "A big thank you goes to Greg Ercolano who helped with" << endl
       << "the porting and with the color schemes.";
+>>>>>>> v5.0.1-RC4
 
     return o.str();
   }
