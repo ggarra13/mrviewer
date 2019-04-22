@@ -75,11 +75,8 @@ using namespace std;
 #include "CMedia.h"
 #include "mrvIO.h"
 
-<<<<<<< HEAD
-=======
 #include "mrvI8N.h"
 #include "gui/MyPack.h"
->>>>>>> v5.0.1-RC4
 
 
 namespace {
@@ -1566,12 +1563,8 @@ static void change_fps_cb( Fl_Float_Input* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-<<<<<<< HEAD
-        img->play_fps( w->fvalue() );
-=======
         float f = atof( w->value() );
         img->play_fps( f );
->>>>>>> v5.0.1-RC4
         update_float_slider( w );
     }
 }
@@ -2145,14 +2138,8 @@ void ImageInformation::fill_data()
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
     for ( int i = 0; i < num; ++i )
     {
-<<<<<<< HEAD
-        static const double fuzz = 0.01f;
-        if ( mrv::is_equal( aspect_ratio, kAspectRatioNames[i].ratio, fuzz ) )
-	{
-=======
         static const double fuzz = 0.001;
-        if ( mrv::is_equal( aspect_ratio, kAspectRatioNames[i].ratio, fuzz ) )   {
->>>>>>> v5.0.1-RC4
+        if ( mrv::is_equal( aspect_ratio, kAspectRatioNames[i].ratio, fuzz ) )          {
             name = _( kAspectRatioNames[i].name );
             break;
         }
@@ -2260,11 +2247,7 @@ void ImageInformation::fill_data()
     {
         add_enum( _("Color Space"), _("YUV Color Space conversion.  This value is extracted from the movie file.  To lock it to always use the same color space, set the value in Preferences->Video->YUV Conversion.  That value shall take precedence upon loading of the movie file."),
                   avi->colorspace_index(), kColorSpaces,
-<<<<<<< HEAD
-                  12, true, (fltk::Callback*)change_colorspace );
-=======
                   12, true, (Fl_Callback*)change_colorspace );
->>>>>>> v5.0.1-RC4
         add_text( _("Color Range"), _("YUV Color Range"),
                   _(avi->color_range()) );
     }
