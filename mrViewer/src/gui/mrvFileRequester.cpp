@@ -442,7 +442,7 @@ const char* open_icc_profile( const char* startfile,
 #endif
     }
 
-    std::string kICC_PATTERN   = _("Color Profiles\t{*." ) +
+    std::string kICC_PATTERN   = _("Color Profiles\t*.{" ) +
                                  kProfilePattern + "}\n";
 
     const char* profile = file_single_requester( title, kICC_PATTERN.c_str(),
