@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -70,6 +71,7 @@ public:
         kNoCommand = 0,
         kCreateReel = 1,
         kLoadImage,
+	kInsertImage,
         kChangeImage,
 	kBGImage,
 	kFGReel,
@@ -86,6 +88,10 @@ public:
 	kGAIN,
 	kGAMMA,
         kChangeChannel,
+	kTimelineMin,
+	kTimelineMax,
+	kTimelineMinDisplay,
+	kTimelineMaxDisplay,
         kFULLSCREEN,
         kPRESENTATION,
         kMEDIA_INFO_WINDOW_SHOW,
