@@ -30,9 +30,22 @@
 
 #ifdef USE_GETTEXT
 
+<<<<<<< HEAD
+#ifdef __cplusplus
+
+extern "C"
+{
+#include <libintl.h>
+}
+
+#endif
+
+#define _(String)  gettext(String)
+=======
 #include <string.h>
 #include <libintl.h>
 #define _(String)  gettext2(String)
+>>>>>>> v5.0.1-RC4
 #define gettext_noop(String) String
 #define N_(String) gettext_noop (String)
 
