@@ -547,8 +547,15 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsSaveOcio->value( tmp );
 
     ocio.get( "config", tmpS, "", 2048 );
+<<<<<<< HEAD
+    if ( strlen(tmpS) > 0 )
+    {
+	uiPrefs->uiPrefsOCIOConfig->text( tmpS );
+    }
+=======
     uiPrefs->uiPrefsOCIOConfig->value( tmpS );
 
+>>>>>>> v5.0.1-RC4
 
     Fl_Preferences ics( ocio, "ICS" );
     {
@@ -1249,6 +1256,20 @@ void Preferences::run( ViewerUI* main )
 
         sprintf( buf, "OCIO=%s", parsed.c_str() );
         putenv( strdup(buf) );
+<<<<<<< HEAD
+        uiPrefs->uiPrefsOCIOConfig->text( var );
+
+#if 0 // __linux__
+        char tmpS[256];
+        sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
+        const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
+        mrvLOG_INFO( "ocio", _("Setting OCIO's view environment variable to:")
+                     << std::endl );
+        sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
+        mrvLOG_INFO( "ocio", buf << std::endl );
+        putenv( strdup(buf) );
+#endif
+=======
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
 // #ifdef __linux__
@@ -1261,6 +1282,7 @@ void Preferences::run( ViewerUI* main )
 //         mrvLOG_INFO( "ocio", buf << std::endl );
 //         putenv( strdup(buf) );
 // #endif
+>>>>>>> v5.0.1-RC4
 
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
@@ -1785,6 +1807,11 @@ void Preferences::save()
             ocio.set( "save_config", 1 );
             ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
         }
+	else
+	{
+            ocio.set( "save_config", 1 );
+            ocio.set( "config", "" );
+	}
 
         Fl_Preferences ics( ocio, "ICS" );
         {
