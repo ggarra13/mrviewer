@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "core/mrvI8N.h"
+
 #include <algorithm>
 
 #include "core/mrvImageOpts.h"
