@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir header_name 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+
+decl {\#include "core/mrvI8N.h"} { public }
+
+decl {\#include <cstring>} {public
+} 
+=======
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 header_name {.h}
@@ -13,6 +28,7 @@ decl {\#include "core/mrvI8N.h"} {private local
 
 decl {\#include "IccProfile.h"} {private local
 }
+>>>>>>> v5.0.1-RC4
 
 decl {\#include "IccUtil.h"} {private local
 }
@@ -20,11 +36,15 @@ decl {\#include "IccUtil.h"} {private local
 decl {\#include "gui/mrvBrowser.h"} {public local
 }
 
+<<<<<<< HEAD
+decl {\#include "IccProfile.h"} {} 
+=======
 decl {\#include "gui/mrvMainWindow.h"} {public local
 }
 
 decl {\#include "gui/mrvTextDisplay.h"} {public local
 }
+>>>>>>> v5.0.1-RC4
 
 decl {\#include "core/mrvColorProfile.h"} {private local
 }
