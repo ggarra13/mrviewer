@@ -18,6 +18,7 @@
 #ifndef mrvImageOpts_h
 #define mrvImageOpts_h
 
+#include "core/mrvI8N.h"
 #include <string>
 
 #include "ImfCompression.h"
