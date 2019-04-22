@@ -115,7 +115,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-04-22 15:04-0300\n"
+"POT-Creation-Date: 2019-04-22 15:38-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -6167,7 +6167,7 @@ msgstr ""
 msgid "%s %c%d"
 msgstr ""
 
-#: gui/mrvColorSchemes.cpp:80
+#: gui/mrvColorSchemes.cpp:81
 #, c-format
 msgid "%s %d %d %d %d"
 msgstr ""
@@ -15779,6 +15779,7 @@ msgid "Deep Data"
 msgstr "Datos Profundos"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1245
+#: gui/mrvColorSchemes.cpp:100
 msgid "Default"
 msgstr "Defecto"
 
@@ -33108,6 +33109,22 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:737
 msgid "~/"
 msgstr ""
+
+#, fuzzy
+#~ msgid "not cmap "
+#~ msgstr "No puedo mapear \""
+
+#, fuzzy
+#~ msgid "read colors "
+#~ msgstr "Colores"
+
+#, fuzzy
+#~ msgid "colors okay"
+#~ msgstr "Colores"
+
+#, fuzzy
+#~ msgid "not 5 for "
+#~ msgstr ", formato "
 
 #, fuzzy
 #~ msgid "set video stream to "
