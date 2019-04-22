@@ -857,7 +857,7 @@ public:
     virtual void video_stream( int x ) {}
 
     // Returns the video stream index or -1 if no video stream (images)
-    virtual int video_stream() {
+    virtual int video_stream() const {
         return -1;
     }
 
