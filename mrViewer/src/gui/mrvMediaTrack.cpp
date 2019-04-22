@@ -723,7 +723,7 @@ void media_track::draw()
 
 
         mrv::Recti r(rx+dx, y(), dw, h()-20 );
-
+	fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
         if ( browser()->current_image() == fg )
         {
@@ -806,6 +806,7 @@ void media_track::draw()
             }
         }
 
+	fl_pop_clip();
 
         Fl_Image* thumb = fg->thumbnail();
 
@@ -873,7 +874,6 @@ void media_track::draw()
                          y() + (h()-20)/2, ww, hh );
         r.intersect( text );
         if ( r.empty() ) continue;
-
 
 	// Draw shadow first
         fl_draw( txt,
