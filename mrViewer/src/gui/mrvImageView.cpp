@@ -29,6 +29,14 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
+
+//#define NETWORK_COMMANDS
+#ifdef NETWORK_COMMANDS
+#  define NET(x) std::cerr << "COMMAND: " << N_(x) << " for " << name << std::endl;
+#else
+#  define NET(x)
+#endif
+
 #ifdef _WIN32
 #include <winsock2.h>
 #include <windows.h>
@@ -652,19 +660,30 @@ void masking_cb( mrv::PopupMenu* menu, ViewerUI* uiMain )
 }
 
 
-void change_video_cb( Fl_Widget* o, mrv::ImageView* view )
+void change_video_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
 {
-    Fl_Group* g = o->parent();
-    if ( !g ) return;
-    Fl_Menu* p = dynamic_cast< Fl_Menu* >( g );
-    if ( !p ) return;
-
+    const Fl_Menu_Item* p = menu->mvalue();
+    if ( !p ) {
+        std::cerr << "o not menu item" << std::endl;
+        return;
+    }
     if ( !view) return;
+
+    const char* lbl = p->label();
+    char buf[128];
+    int i;
+    // Label format is:
+    // Track #i eng.
+    int num = sscanf( lbl, "%s %c%d", buf, buf, &i);
+    if ( num < 3 )
+    {
+        LOG_ERROR( "sscanf returned less than 3 elements" );
+        return;
+    }
 
     mrv::media fg = view->foreground();
     if ( !fg ) return;
 
-    int i = p->value();  // Video Track #
     fg->image()->video_stream(i);
 }
 
@@ -2739,6 +2758,16 @@ void ImageView::handle_commands()
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
+    std::string name;
+#define  DEBUG_IMAGES_IN_NETWORK
+#ifdef DEBUG_IMAGES_IN_NETWORK
+    mrv::media fg = foreground();
+    if ( fg )
+    {
+        CMedia* img = fg->image();
+        name = img->name();
+    }
+#endif
     _network_active = false;
     Command c = commands.front();
           again:
@@ -2753,7 +2782,47 @@ void ImageView::handle_commands()
         {
             b->new_reel( s.c_str() );
         }
-        // std::cerr << "COMMAND: change to reel " << s << std::endl;
+        NET( "change to reel " << s );
+        break;
+    }
+    case kTimelineMinDisplay:
+    {
+        int64_t x = c.frame;
+        NET("TimelineMinDisplay " << x );
+        uiMain->uiTimeline->display_minimum( x );
+        uiMain->uiTimeline->redraw();
+        uiMain->uiStartFrame->value( x );
+        uiMain->uiStartFrame->redraw();
+        break;
+    }
+    case kTimelineMaxDisplay:
+    {
+        int64_t x = c.frame;
+        NET("TimelineMaxDisplay " << x );
+        uiMain->uiTimeline->display_minimum( x );
+        uiMain->uiTimeline->redraw();
+        uiMain->uiStartFrame->value( x );
+        uiMain->uiStartFrame->redraw();
+        break;
+    }
+    case kTimelineMin:
+    {
+        int64_t x = c.frame;
+        NET("TimelineMin " << x );
+        uiMain->uiTimeline->minimum( x );
+        uiMain->uiTimeline->redraw();
+        uiMain->uiStartFrame->value( x );
+        uiMain->uiStartFrame->redraw();
+        break;
+    }
+    case kTimelineMax:
+    {
+        int64_t x = c.frame;
+        NET( "TimelineMax " << x );
+        uiMain->uiTimeline->maximum( x );
+        uiMain->uiTimeline->redraw();
+        uiMain->uiEndFrame->value( x );
+        uiMain->uiEndFrame->redraw();
         break;
     }
     case kLoadImage:
@@ -2761,12 +2830,14 @@ void ImageView::handle_commands()
         LoadInfo file = * (LoadInfo*) c.linfo;
         LoadList files;
         files.push_back( file );
+        NET( "Load Image " << file.filename << " start " << file.first << " "
+             << file.last );
         b->load( files, false, "", false, false );
         break;
     }
     case kCacheClear:
         clear_caches();
-        // std::cerr << "COMMAND: clear caches "  << std::endl;
+        NET( "clear caches ");
         break;
     case kChangeImage:
     {
@@ -2780,8 +2851,7 @@ void ImageView::handle_commands()
         if ( c.linfo )
         {
             const std::string imgname = c.linfo->filename;
-            std::cerr << "COMMAND: change image #" << idx << " "
-		      << imgname << std::endl;
+            NET( "change image #" << idx << " " << imgname );
             for ( ; j != e; ++j, ++i )
             {
                 if ( !(*j) ) continue;
@@ -2797,12 +2867,41 @@ void ImageView::handle_commands()
         }
         else
         {
+            NET( "change image to #" << idx << " < " << r->images.size() );
             found = (idx < r->images.size() );
         }
-        if ( found ) b->change_image(idx);
-        else {
-            c.type = kLoadImage;
-            goto again;
+        if ( found ) {
+            NET( "change image to #" << idx );
+            b->change_image(idx);
+        }
+        else
+        {
+            if ( c.linfo ) {
+                NET( "Load Image and try again idx #" << idx );
+                c.type = kLoadImage;
+                goto again;
+            }
+        }
+        break;
+    }
+    case kInsertImage:
+    {
+        Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
+        int idx = attr->value();
+
+        NET( "insert image #" << idx );
+
+        mrv::Reel r = b->reel_at( bg_reel() );
+        if ( idx < r->images.size() )
+        {
+            LoadInfo file = * (LoadInfo*) c.linfo;
+
+            CMedia* img = CMedia::guess_image( file.filename.c_str(), NULL, 0,
+                                               false );
+            if (!img) return;
+
+            mrv::media m( new mrv::gui::media( img ) );
+            b->insert( idx, m );
         }
         break;
     }
@@ -2811,7 +2910,7 @@ void ImageView::handle_commands()
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
 
-        // std::cerr << "COMMAND: change bg image #" << idx << std::endl;
+        NET( "change bg image #" << idx );
 
         if ( idx < 0 ) background( mrv::media() );
         else
@@ -2832,7 +2931,7 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
-        // std::cerr << "COMMAND: change fg reel #" << idx << std::endl;
+        NET( "change fg reel #" << idx );
         fg_reel( idx );
         break;
     }
@@ -2840,32 +2939,32 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
-        // std::cerr << "COMMAND: change bg reel #" << idx << std::endl;
+        NET( "change bg reel #" << idx );
         bg_reel( idx );
         break;
     }
     case kStopVideo:
     {
-        // std::cerr << "COMMAND: stop at " << c.frame << std::endl;
+        NET( "stop at " << c.frame );
         stop();
         seek( c.frame );
         break;
     }
     case kSeek:
     {
-        // std::cerr << "COMMAND: seek " << c.frame << std::endl;
+        NET( "seek " << c.frame );
         seek( c.frame );
         break;
     }
     case kPlayForwards:
     {
-        // std::cerr << "COMMAND: playfwd " << std::endl;
+        NET( "playfwd" );
         play_forwards();
         break;
     }
     case kPlayBackwards:
     {
-        // std::cerr << "COMMAND: playbwd " << std::endl;
+        NET( "playbwd" );
         play_backwards();
         break;
     }
@@ -2873,7 +2972,7 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         int idx = attr->value();
-        // std::cerr << "COMMAND: remove image " << idx << std::endl;
+        NET("remove image " << idx );
         b->remove(idx);
         break;
     }
@@ -2883,7 +2982,7 @@ void ImageView::handle_commands()
         const Imath::V2i& list = attr->value();
         int oldsel = list[0];
         int sel = list[1];
-        // std::cerr << "COMMAND: exchange " << oldsel << " with " << sel << std::endl;
+        NET( "exchange " << oldsel << " with " << sel );
         b->exchange(oldsel, sel);
         break;
     }
@@ -2891,7 +2990,7 @@ void ImageView::handle_commands()
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
         const std::string& s = attr->value();
-        // std::cerr << "COMMAND: ICS " << s << std::endl;
+        NET("ICS " << s );
         mrv::media fg = foreground();
         if (fg)
         {
@@ -2905,7 +3004,7 @@ void ImageView::handle_commands()
     {
         Imf::StringAttribute* attr = dynamic_cast< Imf::StringAttribute* >( c.data );
         const std::string& s = attr->value();
-        // std::cerr << "COMMAND: RT " << s << std::endl;
+        NET( "RT " << s );
         mrv::media fg = foreground();
         if (fg)
         {
@@ -2920,13 +3019,11 @@ void ImageView::handle_commands()
     {
         Imf::IntAttribute* attr = dynamic_cast< Imf::IntAttribute* >( c.data );
         unsigned idx = attr->value();
-        std::cerr << "COMMAND: Change Channel " << idx << std::endl;
+        NET( "Change Channel " << idx );
         if ( foreground() )
         {
             channel( idx );
         }
-        else
-            LOG_ERROR( "No image for channel selection" );
         break;
     }
     case kFULLSCREEN:
@@ -2985,7 +3082,7 @@ void ImageView::handle_commands()
         break;
     case kLUT_CHANGE:
     {
-        // std::cerr << "COMMAND: LUT CHANGE " << std::endl;
+        NET( "LUT change");
         mrv::media fg = foreground();
         if ( fg )
         {
@@ -3000,7 +3097,7 @@ void ImageView::handle_commands()
         {
             Imf::FloatAttribute* f =
             dynamic_cast< Imf::FloatAttribute* >( c.data );
-            // std::cerr << "COMMAND: gain " << f->value() << std::endl;
+            NET("gain " << f->value() );
             gain( f->value() );
             break;
         }
@@ -3008,7 +3105,7 @@ void ImageView::handle_commands()
         {
             Imf::FloatAttribute* f =
             dynamic_cast< Imf::FloatAttribute* >( c.data );
-            // std::cerr << "COMMAND: gamma " << f->value() << std::endl;
+            NET("gamma " << f->value() );
             gamma( f->value() );
             break;
         }
@@ -7386,7 +7483,7 @@ void ImageView::channel( unsigned short c )
     if ( c >= idx )
     {
         c = 0;
-	const Fl_Menu_Item* w;
+        const Fl_Menu_Item* w;
         const char* lbl = uiColorChannel->label();
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
@@ -7400,14 +7497,14 @@ void ImageView::channel( unsigned short c )
                 // {
                 //     for ( ; w->label(); w = w->next(), ++idx )
                 //     {
-		// 	if ( strcmp( w->label(), lbl ) == 0 )
-		// 	{
-		// 	    found = true;
-		// 	    break;
-		// 	}
+                //      if ( strcmp( w->label(), lbl ) == 0 )
+                //      {
+                //          found = true;
+                //          break;
+                //      }
                 //     }
-		//     if ( found ) break;
-		// }
+                //     if ( found ) break;
+                // }
             }
         }
 
@@ -7416,7 +7513,7 @@ void ImageView::channel( unsigned short c )
             LOG_ERROR( _("Invalid index ") << c
                        << _(" for channel.  Maximum: " )
                        << idx << _(". Widget label is ")
-		       << (w->label() ? w->label() : "empty" ) );
+                       << (w->label() ? w->label() : "empty" ) );
             return;
         }
     }
@@ -8334,14 +8431,28 @@ void ImageView::resize_main_window()
         h = (int) (h / img->pixel_ratio());
     }
 
+    float scale = Fl::screen_scale(window()->screen_num());
+    
     if ( uiMain->uiTopBar->visible() )
+    {
+        uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+                                28 * scale );
         h += uiMain->uiTopBar->h();
-
+    }
+    
     if ( uiMain->uiPixelBar->visible() )
+    {
+        uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+                                  28 * scale );
         h += uiMain->uiPixelBar->h();
-
+    }
+    
     if ( uiMain->uiBottomBar->visible() )
+    {
+        uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+                                  49 * scale );
         h += uiMain->uiBottomBar->h();
+    }
 
     PreferencesUI* uiPrefs = uiMain->uiPrefs;
     if ( uiPrefs && uiPrefs->uiWindowFixedPosition->value() )
@@ -8359,9 +8470,11 @@ void ImageView::resize_main_window()
 #ifdef _WIN32
     const unsigned kBorders = 8;
     const unsigned kMenus = 30;
+    const unsigned kTitleBar = 24;
 #else
     const unsigned kBorders = 0;
     const unsigned kMenus = 30;
+    const unsigned kTitleBar = 24;
 #endif
 
     int minx, miny, maxw, maxh;
@@ -8392,10 +8505,11 @@ void ImageView::resize_main_window()
 
     if ( posY + h > maxy ) {
         posY = ( h + posY - maxh ) / 2;
+        if ( posY + h > maxy ) posY = ( h + posY - maxh ) / 2;
     }
     if ( posY + h > maxy ) {
-        posY = miny;
-        h = maxh;
+        posY = miny + kTitleBar;
+        h = maxh - kTitleBar;
     }
     if ( posY < miny )     posY = miny;
 
@@ -8928,8 +9042,8 @@ void ImageView::play( const CMedia::Playback dir )
 
     CMedia* img = fg->image();
 
-    if ( img->first_frame() == img->last_frame() )
-	return;
+    // if ( img->first_frame() == img->last_frame() )
+    //  return;
 
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
