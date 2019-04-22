@@ -3873,7 +3873,7 @@ void ImageView::draw()
 
     }
 
-#define DEBUG_GL_CROSS
+//#define DEBUG_GL_CROSS
 #ifdef DEBUG_GL_CROSS
     int W = w();
     int H = h();
