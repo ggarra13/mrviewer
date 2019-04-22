@@ -248,6 +248,9 @@ public:
 protected:
 
     //! Set pathname from a media
+    Fl_Tree_Item* media_to_item( const mrv::media m );
+
+    //! Set pathname from a media
     std::string media_to_pathname( const mrv::media m );
 
     //! These functions send reel, images o current image to network
