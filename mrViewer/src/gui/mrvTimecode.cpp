@@ -29,6 +29,8 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
+#include "core/mrvI8N.h"
+
 #include <cassert>
 #include <cstdio> // for sprintf()
 #include <cstring> // for strchr
