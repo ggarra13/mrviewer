@@ -909,8 +909,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 #define ICC_PROFILE(x, d)						\
           ok = icc.get( #x, tmpS, d, 2048 );				\
           CMedia::icc_profile_##x = environmentSetting( "MRV_ICC_RT_" #x, tmpS, ok ); \
-	  uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
-	  if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
+          uiPrefs->uiICC_## x ## _profile->value( tmpS ); \
+          if ( strlen( tmpS ) > 0 ) mrv::colorProfile::add( tmpS );
                 ICC_PROFILE( 8bits,  "" );
                 ICC_PROFILE( 16bits, "" );
                 ICC_PROFILE( 32bits, "" );
@@ -1251,16 +1251,16 @@ void Preferences::run( ViewerUI* main )
         putenv( strdup(buf) );
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
-#ifdef __linux__
-        char tmpS[256];
-        sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
-        const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
-        mrvLOG_INFO( "ocio", _("Setting OCIO's view environment variable to:")
-                     << std::endl );
-        sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
-        mrvLOG_INFO( "ocio", buf << std::endl );
-        putenv( strdup(buf) );
-#endif
+// #ifdef __linux__
+//         char tmpS[256];
+//         sprintf( tmpS, "sRGB:rec709:Film:Log:Raw:None" );
+//         const char* var = environmentSetting( "OCIO_ACTIVE_VIEWS", tmpS, true);
+//         mrvLOG_INFO( "ocio", _("Setting OCIO's view environment variable to:")
+//                      << std::endl );
+//         sprintf( buf, "OCIO_ACTIVE_VIEWS=%s", var );
+//         mrvLOG_INFO( "ocio", buf << std::endl );
+//         putenv( strdup(buf) );
+// #endif
 
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
@@ -1420,7 +1420,6 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle file requester
     //
-    // @TODO: fltk1.4
     Flu_File_Chooser::thumbnailsFileReq = (bool)
                                           uiPrefs->uiPrefsFileReqThumbnails->value();
 
