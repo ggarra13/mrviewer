@@ -25,6 +25,7 @@
  *
  */
 
+#include "core/mrvI8N.h"
 #include <iostream>
 
 // Must come before FL/Fl_x11.H
