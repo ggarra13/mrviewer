@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,22 +30,9 @@
 
 #ifdef USE_GETTEXT
 
-<<<<<<< HEAD
-#ifdef __cplusplus
-
-extern "C"
-{
-#include <libintl.h>
-}
-
-#endif
-
-#define _(String)  gettext(String)
-=======
 #include <string.h>
 #include <libintl.h>
 #define _(String)  gettext2(String)
->>>>>>> v5.0.1-RC4
 #define gettext_noop(String) String
 #define N_(String) gettext_noop (String)
 
