@@ -26,6 +26,7 @@
  */
 
 
+#include "core/mrvI8N.h"
 #include <iostream>
 using namespace std;
 
@@ -62,7 +63,6 @@ OIIO_NAMESPACE_USING;
 #include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/oiioImage.h"
-#include "core/mrvI8N.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 #include "OIIOOptionsUI.h"
