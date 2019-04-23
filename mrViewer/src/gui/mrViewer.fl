@@ -53,6 +53,9 @@ decl {\#include "gui/mrvCTLBrowser.h"} {public local
 decl {\#include "mrvFileRequester.h"} {private local
 }
 
+decl {\#include "gui/MyPack.h"} {public local
+}
+
 decl {\#include "gui/mrvSlider.h"} {public local
 }
 
@@ -706,7 +709,9 @@ o->main( this );}
     } {
       Fl_Pack uiRegion {
         xywh {0 0 640 535}
-      } {
+	class {MyPack}
+      }
+      {
         Fl_Group uiTopBar {open
           xywh {0 0 640 28} box ENGRAVED_BOX
         } {
