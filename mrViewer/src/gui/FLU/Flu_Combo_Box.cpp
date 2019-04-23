@@ -39,7 +39,7 @@ Flu_Combo_Box :: Flu_Combo_Box( int X, int Y, int W, int H, const char* l )
   input.color( FL_WHITE, selection_color());
   input.textfont( FL_HELVETICA );
   input.textsize(  FL_NORMAL_SIZE );
-  input.textcolor( FL_FOREGROUND_COLOR );
+  input.textcolor( FL_BLACK );
 
   input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()), 
 		W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
