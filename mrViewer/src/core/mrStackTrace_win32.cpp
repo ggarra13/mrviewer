@@ -375,10 +375,17 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
 	 break;
 #endif
       // display its contents
+#ifdef ARCH_X86_64
+      sprintf( tmp, "%3d %c%c %08llx %08llx %08llx %08llx ",
+	       frameNum, s.Far? 'F': '.', s.Virtual? 'V': '.',
+	       s.AddrPC.Offset, s.AddrReturn.Offset,
+	       s.AddrFrame.Offset, s.AddrStack.Offset );
+#else
       sprintf( tmp, "%3d %c%c %08lx %08lx %08lx %08lx ",
 	       frameNum, s.Far? 'F': '.', s.Virtual? 'V': '.',
 	       s.AddrPC.Offset, s.AddrReturn.Offset,
 	       s.AddrFrame.Offset, s.AddrStack.Offset );
+#endif
 
       if ( s.AddrPC.Offset == 0 )
       {
@@ -462,8 +469,13 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
 		  break;
 	    }
 
+#ifdef ARCH_X86_64
+	    sprintf( tmp, "    Mod:  %s[%s], base: %08llxh",
+		    Module.ModuleName, Module.ImageName, Module.BaseOfImage );
+#else
 	    sprintf( tmp, "    Mod:  %s[%s], base: %08lxh",
 		    Module.ModuleName, Module.ImageName, Module.BaseOfImage );
+#endif
 	    log << tmp << std::endl;
 	    sprintf( tmp, "    Sym:  type: %s, file: %s",
 		     ty, Module.LoadedImageName );
@@ -609,7 +621,7 @@ bool ExceptionHandler::fillModuleListTH32( EH::ModuleList& modules, DWORD pid )
    while ( keepGoing )
    {
       // here, we have a filled-in MODULEENTRY32
-      fprintf( stderr,  "%08lXh %6lu %-15.15s %s\n", me.modBaseAddr, me.modBaseSize,
+       fprintf( stderr,  "%p %6lu %-15.15s %s\n", me.modBaseAddr, me.modBaseSize,
 		me.szModule, me.szExePath );
       e.imageName = me.szExePath;
       e.moduleName = me.szModule;
@@ -698,7 +710,7 @@ bool ExceptionHandler::fillModuleListPSAPI( EH::ModuleList& modules,
 
    if ( cbNeeded > TTBUFLEN )
    {
-      fprintf( stderr,  "More than %lu module handles. Huh?\n", lenof( hMods ) );
+      fprintf( stderr,  "More than %llu module handles. Huh?\n", lenof( hMods ) );
       goto cleanup;
    }
 
