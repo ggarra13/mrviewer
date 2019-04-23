@@ -1758,7 +1758,7 @@ void ImageBrowser::load( const stringArray& files,
             loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
         }
 
-        // retname = file;  // @TODO: fltk1.4
+        retname = file;  // @TODO: fltk1.4
     }
 
     load( loadlist, stereo, bgfile, edl, progress );
@@ -2688,7 +2688,7 @@ void ImageBrowser::handle_dnd()
     std::string oldroot, oldview, oldext;
 
     if ( i != e ) {
-        // retname = *i;  // @TODO: fltk1.4 to open file requester in last directory
+	retname = *i;  // to open file requester in last directory
     }
 
     for ( ; i != e; ++i )
