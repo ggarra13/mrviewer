@@ -6846,6 +6846,7 @@ void ImageView::toggle_presentation()
 // #endif
         presentation = false;
         FullScreen = false;
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
         resize_main_window();
     }
