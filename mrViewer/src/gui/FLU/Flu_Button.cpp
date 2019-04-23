@@ -11,7 +11,7 @@
  * 
  ***************************************************************/
 
-
+#include <iostream>
 
 #include <FL/Fl.H>
 #include "FLU/Flu_Button.h"
@@ -108,14 +108,24 @@ int Flu_Button :: handle( int event )
 	return 1;
 	break;
       }
-    }
-  if( retBtn )
-    {
-      if( event == FL_SHORTCUT &&
-	  (Fl::event_key() == FL_Enter || Fl::event_key() == FL_KP_Enter))
+    case FL_UNFOCUS:
+    case FL_FOCUS:
+	return 1;
+    case FL_KEYBOARD:
+    case FL_KEYUP:
+    case FL_SHORTCUT:
 	{
-	  do_callback();
-	  return 1;
+	    if( retBtn )
+	    {
+		if( Fl::event_key() == FL_Enter ||
+		    Fl::event_key() == FL_KP_Enter )
+		{
+		    do_callback();
+		    return 1;
+		}
+	    }
+		
+	    return 1;
 	}
     }
   return Fl_Button::handle( event );
