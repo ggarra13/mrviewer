@@ -333,6 +333,8 @@ void parse_command_line( const int argc, char** argv,
     mrv::CmdLineOutput my;
     cmd.setOutput(&my);
 
+    SwitchArg adebug( "d", "debug", _("Turn on debugging console" ) );
+    
     //
     // The command-line arguments (parsed in order)
     //
@@ -385,6 +387,9 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(ahostname);
     cmd.add(aport);
     cmd.add(aedl);
+#ifdef _WIN32
+    cmd.add(adebug);
+#endif
     cmd.add(afps);
     cmd.add(aaudio);
     cmd.add(aoffset);
@@ -432,6 +437,16 @@ void parse_command_line( const int argc, char** argv,
        files.push_back( stereo[i] ); 
     }
 
+#endif
+
+#ifdef _WIN32
+    bool debug = adebug.getValue();
+    if ( debug )
+    {
+        AllocConsole();
+        freopen("conout$", "w", stdout);
+        freopen("conout$", "w", stderr);
+    }
 #endif
 
     const stringArray& audios = aaudio.getValue();
