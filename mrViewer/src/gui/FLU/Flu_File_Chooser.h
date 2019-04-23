@@ -273,12 +273,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   bool _compact;
   
   FileInput filename;
-  // the <Enter> key behavior is not correct for versions before 1.1.4rc2
-#if FL_MAJOR_VERSION >= 1 && FL_MINOR_VERSION >= 1 && FL_PATCH_VERSION >= 4
   Flu_Return_Button ok;
-#else
-  Flu_Button ok;
-#endif
   Flu_Button cancel;
 
   // apparently there is a bug in VC6 that prevents friend classes from accessing
