@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir header_name 
-header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-
-decl {\#include "core/mrvI8N.h"} { public }
-
-decl {\#include <cstring>} {public
-} 
-=======
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
 header_name {.h}
@@ -28,7 +13,6 @@ decl {\#include "core/mrvI8N.h"} {private local
 
 decl {\#include "IccProfile.h"} {private local
 }
->>>>>>> v5.0.1-RC4
 
 decl {\#include "IccUtil.h"} {private local
 }
@@ -36,15 +20,11 @@ decl {\#include "IccUtil.h"} {private local
 decl {\#include "gui/mrvBrowser.h"} {public local
 }
 
-<<<<<<< HEAD
-decl {\#include "IccProfile.h"} {} 
-=======
 decl {\#include "gui/mrvMainWindow.h"} {public local
 }
 
 decl {\#include "gui/mrvTextDisplay.h"} {public local
 }
->>>>>>> v5.0.1-RC4
 
 decl {\#include "core/mrvColorProfile.h"} {private local
 }
@@ -82,30 +62,30 @@ delete _profile;} {}
       xywh {98 381 650 485} type Double resizable visible
     } {
       Fl_Group {} {
-        xywh {0 0 650 485}
+	xywh {0 0 650 485}
       } {
-        Fl_Group {} {open
-          xywh {0 0 650 185} box PLASTIC_DOWN_BOX
-        } {
-          Fl_Browser uiTags {
-            label Tags
-            user_data this user_data_type {ICCProfileUI*}
-            callback {v->fill_text();}
-            xywh {0 26 650 159} type Hold align 1
-            code0 {static const int widths[] = { 220, 120, 80,  80, 0 };
+	Fl_Group {} {open
+	  xywh {0 0 650 185} box PLASTIC_DOWN_BOX
+	} {
+	  Fl_Browser uiTags {
+	    label Tags
+	    user_data this user_data_type {ICCProfileUI*}
+	    callback {v->fill_text();}
+	    xywh {0 26 650 159} type Hold align 1
+	    code0 {static const int widths[] = { 220, 120, 80,  80, 0 };
 
 o->column_widths( widths );}
-            class {mrv::Browser}
-          }
-        }
+	    class {mrv::Browser}
+	  }
+	}
       }
       Fl_Group {} {open
-        xywh {0 184 650 301} box PLASTIC_UP_BOX
+	xywh {0 184 650 301} box PLASTIC_UP_BOX
       } {
-        Fl_Text_Display uiTextDisplay {
-          xywh {5 189 640 296} textcolor 32
-          code0 {o->buffer(uiText); o->wrap_mode( Fl_Text_Display::WRAP_AT_BOUNDS, 80 ); o->scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT ); uiText->text( "some text\\nline 2\\n" );}
-        }
+	Fl_Text_Display uiTextDisplay {
+	  xywh {5 189 640 296} textcolor 32
+	  code0 {o->buffer(uiText); o->wrap_mode( Fl_Text_Display::WRAP_AT_BOUNDS, 80 ); o->scrollbar_align( FL_ALIGN_BOTTOM | FL_ALIGN_RIGHT ); uiText->text( "some text\\nline 2\\n" );}
+	}
       }
     }
   }
@@ -182,18 +162,18 @@ class ICCProfileListUI {open
       xywh {916 103 630 460} type Double resizable visible
     } {
       Fl_Group {} {open
-        xywh {0 0 630 460} box PLASTIC_UP_BOX
+	xywh {0 0 630 460} box PLASTIC_UP_BOX
       } {
-        Fl_Group {} {open
-          xywh {0 0 630 420}
-        } {
-          Fl_Browser uiProfiles {
-            label {ICC Profiles}
-            user_data this user_data_type {ICCProfileListUI*}
-            callback {v->show_info();}
-            xywh {6 26 605 394} type Hold box PLASTIC_DOWN_BOX resizable
-          }
-        }
+	Fl_Group {} {open
+	  xywh {0 0 630 420}
+	} {
+	  Fl_Browser uiProfiles {
+	    label {ICC Profiles}
+	    user_data this user_data_type {ICCProfileListUI*}
+	    callback {v->show_info();}
+	    xywh {6 26 605 394} type Hold box PLASTIC_DOWN_BOX resizable
+	  }
+	}
       }
     }
     code {_info = new ICCProfileUI();} {}
