@@ -664,7 +664,6 @@ void change_video_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
 {
     const Fl_Menu_Item* p = menu->mvalue();
     if ( !p ) {
-        std::cerr << "o not menu item" << std::endl;
         return;
     }
     if ( !view) return;
@@ -2236,6 +2235,7 @@ void ImageView::fit_image()
     char buf[128];
     sprintf( buf, "Offset %g %g", xoffset, yoffset );
     send_network( buf );
+    
     zoom( float(z) );
 
     mouseMove( Fl::event_x(), Fl::event_y() );
@@ -6517,6 +6517,7 @@ int ImageView::keyDown(unsigned int rawkey)
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -6537,6 +6538,7 @@ int ImageView::keyDown(unsigned int rawkey)
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -6556,9 +6558,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->init_sizes();
+        uiMain->uiRegion->layout();
         uiMain->uiRegion->redraw();
-        uiMain->uiBottomBar->redraw();
-        fltk_main()->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
@@ -6739,6 +6740,8 @@ void ImageView::toggle_fullscreen()
         posX = fltk_main()->x();
         posY = fltk_main()->y();
         fltk_main()->fullscreen();
+        uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
     }
     else
     {
@@ -6747,15 +6750,14 @@ void ImageView::toggle_fullscreen()
         resize_main_window();
     }
 
-    uiMain->uiRegion->init_sizes();
 
+    Fl::check();
+    
     fit_image();
-
 
     take_focus();
 
 
-    Fl::check();
 
     char buf[128];
     sprintf( buf, "FullScreen %d", FullScreen );
@@ -6812,17 +6814,17 @@ void ImageView::toggle_presentation()
 
         presentation = true;
 
+	// Resize needed as fullscreen does not happpen in the single
+	// Fl::check below
+	int X = Fl::x(), Y = Fl::y(), W = Fl::w(), H = Fl::h();
+	fltk_main()->resize( X, Y, W, H);
+        
         fltk_main()->fullscreen();
+        uiMain->uiRegion->layout();
+#ifdef WIN32
+        resize( X, Y, W, H + 40 );  // @BUG: We need +40 to cover bottom strip
+#endif
         uiMain->uiRegion->init_sizes();
-// #ifdef WIN32
-//         fltk_main()->fullscreen();
-//         fltk_main()->resize(0, 0,
-//                             GetSystemMetrics(SM_CXSCREEN),
-//                             GetSystemMetrics(SM_CYSCREEN));
-// #else
-//         send_wm_state_event(fl_xid( fltk_main() ), 1,
-//                             fl_NET_WM_STATE_FULLSCREEN);
-// #endif
     }
     else
     {
@@ -6840,10 +6842,6 @@ void ImageView::toggle_presentation()
         if ( has_bottom_bar)  uiMain->uiBottomBar->show();
         if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
-// #ifndef _WIN32
-//         send_wm_state_event(fl_xid( fltk_main() ), 0,
-//                             fl_NET_WM_STATE_FULLSCREEN);
-// #endif
         presentation = false;
         FullScreen = false;
         uiMain->uiRegion->layout();
@@ -6851,14 +6849,11 @@ void ImageView::toggle_presentation()
         resize_main_window();
     }
 
-    fit_image();
-
+    Fl::check();
 
     take_focus();
 
-
-    Fl::check();
-
+    fit_image();
 
     char buf[128];
     sprintf( buf, "PresentationMode %d", presentation );
@@ -8437,22 +8432,22 @@ void ImageView::resize_main_window()
     
     if ( uiMain->uiTopBar->visible() )
     {
-        uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-                                28 * scale );
+        // uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+        //                         28 * scale );
         h += uiMain->uiTopBar->h();
     }
     
     if ( uiMain->uiPixelBar->visible() )
     {
-        uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-                                  28 * scale );
+        // uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+        //                           28 * scale );
         h += uiMain->uiPixelBar->h();
     }
     
     if ( uiMain->uiBottomBar->visible() )
     {
-        uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-                                  49 * scale );
+        // uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+        //                           49 * scale );
         h += uiMain->uiBottomBar->h();
     }
 
@@ -8476,7 +8471,7 @@ void ImageView::resize_main_window()
 #else
     const unsigned kBorders = 0;
     const unsigned kMenus = 30;
-    const unsigned kTitleBar = 24;
+    const unsigned kTitleBar = 0;
 #endif
 
     int minx, miny, maxw, maxh;
@@ -8515,12 +8510,16 @@ void ImageView::resize_main_window()
     }
     if ( posY < miny )     posY = miny;
 
+
+    
     if ( w < 640 )  w = 640;
     if ( h < 535 )  h = 535;
 
     fltk_main()->fullscreen_off( posX, posY, w, h );
-    fltk_main()->resize( posX, posY, w, h );
-    uiMain->uiRegion->init_sizes();
+    // @BUG: we need to add kTitlebar to avoid bad redraw on windows
+    int H = Fl::h();
+    if ( h + kTitleBar <= H - kTitleBar )
+        fltk_main()->resize( posX, posY, w, h + kTitleBar );
     uiMain->uiRegion->redraw();
 #ifdef LINUX
     fltk_main()->show();
