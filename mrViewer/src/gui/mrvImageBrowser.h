@@ -44,7 +44,7 @@
 #include "gui/mrvMedia.h"
 #include "video/mrvGLShape.h"
 
-
+extern std::string retname;
 class ViewerUI;
 
 namespace mrv
