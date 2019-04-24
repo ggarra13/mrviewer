@@ -19,10 +19,10 @@
  * @file   mrvCPU.cpp
  * @author gga
  * @date   Mon Jan 14 21:25:33 2008
- * 
+ *
  * @brief  CPU detection routines
- * 
- * 
+ *
+ *
  */
 
 
@@ -109,8 +109,8 @@ CpuCaps gCpuCaps;
 
 
 /* returned value is malloc()'ed so free() it after use */
-char *GetCpuFriendlyName(std::ostringstream& out, 
-			 unsigned int regs[], unsigned int regs2[]);
+char *GetCpuFriendlyName(std::ostringstream& out,
+                         unsigned int regs[], unsigned int regs2[]);
 
 #if defined(ARCH_X86) || defined(ARCH_X86_64)
 
@@ -142,8 +142,8 @@ char *GetCpuFriendlyName(std::ostringstream& out,
 
 
 //#define X86_FXSR_MAGIC
-/* Thanks to the FreeBSD project for some of this cpuid code, and 
- * help understanding how to use it.  Thanks to the Mesa 
+/* Thanks to the FreeBSD project for some of this cpuid code, and
+ * help understanding how to use it.  Thanks to the Mesa
  * team for SSE support detection and more cpu detect code.
  */
 
@@ -158,7 +158,7 @@ static bool has_cpuid(void)
    return true;
 #elif defined(_MSC_VER)
   unsigned long BitChanged;
-	
+
   // We've to check if we can toggle the flag register bit 21
   // If we can't the processor does not support the CPUID command
   __asm
@@ -166,12 +166,12 @@ static bool has_cpuid(void)
       pushfd;
       pop REGa;
       mov REGb, REGa;
-      xor REGa, 0x00200000; 
+      xor REGa, 0x00200000;
       push REGa;
       popfd;
       pushfd;
       pop REGa;
-      xor REGa, REGb; 
+      xor REGa, REGb;
       mov BitChanged, REGa;
     }
 
@@ -180,25 +180,25 @@ static bool has_cpuid(void)
   // code from libavcodec:
   long a, c;
   __asm __volatile (
-			/* See if CPUID instruction is supported ... */
-			/* ... Get copies of EFLAGS into eax and ecx */
-			"pushf\n\t"
-			"pop %0\n\t"
-			"mov %0, %1\n\t"
-                          
-			/* ... Toggle the ID bit in one copy and store */
-			/*     to the EFLAGS reg */
-			"xor $0x200000, %0\n\t"
-			"push %0\n\t"
-			"popf\n\t"
-                          
-			/* ... Get the (hopefully modified) EFLAGS */
-			"pushf\n\t"
-			"pop %0\n\t"
-			: "=a" (a), "=c" (c)
-			:
-			: "cc" 
-		    );
+                        /* See if CPUID instruction is supported ... */
+                        /* ... Get copies of EFLAGS into eax and ecx */
+                        "pushf\n\t"
+                        "pop %0\n\t"
+                        "mov %0, %1\n\t"
+
+                        /* ... Toggle the ID bit in one copy and store */
+                        /*     to the EFLAGS reg */
+                        "xor $0x200000, %0\n\t"
+                        "push %0\n\t"
+                        "popf\n\t"
+
+                        /* ... Get the (hopefully modified) EFLAGS */
+                        "pushf\n\t"
+                        "pop %0\n\t"
+                        : "=a" (a), "=c" (c)
+                        :
+                        : "cc"
+                    );
 
   return (a!=c);
 #endif
@@ -214,25 +214,25 @@ static bool has_cpuid(void)
 // #ifndef _M_X64
 // void do_cpuid2(CPUID_ARGS* p) {
 // #ifdef _MSC_VER
-// 	__asm {
-// 		mov	edi, p
-// 		mov eax, [edi].eax
-// 		mov ecx, [edi].ecx // for functions such as eax=4
-// 		cpuid
-// 		mov [edi].eax, eax
-// 		mov [edi].ebx, ebx
-// 		mov [edi].ecx, ecx
-// 		mov [edi].edx, edx
-// 	}
+//      __asm {
+//              mov	edi, p
+//              mov eax, [edi].eax
+//              mov ecx, [edi].ecx // for functions such as eax=4
+//              cpuid
+//              mov [edi].eax, eax
+//              mov [edi].ebx, ebx
+//              mov [edi].ecx, ecx
+//              mov [edi].edx, edx
+//      }
 // #else
 //   __asm __volatile (
-// 		    "mov %%"REG_b", %%"REG_S"\n\t"
-// 		    "cpuid\n\t"
-// 		    "xchg %%"REG_b", %%"REG_S
-// 		    : "=a" ( p.eax ), "=S" ( p.ebx ), 
-// 		    "=c" ( p.ecx ), "=d" ( p.edx )
-// 		    : "0" ( p.eax )
-// 		    );
+//                  "mov %%"REG_b", %%"REG_S"\n\t"
+//                  "cpuid\n\t"
+//                  "xchg %%"REG_b", %%"REG_S
+//                  : "=a" ( p.eax ), "=S" ( p.ebx ),
+//                  "=c" ( p.ecx ), "=d" ( p.edx )
+//                  : "0" ( p.eax )
+//                  );
 // #endif
 // }
 // #endif
@@ -258,13 +258,13 @@ do_cpuid(unsigned int eaxval, unsigned int* eregs)
 #else
   // code from libavcodec:
   __asm __volatile (
-		    "mov %%"REG_b", %%"REG_S"\n\t"
-		    "cpuid\n\t"
-		    "xchg %%"REG_b", %%"REG_S
-		    : "=a" (eregs[0]), "=S" (eregs[1]), 
-		    "=c" (eregs[2]), "=d" (eregs[3])
-		    : "0" (eaxval)
-		    );
+                    "mov %%"REG_b", %%"REG_S"\n\t"
+                    "cpuid\n\t"
+                    "xchg %%"REG_b", %%"REG_S
+                    : "=a" (eregs[0]), "=S" (eregs[1]),
+                    "=c" (eregs[2]), "=d" (eregs[3])
+                    : "0" (eaxval)
+                    );
 #endif  // _MSC_VER
 }
 
@@ -289,11 +289,11 @@ std::string GetCpuCaps( CpuCaps *caps)
 
   char buf[1024];
   sprintf( buf, "CPU vendor name: %x %x %x %x",
-	   regs[1], regs[3], regs[2], regs[0] );
+           regs[1], regs[3], regs[2], regs[0] );
   LOG_VERBOSE(buf);
 
   sprintf( buf, "CPU vendor name: %.4s%.4s%.4s  max cpuid level: %d",
-	   (char*) (regs+1),(char*) (regs+3),(char*) (regs+2), regs[0] );
+           (char*) (regs+1),(char*) (regs+3),(char*) (regs+2), regs[0] );
   LOG_VERBOSE(buf);
 
   if (regs[0]>=0x00000001)
@@ -309,11 +309,11 @@ std::string GetCpuCaps( CpuCaps *caps)
       // see AMD64 Architecture Programmer's Manual, Volume 3: General-purpose and
       // System Instructions, Table 3-2: Effective family computation, page 120.
       if(caps->cpuType==0xf){
-	// use extended family (P4, IA64, K8)
-	caps->cpuType=0xf+((regs2[0]>>20)&255);
+        // use extended family (P4, IA64, K8)
+        caps->cpuType=0xf+((regs2[0]>>20)&255);
       }
       if(caps->cpuType==0xf || caps->cpuType==6)
-	caps->cpuModel |= ((regs2[0]>>16)&0xf) << 4;
+        caps->cpuModel |= ((regs2[0]>>16)&0xf) << 4;
 
       caps->cpuStepping=regs2[0] & 0xf;
 
@@ -328,13 +328,13 @@ std::string GetCpuCaps( CpuCaps *caps)
 
       ptmpstr=tmpstr=GetCpuFriendlyName(out, regs, regs2);
       while(*ptmpstr == ' ')        // strip leading spaces
-	ptmpstr++;
+        ptmpstr++;
       LOG_INFO(ptmpstr);
       free(tmpstr);
 
-      LOG_INFO("(Family: " << caps->cpuType 
-	       << ", Model: " << caps->cpuModel
-	       << ", Stepping: " << caps->cpuStepping << ")");
+      LOG_INFO("(Family: " << caps->cpuType
+               << ", Model: " << caps->cpuModel
+               << ", Stepping: " << caps->cpuStepping << ")");
 
     }
   do_cpuid(0x80000000, regs);
@@ -387,14 +387,14 @@ std::string GetCpuCaps( CpuCaps *caps)
 #define CPUID_MODEL		((regs2[0] >>  4)&0x0F) /* 07..04 */
 #define CPUID_STEPPING	((regs2[0] >>  0)&0x0F) /* 03..00 */
 
-char *GetCpuFriendlyName(std::ostringstream& out, 
-			 unsigned int regs[], unsigned int regs2[]){
+char *GetCpuFriendlyName(std::ostringstream& out,
+                         unsigned int regs[], unsigned int regs2[]){
 #include "cputable.h" /* get cpuname and cpuvendors */
   char vendor[13];
-  char *retname;
+  char *ret;
   int i;
 
-  if (NULL==(retname=(char*)malloc(256))) {
+  if (NULL==(ret=(char*)malloc(256))) {
     std::cerr << "Not enough memory" << std::endl;
     exit(1);
   }
@@ -405,36 +405,36 @@ char *GetCpuFriendlyName(std::ostringstream& out,
   if (regs[0] >= 0x80000004)
     {
       // CPU has built-in namestring
-      retname[0] = '\0';
+      ret[0] = '\0';
       for (i = 0x80000002; i <= 0x80000004; i++)
-	{
-	  do_cpuid(i, regs);
-	  strncat(retname, (char*)regs, 16);
-	}
-      return retname;
+        {
+          do_cpuid(i, regs);
+          strncat(ret, (char*)regs, 16);
+        }
+      return ret;
     }
 
   for(i=0; i<MAX_VENDORS; i++){
     if(!strcmp(cpuvendors[i].string,vendor)){
       if(cpuname[i][CPUID_FAMILY][CPUID_MODEL]){
-	snprintf(retname,255,"%s %s",cpuvendors[i].name,cpuname[i][CPUID_FAMILY][CPUID_MODEL]);
+        snprintf(ret,255,"%s %s",cpuvendors[i].name,cpuname[i][CPUID_FAMILY][CPUID_MODEL]);
       } else {
-	snprintf(retname,255,"unknown %s %d. Generation CPU",cpuvendors[i].name,CPUID_FAMILY); 
+        snprintf(ret,255,"unknown %s %d. Generation CPU",cpuvendors[i].name,CPUID_FAMILY);
 
-	LOG_WARNING("unknown " << cpuvendors[i].name << " CPU:");
-	LOG_WARNING("Vendor:   " << cpuvendors[i].string);
-	LOG_WARNING("Type:     " << CPUID_TYPE);
-	LOG_WARNING("Family:   " << CPUID_FAMILY 
-		    << " (ext: " << CPUID_EXTFAMILY << ")" );
-	LOG_WARNING("Model:    " << CPUID_MODEL << " (ext: " 
-		    << CPUID_EXTMODEL << ")");
-	LOG_WARNING("Stepping: " << CPUID_STEPPING);
+        LOG_WARNING("unknown " << cpuvendors[i].name << " CPU:");
+        LOG_WARNING("Vendor:   " << cpuvendors[i].string);
+        LOG_WARNING("Type:     " << CPUID_TYPE);
+        LOG_WARNING("Family:   " << CPUID_FAMILY
+                    << " (ext: " << CPUID_EXTFAMILY << ")" );
+        LOG_WARNING("Model:    " << CPUID_MODEL << " (ext: "
+                    << CPUID_EXTMODEL << ")");
+        LOG_WARNING("Stepping: " << CPUID_STEPPING);
       }
     }
   }
-  retname[255] = 0;
+  ret[255] = 0;
 
-  return retname;
+  return ret;
 }
 
 #undef CPUID_EXTFAMILY
@@ -490,7 +490,7 @@ LONG CALLBACK win32_sig_handler_sse(EXCEPTION_POINTERS* ep)
   if(ep->ExceptionRecord->ExceptionCode==EXCEPTION_ILLEGAL_INSTRUCTION){
     LOG_VERBOSE( "SIGILL, " );
     ep->ContextRecord->Eip +=3;
-    gCpuCaps.hasSSE=0;       
+    gCpuCaps.hasSSE=0;
     return EXCEPTION_CONTINUE_EXECUTION;
   }
   return EXCEPTION_CONTINUE_SEARCH;
@@ -503,7 +503,7 @@ LONG CALLBACK win32_sig_handler_sse(EXCEPTION_POINTERS* ep)
  * and RedHat patched 2.2 kernels that have broken exception handling
  * support for user space apps that do SSE.
  */
- 
+
 #if defined(__FreeBSD__) || defined(__DragonFly__)
 #define SSE_SYSCTL_NAME "hw.instruction_sse"
 #elif defined(__APPLE__)
@@ -564,8 +564,8 @@ static void check_os_katmai_support( void )
     LOG_VERBOSE("Testing OS support for SSE... " );
     exc_fil = SetUnhandledExceptionFilter(win32_sig_handler_sse);
 #ifdef _MSC_VER
-    __asm { 
-      xorps xmm0, xmm0; 
+    __asm {
+      xorps xmm0, xmm0;
     }
 #else
     __asm __volatile ("xorps %xmm0, %xmm0");
@@ -676,7 +676,7 @@ static void sigill_handler (int sig)
     signal (sig, SIG_DFL);
     raise (sig);
   }
-    
+
   canjump = 0;
   siglongjmp (jmpbuf, 1);
 }
@@ -698,8 +698,8 @@ std::string GetCpuCaps( CpuCaps *caps)
   caps->hasSSE2=0;
   caps->isX86=0;
   caps->hasAltiVec = 0;
-#ifdef HAVE_ALTIVEC   
-#ifdef SYS_DARWIN   
+#ifdef HAVE_ALTIVEC
+#ifdef SYS_DARWIN
   /*
     rip-off from ffmpeg altivec detection code.
     this code also appears on Apple's AltiVec pages.
@@ -710,11 +710,11 @@ std::string GetCpuCaps( CpuCaps *caps)
     size_t len = sizeof(has_vu);
     int err;
 
-    err = sysctl(sels, 2, &has_vu, &len, NULL, 0);   
+    err = sysctl(sels, 2, &has_vu, &len, NULL, 0);
 
     if (err == 0)
       if (has_vu != 0)
-	caps->hasAltiVec = 1;
+        caps->hasAltiVec = 1;
   }
 #else /* SYS_DARWIN */
 #ifdef __AMIGAOS4__
@@ -732,12 +732,12 @@ std::string GetCpuCaps( CpuCaps *caps)
       signal (SIGILL, SIG_DFL);
     } else {
       canjump = 1;
-            
+
       asm volatile ("mtspr 256, %0\n\t"
-		    "vand %%v0, %%v0, %%v0"
-		    :
-		    : "r" (-1));
-            
+                    "vand %%v0, %%v0, %%v0"
+                    :
+                    : "r" (-1));
+
       signal (SIGILL, SIG_DFL);
       caps->hasAltiVec = 1;
     }
