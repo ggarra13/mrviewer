@@ -78,7 +78,7 @@ protected:
   virtual bool _value( const char *v ) = 0;
   virtual const char* _next() = 0;
   virtual const char* _previous() = 0;
-  virtual void _hilight( int x, int y ) = 0;
+  virtual void _hilight( int event, int x, int y ) = 0;
 
   void draw();
 
