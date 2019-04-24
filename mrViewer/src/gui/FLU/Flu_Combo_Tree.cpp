@@ -1,17 +1,17 @@
 // $Id: Flu_Combo_Tree.cpp,v 1.5 2004/08/02 14:18:16 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
-
+#include <iostream>
 
 #include <stdio.h>
 #include <FL/Fl.H>
@@ -19,6 +19,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <FL/math.h>
+#include <FL/Fl_Rect.H>
 
 #include "FLU/Flu_Combo_Tree.h"
 
@@ -26,8 +27,10 @@ Flu_Combo_Tree :: Flu_Combo_Tree( int X, int Y, int W, int H, const char* l )
   : Flu_Combo_Box( X, Y, W, H, l ), tree(0,0,0,0)
 {
   tree.callback( _cb, this );
-  tree.selection_mode( FLU_SINGLE_SELECT );
   tree.when( FL_WHEN_RELEASE );
+  tree.showroot( false );
+  tree.showcollapse( false );
+  tree.label( "/" ); // this does not work
   set_combo_widget( &tree );
 }
 
@@ -37,24 +40,44 @@ Flu_Combo_Tree :: ~Flu_Combo_Tree()
 
 void Flu_Combo_Tree :: cb()
 {
-  if( tree.callback_reason() == FLU_SELECTED )
-    selected( tree.callback_node()->find_path() );
+  if( tree.callback_reason() == FL_TREE_REASON_SELECTED )
+  {
+      char path[2048];
+      tree.item_pathname( path+1, 2047, tree.callback_item() );
+      path[0] = '/';
+      value( path );
+  }
 }
 
-void Flu_Combo_Tree :: _hilight( int x, int y )
+void Flu_Combo_Tree :: _hilight( int event, int x, int y )
 {
-  if( tree.inside_entry_area( x, y ) )
-    tree.handle( FL_PUSH );
+    // @TODO: fltk1.4
+    Fl_Tree_Item* i;
+    for ( i = tree.first(); i; i = tree.next_item(i) )
+    {
+	if ( i->is_root() ) continue;
+    	if ( i->event_on_label( tree.prefs() ) )
+    	{
+    	    tree.deselect_all();
+    	    tree.select( i, 0 );
+    	    break;
+    	}
+    }
+
+    if ( event == FL_PUSH && i )
+    {
+	std::string path = i->label();
+	selected( path.c_str() );
+    }
 }
 
 bool Flu_Combo_Tree :: _value( const char *v )
 {
   // see if 'v' is in the tree, and if so, make it the current selection
-  Flu_Tree_Browser::Node *n = tree.find( v );
+  Fl_Tree_Item *n = tree.find_item( v );
   if( n )
     {
-      tree.unselect_all();
-      tree.set_hilighted( n );
+      tree.deselect_all();
       n->select( true );
       return true;
     }
@@ -63,38 +86,36 @@ bool Flu_Combo_Tree :: _value( const char *v )
 
 const char* Flu_Combo_Tree :: _next()
 {
-  Flu_Tree_Browser::Node *n = tree.get_selected( 1 );
+  Fl_Tree_Item *n = tree.first_selected_item();
   if( n )
     {
-      Flu_Tree_Browser::Node *n2 = n->next();
+      Fl_Tree_Item *n2 = tree.next_selected_item(n);
       if( n2 )
-	{
-	  n->select( false );
-	  n2->select( true );
-	  tree.set_hilighted( n2 );
-	  const char *path = n2->find_path();
-	  return( strlen(path) ? path : NULL );
-	}
+        {
+          n->select( false );
+          n2->select( true );
+          const char *path = n2->label();
+          return( strlen(path) ? path : NULL );
+        }
     }
   return NULL;
 }
 
 const char* Flu_Combo_Tree :: _previous()
 {
-  Flu_Tree_Browser::Node *n = tree.get_selected( 1 );
+  Fl_Tree_Item *n = tree.last_selected_item();
   if( n )
     {
-      Flu_Tree_Browser::Node *n2 = n->previous();
+        Fl_Tree_Item *n2 = tree.next_selected_item(n, FL_Up);
       if( n2 )
-	{
-	  if( n2->is_root() && !tree.show_root() )
-	    return NULL;
-	  n->select( false );
-	  n2->select( true );
-	  tree.set_hilighted( n2 );
-	  const char *path = n2->find_path();
-	  return( strlen(path) ? path : NULL );
-	}
+        {
+          if( n2->is_root() && !tree.showroot() )
+            return NULL;
+          n->select( false );
+          n2->select( true );
+          const char *path = n2->label();
+          return( strlen(path) ? path : NULL );
+        }
     }
   return NULL;
 }
