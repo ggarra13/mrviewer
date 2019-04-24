@@ -1,17 +1,17 @@
 // $Id: Flu_Tree_Browser.cpp,v 1.126 2004/11/05 17:03:20 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
-
+#include <iostream>
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
@@ -73,9 +73,9 @@ void Flu_Tree_Browser :: IntStack :: push( int i )
       int *newList = (int*)malloc( _bufferSize*sizeof(int) );
       // copy the old list
       if( _size > 0 )
-	memcpy( newList, _list, _size*sizeof(int) );
+        memcpy( newList, _list, _size*sizeof(int) );
       if( _list )
-	free( _list );
+        free( _list );
       _list = newList;
     }
   // add the new item
@@ -151,10 +151,10 @@ bool Flu_Tree_Browser :: NodeList :: linSearch( const char *n, int &index )
   for( int i = 0; i < _nNodes; i++ )
     {
       if( strcmp( n, _nodes[i]->label() ) == 0 )
-	{
-	  index = i;
-	  return true;
-	}
+        {
+          index = i;
+          return true;
+        }
     }
   return false;
 }
@@ -165,10 +165,10 @@ bool Flu_Tree_Browser :: NodeList :: linSearch( Node *n, int &index )
   for( int i = 0; i < _nNodes; i++ )
     {
       if( n == _nodes[i] )
-	{
-	  index = i;
-	  return true;
-	}
+        {
+          index = i;
+          return true;
+        }
     }
   return false;
 }
@@ -180,8 +180,8 @@ bool Flu_Tree_Browser :: NodeList :: binSearch( Node *n, int &index )
       // the search found the first node with the label. since there are identical entries
       // allowed, it may not be the actual node we want. therefore search forward until we find it
       for( ; index < _nNodes; index++ )
-	if( _nodes[index] == n )
-	  return true;
+        if( _nodes[index] == n )
+          return true;
       return false;
     }
   else
@@ -211,16 +211,16 @@ bool Flu_Tree_Browser :: NodeList :: binSearch( const char *n, int &index )
     {
       int val = strcmp( n, _nodes[0]->label() );
       if( iMode == FLU_INSERT_SORTED_REVERSE )
-	val *= -1;
+        val *= -1;
       if( val == 0 )
-	{
-	  index = 0;
-	  return true;
-	}
+        {
+          index = 0;
+          return true;
+        }
       else if( val < 0 )
-	index = 0;
+        index = 0;
       else
-	index = 1;
+        index = 1;
       return false;
     }
 
@@ -230,54 +230,54 @@ bool Flu_Tree_Browser :: NodeList :: binSearch( const char *n, int &index )
     {
       // the range is down to 2 nodes
       if( last == first + 1 )
-	{
-	  val1 = strcmp( n, _nodes[first]->label() );
-	  if( iMode == FLU_INSERT_SORTED_REVERSE )
-	    val1 = -val1;
-	  if( val1 < 0 )
-	    {
-	      index = first;
-	      return false;
-	    }
-	  else if( val1 == 0 )
-	    {
-	      index = first;
-	      break;
-	    }
-	  val2 = strcmp( n, _nodes[last]->label() );
-	  if( iMode == FLU_INSERT_SORTED_REVERSE )
-	    val2 = -val2;
-	  if( val2 < 0 )
-	    {
-	      index = last;
-	      return false;
-	    }
-	  else if( val2 == 0 )
-	    {
-	      index = last;
-	      break;
-	    }
-	  else
-	    {
-	      index = last+1;
-	      return false;
-	    }
-	}
+        {
+          val1 = strcmp( n, _nodes[first]->label() );
+          if( iMode == FLU_INSERT_SORTED_REVERSE )
+            val1 = -val1;
+          if( val1 < 0 )
+            {
+              index = first;
+              return false;
+            }
+          else if( val1 == 0 )
+            {
+              index = first;
+              break;
+            }
+          val2 = strcmp( n, _nodes[last]->label() );
+          if( iMode == FLU_INSERT_SORTED_REVERSE )
+            val2 = -val2;
+          if( val2 < 0 )
+            {
+              index = last;
+              return false;
+            }
+          else if( val2 == 0 )
+            {
+              index = last;
+              break;
+            }
+          else
+            {
+              index = last+1;
+              return false;
+            }
+        }
 
       // pick which half of the array to search next
       int midpoint = first + ((last-first)>>1);
       mVal = strcmp( n, _nodes[midpoint]->label() );
       if( iMode == FLU_INSERT_SORTED_REVERSE )
-	mVal = -mVal;
+        mVal = -mVal;
       if( mVal < 0 )
-	last = midpoint;
+        last = midpoint;
       else if( mVal > 0 )
-	first = midpoint;
+        first = midpoint;
       else
-	{
-	  index = midpoint;
-	  break;
-	}
+        {
+          index = midpoint;
+          break;
+        }
     }
 
   // we found *a* node equal to "n", now find the first node equal to "n"
@@ -310,9 +310,9 @@ void Flu_Tree_Browser :: NodeList :: sort()
       // the insertion mode is
       int iMode = _nodes[0]->tree->insertion_mode();
       if( iMode == FLU_INSERT_SORTED )
-	qsort( _nodes, _nNodes, sizeof(Node*), compareNodes );
+        qsort( _nodes, _nNodes, sizeof(Node*), compareNodes );
       else if( iMode == FLU_INSERT_SORTED_REVERSE )
-	qsort( _nodes, _nNodes, sizeof(Node*), reverseCompareNodes );
+        qsort( _nodes, _nNodes, sizeof(Node*), reverseCompareNodes );
     }
 }
 
@@ -369,19 +369,19 @@ bool Flu_Tree_Browser :: Node :: swap( Node* n1, Node* n2 )
   for( i = 0; i < p1->children(); i++ )
     {
       if( p1->child(i) == n1 )
-	{
-	  index1 = i;
-	  break;
-	}
+        {
+          index1 = i;
+          break;
+        }
     }
   if( index1 == -1 ) return false;
   for( i = 0; i < p2->children(); i++ )
     {
       if( p2->child(i) == n2 )
-	{
-	  index2 = i;
-	  break;
-	}
+        {
+          index2 = i;
+          break;
+        }
     }
   if( index2 == -1 ) return false;
   p1->_children._nodes[index1] = n2;
@@ -410,9 +410,9 @@ bool Flu_Tree_Browser :: Node :: is_ancestor( Node* n )
   while( p )
     {
       if( p == n )
-	return true;
+        return true;
       else
-	p = p->parent();
+        p = p->parent();
     }
   return false;
 }
@@ -436,18 +436,18 @@ bool Flu_Tree_Browser :: NodeList :: move( Node* n1, int where, Node* n2 )
   if( where == MOVE_INSIDE )
     {
       if( !n2->is_branch() )
-	return false;
+        return false;
       // get the parent of n1
       Node* p1 = n1->parent();
       if( p1 )
-	// remove n1 from its parent's list
-	p1->_children.erase( n1 );
+        // remove n1 from its parent's list
+        p1->_children.erase( n1 );
       // insert into n2
       int iMode = n1->tree->insertion_mode();
       if( iMode == FLU_INSERT_SORTED || iMode == FLU_INSERT_SORTED_REVERSE )
-	n2->_children.add( n1 );
+        n2->_children.add( n1 );
       else
-	n2->_children.add( n1, 0 );
+        n2->_children.add( n1, 0 );
       // update the parent of n1
       n1->_parent = n2;
       return true;
@@ -463,13 +463,13 @@ bool Flu_Tree_Browser :: NodeList :: move( Node* n1, int where, Node* n2 )
       // get the parent of n1
       Node* p1 = n1->parent();
       if( p1 )
-	// remove n1 from its parent's list. remember the position it was removed from
-	removed = p1->_children.erase( n1 );
+        // remove n1 from its parent's list. remember the position it was removed from
+        removed = p1->_children.erase( n1 );
 
       // if n1 and n2 have the same parent, and if n1 came before the spot where
       // n2 will be inserted, then our indexing is off by one because n1 has been removed
       if( p1 == p2 && removed <= index )
-	index--;
+        index--;
 
       if( where == MOVE_AFTER )
        index++;
@@ -507,9 +507,9 @@ void Flu_Tree_Browser :: NodeList :: add( Node* n, int position )
   if( position >= 0 )
     {
       if( position > _nNodes )
-	index = _nNodes;
+        index = _nNodes;
       else
-	index = position;
+        index = position;
     }
   else if( mode == FLU_INSERT_SORTED || mode == FLU_INSERT_SORTED_REVERSE )
     {
@@ -548,7 +548,7 @@ int Flu_Tree_Browser :: NodeList :: erase( Node *n )
     {
       // move all the others down one spot to remove the node
       for( int i = index; i < _nNodes-1; i++ )
-	_nodes[i] = _nodes[i+1];
+        _nodes[i] = _nodes[i+1];
       _nNodes--;
 
       return index;
@@ -566,7 +566,7 @@ int Flu_Tree_Browser :: NodeList :: erase( const char* n )
     {
       // move all the others down one spot to remove the node
       for( int i = index; i < _nNodes-1; i++ )
-	_nodes[i] = _nodes[i+1];
+        _nodes[i] = _nodes[i+1];
       _nNodes--;
       return index;
     }
@@ -632,13 +632,13 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: NodeList :: find( const char* n, int
   for( index = first; index < _nNodes; index++ )
     {
       if( strcmp( n, _nodes[index]->label() ) == 0 )
-	{
-	  total++;
-	  if( total == which )
-	    break;
-	}
+        {
+          total++;
+          if( total == which )
+            break;
+        }
       else
-	break;
+        break;
     }
   if( total != which )
     return NULL;
@@ -800,20 +800,20 @@ bool Flu_Tree_Browser :: inside_entry_area( int x, int y )
 {
   if( scrollH->visible() && scrollV->visible() )
     return( x > _box->x() && y > _box->y() &&
-	    x < (_box->x()+_box->w()-scrollV->w()) &&
-	    y < (_box->y()+_box->h()-scrollH->h()) );
+            x < (_box->x()+_box->w()-scrollV->w()) &&
+            y < (_box->y()+_box->h()-scrollH->h()) );
   else if( !scrollH->visible() && !scrollV->visible() )
     return( x > _box->x() && y > _box->y() &&
-	    x < (_box->x()+_box->w()) &&
-	    y < (_box->y()+_box->h()) );
+            x < (_box->x()+_box->w()) &&
+            y < (_box->y()+_box->h()) );
   else if( scrollH->visible() )
     return( x > _box->x() && y > _box->y() &&
-	    x < (_box->x()+_box->w()) &&
-	    y < (_box->y()+_box->h()-scrollH->h()) );
+            x < (_box->x()+_box->w()) &&
+            y < (_box->y()+_box->h()-scrollH->h()) );
   else
     return( x > _box->x() && y > _box->y() &&
-	    x < (_box->x()+_box->w()-scrollV->w()) &&
-	    y < (_box->y()+_box->h()) );
+            x < (_box->x()+_box->w()-scrollV->w()) &&
+            y < (_box->y()+_box->h()) );
 }
 
 void Flu_Tree_Browser :: resize( int X, int Y, int W, int H )
@@ -921,9 +921,9 @@ void Flu_Tree_Browser :: on_dnd_leave()
       float max = 0.01f * (scrollH->maximum() - scrollH->minimum());
       if( max < 10.0f ) max = 10.0f;
       if( autoScrollX > 0.0f )
-	autoScrollX = max;
+        autoScrollX = max;
       else
-	autoScrollX = -max;
+        autoScrollX = -max;
     }
 
   // Y
@@ -932,9 +932,9 @@ void Flu_Tree_Browser :: on_dnd_leave()
       float max = 0.01f * (scrollV->maximum() - scrollV->minimum());
       if( max < 10.0f ) max = 10.0f;
       if( autoScrollY > 0.0f )
-	autoScrollY = max;
+        autoScrollY = max;
       else
-	autoScrollY = -max;
+        autoScrollY = -max;
     }
 #endif
 }
@@ -952,19 +952,19 @@ bool Flu_Tree_Browser :: on_dnd_drag( int X, int Y )
       float min = 1.0f, max = 0.01f * (scrollH->maximum() - scrollH->minimum());
       if( max < 10.0f ) max = 10.0f;
       if( X < (x()+30) ) // left
-	{
-	  float t = float((x()+30) - X) / 30.0f;
-	  autoScrollX = -LERP( t*t, min, max );
-	  if( !scrolledTimerOn )
-	    Fl::add_timeout( 0.0, _timerScrollCB, this );
-	}
+        {
+          float t = float((x()+30) - X) / 30.0f;
+          autoScrollX = -LERP( t*t, min, max );
+          if( !scrolledTimerOn )
+            Fl::add_timeout( 0.0, _timerScrollCB, this );
+        }
       else if( X > (x()+w()-30) ) // right
-	{
-	  float t = float(X - (x()+w()-30)) / 30.0f;
-	  autoScrollX = LERP( t*t, min, max );
-	  if( !scrolledTimerOn )
-	    Fl::add_timeout( 0.0, _timerScrollCB, this );
-	}
+        {
+          float t = float(X - (x()+w()-30)) / 30.0f;
+          autoScrollX = LERP( t*t, min, max );
+          if( !scrolledTimerOn )
+            Fl::add_timeout( 0.0, _timerScrollCB, this );
+        }
     }
 
   if( scrollV->visible() )
@@ -973,19 +973,19 @@ bool Flu_Tree_Browser :: on_dnd_drag( int X, int Y )
       float min = 1.0f, max = 0.01f * (scrollV->maximum() - scrollV->minimum());
       if( max < 10.0f ) max = 10.0f;
       if( Y < (y()+30) ) // top
-	{
-	  float t = float((y()+30) - Y) / 30.0f;
-	  autoScrollY = -LERP( t*t, min, max );
-	  if( !scrolledTimerOn )
-	    Fl::add_timeout( 0.0, _timerScrollCB, this );
-	}
+        {
+          float t = float((y()+30) - Y) / 30.0f;
+          autoScrollY = -LERP( t*t, min, max );
+          if( !scrolledTimerOn )
+            Fl::add_timeout( 0.0, _timerScrollCB, this );
+        }
       else if( Y > (y()+h()-30) ) // bottom
-	{
-	  float t = float(Y - (y()+h()-30)) / 30.0f;
-	  autoScrollY = LERP( t*t, min, max );
-	  if( !scrolledTimerOn )
-	    Fl::add_timeout( 0.0, _timerScrollCB, this );
-	}
+        {
+          float t = float(Y - (y()+h()-30)) / 30.0f;
+          autoScrollY = LERP( t*t, min, max );
+          if( !scrolledTimerOn )
+            Fl::add_timeout( 0.0, _timerScrollCB, this );
+        }
     }
 
   if( autoScrollX == 0.0f && autoScrollY == 0.0f )
@@ -1037,29 +1037,29 @@ void Flu_Tree_Browser :: on_dnd_drop( const Flu_DND_Event *e )
       // create a new node with the text as the name and make it the grabbed node
       rdata.grabbed = new Node( true, e->text(), NULL, rdata, NULL, true );
       if( rdata.grabbed )
-	newNode = true;
+        newNode = true;
     }
 
   else
     {
       if( e->is_data_type( "Flu_Tree_Browser" ) )
-	{
-	  if( rdata.moveOnlySameGroup && ( rdata.grabbed->parent() != rdata.dragNode->parent() ) )
-	    rdata.grabbed = NULL;
-	}
+        {
+          if( rdata.moveOnlySameGroup && ( rdata.grabbed->parent() != rdata.dragNode->parent() ) )
+            rdata.grabbed = NULL;
+        }
       else if( e->is_data_type( "DND_Object" ) && rdata.dnd )
-	{
-	  // create a new node with the text as the name and make it the grabbed node
-	  DND_Object *o = (DND_Object*)e->data();
-	  rdata.grabbed = new Node( true, o->name(), NULL, rdata, NULL, true );
-	  if( rdata.grabbed )
-	    {
-	      rdata.grabbed->user_data( e->data() );
-	      newNode = true;
-	    }
-	}
+        {
+          // create a new node with the text as the name and make it the grabbed node
+          DND_Object *o = (DND_Object*)e->data();
+          rdata.grabbed = new Node( true, o->name(), NULL, rdata, NULL, true );
+          if( rdata.grabbed )
+            {
+              rdata.grabbed->user_data( e->data() );
+              newNode = true;
+            }
+        }
       else
-	rdata.grabbed = NULL;
+        rdata.grabbed = NULL;
     }
 
   // select only the new/moved node
@@ -1068,15 +1068,15 @@ void Flu_Tree_Browser :: on_dnd_drop( const Flu_DND_Event *e )
   if( rdata.grabbed )
     {
       rdata.grabbed->select( true );
-  
+
       // move the node
       if( NodeList::move( rdata.grabbed, rdata.dragWhere, rdata.dragNode ) )
-	{
-	  if( newNode )
-	    rdata.grabbed->do_callback( FLU_NEW_NODE );
-	  else
-	    rdata.grabbed->do_callback( FLU_MOVED_NODE );
-	}
+        {
+          if( newNode )
+            rdata.grabbed->do_callback( FLU_NEW_NODE );
+          else
+            rdata.grabbed->do_callback( FLU_MOVED_NODE );
+        }
       rdata.forceResize = true;
     }
   Fl::focus(this);
@@ -1114,7 +1114,7 @@ int Flu_Tree_Browser :: handle( int event )
     {
       //if( lastEvent != FL_LEAVE )
       //{
-	  //rdata.lastHilighted = rdata.hilighted;
+          //rdata.lastHilighted = rdata.hilighted;
       //}
       //set_hilighted( NULL );
       //lastEvent = event;
@@ -1126,14 +1126,14 @@ int Flu_Tree_Browser :: handle( int event )
   if( !rdata.dragging && !( event == FL_MOVE && rdata.selectUnderMouse ) )
     {
       if( ! (event == FL_MOVE || event == FL_ENTER || event == FL_LEAVE ) )
-	_box->redraw();
+        _box->redraw();
 
       if( Fl_Group::handle( event ) )
-	{
-	  //if( event == FL_KEYDOWN || event == FL_KEYUP )
-	  // redraw();
-	  return 1;
-	}
+        {
+          //if( event == FL_KEYDOWN || event == FL_KEYUP )
+          // redraw();
+          return 1;
+        }
       //if (scrollV && Fl::event_inside(scrollV) && scrollV->handle(event)) return 1;
       //if (scrollH && Fl::event_inside(scrollH) && scrollH->handle(event)) return 1;
     }
@@ -1166,56 +1166,56 @@ int Flu_Tree_Browser :: handle( int event )
     {
       // move hilighted entry up
       if( Fl::event_key() == FL_Up )
-	{
-	  rdata.delta = -1;
-	  Fl::focus(this);
-	  redraw();
-	}
+        {
+          rdata.delta = -1;
+          Fl::focus(this);
+          redraw();
+        }
 
       // move hilighted entry down
       else if( Fl::event_key() == FL_Down )
-	{
-	  rdata.delta = 1;
-	  Fl::focus(this);
-	  redraw();
-	}
+        {
+          rdata.delta = 1;
+          Fl::focus(this);
+          redraw();
+        }
 
       // select all
       else if( Fl::event_state(FL_CTRL) && Fl::event_key() == 'a' )
-	{
-	  select_all();
-	  Fl::focus(this);
-	  redraw();
-	  return 1;
-	}
+        {
+          select_all();
+          Fl::focus(this);
+          redraw();
+          return 1;
+        }
 
       // check for the Home key
       else if( Fl::event_key() == FL_Home )
-	{
-	  // set the hilighted entry to be the first entry
-	  if( rdata.showRoot || ( rdata.root->_children.size() == 0 ) )
-	    set_hilighted( rdata.root );
-	  else if( rdata.root->_children.size() > 0 )
-	    set_hilighted( rdata.root->_children.child(0) );
-	  redraw();
-	}
+        {
+          // set the hilighted entry to be the first entry
+          if( rdata.showRoot || ( rdata.root->_children.size() == 0 ) )
+            set_hilighted( rdata.root );
+          else if( rdata.root->_children.size() > 0 )
+            set_hilighted( rdata.root->_children.child(0) );
+          redraw();
+        }
 
       // check for the End key
       else if( Fl::event_key() == FL_End )
-	{
-	  // set the hilighted entry to be the last visible entry
-	  if( rdata.showRoot && ( rdata.root->_children.size() == 0 ) )
-	    set_hilighted( rdata.root );
-	  else
-	    {
-	      // find the last node by repeatedly looking for the last child until there are no more branches
-	      Node *n = &root;
-	      while( n->_children.size() && n->open() )
-		n = n->_children.child( n->_children.size()-1 );
-	      set_hilighted( n );
-	    }
-	  redraw();
-	}
+        {
+          // set the hilighted entry to be the last visible entry
+          if( rdata.showRoot && ( rdata.root->_children.size() == 0 ) )
+            set_hilighted( rdata.root );
+          else
+            {
+              // find the last node by repeatedly looking for the last child until there are no more branches
+              Node *n = &root;
+              while( n->_children.size() && n->open() )
+                n = n->_children.child( n->_children.size()-1 );
+              set_hilighted( n );
+            }
+          redraw();
+        }
     }
 
   // pass the event down the tree
@@ -1224,9 +1224,9 @@ int Flu_Tree_Browser :: handle( int event )
     {
       //redraw();
       if( rdata.visibilityChanged )
-	root.determineVisibility();
+        root.determineVisibility();
       if( val == 1 )
-	return 1;
+        return 1;
     }
   // special case: if multi-select or single-select and user clicks on no items, unselect all items
   else if( (rdata.selectionMode != FLU_NO_SELECT) && (event == FL_PUSH) && (!Fl::event_state(FL_CTRL)) )
@@ -1266,23 +1266,23 @@ void Flu_Tree_Browser :: set_hilighted( Flu_Tree_Browser::Node* n )
   if( rdata.hilighted )
     {
       if( rdata.selectionFollowsHilight )
-	{
-	  if( rdata.selectionMode == FLU_SINGLE_SELECT )
-	    unselect_all();
-	  rdata.hilighted->select( true );
-	}
+        {
+          if( rdata.selectionMode == FLU_SINGLE_SELECT )
+            unselect_all();
+          rdata.hilighted->select( true );
+        }
 
       int extraH = scrollH->visible() ? scrollH->h() : 0;
 
       // if the hilighted entry is below the visible bounds of the browser, move the vertical scrollbar
       // so the hilighted entry is the last visible entry
       if( rdata.hilighted->currentY-y()+rdata.hilighted->currentH > scrollV->value()+h()-extraH )
-	((Fl_Valuator*)scrollV)->value( rdata.hilighted->currentY-y() - h()+extraH + rdata.hilighted->currentH );
+        ((Fl_Valuator*)scrollV)->value( rdata.hilighted->currentY-y() - h()+extraH + rdata.hilighted->currentH );
 
       // if the hilighted entry is above the visible bounds of the browser, move the vertical scrollbar
       // so the hilighted entry is the first visible entry
       if( rdata.hilighted->currentY-y() < scrollV->value() )
-	((Fl_Valuator*)scrollV)->value( rdata.hilighted->currentY-y() );
+        ((Fl_Valuator*)scrollV)->value( rdata.hilighted->currentY-y() );
     }
   redraw();
 }
@@ -1412,9 +1412,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: first_branch()
   while( n )
     {
       if( n->is_branch() )
-	return n;
+        return n;
       else
-	n = n->next();
+        n = n->next();
     }
   return NULL;
 }
@@ -1425,9 +1425,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: first_leaf()
   while( n )
     {
       if( n->is_leaf() )
-	return n;
+        return n;
       else
-	n = n->next();
+        n = n->next();
     }
   return NULL;
 }
@@ -1446,9 +1446,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: last_branch()
   while( n )
     {
       if( n->is_branch() )
-	return n;
+        return n;
       else
-	n = n->previous();
+        n = n->previous();
     }
   return NULL;
 }
@@ -1459,9 +1459,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: last_leaf()
   while( n )
     {
       if( n->is_leaf() )
-	return n;
+        return n;
       else
-	n = n->previous();
+        n = n->previous();
     }
   return NULL;
 }
@@ -1515,9 +1515,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: next()
   if( is_root() )
     {
       if( children() )
-	return child(0);
+        return child(0);
       else
-	return NULL;
+        return NULL;
     }
 
   // if we are a branch, then the next node is our first child, unless we don't have any children
@@ -1529,15 +1529,15 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: next()
       // are the last child of our parent), then the next node is the next sibling of our parent (and so on...)
       Node *p = parent(), *n = next_sibling();
       while( p )
-	{
-	  if( n )
-	    return n;
-	  else
-	    {
-	      n = p->next_sibling();
-	      p = p->parent();
-	    }
-	}
+        {
+          if( n )
+            return n;
+          else
+            {
+              n = p->next_sibling();
+              p = p->parent();
+            }
+        }
       return NULL;
     }
 }
@@ -1548,9 +1548,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: next_branch()
   while( n )
     {
       if( n->is_branch() )
-	return n;
+        return n;
       else
-	n = n->next();
+        n = n->next();
     }
   return NULL;
 }
@@ -1561,9 +1561,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: next_leaf()
   while( n )
     {
       if( n->is_leaf() )
-	return n;
+        return n;
       else
-	n = n->next();
+        n = n->next();
     }
   return NULL;
 }
@@ -1585,11 +1585,11 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: previous()
   else
     {
       if( n->is_leaf() )  // is leaf, so that is the previous node
-	return n;
+        return n;
       else if( n->children() )  // is branch with some children, so previous node is last child
-	return( n->last() );
+        return( n->last() );
       else  // is branch with no children, so that is the previous node
-	return n;
+        return n;
     }
 }
 
@@ -1599,9 +1599,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: previous_branch()
   while( n )
     {
       if( n->is_branch() )
-	return n;
+        return n;
       else
-	n = n->previous();
+        n = n->previous();
     }
   return NULL;
 }
@@ -1612,9 +1612,9 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: previous_leaf()
   while( n )
     {
       if( n->is_leaf() )
-	return n;
+        return n;
       else
-	n = n->previous();
+        n = n->previous();
     }
   return NULL;
 }
@@ -1624,9 +1624,9 @@ void Flu_Tree_Browser :: Node :: determineVisibility( bool parentVisible )
   if( _widget )
     {
       if( parentVisible )
-	_widget->w->show();
+        _widget->w->show();
       else
-	_widget->w->hide();
+        _widget->w->hide();
     }
   for( int i = 0; i < _children.size(); i++ )
     _children.child(i)->determineVisibility( parentVisible && open() );
@@ -1653,9 +1653,9 @@ void Flu_Tree_Browser :: Node :: clear()
   if( _group )
     {
       if( _group->parent() )
-	_group->parent()->remove( *_group );
+        _group->parent()->remove( *_group );
       while( _group->children() )
-	_group->remove( *_group->child(0) );
+        _group->remove( *_group->child(0) );
       delete _group;
       _group = NULL;
     }
@@ -1723,21 +1723,21 @@ void Flu_Tree_Browser :: draw()
     {
       bool drawLine = false;
       if( dnd_event_is_text() )
-	drawLine = true;
+        drawLine = true;
       else if( dnd_is_data_type( "Flu_Tree_Browser" ) )
-	{
-	  if( !rdata.moveOnlySameGroup || ( rdata.grabbed->parent() == rdata.dragNode->parent() ) )
-	    drawLine = true;
-	}
+        {
+          if( !rdata.moveOnlySameGroup || ( rdata.grabbed->parent() == rdata.dragNode->parent() ) )
+            drawLine = true;
+        }
       else if( dnd_is_data_type( "DND_Object" ) )
-	drawLine = true;
+        drawLine = true;
       if( drawLine && rdata.dragWhere != MOVE_INSIDE )
-	{
-	  fl_color( FL_RED );
-	  fl_line_style( FL_SOLID, 2 );
-	  fl_line( _box->x(), rdata.dragPos, _box->x()+_box->w(), rdata.dragPos );
-	  fl_line_style( 0 );
-	}
+        {
+          fl_color( FL_RED );
+          fl_line_style( FL_SOLID, 2 );
+          fl_line( _box->x(), rdata.dragPos, _box->x()+_box->w(), rdata.dragPos );
+          fl_line_style( 0 );
+        }
     }
 #endif
 
@@ -1827,23 +1827,23 @@ void Flu_Tree_Browser :: Node :: draw( RData &rdata, bool measure )
       // if dragging to the inside of a branch, hilight that branch
 #ifdef USE_FLU_DND
       if( tree->dnd_is_dragging() && rdata.isMoveValid && rdata.dragWhere == MOVE_INSIDE && rdata.dragNode == this )
-	{
-	  bgColor = FL_RED;
-	  tColor = fl_contrast( tColor, bgColor );
-	  hilightColor = rdata.bgColor;
-	  fl_draw_box( FL_FLAT_BOX, rdata.browserX, Y, rdata.browserW, currentH, bgColor );
-	}
+        {
+          bgColor = FL_RED;
+          tColor = fl_contrast( tColor, bgColor );
+          hilightColor = rdata.bgColor;
+          fl_draw_box( FL_FLAT_BOX, rdata.browserX, Y, rdata.browserW, currentH, bgColor );
+        }
       // if selected, draw a filled selection box and reverse the normal draw colors
       else if( CHECK(SELECTED) )
 #else
       if( CHECK(SELECTED) )
 #endif
-	{
-	  bgColor = rdata.selectionColor;
-	  tColor = fl_contrast( tColor, bgColor );
-	  hilightColor = rdata.bgColor;
-	  fl_draw_box( FL_FLAT_BOX, rdata.browserX, Y, rdata.browserW, currentH, bgColor );
-	}
+        {
+          bgColor = rdata.selectionColor;
+          tColor = fl_contrast( tColor, bgColor );
+          hilightColor = rdata.bgColor;
+          fl_draw_box( FL_FLAT_BOX, rdata.browserX, Y, rdata.browserW, currentH, bgColor );
+        }
 
       fl_color( rdata.lineColor );
       fl_line_style( rdata.lineStyle, rdata.lineWidth );
@@ -1853,125 +1853,125 @@ void Flu_Tree_Browser :: Node :: draw( RData &rdata, bool measure )
     {
       // draw the connectors
       if( doDraw && rdata.showConnectors && rdata.showBranches )
-	{
-	  if( parent()->is_root() && !rdata.showRoot && rdata.first )
-	    {
-	      if( rdata.last )
-		draw_Rdash( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	      else
-		draw_Lflop( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	    }
-	  else if( rdata.last )
-	    draw_L( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	  else
-	    draw_T( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	}
+        {
+          if( parent()->is_root() && !rdata.showRoot && rdata.first )
+            {
+              if( rdata.last )
+                draw_Rdash( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+              else
+                draw_Lflop( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+            }
+          else if( rdata.last )
+            draw_L( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+          else
+            draw_T( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+        }
 
       // account for leaf icon spacing
       if( rdata.showBranches )
-	{
-	  if( lIcon )
-	    X += rdata.collapseIcons[which]->w() + rdata.hGap;
-	  else
-	    X += rdata.collapseIcons[which]->w() + rdata.wGap;
-	}
-      else 
-	X += rdata.wGap;
+        {
+          if( lIcon )
+            X += rdata.collapseIcons[which]->w() + rdata.hGap;
+          else
+            X += rdata.collapseIcons[which]->w() + rdata.wGap;
+        }
+      else
+        X += rdata.wGap;
 
       // draw some more connectors
       if( doDraw && rdata.showConnectors && lIcon && rdata.showBranches )
-	draw_Ldash( X-halfHGap, Y-halfVGap, lIcon->w()+rdata.hGap, currentH+rdata.vGap );
+        draw_Ldash( X-halfHGap, Y-halfVGap, lIcon->w()+rdata.hGap, currentH+rdata.vGap );
 
       // draw the leaf icon
       if( lIcon && !CHECK(ICON_AT_END) )
-	{
-	  if( doDraw )
-	    lIcon->draw( X, Y+(currentH>>1)-(lIcon->h()>>1) );
-	  X += lIcon->w() + rdata.wGap;
-	}
+        {
+          if( doDraw )
+            lIcon->draw( X, Y+(currentH>>1)-(lIcon->h()>>1) );
+          X += lIcon->w() + rdata.wGap;
+        }
     }
   else // ...and branches another
     {
       // force the root to the left if it has no visible children
       if( is_root() && !CHECK(SOME_VISIBLE_CHILDREN) )
-	{
-	  skipCollapser = true;
-	  which = 0;
-	}
+        {
+          skipCollapser = true;
+          which = 0;
+        }
 
       if( !CHECK(SOME_VISIBLE_CHILDREN) && !rdata.showLeaves )
-	which = 0;
+        which = 0;
 
       // draw the connectors
       if( doDraw && !skipCollapser && rdata.showConnectors && rdata.showBranches )
-	{
-	  if( is_root() )
-	    {
-	      if( CHECK(SOME_VISIBLE_CHILDREN) )
-		draw_Rdash( X-halfHGap, Y-halfVGap, rdata.collapseIcons[which]->w()+4+rdata.hGap, currentH+rdata.vGap );
-	    }
-	  else if( parent()->is_root() && !rdata.showRoot && rdata.first )
-	    {
-	      if( rdata.last )
-		draw_Rdash( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	      else
-		draw_Lflop( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	    }
-	  else if( rdata.last )
-	    draw_L( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	  else
-	    draw_T( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
-	}
+        {
+          if( is_root() )
+            {
+              if( CHECK(SOME_VISIBLE_CHILDREN) )
+                draw_Rdash( X-halfHGap, Y-halfVGap, rdata.collapseIcons[which]->w()+4+rdata.hGap, currentH+rdata.vGap );
+            }
+          else if( parent()->is_root() && !rdata.showRoot && rdata.first )
+            {
+              if( rdata.last )
+                draw_Rdash( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+              else
+                draw_Lflop( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+            }
+          else if( rdata.last )
+            draw_L( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+          else
+            draw_T( X-halfHGap, Y-halfVGap, rdata.branchIconW+rdata.hGap, currentH+rdata.vGap );
+        }
 
       // draw the collapsed icons
       if( doDraw && !skipCollapser && !CHECK(ALWAYS_OPEN) && !rdata.allBranchesAlwaysOpen )
-	{
-	  if( CHECK(SOME_VISIBLE_CHILDREN) || rdata.showLeaves )
-	    {
-	      if( !rdata.openWOChildren && !CHECK(SOME_VISIBLE_CHILDREN) )
-		which = 0;
-	      if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
-		{
-		  if( _parent==0 )
-		    cIcon[which]->draw( X, Y+(currentH>>1)-(cIcon[which]->h()>>1) );
-		  else
-		    cIcon[which]->draw( X+(rdata.branchIconW>>1)-(cIcon[which]->w()>>1), Y+(currentH>>1)-(cIcon[which]->h()>>1) );
-		}
-	    }
-	}
+        {
+          if( CHECK(SOME_VISIBLE_CHILDREN) || rdata.showLeaves )
+            {
+              if( !rdata.openWOChildren && !CHECK(SOME_VISIBLE_CHILDREN) )
+                which = 0;
+              if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
+                {
+                  if( _parent==0 )
+                    cIcon[which]->draw( X, Y+(currentH>>1)-(cIcon[which]->h()>>1) );
+                  else
+                    cIcon[which]->draw( X+(rdata.branchIconW>>1)-(cIcon[which]->w()>>1), Y+(currentH>>1)-(cIcon[which]->h()>>1) );
+                }
+            }
+        }
 
       if( !skipCollapser )
-	{
-	  X += cIcon[which]->w();
-	  if( bIcon[which] )
-	    X += rdata.hGap;
-	  else
-	    X += rdata.wGap;
-	}
+        {
+          X += cIcon[which]->w();
+          if( bIcon[which] )
+            X += rdata.hGap;
+          else
+            X += rdata.wGap;
+        }
 
       // draw some more connectors
       if( doDraw && rdata.showConnectors && rdata.showBranches )
-	{
-	  int hGap = rdata.hGap;
-	  if( bIcon[which] )
-	    hGap += bIcon[which]->w();
-	  if( skipCollapser && CHECK(SOME_VISIBLE_CHILDREN) )
-	    draw_vert_dash( X-halfHGap, Y-halfVGap, hGap, currentH+rdata.vGap );
-	  else if( !which || !CHECK(SOME_VISIBLE_CHILDREN) )
-	    draw_Ldash( X-halfHGap, Y-halfVGap, hGap, currentH+rdata.vGap );
-	  else
-	    draw_Lflip( X-halfHGap, Y-halfVGap, hGap, currentH+rdata.vGap );
-	}
+        {
+          int hGap = rdata.hGap;
+          if( bIcon[which] )
+            hGap += bIcon[which]->w();
+          if( skipCollapser && CHECK(SOME_VISIBLE_CHILDREN) )
+            draw_vert_dash( X-halfHGap, Y-halfVGap, hGap, currentH+rdata.vGap );
+          else if( !which || !CHECK(SOME_VISIBLE_CHILDREN) )
+            draw_Ldash( X-halfHGap, Y-halfVGap, hGap, currentH+rdata.vGap );
+          else
+            draw_Lflip( X-halfHGap, Y-halfVGap, hGap, currentH+rdata.vGap );
+        }
 
       // draw the branch icon
       if( bIcon[which] )
-	{
-	  if( doDraw )
-	    bIcon[which]->draw( X, Y+(currentH>>1)-(bIcon[which]->h()>>1) );
-	  X += bIcon[which]->w() + rdata.wGap;
-	}
+        {
+          if( doDraw )
+            bIcon[which]->draw( X, Y+(currentH>>1)-(bIcon[which]->h()>>1) );
+          X += bIcon[which]->w() + rdata.wGap;
+        }
       else
-	X += rdata.wGap;
+        X += rdata.wGap;
     }
 
   if( doDraw )
@@ -1981,12 +1981,12 @@ void Flu_Tree_Browser :: Node :: draw( RData &rdata, bool measure )
   if( CHECK(SHOW_LABEL) && !CHECK(SWAP_LABEL_AND_WIDGET) )
     {
       if( doDraw )
-	{
-	  fl_draw_box( FL_FLAT_BOX, X, Y+(currentH>>1)-(textH>>1), textW, textH, bgColor );
-	  fl_color( tColor );
-	  fl_font( textFont, textSize );
-	  fl_draw( text.c_str(), X, Y+(currentH>>1)-(textH>>1), textW, textH, FL_ALIGN_LEFT );
-	}
+        {
+          fl_draw_box( FL_FLAT_BOX, X, Y+(currentH>>1)-(textH>>1), textW, textH, bgColor );
+          fl_color( tColor );
+          fl_font( textFont, textSize );
+          fl_draw( text.c_str(), X, Y+(currentH>>1)-(textH>>1), textW, textH, FL_ALIGN_LEFT );
+        }
       X += textW;
     }
 
@@ -1995,37 +1995,37 @@ void Flu_Tree_Browser :: Node :: draw( RData &rdata, bool measure )
       int widgetW = _widget->w->w();
       int widgetH = _widget->w->h();
       if( doDraw )
-	{
-	  if( CHECK(AUTO_COLOR) )
-	    _widget->w->color( bgColor );
-	  if( CHECK(AUTO_LABEL_COLOR) )
-	    _widget->w->labelcolor( tColor );
-	  if( CHECK(AUTO_LABEL) )
-	    _widget->w->label( text.c_str() );
-	  _widget->w->redraw();
-	  _widget->w->position( X, Y+(currentH>>1)-(widgetH>>1) );
-	  if( CHECK(EXPAND_TO_WIDTH) )
-	    _widget->w->size( MAX( _widget->defaultW, rdata.browserW - (X-rdata.browserX) ), _widget->w->h() );
-	  _widget->w->draw();
-	}
+        {
+          if( CHECK(AUTO_COLOR) )
+            _widget->w->color( bgColor );
+          if( CHECK(AUTO_LABEL_COLOR) )
+            _widget->w->labelcolor( tColor );
+          if( CHECK(AUTO_LABEL) )
+            _widget->w->label( text.c_str() );
+          _widget->w->redraw();
+          _widget->w->position( X, Y+(currentH>>1)-(widgetH>>1) );
+          if( CHECK(EXPAND_TO_WIDTH) )
+            _widget->w->size( MAX( _widget->defaultW, rdata.browserW - (X-rdata.browserX) ), _widget->w->h() );
+          _widget->w->draw();
+        }
       if( CHECK(EXPAND_TO_WIDTH) )
-	{
-	  if( _widget->w->w() == _widget->defaultW )
-	    X += _widget->defaultW;
-	}
+        {
+          if( _widget->w->w() == _widget->defaultW )
+            X += _widget->defaultW;
+        }
       else
-	X += widgetW;
+        X += widgetW;
     }
 
   if( CHECK(SHOW_LABEL) && CHECK(SWAP_LABEL_AND_WIDGET) )
     {
       if( doDraw )
-	{
-	  fl_draw_box( FL_FLAT_BOX, X, Y+(currentH>>1)-(textH>>1), textW, textH, bgColor );
-	  fl_color( tColor );
-	  fl_font( textFont, textSize );
-	  fl_draw( text.c_str(), X, Y+(currentH>>1)-(textH>>1), textW, textH, FL_ALIGN_LEFT );
-	}
+        {
+          fl_draw_box( FL_FLAT_BOX, X, Y+(currentH>>1)-(textH>>1), textW, textH, bgColor );
+          fl_color( tColor );
+          fl_font( textFont, textSize );
+          fl_draw( text.c_str(), X, Y+(currentH>>1)-(textH>>1), textW, textH, FL_ALIGN_LEFT );
+        }
       X += textW;
     }
 
@@ -2033,7 +2033,7 @@ void Flu_Tree_Browser :: Node :: draw( RData &rdata, bool measure )
   if( is_leaf() && lIcon && CHECK(ICON_AT_END) )
     {
       if( doDraw )
-	lIcon->draw( X, Y+(currentH>>1)-(lIcon->h()>>1) );
+        lIcon->draw( X, Y+(currentH>>1)-(lIcon->h()>>1) );
       X += lIcon->w() + rdata.wGap;
     }
 
@@ -2115,36 +2115,36 @@ void Flu_Tree_Browser :: Node :: open( bool b )
     {
       // if we aren't yet animating a node, animate it!
       if( !tree->rdata.animating && !tree->rdata.animatedNode )
-	{
-	  // if we don't know how high all the children are, find out
-	  // (this only happens once per node, the first time it is opened)
-	  if( totalChildH == 0 )
-	    {
-	      RData r = tree->rdata;
-	      r.x = r.y = r.totalW = 0;
-	      recurse( r, Node::MEASURE_THIS_OPEN );
-	    }
-	  // set the initial offset based on whether the branch is open or closed
-	  tree->rdata.animationOffset = b ? -totalChildH : -1;
-	  // the delta is how much to change the offset each frame
-	  tree->rdata.animationDelta = totalChildH / ( tree->rdata.collapseTime * tree->rdata.fps );
-	  tree->rdata.animationDelta = b ? tree->rdata.animationDelta : -tree->rdata.animationDelta;
-	  tree->rdata.animating = true;
-	  tree->rdata.animatedNode = this;
-	  Fl::add_timeout( 1.0f/tree->rdata.fps, _timerRedrawCB, tree );
-	}
+        {
+          // if we don't know how high all the children are, find out
+          // (this only happens once per node, the first time it is opened)
+          if( totalChildH == 0 )
+            {
+              RData r = tree->rdata;
+              r.x = r.y = r.totalW = 0;
+              recurse( r, Node::MEASURE_THIS_OPEN );
+            }
+          // set the initial offset based on whether the branch is open or closed
+          tree->rdata.animationOffset = b ? -totalChildH : -1;
+          // the delta is how much to change the offset each frame
+          tree->rdata.animationDelta = totalChildH / ( tree->rdata.collapseTime * tree->rdata.fps );
+          tree->rdata.animationDelta = b ? tree->rdata.animationDelta : -tree->rdata.animationDelta;
+          tree->rdata.animating = true;
+          tree->rdata.animatedNode = this;
+          Fl::add_timeout( 1.0f/tree->rdata.fps, _timerRedrawCB, tree );
+        }
       // otherwise reverse the direction of the animation, only if we are animating this node
       else if( tree->rdata.animating && tree->rdata.animatedNode==this )
-	{
-	  if( b ^ (tree->rdata.animationDelta>0) )
-	    tree->rdata.animationDelta = -tree->rdata.animationDelta;
-	}
+        {
+          if( b ^ (tree->rdata.animationDelta>0) )
+            tree->rdata.animationDelta = -tree->rdata.animationDelta;
+        }
     }
 
   if( open() && (_parent != 0) ) // root node doesn't count as a single open branch
     {
       if( ( tree->rdata.lastOpenBranch != this ) && tree->rdata.singleBranchOpen )
-	tree->rdata.lastOpenBranch->close();
+        tree->rdata.lastOpenBranch->close();
       tree->rdata.lastOpenBranch = this;
     }
 
@@ -2164,14 +2164,14 @@ void Flu_Tree_Browser :: Node :: active( bool b )
   if( _widget )
     {
       if( b )
-	_widget->w->activate();
+        _widget->w->activate();
       else
-	_widget->w->deactivate();
+        _widget->w->deactivate();
     }
   if( !CHECK(ACTIVE) )
     {
       if( tree->rdata.hilighted == this )
-	tree->set_hilighted( NULL );
+        tree->set_hilighted( NULL );
       select( false );
       open( false );
     }
@@ -2217,53 +2217,53 @@ bool Flu_Tree_Browser :: Node :: isMoveValid( Node* &n1, int &where, Node* &n2 )
   if( n1 )
     {
       if( !n1->movable() )
-	return false;
+        return false;
       if( n1->is_branch() )
-	if( n1->is_descendent( n2 ) )
-	  return false;
+        if( n1->is_descendent( n2 ) )
+          return false;
     }
 
   bool sameGroup = n2->tree->move_only_same_group();
   if( sameGroup && n1 )
     {
       if( n1->parent() != n2->parent() || where==MOVE_INSIDE )
-	return false;
+        return false;
     }
 
   int iMode = n2->tree->insertion_mode();
   if( iMode == FLU_INSERT_SORTED || iMode == FLU_INSERT_SORTED_REVERSE )
     {
       if( n2->is_branch() )
-	{
-	  where = MOVE_INSIDE;
-	  return true;
-	}
+        {
+          where = MOVE_INSIDE;
+          return true;
+        }
       else
-	return false;
+        return false;
     }
 
   if( where==MOVE_AFTER && n2->is_branch() && n2->open() )
     {
-      // can't move inside a branch if within the same group, unless the first node is dragged 
+      // can't move inside a branch if within the same group, unless the first node is dragged
       // from outside the tree (in which case n1 is NULL)
       if( sameGroup && n1 )
-	{
-	  if( n2->_children.size() > 0 )
-	    return false;
-	}
+        {
+          if( n2->_children.size() > 0 )
+            return false;
+        }
       else if( n2->_children.size() > 0 )
-	{
-	  where = MOVE_BEFORE;
-	  n2 = n2->_children.child(0);
-	}
+        {
+          where = MOVE_BEFORE;
+          n2 = n2->_children.child(0);
+        }
       else
-	where = MOVE_INSIDE;
+        where = MOVE_INSIDE;
     }
 
   if( where==MOVE_INSIDE )
     {
       if( !n2->droppable() )
-	return false;
+        return false;
     }
   else if( n2->parent() )
     if( !n2->parent()->droppable() )
@@ -2282,23 +2282,23 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
   if( type == COUNT_SELECTED )
     {
       if( is_leaf() )
-	return (int)CHECK(SELECTED);
+        return (int)CHECK(SELECTED);
       else
-	{
-	  int total = (int)CHECK(SELECTED);
-	  for( i = 0; i < _children.size(); i++ )
-	    total += _children.child(i)->recurse( rdata, type, event );
-	  return total;
-	}
+        {
+          int total = (int)CHECK(SELECTED);
+          for( i = 0; i < _children.size(); i++ )
+            total += _children.child(i)->recurse( rdata, type, event );
+          return total;
+        }
     }
 
   // see if this entry is even visible
   if( rdata.y > rdata.browserY+rdata.browserH )
     {
       if( type == DRAW )
-	return 1;
+        return 1;
       else if( type == HANDLE )
-	return 0;
+        return 0;
     }
 
   int which = open();
@@ -2309,18 +2309,18 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
   if( (type == MEASURE) || (type == MEASURE_THIS_OPEN) )
     {
       if( CHECK(SHOW_LABEL) )
-	{
-	  int W = 0, H;
-	  fl_font( textFont, textSize );
-	  fl_measure( text.c_str(), W, H );
-	  W += 4; H += 4;  // hack - it looks better
-	  textW = W;
-	  textH = H;
-	}
+        {
+          int W = 0, H;
+          fl_font( textFont, textSize );
+          fl_measure( text.c_str(), W, H );
+          W += 4; H += 4;  // hack - it looks better
+          textW = W;
+          textH = H;
+        }
       else
-	{
-	  textW = textH = 0;
-	}
+        {
+          textW = textH = 0;
+        }
 
       // remember vertically where this node is w.r.t the browser
       currentY = rdata.y;
@@ -2329,20 +2329,20 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
 
       // find the total size of the entry, depending on if there's a widget
       if( _widget )
-	currentH = MAX( _widget->w->h(), currentH );
+        currentH = MAX( _widget->w->h(), currentH );
 
       // find the total height of this entry by taking the max height of the entry and icons
       if( is_leaf() )
-	{
-	  if( lIcon )
-	    currentH = MAX( currentH, lIcon->h() );
-	}
+        {
+          if( lIcon )
+            currentH = MAX( currentH, lIcon->h() );
+        }
       else
-	{
-	  currentH = MAX( currentH, cIcon[which]->h() );
-	  if( bIcon[which] )
-	    currentH = MAX( currentH, bIcon[which]->h() );
-	}
+        {
+          currentH = MAX( currentH, cIcon[which]->h() );
+          if( bIcon[which] )
+            currentH = MAX( currentH, bIcon[which]->h() );
+        }
     }
 
   bool skipAhead = (rdata.y + currentH) < rdata.browserY;
@@ -2352,47 +2352,47 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
     {
     case DRAW:
       {
-	if( skipEntry || skipAhead ) break;
+        if( skipEntry || skipAhead ) break;
 
-	draw( rdata, false );
+        draw( rdata, false );
 
-	// draw any vertical connectors connecting our parents, grandparents, etc.,
-	if( rdata.showBranches )
-	  {
-	    int d = depth()-1;
-	    for( i = 0; i < rdata.branchConnectors.size(); i++ )
-	      {
-		if( i != d )
-		  {
-		    fl_color( rdata.lineColor );
-		    fl_line_style( rdata.lineStyle, rdata.lineWidth );
-		    fl_line( rdata.branchConnectors[i], rdata.y, rdata.branchConnectors[i], rdata.y+currentH );
-		    fl_line_style( 0 );
-		  }
-	      }
-	  }
+        // draw any vertical connectors connecting our parents, grandparents, etc.,
+        if( rdata.showBranches )
+          {
+            int d = depth()-1;
+            for( i = 0; i < rdata.branchConnectors.size(); i++ )
+              {
+                if( i != d )
+                  {
+                    fl_color( rdata.lineColor );
+                    fl_line_style( rdata.lineStyle, rdata.lineWidth );
+                    fl_line( rdata.branchConnectors[i], rdata.y, rdata.branchConnectors[i], rdata.y+currentH );
+                    fl_line_style( 0 );
+                  }
+              }
+          }
 
-	rdata.shadedIndex = 1 - rdata.shadedIndex;  // toggle the even/odd entry for shading
+        rdata.shadedIndex = 1 - rdata.shadedIndex;  // toggle the even/odd entry for shading
       }
       break;
 
     case MEASURE:
       if( is_leaf() )
-	CLEAR( SOME_VISIBLE_CHILDREN );
+        CLEAR( SOME_VISIBLE_CHILDREN );
       else
-	{
-	  // find out whether the branch has any children that could be visible
-	  bool someVisibleChildren = rdata.showLeaves && ( _children.size() > 0 );
-	  for( i = 0; i < _children.size(); i++ )
-	    {
-	      if( _children.child(i)->is_branch() )
-		{
-		  someVisibleChildren = true;
-		  break;
-		}
-	    }
-	  SET( SOME_VISIBLE_CHILDREN, someVisibleChildren );
-	}
+        {
+          // find out whether the branch has any children that could be visible
+          bool someVisibleChildren = rdata.showLeaves && ( _children.size() > 0 );
+          for( i = 0; i < _children.size(); i++ )
+            {
+              if( _children.child(i)->is_branch() )
+                {
+                  someVisibleChildren = true;
+                  break;
+                }
+            }
+          SET( SOME_VISIBLE_CHILDREN, someVisibleChildren );
+        }
 
     case MEASURE_THIS_OPEN:
       if( skipEntry ) break;
@@ -2401,376 +2401,376 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
 
     case HANDLE:
       {
-	if( skipEntry || skipAhead || !CHECK(ACTIVE) ) break;
+        if( skipEntry || skipAhead || !CHECK(ACTIVE) ) break;
 
-	if( event != FL_DRAG && event != FL_NO_EVENT )
-	  rdata.justOpenedClosed = false;
+        if( event != FL_DRAG && event != FL_NO_EVENT )
+          rdata.justOpenedClosed = false;
 
-	// if we are trying to select all entries between 2 widgets due to a shift-select...
-	if( rdata.shiftSelect )
-	  {
-	    if( (rdata.hilighted == this) || (rdata.grabbed == this) )
-	      {
-		if( !rdata.shiftSelectAll )
-		  {
-		    rdata.shiftSelectAll = true;
-		    select( true );
-		    if( is_branch() && rdata.openOnSelect )
-		      {
-			open( true );
-		      }
-		  }
-		else
-		  {
-		    rdata.shiftSelect = false;
-		    rdata.shiftSelectAll = false;
-		    rdata.grabbed = 0;
-		    select( true );
-		    if( is_branch() && rdata.openOnSelect )
-		      {
-			open( true );
-		      }
-		  }
-	      }
-	    else if( rdata.shiftSelectAll )
-	      {
-		select( true );
-		if( is_branch() && rdata.openOnSelect )
-		  {
-		    open( true );
-		  }
-	      }
-	    break;
-	  }
+        // if we are trying to select all entries between 2 widgets due to a shift-select...
+        if( rdata.shiftSelect )
+          {
+            if( (rdata.hilighted == this) || (rdata.grabbed == this) )
+              {
+                if( !rdata.shiftSelectAll )
+                  {
+                    rdata.shiftSelectAll = true;
+                    select( true );
+                    if( is_branch() && rdata.openOnSelect )
+                      {
+                        open( true );
+                      }
+                  }
+                else
+                  {
+                    rdata.shiftSelect = false;
+                    rdata.shiftSelectAll = false;
+                    rdata.grabbed = 0;
+                    select( true );
+                    if( is_branch() && rdata.openOnSelect )
+                      {
+                        open( true );
+                      }
+                  }
+              }
+            else if( rdata.shiftSelectAll )
+              {
+                select( true );
+                if( is_branch() && rdata.openOnSelect )
+                  {
+                    open( true );
+                  }
+              }
+            break;
+          }
 
-	// check for the keyboard event
-	if( event == FL_KEYDOWN )
-	  {
-	    // check for the spacebar selecting this entry
-	    if( Fl::event_key() == ' ' && rdata.hilighted == this )
-	      {
-		if( Fl::event_state(FL_CTRL) )
-		  select( !CHECK(SELECTED) );
-		else
-		  {
-		    rdata.root->unselect_all( this );
-		    select( true );
-		  }
-		if( is_branch() && rdata.openOnSelect )
-		  {
-		    open( true );
-		  }
-		return 1;		
-	      }
+        // check for the keyboard event
+        if( event == FL_KEYDOWN )
+          {
+            // check for the spacebar selecting this entry
+            if( Fl::event_key() == ' ' && rdata.hilighted == this )
+              {
+                if( Fl::event_state(FL_CTRL) )
+                  select( !CHECK(SELECTED) );
+                else
+                  {
+                    rdata.root->unselect_all( this );
+                    select( true );
+                  }
+                if( is_branch() && rdata.openOnSelect )
+                  {
+                    open( true );
+                  }
+                return 1;
+              }
 
-	    // check for the enter key opening/closing this entry
-	    else if( (Fl::event_key() == FL_Enter) && (rdata.hilighted == this) )
-	      {
-		open( !open() );
-		return 1;
-	      }
+            // check for the enter key opening/closing this entry
+            else if( (Fl::event_key() == FL_Enter) && (rdata.hilighted == this) )
+              {
+                open( !open() );
+                return 1;
+              }
 
-	    // check for the left/right cursor keys opening/closing this entry
-	    else if( (Fl::event_key() == FL_Left) && (rdata.hilighted == this) )
-	      {
-		open( false );
-		return 1;
-	      }
-	    else if( (Fl::event_key() == FL_Right) && (rdata.hilighted == this) )
-	      {
-		open( true );
-		return 1;
-	      }
-	  }
+            // check for the left/right cursor keys opening/closing this entry
+            else if( (Fl::event_key() == FL_Left) && (rdata.hilighted == this) )
+              {
+                open( false );
+                return 1;
+              }
+            else if( (Fl::event_key() == FL_Right) && (rdata.hilighted == this) )
+              {
+                open( true );
+                return 1;
+              }
+          }
 
-	// check for the "up" cursor key moving the hilighted entry
-	if( rdata.delta == -1 && rdata.hilighted == this && rdata.previous != NULL )
-	  {
-	    tree->set_hilighted( rdata.previous );
-	    rdata.delta = 0;
-	    return 1;
-	  }
+        // check for the "up" cursor key moving the hilighted entry
+        if( rdata.delta == -1 && rdata.hilighted == this && rdata.previous != NULL )
+          {
+            tree->set_hilighted( rdata.previous );
+            rdata.delta = 0;
+            return 1;
+          }
 
-	// check for the "down" cursor key moving the hilighted entry
-	if( rdata.delta == 1 && rdata.hilighted == rdata.previous )
-	  {
-	    tree->set_hilighted( this );
-	    rdata.delta = 0;
-	    return 1;
-	  }
+        // check for the "down" cursor key moving the hilighted entry
+        if( rdata.delta == 1 && rdata.hilighted == rdata.previous )
+          {
+            tree->set_hilighted( this );
+            rdata.delta = 0;
+            return 1;
+          }
 
-	rdata.previous = this;
+        rdata.previous = this;
 
-	// the event is not ours to use
-	//if( _widget && !rdata.dragging )
-	//if( Fl::event_inside( _widget->w ) )
-	//  return 2;
+        // the event is not ours to use
+        //if( _widget && !rdata.dragging )
+        //if( Fl::event_inside( _widget->w ) )
+        //  return 2;
 
-	bool inExpander = false;
-	if( is_branch() )
-	  {
-	    int which = open();
-	    if( _parent==0 )
-	      inExpander = Fl::event_inside( rdata.x, rdata.y+(currentH>>1)-(cIcon[which]->h()>>1),
-					     cIcon[which]->w(), cIcon[which]->h() );
-	    else
-	      inExpander = Fl::event_inside( rdata.x+(rdata.branchIconW>>1)-(cIcon[which]->w()>>1),
-					     rdata.y+(currentH>>1)-(cIcon[which]->h()>>1),
-					     cIcon[which]->w(), cIcon[which]->h() );
-	  }
+        bool inExpander = false;
+        if( is_branch() )
+          {
+            int which = open();
+            if( _parent==0 )
+              inExpander = Fl::event_inside( rdata.x, rdata.y+(currentH>>1)-(cIcon[which]->h()>>1),
+                                             cIcon[which]->w(), cIcon[which]->h() );
+            else
+              inExpander = Fl::event_inside( rdata.x+(rdata.branchIconW>>1)-(cIcon[which]->w()>>1),
+                                             rdata.y+(currentH>>1)-(cIcon[which]->h()>>1),
+                                             cIcon[which]->w(), cIcon[which]->h() );
+          }
 
-	if( event == FL_PUSH )
-	  {	
-	    // check for expand/collapse
-	    if( Fl::event_button() == FL_LEFT_MOUSE && inExpander )
-	      {
-		if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
-		  {
-		    open( !open() );
-		    rdata.dragging = false;
-		    rdata.dragNode = 0;
-		    return 1;
-		  }
-	      }
-	  }
+        if( event == FL_PUSH )
+          {
+            // check for expand/collapse
+            if( Fl::event_button() == FL_LEFT_MOUSE && inExpander )
+              {
+                if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
+                  {
+                    open( !open() );
+                    rdata.dragging = false;
+                    rdata.dragNode = 0;
+                    return 1;
+                  }
+              }
+          }
 
-	if( event == FL_DRAG && rdata.justOpenedClosed )
-	  return 0;
+        if( event == FL_DRAG && rdata.justOpenedClosed )
+          return 0;
 
-	// if no selections, return
-	if( rdata.selectionMode == FLU_NO_SELECT )
-	  break;
+        // if no selections, return
+        if( rdata.selectionMode == FLU_NO_SELECT )
+          break;
 
-	// if the event is not inside us, return
-	if( !Fl::event_inside( rdata.browserX, rdata.y, rdata.browserW, currentH ) )
-	  break;
+        // if the event is not inside us, return
+        if( !Fl::event_inside( rdata.browserX, rdata.y, rdata.browserW, currentH ) )
+          break;
 
 #ifdef USE_FLU_DND
-	// check for grabbing of a node for DND
-	if( event == FL_DRAG && rdata.selectionDragMode == FLU_DRAG_TO_MOVE && !is_root() && rdata.grabbed &&
-	    //rdata.insertionMode!=FLU_INSERT_SORTED && rdata.insertionMode!=FLU_INSERT_SORTED_REVERSE &&
-	    !tree->dnd_is_dragging() && !rdata.justOpenedClosed && CHECK(MOVABLE) )
-	  {
-	    tree->dnd_grab( this, "Flu_Tree_Browser" );
-	    return 1;
-	  }
+        // check for grabbing of a node for DND
+        if( event == FL_DRAG && rdata.selectionDragMode == FLU_DRAG_TO_MOVE && !is_root() && rdata.grabbed &&
+            //rdata.insertionMode!=FLU_INSERT_SORTED && rdata.insertionMode!=FLU_INSERT_SORTED_REVERSE &&
+            !tree->dnd_is_dragging() && !rdata.justOpenedClosed && CHECK(MOVABLE) )
+          {
+            tree->dnd_grab( this, "Flu_Tree_Browser" );
+            return 1;
+          }
 
-	// dragging to move a node
-	if( event == FL_DND_DRAG )
-	  {
-	    rdata.dragNode = this; // remember which node to move the grabbed node before/after
-	    if( is_root() )
-	      {
-		rdata.dragWhere = MOVE_AFTER;
-		rdata.dragPos = rdata.y + currentH;
-	      }
-	    else
-	      {
-		// if this is a leaf or an open branch, then can only move before or after
-		// otherwise can move inside
-		if( is_branch() && !open() )
-		  {
-		    int t = MAX( currentH / 3, 1 );
-		    if( (Fl::event_y()-rdata.y) <= t )
-		      rdata.dragWhere = MOVE_BEFORE;
-		    else if( (Fl::event_y()-rdata.y) <= (t<<1) )
-		      rdata.dragWhere = MOVE_INSIDE;
-		    else
-		      rdata.dragWhere = MOVE_AFTER;
-		  }
-		else
-		  {
-		    if( (Fl::event_y()-rdata.y) <= (currentH>>1) )
-		      rdata.dragWhere = MOVE_BEFORE;
-		    else
-		      rdata.dragWhere = MOVE_AFTER;
-		  }
+        // dragging to move a node
+        if( event == FL_DND_DRAG )
+          {
+            rdata.dragNode = this; // remember which node to move the grabbed node before/after
+            if( is_root() )
+              {
+                rdata.dragWhere = MOVE_AFTER;
+                rdata.dragPos = rdata.y + currentH;
+              }
+            else
+              {
+                // if this is a leaf or an open branch, then can only move before or after
+                // otherwise can move inside
+                if( is_branch() && !open() )
+                  {
+                    int t = MAX( currentH / 3, 1 );
+                    if( (Fl::event_y()-rdata.y) <= t )
+                      rdata.dragWhere = MOVE_BEFORE;
+                    else if( (Fl::event_y()-rdata.y) <= (t<<1) )
+                      rdata.dragWhere = MOVE_INSIDE;
+                    else
+                      rdata.dragWhere = MOVE_AFTER;
+                  }
+                else
+                  {
+                    if( (Fl::event_y()-rdata.y) <= (currentH>>1) )
+                      rdata.dragWhere = MOVE_BEFORE;
+                    else
+                      rdata.dragWhere = MOVE_AFTER;
+                  }
 
-		// where to draw the insertion position?
-		if( rdata.dragWhere == MOVE_BEFORE || rdata.dragWhere == MOVE_INSIDE )
-		  rdata.dragPos = rdata.y;
-		else
-		  rdata.dragPos = rdata.y + currentH;
-	      }
-	    return 1;
-	  }
+                // where to draw the insertion position?
+                if( rdata.dragWhere == MOVE_BEFORE || rdata.dragWhere == MOVE_INSIDE )
+                  rdata.dragPos = rdata.y;
+                else
+                  rdata.dragPos = rdata.y + currentH;
+              }
+            return 1;
+          }
 #endif
 
-	//if( _widget && _widget->w && Fl::event_inside(_widget->w) && _widget->w->handle(event))
-	//return 1;
+        //if( _widget && _widget->w && Fl::event_inside(_widget->w) && _widget->w->handle(event))
+        //return 1;
 
-	// single selection
-	if( rdata.selectionMode == FLU_SINGLE_SELECT )
-	  {
-	    if( event == FL_MOVE && rdata.selectUnderMouse )
-	      {
-		//select_only();
-		rdata.root->unselect_all( this );
-		SET(SELECTED,true);
-		tree->redraw();
-	      }
-	    else if( event == FL_PUSH )
-	      {
-		//rdata.dragging = true;
-		rdata.grabbed = this;
+        // single selection
+        if( rdata.selectionMode == FLU_SINGLE_SELECT )
+          {
+            if( event == FL_MOVE && rdata.selectUnderMouse )
+              {
+                //select_only();
+                rdata.root->unselect_all( this );
+                SET(SELECTED,true);
+                tree->redraw();
+              }
+            else if( event == FL_PUSH )
+              {
+                //rdata.dragging = true;
+                rdata.grabbed = this;
 
-		if( rdata.selectUnderMouse )
-		  rdata.root->unselect_all();
-		else
-		  rdata.root->unselect_all( this );
-		tree->set_hilighted( this );
-		if( Fl::event_state(FL_CTRL) )
-		  select( !CHECK(SELECTED) );
-		else
-		  select( true );
+                if( rdata.selectUnderMouse )
+                  rdata.root->unselect_all();
+                else
+                  rdata.root->unselect_all( this );
+                tree->set_hilighted( this );
+                if( Fl::event_state(FL_CTRL) )
+                  select( !CHECK(SELECTED) );
+                else
+                  select( true );
 
-		if( is_leaf() )
-		  {
-		    if( Fl::event_clicks() > 0 )
-		      {
-			Fl::event_clicks(0);
-			do_callback( FLU_DOUBLE_CLICK );
-		      }
-		  }
-		else
-		  {
-		    if( Fl::event_clicks() > 0 )
-		      {
-			Fl::event_clicks(0);
-			if( rdata.doubleClickToOpen )
-			  {
-			    if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
-			      open( !open() );
-			  }
-			else
-			  do_callback( FLU_DOUBLE_CLICK );
-		      }
-		    else if( rdata.openOnSelect )
-		      {
-			open( true );
-		      }
-		  }
-		Fl::focus(tree);
-		return 1;
-	      }
-	    else if( event == FL_DRAG )
-	      {
-		if( rdata.selectionDragMode == FLU_DRAG_IGNORE )
-		  return 1;
-		rdata.dragging = true;
-		//if( ( rdata.selectionDragMode == FLU_DRAG_IGNORE || rdata.selectionDragMode == FLU_DRAG_TO_MOVE) && ( tree->insertion_mode() == FLU_INSERT_FRONT || tree->insertion_mode() == FLU_INSERT_BACK ) )
-		//return 1;
-		rdata.root->unselect_all( this );
-		tree->set_hilighted( this );
-		select( true );
-		return 1;
-	      }
-	    else if( event == FL_RELEASE && tree->when() == FL_WHEN_RELEASE && selected() && !inExpander )
-	      {
-		do_callback( FLU_SELECTED );
-		return 1;
-	      }
-	  }
+                if( is_leaf() )
+                  {
+                    if( Fl::event_clicks() > 0 )
+                      {
+                        Fl::event_clicks(0);
+                        do_callback( FLU_DOUBLE_CLICK );
+                      }
+                  }
+                else
+                  {
+                    if( Fl::event_clicks() > 0 )
+                      {
+                        Fl::event_clicks(0);
+                        if( rdata.doubleClickToOpen )
+                          {
+                            if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
+                              open( !open() );
+                          }
+                        else
+                          do_callback( FLU_DOUBLE_CLICK );
+                      }
+                    else if( rdata.openOnSelect )
+                      {
+                        open( true );
+                      }
+                  }
+                Fl::focus(tree);
+                return 1;
+              }
+            else if( event == FL_DRAG )
+              {
+                if( rdata.selectionDragMode == FLU_DRAG_IGNORE )
+                  return 1;
+                rdata.dragging = true;
+                //if( ( rdata.selectionDragMode == FLU_DRAG_IGNORE || rdata.selectionDragMode == FLU_DRAG_TO_MOVE) && ( tree->insertion_mode() == FLU_INSERT_FRONT || tree->insertion_mode() == FLU_INSERT_BACK ) )
+                //return 1;
+                rdata.root->unselect_all( this );
+                tree->set_hilighted( this );
+                select( true );
+                return 1;
+              }
+            else if( event == FL_RELEASE && tree->when() == FL_WHEN_RELEASE && selected() && !inExpander )
+              {
+                  do_callback( FLU_SELECTED );
+                  return 1;
+              }
+          }
 
-	// multiple selection
-	else if( rdata.selectionMode == FLU_MULTI_SELECT )
-	  {
-	    if( event == FL_PUSH )
-	      {
-		//rdata.dragging = true;
-		rdata.grabbed = this;
+        // multiple selection
+        else if( rdata.selectionMode == FLU_MULTI_SELECT )
+          {
+            if( event == FL_PUSH )
+              {
+                //rdata.dragging = true;
+                rdata.grabbed = this;
 
-		if( Fl::event_state(FL_CTRL) )
-		  {
-		    select( !CHECK(SELECTED) );
-		    tree->set_hilighted( this );
-		  }
-		else if( Fl::event_state(FL_SHIFT) )
-		  {
-		    // select everything from the last selected entry to this one
-		    if( rdata.hilighted == this )
-		      {
-			select( true );
-			if( is_branch() )
-			  {
-			    if( Fl::event_clicks() > 0 )
-			      {
-				Fl::event_clicks(0);
-				if( rdata.doubleClickToOpen )
-				  {
-				    if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
-				      open( !open() );
-				  }
-				else
-				  do_callback( FLU_DOUBLE_CLICK );
-			      }
-			    else if( rdata.openOnSelect )
-			      {
-				open( !open() );
-			      }
-			  }
-		      }
-		    else
-		      {
-			rdata.shiftSelectAll = false;
-			rdata.shiftSelect = true;
-			rdata.grabbed = this;
-			rdata.root->recurse( rdata, HANDLE, 0 );
-			tree->set_hilighted( this );
-		      }
-		  }
-		else
-		  {
-		    rdata.root->unselect_all( this );
-		    select( true );
-		    if( is_leaf() )
-		      {
-			if( Fl::event_clicks() > 0 )
-			  {
-			    Fl::event_clicks(0);
-			    do_callback( FLU_DOUBLE_CLICK );
-			  }
-		      }
-		    else
-		      {
-			if( Fl::event_clicks() > 0 )
-			  {
-			    Fl::event_clicks(0);
-			    if( rdata.doubleClickToOpen )
-			      {
-				if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
-				  open( !open() );
-			      }
-			    else
-			      do_callback( FLU_DOUBLE_CLICK );
-			  }
-			else if( rdata.openOnSelect )
-			  {
-			    open( true );
-			  }
-		      }
-		    tree->set_hilighted( this );
-		  }
-		Fl::focus(tree);
-		return 1;
-	      }
-	    else if( event == FL_DRAG )
-	      {
-		if( rdata.selectionDragMode == FLU_DRAG_IGNORE )
-		  return 1;
-		rdata.dragging = true;
-		//if( ( rdata.selectionDragMode == FLU_DRAG_IGNORE || rdata.selectionDragMode == FLU_DRAG_TO_MOVE) && ( tree->insertion_mode() == FLU_INSERT_FRONT || tree->insertion_mode() == FLU_INSERT_BACK ) )
-		//return 1;
-		select( true );
-		tree->set_hilighted( this );
-		return 1;
-	      }
-	    else if( event == FL_RELEASE && tree->when() == FL_WHEN_RELEASE && selected() && !inExpander )
-	      {
-		do_callback( FLU_SELECTED );
-		return 1;
-	      }
-	  }
+                if( Fl::event_state(FL_CTRL) )
+                  {
+                    select( !CHECK(SELECTED) );
+                    tree->set_hilighted( this );
+                  }
+                else if( Fl::event_state(FL_SHIFT) )
+                  {
+                    // select everything from the last selected entry to this one
+                    if( rdata.hilighted == this )
+                      {
+                        select( true );
+                        if( is_branch() )
+                          {
+                            if( Fl::event_clicks() > 0 )
+                              {
+                                Fl::event_clicks(0);
+                                if( rdata.doubleClickToOpen )
+                                  {
+                                    if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
+                                      open( !open() );
+                                  }
+                                else
+                                  do_callback( FLU_DOUBLE_CLICK );
+                              }
+                            else if( rdata.openOnSelect )
+                              {
+                                open( !open() );
+                              }
+                          }
+                      }
+                    else
+                      {
+                        rdata.shiftSelectAll = false;
+                        rdata.shiftSelect = true;
+                        rdata.grabbed = this;
+                        rdata.root->recurse( rdata, HANDLE, 0 );
+                        tree->set_hilighted( this );
+                      }
+                  }
+                else
+                  {
+                    rdata.root->unselect_all( this );
+                    select( true );
+                    if( is_leaf() )
+                      {
+                        if( Fl::event_clicks() > 0 )
+                          {
+                            Fl::event_clicks(0);
+                            do_callback( FLU_DOUBLE_CLICK );
+                          }
+                      }
+                    else
+                      {
+                        if( Fl::event_clicks() > 0 )
+                          {
+                            Fl::event_clicks(0);
+                            if( rdata.doubleClickToOpen )
+                              {
+                                if( rdata.openWOChildren || CHECK(SOME_VISIBLE_CHILDREN) )
+                                  open( !open() );
+                              }
+                            else
+                              do_callback( FLU_DOUBLE_CLICK );
+                          }
+                        else if( rdata.openOnSelect )
+                          {
+                            open( true );
+                          }
+                      }
+                    tree->set_hilighted( this );
+                  }
+                Fl::focus(tree);
+                return 1;
+              }
+            else if( event == FL_DRAG )
+              {
+                if( rdata.selectionDragMode == FLU_DRAG_IGNORE )
+                  return 1;
+                rdata.dragging = true;
+                //if( ( rdata.selectionDragMode == FLU_DRAG_IGNORE || rdata.selectionDragMode == FLU_DRAG_TO_MOVE) && ( tree->insertion_mode() == FLU_INSERT_FRONT || tree->insertion_mode() == FLU_INSERT_BACK ) )
+                //return 1;
+                select( true );
+                tree->set_hilighted( this );
+                return 1;
+              }
+            else if( event == FL_RELEASE && tree->when() == FL_WHEN_RELEASE && selected() && !inExpander )
+              {
+                do_callback( FLU_SELECTED );
+                return 1;
+              }
+          }
       }
       break;
     }
@@ -2797,7 +2797,7 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
   if( rdata.showBranches )
     {
       if( !skipEntry && !skipCollapser )
-	rdata.x += cIcon[which]->w() + rdata.hGap;
+        rdata.x += cIcon[which]->w() + rdata.hGap;
     }
   rdata.totalW = MAX( rdata.totalW, rdata.x );
 
@@ -2807,9 +2807,9 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
   if( rdata.showBranches )
     {
       if( bIcon[which] )
-	rdata.branchIconW = bIcon[which]->w();
+        rdata.branchIconW = bIcon[which]->w();
       else
-	rdata.branchIconW = cIcon[which]->w();
+        rdata.branchIconW = cIcon[which]->w();
     }
   else
     rdata.branchIconW = 0;
@@ -2819,19 +2819,19 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
     {
       // check for termination (if opening)
       if( (rdata.animationOffset+rdata.animationDelta) >= 0.0f )
-	{
-	  tree->rdata.animatedNode = NULL;
-	  rdata.animating = false;
-	  tree->rdata.forceResize = true;
-	  Fl::remove_timeout( _timerRedrawCB, tree );
-	}
+        {
+          tree->rdata.animatedNode = NULL;
+          rdata.animating = false;
+          tree->rdata.forceResize = true;
+          Fl::remove_timeout( _timerRedrawCB, tree );
+        }
       else
-	{
-	  // update the offset
-	  rdata.animationOffset += rdata.animationDelta;
-	  fl_push_clip( rdata.browserX, rdata.y, rdata.browserW, rdata.browserH );
-	  rdata.y += (int)rdata.animationOffset;
-	}
+        {
+          // update the offset
+          rdata.animationOffset += rdata.animationDelta;
+          fl_push_clip( rdata.browserX, rdata.y, rdata.browserW, rdata.browserH );
+          rdata.y += (int)rdata.animationOffset;
+        }
     }
 
   if( ( type == MEASURE ) || ( type == MEASURE_THIS_OPEN ) )
@@ -2844,23 +2844,23 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
     {
       // prepare the recursive data structure for the next level
       if( i == 0 )
-	rdata.first = true;
+        rdata.first = true;
       rdata.last = (i == _children.size()-1 );
 
       // if child "i" is not the last child,
       // then there is a long connector that needs drawn between this node and the last child.
       // push the horizontal position of the connector onto the stack
       if( (type == DRAW) && rdata.showConnectors && ( i < _children.size()-1 ) )
-	{
-	  rdata.branchConnectors.push( rdata.x+tempW );
-	  val = _children.child(i)->recurse( rdata, type, event );
-	  rdata.branchConnectors.pop();
-	}
+        {
+          rdata.branchConnectors.push( rdata.x+tempW );
+          val = _children.child(i)->recurse( rdata, type, event );
+          rdata.branchConnectors.pop();
+        }
       else
-	val = _children.child(i)->recurse( rdata, type, event );
+        val = _children.child(i)->recurse( rdata, type, event );
 
       if( val )
-	return val;
+        return val;
     }
 
   // set the branch icon width back to what it was before we changed it
@@ -2875,19 +2875,19 @@ int Flu_Tree_Browser :: Node :: recurse( RData &rdata, int type, int event )
       fl_pop_clip();
       // check for termination (if closing)
       if( rdata.animationOffset <= (float)(-totalChildH) )
-	{
-	  tree->rdata.animatedNode = NULL;
-	  rdata.animating = false;
-	  tree->rdata.forceResize = true;
-	  Fl::remove_timeout( _timerRedrawCB, tree );
-	}
+        {
+          tree->rdata.animatedNode = NULL;
+          rdata.animating = false;
+          tree->rdata.forceResize = true;
+          Fl::remove_timeout( _timerRedrawCB, tree );
+        }
     }
 
   // move back horizontally from the last entry
   if( rdata.showBranches )
     {
       if( !skipEntry && !skipCollapser )
-	rdata.x -= cIcon[which]->w() + rdata.hGap;
+        rdata.x -= cIcon[which]->w() + rdata.hGap;
     }
 
   return 0;
@@ -3016,19 +3016,19 @@ unsigned int Flu_Tree_Browser :: Node :: remove( unsigned int id )
     {
       Node *n = _children.child(i);
       if( n->id() == id )
-	{
-	  _children.erase( i );
-	  tree->rdata.forceResize = true;
-	  //if( tree->rdata.cbNode == n )
-	  //tree->rdata.cbNode = NULL;
-	  delete n;
-	  if( tree->rdata.autoBranches )
-	    initType();
-	  tree->redraw();
-	  return id;
-	}
+        {
+          _children.erase( i );
+          tree->rdata.forceResize = true;
+          //if( tree->rdata.cbNode == n )
+          //tree->rdata.cbNode = NULL;
+          delete n;
+          if( tree->rdata.autoBranches )
+            initType();
+          tree->redraw();
+          return id;
+        }
       else if( n->remove( id ) )
-	return id;
+        return id;
     }
 
   return 0;
@@ -3047,25 +3047,25 @@ unsigned int Flu_Tree_Browser :: Node :: remove( Fl_Widget *w )
     {
       Node *n = _children.child(i);
       if( n->_widget )
-	{
-	  if( n->_widget->w == w )
-	    {
-	      int id = n->id();
-	      _children.erase( i );
-	      tree->rdata.forceResize = true;
-	      //if( tree->rdata.cbNode == n )
-	      //tree->rdata.cbNode = NULL;
-	      delete n;
-	      if( tree->rdata.autoBranches )
-		initType();
-	      tree->redraw();
-	      return id;
-	    }
-	}
+        {
+          if( n->_widget->w == w )
+            {
+              int id = n->id();
+              _children.erase( i );
+              tree->rdata.forceResize = true;
+              //if( tree->rdata.cbNode == n )
+              //tree->rdata.cbNode = NULL;
+              delete n;
+              if( tree->rdata.autoBranches )
+                initType();
+              tree->redraw();
+              return id;
+            }
+        }
 
       int id = n->remove( w );
       if( id )
-	return id;
+        return id;
     }
 
   return 0;
@@ -3134,7 +3134,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: find( unsigned int id )
     {
       Node *n = _children.child(i)->find( id );
       if( n )
-	return n;
+        return n;
     }
 
   return NULL;
@@ -3155,7 +3155,7 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: find( Fl_Widget *w )
     {
       Node *n = _children.child(i)->find( w );
       if( n )
-	return n;
+        return n;
     }
 
   return NULL;
@@ -3167,12 +3167,12 @@ bool Flu_Tree_Browser :: Node :: findPath( unsigned int id, RData &rdata )
   if( _id == id )
     {
       if( is_leaf() )
-	rdata.path += text;
+        rdata.path += text;
       else
-	{
-	  rdata.path += text;
-	  rdata.path += "/";
-	}
+        {
+          rdata.path += text;
+          rdata.path += "/";
+        }
       return true;
     }
 
@@ -3189,10 +3189,10 @@ bool Flu_Tree_Browser :: Node :: findPath( unsigned int id, RData &rdata )
   for( int i = 0; i < _children.size(); i++ )
     {
       if( _children.child(i)->findPath( id, rdata ) )
-	{
-	  free( oldPath );
-	  return true;
-	}
+        {
+          free( oldPath );
+          return true;
+        }
     }
 
   rdata.path = oldPath;
@@ -3206,14 +3206,14 @@ bool Flu_Tree_Browser :: Node :: findPath( Fl_Widget *w, RData &rdata )
   if( _widget )
     if( _widget->w == w )
       {
-	if( is_leaf() )
-	  rdata.path += text;
-	else
-	  {
-	    rdata.path += text;
-	    rdata.path += "/";
-	  }
-	return true;
+        if( is_leaf() )
+          rdata.path += text;
+        else
+          {
+            rdata.path += text;
+            rdata.path += "/";
+          }
+        return true;
       }
 
   if( is_leaf() )
@@ -3229,10 +3229,10 @@ bool Flu_Tree_Browser :: Node :: findPath( Fl_Widget *w, RData &rdata )
   for( int i = 0; i < _children.size(); i++ )
     {
       if( _children.child(i)->findPath( w, rdata ) )
-	{
-	  free( oldPath );
-	  return true;
-	}
+        {
+          free( oldPath );
+          return true;
+        }
     }
 
   rdata.path = oldPath;
@@ -3246,7 +3246,11 @@ const char* Flu_Tree_Browser :: find_path( unsigned int id )
   // degenerate case: the root is always id==0
   if( id == 0 )
     return "/";
-  rdata.path = "/";
+  std::cerr << "this " << this << std::endl;
+  std::cerr << "id " << id << std::endl;
+  std::cerr << "rdata " << &rdata << std::endl;
+  std::cerr << "rdata.path " << &rdata.path << std::endl;
+  rdata.path = '/';
   if( root.findPath( id, rdata ) )
     return rdata.path.c_str();
   else
@@ -3270,7 +3274,7 @@ static char* remove_escape_chars( const char *str )
   for( int pIndex = 0; pIndex < (int)strlen( str ); pIndex++ )
     {
       if( str[pIndex] != '\\' )
-	text[tIndex++] = str[pIndex];
+        text[tIndex++] = str[pIndex];
     }
   text[tIndex] = '\0';
 
@@ -3347,17 +3351,17 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: modify( const char* path, in
   if( what == GET_SELECTED )
     {
       if( CHECK(SELECTED) )
-	{
-	  rdata.counter++;
-	  if( rdata.counter == rdata.searchIndex )
-	    return this;
-	}
+        {
+          rdata.counter++;
+          if( rdata.counter == rdata.searchIndex )
+            return this;
+        }
       for( int i = 0; i < _children.size(); i++ )
-	{
-	  Node *n = _children.child(i)->modify( path, what, rdata, w );
-	  if( n )
-	    return n;
-	}
+        {
+          Node *n = _children.child(i)->modify( path, what, rdata, w );
+          if( n )
+            return n;
+        }
       return NULL;
     }
 
@@ -3386,13 +3390,13 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: modify( const char* path, in
     {
       // find the next '/'
       if( slash == NULL ) // there isn't one, so we're done
-	break;
+        break;
       // test for escape character
       else if( slash[-1] == '\\' ) // path[0] can never be '/', so this is a safe test
-	slash = strchr( slash+1, '/' );
+        slash = strchr( slash+1, '/' );
       // we have it
       else
-	break;
+        break;
     }
 
   // if there is no slash, then the node name is the path and it is a leaf and the last node in the path
@@ -3416,13 +3420,13 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: modify( const char* path, in
       free( name );
       lastNode = ( slash[1] == '\0' ); // this is the last node if there is nothing after the slash
       if( lastNode )
-	{
-	  //if( rdata.autoBranches )
-	  //branchNode = false;
-	  remainingPath = NULL;
-	}
+        {
+          //if( rdata.autoBranches )
+          //branchNode = false;
+          remainingPath = NULL;
+        }
       else
-	remainingPath = slash+1;
+        remainingPath = slash+1;
     }
 
   ///////////// process the node ///////////////////
@@ -3431,158 +3435,158 @@ Flu_Tree_Browser::Node* Flu_Tree_Browser :: Node :: modify( const char* path, in
     {
     case ADD:
       {
-	// if the new node is a leaf node, add the string as a leaf and return
-	if( !branchNode )
-	  {
-	    // is there already a node with this name?
-	    Node *n = _children.find( nodeName );
-	    if( n )
-	      {
-		// if that node is a branch node, we can't add a new one with the same name
-		if( n->is_branch() )
-		  break;
+        // if the new node is a leaf node, add the string as a leaf and return
+        if( !branchNode )
+          {
+            // is there already a node with this name?
+            Node *n = _children.find( nodeName );
+            if( n )
+              {
+                // if that node is a branch node, we can't add a new one with the same name
+                if( n->is_branch() )
+                  break;
 
-		// if we are not allowed to add multiple nodes with the same name,
-		// then just return
-		if( !rdata.allowDuplication )
-		  break;
-	      }
+                // if we are not allowed to add multiple nodes with the same name,
+                // then just return
+                if( !rdata.allowDuplication )
+                  break;
+              }
 
-	    // add a new node
-	    retNode = new Node( true, nodeName, this, rdata, w, showLabel );
-	    _children.add( retNode );
-	    rdata.forceResize = true;
-	    rdata.visibilityChanged = true;
+            // add a new node
+            retNode = new Node( true, nodeName, this, rdata, w, showLabel );
+            _children.add( retNode );
+            rdata.forceResize = true;
+            rdata.visibilityChanged = true;
 
-	    if( tree->rdata.autoBranches )
-	      initType();
-	  }
-	// otherwise make sure the node name exists as a branch and recurse on it
-	else
-	  {
-	    // if there is already a node with this name, just use it
-	    Node *n = NULL;
-	    n = _children.find( nodeName );
-	    if( n )
-	      {
-		// make sure it is a branch
-		if( n->is_leaf() )
-		  break;
-	      }
+            if( tree->rdata.autoBranches )
+              initType();
+          }
+        // otherwise make sure the node name exists as a branch and recurse on it
+        else
+          {
+            // if there is already a node with this name, just use it
+            Node *n = NULL;
+            n = _children.find( nodeName );
+            if( n )
+              {
+                // make sure it is a branch
+                if( n->is_leaf() )
+                  break;
+              }
 
-	    // else add a new node
-	    if( n == NULL )
-	      {
-		// only add the widget for the last node
-		n = new Node( false, nodeName, this, rdata, lastNode?w:NULL, lastNode?showLabel:true );
-		_children.add( n );
-		rdata.forceResize = true;
-		rdata.visibilityChanged = true;
-	      }
+            // else add a new node
+            if( n == NULL )
+              {
+                // only add the widget for the last node
+                n = new Node( false, nodeName, this, rdata, lastNode?w:NULL, lastNode?showLabel:true );
+                _children.add( n );
+                rdata.forceResize = true;
+                rdata.visibilityChanged = true;
+              }
 
-	    if( tree->rdata.autoBranches )
-	      initType();
+            if( tree->rdata.autoBranches )
+              initType();
 
-	    // recurse on the remainder of the path, if not the last node
-	    if( lastNode )
-	      retNode = n;
-	    else
-	      retNode = n->modify( remainingPath, what, rdata, w, showLabel );
-	  }
+            // recurse on the remainder of the path, if not the last node
+            if( lastNode )
+              retNode = n;
+            else
+              retNode = n->modify( remainingPath, what, rdata, w, showLabel );
+          }
       }
       break;
 
     case REMOVE:
       {
-	// try to find the indicated node. if we can't find it, just return
-	Node *n = _children.find( nodeName );
-	if( !n )
-	  break;
+        // try to find the indicated node. if we can't find it, just return
+        Node *n = _children.find( nodeName );
+        if( !n )
+          break;
 
-	// if this is the last node, remove it.
-	if( lastNode )
-	  {
-	    int ID = n->id();
-	    _children.erase( n );
-	    //if( tree->rdata.cbNode == n )
-	    //tree->rdata.cbNode = NULL;
-	    delete n;
-	    retNode = (Node*)ID; // non-null return value means remove was successful
-	    rdata.forceResize = true;
-	    rdata.visibilityChanged = true;
+        // if this is the last node, remove it.
+        if( lastNode )
+          {
+            intptr_t ID = n->id();
+            _children.erase( n );
+            //if( tree->rdata.cbNode == n )
+            //tree->rdata.cbNode = NULL;
+            delete n;
+            retNode = (Node*)ID; // non-null return value means remove was successful
+            rdata.forceResize = true;
+            rdata.visibilityChanged = true;
 
-	    if( tree->rdata.autoBranches )
-	      initType();
-	    tree->redraw();
-	  }
-	// otherwise recurse on the remainder of the path
-	else
-	  retNode = n->modify( remainingPath, what, rdata, w, showLabel );
+            if( tree->rdata.autoBranches )
+              initType();
+            tree->redraw();
+          }
+        // otherwise recurse on the remainder of the path
+        else
+          retNode = n->modify( remainingPath, what, rdata, w, showLabel );
       }
       break;
 
     case FIND:
       {
-	// if this node equals the starting node for a find_next,
-	// then by clearing rdata.previous we flag that we are allowed to return the next match
-	if( rdata.previous == this )
-	  rdata.previous = NULL;
+        // if this node equals the starting node for a find_next,
+        // then by clearing rdata.previous we flag that we are allowed to return the next match
+        if( rdata.previous == this )
+          rdata.previous = NULL;
 
-	Node *n = NULL;
+        Node *n = NULL;
 
-	if( !lastNode )
-	  {
-	    // if, according to the path, this is not the last node, then just recursively
-	    // search for the named node
-	    n = _children.find( nodeName );
-	    if( !n )
-	      break;
-	    retNode = n->modify( remainingPath, what, rdata, w, showLabel );
-	  }
-	else
-	  {
-	    // otherwise, according to the path, this is the last node (i.e. a leaf).
-	    // since only leaves can have multiple identical entries,
-	    // try to find the indicated node, accounting for the possibility
-	    // that it may not be the one we're after
-	    int next = 1;
-	    for(;;)
-	      {
-		// look for the named node
-		n = _children.find( nodeName, next++ );
+        if( !lastNode )
+          {
+            // if, according to the path, this is not the last node, then just recursively
+            // search for the named node
+            n = _children.find( nodeName );
+            if( !n )
+              break;
+            retNode = n->modify( remainingPath, what, rdata, w, showLabel );
+          }
+        else
+          {
+            // otherwise, according to the path, this is the last node (i.e. a leaf).
+            // since only leaves can have multiple identical entries,
+            // try to find the indicated node, accounting for the possibility
+            // that it may not be the one we're after
+            int next = 1;
+            for(;;)
+              {
+                // look for the named node
+                n = _children.find( nodeName, next++ );
 
-		// if we can't find it, just return, because it's not here
-		if( !n )
-		  break;
+                // if we can't find it, just return, because it's not here
+                if( !n )
+                  break;
 
-		// we are only allowed to return a match if the previous node is NULL,
-		// indicating we have passed the starting node for a find_next
-		if( rdata.previous == NULL )
-		  {
-		    retNode = n;
-		    break;
-		  }
+                // we are only allowed to return a match if the previous node is NULL,
+                // indicating we have passed the starting node for a find_next
+                if( rdata.previous == NULL )
+                  {
+                    retNode = n;
+                    break;
+                  }
 
-		// if the found node equals the starting node for a find_next,
-		// then by clearing rdata.previous we flag that we are allowed to return the next match
-		if( rdata.previous == n )
-		  rdata.previous = NULL;
-	      }
-	  }
+                // if the found node equals the starting node for a find_next,
+                // then by clearing rdata.previous we flag that we are allowed to return the next match
+                if( rdata.previous == n )
+                  rdata.previous = NULL;
+              }
+          }
       }
       break;
 
     case FIND_NUMBER:
       {
-	if( lastNode )  // can only match multiple leaves if the path says this is the last node
-	  {
-	    rdata.counter += _children.findNum( nodeName );
-	  }
-	else  // otherwise recurse down the remaining path
-	  {
-	    Node *n = _children.find( nodeName );
-	    n->modify( remainingPath, what, rdata, w, showLabel );
-	  }
+        if( lastNode )  // can only match multiple leaves if the path says this is the last node
+          {
+            rdata.counter += _children.findNum( nodeName );
+          }
+        else  // otherwise recurse down the remaining path
+          {
+            Node *n = _children.find( nodeName );
+            n->modify( remainingPath, what, rdata, w, showLabel );
+          }
       }
       break;
     }
@@ -3597,7 +3601,7 @@ void Flu_Tree_Browser :: Node :: widgetCB()
   if( _widget )
     {
       if( _widget->CB )
-	_widget->CB( _widget->w, _widget->CBData );
+        _widget->CB( _widget->w, _widget->CBData );
     }
   do_callback( FLU_WIDGET_CALLBACK );
 }
@@ -3610,7 +3614,7 @@ void Flu_Tree_Browser :: Node :: widget( Fl_Widget *w )
     {
       Fl_Group *p = _widget->w->parent();
       if( p )
-	p->remove( *(_widget->w) );
+        p->remove( *(_widget->w) );
       delete _widget->w;
       delete _widget;
       _widget = NULL;
@@ -3641,11 +3645,11 @@ void Flu_Tree_Browser :: Node :: widget( Fl_Widget *w )
     {
       Node *p = parent();
       if( !p->_group )
-	{
-	  p->_group = new Fl_Group( tree->_box->x(), tree->_box->y(), tree->_box->w(), tree->_box->h() );
-	  p->_group->end();
-	  tree->_box->add( p->_group );
-	}
+        {
+          p->_group = new Fl_Group( tree->_box->x(), tree->_box->y(), tree->_box->w(), tree->_box->h() );
+          p->_group->end();
+          tree->_box->add( p->_group );
+        }
       p->_group->add( w );
     }
 }
@@ -3665,15 +3669,15 @@ void Flu_Tree_Browser :: Node :: collapse_icons( Fl_Image *closed, Fl_Image *ope
   if( is_branch() )
     {
       if( !closed || !open )
-	{
-	  cIcon[0] = tree->rdata.defaultCollapseIcons[0];
-	  cIcon[1] = tree->rdata.defaultCollapseIcons[1];
-	}
+        {
+          cIcon[0] = tree->rdata.defaultCollapseIcons[0];
+          cIcon[1] = tree->rdata.defaultCollapseIcons[1];
+        }
       else
-	{
-	  cIcon[0] = closed;
-	  cIcon[1] = open;
-	}
+        {
+          cIcon[0] = closed;
+          cIcon[1] = open;
+        }
       tree->rdata.forceResize = true;
     }
 }
