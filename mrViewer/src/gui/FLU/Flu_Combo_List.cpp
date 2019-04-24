@@ -42,7 +42,7 @@ void Flu_Combo_List :: cb()
     _value( value() );
 }
 
-void Flu_Combo_List :: _hilight( int x, int y )
+void Flu_Combo_List :: _hilight( int event, int x, int y )
 {
   if( list.scrollbar.visible() )
     {
