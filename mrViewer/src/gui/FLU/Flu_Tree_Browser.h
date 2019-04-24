@@ -1,14 +1,14 @@
 // $Id: Flu_Tree_Browser.h,v 1.91 2004/11/05 17:03:20 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
 
@@ -21,6 +21,8 @@
 #include <stdlib.h>
 
 #include <string>
+#include <iostream>
+
 //#define USE_FLU_DND
 
 /* fltk includes */
@@ -155,15 +157,15 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
   inline bool auto_branches() const
     { return rdata.autoBranches; }
 
-  //! Get the default branch text color 
+  //! Get the default branch text color
   inline Fl_Color branch_color() const
     { return rdata.defBranchColor; }
 
-  //! Get the default branch text font 
+  //! Get the default branch text font
   inline Fl_Font branch_font() const
     { return rdata.defBranchFont; }
 
-  //! Get the default branch text size 
+  //! Get the default branch text size
   inline int branch_size() const
     { return rdata.defBranchSize; }
 
@@ -250,7 +252,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
     { return rdata.doubleClickToOpen; }
 
   //! Get the color to use for shading even entries
-  inline Fl_Color even_shaded_entry_color() const 
+  inline Fl_Color even_shaded_entry_color() const
     { return rdata.shadedColors[0]; }
 
   //! Find the entry identified by \b fullpath
@@ -300,7 +302,8 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
   //! \return the full path of Node \b n, or the empty string if \b n is not in the tree
   /*! \note the returned value is only valid until the next time find_path() is called */
   inline const char* find_path( Node *n )
-    { if( !n ) return ""; else return find_path( n->id() ); }
+    { if( !n ) return ""; else return find_path( n->id() );
+    }
 
   //! \return the first node in the tree (i.e. the root)
   inline Node* first() { return root.first(); }
@@ -368,15 +371,15 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
   //! \return the last leaf encountered in a depth-first traversal of the tree. NULL means there are no leaves
   inline Node* last_leaf() { return root.last_leaf(); }
 
-  //! Get the default leaf text color 
+  //! Get the default leaf text color
   inline Fl_Color leaf_color() const
     { return rdata.defLeafColor; }
 
-  //! Get the default leaf text font 
+  //! Get the default leaf text font
   inline Fl_Font leaf_font() const
     { return rdata.defLeafFont; }
 
-  //! Get the default leaf text size 
+  //! Get the default leaf text size
   inline int leaf_size() const
     { return rdata.defLeafSize; }
 
@@ -399,7 +402,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
   int num_selected();
 
   //! Get the color to use for shading odd entries
-  inline Fl_Color odd_shaded_entry_color() const 
+  inline Fl_Color odd_shaded_entry_color() const
     { return rdata.shadedColors[1]; }
 
   //! Set whether only a single branch (except the root branch) is allowed open at a time. Default is \c false
@@ -496,13 +499,6 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
   //! Set the color to use when hilighting selected entries. Default is FL_SELECTION_COLOR
   inline void selection_color( Fl_Color c )
     { rdata.defSelectionColor = c; }
-
-  //! Set the color to use when hilighting selected entries. Default is FL_SELECTION_COLOR
-#if FL_MINOR_VERSION < 3
-  /* In FLTK 1.1.x, Fl_Color is an enum, in FLTK >= 1.3, Fl_Color is a 'typedef unsigned int' */
-  inline void selection_color( unsigned c )
-    { selection_color( (Fl_Color)c ); }
-#endif
 
   //! Set how selection is affected when the mouse is dragged. This can be one of FLU_DRAG_IGNORE, FLU_DRAG_TO_SELECT, FLU_DRAG_TO_MOVE. Default is FLU_DRAG_TO_SELECT.
   inline void selection_drag_mode( int m )
@@ -615,7 +611,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
   inline void widget_gap( int g )
     { rdata.wGap = g; rdata.forceResize = true; }
 
-  //! Get the gap between the widget and the icon that precedes it 
+  //! Get the gap between the widget and the icon that precedes it
   inline int widget_gap() const
     { return rdata.wGap; }
 
@@ -727,7 +723,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! The descendent should call this when the user grabs the object to start dragging it (e.g. on the FL_PUSH event)
       inline void grab()
-	{ dnd_grab( this, "DND_Object" ); }
+        { dnd_grab( this, "DND_Object" ); }
 
       //! Descendents MUST implement this function to return the name of the dropped object
       virtual const char* name() = 0;
@@ -743,17 +739,17 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       enum { DRAW, MEASURE, MEASURE_THIS_OPEN, HANDLE, COUNT_SELECTED };  // parameters for recurse()
 
     protected:
-      
+
       enum { ADD, REMOVE, FIND, FIND_NUMBER, GET_SELECTED };  // parameters for modify()
       // Moved to public to be able to create a child class that overload Handle
       //enum { DRAW, MEASURE, MEASURE_THIS_OPEN, HANDLE, COUNT_SELECTED };  // parameters for recurse()
 
       // flags
       enum { SELECTED = 0x0001, COLLAPSED = 0x0002, LEAF = 0x0004, SHOW_LABEL = 0x0008,
-	     ACTIVE = 0x0010, EXPAND_TO_WIDTH = 0x0020, ALWAYS_OPEN = 0x0040,
-	     SOME_VISIBLE_CHILDREN = 0x0080, MOVABLE = 0x0100, DROPPABLE = 0x0200,
-	     AUTO_LABEL_COLOR = 0x0400, AUTO_COLOR = 0x0800, AUTO_LABEL = 0x1000, 
-	     SWAP_LABEL_AND_WIDGET = 0x2000, ICON_AT_END = 0x4000 };
+             ACTIVE = 0x0010, EXPAND_TO_WIDTH = 0x0020, ALWAYS_OPEN = 0x0040,
+             SOME_VISIBLE_CHILDREN = 0x0080, MOVABLE = 0x0100, DROPPABLE = 0x0200,
+             AUTO_LABEL_COLOR = 0x0400, AUTO_COLOR = 0x0800, AUTO_LABEL = 0x1000,
+             SWAP_LABEL_AND_WIDGET = 0x2000, ICON_AT_END = 0x4000 };
 
       // flag manipulator functions
       inline bool CHECK( unsigned short flag ) const { return flags & flag; }
@@ -765,19 +761,19 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Is this node currently active?
       inline bool active() const
-	{ return CHECK(ACTIVE); }
+        { return CHECK(ACTIVE); }
 
       //! Activate or deactivate this node
       void active( bool b );
 
       //! Activate this node
       inline void activate()
-	{ active(true); }
+        { active(true); }
 
       //! Add the entry specified by \b fullpath to this node. If \b w is not \c NULL then that widget is the entry and the label (as specified in \b fullPath) is visible depending on the value of \b showLabel. Note that the widget is destroyed by the tree/node on clear() or the destructor
       /*! \return a pointer to the Node of the added entry or NULL if the add failed */
       inline Node* add( const char* fullpath, Fl_Widget *w = 0, bool showLabel = true )
-	{ return( modify( fullpath, ADD, tree->rdata, w, showLabel ) ); }
+        { return( modify( fullpath, ADD, tree->rdata, w, showLabel ) ); }
 
       //! Convenience function that is the same as add() except it appends a '/' to \b fullpath if one does not exist
       Node* add_branch( const char* fullpath, Fl_Widget *w = 0, bool showLabel = true );
@@ -796,60 +792,60 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Set whether a branch node is always open (only for branch nodes). Default is \c false
       inline void always_open( bool b )
-	{ if( b ) open(true); SET(ALWAYS_OPEN,b); tree->rdata.forceResize = true; }
+        { if( b ) open(true); SET(ALWAYS_OPEN,b); tree->rdata.forceResize = true; }
 
       //! Get whether this branch node is always open (only for branches)
       inline bool always_open() const
-	{ return CHECK(ALWAYS_OPEN); }
+        { return CHECK(ALWAYS_OPEN); }
 
       //! Set whether the color of the widget in this node tracks the color of the node itself. This is useful for changing the color of the widget when the node is selected. Default is \c false
       inline void auto_color( bool b )
-	{ SET(AUTO_COLOR,b); }
+        { SET(AUTO_COLOR,b); }
 
       //! Get whether the color of the widget in this node tracks the color of the node itself
       inline bool auto_color()
-	{ return CHECK(AUTO_COLOR); }
+        { return CHECK(AUTO_COLOR); }
 
       //! Set whether the label of the widget in this node tracks the label of the node itself. This is useful for when the label of the node changes and you want the widget to reflect the change
       inline void auto_label( bool b )
-	{ SET(AUTO_LABEL,b); }
+        { SET(AUTO_LABEL,b); }
 
       //! Set whether the label of the widget in this node tracks the label of the node itself.
       inline bool auto_label()
-	{ return CHECK(AUTO_LABEL); }
+        { return CHECK(AUTO_LABEL); }
 
       //! Set whether the label color of the widget in this node tracks the label color of the node itself. This is useful for changing the label color of the widget when the node is selected. Default is \c false
       inline void auto_label_color( bool b )
-	{ SET(AUTO_LABEL_COLOR,b); }
+        { SET(AUTO_LABEL_COLOR,b); }
 
       //! Get whether the label color of the widget in this node tracks the label color of the node itself
       inline bool auto_label_color()
-	{ return CHECK(AUTO_LABEL_COLOR); }
+        { return CHECK(AUTO_LABEL_COLOR); }
 
       //! Set the branch icons to use for this node (only for branch nodes)
       void branch_icons( Fl_Image *closed, Fl_Image *open );
 
       //! Convenience routine to set both branch icons at once
       inline void branch_icon( Fl_Image *icon )
-	{ branch_icons( icon, icon ); }
+        { branch_icons( icon, icon ); }
 
       //! \return child \b i of this node (base 0). Bounds checking is performed and NULL is returned if the child cannot be found
       Node* child( int i ) const;
 
       //! \return the number of child nodes beneath this node
       inline int children() const
-	{ return _children.size(); }
+        { return _children.size(); }
 
       //! Clear all child entries from this node (does not change the entry of this node)
       void clear();
 
       //! Close this node (only for branches)
       inline void close()
-	{ open( false ); }
+        { open( false ); }
 
       //! Is this node closed? (only for branches)
       inline bool closed()
-	{ return !open(); }
+        { return !open(); }
 
        //! Set the collapse icons to use for this node (only for branch nodes)
       /*! \note if a NULL icon is passed, the default plus/minus icons are chosen */
@@ -857,7 +853,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Deactivate this node
       inline void deactivate()
-	{ active(false); }
+        { active(false); }
 
       //! Get the depth of this node in the tree
       unsigned short depth() const;
@@ -867,24 +863,24 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Set whether this node can receive new nodes as a result of dragging-and-dropping (only for branch nodes). Default is \c true
       inline void droppable( bool b )
-	{ SET(DROPPABLE,b); }
+        { SET(DROPPABLE,b); }
 
       //! Get whether this node can receive new nodes as a result of dragging-and-dropping (only for branch nodes).
       inline bool droppable()
-	{ return CHECK(DROPPABLE); }
+        { return CHECK(DROPPABLE); }
 
       //! Set whether to force the size of the embedded widget to expand to fill the visible width of the browser. Default is \c false
       inline void expand_to_width( bool b )
-	{ SET(EXPAND_TO_WIDTH,b); tree->rdata.forceResize = true; }
+        { SET(EXPAND_TO_WIDTH,b); tree->rdata.forceResize = true; }
 
       //! Get whether to force the size of the embedded widget to expand to fill the visible width of the browser
       inline bool expand_to_width() const
-	{ return CHECK(EXPAND_TO_WIDTH); }
+        { return CHECK(EXPAND_TO_WIDTH); }
 
       //! Find the entry identified by \b fullpath
       /*! \return a pointer to the Node of the found entry, or NULL if no matching entry was found */
       inline Node* find( const char *fullpath )
-	{ return( modify( fullpath, FIND, tree->rdata ) ); }
+        { return( modify( fullpath, FIND, tree->rdata ) ); }
 
       //! Find the entry identified by unique id \b id
       /*! \return a pointer to the Node of the found entry, or NULL if no matching entry was found */
@@ -897,12 +893,14 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       //! Search for Node \b n
       /*! \return a pointer to \b n if it is found, or NULL if it is not present */
       inline Node* find( Node *n )
-	{ if( !n ) return NULL; else return find( n->id() ); }
+        {
+            if( !n ) return NULL; else return find( n->id() );
+        }
 
       //! \return the full path of this node
       /*! \note the returned value is only valid until the next time find_path() is called */
       inline const char* find_path()
-	{ return tree->find_path( this ); }
+        { return tree->find_path( this ); }
 
       //! \return the first node in this hierarchy (i.e. this node)
       Node* first();
@@ -915,11 +913,11 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Set whether this node draws the label to the left of the widget (\c false, default) or to the right of the widget (\c true)
       inline void swap_label_and_widget( bool b )
-	{ SET(SWAP_LABEL_AND_WIDGET,b); }
+        { SET(SWAP_LABEL_AND_WIDGET,b); }
 
       //! Get whether this node draws the label to the left of the widget (\c false, default) or to the right of the widget (\c true)
       inline bool swap_label_and_widget()
-	{ return CHECK(SWAP_LABEL_AND_WIDGET); }      
+        { return CHECK(SWAP_LABEL_AND_WIDGET); }
 
       //! \return the selected Node that is at \b index among all selected nodes, or \c NULL if no Node is selected
       /*! For example, \c get_selected(1) will return the first selected node. */
@@ -927,15 +925,15 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Set whether the icon for this node is drawn after the label and widget (\c true) or before (\c false, default) (only for leaf nodes)
       inline void icon_at_end( bool b )
-	{ SET(ICON_AT_END,b); }
+        { SET(ICON_AT_END,b); }
 
       //! Get whether the icon for this node is drawn after the label and widget (\c true) or before (\c false, default) (only for leaf nodes)
       inline bool icon_at_end()
-	{ return CHECK(ICON_AT_END); }
+        { return CHECK(ICON_AT_END); }
 
       //! Get the unique ID of this node
       inline unsigned int id() const
-	{ return _id; }
+        { return _id; }
 
       //! Get the index this node is (as a child) in its parent's list
       /*! \return -1 if this node has no parent, else its index in its parent's list of children */
@@ -964,47 +962,47 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Is this node the root node?
       inline bool is_root() const
-	{ return( _parent == 0 ); }
+        { return( _parent == 0 ); }
 
-      //! Set the label for this node. Note that setting the label may invalidate a sorted tree. Fix by calling Flu_Tree_Browser::sort() 
+      //! Set the label for this node. Note that setting the label may invalidate a sorted tree. Fix by calling Flu_Tree_Browser::sort()
       inline void label( const char *l )
-	{ text = l; tree->redraw(); }
+        { text = l; tree->redraw(); }
 
       //! Get the label for this node
       inline const char* label() const
-	{ return text.c_str(); }
+        { return text.c_str(); }
 
       //! Set the label color for this node
       inline void label_color( Fl_Color c )
-	{ textColor = c; }
+        { textColor = c; }
 
       //! Get the label color for this node
       inline Fl_Color label_color() const
-	{ return textColor; }
+        { return textColor; }
 
       //! Set the label font for this node
       inline void label_font( Fl_Font f )
-	{ textFont = f; tree->rdata.forceResize = true; }
+        { textFont = f; tree->rdata.forceResize = true; }
 
       //! Get the label font for this node
       inline Fl_Font label_font() const
-	{ return textFont; }
+        { return textFont; }
 
       //! Set the label size for this node
       inline void label_size( unsigned char s )
-	{ textSize = s; tree->rdata.forceResize = true; }
+        { textSize = s; tree->rdata.forceResize = true; }
 
       //! Get the label size for this node
       inline unsigned char label_size() const
-	{ return textSize; }
+        { return textSize; }
 
       //! Is the label for this node visible?
       inline bool label_visible() const
-	{ return CHECK(SHOW_LABEL); }
+        { return CHECK(SHOW_LABEL); }
 
       //! Set whether the label for this node is visible
       inline void label_visible( bool b )
-	{ SET(SHOW_LABEL,b); tree->rdata.forceResize = true; }
+        { SET(SHOW_LABEL,b); tree->rdata.forceResize = true; }
 
       //! \return the last node in this hierarchy
       Node* last();
@@ -1020,11 +1018,11 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Set whether this node can be moved (either via move() or by dragging with the mouse). Default is \c true
       inline void movable( bool b )
-	{ SET(MOVABLE,b); }
+        { SET(MOVABLE,b); }
 
       //! Get whether this node can be moved (either via move() or by dragging with the mouse)
       inline bool movable()
-	{ return CHECK(MOVABLE); }
+        { return CHECK(MOVABLE); }
 
       //! Move this node to absolute position \b pos within its parent
       /*! \return \c true if the move was successful, or \c false if the move is not allowed
@@ -1033,14 +1031,14 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Move this node to a position before, after, or inside node \b n
       /*! \param where can be one of MOVE_BEFORE, MOVE_AFTER, or MOVE_INSIDE
-	\return \c true if the move was successful, or \c false if the move is not allowed
+        \return \c true if the move was successful, or \c false if the move is not allowed
        */
       inline bool move( int where, Node* n )
-	{ return( move( this, where, n ) ); }
+        { return( move( this, where, n ) ); }
 
       //! Move node \b n1 to a position before, after, or inside node \b n2
       /*! \param where can be one of MOVE_BEFORE, MOVE_AFTER, or MOVE_INSIDE
-	\return \c true if the move was successful, or \c false if the move is not allowed
+        \return \c true if the move was successful, or \c false if the move is not allowed
        */
       static bool move( Node* n1, int where, Node* n2 );
 
@@ -1061,14 +1059,14 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Is this node currently open? (only for branch nodes)
       inline bool open() const
-	{ return( !CHECK(COLLAPSED) || tree->rdata.allBranchesAlwaysOpen ); }
+        { return( !CHECK(COLLAPSED) || tree->rdata.allBranchesAlwaysOpen ); }
 
       //! Open or close this node (only for branch nodes)
       void open( bool b );
 
       //! Get the node that is the parent of this node, or NULL if there is no parent
       inline Node* parent() const
-	{ return _parent; }
+        { return _parent; }
 
       //! \return the previous node (before this node) in this hierarchy (depth-first traversal)
       Node* previous();
@@ -1089,7 +1087,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       /*! \return the unique id of the removed entry, or \c 0 if no matching entry was found */
 
 //       inline unsigned int remove( const char *fullpath )
-// 	{ return( (unsigned int)modify( fullpath, REMOVE, tree->rdata ) ); }
+//      { return( (unsigned int)modify( fullpath, REMOVE, tree->rdata ) ); }
 
       inline Node* remove( const char *fullpath )
     { return( modify( fullpath, REMOVE, tree->rdata ) ); }
@@ -1105,30 +1103,30 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       //! Remove Node \b n
       /*! \return the id of \b n on successful removal, or \c 0 if \b n is present */
       inline unsigned int remove( Node* n )
-	{ if( !n ) return 0; else return remove( n->id() ); }
+        { if( !n ) return 0; else return remove( n->id() ); }
 
       //! Select this entry and all child entries
       void select_all();
 
       //! Is this node currently selected?
       inline bool selected() const
-	{ return CHECK(SELECTED); }
+        { return CHECK(SELECTED); }
 
       //! Select or unselect this node
       void select( bool b );
 
       //! Select only this node
       inline void select_only()
-	{ tree->unselect_all(); select(true); }
+        { tree->unselect_all(); select(true); }
 
       //! Sort this node's children according to Flu_Tree_Browser::insertion_mode()
       inline void sort_children()
-	{ sort(); }
+        { sort(); }
 
       //! Swap this node and node \b n in their respective trees
       /*! \return \c true if the swap was successful, else \c false */
       inline bool swap( Node* n )
-	{ return swap( this, n ); }
+        { return swap( this, n ); }
 
       //! Swap nodes \b n1 and \b n2 in their respective trees
       /*! \return \c true if the swap was successful, else \c false */
@@ -1139,15 +1137,15 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //! Get the user-specific data stored in this node
       inline void* user_data()
-	{ return userData; }
+        { return userData; }
 
       //! Set the user-specific data stored in this node
       inline void user_data( void *d )
-	{ userData = d; }
+        { userData = d; }
 
       //! Get the widget in this node, or NULL if there is no widget. Note that the widget is destroyed by the tree/node on clear() or the destructor
       inline Fl_Widget* widget() const
-	{ return( _widget ? _widget->w : NULL ); }
+        { return( _widget ? _widget->w : NULL ); }
 
       //! Set the widget in this node. Note that the widget is destroyed by the tree/node on clear() or the destructor
       void widget( Fl_Widget *w );
@@ -1155,7 +1153,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
 
       //MOVED from protected to public to be able to create a child class that overloads Handle()
       void determineVisibility( bool parentVisible = true );
-      // handle/draw/measure/count      
+      // handle/draw/measure/count
       int recurse( RData &rdata, int type, int event = 0 );
 
     protected:
@@ -1195,13 +1193,13 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       bool findPath( Fl_Widget *w, RData &rdata );
 
       class FLU_EXPORT WidgetInfo
-	{
-	public:
-	  Fl_Widget *w;
-	  int defaultW;  // the initial width of the widget
-	  void (*CB)(Fl_Widget*,void*);
-	  void *CBData;
-	};
+        {
+        public:
+          Fl_Widget *w;
+          int defaultW;  // the initial width of the widget
+          void (*CB)(Fl_Widget*,void*);
+          void *CBData;
+        };
 
       unsigned int _id; // the unique id of this node
       unsigned short flags;
@@ -1222,7 +1220,7 @@ class FLU_EXPORT Flu_Tree_Browser : public Fl_Group
       unsigned short currentH;
 
       inline static void _widgetCB( Fl_Widget* w, void* arg )
-	{ ((Node*)arg)->widgetCB(); }
+        { ((Node*)arg)->widgetCB(); }
       void widgetCB();
      };
 
