@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -39,6 +39,32 @@
 #include <boost/cstdint.hpp>      // for int64_t
 
 #include "video/mrvGLShape.h"
+
+inline std::string uncomment_slashes( std::string path )
+{
+    size_t found = 0;
+    while( (found = path.find("\\/", found)) != std::string::npos )
+    {
+	std::string part2 = path.substr( found + 2, path.size() );
+        path = path.substr(0, found) + part2;
+	found += 2;
+    }
+
+    return path;
+}
+
+inline std::string comment_slashes( std::string path )
+{
+    size_t found = 0, next = 0;
+    while( (found = path.find('/', next)) != std::string::npos )
+    {
+        path.insert(found, "\\");
+        next = found+3;
+    }
+
+    return path;
+}
+
 
 namespace mrv
 {
