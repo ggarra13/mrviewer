@@ -40,7 +40,7 @@ public:
   bool _value( const char *v );
   const char* _next();
   const char* _previous();
-  void _hilight( int x, int y );
+  void _hilight( int event, int x, int y );
 
   inline static void _cb( Fl_Widget *w, void *arg )
     { ((Flu_Combo_List*)arg)->cb(); }
