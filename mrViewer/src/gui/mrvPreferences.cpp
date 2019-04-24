@@ -37,6 +37,7 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+#include <FL/filename.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Button.H>
@@ -795,12 +796,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // Get environment preferences (LUTS)
     //
     const char* env = getenv( "CTL_MODULE_PATH");
-    std::string ctlEnv = "CTL_MODULE_PATH=" + temporaryDirectory();
+    std::string ctlEnv = temporaryDirectory();
 #if defined(WIN32) || defined(WIN64)
-    ctlEnv += ";";
+    char sep = ';';
 #else
-    ctlEnv += ":";
+    char sep = ':';
 #endif
+
+    ctlEnv += sep;
 
     if ( !env )
     {
@@ -812,9 +815,55 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         ctlEnv += env;
     }
 
-    putenv( strdup( ctlEnv.c_str() ) );
+    std::string var = "CTL_MODULE_PATH=" + ctlEnv;
+    putenv( strdup( var.c_str() ) );
 
 
+    size_t found = 0;
+    while( (found = ctlEnv.find(sep)) != std::string::npos )
+    {
+	std::string part2;
+	if ( found+1 < ctlEnv.size() )
+	    part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
+        ctlEnv = ctlEnv.substr(0, found);
+	uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
+	ctlEnv = part2;
+    }
+
+    for ( int j = 1; j <= uiPrefs->uiPrefsCTLModulePath->size(); ++j )
+    {
+	char* name;
+	dirent** e;
+	const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
+	int num = fl_filename_list( dir, &e );
+	for( int i = 0; i < num; i++ )
+	{
+	    name = e[i]->d_name;
+	    
+	    // if 'name' ends in '/' or '\', remove it
+	    if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
+		name[strlen(name)-1] = '\0';
+      
+	    // ignore the "." and ".." names
+	    if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
+		continue;
+	    
+	    std::string fullpath = dir;
+	    fullpath += "/";
+	    fullpath += name;
+
+	    if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
+		 ".ctl" ) continue;
+	    
+	    if( fl_filename_isdir( fullpath.c_str() ) )
+		continue;
+	  
+	    uiPrefs->uiPrefsCTLScripts->add( name );
+	}
+    }
+
+
+    
 
     Fl_Preferences lut( base, "lut" );
     lut.get("quality", tmpS, "128x128x128", 2047 );
