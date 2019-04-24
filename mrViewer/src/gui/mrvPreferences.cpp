@@ -37,6 +37,7 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+#include <FL/filename.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Browser.H>
 #include <FL/Fl_Button.H>
@@ -795,12 +796,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     // Get environment preferences (LUTS)
     //
     const char* env = getenv( "CTL_MODULE_PATH");
-    std::string ctlEnv = "CTL_MODULE_PATH=" + temporaryDirectory();
+    std::string ctlEnv = temporaryDirectory();
 #if defined(WIN32) || defined(WIN64)
-    ctlEnv += ";";
+    char sep = ';';
 #else
-    ctlEnv += ":";
+    char sep = ':';
 #endif
+
+    ctlEnv += sep;
 
     if ( !env )
     {
@@ -812,8 +815,38 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         ctlEnv += env;
     }
 
-    putenv( strdup( ctlEnv.c_str() ) );
+    std::string var = "CTL_MODULE_PATH=" + ctlEnv;
+    putenv( strdup( var.c_str() ) );
 
+    // size_t pos = 0;
+    // while ( (pos = ctlEnv.find( sep )) != std::string::npos )
+    // {
+    // 	var = ctlEnv.substr( 0, pos );
+    // 	std::cerr << "var=" << var << " " << pos << std::endl;
+    // 	uiPrefs->uiPrefsCTLModulePath->add( var.c_str() );
+    // 	if ( pos != ctlEnv.size() )
+    // 	    ctlEnv = ctlEnv.substr( pos+1, ctlEnv.size() );
+    // }
+    // uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
+
+    // for ( int i = 1; i <= uiPrefs->uiPrefsCTLModulePath->children(); ++i )
+    // {
+    // 	const char* dir = uiPrefs->uiPrefsCTLModulePath->text(i);
+    // 	std::string name;
+    // 	dirent **e;
+    // 	int num = fl_filename_list( dir, &e );
+    // 	if ( num > 0 )
+    // 	{
+    // 	    for( int i = 0; i < num; i++ )
+    // 	    {
+    // 		name = e[i]->d_name;
+    // 		if (name.substr( name.size()-4, name.size() ) != ".ctl" )
+    // 		    continue;
+    // 		uiPrefs->uiPrefsCTLScripts->add( name.c_str() );
+    // 	    }
+    // 	}
+    // }
+    
 
 
     Fl_Preferences lut( base, "lut" );
