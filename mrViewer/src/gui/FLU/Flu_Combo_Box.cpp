@@ -1,17 +1,17 @@
 // $Id: Flu_Combo_Box.cpp,v 1.20 2004/10/15 14:46:12 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
-
+#include <iostream>
 
 #include <stdio.h>
 #include <FL/Fl.H>
@@ -41,8 +41,8 @@ Flu_Combo_Box :: Flu_Combo_Box( int X, int Y, int W, int H, const char* l )
   input.textsize(  FL_NORMAL_SIZE );
   input.textcolor( FL_BLACK );
 
-  input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()), 
-		W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
+  input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()),
+                W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
 
   editable( true );
 
@@ -67,25 +67,25 @@ void Flu_Combo_Box :: input_cb( Fl_Widget*, void* v )
   if( strcmp( t.input.value(), t.value() )!=0 || t.input.when() & FL_WHEN_NOT_CHANGED)
     {
       if( t.when() )
-	{
-	  t.clear_changed();
-	  if( t._inputCB )
-	    t._inputCB( &t, t._inputCBD );
-	  else
-	    t.do_callback();
-	}
+        {
+          t.clear_changed();
+          if( t._inputCB )
+            t._inputCB( &t, t._inputCBD );
+          else
+            t.do_callback();
+        }
       else
-	{
-	  t.set_changed();
-	}
+        {
+          t.set_changed();
+        }
     }
 }
 
 void Flu_Combo_Box :: resize( int X, int Y, int W, int H )
 {
   Fl_Group::resize( X, Y, W, H );
-  input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()), 
-		W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
+  input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()),
+                W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
 }
 
 void Flu_Combo_Box :: draw()
@@ -131,8 +131,8 @@ int global_y( Fl_Widget *w )
 
 Flu_Combo_Box::Popup :: Popup( Flu_Combo_Box *b, Fl_Widget *c, int H )
   : Fl_Double_Window( global_x(b)-2, //Fl::x()+b->window()->x()+b->x()-2,
-		      global_y(b)+b->h()-2, //Fl::y()+b->window()->y()+b->y()+b->h()-2,
-		      b->w()+4, H, 0 )
+                      global_y(b)+b->h()-2, //Fl::y()+b->window()->y()+b->y()+b->h()-2,
+                      b->w()+4, H, 0 )
 {
   combo = b;
   dragging = false;
@@ -163,23 +163,27 @@ void Flu_Combo_Box :: value( const char *v )
 void Flu_Combo_Box :: selected( const char *v )
 {
   if( v )
+  {
     input.value( v );
+  }
   _popped = false;
   do_callback();
 }
 
 int Flu_Combo_Box::Popup :: handle( int event )
 {
-  if( event == FL_MOVE )
+    
+  if( event == FL_MOVE || event == FL_PUSH || event == FL_DRAG )
     {
       // FL_MOVE is also generated while the window is moving
       // this attempts to keep the popup window moving with the enclosing window
       //position( combo->window()->x()+combo->x()-2, combo->window()->y()+combo->y()+combo->h()-2 );
       position( global_x(combo)-2, global_y(combo)+combo->h()-2 );
       // this lets the mouse move event also move the selected item
-      combo->_hilight( Fl::event_x(), Fl::event_y() );
+      combo->_hilight( event, Fl::event_x(), Fl::event_y() );
     }
 
+  
   if( event == FL_DRAG )
     dragging = true;
 
@@ -192,7 +196,7 @@ int Flu_Combo_Box::Popup :: handle( int event )
     }
 
   // if release after dragging outside the popup window, popdown
-  if( event == FL_RELEASE && dragging && 
+  if( event == FL_RELEASE && dragging &&
       !Fl::event_inside( child(0) ) )
     {
       combo->_popped = false;
@@ -202,34 +206,34 @@ int Flu_Combo_Box::Popup :: handle( int event )
   if( event == FL_KEYDOWN )
     {
       if( Fl::event_key( FL_Escape ) )
-	{
-	  combo->_popped = false;
-	  return 0;
-	}
+        {
+          combo->_popped = false;
+          return 0;
+        }
       else if( Fl::event_key( FL_Up ) )
-	{
-	  const char *s = combo->_previous();
-	  if( s )
-	    selected = s;
-	  return 1;
-	}
+        {
+          const char *s = combo->_previous();
+          if( s )
+            selected = s;
+          return 1;
+        }
       else if( Fl::event_key( FL_Down ) )
-	{
-	  const char *s = combo->_next();
-	  if( s )
-	    selected = s;
-	  return 1;
-	}
+        {
+          const char *s = combo->_next();
+          if( s )
+            selected = s;
+          return 1;
+        }
       else if( Fl::event_key( FL_Enter ) || Fl::event_key( ' ' ) )
-	{
-	  if( selected )
-	    {
-	      combo->value( selected );
-	      combo->selected( selected );
-	    }
-	  combo->_popped = false;
-	  return 1;	  
-	}
+        {
+          if( selected )
+            {
+              combo->value( selected );
+              combo->selected( selected );
+            }
+          combo->_popped = false;
+          return 1;
+        }
     }
 
   return Fl_Double_Window::handle( event );
@@ -241,7 +245,7 @@ int Flu_Combo_Box :: handle( int event )
     return Fl_Group::handle( event );
 
   // is it time to popup?
-  bool open = ( event == FL_PUSH ) && 
+  bool open = ( event == FL_PUSH ) &&
     (!Fl::event_inside( &input ) || ( !editable() && Fl::event_inside( &input ) ) );
   open |= ( event == FL_KEYDOWN ) && Fl::event_key( ' ' );
 
@@ -269,7 +273,7 @@ int Flu_Combo_Box :: handle( int event )
 
       // wait for a selection to be made
       while( _popped )
-	Fl::wait();
+        Fl::check();
 
       // restore things and delete the popup
       _popup->hide();
@@ -287,7 +291,7 @@ int Flu_Combo_Box :: handle( int event )
   if( input.handle(event) )
     {
       if( !editable() && ( event == FL_ENTER || event == FL_LEAVE ) )
-	fl_cursor( FL_CURSOR_DEFAULT );
+        fl_cursor( FL_CURSOR_DEFAULT );
       return 1;
     }
   else
