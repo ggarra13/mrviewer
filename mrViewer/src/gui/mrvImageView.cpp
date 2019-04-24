@@ -8432,22 +8432,22 @@ void ImageView::resize_main_window()
     
     if ( uiMain->uiTopBar->visible() )
     {
-        // uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-        //                         28 * scale );
+        uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+                                28 * scale );
         h += uiMain->uiTopBar->h();
     }
     
     if ( uiMain->uiPixelBar->visible() )
     {
-        // uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-        //                           28 * scale );
+        uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+                                  28 * scale );
         h += uiMain->uiPixelBar->h();
     }
     
     if ( uiMain->uiBottomBar->visible() )
     {
-        // uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-        //                           49 * scale );
+        uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+                                  49 * scale );
         h += uiMain->uiBottomBar->h();
     }
 
@@ -9043,9 +9043,11 @@ void ImageView::play( const CMedia::Playback dir )
 
     CMedia* img = fg->image();
 
-    // if ( img->first_frame() == img->last_frame() )
-    //  return;
-
+    if ( img->first_frame() == img->last_frame() )
+    {
+	return;
+    }
+    
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
     {
