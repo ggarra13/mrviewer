@@ -61,6 +61,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
+    # ADD_COMPILE_OPTIONS( -Wall -Werror )
 
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
@@ -225,7 +226,7 @@ SET( SOURCES
   core/mrvImageOpts.cpp
   core/mrvColorOps.cpp
   core/mrvFrame.cpp
-  
+
 
   gui/FLU/Flu_Combo_Box.cpp      # needed?
   gui/FLU/Flu_Combo_Tree.cpp     # needed?
