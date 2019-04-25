@@ -363,11 +363,11 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     Fl_Preferences ui( base, "ui" );
 
-    ui.get( "topbar", tmp, 1 );
-    uiPrefs->uiPrefsTopbar->value( (bool) tmp );
-
     ui.get( "single_instance", tmp, 0 );
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
+    
+    ui.get( "topbar", tmp, 1 );
+    uiPrefs->uiPrefsTopbar->value( (bool) tmp );
 
     ui.get( "pixel_toolbar", tmp, 1 );
     uiPrefs->uiPrefsPixelToolbar->value( (bool) tmp );
@@ -386,7 +386,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     ui.get( "action_tools", tmp, 0 );
     uiPrefs->uiPrefsPaintTools->value(tmp);
-
 
     ui.get( "image_info", tmp, 0 );
     uiPrefs->uiPrefsImageInfo->value(tmp);
