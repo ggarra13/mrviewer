@@ -287,7 +287,7 @@ void GLLut3d::clear_lut()
     _inited = false;
     // @bug: CTL would hang or crash if lut_size is used.
     //       We pad it with 4 additional values and all seems fine.
-    unsigned long num = lut_size();
+    unsigned long num = lut_size() + 4;
     lut.resizeErase( num );
     memset( &lut[0], 0x00, num*sizeof(float) );
 }
