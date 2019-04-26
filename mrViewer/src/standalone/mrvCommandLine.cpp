@@ -387,9 +387,7 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(ahostname);
     cmd.add(aport);
     cmd.add(aedl);
-#ifdef _WIN32
     cmd.add(adebug);
-#endif
     cmd.add(afps);
     cmd.add(aaudio);
     cmd.add(aoffset);
@@ -439,8 +437,9 @@ void parse_command_line( const int argc, char** argv,
 
 #endif
 
-#ifdef _WIN32
     bool debug = adebug.getValue();
+    Preferences::debug = debug;
+#ifdef _WIN32
     if ( debug )
     {
         AllocConsole();
