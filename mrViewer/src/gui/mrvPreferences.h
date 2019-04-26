@@ -75,7 +75,7 @@ public:
     }
 
 protected:
-    static bool set_theme();
+    static bool set_transforms();
 
 public:
     static ViewerUI* uiMain;
