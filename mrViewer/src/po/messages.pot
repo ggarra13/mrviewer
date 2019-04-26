@@ -122,7 +122,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-04-25 23:20-0300\n"
+"POT-Creation-Date: 2019-04-25 23:39-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -285,8 +285,8 @@ msgstr ""
 #: core/CMedia_audio.cpp:2313 core/CMedia_audio.cpp:2315
 #: core/CMedia_audio.cpp:2434 core/aviImage.cpp:694 core/aviImage.cpp:2118
 #: core/aviImage.cpp:3686 core/aviImage.cpp:3698 core/aviImage.cpp:3715
-#: core/aviImage.cpp:3764 core/aviImage.cpp:3821 core/aviImage_save.cpp:590
-#: core/aviImage_save.cpp:596 core/aviImage_save.cpp:1368
+#: core/aviImage.cpp:3764 core/aviImage.cpp:3821 core/aviImage_save.cpp:582
+#: core/aviImage_save.cpp:588 core/aviImage_save.cpp:1360
 #: core/hdrImage.cpp:252 core/hdrImage.cpp:260 core/hdrImage.cpp:263
 #: core/hdrImage.cpp:270 core/slateImage.cpp:369 core/wandImage.cpp:90
 #: core/mrvServer.cpp:1070 core/mrvServer.cpp:1658 core/mrvPlayback.cpp:87
@@ -465,7 +465,7 @@ msgstr ""
 msgid "             "
 msgstr ""
 
-#: core/aviImage_save.cpp:593
+#: core/aviImage_save.cpp:585
 msgid "              "
 msgstr ""
 
@@ -2887,7 +2887,7 @@ msgstr ""
 msgid "  ]]]]]]]]]]]]    "
 msgstr ""
 
-#: core/aviImage_save.cpp:799
+#: core/aviImage_save.cpp:791
 msgid "  audio->size()= "
 msgstr ""
 
@@ -3656,7 +3656,7 @@ msgstr ""
 msgid " bytes in fragment "
 msgstr ""
 
-#: core/aviImage_save.cpp:589 core/aviImage_save.cpp:595
+#: core/aviImage_save.cpp:581 core/aviImage_save.cpp:587
 msgid " channels "
 msgstr ""
 
@@ -3701,7 +3701,7 @@ msgstr ""
 msgid " due to frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1601
+#: core/aviImage_save.cpp:1593
 msgid " encoding"
 msgstr ""
 
@@ -3765,7 +3765,7 @@ msgstr ""
 msgid " for yuv"
 msgstr ""
 
-#: core/aviImage_save.cpp:1618
+#: core/aviImage_save.cpp:1610
 msgid " frame"
 msgstr ""
 
@@ -3778,7 +3778,7 @@ msgstr ""
 msgid " frame: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1608
+#: core/aviImage_save.cpp:1600
 msgid " frames"
 msgstr ""
 
@@ -3918,7 +3918,7 @@ msgstr ""
 msgid " s16_le"
 msgstr ""
 
-#: core/aviImage_save.cpp:1369
+#: core/aviImage_save.cpp:1361
 msgid " selected"
 msgstr ""
 
@@ -3981,7 +3981,7 @@ msgstr ""
 msgid " to"
 msgstr ""
 
-#: core/aviImage_save.cpp:592 gui/FLU/Flu_File_Chooser.cpp:4435
+#: core/aviImage_save.cpp:584 gui/FLU/Flu_File_Chooser.cpp:4435
 #: gui/mrvImageBrowser.cpp:2248 gui/mrvTimeline.cpp:464
 msgid " to "
 msgstr ""
@@ -6450,7 +6450,7 @@ msgid "&@\tc #525252"
 msgstr ""
 
 #: core/aviImage.cpp:652 core/aviImage.cpp:688 core/aviImage_save.cpp:247
-#: core/aviImage_save.cpp:1423 core/mrvACES.cpp:118 core/mrvACES.cpp:163
+#: core/aviImage_save.cpp:1415 core/mrvACES.cpp:118 core/mrvACES.cpp:163
 #: core/mrvACES.cpp:212 gui/mrvMedia.cpp:148 gui/mrvImageBrowser.cpp:534
 #: gui/mrvImageBrowser.cpp:1546 gui/mrvImageInformation.cpp:574
 #: gui/mrvImageInformation.cpp:2060 gui/mrvSave.cpp:296
@@ -7050,7 +7050,7 @@ msgstr ""
 msgid ") does not exist in file "
 msgstr ""
 
-#: core/aviImage_save.cpp:437
+#: core/aviImage_save.cpp:436
 msgid ") for movie file"
 msgstr ""
 
@@ -7634,7 +7634,7 @@ msgstr ""
 msgid "+pqrsiiiiiiiiittuuu+"
 msgstr ""
 
-#: core/aviImage_save.cpp:1010 core/aviImage_save.cpp:1430
+#: core/aviImage_save.cpp:1002 core/aviImage_save.cpp:1422
 msgid "+use_metadata_tags"
 msgstr ""
 
@@ -7803,7 +7803,7 @@ msgstr ""
 msgid ", format "
 msgstr ""
 
-#: core/aviImage_save.cpp:589 core/aviImage_save.cpp:596
+#: core/aviImage_save.cpp:581 core/aviImage_save.cpp:588
 msgid ", freq "
 msgstr ""
 
@@ -8110,7 +8110,7 @@ msgstr ""
 msgid "-wx"
 msgstr ""
 
-#: core/CMedia.cpp:4138 core/CMedia_audio.cpp:946 core/aviImage_save.cpp:597
+#: core/CMedia.cpp:4138 core/CMedia_audio.cpp:946 core/aviImage_save.cpp:589
 #: core/exrImage.cpp:558 core/exrImage.cpp:880 core/stubImage.cpp:884
 #: core/wandImage.cpp:938 core/wandImage.cpp:1263 core/Sequence.cpp:103
 #: core/Sequence.cpp:325 core/Sequence.cpp:393 core/Sequence.cpp:405
@@ -13185,8 +13185,8 @@ msgstr ""
 msgid "Audio"
 msgstr ""
 
-#: core/CMedia_audio.cpp:709 core/aviImage.cpp:2731 core/aviImage_save.cpp:507
-#: core/aviImage_save.cpp:1037
+#: core/CMedia_audio.cpp:709 core/aviImage.cpp:2731 core/aviImage_save.cpp:499
+#: core/aviImage_save.cpp:1029
 msgid "Audio "
 msgstr ""
 
@@ -13207,7 +13207,7 @@ msgstr ""
 msgid "Audio Volume"
 msgstr ""
 
-#: core/aviImage_save.cpp:587
+#: core/aviImage_save.cpp:579
 msgid "Audio conversion of "
 msgstr ""
 
@@ -13215,7 +13215,7 @@ msgstr ""
 msgid "Audio frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:661
+#: core/aviImage_save.cpp:653
 msgid "Audio frame has NOPTS value."
 msgstr ""
 
@@ -13285,9 +13285,9 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:182
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:204
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:224
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:184
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:209
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:232
 #: core/exrImage.cpp:317 core/exrImage.cpp:818 core/exrImage.cpp:874
 #: core/exrImage.cpp:1044 core/exrImage.cpp:1053 core/exrImage.cpp:1097
 #: core/exrImage.cpp:1582 core/exrImage.cpp:1636 core/exrImage.cpp:1944
@@ -13945,7 +13945,7 @@ msgstr ""
 msgid "Cancel the OCIO selection and don't change anything."
 msgstr ""
 
-#: core/aviImage_save.cpp:719
+#: core/aviImage_save.cpp:711
 msgid "Cannot allocate dst samples"
 msgstr ""
 
@@ -14191,7 +14191,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: core/aviImage_save.cpp:1668
+#: core/aviImage_save.cpp:1660
 msgid "Closed movie file"
 msgstr ""
 
@@ -14210,7 +14210,7 @@ msgstr ""
 msgid "Codec"
 msgstr ""
 
-#: core/aviImage_save.cpp:1368
+#: core/aviImage_save.cpp:1360
 msgid "Codec "
 msgstr ""
 
@@ -14226,7 +14226,7 @@ msgstr ""
 msgid "Codec Name"
 msgstr ""
 
-#: core/aviImage_save.cpp:677
+#: core/aviImage_save.cpp:669
 msgid "Codec has variable frame size.  Setting it to "
 msgstr ""
 
@@ -14444,19 +14444,19 @@ msgstr ""
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr ""
 
-#: core/aviImage_save.cpp:563
+#: core/aviImage_save.cpp:555
 msgid "Could not alloc swr_ctx"
 msgstr ""
 
-#: core/aviImage_save.cpp:477
+#: core/aviImage_save.cpp:469
 msgid "Could not allocate audio frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:613
+#: core/aviImage_save.cpp:605
 msgid "Could not allocate destination samples"
 msgstr ""
 
-#: core/aviImage_save.cpp:689
+#: core/aviImage_save.cpp:681
 msgid "Could not allocate fifo buffer"
 msgstr ""
 
@@ -14468,19 +14468,19 @@ msgstr ""
 msgid "Could not allocate new element"
 msgstr ""
 
-#: core/aviImage_save.cpp:536
+#: core/aviImage_save.cpp:528
 msgid "Could not allocate output frame samples. Error: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1067
+#: core/aviImage_save.cpp:1059
 msgid "Could not allocate picture"
 msgstr ""
 
-#: core/aviImage_save.cpp:937
+#: core/aviImage_save.cpp:929
 msgid "Could not allocate raw picture buffer"
 msgstr ""
 
-#: core/aviImage_save.cpp:547
+#: core/aviImage_save.cpp:539
 msgid "Could not allocate source samples. Error: "
 msgstr ""
 
@@ -14492,7 +14492,7 @@ msgstr ""
 msgid "Could not clone subtitle frame"
 msgstr ""
 
-#: core/aviImage_save.cpp:492 core/aviImage_save.cpp:1021
+#: core/aviImage_save.cpp:484 core/aviImage_save.cpp:1013
 msgid "Could not copy context to parameters"
 msgstr ""
 
@@ -14535,7 +14535,7 @@ msgstr ""
 msgid "Could not decode video frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1325
+#: core/aviImage_save.cpp:1317
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 
@@ -14551,7 +14551,7 @@ msgstr ""
 msgid "Could not draw image"
 msgstr ""
 
-#: core/aviImage_save.cpp:821 core/aviImage_save.cpp:1545
+#: core/aviImage_save.cpp:813 core/aviImage_save.cpp:1537
 msgid "Could not encode audio frame: "
 msgstr ""
 
@@ -14748,7 +14748,7 @@ msgstr ""
 msgid "Could not open \"%s\""
 msgstr ""
 
-#: core/aviImage_save.cpp:1423
+#: core/aviImage_save.cpp:1415
 msgid "Could not open '"
 msgstr ""
 
@@ -14764,7 +14764,7 @@ msgstr ""
 msgid "Could not open any font of size "
 msgstr ""
 
-#: core/aviImage_save.cpp:485
+#: core/aviImage_save.cpp:477
 msgid "Could not open audio codec"
 msgstr ""
 
@@ -14776,7 +14776,7 @@ msgstr ""
 msgid "Could not open audio driver"
 msgstr ""
 
-#: core/aviImage_save.cpp:1330
+#: core/aviImage_save.cpp:1322
 msgid "Could not open mpeg movie"
 msgstr ""
 
@@ -14784,7 +14784,7 @@ msgstr ""
 msgid "Could not open shadow map image."
 msgstr ""
 
-#: core/aviImage_save.cpp:1014
+#: core/aviImage_save.cpp:1006
 msgid "Could not open video codec"
 msgstr ""
 
@@ -14800,11 +14800,11 @@ msgstr ""
 msgid "Could not profile image"
 msgstr ""
 
-#: core/aviImage_save.cpp:1533
+#: core/aviImage_save.cpp:1525
 msgid "Could not read audio fifo: "
 msgstr ""
 
-#: core/aviImage_save.cpp:809
+#: core/aviImage_save.cpp:801
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr ""
 
@@ -14858,11 +14858,11 @@ msgstr ""
 msgid "Could not unmap pixel buffer #"
 msgstr ""
 
-#: core/aviImage_save.cpp:781
+#: core/aviImage_save.cpp:773
 msgid "Could not write to fifo buffer. Error:"
 msgstr ""
 
-#: core/aviImage_save.cpp:765
+#: core/aviImage_save.cpp:757
 msgid "Could not write to fifo buffer. Error: "
 msgstr ""
 
@@ -15643,11 +15643,11 @@ msgstr ""
 msgid "Device"
 msgstr ""
 
-#: core/aviImage_save.cpp:768
+#: core/aviImage_save.cpp:760
 msgid "Did not write all dst samples to fifo. Error: "
 msgstr ""
 
-#: core/aviImage_save.cpp:784
+#: core/aviImage_save.cpp:776
 msgid "Did not write all src samples to fifo. Error: "
 msgstr ""
 
@@ -16094,7 +16094,7 @@ msgstr ""
 msgid "Error configuring filter graph"
 msgstr ""
 
-#: core/aviImage_save.cpp:1436
+#: core/aviImage_save.cpp:1428
 msgid "Error occurred when opening output file: "
 msgstr ""
 
@@ -16106,11 +16106,11 @@ msgstr ""
 msgid "Error parsing filter description"
 msgstr ""
 
-#: core/aviImage_save.cpp:735
+#: core/aviImage_save.cpp:727
 msgid "Error while converting audio: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1207
+#: core/aviImage_save.cpp:1199
 msgid "Error while encoding video frame: "
 msgstr ""
 
@@ -16118,15 +16118,15 @@ msgstr ""
 msgid "Error while feeding the filtergraph"
 msgstr ""
 
-#: core/aviImage_save.cpp:839
+#: core/aviImage_save.cpp:831
 msgid "Error while writing audio frame: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1220
+#: core/aviImage_save.cpp:1212
 msgid "Error while writing video frame: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1618
+#: core/aviImage_save.cpp:1610
 msgid "Error writing "
 msgstr ""
 
@@ -16439,7 +16439,7 @@ msgstr ""
 msgid "FRAME("
 msgstr ""
 
-#: core/aviImage_save.cpp:1601
+#: core/aviImage_save.cpp:1593
 msgid "Failed "
 msgstr ""
 
@@ -16451,19 +16451,15 @@ msgstr ""
 msgid "Failed to alloc swresample library"
 msgstr ""
 
-#: core/aviImage_save.cpp:458
-msgid "Failed to copy encoder parameters to output stream"
-msgstr ""
-
 #: core/CMedia_audio.cpp:1158
 msgid "Failed to init swresample library with "
 msgstr ""
 
-#: core/aviImage_save.cpp:1178
+#: core/aviImage_save.cpp:1170
 msgid "Failed to initialize swscale conversion context"
 msgstr ""
 
-#: core/aviImage_save.cpp:620
+#: core/aviImage_save.cpp:612
 msgid "Failed to initialize the resampling context"
 msgstr ""
 
@@ -16647,7 +16643,7 @@ msgstr ""
 msgid "Flu_Tree_Browser"
 msgstr ""
 
-#: core/aviImage_save.cpp:1637
+#: core/aviImage_save.cpp:1629
 msgid "Flushing of buffers failed"
 msgstr ""
 
@@ -16803,9 +16799,9 @@ msgstr ""
 msgid "Fullscreen"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:176
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:198
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:219
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:177
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:202
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:226
 #: core/exrImage.cpp:307 core/exrImage.cpp:817 core/exrImage.cpp:874
 #: core/exrImage.cpp:1053 core/exrImage.cpp:1096 core/exrImage.cpp:1586
 #: core/exrImage.cpp:1629 core/exrImage.cpp:1943 core/exrImage.cpp:2777
@@ -16899,7 +16895,7 @@ msgid "G.H ^.-.H w.w.s V.W.S.V.X.X.w.N.A."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:17
-#: core/aviImage_save.cpp:325
+#: core/aviImage_save.cpp:324
 msgid "GBRP10LE"
 msgstr ""
 
@@ -18522,7 +18518,7 @@ msgstr ""
 msgid "LMT.SOPNode"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:280
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:290
 #, c-format
 msgid "LMT.SOPNode %g %g %g %g %g %g %g %g %g"
 msgstr ""
@@ -18531,7 +18527,7 @@ msgstr ""
 msgid "LMT.SatNode"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:299
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:309
 #, c-format
 msgid "LMT.SatNode %g"
 msgstr ""
@@ -19290,11 +19286,11 @@ msgstr ""
 msgid "Missing Frames"
 msgstr ""
 
-#: core/aviImage_save.cpp:1284
+#: core/aviImage_save.cpp:1276
 msgid "Missing audio frame "
 msgstr ""
 
-#: core/aviImage_save.cpp:1093
+#: core/aviImage_save.cpp:1085
 msgid "Missing picture"
 msgstr ""
 
@@ -19635,7 +19631,7 @@ msgstr ""
 msgid "No audio device."
 msgstr ""
 
-#: core/aviImage_save.cpp:1400
+#: core/aviImage_save.cpp:1392
 msgid "No audio nor video stream created"
 msgstr ""
 
@@ -19734,7 +19730,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:24
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:800
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:172
-#: core/aviImage_save.cpp:1341 core/aviImage_save.cpp:1372
+#: core/aviImage_save.cpp:1333 core/aviImage_save.cpp:1364
 #: core/ddsImage.cpp:1240 core/ddsImage.cpp:1241 core/ddsImage.cpp:1242
 #: core/exrImage.cpp:122 core/iffImage.cpp:61 core/picImage.cpp:190
 #: gui/mrvImageInformation.cpp:2797 gui/mrvSave.cpp:267 gui/mrvSave.cpp:268
@@ -20106,7 +20102,7 @@ msgstr ""
 msgid "Oct"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:212
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:218
 #: core/mrvServer.cpp:402 core/mrvColorProfile.cpp:297
 msgid "Offset"
 msgstr ""
@@ -20682,7 +20678,7 @@ msgstr ""
 msgid "Positioning"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:190
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:193
 msgid "Power"
 msgstr ""
 
@@ -20807,7 +20803,7 @@ msgstr ""
 msgid "Profile Tags"
 msgstr ""
 
-#: core/aviImage_save.cpp:448
+#: core/aviImage_save.cpp:447
 msgid "Profile name "
 msgstr ""
 
@@ -20930,8 +20926,8 @@ msgid "Quicktime Movie"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:170
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:192
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:214
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:195
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:220
 #: core/exrImage.cpp:297 core/exrImage.cpp:816 core/exrImage.cpp:874
 #: core/exrImage.cpp:1053 core/exrImage.cpp:1096 core/exrImage.cpp:1578
 #: core/exrImage.cpp:1622 core/exrImage.cpp:1942 core/exrImage.cpp:2775
@@ -21681,7 +21677,7 @@ msgstr ""
 msgid "SatNode"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:231
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:240
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:289
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:121
 #: gui/mrvImageInformation.cpp:2268
@@ -22284,7 +22280,7 @@ msgstr ""
 msgid "Stop playback."
 msgstr ""
 
-#: core/aviImage_save.cpp:1607
+#: core/aviImage_save.cpp:1599
 msgid "Stopped encoding cached "
 msgstr ""
 
@@ -23307,7 +23303,7 @@ msgstr ""
 msgid "Unknown bit depth"
 msgstr ""
 
-#: core/aviImage_save.cpp:435
+#: core/aviImage_save.cpp:434
 msgid "Unknown c->pix_fmt ("
 msgstr ""
 
@@ -23728,8 +23724,8 @@ msgstr ""
 msgid "Video"
 msgstr ""
 
-#: core/aviImage.cpp:2737 core/aviImage_save.cpp:1036
-#: core/aviImage_save.cpp:1052
+#: core/aviImage.cpp:2737 core/aviImage_save.cpp:1028
+#: core/aviImage_save.cpp:1044
 msgid "Video "
 msgstr ""
 
@@ -24670,19 +24666,19 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:14
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:209
-#: core/aviImage_save.cpp:319 core/aviImage_save.cpp:428
+#: core/aviImage_save.cpp:318 core/aviImage_save.cpp:427
 msgid "YUV420"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:15
-#: core/aviImage_save.cpp:321 core/aviImage_save.cpp:412
-#: core/aviImage_save.cpp:430
+#: core/aviImage_save.cpp:320 core/aviImage_save.cpp:411
+#: core/aviImage_save.cpp:429
 msgid "YUV422"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:16
-#: core/aviImage_save.cpp:323 core/aviImage_save.cpp:414
-#: core/aviImage_save.cpp:432
+#: core/aviImage_save.cpp:322 core/aviImage_save.cpp:413
+#: core/aviImage_save.cpp:431
 msgid "YUV444"
 msgstr ""
 
@@ -24703,7 +24699,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: core/aviImage_save.cpp:1307
+#: core/aviImage_save.cpp:1299
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr ""
 
@@ -25623,13 +25619,13 @@ msgid "aOut"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:131
-#: core/aviImage_save.cpp:1378
+#: core/aviImage_save.cpp:1370
 msgid "aac"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:130
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:289
-#: core/aviImage_save.cpp:1376
+#: core/aviImage_save.cpp:1368
 msgid "ac3"
 msgstr ""
 
@@ -25730,7 +25726,7 @@ msgid "attributes not found"
 msgstr ""
 
 #: core/CMedia.cpp:3108 core/CMedia.cpp:3139 core/CMedia_audio.cpp:80
-#: core/aviImage_save.cpp:1584 gui/mrvPreferences.cpp:719
+#: core/aviImage_save.cpp:1576 gui/mrvPreferences.cpp:719
 #: gui/mrvPreferences.cpp:1976 standalone/mrvCommandLine.cpp:372
 #: standalone/main.cpp:121 standalone/main.cpp:272
 msgid "audio"
@@ -25740,7 +25736,7 @@ msgstr ""
 msgid "audio files"
 msgstr ""
 
-#: core/aviImage_save.cpp:654
+#: core/aviImage_save.cpp:646
 msgid "audio frame is missing"
 msgstr ""
 
@@ -25805,7 +25801,7 @@ msgstr ""
 msgid "avcodec_copy_context failed for subtitle"
 msgstr ""
 
-#: core/aviImage.cpp:89 core/aviImage_save.cpp:1314
+#: core/aviImage.cpp:89 core/aviImage_save.cpp:1306
 #: gui/FLU/Flu_File_Chooser.cpp:618
 msgid "avi"
 msgstr ""
@@ -27088,7 +27084,7 @@ msgid "ffmpeg"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:110
-#: core/aviImage_save.cpp:1358
+#: core/aviImage_save.cpp:1350
 msgid "ffv1"
 msgstr ""
 
@@ -27289,7 +27285,7 @@ msgstr ""
 msgid "frame_range"
 msgstr ""
 
-#: core/aviImage_save.cpp:799
+#: core/aviImage_save.cpp:791
 msgid "frame_size= "
 msgstr ""
 
@@ -27585,7 +27581,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:107
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:688
-#: core/aviImage_save.cpp:1352
+#: core/aviImage_save.cpp:1344
 msgid "h264"
 msgstr ""
 
@@ -27627,7 +27623,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:106
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:687
-#: core/aviImage_save.cpp:1350
+#: core/aviImage_save.cpp:1342
 msgid "hevc"
 msgstr ""
 
@@ -27857,19 +27853,19 @@ msgstr ""
 msgid "in"
 msgstr ""
 
-#: core/aviImage_save.cpp:571
+#: core/aviImage_save.cpp:563
 msgid "in_channel_count"
 msgstr ""
 
-#: core/aviImage_save.cpp:569
+#: core/aviImage_save.cpp:561
 msgid "in_channel_layout"
 msgstr ""
 
-#: core/aviImage_save.cpp:575
+#: core/aviImage_save.cpp:567
 msgid "in_sample_fmt"
 msgstr ""
 
-#: core/aviImage_save.cpp:573
+#: core/aviImage_save.cpp:565
 msgid "in_sample_rate"
 msgstr ""
 
@@ -28676,12 +28672,12 @@ msgstr ""
 msgid "move_picture"
 msgstr ""
 
-#: core/aviImage_save.cpp:1010 core/aviImage_save.cpp:1430
+#: core/aviImage_save.cpp:1002 core/aviImage_save.cpp:1422
 msgid "movflags"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:132
-#: core/aviImage_save.cpp:1374 gui/FLU/Flu_File_Chooser.cpp:670
+#: core/aviImage_save.cpp:1366 gui/FLU/Flu_File_Chooser.cpp:670
 msgid "mp3"
 msgstr ""
 
@@ -28689,7 +28685,7 @@ msgstr ""
 msgid "mp4"
 msgstr ""
 
-#: core/aviImage_save.cpp:1327 gui/FLU/Flu_File_Chooser.cpp:627
+#: core/aviImage_save.cpp:1319 gui/FLU/Flu_File_Chooser.cpp:627
 msgid "mpeg"
 msgstr ""
 
@@ -28699,7 +28695,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:108
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:689
-#: core/aviImage_save.cpp:1354
+#: core/aviImage_save.cpp:1346
 msgid "mpeg4"
 msgstr ""
 
@@ -29176,19 +29172,19 @@ msgstr ""
 msgid "out"
 msgstr ""
 
-#: core/aviImage_save.cpp:578
+#: core/aviImage_save.cpp:570
 msgid "out_channel_count"
 msgstr ""
 
-#: core/aviImage_save.cpp:576
+#: core/aviImage_save.cpp:568
 msgid "out_channel_layout"
 msgstr ""
 
-#: core/aviImage_save.cpp:581
+#: core/aviImage_save.cpp:573
 msgid "out_sample_fmt"
 msgstr ""
 
-#: core/aviImage_save.cpp:579
+#: core/aviImage_save.cpp:571
 msgid "out_sample_rate"
 msgstr ""
 
@@ -29348,11 +29344,11 @@ msgstr ""
 msgid "parser"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:79 core/aviImage_save.cpp:1382
+#: audio/mrvALSAEngine.cpp:79 core/aviImage_save.cpp:1374
 msgid "pcm"
 msgstr ""
 
-#: core/aviImage_save.cpp:271
+#: core/aviImage_save.cpp:270
 msgid "pcm_s16le"
 msgstr ""
 
@@ -29449,7 +29445,7 @@ msgstr ""
 msgid "plughw:%d,%d"
 msgstr ""
 
-#: core/aviImage_save.cpp:1346 gui/FLU/Flu_File_Chooser.cpp:657
+#: core/aviImage_save.cpp:1338 gui/FLU/Flu_File_Chooser.cpp:657
 msgid "png"
 msgstr ""
 
@@ -29499,7 +29495,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:109
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:690
-#: core/aviImage_save.cpp:1356
+#: core/aviImage_save.cpp:1348
 msgid "prores_ks"
 msgstr ""
 
@@ -30307,7 +30303,7 @@ msgstr ""
 msgid "src_luma"
 msgstr ""
 
-#: core/aviImage_save.cpp:670
+#: core/aviImage_save.cpp:662
 msgid "src_nb_samples is 0"
 msgstr ""
 
@@ -30569,7 +30565,7 @@ msgstr ""
 msgid "tif"
 msgstr ""
 
-#: core/aviImage_save.cpp:1348 gui/FLU/Flu_File_Chooser.cpp:667
+#: core/aviImage_save.cpp:1340 gui/FLU/Flu_File_Chooser.cpp:667
 #: gui/mrvSave.cpp:250
 msgid "tiff"
 msgstr ""
@@ -30917,7 +30913,7 @@ msgstr ""
 msgid "version"
 msgstr ""
 
-#: core/CMedia.cpp:3105 core/CMedia.cpp:3136 core/aviImage_save.cpp:1587
+#: core/CMedia.cpp:3105 core/CMedia.cpp:3136 core/aviImage_save.cpp:1579
 #: gui/mrvPreferences.cpp:1008 gui/mrvPreferences.cpp:1964
 msgid "video"
 msgstr ""
@@ -30980,7 +30976,7 @@ msgstr ""
 msgid "volume_mute"
 msgstr ""
 
-#: core/aviImage_save.cpp:1380
+#: core/aviImage_save.cpp:1372
 msgid "vorbis"
 msgstr ""
 
