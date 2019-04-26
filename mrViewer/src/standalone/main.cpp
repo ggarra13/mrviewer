@@ -158,6 +158,13 @@ int main( int argc, char** argv )
 {
     Fl::scheme("plastic");
 
+    for ( int i = 0; i < argc; ++i )
+    {
+	if ( strcmp( argv[i], "-d" ) == 0 ||
+	     strcmp( argv[i], "--debug") == 0 )
+	    mrv::Preferences::debug = 1;
+    }
+    
     // Fl::background( 32, 32, 32 );
     // Fl::foreground( 190, 190, 190 );
     // Fl::set_box_color( fl_rgb_color( 64, 64, 64 ) );
