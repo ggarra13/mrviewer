@@ -37,7 +37,7 @@ FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
 
-ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D_CRT_SECURE_NO_WARNINGS  )
+ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D_CRT_SECURE_NO_WARNINGS )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -325,23 +325,23 @@ IF(NOT WIN32)
     )
 
   FIND_LIBRARY( Boost_locale_LIBRARY
-    NAMES boost_locale boost_locale_vc100_mt_1_47
+    NAMES boost_locale 
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_system_LIBRARY
-    NAMES boost_system boost_system_vc100_mt_1_47
+    NAMES boost_system 
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY
-    NAMES boost_filesystem boost_filesystem_vc100_mt_1_47
+    NAMES boost_filesystem 
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_thread_LIBRARY
-    NAMES boost_thread boost_thread_vc100_mt_1_47
+    NAMES boost_thread 
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
