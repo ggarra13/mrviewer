@@ -738,7 +738,10 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     char buf[1024];
     fl_filename_expand( buf, 1024, "~/" );
     userHome = buf;
-    userDesktop = userHome + "/" + desktopTxt + "/";
+    userDesktop = userHome;
+    userDesktop += "/";
+    userDesktop += _( desktopTxt.c_str() );
+    userDesktop += "/";
     userDocs = "/tmp/";
   }
 #endif
@@ -1049,7 +1052,11 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
                 if( !duplicate )
 		{
                     favoritesList->add( buf );
-		    location->tree.add( comment_slashes( buf ).c_str() );
+                    std::string favs = "/";
+		    favs += _( favoritesTxt.c_str() );
+		    favs += "/";
+		    favs += comment_slashes( buf );
+		    location->tree.add( favs.c_str() );
 		}
               }
           }
@@ -3209,7 +3216,7 @@ void Flu_File_Chooser :: addToFavoritesCB()
   if( !duplicate )
   {
     favoritesList->add( currentDir.c_str() );
-    //location->tree.add( comment_slashes( currentDir ).c_str() );
+    location->tree.add( comment_slashes( currentDir ).c_str() );
   }
   
   // save the favorites
@@ -3350,19 +3357,22 @@ bool Flu_File_Chooser :: correctPath( std::string &path )
   // the path may or may not be an alias, needing corrected
 #ifdef WIN32
   // point to the correct desktop
-  if( path == "/"+desktopTxt+"/" )
+    std::string desk = "/" + desktopTxt + "/";
+    std::string comp = desk + myComputerTxt + "/";
+    std::string usercomp = userDesktop + myComputerTxt + "/";
+    std::string docs = desk + myDocumentsTxt + "/";
+    std::string userdocs = userDesktop + myDocumentsTxt + "/";
+    if( path == desk )
     {
-      path = userDesktop;
-      return true;
+        path = userDesktop;
+        return true;
     }
-  else if( path == userDesktop )
-    return true;
-  else if( path == "/"+desktopTxt+"/"+myComputerTxt+"/" ||
-           path == userDesktop+myComputerTxt+"/" )
-    path = "/";
-  else if( path == "/"+desktopTxt+"/"+myDocumentsTxt+"/" ||
-           path == userDesktop+myDocumentsTxt+"/" )
-    path = userDocs;
+    else if( path == userDesktop )
+        return true;
+    else if( path == comp || path == usercomp )
+        path = "/";
+    else if( path == docs || path == userdocs )
+        path = userDocs;
 #endif
   return false;
 }
@@ -3371,19 +3381,35 @@ void Flu_File_Chooser :: locationCB( const char *path )
 {
 #ifdef WIN32
   std::string p = path;
-  if( p == "/"+favoritesTxt+"/" )
+  std::string favs = "/";
+  favs += favoritesTxt;
+  favs += "/";
+  std::string mycomp = "/";
+  mycomp += desktopTxt;
+  mycomp += "/";
+  mycomp += myComputerTxt;
+  mycomp += "/";
+  std::string mydocs = "/";
+  mydocs += desktopTxt;
+  mydocs += "/";
+  mydocs += myDocumentsTxt;
+  mydocs += "/";
+  std::string desk = "/";
+  desk += desktopTxt;
+  desk += "/";
+  if( p == favs )
     favoritesCB();
-  else if( p == "/"+desktopTxt+"/"+myComputerTxt+"/" )
+  else if( p == mycomp )
     myComputerCB();
-  else if( p == "/"+desktopTxt+"/"+myDocumentsTxt+"/" )
+  else if( p == mydocs )
     documentsCB();
-  else if( p == "/"+desktopTxt+"/" )
+  else if( p == desk )
     desktopCB();
   // if the path leads off with "/Desktop/My Computer", then strip that part off and cd
   // to the remaining
   else
     {
-      std::string s = "/"+desktopTxt+"/"+myComputerTxt+"/";
+      std::string s = mycomp;
       if( strstr( path, s.c_str() ) == path )
         {
           // seach for '(' and if present, extract the drive name and cd to it
@@ -3409,18 +3435,19 @@ void Flu_File_Chooser :: locationCB( const char *path )
 void Flu_File_Chooser :: buildLocationCombo()
 {
   // add all filesystems
-    //    location->tree.clear_children( location->tree.root() );
+  //location->tree.clear_children( location->tree.root() );
 
+  Fl_Tree_Item* n;
 #ifdef WIN32
   std::string s;
   char volumeName[1024];
-  Fl_Tree_Item *n;
-  s = comment_slashes( desktopTxt+"/" );
-  n = location->tree.add( s.c_str() ); n->usericon( &little_desktop );
-  s = comment_slashes( desktopTxt+"/"+myDocumentsTxt+"/" );
-  n = location->tree.add( s.c_str() ); n->usericon( &documents );
-  s = comment_slashes( desktopTxt+"/"+myComputerTxt+"/" );
-  n = location->tree.add( s.c_str() ); n->usericon( &computer );
+  s = comment_slashes( "/"+desktopTxt+"/" );
+  n = location->tree.add( _( s.c_str() ) );
+  if (n) n->usericon( &little_desktop );
+  s = comment_slashes( "/"+desktopTxt+"/"+myDocumentsTxt+"/" );
+  n = location->tree.add( _(s.c_str()) ); if (n) n->usericon( &documents );
+  s = comment_slashes( "/"+desktopTxt+"/"+myComputerTxt+"/" );
+  n = location->tree.add( _(s.c_str()) ); if (n) n->usericon( &computer );
   // get the location and add them
   {
     if( refreshDrives )
@@ -3433,7 +3460,11 @@ void Flu_File_Chooser :: buildLocationCombo()
         driveIcons[i] = &disk_drive;
         if( mask & 1 )
           {
-            s = desktopTxt+"/"+myComputerTxt+"/";
+              s = "/";
+              s += _(desktopTxt.c_str());
+              s += "/";
+              s += myComputerTxt;
+              s += "/";
             char drive[] = "A:";
             char windrive[] = "A:\\";
             windrive[0] = drive[0] = 'A' + i;
@@ -3479,15 +3510,19 @@ void Flu_File_Chooser :: buildLocationCombo()
               }
             drives[i] = std::string(disk) + " (" + std::string(drive) + ")/";
             s += comment_slashes( drives[i] );
-            n = location->tree.add( s.c_str() ); n->usericon( driveIcons[i] );
+            n = location->tree.add( s.c_str() );
+            if (n) n->usericon( driveIcons[i] );
             // erase the trailing '/' to make things look nicer
-            drives[i][ drives[i].size()-1 ] = '\0';
+            drives[i] = drives[i].substr( 0, drives[i].size() - 1 );
           }
         mask >>= 1;
       }
   }
-  s = comment_slashes( favoritesTxt+"/" );
-  n = location->tree.add( s.c_str() ); n->usericon( &little_favorites );
+  std::string favs = "/";
+  favs += _( favoritesTxt.c_str() );
+  favs += "/";
+  n = location->tree.add( _(favs.c_str()) );
+  if ( n ) n->usericon( &little_favorites );
   refreshDrives = false;
 
 #elif defined __APPLE__
@@ -3554,6 +3589,12 @@ void Flu_File_Chooser :: buildLocationCombo()
       fclose( fstab );
     }
 
+  std::string favs = "/";
+  favs += _(favoritesTxt.c_str() );
+  favs += "/";
+  n = location->tree.find_item( _(favs.c_str()) );
+  if ( n ) n->usericon( &little_favorites );
+  
 #endif
 }
 
@@ -3812,7 +3853,7 @@ void Flu_File_Chooser :: cd( const char *path )
       reloadBtn->deactivate();
       addFavoriteBtn->deactivate();
       hiddenFiles->deactivate();
-      location->input.value( favoritesTxt.c_str() );
+      location->input.value( _( favoritesTxt.c_str() ) );
       updateLocationQJ();
 
       filelist->clear();
@@ -3917,7 +3958,10 @@ void Flu_File_Chooser :: cd( const char *path )
   cleanupPath( currentDir );
 
 #ifdef WIN32
-  bool isTopDesktop = ( currentDir == ("/"+desktopTxt+"/") );
+  std::string topdesk = "/";
+  topdesk += _(desktopTxt.c_str() );
+  topdesk += "/";
+  bool isTopDesktop = ( currentDir == topdesk );
   bool isDesktop = correctPath( currentDir );
   if( isTopDesktop )
     upDirBtn->deactivate();
@@ -4048,7 +4092,11 @@ void Flu_File_Chooser :: cd( const char *path )
   {
     std::string tmp = currentDir;
     if( isTopDesktop )
-      currentDir = "/"+desktopTxt+"/";
+    {
+        currentDir = "/";
+        currentDir += _(desktopTxt.c_str());
+        currentDir += "/";
+    }
     addToHistory();
     if( isTopDesktop )
       currentDir = tmp;
@@ -4077,12 +4125,15 @@ void Flu_File_Chooser :: cd( const char *path )
 
       location->input.value( currentDir.c_str() );
 #ifdef WIN32
-      std::string treePath = "/"+desktopTxt+"/"+myComputerTxt+"/"+currentDir;
+      std::string treePath = "/" + desktopTxt + "/" + myComputerTxt +
+                             "/" + currentDir;
       Fl_Tree_Item *n = location->tree.add( comment_slashes( treePath ).c_str() );
-      if( currentDir == (userHome+desktopTxt+"/") )
-        n->usericon( &little_desktop );
-      if( currentDir == (userHome+myDocumentsTxt+"/") )
-        n->usericon( &documents );
+      std::string userDesk = userHome + desktopTxt + "/";
+      if( currentDir == userDesk )
+          if ( n ) n->usericon( &little_desktop );
+      std::string userDocs = userHome + myDocumentsTxt + "/";
+      if( currentDir == userDocs )
+          if ( n ) n->usericon( &documents );
 #else
 
       Fl_Tree_Item* i;
