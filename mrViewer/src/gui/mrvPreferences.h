@@ -111,6 +111,7 @@ public:
     static std::string root;
     static std::string tempDir;
     static ColorSchemes schemes;
+    static int debug;
 };
 
 
