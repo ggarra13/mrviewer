@@ -257,7 +257,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         return NULL;
     }
     st->id = oc->nb_streams-1;
-    c = st->codec;
+    c = avcodec_alloc_context3(*codec);
+    // c = st->codec;
 
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
@@ -451,6 +452,13 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         break;
     }
 
+    int ret = avcodec_parameters_from_context( st->codecpar, c );
+    if ( ret < 0 )
+    {
+	LOG_ERROR( _("Failed to copy encoder parameters to output stream") );
+    }
+
+    st->time_base = c->time_base;
 
     return st;
 }
