@@ -300,7 +300,7 @@ void media_track::shift_audio( mrv::media m, boost::int64_t diff )
 
             char buf[1024];
             sprintf( buf, N_("ShiftAudio %d")
-                     N_(" \"%s\" %") PRId64,
+                     N_(" \"%s\" %" PRId64 ),
                      _reel_idx, img->fileroot(), img->audio_offset() );
             main()->uiView->send_network( buf );
             break;
