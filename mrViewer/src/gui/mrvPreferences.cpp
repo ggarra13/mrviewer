@@ -1084,7 +1084,11 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
 
-    // Set the theme and colors for GUI
+    // Set the CTL/ICC transforms in GUI
+    if ( ! set_transforms() )
+    {
+	LOG_ERROR( _("Could not set transforms in GUI") );
+    }
 }
 
 #ifdef _WIN32
@@ -1393,6 +1397,7 @@ void Preferences::run( ViewerUI* main )
         if ( !var || strlen(var) == 0 )
             LOG_INFO( _("OCIO environment variable is not set.  "
                         "Defaulting to CTL. ") );
+	main->gammaDefaults->copy_label( _("Gamma") );
         use_ocio = false;
     }
 
@@ -2117,13 +2122,13 @@ void Preferences::save()
 }
 
 
-bool Preferences::set_theme()
+bool Preferences::set_transforms()
 {
 
     // Set ui window settings
     PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
     if (!uiPrefs) return true;
-
+    
     uiPrefs->uiODT_CTL_transform->value( ODT_CTL_transform.c_str() );
     uiPrefs->uiODT_CTL_chromaticities_red_x->value( ODT_CTL_chromaticities.red.x );
     uiPrefs->uiODT_CTL_chromaticities_red_y->value( ODT_CTL_chromaticities.red.y );
