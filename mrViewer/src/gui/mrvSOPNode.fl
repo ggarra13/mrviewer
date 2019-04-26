@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 header_name {.h}
 code_name {.cxx}
 decl {\#include "core/mrvACES.h"} {public local
@@ -18,11 +18,11 @@ class SopNode {open
   Function {make_window(mrv::ImageView* view)} {open
   } {
     Fl_Window uiMain {open
-      xywh {500 752 560 325} type Double hide resizable non_modal
+      xywh {969 614 560 325} type Double resizable non_modal visible
     } {
       Fl_Group {} {
         label Slope open
-        xywh {56 16 209 135} box ROUNDED_BOX
+        xywh {56 21 210 134} box ROUNDED_BOX
       } {
         Fl_Value_Slider SlopeRUI {
           label R
@@ -37,7 +37,7 @@ a.slope( 0, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {33 20 160 25} align 4 maximum 10 value 1
+          xywh {88 38 160 25} type Horizontal align 4 maximum 10 value 1
         }
         Fl_Value_Slider SlopeGUI {
           label G
@@ -52,7 +52,7 @@ a.slope( 1, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {33 54 160 25} align 4 maximum 10 value 1
+          xywh {88 72 160 25} type Horizontal align 4 maximum 10 value 1
         }
         Fl_Value_Slider SlopeBUI {
           label B
@@ -67,12 +67,12 @@ a.slope( 2, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {33 87 160 25} align 4 maximum 10 value 1
+          xywh {88 105 160 25} type Horizontal align 4 maximum 10 value 1
         }
       }
       Fl_Group {} {
         label Power open
-        xywh {56 170 209 134} box ROUNDED_BOX
+        xywh {56 181 210 134} box ROUNDED_BOX
       } {
         Fl_Value_Slider PowerRUI {
           label R
@@ -87,7 +87,7 @@ a.power( 0, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {33 18 160 25} align 4 maximum 10 value 1
+          xywh {81 199 160 25} type Horizontal align 4 maximum 10 value 1
         }
         Fl_Value_Slider PowerGUI {
           label G
@@ -102,7 +102,7 @@ a.power( 1, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {32 52 160 25} align 4 maximum 10 value 1
+          xywh {80 233 160 25} type Horizontal align 4 maximum 10 value 1
         }
         Fl_Value_Slider PowerBUI {
           label B
@@ -117,12 +117,12 @@ a.power( 2, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {32 85 160 25} align 4 maximum 10 value 1
+          xywh {80 266 160 25} type Horizontal align 4 maximum 10 value 1
         }
       }
       Fl_Group {} {
-        label Offset
-        xywh {290 16 209 134} box ROUNDED_BOX
+        label Offset open
+        xywh {290 21 210 134} box ROUNDED_BOX
       } {
         Fl_Value_Slider OffsetRUI {
           label R
@@ -137,7 +137,7 @@ a.offset( 0, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {34 21 160 25} align 4 maximum 10
+          xywh {316 40 169 25} type Horizontal align 4 maximum 10
         }
         Fl_Value_Slider OffsetGUI {
           label G
@@ -152,7 +152,7 @@ a.offset( 1, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {33 55 160 25} align 4 maximum 10
+          xywh {315 74 170 25} type Horizontal align 4 maximum 10
         }
         Fl_Value_Slider OffsetBUI {
           label B
@@ -167,7 +167,7 @@ a.offset( 2, o->value() );
 send_sop( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
 v->redraw();}
-          xywh {33 88 160 25} align 4 maximum 10
+          xywh {315 107 170 25} type Horizontal align 4 maximum 10
         }
       }
       Fl_Value_Slider SaturationUI {
@@ -182,13 +182,12 @@ ACES::ASC_CDL& a = img->asc_cdl();
 a.saturation( o->value() );
 send_sat( img, v );
 img->image_damage( img->image_damage() | mrv::CMedia::kDamageLut );
-v->redraw();}
-        xywh {355 215 135 25} align 4 value 1
+v->redraw();} selected
+        xywh {365 215 135 25} type Horizontal align 4 value 1
       }
     }
     code {refresh();} {}
-    code {uiMain->show();} {selected
-    }
+    code {uiMain->show();} {}
   }
   Function {SopNode( mrv::ImageView* view )} {open
   } {
@@ -225,17 +224,17 @@ refresh();} {}
     code {char buf[1024];
 const ACES::ASC_CDL& a = img->asc_cdl();
 sprintf( buf, "LMT.SOPNode %g %g %g "
-               "%g %g %g "
-               "%g %g %g",
-               a.slope(0),
-               a.slope(1),
-               a.slope(2),
-               a.offset(0),
-               a.offset(1),
-               a.offset(2),
-               a.power(0),
-               a.power(1),
-               a.power(2) );
+	       "%g %g %g "
+	       "%g %g %g",
+	       a.slope(0),
+	       a.slope(1),
+	       a.slope(2),
+	       a.offset(0),
+	       a.offset(1),
+	       a.offset(2),
+	       a.power(0),
+	       a.power(1),
+	       a.power(2) );
 
 v->send_network( buf );} {}
   }
@@ -244,7 +243,7 @@ v->send_network( buf );} {}
     code {char buf[1024];
 const ACES::ASC_CDL& a = img->asc_cdl();
 sprintf( buf, "LMT.SatNode %g",
-               a.saturation() );
+	       a.saturation() );
 
 v->send_network( buf );} {}
   }
