@@ -1750,8 +1750,7 @@ void ImageBrowser::load( const stringArray& files,
             loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
         }
 
-        retname = file;  // @TODO: fltk1.4
-        std::cerr << "retname 2 should be " << file << std::endl;
+        retname = file;
     }
 
     load( loadlist, stereo, bgfile, edl, progress );
