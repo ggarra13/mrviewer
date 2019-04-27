@@ -177,7 +177,7 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
         user_data {&ctl} user_data_type {std::string*}
         callback {int elem = o->value();
 if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
-*v = o->text(elem);} selected
+*v = o->text(elem);}
         private xywh {10 25 375 345} type Hold box DOWN_BOX labelcolor 32
         code0 {o->set_prefix(prefix);}
         code1 {o->find( ctl.c_str() );}
@@ -198,8 +198,14 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
     }
   }
   code {if (!w->exec())
+{
+        Fl::delete_widget(w);
 	return orig;
-return ctl;} {}
+}
+
+Fl::delete_widget(w);
+return ctl;} {selected
+  }
 }
 
 class SaveOptionsUI {} {
