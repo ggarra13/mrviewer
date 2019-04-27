@@ -98,31 +98,31 @@
 #: gui/mrvImageBrowser.cpp:2711 gui/mrvImageInformation.cpp:2523
 #: gui/mrvLogDisplay.cpp:91 gui/mrvLogDisplay.cpp:92
 #: gui/mrvPreferences.cpp:330 gui/mrvPreferences.cpp:600
-#: gui/mrvPreferences.cpp:614 gui/mrvPreferences.cpp:616
-#: gui/mrvPreferences.cpp:618 gui/mrvPreferences.cpp:1041
-#: gui/mrvPreferences.cpp:1058 gui/mrvPreferences.cpp:1077
-#: gui/mrvPreferences.cpp:1079 gui/mrvPreferences.cpp:1081
-#: gui/mrvPreferences.cpp:1100 gui/mrvPreferences.cpp:1102
-#: gui/mrvPreferences.cpp:1104 gui/mrvPreferences.cpp:1106
-#: gui/mrvPreferences.cpp:1580 gui/mrvPreferences.cpp:1581
-#: gui/mrvPreferences.cpp:2065 gui/mrvSave.cpp:269 gui/mrvTimecode.cpp:362
-#: gui/mrvTimecode.cpp:470 gui/mrvVersion.cpp:315 gui/mrvVersion.cpp:326
-#: video/mrvGLEngine.cpp:3663 video/mrvGLEngine.cpp:3719
-#: video/mrvGLEngine.cpp:3743 video/mrvGLEngine.cpp:3980
-#: video/mrvGLEngine.cpp:3981 video/mrvGLShader.cpp:69
-#: video/mrvGLLut3d.cpp:1122 video/mrvGLLut3d.cpp:1167
-#: video/mrvGLLut3d.cpp:1298 video/mrvGLLut3d.cpp:1299
-#: standalone/mrvCommandLine.cpp:235 standalone/mrvCommandLine.cpp:282
-#: standalone/mrvCommandLine.cpp:319 standalone/mrvCommandLine.cpp:354
-#: standalone/mrvCommandLine.cpp:521 standalone/mrvCommandLine.cpp:544
-#: standalone/main.cpp:120 standalone/main.cpp:121 standalone/main.cpp:179
-#: standalone/main.cpp:183
+#: gui/mrvPreferences.cpp:612 gui/mrvPreferences.cpp:614
+#: gui/mrvPreferences.cpp:616 gui/mrvPreferences.cpp:618
+#: gui/mrvPreferences.cpp:1041 gui/mrvPreferences.cpp:1058
+#: gui/mrvPreferences.cpp:1077 gui/mrvPreferences.cpp:1079
+#: gui/mrvPreferences.cpp:1081 gui/mrvPreferences.cpp:1100
+#: gui/mrvPreferences.cpp:1102 gui/mrvPreferences.cpp:1104
+#: gui/mrvPreferences.cpp:1106 gui/mrvPreferences.cpp:1581
+#: gui/mrvPreferences.cpp:1582 gui/mrvPreferences.cpp:2068 gui/mrvSave.cpp:269
+#: gui/mrvTimecode.cpp:362 gui/mrvTimecode.cpp:470 gui/mrvVersion.cpp:315
+#: gui/mrvVersion.cpp:326 video/mrvGLEngine.cpp:3666
+#: video/mrvGLEngine.cpp:3722 video/mrvGLEngine.cpp:3746
+#: video/mrvGLEngine.cpp:3983 video/mrvGLEngine.cpp:3984
+#: video/mrvGLShader.cpp:69 video/mrvGLLut3d.cpp:1143
+#: video/mrvGLLut3d.cpp:1188 video/mrvGLLut3d.cpp:1340
+#: video/mrvGLLut3d.cpp:1341 standalone/mrvCommandLine.cpp:235
+#: standalone/mrvCommandLine.cpp:282 standalone/mrvCommandLine.cpp:319
+#: standalone/mrvCommandLine.cpp:354 standalone/mrvCommandLine.cpp:521
+#: standalone/mrvCommandLine.cpp:544 standalone/main.cpp:120
+#: standalone/main.cpp:121 standalone/main.cpp:179 standalone/main.cpp:183
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-04-26 16:23-0300\n"
+"POT-Creation-Date: 2019-04-27 18:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,8 +138,8 @@ msgstr ""
 msgid "\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3063 video/mrvGLEngine.cpp:3064
-#: video/mrvGLEngine.cpp:3071 video/mrvGLEngine.cpp:3072
+#: video/mrvGLEngine.cpp:3066 video/mrvGLEngine.cpp:3067
+#: video/mrvGLEngine.cpp:3074 video/mrvGLEngine.cpp:3075
 msgid "\t\t"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:2365 gui/FLU/Flu_File_Chooser.cpp:2368
 #: gui/FLU/Flu_File_Chooser.cpp:2371 gui/mrvColorInfo.cpp:891
 #: gui/mrvImageBrowser.cpp:2668 gui/mrvImageBrowser.cpp:2670
-#: gui/mrvImageBrowser.cpp:2907 video/mrvGLEngine.cpp:3033
+#: gui/mrvImageBrowser.cpp:2907 video/mrvGLEngine.cpp:3036
 #: standalone/mrvCommandLine.cpp:122
 #, c-format
 msgid "\n"
@@ -307,19 +307,20 @@ msgstr ""
 #: video/mrvGLEngine.cpp:168 video/mrvGLEngine.cpp:226
 #: video/mrvGLEngine.cpp:242 video/mrvGLEngine.cpp:271
 #: video/mrvGLEngine.cpp:273 video/mrvGLEngine.cpp:282
-#: video/mrvGLEngine.cpp:284 video/mrvGLEngine.cpp:305
-#: video/mrvGLEngine.cpp:333 video/mrvGLEngine.cpp:352
-#: video/mrvGLEngine.cpp:354 video/mrvGLEngine.cpp:454
-#: video/mrvGLEngine.cpp:1018 video/mrvGLEngine.cpp:1094
-#: video/mrvGLEngine.cpp:1113 video/mrvGLEngine.cpp:1143
-#: video/mrvGLEngine.cpp:1244 video/mrvGLEngine.cpp:1328
-#: video/mrvGLEngine.cpp:1376 video/mrvGLEngine.cpp:1420
-#: video/mrvGLEngine.cpp:1538 video/mrvGLEngine.cpp:1653
-#: video/mrvGLEngine.cpp:1717 video/mrvGLEngine.cpp:2320
-#: video/mrvGLEngine.cpp:2364 video/mrvGLEngine.cpp:2421
-#: video/mrvGLEngine.cpp:3949 video/mrvGLEngine.cpp:3987
-#: video/mrvGLQuad.cpp:816 video/mrvGLLut3d.cpp:956 video/mrvGLLut3d.cpp:963
-#: standalone/mrvCommandLine.cpp:117 standalone/mrvCommandLine.cpp:561
+#: video/mrvGLEngine.cpp:284 video/mrvGLEngine.cpp:308
+#: video/mrvGLEngine.cpp:336 video/mrvGLEngine.cpp:355
+#: video/mrvGLEngine.cpp:357 video/mrvGLEngine.cpp:457
+#: video/mrvGLEngine.cpp:1021 video/mrvGLEngine.cpp:1097
+#: video/mrvGLEngine.cpp:1116 video/mrvGLEngine.cpp:1146
+#: video/mrvGLEngine.cpp:1247 video/mrvGLEngine.cpp:1331
+#: video/mrvGLEngine.cpp:1379 video/mrvGLEngine.cpp:1423
+#: video/mrvGLEngine.cpp:1541 video/mrvGLEngine.cpp:1656
+#: video/mrvGLEngine.cpp:1720 video/mrvGLEngine.cpp:2323
+#: video/mrvGLEngine.cpp:2367 video/mrvGLEngine.cpp:2424
+#: video/mrvGLEngine.cpp:3952 video/mrvGLEngine.cpp:3990
+#: video/mrvGLQuad.cpp:816 video/mrvGLLut3d.cpp:74 video/mrvGLLut3d.cpp:977
+#: video/mrvGLLut3d.cpp:984 standalone/mrvCommandLine.cpp:117
+#: standalone/mrvCommandLine.cpp:561
 #, c-format
 msgid " "
 msgstr ""
@@ -353,7 +354,7 @@ msgstr ""
 msgid " \tc None"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3664
+#: video/mrvGLEngine.cpp:3667
 msgid ""
 " \n"
 " /** \n"
@@ -1787,7 +1788,7 @@ msgstr ""
 msgid "      ^.Q O P /.(._.:.<.[.}.H y |.1.2.I         "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3193
+#: video/mrvGLEngine.cpp:3196
 #, c-format
 msgid "      for (uint i = 0; i < %d; i++)\n"
 msgstr ""
@@ -2112,22 +2113,22 @@ msgstr ""
 msgid "    chhhhhhhhhhhhh  "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3162
+#: video/mrvGLEngine.cpp:3165
 #, c-format
 msgid "    float avg = %f * float(total_avg) / float(frame_num);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3161
+#: video/mrvGLEngine.cpp:3164
 #, c-format
 msgid "    float peak = %f * float(total_max) / float(frame_num);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3164
+#: video/mrvGLEngine.cpp:3167
 #, c-format
 msgid "    sig_avg  = max(%f, avg);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3163
+#: video/mrvGLEngine.cpp:3166
 msgid "    sig_peak = max(1.0, peak);\n"
 msgstr ""
 
@@ -2843,7 +2844,7 @@ msgstr ""
 msgid "  @@vBC;;DEFGH      "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1221
+#: video/mrvGLLut3d.cpp:1252
 msgid "  Choosing "
 msgstr ""
 
@@ -2875,12 +2876,12 @@ msgstr ""
 msgid "  dts: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3211
+#: video/mrvGLEngine.cpp:3214
 #, c-format
 msgid "  frame_num = min(frame_num + 1, %d);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3188
+#: video/mrvGLEngine.cpp:3191
 #, c-format
 msgid "  if (abs(diff) > frame_num * %d) {\n"
 msgstr ""
@@ -2897,7 +2898,7 @@ msgstr ""
 msgid "  r+s+t+u+v+w+x+y+z+A+B+C+D+E+F+G+H+I+  "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3204
+#: video/mrvGLEngine.cpp:3207
 #, c-format
 msgid "  uint next = (frame_idx + 1) %% %d;\n"
 msgstr ""
@@ -3032,12 +3033,12 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:932 video/mrvGLLut3d.cpp:966 video/mrvGLLut3d.cpp:979
-#: video/mrvGLLut3d.cpp:1040
+#: video/mrvGLLut3d.cpp:953 video/mrvGLLut3d.cpp:987 video/mrvGLLut3d.cpp:1000
+#: video/mrvGLLut3d.cpp:1061
 msgid " (C)"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1015 video/mrvGLLut3d.cpp:1064
+#: video/mrvGLLut3d.cpp:1036 video/mrvGLLut3d.cpp:1085
 msgid " (I)"
 msgstr ""
 
@@ -3053,7 +3054,7 @@ msgstr ""
 msgid " (ext: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3065 video/mrvGLEngine.cpp:3073
+#: video/mrvGLEngine.cpp:3068 video/mrvGLEngine.cpp:3076
 msgid " ); "
 msgstr ""
 
@@ -3113,10 +3114,10 @@ msgstr ""
 msgid " - decode Error audio frame "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:930 video/mrvGLLut3d.cpp:947 video/mrvGLLut3d.cpp:977
-#: video/mrvGLLut3d.cpp:1013 video/mrvGLLut3d.cpp:1038
-#: video/mrvGLLut3d.cpp:1062 video/mrvGLLut3d.cpp:1190
-#: video/mrvGLLut3d.cpp:1191
+#: video/mrvGLLut3d.cpp:951 video/mrvGLLut3d.cpp:968 video/mrvGLLut3d.cpp:998
+#: video/mrvGLLut3d.cpp:1034 video/mrvGLLut3d.cpp:1059
+#: video/mrvGLLut3d.cpp:1083 video/mrvGLLut3d.cpp:1215
+#: video/mrvGLLut3d.cpp:1217
 msgid " -> "
 msgstr ""
 
@@ -3369,11 +3370,11 @@ msgstr ""
 msgid " <----"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3061 video/mrvGLEngine.cpp:3069
+#: video/mrvGLEngine.cpp:3064 video/mrvGLEngine.cpp:3072
 msgid " = mat3( "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3052
+#: video/mrvGLEngine.cpp:3055
 msgid " = vec3( "
 msgstr ""
 
@@ -3579,11 +3580,11 @@ msgstr ""
 msgid " _frame_offset "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1203
+#: video/mrvGLLut3d.cpp:1230
 msgid " already created: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1214 gui/mrvPreferences.cpp:2329
+#: gui/mrvPreferences.cpp:1215 gui/mrvPreferences.cpp:2332
 msgid " alt"
 msgstr ""
 
@@ -3641,7 +3642,7 @@ msgstr ""
 msgid " chooser "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1210 gui/mrvPreferences.cpp:2327
+#: gui/mrvPreferences.cpp:1211 gui/mrvPreferences.cpp:2330
 msgid " ctrl"
 msgstr ""
 
@@ -3816,11 +3817,11 @@ msgstr ""
 msgid " is_seek "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1231 gui/mrvPreferences.cpp:2335
+#: gui/mrvPreferences.cpp:1232 gui/mrvPreferences.cpp:2338
 msgid " key"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1235 gui/mrvPreferences.cpp:2337
+#: gui/mrvPreferences.cpp:1236 gui/mrvPreferences.cpp:2340
 msgid " key2"
 msgstr ""
 
@@ -3832,7 +3833,7 @@ msgstr ""
 msgid " max frames: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1219 gui/mrvPreferences.cpp:2331
+#: gui/mrvPreferences.cpp:1220 gui/mrvPreferences.cpp:2334
 msgid " meta"
 msgstr ""
 
@@ -3902,11 +3903,11 @@ msgstr ""
 msgid " set to frame "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:454
+#: video/mrvGLEngine.cpp:457
 msgid " shader file "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1226 gui/mrvPreferences.cpp:2333
+#: gui/mrvPreferences.cpp:1227 gui/mrvPreferences.cpp:2336
 msgid " shift"
 msgstr ""
 
@@ -3949,7 +3950,7 @@ msgstr ""
 msgid " tag ("
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1240 gui/mrvPreferences.cpp:2339
+#: gui/mrvPreferences.cpp:1241 gui/mrvPreferences.cpp:2342
 msgid " text"
 msgstr ""
 
@@ -4015,7 +4016,7 @@ msgstr ""
 msgid " x "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3744
+#: video/mrvGLEngine.cpp:3747
 msgid ""
 " }\n"
 "       //\n"
@@ -4212,7 +4213,7 @@ msgstr ""
 msgid "!!ARBfp1.0"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2447
+#: video/mrvGLEngine.cpp:2450
 msgid ""
 "!!ARBfp1.0\n"
 "# cgc version 3.1.0013, build date Apr 24 2012\n"
@@ -4514,7 +4515,7 @@ msgstr ""
 msgid "!!FP1.0"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2743
+#: video/mrvGLEngine.cpp:2746
 msgid ""
 "!!FP1.0\n"
 "# cgc version 3.1.0013, build date Apr 24 2012\n"
@@ -4847,8 +4848,8 @@ msgstr ""
 #: core/hdrImage.cpp:279 core/mrvServer.cpp:1187 core/mrvServer.cpp:1288
 #: gui/mrvFileRequester.cpp:557 gui/mrvFileRequester.cpp:718
 #: gui/mrvImageView.cpp:799 gui/mrvImageInformation.cpp:1369
-#: gui/mrvPreferences.cpp:527 video/mrvGLLut3d.cpp:775
-#: video/mrvGLLut3d.cpp:990 video/mrvGLLut3d.cpp:1020
+#: gui/mrvPreferences.cpp:527 video/mrvGLLut3d.cpp:796
+#: video/mrvGLLut3d.cpp:1011 video/mrvGLLut3d.cpp:1041
 msgid "\""
 msgstr ""
 
@@ -4924,7 +4925,7 @@ msgstr ""
 msgid "\"."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1132
+#: video/mrvGLLut3d.cpp:1153
 msgid "\": "
 msgstr ""
 
@@ -5444,11 +5445,11 @@ msgstr ""
 msgid "$@\tc #585858"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1465
+#: gui/mrvPreferences.cpp:1466
 msgid "${"
 msgstr ""
 
-#: core/Sequence.cpp:1022 gui/mrvPreferences.cpp:1464
+#: core/Sequence.cpp:1022 gui/mrvPreferences.cpp:1465
 msgid "%"
 msgstr ""
 
@@ -5842,10 +5843,10 @@ msgstr ""
 #: gui/mrvImageBrowser.cpp:424 gui/mrvImageInformation.cpp:2585
 #: gui/mrvImageInformation.cpp:3215 gui/mrvImageInformation.cpp:3228
 #: gui/mrvImageInformation.cpp:3402 gui/mrvImageInformation.cpp:3415
-#: gui/mrvImageInformation.cpp:3536 gui/mrvImageInformation.cpp:3555
-#: gui/mrvImageInformation.cpp:3575 gui/mrvImageInformation.cpp:3595
-#: gui/mrvImageInformation.cpp:3616 gui/mrvImageInformation.cpp:3629
-#: gui/mrvPreferences.cpp:1675 standalone/mrvCommandLine.cpp:258
+#: gui/mrvImageInformation.cpp:3536 gui/mrvImageInformation.cpp:3556
+#: gui/mrvImageInformation.cpp:3576 gui/mrvImageInformation.cpp:3596
+#: gui/mrvImageInformation.cpp:3617 gui/mrvImageInformation.cpp:3630
+#: gui/mrvPreferences.cpp:1676 standalone/mrvCommandLine.cpp:258
 #: standalone/main.cpp:353
 #, c-format
 msgid "%d"
@@ -5915,7 +5916,7 @@ msgstr ""
 msgid "%d:%d:%d %d:%d:%d"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1762
+#: gui/mrvPreferences.cpp:1763
 #, c-format
 msgid "%f"
 msgstr ""
@@ -5936,9 +5937,9 @@ msgid "%f %f %f %f %f %f %f %f"
 msgstr ""
 
 #: core/wandImage.cpp:806 gui/mrvImageInformation.cpp:910
-#: gui/mrvImageInformation.cpp:919 gui/mrvImageInformation.cpp:3680
-#: gui/mrvImageInformation.cpp:3693 gui/mrvSlider.cpp:14
-#: video/mrvGLLut3d.cpp:962
+#: gui/mrvImageInformation.cpp:919 gui/mrvImageInformation.cpp:3681
+#: gui/mrvImageInformation.cpp:3694 gui/mrvSlider.cpp:14
+#: video/mrvGLLut3d.cpp:983
 #, c-format
 msgid "%g"
 msgstr ""
@@ -6008,7 +6009,7 @@ msgstr ""
 msgid "%g %g %g %g %g %g %g %g %g %g %g %g %g %g %g %g"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:952
+#: video/mrvGLLut3d.cpp:973
 #, c-format
 msgid "%g %g %g - %g %g %g - %g %g %g"
 msgstr ""
@@ -6176,9 +6177,9 @@ msgstr ""
 msgid "%s/%s"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:452 video/mrvGLEngine.cpp:473
-#: video/mrvGLEngine.cpp:483 video/mrvGLEngine.cpp:502
-#: video/mrvGLEngine.cpp:505
+#: video/mrvGLEngine.cpp:455 video/mrvGLEngine.cpp:476
+#: video/mrvGLEngine.cpp:486 video/mrvGLEngine.cpp:505
+#: video/mrvGLEngine.cpp:508
 #, c-format
 msgid "%s/%s.%s"
 msgstr ""
@@ -6860,7 +6861,7 @@ msgstr ""
 msgid "(mouse button %d)"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1436
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1441
 #: gui/mrvImageView.cpp:7485 gui/mrvImageView.cpp:8109
 #: gui/mrvImageView.cpp:8110 gui/mrvImageView.cpp:8117
 msgid "(no image)"
@@ -7099,7 +7100,7 @@ msgstr ""
 msgid "): "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3053
+#: video/mrvGLEngine.cpp:3056
 msgid ");"
 msgstr ""
 
@@ -7563,7 +7564,7 @@ msgstr ""
 msgid "+.         .+90b+   "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1507
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1512
 msgid "+0.0  f/8.0"
 msgstr ""
 
@@ -7627,8 +7628,8 @@ msgstr ""
 #: gui/mrvCTLBrowser.cpp:96 gui/mrvFileRequester.cpp:348
 #: gui/mrvFileRequester.cpp:349 gui/mrvFileRequester.cpp:753
 #: gui/mrvFileRequester.cpp:754 gui/mrvFileRequester.cpp:805
-#: gui/mrvFileRequester.cpp:806 video/mrvGLEngine.cpp:3062
-#: video/mrvGLEngine.cpp:3070
+#: gui/mrvFileRequester.cpp:806 video/mrvGLEngine.cpp:3065
+#: video/mrvGLEngine.cpp:3073
 msgid ","
 msgstr ""
 
@@ -7700,14 +7701,14 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:1114 core/exrImage.cpp:556 core/stubImage.cpp:991
 #: gui/mrvColorInfo.cpp:516 gui/mrvColorInfo.cpp:518 gui/mrvVersion.cpp:595
-#: video/mrvGLEngine.cpp:3052 video/mrvGLEngine.cpp:3053
-#: video/mrvGLEngine.cpp:3061 video/mrvGLEngine.cpp:3062
-#: video/mrvGLEngine.cpp:3063 video/mrvGLEngine.cpp:3064
-#: video/mrvGLEngine.cpp:3065 video/mrvGLEngine.cpp:3069
-#: video/mrvGLEngine.cpp:3070 video/mrvGLEngine.cpp:3071
-#: video/mrvGLEngine.cpp:3072 video/mrvGLEngine.cpp:3073
-#: video/mrvGLEngine.cpp:3871 video/mrvGLEngine.cpp:3875
-#: video/mrvGLEngine.cpp:3879 video/mrvGLEngine.cpp:3882
+#: video/mrvGLEngine.cpp:3055 video/mrvGLEngine.cpp:3056
+#: video/mrvGLEngine.cpp:3064 video/mrvGLEngine.cpp:3065
+#: video/mrvGLEngine.cpp:3066 video/mrvGLEngine.cpp:3067
+#: video/mrvGLEngine.cpp:3068 video/mrvGLEngine.cpp:3072
+#: video/mrvGLEngine.cpp:3073 video/mrvGLEngine.cpp:3074
+#: video/mrvGLEngine.cpp:3075 video/mrvGLEngine.cpp:3076
+#: video/mrvGLEngine.cpp:3874 video/mrvGLEngine.cpp:3878
+#: video/mrvGLEngine.cpp:3882 video/mrvGLEngine.cpp:3885
 msgid ", "
 msgstr ""
 
@@ -8108,8 +8109,8 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:3891 gui/FLU/Flu_File_Chooser.cpp:4220
 #: gui/mrvImageView.cpp:8019 gui/mrvPreferences.cpp:534
 #: gui/mrvPreferences.cpp:968 gui/mrvVersion.cpp:548 gui/mrvVersion.cpp:549
-#: video/mrvGLEngine.cpp:527 video/mrvGLLut3d.cpp:1132
-#: video/mrvGLLut3d.cpp:1176 video/mrvGLLut3d.cpp:1221
+#: video/mrvGLEngine.cpp:530 video/mrvGLLut3d.cpp:1153
+#: video/mrvGLLut3d.cpp:1197 video/mrvGLLut3d.cpp:1252
 msgid "."
 msgstr ""
 
@@ -9216,7 +9217,7 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:4129 gui/FLU/Flu_File_Chooser.cpp:4131
 #: gui/FLU/Flu_File_Chooser.cpp:4134 gui/FLU/Flu_File_Chooser.cpp:4591
 #: gui/mrvImageView.cpp:4305 gui/mrvImageBrowser.cpp:2171
-#: gui/mrvPreferences.cpp:972 gui/mrvPreferences.cpp:1544
+#: gui/mrvPreferences.cpp:972 gui/mrvPreferences.cpp:1545
 #: standalone/mrvRoot.cpp:133
 msgid "/"
 msgstr ""
@@ -9363,35 +9364,35 @@ msgstr ""
 msgid "/.filmaura/mrViewer.lock.prefs"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3255
+#: video/mrvGLEngine.cpp:3258
 msgid "// HDR tone mapping\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3224
+#: video/mrvGLEngine.cpp:3227
 msgid "// apply inverse ootf\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3515
+#: video/mrvGLEngine.cpp:3518
 msgid "// apply ootf\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3560
+#: video/mrvGLEngine.cpp:3563
 msgid "// color mapping //\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:809
+#: video/mrvGLEngine.cpp:812
 msgid "// constant luminance conversion\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3442
+#: video/mrvGLEngine.cpp:3445
 msgid "// delinearize\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3359
+#: video/mrvGLEngine.cpp:3362
 msgid "// linearize\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3559 video/mrvGLEngine.cpp:3561
+#: video/mrvGLEngine.cpp:3562 video/mrvGLEngine.cpp:3564
 msgid "///////////////////\n"
 msgstr ""
 
@@ -9419,7 +9420,7 @@ msgstr ""
 msgid "/etc/fstab"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1436
+#: gui/mrvPreferences.cpp:1437
 msgid "/ocio/nuke-default/config.ocio"
 msgstr ""
 
@@ -9435,7 +9436,7 @@ msgstr ""
 msgid "/proc/self/status"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:419
+#: video/mrvGLEngine.cpp:422
 msgid "/shaders"
 msgstr ""
 
@@ -9591,11 +9592,11 @@ msgstr ""
 msgid "0.2 5.1  10.5 20.2"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:945
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:950
 msgid "0.45"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:944
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:949
 msgid "0.55"
 msgstr ""
 
@@ -9770,7 +9771,7 @@ msgstr ""
 msgid "1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:943
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:948
 msgid "1.00"
 msgstr ""
 
@@ -9810,7 +9811,7 @@ msgstr ""
 msgid "1.77 HDTV (16:9)"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:942
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:947
 msgid "1.8"
 msgstr ""
 
@@ -9827,45 +9828,45 @@ msgstr ""
 msgid "1/%.3g"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1026
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1031
 msgid "1/2"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1025
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1030
 msgid "1/3"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1024
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1029
 msgid "1/4"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1023
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1028
 msgid "1/5"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1022
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1027
 msgid "1/6"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1021
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1026
 msgid "1/7"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1020
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1025
 msgid "1/8"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1019
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1024
 msgid "1/9"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:138
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1257
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1262
 msgid "12"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:137
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1256
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1261
 msgid "12.5"
 msgstr ""
 
@@ -9881,11 +9882,11 @@ msgid "13 13 9 1"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:136
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1255
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1260
 msgid "14.985"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1254
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1259
 #: gui/mrvImageInformation.cpp:168
 msgid "15"
 msgstr ""
@@ -9916,8 +9917,8 @@ msgstr ""
 msgid "16-bits"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2071 gui/mrvPreferences.cpp:2274
-#: gui/mrvPreferences.cpp:2282
+#: gui/mrvPreferences.cpp:2074 gui/mrvPreferences.cpp:2277
+#: gui/mrvPreferences.cpp:2285
 msgid "16bits"
 msgstr ""
 
@@ -9958,7 +9959,7 @@ msgid "192x192x192"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:201
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1604
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1609
 msgid "1:1"
 msgstr ""
 
@@ -10116,7 +10117,7 @@ msgstr ""
 msgid "2.10 VistaVision"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:941
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:946
 #: gui/mrvImageInformation.cpp:170
 msgid "2.2"
 msgstr ""
@@ -10222,12 +10223,12 @@ msgstr ""
 msgid "22 22 39 1"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1253
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1258
 msgid "23.97"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:135
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1252
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1257
 msgid "24"
 msgstr ""
 
@@ -10244,7 +10245,7 @@ msgid "24000/1001"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:134
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1251
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1256
 msgid "25"
 msgstr ""
 
@@ -10253,7 +10254,7 @@ msgid "256x256x256"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:133
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1250
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1255
 msgid "29.97"
 msgstr ""
 
@@ -10389,7 +10390,7 @@ msgid "3.f.g.h.e.{.i.j.j.9.k.7.l.3.C m.h."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:132
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1249
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1254
 msgid "30"
 msgstr ""
 
@@ -10415,8 +10416,8 @@ msgstr ""
 msgid "32-bits"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2072 gui/mrvPreferences.cpp:2275
-#: gui/mrvPreferences.cpp:2283
+#: gui/mrvPreferences.cpp:2075 gui/mrvPreferences.cpp:2278
+#: gui/mrvPreferences.cpp:2286
 msgid "32bits"
 msgstr ""
 
@@ -10444,7 +10445,7 @@ msgstr ""
 msgid "35mm Panavision"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1202 video/mrvGLLut3d.cpp:1285
+#: video/mrvGLLut3d.cpp:1229 video/mrvGLLut3d.cpp:1327
 msgid "3D Lut for "
 msgstr ""
 
@@ -10497,7 +10498,7 @@ msgstr ""
 msgid "3d View"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:788
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
 msgid "3dView"
 msgstr ""
 
@@ -10822,13 +10823,13 @@ msgid "5.0.1-RC5"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:131
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1248
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1253
 #: standalone/main.cpp:123 standalone/main.cpp:125
 msgid "50"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:130
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1247
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1252
 msgid "59.94"
 msgstr ""
 
@@ -10959,7 +10960,7 @@ msgid "6.\tc #968A8A"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:129
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1246
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1251
 msgid "60"
 msgstr ""
 
@@ -11219,7 +11220,7 @@ msgstr ""
 msgid "8-bit Values"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1749
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1754
 msgid "8-bit sample of image pixel under mouse."
 msgstr ""
 
@@ -11253,16 +11254,16 @@ msgstr ""
 msgid "8.\tc #E4C889"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1053
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1058
 msgid "8bit"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:771 gui/mrvPreferences.cpp:2159
+#: gui/mrvPreferences.cpp:771 gui/mrvPreferences.cpp:2162
 msgid "8bit_caches"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2070 gui/mrvPreferences.cpp:2273
-#: gui/mrvPreferences.cpp:2281
+#: gui/mrvPreferences.cpp:2073 gui/mrvPreferences.cpp:2276
+#: gui/mrvPreferences.cpp:2284
 msgid "8bits"
 msgstr ""
 
@@ -11393,7 +11394,7 @@ msgstr ""
 
 #: core/mrvColorProfile.cpp:257 core/mrvColorProfile.cpp:258
 #: gui/mrvCTLBrowser.cpp:91 gui/mrvFileRequester.cpp:73 gui/mrvVersion.cpp:449
-#: gui/mrvVersion.cpp:455 video/mrvGLLut3d.cpp:1285
+#: gui/mrvVersion.cpp:455 video/mrvGLLut3d.cpp:1327
 msgid ":"
 msgstr ""
 
@@ -11455,8 +11456,8 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:2352 gui/FLU/Flu_File_Chooser.cpp:2357
 #: gui/FLU/Flu_File_Chooser.cpp:2363 gui/FLU/Flu_File_Chooser.cpp:2367
 #: gui/FLU/Flu_File_Chooser.cpp:2370 gui/FLU/Flu_File_Chooser.cpp:2373
-#: gui/mrvImageView.cpp:3856 video/mrvGLEngine.cpp:463
-#: video/mrvGLEngine.cpp:489 video/mrvGLEngine.cpp:512
+#: gui/mrvImageView.cpp:3856 video/mrvGLEngine.cpp:466
+#: video/mrvGLEngine.cpp:492 video/mrvGLEngine.cpp:515
 #: video/mrvGLShader.cpp:250
 msgid ": "
 msgstr ""
@@ -12529,8 +12530,8 @@ msgstr ""
 msgid "@2>  %s"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1503
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1970
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1508
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1975
 msgid "@<"
 msgstr ""
 
@@ -12538,16 +12539,16 @@ msgstr ""
 msgid "@<-"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1143
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1148
 msgid "@<->"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1975
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1980
 msgid "@<|"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1514
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1990
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1519
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1995
 msgid "@>"
 msgstr ""
 
@@ -12556,7 +12557,7 @@ msgstr ""
 msgid "@>  %s"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1995
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2000
 msgid "@>|"
 msgstr ""
 
@@ -12601,20 +12602,20 @@ msgstr ""
 msgid "@b@B8ID\t@b@B8Tag\t@b@B8Offset\t@b@B8Size"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1965
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1970
 msgid "@|<"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1985
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1990
 msgid "@|>"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1141
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1980
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1146
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1985
 msgid "@||"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2043
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2048
 #: core/exrImage.cpp:327 core/exrImage.cpp:855 core/exrImage.cpp:875
 #: core/exrImage.cpp:1053 core/exrImage.cpp:1096 core/exrImage.cpp:1592
 #: core/exrImage.cpp:1646 core/exrImage.cpp:1763 core/exrImage.cpp:1978
@@ -12813,11 +12814,11 @@ msgstr ""
 msgid "ARB Fragment Program 1"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:607
+#: video/mrvGLEngine.cpp:610
 msgid "ARBFP"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:606
+#: video/mrvGLEngine.cpp:609
 msgid "ARBFP1"
 msgstr ""
 
@@ -12843,7 +12844,7 @@ msgstr ""
 msgid "AVI Movie"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:797
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:802
 msgid "About"
 msgstr ""
 
@@ -12851,7 +12852,7 @@ msgstr ""
 msgid "About mrViewer"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:123
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:128
 #: gui/mrvImageInformation.cpp:2270
 msgid "Absolute"
 msgstr ""
@@ -12874,7 +12875,7 @@ msgid "Accept the selected OCIO file."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:994
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:786
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:791
 msgid "Action Tools"
 msgstr ""
 
@@ -12883,7 +12884,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1612
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1617
 msgid "Activate viewer's 3D Lut."
 msgstr ""
 
@@ -12903,7 +12904,7 @@ msgstr ""
 msgid "Adopted Neutral"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1986
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1991
 msgid "Advance one frame."
 msgstr ""
 
@@ -12919,8 +12920,8 @@ msgstr ""
 msgid "Algorithm"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:139
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:522
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:144
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:527
 #: gui/mrvImageInformation.cpp:621
 msgid "All"
 msgstr ""
@@ -12936,8 +12937,8 @@ msgstr ""
 msgid "All Layers"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:130
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:198
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:135
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:203
 msgid "All Possible"
 msgstr ""
 
@@ -12950,22 +12951,22 @@ msgstr ""
 msgid "All rights reserved."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:675
+#: video/mrvGLLut3d.cpp:696
 msgid "Allocation error"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2026
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2031
 msgid "Allows you to adjust frame rate playback."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1555
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1567
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1560
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1572
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1470
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1475
 msgid "Allows you to adjust the gain or exposure of the image."
 msgstr ""
 
@@ -12973,15 +12974,15 @@ msgstr ""
 msgid "Allows you to select a standard cropping area around image."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1437
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1442
 msgid "Allows you to select different image channels or layers."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2073
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2078
 msgid "Allows you to set starting frame for timeline."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2087
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2092
 msgid "Allows you to set the ending frame for timeline."
 msgstr ""
 
@@ -12991,7 +12992,7 @@ msgstr ""
 msgid "Alpha"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:133
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:138
 msgid "Alpha Only"
 msgstr ""
 
@@ -13001,7 +13002,7 @@ msgstr ""
 msgid "Alpha Overlay"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1739
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1744
 msgid "Alpha value of image pixel under mouse."
 msgstr ""
 
@@ -13087,7 +13088,7 @@ msgstr ""
 msgid "Aperture Value"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:875
+#: video/mrvGLLut3d.cpp:896
 msgid "Apply: "
 msgstr ""
 
@@ -13115,9 +13116,9 @@ msgstr ""
 msgid "Area Mode"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:434
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:441
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:465
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:439
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:446
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:470
 msgid "Area Select Tool"
 msgstr ""
 
@@ -13199,7 +13200,7 @@ msgstr ""
 msgid "Audio Streams"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2058
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2063
 msgid "Audio Volume"
 msgstr ""
 
@@ -13522,11 +13523,11 @@ msgid ""
 "allowed.  Turning edl off."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:696 video/mrvGLLut3d.cpp:699
+#: video/mrvGLLut3d.cpp:717 video/mrvGLLut3d.cpp:720
 msgid "Bad color encoding"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:702
+#: video/mrvGLLut3d.cpp:723
 msgid "Bad color space link"
 msgstr ""
 
@@ -13534,7 +13535,7 @@ msgstr ""
 msgid "Bad port number "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:681
+#: video/mrvGLLut3d.cpp:702
 msgid "Bad transform"
 msgstr ""
 
@@ -13575,7 +13576,7 @@ msgstr ""
 msgid "Blue"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1731
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1736
 msgid "Blue value of image pixel under mouse."
 msgstr ""
 
@@ -13591,7 +13592,7 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:976
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:981
 msgid "Bottom Field"
 msgstr ""
 
@@ -13636,12 +13637,12 @@ msgstr ""
 #: core/mrvACES.cpp:124 core/Sequence.cpp:784 core/Sequence.cpp:823
 #: gui/FLU/flu_filename_list.cxx:57 gui/mrvOCIOBrowser.cpp:139
 #: gui/mrvOCIOBrowser.cpp:140 gui/mrvImageBrowser.cpp:529
-#: gui/mrvPreferences.cpp:1259 gui/mrvPreferences.cpp:1493
-#: gui/mrvPreferences.cpp:1494 gui/mrvTimecode.cpp:45
+#: gui/mrvPreferences.cpp:1260 gui/mrvPreferences.cpp:1494
+#: gui/mrvPreferences.cpp:1495 gui/mrvTimecode.cpp:45
 #: gui/mrvVectorscope.cpp:113 gui/mrvVersion.cpp:46 video/mrvGLEngine.cpp:58
-#: video/mrvGLEngine.cpp:3656 video/mrvGLEngine.cpp:3657
-#: video/mrvCSPUtils.cpp:34 video/mrvGLLut3d.cpp:1295
-#: video/mrvGLLut3d.cpp:1296
+#: video/mrvGLEngine.cpp:3659 video/mrvGLEngine.cpp:3660
+#: video/mrvCSPUtils.cpp:34 video/mrvGLLut3d.cpp:1337
+#: video/mrvGLLut3d.cpp:1338
 msgid "C"
 msgstr ""
 
@@ -13737,11 +13738,11 @@ msgstr ""
 msgid "CDXA"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:603
+#: video/mrvGLEngine.cpp:606
 msgid "CG"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:604
+#: video/mrvGLEngine.cpp:607
 msgid "CGGL"
 msgstr ""
 
@@ -13863,7 +13864,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:167
 #: gui/mrvPreferences.cpp:1018 gui/mrvPreferences.cpp:1071
-#: gui/mrvPreferences.cpp:2234 gui/mrvPreferences.cpp:2271
+#: gui/mrvPreferences.cpp:2237 gui/mrvPreferences.cpp:2274
 msgid "CTL"
 msgstr ""
 
@@ -13918,7 +13919,7 @@ msgstr ""
 msgid "Can't load shader file '"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:678
+#: video/mrvGLLut3d.cpp:699
 msgid "Can't open profile"
 msgstr ""
 
@@ -13930,7 +13931,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:67
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:47
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:95
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:230
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
 #: gui/FLU/Flu_File_Chooser.cpp:103 gui/mrvAsk.cpp:242
 #: gui/mrvFontsWindowUI.cpp:151 gui/mrvImageInformation.cpp:240
 #: gui/mrvImageInformation.cpp:269
@@ -14044,7 +14045,7 @@ msgstr ""
 msgid "Changed locale to "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1583
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1588
 msgid "Changes frame/field display"
 msgstr ""
 
@@ -14063,7 +14064,7 @@ msgstr ""
 msgid "Channel %d %s"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:195
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:200
 #: gui/mrvImageInformation.cpp:2591
 msgid "Channels"
 msgstr ""
@@ -14095,7 +14096,7 @@ msgstr ""
 #: core/exrImage.cpp:2406 core/exrImage.cpp:2407
 #: gui/mrvImageInformation.cpp:187 gui/mrvImageInformation.cpp:224
 #: gui/mrvImageInformation.cpp:474 gui/mrvPreferences.cpp:1025
-#: gui/mrvPreferences.cpp:2238
+#: gui/mrvPreferences.cpp:2241
 msgid "Chromaticities"
 msgstr ""
 
@@ -14124,7 +14125,7 @@ msgstr ""
 msgid "City"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:287
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:292
 msgid "Clear"
 msgstr ""
 
@@ -14136,7 +14137,7 @@ msgstr ""
 msgid "ClearCache"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:609
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:614
 msgid "Client"
 msgstr ""
 
@@ -14253,7 +14254,7 @@ msgstr ""
 msgid "Color Area"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:784
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:789
 msgid "Color Info"
 msgstr ""
 
@@ -14281,7 +14282,7 @@ msgstr ""
 msgid "Color channel not found at index "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:690
+#: video/mrvGLLut3d.cpp:711
 msgid "Color not found"
 msgstr ""
 
@@ -14343,7 +14344,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:72
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2436
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:169
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:174
 #: gui/mrvImageInformation.cpp:2355
 msgid "Compression"
 msgstr ""
@@ -14364,8 +14365,8 @@ msgstr ""
 msgid "Configuration: "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:584
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:619
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:589
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:624
 #: core/mrvClient.cpp:424
 msgid "Connect"
 msgstr ""
@@ -14382,8 +14383,8 @@ msgstr ""
 msgid "Connected to "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:594
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:793
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:599
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:798
 msgid "Connections"
 msgstr ""
 
@@ -14435,7 +14436,7 @@ msgstr ""
 msgid "Corrupt tile in iff file"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:783
+#: video/mrvGLLut3d.cpp:804
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr ""
@@ -14695,7 +14696,7 @@ msgstr ""
 msgid "Could not guess image format"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:864
+#: video/mrvGLLut3d.cpp:885
 msgid "Could not init cmm: "
 msgstr ""
 
@@ -14719,7 +14720,7 @@ msgstr ""
 msgid "Could not load shadow map image"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:774
+#: video/mrvGLLut3d.cpp:795
 msgid "Could not locate ICC profile \""
 msgstr ""
 
@@ -14846,7 +14847,7 @@ msgstr ""
 msgid "Could not set "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1252
+#: gui/mrvPreferences.cpp:1253
 msgid "Could not set transforms in GUI"
 msgstr ""
 
@@ -14968,8 +14969,8 @@ msgstr ""
 msgid "Coverage"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:574
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:604
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:579
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:609
 #: core/mrvServer.cpp:2085
 msgid "Create"
 msgstr ""
@@ -15082,13 +15083,13 @@ msgstr ""
 msgid "Ctrl+"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:141
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:215
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:514
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:146
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:220
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:519
 msgid "Current"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1948
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1953
 msgid "Current frame."
 msgstr ""
 
@@ -15536,7 +15537,7 @@ msgstr ""
 msgid "Decompressing data "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1504
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1509
 msgid "Decrease exposure by 0.5."
 msgstr ""
 
@@ -15548,7 +15549,7 @@ msgstr ""
 msgid "Deep Data"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1245
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1250
 #: gui/mrvColorSchemes.cpp:100
 msgid "Default"
 msgstr ""
@@ -15615,13 +15616,13 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:851
+#: video/mrvGLLut3d.cpp:872
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:857
+#: video/mrvGLLut3d.cpp:878
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -15724,7 +15725,7 @@ msgstr ""
 msgid "DisplayWindow %d"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1508
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1513
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -15767,7 +15768,7 @@ msgid "Driver"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:154
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1160
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1165
 msgid "Drop Frame Timecode"
 msgstr ""
 
@@ -15788,8 +15789,8 @@ msgstr ""
 msgid "Duration of Video"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2086
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2103
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2091
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2108
 msgid "E"
 msgstr ""
 
@@ -15902,7 +15903,7 @@ msgid "EDL 1"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:981
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:785
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
 msgid "EDL Edit"
 msgstr ""
 
@@ -15914,8 +15915,8 @@ msgstr ""
 msgid "EMPTY REEL AT INDEX "
 msgstr ""
 
-#: gui/mrvHotkey.cpp:359 gui/mrvHotkey.cpp:437 gui/mrvPreferences.cpp:1203
-#: gui/mrvPreferences.cpp:2325
+#: gui/mrvHotkey.cpp:359 gui/mrvHotkey.cpp:437 gui/mrvPreferences.cpp:1204
+#: gui/mrvPreferences.cpp:2328
 msgid "END"
 msgstr ""
 
@@ -16057,7 +16058,7 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1257
+#: gui/mrvPreferences.cpp:1258
 msgid "English"
 msgstr ""
 
@@ -16074,7 +16075,7 @@ msgstr ""
 msgid "Environment variable MRV_ROOT not set.  Aborting"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:522
+#: video/mrvGLEngine.cpp:525
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
@@ -16082,7 +16083,7 @@ msgstr ""
 msgid "Erase Mode"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:453
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:458
 msgid "Eraser Tool"
 msgstr ""
 
@@ -16191,7 +16192,7 @@ msgstr ""
 msgid "Exif:ShutterSpeedValue"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1469
+#: gui/mrvPreferences.cpp:1470
 msgid "Expanded OCIO environment variable to:"
 msgstr ""
 
@@ -16231,10 +16232,10 @@ msgstr ""
 msgid "Eye Separation"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1582
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1803
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1925
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1947
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1587
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1808
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1952
 #: core/CMedia.cpp:3838 core/CMedia.cpp:4492 core/CMedia_audio.cpp:2251
 #: core/CMedia_audio.cpp:2433 core/aviImage.cpp:3697 core/aviImage.cpp:3744
 #: core/aviImage.cpp:3820
@@ -16390,7 +16391,7 @@ msgstr ""
 msgid "FIND"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1036
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1041
 msgid "FIT"
 msgstr ""
 
@@ -16410,7 +16411,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1123
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1323
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1533
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2003
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2008
 #: core/mrvServer.cpp:331 gui/mrvImageInformation.cpp:2116
 #: gui/mrvImageInformation.cpp:2535 gui/mrvProgressReport.cpp:67
 msgid "FPS"
@@ -16652,7 +16653,7 @@ msgstr ""
 msgid "Font Size"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:152
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:157
 #: gui/mrvImageInformation.cpp:2340 gui/mrvImageInformation.cpp:2590
 msgid "Format"
 msgstr ""
@@ -16676,7 +16677,7 @@ msgid "FourCC"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1102
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:974
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:979
 #: gui/mrvImageView.cpp:9291
 msgid "Frame"
 msgstr ""
@@ -16726,26 +16727,26 @@ msgstr ""
 msgid "Frame start of clip in file"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:967
+#: video/mrvGLEngine.cpp:970
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:974
+#: video/mrvGLEngine.cpp:977
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:971
+#: video/mrvGLEngine.cpp:974
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:978
+#: video/mrvGLEngine.cpp:981
 msgid "Framebuffer incomplete: Read buffer."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:150
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:212
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:512
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1156
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:217
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:517
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1161
 #: core/slateImage.cpp:288 gui/FLU/Flu_File_Chooser.cpp:95
 msgid "Frames"
 msgstr ""
@@ -16758,7 +16759,7 @@ msgstr ""
 msgid "Frames per Second"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:448
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:453
 msgid "Freehand Drawing Tool"
 msgstr ""
 
@@ -16770,7 +16771,7 @@ msgstr ""
 msgid "Frequency of audio"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1098
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1103
 msgid "Full"
 msgstr ""
 
@@ -16903,7 +16904,7 @@ msgstr ""
 msgid "GIF89a"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:593
+#: video/mrvGLEngine.cpp:596
 msgid "GL"
 msgstr ""
 
@@ -16924,7 +16925,7 @@ msgstr ""
 msgid "GLEW "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:359
+#: video/mrvGLEngine.cpp:362
 msgid "GLEW Initialize Error: "
 msgstr ""
 
@@ -16952,7 +16953,7 @@ msgstr ""
 msgid "GLPathShape "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:594
+#: video/mrvGLEngine.cpp:597
 msgid "GLSL"
 msgstr ""
 
@@ -16972,11 +16973,11 @@ msgstr ""
 msgid "GLTextShape "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:583
+#: video/mrvGLEngine.cpp:586
 msgid "GLX_NV_video_out"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:584
+#: video/mrvGLEngine.cpp:587
 msgid "GLX_NV_video_output"
 msgstr ""
 
@@ -17085,7 +17086,7 @@ msgid "GREEN"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1016
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1453
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1458
 #: core/mrvServer.cpp:700
 msgid "Gain"
 msgstr ""
@@ -17096,17 +17097,17 @@ msgstr ""
 msgid "Gain %g"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1458
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1463
 msgid "Gain image value.  A simple multiplier of the image pixel values."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1023
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2424
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:899
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1099
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1533
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:904
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1104
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1538
 #: core/mrvServer.cpp:708 gui/mrvImageInformation.cpp:2283
-#: gui/mrvPreferences.cpp:1591
+#: gui/mrvPreferences.cpp:1592
 msgid "Gamma"
 msgstr ""
 
@@ -17154,12 +17155,12 @@ msgstr ""
 msgid "Gb"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:531
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:536
 #: core/Sequence.cpp:837
 msgid "Ghosting"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:552
+#: video/mrvGLEngine.cpp:555
 msgid "GlEngine"
 msgstr ""
 
@@ -17167,7 +17168,7 @@ msgstr ""
 msgid "Go back one directory in the history"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1976
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1981
 msgid "Go back one frame."
 msgstr ""
 
@@ -17175,11 +17176,11 @@ msgstr ""
 msgid "Go forward one directory in the history"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1966
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1971
 msgid "Go to the beginning of the sequence."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1996
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2001
 msgid "Go to the end of the sequence."
 msgstr ""
 
@@ -17203,7 +17204,7 @@ msgstr ""
 msgid "Green"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1723
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1728
 msgid "Green value of image pixel under mouse."
 msgstr ""
 
@@ -17300,7 +17301,7 @@ msgid "H.\tc #FFE29A"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1252
-#: gui/mrvImageInformation.cpp:3628
+#: gui/mrvImageInformation.cpp:3629
 msgid "H:"
 msgstr ""
 
@@ -17333,19 +17334,19 @@ msgid "HQ"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:180
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1070
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1075
 #: core/mrvColorSpaces.cpp:49
 msgid "HSL"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:179
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1069
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1754
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1074
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1759
 #: core/mrvColorSpaces.cpp:48
 msgid "HSV"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:726 gui/mrvPreferences.cpp:2142
+#: gui/mrvPreferences.cpp:726 gui/mrvPreferences.cpp:2145
 msgid "HSV_pixel"
 msgstr ""
 
@@ -17387,7 +17388,7 @@ msgstr ""
 msgid "Hardware Shaders:\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:532
+#: video/mrvGLEngine.cpp:535
 msgid "Hardware shaders not available."
 msgstr ""
 
@@ -17412,7 +17413,7 @@ msgstr ""
 msgid "Helvetica"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1052
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1057
 msgid "Hex"
 msgstr ""
 
@@ -17434,7 +17435,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:956
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:59
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:789
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:794
 msgid "Histogram"
 msgstr ""
 
@@ -17457,7 +17458,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:23
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:25
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:795
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:800
 msgid "Hotkeys"
 msgstr ""
 
@@ -17469,7 +17470,7 @@ msgstr ""
 msgid "How to display timeline selection by default."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1778
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1783
 msgid "Hue value of image pixel under mouse."
 msgstr ""
 
@@ -17563,7 +17564,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1644
 #: gui/mrvPreferences.cpp:1039 gui/mrvPreferences.cpp:1092
-#: gui/mrvPreferences.cpp:2261 gui/mrvPreferences.cpp:2279
+#: gui/mrvPreferences.cpp:2264 gui/mrvPreferences.cpp:2282
 #: video/mrvDrawEngine.cpp:268 video/mrvDrawEngine.cpp:275
 msgid "ICC"
 msgstr ""
@@ -17575,7 +17576,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:144
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1986
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:792
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:797
 msgid "ICC Profiles"
 msgstr ""
 
@@ -17596,7 +17597,7 @@ msgid "ICC_PROFILES"
 msgstr ""
 
 #: core/mrvServer.cpp:683 gui/mrvPreferences.cpp:604
-#: gui/mrvPreferences.cpp:2068
+#: gui/mrvPreferences.cpp:2071
 msgid "ICS"
 msgstr ""
 
@@ -17604,9 +17605,9 @@ msgstr ""
 msgid "ICS "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:839
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:844
 #: core/mrvServer.cpp:1224 gui/mrvFileRequester.cpp:379
-#: video/mrvGLLut3d.cpp:1225
+#: video/mrvGLLut3d.cpp:1257
 #, c-format
 msgid "ICS \"%s\""
 msgstr ""
@@ -17636,7 +17637,7 @@ msgstr ""
 msgid "ILM OpenEXR"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:111
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:116
 msgid "ILM OpenEXR (.exr)"
 msgstr ""
 
@@ -17653,7 +17654,7 @@ msgid "ISO Speed"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:754
-#: gui/mrvPreferences.cpp:1189
+#: gui/mrvPreferences.cpp:1190
 msgid "ISO-8859-1"
 msgstr ""
 
@@ -17674,12 +17675,12 @@ msgid "ITU 709"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:188
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1078
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1083
 msgid "ITU-601 (Digital PAL/NTSC YCbCr)"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:189
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1079
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1084
 msgid "ITU-709 (Digital HDTV YCbCr)"
 msgstr ""
 
@@ -17818,7 +17819,7 @@ msgstr ""
 msgid "Image bigger than "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1678
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1683
 msgid "Image coordinate of pixel under mouse."
 msgstr ""
 
@@ -17826,7 +17827,7 @@ msgstr ""
 msgid "Image file \""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1213
+#: video/mrvGLLut3d.cpp:1241
 msgid "Image input color space is undefined."
 msgstr ""
 
@@ -17860,7 +17861,7 @@ msgid ""
 "will be loaded on demand but fluid playback may not be possible."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1654
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1659
 msgid "Image zoom setting."
 msgstr ""
 
@@ -18005,11 +18006,11 @@ msgstr ""
 msgid "Img is NULL"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:693
+#: video/mrvGLLut3d.cpp:714
 msgid "Incorrect Apply"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1515
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
 msgid "Increase exposure by 0.5."
 msgstr ""
 
@@ -18026,7 +18027,7 @@ msgid "Input"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1700
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1488
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1493
 #: core/exrImage.cpp:2452 gui/mrvImageInformation.cpp:2301
 msgid "Input Color Space"
 msgstr ""
@@ -18069,19 +18070,19 @@ msgstr ""
 msgid "Internal Image: Unknown image type"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:684
+#: video/mrvGLLut3d.cpp:705
 msgid "Invalid Lut"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:795
+#: video/mrvGLLut3d.cpp:816
 msgid "Invalid Profile for CMM: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:845
+#: video/mrvGLLut3d.cpp:866
 msgid "Invalid destination profile/image format"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2205
+#: gui/mrvPreferences.cpp:2208
 msgid "Invalid device selected"
 msgstr ""
 
@@ -18109,7 +18110,7 @@ msgstr ""
 msgid "Invalid pixel buffer coordinates "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:810
+#: video/mrvGLLut3d.cpp:831
 msgid "Invalid source profile/image pixel format"
 msgstr ""
 
@@ -18217,7 +18218,7 @@ msgstr ""
 msgid "JPEG"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:112
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:117
 msgid "JPEG (.jpg)"
 msgstr ""
 
@@ -18377,8 +18378,8 @@ msgstr ""
 msgid "Kr"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1142
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1901
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1147
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1906
 #: core/CMedia.cpp:4445 core/Sequence.cpp:288 gui/mrvColorInfo.cpp:809
 #: gui/mrvColorInfo.cpp:814 gui/mrvColorInfo.cpp:831 gui/mrvColorInfo.cpp:852
 msgid "L"
@@ -18433,7 +18434,7 @@ msgid "L \tc #F5DECC"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:196
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1118
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1123
 msgid "L (Lightness)"
 msgstr ""
 
@@ -18506,7 +18507,7 @@ msgstr ""
 msgid "LMT."
 msgstr ""
 
-#: core/mrvServer.cpp:518 gui/mrvImageView.cpp:1091 video/mrvGLLut3d.cpp:949
+#: core/mrvServer.cpp:518 gui/mrvImageView.cpp:1091 video/mrvGLLut3d.cpp:970
 msgid "LMT.SOPNode"
 msgstr ""
 
@@ -18515,7 +18516,7 @@ msgstr ""
 msgid "LMT.SOPNode %g %g %g %g %g %g %g %g %g"
 msgstr ""
 
-#: core/mrvServer.cpp:541 gui/mrvImageView.cpp:1092 video/mrvGLLut3d.cpp:959
+#: core/mrvServer.cpp:541 gui/mrvImageView.cpp:1092 video/mrvGLLut3d.cpp:980
 msgid "LMT.SatNode"
 msgstr ""
 
@@ -18541,7 +18542,7 @@ msgstr ""
 msgid "LUMINANCE_ALPHA"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1611
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1616
 msgid "LUT"
 msgstr ""
 
@@ -18554,7 +18555,7 @@ msgid "Lab"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:183
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1073
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1078
 msgid "Lab CIELAB (L*a*b*)"
 msgstr ""
 
@@ -18761,11 +18762,11 @@ msgstr ""
 msgid "Loading \"%s\""
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3955
+#: video/mrvGLEngine.cpp:3958
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3961
+#: video/mrvGLEngine.cpp:3964
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
@@ -18781,7 +18782,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:268
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:273
 msgid "Log Messages"
 msgstr ""
 
@@ -18789,7 +18790,7 @@ msgstr ""
 msgid "Logarithmic"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:796
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:801
 msgid "Logs"
 msgstr ""
 
@@ -18812,7 +18813,7 @@ msgstr ""
 msgid "Looping %d"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1902
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1907
 msgid "Looping Behavior ( Stop, Loop, Ping-Pong )"
 msgstr ""
 
@@ -18833,11 +18834,11 @@ msgstr ""
 msgid "Luminance Gradient"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1858
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1863
 msgid "Luminance of image pixel under mouse."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3889
+#: video/mrvGLEngine.cpp:3892
 msgid "Luminance: "
 msgstr ""
 
@@ -18853,7 +18854,7 @@ msgstr ""
 msgid "LummaA"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:730 gui/mrvPreferences.cpp:2143
+#: gui/mrvPreferences.cpp:730 gui/mrvPreferences.cpp:2146
 msgid "Lumma_pixel"
 msgstr ""
 
@@ -18861,7 +18862,7 @@ msgstr ""
 msgid "Lut Active"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1319 video/mrvGLLut3d.cpp:1332
+#: video/mrvGLLut3d.cpp:1361 video/mrvGLLut3d.cpp:1374
 msgid "Lut calculate failed"
 msgstr ""
 
@@ -18874,7 +18875,7 @@ msgid "Luv"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:184
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1074
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1079
 msgid "Luv CIELUV (L*u*v*)"
 msgstr ""
 
@@ -19054,7 +19055,7 @@ msgstr ""
 msgid "MRV_ODT_ICC_PROFILE"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:351 video/mrvGLEngine.cpp:415
+#: gui/mrvPreferences.cpp:351 video/mrvGLEngine.cpp:418
 #: standalone/mrvRoot.cpp:191
 msgid "MRV_ROOT"
 msgstr ""
@@ -19063,11 +19064,11 @@ msgstr ""
 msgid "MRV_ROOT="
 msgstr ""
 
-#: video/mrvGLEngine.cpp:412
+#: video/mrvGLEngine.cpp:415
 msgid "MRV_SHADER_PATH"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:590
+#: video/mrvGLEngine.cpp:593
 msgid "MRV_SHADER_TYPE"
 msgstr ""
 
@@ -19188,7 +19189,7 @@ msgid "Mean"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:968
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:783
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:788
 msgid "Media Info"
 msgstr ""
 
@@ -19245,7 +19246,7 @@ msgstr ""
 msgid "Metadata"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:113
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:118
 msgid "Microsoft Bitmap (.bmp)"
 msgstr ""
 
@@ -19498,19 +19499,19 @@ msgstr ""
 msgid "NTSC Video"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:600
+#: video/mrvGLEngine.cpp:603
 msgid "NV"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:601
+#: video/mrvGLEngine.cpp:604
 msgid "NV30"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:602
+#: video/mrvGLEngine.cpp:605
 msgid "NVIDIA"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3957
+#: video/mrvGLEngine.cpp:3960
 msgid "NVShader builtin"
 msgstr ""
 
@@ -19522,7 +19523,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:155
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:160
 msgid "Name (.ext)"
 msgstr ""
 
@@ -19557,7 +19558,7 @@ msgstr ""
 msgid "New item was not found in tree."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:543
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:548
 msgid "Next"
 msgstr ""
 
@@ -19574,7 +19575,7 @@ msgid "Next Image Version"
 msgstr ""
 
 #: gui/mrvAsk.cpp:239 gui/mrvImageBrowser.cpp:639 gui/mrvImageBrowser.cpp:1942
-#: gui/mrvImageInformation.cpp:3766 gui/mrvSave.cpp:225 gui/mrvVersion.cpp:772
+#: gui/mrvImageInformation.cpp:3767 gui/mrvSave.cpp:225 gui/mrvVersion.cpp:772
 #: gui/mrvVersion.cpp:775 video/mrvGLEngine.cpp:231 video/mrvGLEngine.cpp:232
 #: video/mrvGLEngine.cpp:233 video/mrvGLEngine.cpp:235
 #: video/mrvGLEngine.cpp:239 video/mrvGLEngine.cpp:240
@@ -19582,11 +19583,11 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1127 video/mrvGLLut3d.cpp:1172
+#: video/mrvGLLut3d.cpp:1148 video/mrvGLLut3d.cpp:1193
 msgid "No CTL script"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1125 video/mrvGLLut3d.cpp:1170
+#: video/mrvGLLut3d.cpp:1146 video/mrvGLLut3d.cpp:1191
 msgid "No CTL script or ICC profile"
 msgstr ""
 
@@ -19594,7 +19595,7 @@ msgstr ""
 msgid "No GPU."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1129 video/mrvGLLut3d.cpp:1174
+#: video/mrvGLLut3d.cpp:1150 video/mrvGLLut3d.cpp:1195
 msgid "No ICC profile"
 msgstr ""
 
@@ -19651,7 +19652,7 @@ msgstr ""
 msgid "No image to add shape to"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3652
+#: video/mrvGLEngine.cpp:3655
 msgid "No image to proceed"
 msgstr ""
 
@@ -19679,11 +19680,11 @@ msgstr ""
 msgid "No such framebuffer - cannot set pixel"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1176
+#: video/mrvGLLut3d.cpp:1197
 msgid "No valid ODT transform: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1131
+#: video/mrvGLLut3d.cpp:1152
 msgid "No valid RT transform for \""
 msgstr ""
 
@@ -19702,7 +19703,7 @@ msgid "Node"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:153
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1159
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1164
 msgid "Non-Drop Frame Timecode"
 msgstr ""
 
@@ -19713,7 +19714,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:133
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:24
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:800
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:172
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:177
 #: core/aviImage_save.cpp:1333 core/aviImage_save.cpp:1364
 #: core/ddsImage.cpp:1240 core/ddsImage.cpp:1241 core/ddsImage.cpp:1242
 #: core/exrImage.cpp:122 core/iffImage.cpp:61 core/picImage.cpp:190
@@ -19722,7 +19723,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1520
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1525
 msgid "Norm"
 msgstr ""
 
@@ -19740,7 +19741,7 @@ msgstr ""
 msgid "Normalize %d"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1521
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1526
 msgid "Normalize pixel values to remain in [0,1] range."
 msgstr ""
 
@@ -19938,7 +19939,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:307
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1696
 #: core/mrvServer.cpp:610 core/mrvServer.cpp:618 gui/mrvPreferences.cpp:579
-#: gui/mrvPreferences.cpp:1431
+#: gui/mrvPreferences.cpp:1432
 msgid "OCIO"
 msgstr ""
 
@@ -19971,11 +19972,11 @@ msgstr ""
 msgid "OCIO config\t*.{"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1588
+#: gui/mrvPreferences.cpp:1589
 msgid "OCIO environment variable is not set.  Defaulting to CTL. "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1489
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1494
 msgid "OCIO input color space for the image"
 msgstr ""
 
@@ -19995,7 +19996,7 @@ msgstr ""
 msgid "OCIO="
 msgstr ""
 
-#: core/mrvServer.cpp:636 gui/mrvPreferences.cpp:1476
+#: core/mrvServer.cpp:636 gui/mrvPreferences.cpp:1477
 #, c-format
 msgid "OCIO=%s"
 msgstr ""
@@ -20021,7 +20022,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:396
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1563
 #: core/mrvServer.cpp:598 gui/mrvFileRequester.cpp:715
-#: gui/mrvPreferences.cpp:1012 gui/mrvPreferences.cpp:2231
+#: gui/mrvPreferences.cpp:1012 gui/mrvPreferences.cpp:2234
 msgid "ODT"
 msgstr ""
 
@@ -20029,11 +20030,11 @@ msgstr ""
 msgid "ODT \""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1068
+#: video/mrvGLLut3d.cpp:1089
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1044
+#: video/mrvGLLut3d.cpp:1065
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 
@@ -20070,7 +20071,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:595
+#: video/mrvGLEngine.cpp:598
 msgid "OPENGL"
 msgstr ""
 
@@ -20202,7 +20203,11 @@ msgstr ""
 msgid "OpenImageIO v"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1414
+#: video/mrvGLEngine.cpp:297
+msgid "Opening any fixed font"
+msgstr ""
+
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1419
 msgid "Opens different windows"
 msgstr ""
 
@@ -20215,7 +20220,7 @@ msgstr ""
 msgid "Options for EXR were empty"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1100
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1105
 msgid "Original"
 msgstr ""
 
@@ -20432,7 +20437,7 @@ msgstr ""
 msgid "PageUp"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:428
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:433
 msgid "Paint"
 msgstr ""
 
@@ -20472,11 +20477,11 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:503
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:508
 msgid "Pen Color"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:472
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:477
 msgid "Pen Size"
 msgstr ""
 
@@ -20489,7 +20494,7 @@ msgid "Pen Size More"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:286
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:122
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:127
 #: gui/mrvImageInformation.cpp:2269
 msgid "Perceptual"
 msgstr ""
@@ -20522,7 +20527,7 @@ msgstr ""
 msgid "Pick"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:399
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:404
 msgid "Pick Draw Color"
 msgstr ""
 
@@ -20631,11 +20636,11 @@ msgstr ""
 msgid "Play Forwards X2  Speed"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1971
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1976
 msgid "Play sequence backwards."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1991
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1996
 msgid "Play sequence forward."
 msgstr ""
 
@@ -20648,12 +20653,12 @@ msgstr ""
 msgid "Playback of audio frame "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:600
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:615
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:605
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:620
 msgid "Port"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1634
+#: video/mrvGLEngine.cpp:1637
 #, c-format
 msgid "Pos: %d, %d"
 msgstr ""
@@ -20677,7 +20682,7 @@ msgid "Prefer ICC"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:855
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:794
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:799
 msgid "Preferences"
 msgstr ""
 
@@ -20731,7 +20736,7 @@ msgstr ""
 msgid "Preview files"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:533
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:538
 msgid "Previous"
 msgstr ""
 
@@ -20747,7 +20752,7 @@ msgstr ""
 msgid "Previous Image Version"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3868
+#: video/mrvGLEngine.cpp:3871
 msgid "Primaries:"
 msgstr ""
 
@@ -20779,7 +20784,7 @@ msgstr ""
 msgid "Profile ID:       "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:687
+#: video/mrvGLLut3d.cpp:708
 msgid "Profile Missing Tag"
 msgstr ""
 
@@ -21050,7 +21055,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:115
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:34
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:82
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:132
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:137
 #: core/mrvFrame.cpp:81 core/aviImage.cpp:139 core/ddsImage.cpp:1225
 #: core/wandImage.cpp:380 core/wandImage.cpp:1210 core/wandImage.cpp:1229
 #: core/wandImage.cpp:1480 core/mrvColorSpaces.cpp:47 gui/mrvImageView.cpp:200
@@ -21062,9 +21067,9 @@ msgstr ""
 msgid "RGB Picture"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:131
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1051
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1690
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:136
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1056
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1695
 #: core/mrvFrame.cpp:82 core/slateImage.cpp:375 core/wandImage.cpp:372
 #: core/wandImage.cpp:1213 core/wandImage.cpp:1230 core/wandImage.cpp:1414
 #: core/wandImage.cpp:1533 gui/mrvImageView.cpp:199 gui/mrvImageView.cpp:293
@@ -21076,7 +21081,7 @@ msgstr ""
 msgid "RGBA Display"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:718 gui/mrvPreferences.cpp:2140
+#: gui/mrvPreferences.cpp:718 gui/mrvPreferences.cpp:2143
 msgid "RGBA_pixel"
 msgstr ""
 
@@ -21094,7 +21099,7 @@ msgstr ""
 msgid "RLE"
 msgstr ""
 
-#: core/mrvColorOps.cpp:52 video/mrvGLLut3d.cpp:522
+#: core/mrvColorOps.cpp:52 video/mrvGLLut3d.cpp:535
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr ""
 
@@ -21112,7 +21117,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1584
 #: core/mrvServer.cpp:581 gui/mrvPreferences.cpp:1064
-#: gui/mrvPreferences.cpp:2267
+#: gui/mrvPreferences.cpp:2270
 msgid "RT"
 msgstr ""
 
@@ -21129,11 +21134,11 @@ msgstr ""
 msgid "RT \"%s\""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:1019
+#: video/mrvGLLut3d.cpp:1040
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:988
+#: video/mrvGLLut3d.cpp:1009
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 
@@ -21222,7 +21227,7 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1715
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1720
 msgid "Red value of image pixel under mouse."
 msgstr ""
 
@@ -21230,7 +21235,7 @@ msgstr ""
 msgid "Red/cyan glasses"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:493
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:498
 msgid "Redo Previous Shape Drawn"
 msgstr ""
 
@@ -21249,7 +21254,7 @@ msgid "Reel Name"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2151
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:782
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:787
 msgid "Reels"
 msgstr ""
 
@@ -21275,8 +21280,8 @@ msgstr ""
 msgid "Refresh this directory"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:124
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:181
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:129
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:186
 #: gui/mrvImageInformation.cpp:2271
 msgid "Relative"
 msgstr ""
@@ -21334,7 +21339,7 @@ msgstr ""
 msgid "Rename"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:178
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:183
 msgid "Render Intent"
 msgstr ""
 
@@ -21476,8 +21481,8 @@ msgstr ""
 msgid "Rounding Mode"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2072
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2100
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2077
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2105
 #: core/CMedia.cpp:4490 core/CMedia_audio.cpp:2431 core/aviImage.cpp:3695
 #: core/aviImage.cpp:3742 core/aviImage.cpp:3818 gui/mrvColorInfo.cpp:830
 #: gui/mrvColorInfo.cpp:836 gui/mrvImageView.cpp:7588 gui/mrvVersion.cpp:399
@@ -21617,7 +21622,7 @@ msgid "SOFTWARE"
 msgstr ""
 
 #: core/mrvACES.cpp:172 gui/mrvImageInformation.cpp:3053
-#: video/mrvGLLut3d.cpp:88
+#: video/mrvGLLut3d.cpp:95
 msgid "SOPNode"
 msgstr ""
 
@@ -21657,25 +21662,25 @@ msgid "SafeAreas %d"
 msgstr ""
 
 #: core/mrvACES.cpp:176 gui/mrvImageInformation.cpp:3053
-#: video/mrvGLLut3d.cpp:103
+#: video/mrvGLLut3d.cpp:110
 msgid "SatNode"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvSOPNode.cxx:240
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:289
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:121
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:126
 #: gui/mrvImageInformation.cpp:2268
 msgid "Saturation"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1786
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1791
 msgid "Saturation value of image pixel under mouse."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvHotkeyUI.cxx:38
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2489
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:228
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:284
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:233
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:289
 msgid "Save"
 msgstr ""
 
@@ -21705,7 +21710,7 @@ msgstr ""
 msgid "Save Ocio Config File in Preferences"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:146
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:151
 msgid "Save Options"
 msgstr ""
 
@@ -21784,7 +21789,7 @@ msgid ""
 "the expense of pixelization."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1628
+#: video/mrvGLEngine.cpp:1631
 #, c-format
 msgid "Scale: %g, %g"
 msgstr ""
@@ -21810,7 +21815,7 @@ msgstr ""
 msgid "ScrollLock"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1206
+#: gui/mrvPreferences.cpp:1207
 msgid "Scrub"
 msgstr ""
 
@@ -21835,11 +21840,11 @@ msgid "Secondary Display"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:151
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1157
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1162
 msgid "Seconds"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2044
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2049
 msgid "Select Audio Track"
 msgstr ""
 
@@ -21870,7 +21875,7 @@ msgid ""
 "glasses (and viceversa)."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:643
+#: video/mrvGLEngine.cpp:646
 msgid "Selecting shader type automatically: "
 msgstr ""
 
@@ -21901,11 +21906,11 @@ msgstr ""
 msgid "Selects the color of the selection rectangle over the current image."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:504
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:509
 msgid "Selects the current pen color."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:473
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:478
 msgid "Selects the size of brush."
 msgstr ""
 
@@ -21921,8 +21926,8 @@ msgstr ""
 msgid "Sequence"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:597
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:612
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:602
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:617
 msgid "Server"
 msgstr ""
 
@@ -21970,11 +21975,11 @@ msgstr ""
 msgid "Sets the default gamma when mrViewer starts."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1442
+#: gui/mrvPreferences.cpp:1443
 msgid "Setting OCIO environment variable to nuke-default."
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1455
+#: gui/mrvPreferences.cpp:1456
 msgid "Setting OCIO environment variable to:"
 msgstr ""
 
@@ -22136,11 +22141,11 @@ msgstr ""
 msgid "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2004
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2009
 msgid "Some default frame rate settings."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1534
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1539
 msgid "Some default gamma settings."
 msgstr ""
 
@@ -22208,7 +22213,7 @@ msgid "Stereo"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:987
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:787
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:792
 msgid "Stereo 3D Options"
 msgstr ""
 
@@ -22260,7 +22265,7 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1981
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1986
 msgid "Stop playback."
 msgstr ""
 
@@ -22268,7 +22273,7 @@ msgstr ""
 msgid "Stopped encoding cached "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1605
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1610
 msgid "Stretch image to compensate for image's pixel ratio."
 msgstr ""
 
@@ -22349,17 +22354,17 @@ msgstr ""
 msgid "Switch FG/BG Images"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1691
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1696
 msgid ""
 "Switch RGBA display between floating point, hexadecimal (0..0xff) and "
 "decimal (0..255)."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1926
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
 msgid "Switch between Frame, Seconds and Timecode display"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1830
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1835
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -22377,12 +22382,12 @@ msgid ""
 "1.0 (white)."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1755
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1760
 msgid ""
 "Switch pixel color space information display for the pixel under the cursor."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:457
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:462
 #: gui/mrvImageView.cpp:7593
 msgid "T"
 msgstr ""
@@ -22459,7 +22464,7 @@ msgstr ""
 msgid "T: "
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:114
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:119
 msgid "TIFF (.tif)"
 msgstr ""
 
@@ -22496,7 +22501,7 @@ msgstr ""
 msgid "Take Current Window Values"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:115
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:120
 msgid "Targa (.tga)"
 msgstr ""
 
@@ -22544,7 +22549,7 @@ msgstr ""
 msgid "Text Overlay"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:458
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:463
 msgid "Text Tool"
 msgstr ""
 
@@ -22792,7 +22797,7 @@ msgid "Tiled"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:152
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1158
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1163
 msgid "Time"
 msgstr ""
 
@@ -22809,11 +22814,11 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:943
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1372
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:140
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:145
 msgid "Timeline"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1882
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1887
 msgid "Timeline."
 msgstr ""
 
@@ -23014,7 +23019,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:975
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:980
 msgid "Top Field"
 msgstr ""
 
@@ -23070,7 +23075,7 @@ msgstr ""
 msgid "Type here"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1804
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1809
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -23221,7 +23226,7 @@ msgstr ""
 msgid "Undefined"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:484
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:489
 msgid "Undo Last Shape Drawn"
 msgstr ""
 
@@ -23311,19 +23316,19 @@ msgstr ""
 msgid "Unknown destination video frame format: "
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:705 standalone/main.cpp:406
+#: video/mrvGLLut3d.cpp:726 standalone/main.cpp:406
 msgid "Unknown error"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3977
+#: video/mrvGLEngine.cpp:3980
 msgid "Unknown error in loadBuiltinFragShader"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:560
+#: video/mrvGLLut3d.cpp:581
 msgid "Unknown error returned from OCIO processor"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:657
+#: video/mrvGLLut3d.cpp:678
 msgid "Unknown error returned from ctlToLut"
 msgstr ""
 
@@ -23375,7 +23380,7 @@ msgstr ""
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:2434
+#: video/mrvGLEngine.cpp:2437
 msgid "Unknown wipe direction"
 msgstr ""
 
@@ -23385,7 +23390,7 @@ msgstr ""
 msgid "Unspecified"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:964
+#: video/mrvGLEngine.cpp:967
 msgid "Unsupported internal format"
 msgstr ""
 
@@ -23472,7 +23477,7 @@ msgstr ""
 msgid "Using default value (chromaticities according to Rec. ITU-R BT.709)."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:651
+#: video/mrvGLEngine.cpp:654
 msgid "Using hardware shader profile: "
 msgstr ""
 
@@ -23615,7 +23620,7 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1794
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1799
 msgid "Value (Intensity) of image pixel under mouse."
 msgstr ""
 
@@ -23655,7 +23660,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:962
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvVectorscopeUI.cxx:32
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:790
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:795
 msgid "Vectorscope"
 msgstr ""
 
@@ -23812,7 +23817,7 @@ msgstr ""
 msgid "Volume %g"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1413
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1418
 #: core/exrImage.cpp:318 core/exrImage.cpp:1055 core/exrImage.cpp:1099
 #: core/exrImage.cpp:3380 gui/mrvImageView.cpp:299 gui/mrvImageView.cpp:7598
 msgid "W"
@@ -23883,7 +23888,7 @@ msgid "W.\tc #FFD891"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1246
-#: gui/mrvImageInformation.cpp:3615
+#: gui/mrvImageInformation.cpp:3616
 msgid "W:"
 msgstr ""
 
@@ -23900,7 +23905,7 @@ msgstr ""
 msgid "WAVE"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:578
+#: video/mrvGLEngine.cpp:581
 msgid "WGL_NV_video_out"
 msgstr ""
 
@@ -23927,7 +23932,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1000
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvWaveformUI.cxx:18
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:791
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:796
 msgid "Waveform"
 msgstr ""
 
@@ -24393,7 +24398,7 @@ msgstr ""
 msgid "XPDS"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1677
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1682
 msgid "XY"
 msgstr ""
 
@@ -24401,12 +24406,12 @@ msgstr ""
 msgid "XYZ"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1071
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1076
 msgid "XYZ CIE XYZ"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1801
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1829
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1834
 #: core/CMedia.cpp:2073 core/exrImage.cpp:298 core/exrImage.cpp:309
 #: core/exrImage.cpp:829 core/exrImage.cpp:831 core/exrImage.cpp:875
 #: core/exrImage.cpp:1054 core/exrImage.cpp:1097 core/exrImage.cpp:1952
@@ -24457,7 +24462,7 @@ msgid "Y \tc #CEB67E"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:194
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1116
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1121
 msgid "Y (Luminance)"
 msgstr ""
 
@@ -24498,7 +24503,7 @@ msgid "Y'"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:195
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1117
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1122
 msgid "Y' (Lumma)"
 msgstr ""
 
@@ -24535,7 +24540,7 @@ msgstr ""
 msgid "YBYRY"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:483
+#: video/mrvGLEngine.cpp:486
 msgid "YByRy"
 msgstr ""
 
@@ -24571,7 +24576,7 @@ msgstr ""
 msgid "YByRy444A"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:505
+#: video/mrvGLEngine.cpp:508
 msgid "YByRyA"
 msgstr ""
 
@@ -24581,11 +24586,11 @@ msgstr ""
 msgid "YCOCG"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:473
+#: video/mrvGLEngine.cpp:476
 msgid "YCbCr"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:502
+#: video/mrvGLEngine.cpp:505
 msgid "YCbCrA"
 msgstr ""
 
@@ -24598,7 +24603,7 @@ msgid "YDD"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:186
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1076
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1081
 msgid "YDbDr (Analog SECAM/PAL-N)"
 msgstr ""
 
@@ -24607,7 +24612,7 @@ msgid "YIQ"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:187
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1077
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1082
 msgid "YIQ (Analog NTSC)"
 msgstr ""
 
@@ -24624,7 +24629,7 @@ msgid "YUV  Support:\t"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:185
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1075
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1080
 msgid "YUV (Analog PAL)"
 msgstr ""
 
@@ -24675,7 +24680,7 @@ msgid "YUVA Support:\t"
 msgstr ""
 
 #: gui/mrvAsk.cpp:240 gui/mrvImageBrowser.cpp:639 gui/mrvImageBrowser.cpp:1942
-#: gui/mrvImageInformation.cpp:3766 gui/mrvSave.cpp:225 gui/mrvVersion.cpp:772
+#: gui/mrvImageInformation.cpp:3767 gui/mrvSave.cpp:225 gui/mrvVersion.cpp:772
 #: gui/mrvVersion.cpp:775 video/mrvGLEngine.cpp:231 video/mrvGLEngine.cpp:232
 #: video/mrvGLEngine.cpp:233 video/mrvGLEngine.cpp:235
 #: video/mrvGLEngine.cpp:239 video/mrvGLEngine.cpp:240
@@ -25594,7 +25599,7 @@ msgstr ""
 msgid "a.\tc #EBCFA9"
 msgstr ""
 
-#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:605
+#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:626
 msgid "aIn"
 msgstr ""
 
@@ -25621,19 +25626,19 @@ msgstr ""
 msgid "acesImageContainerFlag"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:870 gui/mrvPreferences.cpp:2309
+#: gui/mrvPreferences.cpp:870 gui/mrvPreferences.cpp:2312
 msgid "aces_metadata"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:734 gui/mrvPreferences.cpp:2146
+#: gui/mrvPreferences.cpp:734 gui/mrvPreferences.cpp:2149
 msgid "action"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:403 gui/mrvPreferences.cpp:2011
+#: gui/mrvPreferences.cpp:403 gui/mrvPreferences.cpp:2014
 msgid "action_tools"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:755 gui/mrvPreferences.cpp:2156
+#: gui/mrvPreferences.cpp:755 gui/mrvPreferences.cpp:2159
 msgid "active"
 msgstr ""
 
@@ -25642,7 +25647,7 @@ msgid "adoptedNeutral"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:1014 gui/mrvPreferences.cpp:1067
-#: gui/mrvPreferences.cpp:2233 gui/mrvPreferences.cpp:2269
+#: gui/mrvPreferences.cpp:2236 gui/mrvPreferences.cpp:2272
 msgid "algorithm"
 msgstr ""
 
@@ -25650,7 +25655,7 @@ msgstr ""
 msgid "all"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:866 gui/mrvPreferences.cpp:2308
+#: gui/mrvPreferences.cpp:866 gui/mrvPreferences.cpp:2311
 msgid "all_layers"
 msgstr ""
 
@@ -25663,7 +25668,7 @@ msgstr ""
 msgid "altitude"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:438 gui/mrvPreferences.cpp:1989
+#: gui/mrvPreferences.cpp:438 gui/mrvPreferences.cpp:1992
 msgid "always_on_top"
 msgstr ""
 
@@ -25676,7 +25681,7 @@ msgstr ""
 msgid "aperture"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:441
+#: video/mrvGLEngine.cpp:444
 msgid "arbfp1"
 msgstr ""
 
@@ -25696,12 +25701,12 @@ msgstr ""
 msgid "ass"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3137
+#: video/mrvGLEngine.cpp:3140
 #, c-format
 msgid "atomicAdd(wg_sum, uint(sig * %f));\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:650 gui/mrvPreferences.cpp:2091
+#: gui/mrvPreferences.cpp:650 gui/mrvPreferences.cpp:2094
 msgid "attributes"
 msgstr ""
 
@@ -25711,7 +25716,7 @@ msgstr ""
 
 #: core/CMedia.cpp:3108 core/CMedia.cpp:3139 core/CMedia_audio.cpp:80
 #: core/aviImage_save.cpp:1576 gui/mrvPreferences.cpp:812
-#: gui/mrvPreferences.cpp:2198 standalone/mrvCommandLine.cpp:372
+#: gui/mrvPreferences.cpp:2201 standalone/mrvCommandLine.cpp:372
 #: standalone/main.cpp:121 standalone/main.cpp:279
 msgid "audio"
 msgstr ""
@@ -25745,15 +25750,15 @@ msgstr ""
 msgid "auto"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:434 gui/mrvPreferences.cpp:1988
+#: gui/mrvPreferences.cpp:434 gui/mrvPreferences.cpp:1991
 msgid "auto_fit_image"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:688 gui/mrvPreferences.cpp:2128
+#: gui/mrvPreferences.cpp:688 gui/mrvPreferences.cpp:2131
 msgid "auto_playback"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1130 gui/mrvPreferences.cpp:2171
+#: gui/mrvPreferences.cpp:1130 gui/mrvPreferences.cpp:2174
 msgid "autoload_images"
 msgstr ""
 
@@ -25761,7 +25766,7 @@ msgstr ""
 msgid "av_buffersink_get frame failed"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:635 gui/mrvPreferences.cpp:2085
+#: gui/mrvPreferences.cpp:635 gui/mrvPreferences.cpp:2088
 msgid "av_difference"
 msgstr ""
 
@@ -25906,7 +25911,7 @@ msgstr ""
 msgid "b.\tc #FEF6AA"
 msgstr ""
 
-#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:604
+#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:625
 msgid "bIn"
 msgstr ""
 
@@ -25915,7 +25920,7 @@ msgid "bOut"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:509 gui/mrvPreferences.cpp:560
-#: gui/mrvPreferences.cpp:2042 gui/mrvPreferences.cpp:2108
+#: gui/mrvPreferences.cpp:2045 gui/mrvPreferences.cpp:2111
 msgid "background_color"
 msgstr ""
 
@@ -25939,19 +25944,19 @@ msgstr ""
 msgid "bits: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1167 gui/mrvPreferences.cpp:2192
+#: gui/mrvPreferences.cpp:1167 gui/mrvPreferences.cpp:2195
 msgid "blend_mode"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3877
+#: video/mrvGLEngine.cpp:3880
 msgid "blue "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:259 gui/mrvPreferences.cpp:2247
+#: gui/mrvPreferences.cpp:259 gui/mrvPreferences.cpp:2250
 msgid "blue_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:260 gui/mrvPreferences.cpp:2249
+#: gui/mrvPreferences.cpp:260 gui/mrvPreferences.cpp:2252
 msgid "blue_y"
 msgstr ""
 
@@ -25971,8 +25976,8 @@ msgstr ""
 msgid "buffersink"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3850 video/mrvGLEngine.cpp:3942
-#: video/mrvGLEngine.cpp:3956 video/mrvGLEngine.cpp:3964
+#: video/mrvGLEngine.cpp:3853 video/mrvGLEngine.cpp:3945
+#: video/mrvGLEngine.cpp:3959 video/mrvGLEngine.cpp:3967
 msgid "builtin"
 msgstr ""
 
@@ -26052,7 +26057,7 @@ msgstr ""
 msgid "c \tc #FFB5C4"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:780
+#: video/mrvGLEngine.cpp:783
 #, c-format
 msgid "c = c.%s;\n"
 msgstr ""
@@ -26097,40 +26102,40 @@ msgstr ""
 msgid "c.\tc #FEF2A6"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3523
+#: video/mrvGLEngine.cpp:3526
 #, c-format
 msgid "c.rgb *= vec3(%f * pow(dot(src_luma, c.rgb), 0.2));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3225 video/mrvGLEngine.cpp:3399
-#: video/mrvGLEngine.cpp:3444 video/mrvGLEngine.cpp:3516
-#: video/mrvGLEngine.cpp:3590 video/mrvGLEngine.cpp:3622
+#: video/mrvGLEngine.cpp:3228 video/mrvGLEngine.cpp:3402
+#: video/mrvGLEngine.cpp:3447 video/mrvGLEngine.cpp:3519
+#: video/mrvGLEngine.cpp:3593 video/mrvGLEngine.cpp:3625
 #, c-format
 msgid "c.rgb *= vec3(%f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3230 video/mrvGLEngine.cpp:3247
-#: video/mrvGLEngine.cpp:3431 video/mrvGLEngine.cpp:3471
-#: video/mrvGLEngine.cpp:3542
+#: video/mrvGLEngine.cpp:3233 video/mrvGLEngine.cpp:3250
+#: video/mrvGLEngine.cpp:3434 video/mrvGLEngine.cpp:3474
+#: video/mrvGLEngine.cpp:3545
 #, c-format
 msgid "c.rgb *= vec3(1.0/%f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3473
+#: video/mrvGLEngine.cpp:3476
 #, c-format
 msgid ""
 "c.rgb = (vec3(%f) + vec3(%f) * c.rgb) \n"
 "             / (vec3(1.0) + vec3(%f) * c.rgb);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3393
+#: video/mrvGLEngine.cpp:3396
 #, c-format
 msgid ""
 "c.rgb = max(c.rgb - vec3(%f), vec3(0.0)) \n"
 "             / (vec3(%f) - vec3(%f) * c.rgb);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3420
+#: video/mrvGLEngine.cpp:3423
 #, c-format
 msgid ""
 "c.rgb = mix((c.rgb - vec3(%f)) * vec3(1.0/%f),      \n"
@@ -26139,7 +26144,7 @@ msgid ""
 "    lessThanEqual(vec3(%f), c.rgb));                    \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3408
+#: video/mrvGLEngine.cpp:3411
 #, c-format
 msgid ""
 "c.rgb = mix((c.rgb - vec3(0.125)) * vec3(1.0/5.6), \n"
@@ -26148,7 +26153,7 @@ msgid ""
 "    lessThanEqual(vec3(0.181), c.rgb));                \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3496
+#: video/mrvGLEngine.cpp:3499
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(%f) * c.rgb + vec3(%f),                \n"
@@ -26157,7 +26162,7 @@ msgid ""
 "                lessThanEqual(vec3(0.0), c.rgb));           \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3479
+#: video/mrvGLEngine.cpp:3482
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(0.5) * sqrt(c.rgb),\n"
@@ -26165,7 +26170,7 @@ msgid ""
 "                lessThan(vec3(1.0), c.rgb));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3402
+#: video/mrvGLEngine.cpp:3405
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(4.0) * c.rgb * c.rgb,\n"
@@ -26173,7 +26178,7 @@ msgid ""
 "                lessThan(vec3(0.5), c.rgb));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3485
+#: video/mrvGLEngine.cpp:3488
 #, c-format
 msgid ""
 "c.rgb = mix(vec3(5.6) * c.rgb + vec3(0.125),   \n"
@@ -26182,37 +26187,37 @@ msgid ""
 "                lessThanEqual(vec3(0.01), c.rgb)); \n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3472 video/mrvGLEngine.cpp:3476
+#: video/mrvGLEngine.cpp:3475 video/mrvGLEngine.cpp:3479
 #, c-format
 msgid "c.rgb = pow(c.rgb, vec3(%f));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3392 video/mrvGLEngine.cpp:3396
+#: video/mrvGLEngine.cpp:3395 video/mrvGLEngine.cpp:3399
 #, c-format
 msgid "c.rgb = pow(c.rgb, vec3(1.0/%f));\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3415
+#: video/mrvGLEngine.cpp:3418
 #, c-format
 msgid ""
 "c.rgb = pow(vec3(10.0), (c.rgb - vec3(%f)) * vec3(1.0/%f))\n"
 "            - vec3(%f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3492
+#: video/mrvGLEngine.cpp:3495
 #, c-format
 msgid "c.rgb = vec3(%f) * log(c.rgb + vec3(%f)) + vec3(%f);\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:798 gui/mrvPreferences.cpp:2163
+#: gui/mrvPreferences.cpp:798 gui/mrvPreferences.cpp:2166
 msgid "cache_memory"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:752 gui/mrvPreferences.cpp:2155
+#: gui/mrvPreferences.cpp:752 gui/mrvPreferences.cpp:2158
 msgid "caches"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:550
+#: video/mrvGLEngine.cpp:553
 msgid "call glutInit"
 msgstr ""
 
@@ -26306,11 +26311,11 @@ msgstr ""
 msgid "cmm"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3601
+#: video/mrvGLEngine.cpp:3604
 msgid "cms_matrix"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3285
+#: video/mrvGLEngine.cpp:3288
 #, c-format
 msgid "coeff = pow(coeff, %f);\n"
 msgstr ""
@@ -26323,25 +26328,25 @@ msgstr ""
 msgid "coeffs"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:777
+#: video/mrvGLEngine.cpp:780
 msgid "color conversion"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:409 gui/mrvPreferences.cpp:740
-#: gui/mrvPreferences.cpp:2013 gui/mrvPreferences.cpp:2150
+#: gui/mrvPreferences.cpp:2016 gui/mrvPreferences.cpp:2153
 msgid "color_area"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:793
+#: video/mrvGLEngine.cpp:796
 msgid "colormatrix"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:794
+#: video/mrvGLEngine.cpp:797
 msgid "colormatrix_c"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:498 gui/mrvPreferences.cpp:558
-#: gui/mrvPreferences.cpp:2040 gui/mrvPreferences.cpp:2106
+#: gui/mrvPreferences.cpp:2043 gui/mrvPreferences.cpp:2109
 msgid "colors"
 msgstr ""
 
@@ -26357,11 +26362,11 @@ msgstr ""
 msgid "comp: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:474 gui/mrvPreferences.cpp:2028
+#: gui/mrvPreferences.cpp:474 gui/mrvPreferences.cpp:2031
 msgid "compensate_pixel_ratio"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1166 gui/mrvPreferences.cpp:2191
+#: gui/mrvPreferences.cpp:1166 gui/mrvPreferences.cpp:2194
 msgid "compositing"
 msgstr ""
 
@@ -26371,12 +26376,12 @@ msgstr ""
 
 #: core/exrImage.cpp:102 core/exrImage.cpp:2394 core/oiioImage.cpp:191
 #: core/oiioImage.cpp:196 gui/mrvPreferences.cpp:894
-#: gui/mrvPreferences.cpp:2316
+#: gui/mrvPreferences.cpp:2319
 msgid "compression"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:600 gui/mrvPreferences.cpp:2060
-#: gui/mrvPreferences.cpp:2065
+#: gui/mrvPreferences.cpp:600 gui/mrvPreferences.cpp:2063
+#: gui/mrvPreferences.cpp:2068
 msgid "config"
 msgstr ""
 
@@ -26389,12 +26394,12 @@ msgstr ""
 msgid "conout$"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3329
+#: video/mrvGLEngine.cpp:3332
 #, c-format
 msgid "const float cutoff = 0.05, gamma = %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3297
+#: video/mrvGLEngine.cpp:3300
 #, c-format
 msgid "const float j = %f;\n"
 msgstr ""
@@ -26423,7 +26428,7 @@ msgstr ""
 msgid "cr2"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:484 gui/mrvPreferences.cpp:2034
+#: gui/mrvPreferences.cpp:484 gui/mrvPreferences.cpp:2037
 msgid "crop_area"
 msgstr ""
 
@@ -26443,7 +26448,7 @@ msgstr ""
 msgid "ctl"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:652
+#: video/mrvGLLut3d.cpp:673
 msgid "ctlToLut: "
 msgstr ""
 
@@ -26557,7 +26562,7 @@ msgstr ""
 msgid "dataWindow"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:491 gui/mrvPreferences.cpp:2030
+#: gui/mrvPreferences.cpp:491 gui/mrvPreferences.cpp:2033
 msgid "data_window"
 msgstr ""
 
@@ -26594,7 +26599,7 @@ msgid "decode_video"
 msgstr ""
 
 #: audio/mrvALSAEngine.cpp:104 core/CMedia.cpp:3385 core/CMedia.cpp:3469
-#: gui/mrvPreferences.cpp:814 gui/mrvPreferences.cpp:2206
+#: gui/mrvPreferences.cpp:814 gui/mrvPreferences.cpp:2209
 msgid "default"
 msgstr ""
 
@@ -26614,12 +26619,12 @@ msgstr ""
 msgid "depth"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:814 gui/mrvPreferences.cpp:2206
-#: gui/mrvPreferences.cpp:2210
+#: gui/mrvPreferences.cpp:814 gui/mrvPreferences.cpp:2209
+#: gui/mrvPreferences.cpp:2213
 msgid "device"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:631 gui/mrvPreferences.cpp:2083
+#: gui/mrvPreferences.cpp:631 gui/mrvPreferences.cpp:2086
 msgid "directory"
 msgstr ""
 
@@ -26639,7 +26644,7 @@ msgstr ""
 msgid "displayWindow"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:488 gui/mrvPreferences.cpp:2029
+#: gui/mrvPreferences.cpp:488 gui/mrvPreferences.cpp:2032
 msgid "display_window"
 msgstr ""
 
@@ -26675,7 +26680,7 @@ msgstr ""
 msgid "dpx:television.time.code"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1122 gui/mrvPreferences.cpp:2168
+#: gui/mrvPreferences.cpp:1122 gui/mrvPreferences.cpp:2171
 msgid "drag_load_seq"
 msgstr ""
 
@@ -26683,7 +26688,7 @@ msgstr ""
 msgid "draw"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1862
+#: video/mrvGLEngine.cpp:1865
 msgid "draw image "
 msgstr ""
 
@@ -26703,7 +26708,7 @@ msgstr ""
 msgid "dsc"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3570
+#: video/mrvGLEngine.cpp:3573
 msgid "dst_luma"
 msgstr ""
 
@@ -26729,7 +26734,7 @@ msgstr ""
 msgid "dwaCompressionLevel"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:899 gui/mrvPreferences.cpp:2318
+#: gui/mrvPreferences.cpp:899 gui/mrvPreferences.cpp:2321
 msgid "dwa_compression"
 msgstr ""
 
@@ -26857,7 +26862,7 @@ msgstr ""
 msgid "edl"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:396 gui/mrvPreferences.cpp:2009
+#: gui/mrvPreferences.cpp:396 gui/mrvPreferences.cpp:2012
 msgid "edl_edit"
 msgstr ""
 
@@ -26883,7 +26888,7 @@ msgstr ""
 msgid "enableNormalization"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1189 gui/mrvPreferences.cpp:2298
+#: gui/mrvPreferences.cpp:1190 gui/mrvPreferences.cpp:2301
 msgid "encoding"
 msgstr ""
 
@@ -26895,7 +26900,7 @@ msgstr ""
 msgid "epzs"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:748 gui/mrvPreferences.cpp:2153
+#: gui/mrvPreferences.cpp:748 gui/mrvPreferences.cpp:2156
 msgid "eraser"
 msgstr ""
 
@@ -26903,7 +26908,7 @@ msgstr ""
 msgid "erf"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1193 gui/mrvPreferences.cpp:2302
+#: gui/mrvPreferences.cpp:1194 gui/mrvPreferences.cpp:2305
 msgid "errors"
 msgstr ""
 
@@ -27096,15 +27101,15 @@ msgstr ""
 msgid "file://"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1126 gui/mrvPreferences.cpp:2169
+#: gui/mrvPreferences.cpp:1126 gui/mrvPreferences.cpp:2172
 msgid "file_assoc_load_seq"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:671 gui/mrvPreferences.cpp:2114
+#: gui/mrvPreferences.cpp:671 gui/mrvPreferences.cpp:2117
 msgid "file_requester"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:628 gui/mrvPreferences.cpp:2082
+#: gui/mrvPreferences.cpp:628 gui/mrvPreferences.cpp:2085
 #: standalone/main.cpp:120 standalone/main.cpp:278
 msgid "filename"
 msgstr ""
@@ -27125,7 +27130,7 @@ msgstr ""
 msgid "filmType"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:366 gui/mrvPreferences.cpp:1976
+#: gui/mrvPreferences.cpp:366 gui/mrvPreferences.cpp:1979
 #: standalone/main.cpp:100 standalone/main.cpp:149 standalone/main.cpp:261
 #: standalone/main.cpp:267 standalone/main.cpp:310
 msgid "filmaura"
@@ -27147,11 +27152,11 @@ msgstr ""
 msgid "fixed"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:655 gui/mrvPreferences.cpp:2095
+#: gui/mrvPreferences.cpp:655 gui/mrvPreferences.cpp:2098
 msgid "fixed_position"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:662 gui/mrvPreferences.cpp:2098
+#: gui/mrvPreferences.cpp:662 gui/mrvPreferences.cpp:2101
 msgid "fixed_size"
 msgstr ""
 
@@ -27162,8 +27167,8 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1745
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1971
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2031
-#: gui/mrvPreferences.cpp:2073 gui/mrvPreferences.cpp:2276
-#: gui/mrvPreferences.cpp:2284 standalone/mrvCommandLine.cpp:347
+#: gui/mrvPreferences.cpp:2076 gui/mrvPreferences.cpp:2279
+#: gui/mrvPreferences.cpp:2287 standalone/mrvCommandLine.cpp:347
 #: standalone/mrvCommandLine.cpp:351 standalone/mrvCommandLine.cpp:355
 msgid "float"
 msgstr ""
@@ -27172,44 +27177,44 @@ msgstr ""
 msgid "float (32-bits per channel)"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3300
+#: video/mrvGLEngine.cpp:3303
 msgid "float a = -j*j * (sig_peak - 1.0) / (j*j - 2.0*j + sig_peak);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3301
+#: video/mrvGLEngine.cpp:3304
 msgid ""
 "float b = (j*j - 2.0*j*sig_peak + sig_peak) / max(1e-6, sig_peak - 1.0);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3284
+#: video/mrvGLEngine.cpp:3287
 #, c-format
 msgid "float coeff = max(sig - %f, 1e-6) / max(sig, 1e-6);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3319
+#: video/mrvGLEngine.cpp:3322
 msgid "float hable(float x) {\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3303
+#: video/mrvGLEngine.cpp:3306
 msgid "float scale = (b*b + 2.0*b*j + j*j) / (b-a);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3312
+#: video/mrvGLEngine.cpp:3315
 #, c-format
 msgid "float scale = (sig_peak + %f) / sig_peak;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3263
+#: video/mrvGLEngine.cpp:3266
 #, c-format
 msgid "float sig_avg = %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3262
+#: video/mrvGLEngine.cpp:3265
 #, c-format
 msgid "float sig_peak = %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3274
+#: video/mrvGLEngine.cpp:3277
 #, c-format
 msgid "float slope = min(1.0, %f / sig_avg);\n"
 msgstr ""
@@ -27222,7 +27227,7 @@ msgstr ""
 msgid "focus"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1176 gui/mrvPreferences.cpp:2295
+#: gui/mrvPreferences.cpp:1176 gui/mrvPreferences.cpp:2298
 msgid "font"
 msgstr ""
 
@@ -27238,18 +27243,18 @@ msgstr ""
 msgid "found"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:435
+#: video/mrvGLEngine.cpp:438
 msgid "fp30"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:633 gui/mrvPreferences.cpp:700
-#: gui/mrvPreferences.cpp:777 gui/mrvPreferences.cpp:2084
-#: gui/mrvPreferences.cpp:2132 gui/mrvPreferences.cpp:2160
+#: gui/mrvPreferences.cpp:777 gui/mrvPreferences.cpp:2087
+#: gui/mrvPreferences.cpp:2135 gui/mrvPreferences.cpp:2163
 #: standalone/mrvCommandLine.cpp:346
 msgid "fps"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:638 gui/mrvPreferences.cpp:2087
+#: gui/mrvPreferences.cpp:638 gui/mrvPreferences.cpp:2090
 msgid "frame"
 msgstr ""
 
@@ -27265,7 +27270,7 @@ msgstr ""
 msgid "frame_end:"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:645 gui/mrvPreferences.cpp:2089
+#: gui/mrvPreferences.cpp:645 gui/mrvPreferences.cpp:2092
 msgid "frame_range"
 msgstr ""
 
@@ -27386,7 +27391,7 @@ msgstr ""
 msgid "g.\tc #FFDF97"
 msgstr ""
 
-#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:604
+#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:625
 msgid "gIn"
 msgstr ""
 
@@ -27394,7 +27399,7 @@ msgstr ""
 msgid "gOut"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:467 gui/mrvPreferences.cpp:2026
+#: gui/mrvPreferences.cpp:467 gui/mrvPreferences.cpp:2029
 #: video/mrvGLQuad.cpp:1045 video/mrvGLCube.cpp:192 video/mrvGLSphere.cpp:194
 #: standalone/mrvCommandLine.cpp:354
 msgid "gain"
@@ -27405,7 +27410,7 @@ msgid "gain "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:470 gui/mrvPreferences.cpp:880
-#: gui/mrvPreferences.cpp:2027 gui/mrvPreferences.cpp:2315
+#: gui/mrvPreferences.cpp:2030 gui/mrvPreferences.cpp:2318
 #: video/mrvGLQuad.cpp:1047 video/mrvGLCube.cpp:193 video/mrvGLSphere.cpp:195
 #: standalone/mrvCommandLine.cpp:350
 msgid "gamma"
@@ -27423,7 +27428,7 @@ msgstr ""
 msgid "gleam"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:357
+#: video/mrvGLEngine.cpp:360
 msgid "glewInit failed"
 msgstr ""
 
@@ -27431,7 +27436,7 @@ msgstr ""
 msgid "glquad"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:438
+#: video/mrvGLEngine.cpp:441
 msgid "glsl"
 msgstr ""
 
@@ -27450,15 +27455,15 @@ msgstr ""
 msgid "got uniform"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3873
+#: video/mrvGLEngine.cpp:3876
 msgid "green "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:257 gui/mrvPreferences.cpp:2243
+#: gui/mrvPreferences.cpp:257 gui/mrvPreferences.cpp:2246
 msgid "green_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:258 gui/mrvPreferences.cpp:2245
+#: gui/mrvPreferences.cpp:258 gui/mrvPreferences.cpp:2248
 msgid "green_y"
 msgstr ""
 
@@ -27615,7 +27620,7 @@ msgstr ""
 msgid "hexds"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:413 gui/mrvPreferences.cpp:2014
+#: gui/mrvPreferences.cpp:413 gui/mrvPreferences.cpp:2017
 msgid "histogram"
 msgstr ""
 
@@ -27623,7 +27628,7 @@ msgstr ""
 msgid "host"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1201 gui/mrvPreferences.cpp:2324
+#: gui/mrvPreferences.cpp:1202 gui/mrvPreferences.cpp:2327
 msgid "hotkeys"
 msgstr ""
 
@@ -27663,11 +27668,11 @@ msgstr ""
 msgid "https://github.com/ampas/aces-dev"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:626 gui/mrvPreferences.cpp:2081
+#: gui/mrvPreferences.cpp:626 gui/mrvPreferences.cpp:2084
 msgid "hud"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:570 gui/mrvPreferences.cpp:2048
+#: gui/mrvPreferences.cpp:570 gui/mrvPreferences.cpp:2051
 msgid "hud_color"
 msgstr ""
 
@@ -27800,7 +27805,7 @@ msgstr ""
 msgid "id "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3296
+#: video/mrvGLEngine.cpp:3299
 msgid "if (sig_peak > (1.0 + 1e-6)) {\n"
 msgstr ""
 
@@ -27816,15 +27821,15 @@ msgstr ""
 msgid "imageState"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:406 gui/mrvPreferences.cpp:2012
+#: gui/mrvPreferences.cpp:406 gui/mrvPreferences.cpp:2015
 msgid "image_info"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1141 gui/mrvPreferences.cpp:2175
+#: gui/mrvPreferences.cpp:1141 gui/mrvPreferences.cpp:2178
 msgid "image_version_prefix"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:865 gui/mrvPreferences.cpp:2307
+#: gui/mrvPreferences.cpp:865 gui/mrvPreferences.cpp:2310
 #: standalone/mrvCommandLine.cpp:369 standalone/mrvCommandLine.cpp:382
 msgid "images"
 msgstr ""
@@ -28089,7 +28094,7 @@ msgstr ""
 msgid "k25"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3962
+#: video/mrvGLEngine.cpp:3965
 msgid "kARBFP1 builtin shader"
 msgstr ""
 
@@ -28292,15 +28297,15 @@ msgstr ""
 msgid "loadDeepData error: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1115 gui/mrvPreferences.cpp:2166
+#: gui/mrvPreferences.cpp:1115 gui/mrvPreferences.cpp:2169
 msgid "load_library"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1113 gui/mrvPreferences.cpp:2165
+#: gui/mrvPreferences.cpp:1113 gui/mrvPreferences.cpp:2168
 msgid "loading"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:613
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:618
 msgid "localhost"
 msgstr ""
 
@@ -28313,7 +28318,7 @@ msgstr ""
 msgid "longitude"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:705 gui/mrvPreferences.cpp:2133
+#: gui/mrvPreferences.cpp:705 gui/mrvPreferences.cpp:2136
 msgid "loop_mode"
 msgstr ""
 
@@ -28334,7 +28339,7 @@ msgid "lri quick exit "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:477 gui/mrvPreferences.cpp:991
-#: gui/mrvPreferences.cpp:2032 gui/mrvPreferences.cpp:2221
+#: gui/mrvPreferences.cpp:2035 gui/mrvPreferences.cpp:2224
 #: video/mrvGLQuad.cpp:1033 video/mrvGLCube.cpp:185 video/mrvGLSphere.cpp:187
 msgid "lut"
 msgstr ""
@@ -28495,15 +28500,15 @@ msgstr ""
 msgid "mask_value"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3892
+#: video/mrvGLEngine.cpp:3895
 msgid "max/MP_REF_WHITE: "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3891
+#: video/mrvGLEngine.cpp:3894
 msgid "max: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1144 gui/mrvPreferences.cpp:2177
+#: gui/mrvPreferences.cpp:1144 gui/mrvPreferences.cpp:2180
 msgid "max_images_apart"
 msgstr ""
 
@@ -28523,7 +28528,7 @@ msgstr ""
 msgid "mef"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:647 gui/mrvPreferences.cpp:2090
+#: gui/mrvPreferences.cpp:647 gui/mrvPreferences.cpp:2093
 msgid "memory"
 msgstr ""
 
@@ -28619,11 +28624,11 @@ msgstr ""
 msgid "mental ray Z Depth Picture"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3890
+#: video/mrvGLEngine.cpp:3893
 msgid "min: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1119 gui/mrvPreferences.cpp:2167
+#: gui/mrvPreferences.cpp:1119 gui/mrvPreferences.cpp:2170
 msgid "missing_frames"
 msgstr ""
 
@@ -28648,7 +28653,7 @@ msgstr ""
 msgid "mov %%"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:738 gui/mrvPreferences.cpp:2149
+#: gui/mrvPreferences.cpp:738 gui/mrvPreferences.cpp:2152
 msgid "move_picture"
 msgstr ""
 
@@ -28692,9 +28697,9 @@ msgid "mpipe"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/AboutUI.cxx:31
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1390
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1395
 #: core/mrvACES.cpp:128 gui/mrvImageView.cpp:498 gui/mrvPreferences.cpp:367
-#: gui/mrvPreferences.cpp:1977
+#: gui/mrvPreferences.cpp:1980
 #, c-format
 msgid "mrViewer"
 msgstr ""
@@ -28717,7 +28722,7 @@ msgstr ""
 msgid "mrViewer depends on:"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:668
+#: video/mrvGLEngine.cpp:671
 msgid "mrViewer does not support YUV images."
 msgstr ""
 
@@ -28735,11 +28740,11 @@ msgid ""
 "settings control the quality of the 3D Lut."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:663
+#: video/mrvGLEngine.cpp:666
 msgid "mrViewer supports YUV images through shaders."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:659
+#: video/mrvGLEngine.cpp:662
 msgid "mrViewer supports YUVA images through shaders."
 msgstr ""
 
@@ -28910,7 +28915,7 @@ msgstr ""
 msgid "name"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1133 gui/mrvPreferences.cpp:2173
+#: gui/mrvPreferences.cpp:1133 gui/mrvPreferences.cpp:2176
 msgid "native_file_chooser"
 msgstr ""
 
@@ -28927,7 +28932,7 @@ msgstr ""
 msgid "no!\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:2086
+#: gui/mrvPreferences.cpp:2089
 msgid "non_drop_timecode"
 msgstr ""
 
@@ -28967,7 +28972,7 @@ msgstr ""
 msgid "num subtitle streams "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1008 gui/mrvPreferences.cpp:2228
+#: gui/mrvPreferences.cpp:1008 gui/mrvPreferences.cpp:2231
 msgid "number_stops"
 msgstr ""
 
@@ -29064,14 +29069,14 @@ msgid "o.\tc #C8AE76"
 msgstr ""
 
 #: gui/mrvOCIOBrowser.cpp:43 gui/mrvFileRequester.cpp:94
-#: gui/mrvPreferences.cpp:575 gui/mrvPreferences.cpp:1441
-#: gui/mrvPreferences.cpp:1455 gui/mrvPreferences.cpp:1458
-#: gui/mrvPreferences.cpp:1469 gui/mrvPreferences.cpp:1471
-#: gui/mrvPreferences.cpp:2052
+#: gui/mrvPreferences.cpp:575 gui/mrvPreferences.cpp:1442
+#: gui/mrvPreferences.cpp:1456 gui/mrvPreferences.cpp:1459
+#: gui/mrvPreferences.cpp:1470 gui/mrvPreferences.cpp:1472
+#: gui/mrvPreferences.cpp:2055
 msgid "ocio"
 msgstr ""
 
-#: video/mrvGLQuad.cpp:1073 video/mrvGLLut3d.cpp:96
+#: video/mrvGLQuad.cpp:1073 video/mrvGLLut3d.cpp:103
 #: standalone/mrvCommandLine.cpp:377
 msgid "offset"
 msgstr ""
@@ -29112,11 +29117,11 @@ msgstr ""
 msgid "open audio - audio closed"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:442 gui/mrvPreferences.cpp:1998
+#: gui/mrvPreferences.cpp:442 gui/mrvPreferences.cpp:2001
 msgid "open_mode"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:875 gui/mrvPreferences.cpp:2313
+#: gui/mrvPreferences.cpp:875 gui/mrvPreferences.cpp:2316
 msgid "openexr"
 msgstr ""
 
@@ -29164,11 +29169,11 @@ msgstr ""
 msgid "output_format_list"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:852 gui/mrvPreferences.cpp:2214
+#: gui/mrvPreferences.cpp:852 gui/mrvPreferences.cpp:2217
 msgid "override_audio"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:696 gui/mrvPreferences.cpp:2131
+#: gui/mrvPreferences.cpp:696 gui/mrvPreferences.cpp:2134
 msgid "override_fps"
 msgstr ""
 
@@ -29332,7 +29337,7 @@ msgstr ""
 msgid "pef"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:743 gui/mrvPreferences.cpp:2151
+#: gui/mrvPreferences.cpp:743 gui/mrvPreferences.cpp:2154
 msgid "pencil"
 msgstr ""
 
@@ -29369,11 +29374,11 @@ msgid "pixelAspectRatio"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:385 gui/mrvPreferences.cpp:716
-#: gui/mrvPreferences.cpp:2006 gui/mrvPreferences.cpp:2139
+#: gui/mrvPreferences.cpp:2009 gui/mrvPreferences.cpp:2142
 msgid "pixel_toolbar"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:722 gui/mrvPreferences.cpp:2141
+#: gui/mrvPreferences.cpp:722 gui/mrvPreferences.cpp:2144
 msgid "pixel_values"
 msgstr ""
 
@@ -29394,12 +29399,12 @@ msgstr ""
 msgid "play"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:692 gui/mrvPreferences.cpp:2129
+#: gui/mrvPreferences.cpp:692 gui/mrvPreferences.cpp:2132
 msgid "play_all_frames"
 msgstr ""
 
 #: core/mrvServer.cpp:1490 gui/mrvImageView.cpp:9030
-#: gui/mrvPreferences.cpp:686 gui/mrvPreferences.cpp:2127
+#: gui/mrvPreferences.cpp:686 gui/mrvPreferences.cpp:2130
 msgid "playback"
 msgstr ""
 
@@ -29433,7 +29438,7 @@ msgstr ""
 msgid "port"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:100
+#: video/mrvGLLut3d.cpp:107
 msgid "power"
 msgstr ""
 
@@ -29449,7 +29454,7 @@ msgstr ""
 msgid "prefs"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:760 gui/mrvPreferences.cpp:2157
+#: gui/mrvPreferences.cpp:760 gui/mrvPreferences.cpp:2160
 msgid "preload"
 msgstr ""
 
@@ -29461,7 +29466,7 @@ msgstr ""
 msgid "prnum: "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1041 gui/mrvPreferences.cpp:2263
+#: gui/mrvPreferences.cpp:1041 gui/mrvPreferences.cpp:2266
 msgid "profile"
 msgstr ""
 
@@ -29605,7 +29610,7 @@ msgstr ""
 msgid "qtk"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:992 gui/mrvPreferences.cpp:2225
+#: gui/mrvPreferences.cpp:992 gui/mrvPreferences.cpp:2228
 msgid "quality"
 msgstr ""
 
@@ -29621,7 +29626,7 @@ msgstr ""
 msgid "queue packets return "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:675 gui/mrvPreferences.cpp:2115
+#: gui/mrvPreferences.cpp:675 gui/mrvPreferences.cpp:2118
 msgid "quick_folder_travel"
 msgstr ""
 
@@ -29732,7 +29737,7 @@ msgstr ""
 msgid "rFetch"
 msgstr ""
 
-#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:604
+#: core/ctlToLut.cpp:119 video/mrvGLLut3d.cpp:625
 msgid "rIn"
 msgstr ""
 
@@ -29744,7 +29749,7 @@ msgstr ""
 msgid "raf"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1195 gui/mrvPreferences.cpp:2303
+#: gui/mrvPreferences.cpp:1196 gui/mrvPreferences.cpp:2306
 msgid "raise_log_window_on_error"
 msgstr ""
 
@@ -29827,15 +29832,15 @@ msgstr ""
 msgid "recv() failed"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3869
+#: video/mrvGLEngine.cpp:3872
 msgid "red "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:255 gui/mrvPreferences.cpp:2239
+#: gui/mrvPreferences.cpp:255 gui/mrvPreferences.cpp:2242
 msgid "red_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:256 gui/mrvPreferences.cpp:2241
+#: gui/mrvPreferences.cpp:256 gui/mrvPreferences.cpp:2244
 msgid "red_y"
 msgstr ""
 
@@ -29850,7 +29855,7 @@ msgstr ""
 msgid "reel name "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:392 gui/mrvPreferences.cpp:2008
+#: gui/mrvPreferences.cpp:392 gui/mrvPreferences.cpp:2011
 msgid "reel_list"
 msgstr ""
 
@@ -29866,11 +29871,11 @@ msgstr ""
 msgid "remove image "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1170 gui/mrvPreferences.cpp:2193
+#: gui/mrvPreferences.cpp:1170 gui/mrvPreferences.cpp:2196
 msgid "resize_bg"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:642 gui/mrvPreferences.cpp:2088
+#: gui/mrvPreferences.cpp:642 gui/mrvPreferences.cpp:2091
 msgid "resolution"
 msgstr ""
 
@@ -29878,7 +29883,7 @@ msgstr ""
 msgid "resolution not found"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3320
+#: video/mrvGLEngine.cpp:3323
 #, c-format
 msgid "return ((x * (%f*x + %f)+%f)/(x * (%f*x + %f) + %f)) - %f;\n"
 msgstr ""
@@ -29887,7 +29892,7 @@ msgstr ""
 msgid "rgb"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:452
+#: video/mrvGLEngine.cpp:455
 msgid "rgba"
 msgstr ""
 
@@ -30029,15 +30034,14 @@ msgstr ""
 
 #: core/mrvColorBarsImage.cpp:56 core/mrvColorBarsImage.cpp:65
 #: core/mrvColorBarsImage.cpp:81 core/mrvColorBarsImage.cpp:99
-#: gui/mrvPreferences.cpp:612
 msgid "sRGB"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:481 gui/mrvPreferences.cpp:2033
+#: gui/mrvPreferences.cpp:481 gui/mrvPreferences.cpp:2036
 msgid "safe_areas"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:106
+#: video/mrvGLLut3d.cpp:113
 msgid "saturation"
 msgstr ""
 
@@ -30045,25 +30049,25 @@ msgstr ""
 msgid "save"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:596 gui/mrvPreferences.cpp:2059
-#: gui/mrvPreferences.cpp:2064
+#: gui/mrvPreferences.cpp:596 gui/mrvPreferences.cpp:2062
+#: gui/mrvPreferences.cpp:2067
 msgid "save_config"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1148 gui/mrvPreferences.cpp:2179
+#: gui/mrvPreferences.cpp:1148 gui/mrvPreferences.cpp:2182
 msgid "saving"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:765 gui/mrvPreferences.cpp:2158
+#: gui/mrvPreferences.cpp:765 gui/mrvPreferences.cpp:2161
 #: video/mrvGLQuad.cpp:1072
 msgid "scale"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1161 video/mrvGLLut3d.cpp:1215
+#: gui/mrvImageView.cpp:1161 video/mrvGLLut3d.cpp:1244
 msgid "scene_linear"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:500 gui/mrvPreferences.cpp:2107
+#: gui/mrvPreferences.cpp:500 gui/mrvPreferences.cpp:2110
 msgid "scheme"
 msgstr ""
 
@@ -30075,11 +30079,11 @@ msgstr ""
 msgid "screenWindowWidth"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:736 gui/mrvPreferences.cpp:2148
+#: gui/mrvPreferences.cpp:736 gui/mrvPreferences.cpp:2151
 msgid "scrubbing"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:709 gui/mrvPreferences.cpp:2134
+#: gui/mrvPreferences.cpp:709 gui/mrvPreferences.cpp:2137
 msgid "scrubbing_sensitivity"
 msgstr ""
 
@@ -30114,15 +30118,15 @@ msgid "seek_to_position: Could not seek to frame "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:513 gui/mrvPreferences.cpp:566
-#: gui/mrvPreferences.cpp:2046 gui/mrvPreferences.cpp:2110
+#: gui/mrvPreferences.cpp:2049 gui/mrvPreferences.cpp:2113
 msgid "selection_color"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:713 gui/mrvPreferences.cpp:2136
+#: gui/mrvPreferences.cpp:713 gui/mrvPreferences.cpp:2139
 msgid "selection_display_mode"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:515 gui/mrvPreferences.cpp:2111
+#: gui/mrvPreferences.cpp:515 gui/mrvPreferences.cpp:2114
 msgid "selection_text_color"
 msgstr ""
 
@@ -30208,36 +30212,36 @@ msgstr ""
 msgid "shmap"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3269
+#: video/mrvGLEngine.cpp:3272
 #, c-format
 msgid "sig *= %f;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3292
+#: video/mrvGLEngine.cpp:3295
 #, c-format
 msgid "sig = %f * sig;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3337
+#: video/mrvGLEngine.cpp:3340
 #, c-format
 msgid "sig = %f / sig_peak * sig;\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3311
+#: video/mrvGLEngine.cpp:3314
 #, c-format
 msgid "sig = sig / (sig + %f);\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3270
+#: video/mrvGLEngine.cpp:3273
 #, c-format
 msgid "sig_peak *= %f;\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:378 gui/mrvPreferences.cpp:2005
+#: gui/mrvPreferences.cpp:378 gui/mrvPreferences.cpp:2008
 msgid "single_instance"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:782 gui/mrvPreferences.cpp:2161
+#: gui/mrvPreferences.cpp:782 gui/mrvPreferences.cpp:2164
 msgid "size"
 msgstr ""
 
@@ -30249,7 +30253,7 @@ msgstr ""
 msgid "slate"
 msgstr ""
 
-#: video/mrvGLLut3d.cpp:92
+#: video/mrvGLLut3d.cpp:99
 msgid "slope"
 msgstr ""
 
@@ -30271,7 +30275,7 @@ msgstr ""
 msgid "sr2"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3568
+#: video/mrvGLEngine.cpp:3571
 msgid "src_luma"
 msgstr ""
 
@@ -30315,7 +30319,7 @@ msgstr ""
 msgid "stereo"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:399 gui/mrvPreferences.cpp:2010
+#: gui/mrvPreferences.cpp:399 gui/mrvPreferences.cpp:2013
 msgid "stereo3d_options"
 msgstr ""
 
@@ -30365,7 +30369,7 @@ msgstr ""
 msgid "subtitle"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1174 gui/mrvPreferences.cpp:2291
+#: gui/mrvPreferences.cpp:1174 gui/mrvPreferences.cpp:2294
 msgid "subtitles"
 msgstr ""
 
@@ -30373,7 +30377,7 @@ msgstr ""
 msgid "subtitles="
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1034 gui/mrvPreferences.cpp:2258
+#: gui/mrvPreferences.cpp:1034 gui/mrvPreferences.cpp:2261
 msgid "surround_luminance"
 msgstr ""
 
@@ -30485,15 +30489,15 @@ msgstr ""
 msgid "tdls"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:745 gui/mrvPreferences.cpp:2152
+#: gui/mrvPreferences.cpp:745 gui/mrvPreferences.cpp:2155
 msgid "text"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:511 gui/mrvPreferences.cpp:2109
+#: gui/mrvPreferences.cpp:511 gui/mrvPreferences.cpp:2112
 msgid "text_color"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:563 gui/mrvPreferences.cpp:2044
+#: gui/mrvPreferences.cpp:563 gui/mrvPreferences.cpp:2047
 msgid "text_overlay_color"
 msgstr ""
 
@@ -30506,7 +30510,7 @@ msgid "the porting and with the color schemes."
 msgstr ""
 
 #: gui/mrvColorSchemes.cpp:38 gui/mrvPreferences.cpp:544
-#: gui/mrvPreferences.cpp:2112
+#: gui/mrvPreferences.cpp:2115
 msgid "theme"
 msgstr ""
 
@@ -30519,7 +30523,7 @@ msgid "this "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:876 gui/mrvPreferences.cpp:1162
-#: gui/mrvPreferences.cpp:2189 gui/mrvPreferences.cpp:2314
+#: gui/mrvPreferences.cpp:2192 gui/mrvPreferences.cpp:2317
 msgid "thread_count"
 msgstr ""
 
@@ -30528,7 +30532,7 @@ msgstr ""
 msgid "threads"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:679 gui/mrvPreferences.cpp:2116
+#: gui/mrvPreferences.cpp:679 gui/mrvPreferences.cpp:2119
 msgid "thumbnails"
 msgstr ""
 
@@ -30559,15 +30563,15 @@ msgstr ""
 msgid "timecode"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:423 gui/mrvPreferences.cpp:2019
+#: gui/mrvPreferences.cpp:423 gui/mrvPreferences.cpp:2022
 msgid "timeline_display"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:389 gui/mrvPreferences.cpp:2007
+#: gui/mrvPreferences.cpp:389 gui/mrvPreferences.cpp:2010
 msgid "timeline_toolbar"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:382 gui/mrvPreferences.cpp:2004
+#: gui/mrvPreferences.cpp:382 gui/mrvPreferences.cpp:2007
 msgid "topbar"
 msgstr ""
 
@@ -30575,7 +30579,7 @@ msgstr ""
 msgid "track"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1020 gui/mrvPreferences.cpp:2236
+#: gui/mrvPreferences.cpp:1020 gui/mrvPreferences.cpp:2239
 msgid "transform"
 msgstr ""
 
@@ -30699,7 +30703,7 @@ msgstr ""
 msgid "u.\tc #FFE39B"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:376 gui/mrvPreferences.cpp:1981
+#: gui/mrvPreferences.cpp:376 gui/mrvPreferences.cpp:1984
 msgid "ui"
 msgstr ""
 
@@ -30711,11 +30715,11 @@ msgstr ""
 msgid "und"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3061 video/mrvGLEngine.cpp:3069
+#: video/mrvGLEngine.cpp:3064 video/mrvGLEngine.cpp:3072
 msgid "uniform mat3 "
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3052
+#: video/mrvGLEngine.cpp:3055
 msgid "uniform vec3 "
 msgstr ""
 
@@ -30750,24 +30754,24 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1598
+#: gui/mrvPreferences.cpp:1599
 msgid "use_OCIO"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1152 gui/mrvPreferences.cpp:2183
+#: gui/mrvPreferences.cpp:1152 gui/mrvPreferences.cpp:2186
 msgid "use_image_path"
 msgstr ""
 
 #: gui/mrvPreferences.cpp:578 gui/mrvPreferences.cpp:588
-#: gui/mrvPreferences.cpp:2054
+#: gui/mrvPreferences.cpp:2057
 msgid "use_ocio"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1149 gui/mrvPreferences.cpp:2180
+#: gui/mrvPreferences.cpp:1149 gui/mrvPreferences.cpp:2183
 msgid "use_relative_paths"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1137 gui/mrvPreferences.cpp:2174
+#: gui/mrvPreferences.cpp:1137 gui/mrvPreferences.cpp:2177
 msgid "uses_16bits"
 msgstr ""
 
@@ -30868,17 +30872,17 @@ msgstr ""
 msgid "v.\tc #FFE198"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:416 gui/mrvPreferences.cpp:2015
+#: gui/mrvPreferences.cpp:416 gui/mrvPreferences.cpp:2018
 msgid "vectorscope"
 msgstr ""
 
 #: core/exrImage.cpp:114 gui/mrvPreferences.cpp:370
-#: gui/mrvPreferences.cpp:1978
+#: gui/mrvPreferences.cpp:1981
 msgid "version"
 msgstr ""
 
 #: core/CMedia.cpp:3105 core/CMedia.cpp:3136 core/aviImage_save.cpp:1579
-#: gui/mrvPreferences.cpp:1156 gui/mrvPreferences.cpp:2186
+#: gui/mrvPreferences.cpp:1156 gui/mrvPreferences.cpp:2189
 msgid "video"
 msgstr ""
 
@@ -30886,7 +30890,7 @@ msgstr ""
 msgid "video/MP2T"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1157 gui/mrvPreferences.cpp:2187
+#: gui/mrvPreferences.cpp:1157 gui/mrvPreferences.cpp:2190
 msgid "video_codec"
 msgstr ""
 
@@ -30896,7 +30900,7 @@ msgid "video_size=%dx%d:pix_fmt=%d:time_base=%d/%d:pixel_aspect=%d/%d"
 msgstr ""
 
 #: core/exrImage.cpp:115 gui/mrvPreferences.cpp:465
-#: gui/mrvPreferences.cpp:2025
+#: gui/mrvPreferences.cpp:2028
 msgid "view"
 msgstr ""
 
@@ -30908,7 +30912,7 @@ msgstr ""
 msgid "vob"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3721
+#: video/mrvGLEngine.cpp:3724
 msgid ""
 "void main() \n"
 "{ \n"
@@ -30932,11 +30936,11 @@ msgid ""
 "\tc.b = dot(Kb, pre); \n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:856 gui/mrvPreferences.cpp:2215
+#: gui/mrvPreferences.cpp:856 gui/mrvPreferences.cpp:2218
 msgid "volume"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:860 gui/mrvPreferences.cpp:2217
+#: gui/mrvPreferences.cpp:860 gui/mrvPreferences.cpp:2220
 msgid "volume_mute"
 msgstr ""
 
@@ -31056,7 +31060,7 @@ msgstr ""
 msgid "wav"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:420 gui/mrvPreferences.cpp:2016
+#: gui/mrvPreferences.cpp:420 gui/mrvPreferences.cpp:2019
 #: gui/mrvWaveform.cpp:45
 msgid "waveform"
 msgstr ""
@@ -31069,19 +31073,19 @@ msgstr ""
 msgid "webm"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3881
+#: video/mrvGLEngine.cpp:3884
 msgid "white "
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1031 gui/mrvPreferences.cpp:2256
+#: gui/mrvPreferences.cpp:1031 gui/mrvPreferences.cpp:2259
 msgid "white_luminance"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:261 gui/mrvPreferences.cpp:2251
+#: gui/mrvPreferences.cpp:261 gui/mrvPreferences.cpp:2254
 msgid "white_x"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:262 gui/mrvPreferences.cpp:2253
+#: gui/mrvPreferences.cpp:262 gui/mrvPreferences.cpp:2256
 msgid "white_y"
 msgstr ""
 
@@ -31098,7 +31102,7 @@ msgid "width: "
 msgstr ""
 
 #: gui/mrvPreferences.cpp:432 gui/mrvPreferences.cpp:654
-#: gui/mrvPreferences.cpp:1987 gui/mrvPreferences.cpp:2094
+#: gui/mrvPreferences.cpp:1990 gui/mrvPreferences.cpp:2097
 msgid "window"
 msgstr ""
 
@@ -31215,16 +31219,16 @@ msgstr ""
 msgid "x.\tc #FFDA93"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1027
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1653
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1032
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1658
 msgid "x1"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1028
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1033
 msgid "x2"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1029
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1034
 msgid "x3"
 msgstr ""
 
@@ -31232,35 +31236,35 @@ msgstr ""
 msgid "x3f"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1030
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1035
 msgid "x4"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1031
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1036
 msgid "x5"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1032
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1037
 msgid "x6"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1033
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1038
 msgid "x7"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1034
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1039
 msgid "x8"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1035
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1040
 msgid "x9"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:657 gui/mrvPreferences.cpp:2096
+#: gui/mrvPreferences.cpp:657 gui/mrvPreferences.cpp:2099
 msgid "x_position"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:665 gui/mrvPreferences.cpp:2099
+#: gui/mrvPreferences.cpp:665 gui/mrvPreferences.cpp:2102
 msgid "x_size"
 msgstr ""
 
@@ -31281,7 +31285,7 @@ msgstr ""
 msgid "xyY"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1072
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-3.13.0-117-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1077
 msgid "xyY CIE xyY"
 msgstr ""
 
@@ -31377,11 +31381,11 @@ msgstr ""
 msgid "y.\tc #EADA96"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:660 gui/mrvPreferences.cpp:2097
+#: gui/mrvPreferences.cpp:660 gui/mrvPreferences.cpp:2100
 msgid "y_position"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:667 gui/mrvPreferences.cpp:2100
+#: gui/mrvPreferences.cpp:667 gui/mrvPreferences.cpp:2103
 msgid "y_size"
 msgstr ""
 
@@ -31401,7 +31405,7 @@ msgstr ""
 msgid "yes.\n"
 msgstr ""
 
-#: gui/mrvPreferences.cpp:1159 gui/mrvPreferences.cpp:2188
+#: gui/mrvPreferences.cpp:1159 gui/mrvPreferences.cpp:2191
 msgid "yuv_hint"
 msgstr ""
 
@@ -31842,11 +31846,11 @@ msgstr ""
 #: gui/mrvFileRequester.cpp:803 gui/mrvFileRequester.cpp:807
 #: gui/mrvFileRequester.cpp:809 gui/mrvFileRequester.cpp:811
 #: gui/mrvFileRequester.cpp:813 gui/mrvFileRequester.cpp:859
-#: video/mrvGLEngine.cpp:3305 video/mrvGLEngine.cpp:3322
+#: video/mrvGLEngine.cpp:3308 video/mrvGLEngine.cpp:3325
 msgid "}\n"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:3636
+#: video/mrvGLEngine.cpp:3639
 msgid ""
 "}\n"
 "else {\n"
