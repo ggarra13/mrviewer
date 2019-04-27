@@ -351,12 +351,12 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     const char* r = getenv( "MRV_ROOT" );
     if ( r )
     {
-	DBG;
+        DBG;
         root = r;
-	DBG;
+        DBG;
         if ( root.empty() )
         {
-	    DBG;
+            DBG;
             EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
         }
     }
@@ -377,7 +377,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     ui.get( "single_instance", tmp, 0 );
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
-    
+
     DBG;
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
@@ -609,7 +609,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
                                                      tmpS, ok );	\
         uiPrefs->uiOCIO_##x##_ics->value( tmpS );
 
-        OCIO_ICS( 8bits,  "sRGB" );
+        OCIO_ICS( 8bits,  "" );
     DBG;
         OCIO_ICS( 16bits, "" );
     DBG;
@@ -937,55 +937,55 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     DBG;
     while( (found = ctlEnv.find(sep)) != std::string::npos )
     {
-	std::string part2;
-	if ( found+1 < ctlEnv.size() )
-	    part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
+        std::string part2;
+        if ( found+1 < ctlEnv.size() )
+            part2 = ctlEnv.substr( found + 1, ctlEnv.size() );
     DBG;
         ctlEnv = ctlEnv.substr(0, found);
     DBG;
-	uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
-	ctlEnv = part2;
+        uiPrefs->uiPrefsCTLModulePath->add( ctlEnv.c_str() );
+        ctlEnv = part2;
     }
 
     for ( int j = 1; j <= uiPrefs->uiPrefsCTLModulePath->size(); ++j )
     {
     DBG;
-	char* name;
-	dirent** e;
-	const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
-	int num = fl_filename_list( dir, &e );
+        char* name;
+        dirent** e;
+        const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
+        int num = fl_filename_list( dir, &e );
     DBG;
-	for( int i = 0; i < num; i++ )
-	{
+        for( int i = 0; i < num; i++ )
+        {
     DBG;
-	    name = e[i]->d_name;
-	    
-	    // if 'name' ends in '/' or '\', remove it
-	    if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
-		name[strlen(name)-1] = '\0';
-      
-	    // ignore the "." and ".." names
-	    if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
-		continue;
-	    
-	    std::string fullpath = dir;
-	    fullpath += "/";
-	    fullpath += name;
+            name = e[i]->d_name;
+
+            // if 'name' ends in '/' or '\', remove it
+            if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
+                name[strlen(name)-1] = '\0';
+
+            // ignore the "." and ".." names
+            if( strcmp( name, "." ) == 0 || strcmp( name, ".." ) == 0 )
+                continue;
+
+            std::string fullpath = dir;
+            fullpath += "/";
+            fullpath += name;
 
     DBG;
-	    if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
-		 ".ctl" ) continue;
-	    
-	    if( fl_filename_isdir( fullpath.c_str() ) )
-		continue;
-	  
+            if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
+                 ".ctl" ) continue;
+
+            if( fl_filename_isdir( fullpath.c_str() ) )
+                continue;
+
     DBG;
-	    uiPrefs->uiPrefsCTLScripts->add( name );
-	}
+            uiPrefs->uiPrefsCTLScripts->add( name );
+        }
     }
 
 
-    
+
 
     DBG;
     Fl_Preferences lut( base, "lut" );
@@ -1174,13 +1174,14 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     Fl_Preferences subtitles( base, "subtitles" );
     DBG;
     subtitles.get( "font", tmpS, "Arial", 2048 );
+    uiPrefs->uiPrefsSubtitleFont->value(0);  // in case no font is found
     for (int i = 0; i < uiPrefs->uiPrefsSubtitleFont->children(); ++i )
     {
-    DBG;
-        if ( strcmp( uiPrefs->uiPrefsSubtitleFont->child(i)->label(),
-                     tmpS ) == 0 )
+        DBG;
+        const char* label = uiPrefs->uiPrefsSubtitleFont->child(i)->label();
+        if ( tmpS && label && strcmp( label, tmpS ) == 0 )
         {
-    DBG;
+            DBG;
             uiPrefs->uiPrefsSubtitleFont->value(i);
             break;
         }
@@ -1240,8 +1241,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         keys.get( (hotkeys[i].name + " text").c_str(),
                   tmpS,
                   hotkeys[i].hotkey.text.c_str(), 16 );
-        hotkeys[i].hotkey.text = tmpS;
-
+        if ( tmpS ) hotkeys[i].hotkey.text = tmpS;
+        else hotkeys[i].hotkey.text.clear();
     }
 
 
@@ -1249,7 +1250,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     if ( ! set_transforms() )
     {
     DBG;
-	LOG_ERROR( _("Could not set transforms in GUI") );
+        LOG_ERROR( _("Could not set transforms in GUI") );
     }
 }
 
@@ -1407,51 +1408,51 @@ void Preferences::run( ViewerUI* main )
     if ( !view->use_lut() )
     {
         bool use = uiPrefs->uiPrefsViewLut->value();
-	DBG;
+        DBG;
         main->uiLUT->value( use );
         view->use_lut( use );
-	DBG;
+        DBG;
     }
 
 
-	DBG;
+        DBG;
     if ( uiPrefs->uiPrefsSafeAreas->value() )
         view->safe_areas(true);
 
-	DBG;
+        DBG;
     missing_frame = (MissingFrameType)uiPrefs->uiPrefsMissingFrames->value();
 
     //////////////////////////////////////////////////////
     // OCIO
     /////////////////////////////////////////////////////
 
-	DBG;
+        DBG;
     use_ocio = (bool) uiPrefs->uiPrefsUseOcio->value();
 
     const char* var = environmentSetting( "OCIO",
                                           uiPrefs->uiPrefsOCIOConfig->value(),
                                           true );
 
-	DBG;
+        DBG;
     std::string tmp = root + "/ocio/nuke-default/config.ocio";
 
     if (  ( !var || strlen(var) == 0 || tmp == var ) && use_ocio )
     {
-	DBG;
+        DBG;
         mrvLOG_INFO( "ocio",
                      _("Setting OCIO environment variable to nuke-default." )
                      << std::endl );
         var = strdup( tmp.c_str() );
     }
-	DBG;
+        DBG;
     if ( var && use_ocio && strlen(var) > 0 )
     {
         static std::string old_ocio;
 
-	DBG;
+        DBG;
         if ( old_ocio != var )
         {
-	DBG;
+        DBG;
             mrvLOG_INFO( "ocio", _("Setting OCIO environment variable to:")
                          << std::endl );
             old_ocio = var;
@@ -1460,22 +1461,22 @@ void Preferences::run( ViewerUI* main )
 
         char buf[2048];
 
-	DBG;
+        DBG;
         std::string parsed = expandVariables( var, "%", '%' );
         parsed = expandVariables( parsed, "${", '}' );
         if ( old_ocio != parsed )
         {
-	DBG;
+        DBG;
             mrvLOG_INFO( "ocio", _("Expanded OCIO environment variable to:")
                          << std::endl );
             mrvLOG_INFO( "ocio", parsed << std::endl );
 
         }
 
-	DBG;
+        DBG;
         sprintf( buf, "OCIO=%s", parsed.c_str() );
         putenv( strdup(buf) );
-	DBG;
+        DBG;
         uiPrefs->uiPrefsOCIOConfig->value( var );
 
 // #ifdef __linux__
@@ -1489,54 +1490,54 @@ void Preferences::run( ViewerUI* main )
 //         putenv( strdup(buf) );
 // #endif
 
-	DBG;
+        DBG;
         std::locale::global( std::locale("C") );
         setlocale( LC_NUMERIC, "C" );
 
-	DBG;
+        DBG;
 
         try
         {
-	DBG;
+        DBG;
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
 
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
-	DBG;
+        DBG;
             OCIO_Display = config->getDefaultDisplay();
 
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
-	DBG;
+        DBG;
             // First, remove all additional defaults if any from pulldown menu
             for ( int c = main->gammaDefaults->children()-1; c >= 5; --c )
             {
                 main->gammaDefaults->remove( c );
             }
-	DBG;
+        DBG;
 
 
             int numDisplays = config->getNumDisplays();
-	DBG;
+        DBG;
             for ( int j = 0; j < numDisplays; ++j )
             {
                 std::string display = config->getDisplay(j);
-	DBG;
+        DBG;
 
                 std::vector< std::string > views;
                 int numViews = config->getNumViews(display.c_str());
-	DBG;
+        DBG;
                 // Collect all views
                 for(int i = 0; i < numViews; i++)
                 {
                     std::string view = config->getView(display.c_str(), i);
                     views.push_back( view );
                 }
-	DBG;
+        DBG;
 
 
                 // Then sort and add all new views to pulldown menu
-	DBG;
+        DBG;
                 std::sort( views.begin(), views.end() );
                 for ( size_t i = 0; i < views.size(); ++i )
                 {
@@ -1548,87 +1549,87 @@ void Preferences::run( ViewerUI* main )
                     {
                         main->gammaDefaults->copy_label( views[i].c_str() );
                         main->uiGamma->value( 1.0f );
-	DBG;
+        DBG;
                         main->uiGammaInput->value( 1.0f );
-	DBG;
+        DBG;
                         main->uiView->gamma( 1.0f );
                     }
                 }
-	DBG;
+        DBG;
             }
 
 
-	DBG;
+        DBG;
 
             main->gammaDefaults->redraw();
 
         }
         catch( const OCIO::Exception& e )
         {
-	DBG;
+        DBG;
             LOG_ERROR( e.what() );
             use_ocio = false;
         }
         catch( const std::exception& e )
         {
-	DBG;
+        DBG;
             LOG_ERROR( e.what() );
             use_ocio = false;
         }
 
-	DBG;
+        DBG;
         std::locale::global( std::locale("") );
         setlocale(LC_NUMERIC, "" );
-	DBG;
+        DBG;
     }
     else
     {
-	DBG;
+        DBG;
         if ( !var || strlen(var) == 0 )
             LOG_INFO( _("OCIO environment variable is not set.  "
                         "Defaulting to CTL. ") );
-	DBG;
-	main->gammaDefaults->copy_label( _("Gamma") );
-	DBG;
+        DBG;
+        main->gammaDefaults->copy_label( _("Gamma") );
+        DBG;
         use_ocio = false;
     }
 
     if ( use_ocio )
     {
         DBG( "use_OCIO" );
-	DBG;
+        DBG;
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
-	DBG;
+        DBG;
         try
         {
-	DBG;
+        DBG;
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
             std::vector< std::string > spaces;
             for(int i = 0; i < config->getNumColorSpaces(); ++i)
             {
-	DBG;
+        DBG;
                 std::string csname = config->getColorSpaceNameByIndex(i);
                 spaces.push_back( csname );
             }
 
-	DBG;
+        DBG;
             if ( std::find( spaces.begin(), spaces.end(),
                             OCIO::ROLE_SCENE_LINEAR ) == spaces.end() )
             {
                 spaces.push_back( OCIO::ROLE_SCENE_LINEAR );
-	DBG;
+        DBG;
             }
 
             CMedia* img = NULL;
             mrv::media fg = main->uiView->foreground();
             if ( fg )
             {
-	DBG;
+        DBG;
                 img = fg->image();
             }
 
-	DBG;
+        DBG;
             mrv::PopupMenu* w = main->uiICS;
             w->clear();
             std::sort( spaces.begin(), spaces.end() );
@@ -1637,31 +1638,31 @@ void Preferences::run( ViewerUI* main )
                 const char* space = spaces[i].c_str();
                 OCIO::ConstColorSpaceRcPtr cs = config->getColorSpace( space );
                 w->add( space );
-	DBG;
+        DBG;
                 //w->child(i)->tooltip( strdup( cs->getDescription() ) );
                 if ( img && img->ocio_input_color_space() == space )
                 {
-	DBG;
+        DBG;
                     w->copy_label( space );
                     w->value( i );
                 }
             }
             w->do_callback();
-	DBG;
+        DBG;
             w->redraw();
         }
         catch( const std::exception& e )
         {
             LOG_ERROR( e.what() );
         }
-	DBG;
+        DBG;
         main->uiICS->show();
     }
     else
     {
-	DBG;
+        DBG;
         main->uiICS->hide();
-	DBG;
+        DBG;
         main->uiFstopGroup->show();
         main->uiNormalize->show();
     }
@@ -1670,7 +1671,7 @@ void Preferences::run( ViewerUI* main )
     CMedia::load_library = (CMedia::LoadLib)
                            uiPrefs->uiPrefsLoadLibrary->value();
 
-	DBG;
+        DBG;
     char buf[64];
     sprintf( buf, "%d", (int) uiPrefs->uiPrefsVideoThreadCount->value() );
     video_threads = buf;
@@ -1678,26 +1679,26 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle file requester
     //
-	DBG;
+        DBG;
     Flu_File_Chooser::thumbnailsFileReq = (bool)
                                           uiPrefs->uiPrefsFileReqThumbnails->value();
 
-	DBG;
+        DBG;
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
             uiPrefs->uiPrefsFileReqFolder->value();
 
-	DBG;
+        DBG;
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
     // Handle caches
-	DBG;
+        DBG;
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
     CMedia::preload_cache( (bool)uiPrefs->uiPrefsPreloadCache->value() );
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
 
-	DBG;
+        DBG;
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
         uiPrefs->uiPrefsCacheSize->activate();
@@ -1714,7 +1715,7 @@ void Preferences::run( ViewerUI* main )
     Preferences::max_memory = ( uiPrefs->uiPrefsCacheMemory->value() *
                                 1000000000 );
 
-	DBG;
+        DBG;
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
@@ -1728,32 +1729,32 @@ void Preferences::run( ViewerUI* main )
     //
     // Handle pixel values
     //
-	DBG;
+        DBG;
     main->uiAColorType->value( uiPrefs->uiPrefsPixelRGBA->value() );
     main->uiAColorType->redraw();
-	DBG;
+        DBG;
     main->uiAColorType->do_callback();
-	DBG;
+        DBG;
     main->uiPixelValue->value( uiPrefs->uiPrefsPixelValues->value() );
     main->uiPixelValue->redraw();
-	DBG;
+        DBG;
     main->uiPixelValue->do_callback();
-	DBG;
+        DBG;
     main->uiBColorType->value( uiPrefs->uiPrefsPixelHSV->value() );
     main->uiBColorType->redraw();
-	DBG;
+        DBG;
     main->uiBColorType->do_callback();
-	DBG;
+        DBG;
     main->uiLType->value( uiPrefs->uiPrefsPixelLumma->value() );
     main->uiLType->redraw();
-	DBG;
+        DBG;
     main->uiLType->do_callback();
-	DBG;
+        DBG;
 
     //
     // Handle crop area (masking)
     //
-	DBG;
+        DBG;
     int crop = uiPrefs->uiPrefsCropArea->value();
     if ( crop > 0 )
     {
@@ -1763,7 +1764,7 @@ void Preferences::run( ViewerUI* main )
         view->masking( mask );
     }
 
-	DBG;
+        DBG;
     //
     // Handle HUD
     //
@@ -1795,13 +1796,13 @@ void Preferences::run( ViewerUI* main )
     if ( uiPrefs->uiPrefsHudAttributes->value() )
         hud |= mrv::ImageView::kHudAttributes;
 
-	DBG;
+        DBG;
     view->hud( (mrv::ImageView::HudDisplay) hud );
 
 
-	DBG;
+        DBG;
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
-	DBG;
+        DBG;
     change_timeline_display(main);
 
     double mn = 1, mx = 50,
@@ -1810,7 +1811,7 @@ void Preferences::run( ViewerUI* main )
 
     if ( !main->uiTimeline->edl() )
     {
-	DBG;
+        DBG;
         mrv::media fg = main->uiView->foreground();
         if ( fg )
         {
@@ -1821,11 +1822,11 @@ void Preferences::run( ViewerUI* main )
     }
     else
     {
- 	DBG;
+        DBG;
        // edl
         mrv::Reel reel = main->uiReelWindow->uiBrowser->current_reel();
         if ( !reel || reel->images.size() == 0 ) return;
-	DBG;
+        DBG;
 
         mrv::media fg = reel->images[0];
         mrv::media last = reel->images[ reel->images.size()-1 ];
@@ -1836,23 +1837,23 @@ void Preferences::run( ViewerUI* main )
     }
     if ( uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
     {
- 	DBG;
+        DBG;
        main->uiTimeline->minimum( dmn );
         main->uiTimeline->maximum( dmx );
     }
     else
     {
- 	DBG;
-	main->uiTimeline->minimum( mn );
+        DBG;
+        main->uiTimeline->minimum( mn );
         main->uiTimeline->display_minimum( dmn );
         main->uiTimeline->maximum( mx );
         main->uiTimeline->display_maximum( dmx );
     }
 
-	DBG;
+        DBG;
     unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
-	DBG;
+        DBG;
 
     if ( uiPrefs->uiPrefsOverrideAudio->value() )
     {
@@ -1862,7 +1863,7 @@ void Preferences::run( ViewerUI* main )
         view->volume( float(x) );
     }
     DBG;
-    
+
     //
     // Handle fullscreen and presentation mode
     //
@@ -1888,7 +1889,7 @@ void Preferences::run( ViewerUI* main )
     CMedia::default_fps = uiPrefs->uiPrefsFPS->value();
 
     DBG;
- 
+
 #if defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize(  main->uiMain->x(), main->uiMain->y(),
                            main->uiMain->w(), main->uiMain->h()-20 );
@@ -1900,7 +1901,7 @@ void Preferences::run( ViewerUI* main )
 
     if ( r->value() == 1 )
     {
-	DBG;
+        DBG;
         // Fullscreen mode
         view->toggle_fullscreen();
     }
@@ -1911,7 +1912,7 @@ void Preferences::run( ViewerUI* main )
     if ( r->value() == 1 )
     {
         // Go to presentation mode - window must be shown first, thou.
-	DBG;
+        DBG;
          view->toggle_presentation();
     }
 
@@ -1939,7 +1940,7 @@ void Preferences::run( ViewerUI* main )
     CMedia::all_layers( b );
 
     DBG;
- 
+
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
@@ -1950,11 +1951,13 @@ void Preferences::run( ViewerUI* main )
     {    DBG;
 
         const char* font = main->uiPrefs->uiPrefsSubtitleFont->child(idx)->label();
-        CMedia::default_subtitle_font( font );
+        if ( font )
+            CMedia::default_subtitle_font( font );
     }
     const char* enc = main->uiPrefs->uiPrefsSubtitleEncoding->value();
     DBG;
-    CMedia::default_subtitle_encoding( enc );
+    if ( enc )
+        CMedia::default_subtitle_encoding( enc );
 
     LogDisplay::prefs = (LogDisplay::ShowPreferences)
                         main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
@@ -2059,11 +2062,11 @@ void Preferences::save()
             ocio.set( "save_config", 1 );
             ocio.set( "config", uiPrefs->uiPrefsOCIOConfig->value() );
         }
-	else
-	{
+        else
+        {
             ocio.set( "save_config", 1 );
             ocio.set( "config", "" );
-	}
+        }
 
         Fl_Preferences ics( ocio, "ICS" );
         {
@@ -2350,7 +2353,7 @@ bool Preferences::set_transforms()
     // Set ui window settings
     PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
     if (!uiPrefs) return true;
-    
+
     uiPrefs->uiODT_CTL_transform->value( ODT_CTL_transform.c_str() );
     uiPrefs->uiODT_CTL_chromaticities_red_x->value( ODT_CTL_chromaticities.red.x );
     uiPrefs->uiODT_CTL_chromaticities_red_y->value( ODT_CTL_chromaticities.red.y );
