@@ -3536,6 +3536,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         sprintf( buf, "%d", content.l() );
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
+	widget->color( colB );
         widget->textcolor( FL_BLACK );
         widget->box( FL_FLAT_BOX );
         if ( !editable )
