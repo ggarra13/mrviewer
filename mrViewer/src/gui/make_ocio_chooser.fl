@@ -43,13 +43,13 @@ if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
       Fl_Button {} {
         label Accept
         user_data w user_data_type {Fl_Window*}
-        callback {delete v;}
+        callback {v->hide();}
         tooltip {Accept the selected OCIO file.} xywh {200 380 85 25}
       }
       Fl_Button {} {
         label Cancel
         user_data w user_data_type {Fl_Window*}
-        callback {ocio = orig; delete v;}
+        callback {ocio = orig; v->hide();}
         tooltip {Cancel the OCIO selection and don't change anything.} xywh {295 380 80 25}
       }
     }
@@ -57,6 +57,7 @@ if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
   code {w->show();
   while ( w->visible() )
       Fl::check();
+Fl::delete_widget(w);
 return ocio;} {selected
   }
 }
