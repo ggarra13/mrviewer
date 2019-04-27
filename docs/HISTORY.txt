@@ -3,7 +3,12 @@ v5.0.1-RC5
 	  and forth keeps and removes the top bar, pixel bar and bottom
 	  bar.
 	- Fixed the combo listing in the custom file requester.
+	- Bug fixed patterns on native file requesters.
 	- Fixed the listing of CTL transforms in the media info window.
+	- Bug fixed a crash on start up due to missing fonts.
+	- Bug fixed a crash on OCIO due to missing ICS.
+	- Bug fixed a memory crash on OCIO picker.
+	- Bug fixed a similar memory leak on CTL picker.
 
 v5.0.1-RC4
 	- Made ICC Profiles and ICC Profile Inspector actually work again.
