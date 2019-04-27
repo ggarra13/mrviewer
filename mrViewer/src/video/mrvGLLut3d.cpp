@@ -68,6 +68,13 @@ const char* kModule = N_("cmm");
 
 #define OCIO_ERROR(x) LOG_ERROR( "[ocio] " << x );
 
+#if 0
+#undef DBG
+#define DBG \
+std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+#else
+#define DBG
+#endif
 
 namespace mrv {
 
@@ -507,29 +514,42 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
     try
     {
+	DBG;
         OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
+	DBG;
         const std::string& display = mrv::Preferences::OCIO_Display;
+	DBG;
         const std::string& view = mrv::Preferences::OCIO_View;
+	DBG;
 
         OCIO::DisplayTransformRcPtr transform =
             OCIO::DisplayTransform::Create();
+	DBG;
 
         std::string ics = img->ocio_input_color_space();
         if  ( ics.empty() )
         {
+	DBG;
             OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
             if(!defaultcs)
                 throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
-            ics = defaultcs->getName();
+	    DBG;
+	    ics = defaultcs->getName();
+	    DBG;
         }
 
 
+	DBG;
         transform->setInputColorSpaceName( ics.c_str() );
+	DBG;
         transform->setDisplay( display.c_str() );
+	DBG;
         transform->setView( view.c_str() );
+	DBG;
 
         OCIO::ConstProcessorRcPtr processor =
             config->getProcessor( transform );
+	DBG;
 
 
         OCIO::PackedImageDesc img(&lut[0],
@@ -538,6 +558,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
                                   /*channels*/ _channels);
         processor->apply( img );
 
+	DBG;
 
         // std::ostringstream os;
         // os << processor->getGpuShaderText(shaderDesc) << std::endl;
@@ -1182,13 +1203,19 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     }
     else
     {
+	DBG;
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() ) {
+	DBG;
             ics = OCIO::ROLE_SCENE_LINEAR;
+	DBG;
         }
         path = ics;
+	DBG;
         path += " -> " + Preferences::OCIO_Display;
+	DBG;
         path += " -> " + Preferences::OCIO_View;
+	DBG;
     }
     //
     // Check if this lut path was already calculated by some other
@@ -1210,22 +1237,29 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     {
         if ( img->ocio_input_color_space().empty() )
         {
+	DBG;
             std::string msg = _( "Image input color space is undefined." );
             mrv::PopupMenu* uiICS = view->uiICS;
+	DBG;
             const char* const lbl = "scene_linear";
             for ( int i = 0; i < uiICS->children(); ++i )
             {
+	DBG;
                 std::string name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
+	DBG;
                     msg += _("  Choosing ") + name + ".";
                     CMedia* c = const_cast< CMedia* >( img );
 
+	DBG;
                     char buf[1024];
                     sprintf( buf, "ICS \"%s\"", name.c_str() );
                     view->uiView->send_network( buf );
 
+	DBG;
                     c->ocio_input_color_space( name );
+	DBG;
                     uiICS->copy_label( lbl );
                     uiICS->value(i);
                     uiICS->redraw();
@@ -1236,15 +1270,23 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         }
         else
         {
+	DBG;
             mrv::PopupMenu* uiICS = view->uiICS;
+	DBG;
             const std::string& lbl = img->ocio_input_color_space();
+	DBG;
             for ( int i = 0; i < uiICS->children(); ++i )
             {
-                const std::string& name = uiICS->child(i)->label();
-                if ( name == lbl )
+		DBG;
+	        const char* name = uiICS->child(i)->label();
+		DBG;
+		if ( name && name == lbl )
                 {
+		    DBG;
                     uiICS->copy_label( lbl.c_str() );
+		    DBG;
                     uiICS->value(i);
+		    DBG;
                     uiICS->redraw();
                     break;
                 }
