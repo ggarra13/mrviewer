@@ -293,7 +293,10 @@ void GLEngine::init_charset()
     if (!hfont) {
         LOG_ERROR( _("Could not open any font of size ") << fontsize);
         hfont = XLoadQueryFont( gdc, "fixed" );
-        if ( !hfont ) return;
+        if ( !hfont ) {
+	    LOG_INFO( _("Opening any fixed font") );
+	    return;
+	}
     }
 
     // Create GL lists out of XFont
