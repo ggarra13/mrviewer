@@ -51,7 +51,7 @@ void alert( const char* str )
     strcpy( _alert, str );
     _alert[strlen(str)] = 0;
 
-    fl_alert( _alert );
+    fl_alert( "%s", _alert );
 }
 
 const char* alert()
