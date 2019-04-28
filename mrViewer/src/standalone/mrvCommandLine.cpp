@@ -93,7 +93,7 @@ typedef std::vector<int> IntArray;
       //
       // Output options in shorter format than TCLAP's default
       //
-      fprintf( stderr, _("\n\nOptions:\n\n"));
+      fprintf( stderr, "%s", _("\n\nOptions:\n\n"));
 
       //
       // Find longest argument for formatting
@@ -120,8 +120,9 @@ typedef std::vector<int> IntArray;
 	}
 
       fprintf( stderr, "\n" );
-      fprintf( stderr, _("Names cannot contain spaces in their paths.\n\n") );
-      fprintf( stderr, _("Examples:\n\n") );
+      fprintf( stderr, "%s",
+	       _("Names cannot contain spaces in their paths.\n\n") );
+      fprintf( stderr, "%s", _("Examples:\n\n") );
       fprintf( stderr, "  > %s background.dpx texture.png\n", cmd.c_str() );
       fprintf( stderr, "  > %s beauty.001-020.iff background.%%04d.exr 1-20\n", cmd.c_str() );
       fprintf( stderr, "  > %s beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi\n", cmd.c_str() );
