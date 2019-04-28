@@ -563,20 +563,23 @@ bool Parser::parse( const std::string& s )
         std::getline( is, s, '"' );
 
         mrv::media fg = v->foreground();
-        CMedia* img = fg->image();
-        if ( img )
-        {
-            if ( idx == 0 ) img->clear_look_mod_transform();
-            if ( idx <= img->number_of_lmts() )
-            {
-                img->append_look_mod_transform( s.c_str() );
-            }
-            else
-            {
-                img->insert_look_mod_transform( idx, s.c_str() );
-            }
-            ok = true;
-        }
+	if ( fg )
+	{
+	    CMedia* img = fg->image();
+	    if ( img )
+	    {
+		if ( idx == 0 ) img->clear_look_mod_transform();
+		if ( idx <= img->number_of_lmts() )
+		{
+		    img->append_look_mod_transform( s.c_str() );
+		}
+		else
+		{
+		    img->insert_look_mod_transform( idx, s.c_str() );
+		}
+	    }
+	}
+	ok = true;
     }
     else if ( cmd == N_("RT") )
     {
