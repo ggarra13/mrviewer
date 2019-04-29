@@ -334,7 +334,8 @@ void parse_command_line( const int argc, char** argv,
     mrv::CmdLineOutput my;
     cmd.setOutput(&my);
 
-    SwitchArg adebug( "d", "debug", _("Turn on debugging console" ) );
+    ValueArg<int> adebug( "d", "debug", _("Turn on debugging console" ),
+			  false, 0, "int" );
     
     //
     // The command-line arguments (parsed in order)
@@ -438,7 +439,7 @@ void parse_command_line( const int argc, char** argv,
 
 #endif
 
-    bool debug = adebug.getValue();
+    int debug = adebug.getValue();
     Preferences::debug = debug;
 #ifdef _WIN32
     if ( debug )
