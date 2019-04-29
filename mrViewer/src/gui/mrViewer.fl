@@ -864,7 +864,10 @@ char buf[256];
 sprintf( buf, "ICS \\"%s\\"", c.c_str() );
 v->uiView->send_network( buf );
 v->uiView->use_lut(true);
-v->uiLUT->value(true);} open
+v->uiLUT->value(true);
+o->redraw();
+refresh();
+} open
               tooltip {OCIO input color space for the image} xywh {260 2 146 22} labelsize 12 align 96
               class {mrv::PopupMenu}
             } {}
@@ -1778,14 +1781,18 @@ delete uiReelWindow; uiReelWindow = NULL;} {}
   }
   Function {refresh()} {open
   } {
-    code {if ( uiMain ) uiMain->redraw();
+    code {Fl::check();  // needed to refresh menu
+    if ( uiMain ) uiMain->redraw();
 if ( uiPrefs ) uiPrefs->uiMain->redraw();
 if ( uiLog ) uiLog->uiMain->redraw();
 if ( uiAbout ) uiAbout->uiMain->redraw();
 if ( uiICCProfiles ) uiICCProfiles->uiMain->redraw();
 if ( uiHotkey ) uiHotkey->uiMain->redraw();
 if ( uiConnection ) uiConnection->uiMain->redraw();
-if ( uiReelWindow ) uiReelWindow->uiMain->redraw();
+if ( uiReelWindow ) {
+   uiReelWindow->uiMain->redraw();
+   uiReelWindow->uiBrowser->redraw();
+}
 if ( uiImageInfo ) uiImageInfo->uiMain->redraw();
 if ( uiGL3dView ) uiGL3dView->uiMain->redraw();
 if ( uiColorArea ) uiColorArea->uiMain->redraw();
@@ -1795,7 +1802,9 @@ if ( uiWaveform ) uiWaveform->uiMain->redraw();
 if ( uiPaint ) uiPaint->uiMain->redraw();
 if ( uiSOPNode ) uiSOPNode->uiMain->redraw();
 if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
-if ( uiStereo ) uiStereo->uiMain->redraw();} {}
+if ( uiStereo ) uiStereo->uiMain->redraw();
+Fl::check(); // needed to refresh windows
+} {}
   }
 }
 

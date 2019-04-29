@@ -202,9 +202,9 @@ bool Parser::parse( const std::string& s )
     v->_clients.clear();
 
 
-#ifdef DEBUG_COMMANDS
-    LOG_INFO( "received: " << s );
-#endif
+
+    if ( Preferences::debug )
+	LOG_INFO( "received: " << s );
 
     if ( cmd == N_("GLPathShape") )
     {
