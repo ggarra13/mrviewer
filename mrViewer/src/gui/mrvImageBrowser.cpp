@@ -1331,7 +1331,9 @@ mrv::media ImageBrowser::load_image( const char* name,
 
     if ( img == NULL )
     {
-        LOG_ERROR( _("Could not guess image format") );
+	std::string file = name;
+	if ( file.substr( file.size() - 4, file.size() ) != ".xml" )
+	    LOG_ERROR( _("Could not guess image format for ") << name );
         return mrv::media();
     }
 
