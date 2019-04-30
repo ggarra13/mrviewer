@@ -1208,6 +1208,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         if ( ics.empty() ) {
 	DBG;
             ics = OCIO::ROLE_SCENE_LINEAR;
+	    CMedia* c = const_cast< CMedia* >( img );
+	    c->ocio_input_color_space( ics );
 	DBG;
         }
         path = ics;
@@ -1238,7 +1240,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         if ( img->ocio_input_color_space().empty() )
         {
 	DBG;
-            std::string msg = _( "Image input color space is undefined." );
+	std::string msg = _( "Image input color space is undefined for ") +
+	img->name() + ".";
             mrv::PopupMenu* uiICS = view->uiICS;
 	DBG;
             const char* const lbl = "scene_linear";
@@ -1275,6 +1278,8 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 	DBG;
             const std::string& lbl = img->ocio_input_color_space();
 	DBG;
+	LOG_INFO( "Input color space for " << img->name() << " is "
+		  << lbl );
             for ( int i = 0; i < uiICS->children(); ++i )
             {
 		DBG;
