@@ -945,7 +945,10 @@ CMedia::~CMedia()
 
         for ( const auto& i : _attrs )
         {
-            delete i.second;
+	    for ( const auto& d : i.second )
+	    {
+		delete d.second;
+	    }
         }
     }
 
