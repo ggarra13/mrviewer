@@ -785,7 +785,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
     AVRational ratio = { 1, c->sample_rate };
 
-    DEBUG( "frame_size= " << frame_size << "  audio->size()= " << audio->size() );
+    DBG3( "frame_size= " << frame_size << "  audio->size()= " << audio->size() );
 
 
     while ( av_audio_fifo_size( fifo ) >= (int)frame_size )
