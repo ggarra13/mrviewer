@@ -35,6 +35,7 @@
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 #include "mrvEDLWindowUI.h"
 
 namespace {
@@ -290,7 +291,7 @@ int EDLGroup::handle( int event )
             if ( m )
             {
 
-		_drag = ImageBrowser::new_item( m );
+		_drag = browser()->new_item( m );
 
 		
                 int j = track->index_for( m );
@@ -302,7 +303,7 @@ int EDLGroup::handle( int event )
 	    
 
                 browser()->reel( track->reel() );
-                DBG("Change  image " << j );
+                DEBUG("Change  image " << j );
                 // browser()->change_image( j );
 
                 view()->stop();
@@ -311,7 +312,7 @@ int EDLGroup::handle( int event )
                 view()->seek( pt );
 
 	    
-                DBG("Changed image " << j );
+                DEBUG("Changed image " << j );
                 browser()->redraw();
                 return 1;
             }
@@ -821,7 +822,7 @@ void EDLGroup::refresh()
     unsigned e = children();
     for ( unsigned i = 0; i < e; ++i )
     {
-        DBG( "REFRESH MEDIA TRACK " << i );
+        DEBUG( "REFRESH MEDIA TRACK " << i );
         mrv::media_track* o = (mrv::media_track*) child(i);
         o->refresh();
         o->redraw();
