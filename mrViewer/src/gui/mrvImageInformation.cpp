@@ -763,11 +763,11 @@ img( NULL )
                                                r.w(), 400, _("Metadata")  );
 
     Fl_Widget* g = Fl_Group::current();
-    DEBUG( "Fl_Group::current = " << g << " label "  << (g->label() ?
+    DBG3( "Fl_Group::current = " << g << " label "  << (g->label() ?
 							 g->label() : "NULL" ));
     m_all->end();
     g = Fl_Group::current();
-    DEBUG( "Fl_Group::current = " << g << " label "  << (g->label() ?
+    DBG3( "Fl_Group::current = " << g << " label "  << (g->label() ?
 							 g->label() : "NULL" ));
 
     // resizable( this );  // this seems broken, that's why I redo layout
@@ -1721,7 +1721,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
                 mrv::Timecode::kTimecodeNonDrop;
             if ( attr->value().dropFrame() )
                 d = mrv::Timecode::kTimecodeDropFrame;
-            char* buf = new char[64];
+            char buf[64];
             int n = mrv::Timecode::format( buf, d, img->frame(),
                                            img->timecode(),
                                            img->play_fps(), true );
