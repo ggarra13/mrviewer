@@ -1,6 +1,8 @@
 v5.0.1  - Bug fixed connection editor failing on LMTs.
 	- Bug fixed refresh windows when selecting a long ICS menu.
 	- Improved reporting of .xml files as recognized.
+	- Allowed metadata to be read and shown on a per frame basis.
+	  Previously, only the first frame would get shown.
 
 v5.0.1-RC5
 	- Improved the fix to the Presentation mode.  Now switching back
