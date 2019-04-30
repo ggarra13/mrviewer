@@ -189,7 +189,6 @@ exrImage::exrImage() :
     _curpart( -1 ),
     _clear_part( 0 ),
     _numparts( -1 ),
-    _read_attr( false ),
     _lineOrder( (Imf::LineOrder) 0 ),
     _compression( (Imf::Compression) 0 ),
     _aces( false )
@@ -201,7 +200,6 @@ exrImage::exrImage() :
 
 exrImage::~exrImage()
 {
-    _cap_date.clear();
     free( _has_right_eye );
     free( _has_left_eye );
 }
@@ -571,10 +569,7 @@ bool exrImage::fetch_mipmap(  mrv::image_type_ptr& canvas,
                         displayWindow.max.x, displayWindow.max.y, frame );
 
 
-        read_forced_header_attr( h, frame );
-
-        if ( ! _read_attr )
-            read_header_attr( h, frame );
+	read_header_attr( h, frame );
 
 
         FrameBuffer fb;
@@ -1118,29 +1113,17 @@ bool exrImage::find_channels( mrv::image_type_ptr& canvas,
     }
 }
 
-void exrImage::read_forced_header_attr( const Imf::Header& h,
-                                        const boost::int64_t& frame )
-{
-
-    const Imf::StringAttribute *attr =
-        h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
-    if ( attr )
-    {
-        SCOPED_LOCK( _mutex );
-        _cap_date[frame] = attr->value();
-    }
-
-}
-
 void exrImage::read_header_attr( const Imf::Header& h,
                                  const boost::int64_t& frame )
 {
-    _read_attr = true;
-
     stringSet attrs;
     attrs.insert( N_("type") );
-    attrs.insert( N_("capDate") );
 
+    if ( _attrs.find( frame ) == _attrs.end() )
+    {
+	_attrs.insert( std::make_pair( frame, Attributes() ) );
+    }
+    
     {
         const Imf::RationalAttribute* attr =
             h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
@@ -1189,8 +1172,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>( N_("chromaticitiesName") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Chromaticities Name"),
-                                           attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Chromaticities Name"),
+						   attr->copy() ) );
             attrs.insert( N_("chromaticitiesName") );
         }
     }
@@ -1200,8 +1183,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Adopted Neutral"),
-                                           attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Adopted Neutral"),
+						   attr->copy() ) );
             attrs.insert( N_("adoptedNeutral") );
             image_damage( image_damage() | kDamageLut );
         }
@@ -1212,7 +1195,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Image State"),
+            _attrs[frame].insert( std::make_pair( _("Image State"),
                                            attr->copy() ) );
             attrs.insert( N_("imageState") );
         }
@@ -1223,7 +1206,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Owner"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Owner"), attr->copy() ) );
             attrs.insert( N_("owner") );
         }
     }
@@ -1233,7 +1216,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Comments"),
+            _attrs[frame].insert( std::make_pair( _("Comments"),
                                            attr->copy() ) );
             attrs.insert( N_("comments") );
         }
@@ -1244,7 +1227,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("UTC Offset"), attr->copy() ) );
             attrs.insert( N_("utcOffset") );
         }
     }
@@ -1254,7 +1237,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Longitude"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Longitude"), attr->copy() ) );
             attrs.insert( N_("longitude") );
         }
     }
@@ -1264,7 +1247,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Latitude"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Latitude"), attr->copy() ) );
             attrs.insert( N_("latitude") );
         }
     }
@@ -1274,7 +1257,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Altitude"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Altitude"), attr->copy() ) );
             attrs.insert( N_("altitude") );
         }
     }
@@ -1284,7 +1267,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Focus"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Focus"), attr->copy() ) );
             attrs.insert( N_("focus") );
         }
     }
@@ -1294,7 +1277,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Exposure Time"), attr->copy() ) );
             attrs.insert( N_("expTime") );
         }
     }
@@ -1304,7 +1287,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Aperture"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Aperture"), attr->copy() ) );
             attrs.insert( N_("aperture") );
         }
     }
@@ -1315,7 +1298,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("ISO Speed"), attr->copy() ) );
             attrs.insert( N_("isoSpeed") );
         }
     }
@@ -1326,7 +1309,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::KeyCodeAttribute>( N_("keyCode") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( N_("keyCode"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( N_("keyCode"), attr->copy() ) );
             attrs.insert( N_("keyCode") );
         }
     }
@@ -1337,7 +1320,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             process_timecode( attr->value() );
-            _attrs.insert( std::make_pair( N_("timecode"), attr->copy() ));
+            _attrs[frame].insert( std::make_pair( N_("timecode"), attr->copy() ));
             attrs.insert( N_("timeCode") );
         }
     }
@@ -1347,7 +1330,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>( N_("writer") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Writer"), attr->copy() ));
+            _attrs[frame].insert( std::make_pair( _("Writer"), attr->copy() ));
             attrs.insert( N_("writer") );
         }
     }
@@ -1357,7 +1340,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>( N_("iccProfile") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("ICC Profile"), attr->copy() ) );
             attrs.insert( N_("iccProfile") );
         }
     }
@@ -1367,7 +1350,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             h.findTypedAttribute<Imf::StringAttribute>( N_("wrapmodes") );
         if ( attr )
         {
-            _attrs.insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
+            _attrs[frame].insert( std::make_pair( _("Wrap Modes"), attr->copy() ) );
             attrs.insert( N_("wrapmodes") );
         }
     }
@@ -1385,7 +1368,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
         {
             TiledInputFile tin( sequence_filename(frame).c_str() );
             Imf::IntAttribute attr( tin.numLevels() );
-            _attrs.insert( std::make_pair( _("Mipmap Levels"),
+            _attrs[frame].insert( std::make_pair( _("Mipmap Levels"),
                                            attr.copy() ) );
             break;
         }
@@ -1394,9 +1377,9 @@ void exrImage::read_header_attr( const Imf::Header& h,
             TiledInputFile tin( sequence_filename(frame).c_str() );
             Imf::IntAttribute xat( tin.numXLevels() );
             Imf::IntAttribute yat( tin.numYLevels() );
-            _attrs.insert( std::make_pair( _("X Ripmap Levels"),
+            _attrs[frame].insert( std::make_pair( _("X Ripmap Levels"),
                                            xat.copy() ));
-            _attrs.insert( std::make_pair( _("Y Ripmap Levels"),
+            _attrs[frame].insert( std::make_pair( _("Y Ripmap Levels"),
                                            yat.copy() ));
             break;
         }
@@ -1408,11 +1391,11 @@ void exrImage::read_header_attr( const Imf::Header& h,
         switch( desc.roundingMode )
         {
         case Imf::ROUND_DOWN:
-            _attrs.insert( std::make_pair( _("Rounding Mode"),
+            _attrs[frame].insert( std::make_pair( _("Rounding Mode"),
                                            new Imf::StringAttribute( _("Down") ) ) );
             break;
         case Imf::ROUND_UP:
-            _attrs.insert( std::make_pair( _("Rounding Mode"),
+            _attrs[frame].insert( std::make_pair( _("Rounding Mode"),
                                            new Imf::StringAttribute( _("Up") ) ) );
             break;
         default:
@@ -1428,11 +1411,11 @@ void exrImage::read_header_attr( const Imf::Header& h,
     {
         const std::string& name = i.name();
         if ( attrs.find( name ) != attrs.end() ||
-                _attrs.find( name ) != _attrs.end() ||
-                ignore.find( name ) != ignore.end() ) continue;
+	     _attrs[frame].find( name ) != _attrs[frame].end() ||
+	     ignore.find( name ) != ignore.end() ) continue;
 
         const Attribute& attr = i.attribute();
-        _attrs.insert( std::make_pair( name, attr.copy() ) );
+        _attrs[frame].insert( std::make_pair( name, attr.copy() ) );
     }
 }
 
@@ -1885,10 +1868,8 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                     image_damage( image_damage() | kDamage3DData );
                 }
 
-                read_forced_header_attr( header, frame );
 
-                if ( ! _read_attr )
-                    read_header_attr( header, frame );
+		read_header_attr( header, frame );
 
 
                 _pixel_ratio = header.pixelAspectRatio();
@@ -2108,10 +2089,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             image_damage( image_damage() | kDamage3DData );
         }
 
-        read_forced_header_attr( header, frame );
-
-        if ( ! _read_attr )
-            read_header_attr( header, frame );
+	read_header_attr( header, frame );
 
         if ( _multiview )
         {
@@ -2246,10 +2224,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             if ( ! find_layers( header ) )
                 return false;
 
-            read_forced_header_attr( header, frame );
-
-            if ( ! _read_attr )
-                read_header_attr( header, frame );
+	    read_header_attr( header, frame );
 
             int zsize;
             Imf::Array< float* > zbuff;
@@ -2408,14 +2383,6 @@ void save_attributes( const CMedia* img, Header& hdr,
     }
 
 
-    const exrImage* exr = dynamic_cast< const exrImage* >( img );
-    if ( exr )
-    {
-        const std::string& date = exr->capture_date( img->frame() );
-        Imf::StringAttribute attr( date );
-        hdr.insert( N_("capDate"), attr );
-    }
-
     const CMedia::Attributes& attributes = img->attributes();
     CMedia::Attributes::const_iterator it = attributes.find( _( "UTC Offset" ) );
     if ( it != attributes.end() )
@@ -2494,7 +2461,7 @@ void save_attributes( const CMedia* img, Header& hdr,
         attrs.insert( _("Comments") );
     }
 
-    it = attributes.find( _( "Capture Date" ) );
+    it = attributes.find( _( "capDate" ) );
     if ( it != attributes.end() )
     {
         hdr.insert( N_("capDate"), *it->second );

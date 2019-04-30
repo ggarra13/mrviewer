@@ -74,6 +74,7 @@ extern "C" {
 #include "core/mrvI8N.h"
 #include "core/mrvOS.h"
 
+#include "gui/mrvPreferences.h"
 
 namespace {
 
@@ -309,7 +310,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                     {
                         if ( !got_audio && apts >= 0 )
                         {
-                            DBG( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                            DEBUG( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                             _audio_packets.seek_end(apts);
                         }
                     }
@@ -328,7 +329,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
             if ( is_seek )
             {
                 if ( !got_audio && apts >= 0 ) {
-                    DBG( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                    DEBUG( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
                 }
             }
@@ -364,7 +365,7 @@ int64_t CMedia::queue_packets( const int64_t frame,
                 }
                 if ( is_seek && got_audio && apts >= 0 )
                 {
-                    DBG( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
+                    DEBUG( "+++ ADD AUDIO SEEK END <<<<<<<<<<<< " );
                     _audio_packets.seek_end(apts);
                 }
             }
@@ -805,21 +806,26 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
 
     AVDictionaryEntry* tag = NULL;
 
+    if ( _attrs.find( _frame ) == _attrs.end() )
+    {
+	_attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
+    }
+    
     while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
         std::string name = prefix;
         name += tag->key;
         if ( name == N_("timecode") || name == N_("Video timecode") ||
-                name == N_("Timecode") || name == N_("timeCode") )
+	     name == N_("Timecode") || name == N_("timeCode") )
         {
             Imf::TimeCode t = str2timecode( tag->value );
             process_timecode( t );
             Imf::TimeCodeAttribute attr( t );
-            _attrs.insert( std::make_pair( name, attr.copy() ) );
+	    _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
         }
         else
         {
             Imf::StringAttribute attr( tag->value );
-            _attrs.insert( std::make_pair( name, attr.copy() ) );
+            _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
         }
     }
 }
@@ -1634,13 +1640,15 @@ void CMedia::fetch_audio( const int64_t frame )
 
     if ( !got_audio && frame != _expected_audio )
     {
-        DBG( "FRAME(" << frame << ") != EXPECTED (" << _expected_audio << ")" );
+        DEBUG( "FRAME(" << frame << ") != EXPECTED (" << _expected_audio
+	       << ")" );
         bool ok = seek_to_position( frame );
-        DBG( "FRAME(" << frame << ") NEW EXPECTED (" << _expected_audio << ")" );
+        DEBUG( "FRAME(" << frame << ") NEW EXPECTED (" << _expected_audio
+	       << ")" );
         if (ok) return;
     }
 
-    DBG( ">>>>>>>> FRAME " << frame << " IS EXPECTED " << _expected_audio );
+    DEBUG( ">>>>>>>> FRAME " << frame << " IS EXPECTED " << _expected_audio );
 
     // if ( !got_audio && !_audio.empty() )
     //   {
@@ -1652,14 +1660,14 @@ void CMedia::fetch_audio( const int64_t frame )
     bool got_video = true;
     bool got_subtitle = true;
 
-    DBG( "queue packets " << frame << " is_seek " << false
+    DEBUG( "queue packets " << frame << " is_seek " << false
          << " got audio " << got_audio );
     int64_t dts = frame;
 
     queue_packets( frame, false, got_video, got_audio,
                    got_subtitle );
 
-    DBG( "queue packets return " << dts );
+    DEBUG( "queue packets return " << dts );
 
     int64_t last = last_frame() + _audio_offset;
     int64_t first = first_frame() + _audio_offset;
@@ -1670,7 +1678,7 @@ void CMedia::fetch_audio( const int64_t frame )
     _adts = dts;
 
     _expected_audio = dts + 1;
-    DBG( "DTS " << dts << " EXPECTED " << _expected_audio );
+    DEBUG( "DTS " << dts << " EXPECTED " << _expected_audio );
 
 }
 
@@ -1714,7 +1722,7 @@ bool CMedia::open_audio( const short channels,
 {
     close_audio();
 
-    DBG("open audio - audio closed" );
+    DEBUG("open audio - audio closed" );
 
     AudioEngine::AudioFormat format = AudioEngine::kFloatLSB;
 
@@ -1730,7 +1738,7 @@ bool CMedia::open_audio( const short channels,
         // At this speed, we consume buffers really fast.  Use more buffers
         // This fixes a bug in Windows where sound would not play.
         // On Linux, this does nothing.
-        DBG("16 audio buffers" );
+        DEBUG("16 audio buffers" );
         _audio_engine->buffers( 16 );
     }
 
