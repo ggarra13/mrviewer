@@ -48,6 +48,7 @@
 #include "rawImage.h"
 #include "smpteImage.h"
 
+#include "gui/mrvPreferences.h"
 #include "Sequence.h"
 #include "mrvIO.h"
 #include "mrvOS.h"
@@ -424,7 +425,7 @@ CMedia* CMedia::guess_image( const char* file,
         LOG_ERROR( e.what() );
     }
 
-    DBG("Loaded " << image->name() );
+    DEBUG("Loaded " << image->name() );
 
     return image;
 }
