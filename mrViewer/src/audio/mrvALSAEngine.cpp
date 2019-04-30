@@ -1,6 +1,6 @@
 /*
    mrViewer - the professional movie and flipbook playback
-   Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+   Copyright (C) 2007-2014  Gonzalo Garramuño
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -701,7 +701,7 @@ bool ALSAEngine::play( const char* data, const size_t size )
             }
             if ( status == -EPIPE ) {
                 /* output buffer underrun */
-                DEBUG( _("Buffer underrun: ") << snd_strerror( status ) );
+                DBG3( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     std::cerr << "ERROR: [alsa] snd_pcm_prepare failed"
