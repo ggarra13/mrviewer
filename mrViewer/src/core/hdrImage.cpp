@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -113,6 +113,8 @@ void hdrImage::read_header( FILE* f )
     unsigned int w = 0;
     unsigned int h = 0;
 
+    _attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
+
     while ( fgets( line, 256, f ) != NULL )
     {
         char* s = line;
@@ -164,7 +166,7 @@ void hdrImage::read_header( FILE* f )
             static const std::string key = _("Owner");
             std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-            _attrs.insert( std::make_pair( key, attr.copy() ) );
+            _attrs[_frame].insert( std::make_pair( key, attr.copy() ) );
         }
         else if ( strcasecmp( keyword, "CAPDATE" ) == 0 )
         {
@@ -188,7 +190,7 @@ void hdrImage::read_header( FILE* f )
             std::string val = now;
 
             Imf::StringAttribute attr( val );
-            _attrs.insert( std::make_pair( key, attr.copy() ) );
+            _attrs[_frame].insert( std::make_pair( key, attr.copy() ) );
             continue;
         }
         else if ( strcasecmp( keyword, "EXPOSURE" ) == 0 )
@@ -196,7 +198,7 @@ void hdrImage::read_header( FILE* f )
             static const std::string key = _("Exposure");
             char* val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-            _attrs.insert( std::make_pair( key, attr.copy() ) );
+            _attrs[_frame].insert( std::make_pair( key, attr.copy() ) );
 
             exposure = (float) atof( val );
             continue;
@@ -215,7 +217,7 @@ void hdrImage::read_header( FILE* f )
             static const std::string key = _("Software");
             std::string val = strtok_r( NULL, "=", &state );
             Imf::StringAttribute attr( val );
-            _attrs.insert( std::make_pair( key, attr.copy() ) );
+            _attrs[_frame].insert( std::make_pair( key, attr.copy() ) );
             continue;
         }
         else if ( strcasecmp( keyword, "PIXASPECT" ) == 0 )
