@@ -952,9 +952,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
     {
         if ( force || !uiMain->uiConnection->uiMain->visible() )
         {
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiConnection->uiMain->show();
-            Fl_Group::current( 0 );
         }
         else
         {
@@ -965,9 +963,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
     {
         if ( force || !uiMain->uiPrefs->uiMain->visible() )
         {
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiPrefs->uiMain->show();
-            Fl_Group::current( 0 );
         }
         else
         {
@@ -978,9 +974,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
     {
         if ( force || !uiMain->uiHotkey->uiMain->visible() )
         {
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiHotkey->uiMain->show();
-            Fl_Group::current( 0 );
         }
         else
         {
@@ -991,9 +985,7 @@ void ImageView::toggle_window( const ImageView::WindowList idx, const bool force
     {
         if ( force || !uiMain->uiLog->uiMain->visible() )
         {
-            Fl_Group::current( uiMain->uiMain );
             uiMain->uiLog->uiMain->show();
-            Fl_Group::current( 0 );
         }
         else
         {

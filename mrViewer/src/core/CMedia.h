@@ -120,8 +120,8 @@ class CMedia
 {
 public:
     typedef mrv::ImagePixel    Pixel;
-    // typedef  std::map< std::string, std::string > Attributes;
     typedef  std::map< std::string, Imf::Attribute* > Attributes;
+    typedef std::map< int64_t, Attributes > AttributesFrame;
 
     typedef boost::recursive_mutex              Mutex;
     typedef boost::condition_variable_any       Condition;
@@ -1166,10 +1166,22 @@ public:
 
 
     Attributes& attributes()  {
-        return _attrs;
+	static Attributes empty;
+	AttributesFrame::iterator i = _attrs.find( _frame );
+	if ( i != _attrs.end() )
+	    return i->second; 
+        return empty;
     }
     const Attributes& attributes() const {
-        return _attrs;
+	static Attributes empty;
+	AttributesFrame::const_iterator i = _attrs.find( _frame );
+	if ( i != _attrs.end() )
+	    return i->second;
+        return empty;
+    }
+
+    const AttributesFrame attrs_frames() const {
+	return _attrs;
     }
 
     static void default_profile( const char* c );
@@ -1956,7 +1968,7 @@ protected:
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
     LayerBuffers _layerBuffers;          //!< mapping of layer to pixel buf.
 
-    Attributes _attrs;                    //!< All attributes
+    AttributesFrame _attrs;                    //!< All attributes
 
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
