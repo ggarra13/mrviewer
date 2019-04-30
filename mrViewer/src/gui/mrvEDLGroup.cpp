@@ -303,7 +303,7 @@ int EDLGroup::handle( int event )
 	    
 
                 browser()->reel( track->reel() );
-                DEBUG("Change  image " << j );
+                DBG3("Change  image " << j );
                 // browser()->change_image( j );
 
                 view()->stop();
@@ -312,7 +312,7 @@ int EDLGroup::handle( int event )
                 view()->seek( pt );
 
 	    
-                DEBUG("Changed image " << j );
+                DBG3("Changed image " << j );
                 browser()->redraw();
                 return 1;
             }
@@ -822,7 +822,7 @@ void EDLGroup::refresh()
     unsigned e = children();
     for ( unsigned i = 0; i < e; ++i )
     {
-        DEBUG( "REFRESH MEDIA TRACK " << i );
+        DBG3( "REFRESH MEDIA TRACK " << i );
         mrv::media_track* o = (mrv::media_track*) child(i);
         o->refresh();
         o->redraw();
