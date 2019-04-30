@@ -128,7 +128,7 @@ namespace mrv {
                            w-(GROUP_MARGIN*2),               // width same as group within margin
                            10, l);                              // changes when child add()ed
     
-    // Don't end() _contents; we want it to begin() sucking up child widgets on return
+    // end() _contents; we dont' want it to begin() sucking up child widgets on return
     _contents->end();
     Fl_Group::end();
     
