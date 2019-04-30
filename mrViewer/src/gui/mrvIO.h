@@ -189,13 +189,17 @@ extern errorstream error;
 #define IMG_INFO_F(msg) LOG_INFO( name() << _(" frame ") << this->frame() << " - " << msg )
 #define IMG_INFO(msg) LOG_INFO( name() << " - " << msg )
 
-#if 0
-#define DBG(msg) do { \
-    LOG_DEBUG( msg ); \
+#if 1
+#define DEBUG(msg) do { \
+    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
 } while(0)
 #else
-#define DBG(msg)
+#define DEBUG(msg)
 #endif
+
+#define DBG								\
+if ( mrv::Preferences::debug > 2 ) std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
+
 
 #if 0
 #  define TRACE(msg) do { \
