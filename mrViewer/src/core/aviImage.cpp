@@ -2503,11 +2503,12 @@ void aviImage::populate()
     //  _inv_table = sws_getCoefficients( SWS_CS_ITU709 );
     // }
 
+    
     // We get this here for timecode and for color space
     dump_metadata( _context->metadata );
 
-    Attributes::const_iterator i = _attrs.begin();
-    Attributes::const_iterator e = _attrs.end();
+    Attributes::const_iterator i = _attrs[_frame].begin();
+    Attributes::const_iterator e = _attrs[_frame].end();
     for ( ; i != e; ++i )
     {
         if ( i->first.find( "YCbCrMatrix" ) != std::string::npos  )
@@ -2562,7 +2563,7 @@ void aviImage::populate()
         {
             sprintf( buf, _("Program %d: %s"), i+1, tag->key );
             Imf::StringAttribute* value = new Imf::StringAttribute( tag->value );
-            _attrs.insert( std::make_pair(buf, value) );
+            _attrs[_frame].insert( std::make_pair(buf, value) );
         }
         sprintf( buf, _("Program %d "), i+1 );
         dump_metadata( _context->programs[i]->metadata, buf );
