@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -251,35 +251,36 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 
         const libraw_imgother_t& o = iprc->other;
 
+	_attrs.insert( std::make_pair( frame, Attributes() ) );
         {
             Imf::FloatAttribute attr( o.iso_speed );
-            _attrs.insert( std::make_pair( "Exif:ISOSpeedRatings",
+            _attrs[frame].insert( std::make_pair( "Exif:ISOSpeedRatings",
                                            attr.copy() ) );
         }
         {
             Imf::FloatAttribute attr( o.shutter );
-            _attrs.insert( std::make_pair( "ExposureTime",
+            _attrs[frame].insert( std::make_pair( "ExposureTime",
                                            attr.copy() ) );
         }
         {
             Imf::FloatAttribute attr( -log2f(o.shutter) );
-            _attrs.insert( std::make_pair( "Exif:ShutterSpeedValue",
+            _attrs[frame].insert( std::make_pair( "Exif:ShutterSpeedValue",
                                            attr.copy() ) );
         }
         {
             //   Imf::FloatAttribute attr( o.aperture );
             Imf::RationalAttribute attr( Imf::Rational( o.aperture*100,
                                          100 ) );
-            _attrs.insert( std::make_pair( "F Number", attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( "F Number", attr.copy() ) );
         }
         {
             Imf::FloatAttribute attr( 2.0f * log2f(o.aperture) );
-            _attrs.insert( std::make_pair( "Exif:ApertureValue",
+            _attrs[frame].insert( std::make_pair( "Exif:ApertureValue",
                                            attr.copy() ) );
         }
         {
             Imf::FloatAttribute attr( o.focal_len );
-            _attrs.insert( std::make_pair( "Exif:FocalLength",
+            _attrs[frame].insert( std::make_pair( "Exif:FocalLength",
                                            attr.copy() ) );
         }
         {
@@ -287,30 +288,30 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
             char datetime[20];
             strftime (datetime, 20, "%Y-%m-%d %H:%M:%S", m_tm);
             Imf::StringAttribute attr( datetime );
-            _attrs.insert( std::make_pair( "DateTime", attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( "DateTime", attr.copy() ) );
         }
         if ( o.desc[0] )
         {
             Imf::StringAttribute attr( o.desc );
-            _attrs.insert( std::make_pair( "ImageDescription",
+            _attrs[frame].insert( std::make_pair( "ImageDescription",
                                            attr.copy() ) );
         }
 
         if ( o.artist[0] )
         {
             Imf::StringAttribute attr( o.artist );
-            _attrs.insert( std::make_pair( "Artist", attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( "Artist", attr.copy() ) );
         }
         {
             const libraw_colordata_t &color (iprc->color);
             Imf::FloatAttribute attr( color.flash_used );
-            _attrs.insert( std::make_pair( "Exif:Flash",
+            _attrs[frame].insert( std::make_pair( "Exif:Flash",
                                            attr.copy() ) );
 
             if ( color.model2[0] )
             {
                 Imf::StringAttribute attr( color.model2 );
-                _attrs.insert( std::make_pair( "Software", attr.copy() ) );
+                _attrs[frame].insert( std::make_pair( "Software", attr.copy() ) );
             }
         }
 
