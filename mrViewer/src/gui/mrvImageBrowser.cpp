@@ -682,6 +682,7 @@ void ImageBrowser::remove_reel()
  */
 Element* ImageBrowser::new_item( mrv::media m )
 {
+    Fl_Group::current(this);
     Element* nw = new Element( m );
     if ( !nw )
     {
@@ -1030,7 +1031,7 @@ void ImageBrowser::clear_bg()
  */
 void ImageBrowser::change_reel()
 {
-    DBG( "Change reel" );
+    DEBUG( "Change reel" );
 
     CMedia::Playback play = view()->playback();
     view()->stop();
@@ -1045,7 +1046,7 @@ void ImageBrowser::change_reel()
 
     if ( reel->images.empty() )
     {
-        DBG( "NO images in reel" );
+        DEBUG( "NO images in reel" );
 
         change_image( -1 );
     }
@@ -1071,14 +1072,14 @@ void ImageBrowser::change_reel()
 
     if ( reel->edl )
     {
-        DBG( "SET EDL" );
+        DEBUG( "SET EDL" );
 
         set_edl();
     }
     else
     {
 
-        DBG( "CLEAR EDL" );
+        DEBUG( "CLEAR EDL" );
         clear_edl();
     }
 
@@ -1137,7 +1138,7 @@ void ImageBrowser::change_image()
 
         if ( m && v )
         {
-            DBG( "FG REEL " << _reel << " m: " << m->image()->name() );
+            DEBUG( "FG REEL " << _reel << " m: " << m->image()->name() );
 
             v->fg_reel( _reel );
             v->foreground( m );
@@ -1198,7 +1199,7 @@ void ImageBrowser::change_image(int i)
 
     send_reel( reel );
 
-    DBG( "CHANGE IMAGE TO INDEX " << i );
+    DEBUG( "CHANGE IMAGE TO INDEX " << i );
     value( i );
     send_image( i );
     change_image();
@@ -1436,9 +1437,9 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
     if ( files.size() > 1 && progressBar )
     {
-        Fl_Group::current( main );
+	Fl_Group::current(0);
         w = new Fl_Window( main->x(), main->y() + main->h()/2,
-                              main->w(), 80 );
+			   main->w(), 80 );
         w->clear_border();
         w->begin();
         progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
@@ -1449,7 +1450,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
         w->end();
 
         w->show();
-        Fl_Group::current( 0 );
         Fl::check();
     }
 
@@ -1995,12 +1995,12 @@ void ImageBrowser::change_background()
 
     if ( view()->background() == reel->images[sel] )
     {
-        DBG( "BG REEL ************* " << -1 );
+        DEBUG( "BG REEL ************* " << -1 );
         clear_bg();
     }
     else
     {
-        DBG( "BG REEL ************* " << _reel << "  SEL " << sel
+        DEBUG( "BG REEL ************* " << _reel << "  SEL " << sel
              << " " << reel->images[sel]->image()->name() );
         view()->bg_reel( _reel );
         mrv::media bg = reel->images[sel];
@@ -2330,7 +2330,7 @@ void ImageBrowser::next_image()
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
-    DBG( "reel name " << reel->name );
+    DEBUG( "reel name " << reel->name );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
@@ -2370,13 +2370,13 @@ void ImageBrowser::next_image()
     if ( reel->edl )
     {
         int64_t pos = m->position();
-        DBG( "seek to " << pos );
+        DEBUG( "seek to " << pos );
         seek( pos );
     }
     else
     {
         CMedia* img = m->image();
-        DBG( "******* NOT REEL" );
+        DEBUG( "******* NOT REEL" );
         img->seek( orig->image()->frame() );
         img->do_seek();
     }
@@ -2397,7 +2397,7 @@ void ImageBrowser::previous_image()
 {
     mrv::Reel reel = current_reel();
 
-    DBG( "reel name " << reel->name );
+    DEBUG( "reel name " << reel->name );
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
@@ -2438,13 +2438,13 @@ void ImageBrowser::previous_image()
     if ( reel->edl )
     {
         int64_t pos = m->position();
-        DBG( "seek to " << pos );
+        DEBUG( "seek to " << pos );
         seek( pos );
     }
     else
     {
         CMedia* img = m->image();
-        DBG( "******* NOT REEL" );
+        DEBUG( "******* NOT REEL" );
         img->seek( orig->image()->frame() );
         img->do_seek();
     }
@@ -2509,7 +2509,7 @@ int ImageBrowser::mousePush( int x, int y )
         }
 
 
-        DBG( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
+        DEBUG( "DRAGGING LEFT MOUSE BUTTON " << dragging->label() );
 
         mrv::Reel reel = current_reel();
         mrv::Element* e = (mrv::Element*) dragging->widget();
@@ -2527,7 +2527,7 @@ int ImageBrowser::mousePush( int x, int y )
         if ( reel->edl && m )
         {
             int64_t s = m->position();
-            DBG("seek to " << s << " " << m->image()->name() );
+            DEBUG("seek to " << s << " " << m->image()->name() );
             seek( s );
         }
 
@@ -2836,7 +2836,7 @@ void ImageBrowser::exchange( int oldsel, int sel )
     {
         int64_t x = t->offset( img );
         f += x;
-        DBG( "set frame to " << f );
+        DEBUG( "set frame to " << f );
         frame( f );
     }
 
@@ -3033,7 +3033,7 @@ void ImageBrowser::seek( const int64_t tframe )
         }
 
 
-        DBG( "seek f: " << f );
+        DEBUG( "seek f: " << f );
 
         mrv::media fg = view()->foreground();
 
@@ -3236,7 +3236,7 @@ void ImageBrowser::adjust_timeline()
                 for ( j = i, ++i; i != e; j = i, ++i )
                 {
                     int64_t frame = (*j)->position() + (*j)->duration();
-                    DBG( (*i)->image()->name() << " moved to frame " << frame );
+                    DEBUG( (*i)->image()->name() << " moved to frame " << frame );
                     (*i)->position( frame );
                 }
             }
@@ -3281,10 +3281,10 @@ void ImageBrowser::adjust_timeline()
 
     // for ( int i = 0; i < reel->images.size(); ++i )
     // {
-    //    DBG( "Image " << i << " " << reel->images[i]->position() );
+    //    DEBUG( "Image " << i << " " << reel->images[i]->position() );
     // }
 
-    // DBG( "first " << first << " f=" << f << " last " << last );
+    // DEBUG( "first " << first << " f=" << f << " last " << last );
 
     mrv::Timeline* t = timeline();
     if ( t )
