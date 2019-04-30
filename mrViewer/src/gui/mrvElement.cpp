@@ -1,5 +1,6 @@
 
 #include "mrvElement.h"
+#include "gui/mrvPreferences.h"
 
 namespace {
     const char* kModule = "elem";
@@ -85,6 +86,7 @@ void Element::make_thumbnail()
                      );
         }
 
+	DBG;
         label->copy_label( info );
 
         label->color(0xddddff00);
@@ -94,7 +96,9 @@ void Element::make_thumbnail()
 
         label->box(FL_FLAT_BOX);
 
+	DEBUG( "Fl_Group::current = " << Fl_Group::current() );
         end();
+	DEBUG( "Fl_Group::current = " << Fl_Group::current() );
 
     }
 
