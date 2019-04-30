@@ -747,9 +747,9 @@ void change_timeline_display( ViewerUI* uiMain )
     const char* label = uiMain->uiTimecodeSwitch->child(i)->label();
 
     char buf[3];
+    buf[0] = label[0];
     buf[1] = ':';
     buf[2] = 0;
-    buf[0] = label[0];
 
     uiMain->uiTimecodeSwitch->copy_label( buf );
 
