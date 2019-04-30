@@ -19,10 +19,10 @@
  * @file   mrvCollapsibleGroup.cpp
  * @author gga
  * @date   Tue Aug  7 04:52:02 2007
- * 
- * @brief  
- * 
- * 
+ *
+ * @brief
+ *
+ *
  */
 
 #include <cstring>
@@ -85,13 +85,13 @@ namespace mrv {
                       _contents->h());                  // leave height of _contents alone
 
     // DEBUG
-    
+
     // printf("--- LAYOUT CHANGED (%s) ------\n", label() ? label() : "(no label)");
     // printf(" grp: %d,%d,%d,%d\n", x(),y(),w(),h());
     // printf(" but: %d,%d,%d,%d\n", _button->x(), _button->y(), _button->w(), _button->h());
     // printf("pack: %d,%d,%d,%d\n", _contents->x(), _contents->y(), _contents->w(), _contents->h());
     // printf("\n");
-    
+
   }
 
   void CollapsibleGroup::toggle_tab_cb(Fl_Button* w, void *data) {
@@ -100,10 +100,10 @@ namespace mrv {
   }
 
   // CTOR
-  CollapsibleGroup::CollapsibleGroup( const int x, const int y, 
-                                      const int w, const int h, 
+  CollapsibleGroup::CollapsibleGroup( const int x, const int y,
+                                      const int w, const int h,
                                       const char* l ) : Fl_Group( x, y, w, h, l ) {
-   
+
     box( FL_ROUNDED_BOX );   // get fancy later, after we debug. It's harder to see problems with round box. -erco
 
     // Use a border box for now, so we can see our bounds in parent MyPack.
@@ -113,7 +113,7 @@ namespace mrv {
     labeltype(FL_NO_LABEL);
 
     //NOTNEEDED Fl_Group::begin();
-    // Button 
+    // Button
     _button = new Fl_Button(x+GROUP_MARGIN,           // margin leaves room for FL_ROUND_BOX
                             y+GROUP_MARGIN,           // margin leaves room for FL_ROUND_BOX
                             w-(GROUP_MARGIN*2),       // width same as group within margin
@@ -127,11 +127,11 @@ namespace mrv {
                            y+_button->y()+_button->h(),      // just below button
                            w-(GROUP_MARGIN*2),               // width same as group within margin
                            10, l);                              // changes when child add()ed
-    
+
     // end() _contents; we dont' want it to begin() sucking up child widgets on return
     _contents->end();
     Fl_Group::end();
-    
+
     relabel_button();         // relabel button once pack created
     resizable(0);             // prevent FLTK auto-sizing -- we handle children ourself
   }
@@ -159,7 +159,7 @@ namespace mrv {
 //      fl_pop_clip();                     // enforce clipping
 
 //      fl_color(FL_RED);   fl_rect(x(), y(), w(), h());   // red line around group's xywh
-//      fl_color(FL_GREEN); fl_rect(_contents->x(),        // grn line around pack's xywh 
+//      fl_color(FL_GREEN); fl_rect(_contents->x(),        // grn line around pack's xywh
 //                                  _contents->y(),
 //                                  _contents->w(),
 //                                  _contents->h());
