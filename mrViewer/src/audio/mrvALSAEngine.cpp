@@ -32,6 +32,7 @@
 using namespace std;
 
 #include "audio/mrvALSAEngine.h"
+#include "gui/mrvPreferences.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 
@@ -700,7 +701,7 @@ bool ALSAEngine::play( const char* data, const size_t size )
             }
             if ( status == -EPIPE ) {
                 /* output buffer underrun */
-                DBG( _("Buffer underrun: ") << snd_strerror( status ) );
+                DEBUG( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     std::cerr << "ERROR: [alsa] snd_pcm_prepare failed"

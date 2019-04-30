@@ -35,6 +35,7 @@
 #include "gui/mrvImageInformation.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
 #include "mrvImageInfo.h"
@@ -415,7 +416,7 @@ bool media_track::select_media( const boost::int64_t pos,
             ok = true;
             _audio_selected = false;
             if ( Y > y() + h()-20 && Y < y() + h() ) _audio_selected = true;
-            _selected = ImageBrowser::new_item( fg );
+            _selected = browser()->new_item( fg );
             focus(this);
 
 	    
@@ -499,11 +500,11 @@ void media_track::refresh()
 {
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) {
-        DBG( "EMPTY REEL AT INDEX " << _reel_idx );
+        DEBUG( "EMPTY REEL AT INDEX " << _reel_idx );
         return;
     }
 
-    DBG( reel->name << " #images=" << reel->images.size() );
+    DEBUG( reel->name << " #images=" << reel->images.size() );
 
     //
     // Adjust timeline position
@@ -519,7 +520,7 @@ void media_track::refresh()
         for ( j = i, ++i; i != end; j = i, ++i )
         {
             int64_t frame = (*j)->position() + (*j)->duration();
-            DBG( (*i)->image()->name() << " set to frame " << frame );
+            DEBUG( (*i)->image()->name() << " set to frame " << frame );
             (*i)->position( frame );
         }
     }
