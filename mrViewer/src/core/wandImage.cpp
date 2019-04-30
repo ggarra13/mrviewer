@@ -410,8 +410,9 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         _chromaticities.white.y = float(wy);
     }
 
-    if ( _attrs.empty() )
+    if ( _attrs.find( frame ) == _attrs.end() )
     {
+	_attrs.insert( std::make_pair( frame, Attributes() ) );
         ExceptionInfo* exception = NULL;
         GetImageProperty( img, "exif:*", exception );
         ResetImagePropertyIterator( img );
@@ -484,7 +485,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                     Imf::TimeCode t = CMedia::str2timecode( value );
                     process_timecode( t );
                     Imf::TimeCodeAttribute attr( t );
-                    _attrs.insert( std::make_pair( N_("timecode"),
+                    _attrs[frame].insert( std::make_pair( N_("timecode"),
                                                    attr.copy() ) );
                     property = GetNextImageProperty(img);
                     continue;
@@ -493,7 +494,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                 // We always add the EXIF attribute even if it passes
                 // other tests so that if user saves the file all is kept
                 Imf::StringAttribute attr( value );
-                _attrs.insert( std::make_pair( key, attr.copy() ) );
+                _attrs[frame].insert( std::make_pair( key, attr.copy() ) );
             }
             property = GetNextImageProperty(img);
         }
@@ -694,7 +695,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                     (void) CopyMagickString(attribute,(char *) tmp+i,
                                             length+1);
                     Imf::StringAttribute attr( attribute );
-                    _attrs.insert( std::make_pair( tag, attr.copy() ) );
+                    _attrs[frame].insert( std::make_pair( tag, attr.copy() ) );
                     attribute=(char *) RelinquishMagickMemory(attribute);
                 }
             }
@@ -1589,12 +1590,16 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     //
     {
         setlocale( LC_NUMERIC, "C" );  // Set locale to C
-        Attributes::const_iterator i = _attrs.begin();
-        Attributes::const_iterator e = _attrs.end();
-        for ( ; i != e; ++i )
-        {
-            save_attribute( this, wand, i );
-        }
+	AttributesFrame::const_iterator j = _attrs.find( _frame );
+	if ( j != _attrs.end() )
+	{
+	    Attributes::const_iterator i = j->second.begin();
+	    Attributes::const_iterator e = j->second.end();
+	    for ( ; i != e; ++i )
+	    {
+		save_attribute( this, wand, i );
+	    }
+	}
 
         char buf[32];
         sprintf( buf, "%2.4f", _fps.load() );
