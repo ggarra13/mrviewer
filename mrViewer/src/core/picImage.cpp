@@ -1,7 +1,7 @@
 
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -262,8 +262,9 @@ bool picImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame)
     size_t read = fread(buf, 80, 1, file );
     if ( buf[0] != 0 )
     {
+	_attrs.insert( std::make_pair( frame, Attributes() ) );
         Imf::StringAttribute attr( buf );
-        _attrs.insert( std::make_pair( "Creator", attr.copy() ) );
+        _attrs[frame].insert( std::make_pair( "Creator", attr.copy() ) );
     }
 
     tmp = readInt(file);		// File identifier 'PICT'
