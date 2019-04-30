@@ -678,21 +678,21 @@ void audio_thread( PlaybackData* data )
         int step = (int) img->playback();
         if ( step == 0 ) break;
 
-        //DEBUG( "wait audio " << frame );
+        //DBG3( "wait audio " << frame );
         img->wait_audio();
 
 
 
 
         boost::int64_t f = frame;
-        // DEBUG( "decode audio " << frame );
+        // DBG3( "decode audio " << frame );
 
         // if (!fg)
         // img->debug_audio_packets( frame, "play", true );
 
 
         CMedia::DecodeStatus status = img->decode_audio( f );
-        DEBUG( img->name() << " decoded audio " << f << " status " << status );
+        DBG3( img->name() << " decoded audio " << f << " status " << status );
 
         assert( img != NULL );
         assert( reel != NULL );
@@ -729,7 +729,7 @@ void audio_thread( PlaybackData* data )
         {
 
 
-            DEBUG( img->name() << " BARRIER IN AUDIO " << frame );
+            DBG3( img->name() << " BARRIER IN AUDIO " << frame );
 
 
             CMedia::Barrier* barrier = img->loop_barrier();
@@ -737,7 +737,7 @@ void audio_thread( PlaybackData* data )
             {
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                DEBUG( img->name() << " BARRIER PASSED IN AUDIO "
+                DBG3( img->name() << " BARRIER PASSED IN AUDIO "
                      << frame );
             }
 
@@ -777,7 +777,7 @@ void audio_thread( PlaybackData* data )
                 if ( fg ) view->playback( p );
             }
 
-            DEBUG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
+            DBG3( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
             continue;
         }
         case CMedia::kDecodeOK:
@@ -1122,12 +1122,12 @@ void video_thread( PlaybackData* data )
             }
             // LOGT_INFO( img->name() << "@" << barrier << " waited" );
 
-            DEBUG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
+            DBG3( img->name() << " BARRIER PASSED IN VIDEO stopped? "
                  << img->stopped() << " frame: " << frame );
 
             if ( img->stopped() ) continue;
 
-            DEBUG( img->name() << " VIDEO LOOP frame: " << frame );
+            DBG3( img->name() << " VIDEO LOOP frame: " << frame );
 
 
             EndStatus end = handle_loop( frame, step, img, fg, true,
@@ -1366,7 +1366,7 @@ void decode_thread( PlaybackData* data )
                 //      << " used: " << barrier->used() );
                 // Wait until all threads loop and decode is restarted
                 bool ok = barrier->wait();
-                // DEBUG( img->name() << " BARRIER DECODE LOCK PASS gen: "
+                // DBG3( img->name() << " BARRIER DECODE LOCK PASS gen: "
                 //      << barrier->generation()
                 //      << " count: " << barrier->count()
                 //      << " threshold: " << barrier->threshold()
