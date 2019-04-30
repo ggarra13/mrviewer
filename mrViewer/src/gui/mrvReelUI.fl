@@ -129,9 +129,8 @@ v->new_reel(name);}
   }
   Function {ReelUI(ViewerUI* m)} {open
   } {
-    code {Fl_Group::current( m->uiMain );
-make_window( m );
-Fl_Group::current(0);} {selected
+    code {Fl_Group::current( 0 );
+make_window( m );} {selected
     }
   }
   Function {~ReelUI()} {open

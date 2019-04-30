@@ -225,6 +225,7 @@ protected:
 
 public:
     mrv::CollapsibleGroup*       m_attributes;
+    Fl_Menu_Button*              menu;
 };
 
 } // namespace mrv
