@@ -243,7 +243,7 @@ public:
 
 public:
     //! Create a tree element from a media
-    static mrv::Element* new_item(mrv::media img);
+    mrv::Element* new_item(mrv::media img);
 
 protected:
 
