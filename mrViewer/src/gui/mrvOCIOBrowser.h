@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,14 +30,14 @@
 
 #include <string>
 
-#include <FL/Fl_Hold_Browser.H>
+#include <FL/Fl_Browser.H>
 
 
 namespace mrv {
 
 class CMedia;
 
-class OCIOBrowser : public Fl_Hold_Browser
+class OCIOBrowser : public Fl_Browser
 {
 public:
     enum Type {
@@ -61,6 +61,7 @@ public:
         fill();
     }
 
+    int handle( int event );
 
 protected:
     void fill();
