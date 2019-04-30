@@ -187,9 +187,8 @@ o->column_widths( col_widths ); o->add( mrv::ffmpeg_motion_estimation_methods().
   }
   Function {AboutUI(ViewerUI* m)} {open
   } {
-    code {Fl_Group::current( m->uiMain );
-    make_window( m );
-    Fl_Group::current(0);} {}
+    code {Fl_Group::current(0);
+    make_window( m );} {}
   }
   Function {~AboutUI()} {open
   } {
