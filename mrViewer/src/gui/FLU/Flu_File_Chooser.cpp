@@ -334,7 +334,7 @@ static void loadRealIcon( RealIcon* e)
     size_t p;
 
     if ( e->chooser->quick_exit ) {
-        DEBUG( "lri quick exit " << e->entry << " chooser " << e->chooser );
+        DBG3( "lri quick exit " << e->entry << " chooser " << e->chooser );
         goto SALIDA;
     }
 
@@ -382,7 +382,7 @@ static void loadRealIcon( RealIcon* e)
     sprintf( buf, fmt, frameStart );
 
 
-    DEBUG( "lri file exists? " << buf );
+    DBG3( "lri file exists? " << buf );
 
 
     // if ( ! fs::exists( buf ) ) {
@@ -391,7 +391,7 @@ static void loadRealIcon( RealIcon* e)
     //     return;
     // }
 
-    DEBUG( "lri process icon " << e->entry << " " << e->filename
+    DBG3( "lri process icon " << e->entry << " " << e->filename
          << " chooser " << e->chooser );
 
     if ( e->serial == e->chooser->serial )
@@ -406,12 +406,12 @@ static void loadRealIcon( RealIcon* e)
         }
 
         if ( !img ) {
-            DEBUG( "Img is NULL" );
+            DBG3( "Img is NULL" );
             goto SALIDA;
         }
 
 
-        DEBUG( "lri processed icon " << e->entry << " " << e->filename
+        DBG3( "lri processed icon " << e->entry << " " << e->filename
              << " chooser " << e->chooser  );
         if ( e->serial == e->chooser->serial )
         {
