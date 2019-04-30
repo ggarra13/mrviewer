@@ -65,8 +65,6 @@ public:
         return CMedia::get(create, name, datas);
     }
 
-    typedef std::map< int64_t, std::string > CapDates;
-
     virtual const char* const format() const {
         return "ILM OpenEXR";
     }
@@ -130,14 +128,7 @@ public:
                      int zsize,
                      Imf::Array<float*>&       zbuff,
                      Imf::Array<unsigned int>& sampleCount );
-
-    const std::string& capture_date( const int64_t& f ) const {
-        static std::string kUnknown = "";
-        CapDates::const_iterator i = _cap_date.find(f);
-        if ( i == _cap_date.end() ) return kUnknown;
-        return i->second;
-    }
-
+    
 protected:
 
     void loadDeepTileImage( mrv::image_type_ptr& canvas,
@@ -179,8 +170,6 @@ protected:
                         const boost::int64_t& frame );
     void read_header_attr( const Imf::Header& h,
                            const boost::int64_t& frame );
-    void read_forced_header_attr( const Imf::Header& h,
-                                  const boost::int64_t& frame );
 
     /// Returns true if image has an alpha channel
     virtual bool  has_alpha() const {
@@ -201,8 +190,6 @@ public:
 
 protected:
 
-    CapDates _cap_date;
-
     int _levelX, _levelY; //<- r/mipmap levels
     bool _multiview;
     std::atomic<bool> _has_alpha;
@@ -216,7 +203,6 @@ protected:
     int _clear_part;
     int _numparts;
     unsigned _num_layers;
-    bool _read_attr;
 
     Imf::LineOrder   _lineOrder;
     Imf::Compression _compression;
