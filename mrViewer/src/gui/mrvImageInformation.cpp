@@ -693,9 +693,23 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
 
     if ( ! ( w->damage() & FL_DAMAGE_ALL ) ) return;
 
-    std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
+    // std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
+    char picked[1024];
+    int ok = uiKeyRemove->item_pathname( picked, sizeof(picked)-1 );
+    if ( ok < 0 )
+    {
+	LOG_ERROR( _("item_pathname returned ") << ok );
+	return;
+    }
+
+    std::string key;
+    if ( strlen(picked) > 0 ) key = picked;
 
     CMedia::Attributes::iterator i = attrs.find( key );
+    if ( i == attrs.end() && key[0] == '/' ) {
+	key = key.substr( 1, key.size() );
+	i = attrs.find( key );
+    }
     if ( i == attrs.end() )
     {
         char buf[128];
@@ -736,7 +750,7 @@ img( NULL )
     mrv::Recti r( x + Fl::box_dx(box()), y + Fl::box_dy(box()),
                   w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
-    
+
     m_all = new mrvPack( x, y, w-sw, 20, "all" );
     m_all->begin();
 
@@ -764,11 +778,11 @@ img( NULL )
 
     Fl_Widget* g = Fl_Group::current();
     DBG3( "Fl_Group::current = " << g << " label "  << (g->label() ?
-							 g->label() : "NULL" ));
+                                                         g->label() : "NULL" ));
     m_all->end();
     g = Fl_Group::current();
     DBG3( "Fl_Group::current = " << g << " label "  << (g->label() ?
-							 g->label() : "NULL" ));
+                                                         g->label() : "NULL" ));
 
     // resizable( this );  // this seems broken, that's why I redo layout
     end();
@@ -784,13 +798,12 @@ int ImageInformation::handle( int event )
     {
         Fl::e_dy = Fl::event_dy() * 8;
     }
-
-    if ( event == FL_PUSH && Fl::event_button() == FL_RIGHT_MOUSE && img )
+    else if ( event == FL_PUSH && Fl::event_button() == FL_RIGHT_MOUSE && img )
     {
 
         menu->add( _("Add Attribute"), 0,
-		   (Fl_Callback*)add_attribute_cb,
-		   this);
+                   (Fl_Callback*)add_attribute_cb,
+                   this);
         {
             CMedia::Attributes& attrs = img->attributes();
             if ( !attrs.empty() )
@@ -799,16 +812,16 @@ int ImageInformation::handle( int event )
                 CMedia::Attributes::iterator e = attrs.end();
 
                 menu->add( _("Toggle Modify/All"), 0,
-			   (Fl_Callback*)toggle_modify_attribute_cb,
-			   this, FL_MENU_DIVIDER );
+                           (Fl_Callback*)toggle_modify_attribute_cb,
+                           this, FL_MENU_DIVIDER );
                 for ( ; i != e; ++i )
                 {
                     char buf[256];
                     sprintf( buf,  _("Toggle Modify/%s"),
                              i->first.c_str() );
                     menu->add( buf, 0,
-			       (Fl_Callback*)toggle_modify_attribute_cb,
-			       this );
+                               (Fl_Callback*)toggle_modify_attribute_cb,
+                               this );
                 }
 
                 menu->add( _("Remove Attribute"), 0,
@@ -818,11 +831,10 @@ int ImageInformation::handle( int event )
         }
 
         menu->popup();
-	menu->clear();
+        menu->clear();
         return 1;
     }
-
-    if ( event == FL_KEYBOARD )
+    else if ( event == FL_KEYBOARD )
     {
         int ok = view()->handle( event );
         if (ok) return ok;
@@ -2069,7 +2081,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
 
 void ImageInformation::fill_data()
 {
-    
+
     char buf[1024];
     m_curr = add_browser(m_image);
 
@@ -2682,7 +2694,7 @@ void ImageInformation::refresh()
 {
     // SCOPED_LOCK( _mutex );
 
-    
+
     hide_tabs();
 
     m_image->clear();
@@ -2698,7 +2710,7 @@ void ImageInformation::refresh()
     else
         m_button->hide();
 
- 
+
     fill_data();
 
     m_image->end();
@@ -3547,7 +3559,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         sprintf( buf, "%d", content.l() );
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
-	widget->color( colB );
+        widget->color( colB );
         widget->textcolor( FL_BLACK );
         widget->box( FL_FLAT_BOX );
         if ( !editable )
