@@ -159,6 +159,8 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 	free( _format );
 	_format = strdup( fmt.c_str() );
     }
+
+    _attrs.insert( std::make_pair( frame, Attributes() ) );
     
     if ( _level < 0 )
     {
@@ -170,7 +172,7 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
         if ( _mipmaps > 1 )
         {
             Imf::IntAttribute attr( _mipmaps );
-            _attrs.insert( std::make_pair( _("Mipmap Levels"),
+            _attrs[frame].insert( std::make_pair( _("Mipmap Levels"),
                                            attr.copy() ) );
         }
         _level = 0;
@@ -205,27 +207,31 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 
                 // Store attribute in image
                 Imf::TimeCodeAttribute attr( t );
-                _attrs.insert( std::make_pair( p.name().c_str(),
+                _attrs[frame].insert( std::make_pair( p.name().c_str(),
                                                attr.copy() ) );
                 continue;
             }
             Imf::StringAttribute attr( *(const char **)p.data() );
-            _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( p.name().c_str(),
+						   attr.copy() ) );
         }
         else if (p.type() == TypeFloat)
         {
             Imf::FloatAttribute attr( *(const float*)p.data() );
-            _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( p.name().c_str(),
+						   attr.copy() ) );
         }
         else if (p.type() == TypeInt)
         {
             Imf::IntAttribute attr( *(const int*)p.data() );
-            _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( p.name().c_str(),
+						   attr.copy() ) );
         }
         else if (p.type() == TypeDesc::UINT)
         {
             Imf::IntAttribute attr( *(const unsigned int*)p.data() );
-            _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( p.name().c_str(),
+						   attr.copy() ) );
         }
         else if (p.type() == TypeMatrix)
         {
@@ -235,7 +241,8 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                           f[8], f[9], f[10], f[11],
                           f[12], f[13], f[14], f[15]);
             Imf::M44fAttribute attr( m );
-            _attrs.insert( std::make_pair( p.name().c_str(), attr.copy() ) );
+            _attrs[frame].insert( std::make_pair( p.name().c_str(),
+						   attr.copy() ) );
         }
     }
 
