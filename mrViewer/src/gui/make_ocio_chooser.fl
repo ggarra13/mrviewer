@@ -23,20 +23,22 @@ decl {std::string ocio;} {private local
 Function {make_ocio_chooser(std::string c, mrv::OCIOBrowser::Type type )} {open return_type {std::string}
 } {
   Fl_Window {} {
-    label {OCIO Browser} open
+    label {OCIO Browser}
+    user_data w user_data_type {Fl_Window*}
+    callback {ocio = orig; v->hide();} open
     xywh {691 384 395 445} type Single resizable hotspot
     code0 {orig = ocio = c;} modal visible
   } {
     Fl_Group {} {open
-      xywh {5 26 385 411}
+      xywh {5 0 385 438}
     } {
       Fl_Browser uiOCIOBrowser {
         label {Select an OCIO Transform}
         user_data {&ocio} user_data_type {std::string*}
         callback {int elem = o->value();
-if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
-*v = o->text(elem); o->set_selection( *v ); o->value( elem );}
-        xywh {5 0 375 355} when 4
+if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
+*v = o->text(elem); o->set_selection( *v );} selected
+        xywh {5 0 375 355} box UP_BOX labelcolor 32 when 4
         code0 {o->set_selection(c); o->set_type(type);}
         class {mrv::OCIOBrowser}
       }
@@ -58,6 +60,5 @@ if ( elem <= 0 || elem > o->size() ) { v->clear(); return; }
   while ( w->visible() )
       Fl::check();
 Fl::delete_widget(w);
-return ocio;} {selected
-  }
+return ocio;} {}
 }
