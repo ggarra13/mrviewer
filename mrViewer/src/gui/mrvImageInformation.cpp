@@ -721,9 +721,11 @@ ImageView* ImageInformation::view() const
 
 ImageInformation::ImageInformation( int x, int y, int w, int h,
                                     const char* l ) :
-    ImageInfoParent( x, y, w, h, l ),
-    img( NULL )
+menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
+ImageInfoParent( x, y, w, h, l ),
+img( NULL )
 {
+    menu->type( Fl_Menu_Button::POPUP3 );
 
     begin();
 
@@ -734,6 +736,7 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
     mrv::Recti r( x + Fl::box_dx(box()), y + Fl::box_dy(box()),
                   w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
+    
     m_all = new mrvPack( x, y, w-sw, 20, "all" );
     m_all->begin();
 
@@ -759,7 +762,13 @@ ImageInformation::ImageInformation( int x, int y, int w, int h,
     m_attributes  = new mrv::CollapsibleGroup( r.x(), r.y()+2040,
                                                r.w(), 400, _("Metadata")  );
 
+    Fl_Widget* g = Fl_Group::current();
+    DEBUG( "Fl_Group::current = " << g << " label "  << (g->label() ?
+							 g->label() : "NULL" ));
     m_all->end();
+    g = Fl_Group::current();
+    DEBUG( "Fl_Group::current = " << g << " label "  << (g->label() ?
+							 g->label() : "NULL" ));
 
     // resizable( this );  // this seems broken, that's why I redo layout
     end();
@@ -778,14 +787,10 @@ int ImageInformation::handle( int event )
 
     if ( event == FL_PUSH && Fl::event_button() == FL_RIGHT_MOUSE && img )
     {
-        begin();
 
-        Fl_Menu_Button menu(0,0,w(),h());
-        menu.type( Fl_Menu_Button::POPUP3 );
-
-        menu.add( _("Add Attribute"), 0,
-                  (Fl_Callback*)add_attribute_cb,
-                  this);
+        menu->add( _("Add Attribute"), 0,
+		   (Fl_Callback*)add_attribute_cb,
+		   this);
         {
             CMedia::Attributes& attrs = img->attributes();
             if ( !attrs.empty() )
@@ -793,28 +798,27 @@ int ImageInformation::handle( int event )
                 CMedia::Attributes::iterator i = attrs.begin();
                 CMedia::Attributes::iterator e = attrs.end();
 
-                menu.add( _("Toggle Modify/All"), 0,
-                          (Fl_Callback*)toggle_modify_attribute_cb,
-                          this, FL_MENU_DIVIDER );
+                menu->add( _("Toggle Modify/All"), 0,
+			   (Fl_Callback*)toggle_modify_attribute_cb,
+			   this, FL_MENU_DIVIDER );
                 for ( ; i != e; ++i )
                 {
                     char buf[256];
                     sprintf( buf,  _("Toggle Modify/%s"),
                              i->first.c_str() );
-                    menu.add( buf, 0,
-                              (Fl_Callback*)toggle_modify_attribute_cb,
-                              this );
+                    menu->add( buf, 0,
+			       (Fl_Callback*)toggle_modify_attribute_cb,
+			       this );
                 }
 
-                menu.add( _("Remove Attribute"), 0,
+                menu->add( _("Remove Attribute"), 0,
                           (Fl_Callback*)remove_attribute_cb,
                           this);
             }
         }
-        end();
 
-
-        menu.popup();
+        menu->popup();
+	menu->clear();
         return 1;
     }
 
@@ -1674,6 +1678,7 @@ double ImageInformation::to_memory( long double value,
 
 void ImageInformation::set_image( CMedia* i )
 {
+    DBG;
     img = i;
     refresh();
 }
@@ -1694,12 +1699,14 @@ void ImageInformation::clear_callback_data()
 
 void ImageInformation::hide_tabs()
 {
+    DBG;
     tooltip( _("Load an image or movie file") );
     m_image->hide();
     m_video->hide();
     m_audio->hide();
     m_subtitle->hide();
     m_attributes->hide();
+    DBG;
 }
 
 void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterator& i )
@@ -2062,7 +2069,7 @@ void ImageInformation::process_attributes( mrv::CMedia::Attributes::const_iterat
 
 void ImageInformation::fill_data()
 {
-
+    
     char buf[1024];
     m_curr = add_browser(m_image);
 
@@ -2253,6 +2260,7 @@ void ImageInformation::fill_data()
     }
 
 
+    DBG;
 
     ++group;
 
@@ -2271,6 +2279,7 @@ void ImageInformation::fill_data()
         _("Relative"),
     };
 
+    DBG;
 
 
     add_text( _("Rendering Intent"), _("ICC Rendering Intent"),
@@ -2284,6 +2293,7 @@ void ImageInformation::fill_data()
                true, (Fl_Callback*)change_gamma_cb, 0.01f,	4.0f );
 
 
+    DBG;
     if ( img->has_chromaticities() )
     {
         const Imf::Chromaticities& c = img->chromaticities();
@@ -2298,6 +2308,7 @@ void ImageInformation::fill_data()
     //std::cerr << "prefs:use_ocio " << Preferences::use_ocio << std::endl;
     if ( Preferences::use_ocio )
     {
+    DBG;
         add_ocio_ics( _("Input Color Space"),
                       _("OCIO Input Color Space"),
                       img->ocio_input_color_space().c_str() );
@@ -2333,12 +2344,14 @@ void ImageInformation::fill_data()
         add_icc( _("ICC Profile"), _("ICC Profile"), img->icc_profile() );
     }
 
+    DBG;
     ++group;
 
 
 
     add_text( _("Format"), _("Format"), img->format() );
 
+    DBG;
     if ( !img->has_video() )
     {
         add_text( _("Line Order"), _("Line order in file"),
@@ -2351,6 +2364,7 @@ void ImageInformation::fill_data()
     {
         ++group;
 
+    DBG;
 
         add_text( _("Compression"), _("Clip Compression"), img->compression() );
 
@@ -2361,6 +2375,7 @@ void ImageInformation::fill_data()
 
 
 
+    DBG;
     const char* space_type = NULL;
     double memory_space = double( to_memory( (long double)img->memory(),
                                   space_type ) );
@@ -2368,6 +2383,7 @@ void ImageInformation::fill_data()
     add_text( _("Memory"), _("Memory without Compression"), buf );
 
 
+    DBG;
     if ( img->disk_space() >= 0 )
     {
 
@@ -2378,6 +2394,7 @@ void ImageInformation::fill_data()
                                          (long double) img->memory() ) );
 
 
+    DBG;
         sprintf( buf, N_("%.3f %s  (%.2f %% of memory size)"),
                  disk_space, space_type, pct );
 
@@ -2396,16 +2413,20 @@ void ImageInformation::fill_data()
     }
 
 
+    DBG;
 
     ++group;
     add_text( _("Creation Date"), _("Creation Date"), img->creation_date() );
 
 
+    DBG;
 
 
-
+    DBG;
 
     m_image->show();
+
+    DBG;
 
     tooltip( NULL );
 
@@ -2415,16 +2436,6 @@ void ImageInformation::fill_data()
     {
         m_attributes->show();
         m_curr = add_browser( m_attributes );
-
-
-        if ( exr )
-        {
-            std::string date = exr->capture_date( img->frame() );
-            if ( !date.empty() )
-                add_text( _("Capture Date"), _("Capture Date"), date.c_str() );
-
-        }
-
 
         CMedia::Attributes::const_iterator i = attrs.begin();
         CMedia::Attributes::const_iterator e = attrs.end();
@@ -2671,6 +2682,7 @@ void ImageInformation::refresh()
 {
     // SCOPED_LOCK( _mutex );
 
+    
     hide_tabs();
 
     m_image->clear();
@@ -2686,17 +2698,16 @@ void ImageInformation::refresh()
     else
         m_button->hide();
 
-
+ 
     fill_data();
-
-
-    m_all->show();
 
     m_image->end();
     m_video->end();
     m_audio->end();
     m_subtitle->end();
     m_attributes->end();
+    m_all->end();
+    m_all->show();
 
 
 
