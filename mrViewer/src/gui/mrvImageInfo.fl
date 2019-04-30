@@ -40,8 +40,8 @@ class ImageInfoUI {open
   } {
     Fl_Window uiMain {
       label {Media Information}
-      user_data main user_data_type {ViewerUI*}
-      callback {v->uiView->send_network( "MediaInfoWindow 0" );
+      user_data this user_data_type {ImageInfoUI*}
+      callback {v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();} open selected
       xywh {500 197 605 800} type Double resizable
       code0 {main_ = main;} non_modal visible
