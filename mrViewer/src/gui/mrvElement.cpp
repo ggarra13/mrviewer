@@ -96,9 +96,9 @@ void Element::make_thumbnail()
 
         label->box(FL_FLAT_BOX);
 
-	DEBUG( "Fl_Group::current = " << Fl_Group::current() );
+	DBG3( "Fl_Group::current = " << Fl_Group::current() );
         end();
-	DEBUG( "Fl_Group::current = " << Fl_Group::current() );
+	DBG3( "Fl_Group::current = " << Fl_Group::current() );
 
     }
 
