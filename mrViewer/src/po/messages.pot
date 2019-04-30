@@ -51,8 +51,8 @@
 #: gui/FLU/Flu_File_Chooser.cpp:3723 gui/FLU/Flu_File_Chooser.cpp:4068
 #: gui/FLU/Flu_File_Chooser.cpp:4071 gui/FLU/Flu_File_Chooser.cpp:4343
 #: gui/FLU/Flu_File_Chooser.cpp:4416 gui/FLU/Flu_File_Chooser.cpp:4634
-#: gui/FLU/Flu_File_Chooser.cpp:4648 gui/mrvOCIOBrowser.cpp:156
-#: gui/mrvOCIOBrowser.cpp:157 gui/mrvHotkey.cpp:69 gui/mrvHotkey.cpp:71
+#: gui/FLU/Flu_File_Chooser.cpp:4648 gui/mrvOCIOBrowser.cpp:165
+#: gui/mrvOCIOBrowser.cpp:166 gui/mrvHotkey.cpp:69 gui/mrvHotkey.cpp:71
 #: gui/mrvHotkey.cpp:73 gui/mrvHotkey.cpp:75 gui/mrvHotkey.cpp:78
 #: gui/mrvHotkey.cpp:80 gui/mrvHotkey.cpp:81 gui/mrvHotkey.cpp:82
 #: gui/mrvHotkey.cpp:85 gui/mrvHotkey.cpp:87 gui/mrvHotkey.cpp:88
@@ -122,7 +122,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-04-30 08:49-0300\n"
+"POT-Creation-Date: 2019-04-30 10:01-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12868,7 +12868,7 @@ msgstr ""
 msgid "Absolute Colorimetric"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:43
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:48
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:92
 msgid "Accept"
 msgstr ""
@@ -12877,7 +12877,7 @@ msgstr ""
 msgid "Accept settings but don't save."
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:44
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:49
 msgid "Accept the selected OCIO file."
 msgstr ""
 
@@ -13642,8 +13642,8 @@ msgstr ""
 #: core/aviImage.cpp:53 core/aviImage_save.cpp:37 core/iffImage.cpp:39
 #: core/wandImage.cpp:420 core/wandImage.cpp:1592 core/mrvPlayback.cpp:35
 #: core/mrvACES.cpp:124 core/Sequence.cpp:784 core/Sequence.cpp:823
-#: gui/FLU/flu_filename_list.cxx:57 gui/mrvOCIOBrowser.cpp:139
-#: gui/mrvOCIOBrowser.cpp:140 gui/mrvImageBrowser.cpp:529
+#: gui/FLU/flu_filename_list.cxx:57 gui/mrvOCIOBrowser.cpp:148
+#: gui/mrvOCIOBrowser.cpp:149 gui/mrvImageBrowser.cpp:529
 #: gui/mrvPreferences.cpp:1258 gui/mrvPreferences.cpp:1492
 #: gui/mrvPreferences.cpp:1493 gui/mrvTimecode.cpp:45
 #: gui/mrvVectorscope.cpp:113 gui/mrvVersion.cpp:46 video/mrvGLEngine.cpp:58
@@ -13935,7 +13935,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:71
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:111
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:67
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:47
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:52
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:95
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
 #: gui/FLU/Flu_File_Chooser.cpp:104 gui/mrvAsk.cpp:242
@@ -13944,7 +13944,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:48
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:53
 msgid "Cancel the OCIO selection and don't change anything."
 msgstr ""
 
@@ -19960,7 +19960,7 @@ msgstr ""
 msgid "OCIO %d"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:26
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:30
 msgid "OCIO Browser"
 msgstr ""
 
@@ -21864,7 +21864,7 @@ msgstr ""
 msgid "Select a CTL script"
 msgstr ""
 
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:30
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.15.0-39-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:35
 msgid "Select an OCIO Transform"
 msgstr ""
 
@@ -23388,7 +23388,7 @@ msgstr ""
 msgid "Unknown timecode format"
 msgstr ""
 
-#: gui/mrvOCIOBrowser.cpp:154
+#: gui/mrvOCIOBrowser.cpp:163
 msgid "Unknown type for mrvOCIOBrowser"
 msgstr ""
 
