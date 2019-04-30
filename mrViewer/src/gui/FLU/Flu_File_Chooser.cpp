@@ -70,6 +70,7 @@
 #include "gui/mrvFLTKHandler.h"
 #include "gui/mrvMedia.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 
 #include <boost/filesystem.hpp>
 
@@ -333,7 +334,7 @@ static void loadRealIcon( RealIcon* e)
     size_t p;
 
     if ( e->chooser->quick_exit ) {
-        DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
+        DEBUG( "lri quick exit " << e->entry << " chooser " << e->chooser );
         goto SALIDA;
     }
 
@@ -381,7 +382,7 @@ static void loadRealIcon( RealIcon* e)
     sprintf( buf, fmt, frameStart );
 
 
-    DBG( "lri file exists? " << buf );
+    DEBUG( "lri file exists? " << buf );
 
 
     // if ( ! fs::exists( buf ) ) {
@@ -390,7 +391,7 @@ static void loadRealIcon( RealIcon* e)
     //     return;
     // }
 
-    DBG( "lri process icon " << e->entry << " " << e->filename
+    DEBUG( "lri process icon " << e->entry << " " << e->filename
          << " chooser " << e->chooser );
 
     if ( e->serial == e->chooser->serial )
@@ -405,12 +406,12 @@ static void loadRealIcon( RealIcon* e)
         }
 
         if ( !img ) {
-            DBG( "Img is NULL" );
+            DEBUG( "Img is NULL" );
             goto SALIDA;
         }
 
 
-        DBG( "lri processed icon " << e->entry << " " << e->filename
+        DEBUG( "lri processed icon " << e->entry << " " << e->filename
              << " chooser " << e->chooser  );
         if ( e->serial == e->chooser->serial )
         {
