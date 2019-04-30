@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -190,11 +190,11 @@ extern errorstream error;
 #define IMG_INFO(msg) LOG_INFO( name() << " - " << msg )
 
 #if 1
-#define DEBUG(msg) do { \
+#define DBG3(msg) do { \
     if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
 } while(0)
 #else
-#define DEBUG(msg)
+#define DBG3(msg)
 #endif
 
 #define DBG								\
