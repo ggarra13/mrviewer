@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1111,8 +1111,13 @@ void stubImage::end_timer()
     _label = (char*) malloc( strlen(buf) + 1 );
     strcpy( _label, buf );
 
+    if ( _attrs.find( _frame ) == _attrs.end() )
+    {
+	_attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
+    }
+    
     Imf::StringAttribute attr( render_time );
-    _attrs[ N_("Render Time") ] = attr.copy();
+    _attrs[_frame].insert( std::make_pair( N_("Render Time"), attr.copy() ) );
 }
 
 
