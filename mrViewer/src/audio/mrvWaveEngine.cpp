@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 
 
 #include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 #include "audio/mrvWaveEngine.h"
 
 #include <mmreg.h>   // for manufacturer and product IDs
@@ -520,13 +521,13 @@ bool WaveEngine::open( const unsigned channels,
         else
             device -= 1;
 
-        DBG( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
+        DBG3( "waveOutOpen WAVE_MAPPER? " << ( device == WAVE_MAPPER ) );
 
         MMRESULT result =
             waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
                         //0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
                         0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
-        DBG( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
+        DBG3( "waveOutOpen WAVE_MAPPER? ok " << ( device == WAVE_MAPPER ) );
         if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
         {
             if( result == WAVERR_BADFORMAT )
@@ -555,13 +556,13 @@ bool WaveEngine::open( const unsigned channels,
         size_t bytes = _num_buffers * bytesPerBlock;
         _data = new aligned16_uint8_t[ bytes ];
         memset( _data, 0, bytes );
-        DBG( "allocated data at " << _data << " bytes " << bytes
+        DBG3( "allocated data at " << _data << " bytes " << bytes
              << " / num " << bytes / _num_buffers);
 
         delete [] _buffer;
         _buffer = new WAVEHDR[ _num_buffers ];
 
-        DBG( "fill headers " << _num_buffers );
+        DBG3( "fill headers " << _num_buffers );
 
         // Set header memory
         uint8_t* ptr = (uint8_t*)_data;
@@ -579,7 +580,7 @@ bool WaveEngine::open( const unsigned channels,
             ptr += bytesPerBlock;
         }
 
-        DBG( "enabled ok" );
+        DBG3( "enabled ok" );
         // All okay, enable device
         _enabled = true;
         return true;
