@@ -91,9 +91,14 @@ namespace mrv {
 
 
     { // Copy attributes
-	for ( const auto& i : other->attributes() )
+	for ( const auto& i : other->attrs_frames() )
 	{
-	    _attrs[i.first] = i.second->copy();
+	    int64_t frame = i.first;
+	    _attrs.insert( std::make_pair( frame, Attributes() ) );
+	    for ( const auto& j: i.second )
+	    {
+		_attrs[frame][j.first] = j.second->copy();
+	    }
 	}
     }
 
