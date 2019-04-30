@@ -204,8 +204,7 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
 }
 
 Fl::delete_widget(w);
-return ctl;} {selected
-  }
+return ctl;} {}
 }
 
 class SaveOptionsUI {} {
@@ -414,12 +413,10 @@ class LogUI {} {
   }
 }
 
-class PaintUI {open
-} {
-  Function {make_window( ViewerUI* m )} {open
-  } {
+class PaintUI {} {
+  Function {make_window( ViewerUI* m )} {} {
     Fl_Window uiMain {
-      label Paint open
+      label Paint
       xywh {733 95 165 505} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
@@ -713,7 +710,7 @@ class ViewerUI {open
 o->main( this );}
       class {mrv::MainWindow} visible
     } {
-      Fl_Pack uiRegion {
+      Fl_Pack uiRegion {open
         xywh {0 0 640 535}
         class MyPack
       } {
@@ -810,7 +807,7 @@ uiICCProfiles->uiMain->show();}
               xywh {0 0 100 20}
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {30 2 90 23} color 1397969664
           } {
             Fl_Menu_Button uiColorChannel {
@@ -823,7 +820,7 @@ uiICCProfiles->uiMain->show();}
               class {mrv::PopupMenu}
             } {}
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {120 1 286 24} color 1397969664
           } {
             Fl_Box {} {
@@ -866,8 +863,7 @@ v->uiView->send_network( buf );
 v->uiView->use_lut(true);
 v->uiLUT->value(true);
 o->redraw();
-refresh();
-} open
+refresh();} open
               tooltip {OCIO input color space for the image} xywh {260 2 146 22} labelsize 12 align 96
               class {mrv::PopupMenu}
             } {}
@@ -920,7 +916,7 @@ Click to toggle between current and normal exposure.} xywh {280 5 64 19} labelfo
               }
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {405 2 155 23} color 1397969664
           } {
             Fl_Group {} {open
@@ -1018,7 +1014,7 @@ Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maxi
               }
             }
           }
-          Fl_Group {} {open
+          Fl_Group {} {
             xywh {550 3 80 22}
           } {
             Fl_Menu_Button uiField {
@@ -1056,7 +1052,7 @@ Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maxi
             }
           }
         }
-        Fl_Group uiViewGroup {open
+        Fl_Group uiViewGroup {
           xywh {0 28 640 430} resizable
           class Fl_Group
         } {
@@ -1066,7 +1062,7 @@ Value is:  pow( 2, 1/x );} xywh {490 2 60 22} type {Horz Knob} minimum 0.25 maxi
             class {mrv::ImageView}
           } {}
         }
-        Fl_Group uiPixelBar {open
+        Fl_Group uiPixelBar {
           xywh {0 458 640 28} box FLAT_BOX color 56 labelcolor 17
         } {
           Fl_Group {} {open
@@ -1390,7 +1386,7 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
                 user_data this user_data_type {ViewerUI*}
                 callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );}
-                tooltip {Timeline.} xywh {5 489 610 21} type Horizontal minimum 1 maximum 50 step 1 value 1 resizable
+                tooltip {Timeline.} xywh {5 489 610 21} type Horizontal minimum 1 maximum 50 step 1 value 1
                 code0 {o->main( this );}
                 class {mrv::Timeline}
               }
@@ -1399,7 +1395,7 @@ v->uiView->seek( frame );}
                 user_data this user_data_type {ViewerUI*}
                 callback {int c = o->value();
 o->label(o->text(c));
-v->uiView->looping( (mrv::CMedia::Looping)c );} open
+v->uiView->looping( (mrv::CMedia::Looping)c );}
                 tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )} xywh {615 488 21 23}
                 code0 {o->disable_glyph();}
                 class {mrv::PopupMenu}
@@ -1418,9 +1414,9 @@ v->uiView->looping( (mrv::CMedia::Looping)c );} open
                 }
               }
               Fl_Group {} {open
-                xywh {0 509 640 26}
+                xywh {0 509 640 26} resizable
               } {
-                Fl_Group {} {open
+                Fl_Group {} {
                   xywh {4 513 94 20}
                 } {
                   Fl_Menu_Button uiTimecodeSwitch {
@@ -1466,8 +1462,8 @@ v->uiView->seek( f );}
                     class {mrv::Timecode}
                   }
                 }
-                Fl_Group {} {open
-                  xywh {95 511 360 23} resizable
+                Fl_Group {} {
+                  xywh {95 511 360 23}
                 } {
                   Fl_Group {} {open
                     xywh {95 512 215 22}
@@ -1617,7 +1613,7 @@ o->value(24);}
                     }
                   }
                 }
-                Fl_Group {} {open
+                Fl_Group {} {selected
                   xywh {455 509 180 24}
                 } {
                   Fl_Input uiStartFrame {
@@ -1803,8 +1799,7 @@ if ( uiPaint ) uiPaint->uiMain->redraw();
 if ( uiSOPNode ) uiSOPNode->uiMain->redraw();
 if ( uiEDLWindow ) uiEDLWindow->uiMain->redraw();
 if ( uiStereo ) uiStereo->uiMain->redraw();
-Fl::check(); // needed to refresh windows
-} {}
+Fl::check(); // needed to refresh windows} {}
   }
 }
 

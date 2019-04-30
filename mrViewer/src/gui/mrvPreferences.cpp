@@ -298,8 +298,6 @@ std::string         Preferences::root;
 int                 Preferences::debug = 0;
 std::string         Preferences::tempDir = "/usr/tmp/";
 
-#define DBG \
-if ( debug > 2 ) std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
 
 int   Preferences::bgcolor;
