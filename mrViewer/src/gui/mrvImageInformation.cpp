@@ -693,7 +693,6 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
 
     if ( ! ( w->damage() & FL_DAMAGE_ALL ) ) return;
 
-    // std::string key = uiKeyRemove->child( uiKeyRemove->value() )->label();
     char picked[1024];
     int ok = uiKeyRemove->item_pathname( picked, sizeof(picked)-1 );
     if ( ok < 0 )
@@ -702,7 +701,7 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
 	return;
     }
 
-    std::string key;
+    std::string key = "/";
     if ( strlen(picked) > 0 ) key = picked;
 
     CMedia::Attributes::iterator i = attrs.find( key );
@@ -2645,7 +2644,6 @@ void ImageInformation::fill_data()
 
     if ( num_subtitle_streams > 0 )
     {
-        std::cerr << "num subtitle streams " << num_subtitle_streams << std::endl;
         m_subtitle->show();
         for ( unsigned i = 0; i < num_subtitle_streams; ++i )
         {
@@ -2721,7 +2719,7 @@ void ImageInformation::refresh()
     m_all->end();
     m_all->show();
 
-
+    Fl_Group::current(0);
 
 }
 
