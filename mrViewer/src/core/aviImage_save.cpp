@@ -72,6 +72,7 @@ const char* kModule = "save";
 
 namespace mrv {
 
+AVCodecContext* enc_ctx[2];
 
 static AVFrame *picture = NULL;
 static int64_t frame_count = 0;
@@ -254,8 +255,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         return NULL;
     }
     st->id = oc->nb_streams-1;
-    c = st->codec;
-
+    c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
+    
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -299,14 +300,9 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         else
             c->time_base.den = st->time_base.den = int( 1000.0 * opts->fps );
         c->time_base.num = st->time_base.num = 1000;
+	c->framerate.num = c->time_base.den;
+	c->framerate.den = c->time_base.num;
         c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
-        // c->qmin = ptr->qmin;
-        // c->qmax = ptr->qmax;
-        // c->me_method = ptr->me_method;
-        // c->me_subpel_quality = ptr->me_subpel_quality;
-        // c->i_quant_factor = ptr->i_quant_factor;
-        // c->qcompress = ptr->qcompress;
-        // c->max_qdiff = ptr->max_qdiff;
 
         // Use a profile if possible
         c->profile = opts->video_profile;
@@ -458,7 +454,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
                        const AviSaveUI* opts)
 
 {
-    AVCodecContext* c = st->codec;
+    AVCodecContext* c = enc_ctx[st->id];
 
     /* allocate and init a re-usable frame */
     audio_frame = av_frame_alloc();
@@ -482,6 +478,9 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
+    st->time_base = c->time_base;
+
+    
     if ( opts->metadata )
     {
         const CMedia::Attributes& attrs = img->attributes();
@@ -634,10 +633,10 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
     av_init_packet(&pkt);
 
-    AVCodecContext* c = st->codec;
+    AVCodecContext* c = enc_ctx[st->id];
 
-    int tries;
-    audio_type_ptr audio = img->get_audio_frame( frame_audio );
+ 
+    audio_type_ptr audio = img->get_audio_frame( img->frame() );
 
     if ( !audio ) {
         LOG_ERROR( _("audio frame is missing") );
@@ -886,7 +885,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 static void close_audio_static(AVFormatContext *oc, AVStream *st)
 {
-    avcodec_close(st->codec);
+    avcodec_close(enc_ctx[st->id]);
+    avcodec_free_context( &enc_ctx[st->id] );
 
     av_audio_fifo_free( fifo );
     fifo = NULL;
@@ -991,7 +991,7 @@ static AVFrame *frame;
 static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
                        const CMedia* img, const AviSaveUI* opts )
 {
-    AVCodecContext* c = st->codec;
+    AVCodecContext* c = enc_ctx[st->id];
 
     AVDictionary* info = NULL;
 
@@ -1011,6 +1011,9 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         return false;
     }
 
+    //st->codec->time_base = c->time_base;
+    st->time_base = c->time_base;
+
     if ( opts->metadata )
     {
         const CMedia::Attributes& attrs = img->attributes();
@@ -1023,7 +1026,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         for ( ; i != e; ++i )
         {
             if (( i->first.find( _("Video ") ) == 0 ) ||
-                    ( i->first.find( _("Audio ") ) == 0 ) ) {
+		( i->first.find( _("Audio ") ) == 0 ) ) {
                 continue;
             }
 
@@ -1064,7 +1067,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 
 static void close_video(AVFormatContext *oc, AVStream *st)
 {
-    avcodec_close(st->codec);
+    avcodec_close(enc_ctx[st->id]);
+    avcodec_free_context( &enc_ctx[st->id] );
     av_frame_free(&picture);
 }
 
@@ -1180,7 +1184,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
                               const CMedia* img )
 {
     int ret;
-    AVCodecContext* c = st->codec;
+    AVCodecContext* c = enc_ctx[st->id];
 
     fill_yuv_image( c, picture, img );
 
@@ -1448,7 +1452,7 @@ bool write_va_frame( CMedia* img )
     //             : INFINITY );
 
     video_time = ( video_st ? ( double(picture->pts) *
-                                av_q2d( video_st->codec->time_base ) )
+                                av_q2d( enc_ctx[video_st->id]->time_base ) )
                    : INFINITY );
 
 
@@ -1499,7 +1503,7 @@ bool flush_video_and_audio( const CMedia* img )
 
     if ( audio_st && fifo )
     {
-        AVCodecContext* c = audio_st->codec;
+        AVCodecContext* c = enc_ctx[audio_st->id];
 
         unsigned cache_size = av_audio_fifo_size( fifo );
 
@@ -1555,7 +1559,7 @@ bool flush_video_and_audio( const CMedia* img )
         int encoding = 1;
         int stop_encoding = 0;
         ret = 0;
-        AVCodecContext* c = s->codec;
+        AVCodecContext* c = enc_ctx[s->id];
 
         if ( !( c->codec->capabilities & AV_CODEC_CAP_DELAY ) )
             continue;
@@ -1651,6 +1655,7 @@ bool aviImage::close_movie( const CMedia* img )
         /* Close the output file. */
         avio_close(oc->pb);
 
+    
     /* free the stream */
     avformat_free_context(oc);
 
