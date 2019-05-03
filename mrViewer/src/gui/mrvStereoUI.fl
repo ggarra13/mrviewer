@@ -1,8 +1,11 @@
 # data file for the Fltk User Interface Designer (fluid)
 version 1.0400
+i18n_type 1
+i18n_include <libintl.h>
+i18n_function gettext
 header_name {.h}
 code_name {.cxx}
-decl {\#include "core/mrvFrame.h"} {public local
+decl {\#include "core/mrvFrame.h"} {selected public local
 }
 
 decl {\#include "gui/mrvIO.h"} {public local
@@ -43,7 +46,7 @@ o->hide();} open
 o->main( main );}
       class {mrv::StereoWindow} non_modal visible
     } {
-      Fl_Group {} {open selected
+      Fl_Group {} {open
         xywh {0 0 280 160} box UP_BOX
       } {
         Fl_Choice uiStereoInput {
