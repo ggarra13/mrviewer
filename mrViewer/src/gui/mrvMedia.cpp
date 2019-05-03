@@ -38,8 +38,10 @@
 
 #include "core/mrvThread.h"
 #include "core/CMedia.h"
+#include "core/mrvColorOps.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvFLTKHandler.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvMedia.h"
 
 #ifdef _WIN32
@@ -129,6 +131,15 @@ void media::create_thumbnail()
     // Resize image to thumbnail size
     pic.reset( pic->quick_resize( w, h ) );
 
+    if ( mrv::Preferences::use_ocio )
+    {
+    	if ( pic->pixel_type() == mrv::image_type::kFloat )
+	{
+	    std::cerr << "bake ocio thumbnail " << _image->name() << std::endl;
+    	     bake_ocio( pic, _image );
+	}
+    }
+    
     w = pic->width();
     h = pic->height();
 
