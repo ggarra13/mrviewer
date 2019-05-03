@@ -222,7 +222,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                     char text[4096];
                     sprintf( text, _("Do you want to replace '%s'?"),
                              buf );
-                    int ok = mrv::fl_choice( text, _("Yes"), _("No"), NULL );
+                    int ok = mrv::fl_choice( text,
+					     _("Yes"), _("No"), NULL );
                     if (ok == 1) // No
                     {
                         break;
