@@ -1165,20 +1165,9 @@ public:
     virtual bool find_image( const int64_t frame );
 
 
-    Attributes& attributes()  {
-	static Attributes empty;
-	AttributesFrame::iterator i = _attrs.find( _frame );
-	if ( i != _attrs.end() )
-	    return i->second; 
-        return empty;
-    }
-    const Attributes& attributes() const {
-	static Attributes empty;
-	AttributesFrame::const_iterator i = _attrs.find( _frame );
-	if ( i != _attrs.end() )
-	    return i->second;
-        return empty;
-    }
+    Attributes& attributes();
+    
+    const Attributes& attributes() const;
 
     const AttributesFrame attrs_frames() const {
 	return _attrs;
