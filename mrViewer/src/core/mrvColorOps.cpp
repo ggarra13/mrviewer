@@ -37,6 +37,9 @@ namespace mrv {
 
 void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 {
+    setlocale(LC_NUMERIC, "C" );
+    std::locale::global( std::locale("C") );
+	
     const std::string& display = mrv::Preferences::OCIO_Display;
     const std::string& view = mrv::Preferences::OCIO_View;
 
@@ -68,6 +71,8 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
                                 ystride );
     processor->apply( baker );
 
+    std::locale::global( std::locale(N_("")) );
+    setlocale(LC_NUMERIC, N_("") );
 }
 
 bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
