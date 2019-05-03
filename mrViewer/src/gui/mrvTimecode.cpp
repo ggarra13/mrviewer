@@ -270,7 +270,9 @@ void Timecode::display( Timecode::Display x )
     else
         type( FL_NORMAL_INPUT );
 
-    value( v );
+    char buf[100];
+    int n = format( buf, _display, v, _tc_frame, _fps, true );
+    Fl_Input::value(buf, n);
     redraw();
 }
 
@@ -499,6 +501,7 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
 void Timecode::value( const int64_t x )
 {
     if ( x == _frame ) return;
+    
     _frame = x;
 
     char buf[100];
