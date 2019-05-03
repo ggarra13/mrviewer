@@ -966,6 +966,31 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     refresh();
 }
 
+CMedia::Attributes& CMedia::attributes()  {
+    static Attributes empty;
+    AttributesFrame::iterator i;
+    if ( dynamic_cast< aviImage* >( this ) != NULL  )
+	i = _attrs.find( start_frame() );
+    else
+	i = _attrs.find( _frame );
+    if ( i != _attrs.end() )
+	return i->second; 
+    return empty;
+}
+
+const CMedia::Attributes& CMedia::attributes() const {
+    static Attributes empty;
+    AttributesFrame::const_iterator i;
+    if ( dynamic_cast< const aviImage* const >( this ) != NULL  )
+	i = _attrs.find( start_frame() );
+    else
+	i = _attrs.find( _frame );
+    if ( i != _attrs.end() )
+	return i->second;
+    return empty;
+}
+
+
 int CMedia::from_stereo_output( CMedia::StereoOutput x )
 {
     switch( x )
