@@ -2519,7 +2519,7 @@ void aviImage::populate()
             {
                 std::string outcol = str->value();
                 if ( outcol == "Rec 709" || outcol == "ITU 709" ||
-                        outcol == "BT709" )
+		     outcol == "BT709" )
                 {
                     _inv_table = sws_getCoefficients( SWS_CS_ITU709 );
                 }
