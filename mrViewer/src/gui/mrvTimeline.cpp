@@ -94,7 +94,7 @@ mrv::ImageBrowser* Timeline::browser() const
 
 void Timeline::display_minimum( const double& x )
 {
-    if ( x > minimum() ) _display_min = x;
+    if ( x >= minimum() ) _display_min = x;
 
     if ( uiMain && uiMain->uiView )
     {
@@ -106,7 +106,7 @@ void Timeline::display_minimum( const double& x )
 
 void Timeline::display_maximum( const double& x )
 {
-    if ( x < maximum() ) _display_max = x;
+    if ( x <= maximum() ) _display_max = x;
 
     if ( uiMain && uiMain->uiView )
     {
@@ -460,8 +460,6 @@ void Timeline::draw_selection( const mrv::Recti& r )
     int rx = r.x() + (slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
-
-    std::cerr << _display_min << " to " << _display_max << std::endl;
     
     fl_color( FL_CYAN );
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
