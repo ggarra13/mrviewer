@@ -241,12 +241,12 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
     Fl_Group( x, y, w, h, l )
 {
     tooltip( _("Mark an area in the image with SHIFT + the left mouse button") );
+    area = new Fl_Box( 0, 0, w, 50 );
+    area->box( FL_FLAT_BOX );
+    area->align( FL_ALIGN_CENTER | FL_ALIGN_INSIDE );
 
     dcol = new ColorWidget( 16, 10, 32, 32 );
 
-    area = new Fl_Box( 100, 0, w, 50 );
-    area->box( FL_FLAT_BOX );
-    area->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
 
     int w4 = w / 4;
     int w5 = w / 5;
