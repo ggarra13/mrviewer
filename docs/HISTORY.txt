@@ -1,3 +1,19 @@
+v5.0.2  - Made Media Info's Remove Attributes work in nested attributes
+	  as well as flat attributes.
+	- Improved the look of the color area window.
+	- Made RMB Menu show up when media info window is open.  Previously,
+	  only the main titles would show up and it would not allow anything
+	  to be selected.
+	- Bug fixed Start and End frames to show secs/time/timecode when
+	  those options are selected.
+	- Bug fixed Start and End buttons to select timeline display.
+	  (Regression from 4.4.7).
+	- Made movie files return the attributes of their first frame only.
+	  Previously, opening the media info window in some other frame than
+	  the first one would not show any metadata.
+	- Bug fixed all menus and widgets to support internationalization
+	  (Spanish currently).
+
 v5.0.1  - Bug fixed connection editor failing on LMTs.
 	- Bug fixed refresh windows when selecting a long ICS menu.
 	- Improved reporting of .xml files as recognized.
