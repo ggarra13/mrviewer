@@ -495,7 +495,7 @@ static void update_title_bar( mrv::ImageView* view )
     }
     else
     {
-        snprintf( bufs, 32, _("mrViewer") );
+        snprintf( bufs, 32, "%s", _("mrViewer") );
     }
 
     view->main()->uiMain->copy_label( bufs );
@@ -4269,11 +4269,11 @@ int ImageView::leftMouseDown(int x, int y)
                     if ( mask == _masking ) item->set();
                 }
 
-            TRACE("");
+		TRACE("");
 
-                sprintf( buf, _("View/Hud/Toggle Selected") );
-                menu->add( buf, kHudToggle.hotkey(),
-                          (Fl_Callback*)hud_toggle_cb, uiMain );
+		sprintf( buf, "%s", _("View/Hud/Toggle Selected") );
+		menu->add( buf, kHudToggle.hotkey(),
+			   (Fl_Callback*)hud_toggle_cb, uiMain );
 
                 num = uiMain->uiPrefs->uiPrefsHud->children();
                 for ( i = 0; i < num; ++i )
