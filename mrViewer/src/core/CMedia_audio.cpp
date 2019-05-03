@@ -810,7 +810,7 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
     {
 	_attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
     }
-    
+	
     while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
         std::string name = prefix;
         name += tag->key;
