@@ -117,7 +117,7 @@ static const Fl_Color kRowColors[] = {
 static const unsigned int kSizeOfRowColors = ( sizeof(kRowColors) /
         sizeof(Fl_Color) );
 
-static const int kMiddle = 200;
+static const int kMiddle = 220;
 
 static void change_stereo_image( Fl_Button* w, mrv::ImageInformation* info )
 {
@@ -139,6 +139,7 @@ static void change_stereo_image( Fl_Button* w, mrv::ImageInformation* info )
             w->label( _("Left View") );
         }
     }
+    info->filled = false;
     info->refresh();
 }
 
@@ -669,6 +670,7 @@ static void add_attribute_cb( Fl_Box* widget, ImageInformation* info )
 
     CMedia::Attributes& attrs = img->attributes();
     add_attribute( attrs, img );
+    info->filled = false;
     info->refresh();
     ViewerUI* ui = info->main();
     ui->uiView->redraw();
@@ -722,6 +724,7 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
         img->image_damage( img->image_damage() | CMedia::kDamageTimecode );
     }
     attrs.erase( i );
+    info->filled = false;
     info->refresh();
 }
 
@@ -749,8 +752,7 @@ img( NULL )
     mrv::Recti r( x + Fl::box_dx(box()), y + Fl::box_dy(box()),
                   w - Fl::box_dw(box()), h - Fl::box_dh(box()));
 
-
-    m_all = new mrvPack( x, y, w-sw, 20, "all" );
+    m_all = new mrvPack( r.x(), r.y(), r.w()-sw, sw );
     m_all->begin();
 
     m_button = new Fl_Button( r.x(), r.y(), r.w(), 40, _("Left View") );
@@ -1398,6 +1400,7 @@ static void change_string_cb( Fl_Input* w, ImageInformation* info )
     {
         bool ok = modify_value( w, i );
         if (!ok) {
+	    info->filled = false;
             info->refresh();
             toggle_modify_attribute( key, info );
         }
@@ -1690,6 +1693,7 @@ double ImageInformation::to_memory( long double value,
 void ImageInformation::set_image( CMedia* i )
 {
     DBG;
+    filled = false;
     img = i;
     refresh();
 }
@@ -2683,7 +2687,6 @@ void ImageInformation::fill_data()
 
 
     m_all->layout();
-    end();
 
 
 }
@@ -2691,7 +2694,11 @@ void ImageInformation::fill_data()
 void ImageInformation::refresh()
 {
     // SCOPED_LOCK( _mutex );
-
+    bool movie = ( dynamic_cast< aviImage* >( get_image() ) != NULL );
+    if ( movie && filled && !img->right_eye() && !img->is_left_eye() )
+    {
+	return;
+    }
 
     hide_tabs();
 
@@ -2710,14 +2717,19 @@ void ImageInformation::refresh()
 
 
     fill_data();
-
+    
     m_image->end();
     m_video->end();
     m_audio->end();
     m_subtitle->end();
     m_attributes->end();
+    
     m_all->end();
     m_all->show();
+
+    end();
+    
+    filled = true;
 
     Fl_Group::current(0);
 
@@ -2726,6 +2738,7 @@ void ImageInformation::refresh()
 void
 ImageInformation::resize( int x, int y, int w, int h )
 {
+    scroll_to( 0, 0 );  // needed to avoid m_all shifting downwards
     m_all->resize( x, y, w, h );
     Fl_Scroll::resize( x, y, w, h );
 }
@@ -2742,6 +2755,7 @@ mrv::Table* ImageInformation::add_browser( mrv::CollapsibleGroup* g )
     table->column_separator(true);
     table->auto_resize( true );
     table->labeltype(FL_NO_LABEL);
+    table->col_width(0, kMiddle );
 
 
     static const char* headers[] = { _("Attribute"), _("Value"), 0 };
@@ -2777,18 +2791,21 @@ Fl_Color ImageInformation::get_widget_color()
 void ImageInformation::icc_callback( Fl_Widget* t, ImageInformation* v )
 {
     attach_icc_profile( v->get_image() );
+    v->filled = false;
     v->refresh(); // @TODO: move this somewhere else
 }
 
 void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
 {
     attach_ctl_script( v->get_image(), v->main() );
+    v->filled = false;
 }
 
 void ImageInformation::ctl_idt_callback( Fl_Widget* t,
                                          ImageInformation* v )
 {
     attach_ctl_idt_script( v->get_image(), v->main() );
+    v->filled = false;
 }
 
 void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
@@ -2798,6 +2815,7 @@ void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
     size_t idx = c->idx;
 
     attach_ctl_lmt_script( v->get_image(), idx, v->main() );
+    v->filled = false;
 }
 
 void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
@@ -2806,6 +2824,7 @@ void ImageInformation::compression_cb( mrv::PopupMenu* t, ImageInformation* v )
     CMedia* img = v->get_image();
     img->compression( idx );
     t->label( t->child(idx)->label() );
+    v->filled = false;
 }
 
 void ImageInformation::add_icc( const char* name,
