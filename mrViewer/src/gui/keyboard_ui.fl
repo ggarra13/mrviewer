@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.03
+version 1.0400
 i18n_type 1
 i18n_include <libintl.h>
 i18n_function gettext
@@ -29,28 +29,28 @@ class ChooseHotkey {open
   Function {make_window()} {open
   } {
     Fl_Window uiMain {
-      label {Choose Hotkey} open
-      xywh {346 247 360 140} type Double resizable modal visible
+      label {Choose Hotkey} open selected
+      xywh {346 247 360 140} type Double box PLASTIC_UP_BOX resizable modal visible
     } {
       Fl_Input uiKey {
         label Key
-        xywh {60 5 140 27}
+        xywh {60 5 140 27} color 49 labelcolor 32 textcolor 17
       }
       Fl_Check_Button uiShift {
         label Shift
-        xywh {65 68 20 27} down_box DOWN_BOX
+        xywh {40 68 20 27} down_box DOWN_BOX labelcolor 32
       }
       Fl_Check_Button uiCtrl {
         label Ctrl
-        xywh {160 69 25 27} down_box DOWN_BOX
+        xywh {160 69 25 27} down_box DOWN_BOX labelcolor 32
       }
       Fl_Check_Button uiAlt {
         label Alt
-        xywh {65 103 25 27} down_box DOWN_BOX
+        xywh {40 103 25 27} down_box DOWN_BOX labelcolor 32
       }
       Fl_Check_Button uiMeta {
         label Meta
-        xywh {160 103 25 27} down_box DOWN_BOX
+        xywh {160 103 25 27} down_box DOWN_BOX labelcolor 32
       }
       Fl_Button {} {
         label Okay
@@ -112,7 +112,7 @@ v->uiMain->hide();}
         label Cancel
         user_data this user_data_type {ChooseHotkey*}
         callback {v->hk = v->backup;
-v->uiMain->hide();} selected
+v->uiMain->hide();}
         xywh {285 92 70 26}
       }
       Fl_Menu_Button uiSpecialKey {
@@ -121,7 +121,7 @@ v->uiMain->hide();} selected
         callback {int idx = o->value();
 const char* text = o->child(idx)->label();
 uiKey->value( text );} open
-        xywh {210 5 110 27}
+        xywh {210 5 110 27} labelcolor 17 textcolor 17
         code0 {for (int i = 0; i < 40; i++)
 {
    uiSpecialKey->add( mrv::table[i].text );
@@ -136,7 +136,7 @@ for (int i = 1; i < 13; i++)
       } {}
       Fl_Input uiKey2 {
         label Key2
-        xywh {60 38 140 27}
+        xywh {60 38 140 27} color 49 labelcolor 32 textcolor 17
       }
       Fl_Menu_Button uiSpecialKey2 {
         label Special
@@ -144,7 +144,7 @@ for (int i = 1; i < 13; i++)
         callback {int idx = o->value();
 const char* text = o->child(idx)->label();
 uiKey2->value( text );} open
-        xywh {210 38 110 27}
+        xywh {210 38 110 27} labelcolor 17 textcolor 17
         code0 {for (int i = 0; i < 40; i++)
 {
    uiSpecialKey2->add( mrv::table[i].text );
