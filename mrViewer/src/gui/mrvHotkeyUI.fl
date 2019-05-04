@@ -8,7 +8,7 @@ code_name {.cxx}
 decl {\#include "gui/mrvHotkey.h"} {private local
 }
 
-decl {\#include "gui/mrvPreferences.h"} {selected private local
+decl {\#include "gui/mrvPreferences.h"} {private local
 }
 
 decl {\#include "FL/Fl.H"} {public global
@@ -23,21 +23,24 @@ class HotkeyUI {open
   } {
     Fl_Window uiMain {
       label Hotkeys open
-      xywh {620 382 635 430} type Double resizable
-      modal visible
+      xywh {64 274 635 430} type Double box PLASTIC_DOWN_BOX resizable modal visible
     } {
-      Fl_Browser uiFunction {
-        label Hotkeys
-        user_data this user_data_type {HotkeyUI*}
-        callback {mrv::select_hotkey( v );}
-        xywh {10 30 600 320}
-        code0 {mrv::fill_ui_hotkeys( o );}
-        class {mrv::Browser}
-      }
-      Fl_Button {} {
-        label Save
-        callback {mrv::Preferences::save();}
-        xywh {545 380 65 30}
+      Fl_Group {} {open
+        xywh {0 0 635 430} box PLASTIC_DOWN_BOX
+      } {
+        Fl_Browser uiFunction {
+          label Hotkeys
+          user_data this user_data_type {HotkeyUI*}
+          callback {mrv::select_hotkey( v );} selected
+          xywh {15 25 600 320} box PLASTIC_DOWN_BOX
+          code0 {mrv::fill_ui_hotkeys( o );}
+          class {mrv::Browser}
+        }
+        Fl_Button {} {
+          label Save
+          callback {mrv::Preferences::save();} selected
+          xywh {550 375 65 30} box PLASTIC_UP_BOX
+        }
       }
     }
   }
