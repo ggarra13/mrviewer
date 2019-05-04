@@ -224,6 +224,7 @@ protected:
     unsigned int X, Y, W, H;
 
 public:
+    bool                         filled;
     mrv::CollapsibleGroup*       m_attributes;
     Fl_Menu_Button*              menu;
 };
