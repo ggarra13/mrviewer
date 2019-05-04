@@ -1034,7 +1034,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
         buf[0] = '\0';
         while( !feof(f) )
           {
-            fgets( buf, 1024, f );
+	    char* err = fgets( buf, 1024, f );
             char *newline = strrchr( buf, '\n' );
             if( newline )
               *newline = '\0';
@@ -4703,21 +4703,32 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
 {
   static Flu_File_Chooser *fc = NULL;
 
+  if (! retname.empty() )
+      filename = retname.c_str();
+   
   if( !fc )
     {
-        if ( strlen(filename) == 0 )
-        {
-            filename = retname.c_str();
-        }
         fc = new Flu_File_Chooser( filename, pattern, type, message,
                                    compact_files );
+	if (fc && retname.size() )
+	{
+	    fc->value( retname.c_str() );
+	}
     }
   else
     {
+      std::string dir = retname;
+      size_t pos = dir.rfind( '/' );
+      if ( pos != std::string::npos )
+      {
+          dir = dir.substr( 0, pos );
+      }
+      fc->currentDir = dir;
+      
       fc->type( type );
       fc->clear_history();
       fc->label( message );
-      if( !filename || strlen(filename) == 0 || !retname.empty() )
+      if( !filename || strlen(filename) == 0 )
         {
           if( (!pattern || !fc->filter() || strcmp(pattern,fc->filter())) && fc->value() )
             {
