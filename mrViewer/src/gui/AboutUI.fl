@@ -95,7 +95,8 @@ for (; i != e; ++i )
             xywh {16 151 415 205} color 49 textcolor 32
             code0 {static int widths[] = {160,o->w()-160,0};}
             code1 {o->column_widths( widths );}
-            code2 {o->value(-1);}
+	    code2 {o->type( FL_MULTI_BROWSER ); }
+            code3 {o->value(-1);}
             class {mrv::Browser}
           }
         }
