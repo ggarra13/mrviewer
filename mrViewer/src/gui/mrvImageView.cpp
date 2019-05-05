@@ -3103,16 +3103,16 @@ void ImageView::handle_commands()
         }
     default:
     {
-        LOG_ERROR( "Unknown mrv event " << commands.size() << " "
+        LOG_ERROR( "Unknown mrv event size " << commands.size() << " type "
                    << c.type << " data " << c.data );
         break;
     }
     }  // switch
 
-    _network_active = true;
     delete c.data;  c.data = NULL;
     delete c.linfo; c.linfo = NULL;
     commands.pop_front();
+    _network_active = true;
     redraw();
 }
 
@@ -3131,7 +3131,7 @@ void ImageView::timeout()
         SCOPED_LOCK( commands_mutex );
         while ( ! commands.empty()  )
         {
-            handle_commands();
+	    handle_commands();
         }
     }
 
@@ -6743,7 +6743,6 @@ void ImageView::toggle_fullscreen()
     }
 
 
-    Fl::check();
     
     fit_image();
 
@@ -6840,8 +6839,6 @@ void ImageView::toggle_presentation()
         uiMain->uiRegion->init_sizes();
         resize_main_window();
     }
-
-    Fl::check();
 
     take_focus();
 
