@@ -1029,7 +1029,8 @@ bool Parser::parse( const std::string& s )
 	c.type = ImageView::kInsertImage;
 	c.data = new Imf::IntAttribute( idx );
 	c.linfo = new LoadInfo( imgname );
-
+        v->commands.push_back( c );
+	ok = true;
     }
     else if ( cmd == N_("ChangeImage") )
     {
@@ -1050,6 +1051,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kCacheClear;
+	
 
         v->commands.push_back( c );
 
@@ -1149,6 +1151,7 @@ bool Parser::parse( const std::string& s )
             int idx = 0;
             ImageView::Command c;
             c.type = ImageView::kBGImage;
+	    
 
             for ( ; j != e; ++j, ++idx )
             {
@@ -1460,6 +1463,7 @@ bool Parser::parse( const std::string& s )
             deliver( "playfwd" );
             ImageView::Command c;
             c.type = ImageView::kPlayForwards;
+	    
             v->commands.push_back( c );
         }
 
@@ -1476,6 +1480,7 @@ bool Parser::parse( const std::string& s )
         {
             ImageView::Command c;
             c.type = ImageView::kStopVideo;
+	    
             c.frame = f;
             v->commands.push_back( c );
         }
@@ -1487,6 +1492,7 @@ bool Parser::parse( const std::string& s )
     {
         ImageView::Command c;
         c.type = ImageView::kPlayForwards;
+	
         v->commands.push_back( c );
         ok = true;
     }
@@ -1502,6 +1508,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kSeek;
+	
         c.frame = f;
         v->commands.push_back( c );
 
@@ -1512,7 +1519,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kMEDIA_INFO_WINDOW_SHOW;
@@ -1529,7 +1536,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kCOLOR_AREA_WINDOW_SHOW;
@@ -1546,7 +1553,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::k3D_VIEW_WINDOW_SHOW;
@@ -1563,7 +1570,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kSTEREO_OPTIONS_WINDOW_SHOW;
@@ -1594,7 +1601,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kPAINT_TOOLS_WINDOW_SHOW;
@@ -1611,7 +1618,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kHISTOGRAM_WINDOW_SHOW;
@@ -1628,7 +1635,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kVECTORSCOPE_WINDOW_SHOW;
@@ -1645,7 +1652,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        c.data = NULL;
+        
         if ( x )
         {
             c.type = ImageView::kWAVEFORM_WINDOW_SHOW;
