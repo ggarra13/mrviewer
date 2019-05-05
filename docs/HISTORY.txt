@@ -13,6 +13,11 @@ v5.0.2  - Made Media Info's Remove Attributes work in nested attributes
 	  the first one would not show any metadata.
 	- Bug fixed all menus and widgets to support internationalization
 	  (Spanish currently).
+	- Prettyfied some windows (about, hotkeys, keyboard).
+	- Made open image open in the last directory opened (even if it was
+	  from DnD).
+	- Bug fixed fullscreen and presentation modes on network connections.
+	  Previously, they would crash the viewer.
 
 v5.0.1  - Bug fixed connection editor failing on LMTs.
 	- Bug fixed refresh windows when selecting a long ICS menu.
