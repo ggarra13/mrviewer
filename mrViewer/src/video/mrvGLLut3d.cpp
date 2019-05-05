@@ -68,13 +68,6 @@ const char* kModule = N_("cmm");
 
 #define OCIO_ERROR(x) LOG_ERROR( "[ocio] " << x );
 
-#if 0
-#undef DBG
-#define DBG \
-std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
-#else
-#define DBG
-#endif
 
 namespace mrv {
 
