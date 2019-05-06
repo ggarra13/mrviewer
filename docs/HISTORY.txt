@@ -18,6 +18,13 @@ v5.0.2  - Made Media Info's Remove Attributes work in nested attributes
 	  from DnD).
 	- Bug fixed fullscreen and presentation modes on network connections.
 	  Previously, they would crash the viewer.
+	- Made timeline, pixel bar and topbar hide properly from the
+	  preferences.  Restoring them also works, but the top bar shows up
+	  twice its height the first time if it is shown before the other
+	  bars.  If it is shown after, it may show the dreaded white area.
+	- Gave the Black color theme some love.  Now it looks much nicer.
+	- Made the CTRL+Drag gain adjustment be more sensitive.
+	- Added CTRL+SHIFT+Drag to adjust gamma.
 
 v5.0.1  - Bug fixed connection editor failing on LMTs.
 	- Bug fixed refresh windows when selecting a long ICS menu.
