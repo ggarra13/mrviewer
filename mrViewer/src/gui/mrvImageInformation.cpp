@@ -3659,9 +3659,9 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
+	widget->labelcolor( FL_LIGHT3 );
         widget->textcolor( FL_BLACK );
         widget->deactivate();
-        widget->box( FL_FLAT_BOX );
         g2->add( widget );
     }
     {
@@ -3671,10 +3671,10 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
+	widget->labelcolor( FL_LIGHT3 );
         widget->textcolor( FL_BLACK );
         widget->color( colB );
         widget->deactivate();
-        widget->box( FL_FLAT_BOX );
         g2->add( widget );
     }
     m_curr->add( g2 );
