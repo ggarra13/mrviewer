@@ -432,7 +432,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
 
     
     // Labels
-    b->add( "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey" );
+    b->add( _("@B12@C7@b@.Function\t@B12@C7@b@.Hotkey") );
 
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
