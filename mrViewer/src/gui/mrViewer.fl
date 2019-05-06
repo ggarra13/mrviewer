@@ -416,7 +416,7 @@ class LogUI {} {
 class PaintUI {} {
   Function {make_window( ViewerUI* m )} {} {
     Fl_Window uiMain {
-      label Paint
+      label Action
       xywh {733 95 165 505} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
@@ -1773,6 +1773,7 @@ delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiConnection; uiConnection = NULL;
 delete uiMain; uiMain = NULL;
 delete uiHotkey; uiHotkey = NULL;
+delete uiPrefs; uiPrefs = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
   }
   Function {refresh()} {open
