@@ -1348,22 +1348,35 @@ void Preferences::run( ViewerUI* main )
     //
     DBG;
     if ( uiPrefs->uiPrefsTopbar->value() )
+    {
         main->uiTopBar->show();
+    }
     else
+    {
         main->uiTopBar->hide();
-
+    }
+    
     DBG;
     if ( uiPrefs->uiPrefsPixelToolbar->value() )
+    {
         main->uiPixelBar->show();
+    }
     else
+    {
         main->uiPixelBar->hide();
-
+    }
+    
     DBG;
     if ( uiPrefs->uiPrefsTimeline->value() )
+    {
         main->uiBottomBar->show();
+    }
     else
+    {
         main->uiBottomBar->hide();
+    }
 
+    main->uiView->resize_main_window();
 
     //
     // Widget/Viewer settings
