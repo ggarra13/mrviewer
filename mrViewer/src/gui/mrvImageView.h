@@ -125,6 +125,7 @@ public:
         kLeftShift   = 1 << 7,
         kLeftCtrl    = 1 << 8,
         kMouseMove   = 1 << 9,
+	kGamma       = 1 << 10,
     };
 
     enum Mode {
@@ -648,6 +649,8 @@ public:
     // rotation in degrees
     static void rot2vec( double& x, double& y, const double r );
 
+    int  keyDown(unsigned int);
+    
     void text_mode();
     void scrub_mode();
     void selection_mode();
@@ -781,7 +784,6 @@ protected:
     void leftMouseUp(int,int);
     void mouseDrag(int,int);
     void mouseMove(int,int);
-    int  keyDown(unsigned int);
     int  keyUp(unsigned int);
 
     int update_shortcuts( const mrv::media& fg, const char* channelName );
