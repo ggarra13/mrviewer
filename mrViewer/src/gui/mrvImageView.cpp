@@ -3982,7 +3982,15 @@ int ImageView::leftMouseDown(int x, int y)
         if ( Fl::event_state( FL_SHIFT ) )
         {
             flags |= kLeftShift;
-            selection_mode();
+	    if ( Fl::event_state( FL_CTRL ) )
+	    {
+		flags |= kLeftCtrl;
+		flags |= kGamma;
+	    }
+	    else
+	    {
+		selection_mode();
+	    }
         }
         else if ( Fl::event_state( FL_CTRL ) )
         {
@@ -5619,7 +5627,13 @@ void ImageView::mouseDrag(int x,int y)
         }
         else if ( flags & kGain )
         {
-            gain( _gain + float(dx) / 2000.0f );
+            gain( _gain + float(dx) / 250.0f );
+            lastX = x;
+            lastY = y;
+        }
+        else if ( flags & kGamma )
+        {
+            gamma( _gamma + float(dx) / 250.0f );
             lastX = x;
             lastY = y;
         }
@@ -6496,6 +6510,10 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kToggleTopBar.match( rawkey ) )
     {
         int H = uiMain->uiRegion->h();
+	int w = uiMain->uiTopBar->w();
+	float scale = Fl::screen_scale(window()->screen_num());
+	// Topbar MUST be 28 pixels-- for some reason it changes size
+	uiMain->uiTopBar->resize( 0, 0, w, int(28 * scale) );
         if ( uiMain->uiTopBar->visible() ) {
             uiMain->uiTopBar->hide();
             H += uiMain->uiTopBar->h();
@@ -6507,9 +6525,9 @@ int ImageView::keyDown(unsigned int rawkey)
         int X = uiMain->uiRegion->x();
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
-        uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->init_sizes();
+	uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -6529,8 +6547,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -6549,8 +6567,8 @@ int ImageView::keyDown(unsigned int rawkey)
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
         uiMain->uiRegion->resize( X, Y, W, H );
-        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->layout();
+        uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -6812,7 +6830,7 @@ void ImageView::toggle_presentation()
         
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
-#ifdef WIN32
+#ifdef _WIN32
         resize( X, Y, W, H + 40 );  // @BUG: We need +40 to cover bottom strip
 #endif
         uiMain->uiRegion->init_sizes();
@@ -8507,13 +8525,28 @@ void ImageView::resize_main_window()
     fltk_main()->fullscreen_off( posX, posY, w, h );
     // @BUG: we need to add kTitlebar to avoid bad redraw on windows
     int H = Fl::h();
-    if ( h + kTitleBar <= H - kTitleBar )
-        fltk_main()->resize( posX, posY, w, h + kTitleBar );
-    uiMain->uiRegion->redraw();
+#if 1
+   if ( h + kTitleBar <= H - kTitleBar )
+       fltk_main()->resize( posX, posY, w, h + kTitleBar );
+#endif
+   
+   uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
+			   28 * scale );
+
+   uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
+			     28 * scale );
+    
+   uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
+			      49 * scale );
+   
+   uiMain->uiRegion->layout();
+   uiMain->uiRegion->init_sizes();
+   uiMain->uiRegion->redraw();
 #ifdef LINUX
     fltk_main()->show();
 #endif
 
+    
     if ( fit ) fit_image();
 
 }
