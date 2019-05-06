@@ -12,6 +12,7 @@ namespace mrv {
     class ColorSchemes
     {
     protected:
+	std::string filename;
         std::string remove_comments( std::string line );
     public:
         struct Theme
@@ -32,6 +33,8 @@ namespace mrv {
         bool read_themes( const char* file );
         bool read_colors( FILE* f, Theme& scheme );
         void apply_colors( std::string name );
+	void reload_theme( std::string name );
+
     };
 
 }
