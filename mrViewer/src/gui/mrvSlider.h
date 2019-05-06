@@ -30,6 +30,7 @@ class Slider : public Fl_Slider
     Slider( int x, int y, int w, int h, const char* l = 0 ) :
     Fl_Slider( x, y, w, h, l ),
     _slider_type( kNORMAL ),
+    _tick_color( FL_BLACK ),
     tick_size_( 4 )
     {
 	type( FL_HORIZONTAL );
@@ -44,6 +45,8 @@ class Slider : public Fl_Slider
     inline int tick_size() const { return tick_size_; }
     inline void tick_size(int i) { tick_size_ = i; }
 
+    inline void tick_color( Fl_Color c ) { _tick_color = c; }
+    
     inline SliderType slider_type() const { return _slider_type; }
     inline void slider_type( enum SliderType x ) { _slider_type = x; }
     
@@ -57,6 +60,7 @@ class Slider : public Fl_Slider
     
     SliderType _slider_type;
     Ticks      _ticks;
+    Fl_Color   _tick_color;
     int        tick_size_;
 };
 
