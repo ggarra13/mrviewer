@@ -31,6 +31,7 @@ namespace mrv
         if (!f) {
             return false;
         }
+	filename = file;
         char line[256];
         while ( fgets( line, sizeof(line), f ) != NULL )
         {
@@ -118,4 +119,11 @@ namespace mrv
         }
     }
 
+    void
+    ColorSchemes::reload_theme( std::string t )
+    {
+	themes.clear();
+	read_themes( filename.c_str() );
+	apply_colors( t );
+    }
 }
