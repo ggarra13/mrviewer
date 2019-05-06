@@ -99,45 +99,48 @@ class PreferencesUI {open
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
+      Fl_Group {} {open selected
+        xywh {0 0 675 455} box UP_BOX resizable
+      } {}
       Fl_Wizard uiWizard {
         label Settings open
-        xywh {200 25 473 520}
+        xywh {200 25 473 520} box PLASTIC_UP_BOX labelcolor 32
       } {
         Fl_Group {} {
-          label {User Interface} open
-          xywh {220 48 448 497} box EMBOSSED_BOX align 5
+          label {User Interface}
+          xywh {220 48 453 497} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label {Window Behavior} open
-            xywh {228 48 440 126} box ROUNDED_BOX
+            xywh {228 48 412 128} box ROUNDED_BOX
           } {
             Fl_Check_Button uiPrefsAlwaysOnTop {
               label {Always on Top}
-              tooltip {When selected, mrViewer's window will always show up on top of other windows on the desktop.} xywh {244 56 19 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When selected, mrViewer's window will always show up on top of other windows on the desktop.} xywh {244 56 19 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsSingleInstance {
               label {Single Instance}
               tooltip {When selected, only a single mrViewer instance is allowed.
-If you try to open several mrViewers with different images, all these images will be sent to the already open mrViewer.} xywh {244 82 20 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+If you try to open several mrViewers with different images, all these images will be sent to the already open mrViewer.} xywh {244 82 20 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsAutoFitImage {
               label {Auto Refit Image}
-              tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.} xywh {244 109 20 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.} xywh {244 109 20 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Group uiPrefsOpenMode {open
-              xywh {403 57 240 108} box UP_BOX
+              xywh {455 57 165 92} box UP_BOX
             } {
               Fl_Round_Button {} {
                 label Normal
-                tooltip {When selected, mrViewer will resize its window to the first image.} xywh {423 67 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX value 1 align 8
+                tooltip {When selected, mrViewer will resize its window to the first image.} xywh {463 65 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX value 1 selection_color 15 align 8
               }
               Fl_Round_Button {} {
                 label Fullscreen
-                tooltip {When selected, mrViewer will start in full screen mode.} xywh {423 94 25 25} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX align 8
+                tooltip {When selected, mrViewer will start in full screen mode.} xywh {463 92 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
               }
               Fl_Round_Button {} {
-                label Presentation selected
-                tooltip {When selected, mrViewer will start in presentation mode.} xywh {423 121 25 25} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX align 8
+                label Presentation
+                tooltip {When selected, mrViewer will start in presentation mode.} xywh {463 120 25 26} type Radio box ROUND_UP_BOX down_box ROUND_DOWN_BOX selection_color 15 align 8
               }
             }
           }
@@ -147,56 +150,56 @@ If you try to open several mrViewers with different images, all these images wil
           } {
             Fl_Check_Button uiPrefsTopbar {
               label Topbar
-              tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible.} xywh {228 221 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible.} xywh {228 221 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsPixelToolbar {
               label {Pixel Toolbar}
-              tooltip {When selected, mrViewer will start with the pixel toolbar shown.} xywh {228 251 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When selected, mrViewer will start with the pixel toolbar shown.} xywh {228 251 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsTimeline {
               label Timeline
-              tooltip {When selected, mrViewer will start with the timeline shown.} xywh {228 280 25 25} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When selected, mrViewer will start with the timeline shown.} xywh {228 280 25 25} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsReelList {
               label {Reel List}
-              tooltip {When selected, mrViewer will start with the reel list already open.} xywh {363 221 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the reel list already open.} xywh {363 221 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsHistogram {
               label Histogram
-              tooltip {When selected, mrViewer will start with the histogram already open.} xywh {503 251 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the histogram already open.} xywh {503 251 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsVectorscope {
               label Vectorscope
-              tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {503 280 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the vectorscope already open.} xywh {503 280 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsImageInfo {
               label {Media Info}
-              tooltip {When selected, mrViewer will start with the media information window already open.} xywh {363 251 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the media information window already open.} xywh {363 251 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsColorArea {
               label {Color Area}
-              tooltip {When selected, mrViewer will start with the color area window already open.} xywh {363 280 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the color area window already open.} xywh {363 280 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsEDLEdit {
               label {EDL Edit}
-              tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {503 224 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the EDL Edit window already open.} xywh {503 224 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsStereoOptions {
               label {Stereo 3D Options}
-              tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {229 308 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the stereo options window already open.} xywh {229 308 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsPaintTools {
               label {Action Tools}
-              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {229 336 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the action tools already showing.} xywh {229 336 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsWaveform {
               label Waveform
-              tooltip {When selected, mrViewer will start with the waveform already open.} xywh {503 306 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When selected, mrViewer will start with the waveform already open.} xywh {503 306 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
           }
         }
         Fl_Group {} {
-          label {View Window} open
+          label {View Window}
           xywh {220 34 423 417} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -276,25 +279,25 @@ If you try to open several mrViewers with different images, all these images wil
             }
             Fl_Check_Button uiPrefsViewPixelRatio {
               label {Compensate Pixel Ratio}
-              tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.} xywh {423 126 20 22} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.} xywh {423 126 20 22} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsViewLut {
               label {Lut Active}
               user_data this user_data_type {PreferencesUI*}
-              tooltip {When mrViewer starts, the 3D Lut will be active.} xywh {423 151 20 22} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When mrViewer starts, the 3D Lut will be active.} xywh {423 151 20 22} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsSafeAreas {
               label {Safe Areas}
               user_data this user_data_type {PreferencesUI*}
-              tooltip {When mrViewer starts, the safe area display will be active by default.} xywh {423 178 20 20} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {When mrViewer starts, the safe area display will be active by default.} xywh {423 178 20 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsViewDisplayWindow {
               label {Display Window}
-              tooltip {When mrViewer starts, the display window will be shown when appropiate.} xywh {245 159 20 22} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When mrViewer starts, the display window will be shown when appropiate.} xywh {245 159 20 22} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
             Fl_Check_Button uiPrefsViewDataWindow {
               label {Data Window}
-              tooltip {When mrViewer starts, the data window will be shown when appropiate as a dotted line.} xywh {245 179 20 22} box UP_BOX down_box DOWN_BOX value 1 align 8
+              tooltip {When mrViewer starts, the data window will be shown when appropiate as a dotted line.} xywh {245 179 20 22} box UP_BOX down_box DOWN_BOX value 1 selection_color 15 align 8
             }
           }
           Fl_Group uiPrefsHud {
@@ -360,17 +363,17 @@ If you try to open several mrViewers with different images, all these images wil
           }
         }
         Fl_Group {} {
-          label Colors open
-          xywh {200 42 439 409} box EMBOSSED_BOX align 5 hide
+          label Colors
+          xywh {220 36 439 409} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label UI
-            xywh {230 65 385 165} box ROUNDED_BOX
+            label UI open
+            xywh {250 59 385 165} box ROUNDED_BOX
           } {
             Fl_Choice uiScheme {
               label Scheme
               callback {Fl::scheme( o->mvalue()->text );} open
-              xywh {375 110 100 25} down_box BORDER_BOX align 1
+              xywh {395 104 100 25} down_box BORDER_BOX align 1
             } {
               MenuItem {} {
                 label base
@@ -394,12 +397,20 @@ If you try to open several mrViewers with different images, all these images wil
               user_data m user_data_type {ViewerUI*}
               callback {mrv::Preferences::schemes.apply_colors( o->mvalue()->text );
 v->refresh();} open
-              xywh {355 165 150 25} down_box BORDER_BOX align 1
+              xywh {375 159 150 25} down_box BORDER_BOX align 1
             } {}
+            Fl_Button {} {
+              label {Reload Theme}
+              user_data m user_data_type {ViewerUI*}
+              callback {const Fl_Menu_Item* item = uiColorTheme->mvalue();
+mrv::Preferences::schemes.reload_theme( item->text );
+v->refresh();}
+              tooltip {Reload color theme from mrViewer.colors file again to refresh change in colors} xywh {385 189 135 30}
+            }
           }
           Fl_Group {} {
             label View
-            xywh {230 252 390 109} box ROUNDED_BOX
+            xywh {250 246 390 109} box ROUNDED_BOX
           } {
             Fl_Button uiPrefsViewBG {
               label Background
@@ -408,7 +419,7 @@ Fl::get_color(o->color(),r,g,b);
 if (!fl_color_chooser("Pick View Background Color", r,g,b)) return;
 o->color( fl_rgb_color( r, g, b ) );
 o->redraw();}
-              tooltip {Selects the background color of areas outside the current image.} xywh {390 267 25 20} box EMBOSSED_BOX labelsize 11 align 4
+              tooltip {Selects the background color of areas outside the current image.} xywh {410 261 25 20} box EMBOSSED_BOX labelsize 11 align 4
             }
             Fl_Button uiPrefsViewTextOverlay {
               label {Text Overlay}
@@ -419,7 +430,7 @@ if (!fl_color_chooser("Pick View Text Overlay Color", r,g,b)) return;
 o->color( fl_rgb_color( r, g, b ) );
 o->redraw();
 v->refresh();}
-              tooltip {Selects the color of text overlays printed over the current image.} xywh {390 304 25 20} box EMBOSSED_BOX labelsize 11 align 4
+              tooltip {Selects the color of text overlays printed over the current image.} xywh {410 298 25 20} box EMBOSSED_BOX labelsize 11 align 4
             }
             Fl_Button uiPrefsViewSelection {
               label Selection
@@ -430,7 +441,7 @@ if (!fl_color_chooser("Pick View Selection Color", r,g,b)) return;
 o->color( fl_rgb_color( r, g, b ) );
 o->redraw();
 v->refresh();}
-              tooltip {Selects the color of the selection rectangle over the current image.} xywh {505 267 25 20} box EMBOSSED_BOX labelsize 11 align 4
+              tooltip {Selects the color of the selection rectangle over the current image.} xywh {525 261 25 20} box EMBOSSED_BOX labelsize 11 align 4
             }
             Fl_Button uiPrefsViewHud {
               label HUD
@@ -441,44 +452,44 @@ if (!fl_color_chooser("Pick HUD Color", r,g,b)) return;
 o->color( fl_rgb_color( r, g, b ) );
 o->redraw();
 v->refresh();}
-              tooltip {Selects the color of HUD overlays.} xywh {509 304 21 20} box EMBOSSED_BOX align 4
+              tooltip {Selects the color of HUD overlays.} xywh {529 298 21 20} box EMBOSSED_BOX align 4
             }
           }
         }
         Fl_Group {} {
           label Positioning
-          xywh {215 29 423 362} box EMBOSSED_BOX hide
+          xywh {215 33 423 362} box EMBOSSED_BOX hide
         } {
           Fl_Group {} {open
-            xywh {245 110 360 48} box ROUNDED_BOX
+            xywh {245 114 360 48} box ROUNDED_BOX
           } {
             Fl_Check_Button uiWindowFixedPosition {
               label {Fixed Position}
-              tooltip {When this option is set, mrViewer will open in the position you set here (except if the window goes out of the Desktop).} xywh {255 126 130 20} box UP_BOX down_box DOWN_BOX
+              tooltip {When this option is set, mrViewer will open in the position you set here (except if the window goes out of the Desktop).} xywh {255 130 130 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Value_Input uiWindowXPosition {
               label {X:}
-              xywh {408 121 60 25}
+              xywh {408 125 60 25}
             }
             Fl_Value_Input uiWindowYPosition {
               label {Y:}
-              xywh {488 121 60 25}
+              xywh {488 125 60 25}
             }
           }
           Fl_Group {} {open
-            xywh {245 208 360 43} box ROUNDED_BOX
+            xywh {245 212 360 43} box ROUNDED_BOX
           } {
             Fl_Check_Button uiWindowFixedSize {
               label {Fixed Size}
-              tooltip {When this option is on, mrViewer will always open to the size you set in W and H.} xywh {260 221 135 20} box UP_BOX down_box DOWN_BOX
+              tooltip {When this option is on, mrViewer will always open to the size you set in W and H.} xywh {260 225 135 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Value_Input uiWindowXSize {
               label {W:}
-              xywh {420 216 60 25} minimum 640 maximum 4096 step 1 value 640
+              xywh {420 220 60 25} minimum 640 maximum 4096 step 1 value 640
             }
             Fl_Value_Input uiWindowYSize {
               label {H:}
-              xywh {500 216 60 25} minimum 480 maximum 3680 step 1 value 480
+              xywh {500 220 60 25} minimum 480 maximum 3680 step 1 value 480
             }
           }
           Fl_Button {} {
@@ -488,7 +499,7 @@ v->refresh();}
 uiWindowYPosition->value( v->uiMain->y() );
 uiWindowXSize->value( v->uiMain->w() );
 uiWindowYSize->value( v->uiMain->h() );}
-            xywh {250 306 355 40}
+            xywh {250 310 355 40}
           }
         }
         Fl_Group {} {
@@ -509,36 +520,36 @@ uiWindowYSize->value( v->uiMain->h() );}
           }
         }
         Fl_Group Playback {
-          label Playback open
-          xywh {215 25 423 371} box EMBOSSED_BOX align 5 hide
+          label Playback
+          xywh {225 38 423 357} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
-            label Defaults open
-            xywh {245 42 339 224} box ROUNDED_BOX align 5
+            label Defaults
+            xywh {265 55 339 224} box ROUNDED_BOX align 5
           } {
             Fl_Check_Button uiPrefsAutoPlayback {
               label {Auto Playback}
-              tooltip {Start Playback when opening files.} xywh {375 61 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
+              tooltip {Start Playback when opening files.} xywh {395 74 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
             Fl_Group {} {open
-              xywh {260 107 300 154} box ROUNDED_BOX
+              xywh {280 120 300 154} box ROUNDED_BOX
             } {
               Fl_Check_Button uiPrefsOverrideFPS {
                 label {Override FPS}
-                tooltip {Override playback fps when loading sequences.} xywh {422 111 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
+                tooltip {Override playback fps when loading sequences.} xywh {442 124 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
               }
               Fl_Group {} {open
-                xywh {300 134 225 37}
+                xywh {320 147 225 37}
               } {
                 Fl_Value_Input uiPrefsFPS {
                   label Speed
-                  xywh {360 144 80 27} color -1733777408 selection_color 0 minimum 0.001 maximum 120 step 0.01 value 24
+                  xywh {380 157 80 27} color -1733777408 selection_color 0 minimum 0.001 maximum 120 step 0.01 value 24
                 }
                 Fl_Menu_Button {} {
                   label FPS
                   callback {float g = (float) atof( o->child( o->value() )->label() );
 uiPrefsFPS->value( g );} open
-                  xywh {442 144 75 27}
+                  xywh {462 157 75 27}
                   class {mrv::PopupMenu}
                 } {
                   MenuItem {} {
@@ -585,7 +596,7 @@ uiPrefsFPS->value( g );} open
               }
               Fl_Choice uiPrefsLoopMode {
                 label {Looping Mode}
-                tooltip {Select default looping mode in timeline.} xywh {380 186 90 25} box THIN_DOWN_BOX down_box BORDER_BOX
+                tooltip {Select default looping mode in timeline.} xywh {400 199 90 25} box THIN_DOWN_BOX down_box BORDER_BOX
                 class {mrv::Choice}
               } {
                 MenuItem {} {
@@ -604,20 +615,20 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Value_Input uiPrefsScrubbingSensitivity {
               label {Scrub Sensitivity}
-              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {410 226 60 25} minimum 2 maximum 50 step 1 value 5
+              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {430 239 60 25} minimum 2 maximum 50 step 1 value 5
             }
             Fl_Check_Button uiPrefsPlayAllFrames {
               label {Play All Frames}
-              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {530 60 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
+              tooltip {Play All frames without skipping even if frame rate suffers.} xywh {550 73 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 4
             }
           }
           Fl_Group {} {
-            label Timeline
-            xywh {250 290 327 82} box ROUNDED_BOX
+            label Timeline open
+            xywh {270 303 327 82} box ROUNDED_BOX
           } {
             Fl_Choice uiPrefsTimelineDisplay {
               label Display
-              tooltip {How to display timeline by default.} xywh {355 301 190 25} box THIN_DOWN_BOX down_box BORDER_BOX
+              tooltip {How to display timeline by default.} xywh {375 314 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
               code0 {o->value(0);}
             } {
               MenuItem {} {
@@ -643,7 +654,7 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Choice uiPrefsTimelineSelectionDisplay {
               label Selection open
-              tooltip {How to display timeline selection by default.} xywh {355 341 190 25} box THIN_DOWN_BOX down_box BORDER_BOX
+              tooltip {How to display timeline selection by default.} xywh {375 354 210 25} box THIN_DOWN_BOX down_box BORDER_BOX
               code0 {o->value(0);}
             } {
               MenuItem {} {
@@ -659,14 +670,14 @@ uiPrefsFPS->value( g );} open
         }
         Fl_Group {} {
           label {Pixel Toolbar}
-          xywh {210 33 432 361} box EMBOSSED_BOX align 5 hide
+          xywh {225 45 432 350} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {open
-            xywh {240 38 363 308}
+            xywh {255 45 363 302}
           } {
             Fl_Choice uiPrefsPixelRGBA {
               label {RGBA Display}
-              xywh {410 98 185 25} down_box BORDER_BOX
+              xywh {425 99 185 25} down_box BORDER_BOX
             } {
               MenuItem {} {
                 label {Float Values}
@@ -683,7 +694,7 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Choice uiPrefsPixelValues {
               label {Pixel Values}
-              xywh {410 166 185 25} down_box BORDER_BOX
+              xywh {425 167 185 25} down_box BORDER_BOX
             } {
               MenuItem {} {
                 label {Full Lut and Gamma and Gain}
@@ -700,7 +711,7 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Choice uiPrefsPixelHSV {
               label {Secondary Display}
-              xywh {410 241 185 25} down_box BORDER_BOX
+              xywh {425 242 185 25} down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -750,7 +761,7 @@ uiPrefsFPS->value( g );} open
             }
             Fl_Choice uiPrefsPixelLumma {
               label Luminance open
-              xywh {410 301 185 25} down_box BORDER_BOX
+              xywh {425 302 185 25} down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -769,7 +780,7 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label Actions open
+          label Actions
           xywh {215 33 423 358} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -803,25 +814,25 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label Caches open
-          xywh {225 27 423 364} box EMBOSSED_BOX align 5 hide
+          label Caches
+          xywh {230 40 423 345} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Check_Button uiPrefsCacheActive {
             label {Cache Active}
-            tooltip {Image sequences will be cached in memory.  If this setting is off, images will be loaded on demand but fluid playback may not be possible.} xywh {251 49 20 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+            tooltip {Image sequences will be cached in memory.  If this setting is off, images will be loaded on demand but fluid playback may not be possible.} xywh {280 56 24 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
           }
           Fl_Check_Button uiPrefs8BitCaches {
             label {8 bit Caches}
             tooltip {Image sequences will be cached as 8-bit pictures, instead of being cached as the original depth of the sequence.
-This setting thus allows caching more pictures in memory for float and half pictures.} xywh {251 88 20 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+This setting thus allows caching more pictures in memory for float and half pictures.} xywh {280 95 24 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
           }
           Fl_Check_Button uiPrefsPreloadCache {
             label {Preload Cache}
-            tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.  Note however, that this may make the GUI less responsive.} xywh {451 48 20 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+            tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.  Note however, that this may make the GUI less responsive.} xywh {480 55 24 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
           }
           Fl_Choice uiPrefsCacheScale {
             label Scale
-            tooltip {Scale of images stored.  Smaller scale allows more images to be stored at the expense of pixelization.} xywh {286 133 120 25} box THIN_DOWN_BOX down_box BORDER_BOX
+            tooltip {Scale of images stored.  Smaller scale allows more images to be stored at the expense of pixelization.} xywh {315 130 120 25} box THIN_DOWN_BOX down_box BORDER_BOX
             class {mrv::Choice}
           } {
             MenuItem {} {
@@ -843,10 +854,11 @@ This setting thus allows caching more pictures in memory for float and half pict
           }
           Fl_Group {} {
             label {Cache Size} open
-            xywh {235 186 352 188} box ROUNDED_BOX
+            xywh {280 180 352 188} box ROUNDED_BOX
           } {
             Fl_Value_Slider uiPrefsCacheSize {
-              tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {240 214 261 27} type Horizontal align 1 minimum 24 maximum 1500 step 1 value 60
+              label {Video / Audio}
+              tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {285 208 261 27} type Horizontal align 1 minimum 24 maximum 1500 step 1 value 60
               code0 {o->deactivate();}
             }
             Fl_Light_Button uiPrefsCacheFPS {
@@ -854,29 +866,29 @@ This setting thus allows caching more pictures in memory for float and half pict
               user_data uiPrefsCacheSize user_data_type {Fl_Value_Slider*}
               callback {if ( v->active() ) v->deactivate();
                        else v->activate();}
-              tooltip {When selected, cache is set to twice the frames per second of the movie.} xywh {498 211 60 30}
+              tooltip {When selected, cache is set to twice the frames per second of the movie.} xywh {543 205 60 30}
             }
           }
           Fl_Group {} {
             label {Image Cache Size} open
-            xywh {265 280 321 86} box ROUNDED_BOX
+            xywh {295 274 321 86} box ROUNDED_BOX
           } {
             Fl_Value_Input uiPrefsCacheMemory {
               label Memory
-              tooltip {Size of the IMAGE cache in Gigabytes} xywh {350 306 75 25} minimum 0.5 maximum 100 step 0.5 value 3.5
+              tooltip {Size of the IMAGE cache in Gigabytes} xywh {380 300 75 25} minimum 0.5 maximum 100 step 0.5 value 3.5
             }
             Fl_Box {} {
               label Gb
-              xywh {425 306 45 25}
+              xywh {455 300 45 25}
             }
           }
         }
         Fl_Group {} {
           label {3D Luts}
-          xywh {210 32 438 358} box EMBOSSED_BOX align 5 hide
+          xywh {210 32 438 358} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
-            label Algorithm
+            label {Algorithm when not OCIO}
             tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.} xywh {245 140 328 83} box ROUNDED_BOX
           } {
             Fl_Choice ODT_algorithm {
@@ -1036,7 +1048,7 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.} xywh {325 31
             Fl_Check_Button uiPrefsUseOcio {
               label {Use OCIO}
               callback {mrv::Preferences::use_ocio = o->value();}
-              tooltip {Use OCIO or revert to CTL/ICC.} xywh {230 45 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {Use OCIO or revert to CTL/ICC.} xywh {230 45 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
             Fl_Group {} {open
               xywh {215 86 380 34}
@@ -1062,7 +1074,7 @@ uiPrefs->run(v);}
             }
             Fl_Check_Button uiPrefsSaveOcio {
               label {Save Ocio Config File in Preferences}
-              tooltip {Save OCIO config in preferences file or leave it empty so that environment variables can be used.} xywh {360 45 25 25} box UP_BOX down_box DOWN_BOX align 8
+              tooltip {Save OCIO config in preferences file or leave it empty so that environment variables can be used.} xywh {360 45 25 25} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
             }
           }
         }
@@ -1339,7 +1351,7 @@ uiODT_ICC_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label {Default Rendering Transform (RT)} open
+          label {Default Rendering Transform (RT)}
           xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group uiRT_CTL {
@@ -1518,7 +1530,7 @@ uiICC_float_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label Loading open
+          label Loading
           xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {open
@@ -1595,7 +1607,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
           }
         }
         Fl_Group {} {
-          label Saving open
+          label Saving
           xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -1707,7 +1719,7 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 167 31}
           }
         }
         Fl_Group {} {
-          label Compositing open
+          label Compositing
           xywh {225 44 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -1997,7 +2009,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
         }
       }
       Fl_Group {} {open
-        xywh {-25 5 237 430}
+        xywh {0 3 200 447} box PLASTIC_UP_BOX
       } {
         Fl_Tree {} {
           label Module
@@ -2014,7 +2026,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
              break;
          }
 }}
-          xywh {0 25 195 410}
+          xywh {0 25 195 423}
           code0 {fill_tree(o);}
           code1 {o->showroot(false);}
           class {mrv::PreferencesTree}
