@@ -123,6 +123,7 @@ bool make_window() {
 		    int t; // bold/italic flags
                     o->add(Fl::get_font_name( (Fl_Font)i, &t ) );
 		}
+		o->labelcolor( FL_BLACK );
 		o->value(0);
                 mrv::font_current = (Fl_Font) 0;
                 uiText->textfont( mrv::font_current );
@@ -130,6 +131,7 @@ bool make_window() {
                 uiText->buffer()->text( mrv::font_text.c_str() );
                 uiText->textsize( mrv::font_size );
                 uiText->callback( new_text );
+		uiText->textcolor( FL_BLACK );
                 o->callback( new_font );
             }
             {   Fl_Value_Slider* o = uiFontSize = new Fl_Value_Slider(70, 160, 325, 25, "Font Size");
@@ -138,6 +140,7 @@ bool make_window() {
                 o->maximum(100);
                 o->step(1);
                 o->value(32);
+		o->labelcolor( FL_BLACK );
                 o->align(FL_ALIGN_LEFT);
                 o->callback( new_size );
             }
