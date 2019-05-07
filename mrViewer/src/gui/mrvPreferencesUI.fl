@@ -99,7 +99,7 @@ class PreferencesUI {open
       code0 {o->main(m);}
       class {mrv::ActionWindow} non_modal visible
     } {
-      Fl_Group {} {open selected
+      Fl_Group {} {open
         xywh {0 0 675 455} box UP_BOX resizable
       } {}
       Fl_Wizard uiWizard {
@@ -457,7 +457,7 @@ v->refresh();}
           }
         }
         Fl_Group {} {
-          label Positioning
+          label Positioning open
           xywh {215 33 423 362} box EMBOSSED_BOX hide
         } {
           Fl_Group {} {open
@@ -465,7 +465,7 @@ v->refresh();}
           } {
             Fl_Check_Button uiWindowFixedPosition {
               label {Fixed Position}
-              tooltip {When this option is set, mrViewer will open in the position you set here (except if the window goes out of the Desktop).} xywh {255 130 130 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When this option is set, mrViewer will open in the position you set here (except if the window goes out of the Desktop).} xywh {255 130 130 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 16
             }
             Fl_Value_Input uiWindowXPosition {
               label {X:}
@@ -481,7 +481,7 @@ v->refresh();}
           } {
             Fl_Check_Button uiWindowFixedSize {
               label {Fixed Size}
-              tooltip {When this option is on, mrViewer will always open to the size you set in W and H.} xywh {260 225 135 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 8
+              tooltip {When this option is on, mrViewer will always open to the size you set in W and H.} xywh {260 225 135 20} box UP_BOX down_box DOWN_BOX selection_color 15 align 16
             }
             Fl_Value_Input uiWindowXSize {
               label {W:}
@@ -520,11 +520,11 @@ uiWindowYSize->value( v->uiMain->h() );}
           }
         }
         Fl_Group Playback {
-          label Playback
-          xywh {225 38 423 357} box EMBOSSED_BOX align 5 hide
+          label Playback open
+          xywh {225 38 423 357} box EMBOSSED_BOX align 5
         } {
           Fl_Group {} {
-            label Defaults
+            label Defaults open
             xywh {265 55 339 224} box ROUNDED_BOX align 5
           } {
             Fl_Check_Button uiPrefsAutoPlayback {
@@ -614,8 +614,8 @@ uiPrefsFPS->value( g );} open
               }
             }
             Fl_Value_Input uiPrefsScrubbingSensitivity {
-              label {Scrub Sensitivity}
-              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {430 239 60 25} minimum 2 maximum 50 step 1 value 5
+              label {Scrub Sensitivity} selected
+              tooltip {This setting controls the sensitivity of scrubbing (SHIFT and then the mouse right and left).  Smaller values make the mouse move jump more frames while higher values does the opposite.} xywh {480 239 60 25} minimum 2 maximum 50 step 1 value 5
             }
             Fl_Check_Button uiPrefsPlayAllFrames {
               label {Play All Frames}
@@ -814,7 +814,7 @@ uiPrefsFPS->value( g );} open
           }
         }
         Fl_Group {} {
-          label Caches
+          label Caches open
           xywh {230 40 423 345} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Check_Button uiPrefsCacheActive {
@@ -858,7 +858,7 @@ This setting thus allows caching more pictures in memory for float and half pict
           } {
             Fl_Value_Slider uiPrefsCacheSize {
               label {Video / Audio}
-              tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {285 208 261 27} type Horizontal align 1 minimum 24 maximum 1500 step 1 value 60
+              tooltip {Size in frames of the VIDEO and AUDIO cache.} xywh {295 208 261 27} type Horizontal align 1 minimum 24 maximum 1500 step 1 value 60
               code0 {o->deactivate();}
             }
             Fl_Light_Button uiPrefsCacheFPS {
@@ -866,7 +866,7 @@ This setting thus allows caching more pictures in memory for float and half pict
               user_data uiPrefsCacheSize user_data_type {Fl_Value_Slider*}
               callback {if ( v->active() ) v->deactivate();
                        else v->activate();}
-              tooltip {When selected, cache is set to twice the frames per second of the movie.} xywh {543 205 60 30}
+              tooltip {When selected, cache is set to twice the frames per second of the movie.} xywh {553 205 60 30}
             }
           }
           Fl_Group {} {
@@ -885,7 +885,7 @@ This setting thus allows caching more pictures in memory for float and half pict
         }
         Fl_Group {} {
           label {3D Luts}
-          xywh {210 32 438 358} box EMBOSSED_BOX align 5
+          xywh {210 32 438 358} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
             label {Algorithm when not OCIO}
@@ -959,7 +959,7 @@ If unsure what this means, keep your display and images setting always using the
             }
           }
           Fl_Group {} {
-            label Quality
+            label Quality open
             tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.} xywh {240 307 348 74} box ROUNDED_BOX
           } {
             Fl_Choice uiLUT_quality {
@@ -976,7 +976,7 @@ Size     Memory    Max. Error
 192      110.5 Mb      0.5%
 256       262 Mb      0.2%
 
-It is recommended this setting is left at 64x64x64 or 128x128x128.} xywh {325 316 170 30} box THIN_DOWN_BOX down_box BORDER_BOX
+It is recommended this setting is left at 64x64x64 or 128x128x128.} xywh {340 316 170 30} box THIN_DOWN_BOX down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -1010,7 +1010,7 @@ It is recommended this setting is left at 64x64x64 or 128x128x128.} xywh {325 31
             }
             Fl_Value_Input uiPrefsNumStops {
               label {Number of Fstops}
-              tooltip {Number of FStops the LUT will cover.  Higher numbers show more detail in the black levels, while it makes the midrange be less defined.} xywh {429 346 65 25} minimum 1 maximum 20 step 1 value 10
+              tooltip {Number of FStops the LUT will cover.  Higher numbers show more detail in the black levels, while it makes the midrange be less defined.} xywh {445 350 65 25} minimum 1 maximum 20 step 1 value 10
             }
           }
           Fl_Group {} {
@@ -1351,7 +1351,7 @@ uiODT_ICC_profile->do_callback();}
           }
         }
         Fl_Group {} {
-          label {Default Rendering Transform (RT)}
+          label {Default Rendering Transform (RT)} open
           xywh {225 42 423 352} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group uiRT_CTL {
@@ -1538,7 +1538,7 @@ uiICC_float_profile->do_callback();}
           } {
             Fl_Choice uiPrefsLoadLibrary {
               label {JPG/PNG/DPX Load Library}
-              tooltip {When loading a sequence, mrViewer will usually use OIIO loaders which give a good compromise between speed and quality.  OIIO loaders allow precaching and gaps in the sequence.  FFMPEG loaders are multithreaded JPG, DPX and PNG and can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow precaching.  The FFMPEG loaders also cannot have gaps in the sequence.  Finally, ImageMagick loaders are not as fast but share the similar features of OIIO.} xywh {426 71 165 25} box UP_BOX down_box BORDER_BOX
+              tooltip {When loading a sequence, mrViewer will usually use OIIO loaders which give a good compromise between speed and quality.  OIIO loaders allow precaching and gaps in the sequence.  FFMPEG loaders are multithreaded JPG, DPX and PNG and can usually play in real time except when the resolution is too high.  In that case, the loaders will need one pass to cache all images as they don't allow precaching.  The FFMPEG loaders also cannot have gaps in the sequence.  Finally, ImageMagick loaders are not as fast but share the similar features of OIIO.} xywh {426 71 194 25} box UP_BOX down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -1556,7 +1556,7 @@ uiICC_float_profile->do_callback();}
             }
             Fl_Choice uiPrefsMissingFrames {
               label {Missing Frames}
-              tooltip {When loading a sequence, and a frame is not found, mrViewer can either show a black frame or repeat the previous frame.} xywh {426 106 165 25} box UP_BOX down_box BORDER_BOX
+              tooltip {When loading a sequence, and a frame is not found, mrViewer can either show a black frame or repeat the previous frame.} xywh {426 106 194 25} box UP_BOX down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -1639,7 +1639,7 @@ This setting thus allows caching less pictures in memory but at an improved qual
             }
           }
           Fl_Group {} {
-            label Loading open
+            label Loading
             xywh {240 158 368 123} box ROUNDED_BOX
           } {
             Fl_Value_Input uiPrefsVideoThreadCount {
@@ -1690,13 +1690,13 @@ BT470BG/SMPTE170M emulate ITU-R BT 601-6 625 (PAL/SECAM).} xywh {372 213 167 31}
             }
           }
           Fl_Group {} {
-            label Saving open
+            label Saving
             xywh {255 317 318 39} box ROUNDED_BOX
           } {
             Fl_Choice uiPrefsVideoCodec {
               label {Video Codec}
               user_data uiMain user_data_type {ViewerUI*}
-              tooltip {Controls the codec used by default in saving a movie file.} xywh {365 321 167 30} box THIN_DOWN_BOX down_box BORDER_BOX
+              tooltip {Controls the codec used by default in saving a movie file.} xywh {410 322 135 30} box THIN_DOWN_BOX down_box BORDER_BOX
               class {mrv::Choice}
             } {
               MenuItem {} {
@@ -1772,7 +1772,7 @@ where SC is source color, SA is source alpha, and DC is destination color.} xywh
             label Device
             callback {unsigned idx = o->value();
 mrv::AudioEngine::device( idx );}
-            xywh {311 71 275 25} box THIN_DOWN_BOX down_box BORDER_BOX
+            xywh {325 71 275 25} box THIN_DOWN_BOX down_box BORDER_BOX
             code0 {//
 // Initialize an audio engine to get devices
 //
@@ -1812,7 +1812,7 @@ else
           }
         }
         Fl_Group {} {
-          label Subtitles
+          label Subtitles open
           xywh {224 92 420 304} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Choice uiPrefsSubtitleFont {
@@ -1828,7 +1828,7 @@ if (!avi) return;
 avi->subtitle_font( font );
 mrv::CMedia::default_subtitle_font( font );
 v->uiView->redraw();}
-            xywh {314 150 275 30} box THIN_DOWN_BOX down_box BORDER_BOX
+            xywh {340 150 275 30} box THIN_DOWN_BOX down_box BORDER_BOX
             code0 {unsigned num = Fl::set_fonts( "-*" ); int t; for (int i = 0; i < num; i++)
 {
         const char* name =  Fl::get_font_name((Fl_Font)i,&t);
@@ -1843,7 +1843,7 @@ v->uiView->redraw();}
             callback {int i = o->value();
 uiPrefsSubtitleEncoding->value( o->child(i)->label() );
 uiPrefsSubtitleEncoding->do_callback();}
-            xywh {439 201 150 30} box THIN_DOWN_BOX down_box BORDER_BOX
+            xywh {465 201 150 30} box THIN_DOWN_BOX down_box BORDER_BOX
             class {mrv::Choice}
           } {
             MenuItem {} {
@@ -1875,7 +1875,7 @@ if (!avi) return;
 avi->subtitle_encoding( enc );
 mrv::CMedia::default_subtitle_encoding( enc );
 v->uiView->redraw();}
-            xywh {314 201 120 30}
+            xywh {340 201 120 30}
           }
         }
         Fl_Group {} {
@@ -1924,7 +1924,7 @@ v->uiView->redraw();}
           }
         }
         Fl_Group {} {
-          label OpenEXR
+          label OpenEXR open
           tooltip {Options controlling the OpenEXR reader/writer} xywh {224 45 423 351} box EMBOSSED_BOX align 5 hide
         } {
           Fl_Group {} {
@@ -1933,11 +1933,11 @@ v->uiView->redraw();}
           } {
             Fl_Value_Input uiPrefsOpenEXRThreadCount {
               label {Thread Count}
-              tooltip {Use multiple threads when loading a frame.} xywh {394 114 51 28} minimum 1 maximum 16 step 1 value 4
+              tooltip {Use multiple threads when loading a frame.} xywh {440 112 51 28} minimum 1 maximum 16 step 1 value 4
             }
             Fl_Value_Input uiPrefsOpenEXRGamma {
               label Gamma
-              tooltip {Gamma to use when loading an exr and OCIO is off.} xywh {399 174 51 28} minimum 0.1 maximum 16 step 0.1 value 2.2
+              tooltip {Gamma to use when loading an exr and OCIO is off.} xywh {445 172 51 28} minimum 0.1 maximum 16 step 0.1 value 1
             }
           }
           Fl_Group {} {
