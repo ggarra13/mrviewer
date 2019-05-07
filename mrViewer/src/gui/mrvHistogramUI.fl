@@ -67,88 +67,88 @@ class HistogramUI {open
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send_network( "HistogramWindow 0" );
 o->hide();} open
-      xywh {1174 519 325 240} type Double resizable
+      xywh {163 59 325 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;
 o->size_range(325, 80);} non_modal visible
     } {
-      Fl_Pack {} {open
-        xywh {0 -130 325 365}
+      Fl_Group {} {open selected
+        xywh {-2 0 332 250} box PLASTIC_UP_BOX
       } {
         Fl_Box uiHistogram {
-          xywh {5 45 319 190} resizable
+          xywh {3 5 319 190} box FLAT_BOX color 32 resizable
           code0 {o->main( main );}
           class {mrv::Histogram}
         }
-        Fl_Group {} {open
-          xywh {0 -130 325 355}
+        Fl_Group {} {
+          xywh {-2 195 330 45}
         } {
-          Fl_Group {} {open
-            xywh {160 5 165 45}
+          Fl_Group {} {
+            xywh {158 200 170 35}
           } {
             Fl_Box {} {
-              label Channel selected
-              xywh {166 6 65 30} selection_color 32 labelcolor 32 align 32
+              label Channel
+              xywh {164 201 65 30} selection_color 32 labelcolor 32 align 32
             }
             Fl_Menu_Button {} {
               label RGB
               callback {int c = o->value();
 uiHistogram->channel( (mrv::Histogram::Channel) c );
 o->label( o->child( c )->label() );}
-              xywh {235 8 85 25} align 48
+              xywh {233 203 85 25} align 48
               code0 {o->value(0);}
               class {mrv::PopupMenu}
             } {
               MenuItem {} {
                 label RGB
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
               MenuItem {} {
                 label Red
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
               MenuItem {} {
                 label Green
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
               MenuItem {} {
                 label Blue
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
               MenuItem {} {
                 label Lumma
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
             }
           }
-          Fl_Group {} {open
-            xywh {0 10 170 35}
+          Fl_Group {} {
+            xywh {-2 205 170 35}
           } {
             Fl_Box {} {
               label Type
-              xywh {0 10 54 25} labelcolor 32 align 32
+              xywh {-2 205 54 25} labelcolor 32 align 32
             }
             Fl_Menu_Button {} {
               label Linear
               callback {int c = o->value();
 uiHistogram->histogram_type( (mrv::Histogram::Type) c);
 o->label( o->child( c )->label() );} open
-              xywh {55 10 105 25} align 48
+              xywh {53 205 105 25} align 48
               code0 {o->value( (int) uiHistogram->histogram_type() );
 o->label( o->child( o->value() )->label() );}
               class {mrv::PopupMenu}
             } {
               MenuItem {} {
                 label Linear
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
               MenuItem {} {
                 label Logarithmic
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
               MenuItem {} {
                 label {Square Root}
-                xywh {0 0 100 20}
+                xywh {10 10 100 20}
               }
             }
           }
