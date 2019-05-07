@@ -6831,7 +6831,8 @@ void ImageView::toggle_presentation()
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
 #ifdef _WIN32
-        resize( X, Y, W, H + 40 );  // @BUG: We need +40 to cover bottom strip
+        float scale = Fl::screen_scale( window()->screen_num() );
+        resize( X, Y, W, H + 40 * scale );  // @BUG: We need +40 to cover bottom strip
 #endif
         uiMain->uiRegion->init_sizes();
     }
