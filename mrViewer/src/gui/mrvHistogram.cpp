@@ -70,7 +70,7 @@ maxColor( 0 ),
 lastImg( NULL ),
 lastFrame( std::numeric_limits< int64_t >::min() )
 {
-    color( FL_BLACK );
+    color( FL_DARK3 );
     //buttoncolor( FL_BLACK );
 
     Fl::add_timeout(0.016f, (Fl_Timeout_Handler) static_draw_histogram, this );
@@ -84,10 +84,10 @@ void Histogram::draw_grid(const mrv::Recti& r)
 //     int X = r.x() + 2;
 //     int H = r.h() / 4;
 //     int H2 = ( H + FL_getsize() ) / 2;
-//     FL_drawtext( "L", 1, X, H2 );
-//     FL_drawtext( "R", 1, X, H+H2 );
-//     FL_drawtext( "G", 1, X, H*2+H2 );
-//     FL_drawtext( "B", 1, X, H*3+H2 );
+//     fl_draw( "L", 1, X, H2 );
+//     fl_draw( "R", 1, X, H+H2 );
+//     fl_draw( "G", 1, X, H*2+H2 );
+//     fl_draw( "B", 1, X, H*3+H2 );
 }
 
 void Histogram::draw()
