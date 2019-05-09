@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ void ffmpeg_video_codecs( mrv::Browser& b );
 void ffmpeg_audio_codecs( mrv::Browser& b  );
 void ffmpeg_subtitle_codecs( mrv::Browser& b);
 std::string ffmpeg_protocols();
-std::string ffmpeg_motion_estimation_methods();
+void ffmpeg_motion_estimation_methods( mrv::Browser* b );
 
 
 const char* version();
@@ -63,4 +63,3 @@ std::string gpu_information( ViewerUI* uiMain );
 
 
 #endif // mrvVersion_h
-
