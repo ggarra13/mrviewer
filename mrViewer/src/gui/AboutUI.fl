@@ -67,15 +67,15 @@ stringArray::iterator i = a.begin();
 stringArray::iterator e = a.end();
 for (; i != e; ++i )
 	v->uiAbout->uiGPUInfo->add( (*i).c_str() );} open
-        xywh {0 4 445 391}
+        xywh {0 4 445 396}
         code0 {o->value(0);}
       } {
         Fl_Group {} {
           label mrViewer open
-          xywh {0 23 440 368} hide
+          xywh {0 29 440 366} hide
         } {
           Fl_Text_Display {} {
-            xywh {17 23 410 337} color 49 textcolor 32
+            xywh {17 39 410 337} color 49 textcolor 32
             code0 {o->insert( mrv::about_message().c_str() );}
             class {mrv::TextDisplay}
           }
@@ -86,7 +86,7 @@ for (; i != e; ++i )
         } {
           Fl_Text_Display uiCPUInfo {
             label {CPU Information}
-            xywh {15 44 415 82} color 49 textcolor 32
+            xywh {15 53 415 82} color 49 textcolor 32
             code0 {o->insert( mrv::cpu_information().c_str() );}
             class {mrv::TextDisplay}
           }
@@ -95,17 +95,17 @@ for (; i != e; ++i )
             xywh {16 151 415 205} color 49 textcolor 32
             code0 {static int widths[] = {160,o->w()-160,0};}
             code1 {o->column_widths( widths );}
-	    code2 {o->type( FL_MULTI_BROWSER ); }
+            code2 {o->type( FL_MULTI_BROWSER );}
             code3 {o->value(-1);}
             class {mrv::Browser}
           }
         }
         Fl_Group {} {
           label Formats open
-          xywh {0 25 445 365} hide
+          xywh {0 30 445 365} hide
         } {
           Fl_Browser {} {
-            xywh {15 30 415 330} color 49 textcolor 32
+            xywh {15 42 415 330} color 49 textcolor 32
             code0 {static const char* col_labels[] = {
 "",
 "",
@@ -140,32 +140,32 @@ o->value(-1);}
         } {
           Fl_Browser {} {
             label Video
-            xywh {15 25 410 145} color 49 textcolor 32
-            code0 {mrv::ffmpeg_video_codecs(*o);
+            xywh {15 50 410 130} color 49 align 1 textcolor 32
+            code0 {static int widths[] = { 20, 20, 20, 20, 20, 150, 0 }; o->column_widths(widths); mrv::ffmpeg_video_codecs(*o);
 o->value(-1);}
             class {mrv::Browser}
           }
           Fl_Browser {} {
             label Audio
-            xywh {15 190 415 110} color 49 textcolor 32
-            code0 {mrv::ffmpeg_audio_codecs(*o);
+            xywh {15 200 415 110} color 49 align 1 textcolor 32
+            code0 {static int widths[] = { 20, 20, 20, 20, 150, 0 }; o->column_widths( widths ); mrv::ffmpeg_audio_codecs(*o);
 o->value(-1);}
             class {mrv::Browser}
           }
           Fl_Browser {} {
             label Subtitles
-            xywh {15 315 415 55} color 49 textcolor 32
+            xywh {15 330 415 55} color 49 align 1 textcolor 32
             code0 {mrv::ffmpeg_subtitle_codecs(*o);
 o->value(-1);}
             class {mrv::Browser}
           }
         }
         Fl_Group {} {
-          label Protocols open selected
-          xywh {0 25 445 365} deactivate
+          label Protocols open
+          xywh {0 30 445 365} hide deactivate
         } {
           Fl_Browser {} {
-            xywh {15 25 415 335} color 49 textcolor 32
+            xywh {15 45 415 320} color 49 textcolor 32
             code0 {o->add( mrv::ffmpeg_protocols().c_str() );
 o->value(-1);}
             class {mrv::Browser}
@@ -173,16 +173,11 @@ o->value(-1);}
         }
         Fl_Group {} {
           label {Motion Estimation Methods} open
-          xywh {0 25 445 365} hide
+          xywh {0 30 445 365}
         } {
-          Fl_Browser {} {
-            xywh {15 25 415 335} color 49 textcolor 32
-            code0 {static int col_widths[] = {
-120,
-300,
-0
-};
-o->column_widths( col_widths ); o->add( mrv::ffmpeg_motion_estimation_methods().c_str() ); o->value(-1);}
+          Fl_Browser {} {selected
+            xywh {15 41 415 335} color 49 textcolor 32
+            code0 {mrv::ffmpeg_motion_estimation_methods(o); o->value(-1);}
             class {mrv::Browser}
           }
         }
