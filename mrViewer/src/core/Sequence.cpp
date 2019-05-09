@@ -644,7 +644,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
 
     // My encoding type
     // Create and install global locale
-    std::locale::global(boost::locale::generator().generate(""));
+    std::locale::global(boost::locale::generator().generate( N_("") ));
 
     fs::path::imbue( std::locale() );
 
