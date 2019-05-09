@@ -1,3 +1,11 @@
+v5.0.3  - Bug fixed installation of mrViewer on international characters
+	  like umlauts.
+	- Bug fixed pixel query position on Windows.
+	- Made CTRL+Drag gain use exposure instead.
+	- Added SHIFT+r to reset all gamma/gain changes to the image.
+	- Made SHIFT+hotkey shortcuts work properly.  Previously, you had
+	  to press twice on them to take effect.
+
 v5.0.2  - Made Media Info's Remove Attributes work in nested attributes
 	  as well as flat attributes.
 	- Improved the look of the color area window.
