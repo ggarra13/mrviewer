@@ -35,7 +35,7 @@ FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( LibIntl     REQUIRED )
 FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
-FIND_PACKAGE( TinyXML2    REQUIRED )
+FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D_CRT_SECURE_NO_WARNINGS )
 
@@ -386,9 +386,9 @@ SET( LIBRARIES
 # RELEASE VERSION
 #
 if(WIN32)
-	if(COMMAND cmake_policy)
-		   cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
-	endif(COMMAND cmake_policy)
+	# if(COMMAND cmake_policy)
+	# 	   cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
+	# endif(COMMAND cmake_policy)
 else(WIN32)
 	if(COMMAND cmake_policy)
 		   cmake_policy(SET CMP0003 NEW)
