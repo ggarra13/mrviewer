@@ -119,6 +119,7 @@ Hotkey kMoveSizeMode( false, false, false, true, 'm' );
 
 Hotkey kPenSizeMore( false, false, false, false, 0, "]" );
 Hotkey kPenSizeLess( false, false, false, false, 0, "[" );
+Hotkey kResetChanges( false, false, false, true, 'c' );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );
 Hotkey kExposureLess( false, false, false, false, 0, "[" );
 Hotkey kGammaMore( false, false, false, false, 0, ")" );
@@ -309,6 +310,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
     HotkeyEntry( _("Toggle Full Screen"), kFullScreen),
     HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
+    HotkeyEntry( _("Reset Gain/Gamma"), kResetChanges),
     HotkeyEntry( _("Exposure More"), kExposureMore),
     HotkeyEntry( _("Exposure Less"), kExposureLess),
     HotkeyEntry( _("Draw Mode"), kDrawMode ),
