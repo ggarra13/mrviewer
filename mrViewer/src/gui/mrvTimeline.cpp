@@ -37,6 +37,7 @@
 
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvTimecode.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
 #include "mrViewer.h"
@@ -192,14 +193,14 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     w = r.w();
 
 
-    
+
     fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
     if (w <= 0) return;
 
     double A,B;
     if ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() &&
-	 ( display_minimum() > minimum() || display_maximum() < maximum() ) )
+         ( display_minimum() > minimum() || display_maximum() < maximum() ) )
     {
         A = display_minimum();
         B = display_maximum();
@@ -251,6 +252,10 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     Fl_Color textcolor = fl_contrast( this->labelcolor(), color() );
     if ( _edl ) textcolor = FL_BLACK;
     Fl_Color linecolor = FL_BLACK;
+    if ( Preferences::schemes.name == "Black" )
+    {
+        linecolor = fl_rgb_color( 70, 70, 70 );
+    }
 
     fl_color(linecolor);
     char buffer[128];
@@ -312,7 +317,7 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     if (type()&16/*FILL*/) slider_size(0);
 
     mrv::Recti r = sr;
-    
+
     // draw the tick marks and inset the slider drawing area to clear them:
     if (tick_size() && (type()&TICK_BOTH)) {
         mrv::Recti tr = r;
@@ -348,7 +353,7 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
         draw_box();
         box( b );
     }
-    
+
     // if user directly set selected_color we use it:
     if ( selection_color() ) {
         Fl::set_box_color( selection_color() );
@@ -364,7 +369,7 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     //     s.w(s.x()-r.x());    // fill slider
     //     s.x(r.x());
     // }
-    
+
     return true;
 }
 
@@ -460,7 +465,7 @@ void Timeline::draw_selection( const mrv::Recti& r )
     int rx = r.x() + (slider_size()-1)/2;
     int  dx = slider_position( _display_min, r.w() );
     int end = slider_position( _display_max, r.w() );
-    
+
     fl_color( FL_CYAN );
     fl_rectf( rx+dx, r.y(), end-dx, r.h()-8 );
 }
@@ -484,7 +489,7 @@ void Timeline::draw()
     // flags &= ~HIGHLIGHT;
 
     int f2 = 0;
-    
+
     // drawstyle(style(),flags);
 
 
@@ -495,9 +500,9 @@ void Timeline::draw()
 
     mrv::Recti r( X, Y, W, H );
 
-    
+
     draw_box();
-    
+
     // Box* box = this->box();
     // if (!box->fills_rectangle()) draw_background();
 
@@ -566,7 +571,7 @@ void Timeline::draw()
 
 
         if ( ( ! uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() ) &&
-	     ( _display_min > minimum() || _display_max < maximum() ) )
+             ( _display_min > minimum() || _display_max < maximum() ) )
         {
             draw_selection(r);
         }
@@ -758,7 +763,7 @@ void change_timeline_display( ViewerUI* uiMain )
     uiMain->uiTimeline->display( d );
 }
 
-int Timeline::slider_position( double value, int w ) 
+int Timeline::slider_position( double value, int w )
 {
     double A = minimum();
     double B = maximum();
@@ -770,7 +775,7 @@ int Timeline::slider_position( double value, int w )
     if (B <= 0) {flip = !flip; double t = A; A = -B; B = -t; value = -value;}
     double fraction;
     if (!(slider_type() & kLOG)) {
-	// linear slider
+        // linear slider
     fraction = (value-A)/(B-A);
   } else if (A > 0) {
     // logatithmic slider
