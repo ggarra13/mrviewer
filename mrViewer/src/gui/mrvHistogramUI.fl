@@ -72,11 +72,11 @@ o->hide();} open
 main_ = main;
 o->size_range(325, 80);} non_modal visible
     } {
-      Fl_Group {} {open selected
+      Fl_Group {} {open
         xywh {-2 0 332 250} box PLASTIC_UP_BOX
       } {
-        Fl_Box uiHistogram {
-          xywh {3 5 319 190} box FLAT_BOX color 32 resizable
+        Fl_Box uiHistogram {selected
+          xywh {3 5 319 190} box FLAT_BOX color 56 resizable
           code0 {o->main( main );}
           class {mrv::Histogram}
         }
