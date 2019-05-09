@@ -2227,7 +2227,7 @@ void ImageView::fit_image()
     char buf[128];
     sprintf( buf, "Offset %g %g", xoffset, yoffset );
     send_network( buf );
-    
+
     zoom( float(z) );
 
     mouseMove( Fl::event_x(), Fl::event_y() );
@@ -2483,12 +2483,7 @@ bool ImageView::should_update( mrv::media fg )
     if ( update && _playback != CMedia::kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
         int y = Fl::event_y();
-#  ifdef LINUX
         if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
-#  else
-        if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h() *
-                                           (!uiMain->uiMain->border());
-#  endif
         mouseMove( Fl::event_x(), y );
 #else
         mouseMove( Fl::event_x(), Fl::event_y() );
@@ -3131,7 +3126,7 @@ void ImageView::timeout()
         SCOPED_LOCK( commands_mutex );
         while ( ! commands.empty()  )
         {
-	    handle_commands();
+            handle_commands();
         }
     }
 
@@ -3982,15 +3977,15 @@ int ImageView::leftMouseDown(int x, int y)
         if ( Fl::event_state( FL_SHIFT ) )
         {
             flags |= kLeftShift;
-	    if ( Fl::event_state( FL_CTRL ) )
-	    {
-		flags |= kLeftCtrl;
-		flags |= kGamma;
-	    }
-	    else
-	    {
-		selection_mode();
-	    }
+            if ( Fl::event_state( FL_CTRL ) )
+            {
+                flags |= kLeftCtrl;
+                flags |= kGamma;
+            }
+            else
+            {
+                selection_mode();
+            }
         }
         else if ( Fl::event_state( FL_CTRL ) )
         {
@@ -4277,11 +4272,11 @@ int ImageView::leftMouseDown(int x, int y)
                     if ( mask == _masking ) item->set();
                 }
 
-		TRACE("");
+                TRACE("");
 
-		sprintf( buf, "%s", _("View/Hud/Toggle Selected") );
-		menu->add( buf, kHudToggle.hotkey(),
-			   (Fl_Callback*)hud_toggle_cb, uiMain );
+                sprintf( buf, "%s", _("View/Hud/Toggle Selected") );
+                menu->add( buf, kHudToggle.hotkey(),
+                           (Fl_Callback*)hud_toggle_cb, uiMain );
 
                 num = uiMain->uiPrefs->uiPrefsHud->children();
                 for ( i = 0; i < num; ++i )
@@ -5627,7 +5622,7 @@ void ImageView::mouseDrag(int x,int y)
         }
         else if ( flags & kGain )
         {
-            gain( _gain + float(dx) / 250.0f );
+            exposure_change( float(dx) / 150.0f );
             lastX = x;
             lastY = y;
         }
@@ -5992,7 +5987,15 @@ int ImageView::keyDown(unsigned int rawkey)
     }
 
 
-    if ( kDrawMode.match( rawkey ) )
+    if ( kResetChanges.match( rawkey ) )
+    {
+        gamma( 1.0 );
+        gain( 1.0 );
+        redraw();
+        mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
+    else if ( kDrawMode.match( rawkey ) )
     {
         draw_mode();
         return 1;
@@ -6015,12 +6018,6 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kMoveSizeMode.match( rawkey ) )
     {
         move_pic_mode();
-        return 1;
-    }
-    else if ( ( _mode == kNoAction || _mode == kScrub ) &&
-              kAreaMode.match( rawkey ) )
-    {
-        selection_mode();
         return 1;
     }
     else if ( kOpenImage.match( rawkey ) )
@@ -6175,7 +6172,6 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFullScreen.match( rawkey ) )
     {
         toggle_fullscreen();
-
         return 1;
     }
     else if ( kCenterImage.match(rawkey) )
@@ -6438,6 +6434,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPreviousImage.match( rawkey ) )
     {
+        std::cerr << __LINE__ << std::endl;
         previous_image_cb(this, browser());
         update_title_bar( this );
         mouseMove( Fl::event_x(), Fl::event_y() );
@@ -6452,27 +6449,32 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPreloadCache.match( rawkey ) )
     {
+        std::cerr << __LINE__ << std::endl;
         preload_image_cache_cb( NULL, this );
         return 1;
     }
     else if ( kClearCache.match( rawkey ) )
     {
+        std::cerr << __LINE__ << std::endl;
         clear_image_cache_cb( NULL, this );
         return 1;
     }
     else if ( kClearSingleFrameCache.match( rawkey ) )
     {
+        std::cerr << __LINE__ << std::endl;
         update_frame_cb( NULL, this );
         return 1;
     }
     else if ( kRotatePlus90.match( rawkey ) )
     {
+        std::cerr << __LINE__ << std::endl;
         rotate_plus_90_cb( NULL, this );
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kRotateMinus90.match( rawkey ) )
     {
+        std::cerr << __LINE__ << std::endl;
         rotate_minus_90_cb( NULL, this );
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
@@ -6510,10 +6512,10 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kToggleTopBar.match( rawkey ) )
     {
         int H = uiMain->uiRegion->h();
-	int w = uiMain->uiTopBar->w();
-	float scale = Fl::screen_scale(window()->screen_num());
-	// Topbar MUST be 28 pixels-- for some reason it changes size
-	uiMain->uiTopBar->resize( 0, 0, w, int(28 * scale) );
+        int w = uiMain->uiTopBar->w();
+        float scale = Fl::screen_scale(window()->screen_num());
+        // Topbar MUST be 28 pixels-- for some reason it changes size
+        uiMain->uiTopBar->resize( 0, 0, w, int(28 * scale) );
         if ( uiMain->uiTopBar->visible() ) {
             uiMain->uiTopBar->hide();
             H += uiMain->uiTopBar->h();
@@ -6525,7 +6527,7 @@ int ImageView::keyDown(unsigned int rawkey)
         int X = uiMain->uiRegion->x();
         int Y = uiMain->uiRegion->y();
         int W = uiMain->uiRegion->w();
-	uiMain->uiRegion->resize( X, Y, W, H );
+        uiMain->uiRegion->resize( X, Y, W, H );
         uiMain->uiRegion->layout();
         uiMain->uiRegion->init_sizes();
         uiMain->uiRegion->redraw();
@@ -6685,6 +6687,12 @@ int ImageView::keyDown(unsigned int rawkey)
         flags |= kLeftAlt;
         return 1;
     }
+    else if ( ( _mode == kNoAction || _mode == kScrub ) &&
+              kAreaMode.match( rawkey ) )
+    {
+        selection_mode();
+        return 1;
+    }
     else
     {
         // Check if a menu shortcut
@@ -6761,7 +6769,7 @@ void ImageView::toggle_fullscreen()
     }
 
 
-    
+
     fit_image();
 
     take_focus();
@@ -6823,11 +6831,11 @@ void ImageView::toggle_presentation()
 
         presentation = true;
 
-	// Resize needed as fullscreen does not happpen in the single
-	// Fl::check below
-	int X = Fl::x(), Y = Fl::y(), W = Fl::w(), H = Fl::h();
-	fltk_main()->resize( X, Y, W, H);
-        
+        // Resize needed as fullscreen does not happpen in the single
+        // Fl::check below
+        int X = Fl::x(), Y = Fl::y(), W = Fl::w(), H = Fl::h();
+        fltk_main()->resize( X, Y, W, H);
+
         fltk_main()->fullscreen();
         uiMain->uiRegion->layout();
 #ifdef _WIN32
@@ -7140,12 +7148,14 @@ int ImageView::handle(int event)
         mouseDrag( int(X), int(Y) );
         return 1;
         break;
-        //     case FL_SHORTCUT:
+    case FL_SHORTCUT:
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();
         if ( !keyDown(Fl::event_key() ) )
+        {
             return Fl_Gl_Window::handle( event );
+        }
         return 1;
     case FL_KEYUP:
         return keyUp(Fl::event_key());
@@ -8437,21 +8447,21 @@ void ImageView::resize_main_window()
     }
 
     float scale = Fl::screen_scale(window()->screen_num());
-    
+
     if ( uiMain->uiTopBar->visible() )
     {
         uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
                                 28 * scale );
         h += uiMain->uiTopBar->h();
     }
-    
+
     if ( uiMain->uiPixelBar->visible() )
     {
         uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
                                   28 * scale );
         h += uiMain->uiPixelBar->h();
     }
-    
+
     if ( uiMain->uiBottomBar->visible() )
     {
         uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
@@ -8519,7 +8529,7 @@ void ImageView::resize_main_window()
     if ( posY < miny )     posY = miny;
 
 
-    
+
     if ( w < 640 )  w = 640;
     if ( h < 535 )  h = 535;
 
@@ -8530,16 +8540,16 @@ void ImageView::resize_main_window()
    if ( h + kTitleBar <= H - kTitleBar )
        fltk_main()->resize( posX, posY, w, h + kTitleBar );
 #endif
-   
+
    uiMain->uiTopBar->size( uiMain->uiTopBar->w(),
-			   28 * scale );
+                           28 * scale );
 
    uiMain->uiPixelBar->size( uiMain->uiPixelBar->w(),
-			     28 * scale );
-    
+                             28 * scale );
+
    uiMain->uiBottomBar->size( uiMain->uiBottomBar->w(),
-			      49 * scale );
-   
+                              49 * scale );
+
    uiMain->uiRegion->layout();
    uiMain->uiRegion->init_sizes();
    uiMain->uiRegion->redraw();
@@ -8547,7 +8557,7 @@ void ImageView::resize_main_window()
     fltk_main()->show();
 #endif
 
-    
+
     if ( fit ) fit_image();
 
 }
@@ -9058,7 +9068,7 @@ void ImageView::play( const CMedia::Playback dir )
         return;
     }
 
-    
+
     mrv::media fg = foreground();
     if (!fg) return;
 
@@ -9068,9 +9078,9 @@ void ImageView::play( const CMedia::Playback dir )
 
     if ( img->first_frame() == img->last_frame() )
     {
-	return;
+        return;
     }
-    
+
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
     {
