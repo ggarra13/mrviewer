@@ -26,7 +26,7 @@
  *
  */
 
-// #define ALLOC_CONSOLE
+//#define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
@@ -156,18 +156,19 @@ void load_new_files( void* s )
 
 int main( int argc, char** argv )
 {
-    Fl::scheme("plastic");
-
     for ( int i = 0; i < argc; ++i )
     {
-	if ( strcmp( argv[i], "-d" ) == 0 ||
-	     strcmp( argv[i], "--debug") == 0 )
-	    mrv::Preferences::debug = 1;
+        if ( strcmp( argv[i], "-d" ) == 0 ||
+             strcmp( argv[i], "--debug") == 0 )
+            if ( i+1 < argc )
+                mrv::Preferences::debug = atoi( argv[i+1] );
+            else
+                mrv::Preferences::debug = 1;
     }
-    
-    // Fl::background( 32, 32, 32 );
-    // Fl::foreground( 190, 190, 190 );
-    // Fl::set_box_color( fl_rgb_color( 64, 64, 64 ) );
+
+    Fl::scheme("plastic");
+
+
 #ifdef LINUX
   Fl_File_Icon::load_system_icons();
 #endif
@@ -179,57 +180,72 @@ int main( int argc, char** argv )
     const char* tmp = setlocale(LC_ALL, N_(""));
 
 
-  // Create and install global locale
-  std::locale::global(boost::locale::generator().generate( N_("") ));
-  // Make boost.filesystem use it
-  boost::filesystem::path::imbue(std::locale());
-
+    // Create and install global locale
+    try {
+        //std::locale::global(boost::locale::generator().generate(""));
+        const char* env = getenv("LC_ALL");
+        if ( !env )
+            std::locale::global( std::locale("") );
+        else
+            std::locale::global( std::locale(env) );
+        // Make boost.filesystem use it
+        fs::path::imbue(std::locale());
+    }
+    catch( const std::runtime_error& e )
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    
+DBG;
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
-  if ( tmp )
-  {
-      loc = strdup( tmp );
-  }
-
-
+DBG;
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
-
-  std::string locale = argv[0];
-  fs::path file = fs::path( locale );
-
+  
+#ifdef _WIN32
+  int numArgs = 0;
+  LPWSTR* args = CommandLineToArgvW( GetCommandLineW(), &numArgs );
+  if ( args == NULL )
+  {
+      LOG_ERROR( "CommandLineToArgvW failed" );
+      return -1;
+  }
+  fs::path file = fs::path( args[0] );
+  LocalFree( args );
+#else
+  std::string program = argv[0];
+  fs::path file = fs::path( program );
+#endif
+    
   int ok = -1;
-
+  DBG;
   file = fs::absolute( file );
-
+ 
   fs::path dir = file.parent_path().branch_path();
   std::string path = fs::canonical( dir ).string();
-
   path += "/share/locale";
+ 
   bindtextdomain(buf, path.c_str() );
   textdomain(buf);
-
-  if ( loc )
-  {
-      LOG_INFO( _("Changed locale to ") << loc );
-      free(loc);
-  }
-
+ 
+ 
+  DBG;
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
-
-
-
+ 
+  DBG;
+ 
   // Adjust ui based on preferences
   for (;;) {
-
+     
       ViewerUI* ui = NULL;
       std::string lockfile;
 
       try {
-
+          DBG;
           ui = new ViewerUI();
-
+          DBG;
           mrv::Options opts;
           if ( argc > 0 )
               mrv::parse_command_line( argc, argv, ui, opts );
@@ -295,27 +311,27 @@ int main( int argc, char** argv )
                   base.flush();
               }
 
-          if ( idx == 0 )
-          {
-              mrvALERT( "Another instance of mrViewer is open.\n"
-                        "Remove " << lockfile << " if mrViewer crashed\n"
-                        "or modify Preferences->User Interface->Single Instance.");
-              Fl::check();
-          }
+              if ( idx == 0 )
+              {
+                  mrvALERT( "Another instance of mrViewer is open.\n"
+                            "Remove " << lockfile << " if mrViewer crashed\n"
+                            "or modify Preferences->User Interface->Single Instance.");
+                  Fl::check();
+              }
 
               exit(0);
           }
 
-      {
-          Fl_Preferences lock( mrv::prefspath().c_str(), "filmaura",
-                                  "mrViewer.lock" );
-          lock.set( "pid", 1 );
-      }
+          {
+              Fl_Preferences lock( mrv::prefspath().c_str(), "filmaura",
+                                   "mrViewer.lock" );
+              lock.set( "pid", 1 );
+          }
 
           MagickWandGenesis();
 
-      // mrv::open_license( argv[0] );
-      // mrv::checkout_license();
+          // mrv::open_license( argv[0] );
+          // mrv::checkout_license();
 
           load_files( opts.files, ui );
           if ( opts.stereo.size() > 1 )
@@ -332,37 +348,37 @@ int main( int argc, char** argv )
               ui->uiView->fps( opts.fps );
           }
 
-      if ( single_instance )
-          Fl::add_timeout( 1.0, load_new_files, ui );
+          if ( single_instance )
+              Fl::add_timeout( 1.0, load_new_files, ui );
 
-      if (opts.host.empty() && opts.port != 0)
-      {
-          mrv::ServerData* data = new mrv::ServerData;
-          data->ui = ui;
-          data->port = opts.port;
-          boost::thread( boost::bind( mrv::server_thread,
-                                      data ) );
-      }
-      else if ( ! opts.host.empty() && opts.port != 0 )
-      {
-          mrv::ServerData* data = new mrv::ServerData;
-          data->ui = ui;
-          data->host = opts.host;
-          data->port = opts.port;
-          char buf[128];
-          sprintf( buf, "%d", opts.port );
-          data->group = buf;
+          if (opts.host.empty() && opts.port != 0)
+          {
+              mrv::ServerData* data = new mrv::ServerData;
+              data->ui = ui;
+              data->port = opts.port;
+              boost::thread( boost::bind( mrv::server_thread,
+                                          data ) );
+          }
+          else if ( ! opts.host.empty() && opts.port != 0 )
+          {
+              mrv::ServerData* data = new mrv::ServerData;
+              data->ui = ui;
+              data->host = opts.host;
+              data->port = opts.port;
+              char buf[128];
+              sprintf( buf, "%d", opts.port );
+              data->group = buf;
 
-          boost::thread( boost::bind( mrv::client_thread,
-                                      data ) );
-      }
+              boost::thread( boost::bind( mrv::client_thread,
+                                          data ) );
+          }
 
-      if ( single_instance )
-          Fl::add_timeout( 1.0, load_new_files, ui );
+          if ( single_instance )
+              Fl::add_timeout( 1.0, load_new_files, ui );
 
 
-      ui->uiMain->show();   // so run() does something
-      ok = Fl::run();
+          ui->uiMain->show();   // so run() does something
+          ok = Fl::run();
       }
       catch( const mrv::reinit_exception& e )
       {
