@@ -31,7 +31,7 @@ namespace mrv
         if (!f) {
             return false;
         }
-	filename = file;
+        filename = file;
         char line[256];
         while ( fgets( line, sizeof(line), f ) != NULL )
         {
@@ -56,7 +56,7 @@ namespace mrv
                     if ( text.find( '{' ) != std::string::npos )
                         break;
                 }
-		
+
                 if ( ! read_colors( f, themes.back() ) )
                     return false;
             }
@@ -73,7 +73,7 @@ namespace mrv
         while ( fgets( line, sizeof(line), f ) != NULL )
         {
             std::string text = remove_comments( line );
-	    
+
             size_t pos = text.rfind( '}' );
             if ( pos != std::string::npos ) break;
 
@@ -85,16 +85,16 @@ namespace mrv
                 continue;
             }
 
-	    uchar r, g, b;
+            uchar r, g, b;
             r = (uchar)ri; g = (uchar)gi; b = (uchar)bi;
             Fl_Color c = fl_rgb_color( r, g, b );
             theme.colormaps.insert( std::make_pair( idx, c ) );
         }
-	
+
         return true;
     }
 
-    void ColorSchemes::apply_colors( std::string name )
+    void ColorSchemes::apply_colors( std::string n )
     {
         for ( auto& s : themes )
         {
@@ -106,11 +106,12 @@ namespace mrv
                 }
             }
         }
-	
+
         for ( auto& s : themes )
         {
-            if ( s.name == name )
+            if ( s.name == n )
             {
+                name = n;
                 for ( auto& c: s.colormaps )
                 {
                     Fl::set_color( c.first, Fl_Color(c.second) );
@@ -122,8 +123,8 @@ namespace mrv
     void
     ColorSchemes::reload_theme( std::string t )
     {
-	themes.clear();
-	read_themes( filename.c_str() );
-	apply_colors( t );
+        themes.clear();
+        read_themes( filename.c_str() );
+        apply_colors( t );
     }
 }
