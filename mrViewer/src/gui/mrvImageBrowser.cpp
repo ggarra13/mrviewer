@@ -3047,7 +3047,6 @@ void ImageBrowser::seek( const int64_t tframe )
             f = reel->global_to_local( f );
             if ( !img ) return;
 
-
             img->seek( f );
 
             if ( (int) i < children() )
