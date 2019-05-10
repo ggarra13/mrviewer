@@ -379,52 +379,27 @@ EndStatus handle_loop( boost::int64_t& frame,
     {
         if ( reel->edl )
         {
-            boost::int64_t f = frame;
-
+            boost::int64_t f = frame; 
             f -= img->first_frame();
             f += reel->location(img);
 
-            if ( f <= timeline->display_maximum() )
-            {
-                next = reel->image_at( f );
-            }
+	    int64_t dts = f;
+	    
+	    next = reel->image_at( f );
 
+	    if ( next == NULL && loop == CMedia::kLoop )
+	    {
+		f = boost::int64_t(timeline->display_minimum());
+		next = reel->image_at( f );
+		dts = first;
+	    }
 
-            if ( next )
-            {
-                f = reel->global_to_local( f );
-            }
-            else
-            {
-                if ( loop == CMedia::kLoop )
-                {
-                    f = boost::int64_t(timeline->display_minimum());
-                    next = reel->image_at( f );
-                    f = reel->global_to_local( f );
-                }
-                else
-                {
-                    next = img;
-                }
-            }
 
             if ( next != img && next != NULL )
             {
                 //if ( video )
                 {
-                    mrv::PacketQueue& vp = next->video_packets();
-                    CMedia::Mutex& vpm2 = vp.mutex();
-                    SCOPED_LOCK( vpm2 ); // 1155
-                    mrv::PacketQueue& ap = next->audio_packets();
-                    CMedia::Mutex& apm2 = ap.mutex();
-                    SCOPED_LOCK( apm2 );
-                    mrv::PacketQueue& sp = next->subtitle_packets();
-                    CMedia::Mutex& spm2 = sp.mutex();
-                    SCOPED_LOCK( spm2 );
-                    CMedia::Mutex& m2 = next->video_mutex();
-                    SCOPED_LOCK( m2 );
-
-                    if ( next->stopped() )
+                    if ( next->stopped() && !decode )
                     {
                         if ( img->fg_bg_barrier() )
                         {
@@ -437,23 +412,25 @@ EndStatus handle_loop( boost::int64_t& frame,
                             next->fg_bg_barrier( b );
                             img->fg_bg_barrier( NULL );
                         }
-                        next->seek( f );
-                        next->do_seek();
-                        next->play( CMedia::kForwards, uiMain, fg );
-                        // LOGT_WARNING( next->name() << " " << (fg ? "FG" : "BG")
-                        //           << " next barrier "
-                        //           << next->fg_bg_barrier() );
+			
+			ImageView::Command c;
+			
+			c.type = ImageView::kSeek;
+			c.frame = dts;
+			view->commands.push_back( c );
+							       
+			c.type = ImageView::kPlayForwards;
+			view->commands.push_back( c );
+			
                     }
-
-		    img->playback( CMedia::kStopped );
-		    img->flush_all();
-                    if ( img->has_video() ) img->clear_cache();
                 }
+		
+		img->playback( CMedia::kStopped );
+		img->flush_all();
+		if ( img->has_video() ) img->clear_cache();
 
-                status = kEndNextImage;
-                return status;
             }
-            if ( img->stopped() ) return kEndNextImage;
+	    return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
