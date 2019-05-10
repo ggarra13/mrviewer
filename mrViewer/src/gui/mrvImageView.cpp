@@ -3159,23 +3159,6 @@ void ImageView::timeout()
         }
     }
 
-    if ( reel && reel->edl )
-    {
-        TRACE("");
-        fg = reel->media_at( tframe );
-
-        if ( fg && fg != foreground() )
-        {
-            TRACE("");
-            DBG( ">>>>>>>>>>>>>> CHANGE TO FG " << fg->image()->name() << " due to frame "
-                 << tframe );
-            foreground( fg );
-            browser()->match_tree_order();
-
-            fit_image();
-        }
-
-    }
 
     mrv::media bg = background();
 
@@ -3185,8 +3168,6 @@ void ImageView::timeout()
 
         if ( bg && bg != background() )
         {
-            // CMedia* img = bg->image();
-            // if ( img->playback() == playback() )
             background( bg );
         }
     }
@@ -7483,7 +7464,8 @@ void ImageView::channel( unsigned short c )
 
     const Fl_Menu_Item* o = uiColorChannel->child(c);
 
-    unsigned short idx = 0;
+    unsigned short idx = num;
+    /*
     const Fl_Menu_Item* w ;
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
@@ -7494,6 +7476,7 @@ void ImageView::channel( unsigned short c )
                 ++idx;
         }
     }
+    */
 
     if ( c >= idx )
     {
@@ -8045,7 +8028,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                     unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
                     // s = w->shortcut();
-                    uiColorChannel->clear_submenu( last );
+		    if ( w->flags & FL_SUBMENU )
+			uiColorChannel->clear_submenu( last );
                     uiColorChannel->remove( last );
                 }
 
