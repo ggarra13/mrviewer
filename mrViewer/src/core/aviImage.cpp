@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2016  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramu?o
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -798,7 +798,7 @@ void aviImage::open_video_codec()
     AVDictionary* info = NULL;
     if (!av_dict_get(info, "threads", NULL, 0))
         av_dict_set(&info, "threads", Preferences::video_threads.c_str(), 0 );
-    //av_dict_set(&info, "threads", "auto", 0);  // not "auto" nor "4"
+    //av_dict_set(&info, "threads", "1", 0);  // not "auto" nor "4"
 
     // recounted frames needed for subtitles
     av_dict_set(&info, "refcounted_frames", "1", 0);
@@ -1474,11 +1474,6 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
                          << (pkt.pts == AV_NOPTS_VALUE ?
                              -1 : pkt.pts ) << " dts: " << pkt.dts
                          << " data: " << (void*)pkt.data);
-        av_frame_unref(_av_frame);
-        av_frame_unref(_filt_frame);
-    }
-    else
-    {
         av_frame_unref(_av_frame);
         av_frame_unref(_filt_frame);
     }
@@ -2476,7 +2471,7 @@ void aviImage::populate()
                     av_seek_frame( _context,
                                    video_stream_index(),
                                    0,
-                                   AVSEEK_FLAG_BACKWARD);
+                                   AVSEEK_FLAG_BACKWARD|AVSEEK_FLAG_BYTE);
                 }
                 else
                 {
@@ -2596,8 +2591,8 @@ void aviImage::populate()
         {
             // Hack to exit loop if got_video or got_audio fails
             ++force_exit;
-            if ( force_exit == 200 )  break;
-
+            if ( force_exit == 1200 )  break;
+	    
             int error = av_read_frame( _context, &pkt );
             if ( error < 0 )
             {
@@ -2695,7 +2690,7 @@ void aviImage::populate()
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
-    //if ( _frame_offset > 3 ) _frame_offset = 0;
+    if ( _frame_offset > 3 ) _frame_offset = 0;
 
     if ( !has_video() )
     {
@@ -3337,13 +3332,13 @@ aviImage::handle_video_packet_seek( int64_t& frame, const bool is_seek )
                 got_video = status;
         }
 
-        assert( !_video_packets.empty() );
+        assert0( !_video_packets.empty() );
         _video_packets.pop_front();
     }
 
 
     if ( _video_packets.empty() ) {
-        LOG_ERROR( _("Empty packets for video seek") );
+        IMG_ERROR( _("Empty packets for video seek.") );
         return kDecodeError;
     }
 
@@ -3451,7 +3446,7 @@ aviImage::audio_video_display( const int64_t& frame )
     int i_start = 0;
 
     if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-            _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
+	 _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
     {
         float* data = (float*)result->data();
         unsigned size = result->size();
