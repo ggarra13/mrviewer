@@ -112,6 +112,9 @@ std::ostream& operator<<( std::ostream& o, mrv::AudioEngine::AudioFormat s )
     case mrv::AudioEngine::kFloatLSB:
         return o << " flt_le";
         break;
+    case mrv::AudioEngine::kS32LSB:
+        return o << " s32_le";
+        break;
     case mrv::AudioEngine::kS16LSB:
         return o << " s16_le";
         break;
@@ -212,8 +215,7 @@ void CMedia::open_audio_codec()
     _audio_ctx->pkt_timebase = get_audio_stream()->time_base;
 
     AVDictionary* opts = NULL;
-    if (!av_dict_get(opts, "threads", NULL, 0))
-        av_dict_set(&opts, "threads", "auto", 0);  // not "auto" nor "4"
+    av_dict_set(&opts, "threads", "1", 0);
     av_dict_set(&opts, "refcounted_frames", "1", 0);
 
     if ( avcodec_open2( _audio_ctx, _audio_codec, &opts ) < 0 )
@@ -990,24 +992,25 @@ void CMedia::limit_audio_store(const int64_t frame)
 
     switch( playback() )
     {
-    case kForwards:
-        first = frame;
-        last  = frame + max_frames;
-        break;
-    case kBackwards:
-        first = frame - max_frames;
-        last  = frame;
-        break;
-    default:
-        first = frame - max_frames;
-        last  = frame + max_frames;
-        break;
+	case kBackwards:
+	    first = frame - max_frames;
+	    last  = frame;
+	    if ( _adts < first ) first = _adts;
+	    break;
+        case kForwards:
+            first = frame - max_frames;
+            last  = frame + max_frames;
+            if ( _adts < first ) first = _adts;
+            if ( _adts > last )   last = _adts;
+	    break;
+	default:
+	    first = frame - max_frames;
+	    last  = frame + max_frames;
+            if ( _adts > last )   last = _adts;
+	    break;
     }
 
 
-
-    if ( _adts < first ) first = _adts;
-    if ( _adts > last )   last = _adts;
 #if 0
     if ( first > last )
     {
@@ -1084,8 +1087,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     }
 
 
-    if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-            ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+        if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+               ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
     {
         _audio_format = AudioEngine::kS16LSB;
     }
@@ -1095,7 +1098,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         _audio_channels = (unsigned short) ctx->channels;
 
     if ( ctx->sample_fmt != fmt  ||
-            unsigned(ctx->channels) != _audio_channels )
+	 unsigned(ctx->channels) != _audio_channels )
     {
         if (!forw_ctx)
         {
@@ -1307,7 +1310,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     av_assert0( !_audio_packets.is_loop_end( pkt ) );
     av_assert0( !_audio_packets.is_loop_start( pkt ) );
 
-    ptsframe = pts2frame( stream, pkt.dts );
+  ptsframe = get_frame( stream, pkt );
     if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
 
     // Make sure audio frames are continous during playback to
@@ -1577,8 +1580,9 @@ CMedia::store_audio( const int64_t audio_frame,
 
     // Get the audio info from the codec context
     _audio_channels = (unsigned short)_audio_ctx->channels;
-    const unsigned short channels = _audio_channels;
-    const int frequency = _audio_ctx->sample_rate;
+  unsigned short channels = _audio_channels;
+  
+  int frequency = _audio_ctx->sample_rate;
 
     audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
                                          frequency,
@@ -1599,7 +1603,7 @@ CMedia::store_audio( const int64_t audio_frame,
     {
         audio_cache_t::iterator end = _audio.end();
 
-#if 1  // needed
+#if 0
         audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
                                      end,
                                      f,
@@ -1728,7 +1732,7 @@ bool CMedia::open_audio( const short channels,
 
     // Avoid conversion to float if unneeded
     if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-            _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+         _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
     {
         format = AudioEngine::kS16LSB;
     }
@@ -1952,8 +1956,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     if ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
         const AVPacket& pkt = _audio_packets.front();
-        // int64_t pts = pkt.dts + pkt.duration;
-        _audio_last_frame = pts2frame( get_audio_stream(), pkt.dts );
+      _audio_last_frame = get_frame( get_audio_stream(), pkt );
     }
 
 
@@ -1963,7 +1966,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
         const AVPacket& pkt = _audio_packets.front();
-        int64_t f = pts2frame( get_audio_stream(), pkt.dts );
+      int64_t f = get_frame( get_audio_stream(), pkt );
 
 
         DecodeStatus status;
@@ -1995,7 +1998,7 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     {
         assert( !_audio_packets.empty() );
         const AVPacket& pkt = _audio_packets.front();
-        frame = pts2frame( get_audio_stream(), pkt.dts ) + _audio_offset;
+      frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
     }
 
     if ( _audio_packets.is_seek_end() )
