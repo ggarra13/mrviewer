@@ -14,7 +14,15 @@ void Element::make_thumbnail()
 {
     _elem->create_thumbnail();
 
-    Fl_Image* b = _elem->thumbnail()->copy();
+    Fl_Image* b = NULL;
+    if ( _elem->thumbnail() )
+        b = _elem->thumbnail()->copy();
+    else
+    {
+        uchar* d = new uchar[64*64];
+        memset( d, 0, 64*64 );
+        b = new Fl_RGB_Image( d, 64, 64, 1 );
+    }
     if ( !b || b->w() < 1 )
     {
         LOG_ERROR( "Empty image in thumbnail"  );
@@ -38,7 +46,7 @@ void Element::make_thumbnail()
         if ( !m )
         {
             LOG_ERROR( _("Empty media provided to Element constructor") );
-	    return;
+            return;
         }
 
 
@@ -86,7 +94,7 @@ void Element::make_thumbnail()
                      );
         }
 
-	DBG;
+        DBG;
         label->copy_label( info );
 
         label->color(0xddddff00);
