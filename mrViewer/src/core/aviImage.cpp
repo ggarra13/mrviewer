@@ -1477,6 +1477,11 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
         av_frame_unref(_av_frame);
         av_frame_unref(_filt_frame);
     }
+    else
+    {
+        av_frame_unref(_av_frame);
+        av_frame_unref(_filt_frame);
+    }
 
     if ( status == kDecodeDone ) status = kDecodeOK;
     return status;
@@ -2690,7 +2695,7 @@ void aviImage::populate()
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
-    if ( _frame_offset > 3 ) _frame_offset = 0;
+    //if ( _frame_offset > 3 ) _frame_offset = 0;
 
     if ( !has_video() )
     {
