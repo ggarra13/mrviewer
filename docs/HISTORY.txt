@@ -1,3 +1,6 @@
+v5.0.4  - Removed a minor memory leak in decode_image when packet could
+	  not be decoded.
+
 v5.0.3  - Bug fixed installation of mrViewer on international characters
 	  like umlauts.
 	- Bug fixed pixel query position on Windows.
@@ -6,6 +9,8 @@ v5.0.3  - Bug fixed installation of mrViewer on international characters
 	- Added SHIFT+r to reset all gamma/gain changes to the image.
 	- Made SHIFT+hotkey shortcuts work properly.  Previously, you had
 	  to press twice on them to take effect.
+	- Bug fixed playback of Dolby's TrueHD clips.
+	  Regression from v4.2.5.
 
 v5.0.2  - Made Media Info's Remove Attributes work in nested attributes
 	  as well as flat attributes.
