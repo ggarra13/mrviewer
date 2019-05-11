@@ -166,6 +166,7 @@ int main( int argc, char** argv )
                 mrv::Preferences::debug = 1;
     }
 
+    Fl::lock();  // Start locking mechanism
     Fl::scheme("plastic");
 
 
