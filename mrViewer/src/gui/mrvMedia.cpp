@@ -77,7 +77,7 @@ media::~media()
     _image = NULL;
     if ( _thumbnail )
     {
-	delete _thumbnail;
+        delete _thumbnail;
         _thumbnail = NULL;
     }
 }
@@ -110,18 +110,17 @@ void media::create_thumbnail()
     mrv::image_type_ptr pic = _image->left();
 
     if ( !pic ) {
-	LOG_ERROR( _("Empty pic file for media ") << _image->name() );
-	abort();
-	return;
+        LOG_ERROR( _("Empty pic file for media ") << _image->name() );
+        return;
     }
-    
+
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw == 0 || dh == 0 ) {
-	LOG_ERROR( _("Media file has zero size in width or height") );
-	return;
+        LOG_ERROR( _("Media file has zero size in width or height") );
+        return;
     }
-    
+
     unsigned int h = _thumbnail_height;
 
     float yScale = (float)(h+0.5) / (float)dh;
@@ -133,13 +132,12 @@ void media::create_thumbnail()
 
     if ( mrv::Preferences::use_ocio )
     {
-    	if ( pic->pixel_type() == mrv::image_type::kFloat )
-	{
-	    std::cerr << "bake ocio thumbnail " << _image->name() << std::endl;
-    	     bake_ocio( pic, _image );
-	}
+        if ( pic->pixel_type() == mrv::image_type::kFloat )
+        {
+             bake_ocio( pic, _image );
+        }
     }
-    
+
     w = pic->width();
     h = pic->height();
 
@@ -148,11 +146,11 @@ void media::create_thumbnail()
     sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
     delete _thumbnail;
-    
+
     uchar* data = new uchar[ w * h * 3 ];
     _thumbnail = new Fl_RGB_Image( data, w, h, 3 );
     _thumbnail->alloc_array = 1;
-    
+
     if ( !_thumbnail )
     {
         IMG_ERROR( _("Could not create thumbnail picture for '")
