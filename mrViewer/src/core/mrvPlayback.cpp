@@ -337,7 +337,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
                        const mrv::CMedia::DecodeStatus end,
-		       bool decode = false )
+                       bool decode = false )
 {
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
@@ -379,27 +379,27 @@ EndStatus handle_loop( boost::int64_t& frame,
     {
         if ( reel->edl )
         {
-            boost::int64_t f = frame; 
+            boost::int64_t f = frame;
             f -= img->first_frame();
             f += reel->location(img);
 
-	    int64_t dts = f;
-	    
-	    next = reel->image_at( f );
+            int64_t dts = f;
 
-	    if ( next == NULL && loop == CMedia::kLoop )
-	    {
-		f = boost::int64_t(timeline->display_minimum());
-		next = reel->image_at( f );
-		dts = first;
-	    }
+            next = reel->image_at( f );
+
+            if ( next == NULL && loop == CMedia::kLoop )
+            {
+                f = boost::int64_t(timeline->display_minimum());
+                next = reel->image_at( f );
+                dts = first;
+            }
 
 
             if ( next != img && next != NULL )
             {
                 //if ( video )
                 {
-                    if ( next->stopped() && !decode )
+                    if ( next->stopped() )
                     {
                         if ( img->fg_bg_barrier() )
                         {
@@ -412,25 +412,25 @@ EndStatus handle_loop( boost::int64_t& frame,
                             next->fg_bg_barrier( b );
                             img->fg_bg_barrier( NULL );
                         }
-			
-			ImageView::Command c;
-			
-			c.type = ImageView::kSeek;
-			c.frame = dts;
-			view->commands.push_back( c );
-							       
-			c.type = ImageView::kPlayForwards;
-			view->commands.push_back( c );
-			
+
+                        ImageView::Command c;
+
+                        c.type = ImageView::kSeek;
+                        c.frame = dts;
+                        view->commands.push_back( c );
+
+                        c.type = ImageView::kPlayForwards;
+                        view->commands.push_back( c );
+
                     }
                 }
-		
-		img->playback( CMedia::kStopped );
-		img->flush_all();
-		if ( img->has_video() ) img->clear_cache();
+
+                img->playback( CMedia::kStopped );
+                img->flush_all();
+                if ( img->has_video() ) img->clear_cache();
 
             }
-	    return kEndNextImage;
+            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
@@ -462,8 +462,8 @@ EndStatus handle_loop( boost::int64_t& frame,
         }
         else
         {
-	    if (fg) view->playback( CMedia::kStopped );
-	    img->playback( CMedia::kStopped );
+            if (fg) view->playback( CMedia::kStopped );
+            img->playback( CMedia::kStopped );
         }
         break;
     }
@@ -476,22 +476,22 @@ EndStatus handle_loop( boost::int64_t& frame,
             f -= img->first_frame();
             f += reel->location(img);
 
-	    int64_t dts = f;
+            int64_t dts = f;
 
-	    next = reel->image_at( f );
-            
-	    if ( next == NULL && loop == CMedia::kLoop )
-	    {
-		f = boost::int64_t(timeline->display_maximum());
-		next = reel->image_at( f );
-		dts = f;
-	    }
+            next = reel->image_at( f );
+
+            if ( next == NULL && loop == CMedia::kLoop )
+            {
+                f = boost::int64_t(timeline->display_maximum());
+                next = reel->image_at( f );
+                dts = f;
+            }
 
             if ( next != img && next != NULL )
             {
                 //if ( video )
                 {
-                    if ( next->stopped() && !decode )
+                    if ( next->stopped() )
                     {
                         if ( img->fg_bg_barrier() )
                         {
@@ -507,18 +507,18 @@ EndStatus handle_loop( boost::int64_t& frame,
                             //           << " next barrier "
                             //           << next->fg_bg_barrier() );
                         }
-			
-			ImageView::Command c;
-			
-			c.type = ImageView::kSeek;
-			c.frame = dts;
-			view->commands.push_back( c );
-							       
-			c.type = ImageView::kPlayBackwards;
-			view->commands.push_back( c );
+
+                        ImageView::Command c;
+
+                        c.type = ImageView::kSeek;
+                        c.frame = dts;
+                        view->commands.push_back( c );
+
+                        c.type = ImageView::kPlayBackwards;
+                        view->commands.push_back( c );
                     }
 
-		    img->playback( CMedia::kStopped );
+                    img->playback( CMedia::kStopped );
                     img->flush_all();
                     if ( img->has_video() ) img->clear_cache();
                 }
@@ -557,9 +557,9 @@ EndStatus handle_loop( boost::int64_t& frame,
         }
         else
         {
-	    img->playback( CMedia::kStopped );
-	    if (fg) view->playback( CMedia::kStopped );
-	}
+            img->playback( CMedia::kStopped );
+            if (fg) view->playback( CMedia::kStopped );
+        }
         break;
     }
     default:
