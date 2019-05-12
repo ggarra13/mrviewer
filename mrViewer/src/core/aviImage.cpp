@@ -25,7 +25,7 @@
  *
  */
 
-#ifndef __STDC_FORMAT_MACROS 
+#ifndef __STDC_FORMAT_MACROS
 #  define __STDC_FORMAT_MACROS
 #  define __STDC_LIMIT_MACROS
 #endif
@@ -881,9 +881,9 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_subtitle = !has_subtitle();
 
     if ( stopped() &&
-	 (got_video || in_video_store( frame )) &&
-	 (got_audio || in_audio_store( frame + _audio_offset )) &&
-	 (got_subtitle || in_subtitle_store( frame )) )
+         (got_video || in_video_store( frame )) &&
+         (got_audio || in_audio_store( frame + _audio_offset )) &&
+         (got_subtitle || in_subtitle_store( frame )) )
     {
         skip = true;
     }
@@ -1328,8 +1328,6 @@ aviImage::decode_video_packet( int64_t& ptsframe,
             return kDecodeError;
         }
 
-
-
         if ( got_pict ) {
             ptsframe = _av_frame->best_effort_timestamp;
 
@@ -1361,13 +1359,11 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
             if ( pkt && ptsframe == AV_NOPTS_VALUE )
             {
-
                 ptsframe = get_frame( stream, *p );
                 if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
             }
             else
             {
-
                 ptsframe = pts2frame( stream, ptsframe ); // - _frame_offset;
             }
 
@@ -2039,7 +2035,7 @@ void aviImage::video_stream( int x )
     if ( colorspace_override ) _colorspace_index = colorspace_override;
     else _colorspace_index = ctx->color_space;
 
-    
+
     switch( _av_dst_pix_fmt )
     {
     case AV_PIX_FMT_RGBA64BE:
@@ -2087,7 +2083,7 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV422P:
     case AV_PIX_FMT_YUVJ422P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-	     ( ctx->height >= 630 && ctx->width >= 1120 )  )
+             ( ctx->height >= 630 && ctx->width >= 1120 )  )
             _pix_fmt = VideoFrame::kITU_709_YCbCr422;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr422;
@@ -2097,7 +2093,7 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV420P:
     case AV_PIX_FMT_YUVJ420P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-	     ( ctx->height >= 630 && ctx->width >= 1120 ) )
+             ( ctx->height >= 630 && ctx->width >= 1120 ) )
             _pix_fmt = VideoFrame::kITU_709_YCbCr420;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr420;
@@ -2498,7 +2494,7 @@ void aviImage::populate()
     //  _inv_table = sws_getCoefficients( SWS_CS_ITU709 );
     // }
 
-    
+
     // We get this here for timecode and for color space
     dump_metadata( _context->metadata );
 
@@ -2514,7 +2510,7 @@ void aviImage::populate()
             {
                 std::string outcol = str->value();
                 if ( outcol == "Rec 709" || outcol == "ITU 709" ||
-		     outcol == "BT709" )
+                     outcol == "BT709" )
                 {
                     _inv_table = sws_getCoefficients( SWS_CS_ITU709 );
                 }
@@ -2592,7 +2588,7 @@ void aviImage::populate()
             // Hack to exit loop if got_video or got_audio fails
             ++force_exit;
             if ( force_exit == 1200 )  break;
-	    
+
             int error = av_read_frame( _context, &pkt );
             if ( error < 0 )
             {
@@ -2690,7 +2686,7 @@ void aviImage::populate()
     _expected = dts + 1;
     _expected_audio = _adts + 1;
 
-    if ( _frame_offset > 3 ) _frame_offset = 0;
+    //if ( _frame_offset > 3 ) _frame_offset = 0;
 
     if ( !has_video() )
     {
@@ -3446,7 +3442,7 @@ aviImage::audio_video_display( const int64_t& frame )
     int i_start = 0;
 
     if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-	 _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
+         _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
     {
         float* data = (float*)result->data();
         unsigned size = result->size();
