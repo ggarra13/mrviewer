@@ -1,5 +1,9 @@
 v5.0.4  - Removed a minor memory leak in decode_image when packet could
 	  not be decoded.
+	- Worked around an FLTK menu bug which would change the text of
+	  the main menus and replace them with the color channel names.
+	- Bug fixed a missed frame when the videos were stopped in their
+	  last frames.
 
 v5.0.3  - Bug fixed installation of mrViewer on international characters
 	  like umlauts.
