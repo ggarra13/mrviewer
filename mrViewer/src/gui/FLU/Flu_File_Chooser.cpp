@@ -78,7 +78,7 @@
 static const char* kModule = "filereq";
 
 
-//#define ICONS_SINGLE_THREAD
+#define ICONS_SINGLE_THREAD
 
 
 // set default language strings
