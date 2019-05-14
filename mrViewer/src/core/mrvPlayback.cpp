@@ -422,12 +422,13 @@ EndStatus handle_loop( boost::int64_t& frame,
 			c.type = ImageView::kPlayForwards;
 			view->commands.push_back( c );
 			
+                        img->playback( CMedia::kStopped );
+                        img->flush_all();
+                        if ( img->has_video() ) img->clear_cache();
                     }
+                    
                 }
 		
-		img->playback( CMedia::kStopped );
-		img->flush_all();
-		if ( img->has_video() ) img->clear_cache();
 
             }
 	    return kEndNextImage;
@@ -516,11 +517,12 @@ EndStatus handle_loop( boost::int64_t& frame,
 							       
 			c.type = ImageView::kPlayBackwards;
 			view->commands.push_back( c );
+
+                        img->playback( CMedia::kStopped );
+                        img->flush_all();
+                        if ( img->has_video() ) img->clear_cache();
                     }
 
-		    img->playback( CMedia::kStopped );
-                    img->flush_all();
-                    if ( img->has_video() ) img->clear_cache();
                 }
             }
             return kEndNextImage;
