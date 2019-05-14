@@ -3625,7 +3625,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             int64_t pktframe;
             if ( pkt.dts != AV_NOPTS_VALUE )
             {
-                pktframe = pts2frame( get_video_stream(), pkt.dts );
+                pktframe = get_frame( get_video_stream(), pkt );
             }
             else
             {
