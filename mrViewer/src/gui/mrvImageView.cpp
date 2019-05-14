@@ -4174,7 +4174,6 @@ int ImageView::leftMouseDown(int x, int y)
 
             int idx;
 
-            menu->clear();
             idx = menu->add( _("File/Open/Movie or Sequence"),
 			     kOpenImage.hotkey(),
 			     (Fl_Callback*)open_cb, browser() );
@@ -4522,6 +4521,7 @@ int ImageView::leftMouseDown(int x, int y)
 	    dummy_menu->add("workaround");
             menu->popup();
 
+            menu->clear();
             TRACE("");
             return 1;
         }
@@ -7624,7 +7624,7 @@ void ImageView::channel( unsigned short c )
     update_image_info();
 
     // We must send the full channel name
-    // update_shortcuts( fg, channelName.c_str() );
+    update_shortcuts( fg, channelName.c_str() );
 
     oldChannel = channelName;
     free( lbl );
