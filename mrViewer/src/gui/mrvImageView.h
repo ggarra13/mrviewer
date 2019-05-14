@@ -920,7 +920,7 @@ protected:
     // Popup menu
     ///////////////////
     Fl_Menu_Button* menu;
-
+    Fl_Menu_Button* dummy_menu;  // workaround fltk bug with menus
     
     // Event Timeout
     mrv::Event*  _timeout;
