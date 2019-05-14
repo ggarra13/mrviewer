@@ -1419,6 +1419,7 @@ _old_fg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
+dummy_menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
@@ -4517,6 +4518,8 @@ int ImageView::leftMouseDown(int x, int y)
                           uiMain, FL_MENU_DIVIDER);
             }
             TRACE("");
+	    dummy_menu->clear();
+	    dummy_menu->add("workaround");
             menu->popup();
 
             TRACE("");
