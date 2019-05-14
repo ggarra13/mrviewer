@@ -4173,8 +4173,11 @@ int ImageView::leftMouseDown(int x, int y)
 
             int idx;
 
-            menu->add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
-                      (Fl_Callback*)open_cb, browser() );
+            menu->clear();
+            idx = menu->add( _("File/Open/Movie or Sequence"),
+			     kOpenImage.hotkey(),
+			     (Fl_Callback*)open_cb, browser() );
+	    
             menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                       (Fl_Callback*)open_single_cb, browser() );
 
@@ -4516,7 +4519,6 @@ int ImageView::leftMouseDown(int x, int y)
             TRACE("");
             menu->popup();
 
-            menu->clear();
             TRACE("");
             return 1;
         }
@@ -7461,7 +7463,6 @@ void ImageView::channel( unsigned short c )
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return; // Audio only - no channels
 
-
     const Fl_Menu_Item* o = uiColorChannel->child(c);
 
     unsigned short idx = num;
@@ -7620,7 +7621,7 @@ void ImageView::channel( unsigned short c )
     update_image_info();
 
     // We must send the full channel name
-    update_shortcuts( fg, channelName.c_str() );
+    // update_shortcuts( fg, channelName.c_str() );
 
     oldChannel = channelName;
     free( lbl );
@@ -7966,6 +7967,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     uiColorChannel->clear();
 
+
     const stringArray& layers = img->layers();
 
 
@@ -8056,7 +8058,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
-
+	
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
         std::string chx = remove_hash_number( x );
