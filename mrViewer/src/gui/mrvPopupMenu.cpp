@@ -34,7 +34,7 @@ Normally any mouse button will pop up a menu and it is lined up above
 the button, or below it when there is no previous selected value as
 shown in the picture.
 
-However a MyPopupMenu can also have type() set to POPUP1, POPUP2,
+However a mrvPopupMenu can also have type() set to POPUP1, POPUP2,
 POPUP12, POPUP3, POPUP13, POPUP23, or POPUP123. It then becomes invisible
 and ignores all mouse buttons other than the ones named in the popup
 type. You can then resize it to cover another widget (or many widgets)
@@ -50,6 +50,12 @@ effect to the widget.
 */
 
 #include "mrvPopupMenu.h"
+
+#define __STDC_CONSTANT_MACROS
+
+extern "C" {
+#include <libavutil/avassert.h>
+}
 
 #include <FL/Fl_Box.H>
 #include <FL/fl_draw.H>
@@ -90,22 +96,10 @@ void PopupMenu::draw() {
 }
 
 const Fl_Menu_Item* PopupMenu::child(int i) {
+    av_assert0( i >= 0 );
     return &(menu()[i]);
 }
 
-int PopupMenu::add_leaf( const char* name, Fl_Menu_Item* g )
-{
-    for ( int i = 0; i < children(); ++i )
-    {
-	const Fl_Menu_Item* w = child(i);
-	if ( w == g )
-	{
-	    int idx = g->add( name, 0, NULL );
-	    return i + idx;
-	}
-    }
-    return -1;
-}
 
 const Fl_Menu_Item* PopupMenu::popup() {
   const Fl_Menu_Item* m;
@@ -123,21 +117,15 @@ const Fl_Menu_Item* PopupMenu::popup() {
   return m;
 }
 
-// static NamedStyle style("mrvPopupMenu", 0, &Fl_PopupMenu::default_style);
-// NamedStyle* PopupMenu::default_style = &mrv::style;
-
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
     : Fl_Menu_Button(X,Y,W,H,l),
       _enable_glyph( true )
 {
-    // set the parent style to Menu::default_style, not Widget::default_style:
     align(FL_ALIGN_CENTER);
-
-    //set_click_to_focus();
 }
 
 } // namespace mrv
 
 //
-// End of "$Id: MyPopupMenu.cxx 8636 2011-05-06 08:01:12Z bgbnbigben $".
+// End of "$Id: mrvPopupMenu.cxx 8636 2011-05-06 08:01:12Z bgbnbigben $".
 //
