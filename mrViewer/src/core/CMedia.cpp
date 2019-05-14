@@ -2622,8 +2622,6 @@ void CMedia::stop(const bool bg)
 
     TRACE("");
 
-    assert( 0 );
-
     _playback = kStopped;
 
     //
