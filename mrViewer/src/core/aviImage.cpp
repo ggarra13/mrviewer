@@ -1278,6 +1278,7 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
 
     if ( ret == AVERROR_EOF ) eof = true;
 
+    
     if (ret >= 0)
     {
         *got_frame = 1;
@@ -3625,7 +3626,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             int64_t pktframe;
             if ( pkt.dts != AV_NOPTS_VALUE )
             {
-                pktframe = pts2frame( get_video_stream(), pkt.dts );
+                pktframe = get_frame( get_video_stream(), pkt );
             }
             else
             {
@@ -3635,7 +3636,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 
             // Avoid storing too many frames in advance
             if ( playback() == kForwards &&
-                    pktframe > _frame + max_video_frames() )
+		 pktframe > _frame + max_video_frames() )
             {
                 got_video = kDecodeOK;
                 continue;
@@ -3652,7 +3653,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                 }
                 continue;
             }
-;
+
             got_video = decode_image( pktframe, pkt );
             //assert( !_video_packets.empty() );
             _video_packets.pop_front();
