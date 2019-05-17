@@ -324,7 +324,7 @@ static void loadRealIcon( RealIcon* e)
 
 
 #ifdef ICONS_SINGLE_THREAD
-    Mutex::scoped_lock lk_m( e->chooser->mutex );
+    // Mutex::scoped_lock lk_m( e->chooser->mutex );
 #else
     Fl::lock();
 #endif
@@ -420,9 +420,8 @@ static void loadRealIcon( RealIcon* e)
         }
 
     }
+
           SALIDA:
-    e->entry->redraw();
-    e->chooser->redraw();
     delete e;
 
 #ifdef ICONS_SINGLE_THREAD
@@ -1242,7 +1241,6 @@ void Flu_File_Chooser::clear_threads()
   thread_pool_t::iterator it = threads.begin();
   thread_pool_t::iterator ie = threads.end();
 
-  
   for ( ;it != ie; ++it )
   {
       (*it)->join();
