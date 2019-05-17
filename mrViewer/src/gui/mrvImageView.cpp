@@ -1472,9 +1472,6 @@ ImageView::~ImageView()
     // make sure to stop any playback
     stop_playback();
 
-    foreground( mrv::media() );
-    background( mrv::media() );
-
     delete _engine;
     _engine = NULL;
 
@@ -4518,7 +4515,8 @@ int ImageView::leftMouseDown(int x, int y)
             }
             TRACE("");
 	    dummy_menu->clear();
-	    dummy_menu->add("workaround");
+	    dummy_menu->add( "workaround" );
+	    
             menu->popup();
 
             menu->clear();
