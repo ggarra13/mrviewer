@@ -202,6 +202,8 @@ static Fl_Double_Window* make_attribute_add_window() {
         w = o;
         o->label( _("Add Attribute") );
         o->begin();
+	Fl_Group* g = new Fl_Group( 0, 0, 405, 200 );
+	g->box( FL_UP_BOX );
         {   mrv::Choice* o = uiType = new mrv::Choice( 10, 30, 390, 25, _("Type") );
             o->align(FL_ALIGN_TOP);
             o->add( _("String") );
@@ -227,11 +229,11 @@ static Fl_Double_Window* make_attribute_add_window() {
             o->callback( (Fl_Callback*) cb_uiType, (void*)w );
             o->value( 9 );
         }
-        {   Fl_Input* o = uiKey = new Fl_Input(10, 70, 390, 25, _("Keyword"));
+        {   Fl_Input* o = uiKey = new Fl_Input(10, 75, 390, 25, _("Keyword"));
             o->value( N_("timecode") );
             o->align(FL_ALIGN_TOP);
         }
-        {   Fl_Input* o = uiValue = new Fl_Input(10, 110, 390, 25, _("Value"));
+        {   Fl_Input* o = uiValue = new Fl_Input(10, 120, 390, 25, _("Value"));
             o->value( N_("00:00:00:00") );
             o->align(FL_ALIGN_TOP);
         }
@@ -241,6 +243,7 @@ static Fl_Double_Window* make_attribute_add_window() {
         {   Fl_Button* o = new Fl_Button(224, 150, 93, 41, _("Cancel"));
             o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
         }
+	g->end();
         o->end();
         o->set_modal();
         o->resizable(o);
