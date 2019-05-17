@@ -1,9 +1,12 @@
 v5.0.5  - Removed a minor memory leak in decode_image when packet could
 	  not be decoded.
-	- Worked around an FLTK menu bug which would change the text of
-	  the main menus and replace them with the color channel names.
-	- Bug fixed a missed frame when the videos were stopped in their
-	  last frames.
+	- Bug fixed an FLTK menu bug which would change the text of
+	  the main menu popup and replace them with the color channel
+	  names when images changed (like in EDL playback).
+	- Bug fixed a missed frame error when the videos were stopped in
+	  their last frames while in EDL playback.
+	- Incorrectly called SHIFT+r to reset all changes in the image
+	  in v5.0.3, when in fact it is SHIFT+c.
 
 v5.0.4  - Quick patch to fix EDL playback.
 
@@ -12,7 +15,7 @@ v5.0.3  - Bug fixed installation of mrViewer on international characters
 	- Bug fixed pixel query position on Windows.
 	- Made CTRL+Drag gain use exposure instead.
 	- Bug fixed EDL playback.
-	- Added SHIFT+r to reset all gamma/gain changes to the image.
+	- Added SHIFT+c to reset all gamma/gain changes to the image.
 	- Made SHIFT+hotkey shortcuts work properly.  Previously, you had
 	  to press twice on them to take effect.
 	- Bug fixed playback of Dolby's TrueHD clips.
