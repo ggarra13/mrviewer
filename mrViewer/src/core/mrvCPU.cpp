@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -258,9 +258,9 @@ do_cpuid(unsigned int eaxval, unsigned int* eregs)
 #else
   // code from libavcodec:
   __asm __volatile (
-                    "mov %%"REG_b", %%"REG_S"\n\t"
+                    "mov %%" REG_b ", %%" REG_S "\n\t"
                     "cpuid\n\t"
-                    "xchg %%"REG_b", %%"REG_S
+                    "xchg %%" REG_b ", %%" REG_S
                     : "=a" (eregs[0]), "=S" (eregs[1]),
                     "=c" (eregs[2]), "=d" (eregs[3])
                     : "0" (eaxval)
