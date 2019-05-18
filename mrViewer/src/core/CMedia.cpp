@@ -2863,7 +2863,8 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
     if ( seq[idx] ) {
         memory_used -= seq[idx]->data_size();
-        assert0( CMedia::memory_used >= 0 );
+        if ( CMedia::memory_used < 0 )
+            CMedia::memory_used = 0;
     }
     MEM();
 
@@ -3580,7 +3581,8 @@ uint64_t CMedia::max_image_frames()
 #else
     if ( _hires )
     {
-        assert0( CMedia::memory_used >= 0 );
+        if ( CMedia::memory_used < 0 )
+            CMedia::memory_used = 0;
         return ((Preferences::max_memory - CMedia::memory_used) * 100.0 /
                 (double) _hires->data_size());
     }
@@ -3597,7 +3599,8 @@ uint64_t CMedia::max_image_frames()
     if ( Preferences::max_memory < CMedia::memory_used )
         return 0;
 
-    assert0( CMedia::memory_used >= 0 );
+    if ( CMedia::memory_used < 0 )
+        CMedia::memory_used = 0;
     return ((Preferences::max_memory - CMedia::memory_used) * 100.0 / (double)
             _sequence[i]->data_size());
 #endif
