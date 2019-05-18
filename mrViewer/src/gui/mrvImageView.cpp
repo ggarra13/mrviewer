@@ -1419,7 +1419,6 @@ _old_fg( NULL ),
 _fg_reel( 0 ),
 _bg_reel( -1 ),
 menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
-dummy_menu( new Fl_Menu_Button( 0, 0, 0, 0 ) ),
 _mode( kNoAction ),
 _selected_image( NULL ),
 _selection( mrv::Rectd(0,0) ),
@@ -4172,12 +4171,13 @@ int ImageView::leftMouseDown(int x, int y)
 
             TRACE("");
 
+            menu->clear();
             int idx;
 
             idx = menu->add( _("File/Open/Movie or Sequence"),
-			     kOpenImage.hotkey(),
-			     (Fl_Callback*)open_cb, browser() );
-	    
+                             kOpenImage.hotkey(),
+                             (Fl_Callback*)open_cb, browser() );
+
             menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
                       (Fl_Callback*)open_single_cb, browser() );
 
@@ -4517,11 +4517,8 @@ int ImageView::leftMouseDown(int x, int y)
                           uiMain, FL_MENU_DIVIDER);
             }
             TRACE("");
-	    dummy_menu->clear();
-	    dummy_menu->add("workaround");
             menu->popup();
 
-            menu->clear();
             TRACE("");
             return 1;
         }
@@ -8033,8 +8030,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                     unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
                     // s = w->shortcut();
-		    if ( w->flags & FL_SUBMENU )
-			uiColorChannel->clear_submenu( last );
+                    if ( w->flags & FL_SUBMENU )
+                        uiColorChannel->clear_submenu( last );
                     uiColorChannel->remove( last );
                 }
 
@@ -8061,7 +8058,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
-	
+
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
         std::string chx = remove_hash_number( x );
