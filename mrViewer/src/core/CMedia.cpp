@@ -948,10 +948,10 @@ CMedia::~CMedia()
 
         for ( const auto& i : _attrs )
         {
-	    for ( const auto& d : i.second )
-	    {
-		delete d.second;
-	    }
+            for ( const auto& d : i.second )
+            {
+                delete d.second;
+            }
         }
     }
 
@@ -973,11 +973,11 @@ CMedia::Attributes& CMedia::attributes()  {
     static Attributes empty;
     AttributesFrame::iterator i;
     if ( dynamic_cast< aviImage* >( this ) != NULL  )
-	i = _attrs.find( start_frame() );
+        i = _attrs.find( start_frame() );
     else
-	i = _attrs.find( _frame );
+        i = _attrs.find( _frame );
     if ( i != _attrs.end() )
-	return i->second; 
+        return i->second;
     return empty;
 }
 
@@ -985,11 +985,11 @@ const CMedia::Attributes& CMedia::attributes() const {
     static Attributes empty;
     AttributesFrame::const_iterator i;
     if ( dynamic_cast< const aviImage* const >( this ) != NULL  )
-	i = _attrs.find( start_frame() );
+        i = _attrs.find( start_frame() );
     else
-	i = _attrs.find( _frame );
+        i = _attrs.find( _frame );
     if ( i != _attrs.end() )
-	return i->second;
+        return i->second;
     return empty;
 }
 
@@ -2861,8 +2861,10 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
     if ( !seq ) return;
 
 
-    if ( seq[idx] ) memory_used -= seq[idx]->data_size();
-    assert0( CMedia::memory_used >= 0 );
+    if ( seq[idx] ) {
+        memory_used -= seq[idx]->data_size();
+        assert0( CMedia::memory_used >= 0 );
+    }
     MEM();
 
     mrv::image_type_ptr np;
