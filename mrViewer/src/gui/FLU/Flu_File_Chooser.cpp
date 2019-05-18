@@ -2939,7 +2939,7 @@ int Flu_File_Chooser :: popupContextMenu( Entry *entry )
       if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
         if( contextHandlers[i].ext.size() && contextHandlers[i].ext != ext )
           continue;
-      entryPopup.add( _(contextHandlers[i].name.c_str()), 0, 0, (void*)i );
+      entryPopup.add( _(contextHandlers[i].name.c_str()), 0, 0, (uintptr_t*)i );
     }
   if( ext )
     free( ext );
