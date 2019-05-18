@@ -42,8 +42,8 @@ SET( VersionMinor 0 )
 SET( VersionPatch 5 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
-#STRING( TIMESTAMP VersionDate ".%Y%m%d" )
-SET( VersionDate "" )
+STRING( TIMESTAMP VersionDate ".%Y%m%d" )
+#SET( VersionDate "" )
 
 
 SET( SHORTVERSION  "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
