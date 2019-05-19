@@ -79,6 +79,7 @@ static const char* kModule = "filereq";
 
 
 #define ICONS_SINGLE_THREAD
+//#define ICONS_TIMEOUT
 
 
 // set default language strings
@@ -422,6 +423,11 @@ static void loadRealIcon( RealIcon* e)
     }
 
           SALIDA:
+
+#ifndef ICONS_TIMEOUT
+    Fl::remove_idle( (Fl_Timeout_Handler) loadRealIcon, e );
+#endif
+    
     delete e;
 
 #ifdef ICONS_SINGLE_THREAD
@@ -468,7 +474,12 @@ void Flu_File_Chooser::previewCB()
                 ri->filesize = e->filesize;
                 ri->serial   = serial;
 #ifdef ICONS_SINGLE_THREAD
-                Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) loadRealIcon, ri );
+#ifdef ICONS_TIMEOUT
+                Fl::add_timeout( 0.1, (Fl_Timeout_Handler) loadRealIcon, ri );
+#else
+                Fl::add_idle( (Fl_Timeout_Handler) loadRealIcon, ri );
+#endif
+		
 #else
                 boost::thread* t = new boost::thread( boost::bind( loadRealIcon,
                                                                    ri ) );
@@ -1233,8 +1244,10 @@ void Flu_File_Chooser::clear_threads()
   ++serial;
 
 #ifdef ICONS_SINGLE_THREAD
+#ifdef ICONS_TIMEOUT
     for (unsigned i = 0; i < num_timeouts; ++i )
         Fl::remove_timeout( (Fl_Timeout_Handler) loadRealIcon );
+#endif
     num_timeouts = 0;
 #else
 
@@ -4351,6 +4364,12 @@ void Flu_File_Chooser :: cd( const char *path )
                       cview = view;
 
                       std::string tmp = root + view + frame + ext;
+                      // int pos = -1;
+                      // while ( pos = tmp.find('@', pos+1) != std::string::npos )
+                      // {
+                      //     tmp = tmp.substr( 0, pos ) + '@' +
+                      //           tmp.substr( pos, tmp.size() );
+                      // }
                       files.push_back( tmp );
                   }
             }
