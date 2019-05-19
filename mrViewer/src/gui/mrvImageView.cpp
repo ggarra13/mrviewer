@@ -1558,6 +1558,7 @@ bool ImageView::previous_channel()
     const Fl_Menu_Item* w;
 
     // Count (total) number of channels
+    uiColorChannel->menu_end();
     total = uiColorChannel->children() - 1;
 
     unsigned short idx = 0;
@@ -1651,6 +1652,7 @@ bool ImageView::next_channel()
 {
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     // check if a channel shortcut
+    uiColorChannel->menu_end();
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return false; // Audio only - no channels
 
@@ -6682,6 +6684,7 @@ int ImageView::keyDown(unsigned int rawkey)
         mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
         // check if a channel shortcut
+        uiColorChannel->menu_end();
         unsigned short num = uiColorChannel->children();
         unsigned short idx = 0;
         for ( unsigned short c = 0; c < num; ++c, ++idx )
@@ -7397,6 +7400,7 @@ char* ImageView::get_layer_label( unsigned short c )
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     char* lbl = NULL;
     unsigned short idx = 0;
+    uiColorChannel->menu_end();
     unsigned num = uiColorChannel->children();
     std::string layername;
     const Fl_Menu_Item* o = NULL;
@@ -7432,6 +7436,7 @@ void ImageView::channel( Fl_Menu_Item* o )
 {
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
+    uiColorChannel->menu_end();
     unsigned int i = 0;
     for ( ; i < num; ++i )
     {
@@ -7463,6 +7468,7 @@ void ImageView::channel( unsigned short c )
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return; // Audio only - no channels
 
+    uiColorChannel->menu_end();
     const Fl_Menu_Item* o = uiColorChannel->child(c);
 
     unsigned short idx = num;
@@ -7487,6 +7493,7 @@ void ImageView::channel( unsigned short c )
         if ( lbl && strcmp( lbl, _("(no image)") ) != 0 )
         {
             bool found = false;
+            uiColorChannel->menu_end();
             num = uiColorChannel->children();
             for ( unsigned short i = 0; i < num; ++i, ++c )
             {
@@ -7573,6 +7580,7 @@ void ImageView::channel( unsigned short c )
         x = x.substr( loc+1, x.size() );
     }
 
+    uiColorChannel->menu_end();
     uiColorChannel->value( c );
     uiColorChannel->copy_label( x.c_str() );
     uiColorChannel->redraw();
@@ -8027,12 +8035,14 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                 // unsigned s = 0;
                 if ( uiColorChannel->children() >= 2 )
                 {
+                    uiColorChannel->menu_end();
                     unsigned last = uiColorChannel->children()-2;
                     Fl_Menu_Item* w = (Fl_Menu_Item*)uiColorChannel->child(last);
                     // s = w->shortcut();
                     if ( w->flags & FL_SUBMENU )
                         uiColorChannel->clear_submenu( last );
                     uiColorChannel->remove( last );
+                    uiColorChannel->menu_end();
                 }
 
                 // int idx = uiColorChannel->add( x.c_str(), s, NULL, 0 );
@@ -8047,6 +8057,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                 y = x + '/' + name.substr( x.size()+1, name.size() );
 
             idx = uiColorChannel->add( y.c_str() );
+            uiColorChannel->menu_end();
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
         else
@@ -8056,6 +8067,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             x = name;
 
             idx = uiColorChannel->add( name.c_str(), 0, NULL, 0 );
+            uiColorChannel->menu_end();
             o = (Fl_Menu_Item*) uiColorChannel->child(idx);
         }
 
@@ -8112,6 +8124,7 @@ void ImageView::update_layers()
         uiColorChannel->clear();
         uiColorChannel->add( _("(no image)") );
         uiColorChannel->copy_label( _("(no image)") );
+        uiColorChannel->menu_end();
         uiColorChannel->value(0);
         uiColorChannel->redraw();
         return;
