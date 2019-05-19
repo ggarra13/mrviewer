@@ -344,7 +344,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
                                       kReelPattern + ")\n";
     const std::string kIMAGE_PATTERN = _("Images\t*.{") +
                                        kImagePattern + "}";
-    const std::string kALL_PATTERN = _("All Recognized\t*.{") +
+    const std::string kALL_PATTERN = _("All\t*.{") +
                                      kImagePattern + "," + kMoviePattern +
                                      "," + kReelPattern + "," +
                                      kAudioPattern + "}\n" +
