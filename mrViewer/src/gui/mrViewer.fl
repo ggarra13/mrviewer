@@ -149,7 +149,7 @@ decl {\#include "mrvSOPNode.h"} {public global
 decl {\#include "icons/icons.c"} {private local
 }
 
-decl {\#include "FL/Fl_Color_Chooser.H"} {private local
+decl {\#include "FL/Fl_Color_Chooser.H"} {selected private local
 }
 
 decl {\#include "FL/fl_ask.H"} {private local
@@ -161,13 +161,13 @@ decl {\#include "FL/Fl.H"} {public global
 decl {\#include "namespace.h"} {public global
 }
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
   code {std::string orig = ctl;} {}
   Fl_Window {} {
     label {CTL Browser} open
-    xywh {1207 382 395 440} type Double resizable hotspot
-    class mrvDoubleWindow modal visible
+    xywh {1207 382 395 440} type Double hide resizable hotspot
+    class mrvDoubleWindow modal
   } {
     Fl_Group {} {open
       xywh {10 25 375 405}
@@ -370,16 +370,17 @@ class SaveOptionsUI {} {
   }
 }
 
-class LogUI {} {
+class LogUI {open
+} {
   Function {make_window(ViewerUI* main)} {open
   } {
     Fl_Window uiMain {
       label {Log Messages} open
-      xywh {487 205 635 250} type Double hide resizable
-      code0 {//o->child_of( main->uiMain );} non_modal
+      xywh {487 205 635 250} type Double resizable
+      code0 {//o->child_of( main->uiMain );} non_modal visible
     } {
-      Fl_Group {} {open
-        xywh {5 5 630 240} resizable
+      Fl_Group {} {
+        xywh {0 0 635 250} box UP_BOX resizable
       } {
         Fl_Text_Display uiLogText {
           xywh {5 5 625 200} resizable
@@ -590,7 +591,8 @@ v->uiView->redraw();}
   }
 }
 
-class ConnectionUI {} {
+class ConnectionUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -600,15 +602,15 @@ class ConnectionUI {} {
 //o->child_of( main->uiMain );} non_modal
     } {
       Fl_Group {} {open
-        xywh {0 5 445 390}
+        xywh {0 0 450 400} box UP_BOX
       } {
         Fl_Group uiServerGroup {
           label Server open
-          xywh {15 15 400 75} box ROUNDED_BOX align 5
+          xywh {15 25 400 75} box ROUNDED_BOX align 5
         } {
           Fl_Value_Input uiServerPort {
             label Port
-            xywh {130 40 70 25} step 1 value 4333
+            xywh {130 50 70 25} step 1 value 4333
           }
           Fl_Button uiCreate {
             label Create
@@ -617,21 +619,21 @@ class ConnectionUI {} {
     mrv::server::create(v);
 else
     mrv::server::remove(v);}
-            xywh {210 40 100 25}
+            xywh {210 50 100 25}
           }
         }
         Fl_Group uiClientGroup {
           label Client open
-          xywh {15 110 400 70} box ROUNDED_BOX align 5
+          xywh {15 125 400 70} box ROUNDED_BOX align 5
         } {
           Fl_Input uiClientServer {
             label Server
-            xywh {80 128 115 30}
+            xywh {80 143 115 30}
             code0 {o->value("localhost");}
           }
           Fl_Value_Input uiClientPort {
             label Port
-            xywh {250 130 70 25} step 1 value 4333
+            xywh {250 145 70 25} step 1 value 4333
           }
           Fl_Button uiConnect {
             label Connect
@@ -640,14 +642,14 @@ else
    mrv::client::create(v);
 else
    mrv::client::remove(v);}
-            xywh {325 130 85 25}
+            xywh {325 145 85 25}
           }
         }
         Fl_Group {} {open
-          xywh {15 190 400 200} box ROUNDED_BOX
+          xywh {15 205 400 185} box ROUNDED_BOX
         } {
           Fl_Text_Display uiLog {
-            xywh {30 195 375 190} box FLAT_BOX
+            xywh {30 205 375 180} box FLAT_BOX
             class {mrv::LogDisplay}
           }
         }
@@ -662,8 +664,7 @@ else
   }
 }
 
-class ViewerUI {open
-} {
+class ViewerUI {} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -698,7 +699,7 @@ class ViewerUI {open
   }
   decl {StereoUI* uiStereo;} {public local
   }
-  Function {make_window()} {open private
+  Function {make_window()} {private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
@@ -1087,7 +1088,7 @@ else
 f = float(t - 7);
 }
 v->uiView->zoom( f );
-o->value(8);} selected
+o->value(8);}
               tooltip {Image zoom setting.} xywh {5 461 26 20} color 1397969664 labelsize 10 labelcolor 26 align 16 textsize 10
               code0 {o->value(10); o->disable_glyph();}
               class {mrv::PopupMenu}

@@ -50,8 +50,10 @@ static Fl_Window *makeform() {
  // create a new top level window
  Fl_Window *w = message_form = new Fl_Window(410,103);
   message_form->callback(button_cb);
+ Fl_Group* g = new Fl_Group( 0, 0, 410, 103 );
+ g->box( FL_UP_BOX );
  // w->clear_border();
- (message = new Fl_Box(60, 25, 340, 20))
+ (message = new Fl_Box(60, 25, 340, 30))
  ->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
  message->box(FL_UP_BOX);
  (input = new Fl_Input(60, 37, 340, 23))->hide();
@@ -62,6 +64,7 @@ static Fl_Window *makeform() {
   o->color(FL_WHITE);
   o->labelcolor(FL_BLUE);
  }
+ g->end();
  w->end(); // don't add the buttons automatically
  // create the buttons (right to left)
  {
@@ -342,6 +345,29 @@ const char* fl_input(const char *fmt, const char *defstr, ...) {
   const char* r = input_innards(fmt, ap, defstr, FL_NORMAL_INPUT);
   va_end(ap);
   return r;
+}
+
+/** Shows an alert message dialog box
+
+   \note Common dialog boxes are application modal. No more than one common dialog box
+   can be open at any time. Requests for additional dialog boxes are ignored.
+   \note \#include <FL/fl_ask.H>
+
+   \param[in] fmt can be used as an sprintf-like format and variables for the message text
+ */
+void fl_alert(const char *fmt, ...) {
+
+  if (avoidRecursion) return;
+
+  va_list ap;
+
+  // fl_beep(FL_BEEP_ERROR);
+
+  va_start(ap, fmt);
+  iconlabel = "!";
+  innards(fmt, ap, 0, fl_close, 0);
+  va_end(ap);
+  iconlabel = "?";
 }
 
 /** Sets whether or not to move the common message box used in
