@@ -3905,7 +3905,7 @@ void GLEngine::loadOpenGLShader()
         avcol_pri_to_mp_csp_prim( c->color_primaries ), // primaries
         avcol_trc_to_mp_csp_trc( c->color_trc ),   // gamma
         MP_CSP_LIGHT_DISPLAY,  // light
-        max_cll / MP_REF_WHITE               // sig_peak
+        (float)max_cll / (float)MP_REF_WHITE               // sig_peak
     };
 
     mp_colorspace dst
