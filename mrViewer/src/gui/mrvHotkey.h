@@ -240,7 +240,7 @@ struct HotkeyEntry
     };
 
     std::string name;
-    Hotkey hotkey;
+    Hotkey& hotkey;
 };
 
 struct TableText
