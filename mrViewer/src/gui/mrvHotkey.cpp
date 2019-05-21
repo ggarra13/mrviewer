@@ -36,7 +36,7 @@ namespace mrv {
 // ctrl, meta, alt, shift, key
 Hotkey kOpenDirectory( true, false, false, true, 'o' );
 Hotkey kOpenImage( true, false, false, false, 'o' );
-Hotkey kOpenSingleImage( true, false, true, false, 'o' );
+Hotkey kOpenSingleImage( true, true, false, false, 'o' );
 Hotkey kOpenStereoImage( false, false, true, false, 'o' );
 Hotkey kOpenClipXMLMetadata( true, false, false, false, 'x' );
 Hotkey kSaveReel( true, false, false, false, 'r' );
@@ -184,16 +184,17 @@ Hotkey kToggleICS( false, false, false, true, 'i' );
 bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
-    if ( (!text.empty()) && text == Fl::event_text() ) {
-        return true;
-    }
 
     if ( ctrl )
     {
         if ( Fl::event_state( FL_CTRL ) )
+	{
             ok = true;
+	}
         else
+	{
             return false;
+	}
     }
     else
     {
@@ -249,6 +250,9 @@ bool Hotkey::match( unsigned rawkey )
             ok = false;
         }
     }
+    
+    // if ( (!text.empty()) && text == Fl::event_text() ) 
+    //     return true;
     return ok;
 }
 
@@ -313,6 +317,9 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Reset Gain/Gamma"), kResetChanges),
     HotkeyEntry( _("Exposure More"), kExposureMore),
     HotkeyEntry( _("Exposure Less"), kExposureLess),
+    HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
+    HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
+    HotkeyEntry( _("OCIO View"), kOCIOView ),
     HotkeyEntry( _("Draw Mode"), kDrawMode ),
     HotkeyEntry( _("Erase Mode"), kEraseMode ),
     HotkeyEntry( _("Scrub Mode"), kScrubMode ),
@@ -325,17 +332,12 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("Gamma Less"), kGammaLess),
     HotkeyEntry( _("Switch FG/BG Images"), kSwitchFGBG ),
     HotkeyEntry( _("Set As BG Image"), kSetAsBG),
-    HotkeyEntry( _("Add IPTC Metadata"), kAddIPTCMetadata),
-    HotkeyEntry( _("Remove IPTC Metadata"), kRemoveIPTCMetadata),
     HotkeyEntry( _("Attach Audio File"), kAttachAudio),
     HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
     HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
     HotkeyEntry( _("Clone Image"), kCloneImage),
     HotkeyEntry( _("Set In Point"), kSetInPoint),
     HotkeyEntry( _("Set Out Point"), kSetOutPoint),
-    HotkeyEntry( _("OCIO Input Color Space"), kOCIOInputColorSpace ),
-    HotkeyEntry( _("OCIO Display"), kOCIODisplay ),
-    HotkeyEntry( _("OCIO View"), kOCIOView ),
     HotkeyEntry( _("Toggle Reel Window"), kToggleReel),
     HotkeyEntry( _("Toggle Media Info Window"), kToggleMediaInfo),
     HotkeyEntry( _("Toggle Color Area Info Window"), kToggleColorInfo),
