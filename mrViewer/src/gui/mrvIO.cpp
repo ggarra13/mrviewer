@@ -31,6 +31,7 @@
 
 #include "core/mrvHome.h"
 #include "gui/mrvLogDisplay.h"
+#include "gui/mrvAsk.h"
 #include "mrViewer.h" // for uiLog
 #include "mrvIO.h"
 
@@ -51,7 +52,7 @@ void alert( const char* str )
     strcpy( _alert, str );
     _alert[strlen(str)] = 0;
 
-    fl_alert( "%s", _alert );
+    mrv::fl_alert( "%s", _alert );
 }
 
 const char* alert()
