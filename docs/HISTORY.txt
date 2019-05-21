@@ -1,5 +1,19 @@
 v5.0.6  - Made custom file requester load icons faster and be more
 	  interactive.
+	- Improved the interaction of the TAB hotkey in the custom
+	  file requester.
+	- Made progress report colors be readable in the black scheme.
+	- Made ask/alert questions use mrv::fl_choice/fl_alert instead
+	  for color scheme and better layout.
+	- Removed white background from a number of windows.
+	- Bug fixed hotkeys which were acting out.  Note that there's
+	  an FLTK bug with CTRL+ALT+key hotkeys, at least on international
+	  keyboards.  This can be seen in the keyboard demo of fltk.
+	- Bug fixed OCIO second display transform.
+	- Made OCIO respect active_views and active_displays in ocio
+	  config file.
+	- When OCIO is on, the gamma defaults are now removed from the
+	  pull down menu.
 
 v5.0.5  - Removed a minor memory leak in decode_image when packet could
 	  not be decoded.
