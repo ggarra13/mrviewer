@@ -256,7 +256,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     }
     st->id = oc->nb_streams-1;
     c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
-    
+
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -300,8 +300,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         else
             c->time_base.den = st->time_base.den = int( 1000.0 * opts->fps );
         c->time_base.num = st->time_base.num = 1000;
-	c->framerate.num = c->time_base.den;
-	c->framerate.den = c->time_base.num;
+        c->framerate.num = c->time_base.den;
+        c->framerate.den = c->time_base.num;
         c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
 
         // Use a profile if possible
@@ -463,6 +463,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
+    c->audio_service_type = AV_AUDIO_SERVICE_TYPE_MAIN;
     c->channel_layout = select_channel_layout( codec, c->channels );
 
     /* open it */
@@ -480,7 +481,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
 
     st->time_base = c->time_base;
 
-    
+
     if ( opts->metadata )
     {
         const CMedia::Attributes& attrs = img->attributes();
@@ -635,7 +636,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
     AVCodecContext* c = enc_ctx[st->id];
 
- 
+
     audio_type_ptr audio = img->get_audio_frame( img->frame() );
 
     if ( !audio ) {
@@ -647,7 +648,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
     if ( audio->frame() == AV_NOPTS_VALUE ) {
         LOG_ERROR( _("Audio frame has NOPTS value.") );
-	return false;
+        return false;
     }
 
     src_nb_samples = audio->size();
@@ -1026,7 +1027,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         for ( ; i != e; ++i )
         {
             if (( i->first.find( _("Video ") ) == 0 ) ||
-		( i->first.find( _("Audio ") ) == 0 ) ) {
+                ( i->first.find( _("Audio ") ) == 0 ) ) {
                 continue;
             }
 
@@ -1655,7 +1656,7 @@ bool aviImage::close_movie( const CMedia* img )
         /* Close the output file. */
         avio_close(oc->pb);
 
-    
+
     /* free the stream */
     avformat_free_context(oc);
 
