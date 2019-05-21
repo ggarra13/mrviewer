@@ -1244,6 +1244,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     }
 
 
+    fill_ui_hotkeys( uiMain->uiHotkey->uiFunction );
+    
     // Set the CTL/ICC transforms in GUI
     if ( ! set_transforms() )
     {
@@ -1519,54 +1521,101 @@ void Preferences::run( ViewerUI* main )
 
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
-        DBG;
+	    DBG;
             // First, remove all additional defaults if any from pulldown menu
-            for ( int c = main->gammaDefaults->children()-1; c >= 5; --c )
-            {
-                main->gammaDefaults->remove( c );
-            }
+	    if ( use_ocio && !OCIO_View.empty() && !OCIO_Display.empty() )
+	    {
+		main->gammaDefaults->clear();
+	    }
         DBG;
 
 
             int numDisplays = config->getNumDisplays();
         DBG;
-            for ( int j = 0; j < numDisplays; ++j )
+
+	stringArray active_displays;
+	const char* displaylist = config->getActiveDisplays();
+	if ( displaylist )
+	{
+	    mrv::split( active_displays, displaylist, ',' );
+	    
+	    // Eliminate forward spaces in names
+	    for ( int i = 0; i < active_displays.size(); ++i )
+	    {
+		while ( active_displays[i][0] == ' ' )
+		    active_displays[i] =
+		    active_displays[i].substr( 1, active_displays[i].size() );
+	    }
+	}
+	else
+	{
+	   int num = config->getNumDisplays();
+	   for ( int i = 0; i < num; ++i )
+	   {
+	       active_displays.push_back( config->getDisplay( i ) );
+	   }
+	}
+	
+	stringArray active_views;
+	const char* viewlist = config->getActiveViews();
+	if ( viewlist )
+	{
+	    mrv::split( active_views, viewlist, ',' );
+
+	    // Eliminate forward spaces in names
+	    for ( int i = 0; i < active_views.size(); ++i )
+	    {
+		while ( active_views[i][0] == ' ' )
+		    active_views[i] =
+		    active_views[i].substr( 1, active_views[i].size() );
+	    }
+	}
+
+	unsigned num_active_displays = active_displays.size();
+	unsigned num_active_views = active_views.size();
+
+	for ( int j = 0; j < num_active_displays; ++j )
             {
-                std::string display = config->getDisplay(j);
-        DBG;
+                std::string display = active_displays[j];
+		DBG;
 
-                std::vector< std::string > views;
-                int numViews = config->getNumViews(display.c_str());
-        DBG;
-                // Collect all views
-                for(int i = 0; i < numViews; i++)
-                {
-                    std::string view = config->getView(display.c_str(), i);
-                    views.push_back( view );
-                }
-        DBG;
+		int numViews = config->getNumViews(display.c_str());
+		DBG;
+		// Collect all views
+		for(int i = 0; i < numViews; i++)
+		{
+		    std::string view = config->getView(display.c_str(), i);
+		    bool add = true;
 
+		    if ( num_active_views )
+		    {
+			add = false;
+			for ( int h = 0; h < num_active_views; ++h )
+			{
+			    if ( active_views[h] == view )
+			    {
+				add = true; break;
+			    }
+			}
 
-                // Then sort and add all new views to pulldown menu
-        DBG;
-                std::sort( views.begin(), views.end() );
-                for ( size_t i = 0; i < views.size(); ++i )
-                {
-                    std::string name = display;
-                    name += "/";
-                    name += views[i];
-                    main->gammaDefaults->add( name.c_str() );
-                    if ( views[i] == OCIO_View && !OCIO_View.empty() )
-                    {
-                        main->gammaDefaults->copy_label( views[i].c_str() );
-                        main->uiGamma->value( 1.0f );
-        DBG;
-                        main->uiGammaInput->value( 1.0f );
-        DBG;
-                        main->uiView->gamma( 1.0f );
-                    }
-                }
-        DBG;
+		    }
+		    
+		    if ( add )
+		    {
+			std::string name = display;
+			name += "/";
+			name += view;
+			main->gammaDefaults->add( name.c_str() );
+			    
+			if ( view == OCIO_View && !OCIO_View.empty() )
+			{
+			    main->gammaDefaults->copy_label( view.c_str() );
+			    main->uiGamma->value( 1.0f );
+			    main->uiGammaInput->value( 1.0f );
+			    main->uiView->gamma( 1.0f );
+			}
+		    }
+		}
             }
 
 
