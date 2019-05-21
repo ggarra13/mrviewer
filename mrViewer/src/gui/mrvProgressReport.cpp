@@ -41,12 +41,13 @@ ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
 {
     Fl_Group::current(main);
     w = new Fl_Window( main->x() + main->w() / 2 - 320,
-                          main->y() + main->h()/2,
-                          640, 120 );
+                       main->y() + main->h()/2,
+                       640, 120 );
     w->size_range( 640, 120 );
     w->begin();
     Fl_Group* g = new Fl_Group( 0, 0, w->w(), 120 );
     g->begin();
+    g->box( FL_UP_BOX );
     progress = new Fl_Progress( 0, 20, g->w(), 40 );
     progress->minimum( 0 );
     progress->maximum( double( end - start + 1) );
@@ -59,14 +60,17 @@ ProgressReport::ProgressReport( Fl_Window* main, boost::int64_t start,
     elapsed = new Fl_Output( 120, 80, 120, 20, _("Elapsed") );
     elapsed->labelsize( 16 );
     elapsed->box( FL_FLAT_BOX );
+    elapsed->textcolor( FL_BLACK );
     elapsed->set_output(); // needed so no selection appears
     remain = new Fl_Output( 350, 80, 120, 20, _("Remaining") );
     remain->labelsize( 16 );
     remain->box( FL_FLAT_BOX );
+    remain->textcolor( FL_BLACK );
     remain->set_output(); // needed so no selection appears
     fps = new Fl_Output( 550, 80, 60, 20, _("FPS") );
     fps->labelsize( 16 );
     fps->box( FL_FLAT_BOX );
+    fps->textcolor( FL_BLACK );
     fps->set_output(); // needed so no selection appears
     g->end();
     w->resizable(w);
