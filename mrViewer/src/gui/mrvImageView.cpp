@@ -4416,7 +4416,8 @@ int ImageView::leftMouseDown(int x, int y)
                     menu->add( _("OCIO/Input Color Space"),
                               kOCIOInputColorSpace.hotkey(),
                               (Fl_Callback*)attach_ocio_ics_cb, (void*)this);
-                    menu->add( _("OCIO/Display"),
+
+		    menu->add( _("OCIO/Display"),
                               kOCIODisplay.hotkey(),
                               (Fl_Callback*)attach_ocio_display_cb, (void*)this);
                     menu->add( _("OCIO/View"),
@@ -5968,13 +5969,17 @@ int ImageView::keyDown(unsigned int rawkey)
         }
     }
 
-
     if ( kResetChanges.match( rawkey ) )
     {
         gamma( 1.0 );
         gain( 1.0 );
         redraw();
         mouseMove( Fl::event_x(), Fl::event_y() );
+        return 1;
+    }
+    else if ( kOpenSingleImage.match( rawkey ) )
+    {
+        open_single_cb( this, browser() );
         return 1;
     }
     else if ( kDrawMode.match( rawkey ) )
@@ -6007,9 +6012,14 @@ int ImageView::keyDown(unsigned int rawkey)
         open_cb( this, browser() );
         return 1;
     }
-    else if ( kOpenSingleImage.match( rawkey ) )
+    else if ( kOpenDirectory.match( rawkey ) )
     {
-        open_single_cb( this, browser() );
+        open_dir_cb( this, browser() );
+        return 1;
+    }
+    else if ( kOpenStereoImage.match( rawkey ) )
+    {
+        open_stereo_cb( this, browser() );
         return 1;
     }
     else if ( kOpenClipXMLMetadata.match( rawkey ) )
@@ -6021,6 +6031,21 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         clone_image_cb( NULL, browser() );
         return 1;
+    }
+    else if ( kOCIOInputColorSpace.match( rawkey ) )
+    {
+	attach_ocio_ics_cb( NULL, this );
+	return 1;
+    }
+    else if ( kOCIODisplay.match( rawkey ) )
+    {
+	attach_ocio_display_cb( NULL, this );
+	return 1;
+    }
+    else if ( kOCIOView.match( rawkey ) )
+    {
+	attach_ocio_view_cb( NULL, this );
+	return 1;
     }
     else if ( kSaveSequence.match( rawkey ) )
     {
@@ -6260,6 +6285,16 @@ int ImageView::keyDown(unsigned int rawkey)
         attach_audio_cb( NULL, this );
         return 1;
     }
+    else if ( kEditAudio.match(rawkey) )
+    {
+        edit_audio_cb( NULL, this );
+        return 1;
+    }
+    else if ( kDetachAudio.match(rawkey) )
+    {
+        detach_audio_cb( NULL, this );
+        return 1;
+    }
     else if ( kFrameStepFPSBack.match(rawkey) )
     {
         mrv::media fg = foreground();
@@ -6416,7 +6451,6 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPreviousImage.match( rawkey ) )
     {
-        std::cerr << __LINE__ << std::endl;
         previous_image_cb(this, browser());
         update_title_bar( this );
         mouseMove( Fl::event_x(), Fl::event_y() );
@@ -6431,32 +6465,27 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kPreloadCache.match( rawkey ) )
     {
-        std::cerr << __LINE__ << std::endl;
         preload_image_cache_cb( NULL, this );
         return 1;
     }
     else if ( kClearCache.match( rawkey ) )
     {
-        std::cerr << __LINE__ << std::endl;
         clear_image_cache_cb( NULL, this );
         return 1;
     }
     else if ( kClearSingleFrameCache.match( rawkey ) )
     {
-        std::cerr << __LINE__ << std::endl;
         update_frame_cb( NULL, this );
         return 1;
     }
     else if ( kRotatePlus90.match( rawkey ) )
     {
-        std::cerr << __LINE__ << std::endl;
         rotate_plus_90_cb( NULL, this );
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kRotateMinus90.match( rawkey ) )
     {
-        std::cerr << __LINE__ << std::endl;
         rotate_minus_90_cb( NULL, this );
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
