@@ -42,57 +42,61 @@ class WandOptionsUI {open : {public mrv::WandOpts}
       label {ImageMagick Saving} open
       xywh {193 251 340 295} type Double resizable modal noborder visible
     } {
-      Fl_Group {} {
-        label {Image Options} open selected
-        xywh {34 33 272 193} box UP_BOX
+      Fl_Group {} {open
+        xywh {0 0 340 295} box UP_BOX
       } {
-        Fl_Choice uiPixelType {
-          label {Pixel Format}
-          callback {pixel_type = o->child(o->value())->label();}
-          xywh {175 175 90 25} down_box BORDER_BOX
-          class {mrv::Choice}
+        Fl_Group {} {
+          label {Image Options}
+          xywh {35 29 272 193} box UP_BOX
         } {
-          MenuItem {} {
-            label Char
-            xywh {0 0 100 20}
+          Fl_Choice uiPixelType {
+            label {Pixel Format}
+            callback {pixel_type = o->child(o->value())->label();}
+            xywh {176 171 90 25} down_box BORDER_BOX
+            class {mrv::Choice}
+          } {
+            MenuItem {} {
+              label Char
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Short
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Integer
+              xywh {5 5 100 20}
+            }
+            MenuItem {} {
+              label Float
+              xywh {5 5 100 20}
+            }
           }
-          MenuItem {} {
-            label Short
-            xywh {0 0 100 20}
+          Fl_Light_Button uiAllLayers {
+            label {All Layers}
+            xywh {86 116 155 35}
+            code0 {o->value( all_layers );}
           }
-          MenuItem {} {
-            label Integer
-            xywh {0 0 100 20}
-          }
-          MenuItem {} {
-            label Float
-            xywh {0 0 100 20}
+          Fl_Light_Button uiACESmetadata {
+            label {ACES metadata}
+            xywh {86 61 155 35}
+            code0 {o->value( aces );}
           }
         }
-        Fl_Light_Button uiAllLayers {
-          label {All Layers}
-          xywh {85 120 155 35}
-          code0 {o->value( all_layers );}
-        }
-        Fl_Light_Button uiACESmetadata {
-          label {ACES metadata}
-          xywh {85 65 155 35}
-          code0 {o->value( aces );}
-        }
-      }
-      Fl_Button {} {
-        label OK
-        user_data this user_data_type {WandOptionsUI*}
-        callback {v->active(true);
+        Fl_Button {} {
+          label OK
+          user_data this user_data_type {WandOptionsUI*}
+          callback {v->active(true);
 v->uiMain->hide();}
-        xywh {85 257 62 27}
-      }
-      Fl_Button {} {
-        label Cancel
-        user_data this user_data_type {WandOptionsUI*}
-        callback {v->active( false );
-v->uiMain->hide();}
-        xywh {164 257 68 27}
+          xywh {85 253 75 27}
+        }
+        Fl_Button {} {
+          label Cancel
+          user_data this user_data_type {WandOptionsUI*}
+          callback {v->active( false );
+v->uiMain->hide();} selected
+          xywh {165 253 80 27}
+        }
       }
     }
   }
