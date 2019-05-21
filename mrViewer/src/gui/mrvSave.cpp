@@ -177,7 +177,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
 
         decode_some( img, frame );
 
-        img->debug_audio_stores( frame, "decode", true );
+        // img->debug_audio_stores( frame, "decode", true );
 
         size_t vsize = img->video_packets().size();
         size_t asize = img->audio_packets().size();
@@ -219,11 +219,8 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
 
                 if ( fs::exists( buf ) )
                 {
-                    char text[4096];
-                    sprintf( text, _("Do you want to replace '%s'?"),
-                             buf );
-                    int ok = mrv::fl_choice( text,
-					     _("Yes"), _("No"), NULL );
+                    int ok = mrv::fl_choice( _("Do you want to replace '%s'?"),
+					     _("Yes"), _("No"), NULL, buf );
                     if (ok == 1) // No
                     {
                         break;
