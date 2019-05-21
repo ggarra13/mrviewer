@@ -1,14 +1,14 @@
 // $Id: Flu_File_Chooser.h,v 1.63 2004/10/18 15:14:58 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
 
@@ -46,6 +46,8 @@ FLU_EXPORT const char* flu_save_chooser( const char *message, const char *patter
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles );
 FLU_EXPORT const char* flu_file_and_dir_chooser( const char *message, const char *filename );
+
+struct RealIcon;
 
 //! A file and directory choosing widget that looks and acts similar to the stock Windows file chooser
 class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
@@ -112,7 +114,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     it can preview the file, it should return nonzero, else it should return zero.
    */
   //! File entry type
-  enum { 
+  enum {
     ENTRY_NONE = 1,         /*!< An empty (or non-existant) entry */
     ENTRY_DIR = 2,          /*!< A directory entry */
     ENTRY_FILE = 4,         /*!< A file entry */
@@ -124,7 +126,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   };
 
   //! Chooser type
-  enum { 
+  enum {
     SINGLE = 0,            /*!< Choose a single file or directory */
     MULTI = 1,             /*!< Choose multiple files or directories */
     DIRECTORY = 4,         /*!< Choose directories (choosing files is implicit if this bit is clear) */
@@ -141,7 +143,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     std::string type, shortType;
   };
 
-  //! Constructor opening a file chooser with title \b title visiting directory \b path with files filtered according to \b pattern. \b type is a logical OR of Flu_File_Chooser::SINGLE, Flu_File_Chooser::MULTI, and Flu_File_Chooser::DIRECTORY 
+  //! Constructor opening a file chooser with title \b title visiting directory \b path with files filtered according to \b pattern. \b type is a logical OR of Flu_File_Chooser::SINGLE, Flu_File_Chooser::MULTI, and Flu_File_Chooser::DIRECTORY
   Flu_File_Chooser( const char *path, const char *pattern, int type, const char *title, const bool compact = true );
 
   //! Destructor
@@ -153,7 +155,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     \param name is the name that will appear in the popup menu for this handler
    */
   static void add_context_handler( int type, const char *ext, const char *name,
-				   void (*cb)(const char*,int,void*), void *cbd );
+                                   void (*cb)(const char*,int,void*), void *cbd );
 
 
   //! Add descriptive information and an icon for a file type
@@ -176,7 +178,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   // Return if sequences are displayed as a single line
   inline bool compact_files() const { return _compact; }
-  
+
   //! Set whether file sorting is case insensitive. Default value is case-insensitive for windows, case-sensitive for everything else
   inline void case_insensitive_sort( bool b )
     { caseSort = !b; }
@@ -196,10 +198,10 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   inline static void _previewCB( Fl_Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->previewCB(); }
-  
+
   //! previewCB handle icon creation
   void previewCB();
-  
+
   //! \return how many files are selected
   int count();
 
@@ -271,14 +273,14 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   const char *value( int n );
 
   bool _compact;
-  
+
   FileInput filename;
   Flu_Return_Button ok;
   Flu_Button cancel;
 
   // apparently there is a bug in VC6 that prevents friend classes from accessing
   // non-public members. stupid windows
-  // several other compilers were reported to have a problem with this too, so 
+  // several other compilers were reported to have a problem with this too, so
   // i'm just making the whole class public to eliminate potential problems.
   // bad c++ - i know...
   //#ifndef WIN32
@@ -393,7 +395,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
     SORT_SIZE = 2,
     SORT_TYPE = 4,
     SORT_DATE = 8,
-    SORT_REVERSE = 16 
+    SORT_REVERSE = 16
   };
   static void _qSort( int how, bool caseSort, Fl_Widget **array, int low, int high );
 
@@ -408,12 +410,12 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       void draw();
 
       void set_colors();
-	
+
       void updateSize();
       void updateIcon();
 
-      std::string filename, date, filesize, shortname, owner, 
-	description, shortDescription, toolTip, altname;
+      std::string filename, date, filesize, shortname, owner,
+description, shortDescription, toolTip, altname;
       std::string permissions;
       unsigned char pU, pG, pO; // 3-bit unix style permissions
       unsigned int type, idate;
@@ -427,11 +429,11 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       bool details;
 
       inline static void _inputCB( Fl_Widget *w, void *arg )
-	{ ((Entry*)arg)->inputCB(); }
+        { ((Entry*)arg)->inputCB(); }
       void inputCB();
 
       inline static void _editCB( void *arg )
-	{ ((Entry*)arg)->editCB(); }
+        { ((Entry*)arg)->editCB(); }
       void editCB();
     };
 
@@ -446,10 +448,10 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       void sort( int numDirs = -1 );
 
       inline Fl_Widget *child(int n) const
-	{ return Flu_Wrap_Group::child(n); }
+        { return Flu_Wrap_Group::child(n); }
 
       inline int children() const
-	{ return Flu_Wrap_Group::children(); }
+        { return Flu_Wrap_Group::children(); }
 
       int numDirs;
       Flu_File_Chooser *chooser;
@@ -462,8 +464,8 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       FileDetails( int x, int y, int w, int h, Flu_File_Chooser *c );
       ~FileDetails();
 
-	int handle( int event );
-	void sort( int numDirs = -1 );
+        int handle( int event );
+        void sort( int numDirs = -1 );
 
       void scroll_to( Fl_Widget *w );
       Fl_Widget* next( Fl_Widget* w );
@@ -513,7 +515,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   void updateLocationQJ();
 
   void statFile( Entry* e, const char* file );
-  
+
   void addToHistory();
 
   std::string formatDate( const char *d );
@@ -529,6 +531,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   static int (*customSort)(const char*,const char*);
 
+  Fl_Group* wingrp;
   Fl_Group *fileGroup, *locationQuickJump;
   Fl_Menu_Button entryPopup;
   Fl_Image *defaultFileIcon;
@@ -560,18 +563,18 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   static bool thumbnailsFileReq;
   static bool singleButtonTravelDrawer;
-  
+
   typedef boost::recursive_mutex Mutex;
   Mutex  mutex;
 
   typedef std::vector< boost::thread* > thread_pool_t;
-  
+
   unsigned num_timeouts;
   unsigned serial;
 
   thread_pool_t threads;
   bool quick_exit;
-  
+
   static std::string dArrow[4];
   static std::string uArrow[4];
 
@@ -592,6 +595,7 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
 
   History *history, *currentHist;
 
+  std::vector< RealIcon* > idle;
   Fl_Callback *_callback;
   void *_userdata;
 
