@@ -1087,8 +1087,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     }
 
 
-        if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-               ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
+    if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+	 ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
     {
         _audio_format = AudioEngine::kS16LSB;
     }
@@ -1184,7 +1184,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                                _aframe->nb_samples );
         if ( len2 <= 0 )
         {
-            IMG_ERROR( _("Resampling failed") );
+            IMG_ERROR( _("Resampling audio failed") );
             return 0;
         }
 
