@@ -429,6 +429,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                     
                 }
             }
+	    else if ( next == img )
+	    {
+		frame = dts;
+	    }
 	    return kEndNextImage;
         }
 
@@ -523,6 +527,10 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                 }
             }
+	    else if ( next == img )
+	    {
+		frame = dts;
+	    }
             return kEndNextImage;
         }
 
