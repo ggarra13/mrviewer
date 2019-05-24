@@ -1245,7 +1245,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
 
     fill_ui_hotkeys( uiMain->uiHotkey->uiFunction );
-    
+
     // Set the CTL/ICC transforms in GUI
     if ( ! set_transforms() )
     {
@@ -1357,7 +1357,7 @@ void Preferences::run( ViewerUI* main )
     {
         main->uiTopBar->hide();
     }
-    
+
     DBG;
     if ( uiPrefs->uiPrefsPixelToolbar->value() )
     {
@@ -1367,7 +1367,7 @@ void Preferences::run( ViewerUI* main )
     {
         main->uiPixelBar->hide();
     }
-    
+
     DBG;
     if ( uiPrefs->uiPrefsTimeline->value() )
     {
@@ -1511,118 +1511,137 @@ void Preferences::run( ViewerUI* main )
 
         try
         {
-        DBG;
+            DBG;
             OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
 
             uiPrefs->uiPrefsOCIOConfig->tooltip( config->getDescription() );
 
-        DBG;
+            DBG;
             OCIO_Display = config->getDefaultDisplay();
 
             OCIO_View = config->getDefaultView( OCIO_Display.c_str() );
 
-	    DBG;
+            DBG;
             // First, remove all additional defaults if any from pulldown menu
-	    if ( use_ocio && !OCIO_View.empty() && !OCIO_Display.empty() )
-	    {
-		main->gammaDefaults->clear();
-	    }
-        DBG;
+            if ( use_ocio && !OCIO_View.empty() && !OCIO_Display.empty() )
+            {
+                main->gammaDefaults->clear();
+            }
+            DBG;
 
 
             int numDisplays = config->getNumDisplays();
-        DBG;
+            DBG;
 
-	stringArray active_displays;
-	const char* displaylist = config->getActiveDisplays();
-	if ( displaylist )
-	{
-	    mrv::split( active_displays, displaylist, ',' );
-	    
-	    // Eliminate forward spaces in names
-	    for ( int i = 0; i < active_displays.size(); ++i )
-	    {
-		while ( active_displays[i][0] == ' ' )
-		    active_displays[i] =
-		    active_displays[i].substr( 1, active_displays[i].size() );
-	    }
-	}
-	else
-	{
-	   int num = config->getNumDisplays();
-	   for ( int i = 0; i < num; ++i )
-	   {
-	       active_displays.push_back( config->getDisplay( i ) );
-	   }
-	}
-	
-	stringArray active_views;
-	const char* viewlist = config->getActiveViews();
-	if ( viewlist )
-	{
-	    mrv::split( active_views, viewlist, ',' );
+            stringArray active_displays;
+            const char* displaylist = config->getActiveDisplays();
+            if ( displaylist )
+            {
+                mrv::split( active_displays, displaylist, ',' );
 
-	    // Eliminate forward spaces in names
-	    for ( int i = 0; i < active_views.size(); ++i )
-	    {
-		while ( active_views[i][0] == ' ' )
-		    active_views[i] =
-		    active_views[i].substr( 1, active_views[i].size() );
-	    }
-	}
+                // Eliminate forward spaces in names
+                for ( int i = 0; i < active_displays.size(); ++i )
+                {
+                    while ( active_displays[i][0] == ' ' )
+                        active_displays[i] =
+                        active_displays[i].substr( 1, active_displays[i].size() );
+                }
+            }
+            else
+            {
+                int num = config->getNumDisplays();
+                for ( int i = 0; i < num; ++i )
+                {
+                    active_displays.push_back( config->getDisplay( i ) );
+                }
+            }
 
-	unsigned num_active_displays = active_displays.size();
-	unsigned num_active_views = active_views.size();
+            stringArray active_views;
+            const char* viewlist = config->getActiveViews();
+            if ( viewlist )
+            {
+                mrv::split( active_views, viewlist, ',' );
 
-	for ( int j = 0; j < num_active_displays; ++j )
+                // Eliminate forward spaces in names
+                for ( int i = 0; i < active_views.size(); ++i )
+                {
+                    while ( active_views[i][0] == ' ' )
+                        active_views[i] =
+                        active_views[i].substr( 1, active_views[i].size() );
+                }
+            }
+
+            unsigned num_active_displays = active_displays.size();
+            unsigned num_active_views = active_views.size();
+
+            for ( int j = 0; j < num_active_displays; ++j )
             {
                 std::string display = active_displays[j];
-		DBG;
+                DBG;
 
-		int numViews = config->getNumViews(display.c_str());
-		DBG;
-		// Collect all views
-		for(int i = 0; i < numViews; i++)
-		{
-		    std::string view = config->getView(display.c_str(), i);
-		    bool add = true;
+                int numViews = config->getNumViews(display.c_str());
+                DBG;
+                // Collect all views
 
-		    if ( num_active_views )
-		    {
-			add = false;
-			for ( int h = 0; h < num_active_views; ++h )
-			{
-			    if ( active_views[h] == view )
-			    {
-				add = true; break;
-			    }
-			}
+                if ( num_active_views )
+                {
+                    for ( int h = 0; h < num_active_views; ++h )
+                    {
+                        std::string view;
+                        bool add = false;
 
-		    }
-		    
-		    if ( add )
-		    {
-			std::string name = display;
-			name += "/";
-			name += view;
-			main->gammaDefaults->add( name.c_str() );
-			    
-			if ( view == OCIO_View && !OCIO_View.empty() )
-			{
-			    main->gammaDefaults->copy_label( view.c_str() );
-			    main->uiGamma->value( 1.0f );
-			    main->uiGammaInput->value( 1.0f );
-			    main->uiView->gamma( 1.0f );
-			}
-		    }
-		}
+                        for (int i = 0; i < numViews; ++i)
+                        {
+                            view = config->getView(display.c_str(), i);
+                            if ( active_views[h] == view )
+                            {
+                                add = true; break;
+                            }
+                        }
+
+                        if ( add )
+                        {
+                            std::string name = display;
+                            name += "/";
+                            name += view;
+                            main->gammaDefaults->add( name.c_str() );
+
+                            if ( view == OCIO_View && !OCIO_View.empty() )
+                            {
+                                main->gammaDefaults->copy_label( view.c_str() );
+                                main->uiGamma->value( 1.0f );
+                                main->uiGammaInput->value( 1.0f );
+                                main->uiView->gamma( 1.0f );
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i < numViews; i++)
+                    {
+                        std::string view = config->getView(display.c_str(), i);
+
+                        std::string name = display;
+                        name += "/";
+                        name += view;
+                        main->gammaDefaults->add( name.c_str() );
+
+                        if ( view == OCIO_View && !OCIO_View.empty() )
+                        {
+                            main->gammaDefaults->copy_label( view.c_str() );
+                            main->uiGamma->value( 1.0f );
+                            main->uiGammaInput->value( 1.0f );
+                            main->uiView->gamma( 1.0f );
+                        }
+                    }
+                }
             }
 
 
-        DBG;
+            DBG;
 
             main->gammaDefaults->redraw();
-
         }
         catch( const OCIO::Exception& e )
         {
