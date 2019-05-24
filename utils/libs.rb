@@ -18,9 +18,9 @@ libdl.*
 libxcb.*
 libasound.*
 libglib.*
-libfontconfig.*
 )
-
+# libfontconfig.*
+             
 @options = { :verbose => false }
 OptionParser.new do |opts|
   opts.banner = "Usage: utils/libs.rb [@options]"
