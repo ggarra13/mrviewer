@@ -2983,7 +2983,27 @@ int ImageBrowser::handle( int event )
     return ret;
 }
 
+/// Ensure the scrollbars are the last children
+void ImageBrowser::fix_scrollbar_order() {
+  Fl_Widget** a = (Fl_Widget**)array();
+  if (a[children()-1] != _vscroll) {
+    int i,j;
+    for (i = j = 0; j < children(); j++) {
+      if (a[j] != _vscroll && a[j] != _hscroll ) a[i++] = a[j];
+    }
+    a[i++] = _hscroll;
+    a[i++] = _vscroll;
+  }
+}
 
+void ImageBrowser::resize( int X, int Y, int W, int H )
+{
+  fix_scrollbar_order();
+  Fl_Group::resize(X,Y,W,H);
+  recalc_tree();
+  calc_tree();
+  // init_sizes();
+}
 
 /**
  * Switch to a new frame on one image if in EDL mode or
