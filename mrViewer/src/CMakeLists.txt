@@ -325,23 +325,23 @@ IF(NOT WIN32)
     )
 
   FIND_LIBRARY( Boost_locale_LIBRARY
-    NAMES boost_locale 
+    NAMES boost_locale
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_system_LIBRARY
-    NAMES boost_system 
+    NAMES boost_system
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY
-    NAMES boost_filesystem 
+    NAMES boost_filesystem
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_thread_LIBRARY
-    NAMES boost_thread 
+    NAMES boost_thread
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
@@ -570,7 +570,7 @@ ELSEIF (UNIX)
 
     # SET the installation directory.
 
-    SET(CPACK_SET_DESTDIR true) # Needed
+    # SET(CPACK_SET_DESTDIR true) # Needed
     SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
 
     # Configure install/uninstall scripts
