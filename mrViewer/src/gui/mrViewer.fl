@@ -149,7 +149,7 @@ decl {\#include "mrvSOPNode.h"} {public global
 decl {\#include "icons/icons.c"} {private local
 }
 
-decl {\#include "FL/Fl_Color_Chooser.H"} {selected private local
+decl {\#include "FL/Fl_Color_Chooser.H"} {private local
 }
 
 decl {\#include "FL/fl_ask.H"} {private local
@@ -944,35 +944,33 @@ else
     int idx = o->value();
     const Fl_Menu_Item* w = gammaDefaults->mvalue();
     const char* lbl = w->label();
-    const Fl_Menu_Item* parent = o->child( o->value() );
     const Fl_Menu_Item* p = o->child(0);
     const Fl_Menu_Item* c = p;
-    for ( ; c->label(); ++c )
+    for ( ; c != w; ++c )
     {
 	if ( c->flags & FL_SUBMENU ) p = c;
-	if ( c == w ) break;
     }
-    if ( strcmp( lbl, p->label() ) == 0 )
-       return;
     if ( p && p->label() )
-       mrv::Preferences::OCIO_Display = p->label();
-    if ( lbl && p->label() && strcmp(lbl, p->label()) != 0 )
     {
-       v->uiGamma->value( 1.0f );
-	v->uiGammaInput->value( 1.0f );
-	v->uiView->gamma( 1.0f );
+       mrv::Preferences::OCIO_Display = p->label();
+       if ( lbl && strcmp(lbl, p->label()) != 0 )
+       {
+	 v->uiGamma->value( 1.0f );
+	 v->uiGammaInput->value( 1.0f );
+	 v->uiView->gamma( 1.0f );
 
-	mrv::Preferences::OCIO_View = lbl;
+	 mrv::Preferences::OCIO_View = lbl;
 
-	v->uiView->use_lut(true);
-	v->uiLUT->value(true);
-	mrv::media fg = v->uiView->foreground();
-	if ( !fg ) return;
-	fg->image()->image_damage( mrv::CMedia::kDamageAll );
-	v->uiView->redraw();
+	 v->uiView->use_lut(true);
+	 v->uiLUT->value(true);
+	 mrv::media fg = v->uiView->foreground();
+	 if ( !fg ) return;
+	 fg->image()->image_damage( mrv::CMedia::kDamageAll );
+	 v->uiView->redraw();
+       }
     }
-    }}
-                  tooltip {Some default gamma settings.} xywh {405 3 50 21} labelsize 12
+ }} selected
+                  tooltip {Some default gamma settings.} xywh {405 3 50 21} labelsize 12 align 80
                   class {mrv::PopupMenu}
                 } {
                   MenuItem {} {
