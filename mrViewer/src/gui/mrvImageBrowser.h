@@ -63,9 +63,6 @@ class ImageBrowser : public Fl_Tree
 public:
     ImageBrowser(int x, int y, int w, int h);
     ~ImageBrowser();
-
-    void fix_scrollbar_order();
-    void resize( int X, int Y, int W, int H );
     
     //! Clone all channels of a media
     void clone_all_current();
