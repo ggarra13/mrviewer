@@ -14,6 +14,8 @@ v5.0.6  - Made custom file requester load icons faster and be more
 	  config file.
 	- When OCIO is on, the gamma defaults are now removed from the
 	  pull down menu.
+	- Bug fixed scaling up and down of the Reel window, getting
+	  corrupted.
 
 v5.0.5  - Removed a minor memory leak in decode_image when packet could
 	  not be decoded.
