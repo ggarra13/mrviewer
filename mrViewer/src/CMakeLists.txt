@@ -566,11 +566,11 @@ ELSEIF (UNIX)
 
     # try to set up the menu system
 
-    SET(CPACK_GENERATOR DEB TGZ RPM )
+    SET(CPACK_GENERATOR DEB RPM TGZ )
 
     # SET the installation directory.
 
-    # SET(CPACK_SET_DESTDIR true) # Needed
+    SET(CPACK_SET_DESTDIR true) # Needed
     SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerShortName})
 
     # Configure install/uninstall scripts
@@ -595,7 +595,7 @@ ELSEIF (UNIX)
       # SET RPM options.
 
     SET(CPACK_RPM_PACKAGE_NAME mrViewer)
-    SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
+    SET(CPACK_RPM_PACKAGE_RELOCATABLE false)
 
     # SET Debian options.
 
@@ -620,7 +620,7 @@ ENDIF(WIN32)
   SET(CPACK_PACKAGE_VERSION_MAJOR ${VersionMajor})
   SET(CPACK_PACKAGE_VERSION_MINOR ${VersionMinor})
   SET(CPACK_PACKAGE_VERSION_PATCH ${VersionPatch})
-  SET(CPACK_PACKAGE_VERSION "${VERSION}" )
+  SET(CPACK_PACKAGE_VERSION "${SHORTVERSION}" )
   SET(CPACK_PACKAGE_FILE_NAME "${mrViewerPackageName}" )
   SET(CPACK_PACKAGE_CONTACT "ggarra13@gmail.com")
 # SET(CPACK_PACKAGE_DESCRIPTION_FILE ${PROJECT_SOURCE_DIR}/README.txt)
@@ -630,7 +630,6 @@ ENDIF(WIN32)
 
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
 SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../docs/LICENSE.txt)
-
 
 #
 # Print out some status to verify configuration
@@ -752,7 +751,7 @@ ENDIF()
 IF (WIN32)
    ADD_CUSTOM_COMMAND( TARGET bundle
 		      POST_BUILD
-		      COMMAND "${CMAKE_COMMAND}"  -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
+		      COMMAND "${CMAKE_COMMAND}" -D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -D VERSION=${VERSION} -D SHORTVERSION=${SHORTVERSION} "-P" "${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/CMakeLists.txt"
 		      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 		      )
 ENDIF( WIN32 )
