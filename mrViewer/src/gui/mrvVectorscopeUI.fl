@@ -106,7 +106,7 @@ main_ = main;} non_modal visible
     code {Fl_Group::current(0); make_window( m );} {}
   }
   Function {~VectorscopeUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
   Function {main()} {return_type {ViewerUI*}
   } {
