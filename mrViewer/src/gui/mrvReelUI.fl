@@ -141,7 +141,6 @@ make_window( m );} {}
   }
   Function {~ReelUI()} {open
   } {
-    code {delete uiBrowser; uiBrowser = NULL;
-delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
 }
