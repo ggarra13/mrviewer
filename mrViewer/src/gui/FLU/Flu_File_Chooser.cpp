@@ -617,7 +617,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
 
   wingrp->box( FL_UP_BOX );
   resizable( wingrp );
-  
+
   Fl_Group *g;
 
   filename.labelcolor( FL_BLACK );
@@ -1339,8 +1339,8 @@ void Flu_File_Chooser :: newFolderCB()
   if( mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 )
 #endif
     {
-	mrv::fl_alert( createFolderErrTxt.c_str(), newName.c_str() );
-	return;
+        mrv::fl_alert( createFolderErrTxt.c_str(), newName.c_str() );
+        return;
     }
 
   // create a new entry with the name of the new folder. add to either the list or the details
@@ -1433,13 +1433,13 @@ void Flu_File_Chooser :: trashCB( bool recycle )
          {
            if( recycle )
              {
-		 if( !mrv::fl_choice( "Really send '%s' to the Recycle Bin?",
-				 "No", "Yes", 0, first ) )
+                 if( !mrv::fl_choice( "Really send '%s' to the Recycle Bin?",
+                                 "No", "Yes", 0, first ) )
                  return;
              }
            else
              {
-		 if( !mrv::fl_choice( "Really delete '%s'?", "No", "Yes", 0, first ) )
+                 if( !mrv::fl_choice( "Really delete '%s'?", "No", "Yes", 0, first ) )
                  return;
              }
          }
@@ -1447,12 +1447,12 @@ void Flu_File_Chooser :: trashCB( bool recycle )
          {
            if( recycle )
              {
-		 if( !mrv::fl_choice( "Really send these %d files to the Recycle Bin?", "No", "Yes", 0, selected ) )
+                 if( !mrv::fl_choice( "Really send these %d files to the Recycle Bin?", "No", "Yes", 0, selected ) )
                  return;
              }
            else
              {
-		 if( !mrv::fl_choice( "Really delete these %d files?", "No", "Yes", 0, selected ) )
+                 if( !mrv::fl_choice( "Really delete these %d files?", "No", "Yes", 0, selected ) )
                  return;
              }
          }
@@ -1555,7 +1555,7 @@ void Flu_File_Chooser :: trashCB( bool recycle )
                // if remove fails, report an error
                if( result != 0 )
                  {
-		     mrv::fl_alert( _(deleteFileErrTxt.c_str()), name.c_str() );
+                     mrv::fl_alert( _(deleteFileErrTxt.c_str()), name.c_str() );
                      cd( "./" );
                      return;
                  }
@@ -2577,13 +2577,13 @@ void Flu_File_Chooser :: Entry :: inputCB()
       int result = ::stat( newName.c_str(), &s );
       if( result == 0 )
         {
-	    mrv::fl_alert( fileExistsErrTxt.c_str(), newName.c_str() );
-	    return;  // leave editing on
+            mrv::fl_alert( fileExistsErrTxt.c_str(), newName.c_str() );
+            return;  // leave editing on
         }
 
       if( rename( oldName.c_str(), newName.c_str() ) == -1 )
         {
-	    mrv::fl_alert( renameErrTxt.c_str(), oldName.c_str(), newName.c_str() );
+            mrv::fl_alert( renameErrTxt.c_str(), oldName.c_str(), newName.c_str() );
           //return;  // leave editing on
         }
       else
@@ -4658,9 +4658,9 @@ void Flu_File_Chooser :: cd( const char *path )
               filename.value( s.c_str() );
             }
           else
-	  {
+          {
             filename.value( prefix.c_str() );
-	  }
+          }
         }
 
       if( currentFile == "*" &&
