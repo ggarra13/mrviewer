@@ -193,9 +193,15 @@ int64_t Reel_t::offset( const CMedia* const img ) const
         {
             CMedia* timg = (*i)->image()->right_eye();
             assert( timg != NULL );
-
-            t += timg->duration();
+    	    if ( timg )
+    		t += timg->duration();
+    	    else
+    		t += (*i)->image()->duration();
         }
+
+	if ( i == e ) LOG_ERROR( _("Invalid stereo image ") << img->name()
+				 << _(" for reel ") << name );
+    
         return t;
     }
 
@@ -206,8 +212,8 @@ int64_t Reel_t::offset( const CMedia* const img ) const
 
         t += timg->duration();
     }
-    if ( i == e ) LOG_ERROR("Invalid image " << img->name() << " for reel "
-                                << name );
+    if ( i == e ) LOG_ERROR( _("Invalid image ") << img->name()
+			     << _(" for reel " ) << name );
     return t;
 }
 
