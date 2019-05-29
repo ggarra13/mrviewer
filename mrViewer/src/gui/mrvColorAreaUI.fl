@@ -57,12 +57,12 @@ o->size_range( 500, 280 );} non_modal visible
   }
   Function {ColorAreaUI(ViewerUI* m)} {open
   } {
-    code {Fl_Group::current(0); 
+    code {Fl_Group::current(0);
       make_window( m );} {}
   }
   Function {~ColorAreaUI()} {open
   } {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
   Function {main()} {open return_type {ViewerUI*}
   } {
