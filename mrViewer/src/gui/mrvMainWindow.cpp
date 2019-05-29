@@ -55,14 +55,13 @@ namespace mrv {
 MainWindow::MainWindow( int W, int H, const char* title ) :
 Fl_Double_Window( W, H, title )
 {
-    // Set icon does not work on Linux yet
     set_icon();
 }
 
 MainWindow::~MainWindow()
 {
     uiMain->uiView->stop();
-    delete uiMain->uiView;
+    Fl::delete_widget( uiMain->uiView );
     uiMain->uiView = NULL;
 }
 
@@ -71,7 +70,7 @@ void MainWindow::set_icon()
 {
     fl_open_display();  // Needed for icons
 
-    
+
 #if defined(_WIN32) || defined(_WIN64)
      HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
      this->icon(data);
