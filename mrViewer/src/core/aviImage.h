@@ -325,6 +325,7 @@ protected:
     unsigned int          _max_images;
     const int*            _inv_table;
 
+    std::string           _right_filename;
     std::string           _subtitle_dir;
     std::string           _subtitle_file;
     std::string           _filter_description;
