@@ -49,6 +49,6 @@ class HotkeyUI {open
   }
   Function {~HotkeyUI()} {open
   } {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
 }
