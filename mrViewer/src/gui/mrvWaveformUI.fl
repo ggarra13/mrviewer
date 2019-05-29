@@ -67,7 +67,7 @@ make_window( m );} {}
   }
   Function {~WaveformUI()} {open
   } {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
   Function {main()} {open return_type {ViewerUI*}
   } {
