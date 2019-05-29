@@ -200,7 +200,7 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
   code {if (!w->exec())
 {
         Fl::delete_widget(w);
-	return orig;
+        return orig;
 }
 
 Fl::delete_widget(w);
@@ -366,7 +366,7 @@ class SaveOptionsUI {} {
     code {make_window( m );} {}
   }
   Function {~SaveOptionsUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
 }
 
@@ -410,7 +410,7 @@ class LogUI {open
     code {make_window( m );} {}
   }
   Function {~LogUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget(uiMain); uiMain = NULL;} {}
   }
 }
 
@@ -587,7 +587,7 @@ v->uiView->redraw();}
   }
   Function {~PaintUI()} {open
   } {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget(uiMain); uiMain = NULL;} {}
   }
 }
 
@@ -660,7 +660,7 @@ else
     code {make_window( m );} {}
   }
   Function {~ConnectionUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget(uiMain); uiMain = NULL;} {}
   }
 }
 
@@ -815,8 +815,8 @@ uiICCProfiles->uiMain->show();}
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
               callback {Fl_Menu_Item* m = (Fl_Menu_Item*)v->uiColorChannel->mvalue();
-	      v->uiView->channel( m );
-	      //v->uiView->channel( o->value() );} open
+              v->uiView->channel( m );
+              //v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {30 2 90 22}
               class {mrv::PopupMenu}
             } {}
@@ -948,25 +948,25 @@ else
     const Fl_Menu_Item* c = p;
     for ( ; c != w; ++c )
     {
-	if ( c->flags & FL_SUBMENU ) p = c;
+        if ( c->flags & FL_SUBMENU ) p = c;
     }
     if ( p && p->label() )
     {
        mrv::Preferences::OCIO_Display = p->label();
        if ( lbl && strcmp(lbl, p->label()) != 0 )
        {
-	 v->uiGamma->value( 1.0f );
-	 v->uiGammaInput->value( 1.0f );
-	 v->uiView->gamma( 1.0f );
+         v->uiGamma->value( 1.0f );
+         v->uiGammaInput->value( 1.0f );
+         v->uiView->gamma( 1.0f );
 
-	 mrv::Preferences::OCIO_View = lbl;
+         mrv::Preferences::OCIO_View = lbl;
 
-	 v->uiView->use_lut(true);
-	 v->uiLUT->value(true);
-	 mrv::media fg = v->uiView->foreground();
-	 if ( !fg ) return;
-	 fg->image()->image_damage( mrv::CMedia::kDamageAll );
-	 v->uiView->redraw();
+         v->uiView->use_lut(true);
+         v->uiLUT->value(true);
+         mrv::media fg = v->uiView->foreground();
+         if ( !fg ) return;
+         fg->image()->image_damage( mrv::CMedia::kDamageAll );
+         v->uiView->redraw();
        }
     }
  }} selected
@@ -1661,8 +1661,8 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-	mrv::Image_ptr img = fg->image();
-	f = img->first_frame();
+        mrv::Image_ptr img = fg->image();
+        f = img->first_frame();
      }
    }
    else
@@ -1699,8 +1699,8 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-	mrv::Image_ptr img = fg->image();
-	f = img->last_frame();
+        mrv::Image_ptr img = fg->image();
+        f = img->last_frame();
      }
    }
    else
@@ -1770,7 +1770,7 @@ delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiConnection; uiConnection = NULL;
-delete uiMain; uiMain = NULL;
+Fl::delete_widget( uiMain ); uiMain = NULL;
 delete uiHotkey; uiHotkey = NULL;
 delete uiPrefs; uiPrefs = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
