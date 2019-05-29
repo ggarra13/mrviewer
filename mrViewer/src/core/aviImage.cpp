@@ -2262,17 +2262,17 @@ void aviImage::populate()
             }
             else if ( _video_info.size() == 2 )
             {
-                static std::string file;
-                double diff1 = fabs( _video_info[0].fps - s.fps );
-                double diff2 = fabs( _video_info[0].duration -
-                                     s.duration );
-                if ( !_is_thumbnail && file != filename() &&
-                        _w == ctx->width && _h == ctx->height &&
-                        diff1 <= 0.0001 && diff2 <= 0.0001 )
+                // double diff1 = fabs( _video_info[0].fps - s.fps );
+                // double diff2 = fabs( _video_info[0].duration -
+                //                      s.duration );
+                // if ( !_is_thumbnail && file != filename() &&
+		//      _w == ctx->width && _h == ctx->height &&
+		//      diff1 <= 0.0001 && diff2 <= 0.0001 )
+                if ( !_is_thumbnail && _right_filename.empty() )
                 {
                     _is_stereo = true;
                     _is_left_eye = true;
-                    file = filename();
+                    _right_filename = filename();
                     _right_eye = CMedia::guess_image( filename(),
                                                       NULL, 0, true );
                     _right_eye->is_stereo( true );
