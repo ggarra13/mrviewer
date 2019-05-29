@@ -49,7 +49,7 @@ class EDLWindowUI {open
 v->uiView->seek( frame );
 v->uiEDLWindow->uiEDLGroup->redraw();}
           xywh {90 39 925 21} type Horizontal minimum 1 maximum 50 step 1 value 1
-          code0 {o->main( main ); 
+          code0 {o->main( main );
 o->draw_cache( false );}
           class {mrv::Timeline}
         }
@@ -208,7 +208,6 @@ v->new_reel(name);}
   }
   Function {~EDLWindowUI()} {open
   } {
-    code {delete uiEDLGroup; uiEDLGroup = NULL;
-delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
 }
