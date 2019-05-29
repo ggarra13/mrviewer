@@ -161,7 +161,7 @@ o->label( o->child( o->value() )->label() );}
       make_window( m );} {}
   }
   Function {~HistogramUI()} {} {
-    code {delete uiMain; uiMain = NULL;} {}
+    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
   }
   Function {main()} {open return_type {ViewerUI*}
   } {
