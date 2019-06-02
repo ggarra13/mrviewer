@@ -502,9 +502,6 @@ void GLEngine::refresh_shaders()
                 sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
                 _YCbCrA = new GLShader( shaderFile );
 
-                std::cerr << "Reading " << shaderFile
-                          << " for YCbCrA" << std::endl;
-
                 sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
                 _YByRyA = new GLShader( shaderFile );
             }
