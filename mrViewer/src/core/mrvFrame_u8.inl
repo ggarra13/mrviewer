@@ -110,6 +110,15 @@ namespace mrv {
           cr = d[ Ylen + Cblen + offset2 ];
           break;
         }
+      case kITU_709_YCbCr422A:
+      case kITU_601_YCbCr422A:
+        {
+          unsigned int  Ylen = _width * _height;
+          unsigned int w2 = (_width + 1) / 2;
+          unsigned int Cblen = w2 * _height;
+          unsigned int offset2 = y * w2 + x / 2;
+          p.a = d[ Ylen + Cblen * 2 + offset2 ];
+        }
       case kITU_709_YCbCr422:
       case kITU_601_YCbCr422:
         {
@@ -212,15 +221,6 @@ namespace mrv {
         col[1] = boost::uint8_t(p.g * 255.0f);
         col[2] = boost::uint8_t(p.b * 255.0f);
         break;
-      case kITU_709_YCbCr444:
-      case kITU_601_YCbCr444:
-        {
-          unsigned int len = _width * _height;
-          yp = d + offset;
-          cb = d + offset + len;
-          cr = d + offset + len*2;
-          break;
-        }
       case kITU_709_YCbCr410A:
       case kITU_601_YCbCr410A:
       case kYByRy410A:
@@ -245,16 +245,6 @@ namespace mrv {
           cr = d + Ylen + Cblen;
           break;
         }
-      case kITU_709_YCbCr420A:
-      case kITU_601_YCbCr420A:
-      case kYByRy420A:
-        {
-          unsigned int Ylen    = _width * _height;
-          unsigned int w2      = (_width  + 1) / 2;
-          unsigned int h2      = (_height + 1) / 2;
-          unsigned int Cblen2  = w2 * h2 * 2;
-          d[ Ylen + Cblen2 + offset] = boost::uint8_t(p.a * 255.0f);
-        }
       case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
       case kYByRy420:
@@ -270,6 +260,16 @@ namespace mrv {
           cr = d + Ylen + Cblen + offset2;
           break;
         }
+      case kITU_709_YCbCr422A:
+      case kITU_601_YCbCr422A:
+      case kYByRy420A:
+        {
+          unsigned int Ylen    = _width * _height;
+          unsigned int w2      = (_width  + 1) / 2;
+          unsigned int h2      = (_height + 1) / 2;
+          unsigned int Cblen2  = w2 * h2 * 2;
+          d[ Ylen + Cblen2 + offset] = boost::uint8_t(p.a * 255.0f);
+        }
       case kITU_709_YCbCr422:
       case kITU_601_YCbCr422:
         {
@@ -280,6 +280,22 @@ namespace mrv {
           yp = d + offset;
           cb = d + Ylen + offset2;
           cr = d + Ylen + Cblen + offset2;
+          break;
+        }
+      case kITU_709_YCbCr444A:
+      case kITU_601_YCbCr444A:
+      case kYByRy444A:
+        {
+          unsigned int Ylen    = _width * _height;
+          d[ Ylen * 3 + offset ] = boost::uint8_t(p.a * 255.0f);
+        }
+      case kITU_709_YCbCr444:
+      case kITU_601_YCbCr444:
+        {
+          unsigned int  Ylen = _width * _height;
+          yp = d + offset;
+          cb = d + Ylen + offset;
+          cr = d + Ylen*2 + offset;
           break;
         }
       default:
