@@ -132,6 +132,9 @@ FileUtils.cp_r( "colors/", "#{build}/#{@debug}/" )
 $stderr.puts "Copy ctl scripts"
 FileUtils.rm_f( "#{@debug}/ctl" )
 FileUtils.cp_r( "ctl/", "#{build}/#{@debug}/" )
+$stderr.puts "Copy ocio configs"
+FileUtils.rm_f( "#{@debug}/ocio" )
+FileUtils.cp_r( "ocio/", "#{build}/#{@debug}/" )
 
 $stderr.puts "remove .fuse files"
 `find BUILD/Linux* -name '*fuse*' -exec rm {} \\;`
