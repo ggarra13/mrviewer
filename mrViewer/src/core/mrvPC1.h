@@ -33,7 +33,7 @@ namespace mrv {
     public:
       unsigned short pkax,pkbx,pkcx,pkdx,pksi,pktmp,x1a2;
       unsigned short pkres,pki,inter,cfc,cfd,compte;
-      unsigned short x1a0[8];
+      unsigned short x1a0[9];
       unsigned char cle[17];
       short pkc, plainlen, ascipherlen;
 
