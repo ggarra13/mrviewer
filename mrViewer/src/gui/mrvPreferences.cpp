@@ -1128,7 +1128,12 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     loading.get( "autoload_images", tmp, 0 );
     uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
 
+#ifdef _WIN32
     loading.get( "native_file_chooser", tmp, 1 );
+#else
+    loading.get( "native_file_chooser", tmp, 0 );
+#endif
+    
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
     DBG;
