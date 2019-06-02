@@ -1275,9 +1275,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
 		  << lbl );
             for ( int i = 0; i < uiICS->children(); ++i )
             {
-		DBG;
 	        const char* name = uiICS->child(i)->label();
-		DBG;
 		if ( name && name == lbl )
                 {
 		    DBG;
