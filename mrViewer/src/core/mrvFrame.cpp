@@ -181,6 +181,14 @@ unsigned short VideoFrame::line_size() const
         size += 2 * W2;  // U and V
         break;
 
+    case kITU_709_YCbCr422A:
+    case kITU_601_YCbCr422A:
+        size += W;   // alpha
+        size += W;   // Y
+        W2 = (_width  + 1) / 2;
+        size += 2 * W2;  // U and V
+        break;
+
     default:
         size = W * _channels;
         break;

@@ -285,6 +285,8 @@ run_make()
     cmd=''
     if [[ $cmake_generator == NMake* ]]; then
 	cmd="nmake $@"
+    elif [[ $cmake_generator == Unix* ]]; then
+	cmd="make -j ${CMAKE_PROCS} $@"
     elif [[ $cmake_generator == Visual* ]]; then
 	return
     else
