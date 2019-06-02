@@ -294,9 +294,9 @@ void GLEngine::init_charset()
         LOG_ERROR( _("Could not open any font of size ") << fontsize);
         hfont = XLoadQueryFont( gdc, "fixed" );
         if ( !hfont ) {
-	    LOG_INFO( _("Opening any fixed font") );
-	    return;
-	}
+            LOG_INFO( _("Opening any fixed font") );
+            return;
+        }
     }
 
     // Create GL lists out of XFont
@@ -434,9 +434,6 @@ void GLEngine::refresh_shaders()
         const char* ext = NULL;
         switch( _hardwareShaders )
         {
-        case kNV30:
-            ext = N_("fp30");
-            break;
         case kGLSL:
             ext = N_("glsl");
             break;
@@ -504,6 +501,9 @@ void GLEngine::refresh_shaders()
             {
                 sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCrA"), ext );
                 _YCbCrA = new GLShader( shaderFile );
+
+                std::cerr << "Reading " << shaderFile
+                          << " for YCbCrA" << std::endl;
 
                 sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRyA"), ext );
                 _YByRyA = new GLShader( shaderFile );
@@ -594,18 +594,12 @@ void GLEngine::initialize()
     if ( shader_type )
     {
         if ( stricmp( shader_type, "GL" ) == 0 ||
-                stricmp( shader_type, "GLSL" ) == 0 ||
-                stricmp( shader_type, "OPENGL" ) == 0 )
+             stricmp( shader_type, "GLSL" ) == 0 ||
+             stricmp( shader_type, "OPENGL" ) == 0 )
         {
             _hardwareShaders = kGLSL;
             _has_hdr = USE_HDR;
         }
-        else if ( stricmp( shader_type, "NV" ) == 0 ||
-                  stricmp( shader_type, "NV30" ) == 0 ||
-                  stricmp( shader_type, "NVIDIA" ) == 0 ||
-                  stricmp( shader_type, "CG" ) == 0 ||
-                  stricmp( shader_type, "CGGL" ) == 0 )
-            _hardwareShaders = kNV30;
         else if ( stricmp( shader_type, "ARBFP1" ) == 0 ||
                   stricmp( shader_type, "ARBFP" ) == 0 )
             _hardwareShaders = kARBFP1;
@@ -633,11 +627,6 @@ void GLEngine::initialize()
         {
             _hardwareShaders = kGLSL;
         }
-#endif
-
-#ifdef USE_NV_SHADERS
-        if ( GLEW_NV_fragment_program )
-            _hardwareShaders = kNV30;
 #endif
 
         if ( _hardwareShaders == kGLSL )
@@ -2054,8 +2043,20 @@ void GLEngine::draw_images( ImageList& images )
                 }
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
-                if ( pic->format() >= image_type::kYByRy420 )
+                if ( pic->format() >= image_type::kYByRy420A )
+                    quad->shader( GLEngine::YByRyAShader() );
+                else if ( pic->format() >= image_type::kYByRy420 )
                     quad->shader( GLEngine::YByRyShader() );
+                else if ( pic->format() == image_type::kITU_601_YCbCr410A ||
+                          pic->format() == image_type::kITU_709_YCbCr410A ||
+                          pic->format() == image_type::kITU_601_YCbCr420A ||
+                          pic->format() == image_type::kITU_709_YCbCr420A ||
+                          pic->format() == image_type::kITU_601_YCbCr422A ||
+                          pic->format() == image_type::kITU_709_YCbCr422A ||
+                          pic->format() == image_type::kITU_601_YCbCr444A ||
+                          pic->format() == image_type::kITU_709_YCbCr444A
+                    )
+                    quad->shader( GLEngine::YCbCrAShader() );
                 else
                     quad->shader( GLEngine::YCbCrShader() );
                 quad->bind( pic );
@@ -2222,8 +2223,7 @@ void GLEngine::draw_images( ImageList& images )
             glEnable( GL_BLEND );
         }
 
-        if ( fg == img && bg != fg &&
-                _view->show_background() )
+        if ( fg == img && bg != fg &&  _view->show_background() )
             glEnable( GL_BLEND );
 
         if ( img->image_damage() & CMedia::kDamageContents )
@@ -2248,8 +2248,20 @@ void GLEngine::draw_images( ImageList& images )
             }
             CMedia::Mutex& mtx = img->video_mutex();
             SCOPED_LOCK( mtx );
-            if ( pic->format() >= image_type::kYByRy420 )
+            if ( pic->format() >= image_type::kYByRy420A )
+                quad->shader( GLEngine::YByRyAShader() );
+            else if ( pic->format() >= image_type::kYByRy420 )
                 quad->shader( GLEngine::YByRyShader() );
+            else if ( pic->format() == image_type::kITU_601_YCbCr410A ||
+                      pic->format() == image_type::kITU_709_YCbCr410A ||
+                      pic->format() == image_type::kITU_601_YCbCr420A ||
+                      pic->format() == image_type::kITU_709_YCbCr420A ||
+                      pic->format() == image_type::kITU_601_YCbCr422A ||
+                      pic->format() == image_type::kITU_709_YCbCr422A ||
+                      pic->format() == image_type::kITU_601_YCbCr444A ||
+                      pic->format() == image_type::kITU_709_YCbCr444A
+                )
+                quad->shader( GLEngine::YCbCrAShader() );
             else
                 quad->shader( GLEngine::YCbCrShader() );
             quad->bind( pic );
