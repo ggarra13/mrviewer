@@ -4,6 +4,10 @@ v5.0.7  - Made videos with two video tracks support stereo viewing,
 	  causing problems with deepin AMD drivers.
 	- The FLTK but with CTRL+ALT hotkeys was traced to a bad
 	  Linux configuration which can be corrected with xmodmap.
+	- Bug fixed some memory trashing upon program exit.
+	- Removed .cg shaders as NVidia has discontinued them.
+	- Made shaders work with 4 channels on videos that have alpha in
+	  them and are not rgba.
 
 v5.0.6  - Made custom file requester load icons faster and be more
 	  interactive.
