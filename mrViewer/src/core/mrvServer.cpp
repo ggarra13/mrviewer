@@ -2015,7 +2015,9 @@ server::server(boost::asio::io_service& io_service,
 {
 
     acceptor_.open(endpoint.protocol());
-    acceptor_.set_option(tcp::acceptor::reuse_address(true));
+    
+    boost::asio::socket_base::reuse_address option(true);
+    acceptor_.set_option(option);
     acceptor_.bind(endpoint);
     acceptor_.listen();
 
