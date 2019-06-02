@@ -624,11 +624,11 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
 
 
         if ( _width      != dw ||
-                _height     != dh ||
-                _pixel_type != pixel_type ||
-                _channels   != channels ||
-                _glformat       != GL_LUMINANCE ||
-                _internalFormat != internalFormat )
+             _height     != dh ||
+             _pixel_type != pixel_type ||
+             _channels   != channels ||
+             _glformat       != GL_LUMINANCE ||
+             _internalFormat != internalFormat )
         {
             if ( i == channels-1 )
             {
@@ -660,7 +660,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
 
 
             if ( _view->stereo_input() &
-                    CMedia::kTopBottomStereoInput )
+                 CMedia::kTopBottomStereoInput )
             {
                 hth /= 2;
             }
@@ -1022,8 +1022,10 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
             _shader->setTextureUnit( "UImage", 1 );
             _shader->setTextureUnit( "VImage", 2 );
             if ( _shader == GLEngine::YByRyAShader() ||
-                    _shader == GLEngine::YCbCrAShader() )
+                 _shader == GLEngine::YCbCrAShader() )
+            {
                 _shader->setTextureUnit( "AImage", 4 );
+            }
         }
         else
         {
@@ -1136,7 +1138,7 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                 CHECK_GL;
                 // HDTV  YCbCr coefficients,
                 _shader->setUniform( "Koff", -0.0627451017f, -0.501960814f,
-				     -0.501960814f );
+                                     -0.501960814f );
                 CHECK_GL;
                 _shader->setUniform( "Kr", 1.16438356f, 0.f, 1.79274107f );
                 CHECK_GL;
@@ -1145,7 +1147,7 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
                 CHECK_GL;
                 _shader->setUniform( "Kb", 1.16438356f, 2.11240179f, 0.0f );
                 CHECK_GL;
-	    }
+            }
             else if ( colorspace == "JPEG" )
             {
                 _shader->setUniform( "coeffs", 1 );
