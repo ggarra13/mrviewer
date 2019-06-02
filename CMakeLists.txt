@@ -39,7 +39,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET( VersionMajor 5 )
 SET( VersionMinor 0 )
-SET( VersionPatch 7 )
+SET( VersionPatch 6 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d19" )
 #STRING( TIMESTAMP VersionDate ".%Y%m%d" )
@@ -79,8 +79,8 @@ ADD_SUBDIRECTORY( libACESclip )
 ADD_SUBDIRECTORY( mrViewer/src )
 #ADD_SUBDIRECTORY( tools )
 
-IF( UNIX )
-  ADD_SUBDIRECTORY( shaders )
-  EXECUTE_PROCESS( COMMAND ${CMAKE_SOURCE_DIR}/bin/release
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
-ENDIF( UNIX )
+#IF( UNIX )
+#  ADD_SUBDIRECTORY( shaders )
+#  EXECUTE_PROCESS( COMMAND ${CMAKE_SOURCE_DIR}/bin/release
+#    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
+#ENDIF( UNIX )
