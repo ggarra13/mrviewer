@@ -42,6 +42,12 @@ namespace mrv {
         p.g = col[1];
         p.b = col[2];
         break;
+      case kITU_709_YCbCr444A:
+      case kITU_601_YCbCr444A:
+        {
+          unsigned int len = _width * _height;
+          p.a = (d[len*3 + offset ]);
+        }
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
         {
@@ -49,6 +55,30 @@ namespace mrv {
           yp = d[ offset];
           cb = d[ len + offset ];
           cr = d[ len*2 + offset ];
+          break;
+        }
+      case kITU_709_YCbCr410A:
+      case kITU_601_YCbCr410A:
+      case kYByRy410A:
+        {
+          unsigned int Ylen    = _width * _height;
+          unsigned int w2      = _width;
+          unsigned int h2      = _height;
+          unsigned int Cblen   = w2 * h2;
+          p.a = d[ Ylen + Cblen + offset];
+        }
+      case kITU_709_YCbCr410:
+      case kITU_601_YCbCr410:
+      case kYByRy410:
+        {
+          unsigned int Ylen    = _width * _height;
+          unsigned int w2      = _width;
+          unsigned int h2      = _height;
+          unsigned int Cblen   = w2 * h2;
+
+          yp = d[ offset ];
+          cb = d[ Ylen + offset ];
+          cr = d[ Ylen + Cblen + offset ];
           break;
         }
       case kITU_709_YCbCr420A:
