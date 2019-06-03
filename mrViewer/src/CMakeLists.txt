@@ -1,4 +1,3 @@
-
 cmake_minimum_required( VERSION 3.1 )
 
 PROJECT( mrViewer )
@@ -387,7 +386,7 @@ SET( LIBRARIES
 #
 if(WIN32)
 	# if(COMMAND cmake_policy)
-	# 	   cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
+	#	   cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
 	# endif(COMMAND cmake_policy)
 else(WIN32)
 	if(COMMAND cmake_policy)
@@ -594,14 +593,17 @@ ELSEIF (UNIX)
 
       # SET RPM options.
 
-    SET(CPACK_RPM_PACKAGE_NAME mrViewer)
-    SET(CPACK_RPM_PACKAGE_RELOCATABLE false)
+    SET(CPACK_RPM_PACKAGE_NAME ${PROJECT_NAME})
+    SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
+    set(CPACK_RPM_PACKAGE_AUTOREQ false)
+    set(CPACK_RPM_PACKAGE_AUTOPROV true)
+    SET(CPACK_RPM_COMPRESSION_TYPE gzip )
+
 
     # SET Debian options.
 
-    SET(CPACK_DEBIAN_PACKAGE_NAME mrviewer)
-    SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ggarra13@gmail.com")
-
+    set(CPACK_DEBIAN_PACKAGE_NAME ${PROJECT_NAME})
+   
     SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 	${PROJECT_BINARY_DIR}/etc/Linux/postinst
 	${PROJECT_BINARY_DIR}/etc/Linux/postrm)
@@ -629,6 +631,7 @@ ENDIF(WIN32)
 
 
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
+set(CPACK_PACKAGE_EXECUTABLES mrViewer mrViewer)
 SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../docs/LICENSE.txt)
 
 #
@@ -726,7 +729,7 @@ ENDIF(TINYXML2_FOUND)
 MESSAGE( STATUS "mrViewer version: " ${SHORTVERSION} )
 
 
-#SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
+SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
 
 # set( TEST_BUNDLE 1 )
