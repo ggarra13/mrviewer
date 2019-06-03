@@ -18,9 +18,11 @@ libdl.*
 libxcb.*
 libasound.*
 libglib.*
+libstdc\+\+\.so.*
+libfontconfig.*
+libfreetype.*
+libz.*
 )
-# libstdc\+\+\.so.*
-# libfontconfig.*
 
 @options = { :verbose => false }
 OptionParser.new do |opts|
