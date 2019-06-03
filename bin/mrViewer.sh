@@ -39,7 +39,7 @@ export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 # export LANG=C
 
 # Comment this line if libfontconfig is configured properly
-export FONTCONFIG_PATH=/etc/fonts
+# export FONTCONFIG_PATH=/etc/fonts
 
 # This is to avoid underruns in audio
 export PULSE_LATENCY_MSEC=60
