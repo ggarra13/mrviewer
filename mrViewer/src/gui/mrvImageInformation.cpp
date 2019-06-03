@@ -202,8 +202,8 @@ static Fl_Double_Window* make_attribute_add_window() {
         w = o;
         o->label( _("Add Attribute") );
         o->begin();
-	Fl_Group* g = new Fl_Group( 0, 0, 405, 200 );
-	g->box( FL_UP_BOX );
+        Fl_Group* g = new Fl_Group( 0, 0, 405, 200 );
+        g->box( FL_UP_BOX );
         {   mrv::Choice* o = uiType = new mrv::Choice( 10, 30, 390, 25, _("Type") );
             o->align(FL_ALIGN_TOP);
             o->add( _("String") );
@@ -243,7 +243,7 @@ static Fl_Double_Window* make_attribute_add_window() {
         {   Fl_Button* o = new Fl_Button(224, 150, 93, 41, _("Cancel"));
             o->callback((Fl_Callback*)cb_Cancel, (void*)(w));
         }
-	g->end();
+        g->end();
         o->end();
         o->set_modal();
         o->resizable(o);
@@ -702,8 +702,8 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
     int ok = uiKeyRemove->item_pathname( picked, sizeof(picked)-1 );
     if ( ok < 0 )
     {
-	LOG_ERROR( _("item_pathname returned ") << ok );
-	return;
+        LOG_ERROR( _("item_pathname returned ") << ok );
+        return;
     }
 
     std::string key = "/";
@@ -711,8 +711,8 @@ static void remove_attribute_cb( Fl_Box* widget, ImageInformation* info )
 
     CMedia::Attributes::iterator i = attrs.find( key );
     if ( i == attrs.end() && key[0] == '/' ) {
-	key = key.substr( 1, key.size() );
-	i = attrs.find( key );
+        key = key.substr( 1, key.size() );
+        i = attrs.find( key );
     }
     if ( i == attrs.end() )
     {
@@ -1403,7 +1403,7 @@ static void change_string_cb( Fl_Input* w, ImageInformation* info )
     {
         bool ok = modify_value( w, i );
         if (!ok) {
-	    info->filled = false;
+            info->filled = false;
             info->refresh();
             toggle_modify_attribute( key, info );
         }
@@ -2700,7 +2700,7 @@ void ImageInformation::refresh()
     bool movie = ( dynamic_cast< aviImage* >( get_image() ) != NULL );
     if ( movie && filled && !img->right_eye() && !img->is_left_eye() )
     {
-	return;
+        return;
     }
 
     hide_tabs();
@@ -2720,18 +2720,18 @@ void ImageInformation::refresh()
 
 
     fill_data();
-    
+
     m_image->end();
     m_video->end();
     m_audio->end();
     m_subtitle->end();
     m_attributes->end();
-    
+
     m_all->end();
     m_all->show();
 
     end();
-    
+
     filled = true;
 
     Fl_Group::current(0);
@@ -2908,23 +2908,21 @@ void ImageInformation::add_ctl( const char* name,
     int hh = line_height();
     Y += hh;
     Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
-    g->end();
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
         widget->color( colA );
         widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
-        g->add( widget );
+        g->end();
     }
     m_curr->add( g );
 
 
     {
-        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, g->w()-kMiddle-X, hh );
-        sg->end();
+        Fl_Group* sg = new Fl_Group( kMiddle, Y, w()-kMiddle, hh );
 
-        Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
+        Fl_Input* widget = new Fl_Input( kMiddle, Y, sg->w()-50, hh );
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
@@ -2935,12 +2933,9 @@ void ImageInformation::add_ctl( const char* name,
         if ( callback )
             widget->callback( (Fl_Callback*)ctl_callback, (void*)this );
 
-        sg->add( widget );
-
-        Fl_Button* pick = new Fl_Button( X+kMiddle + sg->w()-50, Y, 50, hh,
+        Fl_Button* pick = new Fl_Button( kMiddle + sg->w()-50, Y, 50, hh,
                                          _("Pick") );
         pick->callback( (Fl_Callback*)ctl_callback, this );
-        sg->add( pick );
         sg->resizable(widget);
         sg->end();
 
@@ -3031,14 +3026,14 @@ void ImageInformation::add_ctl_idt( const char* name,
     m_curr->add( g );
 
     {
-        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, g->w()-kMiddle-X, hh );
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
         sg->end();
 
         Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50, hh );
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_BLACK );
+        widget->textcolor( FL_WHITE );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -3098,7 +3093,7 @@ void ImageInformation::add_ctl_lmt( const char* name,
     }
 
     {
-        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, g->w()-kMiddle-X, hh );
+        Fl_Group* sg = new Fl_Group( X+kMiddle, Y, w()-kMiddle-X, hh );
         sg->end();
 
         Fl_Input* widget = new Fl_Input( X+kMiddle, Y, sg->w()-50
@@ -3106,7 +3101,7 @@ void ImageInformation::add_ctl_lmt( const char* name,
         widget->value( content );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-        widget->textcolor( FL_BLACK );
+        widget->textcolor( FL_WHITE );
         widget->color( colB );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
@@ -3160,14 +3155,13 @@ void ImageInformation::add_text( const char* name,
     int hh = line_height();
     Y += hh;
     Fl_Group* g = new Fl_Group( X, Y, kMiddle, hh );
-    g->end();
     {
         Fl_Box* widget = lbl = new Fl_Box( X, Y, kMiddle, hh );
         widget->box( FL_FLAT_BOX );
         widget->color( colA );
         widget->labelcolor( FL_BLACK );
         widget->copy_label( name );
-        g->add( widget );
+        g->end();
     }
     m_curr->add( g );
 
@@ -3662,7 +3656,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
-	widget->labelcolor( FL_LIGHT3 );
+        widget->labelcolor( FL_LIGHT3 );
         widget->textcolor( FL_BLACK );
         widget->deactivate();
         g2->add( widget );
@@ -3674,7 +3668,7 @@ void ImageInformation::add_rect( const char* name, const char* tooltip,
         widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
-	widget->labelcolor( FL_LIGHT3 );
+        widget->labelcolor( FL_LIGHT3 );
         widget->textcolor( FL_BLACK );
         widget->color( colB );
         widget->deactivate();
