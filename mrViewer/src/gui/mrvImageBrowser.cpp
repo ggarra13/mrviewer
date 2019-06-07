@@ -1331,9 +1331,9 @@ mrv::media ImageBrowser::load_image( const char* name,
 
     if ( img == NULL )
     {
-	std::string file = name;
-	if ( file.substr( file.size() - 4, file.size() ) != ".xml" )
-	    LOG_ERROR( _("Could not guess image format for ") << name );
+        std::string file = name;
+        if ( file.substr( file.size() - 4, file.size() ) != ".xml" )
+            LOG_ERROR( _("Could not guess image format for ") << name );
         return mrv::media();
     }
 
@@ -1436,9 +1436,9 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
     if ( files.size() > 1 && progressBar )
     {
-	Fl_Group::current(0);
+        Fl_Group::current(0);
         w = new Fl_Window( main->x(), main->y() + main->h()/2,
-			   main->w(), 80 );
+                           main->w(), 80 );
         w->clear_border();
         w->begin();
         progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
@@ -2077,13 +2077,13 @@ void ImageBrowser::replace( int i, mrv::media m )
     window()->redraw();
 
     // Sanely remove image from reel
-    mrv::MediaList::const_iterator j = reel->images.begin();
+    mrv::MediaList::iterator j = reel->images.begin();
     reel->images.erase( j + i );
 
 
     // Insert item in right place on list
-    j = reel->images.begin();
-    reel->images.insert( j + i, m );
+    j = reel->images.begin() + i;
+    reel->images.insert( j, m );
 
 
     view()->foreground( m );
@@ -2480,7 +2480,7 @@ int ImageBrowser::mousePush( int x, int y )
         lastX = x;
         lastY = y;
         dragging = callback_item();
-	
+
         if ( (! dragging) || (! dragging->widget()) ) return 0;
 
         if ( dragging == old_dragging && clicks > 0 )
