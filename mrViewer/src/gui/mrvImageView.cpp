@@ -161,8 +161,6 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 // Video
 #include "video/mrvGLEngine.h"  // should be dynamically chosen from prefs
 
-#undef DBG
-#define DBG(x)
 // Audio
 
 // #define USE_TIMEOUT // USE TIMEOUTS INSTEAD OF IDLE CALLBACK
@@ -1219,9 +1217,9 @@ static void attach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
     CMedia* img = fg->image();
     if ( img == NULL ) return;
 
-    DBG( "Attach audio file " << file << " first frame: " << img->first_frame() );
+    DBG3( "Attach audio file " << file << " first frame: " << img->first_frame() );
     img->audio_file( file );
-    DBG( "Attached audio file " << file << " first frame: " << img->first_frame() );
+    DBG3( "Attached audio file " << file << " first frame: " << img->first_frame() );
     view->refresh_audio_tracks();
 
 }
@@ -1713,7 +1711,7 @@ bool ImageView::next_channel()
 void ImageView::init_draw_engine()
 {
     _engine = new mrv::GLEngine( this );
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     if ( !_engine )
     {
         mrvALERT( _("Could not initialize draw engine") );
@@ -3370,20 +3368,20 @@ void ImageView::vr( VRType t )
 void ImageView::draw()
 {
 
-    DBG( "draw valid? " << (int)valid() );
+    DBG3( "draw valid? " << (int)valid() );
     if ( !valid() )
     {
         if ( ! _engine )
         {
-            DBG( __FUNCTION__ << " " << __LINE__ );
+            DBG3( __FUNCTION__ << " " << __LINE__ );
             init_draw_engine();
         }
 
-        DBG( "GLengine " << _engine );
+        DBG3( "GLengine " << _engine );
         if ( !_engine ) return;
 
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        DBG3( __FUNCTION__ << " " << __LINE__ );
         _engine->reset_view_matrix();
 
 
@@ -3412,13 +3410,13 @@ void ImageView::draw()
             r = g = b = a = 0.0f;
         }
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        DBG3( __FUNCTION__ << " " << __LINE__ );
 
         _engine->clear_canvas( r, g, b, a );
 
         if ( !_update ) return;
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        DBG3( __FUNCTION__ << " " << __LINE__ );
         switch( uiPrefs->uiPrefsBlendMode->value() )
         {
         case kBlendTraditional:
@@ -3468,7 +3466,7 @@ void ImageView::draw()
     }
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     if ( images.empty() ) return;
     TRACE("");
 
@@ -3479,7 +3477,7 @@ void ImageView::draw()
         Mutex& mtx = img->video_mutex();
         SCOPED_LOCK( mtx );
 
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        DBG3( __FUNCTION__ << " " << __LINE__ );
         _engine->draw_images( images );
     }
 
@@ -4417,7 +4415,7 @@ int ImageView::leftMouseDown(int x, int y)
                               kOCIOInputColorSpace.hotkey(),
                               (Fl_Callback*)attach_ocio_ics_cb, (void*)this);
 
-		    menu->add( _("OCIO/Display"),
+                    menu->add( _("OCIO/Display"),
                               kOCIODisplay.hotkey(),
                               (Fl_Callback*)attach_ocio_display_cb, (void*)this);
                     menu->add( _("OCIO/View"),
@@ -6034,18 +6032,18 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kOCIOInputColorSpace.match( rawkey ) )
     {
-	attach_ocio_ics_cb( NULL, this );
-	return 1;
+        attach_ocio_ics_cb( NULL, this );
+        return 1;
     }
     else if ( kOCIODisplay.match( rawkey ) )
     {
-	attach_ocio_display_cb( NULL, this );
-	return 1;
+        attach_ocio_display_cb( NULL, this );
+        return 1;
     }
     else if ( kOCIOView.match( rawkey ) )
     {
-	attach_ocio_view_cb( NULL, this );
-	return 1;
+        attach_ocio_view_cb( NULL, this );
+        return 1;
     }
     else if ( kSaveSequence.match( rawkey ) )
     {
@@ -7723,7 +7721,7 @@ void ImageView::gamma( const float f )
     mrv::media fg = foreground();
     if ( fg )
     {
-        DBG(  "gamma " << f );
+        DBG3(  "gamma " << f );
         fg->image()->gamma( f );
 
         char buf[256];
@@ -8770,7 +8768,8 @@ void ImageView::frame( const int64_t f )
 {
     // Redraw browser to update thumbnail
     _frame = f;
-    browser()->redraw();
+    mrv::ImageBrowser* b = browser();
+    if ( b ) b->redraw();
 }
 
 
@@ -9179,8 +9178,8 @@ void ImageView::thumbnails()
     mrv::media bg = background();
     if ( bg ) bg->create_thumbnail();
 
-
-    browser()->redraw();
+    mrv::ImageBrowser* b = browser();
+    if ( b ) b->redraw();
 }
 
 /**
