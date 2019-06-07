@@ -34,13 +34,15 @@
 #include "gui/mrvImageView.h"
 #include "mrvDrawEngine.h"
 
+#include "gui/mrvIO.h"
+
 #if 1
-#define CHECK_GL DBG("checkgl"); GLEngine::handle_gl_errors( __FUNCTION__, __LINE__, true )
+#define CHECK_GL DBG; GLEngine::handle_gl_errors( kModule, __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL
 #endif
 
-#define FLUSH_GL_ERRORS GLEngine::handle_gl_errors( __FUNCTION__, __LINE__ )
+#define FLUSH_GL_ERRORS GLEngine::handle_gl_errors( kModule, __FUNCTION__, __LINE__ )
 
 namespace mrv {
 
@@ -131,7 +133,7 @@ public:
     virtual void draw_text(const int x, const int y, const char* text );
 
     virtual void draw_cursor( const double x, const double y,
-			      ImageView::Mode mode = ImageView::kDraw );
+                              ImageView::Mode mode = ImageView::kDraw );
 
     virtual void draw_annotation( const GLShapeList& shapes );
 
@@ -181,7 +183,8 @@ public:
 
 
     /// Auxiliary function used to check for openGL errors
-    static void handle_gl_errors(const char* function, const unsigned line,
+    static void handle_gl_errors(const char* module,
+				 const char* function, const unsigned line,
                                  const bool print = false);
 
 protected:
