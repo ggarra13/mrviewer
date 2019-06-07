@@ -93,7 +93,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
     #
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
-    ADD_COMPILE_OPTIONS( -O3 -fdiagnostics-color=always -msse )
+    ADD_COMPILE_OPTIONS( -O3 -msse )
     SET(OS_LIBRARIES
       asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx
       )
@@ -603,7 +603,7 @@ ELSEIF (UNIX)
     # SET Debian options.
 
     set(CPACK_DEBIAN_PACKAGE_NAME ${PROJECT_NAME})
-   
+
     SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 	${PROJECT_BINARY_DIR}/etc/Linux/postinst
 	${PROJECT_BINARY_DIR}/etc/Linux/postrm)
