@@ -19,6 +19,7 @@ libxcb.*
 libasound.*
 libglib.*
 libstdc\+\+\.so.*
+libgcc_s.*
 libfontconfig.*
 libfreetype.*
 libz.*
