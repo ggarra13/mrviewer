@@ -190,15 +190,19 @@ extern errorstream error;
 #define IMG_INFO(msg) LOG_INFO( name() << " - " << msg )
 
 #if 1
+#include "gui/mrvPreferences.h"
 #define DBG3(msg) do { \
     if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
 } while(0)
+
+#define DBG do { \
+    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( "" ); \
+} while(0)
+
 #else
 #define DBG3(msg)
+#define DBG
 #endif
-
-#define DBG								\
-if ( mrv::Preferences::debug > 2 ) std::cerr << __FUNCTION__ << " " << __LINE__ << std::endl;
 
 
 #if 0
