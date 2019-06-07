@@ -187,7 +187,5 @@ protected:
 
 } // namespace mrv
 
-#undef DBG
-#define DBG(x)
 
 #endif // mrvGLQuad_h
