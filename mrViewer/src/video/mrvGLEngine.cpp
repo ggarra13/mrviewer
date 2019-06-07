@@ -151,8 +151,9 @@ unsigned int GLEngine::_maxTexHeight;
 //
 // Check for opengl errors and print function name where it happened.
 //
-void GLEngine::handle_gl_errors(const char* where, const unsigned line,
-                                const bool print )
+  void GLEngine::handle_gl_errors(const char* module,
+				  const char* where, const unsigned line,
+				  const bool print )
 {
     GLenum error = glGetError();
     if ( error == GL_NO_ERROR ) return;
@@ -161,10 +162,10 @@ void GLEngine::handle_gl_errors(const char* where, const unsigned line,
     {
         if ( print )
         {
-            mrvALERT( where << " (" << line << ")"
+	  mrvALERT( module << " -> " << where << " (" << line << ")"
                       << _(": Error ") << error << " "
                       << gluErrorString(error) );
-            LOG_ERROR( where << " (" << line << ")"
+	  LOG_ERROR( module << " -> " << where << " (" << line << ")"
                        << _(": Error ") << error << " "
                        << gluErrorString(error) );
         }
@@ -223,7 +224,7 @@ std::string GLEngine::options()
     if ( !versionString ) versionString = (char*)_("Unknown");
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     o << _("Vendor:\t") << vendorString << endl
       << _("Renderer:\t") << rendererString << endl
       << _("Version:\t")  << versionString << endl
@@ -239,7 +240,7 @@ std::string GLEngine::options()
       << _("YUV  Support:\t") << (supports_yuv() ? _("Yes") : _("No")) << endl
       << _("YUVA Support:\t") << (supports_yuva() ? _("Yes") : _("No")) << endl
       << _("SDI Output:\t") << (_sdiOutput ? _("Yes") : _("No")) << endl;
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     return o.str();
 }
 
@@ -251,7 +252,7 @@ void GLEngine::init_charset()
     int fontsize = 16;
 
 #ifdef WIN32
-    // DBG( __FUNCTION__ << " " << __LINE__ );
+    // DBG3( __FUNCTION__ << " " << __LINE__ );
     HDC   hDC = fl_gc;
     HGLRC hRC = wglGetCurrentContext();
     if (hRC == NULL ) hRC = wglCreateContext( hDC );
@@ -268,9 +269,9 @@ void GLEngine::init_charset()
     lstrcpy (lf.lfFaceName, N_("Helvetica") ) ;
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     HFONT    fid = CreateFontIndirect(&lf);
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     HFONT oldFid = (HFONT)SelectObject(hDC, fid);
 
     sCharset = glGenLists( numChars );
@@ -279,9 +280,9 @@ void GLEngine::init_charset()
     wglUseFontBitmaps(hDC, 0, numChars-1, sCharset);
 
     SelectObject(hDC, oldFid);
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
 #else
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     // Find Window's default font
     Display* gdc = fl_display;
 
@@ -305,7 +306,7 @@ void GLEngine::init_charset()
 
     // Free font and struct
     XFreeFont( gdc, hfont );
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
 #endif
 
     CHECK_GL;
@@ -333,7 +334,7 @@ void GLEngine::init_textures()
     _maxTexUnits = 1;
     if ( GLEW_ARB_multitexture )
     {
-        DBG( __FUNCTION__ << " " << __LINE__ );
+        DBG3( __FUNCTION__ << " " << __LINE__ );
 #ifndef TEST_NO_YUV
         glGetIntegerv(GL_MAX_TEXTURE_UNITS, &_maxTexUnits);
         CHECK_GL;
@@ -352,12 +353,12 @@ void GLEngine::init_textures()
  */
 void GLEngine::init_GLEW()
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     GLenum err = glewInit();
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     if (GLEW_OK != err)
     {
-        DBG( "glewInit failed" );
+        DBG3( "glewInit failed" );
         /* Problem: glewInit failed, something is seriously wrong. */
         LOG_ERROR( _("GLEW Initialize Error: ") << glewGetErrorString(err) );
         return;
@@ -451,7 +452,7 @@ void GLEngine::refresh_shaders()
 
             sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("rgba"), ext );
 
-            DBG( __FUNCTION__ << " " << __LINE__ << " shader file "
+            DBG3( __FUNCTION__ << " " << __LINE__ << " shader file "
                  << shaderFile );
 
 
@@ -547,7 +548,7 @@ void GLEngine::initialize()
 
     if ( !glut_init )
     {
-        DBG( "call glutInit" );
+        DBG3( "call glutInit" );
         int argc = 1;
         static char* args[] = { (char*)"GlEngine", NULL };
         glutInit( &argc, args );
@@ -1004,7 +1005,7 @@ void GLEngine::draw_title( const float size,
 {
     if ( !text ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     void* font = GLUT_STROKE_MONO_ROMAN;
 
     glMatrixMode(GL_MODELVIEW);
@@ -1080,7 +1081,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
 {
     if (! sCharset ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     glLoadIdentity();
     glRasterPos2i( x, y );
 
@@ -1099,7 +1100,7 @@ void GLEngine::draw_cursor( const double x, const double y,
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity();
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     double pr = 1.0;
     if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
 
@@ -1129,7 +1130,7 @@ void GLEngine::draw_cursor( const double x, const double y,
 void GLEngine::draw_square_stencil( const int x, const int y,
                                     const int W, const int H)
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     CHECK_GL;
@@ -1144,7 +1145,9 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     CHECK_GL;
 
     glMatrixMode(GL_MODELVIEW);
+    CHECK_GL;
     glPushMatrix();
+    CHECK_GL;
 
     if ( _view->main()->uiPixelRatio->value() )
     {
@@ -1161,14 +1164,20 @@ void GLEngine::draw_square_stencil( const int x, const int y,
         glVertex2d(x, -H);
     }
     glEnd();
+    CHECK_GL;
 
     glMatrixMode( GL_MODELVIEW );
+    CHECK_GL;
     glPopMatrix();
+    CHECK_GL;
 
     // just draw where inside of the mask
     glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
+    CHECK_GL;
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    CHECK_GL;
     glDisable(GL_BLEND);
+    CHECK_GL;
 }
 
 inline
@@ -1230,7 +1239,7 @@ void GLEngine::draw_mask( const float pct )
     mrv::media fg = _view->foreground();
     if ( !fg ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
 
 
     Image_ptr img = fg->image();
@@ -1314,7 +1323,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     mrv::media fg = _view->foreground();
     if (!fg) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     Image_ptr img = fg->image();
 
     mrv::Recti daw = img->data_window();
@@ -1362,7 +1371,7 @@ void GLEngine::draw_safe_area_inner( const double tw, const double th,
 {
     glLineWidth( 1.0 );
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     glBegin(GL_LINE_LOOP);
 
     glVertex2d(-tw,-th);
@@ -1406,7 +1415,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
         bimg = bg->image();
     }
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     Image_ptr img = fg->image();
 
     mrv::Recti dpw2;
@@ -1524,7 +1533,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
     Image_ptr img = _view->selected_image();
     if ( img == NULL ) return;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     ImageView::FlipDirection flip = _view->flip();
 
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
@@ -1639,7 +1648,7 @@ void GLEngine::draw_selection_marquee( const mrv::Rectd& r )
 
 void GLEngine::draw_data_window( const mrv::Rectd& r )
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
@@ -1665,21 +1674,29 @@ void prepare_subtitle( GLQuad* quad, mrv::image_type_ptr sub,
 {
     glEnable( GL_BLEND );
     glDisable( GL_SCISSOR_TEST );
+    CHECK_GL;
     quad->mask( 0 );
     quad->mask_value( -10 );
+    CHECK_GL;
     quad->bind( sub );
+    CHECK_GL;
     quad->gamma( 1.0 );
     // Handle rotation of cube/sphere
+    CHECK_GL;
     quad->rot_x( _rotX );
     quad->rot_y( _rotY );
+    CHECK_GL;
     quad->draw( texWidth, texHeight );
+    CHECK_GL;
 }
 
 void prepare_image( CMedia* img, mrv::Recti& daw, unsigned texWidth,
                     unsigned texHeight, const mrv::ImageView* view )
 {
     glRotated( img->rot_z(), 0, 0, 1 );
+    CHECK_GL;
     glTranslated( img->x(), img->y(), 0 );
+    CHECK_GL;
     glTranslated( double(daw.x() - img->eye_separation()),
                   double(-daw.y()), 0 );
     CHECK_GL;
@@ -1703,7 +1720,7 @@ void GLEngine::draw_images( ImageList& images )
 
     CHECK_GL;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     // Check if lut types changed since last time
     static int  RT_lut_old_algorithm = Preferences::kLutPreferCTL;
     static int ODT_lut_old_algorithm = Preferences::kLutPreferCTL;
@@ -1848,7 +1865,7 @@ void GLEngine::draw_images( ImageList& images )
         if (!pic)  continue;
 
 
-        DBG( "draw image " << img->name() );
+        DBG3( "draw image " << img->name() );
 
         CMedia::StereoOutput stereo = img->stereo_output();
         const boost::int64_t& frame = pic->frame();
@@ -2012,7 +2029,6 @@ void GLEngine::draw_images( ImageList& images )
                 CHECK_GL;
             }
 #endif
-
             quad->mask( 0 );
             quad->mask_value( 10 );
             if ( stereo & CMedia::kStereoInterlaced )
@@ -2056,10 +2072,14 @@ void GLEngine::draw_images( ImageList& images )
                     quad->shader( GLEngine::YCbCrAShader() );
                 else
                     quad->shader( GLEngine::YCbCrShader() );
+                CHECK_GL;
                 quad->bind( pic );
             }
+                CHECK_GL;
             quad->gamma( g );
+                CHECK_GL;
             quad->draw( texWidth, texHeight );
+                CHECK_GL;
 
 
             if ( img->has_subtitle() )
@@ -2266,30 +2286,39 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         quad->gamma( g );
+    CHECK_GL;
         quad->draw( texWidth, texHeight );
+    CHECK_GL;
 
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {
             glDisable( GL_DEPTH );
             glDisable( GL_STENCIL_TEST );
+    CHECK_GL;
             glDisable( GL_TEXTURE_2D );
             glDisable( GL_TEXTURE_3D );
             glEnable(GL_BLEND);
+    CHECK_GL;
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glLineWidth( 50.0 );
+    CHECK_GL;
             glColor4f( 1.0f, 0.f, 0.f, 0.5f );
             glBegin(GL_LINES);
+    CHECK_GL;
             glVertex2d( -0.5, -0.5 );
             glVertex2d( 0.5, 0.5 );
             glVertex2d( 0.5, -0.5 );
             glVertex2d( -0.5, 0.5 );
             glEnd();
             glDisable( GL_BLEND );
+    CHECK_GL;
             glEnable( GL_DEPTH );
             glEnable( GL_STENCIL_TEST );
+    CHECK_GL;
             glEnable( GL_TEXTURE_2D );
             glEnable( GL_TEXTURE_3D );
+    CHECK_GL;
         }
 
 
@@ -2329,7 +2358,7 @@ void GLEngine::draw_shape( GLShape* const shape )
 {
 
     double zoomX = _view->zoom();
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     if ( _view->ghost_previous() )
     {
         short num = _view->ghost_previous();
@@ -2373,9 +2402,10 @@ void GLEngine::draw_shape( GLShape* const shape )
 
 void GLEngine::draw_annotation( const GLShapeList& shapes )
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity();
+    CHECK_GL;
 
     double pr = 1.0;
     if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
@@ -2392,19 +2422,27 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
 
     glTranslated( (tw + _view->offset_x()) * zoomX + sw,
                   (th + _view->offset_y()) * zoomY + sh, 0);
+    CHECK_GL;
 
     glScaled(zoomX, zoomY * pr, 1.0f);
 
+    CHECK_GL;
 
     glClear(GL_STENCIL_BUFFER_BIT);
 
+    CHECK_GL;
     glEnable( GL_STENCIL_TEST );
+    CHECK_GL;
 
     glEnable(GL_BLEND);
+    CHECK_GL;
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    CHECK_GL;
 
     glEnable( GL_LINE_SMOOTH );
+    CHECK_GL;
     glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
+    CHECK_GL;
 
     {
         GLShapeList::const_reverse_iterator i = shapes.rbegin();
@@ -2420,17 +2458,19 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
     }
 
     glDisable(GL_BLEND);
+    CHECK_GL;
     glDisable(GL_STENCIL_TEST);
+    CHECK_GL;
 }
 
 
 void GLEngine::wipe_area()
 {
     ImageView* view = const_cast< ImageView* >( _view );
-    int w = view->pixel_w();
-    int h = view->pixel_h();
+    GLint w = view->pixel_w();
+    GLint h = view->pixel_h();
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ << " w,h " << w << " " << h );
     if ( _view->wipe_direction() == ImageView::kNoWipe )
         return;
     else if ( _view->wipe_direction() & ImageView::kWipeVertical )
@@ -2447,10 +2487,11 @@ void GLEngine::wipe_area()
     }
 
     glEnable( GL_SCISSOR_TEST );
-
-    int  x = 0;
-    int  y = 0;
+    CHECK_GL;
+    GLint  x = 0;
+    GLint  y = 0;
     glScissor( x, y, w, h );
+    CHECK_GL;
 }
 
 
@@ -3958,7 +3999,7 @@ void
 GLEngine::loadBuiltinFragShader()
 {
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     _rgba = new GLShader();
 
     try {
@@ -3966,12 +4007,12 @@ GLEngine::loadBuiltinFragShader()
         {
             LOG_INFO( _("Loading built-in NV3.0 rgba shader") );
             _rgba->load( N_("builtin"), NVShader );
-            DBG( "NVShader builtin" );
+            DBG3( "NVShader builtin" );
         }
         else
         {
             LOG_INFO( _("Loading built-in arbfp1 rgba shader") );
-            DBG( "kARBFP1 builtin shader" );
+            DBG3( "kARBFP1 builtin shader" );
             _hardwareShaders = kARBFP1;
             _rgba->load( N_("builtin"), ARBFP1Shader );
         }
@@ -3996,7 +4037,7 @@ GLEngine::loadBuiltinFragShader()
 
 void GLEngine::clear_quads()
 {
-    DBG( __FUNCTION__ << " " << __LINE__ );
+    DBG3( __FUNCTION__ << " " << __LINE__ );
     QuadList::iterator i = _quads.begin();
     QuadList::iterator e = _quads.end();
     for ( ; i != e; ++i )
