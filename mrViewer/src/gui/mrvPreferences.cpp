@@ -1133,7 +1133,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 #else
     loading.get( "native_file_chooser", tmp, 0 );
 #endif
-    
+
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
     DBG;
@@ -1680,7 +1680,7 @@ void Preferences::run( ViewerUI* main )
 
     if ( use_ocio )
     {
-        DBG( "use_OCIO" );
+        DBG3( "use_OCIO" );
         DBG;
         main->uiFstopGroup->hide();
         main->uiNormalize->hide();
