@@ -1,3 +1,9 @@
+v5.0.8  - Removed dead code paths of NV shaders.
+	- Reverted to Ubuntu12.04 to compile mrViewer compatible with
+	  CentOS7.2+.
+	- Solidified OpenGL pipeline to deal with other vendors other
+	  than nvidia and amd.
+
 v5.0.7  - Made videos with two video tracks support stereo viewing,
 	  without needing to be the same length or fps.
 	- Removed libstdc++.so from Linux distribution as it was
@@ -7,7 +13,7 @@ v5.0.7  - Made videos with two video tracks support stereo viewing,
 	- Bug fixed some memory trashing upon program exit.
 	- Removed .cg shaders as NVidia has discontinued them.
 	- Made shaders work with 4 channels on videos that have alpha in
-	  them and are not rgba (YCbCr and YByBr shaders).
+	  them and are not rgba (YCbCrA and YByBrA shaders).
 	- Made Linux shortcut belong to user 1000 of the machine instead
 	  of root.  This removes the message about the program not being
 	  trusted.
