@@ -77,6 +77,7 @@ namespace OCIO = OCIO_NAMESPACE;
 #include "gui/mrvHotkey.h"
 #include "gui/mrvImageBrowser.h"
 #include "video/mrvGLLut3d.h"
+#include "video/mrvGLEngine.h"
 #include "mrvEDLWindowUI.h"
 
 // Widgets
@@ -473,6 +474,9 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     uiPrefs->uiPrefsViewPixelRatio->value( (bool) tmp );
 
     view.get("lut", tmp, 1 );
+
+    if ( ! GLEngine::floatTextures() ) tmp = 0;
+
     uiPrefs->uiPrefsViewLut->value( (bool) tmp );
 
     DBG;
