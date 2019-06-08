@@ -328,45 +328,80 @@ void GLLut3d::create_gl_texture()
     // Convert the output values into a 3D texture.
     //
     glPixelStorei( GL_UNPACK_ROW_LENGTH, 0 );
+    CHECK_GL;
     glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+    CHECK_GL;
 
     glActiveTexture( GL_TEXTURE3 );
+    CHECK_GL;
 
     glBindTexture( GL_TEXTURE_3D, texId );
+    CHECK_GL;
 
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    CHECK_GL;
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    CHECK_GL;
 
     GLenum gl_clamp = GL_CLAMP;
     if ( GLEW_EXT_texture_edge_clamp )
         gl_clamp = GL_CLAMP_TO_EDGE;
 
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, gl_clamp );
+    CHECK_GL;
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, gl_clamp );
+    CHECK_GL;
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, gl_clamp );
+    CHECK_GL;
+
 
     if ( _channels == 3 )
     {
+        GLenum internal = GL_RGB16F_ARB;
+        if ( ! GLEngine::halfPixels() )
+        {
+            internal = GL_RGB32F_ARB;
+            if ( ! GLEngine::floatTextures() ||
+                 ! GLEngine::floatPixels() )
+            {
+                internal = GL_RGB;
+            }
+        }
+
         glTexImage3D( GL_TEXTURE_3D,
                       0,			// level
-                      GL_RGB16F_ARB,           // internal format
+                      internal,           // internal format
                       _lutN, _lutN, _lutN,	// width, height, depth
                       0,			// border
                       GL_RGB,		// format
                       GL_FLOAT,	// type
                       (char *) &lut[0] );
+    CHECK_GL;
     }
     else
     {
+        GLenum internal = GL_RGBA16F_ARB;
+        if ( ! GLEngine::halfPixels() )
+        {
+            internal = GL_RGBA32F_ARB;
+            if ( ! GLEngine::floatTextures() ||
+                 ! GLEngine::floatPixels() )
+            {
+                internal = GL_RGBA;
+            }
+        }
+
         glTexImage3D( GL_TEXTURE_3D,
                       0,			// level
-                      GL_RGBA16F_ARB,           // internal format
+                      internal,           // internal format
                       _lutN, _lutN, _lutN,	// width, height, depth
                       0,			// border
                       GL_RGBA,		// format
                       GL_FLOAT,	// type
                       (char *) &lut[0] );
+    CHECK_GL;
     }
+    FLUSH_GL_ERRORS;
 }
 
 
@@ -507,42 +542,42 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
 
     try
     {
-	DBG;
+        DBG;
         OCIO::ConstConfigRcPtr config = OCIO::GetCurrentConfig();
-	DBG;
+        DBG;
         const std::string& display = mrv::Preferences::OCIO_Display;
-	DBG;
+        DBG;
         const std::string& view = mrv::Preferences::OCIO_View;
-	DBG;
+        DBG;
 
         OCIO::DisplayTransformRcPtr transform =
             OCIO::DisplayTransform::Create();
-	DBG;
+        DBG;
 
         std::string ics = img->ocio_input_color_space();
         if  ( ics.empty() )
         {
-	DBG;
+        DBG;
             OCIO::ConstColorSpaceRcPtr defaultcs = config->getColorSpace(OCIO::ROLE_SCENE_LINEAR);
             if(!defaultcs)
                 throw std::runtime_error( _("ROLE_SCENE_LINEAR not defined." ));
-	    DBG;
-	    ics = defaultcs->getName();
-	    DBG;
+            DBG;
+            ics = defaultcs->getName();
+            DBG;
         }
 
 
-	DBG;
+        DBG;
         transform->setInputColorSpaceName( ics.c_str() );
-	DBG;
+        DBG;
         transform->setDisplay( display.c_str() );
-	DBG;
+        DBG;
         transform->setView( view.c_str() );
-	DBG;
+        DBG;
 
         OCIO::ConstProcessorRcPtr processor =
             config->getProcessor( transform );
-	DBG;
+        DBG;
 
 
         OCIO::PackedImageDesc img(&lut[0],
@@ -551,7 +586,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
                                   /*channels*/ _channels);
         processor->apply( img );
 
-	DBG;
+        DBG;
 
         // std::ostringstream os;
         // os << processor->getGpuShaderText(shaderDesc) << std::endl;
@@ -1196,21 +1231,21 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     }
     else
     {
-	DBG;
+        DBG;
         std::string ics = img->ocio_input_color_space();
         if ( ics.empty() ) {
-	DBG;
+        DBG;
             ics = OCIO::ROLE_SCENE_LINEAR;
-	    CMedia* c = const_cast< CMedia* >( img );
-	    c->ocio_input_color_space( ics );
-	DBG;
+            CMedia* c = const_cast< CMedia* >( img );
+            c->ocio_input_color_space( ics );
+        DBG;
         }
         path = ics;
-	DBG;
+        DBG;
         path += " -> " + Preferences::OCIO_Display;
-	DBG;
+        DBG;
         path += " -> " + Preferences::OCIO_View;
-	DBG;
+        DBG;
     }
     //
     // Check if this lut path was already calculated by some other
@@ -1232,30 +1267,30 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
     {
         if ( img->ocio_input_color_space().empty() )
         {
-	DBG;
-	std::string msg = _( "Image input color space is undefined for ") +
-	img->name() + ".";
+        DBG;
+        std::string msg = _( "Image input color space is undefined for ") +
+        img->name() + ".";
             mrv::PopupMenu* uiICS = view->uiICS;
-	DBG;
+        DBG;
             const char* const lbl = "scene_linear";
             for ( int i = 0; i < uiICS->children(); ++i )
             {
-	DBG;
+        DBG;
                 std::string name = uiICS->child(i)->label();
                 if ( name == lbl )
                 {
-	DBG;
+        DBG;
                     msg += _("  Choosing ") + name + ".";
                     CMedia* c = const_cast< CMedia* >( img );
 
-	DBG;
+        DBG;
                     char buf[1024];
                     sprintf( buf, "ICS \"%s\"", name.c_str() );
                     view->uiView->send_network( buf );
 
-	DBG;
+        DBG;
                     c->ocio_input_color_space( name );
-	DBG;
+        DBG;
                     uiICS->copy_label( lbl );
                     uiICS->value(i);
                     uiICS->redraw();
@@ -1266,23 +1301,23 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         }
         else
         {
-	DBG;
+        DBG;
             mrv::PopupMenu* uiICS = view->uiICS;
-	DBG;
+        DBG;
             const std::string& lbl = img->ocio_input_color_space();
-	DBG;
-	LOG_INFO( "Input color space for " << img->name() << " is "
-		  << lbl );
+        DBG;
+        LOG_INFO( "Input color space for " << img->name() << " is "
+                  << lbl );
             for ( int i = 0; i < uiICS->children(); ++i )
             {
-	        const char* name = uiICS->child(i)->label();
-		if ( name && name == lbl )
+                const char* name = uiICS->child(i)->label();
+                if ( name && name == lbl )
                 {
-		    DBG;
+                    DBG;
                     uiICS->copy_label( lbl.c_str() );
-		    DBG;
+                    DBG;
                     uiICS->value(i);
-		    DBG;
+                    DBG;
                     uiICS->redraw();
                     break;
                 }
