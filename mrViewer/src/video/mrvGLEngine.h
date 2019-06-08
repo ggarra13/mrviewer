@@ -36,7 +36,7 @@
 
 #include "gui/mrvIO.h"
 
-#if 1
+#if 0
 #define CHECK_GL DBG; GLEngine::handle_gl_errors( kModule, __FUNCTION__, __LINE__, true )
 #else
 #  define CHECK_GL
@@ -152,8 +152,11 @@ public:
     static bool pow2Textures()  {
         return _pow2Textures;
     }
-    static bool halfTextures()  {
-        return _halfTextures;
+    static bool halfPixels()  {
+        return _halfPixels;
+    }
+    static bool floatPixels() {
+        return _floatPixels;
     }
     static bool floatTextures() {
         return _floatTextures;
@@ -184,7 +187,7 @@ public:
 
     /// Auxiliary function used to check for openGL errors
     static void handle_gl_errors(const char* module,
-				 const char* function, const unsigned line,
+                                 const char* function, const unsigned line,
                                  const bool print = false);
 
 protected:
@@ -277,7 +280,8 @@ protected:
     static bool _hdr;          //!< we support HDR10 movies
     static GLint _maxTexUnits;   //!< hardware texture units
     static bool _floatTextures;   //!< float textures supported
-    static bool _halfTextures;    //!< half textures supported
+    static bool _floatPixels;      //!< half pixels supported
+    static bool _halfPixels;      //!< half pixels supported
     static bool _pow2Textures;    //!< only power of 2 textures supported
     static bool _pboTextures;     //!< Pixel Buffer Objects?
     static bool _sdiOutput;       //!< SDI output
