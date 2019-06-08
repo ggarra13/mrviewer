@@ -172,7 +172,7 @@ void Flu_Combo_Box :: selected( const char *v )
 
 int Flu_Combo_Box::Popup :: handle( int event )
 {
-    
+
   if( event == FL_MOVE || event == FL_PUSH || event == FL_DRAG )
     {
       // FL_MOVE is also generated while the window is moving
@@ -183,7 +183,7 @@ int Flu_Combo_Box::Popup :: handle( int event )
       combo->_hilight( event, Fl::event_x(), Fl::event_y() );
     }
 
-  
+
   if( event == FL_DRAG )
     dragging = true;
 
