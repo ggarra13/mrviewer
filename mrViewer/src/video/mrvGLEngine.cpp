@@ -138,7 +138,8 @@ GLShader* GLEngine::_YByRyA = NULL;
 
 GLint  GLEngine::_maxTexUnits     = 1;
 bool   GLEngine::_floatTextures   = false;
-bool   GLEngine::_halfTextures    = false;
+bool   GLEngine::_floatPixels     = false;
+bool   GLEngine::_halfPixels      = false;
 bool   GLEngine::_pow2Textures    = true;
 bool   GLEngine::_pboTextures     = false;
 bool   GLEngine::_sdiOutput       = false;
@@ -152,8 +153,8 @@ unsigned int GLEngine::_maxTexHeight;
 // Check for opengl errors and print function name where it happened.
 //
   void GLEngine::handle_gl_errors(const char* module,
-				  const char* where, const unsigned line,
-				  const bool print )
+                                  const char* where, const unsigned line,
+                                  const bool print )
 {
     GLenum error = glGetError();
     if ( error == GL_NO_ERROR ) return;
@@ -162,10 +163,10 @@ unsigned int GLEngine::_maxTexHeight;
     {
         if ( print )
         {
-	  mrvALERT( module << " -> " << where << " (" << line << ")"
+          mrvALERT( module << " -> " << where << " (" << line << ")"
                       << _(": Error ") << error << " "
                       << gluErrorString(error) );
-	  LOG_ERROR( module << " -> " << where << " (" << line << ")"
+          LOG_ERROR( module << " -> " << where << " (" << line << ")"
                        << _(": Error ") << error << " "
                        << gluErrorString(error) );
         }
@@ -230,8 +231,9 @@ std::string GLEngine::options()
       << _("Version:\t")  << versionString << endl
       << _("Hardware Shaders:\t") << shader_type_name() << endl
       << _("PBO Textures:\t") << (_pboTextures   ? _("Yes") : _("No")) << endl
+      << _("Float Pixels:\t") << (_floatPixels  ? _("Yes") : _("No")) << endl
+      << _("Half Pixels:\t") << (_halfPixels  ? _("Yes") : _("No")) << endl
       << _("Float Textures:\t") << (_floatTextures ? _("Yes") : _("No")) << endl
-      << _("Half Textures:\t") << (_halfTextures  ? _("Yes") : _("No")) << endl
       << _("Non-POT Textures:\t")
       << (_pow2Textures  ? _("No")  : _("Yes")) << endl
       << _("Max. Texture Size:\t")
@@ -659,10 +661,12 @@ void GLEngine::initialize()
         }
     }
 
-    _floatTextures     = ( GLEW_ARB_color_buffer_float != GL_FALSE );
-    _halfTextures      = ( GLEW_ARB_half_float_pixel != GL_FALSE );
-    _pow2Textures      = !GLEW_ARB_texture_non_power_of_two;
-    _fboRenderBuffer   = ( GLEW_ARB_framebuffer_object != GL_FALSE );
+    _floatPixels     = GLEW_ARB_color_buffer_float != GL_FALSE;
+    _floatTextures   = ( GLEW_ARB_texture_float != GL_FALSE ||
+                         GLEW_ATI_texture_float != GL_FALSE );
+    _halfPixels      = GLEW_ARB_half_float_pixel != GL_FALSE;
+    _pow2Textures    = !GLEW_ARB_texture_non_power_of_two;
+    _fboRenderBuffer = ( GLEW_ARB_framebuffer_object != GL_FALSE );
 
     ImageView::VRType t = _view->vr();
     if ( t == ImageView::kVRSphericalMap )
@@ -1972,19 +1976,27 @@ void GLEngine::draw_images( ImageList& images )
         }
 
         GLQuad* quad = *q;
+            CHECK_GL;
         quad->minmax( _normMin, _normMax );
+            CHECK_GL;
         quad->image( img );
+            CHECK_GL;
         // Handle rotation of cube/sphere
+            CHECK_GL;
         quad->rot_x( _rotX );
+            CHECK_GL;
         quad->rot_y( _rotY );
 
+            CHECK_GL;
         if ( _view->use_lut() )
         {
             if ( img->image_damage() & CMedia::kDamageLut )
                 quad->clear_lut();
 
+            CHECK_GL;
             quad->lut( img );
 
+            CHECK_GL;
             if ( stereo != CMedia::kNoStereo )
             {
                 if ( img->image_damage() & CMedia::kDamageLut )
@@ -1995,7 +2007,9 @@ void GLEngine::draw_images( ImageList& images )
             img->image_damage( img->image_damage() & ~CMedia::kDamageLut  );
         }
 
+            CHECK_GL;
         if ( i+1 == e ) wipe_area();
+            CHECK_GL;
 
         float g = img->gamma();
 
@@ -2151,9 +2165,11 @@ void GLEngine::draw_images( ImageList& images )
                     {
                         int x = img->x();
                         int y = img->y();
+            CHECK_GL;
                         draw_square_stencil( dpw.x() + x,
                                              dpw.y() - y, dpw.w() - x,
                                              dpw.h() + y );
+            CHECK_GL;
                     }
 
                     if ( _view->data_window() )
@@ -2168,7 +2184,9 @@ void GLEngine::draw_images( ImageList& images )
 
                         mrv::Rectd r( daw2.x() + x, daw2.y() - y,
                                       daw2.w(), daw2.h() );
+            CHECK_GL;
                         draw_data_window( r );
+            CHECK_GL;
                     }
                 }
 
@@ -2196,7 +2214,9 @@ void GLEngine::draw_images( ImageList& images )
                     texHeight = pic->height();
                 }
 
+            CHECK_GL;
                 prepare_image( img, daw2, texWidth, texHeight, _view );
+            CHECK_GL;
             }
         }
         else if ( img->left() || img->has_subtitle() )
@@ -2207,15 +2227,19 @@ void GLEngine::draw_images( ImageList& images )
             if ( shader_type() == kNone && img->stopped() &&
                  pic->pixel_type() != image_type::kByte )
             {
+            CHECK_GL;
                 pic = display( pic, img );
+            CHECK_GL;
             }
 
         }
 
+            CHECK_GL;
         if ( stereo & CMedia::kStereoAnaglyph )
             glColorMask( GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE );
         else
             glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+            CHECK_GL;
 
 #ifdef USE_STEREO_GL
         if ( stereo & CMedia::kStereoOpenGL )
@@ -2226,7 +2250,9 @@ void GLEngine::draw_images( ImageList& images )
 #endif
 
         quad->mask( 0 );
+            CHECK_GL;
         quad->mask_value( 10 );
+            CHECK_GL;
         if ( stereo & CMedia::kStereoInterlaced )
         {
             if ( stereo == CMedia::kStereoInterlaced )
@@ -2236,13 +2262,17 @@ void GLEngine::draw_images( ImageList& images )
             else if ( stereo == CMedia::kStereoCheckerboard )
                 mask = 3; // checkerboard
             quad->mask( mask );
+            CHECK_GL;
             quad->mask_value( 0 );
+            CHECK_GL;
             glEnable( GL_BLEND );
+            CHECK_GL;
         }
 
         if ( fg == img && bg != fg &&  _view->show_background() )
             glEnable( GL_BLEND );
 
+            CHECK_GL;
         if ( img->image_damage() & CMedia::kDamageContents )
         {
             if ( stereo )
@@ -2262,6 +2292,7 @@ void GLEngine::draw_images( ImageList& images )
                 else if ( stereo == CMedia::kStereoLeft )
                     rightView = false;
                 quad->right( rightView );
+            CHECK_GL;
             }
             CMedia::Mutex& mtx = img->video_mutex();
             SCOPED_LOCK( mtx );
@@ -2281,7 +2312,9 @@ void GLEngine::draw_images( ImageList& images )
                 quad->shader( GLEngine::YCbCrAShader() );
             else
                 quad->shader( GLEngine::YCbCrShader() );
+            CHECK_GL;
             quad->bind( pic );
+            CHECK_GL;
             img->image_damage( img->image_damage() & ~CMedia::kDamageContents );
         }
 
@@ -2293,17 +2326,23 @@ void GLEngine::draw_images( ImageList& images )
         if ( ! pic->valid() && pic->channels() >= 2 &&
              Preferences::missing_frame == Preferences::kScratchedRepeatFrame )
         {
+            CHECK_GL;
             glDisable( GL_DEPTH );
+            CHECK_GL;
             glDisable( GL_STENCIL_TEST );
     CHECK_GL;
             glDisable( GL_TEXTURE_2D );
+            CHECK_GL;
             glDisable( GL_TEXTURE_3D );
+            CHECK_GL;
             glEnable(GL_BLEND);
     CHECK_GL;
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            CHECK_GL;
             glLineWidth( 50.0 );
     CHECK_GL;
             glColor4f( 1.0f, 0.f, 0.f, 0.5f );
+            CHECK_GL;
             glBegin(GL_LINES);
     CHECK_GL;
             glVertex2d( -0.5, -0.5 );
@@ -2311,12 +2350,15 @@ void GLEngine::draw_images( ImageList& images )
             glVertex2d( 0.5, -0.5 );
             glVertex2d( -0.5, 0.5 );
             glEnd();
+            CHECK_GL;
             glDisable( GL_BLEND );
     CHECK_GL;
             glEnable( GL_DEPTH );
+            CHECK_GL;
             glEnable( GL_STENCIL_TEST );
     CHECK_GL;
             glEnable( GL_TEXTURE_2D );
+            CHECK_GL;
             glEnable( GL_TEXTURE_3D );
     CHECK_GL;
         }
@@ -2343,12 +2385,18 @@ void GLEngine::draw_images( ImageList& images )
             img->image_damage( img->image_damage() & ~CMedia::kDamageSubtitle );
         }
 
+            CHECK_GL;
         glMatrixMode(GL_MODELVIEW);
+            CHECK_GL;
         glPopMatrix();
+            CHECK_GL;
     }
 
+            CHECK_GL;
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+            CHECK_GL;
     glDisable( GL_SCISSOR_TEST );
+            CHECK_GL;
     glDisable( GL_BLEND );
     FLUSH_GL_ERRORS;
 }
