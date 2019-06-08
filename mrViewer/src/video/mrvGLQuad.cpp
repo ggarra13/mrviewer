@@ -532,9 +532,10 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
     }
     else if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
     {
-        if ( GLEngine::halfTextures() )
+        if ( GLEngine::halfPixels() )
             internalFormat = GL_LUMINANCE16F_ARB;
-        else if ( GLEngine::floatTextures() )
+        else if ( GLEngine::floatTextures() &&
+                  GLEngine::floatPixels() )
             internalFormat = GL_LUMINANCE32F_ARB;
     }
 
@@ -742,9 +743,9 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         //
         if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
         {
-            if ( GLEngine::halfTextures() )
+            if ( GLEngine::halfPixels() && GLEngine::floatTextures() )
                 internalFormat = GL_RGBA16F_ARB;
-            else if ( GLEngine::floatTextures() )
+            else if ( GLEngine::floatPixels() && GLEngine::floatTextures() )
                 internalFormat = GL_RGBA32F_ARB;
         }
 
@@ -756,9 +757,9 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
         //
         if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
         {
-            if ( GLEngine::halfTextures() )
+            if ( GLEngine::halfPixels() && GLEngine::floatTextures() )
                 internalFormat = GL_RGB16F_ARB;
-            else if ( GLEngine::floatTextures() )
+            else if ( GLEngine::floatPixels() && GLEngine::floatTextures() )
                 internalFormat = GL_RGB32F_ARB;
         }
     }
