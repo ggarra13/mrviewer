@@ -1,14 +1,14 @@
 // $Id: Flu_Combo_Box.h,v 1.12 2004/03/24 02:49:00 jbryan Exp $
 
 /***************************************************************
- *                FLU - FLTK Utility Widgets 
+ *                FLU - FLTK Utility Widgets
  *  Copyright (C) 2002 Ohio Supercomputer Center, Ohio State University
  *
  * This file and its content is protected by a software license.
  * You should have received a copy of this license with this file.
  * If not, please contact the Ohio Supercomputer Center immediately:
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
- * 
+ *
  ***************************************************************/
 
 
@@ -74,7 +74,7 @@ protected:
 
   void (*_inputCB)(Fl_Widget*,void*);
   void* _inputCBD;
- 
+
   virtual bool _value( const char *v ) = 0;
   virtual const char* _next() = 0;
   virtual const char* _previous() = 0;
