@@ -854,8 +854,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   locationQuickJump->end();
 
   location = new Flu_Combo_Tree( 166, 15, w()-171, 22, _(locationTxt.c_str()) );
-  location->editable( false );
-  location->labelcolor( FL_BLACK );
+  location->labelcolor( FL_WHITE );
   location->pop_height( 200 );
   // location->tree.all_branches_always_open( true );
   location->tree.showroot( false );
