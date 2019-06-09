@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,18 +42,8 @@ extern "C" {
 #define MRV_NOPTS_VALUE (int64_t) AV_NOPTS_VALUE
 }
 
+#include "core/mrvAssert.h"
 
-
-/**
- * assert0() equivalent, that is always enabled.
- */
-#define assert0(cond) do {                                            \
-    if (!(cond)) {                                                       \
-        std::cerr << "Assertion " << AV_STRINGIFY(cond) << " failed at " \
-                  << __FILE__ << ":" << __LINE__ << std::endl;           \
-        ::abort();                                                      \
-    }                                                                    \
-} while (0)
 
 //#define DEBUG_PACKET_QUEUE
 
@@ -187,21 +177,21 @@ public:
                 pkt.data != NULL )
         {
             // std::cerr << this << " #" << _packets.size()
-            // 		<< " push back " << &pkt << " at "
-            // 		<< &(_packets.back())
+            //          << " push back " << &pkt << " at "
+            //          << &(_packets.back())
             //                << " start size: " << pkt.size
-            // 		<< " bytes " << _bytes
-            // 		<< std::endl;
+            //          << " bytes " << _bytes
+            //          << std::endl;
             assert0( pkt.size > 0 );
 
             _bytes += pkt.size;
             assert0( _bytes > 0 );
 
             // std::cerr << this << " #" << _packets.size()
-            // 		<< " push back end " << std::dec
-            // 		<< pkt.dts << " size: " << pkt.size
-            // 		<< " bytes " << _bytes
-            // 		<< std::endl;
+            //          << " push back end " << std::dec
+            //          << pkt.dts << " size: " << pkt.size
+            //          << " bytes " << _bytes
+            //          << std::endl;
         }
 
 #ifdef DEBUG_PACKET_QUEUE
@@ -278,16 +268,16 @@ public:
                 pkt.data != NULL )
         {
             // std::cerr << this << " #" << _packets.size()
-            // 		<< " erase " << &pkt << std::endl;
+            //          << " erase " << &pkt << std::endl;
 
             assert0( pkt.size >= 0 );
             assert0( _bytes >= pkt.size );
 
             // std::cerr << std::hex << this << " #"
-            // 		<< std::dec << _packets.size()
-            // 		<< " erase " << std::dec << pkt.dts
-            // 		<< " bytes " << std::dec << _bytes
-            // 		<< " - " << std::dec << pkt.size << " = ";
+            //          << std::dec << _packets.size()
+            //          << " erase " << std::dec << pkt.dts
+            //          << " bytes " << std::dec << _bytes
+            //          << " - " << std::dec << pkt.size << " = ";
 
             _bytes -= pkt.size;
 
@@ -335,14 +325,14 @@ public:
             assert0( _bytes >= pkt.size );
 
             // std::cerr << this  << " #"
-            // 		<< std::dec << _packets.size()
-            // 		<< " pop front " << &pkt << std::endl;
+            //          << std::dec << _packets.size()
+            //          << " pop front " << &pkt << std::endl;
 
             // std::cerr << std::hex << this << " #"
-            // 		<< std::dec << _packets.size()
-            // 		<< " pop front " << std::dec << pkt.dts
-            // 		<< " bytes " << std::dec << _bytes
-            // 		<< " - " << std::dec << pkt.size << " = ";
+            //          << std::dec << _packets.size()
+            //          << " pop front " << std::dec << pkt.dts
+            //          << " bytes " << std::dec << _bytes
+            //          << " - " << std::dec << pkt.size << " = ";
 
             _bytes -= pkt.size;
 
@@ -592,7 +582,7 @@ protected:
     static AVPacket _seek;       // special packet used to mark seeks to skip
     static AVPacket _jump;       // special packet used to mark jumps
     static AVPacket _preroll;    // special packet used to mark preroll seeks
-    static AVPacket _seek_end;   // special packet used to mark seek/preroll 
+    static AVPacket _seek_end;   // special packet used to mark seek/preroll
                                  // endings (used when playing backwards)
     static AVPacket _loop_end;   // special packet to mark loops in playback
     static AVPacket _loop_start; // special packet to mark loops in reverse playback
