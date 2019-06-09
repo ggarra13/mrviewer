@@ -55,6 +55,7 @@ namespace mrv {
 MainWindow::MainWindow( int W, int H, const char* title ) :
 Fl_Double_Window( W, H, title )
 {
+    xclass("mrViewer");
     set_icon();
 }
 
