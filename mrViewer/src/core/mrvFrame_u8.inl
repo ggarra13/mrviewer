@@ -10,6 +10,10 @@
 
 #include <ImathFun.h>
 
+namespace {
+    const char* kModule = "frame";
+}
+
 namespace mrv {
 
   ImagePixel VideoFrame::pixel_u8( const unsigned int x,
@@ -133,7 +137,7 @@ namespace mrv {
           break;
         }
       default:
-          throw std::runtime_error( _("Unknown mrv::Frame format") );
+          LOG_ERROR( _("Unknown mrv::Frame format " ) << _format );
       }
 
     if ( _format >= kYByRy410 )
@@ -299,7 +303,7 @@ namespace mrv {
           break;
         }
       default:
-        throw std::runtime_error("Unknown mrv::Frame format");
+          LOG_ERROR( _("Unknown mrv::Frame format " ) << _format );
       }
 
     if ( _format >= kYByRy410 )
