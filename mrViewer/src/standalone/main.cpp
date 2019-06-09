@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -196,14 +195,14 @@ int main( int argc, char** argv )
     {
         std::cerr << e.what() << std::endl;
     }
-    
+
 DBG;
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
 DBG;
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
-  
+
 #ifdef _WIN32
   int numArgs = 0;
   LPWSTR* args = CommandLineToArgvW( GetCommandLineW(), &numArgs );
@@ -218,28 +217,28 @@ DBG;
   std::string program = argv[0];
   fs::path file = fs::path( program );
 #endif
-    
+
   int ok = -1;
   DBG;
   file = fs::absolute( file );
- 
+
   fs::path dir = file.parent_path().branch_path();
   std::string path = fs::canonical( dir ).string();
   path += "/share/locale";
- 
+
   bindtextdomain(buf, path.c_str() );
   textdomain(buf);
- 
- 
+
+
   DBG;
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
- 
+
   DBG;
- 
+
   // Adjust ui based on preferences
   for (;;) {
-     
+
       ViewerUI* ui = NULL;
       std::string lockfile;
 
@@ -376,7 +375,6 @@ DBG;
 
           if ( single_instance )
               Fl::add_timeout( 1.0, load_new_files, ui );
-
 
           ui->uiMain->show();   // so run() does something
           ok = Fl::run();
