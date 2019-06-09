@@ -2081,16 +2081,19 @@ void aviImage::video_stream( int x )
     case AV_PIX_FMT_YUV444P16LE:
         _ptype = VideoFrame::kShort;
     case AV_PIX_FMT_YUVA444P:
-        if ( _colorspace_index == AVCOL_SPC_BT709 ||
-                ( ctx->height >= 630 && ctx->width >= 1120 ) )
-            _pix_fmt = VideoFrame::kITU_709_YCbCr444A;
-        else
-            _pix_fmt = VideoFrame::kITU_601_YCbCr444A;
-        break;
+        if ( has_alpha )
+        {
+            if ( _colorspace_index == AVCOL_SPC_BT709 ||
+                 ( ctx->height >= 630 && ctx->width >= 1120 ) )
+                _pix_fmt = VideoFrame::kITU_709_YCbCr444A;
+            else
+                _pix_fmt = VideoFrame::kITU_601_YCbCr444A;
+            break;
+        }
     case AV_PIX_FMT_YUV444P:
     case AV_PIX_FMT_YUVJ444P:
         if ( _colorspace_index == AVCOL_SPC_BT709 ||
-                ( ctx->height >= 630 && ctx->width >= 1120 ) )
+             ( ctx->height >= 630 && ctx->width >= 1120 ) )
             _pix_fmt = VideoFrame::kITU_709_YCbCr444;
         else
             _pix_fmt = VideoFrame::kITU_601_YCbCr444;
@@ -2129,6 +2132,8 @@ void aviImage::video_stream( int x )
         break;
     }
 
+    if ( _ptype == VideoFrame::kShort )
+        _depth = image_type::kShort;
 
     if ( old >= 0 )
     {
