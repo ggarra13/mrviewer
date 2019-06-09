@@ -687,7 +687,7 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
     //
     Fl_Preferences playback( base, "playback" );
     DBG;
-    playback.get( "auto_playback", tmp, 0 );
+    playback.get( "auto_playback", tmp, 1 );
     uiPrefs->uiPrefsAutoPlayback->value(tmp);
 
     DBG;
