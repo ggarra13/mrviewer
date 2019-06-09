@@ -49,6 +49,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 
+#include "core/mrvAssert.h"
 #include "core/mrvAlignedData.h"
 #include "core/mrvImagePixel.h"
 
@@ -426,7 +427,7 @@ public:
     }
 
     inline void frame( int64_t f ) { _frame = f; }
-    
+
     inline unsigned int frequency() const {
         return _freq;
     }
