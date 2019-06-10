@@ -755,6 +755,7 @@ void change_timeline_display( ViewerUI* uiMain )
     buf[2] = 0;
 
     uiMain->uiTimecodeSwitch->copy_label( buf );
+    uiMain->uiTimecodeSwitch->redraw();
 
     mrv::Timecode::Display d = (mrv::Timecode::Display) i;
     uiMain->uiFrame->display( d );
