@@ -44,7 +44,7 @@ decl {\#include "gui/mrvImageView.h"} {private local
 decl {\#include "gui/mrvImageBrowser.h"} {private local
 }
 
-decl {\#include "gui/mrvBrowser.h"} {private local
+decl {\#include "gui/mrvBrowser.h"} {selected private local
 }
 
 decl {\#include "gui/mrvCTLBrowser.h"} {public local
@@ -969,7 +969,7 @@ else
 	 v->uiView->redraw();
        }
     }
- }} selected
+ }}
 		  tooltip {Some default gamma settings.} xywh {405 3 50 21} labelsize 12 align 80
 		  class {mrv::PopupMenu}
 		} {
@@ -1419,10 +1419,9 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
 		  xywh {4 513 94 20}
 		} {
 		  Fl_Menu_Button uiTimecodeSwitch {
-		    label F
 		    user_data this user_data_type {ViewerUI*}
 		    callback {mrv::change_timeline_display(v);} open
-		    tooltip {Switch between Frame, Seconds and Timecode display} xywh {4 513 20 20} box DOWN_BOX align 16
+		    tooltip {Switch between Frame, Seconds and Timecode display} xywh {4 513 20 20}
 		    code0 {o->disable_glyph();}
 		    class {mrv::PopupMenu}
 		  } {
@@ -1448,7 +1447,6 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
 		    }
 		  }
 		  Fl_Input uiFrame {
-		    label F
 		    user_data this user_data_type {ViewerUI*}
 		    callback {int64_t f = o->value();
 if ( f < v->uiTimeline->minimum() )
