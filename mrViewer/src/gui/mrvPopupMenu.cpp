@@ -53,16 +53,13 @@ effect to the widget.
 
 #define __STDC_CONSTANT_MACROS
 
-extern "C" {
-#include <libavutil/avassert.h>
-}
-
 #include <FL/Fl_Box.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Menu_Item.H>
 
 #include <iostream>
 
+#include "core/mrvAssert.h"
 
 extern Fl_Widget* fl_did_clipping;
 
@@ -96,7 +93,7 @@ void PopupMenu::draw() {
 }
 
 const Fl_Menu_Item* PopupMenu::child(int i) {
-    av_assert0( i >= 0 );
+    assert0( i >= 0 );
     return &(menu()[i]);
 }
 
