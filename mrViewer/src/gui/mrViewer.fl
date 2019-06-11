@@ -1419,6 +1419,7 @@ v->uiView->looping( (mrv::CMedia::Looping)c );}
 		  xywh {4 513 94 20}
 		} {
 		  Fl_Menu_Button uiTimecodeSwitch {
+		    label {F:}
 		    user_data this user_data_type {ViewerUI*}
 		    callback {mrv::change_timeline_display(v);} open
 		    tooltip {Switch between Frame, Seconds and Timecode display} xywh {4 513 20 20}
