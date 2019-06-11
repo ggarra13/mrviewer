@@ -116,7 +116,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-06-10 18:41-0300\n"
+"POT-Creation-Date: 2019-06-11 08:01-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -2818,7 +2818,7 @@ msgstr ""
 msgid "  < [ } | 1 2 | | 3 4 5 6 7 8 9 0 a b   "
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:557
+#: audio/mrvALSAEngine.cpp:556
 msgid "  ==> Using "
 msgstr "==>  Usando "
 
@@ -3502,11 +3502,11 @@ msgstr " C:"
 msgid " FAILED"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:558
+#: audio/mrvALSAEngine.cpp:557
 msgid " Hz instead."
 msgstr " Hz en remplazo."
 
-#: audio/mrvALSAEngine.cpp:555
+#: audio/mrvALSAEngine.cpp:554
 msgid " Hz is not supported by your hardware."
 msgstr " Hz no es soportado por su hardware."
 
@@ -13747,7 +13747,7 @@ msgstr "Caja2 Coma Flotante"
 msgid "Box2 Integer"
 msgstr "Caja2 Entero"
 
-#: audio/mrvALSAEngine.cpp:704
+#: audio/mrvALSAEngine.cpp:703
 msgid "Buffer underrun: "
 msgstr "Buffer infrautilizado: "
 
@@ -14048,9 +14048,13 @@ msgstr ""
 msgid "Can't load shader file '"
 msgstr "Usando perfil de shader de hardware: "
 
+#: audio/mrvALSAEngine.cpp:127
+msgid "Can't open card "
+msgstr "No pude abrir tarjeta "
+
 #: video/mrvGLLut3d.cpp:727
 msgid "Can't open profile"
-msgstr "No pude localizar el perfil ICC \""
+msgstr "No pude localizar el perfil ICC"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:352
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvAudioOffset.cxx:43
@@ -15130,17 +15134,17 @@ msgstr "No pude encontrar ningun formato de audio de hardware"
 msgid "Couldn't get hardware config: %s"
 msgstr "No pude obtener configuración de hardware: %s"
 
-#: audio/mrvALSAEngine.cpp:571
+#: audio/mrvALSAEngine.cpp:570
 #, c-format
 msgid "Couldn't get hw_params_set_period_time_near: %s"
 msgstr "No pude obtener hw_params_set_period_time_near: %s"
 
-#: audio/mrvALSAEngine.cpp:592
+#: audio/mrvALSAEngine.cpp:591
 #, c-format
 msgid "Couldn't get period size: %s"
 msgstr "No pude obtener el tamaño del período: %s"
 
-#: audio/mrvALSAEngine.cpp:612
+#: audio/mrvALSAEngine.cpp:611
 #, c-format
 msgid "Couldn't get software config: %s"
 msgstr "No pude obtener configuración de software: %s"
@@ -15154,7 +15158,7 @@ msgstr "No pude abrir '"
 msgid "Couldn't open audio device %s: %s"
 msgstr "No pude abrir el dispositivo de audio %s: %s"
 
-#: audio/mrvALSAEngine.cpp:648
+#: audio/mrvALSAEngine.cpp:647
 #, c-format
 msgid "Couldn't prepare sound device: %s"
 msgstr "No pude preparar el dispositivo de audio: %s"
@@ -15173,27 +15177,27 @@ msgstr "No pude setear los canales de audio"
 msgid "Couldn't set audio frequency: %s"
 msgstr "No pude setear la frecuencia de audio: %s"
 
-#: audio/mrvALSAEngine.cpp:629
+#: audio/mrvALSAEngine.cpp:628
 #, c-format
 msgid "Couldn't set avail min: %s"
 msgstr "No pude setear el minimo disponible: %s"
 
-#: audio/mrvALSAEngine.cpp:583
+#: audio/mrvALSAEngine.cpp:582
 #, c-format
 msgid "Couldn't set buffer time near: %s"
 msgstr "No pude setear el tiempo cercano del buffer: %s"
 
-#: audio/mrvALSAEngine.cpp:600
+#: audio/mrvALSAEngine.cpp:599
 #, c-format
 msgid "Couldn't set hardware audio parameters: %s"
 msgstr "No pude setear los parametros de audio de hardware: %s"
 
-#: audio/mrvALSAEngine.cpp:638
+#: audio/mrvALSAEngine.cpp:637
 #, c-format
 msgid "Couldn't set software audio parameters: %s"
 msgstr "No pude setear los parametros de softare de audio: %s"
 
-#: audio/mrvALSAEngine.cpp:621
+#: audio/mrvALSAEngine.cpp:620
 #, c-format
 msgid "Couldn't set start threshold: %s"
 msgstr "No pude setear el límite del comienzo: %s"
@@ -16159,6 +16163,14 @@ msgstr ""
 msgid "E.\tc #FFEAA0"
 msgstr ""
 
+#: audio/mrvALSAEngine.cpp:691
+msgid "EAGAIN: "
+msgstr ""
+
+#: audio/mrvALSAEngine.cpp:710
+msgid "EBADFD: "
+msgstr ""
+
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:182
 #: core/mrvServer.cpp:340 core/Sequence.cpp:827
 msgid "EDL"
@@ -16203,39 +16215,6 @@ msgstr ""
 
 #: core/mrvPlayback.cpp:841
 msgid "ENTER SUBTITLE THREAD "
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:303 audio/mrvALSAEngine.cpp:412
-#: audio/mrvALSAEngine.cpp:663
-msgid "ERROR: [alsa] "
-msgstr "AVISO: [alsa]"
-
-#: audio/mrvALSAEngine.cpp:127
-msgid "ERROR: [alsa] Can't open card "
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:692
-msgid "ERROR: [alsa] EAGAIN: "
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:712
-msgid "ERROR: [alsa] EBADFD: "
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:758
-msgid "ERROR: [alsa] snd_pcm_close failed with "
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:740
-msgid "ERROR: [alsa] snd_pcm_drop failed with "
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:707
-msgid "ERROR: [alsa] snd_pcm_prepare failed"
-msgstr ""
-
-#: audio/mrvALSAEngine.cpp:716
-msgid "ERROR: [alsa] snd_pcm_prepare failed "
 msgstr ""
 
 #: core/mrvPlayback.cpp:798
@@ -16620,6 +16599,12 @@ msgstr ""
 #: gui/FLU/flu_file_chooser_pixmaps.cpp:1154
 msgid "F.\tc #FFE89E"
 msgstr ""
+
+#
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1931
+#
+msgid "F:"
+msgstr "C:"
 
 #
 #: gui/mrvImageView.cpp:3707
@@ -23443,7 +23428,7 @@ msgstr ""
 "El perfil controla las característica y calidad del codec.  Si esta en duda, "
 "setéelo al mas alto perfil."
 
-#: audio/mrvALSAEngine.cpp:554
+#: audio/mrvALSAEngine.cpp:553
 msgid "The rate "
 msgstr "Velocidad de sampleo "
 
@@ -24709,10 +24694,6 @@ msgstr "W:"
 #, c-format
 msgid "W: %g %g"
 msgstr ""
-
-#: audio/mrvALSAEngine.cpp:553
-msgid "WARNING: [alsa] "
-msgstr "AVISO: [alsa]"
 
 #: core/aviImage.cpp:328
 msgid "WAVE"
@@ -31261,6 +31242,20 @@ msgstr "Loma"
 msgid "smpte"
 msgstr ""
 
+#: audio/mrvALSAEngine.cpp:753
+#,
+msgid "snd_pcm_close failed with "
+msgstr "snd_pcm_close falló con "
+
+#: audio/mrvALSAEngine.cpp:736
+#,
+msgid "snd_pcm_drop failed with "
+msgstr "snd_pcm_drop falló con "
+
+#: audio/mrvALSAEngine.cpp:706 audio/mrvALSAEngine.cpp:713
+msgid "snd_pcm_prepare failed"
+msgstr ""
+
 #: core/mrSocket.cpp:30
 msgid "sock"
 msgstr ""
@@ -33108,10 +33103,11 @@ msgstr ""
 msgid "~/"
 msgstr ""
 
-#
-#, fuzzy
-#~ msgid "F:"
-#~ msgstr " C:"
+#~ msgid "ERROR: [alsa] "
+#~ msgstr "AVISO: [alsa]"
+
+#~ msgid "WARNING: [alsa] "
+#~ msgstr "AVISO: [alsa]"
 
 #, fuzzy
 #~ msgid "editable? "
