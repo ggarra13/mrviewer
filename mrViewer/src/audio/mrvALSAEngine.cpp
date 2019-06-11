@@ -124,17 +124,17 @@ bool ALSAEngine::initialize()
             err = snd_ctl_open(&p_ctl, psz_dev, 0);
             if ( err < 0 )
             {
-                std::cerr << "ERROR: [alsa] Can't open card " << card
-                          << " " << snd_strerror(err) << std::endl;
+                LOG_ERROR( _("Can't open card ") << card
+                           << " " << _( snd_strerror(err) ) );
                 continue;
             }
 
-	    std::string card_name = _("Unknown");
+            std::string card_name = _("Unknown");
             err = snd_card_get_name(card, &psz_card_name);
             if ( err >= 0 ) {
-		card_name = psz_card_name;
-		free( psz_card_name );
-	    }
+                card_name = psz_card_name;
+                free( psz_card_name );
+            }
 
             snd_pcm_info_alloca(&pcm_info);
             memset(pcm_info, 0, snd_pcm_info_sizeof());
@@ -199,7 +199,7 @@ bool ALSAEngine::shutdown()
 
 float ALSAEngine::volume() const
 {
-#if 1
+#if 0
     return _volume;
 #else
 
@@ -300,7 +300,7 @@ float ALSAEngine::volume() const
         }
         catch( const exception& e )
         {
-            std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
+            LOG_ERROR( e.what() );
         }
     }
 
@@ -409,7 +409,7 @@ void ALSAEngine::volume( float v )
     }
     catch( const exception& e )
     {
-        std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
+        LOG_ERROR( e.what() );
     }
 
 #else
@@ -550,12 +550,11 @@ bool ALSAEngine::open( const unsigned channels,
         }
 
         if (freq != exact_rate) {
-            std::cerr  << _("WARNING: [alsa] ")
-                       << _("The rate ") << freq
-                       << _(" Hz is not supported by your hardware.")
-                       << std::endl
-                       << _("  ==> Using ") << exact_rate
-                       << _(" Hz instead.") << std::endl;
+            LOG_WARNING( _("The rate ") << freq
+                         << _(" Hz is not supported by your hardware.")
+                         << std::endl
+                         << _("  ==> Using ") << exact_rate
+                         << _(" Hz instead.") );
         }
 
         /* calculate a period time of one half sample time */
@@ -660,7 +659,7 @@ bool ALSAEngine::open( const unsigned channels,
     }
     catch( const std::exception& e )
     {
-        std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
+        LOG_ERROR( e.what() );
         close();
         struct timespec req = {
             7, 0
@@ -689,8 +688,8 @@ bool ALSAEngine::play( const char* data, const size_t size )
         status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
         if ( status < 0 ) {
             if ( status == -EAGAIN ) {
-                std::cerr << "ERROR: [alsa] EAGAIN: "
-                          << snd_strerror( status ) << std::endl;
+                LOG_ERROR( _("EAGAIN: ")
+                           << _(snd_strerror( status )) );
                 continue;
             }
             if ( status == -ESTRPIPE ) {
@@ -704,17 +703,14 @@ bool ALSAEngine::play( const char* data, const size_t size )
                 DBG3( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
-                    std::cerr << "ERROR: [alsa] snd_pcm_prepare failed"
-                              << std::endl;
+                    LOG_ERROR( _("snd_pcm_prepare failed") );
             }
             if ( status == -EBADFD )
             {
-                std::cerr << "ERROR: [alsa] EBADFD: "
-                          << snd_strerror( status ) << std::endl;
+                LOG_ERROR( _("EBADFD: ") << _(snd_strerror( status )) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
-                    std::cerr << "ERROR: [alsa] snd_pcm_prepare failed "
-                              << snd_strerror( status ) << std::endl;
+                    LOG_ERROR( _("snd_pcm_prepare failed") );
             }
             if ( status < 0 ) {
                 /* Hmm, not much we can do - abort */
@@ -737,9 +733,8 @@ void ALSAEngine::flush()
         int err = snd_pcm_drop( _pcm_handle );
         if ( err < 0 )
         {
-            std::cerr << "ERROR: [alsa] snd_pcm_drop failed with "
-                      << snd_strerror(err)
-                      << std::endl;
+            LOG_ERROR( _("snd_pcm_drop failed with ")
+                       << _( snd_strerror(err) ) );
         }
     }
 }
@@ -755,9 +750,8 @@ bool ALSAEngine::close()
         int err = snd_pcm_close( _pcm_handle );
         if ( err < 0 )
         {
-            std::cerr << "ERROR: [alsa] snd_pcm_close failed with "
-                      << snd_strerror(err)
-                      << std::endl;
+            LOG_ERROR( _("snd_pcm_close failed with ")
+                       << _( snd_strerror(err) ) );
         }
         _pcm_handle = NULL;
         _enabled = false;
