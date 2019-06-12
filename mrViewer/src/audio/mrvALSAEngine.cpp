@@ -551,10 +551,8 @@ bool ALSAEngine::open( const unsigned channels,
 
         if (freq != exact_rate) {
             LOG_WARNING( _("The rate ") << freq
-                         << _(" Hz is not supported by your hardware.")
-                         << std::endl
-                         << _("  ==> Using ") << exact_rate
-                         << _(" Hz instead.") );
+                         << _(" Hz is not supported by your hardware.") );
+            LOG_WARNING( _("  ==> Using ") << exact_rate << _(" Hz instead.") );
         }
 
         /* calculate a period time of one half sample time */
