@@ -425,7 +425,8 @@ CMedia* CMedia::guess_image( const char* file,
         LOG_ERROR( e.what() );
     }
 
-    DBG3("Loaded " << image->name() );
+    if ( image )
+        DBG3("Loaded " << image->name() );
 
     return image;
 }
