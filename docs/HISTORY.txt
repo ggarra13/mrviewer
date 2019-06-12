@@ -14,7 +14,7 @@ v5.0.8  - Removed dead code paths of NV shaders.
 	- Made auto-playback be the default setting on new installs.
 	- Removed dead code of copy of boost threadpool in core directory.
 	- Fixed volume display on Linux.  Now the audio slider reflects
-	  the current volume at startup.
+	  the current volume at startup when the movie is loaded.
 
 v5.0.7  - Made videos with two video tracks support stereo viewing,
 	  without needing to be the same length or fps.
