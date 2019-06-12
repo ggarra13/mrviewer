@@ -81,6 +81,10 @@ namespace fs = boost::filesystem;
 
 #include "standalone/mrvCommandLine.h"
 
+#ifdef LINUX
+// Turn off format-security warning as it is incorrect here
+#  pragma GCC diagnostic ignored "-Wformat-security"
+#endif
 
 namespace
 {
@@ -621,6 +625,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( uiMain == NULL || uiMain->uiEDLWindow == NULL ) return NULL;
     return uiMain->uiEDLWindow->uiEDLGroup;
 }
+
 
 /**
  * Remove/Erase current reel
@@ -1374,19 +1379,19 @@ mrv::media ImageBrowser::load_image( const char* name,
 
     mrv::EDLGroup* e = edl_group();
 
-    size_t i = 0;
-    for ( i = 0; i < number_of_reels(); ++i )
-    {
-        if ( e && reel == this->reel( (unsigned int)i ) )
-        {
-            mrv::media_track* track = e->media_track((int)i);
-            if ( track && m )
-            {
-                track->add( m );
-                track->redraw();
-            }
-        }
-    }
+    // size_t i = 0;
+    // for ( i = 0; i < number_of_reels(); ++i )
+    // {
+    //     if ( e && reel == this->reel( (unsigned int)i ) )
+    //     {
+    //         mrv::media_track* track = e->media_track((int)i);
+    //         if ( track && m )
+    //         {
+    //             track->add( m );
+    //             track->redraw();
+    //         }
+    //     }
+    // }
 
     return m;
 }
@@ -1950,30 +1955,26 @@ void ImageBrowser::remove_current()
 
     mrv::EDLGroup* e = edl_group();
 
-    for ( size_t i = 0; i < number_of_reels(); ++i )
+
+
+    Fl_Tree_Item* item = media_to_item( m );
+    if ( !item )
     {
-        if ( e && reel == this->reel( (unsigned int)i ) )
-        {
-            mrv::media_track* track = e->media_track((int)i);
-            if ( track && m )
-            {
-                track->remove( m );
-                break;
-            }
-        }
+        LOG_ERROR( _("Image item not found for ") << m->image()->name() );
+        return;
+    }
+    Fl_Tree::remove( item );
+
+    match_tree_order();
+
+    if ( sel >= (int)reel->images.size() )
+    {
+        sel = reel->images.size() - 1;
     }
 
-    if ( sel < (int)reel->images.size() )
-    {
-        value( sel );
-    }
-    else
-    {
-        value( (int)reel->images.size()-1 );
-    }
-
-    change_image();
+    change_image(sel);
     adjust_timeline();
+
     redraw();
 }
 
