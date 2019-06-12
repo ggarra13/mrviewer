@@ -475,8 +475,6 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     view.get("lut", tmp, 1 );
 
-    if ( ! GLEngine::floatTextures() ) tmp = 0;
-
     uiPrefs->uiPrefsViewLut->value( (bool) tmp );
 
     DBG;
@@ -1294,6 +1292,8 @@ void Preferences::run( ViewerUI* main )
     // Windows
     //
 
+
+
     DBG;
     if ( uiPrefs->uiPrefsEDLEdit->value() )
     {
@@ -1430,6 +1430,7 @@ void Preferences::run( ViewerUI* main )
     if ( !view->use_lut() )
     {
         bool use = uiPrefs->uiPrefsViewLut->value();
+        if ( ! GLEngine::floatTextures() ) use = false;
         DBG;
         main->uiLUT->value( use );
         view->use_lut( use );
