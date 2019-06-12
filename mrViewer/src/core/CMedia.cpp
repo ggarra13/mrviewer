@@ -4294,8 +4294,9 @@ void CMedia::default_ocio_input_color_space()
             defaultcs = config->getColorSpace("lg10");
         if ( defaultcs )
         {
-            IMG_INFO( "Got colorspace '" << defaultcs->getName()
-                      << "' for dpx/cin extension");
+            if ( !_is_thumbnail )
+                IMG_INFO( "Got colorspace '" << defaultcs->getName()
+                          << "' for dpx/cin extension");
             ocio_input_color_space( defaultcs->getName() );
         }
     }
