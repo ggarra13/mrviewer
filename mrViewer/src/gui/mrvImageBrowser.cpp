@@ -1973,6 +1973,9 @@ void ImageBrowser::remove_current()
     }
 
     change_image(sel);
+
+    view()->fit_image();
+
     adjust_timeline();
 
     redraw();
@@ -2467,7 +2470,9 @@ void ImageBrowser::previous_image()
  */
 int ImageBrowser::mousePush( int x, int y )
 {
+    DBG;
     int ok = Fl_Tree::handle( FL_PUSH );
+    DBG;
 
     CMedia::Playback play = (CMedia::Playback) view()->playback();
     if ( play != CMedia::kStopped )
@@ -2477,15 +2482,20 @@ int ImageBrowser::mousePush( int x, int y )
 
     if ( button == FL_LEFT_MOUSE )
     {
+    DBG;
         int clicks = Fl::event_clicks();
         lastX = x;
         lastY = y;
+    DBG;
         dragging = callback_item();
 
+    DBG;
         if ( (! dragging) || (! dragging->widget()) ) return 0;
 
+    DBG;
         if ( dragging == old_dragging && clicks > 0 )
         {
+    DBG;
             Fl::event_clicks(0);
             redraw();
             uiMain->uiImageInfo->uiMain->show();
@@ -2495,14 +2505,17 @@ int ImageBrowser::mousePush( int x, int y )
             return 1;
         }
 
+    DBG;
         old_dragging = dragging;
 
+    DBG;
         int ok = Fl_Tree::deselect_all( NULL, 0 );
         if ( ok < 0 )
         {
             LOG_ERROR( "Could not deselect all" );
         }
-        ok = select( dragging, 0 );
+        DBG;
+        ok = Fl_Tree::select( dragging, 0 );
         if ( ok < 0 )
         {
             LOG_ERROR( "Could not select " << dragging->label() );
