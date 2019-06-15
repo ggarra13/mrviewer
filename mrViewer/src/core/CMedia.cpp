@@ -1584,7 +1584,7 @@ void CMedia::sequence( const char* fileroot,
     }
 }
 
-// Adds default OCIO, ICC, and CTL profiles
+//! Adds default OCIO, ICC, and CTL profiles
 void CMedia::default_color_corrections()
 {
     default_icc_profile();
