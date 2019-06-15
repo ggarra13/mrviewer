@@ -2773,8 +2773,6 @@ bool aviImage::initialize()
     {
         int error = 0;
 
-        std::string file;
-
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "initial_pause", "1", 0);
 
@@ -2797,17 +2795,12 @@ bool aviImage::initialize()
 
             if ( CMedia::load_library != CMedia::kFFMPEGLibrary ) return false;
 
-            // We must open fileroot for png/dpx/jpg sequences to work
-            file = fileroot();
-        }
-        else
-        {
-            file = sequence_filename( _frameStart );
         }
 
 
+        // We must open fileroot for png/dpx/jpg sequences to work
         AVInputFormat*     format = NULL;
-        error = avformat_open_input( &_context, file.c_str(),
+        error = avformat_open_input( &_context, fileroot(),
                                      format, &opts );
 
 
