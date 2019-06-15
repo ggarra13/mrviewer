@@ -27,26 +27,20 @@
 #: core/Sequence.cpp:632 core/Sequence.cpp:642 core/Sequence.cpp:658
 #: core/Sequence.cpp:666 core/Sequence.cpp:1009 core/Sequence.cpp:1044
 #: core/mrvCPU.cpp:747 core/mrvColorOps.cpp:74 core/mrvColorOps.cpp:75
-#: gui/FLU/Flu_Tree_Browser.cpp:1334 gui/FLU/Flu_Tree_Browser.cpp:2904
-#: gui/FLU/Flu_Tree_Browser.cpp:2924 gui/FLU/Flu_Tree_Browser.cpp:3257
-#: gui/FLU/Flu_Tree_Browser.cpp:3266 gui/FLU/FluSimpleString.cpp:20
-#: gui/FLU/FluSimpleString.cpp:28 gui/FLU/FluSimpleString.cpp:33
-#: gui/FLU/FluSimpleString.cpp:39 gui/FLU/FluSimpleString.cpp:108
-#: gui/FLU/FluSimpleString.cpp:124 gui/FLU/FluSimpleString.cpp:136
-#: gui/FLU/Flu_Button.cpp:170 gui/FLU/Flu_File_Chooser.cpp:195
-#: gui/FLU/Flu_File_Chooser.cpp:205 gui/FLU/Flu_File_Chooser.cpp:208
-#: gui/FLU/Flu_File_Chooser.cpp:225 gui/FLU/Flu_File_Chooser.cpp:512
-#: gui/FLU/Flu_File_Chooser.cpp:603 gui/FLU/Flu_File_Chooser.cpp:776
-#: gui/FLU/Flu_File_Chooser.cpp:1121 gui/FLU/Flu_File_Chooser.cpp:1144
-#: gui/FLU/Flu_File_Chooser.cpp:1416 gui/FLU/Flu_File_Chooser.cpp:1599
-#: gui/FLU/Flu_File_Chooser.cpp:1908 gui/FLU/Flu_File_Chooser.cpp:2118
-#: gui/FLU/Flu_File_Chooser.cpp:2325 gui/FLU/Flu_File_Chooser.cpp:2523
-#: gui/FLU/Flu_File_Chooser.cpp:2526 gui/FLU/Flu_File_Chooser.cpp:2840
-#: gui/FLU/Flu_File_Chooser.cpp:3221 gui/FLU/Flu_File_Chooser.cpp:3487
-#: gui/FLU/Flu_File_Chooser.cpp:3747 gui/FLU/Flu_File_Chooser.cpp:3751
-#: gui/FLU/Flu_File_Chooser.cpp:4098 gui/FLU/Flu_File_Chooser.cpp:4101
-#: gui/FLU/Flu_File_Chooser.cpp:4373 gui/FLU/Flu_File_Chooser.cpp:4452
-#: gui/FLU/Flu_File_Chooser.cpp:4672 gui/FLU/Flu_File_Chooser.cpp:4686
+#: gui/FLU/Flu_Button.cpp:170 gui/FLU/Flu_File_Chooser.cpp:194
+#: gui/FLU/Flu_File_Chooser.cpp:204 gui/FLU/Flu_File_Chooser.cpp:207
+#: gui/FLU/Flu_File_Chooser.cpp:224 gui/FLU/Flu_File_Chooser.cpp:511
+#: gui/FLU/Flu_File_Chooser.cpp:602 gui/FLU/Flu_File_Chooser.cpp:775
+#: gui/FLU/Flu_File_Chooser.cpp:1120 gui/FLU/Flu_File_Chooser.cpp:1143
+#: gui/FLU/Flu_File_Chooser.cpp:1413 gui/FLU/Flu_File_Chooser.cpp:1596
+#: gui/FLU/Flu_File_Chooser.cpp:1905 gui/FLU/Flu_File_Chooser.cpp:2115
+#: gui/FLU/Flu_File_Chooser.cpp:2322 gui/FLU/Flu_File_Chooser.cpp:2520
+#: gui/FLU/Flu_File_Chooser.cpp:2523 gui/FLU/Flu_File_Chooser.cpp:2837
+#: gui/FLU/Flu_File_Chooser.cpp:3218 gui/FLU/Flu_File_Chooser.cpp:3484
+#: gui/FLU/Flu_File_Chooser.cpp:3748 gui/FLU/Flu_File_Chooser.cpp:3752
+#: gui/FLU/Flu_File_Chooser.cpp:4099 gui/FLU/Flu_File_Chooser.cpp:4102
+#: gui/FLU/Flu_File_Chooser.cpp:4374 gui/FLU/Flu_File_Chooser.cpp:4453
+#: gui/FLU/Flu_File_Chooser.cpp:4671 gui/FLU/Flu_File_Chooser.cpp:4685
 #: gui/mrvOCIOBrowser.cpp:165 gui/mrvOCIOBrowser.cpp:166 gui/mrvHotkey.cpp:69
 #: gui/mrvHotkey.cpp:71 gui/mrvHotkey.cpp:73 gui/mrvHotkey.cpp:75
 #: gui/mrvHotkey.cpp:78 gui/mrvHotkey.cpp:80 gui/mrvHotkey.cpp:81
@@ -116,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-06-15 17:23-0300\n"
+"POT-Creation-Date: 2019-06-15 20:16-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -126,7 +120,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:530 gui/FLU/Flu_File_Chooser.cpp:576
+#: gui/FLU/Flu_File_Chooser.cpp:529 gui/FLU/Flu_File_Chooser.cpp:575
 #: gui/mrvHotkey.cpp:479 gui/mrvColorInfo.cpp:739 gui/mrvColorInfo.cpp:741
 #: gui/mrvColorInfo.cpp:743 gui/mrvColorInfo.cpp:841 gui/mrvVersion.cpp:348
 #: gui/mrvVersion.cpp:349 gui/mrvVersion.cpp:414
@@ -146,7 +140,7 @@ msgstr ""
 msgid "\t "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:131
+#: gui/FLU/Flu_File_Chooser.cpp:130
 msgid "\t!@#$%^&*(Favorites)-=+"
 msgstr ""
 
@@ -201,17 +195,17 @@ msgid ""
 "frame: %05<PRId64>\n"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1155 gui/FLU/Flu_File_Chooser.cpp:1172
-#: gui/FLU/Flu_File_Chooser.cpp:1183 gui/FLU/Flu_File_Chooser.cpp:1193
-#: gui/FLU/Flu_File_Chooser.cpp:1200 gui/FLU/Flu_File_Chooser.cpp:1231
+#: gui/FLU/Flu_File_Chooser.cpp:1154 gui/FLU/Flu_File_Chooser.cpp:1171
+#: gui/FLU/Flu_File_Chooser.cpp:1182 gui/FLU/Flu_File_Chooser.cpp:1192
+#: gui/FLU/Flu_File_Chooser.cpp:1199 gui/FLU/Flu_File_Chooser.cpp:1230
 msgid "\t|;"
 msgstr ""
 
 #: core/stubImage.cpp:218 core/stubImage.cpp:275 core/mrvClient.cpp:240
 #: core/mrvServer.cpp:1750 core/Sequence.cpp:908
-#: gui/FLU/Flu_File_Chooser.cpp:2383 gui/FLU/Flu_File_Chooser.cpp:2389
-#: gui/FLU/Flu_File_Chooser.cpp:2393 gui/FLU/Flu_File_Chooser.cpp:2396
-#: gui/FLU/Flu_File_Chooser.cpp:2399 gui/mrvColorInfo.cpp:891
+#: gui/FLU/Flu_File_Chooser.cpp:2380 gui/FLU/Flu_File_Chooser.cpp:2386
+#: gui/FLU/Flu_File_Chooser.cpp:2390 gui/FLU/Flu_File_Chooser.cpp:2393
+#: gui/FLU/Flu_File_Chooser.cpp:2396 gui/mrvColorInfo.cpp:891
 #: gui/mrvImageBrowser.cpp:2684 gui/mrvImageBrowser.cpp:2686
 #: gui/mrvImageBrowser.cpp:2923 video/mrvGLEngine.cpp:3134
 #: standalone/mrvCommandLine.cpp:122
@@ -297,35 +291,34 @@ msgstr ""
 #: core/hdrImage.cpp:262 core/hdrImage.cpp:265 core/hdrImage.cpp:272
 #: core/slateImage.cpp:369 core/wandImage.cpp:90 core/mrvServer.cpp:1075
 #: core/mrvServer.cpp:1668 core/mrvPlayback.cpp:87 core/mrvPlayback.cpp:88
-#: core/mrvPlayback.cpp:89 gui/FLU/Flu_Tree_Browser.cpp:1667
-#: gui/FLU/Flu_File_Chooser.cpp:395 gui/FLU/Flu_File_Chooser.cpp:415
-#: gui/mrvColorInfo.cpp:90 gui/mrvColorInfo.cpp:98 gui/mrvColorInfo.cpp:520
-#: gui/mrvImageView.cpp:1714 gui/mrvImageView.cpp:2817
-#: gui/mrvImageView.cpp:2838 gui/mrvImageView.cpp:3376
-#: gui/mrvImageView.cpp:3384 gui/mrvImageView.cpp:3413
-#: gui/mrvImageView.cpp:3419 gui/mrvImageView.cpp:3469
-#: gui/mrvImageView.cpp:3480 gui/mrvImageView.cpp:3673
-#: gui/mrvImageView.cpp:3718 gui/mrvImageView.cpp:3725
-#: gui/mrvImageBrowser.cpp:952 gui/mrvImageBrowser.cpp:2007
-#: gui/mrvImageBrowser.cpp:2068 gui/mrvImageBrowser.cpp:2543
-#: gui/mrvVersion.cpp:107 gui/mrvVersion.cpp:454 gui/mrvVersion.cpp:460
-#: gui/mrvVersion.cpp:537 video/mrvGLEngine.cpp:167 video/mrvGLEngine.cpp:170
-#: video/mrvGLEngine.cpp:228 video/mrvGLEngine.cpp:245
-#: video/mrvGLEngine.cpp:274 video/mrvGLEngine.cpp:276
-#: video/mrvGLEngine.cpp:285 video/mrvGLEngine.cpp:287
-#: video/mrvGLEngine.cpp:311 video/mrvGLEngine.cpp:339
-#: video/mrvGLEngine.cpp:358 video/mrvGLEngine.cpp:360
-#: video/mrvGLEngine.cpp:457 video/mrvGLEngine.cpp:1012
-#: video/mrvGLEngine.cpp:1088 video/mrvGLEngine.cpp:1107
-#: video/mrvGLEngine.cpp:1137 video/mrvGLEngine.cpp:1246
-#: video/mrvGLEngine.cpp:1330 video/mrvGLEngine.cpp:1378
-#: video/mrvGLEngine.cpp:1422 video/mrvGLEngine.cpp:1540
-#: video/mrvGLEngine.cpp:1655 video/mrvGLEngine.cpp:1727
-#: video/mrvGLEngine.cpp:2409 video/mrvGLEngine.cpp:2453
-#: video/mrvGLEngine.cpp:2521 video/mrvGLEngine.cpp:4050
-#: video/mrvGLEngine.cpp:4088 video/mrvGLQuad.cpp:817 video/mrvGLLut3d.cpp:1005
-#: video/mrvGLLut3d.cpp:1012 standalone/mrvCommandLine.cpp:117
-#: standalone/mrvCommandLine.cpp:563
+#: core/mrvPlayback.cpp:89 gui/FLU/Flu_File_Chooser.cpp:394
+#: gui/FLU/Flu_File_Chooser.cpp:414 gui/mrvColorInfo.cpp:90
+#: gui/mrvColorInfo.cpp:98 gui/mrvColorInfo.cpp:520 gui/mrvImageView.cpp:1714
+#: gui/mrvImageView.cpp:2817 gui/mrvImageView.cpp:2838
+#: gui/mrvImageView.cpp:3376 gui/mrvImageView.cpp:3384
+#: gui/mrvImageView.cpp:3413 gui/mrvImageView.cpp:3419
+#: gui/mrvImageView.cpp:3469 gui/mrvImageView.cpp:3480
+#: gui/mrvImageView.cpp:3673 gui/mrvImageView.cpp:3718
+#: gui/mrvImageView.cpp:3725 gui/mrvImageBrowser.cpp:952
+#: gui/mrvImageBrowser.cpp:2007 gui/mrvImageBrowser.cpp:2068
+#: gui/mrvImageBrowser.cpp:2543 gui/mrvVersion.cpp:107 gui/mrvVersion.cpp:454
+#: gui/mrvVersion.cpp:460 gui/mrvVersion.cpp:537 video/mrvGLEngine.cpp:167
+#: video/mrvGLEngine.cpp:170 video/mrvGLEngine.cpp:228
+#: video/mrvGLEngine.cpp:245 video/mrvGLEngine.cpp:274
+#: video/mrvGLEngine.cpp:276 video/mrvGLEngine.cpp:285
+#: video/mrvGLEngine.cpp:287 video/mrvGLEngine.cpp:311
+#: video/mrvGLEngine.cpp:339 video/mrvGLEngine.cpp:358
+#: video/mrvGLEngine.cpp:360 video/mrvGLEngine.cpp:457
+#: video/mrvGLEngine.cpp:1012 video/mrvGLEngine.cpp:1088
+#: video/mrvGLEngine.cpp:1107 video/mrvGLEngine.cpp:1137
+#: video/mrvGLEngine.cpp:1246 video/mrvGLEngine.cpp:1330
+#: video/mrvGLEngine.cpp:1378 video/mrvGLEngine.cpp:1422
+#: video/mrvGLEngine.cpp:1540 video/mrvGLEngine.cpp:1655
+#: video/mrvGLEngine.cpp:1727 video/mrvGLEngine.cpp:2409
+#: video/mrvGLEngine.cpp:2453 video/mrvGLEngine.cpp:2521
+#: video/mrvGLEngine.cpp:4050 video/mrvGLEngine.cpp:4088
+#: video/mrvGLQuad.cpp:817 video/mrvGLLut3d.cpp:1005 video/mrvGLLut3d.cpp:1012
+#: standalone/mrvCommandLine.cpp:117 standalone/mrvCommandLine.cpp:563
 #, c-format
 msgid " "
 msgstr ""
@@ -2534,11 +2527,6 @@ msgstr ""
 msgid "  %s"
 msgstr ""
 
-#: gui/FLU/Flu_Tree_Browser.cpp:1669
-#, c-format
-msgid "  %s\n"
-msgstr ""
-
 #: gui/FLU/flu_pixmaps.cpp:712
 msgid "  %~=;>{]]]^^/({-   "
 msgstr ""
@@ -2913,10 +2901,6 @@ msgstr ""
 msgid " != "
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:346 gui/mrvMediaTrack.cpp:474
-msgid " \"%s\" %"
-msgstr ""
-
 #: gui/mrvMediaTrack.cpp:304
 #, c-format
 msgid " \"%s\" %<PRId64>"
@@ -2960,7 +2944,7 @@ msgstr ""
 msgid " #>,'&&&&&&&$;#%  "
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:507
+#: gui/mrvMediaTrack.cpp:505
 msgid " #images="
 msgstr "(sin imagen)"
 
@@ -3029,7 +3013,7 @@ msgid " %g %g"
 msgstr ""
 
 #: core/CMedia_audio.cpp:2327 core/aviImage.cpp:1805 core/aviImage.cpp:3774
-#: core/mrvColorProfile.cpp:247 gui/FLU/Flu_File_Chooser.cpp:3539
+#: core/mrvColorProfile.cpp:247 gui/FLU/Flu_File_Chooser.cpp:3536
 #: video/mrvGLEngine.cpp:166 video/mrvGLEngine.cpp:169
 msgid " ("
 msgstr ""
@@ -3104,7 +3088,7 @@ msgstr ""
 msgid " ++++++++++;>,')!~{+"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:585 gui/FLU/Flu_File_Chooser.cpp:590
+#: gui/FLU/Flu_File_Chooser.cpp:584 gui/FLU/Flu_File_Chooser.cpp:589
 msgid " ,"
 msgstr ""
 
@@ -3655,8 +3639,8 @@ msgid " channels "
 msgstr " canales "
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:338 gui/FLU/Flu_File_Chooser.cpp:396
-#: gui/FLU/Flu_File_Chooser.cpp:416
+#: gui/FLU/Flu_File_Chooser.cpp:337 gui/FLU/Flu_File_Chooser.cpp:395
+#: gui/FLU/Flu_File_Chooser.cpp:415
 msgid " chooser "
 msgstr "  elector "
 
@@ -3817,7 +3801,7 @@ msgstr ""
 msgid " image stores "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:419
+#: gui/FLU/Flu_File_Chooser.cpp:418
 msgid " img "
 msgstr ""
 
@@ -3942,7 +3926,7 @@ msgstr ""
 msgid " selected"
 msgstr " esperado: "
 
-#: gui/mrvMediaTrack.cpp:523
+#: gui/mrvMediaTrack.cpp:521
 msgid " set to frame "
 msgstr " para cuadro "
 
@@ -4002,7 +3986,7 @@ msgstr ""
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:581 gui/FLU/Flu_File_Chooser.cpp:4523
+#: core/aviImage_save.cpp:581 gui/FLU/Flu_File_Chooser.cpp:4524
 #: gui/mrvImageBrowser.cpp:2253
 msgid " to "
 msgstr " a "
@@ -5682,7 +5666,7 @@ msgid ""
 "> , ; k       "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:368
+#: gui/FLU/Flu_File_Chooser.cpp:367
 #, c-format
 msgid "%%"
 msgstr ""
@@ -5740,17 +5724,17 @@ msgstr ""
 msgid "%.\tc #E1BF81"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3760
+#: gui/FLU/Flu_File_Chooser.cpp:3761
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3770
+#: gui/FLU/Flu_File_Chooser.cpp:3771
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3765
+#: gui/FLU/Flu_File_Chooser.cpp:3766
 #, c-format
 msgid "%.1f MB"
 msgstr ""
@@ -5790,7 +5774,7 @@ msgstr ""
 msgid "%.8lg"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4477 standalone/mrvCommandLine.cpp:262
+#: gui/FLU/Flu_File_Chooser.cpp:4478 standalone/mrvCommandLine.cpp:262
 msgid "%0"
 msgstr ""
 
@@ -5841,7 +5825,7 @@ msgstr ""
 
 #: core/aviImage.cpp:2790 gui/mrvImageInformation.cpp:1561
 #: gui/mrvImageInformation.cpp:1605 gui/mrvImageInformation.cpp:3538
-#: gui/mrvMediaTrack.cpp:843 gui/mrvMediaTrack.cpp:856 gui/mrvTimecode.cpp:287
+#: gui/mrvMediaTrack.cpp:841 gui/mrvMediaTrack.cpp:854 gui/mrvTimecode.cpp:287
 #: standalone/main.cpp:297 standalone/main.cpp:300 standalone/main.cpp:303
 #: standalone/main.cpp:306
 #, c-format
@@ -5873,7 +5857,7 @@ msgstr ""
 
 #: core/CMedia.cpp:1539 core/guessImage.cpp:128 core/guessImage.cpp:369
 #: core/exrImage.cpp:2117 core/Sequence.cpp:342 core/Sequence.cpp:346
-#: gui/FLU/Flu_File_Chooser.cpp:350
+#: gui/FLU/Flu_File_Chooser.cpp:349
 msgid "%V"
 msgstr ""
 
@@ -5900,7 +5884,7 @@ msgstr ""
 
 #: core/CMedia.cpp:346 core/slateImage.cpp:320 core/wandImage.cpp:795
 #: core/wandImage.cpp:940 core/mrvClient.cpp:404
-#: gui/FLU/Flu_File_Chooser.cpp:1326 gui/FLU/Flu_File_Chooser.cpp:4474
+#: gui/FLU/Flu_File_Chooser.cpp:1325 gui/FLU/Flu_File_Chooser.cpp:4475
 #: gui/mrvImageBrowser.cpp:427 gui/mrvImageInformation.cpp:2614
 #: gui/mrvImageInformation.cpp:3252 gui/mrvImageInformation.cpp:3265
 #: gui/mrvImageInformation.cpp:3439 gui/mrvImageInformation.cpp:3452
@@ -5952,7 +5936,7 @@ msgstr ""
 msgid "%d Hz."
 msgstr "%d Hz."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3774
+#: gui/FLU/Flu_File_Chooser.cpp:3775
 #, c-format
 msgid "%d bytes"
 msgstr ""
@@ -5967,7 +5951,7 @@ msgstr "%d kb/s"
 msgid "%d/%d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3295
+#: gui/FLU/Flu_File_Chooser.cpp:3292
 #, c-format
 msgid "%d/%d/%02d %d:%02d %s"
 msgstr ""
@@ -6085,7 +6069,7 @@ msgstr ""
 msgid "%g (%s)"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4482 standalone/mrvCommandLine.cpp:267
+#: gui/FLU/Flu_File_Chooser.cpp:4483 standalone/mrvCommandLine.cpp:267
 #, c-format
 msgid "%ld"
 msgstr ""
@@ -6152,7 +6136,7 @@ msgstr ""
 msgid "%s\t%s\t%8d\t%8d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1478 gui/FLU/Flu_File_Chooser.cpp:3255
+#: gui/FLU/Flu_File_Chooser.cpp:1475 gui/FLU/Flu_File_Chooser.cpp:3252
 #: gui/mrvImageBrowser.cpp:597
 #, c-format
 msgid "%s\n"
@@ -6179,12 +6163,12 @@ msgstr ""
 msgid "%s %d %d %d %d"
 msgstr ""
 
-#: core/mrvCPU.cpp:420 gui/FLU/Flu_File_Chooser.cpp:3604
+#: core/mrvCPU.cpp:420 gui/FLU/Flu_File_Chooser.cpp:3605
 #, c-format
 msgid "%s %s"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3274
+#: gui/FLU/Flu_File_Chooser.cpp:3271
 #, c-format
 msgid "%s %s %d %d:%d:%d %d"
 msgstr ""
@@ -6214,8 +6198,8 @@ msgstr ""
 msgid "%s%d%s"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:376 gui/FLU/Flu_File_Chooser.cpp:380
-#: gui/FLU/Flu_File_Chooser.cpp:3821 gui/FLU/Flu_File_Chooser.cpp:3823
+#: gui/FLU/Flu_File_Chooser.cpp:375 gui/FLU/Flu_File_Chooser.cpp:379
+#: gui/FLU/Flu_File_Chooser.cpp:3822 gui/FLU/Flu_File_Chooser.cpp:3824
 #: gui/mrvSave.cpp:216
 #, c-format
 msgid "%s%s"
@@ -6284,7 +6268,7 @@ msgid "%s_%d"
 msgstr ""
 
 #: core/guessImage.cpp:138 core/guessImage.cpp:370 core/exrImage.cpp:2118
-#: core/Sequence.cpp:334 core/Sequence.cpp:338 gui/FLU/Flu_File_Chooser.cpp:348
+#: core/Sequence.cpp:334 core/Sequence.cpp:338 gui/FLU/Flu_File_Chooser.cpp:347
 msgid "%v"
 msgstr ""
 
@@ -7175,7 +7159,7 @@ msgstr ""
 msgid ").\tc #C6AE76"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3539
+#: gui/FLU/Flu_File_Chooser.cpp:3536
 msgid ")/"
 msgstr ""
 
@@ -7187,13 +7171,13 @@ msgstr ""
 msgid ");"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1148 gui/FLU/Flu_File_Chooser.cpp:1150
-#: gui/FLU/Flu_File_Chooser.cpp:1167 gui/FLU/Flu_File_Chooser.cpp:1171
-#: gui/FLU/Flu_File_Chooser.cpp:1238 gui/FLU/Flu_File_Chooser.cpp:1650
-#: gui/FLU/Flu_File_Chooser.cpp:4205 gui/FLU/Flu_File_Chooser.cpp:4214
-#: gui/FLU/Flu_File_Chooser.cpp:4227 gui/FLU/Flu_File_Chooser.cpp:4614
-#: gui/FLU/Flu_File_Chooser.cpp:4665 gui/FLU/Flu_File_Chooser.cpp:4838
-#: gui/FLU/Flu_File_Chooser.cpp:4845 gui/FLU/Flu_File_Chooser.cpp:4854
+#: gui/FLU/Flu_File_Chooser.cpp:1147 gui/FLU/Flu_File_Chooser.cpp:1149
+#: gui/FLU/Flu_File_Chooser.cpp:1166 gui/FLU/Flu_File_Chooser.cpp:1170
+#: gui/FLU/Flu_File_Chooser.cpp:1237 gui/FLU/Flu_File_Chooser.cpp:1647
+#: gui/FLU/Flu_File_Chooser.cpp:4206 gui/FLU/Flu_File_Chooser.cpp:4215
+#: gui/FLU/Flu_File_Chooser.cpp:4228 gui/FLU/Flu_File_Chooser.cpp:4613
+#: gui/FLU/Flu_File_Chooser.cpp:4664 gui/FLU/Flu_File_Chooser.cpp:4837
+#: gui/FLU/Flu_File_Chooser.cpp:4844 gui/FLU/Flu_File_Chooser.cpp:4853
 #: gui/mrvVersion.cpp:281
 msgid "*"
 msgstr ""
@@ -7354,7 +7338,7 @@ msgstr ""
 msgid "*+\tc #EAC483"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4206 gui/FLU/Flu_File_Chooser.cpp:4215
+#: gui/FLU/Flu_File_Chooser.cpp:4207 gui/FLU/Flu_File_Chooser.cpp:4216
 msgid "*."
 msgstr ""
 
@@ -7390,7 +7374,7 @@ msgstr ""
 msgid "*.\tc #FEE69A"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1837
+#: gui/FLU/Flu_File_Chooser.cpp:1834
 msgid "*;|[]?"
 msgstr ""
 
@@ -8087,7 +8071,7 @@ msgstr ""
 msgid "-+\tc #FFD790"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "---"
 msgstr ""
 
@@ -8135,7 +8119,7 @@ msgstr ""
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "La opción --stereo debe ser especificada en un múltiplo de dos veces."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "--x"
 msgstr ""
 
@@ -8175,11 +8159,11 @@ msgstr ""
 msgid "-d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "-w-"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "-wx"
 msgstr ""
 
@@ -8188,8 +8172,8 @@ msgstr ""
 #: core/wandImage.cpp:939 core/wandImage.cpp:1264 core/Sequence.cpp:103
 #: core/Sequence.cpp:330 core/Sequence.cpp:398 core/Sequence.cpp:410
 #: core/Sequence.cpp:432 core/Sequence.cpp:706
-#: gui/FLU/Flu_File_Chooser.cpp:1382 gui/FLU/Flu_File_Chooser.cpp:3571
-#: gui/FLU/Flu_File_Chooser.cpp:3922 gui/FLU/Flu_File_Chooser.cpp:4251
+#: gui/FLU/Flu_File_Chooser.cpp:1381 gui/FLU/Flu_File_Chooser.cpp:3568
+#: gui/FLU/Flu_File_Chooser.cpp:3923 gui/FLU/Flu_File_Chooser.cpp:4252
 #: gui/mrvImageView.cpp:8054 gui/mrvPreferences.cpp:534
 #: gui/mrvPreferences.cpp:968 gui/mrvVersion.cpp:548 gui/mrvVersion.cpp:549
 #: video/mrvGLEngine.cpp:530 video/mrvGLLut3d.cpp:1181
@@ -8651,8 +8635,8 @@ msgstr ""
 msgid ".-;>.//}|123^^^^^.  "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1382 gui/FLU/Flu_File_Chooser.cpp:3571
-#: gui/FLU/Flu_File_Chooser.cpp:3927 gui/FLU/Flu_File_Chooser.cpp:4251
+#: gui/FLU/Flu_File_Chooser.cpp:1381 gui/FLU/Flu_File_Chooser.cpp:3568
+#: gui/FLU/Flu_File_Chooser.cpp:3928 gui/FLU/Flu_File_Chooser.cpp:4252
 #: gui/mrvPreferences.cpp:968
 msgid ".."
 msgstr ""
@@ -8717,8 +8701,8 @@ msgstr ""
 msgid "....................."
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3572 gui/FLU/Flu_File_Chooser.cpp:3927
-#: gui/FLU/Flu_File_Chooser.cpp:4252
+#: gui/FLU/Flu_File_Chooser.cpp:3569 gui/FLU/Flu_File_Chooser.cpp:3928
+#: gui/FLU/Flu_File_Chooser.cpp:4253
 msgid "../"
 msgstr ""
 
@@ -8726,15 +8710,15 @@ msgstr ""
 msgid "..//////c)!~{].     "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3573 gui/FLU/Flu_File_Chooser.cpp:3927
-#: gui/FLU/Flu_File_Chooser.cpp:4253
+#: gui/FLU/Flu_File_Chooser.cpp:3570 gui/FLU/Flu_File_Chooser.cpp:3928
+#: gui/FLU/Flu_File_Chooser.cpp:4254
 msgid "..\\"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1528 gui/FLU/Flu_File_Chooser.cpp:1558
-#: gui/FLU/Flu_File_Chooser.cpp:1565 gui/FLU/Flu_File_Chooser.cpp:3572
-#: gui/FLU/Flu_File_Chooser.cpp:3815 gui/FLU/Flu_File_Chooser.cpp:3922
-#: gui/FLU/Flu_File_Chooser.cpp:4142 gui/FLU/Flu_File_Chooser.cpp:4252
+#: gui/FLU/Flu_File_Chooser.cpp:1525 gui/FLU/Flu_File_Chooser.cpp:1555
+#: gui/FLU/Flu_File_Chooser.cpp:1562 gui/FLU/Flu_File_Chooser.cpp:3569
+#: gui/FLU/Flu_File_Chooser.cpp:3816 gui/FLU/Flu_File_Chooser.cpp:3923
+#: gui/FLU/Flu_File_Chooser.cpp:4143 gui/FLU/Flu_File_Chooser.cpp:4253
 msgid "./"
 msgstr ""
 
@@ -8884,8 +8868,8 @@ msgstr ""
 msgid ".Z"
 msgstr "Z"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3573 gui/FLU/Flu_File_Chooser.cpp:3922
-#: gui/FLU/Flu_File_Chooser.cpp:4253
+#: gui/FLU/Flu_File_Chooser.cpp:3570 gui/FLU/Flu_File_Chooser.cpp:3923
+#: gui/FLU/Flu_File_Chooser.cpp:4254
 msgid ".\\"
 msgstr ""
 
@@ -8963,7 +8947,7 @@ msgstr "País"
 msgid ".ct"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4348 gui/mrvCTLBrowser.cpp:143
+#: gui/FLU/Flu_File_Chooser.cpp:4349 gui/mrvCTLBrowser.cpp:143
 #: gui/mrvPreferences.cpp:977
 msgid ".ctl"
 msgstr ""
@@ -8997,7 +8981,7 @@ msgstr ""
 msgid ".filmType"
 msgstr "Tipos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:766
+#: gui/FLU/Flu_File_Chooser.cpp:765
 msgid ".filmaura/mrViewer.favorites"
 msgstr ""
 
@@ -9026,11 +9010,11 @@ msgstr ""
 msgid ".hdri"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4346
+#: gui/FLU/Flu_File_Chooser.cpp:4347
 msgid ".icc"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4347
+#: gui/FLU/Flu_File_Chooser.cpp:4348
 msgid ".icm"
 msgstr ""
 
@@ -9110,7 +9094,7 @@ msgstr ""
 msgid ".nwwuuzy}}}}}}}}}}}."
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:467 gui/FLU/Flu_File_Chooser.cpp:4350
+#: gui/FLU/Flu_File_Chooser.cpp:466 gui/FLU/Flu_File_Chooser.cpp:4351
 msgid ".ocio"
 msgstr ""
 
@@ -9262,7 +9246,7 @@ msgstr ""
 msgid ".wmv"
 msgstr ""
 
-#: core/guessImage.cpp:389 gui/FLU/Flu_File_Chooser.cpp:4349
+#: core/guessImage.cpp:389 gui/FLU/Flu_File_Chooser.cpp:4350
 #: gui/mrvImageBrowser.cpp:1340
 msgid ".xml"
 msgstr ""
@@ -9276,51 +9260,41 @@ msgid ".zt"
 msgstr ""
 
 #: core/mrvServer.cpp:1206 core/mrvACES.cpp:35 core/mrvColorProfile.cpp:255
-#: gui/FLU/Flu_Combo_Tree.cpp:33 gui/FLU/Flu_Tree_Browser.cpp:338
-#: gui/FLU/Flu_Tree_Browser.cpp:2950 gui/FLU/Flu_Tree_Browser.cpp:2959
-#: gui/FLU/Flu_Tree_Browser.cpp:2966 gui/FLU/Flu_Tree_Browser.cpp:3000
-#: gui/FLU/Flu_Tree_Browser.cpp:3086 gui/FLU/Flu_Tree_Browser.cpp:3094
-#: gui/FLU/Flu_Tree_Browser.cpp:3105 gui/FLU/Flu_Tree_Browser.cpp:3115
-#: gui/FLU/Flu_Tree_Browser.cpp:3174 gui/FLU/Flu_Tree_Browser.cpp:3186
-#: gui/FLU/Flu_Tree_Browser.cpp:3214 gui/FLU/Flu_Tree_Browser.cpp:3226
-#: gui/FLU/Flu_Tree_Browser.cpp:3248 gui/FLU/Flu_Tree_Browser.cpp:3262
-#: gui/FLU/Flu_Tree_Browser.cpp:3313 gui/FLU/Flu_Tree_Browser.cpp:3327
-#: gui/FLU/Flu_Tree_Browser.cpp:3335 gui/FLU/Flu_Tree_Browser.cpp:3343
-#: gui/FLU/Flu_File_Chooser.cpp:222 gui/FLU/Flu_File_Chooser.cpp:750
-#: gui/FLU/Flu_File_Chooser.cpp:751 gui/FLU/Flu_File_Chooser.cpp:752
-#: gui/FLU/Flu_File_Chooser.cpp:760 gui/FLU/Flu_File_Chooser.cpp:762
-#: gui/FLU/Flu_File_Chooser.cpp:1072 gui/FLU/Flu_File_Chooser.cpp:1074
-#: gui/FLU/Flu_File_Chooser.cpp:1387 gui/FLU/Flu_File_Chooser.cpp:1614
-#: gui/FLU/Flu_File_Chooser.cpp:1645 gui/FLU/Flu_File_Chooser.cpp:1925
-#: gui/FLU/Flu_File_Chooser.cpp:2696 gui/FLU/Flu_File_Chooser.cpp:3338
+#: gui/FLU/Flu_Combo_Tree.cpp:33 gui/FLU/Flu_File_Chooser.cpp:221
+#: gui/FLU/Flu_File_Chooser.cpp:749 gui/FLU/Flu_File_Chooser.cpp:750
+#: gui/FLU/Flu_File_Chooser.cpp:751 gui/FLU/Flu_File_Chooser.cpp:759
+#: gui/FLU/Flu_File_Chooser.cpp:761 gui/FLU/Flu_File_Chooser.cpp:1071
+#: gui/FLU/Flu_File_Chooser.cpp:1073 gui/FLU/Flu_File_Chooser.cpp:1386
+#: gui/FLU/Flu_File_Chooser.cpp:1611 gui/FLU/Flu_File_Chooser.cpp:1642
+#: gui/FLU/Flu_File_Chooser.cpp:1922 gui/FLU/Flu_File_Chooser.cpp:2693
+#: gui/FLU/Flu_File_Chooser.cpp:3335 gui/FLU/Flu_File_Chooser.cpp:3385
+#: gui/FLU/Flu_File_Chooser.cpp:3386 gui/FLU/Flu_File_Chooser.cpp:3387
 #: gui/FLU/Flu_File_Chooser.cpp:3388 gui/FLU/Flu_File_Chooser.cpp:3389
-#: gui/FLU/Flu_File_Chooser.cpp:3390 gui/FLU/Flu_File_Chooser.cpp:3391
-#: gui/FLU/Flu_File_Chooser.cpp:3392 gui/FLU/Flu_File_Chooser.cpp:3401
-#: gui/FLU/Flu_File_Chooser.cpp:3412 gui/FLU/Flu_File_Chooser.cpp:3414
-#: gui/FLU/Flu_File_Chooser.cpp:3415 gui/FLU/Flu_File_Chooser.cpp:3417
-#: gui/FLU/Flu_File_Chooser.cpp:3419 gui/FLU/Flu_File_Chooser.cpp:3420
-#: gui/FLU/Flu_File_Chooser.cpp:3422 gui/FLU/Flu_File_Chooser.cpp:3424
-#: gui/FLU/Flu_File_Chooser.cpp:3425 gui/FLU/Flu_File_Chooser.cpp:3427
-#: gui/FLU/Flu_File_Chooser.cpp:3472 gui/FLU/Flu_File_Chooser.cpp:3475
-#: gui/FLU/Flu_File_Chooser.cpp:3477 gui/FLU/Flu_File_Chooser.cpp:3491
-#: gui/FLU/Flu_File_Chooser.cpp:3493 gui/FLU/Flu_File_Chooser.cpp:3495
-#: gui/FLU/Flu_File_Chooser.cpp:3549 gui/FLU/Flu_File_Chooser.cpp:3551
-#: gui/FLU/Flu_File_Chooser.cpp:3582 gui/FLU/Flu_File_Chooser.cpp:3609
-#: gui/FLU/Flu_File_Chooser.cpp:3614 gui/FLU/Flu_File_Chooser.cpp:3621
-#: gui/FLU/Flu_File_Chooser.cpp:3623 gui/FLU/Flu_File_Chooser.cpp:3836
-#: gui/FLU/Flu_File_Chooser.cpp:3944 gui/FLU/Flu_File_Chooser.cpp:3951
-#: gui/FLU/Flu_File_Chooser.cpp:3955 gui/FLU/Flu_File_Chooser.cpp:3992
-#: gui/FLU/Flu_File_Chooser.cpp:3994 gui/FLU/Flu_File_Chooser.cpp:4000
-#: gui/FLU/Flu_File_Chooser.cpp:4007 gui/FLU/Flu_File_Chooser.cpp:4087
-#: gui/FLU/Flu_File_Chooser.cpp:4090 gui/FLU/Flu_File_Chooser.cpp:4118
-#: gui/FLU/Flu_File_Chooser.cpp:4127 gui/FLU/Flu_File_Chooser.cpp:4129
-#: gui/FLU/Flu_File_Chooser.cpp:4151 gui/FLU/Flu_File_Chooser.cpp:4159
-#: gui/FLU/Flu_File_Chooser.cpp:4160 gui/FLU/Flu_File_Chooser.cpp:4162
-#: gui/FLU/Flu_File_Chooser.cpp:4165 gui/FLU/Flu_File_Chooser.cpp:4628
-#: gui/mrvImageView.cpp:4281 gui/mrvImageBrowser.cpp:2176
-#: gui/mrvImageInformation.cpp:709 gui/mrvPreferences.cpp:972
-#: gui/mrvPreferences.cpp:1615 gui/mrvPreferences.cpp:1636
-#: standalone/mrvRoot.cpp:133
+#: gui/FLU/Flu_File_Chooser.cpp:3398 gui/FLU/Flu_File_Chooser.cpp:3409
+#: gui/FLU/Flu_File_Chooser.cpp:3411 gui/FLU/Flu_File_Chooser.cpp:3412
+#: gui/FLU/Flu_File_Chooser.cpp:3414 gui/FLU/Flu_File_Chooser.cpp:3416
+#: gui/FLU/Flu_File_Chooser.cpp:3417 gui/FLU/Flu_File_Chooser.cpp:3419
+#: gui/FLU/Flu_File_Chooser.cpp:3421 gui/FLU/Flu_File_Chooser.cpp:3422
+#: gui/FLU/Flu_File_Chooser.cpp:3424 gui/FLU/Flu_File_Chooser.cpp:3469
+#: gui/FLU/Flu_File_Chooser.cpp:3472 gui/FLU/Flu_File_Chooser.cpp:3474
+#: gui/FLU/Flu_File_Chooser.cpp:3488 gui/FLU/Flu_File_Chooser.cpp:3490
+#: gui/FLU/Flu_File_Chooser.cpp:3492 gui/FLU/Flu_File_Chooser.cpp:3546
+#: gui/FLU/Flu_File_Chooser.cpp:3548 gui/FLU/Flu_File_Chooser.cpp:3579
+#: gui/FLU/Flu_File_Chooser.cpp:3610 gui/FLU/Flu_File_Chooser.cpp:3615
+#: gui/FLU/Flu_File_Chooser.cpp:3622 gui/FLU/Flu_File_Chooser.cpp:3624
+#: gui/FLU/Flu_File_Chooser.cpp:3837 gui/FLU/Flu_File_Chooser.cpp:3945
+#: gui/FLU/Flu_File_Chooser.cpp:3952 gui/FLU/Flu_File_Chooser.cpp:3956
+#: gui/FLU/Flu_File_Chooser.cpp:3993 gui/FLU/Flu_File_Chooser.cpp:3995
+#: gui/FLU/Flu_File_Chooser.cpp:4001 gui/FLU/Flu_File_Chooser.cpp:4008
+#: gui/FLU/Flu_File_Chooser.cpp:4088 gui/FLU/Flu_File_Chooser.cpp:4091
+#: gui/FLU/Flu_File_Chooser.cpp:4119 gui/FLU/Flu_File_Chooser.cpp:4128
+#: gui/FLU/Flu_File_Chooser.cpp:4130 gui/FLU/Flu_File_Chooser.cpp:4152
+#: gui/FLU/Flu_File_Chooser.cpp:4160 gui/FLU/Flu_File_Chooser.cpp:4161
+#: gui/FLU/Flu_File_Chooser.cpp:4163 gui/FLU/Flu_File_Chooser.cpp:4166
+#: gui/FLU/Flu_File_Chooser.cpp:4627 gui/mrvImageView.cpp:4281
+#: gui/mrvImageBrowser.cpp:2176 gui/mrvImageInformation.cpp:709
+#: gui/mrvPreferences.cpp:972 gui/mrvPreferences.cpp:1615
+#: gui/mrvPreferences.cpp:1636 standalone/mrvRoot.cpp:133
 msgid "/"
 msgstr ""
 
@@ -9498,11 +9472,11 @@ msgstr ""
 msgid "///////////////////\n"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3562 gui/FLU/Flu_File_Chooser.cpp:3580
+#: gui/FLU/Flu_File_Chooser.cpp:3559 gui/FLU/Flu_File_Chooser.cpp:3577
 msgid "/Volumes/"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3610
+#: gui/FLU/Flu_File_Chooser.cpp:3611
 msgid "/boot"
 msgstr ""
 
@@ -9518,7 +9492,7 @@ msgstr ""
 msgid "/cygdrive/"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3595
+#: gui/FLU/Flu_File_Chooser.cpp:3596
 msgid "/etc/fstab"
 msgstr ""
 
@@ -9526,7 +9500,7 @@ msgstr ""
 msgid "/ocio/nuke-default/config.ocio"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3611
+#: gui/FLU/Flu_File_Chooser.cpp:3612
 msgid "/proc"
 msgstr ""
 
@@ -9546,7 +9520,7 @@ msgstr ""
 msgid "/share/locale"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:763
+#: gui/FLU/Flu_File_Chooser.cpp:762
 msgid "/tmp/"
 msgstr ""
 
@@ -10601,7 +10575,7 @@ msgstr ""
 msgid "3DNow2 "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:632
+#: gui/FLU/Flu_File_Chooser.cpp:631
 msgid "3GP Movie"
 msgstr "Película 3GP"
 
@@ -10642,7 +10616,7 @@ msgid ""
 "tiff,tx,x3f,zt"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:632
+#: gui/FLU/Flu_File_Chooser.cpp:631
 msgid "3gp"
 msgstr ""
 
@@ -11564,9 +11538,9 @@ msgstr ""
 #: core/CMedia.cpp:3861 core/CMedia_audio.cpp:2246 core/aviImage.cpp:607
 #: core/aviImage.cpp:937 core/aviImage.cpp:3716 core/aviImage.cpp:3745
 #: core/wandImage.cpp:90 core/rawImage.cpp:64 core/rawImage.cpp:147
-#: gui/FLU/Flu_File_Chooser.cpp:2380 gui/FLU/Flu_File_Chooser.cpp:2385
-#: gui/FLU/Flu_File_Chooser.cpp:2391 gui/FLU/Flu_File_Chooser.cpp:2395
-#: gui/FLU/Flu_File_Chooser.cpp:2398 gui/FLU/Flu_File_Chooser.cpp:2401
+#: gui/FLU/Flu_File_Chooser.cpp:2377 gui/FLU/Flu_File_Chooser.cpp:2382
+#: gui/FLU/Flu_File_Chooser.cpp:2388 gui/FLU/Flu_File_Chooser.cpp:2392
+#: gui/FLU/Flu_File_Chooser.cpp:2395 gui/FLU/Flu_File_Chooser.cpp:2398
 #: gui/mrvImageView.cpp:3821 video/mrvGLEngine.cpp:466
 #: video/mrvGLEngine.cpp:492 video/mrvGLEngine.cpp:515
 #: video/mrvGLShader.cpp:230
@@ -12024,8 +11998,7 @@ msgid "<.\tc #E3DAD3"
 msgstr ""
 
 #: core/mrvServer.cpp:1326 core/mrvServer.cpp:1371 core/Sequence.cpp:710
-#: core/Sequence.cpp:767 core/Sequence.cpp:1052 gui/mrvMediaTrack.cpp:346
-#: gui/mrvMediaTrack.cpp:474
+#: core/Sequence.cpp:767 core/Sequence.cpp:1052
 #, c-format
 msgid "<PRId64>"
 msgstr " CNM: %<PRId64> "
@@ -12585,15 +12558,15 @@ msgstr ""
 msgid "@+\tc #FFEDA2"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:694
+#: gui/FLU/Flu_File_Chooser.cpp:693
 msgid "@-12DnArrow "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:695
+#: gui/FLU/Flu_File_Chooser.cpp:694
 msgid "@-18UpArrow "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:885
+#: gui/FLU/Flu_File_Chooser.cpp:884
 msgid "@->"
 msgstr ""
 
@@ -12643,7 +12616,7 @@ msgstr ""
 msgid "@<"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:877
+#: gui/FLU/Flu_File_Chooser.cpp:876
 msgid "@<-"
 msgstr ""
 
@@ -12841,15 +12814,15 @@ msgstr ""
 msgid "A.k.B.n.C.D.E.F.F.1 G.$.3.].H.I.J."
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3496
+#: gui/FLU/Flu_File_Chooser.cpp:3493
 msgid "A:"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3447 gui/FLU/Flu_File_Chooser.cpp:4019
+#: gui/FLU/Flu_File_Chooser.cpp:3444 gui/FLU/Flu_File_Chooser.cpp:4020
 msgid "A:/"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3497
+#: gui/FLU/Flu_File_Chooser.cpp:3494
 msgid "A:\\"
 msgstr ""
 
@@ -12908,7 +12881,7 @@ msgstr "Imagen"
 msgid "ALPHA"
 msgstr "ALFA"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3295
+#: gui/FLU/Flu_File_Chooser.cpp:3292
 msgid "AM"
 msgstr ""
 
@@ -12940,9 +12913,9 @@ msgstr ""
 msgid "ATI1N"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:634 gui/FLU/Flu_File_Chooser.cpp:635
-#: gui/FLU/Flu_File_Chooser.cpp:640 gui/FLU/Flu_File_Chooser.cpp:641
-#: gui/FLU/Flu_File_Chooser.cpp:652
+#: gui/FLU/Flu_File_Chooser.cpp:633 gui/FLU/Flu_File_Chooser.cpp:634
+#: gui/FLU/Flu_File_Chooser.cpp:639 gui/FLU/Flu_File_Chooser.cpp:640
+#: gui/FLU/Flu_File_Chooser.cpp:651
 msgid "AVCHD Video"
 msgstr "Vídeo AVCHD"
 
@@ -12951,7 +12924,7 @@ msgid "AVI "
 msgstr "Pelicula AVI"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:636
+#: gui/FLU/Flu_File_Chooser.cpp:635
 msgid "AVI Movie"
 msgstr "Pelicula AVI"
 
@@ -13012,7 +12985,7 @@ msgstr "Activar el 3D LUT del visor."
 msgid "Add Attribute"
 msgstr "Agregar Atributo"
 
-#: gui/FLU/Flu_File_Chooser.cpp:119
+#: gui/FLU/Flu_File_Chooser.cpp:118
 msgid "Add this directory to my favorites"
 msgstr "Agregar esta carpeta a mis favoritos"
 
@@ -13028,7 +13001,7 @@ msgstr "Avance un cuadro."
 msgid "Advanced Core"
 msgstr "Núcleo Avanzado"
 
-#: gui/FLU/Flu_File_Chooser.cpp:633
+#: gui/FLU/Flu_File_Chooser.cpp:632
 msgid "Advanced Systems Format Media"
 msgstr "Formato de Media de Sistemas Avanzados"
 
@@ -13047,7 +13020,7 @@ msgstr "Todo"
 msgid "All\t*.{"
 msgstr "Todo\t*.{"
 
-#: gui/FLU/Flu_File_Chooser.cpp:110
+#: gui/FLU/Flu_File_Chooser.cpp:109
 msgid "All Files (*)"
 msgstr "Todos los Archivos (*)"
 
@@ -13191,7 +13164,7 @@ msgstr "Siempre use BT709"
 msgid "Always use Unspecified"
 msgstr "Siempre use Sin Especificar"
 
-#: gui/FLU/Flu_File_Chooser.cpp:126
+#: gui/FLU/Flu_File_Chooser.cpp:125
 #, c-format
 msgid "An error ocurred while trying to delete '%s'."
 msgstr "Un error ocurrió al intentar borrar '%s'."
@@ -13226,7 +13199,7 @@ msgstr "Apertura"
 msgid "Apply: "
 msgstr "Aplicar: "
 
-#: gui/FLU/Flu_File_Chooser.cpp:3285
+#: gui/FLU/Flu_File_Chooser.cpp:3282
 msgid "Apr"
 msgstr "Abr"
 
@@ -13376,7 +13349,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: gui/mrvMediaTrack.cpp:789
+#: gui/mrvMediaTrack.cpp:787
 #, c-format
 msgid "Audio: %<PRId64>"
 msgstr "Audio: %<PRId64> "
@@ -13394,7 +13367,7 @@ msgstr "Audios\t*.{"
 msgid "Audios #"
 msgstr "Audios #"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3289
+#: gui/FLU/Flu_File_Chooser.cpp:3286
 msgid "Aug"
 msgstr "Ago"
 
@@ -13697,7 +13670,7 @@ msgstr "Básica"
 msgid "Bit depth of clip"
 msgstr "Profundidad de Bits del clip"
 
-#: gui/FLU/Flu_File_Chooser.cpp:657
+#: gui/FLU/Flu_File_Chooser.cpp:656
 msgid "Bitmap Picture"
 msgstr "Imagen Bitmap"
 
@@ -13793,8 +13766,7 @@ msgstr "Byte"
 #: core/aviImage.cpp:53 core/aviImage_save.cpp:37 core/iffImage.cpp:39
 #: core/wandImage.cpp:420 core/wandImage.cpp:1592 core/mrvPlayback.cpp:35
 #: core/mrvACES.cpp:122 core/Sequence.cpp:795 core/Sequence.cpp:834
-#: core/mrvColorOps.cpp:40 core/mrvColorOps.cpp:41
-#: gui/FLU/flu_filename_list.cxx:57 gui/mrvOCIOBrowser.cpp:148
+#: core/mrvColorOps.cpp:40 core/mrvColorOps.cpp:41 gui/mrvOCIOBrowser.cpp:148
 #: gui/mrvOCIOBrowser.cpp:149 gui/mrvImageBrowser.cpp:532
 #: gui/mrvPreferences.cpp:1267 gui/mrvPreferences.cpp:1517
 #: gui/mrvPreferences.cpp:1518 gui/mrvTimecode.cpp:45
@@ -14086,7 +14058,7 @@ msgstr "No pude localizar el perfil ICC"
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/make_ocio_chooser.cxx:53
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:95
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:235
-#: gui/FLU/Flu_File_Chooser.cpp:105 gui/mrvAsk.cpp:245
+#: gui/FLU/Flu_File_Chooser.cpp:104 gui/mrvAsk.cpp:245
 #: gui/mrvFontsWindowUI.cpp:154 gui/mrvImageInformation.cpp:243
 #: gui/mrvImageInformation.cpp:273
 msgid "Cancel"
@@ -14138,7 +14110,7 @@ msgstr ""
 msgid "Cannot test OS support for SSE, leaving disabled.\n"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:660
+#: gui/FLU/Flu_File_Chooser.cpp:659
 msgid "Canon Raw Picture"
 msgstr "Imagen Cruda de Canon"
 
@@ -14268,7 +14240,7 @@ msgid "Cineon"
 msgstr "Imagen Cineon"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:659
+#: gui/FLU/Flu_File_Chooser.cpp:658
 msgid "Cineon Picture"
 msgstr "Imagen Cineon"
 
@@ -14326,7 +14298,7 @@ msgstr ""
 msgid "CloneImageAll \"%s\""
 msgstr ""
 
-#: gui/mrvElement.cpp:70
+#: gui/mrvElement.cpp:76
 #, c-format
 msgid ""
 "Cloned Image\n"
@@ -14502,7 +14474,7 @@ msgstr ""
 msgid "Comments"
 msgstr "Comentarios"
 
-#: gui/FLU/Flu_File_Chooser.cpp:100
+#: gui/FLU/Flu_File_Chooser.cpp:99
 msgid "Compact Disk"
 msgstr "Compact Disk"
 
@@ -14692,7 +14664,7 @@ msgstr "No pude copiar el contexto a los parámetros"
 msgid "Could not copy parameters to context"
 msgstr "No pude copiar los parámetros al contexto de codec"
 
-#: gui/FLU/Flu_File_Chooser.cpp:125
+#: gui/FLU/Flu_File_Chooser.cpp:124
 #, c-format
 msgid ""
 "Could not create directory '%s'. You may not have permission to perform this "
@@ -15269,7 +15241,7 @@ msgstr "Crear nuevo carrete o pista de LDE"
 msgid "Create audio conversion from "
 msgstr "Crear conversión de audio desde "
 
-#: gui/FLU/Flu_File_Chooser.cpp:118
+#: gui/FLU/Flu_File_Chooser.cpp:117
 msgid "Create new directory"
 msgstr "Crear un directorio nuevo"
 
@@ -15639,14 +15611,9 @@ msgstr ""
 msgid "DHAV"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:637
+#: gui/FLU/Flu_File_Chooser.cpp:636
 msgid "DIVX Movie"
 msgstr "Película DIVX"
-
-#: gui/FLU/Flu_Tree_Browser.cpp:32 gui/FLU/Flu_Tree_Browser.cpp:661
-#: gui/FLU/Flu_Tree_Browser.cpp:1050 gui/FLU/Flu_Tree_Browser.cpp:1732
-msgid "DND_Object"
-msgstr ""
 
 #: core/CMedia_audio.cpp:1931 core/CMedia_audio.cpp:1935
 msgid "DOSEEK"
@@ -15656,7 +15623,7 @@ msgstr ""
 msgid "DOSEEK END"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:663
+#: gui/FLU/Flu_File_Chooser.cpp:662
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
@@ -15751,7 +15718,7 @@ msgstr "Ventana de Datos"
 msgid "DataWindow %d"
 msgstr "Ventana de Datos 2"
 
-#: core/slateImage.cpp:286 gui/FLU/Flu_File_Chooser.cpp:97
+#: core/slateImage.cpp:286 gui/FLU/Flu_File_Chooser.cpp:96
 msgid "Date"
 msgstr "Fecha"
 
@@ -15870,7 +15837,7 @@ msgstr "Defecto audio al abrir mrViewer."
 msgid "Defaults"
 msgstr "Defecto"
 
-#: gui/FLU/Flu_File_Chooser.cpp:98 gui/mrvHotkey.cpp:380
+#: gui/FLU/Flu_File_Chooser.cpp:97 gui/mrvHotkey.cpp:380
 msgid "Delete"
 msgstr "Borrar"
 
@@ -15880,11 +15847,11 @@ msgstr "Borrar"
 msgid "Delete current reel"
 msgstr "Borrar carrete actual."
 
-#: gui/FLU/Flu_File_Chooser.cpp:117
+#: gui/FLU/Flu_File_Chooser.cpp:116
 msgid "Delete file(s)"
 msgstr "Borrar archivo(s)"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1521
+#: gui/FLU/Flu_File_Chooser.cpp:1518
 msgid "Deleting files..."
 msgstr "Borrar archivo(s)"
 
@@ -15898,8 +15865,8 @@ msgstr ""
 msgid "Depth"
 msgstr "Profundidad"
 
-#: gui/FLU/Flu_File_Chooser.cpp:90 gui/FLU/Flu_File_Chooser.cpp:94
-#: gui/FLU/Flu_File_Chooser.cpp:198
+#: gui/FLU/Flu_File_Chooser.cpp:89 gui/FLU/Flu_File_Chooser.cpp:93
+#: gui/FLU/Flu_File_Chooser.cpp:197
 msgid "Desktop"
 msgstr "Escritorio"
 
@@ -15919,7 +15886,7 @@ msgstr ""
 "El espacio de color no es ni RGB ni XYZ.  Los colores pueden verse extraños "
 "al mostrarse como RGB."
 
-#: gui/FLU/Flu_File_Chooser.cpp:123
+#: gui/FLU/Flu_File_Chooser.cpp:122
 msgid "Detail mode"
 msgstr "Modo de Detalle"
 
@@ -15949,12 +15916,12 @@ msgid "Digital PAL/NTSC"
 msgstr "ITU-601 (PAL/NTSC YCbCr Digital)"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:638
+#: gui/FLU/Flu_File_Chooser.cpp:637
 msgid "Digital Video"
 msgstr "Vídeo Digital"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1166
-#: gui/FLU/Flu_File_Chooser.cpp:109 gui/mrvImageInformation.cpp:2095
+#: gui/FLU/Flu_File_Chooser.cpp:108 gui/mrvImageInformation.cpp:2095
 msgid "Directory"
 msgstr "Carpeta"
 
@@ -15966,7 +15933,7 @@ msgstr "Carpeta "
 msgid "Directory where clip resides"
 msgstr "Directorio donde el clip reside"
 
-#: gui/mrvElement.cpp:83
+#: gui/mrvElement.cpp:89
 #, c-format
 msgid ""
 "Directory: %s\n"
@@ -15983,7 +15950,7 @@ msgstr ""
 msgid "Disconnect"
 msgstr "Desconectar"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3515
+#: gui/FLU/Flu_File_Chooser.cpp:3512
 msgid "Disk"
 msgstr "Disco RAM"
 
@@ -16225,7 +16192,7 @@ msgstr "Editar LDE"
 msgid "EDL Window"
 msgstr "Ventana de LDE"
 
-#: gui/mrvMediaTrack.cpp:503
+#: gui/mrvMediaTrack.cpp:501
 msgid "EMPTY REEL AT INDEX "
 msgstr ""
 
@@ -16262,7 +16229,7 @@ msgstr ""
 msgid "EXR"
 msgstr "OpenEXR"
 
-#: gui/FLU/Flu_File_Chooser.cpp:664
+#: gui/FLU/Flu_File_Chooser.cpp:663
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
@@ -16294,11 +16261,11 @@ msgstr "Vacía busqueda o preroll"
 msgid "Empty image in media passed to media_to_pathname"
 msgstr ""
 
-#: gui/mrvElement.cpp:28
+#: gui/mrvElement.cpp:27
 msgid "Empty image in thumbnail"
 msgstr ""
 
-#: gui/mrvElement.cpp:56
+#: gui/mrvElement.cpp:55
 msgid "Empty image provided to Element constructor"
 msgstr ""
 
@@ -16314,7 +16281,7 @@ msgstr ""
 msgid "Empty media passed to media_to_pathname"
 msgstr ""
 
-#: gui/mrvElement.cpp:48
+#: gui/mrvElement.cpp:47
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
@@ -16763,11 +16730,11 @@ msgstr ""
 msgid "Family:   "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:86
+#: gui/FLU/Flu_File_Chooser.cpp:85
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3283
+#: gui/FLU/Flu_File_Chooser.cpp:3280
 msgid "Feb"
 msgstr ""
 
@@ -16785,7 +16752,7 @@ msgstr "Display"
 msgid "FieldDisplay %d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:127
+#: gui/FLU/Flu_File_Chooser.cpp:126
 #, c-format
 msgid "File '%s' already exists!"
 msgstr "¡El archivo '%s' ya existe!"
@@ -16794,7 +16761,7 @@ msgstr "¡El archivo '%s' ya existe!"
 msgid "File Requester"
 msgstr "Buscador de Archivos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:108
+#: gui/FLU/Flu_File_Chooser.cpp:107
 msgid "File Types"
 msgstr "Tipos"
 
@@ -16812,7 +16779,7 @@ msgid "File/Open/Directory"
 msgstr "Archivo/Abrir/Directorio"
 
 #: gui/mrvImageView.cpp:4174 gui/mrvImageBrowser.cpp:2562
-#: gui/mrvMediaTrack.cpp:593
+#: gui/mrvMediaTrack.cpp:591
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivo/Abrir/Pelicula o Secuencia"
 
@@ -16845,7 +16812,7 @@ msgid "File/Save/Reel As"
 msgstr "Archivo/Grabar/Carrete Como"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1159
-#: gui/FLU/Flu_File_Chooser.cpp:103 gui/mrvImageInformation.cpp:2098
+#: gui/FLU/Flu_File_Chooser.cpp:102 gui/mrvImageInformation.cpp:2098
 msgid "Filename"
 msgstr "Nombre"
 
@@ -16894,7 +16861,7 @@ msgstr ""
 msgid "Flags             "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:639
+#: gui/FLU/Flu_File_Chooser.cpp:638
 msgid "Flash Movie"
 msgstr "Pelicula Flash"
 
@@ -16930,15 +16897,9 @@ msgstr "Texturas de Floats:\t"
 msgid "Float Values"
 msgstr "Valores de Coma Flotante"
 
-#: gui/FLU/Flu_File_Chooser.cpp:99
+#: gui/FLU/Flu_File_Chooser.cpp:98
 msgid "Floppy Disk"
 msgstr "Disco Floppy"
-
-#: gui/FLU/Flu_Tree_Browser.cpp:654 gui/FLU/Flu_Tree_Browser.cpp:660
-#: gui/FLU/Flu_Tree_Browser.cpp:1045 gui/FLU/Flu_Tree_Browser.cpp:1727
-#: gui/FLU/Flu_Tree_Browser.cpp:2554
-msgid "Flu_Tree_Browser"
-msgstr ""
 
 #: core/aviImage_save.cpp:1631
 msgid "Flushing of buffers failed"
@@ -17051,7 +17012,7 @@ msgstr "Framebuffer incompleto: Buffer de lectura."
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:217
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:518
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1163
-#: core/slateImage.cpp:288 gui/FLU/Flu_File_Chooser.cpp:97
+#: core/slateImage.cpp:288 gui/FLU/Flu_File_Chooser.cpp:96
 msgid "Frames"
 msgstr "Cuadros"
 
@@ -17197,7 +17158,7 @@ msgstr ""
 msgid "GBRP10LE"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:671
+#: gui/FLU/Flu_File_Chooser.cpp:670
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
@@ -17471,7 +17432,7 @@ msgstr "Fantasma"
 msgid "GlEngine"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:113
+#: gui/FLU/Flu_File_Chooser.cpp:112
 msgid "Go back one directory in the history"
 msgstr "Volver una carpeta en la historia"
 
@@ -17479,7 +17440,7 @@ msgstr "Volver una carpeta en la historia"
 msgid "Go back one frame."
 msgstr "Volver atrás un cuadro."
 
-#: gui/FLU/Flu_File_Chooser.cpp:114
+#: gui/FLU/Flu_File_Chooser.cpp:113
 msgid "Go forward one directory in the history"
 msgstr "Avanzar una carpeta en la historia"
 
@@ -17491,7 +17452,7 @@ msgstr "Ir al principio de la secuencia."
 msgid "Go to the end of the sequence."
 msgstr "Ir al final de la secuencia."
 
-#: gui/FLU/Flu_File_Chooser.cpp:115
+#: gui/FLU/Flu_File_Chooser.cpp:114
 msgid "Go to the parent directory"
 msgstr "Ir a la carpeta anterior"
 
@@ -17616,7 +17577,7 @@ msgstr ""
 msgid "HDR"
 msgstr "Sobreimpreso"
 
-#: gui/FLU/Flu_File_Chooser.cpp:665
+#: gui/FLU/Flu_File_Chooser.cpp:664
 msgid "HDRI Picture"
 msgstr "Imagen HDRI"
 
@@ -17759,7 +17720,7 @@ msgstr ""
 msgid "HistogramWindow 1"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:92 gui/mrvHotkey.cpp:377
+#: gui/FLU/Flu_File_Chooser.cpp:91 gui/mrvHotkey.cpp:377
 msgid "Home"
 msgstr "Inicio"
 
@@ -17936,7 +17897,7 @@ msgstr ""
 msgid "IFF"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:667
+#: gui/FLU/Flu_File_Chooser.cpp:666
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
@@ -18337,7 +18298,7 @@ msgstr ""
 msgid "Images, sequences or movies to display."
 msgstr "Imágenes, secuencias o peliculas para mostrar."
 
-#: gui/FLU/Flu_File_Chooser.cpp:410
+#: gui/FLU/Flu_File_Chooser.cpp:409
 msgid "Img is NULL"
 msgstr ""
 
@@ -18569,7 +18530,7 @@ msgstr ""
 msgid "JPEG (.jpg)"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:668 gui/FLU/Flu_File_Chooser.cpp:669
+#: gui/FLU/Flu_File_Chooser.cpp:667 gui/FLU/Flu_File_Chooser.cpp:668
 msgid "JPEG Picture"
 msgstr "Imagen JPEG"
 
@@ -18577,15 +18538,15 @@ msgstr "Imagen JPEG"
 msgid "JPG/PNG/DPX Load Library"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3282
+#: gui/FLU/Flu_File_Chooser.cpp:3279
 msgid "Jan"
 msgstr "Ene"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3288
+#: gui/FLU/Flu_File_Chooser.cpp:3285
 msgid "Jul"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3287
+#: gui/FLU/Flu_File_Chooser.cpp:3284
 msgid "Jun"
 msgstr "ind"
 
@@ -18707,7 +18668,7 @@ msgstr ""
 msgid "Known Codec"
 msgstr "Codec Conocido"
 
-#: gui/FLU/Flu_File_Chooser.cpp:662
+#: gui/FLU/Flu_File_Chooser.cpp:661
 msgid "Kodak Digital Negative"
 msgstr "Negativo Digital de Kodak"
 
@@ -19022,7 +18983,7 @@ msgstr "Graduación Lineal"
 msgid "Linear RGB"
 msgstr "Linear"
 
-#: gui/FLU/Flu_File_Chooser.cpp:121
+#: gui/FLU/Flu_File_Chooser.cpp:120
 msgid "List mode"
 msgstr "Modo de Listado"
 
@@ -19130,11 +19091,11 @@ msgstr "Cargando interno shader rgba arbfp1"
 msgid "Local Caption"
 msgstr "Rótulo Local"
 
-#: gui/FLU/Flu_File_Chooser.cpp:100
+#: gui/FLU/Flu_File_Chooser.cpp:99
 msgid "Local Disk"
 msgstr "Disco Local"
 
-#: gui/FLU/Flu_File_Chooser.cpp:106
+#: gui/FLU/Flu_File_Chooser.cpp:105
 msgid "Location"
 msgstr "Localidad"
 
@@ -19357,11 +19318,11 @@ msgstr ""
 msgid "MMX2 "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:688
+#: gui/FLU/Flu_File_Chooser.cpp:687
 msgid "MP3 music"
 msgstr "Música MP3"
 
-#: gui/FLU/Flu_File_Chooser.cpp:644
+#: gui/FLU/Flu_File_Chooser.cpp:643
 msgid "MP4 Movie"
 msgstr "Película MP4"
 
@@ -19369,7 +19330,7 @@ msgstr "Película MP4"
 msgid "MPEG"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:645 gui/FLU/Flu_File_Chooser.cpp:646
+#: gui/FLU/Flu_File_Chooser.cpp:644 gui/FLU/Flu_File_Chooser.cpp:645
 msgid "MPEG Movie"
 msgstr "Película MPEG"
 
@@ -19459,7 +19420,7 @@ msgstr ""
 msgid "MT"
 msgstr "T"
 
-#: gui/FLU/Flu_File_Chooser.cpp:647
+#: gui/FLU/Flu_File_Chooser.cpp:646
 msgid "MXF Movie"
 msgstr "Película MXF"
 
@@ -19478,11 +19439,11 @@ msgid "Main 10"
 msgstr "Principal 10"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:670
+#: gui/FLU/Flu_File_Chooser.cpp:669
 msgid "Map Picture"
 msgstr "Imagen Map"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3284
+#: gui/FLU/Flu_File_Chooser.cpp:3281
 msgid "Mar"
 msgstr ""
 
@@ -19513,7 +19474,7 @@ msgstr ""
 msgid "Master"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:642
+#: gui/FLU/Flu_File_Chooser.cpp:641
 msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
@@ -19545,7 +19506,7 @@ msgstr ""
 "v6 serían encontradas.  v7 no sería encontrada ya que la separación sería "
 "demasiado amplia."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3286
+#: gui/FLU/Flu_File_Chooser.cpp:3283
 msgid "May"
 msgstr ""
 
@@ -19784,11 +19745,11 @@ msgstr "Peliculas\t*.{"
 msgid "Mute"
 msgstr "Mudo"
 
-#: gui/FLU/Flu_File_Chooser.cpp:88
+#: gui/FLU/Flu_File_Chooser.cpp:87
 msgid "My Computer"
 msgstr "Mi PC"
 
-#: gui/FLU/Flu_File_Chooser.cpp:89
+#: gui/FLU/Flu_File_Chooser.cpp:88
 msgid "My Documents"
 msgstr "Mis Documentos"
 
@@ -19906,7 +19867,7 @@ msgstr ""
 msgid "NVidia NV30"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:97
+#: gui/FLU/Flu_File_Chooser.cpp:96
 msgid "Name"
 msgstr "Nombre"
 
@@ -19926,7 +19887,7 @@ msgstr ""
 msgid "Negative indices to exchange"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:101
+#: gui/FLU/Flu_File_Chooser.cpp:100
 msgid "Network Disk"
 msgstr "Disco de Red"
 
@@ -19934,7 +19895,7 @@ msgstr "Disco de Red"
 msgid "Never"
 msgstr "Nunca"
 
-#: gui/FLU/Flu_File_Chooser.cpp:98 gui/FLU/Flu_File_Chooser.cpp:111
+#: gui/FLU/Flu_File_Chooser.cpp:97 gui/FLU/Flu_File_Chooser.cpp:110
 msgid "New Folder"
 msgstr "Nueva Carpeta"
 
@@ -19963,8 +19924,8 @@ msgstr "Próxima Imagen"
 msgid "Next Image Version"
 msgstr "Próxima Versión de la Imagen"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1436 gui/FLU/Flu_File_Chooser.cpp:1441
-#: gui/FLU/Flu_File_Chooser.cpp:1449 gui/FLU/Flu_File_Chooser.cpp:1454
+#: gui/FLU/Flu_File_Chooser.cpp:1433 gui/FLU/Flu_File_Chooser.cpp:1438
+#: gui/FLU/Flu_File_Chooser.cpp:1446 gui/FLU/Flu_File_Chooser.cpp:1451
 #: gui/mrvAsk.cpp:242 gui/mrvImageBrowser.cpp:643 gui/mrvImageBrowser.cpp:1948
 #: gui/mrvImageInformation.cpp:3804 gui/mrvSave.cpp:223 gui/mrvVersion.cpp:772
 #: gui/mrvVersion.cpp:775 video/mrvGLEngine.cpp:233 video/mrvGLEngine.cpp:234
@@ -20221,11 +20182,11 @@ msgstr "Sin memoria para imagen"
 msgid "Not group child in table row "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1512
+#: gui/FLU/Flu_File_Chooser.cpp:1509
 msgid "Notice"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3292
+#: gui/FLU/Flu_File_Chooser.cpp:3289
 msgid "Nov"
 msgstr "No"
 
@@ -20459,7 +20420,7 @@ msgstr ""
 msgid "ODT.Academy.RGBmonitor_D60sim_100nits_dim"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:689
+#: gui/FLU/Flu_File_Chooser.cpp:688
 msgid "OGG Vorbis music"
 msgstr "Música OGG Vorbis"
 
@@ -20501,7 +20462,7 @@ msgstr ""
 msgid "Object Cycle"
 msgstr "Ciclo de Objeto"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3291
+#: gui/FLU/Flu_File_Chooser.cpp:3288
 msgid "Oct"
 msgstr ""
 
@@ -20517,11 +20478,11 @@ msgid "Offset %g %g"
 msgstr "Desplazamiento"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:648
+#: gui/FLU/Flu_File_Chooser.cpp:647
 msgid "Ogg Movie"
 msgstr "Pelicula Ogg"
 
-#: gui/FLU/Flu_File_Chooser.cpp:649
+#: gui/FLU/Flu_File_Chooser.cpp:648
 msgid "Ogg Video"
 msgstr "Vídeo Ogg"
 
@@ -20529,7 +20490,7 @@ msgstr "Vídeo Ogg"
 msgid "OggS"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:104
+#: gui/FLU/Flu_File_Chooser.cpp:103
 msgid "Ok"
 msgstr "Ok"
 
@@ -20734,7 +20695,7 @@ msgid "Overrun scanline (Repeat) ["
 msgstr "Sobre escritura línea (Repetir) ["
 
 #: core/exrImage.cpp:1209 core/exrImage.cpp:2450 core/exrImage.cpp:2454
-#: core/hdrImage.cpp:166 gui/FLU/Flu_File_Chooser.cpp:97
+#: core/hdrImage.cpp:166 gui/FLU/Flu_File_Chooser.cpp:96
 msgid "Owner"
 msgstr "Propietario"
 
@@ -20851,7 +20812,7 @@ msgstr ""
 msgid "PIZ"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3295
+#: gui/FLU/Flu_File_Chooser.cpp:3292
 msgid "PM"
 msgstr ""
 
@@ -20860,7 +20821,7 @@ msgstr ""
 msgid "PMem: %<PRIu64>/%<PRIu64> MB  VMem: %<PRIu64>/%<PRIu64> MB"
 msgstr "MemF: %<PRIu64>/%<PRIu64> MB  MemV: %<PRIu64>/%<PRIu64> MB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:675
+#: gui/FLU/Flu_File_Chooser.cpp:674
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
@@ -20942,15 +20903,15 @@ msgstr "Tamaño del Lápiz Mayor"
 msgid "Perceptual"
 msgstr "Perceptual"
 
-#: gui/FLU/Flu_File_Chooser.cpp:97
+#: gui/FLU/Flu_File_Chooser.cpp:96
 msgid "Permissions"
 msgstr "Permisos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:199
+#: gui/FLU/Flu_File_Chooser.cpp:198
 msgid "Personal"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:676
+#: gui/FLU/Flu_File_Chooser.cpp:675
 msgid "Photoshop Picture"
 msgstr "Imagen de Photoshop"
 
@@ -21170,7 +21131,7 @@ msgstr "Premultiplicar"
 msgid "Premult No Gamma"
 msgstr "Premultiplicar Sin Gama"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1513
+#: gui/FLU/Flu_File_Chooser.cpp:1510
 msgid "Preparing to delete..."
 msgstr ""
 
@@ -21187,7 +21148,7 @@ msgstr "Presentación"
 msgid "PresentationMode %d"
 msgstr "Presentación"
 
-#: gui/FLU/Flu_File_Chooser.cpp:120
+#: gui/FLU/Flu_File_Chooser.cpp:119
 msgid "Preview files"
 msgstr "Archivos de Previz"
 
@@ -21367,7 +21328,7 @@ msgstr ""
 msgid "Quality"
 msgstr "Calidad"
 
-#: gui/FLU/Flu_File_Chooser.cpp:643 gui/FLU/Flu_File_Chooser.cpp:650
+#: gui/FLU/Flu_File_Chooser.cpp:642 gui/FLU/Flu_File_Chooser.cpp:649
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
@@ -21460,7 +21421,7 @@ msgstr ""
 msgid "RAFTER SEEK"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:101
+#: gui/FLU/Flu_File_Chooser.cpp:100
 msgid "RAM Disk"
 msgstr "Disco RAM"
 
@@ -21520,7 +21481,7 @@ msgstr ""
 msgid "RGB"
 msgstr "RGB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:677
+#: gui/FLU/Flu_File_Chooser.cpp:676
 msgid "RGB Picture"
 msgstr "Imagen RGB"
 
@@ -21642,26 +21603,26 @@ msgid "Read 16 bit movies when possible"
 msgstr "Leer peliculas en 16 bits cuando sea posible"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:651
+#: gui/FLU/Flu_File_Chooser.cpp:650
 msgid "Real Media Movie"
 msgstr "Película Real Media"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1441
+#: gui/FLU/Flu_File_Chooser.cpp:1438
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1454
+#: gui/FLU/Flu_File_Chooser.cpp:1451
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1435
+#: gui/FLU/Flu_File_Chooser.cpp:1432
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1449
+#: gui/FLU/Flu_File_Chooser.cpp:1446
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
@@ -21739,7 +21700,7 @@ msgstr "Número de Referencia"
 msgid "Reference Service"
 msgstr "Servicio de Referencia"
 
-#: gui/FLU/Flu_File_Chooser.cpp:116
+#: gui/FLU/Flu_File_Chooser.cpp:115
 msgid "Refresh this directory"
 msgstr "Refrescar esta carpeta"
 
@@ -21779,7 +21740,7 @@ msgstr ""
 msgid "Remaining"
 msgstr "Faltante"
 
-#: gui/FLU/Flu_File_Chooser.cpp:99
+#: gui/FLU/Flu_File_Chooser.cpp:98
 msgid "Removable Disk"
 msgstr "Disco Removible"
 
@@ -21810,7 +21771,7 @@ msgstr ""
 msgid "Removed client "
 msgstr "Borré el cliente "
 
-#: gui/FLU/Flu_File_Chooser.cpp:98
+#: gui/FLU/Flu_File_Chooser.cpp:97
 msgid "Rename"
 msgstr "Renombrar"
 
@@ -21905,7 +21866,7 @@ msgstr "Revertir"
 msgid "Revert settings to last saved preferences."
 msgstr "Revertir seteos a la la ultima preferencias grabadas."
 
-#: gui/FLU/Flu_File_Chooser.cpp:678
+#: gui/FLU/Flu_File_Chooser.cpp:677
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
@@ -22054,7 +22015,7 @@ msgstr ""
 msgid "SET EDL"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:680
+#: gui/FLU/Flu_File_Chooser.cpp:679
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
@@ -22413,7 +22374,7 @@ msgstr "Selecciona el color del lápiz."
 msgid "Selects the size of brush."
 msgstr "Selecciona el tamaño del pincel."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3290
+#: gui/FLU/Flu_File_Chooser.cpp:3287
 msgid "Sep"
 msgstr ""
 
@@ -22519,9 +22480,9 @@ msgstr ""
 msgid "ShiftMediaEnd"
 msgstr ""
 
-#: gui/mrvMediaTrack.cpp:473
+#: gui/mrvMediaTrack.cpp:472
 #, c-format
-msgid "ShiftMediaEnd %d"
+msgid "ShiftMediaEnd %d \"%s\" %<PRId64>"
 msgstr ""
 
 #: core/mrvServer.cpp:898
@@ -22530,7 +22491,7 @@ msgstr ""
 
 #: gui/mrvMediaTrack.cpp:345
 #, c-format
-msgid "ShiftMediaStart %d"
+msgid "ShiftMediaStart %d \"%s\" %<PRId64>"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:19
@@ -22553,7 +22514,7 @@ msgstr ""
 msgid "Show"
 msgstr "Mostrado"
 
-#: gui/FLU/Flu_File_Chooser.cpp:107
+#: gui/FLU/Flu_File_Chooser.cpp:106
 msgid "Show Hidden Files"
 msgstr "Mostrar Archivos Ocultos"
 
@@ -22591,7 +22552,7 @@ msgstr "Un Solo Click para Viajar a las Carpetas"
 msgid "Single Instance"
 msgstr "Una Sola Instancia"
 
-#: core/mrvColorProfile.cpp:297 gui/FLU/Flu_File_Chooser.cpp:97
+#: core/mrvColorProfile.cpp:297 gui/FLU/Flu_File_Chooser.cpp:96
 #: gui/mrvColorInfo.cpp:519
 msgid "Size"
 msgstr "Tamaño"
@@ -22630,7 +22591,7 @@ msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:674
+#: gui/FLU/Flu_File_Chooser.cpp:673
 msgid "Softimage Picture"
 msgstr "Imagen Softimage"
 
@@ -22642,7 +22603,7 @@ msgstr "Imagen Softimage"
 msgid "Software"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:203
+#: gui/FLU/Flu_File_Chooser.cpp:202
 msgid "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
 msgstr ""
 
@@ -22722,7 +22683,7 @@ msgstr "Estéreo OpenGL"
 msgid "Stereo 3D Options"
 msgstr "Opciones de Estéreo 3D"
 
-#: gui/FLU/Flu_File_Chooser.cpp:682
+#: gui/FLU/Flu_File_Chooser.cpp:681
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
@@ -23000,8 +22961,8 @@ msgstr ""
 msgid "TIFF (.tif)"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:666 gui/FLU/Flu_File_Chooser.cpp:684
-#: gui/FLU/Flu_File_Chooser.cpp:685
+#: gui/FLU/Flu_File_Chooser.cpp:665 gui/FLU/Flu_File_Chooser.cpp:683
+#: gui/FLU/Flu_File_Chooser.cpp:684
 msgid "TIFF Picture"
 msgstr "Imagen TIFF"
 
@@ -23037,7 +22998,7 @@ msgstr "Tomar Valores de la Ventana"
 msgid "Targa (.tga)"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:683
+#: gui/FLU/Flu_File_Chooser.cpp:682
 msgid "Targa Picture"
 msgstr "Imagen Targa"
 
@@ -23045,7 +23006,7 @@ msgstr "Imagen Targa"
 msgid "Tb"
 msgstr "Tab"
 
-#: gui/FLU/Flu_File_Chooser.cpp:93
+#: gui/FLU/Flu_File_Chooser.cpp:92
 msgid "Temporary"
 msgstr "Temporario"
 
@@ -23844,7 +23805,7 @@ msgid "Turn on debugging console"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:100
-#: gui/FLU/Flu_File_Chooser.cpp:97 gui/mrvImageInformation.cpp:207
+#: gui/FLU/Flu_File_Chooser.cpp:96 gui/mrvImageInformation.cpp:207
 msgid "Type"
 msgstr "Tipo"
 
@@ -24007,7 +23968,7 @@ msgstr "No pude encontrar un control simple '%s', id %i\n"
 msgid "Unable to find volume range '%s', id: %i\n"
 msgstr "No pude encontrar el rango de volumen '%s', id: %i\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:128
+#: gui/FLU/Flu_File_Chooser.cpp:127
 #, c-format
 msgid "Unable to rename '%s' to '%s'"
 msgstr "No se pudo renombrar '%s' a '%s'"
@@ -24365,7 +24326,7 @@ msgstr ""
 msgid "VImage"
 msgstr "VImagen"
 
-#: gui/FLU/Flu_File_Chooser.cpp:653
+#: gui/FLU/Flu_File_Chooser.cpp:652
 msgid "VOB Movie"
 msgstr "Pelicula VOB"
 
@@ -24732,7 +24693,7 @@ msgstr ""
 msgid "WINDIR"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:655
+#: gui/FLU/Flu_File_Chooser.cpp:654
 msgid "WMV Movie"
 msgstr "Película WMV"
 
@@ -24745,7 +24706,7 @@ msgstr "WSA no esta listo\n"
 msgid "Warning: "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:690
+#: gui/FLU/Flu_File_Chooser.cpp:689
 msgid "Wave music"
 msgstr "Musica WAVE"
 
@@ -24770,7 +24731,7 @@ msgstr "Permutar Ventana de Forma de Onda"
 msgid "WaveformWindow 1"
 msgstr "Permutar Ventana de Forma de Onda"
 
-#: gui/FLU/Flu_File_Chooser.cpp:654
+#: gui/FLU/Flu_File_Chooser.cpp:653
 msgid "WebM Movie"
 msgstr "Película WebM"
 
@@ -25073,7 +25034,7 @@ msgstr "Blanco"
 msgid "White Luminance"
 msgstr "Luminancia de Blanco"
 
-#: gui/FLU/Flu_File_Chooser.cpp:122
+#: gui/FLU/Flu_File_Chooser.cpp:121
 msgid "Wide list mode"
 msgstr "Modo de listado amplio"
 
@@ -25628,8 +25589,8 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1436 gui/FLU/Flu_File_Chooser.cpp:1441
-#: gui/FLU/Flu_File_Chooser.cpp:1449 gui/FLU/Flu_File_Chooser.cpp:1454
+#: gui/FLU/Flu_File_Chooser.cpp:1433 gui/FLU/Flu_File_Chooser.cpp:1438
+#: gui/FLU/Flu_File_Chooser.cpp:1446 gui/FLU/Flu_File_Chooser.cpp:1451
 #: gui/mrvAsk.cpp:243 gui/mrvImageBrowser.cpp:643 gui/mrvImageBrowser.cpp:1948
 #: gui/mrvImageInformation.cpp:3804 gui/mrvSave.cpp:223 gui/mrvVersion.cpp:772
 #: gui/mrvVersion.cpp:775 video/mrvGLEngine.cpp:233 video/mrvGLEngine.cpp:234
@@ -25870,11 +25831,6 @@ msgstr ""
 
 #: gui/FLU/flu_pixmaps.cpp:1404
 msgid "[      c #BDD67B"
-msgstr ""
-
-#: gui/FLU/Flu_Tree_Browser.cpp:1671
-#, c-format
-msgid "[%s]\n"
 msgstr ""
 
 #: core/CMedia_audio.cpp:2403
@@ -26642,7 +26598,7 @@ msgstr ""
 msgid "arw"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:633
+#: gui/FLU/Flu_File_Chooser.cpp:632
 msgid "asf"
 msgstr ""
 
@@ -26718,11 +26674,11 @@ msgid "av_difference"
 msgstr "Diferencia V-A"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:634
+#: gui/FLU/Flu_File_Chooser.cpp:633
 msgid "avc"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:635
+#: gui/FLU/Flu_File_Chooser.cpp:634
 msgid "avchd"
 msgstr ""
 
@@ -26739,7 +26695,7 @@ msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
 #: core/aviImage.cpp:89 core/aviImage_save.cpp:1308
-#: gui/FLU/Flu_File_Chooser.cpp:636
+#: gui/FLU/Flu_File_Chooser.cpp:635
 msgid "avi"
 msgstr "Grabando"
 
@@ -26885,7 +26841,7 @@ msgid "bind socket failed\n"
 msgstr "Unir enchufe falló\n"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:658
+#: gui/FLU/Flu_File_Chooser.cpp:657
 msgid "bit"
 msgstr ""
 
@@ -26909,7 +26865,7 @@ msgstr ""
 msgid "blue_y"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:657
+#: gui/FLU/Flu_File_Chooser.cpp:656
 msgid "bmp"
 msgstr ""
 
@@ -27238,7 +27194,7 @@ msgid "chunkCount"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:659
+#: gui/FLU/Flu_File_Chooser.cpp:658
 msgid "cin"
 msgstr ""
 
@@ -27377,7 +27333,7 @@ msgstr "País"
 msgid "cprof"
 msgstr ""
 
-#: core/rawImage.cpp:78 gui/FLU/Flu_File_Chooser.cpp:660
+#: core/rawImage.cpp:78 gui/FLU/Flu_File_Chooser.cpp:659
 msgid "cr2"
 msgstr ""
 
@@ -27393,7 +27349,7 @@ msgstr ""
 msgid "cs1"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:661
+#: gui/FLU/Flu_File_Chooser.cpp:660
 msgid "ct"
 msgstr ""
 
@@ -27406,7 +27362,7 @@ msgid "ctlToLut: "
 msgstr ""
 
 #: core/Sequence.cpp:711 core/Sequence.cpp:768 core/Sequence.cpp:1056
-#: gui/FLU/Flu_File_Chooser.cpp:4485 standalone/mrvCommandLine.cpp:270
+#: gui/FLU/Flu_File_Chooser.cpp:4486 standalone/mrvCommandLine.cpp:270
 #: standalone/mrvCommandLine.cpp:337
 msgid "d"
 msgstr ""
@@ -27597,11 +27553,11 @@ msgstr "Ventana de Display"
 msgid "display_window"
 msgstr "Ventana de Display"
 
-#: gui/FLU/Flu_File_Chooser.cpp:637
+#: gui/FLU/Flu_File_Chooser.cpp:636
 msgid "divx"
 msgstr ""
 
-#: core/rawImage.cpp:78 gui/FLU/Flu_File_Chooser.cpp:662
+#: core/rawImage.cpp:78 gui/FLU/Flu_File_Chooser.cpp:661
 msgid "dng"
 msgstr "Cargando"
 
@@ -27610,7 +27566,7 @@ msgid "doseek"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:663
+#: gui/FLU/Flu_File_Chooser.cpp:662
 msgid "dpx"
 msgstr ""
 
@@ -27677,7 +27633,7 @@ msgid "duration:%s duration_time:%s stream_index:%d\n"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:638
+#: gui/FLU/Flu_File_Chooser.cpp:637
 msgid "dv"
 msgstr ""
 
@@ -27765,7 +27721,7 @@ msgstr ""
 msgid "e+\tc #E4D390"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:419
+#: gui/FLU/Flu_File_Chooser.cpp:418
 msgid "e->entry->icon "
 msgstr ""
 
@@ -27825,7 +27781,7 @@ msgstr ""
 msgid "edx"
 msgstr "Rojo"
 
-#: gui/mrvElement.cpp:6
+#: gui/mrvElement.cpp:5
 msgid "elem"
 msgstr ""
 
@@ -27899,7 +27855,7 @@ msgstr ""
 msgid "expTime"
 msgstr "Tiempo"
 
-#: core/exrImage.cpp:81 gui/FLU/Flu_File_Chooser.cpp:664
+#: core/exrImage.cpp:81 gui/FLU/Flu_File_Chooser.cpp:663
 msgid "exr"
 msgstr "Hex"
 
@@ -28075,7 +28031,7 @@ msgid "filename"
 msgstr "Nombre"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:78
+#: gui/FLU/Flu_File_Chooser.cpp:77
 msgid "filereq"
 msgstr "b.arch"
 
@@ -28181,7 +28137,7 @@ msgstr ""
 msgid "float slope = min(1.0, %f / sig_avg);\n"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:639
+#: gui/FLU/Flu_File_Chooser.cpp:638
 msgid "flv"
 msgstr ""
 
@@ -28379,7 +28335,7 @@ msgstr "Gama"
 msgid "gamma "
 msgstr "Gama"
 
-#: gui/FLU/Flu_File_Chooser.cpp:671
+#: gui/FLU/Flu_File_Chooser.cpp:670
 msgid "gif"
 msgstr ""
 
@@ -28538,7 +28494,7 @@ msgstr ""
 msgid "has invalid magic number in the header."
 msgstr "tiene un número mágico inválido en el encabezado."
 
-#: core/hdrImage.cpp:67 gui/FLU/Flu_File_Chooser.cpp:665
+#: core/hdrImage.cpp:67 gui/FLU/Flu_File_Chooser.cpp:664
 msgid "hdr"
 msgstr ""
 
@@ -28749,16 +28705,11 @@ msgstr ""
 msgid "icon"
 msgstr ""
 
-#
-#: gui/FLU/Flu_Tree_Browser.cpp:3250
-msgid "id "
-msgstr ""
-
 #: video/mrvGLEngine.cpp:3397
 msgid "if (sig_peak > (1.0 + 1e-6)) {\n"
 msgstr ""
 
-#: core/iffImage.cpp:54 gui/FLU/Flu_File_Chooser.cpp:667
+#: core/iffImage.cpp:54 gui/FLU/Flu_File_Chooser.cpp:666
 msgid "iff"
 msgstr ""
 
@@ -28953,11 +28904,11 @@ msgstr ""
 msgid "j.\tc #FFDB94"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:669
+#: gui/FLU/Flu_File_Chooser.cpp:668
 msgid "jpeg"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:668
+#: gui/FLU/Flu_File_Chooser.cpp:667
 msgid "jpg"
 msgstr ""
 
@@ -29281,19 +29232,19 @@ msgstr "Longitud"
 msgid "loop_mode"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:386
+#: gui/FLU/Flu_File_Chooser.cpp:385
 msgid "lri file exists? "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:395
+#: gui/FLU/Flu_File_Chooser.cpp:394
 msgid "lri process icon "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:415
+#: gui/FLU/Flu_File_Chooser.cpp:414
 msgid "lri processed icon "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:338
+#: gui/FLU/Flu_File_Chooser.cpp:337
 msgid "lri quick exit "
 msgstr ""
 
@@ -29411,11 +29362,11 @@ msgstr ""
 msgid "m.\tc #E4C48D"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:641
+#: gui/FLU/Flu_File_Chooser.cpp:640
 msgid "m2t"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:640
+#: gui/FLU/Flu_File_Chooser.cpp:639
 msgid "m2ts"
 msgstr ""
 
@@ -29448,7 +29399,7 @@ msgid "maketx:outcolorspace"
 msgstr "Obtuve el espacio de color '"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:670
+#: gui/FLU/Flu_File_Chooser.cpp:669
 msgid "map"
 msgstr "mapa"
 
@@ -29557,36 +29508,36 @@ msgid "mental images' tag image"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:658
+#: gui/FLU/Flu_File_Chooser.cpp:657
 msgid "mental ray Bit Picture"
 msgstr "Imagen de Bit de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:661
+#: gui/FLU/Flu_File_Chooser.cpp:660
 msgid "mental ray Contour Picture"
 msgstr "Imagen de Contornos de mental ray"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:673
+#: gui/FLU/Flu_File_Chooser.cpp:672
 msgid "mental ray Motion Picture"
 msgstr "Imagen de Movimiento de mental ray"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:672
+#: gui/FLU/Flu_File_Chooser.cpp:671
 msgid "mental ray Normal Picture"
 msgstr "Imagen de Normales de mental ray"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:681
+#: gui/FLU/Flu_File_Chooser.cpp:680
 msgid "mental ray Scalar Picture"
 msgstr "Imagen de Coma Flotante de mental ray"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:679
+#: gui/FLU/Flu_File_Chooser.cpp:678
 msgid "mental ray Shadow Map"
 msgstr "Imagen de Sombras de mental ray"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:686
+#: gui/FLU/Flu_File_Chooser.cpp:685
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de Profundidad en Z de mental ray"
 
@@ -29599,7 +29550,7 @@ msgstr ""
 msgid "missing_frames"
 msgstr "Cuadros Faltantes"
 
-#: gui/FLU/Flu_File_Chooser.cpp:642
+#: gui/FLU/Flu_File_Chooser.cpp:641
 msgid "mkv"
 msgstr ""
 
@@ -29612,7 +29563,7 @@ msgid "mos"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:643
+#: gui/FLU/Flu_File_Chooser.cpp:642
 msgid "mov"
 msgstr ""
 
@@ -29632,15 +29583,15 @@ msgid "movflags"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:138
-#: core/aviImage_save.cpp:1368 gui/FLU/Flu_File_Chooser.cpp:688
+#: core/aviImage_save.cpp:1368 gui/FLU/Flu_File_Chooser.cpp:687
 msgid "mp3"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:644
+#: gui/FLU/Flu_File_Chooser.cpp:643
 msgid "mp4"
 msgstr ""
 
-#: core/aviImage_save.cpp:1321 gui/FLU/Flu_File_Chooser.cpp:645
+#: core/aviImage_save.cpp:1321 gui/FLU/Flu_File_Chooser.cpp:644
 msgid "mpeg"
 msgstr ""
 
@@ -29658,7 +29609,7 @@ msgstr ""
 msgid "mpegts"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:646
+#: gui/FLU/Flu_File_Chooser.cpp:645
 msgid "mpg"
 msgstr ""
 
@@ -29812,7 +29763,7 @@ msgstr "mrv::Frame No hay datos de pixel a cambiar"
 msgid "mrw"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:673
+#: gui/FLU/Flu_File_Chooser.cpp:672
 msgid "mt"
 msgstr ""
 
@@ -29822,7 +29773,7 @@ msgid ""
 "\tvand %%v0, %%v0, %%v0"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:647
+#: gui/FLU/Flu_File_Chooser.cpp:646
 msgid "mxf"
 msgstr ""
 
@@ -29973,7 +29924,7 @@ msgid "nrw"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:672
+#: gui/FLU/Flu_File_Chooser.cpp:671
 msgid "nt"
 msgstr ""
 
@@ -30110,16 +30061,16 @@ msgstr "Desplazamiento"
 msgid "offset w: "
 msgstr "Desplazamiento"
 
-#: gui/FLU/Flu_File_Chooser.cpp:689
+#: gui/FLU/Flu_File_Chooser.cpp:688
 msgid "ogg"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:648
+#: gui/FLU/Flu_File_Chooser.cpp:647
 msgid "ogm"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:649
+#: gui/FLU/Flu_File_Chooser.cpp:648
 msgid "ogv"
 msgstr ""
 
@@ -30384,7 +30335,7 @@ msgstr ""
 msgid "perfsPerFrame"
 msgstr ""
 
-#: core/picImage.cpp:96 gui/FLU/Flu_File_Chooser.cpp:674
+#: core/picImage.cpp:96 gui/FLU/Flu_File_Chooser.cpp:673
 msgid "pic"
 msgstr ""
 
@@ -30453,7 +30404,7 @@ msgstr ""
 msgid "plughw:%d,%d"
 msgstr ""
 
-#: core/aviImage_save.cpp:1340 gui/FLU/Flu_File_Chooser.cpp:675
+#: core/aviImage_save.cpp:1340 gui/FLU/Flu_File_Chooser.cpp:674
 msgid "png"
 msgstr ""
 
@@ -30511,7 +30462,7 @@ msgid "prores_ks"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:676
+#: gui/FLU/Flu_File_Chooser.cpp:675
 msgid "psd"
 msgstr ""
 
@@ -30637,7 +30588,7 @@ msgstr ""
 msgid "q.\tc #FFE99F"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:650
+#: gui/FLU/Flu_File_Chooser.cpp:649
 msgid "qt"
 msgstr ""
 
@@ -30666,7 +30617,7 @@ msgid "quick_folder_travel"
 msgstr ""
 
 #: core/ddsImage.cpp:1259 core/Sequence.cpp:797 core/mrvCPU.cpp:739
-#: gui/FLU/Flu_File_Chooser.cpp:1047 gui/FLU/Flu_File_Chooser.cpp:3595
+#: gui/FLU/Flu_File_Chooser.cpp:1046 gui/FLU/Flu_File_Chooser.cpp:3596
 #: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:678 gui/mrvVersion.cpp:694
 #: standalone/mrvCommandLine.cpp:74 standalone/main.cpp:444
 msgid "r"
@@ -30736,12 +30687,12 @@ msgstr ""
 msgid "r+\tc #C7AC74"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "r--"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "r-x"
 msgstr ""
 
@@ -30819,15 +30770,6 @@ msgstr ""
 #: core/mrvCPU.cpp:53
 msgid "rcx"
 msgstr "Fuente"
-
-#
-#: gui/FLU/Flu_Tree_Browser.cpp:3251
-msgid "rdata "
-msgstr ""
-
-#: gui/FLU/Flu_Tree_Browser.cpp:3252
-msgid "rdata.path "
-msgstr ""
 
 #: core/rawImage.cpp:80
 msgid "rdc"
@@ -30927,7 +30869,7 @@ msgstr " no encontrado"
 msgid "return ((x * (%f*x + %f)+%f)/(x * (%f*x + %f) + %f)) - %f;\n"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:677
+#: gui/FLU/Flu_File_Chooser.cpp:676
 msgid "rgb"
 msgstr ""
 
@@ -30940,7 +30882,7 @@ msgid "right"
 msgstr "Derecha"
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:651
+#: gui/FLU/Flu_File_Chooser.cpp:650
 msgid "rm"
 msgstr ""
 
@@ -30948,7 +30890,7 @@ msgstr ""
 msgid "root"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:678
+#: gui/FLU/Flu_File_Chooser.cpp:677
 msgid "rpf"
 msgstr ""
 
@@ -30960,7 +30902,7 @@ msgstr ""
 msgid "rsp"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "rw-"
 msgstr ""
 
@@ -30973,7 +30915,7 @@ msgid "rwl"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:3797
+#: gui/FLU/Flu_File_Chooser.cpp:3798
 msgid "rwx"
 msgstr ""
 
@@ -31197,7 +31139,7 @@ msgid "set frame to "
 msgstr " cuadro "
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:680
+#: gui/FLU/Flu_File_Chooser.cpp:679
 msgid "sgi"
 msgstr ""
 
@@ -31214,7 +31156,7 @@ msgstr "Archivo de imagen \""
 msgid "shape"
 msgstr ""
 
-#: core/shmapImage.cpp:51 gui/FLU/Flu_File_Chooser.cpp:679
+#: core/shmapImage.cpp:51 gui/FLU/Flu_File_Chooser.cpp:678
 msgid "shmap"
 msgstr ""
 
@@ -31322,7 +31264,7 @@ msgid "sscanf returned less than 3 elements"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:681
+#: gui/FLU/Flu_File_Chooser.cpp:680
 msgid "st"
 msgstr ""
 
@@ -31406,7 +31348,7 @@ msgid "swap: "
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:682
+#: gui/FLU/Flu_File_Chooser.cpp:681
 msgid "sxr"
 msgstr ""
 
@@ -31526,7 +31468,7 @@ msgstr ""
 msgid "text_overlay_color"
 msgstr "Sobreimpreso de Texto"
 
-#: gui/FLU/Flu_File_Chooser.cpp:683
+#: gui/FLU/Flu_File_Chooser.cpp:682
 msgid "tga"
 msgstr ""
 
@@ -31543,10 +31485,6 @@ msgstr ""
 msgid "themes"
 msgstr ""
 
-#: gui/FLU/Flu_Tree_Browser.cpp:3249
-msgid "this "
-msgstr ""
-
 #: gui/mrvPreferences.cpp:876 gui/mrvPreferences.cpp:1167
 #: gui/mrvPreferences.cpp:2281 gui/mrvPreferences.cpp:2406
 msgid "thread_count"
@@ -31560,12 +31498,12 @@ msgstr ""
 msgid "thumbnails"
 msgstr "Estampas Activas"
 
-#: gui/FLU/Flu_File_Chooser.cpp:666 gui/FLU/Flu_File_Chooser.cpp:684
+#: gui/FLU/Flu_File_Chooser.cpp:665 gui/FLU/Flu_File_Chooser.cpp:683
 #: gui/mrvSave.cpp:247
 msgid "tif"
 msgstr ""
 
-#: core/aviImage_save.cpp:1342 gui/FLU/Flu_File_Chooser.cpp:685
+#: core/aviImage_save.cpp:1342 gui/FLU/Flu_File_Chooser.cpp:684
 #: gui/mrvSave.cpp:248
 msgid "tiff"
 msgstr ""
@@ -31608,7 +31546,7 @@ msgstr "Substraer"
 msgid "transform"
 msgstr "Transformación"
 
-#: gui/FLU/Flu_File_Chooser.cpp:652
+#: gui/FLU/Flu_File_Chooser.cpp:651
 msgid "ts"
 msgstr ""
 
@@ -31749,7 +31687,7 @@ msgid "uniform vec3 "
 msgstr ""
 
 #: core/CMedia.cpp:3149 core/CMedia.cpp:3180 core/CMedia.cpp:4242
-#: core/wandImage.cpp:686 gui/FLU/Flu_File_Chooser.cpp:3743
+#: core/wandImage.cpp:686 gui/FLU/Flu_File_Chooser.cpp:3744
 #: standalone/main.cpp:178
 msgid "unknown"
 msgstr "desconocido"
@@ -31933,7 +31871,7 @@ msgstr "Vista Izquierda"
 msgid "visual impaired"
 msgstr "discapacitado visual"
 
-#: gui/FLU/Flu_File_Chooser.cpp:653
+#: gui/FLU/Flu_File_Chooser.cpp:652
 msgid "vob"
 msgstr ""
 
@@ -31973,7 +31911,7 @@ msgstr ""
 msgid "vorbis"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1474 gui/FLU/Flu_File_Chooser.cpp:3251
+#: gui/FLU/Flu_File_Chooser.cpp:1471 gui/FLU/Flu_File_Chooser.cpp:3248
 #: gui/mrvImageBrowser.cpp:534 gui/mrvLogDisplay.cpp:112
 #: standalone/mrvCommandLine.cpp:75 standalone/mrvCommandLine.cpp:76
 #: standalone/mrvCommandLine.cpp:448 standalone/mrvCommandLine.cpp:449
@@ -32082,7 +32020,7 @@ msgid "wand"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:690
+#: gui/FLU/Flu_File_Chooser.cpp:689
 msgid "wav"
 msgstr ""
 
@@ -32095,7 +32033,7 @@ msgstr "Forma de Onda"
 msgid "wb"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:654
+#: gui/FLU/Flu_File_Chooser.cpp:653
 msgid "webm"
 msgstr ""
 
@@ -32132,7 +32070,7 @@ msgstr "Ancho"
 msgid "window"
 msgstr "ventana"
 
-#: gui/FLU/Flu_File_Chooser.cpp:655
+#: gui/FLU/Flu_File_Chooser.cpp:654
 msgid "wmv"
 msgstr ""
 
@@ -32535,7 +32473,7 @@ msgstr ""
 msgid "zlib v"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:686
+#: gui/FLU/Flu_File_Chooser.cpp:685
 msgid "zt"
 msgstr ""
 
@@ -32807,7 +32745,7 @@ msgstr ""
 msgid "|.\tc #FAE69E"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3697 gui/FLU/Flu_File_Chooser.cpp:3705
+#: gui/FLU/Flu_File_Chooser.cpp:3698 gui/FLU/Flu_File_Chooser.cpp:3706
 msgid "|;"
 msgstr ""
 
@@ -33122,9 +33060,15 @@ msgstr ""
 msgid "~.\tc #B29A6A"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:757
+#: gui/FLU/Flu_File_Chooser.cpp:756
 msgid "~/"
 msgstr ""
+
+#
+#
+#, fuzzy
+#~ msgid "NAME "
+#~ msgstr "Display OCIO"
 
 #, fuzzy
 #~ msgid "browser uiMain "
@@ -33743,11 +33687,6 @@ msgstr ""
 #
 #~ msgid "dir"
 #~ msgstr "Rojo"
-
-#
-#
-#~ msgid "NAME is "
-#~ msgstr "Display OCIO"
 
 #
 #~ msgid "FILL ui hotkeys "
