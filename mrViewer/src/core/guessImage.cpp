@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -217,14 +217,15 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     {
         if ( is_seq )
         {
-            sprintf( name, root.c_str(), frame );  // eliminate file:
+            sprintf( name, root.c_str(), frame );
         }
         else
         {
-            strncpy( name, root.c_str(), 1024 );  // eliminate file:
+            strncpy( name, root.c_str(), 1024 );
         }
     }
 
+    // eliminate file:
     if ( strncmp( name, "file:", 5 ) == 0 )
     {
         name += 5;
@@ -372,7 +373,7 @@ CMedia* CMedia::guess_image( const char* file,
     }
 
     mrv::get_sequence_limits( start, end, root, false );
-    if ( start != AV_NOPTS_VALUE || end   != AV_NOPTS_VALUE )
+    if ( start != AV_NOPTS_VALUE || end != AV_NOPTS_VALUE )
     {
         if ( mrv::fileroot( tmp, root ) )
         {
@@ -385,10 +386,10 @@ CMedia* CMedia::guess_image( const char* file,
     int64_t lastFrame = end;
 
     if ( (root.size() > 4 &&
-            ( root.substr( root.size() - 4, root.size()) == ".xml" ||
-              root.substr( root.size() - 4, root.size()) == ".XML" ) ) ||
-            ( root.size() > 1 &&
-              ( root.substr( root.size() - 1, root.size()) == "~" )) )
+          ( root.substr( root.size() - 4, root.size()) == ".xml" ||
+            root.substr( root.size() - 4, root.size()) == ".XML" ) ) ||
+         ( root.size() > 1 &&
+           ( root.substr( root.size() - 1, root.size()) == "~" )) )
         return NULL;
 
     CMedia* right = NULL;
