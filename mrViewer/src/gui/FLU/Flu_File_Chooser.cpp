@@ -53,7 +53,6 @@
 
 #include "FLU/flu_pixmaps.h"
 #include "FLU/Flu_Label.h"
-#include "FLU/Flu_Tree_Browser.h"
 #include "FLU/Flu_Separator.h"
 #include "FLU/Flu_Enumerations.h"
 
@@ -1386,16 +1385,14 @@ void Flu_File_Chooser :: recursiveScan( const char *dir, FluStringVector *files 
       fullpath = dir;
       fullpath += "/";
       fullpath += name;
-      if( fl_filename_isdir( fullpath.c_str() ) != 0 )
+      if( fl_filename_isdir( fullpath.c_str() ) )
         recursiveScan( fullpath.c_str(), files );
 
       files->push_back( fullpath );
     }
   files->push_back( dir );
 
-  for( int i = 0; i < num; i++ )
-      free((void*)(e[i]));
-  free((void*)e);
+  fl_filename_free_list( &e, num );
 }
 
 void Flu_File_Chooser :: trashCB( bool recycle )
@@ -3559,7 +3556,7 @@ void Flu_File_Chooser :: buildLocationCombo()
   // get all volume mount points and add to the location combobox
   dirent **e;
   char *name;
-  int num = flu_filename_list( "/Volumes/", &e );
+  int num = fl_filename_list( "/Volumes/", &e );
   if( num > 0 )
     {
       int i;
@@ -3583,6 +3580,10 @@ void Flu_File_Chooser :: buildLocationCombo()
           location->tree.add( comment_slashes( fullpath ).c_str() );
         }
     }
+
+  for( i = 0; i < num; i++ )
+      free(e[i]);
+  free(e);
 
 
 #else
@@ -4583,9 +4584,7 @@ void Flu_File_Chooser :: cd( const char *path )
         } // i != e
       }
 
-      for( i = 0; i < num; i++ )
-        free((void*)(e[i]));
-      free((void*)e);
+      fl_filename_free_list( &e, num );
     } // num > 0
 
   // sort the files: directories first, then files
