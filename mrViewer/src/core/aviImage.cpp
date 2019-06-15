@@ -2772,6 +2772,9 @@ bool aviImage::initialize()
     if ( !_initialize )
     {
         int error = 0;
+
+        std::string file;
+
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "initial_pause", "1", 0);
 
@@ -2781,9 +2784,9 @@ bool aviImage::initialize()
                         (int(*)(int)) tolower);
 
         if ( ext.rfind( ".png" )  != std::string::npos ||
-                ext.rfind( ".dpx" )  != std::string::npos ||
-                ext.rfind( ".jpg" )  != std::string::npos ||
-                ext.rfind( ".jpeg" ) != std::string::npos )
+             ext.rfind( ".dpx" )  != std::string::npos ||
+             ext.rfind( ".jpg" )  != std::string::npos ||
+             ext.rfind( ".jpeg" ) != std::string::npos )
         {
             char buf[64];
             sprintf( buf, "%" PRId64, _frameStart );
@@ -2794,13 +2797,18 @@ bool aviImage::initialize()
 
             if ( CMedia::load_library != CMedia::kFFMPEGLibrary ) return false;
 
+            // We must open fileroot for png/dpx/jpg sequences to work
+            file = fileroot();
+        }
+        else
+        {
+            file = sequence_filename( _frameStart );
         }
 
 
         AVInputFormat*     format = NULL;
-        // We must open fileroot for png sequences to work
-        error = avformat_open_input( &_context, fileroot(),
-                                         format, &opts );
+        error = avformat_open_input( &_context, file.c_str(),
+                                     format, &opts );
 
 
         if ( error >= 0 )

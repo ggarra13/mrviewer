@@ -201,9 +201,14 @@ bool is_valid_audio( const char* ext )
                     (int(*)(int)) tolower);
     if ( tmp[0] != '.' ) tmp = '.' + tmp;
 
-    if ( tmp == N_(".mp3") ||
-            tmp == N_(".ogg") ||
-            tmp == N_(".wav") )
+    if ( tmp == N_(".aiff") ||
+         tmp == N_(".flac") ||
+         tmp == N_(".mp3") ||
+         tmp == N_(".ogg") ||
+         tmp == N_(".opus") ||
+         tmp == N_(".snd") ||
+         tmp == N_(".vorbis") ||
+         tmp == N_(".wav") )
         return true;
 
     return false;
@@ -218,8 +223,8 @@ bool is_valid_subtitle( const char* ext )
     if ( tmp[0] != '.' ) tmp = '.' + tmp;
 
     if ( tmp == N_(".srt")  ||
-            tmp == N_(".sub")  ||
-            tmp == N_(".ass") )
+         tmp == N_(".sub")  ||
+         tmp == N_(".ass") )
         return true;
 
     return false;
@@ -403,7 +408,8 @@ bool split_sequence(
         }
 
         if ( !view.empty() ) view += ".";
-        if ( mrv::is_valid_movie( ext.c_str() ) )
+        if ( mrv::is_valid_movie( ext.c_str() ) ||
+             mrv::is_valid_audio( ext.c_str() ) )
         {
             if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
                 return true;
@@ -428,7 +434,8 @@ bool split_sequence(
             root = root.substr( 5, root.size() );
         frame = periods[1];
         ext = '.' + periods[2];
-        if ( mrv::is_valid_movie( ext.c_str() ) )
+        if ( mrv::is_valid_movie( ext.c_str() ) ||
+             mrv::is_valid_audio( ext.c_str() ) )
         {
             if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
                 return true;
@@ -499,7 +506,8 @@ bool split_sequence(
         ext   = f.substr( idx[0], file.size()-idx[0] );
 
         bool ok = is_valid_frame( frame );
-        if ( ok && !is_valid_movie( ext.c_str() ) )
+        if ( ok && !is_valid_movie( ext.c_str() ) ||
+             mrv::is_valid_audio( ext.c_str() ) )
         {
             return true;
         }
@@ -512,7 +520,8 @@ bool split_sequence(
             ext.clear();
         }
 
-        if ( is_valid_movie( ext.c_str() ) )
+        if ( is_valid_movie( ext.c_str() ) ||
+             mrv::is_valid_audio( ext.c_str() ) )
         {
             if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
                 return true;
@@ -531,7 +540,8 @@ bool split_sequence(
             root = root.substr( 5, root.size() );
         ext  = f.substr( idx[0]+1, file.size() );
 
-        if ( is_valid_movie( ext.c_str() ) )
+        if ( is_valid_movie( ext.c_str() ) ||
+             is_valid_audio( ext.c_str() ) )
         {
             frame = "";
             return false;
@@ -557,7 +567,8 @@ bool split_sequence(
         // Handle image0001.exr
         //
         std::string tmp = '.' + ext;
-        bool valid = is_valid_movie( tmp.c_str() );
+        bool valid = is_valid_movie( tmp.c_str() ) ||
+                     mrv::is_valid_audio( ext.c_str() );
         size_t len = root.size();
         if ( len >= 2 && !valid )
         {
@@ -601,7 +612,7 @@ bool split_sequence(
                 if ( pos == std::string::npos ||
                         ( pos2 != std::string::npos && pos2 > pos ) ) pos = pos2;
                 if ( pos == std::string::npos ||
-                        ( pos3 != std::string::npos && pos3 > pos ) ) pos = pos3;
+                     ( pos3 != std::string::npos && pos3 > pos ) ) pos = pos3;
 
                 if ( root.empty() || pos != std::string::npos )
                 {
@@ -611,7 +622,7 @@ bool split_sequence(
                         file = root.substr( pos+1, root.size() );
                     if ( file.empty() ) {
                         if ( is_valid_frame( frame ) ||
-                                is_valid_frame_spec( frame ) )
+                             is_valid_frame_spec( frame ) )
                         {
                             ext = tmp;
                             return true;
@@ -1030,7 +1041,8 @@ bool fileroot( std::string& fileroot, const std::string& file,
     std::string root, frame, view, ext;
 
     bool ok = split_sequence( root, frame, view, ext, file, change_view );
-    if ( !ok || frame == "" || is_valid_movie( ext.c_str() ) )
+    if ( !ok || frame == "" || is_valid_movie( ext.c_str() ) ||
+         mrv::is_valid_audio( ext.c_str() ) )
     {
         fileroot = file;
         return false;
