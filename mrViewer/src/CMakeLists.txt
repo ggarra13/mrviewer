@@ -227,22 +227,22 @@ SET( SOURCES
   core/mrvFrame.cpp
 
 
-  gui/FLU/Flu_Combo_Box.cpp      # needed?
-  gui/FLU/Flu_Combo_Tree.cpp     # needed?
-  gui/FLU/Flu_Combo_List.cpp     # needed?
-  gui/FLU/Flu_Separator.cpp     # needed?
-  gui/FLU/Flu_Tree_Browser.cpp     # needed?
-  gui/FLU/FluSimpleString.cpp
-  gui/FLU/Flu_Button.cpp
-  gui/FLU/Flu_Return_Button.cpp
-  gui/FLU/Flu_Label.cpp
-  gui/FLU/flu_filename_list.cxx
-  gui/FLU/flu_scandir.c
-  gui/FLU/flu_numericsort.c
-  gui/FLU/flu_file_chooser_pixmaps.cpp
-  gui/FLU/Flu_Wrap_Group.cpp
-  gui/FLU/Flu_File_Chooser.cpp
-  gui/FLU/flu_pixmaps.cpp
+  gui/FLU/Flu_Combo_Box.cpp       # needed
+  gui/FLU/Flu_Combo_Tree.cpp      # needed
+  gui/FLU/Flu_Combo_List.cpp      # needed
+  gui/FLU/Flu_Separator.cpp       # needed
+  #gui/FLU/Flu_Tree_Browser.cpp   # not needed- replaced by Fl_Tree
+  #gui/FLU/FluSimpleString.cpp    # not needed
+  gui/FLU/Flu_Button.cpp          # needed
+  gui/FLU/Flu_Return_Button.cpp   # needed
+  gui/FLU/Flu_Label.cpp           # needed
+  # gui/FLU/flu_filename_list.cxx # not needed - replaced by fl_filename_list
+  # gui/FLU/flu_scandir.c         # not needed - not used
+  # gui/FLU/flu_numericsort.c     # not needed - not used
+  gui/FLU/flu_file_chooser_pixmaps.cpp # needed
+  gui/FLU/Flu_Wrap_Group.cpp      # needed
+  gui/FLU/Flu_File_Chooser.cpp    # needed
+  gui/FLU/flu_pixmaps.cpp         # needed
 
   gui/MyPack.cpp
   gui/mrvActionWindow.cpp
