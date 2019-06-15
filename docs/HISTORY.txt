@@ -3,6 +3,10 @@ v5.0.9  - Removed a silly crash on exit usually during playback of EDLs.
 	  first one.  Previously, this would work sporadically.
 	- Added support for audio files named with numbers in them.
 	  Previously, they would get read as sequences.
+	- Allowed names with @ in them in movie files or sequences.
+	  Previously, the @ character would get swallowed and interpreted
+	  as a fltk control string.
+	- Added missing audio track to EDL editor.
 
 v5.0.8  - Removed dead code paths of NV shaders.
 	- Reverted to Ubuntu12.04 to compile mrViewer compatible with
