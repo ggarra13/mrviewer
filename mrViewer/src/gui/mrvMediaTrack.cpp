@@ -313,7 +313,7 @@ void media_track::shift_audio( mrv::media m, boost::int64_t diff )
 
 void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 {
-    
+
     const mrv::Reel& reel = browser()->reel_at( _reel_idx );
     if ( !reel ) return;
 
@@ -342,8 +342,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
                 main()->uiView->redraw();
 
                 char buf[1024];
-                sprintf( buf, N_("ShiftMediaStart %d")
-                         N_(" \"%s\" %") PRId64,
+                sprintf( buf, N_("ShiftMediaStart %d \"%s\" %" PRId64 ),
                          _reel_idx, img->fileroot(), img->first_frame() );
                 main()->uiView->send_network( buf );
             }
@@ -419,7 +418,7 @@ bool media_track::select_media( const boost::int64_t pos,
             _selected = browser()->new_item( fg );
             focus(this);
 
-	    
+
             if ( _reel_idx < 0 ) break;
 
 
@@ -456,10 +455,10 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
         mrv::media& fg = reel->images[i];
         if ( fg == m )
         {
-	    CMedia* img = m->image();
+            CMedia* img = m->image();
             int64_t pos = img->last_frame() + diff;
             if ( pos > img->first_frame() &&
-		 pos <= img->end_frame() )
+                 pos <= img->end_frame() )
             {
                 if ( reel->edl )
                 {
@@ -470,8 +469,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
                 img->seek( pos );
 
                 char buf[1024];
-                sprintf( buf, N_( "ShiftMediaEnd %d" )
-                         N_(" \"%s\" %" ) PRId64,
+                sprintf( buf, N_( "ShiftMediaEnd %d \"%s\" %" PRId64 ),
                          _reel_idx, img->fileroot(), img->last_frame() );
                 main()->uiView->send_network( buf );
                 main()->uiView->redraw();
@@ -540,118 +538,118 @@ int media_track::handle( int event )
 {
     switch( event )
     {
-	case FL_RELEASE:
-	    if ( _selected && Fl::event_button() == FL_RIGHT_MOUSE )
-	    {
-		mrv::Timeline* t = main()->uiTimeline;
-		if ( ! t->edl() )
-		{
-		    mrv::media fg = _selected->media();
-		    int64_t start = fg->image()->first_frame();
-		    int64_t end   = fg->image()->last_frame();
-		    t->minimum( double(start) );
-		    // main()->uiStartFrame->value( start );
-		    t->maximum( double(end) );
-		    // main()->uiEndFrame->value( end );
-		}
+        case FL_RELEASE:
+            if ( _selected && Fl::event_button() == FL_RIGHT_MOUSE )
+            {
+                mrv::Timeline* t = main()->uiTimeline;
+                if ( ! t->edl() )
+                {
+                    mrv::media fg = _selected->media();
+                    int64_t start = fg->image()->first_frame();
+                    int64_t end   = fg->image()->last_frame();
+                    t->minimum( double(start) );
+                    // main()->uiStartFrame->value( start );
+                    t->maximum( double(end) );
+                    // main()->uiEndFrame->value( end );
+                }
 
-		main()->uiView->seek( _frame );
-		if ( _playback != CMedia::kStopped )
-		    main()->uiView->play( _playback );
-		main()->uiImageInfo->uiInfoText->refresh();
-	    }
-	    return 1;
-	    break;
-	case FL_PUSH:
-	    {
-		int xx = _dragX = Fl::event_x();
-		int yy = Fl::event_y();
+                main()->uiView->seek( _frame );
+                if ( _playback != CMedia::kStopped )
+                    main()->uiView->play( _playback );
+                main()->uiImageInfo->uiInfoText->refresh();
+            }
+            return 1;
+            break;
+        case FL_PUSH:
+            {
+                int xx = _dragX = Fl::event_x();
+                int yy = Fl::event_y();
 
-		if ( Fl::event_button() == FL_RIGHT_MOUSE )
-		{
-		    window()->cursor( FL_CURSOR_ARROW );
-		    _playback = (CMedia::Playback) main()->uiView->playback();
-		    main()->uiView->stop();
-		    _frame = main()->uiView->frame();
+                if ( Fl::event_button() == FL_RIGHT_MOUSE )
+                {
+                    window()->cursor( FL_CURSOR_ARROW );
+                    _playback = (CMedia::Playback) main()->uiView->playback();
+                    main()->uiView->stop();
+                    _frame = main()->uiView->frame();
 
-		    mrv::Timeline* t = timeline();
+                    mrv::Timeline* t = timeline();
 
-		    int ww = t->w();
+                    int ww = t->w();
 
-		    double len = (t->maximum() - t->minimum() + 1);
-		    double p = double( xx - x() ) / double(ww);
-		    p = t->minimum() + p * len + 0.5f;
+                    double len = (t->maximum() - t->minimum() + 1);
+                    double p = double( xx - x() ) / double(ww);
+                    p = t->minimum() + p * len + 0.5f;
 
-		    if ( select_media( int64_t(p), yy ) )
-		    {
-			return 1;
-		    }
-		    else
-		    {
-			if ( _reel_idx < 0 ) return 1;
-			Fl_Menu_Button menu(0,0,0,0);
-			menu.add( _("File/Open/Movie or Sequence"),
-				  kOpenImage.hotkey(),
-				  (Fl_Callback*)open_track_cb, this );
-			menu.popup();
-		    }
-		}
-		return 0;
-	    }
-	case FL_KEYBOARD:
-	    {
-		int key = Fl::event_key();
-		if ( key == FL_Delete ||
-		     key == FL_BackSpace )
-		{
-		    if ( _selected )
-			remove( _selected->media() );
-		    return 1;
-		}
-		break;
-	    }
-	case FL_DRAG:
-	    {
-		if ( _selected )
-		{
-		    window()->cursor( FL_CURSOR_WE );
+                    if ( select_media( int64_t(p), yy ) )
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        if ( _reel_idx < 0 ) return 1;
+                        Fl_Menu_Button menu(0,0,0,0);
+                        menu.add( _("File/Open/Movie or Sequence"),
+                                  kOpenImage.hotkey(),
+                                  (Fl_Callback*)open_track_cb, this );
+                        menu.popup();
+                    }
+                }
+                return 0;
+            }
+        case FL_KEYBOARD:
+            {
+                int key = Fl::event_key();
+                if ( key == FL_Delete ||
+                     key == FL_BackSpace )
+                {
+                    if ( _selected )
+                        remove( _selected->media() );
+                    return 1;
+                }
+                break;
+            }
+        case FL_DRAG:
+            {
+                if ( _selected )
+                {
+                    window()->cursor( FL_CURSOR_WE );
 
-		    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
-		    if ( !reel ) return 0;
+                    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
+                    if ( !reel ) return 0;
 
-		    int diff = (Fl::event_x() - _dragX);
+                    int diff = (Fl::event_x() - _dragX);
 
-		    mrv::MediaList::const_iterator i = reel->images.begin();
-		    mrv::MediaList::const_iterator e = reel->images.end();
+                    mrv::MediaList::const_iterator i = reel->images.begin();
+                    mrv::MediaList::const_iterator e = reel->images.end();
 
-		    for ( ; i != e; ++i )
-		    {
-			if ( *i == _selected->media() )
-			{
-			    if ( _audio_selected )
-			    {
-				shift_audio( _selected->media(), diff );
-			    }
-			    else
-			    {
-				if ( _at_start )
-				    shift_media_start( _selected->media(),
-						       diff );
-				else
-				    shift_media_end( _selected->media(), diff );
-				_selected->media()->create_thumbnail();
-			    }
-			    break;
-			}
-		    }
-		    timeline()->redraw();
-		    redraw();
-		}
-		_dragX = Fl::event_x();
-		return 1;
-	    }
-	default:
-	    break;
+                    for ( ; i != e; ++i )
+                    {
+                        if ( *i == _selected->media() )
+                        {
+                            if ( _audio_selected )
+                            {
+                                shift_audio( _selected->media(), diff );
+                            }
+                            else
+                            {
+                                if ( _at_start )
+                                    shift_media_start( _selected->media(),
+                                                       diff );
+                                else
+                                    shift_media_end( _selected->media(), diff );
+                                _selected->media()->create_thumbnail();
+                            }
+                            break;
+                        }
+                    }
+                    timeline()->redraw();
+                    redraw();
+                }
+                _dragX = Fl::event_x();
+                return 1;
+            }
+        default:
+            break;
     }
 
     return Fl_Group::handle( event );
@@ -723,8 +721,8 @@ void media_track::draw()
         dw -= dx;
 
 
-        mrv::Recti r(rx+dx, y(), dw, h()-20 );
-	fl_push_clip( r.x(), r.y(), r.w(), r.h() );
+        mrv::Recti r(rx+dx, y(), dw, h() );
+        fl_push_clip( r.x(), r.y(), r.w(), r.h() );
 
         if ( browser()->current_image() == fg )
         {
@@ -791,11 +789,11 @@ void media_track::draw()
             fl_measure( buf, aw, ah );
 
             mrv::Recti off( rx + dx + dw/2 - aw/2,
-			    y() + h()-ah/2, aw, ah );
+                            y() + h()-ah/2, aw, ah );
             ra.intersect( off );
             if ( !ra.empty() )
             {
-		// Draw shadow first
+                // Draw shadow first
                 fl_draw( buf, float( off.x()+2 ), float( off.y()+2 ) );
 
                 if ( _selected && _selected->media() == fg )
@@ -807,7 +805,7 @@ void media_track::draw()
             }
         }
 
-	fl_pop_clip();
+        fl_pop_clip();
 
         Fl_Image* thumb = fg->thumbnail();
 
@@ -876,7 +874,7 @@ void media_track::draw()
         r.intersect( text );
         if ( r.empty() ) continue;
 
-	// Draw shadow first
+        // Draw shadow first
         fl_draw( txt,
                  float( text.x() + 2 ),
                  float( text.y() + 2 ) );
