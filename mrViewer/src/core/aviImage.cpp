@@ -390,6 +390,11 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
         // DPX
         return true;
     }
+    else if ( magic == 0xE3C54D55 )
+    {
+        // .snd file
+        return true;
+    }
     else
     {
         // Check for Quicktime
@@ -2766,7 +2771,7 @@ bool aviImage::initialize()
 {
     if ( !_initialize )
     {
-
+        int error = 0;
         AVDictionary *opts = NULL;
         av_dict_set(&opts, "initial_pause", "1", 0);
 
@@ -2791,10 +2796,12 @@ bool aviImage::initialize()
 
         }
 
+
         AVInputFormat*     format = NULL;
         // We must open fileroot for png sequences to work
-        int error = avformat_open_input( &_context, fileroot(),
+        error = avformat_open_input( &_context, fileroot(),
                                          format, &opts );
+
 
         if ( error >= 0 )
         {
@@ -2805,6 +2812,11 @@ bool aviImage::initialize()
                 probe_size( 30 * AV_TIME_BASE );
             }
             error = avformat_find_stream_info( _context, NULL );
+            if ( error < 0 )
+            {
+                IMG_ERROR( _("Could not find stream info") );
+            }
+
         }
 
         if ( error >= 0 )
@@ -2817,7 +2829,9 @@ bool aviImage::initialize()
         }
         else
         {
-            LOG_ERROR( filename() << _(" Could not open file") );
+            char buf[1024];
+            av_strerror(error, buf, 1024);
+            IMG_ERROR( _(" Could not open file. ") << buf );
             avformat_free_context( _context );
             _initialize = false;
             _context = NULL;
