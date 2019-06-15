@@ -1,4 +1,3 @@
-
 #include "mrvElement.h"
 #include "gui/mrvPreferences.h"
 
@@ -64,6 +63,13 @@ void Element::make_thumbnail()
         label = new Fl_Box(image->w(), VMARGIN, 800, 64);
 
         char info[2048];
+        std::string name = img->name();
+        int pos = -2;
+        while ( ( pos = name.find( '@', pos+2 ) ) != std::string::npos )
+        {
+            name = name.substr( 0, pos + 1 ) + '@' +
+                   name.substr( pos + 1, name.size() );
+        }
         if ( dynamic_cast< clonedImage* >( img ) != NULL )
         {
             sprintf( info,
@@ -71,7 +77,7 @@ void Element::make_thumbnail()
                        "Name: %s\n"
                        "Date: %s\n"
                        "Resolution: %dx%d"),
-                     img->name().c_str(),
+                     name.c_str(),
                      img->creation_date().c_str(),
                      img->width(),
                      img->height()
@@ -85,7 +91,7 @@ void Element::make_thumbnail()
                        "Resolution: %dx%d\n"
                        "Frames: %" PRId64 "-%" PRId64 " FPS %g"),
                      img->directory().c_str(),
-                     img->name().c_str(),
+                     name.c_str(),
                      img->width(),
                      img->height(),
                      img->start_frame(),
