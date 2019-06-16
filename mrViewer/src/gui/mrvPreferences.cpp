@@ -954,10 +954,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
         dirent** e;
         const char* dir = uiPrefs->uiPrefsCTLModulePath->text(j);
         int num = fl_filename_list( dir, &e );
-    DBG;
         for( int i = 0; i < num; i++ )
         {
-    DBG;
             name = e[i]->d_name;
 
             // if 'name' ends in '/' or '\', remove it
@@ -972,16 +970,16 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
             fullpath += "/";
             fullpath += name;
 
-    DBG;
             if ( fullpath.substr( fullpath.size() - 4, fullpath.size() ) !=
                  ".ctl" ) continue;
 
             if( fl_filename_isdir( fullpath.c_str() ) )
                 continue;
 
-    DBG;
             uiPrefs->uiPrefsCTLScripts->add( name );
         }
+
+        fl_filename_free_list( &e, num );
     }
 
 
