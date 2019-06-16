@@ -15,7 +15,7 @@ void Element::make_thumbnail()
 
     Fl_Image* b = NULL;
     if ( _elem->thumbnail() )
-        b = _elem->thumbnail()->copy();
+        b = _elem->thumbnail();
     else
     {
         uchar* d = new uchar[64*64];
