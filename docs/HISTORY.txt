@@ -7,6 +7,8 @@ v5.0.9  - Removed a silly crash on exit usually during playback of EDLs.
 	  Previously, the @ character would get swallowed and interpreted
 	  as a fltk control string.
 	- Added missing audio track to EDL editor.
+	- Removed a minor memory leak from preferences' tree.
+	- Removed a memory leak from Preferences at run time.
 
 v5.0.8  - Removed dead code paths of NV shaders.
 	- Reverted to Ubuntu12.04 to compile mrViewer compatible with
