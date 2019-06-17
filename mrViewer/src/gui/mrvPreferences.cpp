@@ -1157,6 +1157,8 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 
     DBG;
     Fl_Preferences video( base, "video" );
+    video.get( "filtering", tmp, 0 );
+    uiPrefs->uiPrefsFiltering->value( tmp );
     video.get( "video_codec", tmp, 0 );
     uiPrefs->uiPrefsVideoCodec->value(tmp);
     video.get( "yuv_hint", tmp, 2 );
@@ -1406,6 +1408,7 @@ void Preferences::run( ViewerUI* main )
     if ( main->uiPixelRatio->value() )
         view->toggle_pixel_ratio();
 
+    view->texture_filtering( ImageView::kNearestNeighbor );
 
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
@@ -2274,6 +2277,7 @@ void Preferences::save()
                 uiPrefs->uiPrefsImagePathReelPath->value() );
 
     Fl_Preferences video( base, "video" );
+    video.set( "filtering", (int) uiPrefs->uiPrefsFiltering->value() );
     video.set( "video_codec", (int) uiPrefs->uiPrefsVideoCodec->value() );
     video.set( "yuv_hint", (int) uiPrefs->uiPrefsYUVConversion->value() );
     video.set( "thread_count", (int) uiPrefs->uiPrefsVideoThreadCount->value());
