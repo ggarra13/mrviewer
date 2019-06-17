@@ -4262,9 +4262,13 @@ int ImageView::leftMouseDown(int x, int y)
                 menu->add( _("View/Data Window"), kDataWindow.hotkey(),
                           (Fl_Callback*)data_window_cb, this );
 
-                menu->add( _("View/Toggle Texture Filtering"),
-                           kTextureFiltering.hotkey(),
-                          (Fl_Callback*)texture_filtering_cb, this );
+                idx = menu->add( _("View/Texture Filtering  "),
+                                 kTextureFiltering.hotkey(),
+                                 (Fl_Callback*)texture_filtering_cb, this,
+                                 FL_MENU_TOGGLE );
+                item = (Fl_Menu_Item*) &(menu->menu()[idx]);
+                if ( texture_filtering() == ImageView::kBilinearFiltering )
+                    item->set();
 
                 TRACE("");
                 num = uiMain->uiPrefs->uiPrefsCropArea->children();
