@@ -26,21 +26,21 @@ class HotkeyUI {open
       xywh {64 274 635 430} type Double box PLASTIC_DOWN_BOX resizable modal visible
     } {
       Fl_Group {} {open
-        xywh {0 0 635 430} box PLASTIC_DOWN_BOX
+	xywh {0 0 635 430} box PLASTIC_DOWN_BOX
       } {
-        Fl_Browser uiFunction {
-          label Hotkeys
-          user_data this user_data_type {HotkeyUI*}
-          callback {mrv::select_hotkey( v );} selected
-          xywh {15 25 600 320} box PLASTIC_DOWN_BOX
-          code0 {mrv::fill_ui_hotkeys( o );}
-          class {mrv::Browser}
-        }
-        Fl_Button {} {
-          label Save
-          callback {mrv::Preferences::save();} selected
-          xywh {550 375 65 30} box PLASTIC_UP_BOX
-        }
+	Fl_Browser uiFunction {
+	  label Hotkeys
+	  user_data this user_data_type {HotkeyUI*}
+	  callback {mrv::select_hotkey( v );} selected
+	  xywh {15 25 600 320} box PLASTIC_DOWN_BOX
+	  code0 {mrv::fill_ui_hotkeys( o );}
+	  class {mrv::Browser}
+	}
+	Fl_Button {} {
+	  label Save
+	  callback {mrv::Preferences::save();} selected
+	  xywh {550 375 65 30} box PLASTIC_UP_BOX
+	}
       }
     }
   }
@@ -49,6 +49,6 @@ class HotkeyUI {open
   }
   Function {~HotkeyUI()} {open
   } {
-    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
 }
