@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -71,27 +70,27 @@ public:
         kNoCommand = 0,
         kCreateReel = 1,
         kLoadImage,
-	kInsertImage,
+        kInsertImage,
         kChangeImage,
-	kBGImage,
-	kFGReel,
-	kBGReel,
+        kBGImage,
+        kFGReel,
+        kBGReel,
         kStopVideo,
         kSeek,
         kPlayForwards,
         kPlayBackwards,
         kRemoveImage,
         kExchangeImage,
-	kCacheClear,
+        kCacheClear,
         kICS,
         kRT,
-	kGAIN,
-	kGAMMA,
+        kGAIN,
+        kGAMMA,
         kChangeChannel,
-	kTimelineMin,
-	kTimelineMax,
-	kTimelineMinDisplay,
-	kTimelineMaxDisplay,
+        kTimelineMin,
+        kTimelineMax,
+        kTimelineMinDisplay,
+        kTimelineMaxDisplay,
         kFULLSCREEN,
         kPRESENTATION,
         kMEDIA_INFO_WINDOW_SHOW,
@@ -114,6 +113,13 @@ public:
         kLastCommand
     };
 
+    enum TextureFiltering
+    {
+        kPresentationOnly = 0,
+        kBilinearFiltering = 1,
+        kNearestNeighbor = 2
+    };
+
     enum Actions {
         kMouseDown   = 1 << 0,
         kZoom        = 1 << 1,
@@ -125,7 +131,7 @@ public:
         kLeftShift   = 1 << 7,
         kLeftCtrl    = 1 << 8,
         kMouseMove   = 1 << 9,
-	kGamma       = 1 << 10,
+        kGamma       = 1 << 10,
     };
 
     enum Mode {
@@ -230,6 +236,18 @@ public:
 
     /// Draw the widget and its contents
     virtual void draw();
+
+    // Set the display to frame or specific field
+    inline void texture_filtering( const TextureFiltering p )
+        {
+            _texture_filtering = p;
+            redraw();
+        }
+
+    inline TextureFiltering texture_filtering() const
+        {
+            return _texture_filtering;
+        }
 
     // Set the display to frame or specific field
     void field( const FieldDisplay p );
@@ -650,7 +668,7 @@ public:
     static void rot2vec( double& x, double& y, const double r );
 
     int  keyDown(unsigned int);
-    
+
     void text_mode();
     void scrub_mode();
     void selection_mode();
@@ -706,7 +724,7 @@ public:
     }
 
     void preload_frame( int64_t f ) {
-	_preframe = f;
+        _preframe = f;
     }
 
 
@@ -732,7 +750,7 @@ public:
 
     // Preload an image into sequence cache
     bool preload();
-    
+
     // Return if in presentation mode or not
     bool in_presentation() const;
 
@@ -751,10 +769,10 @@ public:
 public:
     typedef CMedia::Mutex Mutex;
     struct Command {
-        Command() : frame(AV_NOPTS_VALUE), data(NULL), linfo(NULL) {}; 
+        Command() : frame(AV_NOPTS_VALUE), data(NULL), linfo(NULL) {};
         Command( const Command& b ) : type( b.type ),
-				      frame( b.frame ), data( b.data ),
-				      linfo( b.linfo ) {};
+                                      frame( b.frame ), data( b.data ),
+                                      linfo( b.linfo ) {};
         CommandType     type;
         int64_t         frame;
         Imf::Attribute* data;
@@ -839,9 +857,9 @@ protected:
 
     // Ready preframe for next iteration
     bool ready_preframe( std::atomic<int64_t>& _preframe,
-			 CMedia::Playback p, CMedia* const img,
-			 const int64_t& first,
-			 const int64_t& last );
+                         CMedia::Playback p, CMedia* const img,
+                         const int64_t& first,
+                         const int64_t& last );
 
     /// Resize background image to fit foreground image's dimensions
     void resize_background();
@@ -902,11 +920,12 @@ protected:
 
     //! Flags for state of display - unneeded?, should use uiMain->uiLUT, etc.
     FieldDisplay  _field;
+    TextureFiltering _texture_filtering;
     bool          _displayWindow, _dataWindow, _showBG;
     bool          _showPixelRatio, _useLUT;
     float         _volume;
     FlipDirection _flip;
-    unsigned      _reel;      // <- reel of preframe 
+    unsigned      _reel;      // <- reel of preframe
     std::atomic< int64_t >      _preframe;
     int64_t       _old_fg_frame;  // <- old frame used to stat fileroot's fg
     int64_t       _old_bg_frame;  // <- old frame used to stat fileroot's bg
@@ -920,7 +939,7 @@ protected:
     // Popup menu
     ///////////////////
     Fl_Menu_Button* menu;
-    
+
     // Event Timeout
     mrv::Event*  _timeout;
 
@@ -966,7 +985,7 @@ protected:
     CMedia::Mutex _shortcut_mutex;
     CMedia::Mutex _draw_mutex;
 
-    
+
     mrv::Timer   _dtimer;
 };
 
