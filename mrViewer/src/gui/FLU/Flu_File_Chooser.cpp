@@ -3737,7 +3737,7 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
     bool isDir = ( fl_filename_isdir( file ) != 0 );
 
     // store size as human readable and sortable integer
-#if _WIN32
+#ifdef _WIN32
 #else
     passwd* pwd = getpwuid( s.st_uid ); // this must not be freed
     if ( pwd != NULL ) entry->owner = pwd->pw_name;
