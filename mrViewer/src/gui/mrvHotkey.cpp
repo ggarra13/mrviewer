@@ -58,6 +58,7 @@ Hotkey kZoomIn( false, false, false, false, '.' );
 Hotkey kZoomOut( false, false, false, false, ',' );
 Hotkey kFullScreen( false, false, false, false, FL_F + 11 );
 Hotkey kFitScreen( false, false, false, false, 'f' );
+Hotkey kTextureFiltering( false, false, false, true, 'f' );
 Hotkey kSafeAreas( false, false, false, false, 's' );
 Hotkey kDisplayWindow( false, false, false, false, 'd' );
 Hotkey kDataWindow( true, false, false, false, 'd' );
@@ -188,13 +189,13 @@ bool Hotkey::match( unsigned rawkey )
     if ( ctrl )
     {
         if ( Fl::event_state( FL_CTRL ) )
-	{
+        {
             ok = true;
-	}
+        }
         else
-	{
+        {
             return false;
-	}
+        }
     }
     else
     {
@@ -250,8 +251,8 @@ bool Hotkey::match( unsigned rawkey )
             ok = false;
         }
     }
-    
-    // if ( (!text.empty()) && text == Fl::event_text() ) 
+
+    // if ( (!text.empty()) && text == Fl::event_text() )
     //     return true;
     return ok;
 }
@@ -279,6 +280,7 @@ HotkeyEntry hotkeys[] = {
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
     HotkeyEntry( _("Center Image"), kCenterImage ),
     HotkeyEntry( _("Fit Screen"), kFitScreen),
+    HotkeyEntry( _("TextureFiltering"), kTextureFiltering),
     HotkeyEntry( _("Safe Areas"), kSafeAreas),
     HotkeyEntry( _("Display Window"), kDisplayWindow),
     HotkeyEntry( _("Data Window"), kDataWindow),
@@ -425,7 +427,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
 {
     b->type( FL_SELECT_BROWSER );
     b->clear();
-    
+
     int w2 = b->w() / 4;
     int w1 = w2 * 3;
     static int widths[] = {w1-20, w2, 0 };
@@ -434,7 +436,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
     //b->colsepcolor(FL_RED);
     b->column_char('\t');  // tabs as column delimiters
 
-    
+
     // Labels
     b->add( _("@B12@C7@b@.Function\t@B12@C7@b@.Hotkey") );
 
@@ -451,15 +453,15 @@ void fill_ui_hotkeys( mrv::Browser* b )
 
         bool special = false;
         for ( int j = 0; j < sizeof(table)/sizeof(TableText); ++j )
-	{
+        {
             if ( k == table[j].n )
             {
                 key += table[j].text;
                 special = true;
                 break;
             }
-	}
-	
+        }
+
         if ( !special )
         {
             if (k >= FL_F && k <= FL_F_Last) {
@@ -480,7 +482,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
 
         b->add( row.c_str() );
     }
-    
+
 }
 
 
@@ -489,7 +491,7 @@ void select_hotkey( HotkeyUI* b )
 {
     int idx = b->uiFunction->value() - 2;  // 1 for browser offset, 1 for title
     if ( idx < 0 ) return;
-    
+
     Hotkey& hk = hotkeys[idx].hotkey;
 
     ChooseHotkey* h = new ChooseHotkey(hk);
