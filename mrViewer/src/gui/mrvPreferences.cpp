@@ -1409,6 +1409,9 @@ void Preferences::run( ViewerUI* main )
         view->toggle_pixel_ratio();
 
     view->texture_filtering( ImageView::kNearestNeighbor );
+    if ( main->uiPrefs->uiPrefsFiltering->value() ==
+         ImageView::kBilinearFiltering )
+        view->texture_filtering( ImageView::kBilinearFiltering );
 
     view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
     view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
