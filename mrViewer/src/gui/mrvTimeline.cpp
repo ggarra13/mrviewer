@@ -252,7 +252,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     Fl_Color textcolor = fl_contrast( this->labelcolor(), color() );
     if ( _edl ) textcolor = FL_BLACK;
     Fl_Color linecolor = FL_BLACK;
-    if ( Preferences::schemes.name == "Black" )
+    if ( Preferences::schemes.name == "Black" && !edl() )
     {
         linecolor = fl_rgb_color( 70, 70, 70 );
     }
