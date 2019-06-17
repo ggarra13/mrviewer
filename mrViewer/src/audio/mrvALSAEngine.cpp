@@ -599,6 +599,8 @@ bool ALSAEngine::open( const unsigned channels,
             THROW(buf);
         }
 
+        /* Free hwparams */
+        snd_pcm_hw_params_free(hwparams);
 
         /* Set the software parameters */
         swparams = NULL;
