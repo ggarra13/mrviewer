@@ -752,6 +752,30 @@ void hud_cb( mrv::PopupMenu* o, ViewerUI* uiMain )
 }
 
 
+void texture_filtering_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::ImageView::TextureFiltering t = (mrv::ImageView::TextureFiltering)
+        view->main()->uiPrefs->uiPrefsFiltering->value();
+    if ( t == mrv::ImageView::kPresentationOnly )
+    {
+        bool presentation = view->in_presentation();
+        if ( presentation )
+        {
+            if (view->texture_filtering() <= mrv::ImageView::kBilinearFiltering)
+                view->texture_filtering( mrv::ImageView::kNearestNeighbor );
+            else
+                view->texture_filtering( mrv::ImageView::kBilinearFiltering );
+            view->redraw();
+            return;
+        }
+    }
+    if ( view->texture_filtering() <= mrv::ImageView::kBilinearFiltering )
+        view->texture_filtering( mrv::ImageView::kNearestNeighbor );
+    else
+        view->texture_filtering( mrv::ImageView::kBilinearFiltering );
+    view->redraw();
+}
+
 void safe_areas_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     view->safe_areas( !view->safe_areas() );
@@ -4228,6 +4252,7 @@ int ImageView::leftMouseDown(int x, int y)
             if ( fg && fg->image()->has_picture() )
             {
 
+
                 menu->add( _("View/Safe Areas"), kSafeAreas.hotkey(),
                           (Fl_Callback*)safe_areas_cb, this );
 
@@ -4236,6 +4261,10 @@ int ImageView::leftMouseDown(int x, int y)
 
                 menu->add( _("View/Data Window"), kDataWindow.hotkey(),
                           (Fl_Callback*)data_window_cb, this );
+
+                menu->add( _("View/Toggle Texture Filtering"),
+                           kTextureFiltering.hotkey(),
+                          (Fl_Callback*)texture_filtering_cb, this );
 
                 TRACE("");
                 num = uiMain->uiPrefs->uiPrefsCropArea->children();
@@ -6190,6 +6219,11 @@ int ImageView::keyDown(unsigned int rawkey)
         center_image();
         return 1;
     }
+    else if ( kTextureFiltering.match( rawkey ) )
+    {
+        texture_filtering_cb( NULL, this );
+        return 1;
+    }
     else if ( kFitScreen.match( rawkey ) )
     {
         if ( vr() )
@@ -6805,8 +6839,9 @@ void ImageView::toggle_presentation()
 
 
     static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-           has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
-           has_stereo, has_paint, has_sop;
+        has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
+        has_stereo, has_paint, has_sop;
+    static TextureFiltering filter;
 
     if ( !presentation )
     {
@@ -6825,6 +6860,7 @@ void ImageView::toggle_presentation()
         has_paint      = uiPaint ? uiPaint->visible() : false;
         has_stereo     = uiStereo ? uiStereo->visible() : false;
         has_sop        = uiSOP ? uiSOP->visible() : false;
+        filter         = texture_filtering();
 
         if (uiSOP) uiSOP->hide();
         uiPaint->hide();
@@ -6840,6 +6876,11 @@ void ImageView::toggle_presentation()
         uiMain->uiTopBar->hide();
 
         presentation = true;
+        if ( (TextureFiltering) main()->uiPrefs->uiPrefsFiltering->value() ==
+             kPresentationOnly )
+        {
+            texture_filtering( kBilinearFiltering );
+        }
 
         // Resize needed as fullscreen does not happpen in the single
         // Fl::check below
@@ -6870,6 +6911,7 @@ void ImageView::toggle_presentation()
         if ( has_bottom_bar)  uiMain->uiBottomBar->show();
         if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
+        texture_filtering( filter );
         presentation = false;
         FullScreen = false;
         uiMain->uiRegion->layout();
