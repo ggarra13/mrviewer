@@ -1,3 +1,14 @@
+v5.1.0  - Added Texture Filtering options to Preferences->Video.
+	  Options are: Presentation Only, Bilinear Filtering and
+	  Nearest Neighbor Filtering.
+	- Made exiting of mrViewer more solid.  Previously sometimes it
+	  could crash on exit with a memory error.
+	- Added Toggle Texturing Filtering menu entry to View menu.
+	- Added hotkey to toggle texture filtering (SHIFT+f by default).
+	- Note that the pixel bar currently has no notion of texture
+	  filtering and will display always the values of the pixel of the
+	  nearest neighbor.
+
 v5.0.9  - Removed a silly crash on exit usually during playback of EDLs.
 	- Fixed removal of clips from the reels when the reel is not the
 	  first one.  Previously, this would work sporadically.
@@ -7,7 +18,8 @@ v5.0.9  - Removed a silly crash on exit usually during playback of EDLs.
 	  Previously, the @ character would get swallowed and interpreted
 	  as a fltk control string.
 	- Added missing audio track to EDL editor.
-	- Removed a minor memory leak from preferences' tree.
+	- Removed a minor memory leak from Preferences' tree.
+	- Removed a minor memory leak from ALSA audio engine.
 	- Removed a memory leak from Preferences at run time.
 
 v5.0.8  - Removed dead code paths of NV shaders.
