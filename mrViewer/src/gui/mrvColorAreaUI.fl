@@ -49,9 +49,9 @@ main_ = main;
 o->size_range( 500, 280 );} non_modal visible
     } {
       Fl_Browser uiColorText {
-        xywh {0 0 500 280}
-        code0 {o->main( main );}
-        class {mrv::ColorInfo}
+	xywh {0 0 500 280}
+	code0 {o->main( main );}
+	class {mrv::ColorInfo}
       }
     }
   }
@@ -62,7 +62,7 @@ o->size_range( 500, 280 );} non_modal visible
   }
   Function {~ColorAreaUI()} {open
   } {
-    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
   Function {main()} {open return_type {ViewerUI*}
   } {
