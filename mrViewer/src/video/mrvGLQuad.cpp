@@ -971,10 +971,22 @@ void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
 {
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
-    // If in presentation mode (fullscreen), we use a linear texture filter.
-    // Otherwise, use a nearest one to clearly show pixels.
-    bool presentation = _view->in_presentation();
-    GLenum filter = presentation ? GL_LINEAR : GL_NEAREST;
+    const ViewerUI* v = _view->main();
+    if (!v) return;
+
+    GLenum filter = GL_LINEAR;  // default when uiPerfsFiltering is 1
+    if ( v->uiView->texture_filtering() == ImageView::kPresentationOnly )
+    {
+        // If in presentation mode (fullscreen), we use a linear texture filter.
+        // Otherwise, use a nearest one to clearly show pixels.
+        bool presentation = _view->in_presentation();
+        filter = presentation ? GL_LINEAR : GL_NEAREST;
+    }
+    else if ( v->uiView->texture_filtering() == ImageView::kNearestNeighbor )
+    {
+        // User selected to always have nearest filtering
+        filter = GL_NEAREST;
+    }
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
     {
