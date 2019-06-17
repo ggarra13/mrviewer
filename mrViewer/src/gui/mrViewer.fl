@@ -199,11 +199,11 @@ if ( elem < 1 || elem > o->size() ) { v->clear(); return; }
   }
   code {if (!w->exec())
 {
-	Fl::delete_widget(w); w = NULL;
+	delete w; w = NULL;
 	return orig;
 }
 
-Fl::delete_widget(w); w = NULL;
+delete w; w = NULL;
 return ctl;} {}
 }
 
@@ -213,8 +213,7 @@ class SaveOptionsUI {} {
     Fl_Window uiMain {
       label {Save Options} open
       xywh {493 194 315 375} type Double hide resizable
-      code0 {// Make the window transient
-// o->child_of( main->uiMain );} modal
+      modal
     } {
       Fl_Group {} {open
 	xywh {8 14 302 356} box EMBOSSED_BOX
@@ -366,7 +365,7 @@ class SaveOptionsUI {} {
     code {make_window( m );} {}
   }
   Function {~SaveOptionsUI()} {} {
-    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
 }
 
@@ -410,7 +409,7 @@ class LogUI {open
     code {make_window( m );} {}
   }
   Function {~LogUI()} {} {
-    code {Fl::delete_widget(uiMain); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
 }
 
@@ -587,7 +586,7 @@ v->uiView->redraw();}
   }
   Function {~PaintUI()} {open
   } {
-    code {Fl::delete_widget(uiMain); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
 }
 
@@ -660,7 +659,7 @@ else
     code {make_window( m );} {}
   }
   Function {~ConnectionUI()} {} {
-    code {Fl::delete_widget(uiMain); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
 }
 
