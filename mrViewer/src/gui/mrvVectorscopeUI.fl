@@ -96,13 +96,13 @@ o->hide();} open
 main_ = main;} non_modal visible
     } {
       Fl_Group {} {open
-        xywh {0 0 240 240} box FLAT_BOX color 32
+	xywh {0 0 240 240} box FLAT_BOX color 32
       } {
-        Fl_Box uiVectorscope {selected
-          xywh {9 9 319 231}
-          code0 {o->main( main );}
-          class {mrv::Vectorscope}
-        }
+	Fl_Box uiVectorscope {selected
+	  xywh {9 9 319 231}
+	  code0 {o->main( main );}
+	  class {mrv::Vectorscope}
+	}
       }
     }
   }
@@ -110,7 +110,7 @@ main_ = main;} non_modal visible
     code {Fl_Group::current(0); make_window( m );} {}
   }
   Function {~VectorscopeUI()} {} {
-    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
   Function {main()} {return_type {ViewerUI*}
   } {
