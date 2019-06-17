@@ -62,7 +62,7 @@ Fl_Double_Window( W, H, title )
 MainWindow::~MainWindow()
 {
     uiMain->uiView->stop();
-    Fl::delete_widget( uiMain->uiView );
+    delete uiMain->uiView;
     uiMain->uiView = NULL;
 }
 
