@@ -73,86 +73,86 @@ main_ = main;
 o->size_range(325, 80);} non_modal visible
     } {
       Fl_Group {} {open
-        xywh {-2 0 332 250} box PLASTIC_UP_BOX
+	xywh {-2 0 332 250} box PLASTIC_UP_BOX
       } {
-        Fl_Box uiHistogram {selected
-          xywh {3 5 319 190} box FLAT_BOX color 56 resizable
-          code0 {o->main( main );}
-          class {mrv::Histogram}
-        }
-        Fl_Group {} {
-          xywh {-2 195 330 45}
-        } {
-          Fl_Group {} {
-            xywh {158 200 170 35}
-          } {
-            Fl_Box {} {
-              label Channel
-              xywh {164 201 65 30} selection_color 32 labelcolor 32 align 32
-            }
-            Fl_Menu_Button {} {
-              label RGB
-              callback {int c = o->value();
+	Fl_Box uiHistogram {selected
+	  xywh {3 5 319 190} box FLAT_BOX color 56 resizable
+	  code0 {o->main( main );}
+	  class {mrv::Histogram}
+	}
+	Fl_Group {} {
+	  xywh {-2 195 330 45}
+	} {
+	  Fl_Group {} {
+	    xywh {158 200 170 35}
+	  } {
+	    Fl_Box {} {
+	      label Channel
+	      xywh {164 201 65 30} selection_color 32 labelcolor 32 align 32
+	    }
+	    Fl_Menu_Button {} {
+	      label RGB
+	      callback {int c = o->value();
 uiHistogram->channel( (mrv::Histogram::Channel) c );
 o->label( o->child( c )->label() );}
-              xywh {233 203 85 25} align 48
-              code0 {o->value(0);}
-              class {mrv::PopupMenu}
-            } {
-              MenuItem {} {
-                label RGB
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label Red
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label Green
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label Blue
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label Lumma
-                xywh {10 10 100 20}
-              }
-            }
-          }
-          Fl_Group {} {
-            xywh {-2 205 170 35}
-          } {
-            Fl_Box {} {
-              label Type
-              xywh {-2 205 54 25} labelcolor 32 align 32
-            }
-            Fl_Menu_Button {} {
-              label Linear
-              callback {int c = o->value();
+	      xywh {233 203 85 25} align 48
+	      code0 {o->value(0);}
+	      class {mrv::PopupMenu}
+	    } {
+	      MenuItem {} {
+		label RGB
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Red
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Green
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Blue
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Lumma
+		xywh {10 10 100 20}
+	      }
+	    }
+	  }
+	  Fl_Group {} {
+	    xywh {-2 205 170 35}
+	  } {
+	    Fl_Box {} {
+	      label Type
+	      xywh {-2 205 54 25} labelcolor 32 align 32
+	    }
+	    Fl_Menu_Button {} {
+	      label Linear
+	      callback {int c = o->value();
 uiHistogram->histogram_type( (mrv::Histogram::Type) c);
 o->label( o->child( c )->label() );} open
-              xywh {53 205 105 25} align 48
-              code0 {o->value( (int) uiHistogram->histogram_type() );
+	      xywh {53 205 105 25} align 48
+	      code0 {o->value( (int) uiHistogram->histogram_type() );
 o->label( o->child( o->value() )->label() );}
-              class {mrv::PopupMenu}
-            } {
-              MenuItem {} {
-                label Linear
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label Logarithmic
-                xywh {10 10 100 20}
-              }
-              MenuItem {} {
-                label {Square Root}
-                xywh {10 10 100 20}
-              }
-            }
-          }
-        }
+	      class {mrv::PopupMenu}
+	    } {
+	      MenuItem {} {
+		label Linear
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label Logarithmic
+		xywh {10 10 100 20}
+	      }
+	      MenuItem {} {
+		label {Square Root}
+		xywh {10 10 100 20}
+	      }
+	    }
+	  }
+	}
       }
     }
   }
@@ -161,7 +161,7 @@ o->label( o->child( o->value() )->label() );}
       make_window( m );} {}
   }
   Function {~HistogramUI()} {} {
-    code {Fl::delete_widget( uiMain ); uiMain = NULL;} {}
+    code {delete uiMain; uiMain = NULL;} {}
   }
   Function {main()} {open return_type {ViewerUI*}
   } {
