@@ -402,9 +402,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
 
+#
+# CMake 3.15 new variable for windows runtime library
+#
 SET_TARGET_PROPERTIES( mrViewer
   PROPERTIES
   LINK_FLAGS "${LINK_FLAGS}"
+  MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
   )
 
 
