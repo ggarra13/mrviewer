@@ -98,20 +98,32 @@ const Fl_Menu_Item* PopupMenu::child(int i) {
 }
 
 
+/**
+  Act exactly as though the user clicked the button or typed the
+  shortcut key.  The menu appears, it waits for the user to pick an item,
+  and if they pick one it sets value() and does the callback or
+  sets changed() as described above.  The menu item is returned
+  or NULL if the user dismisses the menu.
+  \note Since FLTK 1.4.0 Fl_Menu_::menu_end() is called before the menu
+    pops up to make sure the menu array is located in private storage.
+
+  \see Fl_Menu_::menu_end()
+*/
 const Fl_Menu_Item* PopupMenu::popup() {
-  const Fl_Menu_Item* m;
-  pressed_menu_button_ = this;
-  redraw();
-  Fl_Widget_Tracker mb(this);
-  if (!box() || type()) {
-    m = menu()->popup(Fl::event_x(), Fl::event_y(), label(), mvalue(), this);
-  } else {
-    m = menu()->pulldown(x(), y(), w(), h(), 0, this);
-  }
-  picked(m);
-  pressed_menu_button_ = 0;
-  if (mb.exists()) redraw();
-  return m;
+    menu_end();
+    const Fl_Menu_Item* m;
+    pressed_menu_button_ = this;
+    redraw();
+    Fl_Widget_Tracker mb(this);
+    if (!box() || type()) {
+        m = menu()->popup(Fl::event_x(), Fl::event_y(), label(), mvalue(), this);
+    } else {
+        m = menu()->pulldown(x(), y(), w(), h(), 0, this);
+    }
+    picked(m);
+    pressed_menu_button_ = 0;
+    if (mb.exists()) redraw();
+    return m;
 }
 
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
