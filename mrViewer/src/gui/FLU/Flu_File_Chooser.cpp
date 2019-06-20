@@ -417,6 +417,7 @@ static void loadRealIcon( RealIcon* e)
         {
             DBG3( "e->entry->icon " << e->entry->icon << " img " << img );
             e->entry->icon = img;
+            e->entry->delete_icon = true;
             e->entry->updateSize();
         }
 
@@ -2318,6 +2319,7 @@ Flu_File_Chooser :: Entry :: Entry( const char* name, int t, bool d, Flu_File_Ch
   details = d;
   type = t;
   icon = NULL;
+  delete_icon = false;
   editMode = 0;
   description = "";
 
@@ -2549,6 +2551,8 @@ void Flu_File_Chooser :: Entry :: updateSize()
 
 Flu_File_Chooser :: Entry :: ~Entry()
 {
+    if ( delete_icon ) delete icon;
+    icon = NULL;
 }
 
 void Flu_File_Chooser :: Entry :: inputCB()
