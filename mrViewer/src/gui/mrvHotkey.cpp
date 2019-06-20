@@ -186,6 +186,13 @@ bool Hotkey::match( unsigned rawkey )
 {
     bool ok = false;
 
+    const char* t = Fl::event_text();
+    if ( ( !ctrl && !shift && !alt && !meta ) &&
+         (key && key == t[0]) || ( text.size() && text == t ) )
+    {
+        return true;
+    }
+
     if ( ctrl )
     {
         if ( Fl::event_state( FL_CTRL ) )
@@ -243,6 +250,10 @@ bool Hotkey::match( unsigned rawkey )
     if ( rawkey != 0 && (key != 0 || key2 != 0) )
     {
         if  ( rawkey == key || rawkey == key2 )
+        {
+            ok = true;
+        }
+        else if ( (!text.empty()) && text == t )
         {
             ok = true;
         }
@@ -407,24 +418,25 @@ struct TableText table[] = {
     // {FL_Subtract, _("Subtract")},
     // {FL_Decimal, _("Decimal")},
     // {FL_Divide, _("Divide")},
-    {FL_KP + 0, _("pad0")},
+    {FL_KP + '0', _("pad0")},
 
-    {FL_KP + 1, _("pad1")},
-    {FL_KP + 2, _("pad2")},
-    {FL_KP + 3, _("pad3")},
-    {FL_KP + 4, _("pad4")},
-    {FL_KP + 5, _("pad5")},
+    {FL_KP + '1', _("pad1")},
+    {FL_KP + '2', _("pad2")},
+    {FL_KP + '3', _("pad3")},
+    {FL_KP + '4', _("pad4")},
+    {FL_KP + '5', _("pad5")},
 
-    {FL_KP + 6, _("pad6")},
-    {FL_KP + 7, _("pad7")},
-    {FL_KP + 8, _("pad8")},
-    {FL_KP + 9, _("pad9")},
+    {FL_KP + '6', _("pad6")},
+    {FL_KP + '7', _("pad7")},
+    {FL_KP + '8', _("pad8")},
+    {FL_KP + '9', _("pad9")},
     {' ',_("Space (' ')")}
 };
 
 
 void fill_ui_hotkeys( mrv::Browser* b )
 {
+    int r = b->position();
     b->type( FL_SELECT_BROWSER );
     b->clear();
 
@@ -483,6 +495,7 @@ void fill_ui_hotkeys( mrv::Browser* b )
         b->add( row.c_str() );
     }
 
+    b->position( r );
 }
 
 
