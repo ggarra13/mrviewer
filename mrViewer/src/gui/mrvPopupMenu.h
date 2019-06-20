@@ -40,20 +40,20 @@ class PopupMenu : public Fl_Menu_Button
 {
 public:
     PopupMenu(int,int,int,int,const char* =0);
+    virtual ~PopupMenu() {};
 
-    
     unsigned children() { return size(); }
     const Fl_Menu_Item* child(int i);
-    
-    const Fl_Menu_Item* popup();
-    
+
+    virtual const Fl_Menu_Item* popup();
+
     // Undo the overrides of stuff from Group:
     void disable_glyph() {
         _enable_glyph = false;
     }
 
 protected:
-    void draw();
+    virtual void draw();
 
     bool _enable_glyph;
 };
