@@ -424,6 +424,7 @@ description, shortDescription, toolTip, altname;
       int editMode;
       Flu_File_Chooser *chooser;
       Fl_Image *icon;
+        bool delete_icon;
 
       int nameW, typeW, sizeW, dateW;
       bool details;
