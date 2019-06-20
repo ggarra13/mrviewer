@@ -408,7 +408,7 @@ void attach_ocio_view( CMedia* img, ImageView* view )
             break;
         }
     }
-    m->label( strdup( _(ret.c_str()) ) );
+    m->copy_label( _(ret.c_str()) );
     m->redraw();
     img->image_damage( CMedia::kDamageAll );
     view->redraw();
