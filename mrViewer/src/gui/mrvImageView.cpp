@@ -7208,7 +7208,7 @@ int ImageView::handle(int event)
     case FL_KEYBOARD:
         // lastX = Fl::event_x();
         // lastY = Fl::event_y();
-        if ( !keyDown(Fl::event_key() ) )
+        if ( !keyDown( Fl::event_key() ) )
         {
             return Fl_Gl_Window::handle( event );
         }
