@@ -1,5 +1,3 @@
-
-
 cmake_minimum_required(VERSION 2.8)
 set( PROJECT ACESclip )
 
@@ -9,7 +7,7 @@ set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules )
 find_package( TinyXML2 REQUIRED )
 find_package( Boost REQUIRED )
 
-include_directories( 
+include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${TINYXML2_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
@@ -17,7 +15,9 @@ include_directories(
 
 if(WIN32)
   add_definitions( -DNDEBUG -D_NDEBUG -DACES_DLL -DACES_EXPORTS -D_WIN32_WINNT=0x0501 )
-  add_compile_options( -MD )
+  if(${CMAKE_VERSION} VERSION_LESS "3.15.0")
+    add_compile_options( -MD )
+  endif()
 else(WIN32)
   if ( CMAKE_BUILD_TYPE EQUAL "Debug" )
     add_definitions( -DTHREADS_SANITIZER )
@@ -27,9 +27,9 @@ else(WIN32)
 endif(WIN32)
 
 
-add_library( ACESclip SHARED 
+add_library( ACESclip SHARED
   src/ACESclipWriter.cpp
-  src/ACESclipReader.cpp 
+  src/ACESclipReader.cpp
   )
 
 set( LIBRARIES ${TINYXML2_LIBRARIES} )
@@ -38,7 +38,8 @@ target_link_libraries( ACESclip ${LIBRARIES} )
 
 set_target_properties( ACESclip
   PROPERTIES
-  SOVERSION ${SOVERSION})
+  SOVERSION ${SOVERSION}
+  MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
 
 set( ACESexecutables "" )
@@ -54,14 +55,14 @@ if( NOT DEFINED LIB_ACES_CLIP_ONLY )
 
 endif(NOT DEFINED LIB_ACES_CLIP_ONLY )
 
-install( TARGETS ACESclip 
+install( TARGETS ACESclip
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   )
 
 if( NOT DEFINED LIB_ACES_CLIP_ONLY )
-  install( FILES 
+  install( FILES
     include/ACESclipReader.h
     include/ACESclipWriter.h
     include/ACESExport.h
