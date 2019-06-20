@@ -1623,6 +1623,7 @@ void CMedia::filename( const char* n )
     file = fs::absolute( file );
 
     free( _fileroot );
+
     if ( fs::exists( file ) )
     {
         std::string path = fs::canonical( file ).string();
