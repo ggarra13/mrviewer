@@ -45,7 +45,7 @@
 #: gui/mrvHotkey.cpp:72 gui/mrvHotkey.cpp:74 gui/mrvHotkey.cpp:76
 #: gui/mrvHotkey.cpp:79 gui/mrvHotkey.cpp:81 gui/mrvHotkey.cpp:82
 #: gui/mrvHotkey.cpp:83 gui/mrvHotkey.cpp:86 gui/mrvHotkey.cpp:88
-#: gui/mrvHotkey.cpp:89 gui/mrvHotkey.cpp:487 gui/mrvColorInfo.cpp:412
+#: gui/mrvHotkey.cpp:89 gui/mrvHotkey.cpp:488 gui/mrvColorInfo.cpp:412
 #: gui/mrvColorInfo.cpp:736 gui/mrvFileRequester.cpp:152
 #: gui/mrvFileRequester.cpp:176 gui/mrvFileRequester.cpp:227
 #: gui/mrvFileRequester.cpp:581 gui/mrvFileRequester.cpp:637
@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-06-20 21:16-0300\n"
+"POT-Creation-Date: 2019-06-21 09:09-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -121,7 +121,7 @@ msgstr ""
 "X-Generator: Poedit 2.0.6\n"
 
 #: gui/FLU/Flu_File_Chooser.cpp:530 gui/FLU/Flu_File_Chooser.cpp:576
-#: gui/mrvHotkey.cpp:493 gui/mrvColorInfo.cpp:739 gui/mrvColorInfo.cpp:741
+#: gui/mrvHotkey.cpp:494 gui/mrvColorInfo.cpp:739 gui/mrvColorInfo.cpp:741
 #: gui/mrvColorInfo.cpp:743 gui/mrvColorInfo.cpp:841 gui/mrvVersion.cpp:348
 #: gui/mrvVersion.cpp:349 gui/mrvVersion.cpp:414
 msgid "\t"
@@ -10587,19 +10587,19 @@ msgstr "Vista 3d"
 msgid "3dView"
 msgstr "Vista3d"
 
-#: gui/mrvHotkey.cpp:276
+#: gui/mrvHotkey.cpp:277
 msgid "3dView Density Down"
 msgstr "Bajar Densidad de la Vista 3D"
 
-#: gui/mrvHotkey.cpp:275
+#: gui/mrvHotkey.cpp:276
 msgid "3dView Density Up"
 msgstr "Subir Densidad de la Vista 3D"
 
-#: gui/mrvHotkey.cpp:274
+#: gui/mrvHotkey.cpp:275
 msgid "3dView Z Depth Down"
 msgstr "Bajar Profundidad Z de la Vista 3D"
 
-#: gui/mrvHotkey.cpp:273
+#: gui/mrvHotkey.cpp:274
 msgid "3dView Z Depth Up"
 msgstr "Subir Profundidad Z de la Vista 3D"
 
@@ -12646,7 +12646,7 @@ msgstr ""
 msgid "@@\tc #554A4C"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:453
+#: gui/mrvHotkey.cpp:454
 msgid "@B12@C7@b@.Function\t@B12@C7@b@.Hotkey"
 msgstr "@B12@C7@b@.Funcion\t@B12@C7@b@.Teclas"
 
@@ -13115,7 +13115,7 @@ msgstr "Valor de alfa de la imagen del pixel bajo el mouse."
 msgid "Alt"
 msgstr "Alt"
 
-#: gui/mrvHotkey.cpp:460
+#: gui/mrvHotkey.cpp:461
 msgid "Alt+"
 msgstr ""
 
@@ -13224,7 +13224,7 @@ msgid "Area"
 msgstr "Area"
 
 #
-#: gui/mrvHotkey.cpp:339
+#: gui/mrvHotkey.cpp:340
 msgid "Area Mode"
 msgstr "Modo de Selección de Area"
 
@@ -13259,7 +13259,7 @@ msgstr "Proporción de Aspecto"
 msgid "Aspect ratio of clip"
 msgstr "Proporción de Aspecto del clip"
 
-#: gui/mrvHotkey.cpp:348
+#: gui/mrvHotkey.cpp:349
 msgid "Attach Audio File"
 msgstr "Asociar Archivo de Audio"
 
@@ -13606,7 +13606,7 @@ msgstr ""
 msgid "BY"
 msgstr "A"
 
-#: gui/mrvHotkey.cpp:382
+#: gui/mrvHotkey.cpp:383
 msgid "BackSpace"
 msgstr "Borrado para Atrás"
 
@@ -14122,7 +14122,7 @@ msgstr ""
 msgid "Canon Raw Picture"
 msgstr "Imagen Cruda de Canon"
 
-#: gui/mrvHotkey.cpp:406
+#: gui/mrvHotkey.cpp:407
 msgid "CapsLock"
 msgstr "Bloq. Mayús."
 
@@ -14142,7 +14142,7 @@ msgstr "Fecha de Captura"
 msgid "Category"
 msgstr "Categoría"
 
-#: gui/mrvHotkey.cpp:292
+#: gui/mrvHotkey.cpp:293
 msgid "Center Image"
 msgstr "Centrar la Imagen"
 
@@ -14260,7 +14260,7 @@ msgstr "Ciudad"
 msgid "Clear"
 msgstr "Borrar"
 
-#: gui/mrvHotkey.cpp:312
+#: gui/mrvHotkey.cpp:313
 msgid "Clear Image Cache"
 msgstr "Borrar el Cache de la Imagen"
 
@@ -14284,7 +14284,7 @@ msgstr "Compresión del clip"
 msgid "Clip is a sequence of frames"
 msgstr "El Clip es una secuencia de cuadros."
 
-#: gui/mrvHotkey.cpp:351
+#: gui/mrvHotkey.cpp:352
 msgid "Clone Image"
 msgstr "Clonar la Imagen"
 
@@ -14589,7 +14589,7 @@ msgstr "Controla el codec usado por defecto en grabar una película."
 msgid "Conversion needed.  Gamma: 1.0"
 msgstr "Se necesita conversion.  Gama: 1,0"
 
-#: gui/mrvHotkey.cpp:350
+#: gui/mrvHotkey.cpp:351
 msgid "Copy RGBA Values"
 msgstr "Copiar Valores RGBA"
 
@@ -15341,7 +15341,7 @@ msgstr "Recorte"
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: gui/mrvHotkey.cpp:459
+#: gui/mrvHotkey.cpp:460
 msgid "Ctrl+"
 msgstr "Ctrl"
 
@@ -15705,7 +15705,7 @@ msgid "Data Color Space: "
 msgstr "Espacio de Color"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1152
-#: gui/mrvHotkey.cpp:297 gui/mrvImageInformation.cpp:2202
+#: gui/mrvHotkey.cpp:298 gui/mrvImageInformation.cpp:2202
 msgid "Data Window"
 msgstr "Ventana de Datos"
 
@@ -15845,7 +15845,7 @@ msgstr "Defecto audio al abrir mrViewer."
 msgid "Defaults"
 msgstr "Defecto"
 
-#: gui/FLU/Flu_File_Chooser.cpp:97 gui/mrvHotkey.cpp:393
+#: gui/FLU/Flu_File_Chooser.cpp:97 gui/mrvHotkey.cpp:394
 msgid "Delete"
 msgstr "Borrar"
 
@@ -15976,7 +15976,7 @@ msgid "Display Gamma of Image"
 msgstr "Gama de Display de la Imagen"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1144
-#: gui/mrvHotkey.cpp:296 gui/mrvImageInformation.cpp:2206
+#: gui/mrvHotkey.cpp:297 gui/mrvImageInformation.cpp:2206
 msgid "Display Window"
 msgstr "Ventana de Display"
 
@@ -16032,7 +16032,7 @@ msgstr "¿Quiere reemplazar '%s'?"
 msgid "Double"
 msgstr "Doble"
 
-#: core/exrImage.cpp:1395 gui/mrvHotkey.cpp:400
+#: core/exrImage.cpp:1395 gui/mrvHotkey.cpp:401
 msgid "Down"
 msgstr "Abajo"
 
@@ -16040,7 +16040,7 @@ msgstr "Abajo"
 msgid "Dr"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:336
+#: gui/mrvHotkey.cpp:337
 msgid "Draw Mode"
 msgstr "Modo de Dibujo"
 
@@ -16204,7 +16204,7 @@ msgstr "Ventana de LDE"
 msgid "EMPTY REEL AT INDEX "
 msgstr ""
 
-#: gui/mrvHotkey.cpp:376 gui/mrvHotkey.cpp:455 gui/mrvPreferences.cpp:1209
+#: gui/mrvHotkey.cpp:377 gui/mrvHotkey.cpp:456 gui/mrvPreferences.cpp:1209
 #: gui/mrvPreferences.cpp:2422
 msgid "END"
 msgstr "ROJO"
@@ -16249,7 +16249,7 @@ msgstr "Algoritmo de compresión de EXR"
 msgid "Early 35mm"
 msgstr "35mm Temprano"
 
-#: gui/mrvHotkey.cpp:349
+#: gui/mrvHotkey.cpp:350
 msgid "Edit Audio Frame Offset"
 msgstr "Editar Cuadro de Comienzo de Audio"
 
@@ -16311,7 +16311,7 @@ msgstr "Vacía busqueda o preroll"
 msgid "Encoding"
 msgstr "Encodificado"
 
-#: gui/mrvHotkey.cpp:394
+#: gui/mrvHotkey.cpp:395
 msgid "End"
 msgstr "Fin"
 
@@ -16339,7 +16339,7 @@ msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 "Variable de entorno MRV_SHADER_PATH no encontrada, usando shader interno."
 
-#: gui/mrvHotkey.cpp:337
+#: gui/mrvHotkey.cpp:338
 msgid "Erase Mode"
 msgstr "Modo de Borrado"
 
@@ -16392,7 +16392,7 @@ msgstr "Error escribiendo "
 msgid "Errors"
 msgstr "Errores"
 
-#: gui/mrvHotkey.cpp:381
+#: gui/mrvHotkey.cpp:382
 msgid "Escape"
 msgstr "Escape"
 
@@ -16469,11 +16469,11 @@ msgstr " esperado: "
 msgid "Exposure"
 msgstr "Exposición"
 
-#: gui/mrvHotkey.cpp:332
+#: gui/mrvHotkey.cpp:333
 msgid "Exposure Less"
 msgstr "Menos Exposición"
 
-#: gui/mrvHotkey.cpp:331
+#: gui/mrvHotkey.cpp:332
 msgid "Exposure More"
 msgstr "Más Exposición"
 
@@ -16563,7 +16563,7 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:179
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:214
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:239
-#: gui/mrvHotkey.cpp:481
+#: gui/mrvHotkey.cpp:482
 #, c-format
 msgid "F%d"
 msgstr ""
@@ -16840,7 +16840,7 @@ msgstr "Código de Manufacturador del Film"
 msgid "Filtering"
 msgstr "Filtrado"
 
-#: gui/mrvHotkey.cpp:322 gui/mrvImageInformation.cpp:2127
+#: gui/mrvHotkey.cpp:323 gui/mrvImageInformation.cpp:2127
 msgid "First Frame"
 msgstr "Primer Cuadro"
 
@@ -16848,7 +16848,7 @@ msgstr "Primer Cuadro"
 msgid "First frame of clip - User selected"
 msgstr "Primer cuadro del clip - Selección del Usario"
 
-#: gui/mrvHotkey.cpp:293
+#: gui/mrvHotkey.cpp:294
 msgid "Fit Screen"
 msgstr "Enmarcar Pantalla"
 
@@ -16877,11 +16877,11 @@ msgstr ""
 msgid "Flash Movie"
 msgstr "Pelicula Flash"
 
-#: gui/mrvHotkey.cpp:299
+#: gui/mrvHotkey.cpp:300
 msgid "Flip X"
 msgstr "Voltear en X"
 
-#: gui/mrvHotkey.cpp:300
+#: gui/mrvHotkey.cpp:301
 msgid "Flip Y"
 msgstr "Voltear en Y"
 
@@ -16980,19 +16980,19 @@ msgstr "Rango Cuadros"
 msgid "Frame Start"
 msgstr "Cuadro Comienzo"
 
-#: gui/mrvHotkey.cpp:301
+#: gui/mrvHotkey.cpp:302
 msgid "Frame Step Backwards"
 msgstr "Paso de Cuadro Hacia Atrás"
 
-#: gui/mrvHotkey.cpp:302
+#: gui/mrvHotkey.cpp:303
 msgid "Frame Step FPS Backwards"
 msgstr "Paso de Cuadro Hacia Atrás CPS"
 
-#: gui/mrvHotkey.cpp:304
+#: gui/mrvHotkey.cpp:305
 msgid "Frame Step FPS Forwards"
 msgstr "Paso de Cuadro Hacia Delante CPS"
 
-#: gui/mrvHotkey.cpp:303
+#: gui/mrvHotkey.cpp:304
 msgid "Frame Step Forwards"
 msgstr "Paso de Cuadro Hacia Delante"
 
@@ -17418,11 +17418,11 @@ msgstr "Carta de Gama 2,2"
 msgid "Gamma 2.4 Chart"
 msgstr "Carta de Gama 2.4"
 
-#: gui/mrvHotkey.cpp:345
+#: gui/mrvHotkey.cpp:346
 msgid "Gamma Less"
 msgstr "Menos Gama"
 
-#: gui/mrvHotkey.cpp:344
+#: gui/mrvHotkey.cpp:345
 msgid "Gamma More"
 msgstr "Más Gama"
 
@@ -17732,7 +17732,7 @@ msgstr ""
 msgid "HistogramWindow 1"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:91 gui/mrvHotkey.cpp:390
+#: gui/FLU/Flu_File_Chooser.cpp:91 gui/mrvHotkey.cpp:391
 msgid "Home"
 msgstr "Inicio"
 
@@ -18053,7 +18053,7 @@ msgstr "Imagen"
 msgid "Image \""
 msgstr "Imagen \""
 
-#: gui/mrvHotkey.cpp:287
+#: gui/mrvHotkey.cpp:288
 msgid "Image CTL script"
 msgstr "CTL Escritura de Imagen"
 
@@ -18066,7 +18066,7 @@ msgstr "Tamaño de Cache de las Imágenes"
 msgid "Image Channels"
 msgstr "Canales de Imagen"
 
-#: gui/mrvHotkey.cpp:286
+#: gui/mrvHotkey.cpp:287
 msgid "Image Icc Profile"
 msgstr "Perfil ICC de Imagen"
 
@@ -18349,7 +18349,7 @@ msgstr "Transformación de Dispositivo de Entrada"
 msgid "Input color space for "
 msgstr "Espacio de Color de Entrada para "
 
-#: gui/mrvHotkey.cpp:389
+#: gui/mrvHotkey.cpp:390
 msgid "Insert"
 msgstr "Insertar"
 
@@ -18898,7 +18898,7 @@ msgstr "Lenguaje"
 msgid "Language if known"
 msgstr "Lenguaje si se conoce"
 
-#: gui/mrvHotkey.cpp:323 gui/mrvImageInformation.cpp:2130
+#: gui/mrvHotkey.cpp:324 gui/mrvImageInformation.cpp:2130
 msgid "Last Frame"
 msgstr "Ultimo Cuadro"
 
@@ -18920,7 +18920,7 @@ msgstr "Capa %d"
 msgid "Le("
 msgstr ""
 
-#: gui/mrvHotkey.cpp:396
+#: gui/mrvHotkey.cpp:397
 msgid "Left"
 msgstr "Izquierda"
 
@@ -18937,19 +18937,19 @@ msgstr "Vista Izquierda"
 msgid "Left/right"
 msgstr "Izquierda/derecha"
 
-#: gui/mrvHotkey.cpp:407
+#: gui/mrvHotkey.cpp:408
 msgid "LeftAlt"
 msgstr "Alt Izquierdo"
 
-#: gui/mrvHotkey.cpp:403
+#: gui/mrvHotkey.cpp:404
 msgid "LeftCtrl"
 msgstr "Ctrl Izquierdo"
 
-#: gui/mrvHotkey.cpp:409
+#: gui/mrvHotkey.cpp:410
 msgid "LeftMeta"
 msgstr "Meta Izquierdo"
 
-#: gui/mrvHotkey.cpp:401
+#: gui/mrvHotkey.cpp:402
 msgid "LeftShift"
 msgstr "Shift Izquierdo"
 
@@ -19570,7 +19570,7 @@ msgstr "Memoria"
 msgid "Memory without Compression"
 msgstr "Memoria sin Compresión"
 
-#: gui/mrvHotkey.cpp:412
+#: gui/mrvHotkey.cpp:413
 msgid "Menu"
 msgstr "Menu"
 
@@ -19587,7 +19587,7 @@ msgstr ""
 msgid "Meta"
 msgstr "Meta"
 
-#: gui/mrvHotkey.cpp:461
+#: gui/mrvHotkey.cpp:462
 msgid "Meta+"
 msgstr "Meta"
 
@@ -19674,11 +19674,11 @@ msgstr ""
 msgid "Module"
 msgstr "Módulo"
 
-#: gui/mrvHotkey.cpp:289
+#: gui/mrvHotkey.cpp:290
 msgid "Monitor CTL script"
 msgstr "CTL Escritura del Monitor"
 
-#: gui/mrvHotkey.cpp:288
+#: gui/mrvHotkey.cpp:289
 msgid "Monitor Icc Profile"
 msgstr "Perfil Icc del Monitor"
 
@@ -19707,7 +19707,7 @@ msgid "Motion Estimation Methods"
 msgstr "Métodos de Estimación de Movimiento"
 
 #
-#: gui/mrvHotkey.cpp:341
+#: gui/mrvHotkey.cpp:342
 msgid "Move/Size Mode"
 msgstr "Modo de Mover/Escalar"
 
@@ -19927,16 +19927,16 @@ msgstr " no encontrada en el carrete"
 msgid "Next"
 msgstr "Próximo"
 
-#: gui/mrvHotkey.cpp:321
+#: gui/mrvHotkey.cpp:322
 msgid "Next Channel"
 msgstr "Canal Siguiente"
 
-#: gui/mrvHotkey.cpp:318
+#: gui/mrvHotkey.cpp:319
 msgid "Next Image"
 msgstr "Próxima Imagen"
 
 #
-#: gui/mrvHotkey.cpp:316
+#: gui/mrvHotkey.cpp:317
 msgid "Next Image Version"
 msgstr "Próxima Versión de la Imagen"
 
@@ -20206,7 +20206,7 @@ msgstr ""
 msgid "Nov"
 msgstr "No"
 
-#: gui/mrvHotkey.cpp:413
+#: gui/mrvHotkey.cpp:414
 msgid "NumLock"
 msgstr "Bloqueo Numérico"
 
@@ -20339,15 +20339,15 @@ msgid "OCIO Config File"
 msgstr "Archivo de Configuracion de OCIO"
 
 #
-#: gui/mrvHotkey.cpp:334
+#: gui/mrvHotkey.cpp:335
 msgid "OCIO Display"
 msgstr "Display OCIO"
 
-#: gui/mrvHotkey.cpp:333 gui/mrvImageInformation.cpp:2331
+#: gui/mrvHotkey.cpp:334 gui/mrvImageInformation.cpp:2331
 msgid "OCIO Input Color Space"
 msgstr "Espacio de Color de Entrada de OCIO"
 
-#: gui/mrvHotkey.cpp:335
+#: gui/mrvHotkey.cpp:336
 msgid "OCIO View"
 msgstr "Vista OCIO"
 
@@ -20522,20 +20522,20 @@ msgstr " no encontrada en el carrete"
 msgid "Once"
 msgstr "Una vez"
 
-#: gui/mrvHotkey.cpp:280
+#: gui/mrvHotkey.cpp:281
 msgid "Open Clip XML Metadata"
 msgstr "Abrir Clip XML de Metadatos"
 
 #
-#: gui/mrvHotkey.cpp:277
+#: gui/mrvHotkey.cpp:278
 msgid "Open Directory"
 msgstr "Abrir Carpeta"
 
-#: gui/mrvHotkey.cpp:278
+#: gui/mrvHotkey.cpp:279
 msgid "Open Movie or Sequence"
 msgstr "Abrir Pelicula o Secuencia"
 
-#: gui/mrvHotkey.cpp:279
+#: gui/mrvHotkey.cpp:280
 msgid "Open Single Image"
 msgstr "Abrir Sólo una Imágen"
 
@@ -20850,11 +20850,11 @@ msgstr ""
 msgid "PXR24"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:395
+#: gui/mrvHotkey.cpp:396
 msgid "PageDown"
 msgstr "Av Pág"
 
-#: gui/mrvHotkey.cpp:391
+#: gui/mrvHotkey.cpp:392
 msgid "PageUp"
 msgstr "Re Pág"
 
@@ -20890,7 +20890,7 @@ msgstr "Excepción sin manejo"
 msgid "Parsing failed for "
 msgstr "Análisis gramatical falló "
 
-#: gui/mrvHotkey.cpp:388
+#: gui/mrvHotkey.cpp:389
 msgid "Pause"
 msgstr "Pausa"
 
@@ -20905,11 +20905,11 @@ msgid "Pen Size"
 msgstr "Tamaño del Lapiz"
 
 #
-#: gui/mrvHotkey.cpp:343
+#: gui/mrvHotkey.cpp:344
 msgid "Pen Size Less"
 msgstr "Tamaño del Lápiz Menor"
 
-#: gui/mrvHotkey.cpp:342
+#: gui/mrvHotkey.cpp:343
 msgid "Pen Size More"
 msgstr "Tamaño del Lápiz Mayor"
 
@@ -21034,27 +21034,27 @@ msgstr "Todos los Cuadros"
 msgid "Play All frames without skipping even if frame rate suffers."
 msgstr ""
 
-#: gui/mrvHotkey.cpp:305
+#: gui/mrvHotkey.cpp:306
 msgid "Play Backwards"
 msgstr "Reproducir para Atrás"
 
-#: gui/mrvHotkey.cpp:307
+#: gui/mrvHotkey.cpp:308
 msgid "Play Backwards 1/2 Speed"
 msgstr "Reproducir para Atras a 1/2 Velocidad"
 
-#: gui/mrvHotkey.cpp:306
+#: gui/mrvHotkey.cpp:307
 msgid "Play Backwards X2  Speed"
 msgstr "Reproducir para Atrás a X2 Velocidad"
 
-#: gui/mrvHotkey.cpp:308
+#: gui/mrvHotkey.cpp:309
 msgid "Play Forwards"
 msgstr "Reproducir para Adelante"
 
-#: gui/mrvHotkey.cpp:310
+#: gui/mrvHotkey.cpp:311
 msgid "Play Forwards 1/2 Speed"
 msgstr "Reproducir para Adelante a 1/2 Velocidad"
 
-#: gui/mrvHotkey.cpp:309
+#: gui/mrvHotkey.cpp:310
 msgid "Play Forwards X2  Speed"
 msgstr "Reproducir para Adelante a X2 Velocidad"
 
@@ -21135,7 +21135,7 @@ msgstr ""
 msgid "Preload Cache"
 msgstr "Precargar Cache"
 
-#: gui/mrvHotkey.cpp:311
+#: gui/mrvHotkey.cpp:312
 msgid "Preload Image Cache"
 msgstr "Precargar Cache de Imagen"
 
@@ -21172,15 +21172,15 @@ msgstr "Archivos de Previz"
 msgid "Previous"
 msgstr "Previa"
 
-#: gui/mrvHotkey.cpp:320
+#: gui/mrvHotkey.cpp:321
 msgid "Previous Channel"
 msgstr "Canal Previo"
 
-#: gui/mrvHotkey.cpp:317
+#: gui/mrvHotkey.cpp:318
 msgid "Previous Image"
 msgstr "Imagen Previa"
 
-#: gui/mrvHotkey.cpp:315
+#: gui/mrvHotkey.cpp:316
 msgid "Previous Image Version"
 msgstr "Versión Previa de la Imagen"
 
@@ -21188,7 +21188,7 @@ msgstr "Versión Previa de la Imagen"
 msgid "Primaries:"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:385
+#: gui/mrvHotkey.cpp:386
 msgid "Print"
 msgstr "Imprimir"
 
@@ -21857,7 +21857,7 @@ msgstr "Resampleo de audio falló"
 msgid "Reserved"
 msgstr "Reservada"
 
-#: gui/mrvHotkey.cpp:330
+#: gui/mrvHotkey.cpp:331
 msgid "Reset Gain/Gamma"
 msgstr ""
 
@@ -21870,7 +21870,7 @@ msgstr "Escale el Fondo al tamaño del Frente"
 msgid "Resolution"
 msgstr "Resolución"
 
-#: gui/mrvHotkey.cpp:384
+#: gui/mrvHotkey.cpp:385
 msgid "Return"
 msgstr "Intro"
 
@@ -21886,7 +21886,7 @@ msgstr "Revertir seteos a la la ultima preferencias grabadas."
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
-#: gui/mrvHotkey.cpp:399
+#: gui/mrvHotkey.cpp:400
 msgid "Right"
 msgstr "Derecha"
 
@@ -21902,27 +21902,27 @@ msgstr "Vista Derecha"
 msgid "Right/left"
 msgstr "Derecha/izquierda"
 
-#: gui/mrvHotkey.cpp:408
+#: gui/mrvHotkey.cpp:409
 msgid "RightAlt"
 msgstr "Alt Derecho"
 
-#: gui/mrvHotkey.cpp:405
+#: gui/mrvHotkey.cpp:406
 msgid "RightCtrl"
 msgstr "Ctrl Derecho"
 
-#: gui/mrvHotkey.cpp:411
+#: gui/mrvHotkey.cpp:412
 msgid "RightMeta"
 msgstr "Meta Derecho"
 
-#: gui/mrvHotkey.cpp:402
+#: gui/mrvHotkey.cpp:403
 msgid "RightShift"
 msgstr "Shift Derecho"
 
-#: gui/mrvHotkey.cpp:374
+#: gui/mrvHotkey.cpp:375
 msgid "Rotate Image +90 Degrees"
 msgstr "Rote la Imagen +90 grados"
 
-#: gui/mrvHotkey.cpp:375
+#: gui/mrvHotkey.cpp:376
 msgid "Rotate Image -90 Degrees"
 msgstr "Rote la Imagen -90 grados"
 
@@ -22105,7 +22105,7 @@ msgid "ST"
 msgstr "S"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1136
-#: gui/mrvHotkey.cpp:295
+#: gui/mrvHotkey.cpp:296
 msgid "Safe Areas"
 msgstr "Áreas Seguras"
 
@@ -22142,15 +22142,15 @@ msgstr "Valor de Saturación del pixel de la imagen bajo el ratón."
 msgid "Save"
 msgstr "Grabar"
 
-#: gui/mrvHotkey.cpp:285
+#: gui/mrvHotkey.cpp:286
 msgid "Save Clip XML Metadata"
 msgstr "Grabar Clip XML de Metadatos"
 
-#: gui/mrvHotkey.cpp:283
+#: gui/mrvHotkey.cpp:284
 msgid "Save GL Snapshot"
 msgstr "Grabar Instantánea de Opengl"
 
-#: gui/mrvHotkey.cpp:282 gui/mrvFileRequester.cpp:748
+#: gui/mrvHotkey.cpp:283 gui/mrvFileRequester.cpp:748
 msgid "Save Image"
 msgstr "Grabar Imagen"
 
@@ -22177,11 +22177,11 @@ msgstr "Grabar Configuracion de OCIO"
 msgid "Save Options"
 msgstr "Grabar Opciones"
 
-#: gui/mrvHotkey.cpp:281 gui/mrvFileRequester.cpp:861
+#: gui/mrvHotkey.cpp:282 gui/mrvFileRequester.cpp:861
 msgid "Save Reel"
 msgstr "Grabar Carrete"
 
-#: gui/mrvHotkey.cpp:284 gui/mrvFileRequester.cpp:815
+#: gui/mrvHotkey.cpp:285 gui/mrvFileRequester.cpp:815
 msgid "Save Sequence"
 msgstr "Grabar Secuencia"
 
@@ -22279,7 +22279,7 @@ msgstr ""
 msgid "Scratched Repeat Frame"
 msgstr "Repetir Ultimo Cuadro Tachado"
 
-#: gui/mrvHotkey.cpp:387
+#: gui/mrvHotkey.cpp:388
 msgid "ScrollLock"
 msgstr "Bloq Scroll"
 
@@ -22287,7 +22287,7 @@ msgstr "Bloq Scroll"
 msgid "Scrub"
 msgstr " Fregar"
 
-#: gui/mrvHotkey.cpp:338
+#: gui/mrvHotkey.cpp:339
 msgid "Scrub Mode"
 msgstr "Modo de Fregar"
 
@@ -22407,15 +22407,15 @@ msgstr "Secuencia"
 msgid "Server"
 msgstr "Servidor"
 
-#: gui/mrvHotkey.cpp:347
+#: gui/mrvHotkey.cpp:348
 msgid "Set As BG Image"
 msgstr "Setear como Imagen de Fondo"
 
-#: gui/mrvHotkey.cpp:352
+#: gui/mrvHotkey.cpp:353
 msgid "Set In Point"
 msgstr "Setear Punto Entrada"
 
-#: gui/mrvHotkey.cpp:353
+#: gui/mrvHotkey.cpp:354
 msgid "Set Out Point"
 msgstr "Setear Punto Salida"
 
@@ -22478,7 +22478,7 @@ msgstr ""
 msgid "Shift"
 msgstr "Mayúsculas"
 
-#: gui/mrvHotkey.cpp:462
+#: gui/mrvHotkey.cpp:463
 msgid "Shift+"
 msgstr "Mayúsculas+"
 
@@ -22631,7 +22631,7 @@ msgstr "Algunos seteos de velocidad de reproducción por defecto"
 msgid "Some default gamma settings."
 msgstr "Algunos seteos de gama por defecto"
 
-#: gui/mrvHotkey.cpp:433
+#: gui/mrvHotkey.cpp:434
 msgid "Space (' ')"
 msgstr "Espacio (' ')"
 
@@ -22743,7 +22743,7 @@ msgid "StereoOutput %d"
 msgstr "Sin Salida Estéreo"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-21-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:157
-#: gui/mrvHotkey.cpp:314
+#: gui/mrvHotkey.cpp:315
 msgid "Stop"
 msgstr "Parar"
 
@@ -22830,11 +22830,11 @@ msgid "Surround Luminance"
 msgstr "Luminancia de los Alrededores"
 
 #
-#: gui/mrvHotkey.cpp:319
+#: gui/mrvHotkey.cpp:320
 msgid "Switch Channels"
 msgstr "Intercambiar Canales"
 
-#: gui/mrvHotkey.cpp:346
+#: gui/mrvHotkey.cpp:347
 msgid "Switch FG/BG Images"
 msgstr "Intercambiar Imágenes de Frente y Fondo"
 
@@ -22986,7 +22986,7 @@ msgstr "Imagen TIFF"
 msgid "TX"
 msgstr "T"
 
-#: gui/mrvHotkey.cpp:383
+#: gui/mrvHotkey.cpp:384
 msgid "Tab"
 msgstr "Tab"
 
@@ -23051,7 +23051,7 @@ msgid "Text"
 msgstr "Texto"
 
 #
-#: gui/mrvHotkey.cpp:340
+#: gui/mrvHotkey.cpp:341
 msgid "Text Mode"
 msgstr "Modo de Texto"
 
@@ -23067,7 +23067,7 @@ msgstr "Herramienta de Texto"
 msgid "Texture Units:\t"
 msgstr "Unidades de Textura:\t"
 
-#: gui/mrvHotkey.cpp:294
+#: gui/mrvHotkey.cpp:295
 msgid "TextureFiltering"
 msgstr "Filtrado de Texturas"
 
@@ -23622,77 +23622,77 @@ msgid "TimelineMinDisplay %g"
 msgstr ""
 
 #
-#: gui/mrvHotkey.cpp:358
+#: gui/mrvHotkey.cpp:359
 msgid "Toggle 3D Stereo Options Window"
 msgstr "Permutar Ventana de Opciones de Estéreo 3D"
 
-#: gui/mrvHotkey.cpp:359
+#: gui/mrvHotkey.cpp:360
 msgid "Toggle 3D View Window"
 msgstr "Permutar Ventana de Vista 3D"
 
 #
-#: gui/mrvHotkey.cpp:360
+#: gui/mrvHotkey.cpp:361
 msgid "Toggle About Window"
 msgstr "Permutar Ventana Acerca de"
 
-#: gui/mrvHotkey.cpp:357
+#: gui/mrvHotkey.cpp:358
 msgid "Toggle Action Window"
 msgstr "Permutar Ventana de Acción"
 
-#: gui/mrvHotkey.cpp:324
+#: gui/mrvHotkey.cpp:325
 msgid "Toggle Background"
 msgstr "Permuta Fondo"
 
-#: gui/mrvHotkey.cpp:327
+#: gui/mrvHotkey.cpp:328
 msgid "Toggle Bottom Bar"
 msgstr "Permutar Barra de Abajo"
 
-#: gui/mrvHotkey.cpp:356
+#: gui/mrvHotkey.cpp:357
 msgid "Toggle Color Area Info Window"
 msgstr "Permutar Ventana de Area de Color"
 
-#: gui/mrvHotkey.cpp:364
+#: gui/mrvHotkey.cpp:365
 msgid "Toggle Connections Window"
 msgstr "Permutar Ventana de Connecciones"
 
-#: gui/mrvHotkey.cpp:361
+#: gui/mrvHotkey.cpp:362
 msgid "Toggle EDL Edit Window"
 msgstr "Permutar Ventana de LDE"
 
-#: gui/mrvHotkey.cpp:328
+#: gui/mrvHotkey.cpp:329
 msgid "Toggle Full Screen"
 msgstr "Permutar Pantalla Completa"
 
-#: gui/mrvHotkey.cpp:362
+#: gui/mrvHotkey.cpp:363
 msgid "Toggle Histogram Window"
 msgstr "Permutar Ventana del Histograma"
 
-#: gui/mrvHotkey.cpp:365
+#: gui/mrvHotkey.cpp:366
 msgid "Toggle Hotkeys Window"
 msgstr "Permutar Teclas de Manejo"
 
 #
-#: gui/mrvHotkey.cpp:363
+#: gui/mrvHotkey.cpp:364
 msgid "Toggle Hud"
 msgstr "Permutar Hud"
 
-#: gui/mrvHotkey.cpp:366
+#: gui/mrvHotkey.cpp:367
 msgid "Toggle ICC Profiles Window"
 msgstr "Permutar Ventana de Perfiles ICC"
 
-#: gui/mrvHotkey.cpp:367
+#: gui/mrvHotkey.cpp:368
 msgid "Toggle Input Color Space"
 msgstr "Permutar Espacio de Color de Entrada"
 
-#: gui/mrvHotkey.cpp:369
+#: gui/mrvHotkey.cpp:370
 msgid "Toggle LUT"
 msgstr "Permutar LUT"
 
-#: gui/mrvHotkey.cpp:368
+#: gui/mrvHotkey.cpp:369
 msgid "Toggle Log Window"
 msgstr "Permutar Ventana de Mensajes"
 
-#: gui/mrvHotkey.cpp:355
+#: gui/mrvHotkey.cpp:356
 msgid "Toggle Media Info Window"
 msgstr "Permutar Ventana de Info del Medio"
 
@@ -23706,19 +23706,19 @@ msgstr "Permute Modificar/%s"
 msgid "Toggle Modify/All"
 msgstr "Permute Modificar/Todo"
 
-#: gui/mrvHotkey.cpp:326
+#: gui/mrvHotkey.cpp:327
 msgid "Toggle Pixel Bar"
 msgstr "Permutar Barra de Pixel"
 
-#: gui/mrvHotkey.cpp:370
+#: gui/mrvHotkey.cpp:371
 msgid "Toggle Pixel Ratio"
 msgstr "Permutar Ratio de Pixel"
 
-#: gui/mrvHotkey.cpp:371
+#: gui/mrvHotkey.cpp:372
 msgid "Toggle Preferences Window"
 msgstr "Permutar Ventana de Preferencias"
 
-#: gui/mrvHotkey.cpp:329
+#: gui/mrvHotkey.cpp:330
 msgid "Toggle Presentation"
 msgstr "Permutar Presentación"
 
@@ -23726,11 +23726,11 @@ msgstr "Permutar Presentación"
 msgid "Toggle Reel EDL in Timeline"
 msgstr "Permutar Carrete en la Línea de Tiempo"
 
-#: gui/mrvHotkey.cpp:354
+#: gui/mrvHotkey.cpp:355
 msgid "Toggle Reel Window"
 msgstr "Permutar Ventana de Carretes"
 
-#: gui/mrvHotkey.cpp:325
+#: gui/mrvHotkey.cpp:326
 msgid "Toggle Top Bar"
 msgstr "Permutar Barra Superior"
 
@@ -23752,12 +23752,12 @@ msgstr ""
 "estar compuesta por 6 imágenes por cada lado del cubo, es envuelta alrededor "
 "de un cubo cuando esta opción está activa."
 
-#: gui/mrvHotkey.cpp:372
+#: gui/mrvHotkey.cpp:373
 msgid "Toggle Vectorscope Window"
 msgstr "Permutar Ventana de Vectorscopio"
 
 #
-#: gui/mrvHotkey.cpp:373
+#: gui/mrvHotkey.cpp:374
 msgid "Toggle Waveform Window"
 msgstr "Permutar Ventana de Forma de Onda"
 
@@ -24171,11 +24171,11 @@ msgstr "Sin Especificar"
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
-#: core/exrImage.cpp:1399 gui/mrvHotkey.cpp:397
+#: core/exrImage.cpp:1399 gui/mrvHotkey.cpp:398
 msgid "Up"
 msgstr "Arriba"
 
-#: gui/mrvHotkey.cpp:313
+#: gui/mrvHotkey.cpp:314
 msgid "Update Frame in Cache"
 msgstr "Actualizar Cuadro en el Cache"
 
@@ -25087,7 +25087,7 @@ msgstr "Comportamiento de la Ventana"
 msgid "Windows/%s"
 msgstr "Ventanas/%s"
 
-#: gui/mrvHotkey.cpp:298
+#: gui/mrvHotkey.cpp:299
 msgid "Wipe"
 msgstr "Wipe"
 
@@ -30272,57 +30272,57 @@ msgid "p.\tc #EAC282"
 msgstr ""
 
 #
-#: gui/mrvHotkey.cpp:421
+#: gui/mrvHotkey.cpp:422
 msgid "pad0"
 msgstr "Teclado Numérico 0"
 
 #
-#: gui/mrvHotkey.cpp:423
+#: gui/mrvHotkey.cpp:424
 msgid "pad1"
 msgstr "Teclado Numérico 1"
 
 #
-#: gui/mrvHotkey.cpp:424
+#: gui/mrvHotkey.cpp:425
 msgid "pad2"
 msgstr "Teclado Numérico 2"
 
 #
-#: gui/mrvHotkey.cpp:425
+#: gui/mrvHotkey.cpp:426
 msgid "pad3"
 msgstr "Teclado Numérico 3"
 
 #
-#: gui/mrvHotkey.cpp:426
+#: gui/mrvHotkey.cpp:427
 msgid "pad4"
 msgstr "Teclado Numérico 4"
 
 #
-#: gui/mrvHotkey.cpp:427
+#: gui/mrvHotkey.cpp:428
 msgid "pad5"
 msgstr "Teclado Numérico 5"
 
 #
-#: gui/mrvHotkey.cpp:429
+#: gui/mrvHotkey.cpp:430
 msgid "pad6"
 msgstr "Teclado Numérico 6"
 
 #
-#: gui/mrvHotkey.cpp:430
+#: gui/mrvHotkey.cpp:431
 msgid "pad7"
 msgstr "Teclado Numérico 7"
 
 #
-#: gui/mrvHotkey.cpp:431
+#: gui/mrvHotkey.cpp:432
 msgid "pad8"
 msgstr "Teclado Numérico 8"
 
 #
-#: gui/mrvHotkey.cpp:432
+#: gui/mrvHotkey.cpp:433
 msgid "pad9"
 msgstr "Teclado Numérico 9"
 
 #
-#: gui/mrvHotkey.cpp:414
+#: gui/mrvHotkey.cpp:415
 msgid "padEnter"
 msgstr "Teclado Numérico Enter"
 
@@ -33093,8 +33093,16 @@ msgid "~/"
 msgstr ""
 
 #, fuzzy
-#~ msgid "rawkey "
+#~ msgid "Rotate"
+#~ msgstr "Racional"
+
+#, fuzzy
+#~ msgid " key "
 #~ msgstr "Teclas de Manejo"
+
+#, fuzzy
+#~ msgid "text "
+#~ msgstr "No pude dibujar imagen"
 
 #, fuzzy
 #~ msgid "exposure + match"
@@ -33111,10 +33119,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "gamma - match"
 #~ msgstr "Gama"
-
-#, fuzzy
-#~ msgid " text: "
-#~ msgstr "No pude dibujar imagen"
 
 #, fuzzy
 #~ msgid "not presentation only"
