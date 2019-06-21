@@ -1601,17 +1601,17 @@ bool ImageView::previous_channel()
                 break;
             }
             // Jump to color based on label
-            else if ( total > 7 &&
+            else if ( total >= 7 &&
                       strcmp( last->label(), _("Alpha Overlay") ) == 0 )
             {
-                previous = total-7;
+                previous = total - 1;
                 is_group = true;
                 break;
             }
-            else if ( total > 5 && last->label() &&
+            else if ( total >= 5 && last->label() &&
                       strcmp( last->label(), _("Lumma") ) == 0 )
             {
-                previous = total-5;
+                previous = total - 1;
                 is_group = true;
                 break;
             }
