@@ -188,7 +188,10 @@ bool Hotkey::match( unsigned rawkey )
 
     const char* t = Fl::event_text();
     if ( ( !ctrl && !shift && !alt && !meta ) &&
-         (key && key == t[0]) || ( text.size() && text == t ) )
+         ( ! Fl::event_state( FL_CTRL ) ) &&
+         ( ! Fl::event_state( FL_ALT ) ) &&
+         ( ! Fl::event_state( FL_META ) ) &&
+         ( (key && key == t[0]) || ( text.size() && text == t ) ) )
     {
         return true;
     }
@@ -263,8 +266,6 @@ bool Hotkey::match( unsigned rawkey )
         }
     }
 
-    // if ( (!text.empty()) && text == Fl::event_text() )
-    //     return true;
     return ok;
 }
 
