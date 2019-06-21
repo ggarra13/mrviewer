@@ -3347,6 +3347,7 @@ void ImageInformation::add_enum( const char* name,
         widget->copy_label( _( options[content] ) );
         if ( tooltip ) widget->tooltip( tooltip );
         else widget->tooltip( lbl->label() );
+        widget->menu_end();
 
         if ( !editable )
         {
