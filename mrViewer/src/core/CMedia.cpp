@@ -4419,7 +4419,8 @@ void CMedia::debug_video_packets(const int64_t frame,
     mrv::PacketQueue::const_iterator iter = _video_packets.begin();
     mrv::PacketQueue::const_iterator last = _video_packets.end();
     std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame
-              << " " << routine << " video packets #"
+              << " " << routine << " frame offset: " << _frame_offset
+              << " video packets #"
               << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): ";
 
     AVStream* stream = get_video_stream();
