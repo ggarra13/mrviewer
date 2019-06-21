@@ -3547,6 +3547,15 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 {
     int64_t frame = f;
 
+    // Early exit if we are past loop ends
+    if ( f > loop_end() )
+    {
+        return kDecodeLoopEnd;
+    }
+    else if ( f < loop_start() )
+    {
+        return kDecodeLoopStart;
+    }
 
     if ( !has_video() )
     {
