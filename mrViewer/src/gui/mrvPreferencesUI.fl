@@ -1803,7 +1803,8 @@ mrv::AudioEngine::DeviceList::const_iterator e = devices.end();
 for ( ; i != e; ++i )
    {
       o->add( (*i).description.c_str() );
-   }}
+   }
+   o->menu_end();}
 	    class {mrv::Choice}
 	  } {}
 	  Fl_Group {} {
@@ -1853,7 +1854,8 @@ v->uiView->redraw();}
 	o->add(name);
        if ( strcmp( name, "Arial" ) == 0 )
 	   o->value(i);
-}}
+}
+o->menu_end();}
 	    class {mrv::Choice}
 	  } {}
 	  Fl_Choice uiPrefsSubtitleEncodingChoices {
