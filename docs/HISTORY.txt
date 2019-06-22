@@ -1,6 +1,9 @@
 v5.1.1  - Made preferences always show User Interface first.
 	- Fixed a crash when switching versions of movie files with the
 	  image info window open.
+	- Fixed auto playback to always start when loading any video or
+	  sequence, not only on the first video/sequence.  This would
+	  work intermittently previously.
 
 v5.1.0  - Added Texture Filtering options to Preferences->Video.
 	  Options are: Presentation Only, Always Bilinear and
