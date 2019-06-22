@@ -1014,7 +1014,6 @@ void video_thread( PlaybackData* data )
         if ( step == 0 ) break;
 
 
-
         CMedia::DecodeStatus status = img->decode_video( frame );
 
         // img->debug_video_packets( frame, img->name().c_str(), true );
