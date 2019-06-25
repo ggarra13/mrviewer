@@ -1,5 +1,5 @@
 #
-# This cmake file must be run under cmake 2.5 or later
+# This cmake file must be run under cmake 3.1 or later
 #
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
 
@@ -23,7 +23,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 # wherever your topmost CMakeLists.txt resides.
 #
 # You can also specify support for languages other than C++, using
-# additional arguments.  mrLiquid only needs C++, so we don't bother.
+# additional arguments.
 #
 
 IF( UNIX )
