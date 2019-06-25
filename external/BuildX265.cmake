@@ -1,8 +1,8 @@
-
 ExternalProject_Add(
   x265
   URL "https://bitbucket.org/multicoreware/x265/downloads/x265_3.0.tar.gz"
   SOURCE_SUBDIR source
+  DEPENDS NASM
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
