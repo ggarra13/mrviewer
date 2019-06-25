@@ -569,7 +569,7 @@ bool exrImage::fetch_mipmap(  mrv::image_type_ptr& canvas,
                         displayWindow.max.x, displayWindow.max.y, frame );
 
 
-	read_header_attr( h, frame );
+        read_header_attr( h, frame );
 
 
         FrameBuffer fb;
@@ -1121,9 +1121,9 @@ void exrImage::read_header_attr( const Imf::Header& h,
 
     if ( _attrs.find( frame ) == _attrs.end() )
     {
-	_attrs.insert( std::make_pair( frame, Attributes() ) );
+        _attrs.insert( std::make_pair( frame, Attributes() ) );
     }
-    
+
     {
         const Imf::RationalAttribute* attr =
             h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
@@ -1153,7 +1153,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr && !is_thumbnail() )
         {
             ocio_input_color_space( attr->value() );
-            image_damage( image_damage() | kDamageLut );
+            if ( _frame == _frameStart )
+                image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1163,7 +1164,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             chromaticities( attr->value() );
-            image_damage( image_damage() | kDamageLut );
+            if ( _frame == _frameStart )
+                image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1173,7 +1175,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             _attrs[frame].insert( std::make_pair( _("Chromaticities Name"),
-						   attr->copy() ) );
+                                                   attr->copy() ) );
             attrs.insert( N_("chromaticitiesName") );
         }
     }
@@ -1184,9 +1186,10 @@ void exrImage::read_header_attr( const Imf::Header& h,
         if ( attr )
         {
             _attrs[frame].insert( std::make_pair( _("Adopted Neutral"),
-						   attr->copy() ) );
+                                                   attr->copy() ) );
             attrs.insert( N_("adoptedNeutral") );
-            image_damage( image_damage() | kDamageLut );
+            if ( _frame == _frameStart )
+                image_damage( image_damage() | kDamageLut );
         }
     }
 
@@ -1411,8 +1414,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
     {
         const std::string& name = i.name();
         if ( attrs.find( name ) != attrs.end() ||
-	     _attrs[frame].find( name ) != _attrs[frame].end() ||
-	     ignore.find( name ) != ignore.end() ) continue;
+             _attrs[frame].find( name ) != _attrs[frame].end() ||
+             ignore.find( name ) != ignore.end() ) continue;
 
         const Attribute& attr = i.attribute();
         _attrs[frame].insert( std::make_pair( name, attr.copy() ) );
@@ -1869,7 +1872,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
                 }
 
 
-		read_header_attr( header, frame );
+                read_header_attr( header, frame );
 
 
                 _pixel_ratio = header.pixelAspectRatio();
@@ -2089,7 +2092,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             image_damage( image_damage() | kDamage3DData );
         }
 
-	read_header_attr( header, frame );
+        read_header_attr( header, frame );
 
         if ( _multiview )
         {
@@ -2224,7 +2227,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             if ( ! find_layers( header ) )
                 return false;
 
-	    read_header_attr( header, frame );
+            read_header_attr( header, frame );
 
             int zsize;
             Imf::Array< float* > zbuff;
