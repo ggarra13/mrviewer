@@ -68,7 +68,10 @@ SET(CMAKE_INSTALL_RPATH "")
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
 
-
+#
+# Build dependencies
+#
+#ADD_SUBDIRECTORY( external )
 
 
 #
