@@ -1,0 +1,1006 @@
+diff --git a/FL/Fl_Menu_.H b/FL/Fl_Menu_.H
+index f74670175..cbf7ceaa3 100644
+--- a/FL/Fl_Menu_.H
++++ b/FL/Fl_Menu_.H
+@@ -95,8 +95,25 @@ public:
+ 
+   /**
+     Returns a pointer to the array of Fl_Menu_Items.  This will either be
+-    the value passed to menu(value) or the private copy.
+-    \sa size() -- returns the size of the Fl_Menu_Item array.
++    the value passed to menu(value) or the private copy or an internal
++    (temporary) location (see note below).
++
++    \note <b>Implementation details - may be changed in the future.</b>
++      All modifications of the menu array are done by copying the entire
++      menu array to an internal storage for optimization of memory
++      allocations, for instance when using add() or insert(). While this
++      is done, menu() returns the pointer to this internal location. The
++      entire menu will be copied back to private storage when needed,
++      i.e. when \b another Fl_Menu_ is modified. You can force this
++      reallocation after you're done with all menu modifications by calling
++      Fl_Menu_::menu_end() to make sure menu() returns a permanent pointer
++      to private storage (until the menu is modified again).
++      Note also that some menu methods (e.g. Fl_Menu_Button::popup()) call
++      menu_end() internally to ensure a consistent menu array while the
++      menu is open.
++
++    \see size() -- returns the size of the Fl_Menu_Item array.
++    \see menu_end() -- finish %menu modifications (optional)
+ 
+     \b Example: How to walk the array:
+     \code
+@@ -112,6 +129,7 @@ public:
+ 
+   */
+   const Fl_Menu_Item *menu() const {return menu_;}
++  const Fl_Menu_Item *menu_end(); // in src/Fl_Menu_add.cxx
+   void menu(const Fl_Menu_Item *m);
+   void copy(const Fl_Menu_Item *m, void* user_data = 0);
+   int insert(int index, const char*, int shortcut, Fl_Callback*, void* = 0, int = 0);
+diff --git a/examples/textdisplay-with-colors.cxx b/examples/textdisplay-with-colors.cxx
+index 6c4482402..9e88b2da4 100644
+--- a/examples/textdisplay-with-colors.cxx
++++ b/examples/textdisplay-with-colors.cxx
+@@ -49,6 +49,42 @@ int main() {
+    // Style for text
+    sbuff->text("AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
+ 	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
++   // Text
++   tbuff->insert( 0, "Red Line 1\nYel Line 2\nGrn Line 3\nBlu Line 4\n"
++	       "Red Line 5\nYel Line 6\nGrn Line 7\nBlu Line 8\n");
++   // Style for insert
++   sbuff->insert( 0, "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
++	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
++   // Insert
++   tbuff->insert( 0, "Red Line 1\nYel Line 2\nGrn Line 3\nBlu Line 4\n"
++	       "Red Line 5\nYel Line 6\nGrn Line 7\nBlu Line 8\n");
++   // Style for insert
++   sbuff->insert( 0, "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
++	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
++   // Insert
++   tbuff->insert( 0, "Red Line 1\nYel Line 2\nGrn Line 3\nBlu Line 4\n"
++	       "Red Line 5\nYel Line 6\nGrn Line 7\nBlu Line 8\n");
++   // Style for insert
++   sbuff->insert( 0, "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
++	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
++   // Insert
++   tbuff->insert( 0, "Red Line 1\nYel Line 2\nGrn Line 3\nBlu Line 4\n"
++	       "Red Line 5\nYel Line 6\nGrn Line 7\nBlu Line 8\n");
++   // Style for insert
++   sbuff->insert( 0, "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
++	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
++   // Insert
++   tbuff->insert( 0, "Red Line 1\nYel Line 2\nGrn Line 3\nBlu Line 4\n"
++	       "Red Line 5\nYel Line 6\nGrn Line 7\nBlu Line 8\n");
++   // Style for insert
++   sbuff->insert( 0, "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
++	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
++   // Insert
++   tbuff->insert( 0, "Red Line 1\nYel Line 2\nGrn Line 3\nBlu Line 4\n"
++	       "Red Line 5\nYel Line 6\nGrn Line 7\nBlu Line 8\n");
++   // Style for insert
++   sbuff->insert( 0, "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n"
++	       "AAAAAAAAAA\nBBBBBBBBBB\nCCCCCCCCCC\nDDDDDDDDDD\n");
+    win->resizable(*disp);
+    win->show();
+    return(Fl::run());
+diff --git a/src/Fl_Menu_.cxx b/src/Fl_Menu_.cxx
+index 171ccb200..105b10e9e 100644
+--- a/src/Fl_Menu_.cxx
++++ b/src/Fl_Menu_.cxx
+@@ -57,9 +57,9 @@
+     \endcode
+ 
+     \returns
+-	-   0 : OK (name has menuitem's pathname)
+-	-  -1 : item not found (name="")
+-	-  -2 : 'name' not large enough (name="")
++        -   0 : OK (name has menuitem's pathname)
++        -  -1 : item not found (name="")
++        -  -2 : 'name' not large enough (name="")
+     \see find_item()
+ */
+ int Fl_Menu_::item_pathname(char *name, int namelen, const Fl_Menu_Item *finditem) const {
+@@ -68,13 +68,13 @@ int Fl_Menu_::item_pathname(char *name, int namelen, const Fl_Menu_Item *findite
+ }
+ 
+ // INTERNAL: Descend into a specific menu hierarchy
+-int Fl_Menu_::item_pathname_(char *name, 
+-			     int namelen,
+-			     const Fl_Menu_Item *finditem,
+-			     const Fl_Menu_Item *menu) const {
++int Fl_Menu_::item_pathname_(char *name,
++                             int namelen,
++                             const Fl_Menu_Item *finditem,
++                             const Fl_Menu_Item *menu) const {
+   int len = 0;
+   int level = 0;
+-  finditem = finditem ? finditem : mvalue();    
++  finditem = finditem ? finditem : mvalue();
+   menu = menu ? menu : this->menu();
+   for ( int t=0; t<size(); t++ ) {
+     const Fl_Menu_Item *m = menu + t;
+@@ -82,37 +82,37 @@ int Fl_Menu_::item_pathname_(char *name,
+       if (m->flags & FL_SUBMENU_POINTER) {
+         // SUBMENU POINTER? Recurse to descend
+         int slen = strlen(name);
+-	const Fl_Menu_Item *submenu = (const Fl_Menu_Item*)m->user_data();
++        const Fl_Menu_Item *submenu = (const Fl_Menu_Item*)m->user_data();
+         if (m->label()) {
+           if (*name) SAFE_STRCAT("/");
+-	  SAFE_STRCAT(m->label());
++          SAFE_STRCAT(m->label());
+         }
+         if (item_pathname_(name, len, finditem, submenu) == 0)
+-	  return 0;
+-	name[slen] = 0;				// continue from where we were
++          return 0;
++        name[slen] = 0;				// continue from where we were
+       } else {
+         // REGULAR SUBMENU? DESCEND
+-	++level;
++        ++level;
+         if (*name) SAFE_STRCAT("/");
+         if (m->label()) SAFE_STRCAT(m->label());
+         if (m == finditem) return(0);		// found? done.
+       }
+     } else {
+       if (m->label()) {				// menu item?
+-	if ( m == finditem ) {			// found? tack on itemname, done.
+-	  SAFE_STRCAT("/");
+-	  SAFE_STRCAT(m->label());
+-	  return(0);
+-	}
++        if ( m == finditem ) {			// found? tack on itemname, done.
++          SAFE_STRCAT("/");
++          SAFE_STRCAT(m->label());
++          return(0);
++        }
+       } else {					// end of submenu? pop
+         if ( --level < 0 ) {
+-	  *name = '\0';
+-	  return -1;
+-	}
+-	char *ss = strrchr(name, '/');
+-	if ( ss ) { *ss = 0; len = (int) strlen(name); }	// "File/Edit" -> "File"
+-	else { name[0] = '\0'; len = 0; }	// "File" -> ""
+-	continue;
++          *name = '\0';
++          return -1;
++        }
++        char *ss = strrchr(name, '/');
++        if ( ss ) { *ss = 0; len = (int) strlen(name); }	// "File/Edit" -> "File"
++        else { name[0] = '\0'; len = 0; }	// "File" -> ""
++        continue;
+       }
+     }
+   }
+@@ -122,7 +122,7 @@ int Fl_Menu_::item_pathname_(char *name,
+ 
+ /**
+  Find the menu item for a given menu \p pathname, such as "Edit/Copy".
+- 
++
+  This method finds a menu item in the menu array, also traversing submenus, but
+  not submenu pointers (FL_SUBMENU_POINTER).
+ 
+@@ -137,16 +137,16 @@ int Fl_Menu_::item_pathname_(char *name,
+     // [..]
+     Fl_Menu_Item *item;
+     if ( ( item = (Fl_Menu_Item*)menubar->find_item("File/&Open") ) != NULL ) {
+-	item->labelcolor(FL_RED);
++        item->labelcolor(FL_RED);
+     }
+     if ( ( item = (Fl_Menu_Item*)menubar->find_item("Edit/&Copy") ) != NULL ) {
+-	item->labelcolor(FL_GREEN);
++        item->labelcolor(FL_GREEN);
+     }
+   \endcode
+ 
+   \param pathname The path and name of the menu item
+   \returns The item found, or NULL if not found
+-  \see find_index(const char*), find_item(Fl_Callback*), item_pathname() 
++  \see find_index(const char*), find_item(Fl_Callback*), item_pathname()
+ */
+ const Fl_Menu_Item * Fl_Menu_::find_item(const char *pathname) {
+   int i = find_index(pathname);
+@@ -187,7 +187,7 @@ int Fl_Menu_::find_index(const Fl_Menu_Item *item) const {
+ 
+ /**
+  Find the index into the menu array for a given callback \p cb.
+- 
++
+  This method finds a menu item's index position, also traversing submenus, but
+  \b not submenu pointers (FL_SUBMENU_POINTER). This is useful if an
+  application uses internationalisation and a menu item can not be found
+@@ -206,7 +206,7 @@ int Fl_Menu_::find_index(Fl_Callback *cb) const {
+ 
+ /**
+  Find the menu item index for a given menu \p pathname, such as "Edit/Copy".
+- 
++
+  This method finds a menu item's index position for the given menu pathname,
+  also traversing submenus, but \b not submenu pointers (FL_SUBMENU_POINTER).
+ 
+@@ -229,11 +229,11 @@ int Fl_Menu_::find_index(const char *pathname) const {
+       if (!strcmp(menupath, pathname)) return(t);
+     } else {
+       if (!m->label()) {
+-	// END OF SUBMENU? Pop back one level.
+-	char *ss = strrchr(menupath, '/');
+-	if ( ss ) *ss = 0;
+-	else menupath[0] = '\0';
+-	continue;
++        // END OF SUBMENU? Pop back one level.
++        char *ss = strrchr(menupath, '/');
++        if ( ss ) *ss = 0;
++        else menupath[0] = '\0';
++        continue;
+       }
+       // IT'S A MENU ITEM
+       char itempath[1024];	// eg. Edit/Copy
+@@ -248,12 +248,12 @@ int Fl_Menu_::find_index(const char *pathname) const {
+ 
+ /**
+  Find the menu item for the given callback \p cb.
+- 
++
+  This method finds a menu item in a menu array, also traversing submenus, but
+- not submenu pointers. This is useful if an application uses 
++ not submenu pointers. This is useful if an application uses
+  internationalisation and a menu item can not be found using its label. This
+  search is also much faster.
+- 
++
+  \param[in] cb find the first item with this callback
+  \returns The item found, or NULL if not found
+  \see find_item(const char*)
+@@ -280,7 +280,7 @@ int Fl_Menu_::value(const Fl_Menu_Item* m) {
+   return 0;
+ }
+ 
+-/** 
++/**
+  When user picks a menu item, call this.  It will do the callback.
+  Unfortunately this also casts away const for the checkboxes, but this
+  was necessary so non-checkbox menus can really be declared const...
+@@ -303,8 +303,8 @@ const Fl_Menu_Item* Fl_Menu_::picked(const Fl_Menu_Item* v) {
+     value_ = v;
+     if (when()&(FL_WHEN_CHANGED|FL_WHEN_RELEASE)) {
+       if (changed() || when()&FL_WHEN_NOT_CHANGED) {
+-	if (value_ && value_->callback_) value_->do_callback((Fl_Widget*)this);
+-	else do_callback();
++        if (value_ && value_->callback_) value_->do_callback((Fl_Widget*)this);
++        else do_callback();
+       }
+     }
+   }
+@@ -422,10 +422,10 @@ void Fl_Menu_::menu(const Fl_Menu_Item* m) {
+ 
+ // this version is ok with new Fl_Menu_add code with fl_menu_array_owner:
+ 
+-/** 
+-  Sets the menu array pointer with a copy of m that will be automatically deleted. 
++/**
++  Sets the menu array pointer with a copy of m that will be automatically deleted.
+   If userdata \p ud is not NULL, then all user data pointers are changed in the menus as well.
+-  See void Fl_Menu_::menu(const Fl_Menu_Item* m). 
++  See void Fl_Menu_::menu(const Fl_Menu_Item* m).
+ */
+ void Fl_Menu_::copy(const Fl_Menu_Item* m, void* ud) {
+   int n = m->size();
+@@ -451,7 +451,7 @@ Fl_Menu_* fl_menu_array_owner = 0;
+ /**
+   Same as menu(NULL), set the array pointer to null, indicating
+   a zero-length menu.
+-  
++
+   Menus must not be cleared during a callback to the same menu.
+ */
+ void Fl_Menu_::clear() {
+@@ -476,9 +476,9 @@ void Fl_Menu_::clear() {
+  that shows the last few files that have been opened.
+ 
+  The specified \p index must point to a submenu.
+- 
++
+  The submenu is cleared with remove().
+- If the menu array was directly set with menu(x), then copy() 
++ If the menu array was directly set with menu(x), then copy()
+  is done to make a private array.
+ 
+  \warning Since this method can change the internal menu array, any menu
+diff --git a/src/Fl_Menu_Button.cxx b/src/Fl_Menu_Button.cxx
+index 74bf62430..f887701c1 100644
+--- a/src/Fl_Menu_Button.cxx
++++ b/src/Fl_Menu_Button.cxx
+@@ -46,8 +46,14 @@ void Fl_Menu_Button::draw() {
+   and if they pick one it sets value() and does the callback or
+   sets changed() as described above.  The menu item is returned
+   or NULL if the user dismisses the menu.
++
++  \note Since FLTK 1.4.0 Fl_Menu_::menu_end() is called before the menu
++    pops up to make sure the menu array is located in private storage.
++
++  \see Fl_Menu_::menu_end()
+ */
+ const Fl_Menu_Item* Fl_Menu_Button::popup() {
++  menu_end();
+   const Fl_Menu_Item* m;
+   pressed_menu_button_ = this;
+   redraw();
+diff --git a/src/Fl_Menu_add.cxx b/src/Fl_Menu_add.cxx
+index 57534f4e3..5b01a595b 100644
+--- a/src/Fl_Menu_add.cxx
++++ b/src/Fl_Menu_add.cxx
+@@ -43,7 +43,25 @@ extern Fl_Menu_* fl_menu_array_owner; // in Fl_Menu_.cxx
+ // above pointers to detect if the array belongs to an Fl_Menu_
+ // widget, and if so it reallocates as necessary.
+ 
+-
++// *FIXME* For debugging only! Remove all debugging code under conditional
++// '#if DEBUG_MENU_ADD' including the following function before committing.
++// (Albrecht-S)
++#define DEBUG_MENU_ADD (0)
++#if DEBUG_MENU_ADD
++void *menu_local_array() { // used in developer's test code only
++  return local_array;
++}
++#endif // DEBUG_MENU_ADD
++
++// *FIXME* For debugging only! Remove all debugging code under conditional
++// '#if DEBUG_MENU_ADD' including the following function before committing.
++// (Albrecht-S)
++#define DEBUG_MENU_ADD (0)
++#if DEBUG_MENU_ADD
++void *menu_local_array() { // used in developer's test code only
++  return local_array;
++}
++#endif // DEBUG_MENU_ADD
+ 
+ // Insert a single Fl_Menu_Item into an array of size at offset n,
+ // if this is local_array it will be reallocated if needed.
+@@ -71,7 +89,7 @@ static Fl_Menu_Item* array_insert(
+   m->user_data_ = 0;
+   m->flags = flags;
+   m->labeltype_ = m->labelsize_ = m->labelcolor_ = 0;
+-  m->labelfont_ = FL_HELVETICA; 
++  m->labelfont_ = FL_HELVETICA;
+   return array;
+ }
+ 
+@@ -106,7 +124,7 @@ static int compare(const char* a, const char* b) {
+ int Fl_Menu_Item::add(
+   const char *mytext,
+   int sc,
+-  Fl_Callback *cb,	
++  Fl_Callback *cb,
+   void *data,
+   int myflags
+ ) {
+@@ -114,17 +132,17 @@ int Fl_Menu_Item::add(
+ }
+ 
+ 
+-/** 
++/**
+  Inserts an item at position \p index.
+-    
++
+  If \p index is -1, the item is added the same way as Fl_Menu_Item::add().
+ 
+- If 'mytext' contains any un-escaped front slashes (/), it's assumed 
+- a menu pathname is being specified, and the value of \p index 
++ If 'mytext' contains any un-escaped front slashes (/), it's assumed
++ a menu pathname is being specified, and the value of \p index
+  will be ignored.
+ 
+  In all other aspects, the behavior of insert() is the same as add().
+- 
++
+  \param[in] index	insert new items here
+  \param[in] mytext	new label string, details see above
+  \param[in] sc		keyboard shortcut for new item
+@@ -138,7 +156,7 @@ int Fl_Menu_Item::insert(
+   int index,
+   const char *mytext,
+   int sc,
+-  Fl_Callback *cb,	
++  Fl_Callback *cb,
+   void *data,
+   int myflags
+ ) {
+@@ -218,19 +236,19 @@ int Fl_Menu_Item::insert(
+ 
+   \param[in] label	The text label for the menu item.
+   \param[in] shortcut	Optional keyboard shortcut that can be an int or string:
+-			(FL_CTRL+'a') or "^a". Default 0 if none.
++                        (FL_CTRL+'a') or "^a". Default 0 if none.
+   \param[in] callback	Optional callback invoked when user clicks the item.
+-			Default 0 if none.
++                        Default 0 if none.
+   \param[in] userdata	Optional user data passed as an argument to the callback.
+-			Default 0 if none.
++                        Default 0 if none.
+   \param[in] flags	Optional flags that control the type of menu item;
+-			see below. Default is 0 for none.
++                        see below. Default is 0 for none.
+   \returns		The index into the menu() array, where the entry was added.
+ 
+   \par Description
+-  If the menu array was directly set with menu(x), then copy() is done 
++  If the menu array was directly set with menu(x), then copy() is done
+   to make a private array.
+-  \par 
++  \par
+   Since this method can change the internal menu array, any menu item
+   pointers or indices the application may have cached can become stale,
+   and should be recalculated/refreshed.
+@@ -241,27 +259,27 @@ int Fl_Menu_Item::insert(
+   \par label
+   The menu item's label. This argument is required and must not be NULL.
+   \par
+-  The characters "&", "/", "\", and "_" are treated as special characters in the label string. 
++  The characters "&", "/", "\", and "_" are treated as special characters in the label string.
+   The "&" character specifies that the following character is an accelerator and will be underlined.
+-  The "\" character is used to escape the next character in the string. 
++  The "\" character is used to escape the next character in the string.
+   Labels starting with the "_" character cause a divider to be placed after that menu item.
+-  \par 
++  \par
+   A label of the form "File/Quit" will create the submenu "File"
+   with a menu item called "Quit". The "/" character is ignored if it appears
+   as the first character of the label string, e.g.  "/File/Quit".
+-  \par 
++  \par
+   The label string is copied to new memory and can be freed.
+   The other arguments (including the shortcut) are copied into the
+   menu item unchanged.
+-  \par 
++  \par
+   If an item exists already with that name then it is replaced with
+   this new one.  Otherwise this new one is added to the end of the
+   correct menu or submenu.  The return value is the offset into the array
+   that the new entry was placed at.
+-  
++
+   \par shortcut
+-  The keyboard shortcut for this menu item. 
+-  \par 
++  The keyboard shortcut for this menu item.
++  \par
+   This parameter is optional, and defaults to 0 to indicate no shortcut.
+   \par
+   The shortcut can either be a raw integer value (eg. FL_CTRL+'A')
+@@ -294,20 +312,20 @@ int Fl_Menu_Item::insert(
+   fl_old_shortcut(const char*).
+ 
+   \par callback
+-  The callback to invoke when this menu item is selected. 
+-  \par 
++  The callback to invoke when this menu item is selected.
++  \par
+   This parameter is optional, and defaults to 0 for no callback.
+ 
+   \par userdata
+-  The callback's 'user data' that is passed to the callback. 
+-  \par 
++  The callback's 'user data' that is passed to the callback.
++  \par
+   This parameter is optional, and defaults to 0.
+ 
+   \par flags
+-  These are bit flags to define what kind of menu item this is. 
++  These are bit flags to define what kind of menu item this is.
+   \par
+   This parameter is optional, and defaults to 0 to define a 'regular' menu item.
+-  \par 
++  \par
+   These flags can be 'OR'ed together:
+   \code
+       FL_MENU_INACTIVE     // Deactivate menu item (gray out)
+@@ -326,7 +344,7 @@ int Fl_Menu_Item::insert(
+   set to 0. If you add submenus with the 'path' technique, then the
+   corresponding submenu terminators (maybe more than one) are added as well.
+ 
+-  \todo Raw integer shortcut needs examples. 
++  \todo Raw integer shortcut needs examples.
+         Dependent on responses to http://fltk.org/newsgroups.php?gfltk.development+v:10086 and results of STR#2344
+  */
+ int Fl_Menu_::add(const char *label,int shortcut,Fl_Callback *callback,void *userdata,int flags) {
+@@ -340,25 +358,25 @@ int Fl_Menu_::add(const char *label,int shortcut,Fl_Callback *callback,void *use
+   If \p index is -1, the menu item is appended; same behavior as add().
+ 
+   To properly insert a menu item, \p label must be the name of the item (eg. "Quit"),
+-  and not a 'menu pathname' (eg. "File/Quit").  If a menu pathname is specified, 
++  and not a 'menu pathname' (eg. "File/Quit").  If a menu pathname is specified,
+   the value of \p index is \em ignored, the new item's position defined by the pathname.
+-  
++
+   For more details, see add(). Except for the \p index parameter, add()
+   has more detailed information on parameters and behavior, and is
+   functionally equivalent.
+ 
+   \param[in] index    The menu array's index position where the new item
+                       is inserted. If -1, behavior is the same as add().
+-  \param[in] label    The text label for the menu item. If the label 
++  \param[in] label    The text label for the menu item. If the label
+                       is a menu pathname, \p index is ignored, and the pathname
+-		      indicates the position of the new item.
++                      indicates the position of the new item.
+   \param[in] shortcut Optional keyboard shortcut. Can be an int (FL_CTRL+'a')
+                       or a string ("^a"). Default is 0.
+   \param[in] callback Optional callback invoked when user clicks the item.
+                       Default 0 if none.
+   \param[in] userdata Optional user data passed as an argument to the callback.
+                       Default 0 if none.
+-  \param[in] flags    Optional flags that control the type of menu item; 
++  \param[in] flags    Optional flags that control the type of menu item;
+                       see add() for more info. Default is 0 for none.
+   \returns            The index into the menu() array, where the entry was added.
+ 
+@@ -376,13 +394,7 @@ int Fl_Menu_::insert(
+   // make this widget own the local array:
+   if (this != fl_menu_array_owner) {
+     if (fl_menu_array_owner) {
+-      Fl_Menu_* o = fl_menu_array_owner;
+-      // the previous owner gets its own correctly-sized array:
+-      int value_offset = (int) (o->value_-local_array);
+-      int n = local_array_size;
+-      Fl_Menu_Item* newMenu = o->menu_ = new Fl_Menu_Item[n];
+-      memcpy(newMenu, local_array, n*sizeof(Fl_Menu_Item));
+-      if (o->value_) o->value_ = newMenu+value_offset;
++      fl_menu_array_owner->menu_end();
+     }
+     if (menu_) {
+       // this already has a menu array, use it as the local one:
+@@ -395,10 +407,10 @@ int Fl_Menu_::insert(
+       // start with a blank array:
+       alloc = 2; // indicates that the strings can be freed
+       if (local_array) {
+-	menu_ = local_array;
++        menu_ = local_array;
+       } else {
+-	local_array_alloc = 15;
+-	local_array = menu_ = new Fl_Menu_Item[local_array_alloc];
++        local_array_alloc = 15;
++        local_array = menu_ = new Fl_Menu_Item[local_array_alloc];
+         memset(local_array, 0, sizeof(Fl_Menu_Item) * local_array_alloc);
+       }
+       memset(menu_, 0, sizeof(Fl_Menu_Item));
+@@ -428,7 +440,7 @@ int Fl_Menu_::insert(
+   same special characters as described for the long version of add().
+ 
+   No items must be added to a menu during a callback to the same menu.
+- 
++
+   \param str string containing multiple menu labels as described above
+   \returns the index into the menu() array, where the entry was added
+ */
+@@ -455,7 +467,7 @@ int Fl_Menu_::add(const char *str) {
+   Changes the text of item \p i.  This is the only way to get
+   slash into an add()'ed menu item.  If the menu array was directly set
+   with menu(x) then copy() is done to make a private array.
+- 
++
+   \param i index into menu array
+   \param str new label for menu item at index i
+ */
+@@ -474,9 +486,9 @@ void Fl_Menu_::replace(int i, const char *str) {
+ /**
+   Deletes item \p i from the menu.  If the menu array was directly
+   set with menu(x) then copy() is done to make a private array.
+-  
++
+   No items must be removed from a menu during a callback to the same menu.
+- 
++
+   \param i index into menu array
+ */
+ void Fl_Menu_::remove(int i) {
+@@ -495,6 +507,57 @@ void Fl_Menu_::remove(int i) {
+   memmove(item, next_item, (menu_+n-next_item)*sizeof(Fl_Menu_Item));
+ }
+ 
++/**
++  Finishes menu modifications and returns menu().
++
++  \note	This is work in progress!
++
++  Call menu_end() after using add(), insert(), remove(), or any other
++  methods that may change the menu array if you want to access the
++  menu array anytime later with menu() or ... (?).
++
++  Does nothing if the menu array is already in a private location.
++
++  \note The menu() method is 'const' and would return a pointer to a
++        temporary internal menu array that may be relocated at unexpected
++        times (implementation details).
++
++  \todo Improve documentation.
++
++  \since 1.4.0
++
++  \returns New Fl_Menu_Item array pointer.
++
++  \see Fl_Menu_::menu()
++*/
++
++const Fl_Menu_Item *Fl_Menu_::menu_end() {
++
++#if DEBUG_MENU_ADD
++  fprintf(stderr, "Fl_Menu_::menu_end()\n");
++#endif // DEBUG_MENU_ADD
++
++  if (menu_ == local_array && fl_menu_array_owner == this) {
++
++#if DEBUG_MENU_ADD
++    fprintf(stderr, " ... copy menu to private array: %p -> ", menu_);
++#endif // DEBUG_MENU_ADD
++
++    // copy the menu array to a private correctly-sized array:
++    int value_offset = (int)(value_ - local_array);
++    int n = local_array_size;
++    Fl_Menu_Item* newMenu = menu_ = new Fl_Menu_Item[n];
++    memcpy(newMenu, local_array, n * sizeof(Fl_Menu_Item));
++    if (value_)
++      value_ = newMenu + value_offset;
++#if DEBUG_MENU_ADD
++    fprintf(stderr, "%p\n", menu_);
++#endif // DEBUG_MENU_ADD
++  }
++  fl_menu_array_owner = 0;
++  return menu_;
++}
++
+ //
+ // End of "$Id$".
+ //
+diff --git a/src/Fl_Native_File_Chooser_GTK.cxx b/src/Fl_Native_File_Chooser_GTK.cxx
+index 2d6b819f9..102044f48 100644
+--- a/src/Fl_Native_File_Chooser_GTK.cxx
++++ b/src/Fl_Native_File_Chooser_GTK.cxx
+@@ -1,6 +1,6 @@
+ // "$Id$"
+ //
+-// FLTK native file chooser widget wrapper for GTK's GtkFileChooserDialog 
++// FLTK native file chooser widget wrapper for GTK's GtkFileChooserDialog
+ //
+ // Copyright 1998-2018 by Bill Spitzak and others.
+ // Copyright 2012 IMM
+@@ -47,7 +47,7 @@ struct _GSList
+   gpointer data;
+   GSList *next;
+ };
+-#define  g_slist_next(slist)	         ((slist) ? (((GSList *)(slist))->next) : NULL)
++#define  g_slist_next(slist)             ((slist) ? (((GSList *)(slist))->next) : NULL)
+ typedef struct _GtkWidget      GtkWidget;
+ typedef struct _GtkFileChooser      GtkFileChooser;
+ typedef struct _GtkDialog        GtkDialog;
+@@ -64,7 +64,7 @@ typedef enum {
+ struct _GtkFileFilterInfo
+ {
+   GtkFileFilterFlags contains;
+-  
++
+   const gchar *filename;
+   const gchar *uri;
+   const gchar *display_name;
+@@ -88,9 +88,9 @@ const int   GTK_RESPONSE_ACCEPT = -3;
+ const int   GTK_RESPONSE_DELETE_EVENT = -4;
+ const int   GTK_RESPONSE_CANCEL = -6;
+ typedef void  (*GCallback)(void);
+-#define	G_CALLBACK(f)			 ((GCallback) (f))
++#define	G_CALLBACK(f)                    ((GCallback) (f))
+ typedef int GConnectFlags;
+-typedef struct _GClosure		 GClosure;
++typedef struct _GClosure                 GClosure;
+ typedef void  (*GClosureNotify)(gpointer data, GClosure	*closure);
+ 
+ /* --------------------- End of Type definitions from GLIB and GTK --------------------- */
+@@ -119,7 +119,7 @@ private:
+   mutable char *gtkw_filename; // last name we read back
+   char *gtkw_title; // the title to be applied to the dialog
+   const char *previous_filter;
+-  
++
+   int fl_gtk_chooser_wrapper(); // method that wraps the GTK widget
+   Fl_GTK_Native_File_Chooser_Driver(int val);
+   virtual ~Fl_GTK_Native_File_Chooser_Driver();
+@@ -133,7 +133,7 @@ private:
+   virtual const char* title() const;
+   virtual int show();
+   void changed_output_type(const char *filter);
+-  
++
+   static int custom_gtk_filter_function(const GtkFileFilterInfo*, Fl_GTK_Native_File_Chooser_Driver::pair*);
+   static void free_pair(pair *p);
+ };
+@@ -238,8 +238,8 @@ static XX_gtk_file_filter_add_pattern fl_gtk_file_filter_add_pattern = NULL;
+ // void gtk_file_filter_add_custom(GtkFileFilter *filter, GtkFileFilterFlags needed,
+ //  GtkFileFilterFunc func, gpointer data, GDestroyNotify notify);
+ typedef void (*XX_gtk_file_filter_add_custom)(GtkFileFilter *filter, GtkFileFilterFlags needed,
+-					      GtkFileFilterFunc func, gpointer data, 
+-					      GDestroyNotify notify);
++                                              GtkFileFilterFunc func, gpointer data,
++                                              GDestroyNotify notify);
+ static XX_gtk_file_filter_add_custom fl_gtk_file_filter_add_custom = NULL;
+ 
+ // void gtk_file_filter_set_name(GtkFileFilter*, const gchar*);
+@@ -312,7 +312,7 @@ Fl_Native_File_Chooser::Fl_Native_File_Chooser(int val) {
+ 
+ Fl_GTK_Native_File_Chooser_Driver::Fl_GTK_Native_File_Chooser_Driver(int val) : Fl_Native_File_Chooser_FLTK_Driver(-1)
+ {
+-  gtkw_ptr   = NULL;    // used to hold a GtkWidget* 
++  gtkw_ptr   = NULL;    // used to hold a GtkWidget*
+   gtkw_slist = NULL;    // will hold the returned file names in a multi-selection...
+   gtkw_count = 0;       // How many items were selected?
+   gtkw_filename = NULL; // holds the last name we read back in a single file selection...
+@@ -324,7 +324,7 @@ Fl_GTK_Native_File_Chooser_Driver::Fl_GTK_Native_File_Chooser_Driver(int val) :
+ Fl_GTK_Native_File_Chooser_Driver::~Fl_GTK_Native_File_Chooser_Driver()
+ {
+   // Should free up resources taken for...
+-  if(gtkw_ptr) { 
++  if(gtkw_ptr) {
+     fl_gtk_widget_destroy (gtkw_ptr);
+     gtkw_ptr = NULL;
+   }
+@@ -411,7 +411,7 @@ void Fl_GTK_Native_File_Chooser_Driver::changed_output_type(const char *filter)
+   delete[] r;
+ }
+ 
+-/* Filters files before display in chooser. 
++/* Filters files before display in chooser.
+  Also used to detect when the filter just changed */
+ gboolean Fl_GTK_Native_File_Chooser_Driver::custom_gtk_filter_function(const GtkFileFilterInfo *info, Fl_GTK_Native_File_Chooser_Driver::pair* p)
+ {
+@@ -437,7 +437,7 @@ int Fl_GTK_Native_File_Chooser_Driver::show()
+ {
+   // The point here is that after running a GTK dialog, the calling program's current locale is modified.
+   // To avoid that, we memorize the calling program's current locale, and the locale as modified
+-  // by GTK after the first dialog use. We restore the calling program's current locale 
++  // by GTK after the first dialog use. We restore the calling program's current locale
+   // before returning, and we set the locale as modified by GTK before subsequent GTK dialog uses.
+   static bool first = true;
+   char *p;
+@@ -494,18 +494,18 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+   int result = 1;
+   static int have_gtk_init = 0;
+   char *p;
+-  
++
+   if(!have_gtk_init) {
+     have_gtk_init = -1;
+     int ac = 0;
+     fl_gtk_init_check(&ac, NULL);
+   }
+-  
++
+   if(gtkw_ptr) { // discard the previous dialog widget
+     fl_gtk_widget_destroy (gtkw_ptr);
+     gtkw_ptr = NULL;
+   }
+-  
++
+   // set the dialog action type
+   GtkFileChooserAction gtw_action_type;
+   switch (_btype) {
+@@ -513,15 +513,15 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+     case Fl_Native_File_Chooser::BROWSE_MULTI_DIRECTORY:
+       gtw_action_type = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
+       break;
+-      
++
+     case Fl_Native_File_Chooser::BROWSE_SAVE_FILE:
+       gtw_action_type = GTK_FILE_CHOOSER_ACTION_SAVE;
+       break;
+-      
++
+     case Fl_Native_File_Chooser::BROWSE_SAVE_DIRECTORY:
+       gtw_action_type = GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER;
+       break;
+-      
++
+     case Fl_Native_File_Chooser::BROWSE_MULTI_FILE:
+     case Fl_Native_File_Chooser::BROWSE_FILE:
+     default:
+@@ -530,26 +530,26 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+   }
+   // create a new dialog
+   gtkw_ptr = fl_gtk_file_chooser_dialog_new (gtkw_title,
+-					     NULL, /* parent_window */
+-					     gtw_action_type,
+-					     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+-					     gtw_action_type == GTK_FILE_CHOOSER_ACTION_SAVE || gtw_action_type == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER ? 
+-					     GTK_STOCK_SAVE : GTK_STOCK_OPEN, 
+-					     GTK_RESPONSE_ACCEPT,
+-					     NULL);
++                                             NULL, /* parent_window */
++                                             gtw_action_type,
++                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
++                                             gtw_action_type == GTK_FILE_CHOOSER_ACTION_SAVE || gtw_action_type == GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER ?
++                                             GTK_STOCK_SAVE : GTK_STOCK_OPEN,
++                                             GTK_RESPONSE_ACCEPT,
++                                             NULL);
+   // did we create a valid dialog widget?
+   if(!gtkw_ptr) {
+     // fail
+     return -1;
+   }
+-  
++
+   // set the dialog properties
+   switch (_btype) {
+     case Fl_Native_File_Chooser::BROWSE_MULTI_DIRECTORY:
+     case Fl_Native_File_Chooser::BROWSE_MULTI_FILE:
+       fl_gtk_file_chooser_set_select_multiple((GtkFileChooser *)gtkw_ptr, TRUE);
+       break;
+-      
++
+     case Fl_Native_File_Chooser::BROWSE_SAVE_FILE:
+       if (_preset_file)fl_gtk_file_chooser_set_current_name ((GtkFileChooser *)gtkw_ptr, fl_filename_name(_preset_file));
+       /* FALLTHROUGH */
+@@ -557,13 +557,13 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+       fl_gtk_file_chooser_set_create_folders((GtkFileChooser *)gtkw_ptr, TRUE);
+       fl_gtk_file_chooser_set_do_overwrite_confirmation ((GtkFileChooser *)gtkw_ptr, (_options & Fl_Native_File_Chooser::SAVEAS_CONFIRM)?TRUE:FALSE);
+       break;
+-      
++
+     case Fl_Native_File_Chooser::BROWSE_DIRECTORY:
+     case Fl_Native_File_Chooser::BROWSE_FILE:
+     default:
+       break;
+   }
+-  
++
+   if (_directory && _directory[0]) {
+     p = extract_dir_from_path(_directory);
+     if (p) fl_gtk_file_chooser_set_current_folder((GtkFileChooser *)gtkw_ptr, p);
+@@ -572,7 +572,7 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+     p = extract_dir_from_path(_preset_file);
+     if (p) fl_gtk_file_chooser_set_current_folder((GtkFileChooser *)gtkw_ptr, p);
+   }
+-  
++
+   GtkFileFilter **filter_tab = NULL;
+   if (_parsedfilt) {
+     filter_tab = new GtkFileFilter*[_nfilters];
+@@ -584,11 +584,11 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+       fl_gtk_file_filter_set_name(filter_tab[count], p);
+       p = strchr(p, '(') + 1;
+       char *q = strchr(p, ')'); *q = 0;
+-      fl_gtk_file_filter_add_custom(filter_tab[count], 
+-				    GTK_FILE_FILTER_FILENAME, 
+-				    (GtkFileFilterFunc)Fl_GTK_Native_File_Chooser_Driver::custom_gtk_filter_function,
+-				    new Fl_GTK_Native_File_Chooser_Driver::pair(this, p),
+-				    (GDestroyNotify)Fl_GTK_Native_File_Chooser_Driver::free_pair);
++      fl_gtk_file_filter_add_custom(filter_tab[count],
++                                    GTK_FILE_FILTER_FILENAME,
++                                    (GtkFileFilterFunc)Fl_GTK_Native_File_Chooser_Driver::custom_gtk_filter_function,
++                                    new Fl_GTK_Native_File_Chooser_Driver::pair(this, p),
++                                    (GDestroyNotify)Fl_GTK_Native_File_Chooser_Driver::free_pair);
+       fl_gtk_file_chooser_add_filter((GtkFileChooser *)gtkw_ptr, filter_tab[count]);
+       p = strtok(NULL, "\t");
+       count++;
+@@ -603,7 +603,7 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+       fl_gtk_file_chooser_add_filter((GtkFileChooser *)gtkw_ptr, gfilter);
+     }
+   }
+-  
++
+   GtkWidget *toggle = fl_gtk_check_button_new_with_label(Fl_File_Chooser::hidden_label);
+   fl_gtk_file_chooser_set_extra_widget((GtkFileChooser *)gtkw_ptr, toggle);
+   fl_g_signal_connect_data(toggle, "toggled", G_CALLBACK(hidden_files_cb), gtkw_ptr, NULL, (GConnectFlags) 0);
+@@ -616,7 +616,7 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+     }
+   gboolean state = fl_gtk_file_chooser_get_show_hidden((GtkFileChooser *)gtkw_ptr);
+   fl_gtk_toggle_button_set_active((GtkToggleButton *)toggle, state);
+-  
++
+   gint response_id = GTK_RESPONSE_NONE;
+   fl_g_signal_connect_data(gtkw_ptr, "response", G_CALLBACK(run_response_handler), &response_id, NULL, (GConnectFlags) 0);
+   while (response_id == GTK_RESPONSE_NONE) { // loop that shows the GTK dialog window
+@@ -628,19 +628,19 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+       if (xevent.type == ConfigureNotify) xid = xevent.xmaprequest.window;
+       if (!fl_find(xid)) continue; // skip events to non-FLTK windows
+       // process Expose and ConfigureNotify events
+-      if ( xevent.type == Expose || xevent.type == ConfigureNotify ) fl_handle(xevent); 
++      if ( xevent.type == Expose || xevent.type == ConfigureNotify ) fl_handle(xevent);
+     }
+     Fl::flush(); // do the drawings needed after Expose events
+-  } 
+-  
++  }
++
+   if (response_id == GTK_RESPONSE_ACCEPT) {
+     if (_parsedfilt) {
+       GtkFileFilter *gfilter = fl_gtk_file_chooser_get_filter((GtkFileChooser *)gtkw_ptr);
+       for (_filtvalue = 0; _filtvalue < _nfilters; _filtvalue++) {
+-	if (filter_tab[_filtvalue] == gfilter) break;
++        if (filter_tab[_filtvalue] == gfilter) break;
+       }
+     }
+-    
++
+     // discard any filenames or lists from previous calls
+     if(gtkw_filename) {
+       fl_g_free(gtkw_filename);
+@@ -656,7 +656,7 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+       gtkw_slist = NULL;
+     }
+     gtkw_count = 0; // assume we have no files selected now
+-    
++
+     if(fl_gtk_file_chooser_get_select_multiple((GtkFileChooser *)gtkw_ptr) == FALSE) {
+       gtkw_filename = fl_gtk_file_chooser_get_filename ((GtkFileChooser *)gtkw_ptr);
+       if (gtkw_filename) {
+@@ -669,7 +669,7 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+       gtkw_slist = fl_gtk_file_chooser_get_filenames((GtkFileChooser *)gtkw_ptr);
+       gtkw_count = fl_g_slist_length((GSList *)gtkw_slist);
+       if(gtkw_count) result = 0;
+-      
++
+       //      puts("multiple");
+       //      GSList *iter = (GSList *)gtkw_slist;
+       //      printf ("Selected %d files\n", gtkw_count);
+@@ -683,11 +683,11 @@ int Fl_GTK_Native_File_Chooser_Driver::fl_gtk_chooser_wrapper()
+   delete[] filter_tab;
+   if ( response_id == GTK_RESPONSE_DELETE_EVENT) gtkw_ptr = NULL;
+   else fl_gtk_widget_hide (gtkw_ptr);
+-  
++
+   // I think this is analogus to doing an Fl::check() - we need this here to make sure
+   // the GtkFileChooserDialog is removed from the display correctly
+-  while (fl_gtk_events_pending ()) fl_gtk_main_iteration (); 
+-  
++  while (fl_gtk_events_pending ()) fl_gtk_main_iteration ();
++
+   return result;
+ } // fl_gtk_chooser_wrapper
+ 
+@@ -709,7 +709,7 @@ static void* fl_dlopen(const char *filename1, const char *filename2)
+ }
+ #endif // HAVE_DLSYM && HAVE_DLFCN_H
+ 
+-/* 
++/*
+  * Use dlopen to see if we can load the gtk dynamic libraries that
+  * will allow us to create a GtkFileChooserDialog() on the fly,
+  * without linking to the GTK libs at compile time.
+@@ -718,7 +718,7 @@ void Fl_GTK_Native_File_Chooser_Driver::probe_for_GTK_libs(void) {
+ #if HAVE_DLSYM && HAVE_DLFCN_H
+   void *ptr_glib    = NULL;
+   void *ptr_gtk     = NULL;
+-  
++
+ #   ifdef __APPLE_CC__ // allows testing on Darwin + X11
+   ptr_glib    = dlopen("/sw/lib/libglib-2.0.dylib", RTLD_LAZY | RTLD_GLOBAL);
+ #   else
+@@ -743,7 +743,7 @@ void Fl_GTK_Native_File_Chooser_Driver::probe_for_GTK_libs(void) {
+     }
+ #endif
+   }
+-  
++
+   if((!ptr_glib) || (!ptr_gtk)) {
+ #ifdef DEBUG
+     puts("Failure to load libglib or libgtk");
+@@ -751,7 +751,7 @@ void Fl_GTK_Native_File_Chooser_Driver::probe_for_GTK_libs(void) {
+     did_find_GTK_libs = 0;
+     return;
+   }
+-  
++
+   char *pc_dl_error; // used to report errors by the GET_SYM macro...
+   // items we need from GLib
+   GET_SYM(g_free, ptr_glib);
+@@ -791,7 +791,7 @@ void Fl_GTK_Native_File_Chooser_Driver::probe_for_GTK_libs(void) {
+   GET_SYM(gtk_file_chooser_set_show_hidden, ptr_gtk);
+   GET_SYM(gtk_file_chooser_get_show_hidden, ptr_gtk);
+   GET_SYM(gtk_toggle_button_set_active, ptr_gtk);
+-  
++
+   did_find_GTK_libs = 1;
+ #endif // HAVE_DLSYM && HAVE_DLFCN_H
+ } // probe_for_GTK_libs
