@@ -5,7 +5,7 @@ else()
 endif()
 
 ExternalProject_Add(
-  OCIO
+  ${OCIO_NAME}
   URL "https://github.com/imageworks/OpenColorIO/tarball/master"
   CMAKE_GENERATOR ${generator}
   DEPENDS OpenEXR
@@ -18,7 +18,7 @@ ExternalProject_Add(
   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
   -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
   -DBUILD_SHARED_LIBS=ON
-  -DOCIO_BUILD_APPS=OFF
+  -DOCIO_BUILD_APPS=ON
   -DOCIO_BUILD_NUKE=OFF
   -DOCIO_BUILD_DOCS=OFF
   -DOCIO_BUILD_TESTS=OFF
