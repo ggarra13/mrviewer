@@ -2,6 +2,7 @@ ExternalProject_Add(
   FLTK
   GIT_REPOSITORY "https://github.com/fltk/fltk.git"
   GIT_PROGRESS 1
+  PATCH_COMMAND patch -p1 < ../../../../../../../fltk_patch.txt
   DEPENDS JPEG-TURBO LIBPNG LIBZ
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
