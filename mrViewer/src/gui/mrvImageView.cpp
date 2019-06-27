@@ -670,7 +670,7 @@ void change_video_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
     char buf[128];
     int i;
     // Label format is:
-    // Track #i eng.
+    // Track #i - eng.
     int num = sscanf( lbl, "%s %c%d", buf, buf, &i);
     if ( num < 3 )
     {
@@ -685,21 +685,37 @@ void change_video_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
 }
 
 
-void change_subtitle_cb( Fl_Widget* o, mrv::ImageView* view )
+void change_subtitle_cb( mrv::PopupMenu* menu, mrv::ImageView* view )
 {
-    Fl_Group* g = o->parent();
-    if ( !g ) return;
-    Fl_Menu* p = dynamic_cast< Fl_Menu* >( g );
-    if ( !p ) return;
+    const Fl_Menu_Item* p = menu->mvalue();
+    if ( !p ) {
+        return;
+    }
 
     if ( !view) return;
 
     mrv::media fg = view->foreground();
     if ( !fg ) return;
 
-    int i = (int)p->value() - 2;  // Load Subtitle,  No subtitle
-    fg->image()->subtitle_stream(i);
+    const char* lbl = p->label();
+    char buf[128];
+    int i = -1;
+    // Label format is:
+    // No Subtitle
+    // or
+    // Track #i - eng.
+    int num = sscanf( lbl, "%s %c%d", buf, buf, &i);
+    if ( num < 3 )
+    {
+        i = -1;
+    }
 
+    mrv::CMedia* img = fg->image();
+    mrv::CMedia::Playback play = img->playback();
+    img->stop();
+    img->subtitle_stream(i);
+    if ( play != mrv::CMedia::kStopped )
+        img->play( play, view->main(), true );
 }
 
 void hud_toggle_cb( Fl_Widget* o, ViewerUI* uiMain )
