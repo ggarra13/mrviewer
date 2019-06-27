@@ -85,7 +85,7 @@ ImageTypes image_filetypes[] =
     //{ hdrImage::test,   NULL,            hdrImage::get }, // broken
     { picImage::test,   NULL,            picImage::get },
     { aviImage::test,   NULL,            aviImage::get },
-    { NULL,             rawImage::test,  rawImage::get },
+    // { NULL,             rawImage::test,  rawImage::get },
     { NULL,             oiioImage::test, oiioImage::get },
     { NULL,             wandImage::test, wandImage::get },
     { ddsImage::test,   NULL,            ddsImage::get },
