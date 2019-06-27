@@ -4,3 +4,5 @@ ExternalProject_Add(
   CONFIGURE_COMMAND ./configure --prefix=${CMAKE_INSTALL_PREFIX}
   BUILD_IN_SOURCE 1
   )
+
+set( YASM "YASM" )
