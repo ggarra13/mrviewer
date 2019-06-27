@@ -2506,7 +2506,8 @@ void aviImage::populate()
 
     if ( duration <= 0 ) duration = 1;
 
-    _frameEnd = _frameStart + duration - 1;
+    _loop_start = _frameStart;
+    _loop_end = _frameEnd = _frameStart + duration - 1;
     _frame_end = _frame_start + duration - 1;
 
     _frame_offset = 0;
