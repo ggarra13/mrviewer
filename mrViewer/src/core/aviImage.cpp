@@ -4025,8 +4025,8 @@ void aviImage::subtitle_stream( int idx )
 
     if ( idx == _subtitle_index ) return;
 
-    mrv::PacketQueue::Mutex& apm = _subtitle_packets.mutex();
-    SCOPED_LOCK( apm );
+    mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
+    SCOPED_LOCK( spm );
 
     flush_subtitle();
     close_subtitle_codec();
@@ -4037,7 +4037,6 @@ void aviImage::subtitle_stream( int idx )
     if ( _subtitle_index >= 0 && !filter_graph )
     {
         open_subtitle_codec();
-        seek( _frame );
     }
 
     image_damage( image_damage() | kDamageContents | kDamageSubtitle );
