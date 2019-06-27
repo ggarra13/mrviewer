@@ -167,7 +167,7 @@ bool rawImage::release()
 }
 
 bool rawImage::fetch( mrv::image_type_ptr& canvas,
-		      const boost::int64_t frame )
+                      const boost::int64_t frame )
 {
     if ( !iprc )
     {
@@ -251,7 +251,7 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 
         const libraw_imgother_t& o = iprc->other;
 
-	_attrs.insert( std::make_pair( frame, Attributes() ) );
+        _attrs.insert( std::make_pair( frame, Attributes() ) );
         {
             Imf::FloatAttribute attr( o.iso_speed );
             _attrs[frame].insert( std::make_pair( "Exif:ISOSpeedRatings",
@@ -321,17 +321,18 @@ bool rawImage::fetch( mrv::image_type_ptr& canvas,
 
         rgb_layers();
         lumma_layers();
-        alpha_layers();
+
         pixel_ratio( iprc->sizes.pixel_aspect );
         image_size( dw, dh );
 
+        std::cerr << "dw, dh " << dw << ", " << dh << std::endl;
 
         const image_type::PixelType pixel_type = image_type::kShort;
 
-	image_type_ptr canvas;
+        image_type_ptr canvas;
         image_type::Format type = image_type::kRGBA;
         allocate_pixels( canvas, frame, _num_channels, type, pixel_type,
-			 dw, dh );
+                         dw, dh );
 
         {
             Pixel* pixels = (Pixel*)canvas->data().get();
