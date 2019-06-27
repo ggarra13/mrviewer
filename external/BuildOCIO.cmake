@@ -8,7 +8,7 @@ ExternalProject_Add(
   ${OCIO_NAME}
   URL "https://github.com/imageworks/OpenColorIO/tarball/master"
   CMAKE_GENERATOR ${generator}
-  DEPENDS OpenEXR
+  DEPENDS OpenEXR ${OCIO_DEPENDS}
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

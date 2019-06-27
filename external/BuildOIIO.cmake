@@ -1,7 +1,7 @@
 ExternalProject_Add(
   OIIO
   URL "https://github.com/OpenImageIO/oiio/archive/release.zip"
-  DEPENDS OCIO OpenEXR
+  DEPENDS OCIO OpenEXR ${LibRaw}
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
