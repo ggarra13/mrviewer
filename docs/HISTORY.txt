@@ -7,7 +7,8 @@ v5.1.1  - Made preferences always select and show User Interface first.
 	- Made EXR images' metadata set lut damage only on the first
 	  frame of the sequence, not on all frames as before.  This avoids
 	  a whole list of information messages about lut already created.
-	-
+	- Upgraded mrViewer's reading of Camera RAW formats by using OIIO
+	  instead.
 
 v5.1.0  - Added Texture Filtering options to Preferences->Video.
 	  Options are: Presentation Only, Always Bilinear and

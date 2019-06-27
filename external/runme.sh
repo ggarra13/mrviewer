@@ -1,8 +1,8 @@
 #/usr/bin/bash --norc
 
-install=$PWD/../install
 
 RELEASE=`uname -r`
+installdir=$PWD/../install-$RELEASE
 
 if [[ $RELEASE == 3* ]]; then
     export CC=gcc-4.8
@@ -11,8 +11,7 @@ if [[ $RELEASE == 3* ]]; then
     export CXXFLAGS=-std=c++11
 fi
 
-export PATH=$install-$RELEASE/bin:$PATH
-export LD_LIBRARY_PATH=$install-$RELEASE/lib:$LD_LIBRARY_PATH
+export PATH=$installdir/bin:$PATH
+export LD_LIBRARY_PATH=$installdir/lib:$LD_LIBRARY_PATH
 
-../mk -v --installdir=$install-$RELEASE
-sudo ../mk --installdir=/usr/local
+../mk --installdir=$installdir -v && sudo ../mk --installdir=/usr/local
