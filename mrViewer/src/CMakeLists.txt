@@ -34,6 +34,7 @@ FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( LibIntl     REQUIRED )
 FIND_PACKAGE( LibRaw      REQUIRED )    # for libraw files
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
+#FIND_PACKAGE( RefIccMAX  REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )    # for xml reading/writing
 
 ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_GETTEXT -DMR_SSE -D_CRT_SECURE_NO_WARNINGS )
@@ -99,7 +100,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
 
      IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-       ADD_DEFINITIONS(  -I/usr/local/sanitize -I/usr/local/sanitize/OpenEXR )
+       ADD_DEFINITIONS(  -I/usr/local/sanitize/include -I/usr/local/sanitize/include/OpenEXR )
        #ADD_DEFINITIONS( -fsanitize=thread -DTHREAD_SANITIZER )
        #SET(OS_LIBRARIES tsan ${OS_LIBRARIES} )
        ADD_COMPILE_OPTIONS( -fsanitize=address )
