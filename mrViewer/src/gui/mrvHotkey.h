@@ -250,7 +250,7 @@ struct TableText
     const char* text;
 };
 
-extern struct TableText table[];
+extern struct TableText table[40];
 extern HotkeyEntry hotkeys[];
 
 void fill_ui_hotkeys( mrv::Browser* o );
