@@ -28,8 +28,8 @@ void Element::make_thumbnail()
     }
     if ( !image )
     {
-        image = new Fl_Box(0,VMARGIN,b->w(), b->h()-VMARGIN);
-        image->selection_color( FL_YELLOW );
+        image = new Fl_Box(0,VMARGIN,b->w(), b->h());
+        image->box( FL_NO_BOX );
     }
     if ( b ) image->image( b );
 
@@ -108,7 +108,7 @@ void Element::make_thumbnail()
 
         label->align(FL_ALIGN_LEFT|FL_ALIGN_INSIDE);
 
-        label->box(FL_FLAT_BOX);
+        label->box(FL_NO_BOX);
 
         end();
 
