@@ -9,6 +9,9 @@ v5.1.1  - Made preferences always select and show User Interface first.
 	  a whole list of information messages about lut already created.
 	- Upgraded mrViewer's reading of Camera RAW formats by using OIIO
 	  instead.
+	- Made Images/Labels in reel window not have a background.  This
+	  allows easily seeing what image is selected by having the
+	  background yellow.
 
 v5.1.0  - Added Texture Filtering options to Preferences->Video.
 	  Options are: Presentation Only, Always Bilinear and
