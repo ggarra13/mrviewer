@@ -378,7 +378,7 @@ HotkeyEntry hotkeys[] = {
 };
 
 
-struct TableText table[] = {
+struct TableText table[40] = {
     {FL_Escape, _("Escape")},
     {FL_BackSpace, _("BackSpace")},
     {FL_Tab, _("Tab")},
@@ -413,12 +413,6 @@ struct TableText table[] = {
     {FL_Menu, _("Menu")},
     {FL_Num_Lock, _("NumLock")},
     {FL_KP_Enter, _("padEnter")},
-
-    // {FL_Multiply, _("Multiply")},
-    // {FL_Add, _("Add")},
-    // {FL_Subtract, _("Subtract")},
-    // {FL_Decimal, _("Decimal")},
-    // {FL_Divide, _("Divide")},
     {FL_KP + '0', _("pad0")},
 
     {FL_KP + '1', _("pad1")},
@@ -432,6 +426,12 @@ struct TableText table[] = {
     {FL_KP + '8', _("pad8")},
     {FL_KP + '9', _("pad9")},
     {' ',_("Space (' ')")}
+
+    // {FL_Multiply, _("Multiply")},
+    // {FL_Add, _("Add")},
+    // {FL_Subtract, _("Subtract")},
+    // {FL_Decimal, _("Decimal")},
+    // {FL_Divide, _("Divide")},
 };
 
 
