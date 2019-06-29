@@ -89,6 +89,9 @@ end
 @debug = ARGV.shift
 if not @debug
   @debug = "Release"
+else not @debug == "Debug"
+  $stderr.puts "Invalid option: $0 [Debug|Release]"
+  exit 1
 end
 
 release = `uname -r`.chop!
