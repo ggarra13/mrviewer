@@ -46,8 +46,8 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
-#  define isnan(x) _isnan(x)
-#define isfinite(x) _finite(x)
+#  define isnan(x)    _isnan(x)
+#  define isfinite(x) _finite(x)
 #endif
 
 #include <math.h>
@@ -62,7 +62,6 @@
 #include <sstream>
 #include <limits>
 #include <iomanip>
-#include <sstream>
 #include <set>
 
 #include "video/mrvGLLut3d.h"
@@ -105,7 +104,6 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "core/mrvColor.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvI8N.h"
-#include "core/mrvLicensing.h"
 #include "core/mrvMath.h"
 #include "core/mrvPlayback.h"
 #include "core/mrvString.h"
@@ -6359,13 +6357,12 @@ int ImageView::keyDown(unsigned int rawkey)
 
 
         step_frame( int64_t(-fps) );
-        mouseMove( Fl::event_x(), Fl::event_y() );
+        redraw();
         return 1;
     }
     else if ( kFrameStepBack.match(rawkey) )
     {
         step_frame( -1 );
-        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
@@ -6380,13 +6377,11 @@ int ImageView::keyDown(unsigned int rawkey)
         if ( img ) fps = img->play_fps();
 
         step_frame( int64_t(fps) );
-        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kFrameStepFwd.match( rawkey ) )
     {
         step_frame( 1 );
-        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
@@ -6962,8 +6957,6 @@ void ImageView::scrub( double dx )
     uiMain->uiPlayBackwards->value(0);
 
     step_frame( int64_t(dx) );
-
-    update_color_info();
 }
 
 void ImageView::toggle_color_area( bool show )
@@ -8170,14 +8163,16 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
 
+
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
-        if ( v >= 0 || ( name == _("Color")
+        if ( v >= 0 || ( name == _("Color") || name == _("Red") ||
+                         name == _("Green") || name == _("Blue")
                          /* || chx == "N" || chx == "Z" */ ) )
         {
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
-            if ( shortcut && shortcuts.find( shortcut ) ==
+           if ( shortcut && shortcuts.find( shortcut ) ==
                  shortcuts.end())
             {
                 o->shortcut( shortcut );
