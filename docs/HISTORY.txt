@@ -1,3 +1,9 @@
+v5.1.2  - Fixed hotkey removal by deleting the text in the key1/key2
+	  widgets.
+	- A bug fix in fltk effects hotkeys' potential crashing.
+	- A bug fix in channel selection of red/green/blue channels with
+	  hotkeys.
+
 v5.1.1  - Made preferences always select and show User Interface first.
 	- Fixed a crash when switching versions of movie files with the
 	  image info window open.
@@ -9,6 +15,7 @@ v5.1.1  - Made preferences always select and show User Interface first.
 	  a whole list of information messages about lut already created.
 	- Upgraded mrViewer's reading of Camera RAW formats by using OIIO
 	  instead.
+	- Upgraded ffmpeg to the latest version.
 	- Made Images/Labels in reel window not have a background.  This
 	  allows easily seeing what image is selected by having the
 	  background yellow.
