@@ -100,6 +100,7 @@ Hotkey kNextImage( false, false, false, false, FL_Page_Down );
 Hotkey kFirstFrame( false, false, false, false, FL_Home );
 Hotkey kLastFrame( false, false, false, false, FL_End );
 Hotkey kToggleBG( false, false, false, false, FL_Tab );
+Hotkey kToggleEDL( false, false, false, false, FL_KP_Enter );
 
 
 Hotkey kToggleTopBar( false, false, false, false, FL_F + 1 );
@@ -163,7 +164,7 @@ Hotkey kToggleMediaInfo( false, false, false, false, FL_F + 5 );
 Hotkey kToggleColorInfo( false, false, false, false, FL_F + 6 );
 Hotkey kToggleAction( false, false, false, false, FL_F + 7 );
 Hotkey kToggleStereoOptions( false, false, false, false, FL_F + 8 );
-Hotkey kTogglePreferences( false, false, false, false, FL_F + 9 );;
+Hotkey kTogglePreferences( false, false, false, false, FL_F + 9 );
 Hotkey kToggleEDLEdit( false, false, false, false, 0 );
 Hotkey kToggle3dView( false, false, false, false, 0 );
 Hotkey kToggleHistogram( false, false, false, false, 0 );
@@ -323,6 +324,7 @@ HotkeyEntry hotkeys[] = {
     HotkeyEntry( _("First Frame"), kFirstFrame ),
     HotkeyEntry( _("Last Frame"), kLastFrame ),
     HotkeyEntry( _("Toggle Background"), kToggleBG ),
+    HotkeyEntry( _("Toggle EDL"), kToggleEDL ),
     HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
     HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
     HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
@@ -378,7 +380,7 @@ HotkeyEntry hotkeys[] = {
 };
 
 
-struct TableText table[40] = {
+struct TableText table[45] = {
     {FL_Escape, _("Escape")},
     {FL_BackSpace, _("BackSpace")},
     {FL_Tab, _("Tab")},
@@ -425,13 +427,13 @@ struct TableText table[40] = {
     {FL_KP + '7', _("pad7")},
     {FL_KP + '8', _("pad8")},
     {FL_KP + '9', _("pad9")},
-    {' ',_("Space (' ')")}
+    {' ',_("Space (' ')")},
 
-    // {FL_Multiply, _("Multiply")},
-    // {FL_Add, _("Add")},
-    // {FL_Subtract, _("Subtract")},
-    // {FL_Decimal, _("Decimal")},
-    // {FL_Divide, _("Divide")},
+    {FL_KP + '*', _("Multiply")},
+    {FL_KP + '+', _("Add")},
+    {FL_KP + '-', _("Subtract")},
+    {FL_KP + '.', _("Decimal")},
+    {FL_KP + '/', _("Divide")},
 };
 
 
