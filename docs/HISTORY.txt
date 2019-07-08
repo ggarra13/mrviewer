@@ -3,6 +3,17 @@ v5.1.2  - Fixed hotkey removal by deleting the text in the key1/key2
 	- A bug fix in fltk effects hotkeys' potential crashing.
 	- A bug fix in channel selection of red/green/blue channels with
 	  hotkeys.
+	- Fixed the bug that could crash the viewer when selecting channels
+	  and the video/image changed.  Now there's no longer a crash,
+	  but the menus can get out of sync with the current video if you
+	  open them before the change in image.
+	- Finally added a hotkey entry to toggle EDL.  By default it is
+	  Keypad Enter.
+	- Corrected EDL when the clip's duration is changed in the media
+	  information window.
+	- Improved display of Reel window's thumbnails.  Now they are
+	  separated by a line and don't have the extra garbage at the
+	  beginning of them.
 
 v5.1.1  - Made preferences always select and show User Interface first.
 	- Fixed a crash when switching versions of movie files with the
