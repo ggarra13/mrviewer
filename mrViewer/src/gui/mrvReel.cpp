@@ -128,7 +128,6 @@ mrv::media Reel_t::media_at( const int64_t f ) const
 
     mrv::media fg = images.front();
     if ( !fg ) {
-        std::cerr << "return mrv::media() " << __LINE__ << std::endl;
         return mrv::media();
     }
 
