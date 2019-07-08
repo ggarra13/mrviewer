@@ -271,6 +271,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
         img->loop_start( first );
 
+
     }
     else
     {
