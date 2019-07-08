@@ -7,6 +7,7 @@ namespace {
 
 namespace mrv {
 
+static const int HWIDTH = 800;
 static const int VMARGIN = 6;
 
 void Element::make_thumbnail()
@@ -36,7 +37,7 @@ void Element::make_thumbnail()
 }
 
     Element::Element(mrv::media m) :
-    Fl_Group(0,0,VMARGIN,64+VMARGIN*2),
+    Fl_Group(0,0,1,64+VMARGIN*2),
     image(NULL),
     _elem( m )
     {	// VMARGIN makes group slightly larger than items
@@ -146,6 +147,14 @@ Element::~Element()
 
     void Element::draw() {
         Fl_Group::draw();
+        Fl_Color c = fl_color();
+        fl_color( fl_lighter(c) );
+        fl_line_style( FL_SOLID, 3, NULL );
+        fl_line( 0, y()-1, x()+800, y()-1 );
+        fl_color( fl_darker(c) );
+        fl_line_style( FL_SOLID, 3, NULL );
+        fl_line( 0, y()+h(), x()+800, y()+h() );
+        fl_line_style( 0 );
     }
 
 }
