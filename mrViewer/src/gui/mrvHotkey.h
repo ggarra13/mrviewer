@@ -146,6 +146,7 @@ extern Hotkey kNextChannel;
 extern Hotkey kFirstFrame;
 extern Hotkey kLastFrame;
 extern Hotkey kToggleBG;
+extern Hotkey kToggleEDL;
 
 extern Hotkey kToggleTopBar;
 extern Hotkey kTogglePixelBar;
@@ -250,7 +251,7 @@ struct TableText
     const char* text;
 };
 
-extern struct TableText table[40];
+extern struct TableText table[45];
 extern HotkeyEntry hotkeys[];
 
 void fill_ui_hotkeys( mrv::Browser* o );
