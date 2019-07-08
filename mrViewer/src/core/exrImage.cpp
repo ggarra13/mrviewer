@@ -1387,7 +1387,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
             break;
         }
         default:
-            IMG_ERROR("Unknown mipmap mode");
+            IMG_ERROR( _("Unknown mipmap mode") );
             break;
         }
 
@@ -1491,7 +1491,7 @@ void exrImage::loadDeepData( int& zsize,
     }
     catch( const std::exception& e )
     {
-        IMG_ERROR( "loadDeepData error: " << e.what() );
+        IMG_ERROR( _("loadDeepData error: ") << e.what() );
     }
 
 }
@@ -2135,7 +2135,10 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             size_t pos = part.find( ' ' );
             part = part.substr( 1, pos );
 
-            _curpart = (int) strtoul( part.c_str(), NULL, 10 );
+            if ( _numparts > 1 )
+                _curpart = (int) strtoul( part.c_str(), NULL, 10 );
+            else
+                _curpart = 0;
         }
         else
         {
@@ -2202,6 +2205,7 @@ bool exrImage::fetch_multipart(  mrv::image_type_ptr& canvas,
             catch( const std::exception& e )
             {
                 IMG_ERROR( e.what() );
+                _curpart = 0;
                 return false;
             }
 
@@ -2338,7 +2342,6 @@ bool exrImage::fetch(  mrv::image_type_ptr& canvas,
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
         _numparts = inmaster.parts();
 
-
         if ( _numparts > 0 )
         {
 
@@ -2355,7 +2358,7 @@ bool exrImage::fetch(  mrv::image_type_ptr& canvas,
     catch( const std::exception& e )
     {
         IMG_ERROR( e.what() );
-        _curpart = -1;
+        _curpart = 0;
         image_size( _w, _h );
         return false;
     }
