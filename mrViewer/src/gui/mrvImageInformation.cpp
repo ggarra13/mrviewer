@@ -71,6 +71,7 @@ using namespace std;
 #include "mrvImageView.h"
 #include "gui/mrvHotkey.h"
 #include "gui/mrvTimecode.h"
+#include "gui/mrvImageBrowser.h"
 #include "mrViewer.h"
 #include "CMedia.h"
 #include "mrvIO.h"
@@ -1564,6 +1565,7 @@ static void change_first_frame_cb( Fl_Int_Input* w, ImageInformation* info )
         img->first_frame( v );
         update_int_slider( w );
         mrv::ImageView* view = info->main()->uiView;
+        view->browser()->adjust_timeline();
         view->redraw();
     }
 }
@@ -1606,7 +1608,9 @@ static void change_last_frame_cb( Fl_Int_Input* w,
         w->value( buf );
 
         img->last_frame( v );
-        info->main()->uiView->redraw();
+        mrv::ImageView* view = info->main()->uiView;
+        view->browser()->adjust_timeline();
+        view->redraw();
         update_int_slider( w );
     }
 }
