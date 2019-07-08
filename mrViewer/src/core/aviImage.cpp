@@ -1829,7 +1829,8 @@ bool aviImage::find_image( const int64_t frame )
                 {
                     ++counter;
                     IMG_WARNING( _("find_image: frame ") << frame
-                                 << _(" not found, choosing ") << _hires->frame()
+                                 << _(" not found, choosing ")
+                                 << _hires->frame()
                                  << _(" instead") );
                 }
                 else
