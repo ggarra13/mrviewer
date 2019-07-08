@@ -63,7 +63,7 @@ class ImageBrowser : public Fl_Tree
 public:
     ImageBrowser(int x, int y, int w, int h);
     ~ImageBrowser();
-    
+
     //! Clone all channels of a media
     void clone_all_current();
 
@@ -79,7 +79,7 @@ public:
     //! Ask for filename and open it as a stereo image for current
     //! selected image
     void open_stereo();
-    
+
     //! Ask for filename and open it as a single image
     void open_single();
 
@@ -162,7 +162,7 @@ public:
 
     //! Adds image to tree
     mrv::media add( CMedia* img );
-    
+
     //! Addes filename as media to tree
     mrv::media add( const char* filename,
                     const int64_t start = -999999,
@@ -173,7 +173,7 @@ public:
                std::string bgfile = "",
                const bool edl = false,
                const bool progressBar = false );
-    
+
     //! Loads files as media to tree
     void load( const stringArray& files, const bool seqs = true,
                const bool stereo = false,
@@ -245,6 +245,8 @@ public:
     //! Create a tree element from a media
     mrv::Element* new_item(mrv::media img);
 
+    //! Adjust timeline of media clips when in EDL mode
+    void adjust_timeline();
 protected:
 
     //! Set pathname from a media
@@ -264,15 +266,13 @@ protected:
     //! Change image to new one selected
     void change_image();
 
-    //! Adjust timeline of media clips when in EDL mode
-    void adjust_timeline();
 
     //! Load a stereo image for fg
     void load_stereo( mrv::media& fg,
                       const char* name,
                       const int64_t first, const int64_t last,
                       const int64_t start, const int64_t end );
-    
+
     //! Load an image
     mrv::media load_image( const char* name,
                            const int64_t first, const int64_t last,
@@ -288,7 +288,7 @@ protected:
 
     //! Returns GUI timeline
     mrv::Timeline* timeline();
-    
+
     //! Returns GUI EDL group
     mrv::EDLGroup* edl_group() const;
 
