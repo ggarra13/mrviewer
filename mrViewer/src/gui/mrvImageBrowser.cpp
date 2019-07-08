@@ -307,7 +307,6 @@ dragging( NULL ),
 _value( -1 )
 {
     showroot(0);// don't show root of tree
-    // Add some regular text nodes
     selectmode(FL_TREE_SELECT_SINGLE_DRAGGABLE);
     item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
     connectorstyle( FL_TREE_CONNECTOR_NONE );
@@ -3339,8 +3338,12 @@ void ImageBrowser::draw()
         elem->make_thumbnail();
     }
 
+    // Let tree draw itself
     Fl_Tree::draw();
 
+    // Dragging item that has a widget()?
+    //    Assume widget() is a group, draw it where the mouse is..
+    //
     if ( dragging && dragging->widget() )
     {
         mrv::Element* elem = (mrv::Element*) dragging->widget();
