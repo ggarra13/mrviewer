@@ -98,6 +98,10 @@ const Fl_Menu_Item* PopupMenu::child(int i) {
 }
 
 
+bool PopupMenu::popped() {
+    return ( pressed_menu_button_ == this );
+}
+
 /**
   Act exactly as though the user clicked the button or typed the
   shortcut key.  The menu appears, it waits for the user to pick an item,
@@ -124,6 +128,42 @@ const Fl_Menu_Item* PopupMenu::popup() {
     pressed_menu_button_ = 0;
     if (mb.exists()) redraw();
     return m;
+}
+
+int PopupMenu::handle(int e) {
+  if (!menu() || !menu()->text) return 0;
+  switch (e) {
+  case FL_ENTER: /* FALLTHROUGH */
+  case FL_LEAVE:
+    return (box() && !type()) ? 1 : 0;
+  case FL_PUSH:
+    if (!box()) {
+      if (Fl::event_button() != 3) return 0;
+    } else if (type()) {
+      if (!(type() & (1 << (Fl::event_button()-1)))) return 0;
+    }
+    if (Fl::visible_focus()) Fl::focus(this);
+    popup();
+    return 1;
+  case FL_KEYBOARD:
+    if (!box()) return 0;
+    if (Fl::event_key() == ' ' &&
+        !(Fl::event_state() & (FL_SHIFT | FL_CTRL | FL_ALT | FL_META))) {
+      popup();
+      return 1;
+    } else return 0;
+  case FL_SHORTCUT:
+    if (Fl_Widget::test_shortcut()) {popup(); return 1;}
+    return test_shortcut() != 0;
+  case FL_FOCUS: /* FALLTHROUGH */
+  case FL_UNFOCUS:
+    if (box() && Fl::visible_focus()) {
+      redraw();
+      return 1;
+    }
+  default:
+    return 0;
+  }
 }
 
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
