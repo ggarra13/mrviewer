@@ -1500,14 +1500,14 @@ void CMedia::refresh()
 void  CMedia::first_frame(int64_t x)
 {
     if ( x < _frame_start ) x = _frame_start;
-    _frameStart = x;
+    _frameStart = _loop_start = x;
     if ( _frame < _frameStart ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(int64_t x)
 {
     if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
-    _frameEnd = x;
+    _frameEnd = _loop_end = x;
     if ( _frame > _frameEnd ) _frame = _frameEnd;
 }
 
@@ -3649,15 +3649,26 @@ void CMedia::loop_at_end( const int64_t frame )
         mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
         mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
         AVStream* stream = get_video_stream();
+        int64_t f = AV_NOPTS_VALUE;
         for ( ; i != e; ++i )
         {
-            if ( get_frame( stream, *i ) >= frame )
+            if ( get_frame( stream, *i ) > frame )
             {
                 mrv::PacketQueue::iterator it = (i+1).base();
+                f = get_frame( stream, *it );
                 _video_packets.erase( it );
             }
         }
 
+        for ( int i = 0; i < _frame_offset; ++i )
+        {
+            AVPacket pkt;
+            av_init_packet(&pkt);
+            pkt.data = NULL;
+            pkt.size = 0;
+            pkt.dts = pkt.pts = frame2pts( stream, f + i );
+            _video_packets.push_back( pkt );
+        }
         _video_packets.loop_at_end( frame );
     }
 
@@ -3677,7 +3688,7 @@ void CMedia::loop_at_end( const int64_t frame )
         for ( ; i != e; ++i )
         {
             int64_t pktframe = get_frame( stream, *i );
-            if ( pktframe >= frame )
+            if ( pktframe > frame )
             {
                 mrv::PacketQueue::iterator it = (i+1).base();
                 _audio_packets.erase( it );
