@@ -46,8 +46,8 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
-#  define isnan(x)    _isnan(x)
-#  define isfinite(x) _finite(x)
+#  define isnan(x) _isnan(x)
+#define isfinite(x) _finite(x)
 #endif
 
 #include <math.h>
@@ -62,6 +62,7 @@
 #include <sstream>
 #include <limits>
 #include <iomanip>
+#include <sstream>
 #include <set>
 
 #include "video/mrvGLLut3d.h"
@@ -104,6 +105,7 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "core/mrvColor.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvI8N.h"
+#include "core/mrvLicensing.h"
 #include "core/mrvMath.h"
 #include "core/mrvPlayback.h"
 #include "core/mrvString.h"
@@ -543,6 +545,17 @@ void switch_fg_bg_cb( Fl_Widget* o, mrv::ImageView* view )
 
     update_title_bar( view );
     view->fit_image();
+}
+
+void toggle_edl_cb( Fl_Widget* o, mrv::ImageView* view )
+{
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+
+    mrv::ImageBrowser* b = view->browser();
+    if ( !b ) return;
+
+    b->toggle_edl();
 }
 
 void toggle_background_cb( Fl_Widget* o, mrv::ImageView* view )
@@ -4449,6 +4462,9 @@ int ImageView::leftMouseDown(int x, int y)
                 menu->add( _("Image/Toggle Background"),
                           kToggleBG.hotkey(),
                           (Fl_Callback*)toggle_background_cb, (void*)this);
+                menu->add( _("Image/Toggle EDL"),
+                           kToggleEDL.hotkey(),
+                           (Fl_Callback*)toggle_edl_cb, (void*)this);
 
                 Image_ptr image = fg->image();
 
@@ -6561,6 +6577,11 @@ int ImageView::keyDown(unsigned int rawkey)
         mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
+    else if ( kToggleEDL.match( rawkey ) )
+    {
+        toggle_edl_cb(this, this);
+        return 1;
+    }
     else if ( kToggleBG.match( rawkey ) )
     {
         toggle_background();
@@ -8052,6 +8073,11 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     CMedia* img = fg->image();
 
     mrv::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    uiColorChannel->menu_end();
+    if ( uiColorChannel->popped() ) {
+        return -1;
+    }
+
     uiColorChannel->clear();
 
 
@@ -8167,7 +8193,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // N, Z and Color are special in that they don't change, except
         // when in Stereo, but then they are not called that.
         if ( v >= 0 || ( name == _("Color") || name == _("Red") ||
-                         name == _("Green") || name == _("Blue")
+                         name == _("Green") || name == _("Blue") ||
+                         name == _("Alpha") || name == _("Lumma") ||
+                         name == _("Alpha Overlay") || name == _("Z")
                          /* || chx == "N" || chx == "Z" */ ) )
         {
             // If we have a shortcut and it isn't in the list of shortcuts
@@ -8214,7 +8242,6 @@ void ImageView::update_layers()
     const char* lbl = uiColorChannel->label();
     if ( strcmp(lbl, _("(no image)")) == 0 ) lbl = _("Color");
 
-
     int v = update_shortcuts( fg, lbl );
 
     CMedia* img = fg->image();
@@ -8226,9 +8253,10 @@ void ImageView::update_layers()
 
     uiColorChannel->redraw();
 
-
-    img->image_damage( img->image_damage() & ~CMedia::kDamageLayers );
-
+    if ( v >= 0 )
+    {
+        img->image_damage( img->image_damage() & ~CMedia::kDamageLayers );
+    }
 }
 
 
@@ -8342,7 +8370,8 @@ void ImageView::foreground( mrv::media fg )
 
 
             img->image_damage( img->image_damage() | CMedia::kDamageContents |
-                               CMedia::kDamageLut | CMedia::kDamage3DData );
+                               CMedia::kDamageLut | CMedia::kDamageLayers |
+                               CMedia::kDamage3DData );
 
             if ( dynamic_cast< stubImage* >( img )  )
             {
