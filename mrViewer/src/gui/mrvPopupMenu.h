@@ -45,12 +45,16 @@ public:
     unsigned children() { return size(); }
     const Fl_Menu_Item* child(int i);
 
+    bool popped();
+
     virtual const Fl_Menu_Item* popup();
 
     // Undo the overrides of stuff from Group:
     void disable_glyph() {
         _enable_glyph = false;
     }
+
+    virtual int handle(int e);
 
 protected:
     virtual void draw();
