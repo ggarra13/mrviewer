@@ -168,13 +168,13 @@ public:
         _packets.push_back( pkt );
 
         if ( pkt.data != _flush.data &&
-                pkt.data != _seek.data  &&
-                pkt.data != _seek_end.data  &&
-                pkt.data != _jump.data &&
-                pkt.data != _preroll.data &&
-                pkt.data != _loop_start.data &&
-                pkt.data != _loop_end.data &&
-                pkt.data != NULL )
+             pkt.data != _seek.data  &&
+             pkt.data != _seek_end.data  &&
+             pkt.data != _jump.data &&
+             pkt.data != _preroll.data &&
+             pkt.data != _loop_start.data &&
+             pkt.data != _loop_end.data &&
+             pkt.data != NULL )
         {
             // std::cerr << this << " #" << _packets.size()
             //          << " push back " << &pkt << " at "
@@ -259,13 +259,13 @@ public:
         AVPacket& pkt = *it;
 
         if ( pkt.data != _flush.data &&
-                pkt.data != _seek.data  &&
-                pkt.data != _seek_end.data  &&
-                pkt.data != _jump.data &&
-                pkt.data != _preroll.data &&
-                pkt.data != _loop_start.data &&
-                pkt.data != _loop_end.data &&
-                pkt.data != NULL )
+             pkt.data != _seek.data  &&
+             pkt.data != _seek_end.data  &&
+             pkt.data != _jump.data &&
+             pkt.data != _preroll.data &&
+             pkt.data != _loop_start.data &&
+             pkt.data != _loop_end.data &&
+             pkt.data != NULL )
         {
             // std::cerr << this << " #" << _packets.size()
             //          << " erase " << &pkt << std::endl;
@@ -299,13 +299,13 @@ public:
         AVPacket& pkt = _packets.front();
 
         if ( pkt.data != _flush.data &&
-                pkt.data != _seek.data  &&
-                pkt.data != _seek_end.data  &&
-                pkt.data != _jump.data &&
-                pkt.data != _preroll.data &&
-                pkt.data != _loop_start.data &&
-                pkt.data != _loop_end.data &&
-                pkt.data != NULL && pkt.size != 0 )
+             pkt.data != _seek.data  &&
+             pkt.data != _seek_end.data  &&
+             pkt.data != _jump.data &&
+             pkt.data != _preroll.data &&
+             pkt.data != _loop_start.data &&
+             pkt.data != _loop_end.data &&
+             pkt.data != NULL && pkt.size != 0 )
         {
 #ifdef DEBUG_PACKET_QUEUE
             std::cerr << "POP FRONT " << std::dec << pkt.stream_index
