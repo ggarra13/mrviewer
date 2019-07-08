@@ -69,7 +69,7 @@ if ( v->uiKey->value() )
   std::string text = v->uiKey->value();
 
   unsigned key = 0;
-  for (int i = 0; i < 40; i++)
+  for (int i = 0; i < 45; i++)
      if (text == mrv::table[i].text) {key = mrv::table[i].n; break;}
 
   if ( key == 0 )
@@ -96,7 +96,7 @@ if ( v->uiKey2->value() )
   std::string text = v->uiKey2->value();
 
   unsigned key = 0;
-  for (int i = 0; i < 40; i++)
+  for (int i = 0; i < 45; i++)
      if (text == mrv::table[i].text) {key = mrv::table[i].n; break;}
 
   if ( key == 0 )
@@ -133,7 +133,7 @@ v->uiMain->hide();}
 const char* text = o->child(idx)->label();
 uiKey->value( text );} open
 	  xywh {205 5 110 27} labelcolor 17 textcolor 17
-	  code0 {for (int i = 0; i < 40; i++)
+	  code0 {for (int i = 0; i < 45; i++)
 {
    uiSpecialKey->add( mrv::table[i].text );
 }
@@ -157,7 +157,7 @@ for (int i = 1; i < 13; i++)
 const char* text = o->child(idx)->label();
 uiKey2->value( text );} open
 	  xywh {205 38 110 27} labelcolor 17 textcolor 17
-	  code0 {for (int i = 0; i < 40; i++)
+	  code0 {for (int i = 0; i < 45; i++)
 {
    uiSpecialKey2->add( mrv::table[i].text );
 }
@@ -198,7 +198,7 @@ if (!k) {
       sprintf(buffer, "F%d", k - FL_F);
    } else {
       sprintf(buffer, "0x%04x", k);
-      for (int i = 0; i < 40; ++i)
+      for (int i = 0; i < 45; ++i)
       {
 	 if (mrv::table[i].n == k) {
 		keyname = mrv::table[i].text;
@@ -223,7 +223,7 @@ if (!k) {
       sprintf(buffer, "F%d", k - FL_F );
    } else {
       sprintf(buffer, "0x%04x", k);
-      for (int i = 0; i < 40; ++i)
+      for (int i = 0; i < 45; ++i)
       {
 	 if (mrv::table[i].n == k) {
 		keyname = mrv::table[i].text;

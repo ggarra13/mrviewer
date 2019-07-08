@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -127,14 +127,19 @@ mrv::media Reel_t::media_at( const int64_t f ) const
     mrv::MediaList::const_iterator e = images.end();
 
     mrv::media fg = images.front();
-    if ( !fg ) return mrv::media();
+    if ( !fg ) {
+        std::cerr << "return mrv::media() " << __LINE__ << std::endl;
+        return mrv::media();
+    }
 
     int64_t mn = fg->position();
 
     fg = images.back();
     int64_t mx = fg->position() + fg->duration();
 
-    if ( f < mn || f >= mx ) return mrv::media();
+    if ( f < mn || f >= mx ) {
+        return mrv::media();
+    }
 
     int64_t  t = 1;
     size_t r = 0;
@@ -149,7 +154,9 @@ mrv::media Reel_t::media_at( const int64_t f ) const
         if ( f >= start && f < end ) break;
     }
 
-    if ( r >= images.size() ) return mrv::media();
+    if ( r >= images.size() ) {
+        return mrv::media();
+    }
 
     return images[r];
 }
@@ -193,15 +200,15 @@ int64_t Reel_t::offset( const CMedia* const img ) const
         {
             CMedia* timg = (*i)->image()->right_eye();
             assert( timg != NULL );
-    	    if ( timg )
-    		t += timg->duration();
-    	    else
-    		t += (*i)->image()->duration();
+            if ( timg )
+                t += timg->duration();
+            else
+                t += (*i)->image()->duration();
         }
 
-	if ( i == e ) LOG_ERROR( _("Invalid stereo image ") << img->name()
-				 << _(" for reel ") << name );
-    
+        if ( i == e ) LOG_ERROR( _("Invalid stereo image ") << img->name()
+                                 << _(" for reel ") << name );
+
         return t;
     }
 
@@ -213,10 +220,9 @@ int64_t Reel_t::offset( const CMedia* const img ) const
         t += timg->duration();
     }
     if ( i == e ) LOG_ERROR( _("Invalid image ") << img->name()
-			     << _(" for reel " ) << name );
+                             << _(" for reel " ) << name );
     return t;
 }
 
 
 }  // namespace mrv
-
