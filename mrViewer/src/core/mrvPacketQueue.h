@@ -174,7 +174,8 @@ public:
              pkt.data != _preroll.data &&
              pkt.data != _loop_start.data &&
              pkt.data != _loop_end.data &&
-             pkt.data != NULL )
+             pkt.data != NULL &&
+             pkt.size != 0 )
         {
             // std::cerr << this << " #" << _packets.size()
             //          << " push back " << &pkt << " at "
@@ -251,7 +252,7 @@ public:
         return _packets.back();
     }
 
-    inline void erase( iterator it )
+    inline iterator erase( iterator it )
     {
         Mutex::scoped_lock lk( _mutex );
         assert0( ! _packets.empty() );
@@ -265,19 +266,21 @@ public:
              pkt.data != _preroll.data &&
              pkt.data != _loop_start.data &&
              pkt.data != _loop_end.data &&
-             pkt.data != NULL )
+             pkt.data != NULL &&
+             pkt.size !=0 )
         {
             // std::cerr << this << " #" << _packets.size()
             //          << " erase " << &pkt << std::endl;
 
+            // std::cerr << std::hex << this << " #"
+            //           << std::dec << _packets.size()
+            //           << " erase " << std::dec << pkt.dts
+            //           << " bytes " << std::dec << _bytes
+            //           << " - " << std::dec << pkt.size << " = ";
+
             assert0( pkt.size >= 0 );
             assert0( _bytes >= pkt.size );
 
-            // std::cerr << std::hex << this << " #"
-            //          << std::dec << _packets.size()
-            //          << " erase " << std::dec << pkt.dts
-            //          << " bytes " << std::dec << _bytes
-            //          << " - " << std::dec << pkt.size << " = ";
 
             _bytes -= pkt.size;
 
@@ -286,7 +289,7 @@ public:
             av_packet_unref( &pkt );
         }
 
-        _packets.erase( it );
+        return _packets.erase( it );
     }
 
     inline void pop_front()
@@ -305,7 +308,8 @@ public:
              pkt.data != _preroll.data &&
              pkt.data != _loop_start.data &&
              pkt.data != _loop_end.data &&
-             pkt.data != NULL && pkt.size != 0 )
+             pkt.data != NULL &&
+             pkt.size != 0 )
         {
 #ifdef DEBUG_PACKET_QUEUE
             std::cerr << "POP FRONT " << std::dec << pkt.stream_index
