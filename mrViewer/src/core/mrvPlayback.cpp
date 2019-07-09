@@ -265,11 +265,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
 
         last = reel->global_to_local( last );
-
-        img->loop_end( last );
         first = reel->global_to_local( first );
-
-        img->loop_start( first );
 
 
     }
@@ -286,11 +282,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
             if ( mx < last )  last = mx;
             if ( mn > first ) first = mn;
-
-
-            img->loop_start( first );
-            img->loop_end( last );
-
         }
     }
 
@@ -391,7 +382,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
-                dts = first;
+                dts = reel->location(next);
             }
 
 
