@@ -419,8 +419,6 @@ _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
-_loop_start( 1 ),
-_loop_end( 50 ),
 _audio_pts( 0 ),
 _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
 _video_pts( 0 ),
@@ -535,8 +533,6 @@ _frameEnd( 1 ),
 _frame_start( 1 ),
 _frame_end( 1 ),
 _start_number( 0 ),
-_loop_start( 1 ),
-_loop_end( 50 ),
 _interlaced( kNoInterlace ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
@@ -652,8 +648,6 @@ _frameEnd( other->_frameEnd ),
 _frame_start( other->_frame_start ),
 _frame_end( other->_frame_end ),
 _start_number( other->_start_number ),
-_loop_start( other->_loop_start ),
-_loop_end( other->_loop_end ),
 _interlaced( other->_interlaced ),
 _image_damage( kNoDamage ),
 _damageRectangle( 0, 0, 0, 0 ),
@@ -1499,15 +1493,15 @@ void CMedia::refresh()
 
 void  CMedia::first_frame(int64_t x)
 {
-    if ( x < _frame_start ) x = _frame_start;
-    _frameStart = _loop_start = x;
+//    if ( x < _frame_start ) x = _frame_start;
+    _frameStart = x;
     if ( _frame < _frameStart ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(int64_t x)
 {
-    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
-    _frameEnd = _loop_end = x;
+//    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
+    _frameEnd = x;
     if ( _frame > _frameEnd ) _frame = _frameEnd;
 }
 
@@ -3641,34 +3635,25 @@ void CMedia::loop_at_end( const int64_t frame )
     {
         // With loop at end, we can discard all video packets that go
         // beyond the last frame
-        // SCOPED_LOCK( _mutex ); // unneeded
 
         mrv::PacketQueue::Mutex& m = _video_packets.mutex();
         SCOPED_LOCK( m );
 
-        mrv::PacketQueue::reverse_iterator i = _video_packets.rbegin();
-        mrv::PacketQueue::reverse_iterator e = _video_packets.rend();
         AVStream* stream = get_video_stream();
-        int64_t f = AV_NOPTS_VALUE;
-        for ( ; i != e; ++i )
+
+        mrv::PacketQueue::iterator i = _video_packets.begin();
+        for ( ; i != _video_packets.end(); )
         {
-            if ( get_frame( stream, *i ) > frame )
+            int64_t pktframe = get_frame( stream, *i ) - _frame_offset;
+            if ( pktframe > frame )
             {
-                mrv::PacketQueue::iterator it = (i+1).base();
-                f = get_frame( stream, *it );
-                _video_packets.erase( it );
+                i = _video_packets.erase( i );
             }
+            else
+                ++i;
         }
 
-        for ( int i = 0; i < _frame_offset; ++i )
-        {
-            AVPacket pkt;
-            av_init_packet(&pkt);
-            pkt.data = NULL;
-            pkt.size = 0;
-            pkt.dts = pkt.pts = frame2pts( stream, f + i );
-            _video_packets.push_back( pkt );
-        }
+
         _video_packets.loop_at_end( frame );
     }
 
@@ -3677,23 +3662,22 @@ void CMedia::loop_at_end( const int64_t frame )
         // With loop at end, we can discard all audio packets that go
         // beyond the last frame
 
-        // SCOPED_LOCK( _audio_mutex ); // unneeded
-
         mrv::PacketQueue::Mutex& m = _audio_packets.mutex();
         SCOPED_LOCK( m );
 
-        mrv::PacketQueue::reverse_iterator i = _audio_packets.rbegin();
-        mrv::PacketQueue::reverse_iterator e = _audio_packets.rend();
+        mrv::PacketQueue::iterator i = _audio_packets.begin();
         AVStream* stream = get_audio_stream();
-        for ( ; i != e; ++i )
+        for ( ; i != _audio_packets.end(); )
         {
-            int64_t pktframe = get_frame( stream, *i );
+            int64_t pktframe = get_frame( stream, *i ) - _frame_offset;
             if ( pktframe > frame )
             {
-                mrv::PacketQueue::iterator it = (i+1).base();
-                _audio_packets.erase( it );
+                i = _audio_packets.erase( i );
             }
+            else
+                ++i;
         }
+
 
         _audio_packets.loop_at_end( frame );
     }
@@ -4542,7 +4526,8 @@ void CMedia::debug_video_packets(const int64_t frame,
                 if ( f == frame )  std::cerr << "S";
                 if ( f == _dts )   std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
-                std::cerr << f - _frame_offset << " ";
+                std::cerr << f - _frame_offset << "(" << (void*)(*iter).data
+                          << ") ";
             }
         }
         std::cerr << std::endl << std::endl;
