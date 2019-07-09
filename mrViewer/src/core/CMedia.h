@@ -893,26 +893,6 @@ public:
         return _frame_end;
     }
 
-    // Sets the frame to start the loop at the beginning
-    inline void loop_start( int64_t x ) {
-        _loop_start = x;
-    }
-
-    // Returns the frame to start the loop at the beginning
-    inline int64_t loop_start() const {
-        return _loop_start;
-    }
-
-    // Sets the frame to start the loop at the end
-    inline void loop_end( int64_t x ) {
-        _loop_end = x;
-    }
-
-    // Returns the frame to start the loop at the end
-    inline int64_t loop_end() const {
-        return _loop_end;
-    }
-
     // Returns the video interlace type if any
     inline InterlaceType interlaced() const {
         return _interlaced;
@@ -1166,11 +1146,11 @@ public:
 
 
     Attributes& attributes();
-    
+
     const Attributes& attributes() const;
 
     const AttributesFrame attrs_frames() const {
-	return _attrs;
+        return _attrs;
     }
 
     static void default_profile( const char* c );
