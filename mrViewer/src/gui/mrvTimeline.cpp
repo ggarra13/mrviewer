@@ -97,6 +97,15 @@ void Timeline::display_minimum( const double& x )
 {
     if ( x >= minimum() ) _display_min = x;
 
+    if ( _edl )
+    {
+        CMedia* img = image_at( x );
+        if ( img ) img->first_frame( global_to_local( x ) );
+
+        ImageBrowser* b = browser();
+        if ( b ) b->adjust_timeline();
+    }
+
     if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
@@ -108,6 +117,15 @@ void Timeline::display_minimum( const double& x )
 void Timeline::display_maximum( const double& x )
 {
     if ( x <= maximum() ) _display_max = x;
+
+    if ( _edl )
+    {
+        CMedia* img = image_at( x );
+        if ( img ) img->last_frame( global_to_local( x ) );
+
+        ImageBrowser* b = browser();
+        if ( b ) b->adjust_timeline();
+    }
 
     if ( uiMain && uiMain->uiView )
     {
