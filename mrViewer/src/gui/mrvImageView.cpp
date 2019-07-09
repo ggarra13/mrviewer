@@ -4462,9 +4462,14 @@ int ImageView::leftMouseDown(int x, int y)
                 menu->add( _("Image/Toggle Background"),
                           kToggleBG.hotkey(),
                           (Fl_Callback*)toggle_background_cb, (void*)this);
-                menu->add( _("Image/Toggle EDL"),
-                           kToggleEDL.hotkey(),
-                           (Fl_Callback*)toggle_edl_cb, (void*)this);
+                mrv::ImageBrowser* b = browser();
+                mrv::Reel reel = b->current_reel();
+                if ( reel->images.size() > 1 )
+                {
+                    menu->add( _("Image/Toggle EDL"),
+                               kToggleEDL.hotkey(),
+                               (Fl_Callback*)toggle_edl_cb, (void*)this);
+                }
 
                 Image_ptr image = fg->image();
 
