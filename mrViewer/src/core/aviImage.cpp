@@ -2507,8 +2507,7 @@ void aviImage::populate()
 
     if ( duration <= 0 ) duration = 1;
 
-    _loop_start = _frameStart;
-    _loop_end = _frameEnd = _frameStart + duration - 1;
+    _frameEnd = _frameStart + duration - 1;
     _frame_end = _frame_start + duration - 1;
 
     _frame_offset = 0;
@@ -3550,11 +3549,11 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
     int64_t frame = f;
 
     // Early exit if we are past loop ends
-    if ( f > loop_end() )
+    if ( f > _frameEnd )
     {
         return kDecodeLoopEnd;
     }
-    else if ( f < loop_start() )
+    else if ( f < _frameStart )
     {
         return kDecodeLoopStart;
     }
@@ -3620,12 +3619,12 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             // store here.
             bool ok = in_video_store( frame );
 
-            if ( ok && frame >= loop_start() )
+            if ( ok && frame >= _frameStart )
             {
                 return kDecodeOK;
             }
 
-            if ( frame < loop_start() )
+            if ( frame < _frameStart )
             {
                 assert( !_video_packets.empty() );
                 _video_packets.pop_front();
@@ -3640,7 +3639,7 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         {
             bool ok = in_video_store( frame );
 
-            if ( ok && frame < loop_end() )
+            if ( ok && frame < _frameEnd )
             {
                 return kDecodeOK;
             }
