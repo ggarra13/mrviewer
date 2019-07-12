@@ -3,6 +3,7 @@
 export ROOT=/D/code/applications/mrv
 export DIST=/D/code/lib/vc14_Windows_64
 
+export ZLIB_ROOT=$DIST
 export OPENEXR_ROOT=$DIST
 export     CTL_ROOT=$DIST
 export TINYXML2_ROOT=$DIST
@@ -10,7 +11,7 @@ export LibRaw_ROOT=$DIST
 export OIIO_ROOT=$DIST
 export GLEW_ROOT=$DIST
 
-export BOOST_ROOT="$ROOT/dependencies/boost_1_60_0"
+export BOOST_ROOT="$ROOT/dependencies/boost_1_69_0"
 
 export FFMPEG_ROOT="$ROOT/win64_deps/ffmpeg-20190628-098ab93-win64-shared"
 export OCIO_ROOT=$DIST
@@ -22,3 +23,4 @@ export SampleICC_ROOT="$ROOT/dependencies/SampleICC-1.6.10-win64-linux64"
 export LIBINTL_ROOT="$ROOT/dependencies/libintl-win64/"
 export LIBICONV="$ROOT/dependencies/gettext-iconv-win64"
 
+export PATH=$DIST/bin:$PATH
