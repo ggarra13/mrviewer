@@ -1,7 +1,7 @@
 ExternalProject_Add(
   LIBPNG
-  URL "https://download.sourceforge.net/libpng/libpng-1.6.37.tar.xz"
-  DEPENDS LIBZ
+  GIT_REPOSITORY "https://github.com/glennrp/libpng.git"
+  DEPENDS ZLIB
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
