@@ -401,7 +401,7 @@ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ ISO Standard")
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
-TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
+TARGET_LINK_LIBRARIES( mrViewer PRIVATE ${LIBRARIES} ACESclip )
 
 #
 # CMake 3.15 new variable for windows runtime library

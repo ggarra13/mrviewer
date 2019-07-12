@@ -474,7 +474,6 @@ _audio_engine( NULL )
         mrv::PacketQueue::initialize();
         _initialize = true;
     }
-    // std::cerr << "CMedia " << this << std::endl;
 }
 
 
@@ -1450,7 +1449,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
     // assert( xmax >= xmin );
     // assert( ymax >= ymin );
     int64_t num = _frame_end - _frame_start + 1;
-    assert( _num > 0 );
+    assert( num > 0 );
     if ( !_dataWindow2 )
         _dataWindow2 = new mrv::Recti[num];
 
@@ -3644,15 +3643,16 @@ void CMedia::loop_at_end( const int64_t frame )
         mrv::PacketQueue::iterator i = _video_packets.begin();
         for ( ; i != _video_packets.end(); )
         {
-            int64_t pktframe = get_frame( stream, *i ) - _frame_offset;
+            int64_t pktframe = get_frame( stream, *i );
             if ( pktframe > frame )
             {
                 i = _video_packets.erase( i );
             }
             else
+            {
                 ++i;
+            }
         }
-
 
         _video_packets.loop_at_end( frame );
     }
@@ -3669,7 +3669,7 @@ void CMedia::loop_at_end( const int64_t frame )
         AVStream* stream = get_audio_stream();
         for ( ; i != _audio_packets.end(); )
         {
-            int64_t pktframe = get_frame( stream, *i ) - _frame_offset;
+            int64_t pktframe = get_frame( stream, *i );
             if ( pktframe > frame )
             {
                 i = _audio_packets.erase( i );
