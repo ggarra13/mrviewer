@@ -968,7 +968,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
   g->resizable( hiddenFiles );
   g->end();
 
-  dummy->resizable( location );
+  //dummy->resizable( location );
   dummy->end();
 
   ////////////////////////////////////////////////////////////////
@@ -3042,8 +3042,39 @@ void Flu_File_Chooser :: Entry :: draw()
       X += icon->w()+2;
     }
 
+  int iW = 0, iH = 0, W = 0, H = 0;
+  if( icon )
+    {
+      iW = icon->w()+2;
+      iH = icon->h();
+    }
+
   fl_font( textfont(), textsize() );
   //fl_color( textcolor() );
+
+  fl_measure( filename.c_str(), W, H );
+  if( W > nameW-iW )
+    {
+      // progressively strip characters off the end of the name until
+      // it fits with "..." at the end
+      if( altname[0] != '\0' )
+        shortname = altname;
+      else
+        shortname = filename;
+      int len = shortname.size();
+      while( W > (nameW-iW) && len > 3 )
+        {
+          shortname[len-3] = '.';
+          shortname[len-2] = '.';
+          shortname[len-1] = '.';
+          shortname[len] = '\0';
+          len--;
+          W = 0;
+          fl_measure( shortname.c_str(), W, H );
+        }
+    }
+  else
+    shortname = "";
 
   if( shortname[0] != '\0' )
     fl_draw( shortname.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
@@ -3051,6 +3082,7 @@ void Flu_File_Chooser :: Entry :: draw()
     fl_draw( altname.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
   else
     fl_draw( filename.c_str(), X, y(), nameW, h(), FL_ALIGN_LEFT );
+
 
   X = x()+4 + nameW;
 
