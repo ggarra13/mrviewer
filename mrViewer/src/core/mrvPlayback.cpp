@@ -1050,6 +1050,8 @@ void video_thread( PlaybackData* data )
                 bool ok = barrier->wait();
             }
 
+            img->clear_video_packets();
+
             if ( img->stopped() ) continue;
 
             barrier = img->fg_bg_barrier();
