@@ -3295,7 +3295,7 @@ void ImageBrowser::adjust_timeline()
     //    DBG3( "Image " << i << " " << reel->images[i]->position() );
     // }
 
-    // DBG3( "first " << first << " f=" << f << " last " << last );
+    //LOG_INFO( "first " << first << " f=" << f << " last " << last );
 
     mrv::Timeline* t = timeline();
     if ( t )
@@ -3304,10 +3304,9 @@ void ImageBrowser::adjust_timeline()
         t->maximum( double(last) );
     }
 
-
-    uiMain->uiStartButton->value(0);
+    // uiMain->uiStartButton->value(0);
     uiMain->uiStartFrame->value( first );
-    uiMain->uiEndButton->value(0);
+    // uiMain->uiEndButton->value(0);
     uiMain->uiEndFrame->value( last );
 
     frame( f );
