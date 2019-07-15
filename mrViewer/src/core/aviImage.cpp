@@ -3153,32 +3153,34 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     int64_t f = handle_loops( frame );
 
-    if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
-            in_video_store( f ) )
+    if ( f != _expected )
     {
-        int64_t pts = frame2pts( get_video_stream(), f );
-        _video_packets.jump( pts );
-        pts = frame2pts( get_audio_stream(), f );
-        if ( !got_audio ) _audio_packets.jump( pts );
-        _dts = _adts = f;
-        //_expected = _dts + 1;
-        //_expected_audio = _dts + 1;
-        _expected = -99999;
-        _expected_audio = -99999;
+        if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
+             in_video_store( f ) )
+        {
+            int64_t pts = frame2pts( get_video_stream(), f );
+            _video_packets.jump( pts );
+            pts = frame2pts( get_audio_stream(), f );
+            if ( !got_audio ) _audio_packets.jump( pts );
+            _dts = _adts = f;
+            // _expected = _dts + 1;
+            // _expected_audio = _dts + 1;
+            _expected = -99999;
+            _expected_audio = -99999;
 
-        return true;
+            return true;
+        }
+
+
+        if ( !got_video || !got_audio || !got_subtitle)
+        {
+            bool ok = seek_to_position( f );
+            if ( !ok )
+                IMG_ERROR( ("seek_to_position: Could not seek to frame ")
+                           << frame );
+            return ok;
+        }
     }
-
-
-    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected  )
-    {
-        bool ok = seek_to_position( f );
-        if ( !ok )
-            IMG_ERROR( ("seek_to_position: Could not seek to frame ")
-                       << frame );
-        return ok;
-    }
-
 
 #ifdef DEBUG_DECODE
     cerr << "------------------------------------------------------" << endl;
