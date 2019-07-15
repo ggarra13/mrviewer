@@ -966,7 +966,7 @@ else
 	 v->uiView->redraw();
        }
     }
- }} selected
+ }}
 		  tooltip {OCIO Display/View or some default gamma settings.} xywh {405 3 50 21} labelsize 12 align 80
 		  class {mrv::PopupMenu}
 		} {
@@ -1369,7 +1369,7 @@ where Yn is the white reference (usually 1).} xywh {0 0 100 20}
 	    }
 	  }
 	}
-	Fl_Group uiBottomBar {
+	Fl_Group uiBottomBar {open
 	  xywh {0 486 640 49} box ENGRAVED_BOX
 	} {
 	  Fl_Group uiTimeToolbar {open
@@ -1614,7 +1614,7 @@ o->value(24);}
 		  Fl_Input uiStartFrame {
 		    label S
 		    user_data this user_data_type {ViewerUI*}
-		    callback {double f = (double) o->value();
+		    callback {int64_t f = o->value();
 v->uiTimeline->display_minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
@@ -1625,8 +1625,8 @@ v->uiTimeline->redraw();}
 		  Fl_Input uiEndFrame {
 		    label E
 		    user_data this user_data_type {ViewerUI*}
-		    callback {boost::int64_t f = o->value();
-v->uiTimeline->display_maximum( float(f) );
+		    callback {int64_t f = o->value();
+v->uiTimeline->display_maximum( double(f) );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
 		    tooltip {Allows you to set the ending frame for timeline.} xywh {565 513 70 20} color -1733777408 selection_color 0
@@ -1657,7 +1657,7 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-	mrv::Image_ptr img = fg->image();
+	mrv::CMedia* img = fg->image();
 	f = img->start_frame();
      }
    }
@@ -1675,8 +1675,8 @@ else
 v->uiStartFrame->value( f );
 v->uiTimeline->display_minimum( f );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();}
-		    xywh {456 513 20 20} align 16
+v->uiTimeline->redraw();} selected
+		    xywh {456 513 20 20} down_box DOWN_BOX align 16
 		  }
 		  Fl_Button uiEndButton {
 		    label E
@@ -1695,7 +1695,7 @@ else
      mrv::media fg = v->uiView->foreground();
      if ( fg )
      {
-	mrv::Image_ptr img = fg->image();
+	mrv::CMedia* img = fg->image();
 	f = img->end_frame();
      }
    }
@@ -1707,7 +1707,7 @@ else
      if ( !reel || size == 0 ) return;
 
      mrv::media fg = reel->images[ size - 1 ];
-     if ( fg ) f = fg->position() + fg->image()->duration() - 1;
+     if ( fg ) f = fg->position() + fg->duration() - 1;
    }
 }
 
@@ -1715,7 +1715,7 @@ v->uiEndFrame->value( f );
 v->uiTimeline->display_maximum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
-		    xywh {546 513 20 20} align 16
+		    xywh {546 513 20 20} down_box DOWN_BOX align 16
 		  }
 		}
 	      }
