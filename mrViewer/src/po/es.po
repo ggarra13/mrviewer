@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-07-15 14:40-0300\n"
+"POT-Creation-Date: 2019-07-15 18:55-0300\n"
 "PO-Revision-Date: 2018-12-28 08:08-0300\n"
 "Last-Translator: Gonzalo Garramuño <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -14300,7 +14300,7 @@ msgstr ""
 msgid "CloneImageAll \"%s\""
 msgstr ""
 
-#: gui/mrvElement.cpp:77
+#: gui/mrvElement.cpp:79
 #, c-format
 msgid ""
 "Cloned Image\n"
@@ -15944,7 +15944,7 @@ msgstr "Carpeta "
 msgid "Directory where clip resides"
 msgstr "Directorio donde el clip reside"
 
-#: gui/mrvElement.cpp:90
+#: gui/mrvElement.cpp:92
 #, c-format
 msgid ""
 "Directory: %s\n"
@@ -16274,19 +16274,19 @@ msgstr "Vacía busqueda o preroll"
 
 #: gui/mrvImageBrowser.cpp:831
 msgid "Empty image in media passed to media_to_pathname"
-msgstr ""
+msgstr "Imagen vacía de medio pasada a media_to_pathname"
 
-#: gui/mrvElement.cpp:28
+#: gui/mrvElement.cpp:30
 msgid "Empty image in thumbnail"
-msgstr ""
+msgstr "Imagen vacía en postal"
 
-#: gui/mrvElement.cpp:56
+#: gui/mrvElement.cpp:58
 msgid "Empty image provided to Element constructor"
-msgstr ""
+msgstr "Imagen vacía provista en el constructor de Element"
 
 #: gui/mrvImageBrowser.cpp:833
 msgid "Empty img->fileroot() passed to media_to_pathname"
-msgstr ""
+msgstr "img->fileroot() vacío pasado a media_to_pathname"
 
 #: gui/mrvImageBrowser.cpp:2865
 msgid "Empty media passed to media_to_item"
@@ -16296,7 +16296,7 @@ msgstr ""
 msgid "Empty media passed to media_to_pathname"
 msgstr ""
 
-#: gui/mrvElement.cpp:48
+#: gui/mrvElement.cpp:50
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
