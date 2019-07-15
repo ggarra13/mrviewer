@@ -16,16 +16,18 @@ void Element::make_thumbnail()
 
     Fl_Image* b = NULL;
     if ( _elem->thumbnail() )
-        b = _elem->thumbnail();
+        b = _elem->thumbnail()->copy();
     else
     {
         uchar* d = new uchar[64*64];
         memset( d, 0, 64*64 );
-        b = new Fl_RGB_Image( d, 64, 64, 1 );
+        Fl_RGB_Image* rgb = new Fl_RGB_Image( d, 64, 64, 1 );
+        rgb->alloc_array = 1;
+        b = rgb;
     }
     if ( !b || b->w() < 1 )
     {
-        LOG_ERROR( "Empty image in thumbnail"  );
+        LOG_ERROR( _("Empty image in thumbnail") );
     }
     if ( !image )
     {
@@ -59,8 +61,8 @@ void Element::make_thumbnail()
 
 
         make_thumbnail();
-        // Create label
 
+        // Create label
         label = new Fl_Box(image->w(), VMARGIN, 800, 64);
 
         char info[2048];
@@ -101,7 +103,6 @@ void Element::make_thumbnail()
                      );
         }
 
-        DBG;
         label->copy_label( info );
 
         label->color(0xddddff00);
@@ -147,13 +148,15 @@ Element::~Element()
 
     void Element::draw() {
         Fl_Group::draw();
+
         Fl_Color c = fl_color();
+
         fl_color( fl_lighter(c) );
         fl_line_style( FL_SOLID, 3, NULL );
-        fl_line( 0, y()-1, x()+800, y()-1 );
+        fl_line( x(), y()-1, x()+800, y()-1 );
+
         fl_color( fl_darker(c) );
-        fl_line_style( FL_SOLID, 3, NULL );
-        fl_line( 0, y()+h(), x()+800, y()+h() );
+        fl_line( x(), y()+h(), x()+800, y()+h() );
         fl_line_style( 0 );
     }
 
