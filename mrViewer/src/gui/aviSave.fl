@@ -55,7 +55,7 @@ class AviSaveUI {open
       label {Movie Saving Preferences} open
       xywh {510 384 300 595} type Double resizable modal noborder visible
     } {
-      Fl_Group {} {open selected
+      Fl_Group {} {open
         xywh {0 0 300 595} box UP_BOX
       } {
         Fl_Group {} {
@@ -275,21 +275,21 @@ p->value(0);
           }
         }
         Fl_Group {} {
-          label {Audio Options}
+          label {Audio Options} open
           xywh {25 354 250 97} box PLASTIC_UP_BOX
         } {
           Fl_Choice uiAudioCodec {
-            label Codec
+            label Codec open
             tooltip {This setting controls the encoder (codec) used for audio saving.  ac3 and aac are the best codecs to use.  mp3 is popular as it is commonly used for compressing CDs.} xywh {125 377 91 26} down_box BORDER_BOX
-            code0 {audio_codec = "ac3";}
+            code0 {audio_codec = "aac";}
             class {mrv::Choice}
           } {
             MenuItem {} {
-              label ac3
+              label aac selected
               xywh {5 5 100 20}
             }
             MenuItem {} {
-              label aac
+              label ac3
               xywh {5 5 100 20}
             }
             MenuItem {} {
