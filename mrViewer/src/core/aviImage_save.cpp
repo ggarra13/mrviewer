@@ -257,7 +257,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     st->id = oc->nb_streams-1;
     c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
 
-    /* Some formats want stream headers to be separate. */
+    /* Some container formats (like MP4) require global headers to be present.
+     * Mark the encoder so that it behaves accordingly. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
@@ -270,7 +271,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         else
             c->sample_fmt = select_sample_format(*codec, aformat );
         c->bit_rate    = opts->audio_bitrate;
-        c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
+        //c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
+        c->sample_rate = img->audio_frequency();
         c->channels    = img->audio_channels();
         c->time_base.num = st->time_base.num = 1;
         c->time_base.den = st->time_base.den = c->sample_rate;
@@ -296,12 +298,15 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
          * timebase should be 1/framerate and timestamp increments should be
          * identical to 1. */
         if ( opts->fps <= 0 )
-            c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
+            c->time_base.den = st->time_base.den = int( 10000 * img->fps() );
         else
-            c->time_base.den = st->time_base.den = int( 1000.0 * opts->fps );
-        c->time_base.num = st->time_base.num = 1000;
+            c->time_base.den = st->time_base.den = int( 10000 * opts->fps );
+        c->time_base.num = st->time_base.num = 10000;
         c->framerate.num = c->time_base.den;
         c->framerate.den = c->time_base.num;
+        c->ticks_per_frame = 2;
+
+
         c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
 
         // Use a profile if possible
@@ -479,7 +484,6 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
-    st->time_base = c->time_base;
 
 
     if ( opts->metadata )
@@ -745,7 +749,13 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
             }
         }
 
-
+        ret = av_audio_fifo_realloc( fifo, av_audio_fifo_size(fifo) + dst_nb_samples );
+        if ( ret < 0 )
+        {
+            LOG_ERROR( _("Could not realloc fifo buffer. Error: ")
+                       << get_error_text(ret) );
+            return false;
+        }
         ret = av_audio_fifo_write(fifo, (void**)dst_samples_data, dst_nb_samples);
         if ( ret != dst_nb_samples )
         {
