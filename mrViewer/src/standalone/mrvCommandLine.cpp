@@ -69,12 +69,12 @@ typedef std::vector<int> IntArray;
       using namespace TCLAP;
       using namespace std;
 
-#if defined(_WIN32) || defined(_WIN64)
-      AllocConsole();
-      freopen("CONIN$", "r", stdin );
-      freopen("CONOUT$", "w", stdout);
-      freopen("CONOUT$", "w", stderr);
-#endif
+// #if defined(_WIN32) || defined(_WIN64)
+//       AllocConsole();
+//       freopen("CONIN$", "r", stdin );
+//       freopen("CONOUT$", "w", stdout);
+//       freopen("CONOUT$", "w", stderr);
+// #endif
 
       std::string cmd = c.getProgramName();
       fprintf( stderr, N_("\n%s %s\n\n"), cmd.c_str(), c.getVersion().c_str() );
@@ -447,6 +447,7 @@ void parse_command_line( const int argc, char** argv,
         AllocConsole();
         freopen("conout$", "w", stdout);
         freopen("conout$", "w", stderr);
+        fprintf( stderr, "DEBUG: %d\n", debug );
     }
 #endif
 
