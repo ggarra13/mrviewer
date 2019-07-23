@@ -66,7 +66,7 @@ namespace io
 
 boost::recursive_mutex logbuffer::_mutex;
 std::fstream logbuffer::out;
-bool logbuffer::_debug = false;
+bool logbuffer::_debug = true;
 
 int logbuffer::sync()
 {
