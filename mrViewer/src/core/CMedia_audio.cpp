@@ -810,19 +810,19 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
 
     if ( _attrs.find( _frame ) == _attrs.end() )
     {
-	_attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
+        _attrs.insert( std::make_pair( _frame.load(), Attributes() ) );
     }
-	
+
     while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
         std::string name = prefix;
         name += tag->key;
         if ( name == N_("timecode") || name == N_("Video timecode") ||
-	     name == N_("Timecode") || name == N_("timeCode") )
+             name == N_("Timecode") || name == N_("timeCode") )
         {
             Imf::TimeCode t = str2timecode( tag->value );
             process_timecode( t );
             Imf::TimeCodeAttribute attr( t );
-	    _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
+            _attrs[_frame].insert( std::make_pair( name, attr.copy() ) );
         }
         else
         {
@@ -992,22 +992,22 @@ void CMedia::limit_audio_store(const int64_t frame)
 
     switch( playback() )
     {
-	case kBackwards:
-	    first = frame - max_frames;
-	    last  = frame;
-	    if ( _adts < first ) first = _adts;
-	    break;
+        case kBackwards:
+            first = frame - max_frames;
+            last  = frame;
+            if ( _adts < first ) first = _adts;
+            break;
         case kForwards:
             first = frame - max_frames;
             last  = frame + max_frames;
             if ( _adts < first ) first = _adts;
             if ( _adts > last )   last = _adts;
-	    break;
-	default:
-	    first = frame - max_frames;
-	    last  = frame + max_frames;
+            break;
+        default:
+            first = frame - max_frames;
+            last  = frame + max_frames;
             if ( _adts > last )   last = _adts;
-	    break;
+            break;
     }
 
 
@@ -1088,7 +1088,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
     if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-	 ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
+         ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
     {
         _audio_format = AudioEngine::kS16LSB;
     }
@@ -1098,7 +1098,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         _audio_channels = (unsigned short) ctx->channels;
 
     if ( ctx->sample_fmt != fmt  ||
-	 unsigned(ctx->channels) != _audio_channels )
+         unsigned(ctx->channels) != _audio_channels )
     {
         if (!forw_ctx)
         {
@@ -1581,7 +1581,7 @@ CMedia::store_audio( const int64_t audio_frame,
     // Get the audio info from the codec context
     _audio_channels = (unsigned short)_audio_ctx->channels;
   unsigned short channels = _audio_channels;
-  
+
   int frequency = _audio_ctx->sample_rate;
 
     audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
@@ -1645,10 +1645,10 @@ void CMedia::fetch_audio( const int64_t frame )
     if ( !got_audio && frame != _expected_audio )
     {
         DBG3( "FRAME(" << frame << ") != EXPECTED (" << _expected_audio
-	       << ")" );
+               << ")" );
         bool ok = seek_to_position( frame );
         DBG3( "FRAME(" << frame << ") NEW EXPECTED (" << _expected_audio
-	      << ")" );
+              << ")" );
         if (ok) return;
     }
 
@@ -1850,10 +1850,10 @@ bool CMedia::find_audio( const int64_t frame )
 #endif
         if ( i == end )
         {
-	    if ( _audio_offset == 0 )
-	    {
-		IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
-	    }
+            if ( _audio_offset == 0 )
+            {
+                IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
+            }
             return false;
         }
 
