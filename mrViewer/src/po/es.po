@@ -7,14 +7,14 @@
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/OIIOOptionsUI.cxx:96
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvIccProfileUI.cxx:111
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:92
-#: core/CMedia.cpp:2033 core/CMedia.cpp:2037 core/CMedia.cpp:2463
-#: core/CMedia.cpp:2466 core/CMedia.cpp:2493 core/CMedia.cpp:2497
-#: core/CMedia.cpp:2501 core/CMedia.cpp:2505 core/CMedia.cpp:2622
-#: core/CMedia.cpp:2633 core/CMedia.cpp:2637 core/CMedia.cpp:2641
-#: core/CMedia.cpp:2646 core/CMedia.cpp:2648 core/CMedia.cpp:2650
-#: core/CMedia.cpp:2652 core/CMedia.cpp:2662 core/CMedia.cpp:2664
-#: core/CMedia.cpp:2670 core/CMedia.cpp:2676 core/CMedia.cpp:2680
-#: core/CMedia.cpp:2684 core/CMedia.cpp:3263 core/CMedia.cpp:3305
+#: core/CMedia.cpp:2032 core/CMedia.cpp:2036 core/CMedia.cpp:2462
+#: core/CMedia.cpp:2465 core/CMedia.cpp:2492 core/CMedia.cpp:2496
+#: core/CMedia.cpp:2500 core/CMedia.cpp:2504 core/CMedia.cpp:2621
+#: core/CMedia.cpp:2632 core/CMedia.cpp:2636 core/CMedia.cpp:2640
+#: core/CMedia.cpp:2645 core/CMedia.cpp:2647 core/CMedia.cpp:2649
+#: core/CMedia.cpp:2651 core/CMedia.cpp:2661 core/CMedia.cpp:2663
+#: core/CMedia.cpp:2669 core/CMedia.cpp:2675 core/CMedia.cpp:2679
+#: core/CMedia.cpp:2683 core/CMedia.cpp:3262 core/CMedia.cpp:3304
 #: core/CMedia_audio.cpp:816 core/aviImage.cpp:201 core/exrImage.cpp:1052
 #: core/exrImage.cpp:1054 core/exrImage.cpp:3025 core/exrImage.cpp:3055
 #: core/slateImage.cpp:242 core/wandImage.cpp:502 core/wandImage.cpp:1191
@@ -36,56 +36,56 @@
 #: gui/FLU/Flu_File_Chooser.cpp:1906 gui/FLU/Flu_File_Chooser.cpp:2116
 #: gui/FLU/Flu_File_Chooser.cpp:2324 gui/FLU/Flu_File_Chooser.cpp:2522
 #: gui/FLU/Flu_File_Chooser.cpp:2525 gui/FLU/Flu_File_Chooser.cpp:2841
-#: gui/FLU/Flu_File_Chooser.cpp:3222 gui/FLU/Flu_File_Chooser.cpp:3488
-#: gui/FLU/Flu_File_Chooser.cpp:3752 gui/FLU/Flu_File_Chooser.cpp:3756
-#: gui/FLU/Flu_File_Chooser.cpp:4103 gui/FLU/Flu_File_Chooser.cpp:4106
-#: gui/FLU/Flu_File_Chooser.cpp:4378 gui/FLU/Flu_File_Chooser.cpp:4457
-#: gui/FLU/Flu_File_Chooser.cpp:4675 gui/FLU/Flu_File_Chooser.cpp:4689
-#: gui/mrvOCIOBrowser.cpp:165 gui/mrvOCIOBrowser.cpp:166 gui/mrvHotkey.cpp:70
-#: gui/mrvHotkey.cpp:72 gui/mrvHotkey.cpp:74 gui/mrvHotkey.cpp:76
-#: gui/mrvHotkey.cpp:79 gui/mrvHotkey.cpp:81 gui/mrvHotkey.cpp:82
-#: gui/mrvHotkey.cpp:83 gui/mrvHotkey.cpp:86 gui/mrvHotkey.cpp:88
-#: gui/mrvHotkey.cpp:89 gui/mrvHotkey.cpp:490 gui/mrvColorInfo.cpp:412
-#: gui/mrvColorInfo.cpp:736 gui/mrvFileRequester.cpp:152
-#: gui/mrvFileRequester.cpp:176 gui/mrvFileRequester.cpp:227
-#: gui/mrvFileRequester.cpp:581 gui/mrvFileRequester.cpp:637
-#: gui/mrvFileRequester.cpp:647 gui/mrvFileRequester.cpp:662
-#: gui/mrvFileRequester.cpp:764 gui/mrvFileRequester.cpp:818
-#: gui/mrvFileRequester.cpp:862 gui/mrvImageView.cpp:1114
-#: gui/mrvImageView.cpp:1142 gui/mrvImageView.cpp:1405
-#: gui/mrvImageView.cpp:2870 gui/mrvImageView.cpp:3181
-#: gui/mrvImageView.cpp:3227 gui/mrvImageView.cpp:3242
-#: gui/mrvImageView.cpp:3251 gui/mrvImageView.cpp:3261
-#: gui/mrvImageView.cpp:3264 gui/mrvImageView.cpp:3270
-#: gui/mrvImageView.cpp:3278 gui/mrvImageView.cpp:3280
-#: gui/mrvImageView.cpp:3492 gui/mrvImageView.cpp:3499
-#: gui/mrvImageView.cpp:3501 gui/mrvImageView.cpp:3504
-#: gui/mrvImageView.cpp:3510 gui/mrvImageView.cpp:3516
-#: gui/mrvImageView.cpp:3522 gui/mrvImageView.cpp:3535
-#: gui/mrvImageView.cpp:3672 gui/mrvImageView.cpp:3713
-#: gui/mrvImageView.cpp:3732 gui/mrvImageView.cpp:3822
-#: gui/mrvImageView.cpp:3839 gui/mrvImageView.cpp:3878
-#: gui/mrvImageView.cpp:4147 gui/mrvImageView.cpp:4155
-#: gui/mrvImageView.cpp:4220 gui/mrvImageView.cpp:4232
-#: gui/mrvImageView.cpp:4263 gui/mrvImageView.cpp:4278
-#: gui/mrvImageView.cpp:4300 gui/mrvImageView.cpp:4312
-#: gui/mrvImageView.cpp:4316 gui/mrvImageView.cpp:4334
-#: gui/mrvImageView.cpp:4349 gui/mrvImageView.cpp:4361
-#: gui/mrvImageView.cpp:4371 gui/mrvImageView.cpp:4388
-#: gui/mrvImageView.cpp:4397 gui/mrvImageView.cpp:4407
-#: gui/mrvImageView.cpp:4417 gui/mrvImageView.cpp:4421
-#: gui/mrvImageView.cpp:4445 gui/mrvImageView.cpp:4458
-#: gui/mrvImageView.cpp:4477 gui/mrvImageView.cpp:4481
-#: gui/mrvImageView.cpp:4496 gui/mrvImageView.cpp:4501
-#: gui/mrvImageView.cpp:4526 gui/mrvImageView.cpp:4550
-#: gui/mrvImageView.cpp:4564 gui/mrvImageView.cpp:4574
-#: gui/mrvImageView.cpp:4585 gui/mrvImageView.cpp:4588
-#: gui/mrvImageBrowser.cpp:611 gui/mrvImageBrowser.cpp:825
-#: gui/mrvImageBrowser.cpp:834 gui/mrvImageBrowser.cpp:1412
-#: gui/mrvImageBrowser.cpp:1570 gui/mrvImageBrowser.cpp:1577
-#: gui/mrvImageBrowser.cpp:1698 gui/mrvImageBrowser.cpp:2726
-#: gui/mrvImageInformation.cpp:2556 gui/mrvLogDisplay.cpp:91
-#: gui/mrvLogDisplay.cpp:92 gui/mrvPreferences.cpp:329
+#: gui/FLU/Flu_File_Chooser.cpp:3077 gui/FLU/Flu_File_Chooser.cpp:3254
+#: gui/FLU/Flu_File_Chooser.cpp:3520 gui/FLU/Flu_File_Chooser.cpp:3784
+#: gui/FLU/Flu_File_Chooser.cpp:3788 gui/FLU/Flu_File_Chooser.cpp:4135
+#: gui/FLU/Flu_File_Chooser.cpp:4138 gui/FLU/Flu_File_Chooser.cpp:4410
+#: gui/FLU/Flu_File_Chooser.cpp:4489 gui/FLU/Flu_File_Chooser.cpp:4707
+#: gui/FLU/Flu_File_Chooser.cpp:4721 gui/mrvOCIOBrowser.cpp:165
+#: gui/mrvOCIOBrowser.cpp:166 gui/mrvHotkey.cpp:70 gui/mrvHotkey.cpp:72
+#: gui/mrvHotkey.cpp:74 gui/mrvHotkey.cpp:76 gui/mrvHotkey.cpp:79
+#: gui/mrvHotkey.cpp:81 gui/mrvHotkey.cpp:82 gui/mrvHotkey.cpp:83
+#: gui/mrvHotkey.cpp:86 gui/mrvHotkey.cpp:88 gui/mrvHotkey.cpp:89
+#: gui/mrvHotkey.cpp:490 gui/mrvColorInfo.cpp:412 gui/mrvColorInfo.cpp:736
+#: gui/mrvFileRequester.cpp:152 gui/mrvFileRequester.cpp:176
+#: gui/mrvFileRequester.cpp:227 gui/mrvFileRequester.cpp:581
+#: gui/mrvFileRequester.cpp:637 gui/mrvFileRequester.cpp:647
+#: gui/mrvFileRequester.cpp:662 gui/mrvFileRequester.cpp:764
+#: gui/mrvFileRequester.cpp:818 gui/mrvFileRequester.cpp:862
+#: gui/mrvImageView.cpp:1114 gui/mrvImageView.cpp:1142
+#: gui/mrvImageView.cpp:1405 gui/mrvImageView.cpp:2870
+#: gui/mrvImageView.cpp:3181 gui/mrvImageView.cpp:3227
+#: gui/mrvImageView.cpp:3242 gui/mrvImageView.cpp:3251
+#: gui/mrvImageView.cpp:3261 gui/mrvImageView.cpp:3264
+#: gui/mrvImageView.cpp:3270 gui/mrvImageView.cpp:3278
+#: gui/mrvImageView.cpp:3280 gui/mrvImageView.cpp:3492
+#: gui/mrvImageView.cpp:3499 gui/mrvImageView.cpp:3501
+#: gui/mrvImageView.cpp:3504 gui/mrvImageView.cpp:3510
+#: gui/mrvImageView.cpp:3516 gui/mrvImageView.cpp:3522
+#: gui/mrvImageView.cpp:3535 gui/mrvImageView.cpp:3672
+#: gui/mrvImageView.cpp:3713 gui/mrvImageView.cpp:3732
+#: gui/mrvImageView.cpp:3822 gui/mrvImageView.cpp:3839
+#: gui/mrvImageView.cpp:3878 gui/mrvImageView.cpp:4147
+#: gui/mrvImageView.cpp:4155 gui/mrvImageView.cpp:4220
+#: gui/mrvImageView.cpp:4232 gui/mrvImageView.cpp:4263
+#: gui/mrvImageView.cpp:4278 gui/mrvImageView.cpp:4300
+#: gui/mrvImageView.cpp:4312 gui/mrvImageView.cpp:4316
+#: gui/mrvImageView.cpp:4334 gui/mrvImageView.cpp:4349
+#: gui/mrvImageView.cpp:4361 gui/mrvImageView.cpp:4371
+#: gui/mrvImageView.cpp:4388 gui/mrvImageView.cpp:4397
+#: gui/mrvImageView.cpp:4407 gui/mrvImageView.cpp:4417
+#: gui/mrvImageView.cpp:4421 gui/mrvImageView.cpp:4445
+#: gui/mrvImageView.cpp:4458 gui/mrvImageView.cpp:4477
+#: gui/mrvImageView.cpp:4481 gui/mrvImageView.cpp:4496
+#: gui/mrvImageView.cpp:4501 gui/mrvImageView.cpp:4526
+#: gui/mrvImageView.cpp:4550 gui/mrvImageView.cpp:4564
+#: gui/mrvImageView.cpp:4574 gui/mrvImageView.cpp:4585
+#: gui/mrvImageView.cpp:4588 gui/mrvImageBrowser.cpp:611
+#: gui/mrvImageBrowser.cpp:825 gui/mrvImageBrowser.cpp:834
+#: gui/mrvImageBrowser.cpp:1412 gui/mrvImageBrowser.cpp:1570
+#: gui/mrvImageBrowser.cpp:1577 gui/mrvImageBrowser.cpp:1698
+#: gui/mrvImageBrowser.cpp:2726 gui/mrvImageInformation.cpp:2556
+#: gui/mrvLogDisplay.cpp:91 gui/mrvLogDisplay.cpp:92 gui/mrvPreferences.cpp:329
 #: gui/mrvPreferences.cpp:600 gui/mrvPreferences.cpp:612
 #: gui/mrvPreferences.cpp:614 gui/mrvPreferences.cpp:616
 #: gui/mrvPreferences.cpp:618 gui/mrvPreferences.cpp:1039
@@ -103,7 +103,7 @@
 #: video/mrvGLLut3d.cpp:1371 video/mrvGLLut3d.cpp:1372
 #: standalone/mrvCommandLine.cpp:236 standalone/mrvCommandLine.cpp:283
 #: standalone/mrvCommandLine.cpp:320 standalone/mrvCommandLine.cpp:356
-#: standalone/mrvCommandLine.cpp:523 standalone/mrvCommandLine.cpp:546
+#: standalone/mrvCommandLine.cpp:524 standalone/mrvCommandLine.cpp:547
 #: standalone/main.cpp:119 standalone/main.cpp:120 standalone/main.cpp:180
 #: standalone/main.cpp:188
 msgid ""
@@ -132,7 +132,7 @@ msgstr ""
 msgid "\t\t"
 msgstr ""
 
-#: core/CMedia.cpp:4384 core/CMedia.cpp:4402
+#: core/CMedia.cpp:4385 core/CMedia.cpp:4403
 msgid "\t\tflags: "
 msgstr ""
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "\t!@#$%^&*(Favorites)-=+"
 msgstr ""
 
-#: core/CMedia.cpp:4381 core/CMedia.cpp:4398
+#: core/CMedia.cpp:4382 core/CMedia.cpp:4399
 msgid "\t#"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:3377 core/CMedia.cpp:3461
+#: core/CMedia.cpp:3376 core/CMedia.cpp:3460
 msgid ""
 "\n"
 "\n"
@@ -277,17 +277,17 @@ msgid ""
 "\n"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:128 core/CMedia.cpp:2809 core/CMedia.cpp:2821
+#: audio/mrvALSAEngine.cpp:128 core/CMedia.cpp:2808 core/CMedia.cpp:2820
 #: core/CMedia.cpp:3858 core/CMedia.cpp:3860 core/CMedia.cpp:3875
-#: core/CMedia.cpp:4399 core/CMedia.cpp:4421 core/CMedia.cpp:4481
+#: core/CMedia.cpp:4400 core/CMedia.cpp:4422 core/CMedia.cpp:4482
 #: core/CMedia_audio.cpp:953 core/CMedia_audio.cpp:955
 #: core/CMedia_audio.cpp:1168 core/CMedia_audio.cpp:2243
 #: core/CMedia_audio.cpp:2245 core/CMedia_audio.cpp:2263
 #: core/CMedia_audio.cpp:2324 core/CMedia_audio.cpp:2326
 #: core/CMedia_audio.cpp:2445 core/aviImage.cpp:699 core/aviImage.cpp:2135
-#: core/aviImage.cpp:3725 core/aviImage.cpp:3737 core/aviImage.cpp:3754
-#: core/aviImage.cpp:3803 core/aviImage.cpp:3860 core/aviImage_save.cpp:579
-#: core/aviImage_save.cpp:585 core/aviImage_save.cpp:1362 core/hdrImage.cpp:254
+#: core/aviImage.cpp:3708 core/aviImage.cpp:3720 core/aviImage.cpp:3737
+#: core/aviImage.cpp:3786 core/aviImage.cpp:3843 core/aviImage_save.cpp:583
+#: core/aviImage_save.cpp:589 core/aviImage_save.cpp:1372 core/hdrImage.cpp:254
 #: core/hdrImage.cpp:262 core/hdrImage.cpp:265 core/hdrImage.cpp:272
 #: core/slateImage.cpp:369 core/wandImage.cpp:90 core/mrvServer.cpp:1075
 #: core/mrvServer.cpp:1668 core/mrvPlayback.cpp:86 core/mrvPlayback.cpp:87
@@ -318,7 +318,7 @@ msgstr ""
 #: video/mrvGLEngine.cpp:2453 video/mrvGLEngine.cpp:2521
 #: video/mrvGLEngine.cpp:4050 video/mrvGLEngine.cpp:4088
 #: video/mrvGLQuad.cpp:818 video/mrvGLLut3d.cpp:1005 video/mrvGLLut3d.cpp:1012
-#: standalone/mrvCommandLine.cpp:117 standalone/mrvCommandLine.cpp:563
+#: standalone/mrvCommandLine.cpp:117 standalone/mrvCommandLine.cpp:564
 #, c-format
 msgid " "
 msgstr ""
@@ -440,7 +440,7 @@ msgstr ""
 msgid "             "
 msgstr ""
 
-#: core/aviImage_save.cpp:582
+#: core/aviImage_save.cpp:586
 msgid "              "
 msgstr ""
 
@@ -2426,7 +2426,7 @@ msgstr ""
 msgid "   NAN  "
 msgstr ""
 
-#: core/aviImage.cpp:3215
+#: core/aviImage.cpp:3217
 msgid "   expected: "
 msgstr " esperado: "
 
@@ -2857,7 +2857,7 @@ msgstr ""
 msgid "  ]]]]]]]]]]]]    "
 msgstr ""
 
-#: core/aviImage_save.cpp:788
+#: core/aviImage_save.cpp:798
 msgid "  audio->size()= "
 msgstr ""
 
@@ -2865,7 +2865,7 @@ msgstr ""
 msgid "  bpf: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:1381
 msgid "  dts: "
 msgstr ""
 
@@ -2880,7 +2880,7 @@ msgid "  if (abs(diff) > frame_num * %d) {\n"
 msgstr ""
 
 #
-#: core/mrvPlayback.cpp:1238
+#: core/mrvPlayback.cpp:1251
 msgid "  img->frame: "
 msgstr " cuadro "
 
@@ -3012,8 +3012,8 @@ msgstr ""
 msgid " %g %g"
 msgstr ""
 
-#: core/CMedia_audio.cpp:2327 core/aviImage.cpp:1805 core/aviImage.cpp:3784
-#: core/mrvColorProfile.cpp:247 gui/FLU/Flu_File_Chooser.cpp:3540
+#: core/CMedia_audio.cpp:2327 core/aviImage.cpp:1805 core/aviImage.cpp:3767
+#: core/mrvColorProfile.cpp:247 gui/FLU/Flu_File_Chooser.cpp:3572
 #: video/mrvGLEngine.cpp:166 video/mrvGLEngine.cpp:169
 msgid " ("
 msgstr ""
@@ -3036,7 +3036,7 @@ msgstr ""
 msgid " (NC="
 msgstr ""
 
-#: core/CMedia.cpp:4423 core/aviImage.cpp:3804
+#: core/CMedia.cpp:4424 core/aviImage.cpp:3787
 msgid " (bytes:"
 msgstr ""
 
@@ -3096,11 +3096,11 @@ msgstr ""
 msgid " - "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1020
+#: core/mrvPlayback.cpp:1030
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:663
+#: core/mrvPlayback.cpp:671
 msgid " - decode Error audio frame "
 msgstr " - error de decodificacion del cuadro de audio "
 
@@ -3404,27 +3404,27 @@ msgstr ""
 msgid " A:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1148
+#: core/mrvPlayback.cpp:1161
 msgid " AC: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:736
+#: core/mrvPlayback.cpp:745
 msgid " AUDIO LOOP END/START HAS FRAME "
 msgstr ""
 
-#: core/mrvPlayback.cpp:618 core/mrvPlayback.cpp:789
+#: core/mrvPlayback.cpp:626 core/mrvPlayback.cpp:798
 msgid " AUDIO THREAD "
 msgstr ""
 
-#: core/mrvPlayback.cpp:688
+#: core/mrvPlayback.cpp:696
 msgid " BARRIER IN AUDIO "
 msgstr ""
 
-#: core/mrvPlayback.cpp:696
+#: core/mrvPlayback.cpp:704
 msgid " BARRIER PASSED IN AUDIO "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1081
+#: core/mrvPlayback.cpp:1093
 msgid " BARRIER PASSED IN VIDEO stopped? "
 msgstr ""
 
@@ -3442,13 +3442,13 @@ msgstr " Seleccion de Área de Color"
 msgid " Could not open file. "
 msgstr " No pude abrir el archivo. "
 
-#: core/CMedia.cpp:3859 core/CMedia.cpp:4420 core/CMedia_audio.cpp:2244
-#: core/CMedia_audio.cpp:2325 core/aviImage.cpp:3724 core/aviImage.cpp:3753
-#: core/aviImage.cpp:3802
+#: core/CMedia.cpp:3859 core/CMedia.cpp:4421 core/CMedia_audio.cpp:2244
+#: core/CMedia_audio.cpp:2325 core/aviImage.cpp:3707 core/aviImage.cpp:3736
+#: core/aviImage.cpp:3785
 msgid " D:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1285 core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:1298 core/mrvPlayback.cpp:1381
 msgid " DECODE THREAD "
 msgstr ""
 
@@ -3461,7 +3461,7 @@ msgstr ""
 msgid " E: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1149
+#: core/mrvPlayback.cpp:1162
 msgid " EC: "
 msgstr ""
 
@@ -3499,7 +3499,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " IS EXPECTED "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1147
+#: core/mrvPlayback.cpp:1160
 msgid " MC: "
 msgstr ""
 
@@ -3518,8 +3518,8 @@ msgstr " No hay audio o video en el archivo"
 msgid " Pencil"
 msgstr " Lápiz"
 
-#: core/CMedia.cpp:3859 core/CMedia.cpp:4420 core/CMedia_audio.cpp:2244
-#: core/aviImage.cpp:3724 core/aviImage.cpp:3753 core/aviImage.cpp:3802
+#: core/CMedia.cpp:3859 core/CMedia.cpp:4421 core/CMedia_audio.cpp:2244
+#: core/aviImage.cpp:3707 core/aviImage.cpp:3736 core/aviImage.cpp:3785
 msgid " S:"
 msgstr ""
 
@@ -3536,20 +3536,20 @@ msgstr " Texto"
 msgid " UF: %<PRId64> "
 msgstr " CNM: %<PRId64> "
 
-#: core/CMedia.cpp:4420 core/aviImage.cpp:3724 core/aviImage.cpp:3753
-#: core/aviImage.cpp:3802
+#: core/CMedia.cpp:4421 core/aviImage.cpp:3707 core/aviImage.cpp:3736
+#: core/aviImage.cpp:3785
 msgid " V:"
 msgstr ""
 
-#: core/mrvPlayback.cpp:1146
+#: core/mrvPlayback.cpp:1159
 msgid " VC: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1086
+#: core/mrvPlayback.cpp:1098
 msgid " VIDEO LOOP frame: "
 msgstr ""
 
-#: core/mrvPlayback.cpp:990 core/mrvPlayback.cpp:1236
+#: core/mrvPlayback.cpp:999 core/mrvPlayback.cpp:1249
 msgid " VIDEO THREAD "
 msgstr ""
 
@@ -3561,16 +3561,16 @@ msgstr ""
 msgid " ] = "
 msgstr ""
 
-#: core/CMedia.cpp:2837
+#: core/CMedia.cpp:2836
 msgid " _dts: "
 msgstr ""
 
-#: core/CMedia.cpp:2838 core/aviImage.cpp:3278
+#: core/CMedia.cpp:2837 core/aviImage.cpp:3280
 msgid " _expected: "
 msgstr " esperado: "
 
 #
-#: core/CMedia.cpp:2837 core/aviImage.cpp:3277
+#: core/CMedia.cpp:2836 core/aviImage.cpp:3279
 msgid " _frame: "
 msgstr " cuadro "
 
@@ -3587,16 +3587,16 @@ msgid " alt"
 msgstr ""
 
 #
-#: core/CMedia.cpp:4283
+#: core/CMedia.cpp:4284
 msgid " as default"
 msgstr " por defecto"
 
-#: core/mrvPlayback.cpp:1238
+#: core/mrvPlayback.cpp:1251
 msgid " at "
 msgstr " en el puerto "
 
 #
-#: core/mrvPlayback.cpp:1286
+#: core/mrvPlayback.cpp:1299
 msgid " at frame "
 msgstr " cuadro "
 
@@ -3634,7 +3634,7 @@ msgstr ""
 msgid " bytes in fragment "
 msgstr ""
 
-#: core/aviImage_save.cpp:578 core/aviImage_save.cpp:584
+#: core/aviImage_save.cpp:582 core/aviImage_save.cpp:588
 msgid " channels "
 msgstr " canales "
 
@@ -3652,7 +3652,7 @@ msgstr ""
 msgid " data "
 msgstr " datos "
 
-#: core/aviImage.cpp:1482 core/aviImage.cpp:4178
+#: core/aviImage.cpp:1482 core/aviImage.cpp:4161
 msgid " data: "
 msgstr " datos: "
 
@@ -3660,11 +3660,7 @@ msgstr " datos: "
 msgid " dbl_le"
 msgstr ""
 
-#: core/mrvPlayback.cpp:651
-msgid " decoded audio "
-msgstr "Error de decodificación de audio:"
-
-#: core/CMedia.cpp:4385 core/CMedia.cpp:4404
+#: core/CMedia.cpp:4386 core/CMedia.cpp:4405
 msgid " dist: "
 msgstr ""
 
@@ -3672,11 +3668,11 @@ msgstr ""
 msgid " does not exist or no directory"
 msgstr " no existe o no es una carpeta"
 
-#: core/aviImage.cpp:1481 core/aviImage.cpp:1806 core/aviImage.cpp:4177
+#: core/aviImage.cpp:1481 core/aviImage.cpp:1806 core/aviImage.cpp:4160
 msgid " dts: "
 msgstr ""
 
-#: core/aviImage_save.cpp:1595
+#: core/aviImage_save.cpp:1605
 msgid " encoding"
 msgstr " codificando"
 
@@ -3726,7 +3722,7 @@ msgstr " para "
 msgid " for channel.  Maximum: "
 msgstr " para el canal.  Máximo: "
 
-#: core/CMedia_audio.cpp:2215 core/aviImage.cpp:3907
+#: core/CMedia_audio.cpp:2215 core/aviImage.cpp:3890
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -3734,7 +3730,7 @@ msgstr " para cuadro "
 msgid " for reel "
 msgstr " para carrete "
 
-#: core/CMedia.cpp:3378 core/CMedia.cpp:3462
+#: core/CMedia.cpp:3377 core/CMedia.cpp:3461
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -3742,26 +3738,26 @@ msgstr " para pista #"
 msgid " for yuv"
 msgstr " para yuv"
 
-#: core/aviImage_save.cpp:1612
+#: core/aviImage_save.cpp:1622
 msgid " frame"
 msgstr " cuadro"
 
 #
-#: core/mrvPlayback.cpp:618 core/mrvPlayback.cpp:789 core/mrvPlayback.cpp:991
-#: core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:626 core/mrvPlayback.cpp:798 core/mrvPlayback.cpp:1000
+#: core/mrvPlayback.cpp:1381
 msgid " frame "
 msgstr " cuadro "
 
-#: core/CMedia.cpp:4421
+#: core/CMedia.cpp:4422
 msgid " frame offset: "
 msgstr " dif. de cuadro: "
 
 #
-#: core/CMedia.cpp:4383 core/CMedia.cpp:4401 core/mrvPlayback.cpp:1082
+#: core/CMedia.cpp:4384 core/CMedia.cpp:4402 core/mrvPlayback.cpp:1094
 msgid " frame: "
 msgstr " cuadro "
 
-#: core/aviImage_save.cpp:1602
+#: core/aviImage_save.cpp:1612
 msgid " frames"
 msgstr " cuadros"
 
@@ -3773,19 +3769,19 @@ msgstr " frecuencia: "
 msgid " got audio "
 msgstr ""
 
-#: core/aviImage.cpp:3185
+#: core/aviImage.cpp:3187
 msgid " gotA:"
 msgstr ""
 
-#: core/aviImage.cpp:3216
+#: core/aviImage.cpp:3218
 msgid " gotA: "
 msgstr ""
 
-#: core/aviImage.cpp:3185
+#: core/aviImage.cpp:3187
 msgid " gotV:"
 msgstr ""
 
-#: core/aviImage.cpp:3216
+#: core/aviImage.cpp:3218
 msgid " gotV: "
 msgstr ""
 
@@ -3824,12 +3820,12 @@ msgstr " en remplazo"
 msgid " is "
 msgstr " es "
 
-#: core/CMedia.cpp:4148
+#: core/CMedia.cpp:4149
 msgid " is missing."
 msgstr " está faltante."
 
 #
-#: core/CMedia.cpp:4171
+#: core/CMedia.cpp:4172
 msgid " is missing. Choosing "
 msgstr " está faltante. Eligiendo "
 
@@ -3854,7 +3850,7 @@ msgstr " etiqueta "
 msgid " m: "
 msgstr ""
 
-#: core/CMedia.cpp:4374
+#: core/CMedia.cpp:4375
 msgid " max frames: "
 msgstr " cuadros max: "
 
@@ -3887,7 +3883,7 @@ msgstr " no encontradas en el disco para "
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/aviImage.cpp:4058
+#: core/aviImage.cpp:4041
 msgid " not yet supported"
 msgstr " no soportado aún"
 
@@ -3900,12 +3896,12 @@ msgstr "Desplazamiento"
 msgid " or later"
 msgstr " o más tarde"
 
-#: core/CMedia.cpp:4382 core/CMedia.cpp:4400
+#: core/CMedia.cpp:4383 core/CMedia.cpp:4401
 msgid " pos: "
 msgstr ""
 
-#: core/CMedia.cpp:4382 core/CMedia.cpp:4400 core/aviImage.cpp:1479
-#: core/aviImage.cpp:4176
+#: core/CMedia.cpp:4383 core/CMedia.cpp:4401 core/aviImage.cpp:1479
+#: core/aviImage.cpp:4159
 msgid " pts: "
 msgstr ""
 
@@ -3914,7 +3910,7 @@ msgstr ""
 msgid " red %f %f green %f %f blue %f %f white %f %f"
 msgstr ""
 
-#: core/exrImage.cpp:3451 core/mrvPlayback.cpp:1021
+#: core/exrImage.cpp:3451 core/mrvPlayback.cpp:1031
 msgid " returned "
 msgstr " retornó "
 
@@ -3926,7 +3922,7 @@ msgstr ""
 msgid " s32_le"
 msgstr ""
 
-#: core/aviImage_save.cpp:1363
+#: core/aviImage_save.cpp:1373
 msgid " selected"
 msgstr " esperado: "
 
@@ -3942,7 +3938,7 @@ msgstr " archivo de sombreado "
 msgid " shift"
 msgstr "Mayúsculas"
 
-#: core/CMedia.cpp:4385 core/CMedia.cpp:4403
+#: core/CMedia.cpp:4386 core/CMedia.cpp:4404
 msgid " size: "
 msgstr ") tamaño de cache: "
 
@@ -3951,30 +3947,26 @@ msgstr ") tamaño de cache: "
 msgid " start "
 msgstr " comienzo "
 
-#: core/mrvPlayback.cpp:651
-msgid " status "
-msgstr " estatus: "
-
-#: core/aviImage.cpp:3921
+#: core/aviImage.cpp:3904
 msgid " status: "
 msgstr " estatus: "
 
-#: core/mrvPlayback.cpp:1287
+#: core/mrvPlayback.cpp:1300
 msgid " step "
 msgstr " paso "
 
-#: core/CMedia.cpp:2809 core/CMedia.cpp:2821 core/mrvPlayback.cpp:618
-#: core/mrvPlayback.cpp:789 core/mrvPlayback.cpp:888 core/mrvPlayback.cpp:990
-#: core/mrvPlayback.cpp:1237 core/mrvPlayback.cpp:1285
-#: core/mrvPlayback.cpp:1369
+#: core/CMedia.cpp:2808 core/CMedia.cpp:2820 core/mrvPlayback.cpp:626
+#: core/mrvPlayback.cpp:798 core/mrvPlayback.cpp:897 core/mrvPlayback.cpp:999
+#: core/mrvPlayback.cpp:1250 core/mrvPlayback.cpp:1298
+#: core/mrvPlayback.cpp:1381
 msgid " stopped? "
 msgstr " detenido? "
 
-#: core/aviImage.cpp:3803
+#: core/aviImage.cpp:3786
 msgid " subtitle packets #"
 msgstr ""
 
-#: core/aviImage.cpp:3725
+#: core/aviImage.cpp:3708
 msgid " subtitle stores  #"
 msgstr ""
 
@@ -3990,7 +3982,7 @@ msgstr ""
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:581 gui/FLU/Flu_File_Chooser.cpp:4528
+#: core/aviImage_save.cpp:585 gui/FLU/Flu_File_Chooser.cpp:4560
 #: gui/mrvImageBrowser.cpp:2252
 msgid " to "
 msgstr " a "
@@ -4019,17 +4011,17 @@ msgstr " usado: "
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
-#: core/CMedia.cpp:4422
+#: core/CMedia.cpp:4423
 msgid " video packets #"
 msgstr " cuadro de video, cache "
 
-#: core/aviImage.cpp:3754
+#: core/aviImage.cpp:3737
 msgid " video stores  #"
 msgstr "Pista de video inválido "
 
 #
-#: core/mrvPlayback.cpp:990 core/mrvPlayback.cpp:1238 core/mrvPlayback.cpp:1285
-#: core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:999 core/mrvPlayback.cpp:1251 core/mrvPlayback.cpp:1298
+#: core/mrvPlayback.cpp:1381
 msgid " view playback "
 msgstr "Detener Playback."
 
@@ -5142,11 +5134,11 @@ msgstr ""
 msgid "#      c #E7E7E7"
 msgstr ""
 
-#: core/CMedia.cpp:4354 core/CMedia.cpp:4394
+#: core/CMedia.cpp:4355 core/CMedia.cpp:4395
 msgid "# indices: "
 msgstr ""
 
-#: core/CMedia.cpp:4373
+#: core/CMedia.cpp:4374
 msgid "# keyframes: "
 msgstr "# cuadros claves: "
 
@@ -5728,17 +5720,17 @@ msgstr ""
 msgid "%.\tc #E1BF81"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3765
+#: gui/FLU/Flu_File_Chooser.cpp:3797
 #, c-format
 msgid "%.1f GB"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3775
+#: gui/FLU/Flu_File_Chooser.cpp:3807
 #, c-format
 msgid "%.1f KB"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3770
+#: gui/FLU/Flu_File_Chooser.cpp:3802
 #, c-format
 msgid "%.1f MB"
 msgstr ""
@@ -5778,7 +5770,7 @@ msgstr ""
 msgid "%.8lg"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4482 standalone/mrvCommandLine.cpp:262
+#: gui/FLU/Flu_File_Chooser.cpp:4514 standalone/mrvCommandLine.cpp:262
 msgid "%0"
 msgstr ""
 
@@ -5859,7 +5851,7 @@ msgstr ""
 msgid "%H:%M:%S - %d %b"
 msgstr ""
 
-#: core/CMedia.cpp:1537 core/guessImage.cpp:128 core/guessImage.cpp:369
+#: core/CMedia.cpp:1536 core/guessImage.cpp:128 core/guessImage.cpp:369
 #: core/exrImage.cpp:2120 core/Sequence.cpp:342 core/Sequence.cpp:346
 #: gui/FLU/Flu_File_Chooser.cpp:349
 msgid "%V"
@@ -5876,7 +5868,7 @@ msgstr ""
 msgid "%c"
 msgstr ""
 
-#: core/CMedia.cpp:3248 core/CMedia.cpp:3290
+#: core/CMedia.cpp:3247 core/CMedia.cpp:3289
 #, c-format
 msgid "%c%c%c%c / 0x%04X"
 msgstr ""
@@ -5888,7 +5880,7 @@ msgstr ""
 
 #: core/CMedia.cpp:346 core/slateImage.cpp:320 core/wandImage.cpp:795
 #: core/wandImage.cpp:940 core/mrvClient.cpp:404
-#: gui/FLU/Flu_File_Chooser.cpp:1326 gui/FLU/Flu_File_Chooser.cpp:4479
+#: gui/FLU/Flu_File_Chooser.cpp:1326 gui/FLU/Flu_File_Chooser.cpp:4511
 #: gui/mrvImageBrowser.cpp:426 gui/mrvImageInformation.cpp:2618
 #: gui/mrvImageInformation.cpp:3256 gui/mrvImageInformation.cpp:3269
 #: gui/mrvImageInformation.cpp:3444 gui/mrvImageInformation.cpp:3457
@@ -5940,7 +5932,7 @@ msgstr ""
 msgid "%d Hz."
 msgstr "%d Hz."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3779
+#: gui/FLU/Flu_File_Chooser.cpp:3811
 #, c-format
 msgid "%d bytes"
 msgstr ""
@@ -5955,7 +5947,7 @@ msgstr "%d kb/s"
 msgid "%d/%d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3296
+#: gui/FLU/Flu_File_Chooser.cpp:3328
 #, c-format
 msgid "%d/%d/%02d %d:%02d %s"
 msgstr ""
@@ -6073,7 +6065,7 @@ msgstr ""
 msgid "%g (%s)"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4487 standalone/mrvCommandLine.cpp:267
+#: gui/FLU/Flu_File_Chooser.cpp:4519 standalone/mrvCommandLine.cpp:267
 #, c-format
 msgid "%ld"
 msgstr ""
@@ -6140,7 +6132,7 @@ msgstr ""
 msgid "%s\t%s\t%8d\t%8d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1476 gui/FLU/Flu_File_Chooser.cpp:3256
+#: gui/FLU/Flu_File_Chooser.cpp:1476 gui/FLU/Flu_File_Chooser.cpp:3288
 #: gui/mrvImageBrowser.cpp:596
 #, c-format
 msgid "%s\n"
@@ -6167,12 +6159,12 @@ msgstr ""
 msgid "%s %d %d %d %d"
 msgstr ""
 
-#: core/mrvCPU.cpp:420 gui/FLU/Flu_File_Chooser.cpp:3609
+#: core/mrvCPU.cpp:420 gui/FLU/Flu_File_Chooser.cpp:3641
 #, c-format
 msgid "%s %s"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3275
+#: gui/FLU/Flu_File_Chooser.cpp:3307
 #, c-format
 msgid "%s %s %d %d:%d:%d %d"
 msgstr ""
@@ -6203,7 +6195,7 @@ msgid "%s%d%s"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:375 gui/FLU/Flu_File_Chooser.cpp:379
-#: gui/FLU/Flu_File_Chooser.cpp:3826 gui/FLU/Flu_File_Chooser.cpp:3828
+#: gui/FLU/Flu_File_Chooser.cpp:3858 gui/FLU/Flu_File_Chooser.cpp:3860
 #: gui/mrvSave.cpp:216
 #, c-format
 msgid "%s%s"
@@ -6483,7 +6475,7 @@ msgid "&@\tc #525252"
 msgstr ""
 
 #: core/aviImage.cpp:657 core/aviImage.cpp:693 core/aviImage_save.cpp:245
-#: core/aviImage_save.cpp:1417 core/mrvACES.cpp:116 core/mrvACES.cpp:161
+#: core/aviImage_save.cpp:1427 core/mrvACES.cpp:116 core/mrvACES.cpp:161
 #: core/mrvACES.cpp:210 gui/mrvMedia.cpp:157 gui/mrvImageBrowser.cpp:536
 #: gui/mrvImageBrowser.cpp:1551 gui/mrvImageInformation.cpp:579
 #: gui/mrvImageInformation.cpp:2089 gui/mrvSave.cpp:294
@@ -6596,7 +6588,7 @@ msgstr ""
 msgid "' (%T)"
 msgstr ""
 
-#: core/CMedia.cpp:4299
+#: core/CMedia.cpp:4300
 msgid "' for dpx/cin extension"
 msgstr ""
 
@@ -6605,12 +6597,12 @@ msgid "' for writing. Reason: "
 msgstr "' para escritura. Razón: "
 
 #
-#: core/CMedia.cpp:4283
+#: core/CMedia.cpp:4284
 msgid "' from bitdepth "
 msgstr "' de profundidad en bits: "
 
 #
-#: core/CMedia.cpp:4237
+#: core/CMedia.cpp:4238
 msgid "' from filename"
 msgstr "' del nombre del archivo"
 
@@ -6680,7 +6672,7 @@ msgstr ""
 msgid "'. Reason: "
 msgstr "'. Razón: "
 
-#: core/CMedia.cpp:4529 gui/mrvHotkey.cpp:128
+#: core/CMedia.cpp:4530 gui/mrvHotkey.cpp:128
 msgid "("
 msgstr ""
 
@@ -7029,7 +7021,7 @@ msgstr ""
 msgid ")\n"
 msgstr ""
 
-#: core/CMedia.cpp:4530 core/aviImage.cpp:3784
+#: core/CMedia.cpp:4531 core/aviImage.cpp:3767
 msgid ") "
 msgstr ""
 
@@ -7102,7 +7094,7 @@ msgid ") does not exist in file "
 msgstr " no existe o no es una carpeta"
 
 #
-#: core/aviImage_save.cpp:429
+#: core/aviImage_save.cpp:434
 msgid ") for movie file"
 msgstr ") para la película"
 
@@ -7163,11 +7155,11 @@ msgstr ""
 msgid ").\tc #C6AE76"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3540
+#: gui/FLU/Flu_File_Chooser.cpp:3572
 msgid ")/"
 msgstr ""
 
-#: core/CMedia.cpp:4423 core/CMedia_audio.cpp:2327 core/aviImage.cpp:3805
+#: core/CMedia.cpp:4424 core/CMedia_audio.cpp:2327 core/aviImage.cpp:3788
 msgid "): "
 msgstr ""
 
@@ -7178,10 +7170,10 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1148 gui/FLU/Flu_File_Chooser.cpp:1150
 #: gui/FLU/Flu_File_Chooser.cpp:1167 gui/FLU/Flu_File_Chooser.cpp:1171
 #: gui/FLU/Flu_File_Chooser.cpp:1238 gui/FLU/Flu_File_Chooser.cpp:1648
-#: gui/FLU/Flu_File_Chooser.cpp:4210 gui/FLU/Flu_File_Chooser.cpp:4219
-#: gui/FLU/Flu_File_Chooser.cpp:4232 gui/FLU/Flu_File_Chooser.cpp:4617
-#: gui/FLU/Flu_File_Chooser.cpp:4668 gui/FLU/Flu_File_Chooser.cpp:4841
-#: gui/FLU/Flu_File_Chooser.cpp:4848 gui/FLU/Flu_File_Chooser.cpp:4857
+#: gui/FLU/Flu_File_Chooser.cpp:4242 gui/FLU/Flu_File_Chooser.cpp:4251
+#: gui/FLU/Flu_File_Chooser.cpp:4264 gui/FLU/Flu_File_Chooser.cpp:4649
+#: gui/FLU/Flu_File_Chooser.cpp:4700 gui/FLU/Flu_File_Chooser.cpp:4873
+#: gui/FLU/Flu_File_Chooser.cpp:4880 gui/FLU/Flu_File_Chooser.cpp:4889
 #: gui/mrvVersion.cpp:281
 msgid "*"
 msgstr ""
@@ -7266,7 +7258,7 @@ msgstr ""
 msgid "*\tc #FFFFFF"
 msgstr ""
 
-#: core/CMedia.cpp:4475 core/CMedia_audio.cpp:2377 core/aviImage.cpp:3816
+#: core/CMedia.cpp:4476 core/CMedia_audio.cpp:2377 core/aviImage.cpp:3799
 msgid "* "
 msgstr ""
 
@@ -7322,7 +7314,7 @@ msgstr ""
 msgid "*******Added EMPTY media"
 msgstr ""
 
-#: core/CMedia.cpp:4429 core/CMedia_audio.cpp:2333
+#: core/CMedia.cpp:4430 core/CMedia_audio.cpp:2333
 msgid "***EMPTY***"
 msgstr ""
 
@@ -7342,7 +7334,7 @@ msgstr ""
 msgid "*+\tc #EAC483"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4211 gui/FLU/Flu_File_Chooser.cpp:4220
+#: gui/FLU/Flu_File_Chooser.cpp:4243 gui/FLU/Flu_File_Chooser.cpp:4252
 msgid "*."
 msgstr ""
 
@@ -7382,7 +7374,7 @@ msgstr ""
 msgid "*;|[]?"
 msgstr ""
 
-#: core/CMedia.cpp:4511 core/CMedia_audio.cpp:2423 core/aviImage.cpp:3842
+#: core/CMedia.cpp:4512 core/CMedia_audio.cpp:2423 core/aviImage.cpp:3825
 #: core/iffImage.cpp:321
 msgid "+"
 msgstr ""
@@ -7647,7 +7639,7 @@ msgstr ""
 msgid "+@\tc #5C3E44"
 msgstr ""
 
-#: core/CMedia.cpp:4511 core/CMedia_audio.cpp:2423 core/aviImage.cpp:3842
+#: core/CMedia.cpp:4512 core/CMedia_audio.cpp:2423 core/aviImage.cpp:3825
 msgid "+ERROR:"
 msgstr ""
 
@@ -7687,7 +7679,7 @@ msgstr ""
 msgid "+pqrsiiiiiiiiittuuu+"
 msgstr ""
 
-#: core/aviImage_save.cpp:1000 core/aviImage_save.cpp:1424
+#: core/aviImage_save.cpp:1010 core/aviImage_save.cpp:1434
 msgid "+use_metadata_tags"
 msgstr ""
 
@@ -7856,7 +7848,7 @@ msgstr ", canales "
 msgid ", format "
 msgstr ", formato "
 
-#: core/aviImage_save.cpp:578 core/aviImage_save.cpp:585
+#: core/aviImage_save.cpp:582 core/aviImage_save.cpp:589
 msgid ", freq "
 msgstr ", frecuencia "
 
@@ -7868,7 +7860,7 @@ msgstr ""
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:3378 core/CMedia.cpp:3462 core/CMedia_audio.cpp:618
+#: core/CMedia.cpp:3377 core/CMedia.cpp:3461 core/CMedia_audio.cpp:618
 #: core/aviImage.cpp:2337
 msgid ", type "
 msgstr ", tipo "
@@ -7921,9 +7913,9 @@ msgstr ""
 msgid ",.'.@.).A !.,.%.~.{.].H N ).+. .>."
 msgstr ""
 
-#: core/CMedia_audio.cpp:2250 core/aviImage.cpp:1804 core/aviImage.cpp:3765
+#: core/CMedia_audio.cpp:2250 core/aviImage.cpp:1804 core/aviImage.cpp:3748
 #: gui/mrvTimecode.cpp:366 gui/mrvTimecode.cpp:474
-#: standalone/mrvCommandLine.cpp:474
+#: standalone/mrvCommandLine.cpp:475
 msgid "-"
 msgstr ""
 
@@ -8075,7 +8067,7 @@ msgstr ""
 msgid "-+\tc #FFD790"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "---"
 msgstr ""
 
@@ -8087,23 +8079,23 @@ msgstr ""
 msgid "------"
 msgstr ""
 
-#: core/CMedia.cpp:2831
+#: core/CMedia.cpp:2830
 msgid "------ SEEK STOPPED OR SAVING DO ACTUAL SEEK"
 msgstr ""
 
-#: core/aviImage.cpp:3277
+#: core/aviImage.cpp:3279
 msgid "------- FRAME DONE _dts: "
 msgstr ""
 
-#: core/CMedia.cpp:2809
+#: core/CMedia.cpp:2808
 msgid "------- SEEK "
 msgstr ""
 
-#: core/CMedia.cpp:2837
+#: core/CMedia.cpp:2836
 msgid "------- SEEK DONE "
 msgstr ""
 
-#: core/CMedia.cpp:2821
+#: core/CMedia.cpp:2820
 msgid "------- SEEK RIGHT EYE "
 msgstr ""
 
@@ -8111,7 +8103,7 @@ msgstr ""
 msgid "------------"
 msgstr ""
 
-#: core/aviImage.cpp:3184 core/aviImage.cpp:3214 core/aviImage.cpp:3217
+#: core/aviImage.cpp:3186 core/aviImage.cpp:3216 core/aviImage.cpp:3219
 msgid "------------------------------------------------------"
 msgstr ""
 
@@ -8123,7 +8115,7 @@ msgstr ""
 msgid "--stereo flag needs to be specified a multiple of two times."
 msgstr "La opción --stereo debe ser especificada en un múltiplo de dos veces."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "--x"
 msgstr ""
 
@@ -8163,21 +8155,21 @@ msgstr ""
 msgid "-d"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "-w-"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "-wx"
 msgstr ""
 
-#: core/CMedia.cpp:4172 core/CMedia_audio.cpp:954 core/aviImage_save.cpp:586
+#: core/CMedia.cpp:4173 core/CMedia_audio.cpp:954 core/aviImage_save.cpp:590
 #: core/exrImage.cpp:556 core/exrImage.cpp:875 core/stubImage.cpp:884
 #: core/wandImage.cpp:939 core/wandImage.cpp:1264 core/Sequence.cpp:103
 #: core/Sequence.cpp:330 core/Sequence.cpp:398 core/Sequence.cpp:410
 #: core/Sequence.cpp:432 core/Sequence.cpp:706
-#: gui/FLU/Flu_File_Chooser.cpp:1382 gui/FLU/Flu_File_Chooser.cpp:3572
-#: gui/FLU/Flu_File_Chooser.cpp:3927 gui/FLU/Flu_File_Chooser.cpp:4256
+#: gui/FLU/Flu_File_Chooser.cpp:1382 gui/FLU/Flu_File_Chooser.cpp:3604
+#: gui/FLU/Flu_File_Chooser.cpp:3959 gui/FLU/Flu_File_Chooser.cpp:4288
 #: gui/mrvImageView.cpp:8140 gui/mrvPreferences.cpp:534
 #: gui/mrvPreferences.cpp:966 gui/mrvVersion.cpp:548 gui/mrvVersion.cpp:549
 #: video/mrvGLEngine.cpp:530 video/mrvGLLut3d.cpp:1181
@@ -8639,8 +8631,8 @@ msgstr ""
 msgid ".-;>.//}|123^^^^^.  "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1382 gui/FLU/Flu_File_Chooser.cpp:3572
-#: gui/FLU/Flu_File_Chooser.cpp:3932 gui/FLU/Flu_File_Chooser.cpp:4256
+#: gui/FLU/Flu_File_Chooser.cpp:1382 gui/FLU/Flu_File_Chooser.cpp:3604
+#: gui/FLU/Flu_File_Chooser.cpp:3964 gui/FLU/Flu_File_Chooser.cpp:4288
 #: gui/mrvPreferences.cpp:966
 msgid ".."
 msgstr ""
@@ -8705,8 +8697,8 @@ msgstr ""
 msgid "....................."
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3573 gui/FLU/Flu_File_Chooser.cpp:3932
-#: gui/FLU/Flu_File_Chooser.cpp:4257
+#: gui/FLU/Flu_File_Chooser.cpp:3605 gui/FLU/Flu_File_Chooser.cpp:3964
+#: gui/FLU/Flu_File_Chooser.cpp:4289
 msgid "../"
 msgstr ""
 
@@ -8714,15 +8706,15 @@ msgstr ""
 msgid "..//////c)!~{].     "
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3574 gui/FLU/Flu_File_Chooser.cpp:3932
-#: gui/FLU/Flu_File_Chooser.cpp:4258
+#: gui/FLU/Flu_File_Chooser.cpp:3606 gui/FLU/Flu_File_Chooser.cpp:3964
+#: gui/FLU/Flu_File_Chooser.cpp:4290
 msgid "..\\"
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:1526 gui/FLU/Flu_File_Chooser.cpp:1556
-#: gui/FLU/Flu_File_Chooser.cpp:1563 gui/FLU/Flu_File_Chooser.cpp:3573
-#: gui/FLU/Flu_File_Chooser.cpp:3820 gui/FLU/Flu_File_Chooser.cpp:3927
-#: gui/FLU/Flu_File_Chooser.cpp:4147 gui/FLU/Flu_File_Chooser.cpp:4257
+#: gui/FLU/Flu_File_Chooser.cpp:1563 gui/FLU/Flu_File_Chooser.cpp:3605
+#: gui/FLU/Flu_File_Chooser.cpp:3852 gui/FLU/Flu_File_Chooser.cpp:3959
+#: gui/FLU/Flu_File_Chooser.cpp:4179 gui/FLU/Flu_File_Chooser.cpp:4289
 msgid "./"
 msgstr ""
 
@@ -8872,8 +8864,8 @@ msgstr ""
 msgid ".Z"
 msgstr "Z"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3574 gui/FLU/Flu_File_Chooser.cpp:3927
-#: gui/FLU/Flu_File_Chooser.cpp:4258
+#: gui/FLU/Flu_File_Chooser.cpp:3606 gui/FLU/Flu_File_Chooser.cpp:3959
+#: gui/FLU/Flu_File_Chooser.cpp:4290
 msgid ".\\"
 msgstr ""
 
@@ -8939,7 +8931,7 @@ msgstr ""
 msgid ".bmp"
 msgstr ""
 
-#: core/CMedia.cpp:4287 core/Sequence.cpp:243
+#: core/CMedia.cpp:4288 core/Sequence.cpp:243
 msgid ".cin"
 msgstr ""
 
@@ -8951,7 +8943,7 @@ msgstr "País"
 msgid ".ct"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4353 gui/mrvCTLBrowser.cpp:143
+#: gui/FLU/Flu_File_Chooser.cpp:4385 gui/mrvCTLBrowser.cpp:143
 #: gui/mrvPreferences.cpp:974
 msgid ".ctl"
 msgstr ""
@@ -8960,7 +8952,7 @@ msgstr ""
 msgid ".divx"
 msgstr ""
 
-#: core/CMedia.cpp:4286 core/aviImage.cpp:2786 core/wandImage.cpp:1607
+#: core/CMedia.cpp:4287 core/aviImage.cpp:2786 core/wandImage.cpp:1607
 #: core/oiioImage.cpp:108 core/Sequence.cpp:243
 msgid ".dpx"
 msgstr ""
@@ -9014,11 +9006,11 @@ msgstr ""
 msgid ".hdri"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4351
+#: gui/FLU/Flu_File_Chooser.cpp:4383
 msgid ".icc"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:4352
+#: gui/FLU/Flu_File_Chooser.cpp:4384
 msgid ".icm"
 msgstr ""
 
@@ -9098,7 +9090,7 @@ msgstr ""
 msgid ".nwwuuzy}}}}}}}}}}}."
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:467 gui/FLU/Flu_File_Chooser.cpp:4355
+#: gui/FLU/Flu_File_Chooser.cpp:467 gui/FLU/Flu_File_Chooser.cpp:4387
 msgid ".ocio"
 msgstr ""
 
@@ -9157,7 +9149,7 @@ msgstr ""
 
 #: gui/mrvImageBrowser.cpp:526 gui/mrvImageBrowser.cpp:528
 #: gui/mrvImageBrowser.cpp:905 gui/mrvImageBrowser.cpp:1739
-#: gui/mrvImageBrowser.cpp:1799 standalone/mrvCommandLine.cpp:486
+#: gui/mrvImageBrowser.cpp:1799 standalone/mrvCommandLine.cpp:487
 msgid ".reel"
 msgstr ""
 
@@ -9250,7 +9242,7 @@ msgstr ""
 msgid ".wmv"
 msgstr ""
 
-#: core/guessImage.cpp:389 gui/FLU/Flu_File_Chooser.cpp:4354
+#: core/guessImage.cpp:389 gui/FLU/Flu_File_Chooser.cpp:4386
 #: gui/mrvImageBrowser.cpp:1339
 msgid ".xml"
 msgstr ""
@@ -9271,31 +9263,31 @@ msgstr ""
 #: gui/FLU/Flu_File_Chooser.cpp:1074 gui/FLU/Flu_File_Chooser.cpp:1387
 #: gui/FLU/Flu_File_Chooser.cpp:1612 gui/FLU/Flu_File_Chooser.cpp:1643
 #: gui/FLU/Flu_File_Chooser.cpp:1923 gui/FLU/Flu_File_Chooser.cpp:2697
-#: gui/FLU/Flu_File_Chooser.cpp:3339 gui/FLU/Flu_File_Chooser.cpp:3389
-#: gui/FLU/Flu_File_Chooser.cpp:3390 gui/FLU/Flu_File_Chooser.cpp:3391
-#: gui/FLU/Flu_File_Chooser.cpp:3392 gui/FLU/Flu_File_Chooser.cpp:3393
-#: gui/FLU/Flu_File_Chooser.cpp:3402 gui/FLU/Flu_File_Chooser.cpp:3413
-#: gui/FLU/Flu_File_Chooser.cpp:3415 gui/FLU/Flu_File_Chooser.cpp:3416
-#: gui/FLU/Flu_File_Chooser.cpp:3418 gui/FLU/Flu_File_Chooser.cpp:3420
-#: gui/FLU/Flu_File_Chooser.cpp:3421 gui/FLU/Flu_File_Chooser.cpp:3423
-#: gui/FLU/Flu_File_Chooser.cpp:3425 gui/FLU/Flu_File_Chooser.cpp:3426
-#: gui/FLU/Flu_File_Chooser.cpp:3428 gui/FLU/Flu_File_Chooser.cpp:3473
-#: gui/FLU/Flu_File_Chooser.cpp:3476 gui/FLU/Flu_File_Chooser.cpp:3478
-#: gui/FLU/Flu_File_Chooser.cpp:3492 gui/FLU/Flu_File_Chooser.cpp:3494
-#: gui/FLU/Flu_File_Chooser.cpp:3496 gui/FLU/Flu_File_Chooser.cpp:3550
-#: gui/FLU/Flu_File_Chooser.cpp:3552 gui/FLU/Flu_File_Chooser.cpp:3583
-#: gui/FLU/Flu_File_Chooser.cpp:3614 gui/FLU/Flu_File_Chooser.cpp:3619
-#: gui/FLU/Flu_File_Chooser.cpp:3626 gui/FLU/Flu_File_Chooser.cpp:3628
-#: gui/FLU/Flu_File_Chooser.cpp:3841 gui/FLU/Flu_File_Chooser.cpp:3949
-#: gui/FLU/Flu_File_Chooser.cpp:3956 gui/FLU/Flu_File_Chooser.cpp:3960
-#: gui/FLU/Flu_File_Chooser.cpp:3997 gui/FLU/Flu_File_Chooser.cpp:3999
-#: gui/FLU/Flu_File_Chooser.cpp:4005 gui/FLU/Flu_File_Chooser.cpp:4012
-#: gui/FLU/Flu_File_Chooser.cpp:4092 gui/FLU/Flu_File_Chooser.cpp:4095
-#: gui/FLU/Flu_File_Chooser.cpp:4123 gui/FLU/Flu_File_Chooser.cpp:4132
-#: gui/FLU/Flu_File_Chooser.cpp:4134 gui/FLU/Flu_File_Chooser.cpp:4156
-#: gui/FLU/Flu_File_Chooser.cpp:4164 gui/FLU/Flu_File_Chooser.cpp:4165
-#: gui/FLU/Flu_File_Chooser.cpp:4167 gui/FLU/Flu_File_Chooser.cpp:4170
-#: gui/FLU/Flu_File_Chooser.cpp:4631 gui/mrvImageView.cpp:4341
+#: gui/FLU/Flu_File_Chooser.cpp:3371 gui/FLU/Flu_File_Chooser.cpp:3421
+#: gui/FLU/Flu_File_Chooser.cpp:3422 gui/FLU/Flu_File_Chooser.cpp:3423
+#: gui/FLU/Flu_File_Chooser.cpp:3424 gui/FLU/Flu_File_Chooser.cpp:3425
+#: gui/FLU/Flu_File_Chooser.cpp:3434 gui/FLU/Flu_File_Chooser.cpp:3445
+#: gui/FLU/Flu_File_Chooser.cpp:3447 gui/FLU/Flu_File_Chooser.cpp:3448
+#: gui/FLU/Flu_File_Chooser.cpp:3450 gui/FLU/Flu_File_Chooser.cpp:3452
+#: gui/FLU/Flu_File_Chooser.cpp:3453 gui/FLU/Flu_File_Chooser.cpp:3455
+#: gui/FLU/Flu_File_Chooser.cpp:3457 gui/FLU/Flu_File_Chooser.cpp:3458
+#: gui/FLU/Flu_File_Chooser.cpp:3460 gui/FLU/Flu_File_Chooser.cpp:3505
+#: gui/FLU/Flu_File_Chooser.cpp:3508 gui/FLU/Flu_File_Chooser.cpp:3510
+#: gui/FLU/Flu_File_Chooser.cpp:3524 gui/FLU/Flu_File_Chooser.cpp:3526
+#: gui/FLU/Flu_File_Chooser.cpp:3528 gui/FLU/Flu_File_Chooser.cpp:3582
+#: gui/FLU/Flu_File_Chooser.cpp:3584 gui/FLU/Flu_File_Chooser.cpp:3615
+#: gui/FLU/Flu_File_Chooser.cpp:3646 gui/FLU/Flu_File_Chooser.cpp:3651
+#: gui/FLU/Flu_File_Chooser.cpp:3658 gui/FLU/Flu_File_Chooser.cpp:3660
+#: gui/FLU/Flu_File_Chooser.cpp:3873 gui/FLU/Flu_File_Chooser.cpp:3981
+#: gui/FLU/Flu_File_Chooser.cpp:3988 gui/FLU/Flu_File_Chooser.cpp:3992
+#: gui/FLU/Flu_File_Chooser.cpp:4029 gui/FLU/Flu_File_Chooser.cpp:4031
+#: gui/FLU/Flu_File_Chooser.cpp:4037 gui/FLU/Flu_File_Chooser.cpp:4044
+#: gui/FLU/Flu_File_Chooser.cpp:4124 gui/FLU/Flu_File_Chooser.cpp:4127
+#: gui/FLU/Flu_File_Chooser.cpp:4155 gui/FLU/Flu_File_Chooser.cpp:4164
+#: gui/FLU/Flu_File_Chooser.cpp:4166 gui/FLU/Flu_File_Chooser.cpp:4188
+#: gui/FLU/Flu_File_Chooser.cpp:4196 gui/FLU/Flu_File_Chooser.cpp:4197
+#: gui/FLU/Flu_File_Chooser.cpp:4199 gui/FLU/Flu_File_Chooser.cpp:4202
+#: gui/FLU/Flu_File_Chooser.cpp:4663 gui/mrvImageView.cpp:4341
 #: gui/mrvImageBrowser.cpp:2175 gui/mrvImageInformation.cpp:710
 #: gui/mrvPreferences.cpp:970 gui/mrvPreferences.cpp:1619
 #: gui/mrvPreferences.cpp:1640 standalone/mrvRoot.cpp:133
@@ -9476,11 +9468,11 @@ msgstr ""
 msgid "///////////////////\n"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3563 gui/FLU/Flu_File_Chooser.cpp:3581
+#: gui/FLU/Flu_File_Chooser.cpp:3595 gui/FLU/Flu_File_Chooser.cpp:3613
 msgid "/Volumes/"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3615
+#: gui/FLU/Flu_File_Chooser.cpp:3647
 msgid "/boot"
 msgstr ""
 
@@ -9496,7 +9488,7 @@ msgstr ""
 msgid "/cygdrive/"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3600
+#: gui/FLU/Flu_File_Chooser.cpp:3632
 msgid "/etc/fstab"
 msgstr ""
 
@@ -9504,7 +9496,7 @@ msgstr ""
 msgid "/ocio/nuke-default/config.ocio"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3616
+#: gui/FLU/Flu_File_Chooser.cpp:3648
 msgid "/proc"
 msgstr ""
 
@@ -9701,18 +9693,18 @@ msgstr ""
 msgid "0123456789"
 msgstr ""
 
-#: core/Sequence.cpp:689 standalone/mrvCommandLine.cpp:471
+#: core/Sequence.cpp:689 standalone/mrvCommandLine.cpp:472
 msgid "0123456789-"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:216
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:241
-#: core/CMedia.cpp:3255 core/CMedia.cpp:3297
+#: core/CMedia.cpp:3254 core/CMedia.cpp:3296
 #, c-format
 msgid "0x%04x"
 msgstr ""
 
-#: core/CMedia.cpp:3215
+#: core/CMedia.cpp:3214
 #, c-format
 msgid "0x%08x"
 msgstr ""
@@ -9990,7 +9982,7 @@ msgid "16 audio buffers"
 msgstr ""
 
 #
-#: core/CMedia.cpp:4255
+#: core/CMedia.cpp:4256
 msgid "16 bits"
 msgstr ""
 
@@ -10486,7 +10478,7 @@ msgstr "30"
 msgid "32"
 msgstr ""
 
-#: core/CMedia.cpp:4262
+#: core/CMedia.cpp:4263
 msgid "32 bits"
 msgstr ""
 
@@ -10908,7 +10900,7 @@ msgid "5.\tc #BEA26D"
 msgstr ""
 
 #: gui/mrvVersion.cpp:106
-msgid "5.1.2"
+msgid "5.1.4"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:144
@@ -11285,7 +11277,7 @@ msgstr ""
 msgid "8 bit Caches"
 msgstr "Caches de 8 bits"
 
-#: core/CMedia.cpp:4248
+#: core/CMedia.cpp:4249
 msgid "8 bits"
 msgstr ""
 
@@ -11540,7 +11532,7 @@ msgid ":\tc #FFFFFF"
 msgstr ""
 
 #: core/CMedia.cpp:3861 core/CMedia_audio.cpp:2246 core/aviImage.cpp:607
-#: core/aviImage.cpp:937 core/aviImage.cpp:3726 core/aviImage.cpp:3755
+#: core/aviImage.cpp:937 core/aviImage.cpp:3709 core/aviImage.cpp:3738
 #: core/wandImage.cpp:90 core/rawImage.cpp:64 core/rawImage.cpp:147
 #: gui/FLU/Flu_File_Chooser.cpp:2379 gui/FLU/Flu_File_Chooser.cpp:2384
 #: gui/FLU/Flu_File_Chooser.cpp:2390 gui/FLU/Flu_File_Chooser.cpp:2394
@@ -12007,7 +11999,7 @@ msgstr ""
 msgid "<PRId64>"
 msgstr " CNM: %<PRId64> "
 
-#: core/CMedia.cpp:4506 core/aviImage.cpp:3837
+#: core/CMedia.cpp:4507 core/aviImage.cpp:3820
 msgid "<SEEK END:"
 msgstr ""
 
@@ -12015,7 +12007,7 @@ msgstr ""
 msgid "<SEEK END: "
 msgstr ""
 
-#: core/CMedia.cpp:4516 core/CMedia_audio.cpp:2428 core/aviImage.cpp:3847
+#: core/CMedia.cpp:4517 core/CMedia_audio.cpp:2428 core/aviImage.cpp:3830
 msgid "<SEEK:"
 msgstr ""
 
@@ -12215,9 +12207,9 @@ msgstr ""
 msgid "=d"
 msgstr ""
 
-#: core/CMedia.cpp:4506 core/CMedia.cpp:4516 core/CMedia_audio.cpp:2412
-#: core/CMedia_audio.cpp:2416 core/CMedia_audio.cpp:2428 core/aviImage.cpp:3837
-#: core/aviImage.cpp:3847
+#: core/CMedia.cpp:4507 core/CMedia.cpp:4517 core/CMedia_audio.cpp:2412
+#: core/CMedia_audio.cpp:2416 core/CMedia_audio.cpp:2428 core/aviImage.cpp:3820
+#: core/aviImage.cpp:3830
 msgid ">"
 msgstr ""
 
@@ -12818,15 +12810,15 @@ msgstr ""
 msgid "A.k.B.n.C.D.E.F.F.1 G.$.3.].H.I.J."
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3497
+#: gui/FLU/Flu_File_Chooser.cpp:3529
 msgid "A:"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3448 gui/FLU/Flu_File_Chooser.cpp:4024
+#: gui/FLU/Flu_File_Chooser.cpp:3480 gui/FLU/Flu_File_Chooser.cpp:4056
 msgid "A:/"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3498
+#: gui/FLU/Flu_File_Chooser.cpp:3530
 msgid "A:\\"
 msgstr ""
 
@@ -12859,12 +12851,12 @@ msgstr ""
 msgid "ACEScsc.ACEScg_to_ACES"
 msgstr ""
 
-#: core/CMedia.cpp:3845 core/CMedia.cpp:3849 core/aviImage.cpp:3396
-#: core/aviImage.cpp:3400
+#: core/CMedia.cpp:3845 core/CMedia.cpp:3849 core/aviImage.cpp:3398
+#: core/aviImage.cpp:3402
 msgid "AFTER HSEEK"
 msgstr ""
 
-#: core/aviImage.cpp:4271 core/aviImage.cpp:4275
+#: core/aviImage.cpp:4254 core/aviImage.cpp:4258
 msgid "AFTER PREROLL"
 msgstr ""
 
@@ -12885,7 +12877,7 @@ msgstr "Imagen"
 msgid "ALPHA"
 msgstr "ALFA"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3296
+#: gui/FLU/Flu_File_Chooser.cpp:3328
 msgid "AM"
 msgstr ""
 
@@ -13099,7 +13091,7 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1951 core/CMedia.cpp:2034 core/exrImage.cpp:3001
+#: core/CMedia.cpp:1950 core/CMedia.cpp:2033 core/exrImage.cpp:3001
 #: core/stubImage.cpp:1014 core/wandImage.cpp:1170 gui/mrvImageView.cpp:202
 #: gui/mrvImageView.cpp:7717 gui/mrvImageView.cpp:8140
 #: gui/mrvImageView.cpp:8202
@@ -13110,7 +13102,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "Alfa Sobreimpreso"
 
-#: core/CMedia.cpp:1953 core/CMedia.cpp:2034 core/exrImage.cpp:2999
+#: core/CMedia.cpp:1952 core/CMedia.cpp:2033 core/exrImage.cpp:2999
 #: core/stubImage.cpp:1014 core/wandImage.cpp:1168 gui/mrvImageView.cpp:203
 #: gui/mrvImageView.cpp:1632 gui/mrvImageView.cpp:7698
 #: gui/mrvImageView.cpp:8203
@@ -13209,7 +13201,7 @@ msgstr "Apertura"
 msgid "Apply: "
 msgstr "Aplicar: "
 
-#: gui/FLU/Flu_File_Chooser.cpp:3286
+#: gui/FLU/Flu_File_Chooser.cpp:3318
 msgid "Apr"
 msgstr "Abr"
 
@@ -13305,8 +13297,8 @@ msgid "Audio"
 msgstr "Audio"
 
 #
-#: core/CMedia_audio.cpp:712 core/aviImage.cpp:2751 core/aviImage_save.cpp:496
-#: core/aviImage_save.cpp:1030
+#: core/CMedia_audio.cpp:712 core/aviImage.cpp:2751 core/aviImage_save.cpp:500
+#: core/aviImage_save.cpp:1040
 msgid "Audio "
 msgstr "Audio "
 
@@ -13327,7 +13319,7 @@ msgstr "Pistas de Audio"
 msgid "Audio Volume"
 msgstr "Volumen de Audio"
 
-#: core/aviImage_save.cpp:576
+#: core/aviImage_save.cpp:580
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
@@ -13335,7 +13327,7 @@ msgstr "Conversion de audio de "
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
-#: core/aviImage_save.cpp:650
+#: core/aviImage_save.cpp:654
 msgid "Audio frame has NOPTS value."
 msgstr "Cuadro de audio "
 
@@ -13377,7 +13369,7 @@ msgstr "Audios\t*.{"
 msgid "Audios #"
 msgstr "Audios #"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3290
+#: gui/FLU/Flu_File_Chooser.cpp:3322
 msgid "Aug"
 msgstr "Ago"
 
@@ -13521,11 +13513,11 @@ msgstr ""
 msgid "B44A"
 msgstr ""
 
-#: core/aviImage.cpp:3312 core/aviImage.cpp:3316
+#: core/aviImage.cpp:3314 core/aviImage.cpp:3318
 msgid "BEFORE HSEEK"
 msgstr ""
 
-#: core/aviImage.cpp:4193 core/aviImage.cpp:4197
+#: core/aviImage.cpp:4176 core/aviImage.cpp:4180
 msgid "BEFORE PREROLL"
 msgstr ""
 
@@ -13543,9 +13535,9 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:276
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvReelUI.cxx:175
-#: core/mrvPlayback.cpp:618 core/mrvPlayback.cpp:789 core/mrvPlayback.cpp:990
-#: core/mrvPlayback.cpp:1236 core/mrvPlayback.cpp:1285
-#: core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:626 core/mrvPlayback.cpp:798 core/mrvPlayback.cpp:999
+#: core/mrvPlayback.cpp:1249 core/mrvPlayback.cpp:1298
+#: core/mrvPlayback.cpp:1381
 msgid "BG"
 msgstr "FD"
 
@@ -13608,7 +13600,7 @@ msgstr ""
 msgid "BT709"
 msgstr ""
 
-#: core/CMedia.cpp:2103 core/exrImage.cpp:316 core/exrImage.cpp:834
+#: core/CMedia.cpp:2102 core/exrImage.cpp:316 core/exrImage.cpp:834
 #: core/exrImage.cpp:836 core/exrImage.cpp:870 core/exrImage.cpp:1946
 #: core/exrImage.cpp:1948 core/exrImage.cpp:2741 core/exrImage.cpp:2948
 #: core/exrImage.cpp:3007 core/exrImage.cpp:3353 core/wandImage.cpp:1171
@@ -13625,7 +13617,7 @@ msgid "Background"
 msgstr "Fondo"
 
 #
-#: core/mrvPlayback.cpp:962
+#: core/mrvPlayback.cpp:971
 msgid ""
 "Background image duration is too short.  Looping may not work correctly."
 msgstr ""
@@ -13633,7 +13625,7 @@ msgstr ""
 "funcionar correctamente."
 
 #
-#: core/mrvPlayback.cpp:969
+#: core/mrvPlayback.cpp:978
 #, c-format
 msgid ""
 "Background image play fps ( %lg ) does not match foreground's ( %lg ).  "
@@ -13642,13 +13634,13 @@ msgstr ""
 "Los cps de la imagen de fondo ( %lg ) no es igual a la del frente ( %lg ). "
 "Repetir en ciclos no funcionará correctamente."
 
-#: core/mrvPlayback.cpp:946
+#: core/mrvPlayback.cpp:955
 msgid "Background reel duration is too short.  Looping may not work correctly."
 msgstr ""
 "El carrete de fondo es muy corto.  Repetir en ciclos puede no funcionar "
 "correctamente."
 
-#: core/mrvPlayback.cpp:936
+#: core/mrvPlayback.cpp:945
 msgid ""
 "Background reel has several images and has EDL turned on.  This is not "
 "allowed.  Turning edl off."
@@ -13718,7 +13710,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2026
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:37
-#: core/CMedia.cpp:1967 core/CMedia.cpp:2033 core/exrImage.cpp:3001
+#: core/CMedia.cpp:1966 core/CMedia.cpp:2032 core/exrImage.cpp:3001
 #: core/stubImage.cpp:1014 core/wandImage.cpp:1170 gui/mrvImageView.cpp:201
 #: gui/mrvImageView.cpp:7712 gui/mrvImageView.cpp:8201
 msgid "Blue"
@@ -14086,7 +14078,7 @@ msgstr "Cancelar"
 msgid "Cancel the OCIO selection and don't change anything."
 msgstr "Cancelar la seleccion del archivo CTL y no cambie nada."
 
-#: core/aviImage_save.cpp:708
+#: core/aviImage_save.cpp:712
 msgid "Cannot allocate dst samples"
 msgstr "No puedo asignar dst samples"
 
@@ -14253,7 +14245,7 @@ msgstr "Nombre de Cromaticidades"
 msgid "Cinemascope"
 msgstr "Cinemascope"
 
-#: core/CMedia.cpp:4290
+#: core/CMedia.cpp:4291
 msgid "Cineon"
 msgstr "Imagen Cineon"
 
@@ -14316,7 +14308,7 @@ msgstr ""
 msgid "CloneImageAll \"%s\""
 msgstr ""
 
-#: gui/mrvElement.cpp:77
+#: gui/mrvElement.cpp:79
 #, c-format
 msgid ""
 "Cloned Image\n"
@@ -14333,7 +14325,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: core/aviImage_save.cpp:1663
+#: core/aviImage_save.cpp:1673
 msgid "Closed movie file"
 msgstr "Cerré la creación de la película o secuencia"
 
@@ -14353,7 +14345,7 @@ msgstr ""
 msgid "Codec"
 msgstr "Codec"
 
-#: core/aviImage_save.cpp:1362
+#: core/aviImage_save.cpp:1372
 msgid "Codec "
 msgstr "Codec"
 
@@ -14376,7 +14368,7 @@ msgstr ""
 msgid "Codec Name"
 msgstr "Nombre del Codec"
 
-#: core/aviImage_save.cpp:666
+#: core/aviImage_save.cpp:670
 msgid "Codec has variable frame size.  Setting it to "
 msgstr ""
 
@@ -14394,7 +14386,7 @@ msgstr " no encontrado"
 
 #
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:209
-#: core/CMedia.cpp:1964 core/CMedia.cpp:2032 core/exrImage.cpp:2746
+#: core/CMedia.cpp:1963 core/CMedia.cpp:2031 core/exrImage.cpp:2746
 #: core/exrImage.cpp:3003 core/exrImage.cpp:3011 core/exrImage.cpp:3023
 #: core/exrImage.cpp:3028 core/exrImage.cpp:3030 core/exrImage.cpp:3068
 #: core/exrImage.cpp:3100 core/stubImage.cpp:1013 core/wandImage.cpp:1129
@@ -14624,20 +14616,20 @@ msgstr ""
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
 
-#: core/aviImage_save.cpp:552
+#: core/aviImage_save.cpp:556
 msgid "Could not alloc swr_ctx"
 msgstr "No pude asignar swr_ctx"
 
-#: core/aviImage_save.cpp:462
+#: core/aviImage_save.cpp:467
 msgid "Could not allocate audio frame"
 msgstr "No pude alojar cuadro de audio"
 
-#: core/aviImage_save.cpp:602
+#: core/aviImage_save.cpp:606
 msgid "Could not allocate destination samples"
 msgstr "No pude asignar samples de destino"
 
 #
-#: core/aviImage_save.cpp:678
+#: core/aviImage_save.cpp:682
 msgid "Could not allocate fifo buffer"
 msgstr "No pude reservar fifo buffer"
 
@@ -14650,19 +14642,19 @@ msgstr "No pude alojar cuadro de filtro de video.  No hay memoria suficiente."
 msgid "Could not allocate new element"
 msgstr "No pude alojar pista"
 
-#: core/aviImage_save.cpp:525
+#: core/aviImage_save.cpp:529
 msgid "Could not allocate output frame samples. Error: "
 msgstr "No pude asignar samples de cuadro de salida.  Error:"
 
-#: core/aviImage_save.cpp:1060
+#: core/aviImage_save.cpp:1070
 msgid "Could not allocate picture"
 msgstr "No pude assignar imagen"
 
-#: core/aviImage_save.cpp:927
+#: core/aviImage_save.cpp:937
 msgid "Could not allocate raw picture buffer"
 msgstr "No pude asignar el buffer de imagen"
 
-#: core/aviImage_save.cpp:536
+#: core/aviImage_save.cpp:540
 msgid "Could not allocate source samples. Error: "
 msgstr "No pude asignar samples de fuente.  Error:"
 
@@ -14674,7 +14666,7 @@ msgstr "No pude alojar pista"
 msgid "Could not clone subtitle frame"
 msgstr "No pude clonar cuadro de subtítulos"
 
-#: core/aviImage_save.cpp:478 core/aviImage_save.cpp:1011
+#: core/aviImage_save.cpp:483 core/aviImage_save.cpp:1021
 msgid "Could not copy context to parameters"
 msgstr "No pude copiar el contexto a los parámetros"
 
@@ -14711,7 +14703,7 @@ msgstr "No pude crear dibujo en miniatura para '"
 msgid "Could not create wand"
 msgstr "No pude crear varita"
 
-#: core/aviImage.cpp:4175
+#: core/aviImage.cpp:4158
 msgid "Could not decode subtitle frame "
 msgstr "No pude clonar cuadro de subtítulos"
 
@@ -14719,7 +14711,7 @@ msgstr "No pude clonar cuadro de subtítulos"
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video "
 
-#: core/aviImage_save.cpp:1319
+#: core/aviImage_save.cpp:1329
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 "No pude deducir el formato de salida de la extensión del archivo: usando "
@@ -14731,7 +14723,7 @@ msgstr ""
 msgid "Could not deselect all"
 msgstr "No pude deseleccionar todo"
 
-#: core/aviImage.cpp:4145
+#: core/aviImage.cpp:4128
 msgid "Could not determine pts for subtitle frame, using "
 msgstr "No pude clonar cuadro de subtítulos"
 
@@ -14739,7 +14731,7 @@ msgstr "No pude clonar cuadro de subtítulos"
 msgid "Could not draw image"
 msgstr "No pude dibujar imagen"
 
-#: core/aviImage_save.cpp:810 core/aviImage_save.cpp:1539
+#: core/aviImage_save.cpp:820 core/aviImage_save.cpp:1549
 msgid "Could not encode audio frame: "
 msgstr "No pude codificar cuadro de audio:"
 
@@ -14804,7 +14796,7 @@ msgid "Could not find four integers for box "
 msgstr "No pude encontrar cuatro enteros para la caja "
 
 #
-#: core/mrvPlayback.cpp:1212
+#: core/mrvPlayback.cpp:1225
 msgid "Could not find image "
 msgstr "No pude encontrar imagen "
 
@@ -15009,7 +15001,7 @@ msgstr "No pude abrir \""
 msgid "Could not open \"%s\""
 msgstr "No pude abrir \"%s\""
 
-#: core/aviImage_save.cpp:1417
+#: core/aviImage_save.cpp:1427
 msgid "Could not open '"
 msgstr "No pude abrir '"
 
@@ -15025,7 +15017,7 @@ msgstr "No pude localizar el perfil ICC dentro de \""
 msgid "Could not open any font of size "
 msgstr "No pude abrir ningun font de tamaño "
 
-#: core/aviImage_save.cpp:471
+#: core/aviImage_save.cpp:476
 msgid "Could not open audio codec"
 msgstr "No pude abrir el codec de audio"
 
@@ -15037,7 +15029,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
-#: core/aviImage_save.cpp:1324
+#: core/aviImage_save.cpp:1334
 msgid "Could not open mpeg movie"
 msgstr "No pude abrir película mpeg"
 
@@ -15045,7 +15037,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open shadow map image."
 msgstr "No pude cargar imagen de mapeo de sombras"
 
-#: core/aviImage_save.cpp:1004
+#: core/aviImage_save.cpp:1014
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
@@ -15063,13 +15055,18 @@ msgstr "No pude tocar cuadro de audio "
 msgid "Could not profile image"
 msgstr "No pude encontrar imagen "
 
-#: core/aviImage_save.cpp:1527
+#: core/aviImage_save.cpp:1537
 msgid "Could not read audio fifo: "
 msgstr "No pude leer audio fifo: "
 
-#: core/aviImage_save.cpp:798
+#: core/aviImage_save.cpp:808
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr "No pude leer samples del fifo buffer.  Error: "
+
+#: core/aviImage_save.cpp:755
+#, fuzzy
+msgid "Could not realloc fifo buffer. Error: "
+msgstr "No pude escribir al buffer fifo. Error: "
 
 #: standalone/main.cpp:145 standalone/main.cpp:264
 msgid "Could not remove lock file"
@@ -15097,7 +15094,7 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:2503 core/CMedia_audio.cpp:419 core/aviImage.cpp:935
+#: core/CMedia.cpp:2502 core/CMedia_audio.cpp:419 core/aviImage.cpp:935
 #: core/aviImage.cpp:952
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
@@ -15127,11 +15124,11 @@ msgstr "No pude establecer transformaciones en la GUI"
 msgid "Could not unmap pixel buffer #"
 msgstr "No pude alojar pixels para "
 
-#: core/aviImage_save.cpp:770
+#: core/aviImage_save.cpp:780
 msgid "Could not write to fifo buffer. Error:"
 msgstr "No pude escribir al buffer fifo. Error:"
 
-#: core/aviImage_save.cpp:754
+#: core/aviImage_save.cpp:764
 msgid "Could not write to fifo buffer. Error: "
 msgstr "No pude escribir al buffer fifo. Error: "
 
@@ -15498,9 +15495,9 @@ msgstr "Cortar Clip en el lugar actual"
 msgid "Cyan/red glasses"
 msgstr "Lentes Cian/rojo"
 
-#: core/CMedia.cpp:3871 core/CMedia.cpp:4527 core/CMedia_audio.cpp:2261
-#: core/CMedia_audio.cpp:2443 core/aviImage.cpp:3735 core/aviImage.cpp:3782
-#: core/aviImage.cpp:3858
+#: core/CMedia.cpp:3871 core/CMedia.cpp:4528 core/CMedia_audio.cpp:2261
+#: core/CMedia_audio.cpp:2443 core/aviImage.cpp:3718 core/aviImage.cpp:3765
+#: core/aviImage.cpp:3841
 msgid "D"
 msgstr ""
 
@@ -15611,6 +15608,11 @@ msgstr ""
 
 #: gui/mrvIO.cpp:106
 msgid "DEBUG LOG"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:450
+#, c-format
+msgid "DEBUG: %d\n"
 msgstr ""
 
 #: core/CMedia_audio.cpp:2042 core/CMedia_audio.cpp:2046
@@ -15752,47 +15754,47 @@ msgstr ""
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/CMedia.cpp:171 core/CMedia.cpp:4579
+#: core/CMedia.cpp:171 core/CMedia.cpp:4580
 msgid "Decode Buffer Full"
 msgstr "Buffer de Decodificación Lleno"
 
-#: core/CMedia.cpp:165 core/CMedia.cpp:4561
+#: core/CMedia.cpp:165 core/CMedia.cpp:4562
 msgid "Decode Done"
 msgstr "Decodificación Terminada"
 
-#: core/CMedia.cpp:166 core/CMedia.cpp:4564
+#: core/CMedia.cpp:166 core/CMedia.cpp:4565
 msgid "Decode Error"
 msgstr "Error de Decodificación"
 
-#: core/CMedia.cpp:170 core/CMedia.cpp:4576
+#: core/CMedia.cpp:170 core/CMedia.cpp:4577
 msgid "Decode Loop End"
 msgstr "Loop de Final en Decodificación"
 
-#: core/CMedia.cpp:169 core/CMedia.cpp:4573
+#: core/CMedia.cpp:169 core/CMedia.cpp:4574
 msgid "Decode Loop Start"
 msgstr "Loop de Comienzo en Decodificación"
 
-#: core/CMedia.cpp:163 core/CMedia.cpp:4555
+#: core/CMedia.cpp:163 core/CMedia.cpp:4556
 msgid "Decode Missing Frame"
 msgstr "Decodificación Faltante de Cuadro"
 
-#: core/CMedia.cpp:167 core/CMedia.cpp:4567
+#: core/CMedia.cpp:167 core/CMedia.cpp:4568
 msgid "Decode Missing Samples"
 msgstr "Decodificacion Faltante de Samples"
 
-#: core/CMedia.cpp:168 core/CMedia.cpp:4570
+#: core/CMedia.cpp:168 core/CMedia.cpp:4571
 msgid "Decode No Stream"
 msgstr "Decodificacion sin Pista"
 
-#: core/CMedia.cpp:164 core/CMedia.cpp:4558
+#: core/CMedia.cpp:164 core/CMedia.cpp:4559
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:2213 core/aviImage.cpp:3905
+#: core/CMedia_audio.cpp:2213 core/aviImage.cpp:3888
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3919
+#: core/aviImage.cpp:3902
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -15920,12 +15922,12 @@ msgstr ""
 msgid "Device"
 msgstr "Dispositivos"
 
-#: core/aviImage_save.cpp:757
+#: core/aviImage_save.cpp:767
 msgid "Did not write all dst samples to fifo. Error: "
 msgstr "No pude escribir todos los dst samples al fifo buffer.  Error: "
 
 #
-#: core/aviImage_save.cpp:773
+#: core/aviImage_save.cpp:783
 msgid "Did not write all src samples to fifo. Error: "
 msgstr "No pude escribir todos los src samples al fifo buffer.  Error: "
 
@@ -15955,7 +15957,7 @@ msgstr "Carpeta "
 msgid "Directory where clip resides"
 msgstr "Directorio donde el clip reside"
 
-#: gui/mrvElement.cpp:90
+#: gui/mrvElement.cpp:92
 #, c-format
 msgid ""
 "Directory: %s\n"
@@ -15972,7 +15974,7 @@ msgstr ""
 msgid "Disconnect"
 msgstr "Desconectar"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3516
+#: gui/FLU/Flu_File_Chooser.cpp:3548
 msgid "Disk"
 msgstr "Disco RAM"
 
@@ -16089,7 +16091,7 @@ msgid "Duration of Video"
 msgstr "Duración del Vídeo"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2089
-#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2107
+#: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2108
 msgid "E"
 msgstr "E"
 
@@ -16227,23 +16229,23 @@ msgstr ""
 msgid "END"
 msgstr "ROJO"
 
-#: core/mrvPlayback.cpp:618 core/mrvPlayback.cpp:990 core/mrvPlayback.cpp:1285
+#: core/mrvPlayback.cpp:626 core/mrvPlayback.cpp:999 core/mrvPlayback.cpp:1298
 msgid "ENTER "
 msgstr ""
 
-#: core/mrvPlayback.cpp:832
+#: core/mrvPlayback.cpp:841
 msgid "ENTER SUBTITLE THREAD "
 msgstr ""
 
-#: core/mrvPlayback.cpp:789
+#: core/mrvPlayback.cpp:798
 msgid "EXIT "
 msgstr ""
 
-#: core/mrvPlayback.cpp:1236 core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:1249 core/mrvPlayback.cpp:1381
 msgid "EXIT  "
 msgstr ""
 
-#: core/mrvPlayback.cpp:887
+#: core/mrvPlayback.cpp:896
 msgid "EXIT  SUBTITLE THREAD "
 msgstr ""
 
@@ -16285,19 +16287,19 @@ msgstr "Vacía busqueda o preroll"
 
 #: gui/mrvImageBrowser.cpp:831
 msgid "Empty image in media passed to media_to_pathname"
-msgstr ""
+msgstr "Imagen vacía de medio pasada a media_to_pathname"
 
-#: gui/mrvElement.cpp:28
+#: gui/mrvElement.cpp:30
 msgid "Empty image in thumbnail"
-msgstr ""
+msgstr "Imagen vacía en postal"
 
-#: gui/mrvElement.cpp:56
+#: gui/mrvElement.cpp:58
 msgid "Empty image provided to Element constructor"
-msgstr ""
+msgstr "Imagen vacía provista en el constructor de Element"
 
 #: gui/mrvImageBrowser.cpp:833
 msgid "Empty img->fileroot() passed to media_to_pathname"
-msgstr ""
+msgstr "img->fileroot() vacío pasado a media_to_pathname"
 
 #: gui/mrvImageBrowser.cpp:2865
 msgid "Empty media passed to media_to_item"
@@ -16307,12 +16309,12 @@ msgstr ""
 msgid "Empty media passed to media_to_pathname"
 msgstr ""
 
-#: gui/mrvElement.cpp:48
+#: gui/mrvElement.cpp:50
 msgid "Empty media provided to Element constructor"
 msgstr ""
 
 #
-#: core/aviImage.cpp:3375
+#: core/aviImage.cpp:3377
 msgid "Empty packets for video seek."
 msgstr "Paquetes vacíos para búsqueda de video."
 
@@ -16320,7 +16322,7 @@ msgstr "Paquetes vacíos para búsqueda de video."
 msgid "Empty pic file for media "
 msgstr "Dibujo vacío para media "
 
-#: core/aviImage.cpp:3391 core/aviImage.cpp:4267
+#: core/aviImage.cpp:3393 core/aviImage.cpp:4250
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -16369,7 +16371,7 @@ msgstr "Herramienta de Borrado"
 msgid "Error configuring filter graph"
 msgstr "Error configurando la gráfica de filtros"
 
-#: core/aviImage_save.cpp:1430
+#: core/aviImage_save.cpp:1440
 msgid "Error occurred when opening output file: "
 msgstr "Un error ocurrió al abrir el archivo de salida: "
 
@@ -16381,11 +16383,11 @@ msgstr "Error en mandar: "
 msgid "Error parsing filter description"
 msgstr "Error interpretando la descripción del filtro"
 
-#: core/aviImage_save.cpp:724
+#: core/aviImage_save.cpp:728
 msgid "Error while converting audio: "
 msgstr "Error mientras se convertia el audio: "
 
-#: core/aviImage_save.cpp:1201
+#: core/aviImage_save.cpp:1211
 msgid "Error while encoding video frame: "
 msgstr "Error codificando el cuadro de video: "
 
@@ -16393,15 +16395,15 @@ msgstr "Error codificando el cuadro de video: "
 msgid "Error while feeding the filtergraph"
 msgstr "Error alimentando la gráfica de filtros"
 
-#: core/aviImage_save.cpp:828
+#: core/aviImage_save.cpp:838
 msgid "Error while writing audio frame: "
 msgstr "Error al escribir el cuadro de video: "
 
-#: core/aviImage_save.cpp:1214
+#: core/aviImage_save.cpp:1224
 msgid "Error while writing video frame: "
 msgstr "Error al escribir el cuadro de video: "
 
-#: core/aviImage_save.cpp:1612
+#: core/aviImage_save.cpp:1622
 msgid "Error writing "
 msgstr "Error escribiendo "
 
@@ -16517,9 +16519,9 @@ msgstr "Separación de las Vistas"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1587
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1808
-#: core/CMedia.cpp:3872 core/CMedia.cpp:4528 core/CMedia_audio.cpp:2262
-#: core/CMedia_audio.cpp:2444 core/aviImage.cpp:3736 core/aviImage.cpp:3783
-#: core/aviImage.cpp:3859
+#: core/CMedia.cpp:3872 core/CMedia.cpp:4529 core/CMedia_audio.cpp:2262
+#: core/CMedia_audio.cpp:2444 core/aviImage.cpp:3719 core/aviImage.cpp:3766
+#: core/aviImage.cpp:3842
 msgid "F"
 msgstr "C"
 
@@ -16638,16 +16640,16 @@ msgstr "FCC"
 msgid "FETCH BEGIN: "
 msgstr ""
 
-#: core/aviImage.cpp:3221 core/aviImage.cpp:3225 core/aviImage.cpp:3229
-#: core/aviImage.cpp:3233
+#: core/aviImage.cpp:3223 core/aviImage.cpp:3227 core/aviImage.cpp:3231
+#: core/aviImage.cpp:3235
 msgid "FETCH DONE"
 msgstr ""
 
-#: core/aviImage.cpp:3215
+#: core/aviImage.cpp:3217
 msgid "FETCH DONE: "
 msgstr ""
 
-#: core/aviImage.cpp:3185
+#: core/aviImage.cpp:3187
 msgid "FETCH START: "
 msgstr ""
 
@@ -16656,9 +16658,9 @@ msgstr ""
 msgid "FFMPEG"
 msgstr ""
 
-#: core/mrvPlayback.cpp:618 core/mrvPlayback.cpp:789 core/mrvPlayback.cpp:990
-#: core/mrvPlayback.cpp:1236 core/mrvPlayback.cpp:1285
-#: core/mrvPlayback.cpp:1369
+#: core/mrvPlayback.cpp:626 core/mrvPlayback.cpp:798 core/mrvPlayback.cpp:999
+#: core/mrvPlayback.cpp:1249 core/mrvPlayback.cpp:1298
+#: core/mrvPlayback.cpp:1381
 msgid "FG"
 msgstr "C"
 
@@ -16724,7 +16726,7 @@ msgstr "CPS: %.3f"
 msgid "FRAME("
 msgstr ""
 
-#: core/aviImage_save.cpp:1595
+#: core/aviImage_save.cpp:1605
 msgid "Failed "
 msgstr "Falló "
 
@@ -16740,11 +16742,11 @@ msgstr "No pude asignar la biblioteca swresample"
 msgid "Failed to init swresample library with "
 msgstr "Fallé en inicializar biblioteca swresample con "
 
-#: core/aviImage_save.cpp:1172
+#: core/aviImage_save.cpp:1182
 msgid "Failed to initialize swscale conversion context"
 msgstr "Fallé al inicializar el contexto de conversion de swscale"
 
-#: core/aviImage_save.cpp:609
+#: core/aviImage_save.cpp:613
 msgid "Failed to initialize the resampling context"
 msgstr "Fallé al inicializar el contexto de resampleo"
 
@@ -16760,12 +16762,12 @@ msgstr ""
 msgid "Favorites"
 msgstr "Favoritos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3284
+#: gui/FLU/Flu_File_Chooser.cpp:3316
 msgid "Feb"
 msgstr ""
 
-#: core/aviImage.cpp:3189 core/aviImage.cpp:3192 core/aviImage.cpp:3196
-#: core/aviImage.cpp:3199
+#: core/aviImage.cpp:3191 core/aviImage.cpp:3194 core/aviImage.cpp:3198
+#: core/aviImage.cpp:3201
 msgid "Fetch"
 msgstr ""
 
@@ -16931,7 +16933,7 @@ msgstr "Valores de Coma Flotante"
 msgid "Floppy Disk"
 msgstr "Disco Floppy"
 
-#: core/aviImage_save.cpp:1631
+#: core/aviImage_save.cpp:1641
 msgid "Flushing of buffers failed"
 msgstr "Vaciar los buffers falló"
 
@@ -17184,7 +17186,7 @@ msgid "G.H ^.-.H w.w.s V.W.S.V.X.X.w.N.A."
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:20
-#: core/aviImage_save.cpp:317
+#: core/aviImage_save.cpp:322
 msgid "GBRP10LE"
 msgstr ""
 
@@ -17486,7 +17488,7 @@ msgstr "Ir al final de la secuencia."
 msgid "Go to the parent directory"
 msgstr "Ir a la carpeta anterior"
 
-#: core/CMedia.cpp:4237 core/CMedia.cpp:4282 core/CMedia.cpp:4298
+#: core/CMedia.cpp:4238 core/CMedia.cpp:4283 core/CMedia.cpp:4299
 msgid "Got colorspace '"
 msgstr "Obtuve el espacio de color '"
 
@@ -17496,7 +17498,7 @@ msgstr "Obtuve: "
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:2009
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:36
-#: core/CMedia.cpp:1966 core/CMedia.cpp:2032 core/exrImage.cpp:3000
+#: core/CMedia.cpp:1965 core/CMedia.cpp:2031 core/exrImage.cpp:3000
 #: core/stubImage.cpp:1013 core/wandImage.cpp:1169 gui/mrvImageView.cpp:200
 #: gui/mrvImageView.cpp:7707 gui/mrvImageView.cpp:8201
 msgid "Green"
@@ -18573,19 +18575,19 @@ msgstr "Imagen JPEG"
 msgid "JPG/PNG/DPX Load Library"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3283
+#: gui/FLU/Flu_File_Chooser.cpp:3315
 msgid "Jan"
 msgstr "Ene"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3289
+#: gui/FLU/Flu_File_Chooser.cpp:3321
 msgid "Jul"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3288
+#: gui/FLU/Flu_File_Chooser.cpp:3320
 msgid "Jun"
 msgstr "ind"
 
-#: core/CMedia.cpp:4399
+#: core/CMedia.cpp:4400
 msgid "K"
 msgstr "OK"
 
@@ -18723,7 +18725,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1147
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1905
-#: core/CMedia.cpp:4481 core/Sequence.cpp:293 gui/mrvColorInfo.cpp:809
+#: core/CMedia.cpp:4482 core/Sequence.cpp:293 gui/mrvColorInfo.cpp:809
 #: gui/mrvColorInfo.cpp:814 gui/mrvColorInfo.cpp:831 gui/mrvColorInfo.cpp:852
 msgid "L"
 msgstr ""
@@ -18736,7 +18738,7 @@ msgstr ""
 msgid "L\tc #FF9060"
 msgstr ""
 
-#: core/aviImage.cpp:3822
+#: core/aviImage.cpp:3805
 msgid "L "
 msgstr ""
 
@@ -19194,7 +19196,7 @@ msgid "Luminance: "
 msgstr "Luminosidad"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:38
-#: core/CMedia.cpp:1915 core/CMedia.cpp:1979 core/CMedia.cpp:2034
+#: core/CMedia.cpp:1914 core/CMedia.cpp:1978 core/CMedia.cpp:2033
 #: core/mrvFrame.cpp:77 core/exrImage.cpp:2999 core/stubImage.cpp:1015
 #: core/wandImage.cpp:1168 gui/mrvImageView.cpp:204 gui/mrvImageView.cpp:1639
 #: gui/mrvImageView.cpp:7721 gui/mrvImageView.cpp:8202
@@ -19478,7 +19480,7 @@ msgstr "Principal 10"
 msgid "Map Picture"
 msgstr "Imagen Map"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3285
+#: gui/FLU/Flu_File_Chooser.cpp:3317
 msgid "Mar"
 msgstr ""
 
@@ -19541,7 +19543,7 @@ msgstr ""
 "v6 serían encontradas.  v7 no sería encontrada ya que la separación sería "
 "demasiado amplia."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3287
+#: gui/FLU/Flu_File_Chooser.cpp:3319
 msgid "May"
 msgstr ""
 
@@ -19652,12 +19654,12 @@ msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
 msgid "Missing Frames"
 msgstr "Cuadros Faltantes"
 
-#: core/aviImage_save.cpp:1278
+#: core/aviImage_save.cpp:1288
 msgid "Missing audio frame "
 msgstr "Cuadro faltante de audio "
 
 #
-#: core/aviImage_save.cpp:1087
+#: core/aviImage_save.cpp:1097
 msgid "Missing picture"
 msgstr "Cuadros Faltantes"
 
@@ -20022,7 +20024,7 @@ msgstr "No pude abrir el dispositivo de audio %s: %s"
 msgid "No audio device."
 msgstr "No pude abrir el dispositivo de audio %s: %s"
 
-#: core/aviImage_save.cpp:1394
+#: core/aviImage_save.cpp:1404
 msgid "No audio nor video stream created"
 msgstr "Ningun audio o video creado"
 
@@ -20098,7 +20100,7 @@ msgstr ""
 msgid "NoWipe"
 msgstr "Wipe"
 
-#: core/CMedia.cpp:2321
+#: core/CMedia.cpp:2320
 msgid "Node"
 msgstr ""
 
@@ -20115,7 +20117,7 @@ msgstr "Texturas Non-POT:\t"
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:24
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:842
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:177
-#: core/aviImage_save.cpp:1335 core/aviImage_save.cpp:1366
+#: core/aviImage_save.cpp:1345 core/aviImage_save.cpp:1376
 #: core/ddsImage.cpp:1240 core/ddsImage.cpp:1241 core/ddsImage.cpp:1242
 #: core/exrImage.cpp:122 core/iffImage.cpp:61 core/picImage.cpp:190
 #: gui/mrvImageInformation.cpp:2844 gui/mrvSave.cpp:265 gui/mrvSave.cpp:266
@@ -20229,7 +20231,7 @@ msgstr ""
 msgid "Notice"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3293
+#: gui/FLU/Flu_File_Chooser.cpp:3325
 msgid "Nov"
 msgstr "No"
 
@@ -20510,7 +20512,7 @@ msgstr ""
 msgid "Object Cycle"
 msgstr "Ciclo de Objeto"
 
-#: gui/FLU/Flu_File_Chooser.cpp:3292
+#: gui/FLU/Flu_File_Chooser.cpp:3324
 msgid "Oct"
 msgstr ""
 
@@ -20692,7 +20694,7 @@ msgstr "Original sin Gama ni Gain ni Lut"
 msgid "Originating Program"
 msgstr "Programa Originario"
 
-#: core/CMedia.cpp:1141
+#: core/CMedia.cpp:1140
 msgid "Out of memory"
 msgstr ""
 
@@ -20860,7 +20862,7 @@ msgstr ""
 msgid "PIZ"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3296
+#: gui/FLU/Flu_File_Chooser.cpp:3328
 msgid "PM"
 msgstr ""
 
@@ -21258,7 +21260,7 @@ msgid "Profile Tags"
 msgstr "Perfil"
 
 #
-#: core/aviImage_save.cpp:440
+#: core/aviImage_save.cpp:445
 msgid "Profile name "
 msgstr "Nombre de Perfil "
 
@@ -21510,7 +21512,7 @@ msgstr ""
 msgid "RExt"
 msgstr ""
 
-#: core/aviImage.cpp:3229 core/aviImage.cpp:3233
+#: core/aviImage.cpp:3231 core/aviImage.cpp:3235
 msgid "RFETCH DONE"
 msgstr ""
 
@@ -21617,7 +21619,7 @@ msgstr ""
 msgid "RXGB"
 msgstr ""
 
-#: core/CMedia.cpp:2103 core/exrImage.cpp:306 core/exrImage.cpp:829
+#: core/CMedia.cpp:2102 core/exrImage.cpp:306 core/exrImage.cpp:829
 #: core/exrImage.cpp:831 core/exrImage.cpp:871 core/exrImage.cpp:1941
 #: core/exrImage.cpp:1943 core/exrImage.cpp:2743 core/exrImage.cpp:2948
 #: core/exrImage.cpp:3007 core/exrImage.cpp:3347 core/wandImage.cpp:1171
@@ -21693,7 +21695,6 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1992
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvHistogramUI.cxx:35
-#: core/CMedia.cpp:1965 core/CMedia.cpp:2032 core/exrImage.cpp:3000
 #: core/stubImage.cpp:1013 core/wandImage.cpp:1169 gui/mrvImageView.cpp:199
 #: gui/mrvImageView.cpp:7702 gui/mrvImageView.cpp:8200
 msgid "Red"
@@ -21973,8 +21974,8 @@ msgstr "Modo de Redondeo"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2075
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2103
-#: core/CMedia.cpp:4526 core/CMedia_audio.cpp:2442 core/aviImage.cpp:3734
-#: core/aviImage.cpp:3781 core/aviImage.cpp:3857 gui/mrvColorInfo.cpp:830
+#: core/CMedia.cpp:4527 core/CMedia_audio.cpp:2442 core/aviImage.cpp:3717
+#: core/aviImage.cpp:3764 core/aviImage.cpp:3840 gui/mrvColorInfo.cpp:830
 #: gui/mrvColorInfo.cpp:836 gui/mrvImageView.cpp:7703 gui/mrvVersion.cpp:404
 msgid "S"
 msgstr ""
@@ -22422,7 +22423,7 @@ msgstr "Selecciona el color del lápiz."
 msgid "Selects the size of brush."
 msgstr "Selecciona el tamaño del pincel."
 
-#: gui/FLU/Flu_File_Chooser.cpp:3291
+#: gui/FLU/Flu_File_Chooser.cpp:3323
 msgid "Sep"
 msgstr ""
 
@@ -22618,7 +22619,7 @@ msgstr ""
 msgid "Size:             "
 msgstr ""
 
-#: core/CMedia.cpp:1615 core/CMedia.cpp:2709 core/slateImage.cpp:56
+#: core/CMedia.cpp:1614 core/CMedia.cpp:2708 core/slateImage.cpp:56
 msgid "Slate "
 msgstr ""
 
@@ -22780,7 +22781,7 @@ msgstr "Parar"
 msgid "Stop playback."
 msgstr "Detener Playback."
 
-#: core/aviImage_save.cpp:1601
+#: core/aviImage_save.cpp:1611
 msgid "Stopped encoding cached "
 msgstr "Paré cacheo de codificación "
 
@@ -22818,7 +22819,7 @@ msgstr "Archivo de Subtítulo "
 msgid "Subtitle font "
 msgstr "Letra de Subtítulo "
 
-#: core/aviImage.cpp:4057
+#: core/aviImage.cpp:4040
 msgid "Subtitle type "
 msgstr "Tipo de Subtítulo "
 
@@ -23799,7 +23800,7 @@ msgstr "Permutar Ventana de Vectorscopio"
 msgid "Toggle Waveform Window"
 msgstr "Permutar Ventana de Forma de Onda"
 
-#: standalone/mrvCommandLine.cpp:457
+#: standalone/mrvCommandLine.cpp:458
 msgid "Too many audio offsets for fewer audios"
 msgstr "Demasiados offsets de audio para pocos audios."
 
@@ -24105,7 +24106,7 @@ msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
 #
-#: core/aviImage_save.cpp:427
+#: core/aviImage_save.cpp:432
 msgid "Unknown c->pix_fmt ("
 msgstr "Tipo de pixel desconocido ("
 
@@ -24544,8 +24545,8 @@ msgstr "Versiones "
 msgid "Video"
 msgstr "Vídeo"
 
-#: core/aviImage.cpp:2757 core/aviImage_save.cpp:1029
-#: core/aviImage_save.cpp:1045
+#: core/aviImage.cpp:2757 core/aviImage_save.cpp:1039
+#: core/aviImage_save.cpp:1055
 msgid "Video "
 msgstr "Vídeo "
 
@@ -25248,7 +25249,7 @@ msgstr "Escritor"
 msgid "Wrong data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:3321
+#: core/aviImage.cpp:3323
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -25378,7 +25379,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:1990
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1834
-#: core/CMedia.cpp:2103 core/exrImage.cpp:296 core/exrImage.cpp:307
+#: core/CMedia.cpp:2102 core/exrImage.cpp:296 core/exrImage.cpp:307
 #: core/exrImage.cpp:824 core/exrImage.cpp:826 core/exrImage.cpp:870
 #: core/exrImage.cpp:1049 core/exrImage.cpp:1092 core/exrImage.cpp:1936
 #: core/exrImage.cpp:1938 core/exrImage.cpp:2732 core/exrImage.cpp:2739
@@ -25627,19 +25628,19 @@ msgstr "Sug. YUV"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:17
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:231
-#: core/aviImage_save.cpp:311 core/aviImage_save.cpp:420
+#: core/aviImage_save.cpp:316 core/aviImage_save.cpp:425
 msgid "YUV420"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:18
-#: core/aviImage_save.cpp:313 core/aviImage_save.cpp:404
-#: core/aviImage_save.cpp:422
+#: core/aviImage_save.cpp:318 core/aviImage_save.cpp:409
+#: core/aviImage_save.cpp:427
 msgid "YUV422"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:19
-#: core/aviImage_save.cpp:315 core/aviImage_save.cpp:406
-#: core/aviImage_save.cpp:424
+#: core/aviImage_save.cpp:320 core/aviImage_save.cpp:411
+#: core/aviImage_save.cpp:429
 msgid "YUV444"
 msgstr ""
 
@@ -25662,7 +25663,7 @@ msgstr "Soporte YUVA:\t"
 msgid "Yes"
 msgstr "Sí"
 
-#: core/aviImage_save.cpp:1301
+#: core/aviImage_save.cpp:1311
 msgid "You are saving over the movie you are playing. Aborting..."
 msgstr ""
 "Estás grabando sobre la pelicula que estás reproduciendo.  Abortando..."
@@ -25675,7 +25676,7 @@ msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: core/CMedia.cpp:2106 core/CMedia.cpp:2107 core/CMedia.cpp:2111
+#: core/CMedia.cpp:2105 core/CMedia.cpp:2106 core/CMedia.cpp:2110
 #: core/exrImage.cpp:270 core/exrImage.cpp:297 core/exrImage.cpp:317
 #: core/exrImage.cpp:754 core/exrImage.cpp:1562 core/exrImage.cpp:1577
 #: core/exrImage.cpp:1593 core/exrImage.cpp:1748 core/exrImage.cpp:1763
@@ -25943,15 +25944,15 @@ msgstr ""
 msgid "[.\tc #C7A48B"
 msgstr ""
 
-#: core/CMedia.cpp:4501 core/CMedia_audio.cpp:2399 core/aviImage.cpp:3832
+#: core/CMedia.cpp:4502 core/CMedia_audio.cpp:2399 core/aviImage.cpp:3815
 msgid "[PREROLL END: "
 msgstr ""
 
-#: core/CMedia.cpp:4521 core/CMedia_audio.cpp:2433 core/aviImage.cpp:3852
+#: core/CMedia.cpp:4522 core/CMedia_audio.cpp:2433 core/aviImage.cpp:3835
 msgid "[PREROLL:"
 msgstr ""
 
-#: core/CMedia.cpp:4120
+#: core/CMedia.cpp:4121
 msgid "[mem] Max memory is now "
 msgstr ""
 
@@ -25967,9 +25968,9 @@ msgstr ""
 msgid "\\\\"
 msgstr ""
 
-#: core/CMedia.cpp:4501 core/CMedia.cpp:4521 core/CMedia_audio.cpp:2399
-#: core/CMedia_audio.cpp:2403 core/CMedia_audio.cpp:2433 core/aviImage.cpp:3832
-#: core/aviImage.cpp:3852 core/iffImage.cpp:531 gui/mrvHotkey.cpp:122
+#: core/CMedia.cpp:4502 core/CMedia.cpp:4522 core/CMedia_audio.cpp:2399
+#: core/CMedia_audio.cpp:2403 core/CMedia_audio.cpp:2433 core/aviImage.cpp:3815
+#: core/aviImage.cpp:3835 core/iffImage.cpp:531 gui/mrvHotkey.cpp:122
 #: gui/mrvHotkey.cpp:125
 msgid "]"
 msgstr ""
@@ -26579,12 +26580,12 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:136
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:332
-#: core/aviImage_save.cpp:1372
+#: core/aviImage_save.cpp:1382
 msgid "aac"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:137
-#: core/aviImage_save.cpp:1370
+#: core/aviImage_save.cpp:1380
 msgid "ac3"
 msgstr ""
 
@@ -26682,8 +26683,8 @@ msgstr " atributo"
 msgid "attributes not found"
 msgstr " no encontrado"
 
-#: core/CMedia.cpp:3139 core/CMedia.cpp:3170 core/CMedia_audio.cpp:81
-#: core/aviImage_save.cpp:1578 gui/mrvPreferences.cpp:812
+#: core/CMedia.cpp:3138 core/CMedia.cpp:3169 core/CMedia_audio.cpp:81
+#: core/aviImage_save.cpp:1588 gui/mrvPreferences.cpp:812
 #: gui/mrvPreferences.cpp:2295 standalone/mrvCommandLine.cpp:374
 #: standalone/main.cpp:120 standalone/main.cpp:295
 msgid "audio"
@@ -26693,7 +26694,7 @@ msgstr "audio"
 msgid "audio files"
 msgstr "Asociar Archivo de Audio"
 
-#: core/aviImage_save.cpp:643
+#: core/aviImage_save.cpp:647
 msgid "audio frame is missing"
 msgstr "Cuadro de audio está faltante."
 
@@ -26756,7 +26757,7 @@ msgstr "avcodec_copy_context falló para el audio"
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
-#: core/aviImage.cpp:89 core/aviImage_save.cpp:1308
+#: core/aviImage.cpp:89 core/aviImage_save.cpp:1318
 #: gui/FLU/Flu_File_Chooser.cpp:636
 msgid "avi"
 msgstr "Grabando"
@@ -27264,7 +27265,7 @@ msgstr ""
 msgid "cine"
 msgstr ""
 
-#: core/CMedia.cpp:3434 core/CMedia.cpp:3518
+#: core/CMedia.cpp:3433 core/CMedia.cpp:3517
 msgid "clean effects"
 msgstr "efectos en limpio"
 
@@ -27320,7 +27321,7 @@ msgstr ""
 msgid "colors"
 msgstr "Colores"
 
-#: core/CMedia.cpp:3422 core/CMedia.cpp:3506
+#: core/CMedia.cpp:3421 core/CMedia.cpp:3505
 msgid "comment"
 msgstr "comentarios"
 
@@ -27424,7 +27425,7 @@ msgid "ctlToLut: "
 msgstr ""
 
 #: core/Sequence.cpp:711 core/Sequence.cpp:768 core/Sequence.cpp:1056
-#: gui/FLU/Flu_File_Chooser.cpp:4490 standalone/mrvCommandLine.cpp:270
+#: gui/FLU/Flu_File_Chooser.cpp:4522 standalone/mrvCommandLine.cpp:270
 #: standalone/mrvCommandLine.cpp:337
 msgid "d"
 msgstr ""
@@ -27525,7 +27526,7 @@ msgstr ""
 msgid "d.\tc #FFE39A"
 msgstr ""
 
-#: core/CMedia.cpp:3142 core/CMedia.cpp:3173
+#: core/CMedia.cpp:3141 core/CMedia.cpp:3172
 msgid "data"
 msgstr "datos"
 
@@ -27557,28 +27558,28 @@ msgstr "decode_audio_packet "
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
-#: core/aviImage.cpp:4395
+#: core/aviImage.cpp:4378
 msgid "decode_subtitle"
 msgstr "subtítulo"
 
-#: core/aviImage.cpp:3567 core/aviImage.cpp:3705
+#: core/aviImage.cpp:3559 core/aviImage.cpp:3688
 msgid "decode_video"
 msgstr "Error de decodificación de audio:"
 
-#: audio/mrvALSAEngine.cpp:105 core/CMedia.cpp:3416 core/CMedia.cpp:3500
+#: audio/mrvALSAEngine.cpp:105 core/CMedia.cpp:3415 core/CMedia.cpp:3499
 #: gui/mrvPreferences.cpp:814 gui/mrvPreferences.cpp:2303
 msgid "default"
 msgstr "defecto"
 
-#: core/CMedia.cpp:4218
+#: core/CMedia.cpp:4219
 msgid "default_icc_profile - unknown bit depth"
 msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 
-#: core/CMedia.cpp:4275
+#: core/CMedia.cpp:4276
 msgid "default_ocio_input_color_space - unknown bit depth"
 msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 
-#: core/CMedia.cpp:4339
+#: core/CMedia.cpp:4340
 msgid "default_rendering_tranform - unknown bit depth"
 msgstr "default_ocio_input_color_space - profundidad de bits desconocido"
 
@@ -27623,7 +27624,7 @@ msgstr ""
 msgid "dng"
 msgstr "Cargando"
 
-#: core/aviImage.cpp:3931
+#: core/aviImage.cpp:3914
 msgid "doseek"
 msgstr ""
 
@@ -27685,7 +27686,7 @@ msgstr ""
 msgid "dts:%s dts_time:%s "
 msgstr ""
 
-#: core/CMedia.cpp:3418 core/CMedia.cpp:3502
+#: core/CMedia.cpp:3417 core/CMedia.cpp:3501
 msgid "dub"
 msgstr "doblaje"
 
@@ -28037,7 +28038,7 @@ msgstr ""
 msgid "fb_list:"
 msgstr ""
 
-#: core/aviImage.cpp:3279
+#: core/aviImage.cpp:3281
 msgid "fetch"
 msgstr ""
 
@@ -28054,7 +28055,7 @@ msgid "ffmpeg"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:114
-#: core/aviImage_save.cpp:1352
+#: core/aviImage_save.cpp:1362
 msgid "ffv1"
 msgstr ""
 
@@ -28071,7 +28072,7 @@ msgstr "archivos"
 msgid "file%d"
 msgstr "archivos"
 
-#: core/CMedia.cpp:1526 core/CMedia.cpp:1604 core/guessImage.cpp:229
+#: core/CMedia.cpp:1525 core/CMedia.cpp:1603 core/guessImage.cpp:229
 #: core/Sequence.cpp:399 core/Sequence.cpp:433 core/Sequence.cpp:503
 #: core/Sequence.cpp:539 core/Sequence.cpp:575 gui/mrvImageBrowser.cpp:1732
 #: gui/mrvImageBrowser.cpp:1793
@@ -28219,7 +28220,7 @@ msgstr "Foco"
 msgid "font"
 msgstr ""
 
-#: core/CMedia.cpp:3428 core/CMedia.cpp:3512
+#: core/CMedia.cpp:3427 core/CMedia.cpp:3511
 msgid "forced"
 msgstr "forzado"
 
@@ -28259,7 +28260,7 @@ msgstr "Cuadro Final"
 msgid "frame_range"
 msgstr "Rango Cuadros"
 
-#: core/aviImage_save.cpp:788
+#: core/aviImage_save.cpp:798
 msgid "frame_size= "
 msgstr " cuadros"
 
@@ -28544,7 +28545,7 @@ msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:111
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:726
-#: core/aviImage_save.cpp:1346
+#: core/aviImage_save.cpp:1356
 msgid "h264"
 msgstr ""
 
@@ -28552,11 +28553,11 @@ msgstr ""
 msgid "half float (16-bits per channel)"
 msgstr "media coma flotante (16 bits por canal)"
 
-#: core/CMedia.cpp:4270
+#: core/CMedia.cpp:4271
 msgid "half/float"
 msgstr "media/completa coma flotante"
 
-#: core/CMedia.cpp:3804 core/aviImage.cpp:3334
+#: core/CMedia.cpp:3804 core/aviImage.cpp:3336
 msgid "handle_video_packet_seek error - no seek/preroll packet"
 msgstr ""
 
@@ -28572,7 +28573,7 @@ msgstr ""
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:3430 core/CMedia.cpp:3514
+#: core/CMedia.cpp:3429 core/CMedia.cpp:3513
 msgid "hearing impaired"
 msgstr "deficiencias auditivas"
 
@@ -28586,7 +28587,7 @@ msgstr "Altura"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:110
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:725
-#: core/aviImage_save.cpp:1344
+#: core/aviImage_save.cpp:1354
 msgid "hevc"
 msgstr ""
 
@@ -28812,19 +28813,19 @@ msgstr ""
 msgid "in"
 msgstr "Ganancia"
 
-#: core/aviImage_save.cpp:560
+#: core/aviImage_save.cpp:564
 msgid "in_channel_count"
 msgstr ""
 
-#: core/aviImage_save.cpp:558
+#: core/aviImage_save.cpp:562
 msgid "in_channel_layout"
 msgstr ""
 
-#: core/aviImage_save.cpp:564
+#: core/aviImage_save.cpp:568
 msgid "in_sample_fmt"
 msgstr ""
 
-#: core/aviImage_save.cpp:562
+#: core/aviImage_save.cpp:566
 msgid "in_sample_rate"
 msgstr ", velocidad de sampleo "
 
@@ -29078,7 +29079,7 @@ msgstr "25"
 msgid "kARBFP1 builtin shader"
 msgstr ""
 
-#: core/CMedia.cpp:3426 core/CMedia.cpp:3510
+#: core/CMedia.cpp:3425 core/CMedia.cpp:3509
 msgid "karaoke"
 msgstr "karaoke"
 
@@ -29196,7 +29197,7 @@ msgstr ""
 msgid "lanczos3"
 msgstr ""
 
-#: core/CMedia.cpp:3391 core/CMedia.cpp:3475 core/CMedia_audio.cpp:595
+#: core/CMedia.cpp:3390 core/CMedia.cpp:3474 core/CMedia_audio.cpp:595
 msgid "language"
 msgstr "Lenguaje"
 
@@ -29217,11 +29218,11 @@ msgstr ""
 msgid "left:right"
 msgstr "Izquierda/derecha"
 
-#: core/CMedia.cpp:4294
+#: core/CMedia.cpp:4295
 msgid "lg10"
 msgstr ""
 
-#: core/CMedia.cpp:4292
+#: core/CMedia.cpp:4293
 msgid "lgf"
 msgstr ""
 
@@ -29344,7 +29345,7 @@ msgstr ""
 msgid "lutT"
 msgstr ""
 
-#: core/CMedia.cpp:3424 core/CMedia.cpp:3508
+#: core/CMedia.cpp:3423 core/CMedia.cpp:3507
 msgid "lyrics"
 msgstr "letra lírica"
 
@@ -29648,12 +29649,12 @@ msgstr ""
 msgid "move_picture"
 msgstr " Mover la Imagen"
 
-#: core/aviImage_save.cpp:1000 core/aviImage_save.cpp:1424
+#: core/aviImage_save.cpp:1010 core/aviImage_save.cpp:1434
 msgid "movflags"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:138
-#: core/aviImage_save.cpp:1368 gui/FLU/Flu_File_Chooser.cpp:688
+#: core/aviImage_save.cpp:1378 gui/FLU/Flu_File_Chooser.cpp:688
 msgid "mp3"
 msgstr ""
 
@@ -29661,17 +29662,17 @@ msgstr ""
 msgid "mp4"
 msgstr ""
 
-#: core/aviImage_save.cpp:1321 gui/FLU/Flu_File_Chooser.cpp:645
+#: core/aviImage_save.cpp:1331 gui/FLU/Flu_File_Chooser.cpp:645
 msgid "mpeg"
 msgstr ""
 
-#: core/CMedia.cpp:3242 core/CMedia.cpp:3284
+#: core/CMedia.cpp:3241 core/CMedia.cpp:3283
 msgid "mpeg2ts"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:112
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:727
-#: core/aviImage_save.cpp:1348
+#: core/aviImage_save.cpp:1358
 msgid "mpeg4"
 msgstr ""
 
@@ -30181,7 +30182,7 @@ msgstr ""
 msgid "orgy: "
 msgstr ""
 
-#: core/CMedia.cpp:3420 core/CMedia.cpp:3504
+#: core/CMedia.cpp:3419 core/CMedia.cpp:3503
 msgid "original"
 msgstr "original"
 
@@ -30189,19 +30190,19 @@ msgstr "original"
 msgid "out"
 msgstr "Acerca de mrViewer"
 
-#: core/aviImage_save.cpp:567
+#: core/aviImage_save.cpp:571
 msgid "out_channel_count"
 msgstr ""
 
-#: core/aviImage_save.cpp:565
+#: core/aviImage_save.cpp:569
 msgid "out_channel_layout"
 msgstr ""
 
-#: core/aviImage_save.cpp:570
+#: core/aviImage_save.cpp:574
 msgid "out_sample_fmt"
 msgstr ""
 
-#: core/aviImage_save.cpp:568
+#: core/aviImage_save.cpp:572
 msgid "out_sample_rate"
 msgstr ", velocidad de sampleo "
 
@@ -30372,11 +30373,11 @@ msgstr "Teclado Numérico Enter"
 msgid "parser"
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:80 core/aviImage_save.cpp:1376
+#: audio/mrvALSAEngine.cpp:80 core/aviImage_save.cpp:1386
 msgid "pcm"
 msgstr ""
 
-#: core/aviImage_save.cpp:268
+#: core/aviImage_save.cpp:269
 msgid "pcm_s16le"
 msgstr ""
 
@@ -30474,7 +30475,7 @@ msgstr ""
 msgid "plughw:%d,%d"
 msgstr ""
 
-#: core/aviImage_save.cpp:1340 gui/FLU/Flu_File_Chooser.cpp:675
+#: core/aviImage_save.cpp:1350 gui/FLU/Flu_File_Chooser.cpp:675
 msgid "png"
 msgstr ""
 
@@ -30527,7 +30528,7 @@ msgstr "Perfil"
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:113
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:728
-#: core/aviImage_save.cpp:1350
+#: core/aviImage_save.cpp:1360
 msgid "prores_ks"
 msgstr ""
 
@@ -30687,9 +30688,9 @@ msgid "quick_folder_travel"
 msgstr ""
 
 #: core/ddsImage.cpp:1259 core/Sequence.cpp:797 core/mrvCPU.cpp:739
-#: gui/FLU/Flu_File_Chooser.cpp:1047 gui/FLU/Flu_File_Chooser.cpp:3600
+#: gui/FLU/Flu_File_Chooser.cpp:1047 gui/FLU/Flu_File_Chooser.cpp:3632
 #: gui/mrvColorSchemes.cpp:30 gui/mrvVersion.cpp:678 gui/mrvVersion.cpp:694
-#: standalone/mrvCommandLine.cpp:74 standalone/main.cpp:444
+#: standalone/main.cpp:444
 msgid "r"
 msgstr ""
 
@@ -30757,12 +30758,12 @@ msgstr ""
 msgid "r+\tc #C7AC74"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "r--"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "r-x"
 msgstr ""
 
@@ -30790,7 +30791,7 @@ msgstr ""
 msgid "r.\tc #FFE79E"
 msgstr ""
 
-#: core/aviImage.cpp:3196 core/aviImage.cpp:3199
+#: core/aviImage.cpp:3198 core/aviImage.cpp:3201
 msgid "rFetch"
 msgstr ""
 
@@ -30972,7 +30973,7 @@ msgstr ""
 msgid "rsp"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "rw-"
 msgstr ""
 
@@ -30985,7 +30986,7 @@ msgid "rwl"
 msgstr ""
 
 #
-#: gui/FLU/Flu_File_Chooser.cpp:3802
+#: gui/FLU/Flu_File_Chooser.cpp:3834
 msgid "rwx"
 msgstr ""
 
@@ -31098,7 +31099,7 @@ msgstr "Áreas Seguras"
 msgid "saturation"
 msgstr "Saturación"
 
-#: core/aviImage_save.cpp:63 gui/mrvSave.cpp:27
+#: core/aviImage_save.cpp:63 gui/mrvSave.cpp:26
 msgid "save"
 msgstr ""
 
@@ -31167,7 +31168,7 @@ msgstr ""
 msgid "seek to "
 msgstr " a "
 
-#: core/aviImage.cpp:3177
+#: core/aviImage.cpp:3179
 msgid "seek_to_position: Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -31309,7 +31310,7 @@ msgstr ""
 msgid "src_luma"
 msgstr ""
 
-#: core/aviImage_save.cpp:659
+#: core/aviImage_save.cpp:663
 msgid "src_nb_samples is 0"
 msgstr ""
 
@@ -31397,7 +31398,7 @@ msgstr "Texto"
 msgid "sub"
 msgstr "doblaje"
 
-#: core/CMedia.cpp:3145 core/CMedia.cpp:3176
+#: core/CMedia.cpp:3144 core/CMedia.cpp:3175
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -31573,7 +31574,7 @@ msgstr "Estampas Activas"
 msgid "tif"
 msgstr ""
 
-#: core/aviImage_save.cpp:1342 gui/FLU/Flu_File_Chooser.cpp:685
+#: core/aviImage_save.cpp:1352 gui/FLU/Flu_File_Chooser.cpp:685
 #: gui/mrvSave.cpp:248
 msgid "tiff"
 msgstr ""
@@ -31744,7 +31745,7 @@ msgstr ""
 msgid "umh"
 msgstr ""
 
-#: core/CMedia.cpp:3395 core/CMedia.cpp:3479 core/CMedia_audio.cpp:601
+#: core/CMedia.cpp:3394 core/CMedia.cpp:3478 core/CMedia_audio.cpp:601
 msgid "und"
 msgstr "ind"
 
@@ -31756,8 +31757,8 @@ msgstr "formato "
 msgid "uniform vec3 "
 msgstr ""
 
-#: core/CMedia.cpp:3148 core/CMedia.cpp:3179 core/CMedia.cpp:4242
-#: core/wandImage.cpp:686 gui/FLU/Flu_File_Chooser.cpp:3748
+#: core/CMedia.cpp:3147 core/CMedia.cpp:3178 core/CMedia.cpp:4243
+#: core/wandImage.cpp:686 gui/FLU/Flu_File_Chooser.cpp:3780
 #: standalone/main.cpp:178
 msgid "unknown"
 msgstr "desconocido"
@@ -31913,7 +31914,7 @@ msgstr "Vectorscopio"
 msgid "version"
 msgstr "Versión:\t"
 
-#: core/CMedia.cpp:3136 core/CMedia.cpp:3167 core/aviImage_save.cpp:1581
+#: core/CMedia.cpp:3135 core/CMedia.cpp:3166 core/aviImage_save.cpp:1591
 #: gui/mrvPreferences.cpp:1159 gui/mrvPreferences.cpp:2282
 msgid "video"
 msgstr "video"
@@ -31937,7 +31938,7 @@ msgstr ""
 msgid "view"
 msgstr "Vista Izquierda"
 
-#: core/CMedia.cpp:3432 core/CMedia.cpp:3516
+#: core/CMedia.cpp:3431 core/CMedia.cpp:3515
 msgid "visual impaired"
 msgstr "discapacitado visual"
 
@@ -31977,13 +31978,12 @@ msgstr ""
 msgid "volume_mute"
 msgstr ""
 
-#: core/aviImage_save.cpp:1374
+#: core/aviImage_save.cpp:1384
 msgid "vorbis"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1472 gui/FLU/Flu_File_Chooser.cpp:3252
+#: gui/FLU/Flu_File_Chooser.cpp:1472 gui/FLU/Flu_File_Chooser.cpp:3284
 #: gui/mrvImageBrowser.cpp:533 gui/mrvLogDisplay.cpp:112
-#: standalone/mrvCommandLine.cpp:75 standalone/mrvCommandLine.cpp:76
 #: standalone/mrvCommandLine.cpp:448 standalone/mrvCommandLine.cpp:449
 #: standalone/main.cpp:445 standalone/main.cpp:446
 msgid "w"
@@ -32815,7 +32815,7 @@ msgstr ""
 msgid "|.\tc #FAE69E"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:3702 gui/FLU/Flu_File_Chooser.cpp:3710
+#: gui/FLU/Flu_File_Chooser.cpp:3734 gui/FLU/Flu_File_Chooser.cpp:3742
 msgid "|;"
 msgstr ""
 
@@ -33134,19 +33134,121 @@ msgstr ""
 msgid "~/"
 msgstr ""
 
+#
 #, fuzzy
-#~ msgid "first: "
-#~ msgstr " para cuadro "
+#~ msgid "decode_some"
+#~ msgstr "Código de Tiempo"
 
 #
 #, fuzzy
-#~ msgid "next: "
-#~ msgstr "No pude dibujar imagen"
+#~ msgid "img frame "
+#~ msgstr " cuadro "
+
+#
+#, fuzzy
+#~ msgid "read frame "
+#~ msgstr " cuadro "
+
+#, fuzzy
+#~ msgid "check decode loop "
+#~ msgstr "Loop de Final en Decodificación"
+
+#
+#, fuzzy
+#~ msgid "loop at end "
+#~ msgstr " comienzo "
+
+#~ msgid " decoded audio "
+#~ msgstr "Error de decodificación de audio:"
+
+#~ msgid " status "
+#~ msgstr " estatus: "
+
+#, fuzzy
+#~ msgid "E value "
+#~ msgstr "Valor"
+
+#, fuzzy
+#~ msgid " <= maximum() "
+#~ msgstr "Máximo"
+
+#, fuzzy
+#~ msgid "value: "
+#~ msgstr "Valor"
+
+#
+#
+#, fuzzy
+#~ msgid " last "
+#~ msgstr " cuadro "
+
+#, fuzzy
+#~ msgid "first "
+#~ msgstr " para cuadro "
+
+#, fuzzy
+#~ msgid "display "
+#~ msgstr "Display"
+
+#
+#, fuzzy
+#~ msgid "erase"
+#~ msgstr " Goma de Borrar"
 
 #
 #, fuzzy
 #~ msgid "erase "
 #~ msgstr " Goma de Borrar"
+
+#
+#, fuzzy
+#~ msgid "erased frames for "
+#~ msgstr " cuadro "
+
+#
+#, fuzzy
+#~ msgid "loop end"
+#~ msgstr " comienzo "
+
+#
+#, fuzzy
+#~ msgid "frame "
+#~ msgstr " cuadro "
+
+#, fuzzy
+#~ msgid " handle_loop frame "
+#~ msgstr " para cuadro "
+
+#, fuzzy
+#~ msgid " handle_loop frame: "
+#~ msgstr "Cuadro de audio "
+
+#, fuzzy
+#~ msgid "decode OK"
+#~ msgstr "Decodificación OK"
+
+#, fuzzy
+#~ msgid " return "
+#~ msgstr " retornó "
+
+#, fuzzy
+#~ msgid "stopped? "
+#~ msgstr " detenido? "
+
+#
+#
+#
+#, fuzzy
+#~ msgid "frame is now "
+#~ msgstr " es "
+
+#~ msgid "CMedia "
+#~ msgstr "Info del Medio"
+
+#
+#, fuzzy
+#~ msgid "next: "
+#~ msgstr "No pude dibujar imagen"
 
 #
 #, fuzzy
@@ -33156,11 +33258,6 @@ msgstr ""
 #
 #, fuzzy
 #~ msgid "erase frame iterator "
-#~ msgstr " cuadro "
-
-#
-#, fuzzy
-#~ msgid "erased frame iterator "
 #~ msgstr " cuadro "
 
 #
@@ -33177,21 +33274,9 @@ msgstr ""
 #~ msgid "start "
 #~ msgstr " comienzo "
 
-#
-#, fuzzy
-#~ msgid " loop start "
-#~ msgstr " comienzo "
-
 #, fuzzy
 #~ msgid "clear damage layers "
 #~ msgstr "Capas separadas"
-
-#
-#
-#
-#, fuzzy
-#~ msgid " is now1 "
-#~ msgstr " es "
 
 #
 #
@@ -33308,10 +33393,6 @@ msgstr ""
 #~ msgid "added "
 #~ msgstr "Cargando"
 
-#
-#~ msgid "media "
-#~ msgstr "medio "
-
 #, fuzzy
 #~ msgid "media track found "
 #~ msgstr " esperado: "
@@ -33324,10 +33405,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "sel "
 #~ msgstr " no encontrado"
-
-#, fuzzy
-#~ msgid "value "
-#~ msgstr "Valor"
 
 #~ msgid "ERROR: [alsa] "
 #~ msgstr "AVISO: [alsa]"
@@ -33367,10 +33444,6 @@ msgstr ""
 #~ msgid "return false"
 #~ msgstr " retornó "
 
-#, fuzzy
-#~ msgid "display "
-#~ msgstr "Display"
-
 #~ msgid "Add IPTC Metadata"
 #~ msgstr "Agregar Metadata IPTC"
 
@@ -33399,10 +33472,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "3 "
 #~ msgstr "30"
-
-#
-#~ msgid "decode"
-#~ msgstr "Código de Tiempo"
 
 #, fuzzy
 #~ msgid "filename value "
@@ -33459,9 +33528,6 @@ msgstr ""
 #, fuzzy
 #~ msgid " seek to "
 #~ msgstr " a "
-
-#~ msgid " due to frame "
-#~ msgstr " para cuadro "
 
 #, fuzzy
 #~ msgid " not stopped"
@@ -33806,11 +33872,6 @@ msgstr ""
 #~ "Selecciona el color del rectangulo de seleccion sobre la imagen actual."
 
 #
-#
-#~ msgid "frame "
-#~ msgstr " cuadro "
-
-#
 #~ msgid " child "
 #~ msgstr "No pude dibujar imagen"
 
@@ -33994,9 +34055,6 @@ msgstr ""
 
 #~ msgid "set _reel to "
 #~ msgstr "Crear carrete \""
-
-#~ msgid "return 0;"
-#~ msgstr " retornó "
 
 #~ msgid "Track #1"
 #~ msgstr "Pista #1"
