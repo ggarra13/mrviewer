@@ -204,7 +204,7 @@ bool Parser::parse( const std::string& s )
 
 
     if ( Preferences::debug )
-	LOG_INFO( "received: " << s );
+        LOG_INFO( "received: " << s );
 
     if ( cmd == N_("GLPathShape") )
     {
@@ -254,6 +254,7 @@ bool Parser::parse( const std::string& s )
         unsigned font_size;
         std::getline( is, font, '"' ); // skip first quote
         std::getline( is, font, '"' );
+
         std::getline( is, text, '^' ); // skip first quote
         std::getline( is, text, '^' );
 
@@ -414,9 +415,9 @@ bool Parser::parse( const std::string& s )
         is >> x >> y;
         mrv::media fg = v->foreground();
         if ( !fg ) {
-	    v->_clients = c;
-	    return false;
-	}
+            v->_clients = c;
+            return false;
+        }
         CMedia* img = fg->image();
         img->x( x );
         img->y( y );
@@ -428,9 +429,9 @@ bool Parser::parse( const std::string& s )
         is >> x >> y;
         mrv::media fg = v->foreground();
         if ( !fg ) {
-	    v->_clients = c;
-	    return false;
-	}
+            v->_clients = c;
+            return false;
+        }
         CMedia* img = fg->image();
         img->scale_x( x );
         img->scale_y( y );
@@ -563,23 +564,23 @@ bool Parser::parse( const std::string& s )
         std::getline( is, s, '"' );
 
         mrv::media fg = v->foreground();
-	if ( fg )
-	{
-	    CMedia* img = fg->image();
-	    if ( img )
-	    {
-		if ( idx == 0 ) img->clear_look_mod_transform();
-		if ( idx <= img->number_of_lmts() )
-		{
-		    img->append_look_mod_transform( s.c_str() );
-		}
-		else
-		{
-		    img->insert_look_mod_transform( idx, s.c_str() );
-		}
-	    }
-	}
-	ok = true;
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            if ( img )
+            {
+                if ( idx == 0 ) img->clear_look_mod_transform();
+                if ( idx <= img->number_of_lmts() )
+                {
+                    img->append_look_mod_transform( s.c_str() );
+                }
+                else
+                {
+                    img->insert_look_mod_transform( idx, s.c_str() );
+                }
+            }
+        }
+        ok = true;
     }
     else if ( cmd == N_("RT") )
     {
@@ -794,19 +795,19 @@ bool Parser::parse( const std::string& s )
         double x;
         is >> x;
 
-	ImageView::Command c;
-	c.type = ImageView::kTimelineMax;
-	c.frame = (int64_t) x;
-	ok = true;
+        ImageView::Command c;
+        c.type = ImageView::kTimelineMax;
+        c.frame = (int64_t) x;
+        ok = true;
     }
     else if ( cmd == N_("TimelineMaxDisplay") )
     {
         double x;
         is >> x;
-        
-	ImageView::Command c;
-	c.type = ImageView::kTimelineMaxDisplay;
-	c.frame = (int64_t) x;
+
+        ImageView::Command c;
+        c.type = ImageView::kTimelineMaxDisplay;
+        c.frame = (int64_t) x;
         ok = true;
     }
     else if ( cmd == N_("TimelineMin") )
@@ -814,19 +815,19 @@ bool Parser::parse( const std::string& s )
         double x;
         is >> x;
 
-	ImageView::Command c;
-	c.type = ImageView::kTimelineMin;
-	c.frame = (int64_t) x;
-	
+        ImageView::Command c;
+        c.type = ImageView::kTimelineMin;
+        c.frame = (int64_t) x;
+
         ok = true;
     }
     else if ( cmd == N_("TimelineMinDisplay") )
     {
         double x;
         is >> x;
-	ImageView::Command c;
-	c.type = ImageView::kTimelineMinDisplay;
-	c.frame = (int64_t) x;
+        ImageView::Command c;
+        c.type = ImageView::kTimelineMinDisplay;
+        c.frame = (int64_t) x;
         ok = true;
     }
     else if ( cmd == N_("VRCubic") )
@@ -1025,12 +1026,12 @@ bool Parser::parse( const std::string& s )
         std::getline( is, imgname, '"' );
         is.clear();
 
-	ImageView::Command c;
-	c.type = ImageView::kInsertImage;
-	c.data = new Imf::IntAttribute( idx );
-	c.linfo = new LoadInfo( imgname );
+        ImageView::Command c;
+        c.type = ImageView::kInsertImage;
+        c.data = new Imf::IntAttribute( idx );
+        c.linfo = new LoadInfo( imgname );
         v->commands.push_back( c );
-	ok = true;
+        ok = true;
     }
     else if ( cmd == N_("ChangeImage") )
     {
@@ -1040,7 +1041,7 @@ bool Parser::parse( const std::string& s )
         ImageView::Command c;
         c.type = ImageView::kChangeImage;
         c.data = new Imf::IntAttribute( idx );
-	c.linfo = NULL;
+        c.linfo = NULL;
 
         v->commands.push_back( c );
 
@@ -1051,7 +1052,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kCacheClear;
-	
+
 
         v->commands.push_back( c );
 
@@ -1061,7 +1062,7 @@ bool Parser::parse( const std::string& s )
     {
         int idx = 0;
         std::string imgname;
-	is >> idx;
+        is >> idx;
         is.clear();
         std::getline( is, imgname, '"' ); // skip first quote
         is.clear();
@@ -1072,15 +1073,15 @@ bool Parser::parse( const std::string& s )
         is >> first;
         is >> last;
 
- 	LOG_WARNING( "Change to image #" << idx << " "  << imgname );
-	ImageView::Command c;
-	c.type = ImageView::kChangeImage;
-	c.data = new Imf::IntAttribute( idx );
-	c.linfo = new LoadInfo(imgname, first, last);
+        LOG_WARNING( "Change to image #" << idx << " "  << imgname );
+        ImageView::Command c;
+        c.type = ImageView::kChangeImage;
+        c.data = new Imf::IntAttribute( idx );
+        c.linfo = new LoadInfo(imgname, first, last);
 
-	v->commands.push_back( c );
+        v->commands.push_back( c );
 
-	ok = true;
+        ok = true;
 
     }
     else if ( cmd == N_("ExchangeImage") )
@@ -1151,7 +1152,7 @@ bool Parser::parse( const std::string& s )
             int idx = 0;
             ImageView::Command c;
             c.type = ImageView::kBGImage;
-	    
+
 
             for ( ; j != e; ++j, ++idx )
             {
@@ -1301,13 +1302,13 @@ bool Parser::parse( const std::string& s )
             }
         }
 
-	char buf[256];
-	if ( browser()->value() >= 0 )
-	{
-	    sprintf( buf, N_("ChangeImage %d"), browser()->value() );
-	    deliver( buf );
-	}
-	
+        char buf[256];
+        if ( browser()->value() >= 0 )
+        {
+            sprintf( buf, N_("ChangeImage %d"), browser()->value() );
+            deliver( buf );
+        }
+
         {
             mrv::media bg = v->background();
             if ( bg )
@@ -1328,10 +1329,10 @@ bool Parser::parse( const std::string& s )
             }
 
             mrv::media fg = view()->foreground();
-	    if ( !fg ) {
-		v->_clients = c;
-		return false;
-	    }
+            if ( !fg ) {
+                v->_clients = c;
+                return false;
+            }
 
             CMedia* img = fg->image();
 
@@ -1449,9 +1450,9 @@ bool Parser::parse( const std::string& s )
 
         mrv::media fg = v->foreground();
         if ( !fg ) {
-	    v->_clients = c;
-	    return false;
-	}
+            v->_clients = c;
+            return false;
+        }
 
         CMedia* img = fg->image();
 
@@ -1463,7 +1464,7 @@ bool Parser::parse( const std::string& s )
             deliver( "playfwd" );
             ImageView::Command c;
             c.type = ImageView::kPlayForwards;
-	    
+
             v->commands.push_back( c );
         }
 
@@ -1480,7 +1481,7 @@ bool Parser::parse( const std::string& s )
         {
             ImageView::Command c;
             c.type = ImageView::kStopVideo;
-	    
+
             c.frame = f;
             v->commands.push_back( c );
         }
@@ -1492,7 +1493,7 @@ bool Parser::parse( const std::string& s )
     {
         ImageView::Command c;
         c.type = ImageView::kPlayForwards;
-	
+
         v->commands.push_back( c );
         ok = true;
     }
@@ -1508,7 +1509,7 @@ bool Parser::parse( const std::string& s )
 
         ImageView::Command c;
         c.type = ImageView::kSeek;
-	
+
         c.frame = f;
         v->commands.push_back( c );
 
@@ -1519,7 +1520,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kMEDIA_INFO_WINDOW_SHOW;
@@ -1536,7 +1537,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kCOLOR_AREA_WINDOW_SHOW;
@@ -1553,7 +1554,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::k3D_VIEW_WINDOW_SHOW;
@@ -1570,7 +1571,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kSTEREO_OPTIONS_WINDOW_SHOW;
@@ -1601,7 +1602,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kPAINT_TOOLS_WINDOW_SHOW;
@@ -1618,7 +1619,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kHISTOGRAM_WINDOW_SHOW;
@@ -1635,7 +1636,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kVECTORSCOPE_WINDOW_SHOW;
@@ -1652,7 +1653,7 @@ bool Parser::parse( const std::string& s )
         int x;
         is >> x;
         ImageView::Command c;
-        
+
         if ( x )
         {
             c.type = ImageView::kWAVEFORM_WINDOW_SHOW;
@@ -2015,7 +2016,7 @@ server::server(boost::asio::io_service& io_service,
 {
 
     acceptor_.open(endpoint.protocol());
-    
+
     boost::asio::socket_base::reuse_address option(true);
     acceptor_.set_option(option);
     acceptor_.bind(endpoint);
