@@ -2486,7 +2486,7 @@ void Flu_File_Chooser :: Entry :: updateSize()
     nameW = w();
 
   // how big is the icon?
-  int iW = 0, iH = 0;
+  int iW = 22, iH = 0;
   if( icon )
     {
       iW = icon->w()+2;
