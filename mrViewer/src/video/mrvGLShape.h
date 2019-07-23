@@ -142,7 +142,7 @@ public:
     {
     };
 
-    ~GLShape() {};
+    virtual ~GLShape() {};
 
     virtual std::string send() const = 0;
     virtual void draw( double z ) = 0;
