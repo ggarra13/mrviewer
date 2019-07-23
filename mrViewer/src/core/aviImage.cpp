@@ -3153,32 +3153,34 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     int64_t f = handle_loops( frame );
 
-
-    if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
-            in_video_store( f ) )
+    if ( f != _expected )
     {
-        int64_t pts = frame2pts( get_video_stream(), f );
-        _video_packets.jump( pts );
-        pts = frame2pts( get_audio_stream(), f );
-        if ( !got_audio ) _audio_packets.jump( pts );
-        _dts = _adts = f;
-        _expected = _dts + 1;
-        _expected_audio = _dts + 1;
-        //_expected = -99999;
-        //_expected_audio = -99999;
+        if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
+             in_video_store( f ) )
+        {
+            int64_t pts = frame2pts( get_video_stream(), f );
+            _video_packets.jump( pts );
+            pts = frame2pts( get_audio_stream(), f );
+            if ( !got_audio ) _audio_packets.jump( pts );
+            _dts = _adts = f;
+            // _expected = _dts + 1;
+            // _expected_audio = _dts + 1;
+            _expected = -99999;
+            _expected_audio = -99999;
 
-        return true;
+            return true;
+        }
+
+
+        if ( !got_video || !got_audio || !got_subtitle)
+        {
+            bool ok = seek_to_position( f );
+            if ( !ok )
+                IMG_ERROR( ("seek_to_position: Could not seek to frame ")
+                           << frame );
+            return ok;
+        }
     }
-
-    if ( (!got_video || !got_audio || !got_subtitle) && f != _expected  )
-    {
-        bool ok = seek_to_position( f );
-        if ( !ok )
-            IMG_ERROR( ("seek_to_position: Could not seek to frame ")
-                       << frame );
-        return ok;
-    }
-
 
 #ifdef DEBUG_DECODE
     cerr << "------------------------------------------------------" << endl;
@@ -3548,16 +3550,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 {
     int64_t frame = f;
 
-    // Early exit if we are past loop ends
-    if ( f > _frameEnd )
-    {
-        return kDecodeLoopEnd;
-    }
-    else if ( f < _frameStart )
-    {
-        return kDecodeLoopStart;
-    }
-
     if ( !has_video() )
     {
         return audio_video_display(_audio_frame);
@@ -3626,7 +3618,6 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 
             if ( frame < _frameStart )
             {
-                assert( !_video_packets.empty() );
                 _video_packets.pop_front();
                 return kDecodeLoopStart;
             }
@@ -3645,27 +3636,21 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             }
 
 
-            assert( !_video_packets.empty() );
             _video_packets.pop_front();
             return kDecodeLoopEnd;
         }
         else if ( _video_packets.is_jump() )
         {
-            assert( !_video_packets.empty() );
             _video_packets.pop_front();
             return kDecodeOK;
         }
         else
         {
-            assert( !_video_packets.empty() );
             AVPacket& pkt = _video_packets.front();
 
-            int64_t pktframe;
-            if ( pkt.dts != AV_NOPTS_VALUE )
-            {
-                pktframe = get_frame( get_video_stream(), pkt );
-            }
-            else
+            int64_t pktframe = get_frame( get_video_stream(), pkt );
+
+            if ( pktframe == AV_NOPTS_VALUE )
             {
                 pktframe = frame;
             }
@@ -3685,14 +3670,12 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                 // if ( pktframe == frame )
                 {
                     got_video = decode_vpacket( pktframe, frame, pkt );
-                    //assert( !_video_packets.empty() );
                     _video_packets.pop_front();
                 }
                 continue;
             }
 
             got_video = decode_image( pktframe, pkt );
-            //assert( !_video_packets.empty() );
             _video_packets.pop_front();
             continue;
         }
