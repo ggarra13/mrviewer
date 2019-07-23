@@ -1,4 +1,3 @@
-
 #if defined(WIN32) || defined(WIN64)
 #  include <winsock2.h>
 #  include <windows.h>
@@ -48,7 +47,8 @@ void decode_some( CMedia* img, int64_t& frame )
     bool found = false;
     int64_t audio_frame = frame - 1;
     CMedia::DecodeStatus status = CMedia::kDecodeOK;
-    if ( !found && img->audio_packets().size() > 0 )
+    if ( !found && status == CMedia::kDecodeOK &&
+         img->audio_packets().size() > 1 )
     {
         ++audio_frame;
         status = img->decode_audio( audio_frame );
@@ -183,10 +183,10 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
         size_t asize = img->audio_packets().size();
 
 #define kMIN_SIZE 25
-        if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
-            skip = true;
-        else
-            skip = false;
+        // if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
+        //     skip = true;
+        // else
+        //     skip = false;
 
         if ( !skip )
         {
@@ -220,7 +220,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                 if ( fs::exists( buf ) )
                 {
                     int ok = mrv::fl_choice( _("Do you want to replace '%s'?"),
-					     _("Yes"), _("No"), NULL, buf );
+                                             _("Yes"), _("No"), NULL, buf );
                     if (ok == 1) // No
                     {
                         break;
@@ -264,7 +264,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
                         opts->audio_bitrate == 0 ) ||
                         ( opts->audio_codec == _("None") &&
                           opts->video_codec == _("None") ) ||
-		     opts->video_codec == N_("") )
+                     opts->video_codec == N_("") )
                 {
                     delete opts;
                     delete w;
