@@ -1,7 +1,7 @@
 ExternalProject_Add(
   LibTIFF
-  URL "http://download.osgeo.org/libtiff/tiff-4.0.10.tar.gz"
-  DEPENDS LIBZ
+  URL "https://download.osgeo.org/libtiff/tiff-4.0.10.tar.gz"
+  DEPENDS ZLIB
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
