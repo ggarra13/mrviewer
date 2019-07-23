@@ -1,5 +1,5 @@
 ExternalProject_Add(
-  LIBZ
+  ZLIB
   URL "https://zlib.net/zlib-1.2.11.tar.xz"
   CMAKE_ARGS
   -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
