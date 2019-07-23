@@ -52,7 +52,7 @@ namespace {
 const char* kModule = N_("shape");
 }
 
- 
+
 
 
 namespace mrv {
@@ -294,15 +294,15 @@ void GLTextShape::draw( double z )
 
     glColor4f( r, g, b, a );
 
-    
+
     gl_font(font(), size()*float(z) );
 
 
     std::string txt = text();
-    
+
     std::size_t pos = txt.find('\n');
     float y = pts[0].y;
-    for ( ; pos != std::string::npos; y += size(), pos = txt.find('\n') )
+    for ( ; pos != std::string::npos; y -= size(), pos = txt.find('\n') )
     {
         std::string t;
         if (pos > 0 )
