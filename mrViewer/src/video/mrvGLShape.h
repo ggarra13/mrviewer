@@ -166,7 +166,7 @@ class GLPathShape : public GLShape
 public:
 
     GLPathShape() : GLShape()  {};
-    ~GLPathShape() {};
+    virtual ~GLPathShape() {};
     virtual void draw( double z );
     virtual std::string send() const;
 
@@ -179,7 +179,7 @@ class GLErasePathShape : public GLPathShape
 public:
 
     GLErasePathShape() : GLPathShape()  {};
-    ~GLErasePathShape() {};
+    virtual ~GLErasePathShape() {};
     virtual void draw( double z );
     virtual std::string send() const;
 };
@@ -189,7 +189,7 @@ class GLTextShape : public GLPathShape
 public:
     GLTextShape() : _font(0), _zoom(0), _fontsize(8), _charset(0),
         GLPathShape() {};
-    ~GLTextShape();
+    virtual ~GLTextShape();
 
     void position( int x, int y ) {
         pts[0].x = x;
