@@ -39,7 +39,7 @@ ImageOpts* ImageOpts::build( ViewerUI* main, std::string ext,
                                  CMedia::all_layers(),
                                  has_deep_data );
 
-    if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" )
+    if ( ext == ".tx" || ext == ".iff" || ext == ".hdr" || ext == ".png" )
         return new OIIOOptionsUI( main, ext, CMedia::all_layers() );
 
     return new WandOptionsUI( main,
