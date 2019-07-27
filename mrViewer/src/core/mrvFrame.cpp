@@ -31,12 +31,15 @@
 #include <half.h>
 
 
-#include "core/mrvFrame.h"
-
 extern "C" {
 #include <libavutil/avassert.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
 }
 
+
+#include "core/mrvFrame.h"
+#include "core/mrvColorOps.h"
 
 
 namespace
@@ -634,21 +637,74 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
     av_assert0( dst->width() > 0 );
     av_assert0( dst->height() > 0 );
     if ( src->pixel_type() == dst->pixel_type() &&
-            src->channels() == dst->channels() &&
-            dw == dst->width() &&
-            dh == dst->height() )
+         src->channels() == dst->channels() &&
+         dw == dst->width() &&
+         dh == dst->height() &&
+         src->format() == dst->format() )
     {
         memcpy( dst->data().get(), src->data().get(), src->data_size() );
     }
     else
     {
+        image_type_ptr tmp = src;
+        if ( src->format() > image_type::kRGBA )
+        {
+            // YUV format, we need to convert to rgba
+            try
+            {
+                tmp.reset( new image_type( src->frame(),
+                                           dw, dh,
+                                           4,
+                                           image_type::kRGBA,
+                                           image_type::kByte ) );
+            }
+            catch( const std::bad_alloc& e )
+            {
+                LOG_ERROR( e.what() );
+                return;
+            }
+            catch( const std::runtime_error& e )
+            {
+                LOG_ERROR( e.what() );
+                return;
+            }
+
+            AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
+                                                     src->pixel_type() );
+            struct SwsContext* sws_ctx = NULL;
+            sws_ctx = sws_getCachedContext(sws_ctx,
+                                           dw, dh,
+                                           fmt, dw, dh,
+                                           AV_PIX_FMT_RGBA, 0,
+                                           NULL, NULL, NULL);
+            if ( !sws_ctx )
+            {
+                LOG_ERROR( _("Not enough memory for color transform") );
+                return;
+            }
+
+            uint8_t* buf = (uint8_t*)src->data().get();
+            uint8_t* src_data[4] = {NULL, NULL, NULL, NULL};
+            int src_linesize[4] = { 0, 0, 0, 0 };
+            av_image_fill_arrays( src_data, src_linesize, buf, fmt, dw, dh, 1 );
+
+            uint8_t* tmpbuf = (uint8_t*)tmp->data().get();
+            uint8_t* tmp_data[4] = {NULL, NULL, NULL, NULL};
+            int tmp_linesize[4] = { 0, 0, 0, 0 };
+            av_image_fill_arrays( tmp_data, tmp_linesize, tmpbuf,
+                                  AV_PIX_FMT_RGBA, dw, dh, 1 );
+
+            sws_scale( sws_ctx, src_data, src_linesize, 0, dh,
+                       tmp_data, tmp_linesize );
+        }
+
         av_assert0( dw <= dst->width() );
         av_assert0( dh <= dst->height() );
         for ( unsigned y = 0; y < dh; ++y )
         {
             for ( unsigned x = 0; x < dw; ++x )
             {
-                const ImagePixel& p = src->pixel( x, y );
+                const ImagePixel& p = tmp->pixel( x, y );
                 dst->pixel( x, y, p );
             }
         }
