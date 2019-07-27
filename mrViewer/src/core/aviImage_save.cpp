@@ -192,9 +192,9 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
 
 
     /* Write the compressed frame to the media file. */
-#ifdef DEBUG_PACKET
+//#ifdef DEBUG_PACKET
     log_packet(fmt_ctx, pkt);
-#endif
+//#endif
     return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
