@@ -647,7 +647,9 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
     else
     {
         image_type_ptr tmp = src;
-        if ( src->format() > image_type::kRGBA )
+        if ( src->format() > image_type::kRGBA &&
+             ( dst->format() == image_type::kRGB ||
+               dst->format() == image_type::kRGBA ) )
         {
             // YUV format, we need to convert to rgba
             try
