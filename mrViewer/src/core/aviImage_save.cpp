@@ -941,60 +941,6 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     return picture;
 }
 
-AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
-                                   const mrv::image_type::PixelType& p )
-{
-    switch( f )
-    {
-    case mrv::image_type::kITU_601_YCbCr410A:
-    case mrv::image_type::kITU_709_YCbCr410A:
-    case mrv::image_type::kITU_601_YCbCr410:
-    case mrv::image_type::kITU_709_YCbCr410:
-        return AV_PIX_FMT_YUV410P;
-    case mrv::image_type::kITU_601_YCbCr420:
-    case mrv::image_type::kITU_709_YCbCr420:
-        return AV_PIX_FMT_YUV420P;
-    case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
-    case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
-        return AV_PIX_FMT_YUVA420P;
-    case mrv::image_type::kITU_601_YCbCr422:
-    case mrv::image_type::kITU_709_YCbCr422:
-        return AV_PIX_FMT_YUV422P;
-    case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
-    case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
-        return AV_PIX_FMT_YUVA422P;
-    case mrv::image_type::kITU_601_YCbCr444:
-    case mrv::image_type::kITU_709_YCbCr444:
-        return AV_PIX_FMT_YUV444P;
-    case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
-    case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
-        return AV_PIX_FMT_YUVA444P;
-    case mrv::image_type::kLummaA:
-        return AV_PIX_FMT_GRAY8A;
-    case mrv::image_type::kLumma:
-        if ( p == mrv::image_type::kShort )
-            return AV_PIX_FMT_GRAY16LE;
-        return AV_PIX_FMT_GRAY8;
-    case mrv::image_type::kRGB:
-        if ( p == mrv::image_type::kShort )
-            return AV_PIX_FMT_RGB48;
-        return AV_PIX_FMT_RGB24;
-    case mrv::image_type::kRGBA:
-        if ( p == mrv::image_type::kShort )
-            return AV_PIX_FMT_RGBA64;
-        return AV_PIX_FMT_RGBA;
-    case mrv::image_type::kBGR:
-        if ( p == mrv::image_type::kShort )
-            return AV_PIX_FMT_BGR48;
-        return AV_PIX_FMT_BGR24;
-    case mrv::image_type::kBGRA:
-        if ( p == mrv::image_type::kShort )
-            return AV_PIX_FMT_BGRA64;
-        return AV_PIX_FMT_BGRA;
-    default:
-        return AV_PIX_FMT_NONE;
-    }
-}
 
 
 static AVFrame *frame;
