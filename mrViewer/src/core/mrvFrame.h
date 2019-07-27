@@ -55,7 +55,7 @@
 
 
 // Defined in mrvTimer.cpp
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 int gettimeofday(struct timeval * tp, void * tzp);
 #endif
 
