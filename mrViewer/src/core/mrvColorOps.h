@@ -19,11 +19,18 @@
 #ifndef mrvColorOps_h
 #define mrvColorOps_h
 
+extern "C" {
+#include <libswscale/swscale.h>
+}
+
 #include "core/mrvFrame.h"
 
 namespace mrv {
 
 class CMedia;
+
+AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
+                                   const mrv::image_type::PixelType& p );
 
 bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
                     const image_type::Format format,
