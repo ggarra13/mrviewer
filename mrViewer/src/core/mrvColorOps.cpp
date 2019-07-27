@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2018  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2018  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,11 +35,66 @@ const char* kModule = "[ocio]";
 
 namespace mrv {
 
+AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
+                                   const mrv::image_type::PixelType& p )
+{
+    switch( f )
+    {
+    case mrv::image_type::kITU_601_YCbCr410A:
+    case mrv::image_type::kITU_709_YCbCr410A:
+    case mrv::image_type::kITU_601_YCbCr410:
+    case mrv::image_type::kITU_709_YCbCr410:
+        return AV_PIX_FMT_YUV410P;
+    case mrv::image_type::kITU_601_YCbCr420:
+    case mrv::image_type::kITU_709_YCbCr420:
+        return AV_PIX_FMT_YUV420P;
+    case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
+    case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
+        return AV_PIX_FMT_YUVA420P;
+    case mrv::image_type::kITU_601_YCbCr422:
+    case mrv::image_type::kITU_709_YCbCr422:
+        return AV_PIX_FMT_YUV422P;
+    case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
+    case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
+        return AV_PIX_FMT_YUVA422P;
+    case mrv::image_type::kITU_601_YCbCr444:
+    case mrv::image_type::kITU_709_YCbCr444:
+        return AV_PIX_FMT_YUV444P;
+    case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
+    case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
+        return AV_PIX_FMT_YUVA444P;
+    case mrv::image_type::kLummaA:
+        return AV_PIX_FMT_GRAY8A;
+    case mrv::image_type::kLumma:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_GRAY16LE;
+        return AV_PIX_FMT_GRAY8;
+    case mrv::image_type::kRGB:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_RGB48;
+        return AV_PIX_FMT_RGB24;
+    case mrv::image_type::kRGBA:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_RGBA64;
+        return AV_PIX_FMT_RGBA;
+    case mrv::image_type::kBGR:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_BGR48;
+        return AV_PIX_FMT_BGR24;
+    case mrv::image_type::kBGRA:
+        if ( p == mrv::image_type::kShort )
+            return AV_PIX_FMT_BGRA64;
+        return AV_PIX_FMT_BGRA;
+    default:
+        return AV_PIX_FMT_NONE;
+    }
+}
+
 void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
 {
     setlocale(LC_NUMERIC, "C" );
     std::locale::global( std::locale("C") );
-	
+
     const std::string& display = mrv::Preferences::OCIO_Display;
     const std::string& view = mrv::Preferences::OCIO_View;
 
@@ -65,7 +120,7 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
     float* p = (float*)pic->data().get();
     ptrdiff_t chanstride = pic->pixel_size();
     ptrdiff_t xstride = pic->pixel_size() * pic->channels();
-    ptrdiff_t ystride = pic->pixel_size() * pic->channels() * pic->width();
+    ptrdiff_t ystride = xstride * pic->width();
     OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
                                 pic->channels(), chanstride, xstride,
                                 ystride );
@@ -90,7 +145,7 @@ bool prepare_image( mrv::image_type_ptr& pic, const CMedia* img,
     const std::string& view = mrv::Preferences::OCIO_View;
 
     if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-            Preferences::uiMain->uiView->use_lut() )
+         Preferences::uiMain->uiView->use_lut() )
     {
         try {
             ptr = image_type_ptr( new image_type(
