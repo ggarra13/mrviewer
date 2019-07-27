@@ -484,9 +484,8 @@ bool oiioImage::save( const char* path, const CMedia* img,
             if ( !must_convert )
             {
 
-                if ( pic->channels() > channels )
+                if ( pic->channels() > channels || pic->format() != format )
                 {
-
                     mrv::image_type_ptr ptr =
                         image_type_ptr( new image_type(
                                             img->frame(),
@@ -499,9 +498,11 @@ bool oiioImage::save( const char* path, const CMedia* img,
 
                 mrv::aligned16_uint8_t* p = pic->data().get();
                 unsigned mult = dw * pic->channels() * pixel_size;
-                for ( int y = spec.y; y < spec.y + daw.h(); ++y )
+                unsigned yh = spec.y + dh;
+                for ( int y = spec.y; y < yh; ++y )
                 {
-                    void* line = &p[(y-spec.y) * mult ];
+                    mrv::aligned16_uint8_t* line = p;
+                    line += (y-spec.y) * mult;
                     out->write_scanline( y, 0, type, line );
                 }
             }
@@ -511,7 +512,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
                 prepare_image( pic, img, format, pt );
 
                 mrv::aligned16_uint8_t* p = pic->data().get();
-                int yh = spec.y + dh;
+                unsigned yh = spec.y + dh;
                 unsigned mult = dw * pic->channels() * pixel_size;
                 for ( int y = spec.y; y < yh; ++y )
                 {
