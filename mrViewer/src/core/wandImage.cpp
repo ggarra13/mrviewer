@@ -412,7 +412,7 @@ bool wandImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
 
     if ( _attrs.find( frame ) == _attrs.end() )
     {
-	_attrs.insert( std::make_pair( frame, Attributes() ) );
+        _attrs.insert( std::make_pair( frame, Attributes() ) );
         ExceptionInfo* exception = NULL;
         GetImageProperty( img, "exif:*", exception );
         ResetImagePropertyIterator( img );
@@ -1193,7 +1193,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         p->channel( x.c_str() );
 
-        mrv::image_type_ptr pic = hires();
+        mrv::image_type_ptr pic = left();
 
         mrv::Recti daw = data_window();
 
@@ -1590,16 +1590,16 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     //
     {
         setlocale( LC_NUMERIC, "C" );  // Set locale to C
-	AttributesFrame::const_iterator j = _attrs.find( _frame );
-	if ( j != _attrs.end() )
-	{
-	    Attributes::const_iterator i = j->second.begin();
-	    Attributes::const_iterator e = j->second.end();
-	    for ( ; i != e; ++i )
-	    {
-		save_attribute( this, wand, i );
-	    }
-	}
+        AttributesFrame::const_iterator j = _attrs.find( _frame );
+        if ( j != _attrs.end() )
+        {
+            Attributes::const_iterator i = j->second.begin();
+            Attributes::const_iterator e = j->second.end();
+            for ( ; i != e; ++i )
+            {
+                save_attribute( this, wand, i );
+            }
+        }
 
         char buf[32];
         sprintf( buf, "%2.4f", _fps.load() );
