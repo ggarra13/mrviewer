@@ -1359,6 +1359,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         {
 
 
+
             image_type_ptr ptr = image_type_ptr( new image_type(
                     pic->frame(),
                     dw, dh, 4,
