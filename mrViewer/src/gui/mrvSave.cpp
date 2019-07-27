@@ -75,7 +75,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     bool ffmpeg_handle = (ext == ".png" || ext == ".jpg" || ext == ".jpeg" ||
                           ext == ".tif" || ext == ".tiff" );
     bool movie = is_valid_movie( ext.c_str() ) ||
-                 is_valid_audio( ext.c_str() ) || ffmpeg_handle;
+                 is_valid_audio( ext.c_str() );
 
     std::string root, fileseq = file;
     bool ok = mrv::fileroot( root, fileseq, false );
