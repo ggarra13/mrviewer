@@ -31,7 +31,7 @@
 #: core/Sequence.cpp:526 core/Sequence.cpp:529 core/Sequence.cpp:546
 #: core/Sequence.cpp:632 core/Sequence.cpp:642 core/Sequence.cpp:658
 #: core/Sequence.cpp:666 core/Sequence.cpp:1009 core/Sequence.cpp:1044
-#: core/mrvCPU.cpp:747 core/mrvColorOps.cpp:129 core/mrvColorOps.cpp:130
+#: core/mrvCPU.cpp:747 core/mrvColorOps.cpp:141 core/mrvColorOps.cpp:142
 #: gui/FLU/Flu_Button.cpp:170 gui/FLU/Flu_File_Chooser.cpp:194
 #: gui/FLU/Flu_File_Chooser.cpp:204 gui/FLU/Flu_File_Chooser.cpp:207
 #: gui/FLU/Flu_File_Chooser.cpp:224 gui/FLU/Flu_File_Chooser.cpp:512
@@ -116,7 +116,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-07-27 18:57-0300\n"
+"POT-Creation-Date: 2019-07-27 20:51-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10823,7 +10823,7 @@ msgid "5.\tc #BEA26D"
 msgstr ""
 
 #: gui/mrvVersion.cpp:106
-msgid "5.1.4"
+msgid "5.1.5"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrv/BUILD/Linux-4.18.0-25-generic-64/Release/tmp/mrViewer/src/mrvPreferencesUI.cxx:144
@@ -13657,7 +13657,7 @@ msgstr ""
 #: core/aviImage.cpp:53 core/aviImage_save.cpp:37 core/iffImage.cpp:39
 #: core/wandImage.cpp:420 core/wandImage.cpp:1593 core/mrvPlayback.cpp:34
 #: core/mrvACES.cpp:122 core/Sequence.cpp:795 core/Sequence.cpp:834
-#: core/mrvColorOps.cpp:95 core/mrvColorOps.cpp:96 gui/mrvOCIOBrowser.cpp:148
+#: core/mrvColorOps.cpp:107 core/mrvColorOps.cpp:108 gui/mrvOCIOBrowser.cpp:148
 #: gui/mrvOCIOBrowser.cpp:149 gui/mrvImageBrowser.cpp:531
 #: gui/mrvPreferences.cpp:1267 gui/mrvPreferences.cpp:1521
 #: gui/mrvPreferences.cpp:1522 gui/mrvTimecode.cpp:45
@@ -19832,7 +19832,7 @@ msgstr ""
 msgid "Not enough memory"
 msgstr ""
 
-#: core/mrvFrame.cpp:682
+#: core/mrvFrame.cpp:684
 msgid "Not enough memory for color transform"
 msgstr ""
 
@@ -21121,7 +21121,7 @@ msgstr ""
 msgid "RLE"
 msgstr ""
 
-#: core/mrvColorOps.cpp:110 video/mrvGLLut3d.cpp:563
+#: core/mrvColorOps.cpp:122 video/mrvGLLut3d.cpp:563
 msgid "ROLE_SCENE_LINEAR not defined."
 msgstr ""
 
