@@ -764,8 +764,8 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
     if (!startdir) startdir = "";
 
     const char* file = file_save_single_requester( title.c_str(),
-                       pattern.c_str(),
-                       startdir, false );
+                                                   pattern.c_str(),
+                                                   startdir, false );
     if ( file == NULL || strlen(file) == 0 ) return;
 
 
