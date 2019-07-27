@@ -16,12 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   rawImage.cpp
+ * @file   oiioImage.cpp
  * @author gga
  * @date   Fri Nov 03 15:38:30 2006
  *
- * @brief  A simple wrapper class to read all of ImageMagick's image formats
- *         using the raw interface.
+ * @brief  A simple wrapper class to read all of OIIO's image formats.
  *
  */
 
@@ -31,7 +30,7 @@
 using namespace std;
 
 #include <cstdio>
-#ifndef __STDC_FORMAT_MACROS 
+#ifndef __STDC_FORMAT_MACROS
 #  define __STDC_FORMAT_MACROS
 #  define __STDC_LIMIT_MACROS
 #endif
@@ -153,15 +152,15 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
     ImageSpec& spec = const_cast< ImageSpec& >( s );
 
     {
-	SCOPED_LOCK( _mutex );
-	std::string fmt = in->format_name();
-	fmt = "OIIO (" + fmt + ")";
-	free( _format );
-	_format = strdup( fmt.c_str() );
+        SCOPED_LOCK( _mutex );
+        std::string fmt = in->format_name();
+        fmt = "OIIO (" + fmt + ")";
+        free( _format );
+        _format = strdup( fmt.c_str() );
     }
 
     _attrs.insert( std::make_pair( frame, Attributes() ) );
-    
+
     if ( _level < 0 )
     {
         while ( in->seek_subimage( 0, _mipmaps, spec ) )
@@ -213,25 +212,25 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
             }
             Imf::StringAttribute attr( *(const char **)p.data() );
             _attrs[frame].insert( std::make_pair( p.name().c_str(),
-						   attr.copy() ) );
+                                                   attr.copy() ) );
         }
         else if (p.type() == TypeFloat)
         {
             Imf::FloatAttribute attr( *(const float*)p.data() );
             _attrs[frame].insert( std::make_pair( p.name().c_str(),
-						   attr.copy() ) );
+                                                   attr.copy() ) );
         }
         else if (p.type() == TypeInt)
         {
             Imf::IntAttribute attr( *(const int*)p.data() );
             _attrs[frame].insert( std::make_pair( p.name().c_str(),
-						   attr.copy() ) );
+                                                   attr.copy() ) );
         }
         else if (p.type() == TypeDesc::UINT)
         {
             Imf::IntAttribute attr( *(const unsigned int*)p.data() );
             _attrs[frame].insert( std::make_pair( p.name().c_str(),
-						   attr.copy() ) );
+                                                   attr.copy() ) );
         }
         else if (p.type() == TypeMatrix)
         {
@@ -242,7 +241,7 @@ bool oiioImage::fetch( mrv::image_type_ptr& canvas, const boost::int64_t frame )
                           f[12], f[13], f[14], f[15]);
             Imf::M44fAttribute attr( m );
             _attrs[frame].insert( std::make_pair( p.name().c_str(),
-						   attr.copy() ) );
+                                                   attr.copy() ) );
         }
     }
 
@@ -365,7 +364,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
                     (int(*)(int)) tolower );
 
     TypeDesc::BASETYPE type;
-    mrv::image_type_ptr pic = img->hires();
+    mrv::image_type_ptr pic = img->left();
     image_type::Format format = pic->format();
 
     bool must_convert = false;
@@ -374,10 +373,11 @@ bool oiioImage::save( const char* path, const CMedia* img,
 
     image_type::PixelType st = opts->pixel_type();
 
+
     // Constrain some pixel types to the maximum supported by the format
     std::string f = path;
     image_type::PixelType maxPixelType = image_type::kByte;
-    if ( ext == ".iff" )
+    if ( ext == ".iff" || ext == ".png" )
     {
         maxPixelType = image_type::kShort;
     }
@@ -388,22 +388,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
 
     if ( pt < maxPixelType ) maxPixelType = pt;
 
-    switch( st )
-    {
-    case CharPixel:
-        pt = image_type::kByte;
-        break;
-    case ShortPixel:
-        pt = image_type::kShort;
-        break;
-    case LongPixel:
-        pt = image_type::kInt;
-        break;
-    case DoublePixel:
-    case FloatPixel:
-        pt = image_type::kFloat;
-        break;
-    }
+    pt = st;
 
     if ( pt > maxPixelType ) pt = maxPixelType;
 
@@ -430,14 +415,20 @@ bool oiioImage::save( const char* path, const CMedia* img,
         return false;
     }
 
+    unsigned short pixel_size = pic->pixel_size();
     unsigned short channels = pic->channels();
 
     format = image_type::kLumma;
     if ( channels >= 2 ) format = image_type::kRGB;
     if ( channels >= 4 ) format = image_type::kRGBA;
 
-    if ( pic->pixel_type() > maxPixelType || img->gamma() != 1.0f )
+    if ( pic->pixel_type() != pt || img->gamma() != 1.0f )
     {
+        pixel_size = 1;
+        if ( pt == image_type::kShort || pt == image_type::kHalf )
+            pixel_size = 2;
+        else if ( pt == image_type::kInt || pt == image_type::kFloat )
+            pixel_size = 4;
         must_convert = true;
     }
     if ( channels >= 4 && (ext == ".rgbe" || ext == ".hdr" || ext == ".hdri" ))
@@ -490,11 +481,12 @@ bool oiioImage::save( const char* path, const CMedia* img,
         {
             out->open( path, spec );
 
-            unsigned short pixel_size = pic->pixel_size();
             if ( !must_convert )
             {
+
                 if ( pic->channels() > channels )
                 {
+
                     mrv::image_type_ptr ptr =
                         image_type_ptr( new image_type(
                                             img->frame(),
@@ -515,6 +507,7 @@ bool oiioImage::save( const char* path, const CMedia* img,
             }
             else
             {
+
                 prepare_image( pic, img, format, pt );
 
                 mrv::aligned16_uint8_t* p = pic->data().get();
