@@ -47,6 +47,8 @@
 #  define strdup(x)       _strdup(x)
 #endif
 
+#undef max
+#undef min
 #undef stricmp
 
 #if !(defined strcasecmp)
