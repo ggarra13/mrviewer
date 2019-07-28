@@ -51,7 +51,7 @@ const float kConstant = 65535.0f;
       {
           assert0( _channels > 3 );
           unsigned int Ylen    = _width * _height;
-          d[ Ylen * 3 + offset ] / kConstant;
+          p.a = d[ Ylen * 3 + offset ] / kConstant;
         }
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
