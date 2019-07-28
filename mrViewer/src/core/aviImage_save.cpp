@@ -192,9 +192,9 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
 
 
     /* Write the compressed frame to the media file. */
-//#ifdef DEBUG_PACKET
+#ifdef DEBUG_PACKET
     log_packet(fmt_ctx, pkt);
-//#endif
+#endif
     return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
@@ -1036,7 +1036,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 
     CMedia* m = (CMedia*) img;
 
-    image_type_ptr hires = img->hires();
+    image_type_ptr hires = img->left();
 
     if ( !hires )
     {
@@ -1062,7 +1062,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
     if ( hires->channels() == 4 ) format = image_type::kRGBA;
 
     if ( Preferences::use_ocio && !display.empty() && !view.empty() &&
-            Preferences::uiMain->uiView->use_lut() )
+         Preferences::uiMain->uiView->use_lut() )
     {
 
         ptr = mrv::image_type_ptr( new image_type( hires->frame(),
@@ -1119,7 +1119,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 
 
     AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
-                        hires->pixel_type() );
+                                             hires->pixel_type() );
     sws_ctx = sws_getCachedContext( sws_ctx, w, h,
                                     fmt, c->width, c->height, c->pix_fmt, 0,
                                     NULL, NULL, NULL );
