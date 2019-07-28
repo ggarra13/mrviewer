@@ -3163,10 +3163,10 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
             pts = frame2pts( get_audio_stream(), f );
             if ( !got_audio ) _audio_packets.jump( pts );
             _dts = _adts = f;
-            // _expected = _dts + 1;
-            // _expected_audio = _dts + 1;
-            _expected = -99999;
-            _expected_audio = -99999;
+            _expected = _dts + 1;
+            _expected_audio = _dts + 1;
+            //_expected = -99999;
+            //_expected_audio = -99999;
 
             return true;
         }
