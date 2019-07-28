@@ -1,5 +1,8 @@
 v5.1.5  - Made mrvGLShape.h's virtual destructors.
-	- Fixed saving PNG/TIFF/IFF files.
+	- Fixed alpha channel on some uint16 YUVA files.
+	- Fixed bad use of min/max macros in Windows when used in limits.
+	- Fixed saving PNG/TIFF/IFF/etc. file sequences from movies as well
+	  as from other sequences.
 
 v5.1.4  - Bug fixed looping movies showing some random frame at the end
 	  of the loop.  Problem introduced in v5.1.2.
