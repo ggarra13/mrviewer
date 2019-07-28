@@ -150,7 +150,11 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
     dts = frame - 1;
     int64_t audio_frame = frame;
 
+    mrv::media fg = uiMain->uiView->foreground();
+    if (!fg) return;
 
+    img = fg->image();
+    img->clear_cache();
 
 #if 1
     for ( ; frame <= last; ++frame )
