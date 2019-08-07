@@ -2453,6 +2453,8 @@ void CMedia::play(const CMedia::Playback dir,
                   bool fg )
 {
 
+    if ( saving() ) return;
+
     assert0( dir != kStopped );
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
@@ -3312,38 +3314,15 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
  *
  * @return FPS (frames per second)
  */
-double CMedia::calculate_fps( const AVStream* stream )
+double CMedia::calculate_fps( AVFormatContext* ctx,
+                              AVStream* stream )
 {
-    double fps;
-
+    assert( ctx != NULL );
     assert( stream != NULL );
-    const AVRational& rate = stream->r_frame_rate;
+    const AVRational& rate = av_guess_frame_rate( ctx, stream, NULL ); //;stream->r_frame_rate;
+    double fps = av_q2d( rate );
 
-    if ( stream->avg_frame_rate.den && stream->avg_frame_rate.num )
-    {
-        fps = av_q2d( stream->avg_frame_rate );
-    }
-    else if ( rate.den && rate.num )
-    {
-        fps = av_q2d( rate );
-    }
-    else
-    {
-        fps = 1.0 / av_q2d( stream->time_base );
-    }
-
-    // Some codecs/movies seem to return fps as a time_base > 10000, like:
-    //           24895 / 2   for 24.895 fps.  Not sure why /2, thou.
-    if ( fps > 1000 &&
-            stream->time_base.den > 10000 && stream->time_base.num < 3 )
-    {
-        fps = stream->time_base.den / 1000.0;
-    }
-
-    if ( fps >= 1000 )
-    {
-        fps = 30.0f;  // workaround for some buggy streams
-    }
+    if ( fps == 0 ) fps = 30.0;
 
     return fps;
 }
