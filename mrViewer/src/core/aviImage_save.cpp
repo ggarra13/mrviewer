@@ -255,6 +255,11 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         return NULL;
     }
     st->id = oc->nb_streams-1;
+    if ( st->id > 1 )
+    {
+        LOG_ERROR( _("Too many streams in output context") );
+        return NULL;
+    }
     c = enc_ctx[st->id] = avcodec_alloc_context3(*codec);
 
     /* Some container formats (like MP4) require global headers to be present.
@@ -278,7 +283,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         c->time_base.den = st->time_base.den = c->sample_rate;
 
         if((c->block_align == 1 || c->block_align == 1152 ||
-                c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
+            c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
             c->block_align = 0;
         if(c->codec_id == AV_CODEC_ID_AC3)
             c->block_align = 0;
@@ -298,13 +303,13 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
          * timebase should be 1/framerate and timestamp increments should be
          * identical to 1. */
         if ( opts->fps <= 0 )
-            c->time_base.den = st->time_base.den = int( 10000 * img->fps() );
+            c->time_base.den = st->time_base.den = int( 1000 * img->fps() );
         else
-            c->time_base.den = st->time_base.den = int( 10000 * opts->fps );
-        c->time_base.num = st->time_base.num = 10000;
+            c->time_base.den = st->time_base.den = int( 1000 * opts->fps );
+        c->time_base.num = st->time_base.num = 1000;
         c->framerate.num = c->time_base.den;
         c->framerate.den = c->time_base.num;
-        c->ticks_per_frame = 2;
+        //c->ticks_per_frame = 2;
 
 
         c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
@@ -894,7 +899,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
 
-static void close_audio_static(AVFormatContext *oc, AVStream *st)
+static void close_audio_stream(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(enc_ctx[st->id]);
     avcodec_free_context( &enc_ctx[st->id] );
@@ -1398,46 +1403,17 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 bool write_va_frame( CMedia* img )
 {
 
-    double audio_time, video_time;
-
-    /* Compute current audio and video time. */
-    audio_time = ( audio_st ? ( double(audio_frame->pts) *
-                                av_q2d( audio_st->time_base ) )
-                   : INFINITY );
-    // This is wrong as it does not get updated properly with h264
-    //video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
-    //             : INFINITY );
-
-    video_time = ( video_st ? ( double(picture->pts) *
-                                av_q2d( enc_ctx[video_st->id]->time_base ) )
-                   : INFINITY );
-
-
-    // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts
-    //           << " " << video_st->time_base.num
-    //           << "/" << video_st->time_base.den
-    //           << " c: " << video_st->codec->time_base.num
-    //           << "/" << video_st->codec->time_base.den << std::endl;
-
-
     /* write interleaved audio and video frames */
 
 
-    if ( video_st ) {
+    if ( video_st )
+    {
         write_video_frame(oc, video_st, img);
-
-        // av_rescale_q(1, video_st->codec->time_base,
-        // video_st->time_base);
     }
 
     if ( audio_st )
     {
-        while( audio_time <= video_time ) {
-            if ( ! write_audio_frame(oc, audio_st, img) )
-                break;
-            audio_time = (double)audio_frame->pts *
-                         av_q2d( audio_st->time_base);
-        }
+        write_audio_frame(oc, audio_st, img);
     }
 
     return true;
@@ -1523,8 +1499,7 @@ bool flush_video_and_audio( const CMedia* img )
 
         if (c->codec_type == AVMEDIA_TYPE_AUDIO && c->frame_size <= 1)
             continue;
-        // if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codecpar->id == AV_CODEC_ID_RAWVIDEO)
-        //     continue;
+
 
         while( ret >= 0 ) {
 
@@ -1606,7 +1581,7 @@ bool aviImage::close_movie( const CMedia* img )
     if (video_st)
         close_video(oc, video_st);
     if (audio_st)
-        close_audio_static(oc, audio_st);
+        close_audio_stream(oc, audio_st);
 
     if (!(fmt->flags & AVFMT_NOFILE))
         /* Close the output file. */
