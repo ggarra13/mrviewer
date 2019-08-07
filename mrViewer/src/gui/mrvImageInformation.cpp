@@ -1476,16 +1476,23 @@ static void change_mipmap_cb( Fl_Int_Input* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelX( atoi( w->value() ) );
         img->levelY( atoi( w->value() ) );
+        img->clear_cache();
         update_int_slider( w );
         image_type_ptr canvas;
-        bool ok = img->fetch( canvas, view->frame() );
+        bool ok = img->fetch( canvas, img->frame() );
         if (ok)
         {
+            img->hires( canvas );
             img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
         }
+        else
+        {
+            LOG_ERROR( _("Fetch failed for mipmap " ) << img->levelX() );
+        }
+        return;
     }
     else
     {
@@ -1493,17 +1500,24 @@ static void change_mipmap_cb( Fl_Int_Input* w, ImageInformation* info )
         if ( img )
         {
             mrv::ImageView* view = info->main()->uiView;
+            img->clear_cache();
             img->level( atoi( w->value() ) );
             update_int_slider( w );
             image_type_ptr canvas;
-            bool ok = img->fetch( canvas, view->frame() );
+            bool ok = img->fetch( canvas, img->frame() );
             if (ok)
             {
+                img->hires( canvas );
                 img->cache( canvas );
                 img->refresh();
                 view->fit_image();
                 view->redraw();
             }
+            else
+            {
+                LOG_ERROR( _("Fetch failed for mipmap " ) << img->level() );
+            }
+            return;
         }
     }
 }
@@ -1516,15 +1530,22 @@ static void change_x_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelX( atoi( w->value() ) );
         update_int_slider( w );
+        img->clear_cache();
         image_type_ptr canvas;
         bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+            img->hires( canvas );
             img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
         }
+        else
+        {
+            LOG_ERROR( _("Fetch failed for ripmap X " ) << img->levelX() );
+        }
+        return;
     }
 }
 
@@ -1535,15 +1556,21 @@ static void change_y_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
     {
         mrv::ImageView* view = info->main()->uiView;
         img->levelY( atoi( w->value() ) );
+        img->clear_cache();
         update_int_slider( w );
         image_type_ptr canvas;
         bool ok = img->fetch( canvas, view->frame() );
         if (ok)
         {
+            img->hires( canvas );
             img->cache( canvas );
             img->refresh();
             view->fit_image();
             view->redraw();
+        }
+        else
+        {
+            LOG_ERROR( _("Fetch failed for ripmap Y " ) << img->levelY() );
         }
     }
 }
