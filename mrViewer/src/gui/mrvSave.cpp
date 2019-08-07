@@ -179,6 +179,7 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
             img->frame( dts );
         }
 
+
         decode_some( img, frame );
 
         // img->debug_audio_stores( frame, "decode", true );
@@ -187,10 +188,10 @@ void save_movie_or_sequence( const char* file, ViewerUI* uiMain,
         size_t asize = img->audio_packets().size();
 
 #define kMIN_SIZE 25
-        // if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
-        //     skip = true;
-        // else
-        //     skip = false;
+        if ( vsize > kMIN_SIZE || asize > kMIN_SIZE )
+            skip = true;
+        else
+            skip = false;
 
         if ( !skip )
         {
