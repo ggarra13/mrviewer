@@ -136,8 +136,12 @@ void bake_ocio( const mrv::image_type_ptr& pic, const CMedia* img )
     OCIO::PackedImageDesc baker(p, pic->width(), pic->height(),
                                 pic->channels(), chanstride, xstride,
                                 ystride );
+#ifdef LINUX
+    OCIO::ConstCPUProcessorRcPtr cpu = processor->getDefaultCPUProcessor();
+    cpu->apply( baker );
+#else
     processor->apply( baker );
-
+#endif
     std::locale::global( std::locale(N_("")) );
     setlocale(LC_NUMERIC, N_("") );
 }
