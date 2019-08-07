@@ -4,12 +4,22 @@ require 'fileutils'
 require 'optparse'
 
 
-@options = { :verbose => false }
+def run_cmd(args)
+  puts args
+  `#{args}`
+end
+
+
+@options = { :verbose => false, :dir => '.' }
 opts = OptionParser.new do |o|
   o.banner = "Usage: utils/dll2lib.rb [options] <file.dll>"
 
   o.on("-v", "--[no-]verbose", "Run verbosely") do |v|
     @options[:verbose] = v
+  end
+
+  o.on("-o", "--output dir" ) do |dir|
+    @options[:dir] = dir
   end
 
   o.on_tail("-h", "--help", "Show this message") do
@@ -40,6 +50,9 @@ if dllfile !~ /\.dll$/i
 end
 
 library = dllfile.sub( /\.dll$/i, '' )
+if @options[:dir]
+  library.gsub!( /.*\//, @options[:dir] + '/' )
+end
 tmpfile = "#{library}.tmp"
 deffile = "#{library}.def"
 libfile = "#{library}.lib"
@@ -47,13 +60,13 @@ libfile = "#{library}.lib"
 #
 # Find out whether the dll is for x86 or x64 machines
 #
-machine = `dumpbin -headers #{dllfile}`
-if machine =~ /x86/
+machine = run_cmd( "dumpbin -headers \"#{dllfile}\"")
+if machine =~ /x86/m
   @options[:machine] = 'x86'
-elsif machine =~ /x64/
+elsif machine =~ /x64/m
   @options[:machine] = 'x64'
 else
-  $stderr.puts "DLL for an architecture not supported"
+  $stderr.puts "DLL for an architecture not supported: " + @options[:machine].to_s
   exit 1
 end
 
@@ -61,7 +74,7 @@ puts
 puts "MACHINE ARCHITECTURE OF DLL: #{@options[:machine]}"
 puts
   
-`dumpbin -exports #{dllfile} > #{tmpfile}`
+run_cmd( "dumpbin /EXPORTS \"#{dllfile}\" > \"#{tmpfile}\"" )
 
 #
 # Read all lines of tmpfile
@@ -102,11 +115,10 @@ end
 
 fout.close
 
-
 #
 # Pass def file to lib.exe to create the lib file
 #
-puts `lib -def:#{deffile} -out:#{libfile} -machine:#{@options[:machine]}`
+run_cmd( "lib -def:#{deffile} -out:#{libfile} -machine:#{@options[:machine]}" )
 
 FileUtils.rm_f deffile
 FileUtils.rm_f tmpfile

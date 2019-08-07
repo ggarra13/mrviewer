@@ -1786,7 +1786,8 @@ protected:
     static std::string codec_name( const AVCodecContext* enc );
     static unsigned int calculate_bitrate( const AVStream* stream,
                                            const AVCodecParameters* enc );
-    static double calculate_fps( const AVStream* stream );
+    static double calculate_fps( AVFormatContext* ctx,
+                                 AVStream* stream );
 
 protected:
     static unsigned  _audio_max;        //!< max size of audio buf
