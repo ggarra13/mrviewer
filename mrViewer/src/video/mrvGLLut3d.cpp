@@ -580,12 +580,17 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
         DBG;
 
 
+
         OCIO::PackedImageDesc img(&lut[0],
                                   /* width */ lut_size()/_channels,
                                   /*height*/ 1,
                                   /*channels*/ _channels);
+#ifdef LINUX
+        OCIO::ConstCPUProcessorRcPtr cpu = processor->getDefaultCPUProcessor();
+        cpu->apply( img );
+#else
         processor->apply( img );
-
+#endif
         DBG;
 
         // std::ostringstream os;
