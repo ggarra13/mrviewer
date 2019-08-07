@@ -862,7 +862,6 @@ CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 bool aviImage::seek_to_position( const int64_t frame )
 {
 
-
 #ifdef DEBUG_SEEK
     LOG_INFO( "BEFORE SEEK:  D: " << _dts << " E: " << _expected );
 #endif
@@ -885,7 +884,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
 
-    if ( stopped() &&
+    if ( (saving() || stopped() ) &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -925,8 +924,12 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( offset < 0 ) offset = 0;
 
 
+    int ret = 0;
     int flag = AVSEEK_FLAG_BACKWARD;
-    int ret = av_seek_frame( _context, -1, offset, flag );
+    if ( !skip )
+    {
+        ret = av_seek_frame( _context, -1, offset, flag );
+    }
     //int ret = avformat_seek_file( _context, -1,
     //                            std::numeric_limits<int64_t>::min(), offset,
     //                            std::numeric_limits<int64_t>::max(), flag );
@@ -1466,9 +1469,9 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
 
         av_frame_unref(_av_frame);
         av_frame_unref(_filt_frame);
-        if ( ( stopped() || saving() ) && ptsframe != frame &&
-                frame != first_frame() )
-            return kDecodeMissingFrame;
+        // if ( ( stopped() || saving() ) && ptsframe != frame &&
+        //         frame != first_frame() )
+        //     return kDecodeMissingFrame;
         return kDecodeOK;
     }
     else if ( status == kDecodeError )
@@ -2267,7 +2270,7 @@ void aviImage::populate()
             video_info_t s;
             populate_stream_info( s, msg, _context, ctx, i );
             s.has_b_frames = ( ctx->has_b_frames != 0 );
-            s.fps          = calculate_fps( stream );
+            s.fps          = calculate_fps( _context, (AVStream*)stream );
             if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
                 s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
             _video_info.push_back( s );
@@ -2379,7 +2382,7 @@ void aviImage::populate()
         return;  // no stream detected
     }
 
-    _orig_fps = _fps = _play_fps = calculate_fps( stream );
+    _orig_fps = _fps = _play_fps = calculate_fps( _context, stream );
 
 
 
@@ -3051,15 +3054,15 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 if ( playback() == kBackwards )
                 {
                     // Only add packet if it comes before seek frame
-                    //if ( pktframe <= frame )
-                    _audio_packets.push_back( pkt );
+                    if ( pktframe <= frame )
+                    {
+                        _audio_packets.push_back( pkt );
+                        got_audio = true;
+                    }
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
                 else
                 {
-                    // ffmpeg @bug:  audio seeks in long mp3s while playing can
-                    // result in ffmpeg going backwards too far.
-                    // This pktframe >= frame-10 is to avoid that.
                     _audio_packets.push_back( pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
@@ -3131,7 +3134,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 #endif
 
 
-    if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
+    if ( _right_eye && (stopped() || saving() ) )
     {
         _right_eye->stop();
         mrv::image_type_ptr canvas;
@@ -3153,7 +3156,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     int64_t f = handle_loops( frame );
 
-    if ( f != _expected )
+    if ( !saving() && f != _expected )
     {
         if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
              in_video_store( f ) )
@@ -3247,12 +3250,12 @@ bool aviImage::frame( const int64_t f )
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
 
-    if ( playback() != kStopped && playback() != kSaving &&
-            ( (_video_packets.bytes() +  _audio_packets.bytes() +
-               _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
-            ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
-              ( vpkts > kMIN_FRAMES || !has_video() )
-            ) )
+    if ( !stopped() &&
+         ( (_video_packets.bytes() +  _audio_packets.bytes() +
+            _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
+         ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
+           ( vpkts > kMIN_FRAMES || !has_video() )
+             ) )
     {
         // std::cerr << "false return: " << std::endl;
         // std::cerr << "vp: " << vpkts
@@ -3285,8 +3288,8 @@ bool aviImage::frame( const int64_t f )
 }
 
 CMedia::DecodeStatus aviImage::decode_vpacket( int64_t& ptsframe,
-        const int64_t& frame,
-        const AVPacket& pkt )
+                                               const int64_t& frame,
+                                               const AVPacket& pkt )
 {
     //int64_t oldpktframe = pktframe;
     CMedia::DecodeStatus status = decode_video_packet( ptsframe, frame, &pkt );
@@ -3428,7 +3431,7 @@ bool aviImage::in_video_store( const int64_t frame )
     // Check if video is already in video store
     video_cache_t::iterator end = _images.end();
     video_cache_t::iterator i = std::find_if( _images.begin(), end,
-                                EqualFunctor(frame) );
+                                              EqualFunctor(frame) );
     if ( i != end ) return true;
     return false;
 }
@@ -3856,7 +3859,9 @@ void aviImage::do_seek()
 
     _seek_frame = handle_loops( _seek_frame );
 
-    _dts = _adts = _seek_frame;
+    if ( saving() ) _seek_req = false;
+
+    // _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
@@ -3864,11 +3869,15 @@ void aviImage::do_seek()
 
     if ( !got_audio || !got_video )
     {
-        if ( _seek_frame != _expected )
+        if ( !saving() && _seek_frame != _expected )
             clear_packets();
 
-        image_type_ptr canvas;
-        fetch( canvas, _seek_frame );
+        if ( !saving() || _seek_frame == _expected-1 )
+        {
+            image_type_ptr canvas;
+            fetch( canvas, _seek_frame );
+        }
+
     }
 
 
