@@ -624,7 +624,8 @@ VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 }
 
 
-void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
+void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src,
+                 SwsContext* sws_ctx )
 {
     unsigned dw = src->width();
     unsigned dh = src->height();
@@ -638,9 +639,8 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
     av_assert0( dst->height() > 0 );
     if ( src->pixel_type() == dst->pixel_type() &&
          src->channels() == dst->channels() &&
-         dw == dst->width() &&
-         dh == dst->height() &&
-         src->format() == dst->format() )
+         src->format() == dst->format() &&
+         dw == dst->width() && dh == dst->height() )
     {
         memcpy( dst->data().get(), src->data().get(), src->data_size() );
     }
@@ -673,7 +673,6 @@ void copy_image( mrv::image_type_ptr& dst, const mrv::image_type_ptr& src )
 
             AVPixelFormat fmt = ffmpeg_pixel_format( src->format(),
                                                      src->pixel_type() );
-            struct SwsContext* sws_ctx = NULL;
             sws_ctx = sws_getCachedContext(sws_ctx,
                                            dw, dh,
                                            fmt, dw, dh,
