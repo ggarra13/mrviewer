@@ -1,3 +1,8 @@
+
+v5.1.6  - A quick fix for Windows' 64 bits libtiff crashing due to a
+	  new version.
+	- Bug fixed showing of mipmaps/ripmaps in EXRs and .tx files.
+
 v5.1.5  - Made mrvGLShape.h's virtual destructors.
 	- Fixed alpha channel on some uint16 YUVA files.
 	- Fixed bad use of min/max macros in Windows when used in limits.
