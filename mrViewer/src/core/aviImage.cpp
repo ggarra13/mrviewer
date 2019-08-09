@@ -3872,7 +3872,7 @@ void aviImage::do_seek()
         if ( !saving() && _seek_frame != _expected )
             clear_packets();
 
-        if ( !saving() || _seek_frame == _expected-1 )
+        if ( !saving() || _seek_frame == _expected )
         {
             image_type_ptr canvas;
             fetch( canvas, _seek_frame );
