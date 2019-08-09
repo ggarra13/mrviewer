@@ -1581,10 +1581,10 @@ static void change_first_frame_cb( Fl_Int_Input* w, ImageInformation* info )
     if ( img )
     {
         int64_t v = atoi( w->value() );
-        if ( v < img->start_frame() )
-            v = img->start_frame();
-        if ( v > img->last_frame() )
-            v = img->last_frame();
+        // if ( v < img->start_frame() )
+        //     v = img->start_frame();
+        // if ( v > img->last_frame() )
+        //     v = img->last_frame();
         char buf[64];
         sprintf( buf, "%" PRId64, v );
         w->value( buf );
@@ -1626,10 +1626,10 @@ static void change_last_frame_cb( Fl_Int_Input* w,
     if ( img )
     {
         int64_t v = atoi( w->value() );
-        if ( v < img->first_frame() )
-            v = img->first_frame();
-        if ( v > img->end_frame() )
-            v = img->end_frame();
+        // if ( v < img->first_frame() )
+        //     v = img->first_frame();
+        // if ( v > img->end_frame() )
+        //     v = img->end_frame();
         char buf[64];
         sprintf( buf, "%" PRId64, v );
         w->value( buf );
@@ -2153,7 +2153,7 @@ void ImageInformation::fill_data()
         add_bool( _("Sequence"), _("Clip is a sequence of frames"), img->is_sequence() );
     }
 
-    if ( img->first_frame() != img->last_frame() )
+    //if ( img->first_frame() != img->last_frame() )
     {
         add_int( _("First Frame"), _("First frame of clip - User selected"),
                  (int)img->first_frame(), true, true,
