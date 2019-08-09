@@ -1,13 +1,15 @@
 if (WIN32)
   set( generator "NMake Makefiles" )
+  set( cxx_flags "-DOPENEXR_DLL;${CMAKE_CXX_FLAGS}" )
 else()
   set( generator "Unix Makefiles" )
+  set( cxx_flags ${CMAKE_CXX_FLAGS )
 endif()
 
 ExternalProject_Add(
   ${OCIO_NAME}
-  GIT_REPOSITORY "https://github.com/imageworks/OpenColorIO.git"
-  # URL "https://github.com/imageworks/OpenColorIO/tarball/master"
+  # GIT_REPOSITORY "https://github.com/imageworks/OpenColorIO.git"
+  URL "https://github.com/imageworks/OpenColorIO/zipball/master"
   CMAKE_GENERATOR ${generator}
   DEPENDS OpenEXR ${OCIO_DEPENDS}
   CMAKE_ARGS
@@ -16,7 +18,7 @@ ExternalProject_Add(
   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
   -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-  -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+  -DCMAKE_CXX_FLAGS=${cxx_flags}
   -DBUILD_SHARED_LIBS=ON
   -DOCIO_BUILD_APPS=ON
   -DOCIO_BUILD_NUKE=OFF
