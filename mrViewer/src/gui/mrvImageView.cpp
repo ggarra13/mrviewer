@@ -9190,11 +9190,7 @@ void ImageView::play( const CMedia::Playback dir )
     mrv::media bg = background();
 
     CMedia* img = fg->image();
-
-    if ( img->first_frame() == img->last_frame() )
-    {
-        return;
-    }
+    if ( img->saving() ) return;
 
     if ( CMedia::preload_cache() && _idle_callback &&
          img->is_cache_full() )
