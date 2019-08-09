@@ -36,11 +36,6 @@ using namespace std;
 #endif
 #include <inttypes.h>
 #include <cmath>
-#ifdef _WIN32
-# include <float.h>
-# define isfinite(x) _finite(x)
-#endif
-
 #include <algorithm>
 
 #include <ImfStandardAttributes.h>
@@ -67,6 +62,10 @@ OIIO_NAMESPACE_USING;
 #include "OIIOOptionsUI.h"
 #include "mrViewer.h"
 
+#ifdef _WIN32
+# include <float.h>
+# define isfinite(x) _finite(x)
+#endif
 
 namespace
 {
