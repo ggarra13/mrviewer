@@ -1642,6 +1642,7 @@ void CMedia::filename( const char* n )
 
     if ( fetch( _hires, 1 ) )
     {
+        cache( _hires );
     }
 
     _dts = _adts = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
@@ -3317,12 +3318,26 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
 double CMedia::calculate_fps( AVFormatContext* ctx,
                               AVStream* stream )
 {
+    double fps;
     assert( ctx != NULL );
     assert( stream != NULL );
-    const AVRational& rate = av_guess_frame_rate( ctx, stream, NULL ); //;stream->r_frame_rate;
-    double fps = av_q2d( rate );
+    AVRational rate = av_guess_frame_rate( ctx, stream, NULL );
+    if ( rate.num && rate.den )
+    {
+        fps = av_q2d( rate );
+    }
+    else
+    {
+        fps = 1.0 / av_q2d( stream->time_base );
+    }
+    if ( fps > 1000 &&
+         stream->time_base.den > 10000 && stream->time_base.num < 3 )
+    {
+        fps = stream->time_base.den / 1000.0;
+    }
 
-    if ( fps == 0 ) fps = 30.0;
+    if ( fps >= 1000 ) fps = 30.0;  // workaround for some buggy streams
+    else if ( fps <= 0 ) fps = 30.0;
 
     return fps;
 }
