@@ -395,6 +395,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
             if ( next != img && next != NULL )
             {
+                next->refresh();
                 //if ( video )
                 {
                     if ( next->stopped() && !decode )
@@ -491,6 +492,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( next != img && next != NULL )
             {
                 //if ( video )
+                next->refresh();
                 {
                     if ( next->stopped() && !decode )
                     {
