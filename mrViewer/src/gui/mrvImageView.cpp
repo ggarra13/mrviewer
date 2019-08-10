@@ -2700,6 +2700,7 @@ bool ImageView::preload()
         else
         {
             _preframe = fg->position() + img->duration(); // go to next image
+            img->refresh();
         }
 
         return true;
@@ -9406,6 +9407,13 @@ void  ImageView::looping( CMedia::Looping x )
     if (fg)
     {
         CMedia* img = fg->image();
+        img->looping( x );
+    }
+
+    media bg = foreground();
+    if (bg)
+    {
+        CMedia* img = bg->image();
         img->looping( x );
     }
 
