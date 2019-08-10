@@ -585,7 +585,7 @@ bool GLLut3d::calculate_ocio( const CMedia* img )
                                   /* width */ lut_size()/_channels,
                                   /*height*/ 1,
                                   /*channels*/ _channels);
-#ifdef LINUX
+#ifdef OCIO_v2_1
         OCIO::ConstCPUProcessorRcPtr cpu = processor->getDefaultCPUProcessor();
         cpu->apply( img );
 #else
