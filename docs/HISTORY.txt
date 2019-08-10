@@ -1,5 +1,7 @@
 v5.1.7  - Bug fixed saving of movies with audios.  There's no longer pops
 	  or noises in them.
+	- Fixed distribution having problems with libpng16.so / libz.so.
+	- Fixed fourcc for HEVC to be compatible with vlc and Apple.
 
 v5.1.6  - A quick fix for Windows' 64 bits libtiff crashing due to a
 	  new version.
