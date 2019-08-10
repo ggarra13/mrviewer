@@ -719,6 +719,7 @@ void GLQuad::bind_texture_yuv( const image_type_ptr& pic,
 void GLQuad::bind_texture_quad( const image_type_ptr& pic,
                                 const unsigned poww, const unsigned int powh )
 {
+
     if ( pic->format() >= image_type::kYUV )
         return bind_texture_yuv( pic, poww, powh );
 
@@ -732,6 +733,7 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
     GLenum glformat   = gl_format( pic->format() );
     _pixels = pic->data();
     if (!_pixels) return;
+
 
     GLenum internalFormat = GL_RGB8;
 
@@ -802,11 +804,11 @@ void GLQuad::bind_texture_quad( const image_type_ptr& pic,
     // If texture size is different than old frame/image,
     // allocate new quad texture
     if ( _width          != dw ||
-            _height         != dh ||
-            _channels       != channels ||
-            _pixel_type     != pixel_type ||
-            _glformat       != glformat   ||
-            _internalFormat != internalFormat )
+         _height         != dh ||
+         _channels       != channels ||
+         _pixel_type     != pixel_type ||
+         _glformat       != glformat   ||
+         _internalFormat != internalFormat )
     {
         _width          = dw;
         _height         = dh;
