@@ -281,15 +281,15 @@ p->value(0);
 	  Fl_Choice uiAudioCodec {
 	    label Codec open
 	    tooltip {This setting controls the encoder (codec) used for audio saving.  ac3 and aac are the best codecs to use.  mp3 is popular as it is commonly used for compressing CDs.} xywh {125 377 91 26} down_box BORDER_BOX
-	    code0 {audio_codec = "ac3";}
+	    code0 {audio_codec = "aac";}
 	    class {mrv::Choice}
 	  } {
 	    MenuItem {} {
-	      label ac3
+	      label aac selected
 	      xywh {5 5 100 20}
 	    }
 	    MenuItem {} {
-	      label aac selected
+	      label ac3
 	      xywh {5 5 100 20}
 	    }
 	    MenuItem {} {
