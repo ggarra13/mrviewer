@@ -48,7 +48,7 @@ void decode_some( CMedia* img, int64_t& frame )
     int64_t audio_frame = frame - 1;
     CMedia::DecodeStatus status = CMedia::kDecodeOK;
     if ( !found && status == CMedia::kDecodeOK &&
-         img->audio_packets().size() > 1 )
+         !img->audio_packets().empty() )
     {
         ++audio_frame;
         status = img->decode_audio( audio_frame );
