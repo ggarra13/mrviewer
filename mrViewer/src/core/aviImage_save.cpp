@@ -147,8 +147,9 @@ static uint64_t select_channel_layout(const AVCodec *codec,
     const uint64_t *p;
     uint64_t best_ch_layout = 0;
 
+
     if (!codec->channel_layouts)
-        return AV_CH_LAYOUT_STEREO;
+        return av_get_default_channel_layout(num_channels);
 
     p = codec->channel_layouts;
     while (*p) {
@@ -160,6 +161,7 @@ static uint64_t select_channel_layout(const AVCodec *codec,
         }
         p++;
     }
+
     return best_ch_layout;
 }
 
@@ -329,7 +331,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
         if ( c->codec_id == AV_CODEC_ID_HEVC )
         {
-            c->codec_tag = MAKE_TAG('H', 'V', 'C', '1');
+            c->codec_tag = MAKE_TAG('h', 'v', 'c', '1');
 
             switch( opts->video_profile )
             {
@@ -474,6 +476,7 @@ static bool open_sound(AVFormatContext *oc, AVCodec* codec,
     }
 
     c->audio_service_type = AV_AUDIO_SERVICE_TYPE_MAIN;
+    //c->channel_layout = av_get_default_channel_layout(c->channels);
     c->channel_layout = select_channel_layout( codec, c->channels );
 
     /* open it */
@@ -646,19 +649,20 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
     AVCodecContext* c = enc_ctx[st->id];
 
 
-    audio_type_ptr audio = img->get_audio_frame( img->frame() );
+    audio_type_ptr audio = img->get_audio_frame( frame_audio );
 
     if ( !audio ) {
         LOG_ERROR( _("audio frame is missing") );
         return false;
     }
 
-    ++frame_audio;
 
     if ( audio->frame() == AV_NOPTS_VALUE ) {
         LOG_ERROR( _("Audio frame has NOPTS value.") );
         return false;
     }
+
+    frame_audio++;
 
     src_nb_samples = audio->size();
     src_nb_samples /= img->audio_channels();
@@ -1179,7 +1183,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
     }
 
-    frame_count++;
+    ++frame_count;
 
     return true;
 }
@@ -1249,7 +1253,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
     assert( filename != NULL );
     assert( img != NULL );
 
-    frame_audio = img->frame() + img->audio_offset();
+    frame_audio = img->audio_offset();
 
     samples_count = 0;
     frame_count = 0;
@@ -1406,15 +1410,16 @@ bool write_va_frame( CMedia* img )
     /* write interleaved audio and video frames */
 
 
+    if ( audio_st )
+    {
+        write_audio_frame(oc, audio_st, img);
+    }
+
     if ( video_st )
     {
         write_video_frame(oc, video_st, img);
     }
 
-    if ( audio_st )
-    {
-        write_audio_frame(oc, audio_st, img);
-    }
 
     return true;
 }
