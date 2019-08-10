@@ -1747,12 +1747,12 @@ void GLEngine::draw_images( ImageList& images )
 
         // Check if there was a change effecting lut.
         if ( ! use_ocio &&
-                (( RT_lut_algorithm != RT_lut_old_algorithm ) ||
-                 ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
-                 ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
-                 ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
-                ( LUT_quality != lut_quality ) ||
-                ( kNumStops != num_stops) )
+             (( RT_lut_algorithm != RT_lut_old_algorithm ) ||
+              ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
+              ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
+              ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform)) ||
+             ( LUT_quality != lut_quality ) ||
+             ( kNumStops != num_stops) )
         {
             if ( !use_ocio )
             {
@@ -1770,7 +1770,7 @@ void GLEngine::draw_images( ImageList& images )
             refresh_luts();
 
             if ( LUT_quality != lut_quality ||
-                    kNumStops != num_stops )
+                 kNumStops != num_stops )
             {
                 LUT_quality = lut_quality;
                 kNumStops = num_stops;
@@ -2016,7 +2016,7 @@ void GLEngine::draw_images( ImageList& images )
         int mask = 0;
 
         if ( stereo != CMedia::kNoStereo &&
-                img->left() && img->right() )
+             img->left() && img->right() )
         {
             if ( stereo & CMedia::kStereoRight )
             {
@@ -2119,7 +2119,7 @@ void GLEngine::draw_images( ImageList& images )
             quad->rot_y( _rotY );
 
             if ( stereo != CMedia::kStereoLeft &&
-                    stereo != CMedia::kStereoRight )
+                 stereo != CMedia::kStereoRight )
             {
                 CHECK_GL;
                 glMatrixMode( GL_MODELVIEW );
@@ -2272,7 +2272,7 @@ void GLEngine::draw_images( ImageList& images )
         if ( fg == img && bg != fg &&  _view->show_background() )
             glEnable( GL_BLEND );
 
-            CHECK_GL;
+        CHECK_GL;
         if ( img->image_damage() & CMedia::kDamageContents )
         {
             if ( stereo )
