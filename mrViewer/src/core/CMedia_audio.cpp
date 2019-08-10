@@ -188,31 +188,32 @@ void CMedia::open_audio_codec()
         return;
     }
 
-    AVCodecParameters* ictx = stream->codecpar;
-    if ( ictx == NULL )
+    AVCodecParameters* cpar = stream->codecpar;
+    if ( cpar == NULL )
     {
         IMG_ERROR( _("No codec context for audio stream.") );
         _audio_index = -1;
         return;
     }
 
-    _audio_codec = avcodec_find_decoder( ictx->codec_id );
+    _audio_codec = avcodec_find_decoder( cpar->codec_id );
     if ( _audio_codec == NULL )
     {
         IMG_ERROR( _("No decoder found for audio stream. ID: ")
-                   << ictx->codec_id );
+                   << cpar->codec_id );
         _audio_index = -1;
         return;
     }
 
     _audio_ctx = avcodec_alloc_context3(_audio_codec);
-    int r = avcodec_parameters_to_context(_audio_ctx, ictx);
+    int r = avcodec_parameters_to_context(_audio_ctx, cpar);
     if ( r < 0 )
     {
         throw _("avcodec_copy_context failed for audio");
     }
 
     _audio_ctx->pkt_timebase = get_audio_stream()->time_base;
+    _audio_ctx->strict_std_compliance = FF_COMPLIANCE_STRICT;
 
     AVDictionary* opts = NULL;
     av_dict_set(&opts, "threads", "1", 0);
@@ -1752,7 +1753,7 @@ bool CMedia::open_audio( const short channels,
 
     bool ok = false;
     int ch = channels;
-    for ( int fmt = format; fmt > 0; fmt -= 2 ) // to skip be/le versions
+    for ( int fmt = format; fmt > 0; fmt -= 2 ) // -2 to skip be/le versions
     {
         ok = _audio_engine->open( ch, nSamplesPerSec,
                                   (AudioEngine::AudioFormat)fmt, bps );
