@@ -11,7 +11,7 @@ if (WIN32)
   STRING( JOIN " " cxx_flags -DOPENEXR_DLL -DWIN32 -D_WIN32 ${CMAKE_CXX_FLAGS} )
   set( DOSHARED FALSE )
 else()
-  set( cxx_flags ${CMAKE_CXX_FLAGS )
+  set( cxx_flags ${CMAKE_CXX_FLAGS} )
   set( DOSHARED TRUE )
 endif()
 
