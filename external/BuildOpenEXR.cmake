@@ -1,7 +1,7 @@
 ExternalProject_Add(
   OpenEXR
   GIT_REPOSITORY "https://github.com/openexr/openexr.git"
-  GIT_TAG develop
+  # GIT_TAG develop
   GIT_PROGRESS 1
   DEPENDS ZLIB
   CMAKE_ARGS
