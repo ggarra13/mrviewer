@@ -884,7 +884,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
 
-    if ( (saving() || stopped() ) &&
+    if ( (stopped() || saving()) &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -3461,8 +3461,8 @@ aviImage::audio_video_display( const int64_t& frame )
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end,
-                                 frame,
-                                 LessThanFunctor() );
+                                                   frame,
+                                                   LessThanFunctor() );
     if ( it == end ) {
         return kDecodeMissingFrame;
     }
@@ -3516,7 +3516,7 @@ aviImage::audio_video_display( const int64_t& frame )
               _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
     {
         int16_t* data = (int16_t*)result->data();
-
+        unsigned size = result->size();
         for (int ch = 0; ch < channels; ch++)
         {
             i = i_start + ch;
@@ -3539,8 +3539,6 @@ aviImage::audio_video_display( const int64_t& frame )
             }
         }
     }
-
-
 
 
     _frame = frame;
