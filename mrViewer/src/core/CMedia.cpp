@@ -3911,10 +3911,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // We check packet integrity as the length of packets is
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
-            if ( frame > pkt.pts ) {
-                // std::cerr << name() << " frame " << frame
-                //        << " pkt.pts " << pkt.pts
-                //        << std::endl;
+            if ( frame > get_frame( get_video_stream(), pkt ) ) {
                 return kDecodeOK;
             }
 
@@ -3929,8 +3926,9 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // We check packet integrity as the length of packets is
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
-            // if ( frame < get_frame( get_video_stream(), pkt ) )
-            //     return kDecodeOK;
+            // @TODO: verify
+            if ( frame < get_frame( get_video_stream(), pkt ) )
+                return kDecodeOK;
 
             _video_packets.pop_front();
             return kDecodeLoopEnd;
