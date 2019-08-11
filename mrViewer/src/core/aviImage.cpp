@@ -1469,9 +1469,9 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
 
         av_frame_unref(_av_frame);
         av_frame_unref(_filt_frame);
-        // if ( ( stopped() || saving() ) && ptsframe != frame &&
-        //         frame != first_frame() )
-        //     return kDecodeMissingFrame;
+        if ( ( stopped() || saving() ) && ptsframe != frame &&
+             frame != first_frame() )
+            return kDecodeMissingFrame;
         return kDecodeOK;
     }
     else if ( status == kDecodeError )
@@ -3250,7 +3250,7 @@ bool aviImage::frame( const int64_t f )
     size_t vpkts = _video_packets.size();
     size_t apkts = _audio_packets.size();
 
-    if ( !stopped() &&
+    if ( !stopped() && !saving() &&
          ( (_video_packets.bytes() +  _audio_packets.bytes() +
             _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
          ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
@@ -3516,7 +3516,6 @@ aviImage::audio_video_display( const int64_t& frame )
               _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
     {
         int16_t* data = (int16_t*)result->data();
-        unsigned size = result->size();
         for (int ch = 0; ch < channels; ch++)
         {
             i = i_start + ch;
@@ -3858,8 +3857,7 @@ void aviImage::do_seek()
     _seek_frame = handle_loops( _seek_frame );
 
     if ( saving() ) _seek_req = false;
-
-    // _dts = _adts = _seek_frame;
+    else _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
