@@ -139,7 +139,7 @@ void CMedia::clear_video_packets()
 void CMedia::clear_audio_packets()
 {
     _audio_packets.clear();
-    //_audio_buf_used = 0;
+    _audio_buf_used = 0;
 }
 
 /**
@@ -213,7 +213,6 @@ void CMedia::open_audio_codec()
     }
 
     _audio_ctx->pkt_timebase = get_audio_stream()->time_base;
-    _audio_ctx->strict_std_compliance = FF_COMPLIANCE_STRICT;
 
     AVDictionary* opts = NULL;
     av_dict_set(&opts, "threads", "1", 0);
@@ -929,7 +928,7 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
     };
 
     typedef std::multimap< timeval, audio_cache_t::iterator,
-            customMore > TimedSeqMap;
+                           customMore > TimedSeqMap;
     TimedSeqMap tmp;
     {
         audio_cache_t::iterator  it = _audio.begin();
@@ -951,9 +950,6 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         ++count;
         if ( count > max_frames )
         {
-            std::cerr << "count " << count << " "
-                      << it->first.tv_sec << "." << it->first.tv_usec
-                      << " " << (*(it->second))->frame() << std::endl;
             // Store this iterator to remove it later
             iters.push_back( it->second );
         }
@@ -962,7 +958,6 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
     IteratorList::iterator i = iters.begin();
     IteratorList::iterator e = iters.end();
 
-    // We erase from greater to lower to avoid dangling iterators
     std::sort( i, e, std::greater<audio_cache_t::iterator>() );
 
     i = iters.begin();
@@ -980,6 +975,8 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 //
 void CMedia::limit_audio_store(const int64_t frame)
 {
+
+    //return timed_limit_audio_store( frame );
 
     SCOPED_LOCK( _audio_mutex );
 
@@ -1042,7 +1039,7 @@ void CMedia::clear_stores()
 #endif
 
     _audio.clear();
-    //_audio_buf_used = 0;
+    _audio_buf_used = 0;
 }
 
 uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels)
@@ -2112,7 +2109,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
         else if ( _audio_packets.is_seek()  )
         {
             clear_stores();  // audio stores MUST be cleared when seeked
-            //_audio_buf_used = 0;
+            _audio_buf_used = 0;
             got_audio = handle_audio_packet_seek( frame, true );
             continue;
         }
