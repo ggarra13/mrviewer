@@ -3156,26 +3156,26 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
 
     int64_t f = handle_loops( frame );
 
-    if ( !saving() && f != _expected )
+    if ( !saving() )
     {
         if ( ( got_audio || in_audio_store( f + _audio_offset ) ) &&
-             in_video_store( f ) )
+             ( got_video || in_video_store( f ) ) )
         {
             int64_t pts = frame2pts( get_video_stream(), f );
-            _video_packets.jump( pts );
+            if ( !got_video ) _video_packets.jump( pts );
             pts = frame2pts( get_audio_stream(), f );
             if ( !got_audio ) _audio_packets.jump( pts );
             _dts = _adts = f;
             _expected = _dts + 1;
             _expected_audio = _dts + 1;
-            //_expected = -99999;
-            //_expected_audio = -99999;
+            // _expected = -99999;   // NOT CORRECT
+            // _expected_audio = -99999;
 
             return true;
         }
 
 
-        if ( !got_video || !got_audio || !got_subtitle)
+        if ( f != _expected && (!got_video || !got_audio || !got_subtitle) )
         {
             bool ok = seek_to_position( f );
             if ( !ok )
