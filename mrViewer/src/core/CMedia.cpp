@@ -3554,7 +3554,9 @@ int CMedia::max_video_frames()
     if ( _video_cache_size > 0 )
         return _video_cache_size;
     else if ( _video_cache_size == 0 )
+    {
         return int( fps()*2 );
+    }
     else
         return std::numeric_limits<int>::max() / 3;
 }
@@ -3604,7 +3606,6 @@ void CMedia::loop_at_start( const int64_t frame )
     {
         // With loop at start we cannot discard previous frames as they are
         // part of one or multiple prerolls
-
         _video_packets.loop_at_start( frame );
     }
 
