@@ -360,6 +360,8 @@ int64_t CMedia::queue_packets( const int64_t frame,
             if ( !got_audio )
             {
                 if ( pktframe > frame ) got_audio = true;
+                if ( playback() == kBackwards && pktframe < frame )
+                    got_audio = true;
                 else if ( pktframe == frame )
                 {
                     audio_bytes += pkt.size;
@@ -935,7 +937,9 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         audio_cache_t::iterator end = _audio.end();
         for ( ; it != end; ++it )
         {
-            tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+            if ( playback() != kForwards ||
+                 (*it)->frame() - max_frames < frame )
+                tmp.insert( std::make_pair( (*it)->ptime(), it ) );
         }
     }
 
@@ -967,6 +971,7 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         _audio.erase( *i );
     }
 
+
 }
 
 //
@@ -976,7 +981,8 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 void CMedia::limit_audio_store(const int64_t frame)
 {
 
-    //return timed_limit_audio_store( frame );
+    if ( playback() != kBackwards )
+        return timed_limit_audio_store( frame );
 
     SCOPED_LOCK( _audio_mutex );
 
@@ -1017,7 +1023,6 @@ void CMedia::limit_audio_store(const int64_t frame)
         first = tmp;
     }
 #endif
-
 
     audio_cache_t::iterator end = _audio.end();
     _audio.erase( std::remove_if( _audio.begin(), end,
@@ -1301,12 +1306,12 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     // Get the audio codec context
     if ( !_audio_ctx ) return kDecodeNoStream;
 
-    av_assert0( !_audio_packets.is_seek_end( pkt ) );
-    av_assert0( !_audio_packets.is_seek( pkt ) );
-    av_assert0( !_audio_packets.is_flush( pkt ) );
-    av_assert0( !_audio_packets.is_preroll( pkt ) );
-    av_assert0( !_audio_packets.is_loop_end( pkt ) );
-    av_assert0( !_audio_packets.is_loop_start( pkt ) );
+    assert0( !_audio_packets.is_seek_end( pkt ) );
+    assert0( !_audio_packets.is_seek( pkt ) );
+    assert0( !_audio_packets.is_flush( pkt ) );
+    assert0( !_audio_packets.is_preroll( pkt ) );
+    assert0( !_audio_packets.is_loop_end( pkt ) );
+    assert0( !_audio_packets.is_loop_start( pkt ) );
 
     ptsframe = get_frame( stream, pkt );
     if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
@@ -1341,11 +1346,11 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     pkt_temp.size = pkt.size;
 
 
-    av_assert0( _audio_buf != NULL );
-    av_assert0( pkt.size + _audio_buf_used < _audio_max );
+    assert0( _audio_buf != NULL );
+    assert0( pkt.size + _audio_buf_used < _audio_max );
 
     int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
-    av_assert0( pkt_temp.size <= audio_size );
+    assert0( pkt_temp.size <= audio_size );
 
     if ( _audio_buf_used + audio_size > _audio_max )
     {
@@ -1841,11 +1846,12 @@ bool CMedia::find_audio( const int64_t frame )
 #if 1 // needed
         audio_cache_t::iterator end = _audio.end();
         audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end,
-                                    frame, LessThanFunctor() );
+                                                      frame,
+                                                      LessThanFunctor() );
 #else
         audio_cache_t::iterator end = _audio.end();
         audio_cache_t::iterator i = std::find_if( _audio.begin(), end,
-                                    EqualFunctor(frame) );
+                                                  EqualFunctor(frame) );
 #endif
         if ( i == end )
         {
@@ -1934,6 +1940,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     debug_audio_stores(frame, _right_eye ? "RHANDLESEEK" : "HANDLESEEK");
 #endif
 
+    if ( _audio_packets.empty() || _audio_packets.is_flush() )
+        LOG_ERROR( _("Wrong packets in handle_audio_packet_seek" ) );
 
     bool skip = false;
 
@@ -1949,6 +1957,8 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
         IMG_ERROR( _("Audio packet is unknown, expected seek or preroll") );
 
     DecodeStatus got_audio = kDecodeMissingFrame;
+    DecodeStatus status;
+    unsigned count = 0;
 
     assert( _audio_buf_used == 0 );
 
@@ -1965,20 +1975,25 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
         const AVPacket& pkt = _audio_packets.front();
-        int64_t f = get_frame( get_audio_stream(), pkt );
+        ++count;
 
+        int64_t pktframe;
+        if ( pkt.dts != AV_NOPTS_VALUE )
+            pktframe = pts2frame( get_audio_stream(), pkt.dts );
+        else
+            pktframe = frame;
 
-        DecodeStatus status;
-
-        if ( !in_audio_store( f ) )
+        if ( !in_audio_store( pktframe ) )
         {
-            // if ( (status = decode_audio( frame, pkt )) == kDecodeOK )
-            if ( (status = decode_audio( f, pkt )) == kDecodeOK )
-                got_audio = kDecodeOK;
+            if ( (status = decode_audio( pktframe, pkt )) == kDecodeOK )
+            {
+                if ( pktframe <= frame && playback() == kBackwards )
+                    got_audio = kDecodeOK;
+            }
         }
         else
         {
-            status = decode_audio_packet( last, f, pkt ); //frame
+            status = decode_audio_packet( last, pktframe, pkt ); //frame
             if ( status != kDecodeOK )
                 LOG_WARNING( _( "decode_audio_packet failed for frame " )
                              << frame );
@@ -1993,11 +2008,11 @@ CMedia::handle_audio_packet_seek( int64_t& frame,
     }
 
 
-    if ( is_seek )
+    if ( count > 0 && is_seek )
     {
         assert( !_audio_packets.empty() );
         const AVPacket& pkt = _audio_packets.front();
-      frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
+        frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
     }
 
     if ( _audio_packets.is_seek_end() )
