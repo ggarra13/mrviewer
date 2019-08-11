@@ -1827,8 +1827,8 @@ bool aviImage::find_image( const int64_t frame )
                 static short counter = 0;
 
                 if ( !filter_graph &&
-                        _hires->frame() != f &&
-                        diff > 1 && diff < 10 && counter < 10 )
+                     _hires->frame() != f &&
+                     diff > 1 && diff < 10 && counter < 10 )
                 {
                     ++counter;
                     IMG_WARNING( _("find_image: frame ") << frame
@@ -2918,7 +2918,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
                 _video_packets.push_back( pkt );
                 got_video = true;
                 got_subtitle = true;
-                if ( is_seek || playback() == kBackwards )
+                if ( is_seek )
                 {
                     _video_packets.seek_end(vpts);
                 }
@@ -2938,13 +2938,13 @@ int64_t aviImage::queue_packets( const int64_t frame,
 
                 got_audio = true;
 
-                if ( is_seek || playback() == kBackwards )
+                if ( is_seek )
                 {
                     _audio_packets.seek_end(apts);
                 }
             }
 
-            if ( !got_subtitle && ( is_seek || playback() == kBackwards ) )
+            if ( !got_subtitle && is_seek )
             {
                 _subtitle_packets.seek_end(spts);
             }
@@ -3057,7 +3057,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                     if ( pktframe <= frame )
                     {
                         _audio_packets.push_back( pkt );
-                        got_audio = true;
                     }
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
@@ -3116,7 +3115,6 @@ int64_t aviImage::queue_packets( const int64_t frame,
                                        got_video, got_audio, got_subtitle );
         _expected_audio = _adts + 1;
     }
-
 
     if ( dts > last_frame() ) dts = last_frame();
     else if ( dts < first_frame() ) dts = first_frame();
