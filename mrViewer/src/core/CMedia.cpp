@@ -3638,7 +3638,7 @@ void CMedia::loop_at_end( const int64_t frame )
         for ( ; i != _video_packets.end(); )
         {
             int64_t pktframe = get_frame( stream, *i );
-            if ( pktframe >= frame )
+            if ( pktframe > frame )
             {
                 i = _video_packets.erase( i );
             }
@@ -3648,7 +3648,7 @@ void CMedia::loop_at_end( const int64_t frame )
             }
         }
 
-        _video_packets.loop_at_end( frame2pts( stream, frame ) );
+        _video_packets.loop_at_end( frame );
     }
 
     if ( number_of_audio_streams() > 0 )
@@ -3664,7 +3664,7 @@ void CMedia::loop_at_end( const int64_t frame )
         for ( ; i != _audio_packets.end(); )
         {
             int64_t pktframe = get_frame( stream, *i );
-            if ( pktframe >= frame )
+            if ( pktframe > frame )
             {
                 i = _audio_packets.erase( i );
             }
@@ -3673,7 +3673,7 @@ void CMedia::loop_at_end( const int64_t frame )
         }
 
 
-        _audio_packets.loop_at_end( frame2pts( stream, frame ) );
+        _audio_packets.loop_at_end( frame );
     }
 
     if ( number_of_subtitle_streams() > 0 )
@@ -3911,7 +3911,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // We check packet integrity as the length of packets is
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
-            if ( frame > get_frame( get_video_stream(), pkt ) ) {
+            if ( frame > pkt.pts ) {
                 return kDecodeOK;
             }
 
@@ -3927,7 +3927,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
             // @TODO: verify
-            if ( frame < get_frame( get_video_stream(), pkt ) )
+            if ( frame < pkt.pts )
                 return kDecodeOK;
 
             _video_packets.pop_front();
@@ -4427,7 +4427,7 @@ void CMedia::debug_video_packets(const int64_t frame,
         if ( _video_packets.is_loop_end( *iter ) ||
              _video_packets.is_loop_start( *iter ) )
         {
-            std::cerr << pts2frame( stream, (*iter).dts ) - _frame_offset;
+            std::cerr << (*iter).dts - _frame_offset;
         }
         else
         {
