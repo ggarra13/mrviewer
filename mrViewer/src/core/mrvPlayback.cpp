@@ -654,7 +654,7 @@ void audio_thread( PlaybackData* data )
         // DBG3( "decode audio " << frame );
 
         // if (!fg)
-        // img->debug_audio_packets( frame, "play", true );
+        // img->debug_audio_stores( frame, "play", true );
 
 
         CMedia::DecodeStatus status = img->decode_audio( f );
