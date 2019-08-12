@@ -166,7 +166,7 @@ stringArray file_multi_requester(
     const char* title,
     const char* pattern,
     const char* startfile,
-    const bool compact_images = true
+    const bool compact_images
 )
 {
     stringArray filelist;
@@ -281,8 +281,8 @@ stringArray open_reel( const char* startfile,
     std::string title = _("Load Reel(s)");
 
     stringArray files = file_multi_requester( title.c_str(),
-                        kREEL_PATTERN.c_str(),
-                        startfile );
+                                              kREEL_PATTERN.c_str(),
+                                              startfile, true );
     if ( main && (!main->uiMain || !main->uiMain->visible())) {
         return stringArray();
     }
