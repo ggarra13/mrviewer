@@ -374,7 +374,6 @@ CMedia* CMedia::guess_image( const char* file,
 
     if ( !avoid_seq )
     {
-        std::cerr << "not avoid seq root " << root << std::endl;
         mrv::get_sequence_limits( start, end, root, false );
         if ( start != AV_NOPTS_VALUE || end != AV_NOPTS_VALUE )
         {
