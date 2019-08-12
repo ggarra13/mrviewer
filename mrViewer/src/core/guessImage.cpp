@@ -372,13 +372,17 @@ CMedia* CMedia::guess_image( const char* file,
         is_stereo = true;
     }
 
-    mrv::get_sequence_limits( start, end, root, false );
-    if ( start != AV_NOPTS_VALUE || end != AV_NOPTS_VALUE )
+    if ( !avoid_seq )
     {
-        if ( mrv::fileroot( tmp, root ) )
+        std::cerr << "not avoid seq root " << root << std::endl;
+        mrv::get_sequence_limits( start, end, root, false );
+        if ( start != AV_NOPTS_VALUE || end != AV_NOPTS_VALUE )
         {
-            is_seq = true;
-            root = tmp;
+            if ( mrv::fileroot( tmp, root ) )
+            {
+                is_seq = true;
+                root = tmp;
+            }
         }
     }
 
