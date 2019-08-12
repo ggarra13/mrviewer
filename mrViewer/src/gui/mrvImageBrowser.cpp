@@ -1547,7 +1547,9 @@ void ImageBrowser::load( const mrv::LoadList& files,
                 {
                     bool avoid_seq = true;
                     if ( load.first != load.last || load.start != load.end )
+                    {
                         avoid_seq = false;
+                    }
                     fg = load_image( load.filename.c_str(),
                                      load.first, load.last, load.start,
                                      load.end, avoid_seq );
@@ -1755,8 +1757,7 @@ void ImageBrowser::load( const stringArray& files,
             int64_t end   = AV_NOPTS_VALUE;
 
             std::string fileroot = file;
-            bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
-            if ( load_seq && seqs )
+            if ( seqs )
             {
                 mrv::fileroot( fileroot, file );
                 mrv::get_sequence_limits( start, end, fileroot );
