@@ -4781,54 +4781,14 @@ static const char* _flu_file_chooser( const char *message, const char *pattern, 
   if (! retname.empty() )
       filename = retname.c_str();
 
-  if( !fc )
-    {
-        fc = new Flu_File_Chooser( filename, pattern, type, message,
-                                   compact_files );
-        if (fc && retname.size() )
-        {
-            fc->value( retname.c_str() );
-        }
-    }
-  else
-    {
-      std::string dir = retname;
-      size_t pos = dir.rfind( '/' );
-      if ( pos != std::string::npos )
-      {
-          dir = dir.substr( 0, pos );
-      }
-      fc->currentDir = dir;
+  delete fc; fc = NULL;
 
-      fc->type( type );
-      fc->clear_history();
-      fc->label( message );
-      if( !filename || strlen(filename) == 0 )
-        {
-          if( (!pattern || !fc->filter() || strcmp(pattern,fc->filter())) && fc->value() )
-            {
-              // if pattern is different, remove name but leave old directory:
-              retname = fc->value();
-              char *p = const_cast<char *>(strrchr( retname.c_str(), '/' ));
-              if( p )
-                {
-                  // If the filename is "/foo", then the directory will be "/", not ""
-                  if( p == retname.c_str() )
-                      retname = retname.substr(0, 1);
-                  else
-                      retname = retname.substr(0, p - retname.c_str());
-                }
-            }
-          fc->filter( pattern );
-          fc->value( retname.c_str() );
-        }
-      else
-        {
-          fc->filter( pattern );
-          fc->value( filename );
-        }
-    }
-
+  fc = new Flu_File_Chooser( filename, pattern, type, message,
+                             compact_files );
+  if (fc && !retname.empty() )
+  {
+      fc->value( retname.c_str() );
+  }
   fc->set_modal();
   fc->show();
 
@@ -4858,7 +4818,7 @@ int flu_multi_file_chooser( const char *message, const char *pattern, const char
 const char* flu_file_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files )
 {
     FluStringVector filelist;
-    return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE, filelist );
+    return _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::SINGLE, filelist, compact_files );
 }
 
 const char* flu_save_chooser( const char *message, const char *pattern, const char *filename, const bool compact_files )
