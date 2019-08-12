@@ -1323,15 +1323,21 @@ mrv::media ImageBrowser::load_image( const char* name,
 
     mrv::Reel reel = current_reel();
 
+
+
     if ( first != AV_NOPTS_VALUE ) frame( first );
 
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
+    {
         img = CMedia::guess_image( name, NULL, 0, false,
                                    start, end, avoid_seq );
+    }
     else
+    {
         img = CMedia::guess_image( name, NULL, 0, false,
                                    first, last, avoid_seq );
+    }
 
     if ( img == NULL )
     {
@@ -1539,13 +1545,16 @@ void ImageBrowser::load( const mrv::LoadList& files,
                 }
                 else
                 {
+                    bool avoid_seq = true;
+                    if ( load.first != load.last || load.start != load.end )
+                        avoid_seq = false;
                     fg = load_image( load.filename.c_str(),
                                      load.first, load.last, load.start,
-                                     load.end, (i != s) );
+                                     load.end, avoid_seq );
                     if (!fg)
                     {
                         if ( load.filename.find( "ACESclip" ) ==
-                                std::string::npos )
+                             std::string::npos )
                             LOG_ERROR( _("Could not load '")
                                        << load.filename.c_str()
                                        << N_("'") );
@@ -2723,7 +2732,7 @@ void ImageBrowser::handle_dnd()
             bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
 
             if ( load_seq && ok &&
-                    root != "" && frame != "" && root != oldroot && ext != oldext )
+                 root != "" && frame != "" && root != oldroot && ext != oldext )
             {
                 oldroot = root;
                 oldext = ext;
