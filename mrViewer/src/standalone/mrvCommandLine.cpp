@@ -549,8 +549,15 @@ void parse_command_line( const int argc, char** argv,
                   }
                   else
                   {
-                      opts.files.push_back( mrv::LoadInfo( fileroot, start,
-                                                           end ) );
+                      if ( ui->uiPrefs->uiPrefsLoadSequenceOnAssoc->value() )
+                      {
+                          opts.files.push_back( mrv::LoadInfo( fileroot, start,
+                                                               end ) );
+                      }
+                      else
+                      {
+                          opts.files.push_back( mrv::LoadInfo( arg, 1, 1 ) );
+                      }
                   }
                }
             }
