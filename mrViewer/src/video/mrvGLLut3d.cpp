@@ -1311,7 +1311,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         DBG;
             const std::string& lbl = img->ocio_input_color_space();
         DBG;
-        LOG_INFO( "Input color space for " << img->name() << " is "
+        LOG_INFO( _("Input color space for ") << img->name() << _(" is ")
                   << lbl );
             for ( int i = 0; i < uiICS->children(); ++i )
             {
