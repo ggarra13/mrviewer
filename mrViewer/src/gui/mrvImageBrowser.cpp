@@ -1327,6 +1327,7 @@ mrv::media ImageBrowser::load_image( const char* name,
 
     if ( first != AV_NOPTS_VALUE ) frame( first );
 
+
     CMedia* img;
     if ( start != AV_NOPTS_VALUE )
     {
@@ -1546,7 +1547,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
                 else
                 {
                     bool avoid_seq = true;
-                    if ( load.first != load.last || load.start != load.end )
+                    if ( mrv::is_valid_sequence( load.filename.c_str() ) &&
+                         load.first != AV_NOPTS_VALUE )
                     {
                         avoid_seq = false;
                     }
