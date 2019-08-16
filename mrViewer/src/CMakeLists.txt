@@ -738,7 +738,7 @@ MESSAGE( STATUS "mrViewer version: " ${SHORTVERSION} )
 SET( CPACK_OUTPUT_CONFIG_FILE "${CMAKE_BINARY_DIR}/BundleConfig.cmake" )
 include(CPack)
 
-# set( TEST_BUNDLE 1 )
+#set( TEST_BUNDLE 1 )
 
 IF( TEST_BUNDLE  )
 # A dummy target so that we can test post_build commands faster
