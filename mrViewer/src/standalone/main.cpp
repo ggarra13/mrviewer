@@ -280,36 +280,29 @@ DBG;
               mrv::LoadList::iterator e = opts.files.end();
               for ( idx = 0; i != e ; ++i, ++idx )
               {
-                  Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
-                                       "mrViewer.lock" );
+                  char buf[256];
+                  sprintf( buf, "file%d", idx );
 
-                  mrv::LoadList::iterator i = opts.files.begin();
-                  mrv::LoadList::iterator e = opts.files.end();
-                  for ( idx = 0; i != e ; ++i, ++idx )
-                  {
-                      char buf[256];
-                      sprintf( buf, "file%d", idx );
+                  Fl_Preferences ui( base, buf );
+                  ui.set( "filename", (*i).filename.c_str() );
+                  ui.set( "audio", (*i).audio.c_str() );
 
-                      Fl_Preferences ui( base, buf );
-                      ui.set( "filename", (*i).filename.c_str() );
-                      ui.set( "audio", (*i).audio.c_str() );
+                  sprintf( buf, "%" PRId64, (*i).first );
+                  ui.set( "first", buf );
 
-                      sprintf( buf, "%" PRId64, (*i).first );
-                      ui.set( "first", buf );
+                  sprintf( buf, "%" PRId64, (*i).last );
+                  ui.set( "last", buf );
 
-                      sprintf( buf, "%" PRId64, (*i).last );
-                      ui.set( "last", buf );
+                  sprintf( buf, "%" PRId64, (*i).start );
+                  ui.set( "start", buf );
 
-                      sprintf( buf, "%" PRId64, (*i).start );
-                      ui.set( "start", buf );
+                  sprintf( buf, "%" PRId64, (*i).end );
+                  ui.set( "end", buf );
 
-                      sprintf( buf, "%" PRId64, (*i).end );
-                      ui.set( "end", buf );
+                  ui.flush();
 
-                      ui.flush();
-                  }
-                  base.flush();
               }
+              base.flush();
 
               if ( idx == 0 )
               {
