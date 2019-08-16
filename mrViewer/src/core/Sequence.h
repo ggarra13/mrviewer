@@ -45,9 +45,9 @@ inline std::string uncomment_slashes( std::string path )
     size_t found = 0;
     while( (found = path.find("\\/", found)) != std::string::npos )
     {
-	std::string part2 = path.substr( found + 2, path.size() );
+        std::string part2 = path.substr( found + 2, path.size() );
         path = path.substr(0, found) + part2;
-	found += 2;
+        found += 2;
     }
 
     return path;
@@ -184,13 +184,20 @@ struct LoadInfo
         }
     }
 
-    LoadInfo( const std::string& reel ) :
-        filename( reel ),
-        start( kMinFrame ),
-        end( kMaxFrame ),
-        reel( true ),
+    LoadInfo( const std::string& file ) :
+        filename( file ),
+        start( AV_NOPTS_VALUE ),
+        end( AV_NOPTS_VALUE ),
+        first( AV_NOPTS_VALUE ),
+        last( AV_NOPTS_VALUE ),
+        reel( false ),
         audio_offset( 0 )
     {
+        size_t len = filename.size();
+        if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
+        {
+            reel = true;
+        }
     }
 
     LoadInfo( const LoadInfo& b ) :
