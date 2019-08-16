@@ -372,6 +372,7 @@ CMedia* CMedia::guess_image( const char* file,
         is_stereo = true;
     }
 
+
     if ( !avoid_seq )
     {
         mrv::get_sequence_limits( start, end, root, false );
@@ -397,7 +398,6 @@ CMedia* CMedia::guess_image( const char* file,
 
     CMedia* right = NULL;
     CMedia* image = NULL;
-
 
     try {
         image = guess( is_stereo, is_seq, true, root, frame, datas, len,
