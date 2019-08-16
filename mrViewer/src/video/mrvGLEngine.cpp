@@ -632,7 +632,8 @@ void GLEngine::initialize()
         if ( _hardwareShaders == kGLSL )
             _has_hdr = USE_HDR;
 
-        LOG_INFO( "Selecting shader type automatically: " << shader_type_name() );
+        LOG_INFO( _("Selecting shader type automatically: ")
+                  << shader_type_name() );
 
 #endif // ifndef TEST_NO_SHADERS
 
