@@ -937,9 +937,10 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         audio_cache_t::iterator end = _audio.end();
         for ( ; it != end; ++it )
         {
-            if ( playback() != kForwards ||
-                 (*it)->frame() - max_frames < frame )
+            if ( (*it)->frame() + max_frames < frame )
+            {
                 tmp.insert( std::make_pair( (*it)->ptime(), it ) );
+            }
         }
     }
 
@@ -959,18 +960,26 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
         }
     }
 
-    IteratorList::iterator i = iters.begin();
-    IteratorList::iterator e = iters.end();
-
-    std::sort( i, e, std::greater<audio_cache_t::iterator>() );
-
-    i = iters.begin();
-    e = iters.end();
-    for ( ; i != e; ++i )
+    struct IteratorMatch
     {
-        _audio.erase( *i );
-    }
+        const IteratorList& iters;
+        IteratorMatch( const IteratorList& its ) : iters( its ) {}
+        bool operator()( const audio_type_ptr& a ) const
+        {
+            IteratorList::const_iterator i = iters.begin();
+            IteratorList::const_iterator e = iters.end();
+            for ( ; i != e; ++i )
+            {
+                if ( (*(*i)) == a )
+                    return true;
+            }
+            return false;
+        }
+    };
 
+    audio_cache_t::iterator end = _audio.end();
+    _audio.erase( std::remove_if( _audio.begin(), end,
+                                  IteratorMatch( iters ) ), end );
 
 }
 
@@ -980,8 +989,7 @@ void CMedia::timed_limit_audio_store(const int64_t frame)
 //
 void CMedia::limit_audio_store(const int64_t frame)
 {
-
-    if ( playback() != kBackwards )
+    if ( playback() == kForwards )
         return timed_limit_audio_store( frame );
 
     SCOPED_LOCK( _audio_mutex );
@@ -1010,12 +1018,13 @@ void CMedia::limit_audio_store(const int64_t frame)
         default:
             first = frame - max_frames;
             last  = frame + max_frames;
+            if ( _adts < first ) first = _adts;
             if ( _adts > last )   last = _adts;
             break;
     }
 
 
-#if 0
+#if 1
     if ( first > last )
     {
         int64_t tmp = last;
