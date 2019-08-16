@@ -556,7 +556,7 @@ void parse_command_line( const int argc, char** argv,
                       }
                       else
                       {
-                          opts.files.push_back( mrv::LoadInfo( arg, 1, 1 ) );
+                          opts.files.push_back( mrv::LoadInfo( arg ) );
                       }
                   }
                }
