@@ -19,10 +19,10 @@
  * @file   mrvFrameFunctors.h
  * @author gga
  * @date   Wed Jul 18 08:29:19 2007
- * 
+ *
  * @brief  Functors used to compare with video/audio stores
- * 
- * 
+ *
+ *
  */
 
 #ifndef mrvFrameFunctors_h
@@ -55,6 +55,27 @@ struct ClosestToFunctor
     return ( frame > a->frame() && frame < b->frame() );
   }
 
+};
+
+struct EqualRepeatFunctor
+{
+  const int64_t _frame;
+  EqualRepeatFunctor( const int64_t frame ) : _frame( frame ) {}
+
+  bool operator()( const audio_type_ptr& a ) const
+  {
+    if ( !a ) return false;
+    return a->frame() == _frame;
+  }
+
+  bool operator()( const image_type_ptr& a ) const
+  {
+    if ( !a ) return false;
+    if ( a->repeat() > 0 )
+        return a->frame() + a->repeat() == _frame;
+    else
+        return a->frame() == _frame;
+  }
 };
 
 struct EqualFunctor
@@ -143,7 +164,7 @@ struct NotInRangeFunctor
 
   bool operator()( const image_type_ptr& b ) const
   {
-     return ( b->frame() + b->repeat() < _start || 
+     return ( b->frame() + b->repeat() < _start ||
               b->frame() - b->repeat() > _end );
   }
 };
