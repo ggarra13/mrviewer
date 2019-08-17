@@ -3033,7 +3033,7 @@ CMedia::Cache CMedia::is_cache_filled(int64_t frame)
     if ( _stereo_output != kNoStereo )
     {
         if ( _stereo_input  == kSeparateLayersInput &&
-                _right && _right[i] ) cache = kStereoCache;
+             _right && _right[i] ) cache = kStereoCache;
         else if ( _stereo_input != kSeparateLayersInput && cache == kLeftCache )
             cache = kStereoCache;
     }
