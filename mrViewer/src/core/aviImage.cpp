@@ -853,7 +853,22 @@ void aviImage::play( const Playback dir, ViewerUI* const uiMain,
 
 CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
+    SCOPED_LOCK( _mutex );
+
+#if 0
+    // Check if video is already in video store
     bool ok = in_video_store( frame - _start_number );
+#else
+    bool ok = false;
+
+    // Check if video is already in video store
+    video_cache_t::iterator end = _images.end();
+    video_cache_t::iterator i = std::find_if( _images.begin(), end,
+                                              EqualFunctor(frame) );
+    if ( i != end ) ok = true;
+
+#endif
+
     if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
     return (CMedia::Cache) ok;
 }
@@ -1568,20 +1583,25 @@ void aviImage::timed_limit_store( const int64_t& frame )
 
     if ( iters.empty() ) return;
 
-    IteratorList::iterator i = iters.begin();
-    IteratorList::iterator e = iters.end();
-
-    // We erase from greater to lower to avoid dangling iterators
-    std::sort( i, e, std::greater<video_cache_t::iterator>() );
-
-    // Finally, remove the images with the iterators
-    i = iters.begin();
-    e = iters.end();
-    for ( ; i != e; ++i )
+    struct IteratorMatch
     {
-        _images.erase( *i );
-    }
+        const IteratorList& iters;
+        IteratorMatch( const IteratorList& its ) : iters( its ) {}
+        bool operator()( const image_type_ptr& a ) const
+        {
+            IteratorList::const_iterator i = iters.begin();
+            IteratorList::const_iterator e = iters.end();
+            for ( ; i != e; ++i )
+            {
+                if ( (*(*i)) == a )
+                    return true;
+            }
+            return false;
+        }
+    };
 
+    _images.erase( std::remove_if( _images.begin(), _images.end(),
+                                   IteratorMatch( iters ) ), _images.end() );
 }
 
 
