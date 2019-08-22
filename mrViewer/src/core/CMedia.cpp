@@ -145,6 +145,7 @@ std::string CMedia::icc_profile_float;
 
 
 int64_t CMedia::memory_used = 0;
+double CMedia::thumbnail_percent = 0.0f;
 
 int CMedia::_audio_cache_size = 0;
 int CMedia::_video_cache_size = 0;
@@ -3915,7 +3916,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             //const AVPacket& pkt = _video_packets.front();
 
             // @TODO: verify (WRONG!)
-            // if ( frame > pkt.pts ) {
+            // if ( frame > get_frame( stream, pkt ) ) {
             //     return kDecodeOK;
             // }
 
@@ -3932,7 +3933,7 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
 
             // const AVPacket& pkt = _video_packets.front();
             // @TODO: verify (WRONG!)
-            // if ( frame < pkt.pts )
+            // if ( frame < get_frame( stream, pkt ) )
             //     return kDecodeOK;
 
             _video_packets.pop_front();
