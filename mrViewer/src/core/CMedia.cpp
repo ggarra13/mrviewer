@@ -916,11 +916,6 @@ CMedia::~CMedia()
 
     flush_audio();
 
-    if ( _aframe )
-    {
-        av_frame_unref(_aframe);
-        av_frame_free(&_aframe);
-    }
 
 
     free( _fileroot );
