@@ -1022,9 +1022,9 @@ void CMedia::limit_audio_store(const int64_t frame)
     }
 #endif
 
-    audio_cache_t::iterator end = _audio.end();
-    _audio.erase( std::remove_if( _audio.begin(), end,
-                                  NotInRangeFunctor( first, last ) ), end );
+    _audio.erase( std::remove_if( _audio.begin(), _audio.end(),
+                                  NotInRangeFunctor( first, last ) ),
+                  _audio.end() );
 
 }
 
