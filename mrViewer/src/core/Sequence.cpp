@@ -812,7 +812,28 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
             if ( strncmp( "audio: ", c, 7 ) == 0 )
             {
                 if ( !sequences.empty() )
-                    sequences.back().audio = c+7;
+                {
+                    std::string audio = c+7;
+                    if (c[7] != '/' && c[8] != ':' )
+                    {
+                        fs::path dir = reelfile;
+                        dir = dir.parent_path();
+                        std::string path = dir.generic_string();
+                        if ( !path.empty() ) path += '/';
+                        audio = path + audio;
+                    }
+                    sequences.back().audio = audio;
+                }
+                continue;
+            }
+
+            if ( strncmp( "audio offset: ", c, 13 ) == 0 )
+            {
+                if ( !sequences.empty() )
+                {
+                    int64_t offset = atoi( c+14 );
+                    sequences.back().audio_offset = offset;
+                }
                 continue;
             }
 
@@ -989,16 +1010,18 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 dir = dir.parent_path();
                 fs::path file = root;
 
-                if ( root[0] != '/' && root[1] != ':' )
+                if ( root[0] != '/' && root[1] != ':' && root != "Black Gap" )
                 {
                     dir /= file;
                     root = dir.generic_string();
                 }
 
+                double fps;
                 boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
                 is >> first >> last >> start >> end;
-
-                sequences.push_back( LoadInfo( root, first, last, start, end ) );
+                is >> fps;
+                sequences.push_back( LoadInfo( root, first, last, start, end,
+                                               fps ) );
             }
 
         }
