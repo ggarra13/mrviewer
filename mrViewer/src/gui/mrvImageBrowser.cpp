@@ -567,7 +567,7 @@ void ImageBrowser::save_reel()
                   "# mrViewer Reel \"%s\"\n"
                   "# \n"
                   "# Created with mrViewer\n"
-                  "#\n\nVersion 3.0\nGhosting %d %d\n"),
+                  "#\n\nVersion 4.0\nGhosting %d %d\n"),
              reel->name.c_str(),
              view()->ghost_previous(),
              view()->ghost_next()
