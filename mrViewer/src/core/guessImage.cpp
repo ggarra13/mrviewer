@@ -47,6 +47,7 @@
 #include "picImage.h"
 #include "rawImage.h"
 #include "smpteImage.h"
+#include "mrvBlackImage.h"
 
 #include "gui/mrvPreferences.h"
 #include "Sequence.h"
@@ -248,7 +249,11 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
             else
             {
                 CMedia* img = NULL;
-                if ( strcmp( name, _("SMPTE NTSC Color Bars") ) == 0 )
+                if ( strcmp( name, _("Black Gap") ) == 0 )
+                {
+                    img = new BlackImage( BlackImage::kGap );
+                }
+                else if ( strcmp( name, _("SMPTE NTSC Color Bars") ) == 0 )
                 {
                     img = new ColorBarsImage( ColorBarsImage::kSMPTE_NTSC );
                 }
