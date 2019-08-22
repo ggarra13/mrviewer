@@ -39,7 +39,7 @@ const char* kModule = "icon";
 namespace mrv {
 
 Fl_Image* fltk_handler( const char* filename, uchar* header,
-			    int len )
+                            int len )
 {
     std::string ext = filename;
     size_t start = ext.rfind( '.' );
@@ -50,7 +50,7 @@ Fl_Image* fltk_handler( const char* filename, uchar* header,
                     (int(*)(int))tolower);
 
     if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" ||
-            ext == "srt" || ext == "sub" || ext == "txt" )
+         ext == "srt" || ext == "sub" || ext == "txt" )
         return NULL;
 
     CMedia* img = CMedia::guess_image( filename, header, len, true );
@@ -59,9 +59,9 @@ Fl_Image* fltk_handler( const char* filename, uchar* header,
 
     // Fetch frame in the 1/4 of duration
     int64_t f = img->first_frame();
-    f += int64_t( img->duration() * 0.25f);
+    f += int64_t( img->duration() * CMedia::thumbnail_percent/100.0f );
     img->audio_stream( -1 );
-    img->seek( f );
+    if ( f > 0.0f ) img->seek( f );
     image_type_ptr canvas;
 
     if ( img->fetch( canvas, f ) )
