@@ -54,6 +54,7 @@ namespace fs = boost::filesystem;
 #include "core/smpteImage.h"
 #include "core/clonedImage.h"
 #include "core/mrvColorBarsImage.h"
+#include "core/mrvBlackImage.h"
 #include "core/slateImage.h"
 #include "core/Sequence.h"
 #include "core/mrvACES.h"
@@ -123,6 +124,31 @@ void clone_image_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 }
 
 namespace {
+
+    mrv::media black_gap_cb( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
+    {
+        using mrv::BlackImage;
+        BlackImage*  img = new BlackImage();
+        img->start_frame( i.start );
+        img->first_frame( i.first );
+        img->end_frame( i.end );
+        img->last_frame( i.last );
+        img->fps( i.fps );
+        img->play_fps( i.fps );
+        mrv::image_type_ptr canvas;
+        img->fetch( canvas, i.first );
+        img->cache( canvas );
+        img->default_rendering_transform();
+        return b->add( img );
+    }
+
+    void black_cb( Fl_Widget* o , mrv::ImageBrowser* b )
+    {
+        using mrv::BlackImage;
+        mrv::LoadInfo i( "Black Gap" );
+        i.start = i.first = 1; i.end = i.last = 48; i.fps = 24.0;
+        black_gap_cb( i, b );
+    }
 
 void ntsc_color_bars_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -560,18 +586,26 @@ void ImageBrowser::save_reel()
             fs::path parentPath = reelname; //fs::current_path();
             parentPath = parentPath.parent_path();
             fs::path childPath = img->fileroot();
-            fs::path relativePath = fs::relative( childPath, parentPath );
-            path = relativePath.generic_string();
+            if ( img->internal() )
+            {
+                path = childPath.generic_string();
+            }
+            else
+            {
+                fs::path relativePath = fs::relative( childPath, parentPath );
+                path = relativePath.generic_string();
+            }
         }
 
         fprintf( f, "\"%s\" %" PRId64 " %" PRId64
-                 " %" PRId64 " %" PRId64 "\n", path.c_str(),
+                 " %" PRId64 " %" PRId64 " %.3g\n", path.c_str(),
                  img->first_frame(), img->last_frame(),
-                 img->start_frame(), img->end_frame() );
-        if ( img->is_sequence() )
+                 img->start_frame(), img->end_frame(), img->fps() );
+        if ( img->has_audio() && img->audio_file() != "" )
         {
-            if ( img->has_audio() )
-                fprintf( f, "audio: %s\n", img->audio_file().c_str() );
+            fprintf( f, "audio: %s\n", img->audio_file().c_str() );
+            fprintf( f, "audio offset: %" PRId64 "\n",
+                     img->audio_offset() );
         }
 
         const CMedia* const right = img->right_eye();
@@ -866,6 +900,8 @@ mrv::media ImageBrowser::add( const mrv::media m )
         e->refresh();
         e->redraw();
     }
+
+    view()->fit_image();
 
     redraw();
 
@@ -1491,6 +1527,10 @@ void ImageBrowser::load( const mrv::LoadList& files,
             if ( load.filename == "SMPTE NTSC Color Bars" )
             {
                 ntsc_color_bars_cb(NULL, this);
+            }
+            else if ( load.filename == "Black Gap" )
+            {
+                fg = black_gap_cb( load, this );
             }
             else if ( load.filename == "PAL Color Bars" )
             {
@@ -2648,6 +2688,8 @@ int ImageBrowser::mousePush( int x, int y )
             }
         }
 
+        menu.add( _("Create/Black Gap"), 0,
+                  (Fl_Callback*)black_cb, this);
         menu.add( _("Create/Color Bars/SMPTE NTSC"), 0,
                   (Fl_Callback*)ntsc_color_bars_cb, this);
         menu.add( _("Create/Color Bars/SMPTE NTSC HDTV"), 0,
@@ -3322,6 +3364,7 @@ void ImageBrowser::adjust_timeline()
     uiMain->uiEndFrame->value( last );
 
     frame( f );
+
 }
 
 
