@@ -3635,9 +3635,9 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         {
             bool ok = in_video_store( frame );
 
-            if ( ok && frame < _frameEnd )
+            if ( frame < _frameEnd )
             {
-                return kDecodeOK;
+                if ( ok ) return kDecodeOK;
             }
 
 
