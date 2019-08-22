@@ -1833,8 +1833,8 @@ bool CMedia::find_audio( const int64_t frame )
 
         _audio_frame = frame;
 
-        // if ( frame < first_frame() )
-        //     return true;
+        if ( frame < first_frame() )
+            return true;
 
 #if 1 // needed
         audio_cache_t::iterator end = _audio.end();
