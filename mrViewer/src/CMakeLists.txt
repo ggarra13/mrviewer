@@ -190,6 +190,7 @@ SET( SOURCES
   core/iffImage.cpp
   core/mapImage.cpp
   core/mrayImage.cpp
+  core/mrvBlackImage.cpp
   core/mrvColorBarsImage.cpp
   core/pxrzImage.cpp
   core/shmapImage.cpp
