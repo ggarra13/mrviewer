@@ -1281,7 +1281,9 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
         {
             char buf[128];
             av_strerror(ret, buf, 128);
-            IMG_ERROR( "send_packet error: " << buf );
+            IMG_ERROR( "send_packet error: " << buf
+                       << " for codec "
+                       << avcodec_get_name( avctx->codec_id )  );
             return ret;
         }
 
@@ -1295,7 +1297,9 @@ int CMedia::decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame,
     {
         char buf[128];
         av_strerror(ret, buf, 128);
-        IMG_ERROR( "receive_frame error: " << buf );
+        IMG_ERROR( "receive_frame error: " << buf
+                   << " for codec "
+                   << avcodec_get_name( avctx->codec_id )  );
         return ret;
     }
 
@@ -3436,7 +3440,7 @@ bool aviImage::in_video_store( const int64_t frame )
     // Check if video is already in video store
     video_cache_t::iterator end = _images.end();
     video_cache_t::iterator i = std::find_if( _images.begin(), end,
-                                              EqualFunctor(frame) );
+                                              EqualRepeatFunctor(frame) );
     if ( i != end ) return true;
     return false;
 }
@@ -3635,9 +3639,9 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
         {
             bool ok = in_video_store( frame );
 
-            if ( ok && frame < _frameEnd )
+            if ( frame < _frameEnd )
             {
-                return kDecodeOK;
+                if ( ok ) return kDecodeOK;
             }
 
 
