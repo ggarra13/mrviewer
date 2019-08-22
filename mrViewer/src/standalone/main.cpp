@@ -109,6 +109,7 @@ void load_new_files( void* s )
       char* lastS;
       char* startS;
       char* endS;
+      double fps;
 
       int groups = lock.groups();
 
@@ -122,13 +123,14 @@ void load_new_files( void* s )
          g.get( "last", lastS, "50" );
          g.get( "start", startS, "1" );
          g.get( "end", endS, "50" );
+         g.get( "fps", fps, 24 );
 
          boost::int64_t first = strtoll( firstS, NULL, 10 );
          boost::int64_t last = strtoll( lastS, NULL, 10 );
          boost::int64_t start = strtoll( startS, NULL, 10 );
          boost::int64_t end = strtoll( endS, NULL, 10 );
 
-         mrv::LoadInfo info( filename, first, last, start, end, audio );
+         mrv::LoadInfo info( filename, first, last, start, end, fps, audio );
          files.push_back( info );
       }
    }

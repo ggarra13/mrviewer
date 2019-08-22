@@ -645,6 +645,7 @@ void audio_thread( PlaybackData* data )
         if ( step == 0 ) break;
 
         //DBG3( "wait audio " << frame );
+        // std::cerr << "wait audio " << frame << std::endl;
         img->wait_audio();
 
 
@@ -656,9 +657,12 @@ void audio_thread( PlaybackData* data )
         // if (!fg)
         // img->debug_audio_stores( frame, "play", true );
 
+        // std::cerr << "decode audio " << frame << std::endl;
 
         CMedia::DecodeStatus status = img->decode_audio( f );
         // LOG_INFO( img->name() << " decoded audio " << f << " status " << status );
+        // std::cerr << "decoded audio " << frame << " status " << status
+        //           << std::endl;
 
         assert( img != NULL );
         assert( reel != NULL );
@@ -777,6 +781,7 @@ void audio_thread( PlaybackData* data )
 
         if ( !img->stopped() )
         {
+            // std::cerr << "find audio " << frame << std::endl;
             img->find_audio(frame);
         }
 
@@ -1011,7 +1016,6 @@ void video_thread( PlaybackData* data )
     while ( !img->stopped() && view->playback() != CMedia::kStopped )
     {
         img->wait_image();
-
 
         int step = (int) img->playback();
         if ( step == 0 ) break;
