@@ -501,7 +501,7 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
 void Timecode::value( const int64_t x )
 {
     if ( x == _frame ) return;
-    
+
     _frame = x;
 
     char buf[100];
