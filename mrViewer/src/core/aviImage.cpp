@@ -1596,45 +1596,47 @@ void aviImage::timed_limit_store( const int64_t& frame )
 //
 void aviImage::limit_video_store(const int64_t frame)
 {
-    // SCOPED_LOCK( _mutex );
 
-    // int max_frames = max_video_frames();
-    // if ( _has_image_seq )
-    // {
-    //     max_frames = max_image_frames();
-    // }
+    if ( playback() == kForwards )
+        return timed_limit_store( frame );
 
-    return timed_limit_store( frame );
+    SCOPED_LOCK( _mutex );
 
-    // int64_t first, last;
+    int max_frames = max_video_frames();
+    if ( _has_image_seq )
+    {
+        max_frames = max_image_frames();
+    }
 
-    // switch( playback() )
-    // {
-    // case kBackwards:
-    //     first = frame - max_frames;
-    //     last  = frame + max_frames;
-    //     if ( _dts > last )   last  = _dts;
-    //     if ( _dts < first )  first = _dts;
-    //     break;
-    // case kForwards:
-    //     first = frame - max_frames;
-    //     last  = frame + max_frames;
-    //     if ( _dts > last )   last  = _dts;
-    //     if ( _dts < first )  first = _dts;
-    //     break;
-    // default:
-    //     first = frame - max_frames;
-    //     last  = frame + max_frames;
-    //     if ( _dts > last )   last = _dts;
-    //     if ( _dts < first ) first = _dts;
-    //     break;
-    // }
+    int64_t first, last;
 
-    // if ( _images.empty() ) return;
+    switch( playback() )
+    {
+    case kBackwards:
+        first = frame - max_frames;
+        last  = frame + max_frames;
+        if ( _dts > last )   last  = _dts;
+        if ( _dts < first )  first = _dts;
+        break;
+    case kForwards:
+        first = frame - max_frames;
+        last  = frame + max_frames;
+        if ( _dts > last )   last  = _dts;
+        if ( _dts < first )  first = _dts;
+        break;
+    default:
+        first = frame - max_frames;
+        last  = frame + max_frames;
+        if ( _dts > last )   last = _dts;
+        if ( _dts < first ) first = _dts;
+        break;
+    }
 
-    // video_cache_t::iterator end = _images.end();
-    // _images.erase( std::remove_if( _images.begin(), end,
-    //                                NotInRangeFunctor( first, last ) ), end );
+    if ( _images.empty() ) return;
+
+    _images.erase( std::remove_if( _images.begin(), _images.end(),
+                                   NotInRangeFunctor( first, last ) ),
+                   _images.end() );
 
 
 }
