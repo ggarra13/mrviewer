@@ -169,6 +169,37 @@ struct NotInRangeFunctor
   }
 };
 
+    template< typename T >
+    struct IteratorMatch
+    {
+        const T& iters;
+        IteratorMatch( const T& its ) : iters( its ) {}
+        bool operator()( const image_type_ptr& a ) const
+            {
+                typename T::const_iterator i = iters.begin();
+                typename T::const_iterator e = iters.end();
+                for ( ; i != e; ++i )
+                {
+                    if ( (*(*i)) == a )
+                        return true;
+                }
+                return false;
+            }
+        bool operator()( const audio_type_ptr& a ) const
+            {
+                typename T::const_iterator i = iters.begin();
+                typename T::const_iterator e = iters.end();
+                for ( ; i != e; ++i )
+                {
+                    if ( (*(*i)) == a )
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+    };
+
 } // namespace mrv
 
 
