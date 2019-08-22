@@ -1133,8 +1133,12 @@ Preferences::Preferences( PreferencesUI* uiPrefs )
 #else
     loading.get( "native_file_chooser", tmp, 0 );
 #endif
-
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
+
+
+    loading.get( "thumbnail_percent", tmpF, 0.0 );
+    CMedia::thumbnail_percent = tmpF;
+    uiPrefs->uiPrefsThumbnailPercent->value( tmpF );
 
     DBG;
     loading.get( "uses_16bits", tmp, 0 );
@@ -2267,6 +2271,9 @@ void Preferences::save()
     loading.set( "autoload_images",
                  (int) uiPrefs->uiPrefsAutoLoadImages->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
+    loading.set( "thumbnail_percent",
+                 uiPrefs->uiPrefsThumbnailPercent->value() );
+
     loading.set( "uses_16bits", (int) uiPrefs->uiPrefsUses16Bits->value() );
     loading.set( "image_version_prefix",
                  uiPrefs->uiPrefsImageVersionPrefix->value() );
