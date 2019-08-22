@@ -94,10 +94,10 @@ public:
     }
 
     inline int64_t frame() const {
-        return _frame;
+        return value();
     }
     inline void frame( const int64_t& f ) {
-        _frame = f;
+        value( f );
     }
 
     inline void timecode( const int64_t& f ) {
