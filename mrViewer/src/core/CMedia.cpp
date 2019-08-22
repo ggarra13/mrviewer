@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -145,6 +145,7 @@ std::string CMedia::icc_profile_float;
 
 
 int64_t CMedia::memory_used = 0;
+double CMedia::thumbnail_percent = 0.0f;
 
 int CMedia::_audio_cache_size = 0;
 int CMedia::_video_cache_size = 0;
