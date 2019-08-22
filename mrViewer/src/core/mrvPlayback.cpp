@@ -428,10 +428,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 return kEndNextImage;
             }
-            else if ( next == NULL && loop == CMedia::kPingPong )
-            {
-                return kEndNextImage;
-            }
+            std::cerr << "NEXT " << next << " img " << img << std::endl;
         }
 
         if ( loop == CMedia::kLoop )
@@ -487,10 +484,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 next = reel->image_at( f );
                 dts = f;
             }
-            else if ( next == NULL && loop == CMedia::kPingPong )
-            {
-                next = img;
-            }
 
             if ( next != img && next != NULL )
             {
@@ -529,10 +522,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                     }
 
                 }
-                return kEndNextImage;
-            }
-            else if ( next == NULL && loop == CMedia::kPingPong )
-            {
                 return kEndNextImage;
             }
         }
