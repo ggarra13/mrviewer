@@ -291,7 +291,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         }
     }
 
-
     if ( frame > last )
     {
         return CMedia::kDecodeLoopEnd;
@@ -427,12 +426,12 @@ EndStatus handle_loop( boost::int64_t& frame,
                     }
 
                 }
+                return kEndNextImage;
             }
-            else if ( next == img )
+            else if ( next == NULL && loop == CMedia::kPingPong )
             {
-                frame = dts;
+                return kEndNextImage;
             }
-            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
@@ -488,6 +487,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                 next = reel->image_at( f );
                 dts = f;
             }
+            else if ( next == NULL && loop == CMedia::kPingPong )
+            {
+                next = img;
+            }
 
             if ( next != img && next != NULL )
             {
@@ -526,12 +529,12 @@ EndStatus handle_loop( boost::int64_t& frame,
                     }
 
                 }
+                return kEndNextImage;
             }
-            else if ( next == img )
+            else if ( next == NULL && loop == CMedia::kPingPong )
             {
-                frame = dts;
+                return kEndNextImage;
             }
-            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
@@ -552,8 +555,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = first;
             step  = 1;
             img->playback( (CMedia::Playback) step );
-            // std::cerr << img->name() << " loop ping pong " << first
-            //        << " step " << step << std::endl;
             status = kEndChangeDirection;
             if ( init_time )
             {
