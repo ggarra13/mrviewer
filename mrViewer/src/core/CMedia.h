@@ -1569,6 +1569,7 @@ public:
     };
     static LoadLib load_library;
     static int64_t memory_used;
+    static double thumbnail_percent;
 
 protected:
 
