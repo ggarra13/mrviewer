@@ -43,13 +43,15 @@ struct ClosestToFunctor
 
   ClosestToFunctor( const int64_t f ) : frame(f) {}
 
-  bool operator()( const audio_type_ptr& a, const audio_type_ptr& b ) const
+  inline bool operator()( const audio_type_ptr& a,
+                          const audio_type_ptr& b ) const
   {
     if ( !a || !b ) return false;
     return ( frame > a->frame() && frame < b->frame() );
   }
 
-  bool operator()( const image_type_ptr& a, const image_type_ptr& b ) const
+  inline bool operator()( const image_type_ptr& a,
+                          const image_type_ptr& b ) const
   {
     if ( !a || !b ) return false;
     return ( frame > a->frame() && frame < b->frame() );
@@ -62,17 +64,19 @@ struct EqualRepeatFunctor
   const int64_t _frame;
   EqualRepeatFunctor( const int64_t frame ) : _frame( frame ) {}
 
-  bool operator()( const audio_type_ptr& a ) const
+  inline bool operator()( const audio_type_ptr& a ) const
   {
     if ( !a ) return false;
     return a->frame() == _frame;
   }
 
-  bool operator()( const image_type_ptr& a ) const
+  inline bool operator()( const image_type_ptr& a ) const
   {
     if ( !a ) return false;
     if ( a->repeat() > 0 )
-        return a->frame() + a->repeat() == _frame;
+        return a->frame() == _frame;
+        // return ( a->frame() <= _frame &&
+        //          a->frame() + a->repeat() >= _frame );
     else
         return a->frame() == _frame;
   }
@@ -83,13 +87,13 @@ struct EqualFunctor
   const int64_t _frame;
   EqualFunctor( const int64_t frame ) : _frame( frame ) {}
 
-  bool operator()( const audio_type_ptr& a ) const
+  inline bool operator()( const audio_type_ptr& a ) const
   {
     if ( !a ) return false;
     return a->frame() == _frame;
   }
 
-  bool operator()( const image_type_ptr& a ) const
+  inline bool operator()( const image_type_ptr& a ) const
   {
     if ( !a ) return false;
     return a->frame() == _frame;
@@ -98,23 +102,23 @@ struct EqualFunctor
 
 struct MoreThanFunctor
 {
-  bool operator()( const int64_t a, const audio_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const audio_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a > b->frame();
   }
-  bool operator()( const audio_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const audio_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
     return *a > b;
   }
 
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const image_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a > b->frame();
   }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const image_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
     return a->frame() > b;
@@ -123,23 +127,23 @@ struct MoreThanFunctor
 
 struct LessThanFunctor
 {
-  bool operator()( const int64_t a, const audio_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const audio_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a < b->frame();
   }
-  bool operator()( const audio_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const audio_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
     return *a < b;
   }
 
-  bool operator()( const int64_t a, const image_type_ptr& b ) const
+  inline bool operator()( const int64_t a, const image_type_ptr& b ) const
   {
     if ( !b ) return false;
     return a < b->frame();
   }
-  bool operator()( const image_type_ptr& a, const int64_t b ) const
+  inline bool operator()( const image_type_ptr& a, const int64_t b ) const
   {
     if ( !a ) return false;
     return a->frame() < b;
@@ -157,12 +161,12 @@ struct NotInRangeFunctor
     assert( end >= start );
   }
 
-  bool operator()( const audio_type_ptr& b ) const
+  inline bool operator()( const audio_type_ptr& b ) const
   {
      return ( b->frame() < _start || b->frame() > _end );
   }
 
-  bool operator()( const image_type_ptr& b ) const
+  inline bool operator()( const image_type_ptr& b ) const
   {
      return ( b->frame() + b->repeat() < _start ||
               b->frame() - b->repeat() > _end );
@@ -174,7 +178,7 @@ struct NotInRangeFunctor
     {
         const T& iters;
         IteratorMatch( const T& its ) : iters( its ) {}
-        bool operator()( const image_type_ptr& a ) const
+        inline bool operator()( const image_type_ptr& a ) const
             {
                 typename T::const_iterator i = iters.begin();
                 typename T::const_iterator e = iters.end();
@@ -185,7 +189,7 @@ struct NotInRangeFunctor
                 }
                 return false;
             }
-        bool operator()( const audio_type_ptr& a ) const
+        inline bool operator()( const audio_type_ptr& a ) const
             {
                 typename T::const_iterator i = iters.begin();
                 typename T::const_iterator e = iters.end();
