@@ -1583,25 +1583,10 @@ void aviImage::timed_limit_store( const int64_t& frame )
 
     if ( iters.empty() ) return;
 
-    struct IteratorMatch
-    {
-        const IteratorList& iters;
-        IteratorMatch( const IteratorList& its ) : iters( its ) {}
-        bool operator()( const image_type_ptr& a ) const
-        {
-            IteratorList::const_iterator i = iters.begin();
-            IteratorList::const_iterator e = iters.end();
-            for ( ; i != e; ++i )
-            {
-                if ( (*(*i)) == a )
-                    return true;
-            }
-            return false;
-        }
-    };
 
     _images.erase( std::remove_if( _images.begin(), _images.end(),
-                                   IteratorMatch( iters ) ), _images.end() );
+                                   IteratorMatch<IteratorList>( iters ) ),
+                   _images.end() );
 }
 
 
@@ -1611,13 +1596,13 @@ void aviImage::timed_limit_store( const int64_t& frame )
 //
 void aviImage::limit_video_store(const int64_t frame)
 {
-    SCOPED_LOCK( _mutex );
+    // SCOPED_LOCK( _mutex );
 
-    int max_frames = max_video_frames();
-    if ( _has_image_seq )
-    {
-        max_frames = max_image_frames();
-    }
+    // int max_frames = max_video_frames();
+    // if ( _has_image_seq )
+    // {
+    //     max_frames = max_image_frames();
+    // }
 
     return timed_limit_store( frame );
 
