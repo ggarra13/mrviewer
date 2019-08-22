@@ -2837,8 +2837,8 @@ void ImageView::handle_commands()
         NET("TimelineMaxDisplay " << x );
         uiMain->uiTimeline->display_minimum( x );
         uiMain->uiTimeline->redraw();
-        uiMain->uiStartFrame->value( x );
-        uiMain->uiStartFrame->redraw();
+        uiMain->uiEndFrame->value( x );
+        uiMain->uiEndFrame->redraw();
         break;
     }
     case kTimelineMin:
