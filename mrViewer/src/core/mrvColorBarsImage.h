@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ public:
     }
 
     virtual bool fetch( mrv::image_type_ptr& canvas,
-			const boost::int64_t frame );
+                        const boost::int64_t frame );
 
 protected:
     void NTSC_color_bars(mrv::image_type_ptr& canvas);
@@ -66,10 +66,10 @@ protected:
     void PAL_HDTV_color_bars(mrv::image_type_ptr& canvas);
 
     void smpte_color_bars( mrv::image_type_ptr& canvas,
-			   const unsigned int X, const unsigned int W,
+                           const unsigned int X, const unsigned int W,
                            const unsigned int H, const float pct );
     void smpte_bottom_bars( mrv::image_type_ptr& canvas,
-			    const unsigned int X, const unsigned int Y,
+                            const unsigned int X, const unsigned int Y,
                             const unsigned int W, const unsigned int H );
 
     mrv::image_type_ptr canvas;
