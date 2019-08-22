@@ -1150,8 +1150,8 @@ mrv::image_type_ptr CMedia::left() const
     int64_t f = handle_loops( _frame );
     int64_t idx = f - _frame_start;
 
-    int64_t num = _frame_end - _frame_start + 1;
-    if ( idx > num ) idx = num - 1;
+    int64_t num = _frame_end - _frame_start;
+    if ( idx > num ) idx = num;
     else if ( idx < 0 ) idx = 0;
 
     Mutex& mtx = const_cast< Mutex& >( _mutex );
@@ -2736,9 +2736,9 @@ bool CMedia::frame( int64_t f )
 
     if ( Preferences::max_memory <= CMedia::memory_used )
     {
-        if ( stopped() )
-            return false;
+        if ( stopped() ) return false;
         limit_video_store( f );
+        if ( has_audio() ) limit_audio_store( f );
     }
 
 
@@ -2774,7 +2774,6 @@ bool CMedia::frame( int64_t f )
 
         if ( fs::exists( file ) )
         {
-
             if ( fetch( canvas, _dts ) )
             {
                 cache( canvas );
@@ -2787,8 +2786,8 @@ bool CMedia::frame( int64_t f )
 
     if ( has_audio() )
     {
-        _adts = _dts + _audio_offset;
-        fetch_audio( _adts );
+        f += _audio_offset;
+        fetch_audio( f );
     }
 
     _expected = _dts + 1;
@@ -2855,15 +2854,16 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
 
     int64_t idx = f - _frame_start;
-    int64_t num = _frame_end - _frame_start + 1;
+    int64_t num = _frame_end - _frame_start;
     if ( idx < 0 ) idx = 0;
-    else if ( idx > num ) idx = num - 1;
+    else if ( idx > num ) idx = num;
 
     if ( !seq ) return;
 
 
     if ( seq[idx] ) {
         memory_used -= seq[idx]->data_size();
+        DBG;
         if ( CMedia::memory_used < 0 )
             CMedia::memory_used = 0;
     }
@@ -2933,8 +2933,8 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
             assert0( pic.use_count() >= 2 );
         }
     }
-
     memory_used += seq[idx]->data_size();
+    DBG;
     MEM();
 
     _w = w;
@@ -3662,10 +3662,11 @@ void CMedia::loop_at_end( const int64_t frame )
 
         mrv::PacketQueue::iterator i = _audio_packets.begin();
         AVStream* stream = get_audio_stream();
+        int64_t limit = frame + _audio_offset - 1;
         for ( ; i != _audio_packets.end(); )
         {
             int64_t pktframe = get_frame( stream, *i );
-            if ( pktframe > frame )
+            if ( pktframe > limit )
             {
                 i = _audio_packets.erase( i );
             }
