@@ -884,6 +884,16 @@ public:
     }
 
     /// Returns the first frame in the video or sequence
+    inline void  start_frame( const int64_t& x ) {
+        _frame_start = x;
+    }
+
+    /// Returns the last frame in the video or sequence
+    inline void   end_frame( const int64_t& x ) {
+        _frame_end = x;
+    }
+
+    /// Returns the first frame in the video or sequence
     inline int64_t   start_frame() const {
         return _frame_start;
     }
