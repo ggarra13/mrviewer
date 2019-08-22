@@ -119,16 +119,16 @@ struct LoadInfo
     std::string right_filename;
     std::string audio;
 
-    boost::int64_t first;
-    boost::int64_t last;
+    int64_t first;
+    int64_t last;
 
     double fps;
 
-    boost::int64_t start;
-    boost::int64_t end;
+    int64_t start;
+    int64_t end;
     bool    reel;
     GLShapeList shapes;
-    boost::int64_t audio_offset;
+    int64_t audio_offset;
 
     std::string subtitle;
 
