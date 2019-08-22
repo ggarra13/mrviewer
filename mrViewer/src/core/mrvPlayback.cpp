@@ -428,10 +428,11 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 return kEndNextImage;
             }
-            else if ( next == NULL && loop == CMedia::kPingPong )
+            else if ( next == img )
             {
-                return kEndNextImage;
+                frame = dts;
             }
+            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
@@ -531,10 +532,11 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 return kEndNextImage;
             }
-            else if ( next == NULL && loop == CMedia::kPingPong )
+            else if ( next == img )
             {
-                return kEndNextImage;
+                frame = dts;
             }
+            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
