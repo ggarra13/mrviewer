@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2019-08-22 16:07-0300\n"
+"POT-Creation-Date: 2019-08-22 16:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3775,7 +3775,7 @@ msgstr ""
 msgid " image stores "
 msgstr ""
 
-#: core/mrvPlayback.cpp:431 gui/FLU/Flu_File_Chooser.cpp:418
+#: gui/FLU/Flu_File_Chooser.cpp:418
 msgid " img "
 msgstr ""
 
@@ -19524,10 +19524,6 @@ msgstr ""
 msgid "NAME"
 msgstr ""
 
-#: core/mrvPlayback.cpp:431
-msgid "NEXT "
-msgstr ""
-
 #: gui/mrvImageBrowser.cpp:1088
 msgid "NO images in reel"
 msgstr ""
@@ -26981,6 +26977,10 @@ msgstr ""
 
 #: standalone/main.cpp:125 standalone/main.cpp:302
 msgid "end"
+msgstr ""
+
+#: core/mrvPlayback.cpp:437
+msgid "end loop"
 msgstr ""
 
 #: gui/mrvVersion.cpp:477
