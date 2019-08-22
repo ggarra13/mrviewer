@@ -122,6 +122,8 @@ struct LoadInfo
     boost::int64_t first;
     boost::int64_t last;
 
+    double fps;
+
     boost::int64_t start;
     boost::int64_t end;
     bool    reel;
@@ -134,6 +136,7 @@ struct LoadInfo
               const boost::int64_t sf, const boost::int64_t ef,
               const boost::int64_t s = AV_NOPTS_VALUE,
               const boost::int64_t e = AV_NOPTS_VALUE,
+              const double f = 24.0f,
               const std::string& a = "",
               const std::string& right = "",
               const boost::int64_t aoffset = 0,
@@ -145,6 +148,7 @@ struct LoadInfo
         last( ef ),
         start( s ),
         end( e ),
+        fps( f ),
         reel( false ),
         audio_offset( aoffset ),
         subtitle( sub )
@@ -161,6 +165,7 @@ struct LoadInfo
               const GLShapeList& shl,
               const boost::int64_t s = AV_NOPTS_VALUE,
               const boost::int64_t e = AV_NOPTS_VALUE,
+              const double f = 24.0f,
               const std::string& a = "",
               const std::string& right = "",
               const boost::int64_t aoffset = 0,
@@ -172,6 +177,7 @@ struct LoadInfo
         last( ef ),
         start( s ),
         end( e ),
+        fps( f ),
         reel( false ),
         shapes( shl ),
         audio_offset( aoffset ),
@@ -190,6 +196,7 @@ struct LoadInfo
         end( AV_NOPTS_VALUE ),
         first( AV_NOPTS_VALUE ),
         last( AV_NOPTS_VALUE ),
+        fps( 0.0 ),
         reel( false ),
         audio_offset( 0 )
     {
@@ -208,6 +215,7 @@ struct LoadInfo
         end( b.end ),
         first( b.first ),
         last( b.last ),
+        fps( b.fps ),
         reel( b.reel ),
         shapes( b.shapes ),
         audio_offset( b.audio_offset ),
