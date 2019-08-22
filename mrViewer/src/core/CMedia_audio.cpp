@@ -2097,6 +2097,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
                     IMG_ERROR( _( "Missing audio frame " ) << frame );
                     return kDecodeMissingFrame;
                 }
+                _audio_packets.pop_front();
                 return kDecodeOK;
             }
 
@@ -2117,6 +2118,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
                     IMG_ERROR( _( "Missing audio frame " ) << frame );
                     return kDecodeMissingFrame;
                 }
+                _audio_packets.pop_front();
                 return kDecodeOK;
             }
 
