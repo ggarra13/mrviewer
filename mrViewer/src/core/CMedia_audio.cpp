@@ -233,6 +233,15 @@ void CMedia::open_audio_codec()
             memset( _audio_buf, 0, _audio_max );
         }
     }
+
+    if ( ! _aframe )
+    {
+        if ( ! (_aframe = av_frame_alloc()) )
+        {
+            IMG_ERROR( _("No memory for audio frame") );
+            return;
+        }
+    }
 }
 
 // NO AUDIO OFFSET IN THIS FUNCTION
@@ -476,6 +485,12 @@ void CMedia::close_audio_codec()
     {
         avcodec_free_context( &_audio_ctx );
         _audio_ctx = NULL;
+
+        if ( _aframe )
+        {
+            av_frame_unref(_aframe);
+            av_frame_free(&_aframe);
+        }
     }
 }
 
@@ -1059,13 +1074,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                           int* audio_size,
                           AVPacket *avpkt)
 {
-    if ( ! _aframe )
-    {
-        if ( ! (_aframe = av_frame_alloc()) )
-        {
-            return AVERROR(ENOMEM);
-        }
-    }
 
     int got_frame = 0;
     int ret = -1;
@@ -1309,6 +1317,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     assert0( !_audio_packets.is_seek( pkt ) );
     assert0( !_audio_packets.is_flush( pkt ) );
     assert0( !_audio_packets.is_preroll( pkt ) );
+    assert0( !_audio_packets.is_jump( pkt ) );
     assert0( !_audio_packets.is_loop_end( pkt ) );
     assert0( !_audio_packets.is_loop_start( pkt ) );
 #else
@@ -1316,6 +1325,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
          _audio_packets.is_seek( pkt ) ||
          _audio_packets.is_flush( pkt ) ||
          _audio_packets.is_preroll( pkt ) ||
+         _audio_packets.is_jump( pkt ) ||
          _audio_packets.is_loop_end( pkt ) ||
          _audio_packets.is_loop_start( pkt ) )
         return kDecodeOK;
@@ -1353,6 +1363,7 @@ CMedia::decode_audio_packet( int64_t& ptsframe,
     pkt_temp.data = pkt.data;
     pkt_temp.size = pkt.size;
 
+    assert0( pkt.size != 0 && pkt.data != NULL );
 
     assert0( _audio_buf != NULL );
     assert0( pkt.size + _audio_buf_used < _audio_max );
