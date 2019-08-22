@@ -3535,7 +3535,7 @@ int64_t CMedia::pts2frame( const AVStream* stream,
 
 
     //assert( dts != AV_NOPTS_VALUE );
-    if (!stream || dts == AV_NOPTS_VALUE) return 0;
+    if (!stream || dts == AV_NOPTS_VALUE) return dts;
 
     long double p = (long double) dts;
     p *= stream->time_base.num;
@@ -3912,10 +3912,12 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
         {
             // We check packet integrity as the length of packets is
             // not accurate.
-            const AVPacket& pkt = _video_packets.front();
-            if ( frame > pkt.pts ) {
-                return kDecodeOK;
-            }
+            //const AVPacket& pkt = _video_packets.front();
+
+            // @TODO: verify (WRONG!)
+            // if ( frame > pkt.pts ) {
+            //     return kDecodeOK;
+            // }
 
             // std::cerr << name() << " frame " << frame << " pkt.pts " <<  pkt.pts
             //        << " OK!!!" << std::endl;
@@ -3927,10 +3929,11 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
         {
             // We check packet integrity as the length of packets is
             // not accurate.
-            const AVPacket& pkt = _video_packets.front();
-            // @TODO: verify
-            if ( frame < pkt.pts )
-                return kDecodeOK;
+
+            // const AVPacket& pkt = _video_packets.front();
+            // @TODO: verify (WRONG!)
+            // if ( frame < pkt.pts )
+            //     return kDecodeOK;
 
             _video_packets.pop_front();
             return kDecodeLoopEnd;
