@@ -4,7 +4,7 @@ v5.2.0  - Fixed video cache like audio cache.  This can remove some random
 	  will get reflected in the timeline.
 	- Fixed an error in audio decoding.  Now it will continue without
 	  printing out a bogus error about missing samples.
-	- First beta of OTIO<->.reel adapter.  Current limitations include:
+	- First alpha of OTIO<->.reel adapter.  Current limitations include:
 	  lack of gaps, lack of transitions, lack of retiming.
 	- Made tick mark in timeline be properly centered on current frame.
 	- Made FPS in Media Information window reflect the original fps value,
@@ -14,6 +14,14 @@ v5.2.0  - Fixed video cache like audio cache.  This can remove some random
 	  possible to add an audio and offset it in the EDL timeline.
 	- Audio offset is now saved in the reel file.
 	- FPS of sequences and videos are now saved in the reel file.
+	- Made the requester default to Wide List view to show the name of
+	  the movie and its thumbnail, as that's what most people are
+	  interested in.
+	- Added a thumbnail percentage which is a control into how deep
+	  into the movie file mrViewer should look into to create the
+	  thumbnail.  The default now is 0, which means the first frame.
+	  Previously, it defaulted to 25% of the movie file and it
+	  was a tad slow.
 
 v5.1.9  - Fixed some random crashes due to the audio cache being deleted
 	  incorrectly.
