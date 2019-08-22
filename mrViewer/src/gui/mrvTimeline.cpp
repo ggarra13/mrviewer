@@ -356,21 +356,21 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
         draw_ticks(tr, (slider_size()+1)/2);
     }
 
-    if (slot) {
-        const int slot_size_ = 6;
-        mrv::Recti sl;
-        int dx = (slider_size()-slot_size_)/2;
-        if (dx < 0) dx = 0;
-        sl.x(dx+r.x());
-        sl.w(r.w()-2*dx);
-        sl.y(r.y()+(r.h()-slot_size_+1)/2);
-        sl.h(slot_size_);
-        Fl::set_box_color(FL_BLACK);
-        Fl_Boxtype b = box();
-        box( FL_THIN_DOWN_BOX );
-        draw_box();
-        box( b );
-    }
+    // if (slot) {
+    //     const int slot_size_ = 6;
+    //     mrv::Recti sl;
+    //     int dx = (slider_size()-slot_size_)/2;
+    //     if (dx < 0) dx = 0;
+    //     sl.x(dx+r.x());
+    //     sl.w(r.w()-2*dx);
+    //     sl.y(r.y()+(r.h()-slot_size_+1)/2);
+    //     sl.h(slot_size_);
+    //     Fl::set_box_color(FL_BLACK);
+    //     Fl_Boxtype b = box();
+    //     box( FL_THIN_DOWN_BOX );
+    //     draw_box();
+    //     box( b );
+    // }
 
     // if user directly set selected_color we use it:
     if ( selection_color() ) {
@@ -612,8 +612,8 @@ void Timeline::draw()
 
             if ( _draw_cache )
             {
-                draw_cacheline( img, pos, size, int64_t(minimum()),
-                                int64_t(maximum()),
+                draw_cacheline( img, pos, size, int64_t(mn),
+                                int64_t(mx),
                                 frame, r );
             }
 
@@ -641,7 +641,7 @@ void Timeline::draw()
                     pos = m->position() - img->first_frame();
                 draw_cacheline( img, pos,
                                 img->duration() + img->start_number(),
-                                int64_t(minimum()), int64_t(maximum()),
+                                int64_t(mn), int64_t(mx),
                                 first, r );
             }
         };
@@ -658,7 +658,8 @@ void Timeline::draw()
 
     draw( r, f2, r.y()==0 );
 
-    X = x() - Fl::box_dx(box()) + slider_position( value(), w() );
+    X = x() - Fl::box_dx(box()) + slider_position( value(), w() -
+                                                   Fl::box_dw(box()) );
     Y = y() + Fl::box_dy(box());
     W = 15  - Fl::box_dw(box());
     H = h() - Fl::box_dh(box());
@@ -786,6 +787,13 @@ int Timeline::slider_position( double value, int w )
 {
     double A = minimum();
     double B = maximum();
+
+    if ( uiMain->uiPrefs->uiPrefsTimelineSelectionDisplay->value() )
+    {
+        A = display_minimum();
+        B = display_maximum();
+    }
+
     if (B == A) return 0;
     bool flip = B < A;
     if (flip) {A = B; B = minimum();}
