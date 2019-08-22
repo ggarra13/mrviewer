@@ -3535,7 +3535,7 @@ int64_t CMedia::pts2frame( const AVStream* stream,
 
 
     //assert( dts != AV_NOPTS_VALUE );
-    if (!stream || dts == AV_NOPTS_VALUE) return dts;
+    if (!stream || dts == AV_NOPTS_VALUE) return 0;
 
     long double p = (long double) dts;
     p *= stream->time_base.num;
