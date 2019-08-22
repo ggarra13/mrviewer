@@ -521,6 +521,7 @@ void parse_command_line( const int argc, char** argv,
 
                       opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
                                                             end, start, end,
+                                                            24.0f,
                                                             *ai, "", offset ) );
                      ++ai;
                   }
@@ -544,6 +545,7 @@ void parse_command_line( const int argc, char** argv,
                       opts.files.push_back( mrv::LoadInfo( fileroot, start,
                                                            end, AV_NOPTS_VALUE,
                                                            AV_NOPTS_VALUE,
+                                                           24.0f,
                                                            *ai, "", offset ) );
                      ++ai;
                   }
