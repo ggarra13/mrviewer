@@ -1614,7 +1614,7 @@ static void change_fps_cb( Fl_Float_Input* w, ImageInformation* info )
     if ( img )
     {
         float f = atof( w->value() );
-        img->play_fps( f );
+        img->fps( f );
         update_float_slider( w );
     }
 }
