@@ -247,6 +247,9 @@ public:
 
     //! Adjust timeline of media clips when in EDL mode
     void adjust_timeline();
+
+    //! Returns GUI view window
+    mrv::ImageView* view() const;
 protected:
 
     //! Set pathname from a media
@@ -292,8 +295,6 @@ protected:
     //! Returns GUI EDL group
     mrv::EDLGroup* edl_group() const;
 
-    //! Returns GUI view window
-    mrv::ImageView* view() const;
 
     unsigned       _reel;
     mrv::ReelList  _reels;
