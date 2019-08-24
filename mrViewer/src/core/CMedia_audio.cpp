@@ -2139,7 +2139,7 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
         else if ( _audio_packets.is_seek()  )
         {
             clear_stores();  // audio stores MUST be cleared when seeked
-            _audio_buf_used = 0;
+            //_audio_buf_used = 0;
             got_audio = handle_audio_packet_seek( frame, true );
             continue;
         }
@@ -2271,7 +2271,7 @@ void CMedia::debug_audio_stores(const int64_t frame,
 
     std::cerr << std::endl;
 
-    if (detail)
+    if (detail )
     {
         for ( ; iter != last; ++iter )
         {
