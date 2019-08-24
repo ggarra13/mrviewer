@@ -2529,6 +2529,11 @@ bool ImageView::should_update( mrv::media fg )
     }
 
     if ( update && _playback != CMedia::kStopped ) {
+        if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+        {
+            fit_image();
+        }
+
 #ifdef FLTK_TIMEOUT_EVENT_BUG
         int y = Fl::event_y();
         if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
@@ -6000,6 +6005,7 @@ void ImageView::mouseDrag(int x,int y)
 
             update_color_info( fg );
 
+
             mouseMove( x, y );
         }
 
@@ -8359,11 +8365,7 @@ void ImageView::foreground( mrv::media fg )
 
             if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
             {
-                if ( _zoom < 1.0f )
-                {
-                    fit_image();
-                }
-                else if ( old )
+                if ( old )
                 {
                     CMedia* o = old->image();
                     if (o)
