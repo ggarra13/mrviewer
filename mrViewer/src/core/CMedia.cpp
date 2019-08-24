@@ -4433,7 +4433,7 @@ void CMedia::debug_video_packets(const int64_t frame,
         else
         {
             if ( stream )
-                std::cerr << pts2frame( stream, (*iter).dts ) - _frame_offset;
+                std::cerr << get_frame( stream, *iter ) - _frame_offset;
             else
                 std::cerr << (*iter).dts - _frame_offset;
         }
@@ -4448,7 +4448,7 @@ void CMedia::debug_video_packets(const int64_t frame,
         else
         {
             if ( stream )
-                std::cerr << pts2frame( stream, (*(last-1)).dts ) - _frame_offset;
+                std::cerr << get_frame( stream, *(last-1) ) - _frame_offset;
             else
                 std::cerr << (*(last-1)).dts - _frame_offset;
         }
@@ -4520,8 +4520,7 @@ void CMedia::debug_video_packets(const int64_t frame,
                 if ( f == frame )  std::cerr << "S";
                 if ( f == _dts )   std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
-                std::cerr << f - _frame_offset << "(" << (void*)(*iter).data
-                          << ") ";
+                std::cerr << f - _frame_offset << " ";
             }
         }
         std::cerr << std::endl << std::endl;
