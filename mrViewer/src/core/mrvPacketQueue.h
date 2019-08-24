@@ -167,6 +167,7 @@ public:
 
         _packets.push_back( pkt );
 
+
         if ( pkt.data != _flush.data &&
              pkt.data != _seek.data  &&
              pkt.data != _seek_end.data  &&
@@ -325,7 +326,7 @@ public:
             // if ( pkt.size > _bytes )
             //     _bytes = 0;
             // else
-            assert0( pkt.size > 0 || pkt.data != NULL );
+            //assert0( pkt.size > 0 || pkt.data != NULL );
             assert0( _bytes >= pkt.size );
 
             // std::cerr << this  << " #"
