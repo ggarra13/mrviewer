@@ -397,7 +397,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 next->refresh();
                 //if ( video )
                 {
-                    if ( next->stopped() && !decode )
+                    if ( next->stopped()  )
                     {
                         if ( img->fg_bg_barrier() )
                         {
@@ -428,12 +428,22 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 return kEndNextImage;
             }
+            else if ( next == img )
+            {
+                frame = dts;
+            }
         }
 
         if ( loop == CMedia::kLoop )
         {
             frame = first;
-            if ( img->right_eye() ) img->right_eye()->seek( frame );
+
+            ImageView::Command c;
+
+            c.type = ImageView::kSeek;
+            c.frame = frame;
+            view->commands.push_back( c );
+
             status = kEndLoop;
             if ( init_time )
             {
@@ -489,7 +499,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 //if ( video )
                 next->refresh();
                 {
-                    if ( next->stopped() && !decode )
+                    if ( next->stopped()  )
                     {
                         if ( img->fg_bg_barrier() )
                         {
@@ -523,12 +533,22 @@ EndStatus handle_loop( boost::int64_t& frame,
                 }
                 return kEndNextImage;
             }
+            else if ( next == img )
+            {
+                frame = dts;
+            }
         }
 
         if ( loop == CMedia::kLoop )
         {
             frame = last;
-            if ( img->right_eye() ) img->right_eye()->seek( frame );
+
+            ImageView::Command c;
+
+            c.type = ImageView::kSeek;
+            c.frame = frame;
+            view->commands.push_back( c );
+
             status = kEndLoop;
             if ( init_time )
             {
@@ -639,12 +659,11 @@ void audio_thread( PlaybackData* data )
 
 
 
-
         boost::int64_t f = frame;
         // DBG3( "decode audio " << frame );
 
         // if (!fg)
-        // img->debug_audio_stores( frame, "play", true );
+        //img->debug_audio_packets( frame, "play", false );
 
         // std::cerr << "decode audio " << frame << std::endl;
 
@@ -1010,6 +1029,7 @@ void video_thread( PlaybackData* data )
         if ( step == 0 ) break;
 
 
+
         CMedia::DecodeStatus status = img->decode_video( frame );
 
 
@@ -1343,8 +1363,10 @@ void decode_thread( PlaybackData* data )
             //  and return new frame and step.
             // This handle loop has to come after the barrier as decode thread
             // goes faster than video or audio threads
+            bool decode = true;
             EndStatus end = handle_loop( frame, step, img, fg, true,
-                                         uiMain, reel, timeline, status, true );
+                                         uiMain, reel, timeline, status,
+                                         decode );
 
             if ( img->stopped() ) continue;
         }
