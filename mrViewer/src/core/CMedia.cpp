@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -916,11 +916,6 @@ CMedia::~CMedia()
 
     flush_audio();
 
-    if ( _aframe )
-    {
-        av_frame_unref(_aframe);
-        av_frame_free(&_aframe);
-    }
 
 
     free( _fileroot );
@@ -3536,7 +3531,7 @@ int64_t CMedia::pts2frame( const AVStream* stream,
 
 
     //assert( dts != AV_NOPTS_VALUE );
-    if (!stream || dts == AV_NOPTS_VALUE) return dts;
+    if (!stream || dts == AV_NOPTS_VALUE) return 0;
 
     long double p = (long double) dts;
     p *= stream->time_base.num;
@@ -4438,7 +4433,7 @@ void CMedia::debug_video_packets(const int64_t frame,
         else
         {
             if ( stream )
-                std::cerr << pts2frame( stream, (*iter).dts ) - _frame_offset;
+                std::cerr << get_frame( stream, *iter ) - _frame_offset;
             else
                 std::cerr << (*iter).dts - _frame_offset;
         }
@@ -4453,7 +4448,7 @@ void CMedia::debug_video_packets(const int64_t frame,
         else
         {
             if ( stream )
-                std::cerr << pts2frame( stream, (*(last-1)).dts ) - _frame_offset;
+                std::cerr << get_frame( stream, *(last-1) ) - _frame_offset;
             else
                 std::cerr << (*(last-1)).dts - _frame_offset;
         }
@@ -4525,8 +4520,7 @@ void CMedia::debug_video_packets(const int64_t frame,
                 if ( f == frame )  std::cerr << "S";
                 if ( f == _dts )   std::cerr << "D";
                 if ( f == _frame ) std::cerr << "F";
-                std::cerr << f - _frame_offset << "(" << (void*)(*iter).data
-                          << ") ";
+                std::cerr << f - _frame_offset << " ";
             }
         }
         std::cerr << std::endl << std::endl;
