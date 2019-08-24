@@ -956,6 +956,7 @@ Flu_File_Chooser :: Flu_File_Chooser( const char *pathname, const char *pat, int
     fileListWideBtn->callback( _listModeCB, this );
     fileListWideBtn->value(1);
     fileListWideBtn->image( file_listwide_img );
+    fileListWideBtn->value(1);
     fileListWideBtn->tooltip( wideListTTxt.c_str() );
     fileDetailsBtn = new Flu_Button( 569, 43, 25, 25 );
     fileDetailsBtn->type( FL_RADIO_BUTTON );
