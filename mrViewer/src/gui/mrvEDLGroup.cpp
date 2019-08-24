@@ -265,8 +265,8 @@ int EDLGroup::handle( int event )
             }
             _dragChild = idx;
 
-	    
-	    
+
+
             mrv::Timeline* t = timeline();
             if ( !t ) return 0;
 
@@ -276,31 +276,31 @@ int EDLGroup::handle( int event )
             p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
 
-	    
+
 
 
             mrv::media_track* track = (mrv::media_track*) child(idx);
-	    if ( !track ) return 0;
-	    
-	    
+            if ( !track ) return 0;
+
+
 
             mrv::media m = track->media_at( pt );
 
 
-	    
+
             if ( m )
             {
 
-		_drag = browser()->new_item( m );
+                _drag = browser()->new_item( m );
 
-		
+
                 int j = track->index_for( m );
                 if ( j < 0 ) {
 
                     return 0;
                 }
 
-	    
+
 
                 browser()->reel( track->reel() );
                 DBG3("Change  image " << j );
@@ -308,26 +308,26 @@ int EDLGroup::handle( int event )
 
                 view()->stop();
 
-	    
+
                 view()->seek( pt );
 
-	    
+
                 DBG3("Changed image " << j );
                 browser()->redraw();
                 return 1;
             }
-	    else
-	    {
-	    
+            else
+            {
 
-		delete _drag; _drag = NULL;
 
-		return 1;
-	    }
+                delete _drag; _drag = NULL;
+
+                return 1;
+            }
         }
 
-	return Fl_Group::handle( event );
-	
+        return Fl_Group::handle( event );
+
         // for ( int i = 0; i < children(); ++i )
         // {
         //     Fl_Widget* c = this->child(i);
@@ -517,16 +517,16 @@ int EDLGroup::handle( int event )
     case FL_RELEASE:
         if ( Fl::event_button() == FL_LEFT_MOUSE )
         {
-	    window()->cursor( FL_CURSOR_DEFAULT );
-	    
-	    
+            window()->cursor( FL_CURSOR_DEFAULT );
+
+
             _dragX = Fl::event_x();
             _dragY = Fl::event_y();
 
-	    
-	    Fl::remove_timeout( (Fl_Timeout_Handler) static_move, this );
-	    
-	    int idx = int( ( _dragY - y() ) / kTrackHeight );
+
+            Fl::remove_timeout( (Fl_Timeout_Handler) static_move, this );
+
+            int idx = int( ( _dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= 2 || idx >= children() ) {
                 delete _drag;
                 _drag = NULL;
@@ -534,17 +534,17 @@ int EDLGroup::handle( int event )
                 return 1;
             }
 
-	    
-	    if ( _dragChild < 0 || !_drag ) return 1;
-	    
+
+            if ( _dragChild < 0 || !_drag ) return 1;
 
 
-	    
+
+
             mrv::media_track* t1 = (mrv::media_track*)child( _dragChild );
             mrv::media_track* t2 = (mrv::media_track*)child( idx );
 
 
-	    
+
             if ( !t2 || t2->reel() == -1 ) {
                 delete _drag;
                 _drag = NULL;
@@ -552,19 +552,19 @@ int EDLGroup::handle( int event )
                 return 1;
             }
 
-	    
+
             mrv::Timeline* t = timeline();
             if (!t) return 0;
 
 
-	    
+
             int ww = t->w();
             double len = (t->maximum() - t->minimum() + 1);
             double p = double( _dragX - x() ) / double(ww);
             p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
 
-	    
+
 
             mrv::Reel r = browser()->current_reel();
 
@@ -606,7 +606,7 @@ int EDLGroup::handle( int event )
             }
 
 
-	    
+
             browser()->set_edl();
             timeline()->value( (double)pt );
             view()->seek( pt );
@@ -627,11 +627,11 @@ int EDLGroup::handle( int event )
             _dragY = Fl::event_y();
 
             // LIMITS
-	    
+
             if ( _dragY < 33 ) _dragY = 33;
             if ( X < 8 ) X = 8;
 
-	    int quarter = w() / 4;
+            int quarter = w() / 4;
 
             if ( X >= x() + w() - quarter ) {
                 pan(diff * 2);
@@ -642,7 +642,7 @@ int EDLGroup::handle( int event )
                 pan(diff * -2);
                 Fl::add_timeout( 0.1f, (Fl_Timeout_Handler) static_move, this );
             }
-	    
+
 
             _dragX = X;
 
@@ -656,7 +656,7 @@ int EDLGroup::handle( int event )
             _dragX = Fl::event_x();
             return 1;
         }
-	return 0;
+        return 0;
     }
     break;
     default:
@@ -715,7 +715,7 @@ void EDLGroup::cut( boost::int64_t frame )
     const mrv::Reel& r = browser()->reel_at(c);
     if (!r) return;
 
-    
+
     CMedia* img = r->image_at( frame );
     if ( !img ) return;
 
@@ -731,7 +731,7 @@ void EDLGroup::cut( boost::int64_t frame )
     if (!right) return;
 
     mrv::media m( new mrv::gui::media( right ) );
-    
+
     right->first_frame( f );
     right->last_frame( img->last_frame() );
     image_type_ptr canvasR;
@@ -831,37 +831,48 @@ void EDLGroup::refresh()
 
 void EDLGroup::draw()
 {
-	    
+
 
     fl_color( fl_rgb_color( 128, 128, 128 ) );
     fl_rectf( x(), y(), w(), h() );
 
-	    
+
     Fl_Group::draw();
 
-	    
+
     mrv::Timeline* t = timeline();
     if (!t) return;
 
-	    
+
     double frame = t->value();
+    mrv::Reel r = browser()->current_reel();
 
-    int p = t->x() + t->slider_position( frame, t->w() );
+    int p;
+    if ( r->edl )
+    {
+        p = t->x() + t->slider_position( frame, t->w() );
+    }
+    else
+    {
+        mrv::media fg = browser()->current_image();
+        int offset = 0;
+        if ( fg ) offset = t->offset( fg->image() );
+        p = t->x() + t->slider_position( frame + offset, t->w() );
+    }
     p += int( t->slider_size()/2.0 );
-
 
     fl_color( FL_YELLOW );
     fl_push_clip( x(), y(), w(), y()+h() );
     fl_line( p, y(), p, y()+h() );
     fl_pop_clip();
-	    
+
 
     if ( _drag )
     {
-	    
-	fl_push_clip( x(), y(), w(), h() );
-	_drag->DrawAt( Fl::event_x(), Fl::event_y() );
-	fl_pop_clip();
+
+        fl_push_clip( x(), y(), w(), h() );
+        _drag->DrawAt( Fl::event_x(), Fl::event_y() );
+        fl_pop_clip();
     }
 }
 
