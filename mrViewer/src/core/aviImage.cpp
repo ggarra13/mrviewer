@@ -1038,7 +1038,7 @@ bool aviImage::seek_to_position( const int64_t frame )
     else
     {
         if ( !got_video )    _video_packets.seek_begin(vpts);
-        if ( !got_audio && apts >= 0 )    _audio_packets.seek_begin(apts);
+        if ( !got_audio && apts >= 0 ) _audio_packets.seek_begin(apts);
         if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
     }
 
@@ -1515,18 +1515,6 @@ aviImage::decode_image( const int64_t frame, AVPacket& pkt )
     return status;
 }
 
-void aviImage::clear_packets()
-{
-
-#ifdef DEBUG_AUDIO_PACKETS
-    cerr << "+++++++++++++ CLEAR VIDEO/AUDIO/SUBTITLE PACKETS " << _frame
-         << " expected: " << _expected << endl;
-#endif
-
-    _video_packets.clear();
-    _audio_packets.clear();
-    _subtitle_packets.clear();
-}
 
 void aviImage::timed_limit_store( const int64_t& frame )
 {
@@ -2939,7 +2927,7 @@ int64_t aviImage::queue_packets( const int64_t frame,
             if (!got_audio )
             {
                 if (audio_context() == _context && _audio_ctx &&
-                        _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
+                    _audio_ctx->codec->capabilities & AV_CODEC_CAP_DELAY) {
                     av_init_packet(&pkt);
                     pkt.size = 0;
                     pkt.data = NULL;
@@ -3863,10 +3851,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-    _seek_frame = handle_loops( _seek_frame );
-
     if ( saving() ) _seek_req = false;
-    else _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
