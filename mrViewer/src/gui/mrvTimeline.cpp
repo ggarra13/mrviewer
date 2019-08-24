@@ -660,6 +660,7 @@ void Timeline::draw()
 
     X = x() - Fl::box_dx(box()) + slider_position( value(), w() -
                                                    Fl::box_dw(box()) );
+
     Y = y() + Fl::box_dy(box());
     W = 15  - Fl::box_dw(box());
     H = h() - Fl::box_dh(box());
