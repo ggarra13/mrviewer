@@ -183,9 +183,12 @@ void GLQuad::clear_lut()
     if (_image)
     {
         static ACES::ASC_CDL old;
-        if ( old != _image->asc_cdl() )
+        static const CMedia* old_image = NULL;
+        if ( !Preferences::use_ocio && _image == old_image &&
+             old != _image->asc_cdl() )
         {
             if ( _lut ) _lut->clear_lut();
+            old_image = _image;
             old = _image->asc_cdl();
         }
     }
