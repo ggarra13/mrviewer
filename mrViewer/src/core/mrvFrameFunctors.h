@@ -74,9 +74,8 @@ struct EqualRepeatFunctor
   {
     if ( !a ) return false;
     if ( a->repeat() > 0 )
-        return a->frame() == _frame;
-        // return ( a->frame() <= _frame &&
-        //          a->frame() + a->repeat() >= _frame );
+        return ( a->frame() <= _frame &&
+                 a->frame() + a->repeat() >= _frame );
     else
         return a->frame() == _frame;
   }
