@@ -2529,10 +2529,6 @@ bool ImageView::should_update( mrv::media fg )
     }
 
     if ( update && _playback != CMedia::kStopped ) {
-        if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-        {
-            fit_image();
-        }
 
 #ifdef FLTK_TIMEOUT_EVENT_BUG
         int y = Fl::event_y();
@@ -8365,7 +8361,11 @@ void ImageView::foreground( mrv::media fg )
 
             if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
             {
-                if ( old )
+                if ( _zoom < 1.0f )
+                {
+                    fit_image();
+                }
+                else if ( old )
                 {
                     CMedia* o = old->image();
                     if (o)
