@@ -1,11 +1,13 @@
+v5.2.1  - ***HOTFIX RELEASE***
+	  Removed the Autorefit image on window resize/playback, as it was
+	  creating more problems than benefits.
+
 v5.2.0  - Fixed video cache like audio cache.  This can remove some random
 	  crashes.
 	- Fixed End Frame widget.  Now you can type properly and the value
 	  will get reflected in the timeline.
 	- Fixed an error in audio decoding.  Now it will continue without
 	  printing out a bogus error about missing samples.
-	- First beta of OTIO<->.reel adapter.  Current limitations include:
-	  lack of gaps, lack of transitions, lack of retiming.
 	- Made tick mark in timeline be properly centered on current frame.
 	- Made FPS in Media Information window reflect the original fps value,
 	  not the playback fps (which can be changed from the main pulldown
