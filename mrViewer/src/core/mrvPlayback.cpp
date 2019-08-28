@@ -234,6 +234,7 @@ inline unsigned int barrier_thread_count( const CMedia* img )
 
 CMedia::DecodeStatus check_loop( const int64_t frame,
                                  CMedia* img,
+                                 const bool decode,
                                  const mrv::Reel reel,
                                  const mrv::Timeline* timeline,
                                  int64_t& first,
@@ -269,10 +270,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         if ( mx < last )  last = mx;
         if ( mn > first ) first = mn;
 
-
         last = reel->global_to_local( last );
         first = reel->global_to_local( first );
-
 
     }
     else
@@ -309,7 +308,7 @@ CMedia::DecodeStatus check_decode_loop( const int64_t frame,
                                         const mrv::Timeline* timeline )
 {
     int64_t first, last;
-    CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline,
+    CMedia::DecodeStatus status = check_loop( frame, img, true, reel, timeline,
                                               first, last );
     if ( status == CMedia::kDecodeLoopEnd )
     {
@@ -332,7 +331,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        ViewerUI* uiMain,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
-                       const mrv::CMedia::DecodeStatus end,
+                       mrv::CMedia::DecodeStatus end,
                        bool decode = false )
 {
 
@@ -364,7 +363,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     CMedia* next = NULL;
 
     int64_t first, last;
-    check_loop( frame, img, reel, timeline, first, last );
+    end = check_loop( frame, img, false, reel, timeline, first, last );
 
 
     CMedia::Looping loop = view->looping();
@@ -384,6 +383,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
             next = reel->image_at( f );
 
+
             if ( next == NULL && loop == CMedia::kLoop )
             {
                 f = boost::int64_t(timeline->display_minimum());
@@ -395,42 +395,37 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( next != img && next != NULL )
             {
                 next->refresh();
-                //if ( video )
+
+                if ( next->stopped() )
                 {
-                    if ( next->stopped()  )
+                    if ( img->fg_bg_barrier() )
                     {
-                        if ( img->fg_bg_barrier() )
-                        {
-                            // LOGT_WARNING( img->name() << " img barrier "
-                            //           << img->fg_bg_barrier() << std::endl
-                            //           << "passed to " << " "
-                            //           << next->name()
-                            //           );
-                            CMedia::Barrier* b = img->fg_bg_barrier();
-                            next->fg_bg_barrier( b );
-                            img->fg_bg_barrier( NULL );
-                        }
-
-                        ImageView::Command c;
-
-                        c.type = ImageView::kSeek;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-
-                        c.type = ImageView::kPlayForwards;
-                        view->commands.push_back( c );
-
-                        img->playback( CMedia::kStopped );
-                        img->flush_all();
-                        if ( img->has_video() ) img->clear_cache();
+                        // LOGT_WARNING( img->name() << " img barrier "
+                        //           << img->fg_bg_barrier() << std::endl
+                        //           << "passed to " << " "
+                        //           << next->name()
+                        //           );
+                        CMedia::Barrier* b = img->fg_bg_barrier();
+                        next->fg_bg_barrier( b );
+                        img->fg_bg_barrier( NULL );
                     }
 
+
+                    ImageView::Command c;
+
+                    c.type = ImageView::kSeek;
+                    c.frame = dts;
+                    view->commands.push_back( c );
+
+                    c.type = ImageView::kPlayForwards;
+                    view->commands.push_back( c );
+
+                    img->playback( CMedia::kStopped );
+                    img->flush_all();
+                    if ( img->has_video() ) img->clear_cache();
                 }
+
                 return kEndNextImage;
-            }
-            else if ( next == img )
-            {
-                frame = dts;
             }
         }
 
@@ -439,7 +434,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = first;
 
             ImageView::Command c;
-
             c.type = ImageView::kSeek;
             c.frame = frame;
             view->commands.push_back( c );
@@ -491,52 +485,46 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_maximum());
                 next = reel->image_at( f );
-                dts = f;
+                last = dts = f;
             }
 
             if ( next != img && next != NULL )
             {
-                //if ( video )
                 next->refresh();
+
+                if ( next->stopped()  )
                 {
-                    if ( next->stopped()  )
+                    if ( img->fg_bg_barrier() )
                     {
-                        if ( img->fg_bg_barrier() )
-                        {
-                            // LOGT_WARNING( img->name() << " img barrier "
-                            //           << img->fg_bg_barrier() << std::endl
-                            //           << "passed to " << " "
-                            //           << next->name()
-                            //           );
-                            CMedia::Barrier* b = img->fg_bg_barrier();
-                            next->fg_bg_barrier( b );
-                            img->fg_bg_barrier( NULL );
-                            // LOGT_WARNING( next->name() << " " << (fg ? "FG" : "BG")
-                            //           << " next barrier "
-                            //           << next->fg_bg_barrier() );
-                        }
-
-                        ImageView::Command c;
-
-                        c.type = ImageView::kSeek;
-                        c.frame = dts;
-                        view->commands.push_back( c );
-
-                        c.type = ImageView::kPlayBackwards;
-                        view->commands.push_back( c );
-
-                        img->playback( CMedia::kStopped );
-                        img->flush_all();
-                        if ( img->has_video() ) img->clear_cache();
+                        // LOGT_WARNING( img->name() << " img barrier "
+                        //           << img->fg_bg_barrier() << std::endl
+                        //           << "passed to " << " "
+                        //           << next->name()
+                        //           );
+                        CMedia::Barrier* b = img->fg_bg_barrier();
+                        next->fg_bg_barrier( b );
+                        img->fg_bg_barrier( NULL );
+                        // LOGT_WARNING( next->name() << " " << (fg ? "FG" : "BG")
+                        //           << " next barrier "
+                        //           << next->fg_bg_barrier() );
                     }
 
+                    ImageView::Command c;
+
+                    c.type = ImageView::kSeek;
+                    c.frame = dts;
+                    view->commands.push_back( c );
+
+                    c.type = ImageView::kPlayBackwards;
+                    view->commands.push_back( c );
+
+                    img->playback( CMedia::kStopped );
+                    img->flush_all();
+                    if ( img->has_video() ) img->clear_cache();
                 }
-                return kEndNextImage;
+
             }
-            else if ( next == img )
-            {
-                frame = dts;
-            }
+            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
@@ -544,7 +532,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             frame = last;
 
             ImageView::Command c;
-
             c.type = ImageView::kSeek;
             c.frame = frame;
             view->commands.push_back( c );
@@ -581,7 +568,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     }
     default:
     {
-        // error
+        return kEndIgnore;
     }
     }
 
