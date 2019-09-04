@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -48,7 +48,28 @@ smpteImage::smpteImage( const smpteImage::Type c, const unsigned int dw,
     _gamma = 1.0f;
     default_layers();
     image_size( dw, dh );
+    _frameStart = _frame_start = 1;
+    _frameEnd = _frame_end = int64_t( _fps * 3 + 0.5 );
     allocate_pixels(_hires, 1);
+
+    switch( type_ )
+    {
+    case kGammaChart:
+        gamma_chart( _hires );
+        break;
+    case kLinearGradient:
+        linear_gradient( _hires );
+        break;
+    case kLuminanceGradient:
+        luminance_gradient( _hires );
+        break;
+    case kCheckered:
+        checkered( _hires );
+        break;
+    default:
+        LOG_ERROR("Internal Image: Unknown image type");
+        break;
+    }
 }
 
 
@@ -330,27 +351,7 @@ void smpteImage::checkered( mrv::image_type_ptr& canvas )
 bool smpteImage::fetch( mrv::image_type_ptr& canvas,
                         const boost::int64_t frame )
 {
-    switch( type_ )
-    {
-    case kGammaChart:
-        gamma_chart( _hires );
-        break;
-    case kLinearGradient:
-        linear_gradient( _hires );
-        break;
-    case kLuminanceGradient:
-        luminance_gradient( _hires );
-        break;
-    case kCheckered:
-        checkered( _hires );
-        break;
-    default:
-        LOG_ERROR("Internal Image: Unknown image type");
-        break;
-    }
 
-    _frameStart = _frame_start = 1;
-    _frameEnd = _frame_end = int64_t( _fps * 3 + 0.5 );
 
     return true;
 }
