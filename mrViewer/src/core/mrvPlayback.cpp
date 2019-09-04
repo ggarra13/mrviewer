@@ -261,11 +261,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
         CMedia::Mutex& m = img->video_mutex();
         SCOPED_LOCK( m );
 
-
         first = reel->location(img);
         last  = first + img->duration() - 1;
-
-
 
         if ( mx < last )  last = mx;
         if ( mn > first ) first = mn;
@@ -289,6 +286,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
             if ( mn > first ) first = mn;
         }
     }
+
 
     if ( frame > last )
     {
@@ -363,7 +361,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     CMedia* next = NULL;
 
     int64_t first, last;
-    end = check_loop( frame, img, false, reel, timeline, first, last );
+    check_loop( frame, img, false, reel, timeline, first, last );
 
 
     CMedia::Looping loop = view->looping();
@@ -396,7 +394,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 next->refresh();
 
-                if ( next->stopped() )
+                if ( next->stopped() && !decode )
                 {
                     if ( img->fg_bg_barrier() )
                     {
@@ -411,8 +409,13 @@ EndStatus handle_loop( boost::int64_t& frame,
                     }
 
 
-                    ImageView::Command c;
 
+                    img->clear_packets();
+                    img->playback( CMedia::kStopped );
+                    img->flush_all();
+
+
+                    ImageView::Command c;
                     c.type = ImageView::kSeek;
                     c.frame = dts;
                     view->commands.push_back( c );
@@ -420,13 +423,11 @@ EndStatus handle_loop( boost::int64_t& frame,
                     c.type = ImageView::kPlayForwards;
                     view->commands.push_back( c );
 
-                    img->playback( CMedia::kStopped );
-                    img->flush_all();
-                    if ( img->has_video() ) img->clear_cache();
                 }
-
-                return kEndNextImage;
             }
+
+
+            return kEndNextImage;
         }
 
         if ( loop == CMedia::kLoop )
@@ -485,14 +486,14 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_maximum());
                 next = reel->image_at( f );
-                last = dts = f;
+                dts = f;
             }
 
             if ( next != img && next != NULL )
             {
                 next->refresh();
 
-                if ( next->stopped()  )
+                if ( next->stopped() && !decode )
                 {
                     if ( img->fg_bg_barrier() )
                     {
@@ -520,7 +521,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                     img->playback( CMedia::kStopped );
                     img->flush_all();
-                    if ( img->has_video() ) img->clear_cache();
                 }
 
             }
@@ -575,7 +575,6 @@ EndStatus handle_loop( boost::int64_t& frame,
     if ( status == kEndStop || status == kEndNextImage )
     {
         img->playback( CMedia::kStopped );
-        if ( img->has_video() ) img->clear_cache();
     }
 
 
@@ -1016,7 +1015,6 @@ void video_thread( PlaybackData* data )
         if ( step == 0 ) break;
 
 
-
         CMedia::DecodeStatus status = img->decode_video( frame );
 
 
@@ -1102,8 +1100,10 @@ void video_thread( PlaybackData* data )
 
             EndStatus end = handle_loop( frame, step, img, fg, true,
                                          uiMain, reel, timeline,
-                                         status );
+                                         status, false );
 
+            DBG3( img->name() << " end: " << end
+                      << " Stopped? " << img->stopped() );
 
             // This has to come here not in handle_loop, to avoid
             // setting playback dir on decode thread
@@ -1220,7 +1220,6 @@ void video_thread( PlaybackData* data )
         // LOGT_INFO( "find image " << frame << " delay " << delay );
         //img->debug_video_packets( frame, "find_image", true );
         // img->debug_video_stores( frame, "find_image", true );
-
 
         if ( ! img->find_image( frame ) )
         {
