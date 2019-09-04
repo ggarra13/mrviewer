@@ -1,3 +1,18 @@
+v5.2.2  - Fixed EDL playback when changing clips and seeking manually.
+	  This would often not work and the clip would start at the
+	  beginning.
+	- Fixed EDL playback for good.  This was needed to have the otio
+	  adaptor work well.
+	- Made all PAL/NTSC Color Bars, Checkered, and Luminance/Linear
+	  images be playable.
+	- First beta release of .otio <-> .reel adaptor. This is an
+	  OpenTimelineIO adaptor to work with that EDL format which is now
+	  part of the Academy.  Note that in order to work, it requires
+	  ffprobe to be on your PATH.
+	  Limitations of the current adaptor are: no retiming, no dissolves
+	  or transitions, no stacked tracks (they are flattened to a single
+	  track), limited audio support.
+
 v5.2.1  - ***HOTFIX RELEASE***
 	  Removed the Autorefit image on window resize/playback, as it was
 	  creating more problems than benefits.
