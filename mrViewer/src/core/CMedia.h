@@ -1112,15 +1112,6 @@ public:
         return _audio_index;
     }
 
-    /**
-     * Given a frame number, returns another frame number taking into
-     * account the loops in the sequence.
-     *
-     * @param frame  frame to handle in loops
-     *
-     * @return frame number in _frame_start - _frame_end range
-     */
-    int64_t handle_loops( const int64_t frame ) const;
 
 
     static void image_cache_size( int x ) {
