@@ -336,6 +336,8 @@ EndStatus handle_loop( boost::int64_t& frame,
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
 
 
+    mrv::ImageView* view = uiMain->uiView;
+
     mrv::PacketQueue& vp = img->video_packets();
     CMedia::Mutex& vpm1 = vp.mutex();
     SCOPED_LOCK( vpm1 ); // 1155
@@ -354,7 +356,6 @@ EndStatus handle_loop( boost::int64_t& frame,
     CMedia::Mutex& ma = img->audio_mutex();
     SCOPED_LOCK( ma );
 
-    mrv::ImageView* view = uiMain->uiView;
 
     EndStatus status = kEndIgnore;
     mrv::media c;
@@ -434,6 +435,7 @@ EndStatus handle_loop( boost::int64_t& frame,
         {
             frame = first;
 
+
             ImageView::Command c;
             c.type = ImageView::kSeek;
             c.frame = frame;
@@ -510,6 +512,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                         //           << next->fg_bg_barrier() );
                     }
 
+                    img->clear_packets();
+                    img->playback( CMedia::kStopped );
+                    img->flush_all();
+
                     ImageView::Command c;
 
                     c.type = ImageView::kSeek;
@@ -530,6 +536,7 @@ EndStatus handle_loop( boost::int64_t& frame,
         if ( loop == CMedia::kLoop )
         {
             frame = last;
+
 
             ImageView::Command c;
             c.type = ImageView::kSeek;
