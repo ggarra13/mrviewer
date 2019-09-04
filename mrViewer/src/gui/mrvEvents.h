@@ -1,5 +1,3 @@
-
-
 #ifndef mrvEvents_h
 #define mrvEvents_h
 
@@ -9,7 +7,7 @@ namespace mrv
 {
 
 enum Events {
-kFULLSCREEN = FL_ZOOM_GESTURE + 10,
+kFULLSCREEN = FL_ZOOM_GESTURE + 100,
 kPRESENTATION,
 kMEDIA_INFO_WINDOW_SHOW,
 kMEDIA_INFO_WINDOW_HIDE,
