@@ -72,7 +72,7 @@ public:
         _display = x;
         redraw();
     }
-    
+
     inline bool edl() const {
         return _edl;
     }
@@ -139,6 +139,8 @@ public:
         return _draw_cache;
     }
 
+    ImageBrowser* browser() const;
+
 protected:
     bool draw(const mrv::Recti& sr, int flags, bool slot);
     void draw_ticks(const mrv::Recti& r, int min_spacing);
@@ -148,7 +150,6 @@ protected:
                          int64_t mn, int64_t mx, int64_t frame,
                          const mrv::Recti& r );
 
-    ImageBrowser* browser() const;
 
     static mrv::Timecode::Display _display;
     bool   _edl;
