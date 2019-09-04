@@ -1010,7 +1010,21 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 dir = dir.parent_path();
                 fs::path file = root;
 
-                if ( root[0] != '/' && root[1] != ':' && root != "Black Gap" )
+                if ( root[0] != '/' && root[1] != ':' &&
+                     root != "Black Gap" &&
+                     root != "Checkered" &&
+                     root != "SMPTE NTSC Color Bars" &&
+                     root != "PAL Color Bars" &&
+                     root != "PAL HDTV Color Bars" &&
+                     root != "NTSC HDTV Color Bars" &&
+                     root != "PAL HDTV Color Bars" &&
+                     root != "Linear Gradient" &&
+                     root != "Luminance Gradient" &&
+                     root != "Gamma 1.4 Chart" &&
+                     root != "Gamma 1.8 Chart" &&
+                     root != "Gamma 2.2 Chart" &&
+                     root != "Gamma 2.4 Chart"
+                    )
                 {
                     dir /= file;
                     root = dir.generic_string();
