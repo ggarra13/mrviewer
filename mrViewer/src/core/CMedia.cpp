@@ -4074,7 +4074,7 @@ bool CMedia::find_image( const int64_t frame )
     std::string file = sequence_filename(f);
     std::string old  = sequence_filename(_frame);
 
-    if ( file != old )
+    if ( !internal() && file != old )
     {
 
         should_load = true;
