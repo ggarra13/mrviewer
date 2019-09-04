@@ -3151,7 +3151,7 @@ bool aviImage::fetch(mrv::image_type_ptr& canvas, const int64_t frame)
     bool got_audio = !has_audio();
     bool got_subtitle = !has_subtitle();
 
-    int64_t f = handle_loops( frame );
+    int64_t f = frame; //handle_loops( frame );
 
     if ( !saving() )
     {
