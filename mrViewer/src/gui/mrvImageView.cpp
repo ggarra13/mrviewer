@@ -2807,7 +2807,9 @@ void ImageView::handle_commands()
 #endif
     _network_active = false;
     Command c = commands.front();
-          again:
+
+again:
+
     switch( c.type )
     {
     case kCreateReel:
@@ -8865,6 +8867,7 @@ void ImageView::frame( const int64_t f )
     mrv::ImageBrowser* b = browser();
     if ( b ) b->redraw();
 }
+
 
 
 
