@@ -1143,7 +1143,7 @@ bool CMedia::allocate_pixels( image_type_ptr& canvas,
 
 mrv::image_type_ptr CMedia::left() const
 {
-    int64_t f = handle_loops( _frame );
+    int64_t f = _frame;
     int64_t idx = f - _frame_start;
 
     int64_t num = _frame_end - _frame_start;
@@ -1166,7 +1166,7 @@ mrv::image_type_ptr CMedia::left() const
 
 mrv::image_type_ptr CMedia::right() const
 {
-    int64_t f = handle_loops( _frame );
+    int64_t f = _frame;
     int64_t idx = f - _frame_start;
     if ( _right_eye ) {
         return _right_eye->left();
@@ -1215,7 +1215,6 @@ const mrv::Recti CMedia::display_window( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
 
@@ -1261,7 +1260,6 @@ const mrv::Recti CMedia::display_window2( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
 
@@ -1300,7 +1298,6 @@ const mrv::Recti CMedia::data_window( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
 
@@ -1345,7 +1342,6 @@ const mrv::Recti CMedia::data_window2( int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
-    f = handle_loops( f );
     int64_t idx = f - _frame_start;
 
     if ( idx >= num )   idx = num - 1;
@@ -1377,7 +1373,7 @@ void CMedia::display_window( const int xmin, const int ymin,
     if ( !_displayWindow )
         _displayWindow = new mrv::Recti[num];
 
-    int64_t f = handle_loops( frame );
+    int64_t f = frame;
     int64_t idx = f - _frame_start;
 
     if ( idx >= num || idx < 0 ) return;
@@ -1400,7 +1396,7 @@ void CMedia::display_window2( const int xmin, const int ymin,
     if ( !_displayWindow2 )
         _displayWindow2 = new mrv::Recti[num];
 
-    int64_t f = handle_loops( frame );
+    int64_t f = frame;
     int64_t idx = f - _frame_start;
 
     if ( idx >= num || idx < 0 ) return;
@@ -1423,7 +1419,7 @@ void CMedia::data_window( const int xmin, const int ymin,
     if ( !_dataWindow )
         _dataWindow = new mrv::Recti[num];
 
-    int64_t f = handle_loops( frame );
+    int64_t f = frame;
     int64_t idx = f - _frame_start;
 
     if ( idx >= num || idx < 0 ) return;
@@ -1449,7 +1445,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
     if ( !_dataWindow2 )
         _dataWindow2 = new mrv::Recti[num];
 
-    int64_t f = handle_loops( frame );
+    int64_t f = frame;
     int64_t idx = f - _frame_start;
 
     if ( idx >= num || idx < 0 ) return;
@@ -1724,7 +1720,7 @@ bool CMedia::has_changed()
     {
         if ( !_sequence ) return false;
 
-        int64_t f = handle_loops( _frame );
+        int64_t f = _frame;
         std::string file = sequence_filename(f);
 
 
@@ -1772,7 +1768,7 @@ bool CMedia::has_changed()
         if ( ( _mtime != sbuf.st_mtime ) ||
              ( _ctime != sbuf.st_ctime ) )
         {
-            int64_t f = handle_loops( _frame );
+            int64_t f = _frame;
             _is_thumbnail = true; // to avoid printing errors
             image_type_ptr canvas;
             if ( fetch( canvas, f ) )
@@ -2123,7 +2119,7 @@ void CMedia::channel( const char* c )
     if (to_fetch)
     {
         clear_cache();
-        int64_t f = handle_loops( _frame );
+        int64_t f = _frame;
         image_type_ptr canvas;
         if ( fetch( canvas, f ) )
         {
@@ -3982,40 +3978,6 @@ int64_t CMedia::loops_offset( int64_t f,
 }
 
 
-int64_t CMedia::handle_loops( const int64_t frame ) const
-{
-    int64_t f = frame;
-
-    if ( looping() == kLoop )
-    {
-        int64_t len = duration();
-        if ( len > 0 )
-        {
-            f = modE(f-_frameStart, len) + _frameStart;
-        }
-    }
-    else if ( looping() == kPingPong )
-    {
-        int64_t len = duration();
-        if ( len > 0 )
-        {
-            f -= _frameStart;
-            int64_t v   = f / len;
-            f = modE( f, len ) + _frameStart;
-            if ( modE( v, 2 ) == 1 )
-            {
-                f = len - f + _frame_start;
-            }
-        }
-    }
-    else
-    {
-        if ( f > _frameEnd )       f = _frameEnd;
-        else if ( f < _frameStart) f = _frameStart;
-    }
-
-    return f;
-}
 
 bool CMedia::find_image( const int64_t frame )
 {
@@ -4023,7 +3985,7 @@ bool CMedia::find_image( const int64_t frame )
         _right_eye->find_image(frame);
 
 
-    int64_t f = handle_loops( frame );
+    int64_t f = frame;
 
     _video_pts   = f / _orig_fps;
     _video_clock = double(av_gettime_relative()) / 1000000.0;
