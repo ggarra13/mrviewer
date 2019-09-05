@@ -3793,22 +3793,25 @@ void ImageView::draw()
 
         CMedia::Playback p = playback();
 
-        if (((p == CMedia::kForwards || p == CMedia::kStopped) &&
-             _lastFrame < frame) ||
-            (p == CMedia::kBackwards && _lastFrame > frame ) )
+        if ( img->start_frame() != img->end_frame() )
         {
-            int64_t frame_diff = frame - _lastFrame;
-
-            if ( p == CMedia::kForwards ) --frame_diff;
-            else ++frame_diff;
-
-            int64_t absdiff = std::abs(frame_diff);
-            if ( absdiff > 0 && absdiff < 10 )
+            if (((p == CMedia::kForwards || p == CMedia::kStopped) &&
+                 _lastFrame < frame) ||
+                (p == CMedia::kBackwards && _lastFrame > frame ) )
             {
-                unshown_frames += absdiff;
-            }
+                int64_t frame_diff = frame - _lastFrame;
 
-            _lastFrame = frame;
+                if ( p == CMedia::kForwards ) --frame_diff;
+                else ++frame_diff;
+
+                int64_t absdiff = std::abs(frame_diff);
+                if ( absdiff > 0 && absdiff < 10 )
+                {
+                    unshown_frames += absdiff;
+                }
+
+                _lastFrame = frame;
+            }
         }
 
 
