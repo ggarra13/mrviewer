@@ -173,7 +173,8 @@ namespace {
     void checkered_cb( Fl_Widget* o , mrv::ImageBrowser* b )
     {
         mrv::LoadInfo i( "Checkered" );
-        i.start = i.first = 1; i.end = i.last = 48; i.fps = 24.0;
+        i.start = i.end = 1;
+        i.first = 1; i.last = 48; i.fps = 24.0;
         checkered( i, b );
     }
 
@@ -197,7 +198,8 @@ void ntsc_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
     void ntsc_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
     {
         mrv::LoadInfo i( "SMPTE NTSC Color Bars" );
-        i.start = i.first = 1; i.end = i.last = 60; i.fps = 30.0;
+        i.start = i.end = 1;
+        i.first = 1; i.last = 60; i.fps = 30.0;
         ntsc_color_bars( i, b );
     }
 
@@ -221,7 +223,8 @@ void pal_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
     void pal_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
     {
         mrv::LoadInfo i( "PAL Color Bars" );
-        i.start = i.first = 1; i.end = i.last = 50; i.fps = 25.0;
+        i.start = i.end = 1;
+        i.first = 1; i.last = 50; i.fps = 25.0;
         pal_color_bars( i, b );
     }
 
@@ -245,7 +248,8 @@ void ntsc_hdtv_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
     void ntsc_hdtv_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
     {
         mrv::LoadInfo i( "NTSC HDTV Color Bars" );
-        i.start = i.first = 1; i.end = i.last = 60; i.fps = 30.0;
+        i.start = i.end = 1;
+        i.first = 1; i.last = 60; i.fps = 30.0;
         ntsc_hdtv_color_bars( i, b );
     }
 
@@ -269,7 +273,8 @@ void pal_hdtv_color_bars( const mrv::LoadInfo& i, mrv::ImageBrowser* b )
     void pal_hdtv_color_bars_cb( Fl_Widget* o , mrv::ImageBrowser* b )
     {
         mrv::LoadInfo i( "PAL HDTV Color Bars" );
-        i.start = i.first = 1; i.end = i.last = 60; i.fps = 30.0;
+        i.start = i.end = 1;
+        i.first = 1; i.last = 50; i.fps = 25.0;
         pal_hdtv_color_bars( i, b );
     }
 
