@@ -79,6 +79,11 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
             defaultcs = config->getColorSpace( "Rec.709" );
         if ( !defaultcs )
             defaultcs = config->getColorSpace( "sRGB" );
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "out_rec709" );
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "out_srgb" );
+        if ( !defaultcs ) return;
         ocio_input_color_space( defaultcs->getName() );
         break;
     }
@@ -97,6 +102,11 @@ ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
             defaultcs = config->getColorSpace( "Rec.709" );
         if ( !defaultcs )
             defaultcs = config->getColorSpace( "sRGB" );
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "out_rec709" );
+        if ( !defaultcs )
+            defaultcs = config->getColorSpace( "out_srgb" );
+        if ( !defaultcs ) return;
         ocio_input_color_space( defaultcs->getName() );
         break;
     }
