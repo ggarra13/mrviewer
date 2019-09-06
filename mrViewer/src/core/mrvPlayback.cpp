@@ -87,7 +87,7 @@ const char* kModule = "play";
 #define LOGT_INFO(x) LOG_INFO( get_thread_id() << " " << x );
 #define LOGT_ERROR(x) LOG_ERROR( get_thread_id() << " " << x );
 
-//#define DEBUG_THREADS
+// #define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 
@@ -334,7 +334,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 {
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
-
 
     mrv::ImageView* view = uiMain->uiView;
 
@@ -647,7 +646,6 @@ void audio_thread( PlaybackData* data )
         if ( step == 0 ) break;
 
         //DBG3( "wait audio " << frame );
-        // std::cerr << "wait audio " << frame << std::endl;
         img->wait_audio();
 
 
@@ -662,8 +660,6 @@ void audio_thread( PlaybackData* data )
 
         CMedia::DecodeStatus status = img->decode_audio( f );
         // LOG_INFO( img->name() << " decoded audio " << f << " status " << status );
-        // std::cerr << "decoded audio " << frame << " status " << status
-        //           << std::endl;
 
         assert( img != NULL );
         assert( reel != NULL );
