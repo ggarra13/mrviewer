@@ -67,13 +67,14 @@ media::media( CMedia* const img ) :
     _start( img->first_frame() ),
     _image( img ),
     _thumbnail( NULL ),
-    _thumbnail_frozen( false )
+    _thumbnail_frozen( false ),
+    _own_image( true )
 {
 }
 
 media::~media()
 {
-    delete _image;
+    if ( _own_image ) delete _image;
     _image = NULL;
     if ( _thumbnail )
     {
@@ -100,11 +101,13 @@ void media::thumbnail_pixel( uchar*& ptr, uchar r, uchar g, uchar b )
 
 void media::create_thumbnail()
 {
-    if ( !_image->stopped() || thumbnail_frozen() ) return;
+    if ( (!_image->stopped()) || thumbnail_frozen() ) return;
+
 
     // Make sure frame memory is not deleted
     Mutex& mutex = _image->video_mutex();
     SCOPED_LOCK( mutex );
+
 
     // Audio only clip?  Return
     mrv::image_type_ptr pic = _image->left();
@@ -140,10 +143,6 @@ void media::create_thumbnail()
 
     w = pic->width();
     h = pic->height();
-
-    // Create a unique name for this element, using fileroot and start frame
-    char buf[2048];
-    sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
     delete _thumbnail;
 
