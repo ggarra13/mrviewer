@@ -292,11 +292,12 @@ int EDLGroup::handle( int event )
             {
 
                 _drag = browser()->new_item( m );
-
+                _drag->media()->thumbnail_freeze( true );
 
                 int j = track->index_for( m );
                 if ( j < 0 ) {
-
+                    _drag->media()->thumbnail_freeze( false );
+                    delete _drag; _drag = NULL;
                     return 0;
                 }
 
@@ -320,6 +321,7 @@ int EDLGroup::handle( int event )
             {
 
 
+                _drag->media()->thumbnail_freeze( false );
                 delete _drag; _drag = NULL;
 
                 return 1;
@@ -528,6 +530,7 @@ int EDLGroup::handle( int event )
 
             int idx = int( ( _dragY - y() ) / kTrackHeight );
             if ( idx < 0 || idx >= 2 || idx >= children() ) {
+                _drag->media()->thumbnail_freeze( false );
                 delete _drag;
                 _drag = NULL;
                 redraw();
@@ -546,6 +549,7 @@ int EDLGroup::handle( int event )
 
 
             if ( !t2 || t2->reel() == -1 ) {
+                _drag->media()->thumbnail_freeze( false );
                 delete _drag;
                 _drag = NULL;
                 redraw();
@@ -610,6 +614,7 @@ int EDLGroup::handle( int event )
             browser()->set_edl();
             timeline()->value( (double)pt );
             view()->seek( pt );
+            _drag->media()->thumbnail_freeze( false );
             delete _drag;
             _drag = NULL;
             _dragChild = -1;
