@@ -46,6 +46,8 @@ public:
     // Draw ourself at a specific X,Y position
     void DrawAt(int X, int Y);
 
+    bool thumbnail() const;
+    
     void make_thumbnail();
     
     const mrv::media& media() const;
