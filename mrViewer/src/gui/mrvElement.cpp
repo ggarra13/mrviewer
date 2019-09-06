@@ -10,13 +10,20 @@ namespace mrv {
 static const int HWIDTH = 800;
 static const int VMARGIN = 6;
 
+bool Element::thumbnail() const
+{
+    return _elem->thumbnail();
+}
+
 void Element::make_thumbnail()
 {
     _elem->create_thumbnail();
 
     Fl_Image* b = NULL;
     if ( _elem->thumbnail() )
-        b = _elem->thumbnail()->copy();
+    {
+        b = _elem->thumbnail();
+    }
     else
     {
         uchar* d = new uchar[64*64];
@@ -39,9 +46,9 @@ void Element::make_thumbnail()
 }
 
     Element::Element(mrv::media m) :
-    Fl_Group(0,0,1,64+VMARGIN*2),
-    image(NULL),
-    _elem( m )
+        Fl_Group(0,0,1,64+VMARGIN*2),
+        image(NULL),
+        _elem( m )
     {	// VMARGIN makes group slightly larger than items
         // Create widget to hold image
         //
@@ -84,7 +91,7 @@ void Element::make_thumbnail()
                      img->creation_date().c_str(),
                      img->width(),
                      img->height()
-                     );
+                );
         }
         else
         {
@@ -100,7 +107,7 @@ void Element::make_thumbnail()
                      img->start_frame(),
                      img->end_frame(),
                      img->fps()
-                     );
+                );
         }
 
         label->copy_label( info );
@@ -116,14 +123,14 @@ void Element::make_thumbnail()
 
     }
 
-Element::~Element()
-{
-    delete image; image = NULL;
-    delete label; label = NULL;
-}
+    Element::~Element()
+    {
+        delete image; image = NULL;
+        delete label; label = NULL;
+    }
 
 
-   void Element::Label(const char *s) {
+    void Element::Label(const char *s) {
         if ( label ) label->copy_label(s);
     }
 
