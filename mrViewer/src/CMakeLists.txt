@@ -96,7 +96,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ADD_DEFINITIONS( -DLINUX -DNDEBUG )
     ADD_COMPILE_OPTIONS( -O3 -msse )
     SET(OS_LIBRARIES
-      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx
+      asound ass ${Xpm} ${png} ${jpeg} ${Zlib} dl X11 Xext pthread Xinerama Xfixes Xcursor Xft Xrender Xss m fontconfig dl Xi Xext stdc++ GLEW lzma mp3lame theoraenc theoradec theora vorbisenc vorbis x264 vpx
       )
 
      IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )

@@ -56,6 +56,16 @@ public:
         return _image->duration();
     }
 
+    inline void own_image( bool t )
+        {
+            _own_image = t;
+        }
+
+    inline bool own_image() const
+        {
+            return _own_image;
+        }
+
     inline CMedia* image()             {
         return _image;
     }
@@ -91,6 +101,7 @@ protected:
     CMedia*   _image;
     Fl_RGB_Image* _thumbnail;
     bool         _thumbnail_frozen;
+    bool         _own_image;
 
 public:
     static       int _thumbnail_width;
