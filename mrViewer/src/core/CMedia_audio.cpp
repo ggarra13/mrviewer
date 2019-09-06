@@ -2101,14 +2101,8 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
             // early due to few timestamps in audio track
             bool ok = in_audio_store( frame );
 
-            if ( _audio_packets.size() > 1 && frame >= first  )
+            if ( ok && frame >= first  )
             {
-                if ( !ok )
-                {
-                    IMG_ERROR( _( "Missing audio frame " ) << frame );
-                    return kDecodeMissingFrame;
-                }
-                _audio_packets.pop_front();
                 return kDecodeOK;
             }
 
@@ -2122,14 +2116,8 @@ CMedia::DecodeStatus CMedia::decode_audio( int64_t& f )
             // early due to few timestamps in audio track
             bool ok = in_audio_store( frame );
 
-            if ( _audio_packets.size() > 1 && frame <= last )
+            if ( ok && frame <= last )
             {
-                if ( !ok )
-                {
-                    IMG_ERROR( _( "Missing audio frame " ) << frame );
-                    return kDecodeMissingFrame;
-                }
-                _audio_packets.pop_front();
                 return kDecodeOK;
             }
 
