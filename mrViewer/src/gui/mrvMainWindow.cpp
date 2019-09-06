@@ -28,6 +28,10 @@
 #include "core/mrvI8N.h"
 #include <iostream>
 
+#ifdef LINUX
+#include <X11/extensions/scrnsaver.h>
+#endif
+
 // Must come before FL/Fl_x11.H
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
@@ -61,6 +65,9 @@ Fl_Double_Window( W, H, title )
 
 MainWindow::~MainWindow()
 {
+#ifdef LINUX
+    XScreenSaverSuspend( fl_display, False );
+#endif
     uiMain->uiView->stop();
     delete uiMain->uiView;
     uiMain->uiView = NULL;
@@ -71,6 +78,11 @@ void MainWindow::set_icon()
 {
     fl_open_display();  // Needed for icons
 
+#ifdef LINUX
+    XScreenSaverSuspend( fl_display, True );
+#elif defined(_WIN32) || defined(_WIN64)
+    SetThreadExecutionState( ES_DISPLAY_REQUIRED );
+#endif
 
 #if defined(_WIN32) || defined(_WIN64)
      HICON data = LoadIcon(fl_display, MAKEINTRESOURCE(IDI_ICON1));
