@@ -2696,19 +2696,9 @@ int ImageBrowser::mousePush( int x, int y )
         assert0( m );
         view()->foreground( m );
 
-
-
         match_tree_order();
 
         adjust_timeline();
-
-        if ( reel->edl && m )
-        {
-            int64_t s = m->position();
-            DBG3("seek to " << s << " " << m->image()->name() );
-            seek( s );
-        }
-
 
         if ( play != CMedia::kStopped )
             view()->play( play );
@@ -3505,8 +3495,11 @@ void ImageBrowser::draw()
     {
         if ( ! i->widget() ) continue;
 
-        mrv::Element* elem = (mrv::Element*) i->widget();
-        elem->make_thumbnail();
+        if ( view()->playback() == CMedia::kStopped )
+        {
+            mrv::Element* elem = (mrv::Element*) i->widget();
+            if ( elem->visible_r() ) elem->make_thumbnail();
+        }
     }
 
     // Let tree draw itself
