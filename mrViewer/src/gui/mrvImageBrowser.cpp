@@ -450,6 +450,7 @@ _value( -1 )
     item_draw_mode(FL_TREE_ITEM_HEIGHT_FROM_WIDGET);
     connectorstyle( FL_TREE_CONNECTOR_NONE );
     connectorwidth( 0 );
+    widgetmarginleft( 0 );
 }
 
 ImageBrowser::~ImageBrowser()
@@ -2651,16 +2652,19 @@ int ImageBrowser::mousePush( int x, int y )
         int clicks = Fl::event_clicks();
         lastX = x;
         lastY = y;
-    DBG;
+        DBG;
+        LOG_INFO( "x= " << x << " _tw " << _tiw );
+        if ( x >= _tiw ) return 0;
+        
         dragging = callback_item();
 
-    DBG;
+        DBG;
         if ( (! dragging) || (! dragging->widget()) ) return 0;
 
-    DBG;
+        DBG;
         if ( dragging == old_dragging && clicks > 0 )
         {
-    DBG;
+            DBG;
             Fl::event_clicks(0);
             redraw();
             uiMain->uiImageInfo->uiMain->show();
@@ -3126,6 +3130,18 @@ int ImageBrowser::handle( int event )
 {
     if ( event == FL_KEYBOARD )
     {
+        if ( kFitScreen.match( Fl::event_key() ) )
+        {
+            Fl_Tree::display( Fl_Tree::first_selected_item() );
+            return 1;
+        }
+        else if ( Fl::event_key() == FL_Escape && dragging != NULL )
+        {
+            dragging = NULL;
+            redraw();
+            return 1;
+        }
+
         int ok = view()->handle( event );
         if ( ok ) return ok;
     }
