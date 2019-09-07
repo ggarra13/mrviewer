@@ -34,6 +34,8 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
+#include <boost/exception/diagnostic_information.hpp> 
+#include <boost/exception_ptr.hpp> 
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;
@@ -1208,6 +1210,7 @@ void ImageBrowser::change_reel()
         mrv::MediaList::iterator i = reel->images.begin();
         MediaList::iterator j;
         mrv::MediaList::iterator e = reel->images.end();
+
         for ( ; i != e; ++i )
         {
             add_to_tree( *i );
@@ -2653,7 +2656,6 @@ int ImageBrowser::mousePush( int x, int y )
         lastX = x;
         lastY = y;
         DBG;
-        LOG_INFO( "x= " << x << " _tw " << _tiw );
         if ( x >= _tiw ) return 0;
         
         dragging = callback_item();
@@ -3494,7 +3496,6 @@ void ImageBrowser::adjust_timeline()
 bool ImageBrowser::add_to_tree( mrv::media m )
 {
     std::string path = media_to_pathname( m );
-
     Fl_Tree_Item* item = Fl_Tree::insert( root(), path.c_str(),
                                           root()->children() );
     if ( !item ) return false;
