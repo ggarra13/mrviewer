@@ -321,7 +321,7 @@ int EDLGroup::handle( int event )
             {
 
 
-                _drag->media()->thumbnail_freeze( false );
+                if ( _drag ) _drag->media()->thumbnail_freeze( false );
                 delete _drag; _drag = NULL;
 
                 return 1;
@@ -529,8 +529,8 @@ int EDLGroup::handle( int event )
             Fl::remove_timeout( (Fl_Timeout_Handler) static_move, this );
 
             int idx = int( ( _dragY - y() ) / kTrackHeight );
-            if ( idx < 0 || idx >= 2 || idx >= children() ) {
-                _drag->media()->thumbnail_freeze( false );
+            if ( idx < 0 || idx >= children() ) {
+                if ( _drag ) _drag->media()->thumbnail_freeze( false );
                 delete _drag;
                 _drag = NULL;
                 redraw();
@@ -549,7 +549,7 @@ int EDLGroup::handle( int event )
 
 
             if ( !t2 || t2->reel() == -1 ) {
-                _drag->media()->thumbnail_freeze( false );
+                if ( _drag ) _drag->media()->thumbnail_freeze( false );
                 delete _drag;
                 _drag = NULL;
                 redraw();
@@ -614,7 +614,7 @@ int EDLGroup::handle( int event )
             browser()->set_edl();
             timeline()->value( (double)pt );
             view()->seek( pt );
-            _drag->media()->thumbnail_freeze( false );
+            if ( _drag ) _drag->media()->thumbnail_freeze( false );
             delete _drag;
             _drag = NULL;
             _dragChild = -1;
