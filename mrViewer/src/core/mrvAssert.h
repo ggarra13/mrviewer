@@ -28,6 +28,20 @@
 #ifndef mrvAssert_h
 #define mrvAssert_h
 
+#ifdef _WIN32
+
+#include <windows.h>
+
+#define mrvABORT \
+Sleep( 100000 ); \
+::abort();
+
+#else
+
+#define mrvABORT \
+::abort
+
+#endif
 
 /**
  * assert0() equivalent, that is always enabled.
@@ -36,7 +50,7 @@
     if (!(cond)) {                                                       \
         std::cerr << "Assertion " << #cond << " failed at " \
                   << __FILE__ << ":" << __LINE__ << std::endl;           \
-        ::abort();                                                      \
+        mrvABORT;                                                      \
     }                                                                    \
 } while (0)
 
