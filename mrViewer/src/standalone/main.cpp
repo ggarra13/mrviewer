@@ -225,7 +225,7 @@ DBG;
   file = fs::absolute( file );
 
   fs::path dir = file.parent_path().branch_path();
-  std::string path = fs::canonical( dir ).string();
+  std::string path = fs::canonical( dir ).generic_string();
   path += "/share/locale";
 
   bindtextdomain(buf, path.c_str() );
