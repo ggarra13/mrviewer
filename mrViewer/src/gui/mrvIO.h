@@ -38,6 +38,8 @@
 #include <boost/thread/recursive_mutex.hpp>
 
 #include "core/mrvI8N.h"
+#include "core/mrvHome.h"
+#include "gui/mrvPreferences.h"
 
 namespace mrv {
 
@@ -64,11 +66,11 @@ struct logbuffer : public string_stream
         if (out.is_open()) out.close();
     };
 
-    void debug( bool t ) {
+    static void debug( bool t ) {
         _debug = t;
         open_stream();
     }
-    void open_stream();
+    static void open_stream();
 
     //! from basic_streambuf, stl function used to sync stream
     virtual int sync();
