@@ -1,3 +1,6 @@
+v5.2.3  - Fixed a problem with international characters in filenames making
+	  mrViewer crash when a reel was changed.
+
 v5.2.2  - Fixed EDL playback when changing clips and seeking manually.
 	  This would often not work and the clip would start at the
 	  beginning.
