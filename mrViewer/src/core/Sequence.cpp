@@ -653,10 +653,7 @@ bool get_sequence_limits( boost::int64_t& frameStart,
     frameStart = AV_NOPTS_VALUE;
     frameEnd = AV_NOPTS_VALUE;
 
-    // My encoding type
-    // Create and install global locale
-    std::locale::global(boost::locale::generator().generate( N_("") ));
-
+    // Global encoding type taken from environment
     fs::path::imbue( std::locale() );
 
     fs::path file = fs::path( fileroot.c_str() );
