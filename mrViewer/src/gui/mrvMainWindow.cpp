@@ -65,8 +65,11 @@ Fl_Double_Window( W, H, title )
 
 MainWindow::~MainWindow()
 {
+    // Restore screensaver/black screen
 #ifdef LINUX
     XScreenSaverSuspend( fl_display, False );
+#elif defined(_WIN32) || defined(_WIN64)
+    SetThreadExecutionState(ES_CONTINUOUS);
 #endif
     uiMain->uiView->stop();
     delete uiMain->uiView;
@@ -78,10 +81,12 @@ void MainWindow::set_icon()
 {
     fl_open_display();  // Needed for icons
 
+    // Turn off screensaver and black screen
 #ifdef LINUX
     XScreenSaverSuspend( fl_display, True );
 #elif defined(_WIN32) || defined(_WIN64)
-    SetThreadExecutionState( ES_DISPLAY_REQUIRED );
+    SetThreadExecutionState( ES_CONTINUOUS | ES_SYSTEM_REQUIRED |
+                             ES_DISPLAY_REQUIRED );
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
