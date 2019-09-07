@@ -441,6 +441,7 @@ void parse_command_line( const int argc, char** argv,
 
     int debug = adebug.getValue();
     Preferences::debug = debug;
+    if ( debug > 2 ) mrv::io::logbuffer::debug( true );
 #ifdef _WIN32
     if ( debug )
     {
