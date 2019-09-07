@@ -5,6 +5,12 @@ v5.2.2  - Fixed EDL playback when changing clips and seeking manually.
 	  adaptor work well.
 	- Made all PAL/NTSC Color Bars, Checkered, and Luminance/Linear
 	  images be playable.
+	- Fixed a huge memory leak in the reel window's thumbnails creation.
+	  This also effected the EDL Window's thumbnails.
+	- Added Fit image to Reel window.  By default the key is 'f' and
+	  fits the selected image in the reel.
+	- Made the viewer turn off screen savers to avoid playback from
+	  stopping or the viewer from exiting.
 	- First beta release of .otio <-> .reel adaptor. This is an
 	  OpenTimelineIO adaptor to work with that EDL format which is now
 	  part of the Academy.  Note that in order to work, it requires
