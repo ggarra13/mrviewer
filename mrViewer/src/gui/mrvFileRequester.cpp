@@ -292,11 +292,11 @@ stringArray open_reel( const char* startfile,
 
 
 /**
- * Opens a file requester to load image files
+ * Opens a file requester to load a directory of image files
  *
  * @param startfile  start filename (directory)
  *
- * @return Each file to be opened
+ * @return A directory to be opened or NULL
  */
 std::string open_directory( const char* startfile, ViewerUI* main )
 {
@@ -327,7 +327,8 @@ std::string open_directory( const char* startfile, ViewerUI* main )
         const char* d = flu_dir_chooser( title.c_str(), startfile );
         if (d) dir = d;
     }
-    return dir;
+    fs::path path = dir;
+    return path.generic_string();
 }
 
 /**
