@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo GarramuÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ±o
+    Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -91,15 +91,15 @@ namespace mrv {
 
 
     { // Copy attributes
-	for ( const auto& i : other->attrs_frames() )
-	{
-	    int64_t frame = i.first;
-	    _attrs.insert( std::make_pair( frame, Attributes() ) );
-	    for ( const auto& j: i.second )
-	    {
-		_attrs[frame][j.first] = j.second->copy();
-	    }
-	}
+        for ( const auto& i : other->attrs_frames() )
+        {
+            int64_t frame = i.first;
+            _attrs.insert( std::make_pair( frame, Attributes() ) );
+            for ( const auto& j: i.second )
+            {
+                _attrs[frame][j.first] = j.second->copy();
+            }
+        }
     }
 
     const char* profile = other->icc_profile();
@@ -135,5 +135,9 @@ namespace mrv {
     // _thumbnail_frozen = true;
   }
 
+    bool clonedImage::fetch( int64_t frame )
+    {
+        return true;
+    }
 
 } // namespace mrv
