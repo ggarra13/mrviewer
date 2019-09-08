@@ -34,8 +34,8 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
-#include <boost/exception/diagnostic_information.hpp> 
-#include <boost/exception_ptr.hpp> 
+#include <boost/exception/diagnostic_information.hpp>
+#include <boost/exception_ptr.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;
@@ -114,6 +114,11 @@ extern void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view );
 extern void save_clip_xml_metadata_cb( Fl_Widget* o,
                                        mrv::ImageView* view );
 
+void media_info_cb( Fl_Widget* o, mrv::ImageBrowser* b )
+{
+    b->main()->uiImageInfo->uiMain->show();
+    b->view()->update_image_info();
+}
 
 void clone_all_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
@@ -719,7 +724,17 @@ void ImageBrowser::save_reel()
                  img->start_frame(), img->end_frame(), img->fps() );
         if ( img->has_audio() && img->audio_file() != "" )
         {
-            fprintf( f, "audio: %s\n", img->audio_file().c_str() );
+            fs::path path = img->audio_file();
+            if ( uiMain->uiPrefs->uiPrefsRelativePaths->value() )
+            {
+                fs::path parentPath = reelname; //fs::current_path();
+                parentPath = parentPath.parent_path();
+                fs::path childPath = img->audio_file();
+                fs::path relativePath = fs::relative( childPath, parentPath );
+                path = relativePath.generic_string();
+            }
+
+            fprintf( f, "audio: %s\n", path.generic_string().c_str() );
             fprintf( f, "audio offset: %" PRId64 "\n",
                      img->audio_offset() );
         }
@@ -2657,7 +2672,7 @@ int ImageBrowser::mousePush( int x, int y )
         lastY = y;
         DBG;
         if ( x >= _tiw ) return 0;
-        
+
         dragging = callback_item();
 
         DBG;
@@ -2776,6 +2791,9 @@ int ImageBrowser::mousePush( int x, int y )
                               (Fl_Callback*)clone_image_cb, this,
                               FL_MENU_DIVIDER);
                 }
+                menu.add( _("Image/Media Info"), 0,
+                          (Fl_Callback*)media_info_cb, this,
+                          FL_MENU_DIVIDER );
             }
 
             if ( valid )
