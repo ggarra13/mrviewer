@@ -382,6 +382,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 bool media_track::select_media( const boost::int64_t pos,
                                 const int Y )
 {
+
     bool ok = false;
     delete _selected;
     _selected = NULL;
@@ -399,8 +400,7 @@ bool media_track::select_media( const boost::int64_t pos,
         CMedia* img = fg->image();
 
         int64_t start = fg->position();
-        int64_t duration = fg->duration() - img->first_frame() + 1;
-
+        int64_t duration = fg->duration() + 1;
         if ( pos >= start && pos < start + duration)
         {
             if ( pos < start + duration / 2 )
@@ -576,9 +576,10 @@ int media_track::handle( int event )
 
                     int ww = t->w();
 
-                    double len = (t->maximum() - t->minimum() + 1);
+                    double tmin = t->minimum();
+                    double len = (t->maximum() - tmin + 1);
                     double p = double( xx - x() ) / double(ww);
-                    p = t->minimum() + p * len + 0.5f;
+                    p = tmin + p * len + 0.5f;
 
                     if ( select_media( int64_t(p), yy ) )
                     {
