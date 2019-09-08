@@ -271,9 +271,10 @@ int EDLGroup::handle( int event )
             if ( !t ) return 0;
 
             int ww = t->w();
-            double len = (t->maximum() - t->minimum() + 1);
+            double tmin = t->minimum();
+            double len = (t->maximum() - tmin + 1);
             double p = double( _dragX - x() ) / double(ww);
-            p = t->minimum() + p * len;
+            p = tmin + p * len;
             int64_t pt = int64_t( p );
 
 
