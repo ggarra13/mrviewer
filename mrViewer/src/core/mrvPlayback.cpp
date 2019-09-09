@@ -1220,9 +1220,6 @@ void video_thread( PlaybackData* data )
 
 
 
-        timer.setDesiredSecondsPerFrame( delay );
-        timer.waitUntilNextFrameIsDue();
-
 
         // LOGT_INFO( "find image " << frame << " delay " << delay );
         //img->debug_video_packets( frame, "find_image", true );
@@ -1232,6 +1229,9 @@ void video_thread( PlaybackData* data )
         {
             LOG_ERROR( _("Could not find image ") << frame );
         }
+
+        timer.setDesiredSecondsPerFrame( delay );
+        timer.waitUntilNextFrameIsDue();
 
         if ( reel->edl && fg && img->is_left_eye() )
         {
