@@ -427,7 +427,8 @@ int EDLGroup::handle( int event )
             browser()->next_image();
             return 1;
         }
-        else if ( key == 'f' || key == 'a' )
+        else if ( kFitScreen.match(key) ||
+                  kFitAll.match(key) )
         {
             unsigned i = 0;
             unsigned e = children();
@@ -441,15 +442,9 @@ int EDLGroup::handle( int event )
             int one = c1->value();
             int two = c2->value();
 
-            if ( one == -1 && two == -1 )
-            {
-                tmin = 1;
-                tmax = 100;
-            }
 
             for ( ; i != e; ++i )
             {
-
                 if ( i != one && i != two ) continue;
 
                 mrv::media_track* o = (mrv::media_track*)child(i);
@@ -459,28 +454,24 @@ int EDLGroup::handle( int event )
                 mrv::MediaList::iterator j = r->images.begin();
                 mrv::MediaList::iterator k = r->images.end();
 
+
                 mrv::media fg = view()->foreground();
 
-                if ( key == 'f' )
+                if ( kFitScreen.match(key) )
                 {
                     for ( ; j != k; ++j )
                     {
                         const mrv::media& m = *j;
                         if (m == fg)
                         {
-                            int64_t tmi = m->position();
-                            int64_t tma = m->position() + m->duration();
+                            int64_t tmi = m->position() - 5;
+                            int64_t tma = tmi + m->duration() + 10;
                             if ( tmi < tmin ) tmin = tmi;
                             if ( tma > tmax ) tmax = tma;
                             break;
                         }
                     }
 
-                    if ( j == k )
-                    {
-                        tmin = 1;
-                        tmax = 100;
-                    }
 
                 }
                 else
@@ -495,6 +486,13 @@ int EDLGroup::handle( int event )
                         if ( tma > tmax ) tmax = tma;
                     }
                 }
+            }
+            
+            if ( tmin == std::numeric_limits<int64_t>::max() ||
+                 tmax == std::numeric_limits<int64_t>::min() )
+            {
+                tmin = 1;
+                tmax = 100;
             }
 
             mrv::Timeline* t = timeline();
