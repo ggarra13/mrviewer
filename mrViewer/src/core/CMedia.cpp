@@ -3907,7 +3907,9 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // not accurate.
             const AVPacket& pkt = _video_packets.front();
 
-            if ( frame >= pkt.dts ) {
+            // This is needed to handle loops properly, as packets do not
+            // come for all frames, as counted in the playback loop.
+            if ( frame > pkt.dts ) {
                 return kDecodeOK;
             }
 
@@ -3920,7 +3922,10 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // not accurate.
 
             const AVPacket& pkt = _video_packets.front();
-            if ( frame <= pkt.dts )
+
+            // This is needed to handle loops properly, as packets do not
+            // come for all frames, as counted in the playback loop.
+            if ( frame < pkt.dts )
                  return kDecodeOK;
 
             _video_packets.pop_front();
