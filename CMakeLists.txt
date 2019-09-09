@@ -40,7 +40,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 SET( VersionMajor 5 )
 SET( VersionMinor 2 )
-SET( VersionPatch 2 )
+SET( VersionPatch 3 )
 
 #STRING( TIMESTAMP VersionDate ".%Y%m%d" )
 SET( VersionDate "" )
