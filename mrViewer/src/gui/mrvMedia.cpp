@@ -117,6 +117,7 @@ void media::create_thumbnail()
         return;
     }
 
+
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw == 0 || dh == 0 ) {
