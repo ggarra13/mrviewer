@@ -1,7 +1,11 @@
+v5.2.4  - Tightened the last/first frames of sequence loops as they were
+	  sometimes letting another frame pass.
+
 v5.2.3  - Bug fixed playback of sequences when not in EDL.  There were two
 	  problems: one when stopping the sequence would reset to frame 1
 	  and the other was that the sequence would not get played in full
 	  and it would loop earlier.
+	  This was a regression from v5.2.0 or so.
 	- Fixed a problem with international characters in filenames making
 	  mrViewer crash when a reel was changed on Windows.
 	- Bug fixed Cloned Image to be a playable (static) image.
