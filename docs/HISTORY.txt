@@ -3,6 +3,7 @@ v5.2.3  - Fixed a problem with international characters in filenames making
 	- Bug fixed Cloned Image to be a playable (static) image.
 	- Made audio saving also be relative to the reel location if the
 	  relative preference is set.
+	- Bug fixed fit ('f') algorithm in the EDL timeline.
 
 v5.2.2  - Fixed EDL playback when changing clips and seeking manually.
 	  This would often not work and the clip would start at the
