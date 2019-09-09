@@ -957,6 +957,7 @@ void CMedia::hires( const mrv::image_type_ptr pic)
 {
     _hires = pic;
     _frame = pic->frame();
+    std::cerr << "hires " << _frame << std::endl;
     _w = pic->width();
     _h = pic->height();
     refresh();
@@ -3904,15 +3905,11 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
         {
             // We check packet integrity as the length of packets is
             // not accurate.
-            //const AVPacket& pkt = _video_packets.front();
+            const AVPacket& pkt = _video_packets.front();
 
-            // @TODO: verify (WRONG!)
-            // if ( frame > get_frame( stream, pkt ) ) {
-            //     return kDecodeOK;
-            // }
-
-            // std::cerr << name() << " frame " << frame << " pkt.pts " <<  pkt.pts
-            //        << " OK!!!" << std::endl;
+            if ( frame >= pkt.dts ) {
+                return kDecodeOK;
+            }
 
             _video_packets.pop_front();
             return kDecodeLoopStart;
@@ -3922,10 +3919,9 @@ CMedia::DecodeStatus CMedia::decode_video( int64_t& frame )
             // We check packet integrity as the length of packets is
             // not accurate.
 
-            // const AVPacket& pkt = _video_packets.front();
-            // @TODO: verify (WRONG!)
-            // if ( frame < get_frame( stream, pkt ) )
-            //     return kDecodeOK;
+            const AVPacket& pkt = _video_packets.front();
+            if ( frame <= pkt.dts )
+                 return kDecodeOK;
 
             _video_packets.pop_front();
             return kDecodeLoopEnd;
@@ -4038,16 +4034,15 @@ bool CMedia::find_image( const int64_t frame )
 
     if ( !internal() && file != old )
     {
-
         should_load = true;
         free( _filename );
         _filename = strdup( file.c_str() );
-
     }
 
     if ( _frame != f )
     {
         _frame = f;
+        std::cerr << "limit " << _frame << std::endl;
         limit = true;
     }
 
