@@ -58,6 +58,7 @@ Hotkey kZoomIn( false, false, false, false, '.' );
 Hotkey kZoomOut( false, false, false, false, ',' );
 Hotkey kFullScreen( false, false, false, false, FL_F + 11 );
 Hotkey kFitScreen( false, false, false, false, 'f' );
+Hotkey kFitAll( false, false, false, false, 'a' );
 Hotkey kTextureFiltering( false, false, false, true, 'f' );
 Hotkey kSafeAreas( false, false, false, false, 's' );
 Hotkey kDisplayWindow( false, false, false, false, 'd' );
@@ -293,6 +294,7 @@ HotkeyEntry hotkeys[] = {
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
     HotkeyEntry( _("Center Image"), kCenterImage ),
     HotkeyEntry( _("Fit Screen"), kFitScreen),
+    HotkeyEntry( _("Fit All"), kFitAll),
     HotkeyEntry( _("TextureFiltering"), kTextureFiltering),
     HotkeyEntry( _("Safe Areas"), kSafeAreas),
     HotkeyEntry( _("Display Window"), kDisplayWindow),
