@@ -1078,12 +1078,12 @@ void video_thread( PlaybackData* data )
                 //      << " threshold: " << barrier->threshold()
                 //      << " used: " << barrier->used() );
                 bool ok = barrier->wait();
-                LOGT_INFO( img->name() << " BARRIER " << barrier
-                           << " VIDEO FG/BG PASS gen: "
-                           << barrier->generation()
-                           << " count: " << barrier->count()
-                           << " threshold: " << barrier->threshold()
-                           << " used: " << barrier->used() );
+                // LOGT_INFO( img->name() << " BARRIER " << barrier
+                //            << " VIDEO FG/BG PASS gen: "
+                //            << barrier->generation()
+                //            << " count: " << barrier->count()
+                //            << " threshold: " << barrier->threshold()
+                //            << " used: " << barrier->used() );
             }
 
             if ( img->stopped() ) continue;
