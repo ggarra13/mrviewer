@@ -957,7 +957,6 @@ void CMedia::hires( const mrv::image_type_ptr pic)
 {
     _hires = pic;
     _frame = pic->frame();
-    std::cerr << "hires " << _frame << std::endl;
     _w = pic->width();
     _h = pic->height();
     refresh();
@@ -1486,12 +1485,14 @@ void CMedia::refresh()
 void  CMedia::first_frame(int64_t x)
 {
 //    if ( x < _frame_start ) x = _frame_start;
+    assert0( x != AV_NOPTS_VALUE );
     _frameStart = x;
     if ( _frame < _frameStart ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(int64_t x)
 {
+    assert0( x != AV_NOPTS_VALUE );
 //    if ( (!_is_sequence || !has_video()) && x > _frame_end ) x = _frame_end;
     _frameEnd = x;
     if ( _frame > _frameEnd ) _frame = _frameEnd;
