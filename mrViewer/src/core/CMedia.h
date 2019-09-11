@@ -604,7 +604,7 @@ public:
     }
 
     ////////////////// Set the frame for the current image (sequence)
-    virtual bool    frame( int64_t frame );
+    virtual bool    frame( const int64_t frame );
     inline int64_t frame() const {
         return _frame;
     }
