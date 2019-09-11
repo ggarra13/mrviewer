@@ -3293,7 +3293,6 @@ void ImageBrowser::seek( const int64_t tframe )
         if (!fg) return;
 
         CMedia* img = fg->image();
-        f = reel->global_to_local( f );
         img->seek( f );
 
         mrv::media bg = view()->background();

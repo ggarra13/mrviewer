@@ -41,14 +41,14 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   )
 
 FIND_LIBRARY( IlmImfUtil
-  NAMES IlmImfUtil-2_3 IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
+  NAMES IlmImfUtil-2_4 IlmImfUtil-2_3 IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmImf library"
 )
 
 FIND_LIBRARY( IlmImf
-  NAMES IlmImf-2_3 IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd
+  NAMES IlmImf-2_4 IlmImf-2_3 IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmImf library"
@@ -57,28 +57,28 @@ FIND_LIBRARY( IlmImf
 MESSAGE( "OpenEXR Root=$ENV{OPENEXR_ROOT} SEARCH_DIRS=${SEARCH_DIRS} IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath
-  NAMES Imath-2_3 Imath-2_2 Imath_dll Imath_dll_d Imath Imathd
+  NAMES Imath-2_4 Imath-2_3 Imath-2_2 Imath_dll Imath_dll_d Imath Imathd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR Imath library"
 )
 
 FIND_LIBRARY( Iex
-  NAMES Iex-2_3 Iex-2_2 Iex_dll Iex_dll_d Iex Iexd libIex Iex-2_1
+  NAMES Iex-2_4 Iex-2_3 Iex-2_2 Iex_dll Iex_dll_d Iex Iexd libIex Iex-2_1
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR Iex library"
 )
 
 FIND_LIBRARY( IexMath
-  NAMES IexMath-2_3 IexMath-2_2 IexMath
+  NAMES IexMath-2_4 IexMath-2_3 IexMath-2_2 IexMath
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IexMath library"
 )
 
 FIND_LIBRARY( Half
-  NAMES Half-2_3_dll Half-2_3 Half_dll Half_dll_d Half Halfd
+  NAMES Half-2_4_dll Half-2_4 Half-2_3_dll Half-2_3 Half_dll Half_dll_d Half Halfd
   PATHS ${SEARCH_DIRS}
   NO_DEFAULT_PATH
   DOC   "OpenEXR Half library"
@@ -123,7 +123,7 @@ ENDIF(NOT OPENEXR_FOUND)
 # This is to avoid picking IlmThread for a wrong version of IlmImf.
 #
 FIND_LIBRARY( IlmThread
-  NAMES IlmThread-2_3 IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread
+  NAMES IlmThread-2_4 IlmThread-2_3 IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread
   PATHS ${OPENEXR_LIBRARY_DIR}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmThread library (1.5 or later)"
