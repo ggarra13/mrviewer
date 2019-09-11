@@ -10,6 +10,7 @@ if [[ $KERNEL == Linux ]]; then
 else
     copy='cp'
     finaldir=/D/code/lib/vc14_Windows_$RELEASE
+    export CXXFLAGS=-DOCIO_USE_BOOST_PTR=1
 fi
 
 if [[ $RELEASE == 3* ]]; then
@@ -20,6 +21,5 @@ if [[ $RELEASE == 3* ]]; then
 fi
 
 export PATH=$installdir/bin:$PATH
-#export LD_LIBRARY_PATH=$installdir/lib:$LD_LIBRARY_PATH
 
 ../mk --installdir=$installdir -j 1 && echo "Install in /usr/local.  Needs root permissions" && $copy -r $installdir/* $finaldir
