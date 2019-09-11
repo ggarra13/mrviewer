@@ -1278,7 +1278,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
             mrv::PopupMenu* uiICS = view->uiICS;
         DBG;
             const char* const lbl = "scene_linear";
-            for ( int i = 0; i < uiICS->children(); ++i )
+            for ( unsigned i = 0; i < uiICS->children(); ++i )
             {
         DBG;
                 std::string name = uiICS->child(i)->label();
@@ -1313,7 +1313,7 @@ GLLut3d::GLLut3d_ptr GLLut3d::factory( const ViewerUI* view,
         DBG;
         LOG_INFO( _("Input color space for ") << img->name() << _(" is ")
                   << lbl );
-            for ( int i = 0; i < uiICS->children(); ++i )
+            for ( unsigned i = 0; i < uiICS->children(); ++i )
             {
                 const char* name = uiICS->child(i)->label();
                 if ( name && name == lbl )
