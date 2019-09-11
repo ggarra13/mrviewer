@@ -430,11 +430,11 @@ EndStatus handle_loop( boost::int64_t& frame,
             }
         }
 
+        if ( decode ) return kEndIgnore;
 
         if ( loop == CMedia::kLoop )
         {
             frame = first;
-
 
             ImageView::Command c;
             c.type = ImageView::kSeek;
@@ -533,6 +533,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             }
         }
 
+        if ( decode ) return kEndIgnore;
 
         if ( loop == CMedia::kLoop )
         {
