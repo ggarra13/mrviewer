@@ -2742,16 +2742,24 @@ void ImageInformation::refresh()
     m_subtitle->clear();
     m_attributes->clear();
 
+    DBG;
+
     if ( img == NULL || !visible_r() ) return;
 
     if ( img->is_stereo() && (img->right_eye() || !img->is_left_eye()) )
+    {
         m_button->show();
+        DBG;
+    }
     else
+    {
         m_button->hide();
-
+        DBG;
+    }
 
     fill_data();
 
+    DBG;
     m_image->end();
     m_video->end();
     m_audio->end();
@@ -2759,12 +2767,15 @@ void ImageInformation::refresh()
     m_attributes->end();
 
     m_all->end();
+    DBG;
     m_all->show();
 
+    DBG;
     end();
 
     filled = true;
 
+    DBG;
     Fl_Group::current(0);
 
 }
