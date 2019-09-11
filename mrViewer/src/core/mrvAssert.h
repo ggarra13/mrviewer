@@ -28,35 +28,33 @@
 #ifndef mrvAssert_h
 #define mrvAssert_h
 
-#ifdef DEBUG
-
 #ifdef _WIN32
-
+#include <assert.h>
 #include <windows.h>
 
+#define assert0(cond) assert(cond);
+
 #define mrvABORT \
-Sleep( 100000 ); \
+Sleep( 1000000 ); \
 ::abort();
 
 #else
 
 #define mrvABORT ::abort();
 
-#endif
-#else
-#define mrvABORT
-#endif
-
 /**
  * assert0() equivalent, that is always enabled.
  */
-#define assert0(cond) do {                                            \
-    if (!(cond)) {                                                       \
-        std::cerr << "Assertion " << #cond << " failed at " \
-                  << __FILE__ << ":" << __LINE__ << std::endl;           \
-        mrvABORT;                                                      \
-    }                                                                    \
+#define assert0(cond) do {                                              \
+    if (!(cond)) {                                                      \
+        fflush(stderr);                                                 \
+        fprintf( stderr, "Assertion %s failed at %s %d", #cond,         \
+                 __FILE__, __LINE__ );                                  \
+        mrvABORT;                                                       \
+    }                                                                   \
 } while (0)
 
+
+#endif
 
 #endif // mrvAssert_h
