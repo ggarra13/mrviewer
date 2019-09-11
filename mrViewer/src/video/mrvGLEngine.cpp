@@ -57,6 +57,7 @@
 
 extern "C" {
 
+
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -2069,8 +2070,6 @@ void GLEngine::draw_images( ImageList& images )
                 {
                     quad->right( false );
                 }
-                CMedia::Mutex& mtx = img->video_mutex();
-                SCOPED_LOCK( mtx );
                 if ( pic->format() >= image_type::kYByRy420A )
                     quad->shader( GLEngine::YByRyAShader() );
                 else if ( pic->format() >= image_type::kYByRy420 )
@@ -2099,8 +2098,6 @@ void GLEngine::draw_images( ImageList& images )
 
             if ( img->has_subtitle() )
             {
-                CMedia::Mutex& mtx = img->subtitle_mutex();
-                SCOPED_LOCK( mtx );
                 image_type_ptr sub = img->subtitle();
                 if ( sub )
                 {
@@ -2295,8 +2292,6 @@ void GLEngine::draw_images( ImageList& images )
                 quad->right( rightView );
             CHECK_GL;
             }
-            CMedia::Mutex& mtx = img->video_mutex();
-            SCOPED_LOCK( mtx );
             if ( pic->format() >= image_type::kYByRy420A )
                 quad->shader( GLEngine::YByRyAShader() );
             else if ( pic->format() >= image_type::kYByRy420 )
@@ -3313,7 +3308,7 @@ static void hdr_update_peak(ostringstream& code, ostringstream& hdr )
     GLSLF("  frame_num = min(frame_num + 1, %d);\n", PEAK_DETECT_FRAMES);
     GLSL(    memoryBarrierBuffer();)
     GLSL(
-})
+    })
 }
 
 
