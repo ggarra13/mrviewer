@@ -1,5 +1,10 @@
 v5.2.4  - Tightened the last/first frames of sequence loops as they were
 	  sometimes letting another frame pass.
+	- ***THIS IS EMBARASSING***
+	  Bug fixed playback of sequences when not in EDL.
+	  When stopping the sequence would reset to frame 1.
+	  This was supposedly fixed in v5.2.3 but a re-release caused it
+	  to revert to the previous wrong behavior.
 
 v5.2.3  - Bug fixed playback of sequences when not in EDL.  There were two
 	  problems: one when stopping the sequence would reset to frame 1
