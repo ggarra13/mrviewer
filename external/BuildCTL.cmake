@@ -9,10 +9,10 @@ endif()
 
 if (WIN32)
   STRING( JOIN " " cxx_flags -DOPENEXR_DLL -DWIN32 -D_WIN32 ${CMAKE_CXX_FLAGS} )
-  set( DOSHARED FALSE )
+  set( DO_SHARED FALSE )
 else()
   set( cxx_flags ${CMAKE_CXX_FLAGS} )
-  set( DOSHARED TRUE )
+  set( DO_SHARED TRUE )
 endif()
 
 
@@ -27,6 +27,6 @@ ExternalProject_Add(
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
     -DCMAKE_CXX_FLAGS=${cxx_flags}
-    -DENABLE_SHARED=FALSE
-    -DBUILD_SHARED_LIBS=FALSE
+    -DENABLE_SHARED=${DO_SHARED}
+    -DBUILD_SHARED_LIBS=${DO_SHARED}
     )
