@@ -373,6 +373,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     {
         if ( reel->edl )
         {
+
             boost::int64_t f = frame;
             f -= img->first_frame();
             f += reel->location(img);
@@ -386,7 +387,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_minimum());
                 next = reel->image_at( f );
-                dts = reel->location(next);
+                dts = first = reel->location(next);
             }
 
 
@@ -424,13 +425,11 @@ EndStatus handle_loop( boost::int64_t& frame,
                     view->commands.push_back( c );
 
                 }
+
+                return kEndNextImage;
             }
-
-
-            return kEndNextImage;
         }
 
-        if ( decode ) return kEndIgnore;
 
         if ( loop == CMedia::kLoop )
         {
@@ -489,7 +488,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 f = boost::int64_t(timeline->display_maximum());
                 next = reel->image_at( f );
-                dts = f;
+                dts = last = f;
             }
 
             if ( next != img && next != NULL )
@@ -530,11 +529,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                     img->flush_all();
                 }
 
+                return kEndNextImage;
             }
-            return kEndNextImage;
         }
 
-        if ( decode ) return kEndIgnore;
 
         if ( loop == CMedia::kLoop )
         {
@@ -1080,11 +1078,12 @@ void video_thread( PlaybackData* data )
                 //      << " threshold: " << barrier->threshold()
                 //      << " used: " << barrier->used() );
                 bool ok = barrier->wait();
-                // LOGT_INFO( img->name() << " BARRIER " << barrier << " VIDEO FG/BG PASS gen: "
-                //      << barrier->generation()
-                //      << " count: " << barrier->count()
-                //      << " threshold: " << barrier->threshold()
-                //      << " used: " << barrier->used() );
+                LOGT_INFO( img->name() << " BARRIER " << barrier
+                           << " VIDEO FG/BG PASS gen: "
+                           << barrier->generation()
+                           << " count: " << barrier->count()
+                           << " threshold: " << barrier->threshold()
+                           << " used: " << barrier->used() );
             }
 
             if ( img->stopped() ) continue;
