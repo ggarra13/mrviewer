@@ -182,9 +182,9 @@ extern errorstream error;
 #define LOG_ERROR(msg)   mrvLOG_ERROR( kModule, msg << std::endl )
 #define LOG_WARNING(msg) mrvLOG_WARNING( kModule, msg << std::endl )
 #define LOG_INFO(msg)    mrvLOG_INFO( kModule, msg << std::endl )
-#define LOG_DEBUG(msg)   mrvLOG_INFO( kModule, \
-                                    __FUNCTION__ << "(" << __LINE__ << ") " \
-                                    << msg << std::endl )
+#define LOG_DEBUG(msg)   mrvLOG_INFO( kModule, __FILE__ << " " <<      \
+                                      __FUNCTION__ << "(" << __LINE__ << ") " \
+                                      << msg << std::endl )
 #define LOG_CONN(msg)    mrvCONN_INFO( kModule, msg << std::endl )
 #define IMG_ERROR(msg)   do { if( !is_thumbnail() ) LOG_ERROR( this->name() << _(" frame ") << this->frame() << " - " << msg ); } while(0)
 #define IMG_WARNING(msg) do { if( !is_thumbnail() ) LOG_WARNING( this->name() << _(" frame ") << this->frame() << " - " << msg ); } while(0)
@@ -197,8 +197,12 @@ extern errorstream error;
     if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
 } while(0)
 
+#define DBG2 do { \
+    if ( mrv::Preferences::debug > 1 ) LOG_DEBUG( " " ); \
+} while(0)
+
 #define DBG do { \
-    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( "" ); \
+    if ( mrv::Preferences::debug > 0 ) LOG_DEBUG( " " ); \
 } while(0)
 
 #else
