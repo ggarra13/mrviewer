@@ -142,8 +142,6 @@ void parse_directory( const std::string& fileroot,
 {
 
    std::string oldfile;
-   boost::int64_t frameStart = mrv::kMaxFrame;
-   boost::int64_t frameEnd = mrv::kMinFrame;
    stringArray files;
 
 
@@ -262,7 +260,7 @@ void parse_directory( const std::string& fileroot,
                       seqname += "%0";
                       char buf[19]; buf[18] = 0;
 #ifdef WIN32
-                      seqname += itoa( int((*i).number.size()), buf, 10 );
+                      seqname += _itoa( int((*i).number.size()), buf, 10 );
 #else
                       sprintf( buf, "%ld", (*i).number.size() );
                       seqname += buf;
@@ -442,15 +440,16 @@ void parse_command_line( const int argc, char** argv,
     int debug = adebug.getValue();
     Preferences::debug = debug;
     if ( debug > 2 ) mrv::io::logbuffer::debug( true );
-#ifdef _WIN32
-    if ( debug )
-    {
-        AllocConsole();
-        freopen("conout$", "w", stdout);
-        freopen("conout$", "w", stderr);
-        fprintf( stderr, "DEBUG: %d\n", debug );
-    }
-#endif
+// #ifdef _WIN32
+//     if ( debug )
+//     {
+//         AllocConsole();
+//         freopen("conin$", "r", stdin);
+//         freopen("conout$", "w", stdout);
+//         freopen("conout$", "w", stderr);
+        // fprintf( stderr, "DEBUG: %d\n", debug );
+//     }
+// #endif
 
     const stringArray& audios = aaudio.getValue();
     const IntArray& aoffsets = aoffset.getValue();
