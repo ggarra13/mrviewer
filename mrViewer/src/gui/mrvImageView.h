@@ -54,7 +54,7 @@ namespace mrv {
 
 void modify_sop_sat_cb( Fl_Widget* w, mrv::ImageView* view );
 
-class LoadInfo;
+struct LoadInfo;
 class ImageBrowser;
 class Timeline;
 class DrawEngine;
