@@ -4048,7 +4048,6 @@ bool CMedia::find_image( const int64_t frame )
     if ( _frame != f )
     {
         _frame = f;
-        std::cerr << "limit " << _frame << std::endl;
         limit = true;
     }
 
