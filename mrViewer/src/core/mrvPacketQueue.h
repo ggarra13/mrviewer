@@ -44,6 +44,9 @@ extern "C" {
 
 #include "core/mrvAssert.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#  define strdup(x) _strdup(x)
+#endif
 
 //#define DEBUG_PACKET_QUEUE
 
