@@ -28,6 +28,8 @@
 #ifndef mrvAssert_h
 #define mrvAssert_h
 
+#ifdef DEBUG
+
 #ifdef _WIN32
 
 #include <windows.h>
@@ -38,9 +40,11 @@ Sleep( 100000 ); \
 
 #else
 
-#define mrvABORT \
-::abort
+#define mrvABORT ::abort();
 
+#endif
+#else
+#define mrvABORT
 #endif
 
 /**
