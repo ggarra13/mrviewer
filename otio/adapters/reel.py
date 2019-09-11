@@ -305,13 +305,14 @@ Ghosting 5 5
                 playhead = clip.trimmed_range_in_parent().start_time
         else:
             print(timeline.name,"is empty")
-        return
+            return
 
 
         if len(video_tracks) != 0 and len(video_tracks[0]):
             clip = video_tracks[0][0]
         else:
             clip = audio_tracks[0][0]
+
         if not _is_special(clip):
             start_time = clip.trimmed_range().start_time
         else:
@@ -324,12 +325,12 @@ Ghosting 5 5
                 start_time = clip.trimmed_range().start_time
             else:
                 start_time = clip.trimmed_range().start_time
-            if start_time <= playhead:
-                playhead = start_time
-                audio_start = True
 
+        if start_time < playhead:
+            playhead = start_time
+            audio_start = True
 
-            duration = otio.opentime.RationalTime( 0, 24 )
+        duration = otio.opentime.RationalTime( 0, 24 )
 
         if video_start:
             for c in range(0, len(video_tracks[0]) ): # number of clips
@@ -372,33 +373,33 @@ Ghosting 5 5
                         filename, first, last, start, end, \
                         trange.duration.rate ))
 
-            for at in range( len(audio_tracks) ):
-                for ct in range( len(audio_tracks[at]) ):
-                    aclip = audio_tracks[at][ct]
-                    aclip.name = "audio {}".format(ct)
-                    atrange= aclip.trimmed_range_in_parent()
-                    trange = clip.trimmed_range_in_parent()
-                    try:
-                        srange = aclip.trimmed_range()
-                    except AttributeError:
-                        pass
-                    astart = srange.start_time
-                    astart = int(astart.value)
+                    for at in range( len(audio_tracks) ):
+                        for ct in range( len(audio_tracks[at]) ):
+                            aclip = audio_tracks[at][ct]
+                            aclip.name = "audio {}".format(ct)
+                            atrange= aclip.trimmed_range_in_parent()
+                            trange = clip.trimmed_range_in_parent()
+                            try:
+                                srange = aclip.trimmed_range()
+                            except AttributeError:
+                                pass
+                            astart = srange.start_time
+                            astart = int(astart.value)
 
-                    if _is_special(aclip):
-                        pass
-                    elif trange.overlaps(atrange) and \
-                    ( not _is_special(aclip) and \
-                        not _is_special(clip) and \
-                        not aclip.media_reference.is_missing_reference \
-                        and not clip.media_reference.is_missing_reference \
-                        and aclip.media_reference.target_url != \
-                    clip.media_reference.target_url ):
-                        filename = aclip.media_reference.target_url
-                        filename = re.sub("^file://", "", filename )
-                        filename = self._relative_filename( filename )
-                        f.write( "audio: {}\n".format( filename ) )
-                        f.write( "audio offset: {}\n".format(astart) )
+                            if _is_special(aclip):
+                                pass
+                            elif trange.overlaps(atrange) and \
+                              ( not _is_special(aclip) and \
+                                    not _is_special(clip) and \
+                            not aclip.media_reference.is_missing_reference \
+                            and not clip.media_reference.is_missing_reference \
+                            and aclip.media_reference.target_url != \
+                              clip.media_reference.target_url ):
+                                filename = aclip.media_reference.target_url
+                                filename = re.sub("^file://", "", filename )
+                                filename = self._relative_filename( filename )
+                                f.write( "audio: {}\n".format( filename ) )
+                                f.write( "audio offset: {}\n".format(astart) )
 
         f.write( "EDL\n" )
         f.close
