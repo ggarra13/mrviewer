@@ -2984,7 +2984,7 @@ again:
     }
     case kStopVideo:
     {
-        NET( "stop at " << c.frame );
+        LOG_INFO( "stop at " << c.frame );
         stop();
         seek( c.frame );
         break;
@@ -7420,10 +7420,13 @@ void ImageView::preload_cache_start()
         mrv::media m = foreground();
         if ( m ) {
             img = m->image();
-            CMedia::preload_cache( true );
-            _idle_callback = true;
-            Fl::add_timeout( 1.0/img->fps(),
-                             (Fl_Timeout_Handler) static_preload, this );
+            if ( !img->is_stereo() )
+            {
+                CMedia::preload_cache( true );
+                _idle_callback = true;
+                Fl::add_timeout( 1.0/img->fps(),
+                                 (Fl_Timeout_Handler) static_preload, this );
+            }
         }
         //Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
     }
