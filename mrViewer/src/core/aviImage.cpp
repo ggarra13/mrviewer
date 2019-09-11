@@ -944,10 +944,11 @@ bool aviImage::seek_to_position( const int64_t frame )
     if ( !skip )
     {
         ret = av_seek_frame( _context, -1, offset, flag );
+        // ret = avformat_seek_file( _context, -1,
+        //                        std::numeric_limits<int64_t>::min(), offset,
+        //                        std::numeric_limits<int64_t>::max(), flag );
     }
-    //int ret = avformat_seek_file( _context, -1,
-    //                            std::numeric_limits<int64_t>::min(), offset,
-    //                            std::numeric_limits<int64_t>::max(), flag );
+
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << start
@@ -1359,6 +1360,7 @@ aviImage::decode_video_packet( int64_t& ptsframe,
 
 
         if ( got_pict ) {
+
             ptsframe = _av_frame->best_effort_timestamp;
 
             if ( pkt && ptsframe == AV_NOPTS_VALUE )
@@ -1374,7 +1376,7 @@ aviImage::decode_video_packet( int64_t& ptsframe,
             // The following is a work around for bug in decoding
             // bgc.sub.dub.ogm
             if ( !stopped() && pkt && pkt->dts != AV_NOPTS_VALUE &&
-                    pkt->dts < ptsframe  )
+                 pkt->dts < ptsframe  )
             {
                 ptsframe = pkt->dts;
             }
@@ -1741,6 +1743,7 @@ bool aviImage::find_subtitle( const int64_t frame )
 
 bool aviImage::find_image( const int64_t frame )
 {
+
 
     if ( _right_eye && (stopped() || saving() ) )
         _right_eye->find_image( frame );
@@ -2166,8 +2169,8 @@ void aviImage::video_stream( int x )
                 assert( _images.size() == 1 );
             }
 
-            _dts = _frame - 1;
-            _expected = _frame-2;
+            _dts = _frame - 100;
+            _expected = _frame - 200;
         }
         int64_t f = _frame;
         seek( f );
@@ -2421,7 +2424,7 @@ void aviImage::populate()
         if ( start != std::numeric_limits< double >::max() )
         {
             _frameStart = (int64_t)start;
-            if ( _frameStart == 0 ) _frameStart = 1;
+            // if ( _frameStart == 0 ) _frameStart = 1;
         }
     }
 
@@ -2430,6 +2433,7 @@ void aviImage::populate()
 
     _frame_start = _frame = _frameEnd = _frameStart + _start_number;
 
+    assert0( _frameStart != AV_NOPTS_VALUE );
 
     //
     // BUG FIX for ffmpeg bugs with some codecs/containers.
@@ -3587,10 +3591,10 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             bool ok = in_video_store( frame );
             if ( ok )
             {
-                SCOPED_LOCK( _mutex );
-                AVPacket& pkt = _video_packets.front();
-                int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
-                                   - _frame_offset;
+                // SCOPED_LOCK( _mutex );
+                // AVPacket& pkt = _video_packets.front();
+                // int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
+                //                    - _frame_offset;
                 // if ( pktframe >= frame )
                 {
                     got_video = handle_video_packet_seek( frame, false );
