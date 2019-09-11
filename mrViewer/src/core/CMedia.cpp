@@ -35,7 +35,6 @@
 #endif
 
 #include <cstdio>     // for snprintf
-#include <cassert>    // for assert
 
 
 extern "C" {
@@ -1548,7 +1547,7 @@ void CMedia::sequence( const char* fileroot,
     delete [] _right;
     _right = NULL;
 
-    boost::uint64_t num = _frame_end - _frame_start + 1;
+    uint64_t num = _frame_end - _frame_start + 1;
 
     if ( dynamic_cast< aviImage* >( this ) == NULL )
     {
@@ -2164,11 +2163,15 @@ void CMedia::timestamp(const boost::uint64_t idx,
     int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
     if ( result < 0 ) return;
 
+    DBG;
     _ctime = sbuf.st_ctime;
     _mtime = sbuf.st_mtime;
+    DBG;
     pic->ctime( sbuf.st_ctime );
     pic->mtime( sbuf.st_mtime );
+    DBG;
     _disk_space += sbuf.st_size;
+    DBG;
     image_damage( image_damage() | kDamageData );
 }
 
@@ -2720,7 +2723,7 @@ std::string CMedia::directory() const
  * Set a new frame for the image sequence
  *  * @param f new frame
  */
-bool CMedia::frame( int64_t f )
+bool CMedia::frame( const int64_t f )
 {
     assert( _fileroot != NULL );
 
@@ -2780,8 +2783,7 @@ bool CMedia::frame( int64_t f )
 
     if ( has_audio() )
     {
-        f += _audio_offset;
-        fetch_audio( f );
+        fetch_audio( f + _audio_offset );
     }
 
     _expected = _dts + 1;
@@ -2923,18 +2925,24 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
         }
         else
         {
+            DBG;
             seq[idx] = pic;
+            DBG;
             assert0( pic.use_count() >= 2 );
         }
     }
+
+    DBG;
     memory_used += seq[idx]->data_size();
     DBG;
     MEM();
 
     _w = w;
     _h = h;
+    DBG;
 
     timestamp(idx, seq);
+    DBG;
 }
 
 /**
@@ -2980,17 +2988,20 @@ void CMedia::cache( mrv::image_type_ptr& pic )
 
     if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
     {
+        DBG3( "stereo[0]" );
         update_cache_pic( _sequence, _stereo[0] );
         _stereo[0].reset();
     }
     else
     {
+        DBG3( "sequence" );
         update_cache_pic( _sequence, pic );
         pic.reset();
     }
 
     if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
     {
+        DBG3( "stereo[1]" );
         update_cache_pic( _right, _stereo[1] );
         _stereo[1].reset();
     }
@@ -3702,9 +3713,8 @@ void CMedia::limit_video_store( const int64_t f )
     };
 
 
-    boost::uint64_t num  = _frame_end - _frame_start + 1;
-
-    int max_frames = max_image_frames();
+    uint64_t num  = _frame_end - _frame_start + 1;
+    uint64_t max_frames = max_image_frames();
 
     typedef std::multimap< timeval, uint64_t, customMore > TimedSeqMap;
 
