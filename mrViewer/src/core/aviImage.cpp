@@ -3612,20 +3612,14 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             // store here.
             bool ok = in_video_store( frame );
 
-            if ( ok && frame >= _frameStart )
+            if ( frame > _frameStart )
             {
-                return kDecodeOK;
-            }
-
-            if ( frame < _frameStart )
-            {
-                _video_packets.pop_front();
-                return kDecodeLoopStart;
-            }
-            else
-            {
+                if ( ok ) return kDecodeOK;
                 return got_video;
             }
+
+            _video_packets.pop_front();
+            return kDecodeLoopStart;
         }
         else if ( _video_packets.is_loop_end() )
         {
@@ -3634,8 +3628,8 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
             if ( frame < _frameEnd )
             {
                 if ( ok ) return kDecodeOK;
+                return got_video;
             }
-
 
             _video_packets.pop_front();
             return kDecodeLoopEnd;
@@ -3658,12 +3652,12 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
 
 
             // Avoid storing too many frames in advance
-            if ( playback() == kForwards &&
-                 pktframe > _frame + max_video_frames() )
-            {
-                got_video = kDecodeOK;
-                continue;
-            }
+            // if ( playback() == kForwards &&
+            //      pktframe > _frame + max_video_frames() )
+            // {
+            //     got_video = kDecodeOK;
+            //     continue;
+            // }
 
             bool ok = in_video_store( pktframe );
             if ( ok )
@@ -3671,12 +3665,16 @@ CMedia::DecodeStatus aviImage::decode_video( int64_t& f )
                 // if ( pktframe == frame )
                 {
                     got_video = decode_vpacket( pktframe, frame, pkt );
+                    DBGM1( "1 in video store? " << got_video );
                     _video_packets.pop_front();
                 }
                 continue;
             }
 
+            DBGM1( "Not in video store " << pktframe );
+
             got_video = decode_image( pktframe, pkt );
+            DBGM1( "2 in video store? " << got_video );
             _video_packets.pop_front();
             continue;
         }
