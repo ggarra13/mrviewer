@@ -182,7 +182,7 @@ extern errorstream error;
 #define LOG_ERROR(msg)   mrvLOG_ERROR( kModule, msg << std::endl )
 #define LOG_WARNING(msg) mrvLOG_WARNING( kModule, msg << std::endl )
 #define LOG_INFO(msg)    mrvLOG_INFO( kModule, msg << std::endl )
-#define LOG_DEBUG(msg)   mrvLOG_INFO( kModule, __FILE__ << " " <<      \
+#define LOG_DEBUG(msg)   mrvLOG_INFO( kModule,       \
                                       __FUNCTION__ << "(" << __LINE__ << ") " \
                                       << msg << std::endl )
 #define LOG_CONN(msg)    mrvCONN_INFO( kModule, msg << std::endl )
@@ -193,8 +193,20 @@ extern errorstream error;
 
 #if 1
 #include "gui/mrvPreferences.h"
-#define DBG3(msg) do { \
+#define DBGM3(msg) do { \
     if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( msg ); \
+} while(0)
+
+#define DBGM2(msg) do { \
+    if ( mrv::Preferences::debug > 1 ) LOG_DEBUG( msg ); \
+} while(0)
+
+#define DBGM1(msg) do { \
+    if ( mrv::Preferences::debug > 0 ) LOG_DEBUG( msg ); \
+} while(0)
+
+#define DBG3 do { \
+    if ( mrv::Preferences::debug > 2 ) LOG_DEBUG( " " ); \
 } while(0)
 
 #define DBG2 do { \
@@ -206,7 +218,11 @@ extern errorstream error;
 } while(0)
 
 #else
-#define DBG3(msg)
+#define DBGM3(msg)
+#define DBGM2(msg)
+#define DBGM1(msg)
+#define DBG3
+#define DBG2
 #define DBG
 #endif
 
