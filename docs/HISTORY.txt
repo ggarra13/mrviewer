@@ -3,7 +3,11 @@ v5.2.5  - Bug fixed a Windows problem with relative paths in reel files.
 	- Bug fixed a Windows startup hangup when loading several
 	  short clips (usually in a reel file).
 	- Made stereo cache be brighter green.
-	- Made EDL playback work on same clip divided with cuts in between.
+	- Made EDL playback work better on same clip divided with cuts in
+	  between.
+	- Tightened EDL cuts to the first and last frames of the clip.
+	  Previously, sometimes the last frames would get skipped or the
+	  clip would go on an endless loop.
 
 
 v5.2.4  - Tightened the last/first frames of sequence loops as they were
